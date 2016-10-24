@@ -14,9 +14,13 @@ var (
 type Driver interface {
 	Run()
 
-	NewContext(c interface{}) Contexter
+	NewContext(ctx interface{}) Contexter
 
 	Render(target uid.ID, HTML string) error
+
+	AppMenu() Contexter
+
+	Dock() Contexter
 }
 
 // RegisterDriver registers the driver to be used when using the app package.

@@ -75,3 +75,13 @@ func Finalize() {
 	stopPipeRendering()
 	running = false
 }
+
+// Menu returns the app menu context.
+func Menu() Contexter {
+	return driver.AppMenu()
+}
+
+// Dock returns the dock context.
+func Dock() Contexter {
+	return driver.Dock()
+}

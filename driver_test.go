@@ -1,15 +1,29 @@
 package app
 
 import (
+	"fmt"
+
 	"github.com/murlokswarm/log"
 	"github.com/murlokswarm/uid"
 )
 
 type AbstractDriver struct {
+	dock    Contexter
+	appMenu Contexter
 }
 
 func (d *AbstractDriver) Run() {
 	log.Info("Running app")
+}
+
+func (d *AbstractDriver) NewContext(ctx interface{}) Contexter {
+	switch ctx.(type) {
+	case Window:
+		return NewZeroContext("window")
+
+	default:
+		return NewZeroContext(fmt.Sprintf("%T", ctx))
+	}
 }
 
 func (d *AbstractDriver) Render(target uid.ID, HTML string) (err error) {
@@ -17,6 +31,17 @@ func (d *AbstractDriver) Render(target uid.ID, HTML string) (err error) {
 	return
 }
 
+func (d *AbstractDriver) AppMenu() Contexter {
+	return d.appMenu
+}
+
+func (d *AbstractDriver) Dock() Contexter {
+	return d.dock
+}
+
 func init() {
-	RegisterDriver(&AbstractDriver{})
+	RegisterDriver(&AbstractDriver{
+		dock:    NewZeroContext("dock"),
+		appMenu: NewZeroContext("appMenu"),
+	})
 }

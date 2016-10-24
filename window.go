@@ -46,6 +46,5 @@ type Vibrancy uint8
 
 // NewWindow creates a new window.
 func NewWindow(w Window) (ctx Contexter) {
-	// To implement
-	return
+	return driver.NewContext(w)
 }
