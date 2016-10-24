@@ -54,3 +54,11 @@ func TestRender(t *testing.T) {
 	hello.Greeting = "Maxence"
 	Render(hello)
 }
+
+func TestMenu(t *testing.T) {
+	t.Log(Menu())
+}
+
+func TestDock(t *testing.T) {
+	t.Log(Dock())
+}
