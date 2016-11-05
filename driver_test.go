@@ -39,6 +39,10 @@ func (d *AbstractDriver) Dock() Contexter {
 	return d.dock
 }
 
+func (d *AbstractDriver) Resources() ResourceLocation {
+	return "resources"
+}
+
 func (d *AbstractDriver) JavascriptBridge() string {
 	return "alert('bridge not implemented');"
 }
