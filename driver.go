@@ -22,6 +22,8 @@ type Driver interface {
 
 	Dock() Contexter
 
+	Resources() ResourceLocation
+
 	JavascriptBridge() string
 }
 
