@@ -2,7 +2,7 @@ package app
 
 import (
 	"bytes"
-	"html/template"
+	"text/template"
 
 	"github.com/murlokswarm/uid"
 )
@@ -38,9 +38,7 @@ const (
 <body>
     <div data-murlok-root="{{.ID}}"></div>
 
-    <script>
-    {{.AppJS}}
-    </script>
+    <script>{{.MurlokJS}}</script>
 
     {{range .JS}}
     <script src="{{.}}"></script>{{end}}
@@ -53,12 +51,12 @@ const (
 // setup a webview based context.
 // Should be used only in drivers implementations.
 type HTMLContext struct {
-	ID    uid.ID
-	Title string
-	Lang  string
-	AppJS string
-	JS    []string
-	CSS   []string
+	ID       uid.ID
+	Title    string
+	Lang     string
+	MurlokJS string
+	JS       []string
+	CSS      []string
 }
 
 // HTML generate the HTML based on the data of c.

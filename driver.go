@@ -21,6 +21,8 @@ type Driver interface {
 	AppMenu() Contexter
 
 	Dock() Contexter
+
+	JavascriptBridge() string
 }
 
 // RegisterDriver registers the driver to be used when using the app package.

@@ -8,12 +8,12 @@ import (
 
 func TestHTMLContextHTML(t *testing.T) {
 	c := HTMLContext{
-		ID:    uid.Context(),
-		Title: "Test",
-		Lang:  "fr",
-		AppJS: "alert('hello');",
-		JS:    []string{"test.js"},
-		CSS:   []string{"test.css", "test2.css"},
+		ID:       uid.Context(),
+		Title:    "Test",
+		Lang:     "fr",
+		MurlokJS: MurlokJS(),
+		JS:       []string{"test.js"},
+		CSS:      []string{"test.css", "test2.css"},
 	}
 
 	t.Log(c.HTML())
