@@ -19,11 +19,11 @@ type Contexter interface {
 	// Mounts the component and renders it in the context.
 	Mount(c markup.Componer)
 
-	// If applicable, resizes the context.
-	Resize(width float64, height float64)
-
 	// If applicable, moves the context.
 	Move(x float64, y float64)
+
+	// If applicable, resizes the context.
+	Resize(width float64, height float64)
 
 	// If applicable, set the icon targeted by path.
 	SetIcon(path string)
