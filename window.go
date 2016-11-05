@@ -17,8 +17,10 @@ const (
 // Window represents a window.
 type Window struct {
 	Title           string
-	Width           uint
-	Height          uint
+	X               float64
+	Y               float64
+	Width           float64
+	Height          float64
 	BackgroundColor string
 	Vibrancy        Vibrancy
 	Borderless      bool
