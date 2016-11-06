@@ -58,6 +58,36 @@ func (r ResourcePath) CSS() (css []string) {
 	return
 }
 
+// Js returns a slice containing the js filenames of the js directory.
+func (r ResourcePath) Js() (css []string) {
+	cssPath := r.Join("js")
+
+	info, err := os.Stat(cssPath)
+	if err != nil {
+		log.Warnf("%v doesn't exists", cssPath)
+		return
+	}
+
+	if !info.IsDir() {
+		log.Errorf("%v is not a directory", cssPath)
+		return
+	}
+
+	files, _ := ioutil.ReadDir(cssPath)
+
+	for _, f := range files {
+		if f.IsDir() {
+			continue
+		}
+
+		if strings.HasSuffix(f.Name(), ".js") {
+			css = append(css, f.Name())
+		}
+	}
+
+	return
+}
+
 // Resources returns the path of the app resource directory.
 func Resources() ResourcePath {
 	return driver.Resources()
