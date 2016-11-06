@@ -17,6 +17,7 @@ const (
 // Window represents a window.
 type Window struct {
 	Title           string
+	Lang            string
 	X               float64
 	Y               float64
 	Width           float64

@@ -7,6 +7,7 @@ import (
 const (
 	jsFmt = `
 function Call(msg) {
+	msg = JSON.stringify(msg);
     %v
 }
     `
