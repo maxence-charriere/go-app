@@ -64,7 +64,6 @@ func (r ResourcePath) JS() (css []string) {
 
 	info, err := os.Stat(cssPath)
 	if err != nil {
-		log.Warnf("%v doesn't exists", cssPath)
 		return
 	}
 
