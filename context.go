@@ -29,7 +29,16 @@ type Contexter interface {
 	SetIcon(path string)
 }
 
-func registerContext(c Contexter) {
+// Context returns the context registered under id.
+// Should be used only in a driver implementation.
+func Context(id uid.ID) (ctx Contexter, registered bool) {
+	ctx, registered = contexts[id]
+	return
+}
+
+// RegisterContext registers c.
+// Should be used only in a driver implementation.
+func RegisterContext(c Contexter) {
 	if len(c.ID()) == 0 {
 		log.Panicf("context %T is invalid. ID must be set", c)
 	}
@@ -41,7 +50,9 @@ func registerContext(c Contexter) {
 	contexts[c.ID()] = c
 }
 
-func unregisterContext(c Contexter) {
+// UnregisterContext unregisters c.
+// Should be used only in a driver implementation.
+func UnregisterContext(c Contexter) {
 	delete(contexts, c.ID())
 }
 
@@ -61,7 +72,7 @@ func NewZeroContext(placeholder string) (ctx *ZeroContext) {
 		placeholder: placeholder,
 	}
 
-	registerContext(ctx)
+	RegisterContext(ctx)
 	return
 }
 

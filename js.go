@@ -6,6 +6,12 @@ import (
 
 const (
 	jsFmt = `
+function Mount(id, markup) {
+	const sel = '[data-murlok-root="' + id + '"]';
+    const elem = document.querySelector(sel);
+    elem.innerHTML = markup;
+}
+
 function Call(msg) {
 	msg = JSON.stringify(msg);
 	%v
