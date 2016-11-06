@@ -45,9 +45,8 @@ func unregisterContext(c Contexter) {
 	delete(contexts, c.ID())
 }
 
-// ZeroContext is a placeholder context. It's used to give a support on non
-// implemented or not available app components.
-// eg There is an app menu on MacOS, not on Windows.
+// ZeroContext is a placeholder context.
+// It's used as a replacement for non available or non implemented features.
 //
 // Use of methods from a ZeroContext doesn't do anything.
 type ZeroContext struct {
