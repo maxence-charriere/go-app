@@ -39,7 +39,7 @@ func (d *AbstractDriver) Dock() Contexter {
 	return d.dock
 }
 
-func (d *AbstractDriver) Resources() ResourceLocation {
+func (d *AbstractDriver) Resources() ResourcePath {
 	return "resources"
 }
 

@@ -3,7 +3,7 @@ package app
 import "testing"
 
 func TestResourceLocationJoin(t *testing.T) {
-	l := ResourceLocation("resources")
+	l := ResourcePath("resources")
 
 	if j := l.Join("css"); j != "resources/css" {
 		t.Error("j should be resources/css:", j)

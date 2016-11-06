@@ -4,11 +4,11 @@ import (
 	"path/filepath"
 )
 
-// ResourceLocation represents the path of the app resource directory.
-type ResourceLocation string
+// ResourcePath represents the path of the app resource directory.
+type ResourcePath string
 
-// Path is a convenient method that cast a ResourceLocation into a string.
-func (m ResourceLocation) Path() string {
+// Path is a convenient method that cast a ResourcePath into a string.
+func (m ResourcePath) Path() string {
 	return string(m)
 }
 
@@ -16,12 +16,12 @@ func (m ResourceLocation) Path() string {
 // Separator if necessary.
 // It calls the Join function from package path/filepath with the resource
 // location as the first element.
-func (m ResourceLocation) Join(elems ...string) string {
+func (m ResourcePath) Join(elems ...string) string {
 	elems = append([]string{m.Path()}, elems...)
 	return filepath.Join(elems...)
 }
 
 // Resources returns the path of the app resource directory.
-func Resources() ResourceLocation {
+func Resources() ResourcePath {
 	return driver.Resources()
 }
