@@ -50,7 +50,7 @@ func TestResourcePathCSSError(t *testing.T) {
 	r.CSS()
 }
 
-func TestResourcePathJs(t *testing.T) {
+func TestResourcePathJS(t *testing.T) {
 	r := ResourcePath("resources")
 	jsPath := r.Join("js")
 
@@ -64,7 +64,7 @@ func TestResourcePathJs(t *testing.T) {
 	os.Create(filepath.Join(jsPath, "world.txt"))
 	os.Mkdir(filepath.Join(jsPath, "bar"), os.ModePerm)
 
-	jsFilenames := r.Js()
+	jsFilenames := r.JS()
 
 	if l := len(jsFilenames); l != 1 {
 		t.Error("jsFilenames should have 1 element:", l)
@@ -75,17 +75,17 @@ func TestResourcePathJs(t *testing.T) {
 	}
 }
 
-func TestResourcePathJsError(t *testing.T) {
+func TestResourcePathJSError(t *testing.T) {
 	// No js directory.
 	r := ResourcePath("resources")
-	r.Js()
+	r.JS()
 
 	// js is not a directory.
 	jsPath := r.Join("js")
 	os.Mkdir(r.Path(), os.ModePerm)
 	os.Create(jsPath)
 	defer os.RemoveAll(Resources().Path())
-	r.Js()
+	r.JS()
 }
 
 func TestResources(t *testing.T) {

@@ -58,8 +58,8 @@ func (r ResourcePath) CSS() (css []string) {
 	return
 }
 
-// Js returns a slice containing the js filenames of the js directory.
-func (r ResourcePath) Js() (css []string) {
+// JS returns a slice containing the js filenames of the js directory.
+func (r ResourcePath) JS() (css []string) {
 	cssPath := r.Join("js")
 
 	info, err := os.Stat(cssPath)
