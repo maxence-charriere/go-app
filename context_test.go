@@ -31,7 +31,7 @@ func TestContext(t *testing.T) {
 	// Closed context.
 	ctx.Close()
 
-	if ctxBis, err = Context(compo); err == nil {
+	if _, err = Context(compo); err == nil {
 		t.Error("err should not be nil")
 	}
 
