@@ -6,6 +6,43 @@ import (
 	"github.com/murlokswarm/uid"
 )
 
+func TestContext(t *testing.T) {
+	ctx := &ZeroContext{
+		id: uid.Context(),
+	}
+
+	RegisterContext(ctx)
+	defer UnregisterContext(ctx)
+
+	compo := &Hello{}
+
+	ctx.Mount(compo)
+
+	// Normal case.
+	ctxBis, err := Context(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if ctx != ctxBis {
+		t.Error("ctx and ctx bis should be equals")
+	}
+
+	// Closed context.
+	ctx.Close()
+
+	if ctxBis, err = Context(compo); err == nil {
+		t.Error("err should not be nil")
+	}
+
+	// Component not mounted.
+	compo = &Hello{}
+
+	if ctxBis, err = Context(compo); err == nil {
+		t.Error("err should not be nil")
+	}
+}
+
 func TestRegisterContext(t *testing.T) {
 	ctx := &ZeroContext{
 		id: uid.Context(),
@@ -14,7 +51,7 @@ func TestRegisterContext(t *testing.T) {
 	RegisterContext(ctx)
 	defer UnregisterContext(ctx)
 
-	ctxBis, registered := Context(ctx.ID())
+	ctxBis, registered := contexts[ctx.ID()]
 	if !registered {
 		t.Fatal("ctx should be registered")
 	}

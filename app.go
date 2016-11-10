@@ -49,14 +49,27 @@ func Run() {
 		return
 	}
 
-	startPipeRendering()
 	driver.Run()
 	running = true
 }
 
 // Render renders a component.
 func Render(c markup.Componer) {
-	renderC <- c
+	var ctx Contexter
+	var elems []*markup.Element
+	var err error
+
+	if ctx, err = Context(c); err != nil {
+		log.Panic(err)
+	}
+
+	if elems, err = markup.Sync(c); err != nil {
+		log.Panic(err)
+	}
+
+	for _, elem := range elems {
+		ctx.Render(elem)
+	}
 }
 
 // Finalize performs final cleanup before the application terminates.
@@ -72,7 +85,6 @@ func Finalize() {
 		OnFinalize()
 	}
 
-	stopPipeRendering()
 	running = false
 }
 

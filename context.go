@@ -1,6 +1,8 @@
 package app
 
 import (
+	"fmt"
+
 	"github.com/murlokswarm/log"
 	"github.com/murlokswarm/markup"
 	"github.com/murlokswarm/uid"
@@ -19,6 +21,9 @@ type Contexter interface {
 	// Mounts the component and renders it in the context.
 	Mount(c markup.Componer)
 
+	// Renders an element.
+	Render(elem *markup.Element)
+
 	// If applicable, moves the context.
 	Move(x float64, y float64)
 
@@ -27,12 +32,28 @@ type Contexter interface {
 
 	// If applicable, set the icon targeted by path.
 	SetIcon(path string)
+
+	// Close the context.
+	// Sould call markup.Dismount on its root component.
+	// Should call UnregisterContext on itself.
+	// Should perform additional cleanup if required.
+	Close()
 }
 
-// Context returns the context registered under id.
-// Should be used only in a driver implementation.
-func Context(id uid.ID) (ctx Contexter, registered bool) {
-	ctx, registered = contexts[id]
+// Context returns the context of c.
+// c must be mounted.
+func Context(c markup.Componer) (ctx Contexter, err error) {
+	var root *markup.Element
+
+	if root, err = markup.ComponentRoot(c); err != nil {
+		return
+	}
+
+	ctx, registered := contexts[root.ContextID]
+	if !registered {
+		err = fmt.Errorf("context %v has been closed", root.ID)
+	}
+
 	return
 }
 
@@ -63,6 +84,7 @@ func UnregisterContext(c Contexter) {
 type ZeroContext struct {
 	id          uid.ID
 	placeholder string
+	root        markup.Componer
 }
 
 // NewZeroContext creates a ZeroContext.
@@ -84,7 +106,14 @@ func (c *ZeroContext) ID() uid.ID {
 // Mount is a placeholder method to satisfy the Contexter interface.
 // It does nothing.
 func (c *ZeroContext) Mount(component markup.Componer) {
+	markup.Mount(component, c.ID())
 	log.Infof("%T is mounted into %v (%v)", component, c.placeholder, c.ID())
+}
+
+// Render is a placeholder method to satisfy the Contexter interface.
+// It does nothing.
+func (c *ZeroContext) Render(elem *markup.Element) {
+	log.Infof("rendering:\n\033[32m%v\033[00m", elem.HTML())
 }
 
 // Resize is a placeholder method to satisfy the Contexter interface.
@@ -103,4 +132,11 @@ func (c *ZeroContext) Move(x float64, y float64) {
 // It does nothing.
 func (c *ZeroContext) SetIcon(path string) {
 	log.Infof("%v (%v) simulates set icon with %v", c.placeholder, c.ID(), path)
+}
+
+// Close is a closes the context.
+func (c *ZeroContext) Close() {
+	markup.Dismount(c.root)
+	UnregisterContext(c)
+	log.Infof("%v (%v) is closed", c.placeholder, c.ID())
 }
