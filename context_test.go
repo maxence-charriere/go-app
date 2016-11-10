@@ -38,7 +38,7 @@ func TestContext(t *testing.T) {
 	// Component not mounted.
 	compo = &Hello{}
 
-	if ctxBis, err = Context(compo); err == nil {
+	if _, err = Context(compo); err == nil {
 		t.Error("err should not be nil")
 	}
 }

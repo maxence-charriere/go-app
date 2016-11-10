@@ -34,7 +34,7 @@ type Contexter interface {
 	SetIcon(path string)
 
 	// Close the context.
-	// Sould call markup.Dismount on its root component.
+	// Should call markup.Dismount on its root component.
 	// Should call UnregisterContext on itself.
 	// Should perform additional cleanup if required.
 	Close()
