@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/murlokswarm/log"
-	"github.com/murlokswarm/uid"
 )
 
 type AbstractDriver struct {
@@ -24,11 +23,6 @@ func (d *AbstractDriver) NewContext(ctx interface{}) Contexter {
 	default:
 		return NewZeroContext(fmt.Sprintf("%T", ctx))
 	}
-}
-
-func (d *AbstractDriver) Render(target uid.ID, HTML string) (err error) {
-	log.Infof("rendering %v:\n\033[32m%v\033[00m", target, HTML)
-	return
 }
 
 func (d *AbstractDriver) AppMenu() Contexter {

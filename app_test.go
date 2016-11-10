@@ -4,12 +4,11 @@ import (
 	"testing"
 
 	"github.com/murlokswarm/log"
-	"github.com/murlokswarm/markup"
-	"github.com/murlokswarm/uid"
 )
 
 type Hello struct {
-	Greeting string
+	Greeting  string
+	BadMarkup bool
 }
 
 func (h *Hello) OnInputChange(a OnChangeArg) {
@@ -29,6 +28,8 @@ func (h *Hello) Render() string {
         {{end}}
     </span>
     <input onchange="@OnInputChange" />
+
+	{{if .BadMarkup}}<div></span>{{end}}
 </div>
     `
 }
@@ -45,14 +46,36 @@ func TestRun(t *testing.T) {
 }
 
 func TestRender(t *testing.T) {
-	Run()
-	defer Finalize()
-
 	hello := &Hello{}
-	markup.Mount(hello, uid.Context())
 
+	ctx := NewZeroContext("rendering")
+	defer ctx.Close()
+
+	ctx.Mount(hello)
 	hello.Greeting = "Maxence"
 	Render(hello)
+}
+
+func TestRenderPanicCompoCtxError(t *testing.T) {
+	defer func() { recover() }()
+
+	hello := &Hello{}
+	Render(hello)
+	t.Error("should panic")
+}
+
+func TestRenderPanicCompoBadMarkup(t *testing.T) {
+	defer func() { recover() }()
+
+	hello := &Hello{}
+
+	ctx := NewZeroContext("rendering")
+	defer ctx.Close()
+
+	ctx.Mount(hello)
+	hello.BadMarkup = true
+	Render(hello)
+	t.Error("should panic")
 }
 
 func TestMenu(t *testing.T) {

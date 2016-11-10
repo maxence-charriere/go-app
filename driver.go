@@ -1,9 +1,6 @@
 package app
 
-import (
-	"github.com/murlokswarm/log"
-	"github.com/murlokswarm/uid"
-)
+import "github.com/murlokswarm/log"
 
 var (
 	driver Driver
@@ -15,8 +12,6 @@ type Driver interface {
 	Run()
 
 	NewContext(ctx interface{}) Contexter
-
-	Render(target uid.ID, HTML string) error
 
 	AppMenu() Contexter
 
