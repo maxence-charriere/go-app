@@ -12,6 +12,12 @@ function Mount(id, markup) {
     elem.innerHTML = markup;
 }
 
+function Render(id, markup) {
+	const sel = '[data-murlok-id="' + id + '"]';
+    const elem = document.querySelector(sel);
+    elem.outerHTML = markup;
+}
+
 function Call(msg) {
 	msg = JSON.stringify(msg);
 	%v
