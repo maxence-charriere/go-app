@@ -24,8 +24,14 @@ type Contexter interface {
 	// Renders an element.
 	Render(elem *markup.Element)
 
+	// If applicable, return the position of the context.
+	Position() (x float64, y float64)
+
 	// If applicable, moves the context.
 	Move(x float64, y float64)
+
+	// If applicable, return the size of the context.
+	Size() (width float64, height float64)
 
 	// If applicable, resizes the context.
 	Resize(width float64, height float64)
@@ -116,10 +122,20 @@ func (c *ZeroContext) Render(elem *markup.Element) {
 	log.Infof("rendering:\n\033[32m%v\033[00m", elem.HTML())
 }
 
+// Size is a placeholder method to satisfy the Contexter interface.
+func (c *ZeroContext) Size() (width float64, height float64) {
+	return
+}
+
 // Resize is a placeholder method to satisfy the Contexter interface.
 // It does nothing.
 func (c *ZeroContext) Resize(width float64, height float64) {
 	log.Infof("%v (%v) simulates a resize of %v x %v", c.placeholder, c.ID(), width, height)
+}
+
+// Position is a placeholder method to satisfy the Contexter interface.
+func (c *ZeroContext) Position() (x float64, y float64) {
+	return
 }
 
 // Move is a placeholder method to satisfy the Contexter interface.
