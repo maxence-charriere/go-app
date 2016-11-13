@@ -86,6 +86,8 @@ func TestZeroContext(t *testing.T) {
 	ctx.Resize(42, 42)
 	ctx.Move(42, 42)
 	ctx.SetIcon("test.png")
+	ctx.Size()
+	ctx.Position()
 
 	hello := &Hello{}
 	ctx.Mount(hello)
