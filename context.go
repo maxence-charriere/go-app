@@ -55,9 +55,16 @@ func Context(c markup.Componer) (ctx Contexter, err error) {
 		return
 	}
 
-	ctx, registered := contexts[root.ContextID]
-	if !registered {
-		err = fmt.Errorf("context %v has been closed", root.ID)
+	ctx, err = ContextByID(root.ContextID)
+	return
+}
+
+// ContextByID returns the context registered under id.
+func ContextByID(id uid.ID) (ctx Contexter, err error) {
+	var registered bool
+
+	if ctx, registered = contexts[id]; !registered {
+		err = fmt.Errorf("context %v is not registered or has been closed", id)
 	}
 
 	return
