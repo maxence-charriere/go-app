@@ -11,7 +11,7 @@ type Hello struct {
 	BadMarkup bool
 }
 
-func (h *Hello) OnInputChange(a OnChangeArg) {
+func (h *Hello) OnInputChange(a ChangeArg) {
 	h.Greeting = a.Value
 	Render(h)
 }
@@ -27,7 +27,7 @@ func (h *Hello) Render() string {
             World
         {{end}}
     </span>
-    <input onchange="@OnInputChange" />
+    <input _onchange="OnInputChange" />
 
 	{{if .BadMarkup}}<div></span>{{end}}
 </div>
@@ -65,8 +65,6 @@ func TestRenderPanicCompoCtxError(t *testing.T) {
 }
 
 func TestRenderPanicCompoBadMarkup(t *testing.T) {
-	defer func() { recover() }()
-
 	hello := &Hello{}
 
 	ctx := NewZeroContext("rendering")
@@ -75,7 +73,6 @@ func TestRenderPanicCompoBadMarkup(t *testing.T) {
 	ctx.Mount(hello)
 	hello.BadMarkup = true
 	Render(hello)
-	t.Error("should panic")
 }
 
 func TestMenu(t *testing.T) {
