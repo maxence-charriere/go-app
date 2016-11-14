@@ -122,7 +122,6 @@ function Call(id, method, arg) {
 	};
 	
 	msg = JSON.stringify(msg);
-	alert(msg);
 	%v
 }
     `
@@ -143,8 +142,6 @@ func CallComponentMethod(msg string) {
 		log.Error(err)
 		return
 	}
-
-	log.Error(jsMsg)
 
 	if err := markup.Call(jsMsg.ID, jsMsg.Method, jsMsg.Arg); err != nil {
 		log.Error(err)
