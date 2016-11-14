@@ -24,13 +24,13 @@ type Contexter interface {
 	// Renders an element.
 	Render(elem *markup.Element)
 
-	// If applicable, return the position of the context.
+	// If applicable, returns the position of the context.
 	Position() (x float64, y float64)
 
 	// If applicable, moves the context.
 	Move(x float64, y float64)
 
-	// If applicable, return the size of the context.
+	// If applicable, returns the size of the context.
 	Size() (width float64, height float64)
 
 	// If applicable, resizes the context.
@@ -39,10 +39,7 @@ type Contexter interface {
 	// If applicable, set the icon targeted by path.
 	SetIcon(path string)
 
-	// Close the context.
-	// Should call markup.Dismount on its root component.
-	// Should call UnregisterContext on itself.
-	// Should perform additional cleanup if required.
+	// If applicablex, closes the context.
 	Close()
 }
 
