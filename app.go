@@ -64,7 +64,8 @@ func Render(c markup.Componer) {
 	}
 
 	if elems, err = markup.Sync(c); err != nil {
-		log.Panic(err)
+		log.Error(err)
+		return
 	}
 
 	for _, elem := range elems {

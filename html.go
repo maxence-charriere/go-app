@@ -35,7 +35,7 @@ const (
 <title>{{.Title}}</title>
 </head>
 
-<body>
+<body oncontextmenu="event.preventDefault()">
     <div data-murlok-root="{{.ID}}"></div>
 
     <script>{{.MurlokJS}}</script>
