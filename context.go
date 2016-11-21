@@ -157,6 +157,8 @@ func (c *ZeroContext) SetIcon(path string) {
 	log.Infof("%v (%v) simulates set icon with %v", c.placeholder, c.ID(), path)
 }
 
+// SetBadge is a placeholder method to satisfy the Contexter interface.
+// It does nothing.
 func (c *ZeroContext) SetBadge(v string) {
 	log.Infof("%v (%v) simulates set badge with %v", c.placeholder, c.ID(), v)
 
