@@ -39,6 +39,9 @@ type Contexter interface {
 	// If applicable, set the icon targeted by path.
 	SetIcon(path string)
 
+	// If applicable, set the badge with v.
+	SetBadge(v string)
+
 	// If applicablex, closes the context.
 	Close()
 }
@@ -152,6 +155,11 @@ func (c *ZeroContext) Move(x float64, y float64) {
 // It does nothing.
 func (c *ZeroContext) SetIcon(path string) {
 	log.Infof("%v (%v) simulates set icon with %v", c.placeholder, c.ID(), path)
+}
+
+func (c *ZeroContext) SetBadge(v string) {
+	log.Infof("%v (%v) simulates set badge with %v", c.placeholder, c.ID(), v)
+
 }
 
 // Close is a closes the context.
