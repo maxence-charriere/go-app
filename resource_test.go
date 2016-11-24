@@ -91,3 +91,13 @@ func TestResourcePathJSError(t *testing.T) {
 func TestResources(t *testing.T) {
 	t.Log(Resources())
 }
+
+func TestIsSupportedImageExtension(t *testing.T) {
+	if !IsSupportedImageExtension("logo.png") {
+		t.Error("logo.png should be a supported image")
+	}
+
+	if IsSupportedImageExtension("logo.txt") {
+		t.Error("logo.txt should not be a supported image")
+	}
+}

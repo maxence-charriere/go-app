@@ -91,3 +91,18 @@ func (r ResourcePath) JS() (css []string) {
 func Resources() ResourcePath {
 	return driver.Resources()
 }
+
+// IsSupportedImageExtension returns true if path has a supported image
+// extensions.
+// Supported extensions are jpg and png.
+func IsSupportedImageExtension(path string) bool {
+	ext := filepath.Ext(path)
+
+	switch ext {
+	case ".jpg", ".jpeg", ".png":
+		return true
+
+	default:
+		return false
+	}
+}
