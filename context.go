@@ -40,7 +40,8 @@ type Contexter interface {
 	SetIcon(path string)
 
 	// If applicable, set the badge with v.
-	SetBadge(v string)
+	// Uses fmt.Sprint under the hood.
+	SetBadge(v interface{})
 
 	// If applicablex, closes the context.
 	Close()
@@ -159,7 +160,7 @@ func (c *ZeroContext) SetIcon(path string) {
 
 // SetBadge is a placeholder method to satisfy the Contexter interface.
 // It does nothing.
-func (c *ZeroContext) SetBadge(v string) {
+func (c *ZeroContext) SetBadge(v interface{}) {
 	log.Infof("%v (%v) simulates set badge with %v", c.placeholder, c.ID(), v)
 
 }
