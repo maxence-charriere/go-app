@@ -40,7 +40,6 @@ type Contexter interface {
 	SetIcon(path string)
 
 	// If applicable, set the badge with v.
-	// Uses fmt.Sprint under the hood.
 	SetBadge(v interface{})
 
 	// If applicablex, closes the context.
