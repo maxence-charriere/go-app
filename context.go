@@ -19,7 +19,7 @@ type Contexter interface {
 	ID() uid.ID
 
 	// Mounts the component and renders it in the context.
-	Mount(c markup.Componer)
+	Mount(c Componer)
 
 	// Renders an element.
 	Render(elem *markup.Element)
@@ -48,7 +48,7 @@ type Contexter interface {
 
 // Context returns the context of c.
 // c must be mounted.
-func Context(c markup.Componer) (ctx Contexter, err error) {
+func Context(c Componer) (ctx Contexter, err error) {
 	var root *markup.Element
 
 	if root, err = markup.ComponentRoot(c); err != nil {
@@ -97,7 +97,7 @@ func UnregisterContext(c Contexter) {
 type ZeroContext struct {
 	id          uid.ID
 	placeholder string
-	root        markup.Componer
+	root        Componer
 }
 
 // NewZeroContext creates a ZeroContext.
@@ -118,7 +118,7 @@ func (c *ZeroContext) ID() uid.ID {
 
 // Mount is a placeholder method to satisfy the Contexter interface.
 // It does nothing.
-func (c *ZeroContext) Mount(component markup.Componer) {
+func (c *ZeroContext) Mount(component Componer) {
 	markup.Mount(component, c.ID())
 	log.Infof("%T is mounted into %v (%v)", component, c.placeholder, c.ID())
 }

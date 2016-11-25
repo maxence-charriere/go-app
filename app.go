@@ -54,7 +54,7 @@ func Run() {
 }
 
 // Render renders a component.
-func Render(c markup.Componer) {
+func Render(c Componer) {
 	var ctx Contexter
 	var elems []*markup.Element
 	var err error
