@@ -51,7 +51,7 @@ func (r ResourcePath) CSS() (css []string) {
 		}
 
 		if strings.HasSuffix(f.Name(), ".css") {
-			css = append(css, f.Name())
+			css = append(css, filepath.Join("css", f.Name()))
 		}
 	}
 
@@ -80,7 +80,7 @@ func (r ResourcePath) JS() (css []string) {
 		}
 
 		if strings.HasSuffix(f.Name(), ".js") {
-			css = append(css, f.Name())
+			css = append(css, filepath.Join("js", f.Name()))
 		}
 	}
 
