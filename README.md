@@ -28,6 +28,7 @@ Plus, it is thinked from the ground to gracefully handle concurrency, dependenci
     - [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
 
 ## Getting started
+![hello](https://github.com/murlokswarm/examples/blob/master/mac/hello/capture-1.png)
 
 ### Import a driver
 ```Go
