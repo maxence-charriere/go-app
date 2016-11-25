@@ -21,8 +21,11 @@ Plus, it is thinked from the ground to gracefully handle concurrency, dependenci
     - [golang.org](https://golang.org/doc/install)
     - [Homebrew (MacOS)](http://www.golangbootcamp.com/book/get_setup)
 
-2. Get the package:
+2. Get a driver:
     - MacOS: ```go get -u github.com/murlokswarm/mac```
+    - IOS: Not available yet
+    - Android: Not available yet
+    - Windows: Not available yet
 
 3.  Get Xcode  (If you develop on MacOS): 
     - [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
