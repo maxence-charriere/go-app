@@ -32,8 +32,8 @@ func TestResourcePathCSS(t *testing.T) {
 		t.Error("cssFilenames should have 1 element:", l)
 	}
 
-	if cssFilenames[0] != "foo.css" {
-		t.Error("cssFilenames[0] should be foo.css:", cssFilenames[0])
+	if cssFilenames[0] != "css/foo.css" {
+		t.Error("cssFilenames[0] should be css/foo.css:", cssFilenames[0])
 	}
 }
 
@@ -70,8 +70,8 @@ func TestResourcePathJS(t *testing.T) {
 		t.Error("jsFilenames should have 1 element:", l)
 	}
 
-	if jsFilenames[0] != "foo.js" {
-		t.Error("jsFilenames[0] should be foo.js:", jsFilenames[0])
+	if jsFilenames[0] != "js/foo.js" {
+		t.Error("jsFilenames[0] should be js/foo.js:", jsFilenames[0])
 	}
 }
 
