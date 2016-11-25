@@ -83,7 +83,7 @@ func (h *Hello) OnInputChange(arg app.ChangeArg) {
 
 func init() {
 	// Registers the Hello component.
-	// Allows the app to create a Hello component when it find its declaration
+	// Allows the app to create a Hello component when it finds its declaration
 	// into a HTML markup.
 	app.RegisterComponent(&Hello{})
 }
