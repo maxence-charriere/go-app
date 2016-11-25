@@ -9,59 +9,154 @@ Package to build multiplatform apps with Go, HTML and CSS.
 The idea is to use a web browser to handle just the UI part... 
 Go for all the rest...
 
-## Why?
 A web browser is present on almost every platform. 
 It's a part that never stops to evolve. 
 Today it embeds enough power to handle beautiful UIs with smooth animations on desktop or the latest phones/tablets.
 
 Go, is a simple, fast and well-built programming language. 
-Plus, it is thinked from the ground to gracefully handle dependencies, tests and documentation.
+Plus, it is thinked from the ground to gracefully handle concurrency, dependencies, tests and documentation.
 
 ## Install
-```
-// To be completed.
+1. Install Golang:
+    - [golang.org](https://golang.org/doc/install)
+    - [Homebrew (MacOS)](http://www.golangbootcamp.com/book/get_setup)
+
+2. Get the package:
+    - MacOS: ```go get -u github.com/murlokswarm/mac```
+
+3.  Get Xcode  (If you develop on MacOS): 
+    - [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
+
+## Getting started
+
+### Import a driver
+```Go
+import (
+	_ "github.com/murlokswarm/mac"
+)
 ```
 
-## How it works?
-The way it works looks like a little bit like [React.js](https://facebook.github.io/react/).
+### Create a component
+```Go
+// Hello implements app.Componer interface.
+type Hello struct {
+	Greeting string
+}
 
-### 1. Create a component
-You create a component which satisfies the [markup.Componer](https://godoc.org/github.com/murlokswarm/markup#Componer) interface.
-```go
-type Componer interface {
-	Render() string
+// Render returns the HTML markup that describes the appearance of the
+// component.
+// It supports standard HTML and extends it slightly to handle other component
+// declaration or Golang callbacks.
+// Can be templated following rules from https://golang.org/pkg/text/template.
+func (h *Hello) Render() string {
+	return `
+<div class="WindowLayout">    
+    <div class="HelloBox">
+        <h1>
+            Hello,
+          <span>
+                {{if .Greeting}}
+                    {{html .Greeting}}
+                {{else}}
+                    World
+                {{end}}
+            </span>
+        </h1>
+        <input type="text"
+               value="{{html .Greeting}}"
+               placeholder="What is your name?"
+               autofocus="true"
+               _onchange="OnInputChange" />
+    </div>
+</div>
+    `
+}
+
+// OnInputChange is the handler called when an onchange event occurs.
+// In the HTML markup, a Go component method is target by prefixing the event with "_".
+// eg _onchange.
+func (h *Hello) OnInputChange(arg app.ChangeArg) {
+	h.Greeting = arg.Value // Changing the greeting.
+	app.Render(h)          // Tells the app to update the rendering of the component.
+}
+
+func init() {
+	// Registers the Hello component.
+	// Allows the app to create a Hello component when it find its declaration
+	// into a HTML markup.
+	app.RegisterComponent(&Hello{})
 }
 ```
 
-### 2. Mount the component in a context
-Then you mount the component into a [context](https://godoc.org/github.com/murlokswarm/app#Contexter) (Can be a window, a menu, a dock, etc...).
+### Write the main
 ```go
-type Contexter interface {
-    ID() uid.ID
+func main() {
+    // When app is launched
+	app.OnLaunch = func() {
+		// Creates a window context.
+		win := app.NewWindow(app.Window{
+			Title:          "Hello World",
+			Width:          1280,
+			Height:         720,
+			TitlebarHidden: true,
+		})
 
-    Mount(c markup.Componer) // <- Call for mount a component.
+		hello := &Hello{} // Creates a hello component.
+		win.Mount(hello)  // Mounts the hello component into the window context.
+	}
 
-    Resize(width float64, height float64)
+	app.Run() // Runs the app.
+}
 
-    Move(x float64, y float64)
+```
 
-    SetIcon(path string)
+### Style your component
+```css
+/* In resources/css/hello.css.*/
+
+body {
+    background-image: url("../bg1.jpg");
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+
+.WindowLayout {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.HelloBox {
+    padding: 20pt;
+}
+
+h1 {
+    font-weight: 300;
+}
+
+input {
+    width: 100%;
+    padding: 5pt;
+    border: 0;
+    border-left: 2px solid silver;
+    outline: none;
+    font-size: 14px;
+    background: transparent;
+    color: white;
+}
+
+input:focus {
+    border-left-color: deepskyblue;
 }
 ```
 
+[Full example](https://github.com/murlokswarm/examples/tree/master/mac/hello)
 
-### 3. Update a component
-Finally, when updates to the component rendering are required, call [app.Render](https://godoc.org/github.com/murlokswarm/app#Render) on the component to be updated.
-
-# Example
-```go
-// To be completed.
-```
-
-# How to
-```go
-// To be completed.
-```
-
-# Linked packages
-[markup](https://github.com/murlokswarm/markup)
+## Documentation
+- [Wiki](https://github.com/murlokswarm/app/wiki)
+- [GoDoc](https://godoc.org/github.com/murlokswarm/app)
