@@ -1,4 +1,4 @@
-![app]()
+![app](https://github.com/murlokswarm/app/blob/master/logo/mur_logo-alt2-gris.png)
 #
 [![Build Status](https://travis-ci.org/murlokswarm/app.svg?branch=master)](https://travis-ci.org/murlokswarm/app)
 [![Go Report Card](https://goreportcard.com/badge/github.com/murlokswarm/app)](https://goreportcard.com/report/github.com/murlokswarm/app)
