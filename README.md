@@ -15,8 +15,8 @@ Package to build multiplatform apps with Go, HTML and CSS.
 2. Get a driver:
     - MacOS: ```go get -u github.com/murlokswarm/mac```
     - IOS: Not available yet
-    - Android: Not available yet
-    - Windows: Not available yet
+    - Android: Contribution welcome
+    - Windows: Contribution welcome
 
 3.  Get Xcode  (If you develop on MacOS): 
     - [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
