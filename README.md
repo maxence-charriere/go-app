@@ -49,19 +49,9 @@ func (h *Hello) Render() string {
     <div class="HelloBox">
         <h1>
             Hello,
-          <span>
-                {{if .Greeting}}
-                    {{html .Greeting}}
-                {{else}}
-                    World
-                {{end}}
-            </span>
+            <span>{{if .Greeting}}, {{html .Greeting}}{{end}}</span>
         </h1>
-        <input type="text"
-               value="{{html .Greeting}}"
-               placeholder="What is your name?"
-               autofocus="true"
-               _onchange="OnInputChange" />
+        <input type="text" placeholder="What is your name?" _onchange="OnInputChange" />
     </div>
 </div>
     `
