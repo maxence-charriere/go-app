@@ -22,7 +22,7 @@ Package to build multiplatform apps with Go, HTML and CSS.
     - [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
 
 ## Getting started
-![hello](https://github.com/murlokswarm/examples/blob/master/mac/hello/capture-1.png)
+![hello](https://github.com/murlokswarm/examples/blob/master/mac/hello/capture-2.png)
 
 ### Import a driver
 ```Go
