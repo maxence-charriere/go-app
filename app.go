@@ -6,10 +6,6 @@ import (
 )
 
 var (
-	running bool
-)
-
-var (
 	// OnLaunch is a handler which (if set) is called when the app is
 	// initialized and ready.
 	// The main window should be created here.
@@ -44,13 +40,7 @@ var (
 
 // Run runs the app.
 func Run() {
-	if running {
-		log.Warn("app is already running. Run() should be called a single time")
-		return
-	}
-
 	driver.Run()
-	running = true
 }
 
 // Render renders a component.
@@ -71,22 +61,6 @@ func Render(c Componer) {
 	for _, elem := range elems {
 		ctx.Render(elem)
 	}
-}
-
-// Finalize performs final cleanup before the application terminates.
-// This should be called ONLY in a driver implementation.
-// DO NOT USE IT!
-func Finalize() {
-	if !running {
-		log.Warn("app is already finalized. Finalize() should be called a single time")
-		return
-	}
-
-	if OnFinalize != nil {
-		OnFinalize()
-	}
-
-	running = false
 }
 
 // Menu returns the app menu context.

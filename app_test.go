@@ -40,9 +40,6 @@ func TestRun(t *testing.T) {
 	}
 
 	Run()
-	Run()
-	Finalize()
-	Finalize()
 }
 
 func TestRender(t *testing.T) {
