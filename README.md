@@ -1,4 +1,4 @@
-![app](https://github.com/murlokswarm/app/blob/master/resources/logo/mur_logo-alt2-gris-github.png)
+![app](https://github.com/murlokswarm/app/blob/master/assets/logo/mur_logo-alt2-gris-github.png)
 # app
 [![Build Status](https://travis-ci.org/murlokswarm/app.svg?branch=master)](https://travis-ci.org/murlokswarm/app)
 [![Go Report Card](https://goreportcard.com/badge/github.com/murlokswarm/app)](https://goreportcard.com/report/github.com/murlokswarm/app)
@@ -89,16 +89,16 @@ body {
     background-size: cover;
     background-position: center;
     color: white;
+    overflow: hidden;
 }
 
 .WindowLayout {
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
 }
 
 .HelloBox {
