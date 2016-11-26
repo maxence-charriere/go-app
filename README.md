@@ -7,16 +7,6 @@
 
 Package to build multiplatform apps with Go, HTML and CSS.
 
-The idea is to use a web browser to handle just the UI part... 
-Go for all the rest...
-
-A web browser is present on almost every platform. 
-It's a part that never stops to evolve. 
-Today it embeds enough power to handle beautiful UIs with smooth animations on desktop or the latest phones/tablets.
-
-Go, is a simple, fast and well-built programming language. 
-Plus, it is thinked from the ground to gracefully handle concurrency, dependencies, tests and documentation.
-
 ## Install
 1. Install Golang:
     - [golang.org](https://golang.org/doc/install)

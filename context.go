@@ -42,7 +42,7 @@ type Contexter interface {
 	// If applicable, set the badge with v.
 	SetBadge(v interface{})
 
-	// If applicablex, closes the context.
+	// If applicable, closes the context.
 	Close()
 }
 
