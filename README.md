@@ -18,7 +18,7 @@ Package to build multiplatform apps with Go, HTML and CSS.
     - Android: Contribution welcome
     - Windows: Contribution welcome
 
-3.  Get Xcode  (If you develop on MacOS): 
+3.  Get Xcode if you develop for MacOS (mandatory for Apple frameworks): 
     - [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
 
 ## Getting started
