@@ -125,7 +125,15 @@ input:focus {
 }
 ```
 
-[Full example](https://github.com/murlokswarm/examples/tree/master/mac/hello)
+Try it by cloning the [full example](https://github.com/murlokswarm/examples/tree/master/mac/hello).
+
+Go to the cloned directory and type:
+
+```
+go build
+./hello
+```
+
 
 ## Documentation
 - [Wiki](https://github.com/murlokswarm/app/wiki)
