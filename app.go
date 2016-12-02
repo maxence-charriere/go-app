@@ -45,15 +45,13 @@ func Run() {
 
 // Render renders a component.
 func Render(c Componer) {
-	var ctx Contexter
-	var elems []*markup.Element
-	var err error
-
-	if ctx, err = Context(c); err != nil {
+	ctx, err := Context(c)
+	if err != nil {
 		log.Panic(err)
 	}
 
-	if elems, err = markup.Sync(c); err != nil {
+	elems, err := markup.Sync(c)
+	if err != nil {
 		log.Error(err)
 		return
 	}

@@ -49,9 +49,8 @@ type Contexter interface {
 // Context returns the context of c.
 // c must be mounted.
 func Context(c Componer) (ctx Contexter, err error) {
-	var root *markup.Element
-
-	if root, err = markup.ComponentRoot(c); err != nil {
+	root, err := markup.ComponentRoot(c)
+	if err != nil {
 		return
 	}
 
@@ -120,13 +119,11 @@ func (c *ZeroContext) ID() uid.ID {
 // It does nothing.
 func (c *ZeroContext) Mount(component Componer) {
 	markup.Mount(component, c.ID())
-	log.Infof("%T is mounted into %v (%v)", component, c.placeholder, c.ID())
 }
 
 // Render is a placeholder method to satisfy the Contexter interface.
 // It does nothing.
 func (c *ZeroContext) Render(elem *markup.Element) {
-	log.Infof("rendering:\n\033[32m%v\033[00m", elem.HTML())
 }
 
 // Size is a placeholder method to satisfy the Contexter interface.
@@ -137,7 +134,6 @@ func (c *ZeroContext) Size() (width float64, height float64) {
 // Resize is a placeholder method to satisfy the Contexter interface.
 // It does nothing.
 func (c *ZeroContext) Resize(width float64, height float64) {
-	log.Infof("%v (%v) simulates a resize of %v x %v", c.placeholder, c.ID(), width, height)
 }
 
 // Position is a placeholder method to satisfy the Contexter interface.
@@ -148,25 +144,21 @@ func (c *ZeroContext) Position() (x float64, y float64) {
 // Move is a placeholder method to satisfy the Contexter interface.
 // It does nothing.
 func (c *ZeroContext) Move(x float64, y float64) {
-	log.Infof("%v (%v) simulates a move to (%v, %v)", c.placeholder, c.ID(), x, y)
 }
 
 // SetIcon is a placeholder method to satisfy the Contexter interface.
 // It does nothing.
 func (c *ZeroContext) SetIcon(path string) {
-	log.Infof("%v (%v) simulates set icon with %v", c.placeholder, c.ID(), path)
+	// log.Infof("%v (%v) simulates set icon with %v", c.placeholder, c.ID(), path)
 }
 
 // SetBadge is a placeholder method to satisfy the Contexter interface.
 // It does nothing.
 func (c *ZeroContext) SetBadge(v interface{}) {
-	log.Infof("%v (%v) simulates set badge with %v", c.placeholder, c.ID(), v)
-
 }
 
 // Close is a closes the context.
 func (c *ZeroContext) Close() {
 	markup.Dismount(c.root)
 	UnregisterContext(c)
-	log.Infof("%v (%v) is closed", c.placeholder, c.ID())
 }
