@@ -23,7 +23,7 @@ function Render(id, markup) {
     elem.outerHTML = markup;
 }
 
-function CallEvent(id, method, event, value) {
+function CallEvent(id, method, self, event) {
 	var arg;
 	const eventType = event.type;
 
@@ -59,7 +59,7 @@ function CallEvent(id, method, event, value) {
             break;
 		
 		case "change":
-			arg = MakeChangeArg(value);
+			arg = MakeChangeArg(self.value);
 			break;
 
         default:
