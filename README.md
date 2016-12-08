@@ -7,6 +7,12 @@
 
 Package to build multiplatform apps with Go, HTML and CSS.
 
+## Table of Contents
+1. [Install](#install)
+2. [Getting started](#gettingstarted)
+3. [Documentation](#doc)
+
+<a name="install"></a>
 ## Install
 1. Install Golang:
     - [golang.org](https://golang.org/doc/install)
@@ -21,6 +27,7 @@ Package to build multiplatform apps with Go, HTML and CSS.
 3.  Get Xcode if you develop for MacOS (mandatory for Apple frameworks): 
     - [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
 
+<a name="gettingstarted"></a>
 ## Getting started
 ![hello](https://github.com/murlokswarm/app/wiki/assets/hello.png)
 
@@ -134,7 +141,7 @@ go build
 ./hello
 ```
 
-
+<a name="doc"></a>
 ## Documentation
 - [Wiki](https://github.com/murlokswarm/app/wiki)
 - [GoDoc](https://godoc.org/github.com/murlokswarm/app)
