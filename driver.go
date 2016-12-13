@@ -15,7 +15,7 @@ type Driver interface {
 
 	AppMenu() Contexter
 
-	Dock() Contexter
+	Dock() Docker
 
 	Resources() ResourcePath
 

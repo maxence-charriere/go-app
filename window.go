@@ -14,6 +14,21 @@ const (
 	VibeUltraDark
 )
 
+// Windower represents a context with window specific interactions.
+type Windower interface {
+	Contexter
+
+	Position() (x float64, y float64)
+
+	Move(x float64, y float64)
+
+	Size() (width float64, height float64)
+
+	Resize(width float64, height float64)
+
+	Close()
+}
+
 // Window represents a window.
 type Window struct {
 	Title           string
@@ -48,6 +63,6 @@ type Window struct {
 type Vibrancy uint8
 
 // NewWindow creates a new window.
-func NewWindow(w Window) (ctx Contexter) {
-	return driver.NewContext(w)
+func NewWindow(w Window) Windower {
+	return driver.NewContext(w).(Windower)
 }
