@@ -7,7 +7,7 @@ import (
 )
 
 type AbstractDriver struct {
-	dock    Contexter
+	dock    Docker
 	appMenu Contexter
 }
 
@@ -18,7 +18,7 @@ func (d *AbstractDriver) Run() {
 func (d *AbstractDriver) NewContext(ctx interface{}) Contexter {
 	switch ctx.(type) {
 	case Window:
-		return NewZeroContext("window")
+		return newWindowCtx()
 
 	default:
 		return NewZeroContext(fmt.Sprintf("%T", ctx))
@@ -29,7 +29,7 @@ func (d *AbstractDriver) AppMenu() Contexter {
 	return d.appMenu
 }
 
-func (d *AbstractDriver) Dock() Contexter {
+func (d *AbstractDriver) Dock() Docker {
 	return d.dock
 }
 
@@ -43,7 +43,7 @@ func (d *AbstractDriver) JavascriptBridge() string {
 
 func init() {
 	RegisterDriver(&AbstractDriver{
-		dock:    NewZeroContext("dock"),
+		dock:    newDockCtx(),
 		appMenu: NewZeroContext("appMenu"),
 	})
 }

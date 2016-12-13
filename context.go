@@ -23,27 +23,6 @@ type Contexter interface {
 
 	// Renders an element.
 	Render(elem *markup.Element)
-
-	// If applicable, returns the position of the context.
-	Position() (x float64, y float64)
-
-	// If applicable, moves the context.
-	Move(x float64, y float64)
-
-	// If applicable, returns the size of the context.
-	Size() (width float64, height float64)
-
-	// If applicable, resizes the context.
-	Resize(width float64, height float64)
-
-	// If applicable, set the icon targeted by path.
-	SetIcon(path string)
-
-	// If applicable, set the badge with v.
-	SetBadge(v interface{})
-
-	// If applicable, closes the context.
-	Close()
 }
 
 // Context returns the context of c.
@@ -124,37 +103,7 @@ func (c *ZeroContext) Mount(component Componer) {
 // Render is a placeholder method to satisfy the Contexter interface.
 // It does nothing.
 func (c *ZeroContext) Render(elem *markup.Element) {
-}
-
-// Size is a placeholder method to satisfy the Contexter interface.
-func (c *ZeroContext) Size() (width float64, height float64) {
-	return
-}
-
-// Resize is a placeholder method to satisfy the Contexter interface.
-// It does nothing.
-func (c *ZeroContext) Resize(width float64, height float64) {
-}
-
-// Position is a placeholder method to satisfy the Contexter interface.
-func (c *ZeroContext) Position() (x float64, y float64) {
-	return
-}
-
-// Move is a placeholder method to satisfy the Contexter interface.
-// It does nothing.
-func (c *ZeroContext) Move(x float64, y float64) {
-}
-
-// SetIcon is a placeholder method to satisfy the Contexter interface.
-// It does nothing.
-func (c *ZeroContext) SetIcon(path string) {
-	// log.Infof("%v (%v) simulates set icon with %v", c.placeholder, c.ID(), path)
-}
-
-// SetBadge is a placeholder method to satisfy the Contexter interface.
-// It does nothing.
-func (c *ZeroContext) SetBadge(v interface{}) {
+	log.Info(elem.HTML())
 }
 
 // Close is a closes the context.

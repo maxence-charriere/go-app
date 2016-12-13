@@ -67,6 +67,6 @@ func Menu() Contexter {
 }
 
 // Dock returns the dock context.
-func Dock() Contexter {
+func Dock() Docker {
 	return driver.Dock()
 }

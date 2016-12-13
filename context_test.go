@@ -83,12 +83,6 @@ func TestZeroContext(t *testing.T) {
 	defer UnregisterContext(ctx)
 
 	t.Log(ctx.ID())
-	ctx.Resize(42, 42)
-	ctx.Move(42, 42)
-	ctx.SetIcon("test.png")
-	ctx.Size()
-	ctx.Position()
-	ctx.SetBadge("42")
 
 	hello := &Hello{}
 	ctx.Mount(hello)
