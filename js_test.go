@@ -24,6 +24,10 @@ func (b *Bar) OnCall(arg CallArg) {
 	log.Infof("bar.OnCall(%+v) --> success", arg)
 }
 
+func init() {
+	RegisterComponent(&Bar{})
+}
+
 func TestCallComponentMethod(t *testing.T) {
 	bar := &Bar{}
 
@@ -31,12 +35,7 @@ func TestCallComponentMethod(t *testing.T) {
 	defer ctx.Close()
 
 	ctx.Mount(bar)
-
-	root, err := markup.ComponentRoot(bar)
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	root := markup.Root(bar)
 	jsMsg := jsMsg{
 		ID:     root.ID,
 		Method: "OnCall",
@@ -70,12 +69,7 @@ func TestCallComponentArgError(t *testing.T) {
 	defer ctx.Close()
 
 	ctx.Mount(bar)
-
-	root, err := markup.ComponentRoot(bar)
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	root := markup.Root(bar)
 	jsMsg := jsMsg{
 		ID:     root.ID,
 		Method: "OnCall",

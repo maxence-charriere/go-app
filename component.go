@@ -1,10 +1,6 @@
 package app
 
-import (
-	"reflect"
-
-	"github.com/murlokswarm/markup"
-)
+import "github.com/murlokswarm/markup"
 
 // Componer is the interface that describes a component.
 type Componer interface {
@@ -30,27 +26,5 @@ type Dismounter interface {
 // into a markup.
 // Should be called in an init func following the component implementation.
 func RegisterComponent(c Componer) {
-	v := reflect.Indirect(reflect.ValueOf(c))
-	t := v.Type()
-
-	constructor := func() markup.Componer {
-		compo, _ := reflect.New(t).Interface().(Componer)
-		return compo
-	}
-
-	markup.RegisterComponent(t.Name(), constructor)
-}
-
-// RegisterComponentWithConstructor allows the app to create the component
-// returned by h when found into a markup.
-// Should be called in an init func following the component implementation.
-func RegisterComponentWithConstructor(h func() Componer) {
-	v := reflect.Indirect(reflect.ValueOf(h()))
-	t := v.Type()
-
-	constructor := func() markup.Componer {
-		return h()
-	}
-
-	markup.RegisterComponent(t.Name(), constructor)
+	markup.Register(c)
 }

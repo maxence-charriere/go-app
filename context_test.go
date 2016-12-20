@@ -15,31 +15,28 @@ func TestContext(t *testing.T) {
 	defer UnregisterContext(ctx)
 
 	compo := &Hello{}
-
 	ctx.Mount(compo)
-
-	// Normal case.
-	ctxBis, err := Context(compo)
-	if err != nil {
-		t.Fatal(err)
-	}
+	ctxBis := Context(compo)
 
 	if ctx != ctxBis {
 		t.Error("ctx and ctx bis should be equals")
 	}
+}
 
-	// Closed context.
-	ctx.Close()
+func TestContextByID(t *testing.T) {
+	ctx := NewZeroContext("TestContextByID")
 
-	if _, err = Context(compo); err == nil {
-		t.Error("err should not be nil")
+	ctxBis, err := ContextByID(ctx.ID())
+	if err != nil {
+		t.Error(err)
 	}
 
-	// Component not mounted.
-	compo = &Hello{}
+	if ctx != ctxBis {
+		t.Error("ctx and ctxBis should be the same context")
+	}
 
-	if _, err = Context(compo); err == nil {
-		t.Error("err should not be nil")
+	if ctxBis, err = ContextByID("Ctx-42"); err == nil {
+		t.Error("should error")
 	}
 }
 

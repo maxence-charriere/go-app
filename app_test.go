@@ -34,6 +34,10 @@ func (h *Hello) Render() string {
     `
 }
 
+func init() {
+	RegisterComponent(&Hello{})
+}
+
 func TestRun(t *testing.T) {
 	OnFinalize = func() {
 		log.Info("OnFinalize called")
@@ -59,17 +63,6 @@ func TestRenderPanicCompoCtxError(t *testing.T) {
 	hello := &Hello{}
 	Render(hello)
 	t.Error("should panic")
-}
-
-func TestRenderPanicCompoBadMarkup(t *testing.T) {
-	hello := &Hello{}
-
-	ctx := NewZeroContext("rendering")
-	defer ctx.Close()
-
-	ctx.Mount(hello)
-	hello.BadMarkup = true
-	Render(hello)
 }
 
 func TestMenu(t *testing.T) {

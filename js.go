@@ -143,9 +143,7 @@ func CallComponentMethod(msg string) {
 		return
 	}
 
-	if err := markup.Call(jsMsg.ID, jsMsg.Method, jsMsg.Arg); err != nil {
-		log.Error(err)
-	}
+	markup.Call(jsMsg.ID, jsMsg.Method, jsMsg.Arg)
 }
 
 // MurlokJS returns the javascript code allowing bidirectional communication

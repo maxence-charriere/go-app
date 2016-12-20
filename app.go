@@ -1,9 +1,6 @@
 package app
 
-import (
-	"github.com/murlokswarm/log"
-	"github.com/murlokswarm/markup"
-)
+import "github.com/murlokswarm/markup"
 
 var (
 	// OnLaunch is a handler which (if set) is called when the app is
@@ -45,19 +42,11 @@ func Run() {
 
 // Render renders a component.
 func Render(c Componer) {
-	ctx, err := Context(c)
-	if err != nil {
-		log.Panic(err)
-	}
+	ctx := Context(c)
+	syncs := markup.Synchronize(c)
 
-	elems, err := markup.Sync(c)
-	if err != nil {
-		log.Error(err)
-		return
-	}
-
-	for _, elem := range elems {
-		ctx.Render(elem)
+	for _, s := range syncs {
+		ctx.Render(s)
 	}
 }
 
