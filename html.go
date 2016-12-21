@@ -64,7 +64,6 @@ func (c HTMLContext) HTML() string {
 	var b bytes.Buffer
 
 	t := template.Must(template.New("").Parse(htmlContextTmpl))
-
 	t.Execute(&b, c)
 	return b.String()
 }
