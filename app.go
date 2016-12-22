@@ -1,9 +1,6 @@
 package app
 
-import (
-	"github.com/murlokswarm/log"
-	"github.com/murlokswarm/markup"
-)
+import "github.com/murlokswarm/markup"
 
 var (
 	// OnLaunch is a handler which (if set) is called when the app is
@@ -40,30 +37,23 @@ var (
 
 // Run runs the app.
 func Run() {
+	go startUIScheduler()
 	driver.Run()
 }
 
 // Render renders a component.
 func Render(c Componer) {
-	ctx, err := Context(c)
-	if err != nil {
-		log.Panic(err)
-	}
+	ctx := Context(c)
+	syncs := markup.Synchronize(c)
 
-	elems, err := markup.Sync(c)
-	if err != nil {
-		log.Error(err)
-		return
-	}
-
-	for _, elem := range elems {
-		ctx.Render(elem)
+	for _, s := range syncs {
+		ctx.Render(s)
 	}
 }
 
-// Menu returns the app menu context.
-func Menu() Contexter {
-	return driver.AppMenu()
+// MenuBar returns the menu bar context (MacOS).
+func MenuBar() Contexter {
+	return driver.MenuBar()
 }
 
 // Dock returns the dock context.

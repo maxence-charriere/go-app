@@ -25,7 +25,7 @@ func (d *AbstractDriver) NewContext(ctx interface{}) Contexter {
 	}
 }
 
-func (d *AbstractDriver) AppMenu() Contexter {
+func (d *AbstractDriver) MenuBar() Contexter {
 	return d.appMenu
 }
 

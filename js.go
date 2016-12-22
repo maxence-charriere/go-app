@@ -17,10 +17,21 @@ function Mount(id, markup) {
     elem.innerHTML = markup;
 }
 
-function Render(id, markup) {
+function RenderFull(id, markup) {
 	const sel = '[data-murlok-id="' + id + '"]';
     const elem = document.querySelector(sel);
     elem.outerHTML = markup;
+}
+
+function RenderAttributes(id, attrs) {
+	const sel = '[data-murlok-id="' + id + '"]';
+    const elem = document.querySelector(sel);
+    
+    for (var name in attrs) {
+        if (attrs.hasOwnProperty(name)) {
+            elem.setAttribute(name, attrs[name]);
+        }
+    }
 }
 
 function CallEvent(id, method, self, event) {
@@ -143,9 +154,7 @@ func CallComponentMethod(msg string) {
 		return
 	}
 
-	if err := markup.Call(jsMsg.ID, jsMsg.Method, jsMsg.Arg); err != nil {
-		log.Error(err)
-	}
+	markup.Call(jsMsg.ID, jsMsg.Method, jsMsg.Arg)
 }
 
 // MurlokJS returns the javascript code allowing bidirectional communication

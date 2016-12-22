@@ -21,20 +21,16 @@ type Contexter interface {
 	// Mounts the component and renders it in the context.
 	Mount(c Componer)
 
-	// Renders an element.
-	Render(elem *markup.Element)
+	// Renders a node following desription described in s.
+	Render(s markup.Sync)
 }
 
 // Context returns the context of c.
-// c must be mounted.
-func Context(c Componer) (ctx Contexter, err error) {
-	root, err := markup.ComponentRoot(c)
-	if err != nil {
-		return
-	}
-
-	ctx, err = ContextByID(root.ContextID)
-	return
+// Panic if c is not mounted.
+func Context(c Componer) Contexter {
+	root := markup.Root(c)
+	ctx, _ := ContextByID(root.ContextID)
+	return ctx
 }
 
 // ContextByID returns the context registered under id.
@@ -44,7 +40,6 @@ func ContextByID(id uid.ID) (ctx Contexter, err error) {
 	if ctx, registered = contexts[id]; !registered {
 		err = fmt.Errorf("context %v is not registered or has been closed", id)
 	}
-
 	return
 }
 
@@ -98,12 +93,13 @@ func (c *ZeroContext) ID() uid.ID {
 // It does nothing.
 func (c *ZeroContext) Mount(component Componer) {
 	markup.Mount(component, c.ID())
+	c.root = component
 }
 
 // Render is a placeholder method to satisfy the Contexter interface.
 // It does nothing.
-func (c *ZeroContext) Render(elem *markup.Element) {
-	log.Info(elem.HTML())
+func (c *ZeroContext) Render(s markup.Sync) {
+	log.Infof("%v rendering: %v", s.Scope, s.Node.Markup())
 }
 
 // Close is a closes the context.

@@ -54,7 +54,6 @@ func (r ResourcePath) CSS() (css []string) {
 			css = append(css, filepath.Join("css", f.Name()))
 		}
 	}
-
 	return
 }
 
@@ -83,7 +82,6 @@ func (r ResourcePath) JS() (css []string) {
 			css = append(css, filepath.Join("js", f.Name()))
 		}
 	}
-
 	return
 }
 
