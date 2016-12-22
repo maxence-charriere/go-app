@@ -37,6 +37,7 @@ var (
 
 // Run runs the app.
 func Run() {
+	go startUIScheduler()
 	driver.Run()
 }
 
@@ -50,9 +51,9 @@ func Render(c Componer) {
 	}
 }
 
-// Menu returns the app menu context.
-func Menu() Contexter {
-	return driver.AppMenu()
+// MenuBar returns the menu bar context (MacOS).
+func MenuBar() Contexter {
+	return driver.MenuBar()
 }
 
 // Dock returns the dock context.

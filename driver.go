@@ -13,7 +13,7 @@ type Driver interface {
 
 	NewContext(ctx interface{}) Contexter
 
-	AppMenu() Contexter
+	MenuBar() Contexter
 
 	Dock() Docker
 

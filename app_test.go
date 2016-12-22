@@ -65,8 +65,8 @@ func TestRenderPanicCompoCtxError(t *testing.T) {
 	t.Error("should panic")
 }
 
-func TestMenu(t *testing.T) {
-	t.Log(Menu())
+func TestMenuBar(t *testing.T) {
+	t.Log(MenuBar())
 }
 
 func TestDock(t *testing.T) {
