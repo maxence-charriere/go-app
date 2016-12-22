@@ -27,11 +27,8 @@ function RenderAttributes(id, attrs) {
 	const sel = '[data-murlok-id="' + id + '"]';
     const elem = document.querySelector(sel);
     
-    alert(attrs);
-
     for (var name in attrs) {
         if (attrs.hasOwnProperty(name)) {
-            alert(name + "=" + attrs[name]);
             elem.setAttribute(name, attrs[name]);
         }
     }
