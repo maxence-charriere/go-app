@@ -35,7 +35,7 @@ func TestContextByID(t *testing.T) {
 		t.Error("ctx and ctxBis should be the same context")
 	}
 
-	if ctxBis, err = ContextByID("Ctx-42"); err == nil {
+	if _, err = ContextByID("Ctx-42"); err == nil {
 		t.Error("should error")
 	}
 }
