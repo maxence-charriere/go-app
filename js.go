@@ -29,6 +29,10 @@ function RenderAttributes(id, attrs) {
     
     for (var name in attrs) {
         if (attrs.hasOwnProperty(name)) {
+            if (attrs[name].length == 0) {
+                elem.removeAttribute(name);
+                continue;
+            }
             elem.setAttribute(name, attrs[name]);
         }
     }
