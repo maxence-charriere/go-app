@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/murlokswarm/errors"
 	"github.com/murlokswarm/log"
 	"github.com/murlokswarm/markup"
 	"github.com/murlokswarm/uid"
@@ -154,7 +155,7 @@ func CallComponentMethod(msg string) {
 	var jsMsg jsMsg
 
 	if err := json.Unmarshal([]byte(msg), &jsMsg); err != nil {
-		log.Error(err)
+		log.Error(errors.New(err))
 		return
 	}
 

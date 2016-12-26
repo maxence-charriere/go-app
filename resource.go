@@ -8,6 +8,7 @@ import (
 
 	"strings"
 
+	"github.com/murlokswarm/errors"
 	"github.com/murlokswarm/log"
 )
 
@@ -39,7 +40,8 @@ func (r ResourcePath) CSS() (css []string) {
 	}
 
 	if !info.IsDir() {
-		log.Errorf("%v is not a directory", cssPath)
+		err := errors.Newf("%v is not a directory", cssPath)
+		log.Error(err)
 		return
 	}
 
@@ -67,7 +69,8 @@ func (r ResourcePath) JS() (css []string) {
 	}
 
 	if !info.IsDir() {
-		log.Errorf("%v is not a directory", cssPath)
+		err := errors.Newf("%v is not a directory", cssPath)
+		log.Error(err)
 		return
 	}
 
