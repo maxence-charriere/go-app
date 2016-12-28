@@ -41,6 +41,10 @@ func (d *AbstractDriver) JavascriptBridge() string {
 	return "alert('bridge not implemented');"
 }
 
+func (d *AbstractDriver) Share() Sharer {
+	return &ShareTest{}
+}
+
 func init() {
 	RegisterDriver(&AbstractDriver{
 		dock:    newDockCtx(),
