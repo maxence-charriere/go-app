@@ -20,6 +20,8 @@ type Driver interface {
 	Resources() ResourcePath
 
 	JavascriptBridge() string
+
+	Share() Sharer
 }
 
 // RegisterDriver registers the driver to be used when using the app package.
