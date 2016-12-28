@@ -1,9 +1,8 @@
 package app
 
 import (
-	"testing"
-
 	"net/url"
+	"testing"
 
 	"github.com/murlokswarm/log"
 )
