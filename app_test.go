@@ -7,8 +7,9 @@ import (
 )
 
 type Hello struct {
-	Greeting  string
-	BadMarkup bool
+	Greeting      string
+	BadMarkup     bool
+	BadMarkupSync bool
 }
 
 func (h *Hello) OnInputChange(a ChangeArg) {
@@ -30,6 +31,12 @@ func (h *Hello) Render() string {
     <input _onchange="OnInputChange" />
 
 	{{if .BadMarkup}}<div></span>{{end}}
+
+	{{if .BadMarkupSync}}
+		<div></span>
+	{{else}}
+		<div>Foo</div>
+	{{end}}
 </div>
     `
 }
@@ -63,6 +70,17 @@ func TestRenderPanicCompoCtxError(t *testing.T) {
 	hello := &Hello{}
 	Render(hello)
 	t.Error("should panic")
+}
+
+func TestRenderSyncError(t *testing.T) {
+	hello := &Hello{}
+
+	ctx := NewZeroContext("rendering")
+	defer ctx.Close()
+
+	ctx.Mount(hello)
+	hello.BadMarkupSync = true
+	Render(hello)
 }
 
 func TestMenuBar(t *testing.T) {
