@@ -37,6 +37,10 @@ type Window struct {
 	Y               float64
 	Width           float64
 	Height          float64
+	MinWidth        float64
+	MinHeight       float64
+	MaxWidth        float64
+	MaxHeight       float64
 	BackgroundColor string
 	Vibrancy        Vibrancy
 	Borderless      bool
