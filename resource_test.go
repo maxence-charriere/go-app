@@ -8,8 +8,8 @@ import (
 
 func TestResourcePathJoin(t *testing.T) {
 	l := ResourcePath("resources")
-	if j := l.Join("css"); j != "resources/css" {
-		t.Error("j should be resources/css:", j)
+	if j, exp := l.Join("css"), filepath.Join("resources", "css"); j != exp {
+		t.Errorf("j should be %v: %v", exp, j)
 	}
 }
 
@@ -21,17 +21,20 @@ func TestResourcePathCSS(t *testing.T) {
 	}
 	defer os.RemoveAll(Resources().Path())
 
-	os.Create(filepath.Join(cssPath, "foo.css"))
-	os.Create(filepath.Join(cssPath, "hello"))
-	os.Create(filepath.Join(cssPath, "world.txt"))
 	os.Mkdir(filepath.Join(cssPath, "bar"), os.ModePerm)
+	ffoo, _ := os.Create(filepath.Join(cssPath, "foo.css"))
+	fhello, _ := os.Create(filepath.Join(cssPath, "hello"))
+	fworld, _ := os.Create(filepath.Join(cssPath, "world.txt"))
+	defer ffoo.Close()
+	defer fhello.Close()
+	defer fworld.Close()
 
 	cssFilenames := r.CSS()
 	if l := len(cssFilenames); l != 1 {
 		t.Error("cssFilenames should have 1 element:", l)
 	}
-	if cssFilenames[0] != "css/foo.css" {
-		t.Error("cssFilenames[0] should be css/foo.css:", cssFilenames[0])
+	if exp := filepath.Join("css", "foo.css"); cssFilenames[0] != exp {
+		t.Errorf("cssFilenames[0] should be %v: %v", exp, cssFilenames[0])
 	}
 }
 
@@ -43,8 +46,10 @@ func TestResourcePathCSSError(t *testing.T) {
 	// css is not a directory.
 	cssPath := r.Join("css")
 	os.Mkdir(r.Path(), os.ModePerm)
-	os.Create(cssPath)
 	defer os.RemoveAll(Resources().Path())
+	f, _ := os.Create(cssPath)
+	defer f.Close()
+
 	r.CSS()
 }
 
@@ -56,17 +61,20 @@ func TestResourcePathJS(t *testing.T) {
 	}
 	defer os.RemoveAll(Resources().Path())
 
-	os.Create(filepath.Join(jsPath, "foo.js"))
-	os.Create(filepath.Join(jsPath, "hello"))
-	os.Create(filepath.Join(jsPath, "world.txt"))
 	os.Mkdir(filepath.Join(jsPath, "bar"), os.ModePerm)
+	ffoo, _ := os.Create(filepath.Join(jsPath, "foo.js"))
+	fhello, _ := os.Create(filepath.Join(jsPath, "hello"))
+	fworld, _ := os.Create(filepath.Join(jsPath, "world.txt"))
+	defer ffoo.Close()
+	defer fhello.Close()
+	defer fworld.Close()
 
 	jsFilenames := r.JS()
 	if l := len(jsFilenames); l != 1 {
 		t.Error("jsFilenames should have 1 element:", l)
 	}
-	if jsFilenames[0] != "js/foo.js" {
-		t.Error("jsFilenames[0] should be js/foo.js:", jsFilenames[0])
+	if exp := filepath.Join("js", "foo.js"); jsFilenames[0] != exp {
+		t.Errorf("jsFilenames[0] should be %v: %v", exp, jsFilenames[0])
 	}
 }
 
@@ -78,8 +86,10 @@ func TestResourcePathJSError(t *testing.T) {
 	// js is not a directory.
 	jsPath := r.Join("js")
 	os.Mkdir(r.Path(), os.ModePerm)
-	os.Create(jsPath)
 	defer os.RemoveAll(Resources().Path())
+	f, _ := os.Create(jsPath)
+	defer f.Close()
+
 	r.JS()
 }
 
