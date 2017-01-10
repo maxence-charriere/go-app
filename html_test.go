@@ -15,6 +15,5 @@ func TestHTMLContextHTML(t *testing.T) {
 		JS:       []string{"test.js"},
 		CSS:      []string{"test.css", "test2.css"},
 	}
-
 	t.Log(c.HTML())
 }

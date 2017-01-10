@@ -1,11 +1,9 @@
 package app
 
 import (
+	"io/ioutil"
 	"os"
 	"path/filepath"
-
-	"io/ioutil"
-
 	"strings"
 
 	"github.com/murlokswarm/errors"
@@ -32,13 +30,11 @@ func (r ResourcePath) Join(elems ...string) string {
 // CSS returns a slice containing the css filenames of the css directory.
 func (r ResourcePath) CSS() (css []string) {
 	cssPath := r.Join("css")
-
 	info, err := os.Stat(cssPath)
 	if err != nil {
 		log.Warnf("%v doesn't exists", cssPath)
 		return
 	}
-
 	if !info.IsDir() {
 		err := errors.Newf("%v is not a directory", cssPath)
 		log.Error(err)
@@ -46,12 +42,10 @@ func (r ResourcePath) CSS() (css []string) {
 	}
 
 	files, _ := ioutil.ReadDir(cssPath)
-
 	for _, f := range files {
 		if f.IsDir() {
 			continue
 		}
-
 		if strings.HasSuffix(f.Name(), ".css") {
 			css = append(css, filepath.Join("css", f.Name()))
 		}
@@ -62,12 +56,10 @@ func (r ResourcePath) CSS() (css []string) {
 // JS returns a slice containing the js filenames of the js directory.
 func (r ResourcePath) JS() (css []string) {
 	cssPath := r.Join("js")
-
 	info, err := os.Stat(cssPath)
 	if err != nil {
 		return
 	}
-
 	if !info.IsDir() {
 		err := errors.Newf("%v is not a directory", cssPath)
 		log.Error(err)
@@ -75,12 +67,10 @@ func (r ResourcePath) JS() (css []string) {
 	}
 
 	files, _ := ioutil.ReadDir(cssPath)
-
 	for _, f := range files {
 		if f.IsDir() {
 			continue
 		}
-
 		if strings.HasSuffix(f.Name(), ".js") {
 			css = append(css, filepath.Join("js", f.Name()))
 		}
@@ -98,7 +88,6 @@ func Resources() ResourcePath {
 // Supported extensions are jpg and png.
 func IsSupportedImageExtension(path string) bool {
 	ext := filepath.Ext(path)
-
 	switch ext {
 	case ".jpg", ".jpeg", ".png":
 		return true

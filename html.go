@@ -62,7 +62,6 @@ type HTMLContext struct {
 // HTML generate the HTML based on the data of c.
 func (c HTMLContext) HTML() string {
 	var b bytes.Buffer
-
 	t := template.Must(template.New("").Parse(htmlContextTmpl))
 	t.Execute(&b, c)
 	return b.String()

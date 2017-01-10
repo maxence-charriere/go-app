@@ -45,14 +45,13 @@ func Run() {
 
 // Render renders a component.
 func Render(c Componer) {
-	ctx := Context(c)
-
 	syncs, err := markup.Synchronize(c)
 	if err != nil {
 		log.Error(err)
 		return
 	}
 
+	ctx := Context(c)
 	for _, s := range syncs {
 		ctx.Render(s)
 	}

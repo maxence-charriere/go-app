@@ -49,16 +49,14 @@ func TestRun(t *testing.T) {
 	OnFinalize = func() {
 		log.Info("OnFinalize called")
 	}
-
 	Run()
 }
 
 func TestRender(t *testing.T) {
-	hello := &Hello{}
-
 	ctx := NewZeroContext("rendering")
 	defer ctx.Close()
 
+	hello := &Hello{}
 	ctx.Mount(hello)
 	hello.Greeting = "Maxence"
 	Render(hello)
@@ -73,11 +71,10 @@ func TestRenderPanicCompoCtxError(t *testing.T) {
 }
 
 func TestRenderSyncError(t *testing.T) {
-	hello := &Hello{}
-
 	ctx := NewZeroContext("rendering")
 	defer ctx.Close()
 
+	hello := &Hello{}
 	ctx.Mount(hello)
 	hello.BadMarkupSync = true
 	Render(hello)
