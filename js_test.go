@@ -29,58 +29,52 @@ func init() {
 }
 
 func TestCallComponentMethod(t *testing.T) {
-	bar := &Bar{}
-
 	ctx := NewZeroContext("test for call")
 	defer ctx.Close()
 
+	bar := &Bar{}
 	ctx.Mount(bar)
 	root := markup.Root(bar)
+
 	jsMsg := jsMsg{
 		ID:     root.ID,
 		Method: "OnCall",
 		Arg:    `{"Nb": 42}`,
 	}
-
 	msg, err := json.Marshal(jsMsg)
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	CallComponentMethod(string(msg))
 }
 
 func TestCallComponentJSONError(t *testing.T) {
-	bar := &Bar{}
-
 	ctx := NewZeroContext("test for call")
 	defer ctx.Close()
 
+	bar := &Bar{}
 	ctx.Mount(bar)
 	msg := "}{}"
-
 	CallComponentMethod(string(msg))
 }
 
 func TestCallComponentArgError(t *testing.T) {
-	bar := &Bar{}
-
 	ctx := NewZeroContext("test for call")
 	defer ctx.Close()
 
+	bar := &Bar{}
 	ctx.Mount(bar)
 	root := markup.Root(bar)
+
 	jsMsg := jsMsg{
 		ID:     root.ID,
 		Method: "OnCall",
 		Arg:    "42",
 	}
-
 	msg, err := json.Marshal(jsMsg)
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	CallComponentMethod(string(msg))
 }
 

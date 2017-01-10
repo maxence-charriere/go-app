@@ -153,12 +153,10 @@ type jsMsg struct {
 // Should be used only in a driver.
 func CallComponentMethod(msg string) {
 	var jsMsg jsMsg
-
 	if err := json.Unmarshal([]byte(msg), &jsMsg); err != nil {
 		log.Error(errors.New(err))
 		return
 	}
-
 	markup.Call(jsMsg.ID, jsMsg.Method, jsMsg.Arg)
 }
 

@@ -1,7 +1,9 @@
 package app
 
-import "testing"
-import "time"
+import (
+	"testing"
+	"time"
+)
 
 func TestStartUIScheduler(t *testing.T) {
 	go startUIScheduler()

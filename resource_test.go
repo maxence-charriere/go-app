@@ -1,12 +1,13 @@
 package app
 
-import "testing"
-import "os"
-import "path/filepath"
+import (
+	"os"
+	"path/filepath"
+	"testing"
+)
 
 func TestResourcePathJoin(t *testing.T) {
 	l := ResourcePath("resources")
-
 	if j := l.Join("css"); j != "resources/css" {
 		t.Error("j should be resources/css:", j)
 	}
@@ -15,7 +16,6 @@ func TestResourcePathJoin(t *testing.T) {
 func TestResourcePathCSS(t *testing.T) {
 	r := ResourcePath("resources")
 	cssPath := r.Join("css")
-
 	if err := os.MkdirAll(cssPath, os.ModePerm); err != nil {
 		t.Fatal(err)
 	}
@@ -27,11 +27,9 @@ func TestResourcePathCSS(t *testing.T) {
 	os.Mkdir(filepath.Join(cssPath, "bar"), os.ModePerm)
 
 	cssFilenames := r.CSS()
-
 	if l := len(cssFilenames); l != 1 {
 		t.Error("cssFilenames should have 1 element:", l)
 	}
-
 	if cssFilenames[0] != "css/foo.css" {
 		t.Error("cssFilenames[0] should be css/foo.css:", cssFilenames[0])
 	}
@@ -53,7 +51,6 @@ func TestResourcePathCSSError(t *testing.T) {
 func TestResourcePathJS(t *testing.T) {
 	r := ResourcePath("resources")
 	jsPath := r.Join("js")
-
 	if err := os.MkdirAll(jsPath, os.ModePerm); err != nil {
 		t.Fatal(err)
 	}
@@ -65,11 +62,9 @@ func TestResourcePathJS(t *testing.T) {
 	os.Mkdir(filepath.Join(jsPath, "bar"), os.ModePerm)
 
 	jsFilenames := r.JS()
-
 	if l := len(jsFilenames); l != 1 {
 		t.Error("jsFilenames should have 1 element:", l)
 	}
-
 	if jsFilenames[0] != "js/foo.js" {
 		t.Error("jsFilenames[0] should be js/foo.js:", jsFilenames[0])
 	}
