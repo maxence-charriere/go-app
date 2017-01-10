@@ -28,16 +28,19 @@ type Contexter interface {
 // Panic if c is not mounted.
 func Context(c Componer) Contexter {
 	root := markup.Root(c)
-	return ContextByID(root.ContextID)
+	ctx, err := ContextByID(root.ContextID)
+	if err != nil {
+		log.Panic(err)
+	}
+	return ctx
 }
 
 // ContextByID returns the context registered under id.
 // Panic if context is not registered.
-func ContextByID(id uid.ID) (ctx Contexter) {
+func ContextByID(id uid.ID) (ctx Contexter, err error) {
 	var registered bool
 	if ctx, registered = contexts[id]; !registered {
-		err := errors.Newf("context %v is not registered or has been closed", id)
-		log.Panic(err)
+		err = errors.Newf("context %v is not registered or has been closed", id)
 	}
 	return
 }

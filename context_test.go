@@ -56,7 +56,6 @@ func TestContext(t *testing.T) {
 	ctx := &ZeroContext{
 		id: uid.Context(),
 	}
-
 	RegisterContext(ctx)
 	defer UnregisterContext(ctx)
 
@@ -68,21 +67,36 @@ func TestContext(t *testing.T) {
 	}
 }
 
+func TestContextPanic(t *testing.T) {
+	defer func() { recover() }()
+
+	ctx := &ZeroContext{
+		id: uid.Context(),
+	}
+	RegisterContext(ctx)
+
+	compo := &Hello{}
+	ctx.Mount(compo)
+	UnregisterContext(ctx)
+	Context(compo)
+	t.Error("should panic")
+}
+
 func TestContextByID(t *testing.T) {
 	ctx := NewZeroContext("TestContextByID")
 	defer ctx.Close()
 
-	ctxBis := ContextByID(ctx.ID())
+	ctxBis, err := ContextByID(ctx.ID())
+	if err != nil {
+		t.Fatal(err)
+	}
 	if ctx != ctxBis {
 		t.Error("ctx and ctxBis should be the same context")
 	}
-}
 
-func TestContextByIDPanic(t *testing.T) {
-	defer func() { recover() }()
-
-	ContextByID("Ctx-42")
-	t.Error("should panic")
+	if _, err := ContextByID("Ctx-42"); err == nil {
+		t.Error("err should not be nil")
+	}
 }
 
 func TestRegisterContext(t *testing.T) {
