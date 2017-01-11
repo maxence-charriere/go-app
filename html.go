@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"text/template"
 
-	"fmt"
-
 	"github.com/murlokswarm/uid"
 )
 
@@ -66,8 +64,5 @@ func (c HTMLContext) HTML() string {
 	var b bytes.Buffer
 	t := template.Must(template.New("").Parse(htmlContextTmpl))
 	t.Execute(&b, c)
-
-	fmt.Println(b.String())
-
 	return b.String()
 }
