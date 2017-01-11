@@ -49,7 +49,7 @@ func IsSupportedImageExtension(name string) bool {
 }
 
 // GetFilenamesWithExtensionsFromDir returns the filenames of files within
-// dirname. names are not prefixed with dirname.
+// dirname. names are prefixed with dirname.
 func GetFilenamesWithExtensionsFromDir(dirname string, extension ...string) (names []string, err error) {
 	info, err := os.Stat(dirname)
 	if err != nil {
@@ -66,7 +66,8 @@ func GetFilenamesWithExtensionsFromDir(dirname string, extension ...string) (nam
 			continue
 		}
 		if IsSupportedExtension(f.Name(), extension...) {
-			names = append(names, f.Name())
+			name := filepath.Join(dirname, f.Name())
+			names = append(names, name)
 		}
 	}
 	return

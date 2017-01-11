@@ -73,11 +73,11 @@ func TestGetFilenamesWithExtensionsFromDir(t *testing.T) {
 	if l := len(names); l != 2 {
 		t.Error("l should be 2:", l)
 	}
-	if name := names[0]; name != "hello.css" {
-		t.Error("name should be hello.css:", name)
+	if name, exp := names[0], filepath.Join(dirname, "hello.css"); name != exp {
+		t.Errorf("name should be %v: %v", exp, name)
 	}
-	if name := names[1]; name != "hello.png" {
-		t.Error("name should be hello.png:", name)
+	if name, exp := names[1], filepath.Join(dirname, "hello.png"); name != exp {
+		t.Errorf("name should be %v: %v", exp, name)
 	}
 
 	if _, err = GetFilenamesWithExtensionsFromDir("hello", ".jpg"); err == nil {
