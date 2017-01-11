@@ -30,7 +30,7 @@ const (
     </style>
 
     {{range .CSS}}
-    <link type="text/css" rel="stylesheet" href="{{.}}" />{{end}}
+    <link type="text/css" rel="stylesheet" href="css/{{.}}" />{{end}}
 
 <title>{{.Title}}</title>
 </head>
@@ -41,7 +41,7 @@ const (
     <script>{{.MurlokJS}}</script>
 
     {{range .JS}}
-    <script src="{{.}}"></script>{{end}}
+    <script src="js/{{.}}"></script>{{end}}
 </body>
 </html>
     `

@@ -57,6 +57,11 @@ func Render(c Componer) {
 	}
 }
 
+// Storage returns the app storage directories.
+func Storage() Storer {
+	return driver.Storage()
+}
+
 // MenuBar returns the menu bar context (MacOS).
 func MenuBar() Contexter {
 	return driver.MenuBar()

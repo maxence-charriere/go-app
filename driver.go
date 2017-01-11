@@ -17,7 +17,7 @@ type Driver interface {
 
 	Dock() Docker
 
-	Resources() ResourcePath
+	Storage() Storer
 
 	JavascriptBridge() string
 
