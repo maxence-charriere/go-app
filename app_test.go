@@ -93,5 +93,4 @@ func TestStorage(t *testing.T) {
 	t.Log(Storage().CSS())
 	t.Log(Storage().JS())
 	t.Log(Storage().Storage())
-	t.Log(Storage().Preferences())
 }

@@ -24,9 +24,6 @@ type Storer interface {
 	// Storage returns the root location where common files should be stored.
 	// eg db, cache, downloaded content.
 	Storage() string
-
-	// Preferences returns the location where preferences should be stored.
-	Preferences() string
 }
 
 // IsSupportedExtension returns a boolean indicating whether or not extensions

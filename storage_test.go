@@ -24,10 +24,6 @@ func (s StorageTest) Storage() string {
 	return filepath.Join(s.Resources(), "storage")
 }
 
-func (s StorageTest) Preferences() string {
-	return filepath.Join(s.Resources(), "preferences")
-}
-
 func TestIsSupportedExtension(t *testing.T) {
 	if name, ext := "foo.jpg", ".jpg"; !IsSupportedExtension(name, ext) {
 		t.Errorf("%v not found in %v", ext, name)
