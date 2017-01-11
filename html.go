@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"text/template"
 
+	"fmt"
+
 	"github.com/murlokswarm/uid"
 )
 
@@ -30,7 +32,7 @@ const (
     </style>
 
     {{range .CSS}}
-    <link type="text/css" rel="stylesheet" href="{{.}}" />{{end}}
+    <link type="text/css" rel="stylesheet" href="css/{{.}}" />{{end}}
 
 <title>{{.Title}}</title>
 </head>
@@ -41,7 +43,7 @@ const (
     <script>{{.MurlokJS}}</script>
 
     {{range .JS}}
-    <script src="{{.}}"></script>{{end}}
+    <script src="js/{{.}}"></script>{{end}}
 </body>
 </html>
     `
@@ -64,5 +66,8 @@ func (c HTMLContext) HTML() string {
 	var b bytes.Buffer
 	t := template.Must(template.New("").Parse(htmlContextTmpl))
 	t.Execute(&b, c)
+
+	fmt.Println(b.String())
+
 	return b.String()
 }

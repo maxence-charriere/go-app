@@ -20,8 +20,8 @@ func (s StorageTest) JS() string {
 	return filepath.Join(s.Resources(), "js")
 }
 
-func (s StorageTest) Storage() string {
-	return filepath.Join(s.Resources(), "storage")
+func (s StorageTest) Default() string {
+	return filepath.Join(s.Resources(), "default")
 }
 
 func TestIsSupportedExtension(t *testing.T) {
@@ -69,10 +69,10 @@ func TestGetFilenamesWithExtensionsFromDir(t *testing.T) {
 	if l := len(names); l != 2 {
 		t.Error("l should be 2:", l)
 	}
-	if name, exp := names[0], filepath.Join(dirname, "hello.css"); name != exp {
+	if name, exp := names[0], "hello.css"; name != exp {
 		t.Errorf("name should be %v: %v", exp, name)
 	}
-	if name, exp := names[1], filepath.Join(dirname, "hello.png"); name != exp {
+	if name, exp := names[1], "hello.png"; name != exp {
 		t.Errorf("name should be %v: %v", exp, name)
 	}
 

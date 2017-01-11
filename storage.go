@@ -23,7 +23,7 @@ type Storer interface {
 
 	// Storage returns the root location where common files should be stored.
 	// eg db, cache, downloaded content.
-	Storage() string
+	Default() string
 }
 
 // IsSupportedExtension returns a boolean indicating whether or not extensions
@@ -46,7 +46,7 @@ func IsSupportedImageExtension(name string) bool {
 }
 
 // GetFilenamesWithExtensionsFromDir returns the filenames of files within
-// dirname. names are prefixed with dirname.
+// dirname. names are not prefixed with dirname.
 func GetFilenamesWithExtensionsFromDir(dirname string, extension ...string) (names []string, err error) {
 	info, err := os.Stat(dirname)
 	if err != nil {
@@ -63,8 +63,7 @@ func GetFilenamesWithExtensionsFromDir(dirname string, extension ...string) (nam
 			continue
 		}
 		if IsSupportedExtension(f.Name(), extension...) {
-			name := filepath.Join(dirname, f.Name())
-			names = append(names, name)
+			names = append(names, f.Name())
 		}
 	}
 	return
