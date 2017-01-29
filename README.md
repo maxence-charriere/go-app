@@ -145,3 +145,6 @@ go build
 ## Documentation
 - [Wiki](https://github.com/murlokswarm/app/wiki)
 - [GoDoc](https://godoc.org/github.com/murlokswarm/app)
+
+## More examples
+- [Jubiz](https://github.com/maxence-charriere/jubiz)
