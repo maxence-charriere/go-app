@@ -88,9 +88,11 @@ func main() {
 ```
 
 ### Style your component
-```css
-/* In resources/css/hello.css.*/
+Create a **CSS file** in ```[PACKAGE PATH]/resources/css/``` and write your 
+styles.
 
+#### resources/css/hello.css:
+```css
 body {
     background-image: url("../bg1.jpg");
     background-size: cover;
