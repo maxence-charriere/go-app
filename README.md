@@ -25,10 +25,10 @@ Build multiplatform apps with Go, HTML and CSS.
 
 2. Get a driver:
     - MacOS: ```go get -u github.com/murlokswarm/mac```
-    - Windows: In progress   
-    - Linux: Not available yet
-    - IOS: Not available yet
-    - Android: Not available yet
+    - Windows: *In progress*
+    - Linux: -
+    - IOS: -
+    - Android: -
 
 <a name="gettingstarted"></a>
 ## Getting started
