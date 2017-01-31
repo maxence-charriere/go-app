@@ -8,9 +8,14 @@
 Package to build multiplatform apps with Go, HTML and CSS.
 
 ## Table of Contents
-1. [Install](#install)
-2. [Getting started](#gettingstarted)
-3. [Documentation](#doc)
+1. [Requirements](#req)
+2. [Install](#install)
+3. [Getting started](#gettingstarted)
+4. [Documentation](#doc)
+
+<a name="req"></a>
+## Requirements:
+- MacOS: **10.12** (sierra) and the latest version of [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (mandatory for Apple frameworks).
 
 <a name="install"></a>
 ## Install
@@ -23,9 +28,6 @@ Package to build multiplatform apps with Go, HTML and CSS.
     - IOS: Not available yet
     - Android: Contribution welcome
     - Windows: Contribution welcome
-
-3.  Get Xcode if you develop for MacOS (mandatory for Apple frameworks): 
-    - [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12)
 
 <a name="gettingstarted"></a>
 ## Getting started
