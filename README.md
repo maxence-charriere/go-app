@@ -5,7 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/murlokswarm/app/badge.svg?branch=master)](https://coveralls.io/github/murlokswarm/app?branch=master)
 [![GoDoc](https://godoc.org/github.com/murlokswarm/app?status.svg)](https://godoc.org/github.com/murlokswarm/app)
 
-Package to build multiplatform apps with Go, HTML and CSS.
+Build multiplatform apps with Go, HTML and CSS.
 
 ## Table of Contents
 1. [Requirements](#req)
@@ -25,9 +25,10 @@ Package to build multiplatform apps with Go, HTML and CSS.
 
 2. Get a driver:
     - MacOS: ```go get -u github.com/murlokswarm/mac```
+    - Windows: In progress   
+    - Linux: Not available yet
     - IOS: Not available yet
-    - Android: Contribution welcome
-    - Windows: Contribution welcome
+    - Android: Not available yet
 
 <a name="gettingstarted"></a>
 ## Getting started
