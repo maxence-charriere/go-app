@@ -15,7 +15,7 @@ Package to build multiplatform apps with Go, HTML and CSS.
 
 <a name="req"></a>
 ## Requirements:
-- MacOS: **10.12** (sierra) and the latest version of [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (mandatory for Apple frameworks).
+- MacOS: **10.12** (Sierra) and the latest version of [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (mandatory for Apple frameworks).
 
 <a name="install"></a>
 ## Install
