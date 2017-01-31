@@ -24,11 +24,11 @@ Build multiplatform apps with Go, HTML and CSS.
     - [Homebrew (MacOS)](http://www.golangbootcamp.com/book/get_setup)
 
 2. Get a driver:
-    - MacOS: ```go get -u github.com/murlokswarm/mac```
+    - MacOS: [```go get -u github.com/murlokswarm/mac```](https://github.com/murlokswarm/mac)
     - Windows: *In progress*
-    - Linux: -
-    - IOS: -
-    - Android: -
+    - Linux: (Please contribute)
+    - IOS: (Please contribute)
+    - Android: (Please contribute)
 
 <a name="gettingstarted"></a>
 ## Getting started
