@@ -1,6 +1,8 @@
 package app
 
 import (
+	"runtime"
+
 	"github.com/murlokswarm/log"
 	"github.com/murlokswarm/markup"
 )
@@ -37,6 +39,10 @@ var (
 	// terminates.
 	OnFinalize func()
 )
+
+func init() {
+	runtime.LockOSThread()
+}
 
 // Run runs the app.
 func Run() {
