@@ -46,6 +46,7 @@ func init() {
 
 // Run runs the app.
 func Run() {
+	go startUIScheduler()
 	driver.Run()
 }
 

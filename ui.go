@@ -12,7 +12,3 @@ func startUIScheduler() {
 		f()
 	}
 }
-
-func init() {
-	go startUIScheduler()
-}
