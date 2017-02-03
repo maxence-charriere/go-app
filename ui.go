@@ -7,6 +7,10 @@ var (
 	UIChan = make(chan func(), 255)
 )
 
+func init() {
+	go startUIScheduler()
+}
+
 func startUIScheduler() {
 	for f := range UIChan {
 		f()

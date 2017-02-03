@@ -40,7 +40,6 @@ var (
 
 // Run runs the app.
 func Run() {
-	go startUIScheduler()
 	driver.Run()
 }
 
