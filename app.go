@@ -43,7 +43,8 @@ func Run() {
 	driver.Run()
 }
 
-// Render renders a component.
+// Render renders a component. Update the rendering of c.
+// c must be mounted into a context.
 func Render(c Componer) {
 	syncs, err := markup.Synchronize(c)
 	if err != nil {
