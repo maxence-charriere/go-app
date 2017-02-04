@@ -1,6 +1,10 @@
 package app
 
-import "github.com/murlokswarm/markup"
+import (
+	"text/template"
+
+	"github.com/murlokswarm/markup"
+)
 
 // Componer is the interface that describes a component.
 type Componer interface {
@@ -20,6 +24,16 @@ type Mounter interface {
 // OnDismount si called when a component is dismounted.
 type Dismounter interface {
 	OnDismount()
+}
+
+// TemplateFuncMapper is the interface that wraps FuncMaps method.
+type TemplateFuncMapper interface {
+	// Allows to add custom functions to the template used to render the
+	// component.
+	// Note that funcs named json and time are already implemented to handle
+	// structs as prop and time format. Overloads of these will be ignored.
+	// See https://golang.org/pkg/text/template/#Template.Funcs for more details.
+	FuncMaps() template.FuncMap
 }
 
 // RegisterComponent allows the app to create a component of type c when found
