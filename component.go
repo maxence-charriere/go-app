@@ -4,6 +4,7 @@ import (
 	"text/template"
 
 	"github.com/murlokswarm/markup"
+	"github.com/murlokswarm/uid"
 )
 
 // Componer is the interface that describes a component.
@@ -41,4 +42,15 @@ type TemplateFuncMapper interface {
 // Should be called in an init func following the component implementation.
 func RegisterComponent(c Componer) {
 	markup.Register(c)
+}
+
+// ComponentID returns the id of c. Panic if c is not mounted.
+func ComponentID(c Componer) uid.ID {
+	return markup.ID(c)
+}
+
+// ComponentByID returns the component associated with id.
+// Panic if no component with id is mounted.
+func ComponentByID(id uid.ID) Componer {
+	return markup.Component(id)
 }
