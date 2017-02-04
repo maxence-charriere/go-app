@@ -28,7 +28,7 @@ func (h *Hello) Render() string {
             World
         {{end}}
     </span>
-    <input _onchange="OnInputChange" />
+    <input onchange="OnInputChange" />
 
 	{{if .BadMarkup}}<div></span>{{end}}
 

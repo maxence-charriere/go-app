@@ -55,7 +55,7 @@ func (h *Hello) Render() string {
             Hello,
             <span>{{if .Greeting}}{{html .Greeting}}{{else}}World{{end}}</span>
         </h1>
-        <input type="text" placeholder="What is your name?" _onchange="OnInputChange" />
+        <input type="text" placeholder="What is your name?" onchange="OnInputChange" />
     </div>
 </div>
     `
