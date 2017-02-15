@@ -43,4 +43,5 @@ type KeyboardArg struct {
 	CtrlKey  bool
 	MetaKey  bool
 	ShiftKey bool
+	Value    string
 }

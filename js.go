@@ -43,6 +43,11 @@ function CallEvent(id, method, self, event) {
 	var arg;
 	const eventType = event.type;
 
+    var value = "";
+    if (typeof self.value !== 'undefined') {
+        value = self.value;
+    }
+
 	switch (eventType) {
 		case "click":
         case "contextmenu":
@@ -71,11 +76,11 @@ function CallEvent(id, method, self, event) {
         case "keydown":
         case "keypress":
         case "keyup":
-            arg = MakeKeyboardArg(event);
+            arg = MakeKeyboardArg(event, value);
             break;
 		
 		case "change":
-			arg = MakeChangeArg(self.value);
+			arg = MakeChangeArg(value);
 			break;
 
         default:
@@ -112,7 +117,7 @@ function MakeWheelArg(event) {
     };
 }
 
-function MakeKeyboardArg(event) {
+function MakeKeyboardArg(event, value) {
 	return {
         "AltKey": event.altKey,
         "CtrlKey": event.ctrlKey,
@@ -120,7 +125,8 @@ function MakeKeyboardArg(event) {
         "KeyCode": event.keyCode,
         "Location": event.location,
         "MetaKey": event.metaKey,
-        "ShiftKey": event.shiftKey
+        "ShiftKey": event.shiftKey,
+        "Value": value
     };
 }
 
