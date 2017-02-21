@@ -155,15 +155,16 @@ type jsMsg struct {
 	Arg    string
 }
 
-// CallComponentMethod calls component method described by msg.
+// HandleEvent allows to call the component method or map the component field
+// described in msg.
 // Should be used only in a driver.
-func CallComponentMethod(msg string) {
+func HandleEvent(msg string) {
 	var jsMsg jsMsg
 	if err := json.Unmarshal([]byte(msg), &jsMsg); err != nil {
 		log.Error(errors.New(err))
 		return
 	}
-	markup.Call(jsMsg.ID, jsMsg.Method, jsMsg.Arg)
+	markup.HandleEvent(jsMsg.ID, jsMsg.Method, jsMsg.Arg)
 }
 
 // MurlokJS returns the javascript code allowing bidirectional communication
