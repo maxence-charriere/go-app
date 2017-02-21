@@ -28,7 +28,7 @@ func init() {
 	RegisterComponent(&Bar{})
 }
 
-func TestCallComponentMethod(t *testing.T) {
+func TestHandleEvent(t *testing.T) {
 	ctx := NewZeroContext("test for call")
 	defer ctx.Close()
 
@@ -45,7 +45,7 @@ func TestCallComponentMethod(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	CallComponentMethod(string(msg))
+	HandleEvent(string(msg))
 }
 
 func TestCallComponentJSONError(t *testing.T) {
@@ -55,7 +55,7 @@ func TestCallComponentJSONError(t *testing.T) {
 	bar := &Bar{}
 	ctx.Mount(bar)
 	msg := "}{}"
-	CallComponentMethod(string(msg))
+	HandleEvent(string(msg))
 }
 
 func TestCallComponentArgError(t *testing.T) {
@@ -75,7 +75,7 @@ func TestCallComponentArgError(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	CallComponentMethod(string(msg))
+	HandleEvent(string(msg))
 }
 
 func TestMurlokJS(t *testing.T) {
