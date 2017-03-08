@@ -27,6 +27,10 @@ var (
 	// to be opened with the app.
 	OnFileOpen func(filename string)
 
+	// OnFilesOpen is a handler which (if set) is called when files are targeted
+	// to be opened with the app.
+	OnFilesOpen func(filenames []string)
+
 	// OnTerminate is a handler which (if set) is called when the app is
 	// requested to terminates. Return false cancels the termination request.
 	OnTerminate func() bool
