@@ -2,7 +2,8 @@ package app
 
 // ChangeArg represents the data passed in a onchange event.
 type ChangeArg struct {
-	Value string
+	Value  string
+	Target DOMElement
 }
 
 // MouseArg represents data fired when interacting
@@ -20,6 +21,7 @@ type MouseArg struct {
 	CtrlKey  bool
 	MetaKey  bool
 	ShiftKey bool
+	Target   DOMElement
 }
 
 // WheelArg represents data fired when a wheel button of a
@@ -29,6 +31,7 @@ type WheelArg struct {
 	DeltaY    float64
 	DeltaZ    float64
 	DeltaMode DeltaMode
+	Target    DOMElement
 }
 
 // DeltaMode is an indication of the units of measurement for a delta value.
@@ -43,5 +46,10 @@ type KeyboardArg struct {
 	CtrlKey  bool
 	MetaKey  bool
 	ShiftKey bool
-	Value    string
+	Target   DOMElement
+}
+
+// EventArg represents the data passed in events.
+type EventArg struct {
+	Target DOMElement
 }
