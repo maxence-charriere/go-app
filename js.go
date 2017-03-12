@@ -165,7 +165,7 @@ type DOMElement struct {
 	Tag   string // The tag of the element. e.g. div.
 	ID    string // The id attribute.
 	Class string // the class attribute.
-	Value string // The value attrivute.
+	Value string // The value attribute.
 	Index string // The data-murlok-index attribute.
 }
 
