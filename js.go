@@ -88,7 +88,7 @@ function CallEvent(id, method, self, event) {
             break;
 
         default:
-            arg = { "test": "merd" };
+            arg = {};
             break;
     }
 
