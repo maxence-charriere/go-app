@@ -1,6 +1,8 @@
 package app
 
 import (
+	"net/url"
+
 	"github.com/murlokswarm/log"
 	"github.com/murlokswarm/markup"
 )
@@ -30,6 +32,10 @@ var (
 	// OnFilesOpen is a handler which (if set) is called when files are targeted
 	// to be opened with the app.
 	OnFilesOpen func(filenames []string)
+
+	// OnURLOpen is a handler which (if set) is called when the app is opened by
+	// an URL.
+	OnURLOpen func(URL url.URL)
 
 	// OnTerminate is a handler which (if set) is called when the app is
 	// requested to terminates. Return false cancels the termination request.
