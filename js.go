@@ -13,43 +13,47 @@ import (
 const (
 	jsFmt = `
 function Mount(id, markup) {
-	const sel = '[data-murlok-root="' + id + '"]';
+    const sel = '[data-murlok-root="' + id + '"]';
     const elem = document.querySelector(sel);
     elem.innerHTML = markup;
 }
 
 function RenderFull(id, markup) {
-	const sel = '[data-murlok-id="' + id + '"]';
+    const sel = '[data-murlok-id="' + id + '"]';
     const elem = document.querySelector(sel);
     elem.outerHTML = markup;
 }
 
 function RenderAttributes(id, attrs) {
-	const sel = '[data-murlok-id="' + id + '"]';
+    const sel = '[data-murlok-id="' + id + '"]';
     const elem = document.querySelector(sel);
-    
+
     for (var name in attrs) {
-        if (attrs.hasOwnProperty(name)) {
-            if (attrs[name].length == 0) {
-                elem.removeAttribute(name);
-                continue;
-            }
-            elem.setAttribute(name, attrs[name]);
+        if (elem.hasAttribute(name) && attrs[name].length == 0) {
+            elem.removeAttribute(name);
+            continue;
         }
+        elem.setAttribute(name, attrs[name]);
     }
 }
 
-function CallEvent(id, method, self, event) {
-	var arg;
-	const eventType = event.type;
+function GetAttributeValue(elem, name) {
+    if (!elem.hasAttribute(name)) {
+        return null;
+    }
+    return elem.getAttribute(name);
+}
 
-    var value = "";
-    if (typeof self.value !== 'undefined') {
+function CallEvent(id, method, self, event) {
+    var arg;
+
+    var value = null;
+    if (typeof self.value !== undefined) {
         value = self.value;
     }
 
-	switch (eventType) {
-		case "click":
+    switch (event.type) {
+        case "click":
         case "contextmenu":
         case "dblclick":
         case "mousedown":
@@ -68,86 +72,102 @@ function CallEvent(id, method, self, event) {
         case "drop":
             arg = MakeMouseArg(event);
             break;
-            
+
         case "mousewheel":
             arg = MakeWheelArg(event);
             break;
-            
+
         case "keydown":
         case "keypress":
         case "keyup":
-            arg = MakeKeyboardArg(event, value);
+            arg = MakeKeyboardArg(event);
             break;
-		
-		case "change":
-			arg = MakeChangeArg(value);
-			break;
+
+        case "change":
+            arg = MakeChangeArg(value);
+            break;
 
         default:
-			alert("not supported event: " + eventType);
-            return;
-	}
-	
-	Call(id, method, arg);
+            arg = { "test": "merd" };
+            break;
+    }
+
+    arg.Target = {
+        ID: GetAttributeValue(self, "id"),
+        Class: GetAttributeValue(self, "class"),
+        Index: GetAttributeValue(self, "data-murlok-index"),
+        Value: value,
+        Tag: self.tagName.toLowerCase()
+    };
+
+    Call(id, method, arg);
 }
 
 function MakeMouseArg(event) {
-	return {
-        "AltKey": event.altKey,
-        "Button": event.button,
-        "ClientX": event.clientX,
-        "ClientY": event.clientY,
-        "CtrlKey": event.ctrlKey,
-        "Detail": event.detail,
-        "MetaKey": event.metaKey,
-        "PageX": event.pageX,
-        "PageY": event.pageY,
-        "ScreenX": event.screenX,
-        "ScreenY": event.screenY,
-        "ShiftKey": event.shiftKey
+    return {
+        AltKey: event.altKey,
+        Button: event.button,
+        ClientX: event.clientX,
+        ClientY: event.clientY,
+        CtrlKey: event.ctrlKey,
+        Detail: event.detail,
+        MetaKey: event.metaKey,
+        PageX: event.pageX,
+        PageY: event.pageY,
+        ScreenX: event.screenX,
+        ScreenY: event.screenY,
+        ShiftKey: event.shiftKey
     };
 }
 
 function MakeWheelArg(event) {
-	return {
-        "DeltaX": event.deltaX,
-        "DeltaY": event.deltaY,
-        "DeltaZ": event.deltaZ,
-        "DeltaMode": event.deltaMode
+    return {
+        DeltaX: event.deltaX,
+        DeltaY: event.deltaY,
+        DeltaZ: event.deltaZ,
+        DeltaMode: event.deltaMode
     };
 }
 
-function MakeKeyboardArg(event, value) {
-	return {
-        "AltKey": event.altKey,
-        "CtrlKey": event.ctrlKey,
-        "CharCode": event.charCode,
-        "KeyCode": event.keyCode,
-        "Location": event.location,
-        "MetaKey": event.metaKey,
-        "ShiftKey": event.shiftKey,
-        "Value": value
+function MakeKeyboardArg(event) {
+    return {
+        AltKey: event.altKey,
+        CtrlKey: event.ctrlKey,
+        CharCode: event.charCode,
+        KeyCode: event.keyCode,
+        Location: event.location,
+        MetaKey: event.metaKey,
+        ShiftKey: event.shiftKey
     };
 }
 
 function MakeChangeArg(value) {
-	return {
-		Value: value
-	};
+    return {
+        Value: value
+    };
 }
 
 function Call(id, method, arg) {
-	let msg = {
-		ID: id,
-		Method: method,
-		Arg: JSON.stringify(arg)
-	};
-	
-	msg = JSON.stringify(msg);
-	%v
+    let msg = {
+        ID: id,
+        Method: method,
+        Arg: JSON.stringify(arg)
+    };
+
+    msg = JSON.stringify(msg);
+    %v
 }
     `
 )
+
+// DOMElement represents a DOM element.
+type DOMElement struct {
+	Tag   string // The tag of the element. e.g. div.
+	ID    string // The id attribute.
+	Class string // the class attribute.
+	Value string // The value attribute.
+	Index string // The data-murlok-index attribute.
+}
 
 type jsMsg struct {
 	ID     uid.ID
