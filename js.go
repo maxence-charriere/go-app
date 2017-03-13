@@ -48,7 +48,7 @@ function CallEvent(id, method, self, event) {
     var arg;
 
     var value = null;
-    if (typeof self.value !== undefined) {
+    if (self.value) {
         value = self.value;
     }
 
