@@ -1,6 +1,7 @@
 package app
 
 import (
+	"net/url"
 	"text/template"
 
 	"github.com/murlokswarm/markup"
@@ -25,6 +26,13 @@ type Mounter interface {
 // OnDismount si called when a component is dismounted.
 type Dismounter interface {
 	OnDismount()
+}
+
+// Hrefer is the interface that wraps OnHref method.
+// OnHref is called when a component is mounted following an interaction with a
+// html element with a href attribute.
+type Hrefer interface {
+	OnHref(URL url.URL)
 }
 
 // TemplateFuncMapper is the interface that wraps FuncMaps method.
