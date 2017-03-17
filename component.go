@@ -32,7 +32,7 @@ type Dismounter interface {
 // OnHref is called when a component is mounted following an interaction with a
 // html element with a href attribute.
 type Hrefer interface {
-	OnHref(URL url.URL)
+	OnHref(URL *url.URL)
 }
 
 // TemplateFuncMapper is the interface that wraps FuncMaps method.
