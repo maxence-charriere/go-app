@@ -45,6 +45,10 @@ func (d *AbstractDriver) Share() Sharer {
 	return &ShareTest{}
 }
 
+func (d *AbstractDriver) OpenFileChooser(fc FileChooser) {
+	return
+}
+
 func init() {
 	RegisterDriver(&AbstractDriver{
 		dock:    newDockCtx(),

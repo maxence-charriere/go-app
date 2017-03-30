@@ -11,7 +11,7 @@ var (
 type Driver interface {
 	Run()
 
-	NewContext(ctx interface{}) Contexter
+	NewElement(ctx interface{}) Elementer
 
 	MenuBar() Contexter
 

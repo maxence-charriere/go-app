@@ -62,7 +62,7 @@ func Render(c Componer) {
 		return
 	}
 
-	ctx := Context(c)
+	ctx := Context(c).(Contexter)
 	for _, s := range syncs {
 		ctx.Render(s)
 	}
@@ -81,4 +81,10 @@ func MenuBar() Contexter {
 // Dock returns the dock context.
 func Dock() Docker {
 	return driver.Dock()
+}
+
+func startUIGoroutine() {
+	for f := range UIChan {
+		f()
+	}
 }

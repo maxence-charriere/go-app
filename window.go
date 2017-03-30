@@ -17,15 +17,10 @@ const (
 // Windower represents a context with window specific interactions.
 type Windower interface {
 	Contexter
-
 	Position() (x float64, y float64)
-
 	Move(x float64, y float64)
-
 	Size() (width float64, height float64)
-
 	Resize(width float64, height float64)
-
 	Close()
 }
 
@@ -68,5 +63,5 @@ type Vibrancy uint8
 
 // NewWindow creates a new window.
 func NewWindow(w Window) Windower {
-	return driver.NewContext(w).(Windower)
+	return driver.NewElement(w).(Windower)
 }
