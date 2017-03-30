@@ -62,7 +62,7 @@ func Render(c Componer) {
 		return
 	}
 
-	ctx := Context(c).(Contexter)
+	ctx := Context(c)
 	for _, s := range syncs {
 		ctx.Render(s)
 	}
