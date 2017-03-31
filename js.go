@@ -4,10 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/murlokswarm/errors"
 	"github.com/murlokswarm/log"
 	"github.com/murlokswarm/markup"
-	"github.com/murlokswarm/uid"
+	"github.com/satori/go.uuid"
 )
 
 const (
@@ -170,7 +169,7 @@ type DOMElement struct {
 }
 
 type jsMsg struct {
-	ID     uid.ID
+	ID     uuid.UUID
 	Method string
 	Arg    string
 }
@@ -181,7 +180,7 @@ type jsMsg struct {
 func HandleEvent(msg string) {
 	var jsMsg jsMsg
 	if err := json.Unmarshal([]byte(msg), &jsMsg); err != nil {
-		log.Error(errors.New(err))
+		log.Error(err)
 		return
 	}
 	markup.HandleEvent(jsMsg.ID, jsMsg.Method, jsMsg.Arg)

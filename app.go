@@ -82,9 +82,3 @@ func MenuBar() Contexter {
 func Dock() Docker {
 	return driver.Dock()
 }
-
-func startUIGoroutine() {
-	for f := range UIChan {
-		f()
-	}
-}

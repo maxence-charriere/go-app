@@ -1,15 +1,15 @@
 package app
 
-type DockCtx struct {
-	*ZeroContext
+type dockContext struct {
+	*testContext
 }
 
-func newDockCtx() *DockCtx {
-	return &DockCtx{
-		ZeroContext: NewZeroContext("dock"),
+func newDockContext() *dockContext {
+	return &dockContext{
+		testContext: newTestContext("dock"),
 	}
 }
 
-func (d *DockCtx) SetIcon(path string) {}
+func (d *dockContext) SetIcon(path string) {}
 
-func (d *DockCtx) SetBadge(v interface{}) {}
+func (d *dockContext) SetBadge(v interface{}) {}

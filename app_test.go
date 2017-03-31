@@ -53,7 +53,7 @@ func TestRun(t *testing.T) {
 }
 
 func TestRender(t *testing.T) {
-	ctx := NewZeroContext("rendering")
+	ctx := newTestContext("rendering")
 	defer ctx.Close()
 
 	hello := &Hello{}
@@ -71,7 +71,7 @@ func TestRenderPanicCompoCtxError(t *testing.T) {
 }
 
 func TestRenderSyncError(t *testing.T) {
-	ctx := NewZeroContext("rendering")
+	ctx := newTestContext("rendering")
 	defer ctx.Close()
 
 	hello := &Hello{}

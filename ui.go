@@ -6,8 +6,7 @@ import (
 	"sync"
 
 	"github.com/murlokswarm/markup"
-	"github.com/murlokswarm/uid"
-	"github.com/pkg/errors"
+	"github.com/satori/go.uuid"
 )
 
 var (
@@ -28,7 +27,13 @@ var (
 // Elementer is the interface that describes an app element.
 // It wraps the ID method which allow to keep and retrieve a element.
 type Elementer interface {
-	ID() uid.ID
+	// ID returns the identifier of the element.
+	ID() uuid.UUID
+
+	// Close closes an element.
+	// It should launch a serie of instruction that leads to free the memory
+	// allocated to the element.
+	Close() error
 }
 
 // ElementStorer is the interface that describes a element store.
@@ -39,7 +44,7 @@ type ElementStorer interface {
 	// Add adds an element in the store.
 	// Should be called in a driver implementation when a native element is
 	// created.
-	Add(e Elementer) error
+	Add(e Elementer)
 
 	// Remove removes an element from the store.
 	// Should be called in a driver implementation when a native element is
@@ -51,7 +56,7 @@ type ElementStorer interface {
 
 	// Get returns the element with id.
 	// ok will be false if there is no element with id.
-	Get(id uid.ID) (e Elementer, ok bool)
+	Get(id uuid.UUID) (e Elementer, ok bool)
 }
 
 // Contexter is the interface that describes an element where a component can be
@@ -89,26 +94,31 @@ func init() {
 	Elements = newElementStore()
 }
 
+func startUIGoroutine() {
+	for f := range UIChan {
+		f()
+	}
+}
+
 type elementStore struct {
 	mutex sync.Mutex
-	elems map[uid.ID]Elementer
+	elems map[uuid.UUID]Elementer
 }
 
 func newElementStore() *elementStore {
 	return &elementStore{
-		elems: map[uid.ID]Elementer{},
+		elems: map[uuid.UUID]Elementer{},
 	}
 }
 
-func (s *elementStore) Add(e Elementer) error {
+func (s *elementStore) Add(e Elementer) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
-	if _, ok := s.Get(e.ID()); ok {
-		return errors.Errorf("[%s %T] is already registered", e.ID(), e)
+	if _, ok := s.elems[e.ID()]; ok {
+		log.Panicf("[%s %T] is already registered", e.ID(), e)
 	}
 	s.elems[e.ID()] = e
-	return nil
 }
 
 func (s *elementStore) Remove(e Elementer) {
@@ -125,7 +135,7 @@ func (s *elementStore) Len() int {
 	return len(s.elems)
 }
 
-func (s *elementStore) Get(id uid.ID) (e Elementer, ok bool) {
+func (s *elementStore) Get(id uuid.UUID) (e Elementer, ok bool) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 

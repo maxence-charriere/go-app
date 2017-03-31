@@ -15,13 +15,13 @@ func (d *AbstractDriver) Run() {
 	log.Info("Running app")
 }
 
-func (d *AbstractDriver) NewContext(ctx interface{}) Contexter {
-	switch ctx.(type) {
+func (d *AbstractDriver) NewElement(elem interface{}) Elementer {
+	switch elem.(type) {
 	case Window:
-		return newWindowCtx()
+		return newWindowContext()
 
 	default:
-		return NewZeroContext(fmt.Sprintf("%T", ctx))
+		return newTestContext(fmt.Sprintf("%T", elem))
 	}
 }
 
@@ -51,7 +51,7 @@ func (d *AbstractDriver) OpenFileChooser(fc FileChooser) {
 
 func init() {
 	RegisterDriver(&AbstractDriver{
-		dock:    newDockCtx(),
-		appMenu: NewZeroContext("appMenu"),
+		dock:    newDockContext(),
+		appMenu: newTestContext("appMenu"),
 	})
 }
