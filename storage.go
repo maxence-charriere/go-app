@@ -8,7 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Storer describes the directories location to use during app lifecycle.
+// Storer describes the directory locations to use during app lifecycle.
 type Storer interface {
 	// Resources returns resources directory filename.
 	// Represents the root location where files related to the operation of
