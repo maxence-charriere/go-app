@@ -20,8 +20,7 @@ var (
 	// called through this channel.
 	UIChan = make(chan func(), 256)
 
-	// Elements contains the elements in use by the app.
-	Elements ElementStorer
+	elements ElementStorer
 )
 
 // Elementer is the interface that describes an app element.
@@ -75,12 +74,18 @@ type Contexter interface {
 	Render(s markup.Sync)
 }
 
+// Elements returns the element store containing all the elements in use by the
+// app.
+func Elements() ElementStorer {
+	return elements
+}
+
 // Context returns the context where c is mounted.
 // Panic if there is no context where c is mounted.
 func Context(c Componer) Contexter {
 	root := markup.Root(c)
 
-	elem, ok := Elements.Get(root.ContextID)
+	elem, ok := Elements().Get(root.ContextID)
 	if !ok {
 		log.Panicf("no context with id %v in use", root.ContextID)
 	}
@@ -91,7 +96,7 @@ func init() {
 	runtime.LockOSThread()
 	go startUIGoroutine()
 
-	Elements = newElementStore()
+	elements = newElementStore()
 }
 
 func startUIGoroutine() {

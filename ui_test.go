@@ -19,7 +19,7 @@ func newTestContext(placeholder string) (ctx *testContext) {
 		id:          uuid.NewV1(),
 		placeholder: placeholder,
 	}
-	Elements.Add(ctx)
+	Elements().Add(ctx)
 	return ctx
 }
 
@@ -29,7 +29,7 @@ func (ctx *testContext) ID() uuid.UUID {
 
 func (ctx *testContext) Close() error {
 	markup.Dismount(ctx.root)
-	Elements.Remove(ctx)
+	Elements().Remove(ctx)
 	return nil
 }
 
