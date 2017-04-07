@@ -25,6 +25,8 @@ type Windower interface {
 	Size() (width float64, height float64)
 
 	Resize(width float64, height float64)
+
+	Close()
 }
 
 // Window represents a window.

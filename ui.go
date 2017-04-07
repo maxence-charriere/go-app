@@ -25,14 +25,13 @@ var (
 
 // Elementer is the interface that describes an app element.
 // It wraps the ID method which allow to keep and retrieve a element.
+//
+// Driver implementations:
+// - Elements().Add() should be called an element is created.
+// - Elements().Remove() should be called when an element is closed.
 type Elementer interface {
 	// ID returns the identifier of the element.
 	ID() uuid.UUID
-
-	// Close closes an element.
-	// It should launch a serie of instruction that leads to free the memory
-	// allocated to the element.
-	Close() error
 }
 
 // ElementStorer is the interface that describes a element store.

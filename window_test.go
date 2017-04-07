@@ -24,6 +24,8 @@ func (w *windowContext) Size() (width float64, height float64) {
 
 func (w *windowContext) Resize(width float64, height float64) {}
 
+func (w *windowContext) Close() {}
+
 func TestNewWindow(t *testing.T) {
 	w := Window{}
 	t.Log(NewWindow(w))
