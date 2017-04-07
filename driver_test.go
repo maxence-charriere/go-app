@@ -25,12 +25,16 @@ func (d *AbstractDriver) NewElement(elem interface{}) Elementer {
 	}
 }
 
-func (d *AbstractDriver) MenuBar() Contexter {
-	return d.appMenu
+func (d *AbstractDriver) MenuBar() (menu Contexter, ok bool) {
+	menu = d.appMenu
+	ok = true
+	return
 }
 
-func (d *AbstractDriver) Dock() Docker {
-	return d.dock
+func (d *AbstractDriver) Dock() (dock Docker, ok bool) {
+	dock = d.dock
+	ok = true
+	return
 }
 
 func (d *AbstractDriver) Storage() Storer {
@@ -39,14 +43,6 @@ func (d *AbstractDriver) Storage() Storer {
 
 func (d *AbstractDriver) JavascriptBridge() string {
 	return "alert('bridge not implemented');"
-}
-
-func (d *AbstractDriver) Share() Sharer {
-	return &ShareTest{}
-}
-
-func (d *AbstractDriver) OpenFileChooser(fc FileChooser) {
-	return
 }
 
 func init() {

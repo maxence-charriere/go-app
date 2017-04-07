@@ -38,6 +38,10 @@ func (ctx *testContext) Mount(c Componer) {
 	ctx.root = c
 }
 
+func (ctx *testContext) Component() Componer {
+	return ctx.root
+}
+
 func (ctx *testContext) Render(s markup.Sync) {
 	log.Infof("rendering: %v", s.Node.Markup())
 }

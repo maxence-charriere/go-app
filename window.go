@@ -14,22 +14,36 @@ const (
 	VibeUltraDark
 )
 
-// Windower represents a context with window specific interactions.
+// Windower is the interface that describes a window context.
 type Windower interface {
 	Contexter
 
+	// Position returns the position of the window.
 	Position() (x float64, y float64)
 
 	Move(x float64, y float64)
 
+	// Size returns the size of the window.
 	Size() (width float64, height float64)
 
+	// Resize resizes the window.
 	Resize(width float64, height float64)
 
+	// Close close`s the window.
+	//
+	// Driver implementation:
+	// - Close should call the native way to close a window.
+	// - Native windows often have a handler that is called before a window
+	//   is destroyed. This handler should be implemented and call
+	//   Elements().Remove() to free resources allocated on go side.
+	//   markup.Dismount() should be also called to release the components
+	//   mounted.
 	Close()
 }
 
-// Window represents a window.
+// Window is a struct that describes a window.
+// It will be used by a driver to create a context on the top of a native
+// window.
 type Window struct {
 	Title           string
 	Lang            string

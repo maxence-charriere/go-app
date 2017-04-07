@@ -11,7 +11,7 @@ import (
 
 var (
 	// UIChan is a channel which take a func as payload.
-	// When the app package is initialised, it creates a goroutine dedicated to
+	// When the app package is initialized, it creates a goroutine dedicated to
 	// execute UI related tasks in order to avoid to deal with concurrency when
 	// programming a component.
 	// UIChan allows to enqueue UI related tasks that should be executed in this
@@ -26,8 +26,8 @@ var (
 // Elementer is the interface that describes an app element.
 // It wraps the ID method which allow to keep and retrieve a element.
 //
-// Driver implementations:
-// - Elements().Add() should be called an element is created.
+// Driver implementation:
+// - Elements().Add() should be called when an element is created.
 // - Elements().Remove() should be called when an element is closed.
 type Elementer interface {
 	// ID returns the identifier of the element.
@@ -64,7 +64,14 @@ type Contexter interface {
 
 	// Mount mounts the component c into the context. The context is displayed
 	// with the default appearance of the component.
+	//
+	// Driver implementation:
+	// - Should call markup.Mount()
 	Mount(c Componer)
+
+	// Component returns the component mounted with Mount().
+	// Returns nil if there is no component mounted.
+	Component() Componer
 
 	// Render renders the DOM node targeted into the sync description s.
 	// s contains info specifying if the node and its children should be

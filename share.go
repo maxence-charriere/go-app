@@ -1,17 +1,12 @@
 package app
 
-import (
-	"net/url"
-)
-
-// Sharer describes a sharing service.
-type Sharer interface {
-	Text(v string)
-
-	URL(v *url.URL)
+// Share is a struct that describes a share.
+// It will be used by a driver to create a native share panel.
+type Share struct {
+	Value interface{}
 }
 
-// Share returns the sharing service.
-func Share() Sharer {
-	return driver.Share()
+// Share creates a new sharing.
+func NewShare(s Share) Elementer {
+	return driver.NewElement(s)
 }
