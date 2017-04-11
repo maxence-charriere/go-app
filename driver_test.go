@@ -15,22 +15,26 @@ func (d *AbstractDriver) Run() {
 	log.Info("Running app")
 }
 
-func (d *AbstractDriver) NewContext(ctx interface{}) Contexter {
-	switch ctx.(type) {
+func (d *AbstractDriver) NewElement(elem interface{}) Elementer {
+	switch elem.(type) {
 	case Window:
-		return newWindowCtx()
+		return newWindowContext()
 
 	default:
-		return NewZeroContext(fmt.Sprintf("%T", ctx))
+		return newTestContext(fmt.Sprintf("%T", elem))
 	}
 }
 
-func (d *AbstractDriver) MenuBar() Contexter {
-	return d.appMenu
+func (d *AbstractDriver) MenuBar() (menu Contexter, ok bool) {
+	menu = d.appMenu
+	ok = true
+	return
 }
 
-func (d *AbstractDriver) Dock() Docker {
-	return d.dock
+func (d *AbstractDriver) Dock() (dock Docker, ok bool) {
+	dock = d.dock
+	ok = true
+	return
 }
 
 func (d *AbstractDriver) Storage() Storer {
@@ -41,13 +45,9 @@ func (d *AbstractDriver) JavascriptBridge() string {
 	return "alert('bridge not implemented');"
 }
 
-func (d *AbstractDriver) Share() Sharer {
-	return &ShareTest{}
-}
-
 func init() {
 	RegisterDriver(&AbstractDriver{
-		dock:    newDockCtx(),
-		appMenu: NewZeroContext("appMenu"),
+		dock:    newDockContext(),
+		appMenu: newTestContext("appMenu"),
 	})
 }

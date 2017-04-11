@@ -25,10 +25,6 @@ var (
 	// Eg. when the dock icon is clicked.
 	OnReopen func(hasVisibleWindow bool)
 
-	// OnFileOpen is a handler which (if set) is called when a file is targeted
-	// to be opened with the app.
-	OnFileOpen func(filename string)
-
 	// OnFilesOpen is a handler which (if set) is called when files are targeted
 	// to be opened with the app.
 	OnFilesOpen func(filenames []string)
@@ -73,12 +69,14 @@ func Storage() Storer {
 	return driver.Storage()
 }
 
-// MenuBar returns the menu bar context (MacOS).
-func MenuBar() Contexter {
+// MenuBar returns the menu bar context.
+// ok will be false if there is no menubar available.
+func MenuBar() (menu Contexter, ok bool) {
 	return driver.MenuBar()
 }
 
 // Dock returns the dock context.
-func Dock() Docker {
+// ok will be false if there is no dock available.
+func Dock() (d Docker, ok bool) {
 	return driver.Dock()
 }

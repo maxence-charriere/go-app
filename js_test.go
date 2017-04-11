@@ -29,7 +29,7 @@ func init() {
 }
 
 func TestHandleEvent(t *testing.T) {
-	ctx := NewZeroContext("test for call")
+	ctx := newTestContext("test for call")
 	defer ctx.Close()
 
 	bar := &Bar{}
@@ -49,7 +49,7 @@ func TestHandleEvent(t *testing.T) {
 }
 
 func TestCallComponentJSONError(t *testing.T) {
-	ctx := NewZeroContext("test for call")
+	ctx := newTestContext("test for call")
 	defer ctx.Close()
 
 	bar := &Bar{}
@@ -59,7 +59,7 @@ func TestCallComponentJSONError(t *testing.T) {
 }
 
 func TestCallComponentArgError(t *testing.T) {
-	ctx := NewZeroContext("test for call")
+	ctx := newTestContext("test for call")
 	defer ctx.Close()
 
 	bar := &Bar{}

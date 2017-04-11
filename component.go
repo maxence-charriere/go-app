@@ -5,7 +5,7 @@ import (
 	"text/template"
 
 	"github.com/murlokswarm/markup"
-	"github.com/murlokswarm/uid"
+	"github.com/satori/go.uuid"
 )
 
 // Componer is the interface that describes a component.
@@ -53,12 +53,12 @@ func RegisterComponent(c Componer) {
 }
 
 // ComponentID returns the id of c. Panic if c is not mounted.
-func ComponentID(c Componer) uid.ID {
+func ComponentID(c Componer) uuid.UUID {
 	return markup.ID(c)
 }
 
 // ComponentByID returns the component associated with id.
 // Panic if no component with id is mounted.
-func ComponentByID(id uid.ID) Componer {
+func ComponentByID(id uuid.UUID) Componer {
 	return markup.Component(id)
 }

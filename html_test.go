@@ -3,12 +3,12 @@ package app
 import (
 	"testing"
 
-	"github.com/murlokswarm/uid"
+	"github.com/satori/go.uuid"
 )
 
 func TestHTMLContextHTML(t *testing.T) {
 	c := HTMLContext{
-		ID:       uid.Context(),
+		ID:       uuid.NewV1(),
 		Title:    "Test",
 		Lang:     "fr",
 		MurlokJS: MurlokJS(),

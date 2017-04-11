@@ -2,27 +2,29 @@ package app
 
 import "testing"
 
-type WindowCtx struct {
-	*ZeroContext
+type windowContext struct {
+	*testContext
 }
 
-func newWindowCtx() *WindowCtx {
-	return &WindowCtx{
-		ZeroContext: NewZeroContext("window"),
+func newWindowContext() *windowContext {
+	return &windowContext{
+		testContext: newTestContext("window"),
 	}
 }
 
-func (w *WindowCtx) Position() (x float64, y float64) {
+func (w *windowContext) Position() (x float64, y float64) {
 	return
 }
 
-func (w *WindowCtx) Move(x float64, y float64) {}
+func (w *windowContext) Move(x float64, y float64) {}
 
-func (w *WindowCtx) Size() (width float64, height float64) {
+func (w *windowContext) Size() (width float64, height float64) {
 	return
 }
 
-func (w *WindowCtx) Resize(width float64, height float64) {}
+func (w *windowContext) Resize(width float64, height float64) {}
+
+func (w *windowContext) Close() {}
 
 func TestNewWindow(t *testing.T) {
 	w := Window{}

@@ -1,12 +1,15 @@
 package app
 
-// Menu represents a context menu.
+// Menu is a struct that describes a menu.
+// It will be used by a driver to create a menu on the top of a native menu.
 type Menu struct{}
 
-// ContextMenu represents a context menu.
+// ContextMenu is a struct that describes a context menu.
+// It will be used by a driver to create a context on the top of a native
+// context menu.
 type ContextMenu Menu
 
 // NewContextMenu creates a new context menu.
 func NewContextMenu() Contexter {
-	return driver.NewContext(ContextMenu{})
+	return driver.NewElement(ContextMenu{}).(Contexter)
 }

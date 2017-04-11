@@ -5,10 +5,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/murlokswarm/errors"
+	"github.com/pkg/errors"
 )
 
-// Storer describes the directories location to use during app lifecycle.
+// Storer describes the directory locations to use during app lifecycle.
 type Storer interface {
 	// Resources returns resources directory filename.
 	// Represents the root location where files related to the operation of
@@ -53,7 +53,7 @@ func GetFilenamesWithExtensionsFromDir(dirname string, extension ...string) (nam
 		return
 	}
 	if !info.IsDir() {
-		err = errors.Newf("%v is not a directory", dirname)
+		err = errors.Errorf("%v is not a directory", dirname)
 		return
 	}
 

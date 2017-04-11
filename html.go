@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"text/template"
 
-	"github.com/murlokswarm/uid"
+	"github.com/satori/go.uuid"
 )
 
 const (
@@ -51,7 +51,7 @@ const (
 // setup a webview based context.
 // Should be used only in drivers implementations.
 type HTMLContext struct {
-	ID       uid.ID
+	ID       uuid.UUID
 	Title    string
 	Lang     string
 	MurlokJS string
