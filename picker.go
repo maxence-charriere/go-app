@@ -7,10 +7,10 @@ type FilePicker struct {
 	MultipleSelection bool
 	NoDir             bool
 	NoFile            bool
-	OnChoose          func(filenames []string)
+	OnPick            func(filenames []string)
 }
 
 // NewFilePicker creates and opens a native file picker described by fp.
-func NewFilePicker(fp FilePicker) Elementer {
-	return driver.NewElement(fp)
+func NewFilePicker(p FilePicker) Elementer {
+	return driver.NewElement(p)
 }
