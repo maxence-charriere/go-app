@@ -6,7 +6,7 @@ type Share struct {
 	Value interface{}
 }
 
-// Share creates a new sharing.
+// NewShare creates a new sharing.
 func NewShare(s Share) Elementer {
 	return driver.NewElement(s)
 }
