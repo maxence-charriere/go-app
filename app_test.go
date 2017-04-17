@@ -89,8 +89,6 @@ func TestDock(t *testing.T) {
 }
 
 func TestStorage(t *testing.T) {
-	t.Log(Storage().Resources())
-	t.Log(Storage().CSS())
-	t.Log(Storage().JS())
-	t.Log(Storage().Default())
+	t.Log(Storage())
+	t.Log(Resources())
 }
