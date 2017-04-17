@@ -37,8 +37,12 @@ func (d *AbstractDriver) Dock() (dock Docker, ok bool) {
 	return
 }
 
-func (d *AbstractDriver) Storage() Storer {
-	return StorageTest("")
+func (d *AbstractDriver) Resources() string {
+	return "resources"
+}
+
+func (d *AbstractDriver) Storage() string {
+	return ""
 }
 
 func (d *AbstractDriver) JavascriptBridge() string {

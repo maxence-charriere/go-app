@@ -37,8 +37,14 @@ type Driver interface {
 	// - Should be created in the driver implementation.
 	Dock() (d Docker, ok bool)
 
-	Storage() Storer
+	// Resources returns the location of the resources directory.
+	Resources() string
 
+	// Storage returns the location of the app storage directory.
+	Storage() string
+
+	// JavascriptBridge is the javascript function to call when a driver want to
+	// pass data to the native platform.
 	JavascriptBridge() string
 }
 
