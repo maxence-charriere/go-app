@@ -65,7 +65,7 @@ func Render(c Componer) {
 }
 
 // Resources returns the location of the resources directory.
-// resources directory should contains file required by the UI.
+// resources directory should contain files required by the UI.
 // Its path should be used only for read only operations, otherwise it could
 // mess up with the app signature.
 func Resources() string {

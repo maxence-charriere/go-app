@@ -20,7 +20,7 @@ func FileHaveExtension(name string, exts ...string) bool {
 	return false
 }
 
-// FileIsSupportedIcon returns a boolean indication whether or not name is a
+// FileIsSupportedIcon returns a boolean indicating whether or not name is a
 // supported icon.
 func FileIsSupportedIcon(name string) bool {
 	return FileHaveExtension(name, ".jpg", ".jpeg", ".png")
