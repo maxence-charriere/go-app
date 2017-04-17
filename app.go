@@ -64,8 +64,18 @@ func Render(c Componer) {
 	}
 }
 
-// Storage returns the app storage directories.
-func Storage() Storer {
+// Resources returns the location of the resources directory.
+// resources directory should contains file required by the UI.
+// Its path should be used only for read only operations, otherwise it could
+// mess up with the app signature.
+func Resources() string {
+	return driver.Resources()
+}
+
+// Storage returns the location of the app storage directory.
+// Content generated (e.g. sqlite db) or downloaded (e.g. images, music)
+// should be saved in this directory.
+func Storage() string {
 	return driver.Storage()
 }
 
