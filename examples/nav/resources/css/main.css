@@ -1,0 +1,61 @@
+body {
+  overflow: hidden;
+}
+
+.Content {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  color: white;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.21);
+}
+
+.Paris {
+  background-image: url("../paris.jpg");
+}
+
+.Sf {
+  background-image: url("../sf.jpg");
+}
+
+h1 {
+  margin: 8px 32px;
+
+  font-size: 56px;
+  font-weight: 300;
+  text-align: center;
+}
+
+p {
+  max-width: 600px;
+  margin: 8px 32px;
+
+  font-size: 16px;
+  text-align: justify;
+}
+
+a {
+  border: 1px solid;
+  border-radius: 8px;
+
+  padding: 8px 16px;
+  margin: 8px 32px;
+
+  font-size: 16px;
+  text-decoration: initial;
+  color: white;
+}
+
+a:hover {
+  color: deepskyblue;
+}

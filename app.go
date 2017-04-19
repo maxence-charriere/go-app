@@ -23,7 +23,7 @@ var (
 
 	// OnReopen is a handler which (if set) is called when the app is reopened.
 	// Eg. when the dock icon is clicked.
-	OnReopen func(hasVisibleWindow bool)
+	OnReopen func()
 
 	// OnFilesOpen is a handler which (if set) is called when files are targeted
 	// to be opened with the app.
