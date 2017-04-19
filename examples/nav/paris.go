@@ -6,6 +6,7 @@ import "github.com/murlokswarm/app"
 type Paris struct{}
 
 // Render returns the HTML describing the Paris component content.
+// It contains a link to show how to navigate to an other component (Sf).
 func (p *Paris) Render() string {
 	return `
 <div class="Content Paris">

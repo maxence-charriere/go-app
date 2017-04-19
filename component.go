@@ -29,8 +29,8 @@ type Dismounter interface {
 }
 
 // Hrefer is the interface that wraps OnHref method.
-// OnHref is called when a component is mounted following an interaction with a
-// html element with a href attribute.
+// OnHref is called when the component is mounted from a click on a link that
+// targets the component in the href attribute.
 type Hrefer interface {
 	OnHref(URL *url.URL)
 }
