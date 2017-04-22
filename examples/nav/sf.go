@@ -36,6 +36,7 @@ func (s *Sf) OnHref(URL *url.URL) {
 	fmt.Println("mounted from a link click:", URL)
 }
 
+// /!\ Register the component. Required to use the component into a context.
 func init() {
 	app.RegisterComponent(&Sf{})
 }
