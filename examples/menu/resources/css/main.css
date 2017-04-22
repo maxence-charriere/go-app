@@ -1,3 +1,7 @@
+/* 
+** All css file in resources/css directory are included by default.
+*/
+
 body {
   overflow: hidden;
 }
