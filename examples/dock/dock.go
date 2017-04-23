@@ -50,7 +50,7 @@ func (m *DockMenu) OnChangeBadge() {
 	dock.SetBadge("World!")
 }
 
+// /!\ Register the component. Required to use the component into a context.
 func init() {
-	// Registering components to allow their use in HTML.
 	app.RegisterComponent(&DockMenu{})
 }

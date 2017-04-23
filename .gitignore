@@ -22,3 +22,7 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+examples/menu/menu
+
+examples/nav/nav

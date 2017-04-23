@@ -1,0 +1,81 @@
+/* 
+** All css file in resources/css directory are included by default.
+*/
+
+body {
+  overflow: hidden;
+}
+
+.Home {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-flow: wrap;
+  justify-content: center;
+  align-items: center;
+
+  color: white;
+}
+
+.Example {
+  width: 400px;
+  height: 300px;
+  margin: 16px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  margin: 8px 32px;
+
+  font-size: 32px;
+  font-weight: 300;
+  text-align: center;
+}
+
+ul {
+  margin: 16px;
+
+  color: deepskyblue;
+}
+
+textarea {
+  width: 300px;
+  height: 100px;
+  margin: 16px;
+  padding: 16px;
+
+  border: 1px solid white;
+  border-radius: 8px;
+  background-color: transparent;
+
+  color: white;
+  font-size: 16px;
+}
+
+textarea:focus {
+  border-color: deepskyblue;
+  outline: 0;
+}
+
+button {
+  border: 1px solid;
+  border-radius: 8px;
+
+  padding: 8px 16px;
+  margin: 8px 32px;
+
+  font-size: 16px;
+  text-decoration: initial;
+  color: white;
+  background-color: transparent;
+  border-color: currentColor;
+}
+
+button:hover {
+  color: deepskyblue;
+}

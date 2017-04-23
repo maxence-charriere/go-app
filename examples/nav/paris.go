@@ -25,6 +25,7 @@ func (p *Paris) Render() string {
 	`
 }
 
+// /!\ Register the component. Required to use the component into a context.
 func init() {
 	app.RegisterComponent(&Paris{})
 }
