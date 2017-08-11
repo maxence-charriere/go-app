@@ -3,12 +3,11 @@ package markup
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
+	"html/template"
 	"net/url"
 	"reflect"
 	"strconv"
 	"strings"
-	"text/template"
 	"time"
 
 	"github.com/pkg/errors"
@@ -19,9 +18,9 @@ import (
 type Componer interface {
 	// Render should return a string describing the component with HTML5
 	// standard.
-	// It support Golang template/text API.
+	// It support Golang html/template API.
 	// Pipeline is based on the component struct.
-	// See https://golang.org/pkg/text/template for more informations.
+	// See https://golang.org/pkg/text/template for template usage.
 	Render() string
 }
 
@@ -164,13 +163,14 @@ func decodeComponent(c Componer, root *Tag) error {
 		funcMap = mapper.FuncMaps()
 	}
 	if len(funcMap) == 0 {
-		funcMap = make(template.FuncMap, 2)
+		funcMap = make(template.FuncMap, 3)
 	}
+	funcMap["raw"] = rawHTML
 	funcMap["json"] = convertToJSON
 	funcMap["time"] = formatTime
 
 	r := c.Render()
-	tmpl := template.Must(template.New(fmt.Sprintf("%T", c)).Funcs(funcMap).Parse(r))
+	tmpl := template.Must(template.New("").Funcs(funcMap).Parse(r))
 
 	b := bytes.Buffer{}
 	if err := tmpl.Execute(&b, c); err != nil {
@@ -184,9 +184,13 @@ func decodeComponent(c Componer, root *Tag) error {
 	return nil
 }
 
+func rawHTML(s string) template.HTML {
+	return template.HTML(s)
+}
+
 func convertToJSON(v interface{}) string {
 	b, _ := json.Marshal(v)
-	return template.HTMLEscapeString(string(b))
+	return string(b)
 }
 
 func formatTime(t time.Time, layout string) string {

@@ -1,9 +1,9 @@
 package markup
 
 import (
+	"html/template"
 	"strconv"
 	"testing"
-	"text/template"
 
 	"github.com/google/uuid"
 )

@@ -1,6 +1,8 @@
 package markup
 
 import (
+	"bytes"
+	"html/template"
 	"testing"
 	"time"
 )
@@ -48,7 +50,18 @@ type CompoWithFields struct {
 }
 
 func (c *CompoWithFields) Render() string {
-	return `<div></div>`
+	return `
+<div>
+	<div>String: {{.String}}</div>
+	<div>raw String: {{raw .String}}</div>
+	<div>Bool: {{.Bool}}</div>
+	<div>Int: {{.Int}}</div>
+	<div>Uint: {{.Uint}}</div>
+	<div>Float: {{.Float}}</div>
+	<div>Struct: {{.Struct}}</div>
+	<markup.compo obj="{{json .Struct}}">
+</div>
+	`
 }
 
 func (c *CompoWithFields) Func() {
@@ -220,6 +233,10 @@ func TestFormatTime(t *testing.T) {
 	t.Log(formatTime(time.Now(), "2006"))
 }
 
+func TestRawHTML(t *testing.T) {
+	t.Log(rawHTML("<div>Hello</div>"))
+}
+
 func TestCallOrAssignMethod(t *testing.T) {
 	funcCalled := false
 	funcWithArgValue := 0
@@ -289,4 +306,33 @@ func TestCallOrAssignErrors(t *testing.T) {
 		t.Fatal("err should not be nil")
 	}
 	t.Log(err)
+}
+
+func TestHTMLTemplate(t *testing.T) {
+	c := &CompoWithFields{
+		String: "<div>Hello</div>",
+		Struct: struct {
+			A int
+			B string
+		}{
+			B: "<div>World</div>",
+		},
+	}
+
+	funcMap := template.FuncMap{
+		"raw":  rawHTML,
+		"json": convertToJSON,
+		"time": formatTime,
+	}
+
+	tmpl := template.Must(template.New("").
+		Funcs(funcMap).
+		Parse(c.Render()))
+
+	b := bytes.Buffer{}
+	if err := tmpl.Execute(&b, c); err != nil {
+		t.Fatal(err)
+	}
+
+	t.Log(b.String())
 }
