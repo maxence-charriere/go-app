@@ -207,7 +207,7 @@ func (e *env) syncTags(l, r *Tag) (syncs []Sync, syncParent bool, err error) {
 		syncs = append(syncs, subsyncs...)
 	}
 
-	if attrEq := AttrEquals(l.Attrs, r.Attrs); !attrEq || fullsync {
+	if attrEq := AttrEquals(l.Name, l.Attrs, r.Attrs); !attrEq || fullsync {
 		if !attrEq {
 			l.Attrs = r.Attrs
 		}
@@ -252,7 +252,7 @@ func (e *env) syncTextTags(l, r *Tag) (syncParent bool) {
 }
 
 func (e *env) syncComponentTags(l, r *Tag) (syncs []Sync, syncParent bool, err error) {
-	if AttrEquals(l.Attrs, r.Attrs) {
+	if AttrEquals(l.Name, l.Attrs, r.Attrs) {
 		return
 	}
 

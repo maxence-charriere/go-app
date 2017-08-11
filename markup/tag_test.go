@@ -72,37 +72,51 @@ func TestAttrEquals(t *testing.T) {
 	attr := AttrMap{
 		"hello": "world",
 		"foo":   "bar",
+		"value": "",
 	}
 
 	attr2 := AttrMap{
 		"foo":   "bar",
 		"hello": "world",
+		"value": "",
 	}
 
-	if !AttrEquals(attr, attr2) {
+	if !AttrEquals("div", attr, attr2) {
 		t.Error("attr and attr2 should be equals")
 	}
 
-	if AttrEquals(attr, nil) {
+	if AttrEquals("div", attr, nil) {
 		t.Error("attr and nil should not be equals")
 	}
 
 	attr3 := AttrMap{
 		"foo":   "bar",
 		"hello": "maxoo",
+		"value": "",
 	}
 
-	if AttrEquals(attr, attr3) {
+	if AttrEquals("div", attr, attr3) {
 		t.Error("attr and attr3 should not be equals")
 	}
 
 	attr4 := AttrMap{
-		"foo": "bar",
-		"bye": "world",
+		"foo":   "bar",
+		"bye":   "world",
+		"value": "",
 	}
 
-	if AttrEquals(attr, attr4) {
+	if AttrEquals("div", attr, attr4) {
 		t.Error("attr and attr4 should not be equals")
+	}
+
+	attr5 := AttrMap{
+		"hello": "world",
+		"foo":   "bar",
+		"value": "",
+	}
+
+	if AttrEquals("input", attr, attr5) {
+		t.Error("attr and attr5 should not be equals")
 	}
 }
 

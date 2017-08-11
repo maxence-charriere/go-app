@@ -87,7 +87,7 @@ var (
 type AttrMap map[string]string
 
 // AttrEquals reports wheter its arguments l and r are equals.
-func AttrEquals(l, r AttrMap) bool {
+func AttrEquals(tagname string, l, r AttrMap) bool {
 	if len(l) != len(r) {
 		return false
 	}
@@ -98,6 +98,9 @@ func AttrEquals(l, r AttrMap) bool {
 			return false
 		}
 		if v != otherVal {
+			return false
+		}
+		if tagname == "input" && k == "value" && len(otherVal) == 0 {
 			return false
 		}
 	}
