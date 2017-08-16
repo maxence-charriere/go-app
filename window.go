@@ -1,23 +1,7 @@
 package app
 
-// Constants to specify the vibrancy to be used.
-const (
-	VibeNone Vibrancy = iota
-	VibeLight
-	VibeDark
-	VibeTitlebar
-	VibeSelection
-	VibeMenu
-	VibePopover
-	VibeSidebar
-	VibeMediumLight
-	VibeUltraDark
-)
-
 // Windower is the interface that describes a window context.
 type Windower interface {
-	Contexter
-
 	// Position returns the position of the window.
 	Position() (x float64, y float64)
 
@@ -44,35 +28,34 @@ type Windower interface {
 // Window is a struct that describes a window.
 // It will be used by a driver to create a context on the top of a native
 // window.
-type Window struct {
-	Title           string
-	Lang            string
-	X               float64
-	Y               float64
-	Width           float64
-	Height          float64
-	MinWidth        float64
-	MinHeight       float64
-	MaxWidth        float64
-	MaxHeight       float64
-	BackgroundColor string
-	Vibrancy        Vibrancy
-	Borderless      bool
-	FixedSize       bool
-	CloseHidden     bool
-	MinimizeHidden  bool
-	TitlebarHidden  bool
+// type Window struct {
+// 	Title           string
+// 	X               float64
+// 	Y               float64
+// 	Width           float64
+// 	Height          float64
+// 	MinWidth        float64
+// 	MinHeight       float64
+// 	MaxWidth        float64
+// 	MaxHeight       float64
+// 	BackgroundColor string
+// 	Vibrancy        Vibrancy
+// 	Borderless      bool
+// 	FixedSize       bool
+// 	CloseHidden     bool
+// 	MinimizeHidden  bool
+// 	TitlebarHidden  bool
 
-	OnMinimize       func()
-	OnDeminimize     func()
-	OnFullScreen     func()
-	OnExitFullScreen func()
-	OnMove           func(x float64, y float64)
-	OnResize         func(width float64, height float64)
-	OnFocus          func()
-	OnBlur           func()
-	OnClose          func() bool
-}
+// 	OnMinimize       func()
+// 	OnDeminimize     func()
+// 	OnFullScreen     func()
+// 	OnExitFullScreen func()
+// 	OnMove           func(x float64, y float64)
+// 	OnResize         func(width float64, height float64)
+// 	OnFocus          func()
+// 	OnBlur           func()
+// 	OnClose          func() bool
+// }
 
 // Vibrancy represents the NSVisualEffectView which will be applied to the
 // background of the window.
@@ -80,7 +63,16 @@ type Window struct {
 // When set, BackgroundColor is ignored.
 type Vibrancy uint8
 
-// NewWindow creates a new window.
-func NewWindow(w Window) Windower {
-	return driver.NewElement(w).(Windower)
-}
+// Constants to specify the vibrancy to be used.
+const (
+	VibeNone Vibrancy = iota
+	VibeLight
+	VibeDark
+	VibeTitlebar
+	VibeSelection
+	VibeMenu
+	VibePopover
+	VibeSidebar
+	VibeMediumLight
+	VibeUltraDark
+)

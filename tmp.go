@@ -1,13 +1,20 @@
 package app
 
-import (
-	"encoding/json"
-	"fmt"
+// FilePicker is a struct that describes a file picker.
+// It will be used by a driver to create a native file picker that allow to
+// select files and directories filenames.
+type FilePicker struct {
+	MultipleSelection bool
+	NoDir             bool
+	NoFile            bool
+	OnPick            func(filenames []string)
+}
 
-	"github.com/murlokswarm/log"
-	"github.com/murlokswarm/markup"
-	"github.com/satori/go.uuid"
-)
+// Share is a struct that describes a share.
+// It will be used by a driver to create a native share panel.
+type Share struct {
+	Value interface{}
+}
 
 const (
 	jsFmt = `
@@ -158,37 +165,3 @@ function Call(id, method, arg) {
 }
     `
 )
-
-// DOMElement represents a DOM element.
-type DOMElement struct {
-	Tag   string // The tag of the element. e.g. div.
-	ID    string // The id attribute.
-	Class string // the class attribute.
-	Value string // The value attribute.
-	Index string // The data-murlok-index attribute.
-}
-
-type jsMsg struct {
-	ID     uuid.UUID
-	Method string
-	Arg    string
-}
-
-// HandleEvent allows to call the component method or map the component field
-// described in msg.
-// Should be used only in a driver.
-func HandleEvent(msg string) {
-	var jsMsg jsMsg
-	if err := json.Unmarshal([]byte(msg), &jsMsg); err != nil {
-		log.Error(err)
-		return
-	}
-	markup.HandleEvent(jsMsg.ID, jsMsg.Method, jsMsg.Arg)
-}
-
-// MurlokJS returns the javascript code allowing bidirectional communication
-// between a context and it's webview.
-// Should be used only in drivers implementations.
-func MurlokJS() string {
-	return fmt.Sprintf(jsFmt, driver.JavascriptBridge())
-}

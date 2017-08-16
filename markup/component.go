@@ -13,9 +13,9 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Componer is the interface that describes a component.
+// Component is the interface that describes a component.
 // Should be implemented on a non empty struct pointer.
-type Componer interface {
+type Component interface {
 	// Render should return a string describing the component with HTML5
 	// standard.
 	// It support Golang html/template API.
@@ -62,7 +62,7 @@ type ZeroCompo struct {
 	placeholder byte
 }
 
-func ensureValidComponent(c Componer) error {
+func ensureValidComponent(c Component) error {
 	v := reflect.ValueOf(c)
 	if v.Kind() != reflect.Ptr {
 		return errors.Errorf("%T must be implemented on a struct pointer", c)
@@ -78,7 +78,7 @@ func ensureValidComponent(c Componer) error {
 	return nil
 }
 
-func mapComponentFields(c Componer, attrs AttrMap) error {
+func mapComponentFields(c Component, attrs AttrMap) error {
 	if len(attrs) == 0 {
 		return nil
 	}
@@ -157,7 +157,7 @@ func mapComponentField(f reflect.Value, v string) error {
 	return nil
 }
 
-func decodeComponent(c Componer, root *Tag) error {
+func decodeComponent(c Component, root *Tag) error {
 	var funcMap template.FuncMap
 	if mapper, ok := c.(Mapper); ok {
 		funcMap = mapper.FuncMaps()
@@ -201,7 +201,7 @@ func formatTime(t time.Time, layout string) string {
 // jval to the field named n.
 // Methods must take 0 or 1 arg and no return values.
 // Methods and and fields must be exported.
-func CallOrAssign(c Componer, n string, jval string) error {
+func CallOrAssign(c Component, n string, jval string) error {
 	structval := reflect.ValueOf(c)
 
 	if m := structval.MethodByName(n); m.IsValid() {

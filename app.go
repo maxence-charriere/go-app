@@ -1,92 +1,47 @@
 package app
 
-import (
-	"net/url"
-
-	"github.com/murlokswarm/log"
-	"github.com/murlokswarm/markup"
-)
+import "github.com/murlokswarm/app/markup"
 
 var (
-	// OnLaunch is a handler which (if set) is called when the app is
-	// initialized and ready.
-	// The main window should be created here.
-	OnLaunch func()
-
-	// OnFocus is a handler which (if set) is called when the app became
-	// focused.
-	OnFocus func()
-
-	// OnBlur is a handler which (if set) is called when the app lost the
-	// focus.
-	OnBlur func()
-
-	// OnReopen is a handler which (if set) is called when the app is reopened.
-	// Eg. when the dock icon is clicked.
-	OnReopen func()
-
-	// OnFilesOpen is a handler which (if set) is called when files are targeted
-	// to be opened with the app.
-	OnFilesOpen func(filenames []string)
-
-	// OnURLOpen is a handler which (if set) is called when the app is opened by
-	// an URL.
-	OnURLOpen func(URL url.URL)
-
-	// OnTerminate is a handler which (if set) is called when the app is
-	// requested to terminates. Return false cancels the termination request.
-	OnTerminate func() bool
-
-	// OnFinalize is a handler which (if set) is called when the app is about
-	// to be terminated.
-	// It should be used to perform any final cleanup before the application
-	// terminates.
-	OnFinalize func()
+	driver       Driver
+	compoBuilder = markup.NewCompoBuilder()
 )
 
-// Run runs the app.
-func Run() {
-	driver.Run()
+func Import(c markup.Component) {
+
 }
 
-// Render renders a component. Update the rendering of c.
-// c must be mounted into a context.
-func Render(c Componer) {
-	syncs, err := markup.Synchronize(c)
-	if err != nil {
-		log.Error(err)
-		return
-	}
+// Run runs the app with driver d as backend.
+func Run(d Driver) error {
+	driver = d
+	return d.Run()
+}
 
-	ctx := Context(c)
-	for _, s := range syncs {
-		ctx.Render(s)
+// CurrentDriver returns the used driver.
+// It panics if called before Run.
+func CurrentDriver() Driver {
+	if driver == nil {
+		panic("no current driver")
 	}
+	return driver
 }
 
 // Resources returns the location of the resources directory.
-// resources directory should contain files required by the UI.
-// Its path should be used only for read only operations, otherwise it could
-// mess up with the app signature.
+// Resources should be used only for read only operations.
 func Resources() string {
 	return driver.Resources()
 }
 
-// Storage returns the location of the app storage directory.
-// Content generated (e.g. sqlite db) or downloaded (e.g. images, music)
-// should be saved in this directory.
+// Storage returns the location of the storage directory.
+// It panics if the running driver is not a DriverWithStorage.
 func Storage() string {
-	return driver.Storage()
+	d := driver.(DriverWithStorage)
+	return d.Storage()
 }
 
-// MenuBar returns the menu bar context.
-// ok will be false if there is no menubar available.
-func MenuBar() (menu Contexter, ok bool) {
-	return driver.MenuBar()
-}
-
-// Dock returns the dock context.
-// ok will be false if there is no dock available.
-func Dock() (d Docker, ok bool) {
-	return driver.Dock()
+// NewWindow creates and displays a window described by configuration c.
+// It panics if the running driver is not a DriverWithWindows.
+func NewWindow(c WindowConfig) Window {
+	d := driver.(DriverWithWindows)
+	return d.NewWindow(c)
 }

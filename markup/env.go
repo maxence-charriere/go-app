@@ -10,10 +10,10 @@ import (
 type Env interface {
 	// Component returns the component mounted under the identifier id.
 	// err should be set if there is no mounted component under id.
-	Component(id uuid.UUID) (c Componer, err error)
+	Component(id uuid.UUID) (c Component, err error)
 
 	// Root returns the root tag of component c.
-	Root(c Componer) (root Tag, err error)
+	Root(c Component) (root Tag, err error)
 
 	// Mount indexes the component c into the env.
 	// The component will live until it is dismounted.
@@ -23,10 +23,10 @@ type Env interface {
 	// An id should be assigned to each tags.
 	// Tags describing other components should trigger their creation and their
 	// mount.
-	Mount(c Componer) (root Tag, err error)
+	Mount(c Component) (root Tag, err error)
 
 	// Dismount removes references to a component and its children.
-	Dismount(c Componer)
+	Dismount(c Component)
 }
 
 // NewEnv creates an environment.
@@ -36,19 +36,19 @@ func NewEnv(b CompoBuilder) Env {
 
 func newEnv(b CompoBuilder) *env {
 	return &env{
-		components:   make(map[uuid.UUID]Componer),
-		compoRoots:   make(map[Componer]Tag),
+		components:   make(map[uuid.UUID]Component),
+		compoRoots:   make(map[Component]Tag),
 		compoBuilder: b,
 	}
 }
 
 type env struct {
-	components   map[uuid.UUID]Componer
-	compoRoots   map[Componer]Tag
+	components   map[uuid.UUID]Component
+	compoRoots   map[Component]Tag
 	compoBuilder CompoBuilder
 }
 
-func (e *env) Component(id uuid.UUID) (c Componer, err error) {
+func (e *env) Component(id uuid.UUID) (c Component, err error) {
 	ok := false
 	if c, ok = e.components[id]; !ok {
 		err = errors.Errorf("no component with id %v is mounted", id)
@@ -56,7 +56,7 @@ func (e *env) Component(id uuid.UUID) (c Componer, err error) {
 	return
 }
 
-func (e *env) Root(c Componer) (root Tag, err error) {
+func (e *env) Root(c Component) (root Tag, err error) {
 	ok := false
 	if root, ok = e.compoRoots[c]; !ok {
 		err = errors.Errorf("%T is not mounted", c)
@@ -64,13 +64,13 @@ func (e *env) Root(c Componer) (root Tag, err error) {
 	return
 }
 
-func (e *env) Mount(c Componer) (root Tag, err error) {
+func (e *env) Mount(c Component) (root Tag, err error) {
 	rootID := uuid.New()
 	compoID := uuid.New()
 	return e.mount(c, rootID, compoID)
 }
 
-func (e *env) mount(c Componer, rootID uuid.UUID, compoID uuid.UUID) (root Tag, err error) {
+func (e *env) mount(c Component, rootID uuid.UUID, compoID uuid.UUID) (root Tag, err error) {
 	if _, ok := e.compoRoots[c]; ok {
 		err = errors.Errorf("%T is already mounted", c)
 		return
@@ -128,7 +128,7 @@ func (e *env) mountTag(t *Tag, id uuid.UUID, compoID uuid.UUID) error {
 	return nil
 }
 
-func (e *env) Dismount(c Componer) {
+func (e *env) Dismount(c Component) {
 	root, ok := e.compoRoots[c]
 	if !ok {
 		return
@@ -161,12 +161,12 @@ func (e *env) dismountTag(t Tag) {
 	return
 }
 
-func (e *env) Update(c Componer) (syncs []Sync, err error) {
+func (e *env) Update(c Component) (syncs []Sync, err error) {
 	syncs, _, err = e.update(c)
 	return
 }
 
-func (e *env) update(c Componer) (syncs []Sync, syncParent bool, err error) {
+func (e *env) update(c Component) (syncs []Sync, syncParent bool, err error) {
 	root, ok := e.compoRoots[c]
 	if !ok {
 		err = errors.Errorf("%T is not mounted", c)

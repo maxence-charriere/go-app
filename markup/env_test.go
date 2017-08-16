@@ -301,7 +301,7 @@ func TestEnv(t *testing.T) {
 	}
 }
 
-func testMountDismount(t *testing.T, env *env, c Componer) {
+func testMountDismount(t *testing.T, env *env, c Component) {
 	// Mount.
 	root, err := env.Mount(c)
 	if err != nil {
@@ -332,7 +332,7 @@ func testMountDismount(t *testing.T, env *env, c Componer) {
 	}
 }
 
-func testMountMounted(t *testing.T, env *env, c Componer) {
+func testMountMounted(t *testing.T, env *env, c Component) {
 	if _, err := env.Mount(c); err != nil {
 		t.Fatal(err)
 	}
@@ -345,7 +345,7 @@ func testMountMounted(t *testing.T, env *env, c Componer) {
 	t.Log(err)
 }
 
-func testMountInvalid(t *testing.T, env *env, c Componer) {
+func testMountInvalid(t *testing.T, env *env, c Component) {
 	_, err := env.Mount(c)
 	if err == nil {
 		t.Fatal("err should not be nil")
@@ -353,7 +353,7 @@ func testMountInvalid(t *testing.T, env *env, c Componer) {
 	t.Log(err)
 }
 
-func testDismountDismounted(t *testing.T, env *env, c Componer) {
+func testDismountDismounted(t *testing.T, env *env, c Component) {
 	if _, err := env.Mount(c); err != nil {
 		t.Fatal(err)
 	}
@@ -361,7 +361,7 @@ func testDismountDismounted(t *testing.T, env *env, c Componer) {
 	env.Dismount(c)
 }
 
-func testDismountDismountedChild(t *testing.T, env *env, c Componer) {
+func testDismountDismountedChild(t *testing.T, env *env, c Component) {
 	root, err := env.Mount(c)
 	if err != nil {
 		t.Fatal(err)
