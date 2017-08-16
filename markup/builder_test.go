@@ -16,28 +16,18 @@ func TestCompoBuilderRegister(t *testing.T) {
 	cname := strings.ToLower(ct.String())
 
 	b := make(compoBuilder)
-	ok, err := b.Register(c)
+	err := b.Register(c)
 	if err != nil {
 		t.Fatal(err)
-	}
-	if ok {
-		t.Fatalf("%s should not be overridden", cname)
 	}
 
 	if _, ok := b[cname]; !ok {
 		t.Fatalf("%s should have been registered", cname)
 	}
 
-	if ok, err = b.Register(c); err != nil {
-		t.Fatal(err)
-	}
-	if !ok {
-		t.Fatalf("%s should have been overridden", cname)
-	}
-
 	empc := &EmptyCompo{}
-	if _, err = b.Register(empc); err == nil {
-		t.Fatal("register cinv should returns an error")
+	if err = b.Register(empc); err == nil {
+		t.Fatal("register empty component should returns an error")
 	}
 }
 

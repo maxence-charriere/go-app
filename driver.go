@@ -1,9 +1,12 @@
 package app
 
+import "github.com/murlokswarm/app/markup"
+
 // Driver is the interface that describes a backend for app rendering.
 type Driver interface {
-	// Run runs the application.
-	Run() error
+	// Run runs the application with the components resistered in the component
+	// builder b.
+	Run(b markup.CompoBuilder) error
 
 	// Resources returns the location of the resources directory.
 	Resources() string

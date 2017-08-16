@@ -1,20 +1,31 @@
 package app
 
-import "github.com/murlokswarm/app/markup"
+import (
+	"github.com/murlokswarm/app/markup"
+	"github.com/pkg/errors"
+)
 
 var (
 	driver       Driver
 	compoBuilder = markup.NewCompoBuilder()
 )
 
+// Import imports component c into the app.
+// Components must be imported in order the be used by the app package.
+// This mechanism allows components to be created dynamically when they are
+// found into HTML code.
+// Import should be called during app initialization.
 func Import(c markup.Component) {
-
+	if err := compoBuilder.Register(c); err != nil {
+		err = errors.Wrap(err, "invalid component import")
+		panic(err)
+	}
 }
 
 // Run runs the app with driver d as backend.
 func Run(d Driver) error {
 	driver = d
-	return d.Run()
+	return d.Run(compoBuilder)
 }
 
 // CurrentDriver returns the used driver.
