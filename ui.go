@@ -17,15 +17,19 @@ type Navigator interface {
 	// e.g. /hello
 	Navigate(url string) error
 
+	// CanPrevious indicates if navigation to previous page is possible.
 	CanPrevious() bool
 
 	// Previous navigates to the previous page.
-	Previous()
+	// It returns an error if there is no previous page to navigate.
+	Previous() error
 
+	// CanNext indicates if navigation to next page is possible.
 	CanNext() bool
 
 	// Next navigates to the next page.
-	Next()
+	// It returns an error if there is no next page to navigate.
+	Next() error
 }
 
 type Window interface {
