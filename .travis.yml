@@ -7,7 +7,7 @@ install:
   - go install -v github.com/mattn/goveralls
 
 script:
-  - go test ./... -covermode count -coverprofile cover.out
+  - go test . -covermode count -coverprofile cover.out
   - go test -test.run Benchmark -cpu 1 -bench ./...
   - goveralls -service travis-ci -repotoken $COVERALLS_TOKEN -coverprofile cover.out
 
