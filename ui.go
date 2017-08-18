@@ -8,13 +8,15 @@ type Element interface {
 	ID() uuid.UUID
 }
 
+// Navigator is the interface which describes an element that supports
+// navigation.
 type Navigator interface {
 	Element
 
 	// Navigate navigates to the specified URL.
 	// Calls with an URL which contains a component name will load the named
 	// component.
-	// e.g. /hello
+	// e.g. /hello will load the imported component named hello.
 	Navigate(url string) error
 
 	// CanPrevious indicates if navigation to previous page is possible.
