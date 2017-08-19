@@ -8,7 +8,7 @@ type Element interface {
 	ID() uuid.UUID
 }
 
-// Navigator is the interface which describes an element that supports
+// Navigator is the interface that describes an element that supports
 // navigation.
 type Navigator interface {
 	Element
@@ -34,6 +34,7 @@ type Navigator interface {
 	Next() error
 }
 
+//
 type Window interface {
 	Navigator
 
@@ -52,14 +53,26 @@ type Window interface {
 
 type WindowConfig struct{}
 
-type MenuBar interface {
+type Menu interface {
 	Navigator
 }
 
-type Dock interface {
+type DockTile interface {
 	Navigator
 
 	SetIcon(name string)
 
 	SetBadge(v interface{})
+}
+
+type FilePanelConfig struct {
+	MultipleSelection bool
+	IgnoreDirectories bool
+	IgnoreFiles       bool
+	OnSelect          func(filenames []string)
+}
+
+type PopupNotificationConfig struct {
+	Message      string
+	ComponentURL string
 }

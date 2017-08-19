@@ -86,7 +86,7 @@ var (
 // AttrMap represents a map of attributes.
 type AttrMap map[string]string
 
-// AttrEquals reports wheter its arguments l and r are equals.
+// AttrEquals reports whether its arguments l and r are equals.
 func AttrEquals(tagname string, l, r AttrMap) bool {
 	if len(l) != len(r) {
 		return false

@@ -28,7 +28,7 @@ type DriverWithStorage interface {
 type DriverWithWindows interface {
 	Driver
 
-	// NewWindow creates and displays a window described by configuration c.
+	// NewWindow creates and displays the window described in configuration c.
 	NewWindow(c WindowConfig) Window
 }
 
@@ -37,13 +37,40 @@ type DriverWithMenuBar interface {
 	Driver
 
 	// MenuBar returns the menu bar.
-	MenuBar() MenuBar
+	MenuBar() Menu
 }
 
 // DriverWithDock is the interface that describes a driver with a dock.
 type DriverWithDock interface {
 	Driver
 
-	// Dock returns the dock.
-	Dock() Dock
+	// Dock returns the dock tile.
+	Dock() DockTile
+}
+
+// DriverWithShare is the interface that describes a driver with sharing
+// support.
+type DriverWithShare interface {
+	Driver
+
+	// Share shares the value v.
+	Share(v interface{})
+}
+
+// DriverWithFilePanels is the interface that describes a driver able to open a
+// file panel.
+type DriverWithFilePanels interface {
+	Driver
+
+	// NewFilePanel creates and displays the file panel described in
+	// configuration c.
+	NewFilePanel(c FilePanelConfig) Element
+}
+
+// DriverWithPopupNotifications is the interface that describes a driver able to
+// display popup notifications.
+type DriverWithPopupNotifications interface {
+	// NewPopupNotification creates and displays the popup notification
+	// described in configuration c.
+	NewPopupNotification(c PopupNotificationConfig) Element
 }
