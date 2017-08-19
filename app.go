@@ -58,7 +58,7 @@ func Storage() string {
 
 // SupportsWindows reports whether windows are supported.
 func SupportsWindows() bool {
-	_, ok := driver.(DriverWithWindow)
+	_, ok := driver.(DriverWithWindows)
 	return ok
 }
 
@@ -110,7 +110,7 @@ func Share(v interface{}) {
 
 // SupportsFilePanels reports whether file panels are supported.
 func SupportsFilePanels() bool {
-	d, ok := driver.(DriverWithFilePanels)
+	_, ok := driver.(DriverWithFilePanels)
 	return ok
 }
 

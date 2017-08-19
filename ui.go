@@ -53,9 +53,7 @@ type Window interface {
 
 type WindowConfig struct{}
 
-type Menu interface {
-	Navigator
-}
+type Menu Navigator
 
 type DockTile interface {
 	Navigator
