@@ -34,35 +34,99 @@ type Navigator interface {
 	Next() error
 }
 
-//
+// Window is the interface that describes a window.
 type Window interface {
 	Navigator
 
+	// Position returns the window position.
 	Position() (x, y float64)
 
+	// Move moves the window to the position (x, y).
 	Move(x, y float64)
 
+	// Size returns the window size.
 	Size() (width, height float64)
 
+	// Resize resizes the window to width x height.
 	Resize(width, height float64)
 
+	// Focus gives the focus to the window.
+	// The window will be put in front, above the other elements.
 	Focus()
 
+	// Close closes the window.
 	Close()
 }
 
-type WindowConfig struct{}
+// WindowConfig is a struct that describes a window.
+type WindowConfig struct {
+	Title           string
+	X               float64
+	Y               float64
+	Width           float64
+	MinWidth        float64
+	MaxWidth        float64
+	Height          float64
+	MinHeight       float64
+	MaxHeight       float64
+	BackgroundColor string
+	Borderless      bool
+	DisableResize   bool
+	Mac             MacWindowConfig
 
+	OnMinimize       func()
+	OnDeminimize     func()
+	OnFullScreen     func()
+	OnExitFullScreen func()
+	OnMove           func(x, y float64)
+	OnResize         func(width float64, height float64)
+	OnFocus          func()
+	OnBlur           func()
+	OnClose          func() bool
+}
+
+// MacWindowConfig is a struct that describes window fields specific to MacOS.
+type MacWindowConfig struct {
+	BackgroundVibrancy AppleVibrancy
+	HideCloseButton    bool
+	HideMinimizeButton bool
+	HideTitleBar       bool
+}
+
+// AppleVibrancy represents a constant that define Apple's frost glass effects.
+type AppleVibrancy uint8
+
+// Constants to specify vibrancies to use in Apple application elements.
+const (
+	VibeNone AppleVibrancy = iota
+	VibeLight
+	VibeDark
+	VibeTitlebar
+	VibeSelection
+	VibeMenu
+	VibePopover
+	VibeSidebar
+	VibeMediumLight
+	VibeUltraDark
+)
+
+// Menu is the interface that describes a menu.
 type Menu Navigator
 
+// DockTile is the interface that describes a dock tile.
 type DockTile interface {
 	Navigator
 
-	SetIcon(name string)
+	// SetIcon set the dock tile icon with the named file.
+	// It returns an error if the file doesn't exist or if it is not a supported
+	// image.
+	SetIcon(name string) error
 
+	// SetBadge set the dock tile badge with the string representation of v.
 	SetBadge(v interface{})
 }
 
+// FilePanelConfig is a struct that describes a file panel.
 type FilePanelConfig struct {
 	MultipleSelection bool
 	IgnoreDirectories bool
@@ -70,6 +134,7 @@ type FilePanelConfig struct {
 	OnSelect          func(filenames []string)
 }
 
+// PopupNotificationConfig is a struct that describes a popup notification.
 type PopupNotificationConfig struct {
 	Message      string
 	ComponentURL string
