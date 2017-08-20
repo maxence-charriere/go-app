@@ -87,18 +87,18 @@ type WindowConfig struct {
 
 // MacWindowConfig is a struct that describes window fields specific to MacOS.
 type MacWindowConfig struct {
-	BackgroundVibrancy AppleVibrancy
+	BackgroundVibrancy Vibrancy
 	HideCloseButton    bool
 	HideMinimizeButton bool
 	HideTitleBar       bool
 }
 
-// AppleVibrancy represents a constant that define Apple's frost glass effects.
-type AppleVibrancy uint8
+// Vibrancy represents a constant that define Apple's frost glass effects.
+type Vibrancy uint8
 
-// Constants to specify vibrancies to use in Apple application elements.
+// Constants to specify vibrancy effects to use in Apple application elements.
 const (
-	VibeNone AppleVibrancy = iota
+	VibeNone Vibrancy = iota
 	VibeLight
 	VibeDark
 	VibeTitlebar
