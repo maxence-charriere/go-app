@@ -8,6 +8,7 @@ import (
 var (
 	driver       Driver
 	compoBuilder = markup.NewCompoBuilder()
+	uichan       = make(chan func(), 256)
 )
 
 // Import imports component c into the app.
@@ -25,6 +26,13 @@ func Import(c markup.Component) {
 // Run runs the app with driver d as backend.
 func Run(d Driver) error {
 	driver = d
+
+	go func() {
+		for f := range uichan {
+			f()
+		}
+	}()
+
 	return d.Run(compoBuilder)
 }
 
@@ -133,4 +141,10 @@ func SupportsPopupNotifications() bool {
 func NewPopupNotification(c PopupNotificationConfig) Element {
 	d := driver.(DriverWithPopupNotifications)
 	return d.NewPopupNotification(c)
+}
+
+// CallOnUIGoroutine calls func f and ensure it's called from the UI goroutine.
+// UI goroutine is the running application main thread.
+func CallOnUIGoroutine(f func()) {
+	uichan <- f
 }
