@@ -8,6 +8,13 @@ type Driver interface {
 	// builder b.
 	Run(b markup.CompoBuilder) error
 
+	// Render renders component c.
+	Render(c markup.Component) error
+
+	// Context returns the element where component c is mounted.
+	// It returns an error if c is not mounted.
+	Context(c markup.Component) (Navigator, error)
+
 	// Resources returns the location of the resources directory.
 	Resources() string
 }

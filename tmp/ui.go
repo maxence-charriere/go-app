@@ -10,16 +10,6 @@ import (
 )
 
 var (
-	// UIChan is a channel which take a func as payload.
-	// When the app package is initialized, it creates a goroutine dedicated to
-	// execute UI related tasks in order to avoid to deal with concurrency when
-	// programming a component.
-	// UIChan allows to enqueue UI related tasks that should be executed in this
-	// goroutine.
-	// When implementing a driver, driver and component callbacks should be
-	// called through this channel.
-	UIChan = make(chan func(), 256)
-
 	elements ElementStorer
 )
 

@@ -1,6 +1,8 @@
 package app
 
 import (
+	"log"
+
 	"github.com/murlokswarm/app/markup"
 	"github.com/pkg/errors"
 )
@@ -45,8 +47,25 @@ func CurrentDriver() Driver {
 	return driver
 }
 
+// Render renders component c.
+// It should be called when the display of component c have to be updated.
+// It panics if called before Run.
+func Render(c markup.Component) {
+	if err := driver.Render(c); err != nil {
+		log.Println(err)
+	}
+}
+
+// Context returns the element where component c is mounted.
+// It returns an error if c is not mounted.
+// It panics if called before Run.
+func Context(c markup.Component) (Navigator, error) {
+	return driver.Context(c)
+}
+
 // Resources returns the location of the resources directory.
 // Resources should be used only for read only operations.
+// It panics if called before Run.
 func Resources() string {
 	return driver.Resources()
 }
