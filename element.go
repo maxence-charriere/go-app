@@ -245,6 +245,9 @@ func (s *elementStore) Remove(e Element) {
 }
 
 func (s *elementStore) Element(id uuid.UUID) (e Element, ok bool) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
 	e, ok = s.elements[id]
 	return
 }
@@ -266,12 +269,14 @@ func (s *elementStore) ElementByComponent(c markup.Component) (e ElementWithComp
 func (s *elementStore) Sort() {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
+
 	sort.Sort(s.elementsWithComponents)
 }
 
 func (s *elementStore) Len() int {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
+
 	return len(s.elements)
 }
 
