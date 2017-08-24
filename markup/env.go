@@ -12,7 +12,11 @@ type Env interface {
 	// err should be set if there is no mounted component under id.
 	Component(id uuid.UUID) (c Component, err error)
 
+	// Contains reports whether component c is mounted.
+	Contains(c Component) bool
+
 	// Root returns the root tag of component c.
+	// It returns an error if c is not mounted.
 	Root(c Component) (root Tag, err error)
 
 	// Mount indexes the component c into the env.
@@ -27,6 +31,10 @@ type Env interface {
 
 	// Dismount removes references to a component and its children.
 	Dismount(c Component)
+
+	// Update updates the tag tree of component c.
+	// It returns a slice of synchronization operations.
+	Update(c Component) (syncs []Sync, err error)
 }
 
 // NewEnv creates an environment.
@@ -56,8 +64,13 @@ func (e *env) Component(id uuid.UUID) (c Component, err error) {
 	return
 }
 
+func (e *env) Contains(c Component) bool {
+	_, ok := e.compoRoots[c]
+	return ok
+}
+
 func (e *env) Root(c Component) (root Tag, err error) {
-	ok := false
+	var ok bool
 	if root, ok = e.compoRoots[c]; !ok {
 		err = errors.Errorf("%T is not mounted", c)
 	}
@@ -167,9 +180,8 @@ func (e *env) Update(c Component) (syncs []Sync, err error) {
 }
 
 func (e *env) update(c Component) (syncs []Sync, syncParent bool, err error) {
-	root, ok := e.compoRoots[c]
-	if !ok {
-		err = errors.Errorf("%T is not mounted", c)
+	var root Tag
+	if root, err = e.Root(c); err != nil {
 		return
 	}
 

@@ -59,7 +59,7 @@ func Render(c markup.Component) {
 // Context returns the element where component c is mounted.
 // It returns an error if c is not mounted.
 // It panics if called before Run.
-func Context(c markup.Component) (Navigator, error) {
+func Context(c markup.Component) (ElementWithComponent, error) {
 	return driver.Context(c)
 }
 

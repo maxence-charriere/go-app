@@ -1,6 +1,14 @@
 package app
 
-import "github.com/google/uuid"
+import (
+	"sort"
+	"sync"
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/murlokswarm/app/markup"
+	"github.com/pkg/errors"
+)
 
 // Element is the interface that describes an app element.
 type Element interface {
@@ -8,35 +16,51 @@ type Element interface {
 	ID() uuid.UUID
 }
 
-// Navigator is the interface that describes an element that supports
-// navigation.
-type Navigator interface {
+// ElementWithComponent is the interface that describes an element that hosts
+// components.
+type ElementWithComponent interface {
 	Element
 
-	// Navigate navigates to the specified URL.
+	// Load loads the page specified by the URL.
 	// Calls with an URL which contains a component name will load the named
 	// component.
-	// e.g. /hello will load the imported component named hello.
-	Navigate(url string) error
+	// e.g. /hello will load the component named hello.
+	// It returns an error if the component is not imported.
+	Load(url string) error
 
-	// CanPrevious indicates if navigation to previous page is possible.
+	// Contains reports whether component c is mounted in the element.
+	Contains(c markup.Component) bool
+
+	// Render renders component c.
+	Render(c markup.Component) error
+
+	// LastFocus returns the last time when the element has got focus.
+	LastFocus() time.Time
+}
+
+// ElementWithNavigation is the interface that describes an element that
+// supports navigation.
+type ElementWithNavigation interface {
+	ElementWithComponent
+
+	// CanPrevious reports whether load the previous page is possible.
 	CanPrevious() bool
 
-	// Previous navigates to the previous page.
-	// It returns an error if there is no previous page to navigate.
+	// Previous loads the previous page.
+	// It returns an error if there is no previous page to load.
 	Previous() error
 
-	// CanNext indicates if navigation to next page is possible.
+	// CanNext indicates if loading next page is possible.
 	CanNext() bool
 
-	// Next navigates to the next page.
-	// It returns an error if there is no next page to navigate.
+	// Next loads the next page.
+	// It returns an error if there is no next page to load.
 	Next() error
 }
 
 // Window is the interface that describes a window.
 type Window interface {
-	Navigator
+	ElementWithNavigation
 
 	// Position returns the window position.
 	Position() (x, y float64)
@@ -111,11 +135,11 @@ const (
 )
 
 // Menu is the interface that describes a menu.
-type Menu Navigator
+type Menu ElementWithComponent
 
 // DockTile is the interface that describes a dock tile.
 type DockTile interface {
-	Navigator
+	ElementWithComponent
 
 	// SetIcon set the dock tile icon with the named file.
 	// It returns an error if the file doesn't exist or if it is not a supported
@@ -138,4 +162,130 @@ type FilePanelConfig struct {
 type PopupNotificationConfig struct {
 	Message      string
 	ComponentURL string
+}
+
+// ElementStore is the interface that decribes a store of elements.
+// It should thread safe.
+type ElementStore interface {
+	// Add adds an element in the store.
+	Add(e Element) error
+
+	// Remove removes an element from the store.
+	Remove(e Element)
+
+	// Element returns the element with identifier id.
+	Element(id uuid.UUID) (e Element, ok bool)
+
+	// ElementByComponent returns the element where component c is mounted.
+	ElementByComponent(c markup.Component) (e ElementWithComponent, ok bool)
+
+	// Sort sorts the elements that hosts components.
+	Sort()
+
+	// Len returns the number of elements.
+	Len() int
+}
+
+// NewElementStore creates an element store.
+func NewElementStore() ElementStore {
+	return newElementStore(256)
+}
+
+type elementStore struct {
+	mutex                  sync.Mutex
+	capacity               int
+	elements               map[uuid.UUID]Element
+	elementsWithComponents elementWithComponentList
+}
+
+func newElementStore(capacity int) *elementStore {
+	return &elementStore{
+		capacity:               capacity,
+		elements:               make(map[uuid.UUID]Element, capacity),
+		elementsWithComponents: make(elementWithComponentList, 0, capacity),
+	}
+}
+
+func (s *elementStore) Add(e Element) error {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	if len(s.elements) == s.capacity {
+		return errors.Errorf("can't handle more than 256 elements simultaneously")
+	}
+	s.elements[e.ID()] = e
+
+	if elemWithComp, ok := e.(ElementWithComponent); ok {
+		s.elementsWithComponents = append(s.elementsWithComponents, elemWithComp)
+		sort.Sort(s.elementsWithComponents)
+	}
+	return nil
+}
+
+func (s *elementStore) Remove(e Element) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	delete(s.elements, e.ID())
+
+	if _, ok := e.(ElementWithComponent); !ok {
+		return
+	}
+
+	elements := s.elementsWithComponents
+	for i, elem := range elements {
+		if elem == e {
+			copy(elements[i:], elements[i+1:])
+			elements[len(elements)-1] = nil
+			elements = elements[:len(elements)-1]
+			s.elementsWithComponents = elements
+			return
+		}
+	}
+}
+
+func (s *elementStore) Element(id uuid.UUID) (e Element, ok bool) {
+	e, ok = s.elements[id]
+	return
+}
+
+func (s *elementStore) ElementByComponent(c markup.Component) (e ElementWithComponent, ok bool) {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	for _, elem := range s.elementsWithComponents {
+		if elem.Contains(c) {
+			e = elem
+			ok = true
+			return
+		}
+	}
+	return
+}
+
+func (s *elementStore) Sort() {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	sort.Sort(s.elementsWithComponents)
+}
+
+func (s *elementStore) Len() int {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+	return len(s.elements)
+}
+
+// Slice of []ElementWithComponent that implements sort.Interface.
+type elementWithComponentList []ElementWithComponent
+
+func (l elementWithComponentList) Len() int {
+	return len(l)
+}
+
+func (l elementWithComponentList) Less(i, j int) bool {
+	return l[i].LastFocus().After(l[j].LastFocus())
+}
+
+func (l elementWithComponentList) Swap(i, j int) {
+	l[i], l[j] = l[j], l[i]
 }

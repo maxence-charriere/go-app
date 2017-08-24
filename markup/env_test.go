@@ -158,6 +158,19 @@ func TestEnvComponent(t *testing.T) {
 	}
 }
 
+func TestEnvContains(t *testing.T) {
+	env := newEnv(NewCompoBuilder())
+	bar := &Bar{}
+
+	if _, err := env.Mount(bar); err != nil {
+		t.Fatal(err)
+	}
+
+	if !env.Contains(bar) {
+		t.Error("bar should be mounted")
+	}
+}
+
 func TestEnvRoot(t *testing.T) {
 	b := NewCompoBuilder()
 	b.Register(&Foo{})

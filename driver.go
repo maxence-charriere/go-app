@@ -13,7 +13,7 @@ type Driver interface {
 
 	// Context returns the element where component c is mounted.
 	// It returns an error if c is not mounted.
-	Context(c markup.Component) (Navigator, error)
+	Context(c markup.Component) (ElementWithComponent, error)
 
 	// Resources returns the location of the resources directory.
 	Resources() string
