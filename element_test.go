@@ -25,12 +25,14 @@ func (e *element) ID() uuid.UUID {
 type elementWithComponent struct {
 	id        uuid.UUID
 	lastFocus time.Time
+	env       markup.Env
 }
 
 func newElementWithComponent() *elementWithComponent {
 	return &elementWithComponent{
 		id:        uuid.New(),
 		lastFocus: time.Now(),
+		env:       markup.NewEnv(compoBuilder),
 	}
 }
 
@@ -43,11 +45,12 @@ func (e *elementWithComponent) Load(url string) error {
 }
 
 func (e *elementWithComponent) Contains(c markup.Component) bool {
-	return false
+	return e.env.Contains(c)
 }
 
 func (e *elementWithComponent) Render(c markup.Component) error {
-	return nil
+	_, err := e.env.Update(c)
+	return err
 }
 
 func (e *elementWithComponent) LastFocus() time.Time {

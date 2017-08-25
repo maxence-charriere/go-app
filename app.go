@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"log"
 
 	"github.com/murlokswarm/app/markup"
@@ -27,20 +28,21 @@ func Import(c markup.Component) {
 
 // Run runs the app with driver d as backend.
 func Run(d Driver) error {
+	if driver != nil {
+		panic(errors.Errorf("driver %T is already running", driver))
+	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	go startUIRoutine(ctx)
+
 	driver = d
-
-	go func() {
-		for f := range uichan {
-			f()
-		}
-	}()
-
 	return d.Run(compoBuilder)
 }
 
-// CurrentDriver returns the used driver.
+// RunningDriver returns the running driver.
 // It panics if called before Run.
-func CurrentDriver() Driver {
+func RunningDriver() Driver {
 	if driver == nil {
 		panic("no current driver")
 	}
@@ -166,4 +168,18 @@ func NewPopupNotification(c PopupNotificationConfig) Element {
 // UI goroutine is the running application main thread.
 func CallOnUIGoroutine(f func()) {
 	uichan <- f
+}
+
+func startUIRoutine(ctx context.Context) {
+	for {
+		select {
+		case <-ctx.Done():
+			if err := ctx.Err(); err != nil {
+				log.Print(errors.Wrap(err, "stop ui routine"))
+				return
+			}
+		case f := <-uichan:
+			f()
+		}
+	}
 }
