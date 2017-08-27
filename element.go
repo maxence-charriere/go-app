@@ -24,7 +24,7 @@ type ElementWithComponent interface {
 	// Load loads the page specified by the URL.
 	// Calls with an URL which contains a component name will load the named
 	// component.
-	// e.g. /hello will load the component named hello.
+	// e.g. hello will load the component named hello.
 	// It returns an error if the component is not imported.
 	Load(url string) error
 
@@ -78,7 +78,7 @@ type Window interface {
 	// The window will be put in front, above the other elements.
 	Focus()
 
-	// Close closes the window.
+	// Close closes the element.
 	Close()
 }
 
@@ -96,6 +96,7 @@ type WindowConfig struct {
 	BackgroundColor string
 	Borderless      bool
 	DisableResize   bool
+	DefaultURL      string
 	Mac             MacWindowConfig
 
 	OnMinimize       func()
@@ -136,6 +137,11 @@ const (
 
 // Menu is the interface that describes a menu.
 type Menu ElementWithComponent
+
+// MenuConfig is a struct that describes a menu.
+type MenuConfig struct {
+	DefaultURL string
+}
 
 // DockTile is the interface that describes a dock tile.
 type DockTile interface {
@@ -211,7 +217,7 @@ func (s *elementStore) Add(e Element) error {
 	defer s.mutex.Unlock()
 
 	if len(s.elements) == s.capacity {
-		return errors.Errorf("can't handle more than 256 elements simultaneously")
+		return errors.Errorf("can't handle more than %d elements simultaneously", s.capacity)
 	}
 	s.elements[e.ID()] = e
 

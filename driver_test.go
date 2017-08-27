@@ -9,39 +9,77 @@ import (
 	"github.com/pkg/errors"
 )
 
-type driverTest struct {
-	Test     *testing.T
-	elements ElementStore
+type testDriver struct {
+	Test         *testing.T
+	compoBuilder markup.CompoBuilder
+	elements     ElementStore
+	menubar      Menu
+	dock         DockTile
+
+	onWindowLoad func(w Window, c markup.Component)
 }
 
-func (d *driverTest) Run(b markup.CompoBuilder) error {
-	d.Test.Logf("driver.Run")
-
+func (d *testDriver) Run(b markup.CompoBuilder) error {
+	d.compoBuilder = b
 	d.elements = NewElementStore()
+
+	d.menubar = newTestMenu(d, MenuConfig{})
+	d.dock = newDockTile(d)
 	return nil
 }
 
-func (d *driverTest) Render(c markup.Component) error {
-	d.Test.Logf("driver.Render: %T", c)
-
+func (d *testDriver) Render(c markup.Component) error {
 	elem, ok := d.elements.ElementByComponent(c)
 	if !ok {
-		panic(errors.Errorf("no element contain component %#v", c))
+		return errors.Errorf("rendering %T failed: component not mounted", c)
 	}
 	return elem.Render(c)
 }
 
-func (d *driverTest) Context(c markup.Component) (e ElementWithComponent, err error) {
-	d.Test.Logf("driver.Context: %T", c)
+func (d *testDriver) Context(c markup.Component) (e ElementWithComponent, err error) {
+	var ok bool
+	if e, ok = d.elements.ElementByComponent(c); !ok {
+		err = errors.Errorf("can't get context for %T: component not mounted", c)
+	}
 	return
 }
 
-func (d *driverTest) Resources() string {
-	d.Test.Logf("driver.Resources")
-
+func (d *testDriver) Resources() string {
 	wd, err := os.Getwd()
 	if err != nil {
 		panic(err)
 	}
 	return filepath.Join(wd, "resources")
+}
+
+func (d *testDriver) Storage() string {
+	wd, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+	return filepath.Join(wd, "storage")
+}
+
+func (d *testDriver) NewWindow(c WindowConfig) Window {
+	return newTestWindow(d, c)
+}
+
+func (d *testDriver) MenuBar() Menu {
+	return d.menubar
+}
+
+func (d *testDriver) Dock() DockTile {
+	return d.dock
+}
+
+func (d *testDriver) Share(v interface{}) {
+	d.Test.Log("sharing", v)
+}
+
+func (d *testDriver) NewFilePanel(c FilePanelConfig) Element {
+	return newTestElement(d)
+}
+
+func (d *testDriver) NewPopupNotification(c PopupNotificationConfig) Element {
+	return newTestElement(d)
 }
