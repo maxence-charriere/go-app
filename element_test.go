@@ -61,7 +61,7 @@ func newTestWindow(d *testDriver, c WindowConfig) *testWindow {
 
 	if len(c.DefaultURL) != 0 {
 		if err := window.Load(c.DefaultURL); err != nil {
-			d.Test.Log(errors.Wrap(err, ""))
+			d.test.Log(err)
 		}
 	}
 	return window
@@ -168,7 +168,7 @@ func newTestMenu(d *testDriver, c MenuConfig) *testMenu {
 
 	if len(c.DefaultURL) != 0 {
 		if err := menu.Load(c.DefaultURL); err != nil {
-			d.Test.Log(errors.Wrap(err, ""))
+			d.test.Log(err)
 		}
 	}
 	return menu
@@ -238,60 +238,271 @@ func (d *testDockTile) SetIcon(name string) error {
 func (d *testDockTile) SetBadge(v interface{}) {
 }
 
-func TestElementStoreAdd(t *testing.T) {
-	capacity := 42
-	store := newElementStore(capacity)
-	var lastElem ElementWithComponent
+func TestElementStore(t *testing.T) {
 
-	for i := 0; i < capacity; i++ {
-		lastElem = &testWindow{
-			id:        uuid.New(),
-			lastFocus: time.Now(),
+	tests := []struct {
+		name string
+		test func(t *testing.T)
+	}{
+		{
+			name: "should add an element",
+			test: testElementStoreAdd,
+		},
+		{
+			name: "should add an element with components",
+			test: testElementStoreAddElementWithComponent,
+		},
+		{
+			name: "should fail to add an element when full",
+			test: testElementStoreAddWhenFull,
+		},
+		{
+			name: "add element with same id should fail",
+			test: testElementStoreAddElementWithSameID,
+		},
+		{
+			name: "should remove an element",
+			test: testElementStoreRemove,
+		},
+		{
+			name: "should get an element",
+			test: testElementStoreElement,
+		},
+		{
+			name: "should not get an element",
+			test: testElementStoreElementNotFound,
+		},
+		{
+			name: "should get an element by component",
+			test: testElementStoreElementByComponent,
+		},
+		{
+			name: "should not get an element by component",
+			test: testElementStoreElementByComponentNotFound,
+		},
+		{
+			name: "should sort the elements with components",
+			test: testElementStoreSort,
+		},
+		{
+			name: "should return the number of elements",
+			test: testElementStoreLen,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, test.test)
+	}
+}
+
+func testElementStoreAdd(t *testing.T) {
+	store := newElementStore(42)
+
+	if err := store.Add(&testElement{
+		id: uuid.New(),
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	if l := len(store.elements); l != 1 {
+		t.Error("store should have 1 element:", l)
+	}
+	if l := len(store.elementsWithComponents); l != 0 {
+		t.Error("store should not have an element with components")
+	}
+}
+
+func testElementStoreAddElementWithComponent(t *testing.T) {
+	store := newElementStore(42)
+
+	if err := store.Add(&testWindow{
+		id: uuid.New(),
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	if l := len(store.elements); l != 1 {
+		t.Error("store should have 1 element:", l)
+	}
+	if l := len(store.elementsWithComponents); l != 1 {
+		t.Error("store should have 1 element with components:", l)
+	}
+}
+
+func testElementStoreAddElementWithSameID(t *testing.T) {
+	store := newElementStore(42)
+	window := &testWindow{
+		id: uuid.New(),
+	}
+
+	if err := store.Add(window); err != nil {
+		t.Fatal(err)
+	}
+
+	err := store.Add(window)
+	if err == nil {
+		t.Fatal("should not add a window twice")
+	}
+	t.Log()
+
+}
+
+func testElementStoreAddWhenFull(t *testing.T) {
+	store := newElementStore(42)
+
+	newWindow := func() *testWindow {
+		return &testWindow{
+			id: uuid.New(),
 		}
-		if err := store.Add(lastElem); err != nil {
+	}
+
+	for i := 0; i < store.capacity; i++ {
+		if err := store.Add(newWindow()); err != nil {
 			t.Fatal(err)
 		}
 	}
 
-	if firstElem := store.elementsWithComponents[0]; firstElem != lastElem {
-		t.Fatal("last element should have moved to be the first element")
-	}
-
-	overElem := &testElement{
-		id: uuid.New(),
-	}
-	err := store.Add(overElem)
+	err := store.Add(newWindow())
 	if err == nil {
-		t.Fatal("err should not be nil")
+		t.Fatal("adding an element should return an error")
 	}
 	t.Log(err)
 }
 
-func TestElementStoreDelete(t *testing.T) {
-	capacity := 42
-	store := newElementStore(capacity)
-
-	elem := &testElement{
+func testElementStoreRemove(t *testing.T) {
+	store := newElementStore(42)
+	window := &testWindow{
 		id: uuid.New(),
 	}
-	if err := store.Add(elem); err != nil {
+
+	if err := store.Add(window); err != nil {
 		t.Fatal(err)
 	}
-	store.Remove(elem)
 
-	elemWithCompo := &testMenu{
+	store.Remove(window)
+
+	if l := len(store.elements); l != 0 {
+		t.Error("store should not have elements:", l)
+	}
+	if l := len(store.elementsWithComponents); l != 0 {
+		t.Error("store should not have elements with components:", l)
+	}
+}
+
+func testElementStoreElement(t *testing.T) {
+	store := newElementStore(42)
+	window := &testWindow{
+		id: uuid.New(),
+	}
+
+	if err := store.Add(window); err != nil {
+		t.Fatal(err)
+	}
+
+	elem, ok := store.Element(window.ID())
+	if !ok {
+		t.Fatalf("no element with id %v found", window.ID())
+	}
+	if elem != window {
+		t.Fatal("element should be the window")
+	}
+}
+
+func testElementStoreElementNotFound(t *testing.T) {
+	store := newElementStore(42)
+	if _, ok := store.Element(uuid.New()); ok {
+		t.Fatal("no element should have been found")
+	}
+}
+
+func testElementStoreElementByComponent(t *testing.T) {
+	compoBuilder := markup.NewCompoBuilder()
+	if err := compoBuilder.Register(&Component{}); err != nil {
+		t.Fatal(err)
+	}
+
+	compo := &Component{}
+	env := markup.NewEnv(compoBuilder)
+	if _, err := env.Mount(compo); err != nil {
+		t.Fatal(err)
+	}
+
+	window := &testWindow{
+		id:           uuid.New(),
+		compoBuilder: compoBuilder,
+		env:          env,
+	}
+
+	store := newElementStore(42)
+	if err := store.Add(window); err != nil {
+		t.Fatal(err)
+	}
+
+	elem, ok := store.ElementByComponent(compo)
+	if !ok {
+		t.Fatalf("no element with component %T found", compo)
+	}
+	if elem != window {
+		t.Fatal("element should be the window")
+	}
+}
+
+func testElementStoreElementByComponentNotFound(t *testing.T) {
+	store := newElementStore(42)
+
+	if _, ok := store.ElementByComponent(&Component{}); ok {
+		t.Fatal("no element should have been found")
+	}
+}
+
+func testElementStoreSort(t *testing.T) {
+	store := newElementStore(42)
+
+	for i := 0; i < 10; i++ {
+		if err := store.Add(&testMenu{
+			id:        uuid.New(),
+			lastFocus: time.Now(),
+		}); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	window := &testWindow{
 		id:        uuid.New(),
 		lastFocus: time.Now(),
 	}
-	if err := store.Add(elemWithCompo); err != nil {
+	if err := store.Add(window); err != nil {
 		t.Fatal(err)
 	}
-	store.Remove(elemWithCompo)
 
-	if len(store.elements) != 0 {
-		t.Error("store.elements should be empty")
+	elements := store.elementsWithComponents
+	for i, elem := range elements {
+		if elem.ID() == window.ID() {
+			elements[i], elements[5] = elements[5], elements[i]
+			break
+		}
 	}
-	if len(store.elementsWithComponents) != 0 {
-		t.Error("store.elementsWithComponents should be empty")
+
+	store.Sort()
+
+	if elem := store.elementsWithComponents[0]; elem != window {
+		t.Fatalf("1st element with components should be the window: %T", elem)
+	}
+}
+
+func testElementStoreLen(t *testing.T) {
+	store := newElementStore(42)
+
+	for i := 0; i < 10; i++ {
+		if err := store.Add(&testMenu{
+			id:        uuid.New(),
+			lastFocus: time.Now(),
+		}); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	if l := store.Len(); l != 10 {
+		t.Fatal("store should have 10 elements:", l)
 	}
 }

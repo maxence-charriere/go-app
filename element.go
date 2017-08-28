@@ -219,6 +219,11 @@ func (s *elementStore) Add(e Element) error {
 	if len(s.elements) == s.capacity {
 		return errors.Errorf("can't handle more than %d elements simultaneously", s.capacity)
 	}
+
+	if _, ok := s.elements[e.ID()]; ok {
+		return errors.Errorf("element with id %s is already added", e.ID())
+	}
+
 	s.elements[e.ID()] = e
 
 	if elemWithComp, ok := e.(ElementWithComponent); ok {
@@ -234,18 +239,16 @@ func (s *elementStore) Remove(e Element) {
 
 	delete(s.elements, e.ID())
 
-	if _, ok := e.(ElementWithComponent); !ok {
-		return
-	}
-
-	elements := s.elementsWithComponents
-	for i, elem := range elements {
-		if elem == e {
-			copy(elements[i:], elements[i+1:])
-			elements[len(elements)-1] = nil
-			elements = elements[:len(elements)-1]
-			s.elementsWithComponents = elements
-			return
+	if _, ok := e.(ElementWithComponent); ok {
+		elements := s.elementsWithComponents
+		for i, elem := range elements {
+			if elem == e {
+				copy(elements[i:], elements[i+1:])
+				elements[len(elements)-1] = nil
+				elements = elements[:len(elements)-1]
+				s.elementsWithComponents = elements
+				return
+			}
 		}
 	}
 }

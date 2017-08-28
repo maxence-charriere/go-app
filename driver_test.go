@@ -10,7 +10,7 @@ import (
 )
 
 type testDriver struct {
-	Test         *testing.T
+	test         *testing.T
 	compoBuilder markup.CompoBuilder
 	elements     ElementStore
 	menubar      Menu
@@ -73,7 +73,6 @@ func (d *testDriver) Dock() DockTile {
 }
 
 func (d *testDriver) Share(v interface{}) {
-	d.Test.Log("sharing", v)
 }
 
 func (d *testDriver) NewFilePanel(c FilePanelConfig) Element {

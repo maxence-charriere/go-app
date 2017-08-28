@@ -1,7 +1,9 @@
 package app
 
 import (
+	"context"
 	"testing"
+	"time"
 
 	"github.com/murlokswarm/app/markup"
 )
@@ -20,7 +22,7 @@ func (c InvalidComponent) Render() string {
 
 func TestApp(t *testing.T) {
 	d := &testDriver{
-		Test: t,
+		test: t,
 	}
 
 	tests := []struct {
@@ -131,7 +133,7 @@ func testRunPanic(t *testing.T) {
 	defer func() { recover() }()
 
 	Run(&testDriver{
-		Test: t,
+		test: t,
 	})
 	t.Error("should panic")
 }
@@ -285,11 +287,12 @@ func testNewPopupNotification(t *testing.T) {
 func testCallOnUIGoroutine(t *testing.T) {
 	done := make(chan struct{})
 
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Millisecond)
+	defer cancel()
+	go startUIRoutine(ctx)
+
 	CallOnUIGoroutine(func() {
 		done <- struct{}{}
 	})
-
-	t.Log("waiting to be done")
-	// <-done
-	t.Log("done")
+	<-done
 }
