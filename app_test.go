@@ -70,6 +70,10 @@ func TestApp(t *testing.T) {
 			test: testContextError,
 		},
 		{
+			name: "should create a context menu",
+			test: testNewContextMenu,
+		},
+		{
 			name: "resources should return a filepath",
 			test: testResources,
 		},
@@ -204,6 +208,12 @@ func testContextError(t *testing.T) {
 		t.Fatal("context should return an error")
 	}
 	t.Log(err)
+}
+
+func testNewContextMenu(t *testing.T) {
+	if menu := NewContextMenu(MenuConfig{}); menu == nil {
+		t.Fatal("menu should not be nil")
+	}
 }
 
 func testResources(t *testing.T) {
