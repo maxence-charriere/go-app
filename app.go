@@ -65,6 +65,14 @@ func Context(c markup.Component) (ElementWithComponent, error) {
 	return driver.Context(c)
 }
 
+// NewContextMenu creates and displays the context menu described in
+// configuration c.
+// Context menu are displayed in the window or page in use.
+// It panics if called before Run.
+func NewContextMenu(c MenuConfig) Menu {
+	return driver.NewContextMenu(c)
+}
+
 // Resources returns the location of the resources directory.
 // Resources should be used only for read only operations.
 // It panics if called before Run.

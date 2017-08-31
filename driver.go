@@ -15,6 +15,10 @@ type Driver interface {
 	// It returns an error if c is not mounted.
 	Context(c markup.Component) (ElementWithComponent, error)
 
+	// NewContextMenu creates and displays the context menu described in
+	// configuration c.
+	NewContextMenu(c MenuConfig) Menu
+
 	// Resources returns the location of the resources directory.
 	Resources() string
 }

@@ -44,6 +44,10 @@ func (d *testDriver) Context(c markup.Component) (e ElementWithComponent, err er
 	return
 }
 
+func (d *testDriver) NewContextMenu(c MenuConfig) Menu {
+	return newTestMenu(d, c)
+}
+
 func (d *testDriver) Resources() string {
 	wd, err := os.Getwd()
 	if err != nil {
