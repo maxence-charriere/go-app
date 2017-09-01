@@ -18,9 +18,10 @@ import (
 type Component interface {
 	// Render should return a string describing the component with HTML5
 	// standard.
-	// It support Golang html/template API.
+	// It supports standard Go html/template API.
 	// Pipeline is based on the component struct.
-	// See https://golang.org/pkg/text/template for template usage.
+	// See https://golang.org/pkg/text/template and
+	// https://golang.org/pkg/html/template for template usage.
 	Render() string
 }
 
