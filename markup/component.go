@@ -63,22 +63,6 @@ type ZeroCompo struct {
 	placeholder byte
 }
 
-func ensureValidComponent(c Component) error {
-	v := reflect.ValueOf(c)
-	if v.Kind() != reflect.Ptr {
-		return errors.Errorf("%T must be implemented on a struct pointer", c)
-	}
-
-	if v = v.Elem(); v.Kind() != reflect.Struct {
-		return errors.Errorf("%T must be implemented on a struct pointer", c)
-	}
-
-	if v.NumField() == 0 {
-		return errors.Errorf("%T can't be implemented on an empty struct pointer", c)
-	}
-	return nil
-}
-
 func mapComponentFields(c Component, attrs AttrMap) error {
 	if len(attrs) == 0 {
 		return nil

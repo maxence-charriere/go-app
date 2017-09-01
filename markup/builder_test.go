@@ -1,6 +1,7 @@
 package markup
 
 import (
+	"net/url"
 	"reflect"
 	"strings"
 	"testing"
@@ -50,6 +51,28 @@ func TestCompoBuilderNew(t *testing.T) {
 	}
 }
 
+func TestEnsureValidCompo(t *testing.T) {
+	valc := &ValidCompo{}
+	if err := ensureValidComponent(valc); err != nil {
+		t.Error(err)
+	}
+
+	noptrc := NonPtrCompo{}
+	if err := ensureValidComponent(noptrc); err == nil {
+		t.Error("err should not be nil")
+	}
+
+	empc := &EmptyCompo{}
+	if err := ensureValidComponent(empc); err == nil {
+		t.Error("err should not be nil")
+	}
+
+	intc := IntCompo(42)
+	if err := ensureValidComponent(&intc); err == nil {
+		t.Error("err should not be nil")
+	}
+}
+
 func TestNormalizeCompoName(t *testing.T) {
 	if name := "lib.FooBar"; normalizeCompoName(name) != "lib.foobar" {
 		t.Errorf(`name should be "lib.foobar": "%s"`, name)
@@ -57,5 +80,42 @@ func TestNormalizeCompoName(t *testing.T) {
 
 	if name := "main.FooBar"; normalizeCompoName(name) != "foobar" {
 		t.Errorf(`name should be "foobar": "%s"`, name)
+	}
+}
+
+func TestComponentNameFromURL(t *testing.T) {
+	// Default.
+	rawurl := "/markup.hello"
+	u, err := url.Parse(rawurl)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	name, ok := ComponentNameFromURL(u)
+	if !ok {
+		t.Fatalf("%s should point to a component", rawurl)
+	}
+	if name != "markup.hello" {
+		t.Fatal("component name should be markup.hello:", name)
+	}
+
+	// Component name as scheme.
+	rawurl = "component://markup.hello"
+	if u, err = url.Parse(rawurl); err != nil {
+		t.Fatal(err)
+	}
+
+	if name, ok = ComponentNameFromURL(u); ok {
+		t.Fatalf("%s should not point to a component", rawurl)
+	}
+
+	// Bad scheme.
+	rawurl = "https://github.com"
+	if u, err = url.Parse(rawurl); err != nil {
+		t.Fatal(err)
+	}
+
+	if name, ok = ComponentNameFromURL(u); ok {
+		t.Fatalf("%s should not point to a component", rawurl)
 	}
 }

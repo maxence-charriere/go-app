@@ -1,6 +1,7 @@
 package markup
 
 import (
+	"net/url"
 	"reflect"
 	"strings"
 
@@ -50,6 +51,22 @@ func (b compoBuilder) New(name string) (c Component, err error) {
 	return
 }
 
+func ensureValidComponent(c Component) error {
+	v := reflect.ValueOf(c)
+	if v.Kind() != reflect.Ptr {
+		return errors.Errorf("%T must be implemented on a struct pointer", c)
+	}
+
+	if v = v.Elem(); v.Kind() != reflect.Struct {
+		return errors.Errorf("%T must be implemented on a struct pointer", c)
+	}
+
+	if v.NumField() == 0 {
+		return errors.Errorf("%T can't be implemented on an empty struct pointer", c)
+	}
+	return nil
+}
+
 func normalizeCompoName(name string) string {
 	name = strings.ToLower(name)
 	if pkgsep := strings.IndexByte(name, '.'); pkgsep != -1 {
@@ -59,4 +76,16 @@ func normalizeCompoName(name string) string {
 		}
 	}
 	return name
+}
+
+// ComponentNameFromURL returns the component name from URL.
+// ok reports whether URL points a component.
+func ComponentNameFromURL(u *url.URL) (name string, ok bool) {
+	if len(u.Scheme) != 0 && u.Scheme != "component" {
+		return
+	}
+
+	name = strings.TrimLeft(u.Path, "/")
+	ok = len(name) != 0
+	return
 }
