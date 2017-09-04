@@ -34,6 +34,8 @@ type PlatformResponse interface {
 	Unmarshal(v interface{}) error
 }
 
+// PlatformRequestAdapter describes a func that should transform a request to be
+// a platform compatible one.
 type PlatformRequestAdapter func(url string, payload []byte, returnID string) (response []byte, err error)
 
 // NewPlatformBridge creates a platform bridge.
