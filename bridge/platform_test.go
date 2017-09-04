@@ -21,12 +21,7 @@ func TestPlatformBridge(t *testing.T) {
 			return
 		}
 
-		retID, err := uuid.Parse(returnID)
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		bridge.Return(retID, payload, nil)
+		bridge.Return(returnID, payload, nil)
 		return
 	})
 
@@ -71,9 +66,15 @@ func TestPlatformBridge(t *testing.T) {
 			},
 		},
 		{
-			name: "return should panic",
+			name: "return with ivalid id should panic",
 			test: func(t *testing.T) {
-				testPlatformBridgeRequestReturnPanic(t, bridge)
+				testPlatformBridgeRequestReturnIvalidID(t, bridge)
+			},
+		},
+		{
+			name: "unset return should panic",
+			test: func(t *testing.T) {
+				testPlatformBridgeRequestReturnUnset(t, bridge)
 			},
 		},
 	}
@@ -145,8 +146,14 @@ func testPlatformBridgeRequestWithAsyncResponseFail(t *testing.T, bridge Platfor
 	t.Log(err)
 }
 
-func testPlatformBridgeRequestReturnPanic(t *testing.T, bridge PlatformBridge) {
+func testPlatformBridgeRequestReturnIvalidID(t *testing.T, bridge PlatformBridge) {
 	defer func() { recover() }()
-	bridge.Return(uuid.New(), nil, nil)
+	bridge.Return("hello world", nil, nil)
+	t.Fatal("should have panic")
+}
+
+func testPlatformBridgeRequestReturnUnset(t *testing.T, bridge PlatformBridge) {
+	defer func() { recover() }()
+	bridge.Return(uuid.New().String(), nil, nil)
 	t.Fatal("should have panic")
 }
