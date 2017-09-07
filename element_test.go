@@ -1,12 +1,12 @@
 package app
 
 import (
+	"net/url"
 	"testing"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app/markup"
-	"github.com/murlokswarm/app/url"
 	"github.com/pkg/errors"
 )
 
@@ -88,18 +88,18 @@ func (w *testWindow) LastFocus() time.Time {
 	return w.lastFocus
 }
 
-func (w *testWindow) Load(u string) error {
-	parsedURL, err := url.Parse(u)
+func (w *testWindow) Load(rawurl string) error {
+	u, err := url.Parse(rawurl)
 	if err != nil {
 		return err
 	}
 
-	compoName, ok := parsedURL.Component()
+	componame, ok := markup.ComponentNameFromURL(u)
 	if !ok {
 		return nil
 	}
 
-	compo, err := w.compoBuilder.New(compoName)
+	compo, err := w.compoBuilder.New(componame)
 	if err != nil {
 		return err
 	}
@@ -178,18 +178,18 @@ func (m *testMenu) ID() uuid.UUID {
 	return m.id
 }
 
-func (m *testMenu) Load(u string) error {
-	parsedURL, err := url.Parse(u)
+func (m *testMenu) Load(rawurl string) error {
+	u, err := url.Parse(rawurl)
 	if err != nil {
 		return err
 	}
 
-	compoName, ok := parsedURL.Component()
+	componame, ok := markup.ComponentNameFromURL(u)
 	if !ok {
 		return nil
 	}
 
-	compo, err := m.compoBuilder.New(compoName)
+	compo, err := m.compoBuilder.New(componame)
 	if err != nil {
 		return err
 	}

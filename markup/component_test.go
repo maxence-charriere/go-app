@@ -76,28 +76,6 @@ func (c *CompoWithFields) FuncWithMultipleArg(a, b int) {
 	panic("should not be called")
 }
 
-func TestEnsureValidCompo(t *testing.T) {
-	valc := &ValidCompo{}
-	if err := ensureValidComponent(valc); err != nil {
-		t.Error(err)
-	}
-
-	noptrc := NonPtrCompo{}
-	if err := ensureValidComponent(noptrc); err == nil {
-		t.Error("err should not be nil")
-	}
-
-	empc := &EmptyCompo{}
-	if err := ensureValidComponent(empc); err == nil {
-		t.Error("err should not be nil")
-	}
-
-	intc := IntCompo(42)
-	if err := ensureValidComponent(&intc); err == nil {
-		t.Error("err should not be nil")
-	}
-}
-
 func TestMapComponentFields(t *testing.T) {
 	tests := []struct {
 		name string

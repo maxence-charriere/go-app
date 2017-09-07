@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"log"
 
 	"github.com/murlokswarm/app/markup"
@@ -11,7 +10,6 @@ import (
 var (
 	driver       Driver
 	compoBuilder = markup.NewCompoBuilder()
-	uichan       = make(chan func(), 256)
 )
 
 // Import imports component c into the app.
@@ -31,10 +29,6 @@ func Run(d Driver) error {
 	if driver != nil {
 		panic(errors.Errorf("driver %T is already running", driver))
 	}
-
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-	go startUIRoutine(ctx)
 
 	driver = d
 	return d.Run(compoBuilder)
@@ -78,6 +72,12 @@ func NewContextMenu(c MenuConfig) Menu {
 // It panics if called before Run.
 func Resources() string {
 	return driver.Resources()
+}
+
+// CallOnUIGoroutine calls func f and ensure it's called from the UI goroutine.
+// UI goroutine is the running application main thread.
+func CallOnUIGoroutine(f func()) {
+	driver.CallOnUIGoroutine(f)
 }
 
 // SupportsStorage reports whether storage is supported.
@@ -170,24 +170,4 @@ func SupportsPopupNotifications() bool {
 func NewPopupNotification(c PopupNotificationConfig) Element {
 	d := driver.(DriverWithPopupNotifications)
 	return d.NewPopupNotification(c)
-}
-
-// CallOnUIGoroutine calls func f and ensure it's called from the UI goroutine.
-// UI goroutine is the running application main thread.
-func CallOnUIGoroutine(f func()) {
-	uichan <- f
-}
-
-func startUIRoutine(ctx context.Context) {
-	for {
-		select {
-		case <-ctx.Done():
-			if err := ctx.Err(); err != nil {
-				log.Print(errors.Wrap(err, "stop ui routine"))
-				return
-			}
-		case f := <-uichan:
-			f()
-		}
-	}
 }
