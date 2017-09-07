@@ -30,7 +30,7 @@ type PlatformBridge interface {
 // underlying platform.
 type PlatformHandler func(url string, p Payload, returnID string) (res Payload, err error)
 
-// NewPlatformBridge creates a platform bridge.
+// NewPlatformBridge creates an underlying platform bridge.
 func NewPlatformBridge(h PlatformHandler) PlatformBridge {
 	return newPlatformBridge(h)
 }
