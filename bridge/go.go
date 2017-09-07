@@ -3,51 +3,60 @@ package bridge
 import (
 	"net/url"
 
-	"github.com/google/uuid"
+	"github.com/pkg/errors"
 )
 
+// GoBridge is the interface that describes a bridge to communicate from the
+// underlying platform to Go.
 type GoBridge interface {
-	Request(url string, payload []byte) (res []byte, err error)
+	Request(url string, p Payload)
 
-	RequestWithAsyncResponse(url string, payload []byte) (res []byte, err error)
-
-	Return(returnID uuid.UUID, payload interface{}, err error)
+	RequestWithResponse(url string, p Payload) (res Payload)
 }
 
-type GoHandler func(u *url.URL, payload Payload) (response interface{}, err error)
+// GoHandler decribes the func that will handle requests to Go.
+type GoHandler func(u *url.URL, p Payload) (res Payload)
 
-func NewGoBridge(handler GoHandler) GoBridge {
-	return newGoBridge(handler)
+// NewGoBridge creates a Go bridge.
+func NewGoBridge(handler GoHandler, uichan chan func()) GoBridge {
+	return newGoBridge(handler, uichan)
 }
 
 type goBridge struct {
 	handler GoHandler
+	uichan  chan func()
 }
 
-func newGoBridge(h GoHandler) *goBridge {
+func newGoBridge(h GoHandler, uichan chan func()) *goBridge {
 	return &goBridge{
 		handler: h,
+		uichan:  uichan,
 	}
 }
 
-func (b *goBridge) Request(url string, payload []byte) (res []byte, err error) {
-	return
+func (b *goBridge) Request(rawurl string, p Payload) {
+	u, err := url.Parse(rawurl)
+	if err != nil {
+		panic(errors.Wrap(err, "calling callback failed"))
+	}
+
+	b.uichan <- func() {
+		b.handler(u, p)
+	}
 }
 
-func (b *goBridge) RequestWithAsyncResponse(url string, payload []byte) (res []byte, err error) {
+func (b *goBridge) RequestWithResponse(rawurl string, p Payload) (res Payload) {
+	u, err := url.Parse(rawurl)
+	if err != nil {
+		panic(errors.Wrap(err, "calling callback with response failed"))
+	}
+
+	reschan := make(chan Payload, 1)
+
+	b.uichan <- func() {
+		reschan <- b.handler(u, p)
+	}
+
+	res = <-reschan
 	return
 }
-
-func (b *goBridge) Return(returnID uuid.UUID, payload interface{}, err error) {
-	return
-}
-
-// Handler:
-// parse
-// execute sur uigoroutine
-
-// Handler avec result
-// parse
-// cree un return
-// appel fonction sur uigoroutine
-// wait for return

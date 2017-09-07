@@ -2,6 +2,7 @@ package bridge
 
 import (
 	"errors"
+	"net/url"
 	"testing"
 
 	"github.com/google/uuid"
@@ -10,18 +11,23 @@ import (
 func TestPlatformBridge(t *testing.T) {
 	var bridge PlatformBridge
 
-	bridge = NewPlatformBridge(func(url string, payload []byte, returnID string) (response []byte, err error) {
-		if string(payload) == `"err"` {
-			err = errors.New("request error")
+	bridge = NewPlatformBridge(func(rawurl string, p Payload, returnID string) (res Payload, err error) {
+		u, err := url.Parse(rawurl)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if u.Path == "/error" {
+			err = errors.New("fake error")
 			return
 		}
 
 		if len(returnID) == 0 {
-			response = payload
+			res = p
 			return
 		}
 
-		bridge.Return(returnID, payload, nil)
+		bridge.Return(returnID, p, nil)
 		return
 	})
 
@@ -36,12 +42,6 @@ func TestPlatformBridge(t *testing.T) {
 			},
 		},
 		{
-			name: "request with invalid payload should fail",
-			test: func(t *testing.T) {
-				testPlatformBridgeRequestIvalidPayload(t, bridge)
-			},
-		},
-		{
 			name: "request should fail",
 			test: func(t *testing.T) {
 				testPlatformBridgeRequestFail(t, bridge)
@@ -51,12 +51,6 @@ func TestPlatformBridge(t *testing.T) {
 			name: "request with async response should success",
 			test: func(t *testing.T) {
 				testPlatformBridgeRequestWithAsyncResponse(t, bridge)
-			},
-		},
-		{
-			name: "request with async response and invalid payload should fail",
-			test: func(t *testing.T) {
-				testPlatformBridgeRequestWithAsyncResponseIvalidPayload(t, bridge)
 			},
 		},
 		{
@@ -85,30 +79,21 @@ func TestPlatformBridge(t *testing.T) {
 }
 
 func testPlatformBridgeRequest(t *testing.T, bridge PlatformBridge) {
-	res, err := bridge.Request("", 42)
+	res, err := bridge.Request("", NewPayload(42))
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	var nb int
-	if err = res.Unmarshal(&nb); err != nil {
-		t.Fatal(err)
-	}
+	res.Unmarshal(&nb)
+
 	if nb != 42 {
 		t.Fatal("unmarshaled result should be 42:", nb)
 	}
 }
 
-func testPlatformBridgeRequestIvalidPayload(t *testing.T, bridge PlatformBridge) {
-	_, err := bridge.Request("", make(chan int))
-	if err == nil {
-		t.Fatal("error should not be nil")
-	}
-	t.Log(err)
-}
-
 func testPlatformBridgeRequestFail(t *testing.T, bridge PlatformBridge) {
-	_, err := bridge.Request("", "err")
+	_, err := bridge.Request("/error", nil)
 	if err == nil {
 		t.Fatal("error should not be nil")
 	}
@@ -116,30 +101,21 @@ func testPlatformBridgeRequestFail(t *testing.T, bridge PlatformBridge) {
 }
 
 func testPlatformBridgeRequestWithAsyncResponse(t *testing.T, bridge PlatformBridge) {
-	res, err := bridge.RequestWithAsyncResponse("", 21)
+	res, err := bridge.RequestWithAsyncResponse("", NewPayload(21))
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	var nb int
-	if err = res.Unmarshal(&nb); err != nil {
-		t.Fatal(err)
-	}
+	res.Unmarshal(&nb)
+
 	if nb != 21 {
 		t.Fatal("unmarshaled result should be 21:", nb)
 	}
 }
 
-func testPlatformBridgeRequestWithAsyncResponseIvalidPayload(t *testing.T, bridge PlatformBridge) {
-	_, err := bridge.RequestWithAsyncResponse("", make(chan int))
-	if err == nil {
-		t.Fatal("error should not be nil")
-	}
-	t.Log(err)
-}
-
 func testPlatformBridgeRequestWithAsyncResponseFail(t *testing.T, bridge PlatformBridge) {
-	_, err := bridge.RequestWithAsyncResponse("", "err")
+	_, err := bridge.RequestWithAsyncResponse("/error", nil)
 	if err == nil {
 		t.Fatal("error should not be nil")
 	}
@@ -148,7 +124,7 @@ func testPlatformBridgeRequestWithAsyncResponseFail(t *testing.T, bridge Platfor
 
 func testPlatformBridgeRequestReturnIvalidID(t *testing.T, bridge PlatformBridge) {
 	defer func() { recover() }()
-	bridge.Return("hello world", nil, nil)
+	bridge.Return("whoisyourdaddy", nil, nil)
 	t.Fatal("should have panic")
 }
 

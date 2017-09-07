@@ -21,6 +21,10 @@ type Driver interface {
 
 	// Resources returns the location of the resources directory.
 	Resources() string
+
+	// CallOnUIGoroutine calls func f and ensure it's called from the UI
+	// goroutine.
+	CallOnUIGoroutine(f func())
 }
 
 // DriverWithStorage is the interface that describes a driver which supports

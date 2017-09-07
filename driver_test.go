@@ -15,6 +15,7 @@ type testDriver struct {
 	elements     ElementStore
 	menubar      Menu
 	dock         DockTile
+	uichan       chan func()
 
 	onWindowLoad func(w Window, c markup.Component)
 }
@@ -25,6 +26,8 @@ func (d *testDriver) Run(b markup.CompoBuilder) error {
 
 	d.menubar = newTestMenu(d, MenuConfig{})
 	d.dock = newDockTile(d)
+
+	d.uichan = make(chan func(), 256)
 	return nil
 }
 
@@ -54,6 +57,10 @@ func (d *testDriver) Resources() string {
 		panic(err)
 	}
 	return filepath.Join(wd, "resources")
+}
+
+func (d *testDriver) CallOnUIGoroutine(f func()) {
+	d.uichan <- f
 }
 
 func (d *testDriver) Storage() string {

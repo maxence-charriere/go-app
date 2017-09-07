@@ -1,9 +1,8 @@
 package app
 
 import (
-	"context"
+	"fmt"
 	"testing"
-	"time"
 
 	"github.com/murlokswarm/app/markup"
 )
@@ -78,6 +77,10 @@ func TestApp(t *testing.T) {
 			test: testResources,
 		},
 		{
+			name: "should call on ui goroutine",
+			test: func(t *testing.T) { testCallOnUIGoroutine(t, d) },
+		},
+		{
 			name: "storage should return a filepath",
 			test: testStorage,
 		},
@@ -104,10 +107,6 @@ func TestApp(t *testing.T) {
 		{
 			name: "should create a popup notification",
 			test: testNewPopupNotification,
-		},
-		{
-			name: "should call on ui goroutine",
-			test: testCallOnUIGoroutine,
 		},
 	}
 
@@ -224,6 +223,21 @@ func testResources(t *testing.T) {
 	t.Log(resources)
 }
 
+func testCallOnUIGoroutine(t *testing.T, d *testDriver) {
+	done := make(chan struct{})
+
+	go func() {
+		fmt.Println(d.uichan)
+		f := <-d.uichan
+		f()
+	}()
+
+	CallOnUIGoroutine(func() {
+		done <- struct{}{}
+	})
+	<-done
+}
+
 func testStorage(t *testing.T) {
 	if !SupportsStorage() {
 		t.Fatal("storage should be supported")
@@ -292,17 +306,4 @@ func testNewPopupNotification(t *testing.T) {
 	if popup := NewPopupNotification(PopupNotificationConfig{}); popup == nil {
 		t.Fatal("popup should not be nil")
 	}
-}
-
-func testCallOnUIGoroutine(t *testing.T) {
-	done := make(chan struct{})
-
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Millisecond)
-	defer cancel()
-	go startUIRoutine(ctx)
-
-	CallOnUIGoroutine(func() {
-		done <- struct{}{}
-	})
-	<-done
 }
