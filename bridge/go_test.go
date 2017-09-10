@@ -108,9 +108,12 @@ func TestGoBridgeHandleSubpath(t *testing.T) {
 	}
 
 	b := newGoBridge(make(chan func(), 42))
-	b.Handle("/test", handler)
+	b.Handle("/test/foo", handler)
 
-	u, _ := url.Parse("/test/foo/bar")
+	u, _ := url.Parse("/test/foo")
+	b.handle(u, nil)
+
+	u, _ = url.Parse("/test/foo/bar")
 	b.handle(u, nil)
 }
 
