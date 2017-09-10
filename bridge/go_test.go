@@ -15,21 +15,31 @@ func TestGoBridge(t *testing.T) {
 		}
 	}()
 
-	bridge := NewGoBridge(func(u *url.URL, p Payload) (res Payload) {
+	bridge := NewGoBridge(uichan)
+
+	bridge.Handle("/test", func(url *url.URL, p Payload) (res Payload) {
 		res = p
 		return
-	}, uichan)
+	})
 
 	tests := []struct {
 		name string
 		test func(t *testing.T)
 	}{
 		{
+			name: "handle with invalid pattern should fail",
+			test: func(t *testing.T) { testGoBridgeHandleBadPattern(t, bridge) },
+		},
+		{
+			name: "handle with nil handler should fail",
+			test: func(t *testing.T) { testGoBridgeHandleNilHandler(t, bridge) },
+		},
+		{
 			name: "request should success",
 			test: func(t *testing.T) { testGoBridgeRequest(t, bridge) },
 		},
 		{
-			name: "request with bad URL should panic",
+			name: "request with bad URL should fail",
 			test: func(t *testing.T) { testGoBridgeRequestBadURL(t, bridge) },
 		},
 		{
@@ -37,7 +47,7 @@ func TestGoBridge(t *testing.T) {
 			test: func(t *testing.T) { testGoBridgeRequestWithResponse(t, bridge) },
 		},
 		{
-			name: "request with response and bad URL should panic",
+			name: "request with response and bad URL should fail",
 			test: func(t *testing.T) { testGoBridgeRequestWithResponseBadURL(t, bridge) },
 		},
 	}
@@ -47,18 +57,36 @@ func TestGoBridge(t *testing.T) {
 	}
 }
 
+func testGoBridgeHandleBadPattern(t *testing.T, bridge GoBridge) {
+	defer func() { recover() }()
+
+	bridge.Handle("badpattern", func(url *url.URL, p Payload) (res Payload) {
+		return
+	})
+
+	t.Fatal("should have panic")
+}
+
+func testGoBridgeHandleNilHandler(t *testing.T, bridge GoBridge) {
+	defer func() { recover() }()
+
+	bridge.Handle("/test", nil)
+	t.Fatal("should have panic")
+}
+
 func testGoBridgeRequest(t *testing.T, bridge GoBridge) {
-	bridge.Request("/", NewPayload(42))
+	bridge.Request("/test", NewPayload(42))
 }
 
 func testGoBridgeRequestBadURL(t *testing.T, bridge GoBridge) {
 	defer func() { recover() }()
+
 	bridge.Request(":{}K{RKVR<<>>!@#", nil)
 	t.Fatal("should have panic")
 }
 
 func testGoBridgeRequestWithResponse(t *testing.T, bridge GoBridge) {
-	res := bridge.RequestWithResponse("/", NewPayload(21))
+	res := bridge.RequestWithResponse("/test", NewPayload(21))
 
 	var nb int
 	res.Unmarshal(&nb)
@@ -71,5 +99,26 @@ func testGoBridgeRequestWithResponse(t *testing.T, bridge GoBridge) {
 func testGoBridgeRequestWithResponseBadURL(t *testing.T, bridge GoBridge) {
 	defer func() { recover() }()
 	bridge.RequestWithResponse(":{}K{RKVR<<>>!@#", nil)
+	t.Fatal("should have panic")
+}
+
+func TestGoBridgeHandleSubpath(t *testing.T) {
+	handler := func(url *url.URL, p Payload) (res Payload) {
+		return
+	}
+
+	b := newGoBridge(make(chan func(), 42))
+	b.Handle("/test", handler)
+
+	u, _ := url.Parse("/test/foo/bar")
+	b.handle(u, nil)
+}
+
+func TestGoBridgeHandleNotHandled(t *testing.T) {
+	defer func() { recover() }()
+
+	u, _ := url.Parse("/nothandled")
+	b := newGoBridge(make(chan func(), 42))
+	b.handle(u, nil)
 	t.Fatal("should have panic")
 }
