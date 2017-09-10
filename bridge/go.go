@@ -1,7 +1,6 @@
 package bridge
 
 import (
-	"fmt"
 	"net/url"
 	"strings"
 
@@ -56,7 +55,6 @@ func (b *goBridge) Handle(pattern string, handler GoHandler) {
 }
 
 func (b *goBridge) Request(rawurl string, p Payload) {
-	fmt.Println("Go Request")
 	u, err := url.Parse(rawurl)
 	if err != nil {
 		panic(errors.Wrap(err, "parsing URL failed"))
