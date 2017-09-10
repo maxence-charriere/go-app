@@ -1,5 +1,14 @@
 package app
 
+// DOMElement represents a DOM element.
+type DOMElement struct {
+	Tag   string // The tag of the element. e.g. div.
+	ID    string // The id attribute.
+	Class string // the class attribute.
+	Value string // The value attribute.
+	Index string // The data-murlok-index attribute.
+}
+
 // ChangeArg represents the data passed in a onchange event.
 type ChangeArg struct {
 	Value  string

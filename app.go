@@ -1,92 +1,177 @@
 package app
 
 import (
-	"net/url"
+	"log"
 
-	"github.com/murlokswarm/log"
-	"github.com/murlokswarm/markup"
+	"github.com/murlokswarm/app/markup"
+	"github.com/pkg/errors"
 )
 
 var (
-	// OnLaunch is a handler which (if set) is called when the app is
-	// initialized and ready.
-	// The main window should be created here.
-	OnLaunch func()
-
-	// OnFocus is a handler which (if set) is called when the app became
-	// focused.
-	OnFocus func()
-
-	// OnBlur is a handler which (if set) is called when the app lost the
-	// focus.
-	OnBlur func()
-
-	// OnReopen is a handler which (if set) is called when the app is reopened.
-	// Eg. when the dock icon is clicked.
-	OnReopen func()
-
-	// OnFilesOpen is a handler which (if set) is called when files are targeted
-	// to be opened with the app.
-	OnFilesOpen func(filenames []string)
-
-	// OnURLOpen is a handler which (if set) is called when the app is opened by
-	// an URL.
-	OnURLOpen func(URL url.URL)
-
-	// OnTerminate is a handler which (if set) is called when the app is
-	// requested to terminates. Return false cancels the termination request.
-	OnTerminate func() bool
-
-	// OnFinalize is a handler which (if set) is called when the app is about
-	// to be terminated.
-	// It should be used to perform any final cleanup before the application
-	// terminates.
-	OnFinalize func()
+	driver       Driver
+	compoBuilder = markup.NewCompoBuilder()
 )
 
-// Run runs the app.
-func Run() {
-	driver.Run()
+// Import imports component c into the app.
+// Components must be imported in order the be used by the app package.
+// This mechanism allows components to be created dynamically when they are
+// found into HTML code.
+// Import should be called during app initialization.
+func Import(c markup.Component) {
+	if driver != nil {
+		panic(errors.Errorf("importing component %T failed: can't import when a driver is running", c))
+	}
+
+	if err := compoBuilder.Register(c); err != nil {
+		err = errors.Wrapf(err, "importing component %T failed", c)
+		panic(err)
+	}
 }
 
-// Render renders a component. Update the rendering of c.
-// c must be mounted into a context.
-func Render(c Componer) {
-	syncs, err := markup.Synchronize(c)
-	if err != nil {
-		log.Error(err)
-		return
+// Run runs the app with driver d as backend.
+func Run(d Driver) error {
+	if driver != nil {
+		panic(errors.Errorf("driver %T is already running", driver))
 	}
 
-	ctx := Context(c)
-	for _, s := range syncs {
-		ctx.Render(s)
+	driver = d
+	return d.Run(compoBuilder)
+}
+
+// RunningDriver returns the running driver.
+// It panics if called before Run.
+func RunningDriver() Driver {
+	if driver == nil {
+		panic("no current driver")
 	}
+	return driver
+}
+
+// Render renders component c.
+// It should be called when the display of component c have to be updated.
+// It panics if called before Run.
+func Render(c markup.Component) {
+	if err := driver.Render(c); err != nil {
+		log.Println(err)
+	}
+}
+
+// Context returns the element where component c is mounted.
+// It returns an error if c is not mounted.
+// It panics if called before Run.
+func Context(c markup.Component) (ElementWithComponent, error) {
+	return driver.Context(c)
+}
+
+// NewContextMenu creates and displays the context menu described in
+// configuration c.
+// Context menu are displayed in the window or page in use.
+// It panics if called before Run.
+func NewContextMenu(c MenuConfig) Menu {
+	return driver.NewContextMenu(c)
 }
 
 // Resources returns the location of the resources directory.
-// resources directory should contain files required by the UI.
-// Its path should be used only for read only operations, otherwise it could
-// mess up with the app signature.
+// Resources should be used only for read only operations.
+// It panics if called before Run.
 func Resources() string {
 	return driver.Resources()
 }
 
-// Storage returns the location of the app storage directory.
-// Content generated (e.g. sqlite db) or downloaded (e.g. images, music)
-// should be saved in this directory.
+// CallOnUIGoroutine calls func f and ensure it's called from the UI goroutine.
+// UI goroutine is the running application main thread.
+func CallOnUIGoroutine(f func()) {
+	driver.CallOnUIGoroutine(f)
+}
+
+// SupportsStorage reports whether storage is supported.
+func SupportsStorage() bool {
+	_, ok := driver.(DriverWithStorage)
+	return ok
+}
+
+// Storage returns the location of the storage directory.
+// It panics if storage is not supported.
 func Storage() string {
-	return driver.Storage()
+	d := driver.(DriverWithStorage)
+	return d.Storage()
 }
 
-// MenuBar returns the menu bar context.
-// ok will be false if there is no menubar available.
-func MenuBar() (menu Contexter, ok bool) {
-	return driver.MenuBar()
+// SupportsWindows reports whether windows are supported.
+func SupportsWindows() bool {
+	_, ok := driver.(DriverWithWindows)
+	return ok
 }
 
-// Dock returns the dock context.
-// ok will be false if there is no dock available.
-func Dock() (d Docker, ok bool) {
-	return driver.Dock()
+// NewWindow creates and displays the window described in configuration c.
+// It panics if windows are not supported.
+func NewWindow(c WindowConfig) Window {
+	d := driver.(DriverWithWindows)
+	return d.NewWindow(c)
+}
+
+// SupportsMenuBar reports whether menu bar is supported.
+func SupportsMenuBar() bool {
+	_, ok := driver.(DriverWithMenuBar)
+	return ok
+}
+
+// MenuBar returns the menu bar.
+// It panics if menu bar is not supported.
+func MenuBar() Menu {
+	d := driver.(DriverWithMenuBar)
+	return d.MenuBar()
+}
+
+// SupportsDock reports whether dock is supported.
+func SupportsDock() bool {
+	_, ok := driver.(DriverWithDock)
+	return ok
+}
+
+// Dock returns the dock tile.
+// It panics if dock is not supported.
+func Dock() DockTile {
+	d := driver.(DriverWithDock)
+	return d.Dock()
+}
+
+// SupportsShare reports whether share is supported.
+func SupportsShare() bool {
+	_, ok := driver.(DriverWithShare)
+	return ok
+}
+
+// Share shares the value v.
+// It panics if share is not supported.
+func Share(v interface{}) {
+	d := driver.(DriverWithShare)
+	d.Share(v)
+}
+
+// SupportsFilePanels reports whether file panels are supported.
+func SupportsFilePanels() bool {
+	_, ok := driver.(DriverWithFilePanels)
+	return ok
+}
+
+// NewFilePanel creates and displays the file panel described inconfiguration c.
+// It panics if file panels are not supported.
+func NewFilePanel(c FilePanelConfig) Element {
+	d := driver.(DriverWithFilePanels)
+	return d.NewFilePanel(c)
+}
+
+// SupportsPopupNotifications reports whether popup notifications are supported.
+func SupportsPopupNotifications() bool {
+	_, ok := driver.(DriverWithPopupNotifications)
+	return ok
+}
+
+// NewPopupNotification creates and displays the popup notification described in
+// configuration c.
+// It panics if popup notifications are not supported.
+func NewPopupNotification(c PopupNotificationConfig) Element {
+	d := driver.(DriverWithPopupNotifications)
+	return d.NewPopupNotification(c)
 }

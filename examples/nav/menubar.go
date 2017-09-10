@@ -1,9 +1,12 @@
 package main
 
-import "github.com/murlokswarm/app"
+import (
+	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/markup"
+)
 
 // MenuBar is the component that define the menu bar.
-type MenuBar struct{}
+type MenuBar markup.ZeroCompo
 
 // Render returns return the HTML describing the menu bar.
 func (m *MenuBar) Render() string {
@@ -17,7 +20,7 @@ func (m *MenuBar) Render() string {
 	`
 }
 
-// /!\ Register the component. Required to use the component into a context.
+// /!\ Import the component. Required to use a component.
 func init() {
-	app.RegisterComponent(&MenuBar{})
+	app.Import(&MenuBar{})
 }
