@@ -33,6 +33,11 @@ func PayloadFromBytes(b []byte) Payload {
 	return jsonPayload(b)
 }
 
+// PayloadFromString creates a payload from an encoded string.
+func PayloadFromString(s string) Payload {
+	return jsonPayload(s)
+}
+
 type jsonPayload []byte
 
 func makeJSONPayload(v interface{}) (p jsonPayload) {
