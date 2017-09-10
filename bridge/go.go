@@ -1,6 +1,7 @@
 package bridge
 
 import (
+	"fmt"
 	"net/url"
 	"strings"
 
@@ -55,6 +56,7 @@ func (b *goBridge) Handle(pattern string, handler GoHandler) {
 }
 
 func (b *goBridge) Request(rawurl string, p Payload) {
+	fmt.Println("Go Request")
 	u, err := url.Parse(rawurl)
 	if err != nil {
 		panic(errors.Wrap(err, "parsing URL failed"))
@@ -85,24 +87,16 @@ func (b *goBridge) handle(u *url.URL, p Payload) (res Payload) {
 	pattern := u.Path
 
 	for {
-		sep := strings.LastIndexByte(pattern, '/')
-
-		// reach of the begin of the path
-		if sep <= 0 {
-			handler, ok := b.handlers[pattern]
-			if !ok {
-				panic(errors.Errorf("go request %v is not handled", u))
-			}
+		handler, ok := b.handlers[pattern]
+		if ok {
 			res = handler(u, p)
 			return
 		}
 
-		pattern = pattern[:sep]
-		handler, ok := b.handlers[pattern]
-		if !ok {
-			continue
+		sep := strings.LastIndexByte(pattern, '/')
+		if sep == -1 {
+			panic(errors.Errorf("go request %v is not handled", u))
 		}
-		res = handler(u, p)
-		return
+		pattern = pattern[:sep]
 	}
 }
