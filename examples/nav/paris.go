@@ -1,9 +1,12 @@
 package main
 
-import "github.com/murlokswarm/app"
+import (
+	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/markup"
+)
 
 // Paris is the component displaying Paris.
-type Paris struct{}
+type Paris markup.ZeroCompo
 
 // Render returns the HTML describing the Paris component content.
 // It contains a link to show how to navigate to an other component (Sf).
@@ -25,7 +28,7 @@ func (p *Paris) Render() string {
 	`
 }
 
-// /!\ Register the component. Required to use the component into a context.
+// /!\ Import the component. Required to use a component.
 func init() {
-	app.RegisterComponent(&Paris{})
+	app.Import(&Paris{})
 }

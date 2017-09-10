@@ -18,8 +18,12 @@ var (
 // found into HTML code.
 // Import should be called during app initialization.
 func Import(c markup.Component) {
+	if driver != nil {
+		panic(errors.Errorf("importing component %T failed: can't import when a driver is running", c))
+	}
+
 	if err := compoBuilder.Register(c); err != nil {
-		err = errors.Wrap(err, "invalid component import")
+		err = errors.Wrapf(err, "importing component %T failed", c)
 		panic(err)
 	}
 }

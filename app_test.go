@@ -33,8 +33,12 @@ func TestApp(t *testing.T) {
 			test: testImport,
 		},
 		{
-			name: "import invalid component should panic",
-			test: testImportPanic,
+			name: "import component when driver is running should fail",
+			test: testImportWhenDriverRuns,
+		},
+		{
+			name: "import invalid component should fail",
+			test: testImportInvalidComponent,
 		},
 		{
 			name: "should run",
@@ -119,7 +123,17 @@ func testImport(t *testing.T) {
 	Import(&Component{})
 }
 
-func testImportPanic(t *testing.T) {
+func testImportWhenDriverRuns(t *testing.T) {
+	defer func() { recover() }()
+
+	driver = &testDriver{}
+	defer func() { driver = nil }()
+
+	Import(&Component{})
+	t.Error("should panic")
+}
+
+func testImportInvalidComponent(t *testing.T) {
 	defer func() { recover() }()
 
 	Import(InvalidComponent{})
