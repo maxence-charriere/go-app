@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/drivers/mac"
 )
@@ -10,7 +8,7 @@ import (
 func main() {
 	app.Run(&mac.Driver{
 		OnRun: func() {
-			fmt.Println("Hello!")
+			// fmt.Println("Hello!")
 		},
 	})
 }
