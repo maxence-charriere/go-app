@@ -19,6 +19,7 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/bridge"
 	"github.com/murlokswarm/app/markup"
+	"github.com/pkg/errors"
 )
 
 var (
@@ -64,6 +65,13 @@ func (d *Driver) Run(b markup.CompoBuilder) error {
 	d.golang = bridge.NewGoBridge(d.uichan)
 
 	d.golang.Handle("/driver/run", d.onRun)
+	d.golang.Handle("/driver/focus", d.onFocus)
+	d.golang.Handle("/driver/blur", d.onBlur)
+	d.golang.Handle("/driver/reopen", d.onReopen)
+	d.golang.Handle("/driver/filesopen", d.onFilesOpen)
+	d.golang.Handle("/driver/urlopen", d.onURLOpen)
+	d.golang.Handle("/driver/quit", d.onQuit)
+	d.golang.Handle("/driver/exit", d.onExit)
 
 	go func() {
 		for f := range d.uichan {
@@ -78,19 +86,99 @@ func (d *Driver) Run(b markup.CompoBuilder) error {
 
 func (d *Driver) onRun(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	if d.OnRun != nil {
-		d.OnRun()
+		return
 	}
+
+	d.OnRun()
+	return
+}
+
+func (d *Driver) onFocus(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	if d.OnFocus == nil {
+		return
+	}
+
+	d.OnFocus()
+	return
+}
+
+func (d *Driver) onBlur(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	if d.OnBlur == nil {
+		return
+	}
+
+	d.OnBlur()
+	return
+}
+
+func (d *Driver) onReopen(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	if d.OnReopen == nil {
+		return
+	}
+
+	var hasVisibleWindows bool
+	p.Unmarshal(&hasVisibleWindows)
+	d.OnReopen(hasVisibleWindows)
+	return
+}
+
+func (d *Driver) onFilesOpen(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	if d.OnFilesOpen == nil {
+		return
+	}
+
+	var filenames []string
+	p.Unmarshal(&filenames)
+	d.OnFilesOpen(filenames)
+	return
+}
+
+func (d *Driver) onURLOpen(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	if d.OnURLOpen == nil {
+		return
+	}
+
+	var rawurl string
+	p.Unmarshal(&rawurl)
+
+	purl, err := url.Parse(rawurl)
+	if err != nil {
+		panic(errors.Wrap(err, "parsing url failed"))
+	}
+
+	d.OnURLOpen(purl)
+	return
+}
+
+func (d *Driver) onQuit(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	if d.OnQuit == nil {
+		return
+	}
+
+	res = bridge.NewPayload(d.OnQuit())
+	return
+}
+
+func (d *Driver) onExit(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	if d.OnExit == nil {
+		return
+	}
+	d.OnExit()
 	return
 }
 
 // Render satisfies the app.Driver interface.
 func (d *Driver) Render(c markup.Component) error {
-	panic("not implemented")
+	elem, err := d.elements.ElementByComponent(c)
+	if err != nil {
+		return err
+	}
+	return elem.Render(c)
 }
 
 // Context satisfies the app.Driver interface.
 func (d *Driver) Context(c markup.Component) (elem app.ElementWithComponent, err error) {
-	panic("not implemented")
+	return d.elements.ElementByComponent(c)
 }
 
 // NewContextMenu satisfies the app.Driver interface.
@@ -105,7 +193,7 @@ func (d *Driver) Resources() string {
 
 // CallOnUIGoroutine satisfies the app.Driver interface.
 func (d *Driver) CallOnUIGoroutine(f func()) {
-	panic("not implemented")
+	d.uichan <- f
 }
 
 // Storage satisfies the app.DriverWithStorage interface.
