@@ -183,7 +183,8 @@ type ElementStore interface {
 	Element(id uuid.UUID) (e Element, ok bool)
 
 	// ElementByComponent returns the element where component c is mounted.
-	ElementByComponent(c markup.Component) (e ElementWithComponent, ok bool)
+	// It returns an error if the component is not mounted in any element.
+	ElementByComponent(c markup.Component) (e ElementWithComponent, err error)
 
 	// Sort sorts the elements that hosts components.
 	Sort()
@@ -261,17 +262,18 @@ func (s *elementStore) Element(id uuid.UUID) (e Element, ok bool) {
 	return
 }
 
-func (s *elementStore) ElementByComponent(c markup.Component) (e ElementWithComponent, ok bool) {
+func (s *elementStore) ElementByComponent(c markup.Component) (e ElementWithComponent, err error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
 	for _, elem := range s.elementsWithComponents {
 		if elem.Contains(c) {
 			e = elem
-			ok = true
 			return
 		}
 	}
+
+	err = errors.Errorf("component %+v is not mounted in any elements", c)
 	return
 }
 
