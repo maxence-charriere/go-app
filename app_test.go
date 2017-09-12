@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/murlokswarm/app/markup"
@@ -241,7 +240,6 @@ func testCallOnUIGoroutine(t *testing.T, d *testDriver) {
 	done := make(chan struct{})
 
 	go func() {
-		fmt.Println(d.uichan)
 		f := <-d.uichan
 		f()
 	}()
