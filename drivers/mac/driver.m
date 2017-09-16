@@ -2,20 +2,48 @@
 #include "_cgo_export.h"
 #include "json.h"
 
-void driver_run() {
-  [NSApplication sharedApplication];
-  [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+@implementation Driver
++ (instancetype)current {
+  NSApplication *app = [NSApplication sharedApplication];
 
-  DriverDelegate *delegate = [[DriverDelegate alloc] init];
-  NSApp.delegate = delegate;
+  if (app.delegate != nil) {
+    return app.delegate;
+  }
 
-  [NSApp run];
+  Driver *driver = [[Driver alloc] init];
+  app.delegate = driver;
+  return driver;
 }
 
-@implementation DriverDelegate
 - (instancetype)init {
+  self.objc = [[OBJCBridge alloc] init];
+
+  [self.objc handle:@"/driver/run"
+            handler:^(NSURL *url, NSString *payload) {
+              return [self run:url payload:payload];
+            }];
+  [self.objc handle:@"/driver/resources"
+            handler:^(NSURL *url, NSString *payload) {
+              return [self resources:url payload:payload];
+            }];
+
   self.dock = [[NSMenu alloc] initWithTitle:@""];
   return self;
+}
+
+- (bridge_result)run:(NSURL *)url payload:(NSString *)payload {
+  [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+  [NSApp run];
+  return make_bridge_result();
+}
+
+- (bridge_result)resources:(NSURL *)url payload:(NSString *)payload {
+  NSBundle *mainBundle = [NSBundle mainBundle];
+  NSString *resp = [JSONEncoder encodeString:mainBundle.resourcePath];
+
+  bridge_result res = make_bridge_result();
+  res.payload = new_bridge_result_string(resp);
+  return res;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {

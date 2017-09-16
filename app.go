@@ -29,13 +29,15 @@ func Import(c markup.Component) {
 }
 
 // Run runs the app with driver d as backend.
-func Run(d Driver) error {
+func Run(d Driver) {
 	if driver != nil {
 		panic(errors.Errorf("driver %T is already running", driver))
 	}
 
 	driver = d
-	return d.Run(compoBuilder)
+	if err := d.Run(compoBuilder); err != nil {
+		panic(errors.Wrap(err, "running the app failed"))
+	}
 }
 
 // RunningDriver returns the running driver.

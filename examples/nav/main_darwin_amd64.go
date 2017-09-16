@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/murlokswarm/app"
@@ -11,6 +12,7 @@ func main() {
 	app.Run(&mac.Driver{
 		OnRun: func() {
 			log.Println("OnRun")
+			fmt.Println("app.Resources():", app.Resources())
 		},
 		OnFocus: func() {
 			log.Println("OnFocus")

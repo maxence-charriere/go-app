@@ -15,6 +15,7 @@ type testDriver struct {
 	elements     ElementStore
 	menubar      Menu
 	dock         DockTile
+	runSouldErr  bool
 	uichan       chan func()
 
 	onWindowLoad func(w Window, c markup.Component)
@@ -28,6 +29,10 @@ func (d *testDriver) Run(b markup.CompoBuilder) error {
 	d.dock = newDockTile(d)
 
 	d.uichan = make(chan func(), 256)
+
+	if d.runSouldErr {
+		return errors.New("simulating run error")
+	}
 	return nil
 }
 

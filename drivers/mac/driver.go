@@ -4,16 +4,14 @@
 package mac
 
 /*
-#cgo CFLAGS: -x objective-c -fobjc-arc
-#cgo LDFLAGS: -framework Cocoa
-#cgo LDFLAGS: -framework WebKit
-#cgo LDFLAGS: -framework CoreImage
-#cgo LDFLAGS: -framework Security
 #include "driver.h"
+#include "bridge.h"
 */
 import "C"
 import (
 	"net/url"
+	"os"
+	"path/filepath"
 	"runtime"
 
 	"github.com/murlokswarm/app"
@@ -80,12 +78,12 @@ func (d *Driver) Run(b markup.CompoBuilder) error {
 	}()
 
 	driver = d
-	C.driver_run()
-	return nil
+	_, err := d.macos.Request("/driver/run", nil)
+	return err
 }
 
 func (d *Driver) onRun(u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	if d.OnRun != nil {
+	if d.OnRun == nil {
 		return
 	}
 
@@ -163,6 +161,7 @@ func (d *Driver) onExit(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	if d.OnExit == nil {
 		return
 	}
+
 	d.OnExit()
 	return
 }
@@ -188,7 +187,25 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 
 // Resources satisfies the app.Driver interface.
 func (d *Driver) Resources() string {
-	panic("not implemented")
+	// May be reimplemented.
+	res, err := d.macos.Request("/driver/resources", nil)
+	if err != nil {
+		panic(errors.Wrap(err, "getting resource filepath failed"))
+	}
+
+	var dirname string
+	res.Unmarshal(&dirname)
+
+	wd, err := os.Getwd()
+	if err != nil {
+		panic(errors.Wrap(err, "getting resource filepath failed"))
+	}
+	localres := filepath.Join(wd, "Resources")
+
+	if dirname == localres {
+		dirname = filepath.Join(wd, "resources")
+	}
+	return dirname
 }
 
 // CallOnUIGoroutine satisfies the app.Driver interface.
