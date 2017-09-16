@@ -27,9 +27,9 @@
             handler:^(NSURL *url, NSString *payload) {
               return [self resources:url payload:payload];
             }];
-  [self.objc handle:@"/driver/storage"
+  [self.objc handle:@"/driver/support"
             handler:^(NSURL *url, NSString *payload) {
-              return [self storage:url payload:payload];
+              return [self support:url payload:payload];
             }];
 
   self.dock = [[NSMenu alloc] initWithTitle:@""];
@@ -51,7 +51,7 @@
   return res;
 }
 
-- (bridge_result)storage:(NSURL *)url payload:(NSString *)payload {
+- (bridge_result)support:(NSURL *)url payload:(NSString *)payload {
   bridge_result res = make_bridge_result();
   NSBundle *mainBundle = [NSBundle mainBundle];
   NSString *storagename = nil;
@@ -67,8 +67,8 @@
   NSString *applicationSupportDirectory = [paths firstObject];
 
   if (mainBundle.bundleIdentifier.length == 0) {
-    storagename =
-        [NSString stringWithFormat:@"%@/goapp/{appname}", applicationSupportDirectory];
+    storagename = [NSString
+        stringWithFormat:@"%@/goapp/{appname}", applicationSupportDirectory];
   } else {
     storagename =
         [NSString stringWithFormat:@"%@/%@", applicationSupportDirectory,

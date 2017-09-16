@@ -188,7 +188,6 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 
 // Resources satisfies the app.Driver interface.
 func (d *Driver) Resources() string {
-	// May be reimplemented.
 	res, err := d.macos.Request("/driver/resources", nil)
 	if err != nil {
 		panic(errors.Wrap(err, "getting resources filepath failed"))
@@ -216,28 +215,30 @@ func (d *Driver) CallOnUIGoroutine(f func()) {
 
 // Storage satisfies the app.DriverWithStorage interface.
 func (d *Driver) Storage() string {
-	res, err := d.macos.Request("/driver/storage", nil)
+	support, err := d.support()
 	if err != nil {
 		panic(errors.Wrap(err, "getting storage filepath failed"))
 	}
+	return filepath.Join(support, "storage")
+}
 
-	var dirname string
+func (d *Driver) support() (dirname string, err error) {
+	var res bridge.Payload
+	if res, err = d.macos.Request("/driver/support", nil); err != nil {
+		return
+	}
 	res.Unmarshal(&dirname)
 
-	// Set up the storage directory in case of the app is not bundled when
-	// launched.
+	// Set up the support directory in case of the app is not bundled.
 	if strings.HasSuffix(dirname, "{appname}") {
-		wd, err := os.Getwd()
-		if err != nil {
-			panic(errors.Wrap(err, "getting storage filepath failed"))
+		var wd string
+		if wd, err = os.Getwd(); err != nil {
+			return
 		}
 		appname := filepath.Base(wd)
 		dirname = strings.Replace(dirname, "{appname}", appname, 1)
 	}
-
-	dirname = filepath.Join(dirname, "storage")
-	return dirname
-
+	return
 }
 
 // NewWindow satisfies the app.DriverWithWindows interface.
