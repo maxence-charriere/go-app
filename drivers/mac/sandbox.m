@@ -3,7 +3,7 @@
 #import <objc/runtime.h>
 
 @implementation NSBundle (OBCodeSigningInfo)
-+ (BOOL)isSandboxed {
+- (BOOL)isSandboxed {
   return [[NSBundle mainBundle] ob_isSandboxed];
 }
 

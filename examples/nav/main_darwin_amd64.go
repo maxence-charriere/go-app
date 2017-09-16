@@ -13,6 +13,7 @@ func main() {
 		OnRun: func() {
 			log.Println("OnRun")
 			fmt.Println("app.Resources():", app.Resources())
+			fmt.Println("app.Storage():", app.Storage())
 		},
 		OnFocus: func() {
 			log.Println("OnFocus")

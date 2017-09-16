@@ -1,6 +1,7 @@
 #include "driver.h"
 #include "_cgo_export.h"
 #include "json.h"
+#include "sandbox.h"
 
 @implementation Driver
 + (instancetype)current {
@@ -26,6 +27,10 @@
             handler:^(NSURL *url, NSString *payload) {
               return [self resources:url payload:payload];
             }];
+  [self.objc handle:@"/driver/storage"
+            handler:^(NSURL *url, NSString *payload) {
+              return [self storage:url payload:payload];
+            }];
 
   self.dock = [[NSMenu alloc] initWithTitle:@""];
   return self;
@@ -43,6 +48,34 @@
 
   bridge_result res = make_bridge_result();
   res.payload = new_bridge_result_string(resp);
+  return res;
+}
+
+- (bridge_result)storage:(NSURL *)url payload:(NSString *)payload {
+  bridge_result res = make_bridge_result();
+  NSBundle *mainBundle = [NSBundle mainBundle];
+  NSString *storagename = nil;
+
+  if ([mainBundle isSandboxed]) {
+    storagename = [JSONEncoder encodeString:NSHomeDirectory()];
+    res.payload = new_bridge_result_string(storagename);
+    return res;
+  }
+
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(
+      NSApplicationSupportDirectory, NSUserDomainMask, YES);
+  NSString *applicationSupportDirectory = [paths firstObject];
+
+  if (mainBundle.bundleIdentifier.length == 0) {
+    storagename =
+        [NSString stringWithFormat:@"%@/goapp/{appname}", applicationSupportDirectory];
+  } else {
+    storagename =
+        [NSString stringWithFormat:@"%@/%@", applicationSupportDirectory,
+                                   mainBundle.bundleIdentifier];
+  }
+  storagename = [JSONEncoder encodeString:storagename];
+  res.payload = new_bridge_result_string(storagename);
   return res;
 }
 

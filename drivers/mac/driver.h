@@ -12,10 +12,11 @@
 @property OBJCBridge *objc;
 @property NSMenu *dock;
 
-- (instancetype)init;
 + (instancetype)current;
+- (instancetype)init;
 - (bridge_result)run:(NSURL *)url payload:(NSString *)payload;
 - (bridge_result)resources:(NSURL *)url payload:(NSString *)payload;
+- (bridge_result)storage:(NSURL *)url payload:(NSString *)payload;
 @end
 
 #endif /* driver_h */

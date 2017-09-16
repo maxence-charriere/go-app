@@ -13,6 +13,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/bridge"
@@ -190,7 +191,7 @@ func (d *Driver) Resources() string {
 	// May be reimplemented.
 	res, err := d.macos.Request("/driver/resources", nil)
 	if err != nil {
-		panic(errors.Wrap(err, "getting resource filepath failed"))
+		panic(errors.Wrap(err, "getting resources filepath failed"))
 	}
 
 	var dirname string
@@ -198,7 +199,7 @@ func (d *Driver) Resources() string {
 
 	wd, err := os.Getwd()
 	if err != nil {
-		panic(errors.Wrap(err, "getting resource filepath failed"))
+		panic(errors.Wrap(err, "getting resources filepath failed"))
 	}
 	localres := filepath.Join(wd, "Resources")
 
@@ -215,7 +216,28 @@ func (d *Driver) CallOnUIGoroutine(f func()) {
 
 // Storage satisfies the app.DriverWithStorage interface.
 func (d *Driver) Storage() string {
-	panic("not implemented")
+	res, err := d.macos.Request("/driver/storage", nil)
+	if err != nil {
+		panic(errors.Wrap(err, "getting storage filepath failed"))
+	}
+
+	var dirname string
+	res.Unmarshal(&dirname)
+
+	// Set up the storage directory in case of the app is not bundled when
+	// launched.
+	if strings.HasSuffix(dirname, "{appname}") {
+		wd, err := os.Getwd()
+		if err != nil {
+			panic(errors.Wrap(err, "getting storage filepath failed"))
+		}
+		appname := filepath.Base(wd)
+		dirname = strings.Replace(dirname, "{appname}", appname, 1)
+	}
+
+	dirname = filepath.Join(dirname, "storage")
+	return dirname
+
 }
 
 // NewWindow satisfies the app.DriverWithWindows interface.

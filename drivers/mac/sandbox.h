@@ -12,7 +12,7 @@ typedef enum {
 } OBCodeSignState;
 
 @interface NSBundle (OBCodeSigningInfo)
-+ (BOOL)isSandboxed;
+- (BOOL)isSandboxed;
 - (BOOL)ob_comesFromAppStore;
 - (BOOL)ob_isSandboxed;
 - (OBCodeSignState)ob_codeSignState;
