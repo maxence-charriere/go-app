@@ -243,7 +243,11 @@ func (d *Driver) support() (dirname string, err error) {
 
 // NewWindow satisfies the app.DriverWithWindows interface.
 func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
-	panic("not implemented")
+	w, err := newWindow(d, c)
+	if err != nil {
+		panic(errors.Wrap(err, "creating a window failed"))
+	}
+	return w
 }
 
 // MenuBar satisfies the app.DriverWithMenuBar interface.

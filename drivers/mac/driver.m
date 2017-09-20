@@ -2,6 +2,7 @@
 #include "_cgo_export.h"
 #include "json.h"
 #include "sandbox.h"
+#include "window.h"
 
 @implementation Driver
 + (instancetype)current {
@@ -17,6 +18,7 @@
 }
 
 - (instancetype)init {
+  self.elements = [NSMutableDictionary dictionaryWithCapacity:256];
   self.objc = [[OBJCBridge alloc] init];
 
   [self.objc handle:@"/driver/run"
@@ -30,6 +32,11 @@
   [self.objc handle:@"/driver/support"
             handler:^(NSURL *url, NSString *payload) {
               return [self support:url payload:payload];
+            }];
+
+  [self.objc handle:@"/window/new"
+            handler:^(NSURL *url, NSString *payload) {
+              return [Window newWindow:url payload:payload];
             }];
 
   self.dock = [[NSMenu alloc] initWithTitle:@""];

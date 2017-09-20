@@ -10,6 +10,7 @@
 
 @interface Driver : NSObject <NSApplicationDelegate>
 @property OBJCBridge *objc;
+@property NSMutableDictionary<NSString *, id> *elements;
 @property NSMenu *dock;
 
 + (instancetype)current;

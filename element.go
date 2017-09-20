@@ -68,6 +68,9 @@ type Window interface {
 	// Move moves the window to the position (x, y).
 	Move(x, y float64)
 
+	// Center moves the window to the center of the screen.
+	Center()
+
 	// Size returns the window size.
 	Size() (width, height float64)
 
@@ -99,15 +102,15 @@ type WindowConfig struct {
 	DefaultURL      string
 	Mac             MacWindowConfig
 
-	OnMinimize       func()
-	OnDeminimize     func()
-	OnFullScreen     func()
-	OnExitFullScreen func()
-	OnMove           func(x, y float64)
-	OnResize         func(width float64, height float64)
-	OnFocus          func()
-	OnBlur           func()
-	OnClose          func() bool
+	OnMinimize       func()                              `json:"-"`
+	OnDeminimize     func()                              `json:"-"`
+	OnFullScreen     func()                              `json:"-"`
+	OnExitFullScreen func()                              `json:"-"`
+	OnMove           func(x, y float64)                  `json:"-"`
+	OnResize         func(width float64, height float64) `json:"-"`
+	OnFocus          func()                              `json:"-"`
+	OnBlur           func()                              `json:"-"`
+	OnClose          func() bool                         `json:"-"`
 }
 
 // MacWindowConfig is a struct that describes window fields specific to MacOS.
