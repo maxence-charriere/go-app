@@ -137,6 +137,9 @@ func (w *testWindow) Position() (x, y float64) {
 func (w *testWindow) Move(x, y float64) {
 }
 
+func (w *testWindow) Center() {
+}
+
 func (w *testWindow) Size() (width, height float64) {
 	return
 }
@@ -438,9 +441,9 @@ func testElementStoreElementByComponent(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	elem, ok := store.ElementByComponent(compo)
-	if !ok {
-		t.Fatalf("no element with component %T found", compo)
+	elem, err := store.ElementByComponent(compo)
+	if err != nil {
+		t.Fatal(err)
 	}
 	if elem != window {
 		t.Fatal("element should be the window")
@@ -450,7 +453,7 @@ func testElementStoreElementByComponent(t *testing.T) {
 func testElementStoreElementByComponentNotFound(t *testing.T) {
 	store := newElementStore(42)
 
-	if _, ok := store.ElementByComponent(&Component{}); ok {
+	if _, err := store.ElementByComponent(&Component{}); err == nil {
 		t.Fatal("no element should have been found")
 	}
 }

@@ -15,6 +15,7 @@ type testDriver struct {
 	elements     ElementStore
 	menubar      Menu
 	dock         DockTile
+	runSouldErr  bool
 	uichan       chan func()
 
 	onWindowLoad func(w Window, c markup.Component)
@@ -28,21 +29,24 @@ func (d *testDriver) Run(b markup.CompoBuilder) error {
 	d.dock = newDockTile(d)
 
 	d.uichan = make(chan func(), 256)
+
+	if d.runSouldErr {
+		return errors.New("simulating run error")
+	}
 	return nil
 }
 
 func (d *testDriver) Render(c markup.Component) error {
-	elem, ok := d.elements.ElementByComponent(c)
-	if !ok {
-		return errors.Errorf("rendering %T failed: component not mounted", c)
+	elem, err := d.elements.ElementByComponent(c)
+	if err != nil {
+		return errors.Wrap(err, "rendering component")
 	}
 	return elem.Render(c)
 }
 
 func (d *testDriver) Context(c markup.Component) (e ElementWithComponent, err error) {
-	var ok bool
-	if e, ok = d.elements.ElementByComponent(c); !ok {
-		err = errors.Errorf("can't get context for %T: component not mounted", c)
+	if e, err = d.elements.ElementByComponent(c); err != nil {
+		err = errors.Wrap(err, "can't get context")
 	}
 	return
 }

@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/murlokswarm/app/markup"
@@ -33,8 +32,12 @@ func TestApp(t *testing.T) {
 			test: testImport,
 		},
 		{
-			name: "import invalid component should panic",
-			test: testImportPanic,
+			name: "import component when driver is running should fail",
+			test: testImportWhenDriverRuns,
+		},
+		{
+			name: "import invalid component should fail",
+			test: testImportInvalidComponent,
 		},
 		{
 			name: "should run",
@@ -42,7 +45,11 @@ func TestApp(t *testing.T) {
 		},
 		{
 			name: "second run should panic",
-			test: testRunPanic,
+			test: testRunMultiple,
+		},
+		{
+			name: "run with driver error should panic",
+			test: testRunDriverError,
 		},
 		{
 			name: "should return the running driver",
@@ -119,7 +126,17 @@ func testImport(t *testing.T) {
 	Import(&Component{})
 }
 
-func testImportPanic(t *testing.T) {
+func testImportWhenDriverRuns(t *testing.T) {
+	defer func() { recover() }()
+
+	driver = &testDriver{}
+	defer func() { driver = nil }()
+
+	Import(&Component{})
+	t.Error("should panic")
+}
+
+func testImportInvalidComponent(t *testing.T) {
 	defer func() { recover() }()
 
 	Import(InvalidComponent{})
@@ -127,16 +144,30 @@ func testImportPanic(t *testing.T) {
 }
 
 func testRun(t *testing.T, d *testDriver) {
-	if err := Run(d); err != nil {
-		t.Fatal(err)
-	}
+	Run(d)
 }
 
-func testRunPanic(t *testing.T) {
+func testRunMultiple(t *testing.T) {
 	defer func() { recover() }()
 
 	Run(&testDriver{
 		test: t,
+	})
+	t.Error("should panic")
+}
+
+func testRunDriverError(t *testing.T) {
+	currentDriver := driver
+	driver = nil
+	defer func() {
+		driver = currentDriver
+	}()
+
+	defer func() { recover() }()
+
+	Run(&testDriver{
+		test:        t,
+		runSouldErr: true,
 	})
 	t.Error("should panic")
 }
@@ -227,7 +258,6 @@ func testCallOnUIGoroutine(t *testing.T, d *testDriver) {
 	done := make(chan struct{})
 
 	go func() {
-		fmt.Println(d.uichan)
 		f := <-d.uichan
 		f()
 	}()

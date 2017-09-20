@@ -5,6 +5,10 @@ import (
 	"testing"
 )
 
+func TestPayloadFromString(t *testing.T) {
+	PayloadFromString("42")
+}
+
 func TestNewPayloadPanic(t *testing.T) {
 	defer func() { recover() }()
 	NewPayload(make(chan bool))

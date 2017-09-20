@@ -18,20 +18,26 @@ var (
 // found into HTML code.
 // Import should be called during app initialization.
 func Import(c markup.Component) {
+	if driver != nil {
+		panic(errors.Errorf("importing component %T failed: can't import when a driver is running", c))
+	}
+
 	if err := compoBuilder.Register(c); err != nil {
-		err = errors.Wrap(err, "invalid component import")
+		err = errors.Wrapf(err, "importing component %T failed", c)
 		panic(err)
 	}
 }
 
 // Run runs the app with driver d as backend.
-func Run(d Driver) error {
+func Run(d Driver) {
 	if driver != nil {
 		panic(errors.Errorf("driver %T is already running", driver))
 	}
 
 	driver = d
-	return d.Run(compoBuilder)
+	if err := d.Run(compoBuilder); err != nil {
+		panic(errors.Wrap(err, "running the app failed"))
+	}
 }
 
 // RunningDriver returns the running driver.

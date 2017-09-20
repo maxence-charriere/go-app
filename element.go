@@ -68,6 +68,9 @@ type Window interface {
 	// Move moves the window to the position (x, y).
 	Move(x, y float64)
 
+	// Center moves the window to the center of the screen.
+	Center()
+
 	// Size returns the window size.
 	Size() (width, height float64)
 
@@ -99,15 +102,15 @@ type WindowConfig struct {
 	DefaultURL      string
 	Mac             MacWindowConfig
 
-	OnMinimize       func()
-	OnDeminimize     func()
-	OnFullScreen     func()
-	OnExitFullScreen func()
-	OnMove           func(x, y float64)
-	OnResize         func(width float64, height float64)
-	OnFocus          func()
-	OnBlur           func()
-	OnClose          func() bool
+	OnMinimize       func()                              `json:"-"`
+	OnDeminimize     func()                              `json:"-"`
+	OnFullScreen     func()                              `json:"-"`
+	OnExitFullScreen func()                              `json:"-"`
+	OnMove           func(x, y float64)                  `json:"-"`
+	OnResize         func(width float64, height float64) `json:"-"`
+	OnFocus          func()                              `json:"-"`
+	OnBlur           func()                              `json:"-"`
+	OnClose          func() bool                         `json:"-"`
 }
 
 // MacWindowConfig is a struct that describes window fields specific to MacOS.
@@ -183,7 +186,8 @@ type ElementStore interface {
 	Element(id uuid.UUID) (e Element, ok bool)
 
 	// ElementByComponent returns the element where component c is mounted.
-	ElementByComponent(c markup.Component) (e ElementWithComponent, ok bool)
+	// It returns an error if the component is not mounted in any element.
+	ElementByComponent(c markup.Component) (e ElementWithComponent, err error)
 
 	// Sort sorts the elements that hosts components.
 	Sort()
@@ -192,7 +196,7 @@ type ElementStore interface {
 	Len() int
 }
 
-// NewElementStore creates an element store.
+// NewElementStore creates a concurent safe element store.
 func NewElementStore() ElementStore {
 	return newElementStore(256)
 }
@@ -261,17 +265,18 @@ func (s *elementStore) Element(id uuid.UUID) (e Element, ok bool) {
 	return
 }
 
-func (s *elementStore) ElementByComponent(c markup.Component) (e ElementWithComponent, ok bool) {
+func (s *elementStore) ElementByComponent(c markup.Component) (e ElementWithComponent, err error) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
 	for _, elem := range s.elementsWithComponents {
 		if elem.Contains(c) {
 			e = elem
-			ok = true
 			return
 		}
 	}
+
+	err = errors.Errorf("component %+v is not mounted in any elements", c)
 	return
 }
 
