@@ -1,6 +1,8 @@
 package markup
 
 import (
+	"sync"
+
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
 )
@@ -37,9 +39,9 @@ type Env interface {
 	Update(c Component) (syncs []Sync, err error)
 }
 
-// NewEnv creates an environment.
+// NewEnv creates a concurent safe environment..
 func NewEnv(b CompoBuilder) Env {
-	return newEnv(b)
+	return newConcurentEnv(newEnv(b))
 }
 
 func newEnv(b CompoBuilder) *env {
@@ -335,6 +337,56 @@ func (e *env) syncTagChildren(l, r *Tag) (syncs []Sync, fullsync bool, err error
 		rc = rc[1:]
 	}
 	return
+}
+
+// concurentEnv is an environment decorator that allows concurency.
+// It is safe for multiple goroutines to call an environment methods
+// concurrently.
+type concurentEnv struct {
+	mutex sync.Mutex
+	base  Env
+}
+
+func newConcurentEnv(e Env) Env {
+	return &concurentEnv{
+		base: e,
+	}
+}
+
+func (e *concurentEnv) Component(id uuid.UUID) (c Component, err error) {
+	e.mutex.Lock()
+	defer e.mutex.Unlock()
+	return e.base.Component(id)
+}
+
+func (e *concurentEnv) Contains(c Component) bool {
+	e.mutex.Lock()
+	defer e.mutex.Unlock()
+	return e.base.Contains(c)
+}
+
+func (e *concurentEnv) Root(c Component) (root Tag, err error) {
+	e.mutex.Lock()
+	defer e.mutex.Unlock()
+	return e.base.Root(c)
+}
+
+func (e *concurentEnv) Mount(c Component) (root Tag, err error) {
+	e.mutex.Lock()
+	defer e.mutex.Unlock()
+	return e.base.Mount(c)
+}
+
+func (e *concurentEnv) Dismount(c Component) {
+	e.mutex.Lock()
+	defer e.mutex.Unlock()
+	e.base.Dismount(c)
+}
+
+func (e *concurentEnv) Update(c Component) (syncs []Sync, err error) {
+	e.mutex.Lock()
+	defer e.mutex.Unlock()
+	return e.base.Update(c)
 }
 
 // Sync represents a sync operatrion.

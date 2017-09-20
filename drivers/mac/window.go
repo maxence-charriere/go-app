@@ -3,7 +3,6 @@ package mac
 import (
 	"fmt"
 	"net/url"
-	"sync"
 	"time"
 
 	"github.com/google/uuid"
@@ -13,11 +12,8 @@ import (
 )
 
 type Window struct {
-	driver *Driver
-	id     uuid.UUID
-
-	// Fields that requires synchronisation.
-	mutex     sync.Mutex
+	driver    *Driver
+	id        uuid.UUID
 	env       markup.Env
 	lastFocus time.Time
 }

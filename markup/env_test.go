@@ -682,6 +682,21 @@ func testEnvUpdateSyncNotMountedComponent(t *testing.T, env *env, c *Hello) {
 	t.Log(err)
 }
 
+func TestConcurentEnnv(t *testing.T) {
+	b := NewCompoBuilder()
+	b.Register(&Hello{})
+	b.Register(&World{})
+
+	env := newConcurentEnv(newEnv(b))
+	env.Component(uuid.New())
+	c := &Hello{}
+	env.Contains(c)
+	env.Root(c)
+	env.Mount(c)
+	env.Dismount(c)
+	env.Update(c)
+}
+
 func BenchmarkMount(b *testing.B) {
 	bui := NewCompoBuilder()
 	bui.Register(&Hello{})

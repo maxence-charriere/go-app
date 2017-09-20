@@ -137,6 +137,9 @@ func (w *testWindow) Position() (x, y float64) {
 func (w *testWindow) Move(x, y float64) {
 }
 
+func (w *testWindow) Center() {
+}
+
 func (w *testWindow) Size() (width, height float64) {
 	return
 }

@@ -196,7 +196,7 @@ type ElementStore interface {
 	Len() int
 }
 
-// NewElementStore creates an element store.
+// NewElementStore creates a concurent safe element store.
 func NewElementStore() ElementStore {
 	return newElementStore(256)
 }
