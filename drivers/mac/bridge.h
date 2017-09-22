@@ -1,10 +1,6 @@
 #ifndef bridge_h
 #define bridge_h
 
-#define defer(code)                                                            \
-  dispatch_async(dispatch_get_main_queue(), ^{                                 \
-                     code})
-
 #import <Cocoa/Cocoa.h>
 
 // bridge_result is the struct that represent an Objective C request result.
