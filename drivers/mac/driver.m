@@ -1,5 +1,4 @@
 #include "driver.h"
-#include "_cgo_export.h"
 #include "json.h"
 #include "sandbox.h"
 #include "window.h"
@@ -22,20 +21,20 @@
   self.objc = [[OBJCBridge alloc] init];
 
   [self.objc handle:@"/driver/run"
-            handler:^(NSURL *url, NSString *payload) {
+            handler:^(NSURLComponents *url, NSString *payload) {
               return [self run:url payload:payload];
             }];
   [self.objc handle:@"/driver/resources"
-            handler:^(NSURL *url, NSString *payload) {
+            handler:^(NSURLComponents *url, NSString *payload) {
               return [self resources:url payload:payload];
             }];
   [self.objc handle:@"/driver/support"
-            handler:^(NSURL *url, NSString *payload) {
+            handler:^(NSURLComponents *url, NSString *payload) {
               return [self support:url payload:payload];
             }];
 
   [self.objc handle:@"/window/new"
-            handler:^(NSURL *url, NSString *payload) {
+            handler:^(NSURLComponents *url, NSString *payload) {
               return [Window newWindow:url payload:payload];
             }];
 
@@ -43,13 +42,13 @@
   return self;
 }
 
-- (bridge_result)run:(NSURL *)url payload:(NSString *)payload {
+- (bridge_result)run:(NSURLComponents *)url payload:(NSString *)payload {
   [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
   [NSApp run];
   return make_bridge_result();
 }
 
-- (bridge_result)resources:(NSURL *)url payload:(NSString *)payload {
+- (bridge_result)resources:(NSURLComponents *)url payload:(NSString *)payload {
   NSBundle *mainBundle = [NSBundle mainBundle];
   NSString *resp = [JSONEncoder encodeString:mainBundle.resourcePath];
 
@@ -58,7 +57,7 @@
   return res;
 }
 
-- (bridge_result)support:(NSURL *)url payload:(NSString *)payload {
+- (bridge_result)support:(NSURLComponents *)url payload:(NSString *)payload {
   bridge_result res = make_bridge_result();
   NSBundle *mainBundle = [NSBundle mainBundle];
   NSString *storagename = nil;
@@ -87,28 +86,28 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-  goRequest("/driver/run", nil);
+  [GoBridge request:@"/driver/run" payload:nil];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)aNotification {
-  goRequest("/driver/focus", nil);
+  [GoBridge request:@"/driver/focus" payload:nil];
 }
 
 - (void)applicationDidResignActive:(NSNotification *)aNotification {
-  goRequest("/driver/blur", nil);
+  [GoBridge request:@"/driver/blur" payload:nil];
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender
                     hasVisibleWindows:(BOOL)flag {
   NSString *payload = flag ? @"true" : @"false";
-  goRequest("/driver/reopen", (char *)payload.UTF8String);
+  [GoBridge request:@"/driver/reopen" payload:payload];
   return YES;
 }
 
 - (void)application:(NSApplication *)sender
           openFiles:(NSArray<NSString *> *)filenames {
   NSString *payload = [JSONEncoder encodeObject:filenames];
-  goRequest("/driver/filesopen", (char *)payload.UTF8String);
+  [GoBridge request:@"/driver/filesopen" payload:payload];
 }
 
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
@@ -126,20 +125,17 @@
   NSString *rawurl =
       [event paramDescriptorForKeyword:keyDirectObject].stringValue;
   NSString *payload = [JSONEncoder encodeString:rawurl];
-  goRequest("/driver/urlopen", (char *)payload.UTF8String);
+  [GoBridge request:@"/driver/urlopen" payload:payload];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:
     (NSApplication *)sender {
-  char *res = goRequestWithResult("/driver/quit", nil);
-  BOOL shouldTerminate = [JSONDecoder decodeBool:res];
-  free(res);
-  return shouldTerminate;
+  NSString *res = [GoBridge requestWithResult:@"/driver/quit" payload:nil];
+  return [JSONDecoder decodeBool:res];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
-  char *res = goRequestWithResult("/driver/exit", nil);
-  free(res);
+  [GoBridge requestWithResult:@"/driver/exit" payload:nil];
 }
 
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {

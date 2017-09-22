@@ -1,4 +1,5 @@
 #include "bridge.h"
+#include "_cgo_export.h"
 #include "driver.h"
 
 bridge_result make_bridge_result() {
@@ -25,7 +26,7 @@ bridge_result macosRequest(char *rawurl, char *cpayload) {
     free(cpayload);
   }
 
-  NSURL *url = [NSURL URLWithString:urlstr];
+  NSURLComponents *url = [NSURLComponents componentsWithString:urlstr];
   bridge_result res = make_bridge_result();
   Driver *driver = [Driver current];
 
@@ -47,5 +48,40 @@ bridge_result macosRequest(char *rawurl, char *cpayload) {
 
 - (void)handle:(NSString *)path handler:(OBJCHandler)handler {
   self.handlers[path] = handler;
+}
+@end
+
+@implementation GoBridge
++ (void)request:(NSString *)path payload:(NSString *)payload {
+  char *p = nil;
+  if (payload != nil) {
+    p = (char *)payload.UTF8String;
+  }
+
+  goRequest((char *)path.UTF8String, p);
+}
+
++ (NSString *)requestWithResult:(NSString *)path payload:(NSString *)payload {
+  char *p = nil;
+  if (payload != nil) {
+    p = (char *)payload.UTF8String;
+  }
+
+  char *cres = goRequestWithResult((char *)path.UTF8String, p);
+  NSString *res = nil;
+  if (cres != nil) {
+    res = [NSString stringWithUTF8String:cres];
+    free(cres);
+  }
+  return res;
+}
+@end
+
+@implementation NSURLComponents (Queryable)
+- (NSString *)queryValue:(NSString *)name {
+  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name=%@", name];
+  NSURLQueryItem *queryItem =
+      [[self.queryItems filteredArrayUsingPredicate:predicate] firstObject];
+  return queryItem.value;
 }
 @end

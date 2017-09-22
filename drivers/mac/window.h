@@ -10,7 +10,7 @@
 @property NSString *ID;
 @property WKWebView *webview;
 
-+ (bridge_result)newWindow:(NSURL *)url payload:(NSString *)payload;
++ (bridge_result)newWindow:(NSURLComponents *)url payload:(NSString *)payload;
 @end
 
 @interface WindowTitleBar : NSView

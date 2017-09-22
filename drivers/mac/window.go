@@ -27,7 +27,6 @@ func newWindow(d *Driver, c app.WindowConfig) (w *Window, err error) {
 	}
 
 	rawurl := fmt.Sprintf("/window/new?id=%s", w.id)
-
 	if _, err = d.macos.RequestWithAsyncResponse(rawurl, bridge.NewPayload(c)); err != nil {
 		return
 	}
@@ -58,8 +57,6 @@ func (w *Window) Render(c markup.Component) error {
 
 // LastFocus satisfies the app.ElementWithComponent interface.
 func (w *Window) LastFocus() time.Time {
-	w.mutex.Lock()
-	defer w.mutex.Unlock()
 	return w.lastFocus
 }
 

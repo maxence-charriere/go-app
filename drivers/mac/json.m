@@ -29,8 +29,14 @@
 @end
 
 @implementation JSONDecoder
-+ (BOOL)decodeBool:(const char *)b {
-  NSString *boolean = [NSString stringWithUTF8String:b];
-  return [boolean isEqualToString:@"true"];
++ (NSDictionary *)decodeObject:(NSString *)json {
+  NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
+  return [NSJSONSerialization JSONObjectWithData:data
+                                         options:NSJSONReadingMutableContainers
+                                           error:nil];
+}
+
++ (BOOL)decodeBool:(NSString *)json {
+  return [json isEqualToString:@"true"];
 }
 @end

@@ -15,7 +15,13 @@ func main() {
 			fmt.Println("app.Resources():", app.Resources())
 			fmt.Println("app.Storage():", app.Storage())
 
-			app.NewWindow(app.WindowConfig{})
+			app.NewWindow(app.WindowConfig{
+				Title:  "test window",
+				X:      42,
+				Y:      42,
+				Width:  1024,
+				Height: 600,
+			})
 		},
 		OnFocus: func() {
 			log.Println("OnFocus")
