@@ -2,14 +2,23 @@
 #include "_cgo_export.h"
 #include "driver.h"
 
-bridge_result make_bridge_result() {
+bridge_result make_bridge_result(NSString *payload, NSString *err) {
   bridge_result res;
+
   res.payload = nil;
+  if (payload != nil) {
+    res.payload = copyNSString(payload);
+  }
+
   res.err = nil;
+  if (err != nil) {
+    res.err = copyNSString(err);
+  }
+
   return res;
 }
 
-char *new_bridge_result_string(NSString *str) {
+char *copyNSString(NSString *str) {
   int len = strlen(str.UTF8String) + 1;
   char *ret = calloc(len, sizeof(char));
   strcpy(ret, str.UTF8String);
@@ -27,14 +36,12 @@ bridge_result macosRequest(char *rawurl, char *cpayload) {
   }
 
   NSURLComponents *url = [NSURLComponents componentsWithString:urlstr];
-  bridge_result res = make_bridge_result();
   Driver *driver = [Driver current];
 
   OBJCHandler handler = driver.objc.handlers[url.path];
   if (handler == nil) {
     NSString *err = [NSString stringWithFormat:@"%@ is not handled", url.path];
-    res.err = new_bridge_result_string(err);
-    return res;
+    return make_bridge_result(nil, err);
   }
 
   return handler(url, payload);
@@ -49,10 +56,14 @@ bridge_result macosRequest(char *rawurl, char *cpayload) {
 - (void)handle:(NSString *)path handler:(OBJCHandler)handler {
   self.handlers[path] = handler;
 }
+
+- (void)returnFor:(NSString *)id result:(bridge_result)res {
+  macosRequestResult(copyNSString(id), res);
+}
 @end
 
 @implementation GoBridge
-+ (void)request:(NSString *)path payload:(NSString *)payload {
+- (void)request:(NSString *)path payload:(NSString *)payload {
   char *p = nil;
   if (payload != nil) {
     p = (char *)payload.UTF8String;
@@ -61,7 +72,7 @@ bridge_result macosRequest(char *rawurl, char *cpayload) {
   goRequest((char *)path.UTF8String, p);
 }
 
-+ (NSString *)requestWithResult:(NSString *)path payload:(NSString *)payload {
+- (NSString *)requestWithResult:(NSString *)path payload:(NSString *)payload {
   char *p = nil;
   if (payload != nil) {
     p = (char *)payload.UTF8String;

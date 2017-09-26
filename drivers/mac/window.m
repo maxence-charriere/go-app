@@ -5,6 +5,9 @@
 @implementation Window
 + (bridge_result)newWindow:(NSURLComponents *)url payload:(NSString *)payload {
   NSString *id = [url queryValue:@"id"];
+  NSString *returnID = [url queryValue:@"return-id"];
+
+  NSLog(@"ID: %@, retID: %@", id, returnID);
 
   NSDictionary *config = [JSONDecoder decodeObject:payload];
   NSString *title = config[@"title"];
@@ -37,8 +40,11 @@
     driver.elements[id] = win;
 
     [win showWindow:nil];
+
+    [driver.objc returnFor:returnID result:make_bridge_result(nil, nil)];
+
   });
-  return make_bridge_result();
+  return make_bridge_result(nil, nil);
 }
 @end
 

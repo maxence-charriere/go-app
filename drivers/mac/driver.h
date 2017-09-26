@@ -6,6 +6,7 @@
 
 @interface Driver : NSObject <NSApplicationDelegate>
 @property OBJCBridge *objc;
+@property GoBridge *golang;
 @property NSMutableDictionary<NSString *, id> *elements;
 @property NSMenu *dock;
 
