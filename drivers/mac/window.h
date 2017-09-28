@@ -12,6 +12,8 @@
 
 + (bridge_result)newWindow:(NSURLComponents *)url payload:(NSString *)payload;
 + (bridge_result)position:(NSURLComponents *)url payload:(NSString *)payload;
++ (bridge_result)move:(NSURLComponents *)url payload:(NSString *)payload;
++ (bridge_result)center:(NSURLComponents *)url payload:(NSString *)payload;
 @end
 
 @interface WindowTitleBar : NSView

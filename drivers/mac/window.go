@@ -18,6 +18,8 @@ type Window struct {
 	id        uuid.UUID
 	env       markup.Env
 	lastFocus time.Time
+
+	onMove func(x, y float64)
 }
 
 func newWindow(d *Driver, c app.WindowConfig) (w *Window, err error) {
@@ -26,6 +28,8 @@ func newWindow(d *Driver, c app.WindowConfig) (w *Window, err error) {
 		id:        uuid.New(),
 		env:       markup.NewEnv(d.components),
 		lastFocus: time.Now(),
+
+		onMove: c.OnMove,
 	}
 
 	rawurl := fmt.Sprintf("/window/new?id=%s", w.id)
@@ -85,9 +89,10 @@ func (w *Window) Next() error {
 // Position satisfies the app.Window interface.
 func (w *Window) Position() (x, y float64) {
 	rawurl := fmt.Sprintf("/window/position?id=%s", w.id)
+
 	res, err := w.driver.macos.RequestWithAsyncResponse(rawurl, nil)
 	if err != nil {
-		panic(errors.Wrap(err, "window position unavailable"))
+		panic(errors.Wrapf(err, "can't retrieve positon of window %v", w.ID()))
 	}
 
 	var pos geom.Point
@@ -97,16 +102,37 @@ func (w *Window) Position() (x, y float64) {
 
 // Move satisfies the app.Window interface.
 func (w *Window) Move(x, y float64) {
-	panic("not implemented")
+	rawurl := fmt.Sprintf("/window/move?id=%s", w.id)
+	payload := bridge.NewPayload(geom.Point{
+		X: x,
+		Y: y,
+	})
+
+	_, err := w.driver.macos.RequestWithAsyncResponse(rawurl, payload)
+	if err != nil {
+		panic(errors.Wrapf(err, "moving window %v failed", w.ID()))
+	}
 }
 
-func onWindowMove(w *Window, u *url.URL, p bridge.Payload) {
-	panic("not implemented")
+func onWindowMove(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	if w.onMove == nil {
+		return
+	}
+
+	var pos geom.Point
+	p.Unmarshal(&pos)
+	w.onMove(pos.X, pos.Y)
+	return
 }
 
 // Center satisfies the app.Window interface.
 func (w *Window) Center() {
-	panic("not implemented")
+	rawurl := fmt.Sprintf("/window/center?id=%s", w.id)
+
+	_, err := w.driver.macos.RequestWithAsyncResponse(rawurl, nil)
+	if err != nil {
+		panic(errors.Wrapf(err, "centering window %v failed", w.ID()))
+	}
 }
 
 // Size satisfies the app.Window interface.

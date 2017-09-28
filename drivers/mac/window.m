@@ -34,6 +34,7 @@
     Window *win = [[Window alloc] initWithWindow:rawWindow];
     win.ID = ID;
     win.windowFrameAutosaveName = title;
+    win.window.delegate = win;
 
     Driver *driver = [Driver current];
     driver.elements[ID] = win;
@@ -61,6 +62,50 @@
 
     NSString *payload = [JSONEncoder encodeObject:res];
     [driver.objc returnFor:returnID result:make_bridge_result(payload, nil)];
+  });
+  return make_bridge_result(nil, nil);
+}
+
++ (bridge_result)move:(NSURLComponents *)url payload:(NSString *)payload {
+  NSString *ID = [url queryValue:@"id"];
+  NSString *returnID = [url queryValue:@"return-id"];
+
+  NSDictionary *point = [JSONDecoder decodeObject:payload];
+  NSNumber *x = point[@"x"];
+  NSNumber *y = point[@"y"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    Window *win = driver.elements[ID];
+
+    [win.window setFrameOrigin:NSMakePoint(x.doubleValue, y.doubleValue)];
+    [driver.objc returnFor:returnID result:make_bridge_result(nil, nil)];
+  });
+  return make_bridge_result(nil, nil);
+}
+
+- (void)windowDidMove:(NSNotification *)notification {
+  Driver *driver = [Driver current];
+
+  NSMutableDictionary<NSString *, id> *res = [[NSMutableDictionary alloc] init];
+  res[@"x"] = [NSNumber numberWithDouble:self.window.frame.origin.x];
+  res[@"y"] = [NSNumber numberWithDouble:self.window.frame.origin.y];
+
+  [driver.golang
+      request:[NSString stringWithFormat:@"/window/move?id=%@", self.ID]
+      payload:[JSONEncoder encodeObject:res]];
+}
+
++ (bridge_result)center:(NSURLComponents *)url payload:(NSString *)payload {
+  NSString *ID = [url queryValue:@"id"];
+  NSString *returnID = [url queryValue:@"return-id"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    Window *win = driver.elements[ID];
+
+    [win.window center];
+    [driver.objc returnFor:returnID result:make_bridge_result(nil, nil)];
   });
   return make_bridge_result(nil, nil);
 }

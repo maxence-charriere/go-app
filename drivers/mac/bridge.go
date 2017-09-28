@@ -13,6 +13,7 @@ import (
 	"net/url"
 	"unsafe"
 
+	"github.com/google/uuid"
 	"github.com/murlokswarm/app/bridge"
 	"github.com/pkg/errors"
 )
@@ -80,4 +81,25 @@ func goRequestWithResult(url *C.char, payload *C.char) (res *C.char) {
 		res = C.CString(pret.String())
 	}
 	return
+}
+
+func windowHandler(h func(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload)) bridge.GoHandler {
+	return func(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+		id, err := uuid.Parse(u.Query().Get("id"))
+		if err != nil {
+			panic(errors.Wrap(err, "creating window handler failed"))
+		}
+
+		elem, ok := driver.elements.Element(id)
+		if !ok {
+			panic(errors.Errorf("creating window handler failed: window with id %v doesn't exists", id))
+		}
+
+		win, ok := elem.(*Window)
+		if !ok {
+			panic(errors.Errorf("creating window handler failed: element with id %v is not a window", id))
+		}
+
+		return h(win, u, p)
+	}
 }
