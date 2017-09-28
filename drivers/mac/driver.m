@@ -21,6 +21,7 @@
   self.objc = [[OBJCBridge alloc] init];
   self.golang = [[GoBridge alloc] init];
 
+  // Drivers handlers.
   [self.objc handle:@"/driver/run"
             handler:^(NSURLComponents *url, NSString *payload) {
               return [self run:url payload:payload];
@@ -34,6 +35,7 @@
               return [self support:url payload:payload];
             }];
 
+  // Window handlers.
   [self.objc handle:@"/window/new"
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Window newWindow:url payload:payload];
@@ -41,6 +43,14 @@
   [self.objc handle:@"/window/position"
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Window position:url payload:payload];
+            }];
+  [self.objc handle:@"/window/move"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Window move:url payload:payload];
+            }];
+  [self.objc handle:@"/window/center"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Window center:url payload:payload];
             }];
 
   self.dock = [[NSMenu alloc] initWithTitle:@""];
