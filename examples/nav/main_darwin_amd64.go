@@ -15,13 +15,16 @@ func main() {
 			fmt.Println("app.Resources():", app.Resources())
 			fmt.Println("app.Storage():", app.Storage())
 
-			app.NewWindow(app.WindowConfig{
+			win := app.NewWindow(app.WindowConfig{
 				Title:  "test window",
 				X:      42,
 				Y:      42,
 				Width:  1024,
 				Height: 600,
 			})
+
+			x, y := win.Position()
+			fmt.Printf("win.Positon() x:%v, x:%v\n", x, y)
 		},
 		OnFocus: func() {
 			log.Println("OnFocus")

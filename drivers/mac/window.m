@@ -4,10 +4,8 @@
 
 @implementation Window
 + (bridge_result)newWindow:(NSURLComponents *)url payload:(NSString *)payload {
-  NSString *id = [url queryValue:@"id"];
+  NSString *ID = [url queryValue:@"id"];
   NSString *returnID = [url queryValue:@"return-id"];
-
-  NSLog(@"ID: %@, retID: %@", id, returnID);
 
   NSDictionary *config = [JSONDecoder decodeObject:payload];
   NSString *title = config[@"title"];
@@ -34,15 +32,35 @@
                                         defer:NO];
 
     Window *win = [[Window alloc] initWithWindow:rawWindow];
+    win.ID = ID;
     win.windowFrameAutosaveName = title;
 
     Driver *driver = [Driver current];
-    driver.elements[id] = win;
+    driver.elements[ID] = win;
 
     [win showWindow:nil];
 
     [driver.objc returnFor:returnID result:make_bridge_result(nil, nil)];
 
+  });
+  return make_bridge_result(nil, nil);
+}
+
++ (bridge_result)position:(NSURLComponents *)url payload:(NSString *)payload {
+  NSString *ID = [url queryValue:@"id"];
+  NSString *returnID = [url queryValue:@"return-id"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    Window *win = driver.elements[ID];
+
+    NSMutableDictionary<NSString *, id> *res =
+        [[NSMutableDictionary alloc] init];
+    res[@"x"] = [NSNumber numberWithDouble:win.window.frame.origin.x];
+    res[@"y"] = [NSNumber numberWithDouble:win.window.frame.origin.y];
+
+    NSString *payload = [JSONEncoder encodeObject:res];
+    [driver.objc returnFor:returnID result:make_bridge_result(payload, nil)];
   });
   return make_bridge_result(nil, nil);
 }
