@@ -8,7 +8,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/bridge"
+	"github.com/murlokswarm/app/geom"
 	"github.com/murlokswarm/app/markup"
+	"github.com/pkg/errors"
 )
 
 type Window struct {
@@ -27,7 +29,6 @@ func newWindow(d *Driver, c app.WindowConfig) (w *Window, err error) {
 	}
 
 	rawurl := fmt.Sprintf("/window/new?id=%s", w.id)
-
 	if _, err = d.macos.RequestWithAsyncResponse(rawurl, bridge.NewPayload(c)); err != nil {
 		return
 	}
@@ -58,8 +59,6 @@ func (w *Window) Render(c markup.Component) error {
 
 // LastFocus satisfies the app.ElementWithComponent interface.
 func (w *Window) LastFocus() time.Time {
-	w.mutex.Lock()
-	defer w.mutex.Unlock()
 	return w.lastFocus
 }
 
@@ -85,7 +84,15 @@ func (w *Window) Next() error {
 
 // Position satisfies the app.Window interface.
 func (w *Window) Position() (x, y float64) {
-	panic("not implemented")
+	rawurl := fmt.Sprintf("/window/position?id=%s", w.id)
+	res, err := w.driver.macos.RequestWithAsyncResponse(rawurl, nil)
+	if err != nil {
+		panic(errors.Wrap(err, "window position unavailable"))
+	}
+
+	var pos geom.Point
+	res.Unmarshal(&pos)
+	return pos.X, pos.Y
 }
 
 // Move satisfies the app.Window interface.

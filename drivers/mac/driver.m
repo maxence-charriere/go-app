@@ -1,5 +1,4 @@
 #include "driver.h"
-#include "_cgo_export.h"
 #include "json.h"
 #include "sandbox.h"
 #include "window.h"
@@ -20,53 +19,53 @@
 - (instancetype)init {
   self.elements = [NSMutableDictionary dictionaryWithCapacity:256];
   self.objc = [[OBJCBridge alloc] init];
+  self.golang = [[GoBridge alloc] init];
 
   [self.objc handle:@"/driver/run"
-            handler:^(NSURL *url, NSString *payload) {
+            handler:^(NSURLComponents *url, NSString *payload) {
               return [self run:url payload:payload];
             }];
   [self.objc handle:@"/driver/resources"
-            handler:^(NSURL *url, NSString *payload) {
+            handler:^(NSURLComponents *url, NSString *payload) {
               return [self resources:url payload:payload];
             }];
   [self.objc handle:@"/driver/support"
-            handler:^(NSURL *url, NSString *payload) {
+            handler:^(NSURLComponents *url, NSString *payload) {
               return [self support:url payload:payload];
             }];
 
   [self.objc handle:@"/window/new"
-            handler:^(NSURL *url, NSString *payload) {
+            handler:^(NSURLComponents *url, NSString *payload) {
               return [Window newWindow:url payload:payload];
+            }];
+  [self.objc handle:@"/window/position"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Window position:url payload:payload];
             }];
 
   self.dock = [[NSMenu alloc] initWithTitle:@""];
   return self;
 }
 
-- (bridge_result)run:(NSURL *)url payload:(NSString *)payload {
+- (bridge_result)run:(NSURLComponents *)url payload:(NSString *)payload {
   [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
   [NSApp run];
-  return make_bridge_result();
+  return make_bridge_result(nil, nil);
 }
 
-- (bridge_result)resources:(NSURL *)url payload:(NSString *)payload {
+- (bridge_result)resources:(NSURLComponents *)url payload:(NSString *)payload {
   NSBundle *mainBundle = [NSBundle mainBundle];
-  NSString *resp = [JSONEncoder encodeString:mainBundle.resourcePath];
-
-  bridge_result res = make_bridge_result();
-  res.payload = new_bridge_result_string(resp);
-  return res;
+  NSString *res = [JSONEncoder encodeString:mainBundle.resourcePath];
+  return make_bridge_result(res, nil);
 }
 
-- (bridge_result)support:(NSURL *)url payload:(NSString *)payload {
-  bridge_result res = make_bridge_result();
+- (bridge_result)support:(NSURLComponents *)url payload:(NSString *)payload {
   NSBundle *mainBundle = [NSBundle mainBundle];
-  NSString *storagename = nil;
+  NSString *dirname = nil;
 
   if ([mainBundle isSandboxed]) {
-    storagename = [JSONEncoder encodeString:NSHomeDirectory()];
-    res.payload = new_bridge_result_string(storagename);
-    return res;
+    dirname = [JSONEncoder encodeString:NSHomeDirectory()];
+    return make_bridge_result(dirname, nil);
   }
 
   NSArray *paths = NSSearchPathForDirectoriesInDomains(
@@ -74,41 +73,39 @@
   NSString *applicationSupportDirectory = [paths firstObject];
 
   if (mainBundle.bundleIdentifier.length == 0) {
-    storagename = [NSString
+    dirname = [NSString
         stringWithFormat:@"%@/goapp/{appname}", applicationSupportDirectory];
   } else {
-    storagename =
-        [NSString stringWithFormat:@"%@/%@", applicationSupportDirectory,
-                                   mainBundle.bundleIdentifier];
+    dirname = [NSString stringWithFormat:@"%@/%@", applicationSupportDirectory,
+                                         mainBundle.bundleIdentifier];
   }
-  storagename = [JSONEncoder encodeString:storagename];
-  res.payload = new_bridge_result_string(storagename);
-  return res;
+  dirname = [JSONEncoder encodeString:dirname];
+  return make_bridge_result(dirname, nil);
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-  goRequest("/driver/run", nil);
+  [self.golang request:@"/driver/run" payload:nil];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)aNotification {
-  goRequest("/driver/focus", nil);
+  [self.golang request:@"/driver/focus" payload:nil];
 }
 
 - (void)applicationDidResignActive:(NSNotification *)aNotification {
-  goRequest("/driver/blur", nil);
+  [self.golang request:@"/driver/blur" payload:nil];
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender
                     hasVisibleWindows:(BOOL)flag {
   NSString *payload = flag ? @"true" : @"false";
-  goRequest("/driver/reopen", (char *)payload.UTF8String);
+  [self.golang request:@"/driver/reopen" payload:payload];
   return YES;
 }
 
 - (void)application:(NSApplication *)sender
           openFiles:(NSArray<NSString *> *)filenames {
   NSString *payload = [JSONEncoder encodeObject:filenames];
-  goRequest("/driver/filesopen", (char *)payload.UTF8String);
+  [self.golang request:@"/driver/filesopen" payload:payload];
 }
 
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
@@ -126,20 +123,17 @@
   NSString *rawurl =
       [event paramDescriptorForKeyword:keyDirectObject].stringValue;
   NSString *payload = [JSONEncoder encodeString:rawurl];
-  goRequest("/driver/urlopen", (char *)payload.UTF8String);
+  [self.golang request:@"/driver/urlopen" payload:payload];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:
     (NSApplication *)sender {
-  char *res = goRequestWithResult("/driver/quit", nil);
-  BOOL shouldTerminate = [JSONDecoder decodeBool:res];
-  free(res);
-  return shouldTerminate;
+  NSString *res = [self.golang requestWithResult:@"/driver/quit" payload:nil];
+  return [JSONDecoder decodeBool:res];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
-  char *res = goRequestWithResult("/driver/exit", nil);
-  free(res);
+  [self.golang requestWithResult:@"/driver/exit" payload:nil];
 }
 
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {

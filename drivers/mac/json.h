@@ -10,7 +10,8 @@
 @end
 
 @interface JSONDecoder : NSObject
-+ (BOOL)decodeBool:(const char *)b;
++ (NSDictionary *)decodeObject:(NSString *)json;
++ (BOOL)decodeBool:(NSString *)json;
 @end
 
 #endif /* json_h */
