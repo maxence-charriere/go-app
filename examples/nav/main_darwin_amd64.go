@@ -45,6 +45,8 @@ func main() {
 			fmt.Printf("win.Resize(x:%v, y: %v)\n", 1340, 720)
 			win.Resize(1340, 720)
 
+			win.Focus()
+
 			fmt.Println("all tests OK")
 		},
 		OnFocus: func() {
