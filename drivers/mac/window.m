@@ -87,13 +87,13 @@
 - (void)windowDidMove:(NSNotification *)notification {
   Driver *driver = [Driver current];
 
-  NSMutableDictionary<NSString *, id> *res = [[NSMutableDictionary alloc] init];
-  res[@"x"] = [NSNumber numberWithDouble:self.window.frame.origin.x];
-  res[@"y"] = [NSNumber numberWithDouble:self.window.frame.origin.y];
+  NSMutableDictionary<NSString *, id> *pos = [[NSMutableDictionary alloc] init];
+  pos[@"x"] = [NSNumber numberWithDouble:self.window.frame.origin.x];
+  pos[@"y"] = [NSNumber numberWithDouble:self.window.frame.origin.y];
 
   [driver.golang
       request:[NSString stringWithFormat:@"/window/move?id=%@", self.ID]
-      payload:[JSONEncoder encodeObject:res]];
+      payload:[JSONEncoder encodeObject:pos]];
 }
 
 + (bridge_result)center:(NSURLComponents *)url payload:(NSString *)payload {
@@ -108,6 +108,60 @@
     [driver.objc returnFor:returnID result:make_bridge_result(nil, nil)];
   });
   return make_bridge_result(nil, nil);
+}
+
++ (bridge_result)size:(NSURLComponents *)url payload:(NSString *)payload {
+  NSString *ID = [url queryValue:@"id"];
+  NSString *returnID = [url queryValue:@"return-id"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    Window *win = driver.elements[ID];
+
+    NSMutableDictionary<NSString *, id> *res =
+        [[NSMutableDictionary alloc] init];
+    res[@"width"] = [NSNumber numberWithDouble:win.window.frame.size.width];
+    res[@"height"] = [NSNumber numberWithDouble:win.window.frame.size.height];
+
+    NSString *payload = [JSONEncoder encodeObject:res];
+    [driver.objc returnFor:returnID result:make_bridge_result(payload, nil)];
+  });
+  return make_bridge_result(nil, nil);
+}
+
++ (bridge_result)resize:(NSURLComponents *)url payload:(NSString *)payload {
+  NSString *ID = [url queryValue:@"id"];
+  NSString *returnID = [url queryValue:@"return-id"];
+
+  NSDictionary *size = [JSONDecoder decodeObject:payload];
+  NSNumber *width = size[@"width"];
+  NSNumber *height = size[@"height"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    Window *win = driver.elements[ID];
+
+    CGRect frame = win.window.frame;
+    frame.size.width = width.doubleValue;
+    frame.size.height = height.doubleValue;
+    [win.window setFrame:frame display:YES];
+
+    [driver.objc returnFor:returnID result:make_bridge_result(nil, nil)];
+  });
+  return make_bridge_result(nil, nil);
+}
+
+- (void)windowDidResize:(NSNotification *)notification {
+  Driver *driver = [Driver current];
+
+  NSMutableDictionary<NSString *, id> *size =
+      [[NSMutableDictionary alloc] init];
+  size[@"width"] = [NSNumber numberWithDouble:self.window.frame.size.width];
+  size[@"height"] = [NSNumber numberWithDouble:self.window.frame.size.height];
+
+  [driver.golang
+      request:[NSString stringWithFormat:@"/window/resize?id=%@", self.ID]
+      payload:[JSONEncoder encodeObject:size]];
 }
 @end
 
