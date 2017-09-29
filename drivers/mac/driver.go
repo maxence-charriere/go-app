@@ -74,6 +74,8 @@ func (d *Driver) Run(b markup.CompoBuilder) error {
 
 	d.golang.Handle("/window/move", windowHandler(onWindowMove))
 	d.golang.Handle("/window/resize", windowHandler(onWindowResize))
+	d.golang.Handle("/window/focus", windowHandler(onWindowFocus))
+	d.golang.Handle("/window/blur", windowHandler(onWindowBlur))
 
 	go func() {
 		for f := range d.uichan {

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/murlokswarm/app"
@@ -12,8 +11,8 @@ func main() {
 	app.Run(&mac.Driver{
 		OnRun: func() {
 			log.Println("OnRun")
-			fmt.Println("app.Resources():", app.Resources())
-			fmt.Println("app.Storage():", app.Storage())
+			log.Println("app.Resources():", app.Resources())
+			log.Println("app.Storage():", app.Storage())
 
 			win := app.NewWindow(app.WindowConfig{
 				Title:  "test window",
@@ -23,31 +22,37 @@ func main() {
 				Height: 600,
 
 				OnMove: func(x, y float64) {
-					fmt.Printf("window moved to x:%v y:%v\n", x, y)
+					log.Printf("Window moved to x:%v y:%v", x, y)
 				},
 				OnResize: func(width, height float64) {
-					fmt.Printf("window resized to width:%v height:%v\n", width, height)
+					log.Printf("Window resized to width:%v height:%v", width, height)
+				},
+				OnFocus: func() {
+					log.Println("Window focused")
+				},
+				OnBlur: func() {
+					log.Println("Window blured")
 				},
 			})
 
 			x, y := win.Position()
-			fmt.Printf("win.Positon() x:%v, x:%v\n", x, y)
+			log.Printf("win.Positon() x:%v, x:%v", x, y)
 
-			fmt.Printf("win.Move(x:%v, y: %v)\n", 42, 42)
+			log.Printf("win.Move(x:%v, y: %v)", 42, 42)
 			win.Move(42, 42)
 
-			fmt.Println("win.Center()")
+			log.Println("win.Center()")
 			win.Center()
 
 			width, height := win.Size()
-			fmt.Printf("win.Size() width:%v, height:%v\n", width, height)
+			log.Printf("win.Size() width:%v, height:%v", width, height)
 
-			fmt.Printf("win.Resize(x:%v, y: %v)\n", 1340, 720)
+			log.Printf("win.Resize(x:%v, y: %v)", 1340, 720)
 			win.Resize(1340, 720)
 
 			win.Focus()
 
-			fmt.Println("all tests OK")
+			log.Println("all tests OK")
 		},
 		OnFocus: func() {
 			log.Println("OnFocus")

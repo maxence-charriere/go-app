@@ -191,11 +191,21 @@ func (w *Window) Focus() {
 }
 
 func onWindowFocus(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	panic("not implemented")
+	if w.onFocus == nil {
+		return
+	}
+
+	w.onFocus()
+	return
 }
 
 func onWindowBlur(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	panic("not implemented")
+	if w.onBlur == nil {
+		return
+	}
+
+	w.onBlur()
+	return
 }
 
 // Close satisfies the app.Window interface.

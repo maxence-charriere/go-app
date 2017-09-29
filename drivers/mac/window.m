@@ -172,12 +172,26 @@
     Window *win = driver.elements[ID];
 
     [win showWindow:nil];
-    [win.window makeKeyWindow];
-    NSLog(@"window key %d", win.window.keyWindow);
 
     [driver.objc returnFor:returnID result:make_bridge_result(nil, nil)];
   });
   return make_bridge_result(nil, nil);
+}
+
+- (void)windowDidBecomeKey:(NSNotification *)notification {
+  Driver *driver = [Driver current];
+
+  [driver.golang
+      request:[NSString stringWithFormat:@"/window/focus?id=%@", self.ID]
+      payload:nil];
+}
+
+- (void)windowDidResignKey:(NSNotification *)notification {
+  Driver *driver = [Driver current];
+
+  [driver.golang
+      request:[NSString stringWithFormat:@"/window/blur?id=%@", self.ID]
+      payload:nil];
 }
 @end
 
