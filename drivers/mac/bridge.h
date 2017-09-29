@@ -29,7 +29,7 @@ bridge_result macosRequest(char *rawurl, char *payload);
 
 - (instancetype)init;
 - (void)handle:(NSString *)path handler:(OBJCHandler)handler;
-- (void)returnFor:(NSString *)id result:(bridge_result)res;
+- (void)asyncReturn:(NSString *)id result:(bridge_result)res;
 @end
 
 // GoBridge is a golang bridge implementation.

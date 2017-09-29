@@ -57,7 +57,7 @@ bridge_result macosRequest(char *rawurl, char *cpayload) {
   self.handlers[path] = handler;
 }
 
-- (void)returnFor:(NSString *)id result:(bridge_result)res {
+- (void)asyncReturn:(NSString *)id result:(bridge_result)res {
   macosRequestResult(copyNSString(id), res);
 }
 @end

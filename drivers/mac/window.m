@@ -40,7 +40,7 @@
     driver.elements[ID] = win;
 
     [win showWindow:nil];
-    [driver.objc returnFor:returnID result:make_bridge_result(nil, nil)];
+    [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
 
   });
   return make_bridge_result(nil, nil);
@@ -60,7 +60,7 @@
     pos[@"y"] = [NSNumber numberWithDouble:win.window.frame.origin.y];
 
     NSString *payload = [JSONEncoder encodeObject:pos];
-    [driver.objc returnFor:returnID result:make_bridge_result(payload, nil)];
+    [driver.objc asyncReturn:returnID result:make_bridge_result(payload, nil)];
   });
   return make_bridge_result(nil, nil);
 }
@@ -78,7 +78,7 @@
     Window *win = driver.elements[ID];
 
     [win.window setFrameOrigin:NSMakePoint(x.doubleValue, y.doubleValue)];
-    [driver.objc returnFor:returnID result:make_bridge_result(nil, nil)];
+    [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
   });
   return make_bridge_result(nil, nil);
 }
@@ -104,7 +104,7 @@
     Window *win = driver.elements[ID];
 
     [win.window center];
-    [driver.objc returnFor:returnID result:make_bridge_result(nil, nil)];
+    [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
   });
   return make_bridge_result(nil, nil);
 }
@@ -123,7 +123,7 @@
     size[@"height"] = [NSNumber numberWithDouble:win.window.frame.size.height];
 
     NSString *payload = [JSONEncoder encodeObject:size];
-    [driver.objc returnFor:returnID result:make_bridge_result(payload, nil)];
+    [driver.objc asyncReturn:returnID result:make_bridge_result(payload, nil)];
   });
   return make_bridge_result(nil, nil);
 }
@@ -145,7 +145,7 @@
     frame.size.height = height.doubleValue;
     [win.window setFrame:frame display:YES];
 
-    [driver.objc returnFor:returnID result:make_bridge_result(nil, nil)];
+    [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
   });
   return make_bridge_result(nil, nil);
 }
@@ -173,7 +173,7 @@
 
     [win showWindow:nil];
 
-    [driver.objc returnFor:returnID result:make_bridge_result(nil, nil)];
+    [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
   });
   return make_bridge_result(nil, nil);
 }
