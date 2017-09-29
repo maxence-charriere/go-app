@@ -55,12 +55,12 @@
     Driver *driver = [Driver current];
     Window *win = driver.elements[ID];
 
-    NSMutableDictionary<NSString *, id> *res =
+    NSMutableDictionary<NSString *, id> *pos =
         [[NSMutableDictionary alloc] init];
-    res[@"x"] = [NSNumber numberWithDouble:win.window.frame.origin.x];
-    res[@"y"] = [NSNumber numberWithDouble:win.window.frame.origin.y];
+    pos[@"x"] = [NSNumber numberWithDouble:win.window.frame.origin.x];
+    pos[@"y"] = [NSNumber numberWithDouble:win.window.frame.origin.y];
 
-    NSString *payload = [JSONEncoder encodeObject:res];
+    NSString *payload = [JSONEncoder encodeObject:pos];
     [driver.objc returnFor:returnID result:make_bridge_result(payload, nil)];
   });
   return make_bridge_result(nil, nil);
@@ -70,9 +70,9 @@
   NSString *ID = [url queryValue:@"id"];
   NSString *returnID = [url queryValue:@"return-id"];
 
-  NSDictionary *point = [JSONDecoder decodeObject:payload];
-  NSNumber *x = point[@"x"];
-  NSNumber *y = point[@"y"];
+  NSDictionary *pos = [JSONDecoder decodeObject:payload];
+  NSNumber *x = pos[@"x"];
+  NSNumber *y = pos[@"y"];
 
   dispatch_async(dispatch_get_main_queue(), ^{
     Driver *driver = [Driver current];
@@ -118,12 +118,12 @@
     Driver *driver = [Driver current];
     Window *win = driver.elements[ID];
 
-    NSMutableDictionary<NSString *, id> *res =
+    NSMutableDictionary<NSString *, id> *size =
         [[NSMutableDictionary alloc] init];
-    res[@"width"] = [NSNumber numberWithDouble:win.window.frame.size.width];
-    res[@"height"] = [NSNumber numberWithDouble:win.window.frame.size.height];
+    size[@"width"] = [NSNumber numberWithDouble:win.window.frame.size.width];
+    size[@"height"] = [NSNumber numberWithDouble:win.window.frame.size.height];
 
-    NSString *payload = [JSONEncoder encodeObject:res];
+    NSString *payload = [JSONEncoder encodeObject:size];
     [driver.objc returnFor:returnID result:make_bridge_result(payload, nil)];
   });
   return make_bridge_result(nil, nil);
