@@ -5,14 +5,15 @@
 
 @implementation Driver
 + (instancetype)current {
-  NSApplication *app = [NSApplication sharedApplication];
+  static Driver *driver = nil;
 
-  if (app.delegate != nil) {
-    return app.delegate;
+  @synchronized(self) {
+    if (driver == nil) {
+      driver = [[Driver alloc] init];
+      NSApplication *app = [NSApplication sharedApplication];
+      app.delegate = driver;
+    }
   }
-
-  Driver *driver = [[Driver alloc] init];
-  app.delegate = driver;
   return driver;
 }
 
@@ -59,6 +60,10 @@
   [self.objc handle:@"/window/resize"
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Window resize:url payload:payload];
+            }];
+  [self.objc handle:@"/window/focus"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Window focus:url payload:payload];
             }];
 
   self.dock = [[NSMenu alloc] initWithTitle:@""];

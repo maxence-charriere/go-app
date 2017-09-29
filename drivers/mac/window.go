@@ -21,6 +21,8 @@ type Window struct {
 
 	onMove   func(x, y float64)
 	onResize func(width, height float64)
+	onFocus  func()
+	onBlur   func()
 }
 
 func newWindow(d *Driver, c app.WindowConfig) (w *Window, err error) {
@@ -32,6 +34,8 @@ func newWindow(d *Driver, c app.WindowConfig) (w *Window, err error) {
 
 		onMove:   c.OnMove,
 		onResize: c.OnResize,
+		onFocus:  c.OnFocus,
+		onBlur:   c.OnBlur,
 	}
 
 	rawurl := fmt.Sprintf("/window/new?id=%s", w.id)
@@ -94,7 +98,7 @@ func (w *Window) Position() (x, y float64) {
 
 	res, err := w.driver.macos.RequestWithAsyncResponse(rawurl, nil)
 	if err != nil {
-		panic(errors.Wrapf(err, "can't retrieve positon of window %v", w.ID()))
+		panic(errors.Wrapf(err, "retrieving positon of window %v", w.ID()))
 	}
 
 	var pos geom.Point
@@ -143,7 +147,7 @@ func (w *Window) Size() (width, height float64) {
 
 	res, err := w.driver.macos.RequestWithAsyncResponse(rawurl, nil)
 	if err != nil {
-		panic(errors.Wrapf(err, "can't retrieve size of window %v", w.ID()))
+		panic(errors.Wrapf(err, "retrieving size of window %v failed", w.ID()))
 	}
 
 	var size geom.Size
@@ -161,7 +165,7 @@ func (w *Window) Resize(width, height float64) {
 
 	_, err := w.driver.macos.RequestWithAsyncResponse(rawurl, payload)
 	if err != nil {
-		panic(errors.Wrapf(err, "can't retrieve size of window %v", w.ID()))
+		panic(errors.Wrapf(err, "resizing window %v failed", w.ID()))
 	}
 }
 
@@ -178,11 +182,30 @@ func onWindowResize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload
 
 // Focus satisfies the app.Window interface.
 func (w *Window) Focus() {
-	panic("not implemented")
+	rawurl := fmt.Sprintf("/window/focus?id=%s", w.id)
+
+	_, err := w.driver.macos.RequestWithAsyncResponse(rawurl, nil)
+	if err != nil {
+		panic(errors.Wrapf(err, "focusing window %v failed", w.ID()))
+	}
 }
 
-func onWindowFocus(w *Window, u *url.URL, p bridge.Payload) {
-	panic("not implemented")
+func onWindowFocus(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	if w.onFocus == nil {
+		return
+	}
+
+	w.onFocus()
+	return
+}
+
+func onWindowBlur(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	if w.onBlur == nil {
+		return
+	}
+
+	w.onBlur()
+	return
 }
 
 // Close satisfies the app.Window interface.

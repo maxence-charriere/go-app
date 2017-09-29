@@ -40,7 +40,6 @@
     driver.elements[ID] = win;
 
     [win showWindow:nil];
-
     [driver.objc returnFor:returnID result:make_bridge_result(nil, nil)];
 
   });
@@ -162,6 +161,37 @@
   [driver.golang
       request:[NSString stringWithFormat:@"/window/resize?id=%@", self.ID]
       payload:[JSONEncoder encodeObject:size]];
+}
+
++ (bridge_result)focus:(NSURLComponents *)url payload:(NSString *)payload {
+  NSString *ID = [url queryValue:@"id"];
+  NSString *returnID = [url queryValue:@"return-id"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    Window *win = driver.elements[ID];
+
+    [win showWindow:nil];
+
+    [driver.objc returnFor:returnID result:make_bridge_result(nil, nil)];
+  });
+  return make_bridge_result(nil, nil);
+}
+
+- (void)windowDidBecomeKey:(NSNotification *)notification {
+  Driver *driver = [Driver current];
+
+  [driver.golang
+      request:[NSString stringWithFormat:@"/window/focus?id=%@", self.ID]
+      payload:nil];
+}
+
+- (void)windowDidResignKey:(NSNotification *)notification {
+  Driver *driver = [Driver current];
+
+  [driver.golang
+      request:[NSString stringWithFormat:@"/window/blur?id=%@", self.ID]
+      payload:nil];
 }
 @end
 
