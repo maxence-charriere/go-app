@@ -5,10 +5,11 @@ import (
 	"net/url"
 
 	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/markup"
 )
 
 // Sf is the component displaying San Francisco.
-type Sf struct{}
+type Sf markup.ZeroCompo
 
 // Render returns the HTML describing the Sf component content.
 // It contains a link to show how to navigate to an other component (Paris).
@@ -36,7 +37,7 @@ func (s *Sf) OnHref(URL *url.URL) {
 	fmt.Println("mounted from a link click:", URL)
 }
 
-// /!\ Register the component. Required to use the component into a context.
+// /!\ Import the component. Required to use a component.
 func init() {
-	app.RegisterComponent(&Sf{})
+	app.Import(&Sf{})
 }
