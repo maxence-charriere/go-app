@@ -73,6 +73,7 @@ func (d *Driver) Run(b markup.CompoBuilder) error {
 	d.golang.Handle("/driver/exit", d.onExit)
 
 	d.golang.Handle("/window/move", windowHandler(onWindowMove))
+	d.golang.Handle("/window/resize", windowHandler(onWindowResize))
 
 	go func() {
 		for f := range d.uichan {

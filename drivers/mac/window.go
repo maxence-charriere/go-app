@@ -19,7 +19,8 @@ type Window struct {
 	env       markup.Env
 	lastFocus time.Time
 
-	onMove func(x, y float64)
+	onMove   func(x, y float64)
+	onResize func(width, height float64)
 }
 
 func newWindow(d *Driver, c app.WindowConfig) (w *Window, err error) {
@@ -29,7 +30,8 @@ func newWindow(d *Driver, c app.WindowConfig) (w *Window, err error) {
 		env:       markup.NewEnv(d.components),
 		lastFocus: time.Now(),
 
-		onMove: c.OnMove,
+		onMove:   c.OnMove,
+		onResize: c.OnResize,
 	}
 
 	rawurl := fmt.Sprintf("/window/new?id=%s", w.id)
@@ -137,16 +139,41 @@ func (w *Window) Center() {
 
 // Size satisfies the app.Window interface.
 func (w *Window) Size() (width, height float64) {
-	panic("not implemented")
+	rawurl := fmt.Sprintf("/window/size?id=%s", w.id)
+
+	res, err := w.driver.macos.RequestWithAsyncResponse(rawurl, nil)
+	if err != nil {
+		panic(errors.Wrapf(err, "can't retrieve size of window %v", w.ID()))
+	}
+
+	var size geom.Size
+	res.Unmarshal(&size)
+	return size.Width, size.Height
 }
 
 // Resize satisfies the app.Window interface.
 func (w *Window) Resize(width, height float64) {
-	panic("not implemented")
+	rawurl := fmt.Sprintf("/window/resize?id=%s", w.id)
+	payload := bridge.NewPayload(geom.Size{
+		Width:  width,
+		Height: height,
+	})
+
+	_, err := w.driver.macos.RequestWithAsyncResponse(rawurl, payload)
+	if err != nil {
+		panic(errors.Wrapf(err, "can't retrieve size of window %v", w.ID()))
+	}
 }
 
-func onWindowResize(w *Window, u *url.URL, p bridge.Payload) {
-	panic("not implemented")
+func onWindowResize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	if w.onResize == nil {
+		return
+	}
+
+	var size geom.Size
+	p.Unmarshal(&size)
+	w.onResize(size.Width, size.Height)
+	return
 }
 
 // Focus satisfies the app.Window interface.

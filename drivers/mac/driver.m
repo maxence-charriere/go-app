@@ -52,6 +52,14 @@
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Window center:url payload:payload];
             }];
+  [self.objc handle:@"/window/size"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Window size:url payload:payload];
+            }];
+  [self.objc handle:@"/window/resize"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Window resize:url payload:payload];
+            }];
 
   self.dock = [[NSMenu alloc] initWithTitle:@""];
   return self;
