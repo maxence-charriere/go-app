@@ -9,7 +9,6 @@
                                         WKUIDelegate, WKScriptMessageHandler>
 @property NSString *ID;
 @property WKWebView *webview;
-@property BOOL closedFromGolang;
 
 + (bridge_result)newWindow:(NSURLComponents *)url payload:(NSString *)payload;
 + (bridge_result)position:(NSURLComponents *)url payload:(NSString *)payload;

@@ -33,7 +33,6 @@
 
     Window *win = [[Window alloc] initWithWindow:rawWindow];
     win.ID = ID;
-    win.closedFromGolang = NO;
     win.windowFrameAutosaveName = title;
     win.window.delegate = win;
 
@@ -41,8 +40,6 @@
     driver.elements[ID] = win;
 
     [win showWindow:nil];
-    // [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
-
   });
   return make_bridge_result(nil, nil);
 }
@@ -79,8 +76,6 @@
     Window *win = driver.elements[ID];
 
     [win.window setFrameOrigin:NSMakePoint(x.doubleValue, y.doubleValue)];
-
-    // [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
   });
   return make_bridge_result(nil, nil);
 }
@@ -106,7 +101,6 @@
     Window *win = driver.elements[ID];
 
     [win.window center];
-    // [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
   });
   return make_bridge_result(nil, nil);
 }
@@ -147,8 +141,6 @@
     frame.size.height = height.doubleValue;
 
     [win.window setFrame:frame display:YES];
-
-    // [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
   });
   return make_bridge_result(nil, nil);
 }
@@ -175,8 +167,6 @@
     Window *win = driver.elements[ID];
 
     [win showWindow:nil];
-
-    // [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
   });
   return make_bridge_result(nil, nil);
 }
@@ -206,8 +196,6 @@
     Window *win = driver.elements[ID];
 
     [win.window performClose:NSApp];
-
-    // [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
   });
   return make_bridge_result(nil, nil);
 }
