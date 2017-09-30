@@ -9,6 +9,9 @@ install:
 script:
   - go test . -covermode count -coverprofile cover.out
   - go test -test.run Benchmark -cpu 1 -bench ./...
+  - go test ./bridge
+  - go test ./log
+  - go test ./markup
   - goveralls -service travis-ci -repotoken $COVERALLS_TOKEN -coverprofile cover.out
 
 notifications:
