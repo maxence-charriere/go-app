@@ -73,9 +73,9 @@ func (b *goBridge) RequestWithResponse(rawurl string, p Payload) (res Payload) {
 
 	reschan := make(chan Payload, 1)
 
-	b.uichan <- func() {
+	go func() {
 		reschan <- b.handle(u, p)
-	}
+	}()
 
 	res = <-reschan
 	return
