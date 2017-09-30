@@ -65,6 +65,10 @@
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Window focus:url payload:payload];
             }];
+  [self.objc handle:@"/window/close"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Window close:url payload:payload];
+            }];
 
   self.dock = [[NSMenu alloc] initWithTitle:@""];
   return self;

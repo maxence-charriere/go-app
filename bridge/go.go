@@ -73,9 +73,12 @@ func (b *goBridge) RequestWithResponse(rawurl string, p Payload) (res Payload) {
 
 	reschan := make(chan Payload, 1)
 
-	b.uichan <- func() {
+	// Here we donc execute the handler in the ui goroutine because it can
+	// cause a deadlock if RequestWithResponse is called while some platform
+	// requests are waiting for an async result.
+	go func() {
 		reschan <- b.handle(u, p)
-	}
+	}()
 
 	res = <-reschan
 	return

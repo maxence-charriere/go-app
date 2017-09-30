@@ -32,6 +32,7 @@ func (l *Logger) Logf(format string, v ...interface{}) {
 	}
 	printPrefix("Log", accentColor)
 	fmt.Printf(format, v...)
+	fmt.Println()
 }
 
 // Error satisfies the app.Logger interface.
@@ -44,6 +45,7 @@ func (l *Logger) Error(v ...interface{}) {
 func (l *Logger) Errorf(format string, v ...interface{}) {
 	printPrefix("Error", errColor)
 	fmt.Printf(format, v...)
+	fmt.Println()
 }
 
 func printPrefix(level, color string) {

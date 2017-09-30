@@ -1,45 +1,49 @@
 package main
 
 import (
-	"log"
+	"fmt"
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/drivers/mac"
+	"github.com/murlokswarm/app/log"
 )
 
 func main() {
 	app.Run(&mac.Driver{
-		OnRun: func() {
-			log.Println("OnRun")
-			log.Println("app.Resources():", app.Resources())
-			log.Println("app.Storage():", app.Storage())
+		Logger: &log.Logger{Debug: true},
 
-			testWindow()
+		OnRun: func() {
+			fmt.Println("OnRun")
+			fmt.Println("app.Resources():", app.Resources())
+			fmt.Println("app.Storage():", app.Storage())
+
+			testWindow(true)
+			testWindow(false)
 		},
 		OnFocus: func() {
-			log.Println("OnFocus")
+			fmt.Println("OnFocus")
 		},
 		OnBlur: func() {
-			log.Println("OnBlur")
+			fmt.Println("OnBlur")
 		},
 		OnReopen: func(hasVisibleWindows bool) {
-			log.Println("OnReopen hasVisibleWIndow:", hasVisibleWindows)
+			fmt.Println("OnReopen hasVisibleWIndow:", hasVisibleWindows)
 			if hasVisibleWindows {
 				return
 			}
-			testWindow()
+			testWindow(false)
 		},
 		OnQuit: func() bool {
-			log.Println("OnQuit")
+			fmt.Println("OnQuit")
 			return true
 		},
 		OnExit: func() {
-			log.Println("OnExit")
+			fmt.Println("OnExit")
 		},
 	})
 }
 
-func testWindow() {
+func testWindow(close bool) {
 	win := app.NewWindow(app.WindowConfig{
 		Title:  "test window",
 		X:      42,
@@ -48,35 +52,44 @@ func testWindow() {
 		Height: 600,
 
 		OnMove: func(x, y float64) {
-			log.Printf("Window moved to x:%v y:%v", x, y)
+			fmt.Printf("Window moved to x:%v y:%v\n", x, y)
 		},
 		OnResize: func(width, height float64) {
-			log.Printf("Window resized to width:%v height:%v", width, height)
+			fmt.Printf("Window resized to width:%v height:%v\n", width, height)
 		},
 		OnFocus: func() {
-			log.Println("Window focused")
+			fmt.Println("Window focused")
 		},
 		OnBlur: func() {
-			log.Println("Window blured")
+			fmt.Println("Window blured")
+		},
+		OnClose: func() bool {
+			fmt.Println("Window close")
+			return true
 		},
 	})
 
 	x, y := win.Position()
-	log.Printf("win.Positon() x:%v, x:%v", x, y)
+	fmt.Printf("win.Positon() x:%v, x:%v\n", x, y)
 
-	log.Printf("win.Move(x:%v, y: %v)", 42, 42)
+	fmt.Printf("win.Move(x:%v, y: %v)\n", 42, 42)
 	win.Move(42, 42)
 
-	log.Println("win.Center()")
+	fmt.Println("win.Center()")
 	win.Center()
 
 	width, height := win.Size()
-	log.Printf("win.Size() width:%v, height:%v", width, height)
+	fmt.Printf("win.Size() width:%v, height:%v\n", width, height)
 
-	log.Printf("win.Resize(x:%v, y: %v)", 1340, 720)
+	fmt.Printf("win.Resize(x:%v, y: %v)\n", 1340, 720)
 	win.Resize(1340, 720)
 
 	win.Focus()
 
-	log.Println("Window tests OK")
+	if close {
+		fmt.Println("win.Close()")
+		win.Close()
+	}
+
+	fmt.Println("Window tests OK")
 }

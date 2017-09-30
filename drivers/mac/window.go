@@ -23,6 +23,7 @@ type Window struct {
 	onResize func(width, height float64)
 	onFocus  func()
 	onBlur   func()
+	onClose  func() bool
 }
 
 func newWindow(d *Driver, c app.WindowConfig) (w *Window, err error) {
@@ -36,10 +37,11 @@ func newWindow(d *Driver, c app.WindowConfig) (w *Window, err error) {
 		onResize: c.OnResize,
 		onFocus:  c.OnFocus,
 		onBlur:   c.OnBlur,
+		onClose:  c.OnClose,
 	}
 
 	rawurl := fmt.Sprintf("/window/new?id=%s", w.id)
-	if _, err = d.macos.RequestWithAsyncResponse(rawurl, bridge.NewPayload(c)); err != nil {
+	if _, err = d.macos.Request(rawurl, bridge.NewPayload(c)); err != nil {
 		return
 	}
 
@@ -114,7 +116,7 @@ func (w *Window) Move(x, y float64) {
 		Y: y,
 	})
 
-	_, err := w.driver.macos.RequestWithAsyncResponse(rawurl, payload)
+	_, err := w.driver.macos.Request(rawurl, payload)
 	if err != nil {
 		panic(errors.Wrapf(err, "moving window %v failed", w.ID()))
 	}
@@ -135,7 +137,7 @@ func onWindowMove(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) 
 func (w *Window) Center() {
 	rawurl := fmt.Sprintf("/window/center?id=%s", w.id)
 
-	_, err := w.driver.macos.RequestWithAsyncResponse(rawurl, nil)
+	_, err := w.driver.macos.Request(rawurl, nil)
 	if err != nil {
 		panic(errors.Wrapf(err, "centering window %v failed", w.ID()))
 	}
@@ -163,7 +165,7 @@ func (w *Window) Resize(width, height float64) {
 		Height: height,
 	})
 
-	_, err := w.driver.macos.RequestWithAsyncResponse(rawurl, payload)
+	_, err := w.driver.macos.Request(rawurl, payload)
 	if err != nil {
 		panic(errors.Wrapf(err, "resizing window %v failed", w.ID()))
 	}
@@ -184,7 +186,7 @@ func onWindowResize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload
 func (w *Window) Focus() {
 	rawurl := fmt.Sprintf("/window/focus?id=%s", w.id)
 
-	_, err := w.driver.macos.RequestWithAsyncResponse(rawurl, nil)
+	_, err := w.driver.macos.Request(rawurl, nil)
 	if err != nil {
 		panic(errors.Wrapf(err, "focusing window %v failed", w.ID()))
 	}
@@ -210,9 +212,23 @@ func onWindowBlur(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) 
 
 // Close satisfies the app.Window interface.
 func (w *Window) Close() {
-	panic("not implemented")
+	rawurl := fmt.Sprintf("/window/close?id=%s", w.id)
+
+	_, err := w.driver.macos.Request(rawurl, nil)
+	if err != nil {
+		panic(errors.Wrapf(err, "closing window %v failed", w.ID()))
+	}
 }
 
-func onWindowClose(w *Window, u *url.URL, p bridge.Payload) {
-	w.driver.elements.Remove(w)
+func onWindowClose(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	shouldClose := true
+	if w.onClose != nil {
+		shouldClose = w.onClose()
+	}
+	res = bridge.NewPayload(shouldClose)
+
+	if shouldClose {
+		w.driver.elements.Remove(w)
+	}
+	return
 }

@@ -92,7 +92,8 @@ func windowHandler(h func(w *Window, u *url.URL, p bridge.Payload) (res bridge.P
 
 		elem, ok := driver.elements.Element(id)
 		if !ok {
-			panic(errors.Errorf("creating window handler failed: window with id %v doesn't exists", id))
+			driver.Logger.Logf("%v: window with id %v doesn't exists", u.Path, id)
+			return nil
 		}
 
 		win, ok := elem.(*Window)
