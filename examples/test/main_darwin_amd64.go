@@ -14,7 +14,8 @@ func main() {
 			log.Println("app.Resources():", app.Resources())
 			log.Println("app.Storage():", app.Storage())
 
-			testWindow()
+			testWindow(true)
+			testWindow(false)
 		},
 		OnFocus: func() {
 			log.Println("OnFocus")
@@ -27,7 +28,7 @@ func main() {
 			if hasVisibleWindows {
 				return
 			}
-			testWindow()
+			testWindow(false)
 		},
 		OnQuit: func() bool {
 			log.Println("OnQuit")
@@ -39,7 +40,7 @@ func main() {
 	})
 }
 
-func testWindow() {
+func testWindow(close bool) {
 	win := app.NewWindow(app.WindowConfig{
 		Title:  "test window",
 		X:      42,
@@ -59,6 +60,10 @@ func testWindow() {
 		OnBlur: func() {
 			log.Println("Window blured")
 		},
+		OnClose: func() bool {
+			log.Println("Window close")
+			return true
+		},
 	})
 
 	x, y := win.Position()
@@ -77,6 +82,11 @@ func testWindow() {
 	win.Resize(1340, 720)
 
 	win.Focus()
+
+	if close {
+		log.Println("win.Close()")
+		win.Close()
+	}
 
 	log.Println("Window tests OK")
 }

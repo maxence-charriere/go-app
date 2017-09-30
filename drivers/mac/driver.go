@@ -14,6 +14,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"sync"
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/bridge"
@@ -46,6 +47,7 @@ type Driver struct {
 	components markup.CompoBuilder
 	elements   app.ElementStore
 	uichan     chan func()
+	waitStop   sync.WaitGroup
 	macos      bridge.PlatformBridge
 	golang     bridge.GoBridge
 	menubar    app.Menu
@@ -59,6 +61,14 @@ func (d *Driver) Run(b markup.CompoBuilder) error {
 
 	d.uichan = make(chan func(), 256)
 	defer close(d.uichan)
+
+	d.waitStop.Add(1)
+
+	go func() {
+		for f := range d.uichan {
+			f()
+		}
+	}()
 
 	d.macos = bridge.NewPlatformBridge(handleMacOSRequest)
 	d.golang = bridge.NewGoBridge(d.uichan)
@@ -76,15 +86,12 @@ func (d *Driver) Run(b markup.CompoBuilder) error {
 	d.golang.Handle("/window/resize", windowHandler(onWindowResize))
 	d.golang.Handle("/window/focus", windowHandler(onWindowFocus))
 	d.golang.Handle("/window/blur", windowHandler(onWindowBlur))
-
-	go func() {
-		for f := range d.uichan {
-			f()
-		}
-	}()
+	d.golang.Handle("/window/close", windowHandler(onWindowClose))
 
 	driver = d
 	_, err := d.macos.Request("/driver/run", nil)
+
+	d.waitStop.Wait()
 	return err
 }
 
@@ -164,6 +171,8 @@ func (d *Driver) onQuit(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 }
 
 func (d *Driver) onExit(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	defer d.waitStop.Done()
+
 	if d.OnExit == nil {
 		return
 	}

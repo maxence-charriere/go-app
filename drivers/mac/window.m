@@ -33,6 +33,7 @@
 
     Window *win = [[Window alloc] initWithWindow:rawWindow];
     win.ID = ID;
+    win.closedFromGolang = NO;
     win.windowFrameAutosaveName = title;
     win.window.delegate = win;
 
@@ -40,7 +41,7 @@
     driver.elements[ID] = win;
 
     [win showWindow:nil];
-    [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
+    // [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
 
   });
   return make_bridge_result(nil, nil);
@@ -78,7 +79,8 @@
     Window *win = driver.elements[ID];
 
     [win.window setFrameOrigin:NSMakePoint(x.doubleValue, y.doubleValue)];
-    [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
+
+    // [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
   });
   return make_bridge_result(nil, nil);
 }
@@ -104,7 +106,7 @@
     Window *win = driver.elements[ID];
 
     [win.window center];
-    [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
+    // [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
   });
   return make_bridge_result(nil, nil);
 }
@@ -143,9 +145,10 @@
     CGRect frame = win.window.frame;
     frame.size.width = width.doubleValue;
     frame.size.height = height.doubleValue;
+
     [win.window setFrame:frame display:YES];
 
-    [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
+    // [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
   });
   return make_bridge_result(nil, nil);
 }
@@ -173,7 +176,7 @@
 
     [win showWindow:nil];
 
-    [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
+    // [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
   });
   return make_bridge_result(nil, nil);
 }
@@ -192,6 +195,36 @@
   [driver.golang
       request:[NSString stringWithFormat:@"/window/blur?id=%@", self.ID]
       payload:nil];
+}
+
++ (bridge_result)close:(NSURLComponents *)url payload:(NSString *)payload {
+  NSString *ID = [url queryValue:@"id"];
+  NSString *returnID = [url queryValue:@"return-id"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    Window *win = driver.elements[ID];
+
+    [win.window performClose:NSApp];
+
+    // [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
+  });
+  return make_bridge_result(nil, nil);
+}
+
+- (BOOL)windowShouldClose:(NSWindow *)sender {
+  Driver *driver = [Driver current];
+
+  NSString *res = [driver.golang
+      requestWithResult:[NSString
+                            stringWithFormat:@"/window/close?id=%@", self.ID]
+                payload:nil];
+
+  BOOL shouldClose = [JSONDecoder decodeBool:res];
+  if (shouldClose) {
+    [driver.elements removeObjectForKey:self.ID];
+  }
+  return shouldClose;
 }
 @end
 
