@@ -18,6 +18,7 @@ import (
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/bridge"
+	"github.com/murlokswarm/app/log"
 	"github.com/murlokswarm/app/markup"
 	"github.com/pkg/errors"
 )
@@ -34,6 +35,7 @@ func init() {
 type Driver struct {
 	MenubarURL string
 	DockURL    string
+	Logger     app.Logger
 
 	OnRun       func()
 	OnFocus     func()
@@ -58,6 +60,10 @@ type Driver struct {
 func (d *Driver) Run(b markup.CompoBuilder) error {
 	d.components = b
 	d.elements = app.NewElementStore()
+
+	if d.Logger == nil {
+		d.Logger = &log.Logger{}
+	}
 
 	d.uichan = make(chan func(), 256)
 	defer close(d.uichan)

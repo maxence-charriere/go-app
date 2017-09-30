@@ -10,7 +10,6 @@ package mac
 */
 import "C"
 import (
-	"log"
 	"net/url"
 	"unsafe"
 
@@ -93,7 +92,7 @@ func windowHandler(h func(w *Window, u *url.URL, p bridge.Payload) (res bridge.P
 
 		elem, ok := driver.elements.Element(id)
 		if !ok {
-			log.Printf("%v: window with id %v doesn't exists", u.Path, id)
+			driver.Logger.Logf("%v: window with id %v doesn't exists", u.Path, id)
 			return nil
 		}
 
