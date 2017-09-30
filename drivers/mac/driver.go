@@ -220,9 +220,7 @@ func (d *Driver) Resources() string {
 	if err != nil {
 		panic(errors.Wrap(err, "getting resources filepath failed"))
 	}
-	localres := filepath.Join(wd, "Resources")
-
-	if dirname == localres {
+	if dirname == wd {
 		dirname = filepath.Join(wd, "resources")
 	}
 	return dirname
