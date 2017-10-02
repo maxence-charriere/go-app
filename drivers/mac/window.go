@@ -20,11 +20,13 @@ type Window struct {
 	env       markup.Env
 	lastFocus time.Time
 
-	onMove   func(x, y float64)
-	onResize func(width, height float64)
-	onFocus  func()
-	onBlur   func()
-	onClose  func() bool
+	onMove           func(x, y float64)
+	onResize         func(width, height float64)
+	onFocus          func()
+	onBlur           func()
+	onFullScreen     func()
+	onExitFullScreen func()
+	onClose          func() bool
 }
 
 func newWindow(d *Driver, c app.WindowConfig) (w *Window, err error) {
@@ -34,11 +36,13 @@ func newWindow(d *Driver, c app.WindowConfig) (w *Window, err error) {
 		env:       markup.NewEnv(d.components),
 		lastFocus: time.Now(),
 
-		onMove:   c.OnMove,
-		onResize: c.OnResize,
-		onFocus:  c.OnFocus,
-		onBlur:   c.OnBlur,
-		onClose:  c.OnClose,
+		onMove:           c.OnMove,
+		onResize:         c.OnResize,
+		onFocus:          c.OnFocus,
+		onBlur:           c.OnBlur,
+		onFullScreen:     c.OnFullScreen,
+		onExitFullScreen: c.OnExitFullScreen,
+		onClose:          c.OnClose,
 	}
 
 	normalizeSize := func(min, max float64) (float64, float64) {
@@ -225,6 +229,34 @@ func onWindowBlur(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) 
 	}
 
 	w.onBlur()
+	return
+}
+
+// ToggleFullScreen satisfies the app.Window interface.
+func (w *Window) ToggleFullScreen() {
+	rawurl := fmt.Sprintf("/window/togglefullscreen?id=%s", w.id)
+
+	_, err := w.driver.macos.Request(rawurl, nil)
+	if err != nil {
+		panic(errors.Wrapf(err, "toggling full screen on window %v failed", w.ID()))
+	}
+}
+
+func onWindowFullScreen(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	if w.onFullScreen == nil {
+		return
+	}
+
+	w.onFullScreen()
+	return
+}
+
+func onWindowExitFullScreen(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	if w.onExitFullScreen == nil {
+		return
+	}
+
+	w.onExitFullScreen()
 	return
 }
 

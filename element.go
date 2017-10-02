@@ -81,6 +81,9 @@ type Window interface {
 	// The window will be put in front, above the other elements.
 	Focus()
 
+	// ToggleFullScreen takes the window into or out of fullscreen mode.
+	ToggleFullScreen()
+
 	// Close closes the element.
 	Close()
 }
@@ -106,12 +109,12 @@ type WindowConfig struct {
 
 	OnMinimize       func()                              `json:"-"`
 	OnDeminimize     func()                              `json:"-"`
-	OnFullScreen     func()                              `json:"-"`
-	OnExitFullScreen func()                              `json:"-"`
 	OnMove           func(x, y float64)                  `json:"-"`
 	OnResize         func(width float64, height float64) `json:"-"`
 	OnFocus          func()                              `json:"-"`
 	OnBlur           func()                              `json:"-"`
+	OnFullScreen     func()                              `json:"-"`
+	OnExitFullScreen func()                              `json:"-"`
 	OnClose          func() bool                         `json:"-"`
 }
 

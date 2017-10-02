@@ -74,6 +74,12 @@ func testWindow(close bool) {
 		OnBlur: func() {
 			fmt.Println("Window blured")
 		},
+		OnFullScreen: func() {
+			fmt.Println("Window full screen")
+		},
+		OnExitFullScreen: func() {
+			fmt.Println("Window exit full screen")
+		},
 		OnClose: func() bool {
 			fmt.Println("Window close")
 			return true
@@ -94,6 +100,15 @@ func testWindow(close bool) {
 
 	// fmt.Printf("win.Resize(x:%v, y: %v)\n", 1340, 720)
 	// win.Resize(1340, 720)
+
+	// fmt.Println("win.ToggleFullScreen()")
+	// win.ToggleFullScreen()
+
+	// go func() {
+	// 	fmt.Println("win.ToggleFullScreen()")
+	// 	time.Sleep(2 * time.Second)
+	// 	win.ToggleFullScreen()
+	// }()
 
 	win.Focus()
 
