@@ -54,6 +54,11 @@
     win.windowFrameAutosaveName = title;
     win.window.delegate = win;
 
+    win.window.minSize =
+        NSMakeSize(minWidth.doubleValue, minHeight.doubleValue);
+    win.window.maxSize =
+        NSMakeSize(maxWidth.doubleValue, maxHeight.doubleValue);
+
     [win configBackgroundColor:backgroundColor
                       vibrancy:backgroundVibrancy.integerValue];
     [win configWebview];
@@ -170,8 +175,6 @@
 
   WindowTitleBar *titlebar = [[WindowTitleBar alloc] init];
   titlebar.translatesAutoresizingMaskIntoConstraints = NO;
-
-  NSLog(@"gonna crash 1");
 
   [self.window.contentView addSubview:titlebar];
   [self.window.contentView
