@@ -8,9 +8,13 @@
 @interface Window : NSWindowController <NSWindowDelegate, WKNavigationDelegate,
                                         WKUIDelegate, WKScriptMessageHandler>
 @property NSString *ID;
-@property WKWebView *webview;
+@property(weak) WKWebView *webview;
 
 + (bridge_result)newWindow:(NSURLComponents *)url payload:(NSString *)payload;
+- (void)configBackgroundColor:(NSString *)color
+                     vibrancy:(NSVisualEffectMaterial)vibrancy;
+- (void)configWebview;
+- (void)configTitlebar:(NSString *)title hidden:(BOOL)isHidden;
 + (bridge_result)position:(NSURLComponents *)url payload:(NSString *)payload;
 + (bridge_result)move:(NSURLComponents *)url payload:(NSString *)payload;
 + (bridge_result)center:(NSURLComponents *)url payload:(NSString *)payload;

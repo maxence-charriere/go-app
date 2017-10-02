@@ -1,11 +1,11 @@
 #include "window.h"
+#include "color.h"
 #include "driver.h"
 #include "json.h"
 
 @implementation Window
 + (bridge_result)newWindow:(NSURLComponents *)url payload:(NSString *)payload {
   NSString *ID = [url queryValue:@"id"];
-  NSString *returnID = [url queryValue:@"return-id"];
 
   NSDictionary *config = [JSONDecoder decodeObject:payload];
   NSString *title = config[@"title"];
@@ -17,14 +17,32 @@
   NSNumber *height = config[@"height"];
   NSNumber *minHeight = config[@"min-height"];
   NSNumber *maxHeight = config[@"max-height"];
+  NSString *backgroundColor = config[@"background-color"];
+  BOOL noResizable = [config[@"no-resizable"] boolValue];
+  BOOL noClosable = [config[@"no-closable"] boolValue];
+  BOOL noMinimizable = [config[@"no-minimizable"] boolValue];
+  BOOL titlebarHidden = [config[@"titlebar-hidden"] boolValue];
+  NSString *defaultURL = config[@"default-url"];
+  NSNumber *backgroundVibrancy = config[@"mac"][@"background-vibrancy"];
 
   dispatch_async(dispatch_get_main_queue(), ^{
+    // Configuring raw window.
     NSRect rect = NSMakeRect(x.floatValue, y.floatValue, width.floatValue,
                              height.floatValue);
     NSUInteger styleMask =
         NSWindowStyleMaskTitled | NSWindowStyleMaskFullSizeContentView |
         NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable |
         NSWindowStyleMaskResizable;
+    if (noResizable) {
+      styleMask = styleMask & ~NSWindowStyleMaskResizable;
+    }
+    if (noClosable) {
+      styleMask = styleMask & ~NSWindowStyleMaskClosable;
+    }
+    if (noMinimizable) {
+      styleMask = styleMask & ~NSWindowStyleMaskMiniaturizable;
+    }
+
     NSWindow *rawWindow =
         [[NSWindow alloc] initWithContentRect:rect
                                     styleMask:styleMask
@@ -36,12 +54,142 @@
     win.windowFrameAutosaveName = title;
     win.window.delegate = win;
 
+    [win configBackgroundColor:backgroundColor
+                      vibrancy:backgroundVibrancy.integerValue];
+    [win configWebview];
+    [win configTitlebar:title hidden:titlebarHidden];
+
+    // Registering window.
     Driver *driver = [Driver current];
     driver.elements[ID] = win;
 
     [win showWindow:nil];
   });
   return make_bridge_result(nil, nil);
+}
+
+- (void)configBackgroundColor:(NSString *)color
+                     vibrancy:(NSVisualEffectMaterial)vibrancy {
+  if (vibrancy != NSVisualEffectMaterialAppearanceBased) {
+    NSVisualEffectView *visualEffectView =
+        [[NSVisualEffectView alloc] initWithFrame:self.window.frame];
+    visualEffectView.material = vibrancy;
+    visualEffectView.blendingMode = NSVisualEffectBlendingModeBehindWindow;
+    visualEffectView.state = NSVisualEffectStateActive;
+
+    self.window.contentView = visualEffectView;
+    return;
+  }
+
+  if (color.length == 0) {
+    return;
+  }
+  self.window.backgroundColor =
+      [NSColor colorWithCIColor:[CIColor colorWithHexString:color]];
+}
+
+- (void)configWebview {
+  WKUserContentController *userContentController =
+      [[WKUserContentController alloc] init];
+  [userContentController addScriptMessageHandler:self name:@"golangRequest"];
+
+  WKWebViewConfiguration *conf = [[WKWebViewConfiguration alloc] init];
+  conf.userContentController = userContentController;
+
+  WKWebView *webview = [[WKWebView alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)
+                                          configuration:conf];
+  webview.translatesAutoresizingMaskIntoConstraints = NO;
+  webview.navigationDelegate = self;
+  webview.UIDelegate = self;
+
+  // Make background transparent.
+  [webview setValue:@(NO) forKey:@"drawsBackground"];
+
+  [self.window.contentView addSubview:webview];
+  [self.window.contentView
+      addConstraints:
+          [NSLayoutConstraint
+              constraintsWithVisualFormat:@"|[webview]|"
+                                  options:0
+                                  metrics:nil
+                                    views:NSDictionaryOfVariableBindings(
+                                              webview)]];
+  [self.window.contentView
+      addConstraints:
+          [NSLayoutConstraint
+              constraintsWithVisualFormat:@"V:|[webview]|"
+                                  options:0
+                                  metrics:nil
+                                    views:NSDictionaryOfVariableBindings(
+                                              webview)]];
+  self.webview = webview;
+}
+
+- (void)userContentController:(WKUserContentController *)userContentController
+      didReceiveScriptMessage:(WKScriptMessage *)message {
+  if (![message.name isEqual:@"golangRequest"]) {
+    return;
+  }
+
+  Driver *driver = [Driver current];
+  [driver.golang
+      request:[NSString stringWithFormat:@"/window/callback?id=%@", self.ID]
+      payload:message.body];
+}
+
+- (void)webView:(WKWebView *)webView
+    decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction
+                    decisionHandler:
+                        (void (^)(WKNavigationActionPolicy))decisionHandler {
+  if (navigationAction.navigationType == WKNavigationTypeReload ||
+      navigationAction.navigationType == WKNavigationTypeOther) {
+    if (navigationAction.targetFrame.request != nil) {
+      decisionHandler(WKNavigationActionPolicyCancel);
+      return;
+    }
+
+    decisionHandler(WKNavigationActionPolicyAllow);
+    return;
+  }
+
+  NSURL *url = navigationAction.request.URL;
+  // TO DO:
+  // Call go request to navigate to anoter component.
+  decisionHandler(WKNavigationActionPolicyCancel);
+}
+
+- (void)configTitlebar:(NSString *)title hidden:(BOOL)isHidden {
+  self.window.title = title;
+
+  if (!isHidden) {
+    return;
+  }
+
+  self.window.titleVisibility = NSWindowTitleHidden;
+  self.window.titlebarAppearsTransparent = isHidden;
+
+  WindowTitleBar *titlebar = [[WindowTitleBar alloc] init];
+  titlebar.translatesAutoresizingMaskIntoConstraints = NO;
+
+  NSLog(@"gonna crash 1");
+
+  [self.window.contentView addSubview:titlebar];
+  [self.window.contentView
+      addConstraints:
+          [NSLayoutConstraint
+              constraintsWithVisualFormat:@"|[titlebar]|"
+                                  options:0
+                                  metrics:nil
+                                    views:NSDictionaryOfVariableBindings(
+                                              titlebar)]];
+  [self.window.contentView
+      addConstraints:
+          [NSLayoutConstraint
+              constraintsWithVisualFormat:@"V:|[titlebar(==22)]"
+                                  options:0
+                                  metrics:nil
+                                    views:NSDictionaryOfVariableBindings(
+                                              titlebar)]];
 }
 
 + (bridge_result)position:(NSURLComponents *)url payload:(NSString *)payload {
@@ -65,7 +213,6 @@
 
 + (bridge_result)move:(NSURLComponents *)url payload:(NSString *)payload {
   NSString *ID = [url queryValue:@"id"];
-  NSString *returnID = [url queryValue:@"return-id"];
 
   NSDictionary *pos = [JSONDecoder decodeObject:payload];
   NSNumber *x = pos[@"x"];
@@ -94,7 +241,6 @@
 
 + (bridge_result)center:(NSURLComponents *)url payload:(NSString *)payload {
   NSString *ID = [url queryValue:@"id"];
-  NSString *returnID = [url queryValue:@"return-id"];
 
   dispatch_async(dispatch_get_main_queue(), ^{
     Driver *driver = [Driver current];
@@ -126,7 +272,6 @@
 
 + (bridge_result)resize:(NSURLComponents *)url payload:(NSString *)payload {
   NSString *ID = [url queryValue:@"id"];
-  NSString *returnID = [url queryValue:@"return-id"];
 
   NSDictionary *size = [JSONDecoder decodeObject:payload];
   NSNumber *width = size[@"width"];
@@ -160,7 +305,6 @@
 
 + (bridge_result)focus:(NSURLComponents *)url payload:(NSString *)payload {
   NSString *ID = [url queryValue:@"id"];
-  NSString *returnID = [url queryValue:@"return-id"];
 
   dispatch_async(dispatch_get_main_queue(), ^{
     Driver *driver = [Driver current];
@@ -189,7 +333,6 @@
 
 + (bridge_result)close:(NSURLComponents *)url payload:(NSString *)payload {
   NSString *ID = [url queryValue:@"id"];
-  NSString *returnID = [url queryValue:@"return-id"];
 
   dispatch_async(dispatch_get_main_queue(), ^{
     Driver *driver = [Driver current];
@@ -207,12 +350,14 @@
       requestWithResult:[NSString
                             stringWithFormat:@"/window/close?id=%@", self.ID]
                 payload:nil];
+  return [JSONDecoder decodeBool:res];
+}
 
-  BOOL shouldClose = [JSONDecoder decodeBool:res];
-  if (shouldClose) {
-    [driver.elements removeObjectForKey:self.ID];
-  }
-  return shouldClose;
+- (void)windowWillClose:(NSNotification *)notification {
+  self.window = nil;
+
+  Driver *driver = [Driver current];
+  [driver.elements removeObjectForKey:self.ID];
 }
 @end
 

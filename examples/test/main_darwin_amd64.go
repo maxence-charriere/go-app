@@ -50,6 +50,14 @@ func testWindow(close bool) {
 		Y:      42,
 		Width:  1024,
 		Height: 600,
+		// NoResizable:     true,
+		// NoClosable:      true,
+		// NoMinimizable:   true,
+		TitlebarHidden:  true,
+		BackgroundColor: "#282c34",
+		Mac: app.MacWindowConfig{
+			BackgroundVibrancy: app.VibeUltraDark,
+		},
 
 		OnMove: func(x, y float64) {
 			fmt.Printf("Window moved to x:%v y:%v\n", x, y)

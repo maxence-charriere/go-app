@@ -97,7 +97,9 @@ type WindowConfig struct {
 	MinHeight       float64         `json:"min-height"`
 	MaxHeight       float64         `json:"max-height"`
 	BackgroundColor string          `json:"background-color"`
-	ResizeDisabled  bool            `json:"resize-disabled"`
+	NoResizable     bool            `json:"no-resizable"`
+	NoClosable      bool            `json:"no-closable"`
+	NoMinimizable   bool            `json:"no-minimizable"`
 	TitlebarHidden  bool            `json:"titlebar-hidden"`
 	DefaultURL      string          `json:"default-url"`
 	Mac             MacWindowConfig `json:"mac"`
@@ -116,8 +118,6 @@ type WindowConfig struct {
 // MacWindowConfig is a struct that describes window fields specific to MacOS.
 type MacWindowConfig struct {
 	BackgroundVibrancy Vibrancy `json:"background-vibrancy"`
-	CloseHidden        bool     `json:"close-hidden"`
-	MinimizeHidden     bool     `json:"minimize-hidden"`
 }
 
 // Vibrancy represents a constant that define Apple's frost glass effects.
