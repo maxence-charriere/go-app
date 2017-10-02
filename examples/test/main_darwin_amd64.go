@@ -116,11 +116,11 @@ func testWindow(close bool) {
 	// 	win.ToggleFullScreen()
 	// }()
 
-	fmt.Println("win.ToggleMinimize()")
-	win.ToggleMinimize()
+	// fmt.Println("win.ToggleMinimize()")
+	// win.ToggleMinimize()
 
-	fmt.Println("win.ToggleMinimize()")
-	win.ToggleMinimize()
+	// fmt.Println("win.ToggleMinimize()")
+	// win.ToggleMinimize()
 
 	// win.Focus()
 
