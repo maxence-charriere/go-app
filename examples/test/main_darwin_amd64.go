@@ -17,7 +17,7 @@ func main() {
 			fmt.Println("app.Resources():", app.Resources())
 			fmt.Println("app.Storage():", app.Storage())
 
-			testWindow(true)
+			// testWindow(true)
 			testWindow(false)
 		},
 		OnFocus: func() {
@@ -45,11 +45,22 @@ func main() {
 
 func testWindow(close bool) {
 	win := app.NewWindow(app.WindowConfig{
-		Title:  "test window",
-		X:      42,
-		Y:      42,
-		Width:  1024,
-		Height: 600,
+		Title:    "test window",
+		X:        42,
+		Y:        42,
+		Width:    1024,
+		MinWidth: 400,
+		// MaxWidth:  300,
+		Height:    600,
+		MinHeight: 400,
+		// NoResizable:     true,
+		// NoClosable:      true,
+		// NoMinimizable:   true,
+		TitlebarHidden:  true,
+		BackgroundColor: "#282c34",
+		Mac: app.MacWindowConfig{
+			BackgroundVibrancy: app.VibeUltraDark,
+		},
 
 		OnMove: func(x, y float64) {
 			fmt.Printf("Window moved to x:%v y:%v\n", x, y)
@@ -81,8 +92,8 @@ func testWindow(close bool) {
 	width, height := win.Size()
 	fmt.Printf("win.Size() width:%v, height:%v\n", width, height)
 
-	fmt.Printf("win.Resize(x:%v, y: %v)\n", 1340, 720)
-	win.Resize(1340, 720)
+	// fmt.Printf("win.Resize(x:%v, y: %v)\n", 1340, 720)
+	// win.Resize(1340, 720)
 
 	win.Focus()
 

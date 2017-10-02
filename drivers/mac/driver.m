@@ -18,6 +18,8 @@
 }
 
 - (instancetype)init {
+  self = [super init];
+
   self.elements = [NSMutableDictionary dictionaryWithCapacity:256];
   self.objc = [[OBJCBridge alloc] init];
   self.golang = [[GoBridge alloc] init];

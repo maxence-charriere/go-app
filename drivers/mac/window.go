@@ -2,6 +2,7 @@ package mac
 
 import (
 	"fmt"
+	"math"
 	"net/url"
 	"time"
 
@@ -39,6 +40,23 @@ func newWindow(d *Driver, c app.WindowConfig) (w *Window, err error) {
 		onBlur:   c.OnBlur,
 		onClose:  c.OnClose,
 	}
+
+	normalizeSize := func(min, max float64) (float64, float64) {
+		min = math.Max(0, min)
+		min = math.Min(min, 10000)
+
+		if max == 0 {
+			max = 10000
+		}
+		max = math.Max(0, max)
+		max = math.Min(max, 10000)
+
+		min = math.Min(min, max)
+		return min, max
+	}
+
+	c.MinWidth, c.MaxWidth = normalizeSize(c.MinWidth, c.MaxWidth)
+	c.MinHeight, c.MaxHeight = normalizeSize(c.MinHeight, c.MaxHeight)
 
 	rawurl := fmt.Sprintf("/window/new?id=%s", w.id)
 	if _, err = d.macos.Request(rawurl, bridge.NewPayload(c)); err != nil {
