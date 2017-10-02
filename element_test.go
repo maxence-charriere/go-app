@@ -151,6 +151,9 @@ func (w *testWindow) Focus() {
 	w.lastFocus = time.Now()
 }
 
+func (w *testWindow) ToggleFullScreen() {
+}
+
 // A menu implementation for tests.
 type testMenu struct {
 	config       MenuConfig

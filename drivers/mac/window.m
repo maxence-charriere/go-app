@@ -334,6 +334,36 @@
       payload:nil];
 }
 
++ (bridge_result)toggleFullScreen:(NSURLComponents *)url
+                          payload:(NSString *)payload {
+  NSString *ID = [url queryValue:@"id"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    Window *win = driver.elements[ID];
+
+    [win.window toggleFullScreen:nil];
+  });
+  return make_bridge_result(nil, nil);
+}
+
+- (void)windowDidEnterFullScreen:(NSNotification *)notification {
+  Driver *driver = [Driver current];
+
+  [driver.golang
+      request:[NSString stringWithFormat:@"/window/fullscreen?id=%@", self.ID]
+      payload:nil];
+}
+
+- (void)windowDidExitFullScreen:(NSNotification *)notification {
+  Driver *driver = [Driver current];
+
+  [driver.golang
+      request:[NSString
+                  stringWithFormat:@"/window/fullscreen/exit?id=%@", self.ID]
+      payload:nil];
+}
+
 + (bridge_result)close:(NSURLComponents *)url payload:(NSString *)payload {
   NSString *ID = [url queryValue:@"id"];
 
@@ -341,7 +371,7 @@
     Driver *driver = [Driver current];
     Window *win = driver.elements[ID];
 
-    [win.window performClose:NSApp];
+    [win.window performClose:nil];
   });
   return make_bridge_result(nil, nil);
 }

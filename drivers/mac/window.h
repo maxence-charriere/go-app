@@ -21,6 +21,8 @@
 + (bridge_result)size:(NSURLComponents *)url payload:(NSString *)payload;
 + (bridge_result)resize:(NSURLComponents *)url payload:(NSString *)payload;
 + (bridge_result)focus:(NSURLComponents *)url payload:(NSString *)payload;
++ (bridge_result)toggleFullScreen:(NSURLComponents *)url
+                          payload:(NSString *)payload;
 + (bridge_result)close:(NSURLComponents *)url payload:(NSString *)payload;
 @end
 
