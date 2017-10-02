@@ -364,6 +364,39 @@
       payload:nil];
 }
 
++ (bridge_result)toggleMinimize:(NSURLComponents *)url
+                        payload:(NSString *)payload {
+  NSString *ID = [url queryValue:@"id"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    Window *win = driver.elements[ID];
+
+    if (!win.window.miniaturized) {
+      [win.window miniaturize:nil];
+    } else {
+      [win.window deminiaturize:nil];
+    }
+  });
+  return make_bridge_result(nil, nil);
+}
+
+- (void)windowDidMiniaturize:(NSNotification *)notification {
+  Driver *driver = [Driver current];
+
+  [driver.golang
+      request:[NSString stringWithFormat:@"/window/minimize?id=%@", self.ID]
+      payload:nil];
+}
+
+- (void)windowDidDeminiaturize:(NSNotification *)notification {
+  Driver *driver = [Driver current];
+
+  [driver.golang
+      request:[NSString stringWithFormat:@"/window/deminimize?id=%@", self.ID]
+      payload:nil];
+}
+
 + (bridge_result)close:(NSURLComponents *)url payload:(NSString *)payload {
   NSString *ID = [url queryValue:@"id"];
 

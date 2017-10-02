@@ -84,6 +84,9 @@ type Window interface {
 	// ToggleFullScreen takes the window into or out of fullscreen mode.
 	ToggleFullScreen()
 
+	// Minimize takes the window into or out of minimized mode
+	ToggleMinimize()
+
 	// Close closes the element.
 	Close()
 }
@@ -107,14 +110,14 @@ type WindowConfig struct {
 	DefaultURL      string          `json:"default-url"`
 	Mac             MacWindowConfig `json:"mac"`
 
-	OnMinimize       func()                              `json:"-"`
-	OnDeminimize     func()                              `json:"-"`
 	OnMove           func(x, y float64)                  `json:"-"`
 	OnResize         func(width float64, height float64) `json:"-"`
 	OnFocus          func()                              `json:"-"`
 	OnBlur           func()                              `json:"-"`
 	OnFullScreen     func()                              `json:"-"`
 	OnExitFullScreen func()                              `json:"-"`
+	OnMinimize       func()                              `json:"-"`
+	OnDeminimize     func()                              `json:"-"`
 	OnClose          func() bool                         `json:"-"`
 }
 

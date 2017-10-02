@@ -14,6 +14,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Window implements the app.Window interface.
 type Window struct {
 	driver    *Driver
 	id        uuid.UUID
@@ -26,6 +27,8 @@ type Window struct {
 	onBlur           func()
 	onFullScreen     func()
 	onExitFullScreen func()
+	onMinimize       func()
+	onDeminimize     func()
 	onClose          func() bool
 }
 
@@ -42,6 +45,8 @@ func newWindow(d *Driver, c app.WindowConfig) (w *Window, err error) {
 		onBlur:           c.OnBlur,
 		onFullScreen:     c.OnFullScreen,
 		onExitFullScreen: c.OnExitFullScreen,
+		onMinimize:       c.OnMinimize,
+		onDeminimize:     c.OnDeminimize,
 		onClose:          c.OnClose,
 	}
 
@@ -257,6 +262,34 @@ func onWindowExitFullScreen(w *Window, u *url.URL, p bridge.Payload) (res bridge
 	}
 
 	w.onExitFullScreen()
+	return
+}
+
+// ToggleMinimize satisfies the app.Window interface.
+func (w *Window) ToggleMinimize() {
+	rawurl := fmt.Sprintf("/window/toggleminimize?id=%s", w.id)
+
+	_, err := w.driver.macos.Request(rawurl, nil)
+	if err != nil {
+		panic(errors.Wrapf(err, "toggling minimize on window %v failed", w.ID()))
+	}
+}
+
+func onWindowMinimize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	if w.onMinimize == nil {
+		return
+	}
+
+	w.onMinimize()
+	return
+}
+
+func onWindowDeminimize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	if w.onDeminimize == nil {
+		return
+	}
+
+	w.onDeminimize()
 	return
 }
 

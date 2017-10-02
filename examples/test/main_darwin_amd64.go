@@ -80,6 +80,12 @@ func testWindow(close bool) {
 		OnExitFullScreen: func() {
 			fmt.Println("Window exit full screen")
 		},
+		OnMinimize: func() {
+			fmt.Println("Window minimized")
+		},
+		OnDeminimize: func() {
+			fmt.Println("Window deminimized")
+		},
 		OnClose: func() bool {
 			fmt.Println("Window close")
 			return true
@@ -110,7 +116,13 @@ func testWindow(close bool) {
 	// 	win.ToggleFullScreen()
 	// }()
 
-	win.Focus()
+	// fmt.Println("win.ToggleMinimize()")
+	// win.ToggleMinimize()
+
+	// fmt.Println("win.ToggleMinimize()")
+	// win.ToggleMinimize()
+
+	// win.Focus()
 
 	if close {
 		fmt.Println("win.Close()")

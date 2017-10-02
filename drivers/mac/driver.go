@@ -94,6 +94,8 @@ func (d *Driver) Run(b markup.CompoBuilder) error {
 	d.golang.Handle("/window/blur", windowHandler(onWindowBlur))
 	d.golang.Handle("/window/fullscreen", windowHandler(onWindowFullScreen))
 	d.golang.Handle("/window/fullscreen/exit", windowHandler(onWindowExitFullScreen))
+	d.golang.Handle("/window/minimize", windowHandler(onWindowMinimize))
+	d.golang.Handle("/window/deminimize", windowHandler(onWindowDeminimize))
 	d.golang.Handle("/window/close", windowHandler(onWindowClose))
 
 	driver = d
