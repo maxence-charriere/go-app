@@ -71,6 +71,10 @@
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Window toggleFullScreen:url payload:payload];
             }];
+  [self.objc handle:@"/window/toggleminimize"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Window toggleMinimize:url payload:payload];
+            }];
   [self.objc handle:@"/window/close"
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Window close:url payload:payload];

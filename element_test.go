@@ -154,6 +154,9 @@ func (w *testWindow) Focus() {
 func (w *testWindow) ToggleFullScreen() {
 }
 
+func (w *testWindow) ToggleMinimize() {
+}
+
 // A menu implementation for tests.
 type testMenu struct {
 	config       MenuConfig
