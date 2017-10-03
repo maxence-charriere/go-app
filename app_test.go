@@ -84,6 +84,10 @@ func TestApp(t *testing.T) {
 			test: testResources,
 		},
 		{
+			name: "logs should return the logger",
+			test: testLogs,
+		},
+		{
 			name: "should call on ui goroutine",
 			test: func(t *testing.T) { testCallOnUIGoroutine(t, d) },
 		},
@@ -252,6 +256,11 @@ func testResources(t *testing.T) {
 		t.Fatal("resources should return a filepath")
 	}
 	t.Log(resources)
+}
+
+func testLogs(t *testing.T) {
+	Logs().Log("hello")
+	Logs().Error("world")
 }
 
 func testCallOnUIGoroutine(t *testing.T, d *testDriver) {

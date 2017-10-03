@@ -230,6 +230,11 @@ func (d *Driver) Resources() string {
 	return dirname
 }
 
+// Logs satisfies the app.Driver interface.
+func (d *Driver) Logs() app.Logger {
+	return d.Logger
+}
+
 // CallOnUIGoroutine satisfies the app.Driver interface.
 func (d *Driver) CallOnUIGoroutine(f func()) {
 	d.uichan <- f
