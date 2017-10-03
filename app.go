@@ -1,8 +1,6 @@
 package app
 
 import (
-	"log"
-
 	"github.com/murlokswarm/app/markup"
 	"github.com/pkg/errors"
 )
@@ -54,7 +52,7 @@ func RunningDriver() Driver {
 // It panics if called before Run.
 func Render(c markup.Component) {
 	if err := driver.Render(c); err != nil {
-		log.Println(err)
+		Logs().Error(err)
 	}
 }
 
@@ -78,6 +76,12 @@ func NewContextMenu(c MenuConfig) Menu {
 // It panics if called before Run.
 func Resources() string {
 	return driver.Resources()
+}
+
+// Logs returns the application logger.
+// It panics if called before Run.
+func Logs() Logger {
+	return driver.Logs()
 }
 
 // CallOnUIGoroutine calls func f and ensure it's called from the UI goroutine.

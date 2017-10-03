@@ -16,4 +16,3 @@ type Logger interface {
 	// Logf logs an error according to a format specifier.
 	Errorf(format string, v ...interface{})
 }
-
