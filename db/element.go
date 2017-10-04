@@ -91,6 +91,14 @@ func (db *ElementDB) Len() int {
 	return len(db.elements)
 }
 
+// ConcurentElemDB is a concurent element database that implements
+// app.ElementDB.
+// It is safe for multiple goroutines to call its methods concurrently.
+type ConcurentElemDB struct{}
+
+// TO DO:
+// Implementation.
+
 // Slice of []ElementWithComponent that implements sort.Interface.
 type elementWithComponentList []app.ElementWithComponent
 
