@@ -34,6 +34,7 @@ func Run(d Driver) {
 
 	driver = d
 	if err := d.Run(compoBuilder); err != nil {
+		driver = nil
 		panic(errors.Wrap(err, "running the app failed"))
 	}
 }

@@ -1,13 +1,10 @@
 package app
 
 import (
-	"sort"
-	"sync"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app/markup"
-	"github.com/pkg/errors"
 )
 
 // Element is the interface that describes an app element.
@@ -178,9 +175,8 @@ type PopupNotificationConfig struct {
 	ComponentURL string
 }
 
-// ElementStore is the interface that decribes a store of elements.
-// It should thread safe.
-type ElementStore interface {
+// ElementDB is the interface that describes an element database.
+type ElementDB interface {
 	// Add adds an element in the store.
 	Add(e Element) error
 
@@ -197,119 +193,6 @@ type ElementStore interface {
 	// Sort sorts the elements that hosts components.
 	Sort()
 
-	// Len returns the number of elements.
+	// Len returns the number of element.
 	Len() int
-}
-
-// NewElementStore creates a concurent safe element store.
-func NewElementStore() ElementStore {
-	return newElementStore(256)
-}
-
-type elementStore struct {
-	mutex                  sync.Mutex
-	capacity               int
-	elements               map[uuid.UUID]Element
-	elementsWithComponents elementWithComponentList
-}
-
-func newElementStore(capacity int) *elementStore {
-	return &elementStore{
-		capacity:               capacity,
-		elements:               make(map[uuid.UUID]Element, capacity),
-		elementsWithComponents: make(elementWithComponentList, 0, capacity),
-	}
-}
-
-func (s *elementStore) Add(e Element) error {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	if len(s.elements) == s.capacity {
-		return errors.Errorf("can't handle more than %d elements simultaneously", s.capacity)
-	}
-
-	if _, ok := s.elements[e.ID()]; ok {
-		return errors.Errorf("element with id %s is already added", e.ID())
-	}
-
-	s.elements[e.ID()] = e
-
-	if elemWithComp, ok := e.(ElementWithComponent); ok {
-		s.elementsWithComponents = append(s.elementsWithComponents, elemWithComp)
-		sort.Sort(s.elementsWithComponents)
-	}
-	return nil
-}
-
-func (s *elementStore) Remove(e Element) {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	delete(s.elements, e.ID())
-
-	if _, ok := e.(ElementWithComponent); ok {
-		elements := s.elementsWithComponents
-		for i, elem := range elements {
-			if elem == e {
-				copy(elements[i:], elements[i+1:])
-				elements[len(elements)-1] = nil
-				elements = elements[:len(elements)-1]
-				s.elementsWithComponents = elements
-				return
-			}
-		}
-	}
-}
-
-func (s *elementStore) Element(id uuid.UUID) (e Element, ok bool) {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	e, ok = s.elements[id]
-	return
-}
-
-func (s *elementStore) ElementByComponent(c markup.Component) (e ElementWithComponent, err error) {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	for _, elem := range s.elementsWithComponents {
-		if elem.Contains(c) {
-			e = elem
-			return
-		}
-	}
-
-	err = errors.Errorf("component %+v is not mounted in any elements", c)
-	return
-}
-
-func (s *elementStore) Sort() {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	sort.Sort(s.elementsWithComponents)
-}
-
-func (s *elementStore) Len() int {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	return len(s.elements)
-}
-
-// Slice of []ElementWithComponent that implements sort.Interface.
-type elementWithComponentList []ElementWithComponent
-
-func (l elementWithComponentList) Len() int {
-	return len(l)
-}
-
-func (l elementWithComponentList) Less(i, j int) bool {
-	return l[i].LastFocus().After(l[j].LastFocus())
-}
-
-func (l elementWithComponentList) Swap(i, j int) {
-	l[i], l[j] = l[j], l[i]
 }

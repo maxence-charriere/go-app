@@ -1,8 +1,10 @@
-package app
+package app_test
 
 import (
 	"testing"
 
+	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/drivers/test"
 	"github.com/murlokswarm/app/markup"
 )
 
@@ -19,8 +21,8 @@ func (c InvalidComponent) Render() string {
 }
 
 func TestApp(t *testing.T) {
-	d := &testDriver{
-		test: t,
+	d := &test.Driver{
+		Test: t,
 	}
 
 	tests := []struct {
@@ -32,12 +34,16 @@ func TestApp(t *testing.T) {
 			test: testImport,
 		},
 		{
-			name: "import component when driver is running should fail",
-			test: testImportWhenDriverRuns,
-		},
-		{
 			name: "import invalid component should fail",
 			test: testImportInvalidComponent,
+		},
+		{
+			name: "run with driver error should panic",
+			test: testRunDriverError,
+		},
+		{
+			name: "get running driver when app is not running should panic",
+			test: testRunningDriverPanic,
 		},
 		{
 			name: "should run",
@@ -48,16 +54,12 @@ func TestApp(t *testing.T) {
 			test: testRunMultiple,
 		},
 		{
-			name: "run with driver error should panic",
-			test: testRunDriverError,
+			name: "import component when driver is running should fail",
+			test: testImportWhenDriverRuns,
 		},
 		{
 			name: "should return the running driver",
 			test: func(t *testing.T) { testRunningDriver(t, d) },
-		},
-		{
-			name: "running driver when app is not running should panic",
-			test: testRunningDriverPanic,
 		},
 		{
 			name: "should render a component",
@@ -127,107 +129,92 @@ func TestApp(t *testing.T) {
 }
 
 func testImport(t *testing.T) {
-	Import(&Component{})
+	app.Import(&Component{})
 }
 
 func testImportWhenDriverRuns(t *testing.T) {
 	defer func() { recover() }()
 
-	driver = &testDriver{}
-	defer func() { driver = nil }()
-
-	Import(&Component{})
+	app.Import(&Component{})
 	t.Error("should panic")
 }
 
 func testImportInvalidComponent(t *testing.T) {
 	defer func() { recover() }()
 
-	Import(InvalidComponent{})
+	app.Import(InvalidComponent{})
 	t.Error("should panic")
 }
 
-func testRun(t *testing.T, d *testDriver) {
-	Run(d)
+func testRunDriverError(t *testing.T) {
+	defer func() { recover() }()
+
+	app.Run(&test.Driver{
+		RunSouldErr: true,
+	})
+	t.Error("should panic")
+}
+
+func testRunningDriverPanic(t *testing.T) {
+	defer func() { recover() }()
+
+	app.RunningDriver()
+	t.Error("should panic")
+}
+
+func testRun(t *testing.T, d *test.Driver) {
+	app.Run(d)
 }
 
 func testRunMultiple(t *testing.T) {
 	defer func() { recover() }()
 
-	Run(&testDriver{
-		test: t,
-	})
+	app.Run(&test.Driver{})
 	t.Error("should panic")
 }
 
-func testRunDriverError(t *testing.T) {
-	currentDriver := driver
-	driver = nil
-	defer func() {
-		driver = currentDriver
-	}()
-
-	defer func() { recover() }()
-
-	Run(&testDriver{
-		test:        t,
-		runSouldErr: true,
-	})
-	t.Error("should panic")
-}
-
-func testRunningDriver(t *testing.T, d *testDriver) {
-	if RunningDriver() != d {
+func testRunningDriver(t *testing.T, d *test.Driver) {
+	if app.RunningDriver() != d {
 		t.Fatal("running driver should be d")
 	}
 }
 
-func testRunningDriverPanic(t *testing.T) {
-	d := driver
-	driver = nil
-	defer func() { driver = d }()
-	defer func() { recover() }()
-
-	RunningDriver()
-	t.Error("should panic")
-}
-
-func testRender(t *testing.T, d *testDriver) {
+func testRender(t *testing.T, d *test.Driver) {
 	var compo markup.Component
-	d.onWindowLoad = func(w Window, c markup.Component) {
+	d.OnWindowLoad = func(w app.Window, c markup.Component) {
 		compo = c
 	}
 	defer func() {
-		d.onWindowLoad = nil
+		d.OnWindowLoad = nil
 	}()
 
-	window := d.NewWindow(WindowConfig{
+	window := d.NewWindow(app.WindowConfig{
 		DefaultURL: "app.component",
 	})
 	defer window.Close()
 
-	Render(compo)
+	app.Render(compo)
 }
 
 func testRenderLogError(t *testing.T) {
-	Render(&Component{})
+	app.Render(&Component{})
 }
 
-func testContext(t *testing.T, d *testDriver) {
+func testContext(t *testing.T, d *test.Driver) {
 	var compo markup.Component
-	d.onWindowLoad = func(w Window, c markup.Component) {
+	d.OnWindowLoad = func(w app.Window, c markup.Component) {
 		compo = c
 	}
 	defer func() {
-		d.onWindowLoad = nil
+		d.OnWindowLoad = nil
 	}()
 
-	window := d.NewWindow(WindowConfig{
-		DefaultURL: "app.component",
+	window := d.NewWindow(app.WindowConfig{
+		DefaultURL: "app_test.component",
 	})
 	defer window.Close()
 
-	ctx, err := Context(compo)
+	ctx, err := app.Context(compo)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -237,7 +224,7 @@ func testContext(t *testing.T, d *testDriver) {
 }
 
 func testContextError(t *testing.T) {
-	_, err := Context(&Component{})
+	_, err := app.Context(&Component{})
 	if err == nil {
 		t.Fatal("context should return an error")
 	}
@@ -245,13 +232,13 @@ func testContextError(t *testing.T) {
 }
 
 func testNewContextMenu(t *testing.T) {
-	if menu := NewContextMenu(MenuConfig{}); menu == nil {
+	if menu := app.NewContextMenu(app.MenuConfig{}); menu == nil {
 		t.Fatal("menu should not be nil")
 	}
 }
 
 func testResources(t *testing.T) {
-	resources := Resources()
+	resources := app.Resources()
 	if len(resources) == 0 {
 		t.Fatal("resources should return a filepath")
 	}
@@ -259,30 +246,30 @@ func testResources(t *testing.T) {
 }
 
 func testLogs(t *testing.T) {
-	Logs().Log("hello")
-	Logs().Error("world")
+	app.Logs().Log("hello")
+	app.Logs().Error("world")
 }
 
-func testCallOnUIGoroutine(t *testing.T, d *testDriver) {
+func testCallOnUIGoroutine(t *testing.T, d *test.Driver) {
 	done := make(chan struct{})
 
 	go func() {
-		f := <-d.uichan
+		f := <-d.UIchan
 		f()
 	}()
 
-	CallOnUIGoroutine(func() {
+	app.CallOnUIGoroutine(func() {
 		done <- struct{}{}
 	})
 	<-done
 }
 
 func testStorage(t *testing.T) {
-	if !SupportsStorage() {
+	if !app.SupportsStorage() {
 		t.Fatal("storage should be supported")
 	}
 
-	storage := Storage()
+	storage := app.Storage()
 	if len(storage) == 0 {
 		t.Fatal("storage should return a filepath")
 	}
@@ -290,59 +277,59 @@ func testStorage(t *testing.T) {
 }
 
 func testNewWindow(t *testing.T) {
-	if !SupportsWindows() {
+	if !app.SupportsWindows() {
 		t.Fatal("windows should be supported")
 	}
 
-	if window := NewWindow(WindowConfig{}); window == nil {
+	if window := app.NewWindow(app.WindowConfig{}); window == nil {
 		t.Fatal("window should not be nil")
 	}
 }
 
 func testMenuBar(t *testing.T) {
-	if !SupportsMenuBar() {
+	if !app.SupportsMenuBar() {
 		t.Fatal("menu bar should be supported")
 	}
 
-	if menubar := MenuBar(); menubar == nil {
+	if menubar := app.MenuBar(); menubar == nil {
 		t.Fatal("menu bar should not be nil")
 	}
 }
 
 func testDock(t *testing.T) {
-	if !SupportsDock() {
+	if !app.SupportsDock() {
 		t.Fatal("dock should be supported")
 	}
 
-	if dock := Dock(); dock == nil {
+	if dock := app.Dock(); dock == nil {
 		t.Fatal("dock should not be nil")
 	}
 }
 
 func testShare(t *testing.T) {
-	if !SupportsShare() {
+	if !app.SupportsShare() {
 		t.Fatal("share should be supported")
 	}
 
-	Share(42)
+	app.Share(42)
 }
 
 func testNewFilePanel(t *testing.T) {
-	if !SupportsFilePanels() {
+	if !app.SupportsFilePanels() {
 		t.Fatal("file panels should be supported")
 	}
 
-	if panel := NewFilePanel(FilePanelConfig{}); panel == nil {
+	if panel := app.NewFilePanel(app.FilePanelConfig{}); panel == nil {
 		t.Fatal("pannel should not be nil")
 	}
 }
 
 func testNewPopupNotification(t *testing.T) {
-	if !SupportsPopupNotifications() {
+	if !app.SupportsPopupNotifications() {
 		t.Fatal("popup notifications should be supported")
 	}
 
-	if popup := NewPopupNotification(PopupNotificationConfig{}); popup == nil {
+	if popup := app.NewPopupNotification(app.PopupNotificationConfig{}); popup == nil {
 		t.Fatal("popup should not be nil")
 	}
 }
