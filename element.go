@@ -1,10 +1,13 @@
 package app
 
 import (
+	"sort"
+	"sync"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app/markup"
+	"github.com/pkg/errors"
 )
 
 // Element is the interface that describes an app element.
@@ -195,4 +198,154 @@ type ElementDB interface {
 
 	// Len returns the number of element.
 	Len() int
+}
+
+// NewElementDB creates an element database with the given capacity.
+// It is safe for concurrent access.
+func NewElementDB(capacity int) ElementDB {
+	db := newElementDB(capacity)
+	return newConcurentElemDB(db)
+}
+
+// elementDB is an element database that implements ElementDB.
+type elementDB struct {
+	capacity               int
+	elements               map[uuid.UUID]Element
+	elementsWithComponents elementWithComponentList
+}
+
+func newElementDB(capacity int) *elementDB {
+	return &elementDB{
+		capacity:               capacity,
+		elements:               make(map[uuid.UUID]Element, capacity),
+		elementsWithComponents: make(elementWithComponentList, 0, capacity),
+	}
+}
+
+func (db *elementDB) Add(e Element) error {
+	if len(db.elements) == db.capacity {
+		return errors.Errorf("can't handle more than %d elements simultaneously", db.capacity)
+	}
+
+	if _, ok := db.elements[e.ID()]; ok {
+		return errors.Errorf("element with id %s is already added", e.ID())
+	}
+
+	db.elements[e.ID()] = e
+
+	if elemWithComp, ok := e.(ElementWithComponent); ok {
+		db.elementsWithComponents = append(db.elementsWithComponents, elemWithComp)
+		sort.Sort(db.elementsWithComponents)
+	}
+	return nil
+}
+
+func (db *elementDB) Remove(e Element) {
+	delete(db.elements, e.ID())
+
+	if _, ok := e.(ElementWithComponent); ok {
+		elements := db.elementsWithComponents
+		for i, elem := range elements {
+			if elem == e {
+				copy(elements[i:], elements[i+1:])
+				elements[len(elements)-1] = nil
+				elements = elements[:len(elements)-1]
+				db.elementsWithComponents = elements
+				return
+			}
+		}
+	}
+}
+
+func (db *elementDB) Element(id uuid.UUID) (e Element, ok bool) {
+	e, ok = db.elements[id]
+	return
+}
+
+func (db *elementDB) ElementByComponent(c markup.Component) (e ElementWithComponent, err error) {
+	for _, elem := range db.elementsWithComponents {
+		if elem.Contains(c) {
+			e = elem
+			return
+		}
+	}
+
+	err = errors.Errorf("component %+v is not mounted in any elements", c)
+	return
+}
+
+func (db *elementDB) Sort() {
+	sort.Sort(db.elementsWithComponents)
+}
+
+func (db *elementDB) Len() int {
+	return len(db.elements)
+}
+
+// concurentElemDB is a concurent element database that implements
+// ElementDB.
+// It is safe for multiple goroutines to call its methods concurrently.
+type concurentElemDB struct {
+	mutex sync.Mutex
+	base  ElementDB
+}
+
+func newConcurentElemDB(db ElementDB) *concurentElemDB {
+	return &concurentElemDB{
+		base: db,
+	}
+}
+
+func (db *concurentElemDB) Add(e Element) error {
+	db.mutex.Lock()
+	defer db.mutex.Unlock()
+	return db.base.Add(e)
+}
+
+func (db *concurentElemDB) Remove(e Element) {
+	db.mutex.Lock()
+	defer db.mutex.Unlock()
+	db.base.Remove(e)
+}
+
+func (db *concurentElemDB) Element(id uuid.UUID) (e Element, ok bool) {
+	db.mutex.Lock()
+	defer db.mutex.Unlock()
+	return db.base.Element(id)
+}
+
+func (db *concurentElemDB) ElementByComponent(c markup.Component) (e ElementWithComponent, err error) {
+	db.mutex.Lock()
+	defer db.mutex.Unlock()
+	return db.base.ElementByComponent(c)
+}
+
+func (db *concurentElemDB) Sort() {
+	db.mutex.Lock()
+	defer db.mutex.Unlock()
+	db.base.Sort()
+}
+
+func (db *concurentElemDB) Len() int {
+	db.mutex.Lock()
+	defer db.mutex.Unlock()
+	return db.base.Len()
+}
+
+// TO DO:
+// Implementation.
+
+// Slice of []ElementWithComponent that implements sort.Interface.
+type elementWithComponentList []ElementWithComponent
+
+func (l elementWithComponentList) Len() int {
+	return len(l)
+}
+
+func (l elementWithComponentList) Less(i, j int) bool {
+	return l[i].LastFocus().After(l[j].LastFocus())
+}
+
+func (l elementWithComponentList) Swap(i, j int) {
+	l[i], l[j] = l[j], l[i]
 }
