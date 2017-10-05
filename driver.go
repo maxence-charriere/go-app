@@ -4,7 +4,7 @@ package app
 type Driver interface {
 	// Run runs the application with the components resistered in the component
 	// builder b.
-	Run(b CompoBuilder) error
+	Run(b Factory) error
 
 	// Render renders component c.
 	Render(c Component) error

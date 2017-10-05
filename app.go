@@ -5,21 +5,21 @@ import (
 )
 
 var (
-	driver       Driver
-	compoBuilder CompoBuilder
+	driver     Driver
+	components Factory = make(factory)
 )
 
 // Import imports component c into the app.
 // Components must be imported in order the be used by the app package.
-// This mechanism allows components to be created dynamically when they are
-// found into HTML code.
-// Import should be called during app initialization.
+// This allows components to be created dynamically when they are found into
+// HTML code.
+// Imports must be done before the app is running.
 func Import(c Component) {
 	if driver != nil {
 		panic(errors.Errorf("importing component %T failed: can't import when a driver is running", c))
 	}
 
-	if err := compoBuilder.Register(c); err != nil {
+	if _, err := components.RegisterComponent(c); err != nil {
 		err = errors.Wrapf(err, "importing component %T failed", c)
 		panic(err)
 	}
@@ -32,7 +32,7 @@ func Run(d Driver) {
 	}
 
 	driver = d
-	if err := d.Run(compoBuilder); err != nil {
+	if err := d.Run(components); err != nil {
 		driver = nil
 		panic(errors.Wrap(err, "running the app failed"))
 	}

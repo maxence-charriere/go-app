@@ -1,335 +1,327 @@
 package app_test
 
-import (
-	"testing"
+// type Component markup.ZeroCompo
 
-	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/drivers/test"
-	"github.com/murlokswarm/app/markup"
-)
+// func (c *Component) Render() string {
+// 	return `<div>Hello</div>`
+// }
 
-type Component markup.ZeroCompo
+// type InvalidComponent markup.ZeroCompo
 
-func (c *Component) Render() string {
-	return `<div>Hello</div>`
-}
+// func (c InvalidComponent) Render() string {
+// 	return ``
+// }
 
-type InvalidComponent markup.ZeroCompo
+// func TestApp(t *testing.T) {
+// 	d := &test.Driver{
+// 		Test: t,
+// 	}
 
-func (c InvalidComponent) Render() string {
-	return ``
-}
+// 	tests := []struct {
+// 		name string
+// 		test func(t *testing.T)
+// 	}{
+// 		{
+// 			name: "should import component",
+// 			test: testImport,
+// 		},
+// 		{
+// 			name: "import invalid component should fail",
+// 			test: testImportInvalidComponent,
+// 		},
+// 		{
+// 			name: "run with driver error should panic",
+// 			test: testRunDriverError,
+// 		},
+// 		{
+// 			name: "get running driver when app is not running should panic",
+// 			test: testRunningDriverPanic,
+// 		},
+// 		{
+// 			name: "should run",
+// 			test: func(t *testing.T) { testRun(t, d) },
+// 		},
+// 		{
+// 			name: "second run should panic",
+// 			test: testRunMultiple,
+// 		},
+// 		{
+// 			name: "import component when driver is running should fail",
+// 			test: testImportWhenDriverRuns,
+// 		},
+// 		{
+// 			name: "should return the running driver",
+// 			test: func(t *testing.T) { testRunningDriver(t, d) },
+// 		},
+// 		{
+// 			name: "should render a component",
+// 			test: func(t *testing.T) { testRender(t, d) },
+// 		},
+// 		{
+// 			name: "render should log an error",
+// 			test: testRenderLogError,
+// 		},
+// 		{
+// 			name: "context should return an element",
+// 			test: func(t *testing.T) { testContext(t, d) },
+// 		},
+// 		{
+// 			name: "context should return an error",
+// 			test: testContextError,
+// 		},
+// 		{
+// 			name: "should create a context menu",
+// 			test: testNewContextMenu,
+// 		},
+// 		{
+// 			name: "resources should return a filepath",
+// 			test: testResources,
+// 		},
+// 		{
+// 			name: "logs should return the logger",
+// 			test: testLogs,
+// 		},
+// 		{
+// 			name: "should call on ui goroutine",
+// 			test: func(t *testing.T) { testCallOnUIGoroutine(t, d) },
+// 		},
+// 		{
+// 			name: "storage should return a filepath",
+// 			test: testStorage,
+// 		},
+// 		{
+// 			name: "should create a window",
+// 			test: testNewWindow,
+// 		},
+// 		{
+// 			name: "should return the menu bar",
+// 			test: testMenuBar,
+// 		},
+// 		{
+// 			name: "should return the dock tile",
+// 			test: testDock,
+// 		},
+// 		{
+// 			name: "should share",
+// 			test: testShare,
+// 		},
+// 		{
+// 			name: "should create a file panel",
+// 			test: testNewFilePanel,
+// 		},
+// 		{
+// 			name: "should create a popup notification",
+// 			test: testNewPopupNotification,
+// 		},
+// 	}
 
-func TestApp(t *testing.T) {
-	d := &test.Driver{
-		Test: t,
-	}
+// 	for _, test := range tests {
+// 		t.Run(test.name, test.test)
+// 	}
+// }
 
-	tests := []struct {
-		name string
-		test func(t *testing.T)
-	}{
-		{
-			name: "should import component",
-			test: testImport,
-		},
-		{
-			name: "import invalid component should fail",
-			test: testImportInvalidComponent,
-		},
-		{
-			name: "run with driver error should panic",
-			test: testRunDriverError,
-		},
-		{
-			name: "get running driver when app is not running should panic",
-			test: testRunningDriverPanic,
-		},
-		{
-			name: "should run",
-			test: func(t *testing.T) { testRun(t, d) },
-		},
-		{
-			name: "second run should panic",
-			test: testRunMultiple,
-		},
-		{
-			name: "import component when driver is running should fail",
-			test: testImportWhenDriverRuns,
-		},
-		{
-			name: "should return the running driver",
-			test: func(t *testing.T) { testRunningDriver(t, d) },
-		},
-		{
-			name: "should render a component",
-			test: func(t *testing.T) { testRender(t, d) },
-		},
-		{
-			name: "render should log an error",
-			test: testRenderLogError,
-		},
-		{
-			name: "context should return an element",
-			test: func(t *testing.T) { testContext(t, d) },
-		},
-		{
-			name: "context should return an error",
-			test: testContextError,
-		},
-		{
-			name: "should create a context menu",
-			test: testNewContextMenu,
-		},
-		{
-			name: "resources should return a filepath",
-			test: testResources,
-		},
-		{
-			name: "logs should return the logger",
-			test: testLogs,
-		},
-		{
-			name: "should call on ui goroutine",
-			test: func(t *testing.T) { testCallOnUIGoroutine(t, d) },
-		},
-		{
-			name: "storage should return a filepath",
-			test: testStorage,
-		},
-		{
-			name: "should create a window",
-			test: testNewWindow,
-		},
-		{
-			name: "should return the menu bar",
-			test: testMenuBar,
-		},
-		{
-			name: "should return the dock tile",
-			test: testDock,
-		},
-		{
-			name: "should share",
-			test: testShare,
-		},
-		{
-			name: "should create a file panel",
-			test: testNewFilePanel,
-		},
-		{
-			name: "should create a popup notification",
-			test: testNewPopupNotification,
-		},
-	}
+// func testImport(t *testing.T) {
+// 	app.Import(&Component{})
+// }
 
-	for _, test := range tests {
-		t.Run(test.name, test.test)
-	}
-}
+// func testImportWhenDriverRuns(t *testing.T) {
+// 	defer func() { recover() }()
 
-func testImport(t *testing.T) {
-	app.Import(&Component{})
-}
+// 	app.Import(&Component{})
+// 	t.Error("should panic")
+// }
 
-func testImportWhenDriverRuns(t *testing.T) {
-	defer func() { recover() }()
+// func testImportInvalidComponent(t *testing.T) {
+// 	defer func() { recover() }()
 
-	app.Import(&Component{})
-	t.Error("should panic")
-}
+// 	app.Import(InvalidComponent{})
+// 	t.Error("should panic")
+// }
 
-func testImportInvalidComponent(t *testing.T) {
-	defer func() { recover() }()
+// func testRunDriverError(t *testing.T) {
+// 	defer func() { recover() }()
 
-	app.Import(InvalidComponent{})
-	t.Error("should panic")
-}
+// 	app.Run(&test.Driver{
+// 		RunSouldErr: true,
+// 	})
+// 	t.Error("should panic")
+// }
 
-func testRunDriverError(t *testing.T) {
-	defer func() { recover() }()
+// func testRunningDriverPanic(t *testing.T) {
+// 	defer func() { recover() }()
 
-	app.Run(&test.Driver{
-		RunSouldErr: true,
-	})
-	t.Error("should panic")
-}
+// 	app.RunningDriver()
+// 	t.Error("should panic")
+// }
 
-func testRunningDriverPanic(t *testing.T) {
-	defer func() { recover() }()
+// func testRun(t *testing.T, d *test.Driver) {
+// 	app.Run(d)
+// }
 
-	app.RunningDriver()
-	t.Error("should panic")
-}
+// func testRunMultiple(t *testing.T) {
+// 	defer func() { recover() }()
 
-func testRun(t *testing.T, d *test.Driver) {
-	app.Run(d)
-}
+// 	app.Run(&test.Driver{})
+// 	t.Error("should panic")
+// }
 
-func testRunMultiple(t *testing.T) {
-	defer func() { recover() }()
+// func testRunningDriver(t *testing.T, d *test.Driver) {
+// 	if app.RunningDriver() != d {
+// 		t.Fatal("running driver should be d")
+// 	}
+// }
 
-	app.Run(&test.Driver{})
-	t.Error("should panic")
-}
+// func testRender(t *testing.T, d *test.Driver) {
+// 	var compo markup.Component
+// 	d.OnWindowLoad = func(w app.Window, c markup.Component) {
+// 		compo = c
+// 	}
+// 	defer func() {
+// 		d.OnWindowLoad = nil
+// 	}()
 
-func testRunningDriver(t *testing.T, d *test.Driver) {
-	if app.RunningDriver() != d {
-		t.Fatal("running driver should be d")
-	}
-}
+// 	window := d.NewWindow(app.WindowConfig{
+// 		DefaultURL: "app.component",
+// 	})
+// 	defer window.Close()
 
-func testRender(t *testing.T, d *test.Driver) {
-	var compo markup.Component
-	d.OnWindowLoad = func(w app.Window, c markup.Component) {
-		compo = c
-	}
-	defer func() {
-		d.OnWindowLoad = nil
-	}()
+// 	app.Render(compo)
+// }
 
-	window := d.NewWindow(app.WindowConfig{
-		DefaultURL: "app.component",
-	})
-	defer window.Close()
+// func testRenderLogError(t *testing.T) {
+// 	app.Render(&Component{})
+// }
 
-	app.Render(compo)
-}
+// func testContext(t *testing.T, d *test.Driver) {
+// 	var compo markup.Component
+// 	d.OnWindowLoad = func(w app.Window, c markup.Component) {
+// 		compo = c
+// 	}
+// 	defer func() {
+// 		d.OnWindowLoad = nil
+// 	}()
 
-func testRenderLogError(t *testing.T) {
-	app.Render(&Component{})
-}
+// 	window := d.NewWindow(app.WindowConfig{
+// 		DefaultURL: "app_test.component",
+// 	})
+// 	defer window.Close()
 
-func testContext(t *testing.T, d *test.Driver) {
-	var compo markup.Component
-	d.OnWindowLoad = func(w app.Window, c markup.Component) {
-		compo = c
-	}
-	defer func() {
-		d.OnWindowLoad = nil
-	}()
+// 	ctx, err := app.Context(compo)
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+// 	if ctx != window {
+// 		t.Fatal("returned context should be the window")
+// 	}
+// }
 
-	window := d.NewWindow(app.WindowConfig{
-		DefaultURL: "app_test.component",
-	})
-	defer window.Close()
+// func testContextError(t *testing.T) {
+// 	_, err := app.Context(&Component{})
+// 	if err == nil {
+// 		t.Fatal("context should return an error")
+// 	}
+// 	t.Log(err)
+// }
 
-	ctx, err := app.Context(compo)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if ctx != window {
-		t.Fatal("returned context should be the window")
-	}
-}
+// func testNewContextMenu(t *testing.T) {
+// 	if menu := app.NewContextMenu(app.MenuConfig{}); menu == nil {
+// 		t.Fatal("menu should not be nil")
+// 	}
+// }
 
-func testContextError(t *testing.T) {
-	_, err := app.Context(&Component{})
-	if err == nil {
-		t.Fatal("context should return an error")
-	}
-	t.Log(err)
-}
+// func testResources(t *testing.T) {
+// 	resources := app.Resources()
+// 	if len(resources) == 0 {
+// 		t.Fatal("resources should return a filepath")
+// 	}
+// 	t.Log(resources)
+// }
 
-func testNewContextMenu(t *testing.T) {
-	if menu := app.NewContextMenu(app.MenuConfig{}); menu == nil {
-		t.Fatal("menu should not be nil")
-	}
-}
+// func testLogs(t *testing.T) {
+// 	app.Logs().Log("hello")
+// 	app.Logs().Error("world")
+// }
 
-func testResources(t *testing.T) {
-	resources := app.Resources()
-	if len(resources) == 0 {
-		t.Fatal("resources should return a filepath")
-	}
-	t.Log(resources)
-}
+// func testCallOnUIGoroutine(t *testing.T, d *test.Driver) {
+// 	done := make(chan struct{})
 
-func testLogs(t *testing.T) {
-	app.Logs().Log("hello")
-	app.Logs().Error("world")
-}
+// 	go func() {
+// 		f := <-d.UIchan
+// 		f()
+// 	}()
 
-func testCallOnUIGoroutine(t *testing.T, d *test.Driver) {
-	done := make(chan struct{})
+// 	app.CallOnUIGoroutine(func() {
+// 		done <- struct{}{}
+// 	})
+// 	<-done
+// }
 
-	go func() {
-		f := <-d.UIchan
-		f()
-	}()
+// func testStorage(t *testing.T) {
+// 	if !app.SupportsStorage() {
+// 		t.Fatal("storage should be supported")
+// 	}
 
-	app.CallOnUIGoroutine(func() {
-		done <- struct{}{}
-	})
-	<-done
-}
+// 	storage := app.Storage()
+// 	if len(storage) == 0 {
+// 		t.Fatal("storage should return a filepath")
+// 	}
+// 	t.Log(storage)
+// }
 
-func testStorage(t *testing.T) {
-	if !app.SupportsStorage() {
-		t.Fatal("storage should be supported")
-	}
+// func testNewWindow(t *testing.T) {
+// 	if !app.SupportsWindows() {
+// 		t.Fatal("windows should be supported")
+// 	}
 
-	storage := app.Storage()
-	if len(storage) == 0 {
-		t.Fatal("storage should return a filepath")
-	}
-	t.Log(storage)
-}
+// 	if window := app.NewWindow(app.WindowConfig{}); window == nil {
+// 		t.Fatal("window should not be nil")
+// 	}
+// }
 
-func testNewWindow(t *testing.T) {
-	if !app.SupportsWindows() {
-		t.Fatal("windows should be supported")
-	}
+// func testMenuBar(t *testing.T) {
+// 	if !app.SupportsMenuBar() {
+// 		t.Fatal("menu bar should be supported")
+// 	}
 
-	if window := app.NewWindow(app.WindowConfig{}); window == nil {
-		t.Fatal("window should not be nil")
-	}
-}
+// 	if menubar := app.MenuBar(); menubar == nil {
+// 		t.Fatal("menu bar should not be nil")
+// 	}
+// }
 
-func testMenuBar(t *testing.T) {
-	if !app.SupportsMenuBar() {
-		t.Fatal("menu bar should be supported")
-	}
+// func testDock(t *testing.T) {
+// 	if !app.SupportsDock() {
+// 		t.Fatal("dock should be supported")
+// 	}
 
-	if menubar := app.MenuBar(); menubar == nil {
-		t.Fatal("menu bar should not be nil")
-	}
-}
+// 	if dock := app.Dock(); dock == nil {
+// 		t.Fatal("dock should not be nil")
+// 	}
+// }
 
-func testDock(t *testing.T) {
-	if !app.SupportsDock() {
-		t.Fatal("dock should be supported")
-	}
+// func testShare(t *testing.T) {
+// 	if !app.SupportsShare() {
+// 		t.Fatal("share should be supported")
+// 	}
 
-	if dock := app.Dock(); dock == nil {
-		t.Fatal("dock should not be nil")
-	}
-}
+// 	app.Share(42)
+// }
 
-func testShare(t *testing.T) {
-	if !app.SupportsShare() {
-		t.Fatal("share should be supported")
-	}
+// func testNewFilePanel(t *testing.T) {
+// 	if !app.SupportsFilePanels() {
+// 		t.Fatal("file panels should be supported")
+// 	}
 
-	app.Share(42)
-}
+// 	if panel := app.NewFilePanel(app.FilePanelConfig{}); panel == nil {
+// 		t.Fatal("pannel should not be nil")
+// 	}
+// }
 
-func testNewFilePanel(t *testing.T) {
-	if !app.SupportsFilePanels() {
-		t.Fatal("file panels should be supported")
-	}
+// func testNewPopupNotification(t *testing.T) {
+// 	if !app.SupportsPopupNotifications() {
+// 		t.Fatal("popup notifications should be supported")
+// 	}
 
-	if panel := app.NewFilePanel(app.FilePanelConfig{}); panel == nil {
-		t.Fatal("pannel should not be nil")
-	}
-}
-
-func testNewPopupNotification(t *testing.T) {
-	if !app.SupportsPopupNotifications() {
-		t.Fatal("popup notifications should be supported")
-	}
-
-	if popup := app.NewPopupNotification(app.PopupNotificationConfig{}); popup == nil {
-		t.Fatal("popup should not be nil")
-	}
-}
+// 	if popup := app.NewPopupNotification(app.PopupNotificationConfig{}); popup == nil {
+// 		t.Fatal("popup should not be nil")
+// 	}
+// }

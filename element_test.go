@@ -1,326 +1,317 @@
 package app
 
-import (
-	"net/url"
-	"testing"
-	"time"
+// type BasicComponent ZeroCompo
 
-	"github.com/google/uuid"
-	"github.com/pkg/errors"
-)
+// func (c *BasicComponent) Render() string {
+// 	return "<div><div>"
+// }
 
-type BasicComponent ZeroCompo
+// type element struct {
+// 	id uuid.UUID
+// }
 
-func (c *BasicComponent) Render() string {
-	return "<div><div>"
-}
+// func newElement() *element {
+// 	elem := &element{
+// 		id: uuid.New(),
+// 	}
+// 	return elem
+// }
 
-type element struct {
-	id uuid.UUID
-}
+// func (e *element) ID() uuid.UUID {
+// 	return e.id
+// }
 
-func newElement() *element {
-	elem := &element{
-		id: uuid.New(),
-	}
-	return elem
-}
+// type elementWithComponent struct {
+// 	id           uuid.UUID
+// 	compoBuilder CompoBuilder
+// 	lastFocus    time.Time
+// 	env          Env
+// }
 
-func (e *element) ID() uuid.UUID {
-	return e.id
-}
+// func newElementWithComponent() *elementWithComponent {
+// 	compoBuilder := NewCompoBuilder()
+// 	compoBuilder.Register(&BasicComponent{})
 
-type elementWithComponent struct {
-	id           uuid.UUID
-	compoBuilder CompoBuilder
-	lastFocus    time.Time
-	env          Env
-}
+// 	return &elementWithComponent{
+// 		id:           uuid.New(),
+// 		compoBuilder: compoBuilder,
+// 		env:          NewEnv(compoBuilder),
+// 		lastFocus:    time.Now(),
+// 	}
+// }
 
-func newElementWithComponent() *elementWithComponent {
-	compoBuilder := NewCompoBuilder()
-	compoBuilder.Register(&BasicComponent{})
+// func (e *elementWithComponent) ID() uuid.UUID {
+// 	return e.id
+// }
 
-	return &elementWithComponent{
-		id:           uuid.New(),
-		compoBuilder: compoBuilder,
-		env:          NewEnv(compoBuilder),
-		lastFocus:    time.Now(),
-	}
-}
+// func (e *elementWithComponent) Load(rawurl string) error {
+// 	u, err := url.Parse(rawurl)
+// 	if err != nil {
+// 		return err
+// 	}
 
-func (e *elementWithComponent) ID() uuid.UUID {
-	return e.id
-}
+// 	componame, ok := ComponentNameFromURL(u)
+// 	if !ok {
+// 		return nil
+// 	}
 
-func (e *elementWithComponent) Load(rawurl string) error {
-	u, err := url.Parse(rawurl)
-	if err != nil {
-		return err
-	}
+// 	compo, err := e.compoBuilder.New(componame)
+// 	if err != nil {
+// 		return err
+// 	}
 
-	componame, ok := ComponentNameFromURL(u)
-	if !ok {
-		return nil
-	}
+// 	if _, err = e.env.Mount(compo); err != nil {
+// 		return errors.Wrapf(err, "loading %s in test elem %p failed", u, e)
+// 	}
+// 	return nil
+// }
 
-	compo, err := e.compoBuilder.New(componame)
-	if err != nil {
-		return err
-	}
+// func (e *elementWithComponent) Contains(c Component) bool {
+// 	return e.env.Contains(c)
+// }
 
-	if _, err = e.env.Mount(compo); err != nil {
-		return errors.Wrapf(err, "loading %s in test elem %p failed", u, e)
-	}
-	return nil
-}
+// func (e *elementWithComponent) Render(c Component) error {
+// 	_, err := e.env.Update(c)
+// 	return err
+// }
 
-func (e *elementWithComponent) Contains(c Component) bool {
-	return e.env.Contains(c)
-}
+// func (e *elementWithComponent) LastFocus() time.Time {
+// 	return e.lastFocus
+// }
 
-func (e *elementWithComponent) Render(c Component) error {
-	_, err := e.env.Update(c)
-	return err
-}
+// func TestElementDB(t *testing.T) {
+// 	tests := []struct {
+// 		name string
+// 		test func(t *testing.T)
+// 	}{
+// 		{
+// 			name: "should add an element",
+// 			test: testElementDBAdd,
+// 		},
+// 		{
+// 			name: "should add an element with components",
+// 			test: testElementDBAddElementWithComponent,
+// 		},
+// 		{
+// 			name: "should fail to add an element when full",
+// 			test: testElementDBAddWhenFull,
+// 		},
+// 		{
+// 			name: "add element with same id should fail",
+// 			test: testElementDBAddElementWithSameID,
+// 		},
+// 		{
+// 			name: "should remove an element",
+// 			test: testElementDBRemove,
+// 		},
+// 		{
+// 			name: "should get an element",
+// 			test: testElementDBElement,
+// 		},
+// 		{
+// 			name: "should not get an element",
+// 			test: testElementDBElementNotFound,
+// 		},
+// 		{
+// 			name: "should get an element by component",
+// 			test: testElementDBElementByComponent,
+// 		},
+// 		{
+// 			name: "should not get an element by component",
+// 			test: testElementDBElementByComponentNotFound,
+// 		},
+// 		{
+// 			name: "should sort the elements with components",
+// 			test: testElementDBSort,
+// 		},
+// 		{
+// 			name: "should return the number of elements",
+// 			test: testElementDBLen,
+// 		},
+// 	}
 
-func (e *elementWithComponent) LastFocus() time.Time {
-	return e.lastFocus
-}
+// 	for _, test := range tests {
+// 		t.Run(test.name, test.test)
+// 	}
+// }
 
-func TestElementDB(t *testing.T) {
-	tests := []struct {
-		name string
-		test func(t *testing.T)
-	}{
-		{
-			name: "should add an element",
-			test: testElementDBAdd,
-		},
-		{
-			name: "should add an element with components",
-			test: testElementDBAddElementWithComponent,
-		},
-		{
-			name: "should fail to add an element when full",
-			test: testElementDBAddWhenFull,
-		},
-		{
-			name: "add element with same id should fail",
-			test: testElementDBAddElementWithSameID,
-		},
-		{
-			name: "should remove an element",
-			test: testElementDBRemove,
-		},
-		{
-			name: "should get an element",
-			test: testElementDBElement,
-		},
-		{
-			name: "should not get an element",
-			test: testElementDBElementNotFound,
-		},
-		{
-			name: "should get an element by component",
-			test: testElementDBElementByComponent,
-		},
-		{
-			name: "should not get an element by component",
-			test: testElementDBElementByComponentNotFound,
-		},
-		{
-			name: "should sort the elements with components",
-			test: testElementDBSort,
-		},
-		{
-			name: "should return the number of elements",
-			test: testElementDBLen,
-		},
-	}
+// func testElementDBAdd(t *testing.T) {
+// 	elemDB := newElementDB(42)
 
-	for _, test := range tests {
-		t.Run(test.name, test.test)
-	}
-}
+// 	if err := elemDB.Add(newElement()); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-func testElementDBAdd(t *testing.T) {
-	elemDB := newElementDB(42)
+// 	if l := len(elemDB.elements); l != 1 {
+// 		t.Error("elemDB should have 1 element:", l)
+// 	}
+// 	if l := len(elemDB.elementsWithComponents); l != 0 {
+// 		t.Error("elemDB should not have an element with components")
+// 	}
+// }
 
-	if err := elemDB.Add(newElement()); err != nil {
-		t.Fatal(err)
-	}
+// func testElementDBAddElementWithComponent(t *testing.T) {
+// 	elemDB := newElementDB(42)
 
-	if l := len(elemDB.elements); l != 1 {
-		t.Error("elemDB should have 1 element:", l)
-	}
-	if l := len(elemDB.elementsWithComponents); l != 0 {
-		t.Error("elemDB should not have an element with components")
-	}
-}
+// 	if err := elemDB.Add(newElementWithComponent()); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-func testElementDBAddElementWithComponent(t *testing.T) {
-	elemDB := newElementDB(42)
+// 	if l := len(elemDB.elements); l != 1 {
+// 		t.Error("elemDB should have 1 element:", l)
+// 	}
+// 	if l := len(elemDB.elementsWithComponents); l != 1 {
+// 		t.Error("elemDB should have 1 element with components:", l)
+// 	}
+// }
 
-	if err := elemDB.Add(newElementWithComponent()); err != nil {
-		t.Fatal(err)
-	}
+// func testElementDBAddElementWithSameID(t *testing.T) {
+// 	elemDB := newElementDB(42)
+// 	elem := newElementWithComponent()
 
-	if l := len(elemDB.elements); l != 1 {
-		t.Error("elemDB should have 1 element:", l)
-	}
-	if l := len(elemDB.elementsWithComponents); l != 1 {
-		t.Error("elemDB should have 1 element with components:", l)
-	}
-}
+// 	if err := elemDB.Add(elem); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-func testElementDBAddElementWithSameID(t *testing.T) {
-	elemDB := newElementDB(42)
-	elem := newElementWithComponent()
+// 	err := elemDB.Add(elem)
+// 	if err == nil {
+// 		t.Fatal("should not add a same element twice")
+// 	}
+// 	t.Log()
 
-	if err := elemDB.Add(elem); err != nil {
-		t.Fatal(err)
-	}
+// }
 
-	err := elemDB.Add(elem)
-	if err == nil {
-		t.Fatal("should not add a same element twice")
-	}
-	t.Log()
+// func testElementDBAddWhenFull(t *testing.T) {
+// 	elemDB := newElementDB(42)
 
-}
+// 	newElem := func() Element {
+// 		return newElement()
+// 	}
 
-func testElementDBAddWhenFull(t *testing.T) {
-	elemDB := newElementDB(42)
+// 	for i := 0; i < elemDB.capacity; i++ {
+// 		if err := elemDB.Add(newElem()); err != nil {
+// 			t.Fatal(err)
+// 		}
+// 	}
 
-	newElem := func() Element {
-		return newElement()
-	}
+// 	err := elemDB.Add(newElem())
+// 	if err == nil {
+// 		t.Fatal("adding an element should return an error")
+// 	}
+// 	t.Log(err)
+// }
 
-	for i := 0; i < elemDB.capacity; i++ {
-		if err := elemDB.Add(newElem()); err != nil {
-			t.Fatal(err)
-		}
-	}
+// func testElementDBRemove(t *testing.T) {
+// 	elemDB := newElementDB(42)
+// 	elem := newElementWithComponent()
 
-	err := elemDB.Add(newElem())
-	if err == nil {
-		t.Fatal("adding an element should return an error")
-	}
-	t.Log(err)
-}
+// 	if err := elemDB.Add(elem); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-func testElementDBRemove(t *testing.T) {
-	elemDB := newElementDB(42)
-	elem := newElementWithComponent()
+// 	elemDB.Remove(elem)
 
-	if err := elemDB.Add(elem); err != nil {
-		t.Fatal(err)
-	}
+// 	if l := len(elemDB.elements); l != 0 {
+// 		t.Error("elemDB should not have elements:", l)
+// 	}
+// 	if l := len(elemDB.elementsWithComponents); l != 0 {
+// 		t.Error("elemDB should not have elements with components:", l)
+// 	}
+// }
 
-	elemDB.Remove(elem)
+// func testElementDBElement(t *testing.T) {
+// 	elemDB := newElementDB(42)
+// 	elem := newElementWithComponent()
 
-	if l := len(elemDB.elements); l != 0 {
-		t.Error("elemDB should not have elements:", l)
-	}
-	if l := len(elemDB.elementsWithComponents); l != 0 {
-		t.Error("elemDB should not have elements with components:", l)
-	}
-}
+// 	if err := elemDB.Add(elem); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-func testElementDBElement(t *testing.T) {
-	elemDB := newElementDB(42)
-	elem := newElementWithComponent()
+// 	elemret, ok := elemDB.Element(elem.ID())
+// 	if !ok {
+// 		t.Fatalf("no element with id %v found", elem.ID())
+// 	}
+// 	if elemret != elem {
+// 		t.Fatal("returned element should be the added element")
+// 	}
+// }
 
-	if err := elemDB.Add(elem); err != nil {
-		t.Fatal(err)
-	}
+// func testElementDBElementNotFound(t *testing.T) {
+// 	elemDB := newElementDB(42)
+// 	if _, ok := elemDB.Element(uuid.New()); ok {
+// 		t.Fatal("no element should have been found")
+// 	}
+// }
 
-	elemret, ok := elemDB.Element(elem.ID())
-	if !ok {
-		t.Fatalf("no element with id %v found", elem.ID())
-	}
-	if elemret != elem {
-		t.Fatal("returned element should be the added element")
-	}
-}
+// func testElementDBElementByComponent(t *testing.T) {
+// 	elem := newElementWithComponent()
 
-func testElementDBElementNotFound(t *testing.T) {
-	elemDB := newElementDB(42)
-	if _, ok := elemDB.Element(uuid.New()); ok {
-		t.Fatal("no element should have been found")
-	}
-}
+// 	compo := &BasicComponent{}
+// 	if _, err := elem.env.Mount(compo); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-func testElementDBElementByComponent(t *testing.T) {
-	elem := newElementWithComponent()
+// 	elemDB := newElementDB(42)
+// 	if err := elemDB.Add(elem); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-	compo := &BasicComponent{}
-	if _, err := elem.env.Mount(compo); err != nil {
-		t.Fatal(err)
-	}
+// 	elemret, err := elemDB.ElementByComponent(compo)
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+// 	if elemret != elem {
+// 		t.Fatal("returned element should be the added element")
+// 	}
+// }
 
-	elemDB := newElementDB(42)
-	if err := elemDB.Add(elem); err != nil {
-		t.Fatal(err)
-	}
+// func testElementDBElementByComponentNotFound(t *testing.T) {
+// 	elemDB := newElementDB(42)
 
-	elemret, err := elemDB.ElementByComponent(compo)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if elemret != elem {
-		t.Fatal("returned element should be the added element")
-	}
-}
+// 	if _, err := elemDB.ElementByComponent(&BasicComponent{}); err == nil {
+// 		t.Fatal("no element should have been found")
+// 	}
+// }
 
-func testElementDBElementByComponentNotFound(t *testing.T) {
-	elemDB := newElementDB(42)
+// func testElementDBSort(t *testing.T) {
+// 	elemDB := newElementDB(42)
 
-	if _, err := elemDB.ElementByComponent(&BasicComponent{}); err == nil {
-		t.Fatal("no element should have been found")
-	}
-}
+// 	for i := 0; i < 10; i++ {
+// 		if err := elemDB.Add(newElementWithComponent()); err != nil {
+// 			t.Fatal(err)
+// 		}
+// 	}
 
-func testElementDBSort(t *testing.T) {
-	elemDB := newElementDB(42)
+// 	lastElem := newElementWithComponent()
+// 	if err := elemDB.Add(lastElem); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-	for i := 0; i < 10; i++ {
-		if err := elemDB.Add(newElementWithComponent()); err != nil {
-			t.Fatal(err)
-		}
-	}
+// 	elems := elemDB.elementsWithComponents
+// 	for i, elem := range elems {
+// 		if elem.ID() == lastElem.ID() {
+// 			elems[i], elems[5] = elems[5], elems[i]
+// 			break
+// 		}
+// 	}
 
-	lastElem := newElementWithComponent()
-	if err := elemDB.Add(lastElem); err != nil {
-		t.Fatal(err)
-	}
+// 	elemDB.Sort()
 
-	elems := elemDB.elementsWithComponents
-	for i, elem := range elems {
-		if elem.ID() == lastElem.ID() {
-			elems[i], elems[5] = elems[5], elems[i]
-			break
-		}
-	}
+// 	if elem := elemDB.elementsWithComponents[0]; elem != lastElem {
+// 		t.Fatalf("1st element with components should be the last added element: %T", elem)
+// 	}
+// }
 
-	elemDB.Sort()
+// func testElementDBLen(t *testing.T) {
+// 	elemDB := newElementDB(42)
 
-	if elem := elemDB.elementsWithComponents[0]; elem != lastElem {
-		t.Fatalf("1st element with components should be the last added element: %T", elem)
-	}
-}
+// 	for i := 0; i < 10; i++ {
+// 		if err := elemDB.Add(newElementWithComponent()); err != nil {
+// 			t.Fatal(err)
+// 		}
+// 	}
 
-func testElementDBLen(t *testing.T) {
-	elemDB := newElementDB(42)
-
-	for i := 0; i < 10; i++ {
-		if err := elemDB.Add(newElementWithComponent()); err != nil {
-			t.Fatal(err)
-		}
-	}
-
-	if l := elemDB.Len(); l != 10 {
-		t.Fatal("elemDB should have 10 elements:", l)
-	}
-}
+// 	if l := elemDB.Len(); l != 10 {
+// 		t.Fatal("elemDB should have 10 elements:", l)
+// 	}
+// }
