@@ -22,25 +22,33 @@ type Component interface {
 }
 
 // Mounter is the interface that wraps OnMount method.
-// OnMount si called when a component is mounted.
 type Mounter interface {
+	Component
+
+	// OnMount si called when a component is mounted.
 	OnMount()
 }
 
 // Dismounter is the interface that wraps OnDismount method.
-// OnDismount si called when a component is dismounted.
 type Dismounter interface {
+	Component
+
+	// OnDismount is called when a component is dismounted.
 	OnDismount()
 }
 
-// Navigator is the interface that wraps OnNavigate method.
-// OnNavigate is called when a component is navigated to.
-type Navigator interface {
+// Navigable is the interface that wraps OnNavigate method.
+type Navigable interface {
+	Component
+
+	// OnNavigate is called when a component is navigated to.
 	OnNavigate(u url.URL)
 }
 
 // Mapper is the interface that wraps FuncMaps method.
 type Mapper interface {
+	Component
+
 	// Allows to add custom functions to the template used to render the
 	// component.
 	//
