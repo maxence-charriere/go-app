@@ -180,10 +180,10 @@ type PopupNotificationConfig struct {
 
 // ElementDB is the interface that describes an element database.
 type ElementDB interface {
-	// Add adds an element in the store.
+	// Add adds an element in the database.
 	Add(e Element) error
 
-	// Remove removes an element from the store.
+	// Remove removes an element from the database.
 	Remove(e Element)
 
 	// Element returns the element with identifier id.
@@ -193,7 +193,11 @@ type ElementDB interface {
 	// It returns an error if the component is not mounted in any element.
 	ElementByComponent(c markup.Component) (e ElementWithComponent, err error)
 
-	// Sort sorts the elements that hosts components.
+	// ElementsWithComponents returns the elements that contains components.
+	ElementsWithComponents() []ElementWithComponent
+
+	// Sort sorts the elements that hosts components. Latest focused elements
+	// will be at the beginning.
 	Sort()
 
 	// Len returns the number of element.
@@ -274,6 +278,10 @@ func (db *elementDB) ElementByComponent(c markup.Component) (e ElementWithCompon
 	return
 }
 
+func (db *elementDB) ElementsWithComponents() []ElementWithComponent {
+	return db.elementsWithComponents
+}
+
 func (db *elementDB) Sort() {
 	sort.Sort(db.elementsWithComponents)
 }
@@ -320,6 +328,12 @@ func (db *concurentElemDB) ElementByComponent(c markup.Component) (e ElementWith
 	return db.base.ElementByComponent(c)
 }
 
+func (db *concurentElemDB) ElementsWithComponents() []ElementWithComponent {
+	db.mutex.Lock()
+	defer db.mutex.Unlock()
+	return db.base.ElementsWithComponents()
+}
+
 func (db *concurentElemDB) Sort() {
 	db.mutex.Lock()
 	defer db.mutex.Unlock()
@@ -331,9 +345,6 @@ func (db *concurentElemDB) Len() int {
 	defer db.mutex.Unlock()
 	return db.base.Len()
 }
-
-// TO DO:
-// Implementation.
 
 // Slice of []ElementWithComponent that implements sort.Interface.
 type elementWithComponentList []ElementWithComponent
