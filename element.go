@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/murlokswarm/app/markup"
 	"github.com/pkg/errors"
 )
 
@@ -28,13 +27,13 @@ type ElementWithComponent interface {
 	// It returns an error if the component is not imported.
 	Load(url string) error
 
-	// Contains reports whether component c is mounted in the element.
-	Contains(c markup.Component) bool
+	// Contains reports whether the component is mounted in the element.
+	Contains(c Component) bool
 
-	// Render renders component c.
-	Render(c markup.Component) error
+	// Render renders the component.
+	Render(c Component) error
 
-	// LastFocus returns the last time when the element has got focus.
+	// LastFocus returns the last time when the element was focused.
 	LastFocus() time.Time
 }
 
@@ -74,7 +73,7 @@ type Window interface {
 	// Size returns the window size.
 	Size() (width, height float64)
 
-	// Resize resizes the window to width x height.
+	// Resize resizes the window to width * height.
 	Resize(width, height float64)
 
 	// Focus gives the focus to the window.
@@ -160,7 +159,8 @@ type DockTile interface {
 	// image.
 	SetIcon(name string) error
 
-	// SetBadge set the dock tile badge with the string representation of v.
+	// SetBadge set the dock tile badge with the string representation of the
+	// value.
 	SetBadge(v interface{})
 }
 
@@ -180,18 +180,18 @@ type PopupNotificationConfig struct {
 
 // ElementDB is the interface that describes an element database.
 type ElementDB interface {
-	// Add adds an element in the database.
+	// Add adds the element in the database.
 	Add(e Element) error
 
-	// Remove removes an element from the database.
+	// Remove removes the element from the database.
 	Remove(e Element)
 
-	// Element returns the element with identifier id.
+	// Element returns the element with the given identifier.
 	Element(id uuid.UUID) (e Element, ok bool)
 
-	// ElementByComponent returns the element where component c is mounted.
+	// ElementByComponent returns the element where the component is mounted.
 	// It returns an error if the component is not mounted in any element.
-	ElementByComponent(c markup.Component) (e ElementWithComponent, err error)
+	ElementByComponent(c Component) (e ElementWithComponent, err error)
 
 	// ElementsWithComponents returns the elements that contains components.
 	ElementsWithComponents() []ElementWithComponent
@@ -266,7 +266,7 @@ func (db *elementDB) Element(id uuid.UUID) (e Element, ok bool) {
 	return
 }
 
-func (db *elementDB) ElementByComponent(c markup.Component) (e ElementWithComponent, err error) {
+func (db *elementDB) ElementByComponent(c Component) (e ElementWithComponent, err error) {
 	for _, elem := range db.elementsWithComponents {
 		if elem.Contains(c) {
 			e = elem
@@ -322,7 +322,7 @@ func (db *concurentElemDB) Element(id uuid.UUID) (e Element, ok bool) {
 	return db.base.Element(id)
 }
 
-func (db *concurentElemDB) ElementByComponent(c markup.Component) (e ElementWithComponent, err error) {
+func (db *concurentElemDB) ElementByComponent(c Component) (e ElementWithComponent, err error) {
 	db.mutex.Lock()
 	defer db.mutex.Unlock()
 	return db.base.ElementByComponent(c)

@@ -1,31 +1,29 @@
 package app
 
-// type BasicComponent ZeroCompo
+import (
+	"github.com/google/uuid"
+)
 
-// func (c *BasicComponent) Render() string {
-// 	return "<div><div>"
-// }
+type element struct {
+	id uuid.UUID
+}
 
-// type element struct {
-// 	id uuid.UUID
-// }
+func newElement() *element {
+	elem := &element{
+		id: uuid.New(),
+	}
+	return elem
+}
 
-// func newElement() *element {
-// 	elem := &element{
-// 		id: uuid.New(),
-// 	}
-// 	return elem
-// }
-
-// func (e *element) ID() uuid.UUID {
-// 	return e.id
-// }
+func (e *element) ID() uuid.UUID {
+	return e.id
+}
 
 // type elementWithComponent struct {
-// 	id           uuid.UUID
-// 	compoBuilder CompoBuilder
-// 	lastFocus    time.Time
-// 	env          Env
+// 	id         uuid.UUID
+// 	components Factory
+// 	lastFocus  time.Time
+// 	env        Env
 // }
 
 // func newElementWithComponent() *elementWithComponent {

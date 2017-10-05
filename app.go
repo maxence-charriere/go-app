@@ -9,7 +9,7 @@ var (
 	components Factory = make(factory)
 )
 
-// Import imports component c into the app.
+// Import imports the component into the app.
 // Components must be imported in order the be used by the app package.
 // This allows components to be created dynamically when they are found into
 // HTML code.
@@ -25,7 +25,7 @@ func Import(c Component) {
 	}
 }
 
-// Run runs the app with driver d as backend.
+// Run runs the app with the driver as backend.
 func Run(d Driver) {
 	if driver != nil {
 		panic(errors.Errorf("driver %T is already running", driver))
@@ -47,7 +47,7 @@ func RunningDriver() Driver {
 	return driver
 }
 
-// Render renders component c.
+// Render renders the component.
 // It should be called when the display of component c have to be updated.
 // It panics if called before Run.
 func Render(c Component) {
@@ -56,15 +56,15 @@ func Render(c Component) {
 	}
 }
 
-// Context returns the element where component c is mounted.
+// Context returns the element where the component is mounted.
 // It returns an error if c is not mounted.
 // It panics if called before Run.
 func Context(c Component) (ElementWithComponent, error) {
 	return driver.Context(c)
 }
 
-// NewContextMenu creates and displays the context menu described in
-// configuration c.
+// NewContextMenu creates and displays the context menu described in the
+// configuration.
 // Context menu are displayed in the window or page in use.
 // It panics if called before Run.
 func NewContextMenu(c MenuConfig) Menu {
@@ -84,7 +84,7 @@ func Logs() Logger {
 	return driver.Logs()
 }
 
-// CallOnUIGoroutine calls func f and ensure it's called from the UI goroutine.
+// CallOnUIGoroutine calls a function on the UI goroutine.
 // UI goroutine is the running application main thread.
 func CallOnUIGoroutine(f func()) {
 	driver.CallOnUIGoroutine(f)
@@ -109,7 +109,7 @@ func SupportsWindows() bool {
 	return ok
 }
 
-// NewWindow creates and displays the window described in configuration c.
+// NewWindow creates and displays the window described in the configuration.
 // It panics if windows are not supported.
 func NewWindow(c WindowConfig) Window {
 	d := driver.(DriverWithWindows)
@@ -148,7 +148,7 @@ func SupportsShare() bool {
 	return ok
 }
 
-// Share shares the value v.
+// Share shares the value.
 // It panics if share is not supported.
 func Share(v interface{}) {
 	d := driver.(DriverWithShare)
@@ -161,7 +161,8 @@ func SupportsFilePanels() bool {
 	return ok
 }
 
-// NewFilePanel creates and displays the file panel described inconfiguration c.
+// NewFilePanel creates and displays the file panel described in the
+// configuration.
 // It panics if file panels are not supported.
 func NewFilePanel(c FilePanelConfig) Element {
 	d := driver.(DriverWithFilePanels)
@@ -174,8 +175,8 @@ func SupportsPopupNotifications() bool {
 	return ok
 }
 
-// NewPopupNotification creates and displays the popup notification described in
-// configuration c.
+// NewPopupNotification creates and displays the popup notification
+// described in the configuration.
 // It panics if popup notifications are not supported.
 func NewPopupNotification(c PopupNotificationConfig) Element {
 	d := driver.(DriverWithPopupNotifications)

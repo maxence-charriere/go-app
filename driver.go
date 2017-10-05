@@ -2,19 +2,18 @@ package app
 
 // Driver is the interface that describes a backend for app rendering.
 type Driver interface {
-	// Run runs the application with the components resistered in the component
-	// builder b.
+	// Run runs the application with the components resistered in the factory..
 	Run(b Factory) error
 
-	// Render renders component c.
+	// Render renders the component.
 	Render(c Component) error
 
-	// Context returns the element where component c is mounted.
+	// Context returns the element where the component is mounted.
 	// It returns an error if c is not mounted.
 	Context(c Component) (ElementWithComponent, error)
 
-	// NewContextMenu creates and displays the context menu described in
-	// configuration c.
+	// NewContextMenu creates and displays the context menu described in the
+	// configuration.
 	NewContextMenu(c MenuConfig) Menu
 
 	// Resources returns the location of the resources directory.
@@ -23,8 +22,7 @@ type Driver interface {
 	// Logs returns the application logger.
 	Logs() Logger
 
-	// CallOnUIGoroutine calls func f and ensure it's called from the UI
-	// goroutine.
+	// CallOnUIGoroutine calls a function on the UI goroutine.
 	CallOnUIGoroutine(f func())
 }
 
@@ -44,7 +42,7 @@ type DriverWithStorage interface {
 type DriverWithWindows interface {
 	Driver
 
-	// NewWindow creates and displays the window described in configuration c.
+	// NewWindow creates and displays the window described in the configuration.
 	NewWindow(c WindowConfig) Window
 }
 
@@ -69,7 +67,7 @@ type DriverWithDock interface {
 type DriverWithShare interface {
 	Driver
 
-	// Share shares the value v.
+	// Share shares the value.
 	Share(v interface{})
 }
 
@@ -78,8 +76,8 @@ type DriverWithShare interface {
 type DriverWithFilePanels interface {
 	Driver
 
-	// NewFilePanel creates and displays the file panel described in
-	// configuration c.
+	// NewFilePanel creates and displays the file panel described in the
+	// configuration.
 	NewFilePanel(c FilePanelConfig) Element
 }
 
