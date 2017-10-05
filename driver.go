@@ -85,6 +85,6 @@ type DriverWithFilePanels interface {
 // display popup notifications.
 type DriverWithPopupNotifications interface {
 	// NewPopupNotification creates and displays the popup notification
-	// described in configuration c.
+	// described in the configuration.
 	NewPopupNotification(c PopupNotificationConfig) Element
 }
