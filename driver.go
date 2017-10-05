@@ -1,19 +1,17 @@
 package app
 
-import "github.com/murlokswarm/app/markup"
-
 // Driver is the interface that describes a backend for app rendering.
 type Driver interface {
 	// Run runs the application with the components resistered in the component
 	// builder b.
-	Run(b markup.CompoBuilder) error
+	Run(b CompoBuilder) error
 
 	// Render renders component c.
-	Render(c markup.Component) error
+	Render(c Component) error
 
 	// Context returns the element where component c is mounted.
 	// It returns an error if c is not mounted.
-	Context(c markup.Component) (ElementWithComponent, error)
+	Context(c Component) (ElementWithComponent, error)
 
 	// NewContextMenu creates and displays the context menu described in
 	// configuration c.

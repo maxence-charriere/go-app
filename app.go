@@ -1,13 +1,12 @@
 package app
 
 import (
-	"github.com/murlokswarm/app/markup"
 	"github.com/pkg/errors"
 )
 
 var (
 	driver       Driver
-	compoBuilder = markup.NewCompoBuilder()
+	compoBuilder CompoBuilder
 )
 
 // Import imports component c into the app.
@@ -15,7 +14,7 @@ var (
 // This mechanism allows components to be created dynamically when they are
 // found into HTML code.
 // Import should be called during app initialization.
-func Import(c markup.Component) {
+func Import(c Component) {
 	if driver != nil {
 		panic(errors.Errorf("importing component %T failed: can't import when a driver is running", c))
 	}
@@ -51,7 +50,7 @@ func RunningDriver() Driver {
 // Render renders component c.
 // It should be called when the display of component c have to be updated.
 // It panics if called before Run.
-func Render(c markup.Component) {
+func Render(c Component) {
 	if err := driver.Render(c); err != nil {
 		Logs().Error(err)
 	}
@@ -60,7 +59,7 @@ func Render(c markup.Component) {
 // Context returns the element where component c is mounted.
 // It returns an error if c is not mounted.
 // It panics if called before Run.
-func Context(c markup.Component) (ElementWithComponent, error) {
+func Context(c Component) (ElementWithComponent, error) {
 	return driver.Context(c)
 }
 
