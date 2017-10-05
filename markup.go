@@ -42,6 +42,11 @@ type Tag struct {
 	Children []Tag
 }
 
+// Is reports whether the tag is of the given type.
+func (t *Tag) Is(typ TagType) bool {
+	return t.Type == typ
+}
+
 // TagType represents a tag type.
 type TagType byte
 
