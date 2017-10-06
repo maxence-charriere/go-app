@@ -10,6 +10,7 @@ func TestLogger(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	defer os.Remove("logger-test")
 	defer file.Close()
 
 	loggers := []Logger{
@@ -22,10 +23,10 @@ func TestLogger(t *testing.T) {
 	}
 
 	for _, logger := range loggers {
-		logger.Log("hello", "world")
-		logger.Logf("%s %s", "hello", "world")
+		logger.Log("log", "world")
+		logger.Logf("%s %s", "logf", "world")
 
-		logger.Error("hello", "world")
-		logger.Errorf("%s %s", "hello", "world")
+		logger.Error("error", "world")
+		logger.Errorf("%s %s", "errorf", "world")
 	}
 }
