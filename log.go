@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"path/filepath"
-	"runtime"
 	"strings"
 	"sync"
 	"time"
@@ -83,23 +81,16 @@ func (l *logger) Errorf(format string, v ...interface{}) {
 }
 
 func printLogPrefix(w io.Writer, level, color string) {
-	file, line := caller()
 	now := time.Now().Format("2006/01/02 15:04:05")
 	fmt.Fprintf(w,
-		"%s%s%s %s %s:%v |> ",
+		"%s%s%s %s %s|>%s ",
 		color,
 		strings.ToUpper(level),
 		defaultColor,
 		now,
-		file,
-		line,
+		color,
+		defaultColor,
 	)
-}
-
-func caller() (file string, line int) {
-	_, file, line, _ = runtime.Caller(3)
-	file = filepath.Base(file)
-	return
 }
 
 // NewConsole creates a logger that writes messages on standard outputs.
