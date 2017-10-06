@@ -208,7 +208,7 @@ type ElementDB interface {
 // It is safe for concurrent access.
 func NewElementDB(capacity int) ElementDB {
 	db := newElementDB(capacity)
-	return newConcurentElemDB(db)
+	return newConcurrentElemDB(db)
 }
 
 // elementDB is an element database that implements ElementDB.
@@ -290,57 +290,57 @@ func (db *elementDB) Len() int {
 	return len(db.elements)
 }
 
-// concurentElemDB is a concurent element database that implements
+// concurrentElemDB is a concurrent element database that implements
 // ElementDB.
-// It is safe for multiple goroutines to call its methods concurrently.
-type concurentElemDB struct {
+// It is safe for concurrent access.
+type concurrentElemDB struct {
 	mutex sync.Mutex
 	base  ElementDB
 }
 
-func newConcurentElemDB(db ElementDB) *concurentElemDB {
-	return &concurentElemDB{
+func newConcurrentElemDB(db ElementDB) *concurrentElemDB {
+	return &concurrentElemDB{
 		base: db,
 	}
 }
 
-func (db *concurentElemDB) Add(e Element) error {
+func (db *concurrentElemDB) Add(e Element) error {
 	db.mutex.Lock()
 	defer db.mutex.Unlock()
 	return db.base.Add(e)
 }
 
-func (db *concurentElemDB) Remove(e Element) {
+func (db *concurrentElemDB) Remove(e Element) {
 	db.mutex.Lock()
 	defer db.mutex.Unlock()
 	db.base.Remove(e)
 }
 
-func (db *concurentElemDB) Element(id uuid.UUID) (e Element, ok bool) {
+func (db *concurrentElemDB) Element(id uuid.UUID) (e Element, ok bool) {
 	db.mutex.Lock()
 	defer db.mutex.Unlock()
 	return db.base.Element(id)
 }
 
-func (db *concurentElemDB) ElementByComponent(c Component) (e ElementWithComponent, err error) {
+func (db *concurrentElemDB) ElementByComponent(c Component) (e ElementWithComponent, err error) {
 	db.mutex.Lock()
 	defer db.mutex.Unlock()
 	return db.base.ElementByComponent(c)
 }
 
-func (db *concurentElemDB) ElementsWithComponents() []ElementWithComponent {
+func (db *concurrentElemDB) ElementsWithComponents() []ElementWithComponent {
 	db.mutex.Lock()
 	defer db.mutex.Unlock()
 	return db.base.ElementsWithComponents()
 }
 
-func (db *concurentElemDB) Sort() {
+func (db *concurrentElemDB) Sort() {
 	db.mutex.Lock()
 	defer db.mutex.Unlock()
 	db.base.Sort()
 }
 
-func (db *concurentElemDB) Len() int {
+func (db *concurrentElemDB) Len() int {
 	db.mutex.Lock()
 	defer db.mutex.Unlock()
 	return db.base.Len()

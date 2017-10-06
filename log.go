@@ -2,9 +2,12 @@ package app
 
 import (
 	"fmt"
+	"io"
+	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -17,11 +20,11 @@ type Logger interface {
 	// Logf logs a message according to a format specifier.
 	Logf(format string, v ...interface{})
 
-	// Log logs an error using the default formats for its operands.
+	// Error logs an error using the default formats for its operands.
 	// Spaces are always added between operands and a newline is appended.
 	Error(v ...interface{})
 
-	// Logf logs an error according to a format specifier.
+	// Errorf logs an error according to a format specifier.
 	Errorf(format string, v ...interface{})
 }
 
@@ -31,48 +34,66 @@ const (
 	errColor     string = "\033[91m"
 )
 
-// Console is a logger that writes messages on the standard output.
-// It satisfies the Logger interface.
-type Console struct {
-	Debug bool
+// NewLogger creates a logger that writes on the given writer.
+// Logs are written only if debug is enabled.
+// It is safe for concurrent access.
+func NewLogger(w io.Writer, debug bool) Logger {
+	logger := newLogger(w, debug)
+	return NewConcurrentLogger(logger)
 }
 
-// Log satisfies the Logger interface.
-func (c *Console) Log(v ...interface{}) {
-	if !c.Debug {
+type logger struct {
+	writer io.Writer
+	debug  bool
+}
+
+func newLogger(w io.Writer, debug bool) *logger {
+	return &logger{
+		writer: w,
+		debug:  debug,
+	}
+}
+
+func (l *logger) Log(v ...interface{}) {
+	if !l.debug {
 		return
 	}
-	printLogPrefix("Log  ", accentColor)
-	fmt.Println(v...)
+	printLogPrefix(l.writer, "Log  ", accentColor)
+	fmt.Fprintln(l.writer, v...)
 }
 
-// Logf satisfies the Logger interface.
-func (c *Console) Logf(format string, v ...interface{}) {
-	if !c.Debug {
+func (l *logger) Logf(format string, v ...interface{}) {
+	if !l.debug {
 		return
 	}
-	printLogPrefix("Log  ", accentColor)
-	fmt.Printf(format, v...)
-	fmt.Println()
+	printLogPrefix(l.writer, "Log  ", accentColor)
+	fmt.Fprintf(l.writer, format, v...)
+	fmt.Fprintln(l.writer)
 }
 
-// Error satisfies the Logger interface.
-func (c *Console) Error(v ...interface{}) {
-	printLogPrefix("Error", errColor)
-	fmt.Println(v...)
+func (l *logger) Error(v ...interface{}) {
+	printLogPrefix(l.writer, "Error", errColor)
+	fmt.Fprintln(l.writer, v...)
 }
 
-// Errorf satisfies the Logger interface.
-func (c *Console) Errorf(format string, v ...interface{}) {
-	printLogPrefix("Error", errColor)
-	fmt.Printf(format, v...)
-	fmt.Println()
+func (l *logger) Errorf(format string, v ...interface{}) {
+	printLogPrefix(l.writer, "Error", errColor)
+	fmt.Fprintf(l.writer, format, v...)
+	fmt.Fprintln(l.writer)
 }
 
-func printLogPrefix(level, color string) {
+func printLogPrefix(w io.Writer, level, color string) {
 	file, line := caller()
 	now := time.Now().Format("2006/01/02 15:04:05")
-	fmt.Printf("%s%s%s %s %s:%v |> ", color, strings.ToUpper(level), defaultColor, now, file, line)
+	fmt.Fprintf(w,
+		"%s%s%s %s %s:%v |> ",
+		color,
+		strings.ToUpper(level),
+		defaultColor,
+		now,
+		file,
+		line,
+	)
 }
 
 func caller() (file string, line int) {
@@ -81,43 +102,111 @@ func caller() (file string, line int) {
 	return
 }
 
-// MultiLogger is a logger that logs messages using multiple loggers.
-// It satisfies the Logger interface.
-type MultiLogger struct {
-	loggers []Logger
+// NewConsole creates a logger that writes messages on standard outputs.
+// Logs are written on stdout, only if debug is enabled.
+// Errors are written on stderr.
+// It is safe for concurrent access.
+func NewConsole(debug bool) Logger {
+	logger := newConsole(debug)
+	return NewConcurrentLogger(logger)
 }
 
-// NewMultiLogger creates a logger that uses loggers.
-func NewMultiLogger(loggers ...Logger) *MultiLogger {
-	return &MultiLogger{
+type console struct {
+	std Logger
+	err Logger
+}
+
+func newConsole(debug bool) *console {
+	return &console{
+		std: newLogger(os.Stdout, debug),
+		err: newLogger(os.Stderr, debug),
+	}
+}
+
+func (c *console) Log(v ...interface{}) {
+	c.std.Log(v...)
+}
+
+func (c *console) Logf(format string, v ...interface{}) {
+	c.std.Logf(format, v...)
+}
+
+func (c *console) Error(v ...interface{}) {
+	c.err.Error(v...)
+}
+
+func (c *console) Errorf(format string, v ...interface{}) {
+	c.err.Errorf(format, v...)
+}
+
+// NewMultiLogger creates a logger that aggregate multiple loggers.
+func NewMultiLogger(loggers ...Logger) Logger {
+	return &multiLogger{
 		loggers: loggers,
 	}
 }
 
-// Log satisfies the Logger interface.
-func (l *MultiLogger) Log(v ...interface{}) {
+type multiLogger struct {
+	loggers []Logger
+}
+
+func (l *multiLogger) Log(v ...interface{}) {
 	for _, logger := range l.loggers {
 		logger.Log(v...)
 	}
 }
 
-// Logf satisfies the Logger interface.
-func (l *MultiLogger) Logf(format string, v ...interface{}) {
+func (l *multiLogger) Logf(format string, v ...interface{}) {
 	for _, logger := range l.loggers {
 		logger.Logf(format, v...)
 	}
 }
 
-// Error satisfies the Logger interface.
-func (l *MultiLogger) Error(v ...interface{}) {
+func (l *multiLogger) Error(v ...interface{}) {
 	for _, logger := range l.loggers {
 		logger.Error(v...)
 	}
 }
 
-// Errorf satisfies the Logger interface.
-func (l *MultiLogger) Errorf(format string, v ...interface{}) {
+func (l *multiLogger) Errorf(format string, v ...interface{}) {
 	for _, logger := range l.loggers {
 		logger.Errorf(format, v...)
 	}
+}
+
+// NewConcurrentLogger  decorates the given logger to ensure concurrent access
+// safety.
+func NewConcurrentLogger(l Logger) Logger {
+	return &concurrentLogger{
+		logger: l,
+	}
+}
+
+type concurrentLogger struct {
+	mutex  sync.Mutex
+	logger Logger
+}
+
+func (l *concurrentLogger) Log(v ...interface{}) {
+	l.mutex.Lock()
+	l.logger.Log(v...)
+	l.mutex.Unlock()
+}
+
+func (l *concurrentLogger) Logf(format string, v ...interface{}) {
+	l.mutex.Lock()
+	l.logger.Logf(format, v...)
+	l.mutex.Unlock()
+}
+
+func (l *concurrentLogger) Error(v ...interface{}) {
+	l.mutex.Lock()
+	l.logger.Error(v...)
+	l.mutex.Unlock()
+}
+
+func (l *concurrentLogger) Errorf(format string, v ...interface{}) {
+	l.mutex.Lock()
+	l.logger.Errorf(format, v...)
+	l.mutex.Unlock()
 }

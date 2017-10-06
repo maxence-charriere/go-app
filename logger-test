@@ -1,0 +1,6 @@
+[94mLOG  [00m 2017/10/05 22:16:54 log.go:204 |> hello world
+[94mLOG  [00m 2017/10/05 22:16:54 log.go:211 |> hello world
+[91mERROR[00m 2017/10/05 22:16:54 log.go:218 |> hello world
+[91mERROR[00m 2017/10/05 22:16:54 log.go:225 |> hello world
+[91mERROR[00m 2017/10/05 22:16:54 log.go:218 |> hello world
+[91mERROR[00m 2017/10/05 22:16:54 log.go:225 |> hello world

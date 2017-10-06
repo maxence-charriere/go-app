@@ -1,28 +1,31 @@
 package app
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
 
-func TestConsole(t *testing.T) {
-	cons := Console{}
+func TestLogger(t *testing.T) {
+	file, err := os.Create("logger-test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer file.Close()
 
-	cons.Log("hello", "world")
-	cons.Logf("%s %s", "hello", "world")
+	loggers := []Logger{
+		NewLogger(file, true),
+		NewConsole(true),
+		NewMultiLogger(
+			NewLogger(file, false),
+			NewConsole(false),
+		),
+	}
 
-	cons.Debug = true
+	for _, logger := range loggers {
+		logger.Log("hello", "world")
+		logger.Logf("%s %s", "hello", "world")
 
-	cons.Log("hello", "world")
-	cons.Logf("%s %s", "hello", "world")
-
-	cons.Error("hello", "world")
-	cons.Errorf("%s %s", "hello", "world")
-}
-
-func TestMultiLogger(t *testing.T) {
-	l := NewMultiLogger(&Console{Debug: true})
-
-	l.Log("multi", "hello", "world")
-	l.Logf("%s %s %s", "multi", "hello", "world")
-
-	l.Error("multi", "hello", "world")
-	l.Errorf("%s %s %s", "multi", "hello", "world")
+		logger.Error("hello", "world")
+		logger.Errorf("%s %s", "hello", "world")
+	}
 }
