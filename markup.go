@@ -52,7 +52,8 @@ type TagType byte
 
 // Constants that enumerates the tag types.
 const (
-	SimpleTag TagType = iota
+	ZeroTag TagType = iota
+	SimpleTag
 	TextTag
 	CompoTag
 )
