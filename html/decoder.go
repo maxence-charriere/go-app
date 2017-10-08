@@ -2,10 +2,12 @@ package html
 
 import (
 	"io"
+	"strings"
 
 	"github.com/murlokswarm/app"
 	"github.com/pkg/errors"
 	"golang.org/x/net/html"
+	"golang.org/x/net/html/atom"
 )
 
 type Decoder struct {
@@ -43,6 +45,8 @@ func (d *Decoder) decode(tag *app.Tag) bool {
 		return d.decodeClosingTag(tag)
 	case html.SelfClosingTagToken:
 		return d.decodeSelfClosingTag(tag)
+	case html.TextToken:
+		return d.decodeText(tag)
 	case html.ErrorToken:
 		d.err = d.tokenizer.Err()
 		return false
@@ -55,6 +59,7 @@ func (d *Decoder) decodeTag(tag *app.Tag) bool {
 	name, hasAttr := d.tokenizer.TagName()
 	tag.Name = string(name)
 	tag.Type = app.SimpleTag
+	tag.Svg = d.decodingSvg
 
 	if hasAttr {
 		d.decodeAttributes(tag)
@@ -126,12 +131,53 @@ func (d *Decoder) decodeSelfClosingTag(tag *app.Tag) bool {
 }
 
 func (d *Decoder) decodeText(tag *app.Tag) bool {
-	text := string(d.tokenizer.Text())
-	if len(text) == 0 {
+	tag.Text = string(d.tokenizer.Text())
+	tag.Text = strings.TrimSpace(tag.Text)
+
+	if len(tag.Text) == 0 {
 		return d.decode(tag)
 	}
 
-	tag.Text = string(text)
 	tag.Type = app.TextTag
 	return true
+}
+
+func isVoidElement(name string, decodingSvg bool) bool {
+	if decodingSvg {
+		return false
+	}
+	_, ok := voidElems[name]
+	return ok
+}
+
+var (
+	voidElems = map[string]struct{}{
+		"area":   {},
+		"base":   {},
+		"br":     {},
+		"col":    {},
+		"embed":  {},
+		"hr":     {},
+		"img":    {},
+		"input":  {},
+		"keygen": {},
+		"link":   {},
+		"meta":   {},
+		"param":  {},
+		"source": {},
+		"track":  {},
+		"wbr":    {},
+	}
+)
+
+func isComponent(name string, decodingSvg bool) bool {
+	if len(name) == 0 {
+		return false
+	}
+	if decodingSvg {
+		return false
+	}
+
+	// Any non standard html tag name describes a component name.
+	return atom.Lookup([]byte(name)) == 0
 }

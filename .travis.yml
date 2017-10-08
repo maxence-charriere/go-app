@@ -1,5 +1,5 @@
 language: go
-go: 1.8
+go: 1.9
 
 install:
   - go get -v -t .
@@ -10,6 +10,7 @@ script:
   - go test . -covermode count -coverprofile cover.out
   - go test -test.run Benchmark -cpu 1 -bench ./...
   - go test ./bridge
+  - go test ./html
   - goveralls -service travis-ci -repotoken $COVERALLS_TOKEN -coverprofile cover.out
 
 notifications:
