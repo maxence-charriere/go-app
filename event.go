@@ -29,7 +29,6 @@ type WheelEvent struct {
 	DeltaY    float64
 	DeltaZ    float64
 	DeltaMode DeltaMode
-	Target    DOMElement
 }
 
 // DeltaMode is an indication of the units of measurement for a delta value.
