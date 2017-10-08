@@ -1,5 +1,9 @@
 package app
 
+import (
+	"github.com/murlokswarm/app/key"
+)
+
 // ChangeEvent represents the data passed in a change event.
 type ChangeEvent struct {
 	Value string
@@ -37,8 +41,8 @@ type DeltaMode uint64
 // KeyboardEvent represents data fired when the keyboard is used.
 type KeyboardEvent struct {
 	CharCode rune
-	KeyCode  KeyCode
-	Location KeyLocation
+	KeyCode  key.Code
+	Location key.Location
 	AltKey   bool
 	CtrlKey  bool
 	MetaKey  bool
