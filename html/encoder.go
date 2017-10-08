@@ -48,7 +48,7 @@ func (e *Encoder) encodeSimple(tag app.Tag, indent int) error {
 	e.encodeAttributes(tag)
 	e.writer.WriteByte('>')
 
-	if VoidElement(tag) {
+	if isVoidElement(tag.Name, tag.Svg) {
 		return nil
 	}
 
@@ -75,7 +75,7 @@ func (e *Encoder) encodeSimple(tag app.Tag, indent int) error {
 }
 
 func (e *Encoder) encodeAttributes(tag app.Tag) {
-	for name, val := range tag.Attrs {
+	for name, val := range tag.Attributes {
 		e.writer.WriteByte(' ')
 		e.writer.WriteString(name)
 

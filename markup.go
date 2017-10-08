@@ -32,14 +32,14 @@ type Markup interface {
 
 // Tag represents a markup tag.
 type Tag struct {
-	ID       uuid.UUID
-	CompoID  uuid.UUID
-	Name     string
-	Text     string
-	Svg      bool
-	Type     TagType
-	Attrs    AttrMap
-	Children []Tag
+	ID         uuid.UUID
+	CompoID    uuid.UUID
+	Name       string
+	Text       string
+	Svg        bool
+	Type       TagType
+	Attributes AttributeMap
+	Children   []Tag
 }
 
 // Is reports whether the tag is of the given type.
@@ -59,7 +59,7 @@ const (
 )
 
 // AttrMap represents a map of attributes.
-type AttrMap map[string]string
+type AttributeMap map[string]string
 
 // TagSync represents a tag synchronisation.
 type TagSync struct {
