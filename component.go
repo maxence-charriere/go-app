@@ -1,7 +1,6 @@
 package app
 
 import (
-	"html/template"
 	"net/url"
 	"reflect"
 	"strings"
@@ -45,18 +44,16 @@ type Navigable interface {
 	OnNavigate(u url.URL)
 }
 
-// Mapper is the interface that wraps FuncMaps method.
-type Mapper interface {
+// ComponentWithExtendedRender is the interface that wraps Funcs method.
+type ComponentWithExtendedRender interface {
 	Component
 
-	// Allows to add custom functions to the template used to render the
-	// component.
-	//
-	// Funcs named raw, json and time are reserved. They handle raw html code,
-	// json conversions and time format.
+	// Funcs returns a map of funcs to use when rendering a component.
+	// Funcs named raw, json and time are reserved.
+	// They handle raw html code, json conversions and time format.
 	// They can't be overloaded.
 	// See https://golang.org/pkg/text/template/#Template.Funcs for more details.
-	FuncMaps() template.FuncMap
+	Funcs() map[string]interface{}
 }
 
 // ZeroCompo is the type to use as base for an empty compone.

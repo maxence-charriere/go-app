@@ -10,24 +10,24 @@ import (
 type Markup interface {
 	// Component returns the component mounted under the identifier.
 	// Returns an error if there is not component with the identifier.
-	Component(id uuid.UUID) (c Component, err error)
+	Component(id uuid.UUID) (compo Component, err error)
 
 	// Contains reports whether the component is mounted.
-	Contains(c Component) bool
+	Contains(compo Component) bool
 
 	// Root returns the component root tag.
 	// It returns an error if the component is not mounted.
-	Root(c Component) (root Tag, err error)
+	Root(compo Component) (root Tag, err error)
 
 	// Mount indexes the component.
 	// The component will be kept in memory until it is dismounted.
-	Mount(c Component) (root Tag, err error)
+	Mount(compo Component) (root Tag, err error)
 
 	// Dismount removes references to a component and its children.
-	Dismount(c Component)
+	Dismount(compo Component)
 
 	// Update updates the tag tree of the component.
-	Update(c Component) (syncs []TagSync, err error)
+	Update(compo Component) (syncs []TagSync, err error)
 }
 
 // Tag represents a markup tag.
