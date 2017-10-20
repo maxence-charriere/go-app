@@ -4,6 +4,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"html/template"
+	"reflect"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -21,7 +24,7 @@ type Markup struct {
 // NewMarkup creates a markup with the given factory.
 func NewMarkup(factory app.Factory) *Markup {
 	return &Markup{
-		components: make(map[uuid.Component]app.Component),
+		components: make(map[uuid.UUID]app.Component),
 		roots:      make(map[app.Component]app.Tag),
 		factory:    factory,
 	}
@@ -46,11 +49,11 @@ func (m *Markup) Contains(compo app.Component) bool {
 func (m *Markup) Root(compo app.Component) (root app.Tag, err error) {
 	var ok bool
 	if root, ok = m.roots[compo]; !ok {
-		return errors.New("component not mounted")
+		err = errors.New("component not mounted")
 	}
+	return
 }
 
-// Mount satisfies the app.Markup interface.
 func (m *Markup) Mount(compo app.Component) (root app.Tag, err error) {
 	return m.mount(compo, uuid.New())
 }
@@ -66,7 +69,7 @@ func (m *Markup) mount(compo app.Component, compoID uuid.UUID) (tag app.Tag, err
 		return
 	}
 
-	if err = m.mountTag(tag, compoID); err != nil {
+	if err = m.mountTag(&tag, compoID); err != nil {
 		return
 	}
 
@@ -116,23 +119,119 @@ func (m *Markup) mountTag(tag *app.Tag, compoID uuid.UUID) error {
 	tag.ID = uuid.New()
 	tag.CompoID = compoID
 
-	switch tag.Type {
-	case app.TextTag:
+	if tag.Is(app.TextTag) {
 		return nil
-	case app.CompoTag:
-
-	case app.SimpleTag:
-	default:
-		return errors.Errorf("tag named %s: type %v is not supported", tag.Name, tag.Type)
 	}
+
+	if tag.Is(app.CompoTag) {
+		compo, err := m.factory.NewComponent(tag.Name)
+		if err != nil {
+			return err
+		}
+
+		if err = mapComponentFields(compo, tag.Attributes); err != nil {
+			return err
+		}
+
+		_, err = m.mount(compo, tag.ID)
+		return err
+	}
+
+	for i := range tag.Children {
+		if err := m.mountTag(&tag.Children[i], compoID); err != nil {
+			return errors.Wrap(err, "mounting children failed")
+		}
+	}
+	return nil
 }
 
-// Dismount satisfies the app.Markup interface.
-func (m *Markup) Dismount(compo app.Component) {
-	panic("not implemented")
+func mapComponentFields(compo app.Component, attrs app.AttributeMap) error {
+	if len(attrs) == 0 {
+		return nil
+	}
+
+	val := reflect.ValueOf(compo).Elem()
+	typ := val.Type()
+
+	for i, numfields := 0, typ.NumField(); i < numfields; i++ {
+		field := typ.Field(i)
+		fieldVal := val.Field(i)
+
+		if field.Anonymous {
+			continue
+		}
+
+		if len(field.PkgPath) != 0 {
+			continue
+		}
+
+		attrName := strings.ToLower(field.Name)
+		attrVal, ok := attrs[attrName]
+
+		if !ok {
+			if fieldVal.Kind() == reflect.Bool {
+				fieldVal.SetBool(false)
+			}
+			continue
+		}
+
+		if err := mapComponentField(fieldVal, attrVal); err != nil {
+			return errors.Wrapf(err, "mapping attribute %s to field %s failed", attrName, field.Name)
+		}
+	}
+	return nil
 }
 
-// Update satisfies the app.Markup interface.
+func mapComponentField(field reflect.Value, attr string) error {
+	switch field.Kind() {
+	case reflect.String:
+		field.SetString(attr)
+
+	case reflect.Bool:
+		if len(attr) == 0 {
+			attr = "true"
+		}
+		b, err := strconv.ParseBool(attr)
+		if err != nil {
+			return err
+		}
+		field.SetBool(b)
+
+	case reflect.Int, reflect.Int64, reflect.Int32, reflect.Int16, reflect.Int8:
+		n, err := strconv.ParseInt(attr, 0, 64)
+		if err != nil {
+			return err
+		}
+		field.SetInt(n)
+
+	case reflect.Uint, reflect.Uint64, reflect.Uint32, reflect.Uint16, reflect.Uint8, reflect.Uintptr:
+		n, err := strconv.ParseUint(attr, 0, 64)
+		if err != nil {
+			return err
+		}
+		field.SetUint(n)
+
+	case reflect.Float64, reflect.Float32:
+		n, err := strconv.ParseFloat(attr, 64)
+		if err != nil {
+			return err
+		}
+		field.SetFloat(n)
+
+	default:
+		addr := field.Addr()
+		i := addr.Interface()
+		if err := json.Unmarshal([]byte(attr), i); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (m *Markup) Dismount(compo Component) {
+
+}
+
 func (m *Markup) Update(compo app.Component) (syncs []app.TagSync, err error) {
 	panic("not implemented")
 }
