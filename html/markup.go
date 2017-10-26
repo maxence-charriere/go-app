@@ -54,6 +54,7 @@ func (m *Markup) Root(compo app.Component) (root app.Tag, err error) {
 	return
 }
 
+// Mount satisfies the app.Markup interface.
 func (m *Markup) Mount(compo app.Component) (root app.Tag, err error) {
 	return m.mount(compo, uuid.New())
 }
@@ -228,8 +229,38 @@ func mapComponentField(field reflect.Value, attr string) error {
 	return nil
 }
 
-func (m *Markup) Dismount(compo Component) {
+// Dismount satisfies the app.Markup interface.
+func (m *Markup) Dismount(compo app.Component) {
+	tag, ok := m.roots[compo]
+	if !ok {
+		return
+	}
 
+	m.dismountTag(tag)
+	delete(m.components, tag.CompoID)
+	delete(m.roots, compo)
+
+	if dismounter, ok := compo.(app.Dismounter); ok {
+		dismounter.OnDismount()
+	}
+}
+
+func (m *Markup) dismountTag(tag app.Tag) {
+	if tag.Is(app.CompoTag) {
+		// Sub component are registered under the id of the tag that targets
+		// them.
+		compo, err := m.Component(tag.ID)
+		if err != nil {
+			return
+		}
+
+		m.Dismount(compo)
+		return
+	}
+
+	for _, child := range tag.Children {
+		m.dismountTag(child)
+	}
 }
 
 func (m *Markup) Update(compo app.Component) (syncs []app.TagSync, err error) {
