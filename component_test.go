@@ -27,33 +27,39 @@ func (c *EmptyCompo) Render() string {
 }
 
 func TestFactory(t *testing.T) {
-	factory := make(factory)
-
 	tests := []struct {
 		scenario string
-		test     func(t *testing.T, factory Factory)
+		function func(t *testing.T, factory Factory)
 	}{
 		{
 			scenario: "should register a component",
-			test:     testFactoryRegisterComponent,
+			function: testFactoryRegisterComponent,
 		},
 		{
 			scenario: "register a component not implemented on pointer should fail",
-			test:     testFactoryRegisterComponentNoPtr,
+			function: testFactoryRegisterComponentNoPtr,
 		},
 		{
 			scenario: "register a component not implemented on a struct pointer should fail",
-			test:     testFactoryRegisterComponentNoStructPtr,
+			function: testFactoryRegisterComponentNoStructPtr,
 		},
 		{
 			scenario: "register a component implemented on an empty struct pointer should fail",
-			test:     testFactoryRegisterComponentEmptyStructPtr,
+			function: testFactoryRegisterComponentEmptyStructPtr,
+		},
+		{
+			scenario: "should create a component",
+			function: testFactoryCreateComponent,
+		},
+		{
+			scenario: "create a not registered component should fail",
+			function: testFactoryCreateNotRegisteredComponent,
 		},
 	}
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
-			test.test(t, factory)
+			test.function(t, NewFactory())
 		})
 	}
 }
@@ -71,7 +77,7 @@ func testFactoryRegisterComponent(t *testing.T, factory Factory) {
 func testFactoryRegisterComponentNoPtr(t *testing.T, factory Factory) {
 	_, err := factory.RegisterComponent(NonPtrCompo{})
 	if err == nil {
-		t.Fatal("err should not be nil")
+		t.Fatal("err is nil")
 	}
 	t.Log(err)
 }
@@ -80,7 +86,7 @@ func testFactoryRegisterComponentNoStructPtr(t *testing.T, factory Factory) {
 	intc := IntCompo(42)
 	_, err := factory.RegisterComponent(&intc)
 	if err == nil {
-		t.Fatal("err should not be nil")
+		t.Fatal("err is nil")
 	}
 	t.Log(err)
 }
@@ -88,7 +94,27 @@ func testFactoryRegisterComponentNoStructPtr(t *testing.T, factory Factory) {
 func testFactoryRegisterComponentEmptyStructPtr(t *testing.T, factory Factory) {
 	_, err := factory.RegisterComponent(&EmptyCompo{})
 	if err == nil {
-		t.Fatal("err should not be nil")
+		t.Fatal("err is nil")
+	}
+	t.Log(err)
+}
+
+func testFactoryCreateComponent(t *testing.T, factory Factory) {
+	if _, err := factory.RegisterComponent(&ValidCompo{}); err != nil {
+		t.Fatal(err)
+	}
+
+	compo, err := factory.NewComponent("app.validcompo")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(compo)
+}
+
+func testFactoryCreateNotRegisteredComponent(t *testing.T, factory Factory) {
+	_, err := factory.NewComponent("app.validcompo")
+	if err == nil {
+		t.Fatal("err is nil")
 	}
 	t.Log(err)
 }

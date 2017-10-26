@@ -74,6 +74,11 @@ type Factory interface {
 	NewComponent(name string) (Component, error)
 }
 
+// NewFactory creates a component factory.
+func NewFactory() Factory {
+	return make(factory)
+}
+
 // A factory that implements the Factory interface.
 type factory map[string]reflect.Type
 
