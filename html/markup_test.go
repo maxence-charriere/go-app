@@ -283,3 +283,55 @@ func testDismountDismountedChild(t *testing.T, markup *Markup) {
 	}
 	markup.Dismount(compo)
 }
+
+func TestAttributesEquals(t *testing.T) {
+	attrs := app.AttributeMap{
+		"hello": "world",
+		"foo":   "bar",
+		"value": "",
+	}
+
+	attrs2 := app.AttributeMap{
+		"foo":   "bar",
+		"hello": "world",
+		"value": "",
+	}
+
+	if !attributesEquals("div", attrs, attrs2) {
+		t.Error("attrs and attrs2 are not equals")
+	}
+
+	if attributesEquals("div", attrs, nil) {
+		t.Error("attrs and nil are equals")
+	}
+
+	attrs3 := app.AttributeMap{
+		"foo":   "bar",
+		"hello": "maxoo",
+		"value": "",
+	}
+
+	if attributesEquals("div", attrs, attrs3) {
+		t.Error("attrs and attrs3 are equals")
+	}
+
+	attrs4 := app.AttributeMap{
+		"foo":   "bar",
+		"bye":   "world",
+		"value": "",
+	}
+
+	if attributesEquals("div", attrs, attrs4) {
+		t.Error("attrs and attrs4 are equals")
+	}
+
+	attrs5 := app.AttributeMap{
+		"hello": "world",
+		"foo":   "bar",
+		"value": "",
+	}
+
+	if attributesEquals("input", attrs, attrs5) {
+		t.Error("attrs and attrs5 are equals")
+	}
+}

@@ -59,23 +59,23 @@ func (m *Markup) Mount(compo app.Component) (root app.Tag, err error) {
 	return m.mount(compo, uuid.New())
 }
 
-func (m *Markup) mount(compo app.Component, compoID uuid.UUID) (tag app.Tag, err error) {
+func (m *Markup) mount(compo app.Component, compoID uuid.UUID) (root app.Tag, err error) {
 	if m.Contains(compo) {
 		err = errors.New("component is already mounted")
 		return
 	}
 
-	if err = decodeComponent(compo, &tag); err != nil {
+	if err = decodeComponent(compo, &root); err != nil {
 		err = errors.Wrap(err, "decoding component failed")
 		return
 	}
 
-	if err = m.mountTag(&tag, compoID); err != nil {
+	if err = m.mountTag(&root, uuid.New(), compoID); err != nil {
 		return
 	}
 
 	m.components[compoID] = compo
-	m.roots[compo] = tag
+	m.roots[compo] = root
 
 	if mounter, ok := compo.(app.Mounter); ok {
 		mounter.OnMount()
@@ -116,8 +116,8 @@ func decodeComponent(compo app.Component, tag *app.Tag) error {
 	return dec.Decode(tag)
 }
 
-func (m *Markup) mountTag(tag *app.Tag, compoID uuid.UUID) error {
-	tag.ID = uuid.New()
+func (m *Markup) mountTag(tag *app.Tag, id uuid.UUID, compoID uuid.UUID) error {
+	tag.ID = id
 	tag.CompoID = compoID
 
 	if tag.Is(app.TextTag) {
@@ -139,7 +139,7 @@ func (m *Markup) mountTag(tag *app.Tag, compoID uuid.UUID) error {
 	}
 
 	for i := range tag.Children {
-		if err := m.mountTag(&tag.Children[i], compoID); err != nil {
+		if err := m.mountTag(&tag.Children[i], uuid.New(), compoID); err != nil {
 			return errors.Wrap(err, "mounting children failed")
 		}
 	}
@@ -231,13 +231,13 @@ func mapComponentField(field reflect.Value, attr string) error {
 
 // Dismount satisfies the app.Markup interface.
 func (m *Markup) Dismount(compo app.Component) {
-	tag, ok := m.roots[compo]
+	root, ok := m.roots[compo]
 	if !ok {
 		return
 	}
 
-	m.dismountTag(tag)
-	delete(m.components, tag.CompoID)
+	m.dismountTag(root)
+	delete(m.components, root.CompoID)
 	delete(m.roots, compo)
 
 	if dismounter, ok := compo.(app.Dismounter); ok {
@@ -263,6 +263,162 @@ func (m *Markup) dismountTag(tag app.Tag) {
 	}
 }
 
+// Update satisfies the app.Markup interface.
 func (m *Markup) Update(compo app.Component) (syncs []app.TagSync, err error) {
-	panic("not implemented")
+	syncs, _, err = m.update(compo)
+	return
+}
+
+func (m *Markup) update(compo app.Component) (syncs []app.TagSync, replaceParent bool, err error) {
+	var root app.Tag
+	var newRoot app.Tag
+
+	if root, err = m.Root(compo); err != nil {
+		err = errors.Wrapf(err, "updating component %T failed", compo)
+		return
+	}
+
+	if err = decodeComponent(compo, &newRoot); err != nil {
+		err = errors.Wrapf(err, "updating component %T failed", compo)
+		return
+	}
+
+	if syncs, replaceParent, err = m.syncTags(&root, &newRoot); err != nil {
+		err = errors.Wrapf(err, "updating component %T failed", compo)
+	}
+	return
+}
+
+func (m *Markup) syncTags(current, new *app.Tag) (syncs []app.TagSync, replaceParent bool, err error) {
+	if current.Name != new.Name {
+		return m.mergeTags(current, new)
+	}
+
+	if current.Is(app.TextTag) {
+		replaceParent = m.syncTextTags(current, new)
+		return
+	}
+
+	if current.Is(app.CompoTag) {
+		return m.syncComponentTags(current, new)
+	}
+
+	attrEquals := attributesEquals(current.Name, current.Attributes, new.Attributes)
+	if !attrEquals {
+		current.Attributes = new.Attributes
+	}
+
+	var replace bool
+	var childSyncs []app.TagSync
+
+	if childSyncs, replace, err = m.syncChildTags(current, new); err != nil {
+		return
+	}
+
+	if attrEquals && !replace {
+		return
+	}
+
+	if !replace {
+		syncs = append(syncs, childSyncs...)
+		syncs = append(syncs, app.TagSync{
+			Tag: *current,
+		})
+		return
+	}
+
+	if replace {
+		syncs = append(syncs, app.TagSync{
+			Tag:     *current,
+			Replace: true,
+		})
+		return
+	}
+
+	syncs = append(syncs, childSyncs...)
+
+	if sync {
+		syncs = append(syncs, app.TagSync{
+			Tag: *current,
+		})
+	}
+	return
+}
+
+func (m *Markup) mergeTags(current, new *app.Tag) (syncs []app.TagSync, replaceParent bool, err error) {
+	m.dismountTag(*current)
+
+	if err = m.mountTag(new, current.ID, current.CompoID); err != nil {
+		err = errors.Wrapf(err, "merging %s and %s failed", current.Name, new.Name)
+		return
+	}
+
+	*current = *new
+
+	if current.Is(app.TextTag) {
+		replaceParent = true
+		return
+	}
+
+	syncs = append(syncs, app.TagSync{
+		Tag:     *current,
+		Replace: true,
+	})
+	return
+}
+
+func (m *Markup) syncTextTags(current, new *app.Tag) (replaceParent bool) {
+	if current.Text != new.Text {
+		current.Text = new.Text
+		replaceParent = true
+	}
+	return
+}
+
+func (m *Markup) syncComponentTags(current, new *app.Tag) (syncs []app.TagSync, replaceParent bool, err error) {
+	if attributesEquals(current.Name, current.Attributes, new.Attributes) {
+		return
+	}
+
+	current.Attributes = new.Attributes
+
+	var compo app.Component
+	if compo, err = m.Component(current.ID); err != nil {
+		err = errors.Wrapf(err, "syncing component %s failed", current.Name)
+		return
+	}
+
+	if err = mapComponentFields(compo, current.Attributes); err != nil {
+		err = errors.Wrapf(err, "syncing component %s failed", current.Name)
+		return
+	}
+
+	if syncs, replaceParent, err = m.update(compo); err != nil {
+		err = errors.Wrapf(err, "syncing component %s failed", current.Name)
+	}
+	return
+}
+
+func attributesEquals(tagname string, current, new app.AttributeMap) bool {
+	if len(current) != len(new) {
+		return false
+	}
+
+	for name, val := range current {
+		newVal, ok := new[name]
+		if !ok {
+			return false
+		}
+		if val != newVal {
+			return false
+		}
+		if tagname == "input" && name == "value" && len(val) == 0 {
+			return false
+		}
+	}
+	return true
+}
+
+func (m *Markup) syncChildTags(current, new *app.Tag) (syncs []app.TagSync, replaceParent bool, err error) {
+	return
 }

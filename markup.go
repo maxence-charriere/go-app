@@ -58,11 +58,11 @@ const (
 	CompoTag
 )
 
-// AttrMap represents a map of attributes.
+// AttributeMap represents a map of attributes.
 type AttributeMap map[string]string
 
 // TagSync represents a tag synchronisation.
 type TagSync struct {
-	Tag     *Tag
+	Tag     Tag
 	Replace bool
 }
