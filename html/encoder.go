@@ -111,7 +111,7 @@ func (e *Encoder) encodeText(tag app.Tag, indent int) error {
 func (e *Encoder) encodeComponent(tag app.Tag, indent int) error {
 	compo, err := e.markup.Component(tag.ID)
 	if err != nil {
-		return errors.Wrap(err, "encoding component failed")
+		return err
 	}
 
 	root, _ := e.markup.Root(compo)
