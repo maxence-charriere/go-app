@@ -310,18 +310,6 @@ func (m *Markup) syncTags(current, new *app.Tag) (syncs []app.TagSync, replacePa
 		return
 	}
 
-	if attrEquals && !replace {
-		return
-	}
-
-	if !replace {
-		syncs = append(syncs, childSyncs...)
-		syncs = append(syncs, app.TagSync{
-			Tag: *current,
-		})
-		return
-	}
-
 	if replace {
 		syncs = append(syncs, app.TagSync{
 			Tag:     *current,
@@ -410,19 +398,19 @@ func attributesEquals(tagname string, current, new app.AttributeMap) bool {
 }
 
 func (m *Markup) syncChildTags(current, new *app.Tag) (syncs []app.TagSync, replaceParent bool, err error) {
-	currentChildren := current.Children
+	curChildren := current.Children
 	newChildren := new.Children
 	i := 0
 
-	if len(currentChildren) != len(newChildren) {
+	if len(curChildren) != len(newChildren) {
 		replaceParent = true
 	}
 
-	for len(currentChildren) != 0 && len(newChildren) != 0 {
+	for len(curChildren) != 0 && len(newChildren) != 0 {
 		var childSyncs []app.TagSync
 		var replace bool
 
-		if childSyncs, replace, err = m.syncTags(&currentChildren[0], &newChildren[0]); err != nil {
+		if childSyncs, replace, err = m.syncTags(&curChildren[0], &newChildren[0]); err != nil {
 			return
 		}
 
@@ -435,25 +423,24 @@ func (m *Markup) syncChildTags(current, new *app.Tag) (syncs []app.TagSync, repl
 			syncs = append(syncs, childSyncs...)
 		}
 
-		currentChildren = currentChildren[1:]
+		curChildren = curChildren[1:]
 		newChildren = newChildren[1:]
 		i++
 	}
 
-	current.Children = currentChildren[:i]
+	current.Children = current.Children[:i]
 
-	for len(currentChildren) != 0 {
-		m.dismountTag(currentChildren[0])
-		currentChildren = currentChildren[1:]
+	for len(curChildren) != 0 {
+		m.dismountTag(curChildren[0])
+		curChildren = curChildren[1:]
 	}
 
 	for len(newChildren) != 0 {
 		child := &newChildren[0]
-
 		if err = m.mountTag(child, uuid.New(), current.CompoID); err != nil {
 			return
 		}
-
+		current.Children = append(current.Children, *child)
 		newChildren = newChildren[1:]
 	}
 	return

@@ -5,6 +5,9 @@ import (
 )
 
 var (
+	// Logs is the application logger.
+	Logs = NewConsole(false)
+
 	driver     Driver
 	components Factory = make(factory)
 )
@@ -16,11 +19,11 @@ var (
 // Imports must be done before the app is running.
 func Import(c Component) {
 	if driver != nil {
-		panic(errors.New("can't import components while app is running", c))
+		panic(errors.New("can't import components while app is running"))
 	}
 
 	if _, err := components.RegisterComponent(c); err != nil {
-		err = errors.Wrap(err, "import component failed", c)
+		err = errors.Wrap(err, "import component failed")
 		panic(err)
 	}
 }
@@ -52,7 +55,7 @@ func RunningDriver() Driver {
 // It panics if called before Run.
 func Render(c Component) {
 	if err := driver.Render(c); err != nil {
-		Logs().Error(err)
+		Logs.Error(err)
 	}
 }
 
@@ -76,12 +79,6 @@ func NewContextMenu(c MenuConfig) Menu {
 // It panics if called before Run.
 func Resources() string {
 	return driver.Resources()
-}
-
-// Logs returns the application logger.
-// It panics if called before Run.
-func Logs() Logger {
-	return driver.Logs()
 }
 
 // CallOnUIGoroutine calls a function on the UI goroutine.

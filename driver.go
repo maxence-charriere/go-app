@@ -19,9 +19,6 @@ type Driver interface {
 	// Resources returns the location of the resources directory.
 	Resources() string
 
-	// Logs returns the application logger.
-	Logs() Logger
-
 	// CallOnUIGoroutine calls a function on the UI goroutine.
 	CallOnUIGoroutine(f func())
 }
