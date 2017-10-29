@@ -206,6 +206,34 @@ func TestMarkup(t *testing.T) {
 			scenario: "update a unchanged component should do nothing",
 			function: testMarkupUpdateComponentNoChange,
 		},
+		{
+			scenario: "should update attributes",
+			function: testMarkupUpdateUpdateAttributes,
+		},
+		{
+			scenario: "update not mounted component should fail",
+			function: testMarkupUpdateUpdateNotMountedComponent,
+		},
+		{
+			scenario: "update component with bad template should fail",
+			function: testMarkupUpdateComponentWithBadTemplate,
+		},
+		{
+			scenario: "update component with bad child should fail",
+			function: testMarkupUpdateComponentWithBadChild,
+		},
+		{
+			scenario: "update component with an error should fail",
+			function: testMarkupUpdateComponentWithError,
+		},
+		{
+			scenario: "update tag with bad attribute shoulld fail",
+			function: testMarkupUpdateBadAttribute,
+		},
+		{
+			scenario: "update component with dismounted child should fail",
+			function: testMarkupUpdateComponentWithDismountedChild,
+		},
 	}
 
 	for _, test := range tests {
@@ -480,13 +508,13 @@ func testMarkupUpdateComponent(t *testing.T, markup *Markup) {
 
 	worldRoot := sync.Tag
 	if worldRoot.Name != "div" {
-		t.Fatal("worldRoot is not a div:", worldRoot.Name)
+		t.Fatal("root of world is not a div:", worldRoot.Name)
 	}
 	if l := len(worldRoot.Children); l != 1 {
-		t.Fatal("worldRoot doesn't have 1 child:", l)
+		t.Fatal("root of world doesn't have 1 child:", l)
 	}
 	if text := worldRoot.Children[0]; text.Text != compo.Name {
-		t.Fatalf(`text should be "%s": "%s"`, compo.Name, text.Text)
+		t.Fatalf(`text is not "%s": "%s"`, compo.Name, text.Text)
 	}
 }
 
@@ -501,8 +529,128 @@ func testMarkupUpdateComponentNoChange(t *testing.T, markup *Markup) {
 		t.Fatal(err)
 	}
 	if l := len(syncs); l != 0 {
-		t.Fatal("syncs is not empty:", l)
+		t.Error("syncs is not empty:", l)
 	}
+}
+
+func testMarkupUpdateUpdateAttributes(t *testing.T, markup *Markup) {
+	compo := &Hello{}
+	if _, err := markup.Mount(compo); err != nil {
+		t.Fatal(err)
+	}
+
+	compo.Placeholder = "Enter your name"
+
+	syncs, err := markup.Update(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if l := len(syncs); l != 1 {
+		t.Fatal("syncs doesn't have 1 element:", l)
+	}
+
+	sync := syncs[0]
+	if sync.Replace {
+		t.Error("sync is a replace")
+	}
+
+	input := sync.Tag
+	if input.Name != "input" {
+		t.Error("input is not an input tag:", input.Name)
+	}
+	if placeholder := input.Attributes["placeholder"]; placeholder != compo.Placeholder {
+		t.Errorf("input placeholder is not %s: %s", compo.Placeholder, placeholder)
+	}
+	if l := len(input.Children); l != 0 {
+		t.Error("input have child")
+	}
+}
+
+func testMarkupUpdateUpdateNotMountedComponent(t *testing.T, markup *Markup) {
+	_, err := markup.Update(&Hello{})
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupUpdateComponentWithBadTemplate(t *testing.T, markup *Markup) {
+	compo := &Hello{}
+	if _, err := markup.Mount(compo); err != nil {
+		t.Fatal(err)
+	}
+
+	compo.TmplErr = true
+
+	_, err := markup.Update(compo)
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupUpdateComponentWithBadChild(t *testing.T, markup *Markup) {
+	compo := &Hello{Name: "Max"}
+	if _, err := markup.Mount(compo); err != nil {
+		t.Fatal(err)
+	}
+
+	compo.ChildErr = true
+
+	_, err := markup.Update(compo)
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupUpdateComponentWithError(t *testing.T, markup *Markup) {
+	compo := &Hello{}
+	if _, err := markup.Mount(compo); err != nil {
+		t.Fatal(err)
+	}
+
+	compo.Name = "Jonhy"
+	compo.ChildErr = true
+
+	_, err := markup.Update(compo)
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupUpdateBadAttribute(t *testing.T, markup *Markup) {
+	compo := &Hello{Name: "Maxoo"}
+	if _, err := markup.Mount(compo); err != nil {
+		t.Fatal(err)
+	}
+
+	compo.CompoFieldErr = true
+
+	_, err := markup.Update(compo)
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupUpdateComponentWithDismountedChild(t *testing.T, markup *Markup) {
+	compo := &Hello{Name: "Maxoo"}
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	world := root.Children[2].Children[0]
+	markup.dismountTag(world)
+
+	compo.Name = "Jonhy"
+
+	if _, err = markup.Update(compo); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
 }
 
 func TestAttributesEquals(t *testing.T) {
