@@ -1,14 +1,14 @@
 language: go
-go: master
+go:
+  - master
 
 install:
-  - go get -v -t .
+  - go get -t ./...
   - go get -v github.com/mattn/goveralls
   - go install -v github.com/mattn/goveralls
 
 script:
   - go test . -covermode count -coverprofile cover.out
-  - go test -test.run Benchmark -cpu 1 -bench ./...
   - go test ./bridge
   - go test ./html
   - goveralls -service travis-ci -repotoken $COVERALLS_TOKEN -coverprofile cover.out
