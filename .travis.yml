@@ -1,5 +1,5 @@
 language: go
-go: 1.8
+go: master
 
 install:
   - go get -v -t .
