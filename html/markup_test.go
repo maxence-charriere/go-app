@@ -1,8 +1,11 @@
 package html
 
 import (
+	"encoding/json"
 	"html/template"
+	"strconv"
 	"testing"
+	"time"
 
 	"github.com/murlokswarm/app"
 )
@@ -703,4 +706,310 @@ func TestAttributesEquals(t *testing.T) {
 	if attributesEquals("input", attrs, attrs5) {
 		t.Error("attrs and attrs5 are equals")
 	}
+}
+
+type CompoWithFields struct {
+	app.ZeroCompo
+	secret             string
+	funcHandler        func()
+	funcWithArgHandler func(int)
+
+	String     string
+	Bool       bool
+	NotSetBool bool
+	Int        int
+	Uint       uint
+	Float      float64
+	Struct     struct {
+		A int
+		B string
+	}
+	Time time.Time
+}
+
+func (c *CompoWithFields) Render() string {
+	return `
+<div>
+	<div>String: {{.String}}</div>
+	<div>raw String: {{raw .String}}</div>
+	<div>Bool: {{.Bool}}</div>
+	<div>Int: {{.Int}}</div>
+	<div>Uint: {{.Uint}}</div>
+	<div>Float: {{.Float}}</div>
+	<div>Struct: {{.Struct}}</div>
+	<html.compo obj="{{json .Struct}}">	
+	<div>Time: {{time .Time "2006"}}</div>
+	<div>{{hello .String}}</div>
+</div>
+	`
+}
+
+func (c *CompoWithFields) Funcs() map[string]interface{} {
+	return map[string]interface{}{
+		"hello": func(string) string { return "hello" },
+	}
+}
+
+func TestDecodeComponent(t *testing.T) {
+	var tag app.Tag
+
+	s := struct {
+		A int
+		B string
+	}{
+		A: 42,
+		B: "foobar",
+	}
+
+	data, err := json.Marshal(s)
+	if err != nil {
+		t.Fatal(err)
+	}
+	sjson := string(data)
+
+	compo := &CompoWithFields{
+		String: "Hi",
+		Time:   time.Now(),
+		Struct: s,
+	}
+
+	if err := decodeComponent(compo, &tag); err != nil {
+		t.Fatal(err)
+	}
+
+	raw := tag.Children[1].Children[0]
+	if raw.Text != "raw String: Hi" {
+		t.Error(`raw is not "raw String: Hi":`, raw.Text)
+	}
+
+	component := tag.Children[7]
+	if component.Attributes["obj"] != sjson {
+		t.Errorf("component obj attribute should be %s: %s", sjson, component.Attributes["obj"])
+	}
+
+	year := strconv.Itoa(time.Now().Year())
+	timet := tag.Children[8].Children[0]
+	if timet.Text != "Time: "+year {
+		t.Errorf(`time text should be "Time: %s": %s`, year, timet.Text)
+	}
+
+	hello := tag.Children[9].Children[0]
+	if hello.Text != "hello" {
+		t.Error("hello text should be hello:", hello.Text)
+	}
+}
+
+func TestMapComponentFields(t *testing.T) {
+	tests := []struct {
+		scenario string
+		function func(t *testing.T)
+	}{
+		{
+			scenario: "map nil should do nothing",
+			function: testMapComponentFieldsNil,
+		},
+		{
+			scenario: "map anonymous field should do nothing",
+			function: testMapComponentFieldsAnonymous,
+		},
+		{
+			scenario: "map unexported field should do nothing",
+			function: testMapComponentFieldsUnexported,
+		},
+		{
+			scenario: "should map string",
+			function: testMapComponentFieldsString,
+		},
+		{
+			scenario: "should map bool",
+			function: testMapComponentFieldsBool,
+		},
+		{
+			scenario: "should map naked bool",
+			function: testMapComponentFieldsBoolNaked,
+		},
+		{
+			scenario: "map a non boolean value to bool should fail",
+			function: testMapComponentFieldsBoolError,
+		},
+		{
+			scenario: "should map int",
+			function: testMapComponentFieldsInt,
+		},
+		{
+			scenario: "map a non int value to int should fail",
+			function: testMapComponentFieldsIntError,
+		},
+		{
+			scenario: "should map uint",
+			function: testMapComponentFieldsUint,
+		},
+		{
+			scenario: "map a non uint value to uint should fail",
+			function: testMapComponentFieldsUintError,
+		},
+		{
+			scenario: "should map float",
+			function: testMapComponentFieldsFloat,
+		},
+		{
+			scenario: "map a non float value to float should fail",
+			function: testMapComponentFieldsFloatError,
+		},
+		{
+			scenario: "should map struct",
+			function: testMapComponentFieldsStruct,
+		},
+		{
+			scenario: "map a struct with invalid fields should fail",
+			function: testMapComponentFieldsStructError,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.scenario, test.function)
+	}
+}
+
+func testMapComponentFieldsNil(t *testing.T) {
+	compo := &CompoWithFields{}
+	if err := mapComponentFields(compo, nil); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func testMapComponentFieldsAnonymous(t *testing.T) {
+	compo := &CompoWithFields{}
+	if err := mapComponentFields(compo, app.AttributeMap{"zerocompo": `{"placeholder": 42}`}); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func testMapComponentFieldsUnexported(t *testing.T) {
+	compo := &CompoWithFields{}
+	if err := mapComponentFields(compo, app.AttributeMap{"secret": "pandore"}); err != nil {
+		t.Fatal(err)
+	}
+	if len(compo.secret) != 0 {
+		t.Error("secret is not empty:", compo.secret)
+	}
+}
+
+func testMapComponentFieldsString(t *testing.T) {
+	compo := &CompoWithFields{}
+	s := "hello"
+	if err := mapComponentFields(compo, app.AttributeMap{"string": s}); err != nil {
+		t.Fatal(err)
+	}
+	if compo.String != s {
+		t.Errorf("string is not %s: %s", s, compo.String)
+	}
+}
+
+func testMapComponentFieldsBool(t *testing.T) {
+	compo := &CompoWithFields{}
+	if err := mapComponentFields(compo, app.AttributeMap{"bool": "true"}); err != nil {
+		t.Fatal(err)
+	}
+	if !compo.Bool {
+		t.Error("bool is not true")
+	}
+}
+
+func testMapComponentFieldsBoolNaked(t *testing.T) {
+	compo := &CompoWithFields{}
+	if err := mapComponentFields(compo, app.AttributeMap{"bool": ""}); err != nil {
+		t.Fatal(err)
+	}
+	if !compo.Bool {
+		t.Error("bool is not true")
+	}
+}
+
+func testMapComponentFieldsBoolError(t *testing.T) {
+	compo := &CompoWithFields{}
+	err := mapComponentFields(compo, app.AttributeMap{"bool": "lolilol"})
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMapComponentFieldsInt(t *testing.T) {
+	compo := &CompoWithFields{}
+	if err := mapComponentFields(compo, app.AttributeMap{"int": "42"}); err != nil {
+		t.Fatal(err)
+	}
+	if compo.Int != 42 {
+		t.Error("int is not 42:", compo.Int)
+	}
+}
+
+func testMapComponentFieldsIntError(t *testing.T) {
+	compo := &CompoWithFields{}
+	err := mapComponentFields(compo, app.AttributeMap{"int": "lolilol"})
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMapComponentFieldsUint(t *testing.T) {
+	compo := &CompoWithFields{}
+	if err := mapComponentFields(compo, app.AttributeMap{"uint": "42"}); err != nil {
+		t.Fatal(err)
+	}
+	if compo.Uint != 42 {
+		t.Error("uint is not 42:", compo.Uint)
+	}
+}
+
+func testMapComponentFieldsUintError(t *testing.T) {
+	compo := &CompoWithFields{}
+	err := mapComponentFields(compo, app.AttributeMap{"uint": "lolilol"})
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMapComponentFieldsFloat(t *testing.T) {
+	compo := &CompoWithFields{}
+	if err := mapComponentFields(compo, app.AttributeMap{"float": "42.42"}); err != nil {
+		t.Fatal(err)
+	}
+	if compo.Float != 42.42 {
+		t.Error("float is not 42.42:", compo.Float)
+	}
+}
+
+func testMapComponentFieldsFloatError(t *testing.T) {
+	compo := &CompoWithFields{}
+	err := mapComponentFields(compo, app.AttributeMap{"float": "42.world"})
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMapComponentFieldsStruct(t *testing.T) {
+	compo := &CompoWithFields{}
+	if err := mapComponentFields(compo, app.AttributeMap{"struct": `{"A": 42, "B": "world"}`}); err != nil {
+		t.Fatal(err)
+	}
+	if compo.Struct.A != 42 {
+		t.Error("struct.A is not 42:", compo.Struct.A)
+	}
+	if compo.Struct.B != "world" {
+		t.Error("struct.B is not world:", compo.Struct.B)
+	}
+}
+
+func testMapComponentFieldsStructError(t *testing.T) {
+	compo := &CompoWithFields{}
+	err := mapComponentFields(compo, app.AttributeMap{"struct": `{"A": "world", "B": 42}`})
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
 }
