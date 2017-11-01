@@ -30,6 +30,20 @@ type Markup interface {
 	Update(compo Component) (syncs []TagSync, err error)
 }
 
+// TagEncoder is the interface that describes an encoder that writes the tag
+// markup representation to an output stream.
+type TagEncoder interface {
+	// Encode write the tag as a markup representation to its output.
+	Encode(tag Tag) error
+}
+
+// TagDecoder is the interface that describes a decoder that reads and decodes
+// tags from an input stream.
+type TagDecoder interface {
+	// Decode reads the markup from its input put and store it in the given tag.
+	Decode(tag *Tag) error
+}
+
 // Tag represents a markup tag.
 type Tag struct {
 	ID         uuid.UUID

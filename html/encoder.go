@@ -9,11 +9,14 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Encoder is a tag encoder based on HTML5.
+// It implements the app.TagEncoder interface.
 type Encoder struct {
 	writer *bufio.Writer
 	markup app.Markup
 }
 
+// NewTagEncoder create a tag encoder that writes on the given writer.
 func NewTagEncoder(w io.Writer, markup app.Markup) *Encoder {
 	return &Encoder{
 		writer: bufio.NewWriter(w),
@@ -21,6 +24,8 @@ func NewTagEncoder(w io.Writer, markup app.Markup) *Encoder {
 	}
 }
 
+// Encode encodes the given tag to HTML5.
+// It satisfies the app.TagEncoder interface.
 func (e *Encoder) Encode(tag app.Tag) error {
 	if err := e.encode(tag, 0); err != nil {
 		return err

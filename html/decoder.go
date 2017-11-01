@@ -10,18 +10,23 @@ import (
 	"golang.org/x/net/html/atom"
 )
 
+// Decoder is a tag decoder based on HTML5.
+// It implements the app.TagDecoder interface.
 type Decoder struct {
 	tokenizer   *html.Tokenizer
 	decodingSvg bool
 	err         error
 }
 
+// NewDecoder create a tag decoder that reads from the given reader.
 func NewDecoder(r io.Reader) *Decoder {
 	return &Decoder{
 		tokenizer: html.NewTokenizer(r),
 	}
 }
 
+// Decode decodes HTML5 and store it in the given tag.
+// It satisfies the app.TagDecoder interface.
 func (d *Decoder) Decode(tag *app.Tag) error {
 	d.decode(tag)
 	if d.err == io.EOF {
