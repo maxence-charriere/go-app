@@ -418,7 +418,7 @@ func testMarkupUpdateSimpleToCompo(t *testing.T, markup *Markup) {
 		t.Fatalf(`name is not "%s": "%s"`, compo.Name, name)
 	}
 	if l := len(world.Children); l != 0 {
-		t.Fatal("world have children", l)
+		t.Fatal("world has children", l)
 	}
 }
 
@@ -565,7 +565,7 @@ func testMarkupUpdateUpdateAttributes(t *testing.T, markup *Markup) {
 		t.Errorf("input placeholder is not %s: %s", compo.Placeholder, placeholder)
 	}
 	if l := len(input.Children); l != 0 {
-		t.Error("input have child")
+		t.Error("input has child")
 	}
 }
 
@@ -1012,4 +1012,50 @@ func testMapComponentFieldsStructError(t *testing.T) {
 		t.Fatal("error is nil")
 	}
 	t.Log(err)
+}
+
+func BenchmarkMarkupMount(b *testing.B) {
+	factory := app.NewFactory()
+	factory.RegisterComponent(&Hello{})
+	factory.RegisterComponent(&World{})
+
+	markup := NewMarkup(factory)
+
+	for i := 0; i < b.N; i++ {
+		hello := &Hello{
+			Name: "JonhyMaxoo",
+		}
+		markup.Mount(hello)
+		markup.Dismount(hello)
+	}
+}
+
+func BenchmarkMarkupUpdate(b *testing.B) {
+	factory := app.NewFactory()
+	factory.RegisterComponent(&Hello{})
+	factory.RegisterComponent(&World{})
+
+	markup := NewMarkup(factory)
+
+	hello := &Hello{
+		Name: "JonhyMaxoo",
+	}
+	markup.Mount(hello)
+
+	alt := false
+
+	for i := 0; i < b.N; i++ {
+		if alt {
+			hello.Greeting = "Jon"
+		} else {
+			hello.Greeting = ""
+		}
+		hello.TextBye = alt
+		hello.Placeholder = strconv.Itoa(i)
+		hello.Greeting = strconv.Itoa(i)
+
+		markup.Update(hello)
+
+		alt = !alt
+	}
 }

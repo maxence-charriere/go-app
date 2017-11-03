@@ -16,8 +16,8 @@ type Encoder struct {
 	markup app.Markup
 }
 
-// NewTagEncoder create a tag encoder that writes on the given writer.
-func NewTagEncoder(w io.Writer, markup app.Markup) *Encoder {
+// NewEncoder create a tag encoder that writes on the given writer.
+func NewEncoder(w io.Writer, markup app.Markup) *Encoder {
 	return &Encoder{
 		writer: bufio.NewWriter(w),
 		markup: markup,
@@ -93,6 +93,7 @@ func (e *Encoder) encodeAttributes(tag app.Tag) {
 		if strings.HasPrefix(name, "on") && !strings.HasPrefix(val, "js:") {
 			e.writer.WriteString(`CallGoHandler('`)
 			e.writer.WriteString(tag.CompoID.String())
+			e.writer.WriteString(`', '`)
 			e.writer.WriteString(val)
 			e.writer.WriteString(`', this, event)"`)
 			continue
