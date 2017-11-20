@@ -279,7 +279,9 @@ func (db *elementDB) ElementByComponent(c Component) (e ElementWithComponent, er
 }
 
 func (db *elementDB) ElementsWithComponents() []ElementWithComponent {
-	return db.elementsWithComponents
+	elems := make([]ElementWithComponent, len(db.elementsWithComponents))
+	copy(elems, db.elementsWithComponents)
+	return elems
 }
 
 func (db *elementDB) Sort() {

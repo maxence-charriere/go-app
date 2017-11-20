@@ -1,6 +1,9 @@
 package app
 
-import "testing"
+import (
+	"net/url"
+	"testing"
+)
 
 type ValidCompo ZeroCompo
 
@@ -126,5 +129,18 @@ func TestNormalizeComponentName(t *testing.T) {
 
 	if name := "main.FooBar"; normalizeComponentName(name) != "foobar" {
 		t.Errorf("name should be foobar: %s", name)
+	}
+}
+
+func TestComponentNameFromURL(t *testing.T) {
+	u1, _ := url.Parse("/hello")
+	u2, _ := url.Parse("/hello?int=42")
+	u3, _ := url.Parse("/hello/world")
+	urls := []*url.URL{u1, u2, u3}
+
+	for _, u := range urls {
+		if name := ComponentNameFromURL(u); name != "hello" {
+			t.Error("name is not hello:", name)
+		}
 	}
 }

@@ -126,10 +126,23 @@ func ensureValidComponent(c Component) error {
 func normalizeComponentName(name string) string {
 	name = strings.ToLower(name)
 	if pkgsep := strings.IndexByte(name, '.'); pkgsep != -1 {
-		pkgname := name[:pkgsep]
-		if pkgname == "main" {
+		if name[:pkgsep] == "main" {
 			name = name[pkgsep+1:]
 		}
 	}
 	return name
+}
+
+// ComponentNameFromURL is an help function that returns the component name
+// targeted by the URL.
+func ComponentNameFromURL(u *url.URL) string {
+	path := u.Path
+	if strings.HasPrefix(path, "/") {
+		path = path[1:]
+	}
+	paths := strings.SplitN(path, "/", 2)
+	if len(paths) == 0 {
+		return ""
+	}
+	return normalizeComponentName(paths[0])
 }
