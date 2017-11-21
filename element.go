@@ -204,33 +204,26 @@ type ElementDB interface {
 	Len() int
 }
 
-// NewElementDB creates an element database with the given capacity.
+// NewElementDB creates an element database.
 // It is safe for concurrent access.
-func NewElementDB(capacity int) ElementDB {
-	db := newElementDB(capacity)
-	return newConcurrentElemDB(db)
+func NewElementDB() ElementDB {
+	return newConcurrentElemDB(newElementDB())
 }
 
 // elementDB is an element database that implements ElementDB.
 type elementDB struct {
-	capacity               int
 	elements               map[uuid.UUID]Element
 	elementsWithComponents elementWithComponentList
 }
 
-func newElementDB(capacity int) *elementDB {
+func newElementDB() *elementDB {
 	return &elementDB{
-		capacity:               capacity,
-		elements:               make(map[uuid.UUID]Element, capacity),
-		elementsWithComponents: make(elementWithComponentList, 0, capacity),
+		elements:               make(map[uuid.UUID]Element),
+		elementsWithComponents: make(elementWithComponentList, 0, 64),
 	}
 }
 
 func (db *elementDB) Add(e Element) error {
-	if len(db.elements) == db.capacity {
-		return errors.Errorf("can't handle more than %d elements simultaneously", db.capacity)
-	}
-
 	if _, ok := db.elements[e.ID()]; ok {
 		return errors.Errorf("element with id %s is already added", e.ID())
 	}

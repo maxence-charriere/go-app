@@ -82,35 +82,28 @@ func (e *elementWithComponent) LastFocus() time.Time {
 func TestElementDB(t *testing.T) {
 	tests := []struct {
 		scenario string
-		capacity int
 		function func(t *testing.T, db app.ElementDB)
 	}{
 		{
 			scenario: "should add an element",
-			capacity: 1,
 			function: testElementDBAdd,
 		},
 		{
 			scenario: "should add an element with components",
-			capacity: 1,
 			function: testElementDBAddElementWithComponent,
 		},
-		// {
-		// 	scenario: "should fail to add an element when full",
-		// 	function: testElementDBAddWhenFull,
-		// },
-		// {
-		// 	scenario: "add element with same id should fail",
-		// 	function: testElementDBAddElementWithSameID,
-		// },
-		// {
-		// 	scenario: "should remove an element",
-		// 	function: testElementDBRemove,
-		// },
-		// {
-		// 	scenario: "should get an element",
-		// 	function: testElementDBElement,
-		// },
+		{
+			scenario: "add element with same id should fail",
+			function: testElementDBAddElementWithSameID,
+		},
+		{
+			scenario: "should remove an element",
+			function: testElementDBRemove,
+		},
+		{
+			scenario: "should get an element",
+			function: testElementDBElement,
+		},
 		// {
 		// 	scenario: "should not get an element",
 		// 	function: testElementDBElementNotFound,
@@ -135,8 +128,9 @@ func TestElementDB(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
-			test.function(t, app.NewElementDB(test.capacity))
+			test.function(t, app.NewElementDB())
 		})
+
 	}
 }
 
@@ -164,76 +158,52 @@ func testElementDBAddElementWithComponent(t *testing.T, db app.ElementDB) {
 	}
 }
 
-// func testElementDBAddElementWithSameID(t *testing.T) {
-// 	elemDB := newElementDB(42)
-// 	elem := newElementWithComponent()
+func testElementDBAddElementWithSameID(t *testing.T, db app.ElementDB) {
+	elem := newElementWithComponent()
 
-// 	if err := elemDB.Add(elem); err != nil {
-// 		t.Fatal(err)
-// 	}
+	if err := db.Add(elem); err != nil {
+		t.Fatal(err)
+	}
 
-// 	err := elemDB.Add(elem)
-// 	if err == nil {
-// 		t.Fatal("should not add a same element twice")
-// 	}
-// 	t.Log()
+	err := db.Add(elem)
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
 
-// }
+func testElementDBRemove(t *testing.T, db app.ElementDB) {
+	elem := newElementWithComponent()
 
-// func testElementDBAddWhenFull(t *testing.T) {
-// 	elemDB := newElementDB(42)
+	if err := db.Add(elem); err != nil {
+		t.Fatal(err)
+	}
 
-// 	newElem := func() Element {
-// 		return newElement()
-// 	}
+	db.Remove(elem)
 
-// 	for i := 0; i < elemDB.capacity; i++ {
-// 		if err := elemDB.Add(newElem()); err != nil {
-// 			t.Fatal(err)
-// 		}
-// 	}
+	if l := db.Len(); l != 0 {
+		t.Error("elements should be empty:", l)
+	}
+	if l := len(db.ElementsWithComponents()); l != 0 {
+		t.Error("elements with component should be empty:", l)
+	}
+}
 
-// 	err := elemDB.Add(newElem())
-// 	if err == nil {
-// 		t.Fatal("adding an element should return an error")
-// 	}
-// 	t.Log(err)
-// }
+func testElementDBElement(t *testing.T, db app.ElementDB) {
+	elem := newElementWithComponent()
 
-// func testElementDBRemove(t *testing.T) {
-// 	elemDB := newElementDB(42)
-// 	elem := newElementWithComponent()
+	if err := db.Add(elem); err != nil {
+		t.Fatal(err)
+	}
 
-// 	if err := elemDB.Add(elem); err != nil {
-// 		t.Fatal(err)
-// 	}
-
-// 	elemDB.Remove(elem)
-
-// 	if l := len(elemDB.elements); l != 0 {
-// 		t.Error("elemDB should not have elements:", l)
-// 	}
-// 	if l := len(elemDB.elementsWithComponents); l != 0 {
-// 		t.Error("elemDB should not have elements with components:", l)
-// 	}
-// }
-
-// func testElementDBElement(t *testing.T) {
-// 	elemDB := newElementDB(42)
-// 	elem := newElementWithComponent()
-
-// 	if err := elemDB.Add(elem); err != nil {
-// 		t.Fatal(err)
-// 	}
-
-// 	elemret, ok := elemDB.Element(elem.ID())
-// 	if !ok {
-// 		t.Fatalf("no element with id %v found", elem.ID())
-// 	}
-// 	if elemret != elem {
-// 		t.Fatal("returned element should be the added element")
-// 	}
-// }
+	ret, ok := db.Element(elem.ID())
+	if !ok {
+		t.Fatalf("no element with id %v found", elem.ID())
+	}
+	if ret != elem {
+		t.Fatal("returned element is no the added element")
+	}
+}
 
 // func testElementDBElementNotFound(t *testing.T) {
 // 	elemDB := newElementDB(42)

@@ -143,4 +143,9 @@ func TestComponentNameFromURL(t *testing.T) {
 			t.Error("name is not hello:", name)
 		}
 	}
+
+	u0 := &url.URL{}
+	if name := ComponentNameFromURL(u0); len(name) != 0 {
+		t.Error("name is not empty")
+	}
 }
