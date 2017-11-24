@@ -6,33 +6,28 @@ import (
 	"testing"
 
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/db"
-	"github.com/murlokswarm/app/log"
-	"github.com/murlokswarm/app/markup"
 	"github.com/pkg/errors"
 )
 
 // Driver is an app.Driver implementation for testing.
 type Driver struct {
-	Test         *testing.T
-	compoBuilder markup.CompoBuilder
-	elements     app.ElementDB
-	menubar      app.Menu
-	dock         app.DockTile
-	logger       app.Logger
-	RunSouldErr  bool
-	UIchan       chan func()
+	Test        *testing.T
+	factory     app.Factory
+	elements    app.ElementDB
+	menubar     app.Menu
+	dock        app.DockTile
+	RunSouldErr bool
+	UIchan      chan func()
 
-	OnWindowLoad func(w app.Window, c markup.Component)
+	OnWindowLoad func(win app.Window, compo app.Component)
 }
 
 // Run satisfies the app.Driver interface.
-func (d *Driver) Run(b markup.CompoBuilder) error {
-	d.compoBuilder = b
-	d.elements = db.NewElementDB(256)
+func (d *Driver) Run(factory app.Factory) error {
+	d.factory = factory
+	d.elements = app.NewConcurrentElemDB(app.NewElementDB())
 	d.menubar = newMenu(d, app.MenuConfig{})
 	d.dock = newDockTile(d)
-	d.logger = &log.Logger{}
 	d.UIchan = make(chan func(), 256)
 
 	if d.RunSouldErr {
@@ -42,17 +37,17 @@ func (d *Driver) Run(b markup.CompoBuilder) error {
 }
 
 // Render satisfies the app.Driver interface.
-func (d *Driver) Render(c markup.Component) error {
-	elem, err := d.elements.ElementByComponent(c)
+func (d *Driver) Render(compo app.Component) error {
+	elem, err := d.elements.ElementByComponent(compo)
 	if err != nil {
 		return errors.Wrap(err, "rendering component")
 	}
-	return elem.Render(c)
+	return elem.Render(compo)
 }
 
 // Context satisfies the app.Driver interface.
-func (d *Driver) Context(c markup.Component) (e app.ElementWithComponent, err error) {
-	if e, err = d.elements.ElementByComponent(c); err != nil {
+func (d *Driver) Context(compo app.Component) (e app.ElementWithComponent, err error) {
+	if e, err = d.elements.ElementByComponent(compo); err != nil {
 		err = errors.Wrap(err, "can't get context")
 	}
 	return
@@ -70,11 +65,6 @@ func (d *Driver) Resources() string {
 		panic(err)
 	}
 	return filepath.Join(wd, "resources")
-}
-
-// Logs satisfies the app.Driver interface.
-func (d *Driver) Logs() app.Logger {
-	return d.logger
 }
 
 // CallOnUIGoroutine satisfies the app.Driver interface.

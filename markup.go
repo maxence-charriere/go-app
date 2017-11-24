@@ -1,13 +1,18 @@
 package app
 
 import (
+	"sync"
+
 	"github.com/google/uuid"
 )
 
 // Markup is the interface that describes a component set.
-// It keeps track of component state and is able to provide info about their
+// It keeps track of component states and is able to provide info about their
 // structure and modifications.
 type Markup interface {
+	// Len returns the number of components living in the markup.
+	Len() int
+
 	// Component returns the component mounted under the identifier.
 	// Returns an error if there is not component with the identifier.
 	Component(id uuid.UUID) (compo Component, err error)
@@ -79,4 +84,65 @@ type AttributeMap map[string]string
 type TagSync struct {
 	Tag     Tag
 	Replace bool
+}
+
+// NewConcurrentMarkup decorates the given markup to ensure concurrent access
+// safety.
+func NewConcurrentMarkup(markup Markup) Markup {
+	return &concurrentMarkup{
+		base: markup,
+	}
+}
+
+type concurrentMarkup struct {
+	mutex sync.Mutex
+	base  Markup
+}
+
+func (m *concurrentMarkup) Len() int {
+	m.mutex.Lock()
+	l := m.base.Len()
+	m.mutex.Unlock()
+	return l
+}
+
+func (m *concurrentMarkup) Component(id uuid.UUID) (compo Component, err error) {
+	m.mutex.Lock()
+	compo, err = m.base.Component(id)
+	m.mutex.Unlock()
+	return
+}
+
+func (m *concurrentMarkup) Contains(compo Component) bool {
+	m.mutex.Lock()
+	contains := m.base.Contains(compo)
+	m.mutex.Unlock()
+	return contains
+}
+
+func (m *concurrentMarkup) Root(compo Component) (root Tag, err error) {
+	m.mutex.Lock()
+	root, err = m.base.Root(compo)
+	m.mutex.Unlock()
+	return
+}
+
+func (m *concurrentMarkup) Mount(compo Component) (root Tag, err error) {
+	m.mutex.Lock()
+	root, err = m.base.Mount(compo)
+	m.mutex.Unlock()
+	return
+}
+
+func (m *concurrentMarkup) Dismount(compo Component) {
+	m.mutex.Lock()
+	m.base.Dismount(compo)
+	m.mutex.Unlock()
+}
+
+func (m *concurrentMarkup) Update(compo Component) (syncs []TagSync, err error) {
+	m.mutex.Lock()
+	syncs, err = m.base.Update(compo)
+	m.mutex.Unlock()
+	return
 }

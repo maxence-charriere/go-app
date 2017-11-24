@@ -5,8 +5,8 @@ import (
 )
 
 var (
-	// Logs is the application logger.
-	Logs = NewConsole(false)
+	// DefaultLogger is the application logger.
+	DefaultLogger = NewConcurrentLogger(NewConsole(false))
 
 	driver     Driver
 	components Factory = make(factory)
@@ -55,7 +55,7 @@ func RunningDriver() Driver {
 // It panics if called before Run.
 func Render(c Component) {
 	if err := driver.Render(c); err != nil {
-		Logs.Error(err)
+		DefaultLogger.Error(err)
 	}
 }
 

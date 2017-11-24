@@ -205,22 +205,17 @@ type ElementDB interface {
 }
 
 // NewElementDB creates an element database.
-// It is safe for concurrent access.
 func NewElementDB() ElementDB {
-	return newConcurrentElemDB(newElementDB())
+	return &elementDB{
+		elements:               make(map[uuid.UUID]Element),
+		elementsWithComponents: make(elementWithComponentList, 0, 64),
+	}
 }
 
 // elementDB is an element database that implements ElementDB.
 type elementDB struct {
 	elements               map[uuid.UUID]Element
 	elementsWithComponents elementWithComponentList
-}
-
-func newElementDB() *elementDB {
-	return &elementDB{
-		elements:               make(map[uuid.UUID]Element),
-		elementsWithComponents: make(elementWithComponentList, 0, 64),
-	}
 }
 
 func (db *elementDB) Add(e Element) error {
@@ -285,6 +280,14 @@ func (db *elementDB) Len() int {
 	return len(db.elements)
 }
 
+// NewConcurrentElemDB decorates the given element database to ensure concurrent
+// access safety.
+func NewConcurrentElemDB(db ElementDB) ElementDB {
+	return &concurrentElemDB{
+		base: db,
+	}
+}
+
 // concurrentElemDB is a concurrent element database that implements
 // ElementDB.
 // It is safe for concurrent access.
@@ -293,52 +296,51 @@ type concurrentElemDB struct {
 	base  ElementDB
 }
 
-func newConcurrentElemDB(db ElementDB) *concurrentElemDB {
-	return &concurrentElemDB{
-		base: db,
-	}
-}
-
 func (db *concurrentElemDB) Add(e Element) error {
 	db.mutex.Lock()
-	defer db.mutex.Unlock()
-	return db.base.Add(e)
+	err := db.base.Add(e)
+	db.mutex.Unlock()
+	return err
 }
 
 func (db *concurrentElemDB) Remove(e Element) {
 	db.mutex.Lock()
-	defer db.mutex.Unlock()
 	db.base.Remove(e)
+	db.mutex.Unlock()
 }
 
 func (db *concurrentElemDB) Element(id uuid.UUID) (e Element, ok bool) {
 	db.mutex.Lock()
-	defer db.mutex.Unlock()
-	return db.base.Element(id)
+	e, ok = db.base.Element(id)
+	db.mutex.Unlock()
+	return
 }
 
 func (db *concurrentElemDB) ElementByComponent(c Component) (e ElementWithComponent, err error) {
 	db.mutex.Lock()
-	defer db.mutex.Unlock()
-	return db.base.ElementByComponent(c)
+	e, err = db.base.ElementByComponent(c)
+	db.mutex.Unlock()
+	return
 }
 
 func (db *concurrentElemDB) ElementsWithComponents() []ElementWithComponent {
 	db.mutex.Lock()
-	defer db.mutex.Unlock()
-	return db.base.ElementsWithComponents()
+	elems := db.base.ElementsWithComponents()
+	db.mutex.Unlock()
+	return elems
 }
 
 func (db *concurrentElemDB) Sort() {
 	db.mutex.Lock()
-	defer db.mutex.Unlock()
 	db.base.Sort()
+	db.mutex.Unlock()
 }
 
 func (db *concurrentElemDB) Len() int {
 	db.mutex.Lock()
-	defer db.mutex.Unlock()
-	return db.base.Len()
+	l := db.base.Len()
+	db.mutex.Unlock()
+	return l
 }
 
 // Slice of []ElementWithComponent that implements sort.Interface.

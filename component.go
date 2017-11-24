@@ -141,7 +141,7 @@ func ComponentNameFromURL(u *url.URL) string {
 		path = path[1:]
 	}
 	paths := strings.SplitN(path, "/", 2)
-	if len(paths) == 0 {
+	if len(paths[0]) == 0 {
 		return ""
 	}
 	return normalizeComponentName(paths[0])

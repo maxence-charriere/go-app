@@ -6,48 +6,48 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/markup"
+	"github.com/murlokswarm/app/html"
 	"github.com/pkg/errors"
 )
 
 // A Window implementation for tests.
 type Window struct {
-	driver       *Driver
-	config       app.WindowConfig
-	id           uuid.UUID
-	compoBuilder markup.CompoBuilder
-	env          markup.Env
-	lastFocus    time.Time
+	driver    *Driver
+	config    app.WindowConfig
+	id        uuid.UUID
+	factory   app.Factory
+	markup    app.Markup
+	lastFocus time.Time
 
-	onLoad  func(c markup.Component)
+	onLoad  func(compo app.Component)
 	onClose func()
 }
 
 // NewWindow creates a new widnow.
-func NewWindow(d *Driver, c app.WindowConfig) *Window {
+func NewWindow(driver *Driver, config app.WindowConfig) *Window {
 	window := &Window{
-		driver:       d,
-		config:       c,
-		id:           uuid.New(),
-		compoBuilder: d.compoBuilder,
-		env:          markup.NewEnv(d.compoBuilder),
-		lastFocus:    time.Now(),
+		driver:    driver,
+		config:    config,
+		id:        uuid.New(),
+		factory:   driver.factory,
+		markup:    app.NewConcurrentMarkup(html.NewMarkup(driver.factory)),
+		lastFocus: time.Now(),
 	}
 
-	d.elements.Add(window)
+	driver.elements.Add(window)
 	window.onClose = func() {
-		d.elements.Remove(window)
+		driver.elements.Remove(window)
 	}
 
-	if d.OnWindowLoad != nil {
-		window.onLoad = func(c markup.Component) {
-			d.OnWindowLoad(window, c)
+	if driver.OnWindowLoad != nil {
+		window.onLoad = func(compo app.Component) {
+			driver.OnWindowLoad(window, compo)
 		}
 	}
 
-	if len(c.DefaultURL) != 0 {
-		if err := window.Load(c.DefaultURL); err != nil {
-			d.Test.Log(err)
+	if len(config.DefaultURL) != 0 {
+		if err := window.Load(config.DefaultURL); err != nil {
+			driver.Test.Log(err)
 		}
 	}
 	return window
@@ -59,8 +59,8 @@ func (w *Window) ID() uuid.UUID {
 }
 
 // Contains satisfies the app.ElementWithComponent interface.
-func (w *Window) Contains(c markup.Component) bool {
-	return w.env.Contains(c)
+func (w *Window) Contains(compo app.Component) bool {
+	return w.markup.Contains(compo)
 }
 
 // Load satisfies the app.ElementWithComponent interface.
@@ -70,17 +70,12 @@ func (w *Window) Load(rawurl string) error {
 		return err
 	}
 
-	componame, ok := markup.ComponentNameFromURL(u)
-	if !ok {
-		return nil
-	}
-
-	compo, err := w.compoBuilder.New(componame)
+	compo, err := w.factory.NewComponent(app.ComponentNameFromURL(u))
 	if err != nil {
 		return err
 	}
 
-	if _, err = w.env.Mount(compo); err != nil {
+	if _, err = w.markup.Mount(compo); err != nil {
 		return errors.Wrapf(err, "loading %s in test window %p failed", u, w)
 	}
 
@@ -91,8 +86,8 @@ func (w *Window) Load(rawurl string) error {
 }
 
 // Render satisfies the app.ElementWithComponent interface.
-func (w *Window) Render(c markup.Component) error {
-	_, err := w.env.Update(c)
+func (w *Window) Render(compo app.Component) error {
+	_, err := w.markup.Update(compo)
 	return err
 }
 

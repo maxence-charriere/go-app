@@ -35,27 +35,27 @@ func TestFactory(t *testing.T) {
 		function func(t *testing.T, factory Factory)
 	}{
 		{
-			scenario: "should register a component",
+			scenario: "registers a component",
 			function: testFactoryRegisterComponent,
 		},
 		{
-			scenario: "register a component not implemented on pointer should fail",
+			scenario: "registering a component not implemented on pointer returns an error",
 			function: testFactoryRegisterComponentNoPtr,
 		},
 		{
-			scenario: "register a component not implemented on a struct pointer should fail",
+			scenario: "registering a component not implemented on a struct pointer returns an error",
 			function: testFactoryRegisterComponentNoStructPtr,
 		},
 		{
-			scenario: "register a component implemented on an empty struct pointer should fail",
+			scenario: "registering a component implemented on an empty struct pointer returns an error",
 			function: testFactoryRegisterComponentEmptyStructPtr,
 		},
 		{
-			scenario: "should create a component",
+			scenario: "creates a component",
 			function: testFactoryCreateComponent,
 		},
 		{
-			scenario: "create a not registered component should fail",
+			scenario: "creating a not registered component returns an error",
 			function: testFactoryCreateNotRegisteredComponent,
 		},
 	}
@@ -73,7 +73,7 @@ func testFactoryRegisterComponent(t *testing.T, factory Factory) {
 		t.Fatal(err)
 	}
 	if name != "app.validcompo" {
-		t.Error("name should be app.validcompo:", name)
+		t.Error("name is not app.validcompo:", name)
 	}
 }
 
@@ -124,11 +124,11 @@ func testFactoryCreateNotRegisteredComponent(t *testing.T, factory Factory) {
 
 func TestNormalizeComponentName(t *testing.T) {
 	if name := "lib.FooBar"; normalizeComponentName(name) != "lib.foobar" {
-		t.Errorf("name should be lib.foobar: %s", name)
+		t.Errorf("name is not lib.foobar: %s", name)
 	}
 
 	if name := "main.FooBar"; normalizeComponentName(name) != "foobar" {
-		t.Errorf("name should be foobar: %s", name)
+		t.Errorf("name is not foobar: %s", name)
 	}
 }
 
@@ -144,8 +144,14 @@ func TestComponentNameFromURL(t *testing.T) {
 		}
 	}
 
-	u0 := &url.URL{}
+	u0 := &url.URL{
+		Host: "test",
+	}
 	if name := ComponentNameFromURL(u0); len(name) != 0 {
 		t.Error("name is not empty")
 	}
 }
+
+// func TestConcurrentMarkup(t *testing.T) {
+// 	NewConcurrentMarkup()
+// }

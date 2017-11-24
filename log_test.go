@@ -1,32 +1,34 @@
-package app
+package app_test
 
 import (
-	"os"
+	"bytes"
 	"testing"
+
+	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/tests"
 )
 
 func TestLogger(t *testing.T) {
-	file, err := os.Create("logger-test")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer os.Remove("logger-test")
-	defer file.Close()
+	buffer := &bytes.Buffer{}
+	tests.TestLogger(t, app.NewLogger(buffer, true))
+	tests.TestLogger(t, app.NewLogger(buffer, false))
+	t.Log(buffer.String())
+}
 
-	loggers := []Logger{
-		NewLogger(file, true),
-		NewConsole(true),
-		NewMultiLogger(
-			NewLogger(file, false),
-			NewConsole(false),
-		),
-	}
+func TestConsole(t *testing.T) {
+	tests.TestLogger(t, app.NewConsole(false))
+	tests.TestLogger(t, app.NewConsole(true))
+}
 
-	for _, logger := range loggers {
-		logger.Log("log", "world")
-		logger.Logf("%s %s", "logf", "world")
+func TestConcurrentLogger(t *testing.T) {
+	buffer := &bytes.Buffer{}
+	tests.TestLogger(t, app.NewConcurrentLogger(app.NewLogger(buffer, true)))
+}
 
-		logger.Error("error", "world")
-		logger.Errorf("%s %s", "errorf", "world")
-	}
+func TestMultiLogger(t *testing.T) {
+	buffer := &bytes.Buffer{}
+	tests.TestLogger(t, app.NewMultiLogger(
+		app.NewConsole(false),
+		app.NewLogger(buffer, true),
+	))
 }

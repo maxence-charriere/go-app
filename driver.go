@@ -2,8 +2,8 @@ package app
 
 // Driver is the interface that describes a backend for app rendering.
 type Driver interface {
-	// Run runs the application with the components resistered in the factory..
-	Run(b Factory) error
+	// Run runs the application with the components resistered in the factory.
+	Run(factory Factory) error
 
 	// Render renders the component.
 	Render(c Component) error

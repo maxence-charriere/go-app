@@ -6,31 +6,32 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/tests"
 )
 
 func TestEncoder(t *testing.T) {
 	factory := app.NewFactory()
-	factory.RegisterComponent(&Hello{})
-	factory.RegisterComponent(&World{})
+	factory.RegisterComponent(&tests.Hello{})
+	factory.RegisterComponent(&tests.World{})
 
 	tests := []struct {
 		scenario string
 		function func(t *testing.T, markup *Markup)
 	}{
 		{
-			scenario: "should encode component",
+			scenario: "encoding a component",
 			function: testEncoderEncode,
 		},
 		{
-			scenario: "encode a zero tag should fail",
+			scenario: "encoding a zero tag returns an error",
 			function: testEncoderEncodeZeroTag,
 		},
 		{
-			scenario: "encode tag with a zero tag child should fail",
+			scenario: "encoding a tag with a zero tag child returns an error",
 			function: testEncoderEncodeChildZeroTag,
 		},
 		{
-			scenario: "encode not mounted component tag should fail",
+			scenario: "encoding a not mounted component tag returns an error",
 			function: testEncoderEncodeNotMountedComponent,
 		},
 	}
@@ -44,7 +45,7 @@ func TestEncoder(t *testing.T) {
 }
 
 func testEncoderEncode(t *testing.T, markup *Markup) {
-	root, err := markup.Mount(&Hello{
+	root, err := markup.Mount(&tests.Hello{
 		Name: "Maxence",
 	})
 	if err != nil {
@@ -74,7 +75,7 @@ func testEncoderEncodeZeroTag(t *testing.T, markup *Markup) {
 }
 
 func testEncoderEncodeChildZeroTag(t *testing.T, markup *Markup) {
-	root, err := markup.Mount(&Hello{
+	root, err := markup.Mount(&tests.Hello{
 		Name: "Maxence",
 	})
 	if err != nil {
@@ -111,12 +112,12 @@ func testEncoderEncodeNotMountedComponent(t *testing.T, markup *Markup) {
 
 func BenchmarkEncoder(b *testing.B) {
 	factory := app.NewFactory()
-	factory.RegisterComponent(&Hello{})
-	factory.RegisterComponent(&World{})
+	factory.RegisterComponent(&tests.Hello{})
+	factory.RegisterComponent(&tests.World{})
 
 	markup := NewMarkup(factory)
 
-	hello := &Hello{
+	hello := &tests.Hello{
 		Name: "JonhyMaxoo",
 	}
 

@@ -4,7 +4,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/murlokswarm/app/markup"
+	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/html"
 )
 
 // A DockTile implementation for tests.
@@ -15,10 +16,10 @@ type DockTile struct {
 func newDockTile(d *Driver) *DockTile {
 	dock := &DockTile{
 		Menu: Menu{
-			id:           uuid.New(),
-			compoBuilder: d.compoBuilder,
-			env:          markup.NewEnv(d.compoBuilder),
-			lastFocus:    time.Now(),
+			id:        uuid.New(),
+			factory:   d.factory,
+			markup:    app.NewConcurrentMarkup(html.NewMarkup(d.factory)),
+			lastFocus: time.Now(),
 		},
 	}
 	d.elements.Add(dock)

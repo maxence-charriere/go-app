@@ -34,22 +34,16 @@ const (
 
 // NewLogger creates a logger that writes on the given writer.
 // Logs are written only if debug is enabled.
-// It is safe for concurrent access.
 func NewLogger(w io.Writer, debug bool) Logger {
-	logger := newLogger(w, debug)
-	return NewConcurrentLogger(logger)
+	return &logger{
+		writer: w,
+		debug:  debug,
+	}
 }
 
 type logger struct {
 	writer io.Writer
 	debug  bool
-}
-
-func newLogger(w io.Writer, debug bool) *logger {
-	return &logger{
-		writer: w,
-		debug:  debug,
-	}
 }
 
 func (l *logger) Log(v ...interface{}) {
@@ -109,8 +103,8 @@ type console struct {
 
 func newConsole(debug bool) *console {
 	return &console{
-		std: newLogger(os.Stdout, debug),
-		err: newLogger(os.Stderr, debug),
+		std: NewLogger(os.Stdout, debug),
+		err: NewLogger(os.Stderr, debug),
 	}
 }
 
@@ -165,7 +159,7 @@ func (l *multiLogger) Errorf(format string, v ...interface{}) {
 	}
 }
 
-// NewConcurrentLogger  decorates the given logger to ensure concurrent access
+// NewConcurrentLogger decorates the given logger to ensure concurrent access
 // safety.
 func NewConcurrentLogger(l Logger) Logger {
 	return &concurrentLogger{
