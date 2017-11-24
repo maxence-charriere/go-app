@@ -44,7 +44,7 @@ func newGoBridge(uichan chan func()) *goBridge {
 
 func (b *goBridge) Handle(pattern string, handler GoHandler) {
 	if len(pattern) == 0 || pattern[0] != '/' {
-		panic("go handle pattern should begin with '/'")
+		panic("go handle pattern doesn't begin by '/'")
 	}
 
 	if handler == nil {

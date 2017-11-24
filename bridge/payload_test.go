@@ -12,14 +12,14 @@ func TestPayloadFromString(t *testing.T) {
 func TestNewPayloadPanic(t *testing.T) {
 	defer func() { recover() }()
 	NewPayload(make(chan bool))
-	t.Fatal("should have panic")
+	t.Fatal("no panic")
 }
 
 func TestPayloadLen(t *testing.T) {
 	p := NewPayload(42)
 
 	if l := p.Len(); l != 2 {
-		t.Fatal("payload len should be 2:", l)
+		t.Fatal("payload len is not 2:", l)
 	}
 }
 
@@ -28,7 +28,7 @@ func TestPayloadBytes(t *testing.T) {
 
 	expect := []byte("42")
 	if b := p.Bytes(); !reflect.DeepEqual(b, expect) {
-		t.Fatalf("payload bytes should be %v: %v", expect, b)
+		t.Fatalf("payload bytes is not %v: %v", expect, b)
 	}
 }
 
@@ -36,7 +36,7 @@ func TestPayloadString(t *testing.T) {
 	p := NewPayload(42)
 
 	if str := p.String(); str != "42" {
-		t.Fatalf(`payload string should be "42": "%v"`, str)
+		t.Fatalf(`payload string is not "42": "%v"`, str)
 	}
 }
 
@@ -47,7 +47,7 @@ func TestPayloadUnmarshal(t *testing.T) {
 	p.Unmarshal(&res)
 
 	if res != "hello world" {
-		t.Fatalf(`unmarshaled result should be "hello wordl": "%v"`, res)
+		t.Fatalf(`unmarshaled result is not "hello world": "%v"`, res)
 	}
 }
 
@@ -58,7 +58,7 @@ func TestPayloadUnmarshalNotPtr(t *testing.T) {
 
 	var res string
 	p.Unmarshal(res)
-	t.Fatal("should have panic")
+	t.Fatal("no panic")
 
 }
 
@@ -69,5 +69,5 @@ func TestPayloadUnmarshalBadPayload(t *testing.T) {
 
 	var res string
 	p.Unmarshal(&res)
-	t.Fatal("should have panic")
+	t.Fatal("no panic")
 }

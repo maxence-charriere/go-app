@@ -36,37 +36,37 @@ func TestPlatformBridge(t *testing.T) {
 		test func(t *testing.T)
 	}{
 		{
-			name: "request should success",
+			name: "send a request",
 			test: func(t *testing.T) {
 				testPlatformBridgeRequest(t, bridge)
 			},
 		},
 		{
-			name: "request should fail",
+			name: "request returns an error",
 			test: func(t *testing.T) {
 				testPlatformBridgeRequestFail(t, bridge)
 			},
 		},
 		{
-			name: "request with async response should success",
+			name: "send a request with asynchronous response",
 			test: func(t *testing.T) {
 				testPlatformBridgeRequestWithAsyncResponse(t, bridge)
 			},
 		},
 		{
-			name: "request with async response should fail",
+			name: "request with asynchronous response returns an error",
 			test: func(t *testing.T) {
 				testPlatformBridgeRequestWithAsyncResponseFail(t, bridge)
 			},
 		},
 		{
-			name: "return with ivalid id should panic",
+			name: "return with invalid id panics",
 			test: func(t *testing.T) {
 				testPlatformBridgeRequestReturnIvalidID(t, bridge)
 			},
 		},
 		{
-			name: "unset return should panic",
+			name: "return not set up panics",
 			test: func(t *testing.T) {
 				testPlatformBridgeRequestReturnUnset(t, bridge)
 			},
@@ -88,14 +88,14 @@ func testPlatformBridgeRequest(t *testing.T, bridge PlatformBridge) {
 	res.Unmarshal(&nb)
 
 	if nb != 42 {
-		t.Fatal("unmarshaled result should be 42:", nb)
+		t.Fatal("unmarshaled result is not 42:", nb)
 	}
 }
 
 func testPlatformBridgeRequestFail(t *testing.T, bridge PlatformBridge) {
 	_, err := bridge.Request("/error", nil)
 	if err == nil {
-		t.Fatal("error should not be nil")
+		t.Fatal("error is nil")
 	}
 	t.Log(err)
 }
@@ -110,14 +110,14 @@ func testPlatformBridgeRequestWithAsyncResponse(t *testing.T, bridge PlatformBri
 	res.Unmarshal(&nb)
 
 	if nb != 21 {
-		t.Fatal("unmarshaled result should be 21:", nb)
+		t.Fatal("unmarshaled result is not 21:", nb)
 	}
 }
 
 func testPlatformBridgeRequestWithAsyncResponseFail(t *testing.T, bridge PlatformBridge) {
 	_, err := bridge.RequestWithAsyncResponse("/error", nil)
 	if err == nil {
-		t.Fatal("error should not be nil")
+		t.Fatal("error is nil")
 	}
 	t.Log(err)
 }
@@ -125,11 +125,11 @@ func testPlatformBridgeRequestWithAsyncResponseFail(t *testing.T, bridge Platfor
 func testPlatformBridgeRequestReturnIvalidID(t *testing.T, bridge PlatformBridge) {
 	defer func() { recover() }()
 	bridge.Return("whoisyourdaddy", nil, nil)
-	t.Fatal("should have panic")
+	t.Fatal("no panic")
 }
 
 func testPlatformBridgeRequestReturnUnset(t *testing.T, bridge PlatformBridge) {
 	defer func() { recover() }()
 	bridge.Return(uuid.New().String(), nil, nil)
-	t.Fatal("should have panic")
+	t.Fatal("no panic")
 }
