@@ -1,6 +1,7 @@
 language: go
+
 go:
-  - master
+  - 1.9.x
 
 install:
   - go get -t ./...
