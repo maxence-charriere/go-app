@@ -4,7 +4,7 @@ go:
   - 1.9.x
 
 install:
-  - go get ./... -u
+  - go get -v -t .
   - go get -v github.com/mattn/goveralls
   - go install -v github.com/mattn/goveralls
 
