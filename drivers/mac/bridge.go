@@ -14,6 +14,7 @@ import (
 	"unsafe"
 
 	"github.com/google/uuid"
+	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/bridge"
 	"github.com/pkg/errors"
 )
@@ -92,7 +93,7 @@ func windowHandler(h func(w *Window, u *url.URL, p bridge.Payload) (res bridge.P
 
 		elem, ok := driver.elements.Element(id)
 		if !ok {
-			driver.Logger.Logf("%v: window with id %v doesn't exists", u.Path, id)
+			app.DefaultLogger.Logf("%v: window with id %v doesn't exists", u.Path, id)
 			return nil
 		}
 
