@@ -1,3 +1,5 @@
+// +build darwin,amd64
+
 package mac
 
 type point struct {
