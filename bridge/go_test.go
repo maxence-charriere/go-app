@@ -27,27 +27,27 @@ func TestGoBridge(t *testing.T) {
 		test func(t *testing.T)
 	}{
 		{
-			name: "handle with invalid pattern should fail",
+			name: "handle with invalid pattern panics",
 			test: func(t *testing.T) { testGoBridgeHandleBadPattern(t, bridge) },
 		},
 		{
-			name: "handle with nil handler should fail",
+			name: "handle with nil handler panics",
 			test: func(t *testing.T) { testGoBridgeHandleNilHandler(t, bridge) },
 		},
 		{
-			name: "request should success",
+			name: "send a request",
 			test: func(t *testing.T) { testGoBridgeRequest(t, bridge) },
 		},
 		{
-			name: "request with bad URL should fail",
+			name: "send a request with bad URL panics",
 			test: func(t *testing.T) { testGoBridgeRequestBadURL(t, bridge) },
 		},
 		{
-			name: "Request with response should success",
+			name: "send a request with response",
 			test: func(t *testing.T) { testGoBridgeRequestWithResponse(t, bridge) },
 		},
 		{
-			name: "request with response and bad URL should fail",
+			name: "send a request with response and a bad URL panics",
 			test: func(t *testing.T) { testGoBridgeRequestWithResponseBadURL(t, bridge) },
 		},
 	}
@@ -64,14 +64,14 @@ func testGoBridgeHandleBadPattern(t *testing.T, bridge GoBridge) {
 		return
 	})
 
-	t.Fatal("should have panic")
+	t.Fatal("no panic")
 }
 
 func testGoBridgeHandleNilHandler(t *testing.T, bridge GoBridge) {
 	defer func() { recover() }()
 
 	bridge.Handle("/test", nil)
-	t.Fatal("should have panic")
+	t.Fatal("no panic")
 }
 
 func testGoBridgeRequest(t *testing.T, bridge GoBridge) {
@@ -82,7 +82,7 @@ func testGoBridgeRequestBadURL(t *testing.T, bridge GoBridge) {
 	defer func() { recover() }()
 
 	bridge.Request(":{}K{RKVR<<>>!@#", nil)
-	t.Fatal("should have panic")
+	t.Fatal("no panic")
 }
 
 func testGoBridgeRequestWithResponse(t *testing.T, bridge GoBridge) {
@@ -92,14 +92,14 @@ func testGoBridgeRequestWithResponse(t *testing.T, bridge GoBridge) {
 	res.Unmarshal(&nb)
 
 	if nb != 21 {
-		t.Fatal("response should be 21:", nb)
+		t.Fatal("response is not 21:", nb)
 	}
 }
 
 func testGoBridgeRequestWithResponseBadURL(t *testing.T, bridge GoBridge) {
 	defer func() { recover() }()
 	bridge.RequestWithResponse(":{}K{RKVR<<>>!@#", nil)
-	t.Fatal("should have panic")
+	t.Fatal("no panic")
 }
 
 func TestGoBridgeHandleSubpath(t *testing.T) {
@@ -123,5 +123,5 @@ func TestGoBridgeHandleNotHandled(t *testing.T) {
 	u, _ := url.Parse("/nothandled")
 	b := newGoBridge(make(chan func(), 42))
 	b.handle(u, nil)
-	t.Fatal("should have panic")
+	t.Fatal("no panic")
 }

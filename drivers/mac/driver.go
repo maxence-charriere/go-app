@@ -18,8 +18,6 @@ import (
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/bridge"
-	"github.com/murlokswarm/app/log"
-	"github.com/murlokswarm/app/markup"
 	"github.com/pkg/errors"
 )
 
@@ -35,7 +33,6 @@ func init() {
 type Driver struct {
 	MenubarURL string
 	DockURL    string
-	Logger     app.Logger
 
 	OnRun       func()
 	OnFocus     func()
@@ -46,24 +43,23 @@ type Driver struct {
 	OnQuit      func() bool
 	OnExit      func()
 
-	components markup.CompoBuilder
-	elements   app.ElementStore
-	uichan     chan func()
-	waitStop   sync.WaitGroup
-	macos      bridge.PlatformBridge
-	golang     bridge.GoBridge
-	menubar    app.Menu
-	dock       app.DockTile
+	factory  app.Factory
+	elements app.ElementDB
+	uichan   chan func()
+	waitStop sync.WaitGroup
+	macos    bridge.PlatformBridge
+	golang   bridge.GoBridge
+	menubar  app.Menu
+	dock     app.DockTile
 }
 
 // Run satisfies the app.Driver interface.
-func (d *Driver) Run(b markup.CompoBuilder) error {
-	d.components = b
-	d.elements = app.NewElementStore()
+func (d *Driver) Run(factory app.Factory) error {
+	d.factory = factory
 
-	if d.Logger == nil {
-		d.Logger = &log.Logger{}
-	}
+	elements := app.NewElementDB()
+	elements = app.NewConcurrentElemDB(elements)
+	d.elements = elements
 
 	d.uichan = make(chan func(), 256)
 	defer close(d.uichan)
@@ -192,17 +188,17 @@ func (d *Driver) onExit(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 }
 
 // Render satisfies the app.Driver interface.
-func (d *Driver) Render(c markup.Component) error {
-	elem, err := d.elements.ElementByComponent(c)
+func (d *Driver) Render(compo app.Component) error {
+	elem, err := d.elements.ElementByComponent(compo)
 	if err != nil {
 		return err
 	}
-	return elem.Render(c)
+	return elem.Render(compo)
 }
 
 // Context satisfies the app.Driver interface.
-func (d *Driver) Context(c markup.Component) (elem app.ElementWithComponent, err error) {
-	return d.elements.ElementByComponent(c)
+func (d *Driver) Context(compo app.Component) (elem app.ElementWithComponent, err error) {
+	return d.elements.ElementByComponent(compo)
 }
 
 // NewContextMenu satisfies the app.Driver interface.
@@ -228,11 +224,6 @@ func (d *Driver) Resources() string {
 		dirname = filepath.Join(wd, "resources")
 	}
 	return dirname
-}
-
-// Logs satisfies the app.Driver interface.
-func (d *Driver) Logs() app.Logger {
-	return d.Logger
 }
 
 // CallOnUIGoroutine satisfies the app.Driver interface.

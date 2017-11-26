@@ -1,3 +1,5 @@
+// +build darwin,amd64
+
 package mac
 
 import (
@@ -9,8 +11,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/bridge"
-	"github.com/murlokswarm/app/geom"
-	"github.com/murlokswarm/app/markup"
+	"github.com/murlokswarm/app/html"
 	"github.com/pkg/errors"
 )
 
@@ -18,7 +19,7 @@ import (
 type Window struct {
 	driver    *Driver
 	id        uuid.UUID
-	env       markup.Env
+	markup    app.Markup
 	lastFocus time.Time
 
 	onMove           func(x, y float64)
@@ -32,22 +33,22 @@ type Window struct {
 	onClose          func() bool
 }
 
-func newWindow(d *Driver, c app.WindowConfig) (w *Window, err error) {
+func newWindow(driver *Driver, config app.WindowConfig) (w *Window, err error) {
 	w = &Window{
-		driver:    d,
 		id:        uuid.New(),
-		env:       markup.NewEnv(d.components),
+		driver:    driver,
+		markup:    app.NewConcurrentMarkup(html.NewMarkup(driver.factory)),
 		lastFocus: time.Now(),
 
-		onMove:           c.OnMove,
-		onResize:         c.OnResize,
-		onFocus:          c.OnFocus,
-		onBlur:           c.OnBlur,
-		onFullScreen:     c.OnFullScreen,
-		onExitFullScreen: c.OnExitFullScreen,
-		onMinimize:       c.OnMinimize,
-		onDeminimize:     c.OnDeminimize,
-		onClose:          c.OnClose,
+		onMove:           config.OnMove,
+		onResize:         config.OnResize,
+		onFocus:          config.OnFocus,
+		onBlur:           config.OnBlur,
+		onFullScreen:     config.OnFullScreen,
+		onExitFullScreen: config.OnExitFullScreen,
+		onMinimize:       config.OnMinimize,
+		onDeminimize:     config.OnDeminimize,
+		onClose:          config.OnClose,
 	}
 
 	normalizeSize := func(min, max float64) (float64, float64) {
@@ -64,15 +65,15 @@ func newWindow(d *Driver, c app.WindowConfig) (w *Window, err error) {
 		return min, max
 	}
 
-	c.MinWidth, c.MaxWidth = normalizeSize(c.MinWidth, c.MaxWidth)
-	c.MinHeight, c.MaxHeight = normalizeSize(c.MinHeight, c.MaxHeight)
+	config.MinWidth, config.MaxWidth = normalizeSize(config.MinWidth, config.MaxWidth)
+	config.MinHeight, config.MaxHeight = normalizeSize(config.MinHeight, config.MaxHeight)
 
 	rawurl := fmt.Sprintf("/window/new?id=%s", w.id)
-	if _, err = d.macos.Request(rawurl, bridge.NewPayload(c)); err != nil {
+	if _, err = driver.macos.Request(rawurl, bridge.NewPayload(config)); err != nil {
 		return
 	}
 
-	err = d.elements.Add(w)
+	err = driver.elements.Add(w)
 	return
 }
 
@@ -87,12 +88,12 @@ func (w *Window) Load(url string) error {
 }
 
 // Contains satisfies the app.ElementWithComponent interface.
-func (w *Window) Contains(c markup.Component) bool {
+func (w *Window) Contains(compo app.Component) bool {
 	panic("not implemented")
 }
 
 // Render satisfies the app.ElementWithComponent interface.
-func (w *Window) Render(c markup.Component) error {
+func (w *Window) Render(compo app.Component) error {
 	panic("not implemented")
 }
 
@@ -130,7 +131,7 @@ func (w *Window) Position() (x, y float64) {
 		panic(errors.Wrapf(err, "retrieving positon of window %v", w.ID()))
 	}
 
-	var pos geom.Point
+	var pos point
 	res.Unmarshal(&pos)
 	return pos.X, pos.Y
 }
@@ -138,7 +139,7 @@ func (w *Window) Position() (x, y float64) {
 // Move satisfies the app.Window interface.
 func (w *Window) Move(x, y float64) {
 	rawurl := fmt.Sprintf("/window/move?id=%s", w.id)
-	payload := bridge.NewPayload(geom.Point{
+	payload := bridge.NewPayload(point{
 		X: x,
 		Y: y,
 	})
@@ -154,7 +155,7 @@ func onWindowMove(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) 
 		return
 	}
 
-	var pos geom.Point
+	var pos point
 	p.Unmarshal(&pos)
 	w.onMove(pos.X, pos.Y)
 	return
@@ -179,7 +180,7 @@ func (w *Window) Size() (width, height float64) {
 		panic(errors.Wrapf(err, "retrieving size of window %v failed", w.ID()))
 	}
 
-	var size geom.Size
+	var size size
 	res.Unmarshal(&size)
 	return size.Width, size.Height
 }
@@ -187,7 +188,7 @@ func (w *Window) Size() (width, height float64) {
 // Resize satisfies the app.Window interface.
 func (w *Window) Resize(width, height float64) {
 	rawurl := fmt.Sprintf("/window/resize?id=%s", w.id)
-	payload := bridge.NewPayload(geom.Size{
+	payload := bridge.NewPayload(size{
 		Width:  width,
 		Height: height,
 	})
@@ -203,7 +204,7 @@ func onWindowResize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload
 		return
 	}
 
-	var size geom.Size
+	var size size
 	p.Unmarshal(&size)
 	w.onResize(size.Width, size.Height)
 	return
@@ -220,6 +221,8 @@ func (w *Window) Focus() {
 }
 
 func onWindowFocus(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	w.lastFocus = time.Now()
+
 	if w.onFocus == nil {
 		return
 	}

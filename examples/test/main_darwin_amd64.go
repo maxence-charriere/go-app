@@ -5,13 +5,12 @@ import (
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/drivers/mac"
-	"github.com/murlokswarm/app/log"
 )
 
 func main() {
-	app.Run(&mac.Driver{
-		Logger: &log.Logger{Debug: true},
+	app.DefaultLogger = app.NewConcurrentLogger(app.NewConsole(true))
 
+	app.Run(&mac.Driver{
 		OnRun: func() {
 			fmt.Println("OnRun")
 			fmt.Println("app.Resources():", app.Resources())

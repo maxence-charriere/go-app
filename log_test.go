@@ -1,22 +1,34 @@
-package app
+package app_test
 
-import "log"
+import (
+	"bytes"
+	"testing"
 
-type logger struct {
+	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/tests"
+)
+
+func TestLogger(t *testing.T) {
+	buffer := &bytes.Buffer{}
+	tests.TestLogger(t, app.NewLogger(buffer, true))
+	tests.TestLogger(t, app.NewLogger(buffer, false))
+	t.Log(buffer.String())
 }
 
-func (l *logger) Log(v ...interface{}) {
-	log.Println(v...)
+func TestConsole(t *testing.T) {
+	tests.TestLogger(t, app.NewConsole(false))
+	tests.TestLogger(t, app.NewConsole(true))
 }
 
-func (l *logger) Logf(format string, v ...interface{}) {
-	log.Printf(format, v...)
+func TestConcurrentLogger(t *testing.T) {
+	buffer := &bytes.Buffer{}
+	tests.TestLogger(t, app.NewConcurrentLogger(app.NewLogger(buffer, true)))
 }
 
-func (l *logger) Error(v ...interface{}) {
-	log.Println(v...)
-}
-
-func (l *logger) Errorf(format string, v ...interface{}) {
-	log.Printf(format, v...)
+func TestMultiLogger(t *testing.T) {
+	buffer := &bytes.Buffer{}
+	tests.TestLogger(t, app.NewMultiLogger(
+		app.NewConsole(false),
+		app.NewLogger(buffer, true),
+	))
 }

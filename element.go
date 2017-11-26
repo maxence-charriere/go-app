@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/murlokswarm/app/markup"
 	"github.com/pkg/errors"
 )
 
@@ -28,13 +27,13 @@ type ElementWithComponent interface {
 	// It returns an error if the component is not imported.
 	Load(url string) error
 
-	// Contains reports whether component c is mounted in the element.
-	Contains(c markup.Component) bool
+	// Contains reports whether the component is mounted in the element.
+	Contains(c Component) bool
 
-	// Render renders component c.
-	Render(c markup.Component) error
+	// Render renders the component.
+	Render(c Component) error
 
-	// LastFocus returns the last time when the element has got focus.
+	// LastFocus returns the last time when the element was focused.
 	LastFocus() time.Time
 }
 
@@ -74,7 +73,7 @@ type Window interface {
 	// Size returns the window size.
 	Size() (width, height float64)
 
-	// Resize resizes the window to width x height.
+	// Resize resizes the window to width * height.
 	Resize(width, height float64)
 
 	// Focus gives the focus to the window.
@@ -160,7 +159,8 @@ type DockTile interface {
 	// image.
 	SetIcon(name string) error
 
-	// SetBadge set the dock tile badge with the string representation of v.
+	// SetBadge set the dock tile badge with the string representation of the
+	// value.
 	SetBadge(v interface{})
 }
 
@@ -178,103 +178,84 @@ type PopupNotificationConfig struct {
 	ComponentURL string
 }
 
-// ElementStore is the interface that decribes a store of elements.
-// It should thread safe.
-type ElementStore interface {
-	// Add adds an element in the store.
+// ElementDB is the interface that describes an element database.
+type ElementDB interface {
+	// Add adds the element in the database.
 	Add(e Element) error
 
-	// Remove removes an element from the store.
+	// Remove removes the element from the database.
 	Remove(e Element)
 
-	// Element returns the element with identifier id.
+	// Element returns the element with the given identifier.
 	Element(id uuid.UUID) (e Element, ok bool)
 
-	// ElementByComponent returns the element where component c is mounted.
+	// ElementByComponent returns the element where the component is mounted.
 	// It returns an error if the component is not mounted in any element.
-	ElementByComponent(c markup.Component) (e ElementWithComponent, err error)
+	ElementByComponent(c Component) (e ElementWithComponent, err error)
 
-	// Sort sorts the elements that hosts components.
+	// ElementsWithComponents returns the elements that contains components.
+	ElementsWithComponents() []ElementWithComponent
+
+	// Sort sorts the elements that hosts components. Latest focused elements
+	// will be at the beginning.
 	Sort()
 
-	// Len returns the number of elements.
+	// Len returns the number of element.
 	Len() int
 }
 
-// NewElementStore creates a concurent safe element store.
-func NewElementStore() ElementStore {
-	return newElementStore(256)
+// NewElementDB creates an element database.
+func NewElementDB() ElementDB {
+	return &elementDB{
+		elements:               make(map[uuid.UUID]Element),
+		elementsWithComponents: make(elementWithComponentList, 0, 64),
+	}
 }
 
-type elementStore struct {
-	mutex                  sync.Mutex
-	capacity               int
+// elementDB is an element database that implements ElementDB.
+type elementDB struct {
 	elements               map[uuid.UUID]Element
 	elementsWithComponents elementWithComponentList
 }
 
-func newElementStore(capacity int) *elementStore {
-	return &elementStore{
-		capacity:               capacity,
-		elements:               make(map[uuid.UUID]Element, capacity),
-		elementsWithComponents: make(elementWithComponentList, 0, capacity),
-	}
-}
-
-func (s *elementStore) Add(e Element) error {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	if len(s.elements) == s.capacity {
-		return errors.Errorf("can't handle more than %d elements simultaneously", s.capacity)
-	}
-
-	if _, ok := s.elements[e.ID()]; ok {
+func (db *elementDB) Add(e Element) error {
+	if _, ok := db.elements[e.ID()]; ok {
 		return errors.Errorf("element with id %s is already added", e.ID())
 	}
 
-	s.elements[e.ID()] = e
+	db.elements[e.ID()] = e
 
 	if elemWithComp, ok := e.(ElementWithComponent); ok {
-		s.elementsWithComponents = append(s.elementsWithComponents, elemWithComp)
-		sort.Sort(s.elementsWithComponents)
+		db.elementsWithComponents = append(db.elementsWithComponents, elemWithComp)
+		sort.Sort(db.elementsWithComponents)
 	}
 	return nil
 }
 
-func (s *elementStore) Remove(e Element) {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	delete(s.elements, e.ID())
+func (db *elementDB) Remove(e Element) {
+	delete(db.elements, e.ID())
 
 	if _, ok := e.(ElementWithComponent); ok {
-		elements := s.elementsWithComponents
+		elements := db.elementsWithComponents
 		for i, elem := range elements {
 			if elem == e {
 				copy(elements[i:], elements[i+1:])
 				elements[len(elements)-1] = nil
 				elements = elements[:len(elements)-1]
-				s.elementsWithComponents = elements
+				db.elementsWithComponents = elements
 				return
 			}
 		}
 	}
 }
 
-func (s *elementStore) Element(id uuid.UUID) (e Element, ok bool) {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	e, ok = s.elements[id]
+func (db *elementDB) Element(id uuid.UUID) (e Element, ok bool) {
+	e, ok = db.elements[id]
 	return
 }
 
-func (s *elementStore) ElementByComponent(c markup.Component) (e ElementWithComponent, err error) {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	for _, elem := range s.elementsWithComponents {
+func (db *elementDB) ElementByComponent(c Component) (e ElementWithComponent, err error) {
+	for _, elem := range db.elementsWithComponents {
 		if elem.Contains(c) {
 			e = elem
 			return
@@ -285,18 +266,81 @@ func (s *elementStore) ElementByComponent(c markup.Component) (e ElementWithComp
 	return
 }
 
-func (s *elementStore) Sort() {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	sort.Sort(s.elementsWithComponents)
+func (db *elementDB) ElementsWithComponents() []ElementWithComponent {
+	elems := make([]ElementWithComponent, len(db.elementsWithComponents))
+	copy(elems, db.elementsWithComponents)
+	return elems
 }
 
-func (s *elementStore) Len() int {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
+func (db *elementDB) Sort() {
+	sort.Sort(db.elementsWithComponents)
+}
 
-	return len(s.elements)
+func (db *elementDB) Len() int {
+	return len(db.elements)
+}
+
+// NewConcurrentElemDB decorates the given element database to ensure concurrent
+// access safety.
+func NewConcurrentElemDB(db ElementDB) ElementDB {
+	return &concurrentElemDB{
+		base: db,
+	}
+}
+
+// concurrentElemDB is a concurrent element database that implements
+// ElementDB.
+// It is safe for concurrent access.
+type concurrentElemDB struct {
+	mutex sync.Mutex
+	base  ElementDB
+}
+
+func (db *concurrentElemDB) Add(e Element) error {
+	db.mutex.Lock()
+	err := db.base.Add(e)
+	db.mutex.Unlock()
+	return err
+}
+
+func (db *concurrentElemDB) Remove(e Element) {
+	db.mutex.Lock()
+	db.base.Remove(e)
+	db.mutex.Unlock()
+}
+
+func (db *concurrentElemDB) Element(id uuid.UUID) (e Element, ok bool) {
+	db.mutex.Lock()
+	e, ok = db.base.Element(id)
+	db.mutex.Unlock()
+	return
+}
+
+func (db *concurrentElemDB) ElementByComponent(c Component) (e ElementWithComponent, err error) {
+	db.mutex.Lock()
+	e, err = db.base.ElementByComponent(c)
+	db.mutex.Unlock()
+	return
+}
+
+func (db *concurrentElemDB) ElementsWithComponents() []ElementWithComponent {
+	db.mutex.Lock()
+	elems := db.base.ElementsWithComponents()
+	db.mutex.Unlock()
+	return elems
+}
+
+func (db *concurrentElemDB) Sort() {
+	db.mutex.Lock()
+	db.base.Sort()
+	db.mutex.Unlock()
+}
+
+func (db *concurrentElemDB) Len() int {
+	db.mutex.Lock()
+	l := db.base.Len()
+	db.mutex.Unlock()
+	return l
 }
 
 // Slice of []ElementWithComponent that implements sort.Interface.
