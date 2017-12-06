@@ -2,6 +2,9 @@ package html
 
 // PageConfig is the struct that describes a page.
 type PageConfig struct {
+	// The page title.
+	Title string
+
 	// The app.js script.
 	AppJS string
 
