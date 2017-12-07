@@ -28,3 +28,9 @@ examples/menu/menu
 examples/nav/nav
 
 examples/test/test
+
+appjs/test/test.js
+
+appjs/test/appjs.html
+
+appjs/src/appjs
