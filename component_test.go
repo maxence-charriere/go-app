@@ -151,7 +151,3 @@ func TestComponentNameFromURL(t *testing.T) {
 		t.Error("name is not empty")
 	}
 }
-
-// func TestConcurrentMarkup(t *testing.T) {
-// 	NewConcurrentMarkup()
-// }
