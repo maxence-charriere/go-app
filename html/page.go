@@ -2,21 +2,57 @@ package html
 
 // PageConfig is the struct that describes a page.
 type PageConfig struct {
-	// The page title.
+	// The title.
 	Title string
 
-	// The app.js script.
-	AppJS string
+	// The meta data.
+	Metas []Meta
 
 	// The default component rendering.
 	DefaultComponent string
 
+	// Enables application default style.
+	AppStyle bool
+
 	// The CSS filenames to include.
 	CSS []string
+
+	// The app.js code that is included in the page..
+	AppJS string
 
 	// The javascript filenames to include.
 	Javasripts []string
 }
+
+// Meta represents a page metadata.
+type Meta struct {
+	Name      MetaName
+	Content   string
+	HTTPEquiv MetaHTTPEquiv
+}
+
+// MetaName represents a metadata name value.
+type MetaName string
+
+// Constants that define metadata name values.
+const (
+	ApplicationNameMeta MetaName = "application-name"
+	AuthorMeta          MetaName = "author"
+	DescriptionMeta     MetaName = "description"
+	GeneratorMeta       MetaName = "generator"
+	KeywordsMeta        MetaName = "keywords"
+	ViewportMeta        MetaName = "viewport"
+)
+
+// MetaHTTPEquiv represents a metadata http-equiv value.
+type MetaHTTPEquiv string
+
+// Constants that define metadata http-equiv values.
+const (
+	ContentTypeMeta  MetaHTTPEquiv = "content-type"
+	DefaultStyleMeta MetaHTTPEquiv = "default-style"
+	RefreshMeta      MetaHTTPEquiv = "refresh"
+)
 
 func Page(config PageConfig) (page string, err error) {
 	tmpl := ``
