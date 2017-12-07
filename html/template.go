@@ -33,7 +33,7 @@ const pageTemplate = `
     <script> {{if .AppJS}}
        {{.AppJS}}{{end}}
     </script>
-    {{range .Javasripts}}
+    {{range .Javascripts}}
     <script src="{{.}}"></script>{{end}}
 </body>
 </html>
