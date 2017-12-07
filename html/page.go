@@ -1,5 +1,13 @@
 package html
 
+import (
+	"bytes"
+	"html/template"
+)
+
+//go:generate go run gen.go
+//go:generate go fmt
+
 // PageConfig is the struct that describes a page.
 type PageConfig struct {
 	// The title.
@@ -9,7 +17,7 @@ type PageConfig struct {
 	Metas []Meta
 
 	// The default component rendering.
-	DefaultComponent string
+	DefaultComponent template.HTML
 
 	// Enables application default style.
 	AppStyle bool
@@ -18,7 +26,7 @@ type PageConfig struct {
 	CSS []string
 
 	// The app.js code that is included in the page..
-	AppJS string
+	AppJS template.JS
 
 	// The javascript filenames to include.
 	Javasripts []string
@@ -54,8 +62,11 @@ const (
 	RefreshMeta      MetaHTTPEquiv = "refresh"
 )
 
-func Page(config PageConfig) (page string, err error) {
-	tmpl := ``
+// Page generate an HTML page from the given configuration.
+func Page(config PageConfig) string {
+	var buffer bytes.Buffer
 
-	return
+	tmpl := template.Must(template.New("").Parse(pageTemplate))
+	tmpl.Execute(&buffer, config)
+	return buffer.String()
 }
