@@ -152,3 +152,69 @@ func (w *World) Render() string {
 </div>
 	`
 }
+
+// Mapping is a test component to verify mapping behaviors.
+type Mapping struct {
+	String              string
+	Int                 int
+	IntWithMethod       MappingInt
+	IntPtr              *int
+	Struct              MappingStruct
+	Map                 map[string]string
+	MapWithMethod       MappingMap
+	Slice               []int
+	SliceWithMethod     MappingSlice
+	Array               [5]int
+	Func                func()
+	FuncWithArg         func(i int)
+	FuncWithMultipleArg func(x, y int)
+	method              func()
+}
+
+// Method is a method to be mapped.
+func (m *Mapping) Method() {
+	m.method()
+}
+
+// Render satisfies the app.Component interface.
+func (m *Mapping) Render() string {
+	return `<div>Some mappings</div>`
+}
+
+// MappingStruct is struct to test mapping struct behavior.
+type MappingStruct struct {
+	Exported   int
+	unexported int
+	method     func()
+}
+
+// Method is a method to be mapped.
+func (s MappingStruct) Method() {
+	s.method()
+}
+
+// MappingMap is map to test mapping map behavior.
+type MappingMap map[string]func()
+
+// Method is a method to be mapped.
+func (m MappingMap) Method() {
+	m["method"]()
+}
+
+// MappingSlice is slice to test mapping slice behavior.
+type MappingSlice []func()
+
+// Method is a method to be mapped.
+func (s MappingSlice) Method() {
+	s[0]()
+}
+
+// MappingInt is an int to test mapping value behavior.
+type MappingInt int
+
+// Method is a method to be mapped.
+func (i MappingInt) Method(nb int) {
+	mappedInt = nb
+}
+
+var mappedInt int

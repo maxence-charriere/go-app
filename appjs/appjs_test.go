@@ -14,7 +14,7 @@ func TestAppJS(t *testing.T) {
 	page := html.Page(html.PageConfig{
 		Title:       "app.js test",
 		Javascripts: []string{"test.js"},
-		AppJS:       AppJS(),
+		AppJS:       AppJS("alert"),
 	})
 
 	err := ioutil.WriteFile(pagename, []byte(page), 0644)
@@ -25,8 +25,10 @@ func TestAppJS(t *testing.T) {
 	switch runtime.GOOS {
 	case "darwin":
 		openOnMacOS(t, pagename)
+
 	case "windows":
 		openOnWindows(t, pagename)
+
 	default:
 		defaultOpen(t, pagename)
 	}

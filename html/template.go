@@ -30,10 +30,8 @@ const pageTemplate = `
         {{.DefaultComponent}}{{end}}
     </div>
 
-    <script> {{if .AppJS}}
-       {{.AppJS}}{{end}}
-    </script>
-    {{range .Javascripts}}
+    {{if .AppJS}}<script>{{.AppJS}}
+    </script>{{end}}{{range .Javascripts}}
     <script src="{{.}}"></script>{{end}}
 </body>
 </html>

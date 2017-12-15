@@ -37,10 +37,13 @@ func (e *Encoder) encode(tag app.Tag, indent int) error {
 	switch tag.Type {
 	case app.SimpleTag:
 		return e.encodeSimple(tag, indent)
+
 	case app.TextTag:
 		return e.encodeText(tag, indent)
+
 	case app.CompoTag:
 		return e.encodeComponent(tag, indent)
+
 	default:
 		return errors.Errorf("encoding tag %s of type %v is not supported", tag.Name, tag.Type)
 	}
@@ -91,16 +94,15 @@ func (e *Encoder) encodeAttributes(tag app.Tag) {
 		e.writer.WriteString(`="`)
 
 		if strings.HasPrefix(name, "on") && !strings.HasPrefix(val, "js:") {
-			e.writer.WriteString(`CallGoHandler('`)
+			e.writer.WriteString(`callGoEventHandler('`)
 			e.writer.WriteString(tag.CompoID.String())
 			e.writer.WriteString(`', '`)
 			e.writer.WriteString(val)
 			e.writer.WriteString(`', this, event)"`)
-			continue
+		} else {
+			e.writer.WriteString(val)
+			e.writer.WriteByte('"')
 		}
-
-		e.writer.WriteString(val)
-		e.writer.WriteByte('"')
 	}
 
 	e.writer.WriteString(` data-goapp-id="`)

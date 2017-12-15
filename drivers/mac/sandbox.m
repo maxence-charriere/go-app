@@ -45,27 +45,34 @@
   if (staticCode) {
     OSStatus signatureCheckResult = SecStaticCodeCheckValidityWithErrors(
         staticCode, kSecCSBasicValidateOnly, NULL, NULL);
+
     switch (signatureCheckResult) {
     case errSecSuccess:
       resultState = OBCodeSignStateSignatureValid;
       break;
+
     case errSecCSUnsigned:
       resultState = OBCodeSignStateUnsigned;
       break;
+
     case errSecCSSignatureFailed:
     case errSecCSSignatureInvalid:
       resultState = OBCodeSignStateSignatureInvalid;
       break;
+
     case errSecCSSignatureNotVerifiable:
       resultState = OBCodeSignStateSignatureNotVerifiable;
       break;
+
     case errSecCSSignatureUnsupported:
       resultState = OBCodeSignStateSignatureUnsupported;
       break;
+
     default:
       resultState = OBCodeSignStateError;
       break;
     }
+
     CFRelease(staticCode);
   } else {
     resultState = OBCodeSignStateError;
