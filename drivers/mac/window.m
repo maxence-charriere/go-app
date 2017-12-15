@@ -22,7 +22,8 @@
   BOOL noClosable = [config[@"no-closable"] boolValue];
   BOOL noMinimizable = [config[@"no-minimizable"] boolValue];
   BOOL titlebarHidden = [config[@"titlebar-hidden"] boolValue];
-  NSString *defaultURL = config[@"default-url"];
+  NSString *page = config[@"page"];
+  NSString *baseRawURL = config[@"base-url"];
   NSNumber *backgroundVibrancy = config[@"mac"][@"background-vibrancy"];
 
   dispatch_async(dispatch_get_main_queue(), ^{
@@ -67,6 +68,10 @@
     // Registering window.
     Driver *driver = [Driver current];
     driver.elements[ID] = win;
+
+    // Page loading.
+    NSURL *baseURL = [NSURL fileURLWithPath:baseRawURL];
+    [win.webview loadHTMLString:page baseURL:baseURL];
 
     [win showWindow:nil];
   });

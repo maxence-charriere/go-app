@@ -3,10 +3,14 @@
 package mac
 
 import (
+	"bytes"
 	"fmt"
+	"html/template"
 	"math"
 	"net/url"
 	"time"
+
+	"github.com/murlokswarm/app/appjs"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
@@ -51,29 +55,107 @@ func newWindow(driver *Driver, config app.WindowConfig) (w *Window, err error) {
 		onClose:          config.OnClose,
 	}
 
-	normalizeSize := func(min, max float64) (float64, float64) {
-		min = math.Max(0, min)
-		min = math.Min(min, 10000)
-
-		if max == 0 {
-			max = 10000
-		}
-		max = math.Max(0, max)
-		max = math.Min(max, 10000)
-
-		min = math.Min(min, max)
-		return min, max
+	var page string
+	if page, err = w.makePage(config); err != nil {
+		return
 	}
 
-	config.MinWidth, config.MaxWidth = normalizeSize(config.MinWidth, config.MaxWidth)
-	config.MinHeight, config.MaxHeight = normalizeSize(config.MinHeight, config.MaxHeight)
+	app.DefaultLogger.Log(page)
 
-	rawurl := fmt.Sprintf("/window/new?id=%s", w.id)
-	if _, err = driver.macos.Request(rawurl, bridge.NewPayload(config)); err != nil {
+	payload := struct {
+		Title           string              `json:"title"`
+		X               float64             `json:"x"`
+		Y               float64             `json:"y"`
+		Width           float64             `json:"width"`
+		MinWidth        float64             `json:"min-width"`
+		MaxWidth        float64             `json:"max-width"`
+		Height          float64             `json:"height"`
+		MinHeight       float64             `json:"min-height"`
+		MaxHeight       float64             `json:"max-height"`
+		BackgroundColor string              `json:"background-color"`
+		NoResizable     bool                `json:"no-resizable"`
+		NoClosable      bool                `json:"no-closable"`
+		NoMinimizable   bool                `json:"no-minimizable"`
+		TitlebarHidden  bool                `json:"titlebar-hidden"`
+		Page            string              `json:"page"`
+		BaseURL         string              `json:"base-url"`
+		Mac             app.MacWindowConfig `json:"mac"`
+	}{
+		Title:           config.Title,
+		X:               config.X,
+		Y:               config.Y,
+		Width:           config.Width,
+		BackgroundColor: config.BackgroundColor,
+		NoResizable:     config.NoResizable,
+		NoClosable:      config.NoClosable,
+		NoMinimizable:   config.NoMinimizable,
+		TitlebarHidden:  config.TitlebarHidden,
+		Page:            page,
+		BaseURL:         driver.Resources(),
+		Mac:             config.Mac,
+	}
+
+	payload.MinWidth, payload.MaxWidth = normalizeWidowSize(config.MinWidth, config.MaxWidth)
+	payload.MinHeight, payload.MaxHeight = normalizeWidowSize(config.MinHeight, config.MaxHeight)
+
+	if _, err = driver.macos.Request(
+		fmt.Sprintf("/window/new?id=%s", w.id),
+		bridge.NewPayload(payload),
+	); err != nil {
 		return
 	}
 
 	err = driver.elements.Add(w)
+	return
+}
+
+func normalizeWidowSize(min, max float64) (float64, float64) {
+	min = math.Max(0, min)
+	min = math.Min(min, 10000)
+
+	if max == 0 {
+		max = 10000
+	}
+	max = math.Max(0, max)
+	max = math.Min(max, 10000)
+
+	min = math.Min(min, max)
+	return min, max
+}
+
+func (w *Window) makePage(config app.WindowConfig) (page string, err error) {
+	var u *url.URL
+	var renderedCompo string
+
+	if u, err = url.Parse(config.DefaultURL); err != nil {
+		return
+	}
+
+	if compoName := app.ComponentNameFromURL(u); len(compoName) != 0 {
+		var compo app.Component
+		var root app.Tag
+		var buffer bytes.Buffer
+
+		if compo, err = w.driver.factory.NewComponent(compoName); err != nil {
+			return
+		}
+
+		if root, err = w.markup.Mount(compo); err != nil {
+			return
+		}
+
+		enc := html.NewEncoder(&buffer, w.markup)
+		if err = enc.Encode(root); err != nil {
+			return
+		}
+		renderedCompo = buffer.String()
+	}
+
+	page = html.NewPage(html.PageConfig{
+		Title:            config.Title,
+		DefaultComponent: template.HTML(renderedCompo),
+		AppJS:            appjs.AppJS("window.webkit.messageHandlers.golangRequest.postMessage"),
+	})
 	return
 }
 

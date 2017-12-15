@@ -86,6 +86,7 @@
 
 - (bridge_result)run:(NSURLComponents *)url payload:(NSString *)payload {
   [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+  [NSApp activateIgnoringOtherApps:YES];
   [NSApp run];
   return make_bridge_result(nil, nil);
 }
@@ -121,6 +122,7 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+
   [self.golang request:@"/driver/run" payload:nil];
 }
 

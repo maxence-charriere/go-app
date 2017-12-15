@@ -9,7 +9,7 @@ const pageTemplate = `
     {{range .Metas}}<meta{{if .Name}} name="{{.Name}}"{{end}}{{if .HTTPEquiv}} http-equiv="{{.HTTPEquiv}}"{{end}}{{if .Content}} content="{{.Content}}"{{end}}>
     {{end}} 
     <title>{{.Title}}</title>
-    {{if .AppStyle}}<style media="all" type="text/css">
+    {{if not .DisableAppStyle}}<style media="all" type="text/css">
         html {
             height: 100%;
             width: 100%;

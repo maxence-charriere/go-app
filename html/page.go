@@ -19,8 +19,8 @@ type PageConfig struct {
 	// The default component rendering.
 	DefaultComponent template.HTML
 
-	// Enables application default style.
-	AppStyle bool
+	// Disables application default style.
+	DisableAppStyle bool
 
 	// The CSS filenames to include.
 	CSS []string
@@ -62,8 +62,8 @@ const (
 	RefreshMeta      MetaHTTPEquiv = "refresh"
 )
 
-// Page generate an HTML page from the given configuration.
-func Page(config PageConfig) string {
+// NewPage generate an HTML page from the given configuration.
+func NewPage(config PageConfig) string {
 	var buffer bytes.Buffer
 
 	tmpl := template.Must(template.New("").Parse(pageTemplate))

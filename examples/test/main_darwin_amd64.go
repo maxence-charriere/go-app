@@ -60,6 +60,7 @@ func testWindow(close bool) {
 		Mac: app.MacWindowConfig{
 			BackgroundVibrancy: app.VibeUltraDark,
 		},
+		DefaultURL: "webviewcomponent",
 
 		OnMove: func(x, y float64) {
 			fmt.Printf("Window moved to x:%v y:%v\n", x, y)
