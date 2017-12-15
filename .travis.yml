@@ -10,6 +10,7 @@ install:
 
 script:
   - go test . -covermode count -coverprofile cover.out
+  - go test ./appjs
   - go test ./bridge
   - go test ./html
   - goveralls -service travis-ci -repotoken $COVERALLS_TOKEN -coverprofile cover.out
