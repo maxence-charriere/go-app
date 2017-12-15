@@ -29,7 +29,7 @@ type PageConfig struct {
 	AppJS template.JS
 
 	// The javascript filenames to include.
-	Javasripts []string
+	Javascripts []string
 }
 
 // Meta represents a page metadata.

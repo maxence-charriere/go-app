@@ -450,3 +450,27 @@ func (m *Markup) syncChildTags(current, new *app.Tag) (syncs []app.TagSync, repl
 	}
 	return
 }
+
+// Map satisfies the app.Markup interface.
+func (m *Markup) Map(mapping app.Mapping) (shouldUpdate bool, err error) {
+	var pipeline []string
+	var compo app.Component
+	var funcMapping bool
+
+	if pipeline, err = app.ParseMappingTarget(mapping.Target); err != nil {
+		return
+	}
+
+	if compo, err = m.Component(mapping.CompoID); err != nil {
+		return
+	}
+
+	mapper := newMapper(pipeline, mapping.JSONValue)
+
+	if funcMapping, err = mapper.MapTo(compo); err != nil {
+		return
+	}
+
+	shouldUpdate = !funcMapping
+	return
+}

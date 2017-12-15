@@ -31,7 +31,7 @@ func TestPage(t *testing.T) {
 					"world.css",
 				},
 				AppJS: "alert('some javascript code!')",
-				Javasripts: []string{
+				Javascripts: []string{
 					"hello.js",
 					"world.js",
 				},

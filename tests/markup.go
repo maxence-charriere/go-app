@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/murlokswarm/app"
@@ -18,6 +19,7 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 	factory.RegisterComponent(&CompoWithBadChild{})
 	factory.RegisterComponent(&Hello{})
 	factory.RegisterComponent(&World{})
+	factory.RegisterComponent(&Mapping{})
 
 	tests := []struct {
 		scenario string
@@ -118,6 +120,110 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 		{
 			scenario: "updating a component with dismounted child returns an error",
 			function: testMarkupUpdateComponentWithDismountedChild,
+		},
+		{
+			scenario: "maps a bad target returns an error",
+			function: testMarkupMapBadTarget,
+		},
+		{
+			scenario: "maps a not mounted returns an error",
+			function: testMarkupMapNotMountedComponent,
+		},
+		{
+			scenario: "maps a field",
+			function: testMarkupMapField,
+		},
+		{
+			scenario: "maps a method",
+			function: testMarkupMapMethod,
+		},
+		{
+			scenario: "maps an unexported method returns an error",
+			function: testMarkupMapUnexportedMethod,
+		},
+		{
+			scenario: "maps a pointer",
+			function: testMarkupMapPointer,
+		},
+		{
+			scenario: "maps a struct",
+			function: testMarkupMapStruct,
+		},
+		{
+			scenario: "maps a struct field",
+			function: testMarkupMapStructField,
+		},
+		{
+			scenario: "maps a struct unexported field returns an error",
+			function: testMarkupMapStructUnexportedFieldOrMethod,
+		},
+		{
+			scenario: "maps a nonexistent struct field returns an error",
+			function: testMarkupMapStructNonexistentField,
+		},
+		{
+			scenario: "maps a struct method",
+			function: testMarkupMapStructMethod,
+		},
+		{
+			scenario: "maps a map",
+			function: testMarkupMapMap,
+		},
+		{
+			scenario: "maps a map method",
+			function: testMarkupMapMapMethod,
+		},
+		{
+			scenario: "maps a map value returns an error",
+			function: testMarkupMapMapValue,
+		},
+		{
+			scenario: "maps a slice",
+			function: testMarkupMapSlice,
+		},
+		{
+			scenario: "maps a slice method",
+			function: testMarkupMapSliceMethod,
+		},
+		{
+			scenario: "maps a slice value returns an error",
+			function: testMarkupMapSliceValue,
+		},
+		{
+			scenario: "maps an array",
+			function: testMarkupMapArray,
+		},
+		{
+			scenario: "maps a func with argument",
+			function: testMarkupMapFuncWithArg,
+		},
+		{
+			scenario: "maps target from a func returns an error",
+			function: testMarkupMapFuncWithTarget,
+		},
+		{
+			scenario: "maps a func with multiple argument returns an error",
+			function: testMarkupMapFuncWithMultipleArg,
+		},
+		{
+			scenario: "maps a func with bad JSON returns an error",
+			function: testMarkupMapFuncWithBadJSON,
+		},
+		{
+			scenario: "maps a value with bad JSON returns an error",
+			function: testMarkupMapValueWithBadJSON,
+		},
+		{
+			scenario: "maps a value method",
+			function: testMarkupMapValueMethod,
+		},
+		{
+			scenario: "maps a value nonexported method returns an error",
+			function: testMarkupMapValueNonexportedMethod,
+		},
+		{
+			scenario: "maps a value undefined method returns an error",
+			function: testMarkupMapValueUndefinedMethod,
 		},
 	}
 
@@ -561,6 +667,569 @@ func testMarkupUpdateComponentWithDismountedChild(t *testing.T, markup app.Marku
 	compo.Name = "Jonhy"
 
 	if _, err = markup.Update(compo); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupMapBadTarget(t *testing.T, markup app.Markup) {
+	_, err := markup.Map(app.Mapping{
+		Target: "String..Hello",
+	})
+	if err == nil {
+		t.Fatal("error is not nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupMapNotMountedComponent(t *testing.T, markup app.Markup) {
+	_, err := markup.Map(app.Mapping{
+		Target: "Hello",
+	})
+	if err == nil {
+		t.Fatal("error is not nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupMapField(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var shouldUpdate bool
+	if shouldUpdate, err = markup.Map(app.Mapping{
+		CompoID:   root.CompoID,
+		Target:    "String",
+		JSONValue: `"hello"`,
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	if compo.String != "hello" {
+		t.Errorf(`field String is not "hello": "%s"`, compo.String)
+	}
+	if !shouldUpdate {
+		t.Error("shouldUpdate is not true")
+	}
+}
+
+func testMarkupMapMethod(t *testing.T, markup app.Markup) {
+	methodCalled := false
+	compo := &Mapping{
+		method: func() {
+			methodCalled = true
+		},
+	}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var shouldUpdate bool
+	if shouldUpdate, err = markup.Map(app.Mapping{
+		CompoID: root.CompoID,
+		Target:  "Method",
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	if !methodCalled {
+		t.Error("method is not called")
+	}
+	if shouldUpdate {
+		t.Error("shouldUpdate is not false")
+	}
+}
+
+func testMarkupMapUnexportedMethod(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err = markup.Map(app.Mapping{
+		CompoID: root.CompoID,
+		Target:  "method",
+	}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupMapPointer(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var shouldUpdate bool
+	if shouldUpdate, err = markup.Map(app.Mapping{
+		CompoID:   root.CompoID,
+		Target:    "IntPtr",
+		JSONValue: "42",
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	if *compo.IntPtr != 42 {
+		t.Errorf(`field IntPtr is not 42: %v`, *compo.IntPtr)
+	}
+	if !shouldUpdate {
+		t.Error("shouldUpdate is not true")
+	}
+}
+
+func testMarkupMapStruct(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var shouldUpdate bool
+	if shouldUpdate, err = markup.Map(app.Mapping{
+		CompoID:   root.CompoID,
+		Target:    "Struct",
+		JSONValue: `{"Exported": 42}`,
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	if compo.Struct.Exported != 42 {
+		t.Errorf("field String is not 42: %d", compo.Struct.Exported)
+	}
+	if !shouldUpdate {
+		t.Error("shouldUpdate is not true")
+	}
+}
+
+func testMarkupMapStructField(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var shouldUpdate bool
+	if shouldUpdate, err = markup.Map(app.Mapping{
+		CompoID:   root.CompoID,
+		Target:    "Struct.Exported",
+		JSONValue: "42",
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	if compo.Struct.Exported != 42 {
+		t.Errorf("field String is not 42: %d", compo.Struct.Exported)
+	}
+	if !shouldUpdate {
+		t.Error("shouldUpdate is not true")
+	}
+}
+
+func testMarkupMapStructUnexportedFieldOrMethod(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err = markup.Map(app.Mapping{
+		CompoID:   root.CompoID,
+		Target:    "Struct.unexported",
+		JSONValue: "42",
+	}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupMapStructNonexistentField(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err = markup.Map(app.Mapping{
+		CompoID: root.CompoID,
+		Target:  "Struct.Nonexistent",
+	}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupMapStructMethod(t *testing.T, markup app.Markup) {
+	methodCalled := false
+	compo := &Mapping{
+		Struct: MappingStruct{
+			method: func() {
+				methodCalled = true
+			},
+		},
+	}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var shouldUpdate bool
+	if shouldUpdate, err = markup.Map(app.Mapping{
+		CompoID: root.CompoID,
+		Target:  "Struct.Method",
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	if !methodCalled {
+		t.Error("method is not called")
+	}
+	if shouldUpdate {
+		t.Error("shouldUpdate is not false")
+	}
+}
+
+func testMarkupMapMap(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var shouldUpdate bool
+	if shouldUpdate, err = markup.Map(app.Mapping{
+		CompoID:   root.CompoID,
+		Target:    "Map",
+		JSONValue: `{"foo": "bar"}`,
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	if value := compo.Map["foo"]; value != "bar" {
+		t.Errorf("value for key foo is not bar: %s", value)
+	}
+	if !shouldUpdate {
+		t.Error("shouldUpdate is not true")
+	}
+}
+
+func testMarkupMapMapMethod(t *testing.T, markup app.Markup) {
+	methodCalled := false
+	compo := &Mapping{
+		MapWithMethod: MappingMap{
+			"method": func() {
+				methodCalled = true
+			},
+		},
+	}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var shouldUpdate bool
+	if shouldUpdate, err = markup.Map(app.Mapping{
+		CompoID: root.CompoID,
+		Target:  "MapWithMethod.Method",
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	if !methodCalled {
+		t.Error("method is not called")
+	}
+	if shouldUpdate {
+		t.Error("shouldUpdate is not false")
+	}
+}
+
+func testMarkupMapMapValue(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err = markup.Map(app.Mapping{
+		CompoID: root.CompoID,
+		Target:  "Map.value",
+	}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupMapSlice(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var shouldUpdate bool
+	if shouldUpdate, err = markup.Map(app.Mapping{
+		CompoID:   root.CompoID,
+		Target:    "Slice",
+		JSONValue: `[1, 2, 3, 4, 5]`,
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	if !reflect.DeepEqual(compo.Slice, []int{1, 2, 3, 4, 5}) {
+		t.Error("slice is not [1, 2, 3, 4, 5]:", compo.Slice)
+	}
+	if !shouldUpdate {
+		t.Error("shouldUpdate is not true")
+	}
+}
+
+func testMarkupMapSliceMethod(t *testing.T, markup app.Markup) {
+	methodCalled := false
+	compo := &Mapping{
+		SliceWithMethod: MappingSlice{
+			func() {
+				methodCalled = true
+			},
+		},
+	}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var shouldUpdate bool
+	if shouldUpdate, err = markup.Map(app.Mapping{
+		CompoID: root.CompoID,
+		Target:  "SliceWithMethod.Method",
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	if !methodCalled {
+		t.Error("method is not called")
+	}
+	if shouldUpdate {
+		t.Error("shouldUpdate is not false")
+	}
+}
+
+func testMarkupMapSliceValue(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err = markup.Map(app.Mapping{
+		CompoID: root.CompoID,
+		Target:  "Slice.0",
+	}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupMapArray(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var shouldUpdate bool
+	if shouldUpdate, err = markup.Map(app.Mapping{
+		CompoID:   root.CompoID,
+		Target:    "Array",
+		JSONValue: `[1, 2, 3, 4, 5, 6]`,
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	if !reflect.DeepEqual(compo.Array, [5]int{1, 2, 3, 4, 5}) {
+		t.Error("array is not [1, 2, 3, 4, 5]:", compo.Array)
+	}
+	if !shouldUpdate {
+		t.Error("shouldUpdate is not true")
+	}
+}
+
+func testMarkupMapFuncWithArg(t *testing.T, markup app.Markup) {
+	mappedNb := 0
+	compo := &Mapping{
+		FuncWithArg: func(nb int) {
+			mappedNb = nb
+		},
+	}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var shouldUpdate bool
+	if shouldUpdate, err = markup.Map(app.Mapping{
+		CompoID:   root.CompoID,
+		Target:    "FuncWithArg",
+		JSONValue: `42`,
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	if mappedNb != 42 {
+		t.Error("mapped nb is not 42")
+	}
+	if shouldUpdate {
+		t.Error("shouldUpdate is not false")
+	}
+}
+
+func testMarkupMapFuncWithTarget(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err = markup.Map(app.Mapping{
+		CompoID: root.CompoID,
+		Target:  "FuncWithArg.Unkown",
+	}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupMapFuncWithMultipleArg(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err = markup.Map(app.Mapping{
+		CompoID: root.CompoID,
+		Target:  "FuncWithMultipleArg",
+	}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupMapFuncWithBadJSON(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err = markup.Map(app.Mapping{
+		CompoID:   root.CompoID,
+		Target:    "FuncWithArg",
+		JSONValue: `}{`,
+	}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupMapValueWithBadJSON(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err = markup.Map(app.Mapping{
+		CompoID:   root.CompoID,
+		Target:    "Int",
+		JSONValue: `}{`,
+	}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupMapValueMethod(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+	mappedInt = 0
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var shouldUpdate bool
+	if shouldUpdate, err = markup.Map(app.Mapping{
+		CompoID:   root.CompoID,
+		Target:    "IntWithMethod.Method",
+		JSONValue: `42`,
+	}); err != nil {
+		t.Fatal(err)
+	}
+
+	if mappedInt != 42 {
+		t.Error("method is not called")
+	}
+	if shouldUpdate {
+		t.Error("shouldUpdate is not false")
+	}
+}
+
+func testMarkupMapValueNonexportedMethod(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err = markup.Map(app.Mapping{
+		CompoID: root.CompoID,
+		Target:  "IntWithMethod.method",
+	}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupMapValueUndefinedMethod(t *testing.T, markup app.Markup) {
+	compo := &Mapping{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err = markup.Map(app.Mapping{
+		CompoID: root.CompoID,
+		Target:  "IntWithMethod.UndefinedMethod",
+	}); err == nil {
 		t.Fatal("error is nil")
 	}
 	t.Log(err)

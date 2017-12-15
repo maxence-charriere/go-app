@@ -1,6 +1,7 @@
 package app_test
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/murlokswarm/app"
@@ -25,4 +26,54 @@ func TestConcurrentMarkup(t *testing.T) {
 	tests.TestMarkup(t, func(factory app.Factory) app.Markup {
 		return app.NewConcurrentMarkup(html.NewMarkup(factory))
 	})
+}
+
+func TestParseMappingTarget(t *testing.T) {
+	tests := []struct {
+		scenario         string
+		target           string
+		expectedPipeline []string
+		shouldErr        bool
+	}{
+		{
+			scenario:         "parses target",
+			target:           "Hello",
+			expectedPipeline: []string{"Hello"},
+		},
+		{
+			scenario:         "parses target with multiple elements",
+			target:           "Hello.World",
+			expectedPipeline: []string{"Hello", "World"},
+		},
+		{
+			scenario:  "parses empyt target returns an error",
+			shouldErr: true,
+		},
+		{
+			scenario:  "parses target with empty element returns an error",
+			target:    ".Hello.World",
+			shouldErr: true,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.scenario, func(t *testing.T) {
+			pipeline, err := app.ParseMappingTarget(test.target)
+
+			if test.shouldErr {
+				if err == nil {
+					t.Fatal("error is nil")
+				}
+				return
+			}
+
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if !reflect.DeepEqual(pipeline, test.expectedPipeline) {
+				t.Errorf("%v != %v", pipeline, test.expectedPipeline)
+			}
+		})
+	}
 }

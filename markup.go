@@ -1,9 +1,11 @@
 package app
 
 import (
+	"strings"
 	"sync"
 
 	"github.com/google/uuid"
+	"github.com/pkg/errors"
 )
 
 // Markup is the interface that describes a component set.
@@ -33,6 +35,44 @@ type Markup interface {
 
 	// Update updates the tag tree of the component.
 	Update(compo Component) (syncs []TagSync, err error)
+
+	// Map performs the given mapping.
+	// The json value is mapped to the field or method of the specified
+	// component.
+	// Methods and fields of func type are called with the value mapped to their
+	// first arg.
+	// It returns an error if the assigned field or method is not exported.
+	Map(mapping Mapping) (shouldUpdate bool, err error)
+}
+
+// Mapping describes a component mapping.
+type Mapping struct {
+	// The component identifier.
+	CompoID uuid.UUID
+
+	// A dot separated string that points to a component field or method.
+	Target string
+
+	// The JSON value to map to a field or method's first argument.
+	JSONValue string
+}
+
+// ParseMappingTarget parses the given target and returns the corresponding
+// pipeline.
+func ParseMappingTarget(target string) (pipeline []string, err error) {
+	if len(target) == 0 {
+		err = errors.New("empty target")
+	}
+
+	pipeline = strings.Split(target, ".")
+
+	for _, elem := range pipeline {
+		if len(elem) == 0 {
+			err = errors.Errorf("%s contains empty element", target)
+			return
+		}
+	}
+	return
 }
 
 // TagEncoder is the interface that describes an encoder that writes the tag
@@ -143,6 +183,13 @@ func (m *concurrentMarkup) Dismount(compo Component) {
 func (m *concurrentMarkup) Update(compo Component) (syncs []TagSync, err error) {
 	m.mutex.Lock()
 	syncs, err = m.base.Update(compo)
+	m.mutex.Unlock()
+	return
+}
+
+func (m *concurrentMarkup) Map(mapping Mapping) (shouldUpdate bool, err error) {
+	m.mutex.Lock()
+	shouldUpdate, err = m.base.Map(mapping)
 	m.mutex.Unlock()
 	return
 }
