@@ -11,7 +11,7 @@ import (
 
 func TestAppJS(t *testing.T) {
 	pagename := "test/appjs.html"
-	page := html.Page(html.PageConfig{
+	page := html.NewPage(html.PageConfig{
 		Title:       "app.js test",
 		Javascripts: []string{"test.js"},
 		AppJS:       AppJS("alert"),
