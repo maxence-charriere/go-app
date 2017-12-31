@@ -193,3 +193,67 @@ func (m *concurrentMarkup) Map(mapping Mapping) (function func(), err error) {
 	m.mutex.Unlock()
 	return
 }
+
+// NewMarkupWithLogs returns a decorated version of the given markup that logs
+// each operations.
+func NewMarkupWithLogs(markup Markup) Markup {
+	return &markupWithLogs{
+		base: markup,
+	}
+}
+
+type markupWithLogs struct {
+	base Markup
+}
+
+func (m *markupWithLogs) Len() int {
+	return m.base.Len()
+}
+
+func (m *markupWithLogs) Component(id uuid.UUID) (compo Component, err error) {
+	compo, err = m.base.Component(id)
+	if err != nil {
+		DefaultLogger.Errorf("component with id %v can't be retrieved: %v", id, err)
+	}
+	return
+}
+
+func (m *markupWithLogs) Contains(compo Component) bool {
+	return m.base.Contains(compo)
+}
+
+func (m *markupWithLogs) Root(compo Component) (root Tag, err error) {
+	root, err = m.base.Root(compo)
+	if err != nil {
+		DefaultLogger.Errorf("root tag of component %T can't be retrieved: %v", compo, err)
+	}
+	return
+}
+
+func (m *markupWithLogs) Mount(compo Component) (root Tag, err error) {
+	root, err = m.base.Mount(compo)
+	if err != nil {
+		DefaultLogger.Errorf("mounting component %T failed: %v", compo, err)
+	}
+	return
+}
+
+func (m *markupWithLogs) Dismount(compo Component) {
+	m.base.Dismount(compo)
+}
+
+func (m *markupWithLogs) Update(compo Component) (syncs []TagSync, err error) {
+	syncs, err = m.base.Update(compo)
+	if err != nil {
+		DefaultLogger.Errorf("updating component %T failed: %v", compo, err)
+	}
+	return
+}
+
+func (m *markupWithLogs) Map(mapping Mapping) (function func(), err error) {
+	function, err = m.base.Map(mapping)
+	if err != nil {
+		DefaultLogger.Errorf("mapping %+v failed: %v", mapping, err)
+	}
+	return
+}

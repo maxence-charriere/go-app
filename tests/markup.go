@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 )
 
@@ -36,6 +37,14 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 		{
 			scenario: "get the component root",
 			function: testMarkupRoot,
+		},
+		{
+			scenario: "get the component root from dismounted component returns an error",
+			function: testMarkupRootDismounted,
+		},
+		{
+			scenario: "get a dismounted component returns an error",
+			function: testMarkupComponentDismounted,
 		},
 		{
 			scenario: "mounting a mounted component returns an error",
@@ -283,6 +292,23 @@ func testMarkupRoot(t *testing.T, markup app.Markup) {
 	if root2.ID != root.ID {
 		t.Error("root and root 2 doesn't have the same id")
 	}
+}
+
+func testMarkupRootDismounted(t *testing.T, markup app.Markup) {
+	compo := &Hello{}
+	_, err := markup.Root(compo)
+	if err == nil {
+		t.Fatal("error is not nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupComponentDismounted(t *testing.T, markup app.Markup) {
+	_, err := markup.Component(uuid.New())
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
 }
 
 func testMarkupMountMounted(t *testing.T, markup app.Markup) {

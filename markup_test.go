@@ -28,6 +28,12 @@ func TestConcurrentMarkup(t *testing.T) {
 	})
 }
 
+func TestMarkupWithLogs(t *testing.T) {
+	tests.TestMarkup(t, func(factory app.Factory) app.Markup {
+		return app.NewMarkupWithLogs(html.NewMarkup(factory))
+	})
+}
+
 func TestParseMappingTarget(t *testing.T) {
 	tests := []struct {
 		scenario         string
