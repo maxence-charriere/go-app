@@ -42,7 +42,7 @@ type Markup interface {
 	// Methods and fields of func type are called with the value mapped to their
 	// first arg.
 	// It returns an error if the assigned field or method is not exported.
-	Map(mapping Mapping) (shouldUpdate bool, err error)
+	Map(mapping Mapping) (function func(), err error)
 }
 
 // Mapping describes a component mapping.
@@ -187,9 +187,9 @@ func (m *concurrentMarkup) Update(compo Component) (syncs []TagSync, err error) 
 	return
 }
 
-func (m *concurrentMarkup) Map(mapping Mapping) (shouldUpdate bool, err error) {
+func (m *concurrentMarkup) Map(mapping Mapping) (function func(), err error) {
 	m.mutex.Lock()
-	shouldUpdate, err = m.base.Map(mapping)
+	function, err = m.base.Map(mapping)
 	m.mutex.Unlock()
 	return
 }
