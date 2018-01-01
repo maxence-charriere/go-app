@@ -1,6 +1,7 @@
 package test
 
 import (
+	"fmt"
 	"net/url"
 	"time"
 
@@ -64,7 +65,9 @@ func (w *Window) Contains(compo app.Component) bool {
 }
 
 // Load satisfies the app.ElementWithComponent interface.
-func (w *Window) Load(rawurl string) error {
+func (w *Window) Load(rawurl string, v ...interface{}) error {
+	rawurl = fmt.Sprintf(rawurl, v...)
+
 	u, err := url.Parse(rawurl)
 	if err != nil {
 		return err

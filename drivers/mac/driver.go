@@ -93,6 +93,8 @@ func (d *Driver) Run(factory app.Factory) error {
 	d.golang.Handle("/window/minimize", windowHandler(onWindowMinimize))
 	d.golang.Handle("/window/deminimize", windowHandler(onWindowDeminimize))
 	d.golang.Handle("/window/close", windowHandler(onWindowClose))
+	d.golang.Handle("/window/callback", windowHandler(onWindowCallback))
+	d.golang.Handle("/window/navigate", windowHandler(onWindowNavigate))
 
 	driver = d
 	_, err := d.macos.Request("/driver/run", nil)

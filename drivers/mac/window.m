@@ -22,8 +22,6 @@
   BOOL noClosable = [config[@"no-closable"] boolValue];
   BOOL noMinimizable = [config[@"no-minimizable"] boolValue];
   BOOL titlebarHidden = [config[@"titlebar-hidden"] boolValue];
-  NSString *page = config[@"page"];
-  NSString *baseRawURL = config[@"base-url"];
   NSNumber *backgroundVibrancy = config[@"mac"][@"background-vibrancy"];
 
   dispatch_async(dispatch_get_main_queue(), ^{
@@ -68,10 +66,6 @@
     // Registering window.
     Driver *driver = [Driver current];
     driver.elements[ID] = win;
-
-    // Page loading.
-    NSURL *baseURL = [NSURL fileURLWithPath:baseRawURL];
-    [win.webview loadHTMLString:page baseURL:baseURL];
 
     [win showWindow:nil];
   });
@@ -151,20 +145,33 @@
     decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction
                     decisionHandler:
                         (void (^)(WKNavigationActionPolicy))decisionHandler {
-  if (navigationAction.navigationType == WKNavigationTypeReload ||
-      navigationAction.navigationType == WKNavigationTypeOther) {
-    if (navigationAction.targetFrame.request != nil) {
-      decisionHandler(WKNavigationActionPolicyCancel);
+  NSURL *url = navigationAction.request.URL;
+
+  switch (navigationAction.navigationType) {
+  case WKNavigationTypeOther:
+    // Allow the loadHTMLString to not be blocked.
+    if ([url.scheme isEqual:@"about"] && url.host == nil && url.path == nil) {
+      decisionHandler(WKNavigationActionPolicyAllow);
       return;
     }
+    break;
 
+  case WKNavigationTypeReload:
     decisionHandler(WKNavigationActionPolicyAllow);
     return;
+
+  case WKNavigationTypeLinkActivated:
+  case WKNavigationTypeFormSubmitted:
+  case WKNavigationTypeBackForward:
+  case WKNavigationTypeFormResubmitted:
+  default:
+    break;
   }
 
-  NSURL *url = navigationAction.request.URL;
-  // TO DO:
-  // Call go request to navigate to anoter component.
+  Driver *driver = [Driver current];
+  [driver.golang
+      request:[NSString stringWithFormat:@"/window/navigate?id=%@", self.ID]
+      payload:[JSONEncoder encodeString:url.absoluteString]];
   decisionHandler(WKNavigationActionPolicyCancel);
 }
 
@@ -198,6 +205,25 @@
                                   metrics:nil
                                     views:NSDictionaryOfVariableBindings(
                                               titlebar)]];
+}
+
++ (bridge_result)load:(NSURLComponents *)url payload:(NSString *)payload {
+  NSString *ID = [url queryValue:@"id"];
+
+  NSDictionary *config = [JSONDecoder decodeObject:payload];
+  NSString *title = config[@"title"];
+  NSString *page = config[@"page"];
+  NSString *baseRawURL = config[@"base-url"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    Window *win = driver.elements[ID];
+
+    win.window.title = title;
+    NSURL *baseURL = [NSURL fileURLWithPath:@""];
+    [win.webview loadHTMLString:page baseURL:baseURL];
+  });
+  return make_bridge_result(nil, nil);
 }
 
 + (bridge_result)position:(NSURLComponents *)url payload:(NSString *)payload {

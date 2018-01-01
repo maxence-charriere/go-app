@@ -1,10 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"net/url"
 	"strconv"
 
 	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/html"
 )
 
 func init() {
@@ -31,8 +33,15 @@ func (c *WebviewComponent) Render() string {
 		cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
 		non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 	</p>
-	<button onclick="OnNext">Next</button>
-	<p>page {{.Page}}</p>
+	
+	<ul>
+		<li><a href="/webviewcomponent?page=42">To page 42</a></li>
+		<li><a href="http://judgehype.com">external hyperlink</a></li>
+		<li><button onclick="OnNext">Next</button></li>
+		<li><button onclick="OnLink">External link</button></li>
+	</ul>
+	
+	<p>Page: {{.Page}}</p>
 </div>
 	`
 }
@@ -48,10 +57,17 @@ func (c *WebviewComponent) OnNavigate(u *url.URL) {
 	}
 }
 
+// PageConfig return allow to set page information like title or meta when the
+// component is mounted as the root component.
+func (c *WebviewComponent) PageConfig() html.PageConfig {
+	return html.PageConfig{
+		Title: fmt.Sprintf("Test component %v", c.Page),
+	}
+}
+
 // OnNext is the function to be called when the Next button is clicked.
 func (c *WebviewComponent) OnNext() {
 	win, err := app.Context(c)
-
 	if err != nil {
 		app.DefaultLogger.Error(err)
 		return
@@ -60,5 +76,16 @@ func (c *WebviewComponent) OnNext() {
 	page := c.Page
 	page++
 
-	win.Load("webviewcomponent?page=%v", page)
+	win.Load("/webviewcomponent?page=%v", page)
+}
+
+// OnLink is the function to be called when the External link button is clicked.
+func (c *WebviewComponent) OnLink() {
+	app.DefaultLogger.Log("Onlink Clicked")
+
+	win, err := app.Context(c)
+	if err != nil {
+		app.DefaultLogger.Error(err)
+	}
+	win.Load("http://www.judgehype.com")
 }

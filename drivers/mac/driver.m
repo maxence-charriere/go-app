@@ -43,6 +43,10 @@
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Window newWindow:url payload:payload];
             }];
+  [self.objc handle:@"/window/load"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Window load:url payload:payload];
+            }];
   [self.objc handle:@"/window/position"
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Window position:url payload:payload];

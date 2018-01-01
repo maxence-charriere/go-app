@@ -24,7 +24,7 @@ type Component interface {
 type Mounter interface {
 	Component
 
-	// OnMount si called when a component is mounted.
+	// OnMount is called when a component is mounted.
 	OnMount()
 }
 
@@ -40,8 +40,9 @@ type Dismounter interface {
 type Navigable interface {
 	Component
 
-	// OnNavigate is called when a component is navigated to.
-	OnNavigate(u url.URL)
+	// OnNavigate is called when a component is loaded or navigated to.
+	// Called before the component is mounted.
+	OnNavigate(u *url.URL)
 }
 
 // ComponentWithExtendedRender is the interface that wraps Funcs method.

@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"fmt"
 	"net/url"
 	"testing"
 	"time"
@@ -46,7 +47,9 @@ func (e *elementWithComponent) ID() uuid.UUID {
 	return e.id
 }
 
-func (e *elementWithComponent) Load(rawurl string) error {
+func (e *elementWithComponent) Load(rawurl string, v ...interface{}) error {
+	rawurl = fmt.Sprintf(rawurl, v...)
+
 	u, err := url.Parse(rawurl)
 	if err != nil {
 		return err

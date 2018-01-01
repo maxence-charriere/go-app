@@ -15,6 +15,7 @@
                      vibrancy:(NSVisualEffectMaterial)vibrancy;
 - (void)configWebview;
 - (void)configTitlebar:(NSString *)title hidden:(BOOL)isHidden;
++ (bridge_result)load:(NSURLComponents *)url payload:(NSString *)payload;
 + (bridge_result)position:(NSURLComponents *)url payload:(NSString *)payload;
 + (bridge_result)move:(NSURLComponents *)url payload:(NSString *)payload;
 + (bridge_result)center:(NSURLComponents *)url payload:(NSString *)payload;

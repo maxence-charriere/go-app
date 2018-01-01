@@ -8,6 +8,12 @@ import (
 //go:generate go run gen.go
 //go:generate go fmt
 
+// Page is the interface that describes a component that can represent a page.
+type Page interface {
+	// Config returns the page configuration.
+	PageConfig() PageConfig
+}
+
 // PageConfig is the struct that describes a page.
 type PageConfig struct {
 	// The title.
@@ -25,7 +31,7 @@ type PageConfig struct {
 	// The CSS filenames to include.
 	CSS []string
 
-	// The app.js code that is included in the page..
+	// The app.js code that is included in the page.
 	AppJS template.JS
 
 	// The javascript filenames to include.
