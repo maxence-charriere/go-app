@@ -493,8 +493,8 @@ func testMarkupUpdateSimpleToText(t *testing.T, markup app.Markup) {
 	if root.Name != "div" {
 		t.Fatal("root is not a div:", root.Name)
 	}
-	if l := len(root.Children); l != 4 {
-		t.Fatal("root doesn't have 4 children:", l)
+	if l := len(root.Children); l != 6 {
+		t.Fatal("root doesn't have 6 children:", l)
 	}
 	if text := root.Children[3]; text.Text != "Goodbye" {
 		t.Fatalf(`text is not "Goodbye": "%s"`, text.Text)
@@ -523,8 +523,8 @@ func testMarkupUpdateTextToSimple(t *testing.T, markup app.Markup) {
 	}
 
 	root := sync.Tag
-	if l := len(root.Children); l != 5 {
-		t.Fatal("root doesn't have 5 children:", l)
+	if l := len(root.Children); l != 7 {
+		t.Fatal("root doesn't have 7 children:", l)
 	}
 	if span := root.Children[3]; span.Name != "span" {
 		t.Fatalf(`span is not a span tag: %s`, span.Name)

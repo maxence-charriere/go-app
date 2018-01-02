@@ -145,12 +145,13 @@
     decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction
                     decisionHandler:
                         (void (^)(WKNavigationActionPolicy))decisionHandler {
+  decisionHandler(WKNavigationActionPolicyAllow);
   NSURL *url = navigationAction.request.URL;
 
   switch (navigationAction.navigationType) {
   case WKNavigationTypeOther:
     // Allow the loadHTMLString to not be blocked.
-    if ([url.scheme isEqual:@"about"] && url.host == nil && url.path == nil) {
+    if ([url isEqual:self.baseURL]) {
       decisionHandler(WKNavigationActionPolicyAllow);
       return;
     }
@@ -220,8 +221,8 @@
     Window *win = driver.elements[ID];
 
     win.window.title = title;
-    NSURL *baseURL = [NSURL fileURLWithPath:@""];
-    [win.webview loadHTMLString:page baseURL:baseURL];
+    win.baseURL = [NSURL fileURLWithPath:baseRawURL];
+    [win.webview loadHTMLString:page baseURL:win.baseURL];
   });
   return make_bridge_result(nil, nil);
 }

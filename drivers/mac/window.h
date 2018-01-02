@@ -9,6 +9,7 @@
                                         WKUIDelegate, WKScriptMessageHandler>
 @property NSString *ID;
 @property(weak) WKWebView *webview;
+@property NSURL *baseURL;
 
 + (bridge_result)newWindow:(NSURLComponents *)url payload:(NSString *)payload;
 - (void)configBackgroundColor:(NSString *)color

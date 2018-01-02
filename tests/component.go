@@ -129,6 +129,8 @@ func (h *Hello) Render() string {
 		<span>Goodbye</span>
 		<p>world</p>
 	{{end}}
+	<a href="tests.hello">hyperlink to a component</a>
+	<a href="http://github.com">common hyperlink</a>
 </div>
 	`
 }

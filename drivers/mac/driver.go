@@ -9,6 +9,9 @@ package mac
 */
 import "C"
 import (
+	"crypto/md5"
+	"fmt"
+	"io"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -51,10 +54,12 @@ type Driver struct {
 	golang   bridge.GoBridge
 	menubar  app.Menu
 	dock     app.DockTile
+	devID    string
 }
 
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(factory app.Factory) error {
+	d.devID = generateDevID()
 	d.factory = factory
 
 	elements := app.NewElementDB()
@@ -98,7 +103,6 @@ func (d *Driver) Run(factory app.Factory) error {
 
 	driver = d
 	_, err := d.macos.Request("/driver/run", nil)
-
 	d.waitStop.Wait()
 	return err
 }
@@ -222,7 +226,8 @@ func (d *Driver) Resources() string {
 	if err != nil {
 		panic(errors.Wrap(err, "getting resources filepath failed"))
 	}
-	if dirname == wd {
+
+	if filepath.Dir(dirname) == wd {
 		dirname = filepath.Join(wd, "resources")
 	}
 	return dirname
@@ -255,7 +260,7 @@ func (d *Driver) support() (dirname string, err error) {
 		if wd, err = os.Getwd(); err != nil {
 			return
 		}
-		appname := filepath.Base(wd)
+		appname := filepath.Base(wd) + "-" + d.devID
 		dirname = strings.Replace(dirname, "{appname}", appname, 1)
 	}
 	return
@@ -294,4 +299,11 @@ func (d *Driver) NewFilePanel(c app.FilePanelConfig) app.Element {
 // interface.
 func (d *Driver) NewPopupNotification(c app.PopupNotificationConfig) app.Element {
 	panic("not implemented")
+}
+
+func generateDevID() string {
+	h := md5.New()
+	wd, _ := os.Getwd()
+	io.WriteString(h, wd)
+	return fmt.Sprintf("%x", h.Sum(nil))
 }

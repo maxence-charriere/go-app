@@ -11,7 +11,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -112,7 +111,6 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 
 	compoName := app.ComponentNameFromURL(u)
 	var compo app.Component
-
 	if compo, err = w.driver.factory.NewComponent(compoName); err != nil {
 		cmd := exec.Command("open", u.String())
 		return cmd.Run()
@@ -148,11 +146,6 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 	pageConfig.DefaultComponent = template.HTML(buffer.String())
 	pageConfig.AppJS = appjs.AppJS("window.webkit.messageHandlers.golangRequest.postMessage")
 
-	var supportDir string
-	if supportDir, err = w.driver.support(); err != nil {
-		return err
-	}
-
 	payload := struct {
 		Title   string `json:"title"`
 		Page    string `json:"page"`
@@ -160,7 +153,7 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 	}{
 		Title:   pageConfig.Title,
 		Page:    html.NewPage(pageConfig),
-		BaseURL: supportDir,
+		BaseURL: w.driver.Resources(),
 	}
 
 	_, err = driver.macos.Request(
@@ -174,12 +167,19 @@ func defaultCSS() (css []string) {
 	cssdir := filepath.Join(app.Resources(), "css")
 
 	filepath.Walk(cssdir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
 		if info.IsDir() {
 			return nil
 		}
 
-		name := strings.TrimPrefix(path, cssdir)
-		css = append(css, filepath.Join("/resources/css", name))
+		if ext := filepath.Ext(path); ext != ".css" {
+			return nil
+		}
+
+		css = append(css, path)
 		return nil
 	})
 	return

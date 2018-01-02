@@ -146,9 +146,8 @@ func normalizeComponentName(name string) string {
 // targeted by the URL.
 func ComponentNameFromURL(u *url.URL) string {
 	path := u.Path
-	if strings.HasPrefix(path, "/") {
-		path = path[1:]
-	}
+	path = strings.TrimPrefix(path, "/")
+
 	paths := strings.SplitN(path, "/", 2)
 	if len(paths[0]) == 0 {
 		return ""

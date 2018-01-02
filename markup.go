@@ -15,6 +15,9 @@ type Markup interface {
 	// Len returns the number of components living in the markup.
 	Len() int
 
+	// Factory returns the used factory to create components.
+	Factory() Factory
+
 	// Component returns the component mounted under the identifier.
 	// Returns an error if there is not component with the identifier.
 	Component(id uuid.UUID) (compo Component, err error)
@@ -146,6 +149,13 @@ func (m *concurrentMarkup) Len() int {
 	return l
 }
 
+func (m *concurrentMarkup) Factory() Factory {
+	m.mutex.Lock()
+	factory := m.base.Factory()
+	m.mutex.Unlock()
+	return factory
+}
+
 func (m *concurrentMarkup) Component(id uuid.UUID) (compo Component, err error) {
 	m.mutex.Lock()
 	compo, err = m.base.Component(id)
@@ -208,6 +218,10 @@ type markupWithLogs struct {
 
 func (m *markupWithLogs) Len() int {
 	return m.base.Len()
+}
+
+func (m *markupWithLogs) Factory() Factory {
+	return m.base.Factory()
 }
 
 func (m *markupWithLogs) Component(id uuid.UUID) (compo Component, err error) {

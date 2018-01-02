@@ -35,7 +35,8 @@ func (c *WebviewComponent) Render() string {
 	</p>
 	
 	<ul>
-		<li><a href="/webviewcomponent?page=42">To page 42</a></li>
+		<li><a href="webviewcomponent?page=42">To page 42</a></li>
+		<li><a href="unknown?page=42">Unknown compopent</a></li>
 		<li><a href="http://judgehype.com">external hyperlink</a></li>
 		<li><button onclick="OnNext">Next</button></li>
 		<li><button onclick="OnLink">External link</button></li>
