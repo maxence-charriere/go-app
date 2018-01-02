@@ -27,6 +27,10 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 		function func(t *testing.T, markup app.Markup)
 	}{
 		{
+			scenario: "does not return a nil factory",
+			function: testMarkupFactory,
+		},
+		{
 			scenario: "mounting and dismounting a component",
 			function: testMarkupMountDismount,
 		},
@@ -240,6 +244,12 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 		t.Run(test.scenario, func(t *testing.T) {
 			test.function(t, newMarkup(factory))
 		})
+	}
+}
+
+func testMarkupFactory(t *testing.T, markup app.Markup) {
+	if markup.Factory() == nil {
+		t.Error("factory is nil")
 	}
 }
 

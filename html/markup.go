@@ -35,6 +35,11 @@ func (m *Markup) Len() int {
 	return len(m.components)
 }
 
+// Factory satisfies the app.Markup interface.
+func (m *Markup) Factory() app.Factory {
+	return m.factory
+}
+
 // Component satisfies the app.Markup interface.
 func (m *Markup) Component(id uuid.UUID) (compo app.Component, err error) {
 	var ok bool
