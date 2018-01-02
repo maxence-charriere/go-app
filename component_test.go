@@ -51,6 +51,14 @@ func TestFactory(t *testing.T) {
 			function: testFactoryRegisterComponentEmptyStructPtr,
 		},
 		{
+			scenario: "component is registered",
+			function: testFactoryIsComponentRegistered,
+		},
+		{
+			scenario: "component is not registered",
+			function: testFactoryIsComponentNotRegistered,
+		},
+		{
 			scenario: "creates a component",
 			function: testFactoryCreateComponent,
 		},
@@ -100,6 +108,22 @@ func testFactoryRegisterComponentEmptyStructPtr(t *testing.T, factory Factory) {
 		t.Fatal("err is nil")
 	}
 	t.Log(err)
+}
+
+func testFactoryIsComponentRegistered(t *testing.T, factory Factory) {
+	name, err := factory.RegisterComponent(&ValidCompo{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !factory.IsRegisteredComponent(name) {
+		t.Errorf("component %v is not registered", name)
+	}
+}
+
+func testFactoryIsComponentNotRegistered(t *testing.T, factory Factory) {
+	if factory.IsRegisteredComponent("unknown") {
+		t.Errorf("component unknown is registered")
+	}
 }
 
 func testFactoryCreateComponent(t *testing.T, factory Factory) {

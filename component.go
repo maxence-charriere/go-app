@@ -70,6 +70,9 @@ type Factory interface {
 	// RegisterComponent registers a component under its type name lowercased.
 	RegisterComponent(c Component) (name string, err error)
 
+	// IsRegisteredComponent reports wheter the named component is registered.
+	IsRegisteredComponent(name string) bool
+
 	// NewComponent creates the named component.
 	// It returns an error if there is no component registered under name.
 	NewComponent(name string) (Component, error)
@@ -94,6 +97,11 @@ func (f factory) RegisterComponent(c Component) (name string, err error) {
 	name = normalizeComponentName(t.String())
 	f[name] = t
 	return
+}
+
+func (f factory) IsRegisteredComponent(name string) bool {
+	_, registered := f[name]
+	return registered
 }
 
 func (f factory) NewComponent(name string) (c Component, err error) {
