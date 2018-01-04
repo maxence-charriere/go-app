@@ -141,41 +141,6 @@
       payload:message.body];
 }
 
-- (void)webView:(WKWebView *)webView
-    decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction
-                    decisionHandler:
-                        (void (^)(WKNavigationActionPolicy))decisionHandler {
-  decisionHandler(WKNavigationActionPolicyAllow);
-  NSURL *url = navigationAction.request.URL;
-
-  switch (navigationAction.navigationType) {
-  case WKNavigationTypeOther:
-    // Allow the loadHTMLString to not be blocked.
-    if ([url isEqual:self.baseURL]) {
-      decisionHandler(WKNavigationActionPolicyAllow);
-      return;
-    }
-    break;
-
-  case WKNavigationTypeReload:
-    decisionHandler(WKNavigationActionPolicyAllow);
-    return;
-
-  case WKNavigationTypeLinkActivated:
-  case WKNavigationTypeFormSubmitted:
-  case WKNavigationTypeBackForward:
-  case WKNavigationTypeFormResubmitted:
-  default:
-    break;
-  }
-
-  Driver *driver = [Driver current];
-  [driver.golang
-      request:[NSString stringWithFormat:@"/window/navigate?id=%@", self.ID]
-      payload:[JSONEncoder encodeString:url.absoluteString]];
-  decisionHandler(WKNavigationActionPolicyCancel);
-}
-
 - (void)configTitlebar:(NSString *)title hidden:(BOOL)isHidden {
   self.window.title = title;
 
@@ -225,6 +190,41 @@
     [win.webview loadHTMLString:page baseURL:win.baseURL];
   });
   return make_bridge_result(nil, nil);
+}
+
+- (void)webView:(WKWebView *)webView
+    decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction
+                    decisionHandler:
+                        (void (^)(WKNavigationActionPolicy))decisionHandler {
+  decisionHandler(WKNavigationActionPolicyAllow);
+  NSURL *url = navigationAction.request.URL;
+
+  switch (navigationAction.navigationType) {
+  case WKNavigationTypeOther:
+    // Allow the loadHTMLString to not be blocked.
+    if ([url isEqual:self.baseURL]) {
+      decisionHandler(WKNavigationActionPolicyAllow);
+      return;
+    }
+    break;
+
+  case WKNavigationTypeReload:
+    decisionHandler(WKNavigationActionPolicyAllow);
+    return;
+
+  case WKNavigationTypeLinkActivated:
+  case WKNavigationTypeFormSubmitted:
+  case WKNavigationTypeBackForward:
+  case WKNavigationTypeFormResubmitted:
+  default:
+    break;
+  }
+
+  Driver *driver = [Driver current];
+  [driver.golang
+      request:[NSString stringWithFormat:@"/window/navigate?id=%@", self.ID]
+      payload:[JSONEncoder encodeString:url.absoluteString]];
+  decisionHandler(WKNavigationActionPolicyCancel);
 }
 
 + (bridge_result)render:(NSURLComponents *)url payload:(NSString *)payload {
