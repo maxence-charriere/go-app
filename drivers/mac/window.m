@@ -228,10 +228,33 @@
 }
 
 + (bridge_result)render:(NSURLComponents *)url payload:(NSString *)payload {
+  NSString *ID = [url queryValue:@"id"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    Window *win = driver.elements[ID];
+
+    [win.webview
+        evaluateJavaScript:[NSString stringWithFormat:@"render(%@)", payload]
+         completionHandler:nil];
+  });
+  return make_bridge_result(nil, nil);
 }
 
 + (bridge_result)renderAttributes:(NSURLComponents *)url
                           payload:(NSString *)payload {
+  NSString *ID = [url queryValue:@"id"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    Window *win = driver.elements[ID];
+
+    [win.webview
+        evaluateJavaScript:[NSString stringWithFormat:@"renderAttributes(%@)",
+                                                      payload]
+         completionHandler:nil];
+  });
+  return make_bridge_result(nil, nil);
 }
 
 + (bridge_result)position:(NSURLComponents *)url payload:(NSString *)payload {

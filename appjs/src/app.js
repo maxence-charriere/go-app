@@ -1,5 +1,7 @@
 // render replaces the node with the given id by the given component.
 function render (payload) {
+  const {id, component} = payload
+
   const selector = '[data-goapp-id="' + id + '"]'
   const elem = document.querySelector(selector)
   elem.outerHTML = component
@@ -8,7 +10,9 @@ function render (payload) {
 // render replaces the attributes of the node with the given id by the given
 // attributes.
 function renderAttributes (payload) {
-  if (!attrs) {
+  const {id, attributes} = payload
+
+  if (!attributes) {
     return
   }
 
@@ -28,15 +32,15 @@ function renderAttributes (payload) {
       continue
     }
 
-    if (attrs[name] === undefined) {
+    if (attributes[name] === undefined) {
       elem.removeAttribute(name)
     }
   }
 
   // Set attributes.
-  for (var name in attrs) {
+  for (var name in attributes) {
     const currentValue = elem.getAttribute(name)
-    const newValue = attrs[name]
+    const newValue = attributes[name]
 
     if (currentValue !== newValue) {
       elem.setAttribute(name, newValue)

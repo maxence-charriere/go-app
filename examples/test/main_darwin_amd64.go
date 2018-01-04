@@ -55,7 +55,7 @@ func testWindow(close bool) {
 		// NoResizable:     true,
 		// NoClosable:      true,
 		// NoMinimizable:   true,
-		// TitlebarHidden:  true,
+		TitlebarHidden:  true,
 		BackgroundColor: "#282c34",
 		Mac: app.MacWindowConfig{
 			BackgroundVibrancy: app.VibeUltraDark,

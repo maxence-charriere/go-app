@@ -22,6 +22,27 @@
 </head>
 <body>
     <div data-goapp-root>
+        
+<h1>Starting test</h1>
+		
+<h2>render</h2>
+<button onclick="testRender()">Launch</button>
+<h3>Output:</h3>
+<p data-goapp-id="test-01"></p>
+		
+<h2>renderAttibutes</h2>
+<button onclick="testRenderAttributes()">Launch</button>
+<h3>Output:</h3>
+<p data-goapp-id="test-02" data-remove="true" data-update="">
+	<ul data-goapp-id="test-02-bis">
+		<li>data-remove: true</li>
+		<li>data-update:</li>
+	</ul>
+</p>
+		
+<h2>callback onclick</h2>
+<button onclick="callGoEventHandler('compo-03', 'test', this, event)">Launch</button>
+		
     </div>
 
     <script>
@@ -29,15 +50,10 @@ function golangRequest(payload) {
 	alert(payload);
 }
 
-// mount mounts the given component in the page root.
-function mount(component) {
-  const selector = '[data-goapp-root]';
-  const root = document.querySelector(selector);
-  root.innerHTML = component;
-}
-
 // render replaces the node with the given id by the given component.
-function render(id, component) {
+function render(payload) {
+  const { id, component } = payload;
+
   const selector = '[data-goapp-id="' + id + '"]';
   const elem = document.querySelector(selector);
   elem.outerHTML = component;
@@ -45,8 +61,10 @@ function render(id, component) {
 
 // render replaces the attributes of the node with the given id by the given
 // attributes.
-function renderAttributes(id, attrs) {
-  if (!attrs) {
+function renderAttributes(payload) {
+  const { id, attributes } = payload;
+
+  if (!attributes) {
     return;
   }
 
@@ -66,15 +84,15 @@ function renderAttributes(id, attrs) {
       continue;
     }
 
-    if (attrs[name] === undefined) {
+    if (attributes[name] === undefined) {
       elem.removeAttribute(name);
     }
   }
 
   // Set attributes.
-  for (var name in attrs) {
+  for (var name in attributes) {
     const currentValue = elem.getAttribute(name);
-    const newValue = attrs[name];
+    const newValue = attributes[name];
 
     if (currentValue !== newValue) {
       elem.setAttribute(name, newValue);
