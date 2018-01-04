@@ -227,6 +227,13 @@
   return make_bridge_result(nil, nil);
 }
 
++ (bridge_result)render:(NSURLComponents *)url payload:(NSString *)payload {
+}
+
++ (bridge_result)renderAttributes:(NSURLComponents *)url
+                          payload:(NSString *)payload {
+}
+
 + (bridge_result)position:(NSURLComponents *)url payload:(NSString *)payload {
   NSString *ID = [url queryValue:@"id"];
   NSString *returnID = [url queryValue:@"return-id"];

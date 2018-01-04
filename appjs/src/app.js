@@ -1,12 +1,5 @@
-// mount mounts the given component in the page root.
-function mount (component) {
-  const selector = '[data-goapp-root]'
-  const root = document.querySelector(selector)
-  root.innerHTML = component
-}
-
 // render replaces the node with the given id by the given component.
-function render (id, component) {
+function render (payload) {
   const selector = '[data-goapp-id="' + id + '"]'
   const elem = document.querySelector(selector)
   elem.outerHTML = component
@@ -14,7 +7,7 @@ function render (id, component) {
 
 // render replaces the attributes of the node with the given id by the given
 // attributes.
-function renderAttributes (id, attrs) {
+function renderAttributes (payload) {
   if (!attrs) {
     return
   }

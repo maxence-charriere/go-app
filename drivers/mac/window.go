@@ -192,8 +192,62 @@ func (w *Window) Contains(compo app.Component) bool {
 
 // Render satisfies the app.ElementWithComponent interface.
 func (w *Window) Render(compo app.Component) error {
-	app.DefaultLogger.Error("Not implemented")
+	syncs, err := w.markup.Update(compo)
+	if err != nil {
+		return err
+	}
+
+	for _, sync := range syncs {
+		if sync.Replace {
+			err = w.render(sync)
+		} else {
+			err = w.renderAttributes(sync)
+		}
+
+		if err != nil {
+			return err
+		}
+	}
 	return nil
+}
+
+func (w *Window) render(sync app.TagSync) error {
+	var buffer bytes.Buffer
+
+	enc := html.NewEncoder(&buffer, w.markup)
+	if err := enc.Encode(sync.Tag); err != nil {
+		return err
+	}
+
+	payload := struct {
+		ID        string `json:"id"`
+		Component string `json:"component"`
+	}{
+		ID:        sync.Tag.ID.String(),
+		Component: buffer.String(),
+	}
+
+	_, err := driver.macos.Request(
+		fmt.Sprintf("/window/render?id=%s", w.id),
+		bridge.NewPayload(payload),
+	)
+	return err
+}
+
+func (w *Window) renderAttributes(sync app.TagSync) error {
+	payload := struct {
+		ID         string           `json:"id"`
+		Attributes app.AttributeMap `json:"attributes"`
+	}{
+		ID:         sync.Tag.ID.String(),
+		Attributes: sync.Tag.Attributes,
+	}
+
+	_, err := driver.macos.Request(
+		fmt.Sprintf("/window/render/attributes?id=%s", w.id),
+		bridge.NewPayload(payload),
+	)
+	return err
 }
 
 // LastFocus satisfies the app.ElementWithComponent interface.

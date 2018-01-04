@@ -47,6 +47,14 @@
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Window load:url payload:payload];
             }];
+  [self.objc handle:@"/window/render"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Window load:url payload:payload];
+            }];
+  [self.objc handle:@"/window/render/attributes"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Window load:url payload:payload];
+            }];
   [self.objc handle:@"/window/position"
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Window position:url payload:payload];
