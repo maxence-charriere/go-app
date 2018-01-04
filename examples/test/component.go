@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"net/url"
 	"strconv"
 
@@ -16,14 +17,16 @@ func init() {
 // WebviewComponent is a component to test html in webview based elements.
 // It implements the app.Component interface.
 type WebviewComponent struct {
-	Title string
-	Page  int
+	Title       string
+	Page        int
+	SquareColor string
+	Number      int
 }
 
 // Render statisfies the app.Component interface.
 func (c *WebviewComponent) Render() string {
 	return `
-<div>
+<div class="root">
 	<h1>Test Window</h1>
 	<p>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
@@ -37,9 +40,18 @@ func (c *WebviewComponent) Render() string {
 	<ul>
 		<li><a href="webviewcomponent?page=42">To page 42</a></li>
 		<li><a href="unknown?page=42">Unknown compopent</a></li>
-		<li><a href="http://judgehype.com">external hyperlink</a></li>
+		<li><a href="http://theverge.com">external hyperlink</a></li>
 		<li><button onclick="OnNext">Next</button></li>
 		<li><button onclick="OnLink">External link</button></li>
+		<li><button onclick="NotMapped">Not mapped</button></li>
+		<li>
+			<button onclick="OnChangeSquareColor">Render Attributes: change square color</button>
+			<div class="square {{.SquareColor}}"></div>
+		</li>
+		<li>
+			<button onclick="OnChangeNumber">Render: change number</button>
+			<div>{{.Number}}</div>
+		</li>
 	</ul>
 	
 	<p>Page: {{.Page}}</p>
@@ -88,5 +100,26 @@ func (c *WebviewComponent) OnLink() {
 	if err != nil {
 		app.DefaultLogger.Error(err)
 	}
-	win.Load("http://www.judgehype.com")
+	win.Load("http://www.github.com")
+}
+
+// OnChangeSquareColor is the function to be called when the change color button
+// is clicked.
+func (c *WebviewComponent) OnChangeSquareColor() {
+	switch c.SquareColor {
+	case "blue":
+		c.SquareColor = "pink"
+	case "pink":
+		c.SquareColor = ""
+	default:
+		c.SquareColor = "blue"
+	}
+	app.Render(c)
+}
+
+// OnChangeNumber is the function to be called when the change number button is
+// clicked.
+func (c *WebviewComponent) OnChangeNumber() {
+	c.Number = rand.Int()
+	app.Render(c)
 }

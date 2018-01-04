@@ -196,7 +196,6 @@
     decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction
                     decisionHandler:
                         (void (^)(WKNavigationActionPolicy))decisionHandler {
-  decisionHandler(WKNavigationActionPolicyAllow);
   NSURL *url = navigationAction.request.URL;
 
   switch (navigationAction.navigationType) {
@@ -209,9 +208,6 @@
     break;
 
   case WKNavigationTypeReload:
-    decisionHandler(WKNavigationActionPolicyAllow);
-    return;
-
   case WKNavigationTypeLinkActivated:
   case WKNavigationTypeFormSubmitted:
   case WKNavigationTypeBackForward:

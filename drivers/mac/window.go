@@ -42,7 +42,6 @@ type Window struct {
 
 func newWindow(driver *Driver, config app.WindowConfig) (w *Window, err error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
-	markup = app.NewMarkupWithLogs(markup)
 	markup = app.NewConcurrentMarkup(markup)
 
 	w = &Window{
@@ -112,8 +111,7 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 	compoName := app.ComponentNameFromURL(u)
 	var compo app.Component
 	if compo, err = w.driver.factory.NewComponent(compoName); err != nil {
-		cmd := exec.Command("open", u.String())
-		return cmd.Run()
+		return exec.Command("open", u.String())
 	}
 
 	if w.component != nil {

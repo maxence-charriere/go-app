@@ -49,11 +49,11 @@
             }];
   [self.objc handle:@"/window/render"
             handler:^(NSURLComponents *url, NSString *payload) {
-              return [Window load:url payload:payload];
+              return [Window render:url payload:payload];
             }];
   [self.objc handle:@"/window/render/attributes"
             handler:^(NSURLComponents *url, NSString *payload) {
-              return [Window load:url payload:payload];
+              return [Window renderAttributes:url payload:payload];
             }];
   [self.objc handle:@"/window/position"
             handler:^(NSURLComponents *url, NSString *payload) {
