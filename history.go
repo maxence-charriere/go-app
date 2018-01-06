@@ -52,7 +52,7 @@ func (h *history) Len() int {
 
 func (h *history) Current() (url string, err error) {
 	if h.Len() == 0 {
-		err = errors.New("no entry")
+		err = errors.New("history does not have entries")
 		return
 	}
 
@@ -79,7 +79,7 @@ func (h *history) CanPrevious() bool {
 
 func (h *history) Previous() (url string, err error) {
 	if !h.CanPrevious() {
-		err = errors.New("no entry to go back")
+		err = errors.New("history does not have a previous entry to return")
 		return
 	}
 
@@ -94,7 +94,7 @@ func (h *history) CanNext() bool {
 
 func (h *history) Next() (url string, err error) {
 	if !h.CanNext() {
-		err = errors.New("no entry to go next")
+		err = errors.New("history does not have a next entry to return")
 		return
 	}
 

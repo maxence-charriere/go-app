@@ -158,6 +158,7 @@ func TestHistory(t *testing.T, newHistory func() app.History) {
 				t.Fatal("error is nil")
 			}
 			if err != nil && test.expectsErr {
+				t.Log(err)
 				return
 			}
 
