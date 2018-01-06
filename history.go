@@ -1,6 +1,8 @@
 package app
 
-import "github.com/pkg/errors"
+import (
+	"github.com/pkg/errors"
+)
 
 // History is a store that contains URL ordered chronologically.
 type History struct {
