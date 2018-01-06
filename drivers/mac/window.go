@@ -75,7 +75,7 @@ func newWindow(driver *Driver, config app.WindowConfig) (w *Window, err error) {
 		return
 	}
 
-	if len(config.DefaultURL) != 0 {
+	if len(config.DefaultURL) == 0 {
 		err = w.Load(config.DefaultURL)
 	}
 	return
@@ -111,7 +111,8 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 	compoName := app.ComponentNameFromURL(u)
 	var compo app.Component
 	if compo, err = w.driver.factory.NewComponent(compoName); err != nil {
-		return exec.Command("open", u.String())
+		cmd := exec.Command("open", u.String())
+		return cmd.Run()
 	}
 
 	if w.component != nil {

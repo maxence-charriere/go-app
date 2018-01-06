@@ -22,9 +22,7 @@
     <link type="text/css" rel="stylesheet" href="{{.}}">{{end}}
 </head>
 <body>
-    <div data-goapp-root>{{if .DefaultComponent}}
-        {{.DefaultComponent}}{{end}}
-    </div>
+    {{.DefaultComponent}}
 
     {{if .AppJS}}<script>{{.AppJS}}
     </script>{{end}}{{range .Javascripts}}
