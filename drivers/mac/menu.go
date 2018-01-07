@@ -38,6 +38,11 @@ func newMenu(config app.MenuConfig) (m *Menu, err error) {
 	return
 }
 
+// ID satisfies the app.Element interface.
+func (m *Menu) ID() uuid.UUID {
+	return m.id
+}
+
 // Load satisfies the app.Menu interface.
 func (m *Menu) Load(url string, v ...interface{}) error {
 	panic("not implemented")

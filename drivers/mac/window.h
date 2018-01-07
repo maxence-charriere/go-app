@@ -11,6 +11,7 @@
 @property(weak) WKWebView *webview;
 @property NSURL *loadURL;
 @property NSURL *baseURL;
+@property NSString *loadReturnID;
 
 + (bridge_result)newWindow:(NSURLComponents *)url payload:(NSString *)payload;
 - (void)configBackgroundColor:(NSString *)color

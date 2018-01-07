@@ -175,6 +175,7 @@
 
 + (bridge_result)load:(NSURLComponents *)url payload:(NSString *)payload {
   NSString *ID = [url queryValue:@"id"];
+  NSString *returnID = [url queryValue:@"return-id"];
 
   NSDictionary *config = [JSONDecoder decodeObject:payload];
   NSString *title = config[@"title"];
@@ -187,6 +188,7 @@
     Window *win = driver.elements[ID];
 
     win.window.title = title;
+    win.loadReturnID = returnID;
     win.loadURL = [NSURL URLWithString:loadURL];
     win.baseURL = [NSURL fileURLWithPath:baseURL];
     [win.webview loadHTMLString:page baseURL:win.baseURL];
@@ -226,6 +228,19 @@
       request:[NSString stringWithFormat:@"/window/navigate?id=%@", self.ID]
       payload:[JSONEncoder encodeString:url.absoluteString]];
   decisionHandler(WKNavigationActionPolicyCancel);
+}
+
+- (void)webView:(WKWebView *)webView
+    didFinishNavigation:(WKNavigation *)navigation {
+  Driver *driver = [Driver current];
+
+  if (self.loadReturnID == nil || self.loadReturnID.length == 0) {
+    return;
+  }
+
+  [driver.objc asyncReturn:self.loadReturnID
+                    result:make_bridge_result(nil, nil)];
+  self.loadReturnID = nil;
 }
 
 + (bridge_result)render:(NSURLComponents *)url payload:(NSString *)payload {

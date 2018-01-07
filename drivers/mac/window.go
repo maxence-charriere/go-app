@@ -40,7 +40,7 @@ type Window struct {
 	onClose          func() bool
 }
 
-func newWindow(driver *Driver, config app.WindowConfig) (w *Window, err error) {
+func newWindow(config app.WindowConfig) (w *Window, err error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
 	markup = app.NewConcurrentMarkup(markup)
 
@@ -179,7 +179,7 @@ func (w *Window) load(u *url.URL) error {
 		BaseURL: driver.Resources(),
 	}
 
-	_, err = driver.macos.Request(
+	_, err = driver.macos.RequestWithAsyncResponse(
 		fmt.Sprintf("/window/load?id=%s", w.id),
 		bridge.NewPayload(payload),
 	)
