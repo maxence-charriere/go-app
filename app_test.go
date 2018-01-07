@@ -93,6 +93,18 @@ func TestApp(t *testing.T) {
 			function: testNewWindow,
 		},
 		{
+			scenario: "returns a window from a component",
+			function: func(t *testing.T) { testWindowFromComponent(t, driver) },
+		},
+		{
+			scenario: "returning a window from a dismounted component returns an error",
+			function: testWindowFromComponentNotFound,
+		},
+		{
+			scenario: "returning a window from a component mounted in a non window element returns an error",
+			function: func(t *testing.T) { testWindowFromComponentNotWindow(t, driver) },
+		},
+		{
 			scenario: "returns the menu bar",
 			function: testMenuBar,
 		},
@@ -172,11 +184,11 @@ func testRunningDriver(t *testing.T, driver *test.Driver) {
 
 func testRender(t *testing.T, driver *test.Driver) {
 	var compo app.Component
-	driver.OnWindowLoad = func(w app.Window, c app.Component) {
+	driver.OnContextLoad = func(ctx app.ElementWithComponent, c app.Component) {
 		compo = c
 	}
 	defer func() {
-		driver.OnWindowLoad = nil
+		driver.OnContextLoad = nil
 	}()
 
 	window := driver.NewWindow(app.WindowConfig{
@@ -189,11 +201,11 @@ func testRender(t *testing.T, driver *test.Driver) {
 
 func testContext(t *testing.T, driver *test.Driver) {
 	var compo app.Component
-	driver.OnWindowLoad = func(w app.Window, c app.Component) {
+	driver.OnContextLoad = func(ctx app.ElementWithComponent, c app.Component) {
 		compo = c
 	}
 	defer func() {
-		driver.OnWindowLoad = nil
+		driver.OnContextLoad = nil
 	}()
 
 	window := driver.NewWindow(app.WindowConfig{
@@ -266,6 +278,57 @@ func testNewWindow(t *testing.T) {
 	if window := app.NewWindow(app.WindowConfig{}); window == nil {
 		t.Fatal("window is nil")
 	}
+}
+
+func testWindowFromComponent(t *testing.T, driver *test.Driver) {
+	var compo app.Component
+	driver.OnContextLoad = func(w app.ElementWithComponent, c app.Component) {
+		compo = c
+	}
+	defer func() {
+		driver.OnContextLoad = nil
+	}()
+
+	window := driver.NewWindow(app.WindowConfig{
+		DefaultURL: "app_test.component",
+	})
+	defer window.Close()
+
+	winret, err := app.WindowFromComponent(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if winret != window {
+		t.Fatal("returned context is not the window")
+	}
+}
+
+func testWindowFromComponentNotFound(t *testing.T) {
+	_, err := app.WindowFromComponent(&Component{})
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testWindowFromComponentNotWindow(t *testing.T, driver *test.Driver) {
+	var compo app.Component
+	driver.OnContextLoad = func(ctx app.ElementWithComponent, c app.Component) {
+		compo = c
+	}
+	defer func() {
+		driver.OnContextLoad = nil
+	}()
+
+	driver.NewContextMenu(app.MenuConfig{
+		DefaultURL: "app_test.component",
+	})
+
+	_, err := app.WindowFromComponent(compo)
+	if err == nil {
+		t.Fatal("error is not nil")
+	}
+	t.Log(err)
 }
 
 func testMenuBar(t *testing.T) {

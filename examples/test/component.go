@@ -76,13 +76,11 @@ func (c *WebviewComponent) OnNavigate(u *url.URL) {
 		c.Page = 1
 	}
 
-	ctx, err := app.Context(c)
-	if err != nil {
-		return
+	if win, err := app.WindowFromComponent(c); err == nil {
+		c.CanPrevious = win.CanPrevious()
+		c.CanNext = win.CanNext()
 	}
-	win := ctx.(app.Window)
-	c.CanPrevious = win.CanPrevious()
-	c.CanNext = win.CanNext()
+
 	app.Render(c)
 }
 
@@ -94,29 +92,21 @@ func (c *WebviewComponent) PageConfig() html.PageConfig {
 	}
 }
 
-// OnNext is the function to be called when the Next page button is clicked.
+// OnNextPage is the function to be called when the Next page button is clicked.
 func (c *WebviewComponent) OnNextPage() {
-	win, err := app.Context(c)
-	if err != nil {
-		app.DefaultLogger.Error(err)
-		return
-	}
-
 	page := c.Page
 	page++
 
-	win.Load("/webviewcomponent?page=%v", page)
+	if win, err := app.WindowFromComponent(c); err == nil {
+		win.Load("/webviewcomponent?page=%v", page)
+	}
 }
 
 // OnLink is the function to be called when the External link button is clicked.
 func (c *WebviewComponent) OnLink() {
-	app.DefaultLogger.Log("Onlink Clicked")
-
-	win, err := app.Context(c)
-	if err != nil {
-		app.DefaultLogger.Error(err)
+	if win, err := app.WindowFromComponent(c); err == nil {
+		win.Load("http://www.github.com")
 	}
-	win.Load("http://www.github.com")
 }
 
 // OnChangeSquareColor is the function to be called when the change color button
@@ -143,30 +133,21 @@ func (c *WebviewComponent) OnChangeNumber() {
 // OnPrevious is the function that is called when the previous button is
 // clicked.
 func (c *WebviewComponent) OnPrevious() {
-	ctx, err := app.Context(c)
-	if err != nil {
-		return
+	if win, err := app.WindowFromComponent(c); err == nil {
+		win.Previous()
 	}
-	win := ctx.(app.Window)
-	win.Previous()
 }
 
 // OnReload is the function that is called when the reload button is clicked.
 func (c *WebviewComponent) OnReload() {
-	ctx, err := app.Context(c)
-	if err != nil {
-		return
+	if win, err := app.WindowFromComponent(c); err == nil {
+		win.Reload()
 	}
-	win := ctx.(app.Window)
-	win.Reload()
 }
 
 // OnNext is the function that is called when the next button is clicked.
 func (c *WebviewComponent) OnNext() {
-	ctx, err := app.Context(c)
-	if err != nil {
-		return
+	if win, err := app.WindowFromComponent(c); err == nil {
+		win.Next()
 	}
-	win := ctx.(app.Window)
-	win.Next()
 }

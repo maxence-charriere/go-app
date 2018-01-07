@@ -19,7 +19,7 @@ type Driver struct {
 	RunSouldErr bool
 	UIchan      chan func()
 
-	OnWindowLoad func(win app.Window, compo app.Component)
+	OnContextLoad func(ctx app.ElementWithComponent, compo app.Component)
 }
 
 // Run satisfies the app.Driver interface.
