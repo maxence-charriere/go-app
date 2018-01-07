@@ -23,7 +23,6 @@ import (
 
 // Window implements the app.Window interface.
 type Window struct {
-	driver    *Driver
 	id        uuid.UUID
 	markup    app.Markup
 	component app.Component
@@ -50,7 +49,6 @@ func newWindow(driver *Driver, config app.WindowConfig) (w *Window, err error) {
 
 	w = &Window{
 		id:        uuid.New(),
-		driver:    driver,
 		markup:    markup,
 		history:   history,
 		lastFocus: time.Now(),
@@ -114,7 +112,7 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 	}
 
 	compoName := app.ComponentNameFromURL(u)
-	isRegiteredCompo := w.driver.factory.IsRegisteredComponent(compoName)
+	isRegiteredCompo := driver.factory.IsRegisteredComponent(compoName)
 	currentURL, err := w.history.Current()
 
 	if isRegiteredCompo && (err != nil || currentURL != u.String()) {
@@ -132,7 +130,7 @@ func (w *Window) load(u *url.URL) error {
 	var err error
 
 	// Redirect web page to default web browser.
-	if compo, err = w.driver.factory.NewComponent(compoName); err != nil {
+	if compo, err = driver.factory.NewComponent(compoName); err != nil {
 		cmd := exec.Command("open", u.String())
 		err = cmd.Run()
 		return err
@@ -178,7 +176,7 @@ func (w *Window) load(u *url.URL) error {
 		Title:   pageConfig.Title,
 		Page:    html.NewPage(pageConfig),
 		LoadURL: u.String(),
-		BaseURL: w.driver.Resources(),
+		BaseURL: driver.Resources(),
 	}
 
 	_, err = driver.macos.Request(
@@ -345,7 +343,7 @@ func (w *Window) Next() error {
 func (w *Window) Position() (x, y float64) {
 	rawurl := fmt.Sprintf("/window/position?id=%s", w.id)
 
-	res, err := w.driver.macos.RequestWithAsyncResponse(rawurl, nil)
+	res, err := driver.macos.RequestWithAsyncResponse(rawurl, nil)
 	if err != nil {
 		panic(errors.Wrapf(err, "retrieving positon of window %v", w.ID()))
 	}
@@ -363,7 +361,7 @@ func (w *Window) Move(x, y float64) {
 		Y: y,
 	})
 
-	_, err := w.driver.macos.Request(rawurl, payload)
+	_, err := driver.macos.Request(rawurl, payload)
 	if err != nil {
 		panic(errors.Wrapf(err, "moving window %v failed", w.ID()))
 	}
@@ -384,7 +382,7 @@ func onWindowMove(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) 
 func (w *Window) Center() {
 	rawurl := fmt.Sprintf("/window/center?id=%s", w.id)
 
-	_, err := w.driver.macos.Request(rawurl, nil)
+	_, err := driver.macos.Request(rawurl, nil)
 	if err != nil {
 		panic(errors.Wrapf(err, "centering window %v failed", w.ID()))
 	}
@@ -394,7 +392,7 @@ func (w *Window) Center() {
 func (w *Window) Size() (width, height float64) {
 	rawurl := fmt.Sprintf("/window/size?id=%s", w.id)
 
-	res, err := w.driver.macos.RequestWithAsyncResponse(rawurl, nil)
+	res, err := driver.macos.RequestWithAsyncResponse(rawurl, nil)
 	if err != nil {
 		panic(errors.Wrapf(err, "retrieving size of window %v failed", w.ID()))
 	}
@@ -412,7 +410,7 @@ func (w *Window) Resize(width, height float64) {
 		Height: height,
 	})
 
-	_, err := w.driver.macos.Request(rawurl, payload)
+	_, err := driver.macos.Request(rawurl, payload)
 	if err != nil {
 		panic(errors.Wrapf(err, "resizing window %v failed", w.ID()))
 	}
@@ -433,7 +431,7 @@ func onWindowResize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload
 func (w *Window) Focus() {
 	rawurl := fmt.Sprintf("/window/focus?id=%s", w.id)
 
-	_, err := w.driver.macos.Request(rawurl, nil)
+	_, err := driver.macos.Request(rawurl, nil)
 	if err != nil {
 		panic(errors.Wrapf(err, "focusing window %v failed", w.ID()))
 	}
@@ -463,7 +461,7 @@ func onWindowBlur(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) 
 func (w *Window) ToggleFullScreen() {
 	rawurl := fmt.Sprintf("/window/togglefullscreen?id=%s", w.id)
 
-	_, err := w.driver.macos.Request(rawurl, nil)
+	_, err := driver.macos.Request(rawurl, nil)
 	if err != nil {
 		panic(errors.Wrapf(err, "toggling full screen on window %v failed", w.ID()))
 	}
@@ -491,7 +489,7 @@ func onWindowExitFullScreen(w *Window, u *url.URL, p bridge.Payload) (res bridge
 func (w *Window) ToggleMinimize() {
 	rawurl := fmt.Sprintf("/window/toggleminimize?id=%s", w.id)
 
-	_, err := w.driver.macos.Request(rawurl, nil)
+	_, err := driver.macos.Request(rawurl, nil)
 	if err != nil {
 		panic(errors.Wrapf(err, "toggling minimize on window %v failed", w.ID()))
 	}
@@ -519,7 +517,7 @@ func onWindowDeminimize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Pay
 func (w *Window) Close() {
 	rawurl := fmt.Sprintf("/window/close?id=%s", w.id)
 
-	_, err := w.driver.macos.Request(rawurl, nil)
+	_, err := driver.macos.Request(rawurl, nil)
 	if err != nil {
 		panic(errors.Wrapf(err, "closing window %v failed", w.ID()))
 	}
@@ -537,7 +535,7 @@ func onWindowClose(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload)
 	}
 
 	if shouldClose {
-		w.driver.elements.Remove(w)
+		driver.elements.Remove(w)
 	}
 	return
 }
