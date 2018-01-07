@@ -85,7 +85,3 @@ type DriverWithPopupNotifications interface {
 	// described in the configuration.
 	NewPopupNotification(c PopupNotificationConfig) Element
 }
-
-type driverWithLogs struct {
-	base Driver
-}
