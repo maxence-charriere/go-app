@@ -113,6 +113,22 @@ func NewWindow(c WindowConfig) Window {
 	return d.NewWindow(c)
 }
 
+// WindowFromComponent return the window where the given component is mounted.
+func WindowFromComponent(c Component) (w Window, err error) {
+	var ctx ElementWithComponent
+	var isWindow bool
+
+	if ctx, err = Context(c); err != nil {
+		DefaultLogger.Error(err)
+		return nil, err
+	}
+
+	if w, isWindow = ctx.(Window); !isWindow {
+		err = errors.Errorf("element %v is not a %T: %T", ctx.ID(), w, ctx)
+	}
+	return
+}
+
 // SupportsMenuBar reports whether menu bar is supported.
 func SupportsMenuBar() bool {
 	_, ok := driver.(DriverWithMenuBar)

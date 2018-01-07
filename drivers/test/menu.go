@@ -18,6 +18,8 @@ type Menu struct {
 	factory   app.Factory
 	markup    app.Markup
 	lastFocus time.Time
+
+	onLoad func(compo app.Component)
 }
 
 func newMenu(driver *Driver, config app.MenuConfig) app.Menu {
@@ -28,6 +30,12 @@ func newMenu(driver *Driver, config app.MenuConfig) app.Menu {
 		lastFocus: time.Now(),
 	}
 	driver.elements.Add(menu)
+
+	if driver.OnContextLoad != nil {
+		menu.onLoad = func(compo app.Component) {
+			driver.OnContextLoad(menu, compo)
+		}
+	}
 
 	if len(config.DefaultURL) != 0 {
 		if err := menu.Load(config.DefaultURL); err != nil {
@@ -58,6 +66,10 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 
 	if _, err = m.markup.Mount(compo); err != nil {
 		return errors.Wrapf(err, "loading %s in test menu %p failed", u, m)
+	}
+
+	if m.onLoad != nil {
+		m.onLoad(compo)
 	}
 	return nil
 }

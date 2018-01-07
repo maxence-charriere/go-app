@@ -42,9 +42,9 @@ func NewWindow(driver *Driver, config app.WindowConfig) *Window {
 		driver.elements.Remove(window)
 	}
 
-	if driver.OnWindowLoad != nil {
+	if driver.OnContextLoad != nil {
 		window.onLoad = func(compo app.Component) {
-			driver.OnWindowLoad(window, compo)
+			driver.OnContextLoad(window, compo)
 		}
 	}
 
