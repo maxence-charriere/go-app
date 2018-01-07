@@ -268,7 +268,7 @@ func (d *Driver) support() (dirname string, err error) {
 
 // NewWindow satisfies the app.DriverWithWindows interface.
 func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
-	w, err := newWindow(d, c)
+	w, err := newWindow(c)
 	if err != nil {
 		panic(errors.Wrap(err, "creating a window failed"))
 	}
