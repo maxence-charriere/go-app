@@ -1,0 +1,31 @@
+body {
+    color: white;
+    overflow: hidden;
+}
+
+li {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.root {
+    position: absolute;
+    padding: 0 25px;
+    width: calc(100% - 50px);
+    height: 100%;
+    overflow: auto;
+}
+
+.square {
+    border: white solid 1px;
+    width: 300px;
+    height: 300px;
+}
+
+.blue {
+    background-color: deepskyblue;
+}
+
+.pink {
+    background-color: deeppink;
+}

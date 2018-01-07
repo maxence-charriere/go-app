@@ -1,58 +1,87 @@
 package app
 
-import "github.com/murlokswarm/log"
-
-var (
-	driver Driver
-)
-
-// Driver is the interface that describes the implementation to handle platform
-// specific rendering.
+// Driver is the interface that describes a backend for app rendering.
 type Driver interface {
-	// Run runs the application.
-	//
-	// Driver implementation:
-	// - Should start the app loop.
-	Run()
+	// Run runs the application with the components resistered in the factory.
+	Run(factory Factory) error
 
-	// NewElement create an app element. e should be a struct describing the
-	// element (e.g. Window, ContextMenu).
-	//
-	// Driver implementation:
-	// - Should check the type of e and then create the native element
-	//   described.
-	NewElement(e interface{}) Elementer
+	// Render renders the component.
+	Render(c Component) error
 
-	// MenuBar returns the element that represents the menu bar.
-	// ok will be false if there is no menubar available.
-	//
-	// Driver implementation:
-	// - Should be created in a driver.
-	MenuBar() (menu Contexter, ok bool)
+	// Context returns the element where the component is mounted.
+	// It returns an error if c is not mounted.
+	Context(c Component) (ElementWithComponent, error)
 
-	// Dock returns the element that represents the dock.
-	// ok will be false if there is no dock available.
-	//
-	// Driver implementation:
-	// - Should be created in the driver implementation.
-	Dock() (d Docker, ok bool)
+	// NewContextMenu creates and displays the context menu described in the
+	// configuration.
+	NewContextMenu(c MenuConfig) Menu
 
 	// Resources returns the location of the resources directory.
 	Resources() string
 
-	// Storage returns the location of the app storage directory.
-	Storage() string
-
-	// JavascriptBridge is the javascript function to call when a driver want to
-	// pass data to the native platform.
-	JavascriptBridge() string
+	// CallOnUIGoroutine calls a function on the UI goroutine.
+	CallOnUIGoroutine(f func())
 }
 
-// RegisterDriver registers the driver to be used when using the app package.
-//
-// Driver implementation:
-// - Should be called once in an init() func.
-func RegisterDriver(d Driver) {
-	driver = d
-	log.Infof("driver %T is loaded", d)
+// DriverWithStorage is the interface that describes a driver which supports
+// storage.
+// A storage is the local directory where an application can save files.
+// This is the ideal location to save dynamic contents and local database files.
+type DriverWithStorage interface {
+	Driver
+
+	// Storage returns the location of the storage directory.
+	Storage() string
+}
+
+// DriverWithWindows is the interface that describes a driver able to create
+// windows.
+type DriverWithWindows interface {
+	Driver
+
+	// NewWindow creates and displays the window described in the configuration.
+	NewWindow(c WindowConfig) Window
+}
+
+// DriverWithMenuBar is the interface that describes a driver with a menu bar.
+type DriverWithMenuBar interface {
+	Driver
+
+	// MenuBar returns the menu bar.
+	MenuBar() Menu
+}
+
+// DriverWithDock is the interface that describes a driver with a dock.
+type DriverWithDock interface {
+	Driver
+
+	// Dock returns the dock tile.
+	Dock() DockTile
+}
+
+// DriverWithShare is the interface that describes a driver with sharing
+// support.
+type DriverWithShare interface {
+	Driver
+
+	// Share shares the value.
+	Share(v interface{})
+}
+
+// DriverWithFilePanels is the interface that describes a driver able to open a
+// file panel.
+type DriverWithFilePanels interface {
+	Driver
+
+	// NewFilePanel creates and displays the file panel described in the
+	// configuration.
+	NewFilePanel(c FilePanelConfig) Element
+}
+
+// DriverWithPopupNotifications is the interface that describes a driver able to
+// display popup notifications.
+type DriverWithPopupNotifications interface {
+	// NewPopupNotification creates and displays the popup notification
+	// described in the configuration.
+	NewPopupNotification(c PopupNotificationConfig) Element
 }
