@@ -1,0 +1,24 @@
+{
+  "name": "appjs",
+  "version": "1.0.0",
+  "description": "Javascript for app/driver communication.",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/murlokswarm/appjs"
+  },
+  "keywords": [
+    "goapp"
+  ],
+  "author": "Maxence Charriere",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "mocha": "^4.0.1",
+    "standard": "^10.0.3"
+  }
+}

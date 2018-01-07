@@ -1,14 +1,17 @@
 package app
 
-// ChangeArg represents the data passed in a onchange event.
-type ChangeArg struct {
-	Value  string
-	Target DOMElement
+import (
+	"github.com/murlokswarm/app/key"
+)
+
+// ChangeEvent represents the data passed in a change event.
+type ChangeEvent struct {
+	Value string
 }
 
-// MouseArg represents data fired when interacting
-// with a pointing device (such as a mouse).
-type MouseArg struct {
+// MouseEvent represents data fired when interacting with a pointing device
+// (such as a mouse).
+type MouseEvent struct {
 	ClientX  float64
 	ClientY  float64
 	PageX    float64
@@ -21,35 +24,27 @@ type MouseArg struct {
 	CtrlKey  bool
 	MetaKey  bool
 	ShiftKey bool
-	Target   DOMElement
 }
 
-// WheelArg represents data fired when a wheel button of a
-// pointing device (usually a mouse) is rotated.
-type WheelArg struct {
+// WheelEvent represents data fired when a wheel button of a pointing device
+// (usually a mouse) is rotated.
+type WheelEvent struct {
 	DeltaX    float64
 	DeltaY    float64
 	DeltaZ    float64
 	DeltaMode DeltaMode
-	Target    DOMElement
 }
 
 // DeltaMode is an indication of the units of measurement for a delta value.
 type DeltaMode uint64
 
-// KeyboardArg represents data fired when the keyboard is used.
-type KeyboardArg struct {
+// KeyboardEvent represents data fired when the keyboard is used.
+type KeyboardEvent struct {
 	CharCode rune
-	KeyCode  KeyCode
-	Location KeyLocation
+	KeyCode  key.Code
+	Location key.Location
 	AltKey   bool
 	CtrlKey  bool
 	MetaKey  bool
 	ShiftKey bool
-	Target   DOMElement
-}
-
-// EventArg represents the data passed in events.
-type EventArg struct {
-	Target DOMElement
 }

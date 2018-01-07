@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+     
+    <title>app.js test</title>
+    <style media="all" type="text/css">
+        html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+        }
+        
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+        }
+    </style>
+    
+</head>
+<body>
+    
+<h1>Starting test</h1>
+		
+<h2>render</h2>
+<button onclick="testRender()">Launch</button>
+<h3>Output:</h3>
+<p data-goapp-id="test-01"></p>
+		
+<h2>renderAttibutes</h2>
+<button onclick="testRenderAttributes()">Launch</button>
+<h3>Output:</h3>
+<p data-goapp-id="test-02" data-remove="true" data-update="">
+	<ul data-goapp-id="test-02-bis">
+		<li>data-remove: true</li>
+		<li>data-update:</li>
+	</ul>
+</p>
+		
+<h2>callback onclick</h2>
+<button onclick="callGoEventHandler('compo-03', 'test', this, event)">Launch</button>
+		
+
+    <script>
+function golangRequest(payload) {
+	alert(payload);
+}
+
+// render replaces the node with the given id by the given component.
+function render(payload) {
+  const { id, component } = payload;
+
+  const selector = '[data-goapp-id="' + id + '"]';
+  const elem = document.querySelector(selector);
+  elem.outerHTML = component;
+}
+
+// render replaces the attributes of the node with the given id by the given
+// attributes.
+function renderAttributes(payload) {
+  const { id, attributes } = payload;
+
+  if (!attributes) {
+    return;
+  }
+
+  const selector = '[data-goapp-id="' + id + '"]';
+  const elem = document.querySelector(selector);
+
+  // Set attributes.
+  for (var name in attributes) {
+    const currentValue = elem.getAttribute(name);
+    const newValue = attributes[name];
+
+    if (currentValue !== newValue) {
+      elem.setAttribute(name, newValue);
+    }
+  }
+
+  // Remove missing attributes.
+  if (!elem.hasAttributes()) {
+    return;
+  }
+
+  const elemAttrs = elem.attributes;
+
+  for (var i = 0; i < elemAttrs.length; i++) {
+    const name = elemAttrs[i].name;
+
+    if (name === 'data-goapp-id') {
+      continue;
+    }
+
+    if (attributes[name] === undefined) {
+      elem.removeAttribute(name);
+    }
+  }
+}
+
+function callGoEventHandler(compoID, target, self, event) {
+  var payload = {
+    Value: self.value
+  };
+
+  for (var field in event) {
+    const name = field[0].toUpperCase() + field.slice(1);
+    const value = event[field];
+    const type = typeof value;
+
+    switch (type) {
+      case 'object':
+        break;
+
+      case 'function':
+        payload[name] = value.name;
+        break;
+
+      default:
+        payload[name] = value;
+        break;
+    }
+  }
+
+  const mapping = {
+    CompoID: compoID,
+    Target: target,
+    JSONValue: JSON.stringify(payload)
+  };
+
+  golangRequest(JSON.stringify(mapping));
+}
+
+    </script>
+    <script src="test.js"></script>
+</body>
+</html>
