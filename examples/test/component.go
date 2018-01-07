@@ -21,6 +21,8 @@ type WebviewComponent struct {
 	Page        int
 	SquareColor string
 	Number      int
+	CanPrevious bool
+	CanNext     bool
 }
 
 // Render statisfies the app.Component interface.
@@ -41,7 +43,7 @@ func (c *WebviewComponent) Render() string {
 		<li><a href="webviewcomponent?page=42">To page 42</a></li>
 		<li><a href="unknown?page=42">Unknown compopent</a></li>
 		<li><a href="http://theverge.com">external hyperlink</a></li>
-		<li><button onclick="OnNext">Next</button></li>
+		<li><button onclick="OnNextPage">Next Page</button></li>
 		<li><button onclick="OnLink">External link</button></li>
 		<li><button onclick="NotMapped">Not mapped</button></li>
 		<li>
@@ -51,6 +53,11 @@ func (c *WebviewComponent) Render() string {
 		<li>
 			<button onclick="OnChangeNumber">Render: change number</button>
 			<div>{{.Number}}</div>
+		</li>
+		<li>
+		<button {{if not .CanPrevious}}disabled{{end}} onclick="OnPrevious">Previous</button>
+		<button onclick="OnReload">Reload</button>
+		<button {{if not .CanNext}}disabled{{end}} onclick="OnNext">Next</button>
 		</li>
 	</ul>
 	
@@ -68,6 +75,15 @@ func (c *WebviewComponent) OnNavigate(u *url.URL) {
 	if c.Page == 0 {
 		c.Page = 1
 	}
+
+	ctx, err := app.Context(c)
+	if err != nil {
+		return
+	}
+	win := ctx.(app.Window)
+	c.CanPrevious = win.CanPrevious()
+	c.CanNext = win.CanNext()
+	app.Render(c)
 }
 
 // PageConfig return allow to set page information like title or meta when the
@@ -78,8 +94,8 @@ func (c *WebviewComponent) PageConfig() html.PageConfig {
 	}
 }
 
-// OnNext is the function to be called when the Next button is clicked.
-func (c *WebviewComponent) OnNext() {
+// OnNext is the function to be called when the Next page button is clicked.
+func (c *WebviewComponent) OnNextPage() {
 	win, err := app.Context(c)
 	if err != nil {
 		app.DefaultLogger.Error(err)
@@ -122,4 +138,35 @@ func (c *WebviewComponent) OnChangeSquareColor() {
 func (c *WebviewComponent) OnChangeNumber() {
 	c.Number = rand.Int()
 	app.Render(c)
+}
+
+// OnPrevious is the function that is called when the previous button is
+// clicked.
+func (c *WebviewComponent) OnPrevious() {
+	ctx, err := app.Context(c)
+	if err != nil {
+		return
+	}
+	win := ctx.(app.Window)
+	win.Previous()
+}
+
+// OnReload is the function that is called when the reload button is clicked.
+func (c *WebviewComponent) OnReload() {
+	ctx, err := app.Context(c)
+	if err != nil {
+		return
+	}
+	win := ctx.(app.Window)
+	win.Reload()
+}
+
+// OnNext is the function that is called when the next button is clicked.
+func (c *WebviewComponent) OnNext() {
+	ctx, err := app.Context(c)
+	if err != nil {
+		return
+	}
+	win := ctx.(app.Window)
+	win.Next()
 }

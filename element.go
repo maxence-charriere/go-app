@@ -43,6 +43,9 @@ type ElementWithComponent interface {
 type ElementWithNavigation interface {
 	ElementWithComponent
 
+	// Reload reloads the current page.
+	Reload() error
+
 	// CanPrevious reports whether load the previous page is possible.
 	CanPrevious() bool
 

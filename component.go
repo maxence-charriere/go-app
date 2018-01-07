@@ -25,6 +25,7 @@ type Mounter interface {
 	Component
 
 	// OnMount is called when a component is mounted.
+	// App.Render should not be called inside.
 	OnMount()
 }
 
@@ -33,6 +34,7 @@ type Dismounter interface {
 	Component
 
 	// OnDismount is called when a component is dismounted.
+	// App.Render should not be called inside.
 	OnDismount()
 }
 
@@ -41,7 +43,7 @@ type Navigable interface {
 	Component
 
 	// OnNavigate is called when a component is loaded or navigated to.
-	// Called before the component is mounted.
+	// It is called just after the component is mounted.
 	OnNavigate(u *url.URL)
 }
 

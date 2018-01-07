@@ -179,14 +179,16 @@
   NSDictionary *config = [JSONDecoder decodeObject:payload];
   NSString *title = config[@"title"];
   NSString *page = config[@"page"];
-  NSString *baseRawURL = config[@"base-url"];
+  NSString *loadURL = config[@"load-url"];
+  NSString *baseURL = config[@"base-url"];
 
   dispatch_async(dispatch_get_main_queue(), ^{
     Driver *driver = [Driver current];
     Window *win = driver.elements[ID];
 
     win.window.title = title;
-    win.baseURL = [NSURL fileURLWithPath:baseRawURL];
+    win.loadURL = [NSURL URLWithString:loadURL];
+    win.baseURL = [NSURL fileURLWithPath:baseURL];
     [win.webview loadHTMLString:page baseURL:win.baseURL];
   });
   return make_bridge_result(nil, nil);
@@ -208,6 +210,9 @@
     break;
 
   case WKNavigationTypeReload:
+    url = self.loadURL;
+    break;
+
   case WKNavigationTypeLinkActivated:
   case WKNavigationTypeFormSubmitted:
   case WKNavigationTypeBackForward:

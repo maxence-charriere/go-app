@@ -69,12 +69,23 @@ function renderAttributes(payload) {
   const selector = '[data-goapp-id="' + id + '"]';
   const elem = document.querySelector(selector);
 
+  // Set attributes.
+  for (var name in attributes) {
+    const currentValue = elem.getAttribute(name);
+    const newValue = attributes[name];
+
+    if (currentValue !== newValue) {
+      elem.setAttribute(name, newValue);
+    }
+  }
+
+  // Remove missing attributes.
   if (!elem.hasAttributes()) {
     return;
   }
+
   const elemAttrs = elem.attributes;
 
-  // Remove missing attributes.
   for (var i = 0; i < elemAttrs.length; i++) {
     const name = elemAttrs[i].name;
 
@@ -84,16 +95,6 @@ function renderAttributes(payload) {
 
     if (attributes[name] === undefined) {
       elem.removeAttribute(name);
-    }
-  }
-
-  // Set attributes.
-  for (var name in attributes) {
-    const currentValue = elem.getAttribute(name);
-    const newValue = attributes[name];
-
-    if (currentValue !== newValue) {
-      elem.setAttribute(name, newValue);
     }
   }
 }

@@ -8,6 +8,10 @@ function render(payload) {
 
   const selector = '[data-goapp-id="' + id + '"]';
   const elem = document.querySelector(selector);
+
+  if (!elem) {
+    return;
+  }
   elem.outerHTML = component;
 }
 
@@ -22,6 +26,10 @@ function renderAttributes(payload) {
 
   const selector = '[data-goapp-id="' + id + '"]';
   const elem = document.querySelector(selector);
+
+  if (!elem) {
+    return;
+  }
 
   if (!elem.hasAttributes()) {
     return;

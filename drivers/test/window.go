@@ -18,6 +18,7 @@ type Window struct {
 	id        uuid.UUID
 	factory   app.Factory
 	markup    app.Markup
+	history   app.History
 	lastFocus time.Time
 
 	onLoad  func(compo app.Component)
@@ -31,6 +32,7 @@ func NewWindow(driver *Driver, config app.WindowConfig) *Window {
 		config:    config,
 		id:        uuid.New(),
 		factory:   driver.factory,
+		history:   app.NewConcurrentHistory(app.NewHistory()),
 		markup:    app.NewConcurrentMarkup(html.NewMarkup(driver.factory)),
 		lastFocus: time.Now(),
 	}
@@ -73,6 +75,8 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 		return err
 	}
 
+	w.history.NewEntry(u.String())
+
 	compo, err := w.factory.NewComponent(app.ComponentNameFromURL(u))
 	if err != nil {
 		return err
@@ -94,6 +98,15 @@ func (w *Window) Render(compo app.Component) error {
 	return err
 }
 
+// Reload satisfies the app.ElementWithNavigation interface.
+func (w *Window) Reload() error {
+	rawurl, err := w.history.Current()
+	if err != nil {
+		return err
+	}
+	return w.Load(rawurl)
+}
+
 // LastFocus satisfies the app.ElementWithComponent interface.
 func (w *Window) LastFocus() time.Time {
 	return w.lastFocus
@@ -101,22 +114,30 @@ func (w *Window) LastFocus() time.Time {
 
 // CanPrevious satisfies the app.ElementWithNavigation interface.
 func (w *Window) CanPrevious() bool {
-	return false
+	return w.history.CanPrevious()
 }
 
 // Previous satisfies the app.ElementWithNavigation interface.
 func (w *Window) Previous() error {
-	return nil
+	rawurl, err := w.history.Previous()
+	if err != nil {
+		return err
+	}
+	return w.Load(rawurl)
 }
 
 // CanNext satisfies the app.ElementWithNavigation interface.
 func (w *Window) CanNext() bool {
-	return false
+	return w.history.CanNext()
 }
 
 // Next satisfies the app.ElementWithNavigation interface.
 func (w *Window) Next() error {
-	return nil
+	rawurl, err := w.history.Next()
+	if err != nil {
+		return err
+	}
+	return w.Load(rawurl)
 }
 
 // Position satisfies the app.Window interface.

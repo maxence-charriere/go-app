@@ -152,7 +152,7 @@ func (h *concurrentHistory) Previous() (url string, err error) {
 
 func (h *concurrentHistory) CanNext() bool {
 	h.mutex.Lock()
-	ok := h.base.CanPrevious()
+	ok := h.base.CanNext()
 	h.mutex.Unlock()
 	return ok
 }

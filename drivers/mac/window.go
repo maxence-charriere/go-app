@@ -27,6 +27,7 @@ type Window struct {
 	id        uuid.UUID
 	markup    app.Markup
 	component app.Component
+	history   app.History
 	lastFocus time.Time
 
 	onMove           func(x, y float64)
@@ -44,10 +45,14 @@ func newWindow(driver *Driver, config app.WindowConfig) (w *Window, err error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
 	markup = app.NewConcurrentMarkup(markup)
 
+	history := app.NewHistory()
+	history = app.NewConcurrentHistory(history)
+
 	w = &Window{
 		id:        uuid.New(),
 		driver:    driver,
 		markup:    markup,
+		history:   history,
 		lastFocus: time.Now(),
 
 		onMove:           config.OnMove,
@@ -75,7 +80,7 @@ func newWindow(driver *Driver, config app.WindowConfig) (w *Window, err error) {
 		return
 	}
 
-	if len(config.DefaultURL) == 0 {
+	if len(config.DefaultURL) != 0 {
 		err = w.Load(config.DefaultURL)
 	}
 	return
@@ -109,33 +114,52 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 	}
 
 	compoName := app.ComponentNameFromURL(u)
+	isRegiteredCompo := w.driver.factory.IsRegisteredComponent(compoName)
+	currentURL, err := w.history.Current()
+
+	if isRegiteredCompo && (err != nil || currentURL != u.String()) {
+		w.history.NewEntry(u.String())
+	}
+	return w.load(u)
+}
+
+func (w *Window) load(u *url.URL) error {
+	var compoName = app.ComponentNameFromURL(u)
 	var compo app.Component
+	var root app.Tag
+	var buffer bytes.Buffer
+	var pageConfig html.PageConfig
+	var err error
+
+	// Redirect web page to default web browser.
 	if compo, err = w.driver.factory.NewComponent(compoName); err != nil {
 		cmd := exec.Command("open", u.String())
-		return cmd.Run()
+		err = cmd.Run()
+		return err
 	}
 
 	if w.component != nil {
 		w.markup.Dismount(w.component)
 	}
 
-	if navigable, ok := compo.(app.Navigable); ok {
-		navigable.OnNavigate(u)
-	}
-
-	var root app.Tag
-	if root, err = w.markup.Mount(compo); err != nil {
+	if _, err = w.markup.Mount(compo); err != nil {
 		return err
 	}
 	w.component = compo
 
-	var buffer bytes.Buffer
+	if navigable, ok := compo.(app.Navigable); ok {
+		navigable.OnNavigate(u)
+	}
+
+	if root, err = w.markup.Root(compo); err != nil {
+		return nil
+	}
+
 	enc := html.NewEncoder(&buffer, w.markup)
 	if err = enc.Encode(root); err != nil {
 		return err
 	}
 
-	var pageConfig html.PageConfig
 	if page, ok := compo.(html.Page); ok {
 		pageConfig = page.PageConfig()
 	}
@@ -148,10 +172,12 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 	payload := struct {
 		Title   string `json:"title"`
 		Page    string `json:"page"`
+		LoadURL string `json:"load-url"`
 		BaseURL string `json:"base-url"`
 	}{
 		Title:   pageConfig.Title,
 		Page:    html.NewPage(pageConfig),
+		LoadURL: u.String(),
 		BaseURL: w.driver.Resources(),
 	}
 
@@ -254,24 +280,65 @@ func (w *Window) LastFocus() time.Time {
 	return w.lastFocus
 }
 
+// Reload satisfies the app.ElementWithNavigation interface.
+func (w *Window) Reload() error {
+	var rawurl string
+	var u *url.URL
+	var err error
+
+	if rawurl, err = w.history.Current(); err != nil {
+		return err
+	}
+
+	if u, err = url.Parse(rawurl); err != nil {
+		return err
+	}
+
+	return w.load(u)
+}
+
 // CanPrevious satisfies the app.ElementWithNavigation interface.
 func (w *Window) CanPrevious() bool {
-	panic("not implemented")
+	return w.history.CanPrevious()
 }
 
 // Previous satisfies the app.ElementWithNavigation interface.
 func (w *Window) Previous() error {
-	panic("not implemented")
+	var rawurl string
+	var u *url.URL
+	var err error
+
+	if rawurl, err = w.history.Previous(); err != nil {
+		return err
+	}
+
+	if u, err = url.Parse(rawurl); err != nil {
+		return err
+	}
+
+	return w.load(u)
 }
 
 // CanNext satisfies the app.ElementWithNavigation interface.
 func (w *Window) CanNext() bool {
-	panic("not implemented")
+	return w.history.CanNext()
 }
 
 // Next satisfies the app.ElementWithNavigation interface.
 func (w *Window) Next() error {
-	panic("not implemented")
+	var rawurl string
+	var u *url.URL
+	var err error
+
+	if rawurl, err = w.history.Next(); err != nil {
+		return err
+	}
+
+	if u, err = url.Parse(rawurl); err != nil {
+		return err
+	}
+
+	return w.load(u)
 }
 
 // Position satisfies the app.Window interface.
