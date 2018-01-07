@@ -2,29 +2,34 @@
 package appjs
 
 const appjs = `
-// mount mounts the given component in the page root.
-function mount(component) {
-  const selector = '[data-goapp-root]';
-  const root = document.querySelector(selector);
-  root.innerHTML = component;
-}
-
 // render replaces the node with the given id by the given component.
-function render(id, component) {
+function render(payload) {
+  const { id, component } = payload;
+
   const selector = '[data-goapp-id="' + id + '"]';
   const elem = document.querySelector(selector);
+
+  if (!elem) {
+    return;
+  }
   elem.outerHTML = component;
 }
 
 // render replaces the attributes of the node with the given id by the given
 // attributes.
-function renderAttributes(id, attrs) {
-  if (!attrs) {
+function renderAttributes(payload) {
+  const { id, attributes } = payload;
+
+  if (!attributes) {
     return;
   }
 
   const selector = '[data-goapp-id="' + id + '"]';
   const elem = document.querySelector(selector);
+
+  if (!elem) {
+    return;
+  }
 
   if (!elem.hasAttributes()) {
     return;
@@ -39,15 +44,15 @@ function renderAttributes(id, attrs) {
       continue;
     }
 
-    if (attrs[name] === undefined) {
+    if (attributes[name] === undefined) {
       elem.removeAttribute(name);
     }
   }
 
   // Set attributes.
-  for (var name in attrs) {
+  for (var name in attributes) {
     const currentValue = elem.getAttribute(name);
-    const newValue = attrs[name];
+    const newValue = attributes[name];
 
     if (currentValue !== newValue) {
       elem.setAttribute(name, newValue);

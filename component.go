@@ -24,7 +24,8 @@ type Component interface {
 type Mounter interface {
 	Component
 
-	// OnMount si called when a component is mounted.
+	// OnMount is called when a component is mounted.
+	// App.Render should not be called inside.
 	OnMount()
 }
 
@@ -33,6 +34,7 @@ type Dismounter interface {
 	Component
 
 	// OnDismount is called when a component is dismounted.
+	// App.Render should not be called inside.
 	OnDismount()
 }
 
@@ -40,8 +42,9 @@ type Dismounter interface {
 type Navigable interface {
 	Component
 
-	// OnNavigate is called when a component is navigated to.
-	OnNavigate(u url.URL)
+	// OnNavigate is called when a component is loaded or navigated to.
+	// It is called just after the component is mounted.
+	OnNavigate(u *url.URL)
 }
 
 // ComponentWithExtendedRender is the interface that wraps Funcs method.
@@ -69,6 +72,9 @@ type Factory interface {
 	// RegisterComponent registers a component under its type name lowercased.
 	RegisterComponent(c Component) (name string, err error)
 
+	// IsRegisteredComponent reports wheter the named component is registered.
+	IsRegisteredComponent(name string) bool
+
 	// NewComponent creates the named component.
 	// It returns an error if there is no component registered under name.
 	NewComponent(name string) (Component, error)
@@ -93,6 +99,11 @@ func (f factory) RegisterComponent(c Component) (name string, err error) {
 	name = normalizeComponentName(t.String())
 	f[name] = t
 	return
+}
+
+func (f factory) IsRegisteredComponent(name string) bool {
+	_, registered := f[name]
+	return registered
 }
 
 func (f factory) NewComponent(name string) (c Component, err error) {
@@ -137,9 +148,8 @@ func normalizeComponentName(name string) string {
 // targeted by the URL.
 func ComponentNameFromURL(u *url.URL) string {
 	path := u.Path
-	if strings.HasPrefix(path, "/") {
-		path = path[1:]
-	}
+	path = strings.TrimPrefix(path, "/")
+
 	paths := strings.SplitN(path, "/", 2)
 	if len(paths[0]) == 0 {
 		return ""

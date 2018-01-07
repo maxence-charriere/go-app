@@ -35,6 +35,11 @@ func (m *Markup) Len() int {
 	return len(m.components)
 }
 
+// Factory satisfies the app.Markup interface.
+func (m *Markup) Factory() app.Factory {
+	return m.factory
+}
+
 // Component satisfies the app.Markup interface.
 func (m *Markup) Component(id uuid.UUID) (compo app.Component, err error) {
 	var ok bool
@@ -452,25 +457,18 @@ func (m *Markup) syncChildTags(current, new *app.Tag) (syncs []app.TagSync, repl
 }
 
 // Map satisfies the app.Markup interface.
-func (m *Markup) Map(mapping app.Mapping) (shouldUpdate bool, err error) {
+func (m *Markup) Map(mapping app.Mapping) (function func(), err error) {
 	var pipeline []string
-	var compo app.Component
-	var funcMapping bool
-
 	if pipeline, err = app.ParseMappingTarget(mapping.Target); err != nil {
 		return
 	}
 
+	var compo app.Component
 	if compo, err = m.Component(mapping.CompoID); err != nil {
 		return
 	}
 
 	mapper := newMapper(pipeline, mapping.JSONValue)
-
-	if funcMapping, err = mapper.MapTo(compo); err != nil {
-		return
-	}
-
-	shouldUpdate = !funcMapping
+	function, err = mapper.MapTo(compo)
 	return
 }

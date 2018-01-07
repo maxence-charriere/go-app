@@ -35,11 +35,11 @@ func (m *mapper) fullTarget() string {
 	return strings.Join(m.completePipeline[:m.index+1], ".")
 }
 
-func (m *mapper) MapTo(compo app.Component) (funcMapping bool, err error) {
+func (m *mapper) MapTo(compo app.Component) (function func(), err error) {
 	return m.mapTo(reflect.ValueOf(compo))
 }
 
-func (m *mapper) mapTo(value reflect.Value) (funcMapping bool, err error) {
+func (m *mapper) mapTo(value reflect.Value) (function func(), err error) {
 	switch value.Kind() {
 	case reflect.Ptr:
 		return m.mapToPointer(value)
@@ -61,7 +61,7 @@ func (m *mapper) mapTo(value reflect.Value) (funcMapping bool, err error) {
 	}
 }
 
-func (m *mapper) mapToPointer(ptr reflect.Value) (funcMapping bool, err error) {
+func (m *mapper) mapToPointer(ptr reflect.Value) (function func(), err error) {
 	if len(m.pipeline()) == 0 {
 		return m.mapToValue(ptr)
 	}
@@ -80,7 +80,7 @@ func (m *mapper) mapToPointer(ptr reflect.Value) (funcMapping bool, err error) {
 	return m.mapTo(ptr.Elem())
 }
 
-func (m *mapper) mapToStruct(structure reflect.Value) (funcMapping bool, err error) {
+func (m *mapper) mapToStruct(structure reflect.Value) (function func(), err error) {
 	if len(m.pipeline()) == 0 {
 		return m.mapToValue(structure)
 	}
@@ -111,7 +111,7 @@ func (m *mapper) mapToStruct(structure reflect.Value) (funcMapping bool, err err
 	return m.mapTo(field)
 }
 
-func (m *mapper) mapToMap(mapv reflect.Value) (funcMapping bool, err error) {
+func (m *mapper) mapToMap(mapv reflect.Value) (function func(), err error) {
 	if len(m.pipeline()) == 0 {
 		m.mapToValue(mapv)
 		return
@@ -131,7 +131,7 @@ func (m *mapper) mapToMap(mapv reflect.Value) (funcMapping bool, err error) {
 	return
 }
 
-func (m *mapper) mapToSlice(slice reflect.Value) (funcMapping bool, err error) {
+func (m *mapper) mapToSlice(slice reflect.Value) (function func(), err error) {
 	if len(m.pipeline()) == 0 {
 		return m.mapToValue(slice)
 	}
@@ -150,7 +150,7 @@ func (m *mapper) mapToSlice(slice reflect.Value) (funcMapping bool, err error) {
 	return
 }
 
-func (m *mapper) mapToFunction(function reflect.Value) (funcMapping bool, err error) {
+func (m *mapper) mapToFunction(fn reflect.Value) (function func(), err error) {
 	if len(m.pipeline()) != 0 {
 		err = errors.Errorf(
 			"%s is mapped to a unsuported method",
@@ -159,7 +159,7 @@ func (m *mapper) mapToFunction(function reflect.Value) (funcMapping bool, err er
 		return
 	}
 
-	typ := function.Type()
+	typ := fn.Type()
 	if typ.NumIn() > 1 {
 		err = errors.Errorf(
 			"%s is mapped to func that have more than 1 arg",
@@ -168,10 +168,10 @@ func (m *mapper) mapToFunction(function reflect.Value) (funcMapping bool, err er
 		return
 	}
 
-	funcMapping = true
-
 	if typ.NumIn() == 0 {
-		function.Call(nil)
+		function = func() {
+			fn.Call(nil)
+		}
 		return
 	}
 
@@ -182,11 +182,13 @@ func (m *mapper) mapToFunction(function reflect.Value) (funcMapping bool, err er
 		return
 	}
 
-	function.Call([]reflect.Value{arg.Elem()})
+	function = func() {
+		fn.Call([]reflect.Value{arg.Elem()})
+	}
 	return
 }
 
-func (m *mapper) mapToValue(value reflect.Value) (funcMapping bool, err error) {
+func (m *mapper) mapToValue(value reflect.Value) (function func(), err error) {
 	if len(m.pipeline()) == 0 {
 		newValue := reflect.New(value.Type())
 

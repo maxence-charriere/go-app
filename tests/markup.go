@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 )
 
@@ -26,6 +27,10 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 		function func(t *testing.T, markup app.Markup)
 	}{
 		{
+			scenario: "does not return a nil factory",
+			function: testMarkupFactory,
+		},
+		{
 			scenario: "mounting and dismounting a component",
 			function: testMarkupMountDismount,
 		},
@@ -36,6 +41,14 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 		{
 			scenario: "get the component root",
 			function: testMarkupRoot,
+		},
+		{
+			scenario: "get the component root from dismounted component returns an error",
+			function: testMarkupRootDismounted,
+		},
+		{
+			scenario: "get a dismounted component returns an error",
+			function: testMarkupComponentDismounted,
 		},
 		{
 			scenario: "mounting a mounted component returns an error",
@@ -234,6 +247,12 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 	}
 }
 
+func testMarkupFactory(t *testing.T, markup app.Markup) {
+	if markup.Factory() == nil {
+		t.Error("factory is nil")
+	}
+}
+
 func testMarkupMountDismount(t *testing.T, markup app.Markup) {
 	compo := &Foo{}
 
@@ -283,6 +302,23 @@ func testMarkupRoot(t *testing.T, markup app.Markup) {
 	if root2.ID != root.ID {
 		t.Error("root and root 2 doesn't have the same id")
 	}
+}
+
+func testMarkupRootDismounted(t *testing.T, markup app.Markup) {
+	compo := &Hello{}
+	_, err := markup.Root(compo)
+	if err == nil {
+		t.Fatal("error is not nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupComponentDismounted(t *testing.T, markup app.Markup) {
+	_, err := markup.Component(uuid.New())
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
 }
 
 func testMarkupMountMounted(t *testing.T, markup app.Markup) {
@@ -457,8 +493,8 @@ func testMarkupUpdateSimpleToText(t *testing.T, markup app.Markup) {
 	if root.Name != "div" {
 		t.Fatal("root is not a div:", root.Name)
 	}
-	if l := len(root.Children); l != 4 {
-		t.Fatal("root doesn't have 4 children:", l)
+	if l := len(root.Children); l != 6 {
+		t.Fatal("root doesn't have 6 children:", l)
 	}
 	if text := root.Children[3]; text.Text != "Goodbye" {
 		t.Fatalf(`text is not "Goodbye": "%s"`, text.Text)
@@ -487,8 +523,8 @@ func testMarkupUpdateTextToSimple(t *testing.T, markup app.Markup) {
 	}
 
 	root := sync.Tag
-	if l := len(root.Children); l != 5 {
-		t.Fatal("root doesn't have 5 children:", l)
+	if l := len(root.Children); l != 7 {
+		t.Fatal("root doesn't have 7 children:", l)
 	}
 	if span := root.Children[3]; span.Name != "span" {
 		t.Fatalf(`span is not a span tag: %s`, span.Name)
@@ -700,8 +736,7 @@ func testMarkupMapField(t *testing.T, markup app.Markup) {
 		t.Fatal(err)
 	}
 
-	var shouldUpdate bool
-	if shouldUpdate, err = markup.Map(app.Mapping{
+	if _, err = markup.Map(app.Mapping{
 		CompoID:   root.CompoID,
 		Target:    "String",
 		JSONValue: `"hello"`,
@@ -711,9 +746,6 @@ func testMarkupMapField(t *testing.T, markup app.Markup) {
 
 	if compo.String != "hello" {
 		t.Errorf(`field String is not "hello": "%s"`, compo.String)
-	}
-	if !shouldUpdate {
-		t.Error("shouldUpdate is not true")
 	}
 }
 
@@ -730,19 +762,20 @@ func testMarkupMapMethod(t *testing.T, markup app.Markup) {
 		t.Fatal(err)
 	}
 
-	var shouldUpdate bool
-	if shouldUpdate, err = markup.Map(app.Mapping{
+	var function func()
+	if function, err = markup.Map(app.Mapping{
 		CompoID: root.CompoID,
 		Target:  "Method",
 	}); err != nil {
 		t.Fatal(err)
 	}
+	if function == nil {
+		t.Fatal("function is nil")
+	}
 
+	function()
 	if !methodCalled {
 		t.Error("method is not called")
-	}
-	if shouldUpdate {
-		t.Error("shouldUpdate is not false")
 	}
 }
 
@@ -771,8 +804,7 @@ func testMarkupMapPointer(t *testing.T, markup app.Markup) {
 		t.Fatal(err)
 	}
 
-	var shouldUpdate bool
-	if shouldUpdate, err = markup.Map(app.Mapping{
+	if _, err = markup.Map(app.Mapping{
 		CompoID:   root.CompoID,
 		Target:    "IntPtr",
 		JSONValue: "42",
@@ -782,9 +814,6 @@ func testMarkupMapPointer(t *testing.T, markup app.Markup) {
 
 	if *compo.IntPtr != 42 {
 		t.Errorf(`field IntPtr is not 42: %v`, *compo.IntPtr)
-	}
-	if !shouldUpdate {
-		t.Error("shouldUpdate is not true")
 	}
 }
 
@@ -796,8 +825,7 @@ func testMarkupMapStruct(t *testing.T, markup app.Markup) {
 		t.Fatal(err)
 	}
 
-	var shouldUpdate bool
-	if shouldUpdate, err = markup.Map(app.Mapping{
+	if _, err = markup.Map(app.Mapping{
 		CompoID:   root.CompoID,
 		Target:    "Struct",
 		JSONValue: `{"Exported": 42}`,
@@ -807,9 +835,6 @@ func testMarkupMapStruct(t *testing.T, markup app.Markup) {
 
 	if compo.Struct.Exported != 42 {
 		t.Errorf("field String is not 42: %d", compo.Struct.Exported)
-	}
-	if !shouldUpdate {
-		t.Error("shouldUpdate is not true")
 	}
 }
 
@@ -821,8 +846,7 @@ func testMarkupMapStructField(t *testing.T, markup app.Markup) {
 		t.Fatal(err)
 	}
 
-	var shouldUpdate bool
-	if shouldUpdate, err = markup.Map(app.Mapping{
+	if _, err = markup.Map(app.Mapping{
 		CompoID:   root.CompoID,
 		Target:    "Struct.Exported",
 		JSONValue: "42",
@@ -832,9 +856,6 @@ func testMarkupMapStructField(t *testing.T, markup app.Markup) {
 
 	if compo.Struct.Exported != 42 {
 		t.Errorf("field String is not 42: %d", compo.Struct.Exported)
-	}
-	if !shouldUpdate {
-		t.Error("shouldUpdate is not true")
 	}
 }
 
@@ -888,19 +909,20 @@ func testMarkupMapStructMethod(t *testing.T, markup app.Markup) {
 		t.Fatal(err)
 	}
 
-	var shouldUpdate bool
-	if shouldUpdate, err = markup.Map(app.Mapping{
+	var function func()
+	if function, err = markup.Map(app.Mapping{
 		CompoID: root.CompoID,
 		Target:  "Struct.Method",
 	}); err != nil {
 		t.Fatal(err)
 	}
+	if function == nil {
+		t.Fatal("function is nil")
+	}
 
+	function()
 	if !methodCalled {
 		t.Error("method is not called")
-	}
-	if shouldUpdate {
-		t.Error("shouldUpdate is not false")
 	}
 }
 
@@ -912,8 +934,7 @@ func testMarkupMapMap(t *testing.T, markup app.Markup) {
 		t.Fatal(err)
 	}
 
-	var shouldUpdate bool
-	if shouldUpdate, err = markup.Map(app.Mapping{
+	if _, err = markup.Map(app.Mapping{
 		CompoID:   root.CompoID,
 		Target:    "Map",
 		JSONValue: `{"foo": "bar"}`,
@@ -923,9 +944,6 @@ func testMarkupMapMap(t *testing.T, markup app.Markup) {
 
 	if value := compo.Map["foo"]; value != "bar" {
 		t.Errorf("value for key foo is not bar: %s", value)
-	}
-	if !shouldUpdate {
-		t.Error("shouldUpdate is not true")
 	}
 }
 
@@ -944,19 +962,20 @@ func testMarkupMapMapMethod(t *testing.T, markup app.Markup) {
 		t.Fatal(err)
 	}
 
-	var shouldUpdate bool
-	if shouldUpdate, err = markup.Map(app.Mapping{
+	var function func()
+	if function, err = markup.Map(app.Mapping{
 		CompoID: root.CompoID,
 		Target:  "MapWithMethod.Method",
 	}); err != nil {
 		t.Fatal(err)
 	}
+	if function == nil {
+		t.Fatal("function is nil")
+	}
 
+	function()
 	if !methodCalled {
 		t.Error("method is not called")
-	}
-	if shouldUpdate {
-		t.Error("shouldUpdate is not false")
 	}
 }
 
@@ -985,8 +1004,7 @@ func testMarkupMapSlice(t *testing.T, markup app.Markup) {
 		t.Fatal(err)
 	}
 
-	var shouldUpdate bool
-	if shouldUpdate, err = markup.Map(app.Mapping{
+	if _, err = markup.Map(app.Mapping{
 		CompoID:   root.CompoID,
 		Target:    "Slice",
 		JSONValue: `[1, 2, 3, 4, 5]`,
@@ -996,9 +1014,6 @@ func testMarkupMapSlice(t *testing.T, markup app.Markup) {
 
 	if !reflect.DeepEqual(compo.Slice, []int{1, 2, 3, 4, 5}) {
 		t.Error("slice is not [1, 2, 3, 4, 5]:", compo.Slice)
-	}
-	if !shouldUpdate {
-		t.Error("shouldUpdate is not true")
 	}
 }
 
@@ -1017,19 +1032,20 @@ func testMarkupMapSliceMethod(t *testing.T, markup app.Markup) {
 		t.Fatal(err)
 	}
 
-	var shouldUpdate bool
-	if shouldUpdate, err = markup.Map(app.Mapping{
+	var function func()
+	if function, err = markup.Map(app.Mapping{
 		CompoID: root.CompoID,
 		Target:  "SliceWithMethod.Method",
 	}); err != nil {
 		t.Fatal(err)
 	}
+	if function == nil {
+		t.Fatal("function is nil")
+	}
 
+	function()
 	if !methodCalled {
 		t.Error("method is not called")
-	}
-	if shouldUpdate {
-		t.Error("shouldUpdate is not false")
 	}
 }
 
@@ -1058,8 +1074,7 @@ func testMarkupMapArray(t *testing.T, markup app.Markup) {
 		t.Fatal(err)
 	}
 
-	var shouldUpdate bool
-	if shouldUpdate, err = markup.Map(app.Mapping{
+	if _, err = markup.Map(app.Mapping{
 		CompoID:   root.CompoID,
 		Target:    "Array",
 		JSONValue: `[1, 2, 3, 4, 5, 6]`,
@@ -1069,9 +1084,6 @@ func testMarkupMapArray(t *testing.T, markup app.Markup) {
 
 	if !reflect.DeepEqual(compo.Array, [5]int{1, 2, 3, 4, 5}) {
 		t.Error("array is not [1, 2, 3, 4, 5]:", compo.Array)
-	}
-	if !shouldUpdate {
-		t.Error("shouldUpdate is not true")
 	}
 }
 
@@ -1088,20 +1100,21 @@ func testMarkupMapFuncWithArg(t *testing.T, markup app.Markup) {
 		t.Fatal(err)
 	}
 
-	var shouldUpdate bool
-	if shouldUpdate, err = markup.Map(app.Mapping{
+	var function func()
+	if function, err = markup.Map(app.Mapping{
 		CompoID:   root.CompoID,
 		Target:    "FuncWithArg",
 		JSONValue: `42`,
 	}); err != nil {
 		t.Fatal(err)
 	}
+	if function == nil {
+		t.Fatal("function is nil")
+	}
 
+	function()
 	if mappedNb != 42 {
 		t.Error("mapped nb is not 42")
-	}
-	if shouldUpdate {
-		t.Error("shouldUpdate is not false")
 	}
 }
 
@@ -1184,20 +1197,21 @@ func testMarkupMapValueMethod(t *testing.T, markup app.Markup) {
 		t.Fatal(err)
 	}
 
-	var shouldUpdate bool
-	if shouldUpdate, err = markup.Map(app.Mapping{
+	var function func()
+	if function, err = markup.Map(app.Mapping{
 		CompoID:   root.CompoID,
 		Target:    "IntWithMethod.Method",
 		JSONValue: `42`,
 	}); err != nil {
 		t.Fatal(err)
 	}
+	if function == nil {
+		t.Fatal("function is nil")
+	}
 
+	function()
 	if mappedInt != 42 {
 		t.Error("method is not called")
-	}
-	if shouldUpdate {
-		t.Error("shouldUpdate is not false")
 	}
 }
 

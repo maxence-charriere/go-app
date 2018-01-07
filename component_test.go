@@ -51,6 +51,14 @@ func TestFactory(t *testing.T) {
 			function: testFactoryRegisterComponentEmptyStructPtr,
 		},
 		{
+			scenario: "component is registered",
+			function: testFactoryIsComponentRegistered,
+		},
+		{
+			scenario: "component is not registered",
+			function: testFactoryIsComponentNotRegistered,
+		},
+		{
 			scenario: "creates a component",
 			function: testFactoryCreateComponent,
 		},
@@ -102,6 +110,22 @@ func testFactoryRegisterComponentEmptyStructPtr(t *testing.T, factory Factory) {
 	t.Log(err)
 }
 
+func testFactoryIsComponentRegistered(t *testing.T, factory Factory) {
+	name, err := factory.RegisterComponent(&ValidCompo{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !factory.IsRegisteredComponent(name) {
+		t.Errorf("component %v is not registered", name)
+	}
+}
+
+func testFactoryIsComponentNotRegistered(t *testing.T, factory Factory) {
+	if factory.IsRegisteredComponent("unknown") {
+		t.Errorf("component unknown is registered")
+	}
+}
+
 func testFactoryCreateComponent(t *testing.T, factory Factory) {
 	if _, err := factory.RegisterComponent(&ValidCompo{}); err != nil {
 		t.Fatal(err)
@@ -133,21 +157,39 @@ func TestNormalizeComponentName(t *testing.T) {
 }
 
 func TestComponentNameFromURL(t *testing.T) {
-	u1, _ := url.Parse("/hello")
-	u2, _ := url.Parse("/hello?int=42")
-	u3, _ := url.Parse("/hello/world")
-	urls := []*url.URL{u1, u2, u3}
+	tests := []struct {
+		rawurl       string
+		expectedName string
+	}{
+		{
+			rawurl:       "/hello",
+			expectedName: "hello",
+		},
+		{
+			rawurl:       "/hello?int=42",
+			expectedName: "hello",
+		},
+		{
+			rawurl:       "/hello/world",
+			expectedName: "hello",
+		},
+		{
+			rawurl:       "hello",
+			expectedName: "hello",
+		},
+		{
+			rawurl: "test://hello",
+		},
+	}
 
-	for _, u := range urls {
-		if name := ComponentNameFromURL(u); name != "hello" {
-			t.Error("name is not hello:", name)
+	for _, test := range tests {
+		u, err := url.Parse(test.rawurl)
+		if err != nil {
+			t.Fatal(err)
 		}
-	}
 
-	u0 := &url.URL{
-		Host: "test",
-	}
-	if name := ComponentNameFromURL(u0); len(name) != 0 {
-		t.Error("name is not empty")
+		if name := ComponentNameFromURL(u); name != test.expectedName {
+			t.Errorf(`name is not "%s": "%s"`, test.expectedName, name)
+		}
 	}
 }

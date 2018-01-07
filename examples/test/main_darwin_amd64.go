@@ -55,11 +55,12 @@ func testWindow(close bool) {
 		// NoResizable:     true,
 		// NoClosable:      true,
 		// NoMinimizable:   true,
-		TitlebarHidden:  true,
+		// TitlebarHidden:  true,
 		BackgroundColor: "#282c34",
 		Mac: app.MacWindowConfig{
 			BackgroundVibrancy: app.VibeUltraDark,
 		},
+		DefaultURL: "webviewcomponent",
 
 		OnMove: func(x, y float64) {
 			fmt.Printf("Window moved to x:%v y:%v\n", x, y)

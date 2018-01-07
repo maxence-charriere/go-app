@@ -25,7 +25,7 @@ func TestPage(t *testing.T) {
 					},
 				},
 				DefaultComponent: "<div></div>",
-				AppStyle:         true,
+				DisableAppStyle:  true,
 				CSS: []string{
 					"hello.css",
 					"world.css",
@@ -41,7 +41,7 @@ func TestPage(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
-			page := Page(test.config)
+			page := NewPage(test.config)
 			if len(page) == 0 {
 				t.Fatal("page is empty")
 			}

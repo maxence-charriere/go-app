@@ -1,6 +1,7 @@
 package test
 
 import (
+	"fmt"
 	"net/url"
 	"time"
 
@@ -42,7 +43,9 @@ func (m *Menu) ID() uuid.UUID {
 }
 
 // Load satisfies the app.ElementWithComponent interface.
-func (m *Menu) Load(rawurl string) error {
+func (m *Menu) Load(rawurl string, v ...interface{}) error {
+	rawurl = fmt.Sprintf(rawurl, v...)
+
 	u, err := url.Parse(rawurl)
 	if err != nil {
 		return err

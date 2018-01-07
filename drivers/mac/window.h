@@ -9,12 +9,18 @@
                                         WKUIDelegate, WKScriptMessageHandler>
 @property NSString *ID;
 @property(weak) WKWebView *webview;
+@property NSURL *loadURL;
+@property NSURL *baseURL;
 
 + (bridge_result)newWindow:(NSURLComponents *)url payload:(NSString *)payload;
 - (void)configBackgroundColor:(NSString *)color
                      vibrancy:(NSVisualEffectMaterial)vibrancy;
 - (void)configWebview;
 - (void)configTitlebar:(NSString *)title hidden:(BOOL)isHidden;
++ (bridge_result)load:(NSURLComponents *)url payload:(NSString *)payload;
++ (bridge_result)render:(NSURLComponents *)url payload:(NSString *)payload;
++ (bridge_result)renderAttributes:(NSURLComponents *)url
+                          payload:(NSString *)payload;
 + (bridge_result)position:(NSURLComponents *)url payload:(NSString *)payload;
 + (bridge_result)move:(NSURLComponents *)url payload:(NSString *)payload;
 + (bridge_result)center:(NSURLComponents *)url payload:(NSString *)payload;

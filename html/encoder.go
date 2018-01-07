@@ -3,6 +3,7 @@ package html
 import (
 	"bufio"
 	"io"
+	"net/url"
 	"strings"
 
 	"github.com/murlokswarm/app"
@@ -93,13 +94,32 @@ func (e *Encoder) encodeAttributes(tag app.Tag) {
 
 		e.writer.WriteString(`="`)
 
-		if strings.HasPrefix(name, "on") && !strings.HasPrefix(val, "js:") {
+		switch {
+		// Redirect events to go.
+		case strings.HasPrefix(name, "on"):
 			e.writer.WriteString(`callGoEventHandler('`)
 			e.writer.WriteString(tag.CompoID.String())
 			e.writer.WriteString(`', '`)
 			e.writer.WriteString(val)
 			e.writer.WriteString(`', this, event)"`)
-		} else {
+
+		// Formart component targets.
+		case name == "href":
+			u, _ := url.Parse(val)
+			compoName := app.ComponentNameFromURL(u)
+
+			if e.markup.Factory().IsRegisteredComponent(compoName) {
+				u.Scheme = "compo"
+				u.Path = "/" + compoName
+				e.writer.WriteString(u.String())
+				e.writer.WriteByte('"')
+			} else {
+				e.writer.WriteString(val)
+				e.writer.WriteByte('"')
+			}
+
+		default:
+			strings.TrimPrefix(name, "js:")
 			e.writer.WriteString(val)
 			e.writer.WriteByte('"')
 		}

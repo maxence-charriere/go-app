@@ -3,13 +3,19 @@
 package mac
 
 import (
+	"bytes"
 	"fmt"
+	"html/template"
 	"math"
 	"net/url"
+	"os"
+	"os/exec"
+	"path/filepath"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/appjs"
 	"github.com/murlokswarm/app/bridge"
 	"github.com/murlokswarm/app/html"
 	"github.com/pkg/errors"
@@ -20,6 +26,8 @@ type Window struct {
 	driver    *Driver
 	id        uuid.UUID
 	markup    app.Markup
+	component app.Component
+	history   app.History
 	lastFocus time.Time
 
 	onMove           func(x, y float64)
@@ -34,10 +42,17 @@ type Window struct {
 }
 
 func newWindow(driver *Driver, config app.WindowConfig) (w *Window, err error) {
+	var markup app.Markup = html.NewMarkup(driver.factory)
+	markup = app.NewConcurrentMarkup(markup)
+
+	history := app.NewHistory()
+	history = app.NewConcurrentHistory(history)
+
 	w = &Window{
 		id:        uuid.New(),
 		driver:    driver,
-		markup:    app.NewConcurrentMarkup(html.NewMarkup(driver.factory)),
+		markup:    markup,
+		history:   history,
 		lastFocus: time.Now(),
 
 		onMove:           config.OnMove,
@@ -51,30 +66,38 @@ func newWindow(driver *Driver, config app.WindowConfig) (w *Window, err error) {
 		onClose:          config.OnClose,
 	}
 
-	normalizeSize := func(min, max float64) (float64, float64) {
-		min = math.Max(0, min)
-		min = math.Min(min, 10000)
+	config.MinWidth, config.MaxWidth = normalizeWidowSize(config.MinWidth, config.MaxWidth)
+	config.MinHeight, config.MaxHeight = normalizeWidowSize(config.MinHeight, config.MaxHeight)
 
-		if max == 0 {
-			max = 10000
-		}
-		max = math.Max(0, max)
-		max = math.Min(max, 10000)
-
-		min = math.Min(min, max)
-		return min, max
-	}
-
-	config.MinWidth, config.MaxWidth = normalizeSize(config.MinWidth, config.MaxWidth)
-	config.MinHeight, config.MaxHeight = normalizeSize(config.MinHeight, config.MaxHeight)
-
-	rawurl := fmt.Sprintf("/window/new?id=%s", w.id)
-	if _, err = driver.macos.Request(rawurl, bridge.NewPayload(config)); err != nil {
+	if _, err = driver.macos.Request(
+		fmt.Sprintf("/window/new?id=%s", w.id),
+		bridge.NewPayload(config),
+	); err != nil {
 		return
 	}
 
-	err = driver.elements.Add(w)
+	if err = driver.elements.Add(w); err != nil {
+		return
+	}
+
+	if len(config.DefaultURL) != 0 {
+		err = w.Load(config.DefaultURL)
+	}
 	return
+}
+
+func normalizeWidowSize(min, max float64) (float64, float64) {
+	min = math.Max(0, min)
+	min = math.Min(min, 10000)
+
+	if max == 0 {
+		max = 10000
+	}
+	max = math.Max(0, max)
+	max = math.Min(max, 10000)
+
+	min = math.Min(min, max)
+	return min, max
 }
 
 // ID satisfies the app.Element interface.
@@ -83,18 +106,173 @@ func (w *Window) ID() uuid.UUID {
 }
 
 // Load satisfies the app.ElementWithComponent interface.
-func (w *Window) Load(url string) error {
-	panic("not implemented")
+func (w *Window) Load(rawurl string, v ...interface{}) error {
+	rawurl = fmt.Sprintf(rawurl, v...)
+	u, err := url.Parse(rawurl)
+	if err != nil {
+		return err
+	}
+
+	compoName := app.ComponentNameFromURL(u)
+	isRegiteredCompo := w.driver.factory.IsRegisteredComponent(compoName)
+	currentURL, err := w.history.Current()
+
+	if isRegiteredCompo && (err != nil || currentURL != u.String()) {
+		w.history.NewEntry(u.String())
+	}
+	return w.load(u)
+}
+
+func (w *Window) load(u *url.URL) error {
+	var compoName = app.ComponentNameFromURL(u)
+	var compo app.Component
+	var root app.Tag
+	var buffer bytes.Buffer
+	var pageConfig html.PageConfig
+	var err error
+
+	// Redirect web page to default web browser.
+	if compo, err = w.driver.factory.NewComponent(compoName); err != nil {
+		cmd := exec.Command("open", u.String())
+		err = cmd.Run()
+		return err
+	}
+
+	if w.component != nil {
+		w.markup.Dismount(w.component)
+	}
+
+	if _, err = w.markup.Mount(compo); err != nil {
+		return err
+	}
+	w.component = compo
+
+	if navigable, ok := compo.(app.Navigable); ok {
+		navigable.OnNavigate(u)
+	}
+
+	if root, err = w.markup.Root(compo); err != nil {
+		return nil
+	}
+
+	enc := html.NewEncoder(&buffer, w.markup)
+	if err = enc.Encode(root); err != nil {
+		return err
+	}
+
+	if page, ok := compo.(html.Page); ok {
+		pageConfig = page.PageConfig()
+	}
+	if len(pageConfig.CSS) == 0 {
+		pageConfig.CSS = defaultCSS()
+	}
+	pageConfig.DefaultComponent = template.HTML(buffer.String())
+	pageConfig.AppJS = appjs.AppJS("window.webkit.messageHandlers.golangRequest.postMessage")
+
+	payload := struct {
+		Title   string `json:"title"`
+		Page    string `json:"page"`
+		LoadURL string `json:"load-url"`
+		BaseURL string `json:"base-url"`
+	}{
+		Title:   pageConfig.Title,
+		Page:    html.NewPage(pageConfig),
+		LoadURL: u.String(),
+		BaseURL: w.driver.Resources(),
+	}
+
+	_, err = driver.macos.Request(
+		fmt.Sprintf("/window/load?id=%s", w.id),
+		bridge.NewPayload(payload),
+	)
+	return err
+}
+
+func defaultCSS() (css []string) {
+	cssdir := filepath.Join(app.Resources(), "css")
+
+	filepath.Walk(cssdir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		if ext := filepath.Ext(path); ext != ".css" {
+			return nil
+		}
+
+		css = append(css, path)
+		return nil
+	})
+	return
 }
 
 // Contains satisfies the app.ElementWithComponent interface.
 func (w *Window) Contains(compo app.Component) bool {
-	panic("not implemented")
+	return w.markup.Contains(compo)
 }
 
 // Render satisfies the app.ElementWithComponent interface.
 func (w *Window) Render(compo app.Component) error {
-	panic("not implemented")
+	syncs, err := w.markup.Update(compo)
+	if err != nil {
+		return err
+	}
+
+	for _, sync := range syncs {
+		if sync.Replace {
+			err = w.render(sync)
+		} else {
+			err = w.renderAttributes(sync)
+		}
+
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (w *Window) render(sync app.TagSync) error {
+	var buffer bytes.Buffer
+
+	enc := html.NewEncoder(&buffer, w.markup)
+	if err := enc.Encode(sync.Tag); err != nil {
+		return err
+	}
+
+	payload := struct {
+		ID        string `json:"id"`
+		Component string `json:"component"`
+	}{
+		ID:        sync.Tag.ID.String(),
+		Component: buffer.String(),
+	}
+
+	_, err := driver.macos.Request(
+		fmt.Sprintf("/window/render?id=%s", w.id),
+		bridge.NewPayload(payload),
+	)
+	return err
+}
+
+func (w *Window) renderAttributes(sync app.TagSync) error {
+	payload := struct {
+		ID         string           `json:"id"`
+		Attributes app.AttributeMap `json:"attributes"`
+	}{
+		ID:         sync.Tag.ID.String(),
+		Attributes: sync.Tag.Attributes,
+	}
+
+	_, err := driver.macos.Request(
+		fmt.Sprintf("/window/render/attributes?id=%s", w.id),
+		bridge.NewPayload(payload),
+	)
+	return err
 }
 
 // LastFocus satisfies the app.ElementWithComponent interface.
@@ -102,24 +280,65 @@ func (w *Window) LastFocus() time.Time {
 	return w.lastFocus
 }
 
+// Reload satisfies the app.ElementWithNavigation interface.
+func (w *Window) Reload() error {
+	var rawurl string
+	var u *url.URL
+	var err error
+
+	if rawurl, err = w.history.Current(); err != nil {
+		return err
+	}
+
+	if u, err = url.Parse(rawurl); err != nil {
+		return err
+	}
+
+	return w.load(u)
+}
+
 // CanPrevious satisfies the app.ElementWithNavigation interface.
 func (w *Window) CanPrevious() bool {
-	panic("not implemented")
+	return w.history.CanPrevious()
 }
 
 // Previous satisfies the app.ElementWithNavigation interface.
 func (w *Window) Previous() error {
-	panic("not implemented")
+	var rawurl string
+	var u *url.URL
+	var err error
+
+	if rawurl, err = w.history.Previous(); err != nil {
+		return err
+	}
+
+	if u, err = url.Parse(rawurl); err != nil {
+		return err
+	}
+
+	return w.load(u)
 }
 
 // CanNext satisfies the app.ElementWithNavigation interface.
 func (w *Window) CanNext() bool {
-	panic("not implemented")
+	return w.history.CanNext()
 }
 
 // Next satisfies the app.ElementWithNavigation interface.
 func (w *Window) Next() error {
-	panic("not implemented")
+	var rawurl string
+	var u *url.URL
+	var err error
+
+	if rawurl, err = w.history.Next(); err != nil {
+		return err
+	}
+
+	if u, err = url.Parse(rawurl); err != nil {
+		return err
+	}
+
+	return w.load(u)
 }
 
 // Position satisfies the app.Window interface.
@@ -313,8 +532,46 @@ func onWindowClose(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload)
 	}
 	res = bridge.NewPayload(shouldClose)
 
+	if w.component != nil {
+		w.markup.Dismount(w.component)
+	}
+
 	if shouldClose {
 		w.driver.elements.Remove(w)
 	}
+	return
+}
+
+func onWindowCallback(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	var mapping app.Mapping
+	p.Unmarshal(&mapping)
+
+	function, err := w.markup.Map(mapping)
+	if err != nil {
+		app.DefaultLogger.Error(err)
+		return
+	}
+
+	if function != nil {
+		function()
+		return
+	}
+
+	var compo app.Component
+	if compo, err = w.markup.Component(mapping.CompoID); err != nil {
+		app.DefaultLogger.Error(err)
+		return
+	}
+
+	if err = w.Render(compo); err != nil {
+		app.DefaultLogger.Error(err)
+	}
+	return
+}
+
+func onWindowNavigate(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	var rawurl string
+	p.Unmarshal(&rawurl)
+	w.Load(rawurl)
 	return
 }

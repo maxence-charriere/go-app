@@ -21,11 +21,12 @@ type ElementWithComponent interface {
 	Element
 
 	// Load loads the page specified by the URL.
+	// URL can be formated as fmt package functions.
 	// Calls with an URL which contains a component name will load the named
 	// component.
 	// e.g. hello will load the component named hello.
 	// It returns an error if the component is not imported.
-	Load(url string) error
+	Load(url string, v ...interface{}) error
 
 	// Contains reports whether the component is mounted in the element.
 	Contains(c Component) bool
@@ -41,6 +42,9 @@ type ElementWithComponent interface {
 // supports navigation.
 type ElementWithNavigation interface {
 	ElementWithComponent
+
+	// Reload reloads the current page.
+	Reload() error
 
 	// CanPrevious reports whether load the previous page is possible.
 	CanPrevious() bool

@@ -8,6 +8,12 @@ import (
 //go:generate go run gen.go
 //go:generate go fmt
 
+// Page is the interface that describes a component that can represent a page.
+type Page interface {
+	// Config returns the page configuration.
+	PageConfig() PageConfig
+}
+
 // PageConfig is the struct that describes a page.
 type PageConfig struct {
 	// The title.
@@ -19,13 +25,13 @@ type PageConfig struct {
 	// The default component rendering.
 	DefaultComponent template.HTML
 
-	// Enables application default style.
-	AppStyle bool
+	// Disables application default style.
+	DisableAppStyle bool
 
 	// The CSS filenames to include.
 	CSS []string
 
-	// The app.js code that is included in the page..
+	// The app.js code that is included in the page.
 	AppJS template.JS
 
 	// The javascript filenames to include.
@@ -62,8 +68,8 @@ const (
 	RefreshMeta      MetaHTTPEquiv = "refresh"
 )
 
-// Page generate an HTML page from the given configuration.
-func Page(config PageConfig) string {
+// NewPage generate an HTML page from the given configuration.
+func NewPage(config PageConfig) string {
 	var buffer bytes.Buffer
 
 	tmpl := template.Must(template.New("").Parse(pageTemplate))

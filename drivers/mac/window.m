@@ -22,7 +22,6 @@
   BOOL noClosable = [config[@"no-closable"] boolValue];
   BOOL noMinimizable = [config[@"no-minimizable"] boolValue];
   BOOL titlebarHidden = [config[@"titlebar-hidden"] boolValue];
-  NSString *defaultURL = config[@"default-url"];
   NSNumber *backgroundVibrancy = config[@"mac"][@"background-vibrancy"];
 
   dispatch_async(dispatch_get_main_queue(), ^{
@@ -142,27 +141,6 @@
       payload:message.body];
 }
 
-- (void)webView:(WKWebView *)webView
-    decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction
-                    decisionHandler:
-                        (void (^)(WKNavigationActionPolicy))decisionHandler {
-  if (navigationAction.navigationType == WKNavigationTypeReload ||
-      navigationAction.navigationType == WKNavigationTypeOther) {
-    if (navigationAction.targetFrame.request != nil) {
-      decisionHandler(WKNavigationActionPolicyCancel);
-      return;
-    }
-
-    decisionHandler(WKNavigationActionPolicyAllow);
-    return;
-  }
-
-  NSURL *url = navigationAction.request.URL;
-  // TO DO:
-  // Call go request to navigate to anoter component.
-  decisionHandler(WKNavigationActionPolicyCancel);
-}
-
 - (void)configTitlebar:(NSString *)title hidden:(BOOL)isHidden {
   self.window.title = title;
 
@@ -193,6 +171,91 @@
                                   metrics:nil
                                     views:NSDictionaryOfVariableBindings(
                                               titlebar)]];
+}
+
++ (bridge_result)load:(NSURLComponents *)url payload:(NSString *)payload {
+  NSString *ID = [url queryValue:@"id"];
+
+  NSDictionary *config = [JSONDecoder decodeObject:payload];
+  NSString *title = config[@"title"];
+  NSString *page = config[@"page"];
+  NSString *loadURL = config[@"load-url"];
+  NSString *baseURL = config[@"base-url"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    Window *win = driver.elements[ID];
+
+    win.window.title = title;
+    win.loadURL = [NSURL URLWithString:loadURL];
+    win.baseURL = [NSURL fileURLWithPath:baseURL];
+    [win.webview loadHTMLString:page baseURL:win.baseURL];
+  });
+  return make_bridge_result(nil, nil);
+}
+
+- (void)webView:(WKWebView *)webView
+    decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction
+                    decisionHandler:
+                        (void (^)(WKNavigationActionPolicy))decisionHandler {
+  NSURL *url = navigationAction.request.URL;
+
+  switch (navigationAction.navigationType) {
+  case WKNavigationTypeOther:
+    // Allow the loadHTMLString to not be blocked.
+    if ([url isEqual:self.baseURL]) {
+      decisionHandler(WKNavigationActionPolicyAllow);
+      return;
+    }
+    break;
+
+  case WKNavigationTypeReload:
+    url = self.loadURL;
+    break;
+
+  case WKNavigationTypeLinkActivated:
+  case WKNavigationTypeFormSubmitted:
+  case WKNavigationTypeBackForward:
+  case WKNavigationTypeFormResubmitted:
+  default:
+    break;
+  }
+
+  Driver *driver = [Driver current];
+  [driver.golang
+      request:[NSString stringWithFormat:@"/window/navigate?id=%@", self.ID]
+      payload:[JSONEncoder encodeString:url.absoluteString]];
+  decisionHandler(WKNavigationActionPolicyCancel);
+}
+
++ (bridge_result)render:(NSURLComponents *)url payload:(NSString *)payload {
+  NSString *ID = [url queryValue:@"id"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    Window *win = driver.elements[ID];
+
+    [win.webview
+        evaluateJavaScript:[NSString stringWithFormat:@"render(%@)", payload]
+         completionHandler:nil];
+  });
+  return make_bridge_result(nil, nil);
+}
+
++ (bridge_result)renderAttributes:(NSURLComponents *)url
+                          payload:(NSString *)payload {
+  NSString *ID = [url queryValue:@"id"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    Window *win = driver.elements[ID];
+
+    [win.webview
+        evaluateJavaScript:[NSString stringWithFormat:@"renderAttributes(%@)",
+                                                      payload]
+         completionHandler:nil];
+  });
+  return make_bridge_result(nil, nil);
 }
 
 + (bridge_result)position:(NSURLComponents *)url payload:(NSString *)payload {

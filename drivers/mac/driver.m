@@ -43,6 +43,18 @@
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Window newWindow:url payload:payload];
             }];
+  [self.objc handle:@"/window/load"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Window load:url payload:payload];
+            }];
+  [self.objc handle:@"/window/render"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Window render:url payload:payload];
+            }];
+  [self.objc handle:@"/window/render/attributes"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Window renderAttributes:url payload:payload];
+            }];
   [self.objc handle:@"/window/position"
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Window position:url payload:payload];
@@ -86,6 +98,7 @@
 
 - (bridge_result)run:(NSURLComponents *)url payload:(NSString *)payload {
   [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+  [NSApp activateIgnoringOtherApps:YES];
   [NSApp run];
   return make_bridge_result(nil, nil);
 }
@@ -121,6 +134,7 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+
   [self.golang request:@"/driver/run" payload:nil];
 }
 
