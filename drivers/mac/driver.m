@@ -1,5 +1,6 @@
 #include "driver.h"
 #include "json.h"
+#include "menu.h"
 #include "sandbox.h"
 #include "window.h"
 
@@ -90,6 +91,16 @@
   [self.objc handle:@"/window/close"
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Window close:url payload:payload];
+            }];
+
+  // Menu handlers.
+  [self.objc handle:@"/menu/new"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Menu newMenu:url payload:payload];
+            }];
+  [self.objc handle:@"/menu/load"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Menu load:url payload:payload];
             }];
 
   self.dock = [[NSMenu alloc] initWithTitle:@""];

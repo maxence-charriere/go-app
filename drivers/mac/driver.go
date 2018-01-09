@@ -108,6 +108,13 @@ func (d *Driver) Run(factory app.Factory) error {
 }
 
 func (d *Driver) onRun(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	menubar, err := newMenu(app.MenuConfig{})
+	if err != nil {
+		errors.Wrap(err, "creating a menu bar failed")
+		panic(err)
+	}
+	d.menubar = menubar
+
 	if d.OnRun == nil {
 		return
 	}

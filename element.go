@@ -152,6 +152,8 @@ type Menu ElementWithComponent
 // MenuConfig is a struct that describes a menu.
 type MenuConfig struct {
 	DefaultURL string
+
+	OnClose func()
 }
 
 // DockTile is the interface that describes a dock tile.
