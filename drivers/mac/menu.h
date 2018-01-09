@@ -19,10 +19,12 @@
 
 @interface Menu : NSObject <NSMenuDelegate>
 @property NSString *ID;
-@property MenuContainer *Root;
+@property MenuContainer *root;
 
 + (bridge_result)newMenu:(NSURLComponents *)url payload:(NSString *)payload;
 + (bridge_result)load:(NSURLComponents *)url payload:(NSString *)payload;
+- (MenuContainer *)newContainer:(NSDictionary *)map;
+- (MenuItem *)newItem:(NSDictionary *)map;
 @end
 
 #endif /* menu_h */

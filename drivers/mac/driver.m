@@ -38,6 +38,10 @@
             handler:^(NSURLComponents *url, NSString *payload) {
               return [self support:url payload:payload];
             }];
+  [self.objc handle:@"/driver/menubar/set"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [self setMenuBar:url payload:payload];
+            }];
 
   // Window handlers.
   [self.objc handle:@"/window/new"
@@ -144,8 +148,19 @@
   return make_bridge_result(dirname, nil);
 }
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+- (bridge_result)setMenuBar:(NSURLComponents *)url payload:(NSString *)payload {
+  NSString *menuID = [url queryValue:@"menu-id"];
 
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    Menu *menu = driver.elements[menuID];
+
+    NSApp.mainMenu = menu.root;
+  });
+  return make_bridge_result(nil, nil);
+}
+
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   [self.golang request:@"/driver/run" payload:nil];
 }
 

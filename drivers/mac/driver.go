@@ -101,6 +101,10 @@ func (d *Driver) Run(factory app.Factory) error {
 	d.golang.Handle("/window/callback", windowHandler(onWindowCallback))
 	d.golang.Handle("/window/navigate", windowHandler(onWindowNavigate))
 
+	if len(d.MenubarURL) == 0 {
+		d.MenubarURL = "mac.defaultmenubar"
+	}
+
 	driver = d
 	_, err := d.macos.Request("/driver/run", nil)
 	d.waitStop.Wait()
@@ -108,12 +112,22 @@ func (d *Driver) Run(factory app.Factory) error {
 }
 
 func (d *Driver) onRun(u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	menubar, err := newMenu(app.MenuConfig{})
-	if err != nil {
-		errors.Wrap(err, "creating a menu bar failed")
+	var err error
+
+	if d.menubar, err = newMenu(app.MenuConfig{
+		DefaultURL: d.MenubarURL,
+	}); err != nil {
+		errors.Wrap(err, "creating the menu bar failed")
 		panic(err)
 	}
-	d.menubar = menubar
+
+	if _, err = d.macos.Request(
+		fmt.Sprintf("/driver/menubar/set?menu-id=%v", d.menubar.ID()),
+		nil,
+	); err != nil {
+		errors.Wrap(err, "set the menu bar failed")
+		panic(err)
+	}
 
 	if d.OnRun == nil {
 		return

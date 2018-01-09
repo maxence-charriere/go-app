@@ -129,8 +129,8 @@ func (w *Window) load(u *url.URL) error {
 	var pageConfig html.PageConfig
 	var err error
 
-	// Redirect web page to default web browser.
 	if compo, err = driver.factory.NewComponent(compoName); err != nil {
+		// Redirect web page to default web browser.
 		cmd := exec.Command("open", u.String())
 		err = cmd.Run()
 		return err
@@ -138,6 +138,7 @@ func (w *Window) load(u *url.URL) error {
 
 	if w.component != nil {
 		w.markup.Dismount(w.component)
+		w.component = nil
 	}
 
 	if _, err = w.markup.Mount(compo); err != nil {
