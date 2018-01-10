@@ -101,6 +101,8 @@ func (d *Driver) Run(factory app.Factory) error {
 	d.golang.Handle("/window/callback", windowHandler(onWindowCallback))
 	d.golang.Handle("/window/navigate", windowHandler(onWindowNavigate))
 
+	d.golang.Handle("/menu/callback", menuHandler(onMenuCallback))
+
 	if len(d.MenubarURL) == 0 {
 		d.MenubarURL = "mac.defaultmenubar"
 	}

@@ -85,9 +85,9 @@ function callGoEventHandler(compoID, target, self, event) {
   }
 
   const mapping = {
-    CompoID: compoID,
-    Target: target,
-    JSONValue: JSON.stringify(payload)
+    'compo-id': compoID,
+    'target': target,
+    'json-value': JSON.stringify(payload)
   };
 
   golangRequest(JSON.stringify(mapping));

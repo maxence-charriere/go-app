@@ -13,8 +13,12 @@
 @interface MenuItem : NSMenuItem
 @property NSString *ID;
 @property NSString *compoID;
+@property NSString *elemID;
 @property NSString *onClick;
-@property BOOL isSeparator;
+
+- (void)setupOnClick:(NSString *)selector;
+- (void)clicked:(id)sender;
+- (void)setupKeys:(NSString *)keys;
 @end
 
 @interface Menu : NSObject <NSMenuDelegate>

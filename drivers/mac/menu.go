@@ -99,6 +99,33 @@ func (m *Menu) LastFocus() time.Time {
 	return m.lastFocus
 }
 
+func onMenuCallback(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	var mapping app.Mapping
+	p.Unmarshal(&mapping)
+
+	function, err := m.markup.Map(mapping)
+	if err != nil {
+		app.DefaultLogger.Error(err)
+		return
+	}
+
+	if function != nil {
+		function()
+		return
+	}
+
+	var compo app.Component
+	if compo, err = m.markup.Component(mapping.CompoID); err != nil {
+		app.DefaultLogger.Error(err)
+		return
+	}
+
+	if err = m.Render(compo); err != nil {
+		app.DefaultLogger.Error(err)
+	}
+	return
+}
+
 // DefaultMenuBar is a component that describes a menu bar.
 // It is loaded by default if Driver.MenubarURL is not set.
 type DefaultMenuBar struct {
@@ -112,16 +139,21 @@ func (m *DefaultMenuBar) Render() string {
 	<menu label="app">
 		<menuitem label="About" selector="orderFrontStandardAboutPanel:"></menuitem>
 		<menuitem separator></menuitem>	
-		<menuitem label="Preferences…" shortcut="meta+," disabled="true"></menuitem>
+		<menuitem label="Preferences…" keys="cmdorctrl+," disabled></menuitem>
 		<menuitem separator></menuitem>		
-		<menuitem label="Hide" shortcut="meta+h" selector="hide:"></menuitem>
-		<menuitem label="Hide Others" shortcut="meta+alt+h" selector="hideOtherApplications:"></menuitem>
+		<menuitem label="Hide" keys="cmdorctrl+h" selector="hide:"></menuitem>
+		<menuitem label="Hide Others" keys="cmdorctrl+alt+h" selector="hideOtherApplications:"></menuitem>
 		<menuitem label="Show All" selector="unhideAllApplications:"></menuitem>
 		<menuitem separator></menuitem>
-		<menuitem label="Quit" shortcut="meta+q" selector="terminate:"></menuitem>
+		<menuitem label="Quit" keys="cmdorctrl+q" selector="terminate:"></menuitem>
+		<menuitem label="Pouette" onclick="Pouette"></menuitem>
 	</menu>
 </menu>
 	`
+}
+
+func (m *DefaultMenuBar) Pouette() {
+	fmt.Println("Pouette:")
 }
 
 func init() {

@@ -8,6 +8,7 @@
 
   dispatch_async(dispatch_get_main_queue(), ^{
     Menu *menu = [[Menu alloc] init];
+    menu.ID = ID;
 
     // Registering menu.
     Driver *driver = [Driver current];
@@ -41,12 +42,17 @@
 
 - (MenuContainer *)newContainer:(NSDictionary *)map {
   NSString *name = map[@"name"];
-  NSString *label = nil;
+  NSString *ID = map[@"id"];
+  NSString *compoID = map[@"compo-id"];
   NSDictionary *attributes = map[@"attributes"];
+  NSString *label = @"";
+  NSString *disabled = nil;
   NSArray *children = map[@"children"];
 
   if (attributes != (id)[NSNull null]) {
     label = attributes[@"label"];
+    label = label == nil ? @"" : label;
+    disabled = attributes[@"disabled"];
   }
 
   if (![name isEqual:@"menu"]) {
@@ -54,11 +60,11 @@
         exceptionWithName:@"ErrMenuContainer"
                    reason:[NSString
                               stringWithFormat:
-                                  @"cannot create a NSMenu from a %@", name]
+                                  @"cannot create a MenuContainer from a %@",
+                                  name]
                  userInfo:nil];
   }
 
-  label = label == nil ? @"" : label;
   MenuContainer *container = [[MenuContainer alloc] initWithTitle:label];
 
   if (children != (id)[NSNull null]) {
@@ -68,6 +74,7 @@
 
       if ([childName isEqual:@"menu"]) {
         item = [[MenuItem alloc] init];
+        item.title = label;
         item.submenu = [self newContainer:child];
       } else {
         item = [self newItem:child];
@@ -80,8 +87,52 @@
 }
 
 - (MenuItem *)newItem:(NSDictionary *)map {
-  MenuItem *item = [[MenuItem alloc] init];
-  item.title = @"an item";
+  MenuItem *item = nil;
+  NSString *name = map[@"name"];
+  NSString *ID = map[@"id"];
+  NSString *compoID = map[@"compo-id"];
+  NSDictionary *attributes = map[@"attributes"];
+  NSString *label = @"";
+  NSString *disabled = nil;
+  NSString *separator = nil;
+  NSString *selector = nil;
+  NSString *onClick = nil;
+  NSString *keys = nil;
+
+  if (attributes != (id)[NSNull null]) {
+    label = attributes[@"label"];
+    label = label == nil ? @"" : label;
+    disabled = attributes[@"disabled"];
+    separator = attributes[@"separator"];
+    selector = attributes[@"selector"];
+    onClick = attributes[@"onclick"];
+    keys = attributes[@"keys"];
+  }
+
+  if (![name isEqual:@"menuitem"]) {
+    @throw [NSException
+        exceptionWithName:@"ErrMenuItem"
+                   reason:[NSString
+                              stringWithFormat:
+                                  @"cannot create a MenuItem from a %@", name]
+                 userInfo:nil];
+  }
+
+  if (separator != nil) {
+    return (MenuItem *)[MenuItem separatorItem];
+  }
+
+  item = [[MenuItem alloc] init];
+
+  item.ID = ID;
+  item.compoID = compoID;
+  item.elemID = self.ID;
+  item.title = label;
+  item.enabled = disabled == nil ? YES : NO;
+  item.onClick = onClick;
+
+  [item setupOnClick:selector];
+  [item setupKeys:keys];
   return item;
 }
 @end
@@ -90,4 +141,68 @@
 @end
 
 @implementation MenuItem
+- (void)setupOnClick:(NSString *)selector {
+  if (!self.enabled) {
+    return;
+  }
+
+  if (self.hasSubmenu) {
+    self.action = @selector(submenuAction:);
+    return;
+  }
+
+  if (selector != nil && selector.length > 0) {
+    self.action = NSSelectorFromString(selector);
+    return;
+  }
+
+  if (self.onClick == nil || self.onClick.length == 0) {
+    return;
+  }
+
+  self.target = self;
+  self.action = @selector(clicked:);
+}
+
+- (void)clicked:(id)sender {
+  NSMutableDictionary<NSString *, id> *mapping =
+      [[NSMutableDictionary alloc] init];
+  mapping[@"compo-id"] = self.compoID;
+  mapping[@"target"] = self.onClick;
+  mapping[@"json-value"] = @"{}";
+
+  Driver *driver = [Driver current];
+  [driver.golang
+      request:[NSString stringWithFormat:@"/menu/callback?id=%@", self.elemID]
+      payload:[JSONEncoder encodeObject:mapping]];
+}
+
+- (void)setupKeys:(NSString *)keys {
+  if (keys == nil || keys.length == 0) {
+    return;
+  }
+
+  keys = [keys lowercaseString];
+
+  NSArray *keyArray = [keys componentsSeparatedByString:@"+"];
+  self.keyEquivalentModifierMask = 0;
+
+  for (NSString *key in keyArray) {
+    if ([key isEqual:@"cmd"] || [key isEqual:@"cmdorctrl"]) {
+      self.keyEquivalentModifierMask |= NSEventModifierFlagCommand;
+    } else if ([key isEqual:@"ctrl"]) {
+      self.keyEquivalentModifierMask |= NSEventModifierFlagControl;
+    } else if ([key isEqual:@"alt"]) {
+      self.keyEquivalentModifierMask |= NSEventModifierFlagOption;
+    } else if ([key isEqual:@"shift"]) {
+      self.keyEquivalentModifierMask |= NSEventModifierFlagShift;
+    } else if ([key isEqual:@"fn"]) {
+      self.keyEquivalentModifierMask |= NSEventModifierFlagFunction;
+    } else if ([key isEqual:@""]) {
+      self.keyEquivalent = @"+";
+    } else {
+      self.keyEquivalent = key;
+    }
+  }
+}
 @end

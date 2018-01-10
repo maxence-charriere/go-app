@@ -51,13 +51,13 @@ type Markup interface {
 // Mapping describes a component mapping.
 type Mapping struct {
 	// The component identifier.
-	CompoID uuid.UUID
+	CompoID uuid.UUID `json:"compo-id"`
 
 	// A dot separated string that points to a component field or method.
-	Target string
+	Target string `json:"target"`
 
 	// The JSON value to map to a field or method's first argument.
-	JSONValue string
+	JSONValue string `json:"json-value"`
 }
 
 // ParseMappingTarget parses the given target and returns the corresponding
