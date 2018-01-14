@@ -5,20 +5,25 @@
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 
-@interface MenuContainer : NSMenu
-@property NSString *ID;
-@property NSString *compoID;
-@end
-
 @interface MenuItem : NSMenuItem
 @property NSString *ID;
 @property NSString *compoID;
 @property NSString *elemID;
 @property NSString *onClick;
+@property NSMenuItem *separator;
 
 - (void)setupOnClick:(NSString *)selector;
 - (void)clicked:(id)sender;
 - (void)setupKeys:(NSString *)keys;
+@end
+
+@interface MenuContainer : NSMenu
+@property NSString *ID;
+@property NSString *compoID;
+@property NSMutableArray<MenuItem *> *children;
+
+- (instancetype)init;
+- (void)addChild:(MenuItem *)child;
 @end
 
 @interface Menu : NSObject <NSMenuDelegate>

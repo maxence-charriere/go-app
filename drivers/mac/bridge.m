@@ -50,7 +50,7 @@ bridge_result macosRequest(char *rawurl, char *cpayload) {
 @implementation OBJCBridge
 - (instancetype)init {
   self = [super init];
-  self.handlers = [NSMutableDictionary dictionaryWithCapacity:128];
+  self.handlers = [NSMutableDictionary dictionaryWithCapacity:32];
   return self;
 }
 
