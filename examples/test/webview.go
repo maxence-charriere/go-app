@@ -11,12 +11,12 @@ import (
 )
 
 func init() {
-	app.Import(&WebviewComponent{})
+	app.Import(&Webview{})
 }
 
-// WebviewComponent is a component to test html in webview based elements.
+// Webview is a component to test webview based elements.
 // It implements the app.Component interface.
-type WebviewComponent struct {
+type Webview struct {
 	Title       string
 	Page        int
 	SquareColor string
@@ -26,9 +26,9 @@ type WebviewComponent struct {
 }
 
 // Render statisfies the app.Component interface.
-func (c *WebviewComponent) Render() string {
+func (c *Webview) Render() string {
 	return `
-<div class="root">
+<div class="root" oncontextmenu="OnContextMenu">
 	<h1>Test Window</h1>
 	<p>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
@@ -40,7 +40,7 @@ func (c *WebviewComponent) Render() string {
 	</p>
 	
 	<ul>
-		<li><a href="webviewcomponent?page=42">To page 42</a></li>
+		<li><a href="webview?page=42">To page 42</a></li>
 		<li><a href="unknown?page=42">Unknown compopent</a></li>
 		<li><a href="http://theverge.com">external hyperlink</a></li>
 		<li><button onclick="OnNextPage">Next Page</button></li>
@@ -66,8 +66,19 @@ func (c *WebviewComponent) Render() string {
 	`
 }
 
+// OnContextMenu is the function that is called when the context menu is
+// requested.
+func (c *Webview) OnContextMenu() {
+	app.NewContextMenu(app.MenuConfig{
+		DefaultURL: "menu",
+		OnClose: func() {
+			app.DefaultLogger.Log("context menu is closed")
+		},
+	})
+}
+
 // OnNavigate is the function that is called when a component is navigated.
-func (c *WebviewComponent) OnNavigate(u *url.URL) {
+func (c *Webview) OnNavigate(u *url.URL) {
 	if pagevals := u.Query()["page"]; len(pagevals) != 0 {
 		c.Page, _ = strconv.Atoi(pagevals[0])
 	}
@@ -86,24 +97,24 @@ func (c *WebviewComponent) OnNavigate(u *url.URL) {
 
 // PageConfig return allow to set page information like title or meta when the
 // component is mounted as the root component.
-func (c *WebviewComponent) PageConfig() html.PageConfig {
+func (c *Webview) PageConfig() html.PageConfig {
 	return html.PageConfig{
 		Title: fmt.Sprintf("Test component %v", c.Page),
 	}
 }
 
 // OnNextPage is the function to be called when the Next page button is clicked.
-func (c *WebviewComponent) OnNextPage() {
+func (c *Webview) OnNextPage() {
 	page := c.Page
 	page++
 
 	if win, err := app.WindowFromComponent(c); err == nil {
-		win.Load("/webviewcomponent?page=%v", page)
+		win.Load("/webview?page=%v", page)
 	}
 }
 
 // OnLink is the function to be called when the External link button is clicked.
-func (c *WebviewComponent) OnLink() {
+func (c *Webview) OnLink() {
 	if win, err := app.WindowFromComponent(c); err == nil {
 		win.Load("http://www.github.com")
 	}
@@ -111,7 +122,7 @@ func (c *WebviewComponent) OnLink() {
 
 // OnChangeSquareColor is the function to be called when the change color button
 // is clicked.
-func (c *WebviewComponent) OnChangeSquareColor() {
+func (c *Webview) OnChangeSquareColor() {
 	switch c.SquareColor {
 	case "blue":
 		c.SquareColor = "pink"
@@ -125,28 +136,28 @@ func (c *WebviewComponent) OnChangeSquareColor() {
 
 // OnChangeNumber is the function to be called when the change number button is
 // clicked.
-func (c *WebviewComponent) OnChangeNumber() {
+func (c *Webview) OnChangeNumber() {
 	c.Number = rand.Int()
 	app.Render(c)
 }
 
 // OnPrevious is the function that is called when the previous button is
 // clicked.
-func (c *WebviewComponent) OnPrevious() {
+func (c *Webview) OnPrevious() {
 	if win, err := app.WindowFromComponent(c); err == nil {
 		win.Previous()
 	}
 }
 
 // OnReload is the function that is called when the reload button is clicked.
-func (c *WebviewComponent) OnReload() {
+func (c *Webview) OnReload() {
 	if win, err := app.WindowFromComponent(c); err == nil {
 		win.Reload()
 	}
 }
 
 // OnNext is the function that is called when the next button is clicked.
-func (c *WebviewComponent) OnNext() {
+func (c *Webview) OnNext() {
 	if win, err := app.WindowFromComponent(c); err == nil {
 		win.Next()
 	}

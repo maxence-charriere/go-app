@@ -138,7 +138,6 @@ func (w *Window) load(u *url.URL) error {
 
 	if w.component != nil {
 		w.markup.Dismount(w.component)
-		w.component = nil
 	}
 
 	if _, err = w.markup.Mount(compo); err != nil {

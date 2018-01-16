@@ -81,9 +81,11 @@
 
   if (child.separator != nil) {
     [self addItem:child.separator];
-  } else {
-    [self addItem:child];
+    child.menu = self;
+    return;
   }
+
+  [self addItem:child];
 }
 @end
 
@@ -114,11 +116,12 @@
 
     @try {
       menu.root = [menu newContainer:content];
+      menu.root.delegate = menu;
     } @catch (NSException *exception) {
       err = exception.reason;
     }
 
-    [driver.objc asyncReturn:returnID result:make_bridge_result(nil, err)];
+    // [driver.objc asyncReturn:returnID result:make_bridge_result(nil, err)];
   });
   return make_bridge_result(nil, nil);
 }
@@ -219,5 +222,15 @@
   [item setupOnClick:selector];
   [item setupKeys:keys];
   return item;
+}
+
+- (void)menuDidClose:(NSMenu *)menu {
+  Driver *driver = [Driver current];
+
+  [driver.golang
+      request:[NSString stringWithFormat:@"/menu/close?id=%@", self.ID]
+      payload:nil];
+
+  [driver.elements removeObjectForKey:self.ID];
 }
 @end

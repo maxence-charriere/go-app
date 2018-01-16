@@ -11,6 +11,8 @@ func main() {
 	app.DefaultLogger = app.NewConcurrentLogger(app.NewConsole(true))
 
 	app.Run(&mac.Driver{
+		DockURL: "menu",
+
 		OnRun: func() {
 			fmt.Println("OnRun")
 			fmt.Println("app.Resources():", app.Resources())
@@ -60,7 +62,7 @@ func testWindow(close bool) {
 		Mac: app.MacWindowConfig{
 			BackgroundVibrancy: app.VibeUltraDark,
 		},
-		DefaultURL: "webviewcomponent",
+		DefaultURL: "webview",
 
 		OnMove: func(x, y float64) {
 			fmt.Printf("Window moved to x:%v y:%v\n", x, y)

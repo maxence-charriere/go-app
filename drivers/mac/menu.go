@@ -3,6 +3,7 @@
 package mac
 
 import (
+	"bytes"
 	"fmt"
 	"net/url"
 	"time"
@@ -19,6 +20,8 @@ type Menu struct {
 	markup    app.Markup
 	lastFocus time.Time
 	component app.Component
+
+	onClose func()
 }
 
 func newMenu(config app.MenuConfig) (m *Menu, err error) {
@@ -29,6 +32,8 @@ func newMenu(config app.MenuConfig) (m *Menu, err error) {
 		id:        uuid.New(),
 		markup:    markup,
 		lastFocus: time.Now(),
+
+		onClose: config.OnClose,
 	}
 
 	if _, err = driver.macos.Request(
@@ -42,7 +47,9 @@ func newMenu(config app.MenuConfig) (m *Menu, err error) {
 		return
 	}
 
-	m.Load(config.DefaultURL)
+	if len(config.DefaultURL) != 0 {
+		err = m.Load(config.DefaultURL)
+	}
 	return
 }
 
@@ -72,12 +79,20 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 		m.markup.Dismount(m.component)
 	}
 
-	if root, err = m.markup.Mount(compo); err != nil {
+	if _, err = m.markup.Mount(compo); err != nil {
 		return err
 	}
 	m.component = compo
 
-	_, err = driver.macos.RequestWithAsyncResponse(
+	if navigable, ok := compo.(app.Navigable); ok {
+		navigable.OnNavigate(u)
+	}
+
+	if root, err = m.markup.Root(compo); err != nil {
+		return nil
+	}
+
+	_, err = driver.macos.Request(
 		fmt.Sprintf("/menu/load?id=%s", m.id),
 		bridge.NewPayload(root),
 	)
@@ -91,12 +106,86 @@ func (m *Menu) Contains(compo app.Component) bool {
 
 // Render satisfies the app.Menu interface.
 func (m *Menu) Render(compo app.Component) error {
-	panic("not implemented")
+	syncs, err := m.markup.Update(compo)
+	if err != nil {
+		return err
+	}
+
+	for _, sync := range syncs {
+		if sync.Replace {
+			err = m.render(sync)
+		} else {
+			err = m.renderAttributes(sync)
+		}
+
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (m *Menu) render(sync app.TagSync) error {
+	var buffer bytes.Buffer
+
+	enc := html.NewEncoder(&buffer, m.markup)
+	if err := enc.Encode(sync.Tag); err != nil {
+		return err
+	}
+
+	payload := struct {
+		ID        string `json:"id"`
+		Component string `json:"component"`
+	}{
+		ID:        sync.Tag.ID.String(),
+		Component: buffer.String(),
+	}
+
+	_, err := driver.macos.Request(
+		fmt.Sprintf("/menu/render?id=%s", m.id),
+		bridge.NewPayload(payload),
+	)
+	return err
+}
+
+func (m *Menu) renderAttributes(sync app.TagSync) error {
+	payload := struct {
+		ID         string           `json:"id"`
+		Attributes app.AttributeMap `json:"attributes"`
+	}{
+		ID:         sync.Tag.ID.String(),
+		Attributes: sync.Tag.Attributes,
+	}
+
+	_, err := driver.macos.Request(
+		fmt.Sprintf("/menu/render/attributes?id=%s", m.id),
+		bridge.NewPayload(payload),
+	)
+	return err
 }
 
 // LastFocus satisfies the app.Menu interface.
 func (m *Menu) LastFocus() time.Time {
 	return m.lastFocus
+}
+
+func onMenuClose(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	// When a context menu button is clicked, the onclick event is called
+	// after the onclose one.
+	// We have to delay the time we remove the element otherwise the onclick
+	// event cannot be called.
+	go func() {
+		time.Sleep(7 * time.Millisecond)
+
+		app.CallOnUIGoroutine(func() {
+			if m.onClose != nil {
+				m.onClose()
+			}
+
+			driver.elements.Remove(m)
+		})
+	}()
+	return
 }
 
 func onMenuCallback(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Payload) {
@@ -126,6 +215,10 @@ func onMenuCallback(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Payload) 
 	return
 }
 
+func init() {
+	app.Import(&DefaultMenuBar{})
+}
+
 // DefaultMenuBar is a component that describes a menu bar.
 // It is loaded by default if Driver.MenubarURL is not set.
 type DefaultMenuBar struct {
@@ -146,16 +239,7 @@ func (m *DefaultMenuBar) Render() string {
 		<menuitem label="Show All" selector="unhideAllApplications:"></menuitem>
 		<menuitem separator></menuitem>
 		<menuitem label="Quit" keys="cmdorctrl+q" selector="terminate:"></menuitem>
-		<menuitem label="Pouette" onclick="Pouette"></menuitem>
 	</menu>
 </menu>
 	`
-}
-
-func (m *DefaultMenuBar) Pouette() {
-	fmt.Println("Pouette:")
-}
-
-func init() {
-	app.Import(&DefaultMenuBar{})
 }

@@ -38,9 +38,25 @@
             handler:^(NSURLComponents *url, NSString *payload) {
               return [self support:url payload:payload];
             }];
+  [self.objc handle:@"/driver/contextmenu/set"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [self setContextMenu:url payload:payload];
+            }];
   [self.objc handle:@"/driver/menubar/set"
             handler:^(NSURLComponents *url, NSString *payload) {
               return [self setMenuBar:url payload:payload];
+            }];
+  [self.objc handle:@"/driver/dock/set"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [self setDock:url payload:payload];
+            }];
+  [self.objc handle:@"/driver/dock/icon"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [self setDockIcon:url payload:payload];
+            }];
+  [self.objc handle:@"/driver/dock/badge"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [self setDockBadge:url payload:payload];
             }];
 
   // Window handlers.
@@ -107,7 +123,6 @@
               return [Menu load:url payload:payload];
             }];
 
-  self.dock = [[NSMenu alloc] initWithTitle:@""];
   return self;
 }
 
@@ -148,14 +163,72 @@
   return make_bridge_result(dirname, nil);
 }
 
+- (bridge_result)setContextMenu:(NSURLComponents *)url
+                        payload:(NSString *)payload {
+  NSString *menuID = [url queryValue:@"menu-id"];
+  NSString *returnID = [url queryValue:@"return-id"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Menu *menu = self.elements[menuID];
+    NSWindow *win = NSApp.keyWindow;
+
+    if (win == nil) {
+      [self.objc asyncReturn:returnID
+                      result:make_bridge_result(
+                                 nil, @"no window to host the context menu")];
+      return;
+    }
+
+    [menu.root popUpMenuPositioningItem:menu.root.itemArray[0]
+                             atLocation:[win mouseLocationOutsideOfEventStream]
+                                 inView:win.contentView];
+    [self.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
+  });
+  return make_bridge_result(nil, nil);
+}
+
 - (bridge_result)setMenuBar:(NSURLComponents *)url payload:(NSString *)payload {
   NSString *menuID = [url queryValue:@"menu-id"];
 
   dispatch_async(dispatch_get_main_queue(), ^{
-    Driver *driver = [Driver current];
-    Menu *menu = driver.elements[menuID];
-
+    Menu *menu = self.elements[menuID];
     NSApp.mainMenu = menu.root;
+  });
+  return make_bridge_result(nil, nil);
+}
+
+- (bridge_result)setDock:(NSURLComponents *)url payload:(NSString *)payload {
+  NSString *menuID = [url queryValue:@"menu-id"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Menu *menu = self.elements[menuID];
+    self.dock = menu.root;
+  });
+  return make_bridge_result(nil, nil);
+}
+
+- (bridge_result)setDockIcon:(NSURLComponents *)url
+                     payload:(NSString *)payload {
+  NSDictionary *icon = [JSONDecoder decodeObject:payload];
+  NSString *path = icon[@"path"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    if (path.length != 0) {
+      NSApp.applicationIconImage = [[NSImage alloc] initByReferencingFile:path];
+    } else {
+      NSApp.applicationIconImage = nil;
+    }
+  });
+  return make_bridge_result(nil, nil);
+}
+
+- (bridge_result)setDockBadge:(NSURLComponents *)url
+                      payload:(NSString *)payload {
+  NSDictionary *badge = [JSONDecoder decodeObject:payload];
+  NSString *msg = badge[@"message"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [NSApp.dockTile setBadgeLabel:msg];
   });
   return make_bridge_result(nil, nil);
 }

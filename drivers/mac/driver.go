@@ -101,11 +101,8 @@ func (d *Driver) Run(factory app.Factory) error {
 	d.golang.Handle("/window/callback", windowHandler(onWindowCallback))
 	d.golang.Handle("/window/navigate", windowHandler(onWindowNavigate))
 
+	d.golang.Handle("/menu/close", menuHandler(onMenuClose))
 	d.golang.Handle("/menu/callback", menuHandler(onMenuCallback))
-
-	if len(d.MenubarURL) == 0 {
-		d.MenubarURL = "mac.defaultmenubar"
-	}
 
 	driver = d
 	_, err := d.macos.Request("/driver/run", nil)
@@ -114,20 +111,14 @@ func (d *Driver) Run(factory app.Factory) error {
 }
 
 func (d *Driver) onRun(u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	var err error
-
-	if d.menubar, err = newMenu(app.MenuConfig{
-		DefaultURL: d.MenubarURL,
-	}); err != nil {
-		errors.Wrap(err, "creating the menu bar failed")
+	err := d.newMenuBar()
+	if err != nil {
 		panic(err)
 	}
 
-	if _, err = d.macos.Request(
-		fmt.Sprintf("/driver/menubar/set?menu-id=%v", d.menubar.ID()),
-		nil,
-	); err != nil {
-		errors.Wrap(err, "set the menu bar failed")
+	if d.dock, err = newDockTile(app.MenuConfig{
+		DefaultURL: d.DockURL,
+	}); err != nil {
 		panic(err)
 	}
 
@@ -137,6 +128,28 @@ func (d *Driver) onRun(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 
 	d.OnRun()
 	return
+}
+
+func (d *Driver) newMenuBar() error {
+	var err error
+
+	if len(d.MenubarURL) == 0 {
+		d.MenubarURL = "mac.defaultmenubar"
+	}
+
+	if d.menubar, err = newMenu(app.MenuConfig{
+		DefaultURL: d.MenubarURL,
+	}); err != nil {
+		return errors.Wrap(err, "creating the menu bar failed")
+	}
+
+	if _, err = d.macos.Request(
+		fmt.Sprintf("/driver/menubar/set?menu-id=%v", d.menubar.ID()),
+		nil,
+	); err != nil {
+		return errors.Wrap(err, "set the menu bar failed")
+	}
+	return nil
 }
 
 func (d *Driver) onFocus(u *url.URL, p bridge.Payload) (res bridge.Payload) {
@@ -231,8 +244,19 @@ func (d *Driver) Context(compo app.Component) (elem app.ElementWithComponent, er
 }
 
 // NewContextMenu satisfies the app.Driver interface.
-func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
-	panic("not implemented")
+func (d *Driver) NewContextMenu(config app.MenuConfig) app.Menu {
+	menu, err := newMenu(config)
+	if err != nil {
+		panic(errors.Wrap(err, "creating a context menu failed"))
+	}
+
+	if _, err = d.macos.RequestWithAsyncResponse(
+		"/driver/contextmenu/set?menu-id="+menu.ID().String(),
+		nil,
+	); err != nil {
+		panic(errors.Wrap(err, "creating a context menu failed"))
+	}
+	return menu
 }
 
 // Resources satisfies the app.Driver interface.
@@ -290,8 +314,8 @@ func (d *Driver) support() (dirname string, err error) {
 }
 
 // NewWindow satisfies the app.DriverWithWindows interface.
-func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
-	w, err := newWindow(c)
+func (d *Driver) NewWindow(config app.WindowConfig) app.Window {
+	w, err := newWindow(config)
 	if err != nil {
 		panic(errors.Wrap(err, "creating a window failed"))
 	}
@@ -300,12 +324,12 @@ func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
 
 // MenuBar satisfies the app.DriverWithMenuBar interface.
 func (d *Driver) MenuBar() app.Menu {
-	panic("not implemented")
+	return d.menubar
 }
 
 // Dock satisfies the app.DriverWithDock interface.
 func (d *Driver) Dock() app.DockTile {
-	panic("not implemented")
+	return d.dock
 }
 
 // Share satisfies the app.DriverWithShare interface.
@@ -314,13 +338,13 @@ func (d *Driver) Share(v interface{}) {
 }
 
 // NewFilePanel satisfies the app.DriverWithFilePanels interface.
-func (d *Driver) NewFilePanel(c app.FilePanelConfig) app.Element {
+func (d *Driver) NewFilePanel(config app.FilePanelConfig) app.Element {
 	panic("not implemented")
 }
 
 // NewPopupNotification satisfies the app.DriverWithPopupNotifications
 // interface.
-func (d *Driver) NewPopupNotification(c app.PopupNotificationConfig) app.Element {
+func (d *Driver) NewPopupNotification(config app.PopupNotificationConfig) app.Element {
 	panic("not implemented")
 }
 
