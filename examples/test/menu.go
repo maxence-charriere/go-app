@@ -42,6 +42,7 @@ func (m *Menu) Render() string {
 		<menuitem label="sub button" onclick="OnSubButtonClick" {{if .DisableAll}}disabled{{end}}></menuitem>
 		<menuitem label="sub button without action"></menuitem>	
 	</menu>
+	<menu label="disabled submenu" disabled></menu>
 	
 	<menuitem separator></menuitem>
 	

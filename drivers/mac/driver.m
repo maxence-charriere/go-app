@@ -122,7 +122,14 @@
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Menu load:url payload:payload];
             }];
-
+  [self.objc handle:@"/menu/render"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Menu render:url payload:payload];
+            }];
+  [self.objc handle:@"/menu/render/attributes"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Menu renderAttributes:url payload:payload];
+            }];
   return self;
 }
 

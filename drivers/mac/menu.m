@@ -120,9 +120,18 @@
     } @catch (NSException *exception) {
       err = exception.reason;
     }
-
-    // [driver.objc asyncReturn:returnID result:make_bridge_result(nil, err)];
   });
+  return make_bridge_result(nil, nil);
+}
+
++ (bridge_result)render:(NSURLComponents *)url payload:(NSString *)payload {
+  NSLog(@"should render");
+  return make_bridge_result(nil, nil);
+}
+
++ (bridge_result)renderAttributes:(NSURLComponents *)url
+                          payload:(NSString *)payload {
+  NSLog(@"should render attributes");
   return make_bridge_result(nil, nil);
 }
 
@@ -132,13 +141,11 @@
   NSString *compoID = map[@"compo-id"];
   NSDictionary *attributes = map[@"attributes"];
   NSString *label = @"";
-  NSString *disabled = nil;
   NSArray *children = map[@"children"];
 
   if (attributes != (id)[NSNull null]) {
     label = attributes[@"label"];
     label = label == nil ? @"" : label;
-    disabled = attributes[@"disabled"];
   }
 
   if (![name isEqual:@"menu"]) {
@@ -152,19 +159,16 @@
   }
 
   MenuContainer *container = [[MenuContainer alloc] initWithTitle:label];
+  container.ID = ID;
+  container.compoID = compoID;
 
   if (children != (id)[NSNull null]) {
     for (NSDictionary *child in children) {
       NSString *childName = child[@"name"];
-      MenuItem *item = nil;
+      MenuItem *item = [self newItem:child];
 
       if ([childName isEqual:@"menu"]) {
-        item = [[MenuItem alloc] init];
-        item.elemID = self.ID;
-        item.title = label;
         item.submenu = [self newContainer:child];
-      } else {
-        item = [self newItem:child];
       }
 
       [container addChild:item];
@@ -196,7 +200,7 @@
     keys = attributes[@"keys"];
   }
 
-  if (![name isEqual:@"menuitem"]) {
+  if (![name isEqual:@"menuitem"] && ![name isEqual:@"menu"]) {
     @throw [NSException
         exceptionWithName:@"ErrMenuItem"
                    reason:[NSString
@@ -209,19 +213,55 @@
   item.ID = ID;
   item.compoID = compoID;
   item.elemID = self.ID;
+  item.title = label;
+  item.enabled = disabled == nil ? YES : NO;
+
+  if ([name isEqual:@"menu"]) {
+    return item;
+  }
 
   if (separator != nil) {
     item.separator = [NSMenuItem separatorItem];
     return item;
   }
 
-  item.title = label;
-  item.enabled = disabled == nil ? YES : NO;
   item.onClick = onClick;
 
   [item setupOnClick:selector];
   [item setupKeys:keys];
   return item;
+}
+
+- (id)elementByID:(NSString *)ID {
+  return [self elementFromContainer:self.root ID:ID];
+}
+
+- (id)elementFromContainer:(MenuContainer *)container ID:(NSString *)ID {
+  if ([container.ID isEqual:ID]) {
+    return container;
+  }
+
+  for (MenuItem *child in container.children) {
+    id elem = [self elementFromItem:child ID:ID];
+
+    if (elem != nil) {
+      return elem;
+    }
+  }
+
+  return nil;
+}
+
+- (id)elementFromItem:(MenuItem *)item ID:(NSString *)ID {
+  if ([item.ID isEqual:ID]) {
+    return item;
+  }
+
+  if (item.submenu == nil) {
+    return nil;
+  }
+
+  return [self elementFromContainer:(MenuContainer *)item.submenu ID:ID];
 }
 
 - (void)menuDidClose:(NSMenu *)menu {
