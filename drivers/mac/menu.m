@@ -3,8 +3,13 @@
 #include "json.h"
 
 @implementation MenuItem
+- (BOOL)isSeparator {
+  return self.separator != nil;
+}
+
 - (void)setupOnClick:(NSString *)selector {
   if (!self.enabled) {
+    self.action = nil;
     return;
   }
 
@@ -79,7 +84,7 @@
 - (void)addChild:(MenuItem *)child {
   [self.children addObject:child];
 
-  if (child.separator != nil) {
+  if ([child isSeparator]) {
     [self addItem:child.separator];
     child.menu = self;
     return;
@@ -87,6 +92,23 @@
 
   [self addItem:child];
 }
+
+- (void)insertChild:(MenuItem *)child atIndex:(NSInteger)index {
+  [self.children insertObject:child atIndex:index];
+
+  if ([child isSeparator]) {
+    [self insertItem:child.separator atIndex:index];
+    child.menu = self;
+  } else {
+    [self insertItem:child atIndex:index];
+  }
+}
+
+- (void)removeChildAtIndex:(NSInteger)index {
+  [self.children removeObjectAtIndex:index];
+  [self removeItemAtIndex:index];
+}
+
 @end
 
 @implementation Menu
@@ -125,13 +147,98 @@
 }
 
 + (bridge_result)render:(NSURLComponents *)url payload:(NSString *)payload {
-  NSLog(@"should render");
+  NSString *ID = [url queryValue:@"id"];
+  NSDictionary *tag = [JSONDecoder decodeObject:payload];
+  NSString *tagID = tag[@"id"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+                     // Driver *driver = [Driver current];
+                     // Menu *menu = driver.elements[ID];
+
+                     // id elem = [menu elementByID:tagID];
+                     // MenuContainer *container = nil;
+                     // MenuItem *item = nil;
+
+                     // // Menu container.
+                     // if ([elem isKindOfClass:[MenuContainer class]]) {
+                     //   container = (MenuContainer *)elem;
+                     //   return;
+                     // }
+
+                     // // Menu item.
+                     // item = (MenuItem *)elem;
+                 });
   return make_bridge_result(nil, nil);
 }
 
 + (bridge_result)renderAttributes:(NSURLComponents *)url
                           payload:(NSString *)payload {
-  NSLog(@"should render attributes");
+  NSString *ID = [url queryValue:@"id"];
+  NSDictionary *tag = [JSONDecoder decodeObject:payload];
+  NSString *tagID = tag[@"id"];
+
+  NSDictionary *attributes = tag[@"attributes"];
+  NSString *label = @"";
+  BOOL disabled = NO;
+  BOOL separator = NO;
+  NSString *selector = nil;
+  NSString *onClick = nil;
+  NSString *keys = nil;
+
+  if (attributes != (id)[NSNull null]) {
+    label = attributes[@"label"];
+    label = label == nil ? @"" : label;
+    disabled = attributes[@"disabled"] != nil ? YES : NO;
+    separator = attributes[@"separator"] != nil ? YES : NO;
+    selector = attributes[@"selector"];
+    onClick = attributes[@"onclick"];
+    keys = attributes[@"keys"];
+  }
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    Menu *menu = driver.elements[ID];
+
+    id elem = [menu elementByID:tagID];
+    MenuContainer *container = nil;
+    MenuItem *item = nil;
+
+    if (elem == nil) {
+      return;
+    }
+
+    // Menu container.
+    // Should occur only for the root menu container.
+    if ([elem isKindOfClass:[MenuContainer class]]) {
+      container = (MenuContainer *)elem;
+      container.title = label;
+      return;
+    }
+
+    // Menu item.
+    item = (MenuItem *)elem;
+    item.title = label;
+    item.enabled = !disabled;
+
+    if (item.submenu != nil) {
+      item.submenu.title = label;
+      return;
+    }
+
+    if ([item isSeparator] != separator) {
+      MenuItem *newItem = [menu newItem:tag];
+      MenuContainer *container = (MenuContainer *)item.menu;
+      NSInteger index = [container.children indexOfObject:item];
+
+      [container removeChildAtIndex:index];
+      [container insertChild:newItem atIndex:index];
+      return;
+    }
+
+    item.onClick = onClick;
+    [item setupOnClick:selector];
+    [item setupKeys:keys];
+  });
   return make_bridge_result(nil, nil);
 }
 
@@ -139,6 +246,7 @@
   NSString *name = map[@"name"];
   NSString *ID = map[@"id"];
   NSString *compoID = map[@"compo-id"];
+
   NSDictionary *attributes = map[@"attributes"];
   NSString *label = @"";
   NSArray *children = map[@"children"];
@@ -158,9 +266,10 @@
                  userInfo:nil];
   }
 
-  MenuContainer *container = [[MenuContainer alloc] initWithTitle:label];
+  MenuContainer *container = [[MenuContainer alloc] init];
   container.ID = ID;
   container.compoID = compoID;
+  container.title = label;
 
   if (children != (id)[NSNull null]) {
     for (NSDictionary *child in children) {
@@ -182,10 +291,11 @@
   NSString *name = map[@"name"];
   NSString *ID = map[@"id"];
   NSString *compoID = map[@"compo-id"];
+
   NSDictionary *attributes = map[@"attributes"];
   NSString *label = @"";
-  NSString *disabled = nil;
-  NSString *separator = nil;
+  BOOL disabled = NO;
+  BOOL separator = NO;
   NSString *selector = nil;
   NSString *onClick = nil;
   NSString *keys = nil;
@@ -193,8 +303,8 @@
   if (attributes != (id)[NSNull null]) {
     label = attributes[@"label"];
     label = label == nil ? @"" : label;
-    disabled = attributes[@"disabled"];
-    separator = attributes[@"separator"];
+    disabled = attributes[@"disabled"] != nil ? YES : NO;
+    separator = attributes[@"separator"] != nil ? YES : NO;
     selector = attributes[@"selector"];
     onClick = attributes[@"onclick"];
     keys = attributes[@"keys"];
@@ -214,13 +324,13 @@
   item.compoID = compoID;
   item.elemID = self.ID;
   item.title = label;
-  item.enabled = disabled == nil ? YES : NO;
+  item.enabled = !disabled;
 
   if ([name isEqual:@"menu"]) {
     return item;
   }
 
-  if (separator != nil) {
+  if (separator) {
     item.separator = [NSMenuItem separatorItem];
     return item;
   }

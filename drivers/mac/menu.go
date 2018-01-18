@@ -149,17 +149,9 @@ func (m *Menu) render(sync app.TagSync) error {
 }
 
 func (m *Menu) renderAttributes(sync app.TagSync) error {
-	payload := struct {
-		ID         string           `json:"id"`
-		Attributes app.AttributeMap `json:"attributes"`
-	}{
-		ID:         sync.Tag.ID.String(),
-		Attributes: sync.Tag.Attributes,
-	}
-
 	_, err := driver.macos.Request(
 		fmt.Sprintf("/menu/render/attributes?id=%s", m.id),
-		bridge.NewPayload(payload),
+		bridge.NewPayload(sync.Tag),
 	)
 	return err
 }

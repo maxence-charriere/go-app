@@ -16,38 +16,85 @@ func init() {
 type Menu struct {
 	DisableAll  bool
 	RandomTitle uuid.UUID
+	Separator   bool
 }
 
 // Render statisfies the app.Component interface.
 func (m *Menu) Render() string {
 	return `
 <menu>
-	<menuitem label="button" onclick="OnButtonClick" {{if .DisableAll}}disabled{{end}}></menuitem>
-	<menuitem label="button with icon" onclick="OnButtonWithIconClick" {{if .DisableAll}}disabled{{end}}></menuitem>
-	<menuitem label="{{.RandomTitle}}" onclick="OnButtonWithRandomTitleClicked"></menuitem>
+	<menuitem label="button" 
+			  onclick="OnButtonClick"
+			  {{if .DisableAll}}disabled{{end}}>
+	</menuitem>
+	<menuitem label="button with icon" 
+			  onclick="OnButtonWithIconClick" 
+			  {{if .DisableAll}}disabled{{end}}>
+	</menuitem>
+	<menuitem label="random button: {{.RandomTitle}}" 
+			  onclick="OnButtonWithRandomTitleClicked"
+			  {{if .DisableAll}}disabled{{end}}>
+	</menuitem>
 
 	<menuitem separator></menuitem>
 
-	<menuitem label="set dock badge" onclick="OnSetDockBadge"></menuitem>
-	<menuitem label="unset dock badge" onclick="OnUnsetDockBadge"></menuitem>
+	<menuitem label="set dock badge" 
+			  onclick="OnSetDockBadge"
+			  {{if .DisableAll}}disabled{{end}}>
+	</menuitem>
+	<menuitem label="unset dock badge" 
+			  onclick="OnUnsetDockBadge"
+			  {{if .DisableAll}}disabled{{end}}>
+	</menuitem>
 	
 	<menuitem separator></menuitem>
 
-	<menuitem label="set dock icon" onclick="OnSetDockIcon"></menuitem>
-	<menuitem label="unset dock icon" onclick="OnUnsetDockIcon"></menuitem>
+	<menuitem label="set dock icon" 
+			  onclick="OnSetDockIcon"
+			  {{if .DisableAll}}disabled{{end}}>
+	</menuitem>
+	<menuitem label="unset dock icon" 
+			  onclick="OnUnsetDockIcon"
+			  {{if .DisableAll}}disabled{{end}}>
+	</menuitem>
 	
 	<menuitem separator></menuitem>
 
-	<menu label="submenu">
-		<menuitem label="sub button" onclick="OnSubButtonClick" {{if .DisableAll}}disabled{{end}}></menuitem>
+	<menu label="submenu" {{if .DisableAll}}disabled{{end}}>
+		<menuitem label="sub button" onclick="OnSubButtonClick"></menuitem>
 		<menuitem label="sub button without action"></menuitem>	
 	</menu>
 	<menu label="disabled submenu" disabled></menu>
+	<menu label="random menu: {{.RandomTitle}}" 
+		  {{if .DisableAll}}disabled{{end}}>
+	</menu>
 	
 	<menuitem separator></menuitem>
+
+	<menu label="separator test" {{if .DisableAll}}disabled{{end}}>
+		<menuitem label="switch separator" 
+				  onclick="OnSwitchSeparatorClick">
+		</menuitem>
+
+		{{if .Separator}}
+			<menuitem separator></menuitem>		
+		{{else}}
+			<menuitem label="----- Separator -----"></menuitem>	
+		{{end}}
+
+		<menuitem label="disabled button" disabled></menuitem>		
+	</menu>
+
+	<menuitem separator></menuitem>
 	
-	<menuitem label="enable all" onclick="OnEnableAllClick" {{if not .DisableAll}}disabled{{end}}></menuitem>
-	<menuitem label="disable all" onclick="OnDisableAllClick" {{if .DisableAll}}disabled{{end}}></menuitem>	
+	<menuitem label="enable all" 
+			onclick="OnEnableAllClick"
+			{{if not .DisableAll}}disabled{{end}}>
+	</menuitem>
+	<menuitem label="disable all" 
+			  onclick="OnDisableAllClick"
+			  {{if .DisableAll}}disabled{{end}}>
+	</menuitem>	
 </menu>
 	`
 }
@@ -137,5 +184,13 @@ func (m *Menu) OnEnableAllClick() {
 func (m *Menu) OnDisableAllClick() {
 	app.DefaultLogger.Log("button disable all clicked")
 	m.DisableAll = true
+	app.Render(m)
+}
+
+// OnSwitchSeparatorClick is the function that is called when the button
+// labelled "switch separator" is clicked.
+func (m *Menu) OnSwitchSeparatorClick() {
+	app.DefaultLogger.Log("button switch separator clicked")
+	m.Separator = !m.Separator
 	app.Render(m)
 }

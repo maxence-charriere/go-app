@@ -24,6 +24,8 @@
 
 - (instancetype)init;
 - (void)addChild:(MenuItem *)child;
+- (void)insertChild:(MenuItem *)child atIndex:(NSInteger)index;
+- (void)removeChildAtIndex:(NSInteger)index;
 @end
 
 @interface Menu : NSObject <NSMenuDelegate>
