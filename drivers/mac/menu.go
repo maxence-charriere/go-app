@@ -3,7 +3,6 @@
 package mac
 
 import (
-	"bytes"
 	"fmt"
 	"net/url"
 	"time"
@@ -126,24 +125,9 @@ func (m *Menu) Render(compo app.Component) error {
 }
 
 func (m *Menu) render(sync app.TagSync) error {
-	var buffer bytes.Buffer
-
-	enc := html.NewEncoder(&buffer, m.markup)
-	if err := enc.Encode(sync.Tag); err != nil {
-		return err
-	}
-
-	payload := struct {
-		ID        string `json:"id"`
-		Component string `json:"component"`
-	}{
-		ID:        sync.Tag.ID.String(),
-		Component: buffer.String(),
-	}
-
-	_, err := driver.macos.Request(
+	_, err := driver.macos.RequestWithAsyncResponse(
 		fmt.Sprintf("/menu/render?id=%s", m.id),
-		bridge.NewPayload(payload),
+		bridge.NewPayload(sync.Tag),
 	)
 	return err
 }

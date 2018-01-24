@@ -12,6 +12,7 @@
 @property NSString *onClick;
 @property NSMenuItem *separator;
 
+// - (instancetype)initFromTag:(NSDictionary *)tag;
 - (void)setupOnClick:(NSString *)selector;
 - (void)clicked:(id)sender;
 - (void)setupKeys:(NSString *)keys;
@@ -37,8 +38,8 @@
 + (bridge_result)render:(NSURLComponents *)url payload:(NSString *)payload;
 + (bridge_result)renderAttributes:(NSURLComponents *)url
                           payload:(NSString *)payload;
-- (MenuContainer *)newContainer:(NSDictionary *)map;
-- (MenuItem *)newItem:(NSDictionary *)map;
+- (MenuContainer *)newContainer:(NSDictionary *)tag;
+- (MenuItem *)newItem:(NSDictionary *)tag;
 - (id)elementByID:(NSString *)ID;
 - (id)elementFromContainer:(MenuContainer *)container ID:(NSString *)ID;
 - (id)elementFromItem:(MenuItem *)item ID:(NSString *)ID;
