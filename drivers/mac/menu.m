@@ -142,6 +142,7 @@
   self.compoID = tag[@"compo-id"];
   self.title = @"";
   self.children = [[NSMutableArray alloc] init];
+  [self removeAllItems];
 
   NSDictionary *attributes = tag[@"attributes"];
   if (attributes != nil) {
@@ -248,6 +249,7 @@
   NSString *returnID = [url queryValue:@"return-id"];
 
   NSDictionary *tag = [JSONDecoder decodeObject:payload];
+  NSString *name = tag[@"name"];
   NSString *tagID = tag[@"id"];
 
   dispatch_async(dispatch_get_main_queue(), ^{
@@ -262,18 +264,43 @@
       return;
     }
 
-    // id elem = [menu elementByID:tagID];
-    // MenuContainer *container = nil;
-    // MenuItem *item = nil;
+    @try {
+      // Menu container.
+      // Should occur only for the root menu container.
+      if ([elem isKindOfClass:[MenuContainer class]]) {
+        if (![name isEqual:@"menu"]) {
+          err =
+              [NSString stringWithFormat:@"root tag must be a menu: %@", name];
+          [driver.objc asyncReturn:returnID
+                            result:make_bridge_result(nil, err)];
+          return;
+        }
 
-    // // Menu container.
-    // if ([elem isKindOfClass:[MenuContainer class]]) {
-    //   container = (MenuContainer *)elem;
-    //   return;
-    // }
+        MenuContainer *container = (MenuContainer *)elem;
+        container = [container initWithMenuID:menu.ID andTag:tag];
+        [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
+        return;
+      }
 
-    // // Menu item.
-    // item = (MenuItem *)elem;
+      MenuItem *item = (MenuItem *)elem;
+      MenuContainer *container = (MenuContainer *)item.menu;
+      NSInteger index = [container.children indexOfObject:item];
+      [container removeChildAtIndex:index];
+
+      MenuItem *newItem = [[MenuItem alloc] initWithMenuID:menu.ID andTag:tag];
+
+      if ([name isEqual:@"menu"]) {
+        newItem.submenu =
+            [[MenuContainer alloc] initWithMenuID:menu.ID andTag:tag];
+      }
+
+      [container insertChild:newItem atIndex:index];
+
+      [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
+    } @catch (NSException *exception) {
+      err = exception.reason;
+      [driver.objc asyncReturn:returnID result:make_bridge_result(nil, err)];
+    }
   });
   return make_bridge_result(nil, nil);
 }

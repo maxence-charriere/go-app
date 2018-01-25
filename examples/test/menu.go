@@ -14,6 +14,7 @@ func init() {
 
 // Menu is a component to test menu based elements.
 type Menu struct {
+	Name             string
 	DisableAll       bool
 	RandomTitle      uuid.UUID
 	Separator        bool
@@ -24,7 +25,7 @@ type Menu struct {
 // Render statisfies the app.Component interface.
 func (m *Menu) Render() string {
 	return `
-<menu>
+<menu label="{{.Name}}">
 	<menuitem label="button" 
 			  onclick="OnButtonClick"
 			  {{if .DisableAll}}disabled{{end}}>
@@ -89,6 +90,7 @@ func (m *Menu) Render() string {
 
 	<menu label="full render test" {{if .DisableAll}}disabled{{end}}>
 		<menuitem label="render root" onclick="OnRenderRootClicked"></menuitem>
+		<menuitem label="render root attribute" onclick="OnRenderRootAttributeClicked"></menuitem>
 		{{if .RenderToggle}}
 			<menuitem label="render menu" onclick="OnRenderTest"></menuitem>
 		{{else}}
@@ -215,7 +217,16 @@ func (m *Menu) OnSwitchSeparatorClick() {
 // OnRenderRootClicked is the function that is called when the button labelled
 // "render root" is clicked.
 func (m *Menu) OnRenderRootClicked() {
+	app.DefaultLogger.Log("button render root clicked")
 	m.RenderRootToggle = !m.RenderRootToggle
+	app.Render(m)
+}
+
+// OnRenderRootAttributeClicked is the function that is called when the button
+// labelled "render root attribute" is clicked.
+func (m *Menu) OnRenderRootAttributeClicked() {
+	app.DefaultLogger.Log("button render root attribute clicked")
+	m.Name = uuid.New().String()
 	app.Render(m)
 }
 

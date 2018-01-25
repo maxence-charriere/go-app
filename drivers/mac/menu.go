@@ -114,7 +114,7 @@ func (m *Menu) Render(compo app.Component) error {
 		if sync.Replace {
 			err = m.render(sync)
 		} else {
-			err = m.renderAttributes(sync)
+			err = m.renderAttributes(compo, sync)
 		}
 
 		if err != nil {
@@ -132,12 +132,19 @@ func (m *Menu) render(sync app.TagSync) error {
 	return err
 }
 
-func (m *Menu) renderAttributes(sync app.TagSync) error {
-	// Ensure that objc will not do extra initializations.
-	tag := sync.Tag
-	tag.Children = nil
+func (m *Menu) renderAttributes(compo app.Component, sync app.TagSync) error {
+	root, err := m.markup.Root(compo)
+	if err != nil {
+		return err
+	}
 
-	_, err := driver.macos.RequestWithAsyncResponse(
+	tag := sync.Tag
+	if root.ID != tag.ID {
+		// Ensure that objc will not do extra initializations.
+		tag.Children = nil
+	}
+
+	_, err = driver.macos.RequestWithAsyncResponse(
 		fmt.Sprintf("/menu/render/attributes?id=%s", m.id),
 		bridge.NewPayload(tag),
 	)
