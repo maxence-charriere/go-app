@@ -100,8 +100,8 @@ type Tag struct {
 	Text       string       `json:"text"`
 	Svg        bool         `json:"svg"`
 	Type       TagType      `json:"type"`
-	Attributes AttributeMap `json:"attributes"`
-	Children   []Tag        `json:"children"`
+	Attributes AttributeMap `json:"attributes,omitempty"`
+	Children   []Tag        `json:"children,omitempty"`
 }
 
 // Is reports whether the tag is of the given type.

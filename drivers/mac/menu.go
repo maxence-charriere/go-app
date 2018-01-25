@@ -133,9 +133,13 @@ func (m *Menu) render(sync app.TagSync) error {
 }
 
 func (m *Menu) renderAttributes(sync app.TagSync) error {
-	_, err := driver.macos.Request(
+	// Ensure that objc will not do extra initializations.
+	tag := sync.Tag
+	tag.Children = nil
+
+	_, err := driver.macos.RequestWithAsyncResponse(
 		fmt.Sprintf("/menu/render/attributes?id=%s", m.id),
-		bridge.NewPayload(sync.Tag),
+		bridge.NewPayload(tag),
 	)
 	return err
 }
