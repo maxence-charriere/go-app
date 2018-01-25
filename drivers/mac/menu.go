@@ -91,7 +91,7 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 		return nil
 	}
 
-	_, err = driver.macos.Request(
+	_, err = driver.macos.RequestWithAsyncResponse(
 		fmt.Sprintf("/menu/load?id=%s", m.id),
 		bridge.NewPayload(root),
 	)

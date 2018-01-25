@@ -12,7 +12,7 @@
 @property NSString *onClick;
 @property NSMenuItem *separator;
 
-// - (instancetype)initFromTag:(NSDictionary *)tag;
+- (instancetype)initFromTag:(NSDictionary *)tag;
 - (void)setupOnClick:(NSString *)selector;
 - (void)clicked:(id)sender;
 - (void)setupKeys:(NSString *)keys;

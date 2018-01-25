@@ -3,6 +3,53 @@
 #include "json.h"
 
 @implementation MenuItem
+- (instancetype)initFromTag:(NSDictionary *)tag {
+  self = [super init];
+
+  NSString *name = tag[@"name"];
+  NSString *ID = tag[@"id"];
+  NSString *compoID = tag[@"compo-id"];
+
+  NSDictionary *attributes = tag[@"attributes"];
+  NSString *label = @"";
+  BOOL disabled = NO;
+  BOOL separator = NO;
+  NSString *selector = nil;
+  NSString *onClick = nil;
+  NSString *keys = nil;
+
+  if (attributes != (id)[NSNull null]) {
+    label = attributes[@"label"];
+    label = label == nil ? @"" : label;
+
+    disabled = attributes[@"disabled"] != nil ? YES : NO;
+    separator = attributes[@"separator"] != nil ? YES : NO;
+    selector = attributes[@"selector"];
+    onClick = attributes[@"onclick"];
+    keys = attributes[@"keys"];
+  }
+
+  self.ID = ID;
+  self.compoID = compoID;
+  self.title = label;
+  self.enabled = !disabled;
+
+  if (self.submenu != nil) {
+    self.submenu.title = label;
+  }
+
+  if (separator && self.separator == nil) {
+    self.separator = [NSMenuItem separatorItem];
+    return self;
+  }
+
+  self.onClick = onClick;
+  [self setupOnClick:selector];
+
+  [self setupKeys:keys];
+  return self;
+}
+
 - (BOOL)isSeparator {
   return self.separator != nil;
 }
@@ -142,6 +189,8 @@
     } @catch (NSException *exception) {
       err = exception.reason;
     }
+
+    [driver.objc asyncReturn:returnID result:make_bridge_result(nil, err)];
   });
   return make_bridge_result(nil, nil);
 }
@@ -174,82 +223,79 @@
 + (bridge_result)renderAttributes:(NSURLComponents *)url
                           payload:(NSString *)payload {
   NSString *ID = [url queryValue:@"id"];
+  NSString *returnID = [url queryValue:@"return-id"];
+
   NSDictionary *tag = [JSONDecoder decodeObject:payload];
   NSString *tagID = tag[@"id"];
 
   NSDictionary *attributes = tag[@"attributes"];
   NSString *label = @"";
-  BOOL disabled = NO;
   BOOL separator = NO;
-  NSString *selector = nil;
-  NSString *onClick = nil;
-  NSString *keys = nil;
 
   if (attributes != (id)[NSNull null]) {
     label = attributes[@"label"];
     label = label == nil ? @"" : label;
-    disabled = attributes[@"disabled"] != nil ? YES : NO;
+
     separator = attributes[@"separator"] != nil ? YES : NO;
-    selector = attributes[@"selector"];
-    onClick = attributes[@"onclick"];
-    keys = attributes[@"keys"];
   }
 
   dispatch_async(dispatch_get_main_queue(), ^{
     Driver *driver = [Driver current];
     Menu *menu = driver.elements[ID];
+    NSString *err = nil;
 
     id elem = [menu elementByID:tagID];
-    MenuContainer *container = nil;
-    MenuItem *item = nil;
-
     if (elem == nil) {
+      err = [NSString stringWithFormat:@"no element with id %@", tagID];
+      [driver.objc asyncReturn:returnID result:make_bridge_result(nil, err)];
       return;
     }
 
     // Menu container.
     // Should occur only for the root menu container.
     if ([elem isKindOfClass:[MenuContainer class]]) {
-      container = (MenuContainer *)elem;
+      MenuContainer *container = (MenuContainer *)elem;
       container.title = label;
+
+      [driver.objc asyncReturn:returnID result:make_bridge_result(nil, err)];
       return;
     }
 
     // Menu item.
-    item = (MenuItem *)elem;
-    item.title = label;
-    item.enabled = !disabled;
-
-    if (item.submenu != nil) {
-      item.submenu.title = label;
-      return;
-    }
+    MenuItem *item = (MenuItem *)elem;
 
     if ([item isSeparator] != separator) {
-      MenuItem *newItem = [menu newItem:tag];
-      MenuContainer *container = (MenuContainer *)item.menu;
-      NSInteger index = [container.children indexOfObject:item];
+      NSString *err = nil;
 
-      [container removeChildAtIndex:index];
-      [container insertChild:newItem atIndex:index];
+      @try {
+        MenuItem *newItem = [menu newItem:tag];
+        MenuContainer *container = (MenuContainer *)item.menu;
+        NSInteger index = [container.children indexOfObject:item];
+
+        [container removeChildAtIndex:index];
+        [container insertChild:newItem atIndex:index];
+      } @catch (NSException *exception) {
+        err = exception.reason;
+      }
+
+      [driver.objc asyncReturn:returnID result:make_bridge_result(nil, err)];
       return;
     }
 
-    item.onClick = onClick;
-    [item setupOnClick:selector];
-    [item setupKeys:keys];
+    item = [item initFromTag:tag];
+    [driver.objc asyncReturn:returnID result:make_bridge_result(nil, err)];
   });
   return make_bridge_result(nil, nil);
 }
 
-- (MenuContainer *)newContainer:(NSDictionary *)map {
-  NSString *name = map[@"name"];
-  NSString *ID = map[@"id"];
-  NSString *compoID = map[@"compo-id"];
+- (MenuContainer *)newContainer:(NSDictionary *)tag {
+  NSString *name = tag[@"name"];
+  NSString *ID = tag[@"id"];
+  NSString *compoID = tag[@"compo-id"];
 
-  NSDictionary *attributes = map[@"attributes"];
+  NSDictionary *attributes = tag[@"attributes"];
   NSString *label = @"";
-  NSArray *children = map[@"children"];
+  NSArray *children = tag[@"children"];
 
   if (attributes != (id)[NSNull null]) {
     label = attributes[@"label"];
@@ -286,29 +332,9 @@
   return container;
 }
 
-- (MenuItem *)newItem:(NSDictionary *)map {
+- (MenuItem *)newItem:(NSDictionary *)tag {
   MenuItem *item = nil;
-  NSString *name = map[@"name"];
-  NSString *ID = map[@"id"];
-  NSString *compoID = map[@"compo-id"];
-
-  NSDictionary *attributes = map[@"attributes"];
-  NSString *label = @"";
-  BOOL disabled = NO;
-  BOOL separator = NO;
-  NSString *selector = nil;
-  NSString *onClick = nil;
-  NSString *keys = nil;
-
-  if (attributes != (id)[NSNull null]) {
-    label = attributes[@"label"];
-    label = label == nil ? @"" : label;
-    disabled = attributes[@"disabled"] != nil ? YES : NO;
-    separator = attributes[@"separator"] != nil ? YES : NO;
-    selector = attributes[@"selector"];
-    onClick = attributes[@"onclick"];
-    keys = attributes[@"keys"];
-  }
+  NSString *name = tag[@"name"];
 
   if (![name isEqual:@"menuitem"] && ![name isEqual:@"menu"]) {
     @throw [NSException
@@ -319,26 +345,8 @@
                  userInfo:nil];
   }
 
-  item = [[MenuItem alloc] init];
-  item.ID = ID;
-  item.compoID = compoID;
+  item = [[MenuItem alloc] initFromTag:tag];
   item.elemID = self.ID;
-  item.title = label;
-  item.enabled = !disabled;
-
-  if ([name isEqual:@"menu"]) {
-    return item;
-  }
-
-  if (separator) {
-    item.separator = [NSMenuItem separatorItem];
-    return item;
-  }
-
-  item.onClick = onClick;
-
-  [item setupOnClick:selector];
-  [item setupKeys:keys];
   return item;
 }
 
