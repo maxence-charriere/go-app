@@ -100,6 +100,7 @@ type Hello struct {
 	Name          string
 	Placeholder   string
 	TextBye       bool
+	SizeDiff      bool
 	TmplErr       bool
 	ChildErr      bool
 	CompoFieldErr bool
@@ -129,6 +130,11 @@ func (h *Hello) Render() string {
 		<span>Goodbye</span>
 		<p>world</p>
 	{{end}}
+
+	{{if .SizeDiff}}
+		<a>another tag</a>
+	{{end}}
+
 	<a href="tests.hello">hyperlink to a component</a>
 	<a href="http://github.com">common hyperlink</a>
 </div>

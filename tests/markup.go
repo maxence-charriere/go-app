@@ -127,6 +127,14 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 			function: testMarkupUpdateComponentWithError,
 		},
 		{
+			scenario: "updating a component with an added child",
+			function: testMarkupUpdateComponentAddChild,
+		},
+		{
+			scenario: "updating a component with an removed child",
+			function: testMarkupUpdateComponentRemoveChild,
+		},
+		{
 			scenario: "updating a tag with bad attribute returns an error",
 			function: testMarkupUpdateBadAttribute,
 		},
@@ -706,6 +714,68 @@ func testMarkupUpdateComponentWithDismountedChild(t *testing.T, markup app.Marku
 		t.Fatal("error is nil")
 	}
 	t.Log(err)
+}
+
+func testMarkupUpdateComponentAddChild(t *testing.T, markup app.Markup) {
+	compo := &Hello{}
+	if _, err := markup.Mount(compo); err != nil {
+		t.Fatal(err)
+	}
+
+	compo.SizeDiff = true
+
+	syncs, err := markup.Update(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if l := len(syncs); l != 1 {
+		t.Fatal("syncs doesn't have 1 element:", l)
+	}
+
+	sync := syncs[0]
+	if !sync.Replace {
+		t.Error("sync is not a replace")
+	}
+
+	root := sync.Tag
+	if root.Name != "div" {
+		t.Fatal("root is not a div")
+	}
+	if l := len(root.Children); l != 8 {
+		t.Error("root does not have 8 children:", l)
+	}
+}
+
+func testMarkupUpdateComponentRemoveChild(t *testing.T, markup app.Markup) {
+	compo := &Hello{
+		SizeDiff: true,
+	}
+	if _, err := markup.Mount(compo); err != nil {
+		t.Fatal(err)
+	}
+
+	compo.SizeDiff = false
+
+	syncs, err := markup.Update(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if l := len(syncs); l != 1 {
+		t.Fatal("syncs doesn't have 1 element:", l)
+	}
+
+	sync := syncs[0]
+	if !sync.Replace {
+		t.Error("sync is not a replace")
+	}
+
+	root := sync.Tag
+	if root.Name != "div" {
+		t.Fatal("root is not a div")
+	}
+	if l := len(root.Children); l != 7 {
+		t.Error("root does not have 8 children:", l)
+	}
 }
 
 func testMarkupMapBadTarget(t *testing.T, markup app.Markup) {

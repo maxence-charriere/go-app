@@ -17,7 +17,7 @@ import (
 // Markup implements the app.Markup interface.
 type Markup struct {
 	components map[uuid.UUID]app.Component
-	roots      map[app.Component]app.Tag
+	roots      map[app.Component]*app.Tag
 	factory    app.Factory
 }
 
@@ -25,7 +25,7 @@ type Markup struct {
 func NewMarkup(factory app.Factory) *Markup {
 	return &Markup{
 		components: make(map[uuid.UUID]app.Component),
-		roots:      make(map[app.Component]app.Tag),
+		roots:      make(map[app.Component]*app.Tag),
 		factory:    factory,
 	}
 }
@@ -57,10 +57,13 @@ func (m *Markup) Contains(compo app.Component) bool {
 
 // Root satisfies the app.Markup interface.
 func (m *Markup) Root(compo app.Component) (root app.Tag, err error) {
-	var ok bool
-	if root, ok = m.roots[compo]; !ok {
+	rootPtr, ok := m.roots[compo]
+	if !ok {
 		err = errors.New("component not mounted")
+		return
 	}
+
+	root = *rootPtr
 	return
 }
 
@@ -84,7 +87,7 @@ func (m *Markup) mount(compo app.Component, compoID uuid.UUID) (root app.Tag, er
 	}
 
 	m.components[compoID] = compo
-	m.roots[compo] = root
+	m.roots[compo] = &root
 
 	if mounter, ok := compo.(app.Mounter); ok {
 		mounter.OnMount()
@@ -245,7 +248,7 @@ func (m *Markup) Dismount(compo app.Component) {
 		return
 	}
 
-	m.dismountTag(root)
+	m.dismountTag(*root)
 	delete(m.components, root.CompoID)
 	delete(m.roots, compo)
 
@@ -279,18 +282,18 @@ func (m *Markup) Update(compo app.Component) (syncs []app.TagSync, err error) {
 }
 
 func (m *Markup) update(compo app.Component) (syncs []app.TagSync, replaceParent bool, err error) {
-	var root app.Tag
-	var newRoot app.Tag
-
-	if root, err = m.Root(compo); err != nil {
+	root, ok := m.roots[compo]
+	if !ok {
+		err = errors.New("component not mounted")
 		return
 	}
 
+	var newRoot app.Tag
 	if err = decodeComponent(compo, &newRoot); err != nil {
 		return
 	}
 
-	syncs, replaceParent, err = m.syncTags(&root, &newRoot)
+	syncs, replaceParent, err = m.syncTags(root, &newRoot)
 	return
 }
 
