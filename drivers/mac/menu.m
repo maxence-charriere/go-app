@@ -20,6 +20,7 @@
   self.separator = nil;
   self.title = @"";
   self.enabled = YES;
+  self.toolTip = nil;
   self.onClick = nil;
   self.selector = nil;
   self.keys = nil;
@@ -44,6 +45,7 @@
       self.enabled = false;
     }
 
+    self.toolTip = attributes[@"title"];
     self.onClick = attributes[@"onclick"];
     self.selector = attributes[@"selector"];
     self.keys = attributes[@"keys"];

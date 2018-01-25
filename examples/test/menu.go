@@ -26,7 +26,8 @@ type Menu struct {
 func (m *Menu) Render() string {
 	return `
 <menu label="{{.Name}}">
-	<menuitem label="button" 
+	<menuitem label="button"
+			  title="A button."
 			  onclick="OnButtonClick"
 			  {{if .DisableAll}}disabled{{end}}>
 	</menuitem>
