@@ -32,5 +32,6 @@ func (d *DockTile) SetIcon(name string) error {
 }
 
 // SetBadge satisfies the app.DockTile interface.
-func (d *DockTile) SetBadge(v interface{}) {
+func (d *DockTile) SetBadge(v interface{}) error {
+	return nil
 }

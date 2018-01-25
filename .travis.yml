@@ -9,10 +9,11 @@ install:
   - go install -v github.com/mattn/goveralls
 
 script:
-  - go test .
+  - go test . -covermode count -coverprofile cover.out
   - go test ./appjs
   - go test ./bridge
   - go test ./html
+  - goveralls -service travis-ci -repotoken $COVERALLS_TOKEN -coverprofile cover.out
 
 notifications:
   email: false
