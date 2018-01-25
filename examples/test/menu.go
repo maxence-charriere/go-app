@@ -35,10 +35,6 @@ func (m *Menu) Render() string {
 			  onclick="OnButtonWithIconClick" 
 			  {{if .DisableAll}}disabled{{end}}>
 	</menuitem>
-	<menuitem label="random button: {{.RandomTitle}}" 
-			  onclick="OnButtonWithRandomTitleClicked"
-			  {{if .DisableAll}}disabled{{end}}>
-	</menuitem>
 
 	<menuitem separator></menuitem>
 
@@ -69,7 +65,18 @@ func (m *Menu) Render() string {
 		<menuitem label="sub button without action"></menuitem>	
 	</menu>
 	<menu label="disabled submenu" disabled></menu>
-	<menu label="random menu: {{.RandomTitle}}" disabled></menu>
+
+	<menuitem separator></menuitem>
+
+	<menuitem label="random button: {{.RandomTitle}}" 
+			  onclick="OnButtonWithRandomTitleClicked"
+			  {{if .DisableAll}}disabled{{end}}>
+	</menuitem>
+	<menu label="random menu: {{.RandomTitle}}"
+				onclick="OnButtonWithRandomTitleClicked"
+				{{if .DisableAll}}disabled{{end}}>
+		<menuitem label="disabled item" disabled></menuitem>
+	</menu>
 	
 	<menuitem separator></menuitem>
 
