@@ -58,6 +58,11 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 	return newMenu(d, c)
 }
 
+// AppName satisfies the app.Driver interface.
+func (d *Driver) AppName() string {
+	return "test"
+}
+
 // Resources satisfies the app.Driver interface.
 func (d *Driver) Resources() string {
 	wd, err := os.Getwd()

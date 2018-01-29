@@ -77,6 +77,10 @@ func TestApp(t *testing.T) {
 			function: testNewContextMenu,
 		},
 		{
+			scenario: "name returns the app name",
+			function: testName,
+		},
+		{
 			scenario: "resources returns a filepath",
 			function: testResources,
 		},
@@ -234,6 +238,14 @@ func testNewContextMenu(t *testing.T) {
 	if menu := app.NewContextMenu(app.MenuConfig{}); menu == nil {
 		t.Fatal("menu is nil")
 	}
+}
+
+func testName(t *testing.T) {
+	name := app.Name()
+	if len(name) == 0 {
+		t.Fatal("name is empty")
+	}
+	t.Log(name)
 }
 
 func testResources(t *testing.T) {

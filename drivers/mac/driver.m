@@ -30,6 +30,10 @@
             handler:^(NSURLComponents *url, NSString *payload) {
               return [self run:url payload:payload];
             }];
+  [self.objc handle:@"/driver/appname"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [self appName:url payload:payload];
+            }];
   [self.objc handle:@"/driver/resources"
             handler:^(NSURLComponents *url, NSString *payload) {
               return [self resources:url payload:payload];
@@ -138,6 +142,13 @@
   [NSApp activateIgnoringOtherApps:YES];
   [NSApp run];
   return make_bridge_result(nil, nil);
+}
+
+- (bridge_result)appName:(NSURLComponents *)url payload:(NSString *)payload {
+  NSBundle *mainBundle = [NSBundle mainBundle];
+  NSString *res =
+      [JSONEncoder encodeString:mainBundle.infoDictionary[@"CFBundleName"]];
+  return make_bridge_result(res, nil);
 }
 
 - (bridge_result)resources:(NSURLComponents *)url payload:(NSString *)payload {

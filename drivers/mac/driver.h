@@ -13,6 +13,7 @@
 + (instancetype)current;
 - (instancetype)init;
 - (bridge_result)run:(NSURLComponents *)url payload:(NSString *)payload;
+- (bridge_result)appName:(NSURLComponents *)url payload:(NSString *)payload;
 - (bridge_result)resources:(NSURLComponents *)url payload:(NSString *)payload;
 - (bridge_result)support:(NSURLComponents *)url payload:(NSString *)payload;
 - (bridge_result)setContextMenu:(NSURLComponents *)url

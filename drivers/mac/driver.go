@@ -259,6 +259,26 @@ func (d *Driver) NewContextMenu(config app.MenuConfig) app.Menu {
 	return menu
 }
 
+// AppName satisfies the app.Driver interface.
+func (d *Driver) AppName() string {
+	res, err := d.macos.Request("/driver/appname", nil)
+	if err != nil {
+		panic(errors.Wrap(err, "getting app name failed"))
+	}
+
+	var appName string
+	res.Unmarshal(&appName)
+	if len(appName) != 0 && appName != "(null)" {
+		return appName
+	}
+
+	var wd string
+	if wd, err = os.Getwd(); err != nil {
+		panic(errors.Wrap(err, "getting resources filepath failed"))
+	}
+	return filepath.Base(wd)
+}
+
 // Resources satisfies the app.Driver interface.
 func (d *Driver) Resources() string {
 	res, err := d.macos.Request("/driver/resources", nil)
