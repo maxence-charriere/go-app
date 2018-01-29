@@ -41,16 +41,10 @@ type Window struct {
 }
 
 func newWindow(config app.WindowConfig) (w *Window, err error) {
-	var markup app.Markup = html.NewMarkup(driver.factory)
-	markup = app.NewConcurrentMarkup(markup)
-
-	history := app.NewHistory()
-	history = app.NewConcurrentHistory(history)
-
 	w = &Window{
 		id:        uuid.New(),
-		markup:    markup,
-		history:   history,
+		markup:    html.NewMarkup(driver.factory),
+		history:   app.NewHistory(),
 		lastFocus: time.Now(),
 
 		onMove:           config.OnMove,

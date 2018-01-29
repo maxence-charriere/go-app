@@ -24,12 +24,9 @@ type Menu struct {
 }
 
 func newMenu(config app.MenuConfig) (m *Menu, err error) {
-	var markup app.Markup = html.NewMarkup(driver.factory)
-	markup = app.NewConcurrentMarkup(markup)
-
 	m = &Menu{
 		id:        uuid.New(),
-		markup:    markup,
+		markup:    html.NewMarkup(driver.factory),
 		lastFocus: time.Now(),
 
 		onClose: config.OnClose,
@@ -212,20 +209,26 @@ type DefaultMenuBar struct {
 	AppName string
 }
 
+// OnMount initializes the menu application name.
+func (m *DefaultMenuBar) OnMount() {
+	m.AppName = app.Name()
+	app.Render(m)
+}
+
 // Render returns the markup that describes the menu bar.
 func (m *DefaultMenuBar) Render() string {
 	return `
 <menu>
-	<menu label="app">
-		<menuitem label="About" selector="orderFrontStandardAboutPanel:"></menuitem>
+	<menu label="{{.AppName}}">
+		<menuitem label="About {{.AppName}}" selector="orderFrontStandardAboutPanel:"></menuitem>
 		<menuitem separator></menuitem>	
 		<menuitem label="Preferences…" keys="cmdorctrl+," disabled></menuitem>
 		<menuitem separator></menuitem>		
-		<menuitem label="Hide" keys="cmdorctrl+h" selector="hide:"></menuitem>
+		<menuitem label="Hide {{.AppName}}" keys="cmdorctrl+h" selector="hide:"></menuitem>
 		<menuitem label="Hide Others" keys="cmdorctrl+alt+h" selector="hideOtherApplications:"></menuitem>
 		<menuitem label="Show All" selector="unhideAllApplications:"></menuitem>
 		<menuitem separator></menuitem>
-		<menuitem label="Quit" keys="cmdorctrl+q" selector="terminate:"></menuitem>
+		<menuitem label="Quit {{.AppName}}" keys="cmdorctrl+q" selector="terminate:"></menuitem>
 	</menu>
 </menu>
 	`
