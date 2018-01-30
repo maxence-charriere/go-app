@@ -153,4 +153,4 @@ go build
 
 ## More examples
 - [Jubiz](https://github.com/maxence-charriere/jubiz)
-- [Pass](https://github.com/grocid/PassMacOS)
+- [Pass](https://github.com/grocid/passdesktop)
