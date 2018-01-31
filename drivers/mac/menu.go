@@ -200,36 +200,58 @@ func onMenuCallback(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Payload) 
 }
 
 func init() {
-	app.Import(&DefaultMenuBar{})
+	app.Import(&MenuBar{})
+	app.Import(&EditMenu{})
 }
 
-// DefaultMenuBar is a component that describes a menu bar.
+// MenuBar is a component that describes a menu bar.
 // It is loaded by default if Driver.MenubarURL is not set.
-type DefaultMenuBar struct {
+type MenuBar struct {
 	AppName string
 }
 
 // OnMount initializes the menu application name.
-func (m *DefaultMenuBar) OnMount() {
+func (m *MenuBar) OnMount() {
 	m.AppName = app.Name()
 	app.Render(m)
 }
 
 // Render returns the markup that describes the menu bar.
-func (m *DefaultMenuBar) Render() string {
+func (m *MenuBar) Render() string {
 	return `
 <menu>
 	<menu label="{{.AppName}}">
 		<menuitem label="About {{.AppName}}" selector="orderFrontStandardAboutPanel:"></menuitem>
 		<menuitem separator></menuitem>	
 		<menuitem label="Preferences…" keys="cmdorctrl+," disabled></menuitem>
-		<menuitem separator></menuitem>		
+		<menuitem separator></menuitem>	
 		<menuitem label="Hide {{.AppName}}" keys="cmdorctrl+h" selector="hide:"></menuitem>
 		<menuitem label="Hide Others" keys="cmdorctrl+alt+h" selector="hideOtherApplications:"></menuitem>
 		<menuitem label="Show All" selector="unhideAllApplications:"></menuitem>
 		<menuitem separator></menuitem>
 		<menuitem label="Quit {{.AppName}}" keys="cmdorctrl+q" selector="terminate:"></menuitem>
 	</menu>
+	<mac.editmenu>
+</menu>
+	`
+}
+
+// EditMenu is a component that describes an edit menu.
+type EditMenu app.ZeroCompo
+
+// Render returns the markup that describes the edit menu.
+func (m *EditMenu) Render() string {
+	return `
+<menu label="Edit">
+	<menuitem label="Undo" keys="cmdorctrl+z" selector="undo:"></menuitem>
+	<menuitem label="Redo" keys="cmdorctrl+shift+z" selector="redo:"></menuitem>
+	<menuitem separator></menuitem>
+	<menuitem label="Cut" keys="cmdorctrl+x" selector="cut:"></menuitem>
+	<menuitem label="Copy" keys="cmdorctrl+c" selector="copy:"></menuitem>
+	<menuitem label="Paste" keys="cmdorctrl+v" selector="paste:"></menuitem>
+	<menuitem label="Paste and Match Style" keys="shift+alt+cmdorctrl+v" selector="pasteAsPlainText:"></menuitem>
+	<menuitem label="Delete" selector="delete:"></menuitem>
+	<menuitem label="Select All" keys="cmdorctrl+a" selector="selectAll:"></menuitem>
 </menu>
 	`
 }

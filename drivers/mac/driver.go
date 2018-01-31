@@ -134,7 +134,7 @@ func (d *Driver) newMenuBar() error {
 	var err error
 
 	if len(d.MenubarURL) == 0 {
-		d.MenubarURL = "mac.defaultmenubar"
+		d.MenubarURL = "mac.menubar"
 	}
 
 	if d.menubar, err = newMenu(app.MenuConfig{
