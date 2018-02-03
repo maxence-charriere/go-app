@@ -29,6 +29,10 @@ type Markup interface {
 	// It returns an error if the component is not mounted.
 	Root(compo Component) (root Tag, err error)
 
+	// FullRoot returns a version of the given tag where the children tht are components
+	// are replaced by their full tree.
+	FullRoot(tag Tag) (root Tag, err error)
+
 	// Mount indexes the component.
 	// The component will be kept in memory until it is dismounted.
 	Mount(compo Component) (root Tag, err error)
@@ -51,13 +55,13 @@ type Markup interface {
 // Mapping describes a component mapping.
 type Mapping struct {
 	// The component identifier.
-	CompoID uuid.UUID
+	CompoID uuid.UUID `json:"compo-id"`
 
 	// A dot separated string that points to a component field or method.
-	Target string
+	Target string `json:"target"`
 
 	// The JSON value to map to a field or method's first argument.
-	JSONValue string
+	JSONValue string `json:"json-value"`
 }
 
 // ParseMappingTarget parses the given target and returns the corresponding
@@ -94,14 +98,14 @@ type TagDecoder interface {
 
 // Tag represents a markup tag.
 type Tag struct {
-	ID         uuid.UUID
-	CompoID    uuid.UUID
-	Name       string
-	Text       string
-	Svg        bool
-	Type       TagType
-	Attributes AttributeMap
-	Children   []Tag
+	ID         uuid.UUID    `json:"id"`
+	CompoID    uuid.UUID    `json:"compo-id"`
+	Name       string       `json:"name"`
+	Text       string       `json:"text"`
+	Svg        bool         `json:"svg"`
+	Type       TagType      `json:"type"`
+	Attributes AttributeMap `json:"attributes,omitempty"`
+	Children   []Tag        `json:"children,omitempty"`
 }
 
 // Is reports whether the tag is of the given type.
@@ -125,8 +129,8 @@ type AttributeMap map[string]string
 
 // TagSync represents a tag synchronisation.
 type TagSync struct {
-	Tag     Tag
-	Replace bool
+	Tag     Tag  `json:"tag"`
+	Replace bool `json:"replace"`
 }
 
 // NewConcurrentMarkup decorates the given markup to ensure concurrent access
@@ -173,6 +177,13 @@ func (m *concurrentMarkup) Contains(compo Component) bool {
 func (m *concurrentMarkup) Root(compo Component) (root Tag, err error) {
 	m.mutex.Lock()
 	root, err = m.base.Root(compo)
+	m.mutex.Unlock()
+	return
+}
+
+func (m *concurrentMarkup) FullRoot(tag Tag) (root Tag, err error) {
+	m.mutex.Lock()
+	root, err = m.base.FullRoot(tag)
 	m.mutex.Unlock()
 	return
 }
@@ -240,6 +251,14 @@ func (m *markupWithLogs) Root(compo Component) (root Tag, err error) {
 	root, err = m.base.Root(compo)
 	if err != nil {
 		DefaultLogger.Errorf("root tag of component %T can't be retrieved: %v", compo, err)
+	}
+	return
+}
+
+func (m *markupWithLogs) FullRoot(tag Tag) (root Tag, err error) {
+	root, err = m.base.FullRoot(tag)
+	if err != nil {
+		DefaultLogger.Errorf("full tree can't be retrieved: %v", err)
 	}
 	return
 }

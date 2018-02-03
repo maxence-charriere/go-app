@@ -74,6 +74,11 @@ func NewContextMenu(c MenuConfig) Menu {
 	return driver.NewContextMenu(c)
 }
 
+// Name returns the application name.
+func Name() string {
+	return driver.AppName()
+}
+
 // Resources returns the location of the resources directory.
 // Resources should be used only for read only operations.
 // It panics if called before Run.

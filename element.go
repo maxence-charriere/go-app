@@ -152,11 +152,13 @@ type Menu ElementWithComponent
 // MenuConfig is a struct that describes a menu.
 type MenuConfig struct {
 	DefaultURL string
+
+	OnClose func()
 }
 
 // DockTile is the interface that describes a dock tile.
 type DockTile interface {
-	ElementWithComponent
+	Menu
 
 	// SetIcon set the dock tile icon with the named file.
 	// It returns an error if the file doesn't exist or if it is not a supported
@@ -165,7 +167,7 @@ type DockTile interface {
 
 	// SetBadge set the dock tile badge with the string representation of the
 	// value.
-	SetBadge(v interface{})
+	SetBadge(v interface{}) error
 }
 
 // FilePanelConfig is a struct that describes a file panel.

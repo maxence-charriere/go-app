@@ -100,6 +100,7 @@ type Hello struct {
 	Name          string
 	Placeholder   string
 	TextBye       bool
+	SizeDiff      bool
 	TmplErr       bool
 	ChildErr      bool
 	CompoFieldErr bool
@@ -129,6 +130,11 @@ func (h *Hello) Render() string {
 		<span>Goodbye</span>
 		<p>world</p>
 	{{end}}
+
+	{{if .SizeDiff}}
+		<a>another tag</a>
+	{{end}}
+
 	<a href="tests.hello">hyperlink to a component</a>
 	<a href="http://github.com">common hyperlink</a>
 </div>
@@ -220,3 +226,28 @@ func (i MappingInt) Method(nb int) {
 }
 
 var mappedInt int
+
+// RussianDoll is a component to test nested components behaviors.
+type RussianDoll struct {
+	Remaining int
+}
+
+// Render satisfies the app.Component interface.
+func (r *RussianDoll) Render() string {
+	return `
+<div>
+	{{if gt .Remaining 0}}
+	 <tests.russiandoll remaining="{{sub .Remaining 1}}">
+	{{end}}
+</div>
+	`
+}
+
+// Funcs satisfies the app.ComponentWithExtendedRender interface.
+func (r *RussianDoll) Funcs() map[string]interface{} {
+	return map[string]interface{}{
+		"sub": func(a, b int) int {
+			return a - b
+		},
+	}
+}

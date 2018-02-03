@@ -1,7 +1,6 @@
 package app
 
 import (
-	"net/url"
 	"testing"
 )
 
@@ -183,12 +182,7 @@ func TestComponentNameFromURL(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		u, err := url.Parse(test.rawurl)
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		if name := ComponentNameFromURL(u); name != test.expectedName {
+		if name := ComponentNameFromURLString(test.rawurl); name != test.expectedName {
 			t.Errorf(`name is not "%s": "%s"`, test.expectedName, name)
 		}
 	}

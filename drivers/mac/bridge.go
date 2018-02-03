@@ -107,3 +107,25 @@ func windowHandler(h func(w *Window, u *url.URL, p bridge.Payload) (res bridge.P
 		return h(win, u, p)
 	}
 }
+
+func menuHandler(h func(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Payload)) bridge.GoHandler {
+	return func(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+		id, err := uuid.Parse(u.Query().Get("id"))
+		if err != nil {
+			panic(errors.Wrap(err, "creating menu handler failed"))
+		}
+
+		elem, ok := driver.elements.Element(id)
+		if !ok {
+			app.DefaultLogger.Logf("%v: menu with id %v doesn't exists", u.Path, id)
+			return nil
+		}
+
+		menu, ok := elem.(*Menu)
+		if !ok {
+			panic(errors.Errorf("creating menu handler failed: element with id %v is not a menu", id))
+		}
+
+		return h(menu, u, p)
+	}
+}

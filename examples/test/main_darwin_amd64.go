@@ -11,6 +11,13 @@ func main() {
 	app.DefaultLogger = app.NewConcurrentLogger(app.NewConsole(true))
 
 	app.Run(&mac.Driver{
+		MenubarConfig: mac.MenuBarConfig{
+			OnPreference: func() {
+				app.DefaultLogger.Log("Preferences clicked")
+			},
+		},
+		DockURL: "menu",
+
 		OnRun: func() {
 			fmt.Println("OnRun")
 			fmt.Println("app.Resources():", app.Resources())
@@ -60,7 +67,7 @@ func testWindow(close bool) {
 		Mac: app.MacWindowConfig{
 			BackgroundVibrancy: app.VibeUltraDark,
 		},
-		DefaultURL: "webviewcomponent",
+		DefaultURL: "webview",
 
 		OnMove: func(x, y float64) {
 			fmt.Printf("Window moved to x:%v y:%v\n", x, y)
@@ -91,6 +98,8 @@ func testWindow(close bool) {
 			return true
 		},
 	})
+
+	fmt.Println("app name:", app.Name())
 
 	x, y := win.Position()
 	fmt.Printf("win.Positon() x:%v, x:%v\n", x, y)

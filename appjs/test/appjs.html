@@ -54,6 +54,10 @@ function render(payload) {
 
   const selector = '[data-goapp-id="' + id + '"]';
   const elem = document.querySelector(selector);
+
+  if (!elem) {
+    return;
+  }
   elem.outerHTML = component;
 }
 
@@ -69,23 +73,16 @@ function renderAttributes(payload) {
   const selector = '[data-goapp-id="' + id + '"]';
   const elem = document.querySelector(selector);
 
-  // Set attributes.
-  for (var name in attributes) {
-    const currentValue = elem.getAttribute(name);
-    const newValue = attributes[name];
-
-    if (currentValue !== newValue) {
-      elem.setAttribute(name, newValue);
-    }
-  }
-
-  // Remove missing attributes.
-  if (!elem.hasAttributes()) {
+  if (!elem) {
     return;
   }
 
+  if (!elem.hasAttributes()) {
+    return;
+  }
   const elemAttrs = elem.attributes;
 
+  // Remove missing attributes.
   for (var i = 0; i < elemAttrs.length; i++) {
     const name = elemAttrs[i].name;
 
@@ -95,6 +92,16 @@ function renderAttributes(payload) {
 
     if (attributes[name] === undefined) {
       elem.removeAttribute(name);
+    }
+  }
+
+  // Set attributes.
+  for (var name in attributes) {
+    const currentValue = elem.getAttribute(name);
+    const newValue = attributes[name];
+
+    if (currentValue !== newValue) {
+      elem.setAttribute(name, newValue);
     }
   }
 }
@@ -124,9 +131,9 @@ function callGoEventHandler(compoID, target, self, event) {
   }
 
   const mapping = {
-    CompoID: compoID,
-    Target: target,
-    JSONValue: JSON.stringify(payload)
+    'compo-id': compoID,
+    'target': target,
+    'json-value': JSON.stringify(payload)
   };
 
   golangRequest(JSON.stringify(mapping));

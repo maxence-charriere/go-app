@@ -72,8 +72,13 @@ func (b *platformBridge) RequestWithAsyncResponse(rawurl string, p Payload) (res
 }
 
 func (b *platformBridge) Return(returnID string, res Payload, err error) {
-	retID, err := uuid.Parse(returnID)
-	if err != nil {
+	ret := returnPayload{
+		response: res,
+		err:      err,
+	}
+
+	var retID uuid.UUID
+	if retID, err = uuid.Parse(returnID); err != nil {
 		panic(errors.Wrapf(err, "returning result %s failed", res.String()))
 	}
 
@@ -83,10 +88,7 @@ func (b *platformBridge) Return(returnID string, res Payload, err error) {
 			res.String(),
 			retID))
 	}
-	retchan <- returnPayload{
-		response: res,
-		err:      err,
-	}
+	retchan <- ret
 }
 
 type returnPayload struct {

@@ -13,8 +13,16 @@
 + (instancetype)current;
 - (instancetype)init;
 - (bridge_result)run:(NSURLComponents *)url payload:(NSString *)payload;
+- (bridge_result)appName:(NSURLComponents *)url payload:(NSString *)payload;
 - (bridge_result)resources:(NSURLComponents *)url payload:(NSString *)payload;
 - (bridge_result)support:(NSURLComponents *)url payload:(NSString *)payload;
+- (bridge_result)setContextMenu:(NSURLComponents *)url
+                        payload:(NSString *)payload;
+- (bridge_result)setMenuBar:(NSURLComponents *)url payload:(NSString *)payload;
+- (bridge_result)setDock:(NSURLComponents *)url payload:(NSString *)payload;
+- (bridge_result)setDockIcon:(NSURLComponents *)url payload:(NSString *)payload;
+- (bridge_result)setDockBadge:(NSURLComponents *)url
+                      payload:(NSString *)payload;
 @end
 
 #endif /* driver_h */

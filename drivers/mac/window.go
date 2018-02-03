@@ -41,16 +41,10 @@ type Window struct {
 }
 
 func newWindow(config app.WindowConfig) (w *Window, err error) {
-	var markup app.Markup = html.NewMarkup(driver.factory)
-	markup = app.NewConcurrentMarkup(markup)
-
-	history := app.NewHistory()
-	history = app.NewConcurrentHistory(history)
-
 	w = &Window{
 		id:        uuid.New(),
-		markup:    markup,
-		history:   history,
+		markup:    html.NewMarkup(driver.factory),
+		history:   app.NewHistory(),
 		lastFocus: time.Now(),
 
 		onMove:           config.OnMove,
@@ -129,8 +123,8 @@ func (w *Window) load(u *url.URL) error {
 	var pageConfig html.PageConfig
 	var err error
 
-	// Redirect web page to default web browser.
 	if compo, err = driver.factory.NewComponent(compoName); err != nil {
+		// Redirect web page to default web browser.
 		cmd := exec.Command("open", u.String())
 		err = cmd.Run()
 		return err

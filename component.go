@@ -144,8 +144,8 @@ func normalizeComponentName(name string) string {
 	return name
 }
 
-// ComponentNameFromURL is an help function that returns the component name
-// targeted by the URL.
+// ComponentNameFromURL is a helper function that returns the component name
+// targeted by the given URL.
 func ComponentNameFromURL(u *url.URL) string {
 	path := u.Path
 	path = strings.TrimPrefix(path, "/")
@@ -155,4 +155,11 @@ func ComponentNameFromURL(u *url.URL) string {
 		return ""
 	}
 	return normalizeComponentName(paths[0])
+}
+
+// ComponentNameFromURLString is a helper function that returns the component
+// name targeted by the given URL.
+func ComponentNameFromURLString(rawurl string) string {
+	u, _ := url.Parse(rawurl)
+	return ComponentNameFromURL(u)
 }

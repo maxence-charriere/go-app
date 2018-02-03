@@ -100,6 +100,7 @@ func (c *CompoWithFields) Render() string {
 	<html.compo obj="{{json .Struct}}">	
 	<div>Time: {{time .Time "2006"}}</div>
 	<div>{{hello .String}}</div>
+	<div>compo String: {{compo "html.compo"}}</div>	
 </div>
 	`
 }

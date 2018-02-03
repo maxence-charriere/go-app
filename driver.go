@@ -16,6 +16,9 @@ type Driver interface {
 	// configuration.
 	NewContextMenu(c MenuConfig) Menu
 
+	// AppName returns the appliction name.
+	AppName() string
+
 	// Resources returns the location of the resources directory.
 	Resources() string
 

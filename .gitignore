@@ -19,12 +19,12 @@ _cgo_export.*
 
 _testmain.go
 
-*.exe
 *.test
 *.prof
 
+# Executables
 examples/menu/menu
-
 examples/nav/nav
-
 examples/test/test
+*.exe
+

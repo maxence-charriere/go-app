@@ -21,6 +21,7 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 	factory.RegisterComponent(&Hello{})
 	factory.RegisterComponent(&World{})
 	factory.RegisterComponent(&Mapping{})
+	factory.RegisterComponent(&RussianDoll{})
 
 	tests := []struct {
 		scenario string
@@ -45,6 +46,18 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 		{
 			scenario: "get the component root from dismounted component returns an error",
 			function: testMarkupRootDismounted,
+		},
+		{
+			scenario: "get the full root",
+			function: testMarkupFullRoot,
+		},
+		{
+			scenario: "get the full root from a dismounted component returns an error",
+			function: testMarkupFullRootDismounted,
+		},
+		{
+			scenario: "get the full root with a child that have an error returns an error",
+			function: testMarkupFullRootChildError,
 		},
 		{
 			scenario: "get a dismounted component returns an error",
@@ -125,6 +138,14 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 		{
 			scenario: "updating a component with an error returns an error",
 			function: testMarkupUpdateComponentWithError,
+		},
+		{
+			scenario: "updating a component with an added child",
+			function: testMarkupUpdateComponentAddChild,
+		},
+		{
+			scenario: "updating a component with an removed child",
+			function: testMarkupUpdateComponentRemoveChild,
 		},
 		{
 			scenario: "updating a tag with bad attribute returns an error",
@@ -309,6 +330,72 @@ func testMarkupRootDismounted(t *testing.T, markup app.Markup) {
 	_, err := markup.Root(compo)
 	if err == nil {
 		t.Fatal("error is not nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupFullRoot(t *testing.T, markup app.Markup) {
+	compo := &Foo{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if root, err = markup.FullRoot(root); err != nil {
+		t.Fatal(err)
+	}
+
+	h2 := root.Children[1]
+	if h2.Name != "h2" {
+		t.Errorf("component is not replaced by its root")
+	}
+}
+
+func testMarkupFullRootDismounted(t *testing.T, markup app.Markup) {
+	compo := &RussianDoll{
+		Remaining: 2,
+	}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	markup.Dismount(compo)
+
+	if root, err = markup.FullRoot(root); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupFullRootChildError(t *testing.T, markup app.Markup) {
+	compo := &RussianDoll{
+		Remaining: 2,
+	}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rootToDismount := root
+	if rootToDismount, err = markup.FullRoot(rootToDismount); err != nil {
+		t.Fatal(err)
+	}
+
+	rootToDismount = rootToDismount.Children[0]
+	rootToDismount = rootToDismount.Children[0]
+
+	var compoToDismount app.Component
+	if compoToDismount, err = markup.Component(rootToDismount.CompoID); err != nil {
+		t.Fatal(err)
+	}
+	markup.Dismount(compoToDismount)
+
+	if root, err = markup.FullRoot(root); err == nil {
+		t.Fatal("error is nil")
 	}
 	t.Log(err)
 }
@@ -706,6 +793,68 @@ func testMarkupUpdateComponentWithDismountedChild(t *testing.T, markup app.Marku
 		t.Fatal("error is nil")
 	}
 	t.Log(err)
+}
+
+func testMarkupUpdateComponentAddChild(t *testing.T, markup app.Markup) {
+	compo := &Hello{}
+	if _, err := markup.Mount(compo); err != nil {
+		t.Fatal(err)
+	}
+
+	compo.SizeDiff = true
+
+	syncs, err := markup.Update(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if l := len(syncs); l != 1 {
+		t.Fatal("syncs doesn't have 1 element:", l)
+	}
+
+	sync := syncs[0]
+	if !sync.Replace {
+		t.Error("sync is not a replace")
+	}
+
+	root := sync.Tag
+	if root.Name != "div" {
+		t.Fatal("root is not a div")
+	}
+	if l := len(root.Children); l != 8 {
+		t.Error("root does not have 8 children:", l)
+	}
+}
+
+func testMarkupUpdateComponentRemoveChild(t *testing.T, markup app.Markup) {
+	compo := &Hello{
+		SizeDiff: true,
+	}
+	if _, err := markup.Mount(compo); err != nil {
+		t.Fatal(err)
+	}
+
+	compo.SizeDiff = false
+
+	syncs, err := markup.Update(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if l := len(syncs); l != 1 {
+		t.Fatal("syncs doesn't have 1 element:", l)
+	}
+
+	sync := syncs[0]
+	if !sync.Replace {
+		t.Error("sync is not a replace")
+	}
+
+	root := sync.Tag
+	if root.Name != "div" {
+		t.Fatal("root is not a div")
+	}
+	if l := len(root.Children); l != 7 {
+		t.Error("root does not have 8 children:", l)
+	}
 }
 
 func testMarkupMapBadTarget(t *testing.T, markup app.Markup) {
