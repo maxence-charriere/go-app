@@ -21,6 +21,7 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 	factory.RegisterComponent(&Hello{})
 	factory.RegisterComponent(&World{})
 	factory.RegisterComponent(&Mapping{})
+	factory.RegisterComponent(&RussianDoll{})
 
 	tests := []struct {
 		scenario string
@@ -45,6 +46,18 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 		{
 			scenario: "get the component root from dismounted component returns an error",
 			function: testMarkupRootDismounted,
+		},
+		{
+			scenario: "get the full root",
+			function: testMarkupFullRoot,
+		},
+		{
+			scenario: "get the full root from a dismounted component returns an error",
+			function: testMarkupFullRootDismounted,
+		},
+		{
+			scenario: "get the full root with a child that have an error returns an error",
+			function: testMarkupFullRootChildError,
 		},
 		{
 			scenario: "get a dismounted component returns an error",
@@ -317,6 +330,72 @@ func testMarkupRootDismounted(t *testing.T, markup app.Markup) {
 	_, err := markup.Root(compo)
 	if err == nil {
 		t.Fatal("error is not nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupFullRoot(t *testing.T, markup app.Markup) {
+	compo := &Foo{}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if root, err = markup.FullRoot(root); err != nil {
+		t.Fatal(err)
+	}
+
+	h2 := root.Children[1]
+	if h2.Name != "h2" {
+		t.Errorf("component is not replaced by its root")
+	}
+}
+
+func testMarkupFullRootDismounted(t *testing.T, markup app.Markup) {
+	compo := &RussianDoll{
+		Remaining: 2,
+	}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	markup.Dismount(compo)
+
+	if root, err = markup.FullRoot(root); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMarkupFullRootChildError(t *testing.T, markup app.Markup) {
+	compo := &RussianDoll{
+		Remaining: 2,
+	}
+
+	root, err := markup.Mount(compo)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rootToDismount := root
+	if rootToDismount, err = markup.FullRoot(rootToDismount); err != nil {
+		t.Fatal(err)
+	}
+
+	rootToDismount = rootToDismount.Children[0]
+	rootToDismount = rootToDismount.Children[0]
+
+	var compoToDismount app.Component
+	if compoToDismount, err = markup.Component(rootToDismount.CompoID); err != nil {
+		t.Fatal(err)
+	}
+	markup.Dismount(compoToDismount)
+
+	if root, err = markup.FullRoot(root); err == nil {
+		t.Fatal("error is nil")
 	}
 	t.Log(err)
 }

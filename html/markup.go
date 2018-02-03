@@ -67,6 +67,36 @@ func (m *Markup) Root(compo app.Component) (root app.Tag, err error) {
 	return
 }
 
+// FullRoot satisfies the app.Markup interface.
+func (m *Markup) FullRoot(tag app.Tag) (root app.Tag, err error) {
+	root = tag
+	root.Children = make([]app.Tag, len(tag.Children))
+	copy(root.Children, tag.Children)
+
+	for i, child := range tag.Children {
+		if !child.Is(app.CompoTag) {
+			continue
+		}
+
+		var compo app.Component
+		if compo, err = m.Component(child.ID); err != nil {
+			return root, err
+		}
+
+		// The err checking is ignored here because the err would be the same as
+		// m.Component call.
+		child, _ = m.Root(compo)
+
+		if child, err = m.FullRoot(child); err != nil {
+			return root, err
+		}
+
+		root.Children[i] = child
+	}
+
+	return root, nil
+}
+
 // Mount satisfies the app.Markup interface.
 func (m *Markup) Mount(compo app.Component) (root app.Tag, err error) {
 	return m.mount(compo, uuid.New())

@@ -29,6 +29,10 @@ type Markup interface {
 	// It returns an error if the component is not mounted.
 	Root(compo Component) (root Tag, err error)
 
+	// FullRoot returns a version of the given tag where the children tht are components
+	// are replaced by their full tree.
+	FullRoot(tag Tag) (root Tag, err error)
+
 	// Mount indexes the component.
 	// The component will be kept in memory until it is dismounted.
 	Mount(compo Component) (root Tag, err error)
@@ -177,6 +181,13 @@ func (m *concurrentMarkup) Root(compo Component) (root Tag, err error) {
 	return
 }
 
+func (m *concurrentMarkup) FullRoot(tag Tag) (root Tag, err error) {
+	m.mutex.Lock()
+	root, err = m.base.FullRoot(tag)
+	m.mutex.Unlock()
+	return
+}
+
 func (m *concurrentMarkup) Mount(compo Component) (root Tag, err error) {
 	m.mutex.Lock()
 	root, err = m.base.Mount(compo)
@@ -240,6 +251,14 @@ func (m *markupWithLogs) Root(compo Component) (root Tag, err error) {
 	root, err = m.base.Root(compo)
 	if err != nil {
 		DefaultLogger.Errorf("root tag of component %T can't be retrieved: %v", compo, err)
+	}
+	return
+}
+
+func (m *markupWithLogs) FullRoot(tag Tag) (root Tag, err error) {
+	root, err = m.base.FullRoot(tag)
+	if err != nil {
+		DefaultLogger.Errorf("full tree can't be retrieved: %v", err)
 	}
 	return
 }

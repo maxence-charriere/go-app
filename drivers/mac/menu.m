@@ -8,8 +8,8 @@
 
   NSString *name = tag[@"name"];
   if (![name isEqual:@"menuitem"] && ![name isEqual:@"menu"]) {
-    NSString *err =
-        [NSString stringWithFormat:@"cannot create a MenuItem from a %@", name];
+    NSString *err = [NSString
+        stringWithFormat:@"cannot create a MenuItem from a %@ tag", name];
     @throw
         [NSException exceptionWithName:@"ErrMenuItem" reason:err userInfo:nil];
   }
