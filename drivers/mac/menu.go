@@ -85,7 +85,11 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 	}
 
 	if root, err = m.markup.Root(compo); err != nil {
-		return nil
+		return err
+	}
+
+	if root, err = m.markup.FullRoot(root); err != nil {
+		return err
 	}
 
 	_, err = driver.macos.RequestWithAsyncResponse(
@@ -122,9 +126,14 @@ func (m *Menu) Render(compo app.Component) error {
 }
 
 func (m *Menu) render(sync app.TagSync) error {
-	_, err := driver.macos.RequestWithAsyncResponse(
+	tag, err := m.markup.FullRoot(sync.Tag)
+	if err != nil {
+		return err
+	}
+
+	_, err = driver.macos.RequestWithAsyncResponse(
 		fmt.Sprintf("/menu/render?id=%s", m.id),
-		bridge.NewPayload(sync.Tag),
+		bridge.NewPayload(tag),
 	)
 	return err
 }
@@ -197,61 +206,4 @@ func onMenuCallback(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Payload) 
 		app.DefaultLogger.Error(err)
 	}
 	return
-}
-
-func init() {
-	app.Import(&MenuBar{})
-	app.Import(&EditMenu{})
-}
-
-// MenuBar is a component that describes a menu bar.
-// It is loaded by default if Driver.MenubarURL is not set.
-type MenuBar struct {
-	AppName string
-}
-
-// OnMount initializes the menu application name.
-func (m *MenuBar) OnMount() {
-	m.AppName = app.Name()
-	app.Render(m)
-}
-
-// Render returns the markup that describes the menu bar.
-func (m *MenuBar) Render() string {
-	return `
-<menu>
-	<menu label="{{.AppName}}">
-		<menuitem label="About {{.AppName}}" selector="orderFrontStandardAboutPanel:"></menuitem>
-		<menuitem separator></menuitem>	
-		<menuitem label="Preferences…" keys="cmdorctrl+," disabled></menuitem>
-		<menuitem separator></menuitem>	
-		<menuitem label="Hide {{.AppName}}" keys="cmdorctrl+h" selector="hide:"></menuitem>
-		<menuitem label="Hide Others" keys="cmdorctrl+alt+h" selector="hideOtherApplications:"></menuitem>
-		<menuitem label="Show All" selector="unhideAllApplications:"></menuitem>
-		<menuitem separator></menuitem>
-		<menuitem label="Quit {{.AppName}}" keys="cmdorctrl+q" selector="terminate:"></menuitem>
-	</menu>
-	<mac.editmenu>
-</menu>
-	`
-}
-
-// EditMenu is a component that describes an edit menu.
-type EditMenu app.ZeroCompo
-
-// Render returns the markup that describes the edit menu.
-func (m *EditMenu) Render() string {
-	return `
-<menu label="Edit">
-	<menuitem label="Undo" keys="cmdorctrl+z" selector="undo:"></menuitem>
-	<menuitem label="Redo" keys="cmdorctrl+shift+z" selector="redo:"></menuitem>
-	<menuitem separator></menuitem>
-	<menuitem label="Cut" keys="cmdorctrl+x" selector="cut:"></menuitem>
-	<menuitem label="Copy" keys="cmdorctrl+c" selector="copy:"></menuitem>
-	<menuitem label="Paste" keys="cmdorctrl+v" selector="paste:"></menuitem>
-	<menuitem label="Paste and Match Style" keys="shift+alt+cmdorctrl+v" selector="pasteAsPlainText:"></menuitem>
-	<menuitem label="Delete" selector="delete:"></menuitem>
-	<menuitem label="Select All" keys="cmdorctrl+a" selector="selectAll:"></menuitem>
-</menu>
-	`
 }

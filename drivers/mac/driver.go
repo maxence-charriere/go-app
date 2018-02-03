@@ -34,8 +34,8 @@ func init() {
 
 // Driver is the app.Driver implementation for MacOS.
 type Driver struct {
-	MenubarURL string
-	DockURL    string
+	MenubarConfig MenuBarConfig
+	DockURL       string
 
 	OnRun       func()
 	OnFocus     func()
@@ -133,14 +133,23 @@ func (d *Driver) onRun(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 func (d *Driver) newMenuBar() error {
 	var err error
 
-	if len(d.MenubarURL) == 0 {
-		d.MenubarURL = "mac.menubar"
+	if d.menubar, err = newMenu(app.MenuConfig{}); err != nil {
+		return errors.Wrap(err, "creating the menu bar failed")
 	}
 
-	if d.menubar, err = newMenu(app.MenuConfig{
-		DefaultURL: d.MenubarURL,
-	}); err != nil {
-		return errors.Wrap(err, "creating the menu bar failed")
+	if len(d.MenubarConfig.URL) == 0 {
+		err = d.menubar.Load(
+			"mac.menubar?appurl=%s&editurl=%s&windowurl=%s&helpurl=%s",
+			d.MenubarConfig.AppURL,
+			d.MenubarConfig.EditURL,
+			d.MenubarConfig.WindowURL,
+			d.MenubarConfig.HelpURL,
+		)
+	} else {
+		err = d.menubar.Load(d.MenubarConfig.URL)
+	}
+	if err != nil {
+		return err
 	}
 
 	if _, err = d.macos.Request(

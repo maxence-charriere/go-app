@@ -11,6 +11,11 @@ func main() {
 	app.DefaultLogger = app.NewConcurrentLogger(app.NewConsole(true))
 
 	app.Run(&mac.Driver{
+		MenubarConfig: mac.MenuBarConfig{
+			OnPreference: func() {
+				app.DefaultLogger.Log("Preferences clicked")
+			},
+		},
 		DockURL: "menu",
 
 		OnRun: func() {

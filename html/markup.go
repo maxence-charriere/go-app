@@ -137,6 +137,10 @@ func decodeComponent(compo app.Component, tag *app.Tag) error {
 		return template.HTML(s)
 	}
 
+	funcs["compo"] = func(s string) template.HTML {
+		return template.HTML("<" + s + ">")
+	}
+
 	funcs["time"] = func(t time.Time, layout string) string {
 		return t.Format(layout)
 	}
