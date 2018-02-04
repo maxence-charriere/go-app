@@ -204,7 +204,7 @@ func (c *Webview) OnFilePanel() {
 }
 
 // OnMultipleFilePanel is the function that is called when the Multiple file
-//  panel button is clicked.
+// panel button is clicked.
 func (c *Webview) OnMultipleFilePanel() {
 	if !app.SupportsFilePanels() {
 		return
