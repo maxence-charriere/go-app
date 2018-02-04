@@ -129,3 +129,25 @@ func menuHandler(h func(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Paylo
 		return h(menu, u, p)
 	}
 }
+
+func filePanelHandler(h func(fp *FilePanel, u *url.URL, p bridge.Payload) (res bridge.Payload)) bridge.GoHandler {
+	return func(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+		id, err := uuid.Parse(u.Query().Get("id"))
+		if err != nil {
+			panic(errors.Wrap(err, "creating file panel handler failed"))
+		}
+
+		elem, ok := driver.elements.Element(id)
+		if !ok {
+			app.DefaultLogger.Logf("%v: file panel with id %v doesn't exists", u.Path, id)
+			return nil
+		}
+
+		panel, ok := elem.(*FilePanel)
+		if !ok {
+			panic(errors.Errorf("creating file panel handler failed: element with id %v is not a file panel", id))
+		}
+
+		return h(panel, u, p)
+	}
+}

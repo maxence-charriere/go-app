@@ -104,6 +104,8 @@ func (d *Driver) Run(factory app.Factory) error {
 	d.golang.Handle("/menu/close", menuHandler(onMenuClose))
 	d.golang.Handle("/menu/callback", menuHandler(onMenuCallback))
 
+	d.golang.Handle("/file/panel/select", filePanelHandler(onFilePanelClose))
+
 	driver = d
 	_, err := d.macos.Request("/driver/run", nil)
 	d.waitStop.Wait()
@@ -388,7 +390,11 @@ func (d *Driver) Share(v interface{}) error {
 
 // NewFilePanel satisfies the app.DriverWithFilePanels interface.
 func (d *Driver) NewFilePanel(config app.FilePanelConfig) app.Element {
-	panic("not implemented")
+	panel, err := newFilePanel(config)
+	if err != nil {
+		panic(err)
+	}
+	return panel
 }
 
 // NewPopupNotification satisfies the app.DriverWithPopupNotifications

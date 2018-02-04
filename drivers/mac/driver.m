@@ -1,4 +1,5 @@
 #include "driver.h"
+#include "file.h"
 #include "json.h"
 #include "menu.h"
 #include "sandbox.h"
@@ -138,6 +139,13 @@
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Menu renderAttributes:url payload:payload];
             }];
+
+  // File panel handlers.
+  [self.objc handle:@"/file/panel/new"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [FilePanel newFilePanel:url payload:payload];
+            }];
+
   return self;
 }
 
@@ -292,6 +300,7 @@
     } @catch (NSException *exception) {
       err = exception.reason;
     }
+
     [self.objc asyncReturn:returnID result:make_bridge_result(nil, err)];
   });
   return make_bridge_result(nil, nil);
