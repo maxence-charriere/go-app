@@ -68,7 +68,7 @@ type DriverWithShare interface {
 	Driver
 
 	// Share shares the value.
-	Share(v interface{})
+	Share(v interface{}) error
 }
 
 // DriverWithFilePanels is the interface that describes a driver able to open a

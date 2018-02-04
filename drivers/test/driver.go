@@ -102,7 +102,8 @@ func (d *Driver) Dock() app.DockTile {
 }
 
 // Share satisfies the app.DriverWithShare interface.
-func (d *Driver) Share(v interface{}) {
+func (d *Driver) Share(v interface{}) error {
+	return nil
 }
 
 // NewFilePanel satisfies the app.DriverWithFilePanels interface.
