@@ -27,8 +27,10 @@
       id onComplete = ^(NSInteger result) {
         NSMutableArray<NSString *> *filenames = [[NSMutableArray alloc] init];
 
-        for (NSURL *url in panel.URLs) {
-          [filenames addObject:url.path];
+        if (result == NSModalResponseOK) {
+          for (NSURL *url in panel.URLs) {
+            [filenames addObject:url.path];
+          }
         }
 
         [driver.golang
