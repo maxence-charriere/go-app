@@ -62,6 +62,10 @@
             handler:^(NSURLComponents *url, NSString *payload) {
               return [self setDockBadge:url payload:payload];
             }];
+  [self.objc handle:@"/driver/share"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [self share:url payload:payload];
+            }];
 
   // Window handlers.
   [self.objc handle:@"/window/new"
@@ -247,6 +251,48 @@
 
   dispatch_async(dispatch_get_main_queue(), ^{
     [NSApp.dockTile setBadgeLabel:msg];
+  });
+  return make_bridge_result(nil, nil);
+}
+
+- (bridge_result)share:(NSURLComponents *)url payload:(NSString *)payload {
+  NSString *returnID = [url queryValue:@"return-id"];
+
+  NSDictionary *share = [JSONDecoder decodeObject:payload];
+  NSString *value = share[@"value"];
+  NSString *type = share[@"type"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    NSString *err = nil;
+
+    @try {
+      NSWindow *rawWindow = NSApp.keyWindow;
+      if (rawWindow == nil) {
+        @throw
+            [NSException exceptionWithName:@"NoKeyWindowExeption"
+                                    reason:@"no window to host the share menu"
+                                  userInfo:nil];
+      }
+
+      id valueToShare = value;
+      if ([type isEqual:@"url"]) {
+        valueToShare = [NSURL URLWithString:value];
+      }
+
+      Window *win = (Window *)rawWindow.windowController;
+      NSPoint pos = [win.window mouseLocationOutsideOfEventStream];
+      pos = [win.webview convertPoint:pos fromView:rawWindow.contentView];
+      NSRect rect = NSMakeRect(pos.x, pos.y, 1, 1);
+
+      NSSharingServicePicker *picker =
+          [[NSSharingServicePicker alloc] initWithItems:@[ valueToShare ]];
+      [picker showRelativeToRect:rect
+                          ofView:win.webview
+                   preferredEdge:NSMinYEdge];
+    } @catch (NSException *exception) {
+      err = exception.reason;
+    }
+    [self.objc asyncReturn:returnID result:make_bridge_result(nil, err)];
   });
   return make_bridge_result(nil, nil);
 }

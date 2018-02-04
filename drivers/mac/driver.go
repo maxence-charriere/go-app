@@ -362,8 +362,28 @@ func (d *Driver) Dock() app.DockTile {
 }
 
 // Share satisfies the app.DriverWithShare interface.
-func (d *Driver) Share(v interface{}) {
-	panic("not implemented")
+func (d *Driver) Share(v interface{}) error {
+	share := struct {
+		Value string `json:"value"`
+		Type  string `json:"type"`
+	}{
+		Value: fmt.Sprint(v),
+	}
+
+	switch v.(type) {
+	case url.URL, *url.URL:
+		share.Type = "url"
+
+	default:
+		share.Type = "string"
+	}
+
+	_, err := d.macos.RequestWithAsyncResponse(
+		"/driver/share",
+		bridge.NewPayload(share),
+	)
+	return err
+
 }
 
 // NewFilePanel satisfies the app.DriverWithFilePanels interface.

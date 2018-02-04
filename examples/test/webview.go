@@ -54,10 +54,12 @@ func (c *Webview) Render() string {
 			<button onclick="OnChangeNumber">Render: change number</button>
 			<div>{{.Number}}</div>
 		</li>
+		<li><button onclick="OnShare">Share</button></li>
+		<li><button onclick="OnShareURL">Share URL</button></li>
 		<li>
-		<button {{if not .CanPrevious}}disabled{{end}} onclick="OnPrevious">Previous</button>
-		<button onclick="OnReload">Reload</button>
-		<button {{if not .CanNext}}disabled{{end}} onclick="OnNext">Next</button>
+			<button {{if not .CanPrevious}}disabled{{end}} onclick="OnPrevious">Previous</button>
+			<button onclick="OnReload">Reload</button>
+			<button {{if not .CanNext}}disabled{{end}} onclick="OnNext">Next</button>
 		</li>
 	</ul>
 	
@@ -134,11 +136,26 @@ func (c *Webview) OnChangeSquareColor() {
 	app.Render(c)
 }
 
-// OnChangeNumber is the function to be called when the change number button is
+// OnChangeNumber is the function that is called when the change number button is
 // clicked.
 func (c *Webview) OnChangeNumber() {
 	c.Number = rand.Int()
 	app.Render(c)
+}
+
+// OnShare is the function that is called when the Share button is clicked.
+func (c *Webview) OnShare() {
+	app.Share("Hello world")
+}
+
+// OnShareURL is the function that is called when the Share URL button is
+// clicked.
+func (c *Webview) OnShareURL() {
+	u, err := url.Parse("https://github.com/murlokswarm/app")
+	if err != nil {
+		app.DefaultLogger.Log(err)
+	}
+	app.Share(u)
 }
 
 // OnPrevious is the function that is called when the previous button is
