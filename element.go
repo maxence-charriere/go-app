@@ -172,10 +172,10 @@ type DockTile interface {
 
 // FilePanelConfig is a struct that describes a file panel.
 type FilePanelConfig struct {
-	MultipleSelection bool
-	IgnoreDirectories bool
-	IgnoreFiles       bool
-	OnSelect          func(filenames []string)
+	MultipleSelection bool                     `json:"multiple-selection"`
+	IgnoreDirectories bool                     `json:"ignore-directories"`
+	IgnoreFiles       bool                     `json:"ignore-files"`
+	OnSelect          func(filenames []string) `json:"-"`
 }
 
 // PopupNotificationConfig is a struct that describes a popup notification.

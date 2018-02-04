@@ -54,8 +54,15 @@ func (c *Webview) Render() string {
 			<button onclick="OnChangeNumber">Render: change number</button>
 			<div>{{.Number}}</div>
 		</li>
-		<li><button onclick="OnShare">Share</button></li>
-		<li><button onclick="OnShareURL">Share URL</button></li>
+		<li>
+			<button onclick="OnShare">Share</button>
+			<button onclick="OnShareURL">Share URL</button>
+		</li>
+		<li>
+			<button onclick="OnDirPanel">Dir panel</button>
+			<button onclick="OnFilePanel">File panel</button>
+			<button onclick="OnMultipleFilePanel">Multiple file panel</button>
+		</li>
 		<li>
 			<button {{if not .CanPrevious}}disabled{{end}} onclick="OnPrevious">Previous</button>
 			<button onclick="OnReload">Reload</button>
@@ -145,17 +152,71 @@ func (c *Webview) OnChangeNumber() {
 
 // OnShare is the function that is called when the Share button is clicked.
 func (c *Webview) OnShare() {
+	if !app.SupportsShare() {
+		return
+	}
+
 	app.Share("Hello world")
 }
 
 // OnShareURL is the function that is called when the Share URL button is
 // clicked.
 func (c *Webview) OnShareURL() {
+	if !app.SupportsShare() {
+		return
+	}
+
 	u, err := url.Parse("https://github.com/murlokswarm/app")
 	if err != nil {
 		app.DefaultLogger.Log(err)
 	}
 	app.Share(u)
+}
+
+// OnDirPanel is the function that is called when the Dir panel button is
+// clicked.
+func (c *Webview) OnDirPanel() {
+	if !app.SupportsFilePanels() {
+		return
+	}
+
+	app.NewFilePanel(app.FilePanelConfig{
+		IgnoreFiles: true,
+		OnSelect: func(filenames []string) {
+			app.DefaultLogger.Log(filenames)
+		},
+	})
+}
+
+// OnFilePanel is the function that is called when the File panel button is
+// clicked.
+func (c *Webview) OnFilePanel() {
+	if !app.SupportsFilePanels() {
+		return
+	}
+
+	app.NewFilePanel(app.FilePanelConfig{
+		IgnoreDirectories: true,
+		OnSelect: func(filenames []string) {
+			app.DefaultLogger.Log(filenames)
+		},
+	})
+}
+
+// OnMultipleFilePanel is the function that is called when the Multiple file
+//  panel button is clicked.
+func (c *Webview) OnMultipleFilePanel() {
+	if !app.SupportsFilePanels() {
+		return
+	}
+
+	app.NewFilePanel(app.FilePanelConfig{
+		IgnoreDirectories: true,
+		MultipleSelection: true,
+		OnSelect: func(filenames []string) {
+			app.DefaultLogger.Log(filenames)
+		},
+	})
 }
 
 // OnPrevious is the function that is called when the previous button is
