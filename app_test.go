@@ -126,7 +126,7 @@ func TestApp(t *testing.T) {
 		},
 		{
 			scenario: "creates a popup notification",
-			function: testNewPopupNotification,
+			function: testNewNotification,
 		},
 	}
 
@@ -381,7 +381,7 @@ func testNewFilePanel(t *testing.T) {
 	}
 }
 
-func testNewPopupNotification(t *testing.T) {
+func testNewNotification(t *testing.T) {
 	if !app.SupportsNotifications() {
 		t.Fatal("notifications are not supported")
 	}

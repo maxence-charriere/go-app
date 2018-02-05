@@ -153,6 +153,11 @@
               return [Notification newNotification:url payload:payload];
             }];
 
+  // Notifications.
+  NSUserNotificationCenter *userNotificationCenter =
+      [NSUserNotificationCenter defaultUserNotificationCenter];
+  userNotificationCenter.delegate = self;
+
   return self;
 }
 
@@ -314,12 +319,6 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-  // Notifications.
-  NSUserNotificationCenter *userNotificationCenter =
-      [NSUserNotificationCenter defaultUserNotificationCenter];
-  userNotificationCenter.delegate = self;
-
-  // Go callback.
   [self.golang request:@"/driver/run" payload:nil];
 }
 
