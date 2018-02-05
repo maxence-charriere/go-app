@@ -111,8 +111,7 @@ func (d *Driver) NewFilePanel(c app.FilePanelConfig) app.Element {
 	return NewElement(d)
 }
 
-// NewPopupNotification satisfies the app.DriverWithPopupNotifications
-// interface.
-func (d *Driver) NewPopupNotification(c app.PopupNotificationConfig) app.Element {
-	return NewElement(d)
+// NewNotification satisfies the app.DriverWithNotifications interface.
+func (d *Driver) NewNotification(c app.NotificationConfig) error {
+	return nil
 }

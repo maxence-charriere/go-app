@@ -130,7 +130,7 @@ func menuHandler(h func(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Paylo
 	}
 }
 
-func filePanelHandler(h func(fp *FilePanel, u *url.URL, p bridge.Payload) (res bridge.Payload)) bridge.GoHandler {
+func filePanelHandler(h func(panel *FilePanel, u *url.URL, p bridge.Payload) (res bridge.Payload)) bridge.GoHandler {
 	return func(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 		id, err := uuid.Parse(u.Query().Get("id"))
 		if err != nil {
@@ -149,5 +149,27 @@ func filePanelHandler(h func(fp *FilePanel, u *url.URL, p bridge.Payload) (res b
 		}
 
 		return h(panel, u, p)
+	}
+}
+
+func notificationHandler(h func(n *Notification, u *url.URL, p bridge.Payload) (res bridge.Payload)) bridge.GoHandler {
+	return func(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+		id, err := uuid.Parse(u.Query().Get("id"))
+		if err != nil {
+			panic(errors.Wrap(err, "creating notification handler failed"))
+		}
+
+		elem, ok := driver.elements.Element(id)
+		if !ok {
+			app.DefaultLogger.Logf("%v: notification with id %v doesn't exists", u.Path, id)
+			return nil
+		}
+
+		notification, ok := elem.(*Notification)
+		if !ok {
+			panic(errors.Errorf("creating notification handler failed: element with id %v is not notification", id))
+		}
+
+		return h(notification, u, p)
 	}
 }

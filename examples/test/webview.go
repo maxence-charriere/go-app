@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"math/rand"
 	"net/url"
+	"path/filepath"
 	"strconv"
 
+	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/html"
 )
@@ -62,6 +64,10 @@ func (c *Webview) Render() string {
 			<button onclick="OnDirPanel">Dir panel</button>
 			<button onclick="OnFilePanel">File panel</button>
 			<button onclick="OnMultipleFilePanel">Multiple file panel</button>
+		</li>
+		<li>
+		<button onclick="OnNotification">Notification</button>
+		<button onclick="OnNotificationWithReply">Notification with reply</button>
 		</li>
 		<li>
 			<button {{if not .CanPrevious}}disabled{{end}} onclick="OnPrevious">Previous</button>
@@ -215,6 +221,40 @@ func (c *Webview) OnMultipleFilePanel() {
 		MultipleSelection: true,
 		OnSelect: func(filenames []string) {
 			app.DefaultLogger.Log(filenames)
+		},
+	})
+}
+
+// OnNotification is the function that is called when the Notificaton button is
+// clicked.
+func (c *Webview) OnNotification() {
+	app.NewNotification(app.NotificationConfig{
+		Title:     "hello",
+		Subtitle:  "world",
+		Text:      uuid.New().String(),
+		ImageName: filepath.Join(app.Resources(), "logo.png"),
+		Sound:     true,
+	})
+}
+
+// OnNotificationWithReply is the function that is called when the Notificaton
+// with reply button is clicked.
+func (c *Webview) OnNotificationWithReply() {
+	id := uuid.New().String()
+
+	app.NewNotification(app.NotificationConfig{
+		Title:     "hello",
+		Subtitle:  "world",
+		Text:      id,
+		ImageName: filepath.Join(app.Resources(), "logo.png"),
+		Sound:     true,
+		OnReply: func(reply string) {
+			app.NewNotification(app.NotificationConfig{
+				Title:    "reply to",
+				Subtitle: id,
+				Text:     reply,
+				Sound:    true,
+			})
 		},
 	})
 }

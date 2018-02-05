@@ -187,16 +187,16 @@ func NewFilePanel(c FilePanelConfig) Element {
 	return d.NewFilePanel(c)
 }
 
-// SupportsPopupNotifications reports whether popup notifications are supported.
-func SupportsPopupNotifications() bool {
-	_, ok := driver.(DriverWithPopupNotifications)
+// SupportsNotifications reports whether notifications are supported.
+func SupportsNotifications() bool {
+	_, ok := driver.(DriverWithNotifications)
 	return ok
 }
 
-// NewPopupNotification creates and displays the popup notification
-// described in the configuration.
-// It panics if popup notifications are not supported.
-func NewPopupNotification(c PopupNotificationConfig) Element {
-	d := driver.(DriverWithPopupNotifications)
-	return d.NewPopupNotification(c)
+// NewNotification creates and displays the notification described in the
+// given configuration.
+// It panics if notifications are not supported.
+func NewNotification(c NotificationConfig) error {
+	d := driver.(DriverWithNotifications)
+	return d.NewNotification(c)
 }

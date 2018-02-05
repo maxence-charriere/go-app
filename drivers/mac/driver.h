@@ -4,7 +4,8 @@
 #import "bridge.h"
 #import <Cocoa/Cocoa.h>
 
-@interface Driver : NSObject <NSApplicationDelegate>
+@interface Driver
+    : NSObject <NSApplicationDelegate, NSUserNotificationCenterDelegate>
 @property OBJCBridge *objc;
 @property GoBridge *golang;
 @property NSMutableDictionary<NSString *, id> *elements;

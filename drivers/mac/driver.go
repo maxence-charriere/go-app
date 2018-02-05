@@ -106,6 +106,8 @@ func (d *Driver) Run(factory app.Factory) error {
 
 	d.golang.Handle("/file/panel/select", filePanelHandler(onFilePanelClose))
 
+	d.golang.Handle("/notification/reply", notificationHandler(onNotificationReply))
+
 	driver = d
 	_, err := d.macos.Request("/driver/run", nil)
 	d.waitStop.Wait()
@@ -397,10 +399,11 @@ func (d *Driver) NewFilePanel(config app.FilePanelConfig) app.Element {
 	return panel
 }
 
-// NewPopupNotification satisfies the app.DriverWithPopupNotifications
+// NewNotification satisfies the app.DriverWithPopupNotifications
 // interface.
-func (d *Driver) NewPopupNotification(config app.PopupNotificationConfig) app.Element {
-	panic("not implemented")
+func (d *Driver) NewNotification(config app.NotificationConfig) error {
+	_, err := newNotification(config)
+	return err
 }
 
 func generateDevID() string {
