@@ -81,10 +81,10 @@ type DriverWithFilePanels interface {
 	NewFilePanel(c FilePanelConfig) Element
 }
 
-// DriverWithPopupNotifications is the interface that describes a driver able to
-// display popup notifications.
-type DriverWithPopupNotifications interface {
-	// NewPopupNotification creates and displays the popup notification
-	// described in the configuration.
-	NewPopupNotification(c PopupNotificationConfig) Element
+// DriverWithNotifications is the interface that describes a driver able to
+// display notifications.
+type DriverWithNotifications interface {
+	// NewNotification creates and displays the notification described in the
+	// given configuration.
+	NewNotification(c NotificationConfig) error
 }

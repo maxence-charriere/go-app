@@ -2,6 +2,7 @@
 #include "file.h"
 #include "json.h"
 #include "menu.h"
+#include "notification.h"
 #include "sandbox.h"
 #include "window.h"
 
@@ -144,6 +145,12 @@
   [self.objc handle:@"/file/panel/new"
             handler:^(NSURLComponents *url, NSString *payload) {
               return [FilePanel newFilePanel:url payload:payload];
+            }];
+
+  // Notification handlers.
+  [self.objc handle:@"/notification/new"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Notification newNotification:url payload:payload];
             }];
 
   return self;
@@ -307,6 +314,12 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+  // Notifications.
+  NSUserNotificationCenter *userNotificationCenter =
+      [NSUserNotificationCenter defaultUserNotificationCenter];
+  userNotificationCenter.delegate = self;
+
+  // Go callback.
   [self.golang request:@"/driver/run" payload:nil];
 }
 
@@ -361,5 +374,17 @@
 
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {
   return self.dock;
+}
+
+- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center
+     shouldPresentNotification:(NSUserNotification *)notification {
+  return YES;
+}
+
+- (void)userNotificationCenter:(NSUserNotificationCenter *)center
+       didActivateNotification:(NSUserNotification *)notification {
+  [self.golang request:[NSString stringWithFormat:@"/notification/reply?id=%@",
+                                                  notification.identifier]
+               payload:[JSONEncoder encodeString:notification.response.string]];
 }
 @end

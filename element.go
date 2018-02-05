@@ -178,10 +178,15 @@ type FilePanelConfig struct {
 	OnSelect          func(filenames []string) `json:"-"`
 }
 
-// PopupNotificationConfig is a struct that describes a popup notification.
-type PopupNotificationConfig struct {
-	Message      string
-	ComponentURL string
+// NotificationConfig is a struct that describes a notification.
+type NotificationConfig struct {
+	Title     string `json:"title"`
+	Subtitle  string `json:"subtitle"`
+	Text      string `json:"text"`
+	ImageName string `json:"image-name"`
+	Sound     bool   `json:"sound"`
+
+	OnReply func(reply string) `json:"-"`
 }
 
 // ElementDB is the interface that describes an element database.

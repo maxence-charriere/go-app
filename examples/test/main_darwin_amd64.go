@@ -23,12 +23,6 @@ func main() {
 			fmt.Println("app.Resources():", app.Resources())
 			fmt.Println("app.Storage():", app.Storage())
 
-			// app.NewFilePanel(app.FilePanelConfig{
-			// 	OnSelect: func(filenames []string) {
-			// 		app.DefaultLogger.Log(filenames)
-			// 	},
-			// })
-
 			// testWindow(true)
 			testWindow(false)
 		},
