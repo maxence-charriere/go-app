@@ -215,8 +215,8 @@ type ElementDB interface {
 	Len() int
 }
 
-// NewElementDB creates an element database.
-func NewElementDB() ElementDB {
+// NewElemDB creates an element database.
+func NewElemDB() ElementDB {
 	return &elementDB{
 		elements:               make(map[uuid.UUID]Element),
 		elementsWithComponents: make(elementWithComponentList, 0, 64),
