@@ -13,7 +13,6 @@ import (
 
 // A Menu implementation for tests.
 type Menu struct {
-	config    app.MenuConfig
 	id        uuid.UUID
 	factory   app.Factory
 	markup    app.Markup
@@ -22,27 +21,20 @@ type Menu struct {
 	onLoad func(compo app.Component)
 }
 
-func newMenu(driver *Driver, config app.MenuConfig) app.Menu {
+func newMenu(d *Driver, c app.MenuConfig) (app.Menu, error) {
 	menu := &Menu{
 		id:        uuid.New(),
-		factory:   driver.factory,
-		markup:    app.NewConcurrentMarkup(html.NewMarkup(driver.factory)),
+		factory:   d.factory,
+		markup:    html.NewMarkup(d.factory),
 		lastFocus: time.Now(),
 	}
-	driver.elements.Add(menu)
+	d.elements.Add(menu)
 
-	if driver.OnContextLoad != nil {
-		menu.onLoad = func(compo app.Component) {
-			driver.OnContextLoad(menu, compo)
-		}
+	var err error
+	if len(c.DefaultURL) != 0 {
+		err = menu.Load(c.DefaultURL)
 	}
-
-	if len(config.DefaultURL) != 0 {
-		if err := menu.Load(config.DefaultURL); err != nil {
-			driver.Test.Log(err)
-		}
-	}
-	return menu
+	return menu, err
 }
 
 // ID satisfies the app.Element interface.

@@ -14,7 +14,6 @@ import (
 // A Window implementation for tests.
 type Window struct {
 	driver    *Driver
-	config    app.WindowConfig
 	id        uuid.UUID
 	factory   app.Factory
 	markup    app.Markup
@@ -25,35 +24,26 @@ type Window struct {
 	onClose func()
 }
 
-// NewWindow creates a new widnow.
-func NewWindow(driver *Driver, config app.WindowConfig) *Window {
-	window := &Window{
-		driver:    driver,
-		config:    config,
+func newWindow(d *Driver, c app.WindowConfig) (*Window, error) {
+	win := &Window{
+		driver:    d,
 		id:        uuid.New(),
-		factory:   driver.factory,
-		history:   app.NewConcurrentHistory(app.NewHistory()),
-		markup:    app.NewConcurrentMarkup(html.NewMarkup(driver.factory)),
+		factory:   d.factory,
+		markup:    html.NewMarkup(d.factory),
+		history:   app.NewHistory(),
 		lastFocus: time.Now(),
 	}
+	d.elements.Add(win)
 
-	driver.elements.Add(window)
-	window.onClose = func() {
-		driver.elements.Remove(window)
+	win.onClose = func() {
+		d.elements.Remove(win)
 	}
 
-	if driver.OnContextLoad != nil {
-		window.onLoad = func(compo app.Component) {
-			driver.OnContextLoad(window, compo)
-		}
+	var err error
+	if len(c.DefaultURL) != 0 {
+		err = win.Load(c.DefaultURL)
 	}
-
-	if len(config.DefaultURL) != 0 {
-		if err := window.Load(config.DefaultURL); err != nil {
-			driver.Test.Log(err)
-		}
-	}
-	return window
+	return win, err
 }
 
 // ID satisfies the app.Element interface.
@@ -62,8 +52,8 @@ func (w *Window) ID() uuid.UUID {
 }
 
 // Contains satisfies the app.ElementWithComponent interface.
-func (w *Window) Contains(compo app.Component) bool {
-	return w.markup.Contains(compo)
+func (w *Window) Contains(c app.Component) bool {
+	return w.markup.Contains(c)
 }
 
 // Load satisfies the app.ElementWithComponent interface.

@@ -62,7 +62,7 @@ func (d *Driver) Run(factory app.Factory) error {
 	d.devID = generateDevID()
 	d.factory = factory
 
-	elements := app.NewElementDB()
+	elements := app.NewElemDB()
 	elements = app.NewConcurrentElemDB(elements)
 	d.elements = elements
 

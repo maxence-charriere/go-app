@@ -5,9 +5,6 @@ import (
 )
 
 var (
-	// DefaultLogger is the application logger.
-	DefaultLogger = NewConcurrentLogger(NewConsole(false))
-
 	driver     Driver
 	components Factory = make(factory)
 )
@@ -15,13 +12,8 @@ var (
 // Import imports the component into the app.
 // Components must be imported in order the be used by the app package.
 // This allows components to be created dynamically when they are found into
-// HTML code.
-// Imports must be done before the app is running.
+// markup.
 func Import(c Component) {
-	if driver != nil {
-		panic(errors.New("can't import components while app is running"))
-	}
-
 	if _, err := components.RegisterComponent(c); err != nil {
 		err = errors.Wrap(err, "import component failed")
 		panic(err)
@@ -29,19 +21,18 @@ func Import(c Component) {
 }
 
 // Run runs the app with the driver as backend.
-func Run(d Driver) {
+func Run(d Driver) error {
 	if driver != nil {
-		panic(errors.Errorf("driver %T is already running", driver))
+		return errors.Errorf("driver %T is already running", driver)
 	}
 
-	driver = d
-	if err := d.Run(components); err != nil {
-		driver = nil
-		panic(err)
-	}
+	driver = NewDriverWithLogs(d)
+	return driver.Run(components)
+
 }
 
 // RunningDriver returns the running driver.
+//
 // It panics if called before Run.
 func RunningDriver() Driver {
 	if driver == nil {
@@ -50,153 +41,116 @@ func RunningDriver() Driver {
 	return driver
 }
 
-// Render renders the component.
-// It should be called when the display of component c have to be updated.
-// It panics if called before Run.
-func Render(c Component) {
-	if err := driver.Render(c); err != nil {
-		DefaultLogger.Error(err)
-	}
-}
-
-// Context returns the element where the component is mounted.
-// It returns an error if c is not mounted.
-// It panics if called before Run.
-func Context(c Component) (ElementWithComponent, error) {
-	return driver.Context(c)
-}
-
-// NewContextMenu creates and displays the context menu described in the
-// configuration.
-// Context menu are displayed in the window or page in use.
-// It panics if called before Run.
-func NewContextMenu(c MenuConfig) Menu {
-	return driver.NewContextMenu(c)
-}
-
 // Name returns the application name.
+//
+// It panics if called before Run.
 func Name() string {
 	return driver.AppName()
 }
 
-// Resources returns the location of the resources directory.
+// Resources returns the given path prefixed by the resources directory
+// location.
 // Resources should be used only for read only operations.
+//
 // It panics if called before Run.
-func Resources() string {
-	return driver.Resources()
+func Resources(path ...string) string {
+	return driver.Resources(path...)
+}
+
+// Storage returns the given path prefixed by the storage directory
+// location.
+//
+// It panics if called before Run.
+func Storage(path ...string) string {
+	return driver.Storage(path...)
+}
+
+// NewWindow creates and displays the window described by the given
+// configuration.
+//
+// It panics if called before Run.
+func NewWindow(c WindowConfig) (Window, error) {
+	return driver.NewWindow(c)
+}
+
+// NewContextMenu creates and displays the context menu described by the
+// given configuration.
+//
+// It panics if called before Run.
+func NewContextMenu(c MenuConfig) (Menu, error) {
+	return driver.NewContextMenu(c)
+}
+
+// Render renders the given component.
+// It should be called when the display of component c have to be updated.
+//
+// It panics if called before Run.
+func Render(c Component) {
+	driver.Render(c)
+}
+
+// ElementByComponent returns the element where the given component is mounted.
+//
+// It panics if called before Run.
+func ElementByComponent(c Component) (ElementWithComponent, error) {
+	return driver.ElementByComponent(c)
+}
+
+// WindowByComponent returns the window where the given component is mounted.
+//
+// It panics if called before Run.
+func WindowByComponent(c Component) (Window, error) {
+	elem, err := driver.ElementByComponent(c)
+	if err != nil {
+		return nil, err
+	}
+
+	win, ok := elem.(Window)
+	if !ok {
+		return nil, errors.New("component is not mounted in a window")
+	}
+	return win, nil
+}
+
+// NewFilePanel creates and displays the file panel described by the given
+// configuration.
+//
+// It panics if called before Run.
+func NewFilePanel(c FilePanelConfig) error {
+	return driver.NewFilePanel(c)
+}
+
+// NewShare creates and display the share pannel to share the given value.
+//
+// It panics if called before Run.
+func NewShare(v interface{}) error {
+	return driver.NewShare(v)
+}
+
+// NewNotification creates and displays the notification described in the
+// given configuration.
+//
+// It panics if called before Run.
+func NewNotification(c NotificationConfig) error {
+	return driver.NewNotification(c)
+}
+
+// MenuBar returns the menu bar.
+//
+// It panics if called before Run.
+func MenuBar() Menu {
+	return driver.MenuBar()
+}
+
+// Dock returns the dock tile.
+//
+// It panics if called before Run.
+func Dock() DockTile {
+	return driver.Dock()
 }
 
 // CallOnUIGoroutine calls a function on the UI goroutine.
 // UI goroutine is the running application main thread.
 func CallOnUIGoroutine(f func()) {
 	driver.CallOnUIGoroutine(f)
-}
-
-// SupportsStorage reports whether storage is supported.
-func SupportsStorage() bool {
-	_, ok := driver.(DriverWithStorage)
-	return ok
-}
-
-// Storage returns the location of the storage directory.
-// It panics if storage is not supported.
-func Storage() string {
-	d := driver.(DriverWithStorage)
-	return d.Storage()
-}
-
-// SupportsWindows reports whether windows are supported.
-func SupportsWindows() bool {
-	_, ok := driver.(DriverWithWindows)
-	return ok
-}
-
-// NewWindow creates and displays the window described in the configuration.
-// It panics if windows are not supported.
-func NewWindow(c WindowConfig) Window {
-	d := driver.(DriverWithWindows)
-	return d.NewWindow(c)
-}
-
-// WindowFromComponent return the window where the given component is mounted.
-func WindowFromComponent(c Component) (w Window, err error) {
-	var ctx ElementWithComponent
-	var isWindow bool
-
-	if ctx, err = Context(c); err != nil {
-		DefaultLogger.Error(err)
-		return nil, err
-	}
-
-	if w, isWindow = ctx.(Window); !isWindow {
-		err = errors.Errorf("element %v is not a %T: %T", ctx.ID(), w, ctx)
-	}
-	return
-}
-
-// SupportsMenuBar reports whether menu bar is supported.
-func SupportsMenuBar() bool {
-	_, ok := driver.(DriverWithMenuBar)
-	return ok
-}
-
-// MenuBar returns the menu bar.
-// It panics if menu bar is not supported.
-func MenuBar() Menu {
-	d := driver.(DriverWithMenuBar)
-	return d.MenuBar()
-}
-
-// SupportsDock reports whether dock is supported.
-func SupportsDock() bool {
-	_, ok := driver.(DriverWithDock)
-	return ok
-}
-
-// Dock returns the dock tile.
-// It panics if dock is not supported.
-func Dock() DockTile {
-	d := driver.(DriverWithDock)
-	return d.Dock()
-}
-
-// SupportsShare reports whether share is supported.
-func SupportsShare() bool {
-	_, ok := driver.(DriverWithShare)
-	return ok
-}
-
-// Share shares the value.
-// It panics if share is not supported.
-func Share(v interface{}) {
-	d := driver.(DriverWithShare)
-	d.Share(v)
-}
-
-// SupportsFilePanels reports whether file panels are supported.
-func SupportsFilePanels() bool {
-	_, ok := driver.(DriverWithFilePanels)
-	return ok
-}
-
-// NewFilePanel creates and displays the file panel described in the
-// configuration.
-// It panics if file panels are not supported.
-func NewFilePanel(c FilePanelConfig) Element {
-	d := driver.(DriverWithFilePanels)
-	return d.NewFilePanel(c)
-}
-
-// SupportsNotifications reports whether notifications are supported.
-func SupportsNotifications() bool {
-	_, ok := driver.(DriverWithNotifications)
-	return ok
-}
-
-// NewNotification creates and displays the notification described in the
-// given configuration.
-// It panics if notifications are not supported.
-func NewNotification(c NotificationConfig) error {
-	d := driver.(DriverWithNotifications)
-	return d.NewNotification(c)
 }
