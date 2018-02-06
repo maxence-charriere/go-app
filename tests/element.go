@@ -77,9 +77,9 @@ func (e *elementWithComponent) LastFocus() time.Time {
 	return e.lastFocus
 }
 
-// TestElementDB is a test suite used to ensure that all element databases
+// TestElemDB is a test suite used to ensure that all element databases
 // implementations behave the same.
-func TestElementDB(t *testing.T, newElementDB func() app.ElementDB) {
+func TestElemDB(t *testing.T, newElementDB func() app.ElementDB) {
 	tests := []struct {
 		scenario string
 		function func(t *testing.T, db app.ElementDB)
