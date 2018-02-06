@@ -12,16 +12,16 @@ import (
 // behave the same.
 func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 	factory := app.NewFactory()
-	factory.RegisterComponent(&Foo{})
-	factory.RegisterComponent(&Bar{})
-	factory.RegisterComponent(&CompoWithBadTmpl{})
-	factory.RegisterComponent(&CompoWithBadTag{})
-	factory.RegisterComponent(&CompoWithNotRegisteredChild{})
-	factory.RegisterComponent(&CompoWithBadChild{})
-	factory.RegisterComponent(&Hello{})
-	factory.RegisterComponent(&World{})
-	factory.RegisterComponent(&Mapping{})
-	factory.RegisterComponent(&RussianDoll{})
+	factory.Register(&Foo{})
+	factory.Register(&Bar{})
+	factory.Register(&CompoWithBadTmpl{})
+	factory.Register(&CompoWithBadTag{})
+	factory.Register(&CompoWithNotRegisteredChild{})
+	factory.Register(&CompoWithBadChild{})
+	factory.Register(&Hello{})
+	factory.Register(&World{})
+	factory.Register(&Mapping{})
+	factory.Register(&RussianDoll{})
 
 	tests := []struct {
 		scenario string

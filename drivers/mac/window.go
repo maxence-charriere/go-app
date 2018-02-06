@@ -106,7 +106,7 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 	}
 
 	compoName := app.ComponentNameFromURL(u)
-	isRegiteredCompo := driver.factory.IsRegisteredComponent(compoName)
+	isRegiteredCompo := driver.factory.Registered(compoName)
 	currentURL, err := w.history.Current()
 
 	if isRegiteredCompo && (err != nil || currentURL != u.String()) {
@@ -123,7 +123,7 @@ func (w *Window) load(u *url.URL) error {
 	var pageConfig html.PageConfig
 	var err error
 
-	if compo, err = driver.factory.NewComponent(compoName); err != nil {
+	if compo, err = driver.factory.New(compoName); err != nil {
 		// Redirect web page to default web browser.
 		cmd := exec.Command("open", u.String())
 		err = cmd.Run()

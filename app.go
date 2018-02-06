@@ -9,12 +9,18 @@ var (
 	components Factory = make(factory)
 )
 
+func init() {
+	components = NewFactory()
+	components = NewConcurrentFactory(components)
+	components = NewFactoryWithLogs(components)
+}
+
 // Import imports the component into the app.
 // Components must be imported in order the be used by the app package.
 // This allows components to be created dynamically when they are found into
 // markup.
 func Import(c Component) {
-	if _, err := components.RegisterComponent(c); err != nil {
+	if _, err := components.Register(c); err != nil {
 		err = errors.Wrap(err, "import component failed")
 		panic(err)
 	}

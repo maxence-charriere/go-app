@@ -67,7 +67,7 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 
 	w.history.NewEntry(u.String())
 
-	compo, err := w.factory.NewComponent(app.ComponentNameFromURL(u))
+	compo, err := w.factory.New(app.ComponentNameFromURL(u))
 	if err != nil {
 		return err
 	}

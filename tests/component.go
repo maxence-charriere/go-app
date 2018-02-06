@@ -94,6 +94,30 @@ func (c *CompoWithBadAttrs) Render() string {
 	`
 }
 
+// NoPointerCompo is a test component that is not implemented as a pointer.
+type NoPointerCompo app.ZeroCompo
+
+// Render satisfies the app.Component interface.
+func (c NoPointerCompo) Render() string {
+	return `<div>goodbye</div>`
+}
+
+// IntCompo is a test component that is not implemented as a pointer to struct.
+type IntCompo int
+
+// Render satisfies the app.Component interface.
+func (i *IntCompo) Render() string {
+	return `<p>Aurevoir World</p>`
+}
+
+// EmptyCompo is a test component that has no fields.
+type EmptyCompo struct{}
+
+// Render satisfies the app.Component interface.
+func (c *EmptyCompo) Render() string {
+	return `<p>Goodbye World</p>`
+}
+
 // Hello is a test component that allows to test multiple behaviors.
 type Hello struct {
 	Greeting      string

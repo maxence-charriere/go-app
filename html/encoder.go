@@ -108,7 +108,7 @@ func (e *Encoder) encodeAttributes(tag app.Tag) {
 			u, _ := url.Parse(val)
 			compoName := app.ComponentNameFromURL(u)
 
-			if e.markup.Factory().IsRegisteredComponent(compoName) {
+			if e.markup.Factory().Registered(compoName) {
 				u.Scheme = "compo"
 				u.Path = "/" + compoName
 				e.writer.WriteString(u.String())

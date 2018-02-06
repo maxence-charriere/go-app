@@ -51,7 +51,7 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 		return err
 	}
 
-	compo, err := m.factory.NewComponent(app.ComponentNameFromURL(u))
+	compo, err := m.factory.New(app.ComponentNameFromURL(u))
 	if err != nil {
 		return err
 	}

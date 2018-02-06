@@ -34,7 +34,7 @@ type elementWithComponent struct {
 
 func newElementWithComponent() *elementWithComponent {
 	factory := app.NewFactory()
-	factory.RegisterComponent(&Foo{})
+	factory.Register(&Foo{})
 
 	return &elementWithComponent{
 		id:        uuid.New(),
@@ -55,7 +55,7 @@ func (e *elementWithComponent) Load(rawurl string, v ...interface{}) error {
 		return err
 	}
 
-	compo, err := e.factory.NewComponent(app.ComponentNameFromURL(u))
+	compo, err := e.factory.New(app.ComponentNameFromURL(u))
 	if err != nil {
 		return err
 	}

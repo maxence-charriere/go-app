@@ -67,7 +67,7 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 	}
 
 	compoName = app.ComponentNameFromURL(u)
-	if compo, err = driver.factory.NewComponent(compoName); err != nil {
+	if compo, err = driver.factory.New(compoName); err != nil {
 		return err
 	}
 
