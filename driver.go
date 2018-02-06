@@ -2,7 +2,6 @@ package app
 
 import (
 	"encoding/json"
-	"path/filepath"
 )
 
 // Driver is the interface that describes a backend for app rendering.
@@ -74,7 +73,6 @@ type driverWithLogs struct {
 }
 
 func (d *driverWithLogs) Name() string {
-	Log("returning driver name")
 	name := d.base.Name()
 	Log("driver name:", name)
 	return name
@@ -91,33 +89,20 @@ func (d *driverWithLogs) Run(f Factory) error {
 }
 
 func (d *driverWithLogs) AppName() string {
-	Log("returning app name")
 	appName := d.base.AppName()
 	Log("app name:", appName)
 	return appName
 }
 
 func (d *driverWithLogs) Resources(path ...string) string {
-	if len(path) == 0 {
-		Log("returning resources directory path")
-	} else {
-		Log("returning resources path for", filepath.Join(path...))
-	}
-
 	resources := d.base.Resources(path...)
-	Log("path:", resources)
+	Log("resources path:", resources)
 	return resources
 }
 
 func (d *driverWithLogs) Storage(path ...string) string {
-	if len(path) == 0 {
-		Log("returning storage directory path")
-	} else {
-		Log("returning storage path for", filepath.Join(path...))
-	}
-
 	storage := d.base.Storage(path...)
-	Log("path:", storage)
+	Log("storage path:", storage)
 	return storage
 }
 
