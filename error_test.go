@@ -28,7 +28,7 @@ func TestErrors(t *testing.T) {
 		t.Run(test.scenario, func(t *testing.T) {
 			t.Log("error:", test.err)
 
-			if notSupported := ErrNotSupported(test.err); notSupported != test.notSupported {
+			if notSupported := NotSupported(test.err); notSupported != test.notSupported {
 				t.Errorf("not supported is not %v: %v", test.notSupported, notSupported)
 			}
 		})

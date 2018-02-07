@@ -27,9 +27,9 @@ func NewErrNotSupported(feature string) error {
 	}
 }
 
-// ErrNotSupported is a helper fuction that reports if the given error is an
+// NotSupported is a helper fuction that reports if the given error is an
 // unsupported error.
-func ErrNotSupported(err error) bool {
+func NotSupported(err error) bool {
 	appErr, ok := err.(appErr)
 	if !ok {
 		return false

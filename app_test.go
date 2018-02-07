@@ -93,17 +93,17 @@ func TestApp(t *testing.T) {
 	}
 
 	err = app.NewFilePanel(app.FilePanelConfig{})
-	if err != nil && !app.ErrNotSupported(err) {
+	if err != nil && !app.NotSupported(err) {
 		t.Error(err)
 	}
 
 	err = app.NewShare("Hello world")
-	if err != nil && !app.ErrNotSupported(err) {
+	if err != nil && !app.NotSupported(err) {
 		t.Error(err)
 	}
 
 	err = app.NewNotification(app.NotificationConfig{})
-	if err != nil && !app.ErrNotSupported(err) {
+	if err != nil && !app.NotSupported(err) {
 		t.Error(err)
 	}
 
