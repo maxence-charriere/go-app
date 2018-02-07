@@ -4,15 +4,27 @@ import (
 	"path/filepath"
 
 	"github.com/murlokswarm/app"
+	"github.com/pkg/errors"
+)
+
+var (
+	// ErrSimulated is an error that is set to simulated a return error
+	// behavior.
+	ErrSimulated = errors.New("simulated error")
 )
 
 // Driver is an app.Driver implementation for testing.
 type Driver struct {
+	SimulateErr bool
+
+	OnRun func()
+
 	factory  app.Factory
 	elements app.ElementDB
 	dock     app.DockTile
 	menubar  app.Menu
 	uichan   chan func()
+	running  bool
 }
 
 // Name satisfies the app.Driver interface.
@@ -22,6 +34,10 @@ func (d *Driver) Name() string {
 
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(f app.Factory) error {
+	if d.SimulateErr {
+		return ErrSimulated
+	}
+
 	d.factory = f
 
 	elements := app.NewElemDB()
@@ -34,6 +50,12 @@ func (d *Driver) Run(f app.Factory) error {
 	d.menubar = menubar
 
 	d.uichan = make(chan func(), 256)
+
+	d.running = true
+	if d.OnRun != nil {
+		d.OnRun()
+	}
+
 	return nil
 }
 
@@ -56,16 +78,26 @@ func (d *Driver) Storage(path ...string) string {
 
 // NewWindow satisfies the app.Driver interface.
 func (d *Driver) NewWindow(c app.WindowConfig) (app.Window, error) {
+	if d.SimulateErr {
+		return nil, ErrSimulated
+	}
 	return newWindow(d, c)
 }
 
 // NewContextMenu satisfies the app.Driver interface.
 func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
+	if d.SimulateErr {
+		return nil, ErrSimulated
+	}
 	return newMenu(d, c)
 }
 
 // Render satisfies the app.Driver interface.
 func (d *Driver) Render(compo app.Component) error {
+	if d.SimulateErr {
+		return ErrSimulated
+	}
+
 	elem, err := d.elements.ElementByComponent(compo)
 	if err != nil {
 		return err
