@@ -38,12 +38,7 @@ func Run(d Driver) error {
 }
 
 // RunningDriver returns the running driver.
-//
-// It panics if called before Run.
 func RunningDriver() Driver {
-	if driver == nil {
-		panic("no current driver")
-	}
 	return driver
 }
 

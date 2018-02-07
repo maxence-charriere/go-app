@@ -19,6 +19,7 @@ type Window struct {
 	markup    app.Markup
 	history   app.History
 	lastFocus time.Time
+	component app.Component
 
 	onLoad  func(compo app.Component)
 	onClose func()
@@ -51,6 +52,11 @@ func (w *Window) ID() uuid.UUID {
 	return w.id
 }
 
+// Component satisfies the app.ElementWithComponent interface.
+func (w *Window) Component() app.Component {
+	return w.component
+}
+
 // Contains satisfies the app.ElementWithComponent interface.
 func (w *Window) Contains(c app.Component) bool {
 	return w.markup.Contains(c)
@@ -58,6 +64,10 @@ func (w *Window) Contains(c app.Component) bool {
 
 // Load satisfies the app.ElementWithComponent interface.
 func (w *Window) Load(rawurl string, v ...interface{}) error {
+	if w.component != nil {
+		w.markup.Dismount(w.component)
+	}
+
 	rawurl = fmt.Sprintf(rawurl, v...)
 
 	u, err := url.Parse(rawurl)
@@ -71,6 +81,8 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 	if err != nil {
 		return err
 	}
+
+	w.component = compo
 
 	if _, err = w.markup.Mount(compo); err != nil {
 		return errors.Wrapf(err, "loading %s in test window %p failed", u, w)

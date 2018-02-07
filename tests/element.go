@@ -64,6 +64,10 @@ func (e *elementWithComponent) Load(rawurl string, v ...interface{}) error {
 	return nil
 }
 
+func (e *elementWithComponent) Component() app.Component {
+	return e.component
+}
+
 func (e *elementWithComponent) Contains(c app.Component) bool {
 	return e.component == c
 }

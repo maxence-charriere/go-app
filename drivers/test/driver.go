@@ -12,7 +12,7 @@ type Driver struct {
 	elements app.ElementDB
 	dock     app.DockTile
 	menubar  app.Menu
-	UIchan   chan func()
+	uichan   chan func()
 }
 
 // Name satisfies the app.Driver interface.
@@ -33,7 +33,7 @@ func (d *Driver) Run(f app.Factory) error {
 	menubar, _ := newMenu(d, app.MenuConfig{})
 	d.menubar = menubar
 
-	d.UIchan = make(chan func(), 256)
+	d.uichan = make(chan func(), 256)
 	return nil
 }
 
@@ -105,5 +105,5 @@ func (d *Driver) Dock() app.DockTile {
 
 // CallOnUIGoroutine satisfies the app.Driver interface.
 func (d *Driver) CallOnUIGoroutine(f func()) {
-	d.UIchan <- f
+	d.uichan <- f
 }

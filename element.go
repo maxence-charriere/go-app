@@ -28,6 +28,9 @@ type ElementWithComponent interface {
 	// It returns an error if the component is not imported.
 	Load(url string, v ...interface{}) error
 
+	// Component returns the loaded component.
+	Component() Component
+
 	// Contains reports whether the component is mounted in the element.
 	Contains(c Component) bool
 

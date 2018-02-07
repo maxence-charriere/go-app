@@ -17,6 +17,7 @@ type Menu struct {
 	factory   app.Factory
 	markup    app.Markup
 	lastFocus time.Time
+	component app.Component
 
 	onLoad func(compo app.Component)
 }
@@ -44,6 +45,10 @@ func (m *Menu) ID() uuid.UUID {
 
 // Load satisfies the app.ElementWithComponent interface.
 func (m *Menu) Load(rawurl string, v ...interface{}) error {
+	if m.component != nil {
+		m.markup.Dismount(m.component)
+	}
+
 	rawurl = fmt.Sprintf(rawurl, v...)
 
 	u, err := url.Parse(rawurl)
@@ -56,6 +61,8 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 		return err
 	}
 
+	m.component = compo
+
 	if _, err = m.markup.Mount(compo); err != nil {
 		return errors.Wrapf(err, "loading %s in test menu %p failed", u, m)
 	}
@@ -64,6 +71,11 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 		m.onLoad(compo)
 	}
 	return nil
+}
+
+// Component satisfies the app.ElementWithComponent interface.
+func (m *Menu) Component() app.Component {
+	return m.component
 }
 
 // Contains satisfies the app.ElementWithComponent interface.
