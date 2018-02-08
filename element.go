@@ -201,11 +201,11 @@ type ElementDB interface {
 	Remove(e Element)
 
 	// Element returns the element with the given identifier.
-	Element(id uuid.UUID) (e Element, ok bool)
+	Element(id uuid.UUID) (Element, bool)
 
 	// ElementByComponent returns the element where the component is mounted.
 	// It returns an error if the component is not mounted in any element.
-	ElementByComponent(c Component) (e ElementWithComponent, err error)
+	ElementByComponent(c Component) (ElementWithComponent, error)
 
 	// ElementsWithComponents returns the elements that contains components.
 	ElementsWithComponents() []ElementWithComponent
@@ -263,21 +263,19 @@ func (db *elementDB) Remove(e Element) {
 	}
 }
 
-func (db *elementDB) Element(id uuid.UUID) (e Element, ok bool) {
-	e, ok = db.elements[id]
-	return
+func (db *elementDB) Element(id uuid.UUID) (Element, bool) {
+	e, ok := db.elements[id]
+	return e, ok
 }
 
-func (db *elementDB) ElementByComponent(c Component) (e ElementWithComponent, err error) {
+func (db *elementDB) ElementByComponent(c Component) (ElementWithComponent, error) {
 	for _, elem := range db.elementsWithComponents {
 		if elem.Contains(c) {
-			e = elem
-			return
+			return elem, nil
 		}
 	}
 
-	err = errors.Errorf("component %+v is not mounted in any elements", c)
-	return
+	return errors.Errorf("component %+v is not mounted in any elements", c)
 }
 
 func (db *elementDB) ElementsWithComponents() []ElementWithComponent {
@@ -323,18 +321,18 @@ func (db *concurrentElemDB) Remove(e Element) {
 	db.mutex.Unlock()
 }
 
-func (db *concurrentElemDB) Element(id uuid.UUID) (e Element, ok bool) {
+func (db *concurrentElemDB) Element(id uuid.UUID) (Element, bool) {
 	db.mutex.Lock()
-	e, ok = db.base.Element(id)
+	e, ok := db.base.Element(id)
 	db.mutex.Unlock()
-	return
+	return e, ok
 }
 
-func (db *concurrentElemDB) ElementByComponent(c Component) (e ElementWithComponent, err error) {
+func (db *concurrentElemDB) ElementByComponent(c Component) (ElementWithComponent, error) {
 	db.mutex.Lock()
-	e, err = db.base.ElementByComponent(c)
+	e, err := db.base.ElementByComponent(c)
 	db.mutex.Unlock()
-	return
+	return e, err
 }
 
 func (db *concurrentElemDB) ElementsWithComponents() []ElementWithComponent {
