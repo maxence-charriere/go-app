@@ -275,7 +275,7 @@ func (db *elementDB) ElementByComponent(c Component) (ElementWithComponent, erro
 		}
 	}
 
-	return errors.Errorf("component %+v is not mounted in any elements", c)
+	return nil, errors.Errorf("component %+v is not mounted in any elements", c)
 }
 
 func (db *elementDB) ElementsWithComponents() []ElementWithComponent {
