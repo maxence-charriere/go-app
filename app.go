@@ -87,7 +87,9 @@ func NewContextMenu(c MenuConfig) (Menu, error) {
 //
 // It panics if called before Run.
 func Render(c Component) {
-	driver.Render(c)
+	driver.CallOnUIGoroutine(func() {
+		driver.Render(c)
+	})
 }
 
 // ElementByComponent returns the element where the given component is mounted.

@@ -108,41 +108,142 @@ type windowWithLogs struct {
 
 func (w *windowWithLogs) ID() uuid.UUID {
 	id := w.base.ID()
+	Log("window id is", id)
+	return id
 }
 
 func (w *windowWithLogs) Load(url string, v ...interface{}) error {
 	fmtURL := fmt.Sprintf(url, v...)
-
-	Logf("loading %s in window %s", fmtURL, w.base.ID())
+	Logf("window %s: loading %s", w.base.ID(), fmtURL)
 
 	err := w.base.Load(url, v...)
 	if err != nil {
-		Errorf("loading %s in window %s failed: %s", fmtURL, w.base.ID(), err)
+		Errorf("window %s: loading %s failed: %s", w.base.ID(), fmtURL, err)
 	}
 	return err
 }
 
-func (w *windowWithLogs) Component() Component          {}
-func (w *windowWithLogs) Contains(c Component) bool     {}
-func (w *windowWithLogs) Render(c Component) error      {}
-func (w *windowWithLogs) LastFocus() time.Time          {}
-func (w *windowWithLogs) Reload() error                 {}
-func (w *windowWithLogs) CanPrevious() bool             {}
-func (w *windowWithLogs) Previous() error               {}
-func (w *windowWithLogs) CanNext() bool                 {}
-func (w *windowWithLogs) Next() error                   {}
-func (w *windowWithLogs) Position() (x, y float64)      {}
-func (w *windowWithLogs) Move(x, y float64)             {}
-func (w *windowWithLogs) Center()                       {}
-func (w *windowWithLogs) Size() (width, height float64) {}
-func (w *windowWithLogs) Resize(width, height float64)  {}
-func (w *windowWithLogs) Focus()                        {}
-func (w *windowWithLogs) ToggleFullScreen()             {}
-func (w *windowWithLogs) ToggleMinimize()               {}
-func (w *windowWithLogs) Close()                        {}
-
-func makeWindowConfigWithLogs(c WindowConfig) WindowConfig {
+func (w *windowWithLogs) Component() Component {
+	c := w.base.Component()
+	Logf("window %s: mounted component is %T", w.base.ID(), c)
 	return c
+}
+
+func (w *windowWithLogs) Contains(c Component) bool {
+	ok := w.base.Contains(c)
+	Logf("window %s: contains %T is %v", w.base.ID(), c, ok)
+	return ok
+}
+
+func (w *windowWithLogs) Render(c Component) error {
+	Logf("window %s: rendering component %T", w.base.ID(), c)
+
+	err := w.base.Render(c)
+	if err != nil {
+		Errorf("indow %s: rendering %T failed: %s", w.base.ID(), c, err)
+	}
+	return err
+}
+
+func (w *windowWithLogs) LastFocus() time.Time {
+	focused := w.base.LastFocus()
+	Logf("window %s: last focus at %v", w.base.ID(), focused)
+	return focused
+}
+
+func (w *windowWithLogs) Reload() error {
+	Logf("window %s: reloading component %T", w.base.ID(), w.base.Component())
+
+	err := w.base.Reload()
+	if err != nil {
+		Errorf("window %s: reloading component failed: %s", w.base.ID(), err)
+	}
+	return err
+}
+
+func (w *windowWithLogs) CanPrevious() bool {
+	ok := w.base.CanPrevious()
+	Logf("window %s: can navigate to previous component is %v", w.base.ID(), ok)
+	return ok
+}
+
+func (w *windowWithLogs) Previous() error {
+	Logf("window %s: navigating to previous component", w.base.ID())
+
+	err := w.base.Previous()
+	if err != nil {
+		Errorf("window %s: navigating to previous component failed: %s",
+			w.base.ID(),
+			err,
+		)
+	}
+	return err
+}
+
+func (w *windowWithLogs) CanNext() bool {
+	ok := w.base.CanNext()
+	Logf("window %s: can navigate to next component is %v", w.base.ID(), ok)
+	return ok
+}
+
+func (w *windowWithLogs) Next() error {
+	Logf("window %s: navigating to next component", w.base.ID())
+
+	err := w.base.Next()
+	if err != nil {
+		Errorf("window %s: navigating to next component failed: %s",
+			w.base.ID(),
+			err,
+		)
+	}
+	return err
+}
+
+func (w *windowWithLogs) Position() (x, y float64) {
+	x, y = w.base.Position()
+	Logf("window %s: position is (%.2f, %.2f)", w.base.ID(), x, y)
+	return x, y
+}
+
+func (w *windowWithLogs) Move(x, y float64) {
+	Logf("window %s: moving to (%.2f, %.2f)", w.base.ID(), x, y)
+	w.base.Move(x, y)
+}
+
+func (w *windowWithLogs) Center() {
+	Logf("window %s: centering", w.base.ID())
+	w.base.Center()
+}
+
+func (w *windowWithLogs) Size() (width, height float64) {
+	width, height = w.base.Size()
+	Logf("window %s: size is %.2fx%.2f", w.base.ID(), width, height)
+	return width, height
+}
+
+func (w *windowWithLogs) Resize(width, height float64) {
+	Logf("window %s: resize to %.2fx%.2f", w.base.ID(), width, height)
+	w.base.Resize(width, height)
+}
+
+func (w *windowWithLogs) Focus() {
+	Logf("window %s: focusing", w.base.ID())
+	w.base.Focus()
+}
+
+func (w *windowWithLogs) ToggleFullScreen() {
+	Logf("window %s: toggle full screen", w.base.ID())
+	w.base.ToggleFullScreen()
+}
+
+func (w *windowWithLogs) ToggleMinimize() {
+	Logf("window %s: toggle minimize", w.base.ID())
+	w.base.ToggleMinimize()
+}
+
+func (w *windowWithLogs) Close() {
+	Logf("window %s: closing", w.base.ID())
+	w.base.Close()
 }
 
 // NewConcurrentWindow returns a decorated version of the given window that is
@@ -158,23 +259,135 @@ type concurrentWindow struct {
 	base  Window
 }
 
-func (w *concurrentWindow) ID() uuid.UUID                           {}
-func (w *concurrentWindow) Load(url string, v ...interface{}) error {}
-func (w *concurrentWindow) Component() Component                    {}
-func (w *concurrentWindow) Contains(c Component) bool               {}
-func (w *concurrentWindow) Render(c Component) error                {}
-func (w *concurrentWindow) LastFocus() time.Time                    {}
-func (w *concurrentWindow) Reload() error                           {}
-func (w *concurrentWindow) CanPrevious() bool                       {}
-func (w *concurrentWindow) Previous() error                         {}
-func (w *concurrentWindow) CanNext() bool                           {}
-func (w *concurrentWindow) Next() error                             {}
-func (w *concurrentWindow) Position() (x, y float64)                {}
-func (w *concurrentWindow) Move(x, y float64)                       {}
-func (w *concurrentWindow) Center()                                 {}
-func (w *concurrentWindow) Size() (width, height float64)           {}
-func (w *concurrentWindow) Resize(width, height float64)            {}
-func (w *concurrentWindow) Focus()                                  {}
-func (w *concurrentWindow) ToggleFullScreen()                       {}
-func (w *concurrentWindow) ToggleMinimize()                         {}
-func (w *concurrentWindow) Close()                                  {}
+func (w *concurrentWindow) ID() uuid.UUID {
+	w.mutex.Lock()
+	id := w.base.ID()
+	w.mutex.Unlock()
+	return id
+}
+
+func (w *concurrentWindow) Load(url string, v ...interface{}) error {
+	w.mutex.Lock()
+	err := w.base.Load(url, v...)
+	w.mutex.Unlock()
+	return err
+}
+
+func (w *concurrentWindow) Component() Component {
+	w.mutex.Lock()
+	c := w.base.Component()
+	w.mutex.Unlock()
+	return c
+}
+
+func (w *concurrentWindow) Contains(c Component) bool {
+	w.mutex.Lock()
+	ok := w.base.Contains(c)
+	w.mutex.Unlock()
+	return ok
+}
+
+func (w *concurrentWindow) Render(c Component) error {
+	w.mutex.Lock()
+	err := w.base.Render(c)
+	w.mutex.Unlock()
+	return err
+}
+
+func (w *concurrentWindow) LastFocus() time.Time {
+	w.mutex.Lock()
+	focused := w.base.LastFocus()
+	w.mutex.Unlock()
+	return focused
+}
+
+func (w *concurrentWindow) Reload() error {
+	w.mutex.Lock()
+	err := w.base.Reload()
+	w.mutex.Unlock()
+	return err
+}
+
+func (w *concurrentWindow) CanPrevious() bool {
+	w.mutex.Lock()
+	ok := w.base.CanPrevious()
+	w.mutex.Unlock()
+	return ok
+}
+
+func (w *concurrentWindow) Previous() error {
+	w.mutex.Lock()
+	err := w.base.Previous()
+	w.mutex.Unlock()
+	return err
+}
+
+func (w *concurrentWindow) CanNext() bool {
+	w.mutex.Lock()
+	ok := w.base.CanNext()
+	w.mutex.Unlock()
+	return ok
+}
+
+func (w *concurrentWindow) Next() error {
+	w.mutex.Lock()
+	err := w.base.Next()
+	w.mutex.Unlock()
+	return err
+}
+
+func (w *concurrentWindow) Position() (x, y float64) {
+	w.mutex.Lock()
+	x, y = w.base.Position()
+	w.mutex.Unlock()
+	return x, y
+}
+
+func (w *concurrentWindow) Move(x, y float64) {
+	w.mutex.Lock()
+	w.base.Move(x, y)
+	w.mutex.Unlock()
+}
+
+func (w *concurrentWindow) Center() {
+	w.mutex.Lock()
+	w.base.Center()
+	w.mutex.Unlock()
+}
+
+func (w *concurrentWindow) Size() (width, height float64) {
+	w.mutex.Lock()
+	width, height = w.Size()
+	w.mutex.Unlock()
+	return width, height
+}
+
+func (w *concurrentWindow) Resize(width, height float64) {
+	w.mutex.Lock()
+	w.base.Resize(width, height)
+	w.mutex.Unlock()
+}
+
+func (w *concurrentWindow) Focus() {
+	w.mutex.Lock()
+	w.base.Focus()
+	w.mutex.Unlock()
+}
+
+func (w *concurrentWindow) ToggleFullScreen() {
+	w.mutex.Lock()
+	w.base.ToggleFullScreen()
+	w.mutex.Unlock()
+}
+
+func (w *concurrentWindow) ToggleMinimize() {
+	w.mutex.Lock()
+	w.base.ToggleMinimize()
+	w.mutex.Unlock()
+}
+
+func (w *concurrentWindow) Close() {
+	w.mutex.Lock()
+	w.base.Close()
+	w.mutex.Unlock()
+}
