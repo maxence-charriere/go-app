@@ -140,7 +140,7 @@ func (w *windowWithLogs) Render(c Component) error {
 
 	err := w.base.Render(c)
 	if err != nil {
-		Errorf("indow %s: rendering %T failed: %s", w.base.ID(), c, err)
+		Errorf("window %s: rendering %T failed: %s", w.base.ID(), c, err)
 	}
 	return err
 }
