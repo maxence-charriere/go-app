@@ -1,6 +1,8 @@
 package app_test
 
 import (
+	"context"
+	"fmt"
 	"testing"
 
 	"github.com/murlokswarm/app"
@@ -9,27 +11,42 @@ import (
 )
 
 func TestDriverWithLogs(t *testing.T) {
-	// Specific tests.
+	ctx, cancel := context.WithCancel(context.Background())
+	fmt.Println("ctx:", ctx)
+
+	tests.TestDriver(t, func(onRun func()) app.Driver {
+		d := &test.Driver{
+			OnRun: onRun,
+			Ctx:   ctx,
+		}
+		return app.NewDriverWithLogs(d)
+	}, cancel)
+}
+
+func TestDriverWithLogsError(t *testing.T) {
 	var d app.Driver = &test.Driver{
 		SimulateErr: true,
 	}
 	d = app.NewDriverWithLogs(d)
 
-	factory := app.NewFactory()
-	factory = app.NewConcurrentFactory(factory)
-
-	d.Run(factory)
-	d.Render(&tests.Foo{})
-	d.NewWindow(app.WindowConfig{})
-	d.NewContextMenu(app.MenuConfig{})
-
-	// Test suite.
-	setup := func(onRun func()) app.Driver {
-		var d app.Driver = &test.Driver{
-			OnRun: onRun,
-		}
-		d = app.NewDriverWithLogs(d)
-		return d
+	err := d.Run(app.NewFactory())
+	if err == nil {
+		t.Fatal("error is nil")
 	}
-	tests.TestDriver(t, setup)
+	t.Log(err)
+
+	if _, err = d.NewWindow(app.WindowConfig{}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+
+	if _, err = d.NewContextMenu(app.MenuConfig{}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+
+	if err = d.Render(&tests.Hello{}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
 }

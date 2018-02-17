@@ -37,7 +37,7 @@ type Window interface {
 	// Minimize takes the window into or out of minimized mode
 	ToggleMinimize()
 
-	// Close closes the element.
+	// Close closes the window.
 	Close()
 }
 
@@ -95,7 +95,7 @@ const (
 
 // NewWindowWithLogs returns a decorated version of the given window that logs
 // all the operations.
-// Use the default logger.
+// Uses the default logger.
 func NewWindowWithLogs(w Window) Window {
 	return &windowWithLogs{
 		base: w,
@@ -260,9 +260,7 @@ type concurrentWindow struct {
 }
 
 func (w *concurrentWindow) ID() uuid.UUID {
-	w.mutex.Lock()
 	id := w.base.ID()
-	w.mutex.Unlock()
 	return id
 }
 
@@ -357,7 +355,7 @@ func (w *concurrentWindow) Center() {
 
 func (w *concurrentWindow) Size() (width, height float64) {
 	w.mutex.Lock()
-	width, height = w.Size()
+	width, height = w.base.Size()
 	w.mutex.Unlock()
 	return width, height
 }

@@ -6,7 +6,7 @@ import (
 
 var (
 	driver     Driver
-	components Factory = make(factory)
+	components Factory
 )
 
 func init() {

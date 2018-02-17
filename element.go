@@ -143,7 +143,7 @@ func (db *elementDB) Remove(e Element) {
 	if _, ok := e.(ElementWithComponent); ok {
 		elements := db.elementsWithComponents
 		for i, elem := range elements {
-			if elem == e {
+			if elem.ID() == e.ID() {
 				copy(elements[i:], elements[i+1:])
 				elements[len(elements)-1] = nil
 				elements = elements[:len(elements)-1]

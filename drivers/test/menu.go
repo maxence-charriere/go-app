@@ -19,17 +19,25 @@ type Menu struct {
 	lastFocus time.Time
 	component app.Component
 
-	onLoad func(compo app.Component)
+	onLoad  func(compo app.Component)
+	onClose func()
 }
 
-func newMenu(d *Driver, c app.MenuConfig) (app.Menu, error) {
-	menu := &Menu{
+func newMenu(d *Driver, name string, c app.MenuConfig) (app.Menu, error) {
+	rawMenu := &Menu{
 		id:        uuid.New(),
 		factory:   d.factory,
 		markup:    html.NewMarkup(d.factory),
 		lastFocus: time.Now(),
 	}
+
+	menu := app.NewConcurrentMenu(rawMenu)
+	menu = app.NewMenuWithLogs(menu, name)
+
 	d.elements.Add(menu)
+	rawMenu.onClose = func() {
+		d.elements.Remove(menu)
+	}
 
 	var err error
 	if len(c.DefaultURL) != 0 {

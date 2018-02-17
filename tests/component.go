@@ -261,7 +261,7 @@ func (r *RussianDoll) Render() string {
 	return `
 <div>
 	{{if gt .Remaining 0}}
-	 <tests.russiandoll remaining="{{sub .Remaining 1}}">
+		<tests.russiandoll remaining="{{sub .Remaining 1}}">
 	{{end}}
 </div>
 	`
@@ -274,4 +274,22 @@ func (r *RussianDoll) Funcs() map[string]interface{} {
 			return a - b
 		},
 	}
+}
+
+// Menu is a component to test menu elements.
+type Menu struct {
+	Label       string
+	SimulateErr bool
+}
+
+// Render satisfies the app.Component interface.
+func (m *Menu) Render() string {
+	return `
+<menu label="{{.Label}}">
+	<menuitem label="a menu"></menuitem>
+	{{if .SimulateErr}}
+		<tests.unknownmenu>
+	{{end}}
+</menu>
+	`
 }

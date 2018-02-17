@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	"path/filepath"
 
 	"github.com/murlokswarm/app"
@@ -16,6 +17,7 @@ var (
 // Driver is an app.Driver implementation for testing.
 type Driver struct {
 	SimulateErr bool
+	Ctx         context.Context
 
 	OnRun func()
 
@@ -24,7 +26,6 @@ type Driver struct {
 	dock     app.DockTile
 	menubar  app.Menu
 	uichan   chan func()
-	running  bool
 }
 
 // Name satisfies the app.Driver interface.
@@ -46,17 +47,31 @@ func (d *Driver) Run(f app.Factory) error {
 
 	d.dock = newDockTile(d)
 
-	menubar, _ := newMenu(d, app.MenuConfig{})
+	menubar, err := newMenu(d, "menu bar", app.MenuConfig{})
+	if err != nil {
+		return err
+	}
 	d.menubar = menubar
 
 	d.uichan = make(chan func(), 256)
 
-	d.running = true
 	if d.OnRun != nil {
-		d.OnRun()
+		d.uichan <- d.OnRun
 	}
 
-	return nil
+	if d.Ctx == nil {
+		return errors.New("driver.Ctx is nil")
+	}
+
+	for {
+		select {
+		case f := <-d.uichan:
+			f()
+
+		case <-d.Ctx.Done():
+			return nil
+		}
+	}
 }
 
 // AppName satisfies the app.Driver interface.
@@ -89,7 +104,7 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
 	if d.SimulateErr {
 		return nil, ErrSimulated
 	}
-	return newMenu(d, c)
+	return newMenu(d, "context menu", c)
 }
 
 // Render satisfies the app.Driver interface.

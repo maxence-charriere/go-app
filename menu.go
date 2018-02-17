@@ -92,9 +92,7 @@ type concurrentMenu struct {
 }
 
 func (m *concurrentMenu) ID() uuid.UUID {
-	m.mutex.Lock()
 	id := m.base.ID()
-	m.mutex.Unlock()
 	return id
 }
 

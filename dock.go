@@ -52,7 +52,7 @@ func (d *dockTileWithLogs) SetBadge(v interface{}) error {
 }
 
 // NewConcurrentDockTile returns a decorated version of the given dock tile that
-//  is safe for concurrent operations.
+// is safe for concurrent operations.
 func NewConcurrentDockTile(d DockTile) DockTile {
 	return &concurrentDockTile{
 		concurrentMenu: concurrentMenu{
