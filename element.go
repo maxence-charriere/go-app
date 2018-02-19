@@ -92,7 +92,7 @@ type ElementDB interface {
 	Remove(e Element)
 
 	// Element returns the element with the given identifier.
-	Element(id uuid.UUID) (Element, bool)
+	Element(id uuid.UUID) (Element, error)
 
 	// ElementByComponent returns the element where the component is mounted.
 	// It returns an error if the component is not mounted in any element.
@@ -154,9 +154,12 @@ func (db *elementDB) Remove(e Element) {
 	}
 }
 
-func (db *elementDB) Element(id uuid.UUID) (Element, bool) {
+func (db *elementDB) Element(id uuid.UUID) (Element, error) {
 	e, ok := db.elements[id]
-	return e, ok
+	if !ok {
+		return nil, NewErrNotFound("element")
+	}
+	return e, nil
 }
 
 func (db *elementDB) ElementByComponent(c Component) (ElementWithComponent, error) {
@@ -212,11 +215,11 @@ func (db *concurrentElemDB) Remove(e Element) {
 	db.mutex.Unlock()
 }
 
-func (db *concurrentElemDB) Element(id uuid.UUID) (Element, bool) {
+func (db *concurrentElemDB) Element(id uuid.UUID) (Element, error) {
 	db.mutex.Lock()
-	e, ok := db.base.Element(id)
+	e, err := db.base.Element(id)
 	db.mutex.Unlock()
-	return e, ok
+	return e, err
 }
 
 func (db *concurrentElemDB) ElementByComponent(c Component) (ElementWithComponent, error) {

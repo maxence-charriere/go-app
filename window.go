@@ -11,6 +11,9 @@ import (
 type Window interface {
 	ElementWithNavigation
 
+	// Base returns the base window without any decorators.
+	Base() Window
+
 	// Position returns the window position.
 	Position() (x, y float64)
 
@@ -109,6 +112,10 @@ func (w *windowWithLogs) ID() uuid.UUID {
 	id := w.base.ID()
 	Log("window id is", id)
 	return id
+}
+
+func (w *windowWithLogs) Base() Window {
+	return w.base.Base()
 }
 
 func (w *windowWithLogs) Load(url string, v ...interface{}) error {

@@ -57,22 +57,27 @@ func newWindow(d *Driver, c app.WindowConfig) (app.Window, error) {
 	return win, err
 }
 
-// ID satisfies the app.Element interface.
+// ID satisfies the app.Window interface.
 func (w *Window) ID() uuid.UUID {
 	return w.id
 }
 
-// Component satisfies the app.ElementWithComponent interface.
+// Base satisfies the app.Window interface.
+func (w *Window) Base() app.Window {
+	return w
+}
+
+// Component satisfies the app.Window interface.
 func (w *Window) Component() app.Component {
 	return w.component
 }
 
-// Contains satisfies the app.ElementWithComponent interface.
+// Contains satisfies the app.Window interface.
 func (w *Window) Contains(c app.Component) bool {
 	return w.markup.Contains(c)
 }
 
-// Load satisfies the app.ElementWithComponent interface.
+// Load satisfies the app.Window interface.
 func (w *Window) Load(rawurl string, v ...interface{}) error {
 	rawurl = fmt.Sprintf(rawurl, v...)
 	u, err := url.Parse(rawurl)
@@ -109,13 +114,13 @@ func (w *Window) load(u *url.URL) error {
 	return nil
 }
 
-// Render satisfies the app.ElementWithComponent interface.
+// Render satisfies the app.Window interface.
 func (w *Window) Render(compo app.Component) error {
 	_, err := w.markup.Update(compo)
 	return err
 }
 
-// Reload satisfies the app.ElementWithNavigation interface.
+// Reload satisfies the app.Window interface.
 func (w *Window) Reload() error {
 	rawurl, err := w.history.Current()
 	if err != nil {
@@ -129,17 +134,17 @@ func (w *Window) Reload() error {
 	return w.load(u)
 }
 
-// LastFocus satisfies the app.ElementWithComponent interface.
+// LastFocus satisfies the app.Window interface.
 func (w *Window) LastFocus() time.Time {
 	return w.lastFocus
 }
 
-// CanPrevious satisfies the app.ElementWithNavigation interface.
+// CanPrevious satisfies the app.Window interface.
 func (w *Window) CanPrevious() bool {
 	return w.history.CanPrevious()
 }
 
-// Previous satisfies the app.ElementWithNavigation interface.
+// Previous satisfies the app.Window interface.
 func (w *Window) Previous() error {
 	rawurl, err := w.history.Previous()
 	if err != nil {
@@ -153,12 +158,12 @@ func (w *Window) Previous() error {
 	return w.load(u)
 }
 
-// CanNext satisfies the app.ElementWithNavigation interface.
+// CanNext satisfies the app.Window interface.
 func (w *Window) CanNext() bool {
 	return w.history.CanNext()
 }
 
-// Next satisfies the app.ElementWithNavigation interface.
+// Next satisfies the app.Window interface.
 func (w *Window) Next() error {
 	rawurl, err := w.history.Next()
 	if err != nil {
@@ -212,7 +217,7 @@ func (w *Window) ToggleFullScreen() {
 func (w *Window) ToggleMinimize() {
 }
 
-// Close satisfies the app.ClosableElement interface.
+// Close satisfies the app.Window interface.
 func (w *Window) Close() {
 	w.onClose()
 }

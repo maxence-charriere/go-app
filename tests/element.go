@@ -200,9 +200,9 @@ func testElementDBElement(t *testing.T, db app.ElementDB) {
 		t.Fatal(err)
 	}
 
-	ret, ok := db.Element(elem.ID())
-	if !ok {
-		t.Fatalf("no element with id %v found", elem.ID())
+	ret, err := db.Element(elem.ID())
+	if err != nil {
+		t.Fatal(err)
 	}
 	if ret != elem {
 		t.Fatal("returned element is no the added element")
@@ -210,9 +210,11 @@ func testElementDBElement(t *testing.T, db app.ElementDB) {
 }
 
 func testElementDBElementNotFound(t *testing.T, db app.ElementDB) {
-	if _, ok := db.Element(uuid.New()); ok {
-		t.Fatal("element is found")
+	_, err := db.Element(uuid.New())
+	if err == nil {
+		t.Fatal("error is nil")
 	}
+	t.Log(err)
 }
 
 func testElementDBElementByComponent(t *testing.T, db app.ElementDB) {

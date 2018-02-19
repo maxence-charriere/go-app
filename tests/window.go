@@ -22,6 +22,10 @@ func testWindow(t *testing.T, d app.Driver) {
 			},
 		},
 		{
+			scenario: "window is decorated with logs",
+			function: testWindowIsDecorated,
+		},
+		{
 			scenario: "load a component",
 			function: testWindowLoadSuccess,
 		},
@@ -99,6 +103,12 @@ func testWindow(t *testing.T, d app.Driver) {
 			}
 			test.function(t, w)
 		})
+	}
+}
+
+func testWindowIsDecorated(t *testing.T, w app.Window) {
+	if base := w.Base(); base == w {
+		t.Error("window is not decorated")
 	}
 }
 
