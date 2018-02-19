@@ -24,15 +24,17 @@ type Menu struct {
 }
 
 func newMenu(d *Driver, name string, c app.MenuConfig) (app.Menu, error) {
+	var markup app.Markup = html.NewMarkup(d.factory)
+	markup = app.NewConcurrentMarkup(markup)
+
 	rawMenu := &Menu{
 		id:        uuid.New(),
 		factory:   d.factory,
-		markup:    html.NewMarkup(d.factory),
+		markup:    markup,
 		lastFocus: time.Now(),
 	}
 
-	menu := app.NewConcurrentMenu(rawMenu)
-	menu = app.NewMenuWithLogs(menu, name)
+	menu := app.NewMenuWithLogs(rawMenu, name)
 
 	d.elements.Add(menu)
 	rawMenu.onClose = func() {

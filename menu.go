@@ -2,7 +2,6 @@ package app
 
 import (
 	"fmt"
-	"sync"
 	"time"
 
 	"github.com/google/uuid"
@@ -75,58 +74,5 @@ func (m *menuWithLogs) Render(c Component) error {
 func (m *menuWithLogs) LastFocus() time.Time {
 	focused := m.base.LastFocus()
 	Logf("%s %s: last focus at %v", m.name, m.base.ID(), focused)
-	return focused
-}
-
-// NewConcurrentMenu returns a decorated version of the given menu that is safe
-// for concurrent operations.
-func NewConcurrentMenu(m Menu) Menu {
-	return &concurrentMenu{
-		base: m,
-	}
-}
-
-type concurrentMenu struct {
-	mutex sync.Mutex
-	base  Menu
-}
-
-func (m *concurrentMenu) ID() uuid.UUID {
-	id := m.base.ID()
-	return id
-}
-
-func (m *concurrentMenu) Load(url string, v ...interface{}) error {
-	m.mutex.Lock()
-	err := m.base.Load(url, v...)
-	m.mutex.Unlock()
-	return err
-}
-
-func (m *concurrentMenu) Component() Component {
-	m.mutex.Lock()
-	c := m.base.Component()
-	m.mutex.Unlock()
-	return c
-}
-
-func (m *concurrentMenu) Contains(c Component) bool {
-	m.mutex.Lock()
-	ok := m.base.Contains(c)
-	m.mutex.Unlock()
-	return ok
-}
-
-func (m *concurrentMenu) Render(c Component) error {
-	m.mutex.Lock()
-	err := m.base.Render(c)
-	m.mutex.Unlock()
-	return err
-}
-
-func (m *concurrentMenu) LastFocus() time.Time {
-	m.mutex.Lock()
-	focused := m.base.LastFocus()
-	m.mutex.Unlock()
 	return focused
 }

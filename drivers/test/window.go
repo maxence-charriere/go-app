@@ -29,16 +29,21 @@ type Window struct {
 }
 
 func newWindow(d *Driver, c app.WindowConfig) (app.Window, error) {
+	var markup app.Markup = html.NewMarkup(d.factory)
+	markup = app.NewConcurrentMarkup(markup)
+
+	history := app.NewHistory()
+	history = app.NewConcurrentHistory(history)
+
 	rawWin := &Window{
 		id:        uuid.New(),
 		factory:   d.factory,
-		markup:    html.NewMarkup(d.factory),
-		history:   app.NewHistory(),
+		markup:    markup,
+		history:   history,
 		lastFocus: time.Now(),
 	}
 
-	win := app.NewConcurrentWindow(rawWin)
-	win = app.NewWindowWithLogs(win)
+	win := app.NewWindowWithLogs(rawWin)
 
 	d.elements.Add(win)
 	rawWin.onClose = func() {

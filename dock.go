@@ -50,33 +50,3 @@ func (d *dockTileWithLogs) SetBadge(v interface{}) error {
 	}
 	return err
 }
-
-// NewConcurrentDockTile returns a decorated version of the given dock tile that
-// is safe for concurrent operations.
-func NewConcurrentDockTile(d DockTile) DockTile {
-	return &concurrentDockTile{
-		concurrentMenu: concurrentMenu{
-			base: d,
-		},
-		base: d,
-	}
-}
-
-type concurrentDockTile struct {
-	concurrentMenu
-	base DockTile
-}
-
-func (d *concurrentDockTile) SetIcon(name string) error {
-	d.mutex.Lock()
-	err := d.base.SetIcon(name)
-	d.mutex.Unlock()
-	return err
-}
-
-func (d *concurrentDockTile) SetBadge(v interface{}) error {
-	d.mutex.Lock()
-	err := d.base.SetBadge(v)
-	d.mutex.Unlock()
-	return err
-}

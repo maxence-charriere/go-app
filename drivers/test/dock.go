@@ -16,17 +16,19 @@ type DockTile struct {
 }
 
 func newDockTile(d *Driver) app.DockTile {
+	var markup app.Markup = html.NewMarkup(d.factory)
+	markup = app.NewConcurrentMarkup(markup)
+
 	rawDock := &DockTile{
 		Menu: Menu{
 			id:        uuid.New(),
 			factory:   d.factory,
-			markup:    app.NewConcurrentMarkup(html.NewMarkup(d.factory)),
+			markup:    markup,
 			lastFocus: time.Now(),
 		},
 	}
 
-	dock := app.NewConcurrentDockTile(rawDock)
-	dock = app.NewDockTileWithLogs(dock)
+	dock := app.NewDockTileWithLogs(rawDock)
 
 	d.elements.Add(dock)
 	return dock

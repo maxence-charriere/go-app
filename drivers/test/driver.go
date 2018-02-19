@@ -63,13 +63,20 @@ func (d *Driver) Run(f app.Factory) error {
 		return errors.New("driver.Ctx is nil")
 	}
 
+	end := false
 	for {
 		select {
-		case f := <-d.uichan:
-			f()
-
 		case <-d.Ctx.Done():
-			return nil
+			if !end {
+				close(d.uichan)
+				end = true
+			}
+
+		case f := <-d.uichan:
+			if f == nil {
+				return nil
+			}
+			f()
 		}
 	}
 }
