@@ -128,8 +128,6 @@
 
 @implementation MenuContainer
 - (instancetype)initWithMenuID:(NSString *)menuID andTag:(NSDictionary *)tag {
-  self = [super init];
-
   NSString *name = tag[@"name"];
   if (![name isEqual:@"menu"]) {
     NSString *err = [NSString
