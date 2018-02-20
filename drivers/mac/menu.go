@@ -104,6 +104,11 @@ func (m *Menu) Contains(compo app.Component) bool {
 	return m.markup.Contains(compo)
 }
 
+// Component satisfies the app.Menu interface.
+func (m *Menu) Component() app.Component {
+	return m.component
+}
+
 // Render satisfies the app.Menu interface.
 func (m *Menu) Render(compo app.Component) error {
 	syncs, err := m.markup.Update(compo)

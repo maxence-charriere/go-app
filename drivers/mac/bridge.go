@@ -52,7 +52,7 @@ func parseBridgeResult(res C.bridge_result) (p bridge.Payload, err error) {
 		err = errors.Errorf("handling MacOS request failed: %s", C.GoString(res.err))
 		C.free(unsafe.Pointer(res.err))
 	}
-	return
+	return p, err
 }
 
 //export macosRequestResult
@@ -83,7 +83,7 @@ func goRequestWithResult(url *C.char, payload *C.char) (res *C.char) {
 	if pret != nil {
 		res = C.CString(pret.String())
 	}
-	return
+	return res
 }
 
 func windowHandler(h func(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload)) bridge.GoHandler {
@@ -93,18 +93,16 @@ func windowHandler(h func(w *Window, u *url.URL, p bridge.Payload) (res bridge.P
 			panic(errors.Wrap(err, "creating window handler failed"))
 		}
 
-		elem, ok := driver.elements.Element(id)
-		if !ok {
-			app.DefaultLogger.Logf("%v: window with id %v doesn't exists", u.Path, id)
+		var elem app.Element
+		if elem, err = driver.elements.Element(id); err != nil {
 			return nil
 		}
 
-		win, ok := elem.(*Window)
+		win, ok := elem.(app.Window)
 		if !ok {
 			panic(errors.Errorf("creating window handler failed: element with id %v is not a window", id))
 		}
-
-		return h(win, u, p)
+		return h(win.Base().(*Window), u, p)
 	}
 }
 
@@ -115,10 +113,9 @@ func menuHandler(h func(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Paylo
 			panic(errors.Wrap(err, "creating menu handler failed"))
 		}
 
-		elem, ok := driver.elements.Element(id)
-		if !ok {
-			app.DefaultLogger.Logf("%v: menu with id %v doesn't exists", u.Path, id)
-			return nil
+		var elem app.Element
+		if elem, err = driver.elements.Element(id); err != nil {
+			panic(errors.Wrap(err, "creating menu handler failed"))
 		}
 
 		menu, ok := elem.(*Menu)
@@ -137,10 +134,9 @@ func filePanelHandler(h func(panel *FilePanel, u *url.URL, p bridge.Payload) (re
 			panic(errors.Wrap(err, "creating file panel handler failed"))
 		}
 
-		elem, ok := driver.elements.Element(id)
-		if !ok {
-			app.DefaultLogger.Logf("%v: file panel with id %v doesn't exists", u.Path, id)
-			return nil
+		var elem app.Element
+		if elem, err = driver.elements.Element(id); err != nil {
+			panic(errors.Wrap(err, "creating file panel handler failed"))
 		}
 
 		panel, ok := elem.(*FilePanel)
@@ -159,10 +155,9 @@ func notificationHandler(h func(n *Notification, u *url.URL, p bridge.Payload) (
 			panic(errors.Wrap(err, "creating notification handler failed"))
 		}
 
-		elem, ok := driver.elements.Element(id)
-		if !ok {
-			app.DefaultLogger.Logf("%v: notification with id %v doesn't exists", u.Path, id)
-			return nil
+		var elem app.Element
+		if elem, err = driver.elements.Element(id); err != nil {
+			panic(errors.Wrap(err, "creating notification handler failed"))
 		}
 
 		notification, ok := elem.(*Notification)

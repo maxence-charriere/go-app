@@ -16,21 +16,19 @@ type FilePanel struct {
 	onSelect func(filenames []string)
 }
 
-func newFilePanel(config app.FilePanelConfig) (panel *FilePanel, err error) {
-	panel = &FilePanel{
+func newFilePanel(config app.FilePanelConfig) error {
+	panel := &FilePanel{
 		id:       uuid.New(),
 		onSelect: config.OnSelect,
 	}
 
-	if _, err = driver.macos.RequestWithAsyncResponse(
+	if _, err := driver.macos.RequestWithAsyncResponse(
 		fmt.Sprintf("/file/panel/new?id=%v", panel.id),
 		bridge.NewPayload(config),
 	); err != nil {
-		return nil, err
+		return err
 	}
-
-	err = driver.elements.Add(panel)
-	return panel, err
+	return driver.elements.Add(panel)
 }
 
 // ID satistfies the app.Element interface.

@@ -50,7 +50,7 @@ func main() {
 }
 
 func testWindow(close bool) {
-	win := app.NewWindow(app.WindowConfig{
+	win, _ := app.NewWindow(app.WindowConfig{
 		Title:    "test window",
 		X:        42,
 		Y:        42,

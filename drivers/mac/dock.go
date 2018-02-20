@@ -21,21 +21,21 @@ func newDockTile(config app.MenuConfig) (dock *DockTile, err error) {
 	dock = &DockTile{}
 
 	if dock.menu, err = newMenu(app.MenuConfig{}); err != nil {
-		err = errors.Wrap(err, "creating the dock failed")
+		return nil, errors.Wrap(err, "creating the dock failed")
 	}
 
 	if len(config.DefaultURL) != 0 {
-		err = dock.Load(config.DefaultURL)
+		return nil, dock.Load(config.DefaultURL)
 	}
-	return
+	return dock, nil
 }
 
-// ID satisfies the app.Element interface.
+// ID satisfies the app.DockTile interface.
 func (d *DockTile) ID() uuid.UUID {
 	return d.menu.ID()
 }
 
-// Load satisfies the app.Menu interface.
+// Load satisfies the app.DockTile interface.
 func (d *DockTile) Load(url string, v ...interface{}) error {
 	if err := d.menu.Load(url, v...); err != nil {
 		return err
@@ -48,17 +48,22 @@ func (d *DockTile) Load(url string, v ...interface{}) error {
 	return err
 }
 
-// Contains satisfies the app.Menu interface.
+// Contains satisfies the app.DockTile interface.
 func (d *DockTile) Contains(compo app.Component) bool {
 	return d.menu.Contains(compo)
 }
 
-// Render satisfies the app.Menu interface.
+// Component satisfies the app.DockTile interface.
+func (d *DockTile) Component() app.Component {
+	return d.menu.component
+}
+
+// Render satisfies the app.DockTile interface.
 func (d *DockTile) Render(compo app.Component) error {
 	return d.menu.Render(compo)
 }
 
-// LastFocus satisfies the app.Menu interface.
+// LastFocus satisfies the app.DockTile interface.
 func (d *DockTile) LastFocus() time.Time {
 	return d.menu.LastFocus()
 }

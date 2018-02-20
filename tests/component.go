@@ -161,6 +161,8 @@ func (h *Hello) Render() string {
 
 	<a href="tests.hello">hyperlink to a component</a>
 	<a href="http://github.com">common hyperlink</a>
+
+	<button onclick="js:console.console.log('hello')">js call</button>
 </div>
 	`
 }
