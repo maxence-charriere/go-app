@@ -67,6 +67,10 @@ type ZeroCompo struct {
 // ComponentNameFromURL is a helper function that returns the component name
 // targeted by the given URL.
 func ComponentNameFromURL(u *url.URL) string {
+	if len(u.Scheme) != 0 && u.Scheme != "compo" {
+		return ""
+	}
+
 	path := u.Path
 	path = strings.TrimPrefix(path, "/")
 
