@@ -2,7 +2,10 @@ package app
 
 // DockTile is the interface that describes a dock tile.
 type DockTile interface {
-	Menu
+	ElementWithComponent
+
+	// Base returns the base dock tile without any decorators.
+	Base() Menu
 
 	// SetIcon set the dock tile icon with the named file.
 	// It returns an error if the file doesn't exist or if it is not a supported
@@ -29,6 +32,10 @@ func NewDockTileWithLogs(d DockTile) DockTile {
 type dockTileWithLogs struct {
 	menuWithLogs
 	base DockTile
+}
+
+func (d *dockTileWithLogs) Base() Menu {
+	return d.base.Base()
 }
 
 func (d *dockTileWithLogs) SetIcon(name string) error {

@@ -70,7 +70,7 @@ func newWindow(config app.WindowConfig) (app.Window, error) {
 	win := app.NewWindowWithLogs(rawWin)
 
 	if _, err := driver.macos.Request(
-		fmt.Sprintf("/window/new?id=%s", win.ID()),
+		fmt.Sprintf("/window/new?id=%s", rawWin.id),
 		bridge.NewPayload(config),
 	); err != nil {
 		return nil, err

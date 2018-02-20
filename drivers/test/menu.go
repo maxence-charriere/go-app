@@ -48,9 +48,14 @@ func newMenu(d *Driver, name string, c app.MenuConfig) (app.Menu, error) {
 	return menu, err
 }
 
-// ID satisfies the app.Element interface.
+// ID satisfies the app.Menu interface.
 func (m *Menu) ID() uuid.UUID {
 	return m.id
+}
+
+// Base satisfies the app.Menu interface.
+func (m *Menu) Base() app.Menu {
+	return m
 }
 
 // Load satisfies the app.ElementWithComponent interface.
@@ -83,23 +88,23 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 	return nil
 }
 
-// Component satisfies the app.ElementWithComponent interface.
+// Component satisfies the app.Menu interface.
 func (m *Menu) Component() app.Component {
 	return m.component
 }
 
-// Contains satisfies the app.ElementWithComponent interface.
+// Contains satisfies the app.Menu interface.
 func (m *Menu) Contains(compo app.Component) bool {
 	return m.markup.Contains(compo)
 }
 
-// Render satisfies the app.ElementWithComponent interface.
+// Render satisfies the app.Menu interface.
 func (m *Menu) Render(compo app.Component) error {
 	_, err := m.markup.Update(compo)
 	return err
 }
 
-// LastFocus satisfies the app.ElementWithComponent interface.
+// LastFocus satisfies the app.Menu interface.
 func (m *Menu) LastFocus() time.Time {
 	return m.lastFocus
 }

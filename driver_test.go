@@ -2,7 +2,6 @@ package app_test
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	"github.com/murlokswarm/app"
@@ -12,7 +11,6 @@ import (
 
 func TestDriverWithLogs(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
-	fmt.Println("ctx:", ctx)
 
 	tests.TestDriver(t, func(onRun func()) app.Driver {
 		d := &test.Driver{

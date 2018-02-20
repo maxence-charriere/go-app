@@ -8,7 +8,12 @@ import (
 )
 
 // Menu is the interface that describes a menu.
-type Menu ElementWithComponent
+type Menu interface {
+	ElementWithComponent
+
+	// Base returns the base menu without any decorators.
+	Base() Menu
+}
 
 // MenuConfig is a struct that describes a menu.
 type MenuConfig struct {
@@ -38,6 +43,10 @@ func (m *menuWithLogs) ID() uuid.UUID {
 	return id
 }
 
+func (m *menuWithLogs) Base() Menu {
+	return m.base.Base()
+}
+
 func (m *menuWithLogs) Load(url string, v ...interface{}) error {
 	fmtURL := fmt.Sprintf(url, v...)
 	Logf("%s %s: loading %s", m.name, m.base.ID(), fmtURL)
@@ -62,7 +71,7 @@ func (m *menuWithLogs) Contains(c Component) bool {
 }
 
 func (m *menuWithLogs) Render(c Component) error {
-	Logf("%s %s: rendering component %T", m.name, m.base.ID(), c)
+	Logf("%s %s: rendering %T", m.name, m.base.ID(), c)
 
 	err := m.base.Render(c)
 	if err != nil {
@@ -72,7 +81,5 @@ func (m *menuWithLogs) Render(c Component) error {
 }
 
 func (m *menuWithLogs) LastFocus() time.Time {
-	focused := m.base.LastFocus()
-	Logf("%s %s: last focus at %v", m.name, m.base.ID(), focused)
-	return focused
+	return m.base.LastFocus()
 }

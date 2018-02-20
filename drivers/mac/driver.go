@@ -302,7 +302,7 @@ func (d *Driver) NewWindow(c app.WindowConfig) (app.Window, error) {
 
 // NewContextMenu satisfies the app.Driver interface.
 func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
-	m, err := newMenu(c)
+	m, err := newMenu(c, "context menu")
 	if err != nil {
 		return nil, err
 	}
@@ -371,14 +371,14 @@ func (d *Driver) MenuBar() app.Menu {
 }
 
 func (d *Driver) newMenuBar() error {
-	var err error
-
-	if d.menubar, err = newMenu(app.MenuConfig{}); err != nil {
+	menubar, err := newMenu(app.MenuConfig{}, "menubar")
+	if err != nil {
 		return errors.Wrap(err, "creating the menu bar failed")
 	}
+	d.menubar = menubar
 
 	if len(d.MenubarConfig.URL) == 0 {
-		err = d.menubar.Load(
+		err = menubar.Load(
 			"mac.menubar?appurl=%s&editurl=%s&windowurl=%s&helpurl=%s",
 			d.MenubarConfig.AppURL,
 			d.MenubarConfig.EditURL,
@@ -386,14 +386,14 @@ func (d *Driver) newMenuBar() error {
 			d.MenubarConfig.HelpURL,
 		)
 	} else {
-		err = d.menubar.Load(d.MenubarConfig.URL)
+		err = menubar.Load(d.MenubarConfig.URL)
 	}
 	if err != nil {
 		return err
 	}
 
 	if _, err = d.macos.Request(
-		fmt.Sprintf("/driver/menubar/set?menu-id=%v", d.menubar.ID()),
+		fmt.Sprintf("/driver/menubar/set?menu-id=%v", menubar.ID()),
 		nil,
 	); err != nil {
 		return errors.Wrap(err, "set the menu bar failed")

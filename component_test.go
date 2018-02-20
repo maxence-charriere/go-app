@@ -28,6 +28,12 @@ func TestComponentNameFromURL(t *testing.T) {
 		{
 			rawurl: "test://hello",
 		},
+		{
+			rawurl: "compo://",
+		},
+		{
+			rawurl: "http://www.github.com",
+		},
 	}
 
 	for _, test := range tests {

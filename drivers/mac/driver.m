@@ -140,6 +140,10 @@
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Menu renderAttributes:url payload:payload];
             }];
+  [self.objc handle:@"/menu/delete"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Menu delete:url payload:payload];
+            }];
 
   // File panel handlers.
   [self.objc handle:@"/file/panel/new"

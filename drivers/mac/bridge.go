@@ -118,12 +118,11 @@ func menuHandler(h func(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Paylo
 			panic(errors.Wrap(err, "creating menu handler failed"))
 		}
 
-		menu, ok := elem.(*Menu)
+		menu, ok := elem.(app.Menu)
 		if !ok {
 			panic(errors.Errorf("creating menu handler failed: element with id %v is not a menu", id))
 		}
-
-		return h(menu, u, p)
+		return h(menu.Base().(*Menu), u, p)
 	}
 }
 
@@ -157,7 +156,8 @@ func notificationHandler(h func(n *Notification, u *url.URL, p bridge.Payload) (
 
 		var elem app.Element
 		if elem, err = driver.elements.Element(id); err != nil {
-			panic(errors.Wrap(err, "creating notification handler failed"))
+			return nil
+			// panic(errors.Wrap(err, "creating notification handler failed"))
 		}
 
 		notification, ok := elem.(*Notification)

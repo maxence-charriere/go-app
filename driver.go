@@ -89,9 +89,7 @@ func (d *driverWithLogs) Run(f Factory) error {
 }
 
 func (d *driverWithLogs) AppName() string {
-	appName := d.base.AppName()
-	Log("app name:", appName)
-	return appName
+	return d.base.AppName()
 }
 
 func (d *driverWithLogs) Resources(path ...string) string {

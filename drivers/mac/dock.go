@@ -9,23 +9,41 @@ import (
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/bridge"
-	"github.com/pkg/errors"
+	"github.com/murlokswarm/app/html"
 )
 
 // DockTile implements the app.DockTile interface.
 type DockTile struct {
-	menu *Menu
+	menu Menu
 }
 
-func newDockTile(config app.MenuConfig) (dock *DockTile, err error) {
-	dock = &DockTile{}
+func newDockTile(config app.MenuConfig) (app.DockTile, error) {
+	var markup app.Markup = html.NewMarkup(driver.factory)
+	markup = app.NewConcurrentMarkup(markup)
 
-	if dock.menu, err = newMenu(app.MenuConfig{}); err != nil {
-		return nil, errors.Wrap(err, "creating the dock failed")
+	rawDock := &DockTile{
+		menu: Menu{
+			id:        uuid.New(),
+			markup:    markup,
+			lastFocus: time.Now(),
+		},
+	}
+
+	dock := app.NewDockTileWithLogs(rawDock)
+
+	if _, err := driver.macos.Request(
+		fmt.Sprintf("/menu/new?id=%s", rawDock.menu.id),
+		nil,
+	); err != nil {
+		return nil, err
+	}
+
+	if err := driver.elements.Add(dock); err != nil {
+		return nil, err
 	}
 
 	if len(config.DefaultURL) != 0 {
-		return nil, dock.Load(config.DefaultURL)
+		return dock, dock.Load(config.DefaultURL)
 	}
 	return dock, nil
 }
@@ -33,6 +51,11 @@ func newDockTile(config app.MenuConfig) (dock *DockTile, err error) {
 // ID satisfies the app.DockTile interface.
 func (d *DockTile) ID() uuid.UUID {
 	return d.menu.ID()
+}
+
+// Base satisfies the app.DockTile interface.
+func (d *DockTile) Base() app.Menu {
+	return d.menu.Base()
 }
 
 // Load satisfies the app.DockTile interface.

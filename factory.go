@@ -96,11 +96,11 @@ func (f *factoryWithLogs) Registered(name string) bool {
 }
 
 func (f *factoryWithLogs) New(name string) (Component, error) {
-	Log("creating component", name)
+	Log("creating", name)
 
 	c, err := f.base.New(name)
 	if err != nil {
-		Errorf("creating component %s failed: %s", name, err)
+		Errorf("creating %s failed: %s", name, err)
 	}
 	return c, err
 }

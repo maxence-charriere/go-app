@@ -142,7 +142,7 @@ func (w *windowWithLogs) Contains(c Component) bool {
 }
 
 func (w *windowWithLogs) Render(c Component) error {
-	Logf("window %s: rendering component %T", w.base.ID(), c)
+	Logf("window %s: rendering %T", w.base.ID(), c)
 
 	err := w.base.Render(c)
 	if err != nil {
@@ -152,9 +152,7 @@ func (w *windowWithLogs) Render(c Component) error {
 }
 
 func (w *windowWithLogs) LastFocus() time.Time {
-	focused := w.base.LastFocus()
-	Logf("window %s: last focus at %v", w.base.ID(), focused)
-	return focused
+	return w.base.LastFocus()
 }
 
 func (w *windowWithLogs) Reload() error {

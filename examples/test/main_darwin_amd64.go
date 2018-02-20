@@ -99,8 +99,6 @@ func testWindow(close bool) {
 		},
 	})
 
-	fmt.Println("app name:", app.Name())
-
 	x, y := win.Position()
 	fmt.Printf("win.Positon() x:%v, x:%v\n", x, y)
 

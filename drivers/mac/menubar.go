@@ -96,6 +96,9 @@ func (m *MenuBar) Render() string {
 <menu>
 	{{if .AppURL}}
 		{{compo .AppURL}}
+	{{else}}
+		<!-- prevent cocoa to generate a non modifiable menu -->
+		<mac.appmenu>
 	{{end}}
 	{{if .EditURL}}
 		{{compo .EditURL}}
@@ -126,7 +129,7 @@ func (m *AppMenu) OnMount() {
 // Render returns the markup that describes the app menu.
 func (m *AppMenu) Render() string {
 	return `
-<menu label="{{.AppName}}">
+<menu>
 	<menuitem label="About {{.AppName}}" selector="orderFrontStandardAboutPanel:"></menuitem>
 	<menuitem separator></menuitem>	
 	<menuitem label="Preferences…" 

@@ -143,8 +143,9 @@
   self.ID = tag[@"id"];
   self.compoID = tag[@"compo-id"];
   self.title = @"";
-  self.children = [[NSMutableArray alloc] init];
+
   [self removeAllItems];
+  self.children = [[NSMutableArray alloc] init];
 
   NSDictionary *attributes = tag[@"attributes"];
   if (attributes != nil) {
@@ -170,6 +171,7 @@
 
     [self addChild:childItem];
   }
+
   return self;
 }
 
@@ -279,6 +281,7 @@
         }
 
         MenuContainer *container = (MenuContainer *)elem;
+
         container = [container initWithMenuID:menu.ID andTag:tag];
         [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
         return;
@@ -337,6 +340,7 @@
       // Menu container.
       // Should occur only for the root menu container.
       if ([elem isKindOfClass:[MenuContainer class]]) {
+
         MenuContainer *container = (MenuContainer *)elem;
         container = [container initWithMenuID:menu.ID andTag:tag];
         [driver.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
@@ -404,7 +408,24 @@
   [driver.golang
       request:[NSString stringWithFormat:@"/menu/close?id=%@", self.ID]
       payload:nil];
+}
 
-  [driver.elements removeObjectForKey:self.ID];
++ (bridge_result) delete:(NSURLComponents *)url payload:(NSString *)payload {
+  NSString *ID = [url queryValue:@"id"];
+  NSString *returnID = [url queryValue:@"return-id"];
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    Driver *driver = [Driver current];
+    NSString *err = nil;
+
+    @try {
+      [driver.elements removeObjectForKey:ID];
+      [driver.objc asyncReturn:returnID result:make_bridge_result(nil, err)];
+    } @catch (NSException *exception) {
+      err = exception.reason;
+      [driver.objc asyncReturn:returnID result:make_bridge_result(nil, err)];
+    }
+  });
+  return make_bridge_result(nil, nil);
 }
 @end
