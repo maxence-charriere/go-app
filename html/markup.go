@@ -171,7 +171,7 @@ func (m *Markup) mountTag(tag *app.Tag, id uuid.UUID, compoID uuid.UUID) error {
 	}
 
 	if tag.Is(app.CompoTag) {
-		compo, err := m.factory.NewComponent(tag.Name)
+		compo, err := m.factory.New(tag.Name)
 		if err != nil {
 			return err
 		}

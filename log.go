@@ -26,11 +26,46 @@ type Logger interface {
 	Errorf(format string, v ...interface{})
 }
 
+var (
+	// DefaultLogger is the application logger.
+	DefaultLogger = NewConcurrentLogger(NewConsole(false))
+)
+
 const (
 	defaultColor string = "\033[00m"
 	accentColor  string = "\033[94m"
 	errColor     string = "\033[91m"
 )
+
+// Log logs a message using the default formats for its operands.
+// Spaces are always added between operands and a newline is appended.
+//
+// It is a helper function that call DefaultLogger.Log
+func Log(v ...interface{}) {
+	DefaultLogger.Log(v...)
+}
+
+// Logf logs a message according to a format specifier.
+//
+// It is a helper function that call DefaultLogger.Logf.
+func Logf(format string, v ...interface{}) {
+	DefaultLogger.Logf(format, v...)
+}
+
+// Error logs an error using the default formats for its operands.
+// Spaces are always added between operands and a newline is appended.
+//
+// It is a helper function that call DefaultLogger.Error.
+func Error(v ...interface{}) {
+	DefaultLogger.Error(v...)
+}
+
+// Errorf logs an error according to a format specifier.
+//
+// It is a helper function that call DefaultLogger.Errorf.
+func Errorf(format string, v ...interface{}) {
+	DefaultLogger.Errorf(format, v...)
+}
 
 // NewLogger creates a logger that writes on the given writer.
 // Logs are written only if debug is enabled.

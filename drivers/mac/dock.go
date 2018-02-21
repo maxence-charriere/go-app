@@ -4,38 +4,62 @@ package mac
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/bridge"
-	"github.com/pkg/errors"
+	"github.com/murlokswarm/app/html"
 )
 
 // DockTile implements the app.DockTile interface.
 type DockTile struct {
-	menu *Menu
+	menu Menu
 }
 
-func newDockTile(config app.MenuConfig) (dock *DockTile, err error) {
-	dock = &DockTile{}
+func newDockTile(config app.MenuConfig) (app.DockTile, error) {
+	var markup app.Markup = html.NewMarkup(driver.factory)
+	markup = app.NewConcurrentMarkup(markup)
 
-	if dock.menu, err = newMenu(app.MenuConfig{}); err != nil {
-		err = errors.Wrap(err, "creating the dock failed")
+	rawDock := &DockTile{
+		menu: Menu{
+			id:        uuid.New(),
+			markup:    markup,
+			lastFocus: time.Now(),
+		},
+	}
+
+	dock := app.NewDockTileWithLogs(rawDock)
+
+	if _, err := driver.macos.Request(
+		fmt.Sprintf("/menu/new?id=%s", rawDock.menu.id),
+		nil,
+	); err != nil {
+		return nil, err
+	}
+
+	if err := driver.elements.Add(dock); err != nil {
+		return nil, err
 	}
 
 	if len(config.DefaultURL) != 0 {
-		err = dock.Load(config.DefaultURL)
+		return dock, dock.Load(config.DefaultURL)
 	}
-	return
+	return dock, nil
 }
 
-// ID satisfies the app.Element interface.
+// ID satisfies the app.DockTile interface.
 func (d *DockTile) ID() uuid.UUID {
 	return d.menu.ID()
 }
 
-// Load satisfies the app.Menu interface.
+// Base satisfies the app.DockTile interface.
+func (d *DockTile) Base() app.Menu {
+	return d.menu.Base()
+}
+
+// Load satisfies the app.DockTile interface.
 func (d *DockTile) Load(url string, v ...interface{}) error {
 	if err := d.menu.Load(url, v...); err != nil {
 		return err
@@ -48,30 +72,39 @@ func (d *DockTile) Load(url string, v ...interface{}) error {
 	return err
 }
 
-// Contains satisfies the app.Menu interface.
+// Contains satisfies the app.DockTile interface.
 func (d *DockTile) Contains(compo app.Component) bool {
 	return d.menu.Contains(compo)
 }
 
-// Render satisfies the app.Menu interface.
+// Component satisfies the app.DockTile interface.
+func (d *DockTile) Component() app.Component {
+	return d.menu.component
+}
+
+// Render satisfies the app.DockTile interface.
 func (d *DockTile) Render(compo app.Component) error {
 	return d.menu.Render(compo)
 }
 
-// LastFocus satisfies the app.Menu interface.
+// LastFocus satisfies the app.DockTile interface.
 func (d *DockTile) LastFocus() time.Time {
 	return d.menu.LastFocus()
 }
 
 // SetIcon satisfies the app.DockTile interface.
 func (d *DockTile) SetIcon(name string) error {
+	if _, err := os.Stat(name); err != nil {
+		return err
+	}
+
 	icon := struct {
 		Path string `json:"path"`
 	}{
 		Path: name,
 	}
 
-	_, err := driver.macos.Request(
+	_, err := driver.macos.RequestWithAsyncResponse(
 		"/driver/dock/icon",
 		bridge.NewPayload(icon),
 	)

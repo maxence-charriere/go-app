@@ -12,16 +12,16 @@ import (
 // behave the same.
 func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 	factory := app.NewFactory()
-	factory.RegisterComponent(&Foo{})
-	factory.RegisterComponent(&Bar{})
-	factory.RegisterComponent(&CompoWithBadTmpl{})
-	factory.RegisterComponent(&CompoWithBadTag{})
-	factory.RegisterComponent(&CompoWithNotRegisteredChild{})
-	factory.RegisterComponent(&CompoWithBadChild{})
-	factory.RegisterComponent(&Hello{})
-	factory.RegisterComponent(&World{})
-	factory.RegisterComponent(&Mapping{})
-	factory.RegisterComponent(&RussianDoll{})
+	factory.Register(&Foo{})
+	factory.Register(&Bar{})
+	factory.Register(&CompoWithBadTmpl{})
+	factory.Register(&CompoWithBadTag{})
+	factory.Register(&CompoWithNotRegisteredChild{})
+	factory.Register(&CompoWithBadChild{})
+	factory.Register(&Hello{})
+	factory.Register(&World{})
+	factory.Register(&Mapping{})
+	factory.Register(&RussianDoll{})
 
 	tests := []struct {
 		scenario string
@@ -580,8 +580,8 @@ func testMarkupUpdateSimpleToText(t *testing.T, markup app.Markup) {
 	if root.Name != "div" {
 		t.Fatal("root is not a div:", root.Name)
 	}
-	if l := len(root.Children); l != 6 {
-		t.Fatal("root doesn't have 6 children:", l)
+	if l := len(root.Children); l != 7 {
+		t.Fatal("root doesn't have 7 children:", l)
 	}
 	if text := root.Children[3]; text.Text != "Goodbye" {
 		t.Fatalf(`text is not "Goodbye": "%s"`, text.Text)
@@ -610,8 +610,8 @@ func testMarkupUpdateTextToSimple(t *testing.T, markup app.Markup) {
 	}
 
 	root := sync.Tag
-	if l := len(root.Children); l != 7 {
-		t.Fatal("root doesn't have 7 children:", l)
+	if l := len(root.Children); l != 8 {
+		t.Fatal("root doesn't have 8 children:", l)
 	}
 	if span := root.Children[3]; span.Name != "span" {
 		t.Fatalf(`span is not a span tag: %s`, span.Name)
@@ -820,8 +820,8 @@ func testMarkupUpdateComponentAddChild(t *testing.T, markup app.Markup) {
 	if root.Name != "div" {
 		t.Fatal("root is not a div")
 	}
-	if l := len(root.Children); l != 8 {
-		t.Error("root does not have 8 children:", l)
+	if l := len(root.Children); l != 9 {
+		t.Error("root does not have 9 children:", l)
 	}
 }
 
@@ -852,7 +852,7 @@ func testMarkupUpdateComponentRemoveChild(t *testing.T, markup app.Markup) {
 	if root.Name != "div" {
 		t.Fatal("root is not a div")
 	}
-	if l := len(root.Children); l != 7 {
+	if l := len(root.Children); l != 8 {
 		t.Error("root does not have 8 children:", l)
 	}
 }

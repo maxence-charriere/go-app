@@ -13,45 +13,57 @@ import (
 
 // A Menu implementation for tests.
 type Menu struct {
-	config    app.MenuConfig
 	id        uuid.UUID
 	factory   app.Factory
 	markup    app.Markup
 	lastFocus time.Time
+	component app.Component
 
-	onLoad func(compo app.Component)
+	onLoad  func(compo app.Component)
+	onClose func()
 }
 
-func newMenu(driver *Driver, config app.MenuConfig) app.Menu {
-	menu := &Menu{
+func newMenu(d *Driver, name string, c app.MenuConfig) (app.Menu, error) {
+	var markup app.Markup = html.NewMarkup(d.factory)
+	markup = app.NewConcurrentMarkup(markup)
+
+	rawMenu := &Menu{
 		id:        uuid.New(),
-		factory:   driver.factory,
-		markup:    app.NewConcurrentMarkup(html.NewMarkup(driver.factory)),
+		factory:   d.factory,
+		markup:    markup,
 		lastFocus: time.Now(),
 	}
-	driver.elements.Add(menu)
 
-	if driver.OnContextLoad != nil {
-		menu.onLoad = func(compo app.Component) {
-			driver.OnContextLoad(menu, compo)
-		}
+	menu := app.NewMenuWithLogs(rawMenu, name)
+
+	d.elements.Add(menu)
+	rawMenu.onClose = func() {
+		d.elements.Remove(menu)
 	}
 
-	if len(config.DefaultURL) != 0 {
-		if err := menu.Load(config.DefaultURL); err != nil {
-			driver.Test.Log(err)
-		}
+	var err error
+	if len(c.DefaultURL) != 0 {
+		err = menu.Load(c.DefaultURL)
 	}
-	return menu
+	return menu, err
 }
 
-// ID satisfies the app.Element interface.
+// ID satisfies the app.Menu interface.
 func (m *Menu) ID() uuid.UUID {
 	return m.id
 }
 
+// Base satisfies the app.Menu interface.
+func (m *Menu) Base() app.Menu {
+	return m
+}
+
 // Load satisfies the app.ElementWithComponent interface.
 func (m *Menu) Load(rawurl string, v ...interface{}) error {
+	if m.component != nil {
+		m.markup.Dismount(m.component)
+	}
+
 	rawurl = fmt.Sprintf(rawurl, v...)
 
 	u, err := url.Parse(rawurl)
@@ -59,10 +71,12 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 		return err
 	}
 
-	compo, err := m.factory.NewComponent(app.ComponentNameFromURL(u))
+	compo, err := m.factory.New(app.ComponentNameFromURL(u))
 	if err != nil {
 		return err
 	}
+
+	m.component = compo
 
 	if _, err = m.markup.Mount(compo); err != nil {
 		return errors.Wrapf(err, "loading %s in test menu %p failed", u, m)
@@ -74,18 +88,23 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 	return nil
 }
 
-// Contains satisfies the app.ElementWithComponent interface.
+// Component satisfies the app.Menu interface.
+func (m *Menu) Component() app.Component {
+	return m.component
+}
+
+// Contains satisfies the app.Menu interface.
 func (m *Menu) Contains(compo app.Component) bool {
 	return m.markup.Contains(compo)
 }
 
-// Render satisfies the app.ElementWithComponent interface.
+// Render satisfies the app.Menu interface.
 func (m *Menu) Render(compo app.Component) error {
 	_, err := m.markup.Update(compo)
 	return err
 }
 
-// LastFocus satisfies the app.ElementWithComponent interface.
+// LastFocus satisfies the app.Menu interface.
 func (m *Menu) LastFocus() time.Time {
 	return m.lastFocus
 }

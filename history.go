@@ -52,12 +52,11 @@ func (h *history) Len() int {
 
 func (h *history) Current() (url string, err error) {
 	if h.Len() == 0 {
-		err = errors.New("history does not have entries")
-		return
+		return "", errors.New("history does not have entries")
 	}
 
 	url = h.history[h.index]
-	return
+	return url, nil
 }
 
 func (h *history) NewEntry(url string) {
@@ -79,13 +78,12 @@ func (h *history) CanPrevious() bool {
 
 func (h *history) Previous() (url string, err error) {
 	if !h.CanPrevious() {
-		err = errors.New("history does not have a previous entry to return")
-		return
+		return "", errors.New("history does not have a previous entry to return")
 	}
 
 	h.index--
 	url = h.history[h.index]
-	return
+	return url, nil
 }
 
 func (h *history) CanNext() bool {
@@ -94,13 +92,12 @@ func (h *history) CanNext() bool {
 
 func (h *history) Next() (url string, err error) {
 	if !h.CanNext() {
-		err = errors.New("history does not have a next entry to return")
-		return
+		return "", errors.New("history does not have a next entry to return")
 	}
 
 	h.index++
 	url = h.history[h.index]
-	return
+	return url, nil
 }
 
 // NewConcurrentHistory returns a decorated version of the given history that
@@ -127,7 +124,7 @@ func (h *concurrentHistory) Current() (url string, err error) {
 	h.mutex.Lock()
 	url, err = h.base.Current()
 	h.mutex.Unlock()
-	return
+	return url, err
 }
 
 func (h *concurrentHistory) NewEntry(url string) {
@@ -147,7 +144,7 @@ func (h *concurrentHistory) Previous() (url string, err error) {
 	h.mutex.Lock()
 	url, err = h.base.Previous()
 	h.mutex.Unlock()
-	return
+	return url, err
 }
 
 func (h *concurrentHistory) CanNext() bool {
@@ -161,5 +158,5 @@ func (h *concurrentHistory) Next() (url string, err error) {
 	h.mutex.Lock()
 	url, err = h.base.Next()
 	h.mutex.Unlock()
-	return
+	return url, err
 }

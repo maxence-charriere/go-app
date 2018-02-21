@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/url"
-	"path/filepath"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
@@ -149,8 +148,8 @@ func (m *Menu) OnButtonWithIconClick() {
 func (m *Menu) OnSetDockBadge() {
 	app.DefaultLogger.Log("button set dock badge clicked")
 
-	if app.SupportsDock() {
-		app.Dock().SetBadge(uuid.New())
+	if err := app.Dock().SetBadge(uuid.New()); err != nil {
+		app.Error(err)
 	}
 }
 
@@ -159,8 +158,8 @@ func (m *Menu) OnSetDockBadge() {
 func (m *Menu) OnUnsetDockBadge() {
 	app.DefaultLogger.Log("button unset dock badge clicked")
 
-	if app.SupportsDock() {
-		app.Dock().SetBadge(nil)
+	if err := app.Dock().SetBadge(nil); err != nil {
+		app.Error(err)
 	}
 }
 
@@ -169,9 +168,7 @@ func (m *Menu) OnUnsetDockBadge() {
 func (m *Menu) OnSetDockIcon() {
 	app.DefaultLogger.Log("button set dock icon clicked")
 
-	if app.SupportsDock() {
-		app.Dock().SetIcon(filepath.Join(app.Resources(), "logo.png"))
-	}
+	app.Dock().SetIcon(app.Resources("logo.png"))
 }
 
 // OnUnsetDockIcon is the function that is called when the button labelled
@@ -179,8 +176,8 @@ func (m *Menu) OnSetDockIcon() {
 func (m *Menu) OnUnsetDockIcon() {
 	app.DefaultLogger.Log("button unset dock icon clicked")
 
-	if app.SupportsDock() {
-		app.Dock().SetIcon("")
+	if err := app.Dock().SetIcon(""); err != nil {
+		app.Error(err)
 	}
 }
 

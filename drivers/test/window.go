@@ -13,71 +13,91 @@ import (
 
 // A Window implementation for tests.
 type Window struct {
-	driver    *Driver
-	config    app.WindowConfig
 	id        uuid.UUID
 	factory   app.Factory
 	markup    app.Markup
 	history   app.History
 	lastFocus time.Time
+	component app.Component
+	x         float64
+	y         float64
+	width     float64
+	height    float64
 
 	onLoad  func(compo app.Component)
 	onClose func()
 }
 
-// NewWindow creates a new widnow.
-func NewWindow(driver *Driver, config app.WindowConfig) *Window {
-	window := &Window{
-		driver:    driver,
-		config:    config,
+func newWindow(d *Driver, c app.WindowConfig) (app.Window, error) {
+	var markup app.Markup = html.NewMarkup(d.factory)
+	markup = app.NewConcurrentMarkup(markup)
+
+	history := app.NewHistory()
+	history = app.NewConcurrentHistory(history)
+
+	rawWin := &Window{
 		id:        uuid.New(),
-		factory:   driver.factory,
-		history:   app.NewConcurrentHistory(app.NewHistory()),
-		markup:    app.NewConcurrentMarkup(html.NewMarkup(driver.factory)),
+		factory:   d.factory,
+		markup:    markup,
+		history:   history,
 		lastFocus: time.Now(),
 	}
 
-	driver.elements.Add(window)
-	window.onClose = func() {
-		driver.elements.Remove(window)
+	win := app.NewWindowWithLogs(rawWin)
+
+	d.elements.Add(win)
+	rawWin.onClose = func() {
+		d.elements.Remove(win)
 	}
 
-	if driver.OnContextLoad != nil {
-		window.onLoad = func(compo app.Component) {
-			driver.OnContextLoad(window, compo)
-		}
+	var err error
+	if len(c.DefaultURL) != 0 {
+		err = win.Load(c.DefaultURL)
 	}
-
-	if len(config.DefaultURL) != 0 {
-		if err := window.Load(config.DefaultURL); err != nil {
-			driver.Test.Log(err)
-		}
-	}
-	return window
+	return win, err
 }
 
-// ID satisfies the app.Element interface.
+// ID satisfies the app.Window interface.
 func (w *Window) ID() uuid.UUID {
 	return w.id
 }
 
-// Contains satisfies the app.ElementWithComponent interface.
-func (w *Window) Contains(compo app.Component) bool {
-	return w.markup.Contains(compo)
+// Base satisfies the app.Window interface.
+func (w *Window) Base() app.Window {
+	return w
 }
 
-// Load satisfies the app.ElementWithComponent interface.
+// Component satisfies the app.Window interface.
+func (w *Window) Component() app.Component {
+	return w.component
+}
+
+// Contains satisfies the app.Window interface.
+func (w *Window) Contains(c app.Component) bool {
+	return w.markup.Contains(c)
+}
+
+// Load satisfies the app.Window interface.
 func (w *Window) Load(rawurl string, v ...interface{}) error {
 	rawurl = fmt.Sprintf(rawurl, v...)
-
 	u, err := url.Parse(rawurl)
 	if err != nil {
 		return err
 	}
 
-	w.history.NewEntry(u.String())
+	var currentURL string
+	if currentURL, err = w.history.Current(); err != nil || currentURL != u.String() {
+		w.history.NewEntry(u.String())
+	}
+	return w.load(u)
+}
 
-	compo, err := w.factory.NewComponent(app.ComponentNameFromURL(u))
+func (w *Window) load(u *url.URL) error {
+	if w.component != nil {
+		w.markup.Dismount(w.component)
+	}
+
+	compo, err := w.factory.New(app.ComponentNameFromURL(u))
 	if err != nil {
 		return err
 	}
@@ -86,80 +106,102 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 		return errors.Wrapf(err, "loading %s in test window %p failed", u, w)
 	}
 
+	w.component = compo
+
 	if w.onLoad != nil {
 		w.onLoad(compo)
 	}
 	return nil
 }
 
-// Render satisfies the app.ElementWithComponent interface.
+// Render satisfies the app.Window interface.
 func (w *Window) Render(compo app.Component) error {
 	_, err := w.markup.Update(compo)
 	return err
 }
 
-// Reload satisfies the app.ElementWithNavigation interface.
+// Reload satisfies the app.Window interface.
 func (w *Window) Reload() error {
 	rawurl, err := w.history.Current()
 	if err != nil {
 		return err
 	}
-	return w.Load(rawurl)
+
+	u, err := url.Parse(rawurl)
+	if err != nil {
+		return err
+	}
+	return w.load(u)
 }
 
-// LastFocus satisfies the app.ElementWithComponent interface.
+// LastFocus satisfies the app.Window interface.
 func (w *Window) LastFocus() time.Time {
 	return w.lastFocus
 }
 
-// CanPrevious satisfies the app.ElementWithNavigation interface.
+// CanPrevious satisfies the app.Window interface.
 func (w *Window) CanPrevious() bool {
 	return w.history.CanPrevious()
 }
 
-// Previous satisfies the app.ElementWithNavigation interface.
+// Previous satisfies the app.Window interface.
 func (w *Window) Previous() error {
 	rawurl, err := w.history.Previous()
 	if err != nil {
 		return err
 	}
-	return w.Load(rawurl)
+
+	u, err := url.Parse(rawurl)
+	if err != nil {
+		return err
+	}
+	return w.load(u)
 }
 
-// CanNext satisfies the app.ElementWithNavigation interface.
+// CanNext satisfies the app.Window interface.
 func (w *Window) CanNext() bool {
 	return w.history.CanNext()
 }
 
-// Next satisfies the app.ElementWithNavigation interface.
+// Next satisfies the app.Window interface.
 func (w *Window) Next() error {
 	rawurl, err := w.history.Next()
 	if err != nil {
 		return err
 	}
-	return w.Load(rawurl)
+
+	u, err := url.Parse(rawurl)
+	if err != nil {
+		return err
+	}
+	return w.load(u)
 }
 
 // Position satisfies the app.Window interface.
 func (w *Window) Position() (x, y float64) {
-	return
+	return w.x, w.y
 }
 
 // Move satisfies the app.Window interface.
 func (w *Window) Move(x, y float64) {
+	w.x = x
+	w.y = y
 }
 
 // Center satisfies the app.Window interface.
 func (w *Window) Center() {
+	w.Move(500, 500)
 }
 
 // Size satisfies the app.Window interface.
 func (w *Window) Size() (width, height float64) {
-	return
+	return w.width, w.height
 }
 
 // Resize satisfies the app.Window interface.
 func (w *Window) Resize(width, height float64) {
+	w.width = width
+	w.height = height
 }
 
 // Focus satisfies the app.Window interface.

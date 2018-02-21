@@ -50,7 +50,7 @@ func main() {
 }
 
 func testWindow(close bool) {
-	win := app.NewWindow(app.WindowConfig{
+	win, _ := app.NewWindow(app.WindowConfig{
 		Title:    "test window",
 		X:        42,
 		Y:        42,
@@ -98,8 +98,6 @@ func testWindow(close bool) {
 			return true
 		},
 	})
-
-	fmt.Println("app name:", app.Name())
 
 	x, y := win.Position()
 	fmt.Printf("win.Positon() x:%v, x:%v\n", x, y)

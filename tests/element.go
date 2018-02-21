@@ -34,7 +34,7 @@ type elementWithComponent struct {
 
 func newElementWithComponent() *elementWithComponent {
 	factory := app.NewFactory()
-	factory.RegisterComponent(&Foo{})
+	factory.Register(&Foo{})
 
 	return &elementWithComponent{
 		id:        uuid.New(),
@@ -55,13 +55,17 @@ func (e *elementWithComponent) Load(rawurl string, v ...interface{}) error {
 		return err
 	}
 
-	compo, err := e.factory.NewComponent(app.ComponentNameFromURL(u))
+	compo, err := e.factory.New(app.ComponentNameFromURL(u))
 	if err != nil {
 		return err
 	}
 
 	e.component = compo
 	return nil
+}
+
+func (e *elementWithComponent) Component() app.Component {
+	return e.component
 }
 
 func (e *elementWithComponent) Contains(c app.Component) bool {
@@ -77,9 +81,9 @@ func (e *elementWithComponent) LastFocus() time.Time {
 	return e.lastFocus
 }
 
-// TestElementDB is a test suite used to ensure that all element databases
+// TestElemDB is a test suite used to ensure that all element databases
 // implementations behave the same.
-func TestElementDB(t *testing.T, newElementDB func() app.ElementDB) {
+func TestElemDB(t *testing.T, newElementDB func() app.ElementDB) {
 	tests := []struct {
 		scenario string
 		function func(t *testing.T, db app.ElementDB)
@@ -196,9 +200,9 @@ func testElementDBElement(t *testing.T, db app.ElementDB) {
 		t.Fatal(err)
 	}
 
-	ret, ok := db.Element(elem.ID())
-	if !ok {
-		t.Fatalf("no element with id %v found", elem.ID())
+	ret, err := db.Element(elem.ID())
+	if err != nil {
+		t.Fatal(err)
 	}
 	if ret != elem {
 		t.Fatal("returned element is no the added element")
@@ -206,9 +210,11 @@ func testElementDBElement(t *testing.T, db app.ElementDB) {
 }
 
 func testElementDBElementNotFound(t *testing.T, db app.ElementDB) {
-	if _, ok := db.Element(uuid.New()); ok {
-		t.Fatal("element is found")
+	_, err := db.Element(uuid.New())
+	if err == nil {
+		t.Fatal("error is nil")
 	}
+	t.Log(err)
 }
 
 func testElementDBElementByComponent(t *testing.T, db app.ElementDB) {

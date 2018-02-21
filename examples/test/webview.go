@@ -102,7 +102,7 @@ func (c *Webview) OnNavigate(u *url.URL) {
 		c.Page = 1
 	}
 
-	if win, err := app.WindowFromComponent(c); err == nil {
+	if win, err := app.WindowByComponent(c); err == nil {
 		c.CanPrevious = win.CanPrevious()
 		c.CanNext = win.CanNext()
 	}
@@ -123,14 +123,14 @@ func (c *Webview) OnNextPage() {
 	page := c.Page
 	page++
 
-	if win, err := app.WindowFromComponent(c); err == nil {
+	if win, err := app.WindowByComponent(c); err == nil {
 		win.Load("/webview?page=%v", page)
 	}
 }
 
 // OnLink is the function to be called when the External link button is clicked.
 func (c *Webview) OnLink() {
-	if win, err := app.WindowFromComponent(c); err == nil {
+	if win, err := app.WindowByComponent(c); err == nil {
 		win.Load("http://www.github.com")
 	}
 }
@@ -158,71 +158,62 @@ func (c *Webview) OnChangeNumber() {
 
 // OnShare is the function that is called when the Share button is clicked.
 func (c *Webview) OnShare() {
-	if !app.SupportsShare() {
-		return
+	if err := app.NewShare("Hello world"); err != nil {
+		app.Error(err)
 	}
-
-	app.Share("Hello world")
 }
 
 // OnShareURL is the function that is called when the Share URL button is
 // clicked.
 func (c *Webview) OnShareURL() {
-	if !app.SupportsShare() {
-		return
-	}
-
 	u, err := url.Parse("https://github.com/murlokswarm/app")
 	if err != nil {
 		app.DefaultLogger.Log(err)
 	}
-	app.Share(u)
+
+	if err = app.NewShare(u); err != nil {
+		app.Error(err)
+	}
 }
 
 // OnDirPanel is the function that is called when the Dir panel button is
 // clicked.
 func (c *Webview) OnDirPanel() {
-	if !app.SupportsFilePanels() {
-		return
-	}
-
-	app.NewFilePanel(app.FilePanelConfig{
+	if err := app.NewFilePanel(app.FilePanelConfig{
 		IgnoreFiles: true,
 		OnSelect: func(filenames []string) {
 			app.DefaultLogger.Log(filenames)
 		},
-	})
+	}); err != nil {
+		app.Error(err)
+	}
 }
 
 // OnFilePanel is the function that is called when the File panel button is
 // clicked.
 func (c *Webview) OnFilePanel() {
-	if !app.SupportsFilePanels() {
-		return
-	}
-
-	app.NewFilePanel(app.FilePanelConfig{
+	if err := app.NewFilePanel(app.FilePanelConfig{
 		IgnoreDirectories: true,
 		OnSelect: func(filenames []string) {
 			app.DefaultLogger.Log(filenames)
 		},
-	})
+	}); err != nil {
+		app.Error(err)
+	}
 }
 
 // OnMultipleFilePanel is the function that is called when the Multiple file
 // panel button is clicked.
 func (c *Webview) OnMultipleFilePanel() {
-	if !app.SupportsFilePanels() {
-		return
-	}
-
-	app.NewFilePanel(app.FilePanelConfig{
+	if err := app.NewFilePanel(app.FilePanelConfig{
 		IgnoreDirectories: true,
 		MultipleSelection: true,
 		OnSelect: func(filenames []string) {
 			app.DefaultLogger.Log(filenames)
 		},
-	})
+	}); err != nil {
+		app.Error(err)
+	}
 }
 
 // OnNotification is the function that is called when the Notificaton button is
@@ -262,21 +253,27 @@ func (c *Webview) OnNotificationWithReply() {
 // OnPrevious is the function that is called when the previous button is
 // clicked.
 func (c *Webview) OnPrevious() {
-	if win, err := app.WindowFromComponent(c); err == nil {
-		win.Previous()
+	win, err := app.WindowByComponent(c)
+	if err != nil {
+		app.Error(err)
 	}
+	win.Previous()
 }
 
 // OnReload is the function that is called when the reload button is clicked.
 func (c *Webview) OnReload() {
-	if win, err := app.WindowFromComponent(c); err == nil {
-		win.Reload()
+	win, err := app.WindowByComponent(c)
+	if err != nil {
+		app.Error(err)
 	}
+	win.Reload()
 }
 
 // OnNext is the function that is called when the next button is clicked.
 func (c *Webview) OnNext() {
-	if win, err := app.WindowFromComponent(c); err == nil {
-		win.Next()
+	win, err := app.WindowByComponent(c)
+	if err != nil {
+		app.Error(err)
 	}
+	win.Next()
 }
