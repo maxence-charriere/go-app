@@ -1,56 +1,60 @@
 package main
 
-// import (
-// 	"path/filepath"
+import (
+	"github.com/murlokswarm/app"
+)
 
-// 	"github.com/murlokswarm/app"
-// )
+// /!\ Import the component. Required to use a component.
+func init() {
+	app.Import(&DockMenu{})
+}
 
-// // DockMenu is the component representing the dock menu.
-// type DockMenu struct {
-// 	switchIcon  bool
-// 	switchBadge bool
-// }
+// DockMenu is the component that represents the dock menu.
+type DockMenu struct {
+	switchIcon  bool
+	switchBadge bool
+}
 
-// // Render returns the HTML describing the dock menu content.
-// func (m *DockMenu) Render() string {
-// 	return `
-// <menu>
-// 	<menuitem label="Change icon" onclick="OnChangeIcon" />
-// 	<menuitem label="Change badge" onclick="OnChangeBadge" />
-// </menu>
-// 	`
-// }
+// Render returns the HTML describing the dock menu content.
+func (m *DockMenu) Render() string {
+	return `
+<menu>
+	<menuitem label="Change icon" onclick="OnChangeIcon"></menuitem>
+	<menuitem label="Change badge" onclick="OnChangeBadge"></menuitem>
+</menu>
+	`
+}
 
-// // OnChangeIcon changes the dock icon when the dock menu item named
-// // "Change icon" is clicked.
-// func (m *DockMenu) OnChangeIcon() {
-// 	dock, _ := app.Dock()
-// 	m.switchIcon = !m.switchIcon
+// OnChangeIcon changes the dock icon when the dock menu item named
+// "Change icon" is clicked.
+func (m *DockMenu) OnChangeIcon() {
+	m.switchIcon = !m.switchIcon
 
-// 	if m.switchIcon {
-// 		icon := filepath.Join(app.Resources(), "like.png")
-// 		dock.SetIcon(icon)
-// 		return
-// 	}
-// 	icon := filepath.Join(app.Resources(), "logo.png")
-// 	dock.SetIcon(icon)
-// }
+	var icon string
+	if m.switchIcon {
+		icon = app.Resources("like.png")
+	} else {
+		icon = app.Resources("logo.png")
+	}
 
-// // OnChangeBadge changes the dock badge when the dock menu item named
-// // "Change badge" is clicked.
-// func (m *DockMenu) OnChangeBadge() {
-// 	dock, _ := app.Dock()
-// 	m.switchBadge = !m.switchBadge
+	if err := app.Dock().SetIcon(icon); err != nil {
+		app.Error(err)
+	}
+}
 
-// 	if m.switchBadge {
-// 		dock.SetBadge("Hello")
-// 		return
-// 	}
-// 	dock.SetBadge("World!")
-// }
+// OnChangeBadge changes the dock badge when the dock menu item named
+// "Change badge" is clicked.
+func (m *DockMenu) OnChangeBadge() {
+	m.switchBadge = !m.switchBadge
 
-// // /!\ Register the component. Required to use the component into a context.
-// func init() {
-// 	app.RegisterComponent(&DockMenu{})
-// }
+	var badge string
+	if m.switchBadge {
+		badge = "hello"
+	} else {
+		badge = "world"
+	}
+
+	if err := app.Dock().SetBadge(badge); err != nil {
+		app.Error(err)
+	}
+}

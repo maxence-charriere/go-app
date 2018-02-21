@@ -24,6 +24,7 @@ _testmain.go
 
 # Executables
 examples/menu/menu
+examples/dock/dock
 examples/nav/nav
 examples/test/test
 *.exe
