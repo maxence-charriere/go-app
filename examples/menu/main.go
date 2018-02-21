@@ -1,42 +1,38 @@
 package main
 
-// import "github.com/murlokswarm/app"
+import (
+	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/drivers/mac"
+)
 
-// var (
-// 	win app.Windower
-// )
+func main() {
+	app.Run(&mac.Driver{
+		MenubarConfig: mac.MenuBarConfig{
+			// Overrides the default edit menu.
+			EditURL: "/editmenu",
 
-// func main() {
-// 	app.OnLaunch = func() {
-// 		if menuBar, ok := app.MenuBar(); ok {
-// 			menuBar.Mount(&MenuBar{})
-// 		}
+			// Adds the custom menu in the menubar.
+			CustomURLs: []string{"/custommenu"},
+		},
 
-// 		win = newMainWindow()
-// 		win.Mount(&Home{})
-// 	}
+		OnRun: func() {
+			newWindow()
+		},
 
-// 	app.OnReopen = func() {
-// 		if win != nil {
-// 			return
-// 		}
-// 		win = newMainWindow()
-// 		win.Mount(&Home{})
-// 	}
-
-// 	app.Run()
-// }
-
-// func newMainWindow() app.Windower {
-// 	return app.NewWindow(app.Window{
-// 		Title:           "nav",
-// 		TitlebarHidden:  true,
-// 		Width:           1280,
-// 		Height:          768,
-// 		BackgroundColor: "#21252b",
-// 		OnClose: func() bool {
-// 			win = nil
-// 			return true
-// 		},
-// 	})
-// }
+		OnReopen: func(hasVisibleWindow bool) {
+			if !hasVisibleWindow {
+				newWindow()
+			}
+		},
+	})
+}
+func newWindow() {
+	app.NewWindow(app.WindowConfig{
+		Title:           "menu",
+		TitlebarHidden:  true,
+		Width:           1280,
+		Height:          768,
+		BackgroundColor: "#21252b",
+		DefaultURL:      "/home",
+	})
+}

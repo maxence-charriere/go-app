@@ -360,8 +360,13 @@ func (d *Driver) newMenuBar() error {
 	d.menubar = menubar
 
 	if len(d.MenubarConfig.URL) == 0 {
+		format := "mac.menubar?appurl=%s&editurl=%s&windowurl=%s&helpurl=%s"
+		for _, u := range d.MenubarConfig.CustomURLs {
+			format += "&custom=" + u
+		}
+
 		err = menubar.Load(
-			"mac.menubar?appurl=%s&editurl=%s&windowurl=%s&helpurl=%s",
+			format,
 			d.MenubarConfig.AppURL,
 			d.MenubarConfig.EditURL,
 			d.MenubarConfig.WindowURL,

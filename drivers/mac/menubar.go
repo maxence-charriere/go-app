@@ -33,6 +33,9 @@ type MenuBarConfig struct {
 	// Default is mac.windowmenu.
 	WindowURL string
 
+	// An array that contains additional menu URLs.
+	CustomURLs []string
+
 	// The URL of the help menu.
 	// Set this to customize only the help menu.
 	//
@@ -59,6 +62,7 @@ type MenuBar struct {
 	EditURL   string
 	WindowURL string
 	HelpURL   string
+	CutomURLs []string
 }
 
 // OnNavigate setup the menu bar sections.
@@ -87,6 +91,13 @@ func (m *MenuBar) OnNavigate(u *url.URL) {
 		m.HelpURL = "mac.helpmenu"
 	}
 
+	for _, u := range u.Query()["custom"] {
+		customURL := app.ComponentNameFromURLString(u)
+		if len(customURL) != 0 {
+			m.CutomURLs = append(m.CutomURLs, customURL)
+		}
+	}
+
 	app.Render(m)
 }
 
@@ -105,6 +116,9 @@ func (m *MenuBar) Render() string {
 	{{end}}
 	{{if .WindowURL}}
 		{{compo .WindowURL}}
+	{{end}}
+	{{range .CutomURLs}}
+		{{compo .}}
 	{{end}}
 	{{if .HelpURL}}
 		{{compo .HelpURL}}
