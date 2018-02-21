@@ -11,24 +11,23 @@ import (
 func TestDriver(t *testing.T, setup func(onRun func()) app.Driver, shutdown func()) {
 	var driver app.Driver
 
-	factory := app.NewFactory()
-	factory = app.NewConcurrentFactory(factory)
-
-	factory.Register(&Hello{})
-	factory.Register(&World{})
-	factory.Register(&Menu{})
+	app.Import(&Hello{})
+	app.Import(&World{})
+	app.Import(&Menu{})
+	app.Import(&Menubar{})
 
 	onRun := func() {
 		defer shutdown()
 
 		t.Log("testing driver", driver.Name())
 		t.Run("window", func(t *testing.T) { testWindow(t, driver) })
-		t.Run("context menu", func(t *testing.T) { testContextMenu(t, driver) })
+		t.Run("text menu", func(t *testing.T) { testContextMenu(t, driver) })
 		t.Run("dock", func(t *testing.T) { testDockTile(t, driver) })
 	}
 
 	driver = setup(onRun)
-	if err := driver.Run(factory); err != nil {
+
+	if err := app.Run(driver); err != nil {
 		t.Error(err)
 	}
 }

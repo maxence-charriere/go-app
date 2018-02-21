@@ -21,10 +21,6 @@ func TestApp(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 
 	onRun := func() {
-		if err := app.Run(d); err == nil {
-			t.Error("error is not nil")
-		}
-
 		if rd := app.RunningDriver(); rd == nil {
 			t.Fatal("driver is not set")
 		}

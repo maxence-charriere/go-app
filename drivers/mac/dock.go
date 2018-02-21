@@ -4,6 +4,7 @@ package mac
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/google/uuid"
@@ -93,13 +94,17 @@ func (d *DockTile) LastFocus() time.Time {
 
 // SetIcon satisfies the app.DockTile interface.
 func (d *DockTile) SetIcon(name string) error {
+	if _, err := os.Stat(name); err != nil {
+		return err
+	}
+
 	icon := struct {
 		Path string `json:"path"`
 	}{
 		Path: name,
 	}
 
-	_, err := driver.macos.Request(
+	_, err := driver.macos.RequestWithAsyncResponse(
 		"/driver/dock/icon",
 		bridge.NewPayload(icon),
 	)

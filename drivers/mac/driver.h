@@ -25,6 +25,7 @@
 - (bridge_result)setDockBadge:(NSURLComponents *)url
                       payload:(NSString *)payload;
 - (bridge_result)share:(NSURLComponents *)url payload:(NSString *)payload;
+- (bridge_result)quit:(NSURLComponents *)url payload:(NSString *)payload;
 @end
 
 #endif /* driver_h */

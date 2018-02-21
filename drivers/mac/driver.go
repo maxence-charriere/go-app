@@ -16,7 +16,6 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 
 	"github.com/murlokswarm/app"
@@ -27,10 +26,6 @@ import (
 var (
 	driver *Driver
 )
-
-func init() {
-	runtime.LockOSThread()
-}
 
 // Driver is the app.Driver implementation for MacOS.
 type Driver struct {
@@ -64,6 +59,10 @@ func (d *Driver) Name() string {
 
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(f app.Factory) error {
+	if driver != nil {
+		return errors.Errorf("driver is already running")
+	}
+
 	d.devID = generateDevID()
 	d.factory = f
 
@@ -73,22 +72,6 @@ func (d *Driver) Run(f app.Factory) error {
 
 	d.uichan = make(chan func(), 4096)
 	defer close(d.uichan)
-
-	var ctx context.Context
-	ctx, d.cancel = context.WithCancel(context.Background())
-	defer d.cancel()
-
-	go func() {
-		for {
-			select {
-			case function := <-d.uichan:
-				function()
-
-			case <-ctx.Done():
-				return
-			}
-		}
-	}()
 
 	d.macos = bridge.NewPlatformBridge(handleMacOSRequest)
 	d.golang = bridge.NewGoBridge(d.uichan)
@@ -121,11 +104,28 @@ func (d *Driver) Run(f app.Factory) error {
 
 	d.golang.Handle("/notification/reply", notificationHandler(onNotificationReply))
 
-	driver = d
-	_, err := d.macos.Request("/driver/run", nil)
+	var ctx context.Context
+	ctx, d.cancel = context.WithCancel(context.Background())
+	defer d.cancel()
 
-	<-ctx.Done()
-	return err
+	driver = d
+
+	errC := make(chan error)
+	go func() {
+		_, err := d.macos.Request("/driver/run", nil)
+		errC <- err
+	}()
+
+	for {
+		select {
+		case function := <-d.uichan:
+			function()
+
+		case <-ctx.Done():
+			break
+		}
+	}
+	return <-errC
 }
 
 func (d *Driver) onRun(u *url.URL, p bridge.Payload) (res bridge.Payload) {
@@ -201,24 +201,6 @@ func (d *Driver) onURLOpen(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 
 	d.OnURLOpen(purl)
 	return
-}
-
-func (d *Driver) onQuit(u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	if d.OnQuit == nil {
-		return
-	}
-
-	res = bridge.NewPayload(d.OnQuit())
-	return
-}
-
-func (d *Driver) onExit(u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	if d.OnExit != nil {
-		d.OnExit()
-	}
-
-	d.cancel()
-	return nil
 }
 
 // AppName satisfies the app.Driver interface.
@@ -409,6 +391,31 @@ func (d *Driver) Dock() app.DockTile {
 // CallOnUIGoroutine satisfies the app.Driver interface.
 func (d *Driver) CallOnUIGoroutine(f func()) {
 	d.uichan <- f
+}
+
+// Quit quits the app.
+func (d *Driver) Quit() {
+	d.macos.Request("/driver/quit", nil)
+}
+
+func (d *Driver) onQuit(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	quit := true
+
+	if d.OnQuit != nil {
+		quit = d.OnQuit()
+	}
+
+	res = bridge.NewPayload(quit)
+	return
+}
+
+func (d *Driver) onExit(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	if d.OnExit != nil {
+		d.OnExit()
+	}
+
+	d.cancel()
+	return nil
 }
 
 func generateDevID() string {

@@ -28,10 +28,6 @@ func Import(c Component) {
 
 // Run runs the app with the driver as backend.
 func Run(d Driver) error {
-	if driver != nil {
-		return errors.Errorf("driver %T is already running", driver)
-	}
-
 	driver = NewDriverWithLogs(d)
 	return driver.Run(components)
 

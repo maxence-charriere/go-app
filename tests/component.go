@@ -295,3 +295,20 @@ func (m *Menu) Render() string {
 </menu>
 	`
 }
+
+// Menubar is a component to test a menu bar element.
+type Menubar app.ZeroCompo
+
+// Render satisfies the app.Component interface.
+func (m *Menubar) Render() string {
+	return `
+<menu>
+	<menu label="app">
+		<menuitem label="a menu"></menuitem>
+	</menu>
+	<menu label="edit">
+		<menuitem label="a menu"></menuitem>
+	</menu>
+</menu>
+	`
+}
