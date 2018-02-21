@@ -1,117 +1,163 @@
 package test
 
 import (
-	"os"
+	"context"
 	"path/filepath"
-	"testing"
 
 	"github.com/murlokswarm/app"
 	"github.com/pkg/errors"
 )
 
+var (
+	// ErrSimulated is an error that is set to simulated a return error
+	// behavior.
+	ErrSimulated = errors.New("simulated error")
+)
+
 // Driver is an app.Driver implementation for testing.
 type Driver struct {
-	Test        *testing.T
-	factory     app.Factory
-	elements    app.ElementDB
-	menubar     app.Menu
-	dock        app.DockTile
-	RunSouldErr bool
-	UIchan      chan func()
+	SimulateErr bool
+	Ctx         context.Context
 
-	OnContextLoad func(ctx app.ElementWithComponent, compo app.Component)
+	OnRun func()
+
+	factory  app.Factory
+	elements app.ElementDB
+	dock     app.DockTile
+	menubar  app.Menu
+	uichan   chan func()
+}
+
+// Name satisfies the app.Driver interface.
+func (d *Driver) Name() string {
+	return "Test"
 }
 
 // Run satisfies the app.Driver interface.
-func (d *Driver) Run(factory app.Factory) error {
-	d.factory = factory
-	d.elements = app.NewConcurrentElemDB(app.NewElementDB())
-	d.menubar = newMenu(d, app.MenuConfig{})
+func (d *Driver) Run(f app.Factory) error {
+	if d.SimulateErr {
+		return ErrSimulated
+	}
+
+	d.factory = f
+
+	elements := app.NewElemDB()
+	elements = app.NewConcurrentElemDB(elements)
+	d.elements = elements
+
 	d.dock = newDockTile(d)
-	d.UIchan = make(chan func(), 256)
 
-	if d.RunSouldErr {
-		return errors.New("simulating run error")
-	}
-	return nil
-}
-
-// Render satisfies the app.Driver interface.
-func (d *Driver) Render(compo app.Component) error {
-	elem, err := d.elements.ElementByComponent(compo)
+	menubar, err := newMenu(d, "menu bar", app.MenuConfig{})
 	if err != nil {
-		return errors.Wrap(err, "rendering component")
+		return err
 	}
-	return elem.Render(compo)
-}
+	d.menubar = menubar
 
-// Context satisfies the app.Driver interface.
-func (d *Driver) Context(compo app.Component) (e app.ElementWithComponent, err error) {
-	if e, err = d.elements.ElementByComponent(compo); err != nil {
-		err = errors.Wrap(err, "can't get context")
+	d.uichan = make(chan func(), 256)
+
+	if d.OnRun != nil {
+		d.uichan <- d.OnRun
 	}
-	return
-}
 
-// NewContextMenu satisfies the app.Driver interface.
-func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
-	return newMenu(d, c)
+	if d.Ctx == nil {
+		return errors.New("driver.Ctx is nil")
+	}
+
+	end := false
+	for {
+		select {
+		case <-d.Ctx.Done():
+			if !end {
+				close(d.uichan)
+				end = true
+			}
+
+		case f := <-d.uichan:
+			if f == nil {
+				return nil
+			}
+			f()
+		}
+	}
 }
 
 // AppName satisfies the app.Driver interface.
 func (d *Driver) AppName() string {
-	return "test"
+	return "Driver unit tests"
 }
 
 // Resources satisfies the app.Driver interface.
-func (d *Driver) Resources() string {
-	wd, err := os.Getwd()
-	if err != nil {
-		panic(err)
+func (d *Driver) Resources(path ...string) string {
+	resources := filepath.Join(path...)
+	return filepath.Join("resources", resources)
+}
+
+// Storage satisfies the app.Driver interface.
+func (d *Driver) Storage(path ...string) string {
+	storage := filepath.Join(path...)
+	return filepath.Join("storage", storage)
+}
+
+// NewWindow satisfies the app.Driver interface.
+func (d *Driver) NewWindow(c app.WindowConfig) (app.Window, error) {
+	if d.SimulateErr {
+		return nil, ErrSimulated
 	}
-	return filepath.Join(wd, "resources")
+	return newWindow(d, c)
 }
 
-// CallOnUIGoroutine satisfies the app.Driver interface.
-func (d *Driver) CallOnUIGoroutine(f func()) {
-	d.UIchan <- f
-}
-
-// Storage satisfies the app.DriverWithStorage interface.
-func (d *Driver) Storage() string {
-	wd, err := os.Getwd()
-	if err != nil {
-		panic(err)
+// NewContextMenu satisfies the app.Driver interface.
+func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
+	if d.SimulateErr {
+		return nil, ErrSimulated
 	}
-	return filepath.Join(wd, "storage")
+	return newMenu(d, "context menu", c)
 }
 
-// NewWindow satisfies the app.DriverWithWindows interface.
-func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
-	return NewWindow(d, c)
+// Render satisfies the app.Driver interface.
+func (d *Driver) Render(compo app.Component) error {
+	if d.SimulateErr {
+		return ErrSimulated
+	}
+
+	elem, err := d.elements.ElementByComponent(compo)
+	if err != nil {
+		return err
+	}
+	return elem.Render(compo)
 }
 
-// MenuBar satisfies the app.DriverWithMenuBar interface.
+// ElementByComponent satisfies the app.Driver interface.
+func (d *Driver) ElementByComponent(c app.Component) (app.ElementWithComponent, error) {
+	return d.elements.ElementByComponent(c)
+}
+
+// NewFilePanel satisfies the app.Driver interface.
+func (d *Driver) NewFilePanel(c app.FilePanelConfig) error {
+	return app.NewErrNotSupported("file panels")
+}
+
+// NewShare satisfies the app.Driver interface.
+func (d *Driver) NewShare(v interface{}) error {
+	return app.NewErrNotSupported("share")
+}
+
+// NewNotification satisfies the app.Driver interface.
+func (d *Driver) NewNotification(c app.NotificationConfig) error {
+	return app.NewErrNotSupported("notifications")
+}
+
+// MenuBar satisfies the app.Driver interface.
 func (d *Driver) MenuBar() app.Menu {
 	return d.menubar
 }
 
-// Dock satisfies the app.DriverWithDock interface.
+// Dock satisfies the app.Driver interface.
 func (d *Driver) Dock() app.DockTile {
 	return d.dock
 }
 
-// Share satisfies the app.DriverWithShare interface.
-func (d *Driver) Share(v interface{}) error {
-	return nil
-}
-
-// NewFilePanel satisfies the app.DriverWithFilePanels interface.
-func (d *Driver) NewFilePanel(c app.FilePanelConfig) app.Element {
-	return NewElement(d)
-}
-
-// NewNotification satisfies the app.DriverWithNotifications interface.
-func (d *Driver) NewNotification(c app.NotificationConfig) error {
-	return nil
+// CallOnUIGoroutine satisfies the app.Driver interface.
+func (d *Driver) CallOnUIGoroutine(f func()) {
+	d.uichan <- f
 }

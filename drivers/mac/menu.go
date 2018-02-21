@@ -23,51 +23,58 @@ type Menu struct {
 	onClose func()
 }
 
-func newMenu(config app.MenuConfig) (m *Menu, err error) {
-	m = &Menu{
+func newMenu(config app.MenuConfig, name string) (app.Menu, error) {
+	var markup app.Markup = html.NewMarkup(driver.factory)
+	markup = app.NewConcurrentMarkup(markup)
+
+	rawMenu := &Menu{
 		id:        uuid.New(),
-		markup:    html.NewMarkup(driver.factory),
+		markup:    markup,
 		lastFocus: time.Now(),
 
 		onClose: config.OnClose,
 	}
 
-	if _, err = driver.macos.Request(
-		fmt.Sprintf("/menu/new?id=%s", m.id),
+	menu := app.NewMenuWithLogs(rawMenu, name)
+
+	if _, err := driver.macos.Request(
+		fmt.Sprintf("/menu/new?id=%s", rawMenu.id),
 		nil,
 	); err != nil {
-		return
+		return nil, err
 	}
 
-	if err = driver.elements.Add(m); err != nil {
-		return
+	if err := driver.elements.Add(menu); err != nil {
+		return nil, err
 	}
 
 	if len(config.DefaultURL) != 0 {
-		err = m.Load(config.DefaultURL)
+		return menu, menu.Load(config.DefaultURL)
 	}
-	return
+	return menu, nil
 }
 
-// ID satisfies the app.Element interface.
+// ID satisfies the app.Menu interface.
 func (m *Menu) ID() uuid.UUID {
 	return m.id
 }
 
+// Base satisfies the app.Menu interface.
+func (m *Menu) Base() app.Menu {
+	return m
+}
+
 // Load satisfies the app.Menu interface.
 func (m *Menu) Load(rawurl string, v ...interface{}) error {
-	var compoName string
-	var compo app.Component
-	var root app.Tag
-
 	rawurl = fmt.Sprintf(rawurl, v...)
 	u, err := url.Parse(rawurl)
 	if err != nil {
 		return err
 	}
 
-	compoName = app.ComponentNameFromURL(u)
-	if compo, err = driver.factory.NewComponent(compoName); err != nil {
+	var compo app.Component
+	compo, err = driver.factory.New(app.ComponentNameFromURL(u))
+	if err != nil {
 		return err
 	}
 
@@ -84,10 +91,10 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 		navigable.OnNavigate(u)
 	}
 
+	var root app.Tag
 	if root, err = m.markup.Root(compo); err != nil {
 		return err
 	}
-
 	if root, err = m.markup.FullRoot(root); err != nil {
 		return err
 	}
@@ -97,6 +104,11 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 		bridge.NewPayload(root),
 	)
 	return err
+}
+
+// Component satisfies the app.Menu interface.
+func (m *Menu) Component() app.Component {
+	return m.component
 }
 
 // Contains satisfies the app.Menu interface.
@@ -163,21 +175,21 @@ func (m *Menu) LastFocus() time.Time {
 }
 
 func onMenuClose(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	// When a context menu button is clicked, the onclick event is called
-	// after the onclose one.
-	// We have to delay the time we remove the element otherwise the onclick
-	// event cannot be called.
-	go func() {
-		time.Sleep(7 * time.Millisecond)
+	app.CallOnUIGoroutine(func() {
+		if m.onClose != nil {
+			m.onClose()
+		}
 
-		app.CallOnUIGoroutine(func() {
-			if m.onClose != nil {
-				m.onClose()
-			}
+		_, err := driver.macos.RequestWithAsyncResponse(
+			fmt.Sprintf("/menu/delete?id=%s", m.id),
+			nil,
+		)
+		if err != nil {
+			app.Error(err)
+		}
 
-			driver.elements.Remove(m)
-		})
-	}()
+		driver.elements.Remove(m)
+	})
 	return
 }
 
@@ -188,22 +200,22 @@ func onMenuCallback(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Payload) 
 	function, err := m.markup.Map(mapping)
 	if err != nil {
 		app.DefaultLogger.Error(err)
-		return
+		return nil
 	}
 
 	if function != nil {
 		function()
-		return
+		return nil
 	}
 
 	var compo app.Component
 	if compo, err = m.markup.Component(mapping.CompoID); err != nil {
 		app.DefaultLogger.Error(err)
-		return
+		return nil
 	}
 
 	if err = m.Render(compo); err != nil {
 		app.DefaultLogger.Error(err)
 	}
-	return
+	return nil
 }

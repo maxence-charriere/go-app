@@ -377,8 +377,8 @@ func testMapComponentFieldsStructError(t *testing.T) {
 
 func BenchmarkMarkupMount(b *testing.B) {
 	factory := app.NewFactory()
-	factory.RegisterComponent(&tests.Hello{})
-	factory.RegisterComponent(&tests.World{})
+	factory.Register(&tests.Hello{})
+	factory.Register(&tests.World{})
 
 	markup := NewMarkup(factory)
 
@@ -393,8 +393,8 @@ func BenchmarkMarkupMount(b *testing.B) {
 
 func BenchmarkMarkupUpdate(b *testing.B) {
 	factory := app.NewFactory()
-	factory.RegisterComponent(&tests.Hello{})
-	factory.RegisterComponent(&tests.World{})
+	factory.Register(&tests.Hello{})
+	factory.Register(&tests.World{})
 
 	markup := NewMarkup(factory)
 

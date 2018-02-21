@@ -28,6 +28,9 @@ type ElementWithComponent interface {
 	// It returns an error if the component is not imported.
 	Load(url string, v ...interface{}) error
 
+	// Component returns the loaded component.
+	Component() Component
+
 	// Contains reports whether the component is mounted in the element.
 	Contains(c Component) bool
 
@@ -61,115 +64,6 @@ type ElementWithNavigation interface {
 	Next() error
 }
 
-// Window is the interface that describes a window.
-type Window interface {
-	ElementWithNavigation
-
-	// Position returns the window position.
-	Position() (x, y float64)
-
-	// Move moves the window to the position (x, y).
-	Move(x, y float64)
-
-	// Center moves the window to the center of the screen.
-	Center()
-
-	// Size returns the window size.
-	Size() (width, height float64)
-
-	// Resize resizes the window to width * height.
-	Resize(width, height float64)
-
-	// Focus gives the focus to the window.
-	// The window will be put in front, above the other elements.
-	Focus()
-
-	// ToggleFullScreen takes the window into or out of fullscreen mode.
-	ToggleFullScreen()
-
-	// Minimize takes the window into or out of minimized mode
-	ToggleMinimize()
-
-	// Close closes the element.
-	Close()
-}
-
-// WindowConfig is a struct that describes a window.
-type WindowConfig struct {
-	Title           string          `json:"title"`
-	X               float64         `json:"x"`
-	Y               float64         `json:"y"`
-	Width           float64         `json:"width"`
-	MinWidth        float64         `json:"min-width"`
-	MaxWidth        float64         `json:"max-width"`
-	Height          float64         `json:"height"`
-	MinHeight       float64         `json:"min-height"`
-	MaxHeight       float64         `json:"max-height"`
-	BackgroundColor string          `json:"background-color"`
-	NoResizable     bool            `json:"no-resizable"`
-	NoClosable      bool            `json:"no-closable"`
-	NoMinimizable   bool            `json:"no-minimizable"`
-	TitlebarHidden  bool            `json:"titlebar-hidden"`
-	DefaultURL      string          `json:"default-url"`
-	Mac             MacWindowConfig `json:"mac"`
-
-	OnMove           func(x, y float64)                  `json:"-"`
-	OnResize         func(width float64, height float64) `json:"-"`
-	OnFocus          func()                              `json:"-"`
-	OnBlur           func()                              `json:"-"`
-	OnFullScreen     func()                              `json:"-"`
-	OnExitFullScreen func()                              `json:"-"`
-	OnMinimize       func()                              `json:"-"`
-	OnDeminimize     func()                              `json:"-"`
-	OnClose          func() bool                         `json:"-"`
-}
-
-// MacWindowConfig is a struct that describes window fields specific to MacOS.
-type MacWindowConfig struct {
-	BackgroundVibrancy Vibrancy `json:"background-vibrancy"`
-}
-
-// Vibrancy represents a constant that define Apple's frost glass effects.
-type Vibrancy uint8
-
-// Constants to specify vibrancy effects to use in Apple application elements.
-const (
-	VibeNone Vibrancy = iota
-	VibeLight
-	VibeDark
-	VibeTitlebar
-	VibeSelection
-	VibeMenu
-	VibePopover
-	VibeSidebar
-	VibeMediumLight
-	VibeUltraDark
-)
-
-// Menu is the interface that describes a menu.
-type Menu ElementWithComponent
-
-// MenuConfig is a struct that describes a menu.
-type MenuConfig struct {
-	DefaultURL string
-
-	OnClose func()
-}
-
-// DockTile is the interface that describes a dock tile.
-type DockTile interface {
-	Menu
-
-	// SetIcon set the dock tile icon with the named file.
-	// It returns an error if the file doesn't exist or if it is not a supported
-	// image.
-	SetIcon(name string) error
-
-	// SetBadge set the dock tile badge with the string representation of the
-	// value.
-	SetBadge(v interface{}) error
-}
-
 // FilePanelConfig is a struct that describes a file panel.
 type FilePanelConfig struct {
 	MultipleSelection bool                     `json:"multiple-selection"`
@@ -198,11 +92,11 @@ type ElementDB interface {
 	Remove(e Element)
 
 	// Element returns the element with the given identifier.
-	Element(id uuid.UUID) (e Element, ok bool)
+	Element(id uuid.UUID) (Element, error)
 
 	// ElementByComponent returns the element where the component is mounted.
 	// It returns an error if the component is not mounted in any element.
-	ElementByComponent(c Component) (e ElementWithComponent, err error)
+	ElementByComponent(c Component) (ElementWithComponent, error)
 
 	// ElementsWithComponents returns the elements that contains components.
 	ElementsWithComponents() []ElementWithComponent
@@ -215,8 +109,8 @@ type ElementDB interface {
 	Len() int
 }
 
-// NewElementDB creates an element database.
-func NewElementDB() ElementDB {
+// NewElemDB creates an element database.
+func NewElemDB() ElementDB {
 	return &elementDB{
 		elements:               make(map[uuid.UUID]Element),
 		elementsWithComponents: make(elementWithComponentList, 0, 64),
@@ -249,7 +143,7 @@ func (db *elementDB) Remove(e Element) {
 	if _, ok := e.(ElementWithComponent); ok {
 		elements := db.elementsWithComponents
 		for i, elem := range elements {
-			if elem == e {
+			if elem.ID() == e.ID() {
 				copy(elements[i:], elements[i+1:])
 				elements[len(elements)-1] = nil
 				elements = elements[:len(elements)-1]
@@ -260,21 +154,22 @@ func (db *elementDB) Remove(e Element) {
 	}
 }
 
-func (db *elementDB) Element(id uuid.UUID) (e Element, ok bool) {
-	e, ok = db.elements[id]
-	return
+func (db *elementDB) Element(id uuid.UUID) (Element, error) {
+	e, ok := db.elements[id]
+	if !ok {
+		return nil, NewErrNotFound("element")
+	}
+	return e, nil
 }
 
-func (db *elementDB) ElementByComponent(c Component) (e ElementWithComponent, err error) {
+func (db *elementDB) ElementByComponent(c Component) (ElementWithComponent, error) {
 	for _, elem := range db.elementsWithComponents {
 		if elem.Contains(c) {
-			e = elem
-			return
+			return elem, nil
 		}
 	}
 
-	err = errors.Errorf("component %+v is not mounted in any elements", c)
-	return
+	return nil, errors.Errorf("component %+v is not mounted in any elements", c)
 }
 
 func (db *elementDB) ElementsWithComponents() []ElementWithComponent {
@@ -320,18 +215,18 @@ func (db *concurrentElemDB) Remove(e Element) {
 	db.mutex.Unlock()
 }
 
-func (db *concurrentElemDB) Element(id uuid.UUID) (e Element, ok bool) {
+func (db *concurrentElemDB) Element(id uuid.UUID) (Element, error) {
 	db.mutex.Lock()
-	e, ok = db.base.Element(id)
+	e, err := db.base.Element(id)
 	db.mutex.Unlock()
-	return
+	return e, err
 }
 
-func (db *concurrentElemDB) ElementByComponent(c Component) (e ElementWithComponent, err error) {
+func (db *concurrentElemDB) ElementByComponent(c Component) (ElementWithComponent, error) {
 	db.mutex.Lock()
-	e, err = db.base.ElementByComponent(c)
+	e, err := db.base.ElementByComponent(c)
 	db.mutex.Unlock()
-	return
+	return e, err
 }
 
 func (db *concurrentElemDB) ElementsWithComponents() []ElementWithComponent {

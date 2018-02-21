@@ -2,10 +2,12 @@ package html
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"net/url"
 	"strings"
 
+	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/pkg/errors"
 )
@@ -85,6 +87,8 @@ func (e *Encoder) encodeSimple(tag app.Tag, indent int) error {
 
 func (e *Encoder) encodeAttributes(tag app.Tag) {
 	for name, val := range tag.Attributes {
+		val = AppJSAttributeValue(name, val, e.markup.Factory(), tag.CompoID)
+
 		e.writer.WriteByte(' ')
 		e.writer.WriteString(name)
 
@@ -93,36 +97,8 @@ func (e *Encoder) encodeAttributes(tag app.Tag) {
 		}
 
 		e.writer.WriteString(`="`)
-
-		switch {
-		// Redirect events to go.
-		case strings.HasPrefix(name, "on"):
-			e.writer.WriteString(`callGoEventHandler('`)
-			e.writer.WriteString(tag.CompoID.String())
-			e.writer.WriteString(`', '`)
-			e.writer.WriteString(val)
-			e.writer.WriteString(`', this, event)"`)
-
-		// Formart component targets.
-		case name == "href":
-			u, _ := url.Parse(val)
-			compoName := app.ComponentNameFromURL(u)
-
-			if e.markup.Factory().IsRegisteredComponent(compoName) {
-				u.Scheme = "compo"
-				u.Path = "/" + compoName
-				e.writer.WriteString(u.String())
-				e.writer.WriteByte('"')
-			} else {
-				e.writer.WriteString(val)
-				e.writer.WriteByte('"')
-			}
-
-		default:
-			strings.TrimPrefix(name, "js:")
-			e.writer.WriteString(val)
-			e.writer.WriteByte('"')
-		}
+		e.writer.WriteString(val)
+		e.writer.WriteByte('"')
 	}
 
 	e.writer.WriteString(` data-goapp-id="`)
@@ -150,4 +126,32 @@ func (e *Encoder) encodeIndent(indent int) {
 	for i := 0; i < indent; i++ {
 		e.writer.WriteString("  ")
 	}
+}
+
+// AppJSAttributeValue is an helper method that make the given attribute value
+// compatible with appjs.
+func AppJSAttributeValue(name, val string, f app.Factory, compoID uuid.UUID) string {
+	if name == "href" {
+		u, _ := url.Parse(val)
+		compoName := app.ComponentNameFromURL(u)
+
+		if f.Registered(compoName) {
+			u.Scheme = "compo"
+			u.Path = "/" + compoName
+		}
+		return u.String()
+	}
+
+	if !strings.HasPrefix(name, "on") {
+		return val
+	}
+
+	if strings.HasPrefix(val, "js:") {
+		return strings.TrimPrefix(val, "js:")
+	}
+
+	return fmt.Sprintf(`callGoEventHandler('%s', '%s', this, event)`,
+		compoID,
+		val,
+	)
 }

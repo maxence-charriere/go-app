@@ -40,11 +40,17 @@ type Window struct {
 	onClose          func() bool
 }
 
-func newWindow(config app.WindowConfig) (w *Window, err error) {
-	w = &Window{
+func newWindow(config app.WindowConfig) (app.Window, error) {
+	var markup app.Markup = html.NewMarkup(driver.factory)
+	markup = app.NewConcurrentMarkup(markup)
+
+	history := app.NewHistory()
+	history = app.NewConcurrentHistory(history)
+
+	rawWin := &Window{
 		id:        uuid.New(),
-		markup:    html.NewMarkup(driver.factory),
-		history:   app.NewHistory(),
+		markup:    markup,
+		history:   history,
 		lastFocus: time.Now(),
 
 		onMove:           config.OnMove,
@@ -61,21 +67,23 @@ func newWindow(config app.WindowConfig) (w *Window, err error) {
 	config.MinWidth, config.MaxWidth = normalizeWidowSize(config.MinWidth, config.MaxWidth)
 	config.MinHeight, config.MaxHeight = normalizeWidowSize(config.MinHeight, config.MaxHeight)
 
-	if _, err = driver.macos.Request(
-		fmt.Sprintf("/window/new?id=%s", w.id),
+	win := app.NewWindowWithLogs(rawWin)
+
+	if _, err := driver.macos.Request(
+		fmt.Sprintf("/window/new?id=%s", rawWin.id),
 		bridge.NewPayload(config),
 	); err != nil {
-		return
+		return nil, err
 	}
 
-	if err = driver.elements.Add(w); err != nil {
-		return
+	if err := driver.elements.Add(win); err != nil {
+		return nil, err
 	}
 
 	if len(config.DefaultURL) != 0 {
-		err = w.Load(config.DefaultURL)
+		return win, win.Load(config.DefaultURL)
 	}
-	return
+	return win, nil
 }
 
 func normalizeWidowSize(min, max float64) (float64, float64) {
@@ -92,12 +100,17 @@ func normalizeWidowSize(min, max float64) (float64, float64) {
 	return min, max
 }
 
-// ID satisfies the app.Element interface.
+// ID satisfies the app.Window interface.
 func (w *Window) ID() uuid.UUID {
 	return w.id
 }
 
-// Load satisfies the app.ElementWithComponent interface.
+// Base satisfies the app.Window interface.
+func (w *Window) Base() app.Window {
+	return w
+}
+
+// Load satisfies the app.Window interface.
 func (w *Window) Load(rawurl string, v ...interface{}) error {
 	rawurl = fmt.Sprintf(rawurl, v...)
 	u, err := url.Parse(rawurl)
@@ -106,7 +119,7 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 	}
 
 	compoName := app.ComponentNameFromURL(u)
-	isRegiteredCompo := driver.factory.IsRegisteredComponent(compoName)
+	isRegiteredCompo := driver.factory.Registered(compoName)
 	currentURL, err := w.history.Current()
 
 	if isRegiteredCompo && (err != nil || currentURL != u.String()) {
@@ -116,18 +129,12 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 }
 
 func (w *Window) load(u *url.URL) error {
-	var compoName = app.ComponentNameFromURL(u)
-	var compo app.Component
-	var root app.Tag
-	var buffer bytes.Buffer
-	var pageConfig html.PageConfig
-	var err error
-
-	if compo, err = driver.factory.NewComponent(compoName); err != nil {
+	compo, err := driver.factory.New(app.ComponentNameFromURL(u))
+	if err != nil {
 		// Redirect web page to default web browser.
-		cmd := exec.Command("open", u.String())
-		err = cmd.Run()
-		return err
+		return exec.
+			Command("open", u.String()).
+			Run()
 	}
 
 	if w.component != nil {
@@ -143,21 +150,26 @@ func (w *Window) load(u *url.URL) error {
 		navigable.OnNavigate(u)
 	}
 
+	var root app.Tag
 	if root, err = w.markup.Root(compo); err != nil {
-		return nil
+		return err
 	}
 
+	var buffer bytes.Buffer
 	enc := html.NewEncoder(&buffer, w.markup)
 	if err = enc.Encode(root); err != nil {
 		return err
 	}
 
+	var pageConfig html.PageConfig
 	if page, ok := compo.(html.Page); ok {
 		pageConfig = page.PageConfig()
 	}
+
 	if len(pageConfig.CSS) == 0 {
 		pageConfig.CSS = defaultCSS()
 	}
+
 	pageConfig.DefaultComponent = template.HTML(buffer.String())
 	pageConfig.AppJS = appjs.AppJS("window.webkit.messageHandlers.golangRequest.postMessage")
 
@@ -202,12 +214,17 @@ func defaultCSS() (css []string) {
 	return
 }
 
-// Contains satisfies the app.ElementWithComponent interface.
+// Contains satisfies the app.Window interface.
 func (w *Window) Contains(compo app.Component) bool {
 	return w.markup.Contains(compo)
 }
 
-// Render satisfies the app.ElementWithComponent interface.
+// Component satisfies the app.Window interface.
+func (w *Window) Component() app.Component {
+	return w.component
+}
+
+// Render satisfies the app.Window interface.
 func (w *Window) Render(compo app.Component) error {
 	syncs, err := w.markup.Update(compo)
 	if err != nil {
@@ -225,6 +242,7 @@ func (w *Window) Render(compo app.Component) error {
 			return err
 		}
 	}
+
 	return nil
 }
 
@@ -252,12 +270,22 @@ func (w *Window) render(sync app.TagSync) error {
 }
 
 func (w *Window) renderAttributes(sync app.TagSync) error {
+	attrs := make(app.AttributeMap, len(sync.Tag.Attributes))
+	for name, val := range sync.Tag.Attributes {
+		attrs[name] = html.AppJSAttributeValue(
+			name,
+			val,
+			driver.factory,
+			sync.Tag.CompoID,
+		)
+	}
+
 	payload := struct {
 		ID         string           `json:"id"`
 		Attributes app.AttributeMap `json:"attributes"`
 	}{
 		ID:         sync.Tag.ID.String(),
-		Attributes: sync.Tag.Attributes,
+		Attributes: attrs,
 	}
 
 	_, err := driver.macos.Request(
@@ -267,12 +295,12 @@ func (w *Window) renderAttributes(sync app.TagSync) error {
 	return err
 }
 
-// LastFocus satisfies the app.ElementWithComponent interface.
+// LastFocus satisfies the app.Window interface.
 func (w *Window) LastFocus() time.Time {
 	return w.lastFocus
 }
 
-// Reload satisfies the app.ElementWithNavigation interface.
+// Reload satisfies the app.Window interface.
 func (w *Window) Reload() error {
 	var rawurl string
 	var u *url.URL
@@ -289,47 +317,41 @@ func (w *Window) Reload() error {
 	return w.load(u)
 }
 
-// CanPrevious satisfies the app.ElementWithNavigation interface.
+// CanPrevious satisfies the app.Window interface.
 func (w *Window) CanPrevious() bool {
 	return w.history.CanPrevious()
 }
 
-// Previous satisfies the app.ElementWithNavigation interface.
+// Previous satisfies the app.Window interface.
 func (w *Window) Previous() error {
-	var rawurl string
-	var u *url.URL
-	var err error
-
-	if rawurl, err = w.history.Previous(); err != nil {
+	rawurl, err := w.history.Previous()
+	if err != nil {
 		return err
 	}
 
+	var u *url.URL
 	if u, err = url.Parse(rawurl); err != nil {
 		return err
 	}
-
 	return w.load(u)
 }
 
-// CanNext satisfies the app.ElementWithNavigation interface.
+// CanNext satisfies the app.Window interface.
 func (w *Window) CanNext() bool {
 	return w.history.CanNext()
 }
 
-// Next satisfies the app.ElementWithNavigation interface.
+// Next satisfies the app.Window interface.
 func (w *Window) Next() error {
-	var rawurl string
-	var u *url.URL
-	var err error
-
-	if rawurl, err = w.history.Next(); err != nil {
+	rawurl, err := w.history.Next()
+	if err != nil {
 		return err
 	}
 
+	var u *url.URL
 	if u, err = url.Parse(rawurl); err != nil {
 		return err
 	}
-
 	return w.load(u)
 }
 
@@ -363,13 +385,13 @@ func (w *Window) Move(x, y float64) {
 
 func onWindowMove(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	if w.onMove == nil {
-		return
+		return nil
 	}
 
 	var pos point
 	p.Unmarshal(&pos)
 	w.onMove(pos.X, pos.Y)
-	return
+	return nil
 }
 
 // Center satisfies the app.Window interface.
@@ -412,13 +434,13 @@ func (w *Window) Resize(width, height float64) {
 
 func onWindowResize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	if w.onResize == nil {
-		return
+		return nil
 	}
 
 	var size size
 	p.Unmarshal(&size)
 	w.onResize(size.Width, size.Height)
-	return
+	return nil
 }
 
 // Focus satisfies the app.Window interface.
@@ -435,20 +457,20 @@ func onWindowFocus(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload)
 	w.lastFocus = time.Now()
 
 	if w.onFocus == nil {
-		return
+		return nil
 	}
 
 	w.onFocus()
-	return
+	return nil
 }
 
 func onWindowBlur(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	if w.onBlur == nil {
-		return
+		return nil
 	}
 
 	w.onBlur()
-	return
+	return nil
 }
 
 // ToggleFullScreen satisfies the app.Window interface.
@@ -463,20 +485,20 @@ func (w *Window) ToggleFullScreen() {
 
 func onWindowFullScreen(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	if w.onFullScreen == nil {
-		return
+		return nil
 	}
 
 	w.onFullScreen()
-	return
+	return nil
 }
 
 func onWindowExitFullScreen(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	if w.onExitFullScreen == nil {
-		return
+		return nil
 	}
 
 	w.onExitFullScreen()
-	return
+	return nil
 }
 
 // ToggleMinimize satisfies the app.Window interface.
@@ -491,20 +513,20 @@ func (w *Window) ToggleMinimize() {
 
 func onWindowMinimize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	if w.onMinimize == nil {
-		return
+		return nil
 	}
 
 	w.onMinimize()
-	return
+	return nil
 }
 
 func onWindowDeminimize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	if w.onDeminimize == nil {
-		return
+		return nil
 	}
 
 	w.onDeminimize()
-	return
+	return nil
 }
 
 // Close satisfies the app.Window interface.
@@ -531,7 +553,7 @@ func onWindowClose(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload)
 	if shouldClose {
 		driver.elements.Remove(w)
 	}
-	return
+	return res
 }
 
 func onWindowCallback(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
@@ -541,29 +563,29 @@ func onWindowCallback(w *Window, u *url.URL, p bridge.Payload) (res bridge.Paylo
 	function, err := w.markup.Map(mapping)
 	if err != nil {
 		app.DefaultLogger.Error(err)
-		return
+		return nil
 	}
 
 	if function != nil {
 		function()
-		return
+		return nil
 	}
 
 	var compo app.Component
 	if compo, err = w.markup.Component(mapping.CompoID); err != nil {
 		app.DefaultLogger.Error(err)
-		return
+		return nil
 	}
 
 	if err = w.Render(compo); err != nil {
 		app.DefaultLogger.Error(err)
 	}
-	return
+	return nil
 }
 
 func onWindowNavigate(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	var rawurl string
 	p.Unmarshal(&rawurl)
 	w.Load(rawurl)
-	return
+	return nil
 }

@@ -20,28 +20,28 @@ type Markup interface {
 
 	// Component returns the component mounted under the identifier.
 	// Returns an error if there is not component with the identifier.
-	Component(id uuid.UUID) (compo Component, err error)
+	Component(id uuid.UUID) (Component, error)
 
 	// Contains reports whether the component is mounted.
 	Contains(compo Component) bool
 
 	// Root returns the component root tag.
 	// It returns an error if the component is not mounted.
-	Root(compo Component) (root Tag, err error)
+	Root(compo Component) (Tag, error)
 
 	// FullRoot returns a version of the given tag where the children tht are components
 	// are replaced by their full tree.
-	FullRoot(tag Tag) (root Tag, err error)
+	FullRoot(tag Tag) (Tag, error)
 
 	// Mount indexes the component.
 	// The component will be kept in memory until it is dismounted.
-	Mount(compo Component) (root Tag, err error)
+	Mount(compo Component) (Tag, error)
 
 	// Dismount removes references to a component and its children.
 	Dismount(compo Component)
 
 	// Update updates the tag tree of the component.
-	Update(compo Component) (syncs []TagSync, err error)
+	Update(compo Component) ([]TagSync, error)
 
 	// Map performs the given mapping.
 	// The json value is mapped to the field or method of the specified
@@ -49,7 +49,7 @@ type Markup interface {
 	// Methods and fields of func type are called with the value mapped to their
 	// first arg.
 	// It returns an error if the assigned field or method is not exported.
-	Map(mapping Mapping) (function func(), err error)
+	Map(mapping Mapping) (func(), error)
 }
 
 // Mapping describes a component mapping.
@@ -75,11 +75,10 @@ func ParseMappingTarget(target string) (pipeline []string, err error) {
 
 	for _, elem := range pipeline {
 		if len(elem) == 0 {
-			err = errors.Errorf("%s contains empty element", target)
-			return
+			return nil, errors.Errorf("%s contains empty element", target)
 		}
 	}
-	return
+	return pipeline, nil
 }
 
 // TagEncoder is the interface that describes an encoder that writes the tag
@@ -160,11 +159,11 @@ func (m *concurrentMarkup) Factory() Factory {
 	return factory
 }
 
-func (m *concurrentMarkup) Component(id uuid.UUID) (compo Component, err error) {
+func (m *concurrentMarkup) Component(id uuid.UUID) (Component, error) {
 	m.mutex.Lock()
-	compo, err = m.base.Component(id)
+	compo, err := m.base.Component(id)
 	m.mutex.Unlock()
-	return
+	return compo, err
 }
 
 func (m *concurrentMarkup) Contains(compo Component) bool {
@@ -174,25 +173,25 @@ func (m *concurrentMarkup) Contains(compo Component) bool {
 	return contains
 }
 
-func (m *concurrentMarkup) Root(compo Component) (root Tag, err error) {
+func (m *concurrentMarkup) Root(compo Component) (Tag, error) {
 	m.mutex.Lock()
-	root, err = m.base.Root(compo)
+	root, err := m.base.Root(compo)
 	m.mutex.Unlock()
-	return
+	return root, err
 }
 
-func (m *concurrentMarkup) FullRoot(tag Tag) (root Tag, err error) {
+func (m *concurrentMarkup) FullRoot(tag Tag) (Tag, error) {
 	m.mutex.Lock()
-	root, err = m.base.FullRoot(tag)
+	root, err := m.base.FullRoot(tag)
 	m.mutex.Unlock()
-	return
+	return root, err
 }
 
-func (m *concurrentMarkup) Mount(compo Component) (root Tag, err error) {
+func (m *concurrentMarkup) Mount(compo Component) (Tag, error) {
 	m.mutex.Lock()
-	root, err = m.base.Mount(compo)
+	root, err := m.base.Mount(compo)
 	m.mutex.Unlock()
-	return
+	return root, err
 }
 
 func (m *concurrentMarkup) Dismount(compo Component) {
@@ -201,18 +200,18 @@ func (m *concurrentMarkup) Dismount(compo Component) {
 	m.mutex.Unlock()
 }
 
-func (m *concurrentMarkup) Update(compo Component) (syncs []TagSync, err error) {
+func (m *concurrentMarkup) Update(compo Component) ([]TagSync, error) {
 	m.mutex.Lock()
-	syncs, err = m.base.Update(compo)
+	syncs, err := m.base.Update(compo)
 	m.mutex.Unlock()
-	return
+	return syncs, err
 }
 
-func (m *concurrentMarkup) Map(mapping Mapping) (function func(), err error) {
+func (m *concurrentMarkup) Map(mapping Mapping) (func(), error) {
 	m.mutex.Lock()
-	function, err = m.base.Map(mapping)
+	f, err := m.base.Map(mapping)
 	m.mutex.Unlock()
-	return
+	return f, err
 }
 
 // NewMarkupWithLogs returns a decorated version of the given markup that logs
@@ -235,58 +234,58 @@ func (m *markupWithLogs) Factory() Factory {
 	return m.base.Factory()
 }
 
-func (m *markupWithLogs) Component(id uuid.UUID) (compo Component, err error) {
-	compo, err = m.base.Component(id)
+func (m *markupWithLogs) Component(id uuid.UUID) (Component, error) {
+	compo, err := m.base.Component(id)
 	if err != nil {
 		DefaultLogger.Errorf("component with id %v can't be retrieved: %v", id, err)
 	}
-	return
+	return compo, err
 }
 
 func (m *markupWithLogs) Contains(compo Component) bool {
 	return m.base.Contains(compo)
 }
 
-func (m *markupWithLogs) Root(compo Component) (root Tag, err error) {
-	root, err = m.base.Root(compo)
+func (m *markupWithLogs) Root(compo Component) (Tag, error) {
+	root, err := m.base.Root(compo)
 	if err != nil {
 		DefaultLogger.Errorf("root tag of component %T can't be retrieved: %v", compo, err)
 	}
-	return
+	return root, err
 }
 
-func (m *markupWithLogs) FullRoot(tag Tag) (root Tag, err error) {
-	root, err = m.base.FullRoot(tag)
+func (m *markupWithLogs) FullRoot(tag Tag) (Tag, error) {
+	root, err := m.base.FullRoot(tag)
 	if err != nil {
 		DefaultLogger.Errorf("full tree can't be retrieved: %v", err)
 	}
-	return
+	return root, err
 }
 
-func (m *markupWithLogs) Mount(compo Component) (root Tag, err error) {
-	root, err = m.base.Mount(compo)
+func (m *markupWithLogs) Mount(compo Component) (Tag, error) {
+	root, err := m.base.Mount(compo)
 	if err != nil {
 		DefaultLogger.Errorf("mounting component %T failed: %v", compo, err)
 	}
-	return
+	return root, err
 }
 
 func (m *markupWithLogs) Dismount(compo Component) {
 	m.base.Dismount(compo)
 }
 
-func (m *markupWithLogs) Update(compo Component) (syncs []TagSync, err error) {
-	syncs, err = m.base.Update(compo)
+func (m *markupWithLogs) Update(compo Component) ([]TagSync, error) {
+	syncs, err := m.base.Update(compo)
 	if err != nil {
 		DefaultLogger.Errorf("updating component %T failed: %v", compo, err)
 	}
-	return
+	return syncs, err
 }
 
-func (m *markupWithLogs) Map(mapping Mapping) (function func(), err error) {
-	function, err = m.base.Map(mapping)
+func (m *markupWithLogs) Map(mapping Mapping) (func(), error) {
+	f, err := m.base.Map(mapping)
 	if err != nil {
 		DefaultLogger.Errorf("mapping %+v failed: %v", mapping, err)
 	}
-	return
+	return f, err
 }

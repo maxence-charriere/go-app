@@ -8,6 +8,13 @@ import (
 	"github.com/murlokswarm/app/tests"
 )
 
+func TestLog(t *testing.T) {
+	app.Log("hello world")
+	app.Logf("hello %s", "world")
+	app.Error("goodbye world")
+	app.Errorf("goodbye %s", "world")
+}
+
 func TestLogger(t *testing.T) {
 	buffer := &bytes.Buffer{}
 	tests.TestLogger(t, app.NewLogger(buffer, true))

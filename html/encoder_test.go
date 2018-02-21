@@ -11,8 +11,8 @@ import (
 
 func TestEncoder(t *testing.T) {
 	factory := app.NewFactory()
-	factory.RegisterComponent(&tests.Hello{})
-	factory.RegisterComponent(&tests.World{})
+	factory.Register(&tests.Hello{})
+	factory.Register(&tests.World{})
 
 	tests := []struct {
 		scenario string
@@ -112,8 +112,8 @@ func testEncoderEncodeNotMountedComponent(t *testing.T, markup *Markup) {
 
 func BenchmarkEncoder(b *testing.B) {
 	factory := app.NewFactory()
-	factory.RegisterComponent(&tests.Hello{})
-	factory.RegisterComponent(&tests.World{})
+	factory.Register(&tests.Hello{})
+	factory.Register(&tests.World{})
 
 	markup := NewMarkup(factory)
 

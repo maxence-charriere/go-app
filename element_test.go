@@ -8,13 +8,13 @@ import (
 )
 
 func TestElemDB(t *testing.T) {
-	tests.TestElementDB(t, func() app.ElementDB {
-		return app.NewElementDB()
+	tests.TestElemDB(t, func() app.ElementDB {
+		return app.NewElemDB()
 	})
 }
 
 func TestConcurrentElemDB(t *testing.T) {
-	tests.TestElementDB(t, func() app.ElementDB {
-		return app.NewConcurrentElemDB(app.NewElementDB())
+	tests.TestElemDB(t, func() app.ElementDB {
+		return app.NewConcurrentElemDB(app.NewElemDB())
 	})
 }

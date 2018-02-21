@@ -41,6 +41,7 @@
 + (bridge_result)render:(NSURLComponents *)url payload:(NSString *)payload;
 + (bridge_result)renderAttributes:(NSURLComponents *)url
                           payload:(NSString *)payload;
++ (bridge_result) delete:(NSURLComponents *)url payload:(NSString *)payload;
 - (id)elementByID:(NSString *)ID;
 - (id)elementFromContainer:(MenuContainer *)container ID:(NSString *)ID;
 - (id)elementFromItem:(MenuItem *)item ID:(NSString *)ID;

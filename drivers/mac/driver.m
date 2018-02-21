@@ -68,6 +68,10 @@
             handler:^(NSURLComponents *url, NSString *payload) {
               return [self share:url payload:payload];
             }];
+  [self.objc handle:@"/driver/quit"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [self quit:url payload:payload];
+            }];
 
   // Window handlers.
   [self.objc handle:@"/window/new"
@@ -139,6 +143,10 @@
   [self.objc handle:@"/menu/render/attributes"
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Menu renderAttributes:url payload:payload];
+            }];
+  [self.objc handle:@"/menu/delete"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [Menu delete:url payload:payload];
             }];
 
   // File panel handlers.
@@ -251,15 +259,26 @@
 
 - (bridge_result)setDockIcon:(NSURLComponents *)url
                      payload:(NSString *)payload {
+  NSString *returnID = [url queryValue:@"return-id"];
   NSDictionary *icon = [JSONDecoder decodeObject:payload];
   NSString *path = icon[@"path"];
 
   dispatch_async(dispatch_get_main_queue(), ^{
-    if (path.length != 0) {
-      NSApp.applicationIconImage = [[NSImage alloc] initByReferencingFile:path];
-    } else {
-      NSApp.applicationIconImage = nil;
+    NSString *err = nil;
+
+    @try {
+      if (path.length != 0) {
+        NSApp.applicationIconImage =
+            [[NSImage alloc] initByReferencingFile:path];
+      } else {
+        NSApp.applicationIconImage = nil;
+      }
+      [self.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
+    } @catch (NSException *exception) {
+      err = exception.reason;
+      [self.objc asyncReturn:returnID result:make_bridge_result(nil, err)];
     }
+
   });
   return make_bridge_result(nil, nil);
 }
@@ -359,6 +378,13 @@
       [event paramDescriptorForKeyword:keyDirectObject].stringValue;
   NSString *payload = [JSONEncoder encodeString:rawurl];
   [self.golang request:@"/driver/urlopen" payload:payload];
+}
+
+- (bridge_result)quit:(NSURLComponents *)url payload:(NSString *)payload {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [NSApp terminate:self];
+  });
+  return make_bridge_result(nil, nil);
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:

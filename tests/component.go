@@ -94,6 +94,30 @@ func (c *CompoWithBadAttrs) Render() string {
 	`
 }
 
+// NoPointerCompo is a test component that is not implemented as a pointer.
+type NoPointerCompo app.ZeroCompo
+
+// Render satisfies the app.Component interface.
+func (c NoPointerCompo) Render() string {
+	return `<div>goodbye</div>`
+}
+
+// IntCompo is a test component that is not implemented as a pointer to struct.
+type IntCompo int
+
+// Render satisfies the app.Component interface.
+func (i *IntCompo) Render() string {
+	return `<p>Aurevoir World</p>`
+}
+
+// EmptyCompo is a test component that has no fields.
+type EmptyCompo struct{}
+
+// Render satisfies the app.Component interface.
+func (c *EmptyCompo) Render() string {
+	return `<p>Goodbye World</p>`
+}
+
 // Hello is a test component that allows to test multiple behaviors.
 type Hello struct {
 	Greeting      string
@@ -137,6 +161,8 @@ func (h *Hello) Render() string {
 
 	<a href="tests.hello">hyperlink to a component</a>
 	<a href="http://github.com">common hyperlink</a>
+
+	<button onclick="js:console.console.log('hello')">js call</button>
 </div>
 	`
 }
@@ -237,7 +263,7 @@ func (r *RussianDoll) Render() string {
 	return `
 <div>
 	{{if gt .Remaining 0}}
-	 <tests.russiandoll remaining="{{sub .Remaining 1}}">
+		<tests.russiandoll remaining="{{sub .Remaining 1}}">
 	{{end}}
 </div>
 	`
@@ -250,4 +276,39 @@ func (r *RussianDoll) Funcs() map[string]interface{} {
 			return a - b
 		},
 	}
+}
+
+// Menu is a component to test menu elements.
+type Menu struct {
+	Label       string
+	SimulateErr bool
+}
+
+// Render satisfies the app.Component interface.
+func (m *Menu) Render() string {
+	return `
+<menu label="{{.Label}}">
+	<menuitem label="a menu"></menuitem>
+	{{if .SimulateErr}}
+		<tests.unknownmenu>
+	{{end}}
+</menu>
+	`
+}
+
+// Menubar is a component to test a menu bar element.
+type Menubar app.ZeroCompo
+
+// Render satisfies the app.Component interface.
+func (m *Menubar) Render() string {
+	return `
+<menu>
+	<menu label="app">
+		<menuitem label="a menu"></menuitem>
+	</menu>
+	<menu label="edit">
+		<menuitem label="a menu"></menuitem>
+	</menu>
+</menu>
+	`
 }
