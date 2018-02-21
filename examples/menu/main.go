@@ -9,10 +9,10 @@ func main() {
 	app.Run(&mac.Driver{
 		MenubarConfig: mac.MenuBarConfig{
 			// Overrides the default edit menu.
-			EditURL: "/editmenu",
+			EditURL: "/EditMenu",
 
 			// Adds the custom menu in the menubar.
-			CustomURLs: []string{"/custommenu"},
+			CustomURLs: []string{"/CustomMenu"},
 		},
 
 		OnRun: func() {
@@ -33,6 +33,6 @@ func newWindow() {
 		Width:           1280,
 		Height:          768,
 		BackgroundColor: "#21252b",
-		DefaultURL:      "/home",
+		DefaultURL:      "/Home",
 	})
 }

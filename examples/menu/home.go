@@ -38,7 +38,7 @@ func (h *Home) Render() string {
 // It creates a context menu and mount the Edit component inside.
 func (h *Home) OnContextMenu() {
 	app.NewContextMenu(app.MenuConfig{
-		DefaultURL: "/editmenu",
+		DefaultURL: "/EditMenu",
 	})
 }
 
@@ -46,6 +46,6 @@ func (h *Home) OnContextMenu() {
 // It creates a context menu and mount the CustomMenu component inside.
 func (h *Home) OnButtonClick() {
 	app.NewContextMenu(app.MenuConfig{
-		DefaultURL: "/custommenu",
+		DefaultURL: "/CustomMenu",
 	})
 }

@@ -7,6 +7,6 @@ import (
 
 func main() {
 	app.Run(&mac.Driver{
-		DockURL: "/dockmenu",
+		DockURL: "/DockMenu",
 	})
 }

@@ -85,9 +85,9 @@ func (c *City) Render() string {
 	<h1>{{.City.Name}}</h1>
 	<p>{{.City.Description}}</p>
 	<div>
-		<a href="/city?id=sf" class="button">San Francisco</a>
-		<a href="/city?id=paris" class="button">Paris</a>
-		<a href="/city?id=beijing" class="button">北京"</a>		
+		<a href="/City?id=sf" class="button">San Francisco</a>
+		<a href="/City?id=paris" class="button">Paris</a>
+		<a href="/City?id=beijing" class="button">北京"</a>		
 	</div>
 	<div>
 		<button class="button navButton" onclick="OnPrevious" {{if not .CanPrevious}}disabled{{end}} >Previous</button>
