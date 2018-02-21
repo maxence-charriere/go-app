@@ -94,7 +94,7 @@ func (d *DockTile) LastFocus() time.Time {
 
 // SetIcon satisfies the app.DockTile interface.
 func (d *DockTile) SetIcon(name string) error {
-	if _, err := os.Stat(name); err != nil {
+	if _, err := os.Stat(name); err != nil && len(name) != 0 {
 		return err
 	}
 
