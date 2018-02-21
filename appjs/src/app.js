@@ -50,6 +50,11 @@ function renderAttributes (payload) {
     const currentValue = elem.getAttribute(name)
     const newValue = attributes[name]
 
+    if (name === 'value') {
+      elem.value = newValue
+      continue
+    }
+
     if (currentValue !== newValue) {
       elem.setAttribute(name, newValue)
     }
@@ -57,26 +62,30 @@ function renderAttributes (payload) {
 }
 
 function callGoEventHandler (compoID, target, self, event) {
-  var payload = {
-    Value: self.value
-  }
+  var payload = null
 
-  for (var field in event) {
-    const name = field[0].toUpperCase() + field.slice(1)
-    const value = event[field]
-    const type = typeof (value)
+  if (event.type === 'change') {
+    payload = self.value
+  } else {
+    payload = {}
 
-    switch (type) {
-      case 'object':
-        break
+    for (var field in event) {
+      const name = field[0].toUpperCase() + field.slice(1)
+      const value = event[field]
+      const type = typeof (value)
 
-      case 'function':
-        payload[name] = value.name
-        break
+      switch (type) {
+        case 'object':
+          break
 
-      default:
-        payload[name] = value
-        break
+        case 'function':
+          payload[name] = value.name
+          break
+
+        default:
+          payload[name] = value
+          break
+      }
     }
   }
 

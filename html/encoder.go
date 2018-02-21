@@ -3,6 +3,7 @@ package html
 import (
 	"bufio"
 	"fmt"
+	"html/template"
 	"io"
 	"net/url"
 	"strings"
@@ -97,7 +98,7 @@ func (e *Encoder) encodeAttributes(tag app.Tag) {
 		}
 
 		e.writer.WriteString(`="`)
-		e.writer.WriteString(val)
+		e.writer.WriteString(template.HTMLEscapeString(val))
 		e.writer.WriteByte('"')
 	}
 
@@ -108,7 +109,7 @@ func (e *Encoder) encodeAttributes(tag app.Tag) {
 
 func (e *Encoder) encodeText(tag app.Tag, indent int) error {
 	e.encodeIndent(indent)
-	e.writer.WriteString(tag.Text)
+	e.writer.WriteString(template.HTMLEscapeString(tag.Text))
 	return nil
 }
 

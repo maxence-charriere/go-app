@@ -4,11 +4,6 @@ import (
 	"github.com/murlokswarm/app/key"
 )
 
-// ChangeEvent represents the data passed in a change event.
-type ChangeEvent struct {
-	Value string
-}
-
 // MouseEvent represents data fired when interacting with a pointing device
 // (such as a mouse).
 type MouseEvent struct {
