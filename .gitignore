@@ -23,7 +23,9 @@ _testmain.go
 *.prof
 
 # Executables
+examples/hello/hello
 examples/menu/menu
+examples/dock/dock
 examples/nav/nav
 examples/test/test
 *.exe

@@ -558,6 +558,7 @@ func onWindowClose(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload)
 
 func onWindowCallback(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	var mapping app.Mapping
+
 	p.Unmarshal(&mapping)
 
 	function, err := w.markup.Map(mapping)
@@ -580,6 +581,7 @@ func onWindowCallback(w *Window, u *url.URL, p bridge.Payload) (res bridge.Paylo
 	if err = w.Render(compo); err != nil {
 		app.DefaultLogger.Error(err)
 	}
+
 	return nil
 }
 

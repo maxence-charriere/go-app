@@ -1,0 +1,40 @@
+body {
+    font-family: 'Helvetica Neue', 'Segoe UI';
+    color: white;
+}
+
+h1 {
+    font-weight: 300;
+    font-size: 42pt;
+    max-width: calc(100% - 80px);
+    padding: 0 40px;
+}
+
+input {
+    width: 265px;
+    padding: 8pt;
+    margin-bottom: 5%;
+    border: 0;
+    border-left: 2px solid silver;
+    outline: none;
+    font-size: 14px;
+    background: transparent;
+    color: white;
+}
+
+input:focus {
+    border-left-color: deepskyblue;
+}
+
+.Hello {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-image: url('../space.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+}
