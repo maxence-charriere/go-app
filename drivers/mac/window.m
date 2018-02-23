@@ -18,9 +18,9 @@
   NSNumber *minHeight = config[@"min-height"];
   NSNumber *maxHeight = config[@"max-height"];
   NSString *backgroundColor = config[@"background-color"];
-  BOOL noResizable = [config[@"no-resizable"] boolValue];
-  BOOL noClosable = [config[@"no-closable"] boolValue];
-  BOOL noMinimizable = [config[@"no-minimizable"] boolValue];
+  BOOL fixedSize = [config[@"fixed-size"] boolValue];
+  BOOL closeHidden = [config[@"close-hidden"] boolValue];
+  BOOL minimizeHidden = [config[@"minimize-hidden"] boolValue];
   BOOL titlebarHidden = [config[@"titlebar-hidden"] boolValue];
   NSNumber *backgroundVibrancy = config[@"mac"][@"background-vibrancy"];
 
@@ -32,13 +32,13 @@
         NSWindowStyleMaskTitled | NSWindowStyleMaskFullSizeContentView |
         NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable |
         NSWindowStyleMaskResizable;
-    if (noResizable) {
+    if (fixedSize) {
       styleMask = styleMask & ~NSWindowStyleMaskResizable;
     }
-    if (noClosable) {
+    if (closeHidden) {
       styleMask = styleMask & ~NSWindowStyleMaskClosable;
     }
-    if (noMinimizable) {
+    if (minimizeHidden) {
       styleMask = styleMask & ~NSWindowStyleMaskMiniaturizable;
     }
 
