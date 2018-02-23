@@ -59,17 +59,17 @@ func (h *Hello) Render() string {
 	`
 }
 ```
-**Components** are structs that implement the 
+Components are structs that implement the 
 [app.Component](https://godoc.org/github.com/murlokswarm/app#Component) 
 interface.
 
-**Render** method returns a string that contains **HTML5**.
+Render method returns a string that contains HTML5.
 It can be templated following Go standard template syntax:
 - [text/template](https://golang.org/pkg/text/template/)
 - [html/template](https://golang.org/pkg/html/template/)
 
-**HTML events** like ```onchange``` are mapped to the targetted component 
-**field** or **method**.
+HTML events like ```onchange``` are mapped to the targetted component 
+field or method.
 Here, ```onchange``` is mapped to the field ```Name```.
 
 ### Main
@@ -100,7 +100,7 @@ func newWindow() {
 }
 ```
 
-**app.Run** starts the app. It takes an 
+app.Run starts the app. It takes an 
 [app.Driver](https://godoc.org/github.com/murlokswarm/app#Driver) as argument. 
 Here we use the
 [MacOS driver](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver) 
@@ -158,7 +158,7 @@ Because, we want a stylish Hello world, here we define the CSS that will give
 us some cool look.
 
 CSS files must be located in ```[PACKAGE PATH]/resources/css/``` directory.
-All **.css** files within that directory will be included.
+All .css files within that directory will be included.
 
 <a name="doc"></a>
 
