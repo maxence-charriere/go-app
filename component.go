@@ -2,63 +2,98 @@ package app
 
 import (
 	"net/url"
-	"text/template"
-
-	"github.com/murlokswarm/markup"
-	"github.com/satori/go.uuid"
+	"strings"
 )
 
-// Componer is the interface that describes a component.
-type Componer interface {
-	// Render should returns a markup.
-	// The markup can be a template string following the text/template standard
-	// package rules.
+// Component is the interface that describes a component.
+// Should be implemented on a non empty struct pointer.
+type Component interface {
+	// Render should return a string describing the component with HTML5
+	// standard.
+	// It supports standard Go html/template API.
+	// Pipeline is based on the component struct.
+	// See https://golang.org/pkg/text/template and
+	// https://golang.org/pkg/html/template for template usage.
 	Render() string
 }
 
 // Mounter is the interface that wraps OnMount method.
-// OnMount si called when a component is mounted.
 type Mounter interface {
+	Component
+
+	// OnMount is called when a component is mounted.
+	// App.Render should not be called inside.
 	OnMount()
 }
 
 // Dismounter is the interface that wraps OnDismount method.
-// OnDismount si called when a component is dismounted.
 type Dismounter interface {
+	Component
+
+	// OnDismount is called when a component is dismounted.
+	// App.Render should not be called inside.
 	OnDismount()
 }
 
-// Hrefer is the interface that wraps OnHref method.
-// OnHref is called when the component is mounted from a click on a link that
-// targets the component in the href attribute.
-type Hrefer interface {
-	OnHref(URL *url.URL)
+// Navigable is the interface that wraps OnNavigate method.
+type Navigable interface {
+	Component
+
+	// OnNavigate is called when a component is loaded or navigated to.
+	// It is called just after the component is mounted.
+	OnNavigate(u *url.URL)
 }
 
-// TemplateFuncMapper is the interface that wraps FuncMaps method.
-type TemplateFuncMapper interface {
-	// Allows to add custom functions to the template used to render the
-	// component.
-	// Note that funcs named json and time are already implemented to handle
-	// structs as prop and time format. Overloads of these will be ignored.
+// ComponentWithExtendedRender is the interface that wraps Funcs method.
+type ComponentWithExtendedRender interface {
+	Component
+
+	// Funcs returns a map of funcs to use when rendering a component.
+	// Funcs named raw, json and time are reserved.
+	// They handle raw html code, json conversions and time format.
+	// They can't be overloaded.
 	// See https://golang.org/pkg/text/template/#Template.Funcs for more details.
-	FuncMaps() template.FuncMap
+	Funcs() map[string]interface{}
 }
 
-// RegisterComponent allows the app to create a component of type c when found
-// into a markup.
-// Should be called in an init func following the component implementation.
-func RegisterComponent(c Componer) {
-	markup.Register(c)
+// ZeroCompo is the type to use as base for an empty compone.
+// Every instances of an empty struct is given the same memory address, which
+// causes problem for indexing components.
+// ZeroCompo have a placeholder field to avoid that.
+type ZeroCompo struct {
+	placeholder byte
 }
 
-// ComponentID returns the id of c. Panic if c is not mounted.
-func ComponentID(c Componer) uuid.UUID {
-	return markup.ID(c)
+// ComponentNameFromURL is a helper function that returns the component name
+// targeted by the given URL.
+func ComponentNameFromURL(u *url.URL) string {
+	if len(u.Scheme) != 0 && u.Scheme != "compo" {
+		return ""
+	}
+
+	path := u.Path
+	path = strings.TrimPrefix(path, "/")
+
+	paths := strings.SplitN(path, "/", 2)
+	if len(paths[0]) == 0 {
+		return ""
+	}
+	return normalizeComponentName(paths[0])
 }
 
-// ComponentByID returns the component associated with id.
-// Panic if no component with id is mounted.
-func ComponentByID(id uuid.UUID) Componer {
-	return markup.Component(id)
+// ComponentNameFromURLString is a helper function that returns the component
+// name targeted by the given URL.
+func ComponentNameFromURLString(rawurl string) string {
+	u, _ := url.Parse(rawurl)
+	return ComponentNameFromURL(u)
+}
+
+func normalizeComponentName(name string) string {
+	name = strings.ToLower(name)
+	if pkgsep := strings.IndexByte(name, '.'); pkgsep != -1 {
+		if name[:pkgsep] == "main" {
+			name = name[pkgsep+1:]
+		}
+	}
+	return name
 }

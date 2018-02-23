@@ -1,6 +1,87 @@
 package app
 
-// Constants to specify the vibrancy to be used.
+import (
+	"fmt"
+	"time"
+
+	"github.com/google/uuid"
+)
+
+// Window is the interface that describes a window.
+type Window interface {
+	ElementWithNavigation
+
+	// Base returns the base window without any decorators.
+	Base() Window
+
+	// Position returns the window position.
+	Position() (x, y float64)
+
+	// Move moves the window to the position (x, y).
+	Move(x, y float64)
+
+	// Center moves the window to the center of the screen.
+	Center()
+
+	// Size returns the window size.
+	Size() (width, height float64)
+
+	// Resize resizes the window to width * height.
+	Resize(width, height float64)
+
+	// Focus gives the focus to the window.
+	// The window will be put in front, above the other elements.
+	Focus()
+
+	// ToggleFullScreen takes the window into or out of fullscreen mode.
+	ToggleFullScreen()
+
+	// Minimize takes the window into or out of minimized mode
+	ToggleMinimize()
+
+	// Close closes the window.
+	Close()
+}
+
+// WindowConfig is a struct that describes a window.
+type WindowConfig struct {
+	Title           string          `json:"title"`
+	X               float64         `json:"x"`
+	Y               float64         `json:"y"`
+	Width           float64         `json:"width"`
+	MinWidth        float64         `json:"min-width"`
+	MaxWidth        float64         `json:"max-width"`
+	Height          float64         `json:"height"`
+	MinHeight       float64         `json:"min-height"`
+	MaxHeight       float64         `json:"max-height"`
+	BackgroundColor string          `json:"background-color"`
+	FixedSize       bool            `json:"fixed-size"`
+	CloseHidden     bool            `json:"close-hidden"`
+	MinimizeHidden  bool            `json:"minimize-hidden"`
+	TitlebarHidden  bool            `json:"titlebar-hidden"`
+	DefaultURL      string          `json:"default-url"`
+	Mac             MacWindowConfig `json:"mac"`
+
+	OnMove           func(x, y float64)                  `json:"-"`
+	OnResize         func(width float64, height float64) `json:"-"`
+	OnFocus          func()                              `json:"-"`
+	OnBlur           func()                              `json:"-"`
+	OnFullScreen     func()                              `json:"-"`
+	OnExitFullScreen func()                              `json:"-"`
+	OnMinimize       func()                              `json:"-"`
+	OnDeminimize     func()                              `json:"-"`
+	OnClose          func() bool                         `json:"-"`
+}
+
+// MacWindowConfig is a struct that describes window fields specific to MacOS.
+type MacWindowConfig struct {
+	BackgroundVibrancy Vibrancy `json:"background-vibrancy"`
+}
+
+// Vibrancy represents a constant that define Apple's frost glass effects.
+type Vibrancy uint8
+
+// Constants to specify vibrancy effects to use in Apple application elements.
 const (
 	VibeNone Vibrancy = iota
 	VibeLight
@@ -14,73 +95,157 @@ const (
 	VibeUltraDark
 )
 
-// Windower is the interface that describes a window context.
-type Windower interface {
-	Contexter
-
-	// Position returns the position of the window.
-	Position() (x float64, y float64)
-
-	Move(x float64, y float64)
-
-	// Size returns the size of the window.
-	Size() (width float64, height float64)
-
-	// Resize resizes the window.
-	Resize(width float64, height float64)
-
-	// Close close`s the window.
-	//
-	// Driver implementation:
-	// - Close should call the native way to close a window.
-	// - Native windows often have a handler that is called before a window
-	//   is destroyed. This handler should be implemented and call
-	//   Elements().Remove() to free resources allocated on go side.
-	//   markup.Dismount() should be also called to release the components
-	//   mounted.
-	Close()
+// NewWindowWithLogs returns a decorated version of the given window that logs
+// all the operations.
+// Uses the default logger.
+func NewWindowWithLogs(w Window) Window {
+	return &windowWithLogs{
+		base: w,
+	}
 }
 
-// Window is a struct that describes a window.
-// It will be used by a driver to create a context on the top of a native
-// window.
-type Window struct {
-	Title           string
-	Lang            string
-	X               float64
-	Y               float64
-	Width           float64
-	Height          float64
-	MinWidth        float64
-	MinHeight       float64
-	MaxWidth        float64
-	MaxHeight       float64
-	BackgroundColor string
-	Vibrancy        Vibrancy
-	Borderless      bool
-	FixedSize       bool
-	CloseHidden     bool
-	MinimizeHidden  bool
-	TitlebarHidden  bool
-
-	OnMinimize       func()
-	OnDeminimize     func()
-	OnFullScreen     func()
-	OnExitFullScreen func()
-	OnMove           func(x float64, y float64)
-	OnResize         func(width float64, height float64)
-	OnFocus          func()
-	OnBlur           func()
-	OnClose          func() bool
+type windowWithLogs struct {
+	base Window
 }
 
-// Vibrancy represents the NSVisualEffectView which will be applied to the
-// background of the window.
-// Only applicable on Apple apps.
-// When set, BackgroundColor is ignored.
-type Vibrancy uint8
+func (w *windowWithLogs) ID() uuid.UUID {
+	id := w.base.ID()
+	Log("window id is", id)
+	return id
+}
 
-// NewWindow creates a new window.
-func NewWindow(w Window) Windower {
-	return driver.NewElement(w).(Windower)
+func (w *windowWithLogs) Base() Window {
+	return w.base.Base()
+}
+
+func (w *windowWithLogs) Load(url string, v ...interface{}) error {
+	fmtURL := fmt.Sprintf(url, v...)
+	Logf("window %s: loading %s", w.base.ID(), fmtURL)
+
+	err := w.base.Load(url, v...)
+	if err != nil {
+		Errorf("window %s: loading %s failed: %s", w.base.ID(), fmtURL, err)
+	}
+	return err
+}
+
+func (w *windowWithLogs) Component() Component {
+	c := w.base.Component()
+	Logf("window %s: mounted component is %T", w.base.ID(), c)
+	return c
+}
+
+func (w *windowWithLogs) Contains(c Component) bool {
+	ok := w.base.Contains(c)
+	Logf("window %s: contains %T is %v", w.base.ID(), c, ok)
+	return ok
+}
+
+func (w *windowWithLogs) Render(c Component) error {
+	Logf("window %s: rendering %T", w.base.ID(), c)
+
+	err := w.base.Render(c)
+	if err != nil {
+		Errorf("window %s: rendering %T failed: %s", w.base.ID(), c, err)
+	}
+	return err
+}
+
+func (w *windowWithLogs) LastFocus() time.Time {
+	return w.base.LastFocus()
+}
+
+func (w *windowWithLogs) Reload() error {
+	Logf("window %s: reloading component %T", w.base.ID(), w.base.Component())
+
+	err := w.base.Reload()
+	if err != nil {
+		Errorf("window %s: reloading component failed: %s", w.base.ID(), err)
+	}
+	return err
+}
+
+func (w *windowWithLogs) CanPrevious() bool {
+	ok := w.base.CanPrevious()
+	Logf("window %s: can navigate to previous component is %v", w.base.ID(), ok)
+	return ok
+}
+
+func (w *windowWithLogs) Previous() error {
+	Logf("window %s: navigating to previous component", w.base.ID())
+
+	err := w.base.Previous()
+	if err != nil {
+		Errorf("window %s: navigating to previous component failed: %s",
+			w.base.ID(),
+			err,
+		)
+	}
+	return err
+}
+
+func (w *windowWithLogs) CanNext() bool {
+	ok := w.base.CanNext()
+	Logf("window %s: can navigate to next component is %v", w.base.ID(), ok)
+	return ok
+}
+
+func (w *windowWithLogs) Next() error {
+	Logf("window %s: navigating to next component", w.base.ID())
+
+	err := w.base.Next()
+	if err != nil {
+		Errorf("window %s: navigating to next component failed: %s",
+			w.base.ID(),
+			err,
+		)
+	}
+	return err
+}
+
+func (w *windowWithLogs) Position() (x, y float64) {
+	x, y = w.base.Position()
+	Logf("window %s: position is (%.2f, %.2f)", w.base.ID(), x, y)
+	return x, y
+}
+
+func (w *windowWithLogs) Move(x, y float64) {
+	Logf("window %s: moving to (%.2f, %.2f)", w.base.ID(), x, y)
+	w.base.Move(x, y)
+}
+
+func (w *windowWithLogs) Center() {
+	Logf("window %s: centering", w.base.ID())
+	w.base.Center()
+}
+
+func (w *windowWithLogs) Size() (width, height float64) {
+	width, height = w.base.Size()
+	Logf("window %s: size is %.2fx%.2f", w.base.ID(), width, height)
+	return width, height
+}
+
+func (w *windowWithLogs) Resize(width, height float64) {
+	Logf("window %s: resize to %.2fx%.2f", w.base.ID(), width, height)
+	w.base.Resize(width, height)
+}
+
+func (w *windowWithLogs) Focus() {
+	Logf("window %s: focusing", w.base.ID())
+	w.base.Focus()
+}
+
+func (w *windowWithLogs) ToggleFullScreen() {
+	Logf("window %s: toggle full screen", w.base.ID())
+	w.base.ToggleFullScreen()
+}
+
+func (w *windowWithLogs) ToggleMinimize() {
+	Logf("window %s: toggle minimize", w.base.ID())
+	w.base.ToggleMinimize()
+}
+
+func (w *windowWithLogs) Close() {
+	Logf("window %s: closing", w.base.ID())
+	w.base.Close()
 }

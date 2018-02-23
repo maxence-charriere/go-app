@@ -1,12 +1,15 @@
 package main
 
 import (
-	"path/filepath"
-
 	"github.com/murlokswarm/app"
 )
 
-// DockMenu is the component representing the dock menu.
+// /!\ Import the component. Required to use a component.
+func init() {
+	app.Import(&DockMenu{})
+}
+
+// DockMenu is the component that represents the dock menu.
 type DockMenu struct {
 	switchIcon  bool
 	switchBadge bool
@@ -16,8 +19,8 @@ type DockMenu struct {
 func (m *DockMenu) Render() string {
 	return `
 <menu>
-	<menuitem label="Change icon" onclick="OnChangeIcon" />
-	<menuitem label="Change badge" onclick="OnChangeBadge" />
+	<menuitem label="Change icon" onclick="OnChangeIcon"></menuitem>
+	<menuitem label="Change badge" onclick="OnChangeBadge"></menuitem>
 </menu>
 	`
 }
@@ -25,32 +28,33 @@ func (m *DockMenu) Render() string {
 // OnChangeIcon changes the dock icon when the dock menu item named
 // "Change icon" is clicked.
 func (m *DockMenu) OnChangeIcon() {
-	dock, _ := app.Dock()
 	m.switchIcon = !m.switchIcon
 
+	var icon string
 	if m.switchIcon {
-		icon := filepath.Join(app.Resources(), "like.png")
-		dock.SetIcon(icon)
-		return
+		icon = app.Resources("like.png")
+	} else {
+		icon = app.Resources("logo.png")
 	}
-	icon := filepath.Join(app.Resources(), "logo.png")
-	dock.SetIcon(icon)
+
+	if err := app.Dock().SetIcon(icon); err != nil {
+		app.Error(err)
+	}
 }
 
 // OnChangeBadge changes the dock badge when the dock menu item named
 // "Change badge" is clicked.
 func (m *DockMenu) OnChangeBadge() {
-	dock, _ := app.Dock()
 	m.switchBadge = !m.switchBadge
 
+	var badge string
 	if m.switchBadge {
-		dock.SetBadge("Hello")
-		return
+		badge = "hello"
+	} else {
+		badge = "world"
 	}
-	dock.SetBadge("World!")
-}
 
-// /!\ Register the component. Required to use the component into a context.
-func init() {
-	app.RegisterComponent(&DockMenu{})
+	if err := app.Dock().SetBadge(badge); err != nil {
+		app.Error(err)
+	}
 }

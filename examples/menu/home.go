@@ -1,9 +1,16 @@
 package main
 
-import "github.com/murlokswarm/app"
+import (
+	"github.com/murlokswarm/app"
+)
+
+// /!\ Import the component. Required to use a component.
+func init() {
+	app.Import(&Home{})
+}
 
 // Home is the component that displays the menu examples.
-type Home struct{}
+type Home app.ZeroCompo
 
 // Render returns return the HTML describing the home screen.
 func (h *Home) Render() string {
@@ -30,18 +37,15 @@ func (h *Home) Render() string {
 // OnContextMenu is called when there is a right click on the ul or textarea.
 // It creates a context menu and mount the Edit component inside.
 func (h *Home) OnContextMenu() {
-	ctxMenu := app.NewContextMenu()
-	ctxMenu.Mount(&EditMenu{})
+	app.NewContextMenu(app.MenuConfig{
+		DefaultURL: "/EditMenu",
+	})
 }
 
 // OnButtonClick is called when the Show buttton is clicked.
 // It creates a context menu and mount the CustomMenu component inside.
 func (h *Home) OnButtonClick() {
-	ctxMenu := app.NewContextMenu()
-	ctxMenu.Mount(&CustomMenu{})
-}
-
-// /!\ Register the component. Required to use the component into a context.
-func init() {
-	app.RegisterComponent(&Home{})
+	app.NewContextMenu(app.MenuConfig{
+		DefaultURL: "/CustomMenu",
+	})
 }

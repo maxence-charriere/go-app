@@ -1,92 +1,155 @@
 package app
 
 import (
-	"net/url"
-
-	"github.com/murlokswarm/log"
-	"github.com/murlokswarm/markup"
+	"github.com/pkg/errors"
 )
 
 var (
-	// OnLaunch is a handler which (if set) is called when the app is
-	// initialized and ready.
-	// The main window should be created here.
-	OnLaunch func()
-
-	// OnFocus is a handler which (if set) is called when the app became
-	// focused.
-	OnFocus func()
-
-	// OnBlur is a handler which (if set) is called when the app lost the
-	// focus.
-	OnBlur func()
-
-	// OnReopen is a handler which (if set) is called when the app is reopened.
-	// Eg. when the dock icon is clicked.
-	OnReopen func()
-
-	// OnFilesOpen is a handler which (if set) is called when files are targeted
-	// to be opened with the app.
-	OnFilesOpen func(filenames []string)
-
-	// OnURLOpen is a handler which (if set) is called when the app is opened by
-	// an URL.
-	OnURLOpen func(URL url.URL)
-
-	// OnTerminate is a handler which (if set) is called when the app is
-	// requested to terminates. Return false cancels the termination request.
-	OnTerminate func() bool
-
-	// OnFinalize is a handler which (if set) is called when the app is about
-	// to be terminated.
-	// It should be used to perform any final cleanup before the application
-	// terminates.
-	OnFinalize func()
+	driver     Driver
+	components Factory
 )
 
-// Run runs the app.
-func Run() {
-	driver.Run()
+func init() {
+	components = NewFactory()
+	components = NewConcurrentFactory(components)
+	components = NewFactoryWithLogs(components)
 }
 
-// Render renders a component. Update the rendering of c.
-// c must be mounted into a context.
-func Render(c Componer) {
-	syncs, err := markup.Synchronize(c)
+// Import imports the component into the app.
+// Components must be imported in order the be used by the app package.
+// This allows components to be created dynamically when they are found into
+// markup.
+func Import(c Component) {
+	if _, err := components.Register(c); err != nil {
+		err = errors.Wrap(err, "import component failed")
+		panic(err)
+	}
+}
+
+// Run runs the app with the driver as backend.
+func Run(d Driver) error {
+	driver = NewDriverWithLogs(d)
+	return driver.Run(components)
+
+}
+
+// RunningDriver returns the running driver.
+func RunningDriver() Driver {
+	return driver
+}
+
+// Name returns the application name.
+//
+// It panics if called before Run.
+func Name() string {
+	return driver.AppName()
+}
+
+// Resources returns the given path prefixed by the resources directory
+// location.
+// Resources should be used only for read only operations.
+//
+// It panics if called before Run.
+func Resources(path ...string) string {
+	return driver.Resources(path...)
+}
+
+// Storage returns the given path prefixed by the storage directory
+// location.
+//
+// It panics if called before Run.
+func Storage(path ...string) string {
+	return driver.Storage(path...)
+}
+
+// NewWindow creates and displays the window described by the given
+// configuration.
+//
+// It panics if called before Run.
+func NewWindow(c WindowConfig) (Window, error) {
+	return driver.NewWindow(c)
+}
+
+// NewContextMenu creates and displays the context menu described by the
+// given configuration.
+//
+// It panics if called before Run.
+func NewContextMenu(c MenuConfig) (Menu, error) {
+	return driver.NewContextMenu(c)
+}
+
+// Render renders the given component.
+// It should be called when the display of component c have to be updated.
+//
+// It panics if called before Run.
+func Render(c Component) {
+	driver.CallOnUIGoroutine(func() {
+		driver.Render(c)
+	})
+}
+
+// ElementByComponent returns the element where the given component is mounted.
+//
+// It panics if called before Run.
+func ElementByComponent(c Component) (ElementWithComponent, error) {
+	return driver.ElementByComponent(c)
+}
+
+// WindowByComponent returns the window where the given component is mounted.
+//
+// It panics if called before Run.
+func WindowByComponent(c Component) (Window, error) {
+	elem, err := driver.ElementByComponent(c)
 	if err != nil {
-		log.Error(err)
-		return
+		return nil, err
 	}
 
-	ctx := Context(c)
-	for _, s := range syncs {
-		ctx.Render(s)
+	win, ok := elem.(Window)
+	if !ok {
+		return nil, errors.New("component is not mounted in a window")
 	}
+	return win, nil
 }
 
-// Resources returns the location of the resources directory.
-// resources directory should contain files required by the UI.
-// Its path should be used only for read only operations, otherwise it could
-// mess up with the app signature.
-func Resources() string {
-	return driver.Resources()
+// NewFilePanel creates and displays the file panel described by the given
+// configuration.
+//
+// It panics if called before Run.
+func NewFilePanel(c FilePanelConfig) error {
+	return driver.NewFilePanel(c)
 }
 
-// Storage returns the location of the app storage directory.
-// Content generated (e.g. sqlite db) or downloaded (e.g. images, music)
-// should be saved in this directory.
-func Storage() string {
-	return driver.Storage()
+// NewShare creates and display the share pannel to share the given value.
+//
+// It panics if called before Run.
+func NewShare(v interface{}) error {
+	return driver.NewShare(v)
 }
 
-// MenuBar returns the menu bar context.
-// ok will be false if there is no menubar available.
-func MenuBar() (menu Contexter, ok bool) {
+// NewNotification creates and displays the notification described in the
+// given configuration.
+//
+// It panics if called before Run.
+func NewNotification(c NotificationConfig) error {
+	return driver.NewNotification(c)
+}
+
+// MenuBar returns the menu bar.
+//
+// It panics if called before Run.
+func MenuBar() Menu {
 	return driver.MenuBar()
 }
 
-// Dock returns the dock context.
-// ok will be false if there is no dock available.
-func Dock() (d Docker, ok bool) {
+// Dock returns the dock tile.
+//
+// It panics if called before Run.
+func Dock() DockTile {
 	return driver.Dock()
+}
+
+// CallOnUIGoroutine calls a function on the UI goroutine.
+// UI goroutine is the running application main thread.
+func CallOnUIGoroutine(f func()) {
+	driver.CallOnUIGoroutine(f)
 }

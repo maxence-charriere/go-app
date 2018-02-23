@@ -1,15 +1,86 @@
 package app
 
-// Menu is a struct that describes a menu.
-// It will be used by a driver to create a menu on the top of a native menu.
-type Menu struct{}
+import (
+	"fmt"
+	"time"
 
-// ContextMenu is a struct that describes a context menu.
-// It will be used by a driver to create a context on the top of a native
-// context menu.
-type ContextMenu Menu
+	"github.com/google/uuid"
+)
 
-// NewContextMenu creates a new context menu.
-func NewContextMenu() Contexter {
-	return driver.NewElement(ContextMenu{}).(Contexter)
+// Menu is the interface that describes a menu.
+// Accept only components that contain menu and menuitem tags.
+type Menu interface {
+	ElementWithComponent
+
+	// Base returns the base menu without any decorators.
+	Base() Menu
+}
+
+// MenuConfig is a struct that describes a menu.
+type MenuConfig struct {
+	DefaultURL string
+
+	OnClose func()
+}
+
+// NewMenuWithLogs returns a decorated version of the given menu that logs
+// all the operations.
+// Uses the default logger.
+func NewMenuWithLogs(m Menu, name string) Menu {
+	return &menuWithLogs{
+		name: name,
+		base: m,
+	}
+}
+
+type menuWithLogs struct {
+	name string
+	base Menu
+}
+
+func (m *menuWithLogs) ID() uuid.UUID {
+	id := m.base.ID()
+	Logf("%s id is %s", m.name, id)
+	return id
+}
+
+func (m *menuWithLogs) Base() Menu {
+	return m.base.Base()
+}
+
+func (m *menuWithLogs) Load(url string, v ...interface{}) error {
+	fmtURL := fmt.Sprintf(url, v...)
+	Logf("%s %s: loading %s", m.name, m.base.ID(), fmtURL)
+
+	err := m.base.Load(url, v...)
+	if err != nil {
+		Errorf("%s %s: loading %s failed: %s", m.name, m.base.ID(), fmtURL, err)
+	}
+	return err
+}
+
+func (m *menuWithLogs) Component() Component {
+	c := m.base.Component()
+	Logf("%s %s: mounted component is %T", m.name, m.base.ID(), c)
+	return c
+}
+
+func (m *menuWithLogs) Contains(c Component) bool {
+	ok := m.base.Contains(c)
+	Logf("%s %s: contains %T is %v", m.name, m.base.ID(), c, ok)
+	return ok
+}
+
+func (m *menuWithLogs) Render(c Component) error {
+	Logf("%s %s: rendering %T", m.name, m.base.ID(), c)
+
+	err := m.base.Render(c)
+	if err != nil {
+		Errorf("%s %s: rendering %T failed: %s", m.name, m.base.ID(), c, err)
+	}
+	return err
+}
+
+func (m *menuWithLogs) LastFocus() time.Time {
+	return m.base.LastFocus()
 }

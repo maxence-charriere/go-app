@@ -1,24 +1,54 @@
 package app
 
-import "testing"
+import (
+	"testing"
+)
 
-func TestComponentID(t *testing.T) {
-	c := &Hello{}
-	ctx := NewWindow(Window{})
-	ctx.Mount(c)
-	defer ctx.Close()
+func TestComponentNameFromURL(t *testing.T) {
+	tests := []struct {
+		rawurl       string
+		expectedName string
+	}{
+		{
+			rawurl:       "/hello",
+			expectedName: "hello",
+		},
+		{
+			rawurl:       "/hello?int=42",
+			expectedName: "hello",
+		},
+		{
+			rawurl:       "/hello/world",
+			expectedName: "hello",
+		},
+		{
+			rawurl:       "hello",
+			expectedName: "hello",
+		},
+		{
+			rawurl: "test://hello",
+		},
+		{
+			rawurl: "compo://",
+		},
+		{
+			rawurl: "http://www.github.com",
+		},
+	}
 
-	t.Log(ComponentID(c))
+	for _, test := range tests {
+		if name := ComponentNameFromURLString(test.rawurl); name != test.expectedName {
+			t.Errorf(`name is not "%s": "%s"`, test.expectedName, name)
+		}
+	}
 }
 
-func TestComponentByID(t *testing.T) {
-	c := &Hello{}
-	ctx := NewWindow(Window{})
-	ctx.Mount(c)
-	defer ctx.Close()
+func TestNormalizeComponentName(t *testing.T) {
+	if name := "lib.FooBar"; normalizeComponentName(name) != "lib.foobar" {
+		t.Errorf("name is not lib.foobar: %s", name)
+	}
 
-	id := ComponentID(c)
-	if c2 := ComponentByID(id); c != c2 {
-		t.Error("c and c2 should be the same component")
+	if name := "main.FooBar"; normalizeComponentName(name) != "foobar" {
+		t.Errorf("name is not foobar: %s", name)
 	}
 }

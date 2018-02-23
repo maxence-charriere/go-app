@@ -1,57 +1,50 @@
-package app
+package app_test
 
 import (
-	"fmt"
+	"context"
+	"testing"
 
-	"github.com/murlokswarm/log"
+	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/drivers/test"
+	"github.com/murlokswarm/app/tests"
 )
 
-type AbstractDriver struct {
-	dock    Docker
-	appMenu Contexter
+func TestDriverWithLogs(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+
+	tests.TestDriver(t, func(onRun func()) app.Driver {
+		d := &test.Driver{
+			OnRun: onRun,
+			Ctx:   ctx,
+		}
+		return app.NewDriverWithLogs(d)
+	}, cancel)
 }
 
-func (d *AbstractDriver) Run() {
-	log.Info("Running app")
-}
-
-func (d *AbstractDriver) NewElement(elem interface{}) Elementer {
-	switch elem.(type) {
-	case Window:
-		return newWindowContext()
-
-	default:
-		return newTestContext(fmt.Sprintf("%T", elem))
+func TestDriverWithLogsError(t *testing.T) {
+	var d app.Driver = &test.Driver{
+		SimulateErr: true,
 	}
-}
+	d = app.NewDriverWithLogs(d)
 
-func (d *AbstractDriver) MenuBar() (menu Contexter, ok bool) {
-	menu = d.appMenu
-	ok = true
-	return
-}
+	err := d.Run(app.NewFactory())
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
 
-func (d *AbstractDriver) Dock() (dock Docker, ok bool) {
-	dock = d.dock
-	ok = true
-	return
-}
+	if _, err = d.NewWindow(app.WindowConfig{}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
 
-func (d *AbstractDriver) Resources() string {
-	return "resources"
-}
+	if _, err = d.NewContextMenu(app.MenuConfig{}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
 
-func (d *AbstractDriver) Storage() string {
-	return ""
-}
-
-func (d *AbstractDriver) JavascriptBridge() string {
-	return "alert('bridge not implemented');"
-}
-
-func init() {
-	RegisterDriver(&AbstractDriver{
-		dock:    newDockContext(),
-		appMenu: newTestContext("appMenu"),
-	})
+	if err = d.Render(&tests.Hello{}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
 }

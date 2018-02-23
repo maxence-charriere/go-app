@@ -1,58 +1,195 @@
 package app
 
-import "github.com/murlokswarm/log"
-
-var (
-	driver Driver
+import (
+	"encoding/json"
 )
 
-// Driver is the interface that describes the implementation to handle platform
-// specific rendering.
+// Driver is the interface that describes a backend for app rendering.
 type Driver interface {
-	// Run runs the application.
-	//
-	// Driver implementation:
-	// - Should start the app loop.
-	Run()
+	// Name returns the driver name.
+	Name() string
 
-	// NewElement create an app element. e should be a struct describing the
-	// element (e.g. Window, ContextMenu).
-	//
-	// Driver implementation:
-	// - Should check the type of e and then create the native element
-	//   described.
-	NewElement(e interface{}) Elementer
+	// Run runs the application with the components resistered in the given
+	// factory.
+	Run(f Factory) error
 
-	// MenuBar returns the element that represents the menu bar.
-	// ok will be false if there is no menubar available.
-	//
-	// Driver implementation:
-	// - Should be created in a driver.
-	MenuBar() (menu Contexter, ok bool)
+	// AppName returns the appliction name.
+	AppName() string
 
-	// Dock returns the element that represents the dock.
-	// ok will be false if there is no dock available.
-	//
-	// Driver implementation:
-	// - Should be created in the driver implementation.
-	Dock() (d Docker, ok bool)
+	// Resources returns the given path prefixed by the resources directory
+	// location.
+	Resources(path ...string) string
 
-	// Resources returns the location of the resources directory.
-	Resources() string
+	// Storage returns the given path prefixed by the storage directory
+	// location.
+	Storage(path ...string) string
 
-	// Storage returns the location of the app storage directory.
-	Storage() string
+	// NewWindow creates and displays the window described by the given
+	// configuration.
+	NewWindow(c WindowConfig) (Window, error)
 
-	// JavascriptBridge is the javascript function to call when a driver want to
-	// pass data to the native platform.
-	JavascriptBridge() string
+	// NewContextMenu creates and displays the context menu described by the
+	// given configuration.
+	NewContextMenu(c MenuConfig) (Menu, error)
+
+	// Render renders the given component.
+	Render(c Component) error
+
+	// ElementByComponent returns the element where the given component is mounted.
+	ElementByComponent(c Component) (ElementWithComponent, error)
+
+	// NewFilePanel creates and displays the file panel described by the given
+	// configuration.
+	NewFilePanel(c FilePanelConfig) error
+
+	// NewShare creates and display the share pannel to share the given value.
+	NewShare(v interface{}) error
+
+	// NewNotification creates and displays the notification described in the
+	// given configuration.
+	NewNotification(c NotificationConfig) error
+
+	// MenuBar returns the menu bar.
+	MenuBar() Menu
+
+	// Dock returns the dock tile.
+	Dock() DockTile
+
+	// CallOnUIGoroutine calls a function on the UI goroutine.
+	CallOnUIGoroutine(f func())
 }
 
-// RegisterDriver registers the driver to be used when using the app package.
-//
-// Driver implementation:
-// - Should be called once in an init() func.
-func RegisterDriver(d Driver) {
-	driver = d
-	log.Infof("driver %T is loaded", d)
+// NewDriverWithLogs returns a decorated version of the given driver that logs
+// all the operations.
+// It uses the default logger.
+func NewDriverWithLogs(driver Driver) Driver {
+	return &driverWithLogs{
+		base: driver,
+	}
+}
+
+type driverWithLogs struct {
+	base Driver
+}
+
+func (d *driverWithLogs) Name() string {
+	name := d.base.Name()
+	Log("driver name:", name)
+	return name
+}
+
+func (d *driverWithLogs) Run(f Factory) error {
+	Log("running driver", d.base.Name())
+
+	err := d.base.Run(f)
+	if err != nil {
+		Error("running driver returned an error:", err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) AppName() string {
+	return d.base.AppName()
+}
+
+func (d *driverWithLogs) Resources(path ...string) string {
+	resources := d.base.Resources(path...)
+	Log("resources path:", resources)
+	return resources
+}
+
+func (d *driverWithLogs) Storage(path ...string) string {
+	storage := d.base.Storage(path...)
+	Log("storage path:", storage)
+	return storage
+}
+
+func (d *driverWithLogs) NewWindow(c WindowConfig) (Window, error) {
+	Log("creating window:", indentedJSON(c))
+
+	win, err := d.base.NewWindow(c)
+	if err != nil {
+		Error("creating window failed:", err)
+	}
+	return win, err
+}
+
+func (d *driverWithLogs) NewContextMenu(c MenuConfig) (Menu, error) {
+	Log("creating context menu:", indentedJSON(c))
+
+	menu, err := d.base.NewContextMenu(c)
+	if err != nil {
+		Error("creating context menu failed:", err)
+	}
+	return menu, err
+}
+
+func (d *driverWithLogs) Render(c Component) error {
+	Logf("rendering %T", c)
+
+	err := d.base.Render(c)
+	if err != nil {
+		Errorf("rendering %T failed: %s", c, err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) ElementByComponent(c Component) (ElementWithComponent, error) {
+	Logf("returning element that hosts %T", c)
+
+	elem, err := d.base.ElementByComponent(c)
+	if err != nil {
+		Errorf("returning element that hosts %T failed: %s", c, err)
+	}
+	return elem, err
+}
+
+func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) error {
+	Log("creating file panel:", indentedJSON(c))
+
+	err := d.base.NewFilePanel(c)
+	if err != nil {
+		Error("creating file panel failed:", err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) NewShare(v interface{}) error {
+	Log("sharing", v)
+
+	err := d.base.NewShare(v)
+	if err != nil {
+		Error("sharing failed:", err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) NewNotification(c NotificationConfig) error {
+	Log("creating notification:", indentedJSON(c))
+
+	err := d.base.NewNotification(c)
+	if err != nil {
+		Error("creating notification failed:", err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) MenuBar() Menu {
+	Log("returning menu bar")
+	return d.base.MenuBar()
+}
+
+func (d *driverWithLogs) Dock() DockTile {
+	Log("returning dock tile")
+	return d.base.Dock()
+}
+
+func (d *driverWithLogs) CallOnUIGoroutine(f func()) {
+	Log("calling a function on the UI goroutine")
+	d.base.CallOnUIGoroutine(f)
+}
+
+func indentedJSON(v interface{}) string {
+	b, _ := json.MarshalIndent(v, "", "  ")
+	return string(b)
 }
