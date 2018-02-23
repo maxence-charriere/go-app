@@ -22,7 +22,7 @@ type GoBridge interface {
 	RequestWithResponse(url string, p Payload) (res Payload)
 }
 
-// GoHandler decribes the func that will handle requests to Go.
+// GoHandler describes the func that will handle requests to Go.
 type GoHandler func(u *url.URL, p Payload) (res Payload)
 
 // NewGoBridge creates a Go bridge.

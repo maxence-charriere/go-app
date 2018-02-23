@@ -9,7 +9,7 @@ type Driver interface {
 	// Name returns the driver name.
 	Name() string
 
-	// Run runs the application with the components resistered in the given
+	// Run runs the application with the components registered in the given
 	// factory.
 	Run(f Factory) error
 

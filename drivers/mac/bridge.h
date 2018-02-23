@@ -9,7 +9,7 @@ typedef struct bridge_result {
   char *err;
 } bridge_result;
 
-// OBJCHandler decribes the func that will handle requests to Objective C.
+// OBJCHandler describes the func that will handle requests to Objective C.
 typedef bridge_result (^OBJCHandler)(NSURLComponents *, NSString *);
 
 // make_bridge_result create a bridge result. If not nil, payload and err are a

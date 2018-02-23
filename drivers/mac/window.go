@@ -361,7 +361,7 @@ func (w *Window) Position() (x, y float64) {
 
 	res, err := driver.macos.RequestWithAsyncResponse(rawurl, nil)
 	if err != nil {
-		panic(errors.Wrapf(err, "retrieving positon of window %v", w.ID()))
+		panic(errors.Wrapf(err, "retrieving position of window %v", w.ID()))
 	}
 
 	var pos point

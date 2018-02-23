@@ -216,7 +216,7 @@ func (c *Webview) OnMultipleFilePanel() {
 	}
 }
 
-// OnNotification is the function that is called when the Notificaton button is
+// OnNotification is the function that is called when the Notification button is
 // clicked.
 func (c *Webview) OnNotification() {
 	app.NewNotification(app.NotificationConfig{
@@ -228,7 +228,7 @@ func (c *Webview) OnNotification() {
 	})
 }
 
-// OnNotificationWithReply is the function that is called when the Notificaton
+// OnNotificationWithReply is the function that is called when the Notification
 // with reply button is clicked.
 func (c *Webview) OnNotificationWithReply() {
 	id := uuid.New().String()
