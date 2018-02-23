@@ -6,10 +6,11 @@
 
 Package to build multi platform apps using **Go**, **HTML** and **CSS**.
 
+## Hello world
+![hello](https://github.com/murlokswarm/app/wiki/assets/hello.gif)
+
 ## Table of Contents
 - [Install](#install)
-	- [MacOS](#macOS)
-- [Hello world](#hello)
 - [Documentation](#doc)
 - [Examples](#examples)
 
@@ -21,19 +22,11 @@ Package to build multi platform apps using **Go**, **HTML** and **CSS**.
 
 ### MacOS 10.12 and above
 ```bash
-# MacOS libraries.
-xcode-select --install
-
-# Get package.
-go get -u github.com/murlokswarm/mac
+# Install MacOS libraries and # Get the package
+xcode-select --install && go get -u github.com/murlokswarm/mac
 ```
 
-<a name="hello"></a>
-
-## Hello world
-![hello](https://github.com/murlokswarm/app/wiki/assets/hello.gif)
-
-### Component:
+### Use HTML with the Component:
 ```go
 func init() {
 	app.Import(&Hello{})
@@ -72,7 +65,7 @@ HTML events like ```onchange``` are mapped to the targetted component
 field or method.
 Here, ```onchange``` is mapped to the field ```Name```.
 
-### Main
+### Main Entry Point
 ```go
 func main() {
 	app.Run(&mac.Driver{
@@ -111,48 +104,10 @@ Other drivers will be released in the futur.
 When creating the window, we set the ```DefaultURL``` to our component struct 
 name ```/Hello``` in order to have it loaded when the window shows.
 
-### CSS
+### Design the app with CSS
 ```css
-body {
-    font-family: 'Helvetica Neue', 'Segoe UI';
-    color: white;
-}
-
-h1 {
-    font-weight: 300;
-    font-size: 42pt;
-    max-width: calc(100% - 80px);
-    padding: 0 40px;
-}
-
-input {
-    width: 265px;
-    padding: 8pt;
-    margin-bottom: 5%;
-    border: 0;
-    border-left: 2px solid silver;
-    outline: none;
-    font-size: 14px;
-    background: transparent;
-    color: white;
-}
-
-input:focus {
-    border-left-color: deepskyblue;
-}
-
-.Hello {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    background-image: url('../space.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 100%;
-    width: 100%;
-}
+body { font-family: 'Helvetica Neue', 'Segoe UI'; }
+h1 { font-weight: 300; }
 ```
 
 Because, we want a stylish Hello world, here we define the CSS that will give
