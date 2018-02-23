@@ -1,129 +1,133 @@
-![app](https://github.com/murlokswarm/app/wiki/assets/logo.png)
 # app
 [![Build Status](https://travis-ci.org/murlokswarm/app.svg?branch=master)](https://travis-ci.org/murlokswarm/app)
 [![Go Report Card](https://goreportcard.com/badge/github.com/murlokswarm/app)](https://goreportcard.com/report/github.com/murlokswarm/app)
 [![Coverage Status](https://coveralls.io/repos/github/murlokswarm/app/badge.svg?branch=master)](https://coveralls.io/github/murlokswarm/app?branch=master)
 [![GoDoc](https://godoc.org/github.com/murlokswarm/app?status.svg)](https://godoc.org/github.com/murlokswarm/app)
 
-Build multiplatform apps with Go, HTML and CSS.
+Package to build multi platform apps using **Go**, **HTML** and **CSS**.
 
 ## Table of Contents
-1. [Requirements](#req)
-2. [Install](#install)
-3. [Getting started](#gettingstarted)
-4. [Documentation](#doc)
-
-<a name="req"></a>
-## Requirements:
-- MacOS: **10.12** (Sierra) and the latest version of [Xcode](https://itunes.apple.com/us/app/xcode/id497799835?mt=12) (mandatory for Apple frameworks).
+- [Install](#install)
+	- [MacOS](#macOS)
+- [Hello world](#hello)
+- [Documentation](#doc)
+- [Examples](#examples)
 
 <a name="install"></a>
+
 ## Install
-1. Install Golang:
-    - [golang.org](https://golang.org/doc/install)
-    - [Homebrew (MacOS)](http://www.golangbootcamp.com/book/get_setup)
 
-2. Get a driver:
-    - MacOS: ```go get -u github.com/murlokswarm/mac```
-    - Windows: *In progress*
-    - Linux: (Please contribute)
-    - IOS: (Please contribute)
-    - Android: (Please contribute)
+<a name="macOS"></a>
 
-<a name="gettingstarted"></a>
-## Getting started
-![hello](https://github.com/murlokswarm/app/wiki/assets/hello.png)
+### MacOS 10.12 and above
+```bash
+# MacOS libraries.
+xcode-select --install
 
-### Import a driver
-```Go
-import (
-	_ "github.com/murlokswarm/mac"
-)
+# Get package.
+go get -u github.com/murlokswarm/mac
 ```
 
-### Create a component
-```Go
+<a name="hello"></a>
+
+## Hello world
+![hello](https://github.com/murlokswarm/app/wiki/assets/hello.gif)
+
+### Component:
+```go
+func init() {
+	app.Import(&Hello{})
+}
+
 type Hello struct {
-	Greeting string
+	Name string
 }
 
 func (h *Hello) Render() string {
 	return `
-<div class="WindowLayout">    
-    <div class="HelloBox">
-        <h1>
-            Hello,
-            <span>{{if .Greeting}}{{html .Greeting}}{{else}}World{{end}}</span>
-        </h1>
-        <input type="text" placeholder="What is your name?" onchange="OnInputChange" />
-    </div>
+<div class="Hello">
+	<h1>
+		Hello
+		{{if .Name}}
+			{{.Name}}
+		{{else}}
+			world
+		{{end}}!
+	</h1>
+	<input value="{{.Name}}" placeholder="Say something..." onchange="Name" autofocus>
 </div>
-    `
-}
-
-func (h *Hello) OnInputChange(arg app.ChangeArg) {
-	h.Greeting = arg.Value
-	app.Render(h)
-}
-
-func init() {
-	app.RegisterComponent(&Hello{})
+	`
 }
 ```
+**Components** are structs that implement the 
+[app.Component](https://godoc.org/github.com/murlokswarm/app#Component) 
+interface.
 
-### Write the main
+**Render** method returns a string that contains **HTML5**.
+It can be templated following Go standard template syntax:
+- [text/template](https://golang.org/pkg/text/template/)
+- [html/template](https://golang.org/pkg/html/template/)
+
+**HTML events** like ```onchange``` are mapped to the targetted component 
+**field** or **method**.
+Here, ```onchange``` is mapped to the field ```Name```.
+
+### Main
 ```go
 func main() {
-	app.OnLaunch = func() {
-		win := app.NewWindow(app.Window{
-			Title:          "Hello World",
-			Width:          1280,
-			Height:         720,
-			TitlebarHidden: true,
-		})
+	app.Run(&mac.Driver{
+		OnRun: func() {
+			newWindow()
+		},
 
-		hello := &Hello{}
-		win.Mount(hello)
-	}
+		OnReopen: func(hasVisibleWindow bool) {
+			if !hasVisibleWindow {
+				newWindow()
+			}
+		},
+	})
+}
 
-	app.Run()
+func newWindow() {
+	app.NewWindow(app.WindowConfig{
+		Title:           "hello world",
+		TitlebarHidden:  true,
+		Width:           1280,
+		Height:          768,
+		BackgroundColor: "#21252b",
+		DefaultURL:      "/Hello",
+	})
 }
 ```
 
-### Style your component
-Create a **CSS file** in ```[PACKAGE PATH]/resources/css/``` and write your 
-styles.
+**app.Run** starts the app. It takes a 
+[app.Driver](https://godoc.org/github.com/murlokswarm/app#Driver) as argument. 
+Here we use the
+[MacOS driver](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver) 
+implementation. 
+Other drivers will be released in the futur.
 
-#### resources/css/hello.css:
+When creating the window, we set the ```DefaultURL``` to our component struct 
+name ```/Hello``` in order to have it loaded when the window shows.
+
+### CSS
 ```css
 body {
-    background-image: url("../bg1.jpg");
-    background-size: cover;
-    background-position: center;
+    font-family: 'Helvetica Neue', 'Segoe UI';
     color: white;
-    overflow: hidden;
-}
-
-.WindowLayout {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.HelloBox {
-    padding: 20pt;
 }
 
 h1 {
     font-weight: 300;
+    font-size: 42pt;
+    max-width: calc(100% - 80px);
+    padding: 0 40px;
 }
 
 input {
-    width: 100%;
-    padding: 5pt;
+    width: 265px;
+    padding: 8pt;
+    margin-bottom: 5%;
     border: 0;
     border-left: 2px solid silver;
     outline: none;
@@ -135,21 +139,43 @@ input {
 input:focus {
     border-left-color: deepskyblue;
 }
+
+.Hello {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-image: url('../space.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+}
 ```
 
-Try it by cloning the [full example](https://github.com/murlokswarm/examples/tree/master/mac/hello).
+Because, we want a stylish Hello world, here we define the CSS that will give
+us some cool look.
 
-Go to the cloned directory and type:
-
-```
-go build
-./hello
-```
+CSS files must be located in ```[PACKAGE PATH]/resources/css/``` directory.
+All **.css** files within that directory will be included.
 
 <a name="doc"></a>
-## Documentation
-- [Wiki](https://github.com/murlokswarm/app/wiki)
-- [GoDoc](https://godoc.org/github.com/murlokswarm/app)
 
-## More examples
-- [Jubiz](https://github.com/maxence-charriere/jubiz)
+## Documentation
+- [GoDoc](https://godoc.org/github.com/murlokswarm/app)
+- [v1 to v2 migration guide](https://github.com/murlokswarm/app/wiki/V1ToV2)
+
+<a name="examples"></a>
+
+## Examples
+From package:
+- [hello](https://github.com/murlokswarm/app/tree/master/examples/hello)
+- [nav](https://github.com/murlokswarm/app/tree/master/examples/nav)
+- [menu](https://github.com/murlokswarm/app/tree/master/examples/menu)
+- [dock](https://github.com/murlokswarm/app/tree/master/examples/dock)
+- [test](https://github.com/murlokswarm/app/tree/master/examples/test)
+
+From community:
+- [grocid/mistlur](https://github.com/grocid/mistlur) - use v1
+- [grocid/passdesktop](https://github.com/grocid/passdesktop) - use v1

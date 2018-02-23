@@ -55,9 +55,9 @@ type WindowConfig struct {
 	MinHeight       float64         `json:"min-height"`
 	MaxHeight       float64         `json:"max-height"`
 	BackgroundColor string          `json:"background-color"`
-	NoResizable     bool            `json:"no-resizable"`
-	NoClosable      bool            `json:"no-closable"`
-	NoMinimizable   bool            `json:"no-minimizable"`
+	FixedSize       bool            `json:"fixed-size"`
+	CloseHidden     bool            `json:"close-hidden"`
+	MinimizeHidden  bool            `json:"minimize-hidden"`
 	TitlebarHidden  bool            `json:"titlebar-hidden"`
 	DefaultURL      string          `json:"default-url"`
 	Mac             MacWindowConfig `json:"mac"`
