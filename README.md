@@ -100,7 +100,8 @@ func newWindow() {
 }
 ```
 
-app.Run starts the app. It takes an 
+[app.Run](https://godoc.org/github.com/murlokswarm/app#Run) starts the app. 
+It takes an 
 [app.Driver](https://godoc.org/github.com/murlokswarm/app#Driver) as argument. 
 Here we use the
 [MacOS driver](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver) 
