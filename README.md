@@ -6,6 +6,8 @@
 
 Package to build multi platform apps using **Go**, **HTML** and **CSS**.
 
+![hello](https://github.com/murlokswarm/app/wiki/assets/hello.gif)
+
 ## Table of Contents
 - [Install](#install)
 	- [MacOS](#macOS)
@@ -31,9 +33,48 @@ go get -u github.com/murlokswarm/mac
 <a name="hello"></a>
 
 ## Hello world
-![hello](https://github.com/murlokswarm/app/wiki/assets/hello.gif)
 
-### Component:
+### Main
+```go
+func main() {
+	app.Run(&mac.Driver{
+		OnRun: func() {
+			newWindow()
+		},
+
+		OnReopen: func(hasVisibleWindow bool) {
+			if !hasVisibleWindow {
+				newWindow()
+			}
+		},
+	})
+}
+
+func newWindow() {
+	app.NewWindow(app.WindowConfig{
+		Title:           "hello world",
+		TitlebarHidden:  true,
+		Width:           1280,
+		Height:          768,
+		BackgroundColor: "#21252b",
+		DefaultURL:      "/Hello",
+	})
+}
+```
+
+[app.Run](https://godoc.org/github.com/murlokswarm/app#Run) starts the app. 
+It takes an 
+[app.Driver](https://godoc.org/github.com/murlokswarm/app#Driver) as argument. 
+Here we use the
+[MacOS driver](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver) 
+implementation. 
+Other drivers will be released in the futur.
+
+When creating the window, we set the ```DefaultURL``` to our Hello component 
+struct name: ```/Hello```.
+It will make the component loaded when the window is displayed.
+
+### Component
 ```go
 func init() {
 	app.Import(&Hello{})
@@ -72,94 +113,26 @@ HTML events like ```onchange``` are mapped to the targetted component
 field or method.
 Here, ```onchange``` is mapped to the field ```Name```.
 
-### Main
-```go
-func main() {
-	app.Run(&mac.Driver{
-		OnRun: func() {
-			newWindow()
-		},
-
-		OnReopen: func(hasVisibleWindow bool) {
-			if !hasVisibleWindow {
-				newWindow()
-			}
-		},
-	})
-}
-
-func newWindow() {
-	app.NewWindow(app.WindowConfig{
-		Title:           "hello world",
-		TitlebarHidden:  true,
-		Width:           1280,
-		Height:          768,
-		BackgroundColor: "#21252b",
-		DefaultURL:      "/Hello",
-	})
-}
-```
-
-[app.Run](https://godoc.org/github.com/murlokswarm/app#Run) starts the app. 
-It takes an 
-[app.Driver](https://godoc.org/github.com/murlokswarm/app#Driver) as argument. 
-Here we use the
-[MacOS driver](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver) 
-implementation. 
-Other drivers will be released in the futur.
-
-When creating the window, we set the ```DefaultURL``` to our component struct 
-name ```/Hello``` in order to have it loaded when the window shows.
-
 ### CSS
+
 ```css
-body {
-    font-family: 'Helvetica Neue', 'Segoe UI';
-    color: white;
-}
-
-h1 {
-    font-weight: 300;
-    font-size: 42pt;
-    max-width: calc(100% - 80px);
-    padding: 0 40px;
-}
-
-input {
-    width: 265px;
-    padding: 8pt;
-    margin-bottom: 5%;
-    border: 0;
-    border-left: 2px solid silver;
-    outline: none;
-    font-size: 14px;
-    background: transparent;
-    color: white;
-}
-
-input:focus {
-    border-left-color: deepskyblue;
-}
+/* [PACKAGE PATH]/resources/css/hello.css */
 
 .Hello {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    background-image: url('../space.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 100%;
-    width: 100%;
+    /* Your CSS */
 }
 ```
 
-Because, we want a stylish Hello world, here we define the CSS that will give
-us some cool look.
+Because, we want a stylish Hello world, we define the CSS that will give us some 
+cool look.
 
-CSS files must be located in ```[PACKAGE PATH]/resources/css/``` directory.
+
+CSS files are located in ```[PACKAGE PATH]/resources/css/``` directory.
 All .css files within that directory will be included.
+
+See the 
+[full example](https://github.com/murlokswarm/app/tree/master/examples/hello).
+
 
 <a name="doc"></a>
 
