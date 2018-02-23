@@ -1,6 +1,6 @@
 // +build windows,amd64
 
-// Package windows is the driver to be used for applications that will run on 
+// Package windows is the driver to be used for applications that will run on
 // Windows.
 package windows
 

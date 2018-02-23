@@ -18,7 +18,7 @@ type city struct {
 }
 
 var cities = map[string]city{
-	"paris": city{
+	"paris": {
 		ID:   "paris",
 		Name: "Paris",
 		Description: `Paris, France's capital, is a major European city and a 
@@ -29,7 +29,7 @@ var cities = map[string]city{
 		Notre-Dame cathedral, the city is known for its cafe culture and
 		designer boutiques along the Rue du Faubourg Saint-Honoré.`,
 	},
-	"sf": city{
+	"sf": {
 		ID:   "sf",
 		Name: "San Francisco",
 		Description: `San Francisco, in northern California, is a hilly city on 
@@ -41,7 +41,7 @@ var cities = map[string]city{
 		skyscraper.
 		In the bay sits Alcatraz Island, site of the notorious former prison.`,
 	},
-	"beijing": city{
+	"beijing": {
 		ID:   "beijing",
 		Name: "北京",
 		Description: `Beijing formerly romanized as Peking, is the capital of 
