@@ -364,7 +364,7 @@ func testMarkupFullRootDismounted(t *testing.T, markup app.Markup) {
 
 	markup.Dismount(compo)
 
-	if root, err = markup.FullRoot(root); err == nil {
+	if _, err = markup.FullRoot(root); err == nil {
 		t.Fatal("error is nil")
 	}
 	t.Log(err)
@@ -394,7 +394,7 @@ func testMarkupFullRootChildError(t *testing.T, markup app.Markup) {
 	}
 	markup.Dismount(compoToDismount)
 
-	if root, err = markup.FullRoot(root); err == nil {
+	if _, err = markup.FullRoot(root); err == nil {
 		t.Fatal("error is nil")
 	}
 	t.Log(err)
