@@ -122,10 +122,9 @@ func (d *Driver) Run(f app.Factory) error {
 			function()
 
 		case <-ctx.Done():
-			break
+			return <-errC
 		}
 	}
-	return <-errC
 }
 
 func (d *Driver) onRun(u *url.URL, p bridge.Payload) (res bridge.Payload) {
