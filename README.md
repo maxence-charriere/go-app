@@ -6,8 +6,6 @@
 
 Package to build multi platform apps using **Go**, **HTML** and **CSS**.
 
-![hello](https://github.com/murlokswarm/app/wiki/assets/hello.gif)
-
 ## Table of Contents
 - [Install](#install)
 	- [MacOS](#macOS)
@@ -33,6 +31,8 @@ go get -u github.com/murlokswarm/mac
 <a name="hello"></a>
 
 ## Hello world
+
+![hello](https://github.com/murlokswarm/app/wiki/assets/hello.gif)
 
 ### Main
 ```go
