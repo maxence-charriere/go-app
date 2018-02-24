@@ -16,7 +16,7 @@ type FilePanelConfig struct {
 	ShowHiddenFiles bool `json:"show-hidden-files"`
 
 	// Specify the file types to display in the pannel.
-	// Accepts file extentions (eg. jpg, gif) and UTI (eg. public.jpeg).
+	// Accepts file extensions (eg. jpg, gif) and UTI (eg. public.jpeg).
 	// Nil or empty allows all file types.
 	FileTypes []string `json:"file-types,omitempty"`
 
@@ -32,7 +32,7 @@ type SaveFilePanelConfig struct {
 	ShowHiddenFiles bool `json:"show-hidden-files"`
 
 	// Specify the file types to display in the pannel.
-	// Accepts file extentions (eg. jpg, gif) and UTI (eg. public.jpeg).
+	// Accepts file extensions (eg. jpg, gif) and UTI (eg. public.jpeg).
 	// Nil or empty allows all file types.
 	FileTypes []string `json:"file-types,omitempty"`
 
