@@ -41,6 +41,12 @@
 		
 <h2>callback onclick</h2>
 <button onclick="callGoEventHandler('compo-03', 'test', this, event)">Launch</button>
+
+<h2>input</h2>
+<input onchange="callGoEventHandler('compo-04', 'test', this, event)" value="Edit me">
+
+<h2>contenteditable</h2>
+<div contenteditable onkeyup="callGoEventHandler('compo-05', 'test', this, event)">Edit me</div>
 		
 
     <script>
@@ -119,6 +125,10 @@ function callGoEventHandler(compoID, target, self, event) {
   } else {
     payload = {};
 
+    if (self.contentEditable === 'true') {
+      payload['InnerText'] = self.innerText;
+    }
+
     for (var field in event) {
       const name = field[0].toUpperCase() + field.slice(1);
       const value = event[field];
@@ -129,7 +139,6 @@ function callGoEventHandler(compoID, target, self, event) {
           break;
 
         case 'function':
-          payload[name] = value.name;
           break;
 
         default:

@@ -35,6 +35,12 @@ func TestAppJS(t *testing.T) {
 		
 <h2>callback onclick</h2>
 <button onclick="callGoEventHandler('compo-03', 'test', this, event)">Launch</button>
+
+<h2>input</h2>
+<input onchange="callGoEventHandler('compo-04', 'test', this, event)" value="Edit me">
+
+<h2>contenteditable</h2>
+<div contenteditable onkeyup="callGoEventHandler('compo-05', 'test', this, event)">Edit me</div>
 		`,
 	})
 

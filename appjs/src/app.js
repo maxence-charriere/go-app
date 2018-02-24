@@ -69,6 +69,10 @@ function callGoEventHandler (compoID, target, self, event) {
   } else {
     payload = {}
 
+    if (self.contentEditable === 'true') {
+      payload['InnerText'] = self.innerText
+    }
+
     for (var field in event) {
       const name = field[0].toUpperCase() + field.slice(1)
       const value = event[field]
@@ -79,7 +83,6 @@ function callGoEventHandler (compoID, target, self, event) {
           break
 
         case 'function':
-          payload[name] = value.name
           break
 
         default:
