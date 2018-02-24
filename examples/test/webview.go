@@ -64,6 +64,7 @@ func (c *Webview) Render() string {
 			<button onclick="OnDirPanel">Dir panel</button>
 			<button onclick="OnFilePanel">File panel</button>
 			<button onclick="OnMultipleFilePanel">Multiple file panel</button>
+			<button onclick="OnSavePanel">Save panel</button>
 		</li>
 		<li>
 		<button onclick="OnNotification">Notification</button>
@@ -194,6 +195,8 @@ func (c *Webview) OnDirPanel() {
 func (c *Webview) OnFilePanel() {
 	if err := app.NewFilePanel(app.FilePanelConfig{
 		IgnoreDirectories: true,
+		ShowHiddenFiles:   true,
+		FileTypes:         []string{"public.jpeg", "gif"},
 		OnSelect: func(filenames []string) {
 			app.DefaultLogger.Log(filenames)
 		},
@@ -210,6 +213,19 @@ func (c *Webview) OnMultipleFilePanel() {
 		MultipleSelection: true,
 		OnSelect: func(filenames []string) {
 			app.DefaultLogger.Log(filenames)
+		},
+	}); err != nil {
+		app.Error(err)
+	}
+}
+
+// OnSavePanel is the function that is called when the Save panel button is
+// clicked.
+func (c *Webview) OnSavePanel() {
+	if err := app.NewSaveFilePanel(app.SaveFilePanelConfig{
+		// FileTypes: []string{"public.jpeg"},
+		OnSelect: func(filename string) {
+			app.DefaultLogger.Log(filename)
 		},
 	}); err != nil {
 		app.Error(err)

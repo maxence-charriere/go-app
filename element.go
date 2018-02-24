@@ -64,14 +64,6 @@ type ElementWithNavigation interface {
 	Next() error
 }
 
-// FilePanelConfig is a struct that describes a file panel.
-type FilePanelConfig struct {
-	MultipleSelection bool                     `json:"multiple-selection"`
-	IgnoreDirectories bool                     `json:"ignore-directories"`
-	IgnoreFiles       bool                     `json:"ignore-files"`
-	OnSelect          func(filenames []string) `json:"-"`
-}
-
 // NotificationConfig is a struct that describes a notification.
 type NotificationConfig struct {
 	Title     string `json:"title"`

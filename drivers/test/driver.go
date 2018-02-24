@@ -137,6 +137,11 @@ func (d *Driver) NewFilePanel(c app.FilePanelConfig) error {
 	return app.NewErrNotSupported("file panels")
 }
 
+// NewSaveFilePanel satisfies the app.Driver interface.
+func (d *Driver) NewSaveFilePanel(c app.SaveFilePanelConfig) error {
+	return app.NewErrNotSupported("save file panels")
+}
+
 // NewShare satisfies the app.Driver interface.
 func (d *Driver) NewShare(v interface{}) error {
 	return app.NewErrNotSupported("share")

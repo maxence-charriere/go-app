@@ -42,6 +42,10 @@ type Driver interface {
 	// configuration.
 	NewFilePanel(c FilePanelConfig) error
 
+	// NewSaveFilePanel creates and displays the save file panel described in
+	// the given configuration.
+	NewSaveFilePanel(c SaveFilePanelConfig) error
+
 	// NewShare creates and display the share pannel to share the given value.
 	NewShare(v interface{}) error
 
@@ -150,6 +154,16 @@ func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) error {
 	err := d.base.NewFilePanel(c)
 	if err != nil {
 		Error("creating file panel failed:", err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) NewSaveFilePanel(c SaveFilePanelConfig) error {
+	Log("creating save file panel:", indentedJSON(c))
+
+	err := d.base.NewSaveFilePanel(c)
+	if err != nil {
+		Error("creating save file panel failed:", err)
 	}
 	return err
 }

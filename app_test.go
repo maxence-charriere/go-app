@@ -89,6 +89,11 @@ func TestApp(t *testing.T) {
 			t.Error(err)
 		}
 
+		err = app.NewSaveFilePanel(app.SaveFilePanelConfig{})
+		if err != nil && !app.NotSupported(err) {
+			t.Error(err)
+		}
+
 		err = app.NewShare("Hello world")
 		if err != nil && !app.NotSupported(err) {
 			t.Error(err)
