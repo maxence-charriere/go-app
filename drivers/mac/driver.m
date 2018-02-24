@@ -154,6 +154,10 @@
             handler:^(NSURLComponents *url, NSString *payload) {
               return [FilePanel newFilePanel:url payload:payload];
             }];
+  [self.objc handle:@"/file/savepanel/new"
+            handler:^(NSURLComponents *url, NSString *payload) {
+              return [FilePanel newSaveFilePanel:url payload:payload];
+            }];
 
   // Notification handlers.
   [self.objc handle:@"/notification/new"

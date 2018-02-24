@@ -101,6 +101,7 @@ func (d *Driver) Run(f app.Factory) error {
 	d.golang.Handle("/menu/callback", menuHandler(onMenuCallback))
 
 	d.golang.Handle("/file/panel/select", filePanelHandler(onFilePanelClose))
+	d.golang.Handle("/file/savepanel/select", saveFilePanelHandler(onSaveFilePanelClose))
 
 	d.golang.Handle("/notification/reply", notificationHandler(onNotificationReply))
 
@@ -312,6 +313,11 @@ func (d *Driver) ElementByComponent(c app.Component) (app.ElementWithComponent, 
 // NewFilePanel satisfies the app.DriverWithFilePanels interface.
 func (d *Driver) NewFilePanel(c app.FilePanelConfig) error {
 	return newFilePanel(c)
+}
+
+// NewSaveFilePanel satisfies the app.DriverWithFilePanels interface.
+func (d *Driver) NewSaveFilePanel(c app.SaveFilePanelConfig) error {
+	return newSaveFilePanel(c)
 }
 
 // NewShare satisfies the app.DriverWithShare interface.

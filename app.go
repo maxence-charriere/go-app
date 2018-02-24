@@ -119,6 +119,14 @@ func NewFilePanel(c FilePanelConfig) error {
 	return driver.NewFilePanel(c)
 }
 
+// NewSaveFilePanel creates and displays the save file panel described by the
+// given configuration.
+//
+// It panics if called before Run.
+func NewSaveFilePanel(c SaveFilePanelConfig) error {
+	return driver.NewSaveFilePanel(c)
+}
+
 // NewShare creates and display the share pannel to share the given value.
 //
 // It panics if called before Run.

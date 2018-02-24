@@ -7,6 +7,8 @@
 @interface FilePanel : NSObject
 + (bridge_result)newFilePanel:(NSURLComponents *)url
                       payload:(NSString *)payload;
++ (bridge_result)newSaveFilePanel:(NSURLComponents *)url
+                          payload:(NSString *)payload;
 @end
 
 #endif /* file_h */
