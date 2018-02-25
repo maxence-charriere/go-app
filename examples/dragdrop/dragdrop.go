@@ -45,7 +45,8 @@ func (d *DragDrop) Render() string {
 		 ondrop="OnDrop" 
 		 ondragover="OnDragEnter">
 		<h1>Drop something</h1>
-		<img class="Blackhole {{if .DragHover}}FastRotate{{else}}Rotate{{end}}" ondragleave="js:event.preventDefault()"
+		<img class="Blackhole {{if .DragHover}}FastRotate{{else}}Rotate{{end}}" 
+			 ondragleave="js:event.preventDefault()"
 			 src="blackhole.png">
 	</div>
 
