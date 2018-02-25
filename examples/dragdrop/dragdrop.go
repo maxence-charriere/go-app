@@ -74,7 +74,7 @@ func (d *DragDrop) OnDragEnter() {
 
 }
 
-// OnDragLeave is called when a draggable item leaves in the drop zone.
+// OnDragLeave is called when a draggable item leaves the drop zone.
 func (d *DragDrop) OnDragLeave() {
 	d.DragHover = false
 	app.Render(d)
