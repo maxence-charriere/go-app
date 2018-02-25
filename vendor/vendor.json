@@ -15,6 +15,66 @@
 			"revisionTime": "2018-01-27T01:58:12Z"
 		},
 		{
+			"checksumSHA1": "lwh5d6WlpDHuVjZzen1dvbDbYPM=",
+			"path": "github.com/segmentio/conf",
+			"revision": "37796b9487623cab86bf7adb8dff473b8a4f65d9",
+			"revisionTime": "2018-02-16T23:26:20Z"
+		},
+		{
+			"checksumSHA1": "HEYnLICmyd945vorrFkojosxDzg=",
+			"path": "github.com/segmentio/go-snakecase",
+			"revision": "af59cb399f9e0d53e5231e6382e064e034d9948f",
+			"revisionTime": "2018-02-16T23:36:12Z"
+		},
+		{
+			"checksumSHA1": "Tk6ptR2FNbpxa0qkJSmktW051x0=",
+			"path": "github.com/segmentio/objconv",
+			"revision": "8998c9cea5fb978cf489f7a8ad69159aa7be3d50",
+			"revisionTime": "2018-02-16T23:19:55Z"
+		},
+		{
+			"checksumSHA1": "Pu4E2aWQJyPFHgo4Q6RIWM1+Jy4=",
+			"path": "github.com/segmentio/objconv/adapters",
+			"revision": "8998c9cea5fb978cf489f7a8ad69159aa7be3d50",
+			"revisionTime": "2018-02-16T23:19:55Z"
+		},
+		{
+			"checksumSHA1": "mIddTYhM4eKEKt6Lamg8WKjVgD4=",
+			"path": "github.com/segmentio/objconv/adapters/net",
+			"revision": "8998c9cea5fb978cf489f7a8ad69159aa7be3d50",
+			"revisionTime": "2018-02-16T23:19:55Z"
+		},
+		{
+			"checksumSHA1": "EZs95wMy7uOILucAHzared6nkCI=",
+			"path": "github.com/segmentio/objconv/adapters/net/mail",
+			"revision": "8998c9cea5fb978cf489f7a8ad69159aa7be3d50",
+			"revisionTime": "2018-02-16T23:19:55Z"
+		},
+		{
+			"checksumSHA1": "HLUSO9OURIDXCF3Vjjt19KHDMnE=",
+			"path": "github.com/segmentio/objconv/adapters/net/url",
+			"revision": "8998c9cea5fb978cf489f7a8ad69159aa7be3d50",
+			"revisionTime": "2018-02-16T23:19:55Z"
+		},
+		{
+			"checksumSHA1": "+5JwYw0R/qKQv0GNs/rr0rCudhk=",
+			"path": "github.com/segmentio/objconv/json",
+			"revision": "8998c9cea5fb978cf489f7a8ad69159aa7be3d50",
+			"revisionTime": "2018-02-16T23:19:55Z"
+		},
+		{
+			"checksumSHA1": "mhfp+6G4GStMRk2G1mjIG0mD/sI=",
+			"path": "github.com/segmentio/objconv/objutil",
+			"revision": "8998c9cea5fb978cf489f7a8ad69159aa7be3d50",
+			"revisionTime": "2018-02-16T23:19:55Z"
+		},
+		{
+			"checksumSHA1": "dS7k/hmbMrVHwwSVJf/GDhXmZh0=",
+			"path": "github.com/segmentio/objconv/yaml",
+			"revision": "8998c9cea5fb978cf489f7a8ad69159aa7be3d50",
+			"revisionTime": "2018-02-16T23:19:55Z"
+		},
+		{
 			"checksumSHA1": "L68uqaYKEOxkq2xwnNV2bRP7yO4=",
 			"path": "golang.org/x/net/html",
 			"revision": "cbe0f9307d0156177f9dd5dc85da1a31abc5f2fb",
@@ -25,6 +85,30 @@
 			"path": "golang.org/x/net/html/atom",
 			"revision": "cbe0f9307d0156177f9dd5dc85da1a31abc5f2fb",
 			"revisionTime": "2018-02-18T17:15:52Z"
+		},
+		{
+			"checksumSHA1": "H4IR3H8CG7sNhmXCG1uKwfi3qOg=",
+			"path": "gopkg.in/go-playground/mold.v2",
+			"revision": "6bc20ce40733e8e04c2fda4523a957dd8e198948",
+			"revisionTime": "2017-11-13T04:55:04Z"
+		},
+		{
+			"checksumSHA1": "Cz3hFzA4SfstuGHuvu6Kt/KX2gw=",
+			"path": "gopkg.in/go-playground/mold.v2/modifiers",
+			"revision": "6bc20ce40733e8e04c2fda4523a957dd8e198948",
+			"revisionTime": "2017-11-13T04:55:04Z"
+		},
+		{
+			"checksumSHA1": "RSjidhVhB/8vw1NJT3bksffTkhE=",
+			"path": "gopkg.in/validator.v2",
+			"revision": "59c90c7046f643cbe0d4e7c8776c42a84ce75910",
+			"revisionTime": "2018-02-05T15:37:50Z"
+		},
+		{
+			"checksumSHA1": "AnKBN2Q4AWaSNb0JyINBQbnpxGM=",
+			"path": "gopkg.in/yaml.v2",
+			"revision": "7f97868eec74b32b0982dd158a51a446d1da7eb5",
+			"revisionTime": "2018-02-23T19:12:37Z"
 		}
 	],
 	"rootPath": "github.com/murlokswarm/app"
