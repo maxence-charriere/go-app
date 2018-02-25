@@ -101,7 +101,7 @@
   conf.userContentController = userContentController;
 
   AppWebView *webview = [[AppWebView alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)
-                                          configuration:conf];
+                                            configuration:conf];
   webview.translatesAutoresizingMaskIntoConstraints = NO;
   webview.navigationDelegate = self;
   webview.UIDelegate = self;

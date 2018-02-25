@@ -97,15 +97,15 @@ function callGoEventHandler(compoID, target, src, event) {
       break;
 
     case 'drag':
-    case 'dragend':
-    case 'dragenter':
-    case 'dragexit':
-    case 'dragleave':
-    case 'dragover':
     case 'dragstart':
+    case 'dragend':
+    case 'dragexit':
       onDragStartToGolang(compoID, target, src, event);
       break;
 
+    case 'dragenter':
+    case 'dragleave':
+    case 'dragover':
     case 'drop':
       ondropToGolang(compoID, target, src, event);
       break;

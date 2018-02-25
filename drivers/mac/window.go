@@ -562,11 +562,9 @@ func onWindowCallback(w *Window, u *url.URL, p bridge.Payload) (res bridge.Paylo
 	var mapping app.Mapping
 	p.Unmarshal(&mapping)
 
-	fmt.Println(mapping)
-
 	if mapping.Override == "Files" {
-
 		data, _ := json.Marshal(driver.droppedFiles)
+		driver.droppedFiles = nil
 
 		mapping.JSONValue = strings.Replace(
 			mapping.JSONValue,
@@ -574,9 +572,6 @@ func onWindowCallback(w *Window, u *url.URL, p bridge.Payload) (res bridge.Paylo
 			fmt.Sprintf(`"Files":%s`, data),
 			1,
 		)
-
-		fmt.Println("override", string(data))
-
 	}
 
 	function, err := w.markup.Map(mapping)

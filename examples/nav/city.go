@@ -77,7 +77,7 @@ func (c *City) OnNavigate(u *url.URL) {
 	app.Render(c)
 }
 
-// Render returns the HTML describing the Paris component content.
+// Render returns the HTML describing the City component content.
 // It contains a link to show how to navigate to an other component (Sf).
 func (c *City) Render() string {
 	return `
