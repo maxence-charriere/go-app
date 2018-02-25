@@ -62,6 +62,9 @@ type Mapping struct {
 
 	// The JSON value to map to a field or method's first argument.
 	JSONValue string `json:"json-value"`
+
+	// A string that describes a field that may required override.
+	Override string `json:"override,omitempty"`
 }
 
 // ParseMappingTarget parses the given target and returns the corresponding

@@ -61,42 +61,103 @@ function renderAttributes (payload) {
   }
 }
 
-function callGoEventHandler (compoID, target, self, event) {
-  var payload = null
+function mapObject (obj) {
+  var map = {}
 
-  if (event.type === 'change') {
-    payload = self.value
-  } else {
-    payload = {}
+  for (var field in obj) {
+    const name = field[0].toUpperCase() + field.slice(1)
+    const value = obj[field]
+    const type = typeof (value)
 
-    if (self.contentEditable === 'true') {
-      payload['InnerText'] = self.innerText
-    }
+    switch (type) {
+      case 'object':
+        break
 
-    for (var field in event) {
-      const name = field[0].toUpperCase() + field.slice(1)
-      const value = event[field]
-      const type = typeof (value)
+      case 'function':
+        break
 
-      switch (type) {
-        case 'object':
-          break
-
-        case 'function':
-          break
-
-        default:
-          payload[name] = value
-          break
-      }
+      default:
+        map[name] = value
+        break
     }
   }
+  return map
+}
 
-  const mapping = {
+function callGoEventHandler (compoID, target, src, event) {
+  var payload = null
+
+  switch (event.type) {
+    case 'change':
+      onchangeToGolang(compoID, target, src, event)
+      break
+
+    case 'drag':
+    case 'dragstart':
+    case 'dragend':
+    case 'dragexit':
+      onDragStartToGolang(compoID, target, src, event)
+      break
+
+    case 'dragenter':
+    case 'dragleave':
+    case 'dragover':
+    case 'drop':
+      ondropToGolang(compoID, target, src, event)
+      break
+
+    default:
+      eventToGolang(compoID, target, src, event)
+      break
+  }
+}
+
+function onchangeToGolang (compoID, target, src, event) {
+  golangRequest(JSON.stringify({
+    'compo-id': compoID,
+    'target': target,
+    'json-value': JSON.stringify(src.value)
+  }))
+}
+
+function onDragStartToGolang (compoID, target, src, event) {
+  const payload = mapObject(event.dataTransfer)
+  payload['Data'] = src.dataset.drag
+
+  event.dataTransfer.setData('text', src.dataset.drag)
+
+  golangRequest(JSON.stringify({
     'compo-id': compoID,
     'target': target,
     'json-value': JSON.stringify(payload)
+  }))
+}
+
+function ondropToGolang (compoID, target, src, event) {
+  event.preventDefault()
+
+  const payload = mapObject(event.dataTransfer)
+  payload['Data'] = event.dataTransfer.getData('text')
+  payload['file-override'] = 'xxx'
+
+  golangRequest(JSON.stringify({
+    'compo-id': compoID,
+    'target': target,
+    'json-value': JSON.stringify(payload),
+    'override': 'Files'
+  }))
+}
+
+function eventToGolang (compoID, target, src, event) {
+  const payload = mapObject(event)
+
+  if (src.contentEditable === 'true') {
+    payload['InnerText'] = src.innerText
   }
 
-  golangRequest(JSON.stringify(mapping))
+  golangRequest(JSON.stringify({
+    'compo-id': compoID,
+    'target': target,
+    'json-value': JSON.stringify(payload)
+  }))
 }

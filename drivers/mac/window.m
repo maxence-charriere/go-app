@@ -100,8 +100,8 @@
   WKWebViewConfiguration *conf = [[WKWebViewConfiguration alloc] init];
   conf.userContentController = userContentController;
 
-  WKWebView *webview = [[WKWebView alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)
-                                          configuration:conf];
+  AppWebView *webview = [[AppWebView alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)
+                                            configuration:conf];
   webview.translatesAutoresizingMaskIntoConstraints = NO;
   webview.navigationDelegate = self;
   webview.UIDelegate = self;

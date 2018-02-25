@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"math/rand"
 	"net/url"
@@ -52,28 +53,47 @@ func (c *Webview) Render() string {
 			<button onclick="OnChangeSquareColor">Render Attributes: change square color</button>
 			<div class="square {{.SquareColor}}"></div>
 		</li>
+
 		<li>
 			<button onclick="OnChangeNumber">Render: change number</button>
 			<div>{{.Number}}</div>
 		</li>
+
 		<li>
 			<button onclick="OnShare">Share</button>
 			<button onclick="OnShareURL">Share URL</button>
 		</li>
+
 		<li>
 			<button onclick="OnDirPanel">Dir panel</button>
 			<button onclick="OnFilePanel">File panel</button>
 			<button onclick="OnMultipleFilePanel">Multiple file panel</button>
 			<button onclick="OnSavePanel">Save panel</button>
 		</li>
+
 		<li>
-		<button onclick="OnNotification">Notification</button>
-		<button onclick="OnNotificationWithReply">Notification with reply</button>
+			<button onclick="OnNotification">Notification</button>
+			<button onclick="OnNotificationWithReply">Notification with reply</button>
 		</li>
+
 		<li>
 			<button {{if not .CanPrevious}}disabled{{end}} onclick="OnPrevious">Previous</button>
 			<button onclick="OnReload">Reload</button>
 			<button {{if not .CanNext}}disabled{{end}} onclick="OnNext">Next</button>
+		</li>
+
+		<li>
+			<div class="square dragdrop blue" 
+				 draggable="true"
+				 data-drag="the blue square on the left"
+				 ondragstart="OnDragStart">
+				Drag me
+			</div>
+			<div class="square dragdrop" 
+				 ondrop="OnDrop" 
+				 ondragover="js:event.preventDefault()">
+				Drop something here
+			</div>
 		</li>
 	</ul>
 	
@@ -292,4 +312,17 @@ func (c *Webview) OnNext() {
 		app.Error(err)
 	}
 	win.Next()
+}
+
+// OnDragStart is the function that is called when the node is dragged.
+func (c *Webview) OnDragStart(e app.DragAndDropEvent) {
+	data, _ := json.MarshalIndent(e, "", "  ")
+	app.Log("drag:", string(data))
+}
+
+// OnDrop is the function that is called when something is dropped to the
+// drop zone.
+func (c *Webview) OnDrop(e app.DragAndDropEvent) {
+	data, _ := json.MarshalIndent(e, "", "  ")
+	app.Log("drop:", string(data))
 }

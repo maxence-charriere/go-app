@@ -41,15 +41,16 @@ type Driver struct {
 	OnQuit      func() bool
 	OnExit      func()
 
-	factory  app.Factory
-	elements app.ElementDB
-	uichan   chan func()
-	cancel   func()
-	macos    bridge.PlatformBridge
-	golang   bridge.GoBridge
-	menubar  app.Menu
-	dock     app.DockTile
-	devID    string
+	factory      app.Factory
+	elements     app.ElementDB
+	uichan       chan func()
+	cancel       func()
+	macos        bridge.PlatformBridge
+	golang       bridge.GoBridge
+	menubar      app.Menu
+	dock         app.DockTile
+	devID        string
+	droppedFiles []string
 }
 
 // Name satisfies the app.Driver interface.
@@ -82,6 +83,7 @@ func (d *Driver) Run(f app.Factory) error {
 	d.golang.Handle("/driver/reopen", d.onReopen)
 	d.golang.Handle("/driver/filesopen", d.onFilesOpen)
 	d.golang.Handle("/driver/urlopen", d.onURLOpen)
+	d.golang.Handle("/driver/filedrop", d.onFileDrop)
 	d.golang.Handle("/driver/quit", d.onQuit)
 	d.golang.Handle("/driver/exit", d.onExit)
 
@@ -148,47 +150,47 @@ func (d *Driver) onRun(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 
 func (d *Driver) onFocus(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	if d.OnFocus == nil {
-		return
+		return nil
 	}
 
 	d.OnFocus()
-	return
+	return nil
 }
 
 func (d *Driver) onBlur(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	if d.OnBlur == nil {
-		return
+		return nil
 	}
 
 	d.OnBlur()
-	return
+	return nil
 }
 
 func (d *Driver) onReopen(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	if d.OnReopen == nil {
-		return
+		return nil
 	}
 
 	var hasVisibleWindows bool
 	p.Unmarshal(&hasVisibleWindows)
 	d.OnReopen(hasVisibleWindows)
-	return
+	return nil
 }
 
 func (d *Driver) onFilesOpen(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	if d.OnFilesOpen == nil {
-		return
+		return nil
 	}
 
 	var filenames []string
 	p.Unmarshal(&filenames)
 	d.OnFilesOpen(filenames)
-	return
+	return nil
 }
 
 func (d *Driver) onURLOpen(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	if d.OnURLOpen == nil {
-		return
+		return nil
 	}
 
 	var rawurl string
@@ -200,7 +202,12 @@ func (d *Driver) onURLOpen(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	}
 
 	d.OnURLOpen(purl)
-	return
+	return nil
+}
+
+func (d *Driver) onFileDrop(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+	p.Unmarshal(&d.droppedFiles)
+	return nil
 }
 
 // AppName satisfies the app.Driver interface.

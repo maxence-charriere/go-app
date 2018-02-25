@@ -2,13 +2,12 @@
 #define window_h
 
 #import "bridge.h"
-#import <Cocoa/Cocoa.h>
-#import <WebKit/WebKit.h>
+#import "webview.h"
 
 @interface Window : NSWindowController <NSWindowDelegate, WKNavigationDelegate,
                                         WKUIDelegate, WKScriptMessageHandler>
 @property NSString *ID;
-@property(weak) WKWebView *webview;
+@property(weak) AppWebView *webview;
 @property NSURL *loadURL;
 @property NSURL *baseURL;
 @property NSString *loadReturnID;

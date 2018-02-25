@@ -4,6 +4,7 @@ package mac
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"math"
@@ -11,6 +12,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -558,8 +560,19 @@ func onWindowClose(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload)
 
 func onWindowCallback(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	var mapping app.Mapping
-
 	p.Unmarshal(&mapping)
+
+	if mapping.Override == "Files" {
+		data, _ := json.Marshal(driver.droppedFiles)
+		driver.droppedFiles = nil
+
+		mapping.JSONValue = strings.Replace(
+			mapping.JSONValue,
+			`"file-override":"xxx"`,
+			fmt.Sprintf(`"Files":%s`, data),
+			1,
+		)
+	}
 
 	function, err := w.markup.Map(mapping)
 	if err != nil {
