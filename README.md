@@ -148,6 +148,7 @@ From package:
 - [nav](https://github.com/murlokswarm/app/tree/master/examples/nav)
 - [menu](https://github.com/murlokswarm/app/tree/master/examples/menu)
 - [dock](https://github.com/murlokswarm/app/tree/master/examples/dock)
+- [drag and drop](https://github.com/murlokswarm/app/tree/master/examples/dragdrop)
 - [test](https://github.com/murlokswarm/app/tree/master/examples/test)
 
 From community:
