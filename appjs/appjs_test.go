@@ -34,13 +34,26 @@ func TestAppJS(t *testing.T) {
 </p>
 		
 <h2>callback onclick</h2>
-<button onclick="callGoEventHandler('compo-03', 'test', this, event)">Launch</button>
+<button onclick="callGoEventHandler('compo-03', 'OnTest', this, event)">Launch</button>
 
 <h2>input</h2>
-<input onchange="callGoEventHandler('compo-04', 'test', this, event)" value="Edit me">
+<input onchange="callGoEventHandler('compo-04', 'OnTest', this, event)" value="Edit me">
 
 <h2>contenteditable</h2>
-<div contenteditable onkeyup="callGoEventHandler('compo-05', 'test', this, event)">Edit me</div>
+<div contenteditable onkeyup="callGoEventHandler('compo-05', 'OnTest', this, event)">Edit me</div>
+
+<h2>drag/drop</h2>
+<div style="display:inline-block;width:200px;height:200px;background-color:grey;cursor:move;"
+	 draggable="true"
+	 data-drag="hello world"
+	 ondragstart="callGoEventHandler('compo-06', 'OnTest', this, event)">
+	Drag me!
+</div>
+<div style="display:inline-block;width:200px;height:200px;background-color:silver;"
+	 ondragover="event.preventDefault()"
+	 ondrop="callGoEventHandler('compo-06', 'OnTest', this, event)">
+	Drop something here
+</div>
 		`,
 	})
 

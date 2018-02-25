@@ -4,8 +4,7 @@ import (
 	"github.com/murlokswarm/app/key"
 )
 
-// MouseEvent represents data fired when interacting with a pointing device
-// (such as a mouse).
+// MouseEvent represents an onmouse event arg.
 type MouseEvent struct {
 	ClientX   float64
 	ClientY   float64
@@ -22,8 +21,7 @@ type MouseEvent struct {
 	InnerText string
 }
 
-// WheelEvent represents data fired when a wheel button of a pointing device
-// (usually a mouse) is rotated.
+// WheelEvent represents an onwheel event arg.
 type WheelEvent struct {
 	DeltaX    float64
 	DeltaY    float64
@@ -34,7 +32,7 @@ type WheelEvent struct {
 // DeltaMode is an indication of the units of measurement for a delta value.
 type DeltaMode uint64
 
-// KeyboardEvent represents data fired when the keyboard is used.
+// KeyboardEvent represents an onkey event arg.
 type KeyboardEvent struct {
 	CharCode  rune
 	KeyCode   key.Code
@@ -44,4 +42,12 @@ type KeyboardEvent struct {
 	MetaKey   bool
 	ShiftKey  bool
 	InnerText string
+}
+
+// DragAndDropEvent represents an ondrop event arg.
+type DragAndDropEvent struct {
+	Files         []string
+	Data          string
+	DropEffect    string
+	EffectAllowed string
 }
