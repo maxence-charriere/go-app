@@ -98,6 +98,7 @@ h1 {
     padding: 0 25px;
     margin: 25px 0;
     overflow-y: auto;
+    overflow-x: hidden;
     word-wrap: break-word;
 }
 
