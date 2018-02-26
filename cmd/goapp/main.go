@@ -18,7 +18,7 @@ func main() {
 		Name: "goapp",
 		Args: os.Args[1:],
 		Commands: []conf.Command{
-			{Name: "web", Help: "Build app on web."},
+			{Name: "web", Help: "Build app for web."},
 			{Name: "help", Help: "Show the help."},
 		},
 	}
