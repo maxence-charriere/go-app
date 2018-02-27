@@ -163,7 +163,9 @@ func (w *Window) load(u *url.URL) error {
 		return err
 	}
 
-	var pageConfig html.PageConfig
+	pageConfig := html.PageConfig{
+		DisableDefaultContextMenu: true,
+	}
 	if page, ok := compo.(html.Page); ok {
 		pageConfig = page.PageConfig()
 	}
