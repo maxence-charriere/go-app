@@ -410,8 +410,8 @@ func (d *Driver) CallOnUIGoroutine(f func()) {
 	d.uichan <- f
 }
 
-// Quit quits the app.
-func (d *Driver) Quit() {
+// Close quits the app.
+func (d *Driver) Close() {
 	d.macos.Request("/driver/quit", nil)
 }
 

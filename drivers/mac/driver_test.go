@@ -20,5 +20,5 @@ func TestDriver(t *testing.T) {
 	tests.TestDriver(t, func(onRun func()) app.Driver {
 		d.OnRun = onRun
 		return d
-	}, d.Quit)
+	}, d.Close)
 }
