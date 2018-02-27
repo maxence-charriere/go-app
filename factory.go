@@ -114,7 +114,7 @@ func NewConcurrentFactory(f Factory) Factory {
 }
 
 type concurrentFactory struct {
-	mutex sync.Mutex
+	mutex sync.RWMutex
 	base  Factory
 }
 
@@ -126,15 +126,15 @@ func (f *concurrentFactory) Register(c Component) (name string, err error) {
 }
 
 func (f *concurrentFactory) Registered(name string) bool {
-	f.mutex.Lock()
+	f.mutex.RLock()
 	ok := f.base.Registered(name)
-	f.mutex.Unlock()
+	f.mutex.RUnlock()
 	return ok
 }
 
 func (f *concurrentFactory) New(name string) (Component, error) {
-	f.mutex.Lock()
+	f.mutex.RLock()
 	c, err := f.base.New(name)
-	f.mutex.Unlock()
+	f.mutex.RUnlock()
 	return c, err
 }
