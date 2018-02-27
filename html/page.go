@@ -28,6 +28,9 @@ type PageConfig struct {
 	// Disables application default style.
 	DisableAppStyle bool
 
+	// Disables the webview default context menu.
+	DisableDefaultContextMenu bool
+
 	// The CSS filenames to include.
 	CSS []string
 
