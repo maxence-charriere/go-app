@@ -42,7 +42,7 @@ type Driver struct {
 	OnExit      func()
 
 	factory      app.Factory
-	elements     app.ElementDB
+	elements     app.ElemDB
 	uichan       chan func()
 	cancel       func()
 	macos        bridge.PlatformBridge

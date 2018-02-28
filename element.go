@@ -75,8 +75,8 @@ type NotificationConfig struct {
 	OnReply func(reply string) `json:"-"`
 }
 
-// ElementDB is the interface that describes an element database.
-type ElementDB interface {
+// ElemDB is the interface that describes an element database.
+type ElemDB interface {
 	// Add adds the element in the database.
 	Add(e Element) error
 
@@ -102,14 +102,14 @@ type ElementDB interface {
 }
 
 // NewElemDB creates an element database.
-func NewElemDB() ElementDB {
+func NewElemDB() ElemDB {
 	return &elementDB{
 		elements:               make(map[uuid.UUID]Element),
 		elementsWithComponents: make(elementWithComponentList, 0, 64),
 	}
 }
 
-// elementDB is an element database that implements ElementDB.
+// elementDB is an element database that implements ElemDB.
 type elementDB struct {
 	elements               map[uuid.UUID]Element
 	elementsWithComponents elementWithComponentList
@@ -180,18 +180,18 @@ func (db *elementDB) Len() int {
 
 // NewConcurrentElemDB decorates the given element database to ensure concurrent
 // access safety.
-func NewConcurrentElemDB(db ElementDB) ElementDB {
+func NewConcurrentElemDB(db ElemDB) ElemDB {
 	return &concurrentElemDB{
 		base: db,
 	}
 }
 
 // concurrentElemDB is a concurrent element database that implements
-// ElementDB.
+// ElemDB.
 // It is safe for concurrent access.
 type concurrentElemDB struct {
 	mutex sync.Mutex
-	base  ElementDB
+	base  ElemDB
 }
 
 func (db *concurrentElemDB) Add(e Element) error {

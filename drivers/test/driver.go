@@ -22,7 +22,7 @@ type Driver struct {
 	OnRun func()
 
 	factory  app.Factory
-	elements app.ElementDB
+	elements app.ElemDB
 	dock     app.DockTile
 	menubar  app.Menu
 	uichan   chan func()

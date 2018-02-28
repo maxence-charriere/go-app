@@ -83,62 +83,62 @@ func (e *elementWithComponent) LastFocus() time.Time {
 
 // TestElemDB is a test suite used to ensure that all element databases
 // implementations behave the same.
-func TestElemDB(t *testing.T, newElementDB func() app.ElementDB) {
+func TestElemDB(t *testing.T, newElemDB func() app.ElemDB) {
 	tests := []struct {
 		scenario string
-		function func(t *testing.T, db app.ElementDB)
+		function func(t *testing.T, db app.ElemDB)
 	}{
 		{
 			scenario: "adds an element",
-			function: testElementDBAdd,
+			function: testElemDBAdd,
 		},
 		{
 			scenario: "adds an element with components",
-			function: testElementDBAddElementWithComponent,
+			function: testElemDBAddElementWithComponent,
 		},
 		{
 			scenario: "adding element with same id returns an error",
-			function: testElementDBAddElementWithSameID,
+			function: testElemDBAddElementWithSameID,
 		},
 		{
 			scenario: "removes an element",
-			function: testElementDBRemove,
+			function: testElemDBRemove,
 		},
 		{
 			scenario: "get an element",
-			function: testElementDBElement,
+			function: testElemDBElement,
 		},
 		{
 			scenario: "get a nonexistent element returns false",
-			function: testElementDBElementNotFound,
+			function: testElemDBElementNotFound,
 		},
 		{
 			scenario: "get an element by component",
-			function: testElementDBElementByComponent,
+			function: testElemDBElementByComponent,
 		},
 		{
 			scenario: "get an element by not mounted component returns an error",
-			function: testElementDBElementByComponentNotFound,
+			function: testElemDBElementByComponentNotFound,
 		},
 		{
 			scenario: "sorts the elements with components",
-			function: testElementDBSort,
+			function: testElemDBSort,
 		},
 		{
 			scenario: "get the number of elements",
-			function: testElementDBLen,
+			function: testElemDBLen,
 		},
 	}
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
-			test.function(t, newElementDB())
+			test.function(t, newElemDB())
 		})
 
 	}
 }
 
-func testElementDBAdd(t *testing.T, db app.ElementDB) {
+func testElemDBAdd(t *testing.T, db app.ElemDB) {
 	if err := db.Add(newElement()); err != nil {
 		t.Fatal(err)
 	}
@@ -150,7 +150,7 @@ func testElementDBAdd(t *testing.T, db app.ElementDB) {
 	}
 }
 
-func testElementDBAddElementWithComponent(t *testing.T, db app.ElementDB) {
+func testElemDBAddElementWithComponent(t *testing.T, db app.ElemDB) {
 	if err := db.Add(newElementWithComponent()); err != nil {
 		t.Fatal(err)
 	}
@@ -162,7 +162,7 @@ func testElementDBAddElementWithComponent(t *testing.T, db app.ElementDB) {
 	}
 }
 
-func testElementDBAddElementWithSameID(t *testing.T, db app.ElementDB) {
+func testElemDBAddElementWithSameID(t *testing.T, db app.ElemDB) {
 	elem := newElementWithComponent()
 
 	if err := db.Add(elem); err != nil {
@@ -176,7 +176,7 @@ func testElementDBAddElementWithSameID(t *testing.T, db app.ElementDB) {
 	t.Log(err)
 }
 
-func testElementDBRemove(t *testing.T, db app.ElementDB) {
+func testElemDBRemove(t *testing.T, db app.ElemDB) {
 	elem := newElementWithComponent()
 
 	if err := db.Add(elem); err != nil {
@@ -193,7 +193,7 @@ func testElementDBRemove(t *testing.T, db app.ElementDB) {
 	}
 }
 
-func testElementDBElement(t *testing.T, db app.ElementDB) {
+func testElemDBElement(t *testing.T, db app.ElemDB) {
 	elem := newElementWithComponent()
 
 	if err := db.Add(elem); err != nil {
@@ -209,7 +209,7 @@ func testElementDBElement(t *testing.T, db app.ElementDB) {
 	}
 }
 
-func testElementDBElementNotFound(t *testing.T, db app.ElementDB) {
+func testElemDBElementNotFound(t *testing.T, db app.ElemDB) {
 	_, err := db.Element(uuid.New())
 	if err == nil {
 		t.Fatal("error is nil")
@@ -217,7 +217,7 @@ func testElementDBElementNotFound(t *testing.T, db app.ElementDB) {
 	t.Log(err)
 }
 
-func testElementDBElementByComponent(t *testing.T, db app.ElementDB) {
+func testElemDBElementByComponent(t *testing.T, db app.ElemDB) {
 	compo := &Bar{}
 	elem := newElementWithComponent()
 	elem.component = compo
@@ -235,13 +235,13 @@ func testElementDBElementByComponent(t *testing.T, db app.ElementDB) {
 	}
 }
 
-func testElementDBElementByComponentNotFound(t *testing.T, db app.ElementDB) {
+func testElemDBElementByComponentNotFound(t *testing.T, db app.ElemDB) {
 	if _, err := db.ElementByComponent(&Foo{}); err == nil {
 		t.Fatal("an element is found")
 	}
 }
 
-func testElementDBSort(t *testing.T, db app.ElementDB) {
+func testElemDBSort(t *testing.T, db app.ElemDB) {
 	for i := 0; i < 10; i++ {
 		if err := db.Add(newElementWithComponent()); err != nil {
 			t.Fatal(err)
@@ -260,7 +260,7 @@ func testElementDBSort(t *testing.T, db app.ElementDB) {
 	}
 }
 
-func testElementDBLen(t *testing.T, db app.ElementDB) {
+func testElemDBLen(t *testing.T, db app.ElemDB) {
 	for i := 0; i < 10; i++ {
 		if err := db.Add(newElementWithComponent()); err != nil {
 			t.Fatal(err)
