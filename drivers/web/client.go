@@ -4,8 +4,10 @@
 package web
 
 import (
+	"net/url"
 	"path"
 
+	"github.com/gopherjs/gopherjs/js"
 	"github.com/murlokswarm/app"
 )
 
@@ -16,7 +18,25 @@ func (d *Driver) Name() string {
 
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(f app.Factory) error {
-	panic("not implemented")
+	elements := app.NewElemDB()
+	elements = app.NewConcurrentElemDB(elements)
+	d.elements = elements
+
+	d.uichan = make(chan func(), 4096)
+	defer close(d.uichan)
+
+	rawurl := js.Global.Get("location").Get("href").String()
+
+	u, err := url.Parse(rawurl)
+	if err != nil {
+		return err
+	}
+
+	if len(u.Path) == 0 || u.Path == "/" {
+		u.Path = d.DefaultURL
+	}
+
+	return nil
 }
 
 // AppName satisfies the app.Driver interface.
