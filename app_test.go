@@ -64,6 +64,43 @@ func TestApp(t *testing.T) {
 			t.Error("error is nil")
 		}
 
+		var page app.Page
+		if page, err = app.NewPage(app.PageConfig{
+			DefaultURL: "tests.foo",
+		}); err != nil {
+			t.Error(err)
+		}
+
+		pageCompo := page.Component()
+		if pageCompo == nil {
+			t.Error("component is nil")
+		}
+
+		app.Render(pageCompo)
+
+		var page2 app.Page
+		if page2, err = app.PageByComponent(pageCompo); err != nil {
+			t.Error(err)
+		}
+
+		if page != page2 {
+			t.Error("page and page2 are different")
+		}
+
+		if _, err := app.NewPage(app.PageConfig{
+			DefaultURL: "/ErrorTest",
+		}); err == nil {
+			t.Error("error is nil")
+		}
+
+		if _, err = app.PageByComponent(&tests.Foo{}); err == nil {
+			t.Error("error is nil")
+		}
+
+		if _, err = app.PageByComponent(winCompo); err == nil {
+			t.Error("error is nil")
+		}
+
 		var menu app.Menu
 		if menu, err = app.NewContextMenu(app.MenuConfig{
 			DefaultURL: "tests.bar",

@@ -303,6 +303,11 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
 	return m, err
 }
 
+// NewPage satisfies the app.Driver interface.
+func (d *Driver) NewPage(c app.PageConfig) (app.Page, error) {
+	return nil, app.NewErrNotSupported("page")
+}
+
 // Render satisfies the app.Driver interface.
 func (d *Driver) Render(c app.Component) error {
 	e, err := d.elements.ElementByComponent(c)

@@ -114,6 +114,14 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
 	return newMenu(d, "context menu", c)
 }
 
+// NewPage satisfies the app.Driver interface.
+func (d *Driver) NewPage(c app.PageConfig) (app.Page, error) {
+	if d.SimulateErr {
+		return nil, ErrSimulated
+	}
+	return newPage(d, c)
+}
+
 // Render satisfies the app.Driver interface.
 func (d *Driver) Render(compo app.Component) error {
 	if d.SimulateErr {

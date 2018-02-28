@@ -19,7 +19,6 @@ type Menu struct {
 	lastFocus time.Time
 	component app.Component
 
-	onLoad  func(compo app.Component)
 	onClose func()
 }
 
@@ -80,10 +79,6 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 
 	if _, err = m.markup.Mount(compo); err != nil {
 		return errors.Wrapf(err, "loading %s in test menu %p failed", u, m)
-	}
-
-	if m.onLoad != nil {
-		m.onLoad(compo)
 	}
 	return nil
 }

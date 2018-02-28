@@ -70,6 +70,13 @@ func NewWindow(c WindowConfig) (Window, error) {
 	return driver.NewWindow(c)
 }
 
+// NewPage creates the page described by the given configuration.
+//
+// It panics if called before Run.
+func NewPage(c PageConfig) (Page, error) {
+	return driver.NewPage(c)
+}
+
 // NewContextMenu creates and displays the context menu described by the
 // given configuration.
 //
@@ -109,6 +116,20 @@ func WindowByComponent(c Component) (Window, error) {
 		return nil, errors.New("component is not mounted in a window")
 	}
 	return win, nil
+}
+
+// PageByComponent returns the page where the given component is mounted.
+func PageByComponent(c Component) (Page, error) {
+	elem, err := driver.ElementByComponent(c)
+	if err != nil {
+		return nil, err
+	}
+
+	page, ok := elem.(Page)
+	if !ok {
+		return nil, errors.New("component is not mounted in a page")
+	}
+	return page, nil
 }
 
 // NewFilePanel creates and displays the file panel described by the given

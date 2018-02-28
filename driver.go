@@ -32,6 +32,9 @@ type Driver interface {
 	// given configuration.
 	NewContextMenu(c MenuConfig) (Menu, error)
 
+	// NewPage creates the webpage described in the given configuration.
+	NewPage(c PageConfig) (Page, error)
+
 	// Render renders the given component.
 	Render(c Component) error
 
@@ -126,6 +129,16 @@ func (d *driverWithLogs) NewContextMenu(c MenuConfig) (Menu, error) {
 		Error("creating context menu failed:", err)
 	}
 	return menu, err
+}
+
+func (d *driverWithLogs) NewPage(c PageConfig) (Page, error) {
+	Log("creating page:", indentedJSON(c))
+
+	page, err := d.base.NewPage(c)
+	if err != nil {
+		Error("creating page failed:", err)
+	}
+	return page, err
 }
 
 func (d *driverWithLogs) Render(c Component) error {

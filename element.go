@@ -64,6 +64,12 @@ type ElementWithNavigation interface {
 	Next() error
 }
 
+// Closer is the interface that describes an element that can be closed.
+type Closer interface {
+	// Close closes the element and free its allocated resources.
+	Close()
+}
+
 // NotificationConfig is a struct that describes a notification.
 type NotificationConfig struct {
 	Title     string `json:"title"`

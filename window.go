@@ -10,6 +10,7 @@ import (
 // Window is the interface that describes a window.
 type Window interface {
 	ElementWithNavigation
+	Closer
 
 	// Base returns the base window without any decorators.
 	Base() Window
@@ -38,9 +39,6 @@ type Window interface {
 
 	// Minimize takes the window into or out of minimized mode
 	ToggleMinimize()
-
-	// Close closes the window.
-	Close()
 }
 
 // WindowConfig is a struct that describes a window.
