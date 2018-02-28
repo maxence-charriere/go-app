@@ -3,6 +3,9 @@ package main
 import (
 	"context"
 	"os"
+	"path/filepath"
+
+	"github.com/murlokswarm/app"
 
 	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
@@ -121,11 +124,11 @@ func buildWeb(ctx context.Context, args []string) {
 
 	for _, root := range roots {
 		if err := goBuild(root, config.Verbose); err != nil {
-			panic(err)
+			app.Error("go build:", err)
 		}
 
 		if err := gopherJSBuild(root, config.Verbose, config.Minify); err != nil {
-			panic(err)
+			app.Error("gopherjs build:", err)
 		}
 	}
 }
@@ -138,6 +141,7 @@ func gopherJSBuild(target string, verbose, minify bool) error {
 	if minify {
 		args = append(args, "-m")
 	}
+	args = append(args, "-o", filepath.Join(target, "resources", "goapp.js"))
 	args = append(args, target)
 	return execute("gopherjs", args...)
 }
