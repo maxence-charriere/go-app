@@ -11,6 +11,8 @@ import (
 	"path"
 	"path/filepath"
 
+	"github.com/murlokswarm/app/appjs"
+
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/html"
 )
@@ -73,9 +75,23 @@ func (d *Driver) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 }
 
 func (d *Driver) handleComponent(res http.ResponseWriter, req *http.Request) {
-	compoName := app.ComponentNameFromURL(req.URL)
+	compo, err := d.factory.New(app.ComponentNameFromURL(req.URL))
+	if err != nil {
+		http.NotFound(res, req)
+		return
+	}
+
+	var config html.PageConfig
+	if page, ok := compo.(html.Page); ok {
+		config = page.PageConfig()
+	}
+
+	config.Javascripts = append(config.Javascripts, "goapp.js")
+	config.AppJS = appjs.AppJS("console.log")
+	page := html.NewPage(config)
+
 	res.WriteHeader(http.StatusOK)
-	res.Write([]byte(compoName))
+	res.Write([]byte(page))
 }
 
 func (d *Driver) handleNotFound(res http.ResponseWriter, req *http.Request) {

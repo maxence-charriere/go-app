@@ -21,5 +21,7 @@ type Driver struct {
 	Server *http.Server
 
 	factory     app.Factory
+	elements    app.ElemDB
+	uichan      chan func()
 	fileHandler http.Handler
 }
