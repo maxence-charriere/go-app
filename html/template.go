@@ -20,6 +20,7 @@ const pageTemplate = `
             height: 100%;
             width: 100%;
             margin: 0;
+            overflow: hidden;
         }
     </style>{{end}}
     {{range .CSS}}

@@ -25,6 +25,8 @@ type Page interface {
 // PageConfig is a struct that describes a webpage.
 type PageConfig struct {
 	DefaultURL string `json:"default-url"`
+
+	OnQuit func()
 }
 
 // NewPageWithLogs returns a decorated version of the given page that logs

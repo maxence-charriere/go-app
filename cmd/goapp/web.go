@@ -17,7 +17,7 @@ type webInitConfig struct {
 
 type webBuildConfig struct {
 	Verbose bool `conf:"v" help:"Verbose mode."`
-	Minify  bool `conf:"m,omitempty" help:"Minify gopherjs file."`
+	Minify  bool `conf:"m" help:"Minify gopherjs file."`
 }
 
 func web(ctx context.Context, args []string) {

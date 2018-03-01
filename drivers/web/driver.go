@@ -24,6 +24,8 @@ type Driver struct {
 
 	factory     app.Factory
 	elements    app.ElemDB
+	page        app.Page
 	uichan      chan func()
+	cancel      func()
 	fileHandler http.Handler
 }

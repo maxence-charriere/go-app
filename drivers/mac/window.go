@@ -565,12 +565,12 @@ func onWindowCallback(w *Window, u *url.URL, p bridge.Payload) (res bridge.Paylo
 
 	var compo app.Component
 	if compo, err = w.markup.Component(mapping.CompoID); err != nil {
-		app.DefaultLogger.Error(err)
+		app.Error(err)
 		return nil
 	}
 
 	if err = w.Render(compo); err != nil {
-		app.DefaultLogger.Error(err)
+		app.Error(err)
 	}
 
 	return nil
