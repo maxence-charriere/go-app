@@ -57,13 +57,64 @@ type Driver interface {
 	NewNotification(c NotificationConfig) error
 
 	// MenuBar returns the menu bar.
-	MenuBar() Menu
+	MenuBar() (Menu, error)
 
 	// Dock returns the dock tile.
-	Dock() DockTile
+	Dock() (DockTile, error)
 
 	// CallOnUIGoroutine calls a function on the UI goroutine.
 	CallOnUIGoroutine(f func())
+}
+
+// BaseDriver represents a base driver to be embedded in app.Driver
+// implementations.
+// It only contains methods related to features.
+// All the methods return not supported error.
+type BaseDriver struct{}
+
+// NewWindow satisfies the app.Driver interface.
+func (d *BaseDriver) NewWindow(c WindowConfig) (Window, error) {
+	return nil, NewErrNotSupported("window")
+}
+
+// NewContextMenu satisfies the app.Driver interface.
+func (d *BaseDriver) NewContextMenu(c MenuConfig) (Menu, error) {
+	return nil, NewErrNotSupported("context menu")
+}
+
+// NewPage satisfies the app.Driver interface.
+func (d *BaseDriver) NewPage(c PageConfig) (Page, error) {
+	return nil, NewErrNotSupported("page")
+}
+
+// NewFilePanel satisfies the app.Driver interface.
+func (d *BaseDriver) NewFilePanel(c FilePanelConfig) error {
+	return NewErrNotSupported("file panel")
+}
+
+// NewSaveFilePanel satisfies the app.Driver interface.
+func (d *BaseDriver) NewSaveFilePanel(c SaveFilePanelConfig) error {
+	return NewErrNotSupported("save file panel")
+}
+
+// NewShare satisfies the app.Driver interface.
+func (d *BaseDriver) NewShare(v interface{}) error {
+	return NewErrNotSupported("share")
+}
+
+// NewNotification satisfies the app.Driver interface.
+func (d *BaseDriver) NewNotification(c NotificationConfig) error {
+	return NewErrNotSupported("notification")
+}
+
+// MenuBar satisfies the app.Driver interface.
+func (d *BaseDriver) MenuBar() (Menu, error) {
+	return nil, NewErrNotSupported("menubar")
+}
+
+// Dock satisfies the app.Driver interface.
+func (d *BaseDriver) Dock() (DockTile, error) {
+	return nil, NewErrNotSupported("dock")
 }
 
 // NewDriverWithLogs returns a decorated version of the given driver that logs
@@ -201,14 +252,24 @@ func (d *driverWithLogs) NewNotification(c NotificationConfig) error {
 	return err
 }
 
-func (d *driverWithLogs) MenuBar() Menu {
+func (d *driverWithLogs) MenuBar() (Menu, error) {
 	Log("returning menu bar")
-	return d.base.MenuBar()
+
+	menu, err := d.base.MenuBar()
+	if err != nil {
+		Errorf("returning menubar failed: %s", err)
+	}
+	return menu, err
 }
 
-func (d *driverWithLogs) Dock() DockTile {
-	Log("returning dock tile")
-	return d.base.Dock()
+func (d *driverWithLogs) Dock() (DockTile, error) {
+	Log("returning dock")
+
+	dock, err := d.base.Dock()
+	if err != nil {
+		Errorf("returning dock failed: %s", err)
+	}
+	return dock, err
 }
 
 func (d *driverWithLogs) CallOnUIGoroutine(f func()) {

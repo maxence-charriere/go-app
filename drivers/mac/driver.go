@@ -29,6 +29,8 @@ var (
 
 // Driver is the app.Driver implementation for MacOS.
 type Driver struct {
+	app.BaseDriver
+
 	MenubarConfig MenuBarConfig
 	DockURL       string
 
@@ -303,11 +305,6 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
 	return m, err
 }
 
-// NewPage satisfies the app.Driver interface.
-func (d *Driver) NewPage(c app.PageConfig) (app.Page, error) {
-	return nil, app.NewErrNotSupported("page")
-}
-
 // Render satisfies the app.Driver interface.
 func (d *Driver) Render(c app.Component) error {
 	e, err := d.elements.ElementByComponent(c)
@@ -365,8 +362,8 @@ func (d *Driver) NewNotification(config app.NotificationConfig) error {
 }
 
 // MenuBar satisfies the app.DriverWithMenuBar interface.
-func (d *Driver) MenuBar() app.Menu {
-	return d.menubar
+func (d *Driver) MenuBar() (app.Menu, error) {
+	return d.menubar, nil
 }
 
 func (d *Driver) newMenuBar() error {
@@ -406,8 +403,8 @@ func (d *Driver) newMenuBar() error {
 }
 
 // Dock satisfies the app.DriverWithDock interface.
-func (d *Driver) Dock() app.DockTile {
-	return d.dock
+func (d *Driver) Dock() (app.DockTile, error) {
+	return d.dock, nil
 }
 
 // CallOnUIGoroutine satisfies the app.Driver interface.

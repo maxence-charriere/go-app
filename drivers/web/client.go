@@ -55,14 +55,8 @@ func (d *Driver) Storage(p ...string) string {
 	return ""
 }
 
-// NewWindow satisfies the app.Driver interface.
-func (d *Driver) NewWindow(c app.WindowConfig) (app.Window, error) {
-	return nil, app.NewErrNotSupported("window")
-}
-
-// NewContextMenu satisfies the app.Driver interface.
-func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
-	return nil, app.NewErrNotSupported("context menu")
+func (d *Driver) NewPage(c app.PageConfig) (app.Page, error) {
+	panic("not implemented")
 }
 
 // Render satisfies the app.Driver interface.
@@ -72,36 +66,6 @@ func (d *Driver) Render(c app.Component) error {
 
 // ElementByComponent satisfies the app.Driver interface.
 func (d *Driver) ElementByComponent(c app.Component) (app.ElementWithComponent, error) {
-	panic("not implemented")
-}
-
-// NewFilePanel satisfies the app.Driver interface.
-func (d *Driver) NewFilePanel(c app.FilePanelConfig) error {
-	return app.NewErrNotSupported("file panel")
-}
-
-// NewSaveFilePanel satisfies the app.Driver interface.
-func (d *Driver) NewSaveFilePanel(c app.SaveFilePanelConfig) error {
-	return app.NewErrNotSupported("save file panel")
-}
-
-// NewShare satisfies the app.Driver interface.
-func (d *Driver) NewShare(v interface{}) error {
-	return app.NewErrNotSupported("share")
-}
-
-// NewNotification satisfies the app.Driver interface.
-func (d *Driver) NewNotification(c app.NotificationConfig) error {
-	return app.NewErrNotSupported("notification")
-}
-
-// MenuBar satisfies the app.Driver interface.
-func (d *Driver) MenuBar() app.Menu {
-	panic("not implemented")
-}
-
-// Dock satisfies the app.Driver interface.
-func (d *Driver) Dock() app.DockTile {
 	panic("not implemented")
 }
 

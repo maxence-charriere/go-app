@@ -9,6 +9,8 @@ import (
 
 // Driver is an app.Driver implementation for web.
 type Driver struct {
+	app.BaseDriver
+
 	// The URL of the component to load when a navigating on the website root.
 	DefaultURL string
 

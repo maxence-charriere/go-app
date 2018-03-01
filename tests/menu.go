@@ -10,6 +10,12 @@ func testContextMenu(t *testing.T, d app.Driver) {
 	testMenu(t, d.NewContextMenu)
 }
 
+func testMenubar(t *testing.T, d app.Driver) {
+	testMenu(t, func(c app.MenuConfig) (app.Menu, error) {
+		return d.MenuBar()
+	})
+}
+
 func testMenu(t *testing.T, setup func(c app.MenuConfig) (app.Menu, error)) {
 	tests := []struct {
 		scenario string

@@ -33,12 +33,19 @@ func testDockTile(t *testing.T, d app.Driver) {
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
-			test.function(t, d.Dock(), d)
+			dock, err := d.Dock()
+			if app.NotSupported(err) {
+				return
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+			test.function(t, dock, d)
 		})
 	}
 
 	testMenu(t, func(c app.MenuConfig) (app.Menu, error) {
-		return d.Dock(), nil
+		return d.Dock()
 	})
 }
 

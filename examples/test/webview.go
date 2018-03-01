@@ -136,6 +136,7 @@ func (c *Webview) OnNavigate(u *url.URL) {
 func (c *Webview) PageConfig() html.PageConfig {
 	return html.PageConfig{
 		Title: fmt.Sprintf("Test component %v", c.Page),
+		DisableDefaultContextMenu: true,
 	}
 }
 
