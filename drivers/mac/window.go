@@ -9,9 +9,7 @@ import (
 	"html/template"
 	"math"
 	"net/url"
-	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
 	"time"
 
@@ -171,7 +169,7 @@ func (w *Window) load(u *url.URL) error {
 	}
 
 	if len(pageConfig.CSS) == 0 {
-		pageConfig.CSS = defaultCSS()
+		pageConfig.CSS = app.CSSResources()
 	}
 
 	pageConfig.DefaultComponent = template.HTML(buffer.String())
@@ -194,28 +192,6 @@ func (w *Window) load(u *url.URL) error {
 		bridge.NewPayload(payload),
 	)
 	return err
-}
-
-func defaultCSS() (css []string) {
-	cssdir := filepath.Join(app.Resources(), "css")
-
-	filepath.Walk(cssdir, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if info.IsDir() {
-			return nil
-		}
-
-		if ext := filepath.Ext(path); ext != ".css" {
-			return nil
-		}
-
-		css = append(css, path)
-		return nil
-	})
-	return
 }
 
 // Contains satisfies the app.Window interface.

@@ -7,9 +7,7 @@ import (
 	"context"
 	"html/template"
 	"net/http"
-	"os"
 	"path"
-	"path/filepath"
 
 	"github.com/murlokswarm/app/appjs"
 
@@ -36,9 +34,9 @@ func (d *Driver) Run(f app.Factory) error {
 		}
 	}
 
-	d.fileHandler = http.FileServer(http.Dir("resources"))
-	d.Server.Handler = d
-	// http.Handle("/", d)
+	// http.Handle("/resources", http.FileServer(http.Dir("resources")))
+	http.Handle("/", d)
+	http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("resources"))))
 
 	errC := make(chan error)
 	go func() {
@@ -64,14 +62,8 @@ func (d *Driver) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	filename := filepath.Join("resources", req.URL.Path)
-	if fi, err := os.Stat(filename); err != nil || fi.IsDir() {
-		req.URL.Path = d.NotFoundURL
-		d.handleNotFound(res, req)
-		return
-	}
-
-	d.fileHandler.ServeHTTP(res, req)
+	req.URL.Path = d.NotFoundURL
+	d.handleNotFound(res, req)
 }
 
 func (d *Driver) handleComponent(res http.ResponseWriter, req *http.Request) {
@@ -86,8 +78,13 @@ func (d *Driver) handleComponent(res http.ResponseWriter, req *http.Request) {
 		config = page.PageConfig()
 	}
 
-	config.Javascripts = append(config.Javascripts, "goapp.js")
+	if len(config.CSS) == 0 {
+		config.CSS = app.CSSResources()
+	}
+
+	config.Javascripts = append(config.Javascripts, d.Resources("goapp.js"))
 	config.AppJS = appjs.AppJS("console.log")
+
 	page := html.NewPage(config)
 
 	res.WriteHeader(http.StatusOK)

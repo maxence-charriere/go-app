@@ -2,6 +2,8 @@ package app_test
 
 import (
 	"context"
+	"os"
+	"reflect"
 	"testing"
 
 	"github.com/murlokswarm/app"
@@ -144,6 +146,8 @@ func TestApp(t *testing.T) {
 		app.MenuBar()
 		app.Dock()
 
+		t.Run("css resources", testCSSResources)
+
 		app.CallOnUIGoroutine(func() {
 		})
 
@@ -160,5 +164,33 @@ func TestApp(t *testing.T) {
 
 	if err := app.Run(d); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func testCSSResources(t *testing.T) {
+	defer os.RemoveAll(app.Resources())
+
+	os.MkdirAll(app.Resources("css"), 0777)
+	if f1, err := os.Create(app.Resources("css", "test.css")); err == nil {
+		defer f1.Close()
+	}
+	if f2, err := os.Create(app.Resources("css", "test.scss")); err == nil {
+		defer f2.Close()
+	}
+
+	os.MkdirAll(app.Resources("css", "sub"), 0777)
+	if f3, err := os.Create(app.Resources("css", "sub", "sub.css")); err == nil {
+		defer f3.Close()
+	}
+
+	css := app.CSSResources()
+	expected := []string{
+		app.Resources("css", "sub", "sub.css"),
+		app.Resources("css", "test.css"),
+	}
+
+	if !reflect.DeepEqual(css, expected) {
+		t.Error("expected:", expected)
+		t.Error("current :", css)
 	}
 }
