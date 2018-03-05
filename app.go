@@ -131,6 +131,19 @@ func ElementByComponent(c Component) (ElementWithComponent, error) {
 	return driver.ElementByComponent(c)
 }
 
+func ElementWithNavigationByComponent(c Component) (ElementWithNavigation, error) {
+	elem, err := driver.ElementByComponent(c)
+	if err != nil {
+		return nil, err
+	}
+
+	nav, ok := elem.(ElementWithNavigation)
+	if !ok {
+		return nil, errors.New("component is not mounted into an element with navigation")
+	}
+	return nav, nil
+}
+
 // WindowByComponent returns the window where the given component is mounted.
 //
 // It panics if called before Run.

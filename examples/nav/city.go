@@ -1,15 +1,10 @@
-package main
+package nav
 
 import (
 	"net/url"
 
 	"github.com/murlokswarm/app"
 )
-
-// /!\ Import the component. Required to use a component.
-func init() {
-	app.Import(&City{})
-}
 
 type city struct {
 	ID          string
@@ -68,6 +63,11 @@ func (c *City) OnNavigate(u *url.URL) {
 		id = "paris"
 	}
 
+	elem, err := app.ElementByComponent(c)
+	if err != nil {
+		app.Error(err)
+	}
+
 	if w, err := app.WindowByComponent(c); err == nil {
 		c.CanPrevious = w.CanPrevious()
 		c.CanNext = w.CanNext()
@@ -85,9 +85,9 @@ func (c *City) Render() string {
 	<h1>{{.City.Name}}</h1>
 	<p>{{.City.Description}}</p>
 	<div>
-		<a href="/City?id=sf" class="button">San Francisco</a>
-		<a href="/City?id=paris" class="button">Paris</a>
-		<a href="/City?id=beijing" class="button">北京"</a>		
+		<a href="/nav.City?id=sf" class="button">San Francisco</a>
+		<a href="/nav.City?id=paris" class="button">Paris</a>
+		<a href="/nav.City?id=beijing" class="button">北京</a>		
 	</div>
 	<div>
 		<button class="button navButton" onclick="OnPrevious" {{if not .CanPrevious}}disabled{{end}} >Previous</button>
@@ -114,6 +114,7 @@ func (c *City) OnPrevious() {
 // OnNext is the function that is called when the button labelled "Next" is
 // clicked.
 func (c *City) OnNext() {
+
 	w, err := app.WindowByComponent(c)
 	if err != nil {
 		app.Error(err)

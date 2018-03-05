@@ -2,10 +2,8 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"path/filepath"
-	"time"
 
 	"github.com/murlokswarm/app"
 
@@ -20,7 +18,6 @@ type webInitConfig struct {
 type webBuildConfig struct {
 	Verbose bool `conf:"v" help:"Verbose mode."`
 	Minify  bool `conf:"m" help:"Minify gopherjs file."`
-	Port    int  `conf:"port" help:"The port to use when running the web app."`
 }
 
 func web(ctx context.Context, args []string) {
@@ -31,7 +28,6 @@ func web(ctx context.Context, args []string) {
 			{Name: "help", Help: "Show the goapp web help"},
 			{Name: "init", Help: "Create the required files and directories to build a web app."},
 			{Name: "build", Help: "Build the web server and generate Gopher.js file."},
-			{Name: "run", Help: "Build, launch the web server and navigate to the default page with the default browser"},
 		},
 	}
 
@@ -44,10 +40,6 @@ func web(ctx context.Context, args []string) {
 
 	case "build":
 		buildWeb(ctx, args)
-
-	case "run":
-		buildWeb(ctx, args)
-		runWeb(ctx, args)
 
 	default:
 		panic("unreachable")
@@ -107,7 +99,6 @@ func goGetGopherJS(config webInitConfig) error {
 func buildWeb(ctx context.Context, args []string) {
 	config := webBuildConfig{
 		Minify: true,
-		Port:   7042,
 	}
 
 	ld := conf.Loader{
@@ -130,48 +121,6 @@ func buildWeb(ctx context.Context, args []string) {
 
 	if err := gopherJSBuild(root, config.Verbose, config.Minify); err != nil {
 		app.Error("gopherjs build:", err)
-	}
-}
-
-func runWeb(ctx context.Context, args []string) {
-	config := webBuildConfig{
-		Minify: true,
-		Port:   7042,
-	}
-
-	ld := conf.Loader{
-		Name:    "web run",
-		Args:    args,
-		Usage:   "[options...] [package]",
-		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
-	}
-
-	_, roots := conf.LoadWith(&config, ld)
-	if len(roots) == 0 {
-		wd, err := os.Getwd()
-		if err != nil {
-			app.Error(err)
-			return
-		}
-		roots = []string{wd}
-	}
-
-	root := roots[0]
-	execName := filepath.Base(root)
-
-	go func() {
-		time.Sleep(50 * time.Millisecond)
-
-		if err := execute(
-			openCommand(),
-			fmt.Sprintf("http://:%v", config.Port),
-		); err != nil {
-			app.Error(err)
-		}
-	}()
-
-	if err := execute(execName); err != nil {
-		app.Error(err)
 	}
 }
 
