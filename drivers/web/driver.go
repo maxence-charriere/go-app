@@ -29,3 +29,13 @@ type Driver struct {
 	cancel      func()
 	fileHandler http.Handler
 }
+
+// Name satisfies the app.Driver interface.
+func (d *Driver) Name() string {
+	return "Web"
+}
+
+// Base satisfies the app.Driver interface.
+func (d *Driver) Base() app.Driver {
+	return d
+}

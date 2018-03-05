@@ -11,6 +11,7 @@ import (
 // Page is the interface that describes a webpage.
 type Page interface {
 	ElementWithNavigation
+	Closer
 
 	// Base returns the base page without any decorators.
 	Base() Page
@@ -25,8 +26,6 @@ type Page interface {
 // PageConfig is a struct that describes a webpage.
 type PageConfig struct {
 	DefaultURL string `json:"default-url"`
-
-	OnQuit func()
 }
 
 // NewPageWithLogs returns a decorated version of the given page that logs
@@ -147,4 +146,9 @@ func (p *pageWithLogs) Referer() *url.URL {
 	u := p.base.Referer()
 	Logf("page %s: referer is %s", p.base.ID(), u)
 	return u
+}
+
+func (p *pageWithLogs) Close() {
+	Logf("page %s: closing", p.base.ID())
+	p.base.Close()
 }

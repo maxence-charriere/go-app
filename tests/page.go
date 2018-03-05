@@ -6,7 +6,21 @@ import (
 	"github.com/murlokswarm/app"
 )
 
+// PageTester is the interface that wraps the NewTestPage inteface.
+type PageTester interface {
+	// NewTestPage creates a page for test.
+	NewTestPage(c app.PageConfig) (app.Page, error)
+}
+
 func testPage(t *testing.T, d app.Driver) {
+	tester, ok := d.(PageTester)
+	if !ok {
+		return
+	}
+	if _, ok := d.Base().(PageTester); !ok {
+		return
+	}
+
 	tests := []struct {
 		scenario string
 		config   app.PageConfig
@@ -37,7 +51,7 @@ func testPage(t *testing.T, d app.Driver) {
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
-			p, err := d.NewPage(test.config)
+			p, err := tester.NewTestPage(test.config)
 			if app.NotSupported(err) {
 				return
 			}
@@ -52,11 +66,11 @@ func testPage(t *testing.T, d app.Driver) {
 	}
 
 	testElementWithComponent(t, func() (app.ElementWithComponent, error) {
-		return d.NewPage(app.PageConfig{})
+		return tester.NewTestPage(app.PageConfig{})
 	})
 
 	testElementWithNavigation(t, func() (app.ElementWithNavigation, error) {
-		return d.NewPage(app.PageConfig{})
+		return tester.NewTestPage(app.PageConfig{})
 	})
 }
 

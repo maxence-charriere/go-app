@@ -20,6 +20,7 @@ func TestImport(t *testing.T) {
 
 func TestApp(t *testing.T) {
 	var d app.Driver
+	var newPage func(c app.PageConfig) (app.Page, error)
 	ctx, cancel := context.WithCancel(context.Background())
 
 	onRun := func() {
@@ -67,7 +68,7 @@ func TestApp(t *testing.T) {
 		}
 
 		var page app.Page
-		if page, err = app.NewPage(app.PageConfig{
+		if page, err = newPage(app.PageConfig{
 			DefaultURL: "tests.foo",
 		}); err != nil {
 			t.Error(err)
@@ -89,7 +90,7 @@ func TestApp(t *testing.T) {
 			t.Error("page and page2 are different")
 		}
 
-		if _, err := app.NewPage(app.PageConfig{
+		if _, err := newPage(app.PageConfig{
 			DefaultURL: "/ErrorTest",
 		}); err == nil {
 			t.Error("error is nil")
@@ -147,6 +148,7 @@ func TestApp(t *testing.T) {
 		app.Dock()
 
 		t.Run("css resources", testCSSResources)
+		t.Run("css no resources", testCSSResourcesNoResources)
 
 		app.CallOnUIGoroutine(func() {
 		})
@@ -154,13 +156,22 @@ func TestApp(t *testing.T) {
 		cancel()
 	}
 
-	d = &test.Driver{
+	dtest := &test.Driver{
 		Ctx:   ctx,
 		OnRun: onRun,
 	}
+	d = dtest
 
 	app.Import(&tests.Foo{})
 	app.Import(&tests.Bar{})
+
+	newPage = func(c app.PageConfig) (app.Page, error) {
+		err := app.NewPage(c)
+		if err != nil {
+			return nil, err
+		}
+		return dtest.Page, nil
+	}
 
 	if err := app.Run(d); err != nil {
 		t.Fatal(err)
@@ -192,5 +203,11 @@ func testCSSResources(t *testing.T) {
 	if !reflect.DeepEqual(css, expected) {
 		t.Error("expected:", expected)
 		t.Error("current :", css)
+	}
+}
+
+func testCSSResourcesNoResources(t *testing.T) {
+	if len(app.CSSResources()) != 0 {
+		t.Error("resources found")
 	}
 }

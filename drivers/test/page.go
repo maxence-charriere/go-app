@@ -183,3 +183,7 @@ func (p *page) Referer() *url.URL {
 	p.history.Next()
 	return u
 }
+
+func (p *page) Close() {
+	p.onClose()
+}

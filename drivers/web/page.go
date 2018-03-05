@@ -20,8 +20,6 @@ type Page struct {
 	markup    app.Markup
 	component app.Component
 	lastFocus time.Time
-
-	onQuit func()
 }
 
 func newPage(c app.PageConfig) (app.Page, error) {
@@ -32,8 +30,6 @@ func newPage(c app.PageConfig) (app.Page, error) {
 		id:        uuid.New(),
 		markup:    markup,
 		lastFocus: time.Now(),
-
-		onQuit: c.OnQuit,
 	}
 
 	page := app.NewPageWithLogs(rawPage)
@@ -44,9 +40,6 @@ func newPage(c app.PageConfig) (app.Page, error) {
 	js.Global.Set("golangRequest", rawPage.onPageRequest)
 
 	js.Global.Call("addEventListener", "unload", func() {
-		if rawPage.onQuit != nil {
-			rawPage.onQuit()
-		}
 		driver.elements.Remove(page)
 	})
 
@@ -185,23 +178,26 @@ func (p *Page) LastFocus() time.Time {
 }
 
 func (p *Page) Reload() error {
-	panic("Not implemented")
+	js.Global.Get("location").Call("reload")
+	return nil
 }
 
 func (p *Page) CanPrevious() bool {
-	panic("Not implemented")
+	return true
 }
 
 func (p *Page) Previous() error {
-	panic("Not implemented")
+	js.Global.Get("history").Call("back")
+	return nil
 }
 
 func (p *Page) CanNext() bool {
-	panic("Not implemented")
+	return true
 }
 
 func (p *Page) Next() error {
-	panic("Not implemented")
+	js.Global.Get("history").Call("forward")
+	return nil
 }
 
 func (p *Page) URL() *url.URL {
@@ -222,6 +218,10 @@ func (p *Page) Referer() *url.URL {
 		String(),
 	)
 	return u
+}
+
+func (p *Page) Close() {
+	js.Global.Call("close")
 }
 
 func (p *Page) onPageRequest(json string) {

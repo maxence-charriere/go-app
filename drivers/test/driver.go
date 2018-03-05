@@ -21,6 +21,7 @@ type Driver struct {
 	SimulateErr   bool
 	UseBaseDriver bool
 	Ctx           context.Context
+	Page          app.Page
 
 	OnRun func()
 
@@ -34,6 +35,11 @@ type Driver struct {
 // Name satisfies the app.Driver interface.
 func (d *Driver) Name() string {
 	return "Test"
+}
+
+// Base satisfies the app.Driver interface.
+func (d *Driver) Base() app.Driver {
+	return d
 }
 
 // Run satisfies the app.Driver interface.
@@ -124,14 +130,33 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
 }
 
 // NewPage satisfies the app.Driver interface.
-func (d *Driver) NewPage(c app.PageConfig) (app.Page, error) {
+func (d *Driver) NewPage(c app.PageConfig) error {
 	if d.UseBaseDriver {
 		return d.BaseDriver.NewPage(c)
 	}
 	if d.SimulateErr {
-		return nil, ErrSimulated
+		return ErrSimulated
 	}
-	return newPage(d, c)
+
+	if d.Page != nil {
+		d.Page.Close()
+		d.Page = nil
+	}
+
+	page, err := newPage(d, c)
+	if err != nil {
+		return err
+	}
+	d.Page = page
+	return nil
+}
+
+// NewTestPage satisfies the tests.PageTester interface.
+func (d *Driver) NewTestPage(c app.PageConfig) (app.Page, error) {
+	if err := d.NewPage(c); err != nil {
+		return nil, err
+	}
+	return d.Page, nil
 }
 
 // Render satisfies the app.Driver interface.

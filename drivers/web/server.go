@@ -15,11 +15,6 @@ import (
 	"github.com/murlokswarm/app/html"
 )
 
-// Name satisfies the app.Driver interface.
-func (d *Driver) Name() string {
-	return "Web"
-}
-
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(f app.Factory) error {
 	d.factory = f
@@ -34,7 +29,6 @@ func (d *Driver) Run(f app.Factory) error {
 		}
 	}
 
-	// http.Handle("/resources", http.FileServer(http.Dir("resources")))
 	http.Handle("/", d)
 	http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("resources"))))
 
@@ -53,7 +47,7 @@ func (d *Driver) Run(f app.Factory) error {
 // ServeHTTP is the http.Handler that route wether to serve a page or a
 // resource.
 func (d *Driver) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	if len(req.URL.Path) == 0 || req.URL.Path == "/" {
+	if req.URL.Path == "/" || len(req.URL.Path) == 0 {
 		req.URL.Path = d.DefaultURL
 	}
 
@@ -152,7 +146,7 @@ func (d *Driver) ElementByComponent(c app.Component) (app.ElementWithComponent, 
 
 // CallOnUIGoroutine satisfies the app.Driver interface.
 func (d *Driver) CallOnUIGoroutine(f func()) {
-	panic("not implemented")
+	app.Error("CallOnUIGoroutine is not supported on server side")
 }
 
 // Close shutdown the server.

@@ -60,6 +60,11 @@ func (d *Driver) Name() string {
 	return "MacOS"
 }
 
+// Base satisfies the app.Driver interface.
+func (d *Driver) Base() app.Driver {
+	return d
+}
+
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(f app.Factory) error {
 	if driver != nil {

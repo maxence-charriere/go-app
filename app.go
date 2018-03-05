@@ -63,6 +63,10 @@ func CSSResources() []string {
 	var css []string
 
 	walker := func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
 		if info.IsDir() {
 			return nil
 		}
@@ -98,7 +102,7 @@ func NewWindow(c WindowConfig) (Window, error) {
 // NewPage creates the page described by the given configuration.
 //
 // It panics if called before Run.
-func NewPage(c PageConfig) (Page, error) {
+func NewPage(c PageConfig) error {
 	return driver.NewPage(c)
 }
 

@@ -9,6 +9,9 @@ type Driver interface {
 	// Name returns the driver name.
 	Name() string
 
+	// Base returns the base driver without any decorators.
+	Base() Driver
+
 	// Run runs the application with the components registered in the given
 	// factory.
 	Run(f Factory) error
@@ -33,7 +36,7 @@ type Driver interface {
 	NewContextMenu(c MenuConfig) (Menu, error)
 
 	// NewPage creates the webpage described in the given configuration.
-	NewPage(c PageConfig) (Page, error)
+	NewPage(c PageConfig) error
 
 	// Render renders the given component.
 	Render(c Component) error
@@ -83,8 +86,8 @@ func (d *BaseDriver) NewContextMenu(c MenuConfig) (Menu, error) {
 }
 
 // NewPage satisfies the app.Driver interface.
-func (d *BaseDriver) NewPage(c PageConfig) (Page, error) {
-	return nil, NewErrNotSupported("page")
+func (d *BaseDriver) NewPage(c PageConfig) error {
+	return NewErrNotSupported("page")
 }
 
 // NewFilePanel satisfies the app.Driver interface.
@@ -136,6 +139,10 @@ func (d *driverWithLogs) Name() string {
 	return name
 }
 
+func (d *driverWithLogs) Base() Driver {
+	return d.base.Base()
+}
+
 func (d *driverWithLogs) Run(f Factory) error {
 	Log("running driver", d.base.Name())
 
@@ -182,14 +189,24 @@ func (d *driverWithLogs) NewContextMenu(c MenuConfig) (Menu, error) {
 	return menu, err
 }
 
-func (d *driverWithLogs) NewPage(c PageConfig) (Page, error) {
+func (d *driverWithLogs) NewPage(c PageConfig) error {
 	Log("creating page:", indentedJSON(c))
 
-	page, err := d.base.NewPage(c)
+	err := d.base.NewPage(c)
 	if err != nil {
 		Error("creating page failed:", err)
 	}
-	return page, err
+	return err
+}
+
+// NewPage satisfies the app.Driver interface.
+func (d *driverWithLogs) NewTestPage(c PageConfig) (Page, error) {
+	type pageTester interface {
+		NewTestPage(c PageConfig) (Page, error)
+	}
+
+	tester := d.base.(pageTester)
+	return tester.NewTestPage(c)
 }
 
 func (d *driverWithLogs) Render(c Component) error {

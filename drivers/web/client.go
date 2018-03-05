@@ -7,17 +7,13 @@ import (
 	"context"
 	"path"
 
+	"github.com/gopherjs/gopherjs/js"
 	"github.com/murlokswarm/app"
 )
 
 var (
 	driver *Driver
 )
-
-// Name satisfies the app.Driver interface.
-func (d *Driver) Name() string {
-	return "Web"
-}
 
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(f app.Factory) error {
@@ -69,6 +65,16 @@ func (d *Driver) Resources(p ...string) string {
 // Storage satisfies the app.Driver interface.
 func (d *Driver) Storage(p ...string) string {
 	return ""
+}
+
+func (d *Driver) NewPage(c app.PageConfig) error {
+	href := app.ComponentNameFromURLString(c.DefaultURL)
+	if len(href) == 0 {
+		href = c.DefaultURL
+	}
+
+	js.Global.Call("open", href)
+	return nil
 }
 
 // Render satisfies the app.Driver interface.
