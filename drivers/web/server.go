@@ -30,7 +30,15 @@ func (d *Driver) Run(f app.Factory) error {
 	}
 
 	http.Handle("/", d)
-	http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("resources"))))
+
+	fileHandler := http.FileServer(http.Dir("resources"))
+	fileHandler = http.StripPrefix("/resources/", fileHandler)
+	fileHandler = newGzipHandler(fileHandler)
+	http.Handle("/resources/", fileHandler)
+
+	if d.OnServerRun != nil {
+		d.OnServerRun()
+	}
 
 	errC := make(chan error)
 	go func() {

@@ -22,6 +22,10 @@ type Driver struct {
 	// Default is a server that listens on port 7042.
 	Server *http.Server
 
+	// OnServerRun is called when the web server is running.
+	// http.Handler overrides should be performed here.
+	OnServerRun func()
+
 	factory     app.Factory
 	elements    app.ElemDB
 	page        app.Page
