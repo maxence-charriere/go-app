@@ -21,7 +21,13 @@ func (d *Driver) Run(f app.Factory) error {
 	elements := app.NewElemDB()
 	elements = app.NewConcurrentElemDB(elements)
 	d.elements = elements
+	d.uichan = make(chan func(), 255)
 	driver = d
+
+	var ctx context.Context
+	ctx, d.cancel = context.WithCancel(context.Background())
+
+	go d.runLoop(ctx)
 
 	var err error
 	page, err := newPage(app.PageConfig{})
@@ -30,24 +36,19 @@ func (d *Driver) Run(f app.Factory) error {
 	}
 	d.page = page
 
-	d.uichan = make(chan func(), 255)
-
-	var ctx context.Context
-	ctx, d.cancel = context.WithCancel(context.Background())
-
-	go func() {
-		for {
-			select {
-			case f := <-d.uichan:
-				f()
-
-			case <-ctx.Done():
-				return
-			}
-		}
-	}()
-
 	return nil
+}
+
+func (d *Driver) runLoop(ctx context.Context) {
+	for {
+		select {
+		case f := <-d.uichan:
+			f()
+
+		case <-ctx.Done():
+			return
+		}
+	}
 }
 
 // AppName satisfies the app.Driver interface.
@@ -83,12 +84,13 @@ func (d *Driver) Render(c app.Component) error {
 	if err != nil {
 		return err
 	}
+
 	return elem.Render(c)
 }
 
 // ElementByComponent satisfies the app.Driver interface.
 func (d *Driver) ElementByComponent(c app.Component) (app.ElementWithComponent, error) {
-	return d.ElementByComponent(c)
+	return d.elements.ElementByComponent(c)
 }
 
 // CallOnUIGoroutine satisfies the app.Driver interface.
