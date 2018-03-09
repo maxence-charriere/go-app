@@ -4,6 +4,7 @@ package web
 
 import (
 	"bytes"
+	"fmt"
 	"net/url"
 	"time"
 
@@ -15,10 +16,11 @@ import (
 )
 
 type Page struct {
-	id        uuid.UUID
-	markup    app.Markup
-	component app.Component
-	lastFocus time.Time
+	id         uuid.UUID
+	markup     app.Markup
+	component  app.Component
+	lastFocus  time.Time
+	currentURL string
 }
 
 func newPage(c app.PageConfig) (app.Page, error) {
@@ -60,6 +62,14 @@ func (p *Page) Load(rawurl string, v ...interface{}) error {
 		p.markup.Dismount(p.component)
 	}
 
+	rawurl = fmt.Sprintf(rawurl, v...)
+	if len(p.currentURL) != 0 && p.currentURL != rawurl {
+		return driver.NewPage(app.PageConfig{
+			DefaultURL: rawurl,
+		})
+	}
+	p.currentURL = rawurl
+
 	u, err := url.Parse(rawurl)
 	if err != nil {
 		return err
@@ -68,6 +78,8 @@ func (p *Page) Load(rawurl string, v ...interface{}) error {
 		u.Path = driver.DefaultURL
 	}
 	u.Scheme = "compo"
+
+	fmt.Println("URL:", u)
 
 	var compo app.Component
 	if compo, err = driver.factory.New(app.ComponentNameFromURL(u)); err != nil {

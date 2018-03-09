@@ -28,6 +28,8 @@ examples/hello/bin/hello-mac/hello-mac
 examples/hello/bin/hello-web/hello-web
 examples/nav/bin/nav-mac/nav-mac
 examples/nav/bin/nav-web/nav-web
+examples/test/bin/test-mac/test-mac
+examples/test/bin/test-web/test-web
 examples/menu/menu
 examples/dock/dock
 examples/nav/nav

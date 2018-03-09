@@ -69,12 +69,7 @@ func (d *Driver) Storage(p ...string) string {
 }
 
 func (d *Driver) NewPage(c app.PageConfig) error {
-	href := app.ComponentNameFromURLString(c.DefaultURL)
-	if len(href) == 0 {
-		href = c.DefaultURL
-	}
-
-	js.Global.Call("open", href)
+	js.Global.Get("location").Set("href", c.DefaultURL)
 	return nil
 }
 
