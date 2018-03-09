@@ -1,6 +1,7 @@
 // +build darwin,amd64
 
-// Package mac is the driver to be used for applications that will run on MacOS.
+// Package mac is the driver to be used for apps that run on MacOS.
+// It is build on the top of Cocoa and Webkit.
 package mac
 
 /*

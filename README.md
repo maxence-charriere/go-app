@@ -139,7 +139,7 @@ A driver contains specific code that allows the app package to work on multiple
 platforms.
 
 - [MacOS](https://godoc.org/github.com/murlokswarm/app/drivers/mac)
-- [Web](https://godoc.org/github.com/murlokswarm/app/drivers/web)
+- [Web](https://godoc.org/github.com/murlokswarm/app/drivers/web) - *run on the top of [gopherjs](https://github.com/gopherjs/gopherjs)*
 
 Other drivers will come in the futur.
 

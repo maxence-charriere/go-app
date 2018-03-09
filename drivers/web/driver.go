@@ -1,4 +1,5 @@
 // Package web is the driver to be used for web applications.
+// It is build on the top of GopherJS.
 package web
 
 import (
