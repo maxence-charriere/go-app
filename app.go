@@ -131,15 +131,17 @@ func ElementByComponent(c Component) (ElementWithComponent, error) {
 	return driver.ElementByComponent(c)
 }
 
-func ElementWithNavigationByComponent(c Component) (ElementWithNavigation, error) {
+// NavigatorByComponent returns the navigator where the given component is
+// mounted.
+func NavigatorByComponent(c Component) (Navigator, error) {
 	elem, err := driver.ElementByComponent(c)
 	if err != nil {
 		return nil, err
 	}
 
-	nav, ok := elem.(ElementWithNavigation)
+	nav, ok := elem.(Navigator)
 	if !ok {
-		return nil, errors.New("component is not mounted into an element with navigation")
+		return nil, errors.New("component is not mounted into a navigator")
 	}
 	return nav, nil
 }

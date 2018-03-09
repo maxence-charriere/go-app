@@ -9,7 +9,7 @@ import (
 
 // Window is the interface that describes a window.
 type Window interface {
-	ElementWithNavigation
+	Navigator
 	Closer
 
 	// Base returns the base window without any decorators.

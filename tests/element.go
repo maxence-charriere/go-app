@@ -174,10 +174,10 @@ func testElementWithComponentRenderFail(t *testing.T, e app.ElementWithComponent
 	t.Log(err)
 }
 
-func testElementWithNavigation(t *testing.T, newElem func() (app.ElementWithNavigation, error)) {
+func testElementWithNavigation(t *testing.T, newElem func() (app.Navigator, error)) {
 	tests := []struct {
 		scenario string
-		function func(t *testing.T, elem app.ElementWithNavigation)
+		function func(t *testing.T, elem app.Navigator)
 	}{
 		{
 			scenario: "reload a component",
@@ -223,7 +223,7 @@ func testElementWithNavigation(t *testing.T, newElem func() (app.ElementWithNavi
 	}
 }
 
-func testElementWithNavigationReloadSuccess(t *testing.T, e app.ElementWithNavigation) {
+func testElementWithNavigationReloadSuccess(t *testing.T, e app.Navigator) {
 	if err := e.Load("tests.hello"); err != nil {
 		t.Fatal(err)
 	}
@@ -233,7 +233,7 @@ func testElementWithNavigationReloadSuccess(t *testing.T, e app.ElementWithNavig
 	}
 }
 
-func testElementWithNavigationReloadFail(t *testing.T, e app.ElementWithNavigation) {
+func testElementWithNavigationReloadFail(t *testing.T, e app.Navigator) {
 	err := e.Reload()
 	if err == nil {
 		t.Fatal("error is nil")
@@ -241,7 +241,7 @@ func testElementWithNavigationReloadFail(t *testing.T, e app.ElementWithNavigati
 	t.Log(err)
 }
 
-func testElementWithNavigationPreviousSuccess(t *testing.T, e app.ElementWithNavigation) {
+func testElementWithNavigationPreviousSuccess(t *testing.T, e app.Navigator) {
 	if err := e.Load("tests.hello"); err != nil {
 		t.Fatal(err)
 	}
@@ -263,7 +263,7 @@ func testElementWithNavigationPreviousSuccess(t *testing.T, e app.ElementWithNav
 	}
 }
 
-func testElementWithNavigationPreviousFail(t *testing.T, e app.ElementWithNavigation) {
+func testElementWithNavigationPreviousFail(t *testing.T, e app.Navigator) {
 	if err := e.Load("tests.hello"); err != nil {
 		t.Fatal(err)
 	}
@@ -279,7 +279,7 @@ func testElementWithNavigationPreviousFail(t *testing.T, e app.ElementWithNaviga
 	t.Log(err)
 }
 
-func testElementWithNavigationNextSuccess(t *testing.T, e app.ElementWithNavigation) {
+func testElementWithNavigationNextSuccess(t *testing.T, e app.Navigator) {
 	if err := e.Load("tests.hello"); err != nil {
 		t.Fatal(err)
 	}
@@ -309,7 +309,7 @@ func testElementWithNavigationNextSuccess(t *testing.T, e app.ElementWithNavigat
 	}
 }
 
-func testElementWithNavigationNextFail(t *testing.T, e app.ElementWithNavigation) {
+func testElementWithNavigationNextFail(t *testing.T, e app.Navigator) {
 	if err := e.Load("tests.hello"); err != nil {
 		t.Fatal(err)
 	}

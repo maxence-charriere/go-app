@@ -69,7 +69,7 @@ func testPage(t *testing.T, d app.Driver) {
 		return tester.NewTestPage(app.PageConfig{})
 	})
 
-	testElementWithNavigation(t, func() (app.ElementWithNavigation, error) {
+	testElementWithNavigation(t, func() (app.Navigator, error) {
 		return tester.NewTestPage(app.PageConfig{})
 	})
 }
