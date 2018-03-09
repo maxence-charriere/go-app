@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -31,7 +30,6 @@ func execute(cmd string, args ...string) error {
 	}
 
 	err = command.Wait()
-	fmt.Println()
 	return err
 }
 

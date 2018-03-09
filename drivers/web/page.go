@@ -79,8 +79,6 @@ func (p *Page) Load(rawurl string, v ...interface{}) error {
 	}
 	u.Scheme = "compo"
 
-	fmt.Println("URL:", u)
-
 	var compo app.Component
 	if compo, err = driver.factory.New(app.ComponentNameFromURL(u)); err != nil {
 		return err
