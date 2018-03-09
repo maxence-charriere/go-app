@@ -1,7 +1,6 @@
 package nav
 
 import (
-	"fmt"
 	"net/url"
 
 	"github.com/murlokswarm/app"
@@ -60,9 +59,6 @@ type City struct {
 // It satisfies the app.Navigable interfaces.
 func (c *City) OnNavigate(u *url.URL) {
 	id := u.Query().Get("id")
-
-	fmt.Println("id:", id)
-
 	if len(id) == 0 {
 		id = "paris"
 	}
