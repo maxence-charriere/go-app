@@ -1,4 +1,10 @@
 
+2.3.0 / 2018-03-09
+==================
+
+  * web driver implementation
+  * goapp tool to build web app
+
 2.2.0 / 2018-02-25
 ==================
 
