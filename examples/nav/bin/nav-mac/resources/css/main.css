@@ -1,0 +1,74 @@
+/* 
+** All css file in resources/css directory are included by default.
+*/
+
+body {
+    font-family: 'Helvetica Neue', 'Segoe UI';
+}
+
+.Content {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.21);
+}
+
+.paris {
+    background-image: url("../paris.jpg");
+}
+
+.sf {
+    background-image: url("../sf.jpg");
+}
+
+.beijing {
+    background-image: url("../beijing.jpg");
+}
+
+h1 {
+    margin: 8px 32px;
+    font-size: 56px;
+    font-weight: 300;
+    text-align: center;
+}
+
+p {
+    max-width: 600px;
+    margin: 8px 32px;
+    font-size: 16px;
+    text-align: justify;
+}
+
+.button {
+    display: inline-block;
+    border: 1px solid;
+    border-radius: 8px;
+    text-align: center;
+    padding: 8px;
+    margin: 8px;
+    width: 150px;
+    font-size: 16px;
+    text-decoration: initial;
+    color: white;
+    background-color: transparent;
+}
+
+.button:hover {
+    color: deepskyblue;
+}
+
+.button:disabled {
+    color: silver;
+}
+
+.navButton {
+    width: 100px;
+}

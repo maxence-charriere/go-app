@@ -16,15 +16,17 @@ import (
 // Encoder is a tag encoder based on HTML5.
 // It implements the app.TagEncoder interface.
 type Encoder struct {
-	writer *bufio.Writer
-	markup app.Markup
+	writer     *bufio.Writer
+	markup     app.Markup
+	formatHref bool
 }
 
 // NewEncoder create a tag encoder that writes on the given writer.
-func NewEncoder(w io.Writer, markup app.Markup) *Encoder {
+func NewEncoder(w io.Writer, markup app.Markup, formatHref bool) *Encoder {
 	return &Encoder{
-		writer: bufio.NewWriter(w),
-		markup: markup,
+		writer:     bufio.NewWriter(w),
+		markup:     markup,
+		formatHref: formatHref,
 	}
 }
 
@@ -88,10 +90,16 @@ func (e *Encoder) encodeSimple(tag app.Tag, indent int) error {
 
 func (e *Encoder) encodeAttributes(tag app.Tag) {
 	for name, val := range tag.Attributes {
-		val = AppJSAttributeValue(name, val, e.markup.Factory(), tag.CompoID)
-
 		e.writer.WriteByte(' ')
 		e.writer.WriteString(name)
+
+		val := AttrValueFormatter{
+			Name:       name,
+			Value:      val,
+			FormatHref: e.formatHref,
+			CompoID:    tag.CompoID,
+			Factory:    e.markup.Factory(),
+		}.Format()
 
 		if len(val) == 0 {
 			continue
@@ -129,30 +137,38 @@ func (e *Encoder) encodeIndent(indent int) {
 	}
 }
 
-// AppJSAttributeValue is an helper method that make the given attribute value
-// compatible with appjs.
-func AppJSAttributeValue(name, val string, f app.Factory, compoID uuid.UUID) string {
-	if name == "href" {
-		u, _ := url.Parse(val)
+// AttrValueFormatter represents a attribute value formatter.
+type AttrValueFormatter struct {
+	Name       string
+	Value      string
+	FormatHref bool
+	CompoID    uuid.UUID
+	Factory    app.Factory
+}
+
+// Format formats the attribute value to be compatible with appjs.
+func (a AttrValueFormatter) Format() string {
+	if a.FormatHref && a.Name == "href" {
+		u, _ := url.Parse(a.Value)
 		compoName := app.ComponentNameFromURL(u)
 
-		if f.Registered(compoName) {
+		if a.Factory.Registered(compoName) {
 			u.Scheme = "compo"
 			u.Path = "/" + compoName
 		}
 		return u.String()
 	}
 
-	if !strings.HasPrefix(name, "on") {
-		return val
+	if !strings.HasPrefix(a.Name, "on") {
+		return a.Value
 	}
 
-	if strings.HasPrefix(val, "js:") {
-		return strings.TrimPrefix(val, "js:")
+	if strings.HasPrefix(a.Value, "js:") {
+		return strings.TrimPrefix(a.Value, "js:")
 	}
 
 	return fmt.Sprintf(`callGoEventHandler('%s', '%s', this, event)`,
-		compoID,
-		val,
+		a.CompoID,
+		a.Value,
 	)
 }

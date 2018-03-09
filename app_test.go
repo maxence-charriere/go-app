@@ -2,6 +2,8 @@ package app_test
 
 import (
 	"context"
+	"os"
+	"reflect"
 	"testing"
 
 	"github.com/murlokswarm/app"
@@ -18,6 +20,7 @@ func TestImport(t *testing.T) {
 
 func TestApp(t *testing.T) {
 	var d app.Driver
+	var newPage func(c app.PageConfig) (app.Page, error)
 	ctx, cancel := context.WithCancel(context.Background())
 
 	onRun := func() {
@@ -37,54 +40,11 @@ func TestApp(t *testing.T) {
 			t.Error("storage is not storage/hello/world:", storage)
 		}
 
-		win, err := app.NewWindow(app.WindowConfig{
-			DefaultURL: "tests.foo",
-		})
-		if err != nil {
-			t.Error(err)
-		}
+		testWindow(t)
+		testPage(t, newPage)
+		testMenu(t)
 
-		winCompo := win.Component()
-		if winCompo == nil {
-			t.Error("component is nil")
-		}
-
-		app.Render(winCompo)
-
-		var win2 app.Window
-		if win2, err = app.WindowByComponent(winCompo); err != nil {
-			t.Error(err)
-		}
-
-		if win != win2 {
-			t.Error("win and win2 are different")
-		}
-
-		if _, err = app.WindowByComponent(&tests.Foo{}); err == nil {
-			t.Error("error is nil")
-		}
-
-		var menu app.Menu
-		if menu, err = app.NewContextMenu(app.MenuConfig{
-			DefaultURL: "tests.bar",
-		}); err != nil {
-			t.Error(err)
-		}
-
-		menuCompo := menu.Component()
-		if menuCompo == nil {
-			t.Error("component is nil")
-		}
-
-		if _, err = app.WindowByComponent(menuCompo); err == nil {
-			t.Error("error is nil")
-		}
-
-		if _, err = app.ElementByComponent(menuCompo); err != nil {
-			t.Error(err)
-		}
-
-		err = app.NewFilePanel(app.FilePanelConfig{})
+		err := app.NewFilePanel(app.FilePanelConfig{})
 		if err != nil && !app.NotSupported(err) {
 			t.Error(err)
 		}
@@ -107,21 +67,177 @@ func TestApp(t *testing.T) {
 		app.MenuBar()
 		app.Dock()
 
+		t.Run("css resources", testCSSResources)
+		t.Run("css no resources", testCSSResourcesNoResources)
+
 		app.CallOnUIGoroutine(func() {
 		})
 
 		cancel()
 	}
 
-	d = &test.Driver{
+	dtest := &test.Driver{
 		Ctx:   ctx,
 		OnRun: onRun,
 	}
+	d = dtest
 
 	app.Import(&tests.Foo{})
 	app.Import(&tests.Bar{})
 
+	newPage = func(c app.PageConfig) (app.Page, error) {
+		err := app.NewPage(c)
+		if err != nil {
+			return nil, err
+		}
+		return dtest.Page, nil
+	}
+
 	if err := app.Run(d); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func testWindow(t *testing.T) {
+	win, err := app.NewWindow(app.WindowConfig{
+		DefaultURL: "tests.foo",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	compo := win.Component()
+	if compo == nil {
+		t.Error("component is nil")
+	}
+
+	app.Render(compo)
+
+	var win2 app.Window
+	if win2, err = app.WindowByComponent(compo); err != nil {
+		t.Fatal(err)
+	}
+
+	if win != win2 {
+		t.Fatal("win and win2 are different")
+	}
+
+	if _, err = app.NavigatorByComponent(compo); err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err = app.WindowByComponent(&tests.Foo{}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+
+	if _, err = app.NavigatorByComponent(&tests.Foo{}); err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testPage(t *testing.T, newPage func(c app.PageConfig) (app.Page, error)) {
+	page, err := newPage(app.PageConfig{
+		DefaultURL: "tests.foo",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	compo := page.Component()
+	if compo == nil {
+		t.Fatal("component is nil")
+	}
+
+	app.Render(compo)
+
+	var page2 app.Page
+	if page2, err = app.PageByComponent(compo); err != nil {
+		t.Fatal(err)
+	}
+
+	if page != page2 {
+		t.Fatal("page and page2 are different")
+	}
+
+	if _, err = app.NavigatorByComponent(compo); err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err = newPage(app.PageConfig{
+		DefaultURL: "/ErrorTest",
+	}); err == nil {
+		t.Error("error is nil")
+	}
+	t.Log(err)
+
+	if _, err = app.PageByComponent(&tests.Foo{}); err == nil {
+		t.Error("error is nil")
+	}
+	t.Log(err)
+}
+
+func testMenu(t *testing.T) {
+	menu, err := app.NewContextMenu(app.MenuConfig{
+		DefaultURL: "tests.bar",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	compo := menu.Component()
+	if compo == nil {
+		t.Fatal("component is nil")
+	}
+
+	if _, err = app.ElementByComponent(compo); err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err = app.NavigatorByComponent(compo); err == nil {
+		t.Fatal("error is nil")
+	}
+
+	if _, err = app.WindowByComponent(compo); err == nil {
+		t.Fatal("error is nil")
+	}
+
+	if _, err = app.PageByComponent(compo); err == nil {
+		t.Fatal("error is nil")
+	}
+}
+
+func testCSSResources(t *testing.T) {
+	defer os.RemoveAll(app.Resources())
+
+	os.MkdirAll(app.Resources("css"), 0777)
+	if f1, err := os.Create(app.Resources("css", "test.css")); err == nil {
+		defer f1.Close()
+	}
+	if f2, err := os.Create(app.Resources("css", "test.scss")); err == nil {
+		defer f2.Close()
+	}
+
+	os.MkdirAll(app.Resources("css", "sub"), 0777)
+	if f3, err := os.Create(app.Resources("css", "sub", "sub.css")); err == nil {
+		defer f3.Close()
+	}
+
+	css := app.CSSResources()
+	expected := []string{
+		app.Resources("css", "sub", "sub.css"),
+		app.Resources("css", "test.css"),
+	}
+
+	if !reflect.DeepEqual(css, expected) {
+		t.Error("expected:", expected)
+		t.Error("current :", css)
+	}
+}
+
+func testCSSResourcesNoResources(t *testing.T) {
+	if len(app.CSSResources()) != 0 {
+		t.Error("resources found")
 	}
 }

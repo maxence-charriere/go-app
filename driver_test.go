@@ -21,6 +21,20 @@ func TestDriverWithLogs(t *testing.T) {
 	}, cancel)
 }
 
+func TestDriverWithLogsBaseDriver(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+
+	tests.TestDriver(t, func(onRun func()) app.Driver {
+		d := &test.Driver{
+			Ctx:           ctx,
+			UseBaseDriver: true,
+
+			OnRun: onRun,
+		}
+		return app.NewDriverWithLogs(d)
+	}, cancel)
+}
+
 func TestDriverWithLogsError(t *testing.T) {
 	var d app.Driver = &test.Driver{
 		SimulateErr: true,

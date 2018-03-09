@@ -1,4 +1,4 @@
-package main
+package test
 
 import (
 	"encoding/json"
@@ -12,10 +12,6 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/html"
 )
-
-func init() {
-	app.Import(&Webview{})
-}
 
 // Webview is a component to test webview based elements.
 // It implements the app.Component interface.
@@ -43,7 +39,7 @@ func (c *Webview) Render() string {
 	</p>
 	
 	<ul>
-		<li><a href="webview?page=42">To page 42</a></li>
+		<li><a href="/test.Webview?page=42">To page 42</a></li>
 		<li><a href="unknown?page=42">Unknown compopent</a></li>
 		<li><a href="http://theverge.com">external hyperlink</a></li>
 		<li><button onclick="OnNextPage">Next Page</button></li>
@@ -106,7 +102,7 @@ func (c *Webview) Render() string {
 // requested.
 func (c *Webview) OnContextMenu() {
 	app.NewContextMenu(app.MenuConfig{
-		DefaultURL: "menu",
+		DefaultURL: "/test.Menu",
 		OnClose: func() {
 			app.DefaultLogger.Log("context menu is closed")
 		},
@@ -123,9 +119,9 @@ func (c *Webview) OnNavigate(u *url.URL) {
 		c.Page = 1
 	}
 
-	if win, err := app.WindowByComponent(c); err == nil {
-		c.CanPrevious = win.CanPrevious()
-		c.CanNext = win.CanNext()
+	if nav, err := app.NavigatorByComponent(c); err == nil {
+		c.CanPrevious = nav.CanPrevious()
+		c.CanNext = nav.CanNext()
 	}
 
 	app.Render(c)
@@ -136,6 +132,7 @@ func (c *Webview) OnNavigate(u *url.URL) {
 func (c *Webview) PageConfig() html.PageConfig {
 	return html.PageConfig{
 		Title: fmt.Sprintf("Test component %v", c.Page),
+		DisableDefaultContextMenu: true,
 	}
 }
 
@@ -144,15 +141,15 @@ func (c *Webview) OnNextPage() {
 	page := c.Page
 	page++
 
-	if win, err := app.WindowByComponent(c); err == nil {
-		win.Load("/webview?page=%v", page)
+	if nav, err := app.NavigatorByComponent(c); err == nil {
+		nav.Load("/test.Webview?page=%v", page)
 	}
 }
 
 // OnLink is the function to be called when the External link button is clicked.
 func (c *Webview) OnLink() {
-	if win, err := app.WindowByComponent(c); err == nil {
-		win.Load("http://www.github.com")
+	if nav, err := app.NavigatorByComponent(c); err == nil {
+		nav.Load("http://www.github.com")
 	}
 }
 
@@ -255,13 +252,15 @@ func (c *Webview) OnSavePanel() {
 // OnNotification is the function that is called when the Notification button is
 // clicked.
 func (c *Webview) OnNotification() {
-	app.NewNotification(app.NotificationConfig{
+	if err := app.NewNotification(app.NotificationConfig{
 		Title:     "hello",
 		Subtitle:  "world",
 		Text:      uuid.New().String(),
 		ImageName: filepath.Join(app.Resources(), "logo.png"),
 		Sound:     true,
-	})
+	}); err != nil {
+		app.Error(err)
+	}
 }
 
 // OnNotificationWithReply is the function that is called when the Notification
@@ -269,7 +268,7 @@ func (c *Webview) OnNotification() {
 func (c *Webview) OnNotificationWithReply() {
 	id := uuid.New().String()
 
-	app.NewNotification(app.NotificationConfig{
+	if err := app.NewNotification(app.NotificationConfig{
 		Title:     "hello",
 		Subtitle:  "world",
 		Text:      id,
@@ -283,35 +282,37 @@ func (c *Webview) OnNotificationWithReply() {
 				Sound:    true,
 			})
 		},
-	})
+	}); err != nil {
+		app.Error(err)
+	}
 }
 
 // OnPrevious is the function that is called when the previous button is
 // clicked.
 func (c *Webview) OnPrevious() {
-	win, err := app.WindowByComponent(c)
+	nav, err := app.NavigatorByComponent(c)
 	if err != nil {
 		app.Error(err)
 	}
-	win.Previous()
+	nav.Previous()
 }
 
 // OnReload is the function that is called when the reload button is clicked.
 func (c *Webview) OnReload() {
-	win, err := app.WindowByComponent(c)
+	nav, err := app.NavigatorByComponent(c)
 	if err != nil {
 		app.Error(err)
 	}
-	win.Reload()
+	nav.Reload()
 }
 
 // OnNext is the function that is called when the next button is clicked.
 func (c *Webview) OnNext() {
-	win, err := app.WindowByComponent(c)
+	nav, err := app.NavigatorByComponent(c)
 	if err != nil {
 		app.Error(err)
 	}
-	win.Next()
+	nav.Next()
 }
 
 // OnDragStart is the function that is called when the node is dragged.

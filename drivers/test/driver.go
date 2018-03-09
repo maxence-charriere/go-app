@@ -16,13 +16,17 @@ var (
 
 // Driver is an app.Driver implementation for testing.
 type Driver struct {
-	SimulateErr bool
-	Ctx         context.Context
+	app.BaseDriver
+
+	SimulateErr   bool
+	UseBaseDriver bool
+	Ctx           context.Context
+	Page          app.Page
 
 	OnRun func()
 
 	factory  app.Factory
-	elements app.ElementDB
+	elements app.ElemDB
 	dock     app.DockTile
 	menubar  app.Menu
 	uichan   chan func()
@@ -31,6 +35,11 @@ type Driver struct {
 // Name satisfies the app.Driver interface.
 func (d *Driver) Name() string {
 	return "Test"
+}
+
+// Base satisfies the app.Driver interface.
+func (d *Driver) Base() app.Driver {
+	return d
 }
 
 // Run satisfies the app.Driver interface.
@@ -100,6 +109,9 @@ func (d *Driver) Storage(path ...string) string {
 
 // NewWindow satisfies the app.Driver interface.
 func (d *Driver) NewWindow(c app.WindowConfig) (app.Window, error) {
+	if d.UseBaseDriver {
+		return d.BaseDriver.NewWindow(c)
+	}
 	if d.SimulateErr {
 		return nil, ErrSimulated
 	}
@@ -108,10 +120,43 @@ func (d *Driver) NewWindow(c app.WindowConfig) (app.Window, error) {
 
 // NewContextMenu satisfies the app.Driver interface.
 func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
+	if d.UseBaseDriver {
+		return d.BaseDriver.NewContextMenu(c)
+	}
 	if d.SimulateErr {
 		return nil, ErrSimulated
 	}
 	return newMenu(d, "context menu", c)
+}
+
+// NewPage satisfies the app.Driver interface.
+func (d *Driver) NewPage(c app.PageConfig) error {
+	if d.UseBaseDriver {
+		return d.BaseDriver.NewPage(c)
+	}
+	if d.SimulateErr {
+		return ErrSimulated
+	}
+
+	if d.Page != nil {
+		d.Page.Close()
+		d.Page = nil
+	}
+
+	page, err := newPage(d, c)
+	if err != nil {
+		return err
+	}
+	d.Page = page
+	return nil
+}
+
+// NewTestPage satisfies the tests.PageTester interface.
+func (d *Driver) NewTestPage(c app.PageConfig) (app.Page, error) {
+	if err := d.NewPage(c); err != nil {
+		return nil, err
+	}
+	return d.Page, nil
 }
 
 // Render satisfies the app.Driver interface.
@@ -132,34 +177,20 @@ func (d *Driver) ElementByComponent(c app.Component) (app.ElementWithComponent, 
 	return d.elements.ElementByComponent(c)
 }
 
-// NewFilePanel satisfies the app.Driver interface.
-func (d *Driver) NewFilePanel(c app.FilePanelConfig) error {
-	return app.NewErrNotSupported("file panels")
-}
-
-// NewSaveFilePanel satisfies the app.Driver interface.
-func (d *Driver) NewSaveFilePanel(c app.SaveFilePanelConfig) error {
-	return app.NewErrNotSupported("save file panels")
-}
-
-// NewShare satisfies the app.Driver interface.
-func (d *Driver) NewShare(v interface{}) error {
-	return app.NewErrNotSupported("share")
-}
-
-// NewNotification satisfies the app.Driver interface.
-func (d *Driver) NewNotification(c app.NotificationConfig) error {
-	return app.NewErrNotSupported("notifications")
-}
-
 // MenuBar satisfies the app.Driver interface.
-func (d *Driver) MenuBar() app.Menu {
-	return d.menubar
+func (d *Driver) MenuBar() (app.Menu, error) {
+	if d.UseBaseDriver {
+		return d.BaseDriver.MenuBar()
+	}
+	return d.menubar, nil
 }
 
 // Dock satisfies the app.Driver interface.
-func (d *Driver) Dock() app.DockTile {
-	return d.dock
+func (d *Driver) Dock() (app.DockTile, error) {
+	if d.UseBaseDriver {
+		return d.BaseDriver.Dock()
+	}
+	return d.dock, nil
 }
 
 // CallOnUIGoroutine satisfies the app.Driver interface.

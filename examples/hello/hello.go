@@ -1,12 +1,4 @@
-package main
-
-import (
-	"github.com/murlokswarm/app"
-)
-
-func init() {
-	app.Import(&Hello{})
-}
+package hello
 
 // Hello is a hello world component.
 type Hello struct {

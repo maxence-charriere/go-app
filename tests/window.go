@@ -26,46 +26,6 @@ func testWindow(t *testing.T, d app.Driver) {
 			function: testWindowIsDecorated,
 		},
 		{
-			scenario: "load a component",
-			function: testWindowLoadSuccess,
-		},
-		{
-			scenario: "load a component fails",
-			function: testWindowLoadFail,
-		},
-		{
-			scenario: "render a component",
-			function: testWindowRenderSuccess,
-		},
-		{
-			scenario: "render a component fails",
-			function: testWindowRenderFail,
-		},
-		{
-			scenario: "reload a component",
-			function: testWindowReloadSuccess,
-		},
-		{
-			scenario: "reload a component fails",
-			function: testWindowReloadFail,
-		},
-		{
-			scenario: "load previous component",
-			function: testWindowPreviousSuccess,
-		},
-		{
-			scenario: "load previous component fails",
-			function: testWindowPreviousFail,
-		},
-		{
-			scenario: "load next component",
-			function: testWindowNextSuccess,
-		},
-		{
-			scenario: "load next component fails",
-			function: testWindowNextFail,
-		},
-		{
 			scenario: "move",
 			function: testWindowMove,
 		},
@@ -104,166 +64,20 @@ func testWindow(t *testing.T, d app.Driver) {
 			test.function(t, w)
 		})
 	}
+
+	testElementWithComponent(t, func() (app.ElementWithComponent, error) {
+		return d.NewWindow(app.WindowConfig{})
+	})
+
+	testElementWithNavigation(t, func() (app.Navigator, error) {
+		return d.NewWindow(app.WindowConfig{})
+	})
 }
 
 func testWindowIsDecorated(t *testing.T, w app.Window) {
 	if base := w.Base(); base == w {
 		t.Error("window is not decorated")
 	}
-}
-
-func testWindowLoadSuccess(t *testing.T, w app.Window) {
-	if err := w.Load("tests.hello"); err != nil {
-		t.Fatal(err)
-	}
-}
-
-func testWindowLoadFail(t *testing.T, w app.Window) {
-	err := w.Load("tests.abracadabra")
-	if err == nil {
-		t.Fatal("error is nil")
-	}
-	t.Log(err)
-}
-
-func testWindowRenderSuccess(t *testing.T, w app.Window) {
-	if err := w.Load("tests.hello"); err != nil {
-		t.Fatal(err)
-	}
-
-	compo := w.Component()
-	if compo == nil {
-		t.Fatal("component is nil")
-	}
-
-	hello := compo.(*Hello)
-	hello.Name = "Maxence"
-
-	if err := w.Render(hello); err != nil {
-		t.Fatal(err)
-	}
-}
-
-func testWindowRenderFail(t *testing.T, w app.Window) {
-	if err := w.Load("tests.hello"); err != nil {
-		t.Fatal(err)
-	}
-
-	compo := w.Component()
-	if compo == nil {
-		t.Fatal("component is nil")
-	}
-
-	hello := compo.(*Hello)
-	hello.TmplErr = true
-
-	err := w.Render(hello)
-	if err == nil {
-		t.Fatal("error is nil")
-	}
-	t.Log(err)
-}
-
-func testWindowReloadSuccess(t *testing.T, w app.Window) {
-	if err := w.Load("tests.hello"); err != nil {
-		t.Fatal(err)
-	}
-
-	if err := w.Reload(); err != nil {
-		t.Fatal(err)
-	}
-}
-
-func testWindowReloadFail(t *testing.T, w app.Window) {
-	err := w.Reload()
-	if err == nil {
-		t.Fatal("error is nil")
-	}
-	t.Log(err)
-}
-
-func testWindowPreviousSuccess(t *testing.T, w app.Window) {
-	if err := w.Load("tests.hello"); err != nil {
-		t.Fatal(err)
-	}
-
-	if w.CanPrevious() {
-		t.Fatal("can previous is true")
-	}
-
-	if err := w.Load("tests.world"); err != nil {
-		t.Fatal(err)
-	}
-
-	if !w.CanPrevious() {
-		t.Fatal("can previous is false")
-	}
-
-	if err := w.Previous(); err != nil {
-		t.Fatal(err)
-	}
-}
-
-func testWindowPreviousFail(t *testing.T, w app.Window) {
-	if err := w.Load("tests.hello"); err != nil {
-		t.Fatal(err)
-	}
-
-	if w.CanPrevious() {
-		t.Fatal("can previous is true")
-	}
-
-	err := w.Previous()
-	if err == nil {
-		t.Fatal("error is nil")
-	}
-	t.Log(err)
-}
-
-func testWindowNextSuccess(t *testing.T, w app.Window) {
-	if err := w.Load("tests.hello"); err != nil {
-		t.Fatal(err)
-	}
-
-	if w.CanNext() {
-		t.Fatal("can next is true")
-	}
-
-	if err := w.Load("tests.world"); err != nil {
-		t.Fatal(err)
-	}
-
-	if w.CanNext() {
-		t.Fatal("can next is true")
-	}
-
-	if err := w.Previous(); err != nil {
-		t.Fatal(err)
-	}
-
-	if !w.CanNext() {
-		t.Fatal("can next is false")
-	}
-
-	if err := w.Next(); err != nil {
-		t.Fatal(err)
-	}
-}
-
-func testWindowNextFail(t *testing.T, w app.Window) {
-	if err := w.Load("tests.hello"); err != nil {
-		t.Fatal(err)
-	}
-
-	if w.CanNext() {
-		t.Fatal("can next is true")
-	}
-
-	err := w.Next()
-	if err == nil {
-		t.Fatal("error is nil")
-	}
-	t.Log(err)
 }
 
 func testWindowMove(t *testing.T, w app.Window) {

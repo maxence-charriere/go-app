@@ -9,6 +9,9 @@ type Driver interface {
 	// Name returns the driver name.
 	Name() string
 
+	// Base returns the base driver without any decorators.
+	Base() Driver
+
 	// Run runs the application with the components registered in the given
 	// factory.
 	Run(f Factory) error
@@ -32,6 +35,9 @@ type Driver interface {
 	// given configuration.
 	NewContextMenu(c MenuConfig) (Menu, error)
 
+	// NewPage creates the webpage described in the given configuration.
+	NewPage(c PageConfig) error
+
 	// Render renders the given component.
 	Render(c Component) error
 
@@ -54,13 +60,64 @@ type Driver interface {
 	NewNotification(c NotificationConfig) error
 
 	// MenuBar returns the menu bar.
-	MenuBar() Menu
+	MenuBar() (Menu, error)
 
 	// Dock returns the dock tile.
-	Dock() DockTile
+	Dock() (DockTile, error)
 
 	// CallOnUIGoroutine calls a function on the UI goroutine.
 	CallOnUIGoroutine(f func())
+}
+
+// BaseDriver represents a base driver to be embedded in app.Driver
+// implementations.
+// It only contains methods related to features.
+// All the methods return not supported error.
+type BaseDriver struct{}
+
+// NewWindow satisfies the app.Driver interface.
+func (d *BaseDriver) NewWindow(c WindowConfig) (Window, error) {
+	return nil, NewErrNotSupported("window")
+}
+
+// NewContextMenu satisfies the app.Driver interface.
+func (d *BaseDriver) NewContextMenu(c MenuConfig) (Menu, error) {
+	return nil, NewErrNotSupported("context menu")
+}
+
+// NewPage satisfies the app.Driver interface.
+func (d *BaseDriver) NewPage(c PageConfig) error {
+	return NewErrNotSupported("page")
+}
+
+// NewFilePanel satisfies the app.Driver interface.
+func (d *BaseDriver) NewFilePanel(c FilePanelConfig) error {
+	return NewErrNotSupported("file panel")
+}
+
+// NewSaveFilePanel satisfies the app.Driver interface.
+func (d *BaseDriver) NewSaveFilePanel(c SaveFilePanelConfig) error {
+	return NewErrNotSupported("save file panel")
+}
+
+// NewShare satisfies the app.Driver interface.
+func (d *BaseDriver) NewShare(v interface{}) error {
+	return NewErrNotSupported("share")
+}
+
+// NewNotification satisfies the app.Driver interface.
+func (d *BaseDriver) NewNotification(c NotificationConfig) error {
+	return NewErrNotSupported("notification")
+}
+
+// MenuBar satisfies the app.Driver interface.
+func (d *BaseDriver) MenuBar() (Menu, error) {
+	return nil, NewErrNotSupported("menubar")
+}
+
+// Dock satisfies the app.Driver interface.
+func (d *BaseDriver) Dock() (DockTile, error) {
+	return nil, NewErrNotSupported("dock")
 }
 
 // NewDriverWithLogs returns a decorated version of the given driver that logs
@@ -80,6 +137,10 @@ func (d *driverWithLogs) Name() string {
 	name := d.base.Name()
 	Log("driver name:", name)
 	return name
+}
+
+func (d *driverWithLogs) Base() Driver {
+	return d.base.Base()
 }
 
 func (d *driverWithLogs) Run(f Factory) error {
@@ -126,6 +187,26 @@ func (d *driverWithLogs) NewContextMenu(c MenuConfig) (Menu, error) {
 		Error("creating context menu failed:", err)
 	}
 	return menu, err
+}
+
+func (d *driverWithLogs) NewPage(c PageConfig) error {
+	Log("creating page:", indentedJSON(c))
+
+	err := d.base.NewPage(c)
+	if err != nil {
+		Error("creating page failed:", err)
+	}
+	return err
+}
+
+// NewPage satisfies the app.Driver interface.
+func (d *driverWithLogs) NewTestPage(c PageConfig) (Page, error) {
+	type pageTester interface {
+		NewTestPage(c PageConfig) (Page, error)
+	}
+
+	tester := d.base.(pageTester)
+	return tester.NewTestPage(c)
 }
 
 func (d *driverWithLogs) Render(c Component) error {
@@ -188,14 +269,24 @@ func (d *driverWithLogs) NewNotification(c NotificationConfig) error {
 	return err
 }
 
-func (d *driverWithLogs) MenuBar() Menu {
+func (d *driverWithLogs) MenuBar() (Menu, error) {
 	Log("returning menu bar")
-	return d.base.MenuBar()
+
+	menu, err := d.base.MenuBar()
+	if err != nil {
+		Errorf("returning menubar failed: %s", err)
+	}
+	return menu, err
 }
 
-func (d *driverWithLogs) Dock() DockTile {
-	Log("returning dock tile")
-	return d.base.Dock()
+func (d *driverWithLogs) Dock() (DockTile, error) {
+	Log("returning dock")
+
+	dock, err := d.base.Dock()
+	if err != nil {
+		Errorf("returning dock failed: %s", err)
+	}
+	return dock, err
 }
 
 func (d *driverWithLogs) CallOnUIGoroutine(f func()) {

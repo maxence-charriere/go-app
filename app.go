@@ -1,6 +1,9 @@
 package app
 
 import (
+	"os"
+	"path/filepath"
+
 	"github.com/pkg/errors"
 )
 
@@ -54,6 +57,32 @@ func Resources(path ...string) string {
 	return driver.Resources(path...)
 }
 
+// CSSResources returns a list that contains the path of the css files located
+// in the resource/css directory.
+func CSSResources() []string {
+	var css []string
+
+	walker := func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		if ext := filepath.Ext(path); ext != ".css" {
+			return nil
+		}
+
+		css = append(css, path)
+		return nil
+	}
+
+	filepath.Walk(Resources("css"), walker)
+	return css
+}
+
 // Storage returns the given path prefixed by the storage directory
 // location.
 //
@@ -68,6 +97,13 @@ func Storage(path ...string) string {
 // It panics if called before Run.
 func NewWindow(c WindowConfig) (Window, error) {
 	return driver.NewWindow(c)
+}
+
+// NewPage creates the page described by the given configuration.
+//
+// It panics if called before Run.
+func NewPage(c PageConfig) error {
+	return driver.NewPage(c)
 }
 
 // NewContextMenu creates and displays the context menu described by the
@@ -95,6 +131,21 @@ func ElementByComponent(c Component) (ElementWithComponent, error) {
 	return driver.ElementByComponent(c)
 }
 
+// NavigatorByComponent returns the navigator where the given component is
+// mounted.
+func NavigatorByComponent(c Component) (Navigator, error) {
+	elem, err := driver.ElementByComponent(c)
+	if err != nil {
+		return nil, err
+	}
+
+	nav, ok := elem.(Navigator)
+	if !ok {
+		return nil, errors.New("component is not mounted into a navigator")
+	}
+	return nav, nil
+}
+
 // WindowByComponent returns the window where the given component is mounted.
 //
 // It panics if called before Run.
@@ -109,6 +160,20 @@ func WindowByComponent(c Component) (Window, error) {
 		return nil, errors.New("component is not mounted in a window")
 	}
 	return win, nil
+}
+
+// PageByComponent returns the page where the given component is mounted.
+func PageByComponent(c Component) (Page, error) {
+	elem, err := driver.ElementByComponent(c)
+	if err != nil {
+		return nil, err
+	}
+
+	page, ok := elem.(Page)
+	if !ok {
+		return nil, errors.New("component is not mounted in a page")
+	}
+	return page, nil
 }
 
 // NewFilePanel creates and displays the file panel described by the given
@@ -145,14 +210,14 @@ func NewNotification(c NotificationConfig) error {
 // MenuBar returns the menu bar.
 //
 // It panics if called before Run.
-func MenuBar() Menu {
+func MenuBar() (Menu, error) {
 	return driver.MenuBar()
 }
 
 // Dock returns the dock tile.
 //
 // It panics if called before Run.
-func Dock() DockTile {
+func Dock() (DockTile, error) {
 	return driver.Dock()
 }
 

@@ -20,12 +20,13 @@ const pageTemplate = `
             height: 100%;
             width: 100%;
             margin: 0;
+            overflow: hidden;
         }
     </style>{{end}}
     {{range .CSS}}
     <link type="text/css" rel="stylesheet" href="{{.}}">{{end}}
 </head>
-<body oncontextmenu="event.preventDefault()">
+<body oncontextmenu="{{if .DisableDefaultContextMenu}}event.preventDefault(){{end}}">
     {{.DefaultComponent}}
 
     {{if .AppJS}}<script>{{.AppJS}}

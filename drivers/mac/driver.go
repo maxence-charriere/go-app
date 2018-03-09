@@ -29,20 +29,40 @@ var (
 
 // Driver is the app.Driver implementation for MacOS.
 type Driver struct {
-	MenubarConfig MenuBarConfig
-	DockURL       string
+	app.BaseDriver
 
-	OnRun       func()
-	OnFocus     func()
-	OnBlur      func()
-	OnReopen    func(hasVisibleWindows bool)
+	// Menubar configuration
+	MenubarConfig MenuBarConfig
+
+	// Component url to load in the dock.
+	DockURL string
+
+	// The handler called when the app is running.
+	OnRun func()
+
+	// The handler called when the app is focused.
+	OnFocus func()
+
+	// The handler called when the app loses focus.
+	OnBlur func()
+
+	// The handler called when the app is reopened.
+	OnReopen func(hasVisibleWindows bool)
+
+	// The handler called when a file associated with the app is opened.
 	OnFilesOpen func(filenames []string)
-	OnURLOpen   func(u *url.URL)
-	OnQuit      func() bool
-	OnExit      func()
+
+	// The handler called when the app URI is invoked.
+	OnURLOpen func(u *url.URL)
+
+	// The handler called when the quit button is clicked.
+	OnQuit func() bool
+
+	// The handler called when the app is about to exit.
+	OnExit func()
 
 	factory      app.Factory
-	elements     app.ElementDB
+	elements     app.ElemDB
 	uichan       chan func()
 	cancel       func()
 	macos        bridge.PlatformBridge
@@ -56,6 +76,11 @@ type Driver struct {
 // Name satisfies the app.Driver interface.
 func (d *Driver) Name() string {
 	return "MacOS"
+}
+
+// Base satisfies the app.Driver interface.
+func (d *Driver) Base() app.Driver {
+	return d
 }
 
 // Run satisfies the app.Driver interface.
@@ -360,8 +385,8 @@ func (d *Driver) NewNotification(config app.NotificationConfig) error {
 }
 
 // MenuBar satisfies the app.DriverWithMenuBar interface.
-func (d *Driver) MenuBar() app.Menu {
-	return d.menubar
+func (d *Driver) MenuBar() (app.Menu, error) {
+	return d.menubar, nil
 }
 
 func (d *Driver) newMenuBar() error {
@@ -401,8 +426,8 @@ func (d *Driver) newMenuBar() error {
 }
 
 // Dock satisfies the app.DriverWithDock interface.
-func (d *Driver) Dock() app.DockTile {
-	return d.dock
+func (d *Driver) Dock() (app.DockTile, error) {
+	return d.dock, nil
 }
 
 // CallOnUIGoroutine satisfies the app.Driver interface.
@@ -410,8 +435,8 @@ func (d *Driver) CallOnUIGoroutine(f func()) {
 	d.uichan <- f
 }
 
-// Quit quits the app.
-func (d *Driver) Quit() {
+// Close quits the app.
+func (d *Driver) Close() {
 	d.macos.Request("/driver/quit", nil)
 }
 

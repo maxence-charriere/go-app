@@ -21,13 +21,19 @@ func TestDriver(t *testing.T, setup func(onRun func()) app.Driver, shutdown func
 
 		t.Log("testing driver", driver.Name())
 		t.Run("window", func(t *testing.T) { testWindow(t, driver) })
-		t.Run("text menu", func(t *testing.T) { testContextMenu(t, driver) })
+		t.Run("page", func(t *testing.T) { testPage(t, driver) })
+		t.Run("context menu", func(t *testing.T) { testContextMenu(t, driver) })
+		t.Run("menubar", func(t *testing.T) { testMenubar(t, driver) })
 		t.Run("dock", func(t *testing.T) { testDockTile(t, driver) })
 	}
 
 	driver = setup(onRun)
 
-	if err := app.Run(driver); err != nil {
+	err := app.Run(driver)
+	if app.NotSupported(err) {
+		return
+	}
+	if err != nil {
 		t.Error(err)
 	}
 }

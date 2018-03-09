@@ -12,7 +12,7 @@ import "fmt"
 // function to perform a go bridge request.
 func AppJS(golangRequest string) template.JS {
 	return template.JS(fmt.Sprintf(`
-function golangRequest(payload) {
+var golangRequest = function (payload) {
 	%s(payload);
 }
 %s`, golangRequest, appjs))

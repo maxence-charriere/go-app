@@ -24,7 +24,6 @@ type Window struct {
 	width     float64
 	height    float64
 
-	onLoad  func(compo app.Component)
 	onClose func()
 }
 
@@ -107,10 +106,6 @@ func (w *Window) load(u *url.URL) error {
 	}
 
 	w.component = compo
-
-	if w.onLoad != nil {
-		w.onLoad(compo)
-	}
 	return nil
 }
 

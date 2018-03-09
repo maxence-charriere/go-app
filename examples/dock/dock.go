@@ -37,7 +37,12 @@ func (m *DockMenu) OnChangeIcon() {
 		icon = app.Resources("logo.png")
 	}
 
-	if err := app.Dock().SetIcon(icon); err != nil {
+	dock, err := app.Dock()
+	if err != nil {
+		app.Error(err)
+		return
+	}
+	if err = dock.SetIcon(icon); err != nil {
 		app.Error(err)
 	}
 }
@@ -54,7 +59,12 @@ func (m *DockMenu) OnChangeBadge() {
 		badge = "world"
 	}
 
-	if err := app.Dock().SetBadge(badge); err != nil {
+	dock, err := app.Dock()
+	if err != nil {
+		app.Error(err)
+		return
+	}
+	if err = dock.SetBadge(badge); err != nil {
 		app.Error(err)
 	}
 }

@@ -81,64 +81,308 @@ func (e *elementWithComponent) LastFocus() time.Time {
 	return e.lastFocus
 }
 
-// TestElemDB is a test suite used to ensure that all element databases
-// implementations behave the same.
-func TestElemDB(t *testing.T, newElementDB func() app.ElementDB) {
+func testElementWithComponent(t *testing.T, newElem func() (app.ElementWithComponent, error)) {
 	tests := []struct {
 		scenario string
-		function func(t *testing.T, db app.ElementDB)
+		function func(t *testing.T, elem app.ElementWithComponent)
 	}{
 		{
-			scenario: "adds an element",
-			function: testElementDBAdd,
+			scenario: "load a component",
+			function: testElementWithComponentLoadSuccess,
 		},
 		{
-			scenario: "adds an element with components",
-			function: testElementDBAddElementWithComponent,
+			scenario: "load a component fails",
+			function: testElementWithComponentLoadFail,
 		},
 		{
-			scenario: "adding element with same id returns an error",
-			function: testElementDBAddElementWithSameID,
+			scenario: "render a component",
+			function: testElementWithComponentRenderSuccess,
 		},
 		{
-			scenario: "removes an element",
-			function: testElementDBRemove,
-		},
-		{
-			scenario: "get an element",
-			function: testElementDBElement,
-		},
-		{
-			scenario: "get a nonexistent element returns false",
-			function: testElementDBElementNotFound,
-		},
-		{
-			scenario: "get an element by component",
-			function: testElementDBElementByComponent,
-		},
-		{
-			scenario: "get an element by not mounted component returns an error",
-			function: testElementDBElementByComponentNotFound,
-		},
-		{
-			scenario: "sorts the elements with components",
-			function: testElementDBSort,
-		},
-		{
-			scenario: "get the number of elements",
-			function: testElementDBLen,
+			scenario: "render a component fails",
+			function: testElementWithComponentRenderFail,
 		},
 	}
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
-			test.function(t, newElementDB())
+			elem, err := newElem()
+			if app.NotSupported(err) {
+				return
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+			if closer, ok := elem.(app.Closer); ok {
+				defer closer.Close()
+			}
+
+			test.function(t, elem)
+		})
+	}
+}
+
+func testElementWithComponentLoadSuccess(t *testing.T, e app.ElementWithComponent) {
+	if err := e.Load("tests.hello"); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func testElementWithComponentLoadFail(t *testing.T, e app.ElementWithComponent) {
+	err := e.Load("tests.abracadabra")
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testElementWithComponentRenderSuccess(t *testing.T, e app.ElementWithComponent) {
+	if err := e.Load("tests.hello"); err != nil {
+		t.Fatal(err)
+	}
+
+	compo := e.Component()
+	if compo == nil {
+		t.Fatal("component is nil")
+	}
+
+	hello := compo.(*Hello)
+	hello.Name = "Maxence"
+
+	if err := e.Render(hello); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func testElementWithComponentRenderFail(t *testing.T, e app.ElementWithComponent) {
+	if err := e.Load("tests.hello"); err != nil {
+		t.Fatal(err)
+	}
+
+	compo := e.Component()
+	if compo == nil {
+		t.Fatal("component is nil")
+	}
+
+	hello := compo.(*Hello)
+	hello.TmplErr = true
+
+	err := e.Render(hello)
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testElementWithNavigation(t *testing.T, newElem func() (app.Navigator, error)) {
+	tests := []struct {
+		scenario string
+		function func(t *testing.T, elem app.Navigator)
+	}{
+		{
+			scenario: "reload a component",
+			function: testElementWithNavigationReloadSuccess,
+		},
+		{
+			scenario: "reload a component fails",
+			function: testElementWithNavigationReloadFail,
+		},
+		{
+			scenario: "load previous component",
+			function: testElementWithNavigationPreviousSuccess,
+		},
+		{
+			scenario: "load previous component fails",
+			function: testElementWithNavigationPreviousFail,
+		},
+		{
+			scenario: "load next component",
+			function: testElementWithNavigationNextSuccess,
+		},
+		{
+			scenario: "load next component fails",
+			function: testElementWithNavigationNextFail,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.scenario, func(t *testing.T) {
+			elem, err := newElem()
+			if app.NotSupported(err) {
+				return
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+			if closer, ok := elem.(app.Closer); ok {
+				defer closer.Close()
+			}
+
+			test.function(t, elem)
+		})
+	}
+}
+
+func testElementWithNavigationReloadSuccess(t *testing.T, e app.Navigator) {
+	if err := e.Load("tests.hello"); err != nil {
+		t.Fatal(err)
+	}
+
+	if err := e.Reload(); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func testElementWithNavigationReloadFail(t *testing.T, e app.Navigator) {
+	err := e.Reload()
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testElementWithNavigationPreviousSuccess(t *testing.T, e app.Navigator) {
+	if err := e.Load("tests.hello"); err != nil {
+		t.Fatal(err)
+	}
+
+	if e.CanPrevious() {
+		t.Fatal("can previous is true")
+	}
+
+	if err := e.Load("tests.world"); err != nil {
+		t.Fatal(err)
+	}
+
+	if !e.CanPrevious() {
+		t.Fatal("can previous is false")
+	}
+
+	if err := e.Previous(); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func testElementWithNavigationPreviousFail(t *testing.T, e app.Navigator) {
+	if err := e.Load("tests.hello"); err != nil {
+		t.Fatal(err)
+	}
+
+	if e.CanPrevious() {
+		t.Fatal("can previous is true")
+	}
+
+	err := e.Previous()
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+func testElementWithNavigationNextSuccess(t *testing.T, e app.Navigator) {
+	if err := e.Load("tests.hello"); err != nil {
+		t.Fatal(err)
+	}
+
+	if e.CanNext() {
+		t.Fatal("can next is true")
+	}
+
+	if err := e.Load("tests.world"); err != nil {
+		t.Fatal(err)
+	}
+
+	if e.CanNext() {
+		t.Fatal("can next is true")
+	}
+
+	if err := e.Previous(); err != nil {
+		t.Fatal(err)
+	}
+
+	if !e.CanNext() {
+		t.Fatal("can next is false")
+	}
+
+	if err := e.Next(); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func testElementWithNavigationNextFail(t *testing.T, e app.Navigator) {
+	if err := e.Load("tests.hello"); err != nil {
+		t.Fatal(err)
+	}
+
+	if e.CanNext() {
+		t.Fatal("can next is true")
+	}
+
+	err := e.Next()
+	if err == nil {
+		t.Fatal("error is nil")
+	}
+	t.Log(err)
+}
+
+// TestElemDB is a test suite used to ensure that all element databases
+// implementations behave the same.
+func TestElemDB(t *testing.T, newElemDB func() app.ElemDB) {
+	tests := []struct {
+		scenario string
+		function func(t *testing.T, db app.ElemDB)
+	}{
+		{
+			scenario: "adds an element",
+			function: testElemDBAdd,
+		},
+		{
+			scenario: "adds an element with components",
+			function: testElemDBAddElementWithComponent,
+		},
+		{
+			scenario: "adding element with same id returns an error",
+			function: testElemDBAddElementWithSameID,
+		},
+		{
+			scenario: "removes an element",
+			function: testElemDBRemove,
+		},
+		{
+			scenario: "get an element",
+			function: testElemDBElement,
+		},
+		{
+			scenario: "get a nonexistent element returns false",
+			function: testElemDBElementNotFound,
+		},
+		{
+			scenario: "get an element by component",
+			function: testElemDBElementByComponent,
+		},
+		{
+			scenario: "get an element by not mounted component returns an error",
+			function: testElemDBElementByComponentNotFound,
+		},
+		{
+			scenario: "sorts the elements with components",
+			function: testElemDBSort,
+		},
+		{
+			scenario: "get the number of elements",
+			function: testElemDBLen,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.scenario, func(t *testing.T) {
+			test.function(t, newElemDB())
 		})
 
 	}
 }
 
-func testElementDBAdd(t *testing.T, db app.ElementDB) {
+func testElemDBAdd(t *testing.T, db app.ElemDB) {
 	if err := db.Add(newElement()); err != nil {
 		t.Fatal(err)
 	}
@@ -150,7 +394,7 @@ func testElementDBAdd(t *testing.T, db app.ElementDB) {
 	}
 }
 
-func testElementDBAddElementWithComponent(t *testing.T, db app.ElementDB) {
+func testElemDBAddElementWithComponent(t *testing.T, db app.ElemDB) {
 	if err := db.Add(newElementWithComponent()); err != nil {
 		t.Fatal(err)
 	}
@@ -162,7 +406,7 @@ func testElementDBAddElementWithComponent(t *testing.T, db app.ElementDB) {
 	}
 }
 
-func testElementDBAddElementWithSameID(t *testing.T, db app.ElementDB) {
+func testElemDBAddElementWithSameID(t *testing.T, db app.ElemDB) {
 	elem := newElementWithComponent()
 
 	if err := db.Add(elem); err != nil {
@@ -176,7 +420,7 @@ func testElementDBAddElementWithSameID(t *testing.T, db app.ElementDB) {
 	t.Log(err)
 }
 
-func testElementDBRemove(t *testing.T, db app.ElementDB) {
+func testElemDBRemove(t *testing.T, db app.ElemDB) {
 	elem := newElementWithComponent()
 
 	if err := db.Add(elem); err != nil {
@@ -193,7 +437,7 @@ func testElementDBRemove(t *testing.T, db app.ElementDB) {
 	}
 }
 
-func testElementDBElement(t *testing.T, db app.ElementDB) {
+func testElemDBElement(t *testing.T, db app.ElemDB) {
 	elem := newElementWithComponent()
 
 	if err := db.Add(elem); err != nil {
@@ -209,7 +453,7 @@ func testElementDBElement(t *testing.T, db app.ElementDB) {
 	}
 }
 
-func testElementDBElementNotFound(t *testing.T, db app.ElementDB) {
+func testElemDBElementNotFound(t *testing.T, db app.ElemDB) {
 	_, err := db.Element(uuid.New())
 	if err == nil {
 		t.Fatal("error is nil")
@@ -217,7 +461,7 @@ func testElementDBElementNotFound(t *testing.T, db app.ElementDB) {
 	t.Log(err)
 }
 
-func testElementDBElementByComponent(t *testing.T, db app.ElementDB) {
+func testElemDBElementByComponent(t *testing.T, db app.ElemDB) {
 	compo := &Bar{}
 	elem := newElementWithComponent()
 	elem.component = compo
@@ -235,13 +479,13 @@ func testElementDBElementByComponent(t *testing.T, db app.ElementDB) {
 	}
 }
 
-func testElementDBElementByComponentNotFound(t *testing.T, db app.ElementDB) {
+func testElemDBElementByComponentNotFound(t *testing.T, db app.ElemDB) {
 	if _, err := db.ElementByComponent(&Foo{}); err == nil {
 		t.Fatal("an element is found")
 	}
 }
 
-func testElementDBSort(t *testing.T, db app.ElementDB) {
+func testElemDBSort(t *testing.T, db app.ElemDB) {
 	for i := 0; i < 10; i++ {
 		if err := db.Add(newElementWithComponent()); err != nil {
 			t.Fatal(err)
@@ -260,7 +504,7 @@ func testElementDBSort(t *testing.T, db app.ElementDB) {
 	}
 }
 
-func testElementDBLen(t *testing.T, db app.ElementDB) {
+func testElemDBLen(t *testing.T, db app.ElemDB) {
 	for i := 0; i < 10; i++ {
 		if err := db.Add(newElementWithComponent()); err != nil {
 			t.Fatal(err)

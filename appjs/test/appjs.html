@@ -16,11 +16,12 @@
             height: 100%;
             width: 100%;
             margin: 0;
+            overflow: hidden;
         }
     </style>
     
 </head>
-<body oncontextmenu="event.preventDefault()">
+<body oncontextmenu="">
     
 <h1>Starting test</h1>
 		
@@ -63,7 +64,7 @@
 		
 
     <script>
-function golangRequest(payload) {
+var golangRequest = function (payload) {
 	alert(payload);
 }
 
@@ -162,15 +163,15 @@ function callGoEventHandler(compoID, target, src, event) {
       break;
 
     case 'drag':
-    case 'dragend':
-    case 'dragenter':
-    case 'dragexit':
-    case 'dragleave':
-    case 'dragover':
     case 'dragstart':
+    case 'dragend':
+    case 'dragexit':
       onDragStartToGolang(compoID, target, src, event);
       break;
 
+    case 'dragenter':
+    case 'dragleave':
+    case 'dragover':
     case 'drop':
       ondropToGolang(compoID, target, src, event);
       break;

@@ -9,9 +9,7 @@ import (
 	"html/template"
 	"math"
 	"net/url"
-	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
 	"time"
 
@@ -158,18 +156,20 @@ func (w *Window) load(u *url.URL) error {
 	}
 
 	var buffer bytes.Buffer
-	enc := html.NewEncoder(&buffer, w.markup)
+	enc := html.NewEncoder(&buffer, w.markup, true)
 	if err = enc.Encode(root); err != nil {
 		return err
 	}
 
-	var pageConfig html.PageConfig
+	pageConfig := html.PageConfig{
+		DisableDefaultContextMenu: true,
+	}
 	if page, ok := compo.(html.Page); ok {
 		pageConfig = page.PageConfig()
 	}
 
 	if len(pageConfig.CSS) == 0 {
-		pageConfig.CSS = defaultCSS()
+		pageConfig.CSS = app.CSSResources()
 	}
 
 	pageConfig.DefaultComponent = template.HTML(buffer.String())
@@ -192,28 +192,6 @@ func (w *Window) load(u *url.URL) error {
 		bridge.NewPayload(payload),
 	)
 	return err
-}
-
-func defaultCSS() (css []string) {
-	cssdir := filepath.Join(app.Resources(), "css")
-
-	filepath.Walk(cssdir, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if info.IsDir() {
-			return nil
-		}
-
-		if ext := filepath.Ext(path); ext != ".css" {
-			return nil
-		}
-
-		css = append(css, path)
-		return nil
-	})
-	return
 }
 
 // Contains satisfies the app.Window interface.
@@ -251,7 +229,7 @@ func (w *Window) Render(compo app.Component) error {
 func (w *Window) render(sync app.TagSync) error {
 	var buffer bytes.Buffer
 
-	enc := html.NewEncoder(&buffer, w.markup)
+	enc := html.NewEncoder(&buffer, w.markup, true)
 	if err := enc.Encode(sync.Tag); err != nil {
 		return err
 	}
@@ -274,12 +252,13 @@ func (w *Window) render(sync app.TagSync) error {
 func (w *Window) renderAttributes(sync app.TagSync) error {
 	attrs := make(app.AttributeMap, len(sync.Tag.Attributes))
 	for name, val := range sync.Tag.Attributes {
-		attrs[name] = html.AppJSAttributeValue(
-			name,
-			val,
-			driver.factory,
-			sync.Tag.CompoID,
-		)
+		attrs[name] = html.AttrValueFormatter{
+			Name:       name,
+			Value:      val,
+			FormatHref: true,
+			CompoID:    sync.Tag.CompoID,
+			Factory:    driver.factory,
+		}.Format()
 	}
 
 	payload := struct {
@@ -587,12 +566,12 @@ func onWindowCallback(w *Window, u *url.URL, p bridge.Payload) (res bridge.Paylo
 
 	var compo app.Component
 	if compo, err = w.markup.Component(mapping.CompoID); err != nil {
-		app.DefaultLogger.Error(err)
+		app.Error(err)
 		return nil
 	}
 
 	if err = w.Render(compo); err != nil {
-		app.DefaultLogger.Error(err)
+		app.Error(err)
 	}
 
 	return nil

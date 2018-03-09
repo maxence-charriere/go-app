@@ -1,4 +1,4 @@
-package main
+package test
 
 import (
 	"net/url"
@@ -148,7 +148,12 @@ func (m *Menu) OnButtonWithIconClick() {
 func (m *Menu) OnSetDockBadge() {
 	app.DefaultLogger.Log("button set dock badge clicked")
 
-	if err := app.Dock().SetBadge(uuid.New()); err != nil {
+	dock, err := app.Dock()
+	if err != nil {
+		app.Error(err)
+		return
+	}
+	if err = dock.SetBadge(uuid.New()); err != nil {
 		app.Error(err)
 	}
 }
@@ -158,7 +163,12 @@ func (m *Menu) OnSetDockBadge() {
 func (m *Menu) OnUnsetDockBadge() {
 	app.DefaultLogger.Log("button unset dock badge clicked")
 
-	if err := app.Dock().SetBadge(nil); err != nil {
+	dock, err := app.Dock()
+	if err != nil {
+		app.Error(err)
+		return
+	}
+	if err = dock.SetBadge(nil); err != nil {
 		app.Error(err)
 	}
 }
@@ -168,7 +178,14 @@ func (m *Menu) OnUnsetDockBadge() {
 func (m *Menu) OnSetDockIcon() {
 	app.DefaultLogger.Log("button set dock icon clicked")
 
-	app.Dock().SetIcon(app.Resources("logo.png"))
+	dock, err := app.Dock()
+	if err != nil {
+		app.Error(err)
+		return
+	}
+	if err = dock.SetIcon(app.Resources("logo.png")); err != nil {
+		app.Error(err)
+	}
 }
 
 // OnUnsetDockIcon is the function that is called when the button labelled
@@ -176,7 +193,12 @@ func (m *Menu) OnSetDockIcon() {
 func (m *Menu) OnUnsetDockIcon() {
 	app.DefaultLogger.Log("button unset dock icon clicked")
 
-	if err := app.Dock().SetIcon(""); err != nil {
+	dock, err := app.Dock()
+	if err != nil {
+		app.Error(err)
+		return
+	}
+	if err = dock.SetIcon(""); err != nil {
 		app.Error(err)
 	}
 }
