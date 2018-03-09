@@ -47,7 +47,6 @@ func main() {
 			}
 		},
 	})
-
 }
 
 func newWindow() {

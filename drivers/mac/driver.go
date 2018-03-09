@@ -31,17 +31,35 @@ var (
 type Driver struct {
 	app.BaseDriver
 
+	// Menubar configuration
 	MenubarConfig MenuBarConfig
-	DockURL       string
 
-	OnRun       func()
-	OnFocus     func()
-	OnBlur      func()
-	OnReopen    func(hasVisibleWindows bool)
+	// Component url to load in the dock.
+	DockURL string
+
+	// The handler called when the app is running.
+	OnRun func()
+
+	// The handler called when the app is focused.
+	OnFocus func()
+
+	// The handler called when the app loses focus.
+	OnBlur func()
+
+	// The handler called when the app is reopened.
+	OnReopen func(hasVisibleWindows bool)
+
+	// The handler called when a file associated with the app is opened.
 	OnFilesOpen func(filenames []string)
-	OnURLOpen   func(u *url.URL)
-	OnQuit      func() bool
-	OnExit      func()
+
+	// The handler called when the app URI is invoked.
+	OnURLOpen func(u *url.URL)
+
+	// The handler called when the quit button is clicked.
+	OnQuit func() bool
+
+	// The handler called when the app is about to exit.
+	OnExit func()
 
 	factory      app.Factory
 	elements     app.ElemDB

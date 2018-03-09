@@ -4,12 +4,12 @@
 [![Coverage Status](https://coveralls.io/repos/github/murlokswarm/app/badge.svg?branch=master)](https://coveralls.io/github/murlokswarm/app?branch=master)
 [![GoDoc](https://godoc.org/github.com/murlokswarm/app?status.svg)](https://godoc.org/github.com/murlokswarm/app)
 
-Package to build multi platform apps using **Go**, **HTML** and **CSS**.
+Package to build MacOS and Web apps using **Go**, **HTML** and **CSS**.
 
 ## Table of Contents
 - [Install](#install)
-	- [MacOS](#macOS)
 - [Hello world](#hello)
+- [Drivers](#drivers)
 - [Documentation](#doc)
 - [Examples](#examples)
 
@@ -17,13 +17,12 @@ Package to build multi platform apps using **Go**, **HTML** and **CSS**.
 
 ## Install
 
-<a name="macOS"></a>
-
-### MacOS 10.12 and above
 ```bash
-# MacOS libraries.
+# MacOS 10.12 and above.
 xcode-select --install
+```
 
+```bash
 # Get package.
 go get -u github.com/murlokswarm/mac
 ```
@@ -67,8 +66,8 @@ It takes an
 [app.Driver](https://godoc.org/github.com/murlokswarm/app#Driver) as argument. 
 Here we use the
 [MacOS driver](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver) 
-implementation. 
-Other drivers will be released in the futur.
+implementation.
+See [other drivers](#drivers).
 
 When creating the window, we set the ```DefaultURL``` to our Hello component 
 struct name: ```/Hello```.
@@ -133,6 +132,16 @@ All .css files within that directory will be included.
 See the 
 [full example](https://github.com/murlokswarm/app/tree/master/examples/hello).
 
+<a name="drivers"></a>
+
+## Drivers
+A driver contains specific code that allows the app package to work on multiple 
+platforms.
+
+- [MacOS](https://godoc.org/github.com/murlokswarm/app/drivers/mac)
+- [Web](https://godoc.org/github.com/murlokswarm/app/drivers/web)
+
+Other drivers will come in the futur.
 
 <a name="doc"></a>
 
