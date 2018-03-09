@@ -109,7 +109,7 @@ func (d *Driver) handleNotFound(res http.ResponseWriter, req *http.Request) {
 	}
 
 	var b bytes.Buffer
-	enc := html.NewEncoder(&b, markup)
+	enc := html.NewEncoder(&b, markup, false)
 
 	if err = enc.Encode(root); err != nil {
 		http.NotFound(res, req)

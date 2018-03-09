@@ -26,6 +26,8 @@ _testmain.go
 cmd/goapp/goapp
 examples/hello/bin/hello-mac/hello-mac
 examples/hello/bin/hello-web/hello-web
+examples/nav/bin/nav-mac/nav-mac
+examples/nav/bin/nav-web/nav-web
 examples/menu/menu
 examples/dock/dock
 examples/nav/nav

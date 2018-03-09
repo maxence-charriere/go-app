@@ -7,11 +7,10 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/murlokswarm/app/bridge"
-
 	"github.com/google/uuid"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/bridge"
 	"github.com/murlokswarm/app/html"
 )
 
@@ -43,7 +42,7 @@ func newPage(c app.PageConfig) (app.Page, error) {
 		driver.elements.Remove(page)
 	})
 
-	err := rawPage.Load(rawPage.URL().Path)
+	err := rawPage.Load(rawPage.URL().String())
 	return page, err
 }
 
@@ -68,6 +67,7 @@ func (p *Page) Load(rawurl string, v ...interface{}) error {
 	if len(u.Path) == 0 || u.Path == "/" {
 		u.Path = driver.DefaultURL
 	}
+	u.Scheme = "compo"
 
 	var compo app.Component
 	if compo, err = driver.factory.New(app.ComponentNameFromURL(u)); err != nil {
@@ -89,7 +89,7 @@ func (p *Page) Load(rawurl string, v ...interface{}) error {
 	}
 
 	var buffer bytes.Buffer
-	enc := html.NewEncoder(&buffer, p.markup)
+	enc := html.NewEncoder(&buffer, p.markup, false)
 	if err = enc.Encode(root); err != nil {
 		return err
 	}
@@ -123,13 +123,12 @@ func (p *Page) Render(c app.Component) error {
 			return err
 		}
 	}
-
 	return nil
 }
 
 func (p *Page) render(sync app.TagSync) error {
 	var buffer bytes.Buffer
-	enc := html.NewEncoder(&buffer, p.markup)
+	enc := html.NewEncoder(&buffer, p.markup, false)
 	if err := enc.Encode(sync.Tag); err != nil {
 		return err
 	}
@@ -151,12 +150,12 @@ func (p *Page) render(sync app.TagSync) error {
 func (p *Page) renderAttributes(sync app.TagSync) error {
 	attrs := make(app.AttributeMap, len(sync.Tag.Attributes))
 	for name, val := range sync.Tag.Attributes {
-		attrs[name] = html.AppJSAttributeValue(
-			name,
-			val,
-			driver.factory,
-			sync.Tag.CompoID,
-		)
+		attrs[name] = html.AttrValueFormatter{
+			Name:    name,
+			Value:   val,
+			CompoID: sync.Tag.CompoID,
+			Factory: driver.factory,
+		}.Format()
 	}
 
 	payload := &struct {

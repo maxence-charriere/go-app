@@ -1,6 +1,7 @@
 package nav
 
 import (
+	"fmt"
 	"net/url"
 
 	"github.com/murlokswarm/app"
@@ -59,21 +60,20 @@ type City struct {
 // It satisfies the app.Navigable interfaces.
 func (c *City) OnNavigate(u *url.URL) {
 	id := u.Query().Get("id")
+
+	fmt.Println("id:", id)
+
 	if len(id) == 0 {
 		id = "paris"
 	}
 
-	elem, err := app.ElementByComponent(c)
-	if err != nil {
-		app.Error(err)
-	}
-
-	if w, err := app.WindowByComponent(c); err == nil {
-		c.CanPrevious = w.CanPrevious()
-		c.CanNext = w.CanNext()
+	if nav, err := app.NavigatorByComponent(c); err == nil {
+		c.CanPrevious = nav.CanPrevious()
+		c.CanNext = nav.CanNext()
 	}
 
 	c.City = cities[id]
+
 	app.Render(c)
 }
 
@@ -100,13 +100,13 @@ func (c *City) Render() string {
 // OnPrevious is the function that is called when the button labelled "Previous"
 // is clicked.
 func (c *City) OnPrevious() {
-	w, err := app.WindowByComponent(c)
+	nav, err := app.NavigatorByComponent(c)
 	if err != nil {
 		app.Error(err)
 		return
 	}
 
-	if err = w.Previous(); err != nil {
+	if err = nav.Previous(); err != nil {
 		app.Error(err)
 	}
 }
@@ -114,14 +114,13 @@ func (c *City) OnPrevious() {
 // OnNext is the function that is called when the button labelled "Next" is
 // clicked.
 func (c *City) OnNext() {
-
-	w, err := app.WindowByComponent(c)
+	nav, err := app.NavigatorByComponent(c)
 	if err != nil {
 		app.Error(err)
 		return
 	}
 
-	if err = w.Next(); err != nil {
+	if err = nav.Next(); err != nil {
 		app.Error(err)
 	}
 }

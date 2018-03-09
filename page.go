@@ -10,7 +10,7 @@ import (
 
 // Page is the interface that describes a webpage.
 type Page interface {
-	ElementWithNavigation
+	Navigator
 	Closer
 
 	// Base returns the base page without any decorators.
