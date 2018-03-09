@@ -156,7 +156,7 @@ func (w *Window) load(u *url.URL) error {
 	}
 
 	var buffer bytes.Buffer
-	enc := html.NewEncoder(&buffer, w.markup)
+	enc := html.NewEncoder(&buffer, w.markup, true)
 	if err = enc.Encode(root); err != nil {
 		return err
 	}
@@ -229,7 +229,7 @@ func (w *Window) Render(compo app.Component) error {
 func (w *Window) render(sync app.TagSync) error {
 	var buffer bytes.Buffer
 
-	enc := html.NewEncoder(&buffer, w.markup)
+	enc := html.NewEncoder(&buffer, w.markup, true)
 	if err := enc.Encode(sync.Tag); err != nil {
 		return err
 	}
@@ -252,12 +252,13 @@ func (w *Window) render(sync app.TagSync) error {
 func (w *Window) renderAttributes(sync app.TagSync) error {
 	attrs := make(app.AttributeMap, len(sync.Tag.Attributes))
 	for name, val := range sync.Tag.Attributes {
-		attrs[name] = html.AppJSAttributeValue(
-			name,
-			val,
-			driver.factory,
-			sync.Tag.CompoID,
-		)
+		attrs[name] = html.AttrValueFormatter{
+			Name:       name,
+			Value:      val,
+			FormatHref: true,
+			CompoID:    sync.Tag.CompoID,
+			Factory:    driver.factory,
+		}.Format()
 	}
 
 	payload := struct {

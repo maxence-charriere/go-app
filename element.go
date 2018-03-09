@@ -41,9 +41,9 @@ type ElementWithComponent interface {
 	LastFocus() time.Time
 }
 
-// ElementWithNavigation is the interface that describes an element that
-// supports navigation.
-type ElementWithNavigation interface {
+// Navigator is the interface that describes an element that supports
+// navigation.
+type Navigator interface {
 	ElementWithComponent
 
 	// Reload reloads the current page.
