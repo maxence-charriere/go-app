@@ -14,13 +14,13 @@ type AsyncInput interface {
 	Async() bool
 }
 
-// CallHandler represents the handler that will perform the call.
-type CallHandler func(call string) (ret string, err error)
+// Handler represents the handler that will perform the call.
+type Handler func(call string) (ret string, err error)
 
 // RPC is a stuct that implements the remote procedure call mechanismes between
 // Go and an underlying platform.
 type RPC struct {
-	CallHandler CallHandler
+	Handler Handler
 
 	mutex   sync.RWMutex
 	returns map[string]chan asyncReturn
@@ -45,7 +45,7 @@ func (r *RPC) Call(method string, in interface{}, out interface{}) error {
 	}
 
 	var ret string
-	if ret, err = r.CallHandler(string(call)); err != nil {
+	if ret, err = r.Handler(string(call)); err != nil {
 		return err
 	}
 
@@ -76,20 +76,24 @@ func (r *RPC) Call(method string, in interface{}, out interface{}) error {
 
 // Return returns the given output to the asynchrounous call that waits for the
 // given return id.
-func (r *RPC) Return(retID string, ret string, err string) error {
+func (r *RPC) Return(retID string, ret string, errString string) {
 	r.mutex.RLock()
 	retC, ok := r.returns[retID]
 	r.mutex.RUnlock()
 
 	if !ok {
-		return errors.New("no async call for " + retID)
+		panic("no async call for " + retID)
+	}
+
+	var err error
+	if len(errString) != 0 {
+		err = errors.New(errString)
 	}
 
 	retC <- asyncReturn{
 		Return: ret,
-		Error:  errors.New(err),
+		Error:  err,
 	}
-	return nil
 }
 
 type call struct {
