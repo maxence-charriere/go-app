@@ -28,52 +28,43 @@
   self.golang = [[GoBridge alloc] init];
   self.macRPC = [[MacRPC alloc] init];
 
-  // Drivers handlers.
+  // Driver handlers.
   [self.macRPC handle:@"driver.Run"
-          withHandler:^(NSDictionary *in) {
-            return [self run:in];
+          withHandler:^(NSDictionary *in, NSString *returnID) {
+            return [self run:in return:returnID];
           }];
-
-  [self.objc handle:@"/driver/appname"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [self appName:url payload:payload];
-            }];
-  [self.objc handle:@"/driver/resources"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [self resources:url payload:payload];
-            }];
-  [self.objc handle:@"/driver/support"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [self support:url payload:payload];
-            }];
-  [self.objc handle:@"/driver/contextmenu/set"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [self setContextMenu:url payload:payload];
-            }];
-  [self.objc handle:@"/driver/menubar/set"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [self setMenuBar:url payload:payload];
-            }];
-  [self.objc handle:@"/driver/dock/set"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [self setDock:url payload:payload];
-            }];
-  [self.objc handle:@"/driver/dock/icon"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [self setDockIcon:url payload:payload];
-            }];
-  [self.objc handle:@"/driver/dock/badge"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [self setDockBadge:url payload:payload];
-            }];
-  [self.objc handle:@"/driver/share"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [self share:url payload:payload];
-            }];
-  [self.objc handle:@"/driver/quit"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [self quit:url payload:payload];
-            }];
+  [self.macRPC handle:@"driver.Bundle"
+          withHandler:^(NSDictionary *in, NSString *returnID) {
+            return [self bundle:in return:returnID];
+          }];
+  [self.macRPC handle:@"driver.SetContextMenu"
+          withHandler:^(NSDictionary *in, NSString *returnID) {
+            return [self setContextMenu:in return:returnID];
+          }];
+  [self.macRPC handle:@"driver.SetMenubar"
+          withHandler:^(NSDictionary *in, NSString *returnID) {
+            return [self setMenubar:in return:returnID];
+          }];
+  [self.macRPC handle:@"driver.SetDock"
+          withHandler:^(NSDictionary *in, NSString *returnID) {
+            return [self setDock:in return:returnID];
+          }];
+  [self.macRPC handle:@"driver.SetDockIcon"
+          withHandler:^(NSDictionary *in, NSString *returnID) {
+            return [self setDockIcon:in return:returnID];
+          }];
+  [self.macRPC handle:@"driver.SetDockBadge"
+          withHandler:^(NSDictionary *in, NSString *returnID) {
+            return [self setDockBadge:in return:returnID];
+          }];
+  [self.macRPC handle:@"driver.Share"
+          withHandler:^(NSDictionary *in, NSString *returnID) {
+            return [self share:in return:returnID];
+          }];
+  [self.macRPC handle:@"driver.Quit"
+          withHandler:^(NSDictionary *in, NSString *returnID) {
+            return [self quit:in return:returnID];
+          }];
 
   // Window handlers.
   [self.objc handle:@"/window/new"
@@ -175,34 +166,30 @@
   return self;
 }
 
-- (void)run:(NSDictionary *)in {
+- (void)run:(NSDictionary *)in return:(NSString *)returnID {
   [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
   [NSApp activateIgnoringOtherApps:YES];
   [NSApp run];
 
-  [self.macRPC return:in[@"ReturnID"] withOutput:nil andError:nil];
+  [self.macRPC return:returnID withOutput:nil andError:nil];
 }
 
-- (bridge_result)appName:(NSURLComponents *)url payload:(NSString *)payload {
+- (void)bundle:(NSDictionary *)in return:(NSString *)returnID {
   NSBundle *mainBundle = [NSBundle mainBundle];
-  NSString *res =
-      [JSONEncoder encodeString:mainBundle.infoDictionary[@"CFBundleName"]];
-  return make_bridge_result(res, nil);
+
+  NSMutableDictionary *out = [[NSMutableDictionary alloc] init];
+  out[@"AppName"] = mainBundle.infoDictionary[@"CFBundleName"];
+  out[@"Resources"] = mainBundle.resourcePath;
+  out[@"Support"] = [self support];
+
+  [self.macRPC return:returnID withOutput:out andError:nil];
 }
 
-- (bridge_result)resources:(NSURLComponents *)url payload:(NSString *)payload {
+- (NSString *)support {
   NSBundle *mainBundle = [NSBundle mainBundle];
-  NSString *res = [JSONEncoder encodeString:mainBundle.resourcePath];
-  return make_bridge_result(res, nil);
-}
-
-- (bridge_result)support:(NSURLComponents *)url payload:(NSString *)payload {
-  NSBundle *mainBundle = [NSBundle mainBundle];
-  NSString *dirname = nil;
 
   if ([mainBundle isSandboxed]) {
-    dirname = [JSONEncoder encodeString:NSHomeDirectory()];
-    return make_bridge_result(dirname, nil);
+    return NSHomeDirectory();
   }
 
   NSArray *paths = NSSearchPathForDirectoriesInDomains(
@@ -210,138 +197,101 @@
   NSString *applicationSupportDirectory = [paths firstObject];
 
   if (mainBundle.bundleIdentifier.length == 0) {
-    dirname = [NSString
+    return [NSString
         stringWithFormat:@"%@/goapp/{appname}", applicationSupportDirectory];
-  } else {
-    dirname = [NSString stringWithFormat:@"%@/%@", applicationSupportDirectory,
-                                         mainBundle.bundleIdentifier];
   }
-  dirname = [JSONEncoder encodeString:dirname];
-  return make_bridge_result(dirname, nil);
+  return [NSString stringWithFormat:@"%@/%@", applicationSupportDirectory,
+                                    mainBundle.bundleIdentifier];
 }
 
-- (bridge_result)setContextMenu:(NSURLComponents *)url
-                        payload:(NSString *)payload {
-  NSString *menuID = [url queryValue:@"menu-id"];
-  NSString *returnID = [url queryValue:@"return-id"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
-    Menu *menu = self.elements[menuID];
+- (void)setContextMenu:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
+    Menu *menu = self.elements[in[@"MenuID"]];
     NSWindow *win = NSApp.keyWindow;
 
     if (win == nil) {
-      [self.objc asyncReturn:returnID
-                      result:make_bridge_result(
-                                 nil, @"no window to host the context menu")];
+      [self.macRPC return:returnID withOutput:nil
+          andError:@"no window to host the context menu"];
       return;
     }
 
     [menu.root popUpMenuPositioningItem:menu.root.itemArray[0]
                              atLocation:[win mouseLocationOutsideOfEventStream]
                                  inView:win.contentView];
-    [self.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
+    [self.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
 }
 
-- (bridge_result)setMenuBar:(NSURLComponents *)url payload:(NSString *)payload {
-  NSString *menuID = [url queryValue:@"menu-id"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
-    Menu *menu = self.elements[menuID];
+- (void)setMenubar:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
+    Menu *menu = self.elements[in[@"MenuID"]];
     NSApp.mainMenu = menu.root;
+    [self.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
 }
 
-- (bridge_result)setDock:(NSURLComponents *)url payload:(NSString *)payload {
-  NSString *menuID = [url queryValue:@"menu-id"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
-    Menu *menu = self.elements[menuID];
+- (void)setDock:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
+    Menu *menu = self.elements[in[@"MenuID"]];
     self.dock = menu.root;
+    [self.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
 }
 
-- (bridge_result)setDockIcon:(NSURLComponents *)url
-                     payload:(NSString *)payload {
-  NSString *returnID = [url queryValue:@"return-id"];
-  NSDictionary *icon = [JSONDecoder decodeObject:payload];
-  NSString *path = icon[@"path"];
+- (void)setDockIcon:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
+    NSString *icon = in[@"Icon"];
 
-  dispatch_async(dispatch_get_main_queue(), ^{
-    NSString *err = nil;
-
-    @try {
-      if (path.length != 0) {
-        NSApp.applicationIconImage =
-            [[NSImage alloc] initByReferencingFile:path];
-      } else {
-        NSApp.applicationIconImage = nil;
-      }
-      [self.objc asyncReturn:returnID result:make_bridge_result(nil, nil)];
-    } @catch (NSException *exception) {
-      err = exception.reason;
-      [self.objc asyncReturn:returnID result:make_bridge_result(nil, err)];
+    if (icon.length != 0) {
+      NSApp.applicationIconImage = [[NSImage alloc] initByReferencingFile:icon];
+    } else {
+      NSApp.applicationIconImage = nil;
     }
 
+    [self.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
 }
 
-- (bridge_result)setDockBadge:(NSURLComponents *)url
-                      payload:(NSString *)payload {
-  NSDictionary *badge = [JSONDecoder decodeObject:payload];
-  NSString *msg = badge[@"message"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
-    [NSApp.dockTile setBadgeLabel:msg];
+- (void)setDockBadge:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
+    [NSApp.dockTile setBadgeLabel:in[@"Badge"]];
+    [self.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
 }
 
-- (bridge_result)share:(NSURLComponents *)url payload:(NSString *)payload {
-  NSString *returnID = [url queryValue:@"return-id"];
+- (void)share:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
+    NSWindow *rawWindow = NSApp.keyWindow;
+    if (rawWindow == nil) {
+      [NSException raise:@"NoKeyWindowExeption"
+                  format:@"no window to host the share menu"];
+    }
+    Window *win = (Window *)rawWindow.windowController;
 
-  NSDictionary *share = [JSONDecoder decodeObject:payload];
-  NSString *value = share[@"value"];
-  NSString *type = share[@"type"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
-    NSString *err = nil;
-
-    @try {
-      NSWindow *rawWindow = NSApp.keyWindow;
-      if (rawWindow == nil) {
-        @throw
-            [NSException exceptionWithName:@"NoKeyWindowExeption"
-                                    reason:@"no window to host the share menu"
-                                  userInfo:nil];
-      }
-
-      id valueToShare = value;
-      if ([type isEqual:@"url"]) {
-        valueToShare = [NSURL URLWithString:value];
-      }
-
-      Window *win = (Window *)rawWindow.windowController;
-      NSPoint pos = [win.window mouseLocationOutsideOfEventStream];
-      pos = [win.webview convertPoint:pos fromView:rawWindow.contentView];
-      NSRect rect = NSMakeRect(pos.x, pos.y, 1, 1);
-
-      NSSharingServicePicker *picker =
-          [[NSSharingServicePicker alloc] initWithItems:@[ valueToShare ]];
-      [picker showRelativeToRect:rect
-                          ofView:win.webview
-                   preferredEdge:NSMinYEdge];
-    } @catch (NSException *exception) {
-      err = exception.reason;
+    id share = in[@"Share"];
+    if ([in[@"Type"] isEqual:@"url"]) {
+      [NSURL URLWithString:share];
     }
 
-    [self.objc asyncReturn:returnID result:make_bridge_result(nil, err)];
+    NSPoint pos = [win.window mouseLocationOutsideOfEventStream];
+    pos = [win.webview convertPoint:pos fromView:rawWindow.contentView];
+    NSRect rect = NSMakeRect(pos.x, pos.y, 1, 1);
+
+    NSSharingServicePicker *picker =
+        [[NSSharingServicePicker alloc] initWithItems:@[ share ]];
+    [picker showRelativeToRect:rect
+                        ofView:win.webview
+                 preferredEdge:NSMinYEdge];
+
+    [self.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
+}
+
+- (void)quit:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
+    [NSApp terminate:self];
+    [self.macRPC return:returnID withOutput:nil andError:nil];
+  });
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -385,13 +335,6 @@
       [event paramDescriptorForKeyword:keyDirectObject].stringValue;
   NSString *payload = [JSONEncoder encodeString:rawurl];
   [self.golang request:@"/driver/urlopen" payload:payload];
-}
-
-- (bridge_result)quit:(NSURLComponents *)url payload:(NSString *)payload {
-  dispatch_async(dispatch_get_main_queue(), ^{
-    [NSApp terminate:self];
-  });
-  return make_bridge_result(nil, nil);
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:

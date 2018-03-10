@@ -114,18 +114,25 @@ void macCall(char *rawCall) {
     MacRPCHandler handler = driver.macRPC.handlers[method];
 
     if (handler == nil) {
-      @throw [NSException
-          exceptionWithName:@"ErrMethodNotHandled"
-                     reason:[NSString
-                                stringWithFormat:@"%@ is not handled", method]
-                   userInfo:nil];
+      [NSException raise:@"rpcNotHandled" format:@"%@ is not handled", method];
     }
 
-    handler(in);
+    handler(in, returnID);
   } @catch (NSException *exception) {
     NSString *err = exception.reason;
     macCallReturn((char *)returnID.UTF8String, nil, (char *)err.UTF8String);
   }
+}
+
+void defer(NSString *returnID, dispatch_block_t block) {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    @try {
+      block();
+    } @catch (NSException *exception) {
+      NSString *err = exception.reason;
+      macCallReturn((char *)returnID.UTF8String, nil, (char *)err.UTF8String);
+    }
+  });
 }
 
 @implementation MacRPC

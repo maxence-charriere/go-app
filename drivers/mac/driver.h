@@ -14,20 +14,16 @@
 
 + (instancetype)current;
 - (instancetype)init;
-- (void)run:(NSDictionary *)in;
-
-- (bridge_result)appName:(NSURLComponents *)url payload:(NSString *)payload;
-- (bridge_result)resources:(NSURLComponents *)url payload:(NSString *)payload;
-- (bridge_result)support:(NSURLComponents *)url payload:(NSString *)payload;
-- (bridge_result)setContextMenu:(NSURLComponents *)url
-                        payload:(NSString *)payload;
-- (bridge_result)setMenuBar:(NSURLComponents *)url payload:(NSString *)payload;
-- (bridge_result)setDock:(NSURLComponents *)url payload:(NSString *)payload;
-- (bridge_result)setDockIcon:(NSURLComponents *)url payload:(NSString *)payload;
-- (bridge_result)setDockBadge:(NSURLComponents *)url
-                      payload:(NSString *)payload;
-- (bridge_result)share:(NSURLComponents *)url payload:(NSString *)payload;
-- (bridge_result)quit:(NSURLComponents *)url payload:(NSString *)payload;
+- (void)run:(NSDictionary *)in return:(NSString *)returnID;
+- (void)bundle:(NSDictionary *)in return:(NSString *)returnID;
+- (NSString *)support;
+- (void)setContextMenu:(NSDictionary *)in return:(NSString *)returnID;
+- (void)setMenubar:(NSDictionary *)in return:(NSString *)returnID;
+- (void)setDock:(NSDictionary *)in return:(NSString *)returnID;
+- (void)setDockIcon:(NSDictionary *)in return:(NSString *)returnID;
+- (void)setDockBadge:(NSDictionary *)in return:(NSString *)returnID;
+- (void)share:(NSDictionary *)in return:(NSString *)returnID;
+- (void)quit:(NSDictionary *)in return:(NSString *)returnID;
 @end
 
 #endif /* driver_h */

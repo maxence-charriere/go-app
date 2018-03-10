@@ -9,7 +9,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/bridge"
 	"github.com/murlokswarm/app/html"
 )
 
@@ -44,7 +43,19 @@ func newDockTile(config app.MenuConfig) (app.DockTile, error) {
 	}
 
 	if len(config.DefaultURL) != 0 {
-		return dock, dock.Load(config.DefaultURL)
+		if err := dock.Load(config.DefaultURL); err != nil {
+			return nil, err
+		}
+	}
+
+	setDockIn := struct {
+		MenuID string
+	}{
+		MenuID: dock.ID().String(),
+	}
+
+	if err := driver.macRPC.Call("driver.SetDock", setDockIn, nil); err != nil {
+		return nil, err
 	}
 	return dock, nil
 }
@@ -61,15 +72,7 @@ func (d *DockTile) Base() app.Menu {
 
 // Load satisfies the app.DockTile interface.
 func (d *DockTile) Load(url string, v ...interface{}) error {
-	if err := d.menu.Load(url, v...); err != nil {
-		return err
-	}
-
-	_, err := driver.macos.Request(
-		fmt.Sprintf("/driver/dock/set?menu-id=%v", d.ID()),
-		nil,
-	)
-	return err
+	return d.menu.Load(url, v...)
 }
 
 // Contains satisfies the app.DockTile interface.
@@ -98,34 +101,26 @@ func (d *DockTile) SetIcon(name string) error {
 		return err
 	}
 
-	icon := struct {
-		Path string `json:"path"`
+	in := struct {
+		Icon string
 	}{
-		Path: name,
+		Icon: name,
 	}
 
-	_, err := driver.macos.RequestWithAsyncResponse(
-		"/driver/dock/icon",
-		bridge.NewPayload(icon),
-	)
-	return err
+	return driver.macRPC.Call("driver.SetDockIcon", in, nil)
 }
 
 // SetBadge satisfies the app.DockTile interface.
 func (d *DockTile) SetBadge(v interface{}) error {
-	badge := struct {
-		Message string `json:"message"`
+	in := struct {
+		Badge string
 	}{}
 
 	if v == nil {
-		badge.Message = ""
+		in.Badge = ""
 	} else {
-		badge.Message = fmt.Sprint(v)
+		in.Badge = fmt.Sprint(v)
 	}
 
-	_, err := driver.macos.Request(
-		"/driver/dock/badge",
-		bridge.NewPayload(badge),
-	)
-	return err
+	return driver.macRPC.Call("driver.SetDockBadge", in, nil)
 }
