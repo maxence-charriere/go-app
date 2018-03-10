@@ -34,6 +34,7 @@ func TestRPC(t *testing.T) {
 		scenario       string
 		method         string
 		input          interface{}
+		skipOutput     bool
 		expectedOutput output
 		returnErr      bool
 	}{
@@ -48,9 +49,9 @@ func TestRPC(t *testing.T) {
 			},
 		},
 		{
-			scenario: "async method",
-			method:   "test.AsyncGreet",
-			input: asyncInput{
+			scenario: "method on goroutine",
+			method:   "test.GreetOnGoroutine",
+			input: input{
 				Name: "Maxence",
 			},
 			expectedOutput: output{
@@ -59,7 +60,7 @@ func TestRPC(t *testing.T) {
 		},
 		{
 			scenario:  "async method error",
-			method:    "test.AsyncGreetErr",
+			method:    "test.GreetErr",
 			input:     asyncInput{},
 			returnErr: true,
 		},
@@ -79,10 +80,11 @@ func TestRPC(t *testing.T) {
 
 	var rpc RPC
 
-	handler := func(rawCall string) (ret string, err error) {
+	handler := func(rawCall string) error {
 		var call call
-		if err = json.Unmarshal([]byte(rawCall), &call); err != nil {
-			return "", err
+		err := json.Unmarshal([]byte(rawCall), &call)
+		if err != nil {
+			return err
 		}
 
 		name := call.Input.(map[string]interface{})["Name"].(string)
@@ -91,27 +93,24 @@ func TestRPC(t *testing.T) {
 		if out, err = json.Marshal(output{
 			Greeting: "Hello, " + name,
 		}); err != nil {
-			return "", err
+			return err
 		}
 
 		switch call.Method {
 		case "test.Greet":
-			return string(out), nil
+			rpc.Return(call.ReturnID, string(out), "")
+			return nil
 
-		case "test.AsyncGreet":
-			go func() {
-				rpc.Return(call.ReturnID, string(out), "")
-			}()
-			return "", nil
+		case "test.GreetOnGoroutine":
+			go rpc.Return(call.ReturnID, string(out), "")
+			return nil
 
-		case "test.AsyncGreetErr":
-			go func() {
-				rpc.Return(call.ReturnID, "", "simulated err")
-			}()
-			return "", nil
+		case "test.GreetErr":
+			rpc.Return(call.ReturnID, "", "simulated err")
+			return nil
 
 		default:
-			return "", errors.Errorf("%s: unknown rpc method", call.Method)
+			return errors.Errorf("%s: unknown rpc method", call.Method)
 		}
 	}
 
@@ -120,12 +119,14 @@ func TestRPC(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
 			var out output
+
 			err := rpc.Call(test.method, test.input, &out)
 			if test.returnErr && err == nil {
 				t.Fatal("error is nil")
 			} else if test.returnErr && err != nil {
 				return
 			}
+
 			if err != nil {
 				t.Fatal(err)
 			}
