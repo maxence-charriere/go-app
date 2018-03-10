@@ -59,6 +59,14 @@ func TestRPC(t *testing.T) {
 			},
 		},
 		{
+			scenario: "method without output",
+			method:   "test.NoGreet",
+			input: input{
+				Name: "Maxence",
+			},
+			expectedOutput: output{},
+		},
+		{
 			scenario:  "async method error",
 			method:    "test.GreetErr",
 			input:     asyncInput{},
@@ -103,6 +111,10 @@ func TestRPC(t *testing.T) {
 
 		case "test.GreetOnGoroutine":
 			go rpc.Return(call.ReturnID, string(out), "")
+			return nil
+
+		case "test.NoGreet":
+			rpc.Return(call.ReturnID, "", "")
 			return nil
 
 		case "test.GreetErr":

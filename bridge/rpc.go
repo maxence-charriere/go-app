@@ -59,7 +59,10 @@ func (r *RPC) Call(method string, in interface{}, out interface{}) error {
 		return rpcRet.Error
 	}
 
-	return json.Unmarshal([]byte(rpcRet.Output), out)
+	if len(rpcRet.Output) != 0 {
+		return json.Unmarshal([]byte(rpcRet.Output), out)
+	}
+	return nil
 }
 
 // Return returns the given output to the call that waits for the given return
