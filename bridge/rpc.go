@@ -59,12 +59,12 @@ func (r *RPC) Call(method string, in interface{}, out interface{}) error {
 		return rpcRet.Error
 	}
 
-	return json.Unmarshal([]byte(rpcRet.Return), out)
+	return json.Unmarshal([]byte(rpcRet.Output), out)
 }
 
-// Return returns the given output to the asynchrounous call that waits for the
-// given return id.
-func (r *RPC) Return(retID string, ret string, errString string) {
+// Return returns the given output to the call that waits for the given return
+// id.
+func (r *RPC) Return(retID string, out string, errString string) {
 	r.mutex.RLock()
 	rpcRetC, ok := r.returns[retID]
 	r.mutex.RUnlock()
@@ -79,18 +79,18 @@ func (r *RPC) Return(retID string, ret string, errString string) {
 	}
 
 	rpcRetC <- rpcReturn{
-		Return: ret,
+		Output: out,
 		Error:  err,
 	}
 }
 
 type call struct {
 	Method   string
-	Input    interface{}
-	ReturnID string `json:",omitempty"`
+	Input    interface{} `json:",omitempty"`
+	ReturnID string
 }
 
 type rpcReturn struct {
-	Return string
+	Output string
 	Error  error
 }
