@@ -42,4 +42,19 @@ bridge_result macosRequest(char *rawurl, char *payload);
 - (NSString *)queryValue:(NSString *)name;
 @end
 
+// --------- NEW -----------
+void macCall(char *rawCall);
+
+typedef void (^MacRPCHandler)(NSDictionary *);
+
+@interface MacRPC : NSObject
+@property NSMutableDictionary<NSString *, MacRPCHandler> *handlers;
+
+- (instancetype)init;
+- (void)handle:(NSString *)method withHandler:(MacRPCHandler)handler;
+- (void) return:(NSString *)returnID
+     withOutput:(NSDictionary *)out
+       andError:(NSString *)err;
+@end
+
 #endif /* bridge_h */

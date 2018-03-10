@@ -10,7 +10,6 @@ package mac
 */
 import "C"
 import (
-	"context"
 	"crypto/md5"
 	"fmt"
 	"io"
@@ -65,9 +64,9 @@ type Driver struct {
 	factory      app.Factory
 	elements     app.ElemDB
 	uichan       chan func()
-	cancel       func()
 	macos        bridge.PlatformBridge
 	golang       bridge.GoBridge
+	macRPC       bridge.RPC
 	menubar      app.Menu
 	dock         app.DockTile
 	devID        string
@@ -103,6 +102,8 @@ func (d *Driver) Run(f app.Factory) error {
 	d.macos = bridge.NewPlatformBridge(handleMacOSRequest)
 	d.golang = bridge.NewGoBridge(d.uichan)
 
+	d.macRPC.Handler = macCall
+
 	d.golang.Handle("/driver/run", d.onRun)
 	d.golang.Handle("/driver/focus", d.onFocus)
 	d.golang.Handle("/driver/blur", d.onBlur)
@@ -133,25 +134,20 @@ func (d *Driver) Run(f app.Factory) error {
 
 	d.golang.Handle("/notification/reply", notificationHandler(onNotificationReply))
 
-	var ctx context.Context
-	ctx, d.cancel = context.WithCancel(context.Background())
-	defer d.cancel()
-
 	driver = d
-
 	errC := make(chan error)
+
 	go func() {
-		_, err := d.macos.Request("/driver/run", nil)
-		errC <- err
+		errC <- d.macRPC.Call("driver.Run", nil, nil)
 	}()
 
 	for {
 		select {
-		case function := <-d.uichan:
-			function()
+		case f := <-d.uichan:
+			f()
 
-		case <-ctx.Done():
-			return <-errC
+		case err := <-errC:
+			return err
 		}
 	}
 }
@@ -456,8 +452,6 @@ func (d *Driver) onExit(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	if d.OnExit != nil {
 		d.OnExit()
 	}
-
-	d.cancel()
 	return nil
 }
 

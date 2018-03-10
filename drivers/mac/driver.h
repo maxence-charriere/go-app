@@ -8,12 +8,14 @@
     : NSObject <NSApplicationDelegate, NSUserNotificationCenterDelegate>
 @property OBJCBridge *objc;
 @property GoBridge *golang;
+@property MacRPC *macRPC;
 @property NSMutableDictionary<NSString *, id> *elements;
 @property NSMenu *dock;
 
 + (instancetype)current;
 - (instancetype)init;
-- (bridge_result)run:(NSURLComponents *)url payload:(NSString *)payload;
+- (void)run:(NSDictionary *)in;
+
 - (bridge_result)appName:(NSURLComponents *)url payload:(NSString *)payload;
 - (bridge_result)resources:(NSURLComponents *)url payload:(NSString *)payload;
 - (bridge_result)support:(NSURLComponents *)url payload:(NSString *)payload;

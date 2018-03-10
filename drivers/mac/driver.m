@@ -26,12 +26,14 @@
   self.elements = [NSMutableDictionary dictionaryWithCapacity:256];
   self.objc = [[OBJCBridge alloc] init];
   self.golang = [[GoBridge alloc] init];
+  self.macRPC = [[MacRPC alloc] init];
 
   // Drivers handlers.
-  [self.objc handle:@"/driver/run"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [self run:url payload:payload];
-            }];
+  [self.macRPC handle:@"driver.Run"
+          withHandler:^(NSDictionary *in) {
+            return [self run:in];
+          }];
+
   [self.objc handle:@"/driver/appname"
             handler:^(NSURLComponents *url, NSString *payload) {
               return [self appName:url payload:payload];
@@ -173,11 +175,12 @@
   return self;
 }
 
-- (bridge_result)run:(NSURLComponents *)url payload:(NSString *)payload {
+- (void)run:(NSDictionary *)in {
   [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
   [NSApp activateIgnoringOtherApps:YES];
   [NSApp run];
-  return make_bridge_result(nil, nil);
+
+  [self.macRPC return:in[@"ReturnID"] withOutput:nil andError:nil];
 }
 
 - (bridge_result)appName:(NSURLComponents *)url payload:(NSString *)payload {

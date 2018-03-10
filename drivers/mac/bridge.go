@@ -189,3 +189,19 @@ func notificationHandler(h func(n *Notification, u *url.URL, p bridge.Payload) (
 		return h(notification, u, p)
 	}
 }
+
+func macCall(call string) error {
+	ccall := C.CString(call)
+	C.macCall(ccall)
+	C.free(unsafe.Pointer(ccall))
+	return nil
+}
+
+//export macCallReturn
+func macCallReturn(retID, ret, err *C.char) {
+	driver.macRPC.Return(
+		C.GoString(retID),
+		C.GoString(ret),
+		C.GoString(err),
+	)
+}
