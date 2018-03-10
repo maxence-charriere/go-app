@@ -144,11 +144,11 @@ func (d *driverWithLogs) Base() Driver {
 }
 
 func (d *driverWithLogs) Run(f Factory) error {
-	Log("running driver", d.base.Name())
+	Log("driver run", d.base.Name())
 
 	err := d.base.Run(f)
 	if err != nil {
-		Error("running driver returned an error:", err)
+		Error("driver run returned an error:", err)
 	}
 	return err
 }
