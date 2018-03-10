@@ -46,7 +46,7 @@ bridge_result macosRequest(char *rawurl, char *payload);
 void macCall(char *rawCall);
 void defer(NSString *returnID, dispatch_block_t block);
 
-typedef void (^MacRPCHandler)(NSDictionary *, NSString *);
+typedef void (^MacRPCHandler)(id, NSString *);
 
 @interface MacRPC : NSObject
 @property NSMutableDictionary<NSString *, MacRPCHandler> *handlers;
@@ -54,7 +54,7 @@ typedef void (^MacRPCHandler)(NSDictionary *, NSString *);
 - (instancetype)init;
 - (void)handle:(NSString *)method withHandler:(MacRPCHandler)handler;
 - (void) return:(NSString *)returnID
-     withOutput:(NSDictionary *)out
+     withOutput:(id)out
        andError:(NSString *)err;
 @end
 

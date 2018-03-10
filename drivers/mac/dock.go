@@ -48,13 +48,7 @@ func newDockTile(config app.MenuConfig) (app.DockTile, error) {
 		}
 	}
 
-	setDockIn := struct {
-		MenuID string
-	}{
-		MenuID: dock.ID().String(),
-	}
-
-	if err := driver.macRPC.Call("driver.SetDock", setDockIn, nil); err != nil {
+	if err := driver.macRPC.Call("driver.SetDock", dock.ID(), nil); err != nil {
 		return nil, err
 	}
 	return dock, nil
@@ -101,26 +95,15 @@ func (d *DockTile) SetIcon(name string) error {
 		return err
 	}
 
-	in := struct {
-		Icon string
-	}{
-		Icon: name,
-	}
-
-	return driver.macRPC.Call("driver.SetDockIcon", in, nil)
+	return driver.macRPC.Call("driver.SetDockIcon", name, nil)
 }
 
 // SetBadge satisfies the app.DockTile interface.
 func (d *DockTile) SetBadge(v interface{}) error {
-	in := struct {
-		Badge string
-	}{}
-
-	if v == nil {
-		in.Badge = ""
-	} else {
-		in.Badge = fmt.Sprint(v)
+	var badge string
+	if v != nil {
+		badge = fmt.Sprint(v)
 	}
 
-	return driver.macRPC.Call("driver.SetDockBadge", in, nil)
+	return driver.macRPC.Call("driver.SetDockBadge", badge, nil)
 }

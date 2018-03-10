@@ -30,39 +30,39 @@
 
   // Driver handlers.
   [self.macRPC handle:@"driver.Run"
-          withHandler:^(NSDictionary *in, NSString *returnID) {
+          withHandler:^(id in, NSString *returnID) {
             return [self run:in return:returnID];
           }];
   [self.macRPC handle:@"driver.Bundle"
-          withHandler:^(NSDictionary *in, NSString *returnID) {
+          withHandler:^(id in, NSString *returnID) {
             return [self bundle:in return:returnID];
           }];
   [self.macRPC handle:@"driver.SetContextMenu"
-          withHandler:^(NSDictionary *in, NSString *returnID) {
+          withHandler:^(id in, NSString *returnID) {
             return [self setContextMenu:in return:returnID];
           }];
   [self.macRPC handle:@"driver.SetMenubar"
-          withHandler:^(NSDictionary *in, NSString *returnID) {
+          withHandler:^(id in, NSString *returnID) {
             return [self setMenubar:in return:returnID];
           }];
   [self.macRPC handle:@"driver.SetDock"
-          withHandler:^(NSDictionary *in, NSString *returnID) {
+          withHandler:^(id in, NSString *returnID) {
             return [self setDock:in return:returnID];
           }];
   [self.macRPC handle:@"driver.SetDockIcon"
-          withHandler:^(NSDictionary *in, NSString *returnID) {
+          withHandler:^(id in, NSString *returnID) {
             return [self setDockIcon:in return:returnID];
           }];
   [self.macRPC handle:@"driver.SetDockBadge"
-          withHandler:^(NSDictionary *in, NSString *returnID) {
+          withHandler:^(id in, NSString *returnID) {
             return [self setDockBadge:in return:returnID];
           }];
   [self.macRPC handle:@"driver.Share"
-          withHandler:^(NSDictionary *in, NSString *returnID) {
+          withHandler:^(id in, NSString *returnID) {
             return [self share:in return:returnID];
           }];
   [self.macRPC handle:@"driver.Quit"
-          withHandler:^(NSDictionary *in, NSString *returnID) {
+          withHandler:^(id in, NSString *returnID) {
             return [self quit:in return:returnID];
           }];
 
@@ -204,9 +204,9 @@
                                     mainBundle.bundleIdentifier];
 }
 
-- (void)setContextMenu:(NSDictionary *)in return:(NSString *)returnID {
+- (void)setContextMenu:(NSString *)menuID return:(NSString *)returnID {
   defer(returnID, ^{
-    Menu *menu = self.elements[in[@"MenuID"]];
+    Menu *menu = self.elements[menuID];
     NSWindow *win = NSApp.keyWindow;
 
     if (win == nil) {
@@ -222,26 +222,24 @@
   });
 }
 
-- (void)setMenubar:(NSDictionary *)in return:(NSString *)returnID {
+- (void)setMenubar:(NSString *)menuID return:(NSString *)returnID {
   defer(returnID, ^{
-    Menu *menu = self.elements[in[@"MenuID"]];
+    Menu *menu = self.elements[menuID];
     NSApp.mainMenu = menu.root;
     [self.macRPC return:returnID withOutput:nil andError:nil];
   });
 }
 
-- (void)setDock:(NSDictionary *)in return:(NSString *)returnID {
+- (void)setDock:(NSString *)menuID return:(NSString *)returnID {
   defer(returnID, ^{
-    Menu *menu = self.elements[in[@"MenuID"]];
+    Menu *menu = self.elements[menuID];
     self.dock = menu.root;
     [self.macRPC return:returnID withOutput:nil andError:nil];
   });
 }
 
-- (void)setDockIcon:(NSDictionary *)in return:(NSString *)returnID {
+- (void)setDockIcon:(NSString *)icon return:(NSString *)returnID {
   defer(returnID, ^{
-    NSString *icon = in[@"Icon"];
-
     if (icon.length != 0) {
       NSApp.applicationIconImage = [[NSImage alloc] initByReferencingFile:icon];
     } else {
@@ -252,9 +250,9 @@
   });
 }
 
-- (void)setDockBadge:(NSDictionary *)in return:(NSString *)returnID {
+- (void)setDockBadge:(NSString *)badge return:(NSString *)returnID {
   defer(returnID, ^{
-    [NSApp.dockTile setBadgeLabel:in[@"Badge"]];
+    [NSApp.dockTile setBadgeLabel:badge];
     [self.macRPC return:returnID withOutput:nil andError:nil];
   });
 }
@@ -287,7 +285,7 @@
   });
 }
 
-- (void)quit:(NSDictionary *)in return:(NSString *)returnID {
+- (void)quit:(id)in return:(NSString *)returnID {
   defer(returnID, ^{
     [NSApp terminate:self];
     [self.macRPC return:returnID withOutput:nil andError:nil];

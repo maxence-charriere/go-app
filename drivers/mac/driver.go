@@ -67,6 +67,7 @@ type Driver struct {
 	macos        bridge.PlatformBridge
 	golang       bridge.GoBridge
 	macRPC       bridge.RPC
+	goRPC        bridge.RPC
 	menubar      app.Menu
 	dock         app.DockTile
 	devID        string
@@ -316,13 +317,7 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
 		return nil, err
 	}
 
-	in := struct {
-		MenuID string
-	}{
-		MenuID: m.ID().String(),
-	}
-
-	err = d.macRPC.Call("driver.SetContextMenu", in, nil)
+	err = d.macRPC.Call("driver.SetContextMenu", m.ID(), nil)
 	return m, err
 }
 
@@ -409,13 +404,7 @@ func (d *Driver) newMenuBar() error {
 		return err
 	}
 
-	in := struct {
-		MenuID string
-	}{
-		MenuID: menubar.ID().String(),
-	}
-
-	if err = d.macRPC.Call("driver.SetMenubar", in, nil); err != nil {
+	if err = d.macRPC.Call("driver.SetMenubar", menubar.ID(), nil); err != nil {
 		return errors.Wrap(err, "set menu bar")
 	}
 	return nil

@@ -14,16 +14,16 @@
 
 + (instancetype)current;
 - (instancetype)init;
-- (void)run:(NSDictionary *)in return:(NSString *)returnID;
-- (void)bundle:(NSDictionary *)in return:(NSString *)returnID;
+- (void)run:(id)in return:(NSString *)returnID;
+- (void)bundle:(id)in return:(NSString *)returnID;
 - (NSString *)support;
-- (void)setContextMenu:(NSDictionary *)in return:(NSString *)returnID;
-- (void)setMenubar:(NSDictionary *)in return:(NSString *)returnID;
-- (void)setDock:(NSDictionary *)in return:(NSString *)returnID;
-- (void)setDockIcon:(NSDictionary *)in return:(NSString *)returnID;
-- (void)setDockBadge:(NSDictionary *)in return:(NSString *)returnID;
+- (void)setContextMenu:(NSString *)menuID return:(NSString *)returnID;
+- (void)setMenubar:(NSString *)menuID return:(NSString *)returnID;
+- (void)setDock:(NSString *)menuID return:(NSString *)returnID;
+- (void)setDockIcon:(NSString *)icon return:(NSString *)returnID;
+- (void)setDockBadge:(NSString *)badge return:(NSString *)returnID;
 - (void)share:(NSDictionary *)in return:(NSString *)returnID;
-- (void)quit:(NSDictionary *)in return:(NSString *)returnID;
+- (void)quit:(id)in return:(NSString *)returnID;
 @end
 
 #endif /* driver_h */

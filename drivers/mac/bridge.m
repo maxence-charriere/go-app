@@ -103,10 +103,10 @@ bridge_result macosRequest(char *rawurl, char *cpayload) {
 
 void macCall(char *rawCall) {
   NSDictionary *call =
-      [JSONDecoder decodeObject:[NSString stringWithUTF8String:rawCall]];
+      [JSONDecoder decode:[NSString stringWithUTF8String:rawCall]];
 
   NSString *method = call[@"Method"];
-  NSDictionary *in = call[@"Input"];
+  id in = call[@"Input"];
   NSString *returnID = call[@"ReturnID"];
 
   @try {
@@ -147,12 +147,11 @@ void defer(NSString *returnID, dispatch_block_t block) {
 }
 
 - (void) return:(NSString *)returnID
-     withOutput:(NSDictionary *)out
+     withOutput:(id)out
        andError:(NSString *)err {
 
   char *creturnID = returnID != nil ? (char *)returnID.UTF8String : nil;
-  char *cout =
-      out != nil ? (char *)[JSONEncoder encodeObject:out].UTF8String : nil;
+  char *cout = out != nil ? (char *)[JSONEncoder encode:out].UTF8String : nil;
   char *cerr = err != nil ? (char *)err.UTF8String : nil;
 
   macCallReturn(creturnID, cout, cerr);
