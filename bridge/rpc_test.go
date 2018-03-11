@@ -89,7 +89,7 @@ func TestRPC(t *testing.T) {
 	var rpc RPC
 
 	handler := func(rawCall string) error {
-		var call call
+		var call Call
 		err := json.Unmarshal([]byte(rawCall), &call)
 		if err != nil {
 			return err

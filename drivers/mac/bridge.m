@@ -157,3 +157,20 @@ void defer(NSString *returnID, dispatch_block_t block) {
   macCallReturn(creturnID, cout, cerr);
 }
 @end
+
+@implementation GoRPC
+- (id)call:(NSString *)method withInput:(id)in {
+  NSDictionary *call = @{
+    @"Method" : method,
+    @"Input" : in,
+  };
+  NSString *callString = [JSONEncoder encode:call];
+
+  char *cout = goCall((char *)callString.UTF8String);
+  NSString *out = [NSString stringWithUTF8String:cout];
+  free(cout);
+
+  return [JSONDecoder decodeObject:out];
+}
+
+@end

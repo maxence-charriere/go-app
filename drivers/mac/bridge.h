@@ -42,7 +42,7 @@ bridge_result macosRequest(char *rawurl, char *payload);
 - (NSString *)queryValue:(NSString *)name;
 @end
 
-// --------- NEW -----------
+// --------- MacRPC -----------
 void macCall(char *rawCall);
 void defer(NSString *returnID, dispatch_block_t block);
 
@@ -56,6 +56,11 @@ typedef void (^MacRPCHandler)(id, NSString *);
 - (void) return:(NSString *)returnID
      withOutput:(id)out
        andError:(NSString *)err;
+@end
+
+// --------- Go RPC -----------
+@interface GoRPC : NSObject
+- (id)call:(NSString *)method withInput:(id)in;
 @end
 
 #endif /* bridge_h */

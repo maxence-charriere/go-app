@@ -205,3 +205,13 @@ func macCallReturn(retID, ret, err *C.char) {
 		C.GoString(err),
 	)
 }
+
+//export goCall
+func goCall(ccall *C.char) (cout *C.char) {
+	// var call bridge.Call
+	// if err := json.Unmarshal([]byte(C.GoString(ccall)), &call); err != nil {
+	// 	panic(err)
+	// }
+
+	return nil
+}

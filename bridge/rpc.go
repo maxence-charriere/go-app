@@ -11,8 +11,8 @@ import (
 // Handler represents the handler that will perform the call.
 type Handler func(call string) error
 
-// RPC is a stuct that implements the remote procedure call mechanismes between
-// Go and an underlying platform.
+// RPC is a struct that implements the remote procedure call from  Go to an
+// underlying platform.
 type RPC struct {
 	Handler Handler
 
@@ -26,7 +26,7 @@ type RPC struct {
 func (r *RPC) Call(method string, in interface{}, out interface{}) error {
 	returnID := uuid.New().String()
 
-	call, err := json.Marshal(call{
+	call, err := json.Marshal(Call{
 		Method:   method,
 		Input:    in,
 		ReturnID: returnID,
@@ -87,7 +87,7 @@ func (r *RPC) Return(retID string, out string, errString string) {
 	}
 }
 
-type call struct {
+type Call struct {
 	Method   string
 	Input    interface{} `json:",omitempty"`
 	ReturnID string
@@ -96,4 +96,10 @@ type call struct {
 type rpcReturn struct {
 	Output string
 	Error  error
+}
+
+// ReverseRPC is a struct that implements the remote procedure call from an
+// underlying platform to Go.
+type ReverseRPC struct {
+	Handler
 }

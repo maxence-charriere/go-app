@@ -23,7 +23,7 @@
 - (instancetype)init {
   self = [super init];
 
-  self.elements = [NSMutableDictionary dictionaryWithCapacity:256];
+  self.elements = [[NSMutableDictionary alloc] init];
   self.objc = [[OBJCBridge alloc] init];
   self.golang = [[GoBridge alloc] init];
   self.macRPC = [[MacRPC alloc] init];
@@ -177,10 +177,11 @@
 - (void)bundle:(NSDictionary *)in return:(NSString *)returnID {
   NSBundle *mainBundle = [NSBundle mainBundle];
 
-  NSMutableDictionary *out = [[NSMutableDictionary alloc] init];
-  out[@"AppName"] = mainBundle.infoDictionary[@"CFBundleName"];
-  out[@"Resources"] = mainBundle.resourcePath;
-  out[@"Support"] = [self support];
+  NSDictionary *out = @{
+    @"AppName" : mainBundle.infoDictionary[@"CFBundleName"],
+    @"Resources" : mainBundle.resourcePath,
+    @"Support" : [self support],
+  };
 
   [self.macRPC return:returnID withOutput:out andError:nil];
 }
