@@ -40,7 +40,7 @@ type Window struct {
 	onClose          func() bool
 }
 
-func newWindow(config app.WindowConfig) (app.Window, error) {
+func newWindow(c app.WindowConfig) (app.Window, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
 	markup = app.NewConcurrentMarkup(markup)
 
@@ -53,26 +53,58 @@ func newWindow(config app.WindowConfig) (app.Window, error) {
 		history:   history,
 		lastFocus: time.Now(),
 
-		onMove:           config.OnMove,
-		onResize:         config.OnResize,
-		onFocus:          config.OnFocus,
-		onBlur:           config.OnBlur,
-		onFullScreen:     config.OnFullScreen,
-		onExitFullScreen: config.OnExitFullScreen,
-		onMinimize:       config.OnMinimize,
-		onDeminimize:     config.OnDeminimize,
-		onClose:          config.OnClose,
+		onMove:           c.OnMove,
+		onResize:         c.OnResize,
+		onFocus:          c.OnFocus,
+		onBlur:           c.OnBlur,
+		onFullScreen:     c.OnFullScreen,
+		onExitFullScreen: c.OnExitFullScreen,
+		onMinimize:       c.OnMinimize,
+		onDeminimize:     c.OnDeminimize,
+		onClose:          c.OnClose,
 	}
-
-	config.MinWidth, config.MaxWidth = normalizeWidowSize(config.MinWidth, config.MaxWidth)
-	config.MinHeight, config.MaxHeight = normalizeWidowSize(config.MinHeight, config.MaxHeight)
-
 	win := app.NewWindowWithLogs(rawWin)
 
-	if _, err := driver.macos.Request(
-		fmt.Sprintf("/window/new?id=%s", rawWin.id),
-		bridge.NewPayload(config),
-	); err != nil {
+	in := struct {
+		ID                 string
+		Title              string
+		X                  float64
+		Y                  float64
+		Width              float64
+		MinWidth           float64
+		MaxWidth           float64
+		Height             float64
+		MinHeight          float64
+		MaxHeight          float64
+		BackgroundColor    string
+		FixedSize          bool
+		CloseHidden        bool
+		MinimizeHidden     bool
+		TitlebarHidden     bool
+		BackgroundVibrancy app.Vibrancy
+	}{
+		ID:                 win.ID().String(),
+		Title:              c.Title,
+		X:                  c.X,
+		Y:                  c.Y,
+		Width:              c.Width,
+		MinWidth:           c.MinWidth,
+		MaxWidth:           c.MaxWidth,
+		Height:             c.Height,
+		MinHeight:          c.MinHeight,
+		MaxHeight:          c.MaxHeight,
+		BackgroundColor:    c.BackgroundColor,
+		FixedSize:          c.FixedSize,
+		CloseHidden:        c.CloseHidden,
+		MinimizeHidden:     c.MinimizeHidden,
+		TitlebarHidden:     c.TitlebarHidden,
+		BackgroundVibrancy: c.Mac.BackgroundVibrancy,
+	}
+
+	in.MinWidth, in.MaxWidth = normalizeWidowSize(in.MinWidth, in.MaxWidth)
+	in.MinHeight, in.MaxHeight = normalizeWidowSize(in.MinHeight, in.MaxHeight)
+
+	if err := driver.macRPC.Call("window.New", in, nil); err != nil {
 		return nil, err
 	}
 
@@ -80,9 +112,12 @@ func newWindow(config app.WindowConfig) (app.Window, error) {
 		return nil, err
 	}
 
-	if len(config.DefaultURL) != 0 {
-		return win, win.Load(config.DefaultURL)
+	if len(c.DefaultURL) != 0 {
+		if err := win.Load(c.DefaultURL); err != nil {
+			return nil, err
+		}
 	}
+
 	return win, nil
 }
 
@@ -175,23 +210,21 @@ func (w *Window) load(u *url.URL) error {
 	pageConfig.DefaultComponent = template.HTML(buffer.String())
 	pageConfig.AppJS = appjs.AppJS("window.webkit.messageHandlers.golangRequest.postMessage")
 
-	payload := struct {
-		Title   string `json:"title"`
-		Page    string `json:"page"`
-		LoadURL string `json:"load-url"`
-		BaseURL string `json:"base-url"`
+	in := struct {
+		ID      string
+		Title   string
+		Page    string
+		LoadURL string
+		BaseURL string
 	}{
+		ID:      w.ID().String(),
 		Title:   pageConfig.Title,
 		Page:    html.NewPage(pageConfig),
 		LoadURL: u.String(),
 		BaseURL: driver.Resources(),
 	}
 
-	_, err = driver.macos.RequestWithAsyncResponse(
-		fmt.Sprintf("/window/load?id=%s", w.id),
-		bridge.NewPayload(payload),
-	)
-	return err
+	return driver.macRPC.Call("window.Load", in, nil)
 }
 
 // Contains satisfies the app.Window interface.
@@ -234,19 +267,26 @@ func (w *Window) render(sync app.TagSync) error {
 		return err
 	}
 
-	payload := struct {
+	render, err := json.Marshal(struct {
 		ID        string `json:"id"`
 		Component string `json:"component"`
 	}{
 		ID:        sync.Tag.ID.String(),
 		Component: buffer.String(),
+	})
+	if err != nil {
+		return err
 	}
 
-	_, err := driver.macos.Request(
-		fmt.Sprintf("/window/render?id=%s", w.id),
-		bridge.NewPayload(payload),
-	)
-	return err
+	in := struct {
+		ID     string
+		Render string
+	}{
+		ID:     w.ID().String(),
+		Render: string(render),
+	}
+
+	return driver.macRPC.Call("window.Render", in, nil)
 }
 
 func (w *Window) renderAttributes(sync app.TagSync) error {
@@ -261,19 +301,26 @@ func (w *Window) renderAttributes(sync app.TagSync) error {
 		}.Format()
 	}
 
-	payload := struct {
+	render, err := json.Marshal(struct {
 		ID         string           `json:"id"`
 		Attributes app.AttributeMap `json:"attributes"`
 	}{
 		ID:         sync.Tag.ID.String(),
 		Attributes: attrs,
+	})
+	if err != nil {
+		return err
 	}
 
-	_, err := driver.macos.Request(
-		fmt.Sprintf("/window/render/attributes?id=%s", w.id),
-		bridge.NewPayload(payload),
-	)
-	return err
+	in := struct {
+		ID     string
+		Render string
+	}{
+		ID:     w.ID().String(),
+		Render: string(render),
+	}
+
+	return driver.macRPC.Call("window.RenderAttributes", in, nil)
 }
 
 // LastFocus satisfies the app.Window interface.

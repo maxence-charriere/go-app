@@ -4,40 +4,43 @@
 #include "json.h"
 
 @implementation Window
-+ (bridge_result)newWindow:(NSURLComponents *)url payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
++ (void) new:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
+    Driver *driver = [Driver current];
 
-  NSDictionary *config = [JSONDecoder decodeObject:payload];
-  NSString *title = config[@"title"];
-  NSNumber *x = config[@"x"];
-  NSNumber *y = config[@"y"];
-  NSNumber *width = config[@"width"];
-  NSNumber *minWidth = config[@"min-width"];
-  NSNumber *maxWidth = config[@"max-width"];
-  NSNumber *height = config[@"height"];
-  NSNumber *minHeight = config[@"min-height"];
-  NSNumber *maxHeight = config[@"max-height"];
-  NSString *backgroundColor = config[@"background-color"];
-  BOOL fixedSize = [config[@"fixed-size"] boolValue];
-  BOOL closeHidden = [config[@"close-hidden"] boolValue];
-  BOOL minimizeHidden = [config[@"minimize-hidden"] boolValue];
-  BOOL titlebarHidden = [config[@"titlebar-hidden"] boolValue];
-  NSNumber *backgroundVibrancy = config[@"mac"][@"background-vibrancy"];
+    NSString *ID = in[@"ID"];
+    NSString *title = in[@"Title"];
+    NSNumber *x = in[@"X"];
+    NSNumber *y = in[@"Y"];
+    NSNumber *width = in[@"Width"];
+    NSNumber *minWidth = in[@"MinWidth"];
+    NSNumber *maxWidth = in[@"MaxWidth"];
+    NSNumber *height = in[@"Height"];
+    NSNumber *minHeight = in[@"MinHeight"];
+    NSNumber *maxHeight = in[@"MaxHeight"];
+    NSString *backgroundColor = in[@"BackgroundColor"];
+    BOOL fixedSize = [in[@"FixedSize"] boolValue];
+    BOOL closeHidden = [in[@"CloseHidden"] boolValue];
+    BOOL minimizeHidden = [in[@"MinimizeHidden"] boolValue];
+    BOOL titlebarHidden = [in[@"TitlebarHidden"] boolValue];
+    NSNumber *backgroundVibrancy = in[@"BackgroundVibrancy"];
 
-  dispatch_async(dispatch_get_main_queue(), ^{
-    // Configuring raw window.
     NSRect rect = NSMakeRect(x.floatValue, y.floatValue, width.floatValue,
                              height.floatValue);
+
     NSUInteger styleMask =
         NSWindowStyleMaskTitled | NSWindowStyleMaskFullSizeContentView |
         NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable |
         NSWindowStyleMaskResizable;
+
     if (fixedSize) {
       styleMask = styleMask & ~NSWindowStyleMaskResizable;
     }
+
     if (closeHidden) {
       styleMask = styleMask & ~NSWindowStyleMaskClosable;
     }
+
     if (minimizeHidden) {
       styleMask = styleMask & ~NSWindowStyleMaskMiniaturizable;
     }
@@ -63,13 +66,11 @@
     [win configWebview];
     [win configTitlebar:title hidden:titlebarHidden];
 
-    // Registering window.
-    Driver *driver = [Driver current];
     driver.elements[ID] = win;
-
     [win showWindow:nil];
+
+    [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
 }
 
 - (void)configBackgroundColor:(NSString *)color
@@ -173,27 +174,30 @@
                                               titlebar)]];
 }
 
-+ (bridge_result)load:(NSURLComponents *)url payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
-  NSString *returnID = [url queryValue:@"return-id"];
-
-  NSDictionary *config = [JSONDecoder decodeObject:payload];
-  NSString *title = config[@"title"];
-  NSString *page = config[@"page"];
-  NSString *loadURL = config[@"load-url"];
-  NSString *baseURL = config[@"base-url"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
++ (void)load:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
     Driver *driver = [Driver current];
-    Window *win = driver.elements[ID];
 
-    win.window.title = title;
+    Window *win = driver.elements[in[@"ID"]];
     win.loadReturnID = returnID;
-    win.loadURL = [NSURL URLWithString:loadURL];
-    win.baseURL = [NSURL fileURLWithPath:baseURL];
-    [win.webview loadHTMLString:page baseURL:win.baseURL];
+    win.loadURL = [NSURL URLWithString:in[@"LoadURL"]];
+    win.baseURL = [NSURL fileURLWithPath:in[@"BaseURL"]];
+
+    [win.webview loadHTMLString:in[@"Page"] baseURL:win.baseURL];
   });
-  return make_bridge_result(nil, nil);
+}
+
+- (void)webView:(WKWebView *)webView
+    didFinishNavigation:(WKNavigation *)navigation {
+  Driver *driver = [Driver current];
+
+  NSString *returnID = self.loadReturnID;
+  if (returnID == nil || returnID.length == 0) {
+    return;
+  }
+  [driver.macRPC return:returnID withOutput:nil andError:nil];
+
+  self.loadReturnID = nil;
 }
 
 - (void)webView:(WKWebView *)webView
@@ -230,47 +234,29 @@
   decisionHandler(WKNavigationActionPolicyCancel);
 }
 
-- (void)webView:(WKWebView *)webView
-    didFinishNavigation:(WKNavigation *)navigation {
-  Driver *driver = [Driver current];
++ (void)render:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
+    Driver *driver = [Driver current];
 
-  if (self.loadReturnID == nil || self.loadReturnID.length == 0) {
-    return;
-  }
+    Window *win = driver.elements[in[@"ID"]];
+    NSString *js = [NSString stringWithFormat:@"render(%@)", in[@"Render"]];
+    [win.webview evaluateJavaScript:js completionHandler:nil];
 
-  [driver.objc asyncReturn:self.loadReturnID
-                    result:make_bridge_result(nil, nil)];
-  self.loadReturnID = nil;
+    [driver.macRPC return:returnID withOutput:nil andError:nil];
+  });
 }
 
-+ (bridge_result)render:(NSURLComponents *)url payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
++ (void)renderAttributes:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
     Driver *driver = [Driver current];
-    Window *win = driver.elements[ID];
 
-    [win.webview
-        evaluateJavaScript:[NSString stringWithFormat:@"render(%@)", payload]
-         completionHandler:nil];
+    Window *win = driver.elements[in[@"ID"]];
+    NSString *js =
+        [NSString stringWithFormat:@"renderAttributes(%@)", in[@"Render"]];
+    [win.webview evaluateJavaScript:js completionHandler:nil];
+
+    [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
-}
-
-+ (bridge_result)renderAttributes:(NSURLComponents *)url
-                          payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
-    Driver *driver = [Driver current];
-    Window *win = driver.elements[ID];
-
-    [win.webview
-        evaluateJavaScript:[NSString stringWithFormat:@"renderAttributes(%@)",
-                                                      payload]
-         completionHandler:nil];
-  });
-  return make_bridge_result(nil, nil);
 }
 
 + (bridge_result)position:(NSURLComponents *)url payload:(NSString *)payload {

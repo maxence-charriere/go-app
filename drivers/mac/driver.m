@@ -27,6 +27,7 @@
   self.objc = [[OBJCBridge alloc] init];
   self.golang = [[GoBridge alloc] init];
   self.macRPC = [[MacRPC alloc] init];
+  self.goRPC = [[GoRPC alloc] init];
 
   // Driver handlers.
   [self.macRPC handle:@"driver.Run"
@@ -67,22 +68,23 @@
           }];
 
   // Window handlers.
-  [self.objc handle:@"/window/new"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Window newWindow:url payload:payload];
-            }];
-  [self.objc handle:@"/window/load"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Window load:url payload:payload];
-            }];
-  [self.objc handle:@"/window/render"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Window render:url payload:payload];
-            }];
-  [self.objc handle:@"/window/render/attributes"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Window renderAttributes:url payload:payload];
-            }];
+  [self.macRPC handle:@"window.New"
+          withHandler:^(id in, NSString *returnID) {
+            return [Window new:in return:returnID];
+          }];
+  [self.macRPC handle:@"window.Load"
+          withHandler:^(id in, NSString *returnID) {
+            return [Window load:in return:returnID];
+          }];
+  [self.macRPC handle:@"window.Render"
+          withHandler:^(id in, NSString *returnID) {
+            return [Window render:in return:returnID];
+          }];
+  [self.macRPC handle:@"window.RenderAttributes"
+          withHandler:^(id in, NSString *returnID) {
+            return [Window renderAttributes:in return:returnID];
+          }];
+
   [self.objc handle:@"/window/position"
             handler:^(NSURLComponents *url, NSString *payload) {
               return [Window position:url payload:payload];
@@ -177,11 +179,10 @@
 - (void)bundle:(NSDictionary *)in return:(NSString *)returnID {
   NSBundle *mainBundle = [NSBundle mainBundle];
 
-  NSDictionary *out = @{
-    @"AppName" : mainBundle.infoDictionary[@"CFBundleName"],
-    @"Resources" : mainBundle.resourcePath,
-    @"Support" : [self support],
-  };
+  NSMutableDictionary *out = [[NSMutableDictionary alloc] init];
+  out[@"AppName"] = mainBundle.infoDictionary[@"CFBundleName"];
+  out[@"Resources"] = mainBundle.resourcePath;
+  out[@"Support"] = [self support];
 
   [self.macRPC return:returnID withOutput:out andError:nil];
 }

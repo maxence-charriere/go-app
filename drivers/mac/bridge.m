@@ -129,6 +129,7 @@ void defer(NSString *returnID, dispatch_block_t block) {
     @try {
       block();
     } @catch (NSException *exception) {
+      NSLog(@"Execption in defer: %@", exception);
       NSString *err = exception.reason;
       macCallReturn((char *)returnID.UTF8String, nil, (char *)err.UTF8String);
     }
@@ -172,5 +173,4 @@ void defer(NSString *returnID, dispatch_block_t block) {
 
   return [JSONDecoder decodeObject:out];
 }
-
 @end

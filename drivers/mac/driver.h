@@ -9,6 +9,7 @@
 @property OBJCBridge *objc;
 @property GoBridge *golang;
 @property MacRPC *macRPC;
+@property GoRPC *goRPC;
 @property NSMutableDictionary<NSString *, id> *elements;
 @property NSMenu *dock;
 
