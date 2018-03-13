@@ -68,59 +68,58 @@
           }];
 
   // Window handlers.
-  [self.macRPC handle:@"window.New"
+  [self.macRPC handle:@"windows.New"
           withHandler:^(id in, NSString *returnID) {
             return [Window new:in return:returnID];
           }];
-  [self.macRPC handle:@"window.Load"
+  [self.macRPC handle:@"windows.Load"
           withHandler:^(id in, NSString *returnID) {
             return [Window load:in return:returnID];
           }];
-  [self.macRPC handle:@"window.Render"
+  [self.macRPC handle:@"windows.Render"
           withHandler:^(id in, NSString *returnID) {
             return [Window render:in return:returnID];
           }];
-  [self.macRPC handle:@"window.RenderAttributes"
+  [self.macRPC handle:@"windows.RenderAttributes"
           withHandler:^(id in, NSString *returnID) {
             return [Window renderAttributes:in return:returnID];
           }];
-
-  [self.objc handle:@"/window/position"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Window position:url payload:payload];
-            }];
-  [self.objc handle:@"/window/move"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Window move:url payload:payload];
-            }];
-  [self.objc handle:@"/window/center"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Window center:url payload:payload];
-            }];
-  [self.objc handle:@"/window/size"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Window size:url payload:payload];
-            }];
-  [self.objc handle:@"/window/resize"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Window resize:url payload:payload];
-            }];
-  [self.objc handle:@"/window/focus"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Window focus:url payload:payload];
-            }];
-  [self.objc handle:@"/window/togglefullscreen"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Window toggleFullScreen:url payload:payload];
-            }];
-  [self.objc handle:@"/window/toggleminimize"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Window toggleMinimize:url payload:payload];
-            }];
-  [self.objc handle:@"/window/close"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Window close:url payload:payload];
-            }];
+  [self.macRPC handle:@"windows.Position"
+          withHandler:^(id in, NSString *returnID) {
+            return [Window position:in return:returnID];
+          }];
+  [self.macRPC handle:@"windows.Move"
+          withHandler:^(id in, NSString *returnID) {
+            return [Window move:in return:returnID];
+          }];
+  [self.macRPC handle:@"windows.Center"
+          withHandler:^(id in, NSString *returnID) {
+            return [Window center:in return:returnID];
+          }];
+  [self.macRPC handle:@"windows.Size"
+          withHandler:^(id in, NSString *returnID) {
+            return [Window size:in return:returnID];
+          }];
+  [self.macRPC handle:@"windows.Resize"
+          withHandler:^(id in, NSString *returnID) {
+            return [Window resize:in return:returnID];
+          }];
+  [self.macRPC handle:@"windows.Focus"
+          withHandler:^(id in, NSString *returnID) {
+            return [Window focus:in return:returnID];
+          }];
+  [self.macRPC handle:@"windows.ToggleFullScreen"
+          withHandler:^(id in, NSString *returnID) {
+            return [Window toggleFullScreen:in return:returnID];
+          }];
+  [self.macRPC handle:@"windows.ToggleMinimize"
+          withHandler:^(id in, NSString *returnID) {
+            return [Window toggleMinimize:in return:returnID];
+          }];
+  [self.macRPC handle:@"windows.Close"
+          withHandler:^(id in, NSString *returnID) {
+            return [Window close:in return:returnID];
+          }];
 
   // Menu handlers.
   [self.objc handle:@"/menu/new"

@@ -20,18 +20,15 @@
 + (void)load:(NSDictionary *)in return:(NSString *)returnID;
 + (void)render:(NSDictionary *)in return:(NSString *)returnID;
 + (void)renderAttributes:(NSDictionary *)in return:(NSString *)returnID;
-
-+ (bridge_result)position:(NSURLComponents *)url payload:(NSString *)payload;
-+ (bridge_result)move:(NSURLComponents *)url payload:(NSString *)payload;
-+ (bridge_result)center:(NSURLComponents *)url payload:(NSString *)payload;
-+ (bridge_result)size:(NSURLComponents *)url payload:(NSString *)payload;
-+ (bridge_result)resize:(NSURLComponents *)url payload:(NSString *)payload;
-+ (bridge_result)focus:(NSURLComponents *)url payload:(NSString *)payload;
-+ (bridge_result)toggleFullScreen:(NSURLComponents *)url
-                          payload:(NSString *)payload;
-+ (bridge_result)toggleMinimize:(NSURLComponents *)url
-                        payload:(NSString *)payload;
-+ (bridge_result)close:(NSURLComponents *)url payload:(NSString *)payload;
++ (void)position:(NSDictionary *)in return:(NSString *)returnID;
++ (void)move:(NSDictionary *)in return:(NSString *)returnID;
++ (void)center:(NSDictionary *)in return:(NSString *)returnID;
++ (void)size:(NSDictionary *)in return:(NSString *)returnID;
++ (void)resize:(NSDictionary *)in return:(NSString *)returnID;
++ (void)focus:(NSDictionary *)in return:(NSString *)returnID;
++ (void)toggleFullScreen:(NSDictionary *)in return:(NSString *)returnID;
++ (void)toggleMinimize:(NSDictionary *)in return:(NSString *)returnID;
++ (void)close:(NSDictionary *)in return:(NSString *)returnID;
 @end
 
 @interface WindowTitleBar : NSView

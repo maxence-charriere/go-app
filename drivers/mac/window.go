@@ -18,7 +18,6 @@ import (
 	"github.com/murlokswarm/app/appjs"
 	"github.com/murlokswarm/app/bridge"
 	"github.com/murlokswarm/app/html"
-	"github.com/pkg/errors"
 )
 
 // Window implements the app.Window interface.
@@ -104,7 +103,7 @@ func newWindow(c app.WindowConfig) (app.Window, error) {
 	in.MinWidth, in.MaxWidth = normalizeWidowSize(in.MinWidth, in.MaxWidth)
 	in.MinHeight, in.MaxHeight = normalizeWidowSize(in.MinHeight, in.MaxHeight)
 
-	if err := driver.macRPC.Call("window.New", in, nil); err != nil {
+	if err := driver.macRPC.Call("windows.New", in, nil); err != nil {
 		return nil, err
 	}
 
@@ -224,7 +223,7 @@ func (w *Window) load(u *url.URL) error {
 		BaseURL: driver.Resources(),
 	}
 
-	return driver.macRPC.Call("window.Load", in, nil)
+	return driver.macRPC.Call("windows.Load", in, nil)
 }
 
 // Contains satisfies the app.Window interface.
@@ -286,7 +285,7 @@ func (w *Window) render(sync app.TagSync) error {
 		Render: string(render),
 	}
 
-	return driver.macRPC.Call("window.Render", in, nil)
+	return driver.macRPC.Call("windows.Render", in, nil)
 }
 
 func (w *Window) renderAttributes(sync app.TagSync) error {
@@ -320,7 +319,7 @@ func (w *Window) renderAttributes(sync app.TagSync) error {
 		Render: string(render),
 	}
 
-	return driver.macRPC.Call("window.RenderAttributes", in, nil)
+	return driver.macRPC.Call("windows.RenderAttributes", in, nil)
 }
 
 // LastFocus satisfies the app.Window interface.
@@ -385,29 +384,37 @@ func (w *Window) Next() error {
 
 // Position satisfies the app.Window interface.
 func (w *Window) Position() (x, y float64) {
-	rawurl := fmt.Sprintf("/window/position?id=%s", w.id)
-
-	res, err := driver.macos.RequestWithAsyncResponse(rawurl, nil)
-	if err != nil {
-		panic(errors.Wrapf(err, "retrieving position of window %v", w.ID()))
+	in := struct {
+		ID string
+	}{
+		ID: w.ID().String(),
 	}
 
-	var pos point
-	res.Unmarshal(&pos)
-	return pos.X, pos.Y
+	var out struct {
+		X float64
+		Y float64
+	}
+
+	if err := driver.macRPC.Call("windows.Position", in, &out); err != nil {
+		panic(err)
+	}
+	return out.X, out.Y
 }
 
 // Move satisfies the app.Window interface.
 func (w *Window) Move(x, y float64) {
-	rawurl := fmt.Sprintf("/window/move?id=%s", w.id)
-	payload := bridge.NewPayload(point{
-		X: x,
-		Y: y,
-	})
+	in := struct {
+		ID string
+		X  float64
+		Y  float64
+	}{
+		ID: w.ID().String(),
+		X:  x,
+		Y:  y,
+	}
 
-	_, err := driver.macos.Request(rawurl, payload)
-	if err != nil {
-		panic(errors.Wrapf(err, "moving window %v failed", w.ID()))
+	if err := driver.macRPC.Call("windows.Move", in, nil); err != nil {
+		panic(err)
 	}
 }
 
@@ -424,39 +431,50 @@ func onWindowMove(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) 
 
 // Center satisfies the app.Window interface.
 func (w *Window) Center() {
-	rawurl := fmt.Sprintf("/window/center?id=%s", w.id)
+	in := struct {
+		ID string
+	}{
+		ID: w.ID().String(),
+	}
 
-	_, err := driver.macos.Request(rawurl, nil)
-	if err != nil {
-		panic(errors.Wrapf(err, "centering window %v failed", w.ID()))
+	if err := driver.macRPC.Call("windows.Center", in, nil); err != nil {
+		panic(err)
 	}
 }
 
 // Size satisfies the app.Window interface.
 func (w *Window) Size() (width, height float64) {
-	rawurl := fmt.Sprintf("/window/size?id=%s", w.id)
-
-	res, err := driver.macos.RequestWithAsyncResponse(rawurl, nil)
-	if err != nil {
-		panic(errors.Wrapf(err, "retrieving size of window %v failed", w.ID()))
+	in := struct {
+		ID string
+	}{
+		ID: w.ID().String(),
 	}
 
-	var size size
-	res.Unmarshal(&size)
-	return size.Width, size.Height
+	var out struct {
+		Width  float64
+		Heigth float64
+	}
+
+	if err := driver.macRPC.Call("windows.Size", in, &out); err != nil {
+		panic(err)
+	}
+	return out.Width, out.Heigth
 }
 
 // Resize satisfies the app.Window interface.
 func (w *Window) Resize(width, height float64) {
-	rawurl := fmt.Sprintf("/window/resize?id=%s", w.id)
-	payload := bridge.NewPayload(size{
+	in := struct {
+		ID     string
+		Width  float64
+		Height float64
+	}{
+		ID:     w.ID().String(),
 		Width:  width,
 		Height: height,
-	})
+	}
 
-	_, err := driver.macos.Request(rawurl, payload)
-	if err != nil {
-		panic(errors.Wrapf(err, "resizing window %v failed", w.ID()))
+	if err := driver.macRPC.Call("windows.Resize", in, nil); err != nil {
+		panic(err)
 	}
 }
 
@@ -473,11 +491,14 @@ func onWindowResize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload
 
 // Focus satisfies the app.Window interface.
 func (w *Window) Focus() {
-	rawurl := fmt.Sprintf("/window/focus?id=%s", w.id)
+	in := struct {
+		ID string
+	}{
+		ID: w.ID().String(),
+	}
 
-	_, err := driver.macos.Request(rawurl, nil)
-	if err != nil {
-		panic(errors.Wrapf(err, "focusing window %v failed", w.ID()))
+	if err := driver.macRPC.Call("windows.Focus", in, nil); err != nil {
+		panic(err)
 	}
 }
 
@@ -503,11 +524,14 @@ func onWindowBlur(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) 
 
 // ToggleFullScreen satisfies the app.Window interface.
 func (w *Window) ToggleFullScreen() {
-	rawurl := fmt.Sprintf("/window/togglefullscreen?id=%s", w.id)
+	in := struct {
+		ID string
+	}{
+		ID: w.ID().String(),
+	}
 
-	_, err := driver.macos.Request(rawurl, nil)
-	if err != nil {
-		panic(errors.Wrapf(err, "toggling full screen on window %v failed", w.ID()))
+	if err := driver.macRPC.Call("windows.ToggleFullScreen", in, nil); err != nil {
+		panic(err)
 	}
 }
 
@@ -531,11 +555,14 @@ func onWindowExitFullScreen(w *Window, u *url.URL, p bridge.Payload) (res bridge
 
 // ToggleMinimize satisfies the app.Window interface.
 func (w *Window) ToggleMinimize() {
-	rawurl := fmt.Sprintf("/window/toggleminimize?id=%s", w.id)
+	in := struct {
+		ID string
+	}{
+		ID: w.ID().String(),
+	}
 
-	_, err := driver.macos.Request(rawurl, nil)
-	if err != nil {
-		panic(errors.Wrapf(err, "toggling minimize on window %v failed", w.ID()))
+	if err := driver.macRPC.Call("windows.ToggleMinimize", in, nil); err != nil {
+		panic(err)
 	}
 }
 
@@ -559,11 +586,14 @@ func onWindowDeminimize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Pay
 
 // Close satisfies the app.Window interface.
 func (w *Window) Close() {
-	rawurl := fmt.Sprintf("/window/close?id=%s", w.id)
+	in := struct {
+		ID string
+	}{
+		ID: w.ID().String(),
+	}
 
-	_, err := driver.macos.Request(rawurl, nil)
-	if err != nil {
-		panic(errors.Wrapf(err, "closing window %v failed", w.ID()))
+	if err := driver.macRPC.Call("windows.Close", in, nil); err != nil {
+		panic(err)
 	}
 }
 
