@@ -103,7 +103,7 @@ func newWindow(c app.WindowConfig) (app.Window, error) {
 	in.MinWidth, in.MaxWidth = normalizeWidowSize(in.MinWidth, in.MaxWidth)
 	in.MinHeight, in.MaxHeight = normalizeWidowSize(in.MinHeight, in.MaxHeight)
 
-	if err := driver.macRPC.Call("windows.New", in, nil); err != nil {
+	if err := driver.macRPC.Call("windows.New", nil, in); err != nil {
 		return nil, err
 	}
 
@@ -209,7 +209,7 @@ func (w *Window) load(u *url.URL) error {
 	pageConfig.DefaultComponent = template.HTML(buffer.String())
 	pageConfig.AppJS = appjs.AppJS("window.webkit.messageHandlers.golangRequest.postMessage")
 
-	in := struct {
+	return driver.macRPC.Call("windows.Load", nil, struct {
 		ID      string
 		Title   string
 		Page    string
@@ -221,9 +221,7 @@ func (w *Window) load(u *url.URL) error {
 		Page:    html.NewPage(pageConfig),
 		LoadURL: u.String(),
 		BaseURL: driver.Resources(),
-	}
-
-	return driver.macRPC.Call("windows.Load", in, nil)
+	})
 }
 
 // Contains satisfies the app.Window interface.
@@ -277,15 +275,13 @@ func (w *Window) render(sync app.TagSync) error {
 		return err
 	}
 
-	in := struct {
+	return driver.macRPC.Call("windows.Render", nil, struct {
 		ID     string
 		Render string
 	}{
 		ID:     w.ID().String(),
 		Render: string(render),
-	}
-
-	return driver.macRPC.Call("windows.Render", in, nil)
+	})
 }
 
 func (w *Window) renderAttributes(sync app.TagSync) error {
@@ -311,15 +307,13 @@ func (w *Window) renderAttributes(sync app.TagSync) error {
 		return err
 	}
 
-	in := struct {
+	return driver.macRPC.Call("windows.RenderAttributes", nil, struct {
 		ID     string
 		Render string
 	}{
 		ID:     w.ID().String(),
 		Render: string(render),
-	}
-
-	return driver.macRPC.Call("windows.RenderAttributes", in, nil)
+	})
 }
 
 // LastFocus satisfies the app.Window interface.
@@ -384,18 +378,16 @@ func (w *Window) Next() error {
 
 // Position satisfies the app.Window interface.
 func (w *Window) Position() (x, y float64) {
-	in := struct {
-		ID string
-	}{
-		ID: w.ID().String(),
-	}
-
 	var out struct {
 		X float64
 		Y float64
 	}
 
-	if err := driver.macRPC.Call("windows.Position", in, &out); err != nil {
+	if err := driver.macRPC.Call("windows.Position", &out, struct {
+		ID string
+	}{
+		ID: w.ID().String(),
+	}); err != nil {
 		panic(err)
 	}
 	return out.X, out.Y
@@ -403,7 +395,7 @@ func (w *Window) Position() (x, y float64) {
 
 // Move satisfies the app.Window interface.
 func (w *Window) Move(x, y float64) {
-	in := struct {
+	if err := driver.macRPC.Call("windows.Move", nil, struct {
 		ID string
 		X  float64
 		Y  float64
@@ -411,9 +403,7 @@ func (w *Window) Move(x, y float64) {
 		ID: w.ID().String(),
 		X:  x,
 		Y:  y,
-	}
-
-	if err := driver.macRPC.Call("windows.Move", in, nil); err != nil {
+	}); err != nil {
 		panic(err)
 	}
 }
@@ -431,31 +421,27 @@ func onWindowMove(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) 
 
 // Center satisfies the app.Window interface.
 func (w *Window) Center() {
-	in := struct {
+	if err := driver.macRPC.Call("windows.Center", nil, struct {
 		ID string
 	}{
 		ID: w.ID().String(),
-	}
-
-	if err := driver.macRPC.Call("windows.Center", in, nil); err != nil {
+	}); err != nil {
 		panic(err)
 	}
 }
 
 // Size satisfies the app.Window interface.
 func (w *Window) Size() (width, height float64) {
-	in := struct {
-		ID string
-	}{
-		ID: w.ID().String(),
-	}
-
 	var out struct {
 		Width  float64
 		Heigth float64
 	}
 
-	if err := driver.macRPC.Call("windows.Size", in, &out); err != nil {
+	if err := driver.macRPC.Call("windows.Size", &out, struct {
+		ID string
+	}{
+		ID: w.ID().String(),
+	}); err != nil {
 		panic(err)
 	}
 	return out.Width, out.Heigth
@@ -463,7 +449,7 @@ func (w *Window) Size() (width, height float64) {
 
 // Resize satisfies the app.Window interface.
 func (w *Window) Resize(width, height float64) {
-	in := struct {
+	if err := driver.macRPC.Call("windows.Resize", nil, struct {
 		ID     string
 		Width  float64
 		Height float64
@@ -471,9 +457,7 @@ func (w *Window) Resize(width, height float64) {
 		ID:     w.ID().String(),
 		Width:  width,
 		Height: height,
-	}
-
-	if err := driver.macRPC.Call("windows.Resize", in, nil); err != nil {
+	}); err != nil {
 		panic(err)
 	}
 }
@@ -491,13 +475,11 @@ func onWindowResize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload
 
 // Focus satisfies the app.Window interface.
 func (w *Window) Focus() {
-	in := struct {
+	if err := driver.macRPC.Call("windows.Focus", nil, struct {
 		ID string
 	}{
 		ID: w.ID().String(),
-	}
-
-	if err := driver.macRPC.Call("windows.Focus", in, nil); err != nil {
+	}); err != nil {
 		panic(err)
 	}
 }
@@ -524,13 +506,11 @@ func onWindowBlur(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) 
 
 // ToggleFullScreen satisfies the app.Window interface.
 func (w *Window) ToggleFullScreen() {
-	in := struct {
+	if err := driver.macRPC.Call("windows.ToggleFullScreen", nil, struct {
 		ID string
 	}{
 		ID: w.ID().String(),
-	}
-
-	if err := driver.macRPC.Call("windows.ToggleFullScreen", in, nil); err != nil {
+	}); err != nil {
 		panic(err)
 	}
 }
@@ -555,13 +535,11 @@ func onWindowExitFullScreen(w *Window, u *url.URL, p bridge.Payload) (res bridge
 
 // ToggleMinimize satisfies the app.Window interface.
 func (w *Window) ToggleMinimize() {
-	in := struct {
+	if err := driver.macRPC.Call("windows.ToggleMinimize", nil, struct {
 		ID string
 	}{
 		ID: w.ID().String(),
-	}
-
-	if err := driver.macRPC.Call("windows.ToggleMinimize", in, nil); err != nil {
+	}); err != nil {
 		panic(err)
 	}
 }
@@ -586,13 +564,11 @@ func onWindowDeminimize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Pay
 
 // Close satisfies the app.Window interface.
 func (w *Window) Close() {
-	in := struct {
+	if err := driver.macRPC.Call("windows.Close", nil, struct {
 		ID string
 	}{
 		ID: w.ID().String(),
-	}
-
-	if err := driver.macRPC.Call("windows.Close", in, nil); err != nil {
+	}); err != nil {
 		panic(err)
 	}
 }

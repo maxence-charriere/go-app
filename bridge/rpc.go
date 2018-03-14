@@ -23,7 +23,7 @@ type RPC struct {
 // Call calls the given method with the given input and stores the result in
 // the value pointed by the output.
 // It returns an error if the output is not a pointer.
-func (r *RPC) Call(method string, in interface{}, out interface{}) error {
+func (r *RPC) Call(method string, out interface{}, in interface{}) error {
 	returnID := uuid.New().String()
 
 	call, err := json.Marshal(Call{

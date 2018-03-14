@@ -132,7 +132,7 @@ func TestRPC(t *testing.T) {
 		t.Run(test.scenario, func(t *testing.T) {
 			var out output
 
-			err := rpc.Call(test.method, test.input, &out)
+			err := rpc.Call(test.method, &out, test.input)
 			if test.returnErr && err == nil {
 				t.Fatal("error is nil")
 			} else if test.returnErr && err != nil {

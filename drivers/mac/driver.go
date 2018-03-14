@@ -239,7 +239,7 @@ func (d *Driver) AppName() string {
 		AppName string
 	}
 
-	if err := d.macRPC.Call("driver.Bundle", nil, &out); err != nil {
+	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
 		panic(err)
 	}
 
@@ -260,7 +260,7 @@ func (d *Driver) Resources(path ...string) string {
 		Resources string
 	}
 
-	if err := d.macRPC.Call("driver.Bundle", nil, &out); err != nil {
+	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
 		panic(err)
 	}
 
@@ -288,7 +288,7 @@ func (d *Driver) support() string {
 		Support string
 	}
 
-	if err := d.macRPC.Call("driver.Bundle", nil, &out); err != nil {
+	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
 		panic(err)
 	}
 
@@ -317,7 +317,7 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
 		return nil, err
 	}
 
-	err = d.macRPC.Call("driver.SetContextMenu", m.ID(), nil)
+	err = d.macRPC.Call("driver.SetContextMenu", nil, m.ID())
 	return m, err
 }
 
@@ -362,7 +362,7 @@ func (d *Driver) NewShare(v interface{}) error {
 		in.Type = "string"
 	}
 
-	return d.macRPC.Call("driver.Share", in, nil)
+	return d.macRPC.Call("driver.Share", nil, in)
 }
 
 // NewNotification satisfies the app.DriverWithPopupNotifications
@@ -404,7 +404,7 @@ func (d *Driver) newMenuBar() error {
 		return err
 	}
 
-	if err = d.macRPC.Call("driver.SetMenubar", menubar.ID(), nil); err != nil {
+	if err = d.macRPC.Call("driver.SetMenubar", nil, menubar.ID()); err != nil {
 		return errors.Wrap(err, "set menu bar")
 	}
 	return nil
