@@ -144,14 +144,14 @@
             }];
 
   // File panel handlers.
-  [self.objc handle:@"/file/panel/new"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [FilePanel newFilePanel:url payload:payload];
-            }];
-  [self.objc handle:@"/file/savepanel/new"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [FilePanel newSaveFilePanel:url payload:payload];
-            }];
+  [self.macRPC handle:@"files.NewPanel"
+          withHandler:^(id in, NSString *returnID) {
+            return [FilePanel newFilePanel:in return:returnID];
+          }];
+  [self.macRPC handle:@"files.NewSavePanel"
+          withHandler:^(id in, NSString *returnID) {
+            return [FilePanel newSaveFilePanel:in return:returnID];
+          }];
 
   // Notification handlers.
   [self.objc handle:@"/notification/new"

@@ -5,10 +5,8 @@
 #import <Cocoa/Cocoa.h>
 
 @interface FilePanel : NSObject
-+ (bridge_result)newFilePanel:(NSURLComponents *)url
-                      payload:(NSString *)payload;
-+ (bridge_result)newSaveFilePanel:(NSURLComponents *)url
-                          payload:(NSString *)payload;
++ (void)newFilePanel:(NSDictionary *)in return:(NSString *)returnID;
++ (void)newSaveFilePanel:(NSDictionary *)in return:(NSString *)returnID;
 @end
 
 #endif /* file_h */
