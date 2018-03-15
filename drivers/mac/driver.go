@@ -368,8 +368,7 @@ func (d *Driver) NewShare(v interface{}) error {
 // NewNotification satisfies the app.DriverWithPopupNotifications
 // interface.
 func (d *Driver) NewNotification(config app.NotificationConfig) error {
-	_, err := newNotification(config)
-	return err
+	return newNotification(config)
 }
 
 // MenuBar satisfies the app.DriverWithMenuBar interface.

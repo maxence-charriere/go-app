@@ -154,10 +154,10 @@
           }];
 
   // Notification handlers.
-  [self.objc handle:@"/notification/new"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Notification newNotification:url payload:payload];
-            }];
+  [self.macRPC handle:@"notifications.New"
+          withHandler:^(id in, NSString *returnID) {
+            return [Notification new:in return:returnID];
+          }];
 
   // Notifications.
   NSUserNotificationCenter *userNotificationCenter =

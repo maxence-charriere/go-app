@@ -3,7 +3,6 @@
 package mac
 
 import (
-	"fmt"
 	"net/url"
 
 	"github.com/murlokswarm/app"
@@ -18,37 +17,33 @@ type Notification struct {
 	onReply func(reply string)
 }
 
-func newNotification(config app.NotificationConfig) (n *Notification, err error) {
-	n = &Notification{
+func newNotification(c app.NotificationConfig) error {
+	n := &Notification{
 		id:      uuid.New(),
-		onReply: config.OnReply,
+		onReply: c.OnReply,
 	}
 
 	if n.onReply != nil {
 		driver.elements.Add(n)
 	}
 
-	p := struct {
-		Title     string `json:"title"`
-		Subtitle  string `json:"subtitle"`
-		Text      string `json:"text"`
-		ImageName string `json:"image-name"`
-		Sound     bool   `json:"sound"`
-		Reply     bool   `json:"reply"`
+	return driver.macRPC.Call("notifications.New", nil, struct {
+		ID        string
+		Title     string
+		Subtitle  string
+		Text      string
+		ImageName string
+		Sound     bool
+		Reply     bool
 	}{
-		Title:     config.Title,
-		Subtitle:  config.Subtitle,
-		Text:      config.Text,
-		ImageName: config.ImageName,
-		Sound:     config.Sound,
-		Reply:     config.OnReply != nil,
-	}
-
-	_, err = driver.macos.RequestWithAsyncResponse(
-		fmt.Sprintf("/notification/new?id=%s", n.id),
-		bridge.NewPayload(p),
-	)
-	return n, err
+		ID:        n.ID().String(),
+		Title:     c.Title,
+		Subtitle:  c.Subtitle,
+		Text:      c.Text,
+		ImageName: c.ImageName,
+		Sound:     c.Sound,
+		Reply:     c.OnReply != nil,
+	})
 }
 
 // ID satisfies the app.Element interface.

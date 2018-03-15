@@ -60,15 +60,15 @@ type WindowConfig struct {
 	DefaultURL      string
 	Mac             MacWindowConfig
 
-	OnMove           func(x, y float64)
-	OnResize         func(width float64, height float64)
-	OnFocus          func()
-	OnBlur           func()
-	OnFullScreen     func()
-	OnExitFullScreen func()
-	OnMinimize       func()
-	OnDeminimize     func()
-	OnClose          func() bool
+	OnMove           func(x, y float64)                  `json:"-"`
+	OnResize         func(width float64, height float64) `json:"-"`
+	OnFocus          func()                              `json:"-"`
+	OnBlur           func()                              `json:"-"`
+	OnFullScreen     func()                              `json:"-"`
+	OnExitFullScreen func()                              `json:"-"`
+	OnMinimize       func()                              `json:"-"`
+	OnDeminimize     func()                              `json:"-"`
+	OnClose          func() bool                         `json:"-"`
 }
 
 // MacWindowConfig is a struct that describes window fields specific to MacOS.

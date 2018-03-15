@@ -22,7 +22,7 @@ type FilePanelConfig struct {
 
 	// If set, the function that is called when files or directories are
 	// selected.
-	OnSelect func(filenames []string)
+	OnSelect func(filenames []string) `json:"-"`
 }
 
 // SaveFilePanelConfig is a struct that describes a panel that selects a file to
@@ -37,5 +37,5 @@ type SaveFilePanelConfig struct {
 	FileTypes []string
 
 	// If set, the function that is called when a file is selected
-	OnSelect func(filename string)
+	OnSelect func(filename string) `json:"-"`
 }
