@@ -10,7 +10,6 @@ package mac
 */
 import "C"
 import (
-	"context"
 	"crypto/md5"
 	"fmt"
 	"io"
@@ -65,9 +64,8 @@ type Driver struct {
 	factory      app.Factory
 	elements     app.ElemDB
 	uichan       chan func()
-	cancel       func()
-	macos        bridge.PlatformBridge
 	golang       bridge.GoBridge
+	macRPC       bridge.PlatformRPC
 	menubar      app.Menu
 	dock         app.DockTile
 	devID        string
@@ -100,7 +98,7 @@ func (d *Driver) Run(f app.Factory) error {
 	d.uichan = make(chan func(), 4096)
 	defer close(d.uichan)
 
-	d.macos = bridge.NewPlatformBridge(handleMacOSRequest)
+	d.macRPC.Handler = macCall
 	d.golang = bridge.NewGoBridge(d.uichan)
 
 	d.golang.Handle("/driver/run", d.onRun)
@@ -133,25 +131,20 @@ func (d *Driver) Run(f app.Factory) error {
 
 	d.golang.Handle("/notification/reply", notificationHandler(onNotificationReply))
 
-	var ctx context.Context
-	ctx, d.cancel = context.WithCancel(context.Background())
-	defer d.cancel()
-
 	driver = d
-
 	errC := make(chan error)
+
 	go func() {
-		_, err := d.macos.Request("/driver/run", nil)
-		errC <- err
+		errC <- d.macRPC.Call("driver.Run", nil, nil)
 	}()
 
 	for {
 		select {
-		case function := <-d.uichan:
-			function()
+		case f := <-d.uichan:
+			f()
 
-		case <-ctx.Done():
-			return <-errC
+		case err := <-errC:
+			return err
 		}
 	}
 }
@@ -238,76 +231,74 @@ func (d *Driver) onFileDrop(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 
 // AppName satisfies the app.Driver interface.
 func (d *Driver) AppName() string {
-	res, err := d.macos.Request("/driver/appname", nil)
+	var out struct {
+		AppName string
+	}
+
+	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
+		panic(err)
+	}
+
+	if len(out.AppName) != 0 {
+		return out.AppName
+	}
+
+	wd, err := os.Getwd()
 	if err != nil {
-		panic(errors.Wrap(err, "getting app name failed"))
-	}
-
-	var appName string
-	res.Unmarshal(&appName)
-	if len(appName) != 0 && appName != "(null)" {
-		return appName
-	}
-
-	var wd string
-	if wd, err = os.Getwd(); err != nil {
-		panic(errors.Wrap(err, "getting resources filepath failed"))
+		panic(errors.Wrap(err, "app name unreachable"))
 	}
 	return filepath.Base(wd)
 }
 
 // Resources satisfies the app.Driver interface.
 func (d *Driver) Resources(path ...string) string {
-	res, err := d.macos.Request("/driver/resources", nil)
-	if err != nil {
-		panic(errors.Wrap(err, "getting resources filepath failed"))
+	var out struct {
+		Resources string
 	}
 
-	var dirname string
-	res.Unmarshal(&dirname)
+	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
+		panic(err)
+	}
 
 	wd, err := os.Getwd()
 	if err != nil {
-		panic(errors.Wrap(err, "getting resources filepath failed"))
+		panic(errors.Wrap(err, "resources unreachable"))
 	}
 
-	if filepath.Dir(dirname) == wd {
-		dirname = filepath.Join(wd, "resources")
+	if filepath.Dir(out.Resources) == wd {
+		out.Resources = filepath.Join(wd, "resources")
 	}
 
-	resources := append([]string{dirname}, path...)
-	return filepath.Join(resources...)
+	resources := filepath.Join(path...)
+	return filepath.Join(out.Resources, resources)
 }
 
 // Storage satisfies the app.DriverWithStorage interface.
 func (d *Driver) Storage(path ...string) string {
-	support, err := d.support()
-	if err != nil {
-		panic(errors.Wrap(err, "getting storage filepath failed"))
-	}
-
-	storage := append([]string{support}, "storage")
-	storage = append(storage, path...)
-	return filepath.Join(storage...)
+	storage := filepath.Join(path...)
+	return filepath.Join(d.support(), "storage", storage)
 }
 
-func (d *Driver) support() (dirname string, err error) {
-	var res bridge.Payload
-	if res, err = d.macos.Request("/driver/support", nil); err != nil {
-		return "", err
+func (d *Driver) support() string {
+	var out struct {
+		Support string
 	}
-	res.Unmarshal(&dirname)
+
+	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
+		panic(err)
+	}
 
 	// Set up the support directory in case of the app is not bundled.
-	if strings.HasSuffix(dirname, "{appname}") {
-		var wd string
-		if wd, err = os.Getwd(); err != nil {
-			return "", err
+	if strings.HasSuffix(out.Support, "{appname}") {
+		wd, err := os.Getwd()
+		if err != nil {
+			panic(errors.Wrap(err, "support unreachable"))
 		}
+
 		appname := filepath.Base(wd) + "-" + d.devID
-		dirname = strings.Replace(dirname, "{appname}", appname, 1)
+		out.Support = strings.Replace(out.Support, "{appname}", appname, 1)
 	}
-	return dirname, nil
+	return out.Support
 }
 
 // NewWindow satisfies the app.DriverWithWindows interface.
@@ -322,10 +313,7 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
 		return nil, err
 	}
 
-	_, err = d.macos.RequestWithAsyncResponse(
-		"/driver/contextmenu/set?menu-id="+m.ID().String(),
-		nil,
-	)
+	err = d.macRPC.Call("driver.SetContextMenu", nil, m.ID())
 	return m, err
 }
 
@@ -355,34 +343,28 @@ func (d *Driver) NewSaveFilePanel(c app.SaveFilePanelConfig) error {
 
 // NewShare satisfies the app.DriverWithShare interface.
 func (d *Driver) NewShare(v interface{}) error {
-	share := struct {
-		Value string `json:"value"`
-		Type  string `json:"type"`
+	in := struct {
+		Share string
+		Type  string
 	}{
-		Value: fmt.Sprint(v),
+		Share: fmt.Sprint(v),
 	}
 
 	switch v.(type) {
 	case url.URL, *url.URL:
-		share.Type = "url"
+		in.Type = "url"
 
 	default:
-		share.Type = "string"
+		in.Type = "string"
 	}
 
-	_, err := d.macos.RequestWithAsyncResponse(
-		"/driver/share",
-		bridge.NewPayload(share),
-	)
-	return err
-
+	return d.macRPC.Call("driver.Share", nil, in)
 }
 
 // NewNotification satisfies the app.DriverWithPopupNotifications
 // interface.
 func (d *Driver) NewNotification(config app.NotificationConfig) error {
-	_, err := newNotification(config)
-	return err
+	return newNotification(config)
 }
 
 // MenuBar satisfies the app.DriverWithMenuBar interface.
@@ -417,11 +399,8 @@ func (d *Driver) newMenuBar() error {
 		return err
 	}
 
-	if _, err = d.macos.Request(
-		fmt.Sprintf("/driver/menubar/set?menu-id=%v", menubar.ID()),
-		nil,
-	); err != nil {
-		return errors.Wrap(err, "set the menu bar failed")
+	if err = d.macRPC.Call("driver.SetMenubar", nil, menubar.ID()); err != nil {
+		return errors.Wrap(err, "set menu bar")
 	}
 	return nil
 }
@@ -438,7 +417,7 @@ func (d *Driver) CallOnUIGoroutine(f func()) {
 
 // Close quits the app.
 func (d *Driver) Close() {
-	d.macos.Request("/driver/quit", nil)
+	d.macRPC.Call("driver.Quit", nil, nil)
 }
 
 func (d *Driver) onQuit(u *url.URL, p bridge.Payload) (res bridge.Payload) {
@@ -456,8 +435,6 @@ func (d *Driver) onExit(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	if d.OnExit != nil {
 		d.OnExit()
 	}
-
-	d.cancel()
 	return nil
 }
 

@@ -4,40 +4,43 @@
 #include "json.h"
 
 @implementation Window
-+ (bridge_result)newWindow:(NSURLComponents *)url payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
++ (void) new:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
+    Driver *driver = [Driver current];
 
-  NSDictionary *config = [JSONDecoder decodeObject:payload];
-  NSString *title = config[@"title"];
-  NSNumber *x = config[@"x"];
-  NSNumber *y = config[@"y"];
-  NSNumber *width = config[@"width"];
-  NSNumber *minWidth = config[@"min-width"];
-  NSNumber *maxWidth = config[@"max-width"];
-  NSNumber *height = config[@"height"];
-  NSNumber *minHeight = config[@"min-height"];
-  NSNumber *maxHeight = config[@"max-height"];
-  NSString *backgroundColor = config[@"background-color"];
-  BOOL fixedSize = [config[@"fixed-size"] boolValue];
-  BOOL closeHidden = [config[@"close-hidden"] boolValue];
-  BOOL minimizeHidden = [config[@"minimize-hidden"] boolValue];
-  BOOL titlebarHidden = [config[@"titlebar-hidden"] boolValue];
-  NSNumber *backgroundVibrancy = config[@"mac"][@"background-vibrancy"];
+    NSString *ID = in[@"ID"];
+    NSString *title = in[@"Title"];
+    NSNumber *x = in[@"X"];
+    NSNumber *y = in[@"Y"];
+    NSNumber *width = in[@"Width"];
+    NSNumber *minWidth = in[@"MinWidth"];
+    NSNumber *maxWidth = in[@"MaxWidth"];
+    NSNumber *height = in[@"Height"];
+    NSNumber *minHeight = in[@"MinHeight"];
+    NSNumber *maxHeight = in[@"MaxHeight"];
+    NSString *backgroundColor = in[@"BackgroundColor"];
+    BOOL fixedSize = [in[@"FixedSize"] boolValue];
+    BOOL closeHidden = [in[@"CloseHidden"] boolValue];
+    BOOL minimizeHidden = [in[@"MinimizeHidden"] boolValue];
+    BOOL titlebarHidden = [in[@"TitlebarHidden"] boolValue];
+    NSNumber *backgroundVibrancy = in[@"BackgroundVibrancy"];
 
-  dispatch_async(dispatch_get_main_queue(), ^{
-    // Configuring raw window.
     NSRect rect = NSMakeRect(x.floatValue, y.floatValue, width.floatValue,
                              height.floatValue);
+
     NSUInteger styleMask =
         NSWindowStyleMaskTitled | NSWindowStyleMaskFullSizeContentView |
         NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable |
         NSWindowStyleMaskResizable;
+
     if (fixedSize) {
       styleMask = styleMask & ~NSWindowStyleMaskResizable;
     }
+
     if (closeHidden) {
       styleMask = styleMask & ~NSWindowStyleMaskClosable;
     }
+
     if (minimizeHidden) {
       styleMask = styleMask & ~NSWindowStyleMaskMiniaturizable;
     }
@@ -63,13 +66,11 @@
     [win configWebview];
     [win configTitlebar:title hidden:titlebarHidden];
 
-    // Registering window.
-    Driver *driver = [Driver current];
     driver.elements[ID] = win;
-
     [win showWindow:nil];
+
+    [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
 }
 
 - (void)configBackgroundColor:(NSString *)color
@@ -173,27 +174,35 @@
                                               titlebar)]];
 }
 
-+ (bridge_result)load:(NSURLComponents *)url payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
-  NSString *returnID = [url queryValue:@"return-id"];
-
-  NSDictionary *config = [JSONDecoder decodeObject:payload];
-  NSString *title = config[@"title"];
-  NSString *page = config[@"page"];
-  NSString *loadURL = config[@"load-url"];
-  NSString *baseURL = config[@"base-url"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
++ (void)load:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
     Driver *driver = [Driver current];
-    Window *win = driver.elements[ID];
 
-    win.window.title = title;
+    NSString *ID = in[@"ID"];
+    Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
+
     win.loadReturnID = returnID;
-    win.loadURL = [NSURL URLWithString:loadURL];
-    win.baseURL = [NSURL fileURLWithPath:baseURL];
-    [win.webview loadHTMLString:page baseURL:win.baseURL];
+    win.loadURL = [NSURL URLWithString:in[@"LoadURL"]];
+    win.baseURL = [NSURL fileURLWithPath:in[@"BaseURL"]];
+
+    [win.webview loadHTMLString:in[@"Page"] baseURL:win.baseURL];
   });
-  return make_bridge_result(nil, nil);
+}
+
+- (void)webView:(WKWebView *)webView
+    didFinishNavigation:(WKNavigation *)navigation {
+  Driver *driver = [Driver current];
+
+  NSString *returnID = self.loadReturnID;
+  if (returnID == nil || returnID.length == 0) {
+    return;
+  }
+  [driver.macRPC return:returnID withOutput:nil andError:nil];
+
+  self.loadReturnID = nil;
 }
 
 - (void)webView:(WKWebView *)webView
@@ -230,82 +239,92 @@
   decisionHandler(WKNavigationActionPolicyCancel);
 }
 
-- (void)webView:(WKWebView *)webView
-    didFinishNavigation:(WKNavigation *)navigation {
-  Driver *driver = [Driver current];
-
-  if (self.loadReturnID == nil || self.loadReturnID.length == 0) {
-    return;
-  }
-
-  [driver.objc asyncReturn:self.loadReturnID
-                    result:make_bridge_result(nil, nil)];
-  self.loadReturnID = nil;
-}
-
-+ (bridge_result)render:(NSURLComponents *)url payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
++ (void)render:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
     Driver *driver = [Driver current];
-    Window *win = driver.elements[ID];
 
-    [win.webview
-        evaluateJavaScript:[NSString stringWithFormat:@"render(%@)", payload]
-         completionHandler:nil];
+    NSString *ID = in[@"ID"];
+    Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
+
+    NSString *js = [NSString stringWithFormat:@"render(%@)", in[@"Render"]];
+    [win.webview evaluateJavaScript:js completionHandler:nil];
+
+    [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
 }
 
-+ (bridge_result)renderAttributes:(NSURLComponents *)url
-                          payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
++ (void)renderAttributes:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
     Driver *driver = [Driver current];
-    Window *win = driver.elements[ID];
 
-    [win.webview
-        evaluateJavaScript:[NSString stringWithFormat:@"renderAttributes(%@)",
-                                                      payload]
-         completionHandler:nil];
+    NSString *ID = in[@"ID"];
+    Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
+
+    NSString *js =
+        [NSString stringWithFormat:@"renderAttributes(%@)", in[@"Render"]];
+    [win.webview evaluateJavaScript:js completionHandler:nil];
+
+    [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
 }
 
-+ (bridge_result)position:(NSURLComponents *)url payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
-  NSString *returnID = [url queryValue:@"return-id"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
++ (void)position:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
     Driver *driver = [Driver current];
+
+    NSString *ID = in[@"ID"];
     Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
 
-    NSMutableDictionary<NSString *, id> *pos =
-        [[NSMutableDictionary alloc] init];
-    pos[@"x"] = [NSNumber numberWithDouble:win.window.frame.origin.x];
-    pos[@"y"] = [NSNumber numberWithDouble:win.window.frame.origin.y];
+    NSDictionary *out = @{
+      @"X" : [NSNumber numberWithDouble:win.window.frame.origin.x],
+      @"Y" : [NSNumber numberWithDouble:win.window.frame.origin.y],
+    };
 
-    NSString *payload = [JSONEncoder encodeObject:pos];
-    [driver.objc asyncReturn:returnID result:make_bridge_result(payload, nil)];
+    [driver.macRPC return:returnID withOutput:out andError:nil];
   });
-  return make_bridge_result(nil, nil);
 }
 
-+ (bridge_result)move:(NSURLComponents *)url payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
-
-  NSDictionary *pos = [JSONDecoder decodeObject:payload];
-  NSNumber *x = pos[@"x"];
-  NSNumber *y = pos[@"y"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
++ (void)move:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
     Driver *driver = [Driver current];
-    Window *win = driver.elements[ID];
 
+    NSString *ID = in[@"ID"];
+    Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
+
+    NSNumber *x = in[@"X"];
+    NSNumber *y = in[@"Y"];
     [win.window setFrameOrigin:NSMakePoint(x.doubleValue, y.doubleValue)];
+
+    [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
+}
+
++ (void)center:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
+    Driver *driver = [Driver current];
+
+    NSString *ID = in[@"ID"];
+    Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
+
+    [win.window center];
+
+    [driver.macRPC return:returnID withOutput:nil andError:nil];
+  });
 }
 
 - (void)windowDidMove:(NSNotification *)notification {
@@ -320,55 +339,40 @@
       payload:[JSONEncoder encodeObject:pos]];
 }
 
-+ (bridge_result)center:(NSURLComponents *)url payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
++ (void)size:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
     Driver *driver = [Driver current];
-    Window *win = driver.elements[ID];
+    Window *win = driver.elements[in[@"ID"]];
 
-    [win.window center];
+    NSDictionary *out = @{
+      @"Width" : [NSNumber numberWithDouble:win.window.frame.size.width],
+      @"Heigth" : [NSNumber numberWithDouble:win.window.frame.size.height],
+    };
+
+    [driver.macRPC return:returnID withOutput:out andError:nil];
   });
-  return make_bridge_result(nil, nil);
 }
 
-+ (bridge_result)size:(NSURLComponents *)url payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
-  NSString *returnID = [url queryValue:@"return-id"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
++ (void)resize:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
     Driver *driver = [Driver current];
+
+    NSString *ID = in[@"ID"];
     Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
 
-    NSMutableDictionary<NSString *, id> *size =
-        [[NSMutableDictionary alloc] init];
-    size[@"width"] = [NSNumber numberWithDouble:win.window.frame.size.width];
-    size[@"height"] = [NSNumber numberWithDouble:win.window.frame.size.height];
-
-    NSString *payload = [JSONEncoder encodeObject:size];
-    [driver.objc asyncReturn:returnID result:make_bridge_result(payload, nil)];
-  });
-  return make_bridge_result(nil, nil);
-}
-
-+ (bridge_result)resize:(NSURLComponents *)url payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
-
-  NSDictionary *size = [JSONDecoder decodeObject:payload];
-  NSNumber *width = size[@"width"];
-  NSNumber *height = size[@"height"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
-    Driver *driver = [Driver current];
-    Window *win = driver.elements[ID];
+    NSNumber *width = in[@"Width"];
+    NSNumber *height = in[@"Height"];
 
     CGRect frame = win.window.frame;
     frame.size.width = width.doubleValue;
     frame.size.height = height.doubleValue;
-
     [win.window setFrame:frame display:YES];
+
+    [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
 }
 
 - (void)windowDidResize:(NSNotification *)notification {
@@ -384,16 +388,15 @@
       payload:[JSONEncoder encodeObject:size]];
 }
 
-+ (bridge_result)focus:(NSURLComponents *)url payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
++ (void)focus:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
     Driver *driver = [Driver current];
-    Window *win = driver.elements[ID];
+    Window *win = driver.elements[in[@"ID"]];
 
     [win showWindow:nil];
+
+    [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
 }
 
 - (void)windowDidBecomeKey:(NSNotification *)notification {
@@ -412,17 +415,15 @@
       payload:nil];
 }
 
-+ (bridge_result)toggleFullScreen:(NSURLComponents *)url
-                          payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
++ (void)toggleFullScreen:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
     Driver *driver = [Driver current];
-    Window *win = driver.elements[ID];
+    Window *win = driver.elements[in[@"ID"]];
 
     [win.window toggleFullScreen:nil];
+
+    [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
 }
 
 - (void)windowDidEnterFullScreen:(NSNotification *)notification {
@@ -442,21 +443,24 @@
       payload:nil];
 }
 
-+ (bridge_result)toggleMinimize:(NSURLComponents *)url
-                        payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
++ (void)toggleMinimize:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
     Driver *driver = [Driver current];
+
+    NSString *ID = in[@"ID"];
     Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
 
     if (!win.window.miniaturized) {
       [win.window miniaturize:nil];
     } else {
       [win.window deminiaturize:nil];
     }
+
+    [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
 }
 
 - (void)windowDidMiniaturize:(NSNotification *)notification {
@@ -475,16 +479,20 @@
       payload:nil];
 }
 
-+ (bridge_result)close:(NSURLComponents *)url payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
++ (void)close:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
     Driver *driver = [Driver current];
+
+    NSString *ID = in[@"ID"];
     Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
 
     [win.window performClose:nil];
+
+    [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
 }
 
 - (BOOL)windowShouldClose:(NSWindow *)sender {

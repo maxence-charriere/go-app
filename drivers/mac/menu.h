@@ -36,12 +36,11 @@
 @property NSString *ID;
 @property MenuContainer *root;
 
-+ (bridge_result)newMenu:(NSURLComponents *)url payload:(NSString *)payload;
-+ (bridge_result)load:(NSURLComponents *)url payload:(NSString *)payload;
-+ (bridge_result)render:(NSURLComponents *)url payload:(NSString *)payload;
-+ (bridge_result)renderAttributes:(NSURLComponents *)url
-                          payload:(NSString *)payload;
-+ (bridge_result) delete:(NSURLComponents *)url payload:(NSString *)payload;
++ (void) new:(NSDictionary *)in return:(NSString *)returnID;
++ (void)load:(NSDictionary *)in return:(NSString *)returnID;
++ (void)render:(NSDictionary *)in return:(NSString *)returnID;
++ (void)renderAttributes:(NSDictionary *)in return:(NSString *)returnID;
++ (void) delete:(NSDictionary *)in return:(NSString *)returnID;
 - (id)elementByID:(NSString *)ID;
 - (id)elementFromContainer:(MenuContainer *)container ID:(NSString *)ID;
 - (id)elementFromItem:(MenuItem *)item ID:(NSString *)ID;

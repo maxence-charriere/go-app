@@ -9,7 +9,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/bridge"
 	"github.com/murlokswarm/app/html"
 )
 
@@ -18,7 +17,7 @@ type DockTile struct {
 	menu Menu
 }
 
-func newDockTile(config app.MenuConfig) (app.DockTile, error) {
+func newDockTile(c app.MenuConfig) (app.DockTile, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
 	markup = app.NewConcurrentMarkup(markup)
 
@@ -32,10 +31,11 @@ func newDockTile(config app.MenuConfig) (app.DockTile, error) {
 
 	dock := app.NewDockTileWithLogs(rawDock)
 
-	if _, err := driver.macos.Request(
-		fmt.Sprintf("/menu/new?id=%s", rawDock.menu.id),
-		nil,
-	); err != nil {
+	if err := driver.macRPC.Call("menus.New", nil, struct {
+		ID string
+	}{
+		ID: dock.ID().String(),
+	}); err != nil {
 		return nil, err
 	}
 
@@ -43,9 +43,16 @@ func newDockTile(config app.MenuConfig) (app.DockTile, error) {
 		return nil, err
 	}
 
-	if len(config.DefaultURL) != 0 {
-		return dock, dock.Load(config.DefaultURL)
+	if len(c.DefaultURL) != 0 {
+		if err := dock.Load(c.DefaultURL); err != nil {
+			return nil, err
+		}
 	}
+
+	if err := driver.macRPC.Call("driver.SetDock", nil, dock.ID()); err != nil {
+		return nil, err
+	}
+
 	return dock, nil
 }
 
@@ -61,15 +68,7 @@ func (d *DockTile) Base() app.Menu {
 
 // Load satisfies the app.DockTile interface.
 func (d *DockTile) Load(url string, v ...interface{}) error {
-	if err := d.menu.Load(url, v...); err != nil {
-		return err
-	}
-
-	_, err := driver.macos.Request(
-		fmt.Sprintf("/driver/dock/set?menu-id=%v", d.ID()),
-		nil,
-	)
-	return err
+	return d.menu.Load(url, v...)
 }
 
 // Contains satisfies the app.DockTile interface.
@@ -98,34 +97,15 @@ func (d *DockTile) SetIcon(name string) error {
 		return err
 	}
 
-	icon := struct {
-		Path string `json:"path"`
-	}{
-		Path: name,
-	}
-
-	_, err := driver.macos.RequestWithAsyncResponse(
-		"/driver/dock/icon",
-		bridge.NewPayload(icon),
-	)
-	return err
+	return driver.macRPC.Call("driver.SetDockIcon", nil, name)
 }
 
 // SetBadge satisfies the app.DockTile interface.
 func (d *DockTile) SetBadge(v interface{}) error {
-	badge := struct {
-		Message string `json:"message"`
-	}{}
-
-	if v == nil {
-		badge.Message = ""
-	} else {
-		badge.Message = fmt.Sprint(v)
+	var badge string
+	if v != nil {
+		badge = fmt.Sprint(v)
 	}
 
-	_, err := driver.macos.Request(
-		"/driver/dock/badge",
-		bridge.NewPayload(badge),
-	)
-	return err
+	return driver.macRPC.Call("driver.SetDockBadge", nil, badge)
 }

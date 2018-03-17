@@ -4,49 +4,38 @@
 #include "json.h"
 
 @implementation Notification
-+ (bridge_result)newNotification:(NSURLComponents *)url
-                         payload:(NSString *)payload {
-  NSString *ID = [url queryValue:@"id"];
-  NSString *returnID = [url queryValue:@"return-id"];
-
-  NSDictionary *config = [JSONDecoder decodeObject:payload];
-  NSString *title = config[@"title"];
-  NSString *subtitle = config[@"subtitle"];
-  NSString *text = config[@"text"];
-  NSString *imageName = config[@"image-name"];
-  BOOL reply = [config[@"reply"] boolValue];
-  BOOL sound = [config[@"sound"] boolValue];
-
-  dispatch_async(dispatch_get_main_queue(), ^{
++ (void) new:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
     Driver *driver = [Driver current];
-    NSString *err = nil;
 
-    @try {
-      NSUserNotification *notification = [[NSUserNotification alloc] init];
-      notification.identifier = ID;
-      notification.title = title;
-      notification.subtitle = subtitle;
-      notification.informativeText = text;
-      notification.hasReplyButton = reply;
-      notification.responsePlaceholder = @"murlok";
+    NSString *ID = in[@"ID"];
+    NSString *title = in[@"Title"];
+    NSString *subtitle = in[@"Subtitle"];
+    NSString *text = in[@"Text"];
+    NSString *imageName = in[@"ImageName"];
+    BOOL sound = [in[@"Sound"] boolValue];
+    BOOL reply = [in[@"Reply"] boolValue];
 
-      if (imageName.length != 0) {
-        notification.contentImage =
-            [[NSImage alloc] initByReferencingFile:imageName];
-      }
+    NSUserNotification *notification = [[NSUserNotification alloc] init];
+    notification.identifier = ID;
+    notification.title = title;
+    notification.subtitle = subtitle;
+    notification.informativeText = text;
+    notification.hasReplyButton = reply;
 
-      if (sound) {
-        notification.soundName = NSUserNotificationDefaultSoundName;
-      }
-
-      [[NSUserNotificationCenter defaultUserNotificationCenter]
-          deliverNotification:notification];
-    } @catch (NSException *exception) {
-      err = exception.reason;
+    if (imageName.length != 0) {
+      notification.contentImage =
+          [[NSImage alloc] initByReferencingFile:imageName];
     }
 
-    [driver.objc asyncReturn:returnID result:make_bridge_result(nil, err)];
+    if (sound) {
+      notification.soundName = NSUserNotificationDefaultSoundName;
+    }
+
+    [[NSUserNotificationCenter defaultUserNotificationCenter]
+        deliverNotification:notification];
+
+    [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
-  return make_bridge_result(nil, nil);
 }
 @end

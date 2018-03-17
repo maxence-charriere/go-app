@@ -5,8 +5,7 @@
 #import <Cocoa/Cocoa.h>
 
 @interface Notification : NSObject
-+ (bridge_result)newNotification:(NSURLComponents *)url
-                         payload:(NSString *)payload;
++ (void) new:(NSDictionary *)in return:(NSString *)returnID;
 @end
 
 #endif /* notification_h */

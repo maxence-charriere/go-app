@@ -72,11 +72,11 @@ type Closer interface {
 
 // NotificationConfig is a struct that describes a notification.
 type NotificationConfig struct {
-	Title     string `json:"title"`
-	Subtitle  string `json:"subtitle"`
-	Text      string `json:"text"`
-	ImageName string `json:"image-name"`
-	Sound     bool   `json:"sound"`
+	Title     string
+	Subtitle  string
+	Text      string
+	ImageName string
+	Sound     bool
 
 	OnReply func(reply string) `json:"-"`
 }

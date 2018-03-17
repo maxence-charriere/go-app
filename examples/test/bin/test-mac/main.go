@@ -26,8 +26,8 @@ func main() {
 
 		OnRun: func() {
 			fmt.Println("OnRun")
-			fmt.Println("app.Resources():", app.Resources())
-			fmt.Println("app.Storage():", app.Storage())
+			app.Resources()
+			app.Storage()
 
 			// testWindow(true)
 			testWindow(false)

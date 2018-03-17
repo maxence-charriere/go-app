@@ -4,21 +4,21 @@ package app
 // directories to open.
 type FilePanelConfig struct {
 	// Reports whether the pannel allows multiple selection.
-	MultipleSelection bool `json:"multiple-selection"`
+	MultipleSelection bool
 
 	// Reports whether the pannel ignore directories.
-	IgnoreDirectories bool `json:"ignore-directories"`
+	IgnoreDirectories bool
 
 	// Reports whether the pannel ignore files.
-	IgnoreFiles bool `json:"ignore-files"`
+	IgnoreFiles bool
 
 	// Reports whether the pannel show hidden files.
-	ShowHiddenFiles bool `json:"show-hidden-files"`
+	ShowHiddenFiles bool
 
 	// Specify the file types to display in the pannel.
 	// Accepts file extensions (eg. jpg, gif) and UTI (eg. public.jpeg).
 	// Nil or empty allows all file types.
-	FileTypes []string `json:"file-types,omitempty"`
+	FileTypes []string
 
 	// If set, the function that is called when files or directories are
 	// selected.
@@ -29,12 +29,12 @@ type FilePanelConfig struct {
 // save.
 type SaveFilePanelConfig struct {
 	// Reports whether the pannel show hidden files.
-	ShowHiddenFiles bool `json:"show-hidden-files"`
+	ShowHiddenFiles bool
 
 	// Specify the file types to display in the pannel.
 	// Accepts file extensions (eg. jpg, gif) and UTI (eg. public.jpeg).
 	// Nil or empty allows all file types.
-	FileTypes []string `json:"file-types,omitempty"`
+	FileTypes []string
 
 	// If set, the function that is called when a file is selected
 	OnSelect func(filename string) `json:"-"`

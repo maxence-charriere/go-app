@@ -6,26 +6,24 @@
 
 @interface Driver
     : NSObject <NSApplicationDelegate, NSUserNotificationCenterDelegate>
-@property OBJCBridge *objc;
 @property GoBridge *golang;
+@property MacRPC *macRPC;
+@property GoRPC *goRPC;
 @property NSMutableDictionary<NSString *, id> *elements;
 @property NSMenu *dock;
 
 + (instancetype)current;
 - (instancetype)init;
-- (bridge_result)run:(NSURLComponents *)url payload:(NSString *)payload;
-- (bridge_result)appName:(NSURLComponents *)url payload:(NSString *)payload;
-- (bridge_result)resources:(NSURLComponents *)url payload:(NSString *)payload;
-- (bridge_result)support:(NSURLComponents *)url payload:(NSString *)payload;
-- (bridge_result)setContextMenu:(NSURLComponents *)url
-                        payload:(NSString *)payload;
-- (bridge_result)setMenuBar:(NSURLComponents *)url payload:(NSString *)payload;
-- (bridge_result)setDock:(NSURLComponents *)url payload:(NSString *)payload;
-- (bridge_result)setDockIcon:(NSURLComponents *)url payload:(NSString *)payload;
-- (bridge_result)setDockBadge:(NSURLComponents *)url
-                      payload:(NSString *)payload;
-- (bridge_result)share:(NSURLComponents *)url payload:(NSString *)payload;
-- (bridge_result)quit:(NSURLComponents *)url payload:(NSString *)payload;
+- (void)run:(id)in return:(NSString *)returnID;
+- (void)bundle:(id)in return:(NSString *)returnID;
+- (NSString *)support;
+- (void)setContextMenu:(NSString *)menuID return:(NSString *)returnID;
+- (void)setMenubar:(NSString *)menuID return:(NSString *)returnID;
+- (void)setDock:(NSString *)menuID return:(NSString *)returnID;
+- (void)setDockIcon:(NSString *)icon return:(NSString *)returnID;
+- (void)setDockBadge:(NSString *)badge return:(NSString *)returnID;
+- (void)share:(NSDictionary *)in return:(NSString *)returnID;
+- (void)quit:(id)in return:(NSString *)returnID;
 @end
 
 #endif /* driver_h */

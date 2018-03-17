@@ -43,22 +43,22 @@ type Window interface {
 
 // WindowConfig is a struct that describes a window.
 type WindowConfig struct {
-	Title           string          `json:"title"`
-	X               float64         `json:"x"`
-	Y               float64         `json:"y"`
-	Width           float64         `json:"width"`
-	MinWidth        float64         `json:"min-width"`
-	MaxWidth        float64         `json:"max-width"`
-	Height          float64         `json:"height"`
-	MinHeight       float64         `json:"min-height"`
-	MaxHeight       float64         `json:"max-height"`
-	BackgroundColor string          `json:"background-color"`
-	FixedSize       bool            `json:"fixed-size"`
-	CloseHidden     bool            `json:"close-hidden"`
-	MinimizeHidden  bool            `json:"minimize-hidden"`
-	TitlebarHidden  bool            `json:"titlebar-hidden"`
-	DefaultURL      string          `json:"default-url"`
-	Mac             MacWindowConfig `json:"mac"`
+	Title           string
+	X               float64
+	Y               float64
+	Width           float64
+	MinWidth        float64
+	MaxWidth        float64
+	Height          float64
+	MinHeight       float64
+	MaxHeight       float64
+	BackgroundColor string
+	FixedSize       bool
+	CloseHidden     bool
+	MinimizeHidden  bool
+	TitlebarHidden  bool
+	DefaultURL      string
+	Mac             MacWindowConfig
 
 	OnMove           func(x, y float64)                  `json:"-"`
 	OnResize         func(width float64, height float64) `json:"-"`
@@ -73,7 +73,7 @@ type WindowConfig struct {
 
 // MacWindowConfig is a struct that describes window fields specific to MacOS.
 type MacWindowConfig struct {
-	BackgroundVibrancy Vibrancy `json:"background-vibrancy"`
+	BackgroundVibrancy Vibrancy
 }
 
 // Vibrancy represents a constant that define Apple's frost glass effects.
@@ -107,9 +107,7 @@ type windowWithLogs struct {
 }
 
 func (w *windowWithLogs) ID() uuid.UUID {
-	id := w.base.ID()
-	Log("window id is", id)
-	return id
+	return w.base.ID()
 }
 
 func (w *windowWithLogs) Base() Window {

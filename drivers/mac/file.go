@@ -3,7 +3,6 @@
 package mac
 
 import (
-	"fmt"
 	"net/url"
 
 	"github.com/google/uuid"
@@ -18,18 +17,30 @@ type FilePanel struct {
 	onSelect func(filenames []string)
 }
 
-func newFilePanel(config app.FilePanelConfig) error {
+func newFilePanel(c app.FilePanelConfig) error {
 	panel := &FilePanel{
 		id:       uuid.New(),
-		onSelect: config.OnSelect,
+		onSelect: c.OnSelect,
 	}
 
-	if _, err := driver.macos.RequestWithAsyncResponse(
-		fmt.Sprintf("/file/panel/new?id=%v", panel.id),
-		bridge.NewPayload(config),
-	); err != nil {
+	if err := driver.macRPC.Call("files.NewPanel", nil, struct {
+		ID                string
+		MultipleSelection bool
+		IgnoreDirectories bool
+		IgnoreFiles       bool
+		ShowHiddenFiles   bool
+		FileTypes         []string `json:",omitempty"`
+	}{
+		ID:                panel.ID().String(),
+		MultipleSelection: c.MultipleSelection,
+		IgnoreDirectories: c.IgnoreDirectories,
+		IgnoreFiles:       c.IgnoreFiles,
+		ShowHiddenFiles:   c.ShowHiddenFiles,
+		FileTypes:         c.FileTypes,
+	}); err != nil {
 		return err
 	}
+
 	return driver.elements.Add(panel)
 }
 
@@ -57,18 +68,24 @@ type SaveFilePanel struct {
 	onSelect func(filename string)
 }
 
-func newSaveFilePanel(config app.SaveFilePanelConfig) error {
+func newSaveFilePanel(c app.SaveFilePanelConfig) error {
 	panel := &SaveFilePanel{
 		id:       uuid.New(),
-		onSelect: config.OnSelect,
+		onSelect: c.OnSelect,
 	}
 
-	if _, err := driver.macos.RequestWithAsyncResponse(
-		fmt.Sprintf("/file/savepanel/new?id=%v", panel.id),
-		bridge.NewPayload(config),
-	); err != nil {
+	if err := driver.macRPC.Call("files.NewSavePanel", nil, struct {
+		ID              string
+		ShowHiddenFiles bool
+		FileTypes       []string `json:",omitempty"`
+	}{
+		ID:              panel.ID().String(),
+		ShowHiddenFiles: c.ShowHiddenFiles,
+		FileTypes:       c.FileTypes,
+	}); err != nil {
 		return err
 	}
+
 	return driver.elements.Add(panel)
 }
 
