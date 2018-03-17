@@ -178,7 +178,12 @@
   defer(returnID, ^{
     Driver *driver = [Driver current];
 
-    Window *win = driver.elements[in[@"ID"]];
+    NSString *ID = in[@"ID"];
+    Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
+
     win.loadReturnID = returnID;
     win.loadURL = [NSURL URLWithString:in[@"LoadURL"]];
     win.baseURL = [NSURL fileURLWithPath:in[@"BaseURL"]];
@@ -237,7 +242,12 @@
 + (void)render:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
-    Window *win = driver.elements[in[@"ID"]];
+
+    NSString *ID = in[@"ID"];
+    Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
 
     NSString *js = [NSString stringWithFormat:@"render(%@)", in[@"Render"]];
     [win.webview evaluateJavaScript:js completionHandler:nil];
@@ -249,7 +259,12 @@
 + (void)renderAttributes:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
-    Window *win = driver.elements[in[@"ID"]];
+
+    NSString *ID = in[@"ID"];
+    Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
 
     NSString *js =
         [NSString stringWithFormat:@"renderAttributes(%@)", in[@"Render"]];
@@ -262,7 +277,12 @@
 + (void)position:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
-    Window *win = driver.elements[in[@"ID"]];
+
+    NSString *ID = in[@"ID"];
+    Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
 
     NSDictionary *out = @{
       @"X" : [NSNumber numberWithDouble:win.window.frame.origin.x],
@@ -276,7 +296,12 @@
 + (void)move:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
-    Window *win = driver.elements[in[@"ID"]];
+
+    NSString *ID = in[@"ID"];
+    Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
 
     NSNumber *x = in[@"X"];
     NSNumber *y = in[@"Y"];
@@ -289,7 +314,12 @@
 + (void)center:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
-    Window *win = driver.elements[in[@"ID"]];
+
+    NSString *ID = in[@"ID"];
+    Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
 
     [win.window center];
 
@@ -326,7 +356,12 @@
 + (void)resize:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
-    Window *win = driver.elements[in[@"ID"]];
+
+    NSString *ID = in[@"ID"];
+    Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
 
     NSNumber *width = in[@"Width"];
     NSNumber *height = in[@"Height"];
@@ -411,7 +446,12 @@
 + (void)toggleMinimize:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
-    Window *win = driver.elements[in[@"ID"]];
+
+    NSString *ID = in[@"ID"];
+    Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
 
     if (!win.window.miniaturized) {
       [win.window miniaturize:nil];
@@ -442,7 +482,12 @@
 + (void)close:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
-    Window *win = driver.elements[in[@"ID"]];
+
+    NSString *ID = in[@"ID"];
+    Window *win = driver.elements[ID];
+    if (win == nil) {
+      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
+    }
 
     [win.window performClose:nil];
 
