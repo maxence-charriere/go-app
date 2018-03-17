@@ -64,10 +64,8 @@ type Driver struct {
 	factory      app.Factory
 	elements     app.ElemDB
 	uichan       chan func()
-	macos        bridge.PlatformBridge
 	golang       bridge.GoBridge
-	macRPC       bridge.RPC
-	goRPC        bridge.RPC
+	macRPC       bridge.PlatformRPC
 	menubar      app.Menu
 	dock         app.DockTile
 	devID        string
@@ -100,10 +98,8 @@ func (d *Driver) Run(f app.Factory) error {
 	d.uichan = make(chan func(), 4096)
 	defer close(d.uichan)
 
-	d.macos = bridge.NewPlatformBridge(handleMacOSRequest)
-	d.golang = bridge.NewGoBridge(d.uichan)
-
 	d.macRPC.Handler = macCall
+	d.golang = bridge.NewGoBridge(d.uichan)
 
 	d.golang.Handle("/driver/run", d.onRun)
 	d.golang.Handle("/driver/focus", d.onFocus)

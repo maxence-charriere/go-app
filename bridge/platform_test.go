@@ -1,135 +1,162 @@
 package bridge
 
 import (
-	"errors"
-	"net/url"
+	"encoding/json"
+	"reflect"
 	"testing"
 
-	"github.com/google/uuid"
+	"github.com/pkg/errors"
 )
 
-func TestPlatformBridge(t *testing.T) {
-	var bridge PlatformBridge
+type input struct {
+	Name string
+}
 
-	bridge = NewPlatformBridge(func(rawurl string, p Payload, returnID string) (res Payload, err error) {
-		u, err := url.Parse(rawurl)
-		if err != nil {
-			t.Fatal(err)
-		}
+type asyncInput struct {
+	Name string
+}
 
-		if u.Path == "/error" {
-			err = errors.New("fake error")
-			return
-		}
+func (i asyncInput) Async() bool {
+	return true
+}
 
-		if len(returnID) == 0 {
-			res = p
-			return
-		}
+type invalidInput struct {
+	Name string
+	Func func()
+}
 
-		bridge.Return(returnID, p, nil)
-		return
-	})
+type output struct {
+	Greeting string
+}
 
+func TestRPC(t *testing.T) {
 	tests := []struct {
-		name string
-		test func(t *testing.T)
+		scenario       string
+		method         string
+		input          interface{}
+		skipOutput     bool
+		expectedOutput output
+		returnErr      bool
 	}{
 		{
-			name: "send a request",
-			test: func(t *testing.T) {
-				testPlatformBridgeRequest(t, bridge)
+			scenario: "method",
+			method:   "test.Greet",
+			input: input{
+				Name: "Maxence",
+			},
+			expectedOutput: output{
+				Greeting: "Hello, Maxence",
 			},
 		},
 		{
-			name: "request returns an error",
-			test: func(t *testing.T) {
-				testPlatformBridgeRequestFail(t, bridge)
+			scenario: "method on goroutine",
+			method:   "test.GreetOnGoroutine",
+			input: input{
+				Name: "Maxence",
+			},
+			expectedOutput: output{
+				Greeting: "Hello, Maxence",
 			},
 		},
 		{
-			name: "send a request with asynchronous response",
-			test: func(t *testing.T) {
-				testPlatformBridgeRequestWithAsyncResponse(t, bridge)
+			scenario: "method without output",
+			method:   "test.NoGreet",
+			input: input{
+				Name: "Maxence",
 			},
+			expectedOutput: output{},
 		},
 		{
-			name: "request with asynchronous response returns an error",
-			test: func(t *testing.T) {
-				testPlatformBridgeRequestWithAsyncResponseFail(t, bridge)
-			},
+			scenario:  "async method error",
+			method:    "test.GreetErr",
+			input:     asyncInput{},
+			returnErr: true,
 		},
 		{
-			name: "return with invalid id panics",
-			test: func(t *testing.T) {
-				testPlatformBridgeRequestReturnIvalidID(t, bridge)
-			},
+			scenario:  "unknown method",
+			method:    "test.Unkown",
+			input:     input{},
+			returnErr: true,
 		},
 		{
-			name: "return not set up panics",
-			test: func(t *testing.T) {
-				testPlatformBridgeRequestReturnUnset(t, bridge)
-			},
+			scenario:  "invalid input",
+			method:    "test.Greet",
+			input:     invalidInput{},
+			returnErr: true,
 		},
 	}
+
+	var rpc PlatformRPC
+
+	handler := func(rawCall string) error {
+		var call PlatformCall
+		err := json.Unmarshal([]byte(rawCall), &call)
+		if err != nil {
+			return err
+		}
+
+		name := call.Input.(map[string]interface{})["Name"].(string)
+
+		var out []byte
+		if out, err = json.Marshal(output{
+			Greeting: "Hello, " + name,
+		}); err != nil {
+			return err
+		}
+
+		switch call.Method {
+		case "test.Greet":
+			rpc.Return(call.ReturnID, string(out), "")
+			return nil
+
+		case "test.GreetOnGoroutine":
+			go rpc.Return(call.ReturnID, string(out), "")
+			return nil
+
+		case "test.NoGreet":
+			rpc.Return(call.ReturnID, "", "")
+			return nil
+
+		case "test.GreetErr":
+			rpc.Return(call.ReturnID, "", "simulated err")
+			return nil
+
+		default:
+			return errors.Errorf("%s: unknown rpc method", call.Method)
+		}
+	}
+
+	rpc.Handler = handler
 
 	for _, test := range tests {
-		t.Run(test.name, test.test)
+		t.Run(test.scenario, func(t *testing.T) {
+			var out output
+
+			err := rpc.Call(test.method, &out, test.input)
+			if test.returnErr && err == nil {
+				t.Fatal("error is nil")
+			} else if test.returnErr && err != nil {
+				return
+			}
+
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if !reflect.DeepEqual(test.expectedOutput, out) {
+				t.Errorf("expected: %+v", test.expectedOutput)
+				t.Errorf("output  : %+v", out)
+			}
+		})
 	}
 }
 
-func testPlatformBridgeRequest(t *testing.T, bridge PlatformBridge) {
-	res, err := bridge.Request("", NewPayload(42))
-	if err != nil {
-		t.Fatal(err)
-	}
+func TestRPCReturnPanic(t *testing.T) {
+	defer func() {
+		recover()
+	}()
 
-	var nb int
-	res.Unmarshal(&nb)
-
-	if nb != 42 {
-		t.Fatal("unmarshaled result is not 42:", nb)
-	}
-}
-
-func testPlatformBridgeRequestFail(t *testing.T, bridge PlatformBridge) {
-	_, err := bridge.Request("/error", nil)
-	if err == nil {
-		t.Fatal("error is nil")
-	}
-	t.Log(err)
-}
-
-func testPlatformBridgeRequestWithAsyncResponse(t *testing.T, bridge PlatformBridge) {
-	res, err := bridge.RequestWithAsyncResponse("", NewPayload(21))
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	var nb int
-	res.Unmarshal(&nb)
-
-	if nb != 21 {
-		t.Fatal("unmarshaled result is not 21:", nb)
-	}
-}
-
-func testPlatformBridgeRequestWithAsyncResponseFail(t *testing.T, bridge PlatformBridge) {
-	_, err := bridge.RequestWithAsyncResponse("/error", nil)
-	if err == nil {
-		t.Fatal("error is nil")
-	}
-	t.Log(err)
-}
-
-func testPlatformBridgeRequestReturnIvalidID(t *testing.T, bridge PlatformBridge) {
-	defer func() { recover() }()
-	bridge.Return("whoisyourdaddy", nil, nil)
-	t.Fatal("no panic")
-}
-
-func testPlatformBridgeRequestReturnUnset(t *testing.T, bridge PlatformBridge) {
-	defer func() { recover() }()
-	bridge.Return(uuid.New().String(), nil, nil)
-	t.Fatal("no panic")
+	rpc := PlatformRPC{}
+	rpc.Return("test", "", "")
+	t.Error("test did not panic")
 }

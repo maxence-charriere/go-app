@@ -6,7 +6,6 @@
 
 @interface Driver
     : NSObject <NSApplicationDelegate, NSUserNotificationCenterDelegate>
-@property OBJCBridge *objc;
 @property GoBridge *golang;
 @property MacRPC *macRPC;
 @property GoRPC *goRPC;
