@@ -24,7 +24,7 @@ xcode-select --install
 
 ```bash
 # Get package.
-go get -u github.com/murlokswarm/mac
+go get -u -v github.com/murlokswarm/app/...
 ```
 
 <a name="hello"></a>
