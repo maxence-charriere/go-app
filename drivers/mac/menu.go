@@ -23,7 +23,7 @@ type Menu struct {
 	onClose func()
 }
 
-func newMenu(config app.MenuConfig, name string) (app.Menu, error) {
+func newMenu(c app.MenuConfig, name string) (app.Menu, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
 	markup = app.NewConcurrentMarkup(markup)
 
@@ -32,15 +32,16 @@ func newMenu(config app.MenuConfig, name string) (app.Menu, error) {
 		markup:    markup,
 		lastFocus: time.Now(),
 
-		onClose: config.OnClose,
+		onClose: c.OnClose,
 	}
 
 	menu := app.NewMenuWithLogs(rawMenu, name)
 
-	if _, err := driver.macos.Request(
-		fmt.Sprintf("/menu/new?id=%s", rawMenu.id),
-		nil,
-	); err != nil {
+	if err := driver.macRPC.Call("menus.New", nil, struct {
+		ID string
+	}{
+		ID: menu.ID().String(),
+	}); err != nil {
 		return nil, err
 	}
 
@@ -48,8 +49,10 @@ func newMenu(config app.MenuConfig, name string) (app.Menu, error) {
 		return nil, err
 	}
 
-	if len(config.DefaultURL) != 0 {
-		return menu, menu.Load(config.DefaultURL)
+	if len(c.DefaultURL) != 0 {
+		if err := menu.Load(c.DefaultURL); err != nil {
+			return nil, err
+		}
 	}
 	return menu, nil
 }
@@ -99,11 +102,13 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 		return err
 	}
 
-	_, err = driver.macos.RequestWithAsyncResponse(
-		fmt.Sprintf("/menu/load?id=%s", m.id),
-		bridge.NewPayload(root),
-	)
-	return err
+	return driver.macRPC.Call("menus.Load", nil, struct {
+		ID  string
+		Tag app.Tag
+	}{
+		ID:  m.ID().String(),
+		Tag: root,
+	})
 }
 
 // Component satisfies the app.Menu interface.
@@ -143,11 +148,13 @@ func (m *Menu) render(sync app.TagSync) error {
 		return err
 	}
 
-	_, err = driver.macos.RequestWithAsyncResponse(
-		fmt.Sprintf("/menu/render?id=%s", m.id),
-		bridge.NewPayload(tag),
-	)
-	return err
+	return driver.macRPC.Call("menus.Render", nil, struct {
+		ID  string
+		Tag app.Tag
+	}{
+		ID:  m.ID().String(),
+		Tag: tag,
+	})
 }
 
 func (m *Menu) renderAttributes(compo app.Component, sync app.TagSync) error {
@@ -162,11 +169,13 @@ func (m *Menu) renderAttributes(compo app.Component, sync app.TagSync) error {
 		tag.Children = nil
 	}
 
-	_, err = driver.macos.RequestWithAsyncResponse(
-		fmt.Sprintf("/menu/render/attributes?id=%s", m.id),
-		bridge.NewPayload(tag),
-	)
-	return err
+	return driver.macRPC.Call("menus.RenderAttributes", nil, struct {
+		ID  string
+		Tag app.Tag
+	}{
+		ID:  m.ID().String(),
+		Tag: tag,
+	})
 }
 
 // LastFocus satisfies the app.Menu interface.
@@ -180,17 +189,17 @@ func onMenuClose(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Payload) {
 			m.onClose()
 		}
 
-		_, err := driver.macos.RequestWithAsyncResponse(
-			fmt.Sprintf("/menu/delete?id=%s", m.id),
-			nil,
-		)
-		if err != nil {
-			app.Error(err)
+		if err := driver.macRPC.Call("menus.Delete", nil, struct {
+			ID string
+		}{
+			ID: m.ID().String(),
+		}); err != nil {
+			panic(err)
 		}
 
 		driver.elements.Remove(m)
 	})
-	return
+	return nil
 }
 
 func onMenuCallback(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Payload) {

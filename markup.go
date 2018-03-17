@@ -100,14 +100,14 @@ type TagDecoder interface {
 
 // Tag represents a markup tag.
 type Tag struct {
-	ID         uuid.UUID    `json:"id"`
-	CompoID    uuid.UUID    `json:"compo-id"`
-	Name       string       `json:"name"`
-	Text       string       `json:"text"`
-	Svg        bool         `json:"svg"`
-	Type       TagType      `json:"type"`
-	Attributes AttributeMap `json:"attributes,omitempty"`
-	Children   []Tag        `json:"children,omitempty"`
+	ID         uuid.UUID
+	CompoID    uuid.UUID
+	Name       string
+	Text       string
+	Svg        bool
+	Type       TagType
+	Attributes AttributeMap `json:",omitempty"`
+	Children   []Tag        `json:",omitempty"`
 }
 
 // Is reports whether the tag is of the given type.
@@ -131,8 +131,8 @@ type AttributeMap map[string]string
 
 // TagSync represents a tag synchronisation.
 type TagSync struct {
-	Tag     Tag  `json:"tag"`
-	Replace bool `json:"replace"`
+	Tag     Tag
+	Replace bool
 }
 
 // NewConcurrentMarkup decorates the given markup to ensure concurrent access

@@ -122,26 +122,26 @@
           }];
 
   // Menu handlers.
-  [self.objc handle:@"/menu/new"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Menu newMenu:url payload:payload];
-            }];
-  [self.objc handle:@"/menu/load"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Menu load:url payload:payload];
-            }];
-  [self.objc handle:@"/menu/render"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Menu render:url payload:payload];
-            }];
-  [self.objc handle:@"/menu/render/attributes"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Menu renderAttributes:url payload:payload];
-            }];
-  [self.objc handle:@"/menu/delete"
-            handler:^(NSURLComponents *url, NSString *payload) {
-              return [Menu delete:url payload:payload];
-            }];
+  [self.macRPC handle:@"menus.New"
+          withHandler:^(id in, NSString *returnID) {
+            return [Menu new:in return:returnID];
+          }];
+  [self.macRPC handle:@"menus.Load"
+          withHandler:^(id in, NSString *returnID) {
+            return [Menu load:in return:returnID];
+          }];
+  [self.macRPC handle:@"menus.Render"
+          withHandler:^(id in, NSString *returnID) {
+            return [Menu render:in return:returnID];
+          }];
+  [self.macRPC handle:@"menus.RenderAttributes"
+          withHandler:^(id in, NSString *returnID) {
+            return [Menu renderAttributes:in return:returnID];
+          }];
+  [self.macRPC handle:@"menus.Delete"
+          withHandler:^(id in, NSString *returnID) {
+            return [Menu delete:in return:returnID];
+          }];
 
   // File panel handlers.
   [self.macRPC handle:@"files.NewPanel"

@@ -17,7 +17,7 @@ type DockTile struct {
 	menu Menu
 }
 
-func newDockTile(config app.MenuConfig) (app.DockTile, error) {
+func newDockTile(c app.MenuConfig) (app.DockTile, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
 	markup = app.NewConcurrentMarkup(markup)
 
@@ -31,10 +31,11 @@ func newDockTile(config app.MenuConfig) (app.DockTile, error) {
 
 	dock := app.NewDockTileWithLogs(rawDock)
 
-	if _, err := driver.macos.Request(
-		fmt.Sprintf("/menu/new?id=%s", rawDock.menu.id),
-		nil,
-	); err != nil {
+	if err := driver.macRPC.Call("menus.New", nil, struct {
+		ID string
+	}{
+		ID: dock.ID().String(),
+	}); err != nil {
 		return nil, err
 	}
 
@@ -42,15 +43,16 @@ func newDockTile(config app.MenuConfig) (app.DockTile, error) {
 		return nil, err
 	}
 
-	if len(config.DefaultURL) != 0 {
-		if err := dock.Load(config.DefaultURL); err != nil {
+	if len(c.DefaultURL) != 0 {
+		if err := dock.Load(c.DefaultURL); err != nil {
 			return nil, err
 		}
 	}
 
-	if err := driver.macRPC.Call("driver.SetDock", dock.ID(), nil); err != nil {
+	if err := driver.macRPC.Call("driver.SetDock", nil, dock.ID()); err != nil {
 		return nil, err
 	}
+
 	return dock, nil
 }
 
@@ -95,7 +97,7 @@ func (d *DockTile) SetIcon(name string) error {
 		return err
 	}
 
-	return driver.macRPC.Call("driver.SetDockIcon", name, nil)
+	return driver.macRPC.Call("driver.SetDockIcon", nil, name)
 }
 
 // SetBadge satisfies the app.DockTile interface.
@@ -105,5 +107,5 @@ func (d *DockTile) SetBadge(v interface{}) error {
 		badge = fmt.Sprint(v)
 	}
 
-	return driver.macRPC.Call("driver.SetDockBadge", badge, nil)
+	return driver.macRPC.Call("driver.SetDockBadge", nil, badge)
 }

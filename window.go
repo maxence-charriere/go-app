@@ -107,9 +107,7 @@ type windowWithLogs struct {
 }
 
 func (w *windowWithLogs) ID() uuid.UUID {
-	id := w.base.ID()
-	Log("window id is", id)
-	return id
+	return w.base.ID()
 }
 
 func (w *windowWithLogs) Base() Window {

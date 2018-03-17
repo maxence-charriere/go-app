@@ -20,7 +20,7 @@ type Menu interface {
 type MenuConfig struct {
 	DefaultURL string
 
-	OnClose func()
+	OnClose func() `json:"-"`
 }
 
 // NewMenuWithLogs returns a decorated version of the given menu that logs
@@ -39,9 +39,7 @@ type menuWithLogs struct {
 }
 
 func (m *menuWithLogs) ID() uuid.UUID {
-	id := m.base.ID()
-	Logf("%s id is %s", m.name, id)
-	return id
+	return m.base.ID()
 }
 
 func (m *menuWithLogs) Base() Menu {
