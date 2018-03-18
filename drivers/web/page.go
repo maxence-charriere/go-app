@@ -4,6 +4,7 @@ package web
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"net/url"
 	"time"
@@ -11,8 +12,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/bridge"
 	"github.com/murlokswarm/app/html"
+	"github.com/pkg/errors"
 )
 
 type Page struct {
@@ -233,11 +234,12 @@ func (p *Page) Close() {
 	js.Global.Call("close")
 }
 
-func (p *Page) onPageRequest(json string) {
-	payload := bridge.PayloadFromString(json)
-
+func (p *Page) onPageRequest(j string) {
 	var mapping app.Mapping
-	payload.Unmarshal(&mapping)
+	if err := json.Unmarshal([]byte(j), &mapping); err != nil {
+		app.Error(errors.Wrap(err, "onPageRequest"))
+		return
+	}
 
 	fn, err := p.markup.Map(mapping)
 	if err != nil {
