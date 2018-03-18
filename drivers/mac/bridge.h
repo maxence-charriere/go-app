@@ -25,7 +25,7 @@ typedef void (^MacRPCHandler)(id, NSString *);
 @end
 
 @interface GoRPC : NSObject
-- (id)call:(NSString *)method withInput:(id)in;
+- (id)call:(NSString *)method withInput:(id)in onUI:(BOOL)ui;
 @end
 
 #endif /* bridge_h */

@@ -4,15 +4,16 @@
 
 @implementation AppWebView
 - (BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender {
-
   NSPasteboard *pboard = [sender draggingPasteboard];
 
   if ([[pboard types] containsObject:NSFilenamesPboardType]) {
     Driver *driver = [Driver current];
-    NSArray *files = [pboard propertyListForType:NSFilenamesPboardType];
 
-    [driver.golang request:@"/driver/filedrop"
-                   payload:[JSONEncoder encodeObject:files]];
+    NSDictionary *in = @{
+      @"Filenames" : [pboard propertyListForType:NSFilenamesPboardType],
+    };
+
+    [driver.goRPC call:@"driver.OnFileDrop" withInput:in onUI:YES];
   }
   return [super prepareForDragOperation:sender];
 }

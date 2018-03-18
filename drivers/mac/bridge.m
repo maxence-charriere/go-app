@@ -87,17 +87,21 @@ void defer(NSString *returnID, dispatch_block_t block) {
 @end
 
 @implementation GoRPC
-- (id)call:(NSString *)method withInput:(id)in {
-  NSDictionary *call = @{
-    @"Method" : method,
-    @"Input" : in,
-  };
+- (id)call:(NSString *)method withInput:(id)in onUI:(BOOL)ui {
+  NSMutableDictionary *call = [[NSMutableDictionary alloc] init];
+  call[@"Method"] = method;
+  call[@"Input"] = in;
+
   NSString *callString = [JSONEncoder encode:call];
 
-  char *cout = goCall((char *)callString.UTF8String);
+  char *cout = goCall((char *)callString.UTF8String, ui);
+
+  if (cout == nil) {
+    return nil;
+  }
+
   NSString *out = [NSString stringWithUTF8String:cout];
   free(cout);
-
-  return [JSONDecoder decodeObject:out];
+  return [JSONDecoder decode:out];
 }
 @end

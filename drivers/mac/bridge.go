@@ -149,8 +149,8 @@ func notificationHandler(h func(n *Notification, u *url.URL, p bridge.Payload) (
 
 func macCall(call string) error {
 	ccall := C.CString(call)
+	defer C.free(unsafe.Pointer(ccall))
 	C.macCall(ccall)
-	C.free(unsafe.Pointer(ccall))
 	return nil
 }
 
@@ -164,6 +164,33 @@ func macCallReturn(retID, ret, err *C.char) {
 }
 
 //export goCall
-func goCall(ccall *C.char) (cout *C.char) {
-	panic("not implemented")
+func goCall(ccall *C.char, ui C.BOOL) (cout *C.char) {
+	call := C.GoString(ccall)
+
+	if ui == 1 {
+		driver.CallOnUIGoroutine(func() {
+			if _, err := driver.goRPC.Call(call); err != nil {
+				panic(errors.Wrap(err, "go call"))
+			}
+		})
+		return nil
+	}
+
+	ret, err := driver.goRPC.Call(call)
+	if err != nil {
+		panic(errors.Wrap(err, "go call"))
+	}
+
+	// Returned string must be free in objc code.
+	return C.CString(ret)
+}
+
+func stringSlice(v interface{}) []string {
+	src := v.([]interface{})
+	s := make([]string, 0, len(src))
+
+	for _, item := range src {
+		s = append(s, item.(string))
+	}
+	return s
 }

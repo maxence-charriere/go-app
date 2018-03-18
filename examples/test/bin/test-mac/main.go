@@ -48,6 +48,7 @@ func main() {
 		OnQuit: func() bool {
 			fmt.Println("OnQuit")
 			return true
+			// return false
 		},
 		OnExit: func() {
 			fmt.Println("OnExit")
