@@ -3,32 +3,6 @@
 #include "driver.h"
 #include "json.h"
 
-@implementation GoBridge
-- (void)request:(NSString *)path payload:(NSString *)payload {
-  char *p = nil;
-  if (payload != nil) {
-    p = (char *)payload.UTF8String;
-  }
-
-  goRequest((char *)path.UTF8String, p);
-}
-
-- (NSString *)requestWithResult:(NSString *)path payload:(NSString *)payload {
-  char *p = nil;
-  if (payload != nil) {
-    p = (char *)payload.UTF8String;
-  }
-
-  char *cres = goRequestWithResult((char *)path.UTF8String, p);
-  NSString *res = nil;
-  if (cres != nil) {
-    res = [NSString stringWithUTF8String:cres];
-    free(cres);
-  }
-  return res;
-}
-@end
-
 void macCall(char *rawCall) {
   NSDictionary *call =
       [JSONDecoder decode:[NSString stringWithUTF8String:rawCall]];

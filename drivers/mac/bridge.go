@@ -14,31 +14,8 @@ import "C"
 import (
 	"unsafe"
 
-	"github.com/murlokswarm/app/bridge"
 	"github.com/pkg/errors"
 )
-
-//export goRequest
-func goRequest(url *C.char, payload *C.char) {
-	driver.golang.Request(
-		C.GoString(url),
-		bridge.PayloadFromString(C.GoString(payload)),
-	)
-}
-
-//export goRequestWithResult
-// res should be free after each call of goRequestWithResult.
-func goRequestWithResult(url *C.char, payload *C.char) (res *C.char) {
-	pret := driver.golang.RequestWithResponse(
-		C.GoString(url),
-		bridge.PayloadFromString(C.GoString(payload)),
-	)
-
-	if pret != nil {
-		res = C.CString(pret.String())
-	}
-	return res
-}
 
 func macCall(call string) error {
 	ccall := C.CString(call)

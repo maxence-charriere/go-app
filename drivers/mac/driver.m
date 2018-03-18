@@ -24,7 +24,6 @@
   self = [super init];
 
   self.elements = [[NSMutableDictionary alloc] init];
-  self.golang = [[GoBridge alloc] init];
   self.macRPC = [[MacRPC alloc] init];
   self.goRPC = [[GoRPC alloc] init];
 

@@ -64,7 +64,6 @@ type Driver struct {
 	factory      app.Factory
 	elements     app.ElemDB
 	uichan       chan func()
-	golang       bridge.GoBridge
 	macRPC       bridge.PlatformRPC
 	goRPC        bridge.GoRPC
 	menubar      app.Menu
@@ -100,7 +99,6 @@ func (d *Driver) Run(f app.Factory) error {
 	defer close(d.uichan)
 
 	d.macRPC.Handler = macCall
-	d.golang = bridge.NewGoBridge(d.uichan)
 
 	d.goRPC.Handle("driver.OnRun", d.onRun)
 	d.goRPC.Handle("driver.OnFocus", d.onFocus)
