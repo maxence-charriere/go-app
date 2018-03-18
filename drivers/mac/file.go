@@ -49,7 +49,7 @@ func (p *FilePanel) ID() uuid.UUID {
 
 func onFilePanelSelect(p *FilePanel, in map[string]interface{}) interface{} {
 	if p.onSelect != nil {
-		p.onSelect(stringSlice(in["Filenames"]))
+		p.onSelect(bridge.Strings(in["Filenames"]))
 	}
 
 	driver.elements.Remove(p)

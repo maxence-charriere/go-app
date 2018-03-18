@@ -54,13 +54,3 @@ func goCall(ccall *C.char, ui C.BOOL) (cout *C.char) {
 	// Returned string must be free in objc code.
 	return C.CString(ret)
 }
-
-func stringSlice(v interface{}) []string {
-	src := v.([]interface{})
-	s := make([]string, 0, len(src))
-
-	for _, item := range src {
-		s = append(s, item.(string))
-	}
-	return s
-}

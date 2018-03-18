@@ -189,7 +189,7 @@ func (d *Driver) onReopen(in map[string]interface{}) interface{} {
 
 func (d *Driver) onFilesOpen(in map[string]interface{}) interface{} {
 	if d.OnFilesOpen != nil {
-		d.OnFilesOpen(stringSlice(in["Filenames"]))
+		d.OnFilesOpen(bridge.Strings(in["Filenames"]))
 	}
 	return nil
 }
@@ -206,7 +206,7 @@ func (d *Driver) onURLOpen(in map[string]interface{}) interface{} {
 }
 
 func (d *Driver) onFileDrop(in map[string]interface{}) interface{} {
-	d.droppedFiles = stringSlice(in["Filenames"])
+	d.droppedFiles = bridge.Strings(in["Filenames"])
 	return nil
 }
 
