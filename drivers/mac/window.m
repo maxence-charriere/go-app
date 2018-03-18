@@ -137,9 +137,13 @@
   }
 
   Driver *driver = [Driver current];
-  [driver.golang
-      request:[NSString stringWithFormat:@"/window/callback?id=%@", self.ID]
-      payload:message.body];
+
+  NSDictionary *in = @{
+    @"ID" : self.ID,
+    @"Mapping" : message.body,
+  };
+
+  [driver.goRPC call:@"windows.OnCallback" withInput:in onUI:YES];
 }
 
 - (void)configTitlebar:(NSString *)title hidden:(BOOL)isHidden {
@@ -233,9 +237,13 @@
   }
 
   Driver *driver = [Driver current];
-  [driver.golang
-      request:[NSString stringWithFormat:@"/window/navigate?id=%@", self.ID]
-      payload:[JSONEncoder encodeString:url.absoluteString]];
+
+  NSDictionary *in = @{
+    @"ID" : self.ID,
+    @"URL" : url.absoluteString,
+  };
+
+  [driver.goRPC call:@"windows.OnNavigate" withInput:in onUI:YES];
   decisionHandler(WKNavigationActionPolicyCancel);
 }
 
@@ -330,13 +338,13 @@
 - (void)windowDidMove:(NSNotification *)notification {
   Driver *driver = [Driver current];
 
-  NSMutableDictionary<NSString *, id> *pos = [[NSMutableDictionary alloc] init];
-  pos[@"x"] = [NSNumber numberWithDouble:self.window.frame.origin.x];
-  pos[@"y"] = [NSNumber numberWithDouble:self.window.frame.origin.y];
+  NSDictionary *in = @{
+    @"ID" : self.ID,
+    @"X" : [NSNumber numberWithDouble:self.window.frame.origin.x],
+    @"Y" : [NSNumber numberWithDouble:self.window.frame.origin.y],
+  };
 
-  [driver.golang
-      request:[NSString stringWithFormat:@"/window/move?id=%@", self.ID]
-      payload:[JSONEncoder encodeObject:pos]];
+  [driver.goRPC call:@"windows.OnMove" withInput:in onUI:YES];
 }
 
 + (void)size:(NSDictionary *)in return:(NSString *)returnID {
@@ -378,14 +386,13 @@
 - (void)windowDidResize:(NSNotification *)notification {
   Driver *driver = [Driver current];
 
-  NSMutableDictionary<NSString *, id> *size =
-      [[NSMutableDictionary alloc] init];
-  size[@"width"] = [NSNumber numberWithDouble:self.window.frame.size.width];
-  size[@"height"] = [NSNumber numberWithDouble:self.window.frame.size.height];
+  NSDictionary *in = @{
+    @"ID" : self.ID,
+    @"Width" : [NSNumber numberWithDouble:self.window.frame.size.width],
+    @"Height" : [NSNumber numberWithDouble:self.window.frame.size.height],
+  };
 
-  [driver.golang
-      request:[NSString stringWithFormat:@"/window/resize?id=%@", self.ID]
-      payload:[JSONEncoder encodeObject:size]];
+  [driver.goRPC call:@"windows.OnResize" withInput:in onUI:YES];
 }
 
 + (void)focus:(NSDictionary *)in return:(NSString *)returnID {
@@ -402,17 +409,21 @@
 - (void)windowDidBecomeKey:(NSNotification *)notification {
   Driver *driver = [Driver current];
 
-  [driver.golang
-      request:[NSString stringWithFormat:@"/window/focus?id=%@", self.ID]
-      payload:nil];
+  NSDictionary *in = @{
+    @"ID" : self.ID,
+  };
+
+  [driver.goRPC call:@"windows.OnFocus" withInput:in onUI:YES];
 }
 
 - (void)windowDidResignKey:(NSNotification *)notification {
   Driver *driver = [Driver current];
 
-  [driver.golang
-      request:[NSString stringWithFormat:@"/window/blur?id=%@", self.ID]
-      payload:nil];
+  NSDictionary *in = @{
+    @"ID" : self.ID,
+  };
+
+  [driver.goRPC call:@"windows.OnBlur" withInput:in onUI:YES];
 }
 
 + (void)toggleFullScreen:(NSDictionary *)in return:(NSString *)returnID {
@@ -429,18 +440,21 @@
 - (void)windowDidEnterFullScreen:(NSNotification *)notification {
   Driver *driver = [Driver current];
 
-  [driver.golang
-      request:[NSString stringWithFormat:@"/window/fullscreen?id=%@", self.ID]
-      payload:nil];
+  NSDictionary *in = @{
+    @"ID" : self.ID,
+  };
+
+  [driver.goRPC call:@"windows.OnFullScreen" withInput:in onUI:YES];
 }
 
 - (void)windowDidExitFullScreen:(NSNotification *)notification {
   Driver *driver = [Driver current];
 
-  [driver.golang
-      request:[NSString
-                  stringWithFormat:@"/window/fullscreen/exit?id=%@", self.ID]
-      payload:nil];
+  NSDictionary *in = @{
+    @"ID" : self.ID,
+  };
+
+  [driver.goRPC call:@"windows.OnExitFullScreen" withInput:in onUI:YES];
 }
 
 + (void)toggleMinimize:(NSDictionary *)in return:(NSString *)returnID {
@@ -466,17 +480,21 @@
 - (void)windowDidMiniaturize:(NSNotification *)notification {
   Driver *driver = [Driver current];
 
-  [driver.golang
-      request:[NSString stringWithFormat:@"/window/minimize?id=%@", self.ID]
-      payload:nil];
+  NSDictionary *in = @{
+    @"ID" : self.ID,
+  };
+
+  [driver.goRPC call:@"windows.OnMinimize" withInput:in onUI:YES];
 }
 
 - (void)windowDidDeminiaturize:(NSNotification *)notification {
   Driver *driver = [Driver current];
 
-  [driver.golang
-      request:[NSString stringWithFormat:@"/window/deminimize?id=%@", self.ID]
-      payload:nil];
+  NSDictionary *in = @{
+    @"ID" : self.ID,
+  };
+
+  [driver.goRPC call:@"windows.OnDeminimize" withInput:in onUI:YES];
 }
 
 + (void)close:(NSDictionary *)in return:(NSString *)returnID {
@@ -498,11 +516,15 @@
 - (BOOL)windowShouldClose:(NSWindow *)sender {
   Driver *driver = [Driver current];
 
-  NSString *res = [driver.golang
-      requestWithResult:[NSString
-                            stringWithFormat:@"/window/close?id=%@", self.ID]
-                payload:nil];
-  return [JSONDecoder decodeBool:res];
+  NSDictionary *in = @{
+    @"ID" : self.ID,
+  };
+
+  NSDictionary *out =
+      [driver.goRPC call:@"windows.OnClose" withInput:in onUI:NO];
+
+  NSNumber *shouldClose = out[@"ShouldClose"];
+  return shouldClose.boolValue;
 }
 
 - (void)windowWillClose:(NSNotification *)notification {

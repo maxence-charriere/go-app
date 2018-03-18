@@ -18,6 +18,7 @@ import (
 	"github.com/murlokswarm/app/appjs"
 	"github.com/murlokswarm/app/bridge"
 	"github.com/murlokswarm/app/html"
+	"github.com/pkg/errors"
 )
 
 // Window implements the app.Window interface.
@@ -408,14 +409,10 @@ func (w *Window) Move(x, y float64) {
 	}
 }
 
-func onWindowMove(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	if w.onMove == nil {
-		return nil
+func onWindowMove(w *Window, in map[string]interface{}) interface{} {
+	if w.onMove != nil {
+		w.onMove(in["X"].(float64), in["Y"].(float64))
 	}
-
-	var pos point
-	p.Unmarshal(&pos)
-	w.onMove(pos.X, pos.Y)
 	return nil
 }
 
@@ -462,14 +459,10 @@ func (w *Window) Resize(width, height float64) {
 	}
 }
 
-func onWindowResize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	if w.onResize == nil {
-		return nil
+func onWindowResize(w *Window, in map[string]interface{}) interface{} {
+	if w.onResize != nil {
+		w.onResize(in["Width"].(float64), in["Height"].(float64))
 	}
-
-	var size size
-	p.Unmarshal(&size)
-	w.onResize(size.Width, size.Height)
 	return nil
 }
 
@@ -484,23 +477,19 @@ func (w *Window) Focus() {
 	}
 }
 
-func onWindowFocus(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+func onWindowFocus(w *Window, in map[string]interface{}) interface{} {
 	w.lastFocus = time.Now()
 
-	if w.onFocus == nil {
-		return nil
+	if w.onFocus != nil {
+		w.onFocus()
 	}
-
-	w.onFocus()
 	return nil
 }
 
-func onWindowBlur(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	if w.onBlur == nil {
-		return nil
+func onWindowBlur(w *Window, in map[string]interface{}) interface{} {
+	if w.onBlur != nil {
+		w.onBlur()
 	}
-
-	w.onBlur()
 	return nil
 }
 
@@ -515,21 +504,17 @@ func (w *Window) ToggleFullScreen() {
 	}
 }
 
-func onWindowFullScreen(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	if w.onFullScreen == nil {
-		return nil
+func onWindowFullScreen(w *Window, in map[string]interface{}) interface{} {
+	if w.onFullScreen != nil {
+		w.onFullScreen()
 	}
-
-	w.onFullScreen()
 	return nil
 }
 
-func onWindowExitFullScreen(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	if w.onExitFullScreen == nil {
-		return nil
+func onWindowExitFullScreen(w *Window, in map[string]interface{}) interface{} {
+	if w.onExitFullScreen != nil {
+		w.onExitFullScreen()
 	}
-
-	w.onExitFullScreen()
 	return nil
 }
 
@@ -544,21 +529,17 @@ func (w *Window) ToggleMinimize() {
 	}
 }
 
-func onWindowMinimize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	if w.onMinimize == nil {
-		return nil
+func onWindowMinimize(w *Window, in map[string]interface{}) interface{} {
+	if w.onMinimize != nil {
+		w.onMinimize()
 	}
-
-	w.onMinimize()
 	return nil
 }
 
-func onWindowDeminimize(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	if w.onDeminimize == nil {
-		return nil
+func onWindowDeminimize(w *Window, in map[string]interface{}) interface{} {
+	if w.onDeminimize != nil {
+		w.onDeminimize()
 	}
-
-	w.onDeminimize()
 	return nil
 }
 
@@ -573,26 +554,34 @@ func (w *Window) Close() {
 	}
 }
 
-func onWindowClose(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+func onWindowClose(w *Window, in map[string]interface{}) interface{} {
 	shouldClose := true
 	if w.onClose != nil {
 		shouldClose = w.onClose()
 	}
-	res = bridge.NewPayload(shouldClose)
-
-	if w.component != nil {
-		w.markup.Dismount(w.component)
-	}
 
 	if shouldClose {
+		if w.component != nil {
+			w.markup.Dismount(w.component)
+		}
 		driver.elements.Remove(w)
 	}
-	return res
+
+	return struct {
+		ShouldClose bool
+	}{
+		ShouldClose: shouldClose,
+	}
 }
 
-func onWindowCallback(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
+	mappingString := in["Mapping"].(string)
+
 	var mapping app.Mapping
-	p.Unmarshal(&mapping)
+	if err := json.Unmarshal([]byte(mappingString), &mapping); err != nil {
+		app.Error(errors.Wrap(err, "onWindowCallback"))
+		return nil
+	}
 
 	if mapping.Override == "Files" {
 		data, _ := json.Marshal(driver.droppedFiles)
@@ -600,7 +589,7 @@ func onWindowCallback(w *Window, u *url.URL, p bridge.Payload) (res bridge.Paylo
 
 		mapping.JSONValue = strings.Replace(
 			mapping.JSONValue,
-			`"file-override":"xxx"`,
+			`"FileOverride":"xxx"`,
 			fmt.Sprintf(`"Files":%s`, data),
 			1,
 		)
@@ -608,7 +597,7 @@ func onWindowCallback(w *Window, u *url.URL, p bridge.Payload) (res bridge.Paylo
 
 	function, err := w.markup.Map(mapping)
 	if err != nil {
-		app.DefaultLogger.Error(err)
+		app.Error(errors.Wrap(err, "onWindowCallback"))
 		return nil
 	}
 
@@ -619,20 +608,31 @@ func onWindowCallback(w *Window, u *url.URL, p bridge.Payload) (res bridge.Paylo
 
 	var compo app.Component
 	if compo, err = w.markup.Component(mapping.CompoID); err != nil {
-		app.Error(err)
+		app.Error(errors.Wrap(err, "onWindowCallback"))
 		return nil
 	}
 
 	if err = w.Render(compo); err != nil {
-		app.Error(err)
+		app.Error(errors.Wrap(err, "onWindowCallback"))
 	}
-
 	return nil
 }
 
-func onWindowNavigate(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	var rawurl string
-	p.Unmarshal(&rawurl)
-	w.Load(rawurl)
+func onWindowNavigate(w *Window, in map[string]interface{}) interface{} {
+	w.Load(in["URL"].(string))
 	return nil
+}
+
+func handleWindow(h func(w *Window, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
+	return func(in map[string]interface{}) interface{} {
+		id, _ := uuid.Parse(in["ID"].(string))
+
+		elem, err := driver.elements.Element(id)
+		if err != nil {
+			return nil
+		}
+
+		win := elem.(app.Window).Base().(*Window)
+		return h(win, in)
+	}
 }

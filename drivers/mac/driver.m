@@ -24,7 +24,6 @@
   self = [super init];
 
   self.elements = [[NSMutableDictionary alloc] init];
-  self.golang = [[GoBridge alloc] init];
   self.macRPC = [[MacRPC alloc] init];
   self.goRPC = [[GoRPC alloc] init];
 
@@ -293,28 +292,34 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-  [self.golang request:@"/driver/run" payload:nil];
+  [self.goRPC call:@"driver.OnRun" withInput:nil onUI:YES];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)aNotification {
-  [self.golang request:@"/driver/focus" payload:nil];
+  [self.goRPC call:@"driver.OnFocus" withInput:nil onUI:YES];
 }
 
 - (void)applicationDidResignActive:(NSNotification *)aNotification {
-  [self.golang request:@"/driver/blur" payload:nil];
+  [self.goRPC call:@"driver.OnBlur" withInput:nil onUI:YES];
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender
                     hasVisibleWindows:(BOOL)flag {
-  NSString *payload = flag ? @"true" : @"false";
-  [self.golang request:@"/driver/reopen" payload:payload];
+  NSDictionary *in = @{
+    @"HasVisibleWindows" : [NSNumber numberWithBool:flag],
+  };
+
+  [self.goRPC call:@"driver.OnReopen" withInput:in onUI:YES];
   return YES;
 }
 
 - (void)application:(NSApplication *)sender
           openFiles:(NSArray<NSString *> *)filenames {
-  NSString *payload = [JSONEncoder encodeObject:filenames];
-  [self.golang request:@"/driver/filesopen" payload:payload];
+  NSDictionary *in = @{
+    @"Filenames" : filenames,
+  };
+
+  [self.goRPC call:@"driver.OnFilesOpen" withInput:in onUI:YES];
 }
 
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
@@ -329,20 +334,22 @@
 
 - (void)handleGetURLEvent:(NSAppleEventDescriptor *)event
            withReplyEvent:(NSAppleEventDescriptor *)replyEvent {
-  NSString *rawurl =
-      [event paramDescriptorForKeyword:keyDirectObject].stringValue;
-  NSString *payload = [JSONEncoder encodeString:rawurl];
-  [self.golang request:@"/driver/urlopen" payload:payload];
+  NSDictionary *in = @{
+    @"URL" : [event paramDescriptorForKeyword:keyDirectObject].stringValue,
+  };
+
+  [self.goRPC call:@"driver.OnURLOpen" withInput:in onUI:YES];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:
     (NSApplication *)sender {
-  NSString *res = [self.golang requestWithResult:@"/driver/quit" payload:nil];
-  return [JSONDecoder decodeBool:res];
+  NSDictionary *out = [self.goRPC call:@"driver.OnQuit" withInput:nil onUI:NO];
+  NSNumber *quit = out[@"Quit"];
+  return quit.boolValue;
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
-  [self.golang requestWithResult:@"/driver/exit" payload:nil];
+  [self.goRPC call:@"driver.OnExit" withInput:nil onUI:YES];
 }
 
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {
@@ -356,8 +363,12 @@
 
 - (void)userNotificationCenter:(NSUserNotificationCenter *)center
        didActivateNotification:(NSUserNotification *)notification {
-  [self.golang request:[NSString stringWithFormat:@"/notification/reply?id=%@",
-                                                  notification.identifier]
-               payload:[JSONEncoder encodeString:notification.response.string]];
+  NSMutableDictionary *in = [[NSMutableDictionary alloc] init];
+  in[@"ID"] = notification.identifier;
+
+  if (notification.activationType == NSUserNotificationActivationTypeReplied) {
+    in[@"Reply"] = notification.response.string;
+    [self.goRPC call:@"notifications.OnReply" withInput:in onUI:YES];
+  }
 }
 @end

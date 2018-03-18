@@ -64,8 +64,8 @@ type Driver struct {
 	factory      app.Factory
 	elements     app.ElemDB
 	uichan       chan func()
-	golang       bridge.GoBridge
 	macRPC       bridge.PlatformRPC
+	goRPC        bridge.GoRPC
 	menubar      app.Menu
 	dock         app.DockTile
 	devID        string
@@ -99,37 +99,36 @@ func (d *Driver) Run(f app.Factory) error {
 	defer close(d.uichan)
 
 	d.macRPC.Handler = macCall
-	d.golang = bridge.NewGoBridge(d.uichan)
 
-	d.golang.Handle("/driver/run", d.onRun)
-	d.golang.Handle("/driver/focus", d.onFocus)
-	d.golang.Handle("/driver/blur", d.onBlur)
-	d.golang.Handle("/driver/reopen", d.onReopen)
-	d.golang.Handle("/driver/filesopen", d.onFilesOpen)
-	d.golang.Handle("/driver/urlopen", d.onURLOpen)
-	d.golang.Handle("/driver/filedrop", d.onFileDrop)
-	d.golang.Handle("/driver/quit", d.onQuit)
-	d.golang.Handle("/driver/exit", d.onExit)
+	d.goRPC.Handle("driver.OnRun", d.onRun)
+	d.goRPC.Handle("driver.OnFocus", d.onFocus)
+	d.goRPC.Handle("driver.OnBlur", d.onBlur)
+	d.goRPC.Handle("driver.OnReopen", d.onReopen)
+	d.goRPC.Handle("driver.OnFilesOpen", d.onFilesOpen)
+	d.goRPC.Handle("driver.OnURLOpen", d.onURLOpen)
+	d.goRPC.Handle("driver.OnFileDrop", d.onFileDrop)
+	d.goRPC.Handle("driver.OnQuit", d.onQuit)
+	d.goRPC.Handle("driver.OnExit", d.onExit)
 
-	d.golang.Handle("/window/move", windowHandler(onWindowMove))
-	d.golang.Handle("/window/resize", windowHandler(onWindowResize))
-	d.golang.Handle("/window/focus", windowHandler(onWindowFocus))
-	d.golang.Handle("/window/blur", windowHandler(onWindowBlur))
-	d.golang.Handle("/window/fullscreen", windowHandler(onWindowFullScreen))
-	d.golang.Handle("/window/fullscreen/exit", windowHandler(onWindowExitFullScreen))
-	d.golang.Handle("/window/minimize", windowHandler(onWindowMinimize))
-	d.golang.Handle("/window/deminimize", windowHandler(onWindowDeminimize))
-	d.golang.Handle("/window/close", windowHandler(onWindowClose))
-	d.golang.Handle("/window/callback", windowHandler(onWindowCallback))
-	d.golang.Handle("/window/navigate", windowHandler(onWindowNavigate))
+	d.goRPC.Handle("windows.OnMove", handleWindow(onWindowMove))
+	d.goRPC.Handle("windows.OnResize", handleWindow(onWindowResize))
+	d.goRPC.Handle("windows.OnFocus", handleWindow(onWindowFocus))
+	d.goRPC.Handle("windows.OnBlur", handleWindow(onWindowBlur))
+	d.goRPC.Handle("windows.OnFullScreen", handleWindow(onWindowFullScreen))
+	d.goRPC.Handle("windows.OnExitFullScreen", handleWindow(onWindowExitFullScreen))
+	d.goRPC.Handle("windows.OnMinimize", handleWindow(onWindowMinimize))
+	d.goRPC.Handle("windows.OnDeminimize", handleWindow(onWindowDeminimize))
+	d.goRPC.Handle("windows.OnClose", handleWindow(onWindowClose))
+	d.goRPC.Handle("windows.OnCallback", handleWindow(onWindowCallback))
+	d.goRPC.Handle("windows.OnNavigate", handleWindow(onWindowNavigate))
 
-	d.golang.Handle("/menu/close", menuHandler(onMenuClose))
-	d.golang.Handle("/menu/callback", menuHandler(onMenuCallback))
+	d.goRPC.Handle("menus.OnClose", handleMenu(onMenuClose))
+	d.goRPC.Handle("menus.OnCallback", handleMenu(onMenuCallback))
 
-	d.golang.Handle("/file/panel/select", filePanelHandler(onFilePanelClose))
-	d.golang.Handle("/file/savepanel/select", saveFilePanelHandler(onSaveFilePanelClose))
+	d.goRPC.Handle("filePanels.OnSelect", handleFilePanel(onFilePanelSelect))
+	d.goRPC.Handle("saveFilePanels.OnSelect", handleSaveFilePanel(onSaveFilePanelSelect))
 
-	d.golang.Handle("/notification/reply", notificationHandler(onNotificationReply))
+	d.goRPC.Handle("notifications.OnReply", handleNotification(onNotificationReply))
 
 	driver = d
 	errC := make(chan error)
@@ -149,7 +148,7 @@ func (d *Driver) Run(f app.Factory) error {
 	}
 }
 
-func (d *Driver) onRun(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+func (d *Driver) onRun(in map[string]interface{}) interface{} {
 	err := d.newMenuBar()
 	if err != nil {
 		panic(err)
@@ -167,65 +166,47 @@ func (d *Driver) onRun(u *url.URL, p bridge.Payload) (res bridge.Payload) {
 	return nil
 }
 
-func (d *Driver) onFocus(u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	if d.OnFocus == nil {
-		return nil
+func (d *Driver) onFocus(in map[string]interface{}) interface{} {
+	if d.OnFocus != nil {
+		d.OnFocus()
 	}
-
-	d.OnFocus()
 	return nil
 }
 
-func (d *Driver) onBlur(u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	if d.OnBlur == nil {
-		return nil
+func (d *Driver) onBlur(in map[string]interface{}) interface{} {
+	if d.OnBlur != nil {
+		d.OnBlur()
 	}
-
-	d.OnBlur()
 	return nil
 }
 
-func (d *Driver) onReopen(u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	if d.OnReopen == nil {
-		return nil
+func (d *Driver) onReopen(in map[string]interface{}) interface{} {
+	if d.OnReopen != nil {
+		d.OnReopen(in["HasVisibleWindows"].(bool))
 	}
-
-	var hasVisibleWindows bool
-	p.Unmarshal(&hasVisibleWindows)
-	d.OnReopen(hasVisibleWindows)
 	return nil
 }
 
-func (d *Driver) onFilesOpen(u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	if d.OnFilesOpen == nil {
-		return nil
+func (d *Driver) onFilesOpen(in map[string]interface{}) interface{} {
+	if d.OnFilesOpen != nil {
+		d.OnFilesOpen(bridge.Strings(in["Filenames"]))
 	}
-
-	var filenames []string
-	p.Unmarshal(&filenames)
-	d.OnFilesOpen(filenames)
 	return nil
 }
 
-func (d *Driver) onURLOpen(u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	if d.OnURLOpen == nil {
-		return nil
+func (d *Driver) onURLOpen(in map[string]interface{}) interface{} {
+	if d.OnURLOpen != nil {
+		u, err := url.Parse(in["URL"].(string))
+		if err != nil {
+			panic(errors.Wrap(err, "onURLOpen"))
+		}
+		d.OnURLOpen(u)
 	}
-
-	var rawurl string
-	p.Unmarshal(&rawurl)
-
-	purl, err := url.Parse(rawurl)
-	if err != nil {
-		panic(errors.Wrap(err, "parsing url failed"))
-	}
-
-	d.OnURLOpen(purl)
 	return nil
 }
 
-func (d *Driver) onFileDrop(u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	p.Unmarshal(&d.droppedFiles)
+func (d *Driver) onFileDrop(in map[string]interface{}) interface{} {
+	d.droppedFiles = bridge.Strings(in["Filenames"])
 	return nil
 }
 
@@ -420,18 +401,20 @@ func (d *Driver) Close() {
 	d.macRPC.Call("driver.Quit", nil, nil)
 }
 
-func (d *Driver) onQuit(u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	quit := true
-
-	if d.OnQuit != nil {
-		quit = d.OnQuit()
+func (d *Driver) onQuit(in map[string]interface{}) interface{} {
+	out := struct {
+		Quit bool
+	}{
+		Quit: true,
 	}
 
-	res = bridge.NewPayload(quit)
-	return
+	if d.OnQuit != nil {
+		out.Quit = d.OnQuit()
+	}
+	return out
 }
 
-func (d *Driver) onExit(u *url.URL, p bridge.Payload) (res bridge.Payload) {
+func (d *Driver) onExit(in map[string]interface{}) interface{} {
 	if d.OnExit != nil {
 		d.OnExit()
 	}

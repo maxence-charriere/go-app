@@ -85,16 +85,20 @@
 }
 
 - (void)clicked:(id)sender {
-  NSMutableDictionary<NSString *, id> *mapping =
-      [[NSMutableDictionary alloc] init];
-  mapping[@"compo-id"] = self.compoID;
-  mapping[@"target"] = self.onClick;
-  mapping[@"json-value"] = @"{}";
-
   Driver *driver = [Driver current];
-  [driver.golang
-      request:[NSString stringWithFormat:@"/menu/callback?id=%@", self.elemID]
-      payload:[JSONEncoder encodeObject:mapping]];
+
+  NSDictionary *mapping = @{
+    @"CompoID" : self.compoID,
+    @"Target" : self.onClick,
+    @"JSONValue" : @"{}",
+  };
+
+  NSDictionary *in = @{
+    @"ID" : self.elemID,
+    @"Mapping" : [JSONEncoder encode:mapping],
+  };
+
+  [driver.goRPC call:@"menus.OnCallback" withInput:in onUI:YES];
 }
 
 - (void)setupKeys {
@@ -384,9 +388,11 @@
 - (void)menuDidClose:(NSMenu *)menu {
   Driver *driver = [Driver current];
 
-  [driver.golang
-      request:[NSString stringWithFormat:@"/menu/close?id=%@", self.ID]
-      payload:nil];
+  NSDictionary *in = @{
+    @"ID" : self.ID,
+  };
+
+  [driver.goRPC call:@"menus.OnClose" withInput:in onUI:YES];
 }
 
 + (void) delete:(NSDictionary *)in return:(NSString *)returnID {

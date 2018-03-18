@@ -3,32 +3,6 @@
 #include "driver.h"
 #include "json.h"
 
-@implementation GoBridge
-- (void)request:(NSString *)path payload:(NSString *)payload {
-  char *p = nil;
-  if (payload != nil) {
-    p = (char *)payload.UTF8String;
-  }
-
-  goRequest((char *)path.UTF8String, p);
-}
-
-- (NSString *)requestWithResult:(NSString *)path payload:(NSString *)payload {
-  char *p = nil;
-  if (payload != nil) {
-    p = (char *)payload.UTF8String;
-  }
-
-  char *cres = goRequestWithResult((char *)path.UTF8String, p);
-  NSString *res = nil;
-  if (cres != nil) {
-    res = [NSString stringWithUTF8String:cres];
-    free(cres);
-  }
-  return res;
-}
-@end
-
 void macCall(char *rawCall) {
   NSDictionary *call =
       [JSONDecoder decode:[NSString stringWithUTF8String:rawCall]];
@@ -87,17 +61,21 @@ void defer(NSString *returnID, dispatch_block_t block) {
 @end
 
 @implementation GoRPC
-- (id)call:(NSString *)method withInput:(id)in {
-  NSDictionary *call = @{
-    @"Method" : method,
-    @"Input" : in,
-  };
+- (id)call:(NSString *)method withInput:(id)in onUI:(BOOL)ui {
+  NSMutableDictionary *call = [[NSMutableDictionary alloc] init];
+  call[@"Method"] = method;
+  call[@"Input"] = in;
+
   NSString *callString = [JSONEncoder encode:call];
 
-  char *cout = goCall((char *)callString.UTF8String);
+  char *cout = goCall((char *)callString.UTF8String, ui);
+
+  if (cout == nil) {
+    return nil;
+  }
+
   NSString *out = [NSString stringWithUTF8String:cout];
   free(cout);
-
-  return [JSONDecoder decodeObject:out];
+  return [JSONDecoder decode:out];
 }
 @end

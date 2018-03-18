@@ -3,12 +3,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-// GoBridge is a golang bridge implementation.
-@interface GoBridge : NSObject
-- (void)request:(NSString *)path payload:(NSString *)payload;
-- (NSString *)requestWithResult:(NSString *)path payload:(NSString *)payload;
-@end
-
 void macCall(char *rawCall);
 void defer(NSString *returnID, dispatch_block_t block);
 
@@ -25,7 +19,7 @@ typedef void (^MacRPCHandler)(id, NSString *);
 @end
 
 @interface GoRPC : NSObject
-- (id)call:(NSString *)method withInput:(id)in;
+- (id)call:(NSString *)method withInput:(id)in onUI:(BOOL)ui;
 @end
 
 #endif /* bridge_h */
