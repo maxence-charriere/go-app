@@ -98,7 +98,6 @@
     @"Mapping" : [JSONEncoder encode:mapping],
   };
 
-  NSLog(@"Gonna call menu callback");
   [driver.goRPC call:@"menus.OnCallback" withInput:in onUI:YES];
 }
 
