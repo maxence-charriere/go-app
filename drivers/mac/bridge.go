@@ -12,11 +12,8 @@ package mac
 */
 import "C"
 import (
-	"net/url"
 	"unsafe"
 
-	"github.com/google/uuid"
-	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/bridge"
 	"github.com/pkg/errors"
 )
@@ -41,110 +38,6 @@ func goRequestWithResult(url *C.char, payload *C.char) (res *C.char) {
 		res = C.CString(pret.String())
 	}
 	return res
-}
-
-func windowHandler(h func(w *Window, u *url.URL, p bridge.Payload) (res bridge.Payload)) bridge.GoHandler {
-	return func(u *url.URL, p bridge.Payload) (res bridge.Payload) {
-		id, err := uuid.Parse(u.Query().Get("id"))
-		if err != nil {
-			panic(errors.Wrap(err, "creating window handler failed"))
-		}
-
-		var elem app.Element
-		if elem, err = driver.elements.Element(id); err != nil {
-			return nil
-		}
-
-		win, ok := elem.(app.Window)
-		if !ok {
-			panic(errors.Errorf("creating window handler failed: element with id %v is not a window", id))
-		}
-		return h(win.Base().(*Window), u, p)
-	}
-}
-
-func menuHandler(h func(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Payload)) bridge.GoHandler {
-	return func(u *url.URL, p bridge.Payload) (res bridge.Payload) {
-		id, err := uuid.Parse(u.Query().Get("id"))
-		if err != nil {
-			panic(errors.Wrap(err, "creating menu handler failed"))
-		}
-
-		var elem app.Element
-		if elem, err = driver.elements.Element(id); err != nil {
-			panic(errors.Wrap(err, "creating menu handler failed"))
-		}
-
-		menu, ok := elem.(app.Menu)
-		if !ok {
-			panic(errors.Errorf("creating menu handler failed: element with id %v is not a menu", id))
-		}
-		return h(menu.Base().(*Menu), u, p)
-	}
-}
-
-func filePanelHandler(h func(panel *FilePanel, u *url.URL, p bridge.Payload) (res bridge.Payload)) bridge.GoHandler {
-	return func(u *url.URL, p bridge.Payload) (res bridge.Payload) {
-		id, err := uuid.Parse(u.Query().Get("id"))
-		if err != nil {
-			panic(errors.Wrap(err, "creating file panel handler failed"))
-		}
-
-		var elem app.Element
-		if elem, err = driver.elements.Element(id); err != nil {
-			panic(errors.Wrap(err, "creating file panel handler failed"))
-		}
-
-		panel, ok := elem.(*FilePanel)
-		if !ok {
-			panic(errors.Errorf("creating file panel handler failed: element with id %v is not a file panel", id))
-		}
-
-		return h(panel, u, p)
-	}
-}
-
-func saveFilePanelHandler(h func(panel *SaveFilePanel, u *url.URL, p bridge.Payload) (res bridge.Payload)) bridge.GoHandler {
-	return func(u *url.URL, p bridge.Payload) (res bridge.Payload) {
-		id, err := uuid.Parse(u.Query().Get("id"))
-		if err != nil {
-			panic(errors.Wrap(err, "creating save file panel handler failed"))
-		}
-
-		var elem app.Element
-		if elem, err = driver.elements.Element(id); err != nil {
-			panic(errors.Wrap(err, "creating save file panel handler failed"))
-		}
-
-		panel, ok := elem.(*SaveFilePanel)
-		if !ok {
-			panic(errors.Errorf("creating save file panel handler failed: element with id %v is not a file panel", id))
-		}
-
-		return h(panel, u, p)
-	}
-}
-
-func notificationHandler(h func(n *Notification, u *url.URL, p bridge.Payload) (res bridge.Payload)) bridge.GoHandler {
-	return func(u *url.URL, p bridge.Payload) (res bridge.Payload) {
-		id, err := uuid.Parse(u.Query().Get("id"))
-		if err != nil {
-			panic(errors.Wrap(err, "creating notification handler failed"))
-		}
-
-		var elem app.Element
-		if elem, err = driver.elements.Element(id); err != nil {
-			return nil
-			// panic(errors.Wrap(err, "creating notification handler failed"))
-		}
-
-		notification, ok := elem.(*Notification)
-		if !ok {
-			panic(errors.Errorf("creating notification handler failed: element with id %v is not notification", id))
-		}
-
-		return h(notification, u, p)
-	}
 }
 
 func macCall(call string) error {

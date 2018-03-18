@@ -364,8 +364,12 @@
 
 - (void)userNotificationCenter:(NSUserNotificationCenter *)center
        didActivateNotification:(NSUserNotification *)notification {
-  [self.golang request:[NSString stringWithFormat:@"/notification/reply?id=%@",
-                                                  notification.identifier]
-               payload:[JSONEncoder encodeString:notification.response.string]];
+  NSMutableDictionary *in = [[NSMutableDictionary alloc] init];
+  in[@"ID"] = notification.identifier;
+
+  if (notification.activationType == NSUserNotificationActivationTypeReplied) {
+    in[@"Reply"] = notification.response.string;
+    [self.goRPC call:@"notifications.OnReply" withInput:in onUI:YES];
+  }
 }
 @end

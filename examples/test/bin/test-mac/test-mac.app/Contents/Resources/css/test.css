@@ -1,0 +1,36 @@
+body {
+    color: white;
+    overflow: hidden;
+}
+
+li {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.root {
+    position: absolute;
+    padding: 0 25px;
+    width: calc(100% - 50px);
+    height: 100%;
+    overflow: auto;
+}
+
+.square {
+    border: white solid 1px;
+    width: calc(200px - 30px);
+    height: calc(200px - 30px);
+}
+
+.blue {
+    background-color: deepskyblue;
+}
+
+.pink {
+    background-color: deeppink;
+}
+
+.dragdrop {
+    display: inline-block;
+    padding: 15px;
+}

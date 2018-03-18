@@ -3,6 +3,7 @@
 package mac
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/url"
 	"time"
@@ -11,6 +12,7 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/bridge"
 	"github.com/murlokswarm/app/html"
+	"github.com/pkg/errors"
 )
 
 // Menu implements the app.Menu interface.
@@ -183,8 +185,11 @@ func (m *Menu) LastFocus() time.Time {
 	return m.lastFocus
 }
 
-func onMenuClose(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	app.CallOnUIGoroutine(func() {
+func onMenuClose(m *Menu, in map[string]interface{}) interface{} {
+	// menuDidClose: is called before clicked:.
+	// We call CallOnUIGoroutine in order to defer the close operation
+	// after the clicked one.
+	driver.CallOnUIGoroutine(func() {
 		if m.onClose != nil {
 			m.onClose()
 		}
@@ -194,21 +199,27 @@ func onMenuClose(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Payload) {
 		}{
 			ID: m.ID().String(),
 		}); err != nil {
-			panic(err)
+			panic(errors.Wrap(err, "onMenuClose"))
 		}
 
 		driver.elements.Remove(m)
 	})
+
 	return nil
 }
 
-func onMenuCallback(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Payload) {
+func onMenuCallback(m *Menu, in map[string]interface{}) interface{} {
+	mappingString := in["Mapping"].(string)
+
 	var mapping app.Mapping
-	p.Unmarshal(&mapping)
+	if err := json.Unmarshal([]byte(mappingString), &mapping); err != nil {
+		app.Error(errors.Wrap(err, "onMenuCallback"))
+		return nil
+	}
 
 	function, err := m.markup.Map(mapping)
 	if err != nil {
-		app.DefaultLogger.Error(err)
+		app.Error(errors.Wrap(err, "onMenuCallback"))
 		return nil
 	}
 
@@ -219,12 +230,26 @@ func onMenuCallback(m *Menu, u *url.URL, p bridge.Payload) (res bridge.Payload) 
 
 	var compo app.Component
 	if compo, err = m.markup.Component(mapping.CompoID); err != nil {
-		app.DefaultLogger.Error(err)
+		app.Error(errors.Wrap(err, "onMenuCallback"))
 		return nil
 	}
 
 	if err = m.Render(compo); err != nil {
-		app.DefaultLogger.Error(err)
+		app.Error(errors.Wrap(err, "onMenuCallback"))
 	}
 	return nil
+}
+
+func handleMenu(h func(m *Menu, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
+	return func(in map[string]interface{}) interface{} {
+		id, _ := uuid.Parse(in["ID"].(string))
+
+		elem, err := driver.elements.Element(id)
+		if err != nil {
+			return nil
+		}
+
+		menu := elem.(app.Menu).Base().(*Menu)
+		return h(menu, in)
+	}
 }

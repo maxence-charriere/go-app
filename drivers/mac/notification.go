@@ -3,8 +3,6 @@
 package mac
 
 import (
-	"net/url"
-
 	"github.com/murlokswarm/app"
 
 	"github.com/google/uuid"
@@ -51,14 +49,25 @@ func (n *Notification) ID() uuid.UUID {
 	return n.id
 }
 
-func onNotificationReply(n *Notification, u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	var reply string
-	p.Unmarshal(&reply)
-
-	if reply != "(null)" {
+func onNotificationReply(n *Notification, in map[string]interface{}) interface{} {
+	if reply := in["Reply"].(string); n.onReply != nil && len(reply) != 0 {
 		n.onReply(reply)
 	}
 
 	driver.elements.Remove(n)
 	return nil
+}
+
+func handleNotification(h func(n *Notification, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
+	return func(in map[string]interface{}) interface{} {
+		id, _ := uuid.Parse(in["ID"].(string))
+
+		elem, err := driver.elements.Element(id)
+		if err != nil {
+			return nil
+		}
+
+		notif := elem.(*Notification)
+		return h(notif, in)
+	}
 }

@@ -26,17 +26,21 @@
     }
 
     id onComplete = ^(NSInteger result) {
-      NSMutableArray<NSString *> *filenames = [[NSMutableArray alloc] init];
-
-      if (result == NSModalResponseOK) {
-        for (NSURL *url in panel.URLs) {
-          [filenames addObject:url.path];
-        }
+      if (result != NSModalResponseOK) {
+        return;
       }
 
-      [driver.golang
-          request:[NSString stringWithFormat:@"/file/panel/select?id=%@", ID]
-          payload:[JSONEncoder encodeObject:filenames]];
+      NSMutableArray<NSString *> *filenames = [[NSMutableArray alloc] init];
+      for (NSURL *url in panel.URLs) {
+        [filenames addObject:url.path];
+      }
+
+      NSDictionary *in = @{
+        @"ID" : ID,
+        @"Filenames" : filenames,
+      };
+
+      [driver.goRPC call:@"filePanels.OnSelect" withInput:in onUI:YES];
     };
 
     NSWindow *win = NSApp.keyWindow;
@@ -67,16 +71,18 @@
     }
 
     id onComplete = ^(NSInteger result) {
-      NSString *filename = @"";
-
-      if (result == NSModalResponseOK) {
-        filename = panel.URL.absoluteString;
+      if (result != NSModalResponseOK) {
+        return;
       }
 
-      [driver.golang
-          request:[NSString
-                      stringWithFormat:@"/file/savepanel/select?id=%@", ID]
-          payload:[JSONEncoder encodeString:filename]];
+      NSDictionary *in = @{
+        @"ID" : ID,
+        @"Filename" : panel.URL.absoluteString,
+      };
+
+      [driver.goRPC call:@"saveFilePanels.OnSelect"
+               withInput:in
+                    onUI:YES];
     };
 
     NSWindow *win = NSApp.keyWindow;

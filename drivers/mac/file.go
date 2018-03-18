@@ -3,8 +3,6 @@
 package mac
 
 import (
-	"net/url"
-
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/bridge"
@@ -49,16 +47,27 @@ func (p *FilePanel) ID() uuid.UUID {
 	return p.id
 }
 
-func onFilePanelClose(panel *FilePanel, u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	var filenames []string
-	p.Unmarshal(&filenames)
-
-	if len(filenames) != 0 && panel.onSelect != nil {
-		panel.onSelect(filenames)
+func onFilePanelSelect(p *FilePanel, in map[string]interface{}) interface{} {
+	if p.onSelect != nil {
+		p.onSelect(stringSlice(in["Filenames"]))
 	}
 
-	driver.elements.Remove(panel)
+	driver.elements.Remove(p)
 	return nil
+}
+
+func handleFilePanel(h func(p *FilePanel, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
+	return func(in map[string]interface{}) interface{} {
+		id, _ := uuid.Parse(in["ID"].(string))
+
+		elem, err := driver.elements.Element(id)
+		if err != nil {
+			return nil
+		}
+
+		panel := elem.(*FilePanel)
+		return h(panel, in)
+	}
 }
 
 // SaveFilePanel implements the app.Element interface.
@@ -94,14 +103,25 @@ func (p *SaveFilePanel) ID() uuid.UUID {
 	return p.id
 }
 
-func onSaveFilePanelClose(panel *SaveFilePanel, u *url.URL, p bridge.Payload) (res bridge.Payload) {
-	var filename string
-	p.Unmarshal(&filename)
-
-	if len(filename) != 0 && panel.onSelect != nil {
-		panel.onSelect(filename)
+func onSaveFilePanelSelect(p *SaveFilePanel, in map[string]interface{}) interface{} {
+	if p.onSelect != nil {
+		p.onSelect(in["Filename"].(string))
 	}
 
-	driver.elements.Remove(panel)
+	driver.elements.Remove(p)
 	return nil
+}
+
+func handleSaveFilePanel(h func(p *SaveFilePanel, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
+	return func(in map[string]interface{}) interface{} {
+		id, _ := uuid.Parse(in["ID"].(string))
+
+		elem, err := driver.elements.Element(id)
+		if err != nil {
+			return nil
+		}
+
+		panel := elem.(*SaveFilePanel)
+		return h(panel, in)
+	}
 }

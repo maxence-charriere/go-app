@@ -114,9 +114,9 @@ function callGoEventHandler (compoID, target, src, event) {
 
 function onchangeToGolang (compoID, target, src, event) {
   golangRequest(JSON.stringify({
-    'compo-id': compoID,
-    'target': target,
-    'json-value': JSON.stringify(src.value)
+    'CompoID': compoID,
+    'Target': target,
+    'JSONValue': JSON.stringify(src.value)
   }))
 }
 
@@ -127,9 +127,9 @@ function onDragStartToGolang (compoID, target, src, event) {
   event.dataTransfer.setData('text', src.dataset.drag)
 
   golangRequest(JSON.stringify({
-    'compo-id': compoID,
-    'target': target,
-    'json-value': JSON.stringify(payload)
+    'CompoID': compoID,
+    'Target': target,
+    'JSONValue': JSON.stringify(payload)
   }))
 }
 
@@ -138,13 +138,13 @@ function ondropToGolang (compoID, target, src, event) {
 
   const payload = mapObject(event.dataTransfer)
   payload['Data'] = event.dataTransfer.getData('text')
-  payload['file-override'] = 'xxx'
+  payload['FileOverride'] = 'xxx'
 
   golangRequest(JSON.stringify({
-    'compo-id': compoID,
-    'target': target,
-    'json-value': JSON.stringify(payload),
-    'override': 'Files'
+    'CompoID': compoID,
+    'Target': target,
+    'JSONValue': JSON.stringify(payload),
+    'Override': 'Files'
   }))
 }
 
@@ -156,8 +156,8 @@ function eventToGolang (compoID, target, src, event) {
   }
 
   golangRequest(JSON.stringify({
-    'compo-id': compoID,
-    'target': target,
-    'json-value': JSON.stringify(payload)
+    'CompoID': compoID,
+    'Target': target,
+    'JSONValue': JSON.stringify(payload)
   }))
 }

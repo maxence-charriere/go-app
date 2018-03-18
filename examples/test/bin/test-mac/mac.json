@@ -1,0 +1,42 @@
+{
+  "name": "test-mac",
+  "id": "maxence.test-mac",
+  "url-scheme": "test-mac",
+  "version": "1.0",
+  "build-number": 1,
+  "icon": "",
+  "dev-region": "en",
+  "deployment-target": "10.12",
+  "copyright": "Copyright © 2017 maxence. All rights reserved",
+  "role": "None",
+  "category": "",
+  "sandbox": true,
+  "capabilities": {
+    "network": {
+      "in": false,
+      "out": true
+    },
+    "hardware": {
+      "camera": false,
+      "microphone": false,
+      "usb": false,
+      "printing": false,
+      "bluetooth": false
+    },
+    "app-data": {
+      "contacts": false,
+      "location": false,
+      "calendar": false
+    },
+    "file-access": {
+      "user-selected": "",
+      "downloads": "",
+      "pictures": "",
+      "music": "",
+      "movies": ""
+    }
+  },
+  "store": false,
+  "sign-id": "",
+  "supported-files": []
+}

@@ -103,6 +103,7 @@ func testWindow(close bool) {
 		OnClose: func() bool {
 			fmt.Println("Window close")
 			return true
+			// return false
 		},
 	})
 
