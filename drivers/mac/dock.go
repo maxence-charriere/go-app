@@ -29,7 +29,7 @@ func newDockTile(c app.MenuConfig) (app.DockTile, error) {
 		},
 	}
 
-	dock := app.NewDockTileWithLogs(rawDock)
+	dock := app.DockTileWithLogs(rawDock)
 
 	if err := driver.macRPC.Call("menus.New", nil, struct {
 		ID string

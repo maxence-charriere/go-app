@@ -28,7 +28,7 @@ func newDockTile(d *Driver) app.DockTile {
 		},
 	}
 
-	dock := app.NewDockTileWithLogs(rawDock)
+	dock := app.DockTileWithLogs(rawDock)
 
 	d.elements.Add(dock)
 	return dock
