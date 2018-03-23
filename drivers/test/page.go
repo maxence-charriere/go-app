@@ -24,7 +24,7 @@ type page struct {
 
 func newPage(d *Driver, c app.PageConfig) (app.Page, error) {
 	var markup app.Markup = html.NewMarkup(d.factory)
-	markup = app.NewConcurrentMarkup(markup)
+	markup = app.ConcurrentMarkup(markup)
 
 	history := app.NewHistory()
 	history = app.ConcurrentHistory(history)

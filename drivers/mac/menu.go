@@ -27,7 +27,7 @@ type Menu struct {
 
 func newMenu(c app.MenuConfig, name string) (app.Menu, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
-	markup = app.NewConcurrentMarkup(markup)
+	markup = app.ConcurrentMarkup(markup)
 
 	rawMenu := &Menu{
 		id:        uuid.New(),

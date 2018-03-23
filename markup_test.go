@@ -24,13 +24,13 @@ func TestTag(t *testing.T) {
 
 func TestConcurrentMarkup(t *testing.T) {
 	tests.TestMarkup(t, func(factory app.Factory) app.Markup {
-		return app.NewConcurrentMarkup(html.NewMarkup(factory))
+		return app.ConcurrentMarkup(html.NewMarkup(factory))
 	})
 }
 
 func TestMarkupWithLogs(t *testing.T) {
 	tests.TestMarkup(t, func(factory app.Factory) app.Markup {
-		return app.NewMarkupWithLogs(html.NewMarkup(factory))
+		return app.MarkupWithLogs(html.NewMarkup(factory))
 	})
 }
 

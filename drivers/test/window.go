@@ -29,7 +29,7 @@ type Window struct {
 
 func newWindow(d *Driver, c app.WindowConfig) (app.Window, error) {
 	var markup app.Markup = html.NewMarkup(d.factory)
-	markup = app.NewConcurrentMarkup(markup)
+	markup = app.ConcurrentMarkup(markup)
 
 	history := app.NewHistory()
 	history = app.ConcurrentHistory(history)
