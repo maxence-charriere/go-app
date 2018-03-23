@@ -45,7 +45,7 @@ func newWindow(c app.WindowConfig) (app.Window, error) {
 	markup = app.NewConcurrentMarkup(markup)
 
 	history := app.NewHistory()
-	history = app.NewConcurrentHistory(history)
+	history = app.ConcurrentHistory(history)
 
 	rawWin := &Window{
 		id:        uuid.New(),

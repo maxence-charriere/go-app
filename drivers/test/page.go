@@ -27,7 +27,7 @@ func newPage(d *Driver, c app.PageConfig) (app.Page, error) {
 	markup = app.NewConcurrentMarkup(markup)
 
 	history := app.NewHistory()
-	history = app.NewConcurrentHistory(history)
+	history = app.ConcurrentHistory(history)
 
 	rawPage := &page{
 		id:        uuid.New(),
