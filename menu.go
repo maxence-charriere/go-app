@@ -23,10 +23,10 @@ type MenuConfig struct {
 	OnClose func() `json:"-"`
 }
 
-// NewMenuWithLogs returns a decorated version of the given menu that logs
+// MenuWithLogs returns a decorated version of the given menu that logs
 // all the operations.
 // Uses the default logger.
-func NewMenuWithLogs(m Menu, name string) Menu {
+func MenuWithLogs(m Menu, name string) Menu {
 	return &menuWithLogs{
 		name: name,
 		base: m,

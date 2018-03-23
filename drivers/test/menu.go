@@ -33,7 +33,7 @@ func newMenu(d *Driver, name string, c app.MenuConfig) (app.Menu, error) {
 		lastFocus: time.Now(),
 	}
 
-	menu := app.NewMenuWithLogs(rawMenu, name)
+	menu := app.MenuWithLogs(rawMenu, name)
 
 	d.elements.Add(menu)
 	rawMenu.onClose = func() {

@@ -37,7 +37,7 @@ func newMenu(c app.MenuConfig, name string) (app.Menu, error) {
 		onClose: c.OnClose,
 	}
 
-	menu := app.NewMenuWithLogs(rawMenu, name)
+	menu := app.MenuWithLogs(rawMenu, name)
 
 	if err := driver.macRPC.Call("menus.New", nil, struct {
 		ID string
