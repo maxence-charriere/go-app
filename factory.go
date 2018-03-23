@@ -65,10 +65,10 @@ func (f factory) New(name string) (Component, error) {
 	return c, nil
 }
 
-// NewFactoryWithLogs returns a decorated version of the given factory that logs
+// FactoryWithLogs returns a decorated version of the given factory that logs
 // all the operations.
 // It uses the default logger.
-func NewFactoryWithLogs(f Factory) Factory {
+func FactoryWithLogs(f Factory) Factory {
 	return &factoryWithLogs{
 		base: f,
 	}
@@ -105,9 +105,9 @@ func (f *factoryWithLogs) New(name string) (Component, error) {
 	return c, err
 }
 
-// NewConcurrentFactory returns a decorated version of the given factory that
+// ConcurrentFactory returns a decorated version of the given factory that
 // is safe for concurrent operations.
-func NewConcurrentFactory(f Factory) Factory {
+func ConcurrentFactory(f Factory) Factory {
 	return &concurrentFactory{
 		base: f,
 	}

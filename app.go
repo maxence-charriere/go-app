@@ -14,8 +14,8 @@ var (
 
 func init() {
 	components = NewFactory()
-	components = NewConcurrentFactory(components)
-	components = NewFactoryWithLogs(components)
+	components = ConcurrentFactory(components)
+	components = FactoryWithLogs(components)
 }
 
 // Import imports the component into the app.

@@ -16,7 +16,7 @@ func TestFactory(t *testing.T) {
 func TestFactoryWithLogs(t *testing.T) {
 	tests.TestFactory(t, func() app.Factory {
 		factory := app.NewFactory()
-		factory = app.NewFactoryWithLogs(factory)
+		factory = app.FactoryWithLogs(factory)
 		return factory
 	})
 }
@@ -24,7 +24,7 @@ func TestFactoryWithLogs(t *testing.T) {
 func TestConcurrentFactory(t *testing.T) {
 	tests.TestFactory(t, func() app.Factory {
 		factory := app.NewFactory()
-		factory = app.NewConcurrentFactory(factory)
+		factory = app.ConcurrentFactory(factory)
 		return factory
 	})
 }
