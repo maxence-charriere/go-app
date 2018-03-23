@@ -37,7 +37,7 @@ func newPage(d *Driver, c app.PageConfig) (app.Page, error) {
 		lastFocus: time.Now(),
 	}
 
-	page := app.NewPageWithLogs(rawPage)
+	page := app.PageWithLogs(rawPage)
 
 	d.elements.Add(page)
 	rawPage.onClose = func() {

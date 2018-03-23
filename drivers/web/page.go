@@ -34,7 +34,7 @@ func newPage(c app.PageConfig) (app.Page, error) {
 		lastFocus: time.Now(),
 	}
 
-	page := app.NewPageWithLogs(rawPage)
+	page := app.PageWithLogs(rawPage)
 	if err := driver.elements.Add(page); err != nil {
 		return nil, err
 	}
