@@ -17,9 +17,9 @@ type DockTile interface {
 	SetBadge(v interface{}) error
 }
 
-// NewDockTileWithLogs returns a decorated version of the given dock tile that
+// DockTileWithLogs returns a decorated version of the given dock tile that
 // logs all the operations.
-func NewDockTileWithLogs(d DockTile) DockTile {
+func DockTileWithLogs(d DockTile) DockTile {
 	return &dockTileWithLogs{
 		menuWithLogs: menuWithLogs{
 			name: "dock",

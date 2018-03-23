@@ -100,9 +100,9 @@ func (h *history) Next() (url string, err error) {
 	return url, nil
 }
 
-// NewConcurrentHistory returns a decorated version of the given history that
+// ConcurrentHistory returns a decorated version of the given history that
 // is safe for concurrent operations.
-func NewConcurrentHistory(history History) History {
+func ConcurrentHistory(history History) History {
 	return &concurrentHistory{
 		base: history,
 	}

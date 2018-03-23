@@ -120,10 +120,10 @@ func (d *BaseDriver) Dock() (DockTile, error) {
 	return nil, NewErrNotSupported("dock")
 }
 
-// NewDriverWithLogs returns a decorated version of the given driver that logs
+// DriverWithLogs returns a decorated version of the given driver that logs
 // all the operations.
 // It uses the default logger.
-func NewDriverWithLogs(driver Driver) Driver {
+func DriverWithLogs(driver Driver) Driver {
 	return &driverWithLogs{
 		base: driver,
 	}

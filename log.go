@@ -28,7 +28,7 @@ type Logger interface {
 
 var (
 	// DefaultLogger is the application logger.
-	DefaultLogger = NewConcurrentLogger(NewConsole(false))
+	DefaultLogger = ConcurrentLogger(NewConsole(false))
 )
 
 const (
@@ -128,7 +128,7 @@ func printLogPrefix(w io.Writer, level, color string) {
 // It is safe for concurrent access.
 func NewConsole(debug bool) Logger {
 	logger := newConsole(debug)
-	return NewConcurrentLogger(logger)
+	return ConcurrentLogger(logger)
 }
 
 type console struct {
@@ -159,8 +159,8 @@ func (c *console) Errorf(format string, v ...interface{}) {
 	c.err.Errorf(format, v...)
 }
 
-// NewMultiLogger creates a logger that aggregate multiple loggers.
-func NewMultiLogger(loggers ...Logger) Logger {
+// MultiLogger creates a logger that aggregate multiple loggers.
+func MultiLogger(loggers ...Logger) Logger {
 	return &multiLogger{
 		loggers: loggers,
 	}
@@ -194,9 +194,9 @@ func (l *multiLogger) Errorf(format string, v ...interface{}) {
 	}
 }
 
-// NewConcurrentLogger decorates the given logger to ensure concurrent access
+// ConcurrentLogger decorates the given logger to ensure concurrent access
 // safety.
-func NewConcurrentLogger(l Logger) Logger {
+func ConcurrentLogger(l Logger) Logger {
 	return &concurrentLogger{
 		logger: l,
 	}

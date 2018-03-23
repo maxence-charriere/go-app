@@ -14,8 +14,8 @@ var (
 
 func init() {
 	components = NewFactory()
-	components = NewConcurrentFactory(components)
-	components = NewFactoryWithLogs(components)
+	components = ConcurrentFactory(components)
+	components = FactoryWithLogs(components)
 }
 
 // Import imports the component into the app.
@@ -31,7 +31,7 @@ func Import(c Component) {
 
 // Run runs the app with the driver as backend.
 func Run(d Driver) error {
-	driver = NewDriverWithLogs(d)
+	driver = DriverWithLogs(d)
 	return driver.Run(components)
 
 }

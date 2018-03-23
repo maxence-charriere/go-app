@@ -19,7 +19,7 @@ var (
 func (d *Driver) Run(f app.Factory) error {
 	d.factory = f
 	elements := app.NewElemDB()
-	elements = app.NewConcurrentElemDB(elements)
+	elements = app.ConcurrentElemDB(elements)
 	d.elements = elements
 	d.uichan = make(chan func(), 255)
 	driver = d

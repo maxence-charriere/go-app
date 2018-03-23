@@ -15,6 +15,6 @@ func TestHistory(t *testing.T) {
 
 func TestConcurrentHistory(t *testing.T) {
 	tests.TestHistory(t, func() app.History {
-		return app.NewConcurrentHistory(app.NewHistory())
+		return app.ConcurrentHistory(app.NewHistory())
 	})
 }

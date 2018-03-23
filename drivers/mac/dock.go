@@ -19,7 +19,7 @@ type DockTile struct {
 
 func newDockTile(c app.MenuConfig) (app.DockTile, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
-	markup = app.NewConcurrentMarkup(markup)
+	markup = app.ConcurrentMarkup(markup)
 
 	rawDock := &DockTile{
 		menu: Menu{
@@ -29,7 +29,7 @@ func newDockTile(c app.MenuConfig) (app.DockTile, error) {
 		},
 	}
 
-	dock := app.NewDockTileWithLogs(rawDock)
+	dock := app.DockTileWithLogs(rawDock)
 
 	if err := driver.macRPC.Call("menus.New", nil, struct {
 		ID string

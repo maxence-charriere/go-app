@@ -15,6 +15,6 @@ func TestElemDB(t *testing.T) {
 
 func TestConcurrentElemDB(t *testing.T) {
 	tests.TestElemDB(t, func() app.ElemDB {
-		return app.NewConcurrentElemDB(app.NewElemDB())
+		return app.ConcurrentElemDB(app.NewElemDB())
 	})
 }

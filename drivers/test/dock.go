@@ -17,7 +17,7 @@ type DockTile struct {
 
 func newDockTile(d *Driver) app.DockTile {
 	var markup app.Markup = html.NewMarkup(d.factory)
-	markup = app.NewConcurrentMarkup(markup)
+	markup = app.ConcurrentMarkup(markup)
 
 	rawDock := &DockTile{
 		Menu: Menu{
@@ -28,7 +28,7 @@ func newDockTile(d *Driver) app.DockTile {
 		},
 	}
 
-	dock := app.NewDockTileWithLogs(rawDock)
+	dock := app.DockTileWithLogs(rawDock)
 
 	d.elements.Add(dock)
 	return dock
