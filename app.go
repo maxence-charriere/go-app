@@ -31,7 +31,7 @@ func Import(c Component) {
 
 // Run runs the app with the driver as backend.
 func Run(d Driver) error {
-	driver = NewDriverWithLogs(d)
+	driver = DriverWithLogs(d)
 	return driver.Run(components)
 
 }
