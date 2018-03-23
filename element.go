@@ -184,9 +184,9 @@ func (db *elementDB) Len() int {
 	return len(db.elements)
 }
 
-// NewConcurrentElemDB decorates the given element database to ensure concurrent
+// ConcurrentElemDB decorates the given element database to ensure concurrent
 // access safety.
-func NewConcurrentElemDB(db ElemDB) ElemDB {
+func ConcurrentElemDB(db ElemDB) ElemDB {
 	return &concurrentElemDB{
 		base: db,
 	}

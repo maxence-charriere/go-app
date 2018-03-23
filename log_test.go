@@ -29,12 +29,12 @@ func TestConsole(t *testing.T) {
 
 func TestConcurrentLogger(t *testing.T) {
 	buffer := &bytes.Buffer{}
-	tests.TestLogger(t, app.NewConcurrentLogger(app.NewLogger(buffer, true)))
+	tests.TestLogger(t, app.ConcurrentLogger(app.NewLogger(buffer, true)))
 }
 
 func TestMultiLogger(t *testing.T) {
 	buffer := &bytes.Buffer{}
-	tests.TestLogger(t, app.NewMultiLogger(
+	tests.TestLogger(t, app.MultiLogger(
 		app.NewConsole(false),
 		app.NewLogger(buffer, true),
 	))

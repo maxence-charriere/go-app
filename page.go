@@ -28,10 +28,10 @@ type PageConfig struct {
 	DefaultURL string `json:"default-url"`
 }
 
-// NewPageWithLogs returns a decorated version of the given page that logs
+// PageWithLogs returns a decorated version of the given page that logs
 // all the operations.
 // Uses the default logger.
-func NewPageWithLogs(p Page) Page {
+func PageWithLogs(p Page) Page {
 	return &pageWithLogs{
 		base: p,
 	}

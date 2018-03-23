@@ -24,10 +24,10 @@ type page struct {
 
 func newPage(d *Driver, c app.PageConfig) (app.Page, error) {
 	var markup app.Markup = html.NewMarkup(d.factory)
-	markup = app.NewConcurrentMarkup(markup)
+	markup = app.ConcurrentMarkup(markup)
 
 	history := app.NewHistory()
-	history = app.NewConcurrentHistory(history)
+	history = app.ConcurrentHistory(history)
 
 	rawPage := &page{
 		id:        uuid.New(),
@@ -37,7 +37,7 @@ func newPage(d *Driver, c app.PageConfig) (app.Page, error) {
 		lastFocus: time.Now(),
 	}
 
-	page := app.NewPageWithLogs(rawPage)
+	page := app.PageWithLogs(rawPage)
 
 	d.elements.Add(page)
 	rawPage.onClose = func() {

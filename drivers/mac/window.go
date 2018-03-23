@@ -42,10 +42,10 @@ type Window struct {
 
 func newWindow(c app.WindowConfig) (app.Window, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
-	markup = app.NewConcurrentMarkup(markup)
+	markup = app.ConcurrentMarkup(markup)
 
 	history := app.NewHistory()
-	history = app.NewConcurrentHistory(history)
+	history = app.ConcurrentHistory(history)
 
 	rawWin := &Window{
 		id:        uuid.New(),
@@ -63,7 +63,7 @@ func newWindow(c app.WindowConfig) (app.Window, error) {
 		onDeminimize:     c.OnDeminimize,
 		onClose:          c.OnClose,
 	}
-	win := app.NewWindowWithLogs(rawWin)
+	win := app.WindowWithLogs(rawWin)
 
 	in := struct {
 		ID                 string
@@ -154,22 +154,27 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 	}
 
 	compoName := app.ComponentNameFromURL(u)
-	isRegiteredCompo := driver.factory.Registered(compoName)
+	isRegisteredCompo := driver.factory.Registered(compoName)
 	currentURL, err := w.history.Current()
 
-	if isRegiteredCompo && (err != nil || currentURL != u.String()) {
+	if isRegisteredCompo && (err != nil || currentURL != u.String()) {
 		w.history.NewEntry(u.String())
 	}
 	return w.load(u)
 }
 
 func (w *Window) load(u *url.URL) error {
-	compo, err := driver.factory.New(app.ComponentNameFromURL(u))
-	if err != nil {
+	compoName := app.ComponentNameFromURL(u)
+	if len(compoName) == 0 {
 		// Redirect web page to default web browser.
 		return exec.
 			Command("open", u.String()).
 			Run()
+	}
+
+	compo, err := driver.factory.New(app.ComponentNameFromURL(u))
+	if err != nil {
+		return nil
 	}
 
 	if w.component != nil {

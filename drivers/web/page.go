@@ -26,7 +26,7 @@ type Page struct {
 
 func newPage(c app.PageConfig) (app.Page, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
-	markup = app.NewConcurrentMarkup(markup)
+	markup = app.ConcurrentMarkup(markup)
 
 	rawPage := &Page{
 		id:        uuid.New(),
@@ -34,7 +34,7 @@ func newPage(c app.PageConfig) (app.Page, error) {
 		lastFocus: time.Now(),
 	}
 
-	page := app.NewPageWithLogs(rawPage)
+	page := app.PageWithLogs(rawPage)
 	if err := driver.elements.Add(page); err != nil {
 		return nil, err
 	}

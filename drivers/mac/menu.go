@@ -27,7 +27,7 @@ type Menu struct {
 
 func newMenu(c app.MenuConfig, name string) (app.Menu, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
-	markup = app.NewConcurrentMarkup(markup)
+	markup = app.ConcurrentMarkup(markup)
 
 	rawMenu := &Menu{
 		id:        uuid.New(),
@@ -37,7 +37,7 @@ func newMenu(c app.MenuConfig, name string) (app.Menu, error) {
 		onClose: c.OnClose,
 	}
 
-	menu := app.NewMenuWithLogs(rawMenu, name)
+	menu := app.MenuWithLogs(rawMenu, name)
 
 	if err := driver.macRPC.Call("menus.New", nil, struct {
 		ID string

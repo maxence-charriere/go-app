@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	app.DefaultLogger = app.NewConcurrentLogger(app.NewConsole(true))
+	app.DefaultLogger = app.ConcurrentLogger(app.NewConsole(true))
 
 	app.Import(&test.Webview{})
 	app.Import(&test.Menu{})

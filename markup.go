@@ -135,9 +135,9 @@ type TagSync struct {
 	Replace bool
 }
 
-// NewConcurrentMarkup decorates the given markup to ensure concurrent access
+// ConcurrentMarkup decorates the given markup to ensure concurrent access
 // safety.
-func NewConcurrentMarkup(markup Markup) Markup {
+func ConcurrentMarkup(markup Markup) Markup {
 	return &concurrentMarkup{
 		base: markup,
 	}
@@ -217,9 +217,9 @@ func (m *concurrentMarkup) Map(mapping Mapping) (func(), error) {
 	return f, err
 }
 
-// NewMarkupWithLogs returns a decorated version of the given markup that logs
+// MarkupWithLogs returns a decorated version of the given markup that logs
 // each operations.
-func NewMarkupWithLogs(markup Markup) Markup {
+func MarkupWithLogs(markup Markup) Markup {
 	return &markupWithLogs{
 		base: markup,
 	}

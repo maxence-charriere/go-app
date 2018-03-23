@@ -17,7 +17,7 @@ func TestDriverWithLogs(t *testing.T) {
 			OnRun: onRun,
 			Ctx:   ctx,
 		}
-		return app.NewDriverWithLogs(d)
+		return app.DriverWithLogs(d)
 	}, cancel)
 }
 
@@ -31,7 +31,7 @@ func TestDriverWithLogsBaseDriver(t *testing.T) {
 
 			OnRun: onRun,
 		}
-		return app.NewDriverWithLogs(d)
+		return app.DriverWithLogs(d)
 	}, cancel)
 }
 
@@ -39,7 +39,7 @@ func TestDriverWithLogsError(t *testing.T) {
 	var d app.Driver = &test.Driver{
 		SimulateErr: true,
 	}
-	d = app.NewDriverWithLogs(d)
+	d = app.DriverWithLogs(d)
 
 	err := d.Run(app.NewFactory())
 	if err == nil {
