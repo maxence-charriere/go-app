@@ -93,10 +93,10 @@ const (
 	VibeUltraDark
 )
 
-// NewWindowWithLogs returns a decorated version of the given window that logs
+// WindowWithLogs returns a decorated version of the given window that logs
 // all the operations.
 // Uses the default logger.
-func NewWindowWithLogs(w Window) Window {
+func WindowWithLogs(w Window) Window {
 	return &windowWithLogs{
 		base: w,
 	}

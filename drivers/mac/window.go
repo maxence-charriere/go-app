@@ -63,7 +63,7 @@ func newWindow(c app.WindowConfig) (app.Window, error) {
 		onDeminimize:     c.OnDeminimize,
 		onClose:          c.OnClose,
 	}
-	win := app.NewWindowWithLogs(rawWin)
+	win := app.WindowWithLogs(rawWin)
 
 	in := struct {
 		ID                 string

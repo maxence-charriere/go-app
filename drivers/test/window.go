@@ -42,7 +42,7 @@ func newWindow(d *Driver, c app.WindowConfig) (app.Window, error) {
 		lastFocus: time.Now(),
 	}
 
-	win := app.NewWindowWithLogs(rawWin)
+	win := app.WindowWithLogs(rawWin)
 
 	d.elements.Add(win)
 	rawWin.onClose = func() {
