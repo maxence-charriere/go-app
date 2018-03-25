@@ -16,17 +16,19 @@ import (
 
 // Markup implements the app.Markup interface.
 type Markup struct {
-	components map[uuid.UUID]app.Component
-	roots      map[app.Component]*app.Tag
-	factory    app.Factory
+	components       map[uuid.UUID]app.Component
+	roots            map[app.Component]*app.Tag
+	eventSubscribers map[app.Component]app.EventSubscriber
+	factory          app.Factory
 }
 
 // NewMarkup creates a markup with the given factory.
 func NewMarkup(factory app.Factory) *Markup {
 	return &Markup{
-		components: make(map[uuid.UUID]app.Component),
-		roots:      make(map[app.Component]*app.Tag),
-		factory:    factory,
+		components:       make(map[uuid.UUID]app.Component),
+		roots:            make(map[app.Component]*app.Tag),
+		eventSubscribers: make(map[app.Component]app.EventSubscriber),
+		factory:          factory,
 	}
 }
 
@@ -121,6 +123,10 @@ func (m *Markup) mount(compo app.Component, compoID uuid.UUID) (root app.Tag, er
 
 	if mounter, ok := compo.(app.Mounter); ok {
 		mounter.OnMount()
+	}
+
+	if subscriber, ok := compo.(app.Subscriber); ok {
+		m.eventSubscribers[compo] = subscriber.Subscribe()
 	}
 	return
 }
@@ -288,6 +294,12 @@ func (m *Markup) Dismount(compo app.Component) {
 
 	if dismounter, ok := compo.(app.Dismounter); ok {
 		dismounter.OnDismount()
+	}
+
+	if _, ok := compo.(app.Subscriber); ok {
+		subscriber := m.eventSubscribers[compo]
+		subscriber.Close()
+		delete(m.eventSubscribers, compo)
 	}
 }
 

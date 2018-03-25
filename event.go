@@ -37,16 +37,6 @@ type EventDispatcher interface {
 	Dispatch(name string, arg interface{})
 }
 
-// EventSubscriber is the interface that describes an event subscriber.
-type EventSubscriber interface {
-	// Subscribe subscribes the given handler to the named event.
-	// It panics if handler is not a func.
-	Subscribe(name string, handler interface{})
-
-	// Close closes the event handler and unsubscribe all its events.
-	Close() error
-}
-
 type eventHandler struct {
 	ID      uuid.UUID
 	Handler interface{}
@@ -193,6 +183,16 @@ func (r *concurrentEventRegistry) Dispatch(name string, arg interface{}) {
 	r.mutex.RUnlock()
 }
 
+// EventSubscriber is the interface that describes an event subscriber.
+type EventSubscriber interface {
+	// Subscribe subscribes the given handler to the named event.
+	// It panics if handler is not a func.
+	Subscribe(name string, handler interface{})
+
+	// Close closes the event handler and unsubscribe all its events.
+	Close()
+}
+
 // NewEventSubscriber creates an event subscriber.
 func NewEventSubscriber() EventSubscriber {
 	return &eventSubscriber{
@@ -210,11 +210,10 @@ func (s *eventSubscriber) Subscribe(name string, handler interface{}) {
 	s.unsuscribes = append(s.unsuscribes, unsubscribe)
 }
 
-func (s *eventSubscriber) Close() error {
+func (s *eventSubscriber) Close() {
 	for _, unsuscribe := range s.unsuscribes {
 		unsuscribe()
 	}
-	return nil
 }
 
 // MouseEvent represents an onmouse event arg.

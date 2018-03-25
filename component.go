@@ -47,7 +47,7 @@ type Navigable interface {
 // Subscriber is the interface that describes a component that subscribes to
 // events generated from actions.
 type Subscriber interface {
-	// Subscribe is called after a component is mounted.
+	// Subscribe is called when a component is mounted.
 	// The returned event subscriber is used to subscribe to events generated
 	// from actions.
 	// All the event subscribed are automatically unsuscribed when the component
