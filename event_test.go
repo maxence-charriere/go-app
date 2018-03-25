@@ -32,3 +32,10 @@ func TestConcurrentEventRegistry(t *testing.T) {
 		return app.ConcurrentEventRegistry(r)
 	})
 }
+
+func TestEventSubscriber(t *testing.T) {
+	s := app.NewEventSubscriber()
+	defer s.Close()
+
+	s.Subscribe("test-event-subscriber", func() {})
+}
