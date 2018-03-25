@@ -15,7 +15,7 @@ var (
 )
 
 func init() {
-	var r EventRegistry = newEventRegistry()
+	r := NewEventRegistry(CallOnUIGoroutine)
 	r = ConcurrentEventRegistry(r)
 	r = EventRegistryWithLogs(r)
 	DefaultEventRegistry = r
@@ -52,14 +52,17 @@ type eventHandler struct {
 	Handler interface{}
 }
 
-type eventRegistry struct {
-	handlers map[string][]eventHandler
+// NewEventRegistry creates an event registry.
+func NewEventRegistry(dispatcher func(func())) EventRegistry {
+	return &eventRegistry{
+		handlers:   make(map[string][]eventHandler),
+		dispatcher: dispatcher,
+	}
 }
 
-func newEventRegistry() *eventRegistry {
-	return &eventRegistry{
-		handlers: make(map[string][]eventHandler),
-	}
+type eventRegistry struct {
+	handlers   map[string][]eventHandler
+	dispatcher func(f func())
 }
 
 func (m *eventRegistry) Subscribe(name string, handler interface{}) (unsuscribe func()) {
@@ -77,6 +80,7 @@ func (m *eventRegistry) Subscribe(name string, handler interface{}) (unsuscribe 
 		ID:      id,
 		Handler: handler,
 	})
+	m.handlers[name] = handlers
 
 	return func() {
 		m.Unsubscribe(name, id)
@@ -87,17 +91,15 @@ func (m *eventRegistry) Unsubscribe(name string, id uuid.UUID) {
 	handlers := m.handlers[name]
 
 	for i, h := range handlers {
-		if h.ID != id {
-			continue
+		if h.ID == id {
+			end := len(handlers) - 1
+			handlers[i] = handlers[end]
+			handlers[end] = eventHandler{}
+			handlers = handlers[:end]
+
+			m.handlers[name] = handlers
+			return
 		}
-
-		end := len(handlers) - 1
-		handlers[i] = handlers[end]
-		handlers[end] = eventHandler{}
-		handlers = handlers[:end]
-
-		m.handlers[name] = handlers
-		return
 	}
 }
 
@@ -107,7 +109,7 @@ func (m *eventRegistry) Dispatch(name string, arg interface{}) {
 		typ := val.Type()
 
 		if typ.NumIn() == 0 {
-			CallOnUIGoroutine(func() {
+			m.dispatcher(func() {
 				val.Call(nil)
 			})
 			return
@@ -117,7 +119,7 @@ func (m *eventRegistry) Dispatch(name string, arg interface{}) {
 		argTyp := typ.In(0)
 
 		if !argVal.Type().ConvertibleTo(argTyp) {
-			Errorf("dispatching event %s failed: can't convert %T to %T",
+			Errorf("dispatching event %s failed: can't convert %s to %s",
 				name,
 				argVal.Type(),
 				argTyp,
@@ -125,7 +127,7 @@ func (m *eventRegistry) Dispatch(name string, arg interface{}) {
 			return
 		}
 
-		CallOnUIGoroutine(func() {
+		m.dispatcher(func() {
 			val.Call([]reflect.Value{
 				argVal.Convert(argTyp),
 			})
@@ -145,9 +147,9 @@ type eventRegistryWithLogs struct {
 	base EventRegistry
 }
 
-func (r *eventRegistryWithLogs) Subscribe(name string, handler interface{}) (unsuscribe func()) {
+func (r *eventRegistryWithLogs) Subscribe(name string, handler interface{}) func() {
 	Logf("subscribing to event %s with %T", name, handler)
-	unsuscribe = r.base.Subscribe(name, handler)
+	unsuscribe := r.base.Subscribe(name, handler)
 
 	return func() {
 		Log("unsubscribing %T from event %s", handler, name)
@@ -173,14 +175,14 @@ type concurrentEventRegistry struct {
 	base  EventRegistry
 }
 
-func (r *concurrentEventRegistry) Subscribe(name string, handler interface{}) (unsuscribe func()) {
+func (r *concurrentEventRegistry) Subscribe(name string, handler interface{}) func() {
 	r.mutex.Lock()
-	unsuscribe = r.base.Subscribe(name, handler)
+	unsubscribe := r.base.Subscribe(name, handler)
 	r.mutex.Unlock()
 
 	return func() {
 		r.mutex.Lock()
-		unsuscribe()
+		unsubscribe()
 		r.mutex.Unlock()
 	}
 }
