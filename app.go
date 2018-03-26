@@ -16,6 +16,15 @@ func init() {
 	components = NewFactory()
 	components = ConcurrentFactory(components)
 	components = FactoryWithLogs(components)
+
+	events := NewEventRegistry(CallOnUIGoroutine)
+	events = ConcurrentEventRegistry(events)
+	events = EventRegistryWithLogs(events)
+	DefaultEventRegistry = events
+
+	actions := NewActionRegistry(events)
+	actions = ActionRegistryWithLogs(actions)
+	DefaultActionRegistry = actions
 }
 
 // Import imports the component into the app.

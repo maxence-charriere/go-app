@@ -17,6 +17,11 @@ func (c *Foo) OnMount() {}
 // OnDismount satisfies the app.Dismounter interface.
 func (c *Foo) OnDismount() {}
 
+// Subscribe satisfies the app.Subscriber interface.
+func (c *Foo) Subscribe() app.EventSubscriber {
+	return app.NewEventSubscriber()
+}
+
 // Funcs satisfies the app.ComponentWithExtendedRender interface.
 func (c *Foo) Funcs() template.FuncMap {
 	return nil
