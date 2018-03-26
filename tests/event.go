@@ -6,6 +6,8 @@ import (
 	"github.com/murlokswarm/app"
 )
 
+// TestEventRegistry is a test suite that ensure all the event registry behave
+// the same.
 func TestEventRegistry(t *testing.T, newRegistry func() app.EventRegistry) {
 	tests := []struct {
 		scenario string

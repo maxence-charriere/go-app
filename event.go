@@ -14,13 +14,6 @@ var (
 	DefaultEventRegistry EventRegistry
 )
 
-func init() {
-	r := NewEventRegistry(CallOnUIGoroutine)
-	r = ConcurrentEventRegistry(r)
-	r = EventRegistryWithLogs(r)
-	DefaultEventRegistry = r
-}
-
 // EventRegistry is the interface that describes an event registry.
 type EventRegistry interface {
 	// Subscribe subscribes the given handler to the named event.
