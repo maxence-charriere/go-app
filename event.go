@@ -135,7 +135,7 @@ func (r *eventRegistryWithLogs) Subscribe(name string, handler interface{}) func
 	unsuscribe := r.base.Subscribe(name, handler)
 
 	return func() {
-		Log("unsubscribing %T from event %s", handler, name)
+		Logf("unsubscribing %T from event %s", handler, name)
 		unsuscribe()
 	}
 }
