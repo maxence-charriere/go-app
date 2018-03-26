@@ -141,7 +141,7 @@ func (r *eventRegistryWithLogs) Subscribe(name string, handler interface{}) func
 }
 
 func (r *eventRegistryWithLogs) Dispatch(name string, arg interface{}) {
-	Logf("dispatching event %s %+v", arg)
+	Logf("dispatching event %s %+v", name, arg)
 	r.base.Dispatch(name, arg)
 }
 
