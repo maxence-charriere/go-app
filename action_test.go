@@ -8,10 +8,10 @@ import (
 )
 
 func TestActions(t *testing.T) {
-	app.HandleAction("test", func(e app.EventDispatcher, a app.Action) {})
+	app.Handle("test", func(e app.EventDispatcher, a app.Action) {})
 
-	app.PostAction("test", 42)
-	app.PostActionBatch(
+	app.NewAction("test", 42)
+	app.NewActions(
 		app.Action{Name: "test", Arg: 21},
 		app.Action{Name: "test", Arg: 84},
 	)

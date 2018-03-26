@@ -7,26 +7,26 @@ var (
 	DefaultActionRegistry ActionRegistry
 )
 
-// HandleAction handles the named action with the given handler.
+// Handle handles the named action with the given handler.
 //
 // It is a helper function that call DefaultActionRegistry.Handle.
-func HandleAction(name string, h ActionHandler) {
+func Handle(name string, h ActionHandler) {
 	DefaultActionRegistry.Handle(name, h)
 }
 
-// PostAction posts the named action with the given arg.
+// NewAction creates and posts the named action with the given arg.
 // The action is then handled in a separate goroutine.
 //
 // It is a helper function that call DefaultActionRegistry.Post.
-func PostAction(name string, arg interface{}) {
+func NewAction(name string, arg interface{}) {
 	DefaultActionRegistry.Post(name, arg)
 }
 
-// PostActionBatch posts a batch of actions.
+// NewActions creates and posts a batch of actions.
 // All the actions are handled sequentially in a separate goroutine.
 //
 // It is a helper function that call DefaultActionRegistry.PostBatch.
-func PostActionBatch(a ...Action) {
+func NewActions(a ...Action) {
 	DefaultActionRegistry.PostBatch(a...)
 }
 

@@ -1,0 +1,37 @@
+// +build darwin,amd64
+
+package main
+
+import (
+	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/drivers/mac"
+	actionevent "github.com/murlokswarm/app/examples/action-event"
+)
+
+func main() {
+	app.Import(&actionevent.Clickbox{})
+	app.Import(&actionevent.ClickListener{})
+
+	app.Run(&mac.Driver{
+		OnRun: func() {
+			newWindow()
+		},
+
+		OnReopen: func(hasVisibleWindow bool) {
+			if !hasVisibleWindow {
+				newWindow()
+			}
+		},
+	})
+}
+
+func newWindow() {
+	app.NewWindow(app.WindowConfig{
+		Title:           "nav",
+		TitlebarHidden:  true,
+		Width:           1280,
+		Height:          768,
+		BackgroundColor: "#21252b",
+		DefaultURL:      "/actionevent.Clickbox",
+	})
+}

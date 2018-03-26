@@ -1,0 +1,43 @@
+h1 {
+  font-weight: 300;
+}
+
+.Layout {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  color: black;
+  font-family: 'Helvetica Neue', 'Segoe UI';
+}
+
+.Clickbox {
+  flex-grow: 1;
+  flex-basis: 25%;
+  height: calc(100% - 40px);
+  padding: 20px;
+}
+
+.ClickArea {
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 100%;
+  height: 88%;
+  cursor: pointer;
+}
+
+.ClickArea:hover {
+  color: deepskyblue;
+  border-color: deepskyblue;
+}
+
+.ClickListener {
+  flex-grow: 1;
+  flex-basis: 37%;
+  height: calc(100% - 40px);
+  padding: 20px;
+}
+
+.ClickOutput {
+  height: 88%;
+  overflow-y: auto;
+}
