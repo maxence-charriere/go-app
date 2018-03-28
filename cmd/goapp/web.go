@@ -25,8 +25,8 @@ func web(ctx context.Context, args []string) {
 		Name: "goapp web",
 		Args: args,
 		Commands: []conf.Command{
-			{Name: "help", Help: "Show the goapp web help"},
-			{Name: "init", Help: "Create the required files and directories to build a web app."},
+			{Name: "help", Help: "Show the web help"},
+			{Name: "init", Help: "Download gopherjs and create the required files and directories."},
 			{Name: "build", Help: "Build the web server and generate Gopher.js file."},
 		},
 	}

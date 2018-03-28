@@ -19,6 +19,7 @@ func main() {
 		Args: os.Args[1:],
 		Commands: []conf.Command{
 			{Name: "web", Help: "Build app for web."},
+			{Name: "mac", Help: "Build app for macOS."},
 			{Name: "help", Help: "Show the help."},
 		},
 	}
@@ -29,6 +30,9 @@ func main() {
 	switch cmd, args := conf.LoadWith(nil, ld); cmd {
 	case "web":
 		web(ctx, args)
+
+	case "mac":
+		mac(ctx, args)
 
 	case "help":
 		ld.PrintHelp(nil)
