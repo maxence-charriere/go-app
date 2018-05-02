@@ -11,8 +11,10 @@ package mac
 import "C"
 import (
 	"crypto/md5"
+	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -36,6 +38,10 @@ type Driver struct {
 
 	// Component url to load in the dock.
 	DockURL string
+
+	// The bundle configuration.
+	// Only applied when the app is build with goapp mac build -bundle.
+	Bundle Bundle
 
 	// The handler called when the app is running.
 	OnRun func()
@@ -84,6 +90,14 @@ func (d *Driver) Base() app.Driver {
 
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(f app.Factory) error {
+	if bundle := os.Getenv("GOAPP_BUNDLE"); bundle == "true" {
+		data, err := json.MarshalIndent(d.Bundle, "", "  ")
+		if err != nil {
+			os.Exit(1)
+		}
+		return ioutil.WriteFile("goapp-mac.json", data, 0777)
+	}
+
 	if driver != nil {
 		return errors.Errorf("driver is already running")
 	}

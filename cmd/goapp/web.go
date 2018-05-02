@@ -115,7 +115,7 @@ func buildWeb(ctx context.Context, args []string) {
 
 	root := roots[0]
 
-	if err := goBuild(root, config.Verbose); err != nil {
+	if err := goBuild(root); err != nil {
 		app.Error("go build:", err)
 	}
 

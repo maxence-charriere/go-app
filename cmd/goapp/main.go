@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -88,11 +89,14 @@ func initPackage(root string) error {
 	return nil
 }
 
-func goBuild(target string, verbose bool) error {
-	args := []string{"build"}
-	if verbose {
-		args = append(args, "-v")
-	}
-	args = append(args, target)
+func goBuild(target string, args ...string) error {
+	args = append([]string{"build"}, args...)
+	args = append(args, "-v")
 	return execute("go", args...)
+}
+
+func printErr(format string, v ...interface{}) {
+	fmt.Print("\033[91m")
+	fmt.Printf(format, v...)
+	fmt.Println("\033[00m")
 }

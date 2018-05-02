@@ -4,12 +4,18 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
 
 	"github.com/murlokswarm/app"
 	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
 )
+
+type macBuildConfig struct {
+	Bundle bool   `conf:"bundle" help:"Bundles the application into a .app."`
+	SignID string `conf:"signID" help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
+}
 
 func mac(ctx context.Context, args []string) {
 	ld := conf.Loader{
@@ -18,6 +24,7 @@ func mac(ctx context.Context, args []string) {
 		Commands: []conf.Command{
 			{Name: "help", Help: "Show the macOS help"},
 			{Name: "init", Help: "Download macOS SDK and create required file and directories."},
+			{Name: "build", Help: "Build the macOS app."},
 		},
 	}
 
@@ -27,6 +34,9 @@ func mac(ctx context.Context, args []string) {
 
 	case "init":
 		initMac(ctx, args)
+
+	case "build":
+		buildMac(ctx, args)
 
 	default:
 		panic("unreachable")
@@ -58,17 +68,38 @@ func initMac(ctx context.Context, args []string) {
 		panic(err)
 	}
 
-	if err := execute("xcode-select", "--install"); err != nil {
-		app.Error(errors.Wrap(err, "xcode-select"))
-		return
-	}
+	fmt.Println("checking for xcode-select...")
+	execute("xcode-select", "--install")
 
 	for _, root := range roots {
 		if err = initPackage(root); err != nil {
-			app.Error(errors.Wrap(err, "init package"))
+			printErr("%s", errors.Wrap(err, "init package"))
 			return
 		}
 	}
+}
+
+func buildMac(ctx context.Context, args []string) error {
+	config := macBuildConfig{}
+
+	ld := conf.Loader{
+		Name:    "mac build",
+		Args:    args,
+		Usage:   "[options...] [package]",
+		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
+	}
+
+	_, unusedArgs := conf.LoadWith(&config, ld)
+	roots, err := packageRoots(unusedArgs)
+	if err != nil {
+		panic(err)
+	}
+	root := roots[0]
+
+	if err := goBuild(root, "-ldflags", "-s"); err != nil {
+		app.Error("go build:", err)
+	}
+	return nil
 }
 
 func openCommand() string {
