@@ -17,6 +17,14 @@ type macBuildConfig struct {
 	SignID string `conf:"signID" help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
 }
 
+func commands() []conf.Command {
+	return []conf.Command{
+		{Name: "web", Help: "Build app for web."},
+		{Name: "mac", Help: "Build app for macOS."},
+		{Name: "help", Help: "Show the help."},
+	}
+}
+
 func mac(ctx context.Context, args []string) {
 	ld := conf.Loader{
 		Name: "goapp mac",
@@ -98,8 +106,17 @@ func buildMac(ctx context.Context, args []string) error {
 
 	if err := goBuild(root, "-ldflags", "-s"); err != nil {
 		app.Error("go build:", err)
+		return err
+	}
+
+	if config.Bundle {
+		return bundleMacApp(ctx, config)
 	}
 	return nil
+}
+
+func bundleMacApp(ctx context.Context, c macBuildConfig) error {
+	panic("not implemented")
 }
 
 func openCommand() string {

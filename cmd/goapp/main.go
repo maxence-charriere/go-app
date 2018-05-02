@@ -16,13 +16,9 @@ const (
 
 func main() {
 	ld := conf.Loader{
-		Name: "goapp",
-		Args: os.Args[1:],
-		Commands: []conf.Command{
-			{Name: "web", Help: "Build app for web."},
-			{Name: "mac", Help: "Build app for macOS."},
-			{Name: "help", Help: "Show the help."},
-		},
+		Name:     "goapp",
+		Args:     os.Args[1:],
+		Commands: commands(),
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
