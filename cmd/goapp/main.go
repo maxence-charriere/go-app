@@ -87,7 +87,7 @@ func initPackage(root string) error {
 
 func goBuild(target string, args ...string) error {
 	args = append([]string{"build"}, args...)
-	args = append(args, "-v")
+	args = append(args, "-v", target)
 	return execute("go", args...)
 }
 

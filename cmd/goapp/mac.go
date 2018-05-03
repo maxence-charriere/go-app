@@ -4,10 +4,13 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
+	"path/filepath"
 
-	"github.com/murlokswarm/app"
+	driver "github.com/murlokswarm/app/drivers/mac"
 	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
 )
@@ -87,7 +90,7 @@ func initMac(ctx context.Context, args []string) {
 	}
 }
 
-func buildMac(ctx context.Context, args []string) error {
+func buildMac(ctx context.Context, args []string) {
 	config := macBuildConfig{}
 
 	ld := conf.Loader{
@@ -97,26 +100,52 @@ func buildMac(ctx context.Context, args []string) error {
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	_, unusedArgs := conf.LoadWith(&config, ld)
-	roots, err := packageRoots(unusedArgs)
-	if err != nil {
-		panic(err)
+	_, roots := conf.LoadWith(&config, ld)
+	if len(roots) == 0 {
+		roots = []string{"."}
 	}
 	root := roots[0]
 
 	if err := goBuild(root, "-ldflags", "-s"); err != nil {
-		app.Error("go build:", err)
-		return err
+		printErr("%s", err)
+		return
 	}
 
 	if config.Bundle {
-		return bundleMacApp(ctx, config)
+		if err := bundleMacApp(root, config); err != nil {
+			printErr("%s", err)
+		}
 	}
-	return nil
 }
 
-func bundleMacApp(ctx context.Context, c macBuildConfig) error {
-	panic("not implemented")
+func bundleMacApp(root string, c macBuildConfig) error {
+	err := os.Setenv("GOAPP_BUNDLE", "true")
+	if err != nil {
+		return err
+	}
+
+	if root, err = filepath.Abs(root); err != nil {
+		return err
+	}
+
+	if err := execute(filepath.Join(".", filepath.Base(root))); err != nil {
+		return err
+	}
+
+	data, err := ioutil.ReadFile("goapp-mac.json")
+	if err != nil {
+		return err
+	}
+	defer os.Remove("goapp-mac.json")
+
+	fmt.Println("bundle configuration:", string(data))
+
+	var bundle driver.Bundle
+	if err := json.Unmarshal(data, &bundle); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func openCommand() string {
