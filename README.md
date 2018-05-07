@@ -3,6 +3,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/murlokswarm/app)](https://goreportcard.com/report/github.com/murlokswarm/app)
 [![Coverage Status](https://coveralls.io/repos/github/murlokswarm/app/badge.svg?branch=master)](https://coveralls.io/github/murlokswarm/app?branch=master)
 [![GoDoc](https://godoc.org/github.com/murlokswarm/app?status.svg)](https://godoc.org/github.com/murlokswarm/app)
+[![Contribute PATREON](https://img.shields.io/badge/Contribute-PATREON-f76959.svg)](https://www.patreon.com/maxencecharriere)
 
 Package to build MacOS and Web apps using **Go**, **HTML** and **CSS**.
 
