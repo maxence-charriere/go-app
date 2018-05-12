@@ -14,13 +14,15 @@ import (
 	"time"
 
 	driver "github.com/murlokswarm/app/drivers/mac"
+	"github.com/murlokswarm/app/file"
 	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
 )
 
 type macBuildConfig struct {
-	Bundle bool   `conf:"bundle" help:"Bundles the application into a .app."`
-	SignID string `conf:"signID" help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
+	Bundle   bool   `conf:"bundle"   help:"Bundles the application into a .app."`
+	Sign     string `conf:"sign"     help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
+	AppStore bool   `conf:"appstore" help:"Report whether the app will be packaged to be uploaded on the app store."`
 }
 
 func commands() []conf.Command {
@@ -117,8 +119,10 @@ func buildMac(ctx context.Context, args []string) {
 	if config.Bundle {
 		if err := bundleMacApp(root, config); err != nil {
 			printErr("%s", err)
+			return
 		}
 	}
+	printSuccess("build succeeded")
 }
 
 func bundleMacApp(root string, c macBuildConfig) error {
@@ -131,19 +135,31 @@ func bundleMacApp(root string, c macBuildConfig) error {
 		return err
 	}
 
-	if err := execute(filepath.Join(".", filepath.Base(root))); err != nil {
+	var wd string
+	if wd, err = os.Getwd(); err != nil {
 		return err
 	}
 
-	data, err := ioutil.ReadFile("goapp-mac.json")
-	if err != nil {
+	if err = execute(filepath.Join(
+		wd,
+		filepath.Base(root),
+	)); err != nil {
+		return err
+	}
+
+	var data []byte
+	if data, err = ioutil.ReadFile("goapp-mac.json"); err != nil {
 		return err
 	}
 	defer os.Remove("goapp-mac.json")
 
 	var bundle driver.Bundle
-	if err := json.Unmarshal(data, &bundle); err != nil {
+	if err = json.Unmarshal(data, &bundle); err != nil {
 		return err
+	}
+
+	if bundle.Sandbox && len(c.Sign) == 0 {
+		return errors.New("sanboxed app require to be signed")
 	}
 
 	bundle = fillBundle(bundle, root)
@@ -151,33 +167,21 @@ func bundleMacApp(root string, c macBuildConfig) error {
 	fmt.Println("bundle configuration:", string(data))
 
 	appName := bundle.AppName + ".app"
-
-	// TODO
-	// create app bundle
-
-	if bundle.Sandbox {
-		if len(c.SignID) == 0 {
-			return errors.New("sandboxed app require to be bundled with a singID")
-		}
-
-		entitlementsName := root + ".entitlements"
-		if err = generatePlist(entitlementsName, entitlements, bundle); err != nil {
-			os.Remove(appName)
-			return err
-		}
-		defer os.Remove(entitlementsName)
-
-		if err = signApp(c.SignID, entitlementsName, appName); err != nil {
-			os.Remove(appName)
-			return err
-		}
-
-		if err = signCheck(appName); err != nil {
-			os.Remove(appName)
-			return err
-		}
+	if err = createAppBundle(bundle, root, appName); err != nil {
+		os.RemoveAll(appName)
+		return err
 	}
 
+	if len(c.Sign) != 0 {
+		if err = signAppBundle(bundle, c.Sign, root, appName); err != nil {
+			os.RemoveAll(appName)
+			return err
+		}
+
+		if c.AppStore {
+			return createAppPkg(bundle, c.Sign, appName)
+		}
+	}
 	return nil
 }
 
@@ -224,6 +228,78 @@ func fillBundle(b driver.Bundle, root string) driver.Bundle {
 	return b
 }
 
+func createAppBundle(bundle driver.Bundle, root, appName string) error {
+	appContents := filepath.Join(appName, "Contents")
+	appMacOS := filepath.Join(appName, "Contents", "MacOS")
+	appResources := filepath.Join(appName, "Contents", "Resources")
+	resources := filepath.Join(root, "resources")
+
+	dirs := []string{
+		appContents,
+		appMacOS,
+		appResources,
+	}
+
+	for _, dir := range dirs {
+		if err := os.MkdirAll(dir, os.ModeDir|0755); err != nil {
+			return err
+		}
+	}
+
+	if err := generatePlist(filepath.Join(appContents, "Info.plist"), plist, bundle); err != nil {
+		return err
+	}
+
+	execName := filepath.Base(root)
+	if err := os.Rename(execName, filepath.Join(appName, "Contents", "MacOS", execName)); err != nil {
+		return err
+	}
+
+	return file.Sync(appResources, resources)
+}
+
+func generateIcons() err {
+
+}
+
+func signAppBundle(bundle driver.Bundle, sign, root, appName string) error {
+	entitlementsName := filepath.Join(root, ".entitlements")
+	if err := generatePlist(entitlementsName, entitlements, bundle); err != nil {
+		return err
+	}
+	defer os.Remove(entitlementsName)
+
+	if err := execute("codesign",
+		"--force",
+		"--sign",
+		sign,
+		"--entitlements",
+		entitlementsName,
+		appName,
+	); err != nil {
+		return err
+	}
+
+	return execute("codesign",
+		"--verify",
+		"--deep",
+		"--strict",
+		"--verbose=2",
+		appName,
+	)
+}
+
+func createAppPkg(bundle driver.Bundle, sign, appName string) error {
+	return execute("productbuild",
+		"--component",
+		appName,
+		"/Applications",
+		"--sign",
+		sign,
+		bundle.AppName+".pkg",
+	)
+}
+
 func generatePlist(filename string, plistTmpl string, bundle driver.Bundle) error {
 	f, err := os.Create(filename)
 	if err != nil {
@@ -231,7 +307,16 @@ func generatePlist(filename string, plistTmpl string, bundle driver.Bundle) erro
 	}
 	defer f.Close()
 
-	tmpl := template.Must(template.New("plist").Parse(plistTmpl))
+	tmpl := template.Must(template.
+		New("plist").
+		Funcs(template.FuncMap{
+			"icon": func(icon string) string {
+				icon = filepath.Base(icon)
+				return strings.TrimSuffix(icon, filepath.Ext(icon))
+			},
+		}).
+		Parse(plistTmpl))
+
 	return tmpl.Execute(f, bundle)
 }
 
@@ -247,7 +332,7 @@ const plist = `
 	<string>{{.AppName}}</string>
 
 	<key>CFBundleIconFile</key>
-	<string>{{.Icon}}</string>
+	<string>{{icon .Icon}}</string>
 
 	<key>CFBundleIdentifier</key>
 	<string>{{.ID}}</string>
@@ -326,99 +411,79 @@ const entitlements = `
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	{{if .Sandbox}}
 	<key>com.apple.security.app-sandbox</key>
 	<true/>
+	{{end}}
 
-    <!-- Network -->
-    {{if .Server}}
-    <key>com.apple.security.network.server</key>
+	<!-- Network -->
+	{{if .Server}}
+	<key>com.apple.security.network.server</key>
 	<true/>
-    {{end}}
-    {{if .Client}}
+	{{end}}
 	<key>com.apple.security.network.client</key>
 	<true/>
-    {{end}}
 
-    <!-- Hadrware -->
-    {{if .Camera}}
+	<!-- Hadrware -->
+	{{if .Camera}}
 	<key>com.apple.security.device.camera</key>
 	<true/>
-    {{end}}
-    {{if .Microphone}}
+	{{end}}
+	{{if .Microphone}}
 	<key>com.apple.security.device.microphone</key>
 	<true/>
-    {{end}}
-    {{if .USB}}
+	{{end}}
+	{{if .USB}}
 	<key>com.apple.security.device.usb</key>
 	<true/>
-    {{end}}
-    {{if .Printers}}
+	{{end}}
+	{{if .Printers}}
 	<key>com.apple.security.print</key>
 	<true/>
-    {{end}}
-    {{if .Bluetooth}}
+	{{end}}
+	{{if .Bluetooth}}
 	<key>com.apple.security.device.bluetooth</key>
 	<true/>
-    {{end}}
+	{{end}}
 
-    <!-- AppData -->
-    {{if .Contacts}}
+	<!-- AppData -->
+	{{if .Contacts}}
 	<key>com.apple.security.personal-information.addressbook</key>
 	<true/>
-    {{end}}
-    {{if .Location}}
+	{{end}}
+	{{if .Location}}
 	<key>com.apple.security.personal-information.location</key>
 	<true/>
-    {{end}}
-    {{if .Calendar}}
+	{{end}}
+	{{if .Calendar}}
 	<key>com.apple.security.personal-information.calendars</key>
 	<true/>
-    {{end}}
+	{{end}}
 
-    <!-- FileAccess -->
-    {{if len .FilePickers}}
-    <key>com.apple.security.files.user-selected.{{.FileAccess.UserSelected}}</key>
+	<!-- FileAccess -->
+	{{if len .FilePickers}}
+	<key>com.apple.security.files.user-selected.{{.FileAccess.UserSelected}}</key>
 	<true/>
-    {{end}}
-    {{if len .Downloads}}
+	{{end}}
+	{{if len .Downloads}}
 	<key>com.apple.security.files.downloads.{{.FileAccess.Downloads}}</key>
 	<true/>
-    {{end}}
-    {{if len .Pictures}}
+	{{end}}
+	{{if len .Pictures}}
 	<key>com.apple.security.assets.pictures.{{.FileAccess.Pictures}}/key>
 	<true/>
-    {{end}}
-    {{if len .Music}}
+	{{end}}
+	{{if len .Music}}
 	<key>com.apple.security.assets.music.{{.FileAccess.Music}}</key>
 	<true/>
-    {{end}}
-    {{if len .Movies}}
+	{{end}}
+	{{if len .Movies}}
 	<key>com.apple.security.assets.movies.{{.FileAccess.Movies}}/key>
 	<true/>
-    {{end}}
+	{{end}}
 </dict>
 </plist>
 `
-
-func signApp(signID, entitlementsName, appName string) error {
-	return execute("codesign",
-		"-s",
-		signID,
-		"--entitlements",
-		entitlementsName,
-		appName,
-	)
-}
-
-func signCheck(appName string) error {
-	return execute("codesign",
-		"--verify",
-		"--deep",
-		"--strict",
-		"--verbose=2",
-		appName,
-	)
-}
 
 func openCommand() string {
 	return "open"

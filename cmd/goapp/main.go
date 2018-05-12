@@ -91,6 +91,12 @@ func goBuild(target string, args ...string) error {
 	return execute("go", args...)
 }
 
+func printSuccess(format string, v ...interface{}) {
+	fmt.Print("\033[92m")
+	fmt.Printf(format, v...)
+	fmt.Println("\033[00m")
+}
+
 func printErr(format string, v ...interface{}) {
 	fmt.Print("\033[91m")
 	fmt.Printf(format, v...)

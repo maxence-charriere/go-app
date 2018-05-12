@@ -1,7 +1,7 @@
 language: go
 
 go:
-  - 1.9.x
+  - 1.10.x
 
 install:
   - go get -v -t .
@@ -13,6 +13,7 @@ script:
   - go test ./appjs
   - go test ./bridge
   - go test ./html
+  - go test ./file
   - goveralls -service travis-ci -repotoken $COVERALLS_TOKEN -coverprofile cover.out
 
 notifications:

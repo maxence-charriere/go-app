@@ -45,9 +45,6 @@ type Bundle struct {
 	// Reports whether the app is a server (accepts incoming connections).
 	Server bool
 
-	// Reports whether the app is a client (creates outgoing connections).
-	Client bool
-
 	// Reports whether the app uses the camera.
 	Camera bool
 
