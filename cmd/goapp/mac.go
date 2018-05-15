@@ -214,6 +214,10 @@ func fillBundle(b driver.Bundle, root string) driver.Bundle {
 		b.DeploymentTarget = "10.13"
 	}
 
+	if len(b.Category) == 0 {
+		b.Category = driver.DeveloperToolsApp
+	}
+
 	if len(b.Copyright) == 0 {
 		b.Copyright = fmt.Sprintf("Copyright © %v %s. All rights reserved.",
 			time.Now().Year(),
