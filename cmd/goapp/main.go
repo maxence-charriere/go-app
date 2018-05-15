@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -15,12 +16,9 @@ const (
 
 func main() {
 	ld := conf.Loader{
-		Name: "goapp",
-		Args: os.Args[1:],
-		Commands: []conf.Command{
-			{Name: "web", Help: "Build app for web."},
-			{Name: "help", Help: "Show the help."},
-		},
+		Name:     "goapp",
+		Args:     os.Args[1:],
+		Commands: commands(),
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -29,6 +27,9 @@ func main() {
 	switch cmd, args := conf.LoadWith(nil, ld); cmd {
 	case "web":
 		web(ctx, args)
+
+	case "mac":
+		mac(ctx, args)
 
 	case "help":
 		ld.PrintHelp(nil)
@@ -84,11 +85,20 @@ func initPackage(root string) error {
 	return nil
 }
 
-func goBuild(target string, verbose bool) error {
-	args := []string{"build"}
-	if verbose {
-		args = append(args, "-v")
-	}
-	args = append(args, target)
+func goBuild(target string, args ...string) error {
+	args = append([]string{"build"}, args...)
+	args = append(args, "-v", target)
 	return execute("go", args...)
+}
+
+func printSuccess(format string, v ...interface{}) {
+	fmt.Print("\033[92m")
+	fmt.Printf(format, v...)
+	fmt.Println("\033[00m")
+}
+
+func printErr(format string, v ...interface{}) {
+	fmt.Print("\033[91m")
+	fmt.Printf(format, v...)
+	fmt.Println("\033[00m")
 }

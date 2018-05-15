@@ -17,6 +17,11 @@ func main() {
 	app.Import(&test.Menu{})
 
 	app.Run(&mac.Driver{
+		Bundle: mac.Bundle{
+			Sandbox: true,
+			Icon:    "logo.png",
+		},
+
 		MenubarConfig: mac.MenuBarConfig{
 			OnPreference: func() {
 				app.DefaultLogger.Log("Preferences clicked")
