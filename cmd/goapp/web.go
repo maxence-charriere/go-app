@@ -5,19 +5,15 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/murlokswarm/app"
-
 	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
 )
 
 type webInitConfig struct {
-	Verbose bool `conf:"v" help:"Verbose mode."`
 }
 
 type webBuildConfig struct {
-	Verbose bool `conf:"v" help:"Verbose mode."`
-	Minify  bool `conf:"m" help:"Minify gopherjs file."`
+	Minify bool `conf:"m" help:"Minify gopherjs file."`
 }
 
 func web(ctx context.Context, args []string) {
@@ -72,28 +68,26 @@ func initWeb(ctx context.Context, args []string) {
 		panic(err)
 	}
 
+	if err = goGetGopherJS(); err != nil {
+		panic(err)
+	}
+
 	for _, root := range roots {
 		if err = initPackage(root); err != nil {
 			panic(err)
 		}
-
-		if err = goGetGopherJS(config); err != nil {
-			panic(err)
-		}
 	}
+
+	printSuccess("init succeeded")
 }
 
-func goGetGopherJS(config webInitConfig) error {
-	args := []string{
+func goGetGopherJS() error {
+	return execute("go",
 		"get",
 		"-u",
-	}
-	if config.Verbose {
-		args = append(args, "-v")
-	}
-	args = append(args, "github.com/gopherjs/gopherjs")
-
-	return execute("go", args...)
+		"-v",
+		"github.com/gopherjs/gopherjs",
+	)
 }
 
 func buildWeb(ctx context.Context, args []string) {
@@ -116,19 +110,24 @@ func buildWeb(ctx context.Context, args []string) {
 	root := roots[0]
 
 	if err := goBuild(root); err != nil {
-		app.Error("go build:", err)
+		printErr("go build:", err)
+		return
 	}
 
-	if err := gopherJSBuild(root, config.Verbose, config.Minify); err != nil {
-		app.Error("gopherjs build:", err)
+	if err := gopherJSBuild(root, config.Minify); err != nil {
+		printErr("gopherjs build:", err)
+		return
 	}
+
+	printSuccess("build succeeded")
 }
 
-func gopherJSBuild(target string, verbose, minify bool) error {
-	args := []string{"build"}
-	if verbose {
-		args = append(args, "-v")
+func gopherJSBuild(target string, minify bool) error {
+	args := []string{
+		"build",
+		"-v",
 	}
+
 	if minify {
 		args = append(args, "-m")
 	}

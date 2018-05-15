@@ -93,6 +93,8 @@ func initMac(ctx context.Context, args []string) {
 			return
 		}
 	}
+
+	printSuccess("init succeeded")
 }
 
 func buildMac(ctx context.Context, args []string) {
