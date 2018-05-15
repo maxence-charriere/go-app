@@ -93,7 +93,7 @@ type Bundle struct {
 // Role represents the role of an application.
 type Role string
 
-// Constans that enumerate application roles.
+// Constants that enumerate application roles.
 const (
 	NoRole     Role = "None"
 	EditorRole Role = "Editor"
@@ -104,7 +104,7 @@ const (
 // FileAccess represents a file access mode.
 type FileAccess string
 
-// Constans that enumerate file access modes.
+// Constants that enumerate file access modes.
 const (
 	FileNoAccess        FileAccess = ""
 	FileReadAccess      FileAccess = "read-only"

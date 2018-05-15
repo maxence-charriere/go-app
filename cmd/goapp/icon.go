@@ -15,8 +15,8 @@ type iconInfo struct {
 	Scale  int
 }
 
-func generateIcons(orginal string, resizes []iconInfo) error {
-	f, err := os.Open(orginal)
+func generateIcons(original string, resizes []iconInfo) error {
+	f, err := os.Open(original)
 	if err != nil {
 		return err
 	}
