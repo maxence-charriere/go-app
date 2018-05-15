@@ -229,6 +229,8 @@ func fillBundle(b driver.Bundle, root string) driver.Bundle {
 }
 
 func createAppBundle(bundle driver.Bundle, root, appName string) error {
+	os.RemoveAll(appName)
+
 	appContents := filepath.Join(appName, "Contents")
 	appMacOS := filepath.Join(appName, "Contents", "MacOS")
 	appResources := filepath.Join(appName, "Contents", "Resources")
@@ -255,11 +257,54 @@ func createAppBundle(bundle driver.Bundle, root, appName string) error {
 		return err
 	}
 
-	return file.Sync(appResources, resources)
+	if err := file.Sync(appResources, resources); err != nil {
+		return err
+	}
+
+	return generateAppIcons(bundle.Icon, appResources)
 }
 
-func generateIcons() err {
+func generateAppIcons(icon, appResources string) error {
+	appIcon := filepath.Join(appResources, icon)
 
+	iconset := filepath.Base(icon)
+	iconset = strings.TrimSuffix(iconset, filepath.Ext(iconset))
+	iconset = filepath.Join(appResources, iconset)
+	iconset += ".iconset"
+
+	if err := os.Mkdir(iconset, os.ModeDir|0755); err != nil {
+		return err
+	}
+	defer os.RemoveAll(iconset)
+
+	standardName := func(w, h int) string {
+		return filepath.Join(iconset, fmt.Sprintf("icon_%vx%v.png", w, h))
+	}
+
+	retinaName := func(w, h, s int) string {
+		return filepath.Join(iconset, fmt.Sprintf("icon_%vx%v@%vx.png", w, h, s))
+	}
+
+	if err := generateIcons(appIcon, []iconInfo{
+		{Name: retinaName(512, 512, 2), Width: 512, Height: 512, Scale: 2},
+		{Name: standardName(512, 512), Width: 512, Height: 512, Scale: 1},
+
+		{Name: retinaName(256, 256, 2), Width: 256, Height: 256, Scale: 2},
+		{Name: standardName(256, 256), Width: 256, Height: 256, Scale: 1},
+
+		{Name: retinaName(128, 128, 2), Width: 128, Height: 128, Scale: 2},
+		{Name: standardName(128, 128), Width: 128, Height: 128, Scale: 1},
+
+		{Name: retinaName(32, 32, 2), Width: 32, Height: 32, Scale: 2},
+		{Name: standardName(32, 32), Width: 32, Height: 32, Scale: 1},
+
+		{Name: retinaName(16, 512, 2), Width: 16, Height: 16, Scale: 2},
+		{Name: standardName(16, 512), Width: 16, Height: 16, Scale: 1},
+	}); err != nil {
+		return err
+	}
+
+	return execute("iconutil", "-c", "icns", iconset)
 }
 
 func signAppBundle(bundle driver.Bundle, sign, root, appName string) error {
