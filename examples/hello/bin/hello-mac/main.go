@@ -12,11 +12,6 @@ func main() {
 	app.Import(&hello.Hello{})
 
 	app.Run(&mac.Driver{
-		Bundle: mac.Bundle{
-			Sandbox: true,
-			Icon:    "logo.png",
-		},
-
 		OnRun: func() {
 			newWindow()
 		},
