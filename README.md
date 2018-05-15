@@ -7,9 +7,12 @@
 
 Package to build MacOS and Web apps using **Go**, **HTML** and **CSS**.
 
+![hello](https://github.com/murlokswarm/app/wiki/assets/app.gif)
+
 ## Table of Contents
 - [Install](#install)
 - [Hello world](#hello)
+- [How it works?](#howto)
 - [Drivers](#drivers)
 - [Documentation](#doc)
 - [Examples](#examples)
@@ -17,11 +20,6 @@ Package to build MacOS and Web apps using **Go**, **HTML** and **CSS**.
 <a name="install"></a>
 
 ## Install
-
-```bash
-# MacOS 10.12 and above.
-xcode-select --install
-```
 
 ```bash
 # Get package.
@@ -32,11 +30,20 @@ go get -u -v github.com/murlokswarm/app/...
 
 ## Hello world
 
-![hello](https://github.com/murlokswarm/app/wiki/assets/hello.gif)
+```bash
+# Go to your go package.
+cd $GOPATH/src/github.com/USERNAME/hello
 
-### Main
+# Install the required frameworks and generate the app structure.
+goapp mac init
+```
+
 ```go
+// main.go
+
 func main() {
+	app.Import(&Hello{})
+
 	app.Run(&mac.Driver{
 		OnRun: func() {
 			newWindow()
@@ -60,25 +67,6 @@ func newWindow() {
 		DefaultURL:      "/Hello",
 	})
 }
-```
-
-[app.Run](https://godoc.org/github.com/murlokswarm/app#Run) starts the app. 
-It takes an 
-[app.Driver](https://godoc.org/github.com/murlokswarm/app#Driver) as argument. 
-Here we use the
-[MacOS driver](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver) 
-implementation.
-See [other drivers](#drivers).
-
-When creating the window, we set the ```DefaultURL``` to our Hello component 
-struct name: ```/Hello```.
-It will make the component loaded when the window is displayed.
-
-### Component
-```go
-func init() {
-	app.Import(&Hello{})
-}
 
 type Hello struct {
 	Name string
@@ -100,6 +88,31 @@ func (h *Hello) Render() string {
 	`
 }
 ```
+
+```bash
+# Build the app.
+goapp mac build
+
+# Launch the app.
+./hello
+```
+
+<a name="howto"></a>
+
+## How it works?
+
+[app.Run](https://godoc.org/github.com/murlokswarm/app#Run) starts the app. 
+It takes an 
+[app.Driver](https://godoc.org/github.com/murlokswarm/app#Driver) as argument. 
+Here we use the
+[MacOS driver](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver) 
+implementation.
+See [other drivers](#drivers).
+
+When creating the window, we set the ```DefaultURL``` to our Hello component 
+struct name: ```/Hello```.
+It will load the ```Hello``` component when the window is displayed.
+
 Components are structs that implement the 
 [app.Component](https://godoc.org/github.com/murlokswarm/app#Component) 
 interface.
@@ -113,21 +126,8 @@ HTML events like ```onchange``` are mapped to the targetted component
 field or method.
 Here, ```onchange``` is mapped to the field ```Name```.
 
-### CSS
 
-```css
-/* [PACKAGE PATH]/resources/css/hello.css */
-
-.Hello {
-    /* Your CSS */
-}
-```
-
-Because, we want a stylish Hello world, we define the CSS that will give us some 
-cool look.
-
-
-CSS files are located in ```[PACKAGE PATH]/resources/css/``` directory.
+Additionally, CSS files can be dropped in ```PACKAGEPATH/resources/css/``` directory.
 All .css files within that directory will be included.
 
 See the 
