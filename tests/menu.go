@@ -32,10 +32,6 @@ func testMenu(t *testing.T, setup func(c app.MenuConfig) (app.Menu, error)) {
 			},
 		},
 		{
-			scenario: "menu is decorated with logs",
-			function: testMenuIsDecorated,
-		},
-		{
 			scenario: "load a component",
 			function: testMenuLoadSuccess,
 		},
@@ -68,12 +64,6 @@ func testMenu(t *testing.T, setup func(c app.MenuConfig) (app.Menu, error)) {
 			}
 			test.function(t, m)
 		})
-	}
-}
-
-func testMenuIsDecorated(t *testing.T, m app.Menu) {
-	if base := m.Base(); base == m {
-		t.Error("menu is not decorated")
 	}
 }
 

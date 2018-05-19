@@ -28,24 +28,23 @@ func newPage(c app.PageConfig) (app.Page, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
 	markup = app.ConcurrentMarkup(markup)
 
-	rawPage := &Page{
+	page := &Page{
 		id:        uuid.New(),
 		markup:    markup,
 		lastFocus: time.Now(),
 	}
 
-	page := app.PageWithLogs(rawPage)
 	if err := driver.elements.Add(page); err != nil {
 		return nil, err
 	}
 
-	js.Global.Set("golangRequest", rawPage.onPageRequest)
+	js.Global.Set("golangRequest", page.onPageRequest)
 
 	js.Global.Call("addEventListener", "unload", func() {
 		driver.elements.Remove(page)
 	})
 
-	err := rawPage.Load(rawPage.URL().String())
+	err := page.Load(page.URL().String())
 	return page, err
 }
 

@@ -19,7 +19,7 @@ func newDockTile(d *Driver) app.DockTile {
 	var markup app.Markup = html.NewMarkup(d.factory)
 	markup = app.ConcurrentMarkup(markup)
 
-	rawDock := &DockTile{
+	dock := &DockTile{
 		Menu: Menu{
 			id:        uuid.New(),
 			factory:   d.factory,
@@ -27,8 +27,6 @@ func newDockTile(d *Driver) app.DockTile {
 			lastFocus: time.Now(),
 		},
 	}
-
-	dock := app.DockTileWithLogs(rawDock)
 
 	d.elements.Add(dock)
 	return dock

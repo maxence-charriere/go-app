@@ -34,7 +34,7 @@ func newWindow(d *Driver, c app.WindowConfig) (app.Window, error) {
 	history := app.NewHistory()
 	history = app.ConcurrentHistory(history)
 
-	rawWin := &Window{
+	win := &Window{
 		id:        uuid.New(),
 		factory:   d.factory,
 		markup:    markup,
@@ -42,10 +42,8 @@ func newWindow(d *Driver, c app.WindowConfig) (app.Window, error) {
 		lastFocus: time.Now(),
 	}
 
-	win := app.WindowWithLogs(rawWin)
-
 	d.elements.Add(win)
-	rawWin.onClose = func() {
+	win.onClose = func() {
 		d.elements.Remove(win)
 	}
 

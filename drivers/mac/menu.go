@@ -29,15 +29,13 @@ func newMenu(c app.MenuConfig, name string) (app.Menu, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
 	markup = app.ConcurrentMarkup(markup)
 
-	rawMenu := &Menu{
+	menu := &Menu{
 		id:        uuid.New(),
 		markup:    markup,
 		lastFocus: time.Now(),
 
 		onClose: c.OnClose,
 	}
-
-	menu := app.MenuWithLogs(rawMenu, name)
 
 	if err := driver.macRPC.Call("menus.New", nil, struct {
 		ID string
@@ -249,7 +247,7 @@ func handleMenu(h func(m *Menu, in map[string]interface{}) interface{}) bridge.G
 			return nil
 		}
 
-		menu := elem.(app.Menu).Base().(*Menu)
+		menu := elem.(app.Menu).(*Menu)
 		return h(menu, in)
 	}
 }

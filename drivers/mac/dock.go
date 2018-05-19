@@ -21,15 +21,13 @@ func newDockTile(c app.MenuConfig) (app.DockTile, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
 	markup = app.ConcurrentMarkup(markup)
 
-	rawDock := &DockTile{
+	dock := &DockTile{
 		menu: Menu{
 			id:        uuid.New(),
 			markup:    markup,
 			lastFocus: time.Now(),
 		},
 	}
-
-	dock := app.DockTileWithLogs(rawDock)
 
 	if err := driver.macRPC.Call("menus.New", nil, struct {
 		ID string

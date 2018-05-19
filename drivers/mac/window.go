@@ -47,7 +47,7 @@ func newWindow(c app.WindowConfig) (app.Window, error) {
 	history := app.NewHistory()
 	history = app.ConcurrentHistory(history)
 
-	rawWin := &Window{
+	win := &Window{
 		id:        uuid.New(),
 		markup:    markup,
 		history:   history,
@@ -63,7 +63,6 @@ func newWindow(c app.WindowConfig) (app.Window, error) {
 		onDeminimize:     c.OnDeminimize,
 		onClose:          c.OnClose,
 	}
-	win := app.WindowWithLogs(rawWin)
 
 	in := struct {
 		ID                 string
@@ -637,7 +636,7 @@ func handleWindow(h func(w *Window, in map[string]interface{}) interface{}) brid
 			return nil
 		}
 
-		win := elem.(app.Window).Base().(*Window)
+		win := elem.(app.Window).(*Window)
 		return h(win, in)
 	}
 }

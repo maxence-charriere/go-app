@@ -26,17 +26,15 @@ func newMenu(d *Driver, name string, c app.MenuConfig) (app.Menu, error) {
 	var markup app.Markup = html.NewMarkup(d.factory)
 	markup = app.ConcurrentMarkup(markup)
 
-	rawMenu := &Menu{
+	menu := &Menu{
 		id:        uuid.New(),
 		factory:   d.factory,
 		markup:    markup,
 		lastFocus: time.Now(),
 	}
 
-	menu := app.MenuWithLogs(rawMenu, name)
-
 	d.elements.Add(menu)
-	rawMenu.onClose = func() {
+	menu.onClose = func() {
 		d.elements.Remove(menu)
 	}
 

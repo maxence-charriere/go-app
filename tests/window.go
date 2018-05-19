@@ -22,10 +22,6 @@ func testWindow(t *testing.T, d app.Driver) {
 			},
 		},
 		{
-			scenario: "window is decorated with logs",
-			function: testWindowIsDecorated,
-		},
-		{
 			scenario: "move",
 			function: testWindowMove,
 		},
@@ -72,12 +68,6 @@ func testWindow(t *testing.T, d app.Driver) {
 	testElementWithNavigation(t, func() (app.Navigator, error) {
 		return d.NewWindow(app.WindowConfig{})
 	})
-}
-
-func testWindowIsDecorated(t *testing.T, w app.Window) {
-	if base := w.Base(); base == w {
-		t.Error("window is not decorated")
-	}
 }
 
 func testWindowMove(t *testing.T, w app.Window) {

@@ -39,3 +39,5 @@ examples/test/test
 *goapp.js
 *.map
 
+
+examples/action-event/bin/mac/mac
