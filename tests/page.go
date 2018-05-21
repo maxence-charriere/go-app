@@ -17,9 +17,6 @@ func testPage(t *testing.T, d app.Driver) {
 	if !ok {
 		return
 	}
-	if _, ok := d.Base().(PageTester); !ok {
-		return
-	}
 
 	tests := []struct {
 		scenario string

@@ -1,6 +1,8 @@
 package app
 
-import "sync"
+import (
+	"sync"
+)
 
 var (
 	// DefaultActionRegistry is the default action registry.
@@ -88,11 +90,9 @@ func (r *actionRegistry) exec(a Action) {
 	h, ok := r.actions[a.Name]
 	r.mutex.RUnlock()
 
-	if !ok {
-		Error("no handler for action", a.Name)
-		return
+	if ok {
+		h(r.dispatcher, a)
 	}
-	h(r.dispatcher, a)
 }
 
 func (r *actionRegistry) PostBatch(a ...Action) {
@@ -101,31 +101,4 @@ func (r *actionRegistry) PostBatch(a ...Action) {
 			r.exec(action)
 		}
 	}()
-}
-
-// ActionRegistryWithLogs returns a decorated version of the given action
-// registry that logs its operations.
-func ActionRegistryWithLogs(r ActionRegistry) ActionRegistry {
-	return &actionRegistryWithLogs{
-		base: r,
-	}
-}
-
-type actionRegistryWithLogs struct {
-	base ActionRegistry
-}
-
-func (r *actionRegistryWithLogs) Handle(name string, h ActionHandler) {
-	Logf("action %s is handled", name)
-	r.base.Handle(name, h)
-}
-
-func (r *actionRegistryWithLogs) Post(name string, arg interface{}) {
-	Logf("posting action %s %+v", name, arg)
-	r.base.Post(name, arg)
-}
-
-func (r *actionRegistryWithLogs) PostBatch(a ...Action) {
-	Logf("posting batch of actions %+v", a)
-	r.base.PostBatch(a...)
 }

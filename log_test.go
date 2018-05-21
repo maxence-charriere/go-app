@@ -1,41 +1,42 @@
-package app_test
+package app
 
 import (
 	"bytes"
 	"testing"
 
-	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/tests"
+	"github.com/pkg/errors"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestLog(t *testing.T) {
-	app.Log("hello world")
-	app.Logf("hello %s", "world")
-	app.Error("goodbye world")
-	app.Errorf("goodbye %s", "world")
+func TestLogs(t *testing.T) {
+	Log("hello world")
+	Debug("goodbye world")
+	WhenDebug(func() {
+		t.Log("when debug")
+	})
 }
 
 func TestLogger(t *testing.T) {
 	buffer := &bytes.Buffer{}
-	tests.TestLogger(t, app.NewLogger(buffer, true))
-	tests.TestLogger(t, app.NewLogger(buffer, false))
+	logger := NewLogger(buffer, buffer, true)
+
+	logger.Log("a message")
+	logger.Log("a message with args: %v", 42)
+	logger.Log("a message with line return\nhere is")
+	logger.Log("an error: %s", errors.New("error"))
+	logger.Debug("a debug message")
+	logger.Debug("a debug message with args: %v", 42)
+
+	logger.WhenDebug(func() {
+		logger.Debug("yoda is strong")
+	})
+	assert.Contains(t, buffer.String(), "yoda is strong")
+
+	logger = NewLogger(buffer, buffer, false)
+	logger.WhenDebug(func() {
+		logger.Debug("vader is strong")
+	})
+	assert.NotContains(t, buffer.String(), "vader is strong")
+
 	t.Log(buffer.String())
-}
-
-func TestConsole(t *testing.T) {
-	tests.TestLogger(t, app.NewConsole(false))
-	tests.TestLogger(t, app.NewConsole(true))
-}
-
-func TestConcurrentLogger(t *testing.T) {
-	buffer := &bytes.Buffer{}
-	tests.TestLogger(t, app.ConcurrentLogger(app.NewLogger(buffer, true)))
-}
-
-func TestMultiLogger(t *testing.T) {
-	buffer := &bytes.Buffer{}
-	tests.TestLogger(t, app.MultiLogger(
-		app.NewConsole(false),
-		app.NewLogger(buffer, true),
-	))
 }

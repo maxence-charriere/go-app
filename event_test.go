@@ -15,15 +15,6 @@ func TestEventRegistry(t *testing.T) {
 	})
 }
 
-func TestEventRegistryWithLogs(t *testing.T) {
-	tests.TestEventRegistry(t, func() app.EventRegistry {
-		r := app.NewEventRegistry(func(f func()) {
-			f()
-		})
-		return app.EventRegistryWithLogs(r)
-	})
-}
-
 func TestConcurrentEventRegistry(t *testing.T) {
 	tests.TestEventRegistry(t, func() app.EventRegistry {
 		r := app.NewEventRegistry(func(f func()) {

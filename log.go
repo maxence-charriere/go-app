@@ -5,228 +5,160 @@ import (
 	"io"
 	"os"
 	"strings"
-	"sync"
 	"time"
 )
 
-// A Logger represents an active logging object that generates lines of output.
+// Logger is the interface that describes an active logging object that
+// generates lines of output.
 type Logger interface {
-	// Log logs a message using the default formats for its operands.
-	// Spaces are always added between operands and a newline is appended.
-	Log(v ...interface{})
+	// Log logs a message according to a format specifier.
+	Log(format string, args ...interface{})
 
-	// Logf logs a message according to a format specifier.
-	Logf(format string, v ...interface{})
+	// Debug logs a debug message according to a format specifier.
+	Debug(format string, args ...interface{})
 
-	// Error logs an error using the default formats for its operands.
-	// Spaces are always added between operands and a newline is appended.
-	Error(v ...interface{})
-
-	// Errorf logs an error according to a format specifier.
-	Errorf(format string, v ...interface{})
+	// WhenDebug execute the given function when debug mode is enabled.
+	WhenDebug(f func())
 }
 
 var (
-	// DefaultLogger is the application logger.
-	DefaultLogger = ConcurrentLogger(NewConsole(false))
+	// Loggers is the loggers used by the app.
+	Loggers = []Logger{
+		NewLogger(os.Stdout, os.Stderr, false),
+	}
 )
 
-const (
-	defaultColor string = "\033[00m"
-	accentColor  string = "\033[94m"
-	errColor     string = "\033[91m"
-)
-
-// Log logs a message using the default formats for its operands.
-// Spaces are always added between operands and a newline is appended.
-//
-// It is a helper function that call DefaultLogger.Log
-func Log(v ...interface{}) {
-	DefaultLogger.Log(v...)
+// Log logs a message according to a format specifier.
+// It is a helper function that calls Log() for all the loggers set in
+// app.Loggers.
+func Log(format string, v ...interface{}) {
+	for _, l := range Loggers {
+		l.Log(format, v...)
+	}
 }
 
-// Logf logs a message according to a format specifier.
-//
-// It is a helper function that call DefaultLogger.Logf.
-func Logf(format string, v ...interface{}) {
-	DefaultLogger.Logf(format, v...)
+// Debug logs a debug message according to a format specifier.
+// It is a helper function that calls Debug() for all the loggers set in
+// app.Loggers.
+func Debug(format string, v ...interface{}) {
+	for _, l := range Loggers {
+		l.Debug(format, v...)
+	}
 }
 
-// Error logs an error using the default formats for its operands.
-// Spaces are always added between operands and a newline is appended.
-//
-// It is a helper function that call DefaultLogger.Error.
-func Error(v ...interface{}) {
-	DefaultLogger.Error(v...)
+// WhenDebug execute the given function when debug mode is enabled.
+// It is a helper function that calls WhenDebug() for all the loggers set in
+// app.Loggers.
+func WhenDebug(f func()) {
+	for _, l := range Loggers {
+		l.WhenDebug(f)
+	}
 }
 
-// Errorf logs an error according to a format specifier.
-//
-// It is a helper function that call DefaultLogger.Errorf.
-func Errorf(format string, v ...interface{}) {
-	DefaultLogger.Errorf(format, v...)
-}
+// NewLogger creates a logger that writes on the given writers.
+// Logs that contain errors are logged on werr.
+func NewLogger(wout, werr io.Writer, debug bool) Logger {
+	whenDebug := func(f func()) {}
 
-// NewLogger creates a logger that writes on the given writer.
-// Logs are written only if debug is enabled.
-func NewLogger(w io.Writer, debug bool) Logger {
+	if debug {
+		whenDebug = func(f func()) {
+			f()
+		}
+	}
+
 	return &logger{
-		writer: w,
-		debug:  debug,
+		wout:      wout,
+		werr:      wout,
+		whenDebug: whenDebug,
 	}
 }
 
 type logger struct {
-	writer io.Writer
-	debug  bool
+	wout      io.Writer
+	werr      io.Writer
+	whenDebug func(func())
+	indent    string
 }
 
-func (l *logger) Log(v ...interface{}) {
-	if !l.debug {
+func (l *logger) Log(format string, v ...interface{}) {
+	for _, i := range v {
+		if _, ok := i.(error); ok {
+			l.print(levelError, format, v...)
+			return
+		}
+	}
+	l.print(levelLog, format, v...)
+}
+
+func (l *logger) Debug(format string, v ...interface{}) {
+	l.print(levelDebug, format, v...)
+}
+
+func (l *logger) WhenDebug(f func()) {
+	l.whenDebug(f)
+}
+
+func (l *logger) print(level int, format string, v ...interface{}) {
+	prefix := l.prefix(level)
+
+	if len(l.indent) == 0 {
+		l.indent = l.genIndent(len(prefix) - len(defaultColor)*4)
+		fmt.Println("--", l.indent, "--")
+	}
+
+	format = prefix + format
+	format = strings.Replace(format, "\n", "\n"+l.indent, -1)
+
+	if format[len(format)-1] != '\n' {
+		format += "\n"
+	}
+
+	if level == levelError {
+		fmt.Fprintf(l.werr, format, v...)
 		return
 	}
-	printLogPrefix(l.writer, "Log  ", accentColor)
-	fmt.Fprintln(l.writer, v...)
+	fmt.Fprintf(l.wout, format, v...)
 }
 
-func (l *logger) Logf(format string, v ...interface{}) {
-	if !l.debug {
-		return
+func (l *logger) prefix(level int) string {
+	logLevel := "LOG  "
+	color := logColor
+
+	switch level {
+	case levelError:
+		logLevel = "ERROR"
+		color = errColor
+
+	case levelDebug:
+		logLevel = "DEBUG"
+		color = debugColor
 	}
-	printLogPrefix(l.writer, "Log  ", accentColor)
-	fmt.Fprintf(l.writer, format, v...)
-	fmt.Fprintln(l.writer)
-}
 
-func (l *logger) Error(v ...interface{}) {
-	printLogPrefix(l.writer, "Error", errColor)
-	fmt.Fprintln(l.writer, v...)
-}
-
-func (l *logger) Errorf(format string, v ...interface{}) {
-	printLogPrefix(l.writer, "Error", errColor)
-	fmt.Fprintf(l.writer, format, v...)
-	fmt.Fprintln(l.writer)
-}
-
-func printLogPrefix(w io.Writer, level, color string) {
-	now := time.Now().Format("2006/01/02 15:04:05")
-	fmt.Fprintf(w,
-		"%s%s%s %s %s|>%s ",
+	return fmt.Sprintf("%s%s%s %s %s|>%s ",
 		color,
-		strings.ToUpper(level),
+		logLevel,
 		defaultColor,
-		now,
+		time.Now().Format("2006/01/02 15:04:05"),
 		color,
 		defaultColor,
 	)
 }
 
-// NewConsole creates a logger that writes messages on standard outputs.
-// Logs are written on stdout, only if debug is enabled.
-// Errors are written on stderr.
-// It is safe for concurrent access.
-func NewConsole(debug bool) Logger {
-	logger := newConsole(debug)
-	return ConcurrentLogger(logger)
-}
-
-type console struct {
-	std Logger
-	err Logger
-}
-
-func newConsole(debug bool) *console {
-	return &console{
-		std: NewLogger(os.Stdout, debug),
-		err: NewLogger(os.Stderr, debug),
+func (l *logger) genIndent(ilen int) string {
+	indent := ""
+	for i := 0; i < ilen; i++ {
+		indent += " "
 	}
+	return indent
 }
 
-func (c *console) Log(v ...interface{}) {
-	c.std.Log(v...)
-}
+const (
+	levelLog = iota
+	levelError
+	levelDebug
 
-func (c *console) Logf(format string, v ...interface{}) {
-	c.std.Logf(format, v...)
-}
-
-func (c *console) Error(v ...interface{}) {
-	c.err.Error(v...)
-}
-
-func (c *console) Errorf(format string, v ...interface{}) {
-	c.err.Errorf(format, v...)
-}
-
-// MultiLogger creates a logger that aggregate multiple loggers.
-func MultiLogger(loggers ...Logger) Logger {
-	return &multiLogger{
-		loggers: loggers,
-	}
-}
-
-type multiLogger struct {
-	loggers []Logger
-}
-
-func (l *multiLogger) Log(v ...interface{}) {
-	for _, logger := range l.loggers {
-		logger.Log(v...)
-	}
-}
-
-func (l *multiLogger) Logf(format string, v ...interface{}) {
-	for _, logger := range l.loggers {
-		logger.Logf(format, v...)
-	}
-}
-
-func (l *multiLogger) Error(v ...interface{}) {
-	for _, logger := range l.loggers {
-		logger.Error(v...)
-	}
-}
-
-func (l *multiLogger) Errorf(format string, v ...interface{}) {
-	for _, logger := range l.loggers {
-		logger.Errorf(format, v...)
-	}
-}
-
-// ConcurrentLogger decorates the given logger to ensure concurrent access
-// safety.
-func ConcurrentLogger(l Logger) Logger {
-	return &concurrentLogger{
-		logger: l,
-	}
-}
-
-type concurrentLogger struct {
-	mutex  sync.Mutex
-	logger Logger
-}
-
-func (l *concurrentLogger) Log(v ...interface{}) {
-	l.mutex.Lock()
-	l.logger.Log(v...)
-	l.mutex.Unlock()
-}
-
-func (l *concurrentLogger) Logf(format string, v ...interface{}) {
-	l.mutex.Lock()
-	l.logger.Logf(format, v...)
-	l.mutex.Unlock()
-}
-
-func (l *concurrentLogger) Error(v ...interface{}) {
-	l.mutex.Lock()
-	l.logger.Error(v...)
-	l.mutex.Unlock()
-}
-
-func (l *concurrentLogger) Errorf(format string, v ...interface{}) {
-	l.mutex.Lock()
-	l.logger.Errorf(format, v...)
-	l.mutex.Unlock()
-}
+	defaultColor string = "\033[00m"
+	logColor     string = "\033[94m"
+	errColor     string = "\033[91m"
+	debugColor   string = "\033[95m"
+)

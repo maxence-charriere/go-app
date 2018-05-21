@@ -5,9 +5,6 @@ type Driver interface {
 	// Name returns the driver name.
 	Name() string
 
-	// Base returns the base driver without any decorators.
-	Base() Driver
-
 	// Run runs the application with the components registered in the given
 	// factory.
 	Run(f Factory) error
@@ -114,4 +111,29 @@ func (d *BaseDriver) MenuBar() (Menu, error) {
 // Dock satisfies the app.Driver interface.
 func (d *BaseDriver) Dock() (DockTile, error) {
 	return nil, NewErrNotSupported("dock")
+}
+
+// Addon represents a driver addon.
+type Addon func(Driver) Driver
+
+// Logs returns an addons that logs all the driver operations.
+// It uses the default logger.
+func Logs() func(Driver) Driver {
+	return func(d Driver) Driver {
+		return &driverWithLogs{
+			Driver: d,
+		}
+	}
+}
+
+type driverWithLogs struct {
+	Driver
+}
+
+func (d *driverWithLogs) Run(f Factory) error {
+	err := d.Driver.Run(f)
+	if err != nil {
+		Log("driver stopped running: %s", err)
+	}
+	return err
 }
