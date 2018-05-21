@@ -18,7 +18,6 @@ import (
 	"github.com/murlokswarm/app/appjs"
 	"github.com/murlokswarm/app/bridge"
 	"github.com/murlokswarm/app/html"
-	"github.com/pkg/errors"
 )
 
 // Window implements the app.Window interface.
@@ -583,7 +582,7 @@ func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 
 	var mapping app.Mapping
 	if err := json.Unmarshal([]byte(mappingString), &mapping); err != nil {
-		app.Error(errors.Wrap(err, "onWindowCallback"))
+		app.Log("window callback failed: %s", err)
 		return nil
 	}
 
@@ -601,7 +600,7 @@ func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 
 	function, err := w.markup.Map(mapping)
 	if err != nil {
-		app.Error(errors.Wrap(err, "onWindowCallback"))
+		app.Log("window callback failed: %s", err)
 		return nil
 	}
 
@@ -612,12 +611,12 @@ func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 
 	var compo app.Component
 	if compo, err = w.markup.Component(mapping.CompoID); err != nil {
-		app.Error(errors.Wrap(err, "onWindowCallback"))
+		app.Log("window callback failed: %s", err)
 		return nil
 	}
 
 	if err = w.Render(compo); err != nil {
-		app.Error(errors.Wrap(err, "onWindowCallback"))
+		app.Log("window callback failed: %s", err)
 	}
 	return nil
 }

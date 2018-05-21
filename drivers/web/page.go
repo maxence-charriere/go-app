@@ -13,7 +13,6 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/html"
-	"github.com/pkg/errors"
 )
 
 type Page struct {
@@ -236,13 +235,13 @@ func (p *Page) Close() {
 func (p *Page) onPageRequest(j string) {
 	var mapping app.Mapping
 	if err := json.Unmarshal([]byte(j), &mapping); err != nil {
-		app.Error(errors.Wrap(err, "onPageRequest"))
+		app.Log("page request failed: %s", err)
 		return
 	}
 
 	fn, err := p.markup.Map(mapping)
 	if err != nil {
-		app.Error(err)
+		app.Log("page request failed: %s", err)
 		return
 	}
 
@@ -253,11 +252,11 @@ func (p *Page) onPageRequest(j string) {
 
 	var compo app.Component
 	if compo, err = p.markup.Component(mapping.CompoID); err != nil {
-		app.Error(err)
+		app.Log("page request failed: %s", err)
 		return
 	}
 
 	if err = p.Render(compo); err != nil {
-		app.Error(err)
+		app.Log("page request failed: %s", err)
 	}
 }

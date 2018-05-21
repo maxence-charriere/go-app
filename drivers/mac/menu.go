@@ -211,13 +211,13 @@ func onMenuCallback(m *Menu, in map[string]interface{}) interface{} {
 
 	var mapping app.Mapping
 	if err := json.Unmarshal([]byte(mappingString), &mapping); err != nil {
-		app.Error(errors.Wrap(err, "onMenuCallback"))
+		app.Log("menu callback failed: %s", err)
 		return nil
 	}
 
 	function, err := m.markup.Map(mapping)
 	if err != nil {
-		app.Error(errors.Wrap(err, "onMenuCallback"))
+		app.Log("menu callback failed: %s", err)
 		return nil
 	}
 
@@ -228,12 +228,12 @@ func onMenuCallback(m *Menu, in map[string]interface{}) interface{} {
 
 	var compo app.Component
 	if compo, err = m.markup.Component(mapping.CompoID); err != nil {
-		app.Error(errors.Wrap(err, "onMenuCallback"))
+		app.Log("menu callback failed: %s", err)
 		return nil
 	}
 
 	if err = m.Render(compo); err != nil {
-		app.Error(errors.Wrap(err, "onMenuCallback"))
+		app.Log("menu callback failed: %s", err)
 	}
 	return nil
 }

@@ -134,13 +134,13 @@ func (m *Menu) OnNavigate(u *url.URL) {
 // OnButtonClick is the function that is called when the button labelled
 // "button" is clicked.
 func (m *Menu) OnButtonClick() {
-	app.DefaultLogger.Log("button clicked")
+	app.Log("button clicked")
 }
 
 // OnButtonWithIconClick is the function that is called when the button labelled
 // "button with icon" is clicked.
 func (m *Menu) OnButtonWithIconClick() {
-	app.DefaultLogger.Log("button with icon clicked")
+	app.Log("button with icon clicked")
 }
 
 // OnSetDockBadge is the function that is called when the button labelled "set
@@ -161,7 +161,7 @@ func (m *Menu) OnSetDockBadge() {
 // OnUnsetDockBadge is the function that is called when the button labelled
 // "unset dock badge" is clicked.
 func (m *Menu) OnUnsetDockBadge() {
-	app.DefaultLogger.Log("button unset dock badge clicked")
+	app.Log("button unset dock badge clicked")
 
 	dock, err := app.Dock()
 	if err != nil {

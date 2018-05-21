@@ -154,7 +154,7 @@ func (d *Driver) ElementByComponent(c app.Component) (app.ElementWithComponent, 
 
 // CallOnUIGoroutine satisfies the app.Driver interface.
 func (d *Driver) CallOnUIGoroutine(f func()) {
-	app.Error("CallOnUIGoroutine is not supported on server side")
+	app.Log("CallOnUIGoroutine is not supported on server side")
 }
 
 // Close shutdown the server.
