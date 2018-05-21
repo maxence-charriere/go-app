@@ -103,7 +103,6 @@ func (l *logger) print(level int, format string, v ...interface{}) {
 
 	if len(l.indent) == 0 {
 		l.indent = l.genIndent(len(prefix) - len(defaultColor)*4)
-		fmt.Println("--", l.indent, "--")
 	}
 
 	format = prefix + format
