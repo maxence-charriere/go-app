@@ -1,5 +1,7 @@
 package app
 
+import "encoding/json"
+
 // Driver is the interface that describes a backend for app rendering.
 type Driver interface {
 	// Name returns the driver name.
@@ -117,7 +119,7 @@ func (d *BaseDriver) Dock() (DockTile, error) {
 type Addon func(Driver) Driver
 
 // Logs returns an addons that logs all the driver operations.
-// It uses the default logger.
+// It uses the loggers defined in app.Loggers.
 func Logs() func(Driver) Driver {
 	return func(d Driver) Driver {
 		return &driverWithLogs{
@@ -131,9 +133,43 @@ type driverWithLogs struct {
 }
 
 func (d *driverWithLogs) Run(f Factory) error {
+	WhenDebug(func() {
+		Debug("running %s driver", d.Name())
+	})
+
 	err := d.Driver.Run(f)
 	if err != nil {
 		Log("driver stopped running: %s", err)
 	}
 	return err
+}
+
+func (d *driverWithLogs) Resources(path ...string) string {
+	resources := d.Driver.Resources(path...)
+	Log("resources path: %s", resources)
+	return resources
+}
+
+func (d *driverWithLogs) Storage(path ...string) string {
+	storage := d.Driver.Resources(path...)
+	Log("storage path: %s", storage)
+	return storage
+}
+
+func (d *driverWithLogs) NewWindow(c WindowConfig) (Window, error) {
+	WhenDebug(func() {
+		config, _ := json.Marshal(c)
+		Log("creating window: %s", config)
+	})
+
+	win, err := d.Driver.NewWindow(c)
+	if err != nil {
+		Log("creating window failed: %s", err)
+		return nil, err
+	}
+
+	win = &windowWithLogs{
+		Window: win,
+	}
+	return win, err
 }

@@ -82,3 +82,7 @@ const (
 	VibeMediumLight
 	VibeUltraDark
 )
+
+type windowWithLogs struct {
+	Window
+}
