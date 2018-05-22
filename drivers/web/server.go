@@ -158,6 +158,6 @@ func (d *Driver) CallOnUIGoroutine(f func()) {
 }
 
 // Close shutdown the server.
-func (d *Driver) Close() {
-	d.Server.Shutdown(context.Background())
+func (d *Driver) Close() error {
+	return d.Server.Shutdown(context.Background())
 }

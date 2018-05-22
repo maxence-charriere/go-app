@@ -411,8 +411,8 @@ func (d *Driver) CallOnUIGoroutine(f func()) {
 }
 
 // Close quits the app.
-func (d *Driver) Close() {
-	d.macRPC.Call("driver.Quit", nil, nil)
+func (d *Driver) Close() error {
+	return d.macRPC.Call("driver.Quit", nil, nil)
 }
 
 func (d *Driver) onQuit(in map[string]interface{}) interface{} {

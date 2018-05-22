@@ -182,6 +182,7 @@ func (p *page) Referer() *url.URL {
 	return u
 }
 
-func (p *page) Close() {
+func (p *page) Close() error {
 	p.onClose()
+	return nil
 }

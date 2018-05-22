@@ -144,18 +144,6 @@ func (d *driverWithLogs) Run(f Factory) error {
 	return err
 }
 
-func (d *driverWithLogs) Resources(path ...string) string {
-	resources := d.Driver.Resources(path...)
-	Log("resources path: %s", resources)
-	return resources
-}
-
-func (d *driverWithLogs) Storage(path ...string) string {
-	storage := d.Driver.Resources(path...)
-	Log("storage path: %s", storage)
-	return storage
-}
-
 func (d *driverWithLogs) NewWindow(c WindowConfig) (Window, error) {
 	WhenDebug(func() {
 		config, _ := json.Marshal(c)
@@ -171,5 +159,66 @@ func (d *driverWithLogs) NewWindow(c WindowConfig) (Window, error) {
 	win = &windowWithLogs{
 		Window: win,
 	}
-	return win, err
+	return win, nil
+}
+
+func (d *driverWithLogs) NewContextMenu(c MenuConfig) (Menu, error) {
+	WhenDebug(func() {
+		config, _ := json.Marshal(c)
+		Log("creating context menu: %s", config)
+	})
+
+	menu, err := d.Driver.NewContextMenu(c)
+	if err != nil {
+		Log("creating context menu failed: %s", err)
+		return nil, err
+	}
+
+	menu = &menuWithLogs{
+		Menu: menu,
+		Type: "context menu",
+	}
+	return menu, nil
+}
+
+func (d *driverWithLogs) NewPage(c PageConfig) error {
+	WhenDebug(func() {
+		config, _ := json.Marshal(c)
+		Log("creating page: %s", config)
+	})
+
+	err := d.Driver.NewPage(c)
+	if err != nil {
+		Log("creating page failed: %s", err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) Render(c Component) error {
+	WhenDebug(func() {
+		Log("rendering %T", c)
+	})
+
+	err := d.Driver.Render(c)
+	if err != nil {
+		Log("rendering %T failed: %s", err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) ElementByComponent(c Component) (ElementWithComponent, error) {
+	WhenDebug(func() {
+		Log("getting element from %T", c)
+	})
+
+	elem, err := d.Driver.ElementByComponent(c)
+	if err != nil {
+		Log("getting element from %T failed: %s",
+			c,
+			err,
+		)
+		return nil, err
+	}
+
+	// CODE NEXT
 }

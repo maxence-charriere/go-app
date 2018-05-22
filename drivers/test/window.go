@@ -211,6 +211,7 @@ func (w *Window) ToggleMinimize() {
 }
 
 // Close satisfies the app.Window interface.
-func (w *Window) Close() {
+func (w *Window) Close() error {
 	w.onClose()
+	return nil
 }

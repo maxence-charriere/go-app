@@ -228,8 +228,9 @@ func (p *Page) Referer() *url.URL {
 	return u
 }
 
-func (p *Page) Close() {
+func (p *Page) Close() error {
 	js.Global.Call("close")
+	return nil
 }
 
 func (p *Page) onPageRequest(j string) {
