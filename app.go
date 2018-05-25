@@ -42,7 +42,6 @@ func Run(d Driver, addons ...Addon) error {
 	}
 	driver = d
 	return driver.Run(components)
-
 }
 
 // RunningDriver returns the running driver.

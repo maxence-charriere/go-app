@@ -14,6 +14,7 @@ import (
 // A Menu implementation for tests.
 type Menu struct {
 	id        uuid.UUID
+	typ       string
 	factory   app.Factory
 	markup    app.Markup
 	lastFocus time.Time
@@ -22,12 +23,13 @@ type Menu struct {
 	onClose func()
 }
 
-func newMenu(d *Driver, name string, c app.MenuConfig) (app.Menu, error) {
+func newMenu(d *Driver, c app.MenuConfig) (app.Menu, error) {
 	var markup app.Markup = html.NewMarkup(d.factory)
 	markup = app.ConcurrentMarkup(markup)
 
 	menu := &Menu{
 		id:        uuid.New(),
+		typ:       c.Type,
 		factory:   d.factory,
 		markup:    markup,
 		lastFocus: time.Now(),
@@ -48,11 +50,6 @@ func newMenu(d *Driver, name string, c app.MenuConfig) (app.Menu, error) {
 // ID satisfies the app.Menu interface.
 func (m *Menu) ID() uuid.UUID {
 	return m.id
-}
-
-// Base satisfies the app.Menu interface.
-func (m *Menu) Base() app.Menu {
-	return m
 }
 
 // Load satisfies the app.ElementWithComponent interface.
@@ -100,4 +97,9 @@ func (m *Menu) Render(compo app.Component) error {
 // LastFocus satisfies the app.Menu interface.
 func (m *Menu) LastFocus() time.Time {
 	return m.lastFocus
+}
+
+// Type satisfies the app.Menu interface.
+func (m *Menu) Type() string {
+	return m.typ
 }

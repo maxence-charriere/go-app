@@ -24,7 +24,7 @@ type Window struct {
 	width     float64
 	height    float64
 
-	onClose func()
+	onClose func() error
 }
 
 func newWindow(d *Driver, c app.WindowConfig) (app.Window, error) {
@@ -43,8 +43,9 @@ func newWindow(d *Driver, c app.WindowConfig) (app.Window, error) {
 	}
 
 	d.elements.Add(win)
-	win.onClose = func() {
+	win.onClose = func() error {
 		d.elements.Remove(win)
+		return nil
 	}
 
 	var err error
@@ -176,14 +177,15 @@ func (w *Window) Position() (x, y float64) {
 }
 
 // Move satisfies the app.Window interface.
-func (w *Window) Move(x, y float64) {
+func (w *Window) Move(x, y float64) error {
 	w.x = x
 	w.y = y
+	return nil
 }
 
 // Center satisfies the app.Window interface.
-func (w *Window) Center() {
-	w.Move(500, 500)
+func (w *Window) Center() error {
+	return w.Move(500, 500)
 }
 
 // Size satisfies the app.Window interface.
@@ -192,26 +194,29 @@ func (w *Window) Size() (width, height float64) {
 }
 
 // Resize satisfies the app.Window interface.
-func (w *Window) Resize(width, height float64) {
+func (w *Window) Resize(width, height float64) error {
 	w.width = width
 	w.height = height
+	return nil
 }
 
 // Focus satisfies the app.Window interface.
-func (w *Window) Focus() {
+func (w *Window) Focus() error {
 	w.lastFocus = time.Now()
+	return nil
 }
 
 // ToggleFullScreen satisfies the app.Window interface.
-func (w *Window) ToggleFullScreen() {
+func (w *Window) ToggleFullScreen() error {
+	return nil
 }
 
 // ToggleMinimize satisfies the app.Window interface.
-func (w *Window) ToggleMinimize() {
+func (w *Window) ToggleMinimize() error {
+	return nil
 }
 
 // Close satisfies the app.Window interface.
 func (w *Window) Close() error {
-	w.onClose()
-	return nil
+	return w.onClose()
 }

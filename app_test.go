@@ -9,6 +9,7 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/drivers/test"
 	"github.com/murlokswarm/app/tests"
+	"github.com/stretchr/testify/require"
 )
 
 func TestImport(t *testing.T) {
@@ -80,7 +81,7 @@ func TestApp(t *testing.T) {
 		Ctx:   ctx,
 		OnRun: onRun,
 	}
-	d = dtest
+	d = app.Logs()(dtest)
 
 	app.Import(&tests.Foo{})
 	app.Import(&tests.Bar{})
@@ -118,9 +119,7 @@ func testWindow(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if win != win2 {
-		t.Fatal("win and win2 are different")
-	}
+	require.Equal(t, win.ID(), win2.ID())
 
 	if _, err = app.NavigatorByComponent(compo); err != nil {
 		t.Fatal(err)

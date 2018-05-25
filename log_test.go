@@ -9,11 +9,17 @@ import (
 )
 
 func TestLogs(t *testing.T) {
+	buff := &bytes.Buffer{}
+	Loggers = []Logger{
+		NewLogger(buff, buff, true),
+	}
+
 	Log("hello world")
-	Debug("goodbye world")
 	WhenDebug(func() {
-		t.Log("when debug")
+		Debug("goodbye world")
 	})
+
+	t.Log(buff.String())
 }
 
 func TestLogger(t *testing.T) {

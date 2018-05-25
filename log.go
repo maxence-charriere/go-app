@@ -87,7 +87,7 @@ func (l *logger) Log(format string, v ...interface{}) {
 			return
 		}
 	}
-	l.print(levelLog, format, v...)
+	l.print(levelInfo, format, v...)
 }
 
 func (l *logger) Debug(format string, v ...interface{}) {
@@ -120,8 +120,8 @@ func (l *logger) print(level int, format string, v ...interface{}) {
 }
 
 func (l *logger) prefix(level int) string {
-	logLevel := "LOG  "
-	color := logColor
+	logLevel := "INFO "
+	color := infoColor
 
 	switch level {
 	case levelError:
@@ -152,12 +152,12 @@ func (l *logger) genIndent(ilen int) string {
 }
 
 const (
-	levelLog = iota
+	levelInfo = iota
 	levelError
 	levelDebug
 
 	defaultColor string = "\033[00m"
-	logColor     string = "\033[94m"
+	infoColor    string = "\033[94m"
 	errColor     string = "\033[91m"
 	debugColor   string = "\033[95m"
 )

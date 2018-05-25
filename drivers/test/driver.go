@@ -56,7 +56,7 @@ func (d *Driver) Run(f app.Factory) error {
 
 	d.dock = newDockTile(d)
 
-	menubar, err := newMenu(d, "menu bar", app.MenuConfig{})
+	menubar, err := newMenu(d, app.MenuConfig{Type: "menubar"})
 	if err != nil {
 		return err
 	}
@@ -120,13 +120,15 @@ func (d *Driver) NewWindow(c app.WindowConfig) (app.Window, error) {
 
 // NewContextMenu satisfies the app.Driver interface.
 func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
+	c.Type = "context menu"
+
 	if d.UseBaseDriver {
 		return d.BaseDriver.NewContextMenu(c)
 	}
 	if d.SimulateErr {
 		return nil, ErrSimulated
 	}
-	return newMenu(d, "context menu", c)
+	return newMenu(d, c)
 }
 
 // NewPage satisfies the app.Driver interface.
