@@ -3,12 +3,14 @@ package app_test
 import (
 	"context"
 	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/drivers/test"
 	"github.com/murlokswarm/app/tests"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -25,21 +27,11 @@ func TestApp(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 
 	onRun := func() {
-		if rd := app.RunningDriver(); rd == nil {
-			t.Fatal("driver is not set")
-		}
-
-		if name := app.Name(); name != "Driver unit tests" {
-			t.Error("app name is not test:", name)
-		}
-
-		if resources := app.Resources("hello", "world"); resources != "resources/hello/world" {
-			t.Error("resources is not resources/hello/world:", resources)
-		}
-
-		if storage := app.Storage("hello", "world"); storage != "storage/hello/world" {
-			t.Error("storage is not storage/hello/world:", storage)
-		}
+		rd := app.RunningDriver()
+		require.NotNil(t, rd, "driver not set")
+		assert.Equal(t, "Driver unit tests", app.Name())
+		assert.Equal(t, filepath.Join("resources", "hello", "world"), app.Resources("hello", "world"))
+		assert.Equal(t, filepath.Join("storage", "hello", "world"), app.Storage("hello", "world"))
 
 		testWindow(t)
 		testPage(t, newPage)
