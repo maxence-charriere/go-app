@@ -1,11 +1,10 @@
 package app
 
+import "fmt"
+
 // DockTile is the interface that describes a dock tile.
 type DockTile interface {
-	ElementWithComponent
-
-	// Base returns the base dock tile without any decorators.
-	Base() Menu
+	Menu
 
 	// SetIcon set the dock tile icon with the named file.
 	// It returns an error if the file doesn't exist or if it is not a supported
@@ -17,43 +16,62 @@ type DockTile interface {
 	SetBadge(v interface{}) error
 }
 
-// DockTileWithLogs returns a decorated version of the given dock tile that
-// logs all the operations.
-func DockTileWithLogs(d DockTile) DockTile {
-	return &dockTileWithLogs{
-		menuWithLogs: menuWithLogs{
-			name: "dock",
-			base: d,
-		},
-		base: d,
-	}
+type dockWithLogs struct {
+	DockTile
 }
 
-type dockTileWithLogs struct {
-	menuWithLogs
-	base DockTile
-}
+func (d *dockWithLogs) Load(url string, v ...interface{}) error {
+	parsedURL := fmt.Sprintf(url, v...)
 
-func (d *dockTileWithLogs) Base() Menu {
-	return d.base.Base()
-}
+	WhenDebug(func() {
+		Debug("dock tile is loading %s", parsedURL)
+	})
 
-func (d *dockTileWithLogs) SetIcon(name string) error {
-	Logf("%s %s: set icon with %s", d.name, d.base.ID(), name)
-
-	err := d.base.SetIcon(name)
+	err := d.DockTile.Load(url, v...)
 	if err != nil {
-		Errorf("%s %s: set icon failed: %s", d.name, d.base.ID(), err)
+		Log("dock tile failed to load %s: %s",
+			parsedURL,
+			err,
+		)
 	}
 	return err
 }
 
-func (d *dockTileWithLogs) SetBadge(v interface{}) error {
-	Logf("%s %s: set badge with %+v", d.name, d.base.ID(), v)
+func (d *dockWithLogs) Render(c Component) error {
+	WhenDebug(func() {
+		Debug("dock tile is rendering %T", c)
+	})
 
-	err := d.base.SetBadge(v)
+	err := d.DockTile.Render(c)
 	if err != nil {
-		Errorf("%s %s: set badge failed: %s", d.name, d.base.ID(), err)
+		Log("dock tile failed to render %T: %s",
+			c,
+			err,
+		)
+	}
+	return err
+}
+
+func (d *dockWithLogs) SetIcon(name string) error {
+	WhenDebug(func() {
+		Debug("dock tile is setting its icon to %s", name)
+	})
+
+	err := d.DockTile.SetIcon(name)
+	if err != nil {
+		Log("dock tile failed to set its icon: %s", err)
+	}
+	return err
+}
+
+func (d *dockWithLogs) SetBadge(v interface{}) error {
+	WhenDebug(func() {
+		Debug("dock tile is setting its badge to %d", v)
+	})
+
+	err := d.DockTile.SetBadge(v)
+	if err != nil {
+		Log("dock tile failed to set its badge: %s", err)
 	}
 	return err
 }

@@ -19,16 +19,16 @@ func newDockTile(d *Driver) app.DockTile {
 	var markup app.Markup = html.NewMarkup(d.factory)
 	markup = app.ConcurrentMarkup(markup)
 
-	rawDock := &DockTile{
+	dock := &DockTile{
 		Menu: Menu{
-			id:        uuid.New(),
-			factory:   d.factory,
-			markup:    markup,
-			lastFocus: time.Now(),
+			id:          uuid.New(),
+			typ:         "dock tile",
+			factory:     d.factory,
+			markup:      markup,
+			lastFocus:   time.Now(),
+			simulateErr: d.SimulateElemErr,
 		},
 	}
-
-	dock := app.DockTileWithLogs(rawDock)
 
 	d.elements.Add(dock)
 	return dock
@@ -36,12 +36,18 @@ func newDockTile(d *Driver) app.DockTile {
 
 // SetIcon satisfies the app.DockTile interface.
 func (d *DockTile) SetIcon(name string) error {
+	if d.simulateErr {
+		return ErrSimulated
+	}
 	_, err := os.Stat(name)
 	return err
 }
 
 // SetBadge satisfies the app.DockTile interface.
 func (d *DockTile) SetBadge(v interface{}) error {
+	if d.simulateErr {
+		return ErrSimulated
+	}
 	_, err := json.Marshal(v)
 	return err
 }

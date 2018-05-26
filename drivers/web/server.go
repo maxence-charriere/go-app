@@ -7,6 +7,7 @@ import (
 	"context"
 	"html/template"
 	"net/http"
+	"os"
 	"path"
 
 	"github.com/murlokswarm/app/appjs"
@@ -14,6 +15,12 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/html"
 )
+
+func init() {
+	app.Loggers = []app.Logger{
+		app.NewLogger(os.Stdout, os.Stderr, true, true),
+	}
+}
 
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(f app.Factory) error {
@@ -154,10 +161,10 @@ func (d *Driver) ElementByComponent(c app.Component) (app.ElementWithComponent, 
 
 // CallOnUIGoroutine satisfies the app.Driver interface.
 func (d *Driver) CallOnUIGoroutine(f func()) {
-	app.Error("CallOnUIGoroutine is not supported on server side")
+	app.Log("CallOnUIGoroutine is not supported on server side")
 }
 
 // Close shutdown the server.
-func (d *Driver) Close() {
-	d.Server.Shutdown(context.Background())
+func (d *Driver) Close() error {
+	return d.Server.Shutdown(context.Background())
 }

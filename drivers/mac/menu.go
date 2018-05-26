@@ -18,6 +18,7 @@ import (
 // Menu implements the app.Menu interface.
 type Menu struct {
 	id        uuid.UUID
+	typ       string
 	markup    app.Markup
 	lastFocus time.Time
 	component app.Component
@@ -25,19 +26,18 @@ type Menu struct {
 	onClose func()
 }
 
-func newMenu(c app.MenuConfig, name string) (app.Menu, error) {
+func newMenu(c app.MenuConfig) (app.Menu, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
 	markup = app.ConcurrentMarkup(markup)
 
-	rawMenu := &Menu{
+	menu := &Menu{
 		id:        uuid.New(),
+		typ:       c.Type,
 		markup:    markup,
 		lastFocus: time.Now(),
 
 		onClose: c.OnClose,
 	}
-
-	menu := app.MenuWithLogs(rawMenu, name)
 
 	if err := driver.macRPC.Call("menus.New", nil, struct {
 		ID string
@@ -64,9 +64,9 @@ func (m *Menu) ID() uuid.UUID {
 	return m.id
 }
 
-// Base satisfies the app.Menu interface.
-func (m *Menu) Base() app.Menu {
-	return m
+// Type satisfies the app.Menu interface.
+func (m *Menu) Type() string {
+	return m.typ
 }
 
 // Load satisfies the app.Menu interface.
@@ -213,13 +213,13 @@ func onMenuCallback(m *Menu, in map[string]interface{}) interface{} {
 
 	var mapping app.Mapping
 	if err := json.Unmarshal([]byte(mappingString), &mapping); err != nil {
-		app.Error(errors.Wrap(err, "onMenuCallback"))
+		app.Log("menu callback failed: %s", err)
 		return nil
 	}
 
 	function, err := m.markup.Map(mapping)
 	if err != nil {
-		app.Error(errors.Wrap(err, "onMenuCallback"))
+		app.Log("menu callback failed: %s", err)
 		return nil
 	}
 
@@ -230,12 +230,12 @@ func onMenuCallback(m *Menu, in map[string]interface{}) interface{} {
 
 	var compo app.Component
 	if compo, err = m.markup.Component(mapping.CompoID); err != nil {
-		app.Error(errors.Wrap(err, "onMenuCallback"))
+		app.Log("menu callback failed: %s", err)
 		return nil
 	}
 
 	if err = m.Render(compo); err != nil {
-		app.Error(errors.Wrap(err, "onMenuCallback"))
+		app.Log("menu callback failed: %s", err)
 	}
 	return nil
 }
@@ -249,7 +249,15 @@ func handleMenu(h func(m *Menu, in map[string]interface{}) interface{}) bridge.G
 			return nil
 		}
 
-		menu := elem.(app.Menu).Base().(*Menu)
-		return h(menu, in)
+		switch menu := elem.(type) {
+		case *Menu:
+			return h(menu, in)
+
+		case *DockTile:
+			return h(&menu.Menu, in)
+
+		default:
+			panic("menu not supported")
+		}
 	}
 }

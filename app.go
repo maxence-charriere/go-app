@@ -15,15 +15,12 @@ var (
 func init() {
 	components = NewFactory()
 	components = ConcurrentFactory(components)
-	components = FactoryWithLogs(components)
 
 	events := NewEventRegistry(CallOnUIGoroutine)
 	events = ConcurrentEventRegistry(events)
-	events = EventRegistryWithLogs(events)
 	DefaultEventRegistry = events
 
 	actions := NewActionRegistry(events)
-	actions = ActionRegistryWithLogs(actions)
 	DefaultActionRegistry = actions
 }
 
@@ -39,10 +36,12 @@ func Import(c Component) {
 }
 
 // Run runs the app with the driver as backend.
-func Run(d Driver) error {
-	driver = DriverWithLogs(d)
+func Run(d Driver, addons ...Addon) error {
+	for _, addon := range addons {
+		d = addon(d)
+	}
+	driver = d
 	return driver.Run(components)
-
 }
 
 // RunningDriver returns the running driver.

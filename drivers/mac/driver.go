@@ -29,6 +29,12 @@ var (
 	driver *Driver
 )
 
+func init() {
+	app.Loggers = []app.Logger{
+		app.NewLogger(os.Stdout, os.Stderr, true, true),
+	}
+}
+
 // Driver is the app.Driver implementation for MacOS.
 type Driver struct {
 	app.BaseDriver
@@ -81,11 +87,6 @@ type Driver struct {
 // Name satisfies the app.Driver interface.
 func (d *Driver) Name() string {
 	return "MacOS"
-}
-
-// Base satisfies the app.Driver interface.
-func (d *Driver) Base() app.Driver {
-	return d
 }
 
 // Run satisfies the app.Driver interface.
@@ -303,7 +304,9 @@ func (d *Driver) NewWindow(c app.WindowConfig) (app.Window, error) {
 
 // NewContextMenu satisfies the app.Driver interface.
 func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
-	m, err := newMenu(c, "context menu")
+	c.Type = "context menu"
+
+	m, err := newMenu(c)
 	if err != nil {
 		return nil, err
 	}
@@ -368,7 +371,7 @@ func (d *Driver) MenuBar() (app.Menu, error) {
 }
 
 func (d *Driver) newMenuBar() error {
-	menubar, err := newMenu(app.MenuConfig{}, "menubar")
+	menubar, err := newMenu(app.MenuConfig{Type: "menubar"})
 	if err != nil {
 		return errors.Wrap(err, "creating the menu bar failed")
 	}
@@ -411,8 +414,8 @@ func (d *Driver) CallOnUIGoroutine(f func()) {
 }
 
 // Close quits the app.
-func (d *Driver) Close() {
-	d.macRPC.Call("driver.Quit", nil, nil)
+func (d *Driver) Close() error {
+	return d.macRPC.Call("driver.Quit", nil, nil)
 }
 
 func (d *Driver) onQuit(in map[string]interface{}) interface{} {

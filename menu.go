@@ -1,84 +1,71 @@
 package app
 
-import (
-	"fmt"
-	"time"
-
-	"github.com/google/uuid"
-)
+import "fmt"
 
 // Menu is the interface that describes a menu.
 // Accept only components that contain menu and menuitem tags.
 type Menu interface {
 	ElementWithComponent
 
-	// Base returns the base menu without any decorators.
-	Base() Menu
+	// The menu type.
+	Type() string
 }
 
 // MenuConfig is a struct that describes a menu.
 type MenuConfig struct {
+	// The URL of the component to load when the menu is created.
 	DefaultURL string
 
+	Type string
+
+	// The function that is called when the menu is closed.
 	OnClose func() `json:"-"`
 }
 
-// MenuWithLogs returns a decorated version of the given menu that logs
-// all the operations.
-// Uses the default logger.
-func MenuWithLogs(m Menu, name string) Menu {
-	return &menuWithLogs{
-		name: name,
-		base: m,
-	}
-}
-
 type menuWithLogs struct {
-	name string
-	base Menu
-}
-
-func (m *menuWithLogs) ID() uuid.UUID {
-	return m.base.ID()
-}
-
-func (m *menuWithLogs) Base() Menu {
-	return m.base.Base()
+	Menu
 }
 
 func (m *menuWithLogs) Load(url string, v ...interface{}) error {
-	fmtURL := fmt.Sprintf(url, v...)
-	Logf("%s %s: loading %s", m.name, m.base.ID(), fmtURL)
+	parsedURL := fmt.Sprintf(url, v...)
 
-	err := m.base.Load(url, v...)
+	WhenDebug(func() {
+		Debug("%s %s is loading %s",
+			m.Type(),
+			m.ID(),
+			parsedURL,
+		)
+	})
+
+	err := m.Menu.Load(url, v...)
 	if err != nil {
-		Errorf("%s %s: loading %s failed: %s", m.name, m.base.ID(), fmtURL, err)
+		Log("%s %s failed to load %s: %s",
+			m.Type(),
+			m.ID(),
+			parsedURL,
+			err,
+		)
 	}
 	return err
-}
-
-func (m *menuWithLogs) Component() Component {
-	c := m.base.Component()
-	Logf("%s %s: mounted component is %T", m.name, m.base.ID(), c)
-	return c
-}
-
-func (m *menuWithLogs) Contains(c Component) bool {
-	ok := m.base.Contains(c)
-	Logf("%s %s: contains %T is %v", m.name, m.base.ID(), c, ok)
-	return ok
 }
 
 func (m *menuWithLogs) Render(c Component) error {
-	Logf("%s %s: rendering %T", m.name, m.base.ID(), c)
+	WhenDebug(func() {
+		Debug("%s %s is rendering %T",
+			m.Type(),
+			m.ID(),
+			c,
+		)
+	})
 
-	err := m.base.Render(c)
+	err := m.Menu.Render(c)
 	if err != nil {
-		Errorf("%s %s: rendering %T failed: %s", m.name, m.base.ID(), c, err)
+		Log("%s %s failed to render %T: %s",
+			m.Type(),
+			m.ID(),
+			c,
+			err,
+		)
 	}
 	return err
-}
-
-func (m *menuWithLogs) LastFocus() time.Time {
-	return m.base.LastFocus()
 }

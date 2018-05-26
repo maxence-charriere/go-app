@@ -11,8 +11,6 @@ import (
 )
 
 func main() {
-	app.DefaultLogger = app.ConcurrentLogger(app.NewConsole(true))
-
 	app.Import(&test.Webview{})
 	app.Import(&test.Menu{})
 
@@ -24,7 +22,7 @@ func main() {
 
 		MenubarConfig: mac.MenuBarConfig{
 			OnPreference: func() {
-				app.DefaultLogger.Log("Preferences clicked")
+				app.Log("Preferences clicked")
 			},
 		},
 		DockURL: "/test.Menu",
@@ -58,7 +56,7 @@ func main() {
 		OnExit: func() {
 			fmt.Println("OnExit")
 		},
-	})
+	}, app.Logs())
 }
 
 func testWindow(close bool) {

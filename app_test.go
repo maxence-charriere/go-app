@@ -1,14 +1,17 @@
 package app_test
 
 import (
+	"bytes"
 	"context"
 	"os"
-	"reflect"
+	"path/filepath"
 	"testing"
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/drivers/test"
 	"github.com/murlokswarm/app/tests"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestImport(t *testing.T) {
@@ -21,56 +24,139 @@ func TestImport(t *testing.T) {
 func TestApp(t *testing.T) {
 	var d app.Driver
 	var newPage func(c app.PageConfig) (app.Page, error)
+
+	output := &bytes.Buffer{}
+	app.Loggers = []app.Logger{app.NewLogger(output, output, true, true)}
+
+	app.Import(&tests.Foo{})
+	app.Import(&tests.Bar{})
+
 	ctx, cancel := context.WithCancel(context.Background())
 
 	onRun := func() {
-		if rd := app.RunningDriver(); rd == nil {
-			t.Fatal("driver is not set")
-		}
+		rd := app.RunningDriver()
+		require.NotNil(t, rd, "driver not set")
+		assert.NotEmpty(t, app.Name())
+		assert.Equal(t, filepath.Join("resources", "hello", "world"), app.Resources("hello", "world"))
+		assert.Equal(t, filepath.Join("storage", "hello", "world"), app.Storage("hello", "world"))
 
-		if name := app.Name(); name != "Driver unit tests" {
-			t.Error("app name is not test:", name)
-		}
+		// Window:
+		win, err := app.NewWindow(app.WindowConfig{
+			DefaultURL: "tests.foo",
+		})
+		require.NoError(t, err)
 
-		if resources := app.Resources("hello", "world"); resources != "resources/hello/world" {
-			t.Error("resources is not resources/hello/world:", resources)
-		}
+		compo := win.Component()
+		require.NotNil(t, compo)
+		app.Render(compo)
 
-		if storage := app.Storage("hello", "world"); storage != "storage/hello/world" {
-			t.Error("storage is not storage/hello/world:", storage)
-		}
+		var win2 app.Window
+		win2, err = app.WindowByComponent(compo)
+		require.NoError(t, err)
+		assert.Equal(t, win.ID(), win2.ID())
 
-		testWindow(t)
-		testPage(t, newPage)
-		testMenu(t)
+		var nav app.Navigator
+		nav, err = app.NavigatorByComponent(compo)
+		require.NoError(t, err)
+		assert.Equal(t, win.ID(), nav.ID())
 
-		err := app.NewFilePanel(app.FilePanelConfig{})
-		if err != nil && !app.NotSupported(err) {
-			t.Error(err)
-		}
+		// Page:
+		var page app.Page
+		page, err = newPage(app.PageConfig{
+			DefaultURL: "tests.foo",
+		})
+		require.NoError(t, err)
+
+		compo = page.Component()
+		require.NotNil(t, compo)
+		app.Render(compo)
+
+		var page2 app.Page
+		page2, err = app.PageByComponent(compo)
+		require.NoError(t, err)
+		assert.Equal(t, page.ID(), page2.ID())
+
+		nav, err = app.NavigatorByComponent(compo)
+		require.NoError(t, err)
+		assert.Equal(t, page.ID(), nav.ID())
+
+		// Menu:
+		var menu app.Menu
+		menu, err = app.NewContextMenu(app.MenuConfig{
+			DefaultURL: "tests.bar",
+		})
+		require.NoError(t, err)
+
+		compo = menu.Component()
+		require.NotNil(t, compo)
+		app.Render(compo)
+
+		var elem app.ElementWithComponent
+		elem, err = app.ElementByComponent(compo)
+		require.NoError(t, err)
+		assert.Equal(t, menu.ID(), elem.ID())
+
+		_, err = app.NavigatorByComponent(compo)
+		assert.Error(t, err)
+
+		_, err = app.WindowByComponent(compo)
+		assert.Error(t, err)
+
+		_, err = app.PageByComponent(compo)
+		assert.Error(t, err)
+
+		// File panels:
+		err = app.NewFilePanel(app.FilePanelConfig{})
+		require.NoError(t, err)
 
 		err = app.NewSaveFilePanel(app.SaveFilePanelConfig{})
-		if err != nil && !app.NotSupported(err) {
-			t.Error(err)
-		}
+		require.NoError(t, err)
 
+		// Share:
 		err = app.NewShare("Hello world")
-		if err != nil && !app.NotSupported(err) {
-			t.Error(err)
-		}
+		require.NoError(t, err)
 
+		// Notifications:
 		err = app.NewNotification(app.NotificationConfig{})
-		if err != nil && !app.NotSupported(err) {
-			t.Error(err)
-		}
+		require.NoError(t, err)
 
-		app.MenuBar()
-		app.Dock()
+		// Menubar:
+		_, err = app.MenuBar()
+		require.NoError(t, err)
 
-		t.Run("css resources", testCSSResources)
-		t.Run("css no resources", testCSSResourcesNoResources)
+		// Dock:
+		var dockTile app.DockTile
+		dockTile, err = app.Dock()
+		require.NoError(t, err)
+
+		err = dockTile.Load("tests.bar")
+		require.NoError(t, err)
+
+		compo = dockTile.Component()
+		require.NotNil(t, compo)
+		app.Render(compo)
+
+		err = dockTile.SetBadge("42")
+		require.NoError(t, err)
+
+		err = dockTile.SetIcon(filepath.Join("tests", "resources", "logo.png"))
+		require.NoError(t, err)
+
+		// CSS resources:
+		assert.Len(t, app.CSSResources(), 0)
+
+		os.MkdirAll(app.Resources("css", "sub"), 0777)
+		os.Create(app.Resources("css", "test.css"))
+		os.Create(app.Resources("css", "test.scss"))
+		os.Create(app.Resources("css", "sub", "sub.css"))
+		defer os.RemoveAll(app.Resources())
+
+		assert.Contains(t, app.CSSResources(), app.Resources("css", "test.css"))
+		assert.NotContains(t, app.CSSResources(), app.Resources("css", "test.scss"))
+		assert.Contains(t, app.CSSResources(), app.Resources("css", "sub", "sub.css"))
 
 		app.CallOnUIGoroutine(func() {
+			t.Log("CallOnUIGoroutine")
 		})
 
 		cancel()
@@ -82,9 +168,6 @@ func TestApp(t *testing.T) {
 	}
 	d = dtest
 
-	app.Import(&tests.Foo{})
-	app.Import(&tests.Bar{})
-
 	newPage = func(c app.PageConfig) (app.Page, error) {
 		err := app.NewPage(c)
 		if err != nil {
@@ -93,151 +176,147 @@ func TestApp(t *testing.T) {
 		return dtest.Page, nil
 	}
 
-	if err := app.Run(d); err != nil {
-		t.Fatal(err)
-	}
+	err := app.Run(d, app.Logs())
+	require.NoError(t, err)
+
+	t.Log(output.String())
 }
 
-func testWindow(t *testing.T) {
-	win, err := app.NewWindow(app.WindowConfig{
-		DefaultURL: "tests.foo",
-	})
-	if err != nil {
-		t.Fatal(err)
+func TestAppError(t *testing.T) {
+	var d app.Driver
+
+	output := &bytes.Buffer{}
+	app.Loggers = []app.Logger{app.NewLogger(output, output, true, true)}
+
+	ctx, cancel := context.WithCancel(context.Background())
+
+	onRun := func() {
+		defer cancel()
+
+		app.Render(nil)
+
+		// Window:
+		win, err := d.NewWindow(app.WindowConfig{})
+		require.NoError(t, err)
+
+		err = win.Load("")
+		assert.Error(t, err)
+
+		err = win.Render(nil)
+		assert.Error(t, err)
+
+		err = win.Reload()
+		assert.Error(t, err)
+
+		err = win.Previous()
+		assert.Error(t, err)
+
+		err = win.Next()
+		assert.Error(t, err)
+
+		err = win.Close()
+		assert.Error(t, err)
+
+		err = win.Move(0, 0)
+		assert.Error(t, err)
+
+		err = win.Center()
+		assert.Error(t, err)
+
+		err = win.Resize(0, 0)
+		assert.Error(t, err)
+
+		err = win.Focus()
+		assert.Error(t, err)
+
+		err = win.ToggleFullScreen()
+		assert.Error(t, err)
+
+		err = win.ToggleMinimize()
+		assert.Error(t, err)
+
+		// Menu:
+		var menu app.Menu
+		menu, err = d.NewContextMenu(app.MenuConfig{})
+		require.NoError(t, err)
+
+		err = menu.Load("")
+		assert.Error(t, err)
+
+		err = menu.Render(nil)
+		assert.Error(t, err)
+
+		// Dock tile:
+		var dockTile app.DockTile
+		dockTile, err = app.Dock()
+		require.NoError(t, err)
+
+		err = dockTile.Load("")
+		assert.Error(t, err)
+
+		err = dockTile.Render(nil)
+		assert.Error(t, err)
+
+		err = dockTile.SetIcon("")
+		assert.Error(t, err)
+
+		err = dockTile.SetBadge("")
+		assert.Error(t, err)
 	}
 
-	compo := win.Component()
-	if compo == nil {
-		t.Error("component is nil")
+	dtest := &test.Driver{
+		Ctx:             ctx,
+		SimulateErr:     true,
+		SimulateElemErr: true,
+		OnRun:           onRun,
 	}
+	d = app.Logs()(dtest)
 
-	app.Render(compo)
+	err := app.Run(d, app.Logs())
+	assert.Error(t, err)
 
-	var win2 app.Window
-	if win2, err = app.WindowByComponent(compo); err != nil {
-		t.Fatal(err)
-	}
+	_, err = app.NewWindow(app.WindowConfig{})
+	assert.Error(t, err)
 
-	if win != win2 {
-		t.Fatal("win and win2 are different")
-	}
+	err = app.NewPage(app.PageConfig{})
+	assert.Error(t, err)
 
-	if _, err = app.NavigatorByComponent(compo); err != nil {
-		t.Fatal(err)
-	}
+	_, err = app.NewContextMenu(app.MenuConfig{})
+	assert.Error(t, err)
 
-	if _, err = app.WindowByComponent(&tests.Foo{}); err == nil {
-		t.Fatal("error is nil")
-	}
-	t.Log(err)
+	_, err = app.ElementByComponent(nil)
+	assert.Error(t, err)
 
-	if _, err = app.NavigatorByComponent(&tests.Foo{}); err == nil {
-		t.Fatal("error is nil")
-	}
-	t.Log(err)
-}
+	_, err = app.NavigatorByComponent(nil)
+	assert.Error(t, err)
 
-func testPage(t *testing.T, newPage func(c app.PageConfig) (app.Page, error)) {
-	page, err := newPage(app.PageConfig{
-		DefaultURL: "tests.foo",
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
+	_, err = app.WindowByComponent(nil)
+	assert.Error(t, err)
 
-	compo := page.Component()
-	if compo == nil {
-		t.Fatal("component is nil")
-	}
+	_, err = app.PageByComponent(nil)
+	assert.Error(t, err)
 
-	app.Render(compo)
+	err = app.NewFilePanel(app.FilePanelConfig{})
+	assert.Error(t, err)
 
-	var page2 app.Page
-	if page2, err = app.PageByComponent(compo); err != nil {
-		t.Fatal(err)
-	}
+	err = app.NewSaveFilePanel(app.SaveFilePanelConfig{})
+	assert.Error(t, err)
 
-	if page != page2 {
-		t.Fatal("page and page2 are different")
-	}
+	err = app.NewShare(nil)
+	assert.Error(t, err)
 
-	if _, err = app.NavigatorByComponent(compo); err != nil {
-		t.Fatal(err)
-	}
+	err = app.NewNotification(app.NotificationConfig{})
+	assert.Error(t, err)
 
-	if _, err = newPage(app.PageConfig{
-		DefaultURL: "/ErrorTest",
-	}); err == nil {
-		t.Error("error is nil")
-	}
-	t.Log(err)
+	_, err = app.MenuBar()
+	assert.Error(t, err)
 
-	if _, err = app.PageByComponent(&tests.Foo{}); err == nil {
-		t.Error("error is nil")
-	}
-	t.Log(err)
-}
+	_, err = app.Dock()
+	assert.Error(t, err)
 
-func testMenu(t *testing.T) {
-	menu, err := app.NewContextMenu(app.MenuConfig{
-		DefaultURL: "tests.bar",
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
+	dtest.SimulateErr = false
+	err = app.Run(d, app.Logs())
+	require.NoError(t, err)
 
-	compo := menu.Component()
-	if compo == nil {
-		t.Fatal("component is nil")
-	}
-
-	if _, err = app.ElementByComponent(compo); err != nil {
-		t.Fatal(err)
-	}
-
-	if _, err = app.NavigatorByComponent(compo); err == nil {
-		t.Fatal("error is nil")
-	}
-
-	if _, err = app.WindowByComponent(compo); err == nil {
-		t.Fatal("error is nil")
-	}
-
-	if _, err = app.PageByComponent(compo); err == nil {
-		t.Fatal("error is nil")
-	}
-}
-
-func testCSSResources(t *testing.T) {
-	defer os.RemoveAll(app.Resources())
-
-	os.MkdirAll(app.Resources("css"), 0777)
-	if f1, err := os.Create(app.Resources("css", "test.css")); err == nil {
-		defer f1.Close()
-	}
-	if f2, err := os.Create(app.Resources("css", "test.scss")); err == nil {
-		defer f2.Close()
-	}
-
-	os.MkdirAll(app.Resources("css", "sub"), 0777)
-	if f3, err := os.Create(app.Resources("css", "sub", "sub.css")); err == nil {
-		defer f3.Close()
-	}
-
-	css := app.CSSResources()
-	expected := []string{
-		app.Resources("css", "sub", "sub.css"),
-		app.Resources("css", "test.css"),
-	}
-
-	if !reflect.DeepEqual(css, expected) {
-		t.Error("expected:", expected)
-		t.Error("current :", css)
-	}
-}
-
-func testCSSResourcesNoResources(t *testing.T) {
-	if len(app.CSSResources()) != 0 {
-		t.Error("resources found")
-	}
+	t.Log(output.String())
 }

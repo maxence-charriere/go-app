@@ -13,30 +13,32 @@ import (
 
 // A Menu implementation for tests.
 type Menu struct {
-	id        uuid.UUID
-	factory   app.Factory
-	markup    app.Markup
-	lastFocus time.Time
-	component app.Component
+	id          uuid.UUID
+	typ         string
+	factory     app.Factory
+	markup      app.Markup
+	lastFocus   time.Time
+	component   app.Component
+	simulateErr bool
 
 	onClose func()
 }
 
-func newMenu(d *Driver, name string, c app.MenuConfig) (app.Menu, error) {
+func newMenu(d *Driver, c app.MenuConfig) (app.Menu, error) {
 	var markup app.Markup = html.NewMarkup(d.factory)
 	markup = app.ConcurrentMarkup(markup)
 
-	rawMenu := &Menu{
-		id:        uuid.New(),
-		factory:   d.factory,
-		markup:    markup,
-		lastFocus: time.Now(),
+	menu := &Menu{
+		id:          uuid.New(),
+		typ:         c.Type,
+		factory:     d.factory,
+		markup:      markup,
+		lastFocus:   time.Now(),
+		simulateErr: d.SimulateElemErr,
 	}
 
-	menu := app.MenuWithLogs(rawMenu, name)
-
 	d.elements.Add(menu)
-	rawMenu.onClose = func() {
+	menu.onClose = func() {
 		d.elements.Remove(menu)
 	}
 
@@ -52,13 +54,12 @@ func (m *Menu) ID() uuid.UUID {
 	return m.id
 }
 
-// Base satisfies the app.Menu interface.
-func (m *Menu) Base() app.Menu {
-	return m
-}
-
 // Load satisfies the app.ElementWithComponent interface.
 func (m *Menu) Load(rawurl string, v ...interface{}) error {
+	if m.simulateErr {
+		return ErrSimulated
+	}
+
 	if m.component != nil {
 		m.markup.Dismount(m.component)
 	}
@@ -95,6 +96,10 @@ func (m *Menu) Contains(compo app.Component) bool {
 
 // Render satisfies the app.Menu interface.
 func (m *Menu) Render(compo app.Component) error {
+	if m.simulateErr {
+		return ErrSimulated
+	}
+
 	_, err := m.markup.Update(compo)
 	return err
 }
@@ -102,4 +107,9 @@ func (m *Menu) Render(compo app.Component) error {
 // LastFocus satisfies the app.Menu interface.
 func (m *Menu) LastFocus() time.Time {
 	return m.lastFocus
+}
+
+// Type satisfies the app.Menu interface.
+func (m *Menu) Type() string {
+	return m.typ
 }

@@ -5,6 +5,7 @@ package web
 
 import (
 	"context"
+	"os"
 	"path"
 
 	"github.com/gopherjs/gopherjs/js"
@@ -14,6 +15,12 @@ import (
 var (
 	driver *Driver
 )
+
+func init() {
+	app.Loggers = []app.Logger{
+		app.NewLogger(os.Stdout, os.Stderr, true, false),
+	}
+}
 
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(f app.Factory) error {

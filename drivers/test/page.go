@@ -29,7 +29,7 @@ func newPage(d *Driver, c app.PageConfig) (app.Page, error) {
 	history := app.NewHistory()
 	history = app.ConcurrentHistory(history)
 
-	rawPage := &page{
+	page := &page{
 		id:        uuid.New(),
 		factory:   d.factory,
 		markup:    markup,
@@ -37,10 +37,8 @@ func newPage(d *Driver, c app.PageConfig) (app.Page, error) {
 		lastFocus: time.Now(),
 	}
 
-	page := app.PageWithLogs(rawPage)
-
 	d.elements.Add(page)
-	rawPage.onClose = func() {
+	page.onClose = func() {
 		d.elements.Remove(page)
 	}
 
@@ -54,11 +52,6 @@ func newPage(d *Driver, c app.PageConfig) (app.Page, error) {
 // ID satisfies the app.Page interface.
 func (p *page) ID() uuid.UUID {
 	return p.id
-}
-
-// Base satisfies the app.Page interface.
-func (p *page) Base() app.Page {
-	return p
 }
 
 // Component satisfies the app.Page interface.
@@ -184,6 +177,7 @@ func (p *page) Referer() *url.URL {
 	return u
 }
 
-func (p *page) Close() {
+func (p *page) Close() error {
 	p.onClose()
+	return nil
 }

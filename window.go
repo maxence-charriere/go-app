@@ -2,9 +2,6 @@ package app
 
 import (
 	"fmt"
-	"time"
-
-	"github.com/google/uuid"
 )
 
 // Window is the interface that describes a window.
@@ -12,63 +9,109 @@ type Window interface {
 	Navigator
 	Closer
 
-	// Base returns the base window without any decorators.
-	Base() Window
-
 	// Position returns the window position.
 	Position() (x, y float64)
 
 	// Move moves the window to the position (x, y).
-	Move(x, y float64)
+	Move(x, y float64) error
 
 	// Center moves the window to the center of the screen.
-	Center()
+	Center() error
 
 	// Size returns the window size.
 	Size() (width, height float64)
 
 	// Resize resizes the window to width * height.
-	Resize(width, height float64)
+	Resize(width, height float64) error
 
 	// Focus gives the focus to the window.
 	// The window will be put in front, above the other elements.
-	Focus()
+	Focus() error
 
 	// ToggleFullScreen takes the window into or out of fullscreen mode.
-	ToggleFullScreen()
+	ToggleFullScreen() error
 
 	// Minimize takes the window into or out of minimized mode
-	ToggleMinimize()
+	ToggleMinimize() error
 }
 
 // WindowConfig is a struct that describes a window.
 type WindowConfig struct {
-	Title           string
-	X               float64
-	Y               float64
-	Width           float64
-	MinWidth        float64
-	MaxWidth        float64
-	Height          float64
-	MinHeight       float64
-	MaxHeight       float64
-	BackgroundColor string
-	FixedSize       bool
-	CloseHidden     bool
-	MinimizeHidden  bool
-	TitlebarHidden  bool
-	DefaultURL      string
-	Mac             MacWindowConfig
+	// The title.
+	Title string
 
-	OnMove           func(x, y float64)                  `json:"-"`
-	OnResize         func(width float64, height float64) `json:"-"`
-	OnFocus          func()                              `json:"-"`
-	OnBlur           func()                              `json:"-"`
-	OnFullScreen     func()                              `json:"-"`
-	OnExitFullScreen func()                              `json:"-"`
-	OnMinimize       func()                              `json:"-"`
-	OnDeminimize     func()                              `json:"-"`
-	OnClose          func() bool                         `json:"-"`
+	// The default position on x axis.
+	X float64
+
+	// The default position on y axis.
+	Y float64
+
+	// The default width.
+	Width float64
+
+	// The minimum width.
+	MinWidth float64
+
+	// The maximum width.
+	MaxWidth float64
+
+	// The default height.
+	Height float64
+
+	// The minimum height.
+	MinHeight float64
+
+	// The maximum height.
+	MaxHeight float64
+
+	// The background color (#rrggbb).
+	BackgroundColor string
+
+	// Reports whether the window is resizable.
+	FixedSize bool
+
+	// Reports whether the close button is hidden.
+	CloseHidden bool
+
+	// Reports whether the minimize button is hidden.
+	MinimizeHidden bool
+
+	// Reports whether the title bar is hidden.
+	TitlebarHidden bool
+
+	// The URL of the component to load when the window is created.
+	DefaultURL string
+
+	// The MacOS window specific configuration.
+	Mac MacWindowConfig
+
+	// The function that is called when the window is moved.
+	OnMove func(x, y float64) `json:"-"`
+
+	// The function that is called when the window is resized.
+	OnResize func(width float64, height float64) `json:"-"`
+
+	// The function that is called when the window get focus.
+	OnFocus func() `json:"-"`
+
+	// The function that is called when the window lose focus.
+	OnBlur func() `json:"-"`
+
+	// The function that is called when the window goes full screen.
+	OnFullScreen func() `json:"-"`
+
+	// The function that is called when the window exit full screen.
+	OnExitFullScreen func() `json:"-"`
+
+	// The function that is called when the window is minimized.
+	OnMinimize func() `json:"-"`
+
+	// The function that is called when the window is deminimized.
+	OnDeminimize func() `json:"-"`
+
+	// The function that is called when the window is closed.
+	// Returning bool prevents the window to be closed.
+	OnClose func() bool `json:"-"`
 }
 
 // MacWindowConfig is a struct that describes window fields specific to MacOS.
@@ -93,155 +136,204 @@ const (
 	VibeUltraDark
 )
 
-// WindowWithLogs returns a decorated version of the given window that logs
-// all the operations.
-// Uses the default logger.
-func WindowWithLogs(w Window) Window {
-	return &windowWithLogs{
-		base: w,
-	}
-}
-
 type windowWithLogs struct {
-	base Window
-}
-
-func (w *windowWithLogs) ID() uuid.UUID {
-	return w.base.ID()
-}
-
-func (w *windowWithLogs) Base() Window {
-	return w.base.Base()
+	Window
 }
 
 func (w *windowWithLogs) Load(url string, v ...interface{}) error {
-	fmtURL := fmt.Sprintf(url, v...)
-	Logf("window %s: loading %s", w.base.ID(), fmtURL)
+	parsedURL := fmt.Sprintf(url, v...)
 
-	err := w.base.Load(url, v...)
+	WhenDebug(func() {
+		Debug("window %s is loading %s",
+			w.ID(),
+			parsedURL,
+		)
+	})
+
+	err := w.Window.Load(url, v...)
 	if err != nil {
-		Errorf("window %s: loading %s failed: %s", w.base.ID(), fmtURL, err)
+		Log("window %s failed to load %s: %s",
+			w.ID(),
+			parsedURL,
+			err,
+		)
 	}
 	return err
-}
-
-func (w *windowWithLogs) Component() Component {
-	c := w.base.Component()
-	Logf("window %s: mounted component is %T", w.base.ID(), c)
-	return c
-}
-
-func (w *windowWithLogs) Contains(c Component) bool {
-	ok := w.base.Contains(c)
-	Logf("window %s: contains %T is %v", w.base.ID(), c, ok)
-	return ok
 }
 
 func (w *windowWithLogs) Render(c Component) error {
-	Logf("window %s: rendering %T", w.base.ID(), c)
+	WhenDebug(func() {
+		Debug("window %s is rendering %T",
+			w.ID(),
+			c,
+		)
+	})
 
-	err := w.base.Render(c)
+	err := w.Window.Render(c)
 	if err != nil {
-		Errorf("window %s: rendering %T failed: %s", w.base.ID(), c, err)
+		Log("window %s failed to render %T: %s",
+			w.ID(),
+			c,
+			err,
+		)
 	}
 	return err
-}
-
-func (w *windowWithLogs) LastFocus() time.Time {
-	return w.base.LastFocus()
 }
 
 func (w *windowWithLogs) Reload() error {
-	Logf("window %s: reloading component %T", w.base.ID(), w.base.Component())
+	WhenDebug(func() {
+		Debug("window %s is reloading", w.ID())
+	})
 
-	err := w.base.Reload()
+	err := w.Window.Reload()
 	if err != nil {
-		Errorf("window %s: reloading component failed: %s", w.base.ID(), err)
+		Log("window %s failed to reload: %s",
+			w.ID(),
+			err,
+		)
 	}
 	return err
-}
-
-func (w *windowWithLogs) CanPrevious() bool {
-	ok := w.base.CanPrevious()
-	Logf("window %s: can navigate to previous component is %v", w.base.ID(), ok)
-	return ok
 }
 
 func (w *windowWithLogs) Previous() error {
-	Logf("window %s: navigating to previous component", w.base.ID())
+	WhenDebug(func() {
+		Debug("window %s is loading previous", w.ID())
+	})
 
-	err := w.base.Previous()
+	err := w.Window.Previous()
 	if err != nil {
-		Errorf("window %s: navigating to previous component failed: %s",
-			w.base.ID(),
+		Log("window %s failed to load previous: %s",
+			w.ID(),
 			err,
 		)
 	}
 	return err
-}
-
-func (w *windowWithLogs) CanNext() bool {
-	ok := w.base.CanNext()
-	Logf("window %s: can navigate to next component is %v", w.base.ID(), ok)
-	return ok
 }
 
 func (w *windowWithLogs) Next() error {
-	Logf("window %s: navigating to next component", w.base.ID())
+	WhenDebug(func() {
+		Debug("window %s is loading next", w.ID())
+	})
 
-	err := w.base.Next()
+	err := w.Window.Next()
 	if err != nil {
-		Errorf("window %s: navigating to next component failed: %s",
-			w.base.ID(),
+		Log("window %s failed to load next: %s",
+			w.ID(),
 			err,
 		)
 	}
 	return err
 }
 
-func (w *windowWithLogs) Position() (x, y float64) {
-	x, y = w.base.Position()
-	Logf("window %s: position is (%.2f, %.2f)", w.base.ID(), x, y)
-	return x, y
+func (w *windowWithLogs) Close() error {
+	WhenDebug(func() {
+		Debug("window %s is closing", w.ID())
+	})
+
+	err := w.Window.Close()
+	if err != nil {
+		Log("window %s failed to close: %s",
+			w.ID(),
+			err,
+		)
+	}
+	return err
 }
 
-func (w *windowWithLogs) Move(x, y float64) {
-	Logf("window %s: moving to (%.2f, %.2f)", w.base.ID(), x, y)
-	w.base.Move(x, y)
+func (w *windowWithLogs) Move(x, y float64) error {
+	WhenDebug(func() {
+		Debug("window %s is moving to x:%.2f y:%.2f",
+			w.ID(),
+			x,
+			y,
+		)
+	})
+
+	err := w.Window.Move(x, y)
+	if err != nil {
+		Log("window %s failed to move: %s",
+			w.ID(),
+			err,
+		)
+	}
+	return err
 }
 
-func (w *windowWithLogs) Center() {
-	Logf("window %s: centering", w.base.ID())
-	w.base.Center()
+func (w *windowWithLogs) Center() error {
+	WhenDebug(func() {
+		Debug("window %s is moving to center", w.ID())
+	})
+
+	err := w.Window.Center()
+	if err != nil {
+		Log("window %s failed to move to center: %s",
+			w.ID(),
+			err,
+		)
+	}
+	return err
 }
 
-func (w *windowWithLogs) Size() (width, height float64) {
-	width, height = w.base.Size()
-	Logf("window %s: size is %.2fx%.2f", w.base.ID(), width, height)
-	return width, height
+func (w *windowWithLogs) Resize(width, height float64) error {
+	WhenDebug(func() {
+		Debug("window %s is resizing to width:%.2f height:%.2f",
+			w.ID(),
+			width,
+			height,
+		)
+	})
+
+	err := w.Window.Resize(width, height)
+	if err != nil {
+		Log("window %s failed to resize: %s",
+			w.ID(),
+			err,
+		)
+	}
+	return err
 }
 
-func (w *windowWithLogs) Resize(width, height float64) {
-	Logf("window %s: resize to %.2fx%.2f", w.base.ID(), width, height)
-	w.base.Resize(width, height)
+func (w *windowWithLogs) Focus() error {
+	WhenDebug(func() {
+		Debug("window %s is getting focus", w.ID())
+	})
+
+	err := w.Window.Focus()
+	if err != nil {
+		Log("window %s failed to get focus: %s",
+			w.ID(),
+			err,
+		)
+	}
+	return err
 }
 
-func (w *windowWithLogs) Focus() {
-	Logf("window %s: focusing", w.base.ID())
-	w.base.Focus()
+func (w *windowWithLogs) ToggleFullScreen() error {
+	WhenDebug(func() {
+		Debug("window %s is toggling full screen", w.ID())
+	})
+
+	err := w.Window.ToggleFullScreen()
+	if err != nil {
+		Log("window %s failed to toggle full screen: %s",
+			w.ID(),
+			err,
+		)
+	}
+	return err
 }
 
-func (w *windowWithLogs) ToggleFullScreen() {
-	Logf("window %s: toggle full screen", w.base.ID())
-	w.base.ToggleFullScreen()
-}
+func (w *windowWithLogs) ToggleMinimize() error {
+	WhenDebug(func() {
+		Debug("window %s is toggling minimize", w.ID())
+	})
 
-func (w *windowWithLogs) ToggleMinimize() {
-	Logf("window %s: toggle minimize", w.base.ID())
-	w.base.ToggleMinimize()
-}
-
-func (w *windowWithLogs) Close() {
-	Logf("window %s: closing", w.base.ID())
-	w.base.Close()
+	err := w.Window.ToggleMinimize()
+	if err != nil {
+		Log("window %s failed to toggle minimize: %s",
+			w.ID(),
+			err,
+		)
+	}
+	return err
 }

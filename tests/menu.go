@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/murlokswarm/app"
+	"github.com/stretchr/testify/require"
 )
 
 func testContextMenu(t *testing.T, d app.Driver) {
@@ -32,10 +33,6 @@ func testMenu(t *testing.T, setup func(c app.MenuConfig) (app.Menu, error)) {
 			},
 		},
 		{
-			scenario: "menu is decorated with logs",
-			function: testMenuIsDecorated,
-		},
-		{
 			scenario: "load a component",
 			function: testMenuLoadSuccess,
 		},
@@ -59,9 +56,7 @@ func testMenu(t *testing.T, setup func(c app.MenuConfig) (app.Menu, error)) {
 			if app.NotSupported(err) {
 				return
 			}
-			if err != nil {
-				t.Fatal(err)
-			}
+			require.NoError(t, err)
 
 			if test.function == nil {
 				return
@@ -71,60 +66,40 @@ func testMenu(t *testing.T, setup func(c app.MenuConfig) (app.Menu, error)) {
 	}
 }
 
-func testMenuIsDecorated(t *testing.T, m app.Menu) {
-	if base := m.Base(); base == m {
-		t.Error("menu is not decorated")
-	}
-}
-
 func testMenuLoadSuccess(t *testing.T, m app.Menu) {
-	if err := m.Load("tests.menu"); err != nil {
-		t.Fatal(err)
-	}
+	err := m.Load("tests.menu")
+	require.NoError(t, err)
 }
 
 func testMenuLoadFail(t *testing.T, m app.Menu) {
 	err := m.Load("tests.tralala")
-	if err == nil {
-		t.Fatal("error is nil")
-	}
-	t.Log(err)
+	require.Error(t, err)
 }
 
 func testMenuRenderSuccess(t *testing.T, m app.Menu) {
-	if err := m.Load("tests.menu"); err != nil {
-		t.Fatal(err)
-	}
+	err := m.Load("tests.menu")
+	require.NoError(t, err)
 
 	compo := m.Component()
-	if compo == nil {
-		t.Fatal("component is nil")
-	}
+	require.NotNil(t, compo)
 
 	menu := compo.(*Menu)
 	menu.Label = "a menu for test"
 
-	if err := m.Render(menu); err != nil {
-		t.Fatal(err)
-	}
+	err = m.Render(menu)
+	require.NoError(t, err)
 }
 
 func testMenuRenderFail(t *testing.T, m app.Menu) {
-	if err := m.Load("tests.menu"); err != nil {
-		t.Fatal(err)
-	}
+	err := m.Load("tests.menu")
+	require.NoError(t, err)
 
 	compo := m.Component()
-	if compo == nil {
-		t.Fatal("component is nil")
-	}
+	require.NotNil(t, compo)
 
 	menu := compo.(*Menu)
 	menu.SimulateErr = true
 
-	err := m.Render(menu)
-	if err == nil {
-		t.Fatal(err)
-	}
-	t.Log(err)
+	err = m.Render(menu)
+	require.Error(t, err)
 }

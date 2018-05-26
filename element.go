@@ -67,7 +67,7 @@ type Navigator interface {
 // Closer is the interface that describes an element that can be closed.
 type Closer interface {
 	// Close closes the element and free its allocated resources.
-	Close()
+	Close() error
 }
 
 // NotificationConfig is a struct that describes a notification.

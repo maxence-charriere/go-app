@@ -102,10 +102,9 @@ func (m *eventRegistry) Dispatch(name string, arg interface{}) {
 		argTyp := typ.In(0)
 
 		if !argVal.Type().ConvertibleTo(argTyp) {
-			Errorf("dispatching event %s failed: can't convert %s to %s",
+			Log("dispatching event %s failed: %s",
 				name,
-				argVal.Type(),
-				argTyp,
+				errors.Errorf("can't convert %s to %s", argVal.Type(), argTyp),
 			)
 			return
 		}
@@ -116,33 +115,6 @@ func (m *eventRegistry) Dispatch(name string, arg interface{}) {
 			})
 		})
 	}
-}
-
-// EventRegistryWithLogs returns a decorated version of the given event registry
-// that logs all its operations.
-func EventRegistryWithLogs(r EventRegistry) EventRegistry {
-	return &eventRegistryWithLogs{
-		base: r,
-	}
-}
-
-type eventRegistryWithLogs struct {
-	base EventRegistry
-}
-
-func (r *eventRegistryWithLogs) Subscribe(name string, handler interface{}) func() {
-	Logf("subscribing to event %s with %T", name, handler)
-	unsuscribe := r.base.Subscribe(name, handler)
-
-	return func() {
-		Logf("unsubscribing %T from event %s", handler, name)
-		unsuscribe()
-	}
-}
-
-func (r *eventRegistryWithLogs) Dispatch(name string, arg interface{}) {
-	Logf("dispatching event %s %+v", name, arg)
-	r.base.Dispatch(name, arg)
 }
 
 // ConcurrentEventRegistry returns a decorated version of the given event
@@ -183,7 +155,7 @@ type EventSubscriber interface {
 	Subscribe(name string, handler interface{})
 
 	// Close closes the event handler and unsubscribe all its events.
-	Close()
+	Close() error
 }
 
 // NewEventSubscriber creates an event subscriber.
@@ -203,10 +175,11 @@ func (s *eventSubscriber) Subscribe(name string, handler interface{}) {
 	s.unsuscribes = append(s.unsuscribes, unsubscribe)
 }
 
-func (s *eventSubscriber) Close() {
+func (s *eventSubscriber) Close() error {
 	for _, unsuscribe := range s.unsuscribes {
 		unsuscribe()
 	}
+	return nil
 }
 
 // MouseEvent represents an onmouse event arg.

@@ -3,6 +3,8 @@ package tests
 import (
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/murlokswarm/app"
 )
 
@@ -20,10 +22,6 @@ func testWindow(t *testing.T, d app.Driver) {
 			config: app.WindowConfig{
 				DefaultURL: "tests.hello",
 			},
-		},
-		{
-			scenario: "window is decorated with logs",
-			function: testWindowIsDecorated,
 		},
 		{
 			scenario: "move",
@@ -74,41 +72,23 @@ func testWindow(t *testing.T, d app.Driver) {
 	})
 }
 
-func testWindowIsDecorated(t *testing.T, w app.Window) {
-	if base := w.Base(); base == w {
-		t.Error("window is not decorated")
-	}
-}
-
 func testWindowMove(t *testing.T, w app.Window) {
-	w.Move(420, 420)
+	w.Move(42, 42)
 	x, y := w.Position()
-	if x != 420 {
-		t.Error("window x is not 420:", x)
-	}
-	if y != 420 {
-		t.Error("window y is not 420:", y)
-	}
+	assert.Equal(t, 42.0, x)
+	assert.Equal(t, 42.0, y)
 
 	w.Center()
 	cx, cy := w.Position()
-	if cx == x {
-		t.Error("window was not centered on x axis")
-	}
-	if cy == y {
-		t.Error("window was not centered on y axis")
-	}
+	assert.NotEqual(t, x, cx)
+	assert.NotEqual(t, y, cy)
 }
 
 func testWindowResize(t *testing.T, w app.Window) {
 	w.Resize(100, 100)
 	width, height := w.Size()
-	if width != 100 {
-		t.Error("window width is not 100:", width)
-	}
-	if height != 100 {
-		t.Error("window height is not 100:", height)
-	}
+	assert.Equal(t, 100.0, width)
+	assert.Equal(t, 100.0, height)
 }
 
 func testWindowFocus(t *testing.T, w app.Window) {

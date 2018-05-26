@@ -65,46 +65,6 @@ func (f factory) New(name string) (Component, error) {
 	return c, nil
 }
 
-// FactoryWithLogs returns a decorated version of the given factory that logs
-// all the operations.
-// It uses the default logger.
-func FactoryWithLogs(f Factory) Factory {
-	return &factoryWithLogs{
-		base: f,
-	}
-}
-
-type factoryWithLogs struct {
-	base Factory
-}
-
-func (f *factoryWithLogs) Register(c Component) (name string, err error) {
-	name, err = f.base.Register(c)
-	if err != nil {
-		Errorf("registering %T failed: %s", c, err)
-		return "", err
-	}
-
-	Logf("%T are registered as %s", c, name)
-	return name, nil
-}
-
-func (f *factoryWithLogs) Registered(name string) bool {
-	ok := f.base.Registered(name)
-	Log(name, "registered:", ok)
-	return ok
-}
-
-func (f *factoryWithLogs) New(name string) (Component, error) {
-	Log("creating", name)
-
-	c, err := f.base.New(name)
-	if err != nil {
-		Errorf("creating %s failed: %s", name, err)
-	}
-	return c, err
-}
-
 // ConcurrentFactory returns a decorated version of the given factory that
 // is safe for concurrent operations.
 func ConcurrentFactory(f Factory) Factory {

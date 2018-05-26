@@ -7,12 +7,10 @@ import (
 )
 
 func main() {
-	app.DefaultLogger = app.ConcurrentLogger(app.NewConsole(true))
-
 	app.Import(&test.Webview{})
 	app.Import(&test.Menu{})
 
 	app.Run(&web.Driver{
 		DefaultURL: "/test.Webview",
-	})
+	}, app.Logs())
 }

@@ -26,14 +26,3 @@ func TestActionRegistry(t *testing.T) {
 		return app.NewActionRegistry(dispatcher)
 	})
 }
-
-func TestActionRegistryWithLogs(t *testing.T) {
-	tests.TestActionRegistry(t, func() app.ActionRegistry {
-		dispatcher := app.NewEventRegistry(func(f func()) {
-			f()
-		})
-
-		r := app.NewActionRegistry(dispatcher)
-		return app.ActionRegistryWithLogs(r)
-	})
-}

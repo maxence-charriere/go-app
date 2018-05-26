@@ -17,9 +17,6 @@ func testPage(t *testing.T, d app.Driver) {
 	if !ok {
 		return
 	}
-	if _, ok := d.Base().(PageTester); !ok {
-		return
-	}
 
 	tests := []struct {
 		scenario string
@@ -34,10 +31,6 @@ func testPage(t *testing.T, d app.Driver) {
 			config: app.PageConfig{
 				DefaultURL: "tests.hello",
 			},
-		},
-		{
-			scenario: "page is decorated with logs",
-			function: testPageIsDecorated,
 		},
 		{
 			scenario: "url",
@@ -72,12 +65,6 @@ func testPage(t *testing.T, d app.Driver) {
 	testElementWithNavigation(t, func() (app.Navigator, error) {
 		return tester.NewTestPage(app.PageConfig{})
 	})
-}
-
-func testPageIsDecorated(t *testing.T, p app.Page) {
-	if base := p.Base(); base == p {
-		t.Error("page is not decorated")
-	}
 }
 
 func testPageURL(t *testing.T, p app.Page) {

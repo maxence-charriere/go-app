@@ -13,7 +13,6 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/html"
-	"github.com/pkg/errors"
 )
 
 type Page struct {
@@ -28,34 +27,29 @@ func newPage(c app.PageConfig) (app.Page, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
 	markup = app.ConcurrentMarkup(markup)
 
-	rawPage := &Page{
+	page := &Page{
 		id:        uuid.New(),
 		markup:    markup,
 		lastFocus: time.Now(),
 	}
 
-	page := app.PageWithLogs(rawPage)
 	if err := driver.elements.Add(page); err != nil {
 		return nil, err
 	}
 
-	js.Global.Set("golangRequest", rawPage.onPageRequest)
+	js.Global.Set("golangRequest", page.onPageRequest)
 
 	js.Global.Call("addEventListener", "unload", func() {
 		driver.elements.Remove(page)
 	})
 
-	err := rawPage.Load(rawPage.URL().String())
+	err := page.Load(page.URL().String())
 	return page, err
 }
 
 // ID satisfies the app.Page interface.
 func (p *Page) ID() uuid.UUID {
 	return p.id
-}
-
-func (p *Page) Base() app.Page {
-	return p
 }
 
 func (p *Page) Load(rawurl string, v ...interface{}) error {
@@ -230,20 +224,21 @@ func (p *Page) Referer() *url.URL {
 	return u
 }
 
-func (p *Page) Close() {
+func (p *Page) Close() error {
 	js.Global.Call("close")
+	return nil
 }
 
 func (p *Page) onPageRequest(j string) {
 	var mapping app.Mapping
 	if err := json.Unmarshal([]byte(j), &mapping); err != nil {
-		app.Error(errors.Wrap(err, "onPageRequest"))
+		app.Log("page request failed: %s", err)
 		return
 	}
 
 	fn, err := p.markup.Map(mapping)
 	if err != nil {
-		app.Error(err)
+		app.Log("page request failed: %s", err)
 		return
 	}
 
@@ -254,11 +249,11 @@ func (p *Page) onPageRequest(j string) {
 
 	var compo app.Component
 	if compo, err = p.markup.Component(mapping.CompoID); err != nil {
-		app.Error(err)
+		app.Log("page request failed: %s", err)
 		return
 	}
 
 	if err = p.Render(compo); err != nil {
-		app.Error(err)
+		app.Log("page request failed: %s", err)
 	}
 }
