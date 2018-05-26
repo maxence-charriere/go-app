@@ -14,7 +14,7 @@ import (
 
 // DockTile implements the app.DockTile interface.
 type DockTile struct {
-	menu Menu
+	Menu
 }
 
 func newDockTile(c app.MenuConfig) (app.DockTile, error) {
@@ -22,7 +22,7 @@ func newDockTile(c app.MenuConfig) (app.DockTile, error) {
 	markup = app.ConcurrentMarkup(markup)
 
 	dock := &DockTile{
-		menu: Menu{
+		Menu: Menu{
 			id:        uuid.New(),
 			markup:    markup,
 			lastFocus: time.Now(),
@@ -52,41 +52,6 @@ func newDockTile(c app.MenuConfig) (app.DockTile, error) {
 	}
 
 	return dock, nil
-}
-
-// ID satisfies the app.DockTile interface.
-func (d *DockTile) ID() uuid.UUID {
-	return d.menu.ID()
-}
-
-// Base satisfies the app.DockTile interface.
-func (d *DockTile) Base() app.Menu {
-	return d.menu.Base()
-}
-
-// Load satisfies the app.DockTile interface.
-func (d *DockTile) Load(url string, v ...interface{}) error {
-	return d.menu.Load(url, v...)
-}
-
-// Contains satisfies the app.DockTile interface.
-func (d *DockTile) Contains(compo app.Component) bool {
-	return d.menu.Contains(compo)
-}
-
-// Component satisfies the app.DockTile interface.
-func (d *DockTile) Component() app.Component {
-	return d.menu.component
-}
-
-// Render satisfies the app.DockTile interface.
-func (d *DockTile) Render(compo app.Component) error {
-	return d.menu.Render(compo)
-}
-
-// LastFocus satisfies the app.DockTile interface.
-func (d *DockTile) LastFocus() time.Time {
-	return d.menu.LastFocus()
 }
 
 // SetIcon satisfies the app.DockTile interface.

@@ -167,7 +167,7 @@ func (w *Window) load(u *url.URL) error {
 
 	compo, err := driver.factory.New(app.ComponentNameFromURL(u))
 	if err != nil {
-		return nil
+		return err
 	}
 
 	if w.component != nil {
@@ -603,7 +603,8 @@ func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 }
 
 func onWindowNavigate(w *Window, in map[string]interface{}) interface{} {
-	w.Load(in["URL"].(string))
+	win, _ := app.WindowByComponent(w.Component())
+	win.Load(in["URL"].(string))
 	return nil
 }
 
@@ -616,7 +617,7 @@ func handleWindow(h func(w *Window, in map[string]interface{}) interface{}) brid
 			return nil
 		}
 
-		win := elem.(app.Window).(*Window)
+		win := elem.(*Window)
 		return h(win, in)
 	}
 }

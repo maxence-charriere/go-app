@@ -4,13 +4,14 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/murlokswarm/app"
 )
 
 // TestDriver is a test suite that ensure that all driver implementations behave
 // the same.
-func TestDriver(t *testing.T, setup func(onRun func()) app.Driver, shutdown func()) {
+func TestDriver(t *testing.T, setup func(onRun func()) app.Driver, shutdown func() error) {
 	var driver app.Driver
 
 	app.Import(&Hello{})
@@ -54,7 +55,5 @@ func TestDriver(t *testing.T, setup func(onRun func()) app.Driver, shutdown func
 	if app.NotSupported(err) {
 		return
 	}
-	if err != nil {
-		t.Error(err)
-	}
+	require.NoError(t, err)
 }

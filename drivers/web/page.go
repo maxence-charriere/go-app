@@ -52,10 +52,6 @@ func (p *Page) ID() uuid.UUID {
 	return p.id
 }
 
-func (p *Page) Base() app.Page {
-	return p
-}
-
 func (p *Page) Load(rawurl string, v ...interface{}) error {
 	if p.component != nil {
 		p.markup.Dismount(p.component)

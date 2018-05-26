@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/murlokswarm/app"
+	"github.com/stretchr/testify/require"
 )
 
 func testDockTile(t *testing.T, d app.Driver) {
@@ -57,9 +58,7 @@ func testDockSetIconSuccess(t *testing.T, d app.DockTile, driver app.Driver) {
 	if app.NotSupported(err) {
 		return
 	}
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 }
 
 func testDockSetIconFail(t *testing.T, d app.DockTile, driver app.Driver) {
@@ -70,10 +69,7 @@ func testDockSetIconFail(t *testing.T, d app.DockTile, driver app.Driver) {
 	if app.NotSupported(err) {
 		return
 	}
-	if err == nil {
-		t.Fatal("error is nil")
-	}
-	t.Log(err)
+	require.Error(t, err)
 }
 
 func testDockSetBadgeSuccess(t *testing.T, d app.DockTile, driver app.Driver) {

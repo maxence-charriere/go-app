@@ -139,7 +139,7 @@ func TestApp(t *testing.T) {
 		err = dockTile.SetBadge("42")
 		require.NoError(t, err)
 
-		err = dockTile.SetIcon("icon.png")
+		err = dockTile.SetIcon(filepath.Join("tests", "resources", "logo.png"))
 		require.NoError(t, err)
 
 		// CSS resources:

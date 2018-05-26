@@ -146,15 +146,15 @@ func (m *Menu) OnButtonWithIconClick() {
 // OnSetDockBadge is the function that is called when the button labelled "set
 // dock badge" is clicked.
 func (m *Menu) OnSetDockBadge() {
-	app.DefaultLogger.Log("button set dock badge clicked")
+	app.Log("button set dock badge clicked")
 
 	dock, err := app.Dock()
 	if err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 		return
 	}
 	if err = dock.SetBadge(uuid.New()); err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 	}
 }
 
@@ -165,48 +165,48 @@ func (m *Menu) OnUnsetDockBadge() {
 
 	dock, err := app.Dock()
 	if err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 		return
 	}
 	if err = dock.SetBadge(nil); err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 	}
 }
 
 // OnSetDockIcon is the function that is called when the button labelled "set
 // dock icon" is clicked.
 func (m *Menu) OnSetDockIcon() {
-	app.DefaultLogger.Log("button set dock icon clicked")
+	app.Log("button set dock icon clicked")
 
 	dock, err := app.Dock()
 	if err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 		return
 	}
 	if err = dock.SetIcon(app.Resources("logo.png")); err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 	}
 }
 
 // OnUnsetDockIcon is the function that is called when the button labelled
 // "unset dock icon" is clicked.
 func (m *Menu) OnUnsetDockIcon() {
-	app.DefaultLogger.Log("button unset dock icon clicked")
+	app.Log("button unset dock icon clicked")
 
 	dock, err := app.Dock()
 	if err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 		return
 	}
 	if err = dock.SetIcon(""); err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 	}
 }
 
 // OnButtonWithRandomTitleClicked is the function that is called when the button
 // with randow title is clicked.
 func (m *Menu) OnButtonWithRandomTitleClicked() {
-	app.DefaultLogger.Log("button with random title clicked")
+	app.Log("button with random title clicked")
 	m.RandomTitle = uuid.New()
 	app.Render(m)
 }
@@ -214,13 +214,13 @@ func (m *Menu) OnButtonWithRandomTitleClicked() {
 // OnSubButtonClick is the function that is called when the button labelled "sub
 // button" is clicked.
 func (m *Menu) OnSubButtonClick() {
-	app.DefaultLogger.Log("sub button clicked")
+	app.Log("sub button clicked")
 }
 
 // OnEnableAllClick is the function that is called when the button labelled
 // "enable all" is clicked.
 func (m *Menu) OnEnableAllClick() {
-	app.DefaultLogger.Log("button enable all clicked")
+	app.Log("button enable all clicked")
 	m.DisableAll = false
 	app.Render(m)
 }
@@ -228,7 +228,7 @@ func (m *Menu) OnEnableAllClick() {
 // OnDisableAllClick is the function that is called when the button labelled
 // "disable all" is clicked.
 func (m *Menu) OnDisableAllClick() {
-	app.DefaultLogger.Log("button disable all clicked")
+	app.Log("button disable all clicked")
 	m.DisableAll = true
 	app.Render(m)
 }
@@ -236,7 +236,7 @@ func (m *Menu) OnDisableAllClick() {
 // OnSwitchSeparatorClick is the function that is called when the button
 // labelled "switch separator" is clicked.
 func (m *Menu) OnSwitchSeparatorClick() {
-	app.DefaultLogger.Log("button switch separator clicked")
+	app.Log("button switch separator clicked")
 	m.Separator = !m.Separator
 	app.Render(m)
 }
@@ -244,7 +244,7 @@ func (m *Menu) OnSwitchSeparatorClick() {
 // OnRenderRootClicked is the function that is called when the button labelled
 // "render root" is clicked.
 func (m *Menu) OnRenderRootClicked() {
-	app.DefaultLogger.Log("button render root clicked")
+	app.Log("button render root clicked")
 	m.RenderRootToggle = !m.RenderRootToggle
 	app.Render(m)
 }
@@ -252,7 +252,7 @@ func (m *Menu) OnRenderRootClicked() {
 // OnRenderRootAttributeClicked is the function that is called when the button
 // labelled "render root attribute" is clicked.
 func (m *Menu) OnRenderRootAttributeClicked() {
-	app.DefaultLogger.Log("button render root attribute clicked")
+	app.Log("button render root attribute clicked")
 	m.Name = uuid.New().String()
 	app.Render(m)
 }

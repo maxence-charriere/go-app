@@ -11,6 +11,10 @@ import (
 
 func TestBaseDriver(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
+	shutdown := func() error {
+		cancel()
+		return nil
+	}
 
 	tests.TestDriver(t, func(onRun func()) app.Driver {
 		return &test.Driver{
@@ -18,5 +22,5 @@ func TestBaseDriver(t *testing.T) {
 			Ctx:           ctx,
 			UseBaseDriver: true,
 		}
-	}, cancel)
+	}, shutdown)
 }

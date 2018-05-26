@@ -83,11 +83,6 @@ func (d *Driver) Name() string {
 	return "MacOS"
 }
 
-// Base satisfies the app.Driver interface.
-func (d *Driver) Base() app.Driver {
-	return d
-}
-
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(f app.Factory) error {
 	if bundle := os.Getenv("GOAPP_BUNDLE"); bundle == "true" {
@@ -303,7 +298,9 @@ func (d *Driver) NewWindow(c app.WindowConfig) (app.Window, error) {
 
 // NewContextMenu satisfies the app.Driver interface.
 func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
-	m, err := newMenu(c, "context menu")
+	c.Type = "context menu"
+
+	m, err := newMenu(c)
 	if err != nil {
 		return nil, err
 	}
@@ -368,7 +365,7 @@ func (d *Driver) MenuBar() (app.Menu, error) {
 }
 
 func (d *Driver) newMenuBar() error {
-	menubar, err := newMenu(app.MenuConfig{}, "menubar")
+	menubar, err := newMenu(app.MenuConfig{Type: "menubar"})
 	if err != nil {
 		return errors.Wrap(err, "creating the menu bar failed")
 	}

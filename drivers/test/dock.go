@@ -2,6 +2,7 @@ package test
 
 import (
 	"encoding/json"
+	"os"
 	"time"
 
 	"github.com/google/uuid"
@@ -38,7 +39,8 @@ func (d *DockTile) SetIcon(name string) error {
 	if d.simulateErr {
 		return ErrSimulated
 	}
-	return nil
+	_, err := os.Stat(name)
+	return err
 }
 
 // SetBadge satisfies the app.DockTile interface.

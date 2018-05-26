@@ -146,8 +146,8 @@ func (d *driverWithLogs) Run(f Factory) error {
 
 func (d *driverWithLogs) NewWindow(c WindowConfig) (Window, error) {
 	WhenDebug(func() {
-		config, _ := json.Marshal(c)
-		Log("creating window: %s", config)
+		config, _ := json.MarshalIndent(c, "", "  ")
+		Debug("creating window: %s", config)
 	})
 
 	win, err := d.Driver.NewWindow(c)
@@ -166,8 +166,8 @@ func (d *driverWithLogs) NewContextMenu(c MenuConfig) (Menu, error) {
 	c.Type = "context menu"
 
 	WhenDebug(func() {
-		config, _ := json.Marshal(c)
-		Log("creating context menu: %s", config)
+		config, _ := json.MarshalIndent(c, "", "  ")
+		Debug("creating context menu: %s", config)
 	})
 
 	menu, err := d.Driver.NewContextMenu(c)
@@ -184,8 +184,8 @@ func (d *driverWithLogs) NewContextMenu(c MenuConfig) (Menu, error) {
 
 func (d *driverWithLogs) NewPage(c PageConfig) error {
 	WhenDebug(func() {
-		config, _ := json.Marshal(c)
-		Log("creating page: %s", config)
+		config, _ := json.MarshalIndent(c, "", "  ")
+		Debug("creating page: %s", config)
 	})
 
 	err := d.Driver.NewPage(c)
@@ -197,7 +197,7 @@ func (d *driverWithLogs) NewPage(c PageConfig) error {
 
 func (d *driverWithLogs) Render(c Component) error {
 	WhenDebug(func() {
-		Log("rendering %T", c)
+		Debug("rendering %T", c)
 	})
 
 	err := d.Driver.Render(c)
@@ -209,7 +209,7 @@ func (d *driverWithLogs) Render(c Component) error {
 
 func (d *driverWithLogs) ElementByComponent(c Component) (ElementWithComponent, error) {
 	WhenDebug(func() {
-		Log("getting element from %T", c)
+		Debug("getting element from %T", c)
 	})
 
 	elem, err := d.Driver.ElementByComponent(c)
@@ -241,8 +241,8 @@ func (d *driverWithLogs) ElementByComponent(c Component) (ElementWithComponent, 
 
 func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) error {
 	WhenDebug(func() {
-		config, _ := json.Marshal(c)
-		Log("creating file panel: %s", config)
+		config, _ := json.MarshalIndent(c, "", "  ")
+		Debug("creating file panel: %s", config)
 	})
 
 	err := d.Driver.NewFilePanel(c)
@@ -254,8 +254,8 @@ func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) error {
 
 func (d *driverWithLogs) NewSaveFilePanel(c SaveFilePanelConfig) error {
 	WhenDebug(func() {
-		config, _ := json.Marshal(c)
-		Log("creating save file panel: %s", config)
+		config, _ := json.MarshalIndent(c, "", "  ")
+		Debug("creating save file panel: %s", config)
 	})
 
 	err := d.Driver.NewSaveFilePanel(c)
@@ -267,7 +267,7 @@ func (d *driverWithLogs) NewSaveFilePanel(c SaveFilePanelConfig) error {
 
 func (d *driverWithLogs) NewShare(v interface{}) error {
 	WhenDebug(func() {
-		Log("creating share: %v", v)
+		Debug("creating share: %v", v)
 	})
 
 	err := d.Driver.NewShare(v)
@@ -279,8 +279,8 @@ func (d *driverWithLogs) NewShare(v interface{}) error {
 
 func (d *driverWithLogs) NewNotification(c NotificationConfig) error {
 	WhenDebug(func() {
-		config, _ := json.Marshal(c)
-		Log("creating notification: %s", config)
+		config, _ := json.MarshalIndent(c, "", "  ")
+		Debug("creating notification: %s", config)
 	})
 
 	err := d.Driver.NewNotification(c)
@@ -292,7 +292,7 @@ func (d *driverWithLogs) NewNotification(c NotificationConfig) error {
 
 func (d *driverWithLogs) MenuBar() (Menu, error) {
 	WhenDebug(func() {
-		Log("getting menubar")
+		Debug("getting menubar")
 	})
 
 	menubar, err := d.Driver.MenuBar()
@@ -309,7 +309,7 @@ func (d *driverWithLogs) MenuBar() (Menu, error) {
 
 func (d *driverWithLogs) Dock() (DockTile, error) {
 	WhenDebug(func() {
-		Log("getting dock tile")
+		Debug("getting dock tile")
 	})
 
 	dockTile, err := d.Driver.Dock()

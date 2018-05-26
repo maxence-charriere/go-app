@@ -39,11 +39,11 @@ func (m *DockMenu) OnChangeIcon() {
 
 	dock, err := app.Dock()
 	if err != nil {
-		app.Error(err)
+		app.Log("OnChangeIcon: %s", err)
 		return
 	}
 	if err = dock.SetIcon(icon); err != nil {
-		app.Error(err)
+		app.Log("OnChangeIcon: %s", err)
 	}
 }
 
@@ -61,10 +61,10 @@ func (m *DockMenu) OnChangeBadge() {
 
 	dock, err := app.Dock()
 	if err != nil {
-		app.Error(err)
+		app.Log("OnChangeBadge: %s", err)
 		return
 	}
 	if err = dock.SetBadge(badge); err != nil {
-		app.Error(err)
+		app.Log("OnChangeBadge: %s", err)
 	}
 }

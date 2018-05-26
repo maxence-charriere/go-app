@@ -78,7 +78,7 @@ func (l *ClickListener) Render() string {
 func (l *ClickListener) OnClickEvent(e app.MouseEvent) {
 	d, err := json.MarshalIndent(e, "", "  ")
 	if err != nil {
-		app.Error(err)
+		app.Log("on click event: %s", err)
 		return
 	}
 

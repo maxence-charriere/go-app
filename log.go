@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"strings"
 	"time"
 )
 
@@ -99,14 +98,7 @@ func (l *logger) WhenDebug(f func()) {
 }
 
 func (l *logger) print(level int, format string, v ...interface{}) {
-	prefix := l.prefix(level)
-
-	if len(l.indent) == 0 {
-		l.indent = l.genIndent(len(prefix) - len(defaultColor)*4)
-	}
-
-	format = prefix + format
-	format = strings.Replace(format, "\n", "\n"+l.indent, -1)
+	format = l.prefix(level) + format
 
 	if format[len(format)-1] != '\n' {
 		format += "\n"
@@ -141,14 +133,6 @@ func (l *logger) prefix(level int) string {
 		color,
 		defaultColor,
 	)
-}
-
-func (l *logger) genIndent(ilen int) string {
-	indent := ""
-	for i := 0; i < ilen; i++ {
-		indent += " "
-	}
-	return indent
 }
 
 const (

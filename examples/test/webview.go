@@ -39,7 +39,7 @@ func (c *Webview) Render() string {
 	</p>
 	
 	<ul>
-		<li><a href="/test.Webview?page=42">To page 42</a></li>
+		<li><a href="test.Webview?page=42">To page 42</a></li>
 		<li><a href="unknown?page=42">Unknown compopent</a></li>
 		<li><a href="http://theverge.com">external hyperlink</a></li>
 		<li><button onclick="OnNextPage">Next Page</button></li>
@@ -104,7 +104,7 @@ func (c *Webview) OnContextMenu() {
 	app.NewContextMenu(app.MenuConfig{
 		DefaultURL: "/test.Menu",
 		OnClose: func() {
-			app.DefaultLogger.Log("context menu is closed")
+			app.Log("context menu is closed")
 		},
 	})
 }
@@ -177,7 +177,7 @@ func (c *Webview) OnChangeNumber() {
 // OnShare is the function that is called when the Share button is clicked.
 func (c *Webview) OnShare() {
 	if err := app.NewShare("Hello world"); err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 	}
 }
 
@@ -186,11 +186,11 @@ func (c *Webview) OnShare() {
 func (c *Webview) OnShareURL() {
 	u, err := url.Parse("https://github.com/murlokswarm/app")
 	if err != nil {
-		app.DefaultLogger.Log(err)
+		app.Log("%s", err)
 	}
 
 	if err = app.NewShare(u); err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 	}
 }
 
@@ -200,10 +200,10 @@ func (c *Webview) OnDirPanel() {
 	if err := app.NewFilePanel(app.FilePanelConfig{
 		IgnoreFiles: true,
 		OnSelect: func(filenames []string) {
-			app.DefaultLogger.Log(filenames)
+			app.Log("filenames: %v", filenames)
 		},
 	}); err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 	}
 }
 
@@ -215,10 +215,10 @@ func (c *Webview) OnFilePanel() {
 		ShowHiddenFiles:   true,
 		FileTypes:         []string{"public.jpeg", "gif"},
 		OnSelect: func(filenames []string) {
-			app.DefaultLogger.Log(filenames)
+			app.Log("filenames: %v", filenames)
 		},
 	}); err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 	}
 }
 
@@ -229,10 +229,10 @@ func (c *Webview) OnMultipleFilePanel() {
 		IgnoreDirectories: true,
 		MultipleSelection: true,
 		OnSelect: func(filenames []string) {
-			app.DefaultLogger.Log(filenames)
+			app.Log("filenames: %v", filenames)
 		},
 	}); err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 	}
 }
 
@@ -242,10 +242,10 @@ func (c *Webview) OnSavePanel() {
 	if err := app.NewSaveFilePanel(app.SaveFilePanelConfig{
 		// FileTypes: []string{"public.jpeg"},
 		OnSelect: func(filename string) {
-			app.DefaultLogger.Log(filename)
+			app.Log(filename)
 		},
 	}); err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 	}
 }
 
@@ -259,7 +259,7 @@ func (c *Webview) OnNotification() {
 		ImageName: filepath.Join(app.Resources(), "logo.png"),
 		Sound:     true,
 	}); err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 	}
 }
 
@@ -283,7 +283,7 @@ func (c *Webview) OnNotificationWithReply() {
 			})
 		},
 	}); err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 	}
 }
 
@@ -292,7 +292,7 @@ func (c *Webview) OnNotificationWithReply() {
 func (c *Webview) OnPrevious() {
 	nav, err := app.NavigatorByComponent(c)
 	if err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 	}
 	nav.Previous()
 }
@@ -301,7 +301,7 @@ func (c *Webview) OnPrevious() {
 func (c *Webview) OnReload() {
 	nav, err := app.NavigatorByComponent(c)
 	if err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 	}
 	nav.Reload()
 }
@@ -310,7 +310,7 @@ func (c *Webview) OnReload() {
 func (c *Webview) OnNext() {
 	nav, err := app.NavigatorByComponent(c)
 	if err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 	}
 	nav.Next()
 }
@@ -318,12 +318,12 @@ func (c *Webview) OnNext() {
 // OnDragStart is the function that is called when the node is dragged.
 func (c *Webview) OnDragStart(e app.DragAndDropEvent) {
 	data, _ := json.MarshalIndent(e, "", "  ")
-	app.Log("drag:", string(data))
+	app.Log("drag: %s", data)
 }
 
 // OnDrop is the function that is called when something is dropped to the
 // drop zone.
 func (c *Webview) OnDrop(e app.DragAndDropEvent) {
 	data, _ := json.MarshalIndent(e, "", "  ")
-	app.Log("drop:", string(data))
+	app.Log("drop: %s", data)
 }

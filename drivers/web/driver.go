@@ -39,8 +39,3 @@ type Driver struct {
 func (d *Driver) Name() string {
 	return "Web"
 }
-
-// Base satisfies the app.Driver interface.
-func (d *Driver) Base() app.Driver {
-	return d
-}

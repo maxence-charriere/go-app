@@ -75,8 +75,8 @@ func testWindow(t *testing.T, d app.Driver) {
 func testWindowMove(t *testing.T, w app.Window) {
 	w.Move(42, 42)
 	x, y := w.Position()
-	assert.Equal(t, 42, x)
-	assert.Equal(t, 42, y)
+	assert.Equal(t, 42.0, x)
+	assert.Equal(t, 42.0, y)
 
 	w.Center()
 	cx, cy := w.Position()
@@ -87,8 +87,8 @@ func testWindowMove(t *testing.T, w app.Window) {
 func testWindowResize(t *testing.T, w app.Window) {
 	w.Resize(100, 100)
 	width, height := w.Size()
-	assert.Equal(t, 100, width)
-	assert.Equal(t, 100, height)
+	assert.Equal(t, 100.0, width)
+	assert.Equal(t, 100.0, height)
 }
 
 func testWindowFocus(t *testing.T, w app.Window) {

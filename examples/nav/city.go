@@ -98,12 +98,12 @@ func (c *City) Render() string {
 func (c *City) OnPrevious() {
 	nav, err := app.NavigatorByComponent(c)
 	if err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 		return
 	}
 
 	if err = nav.Previous(); err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 	}
 }
 
@@ -112,11 +112,11 @@ func (c *City) OnPrevious() {
 func (c *City) OnNext() {
 	nav, err := app.NavigatorByComponent(c)
 	if err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 		return
 	}
 
 	if err = nav.Next(); err != nil {
-		app.Error(err)
+		app.Log("%s", err)
 	}
 }
