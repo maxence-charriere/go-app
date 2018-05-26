@@ -222,6 +222,13 @@ func MenuBar() (Menu, error) {
 	return driver.MenuBar()
 }
 
+// StatusBar returns the status bar menu.
+//
+// It panics if called before Run.
+func StatusBar() (StatusBarMenu, error) {
+	return driver.StatusBar()
+}
+
 // Dock returns the dock tile.
 //
 // It panics if called before Run.

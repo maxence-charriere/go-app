@@ -124,6 +124,25 @@ func TestApp(t *testing.T) {
 		_, err = app.MenuBar()
 		require.NoError(t, err)
 
+		// Status bar:
+		var statusBar app.StatusBarMenu
+		statusBar, err = app.StatusBar()
+		require.NoError(t, err)
+
+		err = statusBar.Load("tests.bar")
+		require.NoError(t, err)
+
+		compo = statusBar.Component()
+		require.NotNil(t, compo)
+		app.Render(compo)
+
+		elem, err = app.ElementByComponent(compo)
+		require.NoError(t, err)
+		assert.Equal(t, statusBar.ID(), elem.ID())
+
+		err = statusBar.SetIcon(filepath.Join("tests", "resources", "logo.png"))
+		assert.NoError(t, err)
+
 		// Dock:
 		var dockTile app.DockTile
 		dockTile, err = app.Dock()
@@ -136,11 +155,15 @@ func TestApp(t *testing.T) {
 		require.NotNil(t, compo)
 		app.Render(compo)
 
-		err = dockTile.SetBadge("42")
+		elem, err = app.ElementByComponent(compo)
 		require.NoError(t, err)
+		assert.Equal(t, dockTile.ID(), elem.ID())
+
+		err = dockTile.SetBadge("42")
+		assert.NoError(t, err)
 
 		err = dockTile.SetIcon(filepath.Join("tests", "resources", "logo.png"))
-		require.NoError(t, err)
+		assert.NoError(t, err)
 
 		// CSS resources:
 		assert.Len(t, app.CSSResources(), 0)
@@ -246,6 +269,20 @@ func TestAppError(t *testing.T) {
 		err = menu.Render(nil)
 		assert.Error(t, err)
 
+		// Status Bar:
+		var statusBar app.StatusBarMenu
+		statusBar, err = app.StatusBar()
+		require.NoError(t, err)
+
+		err = statusBar.Load("")
+		assert.Error(t, err)
+
+		err = statusBar.Render(nil)
+		assert.Error(t, err)
+
+		err = statusBar.SetIcon("")
+		assert.Error(t, err)
+
 		// Dock tile:
 		var dockTile app.DockTile
 		dockTile, err = app.Dock()
@@ -309,6 +346,9 @@ func TestAppError(t *testing.T) {
 	assert.Error(t, err)
 
 	_, err = app.MenuBar()
+	assert.Error(t, err)
+
+	_, err = app.StatusBar()
 	assert.Error(t, err)
 
 	_, err = app.Dock()

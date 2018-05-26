@@ -57,6 +57,9 @@ type Driver interface {
 	// MenuBar returns the menu bar.
 	MenuBar() (Menu, error)
 
+	// StatusBar returns the status bar menu.
+	StatusBar() (StatusBarMenu, error)
+
 	// Dock returns the dock tile.
 	Dock() (DockTile, error)
 
@@ -108,6 +111,11 @@ func (d *BaseDriver) NewNotification(c NotificationConfig) error {
 // MenuBar satisfies the app.Driver interface.
 func (d *BaseDriver) MenuBar() (Menu, error) {
 	return nil, NewErrNotSupported("menubar")
+}
+
+// StatusBar satisfies the app.Driver interface.
+func (d *BaseDriver) StatusBar() (StatusBarMenu, error) {
+	return nil, NewErrNotSupported("status bar")
 }
 
 // Dock satisfies the app.Driver interface.
@@ -228,6 +236,18 @@ func (d *driverWithLogs) ElementByComponent(c Component) (ElementWithComponent, 
 		}
 		return win, nil
 
+	case DockTile:
+		dockTile := &dockWithLogs{
+			DockTile: e,
+		}
+		return dockTile, nil
+
+	case StatusBarMenu:
+		menu := &statusBarWithLogs{
+			StatusBarMenu: e,
+		}
+		return menu, nil
+
 	case Menu:
 		menu := &menuWithLogs{
 			Menu: e,
@@ -305,6 +325,23 @@ func (d *driverWithLogs) MenuBar() (Menu, error) {
 		Menu: menubar,
 	}
 	return menubar, nil
+}
+
+func (d *driverWithLogs) StatusBar() (StatusBarMenu, error) {
+	WhenDebug(func() {
+		Debug("getting status bar menu")
+	})
+
+	statusBar, err := d.Driver.StatusBar()
+	if err != nil {
+		Log("getting status bar failed: %s", err)
+		return nil, err
+	}
+
+	statusBar = &statusBarWithLogs{
+		StatusBarMenu: statusBar,
+	}
+	return statusBar, nil
 }
 
 func (d *driverWithLogs) Dock() (DockTile, error) {

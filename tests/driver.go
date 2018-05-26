@@ -27,6 +27,7 @@ func TestDriver(t *testing.T, setup func(onRun func()) app.Driver, shutdown func
 		t.Run("page", func(t *testing.T) { testPage(t, driver) })
 		t.Run("context menu", func(t *testing.T) { testContextMenu(t, driver) })
 		t.Run("menubar", func(t *testing.T) { testMenubar(t, driver) })
+		t.Run("status bar", func(t *testing.T) { testStatusBar(t, driver) })
 		t.Run("dock", func(t *testing.T) { testDockTile(t, driver) })
 
 		if err := driver.NewFilePanel(app.FilePanelConfig{}); !app.NotSupported(err) {
