@@ -7,6 +7,7 @@ import (
 	"context"
 	"html/template"
 	"net/http"
+	"os"
 	"path"
 
 	"github.com/murlokswarm/app/appjs"
@@ -14,6 +15,12 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/html"
 )
+
+func init() {
+	app.Loggers = []app.Logger{
+		app.NewLogger(os.Stdout, os.Stderr, true, true),
+	}
+}
 
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(f app.Factory) error {

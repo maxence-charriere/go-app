@@ -3,7 +3,6 @@ package app
 import (
 	"fmt"
 	"io"
-	"os"
 	"time"
 )
 
@@ -22,9 +21,7 @@ type Logger interface {
 
 var (
 	// Loggers is the loggers used by the app.
-	Loggers = []Logger{
-		NewLogger(os.Stdout, os.Stderr, false),
-	}
+	Loggers []Logger
 )
 
 // Log logs a message according to a format specifier.
@@ -56,7 +53,7 @@ func WhenDebug(f func()) {
 
 // NewLogger creates a logger that writes on the given writers.
 // Logs that contain errors are logged on werr.
-func NewLogger(wout, werr io.Writer, debug bool) Logger {
+func NewLogger(wout, werr io.Writer, debug, colors bool) Logger {
 	whenDebug := func(f func()) {}
 
 	if debug {
@@ -69,6 +66,7 @@ func NewLogger(wout, werr io.Writer, debug bool) Logger {
 		wout:      wout,
 		werr:      wout,
 		whenDebug: whenDebug,
+		colors:    colors,
 	}
 }
 
@@ -76,7 +74,7 @@ type logger struct {
 	wout      io.Writer
 	werr      io.Writer
 	whenDebug func(func())
-	indent    string
+	colors    bool
 }
 
 func (l *logger) Log(format string, v ...interface{}) {
@@ -114,6 +112,7 @@ func (l *logger) print(level int, format string, v ...interface{}) {
 func (l *logger) prefix(level int) string {
 	logLevel := "INFO "
 	color := infoColor
+	endColor := defaultColor
 
 	switch level {
 	case levelError:
@@ -125,13 +124,18 @@ func (l *logger) prefix(level int) string {
 		color = debugColor
 	}
 
+	if !l.colors {
+		color = ""
+		endColor = ""
+	}
+
 	return fmt.Sprintf("%s%s%s %s %s|>%s ",
 		color,
 		logLevel,
-		defaultColor,
+		endColor,
 		time.Now().Format("2006/01/02 15:04:05"),
 		color,
-		defaultColor,
+		endColor,
 	)
 }
 

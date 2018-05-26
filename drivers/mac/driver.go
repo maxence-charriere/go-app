@@ -29,6 +29,12 @@ var (
 	driver *Driver
 )
 
+func init() {
+	app.Loggers = []app.Logger{
+		app.NewLogger(os.Stdout, os.Stderr, true, true),
+	}
+}
+
 // Driver is the app.Driver implementation for MacOS.
 type Driver struct {
 	app.BaseDriver

@@ -4,7 +4,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/drivers/mac"
@@ -12,10 +11,6 @@ import (
 )
 
 func main() {
-	app.Loggers = []app.Logger{
-		app.NewLogger(os.Stdout, os.Stderr, true),
-	}
-
 	app.Import(&test.Webview{})
 	app.Import(&test.Menu{})
 

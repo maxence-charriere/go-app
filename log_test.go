@@ -11,7 +11,7 @@ import (
 func TestLogs(t *testing.T) {
 	buff := &bytes.Buffer{}
 	Loggers = []Logger{
-		NewLogger(buff, buff, true),
+		NewLogger(buff, buff, true, true),
 	}
 
 	Log("hello world")
@@ -24,7 +24,7 @@ func TestLogs(t *testing.T) {
 
 func TestLogger(t *testing.T) {
 	buffer := &bytes.Buffer{}
-	logger := NewLogger(buffer, buffer, true)
+	logger := NewLogger(buffer, buffer, true, false)
 
 	logger.Log("a message")
 	logger.Log("a message with args: %v", 42)
@@ -38,7 +38,7 @@ func TestLogger(t *testing.T) {
 	})
 	assert.Contains(t, buffer.String(), "yoda is strong")
 
-	logger = NewLogger(buffer, buffer, false)
+	logger = NewLogger(buffer, buffer, false, true)
 	logger.WhenDebug(func() {
 		logger.Debug("vader is strong")
 	})

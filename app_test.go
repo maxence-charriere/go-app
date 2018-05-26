@@ -26,7 +26,7 @@ func TestApp(t *testing.T) {
 	var newPage func(c app.PageConfig) (app.Page, error)
 
 	output := &bytes.Buffer{}
-	app.Loggers = []app.Logger{app.NewLogger(output, output, true)}
+	app.Loggers = []app.Logger{app.NewLogger(output, output, true, true)}
 
 	app.Import(&tests.Foo{})
 	app.Import(&tests.Bar{})
@@ -186,7 +186,7 @@ func TestAppError(t *testing.T) {
 	var d app.Driver
 
 	output := &bytes.Buffer{}
-	app.Loggers = []app.Logger{app.NewLogger(output, output, true)}
+	app.Loggers = []app.Logger{app.NewLogger(output, output, true, true)}
 
 	ctx, cancel := context.WithCancel(context.Background())
 
