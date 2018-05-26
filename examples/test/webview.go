@@ -176,9 +176,7 @@ func (c *Webview) OnChangeNumber() {
 
 // OnShare is the function that is called when the Share button is clicked.
 func (c *Webview) OnShare() {
-	if err := app.NewShare("Hello world"); err != nil {
-		app.Log("%s", err)
-	}
+	app.NewShare("Hello world")
 }
 
 // OnShareURL is the function that is called when the Share URL button is
@@ -188,79 +186,66 @@ func (c *Webview) OnShareURL() {
 	if err != nil {
 		app.Log("%s", err)
 	}
-
-	if err = app.NewShare(u); err != nil {
-		app.Log("%s", err)
-	}
+	app.NewShare(u)
 }
 
 // OnDirPanel is the function that is called when the Dir panel button is
 // clicked.
 func (c *Webview) OnDirPanel() {
-	if err := app.NewFilePanel(app.FilePanelConfig{
+	app.NewFilePanel(app.FilePanelConfig{
 		IgnoreFiles: true,
 		OnSelect: func(filenames []string) {
 			app.Log("filenames: %v", filenames)
 		},
-	}); err != nil {
-		app.Log("%s", err)
-	}
+	})
 }
 
 // OnFilePanel is the function that is called when the File panel button is
 // clicked.
 func (c *Webview) OnFilePanel() {
-	if err := app.NewFilePanel(app.FilePanelConfig{
+	app.NewFilePanel(app.FilePanelConfig{
 		IgnoreDirectories: true,
 		ShowHiddenFiles:   true,
 		FileTypes:         []string{"public.jpeg", "gif"},
 		OnSelect: func(filenames []string) {
 			app.Log("filenames: %v", filenames)
 		},
-	}); err != nil {
-		app.Log("%s", err)
-	}
+	})
 }
 
 // OnMultipleFilePanel is the function that is called when the Multiple file
 // panel button is clicked.
 func (c *Webview) OnMultipleFilePanel() {
-	if err := app.NewFilePanel(app.FilePanelConfig{
+	app.NewFilePanel(app.FilePanelConfig{
 		IgnoreDirectories: true,
 		MultipleSelection: true,
 		OnSelect: func(filenames []string) {
 			app.Log("filenames: %v", filenames)
 		},
-	}); err != nil {
-		app.Log("%s", err)
-	}
+	})
 }
 
 // OnSavePanel is the function that is called when the Save panel button is
 // clicked.
 func (c *Webview) OnSavePanel() {
-	if err := app.NewSaveFilePanel(app.SaveFilePanelConfig{
+	app.NewSaveFilePanel(app.SaveFilePanelConfig{
 		// FileTypes: []string{"public.jpeg"},
 		OnSelect: func(filename string) {
 			app.Log(filename)
 		},
-	}); err != nil {
-		app.Log("%s", err)
-	}
+	})
 }
 
 // OnNotification is the function that is called when the Notification button is
 // clicked.
 func (c *Webview) OnNotification() {
-	if err := app.NewNotification(app.NotificationConfig{
+	app.NewNotification(app.NotificationConfig{
 		Title:     "hello",
 		Subtitle:  "world",
 		Text:      uuid.New().String(),
 		ImageName: filepath.Join(app.Resources(), "logo.png"),
 		Sound:     true,
-	}); err != nil {
-		app.Log("%s", err)
-	}
+	})
 }
 
 // OnNotificationWithReply is the function that is called when the Notification
@@ -292,7 +277,7 @@ func (c *Webview) OnNotificationWithReply() {
 func (c *Webview) OnPrevious() {
 	nav, err := app.NavigatorByComponent(c)
 	if err != nil {
-		app.Log("%s", err)
+		return
 	}
 	nav.Previous()
 }
@@ -301,7 +286,7 @@ func (c *Webview) OnPrevious() {
 func (c *Webview) OnReload() {
 	nav, err := app.NavigatorByComponent(c)
 	if err != nil {
-		app.Log("%s", err)
+		return
 	}
 	nav.Reload()
 }
@@ -310,7 +295,7 @@ func (c *Webview) OnReload() {
 func (c *Webview) OnNext() {
 	nav, err := app.NavigatorByComponent(c)
 	if err != nil {
-		app.Log("%s", err)
+		return
 	}
 	nav.Next()
 }

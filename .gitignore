@@ -41,3 +41,11 @@ examples/test/test
 
 
 examples/action-event/bin/mac/mac
+
+*.map
+
+*.map
+
+examples/test/bin/test-web/resources/goapp.js.map
+
+examples/test/bin/test-web/resources/goapp.js
