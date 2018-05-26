@@ -13,12 +13,13 @@ import (
 
 // A Menu implementation for tests.
 type Menu struct {
-	id        uuid.UUID
-	typ       string
-	factory   app.Factory
-	markup    app.Markup
-	lastFocus time.Time
-	component app.Component
+	id          uuid.UUID
+	typ         string
+	factory     app.Factory
+	markup      app.Markup
+	lastFocus   time.Time
+	component   app.Component
+	simulateErr bool
 
 	onClose func()
 }
@@ -28,11 +29,12 @@ func newMenu(d *Driver, c app.MenuConfig) (app.Menu, error) {
 	markup = app.ConcurrentMarkup(markup)
 
 	menu := &Menu{
-		id:        uuid.New(),
-		typ:       c.Type,
-		factory:   d.factory,
-		markup:    markup,
-		lastFocus: time.Now(),
+		id:          uuid.New(),
+		typ:         c.Type,
+		factory:     d.factory,
+		markup:      markup,
+		lastFocus:   time.Now(),
+		simulateErr: d.SimulateElemErr,
 	}
 
 	d.elements.Add(menu)
@@ -54,6 +56,10 @@ func (m *Menu) ID() uuid.UUID {
 
 // Load satisfies the app.ElementWithComponent interface.
 func (m *Menu) Load(rawurl string, v ...interface{}) error {
+	if m.simulateErr {
+		return ErrSimulated
+	}
+
 	if m.component != nil {
 		m.markup.Dismount(m.component)
 	}
@@ -90,6 +96,10 @@ func (m *Menu) Contains(compo app.Component) bool {
 
 // Render satisfies the app.Menu interface.
 func (m *Menu) Render(compo app.Component) error {
+	if m.simulateErr {
+		return ErrSimulated
+	}
+
 	_, err := m.markup.Update(compo)
 	return err
 }

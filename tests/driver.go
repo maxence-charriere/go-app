@@ -3,6 +3,8 @@ package tests
 import (
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/murlokswarm/app"
 )
 
@@ -25,6 +27,25 @@ func TestDriver(t *testing.T, setup func(onRun func()) app.Driver, shutdown func
 		t.Run("context menu", func(t *testing.T) { testContextMenu(t, driver) })
 		t.Run("menubar", func(t *testing.T) { testMenubar(t, driver) })
 		t.Run("dock", func(t *testing.T) { testDockTile(t, driver) })
+
+		if err := driver.NewFilePanel(app.FilePanelConfig{}); !app.NotSupported(err) {
+			assert.NoError(t, err)
+		}
+
+		if err := driver.NewSaveFilePanel(app.SaveFilePanelConfig{}); !app.NotSupported(err) {
+			assert.NoError(t, err)
+		}
+
+		if err := driver.NewShare(42); !app.NotSupported(err) {
+			assert.NoError(t, err)
+		}
+
+		if err := driver.NewNotification(app.NotificationConfig{
+			Title: "test",
+			Text:  "test",
+		}); !app.NotSupported(err) {
+			assert.NoError(t, err)
+		}
 	}
 
 	driver = setup(onRun)

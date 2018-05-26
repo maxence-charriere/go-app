@@ -2,7 +2,6 @@ package test
 
 import (
 	"encoding/json"
-	"os"
 	"time"
 
 	"github.com/google/uuid"
@@ -21,11 +20,12 @@ func newDockTile(d *Driver) app.DockTile {
 
 	dock := &DockTile{
 		Menu: Menu{
-			id:        uuid.New(),
-			typ:       "dock tile",
-			factory:   d.factory,
-			markup:    markup,
-			lastFocus: time.Now(),
+			id:          uuid.New(),
+			typ:         "dock tile",
+			factory:     d.factory,
+			markup:      markup,
+			lastFocus:   time.Now(),
+			simulateErr: d.SimulateElemErr,
 		},
 	}
 
@@ -35,12 +35,17 @@ func newDockTile(d *Driver) app.DockTile {
 
 // SetIcon satisfies the app.DockTile interface.
 func (d *DockTile) SetIcon(name string) error {
-	_, err := os.Stat(name)
-	return err
+	if d.simulateErr {
+		return ErrSimulated
+	}
+	return nil
 }
 
 // SetBadge satisfies the app.DockTile interface.
 func (d *DockTile) SetBadge(v interface{}) error {
+	if d.simulateErr {
+		return ErrSimulated
+	}
 	_, err := json.Marshal(v)
 	return err
 }

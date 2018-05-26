@@ -54,11 +54,6 @@ func (p *page) ID() uuid.UUID {
 	return p.id
 }
 
-// Base satisfies the app.Page interface.
-func (p *page) Base() app.Page {
-	return p
-}
-
 // Component satisfies the app.Page interface.
 func (p *page) Component() app.Component {
 	return p.component
