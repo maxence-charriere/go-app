@@ -16,7 +16,7 @@ script:
   - go test ./bridge
   - go test ./html
   - go test ./file
-  - go test ./cmd/goapp                                                                                                                             
+  - go build ./cmd/goapp                                                                                                                             
   - goveralls -service travis-ci -repotoken $COVERALLS_TOKEN -coverprofile cover.out
 
 notifications:
