@@ -4,9 +4,8 @@ go:
   - 1.10.x
 
 install:
-  - go get -v -t .
+  - go get -v -t ./...                                                                                        
   - go get -v github.com/mattn/goveralls
-  - go get -v github.com/stretchr/testify
   - go install -v github.com/mattn/goveralls
 
 script:
@@ -15,7 +14,7 @@ script:
   - go test ./bridge
   - go test ./html
   - go test ./file
-  - go test ./cmd/goapp
+  - go test ./cmd/goapp                                                                                                                             
   - goveralls -service travis-ci -repotoken $COVERALLS_TOKEN -coverprofile cover.out
 
 notifications:
