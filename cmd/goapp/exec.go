@@ -5,8 +5,6 @@ import (
 	"io"
 	"os"
 	"os/exec"
-
-	"github.com/murlokswarm/app"
 )
 
 func execute(cmd string, args ...string) error {
@@ -43,7 +41,7 @@ func printOutput(r io.Reader, output io.Writer) {
 			return
 		}
 		if err != nil {
-			app.Error(err)
+			printErr("%s", err)
 			continue
 		}
 		output.Write(b[:n])
