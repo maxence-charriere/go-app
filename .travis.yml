@@ -6,8 +6,6 @@ go:
 install:
   - go get -v -t .                                                                                        
   - go get -v github.com/mattn/goveralls
-  - go get -v github.com/disintegration/imaging
-  - go get -v github.com/segmentio/conf
   - go install -v github.com/mattn/goveralls
 
 script:
@@ -16,7 +14,6 @@ script:
   - go test ./bridge
   - go test ./html
   - go test ./file
-  - go build ./cmd/goapp                                                                                                                             
   - goveralls -service travis-ci -repotoken $COVERALLS_TOKEN -coverprofile cover.out
 
 notifications:
