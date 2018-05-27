@@ -6,7 +6,6 @@ go:
 install:
   - go get -v -t .
   - go get -v github.com/mattn/goveralls
-  - go get -v github.com/stretchr/testify
   - go install -v github.com/mattn/goveralls
 
 script:
