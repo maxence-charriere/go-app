@@ -223,6 +223,8 @@ func MenuBar() (Menu, error) {
 }
 
 // StatusBar returns the status bar menu.
+// Status bar is not displayed by default.
+// Set the status bar icon to make it visible.
 //
 // It panics if called before Run.
 func StatusBar() (StatusBarMenu, error) {

@@ -44,6 +44,14 @@
           withHandler:^(id in, NSString *returnID) {
             return [self setMenubar:in return:returnID];
           }];
+  [self.macRPC handle:@"driver.SetStatusBar"
+          withHandler:^(id in, NSString *returnID) {
+            return [self setStatusBar:in return:returnID];
+          }];
+  [self.macRPC handle:@"driver.SetStatusBarIcon"
+          withHandler:^(id in, NSString *returnID) {
+            return [self setStatusBarIcon:in return:returnID];
+          }];
   [self.macRPC handle:@"driver.SetDock"
           withHandler:^(id in, NSString *returnID) {
             return [self setDock:in return:returnID];
@@ -225,6 +233,33 @@
   defer(returnID, ^{
     Menu *menu = self.elements[menuID];
     NSApp.mainMenu = menu.root;
+    [self.macRPC return:returnID withOutput:nil andError:nil];
+  });
+}
+
+- (void)setStatusBar:(NSString *)menuID return:(NSString *)returnID {
+  defer(returnID, ^{
+    Menu *menu = self.elements[menuID];
+    self.statusBar = menu.root;
+    [self.macRPC return:returnID withOutput:nil andError:nil];
+  });
+}
+
+- (void)setStatusBarIcon:(NSString *)icon return:(NSString *)returnID {
+  defer(returnID, ^{
+    NSStatusBar *statbar = NSStatusBar.systemStatusBar;
+
+    if (icon.length == 0 && self.statusItem != nil) {
+      [statbar removeStatusItem:self.statusItem];
+      self.statusItem = nil;
+      [self.macRPC return:returnID withOutput:nil andError:nil];
+      return;
+    }
+
+    self.statusItem = [statbar statusItemWithLength:NSVariableStatusItemLength];
+    self.statusItem.menu = self.statusBar;
+    self.statusItem.button.image = [[NSImage alloc] initByReferencingFile:icon];
+
     [self.macRPC return:returnID withOutput:nil andError:nil];
   });
 }

@@ -42,7 +42,7 @@ type Driver struct {
 	// Menubar configuration
 	MenubarConfig MenuBarConfig
 
-	// Component url to load in the dock.
+	// The URL of the component to load in the dock.
 	DockURL string
 
 	// The bundle configuration.
@@ -79,6 +79,7 @@ type Driver struct {
 	macRPC       bridge.PlatformRPC
 	goRPC        bridge.GoRPC
 	menubar      app.Menu
+	statusbar    app.StatusBarMenu
 	dock         app.DockTile
 	devID        string
 	droppedFiles []string
@@ -166,6 +167,10 @@ func (d *Driver) Run(f app.Factory) error {
 func (d *Driver) onRun(in map[string]interface{}) interface{} {
 	err := d.newMenuBar()
 	if err != nil {
+		panic(err)
+	}
+
+	if d.statusbar, err = newStatusBar(); err != nil {
 		panic(err)
 	}
 
@@ -401,6 +406,10 @@ func (d *Driver) newMenuBar() error {
 		return errors.Wrap(err, "set menu bar")
 	}
 	return nil
+}
+
+func (d *Driver) StatusBar() (app.StatusBarMenu, error) {
+	panic("not implemented")
 }
 
 // Dock satisfies the app.DriverWithDock interface.
