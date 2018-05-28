@@ -124,23 +124,29 @@ func TestApp(t *testing.T) {
 		_, err = app.MenuBar()
 		require.NoError(t, err)
 
-		// Status bar:
-		var statusBar app.StatusBarMenu
-		statusBar, err = app.StatusBar()
+		// Status menu:
+		var statusMenu app.StatusMenu
+		statusMenu, err = app.NewStatusMenu(app.StatusMenuConfig{})
 		require.NoError(t, err)
 
-		err = statusBar.Load("tests.bar")
+		err = statusMenu.Load("tests.bar")
 		require.NoError(t, err)
 
-		compo = statusBar.Component()
+		compo = statusMenu.Component()
 		require.NotNil(t, compo)
 		app.Render(compo)
 
 		elem, err = app.ElementByComponent(compo)
 		require.NoError(t, err)
-		assert.Equal(t, statusBar.ID(), elem.ID())
+		assert.Equal(t, statusMenu.ID(), elem.ID())
 
-		err = statusBar.SetIcon(filepath.Join("tests", "resources", "logo.png"))
+		err = statusMenu.SetText("test")
+		assert.NoError(t, err)
+
+		err = statusMenu.SetIcon(filepath.Join("tests", "resources", "logo.png"))
+		assert.NoError(t, err)
+
+		err = statusMenu.Close()
 		assert.NoError(t, err)
 
 		// Dock:
@@ -270,17 +276,25 @@ func TestAppError(t *testing.T) {
 		assert.Error(t, err)
 
 		// Status Bar:
-		var statusBar app.StatusBarMenu
-		statusBar, err = app.StatusBar()
+		var statusMenu app.StatusMenu
+		statusMenu, err = app.NewStatusMenu(app.StatusMenuConfig{
+			Text: "test",
+		})
 		require.NoError(t, err)
 
-		err = statusBar.Load("")
+		err = statusMenu.Load("")
 		assert.Error(t, err)
 
-		err = statusBar.Render(nil)
+		err = statusMenu.Render(nil)
 		assert.Error(t, err)
 
-		err = statusBar.SetIcon("")
+		err = statusMenu.SetText("")
+		assert.Error(t, err)
+
+		err = statusMenu.SetIcon("")
+		assert.Error(t, err)
+
+		err = statusMenu.Close()
 		assert.Error(t, err)
 
 		// Dock tile:
@@ -348,7 +362,7 @@ func TestAppError(t *testing.T) {
 	_, err = app.MenuBar()
 	assert.Error(t, err)
 
-	_, err = app.StatusBar()
+	_, err = app.NewStatusMenu(app.StatusMenuConfig{})
 	assert.Error(t, err)
 
 	_, err = app.Dock()

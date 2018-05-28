@@ -32,12 +32,11 @@ type Driver struct {
 
 	OnRun func()
 
-	factory   app.Factory
-	elements  app.ElemDB
-	menubar   app.Menu
-	statusBar app.StatusBarMenu
-	dock      app.DockTile
-	uichan    chan func()
+	factory  app.Factory
+	elements app.ElemDB
+	menubar  app.Menu
+	dock     app.DockTile
+	uichan   chan func()
 }
 
 // Name satisfies the app.Driver interface.
@@ -63,9 +62,7 @@ func (d *Driver) Run(f app.Factory) error {
 	}
 	d.menubar = menubar
 
-	d.statusBar = newStatusBarMenu(d)
 	d.dock = newDockTile(d)
-
 	d.uichan = make(chan func(), 256)
 
 	if d.OnRun != nil {
@@ -245,15 +242,15 @@ func (d *Driver) MenuBar() (app.Menu, error) {
 	return d.menubar, nil
 }
 
-// StatusBar satisfies the app.Driver interface.
-func (d *Driver) StatusBar() (app.StatusBarMenu, error) {
+// NewStatusMenu satisfies the app.Driver interface.
+func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
 	if d.SimulateErr {
 		return nil, ErrSimulated
 	}
 	if d.UseBaseDriver {
-		return d.BaseDriver.StatusBar()
+		return d.BaseDriver.NewStatusMenu(c)
 	}
-	return d.statusBar, nil
+	return newStatusMenu(d, c), nil
 }
 
 // Dock satisfies the app.Driver interface.

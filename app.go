@@ -222,13 +222,12 @@ func MenuBar() (Menu, error) {
 	return driver.MenuBar()
 }
 
-// StatusBar returns the status bar menu.
-// Status bar is not displayed by default.
-// Set the status bar icon to make it visible.
+// NewStatusMenu creates and displays the status menu described in the given
+// configuration.
 //
 // It panics if called before Run.
-func StatusBar() (StatusBarMenu, error) {
-	return driver.StatusBar()
+func NewStatusMenu(c StatusMenuConfig) (StatusMenu, error) {
+	return driver.NewStatusMenu(c)
 }
 
 // Dock returns the dock tile.

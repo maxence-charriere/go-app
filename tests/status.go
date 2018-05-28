@@ -5,31 +5,39 @@ import (
 	"runtime"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/stretchr/testify/require"
 )
 
-func testStatusBar(t *testing.T, d app.Driver) {
+func testStatusMenu(t *testing.T, d app.Driver) {
 	tests := []struct {
 		scenario string
-		function func(t *testing.T, d app.StatusBarMenu, driver app.Driver)
+		function func(t *testing.T, d app.StatusMenu, driver app.Driver)
 	}{
 		{
+			scenario: "set text success",
+			function: testStatusMenuSetTextSuccess,
+		},
+		{
 			scenario: "set icon success",
-			function: testStatusBarSetIconSuccess,
+			function: testStatusMenuSetIconSuccess,
 		},
 		{
 			scenario: "set icon fails",
-			function: testStatusBarSetIconFail,
+			function: testStatusMenuSetIconFail,
 		},
 	}
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
-			menu, err := d.StatusBar()
+			menu, err := d.NewStatusMenu(app.StatusMenuConfig{
+				Text: "test",
+			})
 			if app.NotSupported(err) {
 				return
 			}
+			defer menu.Close()
 
 			require.NoError(t, err)
 			test.function(t, menu, d)
@@ -37,11 +45,18 @@ func testStatusBar(t *testing.T, d app.Driver) {
 	}
 
 	testMenu(t, func(c app.MenuConfig) (app.Menu, error) {
-		return d.StatusBar()
+		return d.NewStatusMenu(app.StatusMenuConfig{
+			Text: "hello",
+		})
 	})
 }
 
-func testStatusBarSetIconSuccess(t *testing.T, m app.StatusBarMenu, driver app.Driver) {
+func testStatusMenuSetTextSuccess(t *testing.T, m app.StatusMenu, driver app.Driver) {
+	err := m.SetText(uuid.New().String())
+	require.NoError(t, err)
+}
+
+func testStatusMenuSetIconSuccess(t *testing.T, m app.StatusMenu, driver app.Driver) {
 	_, filename, _, _ := runtime.Caller(0)
 	filename = filepath.Join(filepath.Dir(filename), "resources", "logo.png")
 
@@ -52,7 +67,7 @@ func testStatusBarSetIconSuccess(t *testing.T, m app.StatusBarMenu, driver app.D
 	require.NoError(t, err)
 }
 
-func testStatusBarSetIconFail(t *testing.T, m app.StatusBarMenu, driver app.Driver) {
+func testStatusMenuSetIconFail(t *testing.T, m app.StatusMenu, driver app.Driver) {
 	_, filename, _, _ := runtime.Caller(0)
 	filename = filepath.Join(filepath.Dir(filename), "resources", "logo.bmp")
 
