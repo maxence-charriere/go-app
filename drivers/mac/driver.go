@@ -79,7 +79,6 @@ type Driver struct {
 	macRPC       bridge.PlatformRPC
 	goRPC        bridge.GoRPC
 	menubar      app.Menu
-	statusbar    app.StatusBarMenu
 	dock         app.DockTile
 	devID        string
 	droppedFiles []string
@@ -167,10 +166,6 @@ func (d *Driver) Run(f app.Factory) error {
 func (d *Driver) onRun(in map[string]interface{}) interface{} {
 	err := d.newMenuBar()
 	if err != nil {
-		panic(err)
-	}
-
-	if d.statusbar, err = newStatusBar(); err != nil {
 		panic(err)
 	}
 
@@ -274,7 +269,7 @@ func (d *Driver) Resources(path ...string) string {
 	return filepath.Join(out.Resources, resources)
 }
 
-// Storage satisfies the app.DriverWithStorage interface.
+// Storage satisfies the app.Driver interface.
 func (d *Driver) Storage(path ...string) string {
 	storage := filepath.Join(path...)
 	return filepath.Join(d.support(), "storage", storage)
@@ -302,7 +297,7 @@ func (d *Driver) support() string {
 	return out.Support
 }
 
-// NewWindow satisfies the app.DriverWithWindows interface.
+// NewWindow satisfies the app.Driver interface.
 func (d *Driver) NewWindow(c app.WindowConfig) (app.Window, error) {
 	return newWindow(c)
 }
@@ -334,17 +329,17 @@ func (d *Driver) ElementByComponent(c app.Component) (app.ElementWithComponent, 
 	return d.elements.ElementByComponent(c)
 }
 
-// NewFilePanel satisfies the app.DriverWithFilePanels interface.
+// NewFilePanel satisfies the app.Driver interface.
 func (d *Driver) NewFilePanel(c app.FilePanelConfig) error {
 	return newFilePanel(c)
 }
 
-// NewSaveFilePanel satisfies the app.DriverWithFilePanels interface.
+// NewSaveFilePanel satisfies the app.Driver interface.
 func (d *Driver) NewSaveFilePanel(c app.SaveFilePanelConfig) error {
 	return newSaveFilePanel(c)
 }
 
-// NewShare satisfies the app.DriverWithShare interface.
+// NewShare satisfies the app.Driver interface.
 func (d *Driver) NewShare(v interface{}) error {
 	in := struct {
 		Share string
@@ -364,13 +359,12 @@ func (d *Driver) NewShare(v interface{}) error {
 	return d.macRPC.Call("driver.Share", nil, in)
 }
 
-// NewNotification satisfies the app.DriverWithPopupNotifications
-// interface.
+// NewNotification satisfies the app.Driver interface.
 func (d *Driver) NewNotification(config app.NotificationConfig) error {
 	return newNotification(config)
 }
 
-// MenuBar satisfies the app.DriverWithMenuBar interface.
+// MenuBar satisfies the app.Driver interface.
 func (d *Driver) MenuBar() (app.Menu, error) {
 	return d.menubar, nil
 }
@@ -408,11 +402,12 @@ func (d *Driver) newMenuBar() error {
 	return nil
 }
 
-func (d *Driver) StatusBar() (app.StatusBarMenu, error) {
-	panic("not implemented")
+// NewStatusMenu satisfies the app.Driver interface.
+func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
+	return newStatusMenu(c)
 }
 
-// Dock satisfies the app.DriverWithDock interface.
+// Dock satisfies the app.Driver interface.
 func (d *Driver) Dock() (app.DockTile, error) {
 	return d.dock, nil
 }

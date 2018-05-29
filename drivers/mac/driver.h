@@ -9,8 +9,6 @@
 @property MacRPC *macRPC;
 @property GoRPC *goRPC;
 @property NSMutableDictionary<NSString *, id> *elements;
-@property NSStatusItem *statusItem;
-@property NSMenu *statusBar;
 @property NSMenu *dock;
 
 + (instancetype)current;
@@ -20,8 +18,6 @@
 - (NSString *)support;
 - (void)setContextMenu:(NSString *)menuID return:(NSString *)returnID;
 - (void)setMenubar:(NSString *)menuID return:(NSString *)returnID;
-- (void)setStatusBar:(NSString *)menuID return:(NSString *)returnID;
-- (void)setStatusBarIcon:(NSString *)icon return:(NSString *)returnID;
 - (void)setDock:(NSString *)menuID return:(NSString *)returnID;
 - (void)setDockIcon:(NSString *)icon return:(NSString *)returnID;
 - (void)setDockBadge:(NSString *)badge return:(NSString *)returnID;

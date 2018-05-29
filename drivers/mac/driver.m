@@ -4,6 +4,7 @@
 #include "menu.h"
 #include "notification.h"
 #include "sandbox.h"
+#include "status.h"
 #include "window.h"
 
 @implementation Driver
@@ -43,14 +44,6 @@
   [self.macRPC handle:@"driver.SetMenubar"
           withHandler:^(id in, NSString *returnID) {
             return [self setMenubar:in return:returnID];
-          }];
-  [self.macRPC handle:@"driver.SetStatusBar"
-          withHandler:^(id in, NSString *returnID) {
-            return [self setStatusBar:in return:returnID];
-          }];
-  [self.macRPC handle:@"driver.SetStatusBarIcon"
-          withHandler:^(id in, NSString *returnID) {
-            return [self setStatusBarIcon:in return:returnID];
           }];
   [self.macRPC handle:@"driver.SetDock"
           withHandler:^(id in, NSString *returnID) {
@@ -149,6 +142,12 @@
             return [Menu delete:in return:returnID];
           }];
 
+  // Status menu handlers.
+  [self.macRPC handle:@"statusMenus.New"
+          withHandler:^(id in, NSString *returnID) {
+            return [StatusMenu new:in return:returnID];
+          }];
+
   // File panel handlers.
   [self.macRPC handle:@"files.NewPanel"
           withHandler:^(id in, NSString *returnID) {
@@ -233,33 +232,6 @@
   defer(returnID, ^{
     Menu *menu = self.elements[menuID];
     NSApp.mainMenu = menu.root;
-    [self.macRPC return:returnID withOutput:nil andError:nil];
-  });
-}
-
-- (void)setStatusBar:(NSString *)menuID return:(NSString *)returnID {
-  defer(returnID, ^{
-    Menu *menu = self.elements[menuID];
-    self.statusBar = menu.root;
-    [self.macRPC return:returnID withOutput:nil andError:nil];
-  });
-}
-
-- (void)setStatusBarIcon:(NSString *)icon return:(NSString *)returnID {
-  defer(returnID, ^{
-    NSStatusBar *statbar = NSStatusBar.systemStatusBar;
-
-    if (icon.length == 0 && self.statusItem != nil) {
-      [statbar removeStatusItem:self.statusItem];
-      self.statusItem = nil;
-      [self.macRPC return:returnID withOutput:nil andError:nil];
-      return;
-    }
-
-    self.statusItem = [statbar statusItemWithLength:NSVariableStatusItemLength];
-    self.statusItem.menu = self.statusBar;
-    self.statusItem.button.image = [[NSImage alloc] initByReferencingFile:icon];
-
     [self.macRPC return:returnID withOutput:nil andError:nil];
   });
 }

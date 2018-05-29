@@ -34,6 +34,17 @@ func main() {
 
 			// testWindow(true)
 			testWindow(false)
+
+			app.NewStatusMenu(app.StatusMenuConfig{
+				Text: "only text",
+			})
+			app.NewStatusMenu(app.StatusMenuConfig{
+				Icon: app.Resources("logo.png"),
+			})
+			app.NewStatusMenu(app.StatusMenuConfig{
+				Text: "text + ",
+				Icon: app.Resources("logo.png"),
+			})
 		},
 		OnFocus: func() {
 			fmt.Println("OnFocus")

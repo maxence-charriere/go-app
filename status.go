@@ -10,6 +10,9 @@ type StatusMenuConfig struct {
 	// The menu button icon.
 	// Should be a .png file.
 	Icon string
+
+	// The URL of the component to load when the status menu is created.
+	DefaultURL string
 }
 
 // StatusMenu is the interface that describes a status menu menu.

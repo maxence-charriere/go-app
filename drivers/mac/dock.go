@@ -59,6 +59,7 @@ func (d *DockTile) SetIcon(name string) error {
 	if _, err := os.Stat(name); err != nil && len(name) != 0 {
 		return err
 	}
+
 	return driver.macRPC.Call("driver.SetDockIcon", nil, name)
 }
 
