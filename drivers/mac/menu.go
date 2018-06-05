@@ -17,11 +17,12 @@ import (
 
 // Menu implements the app.Menu interface.
 type Menu struct {
-	id        uuid.UUID
-	typ       string
-	markup    app.Markup
-	lastFocus time.Time
-	component app.Component
+	id             uuid.UUID
+	typ            string
+	markup         app.Markup
+	lastFocus      time.Time
+	component      app.Component
+	keepWhenClosed bool
 
 	onClose func()
 }
@@ -192,6 +193,10 @@ func onMenuClose(m *Menu, in map[string]interface{}) interface{} {
 	driver.CallOnUIGoroutine(func() {
 		if m.onClose != nil {
 			m.onClose()
+		}
+
+		if m.keepWhenClosed {
+			return
 		}
 
 		if err := driver.macRPC.Call("menus.Delete", nil, struct {

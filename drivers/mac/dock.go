@@ -23,9 +23,10 @@ func newDockTile(c app.MenuConfig) (app.DockTile, error) {
 
 	dock := &DockTile{
 		Menu: Menu{
-			id:        uuid.New(),
-			markup:    markup,
-			lastFocus: time.Now(),
+			id:             uuid.New(),
+			markup:         markup,
+			lastFocus:      time.Now(),
+			keepWhenClosed: true,
 		},
 	}
 

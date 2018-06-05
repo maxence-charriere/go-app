@@ -17,9 +17,10 @@ func newStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
 
 	menu := &statusMenu{
 		Menu: Menu{
-			id:        uuid.New(),
-			markup:    markup,
-			lastFocus: time.Now(),
+			id:             uuid.New(),
+			markup:         markup,
+			lastFocus:      time.Now(),
+			keepWhenClosed: true,
 		},
 	}
 
