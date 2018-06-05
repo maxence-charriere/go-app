@@ -9,6 +9,7 @@
 @interface StatusMenu : Menu
 @property NSStatusItem *item;
 + (void) new:(NSDictionary *)in return:(NSString *)returnID;
++ (void)setMenu:(NSDictionary *)in return:(NSString *)returnID;
 + (void)setText:(NSDictionary *)in return:(NSString *)returnID;
 + (void)setIcon:(NSDictionary *)in return:(NSString *)returnID;
 @end

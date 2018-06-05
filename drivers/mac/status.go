@@ -39,13 +39,26 @@ func newStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
 		return nil, err
 	}
 
-	// implement autoload.
-
+	if len(c.DefaultURL) != 0 {
+		return menu, menu.Load(c.DefaultURL)
+	}
 	return menu, nil
 }
 
 type statusMenu struct {
 	Menu
+}
+
+func (s *statusMenu) Load(url string, v ...interface{}) error {
+	if err := s.Menu.Load(url, v...); err != nil {
+		return err
+	}
+
+	return driver.macRPC.Call("statusMenus.SetMenu", nil, struct {
+		ID string
+	}{
+		ID: s.ID().String(),
+	})
 }
 
 func (s *statusMenu) SetText(text string) error {

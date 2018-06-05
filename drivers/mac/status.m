@@ -34,6 +34,18 @@
   });
 }
 
++ (void)setMenu:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
+    Driver *driver = [Driver current];
+    NSString *ID = in[@"ID"];
+
+    StatusMenu *menu = driver.elements[ID];
+    menu.item.menu = menu.root;
+
+    [driver.macRPC return:returnID withOutput:nil andError:nil];
+  });
+}
+
 + (void)setText:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];

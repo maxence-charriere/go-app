@@ -256,6 +256,9 @@ func handleMenu(h func(m *Menu, in map[string]interface{}) interface{}) bridge.G
 		case *DockTile:
 			return h(&menu.Menu, in)
 
+		case *statusMenu:
+			return h(&menu.Menu, in)
+
 		default:
 			panic("menu not supported")
 		}

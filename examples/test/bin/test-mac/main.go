@@ -36,14 +36,17 @@ func main() {
 			testWindow(false)
 
 			app.NewStatusMenu(app.StatusMenuConfig{
-				Text: "only text",
+				Text:       "only text",
+				DefaultURL: "/test.Menu",
 			})
 			app.NewStatusMenu(app.StatusMenuConfig{
-				Icon: app.Resources("logo.png"),
+				Icon:       app.Resources("logo.png"),
+				DefaultURL: "/test.Menu",
 			})
 			app.NewStatusMenu(app.StatusMenuConfig{
-				Text: "text + ",
-				Icon: app.Resources("logo.png"),
+				Text:       "text + ",
+				Icon:       app.Resources("logo.png"),
+				DefaultURL: "/test.Menu",
 			})
 		},
 		OnFocus: func() {
