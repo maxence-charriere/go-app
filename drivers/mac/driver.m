@@ -151,6 +151,14 @@
           withHandler:^(id in, NSString *returnID) {
             return [StatusMenu setMenu:in return:returnID];
           }];
+  [self.macRPC handle:@"statusMenus.SetText"
+          withHandler:^(id in, NSString *returnID) {
+            return [StatusMenu setText:in return:returnID];
+          }];
+  [self.macRPC handle:@"statusMenus.SetIcon"
+          withHandler:^(id in, NSString *returnID) {
+            return [StatusMenu setIcon:in return:returnID];
+          }];
   [self.macRPC handle:@"statusMenus.Close"
           withHandler:^(id in, NSString *returnID) {
             return [StatusMenu close:in return:returnID];

@@ -51,10 +51,30 @@ func main() {
 				Icon:       app.Resources("logo.png"),
 				DefaultURL: "/test.Menu",
 			}); err == nil {
-				time.AfterFunc(time.Second, func() {
-					app.Log("gonna close menu")
+				go func() {
+					time.Sleep(time.Second)
+					statMenu.SetText("")
+
+					time.Sleep(time.Second)
+					statMenu.SetText("Hello")
+
+					time.Sleep(time.Second)
+					statMenu.SetIcon("")
+
+					time.Sleep(time.Second)
+					statMenu.SetIcon(app.Resources("logo.png"))
+
+					time.Sleep(time.Second)
+					statMenu.SetText("")
+					statMenu.SetIcon("")
+
+					time.Sleep(time.Second)
+					statMenu.SetIcon(app.Resources("logo.png"))
+					statMenu.SetText("Bye bye")
+
+					time.Sleep(time.Second)
 					statMenu.Close()
-				})
+				}()
 			}
 		},
 		OnFocus: func() {

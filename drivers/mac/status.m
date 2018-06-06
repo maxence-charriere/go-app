@@ -49,6 +49,14 @@
 + (void)setText:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
+    NSString *ID = in[@"ID"];
+    NSString *text = in[@"Text"];
+
+    StatusMenu *menu = driver.elements[ID];
+    menu.item.button.title = text;
+    menu.item.button.imagePosition =
+        text.length == 0 ? NSImageOnly : NSImageRight;
+
     [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
 }
@@ -56,6 +64,25 @@
 + (void)setIcon:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
+    NSString *ID = in[@"ID"];
+    NSString *icon = in[@"Icon"];
+    StatusMenu *menu = driver.elements[ID];
+
+    if (icon.length == 0) {
+      menu.item.button.image = nil;
+      menu.item.button.imagePosition = NSNoImage;
+    } else {
+      CGFloat menuBarHeight = [[NSApp mainMenu] menuBarHeight];
+      NSImage *img = [[NSImage alloc] initByReferencingFile:icon];
+      menu.item.button.image =
+          [NSImage resizedImage:img
+              toPixelDimensions:NSMakeSize(menuBarHeight, menuBarHeight)];
+
+      NSString *text = menu.item.button.title;
+      menu.item.button.imagePosition =
+          text.length == 0 ? NSImageOnly : NSImageRight;
+    }
+
     [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
 }

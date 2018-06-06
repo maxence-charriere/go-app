@@ -65,8 +65,13 @@ func (s *statusMenu) Load(url string, v ...interface{}) error {
 }
 
 func (s *statusMenu) SetText(text string) error {
-	panic("not implemented")
-	// return driver.macRPC.Call("driver.SetStatusBarIcon", nil, name)
+	return driver.macRPC.Call("statusMenus.SetText", nil, struct {
+		ID   string
+		Text string
+	}{
+		ID:   s.ID().String(),
+		Text: text,
+	})
 }
 
 func (s *statusMenu) SetIcon(name string) error {
@@ -74,8 +79,13 @@ func (s *statusMenu) SetIcon(name string) error {
 		return err
 	}
 
-	panic("not implemented")
-	// return driver.macRPC.Call("driver.SetStatusBarIcon", nil, name)
+	return driver.macRPC.Call("statusMenus.SetIcon", nil, struct {
+		ID   string
+		Icon string
+	}{
+		ID:   s.ID().String(),
+		Icon: name,
+	})
 }
 
 func (s *statusMenu) Close() error {
