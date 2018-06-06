@@ -230,6 +230,21 @@ func NewStatusMenu(c StatusMenuConfig) (StatusMenu, error) {
 	return driver.NewStatusMenu(c)
 }
 
+// StatusMenuByCompoent returns the status menu where the given component is
+// mounted.
+func StatusMenuByComponent(c Component) (StatusMenu, error) {
+	elem, err := driver.ElementByComponent(c)
+	if err != nil {
+		return nil, err
+	}
+
+	menu, ok := elem.(StatusMenu)
+	if !ok {
+		return nil, errors.New("component is not mounted in a status menu")
+	}
+	return menu, nil
+}
+
 // Dock returns the dock tile.
 //
 // It panics if called before Run.

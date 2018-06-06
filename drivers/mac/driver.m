@@ -189,10 +189,7 @@
 }
 
 - (void)run:(NSDictionary *)in return:(NSString *)returnID {
-  [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
-  [NSApp activateIgnoringOtherApps:YES];
   [NSApp run];
-
   [self.macRPC return:returnID withOutput:nil andError:nil];
 }
 
