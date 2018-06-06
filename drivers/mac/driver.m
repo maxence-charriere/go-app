@@ -4,6 +4,7 @@
 #include "menu.h"
 #include "notification.h"
 #include "sandbox.h"
+#include "status.h"
 #include "window.h"
 
 @implementation Driver
@@ -141,6 +142,28 @@
             return [Menu delete:in return:returnID];
           }];
 
+  // Status menu handlers.
+  [self.macRPC handle:@"statusMenus.New"
+          withHandler:^(id in, NSString *returnID) {
+            return [StatusMenu new:in return:returnID];
+          }];
+  [self.macRPC handle:@"statusMenus.SetMenu"
+          withHandler:^(id in, NSString *returnID) {
+            return [StatusMenu setMenu:in return:returnID];
+          }];
+  [self.macRPC handle:@"statusMenus.SetText"
+          withHandler:^(id in, NSString *returnID) {
+            return [StatusMenu setText:in return:returnID];
+          }];
+  [self.macRPC handle:@"statusMenus.SetIcon"
+          withHandler:^(id in, NSString *returnID) {
+            return [StatusMenu setIcon:in return:returnID];
+          }];
+  [self.macRPC handle:@"statusMenus.Close"
+          withHandler:^(id in, NSString *returnID) {
+            return [StatusMenu close:in return:returnID];
+          }];
+
   // File panel handlers.
   [self.macRPC handle:@"files.NewPanel"
           withHandler:^(id in, NSString *returnID) {
@@ -166,10 +189,7 @@
 }
 
 - (void)run:(NSDictionary *)in return:(NSString *)returnID {
-  [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
-  [NSApp activateIgnoringOtherApps:YES];
   [NSApp run];
-
   [self.macRPC return:returnID withOutput:nil andError:nil];
 }
 

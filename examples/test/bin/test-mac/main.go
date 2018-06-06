@@ -4,6 +4,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/drivers/mac"
@@ -34,6 +35,47 @@ func main() {
 
 			// testWindow(true)
 			testWindow(false)
+
+			app.NewStatusMenu(app.StatusMenuConfig{
+				Text:       "only text",
+				DefaultURL: "/test.Menu",
+			})
+
+			app.NewStatusMenu(app.StatusMenuConfig{
+				Icon:       app.Resources("logo.png"),
+				DefaultURL: "/test.Menu",
+			})
+
+			if statMenu, err := app.NewStatusMenu(app.StatusMenuConfig{
+				Text:       "text + ",
+				Icon:       app.Resources("logo.png"),
+				DefaultURL: "/test.Menu",
+			}); err == nil {
+				go func() {
+					time.Sleep(time.Second)
+					statMenu.SetText("")
+
+					time.Sleep(time.Second)
+					statMenu.SetText("Hello")
+
+					time.Sleep(time.Second)
+					statMenu.SetIcon("")
+
+					time.Sleep(time.Second)
+					statMenu.SetIcon(app.Resources("logo.png"))
+
+					time.Sleep(time.Second)
+					statMenu.SetText("")
+					statMenu.SetIcon("")
+
+					time.Sleep(time.Second)
+					statMenu.SetIcon(app.Resources("logo.png"))
+					statMenu.SetText("Bye bye")
+
+					time.Sleep(time.Second)
+					statMenu.Close()
+				}()
+			}
 		},
 		OnFocus: func() {
 			fmt.Println("OnFocus")

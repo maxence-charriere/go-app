@@ -17,11 +17,12 @@ import (
 
 // Menu implements the app.Menu interface.
 type Menu struct {
-	id        uuid.UUID
-	typ       string
-	markup    app.Markup
-	lastFocus time.Time
-	component app.Component
+	id             uuid.UUID
+	typ            string
+	markup         app.Markup
+	lastFocus      time.Time
+	component      app.Component
+	keepWhenClosed bool
 
 	onClose func()
 }
@@ -186,6 +187,10 @@ func (m *Menu) LastFocus() time.Time {
 }
 
 func onMenuClose(m *Menu, in map[string]interface{}) interface{} {
+	if m.keepWhenClosed {
+		return nil
+	}
+
 	// menuDidClose: is called before clicked:.
 	// We call CallOnUIGoroutine in order to defer the close operation
 	// after the clicked one.
@@ -254,6 +259,9 @@ func handleMenu(h func(m *Menu, in map[string]interface{}) interface{}) bridge.G
 			return h(menu, in)
 
 		case *DockTile:
+			return h(&menu.Menu, in)
+
+		case *statusMenu:
 			return h(&menu.Menu, in)
 
 		default:

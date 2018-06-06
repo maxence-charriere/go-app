@@ -42,7 +42,7 @@ type Driver struct {
 	// Menubar configuration
 	MenubarConfig MenuBarConfig
 
-	// Component url to load in the dock.
+	// The URL of the component to load in the dock.
 	DockURL string
 
 	// The bundle configuration.
@@ -269,7 +269,7 @@ func (d *Driver) Resources(path ...string) string {
 	return filepath.Join(out.Resources, resources)
 }
 
-// Storage satisfies the app.DriverWithStorage interface.
+// Storage satisfies the app.Driver interface.
 func (d *Driver) Storage(path ...string) string {
 	storage := filepath.Join(path...)
 	return filepath.Join(d.support(), "storage", storage)
@@ -297,7 +297,7 @@ func (d *Driver) support() string {
 	return out.Support
 }
 
-// NewWindow satisfies the app.DriverWithWindows interface.
+// NewWindow satisfies the app.Driver interface.
 func (d *Driver) NewWindow(c app.WindowConfig) (app.Window, error) {
 	return newWindow(c)
 }
@@ -329,17 +329,17 @@ func (d *Driver) ElementByComponent(c app.Component) (app.ElementWithComponent, 
 	return d.elements.ElementByComponent(c)
 }
 
-// NewFilePanel satisfies the app.DriverWithFilePanels interface.
+// NewFilePanel satisfies the app.Driver interface.
 func (d *Driver) NewFilePanel(c app.FilePanelConfig) error {
 	return newFilePanel(c)
 }
 
-// NewSaveFilePanel satisfies the app.DriverWithFilePanels interface.
+// NewSaveFilePanel satisfies the app.Driver interface.
 func (d *Driver) NewSaveFilePanel(c app.SaveFilePanelConfig) error {
 	return newSaveFilePanel(c)
 }
 
-// NewShare satisfies the app.DriverWithShare interface.
+// NewShare satisfies the app.Driver interface.
 func (d *Driver) NewShare(v interface{}) error {
 	in := struct {
 		Share string
@@ -359,13 +359,12 @@ func (d *Driver) NewShare(v interface{}) error {
 	return d.macRPC.Call("driver.Share", nil, in)
 }
 
-// NewNotification satisfies the app.DriverWithPopupNotifications
-// interface.
+// NewNotification satisfies the app.Driver interface.
 func (d *Driver) NewNotification(config app.NotificationConfig) error {
 	return newNotification(config)
 }
 
-// MenuBar satisfies the app.DriverWithMenuBar interface.
+// MenuBar satisfies the app.Driver interface.
 func (d *Driver) MenuBar() (app.Menu, error) {
 	return d.menubar, nil
 }
@@ -403,7 +402,12 @@ func (d *Driver) newMenuBar() error {
 	return nil
 }
 
-// Dock satisfies the app.DriverWithDock interface.
+// NewStatusMenu satisfies the app.Driver interface.
+func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
+	return newStatusMenu(c)
+}
+
+// Dock satisfies the app.Driver interface.
 func (d *Driver) Dock() (app.DockTile, error) {
 	return d.dock, nil
 }

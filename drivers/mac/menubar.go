@@ -11,7 +11,7 @@ import (
 
 // MenuBarConfig contains the menu bar configuration.
 type MenuBarConfig struct {
-	// The URL of the menu bar.
+	// The URL of the component to load in the menu bar.
 	// Set this to customize the whole menu bar.
 	//
 	// Default is mac.menubar.

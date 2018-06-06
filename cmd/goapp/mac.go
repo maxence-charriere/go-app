@@ -267,7 +267,10 @@ func createAppBundle(bundle driver.Bundle, root, appName string) error {
 		return err
 	}
 
-	return generateAppIcons(bundle.Icon, appResources)
+	if len(bundle.Icon) != 0 {
+		return generateAppIcons(bundle.Icon, appResources)
+	}
+	return nil
 }
 
 func generateAppIcons(icon, appResources string) error {
@@ -413,6 +416,11 @@ const plist = `
 
 	<key>LSApplicationCategoryType</key>
 	<string>{{.Category}}</string>
+
+	{{if .Background}}
+	<key>LSUIElement</key>
+	<true/>
+	{{end}}
 
 	<key>NSHumanReadableCopyright</key>
 	<string>{{html .Copyright}}</string>

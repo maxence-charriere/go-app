@@ -398,10 +398,8 @@
 + (void) delete:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
-
     NSString *ID = in[@"ID"];
     [driver.elements removeObjectForKey:ID];
-
     [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
 }

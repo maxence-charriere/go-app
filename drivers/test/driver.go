@@ -34,8 +34,8 @@ type Driver struct {
 
 	factory  app.Factory
 	elements app.ElemDB
-	dock     app.DockTile
 	menubar  app.Menu
+	dock     app.DockTile
 	uichan   chan func()
 }
 
@@ -56,14 +56,13 @@ func (d *Driver) Run(f app.Factory) error {
 	elements = app.ConcurrentElemDB(elements)
 	d.elements = elements
 
-	d.dock = newDockTile(d)
-
 	menubar, err := newMenu(d, app.MenuConfig{Type: "menubar"})
 	if err != nil {
 		return err
 	}
 	d.menubar = menubar
 
+	d.dock = newDockTile(d)
 	d.uichan = make(chan func(), 256)
 
 	if d.OnRun != nil {
@@ -241,6 +240,17 @@ func (d *Driver) MenuBar() (app.Menu, error) {
 		return d.BaseDriver.MenuBar()
 	}
 	return d.menubar, nil
+}
+
+// NewStatusMenu satisfies the app.Driver interface.
+func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
+	if d.SimulateErr {
+		return nil, ErrSimulated
+	}
+	if d.UseBaseDriver {
+		return d.BaseDriver.NewStatusMenu(c)
+	}
+	return newStatusMenu(d, c), nil
 }
 
 // Dock satisfies the app.Driver interface.

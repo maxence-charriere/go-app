@@ -69,6 +69,7 @@
     driver.elements[ID] = win;
     [win showWindow:nil];
 
+    [NSApp activateIgnoringOtherApps:YES];
     [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
 }
