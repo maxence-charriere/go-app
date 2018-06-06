@@ -4,6 +4,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/drivers/mac"
@@ -39,15 +40,22 @@ func main() {
 				Text:       "only text",
 				DefaultURL: "/test.Menu",
 			})
+
 			app.NewStatusMenu(app.StatusMenuConfig{
 				Icon:       app.Resources("logo.png"),
 				DefaultURL: "/test.Menu",
 			})
-			app.NewStatusMenu(app.StatusMenuConfig{
+
+			if statMenu, err := app.NewStatusMenu(app.StatusMenuConfig{
 				Text:       "text + ",
 				Icon:       app.Resources("logo.png"),
 				DefaultURL: "/test.Menu",
-			})
+			}); err == nil {
+				time.AfterFunc(time.Second, func() {
+					app.Log("gonna close menu")
+					statMenu.Close()
+				})
+			}
 		},
 		OnFocus: func() {
 			fmt.Println("OnFocus")

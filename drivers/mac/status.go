@@ -22,6 +22,7 @@ func newStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
 			lastFocus:      time.Now(),
 			keepWhenClosed: true,
 		},
+		onClose: c.OnClose,
 	}
 
 	if err := driver.macRPC.Call("statusMenus.New", nil, struct {
@@ -48,6 +49,7 @@ func newStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
 
 type statusMenu struct {
 	Menu
+	onClose func()
 }
 
 func (s *statusMenu) Load(url string, v ...interface{}) error {
@@ -77,6 +79,9 @@ func (s *statusMenu) SetIcon(name string) error {
 }
 
 func (s *statusMenu) Close() error {
-	// TO IMPLEMENT.
-	return nil
+	return driver.macRPC.Call("statusMenus.Close", nil, struct {
+		ID string
+	}{
+		ID: s.ID().String(),
+	})
 }

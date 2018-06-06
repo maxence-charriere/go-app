@@ -13,6 +13,9 @@ type StatusMenuConfig struct {
 
 	// The URL of the component to load when the status menu is created.
 	DefaultURL string
+
+	// The function that is called when the status menu is closed.
+	OnClose func()
 }
 
 // StatusMenu is the interface that describes a status menu menu.

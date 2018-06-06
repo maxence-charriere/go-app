@@ -151,6 +151,10 @@
           withHandler:^(id in, NSString *returnID) {
             return [StatusMenu setMenu:in return:returnID];
           }];
+  [self.macRPC handle:@"statusMenus.Close"
+          withHandler:^(id in, NSString *returnID) {
+            return [StatusMenu close:in return:returnID];
+          }];
 
   // File panel handlers.
   [self.macRPC handle:@"files.NewPanel"

@@ -13,8 +13,8 @@
 
     StatusMenu *menu = [[StatusMenu alloc] init];
 
-    NSStatusBar *bar = [NSStatusBar systemStatusBar];
-    menu.item = [bar statusItemWithLength:NSVariableStatusItemLength];
+    menu.item = [NSStatusBar.systemStatusBar
+        statusItemWithLength:NSVariableStatusItemLength];
     menu.item.button.title = text;
 
     if (icon != nil) {
@@ -56,6 +56,19 @@
 + (void)setIcon:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
+    [driver.macRPC return:returnID withOutput:nil andError:nil];
+  });
+}
+
++ (void)close:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
+    Driver *driver = [Driver current];
+    NSString *ID = in[@"ID"];
+    StatusMenu *menu = driver.elements[ID];
+
+    menu.item.menu = nil;
+    [driver.elements removeObjectForKey:ID];
+
     [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
 }

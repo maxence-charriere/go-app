@@ -12,5 +12,6 @@
 + (void)setMenu:(NSDictionary *)in return:(NSString *)returnID;
 + (void)setText:(NSDictionary *)in return:(NSString *)returnID;
 + (void)setIcon:(NSDictionary *)in return:(NSString *)returnID;
++ (void)close:(NSDictionary *)in return:(NSString *)returnID;
 @end
 #endif /* status_h */

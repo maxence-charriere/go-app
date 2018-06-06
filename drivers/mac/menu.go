@@ -187,16 +187,16 @@ func (m *Menu) LastFocus() time.Time {
 }
 
 func onMenuClose(m *Menu, in map[string]interface{}) interface{} {
+	if m.keepWhenClosed {
+		return nil
+	}
+
 	// menuDidClose: is called before clicked:.
 	// We call CallOnUIGoroutine in order to defer the close operation
 	// after the clicked one.
 	driver.CallOnUIGoroutine(func() {
 		if m.onClose != nil {
 			m.onClose()
-		}
-
-		if m.keepWhenClosed {
-			return
 		}
 
 		if err := driver.macRPC.Call("menus.Delete", nil, struct {
