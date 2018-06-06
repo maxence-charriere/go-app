@@ -105,6 +105,9 @@ func TestApp(t *testing.T) {
 		_, err = app.PageByComponent(compo)
 		assert.Error(t, err)
 
+		_, err = app.StatusMenuByComponent(compo)
+		assert.Error(t, err)
+
 		// File panels:
 		err = app.NewFilePanel(app.FilePanelConfig{})
 		require.NoError(t, err)
@@ -135,6 +138,11 @@ func TestApp(t *testing.T) {
 		compo = statusMenu.Component()
 		require.NotNil(t, compo)
 		app.Render(compo)
+
+		var statusMenu2 app.StatusMenu
+		statusMenu2, err = app.StatusMenuByComponent(compo)
+		require.NoError(t, err)
+		assert.Equal(t, statusMenu.ID(), statusMenu2.ID())
 
 		elem, err = app.ElementByComponent(compo)
 		require.NoError(t, err)
@@ -345,6 +353,9 @@ func TestAppError(t *testing.T) {
 	assert.Error(t, err)
 
 	_, err = app.PageByComponent(nil)
+	assert.Error(t, err)
+
+	_, err = app.StatusMenuByComponent(nil)
 	assert.Error(t, err)
 
 	err = app.NewFilePanel(app.FilePanelConfig{})
