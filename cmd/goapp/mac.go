@@ -414,6 +414,11 @@ const plist = `
 	<key>LSApplicationCategoryType</key>
 	<string>{{.Category}}</string>
 
+	{{if .Background}}
+	<key>LSUIElement</key>
+	<true/>
+	{{end}}
+
 	<key>NSHumanReadableCopyright</key>
 	<string>{{html .Copyright}}</string>
 

@@ -43,6 +43,10 @@ type Bundle struct {
 	// Reports whether the app runs in sandbox mode.
 	Sandbox bool
 
+	// Reports wheter the app runs in background mode.
+	// Background apps does not appear in the dock and menubar.
+	Background bool
+
 	// Reports whether the app is a server (accepts incoming connections).
 	Server bool
 
