@@ -230,7 +230,7 @@ func NewStatusMenu(c StatusMenuConfig) (StatusMenu, error) {
 	return driver.NewStatusMenu(c)
 }
 
-// StatusMenuByCompoent returns the status menu where the given component is
+// StatusMenuByComponent returns the status menu where the given component is
 // mounted.
 func StatusMenuByComponent(c Component) (StatusMenu, error) {
 	elem, err := driver.ElementByComponent(c)
