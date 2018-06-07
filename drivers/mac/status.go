@@ -53,7 +53,7 @@ func newStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
 	return menu, nil
 }
 
-// Load loads the component targetted by the given url.
+// Load loads the component targeted by the given url.
 // It satisfies the app.StatusMenu interface.
 func (s *StatusMenu) Load(url string, v ...interface{}) error {
 	if err := s.Menu.Load(url, v...); err != nil {
