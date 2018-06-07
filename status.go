@@ -2,7 +2,8 @@ package app
 
 import "fmt"
 
-// StatusMenuConfig is a struct that describes a status menu menu.
+// StatusMenuConfig is a struct that describes a status menu.
+// Accept only components that contain menu and menuitem tags.
 type StatusMenuConfig struct {
 	// The menu button text.
 	Text string
