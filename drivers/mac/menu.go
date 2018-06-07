@@ -261,7 +261,7 @@ func handleMenu(h func(m *Menu, in map[string]interface{}) interface{}) bridge.G
 		case *DockTile:
 			return h(&menu.Menu, in)
 
-		case *statusMenu:
+		case *StatusMenu:
 			return h(&menu.Menu, in)
 
 		default:

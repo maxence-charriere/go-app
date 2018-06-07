@@ -11,11 +11,17 @@ import (
 	"github.com/murlokswarm/app/html"
 )
 
+// StatusMenu represents a menu that lives in the status bar.
+type StatusMenu struct {
+	Menu
+	onClose func()
+}
+
 func newStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
 	markup = app.ConcurrentMarkup(markup)
 
-	menu := &statusMenu{
+	menu := &StatusMenu{
 		Menu: Menu{
 			id:             uuid.New(),
 			markup:         markup,
@@ -47,12 +53,9 @@ func newStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
 	return menu, nil
 }
 
-type statusMenu struct {
-	Menu
-	onClose func()
-}
-
-func (s *statusMenu) Load(url string, v ...interface{}) error {
+// Load loads the component targetted by the given url.
+// It satisfies the app.StatusMenu interface.
+func (s *StatusMenu) Load(url string, v ...interface{}) error {
 	if err := s.Menu.Load(url, v...); err != nil {
 		return err
 	}
@@ -64,7 +67,9 @@ func (s *statusMenu) Load(url string, v ...interface{}) error {
 	})
 }
 
-func (s *statusMenu) SetText(text string) error {
+// SetText set the status menu text.
+// It satisfies the app.StatusMenu interface.
+func (s *StatusMenu) SetText(text string) error {
 	return driver.macRPC.Call("statusMenus.SetText", nil, struct {
 		ID   string
 		Text string
@@ -74,7 +79,9 @@ func (s *statusMenu) SetText(text string) error {
 	})
 }
 
-func (s *statusMenu) SetIcon(name string) error {
+// SetIcon set the status menu icon.
+// It satisfies the app.StatusMenu interface.
+func (s *StatusMenu) SetIcon(name string) error {
 	if _, err := os.Stat(name); err != nil && len(name) != 0 {
 		return err
 	}
@@ -88,7 +95,10 @@ func (s *statusMenu) SetIcon(name string) error {
 	})
 }
 
-func (s *statusMenu) Close() error {
+// Close closes the status menu, releasing allocated resources and removing
+// it from the status bar.
+// It satisfies the app.StatusMenu interface.
+func (s *StatusMenu) Close() error {
 	return driver.macRPC.Call("statusMenus.Close", nil, struct {
 		ID string
 	}{

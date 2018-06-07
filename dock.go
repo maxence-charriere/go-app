@@ -3,6 +3,7 @@ package app
 import "fmt"
 
 // DockTile is the interface that describes a dock tile.
+// Accept only components that contain menu and menuitem tags.
 type DockTile interface {
 	Menu
 

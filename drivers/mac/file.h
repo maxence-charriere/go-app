@@ -1,7 +1,6 @@
 #ifndef file_h
 #define file_h
 
-#import "bridge.h"
 #import <Cocoa/Cocoa.h>
 
 @interface FilePanel : NSObject

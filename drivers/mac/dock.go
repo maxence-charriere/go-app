@@ -48,11 +48,20 @@ func newDockTile(c app.MenuConfig) (app.DockTile, error) {
 		}
 	}
 
-	if err := driver.macRPC.Call("driver.SetDock", nil, dock.ID()); err != nil {
-		return nil, err
+	return dock, nil
+}
+
+// Load satisfies the app.DockTile interface.
+func (d *DockTile) Load(url string, v ...interface{}) error {
+	if err := d.Menu.Load(url, v...); err != nil {
+		return err
 	}
 
-	return dock, nil
+	return driver.macRPC.Call("docks.SetMenu", nil, struct {
+		ID string
+	}{
+		ID: d.ID().String(),
+	})
 }
 
 // SetIcon satisfies the app.DockTile interface.
@@ -61,7 +70,11 @@ func (d *DockTile) SetIcon(name string) error {
 		return err
 	}
 
-	return driver.macRPC.Call("driver.SetDockIcon", nil, name)
+	return driver.macRPC.Call("docks.SetIcon", nil, struct {
+		Icon string
+	}{
+		Icon: name,
+	})
 }
 
 // SetBadge satisfies the app.DockTile interface.
@@ -71,5 +84,9 @@ func (d *DockTile) SetBadge(v interface{}) error {
 		badge = fmt.Sprint(v)
 	}
 
-	return driver.macRPC.Call("driver.SetDockBadge", nil, badge)
+	return driver.macRPC.Call("docks.SetBadge", nil, struct {
+		Badge string
+	}{
+		Badge: badge,
+	})
 }

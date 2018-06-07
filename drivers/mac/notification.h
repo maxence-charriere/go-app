@@ -1,7 +1,6 @@
 #ifndef notification_h
 #define notification_h
 
-#import "bridge.h"
 #import <Cocoa/Cocoa.h>
 
 @interface Notification : NSObject
