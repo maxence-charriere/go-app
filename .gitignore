@@ -31,22 +31,14 @@ examples/nav/bin/nav-web/nav-web
 examples/test/bin/test-mac/test-mac
 examples/test/bin/test-web/test-web
 examples/menu/menu
+examples/action-event/bin/mac/mac
+examples/statusmenu/statusmenu
 examples/dock/dock
 examples/nav/nav
 examples/dragdrop/dragdrop
 examples/test/test
+*.app
 *.exe
 *goapp.js
 *.map
 
-
-examples/action-event/bin/mac/mac
-
-*.map
-
-*.map
-
-examples/test/bin/test-web/resources/goapp.js.map
-
-examples/test/bin/test-web/resources/goapp.js
-examples/statusmenu/statusmenu
