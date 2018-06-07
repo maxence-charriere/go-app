@@ -1,10 +1,8 @@
 #ifndef status_h
 #define status_h
 
-#import "bridge.h"
 #import "menu.h"
 #import <Cocoa/Cocoa.h>
-#import <WebKit/WebKit.h>
 
 @interface StatusMenu : Menu
 @property NSStatusItem *item;

@@ -1,4 +1,5 @@
 #include "driver.h"
+#include "dock.h"
 #include "file.h"
 #include "json.h"
 #include "menu.h"
@@ -44,18 +45,6 @@
   [self.macRPC handle:@"driver.SetMenubar"
           withHandler:^(id in, NSString *returnID) {
             return [self setMenubar:in return:returnID];
-          }];
-  [self.macRPC handle:@"driver.SetDock"
-          withHandler:^(id in, NSString *returnID) {
-            return [self setDock:in return:returnID];
-          }];
-  [self.macRPC handle:@"driver.SetDockIcon"
-          withHandler:^(id in, NSString *returnID) {
-            return [self setDockIcon:in return:returnID];
-          }];
-  [self.macRPC handle:@"driver.SetDockBadge"
-          withHandler:^(id in, NSString *returnID) {
-            return [self setDockBadge:in return:returnID];
           }];
   [self.macRPC handle:@"driver.Share"
           withHandler:^(id in, NSString *returnID) {
@@ -162,6 +151,20 @@
   [self.macRPC handle:@"statusMenus.Close"
           withHandler:^(id in, NSString *returnID) {
             return [StatusMenu close:in return:returnID];
+          }];
+
+  // Dock handlers.
+  [self.macRPC handle:@"docks.SetMenu"
+          withHandler:^(id in, NSString *returnID) {
+            return [Dock setMenu:in return:returnID];
+          }];
+  [self.macRPC handle:@"docks.SetBadge"
+          withHandler:^(id in, NSString *returnID) {
+            return [Dock setBadge:in return:returnID];
+          }];
+  [self.macRPC handle:@"docks.SetIcon"
+          withHandler:^(id in, NSString *returnID) {
+            return [Dock setIcon:in return:returnID];
           }];
 
   // File panel handlers.

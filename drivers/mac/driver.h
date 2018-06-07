@@ -18,9 +18,6 @@
 - (NSString *)support;
 - (void)setContextMenu:(NSString *)menuID return:(NSString *)returnID;
 - (void)setMenubar:(NSString *)menuID return:(NSString *)returnID;
-- (void)setDock:(NSString *)menuID return:(NSString *)returnID;
-- (void)setDockIcon:(NSString *)icon return:(NSString *)returnID;
-- (void)setDockBadge:(NSString *)badge return:(NSString *)returnID;
 - (void)share:(NSDictionary *)in return:(NSString *)returnID;
 - (void)quit:(id)in return:(NSString *)returnID;
 @end

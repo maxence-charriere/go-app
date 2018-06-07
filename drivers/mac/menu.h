@@ -1,9 +1,7 @@
 #ifndef menu_h
 #define menu_h
 
-#import "bridge.h"
 #import <Cocoa/Cocoa.h>
-#import <WebKit/WebKit.h>
 
 @interface MenuItem : NSMenuItem
 @property NSString *elemID;

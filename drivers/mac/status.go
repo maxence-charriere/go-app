@@ -11,6 +11,12 @@ import (
 	"github.com/murlokswarm/app/html"
 )
 
+// StatusMenu represents a menu that lives in the status bar.
+type StatusMenu struct {
+	Menu
+	onClose func()
+}
+
 func newStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
 	markup = app.ConcurrentMarkup(markup)
@@ -45,12 +51,6 @@ func newStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
 		return menu, menu.Load(c.DefaultURL)
 	}
 	return menu, nil
-}
-
-// StatusMenu represents a menu that lives in the status bar.
-type StatusMenu struct {
-	Menu
-	onClose func()
 }
 
 // Load loads the component targetted by the given url.
