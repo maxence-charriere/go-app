@@ -1,259 +1,110 @@
 package app
 
-import (
-	"os"
-	"path/filepath"
-
-	"github.com/pkg/errors"
-)
+import "github.com/pkg/errors"
 
 var (
-	driver     Driver
-	components Factory
+	// Loggers contains the loggers used by the app.
+	Loggers []Logger
+
+	// ErrNotFound is the error returned when fetching nonexistent elements or
+	// components.
+	ErrNotFound = errors.New("not found")
+
+	components = NewFactory()
+	backends   = make([]Backend, 0, 5)
+	uiChan     = make(chan func(), 1024)
+	events     = newEventRegistry(CallOnUIGoroutine)
+	actions    = newActionRegistry(events)
 )
 
-func init() {
-	components = NewFactory()
-	components = ConcurrentFactory(components)
-
-	events := NewEventRegistry(CallOnUIGoroutine)
-	events = ConcurrentEventRegistry(events)
-	DefaultEventRegistry = events
-
-	actions := NewActionRegistry(events)
-	DefaultActionRegistry = actions
-}
-
-// Import imports the component into the app.
+// Import imports the given component type into the app.
 // Components must be imported in order the be used by the app package.
 // This allows components to be created dynamically when they are found into
 // markup.
 func Import(c Component) {
 	if _, err := components.Register(c); err != nil {
-		err = errors.Wrap(err, "import component failed")
+		Log("import %T failed: %s", c, err)
 		panic(err)
 	}
 }
 
-// Run runs the app with the driver as backend.
-func Run(d Driver, addons ...Addon) error {
-	for _, addon := range addons {
-		d = addon(d)
-	}
-	driver = d
-	return driver.Run(components)
-}
-
-// RunningDriver returns the running driver.
-func RunningDriver() Driver {
-	return driver
-}
-
-// Name returns the application name.
-//
-// It panics if called before Run.
-func Name() string {
-	return driver.AppName()
-}
-
-// Resources returns the given path prefixed by the resources directory
-// location.
-// Resources should be used only for read only operations.
-//
-// It panics if called before Run.
-func Resources(path ...string) string {
-	return driver.Resources(path...)
-}
-
-// CSSResources returns a list that contains the path of the css files located
-// in the resource/css directory.
-func CSSResources() []string {
-	var css []string
-
-	walker := func(path string, info os.FileInfo, err error) error {
-		if err != nil {
+// Run runs the app.
+// It blocks until the app is closed.
+func Run() error {
+	for _, b := range backends {
+		if err := b.Run(components, uiChan); err != nil {
 			return err
 		}
+	}
+	return nil
+}
 
-		if info.IsDir() {
-			return nil
+// Render the given value.
+// Valid values are:
+//   - app.Element
+//   - app.Component
+// Backends decide whether they render a value.
+// Other types of value are ignored.
+func Render(v interface{}) {
+	for _, b := range backends {
+		if err := b.Render(v); err != nil {
+			Log("rendering %T failed: %s", v)
 		}
-
-		if ext := filepath.Ext(path); ext != ".css" {
-			return nil
-		}
-
-		css = append(css, path)
-		return nil
 	}
-
-	filepath.Walk(Resources("css"), walker)
-	return css
 }
 
-// Storage returns the given path prefixed by the storage directory
-// location.
-//
-// It panics if called before Run.
-func Storage(path ...string) string {
-	return driver.Storage(path...)
-}
-
-// NewWindow creates and displays the window described by the given
-// configuration.
-//
-// It panics if called before Run.
-func NewWindow(c WindowConfig) (Window, error) {
-	return driver.NewWindow(c)
-}
-
-// NewPage creates the page described by the given configuration.
-//
-// It panics if called before Run.
-func NewPage(c PageConfig) error {
-	return driver.NewPage(c)
-}
-
-// NewContextMenu creates and displays the context menu described by the
-// given configuration.
-//
-// It panics if called before Run.
-func NewContextMenu(c MenuConfig) (Menu, error) {
-	return driver.NewContextMenu(c)
-}
-
-// Render renders the given component.
-// It should be called when the display of component c have to be updated.
-//
-// It panics if called before Run.
-func Render(c Component) {
-	driver.CallOnUIGoroutine(func() {
-		driver.Render(c)
-	})
-}
-
-// ElementByComponent returns the element where the given component is mounted.
-//
-// It panics if called before Run.
-func ElementByComponent(c Component) (ElementWithComponent, error) {
-	return driver.ElementByComponent(c)
-}
-
-// NavigatorByComponent returns the navigator where the given component is
-// mounted.
-func NavigatorByComponent(c Component) (Navigator, error) {
-	elem, err := driver.ElementByComponent(c)
-	if err != nil {
-		return nil, err
-	}
-
-	nav, ok := elem.(Navigator)
-	if !ok {
-		return nil, errors.New("component is not mounted into a navigator")
-	}
-	return nav, nil
-}
-
-// WindowByComponent returns the window where the given component is mounted.
-//
-// It panics if called before Run.
-func WindowByComponent(c Component) (Window, error) {
-	elem, err := driver.ElementByComponent(c)
-	if err != nil {
-		return nil, err
-	}
-
-	win, ok := elem.(Window)
-	if !ok {
-		return nil, errors.New("component is not mounted in a window")
-	}
-	return win, nil
-}
-
-// PageByComponent returns the page where the given component is mounted.
-func PageByComponent(c Component) (Page, error) {
-	elem, err := driver.ElementByComponent(c)
-	if err != nil {
-		return nil, err
-	}
-
-	page, ok := elem.(Page)
-	if !ok {
-		return nil, errors.New("component is not mounted in a page")
-	}
-	return page, nil
-}
-
-// NewFilePanel creates and displays the file panel described by the given
-// configuration.
-//
-// It panics if called before Run.
-func NewFilePanel(c FilePanelConfig) error {
-	return driver.NewFilePanel(c)
-}
-
-// NewSaveFilePanel creates and displays the save file panel described by the
-// given configuration.
-//
-// It panics if called before Run.
-func NewSaveFilePanel(c SaveFilePanelConfig) error {
-	return driver.NewSaveFilePanel(c)
-}
-
-// NewShare creates and display the share pannel to share the given value.
-//
-// It panics if called before Run.
-func NewShare(v interface{}) error {
-	return driver.NewShare(v)
-}
-
-// NewNotification creates and displays the notification described in the
-// given configuration.
-//
-// It panics if called before Run.
-func NewNotification(c NotificationConfig) error {
-	return driver.NewNotification(c)
-}
-
-// MenuBar returns the menu bar.
-//
-// It panics if called before Run.
-func MenuBar() (Menu, error) {
-	return driver.MenuBar()
-}
-
-// NewStatusMenu creates and displays the status menu described in the given
-// configuration.
-//
-// It panics if called before Run.
-func NewStatusMenu(c StatusMenuConfig) (StatusMenu, error) {
-	return driver.NewStatusMenu(c)
-}
-
-// StatusMenuByComponent returns the status menu where the given component is
-// mounted.
-func StatusMenuByComponent(c Component) (StatusMenu, error) {
-	elem, err := driver.ElementByComponent(c)
-	if err != nil {
-		return nil, err
-	}
-
-	menu, ok := elem.(StatusMenu)
-	if !ok {
-		return nil, errors.New("component is not mounted in a status menu")
-	}
-	return menu, nil
-}
-
-// Dock returns the dock tile.
-//
-// It panics if called before Run.
-func Dock() (DockTile, error) {
-	return driver.Dock()
-}
-
-// CallOnUIGoroutine calls a function on the UI goroutine.
-// UI goroutine is the running application main thread.
+// CallOnUIGoroutine calls the given function on the UI dedicated goroutine.
 func CallOnUIGoroutine(f func()) {
-	driver.CallOnUIGoroutine(f)
+	uiChan <- f
+}
+
+// PostAction creates and posts the named action with the given arg.
+// The action is then handled in a separate goroutine.
+func PostAction(name string, arg interface{}) {
+	actions.Post(name, arg)
+}
+
+// PostActions posts a batch of actions.
+// All the actions are handled sequentially in a separate goroutine.
+func PostActions(a ...Action) {
+	actions.PostBatch(a...)
+}
+
+// HandleAction handles the named action with the given action handler.
+func HandleAction(name string, h ActionHandler) {
+	actions.Handle(name, h)
+}
+
+// NewEventSubscriber creates an event subscriber.
+func NewEventSubscriber() EventSubscriber {
+	return &eventSubscriber{
+		registry: events,
+	}
+}
+
+// Log logs a message according to a format specifier.
+// It is a helper function that calls Log() for all the loggers set in
+// app.Loggers.
+func Log(format string, v ...interface{}) {
+	for _, l := range Loggers {
+		l.Log(format, v...)
+	}
+}
+
+// Debug logs a debug message according to a format specifier.
+// It is a helper function that calls Debug() for all the loggers set in
+// app.Loggers.
+func Debug(format string, v ...interface{}) {
+	for _, l := range Loggers {
+		l.Debug(format, v...)
+	}
+}
+
+// WhenDebug execute the given function when debug mode is enabled.
+// It is a helper function that calls WhenDebug() for all the loggers set in
+// app.Loggers.
+func WhenDebug(f func()) {
+	for _, l := range Loggers {
+		l.WhenDebug(f)
+	}
 }

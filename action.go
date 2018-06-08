@@ -4,34 +4,6 @@ import (
 	"sync"
 )
 
-var (
-	// DefaultActionRegistry is the default action registry.
-	DefaultActionRegistry ActionRegistry
-)
-
-// Handle handles the named action with the given handler.
-//
-// It is a helper function that call DefaultActionRegistry.Handle.
-func Handle(name string, h ActionHandler) {
-	DefaultActionRegistry.Handle(name, h)
-}
-
-// NewAction creates and posts the named action with the given arg.
-// The action is then handled in a separate goroutine.
-//
-// It is a helper function that call DefaultActionRegistry.Post.
-func NewAction(name string, arg interface{}) {
-	DefaultActionRegistry.Post(name, arg)
-}
-
-// NewActions creates and posts a batch of actions.
-// All the actions are handled sequentially in a separate goroutine.
-//
-// It is a helper function that call DefaultActionRegistry.PostBatch.
-func NewActions(a ...Action) {
-	DefaultActionRegistry.PostBatch(a...)
-}
-
 // Action represents an action to handle.
 type Action struct {
 	Name string
@@ -55,9 +27,7 @@ type ActionRegistry interface {
 	PostBatch(a ...Action)
 }
 
-// NewActionRegistry creates an action registry.
-// Returned registry is safe for concurrent operations.
-func NewActionRegistry(dispatcher EventDispatcher) ActionRegistry {
+func newActionRegistry(dispatcher EventDispatcher) ActionRegistry {
 	return &actionRegistry{
 		actions:    make(map[string]ActionHandler),
 		dispatcher: dispatcher,

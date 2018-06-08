@@ -4,6 +4,30 @@ import (
 	"testing"
 )
 
+type Bar ZeroCompo
+
+func (c *Bar) Render() string {
+	return `<h2>Bar</h2>`
+}
+
+type NoPointerCompo ZeroCompo
+
+func (c NoPointerCompo) Render() string {
+	return `<div>goodbye</div>`
+}
+
+type IntCompo int
+
+func (i *IntCompo) Render() string {
+	return `<p>Aurevoir World</p>`
+}
+
+type EmptyCompo struct{}
+
+func (c *EmptyCompo) Render() string {
+	return `<p>Goodbye World</p>`
+}
+
 func TestComponentNameFromURL(t *testing.T) {
 	tests := []struct {
 		rawurl       string
