@@ -6,30 +6,30 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type element struct {
+type control struct {
 	id    string
 	compo bool
 }
 
-func (e *element) ID() string {
+func (e *control) ID() string {
 	return e.id
 }
 
-func (e *element) Contains(c Component) bool {
+func (e *control) Contains(c Component) bool {
 	return e.compo
 }
 
-func TestElementDB(t *testing.T) {
+func TestControlDB(t *testing.T) {
 	tests := []struct {
 		scenario string
-		elem     *element
+		elem     *control
 		byID     string
 		errID    bool
 		errCompo bool
 	}{
 		{
 			scenario: "elem with component",
-			elem: &element{
+			elem: &control{
 				id:    "hello",
 				compo: true,
 			},
@@ -37,7 +37,7 @@ func TestElementDB(t *testing.T) {
 		},
 		{
 			scenario: "elem without component",
-			elem: &element{
+			elem: &control{
 				id: "hello",
 			},
 			byID:     "hello",
@@ -52,19 +52,19 @@ func TestElementDB(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
-			elemDB := NewElementDB()
+			controlDB := NewControlDB()
 
 			if test.elem != nil {
-				elemDB.Add(test.elem)
+				controlDB.Add(test.elem)
 
 				defer func() {
-					elemDB.Remove(test.elem)
-					_, err := elemDB.ElementByID(test.elem.ID())
+					controlDB.Remove(test.elem)
+					_, err := controlDB.ControlByID(test.elem.ID())
 					assert.Error(t, err)
 				}()
 			}
 
-			elem, err := elemDB.ElementByID(test.byID)
+			elem, err := controlDB.ControlByID(test.byID)
 			if test.errID {
 				assert.Error(t, err)
 			} else {
@@ -72,7 +72,7 @@ func TestElementDB(t *testing.T) {
 				assert.Equal(t, test.elem.ID(), elem.ID())
 			}
 
-			elem, err = elemDB.ElementByComponent(&Bar{})
+			elem, err = controlDB.ControlByComponent(&Bar{})
 			if test.errCompo {
 				assert.Error(t, err)
 			} else {
