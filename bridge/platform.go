@@ -11,8 +11,8 @@ import (
 // PlatformRPCHandler represents the handler that will perform platform calls.
 type PlatformRPCHandler func(call string) error
 
-// PlatformRPC is a struct that implements the remote procedure call from  Go to an
-// underlying platform.
+// PlatformRPC is a struct that implements the remote procedure call from  Go to
+// an underlying platform.
 type PlatformRPC struct {
 	Handler PlatformRPCHandler
 
