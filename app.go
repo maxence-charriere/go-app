@@ -41,10 +41,11 @@ func Run() error {
 
 // Render the given value.
 // Valid values are:
-//   - app.Element
+//   - app.Control
 //   - app.Component
-// Backends decide whether they render a value.
+//   - app.Node
 // Other types of value are ignored.
+// Backends decide whether they render a value.
 func Render(v interface{}) {
 	for _, b := range backends {
 		if err := b.Render(v); err != nil {

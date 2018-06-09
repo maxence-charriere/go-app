@@ -7,6 +7,11 @@ type Backend interface {
 	Run(f Factory, uiChan chan func()) error
 
 	// Render the given value.
+	// Valid values are:
+	//   - app.Control
+	//   - app.Component
+	//   - app.Node
+	// Other types of value are ignored.
 	// It is up to the backend implementation to decide whether it render a
 	// value.
 	Render(v interface{}) error
