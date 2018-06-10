@@ -7,8 +7,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestDecode(t *testing.T) {
-	root, err := decode(`
+func TestDecodeNodes(t *testing.T) {
+	root, err := decodeNodes(`
 		<div>
 			<!-- Comment -->	
 			<h1>hello</h1>
@@ -65,8 +65,8 @@ func TestDecode(t *testing.T) {
 	require.Empty(t, pathB.Children())
 }
 
-func TestDecodeError(t *testing.T) {
-	_, err := decode(`
+func TestDecodeNodesError(t *testing.T) {
+	_, err := decodeNodes(`
 		<div>
 			<div %error>
 		</div>

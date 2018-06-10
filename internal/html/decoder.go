@@ -9,7 +9,7 @@ import (
 	"golang.org/x/net/html/atom"
 )
 
-func decode(s string) (node, error) {
+func decodeNodes(s string) (node, error) {
 	d := &decoder{
 		tokenizer: html.NewTokenizer(bytes.NewBufferString(s)),
 	}
