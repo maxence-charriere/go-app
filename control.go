@@ -10,8 +10,8 @@ type Control interface {
 	// ID returns the control identifier.
 	ID() string
 
-	// Reports whether it contains the given control.
-	Contains(c Component) bool
+	// Reports whether it contains the given component.
+	ContainsComponent(c Component) bool
 }
 
 // ControlDB is the interface that describes an control database.
@@ -72,7 +72,7 @@ func (db *controlDB) ControlByComponent(c Component) (Control, error) {
 	defer db.mutex.RUnlock()
 
 	for _, elem := range db.controls {
-		if elem.Contains(c) {
+		if elem.ContainsComponent(c) {
 			return elem, nil
 		}
 	}

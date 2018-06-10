@@ -15,7 +15,7 @@ func (e *control) ID() string {
 	return e.id
 }
 
-func (e *control) Contains(c Component) bool {
+func (e *control) ContainsComponent(c Component) bool {
 	return e.compo
 }
 
