@@ -7,11 +7,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var changes = []app.DOMChange{app.DOMChange{
-	Type:  app.DOMNoChanges,
-	Value: 42,
-}}
-
 var attrs = map[string]string{
 	"hello": "world",
 }
@@ -22,7 +17,6 @@ func TestTextNode(t *testing.T) {
 		compoID:   "compo",
 		controlID: "control",
 		text:      "hello",
-		changes:   changes,
 	}
 
 	assert.Equal(t, "hello", text.Text())
@@ -36,7 +30,6 @@ func TestElemNode(t *testing.T) {
 		controlID: "control",
 		tagName:   "img",
 		attrs:     attrs,
-		changes:   changes,
 	}
 
 	assert.Equal(t, "img", elem.TagName())
@@ -65,7 +58,6 @@ func TestCompoNode(t *testing.T) {
 		controlID: "control",
 		name:      "foo",
 		fields:    attrs,
-		changes:   changes,
 	}
 
 	assert.Equal(t, "foo", compo.Name())
@@ -84,5 +76,4 @@ func testNode(t *testing.T, n node) {
 	assert.Equal(t, "node", n.ID())
 	assert.Equal(t, "compo", n.CompoID())
 	assert.Equal(t, "control", n.ControlID())
-	assert.Equal(t, changes, n.Changes())
 }

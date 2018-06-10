@@ -13,7 +13,6 @@ type textNode struct {
 	controlID string
 	text      string
 	parent    app.DOMNode
-	changes   []app.DOMChange
 }
 
 func (t *textNode) ID() string {
@@ -40,10 +39,6 @@ func (t *textNode) SetParent(p app.DOMNode) {
 	t.parent = p
 }
 
-func (t *textNode) Changes() []app.DOMChange {
-	return t.changes
-}
-
 type elemNode struct {
 	id        string
 	compoID   string
@@ -52,7 +47,6 @@ type elemNode struct {
 	attrs     map[string]string
 	parent    app.DOMNode
 	children  []app.DOMNode
-	changes   []app.DOMChange
 }
 
 func (e *elemNode) ID() string {
@@ -87,10 +81,6 @@ func (e *elemNode) Children() []app.DOMNode {
 	return e.children
 }
 
-func (e *elemNode) Changes() []app.DOMChange {
-	return e.changes
-}
-
 func (e *elemNode) appendChild(c node) {
 	e.children = append(e.children, c)
 	c.SetParent(e)
@@ -103,7 +93,6 @@ type compoNode struct {
 	name      string
 	fields    map[string]string
 	parent    app.DOMNode
-	changes   []app.DOMChange
 }
 
 func (c *compoNode) ID() string {
@@ -132,7 +121,4 @@ func (c *compoNode) Parent() app.DOMNode {
 
 func (c *compoNode) SetParent(p app.DOMNode) {
 	c.parent = p
-}
-func (c *compoNode) Changes() []app.DOMChange {
-	return c.changes
 }
