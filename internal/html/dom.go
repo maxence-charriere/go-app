@@ -264,6 +264,7 @@ func (d *dom) syncElemNodes(current, new *elemNode) ([]Change, error) {
 		}
 		changes = append(changes, childChange...)
 
+		curChildren = curChildren[:1]
 		newChildren = newChildren[:1]
 	}
 
@@ -301,6 +302,8 @@ func (d *dom) syncElemNodes(current, new *elemNode) ([]Change, error) {
 
 		changes = append(changes, childChanges...)
 		changes = append(changes, appendChildChange(current.ID(), childID))
+
+		newChildren = newChildren[:1]
 	}
 	return changes, nil
 }
