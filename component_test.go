@@ -10,12 +10,6 @@ func (c *Bar) Render() string {
 	return `<h2>Bar</h2>`
 }
 
-type NoPointerCompo ZeroCompo
-
-func (c NoPointerCompo) Render() string {
-	return `<div>goodbye</div>`
-}
-
 type IntCompo int
 
 func (i *IntCompo) Render() string {

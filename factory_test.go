@@ -20,13 +20,7 @@ func TestFactory(t *testing.T) {
 			name:     "app.bar",
 		},
 		{
-			scenario: "registering a non pointer component",
-			compo:    NoPointerCompo{},
-			name:     "app.nopointercompo",
-			err:      true,
-		},
-		{
-			scenario: "registering a non pointer to struct component",
+			scenario: "registering a non struct component",
 			compo: func() *IntCompo {
 				intc := IntCompo(42)
 				return &intc

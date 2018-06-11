@@ -11,7 +11,7 @@ func TestImport(t *testing.T) {
 	Import(&Bar{})
 
 	defer func() { recover() }()
-	Import(NoPointerCompo{})
+	Import(&EmptyCompo{})
 	t.Error("no panic")
 }
 

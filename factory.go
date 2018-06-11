@@ -36,11 +36,9 @@ func (f *factory) Register(c Component) (name string, err error) {
 	defer f.mutex.Unlock()
 
 	rval := reflect.ValueOf(c)
-	if rval.Kind() != reflect.Ptr {
-		return "", errors.New("component is not a pointer")
-	}
+	rval = reflect.Indirect(rval)
 
-	if rval = rval.Elem(); rval.Kind() != reflect.Struct {
+	if rval.Kind() != reflect.Struct {
 		return "", errors.New("component does not point to a struct")
 	}
 
