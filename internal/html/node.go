@@ -4,7 +4,7 @@ import "github.com/murlokswarm/app"
 
 type node interface {
 	app.DOMNode
-	SetParent(app.DOMNode)
+	setParent(node)
 }
 
 type textNode struct {
@@ -12,7 +12,7 @@ type textNode struct {
 	compoID   string
 	controlID string
 	text      string
-	parent    app.DOMNode
+	parent    node
 }
 
 func (t *textNode) ID() string {
@@ -35,7 +35,7 @@ func (t *textNode) Parent() app.DOMNode {
 	return t.parent
 }
 
-func (t *textNode) SetParent(p app.DOMNode) {
+func (t *textNode) setParent(p node) {
 	t.parent = p
 }
 
@@ -45,8 +45,8 @@ type elemNode struct {
 	controlID string
 	tagName   string
 	attrs     map[string]string
-	parent    app.DOMNode
-	children  []app.DOMNode
+	parent    node
+	children  []node
 }
 
 func (e *elemNode) ID() string {
@@ -73,17 +73,35 @@ func (e *elemNode) Parent() app.DOMNode {
 	return e.parent
 }
 
-func (e *elemNode) SetParent(p app.DOMNode) {
+func (e *elemNode) setParent(p node) {
 	e.parent = p
 }
 
 func (e *elemNode) Children() []app.DOMNode {
-	return e.children
+	children := make([]app.DOMNode, len(e.children))
+	for i, c := range e.children {
+		children[i] = c
+	}
+	return children
 }
 
 func (e *elemNode) appendChild(c node) {
 	e.children = append(e.children, c)
-	c.SetParent(e)
+	c.setParent(e)
+}
+
+func (e *elemNode) removeChild(c node) {
+	for i, child := range e.children {
+		if c == child {
+			children := e.children
+			copy(children[i:], children[i+1:])
+			children[len(children)-1] = nil
+			e.children = children[:len(children)-1]
+
+			c.setParent(nil)
+			return
+		}
+	}
 }
 
 type compoNode struct {
@@ -91,8 +109,10 @@ type compoNode struct {
 	compoID   string
 	controlID string
 	name      string
+	component app.Component
 	fields    map[string]string
-	parent    app.DOMNode
+	parent    node
+	root      node
 }
 
 func (c *compoNode) ID() string {
@@ -119,6 +139,29 @@ func (c *compoNode) Parent() app.DOMNode {
 	return c.parent
 }
 
-func (c *compoNode) SetParent(p app.DOMNode) {
+func (c *compoNode) setParent(p node) {
 	c.parent = p
+}
+
+func (c *compoNode) setRoot(r node) {
+	r.setParent(c)
+	c.root = r
+}
+
+func (c *compoNode) removeRoot() {
+	c.root.setParent(nil)
+	c.root = nil
+}
+
+func attrsEqual(a, b map[string]string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+
+	for k, va := range a {
+		if vb, ok := b[k]; !ok || va != vb {
+			return false
+		}
+	}
+	return true
 }

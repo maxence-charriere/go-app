@@ -1,15 +1,5 @@
 package app
 
-// DOM is the interface that describes a document object model store that
-// manages node states.
-type DOM interface {
-	// Returns the component with the given identifier.
-	ComponentByID(id string) (Component, error)
-
-	// Create or update the nodes of the given component.
-	Render(Component) (changes []DOMChange, err error)
-}
-
 // DOMNode is the interface that describes a DOM node.
 // DOM have a limited support.
 type DOMNode interface {
@@ -60,23 +50,3 @@ type DOMCompo interface {
 	// The compenent fields.
 	Fields() map[string]string
 }
-
-// DOMChange represents a change to perform on a DOM node.
-// It is used by backends to synchronize a node with its local representation.
-type DOMChange struct {
-	Type  DOMChangeType
-	Value interface{}
-}
-
-// DOMChangeType represents a DOM change type.
-type DOMChangeType int
-
-// Constants that enumerates DOM change types.
-const (
-	DOMNoChanges DOMChangeType = iota
-	DOMUpdateAttrs
-	DOMAppendChild
-	DOMInsertBefore
-	DOMReplaceChild
-	DOMRemoveChild
-)
