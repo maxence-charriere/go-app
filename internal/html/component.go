@@ -1,146 +1,134 @@
 package html
 
-import (
-	"bytes"
-	"encoding/json"
-	"html/template"
-	"reflect"
-	"strconv"
-	"strings"
-	"time"
+// type compoRow struct {
+// 	id        string
+// 	component app.Component
+// 	events    app.EventSubscriber
+// 	root      node
+// }
 
-	"github.com/murlokswarm/app"
-)
+// func decodeComponent(c app.Component) (node, error) {
+// 	var funcs template.FuncMap
 
-type compoRow struct {
-	id        string
-	component app.Component
-	events    app.EventSubscriber
-	root      node
-}
+// 	if compoExtRend, ok := c.(app.ComponentWithExtendedRender); ok {
+// 		funcs = compoExtRend.Funcs()
+// 	}
 
-func decodeComponent(c app.Component) (node, error) {
-	var funcs template.FuncMap
+// 	if len(funcs) == 0 {
+// 		funcs = make(template.FuncMap, 4)
+// 	}
 
-	if compoExtRend, ok := c.(app.ComponentWithExtendedRender); ok {
-		funcs = compoExtRend.Funcs()
-	}
+// 	funcs["raw"] = func(s string) template.HTML {
+// 		return template.HTML(s)
+// 	}
 
-	if len(funcs) == 0 {
-		funcs = make(template.FuncMap, 4)
-	}
+// 	funcs["compo"] = func(s string) template.HTML {
+// 		return template.HTML("<" + s + ">")
+// 	}
 
-	funcs["raw"] = func(s string) template.HTML {
-		return template.HTML(s)
-	}
+// 	funcs["time"] = func(t time.Time, layout string) string {
+// 		return t.Format(layout)
+// 	}
 
-	funcs["compo"] = func(s string) template.HTML {
-		return template.HTML("<" + s + ">")
-	}
+// 	funcs["json"] = func(v interface{}) string {
+// 		b, _ := json.Marshal(v)
+// 		return string(b)
+// 	}
 
-	funcs["time"] = func(t time.Time, layout string) string {
-		return t.Format(layout)
-	}
+// 	tmpl, err := template.
+// 		New("").
+// 		Funcs(funcs).
+// 		Parse(c.Render())
+// 	if err != nil {
+// 		return nil, err
+// 	}
 
-	funcs["json"] = func(v interface{}) string {
-		b, _ := json.Marshal(v)
-		return string(b)
-	}
+// 	var w bytes.Buffer
+// 	if err = tmpl.Execute(&w, c); err != nil {
+// 		return nil, err
+// 	}
+// 	return decodeNodes(w.String())
+// }
 
-	tmpl, err := template.
-		New("").
-		Funcs(funcs).
-		Parse(c.Render())
-	if err != nil {
-		return nil, err
-	}
+// func mapComponentFields(c app.Component, fields map[string]string) error {
+// 	if len(fields) == 0 {
+// 		return nil
+// 	}
 
-	var w bytes.Buffer
-	if err = tmpl.Execute(&w, c); err != nil {
-		return nil, err
-	}
-	return decodeNodes(w.String())
-}
+// 	v := reflect.ValueOf(c).Elem()
+// 	t := v.Type()
 
-func mapComponentFields(c app.Component, fields map[string]string) error {
-	if len(fields) == 0 {
-		return nil
-	}
+// 	for i, numfields := 0, t.NumField(); i < numfields; i++ {
+// 		fv := v.Field(i)
+// 		ft := t.Field(i)
 
-	v := reflect.ValueOf(c).Elem()
-	t := v.Type()
+// 		if ft.Anonymous {
+// 			continue
+// 		}
 
-	for i, numfields := 0, t.NumField(); i < numfields; i++ {
-		fv := v.Field(i)
-		ft := t.Field(i)
+// 		// Ignore non exported field.
+// 		if len(ft.PkgPath) != 0 {
+// 			continue
+// 		}
 
-		if ft.Anonymous {
-			continue
-		}
+// 		name := strings.ToLower(ft.Name)
+// 		value := fields[name]
 
-		// Ignore non exported field.
-		if len(ft.PkgPath) != 0 {
-			continue
-		}
+// 		// Remove not set boolean.
+// 		if len(value) == 0 && fv.Kind() == reflect.Bool {
+// 			fv.SetBool(false)
+// 			continue
+// 		}
 
-		name := strings.ToLower(ft.Name)
-		value := fields[name]
+// 		if err := mapComponentField(fv, value); err != nil {
+// 			return err
+// 		}
+// 	}
+// 	return nil
+// }
 
-		// Remove not set boolean.
-		if len(value) == 0 && fv.Kind() == reflect.Bool {
-			fv.SetBool(false)
-			continue
-		}
+// func mapComponentField(field reflect.Value, value string) error {
+// 	switch field.Kind() {
+// 	case reflect.String:
+// 		field.SetString(value)
 
-		if err := mapComponentField(fv, value); err != nil {
-			return err
-		}
-	}
-	return nil
-}
+// 	case reflect.Bool:
+// 		if len(value) == 0 {
+// 			value = "true"
+// 		}
+// 		b, err := strconv.ParseBool(value)
+// 		if err != nil {
+// 			return err
+// 		}
+// 		field.SetBool(b)
 
-func mapComponentField(field reflect.Value, value string) error {
-	switch field.Kind() {
-	case reflect.String:
-		field.SetString(value)
+// 	case reflect.Int, reflect.Int64, reflect.Int32, reflect.Int16, reflect.Int8:
+// 		n, err := strconv.ParseInt(value, 0, 64)
+// 		if err != nil {
+// 			return err
+// 		}
+// 		field.SetInt(n)
 
-	case reflect.Bool:
-		if len(value) == 0 {
-			value = "true"
-		}
-		b, err := strconv.ParseBool(value)
-		if err != nil {
-			return err
-		}
-		field.SetBool(b)
+// 	case reflect.Uint, reflect.Uint64, reflect.Uint32, reflect.Uint16, reflect.Uint8, reflect.Uintptr:
+// 		n, err := strconv.ParseUint(value, 0, 64)
+// 		if err != nil {
+// 			return err
+// 		}
+// 		field.SetUint(n)
 
-	case reflect.Int, reflect.Int64, reflect.Int32, reflect.Int16, reflect.Int8:
-		n, err := strconv.ParseInt(value, 0, 64)
-		if err != nil {
-			return err
-		}
-		field.SetInt(n)
+// 	case reflect.Float64, reflect.Float32:
+// 		n, err := strconv.ParseFloat(value, 64)
+// 		if err != nil {
+// 			return err
+// 		}
+// 		field.SetFloat(n)
 
-	case reflect.Uint, reflect.Uint64, reflect.Uint32, reflect.Uint16, reflect.Uint8, reflect.Uintptr:
-		n, err := strconv.ParseUint(value, 0, 64)
-		if err != nil {
-			return err
-		}
-		field.SetUint(n)
-
-	case reflect.Float64, reflect.Float32:
-		n, err := strconv.ParseFloat(value, 64)
-		if err != nil {
-			return err
-		}
-		field.SetFloat(n)
-
-	default:
-		addr := field.Addr()
-		i := addr.Interface()
-		if err := json.Unmarshal([]byte(value), i); err != nil {
-			return err
-		}
-	}
-	return nil
-}
+// 	default:
+// 		addr := field.Addr()
+// 		i := addr.Interface()
+// 		if err := json.Unmarshal([]byte(value), i); err != nil {
+// 			return err
+// 		}
+// 	}
+// 	return nil
+// }

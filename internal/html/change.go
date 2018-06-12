@@ -11,25 +11,43 @@ type Change struct {
 }
 
 const (
-	createNode  = "createNode"
-	deleteNode  = "deleteNode"
+	createText = "createText"
+	setText    = "setText"
+
+	createElem  = "createElem"
+	setAttrs    = "setAttrs"
 	appendChild = "appendChild"
 	removeChild = "removeChild"
-	updateNode  = "updateNode"
-	setRoot     = "setRoot"
+
+	setRoot    = "setRoot"
+	deleteNode = "deleteNode"
 )
 
-func createNodeChange(n node) Change {
+func createTextChange(n *textNode) Change {
 	return Change{
-		Type:  createNode,
+		Type:  createText,
 		Value: n,
 	}
 }
 
-func deleteNodeChange(id string) Change {
+func setTextChange(text string) Change {
 	return Change{
-		Type:  deleteNode,
-		Value: id,
+		Type:  setText,
+		Value: text,
+	}
+}
+
+func createElemChange(n *elemNode) Change {
+	return Change{
+		Type:  createElem,
+		Value: n,
+	}
+}
+
+func setAttrsChange(a map[string]string) Change {
+	return Change{
+		Type:  setAttrs,
+		Value: a,
 	}
 }
 
@@ -59,16 +77,16 @@ func removeChildChange(parentID, childID string) Change {
 	}
 }
 
-func updateNodeChange(n node) Change {
-	return Change{
-		Type:  updateNode,
-		Value: n,
-	}
-}
-
 func setRootChange(id string) Change {
 	return Change{
 		Type:  setRoot,
+		Value: id,
+	}
+}
+
+func deleteNodeChange(id string) Change {
+	return Change{
+		Type:  deleteNode,
 		Value: id,
 	}
 }
