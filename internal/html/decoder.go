@@ -1,168 +1,163 @@
 package html
 
-// func decodeNodes(s string) (node, error) {
-// 	d := &decoder{
-// 		tokenizer: html.NewTokenizer(bytes.NewBufferString(s)),
-// 	}
-// 	return d.decode()
-// }
+import (
+	"bytes"
+	"strings"
 
-// type decoder struct {
-// 	tokenizer   *html.Tokenizer
-// 	decodingSVG bool
-// }
+	"github.com/google/uuid"
+	"golang.org/x/net/html"
+	"golang.org/x/net/html/atom"
+)
 
-// func (d *decoder) decode() (node, error) {
-// 	switch d.tokenizer.Next() {
-// 	case html.TextToken:
-// 		return d.decodeText()
+func decodeNodes(s string, rootID string) (node, error) {
+	d := &decoder{
+		tokenizer: html.NewTokenizer(bytes.NewBufferString(s)),
+	}
+	return d.decode(rootID)
+}
 
-// 	case html.SelfClosingTagToken:
-// 		return d.decodeSelfClosingElem()
+type decoder struct {
+	tokenizer   *html.Tokenizer
+	decodingSVG bool
+}
 
-// 	case html.StartTagToken:
-// 		return d.decodeElem()
+func (d *decoder) decode(id string) (node, error) {
+	switch d.tokenizer.Next() {
+	case html.TextToken:
+		return d.decodeText(id)
 
-// 	case html.EndTagToken:
-// 		return d.closeElem()
+	case html.SelfClosingTagToken:
+		return d.decodeSelfClosingElem(id)
 
-// 	case html.ErrorToken:
-// 		return nil, d.tokenizer.Err()
+	case html.StartTagToken:
+		return d.decodeElem(id)
 
-// 	default:
-// 		// Nothing we care about, decode the next node.
-// 		return d.decode()
-// 	}
-// }
+	case html.EndTagToken:
+		return d.closeElem()
 
-// func (d *decoder) decodeText() (node, error) {
-// 	text := string(d.tokenizer.Text())
-// 	text = strings.TrimSpace(text)
+	case html.ErrorToken:
+		return nil, d.tokenizer.Err()
 
-// 	if len(text) == 0 {
-// 		// Text is empty, decode the next node.
-// 		return d.decode()
-// 	}
+	default:
+		// Nothing we care about, decode the next node.
+		return d.decode(id)
+	}
+}
 
-// 	return &textNode{
-// 		id:   uuid.New().String(),
-// 		text: text,
-// 	}, nil
-// }
+func (d *decoder) decodeText(id string) (node, error) {
+	text := string(d.tokenizer.Text())
+	text = strings.TrimSpace(text)
 
-// func (d *decoder) decodeSelfClosingElem() (node, error) {
-// 	name, hasAttr := d.tokenizer.TagName()
-// 	tagName := string(name)
+	if len(text) == 0 {
+		// Text is empty, decode the next node.
+		return d.decode(id)
+	}
 
-// 	if isCompoTagName(tagName, d.decodingSVG) {
-// 		return d.decodeCompo(tagName, hasAttr)
-// 	}
+	t := newTextNode(id)
+	t.SetText(text)
+	return t, nil
+}
 
-// 	return &elemNode{
-// 		id:      uuid.New().String(),
-// 		tagName: tagName,
-// 		attrs:   d.decodeAttrs(hasAttr),
-// 	}, nil
-// }
+func (d *decoder) decodeSelfClosingElem(id string) (node, error) {
+	name, hasAttr := d.tokenizer.TagName()
+	tagName := string(name)
 
-// func (d *decoder) decodeAttrs(hasAttr bool) map[string]string {
-// 	if !hasAttr {
-// 		return nil
-// 	}
+	if isCompoTagName(tagName, d.decodingSVG) {
+		return newCompoNode(id, tagName, d.decodeAttrs(hasAttr)), nil
+	}
 
-// 	attrs := make(map[string]string)
-// 	for {
-// 		name, val, moreAttr := d.tokenizer.TagAttr()
-// 		attrs[string(name)] = string(val)
+	elem := newElemNode(id, tagName)
+	elem.SetAttrs(d.decodeAttrs(hasAttr))
+	return elem, nil
+}
 
-// 		if !moreAttr {
-// 			break
-// 		}
-// 	}
-// 	return attrs
-// }
+func (d *decoder) decodeAttrs(hasAttr bool) map[string]string {
+	if !hasAttr {
+		return nil
+	}
 
-// func (d *decoder) decodeElem() (node, error) {
-// 	name, hasAttr := d.tokenizer.TagName()
-// 	tagName := string(name)
+	attrs := make(map[string]string)
+	for {
+		name, val, moreAttr := d.tokenizer.TagAttr()
+		attrs[string(name)] = string(val)
 
-// 	if isCompoTagName(tagName, d.decodingSVG) {
-// 		return d.decodeCompo(tagName, hasAttr)
-// 	}
+		if !moreAttr {
+			break
+		}
+	}
+	return attrs
+}
 
-// 	if tagName == "svg" {
-// 		d.decodingSVG = true
-// 	}
+func (d *decoder) decodeElem(id string) (node, error) {
+	name, hasAttr := d.tokenizer.TagName()
+	tagName := string(name)
 
-// 	elem := &elemNode{
-// 		id:      uuid.New().String(),
-// 		tagName: tagName,
-// 		attrs:   d.decodeAttrs(hasAttr),
-// 	}
+	if isCompoTagName(tagName, d.decodingSVG) {
+		return newCompoNode(id, tagName, d.decodeAttrs(hasAttr)), nil
+	}
 
-// 	if isVoidElem(tagName) {
-// 		return elem, nil
-// 	}
+	if tagName == "svg" {
+		d.decodingSVG = true
+	}
 
-// 	for {
-// 		child, err := d.decode()
-// 		if err != nil {
-// 			return nil, err
-// 		}
-// 		if child == nil {
-// 			break
-// 		}
-// 		elem.appendChild(child)
-// 	}
-// 	return elem, nil
-// }
+	elem := newElemNode(id, tagName)
+	elem.SetAttrs(d.decodeAttrs(hasAttr))
 
-// func (d *decoder) closeElem() (node, error) {
-// 	tagName, _ := d.tokenizer.TagName()
-// 	if string(tagName) == "svg" {
-// 		d.decodingSVG = false
-// 	}
-// 	return nil, nil
-// }
+	if isVoidElem(tagName) {
+		return elem, nil
+	}
 
-// func (d *decoder) decodeCompo(tagName string, hasAttr bool) (node, error) {
-// 	return &compoNode{
-// 		id:     uuid.New().String(),
-// 		name:   tagName,
-// 		fields: d.decodeAttrs(hasAttr),
-// 	}, nil
-// }
+	for {
+		child, err := d.decode(uuid.New().String())
+		if err != nil {
+			return nil, err
+		}
+		if child == nil {
+			break
+		}
+		elem.appendChild(child)
+	}
+	return elem, nil
+}
 
-// func isHTMLTagName(tagName string) bool {
-// 	return atom.Lookup([]byte(tagName)) != 0
-// }
+func (d *decoder) closeElem() (node, error) {
+	tagName, _ := d.tokenizer.TagName()
+	if string(tagName) == "svg" {
+		d.decodingSVG = false
+	}
+	return nil, nil
+}
 
-// func isCompoTagName(tagName string, decodingSVG bool) bool {
-// 	if decodingSVG {
-// 		return false
-// 	}
-// 	return !isHTMLTagName(tagName)
-// }
+func isHTMLTagName(tagName string) bool {
+	return atom.Lookup([]byte(tagName)) != 0
+}
 
-// var voidElems = map[string]struct{}{
-// 	"area":   {},
-// 	"base":   {},
-// 	"br":     {},
-// 	"col":    {},
-// 	"embed":  {},
-// 	"hr":     {},
-// 	"img":    {},
-// 	"input":  {},
-// 	"keygen": {},
-// 	"link":   {},
-// 	"meta":   {},
-// 	"param":  {},
-// 	"source": {},
-// 	"track":  {},
-// 	"wbr":    {},
-// }
+func isCompoTagName(tagName string, decodingSVG bool) bool {
+	if decodingSVG {
+		return false
+	}
+	return !isHTMLTagName(tagName)
+}
 
-// func isVoidElem(tagName string) bool {
-// 	_, ok := voidElems[tagName]
-// 	return ok
-// }
+var voidElems = map[string]struct{}{
+	"area":   {},
+	"base":   {},
+	"br":     {},
+	"col":    {},
+	"embed":  {},
+	"hr":     {},
+	"img":    {},
+	"input":  {},
+	"keygen": {},
+	"link":   {},
+	"meta":   {},
+	"param":  {},
+	"source": {},
+	"track":  {},
+	"wbr":    {},
+}
+
+func isVoidElem(tagName string) bool {
+	_, ok := voidElems[tagName]
+	return ok
+}

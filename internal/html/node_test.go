@@ -1,170 +1,163 @@
 package html
 
-import (
-	"testing"
+// var attrs = map[string]string{
+// 	"hello": "world",
+// }
 
-	"github.com/murlokswarm/app"
-	"github.com/stretchr/testify/assert"
-)
+// func TestTextNode(t *testing.T) {
+// 	text := &textNode{
+// 		id:        "node",
+// 		compoID:   "compo",
+// 		controlID: "control",
+// 		text:      "hello",
+// 	}
 
-var attrs = map[string]string{
-	"hello": "world",
-}
+// 	assert.Equal(t, "hello", text.Text())
+// 	testNode(t, text)
+// }
 
-func TestTextNode(t *testing.T) {
-	text := &textNode{
-		id:        "node",
-		compoID:   "compo",
-		controlID: "control",
-		text:      "hello",
-	}
+// func TestElemNode(t *testing.T) {
+// 	elem := &elemNode{
+// 		id:        "node",
+// 		compoID:   "compo",
+// 		controlID: "control",
+// 		tagName:   "img",
+// 		attrs:     attrs,
+// 	}
 
-	assert.Equal(t, "hello", text.Text())
-	testNode(t, text)
-}
+// 	assert.Equal(t, "img", elem.TagName())
+// 	assert.Equal(t, attrs, elem.Attrs())
 
-func TestElemNode(t *testing.T) {
-	elem := &elemNode{
-		id:        "node",
-		compoID:   "compo",
-		controlID: "control",
-		tagName:   "img",
-		attrs:     attrs,
-	}
+// 	childA := &textNode{
+// 		id:   "text",
+// 		text: "hello",
+// 	}
 
-	assert.Equal(t, "img", elem.TagName())
-	assert.Equal(t, attrs, elem.Attrs())
+// 	childB := &textNode{
+// 		id:   "text",
+// 		text: "world",
+// 	}
 
-	childA := &textNode{
-		id:   "text",
-		text: "hello",
-	}
+// 	elem.appendChild(childA)
+// 	elem.appendChild(childB)
 
-	childB := &textNode{
-		id:   "text",
-		text: "world",
-	}
+// 	assert.Equal(t, []app.DOMNode{childA, childB}, elem.Children())
+// 	assert.Equal(t, elem, childA.Parent())
+// 	assert.Equal(t, elem, childB.Parent())
 
-	elem.appendChild(childA)
-	elem.appendChild(childB)
+// 	elem.removeChild(childA)
+// 	assert.Equal(t, []app.DOMNode{childB}, elem.Children())
+// 	assert.Nil(t, childA.Parent())
 
-	assert.Equal(t, []app.DOMNode{childA, childB}, elem.Children())
-	assert.Equal(t, elem, childA.Parent())
-	assert.Equal(t, elem, childB.Parent())
+// 	testNode(t, elem)
+// }
 
-	elem.removeChild(childA)
-	assert.Equal(t, []app.DOMNode{childB}, elem.Children())
-	assert.Nil(t, childA.Parent())
+// func TestCompoNode(t *testing.T) {
+// 	compo := &compoNode{
+// 		id:        "node",
+// 		compoID:   "compo",
+// 		controlID: "control",
+// 		name:      "foo",
+// 		fields:    attrs,
+// 	}
 
-	testNode(t, elem)
-}
+// 	assert.Equal(t, "foo", compo.Name())
+// 	assert.Equal(t, attrs, compo.Fields())
 
-func TestCompoNode(t *testing.T) {
-	compo := &compoNode{
-		id:        "node",
-		compoID:   "compo",
-		controlID: "control",
-		name:      "foo",
-		fields:    attrs,
-	}
+// 	root := &textNode{
+// 		id:   "text",
+// 		text: "hello",
+// 	}
 
-	assert.Equal(t, "foo", compo.Name())
-	assert.Equal(t, attrs, compo.Fields())
+// 	compo.setRoot(root)
+// 	assert.Equal(t, root, compo.root)
+// 	assert.Equal(t, compo, root.Parent())
 
-	root := &textNode{
-		id:   "text",
-		text: "hello",
-	}
+// 	compo.removeRoot()
+// 	assert.Nil(t, root.Parent())
+// 	assert.Nil(t, compo.root)
 
-	compo.setRoot(root)
-	assert.Equal(t, root, compo.root)
-	assert.Equal(t, compo, root.Parent())
+// 	testNode(t, compo)
+// }
 
-	compo.removeRoot()
-	assert.Nil(t, root.Parent())
-	assert.Nil(t, compo.root)
+// func testNode(t *testing.T, n node) {
+// 	parent := &elemNode{
+// 		id:      "parent",
+// 		tagName: "div",
+// 	}
 
-	testNode(t, compo)
-}
+// 	n.setParent(parent)
+// 	assert.Equal(t, parent, n.Parent())
 
-func testNode(t *testing.T, n node) {
-	parent := &elemNode{
-		id:      "parent",
-		tagName: "div",
-	}
+// 	assert.Equal(t, "node", n.ID())
+// 	assert.Equal(t, "compo", n.CompoID())
+// 	assert.Equal(t, "control", n.ControlID())
+// }
 
-	n.setParent(parent)
-	assert.Equal(t, parent, n.Parent())
+// func TestAttrsEqual(t *testing.T) {
+// 	tests := []struct {
+// 		scenario string
+// 		a        map[string]string
+// 		b        map[string]string
+// 		equals   bool
+// 	}{
+// 		{
+// 			scenario: "emptys",
+// 			equals:   true,
+// 		},
+// 		{
+// 			scenario: "equals",
+// 			a: map[string]string{
+// 				"a": "foo",
+// 				"b": "bar",
+// 				"c": "boo",
+// 			},
+// 			b: map[string]string{
+// 				"b": "bar",
+// 				"c": "boo",
+// 				"a": "foo",
+// 			},
+// 			equals: true,
+// 		},
+// 		{
+// 			scenario: "different lengths",
+// 			a: map[string]string{
+// 				"a": "foo",
+// 				"b": "bar",
+// 				"c": "boo",
+// 			},
+// 			b: map[string]string{
+// 				"a": "foo",
+// 				"b": "bar",
+// 			},
+// 			equals: false,
+// 		},
+// 		{
+// 			scenario: "different values",
+// 			a: map[string]string{
+// 				"a": "foo",
+// 			},
+// 			b: map[string]string{
+// 				"a": "bar",
+// 			},
+// 			equals: false,
+// 		},
+// 		{
+// 			scenario: "different keys",
+// 			a: map[string]string{
+// 				"a": "foo",
+// 			},
+// 			b: map[string]string{
+// 				"b": "foo",
+// 			},
+// 			equals: false,
+// 		},
+// 	}
 
-	assert.Equal(t, "node", n.ID())
-	assert.Equal(t, "compo", n.CompoID())
-	assert.Equal(t, "control", n.ControlID())
-}
-
-func TestAttrsEqual(t *testing.T) {
-	tests := []struct {
-		scenario string
-		a        map[string]string
-		b        map[string]string
-		equals   bool
-	}{
-		{
-			scenario: "emptys",
-			equals:   true,
-		},
-		{
-			scenario: "equals",
-			a: map[string]string{
-				"a": "foo",
-				"b": "bar",
-				"c": "boo",
-			},
-			b: map[string]string{
-				"b": "bar",
-				"c": "boo",
-				"a": "foo",
-			},
-			equals: true,
-		},
-		{
-			scenario: "different lengths",
-			a: map[string]string{
-				"a": "foo",
-				"b": "bar",
-				"c": "boo",
-			},
-			b: map[string]string{
-				"a": "foo",
-				"b": "bar",
-			},
-			equals: false,
-		},
-		{
-			scenario: "different values",
-			a: map[string]string{
-				"a": "foo",
-			},
-			b: map[string]string{
-				"a": "bar",
-			},
-			equals: false,
-		},
-		{
-			scenario: "different keys",
-			a: map[string]string{
-				"a": "foo",
-			},
-			b: map[string]string{
-				"b": "foo",
-			},
-			equals: false,
-		},
-	}
-
-	for _, test := range tests {
-		t.Run(test.scenario, func(t *testing.T) {
-			equals := attrsEqual(test.a, test.b)
-			assert.Equal(t, test.equals, equals)
-		})
-	}
-}
+// 	for _, test := range tests {
+// 		t.Run(test.scenario, func(t *testing.T) {
+// 			equals := attrsEqual(test.a, test.b)
+// 			assert.Equal(t, test.equals, equals)
+// 		})
+// 	}
+// }

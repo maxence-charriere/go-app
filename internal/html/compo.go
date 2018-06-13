@@ -11,6 +11,15 @@ type compoNode struct {
 	fields    map[string]string
 	parent    node
 	root      node
+	changes   []Change
+}
+
+func newCompoNode(id string, name string, fields map[string]string) *compoNode {
+	return &compoNode{
+		id:     id,
+		name:   name,
+		fields: fields,
+	}
 }
 
 func (c *compoNode) ID() string {
@@ -46,11 +55,22 @@ func (c *compoNode) Root() node {
 }
 
 func (c *compoNode) SetRoot(r node) {
+	// HANDLE PARRENT
 	r.SetParent(c)
 	c.root = r
+}
+
+func (c *compoNode) UnsetRoot(r node) {
+	// HANDLE PARRENT
+	r.SetParent(nil)
+	c.root = nil
 }
 
 func (c *compoNode) RemoveRoot() {
 	c.root.SetParent(nil)
 	c.root = nil
+}
+
+func (c *compoNode) ConsumeChanges() []Change {
+	return c.root.ConsumeChanges()
 }

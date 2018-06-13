@@ -77,13 +77,6 @@ func removeChildChange(parentID, childID string) Change {
 	}
 }
 
-func setRootChange(id string) Change {
-	return Change{
-		Type:  setRoot,
-		Value: id,
-	}
-}
-
 func deleteNodeChange(id string) Change {
 	return Change{
 		Type:  deleteNode,

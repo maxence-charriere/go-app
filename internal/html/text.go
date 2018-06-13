@@ -1,7 +1,6 @@
 package html
 
 import (
-	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 )
 
@@ -14,9 +13,9 @@ type textNode struct {
 	changes   []Change
 }
 
-func newTextNode() *textNode {
+func newTextNode(id string) *textNode {
 	n := &textNode{
-		id: uuid.New().String(),
+		id: id,
 	}
 
 	n.changes = []Change{
@@ -52,6 +51,10 @@ func (t *textNode) Parent() app.DOMNode {
 
 func (t *textNode) SetParent(p node) {
 	t.parent = p
+}
+
+func (t *textNode) Close() {
+	t.changes = append(t.changes, deleteNodeChange(t.ID()))
 }
 
 func (t *textNode) ConsumeChanges() []Change {

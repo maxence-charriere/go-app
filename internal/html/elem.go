@@ -1,7 +1,6 @@
 package html
 
 import (
-	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 )
 
@@ -16,9 +15,10 @@ type elemNode struct {
 	changes   []Change
 }
 
-func newElemNode() *elemNode {
+func newElemNode(id string, tagName string) *elemNode {
 	n := &elemNode{
-		id: uuid.New().String(),
+		id:      id,
+		tagName: tagName,
 	}
 
 	n.changes = []Change{
@@ -87,6 +87,10 @@ func (e *elemNode) removeChild(c node) {
 			return
 		}
 	}
+}
+
+func (e *elemNode) Close() {
+	e.changes = append(e.changes, deleteNodeChange(e.ID()))
 }
 
 func (e *elemNode) ConsumeChanges() []Change {
