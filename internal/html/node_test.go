@@ -1,20 +1,14 @@
 package html
 
-// var attrs = map[string]string{
-// 	"hello": "world",
-// }
+import (
+	"testing"
 
-// func TestTextNode(t *testing.T) {
-// 	text := &textNode{
-// 		id:        "node",
-// 		compoID:   "compo",
-// 		controlID: "control",
-// 		text:      "hello",
-// 	}
+	"github.com/stretchr/testify/assert"
+)
 
-// 	assert.Equal(t, "hello", text.Text())
-// 	testNode(t, text)
-// }
+var attrs = map[string]string{
+	"hello": "world",
+}
 
 // func TestElemNode(t *testing.T) {
 // 	elem := &elemNode{
@@ -80,84 +74,84 @@ package html
 // 	testNode(t, compo)
 // }
 
-// func testNode(t *testing.T, n node) {
-// 	parent := &elemNode{
-// 		id:      "parent",
-// 		tagName: "div",
-// 	}
+func testNode(t *testing.T, n node) {
+	parent := &elemNode{
+		id:      "parent",
+		tagName: "div",
+	}
 
-// 	n.setParent(parent)
-// 	assert.Equal(t, parent, n.Parent())
+	n.SetParent(parent)
+	assert.Equal(t, parent, n.Parent())
 
-// 	assert.Equal(t, "node", n.ID())
-// 	assert.Equal(t, "compo", n.CompoID())
-// 	assert.Equal(t, "control", n.ControlID())
-// }
+	assert.Equal(t, "node", n.ID())
+	assert.Equal(t, "compo", n.CompoID())
+	assert.Equal(t, "control", n.ControlID())
+}
 
-// func TestAttrsEqual(t *testing.T) {
-// 	tests := []struct {
-// 		scenario string
-// 		a        map[string]string
-// 		b        map[string]string
-// 		equals   bool
-// 	}{
-// 		{
-// 			scenario: "emptys",
-// 			equals:   true,
-// 		},
-// 		{
-// 			scenario: "equals",
-// 			a: map[string]string{
-// 				"a": "foo",
-// 				"b": "bar",
-// 				"c": "boo",
-// 			},
-// 			b: map[string]string{
-// 				"b": "bar",
-// 				"c": "boo",
-// 				"a": "foo",
-// 			},
-// 			equals: true,
-// 		},
-// 		{
-// 			scenario: "different lengths",
-// 			a: map[string]string{
-// 				"a": "foo",
-// 				"b": "bar",
-// 				"c": "boo",
-// 			},
-// 			b: map[string]string{
-// 				"a": "foo",
-// 				"b": "bar",
-// 			},
-// 			equals: false,
-// 		},
-// 		{
-// 			scenario: "different values",
-// 			a: map[string]string{
-// 				"a": "foo",
-// 			},
-// 			b: map[string]string{
-// 				"a": "bar",
-// 			},
-// 			equals: false,
-// 		},
-// 		{
-// 			scenario: "different keys",
-// 			a: map[string]string{
-// 				"a": "foo",
-// 			},
-// 			b: map[string]string{
-// 				"b": "foo",
-// 			},
-// 			equals: false,
-// 		},
-// 	}
+func TestAttrsEqual(t *testing.T) {
+	tests := []struct {
+		scenario string
+		a        map[string]string
+		b        map[string]string
+		equals   bool
+	}{
+		{
+			scenario: "emptys",
+			equals:   true,
+		},
+		{
+			scenario: "equals",
+			a: map[string]string{
+				"a": "foo",
+				"b": "bar",
+				"c": "boo",
+			},
+			b: map[string]string{
+				"b": "bar",
+				"c": "boo",
+				"a": "foo",
+			},
+			equals: true,
+		},
+		{
+			scenario: "different lengths",
+			a: map[string]string{
+				"a": "foo",
+				"b": "bar",
+				"c": "boo",
+			},
+			b: map[string]string{
+				"a": "foo",
+				"b": "bar",
+			},
+			equals: false,
+		},
+		{
+			scenario: "different values",
+			a: map[string]string{
+				"a": "foo",
+			},
+			b: map[string]string{
+				"a": "bar",
+			},
+			equals: false,
+		},
+		{
+			scenario: "different keys",
+			a: map[string]string{
+				"a": "foo",
+			},
+			b: map[string]string{
+				"b": "foo",
+			},
+			equals: false,
+		},
+	}
 
-// 	for _, test := range tests {
-// 		t.Run(test.scenario, func(t *testing.T) {
-// 			equals := attrsEqual(test.a, test.b)
-// 			assert.Equal(t, test.equals, equals)
-// 		})
-// 	}
-// }
+	for _, test := range tests {
+		t.Run(test.scenario, func(t *testing.T) {
+			equals := attrsEqual(test.a, test.b)
+			assert.Equal(t, test.equals, equals)
+		})
+	}
+}

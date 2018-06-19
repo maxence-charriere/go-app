@@ -42,7 +42,7 @@ func (t *textNode) Text() string {
 
 func (t *textNode) SetText(text string) {
 	t.text = text
-	t.changes = append(t.changes, setTextChange(text))
+	t.changes = append(t.changes, setTextChange(t.ID(), text))
 }
 
 func (t *textNode) Parent() app.DOMNode {
