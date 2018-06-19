@@ -54,7 +54,6 @@ func (d *dom) insertCompoRow(r compoRow) {
 	if sub, ok := r.component.(app.Subscriber); ok {
 		r.events = sub.Subscribe()
 	}
-
 	d.compoRowByID[r.id] = r
 	d.compoRowByCompo[r.component] = r
 }
@@ -64,7 +63,6 @@ func (d *dom) deleteCompoRow(id string) {
 		if r.events != nil {
 			r.events.Close()
 		}
-
 		delete(d.compoRowByCompo, r.component)
 		delete(d.compoRowByID, id)
 	}
@@ -77,7 +75,6 @@ func (d *dom) Render(c app.Component) ([]Change, error) {
 		if err := d.mountCompo(c, nil); err != nil {
 			return nil, err
 		}
-
 		row, _ = d.compoRowByCompo[c]
 		d.root.appendChild(row.root)
 		return d.root.ConsumeChanges(), nil
@@ -92,7 +89,12 @@ func (d *dom) Render(c app.Component) ([]Change, error) {
 	if err := d.syncNodes(old, new); err != nil {
 		return nil, err
 	}
-	return old.Parent().(node).ConsumeChanges(), nil
+
+	p := old.Parent()
+	if p == nil {
+		p = new.Parent()
+	}
+	return p.(node).ConsumeChanges(), nil
 }
 
 func (d *dom) mountCompo(c app.Component, parent *compoNode) error {
