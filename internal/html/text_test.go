@@ -21,12 +21,12 @@ func TestTextNode(t *testing.T) {
 	assert.Equal(t, setText, text.changes[1].Type)
 	assert.Equal(t, textValue{"node", "hello"}, text.changes[1].Value)
 
-	text.Close()
-	assert.Len(t, text.changes, 3)
-	assert.Equal(t, deleteNode, text.changes[2].Type)
-	assert.Equal(t, "node", text.changes[2].Value)
-
 	changes := text.ConsumeChanges()
-	assert.Len(t, changes, 3)
+	assert.Len(t, changes, 2)
 	assert.Empty(t, text.changes)
+
+	text.Close()
+	assert.Len(t, text.changes, 1)
+	assert.Equal(t, deleteNode, text.changes[0].Type)
+	assert.Equal(t, "node", text.changes[0].Value)
 }

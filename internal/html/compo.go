@@ -71,6 +71,8 @@ func (c *compoNode) RemoveRoot() {
 	c.root = nil
 }
 
+func (c *compoNode) Close() {}
+
 func (c *compoNode) ConsumeChanges() []Change {
 	return c.root.ConsumeChanges()
 }

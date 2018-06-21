@@ -54,7 +54,7 @@ func (t *textNode) SetParent(p node) {
 }
 
 func (t *textNode) Close() {
-	t.changes = append(t.changes, deleteNodeChange(t.ID()))
+	t.changes = []Change{deleteNodeChange(t.ID())}
 }
 
 func (t *textNode) ConsumeChanges() []Change {

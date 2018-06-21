@@ -7,6 +7,7 @@ import (
 type node interface {
 	app.DOMNode
 	SetParent(node)
+	Close()
 	ConsumeChanges() []Change
 }
 

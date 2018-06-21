@@ -10,42 +10,6 @@ var attrs = map[string]string{
 	"hello": "world",
 }
 
-// func TestElemNode(t *testing.T) {
-// 	elem := &elemNode{
-// 		id:        "node",
-// 		compoID:   "compo",
-// 		controlID: "control",
-// 		tagName:   "img",
-// 		attrs:     attrs,
-// 	}
-
-// 	assert.Equal(t, "img", elem.TagName())
-// 	assert.Equal(t, attrs, elem.Attrs())
-
-// 	childA := &textNode{
-// 		id:   "text",
-// 		text: "hello",
-// 	}
-
-// 	childB := &textNode{
-// 		id:   "text",
-// 		text: "world",
-// 	}
-
-// 	elem.appendChild(childA)
-// 	elem.appendChild(childB)
-
-// 	assert.Equal(t, []app.DOMNode{childA, childB}, elem.Children())
-// 	assert.Equal(t, elem, childA.Parent())
-// 	assert.Equal(t, elem, childB.Parent())
-
-// 	elem.removeChild(childA)
-// 	assert.Equal(t, []app.DOMNode{childB}, elem.Children())
-// 	assert.Nil(t, childA.Parent())
-
-// 	testNode(t, elem)
-// }
-
 // func TestCompoNode(t *testing.T) {
 // 	compo := &compoNode{
 // 		id:        "node",

@@ -84,17 +84,28 @@ func (e *elemNode) removeChild(c node) {
 
 			c.SetParent(nil)
 			e.changes = append(e.changes, removeChildChange(e.ID(), c.ID()))
+			c.Close()
+			e.changes = append(e.changes, c.ConsumeChanges()...)
 			return
 		}
 	}
 }
 
 func (e *elemNode) Close() {
+	e.changes = e.changes[:0]
+	for _, c := range e.children {
+		c.Close()
+		e.changes = append(e.changes, c.ConsumeChanges()...)
+	}
 	e.changes = append(e.changes, deleteNodeChange(e.ID()))
 }
 
 func (e *elemNode) ConsumeChanges() []Change {
-	changes := e.changes
-	e.changes = nil
+	changes := make([]Change, 0, len(e.changes))
+	for _, c := range e.children {
+		changes = append(changes, c.ConsumeChanges()...)
+	}
+	changes = append(changes, e.changes...)
+	e.changes = e.changes[:0]
 	return changes
 }
