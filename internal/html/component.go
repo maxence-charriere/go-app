@@ -84,11 +84,13 @@ func mapComponentFields(c app.Component, fields map[string]string) error {
 		}
 
 		name := strings.ToLower(ft.Name)
-		value := fields[name]
+		value, ok := fields[name]
 
 		// Remove not set boolean.
-		if len(value) == 0 && fv.Kind() == reflect.Bool {
+		if !ok && fv.Kind() == reflect.Bool {
 			fv.SetBool(false)
+			continue
+		} else if !ok {
 			continue
 		}
 
