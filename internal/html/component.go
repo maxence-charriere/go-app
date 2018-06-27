@@ -59,7 +59,7 @@ func decodeComponent(c app.Component, rootID string) (node, error) {
 	if err = tmpl.Execute(&w, c); err != nil {
 		return nil, err
 	}
-	return decodeNodes(w.String(), rootID)
+	return decodeNodes(w.String())
 }
 
 func mapComponentFields(c app.Component, fields map[string]string) error {

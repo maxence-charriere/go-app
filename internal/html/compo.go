@@ -1,6 +1,9 @@
 package html
 
-import "github.com/murlokswarm/app"
+import (
+	"github.com/google/uuid"
+	"github.com/murlokswarm/app"
+)
 
 type compoNode struct {
 	id        string
@@ -14,9 +17,9 @@ type compoNode struct {
 	changes   []Change
 }
 
-func newCompoNode(id string, name string, fields map[string]string) *compoNode {
+func newCompoNode(name string, fields map[string]string) *compoNode {
 	return &compoNode{
-		id:     id,
+		id:     "compo-" + uuid.New().String(),
 		name:   name,
 		fields: fields,
 	}
@@ -55,24 +58,32 @@ func (c *compoNode) Root() node {
 }
 
 func (c *compoNode) SetRoot(r node) {
-	// HANDLE PARRENT
 	r.SetParent(c)
 	c.root = r
 }
 
-func (c *compoNode) UnsetRoot(r node) {
-	// HANDLE PARRENT
-	r.SetParent(nil)
-	c.root = nil
-}
-
 func (c *compoNode) RemoveRoot() {
-	c.root.SetParent(nil)
+	root := c.root
+	root.Close()
+	c.changes = append(c.changes, root.ConsumeChanges()...)
 	c.root = nil
 }
 
-func (c *compoNode) Close() {}
+func (c *compoNode) Close() {
+	c.changes = c.changes[:0]
+	if c.root != nil {
+		c.root.Close()
+		c.changes = append(c.changes, c.root.ConsumeChanges()...)
+	}
+	c.SetParent(nil)
+}
 
 func (c *compoNode) ConsumeChanges() []Change {
-	return c.root.ConsumeChanges()
+	var changes []Change
+	if c.root != nil {
+		changes = append(changes, c.root.ConsumeChanges()...)
+	}
+	changes = append(changes, c.changes...)
+	c.changes = c.changes[:0]
+	return changes
 }

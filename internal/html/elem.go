@@ -1,6 +1,7 @@
 package html
 
 import (
+	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 )
 
@@ -15,9 +16,9 @@ type elemNode struct {
 	changes   []Change
 }
 
-func newElemNode(id string, tagName string) *elemNode {
+func newElemNode(tagName string) *elemNode {
 	n := &elemNode{
-		id:      id,
+		id:      tagName + "-" + uuid.New().String(),
 		tagName: tagName,
 	}
 
@@ -49,7 +50,7 @@ func (e *elemNode) Attrs() map[string]string {
 
 func (e *elemNode) SetAttrs(a map[string]string) {
 	e.attrs = a
-	e.changes = append(e.changes, setAttrsChange(a))
+	e.changes = append(e.changes, setAttrsChange(e.ID(), a))
 }
 
 func (e *elemNode) Parent() app.DOMNode {
@@ -77,15 +78,27 @@ func (e *elemNode) appendChild(c node) {
 func (e *elemNode) removeChild(c node) {
 	for i, child := range e.children {
 		if c == child {
+			e.changes = append(e.changes, removeChildChange(e.ID(), c.ID()))
+			c.Close()
+			e.changes = append(e.changes, c.ConsumeChanges()...)
+
 			children := e.children
 			copy(children[i:], children[i+1:])
 			children[len(children)-1] = nil
 			e.children = children[:len(children)-1]
+			return
+		}
+	}
+}
 
-			c.SetParent(nil)
-			e.changes = append(e.changes, removeChildChange(e.ID(), c.ID()))
-			c.Close()
-			e.changes = append(e.changes, c.ConsumeChanges()...)
+func (e *elemNode) replaceChild(old, new node) {
+	for i, c := range e.children {
+		if c == old {
+			e.children[i] = new
+			new.SetParent(e)
+			e.changes = append(e.changes, replaceChildChange(e.ID(), old.ID(), new.ID()))
+			old.Close()
+			e.changes = append(e.changes, old.ConsumeChanges()...)
 			return
 		}
 	}
@@ -98,6 +111,7 @@ func (e *elemNode) Close() {
 		e.changes = append(e.changes, c.ConsumeChanges()...)
 	}
 	e.changes = append(e.changes, deleteNodeChange(e.ID()))
+	e.SetParent(nil)
 }
 
 func (e *elemNode) ConsumeChanges() []Change {

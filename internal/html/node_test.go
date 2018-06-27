@@ -10,44 +10,11 @@ var attrs = map[string]string{
 	"hello": "world",
 }
 
-// func TestCompoNode(t *testing.T) {
-// 	compo := &compoNode{
-// 		id:        "node",
-// 		compoID:   "compo",
-// 		controlID: "control",
-// 		name:      "foo",
-// 		fields:    attrs,
-// 	}
-
-// 	assert.Equal(t, "foo", compo.Name())
-// 	assert.Equal(t, attrs, compo.Fields())
-
-// 	root := &textNode{
-// 		id:   "text",
-// 		text: "hello",
-// 	}
-
-// 	compo.setRoot(root)
-// 	assert.Equal(t, root, compo.root)
-// 	assert.Equal(t, compo, root.Parent())
-
-// 	compo.removeRoot()
-// 	assert.Nil(t, root.Parent())
-// 	assert.Nil(t, compo.root)
-
-// 	testNode(t, compo)
-// }
-
 func testNode(t *testing.T, n node) {
-	parent := &elemNode{
-		id:      "parent",
-		tagName: "div",
-	}
+	parent := newElemNode("div")
 
 	n.SetParent(parent)
 	assert.Equal(t, parent, n.Parent())
-
-	assert.Equal(t, "node", n.ID())
 	assert.Equal(t, "compo", n.CompoID())
 	assert.Equal(t, "control", n.ControlID())
 }

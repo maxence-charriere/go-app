@@ -38,25 +38,28 @@ const (
 	createText = "createText"
 	setText    = "setText"
 
-	createElem  = "createElem"
-	setAttrs    = "setAttrs"
-	appendChild = "appendChild"
-	removeChild = "removeChild"
+	createElem   = "createElem"
+	setAttrs     = "setAttrs"
+	appendChild  = "appendChild"
+	removeChild  = "removeChild"
+	replaceChild = "replaceChild"
 
 	setRoot    = "setRoot"
 	deleteNode = "deleteNode"
 )
 
-func createTextChange(n *textNode) Change {
-	return Change{
-		Type:  createText,
-		Value: n,
-	}
-}
-
 type textValue struct {
 	ID   string
-	Text string
+	Text string `json:",omitempty"`
+}
+
+func createTextChange(id string) Change {
+	return Change{
+		Type: createText,
+		Value: textValue{
+			ID: id,
+		},
+	}
 }
 
 func setTextChange(id, text string) Change {
@@ -69,23 +72,36 @@ func setTextChange(id, text string) Change {
 	}
 }
 
-func createElemChange(n *elemNode) Change {
-	return Change{
-		Type:  createElem,
-		Value: n,
-	}
-}
-
-func setAttrsChange(a map[string]string) Change {
-	return Change{
-		Type:  setAttrs,
-		Value: a,
-	}
+type elemValue struct {
+	ID      string
+	TagName string            `json:",omitempty"`
+	Attrs   map[string]string `json:",omitempty"`
 }
 
 type childValue struct {
 	ParentID string
 	ChildID  string
+	OldID    string `json:",omitempty"`
+}
+
+func createElemChange(n *elemNode) Change {
+	return Change{
+		Type: createElem,
+		Value: elemValue{
+			ID:      n.ID(),
+			TagName: n.TagName(),
+		},
+	}
+}
+
+func setAttrsChange(id string, a map[string]string) Change {
+	return Change{
+		Type: setAttrs,
+		Value: elemValue{
+			ID:    id,
+			Attrs: a,
+		},
+	}
 }
 
 func appendChildChange(parentID, childID string) Change {
@@ -104,6 +120,17 @@ func removeChildChange(parentID, childID string) Change {
 		Value: childValue{
 			ParentID: parentID,
 			ChildID:  childID,
+		},
+	}
+}
+
+func replaceChildChange(parentID, oldID, newID string) Change {
+	return Change{
+		Type: replaceChild,
+		Value: childValue{
+			ParentID: parentID,
+			ChildID:  newID,
+			OldID:    oldID,
 		},
 	}
 }

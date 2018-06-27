@@ -26,6 +26,8 @@ func NewDOM(f app.Factory, controlID string) DOM {
 		root: &elemNode{
 			id: "goapp-root",
 		},
+		compoRowByID:    make(map[string]compoRow),
+		compoRowByCompo: make(map[app.Component]compoRow),
 	}
 }
 
@@ -81,7 +83,7 @@ func (d *dom) Render(c app.Component) ([]Change, error) {
 	}
 
 	old := row.root
-	new, err := decodeComponent(c, old.ID())
+	new, err := decodeComponent(c, uuid.New().String())
 	if err != nil {
 		return nil, err
 	}
@@ -89,12 +91,7 @@ func (d *dom) Render(c app.Component) ([]Change, error) {
 	if err := d.syncNodes(old, new); err != nil {
 		return nil, err
 	}
-
-	p := old.Parent()
-	if p == nil {
-		p = new.Parent()
-	}
-	return p.(node).ConsumeChanges(), nil
+	return old.Parent().(node).ConsumeChanges(), nil
 }
 
 func (d *dom) mountCompo(c app.Component, parent *compoNode) error {
@@ -168,7 +165,7 @@ func (d *dom) dismountCompo(c app.Component) {
 		p.removeChild(root)
 
 	case *compoNode:
-		p.UnsetRoot(root)
+		p.RemoveRoot()
 	}
 
 	d.deleteCompoRow(row.id)
@@ -287,11 +284,10 @@ func (d *dom) replaceNode(old, new node) error {
 
 	switch p := old.Parent().(type) {
 	case *elemNode:
-		p.removeChild(old)
-		p.appendChild(new)
+		p.replaceChild(old, new)
 
 	case *compoNode:
-		p.UnsetRoot(old)
+		p.RemoveRoot()
 		p.SetRoot(new)
 	}
 	return nil

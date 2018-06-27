@@ -4,16 +4,15 @@ import (
 	"bytes"
 	"strings"
 
-	"github.com/google/uuid"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
 )
 
-func decodeNodes(s string, rootID string) (node, error) {
+func decodeNodes(s string) (node, error) {
 	d := &decoder{
 		tokenizer: html.NewTokenizer(bytes.NewBufferString(s)),
 	}
-	return d.decode(rootID)
+	return d.decode()
 }
 
 type decoder struct {
@@ -21,16 +20,16 @@ type decoder struct {
 	decodingSVG bool
 }
 
-func (d *decoder) decode(id string) (node, error) {
+func (d *decoder) decode() (node, error) {
 	switch d.tokenizer.Next() {
 	case html.TextToken:
-		return d.decodeText(id)
+		return d.decodeText()
 
 	case html.SelfClosingTagToken:
-		return d.decodeSelfClosingElem(id)
+		return d.decodeSelfClosingElem()
 
 	case html.StartTagToken:
-		return d.decodeElem(id)
+		return d.decodeElem()
 
 	case html.EndTagToken:
 		return d.closeElem()
@@ -40,33 +39,33 @@ func (d *decoder) decode(id string) (node, error) {
 
 	default:
 		// Nothing we care about, decode the next node.
-		return d.decode(id)
+		return d.decode()
 	}
 }
 
-func (d *decoder) decodeText(id string) (node, error) {
+func (d *decoder) decodeText() (node, error) {
 	text := string(d.tokenizer.Text())
 	text = strings.TrimSpace(text)
 
 	if len(text) == 0 {
 		// Text is empty, decode the next node.
-		return d.decode(id)
+		return d.decode()
 	}
 
-	t := newTextNode(id)
+	t := newTextNode()
 	t.SetText(text)
 	return t, nil
 }
 
-func (d *decoder) decodeSelfClosingElem(id string) (node, error) {
+func (d *decoder) decodeSelfClosingElem() (node, error) {
 	name, hasAttr := d.tokenizer.TagName()
 	tagName := string(name)
 
 	if isCompoTagName(tagName, d.decodingSVG) {
-		return newCompoNode(id, tagName, d.decodeAttrs(hasAttr)), nil
+		return newCompoNode(tagName, d.decodeAttrs(hasAttr)), nil
 	}
 
-	elem := newElemNode(id, tagName)
+	elem := newElemNode(tagName)
 	elem.SetAttrs(d.decodeAttrs(hasAttr))
 	return elem, nil
 }
@@ -88,19 +87,19 @@ func (d *decoder) decodeAttrs(hasAttr bool) map[string]string {
 	return attrs
 }
 
-func (d *decoder) decodeElem(id string) (node, error) {
+func (d *decoder) decodeElem() (node, error) {
 	name, hasAttr := d.tokenizer.TagName()
 	tagName := string(name)
 
 	if isCompoTagName(tagName, d.decodingSVG) {
-		return newCompoNode(id, tagName, d.decodeAttrs(hasAttr)), nil
+		return newCompoNode(tagName, d.decodeAttrs(hasAttr)), nil
 	}
 
 	if tagName == "svg" {
 		d.decodingSVG = true
 	}
 
-	elem := newElemNode(id, tagName)
+	elem := newElemNode(tagName)
 	elem.SetAttrs(d.decodeAttrs(hasAttr))
 
 	if isVoidElem(tagName) {
@@ -108,7 +107,7 @@ func (d *decoder) decodeElem(id string) (node, error) {
 	}
 
 	for {
-		child, err := d.decode(uuid.New().String())
+		child, err := d.decode()
 		if err != nil {
 			return nil, err
 		}

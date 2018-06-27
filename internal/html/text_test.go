@@ -7,7 +7,7 @@ import (
 )
 
 func TestTextNode(t *testing.T) {
-	text := newTextNode("node")
+	text := newTextNode()
 	text.compoID = "compo"
 	text.controlID = "control"
 
@@ -19,7 +19,7 @@ func TestTextNode(t *testing.T) {
 	assert.Equal(t, "hello", text.Text())
 	assert.Len(t, text.changes, 2)
 	assert.Equal(t, setText, text.changes[1].Type)
-	assert.Equal(t, textValue{"node", "hello"}, text.changes[1].Value)
+	assert.Equal(t, textValue{text.ID(), "hello"}, text.changes[1].Value)
 
 	changes := text.ConsumeChanges()
 	assert.Len(t, changes, 2)
@@ -28,5 +28,5 @@ func TestTextNode(t *testing.T) {
 	text.Close()
 	assert.Len(t, text.changes, 1)
 	assert.Equal(t, deleteNode, text.changes[0].Type)
-	assert.Equal(t, "node", text.changes[0].Value)
+	assert.Equal(t, text.ID(), text.changes[0].Value)
 }
