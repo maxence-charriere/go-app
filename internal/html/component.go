@@ -19,7 +19,7 @@ type compoRow struct {
 	root      node
 }
 
-func decodeComponent(c app.Component, rootID string) (node, error) {
+func decodeComponent(c app.Component) (node, error) {
 	var funcs template.FuncMap
 
 	if compoExtRend, ok := c.(app.ComponentWithExtendedRender); ok {

@@ -15,6 +15,16 @@ type Foo struct {
 	Disabled bool
 }
 
+func (f *Foo) OnMount() {
+}
+
+func (f *Foo) OnDismount() {
+}
+
+func (f *Foo) Subscribe() app.EventSubscriber {
+	return app.NewEventSubscriber()
+}
+
 func (f *Foo) Render() string {
 	return `
 	<div class="test" {{if .Disabled}}disabled{{end}}>
@@ -49,30 +59,49 @@ func (b *Bar) Render() string {
 
 type Boo struct {
 	ReplaceCompoByElem bool
+	ReplaceCompoType   bool
+	AddCompo           bool
+	Value              string
 }
 
 func (b *Boo) Render() string {
 	return `
 	<div>
 		{{if .ReplaceCompoByElem}}
-			<p>bar</p>
+			<p>foo</p>
+		{{else if .ReplaceCompoType}}
+			<html.Oob>
 		{{else}}
-			<html.Bar>
+			<html.Foo value="{{.Value}}">
+		{{end}}
+
+		{{if .AddCompo}}
+			<html.Foo>
 		{{end}}
 	</div>
 	`
 }
 
+type Oob app.ZeroCompo
+
+func (o *Oob) Render() string {
+	return `<p></p>`
+}
+
 func TestDOM(t *testing.T) {
 	f := app.NewFactory()
 	f.Register(&Foo{})
+	f.Register(&Bar{})
+	f.Register(&Boo{})
+	f.Register(&Oob{})
 
 	tests := []struct {
-		scenario string
-		compo    app.Component
-		modifier func(c app.Component)
-		changes  []Change
-		err      bool
+		scenario   string
+		compo      app.Component
+		modifier   func(c app.Component)
+		changes    []Change
+		compoCount int
+		err        bool
 	}{
 		// Foo:
 		{
@@ -86,6 +115,7 @@ func TestDOM(t *testing.T) {
 				appendChildChange("", ""),
 				appendChildChange("", ""), // div -> root
 			},
+			compoCount: 1,
 		},
 		{
 			scenario: "update simple compo",
@@ -96,6 +126,7 @@ func TestDOM(t *testing.T) {
 			changes: []Change{
 				setTextChange("", "world"),
 			},
+			compoCount: 1,
 		},
 		{
 			scenario: "append simple compo child",
@@ -108,6 +139,7 @@ func TestDOM(t *testing.T) {
 				setTextChange("", "hello"),
 				appendChildChange("", ""),
 			},
+			compoCount: 1,
 		},
 		{
 			scenario: "remove simple compo child",
@@ -119,6 +151,7 @@ func TestDOM(t *testing.T) {
 				removeChildChange("", ""),
 				deleteNodeChange(""),
 			},
+			compoCount: 1,
 		},
 		{
 			scenario: "change simple compo root attrs",
@@ -132,6 +165,7 @@ func TestDOM(t *testing.T) {
 					"disabled": "",
 				}),
 			},
+			compoCount: 1,
 		},
 
 		// Bar:
@@ -154,6 +188,7 @@ func TestDOM(t *testing.T) {
 				appendChildChange("", ""), // h1 -> div
 				appendChildChange("", ""), // div -> root
 			},
+			compoCount: 1,
 		},
 		{
 			scenario: "replace compo text by elem",
@@ -171,6 +206,7 @@ func TestDOM(t *testing.T) {
 				replaceChildChange("", "", ""),
 				deleteNodeChange(""),
 			},
+			compoCount: 1,
 		},
 		{
 			scenario: "replace compo elem by text",
@@ -185,6 +221,7 @@ func TestDOM(t *testing.T) {
 				deleteNodeChange(""),           // delete span.hello
 				deleteNodeChange(""),           // delete span
 			},
+			compoCount: 1,
 		},
 		{
 			scenario: "replace compo elem by elem",
@@ -203,9 +240,120 @@ func TestDOM(t *testing.T) {
 				deleteNodeChange(""), // delete h1.world
 				deleteNodeChange(""), // delete h1
 			},
+			compoCount: 1,
 		},
 
 		// Boo:
+		{
+			scenario: "create compo with nested compo",
+			compo:    &Boo{},
+			changes: []Change{
+				createElemChange(newElemNode("div")),
+				setAttrsChange("", map[string]string{"class": "test"}),
+				createCompoChange("", "html.foo"),
+				setCompoRootChange("", ""),
+
+				createElemChange(newElemNode("div")),
+				setAttrsChange("", nil),
+				appendChildChange("", ""), // foo.div -> div
+				appendChildChange("", ""), // div -> root
+			},
+			compoCount: 2,
+		},
+		{
+			scenario: "add compo to elem",
+			compo:    &Boo{},
+			modifier: func(c app.Component) {
+				c.(*Boo).AddCompo = true
+			},
+			changes: []Change{
+				createElemChange(newElemNode("div")),
+				setAttrsChange("", map[string]string{"class": "test"}),
+				createCompoChange("", "html.foo"),
+				setCompoRootChange("", ""),
+				appendChildChange("", ""), // foo2 -> div
+			},
+			compoCount: 3,
+		},
+		{
+			scenario: "remove compo from elem",
+			compo:    &Boo{AddCompo: true},
+			modifier: func(c app.Component) {
+				c.(*Boo).AddCompo = false
+			},
+			changes: []Change{
+				removeChildChange("", ""), // foo2
+				deleteNodeChange(""),      // foo2.div
+				deleteNodeChange(""),      // foo2
+			},
+			compoCount: 2,
+		},
+		{
+			scenario: "replace compo type",
+			compo:    &Boo{},
+			modifier: func(c app.Component) {
+				c.(*Boo).ReplaceCompoType = true
+			},
+			changes: []Change{
+				createElemChange(newElemNode("p")), // oob.p
+				setAttrsChange("", nil),
+				createCompoChange("", "html.oob"),
+				setCompoRootChange("", ""), // oob.p -> oob
+
+				replaceChildChange("", "", ""), // foo <-> oob
+				deleteNodeChange(""),           // foo.text
+				deleteNodeChange(""),           // foo
+			},
+			compoCount: 2,
+		},
+		{
+			scenario: "change compo attrs",
+			compo:    &Boo{Value: "hello"},
+			modifier: func(c app.Component) {
+				c.(*Boo).Value = "world"
+			},
+			changes: []Change{
+				setTextChange("", "world"),
+			},
+			compoCount: 2,
+		},
+		{
+			scenario: "replace compo by elem",
+			compo:    &Boo{},
+			modifier: func(c app.Component) {
+				c.(*Boo).ReplaceCompoByElem = true
+			},
+			changes: []Change{
+				createTextChange(""),
+				setTextChange("", "foo"),
+				createElemChange(newElemNode("p")),
+				setAttrsChange("", nil),
+				appendChildChange("", ""), // "foo" -> p
+
+				replaceChildChange("", "", ""), // foo <-> p
+				deleteNodeChange(""),           // foo.div
+				deleteNodeChange(""),           // foo
+			},
+			compoCount: 1,
+		},
+		{
+			scenario: "replace elem by compo",
+			compo:    &Boo{ReplaceCompoByElem: true},
+			modifier: func(c app.Component) {
+				c.(*Boo).ReplaceCompoByElem = false
+			},
+			changes: []Change{
+				createElemChange(newElemNode("div")),
+				setAttrsChange("", map[string]string{"class": "test"}),
+				createCompoChange("", "html.foo"),
+				setCompoRootChange("", ""),
+
+				replaceChildChange("", "", ""), // p <-> foo
+				deleteNodeChange(""),           // "foo"
+				deleteNodeChange(""),           // p
+			},
+			compoCount: 2,
+		},
 	}
 
 	for _, test := range tests {
@@ -224,6 +372,7 @@ func TestDOM(t *testing.T) {
 			}
 
 			require.NoError(t, err)
+			require.Equal(t, test.compoCount, dom.Len())
 
 			jsonChanges, _ := json.MarshalIndent(changes, "", "  ")
 			t.Log("changes:", string(jsonChanges))
@@ -235,6 +384,10 @@ func TestDOM(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestDOMRenderSubComponent(t *testing.T) {
+
 }
 
 func requireEqualChange(t require.TestingT, expected, actual Change) {
@@ -251,6 +404,9 @@ func requireEqualChange(t require.TestingT, expected, actual Change) {
 		attrs := actual.Value.(elemValue).Attrs
 		delete(attrs, "data-goapp-id")
 		require.Equal(t, expected.Value.(elemValue).Attrs, actual.Value.(elemValue).Attrs)
+
+	case createCompo:
+		require.Equal(t, expected.Value.(compoValue).Name, actual.Value.(compoValue).Name)
 
 	default:
 	}

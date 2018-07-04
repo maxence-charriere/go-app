@@ -44,7 +44,9 @@ const (
 	removeChild  = "removeChild"
 	replaceChild = "replaceChild"
 
-	setRoot    = "setRoot"
+	createCompo  = "createCompo"
+	setCompoRoot = "setCompoRoot"
+
 	deleteNode = "deleteNode"
 )
 
@@ -131,6 +133,32 @@ func replaceChildChange(parentID, oldID, newID string) Change {
 			ParentID: parentID,
 			ChildID:  newID,
 			OldID:    oldID,
+		},
+	}
+}
+
+type compoValue struct {
+	ID     string
+	Name   string `json:",omitempty"`
+	RootID string `json:",omitempty"`
+}
+
+func createCompoChange(id string, name string) Change {
+	return Change{
+		Type: createCompo,
+		Value: compoValue{
+			ID:   id,
+			Name: name,
+		},
+	}
+}
+
+func setCompoRootChange(id, rootID string) Change {
+	return Change{
+		Type: setCompoRoot,
+		Value: compoValue{
+			ID:     id,
+			RootID: rootID,
 		},
 	}
 }

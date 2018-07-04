@@ -18,11 +18,16 @@ type compoNode struct {
 }
 
 func newCompoNode(name string, fields map[string]string) *compoNode {
-	return &compoNode{
+	c := &compoNode{
 		id:     "compo-" + uuid.New().String(),
 		name:   name,
 		fields: fields,
 	}
+
+	c.changes = []Change{
+		createCompoChange(c.ID(), name),
+	}
+	return c
 }
 
 func (c *compoNode) ID() string {
@@ -60,6 +65,7 @@ func (c *compoNode) Root() node {
 func (c *compoNode) SetRoot(r node) {
 	r.SetParent(c)
 	c.root = r
+	c.changes = append(c.changes, setCompoRootChange(c.ID(), r.ID()))
 }
 
 func (c *compoNode) RemoveRoot() {
@@ -76,6 +82,7 @@ func (c *compoNode) Close() {
 		c.changes = append(c.changes, c.root.ConsumeChanges()...)
 	}
 	c.SetParent(nil)
+	c.changes = append(c.changes, deleteNodeChange(c.ID()))
 }
 
 func (c *compoNode) ConsumeChanges() []Change {

@@ -13,6 +13,7 @@ func TestCompoNode(t *testing.T) {
 
 	assert.Equal(t, "foo", c.Name())
 	assert.Equal(t, attrs, c.Fields())
+	assert.Equal(t, createCompo, c.changes[0].Type)
 	testNode(t, c)
 
 	root := newTextNode()
@@ -21,9 +22,10 @@ func TestCompoNode(t *testing.T) {
 	c.SetRoot(root)
 	assert.Equal(t, root, c.Root())
 	assert.Equal(t, c, root.Parent())
+	assert.Equal(t, setCompoRoot, c.changes[1].Type)
 
 	changes := c.ConsumeChanges()
-	assert.Len(t, changes, 2)
+	assert.Len(t, changes, 4)
 
 	c.RemoveRoot()
 	assert.Nil(t, root.Parent())
@@ -35,5 +37,5 @@ func TestCompoNode(t *testing.T) {
 	c.SetRoot(root)
 
 	c.Close()
-	assert.Len(t, c.changes, 1)
+	assert.Len(t, c.changes, 2)
 }

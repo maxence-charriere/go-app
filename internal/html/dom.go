@@ -14,6 +14,9 @@ type DOM interface {
 	// Reports whether the given component is in the dom.
 	ContainsComponent(c app.Component) bool
 
+	// The amount of components in the DOM.
+	Len() int
+
 	// Create or update the nodes of the given component.
 	Render(c app.Component) ([]Change, error)
 }
@@ -70,6 +73,10 @@ func (d *dom) deleteCompoRow(id string) {
 	}
 }
 
+func (d *dom) Len() int {
+	return len(d.compoRowByCompo)
+}
+
 func (d *dom) Render(c app.Component) ([]Change, error) {
 	row, ok := d.compoRowByCompo[c]
 	if !ok {
@@ -83,7 +90,7 @@ func (d *dom) Render(c app.Component) ([]Change, error) {
 	}
 
 	old := row.root
-	new, err := decodeComponent(c, uuid.New().String())
+	new, err := decodeComponent(c)
 	if err != nil {
 		return nil, err
 	}
@@ -95,11 +102,7 @@ func (d *dom) Render(c app.Component) ([]Change, error) {
 }
 
 func (d *dom) mountCompo(c app.Component, parent *compoNode) error {
-	rootID := uuid.New().String()
-	if parent != nil {
-		rootID = parent.ID()
-	}
-	root, err := decodeComponent(c, rootID)
+	root, err := decodeComponent(c)
 	if err != nil {
 		return err
 	}
@@ -150,6 +153,8 @@ func (d *dom) mountNode(n node, compoID string) error {
 		if err = mapComponentFields(c, n.fields); err != nil {
 			return err
 		}
+
+		n.component = c
 		return d.mountCompo(c, n)
 	}
 	return nil
@@ -157,21 +162,11 @@ func (d *dom) mountNode(n node, compoID string) error {
 
 func (d *dom) dismountCompo(c app.Component) {
 	row, _ := d.compoRowByCompo[c]
-	root := row.root
-	d.dismountNode(root)
-
-	switch p := row.root.Parent().(type) {
-	case *elemNode:
-		p.removeChild(root)
-
-	case *compoNode:
-		p.RemoveRoot()
-	}
-
+	d.dismountNode(row.root)
 	d.deleteCompoRow(row.id)
 
 	if dismounter, ok := c.(app.Dismounter); ok {
-		dismounter.Render()
+		dismounter.OnDismount()
 	}
 }
 
@@ -262,11 +257,12 @@ func (d *dom) syncCompoNodes(old, new *compoNode) error {
 	}
 
 	if !attrsEqual(old.fields, new.fields) {
+		old.fields = new.fields
 		if err := mapComponentFields(old.component, new.fields); err != nil {
 			return err
 		}
 
-		newRoot, err := decodeComponent(old.component, old.root.ID())
+		newRoot, err := decodeComponent(old.component)
 		if err != nil {
 			return err
 		}
