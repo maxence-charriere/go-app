@@ -44,6 +44,12 @@ type Navigable interface {
 	OnNavigate(u *url.URL)
 }
 
+// Configurable is the interface that describes a component that modifies
+// the html document configuration when it mounted as the root of the page.
+type Configurable interface {
+	Config() HTMLConfig
+}
+
 // Subscriber is the interface that describes a component that subscribes to
 // events generated from actions.
 type Subscriber interface {

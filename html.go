@@ -1,43 +1,19 @@
-package html
+package app
 
-import (
-	"bytes"
-	"html/template"
-)
-
-//go:generate go run gen.go
-//go:generate go fmt
-
-// Page is the interface that describes a component that can represent a page.
-type Page interface {
-	// Config returns the page configuration.
-	PageConfig() PageConfig
-}
-
-// PageConfig is the struct that describes a page.
-type PageConfig struct {
+// HTMLConfig represents a configuration for an html document.
+type HTMLConfig struct {
 	// The title.
 	Title string
 
 	// The meta data.
 	Metas []Meta
 
-	// The default component rendering.
-	DefaultComponent template.HTML
-
-	// Disables application default style.
-	DisableAppStyle bool
-
-	// Disables the webview default context menu.
-	DisableDefaultContextMenu bool
-
 	// The CSS filenames to include.
+	// Inludes all files in resources/css if nil.
 	CSS []string
 
-	// The app.js code that is included in the page.
-	AppJS template.JS
-
 	// The javascript filenames to include.
+	// Inludes all files in resources/js if nil.
 	Javascripts []string
 }
 
@@ -70,12 +46,3 @@ const (
 	DefaultStyleMeta MetaHTTPEquiv = "default-style"
 	RefreshMeta      MetaHTTPEquiv = "refresh"
 )
-
-// NewPage generate an HTML page from the given configuration.
-func NewPage(config PageConfig) string {
-	var buffer bytes.Buffer
-
-	tmpl := template.Must(template.New("").Parse(pageTemplate))
-	tmpl.Execute(&buffer, config)
-	return buffer.String()
-}
