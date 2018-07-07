@@ -12,23 +12,37 @@ type DOM interface {
 	ComponentByID(id string) (app.Component, error)
 
 	// Reports whether the given component is in the dom.
-	ContainsComponent(c app.Component) bool
+	Contains(c app.Component) bool
+
+	// The amount of components in the DOM.
+	Len() int
 
 	// Create or update the nodes of the given component.
+	// Component must be a pointer and not based on an empty struct.
 	Render(c app.Component) ([]Change, error)
 }
 
 // NewDOM create a document object model store.
 func NewDOM(f app.Factory, controlID string) DOM {
+	return newDOM(f, controlID)
+}
+
+func newDOM(f app.Factory, controlID string) *dom {
 	return &dom{
 		factory:   f,
 		controlID: controlID,
+		root: &elemNode{
+			id: "goapp-root",
+		},
+		compoRowByID:    make(map[string]compoRow),
+		compoRowByCompo: make(map[app.Component]compoRow),
 	}
 }
 
 type dom struct {
 	factory         app.Factory
 	controlID       string
+	root            *elemNode
 	compoRowByID    map[string]compoRow
 	compoRowByCompo map[app.Component]compoRow
 }
@@ -41,7 +55,7 @@ func (d *dom) ComponentByID(id string) (app.Component, error) {
 	return r.component, nil
 }
 
-func (d *dom) ContainsComponent(c app.Component) bool {
+func (d *dom) Contains(c app.Component) bool {
 	_, ok := d.compoRowByCompo[c]
 	return ok
 }
@@ -50,7 +64,6 @@ func (d *dom) insertCompoRow(r compoRow) {
 	if sub, ok := r.component.(app.Subscriber); ok {
 		r.events = sub.Subscribe()
 	}
-
 	d.compoRowByID[r.id] = r
 	d.compoRowByCompo[r.component] = r
 }
@@ -60,254 +73,239 @@ func (d *dom) deleteCompoRow(id string) {
 		if r.events != nil {
 			r.events.Close()
 		}
-
 		delete(d.compoRowByCompo, r.component)
 		delete(d.compoRowByID, id)
 	}
 }
 
-// Render create or update the given component.
-// It satisfies the app.DOM interface.
-func (d *dom) Render(c app.Component) ([]Change, error) {
-	panic("not implemented")
+func (d *dom) Len() int {
+	return len(d.compoRowByCompo)
 }
 
-func (d *dom) mountComponent(c app.Component, isRoot bool) ([]Change, error) {
-	id := uuid.New().String()
+func (d *dom) Render(c app.Component) ([]Change, error) {
+	if err := validateComponent(c); err != nil {
+		return nil, err
+	}
 
-	root, err := decodeComponent(c)
+	row, ok := d.compoRowByCompo[c]
+	if !ok {
+		if len(d.root.children) != 0 {
+			c := d.root.children[0]
+			d.dismountNode(c)
+			d.root.removeChild(c)
+		}
+
+		// Mounting root component.
+		if err := d.mountCompo(c, nil); err != nil {
+			return nil, err
+		}
+		row, _ = d.compoRowByCompo[c]
+
+		d.root.appendChild(row.root)
+		return d.root.ConsumeChanges(), nil
+	}
+
+	old := row.root
+	parent := old.Parent()
+
+	new, err := decodeComponent(c)
 	if err != nil {
 		return nil, err
 	}
 
+	if err := d.syncNodes(old, new); err != nil {
+		return nil, err
+	}
+	return parent.(node).ConsumeChanges(), nil
+}
+
+func (d *dom) mountCompo(c app.Component, parent *compoNode) error {
+	root, err := decodeComponent(c)
+	if err != nil {
+		return err
+	}
+
+	compoID := uuid.New().String()
+	if err := d.mountNode(root, compoID); err != nil {
+		return err
+	}
 	d.insertCompoRow(compoRow{
-		id:        id,
+		id:        compoID,
 		component: c,
 		root:      root,
 	})
 
-	var changes []Change
-	if changes, err = d.mountNode(root, id); err != nil {
-		return nil, err
-	}
-
-	if isRoot {
-		changes = append(changes, setRootChange(root.ID()))
+	if parent != nil {
+		parent.SetRoot(root)
 	}
 
 	if mounter, ok := c.(app.Mounter); ok {
 		mounter.OnMount()
 	}
-	return changes, nil
+	return nil
 }
 
-func (d *dom) mountNode(n node, compoID string) ([]Change, error) {
+func (d *dom) mountNode(n node, compoID string) error {
 	switch n := n.(type) {
 	case *textNode:
 		n.compoID = compoID
 		n.controlID = d.controlID
-		return []Change{createNodeChange(n)}, nil
-
-	case *compoNode:
-		n.compoID = compoID
-		n.controlID = d.controlID
-
-		compo, err := d.factory.New(n.Name())
-		if err != nil {
-			return nil, err
-		}
-		if err = mapComponentFields(compo, n.fields); err != nil {
-			return nil, err
-		}
-
-		var changes []Change
-		if changes, err = d.mountComponent(compo, false); err != nil {
-			return nil, err
-		}
-		n.component = compo
-
-		row, _ := d.compoRowByCompo[compo]
-		n.setRoot(row.root)
-		return changes, err
 
 	case *elemNode:
 		n.compoID = compoID
 		n.controlID = d.controlID
 
-		changes := make([]Change, 0, len(n.children)+1)
-		changes = append(changes, createNodeChange(n))
-
 		for _, c := range n.children {
-			childChanges, err := d.mountNode(c, compoID)
-			if err != nil {
-				return nil, err
+			if err := d.mountNode(c, compoID); err != nil {
+				return err
 			}
-
-			childID := c.ID()
-			if n, ok := c.(*compoNode); ok {
-				childID = n.root.ID()
-			}
-
-			changes = append(changes, childChanges...)
-			changes = append(changes, appendChildChange(n.ID(), childID))
 		}
-		return changes, nil
+
+	case *compoNode:
+		n.compoID = compoID
+		n.controlID = d.controlID
+
+		c, err := d.factory.New(n.Name())
+		if err != nil {
+			return err
+		}
+
+		if err = mapComponentFields(c, n.fields); err != nil {
+			return err
+		}
+
+		n.component = c
+		return d.mountCompo(c, n)
 	}
-	return nil, nil
+	return nil
 }
 
-func (d *dom) dismountComponent(c app.Component) ([]Change, error) {
-	r, ok := d.compoRowByCompo[c]
-	if !ok {
-		return nil, nil
-	}
-
-	changes, _ := d.dismountNode(r.root)
-
-	d.deleteCompoRow(r.id)
+func (d *dom) dismountCompo(c app.Component) {
+	row, _ := d.compoRowByCompo[c]
+	d.dismountNode(row.root)
+	d.deleteCompoRow(row.id)
 
 	if dismounter, ok := c.(app.Dismounter); ok {
-		dismounter.Render()
+		dismounter.OnDismount()
 	}
-	return changes, nil
 }
 
-func (d *dom) dismountNode(n node) ([]Change, error) {
+func (d *dom) dismountNode(n node) {
 	switch n := n.(type) {
-	case *textNode:
-		return []Change{deleteNodeChange(n.ID())}, nil
+	case *elemNode:
+		for _, c := range n.children {
+			d.dismountNode(c)
+		}
 
 	case *compoNode:
-		n.removeRoot()
-		return d.dismountComponent(n.component)
-
-	case *elemNode:
-		changes := make([]Change, 0, 2*len(n.children)+1)
-		for _, c := range n.children {
-			childID := c.ID()
-			if n, ok := c.(*compoNode); ok {
-				childID = n.root.ID()
-			}
-			changes = append(changes, removeChildChange(n.ID(), childID))
-
-			childChanges, _ := d.dismountNode(c)
-			changes = append(changes, childChanges...)
-		}
-
-		changes = append(changes, deleteNodeChange(n.ID()))
-		return changes, nil
+		d.dismountCompo(n.component)
 	}
-	return nil, nil
 }
 
-func (d *dom) syncNodes(current, new node) ([]Change, error) {
-	switch current := current.(type) {
+func (d *dom) syncNodes(old, new node) error {
+	switch old := old.(type) {
 	case *textNode:
 		if new, ok := new.(*textNode); ok {
-			return d.syncTextNodes(current, new)
+			return d.syncTextNodes(old, new)
 		}
-		return d.replaceNode(current, new)
+		return d.replaceNode(old, new)
 
 	case *compoNode:
 		if new, ok := new.(*compoNode); ok {
-			return d.syncCompoNodes(current, new)
+			return d.syncCompoNodes(old, new)
 		}
-		return d.replaceNode(current, new)
+		return d.replaceNode(old, new)
 
-	case *elemNode:
+	default:
 		if new, ok := new.(*elemNode); ok {
-			return d.syncElemNodes(current, new)
+			return d.syncElemNodes(old.(*elemNode), new)
 		}
-		return d.replaceNode(current, new)
+		return d.replaceNode(old, new)
 	}
-	return nil, nil
 }
 
-func (d *dom) syncTextNodes(current, new *textNode) ([]Change, error) {
-	if current.text == new.text {
-		return nil, nil
+func (d *dom) syncTextNodes(old, new *textNode) error {
+	if old.Text() != new.Text() {
+		old.SetText(new.Text())
 	}
-	current.text = new.text
-	return []Change{updateNodeChange(current)}, nil
+	return nil
 }
 
-func (d *dom) syncCompoNodes(current, new *compoNode) ([]Change, error) {
-	if current.name != new.name {
-		return d.replaceNode(current, new)
-	}
-	if attrsEqual(current.fields, new.fields) {
-		return nil, nil
+func (d *dom) syncElemNodes(old, new *elemNode) error {
+	if old.TagName() != new.TagName() {
+		return d.replaceNode(old, new)
 	}
 
-	current.fields = new.fields
-	if err := mapComponentFields(current.component, current.fields); err != nil {
-		return nil, err
-	}
-	return d.Render(current.component)
-}
-
-func (d *dom) syncElemNodes(current, new *elemNode) ([]Change, error) {
-	if current.tagName != new.tagName {
-		return d.replaceNode(current, new)
+	if !attrsEqual(old.attrs, new.attrs) {
+		old.SetAttrs(new.attrs)
 	}
 
-	var changes []Change
-
-	curChildren := current.children
-	newChildren := new.children
+	oc := old.children
+	nc := new.children
 
 	// Sync children.
-	for len(curChildren) != 0 && len(newChildren) != 0 {
-		childChange, err := d.syncNodes(curChildren[0], newChildren[0])
-		if err != nil {
-			return nil, err
+	for len(oc) != 0 && len(nc) != 0 {
+		if err := d.syncNodes(oc[0], nc[0]); err != nil {
+			return err
 		}
-		changes = append(changes, childChange...)
-
-		curChildren = curChildren[:1]
-		newChildren = newChildren[:1]
+		oc = oc[1:]
+		nc = nc[1:]
 	}
 
 	// Remove children.
-	for len(curChildren) != 0 {
-		c := curChildren[0]
-
-		childID := c.ID()
-		if n, ok := c.(*compoNode); ok {
-			childID = n.root.ID()
-		}
-		changes = append(changes, removeChildChange(current.ID(), childID))
-
-		childChange, _ := d.dismountNode(c)
-		changes = append(changes, childChange...)
-		current.removeChild(c)
-
-		curChildren = curChildren[:1]
+	for len(oc) != 0 {
+		c := oc[0]
+		d.dismountNode(c)
+		old.removeChild(c)
+		oc = oc[1:]
 	}
 
-	// Append new children.
-	for len(newChildren) != 0 {
-		c := newChildren[0]
-		current.appendChild(c)
-
-		childChanges, err := d.mountNode(c, current.compoID)
-		if err != nil {
-			return nil, err
+	// Add children.
+	for len(nc) != 0 {
+		c := nc[0]
+		if err := d.mountNode(c, old.CompoID()); err != nil {
+			return err
 		}
-
-		childID := c.ID()
-		if n, ok := c.(*compoNode); ok {
-			childID = n.root.ID()
-		}
-
-		changes = append(changes, childChanges...)
-		changes = append(changes, appendChildChange(current.ID(), childID))
-
-		newChildren = newChildren[:1]
+		old.appendChild(c)
+		nc = nc[1:]
 	}
-	return changes, nil
+	return nil
 }
 
-func (d *dom) replaceNode(old, new node) ([]Change, error) {
-	panic("not implemented")
+func (d *dom) syncCompoNodes(old, new *compoNode) error {
+	if old.Name() != new.Name() {
+		return d.replaceNode(old, new)
+	}
+
+	if !attrsEqual(old.fields, new.fields) {
+		old.fields = new.fields
+		if err := mapComponentFields(old.component, new.fields); err != nil {
+			return err
+		}
+
+		newRoot, err := decodeComponent(old.component)
+		if err != nil {
+			return err
+		}
+		return d.syncNodes(old.root, newRoot)
+	}
+	return nil
+}
+
+func (d *dom) replaceNode(old, new node) error {
+	d.dismountNode(old)
+
+	if err := d.mountNode(new, old.CompoID()); err != nil {
+		return err
+	}
+
+	switch p := old.Parent().(type) {
+	case *elemNode:
+		p.replaceChild(old, new)
+
+	case *compoNode:
+		p.RemoveRoot()
+		p.SetRoot(new)
+	}
+	return nil
 }

@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"strings"
 
-	"github.com/google/uuid"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
 )
@@ -53,10 +52,9 @@ func (d *decoder) decodeText() (node, error) {
 		return d.decode()
 	}
 
-	return &textNode{
-		id:   uuid.New().String(),
-		text: text,
-	}, nil
+	t := newTextNode()
+	t.SetText(text)
+	return t, nil
 }
 
 func (d *decoder) decodeSelfClosingElem() (node, error) {
@@ -64,14 +62,12 @@ func (d *decoder) decodeSelfClosingElem() (node, error) {
 	tagName := string(name)
 
 	if isCompoTagName(tagName, d.decodingSVG) {
-		return d.decodeCompo(tagName, hasAttr)
+		return newCompoNode(tagName, d.decodeAttrs(hasAttr)), nil
 	}
 
-	return &elemNode{
-		id:      uuid.New().String(),
-		tagName: tagName,
-		attrs:   d.decodeAttrs(hasAttr),
-	}, nil
+	elem := newElemNode(tagName)
+	elem.SetAttrs(d.decodeAttrs(hasAttr))
+	return elem, nil
 }
 
 func (d *decoder) decodeAttrs(hasAttr bool) map[string]string {
@@ -96,18 +92,15 @@ func (d *decoder) decodeElem() (node, error) {
 	tagName := string(name)
 
 	if isCompoTagName(tagName, d.decodingSVG) {
-		return d.decodeCompo(tagName, hasAttr)
+		return newCompoNode(tagName, d.decodeAttrs(hasAttr)), nil
 	}
 
 	if tagName == "svg" {
 		d.decodingSVG = true
 	}
 
-	elem := &elemNode{
-		id:      uuid.New().String(),
-		tagName: tagName,
-		attrs:   d.decodeAttrs(hasAttr),
-	}
+	elem := newElemNode(tagName)
+	elem.SetAttrs(d.decodeAttrs(hasAttr))
 
 	if isVoidElem(tagName) {
 		return elem, nil
@@ -132,14 +125,6 @@ func (d *decoder) closeElem() (node, error) {
 		d.decodingSVG = false
 	}
 	return nil, nil
-}
-
-func (d *decoder) decodeCompo(tagName string, hasAttr bool) (node, error) {
-	return &compoNode{
-		id:     uuid.New().String(),
-		name:   tagName,
-		fields: d.decodeAttrs(hasAttr),
-	}, nil
 }
 
 func isHTMLTagName(tagName string) bool {
