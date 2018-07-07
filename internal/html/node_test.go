@@ -98,7 +98,7 @@ func TestTranformsAttrs(t *testing.T) {
 		},
 		{
 			attrs:    map[string]string{"onchange": "Test"},
-			expected: map[string]string{"onchange": `callCompoHandler('test', 'Test', this,event)`},
+			expected: map[string]string{"onchange": `callCompoHandler('test', 'Test', this, event)`},
 		},
 		{
 			attrs:    map[string]string{"onchange": "js:test()"},
