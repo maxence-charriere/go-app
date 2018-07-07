@@ -3,6 +3,14 @@
 
 #import <Cocoa/Cocoa.h>
 
+#if MAC_OS_X_VERSION_MAX_ALLOWED < 101200
+#define NSEventModifierFlagControl NSControlKeyMask
+#define NSEventModifierFlagShift NSShiftKeyMask
+#define NSEventModifierFlagOption NSAlternateKeyMask
+#define NSEventModifierFlagCommand NSCommandKeyMask
+#define NSEventModifierFlagFunction NSFunctionKeyMask
+#endif
+
 @interface MenuItem : NSMenuItem
 @property NSString *elemID;
 @property NSString *ID;

@@ -42,3 +42,4 @@ examples/test/test
 *goapp.js
 *.map
 
+.DS_Store
