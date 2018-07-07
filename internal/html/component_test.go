@@ -1,10 +1,13 @@
 package html
 
 import (
+	"encoding/json"
+	"strconv"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/murlokswarm/app"
 )
@@ -50,6 +53,61 @@ func (c *CompoWithFields) Funcs() map[string]interface{} {
 	return map[string]interface{}{
 		"hello": func(string) string { return "hello" },
 	}
+}
+
+type CompoBadTemplate app.ZeroCompo
+
+func (c *CompoBadTemplate) Render() string {
+	return `{{}}`
+}
+
+type CompoBadTemplate2 app.ZeroCompo
+
+func (c *CompoBadTemplate2) Render() string {
+	return `{{.Bye}}`
+}
+
+func TestDecodeComponent(t *testing.T) {
+	s := struct {
+		A int
+		B string
+	}{
+		A: 42,
+		B: "foobar",
+	}
+
+	data, err := json.Marshal(s)
+	if err != nil {
+		t.Fatal(err)
+	}
+	sjson := string(data)
+
+	n, err := decodeComponent(&CompoWithFields{
+		String: "<br>",
+		Time:   time.Now(),
+		Struct: s,
+	})
+	require.NoError(t, err)
+
+	root := n.(*elemNode)
+	raw := root.children[1].(*elemNode).children[1].(*elemNode)
+	assert.Equal(t, "br", raw.TagName())
+
+	compo := root.children[7].(*compoNode)
+	assert.Equal(t, sjson, compo.fields["obj"])
+
+	year := strconv.Itoa(time.Now().Year())
+	timetext := root.children[8].(*elemNode).children[0].(*textNode)
+	assert.Equal(t, "Time: "+year, timetext.Text())
+
+	hello := root.children[9].(*elemNode).children[0].(*textNode)
+	assert.Equal(t, "hello", hello.Text())
+
+	_, err = decodeComponent(&CompoBadTemplate{})
+	assert.Error(t, err)
+
+	_, err = decodeComponent(&CompoBadTemplate2{})
+	assert.Error(t, err)
 }
 
 func TestMapComponentFields(t *testing.T) {

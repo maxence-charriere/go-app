@@ -61,6 +61,8 @@ type Boo struct {
 	ReplaceCompoByElem bool
 	ReplaceCompoType   bool
 	AddCompo           bool
+	ChildErr           bool
+	ChildNoImport      bool
 	Value              string
 }
 
@@ -78,13 +80,112 @@ func (b *Boo) Render() string {
 		{{if .AddCompo}}
 			<html.Foo>
 		{{end}}
+
+
+		{{if .ChildErr}}
+			<html.ErrCompo>
+		{{end}}
+
+		{{if .ChildNoImport}}
+			<unknown>
+		{{end}}
 	</div>
 	`
 }
 
-type Oob app.ZeroCompo
+type Oob struct {
+	Int int
+}
 
 func (o *Oob) Render() string {
+	return `<p>{{if .Int}}{{.Int}}{{end}}</p>`
+}
+
+type Nested struct {
+	Foo bool
+}
+
+func (n *Nested) Render() string {
+	return `
+		{{if .Foo}}
+			<html.Foo>
+		{{else}}
+			<html.Oob>
+		{{end}}
+	`
+}
+
+type NestedNested struct {
+	Foo bool
+}
+
+func (n *NestedNested) Render() string {
+	return `
+		{{if .Foo}}
+			<html.Nested foo>
+		{{else}}
+			<html.Nested>
+		{{end}}
+	`
+}
+
+type CompoErr struct {
+	DecodeErr       bool
+	NoImport        bool
+	ReplaceCompoErr bool
+	AddChildErr     bool
+	Int             interface{}
+}
+
+func (c *CompoErr) Render() string {
+	return `
+	<div>
+		{{if .DecodeErr}}
+			<html.DecodeErr>
+		{{else}}
+			<html.DecodeErr noerr>
+		{{end}}
+
+		{{if .NoImport}}
+			<html.unknown>
+		{{end}}
+
+		{{if .ReplaceCompoErr}}
+			<html.DecodeErr>
+		{{else}}
+			<html.Oob int="{{.Int}}">
+		{{end}}
+
+		{{if .AddChildErr}}
+			<html.DecodeErr>
+		{{end}}
+	</div>
+	`
+}
+
+type DecodeErr struct {
+	NoErr bool
+}
+
+func (d *DecodeErr) Render() string {
+	return `
+	{{if .NoErr}}
+		<div></div>
+	{{else}}
+		<div><div %error></div>
+	{{end}}
+	`
+}
+
+type NoPtrErr int
+
+func (e NoPtrErr) Render() string {
+	return `<p>42</p>`
+}
+
+type EmptyStructErr struct{}
+
+func (e *EmptyStructErr) Render() string {
 	return `<p></p>`
 }
 
@@ -94,6 +195,12 @@ func TestDOM(t *testing.T) {
 	f.Register(&Bar{})
 	f.Register(&Boo{})
 	f.Register(&Oob{})
+	f.Register(&Nested{})
+	f.Register(&NestedNested{})
+	f.Register(&CompoErr{})
+	f.Register(&DecodeErr{})
+	f.Register(NoPtrErr(0))
+	f.Register(&EmptyStructErr{})
 
 	tests := []struct {
 		scenario   string
@@ -110,7 +217,7 @@ func TestDOM(t *testing.T) {
 			changes: []Change{
 				createTextChange(""),
 				setTextChange("", "hello"),
-				createElemChange(newElemNode("div")),
+				createElemChange("", "div"),
 				setAttrsChange("", map[string]string{"class": "test"}),
 				appendChildChange("", ""),
 				appendChildChange("", ""), // div -> root
@@ -178,11 +285,11 @@ func TestDOM(t *testing.T) {
 
 				createTextChange(""),
 				setTextChange("", "world"),
-				createElemChange(newElemNode("h1")),
+				createElemChange("", "h1"),
 				setAttrsChange("", nil),
 				appendChildChange("", ""), // world -> h1
 
-				createElemChange(newElemNode("div")),
+				createElemChange("", "div"),
 				setAttrsChange("", nil),
 				appendChildChange("", ""), // hello -> div
 				appendChildChange("", ""), // h1 -> div
@@ -199,7 +306,7 @@ func TestDOM(t *testing.T) {
 			changes: []Change{
 				createTextChange(""),
 				setTextChange("", "hello"),
-				createElemChange(newElemNode("span")),
+				createElemChange("", "span"),
 				setAttrsChange("", nil),
 				appendChildChange("", ""), // hello -> span
 
@@ -232,7 +339,7 @@ func TestDOM(t *testing.T) {
 			changes: []Change{
 				createTextChange(""),
 				setTextChange("", "world"),
-				createElemChange(newElemNode("h2")),
+				createElemChange("", "h2"),
 				setAttrsChange("", nil),
 				appendChildChange("", ""), // world -> h2
 
@@ -248,12 +355,12 @@ func TestDOM(t *testing.T) {
 			scenario: "create compo with nested compo",
 			compo:    &Boo{},
 			changes: []Change{
-				createElemChange(newElemNode("div")),
+				createElemChange("", "div"),
 				setAttrsChange("", map[string]string{"class": "test"}),
 				createCompoChange("", "html.foo"),
 				setCompoRootChange("", ""),
 
-				createElemChange(newElemNode("div")),
+				createElemChange("", "div"),
 				setAttrsChange("", nil),
 				appendChildChange("", ""), // foo.div -> div
 				appendChildChange("", ""), // div -> root
@@ -267,7 +374,7 @@ func TestDOM(t *testing.T) {
 				c.(*Boo).AddCompo = true
 			},
 			changes: []Change{
-				createElemChange(newElemNode("div")),
+				createElemChange("", "div"),
 				setAttrsChange("", map[string]string{"class": "test"}),
 				createCompoChange("", "html.foo"),
 				setCompoRootChange("", ""),
@@ -295,7 +402,7 @@ func TestDOM(t *testing.T) {
 				c.(*Boo).ReplaceCompoType = true
 			},
 			changes: []Change{
-				createElemChange(newElemNode("p")), // oob.p
+				createElemChange("", "p"), // oob.p
 				setAttrsChange("", nil),
 				createCompoChange("", "html.oob"),
 				setCompoRootChange("", ""), // oob.p -> oob
@@ -326,7 +433,7 @@ func TestDOM(t *testing.T) {
 			changes: []Change{
 				createTextChange(""),
 				setTextChange("", "foo"),
-				createElemChange(newElemNode("p")),
+				createElemChange("", "p"),
 				setAttrsChange("", nil),
 				appendChildChange("", ""), // "foo" -> p
 
@@ -343,7 +450,7 @@ func TestDOM(t *testing.T) {
 				c.(*Boo).ReplaceCompoByElem = false
 			},
 			changes: []Change{
-				createElemChange(newElemNode("div")),
+				createElemChange("", "div"),
 				setAttrsChange("", map[string]string{"class": "test"}),
 				createCompoChange("", "html.foo"),
 				setCompoRootChange("", ""),
@@ -354,6 +461,145 @@ func TestDOM(t *testing.T) {
 			},
 			compoCount: 2,
 		},
+
+		// Nested:
+		{
+			scenario: "create nested",
+			compo:    &Nested{Foo: true},
+			changes: []Change{
+				createElemChange("", "div"), // foo.div
+				setAttrsChange("", map[string]string{"class": "test"}),
+				createCompoChange("", "html.foo"),
+				setCompoRootChange("", ""),
+				appendChildChange("", ""), // foo -> root
+			},
+			compoCount: 2,
+		},
+		{
+			scenario: "replace nested",
+			compo:    &Nested{},
+			modifier: func(c app.Component) {
+				c.(*Nested).Foo = true
+			},
+			changes: []Change{
+				createElemChange("", "div"), // foo.div
+				setAttrsChange("", map[string]string{"class": "test"}),
+				createCompoChange("", "html.foo"),
+				setCompoRootChange("", ""),
+				replaceChildChange("", "", ""), // oob <=> foo
+
+				deleteNodeChange(""), // oob.p
+				deleteNodeChange(""), // oob
+			},
+			compoCount: 2,
+		},
+		{
+			scenario: "create nested nested",
+			compo:    &NestedNested{},
+			changes: []Change{
+				createElemChange("", "p"), // oob.p
+				setAttrsChange("", nil),
+				createCompoChange("", "html.oob"),
+				setCompoRootChange("", ""),
+
+				createCompoChange("", "html.nested"),
+				setCompoRootChange("", ""), // nested.oob => nested
+
+				appendChildChange("", ""), // nestednested -> root
+			},
+			compoCount: 3,
+		},
+		{
+			scenario: "replace nested nested",
+			compo:    &NestedNested{},
+			modifier: func(c app.Component) {
+				c.(*NestedNested).Foo = true
+			},
+			changes: []Change{
+				createElemChange("", "div"), // foo.div
+				setAttrsChange("", map[string]string{"class": "test"}),
+				createCompoChange("", "html.foo"),
+				setCompoRootChange("", ""),
+
+				deleteNodeChange(""), // oob.p
+				deleteNodeChange(""), // oob
+
+				setCompoRootChange("", ""), // foo => nested
+			},
+			compoCount: 3,
+		},
+
+		// Err:
+		{
+			scenario: "fail decode",
+			compo:    &DecodeErr{},
+			err:      true,
+		},
+		{
+			scenario: "fail decode update",
+			compo:    &DecodeErr{NoErr: true},
+			modifier: func(c app.Component) {
+				c.(*DecodeErr).NoErr = false
+			},
+			err: true,
+		},
+		{
+			scenario: "fail decode child",
+			compo:    &CompoErr{DecodeErr: true},
+			err:      true,
+		},
+		{
+			scenario: "fail decode child update",
+			compo:    &CompoErr{Int: 0},
+			modifier: func(c app.Component) {
+				c.(*CompoErr).DecodeErr = true
+			},
+			err: true,
+		},
+		{
+			scenario: "fail map child fields",
+			compo:    &CompoErr{Int: 42.42},
+			err:      true,
+		},
+		{
+			scenario: "fail update child fields",
+			compo:    &CompoErr{Int: 42},
+			modifier: func(c app.Component) {
+				c.(*CompoErr).Int = 42.42
+			},
+			err: true,
+		},
+		{
+			scenario: "fail child no import",
+			compo:    &CompoErr{NoImport: true},
+			err:      true,
+		},
+		{
+			scenario: "replace compo err",
+			compo:    &CompoErr{Int: 0},
+			modifier: func(c app.Component) {
+				c.(*CompoErr).ReplaceCompoErr = true
+			},
+			err: true,
+		},
+		{
+			scenario: "fail add child",
+			compo:    &CompoErr{Int: 42},
+			modifier: func(c app.Component) {
+				c.(*CompoErr).AddChildErr = true
+			},
+			err: true,
+		},
+		{
+			scenario: "no ptr compo",
+			compo:    NoPtrErr(42),
+			err:      true,
+		},
+		{
+			scenario: "empty compo",
+			compo:    &EmptyStructErr{},
+			err:      true,
+		},
 	}
 
 	for _, test := range tests {
@@ -361,23 +607,24 @@ func TestDOM(t *testing.T) {
 			dom := NewDOM(f, "test")
 			changes, err := dom.Render(test.compo)
 
-			if test.err {
-				assert.Error(t, err)
-				return
-			}
-
 			if test.modifier != nil {
 				test.modifier(test.compo)
 				changes, err = dom.Render(test.compo)
 			}
 
+			if test.err {
+				assert.Error(t, err)
+				return
+			}
+
 			require.NoError(t, err)
-			require.Equal(t, test.compoCount, dom.Len())
+			assert.Equal(t, test.compoCount, dom.Len())
 
 			jsonChanges, _ := json.MarshalIndent(changes, "", "  ")
 			t.Log("changes:", string(jsonChanges))
 
 			require.Len(t, changes, len(test.changes))
+			require.True(t, dom.Contains(test.compo))
 
 			for i := range changes {
 				requireEqualChange(t, test.changes[i], changes[i])
@@ -386,8 +633,58 @@ func TestDOM(t *testing.T) {
 	}
 }
 
-func TestDOMRenderSubComponent(t *testing.T) {
+func TestRenderNewRoot(t *testing.T) {
+	f := app.NewFactory()
+	f.Register(&Oob{})
 
+	dom := newDOM(f, "test")
+	_, err := dom.Render(&Oob{})
+	require.NoError(t, err)
+
+	var changes []Change
+	changes, err = dom.Render(&Oob{})
+	require.NoError(t, err)
+
+	jsonChanges, _ := json.MarshalIndent(changes, "", "  ")
+	t.Log("changes:", string(jsonChanges))
+
+	expected := []Change{
+		createElemChange("", "p"),
+		setAttrsChange("", nil),
+		removeChildChange("", ""), // old oob.p
+		deleteNodeChange(""),      // old oob.p
+		appendChildChange("", ""), // new oob.p
+	}
+	require.Len(t, changes, len(expected))
+
+	for i := range changes {
+		requireEqualChange(t, expected[i], changes[i])
+	}
+}
+
+func TestDOMComponentByID(t *testing.T) {
+	f := app.NewFactory()
+	f.Register(&Foo{})
+
+	dom := newDOM(f, "test")
+	foo := &Foo{}
+	_, err := dom.Render(foo)
+	require.NoError(t, err)
+
+	var row compoRow
+	for _, r := range dom.compoRowByCompo {
+		row = r
+		break
+	}
+	require.Equal(t, foo, row.component)
+
+	var c app.Component
+	c, err = dom.ComponentByID(row.id)
+	require.NoError(t, err)
+	require.Equal(t, foo, c)
+
+	_, err = dom.ComponentByID("hello")
+	require.Error(t, err)
 }
 
 func requireEqualChange(t require.TestingT, expected, actual Change) {

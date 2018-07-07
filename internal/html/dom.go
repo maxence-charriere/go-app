@@ -12,17 +12,22 @@ type DOM interface {
 	ComponentByID(id string) (app.Component, error)
 
 	// Reports whether the given component is in the dom.
-	ContainsComponent(c app.Component) bool
+	Contains(c app.Component) bool
 
 	// The amount of components in the DOM.
 	Len() int
 
 	// Create or update the nodes of the given component.
+	// Component must be a pointer and not based on an empty struct.
 	Render(c app.Component) ([]Change, error)
 }
 
 // NewDOM create a document object model store.
 func NewDOM(f app.Factory, controlID string) DOM {
+	return newDOM(f, controlID)
+}
+
+func newDOM(f app.Factory, controlID string) *dom {
 	return &dom{
 		factory:   f,
 		controlID: controlID,
@@ -50,7 +55,7 @@ func (d *dom) ComponentByID(id string) (app.Component, error) {
 	return r.component, nil
 }
 
-func (d *dom) ContainsComponent(c app.Component) bool {
+func (d *dom) Contains(c app.Component) bool {
 	_, ok := d.compoRowByCompo[c]
 	return ok
 }
@@ -78,18 +83,31 @@ func (d *dom) Len() int {
 }
 
 func (d *dom) Render(c app.Component) ([]Change, error) {
+	if err := validateComponent(c); err != nil {
+		return nil, err
+	}
+
 	row, ok := d.compoRowByCompo[c]
 	if !ok {
+		if len(d.root.children) != 0 {
+			c := d.root.children[0]
+			d.dismountNode(c)
+			d.root.removeChild(c)
+		}
+
 		// Mounting root component.
 		if err := d.mountCompo(c, nil); err != nil {
 			return nil, err
 		}
 		row, _ = d.compoRowByCompo[c]
+
 		d.root.appendChild(row.root)
 		return d.root.ConsumeChanges(), nil
 	}
 
 	old := row.root
+	parent := old.Parent()
+
 	new, err := decodeComponent(c)
 	if err != nil {
 		return nil, err
@@ -98,7 +116,7 @@ func (d *dom) Render(c app.Component) ([]Change, error) {
 	if err := d.syncNodes(old, new); err != nil {
 		return nil, err
 	}
-	return old.Parent().(node).ConsumeChanges(), nil
+	return parent.(node).ConsumeChanges(), nil
 }
 
 func (d *dom) mountCompo(c app.Component, parent *compoNode) error {
@@ -138,7 +156,9 @@ func (d *dom) mountNode(n node, compoID string) error {
 		n.controlID = d.controlID
 
 		for _, c := range n.children {
-			d.mountNode(c, compoID)
+			if err := d.mountNode(c, compoID); err != nil {
+				return err
+			}
 		}
 
 	case *compoNode:
@@ -190,19 +210,18 @@ func (d *dom) syncNodes(old, new node) error {
 		}
 		return d.replaceNode(old, new)
 
-	case *elemNode:
-		if new, ok := new.(*elemNode); ok {
-			return d.syncElemNodes(old, new)
-		}
-		return d.replaceNode(old, new)
-
 	case *compoNode:
 		if new, ok := new.(*compoNode); ok {
 			return d.syncCompoNodes(old, new)
 		}
 		return d.replaceNode(old, new)
+
+	default:
+		if new, ok := new.(*elemNode); ok {
+			return d.syncElemNodes(old.(*elemNode), new)
+		}
+		return d.replaceNode(old, new)
 	}
-	return nil
 }
 
 func (d *dom) syncTextNodes(old, new *textNode) error {
@@ -244,7 +263,9 @@ func (d *dom) syncElemNodes(old, new *elemNode) error {
 	// Add children.
 	for len(nc) != 0 {
 		c := nc[0]
-		d.mountNode(c, old.CompoID())
+		if err := d.mountNode(c, old.CompoID()); err != nil {
+			return err
+		}
 		old.appendChild(c)
 		nc = nc[1:]
 	}

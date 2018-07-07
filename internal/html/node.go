@@ -1,6 +1,9 @@
 package html
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/murlokswarm/app"
 )
 
@@ -22,6 +25,32 @@ func attrsEqual(a, b map[string]string) bool {
 		}
 	}
 	return true
+}
+
+func tranformsAttrs(a map[string]string, compoID string) map[string]string {
+	if len(a) == 0 {
+		return nil
+	}
+
+	attrs := make(map[string]string, len(a))
+
+	for k, v := range a {
+		isEventHandler := strings.HasPrefix(k, "on")
+
+		switch {
+		case isEventHandler && strings.HasPrefix(v, "js:"):
+			v = strings.TrimPrefix(v, "js:")
+
+		case isEventHandler:
+			v = fmt.Sprintf(`callCompoHandler('%s', '%s', this, event)`,
+				compoID,
+				v,
+			)
+		}
+
+		attrs[k] = v
+	}
+	return attrs
 }
 
 // Change represents a change to perform in order to render a component within
@@ -86,12 +115,12 @@ type childValue struct {
 	OldID    string `json:",omitempty"`
 }
 
-func createElemChange(n *elemNode) Change {
+func createElemChange(id, tagName string) Change {
 	return Change{
 		Type: createElem,
 		Value: elemValue{
-			ID:      n.ID(),
-			TagName: n.TagName(),
+			ID:      id,
+			TagName: tagName,
 		},
 	}
 }

@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/murlokswarm/app"
+	"github.com/pkg/errors"
 )
 
 type compoRow struct {
@@ -17,6 +18,19 @@ type compoRow struct {
 	component app.Component
 	events    app.EventSubscriber
 	root      node
+}
+
+func validateComponent(c app.Component) error {
+	v := reflect.ValueOf(c)
+	if v.Kind() != reflect.Ptr {
+		return errors.New("component is not a pointer")
+	}
+
+	v = v.Elem()
+	if v.NumField() == 0 {
+		return errors.New("component is based on a struct without field. use app.ZeroCompo instead of struct{}")
+	}
+	return nil
 }
 
 func decodeComponent(c app.Component) (node, error) {
@@ -63,10 +77,6 @@ func decodeComponent(c app.Component) (node, error) {
 }
 
 func mapComponentFields(c app.Component, fields map[string]string) error {
-	if len(fields) == 0 {
-		return nil
-	}
-
 	v := reflect.ValueOf(c).Elem()
 	t := v.Type()
 

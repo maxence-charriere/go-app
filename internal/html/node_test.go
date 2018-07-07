@@ -86,3 +86,28 @@ func TestAttrsEqual(t *testing.T) {
 		})
 	}
 }
+
+func TestTranformsAttrs(t *testing.T) {
+	tests := []struct {
+		attrs    map[string]string
+		expected map[string]string
+	}{
+		{
+			attrs:    nil,
+			expected: nil,
+		},
+		{
+			attrs:    map[string]string{"onchange": "Test"},
+			expected: map[string]string{"onchange": `callCompoHandler('test', 'Test', this,event)`},
+		},
+		{
+			attrs:    map[string]string{"onchange": "js:test()"},
+			expected: map[string]string{"onchange": "test()"},
+		},
+	}
+
+	for _, test := range tests {
+		a := tranformsAttrs(test.attrs, "test")
+		assert.Equal(t, test.expected, a)
+	}
+}

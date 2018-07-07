@@ -23,7 +23,7 @@ func newElemNode(tagName string) *elemNode {
 	}
 
 	n.changes = []Change{
-		createElemChange(n),
+		createElemChange(n.ID(), n.TagName()),
 	}
 	return n
 }
@@ -119,7 +119,15 @@ func (e *elemNode) ConsumeChanges() []Change {
 	for _, c := range e.children {
 		changes = append(changes, c.ConsumeChanges()...)
 	}
-	changes = append(changes, e.changes...)
+
+	for _, c := range e.changes {
+		if c.Type == setAttrs {
+			v := c.Value.(elemValue)
+			v.Attrs = tranformsAttrs(v.Attrs, e.compoID)
+		}
+		changes = append(changes, c)
+	}
+
 	e.changes = e.changes[:0]
 	return changes
 }
