@@ -4,11 +4,7 @@
 #import <Cocoa/Cocoa.h>
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED < 101200
-#define NSEventModifierFlagControl NSControlKeyMask
-#define NSEventModifierFlagShift NSShiftKeyMask
-#define NSEventModifierFlagOption NSAlternateKeyMask
-#define NSEventModifierFlagCommand NSCommandKeyMask
-#define NSEventModifierFlagFunction NSFunctionKeyMask
+#import "retro.h"
 #endif
 
 @interface MenuItem : NSMenuItem

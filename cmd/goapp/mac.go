@@ -213,7 +213,7 @@ func fillBundle(b driver.Bundle, root string) driver.Bundle {
 	}
 
 	if len(b.DeploymentTarget) == 0 {
-		b.DeploymentTarget = "10.11"
+		b.DeploymentTarget = "10.13"
 	}
 
 	if len(b.Category) == 0 {

@@ -3,27 +3,9 @@
 
 #import "bridge.h"
 #import "webview.h"
+
 #if MAC_OS_X_VERSION_MAX_ALLOWED < 101200
-#define NSWindowStyleMaskResizable NSResizableWindowMask
-#define NSEventTypeLeftMouseDown NSLeftMouseDown
-#define NSEventTypeLeftMouseUp NSLeftMouseUp
-#define NSEventTypeRightMouseDown NSRightMouseDown
-#define NSEventTypeRightMouseUp NSRightMouseUp
-#define NSEventTypeOtherMouseDown NSOtherMouseDown
-#define NSEventTypeOtherMouseUp NSOtherMouseUp
-#define NSEventTypeScrollWheel NSScrollWheel
-#define NSEventTypeMouseMoved NSMouseMoved
-#define NSEventTypeLeftMouseDragged NSLeftMouseDragged
-#define NSEventTypeRightMouseDragged NSRightMouseDragged
-#define NSEventTypeOtherMouseDragged NSOtherMouseDragged
-#define NSCompositingOperationCopy NSCompositeCopy
-#define NSCompositingOperationSourceIn NSCompositeSourceIn
-#define NSEventTypeFlagsChanged NSFlagsChanged
-#define NSWindowStyleMaskTitled NSTitledWindowMask
-#define NSWindowStyleMaskClosable NSClosableWindowMask
-#define NSWindowStyleMaskMiniaturizable NSMiniaturizableWindowMask
-#define NSWindowStyleMaskBorderless NSBorderlessWindowMask
-#define NSWindowStyleMaskFullSizeContentView NSBorderlessWindowMask
+#import "retro.h"
 #endif
 
 @interface Window : NSWindowController <NSWindowDelegate, WKNavigationDelegate,
