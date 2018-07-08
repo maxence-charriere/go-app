@@ -2,7 +2,8 @@
 #define image_h
 
 #import <Cocoa/Cocoa.h>
-
+#import "retro.h"
+ 
 @interface NSImage (ImageCategory)
 + (NSImage *)resizedImage:(NSImage *)sourceImage
         toPixelDimensions:(NSSize)newSize;

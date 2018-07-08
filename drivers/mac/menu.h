@@ -2,6 +2,7 @@
 #define menu_h
 
 #import <Cocoa/Cocoa.h>
+#import "retro.h"
 
 @interface MenuItem : NSMenuItem
 @property NSString *elemID;

@@ -3,6 +3,7 @@
 
 #import "bridge.h"
 #import "webview.h"
+#import "retro.h"
 
 @interface Window : NSWindowController <NSWindowDelegate, WKNavigationDelegate,
                                         WKUIDelegate, WKScriptMessageHandler>
