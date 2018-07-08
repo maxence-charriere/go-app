@@ -2,10 +2,7 @@
 #define menu_h
 
 #import <Cocoa/Cocoa.h>
-
-#if MAC_OS_X_VERSION_MAX_ALLOWED < 101200
 #import "retro.h"
-#endif
 
 @interface MenuItem : NSMenuItem
 @property NSString *elemID;

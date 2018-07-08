@@ -3,10 +3,7 @@
 
 #import "bridge.h"
 #import "webview.h"
-
-#if MAC_OS_X_VERSION_MAX_ALLOWED < 101200
 #import "retro.h"
-#endif
 
 @interface Window : NSWindowController <NSWindowDelegate, WKNavigationDelegate,
                                         WKUIDelegate, WKScriptMessageHandler>
