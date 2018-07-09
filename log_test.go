@@ -8,20 +8,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestLogs(t *testing.T) {
-	buff := &bytes.Buffer{}
-	Loggers = []Logger{
-		NewLogger(buff, buff, true, true),
-	}
-
-	Log("hello world")
-	WhenDebug(func() {
-		Debug("goodbye world")
-	})
-
-	t.Log(buff.String())
-}
-
 func TestLogger(t *testing.T) {
 	buffer := &bytes.Buffer{}
 	logger := NewLogger(buffer, buffer, true, false)
@@ -43,6 +29,9 @@ func TestLogger(t *testing.T) {
 		logger.Debug("vader is strong")
 	})
 	assert.NotContains(t, buffer.String(), "vader is strong")
+	logger.Log("a message")
+	logger.Log("an error: %s", errors.New("error"))
+	logger.Debug("a debug message")
 
 	t.Log(buffer.String())
 }

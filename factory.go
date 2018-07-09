@@ -19,20 +19,26 @@ type Factory interface {
 	New(name string) (Component, error)
 }
 
-// NewFactory creates a component factory.
+// NewFactory creates a component factory that is safe for concurrent use.
 func NewFactory() Factory {
-	return make(factory)
+	return &factory{
+		types: make(map[string]reflect.Type),
+	}
 }
 
-type factory map[string]reflect.Type
+type factory struct {
+	mutex sync.RWMutex
+	types map[string]reflect.Type
+}
 
-func (f factory) Register(c Component) (name string, err error) {
+func (f *factory) Register(c Component) (name string, err error) {
+	f.mutex.Lock()
+	defer f.mutex.Unlock()
+
 	rval := reflect.ValueOf(c)
-	if rval.Kind() != reflect.Ptr {
-		return "", errors.New("component is not a pointer")
-	}
+	rval = reflect.Indirect(rval)
 
-	if rval = rval.Elem(); rval.Kind() != reflect.Struct {
+	if rval.Kind() != reflect.Struct {
 		return "", errors.New("component does not point to a struct")
 	}
 
@@ -42,59 +48,31 @@ func (f factory) Register(c Component) (name string, err error) {
 
 	rtype := rval.Type()
 	name = normalizeComponentName(rtype.String())
-	f[name] = rtype
+	f.types[name] = rtype
 	return name, nil
 }
 
-func (f factory) Registered(name string) bool {
-	_, ok := f[name]
+func (f *factory) Registered(name string) bool {
+	f.mutex.RLock()
+	defer f.mutex.RUnlock()
+
+	_, ok := f.types[name]
 	return ok
 }
 
-func (f factory) New(name string) (Component, error) {
-	rtype, ok := f[name]
+func (f *factory) New(name string) (Component, error) {
+	f.mutex.RLock()
+	defer f.mutex.RUnlock()
+
+	rtype, ok := f.types[name]
 	if !ok {
 		return nil, errors.Errorf("component %s is not registered", name)
 	}
 
 	rval := reflect.New(rtype)
 
-	// Here we are not checking the cast because only component cant go in the
+	// Here we are not checking the cast because only component can go in the
 	// factory.
 	c := rval.Interface().(Component)
 	return c, nil
-}
-
-// ConcurrentFactory returns a decorated version of the given factory that
-// is safe for concurrent operations.
-func ConcurrentFactory(f Factory) Factory {
-	return &concurrentFactory{
-		base: f,
-	}
-}
-
-type concurrentFactory struct {
-	mutex sync.RWMutex
-	base  Factory
-}
-
-func (f *concurrentFactory) Register(c Component) (name string, err error) {
-	f.mutex.Lock()
-	name, err = f.base.Register(c)
-	f.mutex.Unlock()
-	return name, err
-}
-
-func (f *concurrentFactory) Registered(name string) bool {
-	f.mutex.RLock()
-	ok := f.base.Registered(name)
-	f.mutex.RUnlock()
-	return ok
-}
-
-func (f *concurrentFactory) New(name string) (Component, error) {
-	f.mutex.RLock()
-	c, err := f.base.New(name)
-	f.mutex.RUnlock()
-	return c, err
 }

@@ -9,18 +9,13 @@ import (
 	"github.com/pkg/errors"
 )
 
-var (
-	// DefaultEventRegistry is the default event registry.
-	DefaultEventRegistry EventRegistry
-)
-
 // EventRegistry is the interface that describes an event registry.
 type EventRegistry interface {
+	EventDispatcher
+
 	// Subscribe subscribes the given handler to the named event.
 	// It panics if handler is not a func.
 	Subscribe(name string, handler interface{}) (unsuscribe func())
-
-	EventDispatcher
 }
 
 // EventDispatcher is the interface that describes an event dispatcher.
@@ -30,25 +25,28 @@ type EventDispatcher interface {
 	Dispatch(name string, arg interface{})
 }
 
-type eventHandler struct {
-	ID      uuid.UUID
-	Handler interface{}
-}
-
-// NewEventRegistry creates an event registry.
-func NewEventRegistry(dispatcher func(func())) EventRegistry {
+func newEventRegistry(dispatcher func(func())) EventRegistry {
 	return &eventRegistry{
 		handlers:   make(map[string][]eventHandler),
 		dispatcher: dispatcher,
 	}
 }
 
+type eventHandler struct {
+	ID      string
+	Handler interface{}
+}
+
 type eventRegistry struct {
+	mutex      sync.RWMutex
 	handlers   map[string][]eventHandler
 	dispatcher func(f func())
 }
 
 func (m *eventRegistry) Subscribe(name string, handler interface{}) (unsuscribe func()) {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
 	if reflect.ValueOf(handler).Kind() != reflect.Func {
 		panic(errors.Errorf("can't subscribe event %s: handler is not a func: %T",
 			name,
@@ -56,8 +54,7 @@ func (m *eventRegistry) Subscribe(name string, handler interface{}) (unsuscribe 
 		))
 	}
 
-	id := uuid.New()
-
+	id := uuid.New().String()
 	handlers := m.handlers[name]
 	handlers = append(handlers, eventHandler{
 		ID:      id,
@@ -66,11 +63,14 @@ func (m *eventRegistry) Subscribe(name string, handler interface{}) (unsuscribe 
 	m.handlers[name] = handlers
 
 	return func() {
-		m.Unsubscribe(name, id)
+		m.unsubscribe(name, id)
 	}
 }
 
-func (m *eventRegistry) Unsubscribe(name string, id uuid.UUID) {
+func (m *eventRegistry) unsubscribe(name string, id string) {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
 	handlers := m.handlers[name]
 
 	for i, h := range handlers {
@@ -87,6 +87,9 @@ func (m *eventRegistry) Unsubscribe(name string, id uuid.UUID) {
 }
 
 func (m *eventRegistry) Dispatch(name string, arg interface{}) {
+	m.mutex.RLock()
+	defer m.mutex.RUnlock()
+
 	for _, h := range m.handlers[name] {
 		val := reflect.ValueOf(h.Handler)
 		typ := val.Type()
@@ -117,37 +120,6 @@ func (m *eventRegistry) Dispatch(name string, arg interface{}) {
 	}
 }
 
-// ConcurrentEventRegistry returns a decorated version of the given event
-// registry that ensure concurrency safety.
-func ConcurrentEventRegistry(r EventRegistry) EventRegistry {
-	return &concurrentEventRegistry{
-		base: r,
-	}
-}
-
-type concurrentEventRegistry struct {
-	mutex sync.RWMutex
-	base  EventRegistry
-}
-
-func (r *concurrentEventRegistry) Subscribe(name string, handler interface{}) func() {
-	r.mutex.Lock()
-	unsubscribe := r.base.Subscribe(name, handler)
-	r.mutex.Unlock()
-
-	return func() {
-		r.mutex.Lock()
-		unsubscribe()
-		r.mutex.Unlock()
-	}
-}
-
-func (r *concurrentEventRegistry) Dispatch(name string, arg interface{}) {
-	r.mutex.RLock()
-	r.base.Dispatch(name, arg)
-	r.mutex.RUnlock()
-}
-
 // EventSubscriber is the interface that describes an event subscriber.
 type EventSubscriber interface {
 	// Subscribe subscribes the given handler to the named event.
@@ -156,13 +128,6 @@ type EventSubscriber interface {
 
 	// Close closes the event handler and unsubscribe all its events.
 	Close() error
-}
-
-// NewEventSubscriber creates an event subscriber.
-func NewEventSubscriber() EventSubscriber {
-	return &eventSubscriber{
-		registry: DefaultEventRegistry,
-	}
 }
 
 type eventSubscriber struct {
