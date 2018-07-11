@@ -90,3 +90,9 @@ func (d *DockTile) SetBadge(v interface{}) error {
 		Badge: badge,
 	})
 }
+
+// WhenDockTile calls the given handler.
+// It satisfies the app.ElementWithComponent interface.
+func (d *DockTile) WhenDockTile(f func(app.DockTile)) {
+	f(d)
+}

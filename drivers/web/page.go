@@ -13,9 +13,12 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/html"
+	"github.com/murlokswarm/app/internal/core"
 )
 
 type Page struct {
+	core.ElementWithComponent
+
 	id         uuid.UUID
 	markup     app.Markup
 	component  app.Component
@@ -227,6 +230,10 @@ func (p *Page) Referer() *url.URL {
 func (p *Page) Close() error {
 	js.Global.Call("close")
 	return nil
+}
+
+func (p *Page) WhenPage(f func(p app.Page)) {
+	f(p)
 }
 
 func (p *Page) onPageRequest(j string) {

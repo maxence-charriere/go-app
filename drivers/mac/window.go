@@ -18,10 +18,13 @@ import (
 	"github.com/murlokswarm/app/appjs"
 	"github.com/murlokswarm/app/bridge"
 	"github.com/murlokswarm/app/html"
+	"github.com/murlokswarm/app/internal/core"
 )
 
 // Window implements the app.Window interface.
 type Window struct {
+	core.ElementWithComponent
+
 	id        uuid.UUID
 	markup    app.Markup
 	component app.Component
@@ -556,6 +559,12 @@ func onWindowClose(w *Window, in map[string]interface{}) interface{} {
 	}{
 		ShouldClose: shouldClose,
 	}
+}
+
+// WhenWindow calls the given handler.
+// It satisfies the app.ElementWithComponent interface.
+func (w *Window) WhenWindow(f func(app.Window)) {
+	f(w)
 }
 
 func onWindowCallback(w *Window, in map[string]interface{}) interface{} {

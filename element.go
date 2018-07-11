@@ -32,13 +32,25 @@ type ElementWithComponent interface {
 	Component() Component
 
 	// Contains reports whether the component is mounted in the element.
-	Contains(c Component) bool
+	Contains(Component) bool
 
 	// Render renders the component.
-	Render(c Component) error
+	Render(Component) error
 
 	// LastFocus returns the last time when the element was focused.
 	LastFocus() time.Time
+
+	// WhenWindow calls the given handler when the element is a window.
+	WhenWindow(func(w Window))
+
+	// WhenPage calls the given handler when the element is a page.
+	WhenPage(func(p Page))
+
+	// WhenDockTile calls the given handler when the element is a dock tile.
+	WhenDockTile(func(d DockTile))
+
+	// WhenStatusMenu calls the given handler when the element is a status menu.
+	WhenStatusMenu(func(m StatusMenu))
 }
 
 // Navigator is the interface that describes an element that supports

@@ -105,3 +105,9 @@ func (s *StatusMenu) Close() error {
 		ID: s.ID().String(),
 	})
 }
+
+// WhenStatusMenu calls the given handler.
+// It satisfies the app.ElementWithComponent interface.
+func (s *StatusMenu) WhenStatusMenu(f func(app.StatusMenu)) {
+	f(s)
+}
