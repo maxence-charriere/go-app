@@ -38,9 +38,7 @@ func newDockTile(c app.MenuConfig) (app.DockTile, error) {
 		return nil, err
 	}
 
-	if err := driver.elements.Add(dock); err != nil {
-		return nil, err
-	}
+	driver.elems.Put(dock)
 
 	if len(c.DefaultURL) != 0 {
 		if err := dock.Load(c.DefaultURL); err != nil {
@@ -89,6 +87,11 @@ func (d *DockTile) SetBadge(v interface{}) error {
 	}{
 		Badge: badge,
 	})
+}
+
+// WhenMenu override the embedded Menu.WhenMenu to do nothing.
+// It satisfies the app.ElementWithComponent interface.
+func (d *DockTile) WhenMenu(f func(app.Menu)) {
 }
 
 // WhenDockTile calls the given handler.

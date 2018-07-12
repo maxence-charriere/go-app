@@ -7,10 +7,13 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app/bridge"
+	"github.com/murlokswarm/app/internal/core"
 )
 
 // Notification implements the app.Element interface.
 type Notification struct {
+	core.Elem
+
 	id      uuid.UUID
 	onReply func(reply string)
 }
@@ -22,7 +25,7 @@ func newNotification(c app.NotificationConfig) error {
 	}
 
 	if n.onReply != nil {
-		driver.elements.Add(n)
+		driver.elems.Put(n)
 	}
 
 	return driver.macRPC.Call("notifications.New", nil, struct {
@@ -54,20 +57,14 @@ func onNotificationReply(n *Notification, in map[string]interface{}) interface{}
 		n.onReply(reply)
 	}
 
-	driver.elements.Remove(n)
+	driver.elems.Delete(n)
 	return nil
 }
 
 func handleNotification(h func(n *Notification, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
 	return func(in map[string]interface{}) interface{} {
 		id, _ := uuid.Parse(in["ID"].(string))
-
-		elem, err := driver.elements.Element(id)
-		if err != nil {
-			return nil
-		}
-
-		notif := elem.(*Notification)
-		return h(notif, in)
+		e := driver.elems.GetByID(id)
+		return h(e.(*Notification), in)
 	}
 }

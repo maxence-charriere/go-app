@@ -18,7 +18,7 @@ import (
 
 // Menu implements the app.Menu interface.
 type Menu struct {
-	core.ElementWithComponent
+	core.Elem
 
 	id             uuid.UUID
 	typ            string
@@ -51,9 +51,7 @@ func newMenu(c app.MenuConfig) (app.Menu, error) {
 		return nil, err
 	}
 
-	if err := driver.elements.Add(menu); err != nil {
-		return nil, err
-	}
+	driver.elems.Put(menu)
 
 	if len(c.DefaultURL) != 0 {
 		if err := menu.Load(c.DefaultURL); err != nil {
@@ -210,7 +208,7 @@ func onMenuClose(m *Menu, in map[string]interface{}) interface{} {
 			panic(errors.Wrap(err, "onMenuClose"))
 		}
 
-		driver.elements.Remove(m)
+		driver.elems.Delete(m)
 	})
 
 	return nil
@@ -251,13 +249,9 @@ func onMenuCallback(m *Menu, in map[string]interface{}) interface{} {
 func handleMenu(h func(m *Menu, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
 	return func(in map[string]interface{}) interface{} {
 		id, _ := uuid.Parse(in["ID"].(string))
+		e := driver.elems.GetByID(id)
 
-		elem, err := driver.elements.Element(id)
-		if err != nil {
-			return nil
-		}
-
-		switch menu := elem.(type) {
+		switch menu := e.(type) {
 		case *Menu:
 			return h(menu, in)
 
