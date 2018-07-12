@@ -98,7 +98,7 @@ func main() {
 		OnExit: func() {
 			fmt.Println("OnExit")
 		},
-	})
+	}, app.Logs())
 }
 
 func testWindow(close bool) {

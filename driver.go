@@ -1,5 +1,7 @@
 package app
 
+import "encoding/json"
+
 // Driver is the interface that describes a backend for app rendering.
 type Driver interface {
 	// Name returns the driver name.
@@ -123,3 +125,203 @@ func (d *BaseDriver) Dock() (DockTile, error) {
 
 // Addon represents a driver addon.
 type Addon func(Driver) Driver
+
+// Logs returns an addons that logs all the driver operations.
+// It uses the loggers defined in app.Loggers.
+func Logs() func(Driver) Driver {
+	return func(d Driver) Driver {
+		return &driverWithLogs{
+			Driver: d,
+		}
+	}
+}
+
+type driverWithLogs struct {
+	Driver
+}
+
+func (d *driverWithLogs) Run(f Factory) error {
+	WhenDebug(func() {
+		Debug("running %s driver", d.Name())
+	})
+
+	err := d.Driver.Run(f)
+	if err != nil {
+		Log("driver stopped running: %s", err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) NewWindow(c WindowConfig) (Window, error) {
+	WhenDebug(func() {
+		config, _ := json.MarshalIndent(c, "", "  ")
+		Debug("creating window: %s", config)
+	})
+
+	win, err := d.Driver.NewWindow(c)
+	if err != nil {
+		Log("creating window failed: %s", err)
+		return nil, err
+	}
+
+	win = &windowWithLogs{
+		Window: win,
+	}
+	return win, nil
+}
+
+func (d *driverWithLogs) NewContextMenu(c MenuConfig) (Menu, error) {
+	c.Type = "context menu"
+
+	WhenDebug(func() {
+		config, _ := json.MarshalIndent(c, "", "  ")
+		Debug("creating context menu: %s", config)
+	})
+
+	menu, err := d.Driver.NewContextMenu(c)
+	if err != nil {
+		Log("creating context menu failed: %s", err)
+		return nil, err
+	}
+
+	menu = &menuWithLogs{
+		Menu: menu,
+	}
+	return menu, nil
+}
+
+func (d *driverWithLogs) NewPage(c PageConfig) error {
+	WhenDebug(func() {
+		config, _ := json.MarshalIndent(c, "", "  ")
+		Debug("creating page: %s", config)
+	})
+
+	err := d.Driver.NewPage(c)
+	if err != nil {
+		Log("creating page failed: %s", err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) Render(c Component) error {
+	WhenDebug(func() {
+		Debug("rendering %T", c)
+	})
+
+	err := d.Driver.Render(c)
+	if err != nil {
+		Log("rendering %T failed: %s", err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) ElemByCompo(c Component) Elem {
+	WhenDebug(func() {
+		Debug("getting element from %T", c)
+	})
+
+	return d.Driver.ElemByCompo(c)
+}
+
+func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) error {
+	WhenDebug(func() {
+		config, _ := json.MarshalIndent(c, "", "  ")
+		Debug("creating file panel: %s", config)
+	})
+
+	err := d.Driver.NewFilePanel(c)
+	if err != nil {
+		Log("creating file panel failed: %s", err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) NewSaveFilePanel(c SaveFilePanelConfig) error {
+	WhenDebug(func() {
+		config, _ := json.MarshalIndent(c, "", "  ")
+		Debug("creating save file panel: %s", config)
+	})
+
+	err := d.Driver.NewSaveFilePanel(c)
+	if err != nil {
+		Log("creating save file panel failed: %s", err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) NewShare(v interface{}) error {
+	WhenDebug(func() {
+		Debug("creating share: %v", v)
+	})
+
+	err := d.Driver.NewShare(v)
+	if err != nil {
+		Log("creating share failed: %s", err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) NewNotification(c NotificationConfig) error {
+	WhenDebug(func() {
+		config, _ := json.MarshalIndent(c, "", "  ")
+		Debug("creating notification: %s", config)
+	})
+
+	err := d.Driver.NewNotification(c)
+	if err != nil {
+		Log("creating notification failed: %s", err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) MenuBar() (Menu, error) {
+	WhenDebug(func() {
+		Debug("getting menubar")
+	})
+
+	menubar, err := d.Driver.MenuBar()
+	if err != nil {
+		Log("getting menubar failed: %s", err)
+		return nil, err
+	}
+
+	menubar = &menuWithLogs{
+		Menu: menubar,
+	}
+	return menubar, nil
+}
+
+func (d *driverWithLogs) NewStatusMenu(c StatusMenuConfig) (StatusMenu, error) {
+	WhenDebug(func() {
+		config, _ := json.MarshalIndent(c, "", "  ")
+		Debug("creating status menu: %s", config)
+	})
+
+	menu, err := d.Driver.NewStatusMenu(c)
+	if err != nil {
+		Log("getting status menu failed: %s", err)
+		return nil, err
+	}
+
+	menu = &statusMenuWithLogs{
+		StatusMenu: menu,
+	}
+	return menu, nil
+}
+
+func (d *driverWithLogs) Dock() (DockTile, error) {
+	WhenDebug(func() {
+		Debug("getting dock tile")
+	})
+
+	dockTile, err := d.Driver.Dock()
+	if err != nil {
+		Log("getting dock tile failed: %s", err)
+		return nil, err
+	}
+
+	dockTile = &dockWithLogs{
+		DockTile: dockTile,
+	}
+	return dockTile, nil
+}
