@@ -36,8 +36,8 @@ type Driver interface {
 	// Render renders the given component.
 	Render(c Component) error
 
-	// ElementByComponent returns the element where the given component is mounted.
-	ElementByComponent(c Component) (ElementWithComponent, error)
+	// ElemByCompo returns the element where the given component is mounted.
+	ElemByCompo(c Component) (Elem, error)
 
 	// NewFilePanel creates and displays the file panel described by the given
 	// configuration.
@@ -215,12 +215,12 @@ func (d *driverWithLogs) Render(c Component) error {
 	return err
 }
 
-func (d *driverWithLogs) ElementByComponent(c Component) (ElementWithComponent, error) {
+func (d *driverWithLogs) ElemByCompo(c Component) (Elem, error) {
 	WhenDebug(func() {
 		Debug("getting element from %T", c)
 	})
 
-	elem, err := d.Driver.ElementByComponent(c)
+	elem, err := d.Driver.ElemByCompo(c)
 	if err != nil {
 		Log("getting element from %T failed: %s",
 			c,
