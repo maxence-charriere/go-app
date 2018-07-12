@@ -119,10 +119,10 @@ func (c *Webview) OnNavigate(u *url.URL) {
 		c.Page = 1
 	}
 
-	if nav, err := app.NavigatorByComponent(c); err == nil {
-		c.CanPrevious = nav.CanPrevious()
-		c.CanNext = nav.CanNext()
-	}
+	app.ElemByCompo(c).WhenNavigator(func(n app.Navigator) {
+		c.CanPrevious = n.CanPrevious()
+		c.CanNext = n.CanNext()
+	})
 
 	app.Render(c)
 }
@@ -141,16 +141,16 @@ func (c *Webview) OnNextPage() {
 	page := c.Page
 	page++
 
-	if nav, err := app.NavigatorByComponent(c); err == nil {
-		nav.Load("/test.Webview?page=%v", page)
-	}
+	app.ElemByCompo(c).WhenNavigator(func(n app.Navigator) {
+		n.Load("/test.Webview?page=%v", page)
+	})
 }
 
 // OnLink is the function to be called when the External link button is clicked.
 func (c *Webview) OnLink() {
-	if nav, err := app.NavigatorByComponent(c); err == nil {
-		nav.Load("http://www.github.com")
-	}
+	app.ElemByCompo(c).WhenNavigator(func(n app.Navigator) {
+		n.Load("http://www.github.com")
+	})
 }
 
 // OnChangeSquareColor is the function to be called when the change color button
@@ -275,29 +275,23 @@ func (c *Webview) OnNotificationWithReply() {
 // OnPrevious is the function that is called when the previous button is
 // clicked.
 func (c *Webview) OnPrevious() {
-	nav, err := app.NavigatorByComponent(c)
-	if err != nil {
-		return
-	}
-	nav.Previous()
+	app.ElemByCompo(c).WhenNavigator(func(n app.Navigator) {
+		n.Previous()
+	})
 }
 
 // OnReload is the function that is called when the reload button is clicked.
 func (c *Webview) OnReload() {
-	nav, err := app.NavigatorByComponent(c)
-	if err != nil {
-		return
-	}
-	nav.Reload()
+	app.ElemByCompo(c).WhenNavigator(func(n app.Navigator) {
+		n.Reload()
+	})
 }
 
 // OnNext is the function that is called when the next button is clicked.
 func (c *Webview) OnNext() {
-	nav, err := app.NavigatorByComponent(c)
-	if err != nil {
-		return
-	}
-	nav.Next()
+	app.ElemByCompo(c).WhenNavigator(func(n app.Navigator) {
+		n.Next()
+	})
 }
 
 // OnDragStart is the function that is called when the node is dragged.

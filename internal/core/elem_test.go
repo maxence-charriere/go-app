@@ -10,11 +10,12 @@ import (
 
 func TestElem(t *testing.T) {
 	e := &Elem{}
-	e.WhenWindow(func(w app.Window) {})
-	e.WhenPage(func(p app.Page) {})
-	e.WhenMenu(func(m app.Menu) {})
-	e.WhenDockTile(func(d app.DockTile) {})
-	e.WhenStatusMenu(func(s app.StatusMenu) {})
+	e.WhenWindow(func(app.Window) {})
+	e.WhenPage(func(app.Page) {})
+	e.WhenNavigator(func(app.Navigator) {})
+	e.WhenMenu(func(app.Menu) {})
+	e.WhenDockTile(func(app.DockTile) {})
+	e.WhenStatusMenu(func(app.StatusMenu) {})
 	e.WhenNotSet(func() {
 		t.Error("WhenNotSet called")
 	})

@@ -135,7 +135,7 @@ func Render(c Component) {
 // ElemByCompo returns the element where the given component is mounted.
 //
 // It panics if called before Run.
-func ElemByCompo(c Component) (Elem, error) {
+func ElemByCompo(c Component) Elem {
 	return driver.ElemByCompo(c)
 }
 

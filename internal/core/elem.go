@@ -31,19 +31,22 @@ func (e *Elem) ID() uuid.UUID {
 }
 
 // WhenWindow satisfies the app.Elem interface.
-func (e *Elem) WhenWindow(func(w app.Window)) {}
+func (e *Elem) WhenWindow(func(app.Window)) {}
 
 // WhenPage satisfies the app.Elem interface.
-func (e *Elem) WhenPage(func(p app.Page)) {}
+func (e *Elem) WhenPage(func(app.Page)) {}
+
+// WhenNavigator satisfies the app.Elem interface.
+func (e *Elem) WhenNavigator(func(app.Navigator)) {}
 
 // WhenMenu satisfies the app.Elem interface.
-func (e *Elem) WhenMenu(func(m app.Menu)) {}
+func (e *Elem) WhenMenu(func(app.Menu)) {}
 
 // WhenDockTile satisfies the app.Elem interface.
-func (e *Elem) WhenDockTile(func(d app.DockTile)) {}
+func (e *Elem) WhenDockTile(func(app.DockTile)) {}
 
 // WhenStatusMenu satisfies the app.Elem interface.
-func (e *Elem) WhenStatusMenu(func(s app.StatusMenu)) {}
+func (e *Elem) WhenStatusMenu(func(app.StatusMenu)) {}
 
 // WhenNotSet satisfies the app.Elem interface.
 func (e *Elem) WhenNotSet(f func()) {

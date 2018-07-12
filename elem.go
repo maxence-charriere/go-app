@@ -17,6 +17,9 @@ type Elem interface {
 	// WhenPage calls the given func when the element is a page.
 	WhenPage(func(Page))
 
+	// WhenPage calls the given func when the element supports navigation.
+	WhenNavigator(func(Navigator))
+
 	// WhenStatusMenu calls the given func when the element is a menu.
 	WhenMenu(func(Menu))
 
