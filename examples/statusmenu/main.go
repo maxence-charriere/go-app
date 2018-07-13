@@ -51,58 +51,47 @@ func (m *Menu) Render() string {
 
 // OnShowIcon is the function called when the show icon button is clicked.
 func (m *Menu) OnShowIcon() {
-	statMenu, err := app.StatusMenuByComponent(m)
-	if err != nil {
-		return
-	}
-
-	statMenu.SetIcon(app.Resources("logo.png"))
-	m.IconHidden = false
-	app.Render(m)
+	app.ElemByCompo(m).WhenStatusMenu(func(s app.StatusMenu) {
+		s.SetIcon(app.Resources("logo.png"))
+		m.IconHidden = false
+		app.Render(m)
+	})
 }
 
 // OnHideIcon is the function called when the hide icon button is clicked.
 func (m *Menu) OnHideIcon() {
-	statMenu, err := app.StatusMenuByComponent(m)
-	if err != nil {
-		return
-	}
+	app.ElemByCompo(m).WhenStatusMenu(func(s app.StatusMenu) {
+		s.SetIcon("")
+		m.IconHidden = true
+		app.Render(m)
 
-	statMenu.SetIcon("")
-	m.IconHidden = true
-	app.Render(m)
+		if m.TextHidden {
+			m.OnShowText()
+		}
+	})
 
-	if m.TextHidden {
-		m.OnShowText()
-	}
 }
 
 // OnShowText is the function called when the show text button is clicked.
 func (m *Menu) OnShowText() {
-	statMenu, err := app.StatusMenuByComponent(m)
-	if err != nil {
-		return
-	}
-
-	statMenu.SetText("Background app")
-	m.TextHidden = false
-	app.Render(m)
+	app.ElemByCompo(m).WhenStatusMenu(func(s app.StatusMenu) {
+		s.SetText("Background app")
+		m.TextHidden = false
+		app.Render(m)
+	})
 }
 
 // OnHideText is the function called when the hide text button is clicked.
 func (m *Menu) OnHideText() {
-	statMenu, err := app.StatusMenuByComponent(m)
-	if err != nil {
-		return
-	}
+	app.ElemByCompo(m).WhenStatusMenu(func(s app.StatusMenu) {
+		s.SetText("")
+		m.TextHidden = true
+		app.Render(m)
 
-	statMenu.SetText("")
-	m.TextHidden = true
-	app.Render(m)
-
-	if m.IconHidden {
-		m.OnShowIcon()
-	}
+		if m.IconHidden {
+			m.OnShowIcon()
+		}
+	})
 }
 
 // OnOpenWindow is the function called when the open a window button is clicked.

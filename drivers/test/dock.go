@@ -30,7 +30,7 @@ func newDockTile(d *Driver) app.DockTile {
 		},
 	}
 
-	d.elements.Add(dock)
+	d.elems.Put(dock)
 	return dock
 }
 

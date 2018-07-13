@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/internal/core"
 	"github.com/pkg/errors"
 )
 
@@ -32,11 +33,11 @@ type Driver struct {
 
 	OnRun func()
 
-	factory  app.Factory
-	elements app.ElemDB
-	menubar  app.Menu
-	dock     app.DockTile
-	uichan   chan func()
+	factory app.Factory
+	elems   *core.ElemDB
+	menubar app.Menu
+	dock    app.DockTile
+	uichan  chan func()
 }
 
 // Name satisfies the app.Driver interface.
@@ -51,10 +52,7 @@ func (d *Driver) Run(f app.Factory) error {
 	}
 
 	d.factory = f
-
-	elements := app.NewElemDB()
-	elements = app.ConcurrentElemDB(elements)
-	d.elements = elements
+	d.elems = core.NewElemDB()
 
 	menubar, err := newMenu(d, app.MenuConfig{Type: "menubar"})
 	if err != nil {
@@ -216,19 +214,17 @@ func (d *Driver) Render(compo app.Component) error {
 		return ErrSimulated
 	}
 
-	elem, err := d.elements.ElementByComponent(compo)
-	if err != nil {
-		return err
+	e := d.elems.GetByCompo(compo)
+	if e.IsNotSet() {
+		return errors.New("element not set")
 	}
-	return elem.Render(compo)
+
+	return e.Render(compo)
 }
 
-// ElementByComponent satisfies the app.Driver interface.
-func (d *Driver) ElementByComponent(c app.Component) (app.ElementWithComponent, error) {
-	if d.SimulateErr {
-		return nil, ErrSimulated
-	}
-	return d.elements.ElementByComponent(c)
+// ElemByCompo satisfies the app.Driver interface.
+func (d *Driver) ElemByCompo(c app.Component) app.Elem {
+	return d.elems.GetByCompo(c)
 }
 
 // MenuBar satisfies the app.Driver interface.

@@ -64,7 +64,12 @@ func onNotificationReply(n *Notification, in map[string]interface{}) interface{}
 func handleNotification(h func(n *Notification, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
 	return func(in map[string]interface{}) interface{} {
 		id, _ := uuid.Parse(in["ID"].(string))
+
 		e := driver.elems.GetByID(id)
+		if e.IsNotSet() {
+			return nil
+		}
+
 		return h(e.(*Notification), in)
 	}
 }

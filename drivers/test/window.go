@@ -8,11 +8,14 @@ import (
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/html"
+	"github.com/murlokswarm/app/internal/core"
 	"github.com/pkg/errors"
 )
 
 // A Window implementation for tests.
 type Window struct {
+	core.Elem
+
 	id          uuid.UUID
 	factory     app.Factory
 	markup      app.Markup
@@ -44,9 +47,9 @@ func newWindow(d *Driver, c app.WindowConfig) (app.Window, error) {
 		simulateErr: d.SimulateElemErr,
 	}
 
-	d.elements.Add(win)
+	d.elems.Put(win)
 	win.onClose = func() error {
-		d.elements.Remove(win)
+		d.elems.Delete(win)
 		return nil
 	}
 

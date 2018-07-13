@@ -17,7 +17,7 @@ import (
 )
 
 type Page struct {
-	core.ElementWithComponent
+	core.Elem
 
 	id         uuid.UUID
 	markup     app.Markup
@@ -36,14 +36,12 @@ func newPage(c app.PageConfig) (app.Page, error) {
 		lastFocus: time.Now(),
 	}
 
-	if err := driver.elements.Add(page); err != nil {
-		return nil, err
-	}
+	driver.elems.Put(page)
 
 	js.Global.Set("golangRequest", page.onPageRequest)
 
 	js.Global.Call("addEventListener", "unload", func() {
-		driver.elements.Remove(page)
+		driver.elems.Delete(page)
 	})
 
 	err := page.Load(page.URL().String())
@@ -232,7 +230,11 @@ func (p *Page) Close() error {
 	return nil
 }
 
-func (p *Page) WhenPage(f func(p app.Page)) {
+func (p *Page) WhenPage(f func(app.Page)) {
+	f(p)
+}
+
+func (p *Page) WhenNavigator(f func(app.Navigator)) {
 	f(p)
 }
 

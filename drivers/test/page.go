@@ -8,10 +8,13 @@ import (
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/html"
+	"github.com/murlokswarm/app/internal/core"
 	"github.com/pkg/errors"
 )
 
 type page struct {
+	core.Elem
+
 	id        uuid.UUID
 	factory   app.Factory
 	markup    app.Markup
@@ -37,9 +40,9 @@ func newPage(d *Driver, c app.PageConfig) (app.Page, error) {
 		lastFocus: time.Now(),
 	}
 
-	d.elements.Add(page)
+	d.elems.Put(page)
 	page.onClose = func() {
-		d.elements.Remove(page)
+		d.elems.Delete(page)
 	}
 
 	var err error

@@ -10,6 +10,8 @@ import (
 
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/internal/core"
+	"github.com/pkg/errors"
 )
 
 var (
@@ -25,9 +27,7 @@ func init() {
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(f app.Factory) error {
 	d.factory = f
-	elements := app.NewElemDB()
-	elements = app.ConcurrentElemDB(elements)
-	d.elements = elements
+	d.elems = core.NewElemDB()
 	d.uichan = make(chan func(), 255)
 	driver = d
 
@@ -82,17 +82,17 @@ func (d *Driver) NewPage(c app.PageConfig) error {
 
 // Render satisfies the app.Driver interface.
 func (d *Driver) Render(c app.Component) error {
-	elem, err := d.ElementByComponent(c)
-	if err != nil {
-		return err
+	e := d.elems.GetByCompo(c)
+	if e.IsNotSet() {
+		return errors.New("element not set")
 	}
 
-	return elem.Render(c)
+	return e.Render(c)
 }
 
-// ElementByComponent satisfies the app.Driver interface.
-func (d *Driver) ElementByComponent(c app.Component) (app.ElementWithComponent, error) {
-	return d.elements.ElementByComponent(c)
+// ElemByCompo satisfies the app.Driver interface.
+func (d *Driver) ElemByCompo(c app.Component) app.Elem {
+	return d.elems.GetByCompo(c)
 }
 
 // CallOnUIGoroutine satisfies the app.Driver interface.
