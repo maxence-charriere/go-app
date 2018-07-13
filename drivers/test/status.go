@@ -29,7 +29,7 @@ func newStatusMenu(d *Driver, c app.StatusMenuConfig) app.StatusMenu {
 		},
 	}
 
-	d.elements.Add(menu)
+	d.elems.Put(menu)
 	return menu
 }
 

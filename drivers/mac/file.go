@@ -6,10 +6,12 @@ import (
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/bridge"
+	"github.com/murlokswarm/app/internal/core"
 )
 
 // FilePanel implements the app.Element interface.
 type FilePanel struct {
+	core.Elem
 	id uuid.UUID
 
 	onSelect func(filenames []string)
@@ -39,7 +41,8 @@ func newFilePanel(c app.FilePanelConfig) error {
 		return err
 	}
 
-	return driver.elements.Add(panel)
+	driver.elems.Put(panel)
+	return nil
 }
 
 // ID satistfies the app.Element interface.
@@ -52,7 +55,7 @@ func onFilePanelSelect(p *FilePanel, in map[string]interface{}) interface{} {
 		p.onSelect(bridge.Strings(in["Filenames"]))
 	}
 
-	driver.elements.Remove(p)
+	driver.elems.Delete(p)
 	return nil
 }
 
@@ -60,18 +63,19 @@ func handleFilePanel(h func(p *FilePanel, in map[string]interface{}) interface{}
 	return func(in map[string]interface{}) interface{} {
 		id, _ := uuid.Parse(in["ID"].(string))
 
-		elem, err := driver.elements.Element(id)
-		if err != nil {
+		e := driver.elems.GetByID(id)
+		if e.IsNotSet() {
 			return nil
 		}
 
-		panel := elem.(*FilePanel)
+		panel := e.(*FilePanel)
 		return h(panel, in)
 	}
 }
 
 // SaveFilePanel implements the app.Element interface.
 type SaveFilePanel struct {
+	core.Elem
 	id uuid.UUID
 
 	onSelect func(filename string)
@@ -95,7 +99,8 @@ func newSaveFilePanel(c app.SaveFilePanelConfig) error {
 		return err
 	}
 
-	return driver.elements.Add(panel)
+	driver.elems.Put(panel)
+	return nil
 }
 
 // ID satistfies the app.Element interface.
@@ -108,7 +113,7 @@ func onSaveFilePanelSelect(p *SaveFilePanel, in map[string]interface{}) interfac
 		p.onSelect(in["Filename"].(string))
 	}
 
-	driver.elements.Remove(p)
+	driver.elems.Delete(p)
 	return nil
 }
 
@@ -116,12 +121,12 @@ func handleSaveFilePanel(h func(p *SaveFilePanel, in map[string]interface{}) int
 	return func(in map[string]interface{}) interface{} {
 		id, _ := uuid.Parse(in["ID"].(string))
 
-		elem, err := driver.elements.Element(id)
-		if err != nil {
+		e := driver.elems.GetByID(id)
+		if e.IsNotSet() {
 			return nil
 		}
 
-		panel := elem.(*SaveFilePanel)
+		panel := e.(*SaveFilePanel)
 		return h(panel, in)
 	}
 }

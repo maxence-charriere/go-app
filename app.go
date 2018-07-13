@@ -132,56 +132,11 @@ func Render(c Component) {
 	})
 }
 
-// ElementByComponent returns the element where the given component is mounted.
+// ElemByCompo returns the element where the given component is mounted.
 //
 // It panics if called before Run.
-func ElementByComponent(c Component) (ElementWithComponent, error) {
-	return driver.ElementByComponent(c)
-}
-
-// NavigatorByComponent returns the navigator where the given component is
-// mounted.
-func NavigatorByComponent(c Component) (Navigator, error) {
-	elem, err := driver.ElementByComponent(c)
-	if err != nil {
-		return nil, err
-	}
-
-	nav, ok := elem.(Navigator)
-	if !ok {
-		return nil, errors.New("component is not mounted into a navigator")
-	}
-	return nav, nil
-}
-
-// WindowByComponent returns the window where the given component is mounted.
-//
-// It panics if called before Run.
-func WindowByComponent(c Component) (Window, error) {
-	elem, err := driver.ElementByComponent(c)
-	if err != nil {
-		return nil, err
-	}
-
-	win, ok := elem.(Window)
-	if !ok {
-		return nil, errors.New("component is not mounted in a window")
-	}
-	return win, nil
-}
-
-// PageByComponent returns the page where the given component is mounted.
-func PageByComponent(c Component) (Page, error) {
-	elem, err := driver.ElementByComponent(c)
-	if err != nil {
-		return nil, err
-	}
-
-	page, ok := elem.(Page)
-	if !ok {
-		return nil, errors.New("component is not mounted in a page")
-	}
-	return page, nil
+func ElemByCompo(c Component) Elem {
+	return driver.ElemByCompo(c)
 }
 
 // NewFilePanel creates and displays the file panel described by the given
@@ -228,21 +183,6 @@ func MenuBar() (Menu, error) {
 // It panics if called before Run.
 func NewStatusMenu(c StatusMenuConfig) (StatusMenu, error) {
 	return driver.NewStatusMenu(c)
-}
-
-// StatusMenuByComponent returns the status menu where the given component is
-// mounted.
-func StatusMenuByComponent(c Component) (StatusMenu, error) {
-	elem, err := driver.ElementByComponent(c)
-	if err != nil {
-		return nil, err
-	}
-
-	menu, ok := elem.(StatusMenu)
-	if !ok {
-		return nil, errors.New("component is not mounted in a status menu")
-	}
-	return menu, nil
 }
 
 // Dock returns the dock tile.

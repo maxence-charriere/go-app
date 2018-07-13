@@ -154,9 +154,9 @@ func (d *Driver) Render(c app.Component) error {
 	return app.NewErrNotSupported("render")
 }
 
-// ElementByComponent satisfies the app.Driver interface.
-func (d *Driver) ElementByComponent(c app.Component) (app.ElementWithComponent, error) {
-	return nil, app.NewErrNotSupported("element by component")
+// ElemByCompo satisfies the app.Driver interface.
+func (d *Driver) ElemByCompo(c app.Component) app.Elem {
+	return d.elems.GetByCompo(c)
 }
 
 // CallOnUIGoroutine satisfies the app.Driver interface.

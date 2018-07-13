@@ -1,9 +1,13 @@
 package test
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+	"github.com/murlokswarm/app/internal/core"
+)
 
 // A Element implementation for tests.
 type Element struct {
+	core.Elem
 	id uuid.UUID
 }
 
@@ -12,7 +16,8 @@ func NewElement(d *Driver) *Element {
 	elem := &Element{
 		id: uuid.New(),
 	}
-	d.elements.Add(elem)
+
+	d.elems.Put(elem)
 	return elem
 }
 

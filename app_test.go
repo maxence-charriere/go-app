@@ -50,16 +50,6 @@ func TestApp(t *testing.T) {
 		require.NotNil(t, compo)
 		app.Render(compo)
 
-		var win2 app.Window
-		win2, err = app.WindowByComponent(compo)
-		require.NoError(t, err)
-		assert.Equal(t, win.ID(), win2.ID())
-
-		var nav app.Navigator
-		nav, err = app.NavigatorByComponent(compo)
-		require.NoError(t, err)
-		assert.Equal(t, win.ID(), nav.ID())
-
 		// Page:
 		var page app.Page
 		page, err = newPage(app.PageConfig{
@@ -70,15 +60,6 @@ func TestApp(t *testing.T) {
 		compo = page.Component()
 		require.NotNil(t, compo)
 		app.Render(compo)
-
-		var page2 app.Page
-		page2, err = app.PageByComponent(compo)
-		require.NoError(t, err)
-		assert.Equal(t, page.ID(), page2.ID())
-
-		nav, err = app.NavigatorByComponent(compo)
-		require.NoError(t, err)
-		assert.Equal(t, page.ID(), nav.ID())
 
 		// Menu:
 		var menu app.Menu
@@ -91,22 +72,8 @@ func TestApp(t *testing.T) {
 		require.NotNil(t, compo)
 		app.Render(compo)
 
-		var elem app.ElementWithComponent
-		elem, err = app.ElementByComponent(compo)
-		require.NoError(t, err)
+		elem := app.ElemByCompo(compo)
 		assert.Equal(t, menu.ID(), elem.ID())
-
-		_, err = app.NavigatorByComponent(compo)
-		assert.Error(t, err)
-
-		_, err = app.WindowByComponent(compo)
-		assert.Error(t, err)
-
-		_, err = app.PageByComponent(compo)
-		assert.Error(t, err)
-
-		_, err = app.StatusMenuByComponent(compo)
-		assert.Error(t, err)
 
 		// File panels:
 		err = app.NewFilePanel(app.FilePanelConfig{})
@@ -139,13 +106,7 @@ func TestApp(t *testing.T) {
 		require.NotNil(t, compo)
 		app.Render(compo)
 
-		var statusMenu2 app.StatusMenu
-		statusMenu2, err = app.StatusMenuByComponent(compo)
-		require.NoError(t, err)
-		assert.Equal(t, statusMenu.ID(), statusMenu2.ID())
-
-		elem, err = app.ElementByComponent(compo)
-		require.NoError(t, err)
+		elem = app.ElemByCompo(compo)
 		assert.Equal(t, statusMenu.ID(), elem.ID())
 
 		err = statusMenu.SetText("test")
@@ -169,8 +130,7 @@ func TestApp(t *testing.T) {
 		require.NotNil(t, compo)
 		app.Render(compo)
 
-		elem, err = app.ElementByComponent(compo)
-		require.NoError(t, err)
+		elem = app.ElemByCompo(compo)
 		assert.Equal(t, dockTile.ID(), elem.ID())
 
 		err = dockTile.SetBadge("42")
@@ -341,21 +301,6 @@ func TestAppError(t *testing.T) {
 	assert.Error(t, err)
 
 	_, err = app.NewContextMenu(app.MenuConfig{})
-	assert.Error(t, err)
-
-	_, err = app.ElementByComponent(nil)
-	assert.Error(t, err)
-
-	_, err = app.NavigatorByComponent(nil)
-	assert.Error(t, err)
-
-	_, err = app.WindowByComponent(nil)
-	assert.Error(t, err)
-
-	_, err = app.PageByComponent(nil)
-	assert.Error(t, err)
-
-	_, err = app.StatusMenuByComponent(nil)
 	assert.Error(t, err)
 
 	err = app.NewFilePanel(app.FilePanelConfig{})

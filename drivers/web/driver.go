@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/internal/core"
 )
 
 // Driver is an app.Driver implementation for web.
@@ -28,7 +29,7 @@ type Driver struct {
 	OnServerRun func()
 
 	factory     app.Factory
-	elements    app.ElemDB
+	elems       *core.ElemDB
 	page        app.Page
 	uichan      chan func()
 	cancel      func()

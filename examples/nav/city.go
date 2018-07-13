@@ -63,13 +63,12 @@ func (c *City) OnNavigate(u *url.URL) {
 		id = "paris"
 	}
 
-	if nav, err := app.NavigatorByComponent(c); err == nil {
-		c.CanPrevious = nav.CanPrevious()
-		c.CanNext = nav.CanNext()
-	}
+	app.ElemByCompo(c).WhenNavigator(func(n app.Navigator) {
+		c.CanPrevious = n.CanPrevious()
+		c.CanNext = n.CanNext()
+	})
 
 	c.City = cities[id]
-
 	app.Render(c)
 }
 
@@ -96,27 +95,19 @@ func (c *City) Render() string {
 // OnPrevious is the function that is called when the button labelled "Previous"
 // is clicked.
 func (c *City) OnPrevious() {
-	nav, err := app.NavigatorByComponent(c)
-	if err != nil {
-		app.Log("%s", err)
-		return
-	}
-
-	if err = nav.Previous(); err != nil {
-		app.Log("%s", err)
-	}
+	app.ElemByCompo(c).WhenNavigator(func(n app.Navigator) {
+		if err := n.Previous(); err != nil {
+			app.Log("%s", err)
+		}
+	})
 }
 
 // OnNext is the function that is called when the button labelled "Next" is
 // clicked.
 func (c *City) OnNext() {
-	nav, err := app.NavigatorByComponent(c)
-	if err != nil {
-		app.Log("%s", err)
-		return
-	}
-
-	if err = nav.Next(); err != nil {
-		app.Log("%s", err)
-	}
+	app.ElemByCompo(c).WhenNavigator(func(n app.Navigator) {
+		if err := n.Next(); err != nil {
+			app.Log("%s", err)
+		}
+	})
 }

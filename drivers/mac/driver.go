@@ -22,6 +22,7 @@ import (
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/bridge"
+	"github.com/murlokswarm/app/internal/core"
 	"github.com/pkg/errors"
 )
 
@@ -74,7 +75,7 @@ type Driver struct {
 	OnExit func()
 
 	factory      app.Factory
-	elements     app.ElemDB
+	elems        *core.ElemDB
 	uichan       chan func()
 	macRPC       bridge.PlatformRPC
 	goRPC        bridge.GoRPC
@@ -106,9 +107,7 @@ func (d *Driver) Run(f app.Factory) error {
 	d.devID = generateDevID()
 	d.factory = f
 
-	elements := app.NewElemDB()
-	elements = app.ConcurrentElemDB(elements)
-	d.elements = elements
+	d.elems = core.NewElemDB()
 
 	d.uichan = make(chan func(), 4096)
 	defer close(d.uichan)
@@ -317,16 +316,18 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
 
 // Render satisfies the app.Driver interface.
 func (d *Driver) Render(c app.Component) error {
-	e, err := d.elements.ElementByComponent(c)
-	if err != nil {
-		return err
+	e := d.elems.GetByCompo(c)
+
+	if e.IsNotSet() {
+		return errors.New("element not set")
 	}
+
 	return e.Render(c)
 }
 
-// ElementByComponent satisfies the app.Driver interface.
-func (d *Driver) ElementByComponent(c app.Component) (app.ElementWithComponent, error) {
-	return d.elements.ElementByComponent(c)
+// ElemByCompo satisfies the app.Driver interface.
+func (d *Driver) ElemByCompo(c app.Component) app.Elem {
+	return d.elems.GetByCompo(c)
 }
 
 // NewFilePanel satisfies the app.Driver interface.

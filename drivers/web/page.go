@@ -13,9 +13,12 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/html"
+	"github.com/murlokswarm/app/internal/core"
 )
 
 type Page struct {
+	core.Elem
+
 	id         uuid.UUID
 	markup     app.Markup
 	component  app.Component
@@ -33,14 +36,12 @@ func newPage(c app.PageConfig) (app.Page, error) {
 		lastFocus: time.Now(),
 	}
 
-	if err := driver.elements.Add(page); err != nil {
-		return nil, err
-	}
+	driver.elems.Put(page)
 
 	js.Global.Set("golangRequest", page.onPageRequest)
 
 	js.Global.Call("addEventListener", "unload", func() {
-		driver.elements.Remove(page)
+		driver.elems.Delete(page)
 	})
 
 	err := page.Load(page.URL().String())
@@ -227,6 +228,14 @@ func (p *Page) Referer() *url.URL {
 func (p *Page) Close() error {
 	js.Global.Call("close")
 	return nil
+}
+
+func (p *Page) WhenPage(f func(app.Page)) {
+	f(p)
+}
+
+func (p *Page) WhenNavigator(f func(app.Navigator)) {
+	f(p)
 }
 
 func (p *Page) onPageRequest(j string) {

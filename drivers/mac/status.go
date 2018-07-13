@@ -43,9 +43,7 @@ func newStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
 		return nil, err
 	}
 
-	if err := driver.elements.Add(menu); err != nil {
-		return nil, err
-	}
+	driver.elems.Put(menu)
 
 	if len(c.DefaultURL) != 0 {
 		return menu, menu.Load(c.DefaultURL)
@@ -104,4 +102,15 @@ func (s *StatusMenu) Close() error {
 	}{
 		ID: s.ID().String(),
 	})
+}
+
+// WhenMenu override the embedded Menu.WhenMenu to do nothing.
+// It satisfies the app.ElementWithComponent interface.
+func (s *StatusMenu) WhenMenu(f func(app.Menu)) {
+}
+
+// WhenStatusMenu calls the given func.
+// It satisfies the app.ElementWithComponent interface.
+func (s *StatusMenu) WhenStatusMenu(f func(app.StatusMenu)) {
+	f(s)
 }

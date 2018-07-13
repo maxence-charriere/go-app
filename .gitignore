@@ -43,3 +43,4 @@ examples/test/test
 *.map
 
 .DS_Store
+examples/action-event/bin/web/web

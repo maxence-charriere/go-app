@@ -8,11 +8,14 @@ import (
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/html"
+	"github.com/murlokswarm/app/internal/core"
 	"github.com/pkg/errors"
 )
 
 // A Menu implementation for tests.
 type Menu struct {
+	core.Elem
+
 	id          uuid.UUID
 	typ         string
 	factory     app.Factory
@@ -37,9 +40,9 @@ func newMenu(d *Driver, c app.MenuConfig) (app.Menu, error) {
 		simulateErr: d.SimulateElemErr,
 	}
 
-	d.elements.Add(menu)
+	d.elems.Put(menu)
 	menu.onClose = func() {
-		d.elements.Remove(menu)
+		d.elems.Delete(menu)
 	}
 
 	var err error

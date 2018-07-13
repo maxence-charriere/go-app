@@ -18,10 +18,13 @@ import (
 	"github.com/murlokswarm/app/appjs"
 	"github.com/murlokswarm/app/bridge"
 	"github.com/murlokswarm/app/html"
+	"github.com/murlokswarm/app/internal/core"
 )
 
 // Window implements the app.Window interface.
 type Window struct {
+	core.Elem
+
 	id        uuid.UUID
 	markup    app.Markup
 	component app.Component
@@ -106,9 +109,7 @@ func newWindow(c app.WindowConfig) (app.Window, error) {
 		return nil, err
 	}
 
-	if err := driver.elements.Add(win); err != nil {
-		return nil, err
-	}
+	driver.elems.Put(win)
 
 	if len(c.DefaultURL) != 0 {
 		if err := win.Load(c.DefaultURL); err != nil {
@@ -548,7 +549,7 @@ func onWindowClose(w *Window, in map[string]interface{}) interface{} {
 		if w.component != nil {
 			w.markup.Dismount(w.component)
 		}
-		driver.elements.Remove(w)
+		driver.elems.Delete(w)
 	}
 
 	return struct {
@@ -602,9 +603,25 @@ func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 	return nil
 }
 
+// WhenWindow calls the given func.
+// It satisfies the app.ElementWithComponent interface.
+func (w *Window) WhenWindow(f func(app.Window)) {
+	f(w)
+}
+
+// WhenNavigator calls the given func.
+// It satisfies the app.ElementWithComponent interface.
+func (w *Window) WhenNavigator(f func(app.Navigator)) {
+	f(w)
+}
+
 func onWindowNavigate(w *Window, in map[string]interface{}) interface{} {
-	win, _ := app.WindowByComponent(w.Component())
-	win.Load(in["URL"].(string))
+	e := app.ElemByCompo(w.Component())
+
+	e.WhenWindow(func(w app.Window) {
+		w.Load(in["URL"].(string))
+	})
+
 	return nil
 }
 
@@ -612,12 +629,11 @@ func handleWindow(h func(w *Window, in map[string]interface{}) interface{}) brid
 	return func(in map[string]interface{}) interface{} {
 		id, _ := uuid.Parse(in["ID"].(string))
 
-		elem, err := driver.elements.Element(id)
-		if err != nil {
+		e := driver.elems.GetByID(id)
+		if e.IsNotSet() {
 			return nil
 		}
 
-		win := elem.(*Window)
-		return h(win, in)
+		return h(e.(*Window), in)
 	}
 }
