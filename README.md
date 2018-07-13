@@ -121,6 +121,7 @@ interface.
 
 Render method returns a string that contains HTML5.
 It can be templated following Go standard template syntax:
+
 - [text/template](https://golang.org/pkg/text/template/)
 - [html/template](https://golang.org/pkg/html/template/)
 
@@ -149,7 +150,9 @@ Other drivers will come in the future.
 <a name="doc"></a>
 
 ## Documentation
+
 - [GoDoc](https://godoc.org/github.com/murlokswarm/app)
+- [Last changes](https://github.com/murlokswarm/app/blob/master/History.md)
 - [v1 to v2 migration guide](https://github.com/murlokswarm/app/wiki/V1ToV2)
 
 <a name="examples"></a>
