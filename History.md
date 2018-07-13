@@ -24,7 +24,7 @@
   Example:
 
   ```go
-  app.ElemByCompo(myCompo).WhenNavigator(func(w app.Window) {
+  app.ElemByCompo(myCompo).WhenWindow(func(w app.Window) {
     w.Center()
   })
   ```
