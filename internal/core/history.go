@@ -6,63 +6,53 @@ import (
 	"github.com/pkg/errors"
 )
 
-// History is the interface that describes a store that contains URL ordered
-// chronologically.
-type History interface {
-	// Len returns the number of entries recorded in the history.
-	Len() int
-
-	// Current returns the current entry.
-	Current() (url string, err error)
-
-	// NewEntry adds an entry to the history.
-	// The entry is added after the current one.
-	// All the entries that was after the current one are removed.
-	NewEntry(url string)
-
-	// CanPrevious reports whether there is a previous entry.
-	CanPrevious() bool
-
-	// Previous returns the previous entry.
-	Previous() (url string, err error)
-
-	// CanNext reports whether there is a next entry.
-	CanNext() bool
-
-	// Next returns the next entry.
-	Next() (url string, err error)
-}
-
 // NewHistory creates an history.
-func NewHistory() History {
-	return &history{
+func NewHistory() *History {
+	return &History{
 		index:   -1,
 		history: make([]string, 0, 32),
 	}
 }
 
-type history struct {
+// History represents a store that contains URL ordered chronologically.
+type History struct {
+	mutex   sync.RWMutex
 	index   int
 	history []string
 }
 
-func (h *history) Len() int {
+// Len returns the number of entries recorded in the history.
+func (h *History) Len() int {
+	h.mutex.RLock()
+	defer h.mutex.RUnlock()
+
 	return len(h.history)
 }
 
-func (h *history) Current() (url string, err error) {
+// Current returns the current entry.
+func (h *History) Current() (url string, err error) {
 	if h.Len() == 0 {
 		return "", errors.New("history does not have entries")
 	}
+
+	h.mutex.RLock()
+	defer h.mutex.RUnlock()
 
 	url = h.history[h.index]
 	return url, nil
 }
 
-func (h *history) NewEntry(url string) {
-	var history []string
+// NewEntry adds an entry to the history.
+// The entry is added after the current one.
+// All the entries that was after the current one are removed.
+func (h *History) NewEntry(url string) {
+	l := h.Len()
 
-	if h.Len() == 0 {
+	h.mutex.Lock()
+	defer h.mutex.Unlock()
+
+	var history []string
+	if l == 0 {
 		history = h.history
 	} else {
 		history = h.history[:h.index+1]
@@ -72,91 +62,46 @@ func (h *history) NewEntry(url string) {
 	h.index++
 }
 
-func (h *history) CanPrevious() bool {
+// CanPrevious reports whether there is a previous entry.
+func (h *History) CanPrevious() bool {
+	h.mutex.RLock()
+	defer h.mutex.RUnlock()
+
 	return h.index > 0
 }
 
-func (h *history) Previous() (url string, err error) {
+// Previous returns the previous entry.
+func (h *History) Previous() (url string, err error) {
 	if !h.CanPrevious() {
 		return "", errors.New("history does not have a previous entry to return")
 	}
+
+	h.mutex.Lock()
+	defer h.mutex.Unlock()
 
 	h.index--
 	url = h.history[h.index]
 	return url, nil
 }
 
-func (h *history) CanNext() bool {
+// CanNext reports whether there is a next entry.
+func (h *History) CanNext() bool {
+	h.mutex.RLock()
+	defer h.mutex.RUnlock()
+
 	return h.index < h.Len()-1
 }
 
-func (h *history) Next() (url string, err error) {
+// Next returns the next entry.
+func (h *History) Next() (url string, err error) {
 	if !h.CanNext() {
 		return "", errors.New("history does not have a next entry to return")
 	}
 
+	h.mutex.Lock()
+	defer h.mutex.Unlock()
+
 	h.index++
 	url = h.history[h.index]
 	return url, nil
-}
-
-// ConcurrentHistory returns a decorated version of the given history that
-// is safe for concurrent operations.
-func ConcurrentHistory(history History) History {
-	return &concurrentHistory{
-		base: history,
-	}
-}
-
-type concurrentHistory struct {
-	base  History
-	mutex sync.Mutex
-}
-
-func (h *concurrentHistory) Len() int {
-	h.mutex.Lock()
-	l := h.base.Len()
-	h.mutex.Unlock()
-	return l
-}
-
-func (h *concurrentHistory) Current() (url string, err error) {
-	h.mutex.Lock()
-	url, err = h.base.Current()
-	h.mutex.Unlock()
-	return url, err
-}
-
-func (h *concurrentHistory) NewEntry(url string) {
-	h.mutex.Lock()
-	h.base.NewEntry(url)
-	h.mutex.Unlock()
-}
-
-func (h *concurrentHistory) CanPrevious() bool {
-	h.mutex.Lock()
-	ok := h.base.CanPrevious()
-	h.mutex.Unlock()
-	return ok
-}
-
-func (h *concurrentHistory) Previous() (url string, err error) {
-	h.mutex.Lock()
-	url, err = h.base.Previous()
-	h.mutex.Unlock()
-	return url, err
-}
-
-func (h *concurrentHistory) CanNext() bool {
-	h.mutex.Lock()
-	ok := h.base.CanNext()
-	h.mutex.Unlock()
-	return ok
-}
-
-func (h *concurrentHistory) Next() (url string, err error) {
-	h.mutex.Lock()
-	url, err = h.base.Next()
-	h.mutex.Unlock()
-	return url, err
 }

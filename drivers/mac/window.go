@@ -28,7 +28,7 @@ type Window struct {
 	id        uuid.UUID
 	markup    app.Markup
 	component app.Compo
-	history   core.History
+	history   *core.History
 	lastFocus time.Time
 
 	onMove           func(x, y float64)
@@ -46,13 +46,10 @@ func newWindow(c app.WindowConfig) (app.Window, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
 	markup = app.ConcurrentMarkup(markup)
 
-	history := core.NewHistory()
-	history = core.ConcurrentHistory(history)
-
 	win := &Window{
 		id:        uuid.New(),
 		markup:    markup,
-		history:   history,
+		history:   core.NewHistory(),
 		lastFocus: time.Now(),
 
 		onMove:           c.OnMove,

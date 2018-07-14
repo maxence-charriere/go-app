@@ -19,7 +19,7 @@ type Window struct {
 	id          uuid.UUID
 	factory     app.Factory
 	markup      app.Markup
-	history     core.History
+	history     *core.History
 	lastFocus   time.Time
 	component   app.Compo
 	x           float64
@@ -35,14 +35,11 @@ func newWindow(d *Driver, c app.WindowConfig) (app.Window, error) {
 	var markup app.Markup = html.NewMarkup(d.factory)
 	markup = app.ConcurrentMarkup(markup)
 
-	history := core.NewHistory()
-	history = core.ConcurrentHistory(history)
-
 	win := &Window{
 		id:          uuid.New(),
 		factory:     d.factory,
 		markup:      markup,
-		history:     history,
+		history:     core.NewHistory(),
 		lastFocus:   time.Now(),
 		simulateErr: d.SimulateElemErr,
 	}
