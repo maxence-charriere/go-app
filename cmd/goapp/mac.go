@@ -14,7 +14,7 @@ import (
 	"time"
 
 	driver "github.com/murlokswarm/app/drivers/mac"
-	"github.com/murlokswarm/app/file"
+	"github.com/murlokswarm/app/internal/file"
 	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
 )
