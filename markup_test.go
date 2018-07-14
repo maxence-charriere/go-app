@@ -6,7 +6,7 @@ import (
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/html"
-	"github.com/murlokswarm/app/tests"
+	"github.com/murlokswarm/app/internal/tests"
 )
 
 func TestTag(t *testing.T) {

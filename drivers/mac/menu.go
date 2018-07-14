@@ -10,8 +10,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/bridge"
 	"github.com/murlokswarm/app/html"
+	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 	"github.com/pkg/errors"
 )

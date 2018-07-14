@@ -1,9 +1,7 @@
-package tests
+package core
 
 import (
 	"testing"
-
-	"github.com/murlokswarm/app"
 )
 
 type historyAction struct {
@@ -11,9 +9,7 @@ type historyAction struct {
 	url  string
 }
 
-// TestHistory is a test suite used to ensure that all history implementations
-// behave the same.
-func TestHistory(t *testing.T, newHistory func() app.History) {
+func TestHistory(t *testing.T) {
 	const (
 		current     = "Current"
 		new         = "NewEntry"
@@ -125,7 +121,7 @@ func TestHistory(t *testing.T, newHistory func() app.History) {
 			var currentURL string
 			var err error
 
-			history := newHistory()
+			history := NewHistory()
 
 			for _, action := range test.actions {
 				switch action.name {

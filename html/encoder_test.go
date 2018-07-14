@@ -7,7 +7,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/tests"
+	"github.com/murlokswarm/app/internal/tests"
 )
 
 func TestEncoder(t *testing.T) {

@@ -16,8 +16,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/appjs"
-	"github.com/murlokswarm/app/bridge"
 	"github.com/murlokswarm/app/html"
+	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 )
 
@@ -28,7 +28,7 @@ type Window struct {
 	id        uuid.UUID
 	markup    app.Markup
 	component app.Compo
-	history   app.History
+	history   *core.History
 	lastFocus time.Time
 
 	onMove           func(x, y float64)
@@ -46,13 +46,10 @@ func newWindow(c app.WindowConfig) (app.Window, error) {
 	var markup app.Markup = html.NewMarkup(driver.factory)
 	markup = app.ConcurrentMarkup(markup)
 
-	history := app.NewHistory()
-	history = app.ConcurrentHistory(history)
-
 	win := &Window{
 		id:        uuid.New(),
 		markup:    markup,
-		history:   history,
+		history:   core.NewHistory(),
 		lastFocus: time.Now(),
 
 		onMove:           c.OnMove,

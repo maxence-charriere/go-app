@@ -9,7 +9,7 @@ import (
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/drivers/test"
-	"github.com/murlokswarm/app/tests"
+	"github.com/murlokswarm/app/internal/tests"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -112,7 +112,7 @@ func TestApp(t *testing.T) {
 		err = statusMenu.SetText("test")
 		assert.NoError(t, err)
 
-		err = statusMenu.SetIcon(filepath.Join("tests", "resources", "logo.png"))
+		err = statusMenu.SetIcon(filepath.Join("internal", "tests", "resources", "logo.png"))
 		assert.NoError(t, err)
 
 		err = statusMenu.Close()
@@ -136,7 +136,7 @@ func TestApp(t *testing.T) {
 		err = dockTile.SetBadge("42")
 		assert.NoError(t, err)
 
-		err = dockTile.SetIcon(filepath.Join("tests", "resources", "logo.png"))
+		err = dockTile.SetIcon(filepath.Join("internal", "tests", "resources", "logo.png"))
 		assert.NoError(t, err)
 
 		// CSS resources:

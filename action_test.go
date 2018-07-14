@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/tests"
+	"github.com/murlokswarm/app/internal/tests"
 )
 
 func TestActions(t *testing.T) {
