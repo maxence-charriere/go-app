@@ -21,7 +21,7 @@ import (
 	"strings"
 
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/bridge"
+	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 	"github.com/pkg/errors"
 )
