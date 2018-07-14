@@ -101,7 +101,7 @@ func (m *Markup) FullRoot(tag app.Tag) (root app.Tag, err error) {
 
 // Mount satisfies the app.Markup interface.
 func (m *Markup) Mount(compo app.Compo) (root app.Tag, err error) {
-	return m.mount(compo, uuid.New())
+	return m.mount(compo, uuid.New().String())
 }
 
 func (m *Markup) mount(compo app.Compo, compoID string) (root app.Tag, err error) {
@@ -114,7 +114,7 @@ func (m *Markup) mount(compo app.Compo, compoID string) (root app.Tag, err error
 		return
 	}
 
-	if err = m.mountTag(&root, uuid.New(), compoID); err != nil {
+	if err = m.mountTag(&root, uuid.New().String(), compoID); err != nil {
 		return
 	}
 
@@ -191,7 +191,7 @@ func (m *Markup) mountTag(tag *app.Tag, id string, compoID string) error {
 	}
 
 	for i := range tag.Children {
-		if err := m.mountTag(&tag.Children[i], uuid.New(), compoID); err != nil {
+		if err := m.mountTag(&tag.Children[i], uuid.New().String(), compoID); err != nil {
 			return err
 		}
 	}
@@ -496,7 +496,7 @@ func (m *Markup) syncChildTags(current, new *app.Tag) (syncs []app.TagSync, repl
 
 	for len(newChildren) != 0 {
 		child := &newChildren[0]
-		if err = m.mountTag(child, uuid.New(), current.CompoID); err != nil {
+		if err = m.mountTag(child, uuid.New().String(), current.CompoID); err != nil {
 			return
 		}
 		current.Children = append(current.Children, *child)

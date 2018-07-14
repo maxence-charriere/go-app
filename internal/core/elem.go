@@ -26,7 +26,7 @@ type Elem struct {
 
 // ID satisfies the app.Elem interface.
 func (e *Elem) ID() string {
-	return string{}
+	return ""
 }
 
 // WhenWindow satisfies the app.Elem interface.

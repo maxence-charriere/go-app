@@ -110,7 +110,7 @@ func (e *Encoder) encodeAttributes(tag app.Tag) {
 	}
 
 	e.writer.WriteString(` data-goapp-id="`)
-	e.writer.WriteString(tag.ID.String())
+	e.writer.WriteString(tag.ID)
 	e.writer.WriteByte('"')
 }
 

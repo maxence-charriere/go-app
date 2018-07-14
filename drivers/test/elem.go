@@ -14,7 +14,7 @@ type Element struct {
 // NewElement creates a new element.
 func NewElement(d *Driver) *Element {
 	elem := &Element{
-		id: uuid.New(),
+		id: uuid.New().String(),
 	}
 
 	d.elems.Put(elem)

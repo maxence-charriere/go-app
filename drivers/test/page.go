@@ -30,7 +30,7 @@ func newPage(d *Driver, c app.PageConfig) (app.Page, error) {
 	markup = app.ConcurrentMarkup(markup)
 
 	page := &page{
-		id:        uuid.New(),
+		id:        uuid.New().String(),
 		factory:   d.factory,
 		markup:    markup,
 		history:   core.NewHistory(),

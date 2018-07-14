@@ -56,7 +56,7 @@ func (m *eventRegistry) Subscribe(name string, handler interface{}) (unsuscribe 
 		))
 	}
 
-	id := uuid.New()
+	id := uuid.New().String()
 
 	handlers := m.handlers[name]
 	handlers = append(handlers, eventHandler{

@@ -20,7 +20,7 @@ func newStatusMenu(d *Driver, c app.StatusMenuConfig) app.StatusMenu {
 
 	menu := &StatusMenu{
 		Menu: Menu{
-			id:          uuid.New(),
+			id:          uuid.New().String(),
 			typ:         "status menu",
 			factory:     d.factory,
 			markup:      markup,

@@ -21,7 +21,7 @@ func newDockTile(d *Driver) app.DockTile {
 
 	dock := &DockTile{
 		Menu: Menu{
-			id:          uuid.New(),
+			id:          uuid.New().String(),
 			typ:         "dock tile",
 			factory:     d.factory,
 			markup:      markup,

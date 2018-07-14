@@ -35,7 +35,7 @@ func newMenu(c app.MenuConfig) (app.Menu, error) {
 	markup = app.ConcurrentMarkup(markup)
 
 	menu := &Menu{
-		id:        uuid.New(),
+		id:        uuid.New().String(),
 		typ:       c.Type,
 		markup:    markup,
 		lastFocus: time.Now(),
@@ -46,7 +46,7 @@ func newMenu(c app.MenuConfig) (app.Menu, error) {
 	if err := driver.macRPC.Call("menus.New", nil, struct {
 		ID string
 	}{
-		ID: menu.ID().String(),
+		ID: menu.ID(),
 	}); err != nil {
 		return nil, err
 	}
@@ -110,7 +110,7 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 		ID  string
 		Tag app.Tag
 	}{
-		ID:  m.ID().String(),
+		ID:  m.ID(),
 		Tag: root,
 	})
 }
@@ -156,7 +156,7 @@ func (m *Menu) render(sync app.TagSync) error {
 		ID  string
 		Tag app.Tag
 	}{
-		ID:  m.ID().String(),
+		ID:  m.ID(),
 		Tag: tag,
 	})
 }
@@ -177,7 +177,7 @@ func (m *Menu) renderAttributes(compo app.Compo, sync app.TagSync) error {
 		ID  string
 		Tag app.Tag
 	}{
-		ID:  m.ID().String(),
+		ID:  m.ID(),
 		Tag: tag,
 	})
 }
@@ -203,7 +203,7 @@ func onMenuClose(m *Menu, in map[string]interface{}) interface{} {
 		if err := driver.macRPC.Call("menus.Delete", nil, struct {
 			ID string
 		}{
-			ID: m.ID().String(),
+			ID: m.ID(),
 		}); err != nil {
 			panic(errors.Wrap(err, "onMenuClose"))
 		}
@@ -248,7 +248,7 @@ func onMenuCallback(m *Menu, in map[string]interface{}) interface{} {
 
 func handleMenu(h func(m *Menu, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
 	return func(in map[string]interface{}) interface{} {
-		id, _ := uuid.Parse(in["ID"].(string))
+		id, _ := in["ID"].(string)
 		e := driver.elems.GetByID(id)
 
 		switch menu := e.(type) {

@@ -31,7 +31,7 @@ func newPage(c app.PageConfig) (app.Page, error) {
 	markup = app.ConcurrentMarkup(markup)
 
 	page := &Page{
-		id:        uuid.New(),
+		id:        uuid.New().String(),
 		markup:    markup,
 		lastFocus: time.Now(),
 	}
@@ -146,7 +146,7 @@ func (p *Page) render(sync app.TagSync) error {
 	}{
 		Object: js.Global.Get("Object").New(),
 	}
-	payload.ID = sync.Tag.ID.String()
+	payload.ID = sync.Tag.ID
 	payload.Compo = buffer.String()
 
 	js.Global.Call("render", payload)
@@ -171,7 +171,7 @@ func (p *Page) renderAttributes(sync app.TagSync) error {
 	}{
 		Object: js.Global.Get("Object").New(),
 	}
-	payload.ID = sync.Tag.ID.String()
+	payload.ID = sync.Tag.ID
 	payload.Attributes = attrs
 
 	js.Global.Call("renderAttributes", payload)

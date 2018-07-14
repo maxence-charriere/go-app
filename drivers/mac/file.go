@@ -19,7 +19,7 @@ type FilePanel struct {
 
 func newFilePanel(c app.FilePanelConfig) error {
 	panel := &FilePanel{
-		id:       uuid.New(),
+		id:       uuid.New().String(),
 		onSelect: c.OnSelect,
 	}
 
@@ -31,7 +31,7 @@ func newFilePanel(c app.FilePanelConfig) error {
 		ShowHiddenFiles   bool
 		FileTypes         []string `json:",omitempty"`
 	}{
-		ID:                panel.ID().String(),
+		ID:                panel.ID(),
 		MultipleSelection: c.MultipleSelection,
 		IgnoreDirectories: c.IgnoreDirectories,
 		IgnoreFiles:       c.IgnoreFiles,
@@ -61,7 +61,7 @@ func onFilePanelSelect(p *FilePanel, in map[string]interface{}) interface{} {
 
 func handleFilePanel(h func(p *FilePanel, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
 	return func(in map[string]interface{}) interface{} {
-		id, _ := uuid.Parse(in["ID"].(string))
+		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
 		if e.IsNotSet() {
@@ -83,7 +83,7 @@ type SaveFilePanel struct {
 
 func newSaveFilePanel(c app.SaveFilePanelConfig) error {
 	panel := &SaveFilePanel{
-		id:       uuid.New(),
+		id:       uuid.New().String(),
 		onSelect: c.OnSelect,
 	}
 
@@ -92,7 +92,7 @@ func newSaveFilePanel(c app.SaveFilePanelConfig) error {
 		ShowHiddenFiles bool
 		FileTypes       []string `json:",omitempty"`
 	}{
-		ID:              panel.ID().String(),
+		ID:              panel.ID(),
 		ShowHiddenFiles: c.ShowHiddenFiles,
 		FileTypes:       c.FileTypes,
 	}); err != nil {
@@ -119,7 +119,7 @@ func onSaveFilePanelSelect(p *SaveFilePanel, in map[string]interface{}) interfac
 
 func handleSaveFilePanel(h func(p *SaveFilePanel, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
 	return func(in map[string]interface{}) interface{} {
-		id, _ := uuid.Parse(in["ID"].(string))
+		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
 		if e.IsNotSet() {

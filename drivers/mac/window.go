@@ -47,7 +47,7 @@ func newWindow(c app.WindowConfig) (app.Window, error) {
 	markup = app.ConcurrentMarkup(markup)
 
 	win := &Window{
-		id:        uuid.New(),
+		id:        uuid.New().String(),
 		markup:    markup,
 		history:   core.NewHistory(),
 		lastFocus: time.Now(),
@@ -81,7 +81,7 @@ func newWindow(c app.WindowConfig) (app.Window, error) {
 		TitlebarHidden     bool
 		BackgroundVibrancy app.Vibrancy
 	}{
-		ID:                 win.ID().String(),
+		ID:                 win.ID(),
 		Title:              c.Title,
 		X:                  c.X,
 		Y:                  c.Y,
@@ -213,7 +213,7 @@ func (w *Window) load(u *url.URL) error {
 		LoadURL string
 		BaseURL string
 	}{
-		ID:      w.ID().String(),
+		ID:      w.ID(),
 		Title:   pageConfig.Title,
 		Page:    html.NewPage(pageConfig),
 		LoadURL: u.String(),
@@ -265,7 +265,7 @@ func (w *Window) render(sync app.TagSync) error {
 		ID    string `json:"id"`
 		Compo string `json:"component"`
 	}{
-		ID:    sync.Tag.ID.String(),
+		ID:    sync.Tag.ID,
 		Compo: buffer.String(),
 	})
 	if err != nil {
@@ -276,7 +276,7 @@ func (w *Window) render(sync app.TagSync) error {
 		ID     string
 		Render string
 	}{
-		ID:     w.ID().String(),
+		ID:     w.ID(),
 		Render: string(render),
 	})
 }
@@ -297,7 +297,7 @@ func (w *Window) renderAttributes(sync app.TagSync) error {
 		ID         string           `json:"id"`
 		Attributes app.AttributeMap `json:"attributes"`
 	}{
-		ID:         sync.Tag.ID.String(),
+		ID:         sync.Tag.ID,
 		Attributes: attrs,
 	})
 	if err != nil {
@@ -308,7 +308,7 @@ func (w *Window) renderAttributes(sync app.TagSync) error {
 		ID     string
 		Render string
 	}{
-		ID:     w.ID().String(),
+		ID:     w.ID(),
 		Render: string(render),
 	})
 }
@@ -383,7 +383,7 @@ func (w *Window) Position() (x, y float64) {
 	if err := driver.macRPC.Call("windows.Position", &out, struct {
 		ID string
 	}{
-		ID: w.ID().String(),
+		ID: w.ID(),
 	}); err != nil {
 		panic(err)
 	}
@@ -397,7 +397,7 @@ func (w *Window) Move(x, y float64) error {
 		X  float64
 		Y  float64
 	}{
-		ID: w.ID().String(),
+		ID: w.ID(),
 		X:  x,
 		Y:  y,
 	})
@@ -415,7 +415,7 @@ func (w *Window) Center() error {
 	return driver.macRPC.Call("windows.Center", nil, struct {
 		ID string
 	}{
-		ID: w.ID().String(),
+		ID: w.ID(),
 	})
 }
 
@@ -429,7 +429,7 @@ func (w *Window) Size() (width, height float64) {
 	if err := driver.macRPC.Call("windows.Size", &out, struct {
 		ID string
 	}{
-		ID: w.ID().String(),
+		ID: w.ID(),
 	}); err != nil {
 		panic(err)
 	}
@@ -443,7 +443,7 @@ func (w *Window) Resize(width, height float64) error {
 		Width  float64
 		Height float64
 	}{
-		ID:     w.ID().String(),
+		ID:     w.ID(),
 		Width:  width,
 		Height: height,
 	})
@@ -461,7 +461,7 @@ func (w *Window) Focus() error {
 	return driver.macRPC.Call("windows.Focus", nil, struct {
 		ID string
 	}{
-		ID: w.ID().String(),
+		ID: w.ID(),
 	})
 }
 
@@ -486,7 +486,7 @@ func (w *Window) ToggleFullScreen() error {
 	return driver.macRPC.Call("windows.ToggleFullScreen", nil, struct {
 		ID string
 	}{
-		ID: w.ID().String(),
+		ID: w.ID(),
 	})
 }
 
@@ -509,7 +509,7 @@ func (w *Window) ToggleMinimize() error {
 	return driver.macRPC.Call("windows.ToggleMinimize", nil, struct {
 		ID string
 	}{
-		ID: w.ID().String(),
+		ID: w.ID(),
 	})
 }
 
@@ -532,7 +532,7 @@ func (w *Window) Close() error {
 	return driver.macRPC.Call("windows.Close", nil, struct {
 		ID string
 	}{
-		ID: w.ID().String(),
+		ID: w.ID(),
 	})
 }
 
@@ -624,7 +624,7 @@ func onWindowNavigate(w *Window, in map[string]interface{}) interface{} {
 
 func handleWindow(h func(w *Window, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
 	return func(in map[string]interface{}) interface{} {
-		id, _ := uuid.Parse(in["ID"].(string))
+		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
 		if e.IsNotSet() {

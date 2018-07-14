@@ -32,7 +32,7 @@ func newMenu(d *Driver, c app.MenuConfig) (app.Menu, error) {
 	markup = app.ConcurrentMarkup(markup)
 
 	menu := &Menu{
-		id:          uuid.New(),
+		id:          uuid.New().String(),
 		typ:         c.Type,
 		factory:     d.factory,
 		markup:      markup,

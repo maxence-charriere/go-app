@@ -20,7 +20,7 @@ type Notification struct {
 
 func newNotification(c app.NotificationConfig) error {
 	n := &Notification{
-		id:      uuid.New(),
+		id:      uuid.New().String(),
 		onReply: c.OnReply,
 	}
 
@@ -37,7 +37,7 @@ func newNotification(c app.NotificationConfig) error {
 		Sound     bool
 		Reply     bool
 	}{
-		ID:        n.ID().String(),
+		ID:        n.ID(),
 		Title:     c.Title,
 		Subtitle:  c.Subtitle,
 		Text:      c.Text,
@@ -63,7 +63,7 @@ func onNotificationReply(n *Notification, in map[string]interface{}) interface{}
 
 func handleNotification(h func(n *Notification, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
 	return func(in map[string]interface{}) interface{} {
-		id, _ := uuid.Parse(in["ID"].(string))
+		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
 		if e.IsNotSet() {

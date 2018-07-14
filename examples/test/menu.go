@@ -127,7 +127,7 @@ func (m *Menu) Render() string {
 
 // OnNavigate is the function that is called when the component is navigated on.
 func (m *Menu) OnNavigate(u *url.URL) {
-	m.RandomTitle = uuid.New()
+	m.RandomTitle = uuid.New().String()
 	app.Render(m)
 }
 
@@ -153,7 +153,7 @@ func (m *Menu) OnSetDockBadge() {
 		app.Log("%s", err)
 		return
 	}
-	if err = dock.SetBadge(uuid.New()); err != nil {
+	if err = dock.SetBadge(uuid.New().String()); err != nil {
 		app.Log("%s", err)
 	}
 }
@@ -207,7 +207,7 @@ func (m *Menu) OnUnsetDockIcon() {
 // with randow title is clicked.
 func (m *Menu) OnButtonWithRandomTitleClicked() {
 	app.Log("button with random title clicked")
-	m.RandomTitle = uuid.New()
+	m.RandomTitle = uuid.New().String()
 	app.Render(m)
 }
 

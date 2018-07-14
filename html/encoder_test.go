@@ -97,7 +97,7 @@ func testEncoderEncodeChildZeroTag(t *testing.T, markup *Markup) {
 func testEncoderEncodeNotMountedCompo(t *testing.T, markup *Markup) {
 	root := app.Tag{
 		Name: "html.world",
-		ID:   uuid.New(),
+		ID:   uuid.New().String(),
 		Type: app.CompoTag,
 	}
 
@@ -134,7 +134,7 @@ func BenchmarkEncoder(b *testing.B) {
 func TestAttrValueFormatter(t *testing.T) {
 	factory := app.NewFactory()
 	factory.Register(&tests.World{})
-	compoID := uuid.New()
+	compoID := uuid.New().String()
 
 	tests := []struct {
 		scenario  string

@@ -36,7 +36,7 @@ func newWindow(d *Driver, c app.WindowConfig) (app.Window, error) {
 	markup = app.ConcurrentMarkup(markup)
 
 	win := &Window{
-		id:          uuid.New(),
+		id:          uuid.New().String(),
 		factory:     d.factory,
 		markup:      markup,
 		history:     core.NewHistory(),

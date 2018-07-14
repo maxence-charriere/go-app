@@ -28,7 +28,7 @@ func TestElem(t *testing.T) {
 	})
 
 	assert.False(t, e.Contains(&compo{}))
-	assert.Equal(t, string{}, e.ID())
+	assert.Equal(t, "", e.ID())
 	assert.Error(t, e.Render(&compo{}))
 }
 
@@ -70,7 +70,7 @@ func TestElemDB(t *testing.T) {
 
 	// Simple element.
 	e := &elem{
-		id: uuid.New(),
+		id: uuid.New().String(),
 	}
 
 	db.Put(e)
@@ -85,7 +85,7 @@ func TestElemDB(t *testing.T) {
 
 	// Element with components.
 	ec := &elemWithCompo{
-		id: uuid.New(),
+		id: uuid.New().String(),
 	}
 
 	db.Put(ec)

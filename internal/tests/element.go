@@ -16,7 +16,7 @@ type element struct {
 
 func newElement() *element {
 	elem := &element{
-		id: uuid.New(),
+		id: uuid.New().String(),
 	}
 	return elem
 }
@@ -37,7 +37,7 @@ func newElemWithCompo() *elemWithCompo {
 	factory.Register(&Foo{})
 
 	return &elemWithCompo{
-		id:        uuid.New(),
+		id:        uuid.New().String(),
 		factory:   factory,
 		lastFocus: time.Now(),
 	}
