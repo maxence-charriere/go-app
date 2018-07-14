@@ -1,4 +1,15 @@
 
+2.6.1 / 2018-07-13
+==================
+
+* interfaces and funcs renamed with shorter names:
+  * interfaces:
+    * `Component` => `Compo`
+    * `ElementWithComponent` => `ElemWithCompo`
+    * `ComponentWithExtendedRender` => `CompoWithExtendedRender`
+  * functions:
+    * `ComponentNameFromURLString` => `CompoNameFromURLString`
+
 2.6.0 / 2018-07-12
 ==================
 
