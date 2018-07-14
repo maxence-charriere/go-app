@@ -4,7 +4,6 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 )
 
@@ -26,8 +25,8 @@ type Elem struct {
 }
 
 // ID satisfies the app.Elem interface.
-func (e *Elem) ID() uuid.UUID {
-	return uuid.UUID{}
+func (e *Elem) ID() string {
+	return string{}
 }
 
 // WhenWindow satisfies the app.Elem interface.
@@ -77,7 +76,7 @@ func (e *Elem) Render(app.Compo) error {
 // NewElemDB creates an element database.
 func NewElemDB() *ElemDB {
 	return &ElemDB{
-		elems:          make(map[uuid.UUID]app.Elem),
+		elems:          make(map[string]app.Elem),
 		elemsWithCompo: make([]ElemWithCompo, 0, 32),
 	}
 }
@@ -85,7 +84,7 @@ func NewElemDB() *ElemDB {
 // ElemDB represents a element database.
 type ElemDB struct {
 	mutex          sync.RWMutex
-	elems          map[uuid.UUID]app.Elem
+	elems          map[string]app.Elem
 	elemsWithCompo []ElemWithCompo
 }
 
@@ -131,7 +130,7 @@ func (db *ElemDB) Delete(e app.Elem) {
 }
 
 // GetByID returns the element with the given id.
-func (db *ElemDB) GetByID(id uuid.UUID) app.Elem {
+func (db *ElemDB) GetByID(id string) app.Elem {
 	db.mutex.RLock()
 	defer db.mutex.RUnlock()
 

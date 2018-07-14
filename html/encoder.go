@@ -8,7 +8,6 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/pkg/errors"
 )
@@ -142,7 +141,7 @@ type AttrValueFormatter struct {
 	Name       string
 	Value      string
 	FormatHref bool
-	CompoID    uuid.UUID
+	CompoID    string
 	Factory    app.Factory
 }
 

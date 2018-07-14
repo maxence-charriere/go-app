@@ -15,7 +15,7 @@ import (
 type page struct {
 	core.Elem
 
-	id        uuid.UUID
+	id        string
 	factory   app.Factory
 	markup    app.Markup
 	history   *core.History
@@ -50,7 +50,7 @@ func newPage(d *Driver, c app.PageConfig) (app.Page, error) {
 }
 
 // ID satisfies the app.Page interface.
-func (p *page) ID() uuid.UUID {
+func (p *page) ID() string {
 	return p.id
 }
 

@@ -2,14 +2,12 @@ package app
 
 import (
 	"time"
-
-	"github.com/google/uuid"
 )
 
 // Elem is the interface that describes an app element.
 type Elem interface {
 	// ID returns the element identifier.
-	ID() uuid.UUID
+	ID() string
 
 	// WhenWindow calls the given func when the element is a window.
 	WhenWindow(func(Window))

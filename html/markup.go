@@ -16,7 +16,7 @@ import (
 
 // Markup implements the app.Markup interface.
 type Markup struct {
-	components       map[uuid.UUID]app.Compo
+	components       map[string]app.Compo
 	roots            map[app.Compo]*app.Tag
 	eventSubscribers map[app.Compo]app.EventSubscriber
 	factory          app.Factory
@@ -25,7 +25,7 @@ type Markup struct {
 // NewMarkup creates a markup with the given factory.
 func NewMarkup(factory app.Factory) *Markup {
 	return &Markup{
-		components:       make(map[uuid.UUID]app.Compo),
+		components:       make(map[string]app.Compo),
 		roots:            make(map[app.Compo]*app.Tag),
 		eventSubscribers: make(map[app.Compo]app.EventSubscriber),
 		factory:          factory,
@@ -43,7 +43,7 @@ func (m *Markup) Factory() app.Factory {
 }
 
 // Compo satisfies the app.Markup interface.
-func (m *Markup) Compo(id uuid.UUID) (compo app.Compo, err error) {
+func (m *Markup) Compo(id string) (compo app.Compo, err error) {
 	var ok bool
 	if compo, ok = m.components[id]; !ok {
 		err = errors.New("component not mounted")
@@ -104,7 +104,7 @@ func (m *Markup) Mount(compo app.Compo) (root app.Tag, err error) {
 	return m.mount(compo, uuid.New())
 }
 
-func (m *Markup) mount(compo app.Compo, compoID uuid.UUID) (root app.Tag, err error) {
+func (m *Markup) mount(compo app.Compo, compoID string) (root app.Tag, err error) {
 	if m.Contains(compo) {
 		err = errors.New("component is already mounted")
 		return
@@ -168,7 +168,7 @@ func decodeCompo(compo app.Compo, tag *app.Tag) error {
 	return dec.Decode(tag)
 }
 
-func (m *Markup) mountTag(tag *app.Tag, id uuid.UUID, compoID uuid.UUID) error {
+func (m *Markup) mountTag(tag *app.Tag, id string, compoID string) error {
 	tag.ID = id
 	tag.CompoID = compoID
 

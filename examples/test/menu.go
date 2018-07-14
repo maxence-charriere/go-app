@@ -15,7 +15,7 @@ func init() {
 type Menu struct {
 	Name             string
 	DisableAll       bool
-	RandomTitle      uuid.UUID
+	RandomTitle      string
 	Separator        bool
 	RenderRootToggle bool
 	RenderToggle     bool

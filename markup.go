@@ -4,7 +4,6 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/google/uuid"
 	"github.com/pkg/errors"
 )
 
@@ -20,7 +19,7 @@ type Markup interface {
 
 	// Compo returns the component mounted under the identifier.
 	// Returns an error if there is not component with the identifier.
-	Compo(id uuid.UUID) (Compo, error)
+	Compo(id string) (Compo, error)
 
 	// Contains reports whether the component is mounted.
 	Contains(compo Compo) bool
@@ -55,7 +54,7 @@ type Markup interface {
 // Mapping describes a component mapping.
 type Mapping struct {
 	// The component identifier.
-	CompoID uuid.UUID
+	CompoID string
 
 	// A dot separated string that points to a component field or method.
 	Target string
@@ -100,8 +99,8 @@ type TagDecoder interface {
 
 // Tag represents a markup tag.
 type Tag struct {
-	ID         uuid.UUID
-	CompoID    uuid.UUID
+	ID         string
+	CompoID    string
 	Name       string
 	Text       string
 	Svg        bool
@@ -162,7 +161,7 @@ func (m *concurrentMarkup) Factory() Factory {
 	return factory
 }
 
-func (m *concurrentMarkup) Compo(id uuid.UUID) (Compo, error) {
+func (m *concurrentMarkup) Compo(id string) (Compo, error) {
 	m.mutex.Lock()
 	compo, err := m.base.Compo(id)
 	m.mutex.Unlock()

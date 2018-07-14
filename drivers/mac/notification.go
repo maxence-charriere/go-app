@@ -14,7 +14,7 @@ import (
 type Notification struct {
 	core.Elem
 
-	id      uuid.UUID
+	id      string
 	onReply func(reply string)
 }
 
@@ -48,7 +48,7 @@ func newNotification(c app.NotificationConfig) error {
 }
 
 // ID satisfies the app.Element interface.
-func (n *Notification) ID() uuid.UUID {
+func (n *Notification) ID() string {
 	return n.id
 }
 

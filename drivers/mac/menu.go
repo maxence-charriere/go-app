@@ -20,7 +20,7 @@ import (
 type Menu struct {
 	core.Elem
 
-	id             uuid.UUID
+	id             string
 	typ            string
 	markup         app.Markup
 	lastFocus      time.Time
@@ -62,7 +62,7 @@ func newMenu(c app.MenuConfig) (app.Menu, error) {
 }
 
 // ID satisfies the app.Menu interface.
-func (m *Menu) ID() uuid.UUID {
+func (m *Menu) ID() string {
 	return m.id
 }
 

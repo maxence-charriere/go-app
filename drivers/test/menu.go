@@ -16,7 +16,7 @@ import (
 type Menu struct {
 	core.Elem
 
-	id          uuid.UUID
+	id          string
 	typ         string
 	factory     app.Factory
 	markup      app.Markup
@@ -53,7 +53,7 @@ func newMenu(d *Driver, c app.MenuConfig) (app.Menu, error) {
 }
 
 // ID satisfies the app.Menu interface.
-func (m *Menu) ID() uuid.UUID {
+func (m *Menu) ID() string {
 	return m.id
 }
 

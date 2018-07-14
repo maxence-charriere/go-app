@@ -25,7 +25,7 @@ import (
 type Window struct {
 	core.Elem
 
-	id        uuid.UUID
+	id        string
 	markup    app.Markup
 	component app.Compo
 	history   *core.History
@@ -132,7 +132,7 @@ func normalizeWidowSize(min, max float64) (float64, float64) {
 }
 
 // ID satisfies the app.Window interface.
-func (w *Window) ID() uuid.UUID {
+func (w *Window) ID() string {
 	return w.id
 }
 

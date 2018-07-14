@@ -12,7 +12,7 @@ import (
 // FilePanel implements the app.Element interface.
 type FilePanel struct {
 	core.Elem
-	id uuid.UUID
+	id string
 
 	onSelect func(filenames []string)
 }
@@ -46,7 +46,7 @@ func newFilePanel(c app.FilePanelConfig) error {
 }
 
 // ID satistfies the app.Element interface.
-func (p *FilePanel) ID() uuid.UUID {
+func (p *FilePanel) ID() string {
 	return p.id
 }
 
@@ -76,7 +76,7 @@ func handleFilePanel(h func(p *FilePanel, in map[string]interface{}) interface{}
 // SaveFilePanel implements the app.Element interface.
 type SaveFilePanel struct {
 	core.Elem
-	id uuid.UUID
+	id string
 
 	onSelect func(filename string)
 }
@@ -104,7 +104,7 @@ func newSaveFilePanel(c app.SaveFilePanelConfig) error {
 }
 
 // ID satistfies the app.Element interface.
-func (p *SaveFilePanel) ID() uuid.UUID {
+func (p *SaveFilePanel) ID() string {
 	return p.id
 }
 
