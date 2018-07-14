@@ -12,14 +12,14 @@ import (
 // FilePanel implements the app.Element interface.
 type FilePanel struct {
 	core.Elem
-	id uuid.UUID
+	id string
 
 	onSelect func(filenames []string)
 }
 
 func newFilePanel(c app.FilePanelConfig) error {
 	panel := &FilePanel{
-		id:       uuid.New(),
+		id:       uuid.New().String(),
 		onSelect: c.OnSelect,
 	}
 
@@ -31,7 +31,7 @@ func newFilePanel(c app.FilePanelConfig) error {
 		ShowHiddenFiles   bool
 		FileTypes         []string `json:",omitempty"`
 	}{
-		ID:                panel.ID().String(),
+		ID:                panel.ID(),
 		MultipleSelection: c.MultipleSelection,
 		IgnoreDirectories: c.IgnoreDirectories,
 		IgnoreFiles:       c.IgnoreFiles,
@@ -46,7 +46,7 @@ func newFilePanel(c app.FilePanelConfig) error {
 }
 
 // ID satistfies the app.Element interface.
-func (p *FilePanel) ID() uuid.UUID {
+func (p *FilePanel) ID() string {
 	return p.id
 }
 
@@ -61,7 +61,7 @@ func onFilePanelSelect(p *FilePanel, in map[string]interface{}) interface{} {
 
 func handleFilePanel(h func(p *FilePanel, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
 	return func(in map[string]interface{}) interface{} {
-		id, _ := uuid.Parse(in["ID"].(string))
+		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
 		if e.IsNotSet() {
@@ -76,14 +76,14 @@ func handleFilePanel(h func(p *FilePanel, in map[string]interface{}) interface{}
 // SaveFilePanel implements the app.Element interface.
 type SaveFilePanel struct {
 	core.Elem
-	id uuid.UUID
+	id string
 
 	onSelect func(filename string)
 }
 
 func newSaveFilePanel(c app.SaveFilePanelConfig) error {
 	panel := &SaveFilePanel{
-		id:       uuid.New(),
+		id:       uuid.New().String(),
 		onSelect: c.OnSelect,
 	}
 
@@ -92,7 +92,7 @@ func newSaveFilePanel(c app.SaveFilePanelConfig) error {
 		ShowHiddenFiles bool
 		FileTypes       []string `json:",omitempty"`
 	}{
-		ID:              panel.ID().String(),
+		ID:              panel.ID(),
 		ShowHiddenFiles: c.ShowHiddenFiles,
 		FileTypes:       c.FileTypes,
 	}); err != nil {
@@ -104,7 +104,7 @@ func newSaveFilePanel(c app.SaveFilePanelConfig) error {
 }
 
 // ID satistfies the app.Element interface.
-func (p *SaveFilePanel) ID() uuid.UUID {
+func (p *SaveFilePanel) ID() string {
 	return p.id
 }
 
@@ -119,7 +119,7 @@ func onSaveFilePanelSelect(p *SaveFilePanel, in map[string]interface{}) interfac
 
 func handleSaveFilePanel(h func(p *SaveFilePanel, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
 	return func(in map[string]interface{}) interface{} {
-		id, _ := uuid.Parse(in["ID"].(string))
+		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
 		if e.IsNotSet() {

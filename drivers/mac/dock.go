@@ -23,7 +23,7 @@ func newDockTile(c app.MenuConfig) (app.DockTile, error) {
 
 	dock := &DockTile{
 		Menu: Menu{
-			id:             uuid.New(),
+			id:             uuid.New().String(),
 			markup:         markup,
 			lastFocus:      time.Now(),
 			keepWhenClosed: true,
@@ -33,7 +33,7 @@ func newDockTile(c app.MenuConfig) (app.DockTile, error) {
 	if err := driver.macRPC.Call("menus.New", nil, struct {
 		ID string
 	}{
-		ID: dock.ID().String(),
+		ID: dock.ID(),
 	}); err != nil {
 		return nil, err
 	}
@@ -58,7 +58,7 @@ func (d *DockTile) Load(url string, v ...interface{}) error {
 	return driver.macRPC.Call("docks.SetMenu", nil, struct {
 		ID string
 	}{
-		ID: d.ID().String(),
+		ID: d.ID(),
 	})
 }
 

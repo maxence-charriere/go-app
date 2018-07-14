@@ -401,7 +401,7 @@ func testMarkupFullRootChildError(t *testing.T, markup app.Markup) {
 }
 
 func testMarkupCompoDismounted(t *testing.T, markup app.Markup) {
-	_, err := markup.Compo(uuid.New())
+	_, err := markup.Compo(uuid.New().String())
 	if err == nil {
 		t.Fatal("error is nil")
 	}

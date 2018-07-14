@@ -31,7 +31,7 @@ type EventDispatcher interface {
 }
 
 type eventHandler struct {
-	ID      uuid.UUID
+	ID      string
 	Handler interface{}
 }
 
@@ -56,7 +56,7 @@ func (m *eventRegistry) Subscribe(name string, handler interface{}) (unsuscribe 
 		))
 	}
 
-	id := uuid.New()
+	id := uuid.New().String()
 
 	handlers := m.handlers[name]
 	handlers = append(handlers, eventHandler{
@@ -70,7 +70,7 @@ func (m *eventRegistry) Subscribe(name string, handler interface{}) (unsuscribe 
 	}
 }
 
-func (m *eventRegistry) Unsubscribe(name string, id uuid.UUID) {
+func (m *eventRegistry) Unsubscribe(name string, id string) {
 	handlers := m.handlers[name]
 
 	for i, h := range handlers {

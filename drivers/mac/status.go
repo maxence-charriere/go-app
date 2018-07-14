@@ -23,7 +23,7 @@ func newStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
 
 	menu := &StatusMenu{
 		Menu: Menu{
-			id:             uuid.New(),
+			id:             uuid.New().String(),
 			markup:         markup,
 			lastFocus:      time.Now(),
 			keepWhenClosed: true,
@@ -36,7 +36,7 @@ func newStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
 		Text string
 		Icon string
 	}{
-		ID:   menu.ID().String(),
+		ID:   menu.ID(),
 		Text: c.Text,
 		Icon: c.Icon,
 	}); err != nil {
@@ -61,7 +61,7 @@ func (s *StatusMenu) Load(url string, v ...interface{}) error {
 	return driver.macRPC.Call("statusMenus.SetMenu", nil, struct {
 		ID string
 	}{
-		ID: s.ID().String(),
+		ID: s.ID(),
 	})
 }
 
@@ -72,7 +72,7 @@ func (s *StatusMenu) SetText(text string) error {
 		ID   string
 		Text string
 	}{
-		ID:   s.ID().String(),
+		ID:   s.ID(),
 		Text: text,
 	})
 }
@@ -88,7 +88,7 @@ func (s *StatusMenu) SetIcon(name string) error {
 		ID   string
 		Icon string
 	}{
-		ID:   s.ID().String(),
+		ID:   s.ID(),
 		Icon: name,
 	})
 }
@@ -100,7 +100,7 @@ func (s *StatusMenu) Close() error {
 	return driver.macRPC.Call("statusMenus.Close", nil, struct {
 		ID string
 	}{
-		ID: s.ID().String(),
+		ID: s.ID(),
 	})
 }
 

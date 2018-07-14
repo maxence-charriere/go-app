@@ -8,13 +8,13 @@ import (
 // A Element implementation for tests.
 type Element struct {
 	core.Elem
-	id uuid.UUID
+	id string
 }
 
 // NewElement creates a new element.
 func NewElement(d *Driver) *Element {
 	elem := &Element{
-		id: uuid.New(),
+		id: uuid.New().String(),
 	}
 
 	d.elems.Put(elem)
@@ -22,6 +22,6 @@ func NewElement(d *Driver) *Element {
 }
 
 // ID satisfies the app.Element interface.
-func (e *Element) ID() uuid.UUID {
+func (e *Element) ID() string {
 	return e.id
 }

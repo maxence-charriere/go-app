@@ -8,7 +8,6 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/pkg/errors"
 )
@@ -111,7 +110,7 @@ func (e *Encoder) encodeAttributes(tag app.Tag) {
 	}
 
 	e.writer.WriteString(` data-goapp-id="`)
-	e.writer.WriteString(tag.ID.String())
+	e.writer.WriteString(tag.ID)
 	e.writer.WriteByte('"')
 }
 
@@ -142,7 +141,7 @@ type AttrValueFormatter struct {
 	Name       string
 	Value      string
 	FormatHref bool
-	CompoID    uuid.UUID
+	CompoID    string
 	Factory    app.Factory
 }
 

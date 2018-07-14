@@ -16,7 +16,7 @@ import (
 type Window struct {
 	core.Elem
 
-	id          uuid.UUID
+	id          string
 	factory     app.Factory
 	markup      app.Markup
 	history     *core.History
@@ -36,7 +36,7 @@ func newWindow(d *Driver, c app.WindowConfig) (app.Window, error) {
 	markup = app.ConcurrentMarkup(markup)
 
 	win := &Window{
-		id:          uuid.New(),
+		id:          uuid.New().String(),
 		factory:     d.factory,
 		markup:      markup,
 		history:     core.NewHistory(),
@@ -58,7 +58,7 @@ func newWindow(d *Driver, c app.WindowConfig) (app.Window, error) {
 }
 
 // ID satisfies the app.Window interface.
-func (w *Window) ID() uuid.UUID {
+func (w *Window) ID() string {
 	return w.id
 }
 

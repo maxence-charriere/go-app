@@ -11,22 +11,22 @@ import (
 )
 
 type element struct {
-	id uuid.UUID
+	id string
 }
 
 func newElement() *element {
 	elem := &element{
-		id: uuid.New(),
+		id: uuid.New().String(),
 	}
 	return elem
 }
 
-func (e *element) ID() uuid.UUID {
+func (e *element) ID() string {
 	return e.id
 }
 
 type elemWithCompo struct {
-	id        uuid.UUID
+	id        string
 	factory   app.Factory
 	lastFocus time.Time
 	component app.Compo
@@ -37,13 +37,13 @@ func newElemWithCompo() *elemWithCompo {
 	factory.Register(&Foo{})
 
 	return &elemWithCompo{
-		id:        uuid.New(),
+		id:        uuid.New().String(),
 		factory:   factory,
 		lastFocus: time.Now(),
 	}
 }
 
-func (e *elemWithCompo) ID() uuid.UUID {
+func (e *elemWithCompo) ID() string {
 	return e.id
 }
 

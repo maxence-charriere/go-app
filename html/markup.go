@@ -16,7 +16,7 @@ import (
 
 // Markup implements the app.Markup interface.
 type Markup struct {
-	components       map[uuid.UUID]app.Compo
+	components       map[string]app.Compo
 	roots            map[app.Compo]*app.Tag
 	eventSubscribers map[app.Compo]app.EventSubscriber
 	factory          app.Factory
@@ -25,7 +25,7 @@ type Markup struct {
 // NewMarkup creates a markup with the given factory.
 func NewMarkup(factory app.Factory) *Markup {
 	return &Markup{
-		components:       make(map[uuid.UUID]app.Compo),
+		components:       make(map[string]app.Compo),
 		roots:            make(map[app.Compo]*app.Tag),
 		eventSubscribers: make(map[app.Compo]app.EventSubscriber),
 		factory:          factory,
@@ -43,7 +43,7 @@ func (m *Markup) Factory() app.Factory {
 }
 
 // Compo satisfies the app.Markup interface.
-func (m *Markup) Compo(id uuid.UUID) (compo app.Compo, err error) {
+func (m *Markup) Compo(id string) (compo app.Compo, err error) {
 	var ok bool
 	if compo, ok = m.components[id]; !ok {
 		err = errors.New("component not mounted")
@@ -101,10 +101,10 @@ func (m *Markup) FullRoot(tag app.Tag) (root app.Tag, err error) {
 
 // Mount satisfies the app.Markup interface.
 func (m *Markup) Mount(compo app.Compo) (root app.Tag, err error) {
-	return m.mount(compo, uuid.New())
+	return m.mount(compo, uuid.New().String())
 }
 
-func (m *Markup) mount(compo app.Compo, compoID uuid.UUID) (root app.Tag, err error) {
+func (m *Markup) mount(compo app.Compo, compoID string) (root app.Tag, err error) {
 	if m.Contains(compo) {
 		err = errors.New("component is already mounted")
 		return
@@ -114,7 +114,7 @@ func (m *Markup) mount(compo app.Compo, compoID uuid.UUID) (root app.Tag, err er
 		return
 	}
 
-	if err = m.mountTag(&root, uuid.New(), compoID); err != nil {
+	if err = m.mountTag(&root, uuid.New().String(), compoID); err != nil {
 		return
 	}
 
@@ -168,7 +168,7 @@ func decodeCompo(compo app.Compo, tag *app.Tag) error {
 	return dec.Decode(tag)
 }
 
-func (m *Markup) mountTag(tag *app.Tag, id uuid.UUID, compoID uuid.UUID) error {
+func (m *Markup) mountTag(tag *app.Tag, id string, compoID string) error {
 	tag.ID = id
 	tag.CompoID = compoID
 
@@ -191,7 +191,7 @@ func (m *Markup) mountTag(tag *app.Tag, id uuid.UUID, compoID uuid.UUID) error {
 	}
 
 	for i := range tag.Children {
-		if err := m.mountTag(&tag.Children[i], uuid.New(), compoID); err != nil {
+		if err := m.mountTag(&tag.Children[i], uuid.New().String(), compoID); err != nil {
 			return err
 		}
 	}
@@ -496,7 +496,7 @@ func (m *Markup) syncChildTags(current, new *app.Tag) (syncs []app.TagSync, repl
 
 	for len(newChildren) != 0 {
 		child := &newChildren[0]
-		if err = m.mountTag(child, uuid.New(), current.CompoID); err != nil {
+		if err = m.mountTag(child, uuid.New().String(), current.CompoID); err != nil {
 			return
 		}
 		current.Children = append(current.Children, *child)
