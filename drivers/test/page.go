@@ -87,7 +87,7 @@ func (p *page) load(u *url.URL) error {
 		p.markup.Dismount(p.component)
 	}
 
-	compo, err := p.factory.New(app.ComponentNameFromURL(u))
+	compo, err := p.factory.New(app.CompoNameFromURL(u))
 	if err != nil {
 		return err
 	}

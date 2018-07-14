@@ -147,7 +147,7 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 		return err
 	}
 
-	compoName := app.ComponentNameFromURL(u)
+	compoName := app.CompoNameFromURL(u)
 	isRegisteredCompo := driver.factory.Registered(compoName)
 	currentURL, err := w.history.Current()
 
@@ -158,7 +158,7 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 }
 
 func (w *Window) load(u *url.URL) error {
-	compoName := app.ComponentNameFromURL(u)
+	compoName := app.CompoNameFromURL(u)
 	if len(compoName) == 0 {
 		// Redirect web page to default web browser.
 		return exec.
@@ -166,7 +166,7 @@ func (w *Window) load(u *url.URL) error {
 			Run()
 	}
 
-	compo, err := driver.factory.New(app.ComponentNameFromURL(u))
+	compo, err := driver.factory.New(app.CompoNameFromURL(u))
 	if err != nil {
 		return err
 	}
@@ -206,7 +206,7 @@ func (w *Window) load(u *url.URL) error {
 		pageConfig.CSS = app.CSSResources()
 	}
 
-	pageConfig.DefaultComponent = template.HTML(buffer.String())
+	pageConfig.DefaultCompo = template.HTML(buffer.String())
 	pageConfig.AppJS = appjs.AppJS("window.webkit.messageHandlers.golangRequest.postMessage")
 
 	return driver.macRPC.Call("windows.Load", nil, struct {

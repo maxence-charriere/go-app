@@ -66,8 +66,8 @@ func (d *Driver) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 		req.URL.Path = d.DefaultURL
 	}
 
-	if compoName := app.ComponentNameFromURL(req.URL); d.factory.Registered(compoName) {
-		d.handleComponent(res, req)
+	if compoName := app.CompoNameFromURL(req.URL); d.factory.Registered(compoName) {
+		d.handleCompo(res, req)
 		return
 	}
 
@@ -75,8 +75,8 @@ func (d *Driver) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	d.handleNotFound(res, req)
 }
 
-func (d *Driver) handleComponent(res http.ResponseWriter, req *http.Request) {
-	compo, err := d.factory.New(app.ComponentNameFromURL(req.URL))
+func (d *Driver) handleCompo(res http.ResponseWriter, req *http.Request) {
+	compo, err := d.factory.New(app.CompoNameFromURL(req.URL))
 	if err != nil {
 		http.NotFound(res, req)
 		return
@@ -101,7 +101,7 @@ func (d *Driver) handleComponent(res http.ResponseWriter, req *http.Request) {
 }
 
 func (d *Driver) handleNotFound(res http.ResponseWriter, req *http.Request) {
-	compo, err := d.factory.New(app.ComponentNameFromURL(req.URL))
+	compo, err := d.factory.New(app.CompoNameFromURL(req.URL))
 	if err != nil {
 		http.NotFound(res, req)
 		return
@@ -124,8 +124,8 @@ func (d *Driver) handleNotFound(res http.ResponseWriter, req *http.Request) {
 	}
 
 	page := html.NewPage(html.PageConfig{
-		Title:            "not found",
-		DefaultComponent: template.HTML(b.String()),
+		Title:        "not found",
+		DefaultCompo: template.HTML(b.String()),
 	})
 
 	res.WriteHeader(http.StatusNotFound)

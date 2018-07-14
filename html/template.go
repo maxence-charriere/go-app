@@ -27,7 +27,7 @@ const pageTemplate = `
     <link type="text/css" rel="stylesheet" href="{{.}}">{{end}}
 </head>
 <body oncontextmenu="{{if .DisableDefaultContextMenu}}event.preventDefault(){{end}}">
-    {{.DefaultComponent}}
+    {{.DefaultCompo}}
 
     {{if .AppJS}}<script>{{.AppJS}}
     </script>{{end}}{{range .Javascripts}}

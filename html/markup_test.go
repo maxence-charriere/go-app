@@ -111,7 +111,7 @@ func (c *CompoWithFields) Funcs() map[string]interface{} {
 	}
 }
 
-func TestDecodeComponent(t *testing.T) {
+func TestDecodeCompo(t *testing.T) {
 	var tag app.Tag
 
 	s := struct {
@@ -134,7 +134,7 @@ func TestDecodeComponent(t *testing.T) {
 		Struct: s,
 	}
 
-	if err := decodeComponent(compo, &tag); err != nil {
+	if err := decodeCompo(compo, &tag); err != nil {
 		t.Fatal(err)
 	}
 
@@ -160,70 +160,70 @@ func TestDecodeComponent(t *testing.T) {
 	}
 }
 
-func TestMapComponentFields(t *testing.T) {
+func TestMapCompoFields(t *testing.T) {
 	tests := []struct {
 		scenario string
 		function func(t *testing.T)
 	}{
 		{
 			scenario: "skip mapping nil",
-			function: testMapComponentFieldsNil,
+			function: testMapCompoFieldsNil,
 		},
 		{
 			scenario: "skip mapping an anonymous field",
-			function: testMapComponentFieldsAnonymous,
+			function: testMapCompoFieldsAnonymous,
 		},
 		{
 			scenario: "skip mapping an unexported field",
-			function: testMapComponentFieldsUnexported,
+			function: testMapCompoFieldsUnexported,
 		},
 		{
 			scenario: "map a string",
-			function: testMapComponentFieldsString,
+			function: testMapCompoFieldsString,
 		},
 		{
 			scenario: "map a bool",
-			function: testMapComponentFieldsBool,
+			function: testMapCompoFieldsBool,
 		},
 		{
 			scenario: "map a naked bool",
-			function: testMapComponentFieldsBoolNaked,
+			function: testMapCompoFieldsBoolNaked,
 		},
 		{
 			scenario: "map a non boolean value to bool returns an error",
-			function: testMapComponentFieldsBoolError,
+			function: testMapCompoFieldsBoolError,
 		},
 		{
 			scenario: "map an int",
-			function: testMapComponentFieldsInt,
+			function: testMapCompoFieldsInt,
 		},
 		{
 			scenario: "map a non int value to int returns an error",
-			function: testMapComponentFieldsIntError,
+			function: testMapCompoFieldsIntError,
 		},
 		{
 			scenario: "map an uint",
-			function: testMapComponentFieldsUint,
+			function: testMapCompoFieldsUint,
 		},
 		{
 			scenario: "map a non uint value to uint returns an error",
-			function: testMapComponentFieldsUintError,
+			function: testMapCompoFieldsUintError,
 		},
 		{
 			scenario: "map a float",
-			function: testMapComponentFieldsFloat,
+			function: testMapCompoFieldsFloat,
 		},
 		{
 			scenario: "map a non float value to float returns an error",
-			function: testMapComponentFieldsFloatError,
+			function: testMapCompoFieldsFloatError,
 		},
 		{
 			scenario: "map a struct",
-			function: testMapComponentFieldsStruct,
+			function: testMapCompoFieldsStruct,
 		},
 		{
 			scenario: "map a struct with invalid fields returns an error",
-			function: testMapComponentFieldsStructError,
+			function: testMapCompoFieldsStructError,
 		},
 	}
 
@@ -232,23 +232,23 @@ func TestMapComponentFields(t *testing.T) {
 	}
 }
 
-func testMapComponentFieldsNil(t *testing.T) {
+func testMapCompoFieldsNil(t *testing.T) {
 	compo := &CompoWithFields{}
-	if err := mapComponentFields(compo, nil); err != nil {
+	if err := mapCompoFields(compo, nil); err != nil {
 		t.Fatal(err)
 	}
 }
 
-func testMapComponentFieldsAnonymous(t *testing.T) {
+func testMapCompoFieldsAnonymous(t *testing.T) {
 	compo := &CompoWithFields{}
-	if err := mapComponentFields(compo, app.AttributeMap{"zerocompo": `{"placeholder": 42}`}); err != nil {
+	if err := mapCompoFields(compo, app.AttributeMap{"zerocompo": `{"placeholder": 42}`}); err != nil {
 		t.Fatal(err)
 	}
 }
 
-func testMapComponentFieldsUnexported(t *testing.T) {
+func testMapCompoFieldsUnexported(t *testing.T) {
 	compo := &CompoWithFields{}
-	if err := mapComponentFields(compo, app.AttributeMap{"secret": "pandore"}); err != nil {
+	if err := mapCompoFields(compo, app.AttributeMap{"secret": "pandore"}); err != nil {
 		t.Fatal(err)
 	}
 	if len(compo.secret) != 0 {
@@ -256,10 +256,10 @@ func testMapComponentFieldsUnexported(t *testing.T) {
 	}
 }
 
-func testMapComponentFieldsString(t *testing.T) {
+func testMapCompoFieldsString(t *testing.T) {
 	compo := &CompoWithFields{}
 	s := "hello"
-	if err := mapComponentFields(compo, app.AttributeMap{"string": s}); err != nil {
+	if err := mapCompoFields(compo, app.AttributeMap{"string": s}); err != nil {
 		t.Fatal(err)
 	}
 	if compo.String != s {
@@ -267,9 +267,9 @@ func testMapComponentFieldsString(t *testing.T) {
 	}
 }
 
-func testMapComponentFieldsBool(t *testing.T) {
+func testMapCompoFieldsBool(t *testing.T) {
 	compo := &CompoWithFields{}
-	if err := mapComponentFields(compo, app.AttributeMap{"bool": "true"}); err != nil {
+	if err := mapCompoFields(compo, app.AttributeMap{"bool": "true"}); err != nil {
 		t.Fatal(err)
 	}
 	if !compo.Bool {
@@ -277,9 +277,9 @@ func testMapComponentFieldsBool(t *testing.T) {
 	}
 }
 
-func testMapComponentFieldsBoolNaked(t *testing.T) {
+func testMapCompoFieldsBoolNaked(t *testing.T) {
 	compo := &CompoWithFields{}
-	if err := mapComponentFields(compo, app.AttributeMap{"bool": ""}); err != nil {
+	if err := mapCompoFields(compo, app.AttributeMap{"bool": ""}); err != nil {
 		t.Fatal(err)
 	}
 	if !compo.Bool {
@@ -287,18 +287,18 @@ func testMapComponentFieldsBoolNaked(t *testing.T) {
 	}
 }
 
-func testMapComponentFieldsBoolError(t *testing.T) {
+func testMapCompoFieldsBoolError(t *testing.T) {
 	compo := &CompoWithFields{}
-	err := mapComponentFields(compo, app.AttributeMap{"bool": "lolilol"})
+	err := mapCompoFields(compo, app.AttributeMap{"bool": "lolilol"})
 	if err == nil {
 		t.Fatal("error is nil")
 	}
 	t.Log(err)
 }
 
-func testMapComponentFieldsInt(t *testing.T) {
+func testMapCompoFieldsInt(t *testing.T) {
 	compo := &CompoWithFields{}
-	if err := mapComponentFields(compo, app.AttributeMap{"int": "42"}); err != nil {
+	if err := mapCompoFields(compo, app.AttributeMap{"int": "42"}); err != nil {
 		t.Fatal(err)
 	}
 	if compo.Int != 42 {
@@ -306,18 +306,18 @@ func testMapComponentFieldsInt(t *testing.T) {
 	}
 }
 
-func testMapComponentFieldsIntError(t *testing.T) {
+func testMapCompoFieldsIntError(t *testing.T) {
 	compo := &CompoWithFields{}
-	err := mapComponentFields(compo, app.AttributeMap{"int": "lolilol"})
+	err := mapCompoFields(compo, app.AttributeMap{"int": "lolilol"})
 	if err == nil {
 		t.Fatal("error is nil")
 	}
 	t.Log(err)
 }
 
-func testMapComponentFieldsUint(t *testing.T) {
+func testMapCompoFieldsUint(t *testing.T) {
 	compo := &CompoWithFields{}
-	if err := mapComponentFields(compo, app.AttributeMap{"uint": "42"}); err != nil {
+	if err := mapCompoFields(compo, app.AttributeMap{"uint": "42"}); err != nil {
 		t.Fatal(err)
 	}
 	if compo.Uint != 42 {
@@ -325,18 +325,18 @@ func testMapComponentFieldsUint(t *testing.T) {
 	}
 }
 
-func testMapComponentFieldsUintError(t *testing.T) {
+func testMapCompoFieldsUintError(t *testing.T) {
 	compo := &CompoWithFields{}
-	err := mapComponentFields(compo, app.AttributeMap{"uint": "lolilol"})
+	err := mapCompoFields(compo, app.AttributeMap{"uint": "lolilol"})
 	if err == nil {
 		t.Fatal("error is nil")
 	}
 	t.Log(err)
 }
 
-func testMapComponentFieldsFloat(t *testing.T) {
+func testMapCompoFieldsFloat(t *testing.T) {
 	compo := &CompoWithFields{}
-	if err := mapComponentFields(compo, app.AttributeMap{"float": "42.42"}); err != nil {
+	if err := mapCompoFields(compo, app.AttributeMap{"float": "42.42"}); err != nil {
 		t.Fatal(err)
 	}
 	if compo.Float != 42.42 {
@@ -344,18 +344,18 @@ func testMapComponentFieldsFloat(t *testing.T) {
 	}
 }
 
-func testMapComponentFieldsFloatError(t *testing.T) {
+func testMapCompoFieldsFloatError(t *testing.T) {
 	compo := &CompoWithFields{}
-	err := mapComponentFields(compo, app.AttributeMap{"float": "42.world"})
+	err := mapCompoFields(compo, app.AttributeMap{"float": "42.world"})
 	if err == nil {
 		t.Fatal("error is nil")
 	}
 	t.Log(err)
 }
 
-func testMapComponentFieldsStruct(t *testing.T) {
+func testMapCompoFieldsStruct(t *testing.T) {
 	compo := &CompoWithFields{}
-	if err := mapComponentFields(compo, app.AttributeMap{"struct": `{"A": 42, "B": "world"}`}); err != nil {
+	if err := mapCompoFields(compo, app.AttributeMap{"struct": `{"A": 42, "B": "world"}`}); err != nil {
 		t.Fatal(err)
 	}
 	if compo.Struct.A != 42 {
@@ -366,9 +366,9 @@ func testMapComponentFieldsStruct(t *testing.T) {
 	}
 }
 
-func testMapComponentFieldsStructError(t *testing.T) {
+func testMapCompoFieldsStructError(t *testing.T) {
 	compo := &CompoWithFields{}
-	err := mapComponentFields(compo, app.AttributeMap{"struct": `{"A": "world", "B": 42}`})
+	err := mapCompoFields(compo, app.AttributeMap{"struct": `{"A": "world", "B": 42}`})
 	if err == nil {
 		t.Fatal("error is nil")
 	}

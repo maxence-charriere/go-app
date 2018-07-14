@@ -54,8 +54,8 @@ type Subscriber interface {
 	Subscribe() EventSubscriber
 }
 
-// ComponentWithExtendedRender is the interface that wraps Funcs method.
-type ComponentWithExtendedRender interface {
+// CompoWithExtendedRender is the interface that wraps Funcs method.
+type CompoWithExtendedRender interface {
 	Compo
 
 	// Funcs returns a map of funcs to use when rendering a component.
@@ -74,9 +74,9 @@ type ZeroCompo struct {
 	placeholder byte
 }
 
-// ComponentNameFromURL is a helper function that returns the component name
+// CompoNameFromURL is a helper function that returns the component name
 // targeted by the given URL.
-func ComponentNameFromURL(u *url.URL) string {
+func CompoNameFromURL(u *url.URL) string {
 	if len(u.Scheme) != 0 && u.Scheme != "compo" {
 		return ""
 	}
@@ -88,17 +88,17 @@ func ComponentNameFromURL(u *url.URL) string {
 	if len(paths[0]) == 0 {
 		return ""
 	}
-	return normalizeComponentName(paths[0])
+	return normalizeCompoName(paths[0])
 }
 
-// ComponentNameFromURLString is a helper function that returns the component
+// CompoNameFromURLString is a helper function that returns the component
 // name targeted by the given URL.
-func ComponentNameFromURLString(rawurl string) string {
+func CompoNameFromURLString(rawurl string) string {
 	u, _ := url.Parse(rawurl)
-	return ComponentNameFromURL(u)
+	return CompoNameFromURL(u)
 }
 
-func normalizeComponentName(name string) string {
+func normalizeCompoName(name string) string {
 	name = strings.ToLower(name)
 	if pkgsep := strings.IndexByte(name, '.'); pkgsep != -1 {
 		if name[:pkgsep] == "main" {

@@ -15,7 +15,7 @@ func TestAppJS(t *testing.T) {
 		Title:       "app.js test",
 		Javascripts: []string{"test.js"},
 		AppJS:       AppJS("alert"),
-		DefaultComponent: `
+		DefaultCompo: `
 <h1>Starting test</h1>
 		
 <h2>render</h2>

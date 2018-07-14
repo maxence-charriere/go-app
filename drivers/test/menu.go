@@ -74,7 +74,7 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 		return err
 	}
 
-	compo, err := m.factory.New(app.ComponentNameFromURL(u))
+	compo, err := m.factory.New(app.CompoNameFromURL(u))
 	if err != nil {
 		return err
 	}

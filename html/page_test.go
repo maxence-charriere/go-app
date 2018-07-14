@@ -24,8 +24,8 @@ func TestPage(t *testing.T) {
 						Content:   "42",
 					},
 				},
-				DefaultComponent: "<div></div>",
-				DisableAppStyle:  true,
+				DefaultCompo:    "<div></div>",
+				DisableAppStyle: true,
 				CSS: []string{
 					"hello.css",
 					"world.css",

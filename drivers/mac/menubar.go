@@ -70,31 +70,31 @@ type MenuBar struct {
 // OnNavigate setup the menu bar sections.
 func (m *MenuBar) OnNavigate(u *url.URL) {
 	m.AppURL = u.Query().Get("appurl")
-	m.AppURL = app.ComponentNameFromURLString(m.AppURL)
+	m.AppURL = app.CompoNameFromURLString(m.AppURL)
 	if len(m.AppURL) == 0 {
 		m.AppURL = "mac.appmenu"
 	}
 
 	m.EditURL = u.Query().Get("editurl")
-	m.EditURL = app.ComponentNameFromURLString(m.EditURL)
+	m.EditURL = app.CompoNameFromURLString(m.EditURL)
 	if len(m.EditURL) == 0 {
 		m.EditURL = "mac.editmenu"
 	}
 
 	m.WindowURL = u.Query().Get("windowurl")
-	m.WindowURL = app.ComponentNameFromURLString(m.WindowURL)
+	m.WindowURL = app.CompoNameFromURLString(m.WindowURL)
 	if len(m.WindowURL) == 0 {
 		m.WindowURL = "mac.windowmenu"
 	}
 
 	m.HelpURL = u.Query().Get("helpurl")
-	m.HelpURL = app.ComponentNameFromURLString(m.HelpURL)
+	m.HelpURL = app.CompoNameFromURLString(m.HelpURL)
 	if len(m.HelpURL) == 0 {
 		m.HelpURL = "mac.helpmenu"
 	}
 
 	for _, u := range u.Query()["custom"] {
-		customURL := app.ComponentNameFromURLString(u)
+		customURL := app.CompoNameFromURLString(u)
 		if len(customURL) != 0 {
 			m.CutomURLs = append(m.CutomURLs, customURL)
 		}

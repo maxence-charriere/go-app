@@ -33,7 +33,7 @@ func TestEncoder(t *testing.T) {
 		},
 		{
 			scenario: "encoding a not mounted component tag returns an error",
-			function: testEncoderEncodeNotMountedComponent,
+			function: testEncoderEncodeNotMountedCompo,
 		},
 	}
 
@@ -94,7 +94,7 @@ func testEncoderEncodeChildZeroTag(t *testing.T, markup *Markup) {
 	t.Log(err)
 }
 
-func testEncoderEncodeNotMountedComponent(t *testing.T, markup *Markup) {
+func testEncoderEncodeNotMountedCompo(t *testing.T, markup *Markup) {
 	root := app.Tag{
 		Name: "html.world",
 		ID:   uuid.New(),

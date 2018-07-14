@@ -41,7 +41,7 @@ func (f factory) Register(c Compo) (name string, err error) {
 	}
 
 	rtype := rval.Type()
-	name = normalizeComponentName(rtype.String())
+	name = normalizeCompoName(rtype.String())
 	f[name] = rtype
 	return name, nil
 }

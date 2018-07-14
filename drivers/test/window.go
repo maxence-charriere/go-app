@@ -103,7 +103,7 @@ func (w *Window) load(u *url.URL) error {
 		w.markup.Dismount(w.component)
 	}
 
-	compo, err := w.factory.New(app.ComponentNameFromURL(u))
+	compo, err := w.factory.New(app.CompoNameFromURL(u))
 	if err != nil {
 		return err
 	}

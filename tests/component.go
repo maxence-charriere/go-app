@@ -22,7 +22,7 @@ func (c *Foo) Subscribe() app.EventSubscriber {
 	return app.NewEventSubscriber()
 }
 
-// Funcs satisfies the app.ComponentWithExtendedRender interface.
+// Funcs satisfies the app.CompoWithExtendedRender interface.
 func (c *Foo) Funcs() template.FuncMap {
 	return nil
 }
@@ -274,7 +274,7 @@ func (r *RussianDoll) Render() string {
 	`
 }
 
-// Funcs satisfies the app.ComponentWithExtendedRender interface.
+// Funcs satisfies the app.CompoWithExtendedRender interface.
 func (r *RussianDoll) Funcs() map[string]interface{} {
 	return map[string]interface{}{
 		"sub": func(a, b int) int {

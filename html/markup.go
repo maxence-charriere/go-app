@@ -110,7 +110,7 @@ func (m *Markup) mount(compo app.Compo, compoID uuid.UUID) (root app.Tag, err er
 		return
 	}
 
-	if err = decodeComponent(compo, &root); err != nil {
+	if err = decodeCompo(compo, &root); err != nil {
 		return
 	}
 
@@ -131,9 +131,9 @@ func (m *Markup) mount(compo app.Compo, compoID uuid.UUID) (root app.Tag, err er
 	return
 }
 
-func decodeComponent(compo app.Compo, tag *app.Tag) error {
+func decodeCompo(compo app.Compo, tag *app.Tag) error {
 	var funcs template.FuncMap
-	if compoExtRend, ok := compo.(app.ComponentWithExtendedRender); ok {
+	if compoExtRend, ok := compo.(app.CompoWithExtendedRender); ok {
 		funcs = compoExtRend.Funcs()
 	} else {
 		funcs = make(template.FuncMap, 3)
@@ -182,7 +182,7 @@ func (m *Markup) mountTag(tag *app.Tag, id uuid.UUID, compoID uuid.UUID) error {
 			return err
 		}
 
-		if err = mapComponentFields(compo, tag.Attributes); err != nil {
+		if err = mapCompoFields(compo, tag.Attributes); err != nil {
 			return err
 		}
 
@@ -198,7 +198,7 @@ func (m *Markup) mountTag(tag *app.Tag, id uuid.UUID, compoID uuid.UUID) error {
 	return nil
 }
 
-func mapComponentFields(compo app.Compo, attrs app.AttributeMap) error {
+func mapCompoFields(compo app.Compo, attrs app.AttributeMap) error {
 	if len(attrs) == 0 {
 		return nil
 	}
@@ -228,14 +228,14 @@ func mapComponentFields(compo app.Compo, attrs app.AttributeMap) error {
 			continue
 		}
 
-		if err := mapComponentField(fieldVal, attrVal); err != nil {
+		if err := mapCompoField(fieldVal, attrVal); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func mapComponentField(field reflect.Value, attr string) error {
+func mapCompoField(field reflect.Value, attr string) error {
 	switch field.Kind() {
 	case reflect.String:
 		field.SetString(attr)
@@ -335,7 +335,7 @@ func (m *Markup) update(compo app.Compo) (syncs []app.TagSync, replaceParent boo
 	}
 
 	var newRoot app.Tag
-	if err = decodeComponent(compo, &newRoot); err != nil {
+	if err = decodeCompo(compo, &newRoot); err != nil {
 		return
 	}
 
@@ -354,7 +354,7 @@ func (m *Markup) syncTags(current, new *app.Tag) (syncs []app.TagSync, replacePa
 	}
 
 	if current.Is(app.CompoTag) {
-		return m.syncComponentTags(current, new)
+		return m.syncCompoTags(current, new)
 	}
 
 	attrEquals := attributesEquals(current.Name, current.Attributes, new.Attributes)
@@ -416,7 +416,7 @@ func (m *Markup) syncTextTags(current, new *app.Tag) (replaceParent bool) {
 	return
 }
 
-func (m *Markup) syncComponentTags(current, new *app.Tag) (syncs []app.TagSync, replaceParent bool, err error) {
+func (m *Markup) syncCompoTags(current, new *app.Tag) (syncs []app.TagSync, replaceParent bool, err error) {
 	if attributesEquals(current.Name, current.Attributes, new.Attributes) {
 		return
 	}
@@ -428,7 +428,7 @@ func (m *Markup) syncComponentTags(current, new *app.Tag) (syncs []app.TagSync, 
 		return
 	}
 
-	if err = mapComponentFields(compo, current.Attributes); err != nil {
+	if err = mapCompoFields(compo, current.Attributes); err != nil {
 		return
 	}
 

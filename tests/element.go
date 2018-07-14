@@ -55,7 +55,7 @@ func (e *elemWithCompo) Load(rawurl string, v ...interface{}) error {
 		return err
 	}
 
-	compo, err := e.factory.New(app.ComponentNameFromURL(u))
+	compo, err := e.factory.New(app.CompoNameFromURL(u))
 	if err != nil {
 		return err
 	}

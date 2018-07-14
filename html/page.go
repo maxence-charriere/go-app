@@ -23,7 +23,7 @@ type PageConfig struct {
 	Metas []Meta
 
 	// The default component rendering.
-	DefaultComponent template.HTML
+	DefaultCompo template.HTML
 
 	// Disables application default style.
 	DisableAppStyle bool

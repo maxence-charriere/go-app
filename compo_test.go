@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestComponentNameFromURL(t *testing.T) {
+func TestCompoNameFromURL(t *testing.T) {
 	tests := []struct {
 		rawurl       string
 		expectedName string
@@ -37,18 +37,18 @@ func TestComponentNameFromURL(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if name := ComponentNameFromURLString(test.rawurl); name != test.expectedName {
+		if name := CompoNameFromURLString(test.rawurl); name != test.expectedName {
 			t.Errorf(`name is not "%s": "%s"`, test.expectedName, name)
 		}
 	}
 }
 
-func TestNormalizeComponentName(t *testing.T) {
-	if name := "lib.FooBar"; normalizeComponentName(name) != "lib.foobar" {
+func TestNormalizeCompoName(t *testing.T) {
+	if name := "lib.FooBar"; normalizeCompoName(name) != "lib.foobar" {
 		t.Errorf("name is not lib.foobar: %s", name)
 	}
 
-	if name := "main.FooBar"; normalizeComponentName(name) != "foobar" {
+	if name := "main.FooBar"; normalizeCompoName(name) != "foobar" {
 		t.Errorf("name is not foobar: %s", name)
 	}
 }
