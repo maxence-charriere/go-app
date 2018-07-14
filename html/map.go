@@ -35,7 +35,7 @@ func (m *mapper) fullTarget() string {
 	return strings.Join(m.completePipeline[:m.index+1], ".")
 }
 
-func (m *mapper) MapTo(compo app.Component) (function func(), err error) {
+func (m *mapper) MapTo(compo app.Compo) (function func(), err error) {
 	return m.mapTo(reflect.ValueOf(compo))
 }
 

@@ -9,16 +9,16 @@
   Old way (deprecated/deleted):
 
   ```go
-  func ElementByComponent(c Component) (ElementWithComponent, error) { ... }
-  func NavigatorByComponent(c Component) (Navigator, error)          { ... }
-  func WindowByComponent(c Component) (Window, error)                { ... }
-  func PageByComponent(c Component) (Page, error)                    { ... }
+  func ElementByCompo(c Compo) (ElemWithCompo, error) { ... }
+  func NavigatorByCompo(c Compo) (Navigator, error)          { ... }
+  func WindowByCompo(c Compo) (Window, error)                { ... }
+  func PageByCompo(c Compo) (Page, error)                    { ... }
   ```
 
   New way:
 
   ```go
-  func ElemByCompo(c Component) Elem { ... }
+  func ElemByCompo(c Compo) Elem { ... }
   ```
 
   Example:

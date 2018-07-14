@@ -24,7 +24,7 @@ type Menu struct {
 	typ            string
 	markup         app.Markup
 	lastFocus      time.Time
-	component      app.Component
+	component      app.Compo
 	keepWhenClosed bool
 
 	onClose func()
@@ -79,8 +79,8 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 		return err
 	}
 
-	var compo app.Component
-	compo, err = driver.factory.New(app.ComponentNameFromURL(u))
+	var compo app.Compo
+	compo, err = driver.factory.New(app.CompoNameFromURL(u))
 	if err != nil {
 		return err
 	}
@@ -115,18 +115,18 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 	})
 }
 
-// Component satisfies the app.Menu interface.
-func (m *Menu) Component() app.Component {
+// Compo satisfies the app.Menu interface.
+func (m *Menu) Compo() app.Compo {
 	return m.component
 }
 
 // Contains satisfies the app.Menu interface.
-func (m *Menu) Contains(compo app.Component) bool {
+func (m *Menu) Contains(compo app.Compo) bool {
 	return m.markup.Contains(compo)
 }
 
 // Render satisfies the app.Menu interface.
-func (m *Menu) Render(compo app.Component) error {
+func (m *Menu) Render(compo app.Compo) error {
 	syncs, err := m.markup.Update(compo)
 	if err != nil {
 		return err
@@ -161,7 +161,7 @@ func (m *Menu) render(sync app.TagSync) error {
 	})
 }
 
-func (m *Menu) renderAttributes(compo app.Component, sync app.TagSync) error {
+func (m *Menu) renderAttributes(compo app.Compo, sync app.TagSync) error {
 	root, err := m.markup.Root(compo)
 	if err != nil {
 		return err
@@ -234,8 +234,8 @@ func onMenuCallback(m *Menu, in map[string]interface{}) interface{} {
 		return nil
 	}
 
-	var compo app.Component
-	if compo, err = m.markup.Component(mapping.CompoID); err != nil {
+	var compo app.Compo
+	if compo, err = m.markup.Compo(mapping.CompoID); err != nil {
 		app.Log("menu callback failed: %s", err)
 		return nil
 	}

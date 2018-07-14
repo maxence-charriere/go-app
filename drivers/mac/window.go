@@ -27,7 +27,7 @@ type Window struct {
 
 	id        uuid.UUID
 	markup    app.Markup
-	component app.Component
+	component app.Compo
 	history   app.History
 	lastFocus time.Time
 
@@ -147,7 +147,7 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 		return err
 	}
 
-	compoName := app.ComponentNameFromURL(u)
+	compoName := app.CompoNameFromURL(u)
 	isRegisteredCompo := driver.factory.Registered(compoName)
 	currentURL, err := w.history.Current()
 
@@ -158,7 +158,7 @@ func (w *Window) Load(rawurl string, v ...interface{}) error {
 }
 
 func (w *Window) load(u *url.URL) error {
-	compoName := app.ComponentNameFromURL(u)
+	compoName := app.CompoNameFromURL(u)
 	if len(compoName) == 0 {
 		// Redirect web page to default web browser.
 		return exec.
@@ -166,7 +166,7 @@ func (w *Window) load(u *url.URL) error {
 			Run()
 	}
 
-	compo, err := driver.factory.New(app.ComponentNameFromURL(u))
+	compo, err := driver.factory.New(app.CompoNameFromURL(u))
 	if err != nil {
 		return err
 	}
@@ -206,7 +206,7 @@ func (w *Window) load(u *url.URL) error {
 		pageConfig.CSS = app.CSSResources()
 	}
 
-	pageConfig.DefaultComponent = template.HTML(buffer.String())
+	pageConfig.DefaultCompo = template.HTML(buffer.String())
 	pageConfig.AppJS = appjs.AppJS("window.webkit.messageHandlers.golangRequest.postMessage")
 
 	return driver.macRPC.Call("windows.Load", nil, struct {
@@ -225,17 +225,17 @@ func (w *Window) load(u *url.URL) error {
 }
 
 // Contains satisfies the app.Window interface.
-func (w *Window) Contains(compo app.Component) bool {
+func (w *Window) Contains(compo app.Compo) bool {
 	return w.markup.Contains(compo)
 }
 
-// Component satisfies the app.Window interface.
-func (w *Window) Component() app.Component {
+// Compo satisfies the app.Window interface.
+func (w *Window) Compo() app.Compo {
 	return w.component
 }
 
 // Render satisfies the app.Window interface.
-func (w *Window) Render(compo app.Component) error {
+func (w *Window) Render(compo app.Compo) error {
 	syncs, err := w.markup.Update(compo)
 	if err != nil {
 		return err
@@ -265,11 +265,11 @@ func (w *Window) render(sync app.TagSync) error {
 	}
 
 	render, err := json.Marshal(struct {
-		ID        string `json:"id"`
-		Component string `json:"component"`
+		ID    string `json:"id"`
+		Compo string `json:"component"`
 	}{
-		ID:        sync.Tag.ID.String(),
-		Component: buffer.String(),
+		ID:    sync.Tag.ID.String(),
+		Compo: buffer.String(),
 	})
 	if err != nil {
 		return err
@@ -591,8 +591,8 @@ func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 		return nil
 	}
 
-	var compo app.Component
-	if compo, err = w.markup.Component(mapping.CompoID); err != nil {
+	var compo app.Compo
+	if compo, err = w.markup.Compo(mapping.CompoID); err != nil {
 		app.Log("window callback failed: %s", err)
 		return nil
 	}
@@ -604,19 +604,19 @@ func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 }
 
 // WhenWindow calls the given func.
-// It satisfies the app.ElementWithComponent interface.
+// It satisfies the app.ElemWithCompo interface.
 func (w *Window) WhenWindow(f func(app.Window)) {
 	f(w)
 }
 
 // WhenNavigator calls the given func.
-// It satisfies the app.ElementWithComponent interface.
+// It satisfies the app.ElemWithCompo interface.
 func (w *Window) WhenNavigator(f func(app.Navigator)) {
 	f(w)
 }
 
 func onWindowNavigate(w *Window, in map[string]interface{}) interface{} {
-	e := app.ElemByCompo(w.Component())
+	e := app.ElemByCompo(w.Compo())
 
 	e.WhenWindow(func(w app.Window) {
 		w.Load(in["URL"].(string))

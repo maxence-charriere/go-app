@@ -46,7 +46,7 @@ func TestApp(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		compo := win.Component()
+		compo := win.Compo()
 		require.NotNil(t, compo)
 		app.Render(compo)
 
@@ -57,7 +57,7 @@ func TestApp(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		compo = page.Component()
+		compo = page.Compo()
 		require.NotNil(t, compo)
 		app.Render(compo)
 
@@ -68,7 +68,7 @@ func TestApp(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		compo = menu.Component()
+		compo = menu.Compo()
 		require.NotNil(t, compo)
 		app.Render(compo)
 
@@ -102,7 +102,7 @@ func TestApp(t *testing.T) {
 		err = statusMenu.Load("tests.bar")
 		require.NoError(t, err)
 
-		compo = statusMenu.Component()
+		compo = statusMenu.Compo()
 		require.NotNil(t, compo)
 		app.Render(compo)
 
@@ -126,7 +126,7 @@ func TestApp(t *testing.T) {
 		err = dockTile.Load("tests.bar")
 		require.NoError(t, err)
 
-		compo = dockTile.Component()
+		compo = dockTile.Compo()
 		require.NotNil(t, compo)
 		app.Render(compo)
 

@@ -57,7 +57,7 @@ func (s *statusMenuWithLogs) Load(url string, v ...interface{}) error {
 	return err
 }
 
-func (s *statusMenuWithLogs) Render(c Component) error {
+func (s *statusMenuWithLogs) Render(c Compo) error {
 	WhenDebug(func() {
 		Debug("status menu %s is rendering %T",
 			s.ID(),

@@ -21,7 +21,7 @@ type Menu struct {
 	RenderToggle     bool
 }
 
-// Render statisfies the app.Component interface.
+// Render statisfies the app.Compo interface.
 func (m *Menu) Render() string {
 	return `
 <menu label="{{.Name}}">

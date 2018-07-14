@@ -28,7 +28,7 @@ func init() {
 // Components must be imported in order the be used by the app package.
 // This allows components to be created dynamically when they are found into
 // markup.
-func Import(c Component) {
+func Import(c Compo) {
 	if _, err := components.Register(c); err != nil {
 		err = errors.Wrap(err, "import component failed")
 		panic(err)
@@ -126,7 +126,7 @@ func NewContextMenu(c MenuConfig) (Menu, error) {
 // It should be called when the display of component c have to be updated.
 //
 // It panics if called before Run.
-func Render(c Component) {
+func Render(c Compo) {
 	driver.CallOnUIGoroutine(func() {
 		driver.Render(c)
 	})
@@ -135,7 +135,7 @@ func Render(c Component) {
 // ElemByCompo returns the element where the given component is mounted.
 //
 // It panics if called before Run.
-func ElemByCompo(c Component) Elem {
+func ElemByCompo(c Compo) Elem {
 	return driver.ElemByCompo(c)
 }
 

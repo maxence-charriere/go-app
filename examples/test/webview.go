@@ -14,7 +14,7 @@ import (
 )
 
 // Webview is a component to test webview based elements.
-// It implements the app.Component interface.
+// It implements the app.Compo interface.
 type Webview struct {
 	Title       string
 	Page        int
@@ -24,7 +24,7 @@ type Webview struct {
 	CanNext     bool
 }
 
-// Render statisfies the app.Component interface.
+// Render statisfies the app.Compo interface.
 func (c *Webview) Render() string {
 	return `
 <div class="root" oncontextmenu="OnContextMenu">

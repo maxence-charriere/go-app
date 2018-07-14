@@ -21,7 +21,7 @@ type Page struct {
 
 	id         uuid.UUID
 	markup     app.Markup
-	component  app.Component
+	component  app.Compo
 	lastFocus  time.Time
 	currentURL string
 }
@@ -75,8 +75,8 @@ func (p *Page) Load(rawurl string, v ...interface{}) error {
 	}
 	u.Scheme = "compo"
 
-	var compo app.Component
-	if compo, err = driver.factory.New(app.ComponentNameFromURL(u)); err != nil {
+	var compo app.Compo
+	if compo, err = driver.factory.New(app.CompoNameFromURL(u)); err != nil {
 		return err
 	}
 
@@ -104,15 +104,15 @@ func (p *Page) Load(rawurl string, v ...interface{}) error {
 	return nil
 }
 
-func (p *Page) Component() app.Component {
+func (p *Page) Compo() app.Compo {
 	return p.component
 }
 
-func (p *Page) Contains(c app.Component) bool {
+func (p *Page) Contains(c app.Compo) bool {
 	return p.markup.Contains(c)
 }
 
-func (p *Page) Render(c app.Component) error {
+func (p *Page) Render(c app.Compo) error {
 	syncs, err := p.markup.Update(c)
 	if err != nil {
 		return err
@@ -141,13 +141,13 @@ func (p *Page) render(sync app.TagSync) error {
 
 	payload := &struct {
 		*js.Object
-		ID        string `js:"id"`
-		Component string `js:"component"`
+		ID    string `js:"id"`
+		Compo string `js:"component"`
 	}{
 		Object: js.Global.Get("Object").New(),
 	}
 	payload.ID = sync.Tag.ID.String()
-	payload.Component = buffer.String()
+	payload.Compo = buffer.String()
 
 	js.Global.Call("render", payload)
 	return nil
@@ -256,8 +256,8 @@ func (p *Page) onPageRequest(j string) {
 		return
 	}
 
-	var compo app.Component
-	if compo, err = p.markup.Component(mapping.CompoID); err != nil {
+	var compo app.Compo
+	if compo, err = p.markup.Compo(mapping.CompoID); err != nil {
 		app.Log("page request failed: %s", err)
 		return
 	}

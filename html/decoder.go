@@ -76,7 +76,7 @@ func (d *Decoder) decodeTag(tag *app.Tag) bool {
 		tag.Svg = true
 	case isVoidElement(tag.Name, d.decodingSvg):
 		return true
-	case isComponent(tag.Name, d.decodingSvg):
+	case isCompo(tag.Name, d.decodingSvg):
 		tag.Type = app.CompoTag
 		return true
 	}
@@ -175,7 +175,7 @@ var (
 	}
 )
 
-func isComponent(name string, decodingSvg bool) bool {
+func isCompo(name string, decodingSvg bool) bool {
 	if len(name) == 0 {
 		return false
 	}

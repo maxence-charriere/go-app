@@ -22,12 +22,12 @@ func (c *Foo) Subscribe() app.EventSubscriber {
 	return app.NewEventSubscriber()
 }
 
-// Funcs satisfies the app.ComponentWithExtendedRender interface.
+// Funcs satisfies the app.CompoWithExtendedRender interface.
 func (c *Foo) Funcs() template.FuncMap {
 	return nil
 }
 
-// Render satisfies the app.Component interface.
+// Render satisfies the app.Compo interface.
 func (c *Foo) Render() string {
 	return `
 <div>
@@ -40,7 +40,7 @@ func (c *Foo) Render() string {
 // Bar is a test component.
 type Bar app.ZeroCompo
 
-// Render satisfies the app.Component interface.
+// Render satisfies the app.Compo interface.
 func (c *Bar) Render() string {
 	return `<h2>Bar</h2>`
 }
@@ -48,7 +48,7 @@ func (c *Bar) Render() string {
 // CompoWithBadTmpl is a test component that have a bad template.
 type CompoWithBadTmpl app.ZeroCompo
 
-// Render satisfies the app.Component interface.
+// Render satisfies the app.Compo interface.
 func (c *CompoWithBadTmpl) Render() string {
 	return `<h2>{{.Hello}}</h2>`
 }
@@ -56,7 +56,7 @@ func (c *CompoWithBadTmpl) Render() string {
 // CompoWithBadTag is a test component that contains a bad tag.
 type CompoWithBadTag app.ZeroCompo
 
-// Render satisfies the app.Component interface.
+// Render satisfies the app.Compo interface.
 func (c *CompoWithBadTag) Render() string {
 	return `<h1><div/></h1>`
 }
@@ -65,7 +65,7 @@ func (c *CompoWithBadTag) Render() string {
 // registered child component.
 type CompoWithNotRegisteredChild app.ZeroCompo
 
-// Render satisfies the app.Component interface.
+// Render satisfies the app.Compo interface.
 func (c *CompoWithNotRegisteredChild) Render() string {
 	return `
 <div>
@@ -77,7 +77,7 @@ func (c *CompoWithNotRegisteredChild) Render() string {
 // CompoWithBadChild is a test component that contains a bad child.
 type CompoWithBadChild app.ZeroCompo
 
-// Render satisfies the app.Component interface.
+// Render satisfies the app.Compo interface.
 func (c *CompoWithBadChild) Render() string {
 	return `
 <div>
@@ -90,7 +90,7 @@ func (c *CompoWithBadChild) Render() string {
 // attributes.
 type CompoWithBadAttrs app.ZeroCompo
 
-// Render satisfies the app.Component interface.
+// Render satisfies the app.Compo interface.
 func (c *CompoWithBadAttrs) Render() string {
 	return `
 <div>
@@ -102,7 +102,7 @@ func (c *CompoWithBadAttrs) Render() string {
 // NoPointerCompo is a test component that is not implemented as a pointer.
 type NoPointerCompo app.ZeroCompo
 
-// Render satisfies the app.Component interface.
+// Render satisfies the app.Compo interface.
 func (c NoPointerCompo) Render() string {
 	return `<div>goodbye</div>`
 }
@@ -110,7 +110,7 @@ func (c NoPointerCompo) Render() string {
 // IntCompo is a test component that is not implemented as a pointer to struct.
 type IntCompo int
 
-// Render satisfies the app.Component interface.
+// Render satisfies the app.Compo interface.
 func (i *IntCompo) Render() string {
 	return `<p>Aurevoir World</p>`
 }
@@ -118,7 +118,7 @@ func (i *IntCompo) Render() string {
 // EmptyCompo is a test component that has no fields.
 type EmptyCompo struct{}
 
-// Render satisfies the app.Component interface.
+// Render satisfies the app.Compo interface.
 func (c *EmptyCompo) Render() string {
 	return `<p>Goodbye World</p>`
 }
@@ -135,7 +135,7 @@ type Hello struct {
 	CompoFieldErr bool
 }
 
-// Render satisfies the app.Component interface.
+// Render satisfies the app.Compo interface.
 func (h *Hello) Render() string {
 	return `
 <div>
@@ -179,7 +179,7 @@ type World struct {
 	FieldErr uint
 }
 
-// Render satisfies the app.Component interface.
+// Render satisfies the app.Compo interface.
 func (w *World) Render() string {
 	return `
 <div>
@@ -215,7 +215,7 @@ func (m *Mapping) Method() {
 	m.method()
 }
 
-// Render satisfies the app.Component interface.
+// Render satisfies the app.Compo interface.
 func (m *Mapping) Render() string {
 	return `<div>Some mappings</div>`
 }
@@ -263,7 +263,7 @@ type RussianDoll struct {
 	Remaining int
 }
 
-// Render satisfies the app.Component interface.
+// Render satisfies the app.Compo interface.
 func (r *RussianDoll) Render() string {
 	return `
 <div>
@@ -274,7 +274,7 @@ func (r *RussianDoll) Render() string {
 	`
 }
 
-// Funcs satisfies the app.ComponentWithExtendedRender interface.
+// Funcs satisfies the app.CompoWithExtendedRender interface.
 func (r *RussianDoll) Funcs() map[string]interface{} {
 	return map[string]interface{}{
 		"sub": func(a, b int) int {
@@ -289,7 +289,7 @@ type Menu struct {
 	SimulateErr bool
 }
 
-// Render satisfies the app.Component interface.
+// Render satisfies the app.Compo interface.
 func (m *Menu) Render() string {
 	return `
 <menu label="{{.Label}}">
@@ -304,7 +304,7 @@ func (m *Menu) Render() string {
 // Menubar is a component to test a menu bar element.
 type Menubar app.ZeroCompo
 
-// Render satisfies the app.Component interface.
+// Render satisfies the app.Compo interface.
 func (m *Menubar) Render() string {
 	return `
 <menu>

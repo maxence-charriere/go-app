@@ -14,7 +14,7 @@ func TestDecoder(t *testing.T) {
 	<h1>hello</h1>
 	<br>
 	<input type="text" required>
-	<lib.FooComponent Bar="42">
+	<lib.FooCompo Bar="42">
 	<svg>
 		<path d="M 42.42 Z "></path>
 		<path d="M 21.21 Z " />
@@ -32,7 +32,7 @@ func TestDecoder(t *testing.T) {
 	testDecodeCheckH1(t, root.Children[0])
 	testDecodeCheckBr(t, root.Children[1])
 	testDecodeCheckInput(t, root.Children[2])
-	testDecodeCheckFooComponent(t, root.Children[3])
+	testDecodeCheckFooCompo(t, root.Children[3])
 	testDecodeCheckSvg(t, root.Children[4])
 }
 
@@ -96,9 +96,9 @@ func testDecodeCheckInput(t *testing.T, tag app.Tag) {
 	}
 }
 
-func testDecodeCheckFooComponent(t *testing.T, tag app.Tag) {
-	if name := tag.Name; name != "lib.foocomponent" {
-		t.Fatalf(`tag name is not "lib.foocomponent": "%s"`, name)
+func testDecodeCheckFooCompo(t *testing.T, tag app.Tag) {
+	if name := tag.Name; name != "lib.foocompo" {
+		t.Fatalf(`tag name is not "lib.foocompo": "%s"`, name)
 	}
 	if typ := tag.Type; typ != app.CompoTag {
 		t.Fatal("tag is not a component tag")
@@ -211,16 +211,16 @@ func TestIsVoidElement(t *testing.T) {
 	}
 }
 
-func TestIsComponent(t *testing.T) {
-	if isComponent("", false) {
+func TestIsCompo(t *testing.T) {
+	if isCompo("", false) {
 		t.Error("empty name is a component")
 	}
 
-	if isComponent("html.component", true) {
+	if isCompo("html.component", true) {
 		t.Error("html.component is a component")
 	}
 
-	if !isComponent("html.component", false) {
+	if !isCompo("html.component", false) {
 		t.Error("html.component is not a component")
 	}
 }

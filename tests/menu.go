@@ -80,7 +80,7 @@ func testMenuRenderSuccess(t *testing.T, m app.Menu) {
 	err := m.Load("tests.menu")
 	require.NoError(t, err)
 
-	compo := m.Component()
+	compo := m.Compo()
 	require.NotNil(t, compo)
 
 	menu := compo.(*Menu)
@@ -94,7 +94,7 @@ func testMenuRenderFail(t *testing.T, m app.Menu) {
 	err := m.Load("tests.menu")
 	require.NoError(t, err)
 
-	compo := m.Component()
+	compo := m.Compo()
 	require.NotNil(t, compo)
 
 	menu := compo.(*Menu)

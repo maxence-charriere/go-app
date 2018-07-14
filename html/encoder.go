@@ -48,7 +48,7 @@ func (e *Encoder) encode(tag app.Tag, indent int) error {
 		return e.encodeText(tag, indent)
 
 	case app.CompoTag:
-		return e.encodeComponent(tag, indent)
+		return e.encodeCompo(tag, indent)
 
 	default:
 		return errors.Errorf("encoding tag %s of type %v is not supported", tag.Name, tag.Type)
@@ -121,8 +121,8 @@ func (e *Encoder) encodeText(tag app.Tag, indent int) error {
 	return nil
 }
 
-func (e *Encoder) encodeComponent(tag app.Tag, indent int) error {
-	compo, err := e.markup.Component(tag.ID)
+func (e *Encoder) encodeCompo(tag app.Tag, indent int) error {
+	compo, err := e.markup.Compo(tag.ID)
 	if err != nil {
 		return err
 	}
@@ -150,7 +150,7 @@ type AttrValueFormatter struct {
 func (a AttrValueFormatter) Format() string {
 	if a.FormatHref && a.Name == "href" {
 		u, _ := url.Parse(a.Value)
-		compoName := app.ComponentNameFromURL(u)
+		compoName := app.CompoNameFromURL(u)
 
 		if a.Factory.Registered(compoName) {
 			u.Scheme = "compo"

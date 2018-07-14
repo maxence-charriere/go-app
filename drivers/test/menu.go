@@ -21,7 +21,7 @@ type Menu struct {
 	factory     app.Factory
 	markup      app.Markup
 	lastFocus   time.Time
-	component   app.Component
+	component   app.Compo
 	simulateErr bool
 
 	onClose func()
@@ -57,7 +57,7 @@ func (m *Menu) ID() uuid.UUID {
 	return m.id
 }
 
-// Load satisfies the app.ElementWithComponent interface.
+// Load satisfies the app.ElemWithCompo interface.
 func (m *Menu) Load(rawurl string, v ...interface{}) error {
 	if m.simulateErr {
 		return ErrSimulated
@@ -74,7 +74,7 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 		return err
 	}
 
-	compo, err := m.factory.New(app.ComponentNameFromURL(u))
+	compo, err := m.factory.New(app.CompoNameFromURL(u))
 	if err != nil {
 		return err
 	}
@@ -87,18 +87,18 @@ func (m *Menu) Load(rawurl string, v ...interface{}) error {
 	return nil
 }
 
-// Component satisfies the app.Menu interface.
-func (m *Menu) Component() app.Component {
+// Compo satisfies the app.Menu interface.
+func (m *Menu) Compo() app.Compo {
 	return m.component
 }
 
 // Contains satisfies the app.Menu interface.
-func (m *Menu) Contains(compo app.Component) bool {
+func (m *Menu) Contains(compo app.Compo) bool {
 	return m.markup.Contains(compo)
 }
 
 // Render satisfies the app.Menu interface.
-func (m *Menu) Render(compo app.Component) error {
+func (m *Menu) Render(compo app.Compo) error {
 	if m.simulateErr {
 		return ErrSimulated
 	}

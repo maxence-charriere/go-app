@@ -161,7 +161,7 @@ func (w *windowWithLogs) Load(url string, v ...interface{}) error {
 	return err
 }
 
-func (w *windowWithLogs) Render(c Component) error {
+func (w *windowWithLogs) Render(c Compo) error {
 	WhenDebug(func() {
 		Debug("window %s is rendering %T",
 			w.ID(),

@@ -21,7 +21,7 @@ type Window struct {
 	markup      app.Markup
 	history     app.History
 	lastFocus   time.Time
-	component   app.Component
+	component   app.Compo
 	x           float64
 	y           float64
 	width       float64
@@ -65,13 +65,13 @@ func (w *Window) ID() uuid.UUID {
 	return w.id
 }
 
-// Component satisfies the app.Window interface.
-func (w *Window) Component() app.Component {
+// Compo satisfies the app.Window interface.
+func (w *Window) Compo() app.Compo {
 	return w.component
 }
 
 // Contains satisfies the app.Window interface.
-func (w *Window) Contains(c app.Component) bool {
+func (w *Window) Contains(c app.Compo) bool {
 	return w.markup.Contains(c)
 }
 
@@ -103,7 +103,7 @@ func (w *Window) load(u *url.URL) error {
 		w.markup.Dismount(w.component)
 	}
 
-	compo, err := w.factory.New(app.ComponentNameFromURL(u))
+	compo, err := w.factory.New(app.CompoNameFromURL(u))
 	if err != nil {
 		return err
 	}
@@ -117,7 +117,7 @@ func (w *Window) load(u *url.URL) error {
 }
 
 // Render satisfies the app.Window interface.
-func (w *Window) Render(compo app.Component) error {
+func (w *Window) Render(compo app.Compo) error {
 	if w.simulateErr {
 		return ErrSimulated
 	}

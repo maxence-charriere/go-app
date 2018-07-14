@@ -34,10 +34,10 @@ type Driver interface {
 	NewPage(c PageConfig) error
 
 	// Render renders the given component.
-	Render(c Component) error
+	Render(c Compo) error
 
 	// ElemByCompo returns the element where the given component is mounted.
-	ElemByCompo(c Component) Elem
+	ElemByCompo(c Compo) Elem
 
 	// NewFilePanel creates and displays the file panel described by the given
 	// configuration.
@@ -203,7 +203,7 @@ func (d *driverWithLogs) NewPage(c PageConfig) error {
 	return err
 }
 
-func (d *driverWithLogs) Render(c Component) error {
+func (d *driverWithLogs) Render(c Compo) error {
 	WhenDebug(func() {
 		Debug("rendering %T", c)
 	})
@@ -215,7 +215,7 @@ func (d *driverWithLogs) Render(c Component) error {
 	return err
 }
 
-func (d *driverWithLogs) ElemByCompo(c Component) Elem {
+func (d *driverWithLogs) ElemByCompo(c Compo) Elem {
 	WhenDebug(func() {
 		Debug("getting element from %T", c)
 	})

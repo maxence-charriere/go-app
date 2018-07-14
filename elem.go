@@ -36,9 +36,9 @@ type Elem interface {
 	IsNotSet() bool
 }
 
-// ElementWithComponent is the interface that describes an element that hosts
+// ElemWithCompo is the interface that describes an element that hosts
 // components.
-type ElementWithComponent interface {
+type ElemWithCompo interface {
 	Elem
 
 	// Load loads the page specified by the URL.
@@ -49,14 +49,14 @@ type ElementWithComponent interface {
 	// It returns an error if the component is not imported.
 	Load(url string, v ...interface{}) error
 
-	// Component returns the loaded component.
-	Component() Component
+	// Compo returns the loaded component.
+	Compo() Compo
 
 	// Contains reports whether the component is mounted in the element.
-	Contains(Component) bool
+	Contains(Compo) bool
 
 	// Render renders the component.
-	Render(Component) error
+	Render(Compo) error
 
 	// LastFocus returns the last time when the element was focused.
 	LastFocus() time.Time
@@ -65,7 +65,7 @@ type ElementWithComponent interface {
 // Navigator is the interface that describes an element that supports
 // navigation.
 type Navigator interface {
-	ElementWithComponent
+	ElemWithCompo
 
 	// Reload reloads the current page.
 	Reload() error

@@ -61,7 +61,7 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 		},
 		{
 			scenario: "get a dismounted component returns an error",
-			function: testMarkupComponentDismounted,
+			function: testMarkupCompoDismounted,
 		},
 		{
 			scenario: "mounting a mounted component returns an error",
@@ -69,19 +69,19 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 		},
 		{
 			scenario: "mounting a component with a bad template returns an error",
-			function: testMarkupMountComponentWithBadTemplate,
+			function: testMarkupMountCompoWithBadTemplate,
 		},
 		{
 			scenario: "mounting a component with a bad tag returns an error",
-			function: testMarkuptMountComponentWithBadTag,
+			function: testMarkuptMountCompoWithBadTag,
 		},
 		{
 			scenario: "mounting a component with a not registered child returns an error",
-			function: testMarkuptMountComponentWithNotRegistedChild,
+			function: testMarkuptMountCompoWithNotRegistedChild,
 		},
 		{
 			scenario: "mounting a component with bad attributes returns an error",
-			function: testMarkuptMountComponentWithBadAttrs,
+			function: testMarkuptMountCompoWithBadAttrs,
 		},
 		{
 			scenario: "skip dismounting a dismounted component",
@@ -113,11 +113,11 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 		},
 		{
 			scenario: "updating component",
-			function: testMarkupUpdateComponent,
+			function: testMarkupUpdateCompo,
 		},
 		{
 			scenario: "skip updating an unchanged component",
-			function: testMarkupUpdateComponentNoChange,
+			function: testMarkupUpdateCompoNoChange,
 		},
 		{
 			scenario: "updating attributes",
@@ -125,27 +125,27 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 		},
 		{
 			scenario: "updating a not mounted component returns an error",
-			function: testMarkupUpdateUpdateNotMountedComponent,
+			function: testMarkupUpdateUpdateNotMountedCompo,
 		},
 		{
 			scenario: "updating a component with bad template returns an error",
-			function: testMarkupUpdateComponentWithBadTemplate,
+			function: testMarkupUpdateCompoWithBadTemplate,
 		},
 		{
 			scenario: "updating a component with bad child returns an error",
-			function: testMarkupUpdateComponentWithBadChild,
+			function: testMarkupUpdateCompoWithBadChild,
 		},
 		{
 			scenario: "updating a component with an error returns an error",
-			function: testMarkupUpdateComponentWithError,
+			function: testMarkupUpdateCompoWithError,
 		},
 		{
 			scenario: "updating a component with an added child",
-			function: testMarkupUpdateComponentAddChild,
+			function: testMarkupUpdateCompoAddChild,
 		},
 		{
 			scenario: "updating a component with an removed child",
-			function: testMarkupUpdateComponentRemoveChild,
+			function: testMarkupUpdateCompoRemoveChild,
 		},
 		{
 			scenario: "updating a tag with bad attribute returns an error",
@@ -153,7 +153,7 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 		},
 		{
 			scenario: "updating a component with dismounted child returns an error",
-			function: testMarkupUpdateComponentWithDismountedChild,
+			function: testMarkupUpdateCompoWithDismountedChild,
 		},
 		{
 			scenario: "maps a bad target returns an error",
@@ -161,7 +161,7 @@ func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
 		},
 		{
 			scenario: "maps a not mounted returns an error",
-			function: testMarkupMapNotMountedComponent,
+			function: testMarkupMapNotMountedCompo,
 		},
 		{
 			scenario: "maps a field",
@@ -289,7 +289,7 @@ func testMarkupMountDismount(t *testing.T, markup app.Markup) {
 	if name := barTag.Name; name != "tests.bar" {
 		t.Fatalf("bar tag is not a tests.bar: %s", name)
 	}
-	if _, err = markup.Component(barTag.ID); err != nil {
+	if _, err = markup.Compo(barTag.ID); err != nil {
 		t.Fatal(err)
 	}
 
@@ -388,8 +388,8 @@ func testMarkupFullRootChildError(t *testing.T, markup app.Markup) {
 	rootToDismount = rootToDismount.Children[0]
 	rootToDismount = rootToDismount.Children[0]
 
-	var compoToDismount app.Component
-	if compoToDismount, err = markup.Component(rootToDismount.CompoID); err != nil {
+	var compoToDismount app.Compo
+	if compoToDismount, err = markup.Compo(rootToDismount.CompoID); err != nil {
 		t.Fatal(err)
 	}
 	markup.Dismount(compoToDismount)
@@ -400,8 +400,8 @@ func testMarkupFullRootChildError(t *testing.T, markup app.Markup) {
 	t.Log(err)
 }
 
-func testMarkupComponentDismounted(t *testing.T, markup app.Markup) {
-	_, err := markup.Component(uuid.New())
+func testMarkupCompoDismounted(t *testing.T, markup app.Markup) {
+	_, err := markup.Compo(uuid.New())
 	if err == nil {
 		t.Fatal("error is nil")
 	}
@@ -422,12 +422,12 @@ func testMarkupMountMounted(t *testing.T, markup app.Markup) {
 	t.Log(err)
 }
 
-func testMarkupMountComponentWithBadTemplate(t *testing.T, markup app.Markup) {
-	testMarkuptMountInvalidComponent(t, markup, &CompoWithBadTmpl{})
+func testMarkupMountCompoWithBadTemplate(t *testing.T, markup app.Markup) {
+	testMarkuptMountInvalidCompo(t, markup, &CompoWithBadTmpl{})
 
 }
 
-func testMarkuptMountInvalidComponent(t *testing.T, markup app.Markup, compo app.Component) {
+func testMarkuptMountInvalidCompo(t *testing.T, markup app.Markup, compo app.Compo) {
 	_, err := markup.Mount(compo)
 	if err == nil {
 		t.Fatal("error is nil")
@@ -435,18 +435,18 @@ func testMarkuptMountInvalidComponent(t *testing.T, markup app.Markup, compo app
 	t.Log(err)
 }
 
-func testMarkuptMountComponentWithBadTag(t *testing.T, markup app.Markup) {
-	testMarkuptMountInvalidComponent(t, markup, &CompoWithBadTag{})
+func testMarkuptMountCompoWithBadTag(t *testing.T, markup app.Markup) {
+	testMarkuptMountInvalidCompo(t, markup, &CompoWithBadTag{})
 
 }
 
-func testMarkuptMountComponentWithNotRegistedChild(t *testing.T, markup app.Markup) {
-	testMarkuptMountInvalidComponent(t, markup, &CompoWithNotRegisteredChild{})
+func testMarkuptMountCompoWithNotRegistedChild(t *testing.T, markup app.Markup) {
+	testMarkuptMountInvalidCompo(t, markup, &CompoWithNotRegisteredChild{})
 
 }
 
-func testMarkuptMountComponentWithBadAttrs(t *testing.T, markup app.Markup) {
-	testMarkuptMountInvalidComponent(t, markup, &CompoWithBadAttrs{})
+func testMarkuptMountCompoWithBadAttrs(t *testing.T, markup app.Markup) {
+	testMarkuptMountInvalidCompo(t, markup, &CompoWithBadAttrs{})
 }
 
 func testMarkupDismountDismounted(t *testing.T, markup app.Markup) {
@@ -467,8 +467,8 @@ func testMarkupDismountDismountedChild(t *testing.T, markup app.Markup) {
 
 	barTag := root.Children[1]
 
-	var bar app.Component
-	if bar, err = markup.Component(barTag.ID); err != nil {
+	var bar app.Compo
+	if bar, err = markup.Compo(barTag.ID); err != nil {
 		t.Fatal(err)
 	}
 
@@ -621,7 +621,7 @@ func testMarkupUpdateTextToSimple(t *testing.T, markup app.Markup) {
 	}
 }
 
-func testMarkupUpdateComponent(t *testing.T, markup app.Markup) {
+func testMarkupUpdateCompo(t *testing.T, markup app.Markup) {
 	compo := &Hello{Name: "Jonhy"}
 	if _, err := markup.Mount(compo); err != nil {
 		t.Fatal(err)
@@ -654,7 +654,7 @@ func testMarkupUpdateComponent(t *testing.T, markup app.Markup) {
 	}
 }
 
-func testMarkupUpdateComponentNoChange(t *testing.T, markup app.Markup) {
+func testMarkupUpdateCompoNoChange(t *testing.T, markup app.Markup) {
 	compo := &Hello{Name: "JonhyMaxoo"}
 	if _, err := markup.Mount(compo); err != nil {
 		t.Fatal(err)
@@ -702,7 +702,7 @@ func testMarkupUpdateUpdateAttributes(t *testing.T, markup app.Markup) {
 	}
 }
 
-func testMarkupUpdateUpdateNotMountedComponent(t *testing.T, markup app.Markup) {
+func testMarkupUpdateUpdateNotMountedCompo(t *testing.T, markup app.Markup) {
 	_, err := markup.Update(&Hello{})
 	if err == nil {
 		t.Fatal("error is nil")
@@ -710,7 +710,7 @@ func testMarkupUpdateUpdateNotMountedComponent(t *testing.T, markup app.Markup) 
 	t.Log(err)
 }
 
-func testMarkupUpdateComponentWithBadTemplate(t *testing.T, markup app.Markup) {
+func testMarkupUpdateCompoWithBadTemplate(t *testing.T, markup app.Markup) {
 	compo := &Hello{}
 	if _, err := markup.Mount(compo); err != nil {
 		t.Fatal(err)
@@ -725,7 +725,7 @@ func testMarkupUpdateComponentWithBadTemplate(t *testing.T, markup app.Markup) {
 	t.Log(err)
 }
 
-func testMarkupUpdateComponentWithBadChild(t *testing.T, markup app.Markup) {
+func testMarkupUpdateCompoWithBadChild(t *testing.T, markup app.Markup) {
 	compo := &Hello{Name: "Max"}
 	if _, err := markup.Mount(compo); err != nil {
 		t.Fatal(err)
@@ -740,7 +740,7 @@ func testMarkupUpdateComponentWithBadChild(t *testing.T, markup app.Markup) {
 	t.Log(err)
 }
 
-func testMarkupUpdateComponentWithError(t *testing.T, markup app.Markup) {
+func testMarkupUpdateCompoWithError(t *testing.T, markup app.Markup) {
 	compo := &Hello{}
 	if _, err := markup.Mount(compo); err != nil {
 		t.Fatal(err)
@@ -771,7 +771,7 @@ func testMarkupUpdateBadAttribute(t *testing.T, markup app.Markup) {
 	t.Log(err)
 }
 
-func testMarkupUpdateComponentWithDismountedChild(t *testing.T, markup app.Markup) {
+func testMarkupUpdateCompoWithDismountedChild(t *testing.T, markup app.Markup) {
 	compo := &Hello{Name: "Maxoo"}
 	root, err := markup.Mount(compo)
 	if err != nil {
@@ -780,8 +780,8 @@ func testMarkupUpdateComponentWithDismountedChild(t *testing.T, markup app.Marku
 
 	worldTag := root.Children[2].Children[0]
 
-	var world app.Component
-	if world, err = markup.Component(worldTag.ID); err != nil {
+	var world app.Compo
+	if world, err = markup.Compo(worldTag.ID); err != nil {
 		t.Fatal(err)
 	}
 
@@ -795,7 +795,7 @@ func testMarkupUpdateComponentWithDismountedChild(t *testing.T, markup app.Marku
 	t.Log(err)
 }
 
-func testMarkupUpdateComponentAddChild(t *testing.T, markup app.Markup) {
+func testMarkupUpdateCompoAddChild(t *testing.T, markup app.Markup) {
 	compo := &Hello{}
 	if _, err := markup.Mount(compo); err != nil {
 		t.Fatal(err)
@@ -825,7 +825,7 @@ func testMarkupUpdateComponentAddChild(t *testing.T, markup app.Markup) {
 	}
 }
 
-func testMarkupUpdateComponentRemoveChild(t *testing.T, markup app.Markup) {
+func testMarkupUpdateCompoRemoveChild(t *testing.T, markup app.Markup) {
 	compo := &Hello{
 		SizeDiff: true,
 	}
@@ -867,7 +867,7 @@ func testMarkupMapBadTarget(t *testing.T, markup app.Markup) {
 	t.Log(err)
 }
 
-func testMarkupMapNotMountedComponent(t *testing.T, markup app.Markup) {
+func testMarkupMapNotMountedCompo(t *testing.T, markup app.Markup) {
 	_, err := markup.Map(app.Mapping{
 		Target: "Hello",
 	})

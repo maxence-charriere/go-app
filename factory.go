@@ -10,13 +10,13 @@ import (
 // Factory is the interface that describes a component factory.
 type Factory interface {
 	// Register registers the given component under its type name lowercased.
-	Register(c Component) (name string, err error)
+	Register(c Compo) (name string, err error)
 
 	// Registered reports wheter the named component is registered.
 	Registered(name string) bool
 
 	// New creates the named component.
-	New(name string) (Component, error)
+	New(name string) (Compo, error)
 }
 
 // NewFactory creates a component factory.
@@ -26,7 +26,7 @@ func NewFactory() Factory {
 
 type factory map[string]reflect.Type
 
-func (f factory) Register(c Component) (name string, err error) {
+func (f factory) Register(c Compo) (name string, err error) {
 	rval := reflect.ValueOf(c)
 	if rval.Kind() != reflect.Ptr {
 		return "", errors.New("component is not a pointer")
@@ -41,7 +41,7 @@ func (f factory) Register(c Component) (name string, err error) {
 	}
 
 	rtype := rval.Type()
-	name = normalizeComponentName(rtype.String())
+	name = normalizeCompoName(rtype.String())
 	f[name] = rtype
 	return name, nil
 }
@@ -51,7 +51,7 @@ func (f factory) Registered(name string) bool {
 	return ok
 }
 
-func (f factory) New(name string) (Component, error) {
+func (f factory) New(name string) (Compo, error) {
 	rtype, ok := f[name]
 	if !ok {
 		return nil, errors.Errorf("component %s is not registered", name)
@@ -61,7 +61,7 @@ func (f factory) New(name string) (Component, error) {
 
 	// Here we are not checking the cast because only component cant go in the
 	// factory.
-	c := rval.Interface().(Component)
+	c := rval.Interface().(Compo)
 	return c, nil
 }
 
@@ -78,7 +78,7 @@ type concurrentFactory struct {
 	base  Factory
 }
 
-func (f *concurrentFactory) Register(c Component) (name string, err error) {
+func (f *concurrentFactory) Register(c Compo) (name string, err error) {
 	f.mutex.Lock()
 	name, err = f.base.Register(c)
 	f.mutex.Unlock()
@@ -92,7 +92,7 @@ func (f *concurrentFactory) Registered(name string) bool {
 	return ok
 }
 
-func (f *concurrentFactory) New(name string) (Component, error) {
+func (f *concurrentFactory) New(name string) (Compo, error) {
 	f.mutex.RLock()
 	c, err := f.base.New(name)
 	f.mutex.RUnlock()

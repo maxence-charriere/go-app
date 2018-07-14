@@ -90,12 +90,12 @@ func (d *DockTile) SetBadge(v interface{}) error {
 }
 
 // WhenMenu override the embedded Menu.WhenMenu to do nothing.
-// It satisfies the app.ElementWithComponent interface.
+// It satisfies the app.ElemWithCompo interface.
 func (d *DockTile) WhenMenu(f func(app.Menu)) {
 }
 
 // WhenDockTile calls the given handler.
-// It satisfies the app.ElementWithComponent interface.
+// It satisfies the app.ElemWithCompo interface.
 func (d *DockTile) WhenDockTile(f func(app.DockTile)) {
 	f(d)
 }
