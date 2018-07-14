@@ -81,7 +81,7 @@ func (d *Driver) NewPage(c app.PageConfig) error {
 }
 
 // Render satisfies the app.Driver interface.
-func (d *Driver) Render(c app.Component) error {
+func (d *Driver) Render(c app.Compo) error {
 	e := d.elems.GetByCompo(c)
 	if e.IsNotSet() {
 		return errors.New("element not set")
@@ -91,7 +91,7 @@ func (d *Driver) Render(c app.Component) error {
 }
 
 // ElemByCompo satisfies the app.Driver interface.
-func (d *Driver) ElemByCompo(c app.Component) app.Elem {
+func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
 	return d.elems.GetByCompo(c)
 }
 

@@ -105,12 +105,12 @@ func (s *StatusMenu) Close() error {
 }
 
 // WhenMenu override the embedded Menu.WhenMenu to do nothing.
-// It satisfies the app.ElementWithComponent interface.
+// It satisfies the app.ElemWithCompo interface.
 func (s *StatusMenu) WhenMenu(f func(app.Menu)) {
 }
 
 // WhenStatusMenu calls the given func.
-// It satisfies the app.ElementWithComponent interface.
+// It satisfies the app.ElemWithCompo interface.
 func (s *StatusMenu) WhenStatusMenu(f func(app.StatusMenu)) {
 	f(s)
 }

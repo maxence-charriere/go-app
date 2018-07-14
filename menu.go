@@ -5,7 +5,7 @@ import "fmt"
 // Menu is the interface that describes a menu.
 // Accept only components that contain menu and menuitem tags.
 type Menu interface {
-	ElementWithComponent
+	ElemWithCompo
 
 	// The menu type.
 	Type() string
@@ -49,7 +49,7 @@ func (m *menuWithLogs) Load(url string, v ...interface{}) error {
 	return err
 }
 
-func (m *menuWithLogs) Render(c Component) error {
+func (m *menuWithLogs) Render(c Compo) error {
 	WhenDebug(func() {
 		Debug("%s %s is rendering %T",
 			m.Type(),

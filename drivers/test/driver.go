@@ -209,7 +209,7 @@ func (d *Driver) NewNotification(c app.NotificationConfig) error {
 }
 
 // Render satisfies the app.Driver interface.
-func (d *Driver) Render(compo app.Component) error {
+func (d *Driver) Render(compo app.Compo) error {
 	if d.SimulateErr {
 		return ErrSimulated
 	}
@@ -223,7 +223,7 @@ func (d *Driver) Render(compo app.Component) error {
 }
 
 // ElemByCompo satisfies the app.Driver interface.
-func (d *Driver) ElemByCompo(c app.Component) app.Elem {
+func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
 	return d.elems.GetByCompo(c)
 }
 

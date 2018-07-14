@@ -18,16 +18,16 @@ type Markup interface {
 	// Factory returns the used factory to create components.
 	Factory() Factory
 
-	// Component returns the component mounted under the identifier.
+	// Compo returns the component mounted under the identifier.
 	// Returns an error if there is not component with the identifier.
-	Component(id uuid.UUID) (Component, error)
+	Compo(id uuid.UUID) (Compo, error)
 
 	// Contains reports whether the component is mounted.
-	Contains(compo Component) bool
+	Contains(compo Compo) bool
 
 	// Root returns the component root tag.
 	// It returns an error if the component is not mounted.
-	Root(compo Component) (Tag, error)
+	Root(compo Compo) (Tag, error)
 
 	// FullRoot returns a version of the given tag where the children tht are components
 	// are replaced by their full tree.
@@ -35,13 +35,13 @@ type Markup interface {
 
 	// Mount indexes the component.
 	// The component will be kept in memory until it is dismounted.
-	Mount(compo Component) (Tag, error)
+	Mount(compo Compo) (Tag, error)
 
 	// Dismount removes references to a component and its children.
-	Dismount(compo Component)
+	Dismount(compo Compo)
 
 	// Update updates the tag tree of the component.
-	Update(compo Component) ([]TagSync, error)
+	Update(compo Compo) ([]TagSync, error)
 
 	// Map performs the given mapping.
 	// The json value is mapped to the field or method of the specified
@@ -162,21 +162,21 @@ func (m *concurrentMarkup) Factory() Factory {
 	return factory
 }
 
-func (m *concurrentMarkup) Component(id uuid.UUID) (Component, error) {
+func (m *concurrentMarkup) Compo(id uuid.UUID) (Compo, error) {
 	m.mutex.Lock()
-	compo, err := m.base.Component(id)
+	compo, err := m.base.Compo(id)
 	m.mutex.Unlock()
 	return compo, err
 }
 
-func (m *concurrentMarkup) Contains(compo Component) bool {
+func (m *concurrentMarkup) Contains(compo Compo) bool {
 	m.mutex.Lock()
 	contains := m.base.Contains(compo)
 	m.mutex.Unlock()
 	return contains
 }
 
-func (m *concurrentMarkup) Root(compo Component) (Tag, error) {
+func (m *concurrentMarkup) Root(compo Compo) (Tag, error) {
 	m.mutex.Lock()
 	root, err := m.base.Root(compo)
 	m.mutex.Unlock()
@@ -190,20 +190,20 @@ func (m *concurrentMarkup) FullRoot(tag Tag) (Tag, error) {
 	return root, err
 }
 
-func (m *concurrentMarkup) Mount(compo Component) (Tag, error) {
+func (m *concurrentMarkup) Mount(compo Compo) (Tag, error) {
 	m.mutex.Lock()
 	root, err := m.base.Mount(compo)
 	m.mutex.Unlock()
 	return root, err
 }
 
-func (m *concurrentMarkup) Dismount(compo Component) {
+func (m *concurrentMarkup) Dismount(compo Compo) {
 	m.mutex.Lock()
 	m.base.Dismount(compo)
 	m.mutex.Unlock()
 }
 
-func (m *concurrentMarkup) Update(compo Component) ([]TagSync, error) {
+func (m *concurrentMarkup) Update(compo Compo) ([]TagSync, error) {
 	m.mutex.Lock()
 	syncs, err := m.base.Update(compo)
 	m.mutex.Unlock()

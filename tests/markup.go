@@ -289,7 +289,7 @@ func testMarkupMountDismount(t *testing.T, markup app.Markup) {
 	if name := barTag.Name; name != "tests.bar" {
 		t.Fatalf("bar tag is not a tests.bar: %s", name)
 	}
-	if _, err = markup.Component(barTag.ID); err != nil {
+	if _, err = markup.Compo(barTag.ID); err != nil {
 		t.Fatal(err)
 	}
 
@@ -388,8 +388,8 @@ func testMarkupFullRootChildError(t *testing.T, markup app.Markup) {
 	rootToDismount = rootToDismount.Children[0]
 	rootToDismount = rootToDismount.Children[0]
 
-	var compoToDismount app.Component
-	if compoToDismount, err = markup.Component(rootToDismount.CompoID); err != nil {
+	var compoToDismount app.Compo
+	if compoToDismount, err = markup.Compo(rootToDismount.CompoID); err != nil {
 		t.Fatal(err)
 	}
 	markup.Dismount(compoToDismount)
@@ -401,7 +401,7 @@ func testMarkupFullRootChildError(t *testing.T, markup app.Markup) {
 }
 
 func testMarkupComponentDismounted(t *testing.T, markup app.Markup) {
-	_, err := markup.Component(uuid.New())
+	_, err := markup.Compo(uuid.New())
 	if err == nil {
 		t.Fatal("error is nil")
 	}
@@ -427,7 +427,7 @@ func testMarkupMountComponentWithBadTemplate(t *testing.T, markup app.Markup) {
 
 }
 
-func testMarkuptMountInvalidComponent(t *testing.T, markup app.Markup, compo app.Component) {
+func testMarkuptMountInvalidComponent(t *testing.T, markup app.Markup, compo app.Compo) {
 	_, err := markup.Mount(compo)
 	if err == nil {
 		t.Fatal("error is nil")
@@ -467,8 +467,8 @@ func testMarkupDismountDismountedChild(t *testing.T, markup app.Markup) {
 
 	barTag := root.Children[1]
 
-	var bar app.Component
-	if bar, err = markup.Component(barTag.ID); err != nil {
+	var bar app.Compo
+	if bar, err = markup.Compo(barTag.ID); err != nil {
 		t.Fatal(err)
 	}
 
@@ -780,8 +780,8 @@ func testMarkupUpdateComponentWithDismountedChild(t *testing.T, markup app.Marku
 
 	worldTag := root.Children[2].Children[0]
 
-	var world app.Component
-	if world, err = markup.Component(worldTag.ID); err != nil {
+	var world app.Compo
+	if world, err = markup.Compo(worldTag.ID); err != nil {
 		t.Fatal(err)
 	}
 

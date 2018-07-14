@@ -122,7 +122,7 @@ func (e *Encoder) encodeText(tag app.Tag, indent int) error {
 }
 
 func (e *Encoder) encodeComponent(tag app.Tag, indent int) error {
-	compo, err := e.markup.Component(tag.ID)
+	compo, err := e.markup.Compo(tag.ID)
 	if err != nil {
 		return err
 	}

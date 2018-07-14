@@ -150,12 +150,12 @@ func (d *Driver) Storage(p ...string) string {
 }
 
 // Render satisfies the app.Driver interface.
-func (d *Driver) Render(c app.Component) error {
+func (d *Driver) Render(c app.Compo) error {
 	return app.NewErrNotSupported("render")
 }
 
 // ElemByCompo satisfies the app.Driver interface.
-func (d *Driver) ElemByCompo(c app.Component) app.Elem {
+func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
 	return d.elems.GetByCompo(c)
 }
 

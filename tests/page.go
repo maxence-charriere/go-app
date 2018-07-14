@@ -58,7 +58,7 @@ func testPage(t *testing.T, d app.Driver) {
 		})
 	}
 
-	testElementWithComponent(t, func() (app.ElementWithComponent, error) {
+	testElemWithCompo(t, func() (app.ElemWithCompo, error) {
 		return tester.NewTestPage(app.PageConfig{})
 	})
 

@@ -16,18 +16,18 @@ import (
 
 // Markup implements the app.Markup interface.
 type Markup struct {
-	components       map[uuid.UUID]app.Component
-	roots            map[app.Component]*app.Tag
-	eventSubscribers map[app.Component]app.EventSubscriber
+	components       map[uuid.UUID]app.Compo
+	roots            map[app.Compo]*app.Tag
+	eventSubscribers map[app.Compo]app.EventSubscriber
 	factory          app.Factory
 }
 
 // NewMarkup creates a markup with the given factory.
 func NewMarkup(factory app.Factory) *Markup {
 	return &Markup{
-		components:       make(map[uuid.UUID]app.Component),
-		roots:            make(map[app.Component]*app.Tag),
-		eventSubscribers: make(map[app.Component]app.EventSubscriber),
+		components:       make(map[uuid.UUID]app.Compo),
+		roots:            make(map[app.Compo]*app.Tag),
+		eventSubscribers: make(map[app.Compo]app.EventSubscriber),
 		factory:          factory,
 	}
 }
@@ -42,8 +42,8 @@ func (m *Markup) Factory() app.Factory {
 	return m.factory
 }
 
-// Component satisfies the app.Markup interface.
-func (m *Markup) Component(id uuid.UUID) (compo app.Component, err error) {
+// Compo satisfies the app.Markup interface.
+func (m *Markup) Compo(id uuid.UUID) (compo app.Compo, err error) {
 	var ok bool
 	if compo, ok = m.components[id]; !ok {
 		err = errors.New("component not mounted")
@@ -52,13 +52,13 @@ func (m *Markup) Component(id uuid.UUID) (compo app.Component, err error) {
 }
 
 // Contains satisfies the app.Markup interface.
-func (m *Markup) Contains(compo app.Component) bool {
+func (m *Markup) Contains(compo app.Compo) bool {
 	_, ok := m.roots[compo]
 	return ok
 }
 
 // Root satisfies the app.Markup interface.
-func (m *Markup) Root(compo app.Component) (root app.Tag, err error) {
+func (m *Markup) Root(compo app.Compo) (root app.Tag, err error) {
 	rootPtr, ok := m.roots[compo]
 	if !ok {
 		err = errors.New("component not mounted")
@@ -80,13 +80,13 @@ func (m *Markup) FullRoot(tag app.Tag) (root app.Tag, err error) {
 			continue
 		}
 
-		var compo app.Component
-		if compo, err = m.Component(child.ID); err != nil {
+		var compo app.Compo
+		if compo, err = m.Compo(child.ID); err != nil {
 			return root, err
 		}
 
 		// The err checking is ignored here because the err would be the same as
-		// m.Component call.
+		// m.Compo call.
 		child, _ = m.Root(compo)
 
 		if child, err = m.FullRoot(child); err != nil {
@@ -100,11 +100,11 @@ func (m *Markup) FullRoot(tag app.Tag) (root app.Tag, err error) {
 }
 
 // Mount satisfies the app.Markup interface.
-func (m *Markup) Mount(compo app.Component) (root app.Tag, err error) {
+func (m *Markup) Mount(compo app.Compo) (root app.Tag, err error) {
 	return m.mount(compo, uuid.New())
 }
 
-func (m *Markup) mount(compo app.Component, compoID uuid.UUID) (root app.Tag, err error) {
+func (m *Markup) mount(compo app.Compo, compoID uuid.UUID) (root app.Tag, err error) {
 	if m.Contains(compo) {
 		err = errors.New("component is already mounted")
 		return
@@ -131,7 +131,7 @@ func (m *Markup) mount(compo app.Component, compoID uuid.UUID) (root app.Tag, er
 	return
 }
 
-func decodeComponent(compo app.Component, tag *app.Tag) error {
+func decodeComponent(compo app.Compo, tag *app.Tag) error {
 	var funcs template.FuncMap
 	if compoExtRend, ok := compo.(app.ComponentWithExtendedRender); ok {
 		funcs = compoExtRend.Funcs()
@@ -198,7 +198,7 @@ func (m *Markup) mountTag(tag *app.Tag, id uuid.UUID, compoID uuid.UUID) error {
 	return nil
 }
 
-func mapComponentFields(compo app.Component, attrs app.AttributeMap) error {
+func mapComponentFields(compo app.Compo, attrs app.AttributeMap) error {
 	if len(attrs) == 0 {
 		return nil
 	}
@@ -282,7 +282,7 @@ func mapComponentField(field reflect.Value, attr string) error {
 }
 
 // Dismount satisfies the app.Markup interface.
-func (m *Markup) Dismount(compo app.Component) {
+func (m *Markup) Dismount(compo app.Compo) {
 	root, ok := m.roots[compo]
 	if !ok {
 		return
@@ -307,7 +307,7 @@ func (m *Markup) dismountTag(tag app.Tag) {
 	if tag.Is(app.CompoTag) {
 		// Sub component are registered under the id of the tag that targets
 		// them.
-		compo, err := m.Component(tag.ID)
+		compo, err := m.Compo(tag.ID)
 		if err != nil {
 			return
 		}
@@ -322,12 +322,12 @@ func (m *Markup) dismountTag(tag app.Tag) {
 }
 
 // Update satisfies the app.Markup interface.
-func (m *Markup) Update(compo app.Component) (syncs []app.TagSync, err error) {
+func (m *Markup) Update(compo app.Compo) (syncs []app.TagSync, err error) {
 	syncs, _, err = m.update(compo)
 	return
 }
 
-func (m *Markup) update(compo app.Component) (syncs []app.TagSync, replaceParent bool, err error) {
+func (m *Markup) update(compo app.Compo) (syncs []app.TagSync, replaceParent bool, err error) {
 	root, ok := m.roots[compo]
 	if !ok {
 		err = errors.New("component not mounted")
@@ -423,8 +423,8 @@ func (m *Markup) syncComponentTags(current, new *app.Tag) (syncs []app.TagSync, 
 
 	current.Attributes = new.Attributes
 
-	var compo app.Component
-	if compo, err = m.Component(current.ID); err != nil {
+	var compo app.Compo
+	if compo, err = m.Compo(current.ID); err != nil {
 		return
 	}
 
@@ -512,8 +512,8 @@ func (m *Markup) Map(mapping app.Mapping) (function func(), err error) {
 		return
 	}
 
-	var compo app.Component
-	if compo, err = m.Component(mapping.CompoID); err != nil {
+	var compo app.Compo
+	if compo, err = m.Compo(mapping.CompoID); err != nil {
 		return
 	}
 

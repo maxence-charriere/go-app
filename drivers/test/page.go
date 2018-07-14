@@ -20,7 +20,7 @@ type page struct {
 	markup    app.Markup
 	history   app.History
 	lastFocus time.Time
-	component app.Component
+	component app.Compo
 
 	onClose func()
 }
@@ -57,13 +57,13 @@ func (p *page) ID() uuid.UUID {
 	return p.id
 }
 
-// Component satisfies the app.Page interface.
-func (p *page) Component() app.Component {
+// Compo satisfies the app.Page interface.
+func (p *page) Compo() app.Compo {
 	return p.component
 }
 
 // Contains satisfies the app.Page interface.
-func (p *page) Contains(c app.Component) bool {
+func (p *page) Contains(c app.Compo) bool {
 	return p.markup.Contains(c)
 }
 
@@ -101,7 +101,7 @@ func (p *page) load(u *url.URL) error {
 }
 
 // Render satisfies the app.Page interface.
-func (p *page) Render(compo app.Component) error {
+func (p *page) Render(compo app.Compo) error {
 	_, err := p.markup.Update(compo)
 	return err
 }

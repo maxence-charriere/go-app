@@ -37,7 +37,7 @@ func (d *dockWithLogs) Load(url string, v ...interface{}) error {
 	return err
 }
 
-func (d *dockWithLogs) Render(c Component) error {
+func (d *dockWithLogs) Render(c Compo) error {
 	WhenDebug(func() {
 		Debug("dock tile is rendering %T", c)
 	})

@@ -25,29 +25,29 @@ func (e *element) ID() uuid.UUID {
 	return e.id
 }
 
-type elementWithComponent struct {
+type elemWithCompo struct {
 	id        uuid.UUID
 	factory   app.Factory
 	lastFocus time.Time
-	component app.Component
+	component app.Compo
 }
 
-func newElementWithComponent() *elementWithComponent {
+func newElemWithCompo() *elemWithCompo {
 	factory := app.NewFactory()
 	factory.Register(&Foo{})
 
-	return &elementWithComponent{
+	return &elemWithCompo{
 		id:        uuid.New(),
 		factory:   factory,
 		lastFocus: time.Now(),
 	}
 }
 
-func (e *elementWithComponent) ID() uuid.UUID {
+func (e *elemWithCompo) ID() uuid.UUID {
 	return e.id
 }
 
-func (e *elementWithComponent) Load(rawurl string, v ...interface{}) error {
+func (e *elemWithCompo) Load(rawurl string, v ...interface{}) error {
 	rawurl = fmt.Sprintf(rawurl, v...)
 
 	u, err := url.Parse(rawurl)
@@ -64,43 +64,43 @@ func (e *elementWithComponent) Load(rawurl string, v ...interface{}) error {
 	return nil
 }
 
-func (e *elementWithComponent) Component() app.Component {
+func (e *elemWithCompo) Compo() app.Compo {
 	return e.component
 }
 
-func (e *elementWithComponent) Contains(c app.Component) bool {
+func (e *elemWithCompo) Contains(c app.Compo) bool {
 	return e.component == c
 }
 
-func (e *elementWithComponent) Render(c app.Component) error {
+func (e *elemWithCompo) Render(c app.Compo) error {
 	e.component = c
 	return nil
 }
 
-func (e *elementWithComponent) LastFocus() time.Time {
+func (e *elemWithCompo) LastFocus() time.Time {
 	return e.lastFocus
 }
 
-func testElementWithComponent(t *testing.T, newElem func() (app.ElementWithComponent, error)) {
+func testElemWithCompo(t *testing.T, newElem func() (app.ElemWithCompo, error)) {
 	tests := []struct {
 		scenario string
-		function func(t *testing.T, elem app.ElementWithComponent)
+		function func(t *testing.T, elem app.ElemWithCompo)
 	}{
 		{
 			scenario: "load a component",
-			function: testElementWithComponentLoadSuccess,
+			function: testElemWithCompoLoadSuccess,
 		},
 		{
 			scenario: "load a component fails",
-			function: testElementWithComponentLoadFail,
+			function: testElemWithCompoLoadFail,
 		},
 		{
 			scenario: "render a component",
-			function: testElementWithComponentRenderSuccess,
+			function: testElemWithCompoRenderSuccess,
 		},
 		{
 			scenario: "render a component fails",
-			function: testElementWithComponentRenderFail,
+			function: testElemWithCompoRenderFail,
 		},
 	}
 
@@ -122,13 +122,13 @@ func testElementWithComponent(t *testing.T, newElem func() (app.ElementWithCompo
 	}
 }
 
-func testElementWithComponentLoadSuccess(t *testing.T, e app.ElementWithComponent) {
+func testElemWithCompoLoadSuccess(t *testing.T, e app.ElemWithCompo) {
 	if err := e.Load("tests.hello"); err != nil {
 		t.Fatal(err)
 	}
 }
 
-func testElementWithComponentLoadFail(t *testing.T, e app.ElementWithComponent) {
+func testElemWithCompoLoadFail(t *testing.T, e app.ElemWithCompo) {
 	err := e.Load("tests.abracadabra")
 	if err == nil {
 		t.Fatal("error is nil")
@@ -136,12 +136,12 @@ func testElementWithComponentLoadFail(t *testing.T, e app.ElementWithComponent) 
 	t.Log(err)
 }
 
-func testElementWithComponentRenderSuccess(t *testing.T, e app.ElementWithComponent) {
+func testElemWithCompoRenderSuccess(t *testing.T, e app.ElemWithCompo) {
 	if err := e.Load("tests.hello"); err != nil {
 		t.Fatal(err)
 	}
 
-	compo := e.Component()
+	compo := e.Compo()
 	if compo == nil {
 		t.Fatal("component is nil")
 	}
@@ -154,12 +154,12 @@ func testElementWithComponentRenderSuccess(t *testing.T, e app.ElementWithCompon
 	}
 }
 
-func testElementWithComponentRenderFail(t *testing.T, e app.ElementWithComponent) {
+func testElemWithCompoRenderFail(t *testing.T, e app.ElemWithCompo) {
 	if err := e.Load("tests.hello"); err != nil {
 		t.Fatal(err)
 	}
 
-	compo := e.Component()
+	compo := e.Compo()
 	if compo == nil {
 		t.Fatal("component is nil")
 	}

@@ -116,7 +116,7 @@ struct name: ```/Hello```.
 It will load the ```Hello``` component when the window is displayed.
 
 Components are structs that implement the 
-[app.Component](https://godoc.org/github.com/murlokswarm/app#Component) 
+[app.Compo](https://godoc.org/github.com/murlokswarm/app#Compo) 
 interface.
 
 Render method returns a string that contains HTML5.

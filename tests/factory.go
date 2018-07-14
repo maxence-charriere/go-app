@@ -12,7 +12,7 @@ import (
 func TestFactory(t *testing.T, setup func() app.Factory) {
 	tests := []struct {
 		scenario string
-		compo    app.Component
+		compo    app.Compo
 		name     string
 		err      bool
 	}{
@@ -66,7 +66,7 @@ func TestFactory(t *testing.T, setup func() app.Factory) {
 				t.Error("component is not registered")
 			}
 
-			var newCompo app.Component
+			var newCompo app.Compo
 
 			newCompo, err = factory.New(test.name)
 			if test.err && err == nil {

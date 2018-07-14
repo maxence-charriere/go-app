@@ -44,18 +44,18 @@ func (e *elem) ID() uuid.UUID {
 type elemWithCompo struct {
 	Elem
 	id    uuid.UUID
-	compo app.Component
+	compo app.Compo
 }
 
 func (e *elemWithCompo) ID() uuid.UUID {
 	return e.id
 }
 
-func (e *elemWithCompo) Contains(c app.Component) bool {
+func (e *elemWithCompo) Contains(c app.Compo) bool {
 	return c != nil && c == e.compo
 }
 
-func (e *elemWithCompo) Render(app.Component) error {
+func (e *elemWithCompo) Render(app.Compo) error {
 	return nil
 }
 

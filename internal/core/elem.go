@@ -14,10 +14,10 @@ type ElemWithCompo interface {
 	app.Elem
 
 	// Contains reports whether the component is mounted in the element.
-	Contains(app.Component) bool
+	Contains(app.Compo) bool
 
 	// Render the given component.
-	Render(app.Component) error
+	Render(app.Compo) error
 }
 
 // Elem is a base struct to embed in an app.Elem implementations.
@@ -61,12 +61,12 @@ func (e *Elem) IsNotSet() bool {
 }
 
 // Contains satisfies the ElemWithCompo interface.
-func (e *Elem) Contains(c app.Component) bool {
+func (e *Elem) Contains(c app.Compo) bool {
 	return false
 }
 
 // Render satisfies the ElemWithCompo interface.
-func (e *Elem) Render(app.Component) error {
+func (e *Elem) Render(app.Compo) error {
 	if e.notSet {
 		return errors.New("not set")
 	}
@@ -143,7 +143,7 @@ func (db *ElemDB) GetByID(id uuid.UUID) app.Elem {
 }
 
 // GetByCompo returns the element where the given component is mounted.
-func (db *ElemDB) GetByCompo(c app.Component) ElemWithCompo {
+func (db *ElemDB) GetByCompo(c app.Compo) ElemWithCompo {
 	db.mutex.RLock()
 	defer db.mutex.RUnlock()
 
