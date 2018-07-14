@@ -1,9 +1,14 @@
 
+2.6.3 / 2018-07-14
+==================
+
+* Replace UUID by string (#152)
+
 2.6.2 / 2018-07-14
 ==================
 
-  * refactor history test (#151)
-  * Move packages to internal (#149)
+* refactor history test (#151)
+* Move packages to internal (#149)
 
 2.6.1 / 2018-07-13
 ==================
