@@ -3,7 +3,7 @@ package tests
 import (
 	"testing"
 
-	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/internal/core"
 )
 
 type historyAction struct {
@@ -13,7 +13,7 @@ type historyAction struct {
 
 // TestHistory is a test suite used to ensure that all history implementations
 // behave the same.
-func TestHistory(t *testing.T, newHistory func() app.History) {
+func TestHistory(t *testing.T, newHistory func() core.History) {
 	const (
 		current     = "Current"
 		new         = "NewEntry"

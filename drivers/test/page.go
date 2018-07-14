@@ -18,7 +18,7 @@ type page struct {
 	id        uuid.UUID
 	factory   app.Factory
 	markup    app.Markup
-	history   app.History
+	history   core.History
 	lastFocus time.Time
 	component app.Compo
 
@@ -29,8 +29,8 @@ func newPage(d *Driver, c app.PageConfig) (app.Page, error) {
 	var markup app.Markup = html.NewMarkup(d.factory)
 	markup = app.ConcurrentMarkup(markup)
 
-	history := app.NewHistory()
-	history = app.ConcurrentHistory(history)
+	history := core.NewHistory()
+	history = core.ConcurrentHistory(history)
 
 	page := &page{
 		id:        uuid.New(),
