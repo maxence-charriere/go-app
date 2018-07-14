@@ -20,10 +20,10 @@
   Old way (deprecated/deleted):
 
   ```go
-  func ElementByCompo(c Compo) (ElemWithCompo, error)        { ... }
-  func NavigatorByCompo(c Compo) (Navigator, error)          { ... }
-  func WindowByCompo(c Compo) (Window, error)                { ... }
-  func PageByCompo(c Compo) (Page, error)                    { ... }
+  func ElementByCompo(c Compo) (ElemWithCompo, error) { ... }
+  func NavigatorByCompo(c Compo) (Navigator, error)   { ... }
+  func WindowByCompo(c Compo) (Window, error)         { ... }
+  func PageByCompo(c Compo) (Page, error)             { ... }
   ```
 
   New way:
