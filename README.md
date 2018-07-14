@@ -115,7 +115,7 @@ When creating the window, we set the ```DefaultURL``` to our Hello component
 struct name: ```/Hello```.
 It will load the ```Hello``` component when the window is displayed.
 
-Compos are structs that implement the 
+Components are structs that implement the 
 [app.Compo](https://godoc.org/github.com/murlokswarm/app#Compo) 
 interface.
 
