@@ -2,6 +2,9 @@ package core
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 type historyAction struct {
@@ -121,28 +124,28 @@ func TestHistory(t *testing.T) {
 			var currentURL string
 			var err error
 
-			history := NewHistory()
+			h := NewHistory()
 
 			for _, action := range test.actions {
 				switch action.name {
 				case current:
-					url, err = history.Current()
+					url, err = h.Current()
 
 				case new:
 					url = action.url
-					history.NewEntry(action.url)
+					h.NewEntry(action.url)
 
 				case canPrevious:
-					history.CanPrevious()
+					h.CanPrevious()
 
 				case previous:
-					url, err = history.Previous()
+					url, err = h.Previous()
 
 				case canNext:
-					history.CanNext()
+					h.CanNext()
 
 				case next:
-					url, err = history.Next()
+					url, err = h.Next()
 				}
 
 				if err != nil {
@@ -150,25 +153,16 @@ func TestHistory(t *testing.T) {
 				}
 			}
 
-			if err == nil && test.expectsErr {
-				t.Fatal("error is nil")
-			}
-			if err != nil && test.expectsErr {
-				t.Log(err)
+			if test.expectsErr {
+				assert.Error(t, err)
 				return
 			}
+			require.NoError(t, err)
 
-			currentURL, _ = history.Current()
-			if currentURL != url {
-				t.Errorf("current url is not %v: %v", url, currentURL)
-			}
-
-			if url != test.expectedURL {
-				t.Errorf("expected url is not %v: %v", test.expectedURL, url)
-			}
-			if l := history.Len(); l != test.expectedLen {
-				t.Errorf("expected len is not %v: %v", test.expectedLen, l)
-			}
+			currentURL, _ = h.Current()
+			assert.Equal(t, url, currentURL)
+			assert.Equal(t, test.expectedURL, url)
+			assert.Equal(t, test.expectedLen, h.Len())
 		})
 	}
 }
