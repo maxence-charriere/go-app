@@ -627,7 +627,7 @@ func handleWindow(h func(w *Window, in map[string]interface{}) interface{}) brid
 		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
-		if e.IsNotSet() {
+		if e.Err() == app.ErrElemNotSet {
 			return nil
 		}
 

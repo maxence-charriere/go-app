@@ -12,6 +12,9 @@ var (
 	// feature is used.
 	ErrNotSupported = errors.New("not supported")
 
+	// ErrElemNotSet describes an error that reports if an element is set.
+	ErrElemNotSet = errors.New("element not set")
+
 	driver     Driver
 	components Factory
 )

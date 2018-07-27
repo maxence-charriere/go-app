@@ -66,7 +66,7 @@ func handleNotification(h func(n *Notification, in map[string]interface{}) inter
 		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
-		if e.IsNotSet() {
+		if e.Err() == app.ErrElemNotSet {
 			return nil
 		}
 
