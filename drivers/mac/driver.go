@@ -318,8 +318,8 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
 func (d *Driver) Render(c app.Compo) error {
 	e := d.elems.GetByCompo(c)
 
-	if e.Err() == app.ErrElemNotSet {
-		return nil
+	if e.Err() != nil {
+		return e.Err()
 	}
 
 	return e.Render(c)
