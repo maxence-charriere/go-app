@@ -24,7 +24,7 @@ type Driver interface {
 
 	// NewWindow creates and displays the window described by the given
 	// configuration.
-	NewWindow(c WindowConfig) (Window, error)
+	NewWindow(c WindowConfig) Window
 
 	// NewContextMenu creates and displays the context menu described by the
 	// given configuration.

@@ -107,7 +107,7 @@ func Storage(path ...string) string {
 // configuration.
 //
 // It panics if called before Run.
-func NewWindow(c WindowConfig) (Window, error) {
+func NewWindow(c WindowConfig) Window {
 	return driver.NewWindow(c)
 }
 
