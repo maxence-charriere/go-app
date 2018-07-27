@@ -53,7 +53,7 @@ func testMenu(t *testing.T, setup func(c app.MenuConfig) (app.Menu, error)) {
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
 			m, err := setup(test.config)
-			if app.NotSupported(err) {
+			if err == app.ErrNotSupported {
 				return
 			}
 			require.NoError(t, err)

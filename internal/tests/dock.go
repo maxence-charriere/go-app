@@ -35,7 +35,7 @@ func testDockTile(t *testing.T, d app.Driver) {
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
 			dock, err := d.Dock()
-			if app.NotSupported(err) {
+			if err == app.ErrNotSupported {
 				return
 			}
 			if err != nil {
@@ -55,7 +55,7 @@ func testDockSetIconSuccess(t *testing.T, d app.DockTile, driver app.Driver) {
 	filename = filepath.Join(filepath.Dir(filename), "resources", "logo.png")
 
 	err := d.SetIcon(filename)
-	if app.NotSupported(err) {
+	if err == app.ErrNotSupported {
 		return
 	}
 	require.NoError(t, err)
@@ -66,7 +66,7 @@ func testDockSetIconFail(t *testing.T, d app.DockTile, driver app.Driver) {
 	filename = filepath.Join(filepath.Dir(filename), "resources", "logo.bmp")
 
 	err := d.SetIcon(filename)
-	if app.NotSupported(err) {
+	if err == app.ErrNotSupported {
 		return
 	}
 	require.Error(t, err)
@@ -74,7 +74,7 @@ func testDockSetIconFail(t *testing.T, d app.DockTile, driver app.Driver) {
 
 func testDockSetBadgeSuccess(t *testing.T, d app.DockTile, driver app.Driver) {
 	err := d.SetBadge("Hello")
-	if app.NotSupported(err) {
+	if err == app.ErrNotSupported {
 		return
 	}
 	if err != nil {
@@ -84,7 +84,7 @@ func testDockSetBadgeSuccess(t *testing.T, d app.DockTile, driver app.Driver) {
 
 func testDockSetBadgeFails(t *testing.T, d app.DockTile, driver app.Driver) {
 	err := d.SetBadge(func() {})
-	if app.NotSupported(err) {
+	if err == app.ErrNotSupported {
 		return
 	}
 	if err == nil {

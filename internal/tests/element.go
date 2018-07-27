@@ -107,7 +107,7 @@ func testElemWithCompo(t *testing.T, newElem func() (app.ElemWithCompo, error)) 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
 			elem, err := newElem()
-			if app.NotSupported(err) {
+			if err == app.ErrNotSupported {
 				return
 			}
 			if err != nil {
@@ -208,7 +208,7 @@ func testElementWithNavigation(t *testing.T, newElem func() (app.Navigator, erro
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
 			elem, err := newElem()
-			if app.NotSupported(err) {
+			if err == app.ErrNotSupported {
 				return
 			}
 			if err != nil {
