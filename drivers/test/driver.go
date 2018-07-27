@@ -215,8 +215,8 @@ func (d *Driver) Render(compo app.Compo) error {
 	}
 
 	e := d.elems.GetByCompo(compo)
-	if e.IsNotSet() {
-		return errors.New("element not set")
+	if e.Err() != nil {
+		return e.Err()
 	}
 
 	return e.Render(compo)
