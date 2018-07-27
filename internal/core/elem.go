@@ -1,7 +1,6 @@
 package core
 
 import (
-	"errors"
 	"sync"
 
 	"github.com/murlokswarm/app"
@@ -21,7 +20,7 @@ type ElemWithCompo interface {
 
 // Elem is a base struct to embed in an app.Elem implementations.
 type Elem struct {
-	notSet bool
+	err error
 }
 
 // ID satisfies the app.Elem interface.
@@ -47,16 +46,16 @@ func (e *Elem) WhenDockTile(func(app.DockTile)) {}
 // WhenStatusMenu satisfies the app.Elem interface.
 func (e *Elem) WhenStatusMenu(func(app.StatusMenu)) {}
 
-// WhenNotSet satisfies the app.Elem interface.
-func (e *Elem) WhenNotSet(f func()) {
-	if e.notSet {
-		f()
+// WhenErr satisfies the app.Elem interface.
+func (e *Elem) WhenErr(f func(error)) {
+	if e.err != nil {
+		f(e.err)
 	}
 }
 
-// IsNotSet satisfies the app.Elem interface.
-func (e *Elem) IsNotSet() bool {
-	return e.notSet
+// Err satisfies the app.Elem interface.
+func (e *Elem) Err() error {
+	return e.err
 }
 
 // Contains satisfies the ElemWithCompo interface.
@@ -66,10 +65,9 @@ func (e *Elem) Contains(c app.Compo) bool {
 
 // Render satisfies the ElemWithCompo interface.
 func (e *Elem) Render(app.Compo) error {
-	if e.notSet {
-		return errors.New("not set")
+	if e.err != nil {
+		return e.err
 	}
-
 	return nil
 }
 
@@ -138,7 +136,7 @@ func (db *ElemDB) GetByID(id string) app.Elem {
 		return e
 	}
 
-	return &Elem{notSet: true}
+	return &Elem{err: app.ErrElemNotSet}
 }
 
 // GetByCompo returns the element where the given component is mounted.
@@ -152,5 +150,5 @@ func (db *ElemDB) GetByCompo(c app.Compo) ElemWithCompo {
 		}
 	}
 
-	return &Elem{notSet: true}
+	return &Elem{err: app.ErrElemNotSet}
 }

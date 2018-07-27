@@ -64,7 +64,7 @@ func handleFilePanel(h func(p *FilePanel, in map[string]interface{}) interface{}
 		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
-		if e.IsNotSet() {
+		if e.Err() == app.ErrElemNotSet {
 			return nil
 		}
 
@@ -122,7 +122,7 @@ func handleSaveFilePanel(h func(p *SaveFilePanel, in map[string]interface{}) int
 		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
-		if e.IsNotSet() {
+		if e.Err() == app.ErrElemNotSet {
 			return nil
 		}
 
