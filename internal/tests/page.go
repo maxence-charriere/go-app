@@ -45,7 +45,7 @@ func testPage(t *testing.T, d app.Driver) {
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
 			p, err := tester.NewTestPage(test.config)
-			if app.NotSupported(err) {
+			if err == app.ErrNotSupported {
 				return
 			}
 			if err != nil {

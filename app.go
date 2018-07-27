@@ -8,6 +8,10 @@ import (
 )
 
 var (
+	// ErrNotSupported describes an error that occurs when an unsupported
+	// feature is used.
+	ErrNotSupported = errors.New("not supported")
+
 	driver     Driver
 	components Factory
 )

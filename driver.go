@@ -75,52 +75,52 @@ type BaseDriver struct{}
 
 // NewWindow satisfies the app.Driver interface.
 func (d *BaseDriver) NewWindow(c WindowConfig) (Window, error) {
-	return nil, NewErrNotSupported("window")
+	return nil, ErrNotSupported
 }
 
 // NewContextMenu satisfies the app.Driver interface.
 func (d *BaseDriver) NewContextMenu(c MenuConfig) (Menu, error) {
-	return nil, NewErrNotSupported("context menu")
+	return nil, ErrNotSupported
 }
 
 // NewPage satisfies the app.Driver interface.
 func (d *BaseDriver) NewPage(c PageConfig) error {
-	return NewErrNotSupported("page")
+	return ErrNotSupported
 }
 
 // NewFilePanel satisfies the app.Driver interface.
 func (d *BaseDriver) NewFilePanel(c FilePanelConfig) error {
-	return NewErrNotSupported("file panel")
+	return ErrNotSupported
 }
 
 // NewSaveFilePanel satisfies the app.Driver interface.
 func (d *BaseDriver) NewSaveFilePanel(c SaveFilePanelConfig) error {
-	return NewErrNotSupported("save file panel")
+	return ErrNotSupported
 }
 
 // NewShare satisfies the app.Driver interface.
 func (d *BaseDriver) NewShare(v interface{}) error {
-	return NewErrNotSupported("share")
+	return ErrNotSupported
 }
 
 // NewNotification satisfies the app.Driver interface.
 func (d *BaseDriver) NewNotification(c NotificationConfig) error {
-	return NewErrNotSupported("notification")
+	return ErrNotSupported
 }
 
 // MenuBar satisfies the app.Driver interface.
 func (d *BaseDriver) MenuBar() (Menu, error) {
-	return nil, NewErrNotSupported("menubar")
+	return nil, ErrNotSupported
 }
 
 // NewStatusMenu satisfies the app.Driver interface.
 func (d *BaseDriver) NewStatusMenu(c StatusMenuConfig) (StatusMenu, error) {
-	return nil, NewErrNotSupported("status menu")
+	return nil, ErrNotSupported
 }
 
 // Dock satisfies the app.Driver interface.
 func (d *BaseDriver) Dock() (DockTile, error) {
-	return nil, NewErrNotSupported("dock")
+	return nil, ErrNotSupported
 }
 
 // Addon represents a driver addon.
