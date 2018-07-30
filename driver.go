@@ -4,9 +4,6 @@ import "encoding/json"
 
 // Driver is the interface that describes a backend for app rendering.
 type Driver interface {
-	// Name returns the driver name.
-	Name() string
-
 	// Run runs the application with the components registered in the given
 	// factory.
 	Run(f Factory) error
@@ -22,6 +19,12 @@ type Driver interface {
 	// location.
 	Storage(path ...string) string
 
+	// Render renders the given component.
+	Render(c Compo) error
+
+	// ElemByCompo returns the element where the given component is mounted.
+	ElemByCompo(c Compo) Elem
+
 	// NewWindow creates and displays the window described by the given
 	// configuration.
 	NewWindow(c WindowConfig) (Window, error)
@@ -32,12 +35,6 @@ type Driver interface {
 
 	// NewPage creates the webpage described in the given configuration.
 	NewPage(c PageConfig) error
-
-	// Render renders the given component.
-	Render(c Compo) error
-
-	// ElemByCompo returns the element where the given component is mounted.
-	ElemByCompo(c Compo) Elem
 
 	// NewFilePanel creates and displays the file panel described by the given
 	// configuration.
@@ -142,7 +139,7 @@ type driverWithLogs struct {
 
 func (d *driverWithLogs) Run(f Factory) error {
 	WhenDebug(func() {
-		Debug("running %s driver", d.Name())
+		Debug("running %T driver", d)
 	})
 
 	err := d.Driver.Run(f)
