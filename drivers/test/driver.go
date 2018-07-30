@@ -17,7 +17,7 @@ var (
 
 // Driver is an app.Driver implementation for testing.
 type Driver struct {
-	app.BaseDriver
+	core.Driver
 
 	// Cause the driver to return ErrSimulated on its operations.
 	SimulateErr bool
@@ -112,7 +112,7 @@ func (d *Driver) NewWindow(c app.WindowConfig) (app.Window, error) {
 		return nil, ErrSimulated
 	}
 	if d.UseBaseDriver {
-		return d.BaseDriver.NewWindow(c)
+		return d.Driver.NewWindow(c)
 	}
 	return newWindow(d, c)
 }
@@ -123,7 +123,7 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
 		return nil, ErrSimulated
 	}
 	if d.UseBaseDriver {
-		return d.BaseDriver.NewContextMenu(c)
+		return d.Driver.NewContextMenu(c)
 	}
 
 	c.Type = "context menu"
@@ -136,7 +136,7 @@ func (d *Driver) NewPage(c app.PageConfig) error {
 		return ErrSimulated
 	}
 	if d.UseBaseDriver {
-		return d.BaseDriver.NewPage(c)
+		return d.Driver.NewPage(c)
 	}
 
 	if d.Page != nil {
@@ -170,7 +170,7 @@ func (d *Driver) NewFilePanel(c app.FilePanelConfig) error {
 		return ErrSimulated
 	}
 	if d.UseBaseDriver {
-		return d.BaseDriver.NewFilePanel(c)
+		return d.Driver.NewFilePanel(c)
 	}
 	return nil
 }
@@ -181,7 +181,7 @@ func (d *Driver) NewSaveFilePanel(c app.SaveFilePanelConfig) error {
 		return ErrSimulated
 	}
 	if d.UseBaseDriver {
-		return d.BaseDriver.NewSaveFilePanel(c)
+		return d.Driver.NewSaveFilePanel(c)
 	}
 	return nil
 }
@@ -192,7 +192,7 @@ func (d *Driver) NewShare(v interface{}) error {
 		return ErrSimulated
 	}
 	if d.UseBaseDriver {
-		return d.BaseDriver.NewShare(v)
+		return d.Driver.NewShare(v)
 	}
 	return nil
 }
@@ -203,7 +203,7 @@ func (d *Driver) NewNotification(c app.NotificationConfig) error {
 		return ErrSimulated
 	}
 	if d.UseBaseDriver {
-		return d.BaseDriver.NewNotification(c)
+		return d.Driver.NewNotification(c)
 	}
 	return nil
 }
@@ -233,7 +233,7 @@ func (d *Driver) MenuBar() (app.Menu, error) {
 		return nil, ErrSimulated
 	}
 	if d.UseBaseDriver {
-		return d.BaseDriver.MenuBar()
+		return d.Driver.MenuBar()
 	}
 	return d.menubar, nil
 }
@@ -244,7 +244,7 @@ func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
 		return nil, ErrSimulated
 	}
 	if d.UseBaseDriver {
-		return d.BaseDriver.NewStatusMenu(c)
+		return d.Driver.NewStatusMenu(c)
 	}
 	return newStatusMenu(d, c), nil
 }
@@ -255,7 +255,7 @@ func (d *Driver) Dock() (app.DockTile, error) {
 		return nil, ErrSimulated
 	}
 	if d.UseBaseDriver {
-		return d.BaseDriver.Dock()
+		return d.Driver.Dock()
 	}
 	return d.dock, nil
 }

@@ -64,62 +64,6 @@ type Driver interface {
 	CallOnUIGoroutine(f func())
 }
 
-// BaseDriver represents a base driver to be embedded in app.Driver
-// implementations.
-// It only contains methods related to features.
-// All the methods return not supported error.
-type BaseDriver struct{}
-
-// NewWindow satisfies the app.Driver interface.
-func (d *BaseDriver) NewWindow(c WindowConfig) (Window, error) {
-	return nil, ErrNotSupported
-}
-
-// NewContextMenu satisfies the app.Driver interface.
-func (d *BaseDriver) NewContextMenu(c MenuConfig) (Menu, error) {
-	return nil, ErrNotSupported
-}
-
-// NewPage satisfies the app.Driver interface.
-func (d *BaseDriver) NewPage(c PageConfig) error {
-	return ErrNotSupported
-}
-
-// NewFilePanel satisfies the app.Driver interface.
-func (d *BaseDriver) NewFilePanel(c FilePanelConfig) error {
-	return ErrNotSupported
-}
-
-// NewSaveFilePanel satisfies the app.Driver interface.
-func (d *BaseDriver) NewSaveFilePanel(c SaveFilePanelConfig) error {
-	return ErrNotSupported
-}
-
-// NewShare satisfies the app.Driver interface.
-func (d *BaseDriver) NewShare(v interface{}) error {
-	return ErrNotSupported
-}
-
-// NewNotification satisfies the app.Driver interface.
-func (d *BaseDriver) NewNotification(c NotificationConfig) error {
-	return ErrNotSupported
-}
-
-// MenuBar satisfies the app.Driver interface.
-func (d *BaseDriver) MenuBar() (Menu, error) {
-	return nil, ErrNotSupported
-}
-
-// NewStatusMenu satisfies the app.Driver interface.
-func (d *BaseDriver) NewStatusMenu(c StatusMenuConfig) (StatusMenu, error) {
-	return nil, ErrNotSupported
-}
-
-// Dock satisfies the app.Driver interface.
-func (d *BaseDriver) Dock() (DockTile, error) {
-	return nil, ErrNotSupported
-}
-
 // Addon represents a driver addon.
 type Addon func(Driver) Driver
 
