@@ -58,12 +58,14 @@ func testPage(t *testing.T, d app.Driver) {
 		})
 	}
 
-	testElemWithCompo(t, func() (app.ElemWithCompo, error) {
-		return tester.NewTestPage(app.PageConfig{})
+	testElemWithCompo(t, func() app.ElemWithCompo {
+		p, _ := tester.NewTestPage(app.PageConfig{})
+		return p
 	})
 
-	testElementWithNavigation(t, func() (app.Navigator, error) {
-		return tester.NewTestPage(app.PageConfig{})
+	testElementWithNavigation(t, func() app.Navigator {
+		p, _ := tester.NewTestPage(app.PageConfig{})
+		return p
 	})
 }
 

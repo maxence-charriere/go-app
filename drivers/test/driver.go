@@ -107,7 +107,7 @@ func (d *Driver) Storage(path ...string) string {
 }
 
 // NewWindow satisfies the app.Driver interface.
-func (d *Driver) NewWindow(c app.WindowConfig) (app.Window, error) {
+func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
 	if d.SimulateErr {
 		return nil, ErrSimulated
 	}

@@ -8,6 +8,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
+	"github.com/stretchr/testify/require"
 )
 
 type element struct {
@@ -81,7 +82,7 @@ func (e *elemWithCompo) LastFocus() time.Time {
 	return e.lastFocus
 }
 
-func testElemWithCompo(t *testing.T, newElem func() (app.ElemWithCompo, error)) {
+func testElemWithCompo(t *testing.T, newElem func() app.ElemWithCompo) {
 	tests := []struct {
 		scenario string
 		function func(t *testing.T, elem app.ElemWithCompo)
@@ -106,18 +107,18 @@ func testElemWithCompo(t *testing.T, newElem func() (app.ElemWithCompo, error)) 
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
-			elem, err := newElem()
-			if err == app.ErrNotSupported {
+			e := newElem()
+			if e.Err() == app.ErrNotSupported {
 				return
 			}
-			if err != nil {
-				t.Fatal(err)
-			}
-			if closer, ok := elem.(app.Closer); ok {
+
+			require.NoError(t, e.Err())
+
+			if closer, ok := e.(app.Closer); ok {
 				defer closer.Close()
 			}
 
-			test.function(t, elem)
+			test.function(t, e)
 		})
 	}
 }
@@ -174,7 +175,7 @@ func testElemWithCompoRenderFail(t *testing.T, e app.ElemWithCompo) {
 	t.Log(err)
 }
 
-func testElementWithNavigation(t *testing.T, newElem func() (app.Navigator, error)) {
+func testElementWithNavigation(t *testing.T, newElem func() app.Navigator) {
 	tests := []struct {
 		scenario string
 		function func(t *testing.T, elem app.Navigator)
@@ -207,18 +208,18 @@ func testElementWithNavigation(t *testing.T, newElem func() (app.Navigator, erro
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
-			elem, err := newElem()
-			if err == app.ErrNotSupported {
+			e := newElem()
+			if e.Err() == app.ErrNotSupported {
 				return
 			}
-			if err != nil {
-				t.Fatal(err)
-			}
-			if closer, ok := elem.(app.Closer); ok {
+
+			require.NoError(t, e.Err())
+
+			if closer, ok := e.(app.Closer); ok {
 				defer closer.Close()
 			}
 
-			test.function(t, elem)
+			test.function(t, e)
 		})
 	}
 }

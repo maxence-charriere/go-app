@@ -41,10 +41,10 @@ func TestApp(t *testing.T) {
 		assert.Equal(t, filepath.Join("storage", "hello", "world"), app.Storage("hello", "world"))
 
 		// Window:
-		win, err := app.NewWindow(app.WindowConfig{
+		win := app.NewWindow(app.WindowConfig{
 			DefaultURL: "tests.foo",
 		})
-		require.NoError(t, err)
+		require.NoError(t, win.Err())
 
 		compo := win.Compo()
 		require.NotNil(t, compo)
@@ -52,7 +52,7 @@ func TestApp(t *testing.T) {
 
 		// Page:
 		var page app.Page
-		page, err = newPage(app.PageConfig{
+		page, err := newPage(app.PageConfig{
 			DefaultURL: "tests.foo",
 		})
 		require.NoError(t, err)

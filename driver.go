@@ -152,22 +152,20 @@ func (d *driverWithLogs) Run(f Factory) error {
 	return err
 }
 
-func (d *driverWithLogs) NewWindow(c WindowConfig) (Window, error) {
+func (d *driverWithLogs) NewWindow(c WindowConfig) Window {
 	WhenDebug(func() {
-		config, _ := json.MarshalIndent(c, "", "  ")
+		config, _ := json.MarshalIndent(c, "", "    ")
 		Debug("creating window: %s", config)
 	})
 
-	win, err := d.Driver.NewWindow(c)
-	if err != nil {
-		Log("creating window failed: %s", err)
-		return nil, err
+	w := d.Driver.NewWindow(c)
+	if w.Err() != nil {
+		Log("creating window failed: %s", w.Err())
 	}
 
-	win = &windowWithLogs{
-		Window: win,
+	return &windowWithLogs{
+		Window: w,
 	}
-	return win, nil
 }
 
 func (d *driverWithLogs) NewContextMenu(c MenuConfig) (Menu, error) {

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/murlokswarm/app"
 )
@@ -47,27 +48,27 @@ func testWindow(t *testing.T, d app.Driver) {
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
-			w, err := d.NewWindow(test.config)
-			if err == app.ErrNotSupported {
+			w := d.NewWindow(test.config)
+			if w.Err() == app.ErrNotSupported {
 				return
 			}
-			if err != nil {
-				t.Fatal(err)
-			}
+
+			require.NoError(t, w.Err())
 			defer w.Close()
 
 			if test.function == nil {
 				return
 			}
+
 			test.function(t, w)
 		})
 	}
 
-	testElemWithCompo(t, func() (app.ElemWithCompo, error) {
+	testElemWithCompo(t, func() app.ElemWithCompo {
 		return d.NewWindow(app.WindowConfig{})
 	})
 
-	testElementWithNavigation(t, func() (app.Navigator, error) {
+	testElementWithNavigation(t, func() app.Navigator {
 		return d.NewWindow(app.WindowConfig{})
 	})
 }
