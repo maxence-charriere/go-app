@@ -22,7 +22,6 @@ func TestDriver(t *testing.T, setup func(onRun func()) app.Driver, shutdown func
 	onRun := func() {
 		defer shutdown()
 
-		t.Log("testing driver", driver.Name())
 		t.Run("window", func(t *testing.T) { testWindow(t, driver) })
 		t.Run("page", func(t *testing.T) { testPage(t, driver) })
 		t.Run("context menu", func(t *testing.T) { testContextMenu(t, driver) })

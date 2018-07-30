@@ -4,9 +4,6 @@ import "encoding/json"
 
 // Driver is the interface that describes a backend for app rendering.
 type Driver interface {
-	// Name returns the driver name.
-	Name() string
-
 	// Run runs the application with the components registered in the given
 	// factory.
 	Run(f Factory) error
@@ -22,6 +19,12 @@ type Driver interface {
 	// location.
 	Storage(path ...string) string
 
+	// Render renders the given component.
+	Render(c Compo) error
+
+	// ElemByCompo returns the element where the given component is mounted.
+	ElemByCompo(c Compo) Elem
+
 	// NewWindow creates and displays the window described by the given
 	// configuration.
 	NewWindow(c WindowConfig) (Window, error)
@@ -32,12 +35,6 @@ type Driver interface {
 
 	// NewPage creates the webpage described in the given configuration.
 	NewPage(c PageConfig) error
-
-	// Render renders the given component.
-	Render(c Compo) error
-
-	// ElemByCompo returns the element where the given component is mounted.
-	ElemByCompo(c Compo) Elem
 
 	// NewFilePanel creates and displays the file panel described by the given
 	// configuration.
@@ -67,62 +64,6 @@ type Driver interface {
 	CallOnUIGoroutine(f func())
 }
 
-// BaseDriver represents a base driver to be embedded in app.Driver
-// implementations.
-// It only contains methods related to features.
-// All the methods return not supported error.
-type BaseDriver struct{}
-
-// NewWindow satisfies the app.Driver interface.
-func (d *BaseDriver) NewWindow(c WindowConfig) (Window, error) {
-	return nil, ErrNotSupported
-}
-
-// NewContextMenu satisfies the app.Driver interface.
-func (d *BaseDriver) NewContextMenu(c MenuConfig) (Menu, error) {
-	return nil, ErrNotSupported
-}
-
-// NewPage satisfies the app.Driver interface.
-func (d *BaseDriver) NewPage(c PageConfig) error {
-	return ErrNotSupported
-}
-
-// NewFilePanel satisfies the app.Driver interface.
-func (d *BaseDriver) NewFilePanel(c FilePanelConfig) error {
-	return ErrNotSupported
-}
-
-// NewSaveFilePanel satisfies the app.Driver interface.
-func (d *BaseDriver) NewSaveFilePanel(c SaveFilePanelConfig) error {
-	return ErrNotSupported
-}
-
-// NewShare satisfies the app.Driver interface.
-func (d *BaseDriver) NewShare(v interface{}) error {
-	return ErrNotSupported
-}
-
-// NewNotification satisfies the app.Driver interface.
-func (d *BaseDriver) NewNotification(c NotificationConfig) error {
-	return ErrNotSupported
-}
-
-// MenuBar satisfies the app.Driver interface.
-func (d *BaseDriver) MenuBar() (Menu, error) {
-	return nil, ErrNotSupported
-}
-
-// NewStatusMenu satisfies the app.Driver interface.
-func (d *BaseDriver) NewStatusMenu(c StatusMenuConfig) (StatusMenu, error) {
-	return nil, ErrNotSupported
-}
-
-// Dock satisfies the app.Driver interface.
-func (d *BaseDriver) Dock() (DockTile, error) {
-	return nil, ErrNotSupported
-}
-
 // Addon represents a driver addon.
 type Addon func(Driver) Driver
 
@@ -142,7 +83,7 @@ type driverWithLogs struct {
 
 func (d *driverWithLogs) Run(f Factory) error {
 	WhenDebug(func() {
-		Debug("running %s driver", d.Name())
+		Debug("running %T driver", d)
 	})
 
 	err := d.Driver.Run(f)
