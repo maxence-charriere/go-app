@@ -38,7 +38,7 @@ func init() {
 
 // Driver is the app.Driver implementation for MacOS.
 type Driver struct {
-	app.BaseDriver
+	core.Driver
 
 	// Menubar configuration
 	MenubarConfig MenuBarConfig
