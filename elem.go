@@ -1,9 +1,5 @@
 package app
 
-import (
-	"time"
-)
-
 // Elem is the interface that describes an app element.
 type Elem interface {
 	// ID returns the element identifier.
@@ -45,7 +41,7 @@ type ElemWithCompo interface {
 	// component.
 	// e.g. hello will load the component named hello.
 	// It returns an error if the component is not imported.
-	Load(url string, v ...interface{}) error
+	Load(url string, v ...interface{})
 
 	// Compo returns the loaded component.
 	Compo() Compo
@@ -54,10 +50,7 @@ type ElemWithCompo interface {
 	Contains(Compo) bool
 
 	// Render renders the component.
-	Render(Compo) error
-
-	// LastFocus returns the last time when the element was focused.
-	LastFocus() time.Time
+	Render(Compo)
 }
 
 // Navigator is the interface that describes an element that supports
@@ -66,27 +59,25 @@ type Navigator interface {
 	ElemWithCompo
 
 	// Reload reloads the current page.
-	Reload() error
+	Reload()
 
 	// CanPrevious reports whether load the previous page is possible.
 	CanPrevious() bool
 
 	// Previous loads the previous page.
-	// It returns an error if there is no previous page to load.
-	Previous() error
+	Previous()
 
 	// CanNext indicates if loading next page is possible.
 	CanNext() bool
 
 	// Next loads the next page.
-	// It returns an error if there is no next page to load.
-	Next() error
+	Next()
 }
 
 // Closer is the interface that describes an element that can be closed.
 type Closer interface {
 	// Close closes the element and free its allocated resources.
-	Close() error
+	Close()
 }
 
 // NotificationConfig is a struct that describes a notification.

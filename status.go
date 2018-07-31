@@ -36,7 +36,7 @@ type statusMenuWithLogs struct {
 	StatusMenu
 }
 
-func (s *statusMenuWithLogs) Load(url string, v ...interface{}) error {
+func (s *statusMenuWithLogs) Load(url string, v ...interface{}) {
 	parsedURL := fmt.Sprintf(url, v...)
 
 	WhenDebug(func() {
@@ -46,18 +46,17 @@ func (s *statusMenuWithLogs) Load(url string, v ...interface{}) error {
 		)
 	})
 
-	err := s.StatusMenu.Load(url, v...)
-	if err != nil {
+	s.StatusMenu.Load(url, v...)
+	if s.Err() != nil {
 		Log("status menu %T failed to load %s: %s",
 			s.ID(),
 			parsedURL,
-			err,
+			s.Err(),
 		)
 	}
-	return err
 }
 
-func (s *statusMenuWithLogs) Render(c Compo) error {
+func (s *statusMenuWithLogs) Render(c Compo) {
 	WhenDebug(func() {
 		Debug("status menu %s is rendering %T",
 			s.ID(),
@@ -65,15 +64,14 @@ func (s *statusMenuWithLogs) Render(c Compo) error {
 		)
 	})
 
-	err := s.StatusMenu.Render(c)
-	if err != nil {
+	s.StatusMenu.Render(c)
+	if s.Err() != nil {
 		Log("status menu %s failed to render %T: %s",
 			s.ID(),
 			c,
-			err,
+			s.Err(),
 		)
 	}
-	return err
 }
 
 func (s *statusMenuWithLogs) SetIcon(name string) error {
@@ -112,17 +110,16 @@ func (s *statusMenuWithLogs) SetText(text string) error {
 	return err
 }
 
-func (s *statusMenuWithLogs) Close() error {
+func (s *statusMenuWithLogs) Close() {
 	WhenDebug(func() {
 		Debug("status menu %s is closing", s.ID())
 	})
 
-	err := s.StatusMenu.Close()
-	if err != nil {
+	s.StatusMenu.Close()
+	if s.Err() != nil {
 		Log("status menu %s failed to close: %s",
 			s.ID(),
-			err,
+			s.Err(),
 		)
 	}
-	return err
 }

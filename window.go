@@ -146,7 +146,15 @@ type windowWithLogs struct {
 	Window
 }
 
-func (w *windowWithLogs) Load(url string, v ...interface{}) error {
+func (w *windowWithLogs) WhenWindow(f func(Window)) {
+	f(w)
+}
+
+func (w *windowWithLogs) WhenNavigator(f func(Navigator)) {
+	f(w)
+}
+
+func (w *windowWithLogs) Load(url string, v ...interface{}) {
 	parsedURL := fmt.Sprintf(url, v...)
 
 	WhenDebug(func() {
@@ -156,18 +164,17 @@ func (w *windowWithLogs) Load(url string, v ...interface{}) error {
 		)
 	})
 
-	err := w.Window.Load(url, v...)
-	if err != nil {
+	w.Window.Load(url, v...)
+	if w.Err() != nil {
 		Log("window %s failed to load %s: %s",
 			w.ID(),
 			parsedURL,
-			err,
+			w.Err(),
 		)
 	}
-	return err
 }
 
-func (w *windowWithLogs) Render(c Compo) error {
+func (w *windowWithLogs) Render(c Compo) {
 	WhenDebug(func() {
 		Debug("window %s is rendering %T",
 			w.ID(),
@@ -175,75 +182,70 @@ func (w *windowWithLogs) Render(c Compo) error {
 		)
 	})
 
-	err := w.Window.Render(c)
-	if err != nil {
+	w.Window.Render(c)
+	if w.Err() != nil {
 		Log("window %s failed to render %T: %s",
 			w.ID(),
 			c,
-			err,
+			w.Err(),
 		)
 	}
-	return err
 }
 
-func (w *windowWithLogs) Reload() error {
+func (w *windowWithLogs) Reload() {
 	WhenDebug(func() {
 		Debug("window %s is reloading", w.ID())
 	})
 
-	err := w.Window.Reload()
-	if err != nil {
+	w.Window.Reload()
+	if w.Err() != nil {
 		Log("window %s failed to reload: %s",
 			w.ID(),
-			err,
+			w.Err(),
 		)
 	}
-	return err
 }
 
-func (w *windowWithLogs) Previous() error {
+func (w *windowWithLogs) Previous() {
 	WhenDebug(func() {
 		Debug("window %s is loading previous", w.ID())
 	})
 
-	err := w.Window.Previous()
-	if err != nil {
+	w.Window.Previous()
+	if w.Err() != nil {
 		Log("window %s failed to load previous: %s",
 			w.ID(),
-			err,
+			w.Err(),
 		)
 	}
-	return err
 }
 
-func (w *windowWithLogs) Next() error {
+func (w *windowWithLogs) Next() {
 	WhenDebug(func() {
 		Debug("window %s is loading next", w.ID())
 	})
 
-	err := w.Window.Next()
-	if err != nil {
+	w.Window.Next()
+	if w.Err() != nil {
 		Log("window %s failed to load next: %s",
 			w.ID(),
-			err,
+			w.Err(),
 		)
 	}
-	return err
 }
 
-func (w *windowWithLogs) Close() error {
+func (w *windowWithLogs) Close() {
 	WhenDebug(func() {
 		Debug("window %s is closing", w.ID())
 	})
 
-	err := w.Window.Close()
-	if err != nil {
+	w.Window.Close()
+	if w.Err() != nil {
 		Log("window %s failed to close: %s",
 			w.ID(),
-			err,
+			w.Err(),
 		)
 	}
-	return err
 }
 
 func (w *windowWithLogs) Move(x, y float64) {

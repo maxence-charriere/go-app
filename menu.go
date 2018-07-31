@@ -26,7 +26,7 @@ type menuWithLogs struct {
 	Menu
 }
 
-func (m *menuWithLogs) Load(url string, v ...interface{}) error {
+func (m *menuWithLogs) Load(url string, v ...interface{}) {
 	parsedURL := fmt.Sprintf(url, v...)
 
 	WhenDebug(func() {
@@ -37,19 +37,18 @@ func (m *menuWithLogs) Load(url string, v ...interface{}) error {
 		)
 	})
 
-	err := m.Menu.Load(url, v...)
-	if err != nil {
+	m.Menu.Load(url, v...)
+	if m.Err() != nil {
 		Log("%s %s failed to load %s: %s",
 			m.Type(),
 			m.ID(),
 			parsedURL,
-			err,
+			m.Err(),
 		)
 	}
-	return err
 }
 
-func (m *menuWithLogs) Render(c Compo) error {
+func (m *menuWithLogs) Render(c Compo) {
 	WhenDebug(func() {
 		Debug("%s %s is rendering %T",
 			m.Type(),
@@ -58,14 +57,13 @@ func (m *menuWithLogs) Render(c Compo) error {
 		)
 	})
 
-	err := m.Menu.Render(c)
-	if err != nil {
+	m.Menu.Render(c)
+	if m.Err() != nil {
 		Log("%s %s failed to render %T: %s",
 			m.Type(),
 			m.ID(),
 			c,
-			err,
+			m.Err(),
 		)
 	}
-	return err
 }

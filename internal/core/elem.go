@@ -18,7 +18,7 @@ type ElemWithCompo interface {
 	Render(app.Compo) error
 }
 
-// Elem is a base struct to embed in an app.Elem implementations.
+// Elem is a base struct to embed in app.Elem implementations.
 type Elem struct {
 	err error
 }
@@ -56,6 +56,11 @@ func (e *Elem) WhenErr(f func(error)) {
 // Err satisfies the app.Elem interface.
 func (e *Elem) Err() error {
 	return e.err
+}
+
+// SetErr set the element error state with the given error.
+func (e *Elem) SetErr(err error) {
+	e.err = err
 }
 
 // Contains satisfies the ElemWithCompo interface.

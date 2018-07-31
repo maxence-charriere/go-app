@@ -106,6 +106,23 @@ func Storage(path ...string) string {
 	return driver.Storage(path...)
 }
 
+// Render renders the given component.
+// It should be called when the display of component c have to be updated.
+//
+// It panics if called before Run.
+func Render(c Compo) {
+	driver.CallOnUIGoroutine(func() {
+		driver.Render(c)
+	})
+}
+
+// ElemByCompo returns the element where the given component is mounted.
+//
+// It panics if called before Run.
+func ElemByCompo(c Compo) Elem {
+	return driver.ElemByCompo(c)
+}
+
 // NewWindow creates and displays the window described by the given
 // configuration.
 //
@@ -127,23 +144,6 @@ func NewPage(c PageConfig) error {
 // It panics if called before Run.
 func NewContextMenu(c MenuConfig) (Menu, error) {
 	return driver.NewContextMenu(c)
-}
-
-// Render renders the given component.
-// It should be called when the display of component c have to be updated.
-//
-// It panics if called before Run.
-func Render(c Compo) {
-	driver.CallOnUIGoroutine(func() {
-		driver.Render(c)
-	})
-}
-
-// ElemByCompo returns the element where the given component is mounted.
-//
-// It panics if called before Run.
-func ElemByCompo(c Compo) Elem {
-	return driver.ElemByCompo(c)
 }
 
 // NewFilePanel creates and displays the file panel described by the given

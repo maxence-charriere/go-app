@@ -20,36 +20,34 @@ type dockWithLogs struct {
 	DockTile
 }
 
-func (d *dockWithLogs) Load(url string, v ...interface{}) error {
+func (d *dockWithLogs) Load(url string, v ...interface{}) {
 	parsedURL := fmt.Sprintf(url, v...)
 
 	WhenDebug(func() {
 		Debug("dock tile is loading %s", parsedURL)
 	})
 
-	err := d.DockTile.Load(url, v...)
-	if err != nil {
+	d.DockTile.Load(url, v...)
+	if d.Err() != nil {
 		Log("dock tile failed to load %s: %s",
 			parsedURL,
-			err,
+			d.Err(),
 		)
 	}
-	return err
 }
 
-func (d *dockWithLogs) Render(c Compo) error {
+func (d *dockWithLogs) Render(c Compo) {
 	WhenDebug(func() {
 		Debug("dock tile is rendering %T", c)
 	})
 
-	err := d.DockTile.Render(c)
-	if err != nil {
+	d.DockTile.Render(c)
+	if d.Err() != nil {
 		Log("dock tile failed to render %T: %s",
 			c,
-			err,
+			d.Err(),
 		)
 	}
-	return err
 }
 
 func (d *dockWithLogs) SetIcon(name string) error {

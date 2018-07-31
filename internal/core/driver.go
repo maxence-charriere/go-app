@@ -6,7 +6,7 @@ import (
 	"github.com/murlokswarm/app"
 )
 
-// Driver is a base struct to embed in an app.Driver implementation.
+// Driver is a base struct to embed in app.Driver implementations.
 type Driver struct {
 }
 

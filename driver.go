@@ -93,6 +93,32 @@ func (d *driverWithLogs) Run(f Factory) error {
 	return err
 }
 
+func (d *driverWithLogs) Render(c Compo) error {
+	WhenDebug(func() {
+		Debug("rendering %T", c)
+	})
+
+	err := d.Driver.Render(c)
+	if err != nil {
+		Log("rendering %T failed: %s", err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) ElemByCompo(c Compo) Elem {
+	WhenDebug(func() {
+		Debug("getting element from %T", c)
+	})
+
+	switch e := d.Driver.ElemByCompo(c).(type) {
+	case Window:
+		return &windowWithLogs{Window: e}
+
+	default:
+		return e
+	}
+}
+
 func (d *driverWithLogs) NewWindow(c WindowConfig) Window {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "    ")
@@ -104,9 +130,7 @@ func (d *driverWithLogs) NewWindow(c WindowConfig) Window {
 		Log("creating window failed: %s", w.Err())
 	}
 
-	return &windowWithLogs{
-		Window: w,
-	}
+	return &windowWithLogs{Window: w}
 }
 
 func (d *driverWithLogs) NewContextMenu(c MenuConfig) (Menu, error) {
@@ -140,26 +164,6 @@ func (d *driverWithLogs) NewPage(c PageConfig) error {
 		Log("creating page failed: %s", err)
 	}
 	return err
-}
-
-func (d *driverWithLogs) Render(c Compo) error {
-	WhenDebug(func() {
-		Debug("rendering %T", c)
-	})
-
-	err := d.Driver.Render(c)
-	if err != nil {
-		Log("rendering %T failed: %s", err)
-	}
-	return err
-}
-
-func (d *driverWithLogs) ElemByCompo(c Compo) Elem {
-	WhenDebug(func() {
-		Debug("getting element from %T", c)
-	})
-
-	return d.Driver.ElemByCompo(c)
 }
 
 func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) error {

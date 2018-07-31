@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/murlokswarm/app"
-
 	"github.com/stretchr/testify/assert"
 )
 
