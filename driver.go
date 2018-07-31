@@ -27,7 +27,7 @@ type Driver interface {
 
 	// NewWindow creates and displays the window described by the given
 	// configuration.
-	NewWindow(c WindowConfig) (Window, error)
+	NewWindow(c WindowConfig) Window
 
 	// NewContextMenu creates and displays the context menu described by the
 	// given configuration.
@@ -93,22 +93,44 @@ func (d *driverWithLogs) Run(f Factory) error {
 	return err
 }
 
-func (d *driverWithLogs) NewWindow(c WindowConfig) (Window, error) {
+func (d *driverWithLogs) Render(c Compo) error {
 	WhenDebug(func() {
-		config, _ := json.MarshalIndent(c, "", "  ")
+		Debug("rendering %T", c)
+	})
+
+	err := d.Driver.Render(c)
+	if err != nil {
+		Log("rendering %T failed: %s", err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) ElemByCompo(c Compo) Elem {
+	WhenDebug(func() {
+		Debug("getting element from %T", c)
+	})
+
+	switch e := d.Driver.ElemByCompo(c).(type) {
+	case Window:
+		return &windowWithLogs{Window: e}
+
+	default:
+		return e
+	}
+}
+
+func (d *driverWithLogs) NewWindow(c WindowConfig) Window {
+	WhenDebug(func() {
+		config, _ := json.MarshalIndent(c, "", "    ")
 		Debug("creating window: %s", config)
 	})
 
-	win, err := d.Driver.NewWindow(c)
-	if err != nil {
-		Log("creating window failed: %s", err)
-		return nil, err
+	w := d.Driver.NewWindow(c)
+	if w.Err() != nil {
+		Log("creating window failed: %s", w.Err())
 	}
 
-	win = &windowWithLogs{
-		Window: win,
-	}
-	return win, nil
+	return &windowWithLogs{Window: w}
 }
 
 func (d *driverWithLogs) NewContextMenu(c MenuConfig) (Menu, error) {
@@ -142,26 +164,6 @@ func (d *driverWithLogs) NewPage(c PageConfig) error {
 		Log("creating page failed: %s", err)
 	}
 	return err
-}
-
-func (d *driverWithLogs) Render(c Compo) error {
-	WhenDebug(func() {
-		Debug("rendering %T", c)
-	})
-
-	err := d.Driver.Render(c)
-	if err != nil {
-		Log("rendering %T failed: %s", err)
-	}
-	return err
-}
-
-func (d *driverWithLogs) ElemByCompo(c Compo) Elem {
-	WhenDebug(func() {
-		Debug("getting element from %T", c)
-	})
-
-	return d.Driver.ElemByCompo(c)
 }
 
 func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) error {

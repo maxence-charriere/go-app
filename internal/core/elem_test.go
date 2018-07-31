@@ -22,7 +22,7 @@ func TestElem(t *testing.T) {
 
 	assert.NoError(t, e.Render(&compo{}))
 
-	e.err = app.ErrElemNotSet
+	e.SetErr(app.ErrElemNotSet)
 	e.WhenErr(func(err error) {
 		t.Log("WhenErr called:", err)
 	})
