@@ -1,7 +1,5 @@
 package app
 
-import "fmt"
-
 // Menu is the interface that describes a menu.
 // Accept only components that contain menu and menuitem tags.
 type Menu interface {
@@ -22,48 +20,46 @@ type MenuConfig struct {
 	OnClose func() `json:"-"`
 }
 
-type menuWithLogs struct {
+// DockTile is the interface that describes a dock tile.
+// Accept only components that contain menu and menuitem tags.
+type DockTile interface {
 	Menu
+
+	// SetIcon set the dock tile icon with the named file.
+	// The icon should be a .png file.
+	SetIcon(name string) error
+
+	// SetBadge set the dock tile badge with the string representation of the
+	// value.
+	SetBadge(v interface{}) error
 }
 
-func (m *menuWithLogs) Load(url string, v ...interface{}) {
-	parsedURL := fmt.Sprintf(url, v...)
+// StatusMenuConfig is a struct that describes a status menu.
+// Accept only components that contain menu and menuitem tags.
+type StatusMenuConfig struct {
+	// The menu button text.
+	Text string
 
-	WhenDebug(func() {
-		Debug("%s %s is loading %s",
-			m.Type(),
-			m.ID(),
-			parsedURL,
-		)
-	})
+	// The menu button icon.
+	// Should be a .png file.
+	Icon string
 
-	m.Menu.Load(url, v...)
-	if m.Err() != nil {
-		Log("%s %s failed to load %s: %s",
-			m.Type(),
-			m.ID(),
-			parsedURL,
-			m.Err(),
-		)
-	}
+	// The URL of the component to load when the status menu is created.
+	DefaultURL string
+
+	// The function that is called when the status menu is closed.
+	OnClose func()
 }
 
-func (m *menuWithLogs) Render(c Compo) {
-	WhenDebug(func() {
-		Debug("%s %s is rendering %T",
-			m.Type(),
-			m.ID(),
-			c,
-		)
-	})
+// StatusMenu is the interface that describes a status menu menu.
+type StatusMenu interface {
+	Menu
+	Closer
 
-	m.Menu.Render(c)
-	if m.Err() != nil {
-		Log("%s %s failed to render %T: %s",
-			m.Type(),
-			m.ID(),
-			c,
-			m.Err(),
-		)
-	}
+	// Set the menu button icon.
+	// The icon should be a .png file.
+	SetIcon(name string) error
+
+	// Set the menu button text.
+	SetText(text string) error
 }
