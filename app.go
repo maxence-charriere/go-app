@@ -180,7 +180,7 @@ func NewNotification(c NotificationConfig) error {
 // MenuBar returns the menu bar.
 //
 // It panics if called before Run.
-func MenuBar() (Menu, error) {
+func MenuBar() Menu {
 	return driver.MenuBar()
 }
 
@@ -188,14 +188,14 @@ func MenuBar() (Menu, error) {
 // configuration.
 //
 // It panics if called before Run.
-func NewStatusMenu(c StatusMenuConfig) (StatusMenu, error) {
+func NewStatusMenu(c StatusMenuConfig) StatusMenu {
 	return driver.NewStatusMenu(c)
 }
 
 // Dock returns the dock tile.
 //
 // It panics if called before Run.
-func Dock() (DockTile, error) {
+func Dock() DockTile {
 	return driver.Dock()
 }
 

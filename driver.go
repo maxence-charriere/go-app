@@ -50,13 +50,13 @@ type Driver interface {
 	NewNotification(c NotificationConfig) error
 
 	// MenuBar returns the menu bar.
-	MenuBar() (Menu, error)
+	MenuBar() Menu
 
 	// NewStatusMenu creates a status menu.
-	NewStatusMenu(c StatusMenuConfig) (StatusMenu, error)
+	NewStatusMenu(c StatusMenuConfig) StatusMenu
 
 	// Dock returns the dock tile.
-	Dock() (DockTile, error)
+	Dock() DockTile
 
 	// CallOnUIGoroutine calls a function on the UI goroutine.
 	CallOnUIGoroutine(f func())

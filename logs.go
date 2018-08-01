@@ -43,6 +43,12 @@ func (d *driverWithLogs) ElemByCompo(c Compo) Elem {
 	case Window:
 		return &windowWithLogs{Window: e}
 
+	case DockTile:
+		return &dockWithLogs{DockTile: e}
+
+	case StatusMenu:
+		return &statusMenuWithLogs{StatusMenu: e}
+
 	case Menu:
 		return &menuWithLogs{Menu: e}
 
@@ -143,56 +149,44 @@ func (d *driverWithLogs) NewNotification(c NotificationConfig) error {
 	return err
 }
 
-func (d *driverWithLogs) MenuBar() (Menu, error) {
+func (d *driverWithLogs) MenuBar() Menu {
 	WhenDebug(func() {
 		Debug("getting menubar")
 	})
 
-	menubar, err := d.Driver.MenuBar()
-	if err != nil {
-		Log("getting menubar failed: %s", err)
-		return nil, err
+	m := d.Driver.MenuBar()
+	if m.Err() != nil {
+		Log("getting menubar failed: %s", m.Err())
 	}
 
-	menubar = &menuWithLogs{
-		Menu: menubar,
-	}
-	return menubar, nil
+	return &menuWithLogs{Menu: m}
 }
 
-func (d *driverWithLogs) NewStatusMenu(c StatusMenuConfig) (StatusMenu, error) {
+func (d *driverWithLogs) NewStatusMenu(c StatusMenuConfig) StatusMenu {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "  ")
 		Debug("creating status menu: %s", config)
 	})
 
-	menu, err := d.Driver.NewStatusMenu(c)
-	if err != nil {
-		Log("getting status menu failed: %s", err)
-		return nil, err
+	m := d.Driver.NewStatusMenu(c)
+	if m.Err() != nil {
+		Log("getting status menu failed: %s", m.Err())
 	}
 
-	menu = &statusMenuWithLogs{
-		StatusMenu: menu,
-	}
-	return menu, nil
+	return &statusMenuWithLogs{StatusMenu: m}
 }
 
-func (d *driverWithLogs) Dock() (DockTile, error) {
+func (d *driverWithLogs) Dock() DockTile {
 	WhenDebug(func() {
 		Debug("getting dock tile")
 	})
 
-	dockTile, err := d.Driver.Dock()
-	if err != nil {
-		Log("getting dock tile failed: %s", err)
-		return nil, err
+	dt := d.Driver.Dock()
+	if dt.Err() != nil {
+		Log("getting dock tile failed: %s", dt.Err())
 	}
 
-	dockTile = &dockWithLogs{
-		DockTile: dockTile,
-	}
-	return dockTile, nil
+	return &dockWithLogs{DockTile: dt}
 }
 
 // Window logs.
@@ -456,28 +450,26 @@ func (d *dockWithLogs) Render(c Compo) {
 	}
 }
 
-func (d *dockWithLogs) SetIcon(name string) error {
+func (d *dockWithLogs) SetIcon(name string) {
 	WhenDebug(func() {
 		Debug("dock tile is setting its icon to %s", name)
 	})
 
-	err := d.DockTile.SetIcon(name)
-	if err != nil {
-		Log("dock tile failed to set its icon: %s", err)
+	d.DockTile.SetIcon(name)
+	if d.Err() != nil {
+		Log("dock tile failed to set its icon: %s", d.Err())
 	}
-	return err
 }
 
-func (d *dockWithLogs) SetBadge(v interface{}) error {
+func (d *dockWithLogs) SetBadge(v interface{}) {
 	WhenDebug(func() {
 		Debug("dock tile is setting its badge to %d", v)
 	})
 
-	err := d.DockTile.SetBadge(v)
-	if err != nil {
-		Log("dock tile failed to set its badge: %s", err)
+	d.DockTile.SetBadge(v)
+	if d.Err() != nil {
+		Log("dock tile failed to set its badge: %s", d.Err())
 	}
-	return err
 }
 
 // Status menu logs.
@@ -523,7 +515,7 @@ func (s *statusMenuWithLogs) Render(c Compo) {
 	}
 }
 
-func (s *statusMenuWithLogs) SetIcon(name string) error {
+func (s *statusMenuWithLogs) SetIcon(name string) {
 	WhenDebug(func() {
 		Debug("status menu %s is setting icon to %s",
 			s.ID(),
@@ -531,17 +523,16 @@ func (s *statusMenuWithLogs) SetIcon(name string) error {
 		)
 	})
 
-	err := s.StatusMenu.SetIcon(name)
-	if err != nil {
+	s.StatusMenu.SetIcon(name)
+	if s.Err() != nil {
 		Log("status menu %s failed to set icon: %s",
 			s.ID(),
-			err,
+			s.Err(),
 		)
 	}
-	return err
 }
 
-func (s *statusMenuWithLogs) SetText(text string) error {
+func (s *statusMenuWithLogs) SetText(text string) {
 	WhenDebug(func() {
 		Debug("status menu %s is setting text to %s",
 			s.ID(),
@@ -549,14 +540,13 @@ func (s *statusMenuWithLogs) SetText(text string) error {
 		)
 	})
 
-	err := s.StatusMenu.SetText(text)
-	if err != nil {
+	s.StatusMenu.SetText(text)
+	if s.Err() != nil {
 		Log("status menu %s failed to set text: %s",
 			s.ID(),
-			err,
+			s.Err(),
 		)
 	}
-	return err
 }
 
 func (s *statusMenuWithLogs) Close() {
