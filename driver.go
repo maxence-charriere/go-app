@@ -50,7 +50,7 @@ type Driver interface {
 	NewNotification(c NotificationConfig) error
 
 	// MenuBar returns the menu bar.
-	MenuBar() (Menu, error)
+	MenuBar() Menu
 
 	// NewStatusMenu creates a status menu.
 	NewStatusMenu(c StatusMenuConfig) (StatusMenu, error)

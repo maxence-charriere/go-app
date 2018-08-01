@@ -180,7 +180,7 @@ func NewNotification(c NotificationConfig) error {
 // MenuBar returns the menu bar.
 //
 // It panics if called before Run.
-func MenuBar() (Menu, error) {
+func MenuBar() Menu {
 	return driver.MenuBar()
 }
 

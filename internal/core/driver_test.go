@@ -31,10 +31,10 @@ func TestDriver(t *testing.T) {
 	assert.Error(t, d.NewShare(nil))
 	assert.Error(t, d.NewNotification(app.NotificationConfig{}))
 
-	_, err := d.MenuBar()
-	assert.Error(t, err)
+	mb := d.MenuBar()
+	assert.Error(t, mb.Err())
 
-	_, err = d.NewStatusMenu(app.StatusMenuConfig{})
+	_, err := d.NewStatusMenu(app.StatusMenuConfig{})
 	assert.Error(t, err)
 
 	dt := d.Dock()

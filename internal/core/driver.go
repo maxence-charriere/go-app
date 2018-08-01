@@ -84,8 +84,10 @@ func (d *Driver) NewNotification(c app.NotificationConfig) error {
 }
 
 // MenuBar satisfies the app.Driver interface.
-func (d *Driver) MenuBar() (app.Menu, error) {
-	return nil, app.ErrNotSupported
+func (d *Driver) MenuBar() app.Menu {
+	m := &Menu{}
+	m.SetErr(app.ErrNotSupported)
+	return m
 }
 
 // NewStatusMenu satisfies the app.Driver interface.

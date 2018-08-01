@@ -146,21 +146,17 @@ func (d *driverWithLogs) NewNotification(c NotificationConfig) error {
 	return err
 }
 
-func (d *driverWithLogs) MenuBar() (Menu, error) {
+func (d *driverWithLogs) MenuBar() Menu {
 	WhenDebug(func() {
 		Debug("getting menubar")
 	})
 
-	menubar, err := d.Driver.MenuBar()
-	if err != nil {
-		Log("getting menubar failed: %s", err)
-		return nil, err
+	m := d.Driver.MenuBar()
+	if m.Err() != nil {
+		Log("getting menubar failed: %s", m.Err())
 	}
 
-	menubar = &menuWithLogs{
-		Menu: menubar,
-	}
-	return menubar, nil
+	return &menuWithLogs{Menu: m}
 }
 
 func (d *driverWithLogs) NewStatusMenu(c StatusMenuConfig) (StatusMenu, error) {
