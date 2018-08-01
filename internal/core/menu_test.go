@@ -11,6 +11,17 @@ func TestMenu(t *testing.T) {
 	testMenu(t, &Menu{})
 }
 
+func TestDockTile(t *testing.T) {
+	d := &DockTile{}
+	testMenu(t, d)
+
+	d.SetIcon("")
+	assert.Error(t, d.Err())
+
+	d.SetBadge("")
+	assert.Error(t, d.Err())
+}
+
 func testMenu(t *testing.T, m app.Menu) {
 	whenMenuCalled := false
 	m.WhenMenu(func(m app.Menu) {

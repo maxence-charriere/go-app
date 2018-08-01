@@ -43,6 +43,9 @@ func (d *driverWithLogs) ElemByCompo(c Compo) Elem {
 	case Window:
 		return &windowWithLogs{Window: e}
 
+	case DockTile:
+		return &dockWithLogs{DockTile: e}
+
 	case Menu:
 		return &menuWithLogs{Menu: e}
 
@@ -178,21 +181,17 @@ func (d *driverWithLogs) NewStatusMenu(c StatusMenuConfig) (StatusMenu, error) {
 	return menu, nil
 }
 
-func (d *driverWithLogs) Dock() (DockTile, error) {
+func (d *driverWithLogs) Dock() DockTile {
 	WhenDebug(func() {
 		Debug("getting dock tile")
 	})
 
-	dockTile, err := d.Driver.Dock()
-	if err != nil {
-		Log("getting dock tile failed: %s", err)
-		return nil, err
+	dt := d.Driver.Dock()
+	if dt.Err() != nil {
+		Log("getting dock tile failed: %s", dt.Err())
 	}
 
-	dockTile = &dockWithLogs{
-		DockTile: dockTile,
-	}
-	return dockTile, nil
+	return &dockWithLogs{DockTile: dt}
 }
 
 // Window logs.
@@ -456,28 +455,26 @@ func (d *dockWithLogs) Render(c Compo) {
 	}
 }
 
-func (d *dockWithLogs) SetIcon(name string) error {
+func (d *dockWithLogs) SetIcon(name string) {
 	WhenDebug(func() {
 		Debug("dock tile is setting its icon to %s", name)
 	})
 
-	err := d.DockTile.SetIcon(name)
-	if err != nil {
-		Log("dock tile failed to set its icon: %s", err)
+	d.DockTile.SetIcon(name)
+	if d.Err() != nil {
+		Log("dock tile failed to set its icon: %s", d.Err())
 	}
-	return err
 }
 
-func (d *dockWithLogs) SetBadge(v interface{}) error {
+func (d *dockWithLogs) SetBadge(v interface{}) {
 	WhenDebug(func() {
 		Debug("dock tile is setting its badge to %d", v)
 	})
 
-	err := d.DockTile.SetBadge(v)
-	if err != nil {
-		Log("dock tile failed to set its badge: %s", err)
+	d.DockTile.SetBadge(v)
+	if d.Err() != nil {
+		Log("dock tile failed to set its badge: %s", d.Err())
 	}
-	return err
 }
 
 // Status menu logs.

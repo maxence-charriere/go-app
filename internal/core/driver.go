@@ -46,16 +46,16 @@ func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
 
 // NewWindow satisfies the app.Driver interface.
 func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
-	return &Window{
-		Elem: Elem{err: app.ErrNotSupported},
-	}
+	w := &Window{}
+	w.SetErr(app.ErrNotSupported)
+	return w
 }
 
 // NewContextMenu satisfies the app.Driver interface.
 func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
-	return &Menu{
-		Elem: Elem{err: app.ErrNotSupported},
-	}
+	m := &Menu{}
+	m.SetErr(app.ErrNotSupported)
+	return m
 }
 
 // NewPage satisfies the app.Driver interface.
@@ -94,8 +94,10 @@ func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
 }
 
 // Dock satisfies the app.Driver interface.
-func (d *Driver) Dock() (app.DockTile, error) {
-	return nil, app.ErrNotSupported
+func (d *Driver) Dock() app.DockTile {
+	dt := &DockTile{}
+	dt.SetErr(app.ErrNotSupported)
+	return dt
 }
 
 // CallOnUIGoroutine satisfies the app.Driver interface.

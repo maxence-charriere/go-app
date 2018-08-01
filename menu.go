@@ -25,11 +25,11 @@ type DockTile interface {
 
 	// SetIcon set the dock tile icon with the named file.
 	// The icon should be a .png file.
-	SetIcon(name string) error
+	SetIcon(name string)
 
 	// SetBadge set the dock tile badge with the string representation of the
 	// value.
-	SetBadge(v interface{}) error
+	SetBadge(v interface{})
 }
 
 // StatusMenuConfig is a struct that describes a status menu.

@@ -19,8 +19,11 @@ func TestDriver(t *testing.T) {
 	assert.Error(t, d.Render(nil))
 	assert.Error(t, d.ElemByCompo(nil).Err())
 
-	d.NewWindow(app.WindowConfig{})
-	d.NewContextMenu(app.MenuConfig{})
+	w := d.NewWindow(app.WindowConfig{})
+	assert.Error(t, w.Err())
+
+	m := d.NewContextMenu(app.MenuConfig{})
+	assert.Error(t, m.Err())
 
 	assert.Error(t, d.NewPage(app.PageConfig{}))
 	assert.Error(t, d.NewFilePanel(app.FilePanelConfig{}))
@@ -34,8 +37,8 @@ func TestDriver(t *testing.T) {
 	_, err = d.NewStatusMenu(app.StatusMenuConfig{})
 	assert.Error(t, err)
 
-	_, err = d.Dock()
-	assert.Error(t, err)
+	dt := d.Dock()
+	assert.Error(t, dt.Err())
 
 	d.CallOnUIGoroutine(func() {
 		t.Log("call from ui goroutine")

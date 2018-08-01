@@ -195,7 +195,7 @@ func NewStatusMenu(c StatusMenuConfig) (StatusMenu, error) {
 // Dock returns the dock tile.
 //
 // It panics if called before Run.
-func Dock() (DockTile, error) {
+func Dock() DockTile {
 	return driver.Dock()
 }
 

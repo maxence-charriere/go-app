@@ -56,7 +56,7 @@ type Driver interface {
 	NewStatusMenu(c StatusMenuConfig) (StatusMenu, error)
 
 	// Dock returns the dock tile.
-	Dock() (DockTile, error)
+	Dock() DockTile
 
 	// CallOnUIGoroutine calls a function on the UI goroutine.
 	CallOnUIGoroutine(f func())
