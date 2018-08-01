@@ -8,6 +8,13 @@ import (
 )
 
 var (
+	// ErrNotSupported describes an error that occurs when an unsupported
+	// feature is used.
+	ErrNotSupported = errors.New("not supported")
+
+	// ErrElemNotSet describes an error that reports if an element is set.
+	ErrElemNotSet = errors.New("element not set")
+
 	driver     Driver
 	components Factory
 )
@@ -99,29 +106,6 @@ func Storage(path ...string) string {
 	return driver.Storage(path...)
 }
 
-// NewWindow creates and displays the window described by the given
-// configuration.
-//
-// It panics if called before Run.
-func NewWindow(c WindowConfig) (Window, error) {
-	return driver.NewWindow(c)
-}
-
-// NewPage creates the page described by the given configuration.
-//
-// It panics if called before Run.
-func NewPage(c PageConfig) error {
-	return driver.NewPage(c)
-}
-
-// NewContextMenu creates and displays the context menu described by the
-// given configuration.
-//
-// It panics if called before Run.
-func NewContextMenu(c MenuConfig) (Menu, error) {
-	return driver.NewContextMenu(c)
-}
-
 // Render renders the given component.
 // It should be called when the display of component c have to be updated.
 //
@@ -137,6 +121,29 @@ func Render(c Compo) {
 // It panics if called before Run.
 func ElemByCompo(c Compo) Elem {
 	return driver.ElemByCompo(c)
+}
+
+// NewWindow creates and displays the window described by the given
+// configuration.
+//
+// It panics if called before Run.
+func NewWindow(c WindowConfig) Window {
+	return driver.NewWindow(c)
+}
+
+// NewPage creates the page described by the given configuration.
+//
+// It panics if called before Run.
+func NewPage(c PageConfig) error {
+	return driver.NewPage(c)
+}
+
+// NewContextMenu creates and displays the context menu described by the
+// given configuration.
+//
+// It panics if called before Run.
+func NewContextMenu(c MenuConfig) Menu {
+	return driver.NewContextMenu(c)
 }
 
 // NewFilePanel creates and displays the file panel described by the given

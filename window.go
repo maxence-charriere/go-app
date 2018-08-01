@@ -1,9 +1,5 @@
 package app
 
-import (
-	"fmt"
-)
-
 // Window is the interface that describes a window.
 type Window interface {
 	Navigator
@@ -13,26 +9,32 @@ type Window interface {
 	Position() (x, y float64)
 
 	// Move moves the window to the position (x, y).
-	Move(x, y float64) error
+	Move(x, y float64)
 
 	// Center moves the window to the center of the screen.
-	Center() error
+	Center()
 
 	// Size returns the window size.
 	Size() (width, height float64)
 
 	// Resize resizes the window to width * height.
-	Resize(width, height float64) error
+	Resize(width, height float64)
 
 	// Focus gives the focus to the window.
 	// The window will be put in front, above the other elements.
-	Focus() error
+	Focus()
 
-	// ToggleFullScreen takes the window into or out of fullscreen mode.
-	ToggleFullScreen() error
+	// FullScreen takes the window into fullscreen mode.
+	FullScreen()
 
-	// Minimize takes the window into or out of minimized mode
-	ToggleMinimize() error
+	// ExitFullScreen takes the window out of fullscreen mode.
+	ExitFullScreen()
+
+	// Minimize takes the window into minimized mode
+	Minimize()
+
+	// Deminimize takes the window out of minimized mode
+	Deminimize()
 }
 
 // WindowConfig is a struct that describes a window.
@@ -80,7 +82,7 @@ type WindowConfig struct {
 	TitlebarHidden bool
 
 	// The URL of the component to load when the window is created.
-	DefaultURL string
+	URL string
 
 	// The MacOS window specific configuration.
 	Mac MacWindowConfig
@@ -135,205 +137,3 @@ const (
 	VibeMediumLight
 	VibeUltraDark
 )
-
-type windowWithLogs struct {
-	Window
-}
-
-func (w *windowWithLogs) Load(url string, v ...interface{}) error {
-	parsedURL := fmt.Sprintf(url, v...)
-
-	WhenDebug(func() {
-		Debug("window %s is loading %s",
-			w.ID(),
-			parsedURL,
-		)
-	})
-
-	err := w.Window.Load(url, v...)
-	if err != nil {
-		Log("window %s failed to load %s: %s",
-			w.ID(),
-			parsedURL,
-			err,
-		)
-	}
-	return err
-}
-
-func (w *windowWithLogs) Render(c Compo) error {
-	WhenDebug(func() {
-		Debug("window %s is rendering %T",
-			w.ID(),
-			c,
-		)
-	})
-
-	err := w.Window.Render(c)
-	if err != nil {
-		Log("window %s failed to render %T: %s",
-			w.ID(),
-			c,
-			err,
-		)
-	}
-	return err
-}
-
-func (w *windowWithLogs) Reload() error {
-	WhenDebug(func() {
-		Debug("window %s is reloading", w.ID())
-	})
-
-	err := w.Window.Reload()
-	if err != nil {
-		Log("window %s failed to reload: %s",
-			w.ID(),
-			err,
-		)
-	}
-	return err
-}
-
-func (w *windowWithLogs) Previous() error {
-	WhenDebug(func() {
-		Debug("window %s is loading previous", w.ID())
-	})
-
-	err := w.Window.Previous()
-	if err != nil {
-		Log("window %s failed to load previous: %s",
-			w.ID(),
-			err,
-		)
-	}
-	return err
-}
-
-func (w *windowWithLogs) Next() error {
-	WhenDebug(func() {
-		Debug("window %s is loading next", w.ID())
-	})
-
-	err := w.Window.Next()
-	if err != nil {
-		Log("window %s failed to load next: %s",
-			w.ID(),
-			err,
-		)
-	}
-	return err
-}
-
-func (w *windowWithLogs) Close() error {
-	WhenDebug(func() {
-		Debug("window %s is closing", w.ID())
-	})
-
-	err := w.Window.Close()
-	if err != nil {
-		Log("window %s failed to close: %s",
-			w.ID(),
-			err,
-		)
-	}
-	return err
-}
-
-func (w *windowWithLogs) Move(x, y float64) error {
-	WhenDebug(func() {
-		Debug("window %s is moving to x:%.2f y:%.2f",
-			w.ID(),
-			x,
-			y,
-		)
-	})
-
-	err := w.Window.Move(x, y)
-	if err != nil {
-		Log("window %s failed to move: %s",
-			w.ID(),
-			err,
-		)
-	}
-	return err
-}
-
-func (w *windowWithLogs) Center() error {
-	WhenDebug(func() {
-		Debug("window %s is moving to center", w.ID())
-	})
-
-	err := w.Window.Center()
-	if err != nil {
-		Log("window %s failed to move to center: %s",
-			w.ID(),
-			err,
-		)
-	}
-	return err
-}
-
-func (w *windowWithLogs) Resize(width, height float64) error {
-	WhenDebug(func() {
-		Debug("window %s is resizing to width:%.2f height:%.2f",
-			w.ID(),
-			width,
-			height,
-		)
-	})
-
-	err := w.Window.Resize(width, height)
-	if err != nil {
-		Log("window %s failed to resize: %s",
-			w.ID(),
-			err,
-		)
-	}
-	return err
-}
-
-func (w *windowWithLogs) Focus() error {
-	WhenDebug(func() {
-		Debug("window %s is getting focus", w.ID())
-	})
-
-	err := w.Window.Focus()
-	if err != nil {
-		Log("window %s failed to get focus: %s",
-			w.ID(),
-			err,
-		)
-	}
-	return err
-}
-
-func (w *windowWithLogs) ToggleFullScreen() error {
-	WhenDebug(func() {
-		Debug("window %s is toggling full screen", w.ID())
-	})
-
-	err := w.Window.ToggleFullScreen()
-	if err != nil {
-		Log("window %s failed to toggle full screen: %s",
-			w.ID(),
-			err,
-		)
-	}
-	return err
-}
-
-func (w *windowWithLogs) ToggleMinimize() error {
-	WhenDebug(func() {
-		Debug("window %s is toggling minimize", w.ID())
-	})
-
-	err := w.Window.ToggleMinimize()
-	if err != nil {
-		Log("window %s failed to toggle minimize: %s",
-			w.ID(),
-			err,
-		)
-	}
-	return err
-}

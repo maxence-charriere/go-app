@@ -11,7 +11,6 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/pkg/errors"
 )
 
 var (
@@ -83,8 +82,9 @@ func (d *Driver) NewPage(c app.PageConfig) error {
 // Render satisfies the app.Driver interface.
 func (d *Driver) Render(c app.Compo) error {
 	e := d.elems.GetByCompo(c)
-	if e.IsNotSet() {
-		return errors.New("element not set")
+
+	if e.Err() != nil {
+		return e.Err()
 	}
 
 	return e.Render(c)

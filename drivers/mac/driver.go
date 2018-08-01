@@ -38,7 +38,7 @@ func init() {
 
 // Driver is the app.Driver implementation for MacOS.
 type Driver struct {
-	app.BaseDriver
+	core.Driver
 
 	// Menubar configuration
 	MenubarConfig MenuBarConfig
@@ -318,8 +318,8 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
 func (d *Driver) Render(c app.Compo) error {
 	e := d.elems.GetByCompo(c)
 
-	if e.IsNotSet() {
-		return errors.New("element not set")
+	if e.Err() != nil {
+		return e.Err()
 	}
 
 	return e.Render(c)

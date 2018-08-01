@@ -22,7 +22,6 @@ func TestDriver(t *testing.T, setup func(onRun func()) app.Driver, shutdown func
 	onRun := func() {
 		defer shutdown()
 
-		t.Log("testing driver", driver.Name())
 		t.Run("window", func(t *testing.T) { testWindow(t, driver) })
 		t.Run("page", func(t *testing.T) { testPage(t, driver) })
 		t.Run("context menu", func(t *testing.T) { testContextMenu(t, driver) })
@@ -30,22 +29,22 @@ func TestDriver(t *testing.T, setup func(onRun func()) app.Driver, shutdown func
 		t.Run("status menu", func(t *testing.T) { testStatusMenu(t, driver) })
 		t.Run("dock", func(t *testing.T) { testDockTile(t, driver) })
 
-		if err := driver.NewFilePanel(app.FilePanelConfig{}); !app.NotSupported(err) {
+		if err := driver.NewFilePanel(app.FilePanelConfig{}); err != app.ErrNotSupported {
 			assert.NoError(t, err)
 		}
 
-		if err := driver.NewSaveFilePanel(app.SaveFilePanelConfig{}); !app.NotSupported(err) {
+		if err := driver.NewSaveFilePanel(app.SaveFilePanelConfig{}); err != app.ErrNotSupported {
 			assert.NoError(t, err)
 		}
 
-		if err := driver.NewShare(42); !app.NotSupported(err) {
+		if err := driver.NewShare(42); err != app.ErrNotSupported {
 			assert.NoError(t, err)
 		}
 
 		if err := driver.NewNotification(app.NotificationConfig{
 			Title: "test",
 			Text:  "test",
-		}); !app.NotSupported(err) {
+		}); err != app.ErrNotSupported {
 			assert.NoError(t, err)
 		}
 	}
@@ -53,7 +52,7 @@ func TestDriver(t *testing.T, setup func(onRun func()) app.Driver, shutdown func
 	driver = setup(onRun)
 
 	err := app.Run(driver)
-	if app.NotSupported(err) {
+	if err == app.ErrNotSupported {
 		return
 	}
 	require.NoError(t, err)

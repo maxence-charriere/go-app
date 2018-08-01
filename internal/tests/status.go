@@ -34,7 +34,7 @@ func testStatusMenu(t *testing.T, d app.Driver) {
 			menu, err := d.NewStatusMenu(app.StatusMenuConfig{
 				Text: "test",
 			})
-			if app.NotSupported(err) {
+			if err == app.ErrNotSupported {
 				return
 			}
 			defer menu.Close()
@@ -61,7 +61,7 @@ func testStatusMenuSetIconSuccess(t *testing.T, m app.StatusMenu, driver app.Dri
 	filename = filepath.Join(filepath.Dir(filename), "resources", "logo.png")
 
 	err := m.SetIcon(filename)
-	if app.NotSupported(err) {
+	if err == app.ErrNotSupported {
 		return
 	}
 	require.NoError(t, err)
@@ -72,7 +72,7 @@ func testStatusMenuSetIconFail(t *testing.T, m app.StatusMenu, driver app.Driver
 	filename = filepath.Join(filepath.Dir(filename), "resources", "logo.bmp")
 
 	err := m.SetIcon(filename)
-	if app.NotSupported(err) {
+	if err == app.ErrNotSupported {
 		return
 	}
 	require.Error(t, err)
