@@ -53,7 +53,7 @@ type Driver interface {
 	MenuBar() Menu
 
 	// NewStatusMenu creates a status menu.
-	NewStatusMenu(c StatusMenuConfig) (StatusMenu, error)
+	NewStatusMenu(c StatusMenuConfig) StatusMenu
 
 	// Dock returns the dock tile.
 	Dock() DockTile

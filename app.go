@@ -188,7 +188,7 @@ func MenuBar() Menu {
 // configuration.
 //
 // It panics if called before Run.
-func NewStatusMenu(c StatusMenuConfig) (StatusMenu, error) {
+func NewStatusMenu(c StatusMenuConfig) StatusMenu {
 	return driver.NewStatusMenu(c)
 }
 

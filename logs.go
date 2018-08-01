@@ -46,6 +46,9 @@ func (d *driverWithLogs) ElemByCompo(c Compo) Elem {
 	case DockTile:
 		return &dockWithLogs{DockTile: e}
 
+	case StatusMenu:
+		return &statusMenuWithLogs{StatusMenu: e}
+
 	case Menu:
 		return &menuWithLogs{Menu: e}
 
@@ -159,22 +162,18 @@ func (d *driverWithLogs) MenuBar() Menu {
 	return &menuWithLogs{Menu: m}
 }
 
-func (d *driverWithLogs) NewStatusMenu(c StatusMenuConfig) (StatusMenu, error) {
+func (d *driverWithLogs) NewStatusMenu(c StatusMenuConfig) StatusMenu {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "  ")
 		Debug("creating status menu: %s", config)
 	})
 
-	menu, err := d.Driver.NewStatusMenu(c)
-	if err != nil {
-		Log("getting status menu failed: %s", err)
-		return nil, err
+	m := d.Driver.NewStatusMenu(c)
+	if m.Err() != nil {
+		Log("getting status menu failed: %s", m.Err())
 	}
 
-	menu = &statusMenuWithLogs{
-		StatusMenu: menu,
-	}
-	return menu, nil
+	return &statusMenuWithLogs{StatusMenu: m}
 }
 
 func (d *driverWithLogs) Dock() DockTile {
@@ -516,7 +515,7 @@ func (s *statusMenuWithLogs) Render(c Compo) {
 	}
 }
 
-func (s *statusMenuWithLogs) SetIcon(name string) error {
+func (s *statusMenuWithLogs) SetIcon(name string) {
 	WhenDebug(func() {
 		Debug("status menu %s is setting icon to %s",
 			s.ID(),
@@ -524,17 +523,16 @@ func (s *statusMenuWithLogs) SetIcon(name string) error {
 		)
 	})
 
-	err := s.StatusMenu.SetIcon(name)
-	if err != nil {
+	s.StatusMenu.SetIcon(name)
+	if s.Err() != nil {
 		Log("status menu %s failed to set icon: %s",
 			s.ID(),
-			err,
+			s.Err(),
 		)
 	}
-	return err
 }
 
-func (s *statusMenuWithLogs) SetText(text string) error {
+func (s *statusMenuWithLogs) SetText(text string) {
 	WhenDebug(func() {
 		Debug("status menu %s is setting text to %s",
 			s.ID(),
@@ -542,14 +540,13 @@ func (s *statusMenuWithLogs) SetText(text string) error {
 		)
 	})
 
-	err := s.StatusMenu.SetText(text)
-	if err != nil {
+	s.StatusMenu.SetText(text)
+	if s.Err() != nil {
 		Log("status menu %s failed to set text: %s",
 			s.ID(),
-			err,
+			s.Err(),
 		)
 	}
-	return err
 }
 
 func (s *statusMenuWithLogs) Close() {

@@ -34,8 +34,8 @@ func TestDriver(t *testing.T) {
 	mb := d.MenuBar()
 	assert.Error(t, mb.Err())
 
-	_, err := d.NewStatusMenu(app.StatusMenuConfig{})
-	assert.Error(t, err)
+	s := d.NewStatusMenu(app.StatusMenuConfig{})
+	assert.Error(t, s.Err())
 
 	dt := d.Dock()
 	assert.Error(t, dt.Err())

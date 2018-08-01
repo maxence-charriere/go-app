@@ -25,7 +25,7 @@ type DockTile interface {
 
 	// SetIcon set the dock tile icon with the named file.
 	// The icon should be a .png file.
-	SetIcon(name string)
+	SetIcon(path string)
 
 	// SetBadge set the dock tile badge with the string representation of the
 	// value.
@@ -56,8 +56,8 @@ type StatusMenu interface {
 
 	// Set the menu button icon.
 	// The icon should be a .png file.
-	SetIcon(name string) error
+	SetIcon(path string)
 
 	// Set the menu button text.
-	SetText(text string) error
+	SetText(text string)
 }

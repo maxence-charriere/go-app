@@ -91,8 +91,10 @@ func (d *Driver) MenuBar() app.Menu {
 }
 
 // NewStatusMenu satisfies the app.Driver interface.
-func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
-	return nil, app.ErrNotSupported
+func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) app.StatusMenu {
+	s := &StatusMenu{}
+	s.SetErr(app.ErrNotSupported)
+	return s
 }
 
 // Dock satisfies the app.Driver interface.
