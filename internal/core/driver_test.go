@@ -26,16 +26,23 @@ func TestDriver(t *testing.T) {
 	assert.Error(t, m.Err())
 
 	assert.Error(t, d.NewPage(app.PageConfig{}))
-	assert.Error(t, d.NewFilePanel(app.FilePanelConfig{}))
-	assert.Error(t, d.NewSaveFilePanel(app.SaveFilePanelConfig{}))
-	assert.Error(t, d.NewShare(nil))
+
+	fp := d.NewFilePanel(app.FilePanelConfig{})
+	assert.Error(t, fp.Err())
+
+	fsp := d.NewSaveFilePanel(app.SaveFilePanelConfig{})
+	assert.Error(t, fsp.Err())
+
+	s := d.NewShare(nil)
+	assert.Error(t, s.Err())
+
 	assert.Error(t, d.NewNotification(app.NotificationConfig{}))
 
 	mb := d.MenuBar()
 	assert.Error(t, mb.Err())
 
-	s := d.NewStatusMenu(app.StatusMenuConfig{})
-	assert.Error(t, s.Err())
+	sm := d.NewStatusMenu(app.StatusMenuConfig{})
+	assert.Error(t, sm.Err())
 
 	dt := d.Dock()
 	assert.Error(t, dt.Err())

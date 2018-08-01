@@ -64,18 +64,18 @@ func (d *Driver) NewPage(c app.PageConfig) error {
 }
 
 // NewFilePanel satisfies the app.Driver interface.
-func (d *Driver) NewFilePanel(c app.FilePanelConfig) error {
-	return app.ErrNotSupported
+func (d *Driver) NewFilePanel(c app.FilePanelConfig) app.Elem {
+	return &Elem{err: app.ErrNotSupported}
 }
 
 // NewSaveFilePanel satisfies the app.Driver interface.
-func (d *Driver) NewSaveFilePanel(c app.SaveFilePanelConfig) error {
-	return app.ErrNotSupported
+func (d *Driver) NewSaveFilePanel(c app.SaveFilePanelConfig) app.Elem {
+	return &Elem{err: app.ErrNotSupported}
 }
 
 // NewShare satisfies the app.Driver interface.
-func (d *Driver) NewShare(v interface{}) error {
-	return app.ErrNotSupported
+func (d *Driver) NewShare(v interface{}) app.Elem {
+	return &Elem{err: app.ErrNotSupported}
 }
 
 // NewNotification satisfies the app.Driver interface.

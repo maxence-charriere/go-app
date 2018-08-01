@@ -36,14 +36,14 @@ type Driver interface {
 
 	// NewFilePanel creates and displays the file panel described by the given
 	// configuration.
-	NewFilePanel(c FilePanelConfig) error
+	NewFilePanel(c FilePanelConfig) Elem
 
 	// NewSaveFilePanel creates and displays the save file panel described in
 	// the given configuration.
-	NewSaveFilePanel(c SaveFilePanelConfig) error
+	NewSaveFilePanel(c SaveFilePanelConfig) Elem
 
 	// NewShare creates and display the share pannel to share the given value.
-	NewShare(v interface{}) error
+	NewShare(v interface{}) Elem
 
 	// NewNotification creates and displays the notification described in the
 	// given configuration.

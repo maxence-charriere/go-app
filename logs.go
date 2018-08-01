@@ -98,42 +98,45 @@ func (d *driverWithLogs) NewPage(c PageConfig) error {
 	return err
 }
 
-func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) error {
+func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) Elem {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "  ")
 		Debug("creating file panel: %s", config)
 	})
 
-	err := d.Driver.NewFilePanel(c)
-	if err != nil {
-		Log("creating file panel failed: %s", err)
+	p := d.Driver.NewFilePanel(c)
+	if p.Err() != nil {
+		Log("creating file panel failed: %s", p.Err())
 	}
-	return err
+
+	return p
 }
 
-func (d *driverWithLogs) NewSaveFilePanel(c SaveFilePanelConfig) error {
+func (d *driverWithLogs) NewSaveFilePanel(c SaveFilePanelConfig) Elem {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "  ")
 		Debug("creating save file panel: %s", config)
 	})
 
-	err := d.Driver.NewSaveFilePanel(c)
-	if err != nil {
-		Log("creating save file panel failed: %s", err)
+	p := d.Driver.NewSaveFilePanel(c)
+	if p.Err() != nil {
+		Log("creating save file panel failed: %s", p.Err())
 	}
-	return err
+
+	return p
 }
 
-func (d *driverWithLogs) NewShare(v interface{}) error {
+func (d *driverWithLogs) NewShare(v interface{}) Elem {
 	WhenDebug(func() {
 		Debug("creating share: %v", v)
 	})
 
-	err := d.Driver.NewShare(v)
-	if err != nil {
-		Log("creating share failed: %s", err)
+	s := d.Driver.NewShare(v)
+	if s.Err() != nil {
+		Log("creating share failed: %s", s.Err())
 	}
-	return err
+
+	return s
 }
 
 func (d *driverWithLogs) NewNotification(c NotificationConfig) error {
