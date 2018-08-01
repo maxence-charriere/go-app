@@ -10,10 +10,10 @@ type Page interface {
 	Closer
 
 	// URL returns the URL used to navigate on the page.
-	URL() *url.URL
+	URL() url.URL
 
 	// Referer returns URL of the page that loaded the current page.
-	Referer() *url.URL
+	Referer() url.URL
 }
 
 // PageConfig is a struct that describes a webpage.
