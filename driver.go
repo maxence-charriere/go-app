@@ -47,7 +47,7 @@ type Driver interface {
 
 	// NewNotification creates and displays the notification described in the
 	// given configuration.
-	NewNotification(c NotificationConfig) error
+	NewNotification(c NotificationConfig) Elem
 
 	// MenuBar returns the menu bar.
 	MenuBar() Menu

@@ -173,7 +173,7 @@ func NewShare(v interface{}) error {
 // given configuration.
 //
 // It panics if called before Run.
-func NewNotification(c NotificationConfig) error {
+func NewNotification(c NotificationConfig) Elem {
 	return driver.NewNotification(c)
 }
 

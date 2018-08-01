@@ -29,7 +29,9 @@ func TestDriver(t *testing.T) {
 	assert.Error(t, d.NewFilePanel(app.FilePanelConfig{}))
 	assert.Error(t, d.NewSaveFilePanel(app.SaveFilePanelConfig{}))
 	assert.Error(t, d.NewShare(nil))
-	assert.Error(t, d.NewNotification(app.NotificationConfig{}))
+
+	n := d.NewNotification(app.NotificationConfig{})
+	assert.Error(t, n.Err())
 
 	mb := d.MenuBar()
 	assert.Error(t, mb.Err())
