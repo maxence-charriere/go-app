@@ -59,8 +59,10 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 }
 
 // NewPage satisfies the app.Driver interface.
-func (d *Driver) NewPage(c app.PageConfig) error {
-	return app.ErrNotSupported
+func (d *Driver) NewPage(c app.PageConfig) app.Page {
+	p := &Page{}
+	p.SetErr(app.ErrNotSupported)
+	return p
 }
 
 // NewFilePanel satisfies the app.Driver interface.

@@ -134,7 +134,7 @@ func NewWindow(c WindowConfig) Window {
 // NewPage creates the page described by the given configuration.
 //
 // It panics if called before Run.
-func NewPage(c PageConfig) error {
+func NewPage(c PageConfig) Page {
 	return driver.NewPage(c)
 }
 

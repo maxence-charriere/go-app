@@ -32,7 +32,7 @@ type Driver interface {
 	NewContextMenu(c MenuConfig) Menu
 
 	// NewPage creates the webpage described in the given configuration.
-	NewPage(c PageConfig) error
+	NewPage(c PageConfig) Page
 
 	// NewFilePanel creates and displays the file panel described by the given
 	// configuration.

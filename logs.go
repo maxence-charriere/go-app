@@ -85,17 +85,18 @@ func (d *driverWithLogs) NewContextMenu(c MenuConfig) Menu {
 	return &menuWithLogs{Menu: m}
 }
 
-func (d *driverWithLogs) NewPage(c PageConfig) error {
+func (d *driverWithLogs) NewPage(c PageConfig) Page {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "  ")
 		Debug("creating page: %s", config)
 	})
 
-	err := d.Driver.NewPage(c)
-	if err != nil {
-		Log("creating page failed: %s", err)
+	p := d.Driver.NewPage(c)
+	if p.Err() != nil {
+		Log("creating page failed: %s", p.Err())
 	}
-	return err
+
+	return p
 }
 
 func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) error {
