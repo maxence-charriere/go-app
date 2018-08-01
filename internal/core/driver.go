@@ -45,13 +45,17 @@ func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
 }
 
 // NewWindow satisfies the app.Driver interface.
-func (d *Driver) NewWindow(c app.WindowConfig) (app.Window, error) {
-	return nil, app.ErrNotSupported
+func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
+	return &Window{
+		Elem: Elem{err: app.ErrNotSupported},
+	}
 }
 
 // NewContextMenu satisfies the app.Driver interface.
-func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
-	return nil, app.ErrNotSupported
+func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
+	return &Menu{
+		Elem: Elem{err: app.ErrNotSupported},
+	}
 }
 
 // NewPage satisfies the app.Driver interface.

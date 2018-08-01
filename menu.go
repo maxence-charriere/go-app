@@ -12,9 +12,7 @@ type Menu interface {
 // MenuConfig is a struct that describes a menu.
 type MenuConfig struct {
 	// The URL of the component to load when the menu is created.
-	DefaultURL string
-
-	Type string
+	URL string
 
 	// The function that is called when the menu is closed.
 	OnClose func() `json:"-"`
@@ -45,10 +43,10 @@ type StatusMenuConfig struct {
 	Icon string
 
 	// The URL of the component to load when the status menu is created.
-	DefaultURL string
+	URL string
 
 	// The function that is called when the status menu is closed.
-	OnClose func()
+	OnClose func() `json:"-"`
 }
 
 // StatusMenu is the interface that describes a status menu menu.

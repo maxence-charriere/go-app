@@ -5,10 +5,12 @@ import (
 
 	"github.com/murlokswarm/app"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestDriver(t *testing.T) {
 	d := &Driver{}
+	require.Implements(t, (*app.Driver)(nil), d)
 
 	assert.Error(t, d.Run(nil))
 	assert.Empty(t, d.AppName())
@@ -17,11 +19,8 @@ func TestDriver(t *testing.T) {
 	assert.Error(t, d.Render(nil))
 	assert.Error(t, d.ElemByCompo(nil).Err())
 
-	_, err := d.NewWindow(app.WindowConfig{})
-	assert.Error(t, err)
-
-	_, err = d.NewContextMenu(app.MenuConfig{})
-	assert.Error(t, err)
+	d.NewWindow(app.WindowConfig{})
+	d.NewContextMenu(app.MenuConfig{})
 
 	assert.Error(t, d.NewPage(app.PageConfig{}))
 	assert.Error(t, d.NewFilePanel(app.FilePanelConfig{}))
@@ -29,7 +28,7 @@ func TestDriver(t *testing.T) {
 	assert.Error(t, d.NewShare(nil))
 	assert.Error(t, d.NewNotification(app.NotificationConfig{}))
 
-	_, err = d.MenuBar()
+	_, err := d.MenuBar()
 	assert.Error(t, err)
 
 	_, err = d.NewStatusMenu(app.StatusMenuConfig{})
