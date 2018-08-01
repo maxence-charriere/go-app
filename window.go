@@ -82,7 +82,7 @@ type WindowConfig struct {
 	TitlebarHidden bool
 
 	// The URL of the component to load when the window is created.
-	DefaultURL string
+	URL string
 
 	// The MacOS window specific configuration.
 	Mac MacWindowConfig

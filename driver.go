@@ -29,7 +29,7 @@ type Driver interface {
 
 	// NewContextMenu creates and displays the context menu described by the
 	// given configuration.
-	NewContextMenu(c MenuConfig) (Menu, error)
+	NewContextMenu(c MenuConfig) Menu
 
 	// NewPage creates the webpage described in the given configuration.
 	NewPage(c PageConfig) error

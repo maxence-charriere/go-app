@@ -43,6 +43,9 @@ func (d *driverWithLogs) ElemByCompo(c Compo) Elem {
 	case Window:
 		return &windowWithLogs{Window: e}
 
+	case Menu:
+		return &menuWithLogs{Menu: e}
+
 	default:
 		return e
 	}
@@ -62,24 +65,18 @@ func (d *driverWithLogs) NewWindow(c WindowConfig) Window {
 	return &windowWithLogs{Window: w}
 }
 
-func (d *driverWithLogs) NewContextMenu(c MenuConfig) (Menu, error) {
-	c.Type = "context menu"
-
+func (d *driverWithLogs) NewContextMenu(c MenuConfig) Menu {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "  ")
 		Debug("creating context menu: %s", config)
 	})
 
-	menu, err := d.Driver.NewContextMenu(c)
-	if err != nil {
-		Log("creating context menu failed: %s", err)
-		return nil, err
+	m := d.Driver.NewContextMenu(c)
+	if m.Err() != nil {
+		Log("creating context menu failed: %s", m.Err())
 	}
 
-	menu = &menuWithLogs{
-		Menu: menu,
-	}
-	return menu, nil
+	return &menuWithLogs{Menu: m}
 }
 
 func (d *driverWithLogs) NewPage(c PageConfig) error {

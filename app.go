@@ -142,7 +142,7 @@ func NewPage(c PageConfig) error {
 // given configuration.
 //
 // It panics if called before Run.
-func NewContextMenu(c MenuConfig) (Menu, error) {
+func NewContextMenu(c MenuConfig) Menu {
 	return driver.NewContextMenu(c)
 }
 
