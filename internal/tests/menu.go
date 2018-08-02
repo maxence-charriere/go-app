@@ -1,105 +1,98 @@
 package tests
 
-import (
-	"testing"
+// func testContextMenu(t *testing.T, d app.Driver) {
+// 	testMenu(t, d.NewContextMenu)
+// }
 
-	"github.com/murlokswarm/app"
-	"github.com/stretchr/testify/require"
-)
+// func testMenubar(t *testing.T, d app.Driver) {
+// 	testMenu(t, func(c app.MenuConfig) (app.Menu, error) {
+// 		return d.MenuBar()
+// 	})
+// }
 
-func testContextMenu(t *testing.T, d app.Driver) {
-	testMenu(t, d.NewContextMenu)
-}
+// func testMenu(t *testing.T, setup func(c app.MenuConfig) (app.Menu, error)) {
+// 	tests := []struct {
+// 		scenario string
+// 		config   app.MenuConfig
+// 		function func(t *testing.T, w app.Menu)
+// 	}{
+// 		{
+// 			scenario: "create",
+// 		},
+// 		{
+// 			scenario: "create with a default component",
+// 			config: app.MenuConfig{
+// 				DefaultURL: "tests.menu",
+// 			},
+// 		},
+// 		{
+// 			scenario: "load a component",
+// 			function: testMenuLoadSuccess,
+// 		},
+// 		{
+// 			scenario: "load a component fails",
+// 			function: testMenuLoadFail,
+// 		},
+// 		{
+// 			scenario: "render a component",
+// 			function: testMenuRenderSuccess,
+// 		},
+// 		{
+// 			scenario: "render a component fails",
+// 			function: testMenuRenderFail,
+// 		},
+// 	}
 
-func testMenubar(t *testing.T, d app.Driver) {
-	testMenu(t, func(c app.MenuConfig) (app.Menu, error) {
-		return d.MenuBar()
-	})
-}
+// 	for _, test := range tests {
+// 		t.Run(test.scenario, func(t *testing.T) {
+// 			m, err := setup(test.config)
+// 			if err == app.ErrNotSupported {
+// 				return
+// 			}
+// 			require.NoError(t, err)
 
-func testMenu(t *testing.T, setup func(c app.MenuConfig) (app.Menu, error)) {
-	tests := []struct {
-		scenario string
-		config   app.MenuConfig
-		function func(t *testing.T, w app.Menu)
-	}{
-		{
-			scenario: "create",
-		},
-		{
-			scenario: "create with a default component",
-			config: app.MenuConfig{
-				DefaultURL: "tests.menu",
-			},
-		},
-		{
-			scenario: "load a component",
-			function: testMenuLoadSuccess,
-		},
-		{
-			scenario: "load a component fails",
-			function: testMenuLoadFail,
-		},
-		{
-			scenario: "render a component",
-			function: testMenuRenderSuccess,
-		},
-		{
-			scenario: "render a component fails",
-			function: testMenuRenderFail,
-		},
-	}
+// 			if test.function == nil {
+// 				return
+// 			}
+// 			test.function(t, m)
+// 		})
+// 	}
+// }
 
-	for _, test := range tests {
-		t.Run(test.scenario, func(t *testing.T) {
-			m, err := setup(test.config)
-			if err == app.ErrNotSupported {
-				return
-			}
-			require.NoError(t, err)
+// func testMenuLoadSuccess(t *testing.T, m app.Menu) {
+// 	err := m.Load("tests.menu")
+// 	require.NoError(t, err)
+// }
 
-			if test.function == nil {
-				return
-			}
-			test.function(t, m)
-		})
-	}
-}
+// func testMenuLoadFail(t *testing.T, m app.Menu) {
+// 	err := m.Load("tests.tralala")
+// 	require.Error(t, err)
+// }
 
-func testMenuLoadSuccess(t *testing.T, m app.Menu) {
-	err := m.Load("tests.menu")
-	require.NoError(t, err)
-}
+// func testMenuRenderSuccess(t *testing.T, m app.Menu) {
+// 	err := m.Load("tests.menu")
+// 	require.NoError(t, err)
 
-func testMenuLoadFail(t *testing.T, m app.Menu) {
-	err := m.Load("tests.tralala")
-	require.Error(t, err)
-}
+// 	compo := m.Compo()
+// 	require.NotNil(t, compo)
 
-func testMenuRenderSuccess(t *testing.T, m app.Menu) {
-	err := m.Load("tests.menu")
-	require.NoError(t, err)
+// 	menu := compo.(*Menu)
+// 	menu.Label = "a menu for test"
 
-	compo := m.Compo()
-	require.NotNil(t, compo)
+// 	err = m.Render(menu)
+// 	require.NoError(t, err)
+// }
 
-	menu := compo.(*Menu)
-	menu.Label = "a menu for test"
+// func testMenuRenderFail(t *testing.T, m app.Menu) {
+// 	err := m.Load("tests.menu")
+// 	require.NoError(t, err)
 
-	err = m.Render(menu)
-	require.NoError(t, err)
-}
+// 	compo := m.Compo()
+// 	require.NotNil(t, compo)
 
-func testMenuRenderFail(t *testing.T, m app.Menu) {
-	err := m.Load("tests.menu")
-	require.NoError(t, err)
+// 	menu := compo.(*Menu)
+// 	menu.SimulateErr = true
 
-	compo := m.Compo()
-	require.NotNil(t, compo)
-
-	menu := compo.(*Menu)
-	menu.SimulateErr = true
-
-	err = m.Render(menu)
-	require.Error(t, err)
-}
+// 	err = m.Render(menu)
+// 	require.Error(t, err)
+// }

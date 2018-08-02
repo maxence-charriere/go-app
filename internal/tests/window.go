@@ -1,107 +1,98 @@
 package tests
 
-import (
-	"testing"
+// func testWindow(t *testing.T, d app.Driver) {
+// 	tests := []struct {
+// 		scenario string
+// 		config   app.WindowConfig
+// 		function func(t *testing.T, w app.Window)
+// 	}{
+// 		{
+// 			scenario: "create",
+// 		},
+// 		{
+// 			scenario: "create with a default component",
+// 			config: app.WindowConfig{
+// 				DefaultURL: "tests.hello",
+// 			},
+// 		},
+// 		{
+// 			scenario: "move",
+// 			function: testWindowMove,
+// 		},
+// 		{
+// 			scenario: "resize",
+// 			function: testWindowResize,
+// 		},
+// 		{
+// 			scenario: "focus",
+// 			function: testWindowFocus,
+// 		},
+// 		{
+// 			scenario: "full screen",
+// 			function: testWindowFullScreen,
+// 		},
+// 		{
+// 			scenario: "minimize",
+// 			function: testWindowMinimize,
+// 		},
+// 	}
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+// 	for _, test := range tests {
+// 		t.Run(test.scenario, func(t *testing.T) {
+// 			w := d.NewWindow(test.config)
+// 			if w.Err() == app.ErrNotSupported {
+// 				return
+// 			}
 
-	"github.com/murlokswarm/app"
-)
+// 			require.NoError(t, w.Err())
+// 			defer w.Close()
 
-func testWindow(t *testing.T, d app.Driver) {
-	tests := []struct {
-		scenario string
-		config   app.WindowConfig
-		function func(t *testing.T, w app.Window)
-	}{
-		{
-			scenario: "create",
-		},
-		{
-			scenario: "create with a default component",
-			config: app.WindowConfig{
-				DefaultURL: "tests.hello",
-			},
-		},
-		{
-			scenario: "move",
-			function: testWindowMove,
-		},
-		{
-			scenario: "resize",
-			function: testWindowResize,
-		},
-		{
-			scenario: "focus",
-			function: testWindowFocus,
-		},
-		{
-			scenario: "full screen",
-			function: testWindowFullScreen,
-		},
-		{
-			scenario: "minimize",
-			function: testWindowMinimize,
-		},
-	}
+// 			if test.function == nil {
+// 				return
+// 			}
 
-	for _, test := range tests {
-		t.Run(test.scenario, func(t *testing.T) {
-			w := d.NewWindow(test.config)
-			if w.Err() == app.ErrNotSupported {
-				return
-			}
+// 			test.function(t, w)
+// 		})
+// 	}
 
-			require.NoError(t, w.Err())
-			defer w.Close()
+// 	testElemWithCompo(t, func() app.ElemWithCompo {
+// 		return d.NewWindow(app.WindowConfig{})
+// 	})
 
-			if test.function == nil {
-				return
-			}
+// 	testElementWithNavigation(t, func() app.Navigator {
+// 		return d.NewWindow(app.WindowConfig{})
+// 	})
+// }
 
-			test.function(t, w)
-		})
-	}
+// func testWindowMove(t *testing.T, w app.Window) {
+// 	w.Move(42, 42)
+// 	x, y := w.Position()
+// 	assert.Equal(t, 42.0, x)
+// 	assert.Equal(t, 42.0, y)
 
-	testElemWithCompo(t, func() app.ElemWithCompo {
-		return d.NewWindow(app.WindowConfig{})
-	})
+// 	w.Center()
+// 	cx, cy := w.Position()
+// 	assert.NotEqual(t, x, cx)
+// 	assert.NotEqual(t, y, cy)
+// }
 
-	testElementWithNavigation(t, func() app.Navigator {
-		return d.NewWindow(app.WindowConfig{})
-	})
-}
+// func testWindowResize(t *testing.T, w app.Window) {
+// 	w.Resize(100, 100)
+// 	width, height := w.Size()
+// 	assert.Equal(t, 100.0, width)
+// 	assert.Equal(t, 100.0, height)
+// }
 
-func testWindowMove(t *testing.T, w app.Window) {
-	w.Move(42, 42)
-	x, y := w.Position()
-	assert.Equal(t, 42.0, x)
-	assert.Equal(t, 42.0, y)
+// func testWindowFocus(t *testing.T, w app.Window) {
+// 	w.Focus()
+// }
 
-	w.Center()
-	cx, cy := w.Position()
-	assert.NotEqual(t, x, cx)
-	assert.NotEqual(t, y, cy)
-}
+// func testWindowFullScreen(t *testing.T, w app.Window) {
+// 	w.ToggleFullScreen()
+// 	w.ToggleFullScreen()
+// }
 
-func testWindowResize(t *testing.T, w app.Window) {
-	w.Resize(100, 100)
-	width, height := w.Size()
-	assert.Equal(t, 100.0, width)
-	assert.Equal(t, 100.0, height)
-}
-
-func testWindowFocus(t *testing.T, w app.Window) {
-	w.Focus()
-}
-
-func testWindowFullScreen(t *testing.T, w app.Window) {
-	w.ToggleFullScreen()
-	w.ToggleFullScreen()
-}
-
-func testWindowMinimize(t *testing.T, w app.Window) {
-	w.ToggleMinimize()
-	w.ToggleMinimize()
-}
+// func testWindowMinimize(t *testing.T, w app.Window) {
+// 	w.ToggleMinimize()
+// 	w.ToggleMinimize()
+// }
