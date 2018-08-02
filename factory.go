@@ -2,6 +2,7 @@ package app
 
 import (
 	"reflect"
+	"strings"
 	"sync"
 
 	"github.com/pkg/errors"
@@ -41,8 +42,10 @@ func (f factory) Register(c Compo) (name string, err error) {
 	}
 
 	rtype := rval.Type()
-	name = normalizeCompoName(rtype.String())
+	name = strings.ToLower(rtype.String())
+	name = strings.TrimPrefix(name, "main.")
 	f[name] = rtype
+
 	return name, nil
 }
 
