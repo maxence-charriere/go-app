@@ -150,7 +150,7 @@ func NewContextMenu(c MenuConfig) Menu {
 // configuration.
 //
 // It panics if called before Run.
-func NewFilePanel(c FilePanelConfig) error {
+func NewFilePanel(c FilePanelConfig) Elem {
 	return driver.NewFilePanel(c)
 }
 
@@ -158,14 +158,14 @@ func NewFilePanel(c FilePanelConfig) error {
 // given configuration.
 //
 // It panics if called before Run.
-func NewSaveFilePanel(c SaveFilePanelConfig) error {
+func NewSaveFilePanel(c SaveFilePanelConfig) Elem {
 	return driver.NewSaveFilePanel(c)
 }
 
 // NewShare creates and display the share pannel to share the given value.
 //
 // It panics if called before Run.
-func NewShare(v interface{}) error {
+func NewShare(v interface{}) Elem {
 	return driver.NewShare(v)
 }
 
