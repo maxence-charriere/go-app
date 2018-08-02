@@ -51,10 +51,6 @@ func (e *elemWithCompo) Contains(c app.Compo) bool {
 	return c != nil && c == e.compo
 }
 
-func (e *elemWithCompo) Render(app.Compo) error {
-	return nil
-}
-
 type compo app.ZeroCompo
 
 func (c *compo) Render() string {
