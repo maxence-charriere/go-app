@@ -521,6 +521,10 @@ type dockWithLogs struct {
 	DockTile
 }
 
+func (d *dockWithLogs) WhenDockTile(f func(DockTile)) {
+	f(d)
+}
+
 func (d *dockWithLogs) Load(url string, v ...interface{}) {
 	parsedURL := fmt.Sprintf(url, v...)
 
@@ -576,6 +580,10 @@ func (d *dockWithLogs) SetBadge(v interface{}) {
 // Status menu logs.
 type statusMenuWithLogs struct {
 	StatusMenu
+}
+
+func (s *statusMenuWithLogs) WhenStatusMenu(f func(StatusMenu)) {
+	f(s)
 }
 
 func (s *statusMenuWithLogs) Load(url string, v ...interface{}) {

@@ -15,6 +15,12 @@ func TestDockTile(t *testing.T) {
 	d := &DockTile{}
 	testMenu(t, d)
 
+	whenDockTileCalled := false
+	d.WhenDockTile(func(m app.DockTile) {
+		whenDockTileCalled = true
+	})
+	assert.True(t, whenDockTileCalled)
+
 	d.SetIcon("")
 	assert.Error(t, d.Err())
 
@@ -25,6 +31,12 @@ func TestDockTile(t *testing.T) {
 func TestStatusMenu(t *testing.T) {
 	s := &StatusMenu{}
 	testMenu(t, s)
+
+	whenStatusMenuCalled := false
+	s.WhenStatusMenu(func(m app.StatusMenu) {
+		whenStatusMenuCalled = true
+	})
+	assert.True(t, whenStatusMenuCalled)
 
 	s.SetIcon("")
 	assert.Error(t, s.Err())
