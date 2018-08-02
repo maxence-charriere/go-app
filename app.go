@@ -14,6 +14,7 @@ var (
 
 	driver  Driver
 	factory = NewFactory()
+	actions *actionRegistry
 )
 
 func init() {
@@ -21,8 +22,7 @@ func init() {
 	events = ConcurrentEventRegistry(events)
 	DefaultEventRegistry = events
 
-	actions := NewActionRegistry(events)
-	DefaultActionRegistry = actions
+	actions = newActionRegistry(events)
 }
 
 // Import imports the component into the app.
