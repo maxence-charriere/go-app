@@ -18,7 +18,7 @@ func TestWindow(t *testing.T) {
 	assert.True(t, whenWinCalled)
 
 	whenNavCalled := false
-	w.WhenNavigator(func(w app.Navigator) {
+	w.WhenNavigator(func(n app.Navigator) {
 		whenNavCalled = true
 	})
 	assert.True(t, whenNavCalled)

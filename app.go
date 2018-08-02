@@ -134,7 +134,7 @@ func NewWindow(c WindowConfig) Window {
 // NewPage creates the page described by the given configuration.
 //
 // It panics if called before Run.
-func NewPage(c PageConfig) error {
+func NewPage(c PageConfig) Elem {
 	return driver.NewPage(c)
 }
 
@@ -173,7 +173,7 @@ func NewShare(v interface{}) Elem {
 // given configuration.
 //
 // It panics if called before Run.
-func NewNotification(c NotificationConfig) error {
+func NewNotification(c NotificationConfig) Elem {
 	return driver.NewNotification(c)
 }
 

@@ -27,12 +27,12 @@ type Driver interface {
 	// configuration.
 	NewWindow(c WindowConfig) Window
 
+	// NewPage creates the webpage described in the given configuration.
+	NewPage(c PageConfig) Elem
+
 	// NewContextMenu creates and displays the context menu described by the
 	// given configuration.
 	NewContextMenu(c MenuConfig) Menu
-
-	// NewPage creates the webpage described in the given configuration.
-	NewPage(c PageConfig) error
 
 	// NewFilePanel creates and displays the file panel described by the given
 	// configuration.
@@ -47,7 +47,7 @@ type Driver interface {
 
 	// NewNotification creates and displays the notification described in the
 	// given configuration.
-	NewNotification(c NotificationConfig) error
+	NewNotification(c NotificationConfig) Elem
 
 	// MenuBar returns the menu bar.
 	MenuBar() Menu

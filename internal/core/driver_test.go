@@ -25,7 +25,8 @@ func TestDriver(t *testing.T) {
 	m := d.NewContextMenu(app.MenuConfig{})
 	assert.Error(t, m.Err())
 
-	assert.Error(t, d.NewPage(app.PageConfig{}))
+	p := d.NewPage(app.PageConfig{})
+	assert.Error(t, p.Err())
 
 	fp := d.NewFilePanel(app.FilePanelConfig{})
 	assert.Error(t, fp.Err())
@@ -36,7 +37,8 @@ func TestDriver(t *testing.T) {
 	s := d.NewShare(nil)
 	assert.Error(t, s.Err())
 
-	assert.Error(t, d.NewNotification(app.NotificationConfig{}))
+	n := d.NewNotification(app.NotificationConfig{})
+	assert.Error(t, n.Err())
 
 	mb := d.MenuBar()
 	assert.Error(t, mb.Err())

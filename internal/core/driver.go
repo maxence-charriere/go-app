@@ -51,16 +51,18 @@ func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
 	return w
 }
 
+// NewPage satisfies the app.Driver interface.
+func (d *Driver) NewPage(c app.PageConfig) app.Elem {
+	p := &Page{}
+	p.SetErr(app.ErrNotSupported)
+	return p
+}
+
 // NewContextMenu satisfies the app.Driver interface.
 func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 	m := &Menu{}
 	m.SetErr(app.ErrNotSupported)
 	return m
-}
-
-// NewPage satisfies the app.Driver interface.
-func (d *Driver) NewPage(c app.PageConfig) error {
-	return app.ErrNotSupported
 }
 
 // NewFilePanel satisfies the app.Driver interface.
@@ -79,8 +81,8 @@ func (d *Driver) NewShare(v interface{}) app.Elem {
 }
 
 // NewNotification satisfies the app.Driver interface.
-func (d *Driver) NewNotification(c app.NotificationConfig) error {
-	return app.ErrNotSupported
+func (d *Driver) NewNotification(c app.NotificationConfig) app.Elem {
+	return &Elem{err: app.ErrNotSupported}
 }
 
 // MenuBar satisfies the app.Driver interface.
