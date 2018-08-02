@@ -4,7 +4,7 @@ package app
 type Driver interface {
 	// Run runs the application with the components registered in the given
 	// factory.
-	Run(f Factory) error
+	Run(f *Factory) error
 
 	// AppName returns the appliction name.
 	AppName() string

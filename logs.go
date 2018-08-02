@@ -10,7 +10,7 @@ type driverWithLogs struct {
 	Driver
 }
 
-func (d *driverWithLogs) Run(f Factory) error {
+func (d *driverWithLogs) Run(f *Factory) error {
 	WhenDebug(func() {
 		Debug("running %T driver", d)
 	})

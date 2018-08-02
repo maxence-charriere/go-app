@@ -11,7 +11,7 @@ type Driver struct {
 }
 
 // Run satisfies the app.Driver interface.
-func (d *Driver) Run(f app.Factory) error {
+func (d *Driver) Run(f *app.Factory) error {
 	return app.ErrNotSupported
 }
 

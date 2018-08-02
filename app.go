@@ -12,14 +12,11 @@ var (
 	// ErrElemNotSet describes an error that reports if an element is set.
 	ErrElemNotSet = errors.New("element not set")
 
-	driver     Driver
-	components Factory
+	driver  Driver
+	factory = NewFactory()
 )
 
 func init() {
-	components = NewFactory()
-	components = ConcurrentFactory(components)
-
 	events := NewEventRegistry(CallOnUIGoroutine)
 	events = ConcurrentEventRegistry(events)
 	DefaultEventRegistry = events
@@ -33,7 +30,7 @@ func init() {
 // This allows components to be created dynamically when they are found into
 // markup.
 func Import(c Compo) {
-	if _, err := components.Register(c); err != nil {
+	if _, err := factory.RegisterCompo(c); err != nil {
 		err = errors.Wrap(err, "import component failed")
 		panic(err)
 	}
@@ -45,7 +42,7 @@ func Run(d Driver, addons ...Addon) error {
 		d = addon(d)
 	}
 	driver = d
-	return driver.Run(components)
+	return driver.Run(factory)
 }
 
 // RunningDriver returns the running driver.
