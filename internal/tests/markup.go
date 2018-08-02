@@ -10,18 +10,18 @@ import (
 
 // TestMarkup is a test suite used to ensure that all markups implementations
 // behave the same.
-func TestMarkup(t *testing.T, newMarkup func(factory app.Factory) app.Markup) {
+func TestMarkup(t *testing.T, newMarkup func(factory *app.Factory) app.Markup) {
 	factory := app.NewFactory()
-	factory.Register(&Foo{})
-	factory.Register(&Bar{})
-	factory.Register(&CompoWithBadTmpl{})
-	factory.Register(&CompoWithBadTag{})
-	factory.Register(&CompoWithNotRegisteredChild{})
-	factory.Register(&CompoWithBadChild{})
-	factory.Register(&Hello{})
-	factory.Register(&World{})
-	factory.Register(&Mapping{})
-	factory.Register(&RussianDoll{})
+	factory.RegisterCompo(&Foo{})
+	factory.RegisterCompo(&Bar{})
+	factory.RegisterCompo(&CompoWithBadTmpl{})
+	factory.RegisterCompo(&CompoWithBadTag{})
+	factory.RegisterCompo(&CompoWithNotRegisteredChild{})
+	factory.RegisterCompo(&CompoWithBadChild{})
+	factory.RegisterCompo(&Hello{})
+	factory.RegisterCompo(&World{})
+	factory.RegisterCompo(&Mapping{})
+	factory.RegisterCompo(&RussianDoll{})
 
 	tests := []struct {
 		scenario string

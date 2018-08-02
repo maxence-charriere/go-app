@@ -24,6 +24,9 @@ type Factory struct {
 
 // RegisterCompo registers the given component.
 func (f *Factory) RegisterCompo(c Compo) (name string, err error) {
+	f.mutex.Lock()
+	defer f.mutex.Unlock()
+
 	v := reflect.ValueOf(c)
 	if v.Kind() != reflect.Ptr {
 		return "", errors.New("component is not a pointer")
