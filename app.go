@@ -1,9 +1,6 @@
 package app
 
 import (
-	"os"
-	"path/filepath"
-
 	"github.com/pkg/errors"
 )
 
@@ -70,32 +67,6 @@ func Name() string {
 // It panics if called before Run.
 func Resources(path ...string) string {
 	return driver.Resources(path...)
-}
-
-// CSSResources returns a list that contains the path of the css files located
-// in the resource/css directory.
-func CSSResources() []string {
-	var css []string
-
-	walker := func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if info.IsDir() {
-			return nil
-		}
-
-		if ext := filepath.Ext(path); ext != ".css" {
-			return nil
-		}
-
-		css = append(css, path)
-		return nil
-	}
-
-	filepath.Walk(Resources("css"), walker)
-	return css
 }
 
 // Storage returns the given path prefixed by the storage directory
