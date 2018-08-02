@@ -81,8 +81,8 @@ func (d *Driver) NewShare(v interface{}) error {
 }
 
 // NewNotification satisfies the app.Driver interface.
-func (d *Driver) NewNotification(c app.NotificationConfig) error {
-	return app.ErrNotSupported
+func (d *Driver) NewNotification(c app.NotificationConfig) app.Elem {
+	return &Elem{err: app.ErrNotSupported}
 }
 
 // MenuBar satisfies the app.Driver interface.

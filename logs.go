@@ -140,17 +140,18 @@ func (d *driverWithLogs) NewShare(v interface{}) error {
 	return err
 }
 
-func (d *driverWithLogs) NewNotification(c NotificationConfig) error {
+func (d *driverWithLogs) NewNotification(c NotificationConfig) Elem {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "  ")
 		Debug("creating notification: %s", config)
 	})
 
-	err := d.Driver.NewNotification(c)
-	if err != nil {
-		Log("creating notification failed: %s", err)
+	n := d.Driver.NewNotification(c)
+	if n.Err() != nil {
+		Log("creating notification failed: %s", n.Err())
 	}
-	return err
+
+	return n
 }
 
 func (d *driverWithLogs) MenuBar() Menu {
