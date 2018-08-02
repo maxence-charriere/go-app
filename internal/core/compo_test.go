@@ -1,7 +1,9 @@
-package app
+package core
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCompoNameFromURL(t *testing.T) {
@@ -11,6 +13,10 @@ func TestCompoNameFromURL(t *testing.T) {
 	}{
 		{
 			rawurl:       "/hello",
+			expectedName: "hello",
+		},
+		{
+			rawurl:       "/Hello",
 			expectedName: "hello",
 		},
 		{
@@ -26,6 +32,18 @@ func TestCompoNameFromURL(t *testing.T) {
 			expectedName: "hello",
 		},
 		{
+			rawurl:       "main.hello",
+			expectedName: "hello",
+		},
+		{
+			rawurl:       "main.hello?foo=bar",
+			expectedName: "hello",
+		},
+		{
+			rawurl:       "hello?foo=bar",
+			expectedName: "hello",
+		},
+		{
 			rawurl: "test://hello",
 		},
 		{
@@ -37,18 +55,7 @@ func TestCompoNameFromURL(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if name := CompoNameFromURLString(test.rawurl); name != test.expectedName {
-			t.Errorf(`name is not "%s": "%s"`, test.expectedName, name)
-		}
-	}
-}
-
-func TestNormalizeCompoName(t *testing.T) {
-	if name := "lib.FooBar"; normalizeCompoName(name) != "lib.foobar" {
-		t.Errorf("name is not lib.foobar: %s", name)
-	}
-
-	if name := "main.FooBar"; normalizeCompoName(name) != "foobar" {
-		t.Errorf("name is not foobar: %s", name)
+		name := CompoNameFromURLString(test.rawurl)
+		assert.Equal(t, test.expectedName, name)
 	}
 }
