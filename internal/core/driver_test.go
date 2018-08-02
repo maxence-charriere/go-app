@@ -25,7 +25,9 @@ func TestDriver(t *testing.T) {
 	m := d.NewContextMenu(app.MenuConfig{})
 	assert.Error(t, m.Err())
 
-	assert.Error(t, d.NewPage(app.PageConfig{}))
+	p := d.NewPage(app.PageConfig{})
+	assert.Error(t, p.Err())
+
 	assert.Error(t, d.NewFilePanel(app.FilePanelConfig{}))
 	assert.Error(t, d.NewSaveFilePanel(app.SaveFilePanelConfig{}))
 	assert.Error(t, d.NewShare(nil))
