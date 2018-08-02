@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/internal/core"
 	"github.com/pkg/errors"
 )
 
@@ -149,7 +150,7 @@ type AttrValueFormatter struct {
 func (a AttrValueFormatter) Format() string {
 	if a.FormatHref && a.Name == "href" {
 		u, _ := url.Parse(a.Value)
-		compoName := app.CompoNameFromURL(u)
+		compoName := core.CompoNameFromURL(u)
 
 		if a.Factory.Registered(compoName) {
 			u.Scheme = "compo"

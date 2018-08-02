@@ -1,59 +1,50 @@
 package tests
 
-import (
-	"testing"
+// // TestDriver is a test suite that ensure that all driver implementations behave
+// // the same.
+// func TestDriver(t *testing.T, setup func(onRun func()) app.Driver, shutdown func() error) {
+// 	var driver app.Driver
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
+// 	app.Import(&Hello{})
+// 	app.Import(&World{})
+// 	app.Import(&Menu{})
+// 	app.Import(&Menubar{})
 
-	"github.com/murlokswarm/app"
-)
+// 	onRun := func() {
+// 		defer shutdown()
 
-// TestDriver is a test suite that ensure that all driver implementations behave
-// the same.
-func TestDriver(t *testing.T, setup func(onRun func()) app.Driver, shutdown func() error) {
-	var driver app.Driver
+// 		t.Run("window", func(t *testing.T) { testWindow(t, driver) })
+// 		t.Run("page", func(t *testing.T) { testPage(t, driver) })
+// 		t.Run("context menu", func(t *testing.T) { testContextMenu(t, driver) })
+// 		t.Run("menubar", func(t *testing.T) { testMenubar(t, driver) })
+// 		t.Run("status menu", func(t *testing.T) { testStatusMenu(t, driver) })
+// 		t.Run("dock", func(t *testing.T) { testDockTile(t, driver) })
 
-	app.Import(&Hello{})
-	app.Import(&World{})
-	app.Import(&Menu{})
-	app.Import(&Menubar{})
+// 		if err := driver.NewFilePanel(app.FilePanelConfig{}); err != app.ErrNotSupported {
+// 			assert.NoError(t, err)
+// 		}
 
-	onRun := func() {
-		defer shutdown()
+// 		if err := driver.NewSaveFilePanel(app.SaveFilePanelConfig{}); err != app.ErrNotSupported {
+// 			assert.NoError(t, err)
+// 		}
 
-		t.Run("window", func(t *testing.T) { testWindow(t, driver) })
-		t.Run("page", func(t *testing.T) { testPage(t, driver) })
-		t.Run("context menu", func(t *testing.T) { testContextMenu(t, driver) })
-		t.Run("menubar", func(t *testing.T) { testMenubar(t, driver) })
-		t.Run("status menu", func(t *testing.T) { testStatusMenu(t, driver) })
-		t.Run("dock", func(t *testing.T) { testDockTile(t, driver) })
+// 		if err := driver.NewShare(42); err != app.ErrNotSupported {
+// 			assert.NoError(t, err)
+// 		}
 
-		if err := driver.NewFilePanel(app.FilePanelConfig{}); err != app.ErrNotSupported {
-			assert.NoError(t, err)
-		}
+// 		if err := driver.NewNotification(app.NotificationConfig{
+// 			Title: "test",
+// 			Text:  "test",
+// 		}); err != app.ErrNotSupported {
+// 			assert.NoError(t, err)
+// 		}
+// 	}
 
-		if err := driver.NewSaveFilePanel(app.SaveFilePanelConfig{}); err != app.ErrNotSupported {
-			assert.NoError(t, err)
-		}
+// 	driver = setup(onRun)
 
-		if err := driver.NewShare(42); err != app.ErrNotSupported {
-			assert.NoError(t, err)
-		}
-
-		if err := driver.NewNotification(app.NotificationConfig{
-			Title: "test",
-			Text:  "test",
-		}); err != app.ErrNotSupported {
-			assert.NoError(t, err)
-		}
-	}
-
-	driver = setup(onRun)
-
-	err := app.Run(driver)
-	if err == app.ErrNotSupported {
-		return
-	}
-	require.NoError(t, err)
-}
+// 	err := app.Run(driver)
+// 	if err == app.ErrNotSupported {
+// 		return
+// 	}
+// 	require.NoError(t, err)
+// }

@@ -1,327 +1,316 @@
 package tests
 
-import (
-	"fmt"
-	"net/url"
-	"testing"
-	"time"
+// type element struct {
+// 	id string
+// }
 
-	"github.com/google/uuid"
-	"github.com/murlokswarm/app"
-	"github.com/stretchr/testify/require"
-)
+// func newElement() *element {
+// 	elem := &element{
+// 		id: uuid.New().String(),
+// 	}
+// 	return elem
+// }
 
-type element struct {
-	id string
-}
+// func (e *element) ID() string {
+// 	return e.id
+// }
 
-func newElement() *element {
-	elem := &element{
-		id: uuid.New().String(),
-	}
-	return elem
-}
+// type elemWithCompo struct {
+// 	id        string
+// 	factory   app.Factory
+// 	lastFocus time.Time
+// 	component app.Compo
+// }
 
-func (e *element) ID() string {
-	return e.id
-}
+// func newElemWithCompo() *elemWithCompo {
+// 	factory := app.NewFactory()
+// 	factory.Register(&Foo{})
 
-type elemWithCompo struct {
-	id        string
-	factory   app.Factory
-	lastFocus time.Time
-	component app.Compo
-}
+// 	return &elemWithCompo{
+// 		id:        uuid.New().String(),
+// 		factory:   factory,
+// 		lastFocus: time.Now(),
+// 	}
+// }
 
-func newElemWithCompo() *elemWithCompo {
-	factory := app.NewFactory()
-	factory.Register(&Foo{})
+// func (e *elemWithCompo) ID() string {
+// 	return e.id
+// }
 
-	return &elemWithCompo{
-		id:        uuid.New().String(),
-		factory:   factory,
-		lastFocus: time.Now(),
-	}
-}
+// func (e *elemWithCompo) Load(rawurl string, v ...interface{}) error {
+// 	rawurl = fmt.Sprintf(rawurl, v...)
 
-func (e *elemWithCompo) ID() string {
-	return e.id
-}
+// 	u, err := url.Parse(rawurl)
+// 	if err != nil {
+// 		return err
+// 	}
 
-func (e *elemWithCompo) Load(rawurl string, v ...interface{}) error {
-	rawurl = fmt.Sprintf(rawurl, v...)
+// 	compo, err := e.factory.New(core.CompoNameFromURL(u))
+// 	if err != nil {
+// 		return err
+// 	}
 
-	u, err := url.Parse(rawurl)
-	if err != nil {
-		return err
-	}
+// 	e.component = compo
+// 	return nil
+// }
 
-	compo, err := e.factory.New(app.CompoNameFromURL(u))
-	if err != nil {
-		return err
-	}
+// func (e *elemWithCompo) Compo() app.Compo {
+// 	return e.component
+// }
 
-	e.component = compo
-	return nil
-}
+// func (e *elemWithCompo) Contains(c app.Compo) bool {
+// 	return e.component == c
+// }
 
-func (e *elemWithCompo) Compo() app.Compo {
-	return e.component
-}
+// func (e *elemWithCompo) Render(c app.Compo) error {
+// 	e.component = c
+// 	return nil
+// }
 
-func (e *elemWithCompo) Contains(c app.Compo) bool {
-	return e.component == c
-}
+// func (e *elemWithCompo) LastFocus() time.Time {
+// 	return e.lastFocus
+// }
 
-func (e *elemWithCompo) Render(c app.Compo) error {
-	e.component = c
-	return nil
-}
+// func testElemWithCompo(t *testing.T, newElem func() app.ElemWithCompo) {
+// 	tests := []struct {
+// 		scenario string
+// 		function func(t *testing.T, elem app.ElemWithCompo)
+// 	}{
+// 		{
+// 			scenario: "load a component",
+// 			function: testElemWithCompoLoadSuccess,
+// 		},
+// 		{
+// 			scenario: "load a component fails",
+// 			function: testElemWithCompoLoadFail,
+// 		},
+// 		{
+// 			scenario: "render a component",
+// 			function: testElemWithCompoRenderSuccess,
+// 		},
+// 		{
+// 			scenario: "render a component fails",
+// 			function: testElemWithCompoRenderFail,
+// 		},
+// 	}
 
-func (e *elemWithCompo) LastFocus() time.Time {
-	return e.lastFocus
-}
+// 	for _, test := range tests {
+// 		t.Run(test.scenario, func(t *testing.T) {
+// 			e := newElem()
+// 			if e.Err() == app.ErrNotSupported {
+// 				return
+// 			}
 
-func testElemWithCompo(t *testing.T, newElem func() app.ElemWithCompo) {
-	tests := []struct {
-		scenario string
-		function func(t *testing.T, elem app.ElemWithCompo)
-	}{
-		{
-			scenario: "load a component",
-			function: testElemWithCompoLoadSuccess,
-		},
-		{
-			scenario: "load a component fails",
-			function: testElemWithCompoLoadFail,
-		},
-		{
-			scenario: "render a component",
-			function: testElemWithCompoRenderSuccess,
-		},
-		{
-			scenario: "render a component fails",
-			function: testElemWithCompoRenderFail,
-		},
-	}
+// 			require.NoError(t, e.Err())
 
-	for _, test := range tests {
-		t.Run(test.scenario, func(t *testing.T) {
-			e := newElem()
-			if e.Err() == app.ErrNotSupported {
-				return
-			}
+// 			if closer, ok := e.(app.Closer); ok {
+// 				defer closer.Close()
+// 			}
 
-			require.NoError(t, e.Err())
+// 			test.function(t, e)
+// 		})
+// 	}
+// }
 
-			if closer, ok := e.(app.Closer); ok {
-				defer closer.Close()
-			}
+// func testElemWithCompoLoadSuccess(t *testing.T, e app.ElemWithCompo) {
+// 	if err := e.Load("tests.hello"); err != nil {
+// 		t.Fatal(err)
+// 	}
+// }
 
-			test.function(t, e)
-		})
-	}
-}
+// func testElemWithCompoLoadFail(t *testing.T, e app.ElemWithCompo) {
+// 	err := e.Load("tests.abracadabra")
+// 	if err == nil {
+// 		t.Fatal("error is nil")
+// 	}
+// 	t.Log(err)
+// }
 
-func testElemWithCompoLoadSuccess(t *testing.T, e app.ElemWithCompo) {
-	if err := e.Load("tests.hello"); err != nil {
-		t.Fatal(err)
-	}
-}
+// func testElemWithCompoRenderSuccess(t *testing.T, e app.ElemWithCompo) {
+// 	if err := e.Load("tests.hello"); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-func testElemWithCompoLoadFail(t *testing.T, e app.ElemWithCompo) {
-	err := e.Load("tests.abracadabra")
-	if err == nil {
-		t.Fatal("error is nil")
-	}
-	t.Log(err)
-}
+// 	compo := e.Compo()
+// 	if compo == nil {
+// 		t.Fatal("component is nil")
+// 	}
 
-func testElemWithCompoRenderSuccess(t *testing.T, e app.ElemWithCompo) {
-	if err := e.Load("tests.hello"); err != nil {
-		t.Fatal(err)
-	}
+// 	hello := compo.(*Hello)
+// 	hello.Name = "Maxence"
 
-	compo := e.Compo()
-	if compo == nil {
-		t.Fatal("component is nil")
-	}
+// 	if err := e.Render(hello); err != nil {
+// 		t.Fatal(err)
+// 	}
+// }
 
-	hello := compo.(*Hello)
-	hello.Name = "Maxence"
+// func testElemWithCompoRenderFail(t *testing.T, e app.ElemWithCompo) {
+// 	if err := e.Load("tests.hello"); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-	if err := e.Render(hello); err != nil {
-		t.Fatal(err)
-	}
-}
+// 	compo := e.Compo()
+// 	if compo == nil {
+// 		t.Fatal("component is nil")
+// 	}
 
-func testElemWithCompoRenderFail(t *testing.T, e app.ElemWithCompo) {
-	if err := e.Load("tests.hello"); err != nil {
-		t.Fatal(err)
-	}
+// 	hello := compo.(*Hello)
+// 	hello.TmplErr = true
 
-	compo := e.Compo()
-	if compo == nil {
-		t.Fatal("component is nil")
-	}
+// 	err := e.Render(hello)
+// 	if err == nil {
+// 		t.Fatal("error is nil")
+// 	}
+// 	t.Log(err)
+// }
 
-	hello := compo.(*Hello)
-	hello.TmplErr = true
+// func testElementWithNavigation(t *testing.T, newElem func() app.Navigator) {
+// 	tests := []struct {
+// 		scenario string
+// 		function func(t *testing.T, elem app.Navigator)
+// 	}{
+// 		{
+// 			scenario: "reload a component",
+// 			function: testElementWithNavigationReloadSuccess,
+// 		},
+// 		{
+// 			scenario: "reload a component fails",
+// 			function: testElementWithNavigationReloadFail,
+// 		},
+// 		{
+// 			scenario: "load previous component",
+// 			function: testElementWithNavigationPreviousSuccess,
+// 		},
+// 		{
+// 			scenario: "load previous component fails",
+// 			function: testElementWithNavigationPreviousFail,
+// 		},
+// 		{
+// 			scenario: "load next component",
+// 			function: testElementWithNavigationNextSuccess,
+// 		},
+// 		{
+// 			scenario: "load next component fails",
+// 			function: testElementWithNavigationNextFail,
+// 		},
+// 	}
 
-	err := e.Render(hello)
-	if err == nil {
-		t.Fatal("error is nil")
-	}
-	t.Log(err)
-}
+// 	for _, test := range tests {
+// 		t.Run(test.scenario, func(t *testing.T) {
+// 			e := newElem()
+// 			if e.Err() == app.ErrNotSupported {
+// 				return
+// 			}
 
-func testElementWithNavigation(t *testing.T, newElem func() app.Navigator) {
-	tests := []struct {
-		scenario string
-		function func(t *testing.T, elem app.Navigator)
-	}{
-		{
-			scenario: "reload a component",
-			function: testElementWithNavigationReloadSuccess,
-		},
-		{
-			scenario: "reload a component fails",
-			function: testElementWithNavigationReloadFail,
-		},
-		{
-			scenario: "load previous component",
-			function: testElementWithNavigationPreviousSuccess,
-		},
-		{
-			scenario: "load previous component fails",
-			function: testElementWithNavigationPreviousFail,
-		},
-		{
-			scenario: "load next component",
-			function: testElementWithNavigationNextSuccess,
-		},
-		{
-			scenario: "load next component fails",
-			function: testElementWithNavigationNextFail,
-		},
-	}
+// 			require.NoError(t, e.Err())
 
-	for _, test := range tests {
-		t.Run(test.scenario, func(t *testing.T) {
-			e := newElem()
-			if e.Err() == app.ErrNotSupported {
-				return
-			}
+// 			if closer, ok := e.(app.Closer); ok {
+// 				defer closer.Close()
+// 			}
 
-			require.NoError(t, e.Err())
+// 			test.function(t, e)
+// 		})
+// 	}
+// }
 
-			if closer, ok := e.(app.Closer); ok {
-				defer closer.Close()
-			}
+// func testElementWithNavigationReloadSuccess(t *testing.T, e app.Navigator) {
+// 	if err := e.Load("tests.hello"); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-			test.function(t, e)
-		})
-	}
-}
+// 	if err := e.Reload(); err != nil {
+// 		t.Fatal(err)
+// 	}
+// }
 
-func testElementWithNavigationReloadSuccess(t *testing.T, e app.Navigator) {
-	if err := e.Load("tests.hello"); err != nil {
-		t.Fatal(err)
-	}
+// func testElementWithNavigationReloadFail(t *testing.T, e app.Navigator) {
+// 	err := e.Reload()
+// 	if err == nil {
+// 		t.Fatal("error is nil")
+// 	}
+// 	t.Log(err)
+// }
 
-	if err := e.Reload(); err != nil {
-		t.Fatal(err)
-	}
-}
+// func testElementWithNavigationPreviousSuccess(t *testing.T, e app.Navigator) {
+// 	if err := e.Load("tests.hello"); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-func testElementWithNavigationReloadFail(t *testing.T, e app.Navigator) {
-	err := e.Reload()
-	if err == nil {
-		t.Fatal("error is nil")
-	}
-	t.Log(err)
-}
+// 	if e.CanPrevious() {
+// 		t.Fatal("can previous is true")
+// 	}
 
-func testElementWithNavigationPreviousSuccess(t *testing.T, e app.Navigator) {
-	if err := e.Load("tests.hello"); err != nil {
-		t.Fatal(err)
-	}
+// 	if err := e.Load("tests.world"); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-	if e.CanPrevious() {
-		t.Fatal("can previous is true")
-	}
+// 	if !e.CanPrevious() {
+// 		t.Fatal("can previous is false")
+// 	}
 
-	if err := e.Load("tests.world"); err != nil {
-		t.Fatal(err)
-	}
+// 	if err := e.Previous(); err != nil {
+// 		t.Fatal(err)
+// 	}
+// }
 
-	if !e.CanPrevious() {
-		t.Fatal("can previous is false")
-	}
+// func testElementWithNavigationPreviousFail(t *testing.T, e app.Navigator) {
+// 	if err := e.Load("tests.hello"); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-	if err := e.Previous(); err != nil {
-		t.Fatal(err)
-	}
-}
+// 	if e.CanPrevious() {
+// 		t.Fatal("can previous is true")
+// 	}
 
-func testElementWithNavigationPreviousFail(t *testing.T, e app.Navigator) {
-	if err := e.Load("tests.hello"); err != nil {
-		t.Fatal(err)
-	}
+// 	err := e.Previous()
+// 	if err == nil {
+// 		t.Fatal("error is nil")
+// 	}
+// 	t.Log(err)
+// }
 
-	if e.CanPrevious() {
-		t.Fatal("can previous is true")
-	}
+// func testElementWithNavigationNextSuccess(t *testing.T, e app.Navigator) {
+// 	if err := e.Load("tests.hello"); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-	err := e.Previous()
-	if err == nil {
-		t.Fatal("error is nil")
-	}
-	t.Log(err)
-}
+// 	if e.CanNext() {
+// 		t.Fatal("can next is true")
+// 	}
 
-func testElementWithNavigationNextSuccess(t *testing.T, e app.Navigator) {
-	if err := e.Load("tests.hello"); err != nil {
-		t.Fatal(err)
-	}
+// 	if err := e.Load("tests.world"); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-	if e.CanNext() {
-		t.Fatal("can next is true")
-	}
+// 	if e.CanNext() {
+// 		t.Fatal("can next is true")
+// 	}
 
-	if err := e.Load("tests.world"); err != nil {
-		t.Fatal(err)
-	}
+// 	if err := e.Previous(); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-	if e.CanNext() {
-		t.Fatal("can next is true")
-	}
+// 	if !e.CanNext() {
+// 		t.Fatal("can next is false")
+// 	}
 
-	if err := e.Previous(); err != nil {
-		t.Fatal(err)
-	}
+// 	if err := e.Next(); err != nil {
+// 		t.Fatal(err)
+// 	}
+// }
 
-	if !e.CanNext() {
-		t.Fatal("can next is false")
-	}
+// func testElementWithNavigationNextFail(t *testing.T, e app.Navigator) {
+// 	if err := e.Load("tests.hello"); err != nil {
+// 		t.Fatal(err)
+// 	}
 
-	if err := e.Next(); err != nil {
-		t.Fatal(err)
-	}
-}
+// 	if e.CanNext() {
+// 		t.Fatal("can next is true")
+// 	}
 
-func testElementWithNavigationNextFail(t *testing.T, e app.Navigator) {
-	if err := e.Load("tests.hello"); err != nil {
-		t.Fatal(err)
-	}
-
-	if e.CanNext() {
-		t.Fatal("can next is true")
-	}
-
-	err := e.Next()
-	if err == nil {
-		t.Fatal("error is nil")
-	}
-	t.Log(err)
-}
+// 	err := e.Next()
+// 	if err == nil {
+// 		t.Fatal("error is nil")
+// 	}
+// 	t.Log(err)
+// }

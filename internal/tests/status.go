@@ -1,79 +1,69 @@
 package tests
 
-import (
-	"path/filepath"
-	"runtime"
-	"testing"
+// func testStatusMenu(t *testing.T, d app.Driver) {
+// 	tests := []struct {
+// 		scenario string
+// 		function func(t *testing.T, d app.StatusMenu, driver app.Driver)
+// 	}{
+// 		{
+// 			scenario: "set text success",
+// 			function: testStatusMenuSetTextSuccess,
+// 		},
+// 		{
+// 			scenario: "set icon success",
+// 			function: testStatusMenuSetIconSuccess,
+// 		},
+// 		{
+// 			scenario: "set icon fails",
+// 			function: testStatusMenuSetIconFail,
+// 		},
+// 	}
 
-	"github.com/google/uuid"
-	"github.com/murlokswarm/app"
-	"github.com/stretchr/testify/require"
-)
+// 	for _, test := range tests {
+// 		t.Run(test.scenario, func(t *testing.T) {
+// 			menu, err := d.NewStatusMenu(app.StatusMenuConfig{
+// 				Text: "test",
+// 			})
+// 			if err == app.ErrNotSupported {
+// 				return
+// 			}
+// 			defer menu.Close()
 
-func testStatusMenu(t *testing.T, d app.Driver) {
-	tests := []struct {
-		scenario string
-		function func(t *testing.T, d app.StatusMenu, driver app.Driver)
-	}{
-		{
-			scenario: "set text success",
-			function: testStatusMenuSetTextSuccess,
-		},
-		{
-			scenario: "set icon success",
-			function: testStatusMenuSetIconSuccess,
-		},
-		{
-			scenario: "set icon fails",
-			function: testStatusMenuSetIconFail,
-		},
-	}
+// 			require.NoError(t, err)
+// 			test.function(t, menu, d)
+// 		})
+// 	}
 
-	for _, test := range tests {
-		t.Run(test.scenario, func(t *testing.T) {
-			menu, err := d.NewStatusMenu(app.StatusMenuConfig{
-				Text: "test",
-			})
-			if err == app.ErrNotSupported {
-				return
-			}
-			defer menu.Close()
+// 	testMenu(t, func(c app.MenuConfig) (app.Menu, error) {
+// 		return d.NewStatusMenu(app.StatusMenuConfig{
+// 			Text: "hello",
+// 		})
+// 	})
+// }
 
-			require.NoError(t, err)
-			test.function(t, menu, d)
-		})
-	}
+// func testStatusMenuSetTextSuccess(t *testing.T, m app.StatusMenu, driver app.Driver) {
+// 	err := m.SetText(uuid.New().String())
+// 	require.NoError(t, err)
+// }
 
-	testMenu(t, func(c app.MenuConfig) (app.Menu, error) {
-		return d.NewStatusMenu(app.StatusMenuConfig{
-			Text: "hello",
-		})
-	})
-}
+// func testStatusMenuSetIconSuccess(t *testing.T, m app.StatusMenu, driver app.Driver) {
+// 	_, filename, _, _ := runtime.Caller(0)
+// 	filename = filepath.Join(filepath.Dir(filename), "resources", "logo.png")
 
-func testStatusMenuSetTextSuccess(t *testing.T, m app.StatusMenu, driver app.Driver) {
-	err := m.SetText(uuid.New().String())
-	require.NoError(t, err)
-}
+// 	err := m.SetIcon(filename)
+// 	if err == app.ErrNotSupported {
+// 		return
+// 	}
+// 	require.NoError(t, err)
+// }
 
-func testStatusMenuSetIconSuccess(t *testing.T, m app.StatusMenu, driver app.Driver) {
-	_, filename, _, _ := runtime.Caller(0)
-	filename = filepath.Join(filepath.Dir(filename), "resources", "logo.png")
+// func testStatusMenuSetIconFail(t *testing.T, m app.StatusMenu, driver app.Driver) {
+// 	_, filename, _, _ := runtime.Caller(0)
+// 	filename = filepath.Join(filepath.Dir(filename), "resources", "logo.bmp")
 
-	err := m.SetIcon(filename)
-	if err == app.ErrNotSupported {
-		return
-	}
-	require.NoError(t, err)
-}
-
-func testStatusMenuSetIconFail(t *testing.T, m app.StatusMenu, driver app.Driver) {
-	_, filename, _, _ := runtime.Caller(0)
-	filename = filepath.Join(filepath.Dir(filename), "resources", "logo.bmp")
-
-	err := m.SetIcon(filename)
-	if err == app.ErrNotSupported {
-		return
-	}
-	require.Error(t, err)
-}
+// 	err := m.SetIcon(filename)
+// 	if err == app.ErrNotSupported {
+// 		return
+// 	}
+// 	require.Error(t, err)
+// }
