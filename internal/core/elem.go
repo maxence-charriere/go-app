@@ -13,9 +13,6 @@ type ElemWithCompo interface {
 
 	// Contains reports whether the component is mounted in the element.
 	Contains(app.Compo) bool
-
-	// Render the given component.
-	Render(app.Compo) error
 }
 
 // Elem is a base struct to embed in app.Elem implementations.
@@ -61,19 +58,6 @@ func (e *Elem) Err() error {
 // SetErr set the element error state with the given error.
 func (e *Elem) SetErr(err error) {
 	e.err = err
-}
-
-// Contains satisfies the ElemWithCompo interface.
-func (e *Elem) Contains(c app.Compo) bool {
-	return false
-}
-
-// Render satisfies the ElemWithCompo interface.
-func (e *Elem) Render(app.Compo) error {
-	if e.err != nil {
-		return e.err
-	}
-	return nil
 }
 
 // NewElemDB creates an element database.
@@ -145,7 +129,7 @@ func (db *ElemDB) GetByID(id string) app.Elem {
 }
 
 // GetByCompo returns the element where the given component is mounted.
-func (db *ElemDB) GetByCompo(c app.Compo) ElemWithCompo {
+func (db *ElemDB) GetByCompo(c app.Compo) app.Elem {
 	db.mutex.RLock()
 	defer db.mutex.RUnlock()
 

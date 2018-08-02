@@ -20,16 +20,12 @@ func TestElem(t *testing.T) {
 		t.Error("WhenErr called:", err)
 	})
 
-	assert.NoError(t, e.Render(&compo{}))
-
 	e.SetErr(app.ErrElemNotSet)
 	e.WhenErr(func(err error) {
 		t.Log("WhenErr called:", err)
 	})
 
-	assert.False(t, e.Contains(&compo{}))
 	assert.Equal(t, "", e.ID())
-	assert.Error(t, e.Render(&compo{}))
 }
 
 type elem struct {
@@ -53,10 +49,6 @@ func (e *elemWithCompo) ID() string {
 
 func (e *elemWithCompo) Contains(c app.Compo) bool {
 	return c != nil && c == e.compo
-}
-
-func (e *elemWithCompo) Render(app.Compo) error {
-	return nil
 }
 
 type compo app.ZeroCompo
