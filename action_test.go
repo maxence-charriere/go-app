@@ -1,28 +1,21 @@
 package app_test
 
-import (
-	"testing"
+// func TestActions(t *testing.T) {
+// 	app.Handle("test", func(e app.EventDispatcher, a app.Action) {})
 
-	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/tests"
-)
+// 	app.NewAction("test", 42)
+// 	app.NewActions(
+// 		app.Action{Name: "test", Arg: 21},
+// 		app.Action{Name: "test", Arg: 84},
+// 	)
+// }
 
-func TestActions(t *testing.T) {
-	app.Handle("test", func(e app.EventDispatcher, a app.Action) {})
+// func TestActionRegistry(t *testing.T) {
+// 	tests.TestActionRegistry(t, func() app.ActionRegistry {
+// 		dispatcher := app.NewEventRegistry(func(f func()) {
+// 			f()
+// 		})
 
-	app.NewAction("test", 42)
-	app.NewActions(
-		app.Action{Name: "test", Arg: 21},
-		app.Action{Name: "test", Arg: 84},
-	)
-}
-
-func TestActionRegistry(t *testing.T) {
-	tests.TestActionRegistry(t, func() app.ActionRegistry {
-		dispatcher := app.NewEventRegistry(func(f func()) {
-			f()
-		})
-
-		return app.NewActionRegistry(dispatcher)
-	})
-}
+// 		return app.NewActionRegistry(dispatcher)
+// 	})
+// }

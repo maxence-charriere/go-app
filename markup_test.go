@@ -1,79 +1,70 @@
 package app_test
 
-import (
-	"reflect"
-	"testing"
+// func TestTag(t *testing.T) {
+// 	tag := app.Tag{
+// 		Type: app.CompoTag,
+// 	}
 
-	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/html"
-	"github.com/murlokswarm/app/internal/tests"
-)
+// 	if !tag.Is(app.CompoTag) {
+// 		t.Error("tag is not a component tag")
+// 	}
+// 	if tag.Is(app.TextTag) {
+// 		t.Error("tag is not not a text tag")
+// 	}
+// }
 
-func TestTag(t *testing.T) {
-	tag := app.Tag{
-		Type: app.CompoTag,
-	}
+// func TestConcurrentMarkup(t *testing.T) {
+// 	tests.TestMarkup(t, func(factory app.Factory) app.Markup {
+// 		return app.ConcurrentMarkup(html.NewMarkup(factory))
+// 	})
+// }
 
-	if !tag.Is(app.CompoTag) {
-		t.Error("tag is not a component tag")
-	}
-	if tag.Is(app.TextTag) {
-		t.Error("tag is not not a text tag")
-	}
-}
+// func TestParseMappingTarget(t *testing.T) {
+// 	tests := []struct {
+// 		scenario         string
+// 		target           string
+// 		expectedPipeline []string
+// 		shouldErr        bool
+// 	}{
+// 		{
+// 			scenario:         "parses target",
+// 			target:           "Hello",
+// 			expectedPipeline: []string{"Hello"},
+// 		},
+// 		{
+// 			scenario:         "parses target with multiple elements",
+// 			target:           "Hello.World",
+// 			expectedPipeline: []string{"Hello", "World"},
+// 		},
+// 		{
+// 			scenario:  "parses empyt target returns an error",
+// 			shouldErr: true,
+// 		},
+// 		{
+// 			scenario:  "parses target with empty element returns an error",
+// 			target:    ".Hello.World",
+// 			shouldErr: true,
+// 		},
+// 	}
 
-func TestConcurrentMarkup(t *testing.T) {
-	tests.TestMarkup(t, func(factory app.Factory) app.Markup {
-		return app.ConcurrentMarkup(html.NewMarkup(factory))
-	})
-}
+// 	for _, test := range tests {
+// 		t.Run(test.scenario, func(t *testing.T) {
+// 			pipeline, err := app.ParseMappingTarget(test.target)
 
-func TestParseMappingTarget(t *testing.T) {
-	tests := []struct {
-		scenario         string
-		target           string
-		expectedPipeline []string
-		shouldErr        bool
-	}{
-		{
-			scenario:         "parses target",
-			target:           "Hello",
-			expectedPipeline: []string{"Hello"},
-		},
-		{
-			scenario:         "parses target with multiple elements",
-			target:           "Hello.World",
-			expectedPipeline: []string{"Hello", "World"},
-		},
-		{
-			scenario:  "parses empyt target returns an error",
-			shouldErr: true,
-		},
-		{
-			scenario:  "parses target with empty element returns an error",
-			target:    ".Hello.World",
-			shouldErr: true,
-		},
-	}
+// 			if test.shouldErr {
+// 				if err == nil {
+// 					t.Fatal("error is nil")
+// 				}
+// 				return
+// 			}
 
-	for _, test := range tests {
-		t.Run(test.scenario, func(t *testing.T) {
-			pipeline, err := app.ParseMappingTarget(test.target)
+// 			if err != nil {
+// 				t.Fatal(err)
+// 			}
 
-			if test.shouldErr {
-				if err == nil {
-					t.Fatal("error is nil")
-				}
-				return
-			}
-
-			if err != nil {
-				t.Fatal(err)
-			}
-
-			if !reflect.DeepEqual(pipeline, test.expectedPipeline) {
-				t.Errorf("%v != %v", pipeline, test.expectedPipeline)
-			}
-		})
-	}
-}
+// 			if !reflect.DeepEqual(pipeline, test.expectedPipeline) {
+// 				t.Errorf("%v != %v", pipeline, test.expectedPipeline)
+// 			}
+// 		})
+// 	}
+// }

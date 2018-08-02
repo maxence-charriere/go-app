@@ -11,7 +11,7 @@ import (
 )
 
 func TestMarkup(t *testing.T) {
-	tests.TestMarkup(t, func(factory app.Factory) app.Markup {
+	tests.TestMarkup(t, func(factory *app.Factory) app.Markup {
 		return NewMarkup(factory)
 	})
 }
@@ -377,8 +377,8 @@ func testMapCompoFieldsStructError(t *testing.T) {
 
 func BenchmarkMarkupMount(b *testing.B) {
 	factory := app.NewFactory()
-	factory.Register(&tests.Hello{})
-	factory.Register(&tests.World{})
+	factory.RegisterCompo(&tests.Hello{})
+	factory.RegisterCompo(&tests.World{})
 
 	markup := NewMarkup(factory)
 
@@ -393,8 +393,8 @@ func BenchmarkMarkupMount(b *testing.B) {
 
 func BenchmarkMarkupUpdate(b *testing.B) {
 	factory := app.NewFactory()
-	factory.Register(&tests.Hello{})
-	factory.Register(&tests.World{})
+	factory.RegisterCompo(&tests.Hello{})
+	factory.RegisterCompo(&tests.World{})
 
 	markup := NewMarkup(factory)
 

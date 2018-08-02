@@ -15,7 +15,7 @@ type Markup interface {
 	Len() int
 
 	// Factory returns the used factory to create components.
-	Factory() Factory
+	Factory() *Factory
 
 	// Compo returns the component mounted under the identifier.
 	// Returns an error if there is not component with the identifier.
@@ -154,7 +154,7 @@ func (m *concurrentMarkup) Len() int {
 	return l
 }
 
-func (m *concurrentMarkup) Factory() Factory {
+func (m *concurrentMarkup) Factory() *Factory {
 	m.mutex.Lock()
 	factory := m.base.Factory()
 	m.mutex.Unlock()

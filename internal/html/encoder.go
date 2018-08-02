@@ -143,7 +143,7 @@ type AttrValueFormatter struct {
 	Value      string
 	FormatHref bool
 	CompoID    string
-	Factory    app.Factory
+	Factory    *app.Factory
 }
 
 // Format formats the attribute value to be compatible with appjs.
@@ -152,7 +152,7 @@ func (a AttrValueFormatter) Format() string {
 		u, _ := url.Parse(a.Value)
 		compoName := core.CompoNameFromURL(u)
 
-		if a.Factory.Registered(compoName) {
+		if a.Factory.IsCompoRegistered(compoName) {
 			u.Scheme = "compo"
 			u.Path = "/" + compoName
 		}
