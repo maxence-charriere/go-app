@@ -29,7 +29,7 @@ func newEventRegistry(dispatcher func(func())) *eventRegistry {
 }
 
 type eventRegistry struct {
-	mutex      sync.Mutex
+	mutex      sync.RWMutex
 	handlers   map[string][]eventHandler
 	dispatcher func(f func())
 }
@@ -79,8 +79,8 @@ func (m *eventRegistry) Unsubscribe(name string, id string) {
 }
 
 func (m *eventRegistry) Dispatch(name string, arg interface{}) {
-	m.mutex.Lock()
-	defer m.mutex.Unlock()
+	m.mutex.RLock()
+	defer m.mutex.RUnlock()
 
 	for _, h := range m.handlers[name] {
 		val := reflect.ValueOf(h.Handler)
