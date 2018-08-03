@@ -19,38 +19,6 @@ type Logger interface {
 	WhenDebug(f func())
 }
 
-var (
-	// Loggers is the loggers used by the app.
-	Loggers []Logger
-)
-
-// Log logs a message according to a format specifier.
-// It is a helper function that calls Log() for all the loggers set in
-// app.Loggers.
-func Log(format string, v ...interface{}) {
-	for _, l := range Loggers {
-		l.Log(format, v...)
-	}
-}
-
-// Debug logs a debug message according to a format specifier.
-// It is a helper function that calls Debug() for all the loggers set in
-// app.Loggers.
-func Debug(format string, v ...interface{}) {
-	for _, l := range Loggers {
-		l.Debug(format, v...)
-	}
-}
-
-// WhenDebug execute the given function when debug mode is enabled.
-// It is a helper function that calls WhenDebug() for all the loggers set in
-// app.Loggers.
-func WhenDebug(f func()) {
-	for _, l := range Loggers {
-		l.WhenDebug(f)
-	}
-}
-
 // NewLogger creates a logger that writes on the given writers.
 // Logs that contain errors are logged on werr.
 func NewLogger(wout, werr io.Writer, debug, colors bool) Logger {

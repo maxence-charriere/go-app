@@ -5,6 +5,16 @@ import (
 	"fmt"
 )
 
+// Logs returns an addons that logs all the driver operations.
+// It uses the loggers defined in app.Loggers.
+func Logs() func(Driver) Driver {
+	return func(d Driver) Driver {
+		return &driverWithLogs{
+			Driver: d,
+		}
+	}
+}
+
 // Driver logs.
 type driverWithLogs struct {
 	Driver

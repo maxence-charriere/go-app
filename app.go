@@ -12,6 +12,9 @@ var (
 	// ErrElemNotSet describes an error that reports if an element is set.
 	ErrElemNotSet = errors.New("element not set")
 
+	// Loggers contains the loggers used by the app.
+	Loggers []Logger
+
 	driver  Driver
 	factory = NewFactory()
 	events  = newEventRegistry(CallOnUIGoroutine)
@@ -188,5 +191,32 @@ func PostActions(a ...Action) {
 func NewEventSubscriber() *EventSubscriber {
 	return &EventSubscriber{
 		registry: events,
+	}
+}
+
+// Log logs a message according to a format specifier.
+// It is a helper function that calls Log() for all the loggers set in
+// app.Loggers.
+func Log(format string, v ...interface{}) {
+	for _, l := range Loggers {
+		l.Log(format, v...)
+	}
+}
+
+// Debug logs a debug message according to a format specifier.
+// It is a helper function that calls Debug() for all the loggers set in
+// app.Loggers.
+func Debug(format string, v ...interface{}) {
+	for _, l := range Loggers {
+		l.Debug(format, v...)
+	}
+}
+
+// WhenDebug execute the given function when debug mode is enabled.
+// It is a helper function that calls WhenDebug() for all the loggers set in
+// app.Loggers.
+func WhenDebug(f func()) {
+	for _, l := range Loggers {
+		l.WhenDebug(f)
 	}
 }
