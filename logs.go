@@ -32,16 +32,9 @@ func (d *driverWithLogs) Run(f *Factory) error {
 	return err
 }
 
-func (d *driverWithLogs) Render(c Compo) error {
-	WhenDebug(func() {
-		Debug("rendering %T", c)
-	})
-
-	err := d.Driver.Render(c)
-	if err != nil {
-		Log("rendering %T failed: %s", err)
-	}
-	return err
+func (d *driverWithLogs) Render(c Compo) {
+	e := d.ElemByCompo(c).(ElemWithCompo)
+	e.Render(c)
 }
 
 func (d *driverWithLogs) ElemByCompo(c Compo) Elem {

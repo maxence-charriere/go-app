@@ -16,7 +16,7 @@ func TestDriver(t *testing.T) {
 	assert.Empty(t, d.AppName())
 	assert.Equal(t, "resources", d.Resources())
 	assert.Equal(t, "storage", d.Storage())
-	assert.Error(t, d.Render(nil))
+	d.Render(nil)
 	assert.Error(t, d.ElemByCompo(nil).Err())
 
 	w := d.NewWindow(app.WindowConfig{})

@@ -18,7 +18,7 @@ type Driver interface {
 	Storage(path ...string) string
 
 	// Render renders the given component.
-	Render(c Compo) error
+	Render(c Compo)
 
 	// ElemByCompo returns the element where the given component is mounted.
 	ElemByCompo(c Compo) Elem

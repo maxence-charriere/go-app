@@ -35,8 +35,7 @@ func (d *Driver) Storage(p ...string) string {
 }
 
 // Render satisfies the app.Driver interface.
-func (d *Driver) Render(c app.Compo) error {
-	return app.ErrNotSupported
+func (d *Driver) Render(c app.Compo) {
 }
 
 // ElemByCompo satisfies the app.Driver interface.
