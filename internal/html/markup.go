@@ -18,7 +18,7 @@ import (
 type Markup struct {
 	components       map[string]app.Compo
 	roots            map[app.Compo]*app.Tag
-	eventSubscribers map[app.Compo]app.EventSubscriber
+	eventSubscribers map[app.Compo]*app.EventSubscriber
 	factory          *app.Factory
 }
 
@@ -27,7 +27,7 @@ func NewMarkup(factory *app.Factory) *Markup {
 	return &Markup{
 		components:       make(map[string]app.Compo),
 		roots:            make(map[app.Compo]*app.Tag),
-		eventSubscribers: make(map[app.Compo]app.EventSubscriber),
+		eventSubscribers: make(map[app.Compo]*app.EventSubscriber),
 		factory:          factory,
 	}
 }

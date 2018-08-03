@@ -12,18 +12,14 @@ var (
 	// ErrElemNotSet describes an error that reports if an element is set.
 	ErrElemNotSet = errors.New("element not set")
 
+	// Loggers contains the loggers used by the app.
+	Loggers []Logger
+
 	driver  Driver
 	factory = NewFactory()
+	events  = newEventRegistry(CallOnUIGoroutine)
+	actions = newActionRegistry(events)
 )
-
-func init() {
-	events := NewEventRegistry(CallOnUIGoroutine)
-	events = ConcurrentEventRegistry(events)
-	DefaultEventRegistry = events
-
-	actions := NewActionRegistry(events)
-	DefaultActionRegistry = actions
-}
 
 // Import imports the component into the app.
 // Components must be imported in order the be used by the app package.
@@ -171,4 +167,56 @@ func Dock() DockTile {
 // UI goroutine is the running application main thread.
 func CallOnUIGoroutine(f func()) {
 	driver.CallOnUIGoroutine(f)
+}
+
+// HandleAction handles the named action with the given handler.
+func HandleAction(name string, h ActionHandler) {
+	actions.Handle(name, h)
+}
+
+// PostAction creates and posts the named action with the given arg.
+// The action is handled in its own goroutine.
+func PostAction(name string, arg interface{}) {
+	actions.Post(name, arg)
+}
+
+// PostActions creates and posts a batch of actions.
+// All the actions are handled sequentially in a separate goroutine.
+func PostActions(a ...Action) {
+	actions.PostBatch(a...)
+}
+
+// NewEventSubscriber creates an event subscriber to return when
+// implementing the app.Subscriber interface.
+func NewEventSubscriber() *EventSubscriber {
+	return &EventSubscriber{
+		registry: events,
+	}
+}
+
+// Log logs a message according to a format specifier.
+// It is a helper function that calls Log() for all the loggers set in
+// app.Loggers.
+func Log(format string, v ...interface{}) {
+	for _, l := range Loggers {
+		l.Log(format, v...)
+	}
+}
+
+// Debug logs a debug message according to a format specifier.
+// It is a helper function that calls Debug() for all the loggers set in
+// app.Loggers.
+func Debug(format string, v ...interface{}) {
+	for _, l := range Loggers {
+		l.Debug(format, v...)
+	}
+}
+
+// WhenDebug execute the given function when debug mode is enabled.
+// It is a helper function that calls WhenDebug() for all the loggers set in
+// app.Loggers.
+func WhenDebug(f func()) {
+	for _, l := range Loggers {
+		l.WhenDebug(f)
+	}
 }
