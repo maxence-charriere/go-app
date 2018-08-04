@@ -28,7 +28,7 @@ type Driver interface {
 	NewWindow(c WindowConfig) Window
 
 	// NewPage creates the webpage described in the given configuration.
-	NewPage(c PageConfig) Elem
+	NewPage(c PageConfig) Page
 
 	// NewContextMenu creates and displays the context menu described by the
 	// given configuration.
@@ -60,6 +60,10 @@ type Driver interface {
 
 	// CallOnUIGoroutine calls a function on the UI goroutine.
 	CallOnUIGoroutine(f func())
+
+	// Stop stops the driver.
+	// Calling it make run return with an error.
+	Stop()
 }
 
 // Addon represents a driver addon.

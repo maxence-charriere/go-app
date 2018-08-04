@@ -51,7 +51,7 @@ func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
 }
 
 // NewPage satisfies the app.Driver interface.
-func (d *Driver) NewPage(c app.PageConfig) app.Elem {
+func (d *Driver) NewPage(c app.PageConfig) app.Page {
 	p := &Page{}
 	p.SetErr(app.ErrNotSupported)
 	return p
@@ -108,4 +108,8 @@ func (d *Driver) Dock() app.DockTile {
 // CallOnUIGoroutine satisfies the app.Driver interface.
 func (d *Driver) CallOnUIGoroutine(f func()) {
 	f()
+}
+
+// Stop satisfies the app.Driver interface.
+func (d *Driver) Stop() {
 }

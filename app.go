@@ -32,7 +32,7 @@ func Import(c Compo) {
 	}
 }
 
-// Run runs the app with the driver as backend.
+// Run runs the app with the given driver as backend.
 func Run(d Driver, addons ...Addon) error {
 	for _, addon := range addons {
 		d = addon(d)
@@ -98,7 +98,7 @@ func NewWindow(c WindowConfig) Window {
 // NewPage creates the page described by the given configuration.
 //
 // It panics if called before Run.
-func NewPage(c PageConfig) Elem {
+func NewPage(c PageConfig) Page {
 	return driver.NewPage(c)
 }
 
@@ -161,6 +161,14 @@ func NewStatusMenu(c StatusMenuConfig) StatusMenu {
 // It panics if called before Run.
 func Dock() DockTile {
 	return driver.Dock()
+}
+
+// Stop stops the app.
+// Calling stop make Run return an error.
+//
+// It panics if called before Run.
+func Stop() {
+	driver.Stop()
 }
 
 // CallOnUIGoroutine calls a function on the UI goroutine.
