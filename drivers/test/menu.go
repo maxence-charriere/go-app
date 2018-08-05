@@ -2,54 +2,37 @@ package test
 
 import (
 	"fmt"
-	"net/url"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/html"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/pkg/errors"
+	"github.com/murlokswarm/app/internal/html"
 )
 
-// A Menu implementation for tests.
+// Menu is a test menu that implements the app.Menu interface.
 type Menu struct {
-	core.Elem
+	core.Menu
 
-	id          string
-	typ         string
-	factory     app.Factory
-	markup      app.Markup
-	lastFocus   time.Time
-	component   app.Compo
-	simulateErr bool
-
-	onClose func()
+	driver *Driver
+	markup *html.Markup
+	id     string
+	compo  app.Compo
 }
 
-func newMenu(d *Driver, c app.MenuConfig) (app.Menu, error) {
-	var markup app.Markup = html.NewMarkup(d.factory)
-	markup = app.ConcurrentMarkup(markup)
-
-	menu := &Menu{
-		id:          uuid.New().String(),
-		typ:         c.Type,
-		factory:     d.factory,
-		markup:      markup,
-		lastFocus:   time.Now(),
-		simulateErr: d.SimulateElemErr,
+func newMenu(d *Driver, c app.MenuConfig) *Menu {
+	m := &Menu{
+		driver: d,
+		markup: html.NewMarkup(d.factory),
+		id:     uuid.New().String(),
 	}
 
-	d.elems.Put(menu)
-	menu.onClose = func() {
-		d.elems.Delete(menu)
+	d.elems.Put(m)
+
+	if len(c.URL) != 0 {
+		m.Load(c.URL)
 	}
 
-	var err error
-	if len(c.DefaultURL) != 0 {
-		err = menu.Load(c.DefaultURL)
-	}
-	return menu, err
+	return m
 }
 
 // ID satisfies the app.Menu interface.
@@ -57,62 +40,43 @@ func (m *Menu) ID() string {
 	return m.id
 }
 
-// Load satisfies the app.ElemWithCompo interface.
-func (m *Menu) Load(rawurl string, v ...interface{}) error {
-	if m.simulateErr {
-		return ErrSimulated
+// Load satisfies the app.Menu interface.
+func (m *Menu) Load(urlFmt string, v ...interface{}) {
+	var err error
+	defer func() {
+		m.SetErr(err)
+	}()
+
+	m.markup.Dismount(m.compo)
+	m.compo = nil
+
+	u := fmt.Sprintf(urlFmt, v...)
+	n := core.CompoNameFromURLString(u)
+
+	var c app.Compo
+	if c, err = m.driver.factory.NewCompo(n); err != nil {
+		return
 	}
 
-	if m.component != nil {
-		m.markup.Dismount(m.component)
+	if _, err = m.markup.Mount(c); err != nil {
+		return
 	}
 
-	rawurl = fmt.Sprintf(rawurl, v...)
-
-	u, err := url.Parse(rawurl)
-	if err != nil {
-		return err
-	}
-
-	compo, err := m.factory.New(app.CompoNameFromURL(u))
-	if err != nil {
-		return err
-	}
-
-	m.component = compo
-
-	if _, err = m.markup.Mount(compo); err != nil {
-		return errors.Wrapf(err, "loading %s in test menu %p failed", u, m)
-	}
-	return nil
+	m.compo = c
 }
 
 // Compo satisfies the app.Menu interface.
 func (m *Menu) Compo() app.Compo {
-	return m.component
+	return m.compo
 }
 
 // Contains satisfies the app.Menu interface.
-func (m *Menu) Contains(compo app.Compo) bool {
-	return m.markup.Contains(compo)
+func (m *Menu) Contains(c app.Compo) bool {
+	return m.markup.Contains(c)
 }
 
 // Render satisfies the app.Menu interface.
-func (m *Menu) Render(compo app.Compo) error {
-	if m.simulateErr {
-		return ErrSimulated
-	}
-
-	_, err := m.markup.Update(compo)
-	return err
-}
-
-// LastFocus satisfies the app.Menu interface.
-func (m *Menu) LastFocus() time.Time {
-	return m.lastFocus
-}
-
-// Type satisfies the app.Menu interface.
-func (m *Menu) Type() string {
-	return m.typ
+func (m *Menu) Render(c app.Compo) {
+	_, err := m.markup.Update(c)
+	m.SetErr(err)
 }

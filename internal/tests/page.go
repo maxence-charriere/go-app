@@ -62,4 +62,7 @@ func testPage(t *testing.T, p app.Page) {
 
 	p.Referer()
 	assertElem(t, p)
+
+	p.Close()
+	assertElem(t, p)
 }

@@ -160,7 +160,7 @@ func NewStatusMenu(c StatusMenuConfig) StatusMenu {
 //
 // It panics if called before Run.
 func Dock() DockTile {
-	return driver.Dock()
+	return driver.DockTile()
 }
 
 // Stop stops the app.

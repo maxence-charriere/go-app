@@ -64,5 +64,5 @@ func testMenu(t *testing.T, m app.Menu) {
 	m.Render(nil)
 	assert.Error(t, m.Err())
 
-	assert.Equal(t, "menu", m.Type())
+	assert.NotEmpty(t, m.Type())
 }

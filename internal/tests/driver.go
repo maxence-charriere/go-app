@@ -56,17 +56,9 @@ func TestDriver(t *testing.T, setup DriverSetup) {
 		assertElem(t, sm)
 		t.Run("status menu", func(t *testing.T) { testStatusMenu(t, sm) })
 
-		dt := d.Dock()
+		dt := d.DockTile()
 		assertElem(t, dt)
 		t.Run("dock", func(t *testing.T) { testDock(t, dt) })
-
-		called := false
-		wait := make(chan struct{}, 1)
-		d.CallOnUIGoroutine(func() {
-			called = true
-		})
-		<-wait
-		assert.True(t, called)
 
 		d.Stop()
 	}
@@ -78,6 +70,7 @@ func TestDriver(t *testing.T, setup DriverSetup) {
 
 	d = setup(onRun)
 	d.Run(f)
+
 }
 
 func testElemByCompo(t *testing.T, d app.Driver) {
@@ -104,7 +97,7 @@ func testElemByCompo(t *testing.T, d app.Driver) {
 		{
 			scenario: "dock",
 			elem: func() app.DockTile {
-				dt := d.Dock()
+				dt := d.DockTile()
 				dt.Load("tests.Menu")
 				return dt
 			}(),
@@ -114,16 +107,18 @@ func testElemByCompo(t *testing.T, d app.Driver) {
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
 			e := test.elem
+			assertElem(t, e)
+
 			if e.Err() == app.ErrNotSupported {
 				return
 			}
 
 			c := e.Compo()
-			assertElem(t, e)
+			assert.NotNil(t, c)
 
 			ebc := d.ElemByCompo(c)
 			if e.Err() == nil {
-				assert.Equal(t, e, ebc)
+				assert.Equal(t, e.ID(), ebc.ID())
 			}
 		})
 	}

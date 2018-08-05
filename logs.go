@@ -187,12 +187,12 @@ func (d *driverWithLogs) NewStatusMenu(c StatusMenuConfig) StatusMenu {
 	return &statusMenuWithLogs{StatusMenu: m}
 }
 
-func (d *driverWithLogs) Dock() DockTile {
+func (d *driverWithLogs) DockTile() DockTile {
 	WhenDebug(func() {
 		Debug("getting dock tile")
 	})
 
-	dt := d.Driver.Dock()
+	dt := d.Driver.DockTile()
 	if dt.Err() != nil {
 		Log("getting dock tile failed: %s", dt.Err())
 	}

@@ -18,18 +18,17 @@ type MenuConfig struct {
 	OnClose func() `json:"-"`
 }
 
-// DockTile is the interface that describes a dock tile.
-// Accept only components that contain menu and menuitem tags.
-type DockTile interface {
+// StatusMenu is the interface that describes a status menu menu.
+type StatusMenu interface {
 	Menu
+	Closer
 
-	// SetIcon set the dock tile icon with the named file.
+	// Set the menu button icon.
 	// The icon should be a .png file.
 	SetIcon(path string)
 
-	// SetBadge set the dock tile badge with the string representation of the
-	// value.
-	SetBadge(v interface{})
+	// Set the menu button text.
+	SetText(text string)
 }
 
 // StatusMenuConfig is a struct that describes a status menu.
@@ -49,15 +48,16 @@ type StatusMenuConfig struct {
 	OnClose func() `json:"-"`
 }
 
-// StatusMenu is the interface that describes a status menu menu.
-type StatusMenu interface {
+// DockTile is the interface that describes a dock tile.
+// Accept only components that contain menu and menuitem tags.
+type DockTile interface {
 	Menu
-	Closer
 
-	// Set the menu button icon.
+	// SetIcon set the dock tile icon with the named file.
 	// The icon should be a .png file.
 	SetIcon(path string)
 
-	// Set the menu button text.
-	SetText(text string)
+	// SetBadge set the dock tile badge with the string representation of the
+	// value.
+	SetBadge(v interface{})
 }

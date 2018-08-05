@@ -129,6 +129,7 @@ func TestHistory(t *testing.T) {
 				case new:
 					url = action.url
 					h.NewEntry(action.url)
+					assert.Equal(t, action.url, h.Current())
 
 				case canPrevious:
 					h.CanPrevious()

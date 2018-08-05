@@ -1,6 +1,7 @@
 package core
 
 import (
+	"os"
 	"path/filepath"
 
 	"github.com/murlokswarm/app"
@@ -17,7 +18,8 @@ func (d *Driver) Run(f *app.Factory) error {
 
 // AppName satisfies the app.Driver interface.
 func (d *Driver) AppName() string {
-	return ""
+	wd, _ := os.Getwd()
+	return filepath.Base(wd)
 }
 
 // Resources satisfies the app.Driver interface.
@@ -98,8 +100,8 @@ func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) app.StatusMenu {
 	return s
 }
 
-// Dock satisfies the app.Driver interface.
-func (d *Driver) Dock() app.DockTile {
+// DockTile satisfies the app.Driver interface.
+func (d *Driver) DockTile() app.DockTile {
 	dt := &DockTile{}
 	dt.SetErr(app.ErrNotSupported)
 	return dt
