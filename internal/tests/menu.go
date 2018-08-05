@@ -1,98 +1,72 @@
 package tests
 
-// func testContextMenu(t *testing.T, d app.Driver) {
-// 	testMenu(t, d.NewContextMenu)
-// }
+import (
+	"path/filepath"
+	"runtime"
+	"testing"
 
-// func testMenubar(t *testing.T, d app.Driver) {
-// 	testMenu(t, func(c app.MenuConfig) (app.Menu, error) {
-// 		return d.MenuBar()
-// 	})
-// }
+	"github.com/murlokswarm/app"
+	"github.com/stretchr/testify/assert"
+)
 
-// func testMenu(t *testing.T, setup func(c app.MenuConfig) (app.Menu, error)) {
-// 	tests := []struct {
-// 		scenario string
-// 		config   app.MenuConfig
-// 		function func(t *testing.T, w app.Menu)
-// 	}{
-// 		{
-// 			scenario: "create",
-// 		},
-// 		{
-// 			scenario: "create with a default component",
-// 			config: app.MenuConfig{
-// 				DefaultURL: "tests.menu",
-// 			},
-// 		},
-// 		{
-// 			scenario: "load a component",
-// 			function: testMenuLoadSuccess,
-// 		},
-// 		{
-// 			scenario: "load a component fails",
-// 			function: testMenuLoadFail,
-// 		},
-// 		{
-// 			scenario: "render a component",
-// 			function: testMenuRenderSuccess,
-// 		},
-// 		{
-// 			scenario: "render a component fails",
-// 			function: testMenuRenderFail,
-// 		},
-// 	}
+func testMenu(t *testing.T, m app.Menu) {
+	assert.NotEmpty(t, m.ID())
 
-// 	for _, test := range tests {
-// 		t.Run(test.scenario, func(t *testing.T) {
-// 			m, err := setup(test.config)
-// 			if err == app.ErrNotSupported {
-// 				return
-// 			}
-// 			require.NoError(t, err)
+	m.Load("tests.Unknown")
+	assert.Error(t, m.Err())
 
-// 			if test.function == nil {
-// 				return
-// 			}
-// 			test.function(t, m)
-// 		})
-// 	}
-// }
+	m.Load("tests.Menu")
+	assert.Error(t, m.Err())
 
-// func testMenuLoadSuccess(t *testing.T, m app.Menu) {
-// 	err := m.Load("tests.menu")
-// 	require.NoError(t, err)
-// }
+	c := m.Compo()
+	if m.Err() == app.ErrNotSupported {
+		assert.Nil(t, c)
+	} else {
+		assertElem(t, m)
+		assert.NotNil(t, c)
+	}
 
-// func testMenuLoadFail(t *testing.T, m app.Menu) {
-// 	err := m.Load("tests.tralala")
-// 	require.Error(t, err)
-// }
+	assert.True(t, m.Contains(c))
+	assert.False(t, m.Contains(&Menu{}))
 
-// func testMenuRenderSuccess(t *testing.T, m app.Menu) {
-// 	err := m.Load("tests.menu")
-// 	require.NoError(t, err)
+	m.Render(c)
+	assertElem(t, m)
 
-// 	compo := m.Compo()
-// 	require.NotNil(t, compo)
+	m.Render(&Menu{})
+	assert.Error(t, m.Err())
+}
 
-// 	menu := compo.(*Menu)
-// 	menu.Label = "a menu for test"
+func testStatusMenu(t *testing.T, m app.StatusMenu) {
+	t.Run("menu", func(t *testing.T) { testMenu(t, m) })
 
-// 	err = m.Render(menu)
-// 	require.NoError(t, err)
-// }
+	m.SetIcon(filepath.Join(resourcesDir(), "resources", "unknown"))
+	assert.Error(t, m.Err())
 
-// func testMenuRenderFail(t *testing.T, m app.Menu) {
-// 	err := m.Load("tests.menu")
-// 	require.NoError(t, err)
+	m.SetIcon(filepath.Join(resourcesDir(), "resources", "logo.png"))
+	assertElem(t, m)
 
-// 	compo := m.Compo()
-// 	require.NotNil(t, compo)
+	m.SetText("test")
+	assertElem(t, m)
 
-// 	menu := compo.(*Menu)
-// 	menu.SimulateErr = true
+	m.Close()
+	assertElem(t, m)
+}
 
-// 	err = m.Render(menu)
-// 	require.Error(t, err)
-// }
+func testDock(t *testing.T, d app.DockTile) {
+	t.Run("menu", func(t *testing.T) { testMenu(t, d) })
+
+	d.SetIcon(filepath.Join(resourcesDir(), "resources", "unknown"))
+	assert.Error(t, d.Err())
+
+	d.SetIcon(filepath.Join(resourcesDir(), "resources", "logo.png"))
+	assertElem(t, d)
+
+	d.SetBadge("test")
+	assertElem(t, d)
+
+}
+
+func resourcesDir() string {
+	_, filename, _, _ := runtime.Caller(0)
+	return filepath.Dir(filename)
+}

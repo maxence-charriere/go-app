@@ -283,29 +283,11 @@ func (r *RussianDoll) Funcs() map[string]interface{} {
 	}
 }
 
-// Menu is a component to test menu elements.
-type Menu struct {
-	Label       string
-	SimulateErr bool
-}
+// Menu is a component to test a menu element.
+type Menu app.ZeroCompo
 
 // Render satisfies the app.Compo interface.
 func (m *Menu) Render() string {
-	return `
-<menu label="{{.Label}}">
-	<menuitem label="a menu"></menuitem>
-	{{if .SimulateErr}}
-		<tests.unknownmenu>
-	{{end}}
-</menu>
-	`
-}
-
-// Menubar is a component to test a menu bar element.
-type Menubar app.ZeroCompo
-
-// Render satisfies the app.Compo interface.
-func (m *Menubar) Render() string {
 	return `
 <menu>
 	<menu label="app">

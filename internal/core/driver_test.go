@@ -52,4 +52,6 @@ func TestDriver(t *testing.T) {
 	d.CallOnUIGoroutine(func() {
 		t.Log("call from ui goroutine")
 	})
+
+	d.Stop()
 }

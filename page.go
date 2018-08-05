@@ -18,5 +18,6 @@ type Page interface {
 
 // PageConfig is a struct that describes a webpage.
 type PageConfig struct {
+	// The URL of the component to load when the page is created.
 	URL string
 }

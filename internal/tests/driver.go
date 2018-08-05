@@ -1,50 +1,201 @@
 package tests
 
-// // TestDriver is a test suite that ensure that all driver implementations behave
-// // the same.
-// func TestDriver(t *testing.T, setup func(onRun func()) app.Driver, shutdown func() error) {
-// 	var driver app.Driver
+import (
+	"testing"
 
-// 	app.Import(&Hello{})
-// 	app.Import(&World{})
-// 	app.Import(&Menu{})
-// 	app.Import(&Menubar{})
+	"github.com/murlokswarm/app"
+	"github.com/stretchr/testify/assert"
+)
 
-// 	onRun := func() {
-// 		defer shutdown()
+// DriverSetup is the definition of a function that creates a driver.
+type DriverSetup func(onRun func()) app.Driver
 
-// 		t.Run("window", func(t *testing.T) { testWindow(t, driver) })
-// 		t.Run("page", func(t *testing.T) { testPage(t, driver) })
-// 		t.Run("context menu", func(t *testing.T) { testContextMenu(t, driver) })
-// 		t.Run("menubar", func(t *testing.T) { testMenubar(t, driver) })
-// 		t.Run("status menu", func(t *testing.T) { testStatusMenu(t, driver) })
-// 		t.Run("dock", func(t *testing.T) { testDockTile(t, driver) })
+// TestDriver is a test suite that ensure that all driver implementations behave
+// the same.
+func TestDriver(t *testing.T, setup DriverSetup) {
+	var d app.Driver
 
-// 		if err := driver.NewFilePanel(app.FilePanelConfig{}); err != app.ErrNotSupported {
-// 			assert.NoError(t, err)
-// 		}
+	onRun := func() {
+		assert.NotEmpty(t, d.AppName())
+		assert.NotEmpty(t, d.Resources())
+		assert.NotEmpty(t, d.Storage())
 
-// 		if err := driver.NewSaveFilePanel(app.SaveFilePanelConfig{}); err != app.ErrNotSupported {
-// 			assert.NoError(t, err)
-// 		}
+		d.Render(&Hello{})
 
-// 		if err := driver.NewShare(42); err != app.ErrNotSupported {
-// 			assert.NoError(t, err)
-// 		}
+		t.Run("elem by compo", func(t *testing.T) { testElemByCompo(t, d) })
 
-// 		if err := driver.NewNotification(app.NotificationConfig{
-// 			Title: "test",
-// 			Text:  "test",
-// 		}); err != app.ErrNotSupported {
-// 			assert.NoError(t, err)
-// 		}
-// 	}
+		w := d.NewWindow(app.WindowConfig{})
+		assertElem(t, w)
+		t.Run("window", func(t *testing.T) { testWindow(t, w) })
 
-// 	driver = setup(onRun)
+		p := d.NewPage(app.PageConfig{})
+		assertElem(t, p)
+		t.Run("page", func(t *testing.T) { testPage(t, p) })
 
-// 	err := app.Run(driver)
-// 	if err == app.ErrNotSupported {
-// 		return
-// 	}
-// 	require.NoError(t, err)
-// }
+		cm := d.NewContextMenu(app.MenuConfig{})
+		assertElem(t, cm)
+		t.Run("context menu", func(t *testing.T) { testMenu(t, cm) })
+
+		fp := d.NewFilePanel(app.FilePanelConfig{})
+		assertElem(t, fp)
+
+		sfp := d.NewSaveFilePanel(app.SaveFilePanelConfig{})
+		assertElem(t, sfp)
+
+		s := d.NewShare("")
+		assertElem(t, s)
+
+		n := d.NewNotification(app.NotificationConfig{})
+		assertElem(t, n)
+
+		mb := d.MenuBar()
+		assertElem(t, mb)
+		t.Run("menu bar", func(t *testing.T) { testMenu(t, mb) })
+
+		sm := d.NewStatusMenu(app.StatusMenuConfig{})
+		assertElem(t, sm)
+		t.Run("status menu", func(t *testing.T) { testStatusMenu(t, sm) })
+
+		dt := d.Dock()
+		assertElem(t, dt)
+		t.Run("dock", func(t *testing.T) { testDock(t, dt) })
+
+		called := false
+		wait := make(chan struct{}, 1)
+		d.CallOnUIGoroutine(func() {
+			called = true
+		})
+		<-wait
+		assert.True(t, called)
+
+		d.Stop()
+	}
+
+	f := app.NewFactory()
+	f.RegisterCompo(&Hello{})
+	f.RegisterCompo(&World{})
+	f.RegisterCompo(&Menu{})
+
+	d = setup(onRun)
+	d.Run(f)
+}
+
+func testElemByCompo(t *testing.T, d app.Driver) {
+	tests := []struct {
+		scenario string
+		elem     app.ElemWithCompo
+	}{
+		{
+			scenario: "window",
+			elem:     d.NewWindow(app.WindowConfig{URL: "tests.Hello"}),
+		},
+		{
+			scenario: "page",
+			elem:     d.NewPage(app.PageConfig{URL: "tests.Hello"}),
+		},
+		{
+			scenario: "context menu",
+			elem:     d.NewContextMenu(app.MenuConfig{URL: "tests.Menu"}),
+		},
+		{
+			scenario: "status menu",
+			elem:     d.NewStatusMenu(app.StatusMenuConfig{URL: "tests.Menu"}),
+		},
+		{
+			scenario: "dock",
+			elem: func() app.DockTile {
+				dt := d.Dock()
+				dt.Load("tests.Menu")
+				return dt
+			}(),
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.scenario, func(t *testing.T) {
+			e := test.elem
+			if e.Err() == app.ErrNotSupported {
+				return
+			}
+
+			c := e.Compo()
+			assertElem(t, e)
+
+			ebc := d.ElemByCompo(c)
+			if e.Err() == nil {
+				assert.Equal(t, e, ebc)
+			}
+		})
+	}
+}
+
+func testElemWithCompo(t *testing.T, e app.ElemWithCompo) {
+	assert.NotEmpty(t, e.ID())
+
+	e.Load("tests.Unknown")
+	assert.Error(t, e.Err())
+
+	e.Load("tests.Hello")
+	assertElem(t, e)
+
+	c := e.Compo()
+	if e.Err() == app.ErrNotSupported {
+		assert.Nil(t, c)
+	} else {
+		assertElem(t, e)
+		assert.NotNil(t, c)
+	}
+
+	assert.True(t, e.Contains(c))
+	assert.False(t, e.Contains(&Hello{}))
+
+	e.Render(c)
+	assertElem(t, e)
+
+	e.Render(&Hello{})
+	assert.Error(t, e.Err())
+}
+
+func testNavigator(t *testing.T, n app.Navigator, lazy bool) {
+	n.Reload()
+	assertElem(t, n)
+
+	if lazy {
+		n.CanPrevious()
+		assert.NoError(t, n.Err())
+
+		n.Previous()
+		assert.NoError(t, n.Err())
+
+		n.CanNext()
+		assert.NoError(t, n.Err())
+
+		n.Next()
+		assert.NoError(t, n.Err())
+		return
+	}
+
+	assert.False(t, n.CanPrevious())
+	assert.False(t, n.CanNext())
+
+	n.Load("tests.World")
+	assert.True(t, n.CanPrevious())
+	assert.False(t, n.CanNext())
+
+	n.Previous()
+	assertElem(t, n)
+	assert.False(t, n.CanPrevious())
+	assert.True(t, n.CanNext())
+
+	n.Next()
+	assertElem(t, n)
+	assert.True(t, n.CanPrevious())
+	assert.False(t, n.CanNext())
+}
+
+func assertElem(t *testing.T, e app.Elem) {
+	if e.Err() == app.ErrNotSupported {
+		return
+	}
+	assert.NoError(t, e.Err())
+}

@@ -1,98 +1,92 @@
 package tests
 
-// func testWindow(t *testing.T, d app.Driver) {
-// 	tests := []struct {
-// 		scenario string
-// 		config   app.WindowConfig
-// 		function func(t *testing.T, w app.Window)
-// 	}{
-// 		{
-// 			scenario: "create",
-// 		},
-// 		{
-// 			scenario: "create with a default component",
-// 			config: app.WindowConfig{
-// 				DefaultURL: "tests.hello",
-// 			},
-// 		},
-// 		{
-// 			scenario: "move",
-// 			function: testWindowMove,
-// 		},
-// 		{
-// 			scenario: "resize",
-// 			function: testWindowResize,
-// 		},
-// 		{
-// 			scenario: "focus",
-// 			function: testWindowFocus,
-// 		},
-// 		{
-// 			scenario: "full screen",
-// 			function: testWindowFullScreen,
-// 		},
-// 		{
-// 			scenario: "minimize",
-// 			function: testWindowMinimize,
-// 		},
-// 	}
+import (
+	"testing"
 
-// 	for _, test := range tests {
-// 		t.Run(test.scenario, func(t *testing.T) {
-// 			w := d.NewWindow(test.config)
-// 			if w.Err() == app.ErrNotSupported {
-// 				return
-// 			}
+	"github.com/murlokswarm/app"
+	"github.com/stretchr/testify/assert"
+)
 
-// 			require.NoError(t, w.Err())
-// 			defer w.Close()
+func testWindow(t *testing.T, w app.Window) {
+	// app.Elem
+	called := false
+	w.WhenWindow(func(w app.Window) {
+		called = true
+	})
+	assert.True(t, called)
 
-// 			if test.function == nil {
-// 				return
-// 			}
+	called = false
+	w.WhenPage(func(p app.Page) {
+		called = true
+	})
+	assert.False(t, called)
 
-// 			test.function(t, w)
-// 		})
-// 	}
+	called = false
+	w.WhenNavigator(func(n app.Navigator) {
+		called = true
+	})
+	assert.True(t, called)
 
-// 	testElemWithCompo(t, func() app.ElemWithCompo {
-// 		return d.NewWindow(app.WindowConfig{})
-// 	})
+	called = false
+	w.WhenMenu(func(m app.Menu) {
+		called = true
+	})
+	assert.False(t, called)
 
-// 	testElementWithNavigation(t, func() app.Navigator {
-// 		return d.NewWindow(app.WindowConfig{})
-// 	})
-// }
+	called = false
+	w.WhenDockTile(func(d app.DockTile) {
+		called = true
+	})
+	assert.False(t, called)
 
-// func testWindowMove(t *testing.T, w app.Window) {
-// 	w.Move(42, 42)
-// 	x, y := w.Position()
-// 	assert.Equal(t, 42.0, x)
-// 	assert.Equal(t, 42.0, y)
+	called = false
+	w.WhenStatusMenu(func(s app.StatusMenu) {
+		called = true
+	})
+	assert.False(t, called)
 
-// 	w.Center()
-// 	cx, cy := w.Position()
-// 	assert.NotEqual(t, x, cx)
-// 	assert.NotEqual(t, y, cy)
-// }
+	w.WhenErr(func(err error) {
+		t.Log(err)
+	})
 
-// func testWindowResize(t *testing.T, w app.Window) {
-// 	w.Resize(100, 100)
-// 	width, height := w.Size()
-// 	assert.Equal(t, 100.0, width)
-// 	assert.Equal(t, 100.0, height)
-// }
+	t.Run("compo", func(t *testing.T) {
+		testElemWithCompo(t, w)
+	})
 
-// func testWindowFocus(t *testing.T, w app.Window) {
-// 	w.Focus()
-// }
+	t.Run("navigator", func(t *testing.T) {
+		testNavigator(t, w, false)
+	})
 
-// func testWindowFullScreen(t *testing.T, w app.Window) {
-// 	w.ToggleFullScreen()
-// 	w.ToggleFullScreen()
-// }
+	w.Position()
+	assertElem(t, w)
 
-// func testWindowMinimize(t *testing.T, w app.Window) {
-// 	w.ToggleMinimize()
-// 	w.ToggleMinimize()
-// }
+	w.Move(42, 42)
+	assertElem(t, w)
+
+	w.Center()
+	assertElem(t, w)
+
+	w.Size()
+	assertElem(t, w)
+
+	w.Resize(42, 42)
+	assertElem(t, w)
+
+	w.Focus()
+	assertElem(t, w)
+
+	w.FullScreen()
+	assertElem(t, w)
+
+	w.ExitFullScreen()
+	assertElem(t, w)
+
+	w.Minimize()
+	assertElem(t, w)
+
+	w.Deminimize()
+	assertElem(t, w)
+
+	w.Close()
+	assertElem(t, w)
+}

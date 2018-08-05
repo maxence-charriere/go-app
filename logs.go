@@ -77,7 +77,7 @@ func (d *driverWithLogs) NewWindow(c WindowConfig) Window {
 	return &windowWithLogs{Window: w}
 }
 
-func (d *driverWithLogs) NewPage(c PageConfig) Elem {
+func (d *driverWithLogs) NewPage(c PageConfig) Page {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "  ")
 		Debug("creating page: %s", config)
@@ -198,6 +198,14 @@ func (d *driverWithLogs) Dock() DockTile {
 	}
 
 	return &dockWithLogs{DockTile: dt}
+}
+
+func (d *driverWithLogs) Stop() {
+	WhenDebug(func() {
+		Debug("stopping driver")
+	})
+
+	d.Driver.Stop()
 }
 
 // Window logs.
