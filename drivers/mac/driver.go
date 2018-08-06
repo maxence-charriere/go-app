@@ -27,7 +27,8 @@ import (
 )
 
 var (
-	driver *Driver
+	driver        *Driver
+	isGoappBundle = os.Getenv("GOAPP_BUNDLE") == "true"
 )
 
 func init() {
@@ -40,17 +41,17 @@ func init() {
 type Driver struct {
 	core.Driver
 
+	// The bundle configuration.
+	// Only applied when the app is build with goapp mac build -bundle.
+	Bundle Bundle
+
 	// Menubar configuration
 	MenubarConfig MenuBarConfig
 
 	// The URL of the component to load in the dock.
 	DockURL string
 
-	// The bundle configuration.
-	// Only applied when the app is build with goapp mac build -bundle.
-	Bundle Bundle
-
-	// The handler called when the app is running.
+	// The func called right after app.Run.
 	OnRun func()
 
 	// The handler called when the app is focused.
@@ -74,44 +75,31 @@ type Driver struct {
 	// The handler called when the app is about to exit.
 	OnExit func()
 
-	factory      app.Factory
-	elems        *core.ElemDB
-	uichan       chan func()
-	macRPC       bridge.PlatformRPC
-	goRPC        bridge.GoRPC
-	menubar      app.Menu
-	dock         app.DockTile
-	devID        string
+	factory  *app.Factory
+	elems    *core.ElemDB
+	devID    string
+	macRPC   bridge.PlatformRPC
+	goRPC    bridge.GoRPC
+	uichan   chan func()
+	stopchan chan error
+	menubar  *Menu
+	// docktile     *DockTile
 	droppedFiles []string
 }
 
-// Name satisfies the app.Driver interface.
-func (d *Driver) Name() string {
-	return "MacOS"
-}
-
 // Run satisfies the app.Driver interface.
-func (d *Driver) Run(f app.Factory) error {
-	if bundle := os.Getenv("GOAPP_BUNDLE"); bundle == "true" {
-		data, err := json.MarshalIndent(d.Bundle, "", "  ")
-		if err != nil {
-			os.Exit(1)
-		}
-		return ioutil.WriteFile("goapp-mac.json", data, 0777)
+func (d *Driver) Run(f *app.Factory) error {
+	if isGoappBundle {
+		return d.runGoappBundle()
 	}
 
 	if driver != nil {
-		return errors.Errorf("driver is already running")
+		return errors.New("running already")
 	}
 
-	d.devID = generateDevID()
 	d.factory = f
-
 	d.elems = core.NewElemDB()
-
-	d.uichan = make(chan func(), 4096)
-	defer close(d.uichan)
-
+	d.devID = generateDevID()
 	d.macRPC.Handler = macCall
 
 	d.goRPC.Handle("driver.OnRun", d.onRun)
@@ -139,40 +127,187 @@ func (d *Driver) Run(f app.Factory) error {
 	d.goRPC.Handle("menus.OnClose", handleMenu(onMenuClose))
 	d.goRPC.Handle("menus.OnCallback", handleMenu(onMenuCallback))
 
-	d.goRPC.Handle("filePanels.OnSelect", handleFilePanel(onFilePanelSelect))
-	d.goRPC.Handle("saveFilePanels.OnSelect", handleSaveFilePanel(onSaveFilePanelSelect))
-
-	d.goRPC.Handle("notifications.OnReply", handleNotification(onNotificationReply))
+	d.uichan = make(chan func(), 256)
+	d.stopchan = make(chan error)
+	defer close(d.uichan)
+	defer close(d.stopchan)
 
 	driver = d
-	errC := make(chan error)
 
 	go func() {
-		errC <- d.macRPC.Call("driver.Run", nil, nil)
+		d.stopchan <- d.macRPC.Call("driver.Run", nil, nil)
 	}()
 
 	for {
 		select {
-		case f := <-d.uichan:
-			f()
-
-		case err := <-errC:
+		case err := <-d.stopchan:
 			return err
+
+		case fn := <-d.uichan:
+			fn()
 		}
 	}
 }
 
-func (d *Driver) onRun(in map[string]interface{}) interface{} {
-	err := d.newMenuBar()
-	if err != nil {
+// AppName satisfies the app.Driver interface.
+func (d *Driver) AppName() string {
+	var out struct {
+		AppName string
+	}
+
+	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
 		panic(err)
 	}
 
-	if d.dock, err = newDockTile(app.MenuConfig{
-		DefaultURL: d.DockURL,
-	}); err != nil {
+	if len(out.AppName) != 0 {
+		return out.AppName
+	}
+
+	wd, err := os.Getwd()
+	if err != nil {
+		panic(errors.Wrap(err, "app name unreachable"))
+	}
+
+	return filepath.Base(wd)
+}
+
+// Resources satisfies the app.Driver interface.
+func (d *Driver) Resources(path ...string) string {
+	var out struct {
+		Resources string
+	}
+
+	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
 		panic(err)
 	}
+
+	wd, err := os.Getwd()
+	if err != nil {
+		panic(errors.Wrap(err, "resources unreachable"))
+	}
+
+	if filepath.Dir(out.Resources) == wd {
+		out.Resources = filepath.Join(wd, "resources")
+	}
+
+	r := filepath.Join(path...)
+	return filepath.Join(out.Resources, r)
+}
+
+// Storage satisfies the app.Driver interface.
+func (d *Driver) Storage(path ...string) string {
+	s := filepath.Join(path...)
+	return filepath.Join(d.support(), "storage", s)
+}
+
+// Render satisfies the app.Driver interface.
+func (d *Driver) Render(c app.Compo) {
+	e := d.ElemByCompo(c)
+	if e.Err() == nil {
+		e.(app.ElemWithCompo).Render(c)
+	}
+}
+
+// ElemByCompo satisfies the app.Driver interface.
+func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
+	return d.elems.GetByCompo(c)
+}
+
+// NewWindow satisfies the app.Driver interface.
+func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
+	return newWindow(c)
+}
+
+// NewContextMenu satisfies the app.Driver interface.
+func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
+	return newMenu(c, "context menu")
+}
+
+// // NewFilePanel satisfies the app.Driver interface.
+// func (d *Driver) NewFilePanel(c app.FilePanelConfig) app.Elem {
+// 	panic("not implemented")
+// }
+
+// // NewSaveFilePanel satisfies the app.Driver interface.
+// func (d *Driver) NewSaveFilePanel(c app.SaveFilePanelConfig) app.Elem {
+// 	panic("not implemented")
+// }
+
+// // NewShare satisfies the app.Driver interface.
+// func (d *Driver) NewShare(v interface{}) app.Elem {
+// 	panic("not implemented")
+// }
+
+// // NewNotification satisfies the app.Driver interface.
+// func (d *Driver) NewNotification(c app.NotificationConfig) app.Elem {
+// 	panic("not implemented")
+// }
+
+// // MenuBar satisfies the app.Driver interface.
+// func (d *Driver) MenuBar() app.Menu {
+// 	panic("not implemented")
+// }
+
+// // NewStatusMenu satisfies the app.Driver interface.
+// func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) app.StatusMenu {
+// 	panic("not implemented")
+// }
+
+// // DockTile satisfies the app.Driver interface.
+// func (d *Driver) DockTile() app.DockTile {
+// 	panic("not implemented")
+// }
+
+// CallOnUIGoroutine satisfies the app.Driver interface.
+func (d *Driver) CallOnUIGoroutine(f func()) {
+	d.uichan <- f
+}
+
+// Stop satisfies the app.Driver interface.
+func (d *Driver) Stop() {
+	if err := d.macRPC.Call("driver.Quit", nil, nil); err != nil {
+		d.stopchan <- err
+	}
+}
+
+func (d *Driver) runGoappBundle() error {
+	b, err := json.MarshalIndent(d.Bundle, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	return ioutil.WriteFile("goapp-mac.json", b, 0777)
+}
+
+func (d *Driver) support() string {
+	var out struct {
+		Support string
+	}
+
+	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
+		panic(err)
+	}
+
+	// Set up the support directory in case of the app is not bundled.
+	if strings.HasSuffix(out.Support, "{appname}") {
+		wd, err := os.Getwd()
+		if err != nil {
+			panic(errors.Wrap(err, "support unreachable"))
+		}
+
+		appname := filepath.Base(wd) + "-" + d.devID
+		out.Support = strings.Replace(out.Support, "{appname}", appname, 1)
+	}
+
+	return out.Support
+}
+
+func (d *Driver) onRun(in map[string]interface{}) interface{} {
+	// if d.dock, err = newDockTile(app.MenuConfig{
+	// 	DefaultURL: d.DockURL,
+	// }); err != nil {
+	// 	panic(err)
+	// }
 
 	if d.OnRun != nil {
 		d.OnRun()
@@ -224,205 +359,6 @@ func (d *Driver) onFileDrop(in map[string]interface{}) interface{} {
 	return nil
 }
 
-// AppName satisfies the app.Driver interface.
-func (d *Driver) AppName() string {
-	var out struct {
-		AppName string
-	}
-
-	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
-		panic(err)
-	}
-
-	if len(out.AppName) != 0 {
-		return out.AppName
-	}
-
-	wd, err := os.Getwd()
-	if err != nil {
-		panic(errors.Wrap(err, "app name unreachable"))
-	}
-	return filepath.Base(wd)
-}
-
-// Resources satisfies the app.Driver interface.
-func (d *Driver) Resources(path ...string) string {
-	var out struct {
-		Resources string
-	}
-
-	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
-		panic(err)
-	}
-
-	wd, err := os.Getwd()
-	if err != nil {
-		panic(errors.Wrap(err, "resources unreachable"))
-	}
-
-	if filepath.Dir(out.Resources) == wd {
-		out.Resources = filepath.Join(wd, "resources")
-	}
-
-	resources := filepath.Join(path...)
-	return filepath.Join(out.Resources, resources)
-}
-
-// Storage satisfies the app.Driver interface.
-func (d *Driver) Storage(path ...string) string {
-	storage := filepath.Join(path...)
-	return filepath.Join(d.support(), "storage", storage)
-}
-
-func (d *Driver) support() string {
-	var out struct {
-		Support string
-	}
-
-	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
-		panic(err)
-	}
-
-	// Set up the support directory in case of the app is not bundled.
-	if strings.HasSuffix(out.Support, "{appname}") {
-		wd, err := os.Getwd()
-		if err != nil {
-			panic(errors.Wrap(err, "support unreachable"))
-		}
-
-		appname := filepath.Base(wd) + "-" + d.devID
-		out.Support = strings.Replace(out.Support, "{appname}", appname, 1)
-	}
-	return out.Support
-}
-
-// NewWindow satisfies the app.Driver interface.
-func (d *Driver) NewWindow(c app.WindowConfig) (app.Window, error) {
-	return newWindow(c)
-}
-
-// NewContextMenu satisfies the app.Driver interface.
-func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
-	c.Type = "context menu"
-
-	m, err := newMenu(c)
-	if err != nil {
-		return nil, err
-	}
-
-	err = d.macRPC.Call("driver.SetContextMenu", nil, m.ID())
-	return m, err
-}
-
-// Render satisfies the app.Driver interface.
-func (d *Driver) Render(c app.Compo) error {
-	e := d.elems.GetByCompo(c)
-
-	if e.Err() != nil {
-		return e.Err()
-	}
-
-	return e.Render(c)
-}
-
-// ElemByCompo satisfies the app.Driver interface.
-func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
-	return d.elems.GetByCompo(c)
-}
-
-// NewFilePanel satisfies the app.Driver interface.
-func (d *Driver) NewFilePanel(c app.FilePanelConfig) error {
-	return newFilePanel(c)
-}
-
-// NewSaveFilePanel satisfies the app.Driver interface.
-func (d *Driver) NewSaveFilePanel(c app.SaveFilePanelConfig) error {
-	return newSaveFilePanel(c)
-}
-
-// NewShare satisfies the app.Driver interface.
-func (d *Driver) NewShare(v interface{}) error {
-	in := struct {
-		Share string
-		Type  string
-	}{
-		Share: fmt.Sprint(v),
-	}
-
-	switch v.(type) {
-	case url.URL, *url.URL:
-		in.Type = "url"
-
-	default:
-		in.Type = "string"
-	}
-
-	return d.macRPC.Call("driver.Share", nil, in)
-}
-
-// NewNotification satisfies the app.Driver interface.
-func (d *Driver) NewNotification(config app.NotificationConfig) error {
-	return newNotification(config)
-}
-
-// MenuBar satisfies the app.Driver interface.
-func (d *Driver) MenuBar() (app.Menu, error) {
-	return d.menubar, nil
-}
-
-func (d *Driver) newMenuBar() error {
-	menubar, err := newMenu(app.MenuConfig{Type: "menubar"})
-	if err != nil {
-		return errors.Wrap(err, "creating the menu bar failed")
-	}
-	d.menubar = menubar
-
-	if len(d.MenubarConfig.URL) == 0 {
-		format := "mac.menubar?appurl=%s&editurl=%s&windowurl=%s&helpurl=%s"
-		for _, u := range d.MenubarConfig.CustomURLs {
-			format += "&custom=" + u
-		}
-
-		err = menubar.Load(
-			format,
-			d.MenubarConfig.AppURL,
-			d.MenubarConfig.EditURL,
-			d.MenubarConfig.WindowURL,
-			d.MenubarConfig.HelpURL,
-		)
-	} else {
-		err = menubar.Load(d.MenubarConfig.URL)
-	}
-	if err != nil {
-		return err
-	}
-
-	if err = d.macRPC.Call("driver.SetMenubar", nil, menubar.ID()); err != nil {
-		return errors.Wrap(err, "set menu bar")
-	}
-	return nil
-}
-
-// NewStatusMenu satisfies the app.Driver interface.
-func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
-	return newStatusMenu(c)
-}
-
-// Dock satisfies the app.Driver interface.
-func (d *Driver) Dock() (app.DockTile, error) {
-	return d.dock, nil
-}
-
-// CallOnUIGoroutine satisfies the app.Driver interface.
-func (d *Driver) CallOnUIGoroutine(f func()) {
-	d.uichan <- f
-}
-
-// Close quits the app.
-func (d *Driver) Close() error {
-	return d.macRPC.Call("driver.Quit", nil, nil)
-}
-
 func (d *Driver) onQuit(in map[string]interface{}) interface{} {
 	out := struct {
 		Quit bool
@@ -442,6 +378,200 @@ func (d *Driver) onExit(in map[string]interface{}) interface{} {
 	}
 	return nil
 }
+
+// // Driver is the app.Driver implementation for MacOS.
+// type Driver struct {
+// 	core.Driver
+
+// 	// Menubar configuration
+// 	MenubarConfig MenuBarConfig
+
+// 	// The URL of the component to load in the dock.
+// 	DockURL string
+
+// 	// The bundle configuration.
+// 	// Only applied when the app is build with goapp mac build -bundle.
+// 	Bundle Bundle
+
+// 	// The handler called when the app is running.
+// 	OnRun func()
+
+// 	// The handler called when the app is focused.
+// 	OnFocus func()
+
+// 	// The handler called when the app loses focus.
+// 	OnBlur func()
+
+// 	// The handler called when the app is reopened.
+// 	OnReopen func(hasVisibleWindows bool)
+
+// 	// The handler called when a file associated with the app is opened.
+// 	OnFilesOpen func(filenames []string)
+
+// 	// The handler called when the app URI is invoked.
+// 	OnURLOpen func(u *url.URL)
+
+// 	// The handler called when the quit button is clicked.
+// 	OnQuit func() bool
+
+// 	// The handler called when the app is about to exit.
+// 	OnExit func()
+
+// 	factory      app.Factory
+// 	elems        *core.ElemDB
+// 	uichan       chan func()
+// 	macRPC       bridge.PlatformRPC
+// 	goRPC        bridge.GoRPC
+// 	menubar      app.Menu
+// 	dock         app.DockTile
+// 	devID        string
+// 	droppedFiles []string
+// }
+
+// // Name satisfies the app.Driver interface.
+// func (d *Driver) Name() string {
+// 	return "MacOS"
+// }
+
+// // Run satisfies the app.Driver interface.
+// func (d *Driver) Run(f app.Factory) error {
+// 	if bundle := os.Getenv("GOAPP_BUNDLE"); bundle == "true" {
+// 		data, err := json.MarshalIndent(d.Bundle, "", "  ")
+// 		if err != nil {
+// 			os.Exit(1)
+// 		}
+// 		return ioutil.WriteFile("goapp-mac.json", data, 0777)
+// 	}
+
+// 	if driver != nil {
+// 		return errors.Errorf("driver is already running")
+// 	}
+
+// 	d.devID = generateDevID()
+// 	d.factory = f
+
+// 	d.elems = core.NewElemDB()
+
+// 	d.uichan = make(chan func(), 4096)
+// 	defer close(d.uichan)
+
+// 	d.macRPC.Handler = macCall
+
+// 	d.goRPC.Handle("driver.OnRun", d.onRun)
+// 	d.goRPC.Handle("driver.OnFocus", d.onFocus)
+// 	d.goRPC.Handle("driver.OnBlur", d.onBlur)
+// 	d.goRPC.Handle("driver.OnReopen", d.onReopen)
+// 	d.goRPC.Handle("driver.OnFilesOpen", d.onFilesOpen)
+// 	d.goRPC.Handle("driver.OnURLOpen", d.onURLOpen)
+// 	d.goRPC.Handle("driver.OnFileDrop", d.onFileDrop)
+// 	d.goRPC.Handle("driver.OnQuit", d.onQuit)
+// 	d.goRPC.Handle("driver.OnExit", d.onExit)
+
+// 	d.goRPC.Handle("windows.OnMove", handleWindow(onWindowMove))
+// 	d.goRPC.Handle("windows.OnResize", handleWindow(onWindowResize))
+// 	d.goRPC.Handle("windows.OnFocus", handleWindow(onWindowFocus))
+// 	d.goRPC.Handle("windows.OnBlur", handleWindow(onWindowBlur))
+// 	d.goRPC.Handle("windows.OnFullScreen", handleWindow(onWindowFullScreen))
+// 	d.goRPC.Handle("windows.OnExitFullScreen", handleWindow(onWindowExitFullScreen))
+// 	d.goRPC.Handle("windows.OnMinimize", handleWindow(onWindowMinimize))
+// 	d.goRPC.Handle("windows.OnDeminimize", handleWindow(onWindowDeminimize))
+// 	d.goRPC.Handle("windows.OnClose", handleWindow(onWindowClose))
+// 	d.goRPC.Handle("windows.OnCallback", handleWindow(onWindowCallback))
+// 	d.goRPC.Handle("windows.OnNavigate", handleWindow(onWindowNavigate))
+
+// 	d.goRPC.Handle("menus.OnClose", handleMenu(onMenuClose))
+// 	d.goRPC.Handle("menus.OnCallback", handleMenu(onMenuCallback))
+
+// 	d.goRPC.Handle("filePanels.OnSelect", handleFilePanel(onFilePanelSelect))
+// 	d.goRPC.Handle("saveFilePanels.OnSelect", handleSaveFilePanel(onSaveFilePanelSelect))
+
+// 	d.goRPC.Handle("notifications.OnReply", handleNotification(onNotificationReply))
+
+// 	driver = d
+// 	errC := make(chan error)
+
+// 	go func() {
+// 		errC <- d.macRPC.Call("driver.Run", nil, nil)
+// 	}()
+
+// 	for {
+// 		select {
+// 		case f := <-d.uichan:
+// 			f()
+
+// 		case err := <-errC:
+// 			return err
+// 		}
+// 	}
+// }
+
+// // NewWindow satisfies the app.Driver interface.
+// func (d *Driver) NewWindow(c app.WindowConfig) (app.Window, error) {
+// 	return newWindow(c)
+// }
+
+// // NewContextMenu satisfies the app.Driver interface.
+// func (d *Driver) NewContextMenu(c app.MenuConfig) (app.Menu, error) {
+// 	c.Type = "context menu"
+
+// 	m, err := newMenu(c)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	err = d.macRPC.Call("driver.SetContextMenu", nil, m.ID())
+// 	return m, err
+// }
+
+// // NewFilePanel satisfies the app.Driver interface.
+// func (d *Driver) NewFilePanel(c app.FilePanelConfig) error {
+// 	return newFilePanel(c)
+// }
+
+// // NewSaveFilePanel satisfies the app.Driver interface.
+// func (d *Driver) NewSaveFilePanel(c app.SaveFilePanelConfig) error {
+// 	return newSaveFilePanel(c)
+// }
+
+// // NewShare satisfies the app.Driver interface.
+// func (d *Driver) NewShare(v interface{}) error {
+// 	in := struct {
+// 		Share string
+// 		Type  string
+// 	}{
+// 		Share: fmt.Sprint(v),
+// 	}
+
+// 	switch v.(type) {
+// 	case url.URL, *url.URL:
+// 		in.Type = "url"
+
+// 	default:
+// 		in.Type = "string"
+// 	}
+
+// 	return d.macRPC.Call("driver.Share", nil, in)
+// }
+
+// // NewNotification satisfies the app.Driver interface.
+// func (d *Driver) NewNotification(config app.NotificationConfig) error {
+// 	return newNotification(config)
+// }
+
+// // MenuBar satisfies the app.Driver interface.
+// func (d *Driver) MenuBar() (app.Menu, error) {
+// 	return d.menubar, nil
+// }
+
+// // NewStatusMenu satisfies the app.Driver interface.
+// func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
+// 	return newStatusMenu(c)
+// }
+
+// // Dock satisfies the app.Driver interface.
+// func (d *Driver) Dock() (app.DockTile, error) {
+// 	return d.dock, nil
+// }
 
 func generateDevID() string {
 	h := md5.New()
