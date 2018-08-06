@@ -50,10 +50,12 @@ func (s *StatusMenu) SetIcon(path string) {
 // SetText satisfies the app.StatusMenu interface.
 func (s *StatusMenu) SetText(text string) {
 	s.SetErr(nil)
+	s.driver.setElemErr(s)
 }
 
 // Close satisfies the app.StatusMenu interface.
 func (s *StatusMenu) Close() {
 	s.driver.elems.Delete(s)
 	s.SetErr(nil)
+	s.driver.setElemErr(s)
 }

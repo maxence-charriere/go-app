@@ -137,7 +137,8 @@ func (p *Page) Next() {
 
 // URL satisfies the app.Page interface.
 func (p *Page) URL() url.URL {
-	u, _ := url.Parse(p.history.Current())
+	u, err := url.Parse(p.history.Current())
+	p.SetErr(err)
 	return *u
 }
 

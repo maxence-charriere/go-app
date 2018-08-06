@@ -49,12 +49,12 @@ func testPage(t *testing.T, p app.Page) {
 		t.Log(err)
 	})
 
-	t.Run("compo", func(t *testing.T) {
-		testElemWithCompo(t, p)
-	})
-
 	t.Run("navigator", func(t *testing.T) {
 		testNavigator(t, p, true)
+	})
+
+	t.Run("compo", func(t *testing.T) {
+		testElemWithCompo(t, p)
 	})
 
 	p.URL()

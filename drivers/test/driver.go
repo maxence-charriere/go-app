@@ -11,6 +11,10 @@ import (
 type Driver struct {
 	core.Driver
 
+	// A boolean that reports whether driver set element errors.
+	Err bool
+
+	// The function executed after a Run call.
 	OnRun func()
 
 	factory  *app.Factory
@@ -63,31 +67,41 @@ func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
 
 // NewWindow satisfies the app.Driver interface.
 func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
-	return newWindow(d, c)
+	w := newWindow(d, c)
+	d.setElemErr(w)
+	return w
 }
 
 // NewPage satisfies the app.Driver interface.
 func (d *Driver) NewPage(c app.PageConfig) app.Page {
-	return newPage(d, c)
+	p := newPage(d, c)
+	d.setElemErr(p)
+	return p
 }
 
 // NewContextMenu satisfies the app.Driver interface.
 func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
-	return newMenu(d, c)
+	m := newMenu(d, c)
+	d.setElemErr(m)
+	return m
 }
 
 // MenuBar satisfies the app.Driver interface.
 func (d *Driver) MenuBar() app.Menu {
+	d.setElemErr(d.menubar)
 	return d.menubar
 }
 
 // NewStatusMenu satisfies the app.Driver interface.
 func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) app.StatusMenu {
-	return newStatusMenu(d, c)
+	m := newStatusMenu(d, c)
+	d.setElemErr(m)
+	return m
 }
 
 // DockTile satisfies the app.Driver interface.
 func (d *Driver) DockTile() app.DockTile {
+	d.setElemErr(d.docktile)
 	return d.docktile
 }
 
@@ -101,4 +115,15 @@ func (d *Driver) Stop() {
 	if d.stop != nil {
 		d.stop()
 	}
+}
+
+func (d *Driver) setElemErr(e errSetter) {
+	if d.Err && e.Err() == nil {
+		e.SetErr(app.ErrNotSupported)
+	}
+}
+
+type errSetter interface {
+	app.Elem
+	SetErr(error)
 }

@@ -20,6 +20,14 @@ func TestDriver(t *testing.T, setup DriverSetup) {
 		assert.NotEmpty(t, d.Resources())
 		assert.NotEmpty(t, d.Storage())
 
+		tmp := d.NewWindow(app.WindowConfig{URL: "tests.Hello"})
+		if tmp.Err() == nil {
+			c := tmp.Compo()
+			assert.NotNil(t, c)
+			d.Render(c)
+			assertElem(t, tmp)
+		}
+
 		d.Render(&Hello{})
 
 		t.Run("elem by compo", func(t *testing.T) { testElemByCompo(t, d) })
@@ -153,6 +161,9 @@ func testElemWithCompo(t *testing.T, e app.ElemWithCompo) {
 
 func testNavigator(t *testing.T, n app.Navigator, lazy bool) {
 	n.Reload()
+	assert.Error(t, n.Err())
+
+	n.Load("tests.Hello")
 	assertElem(t, n)
 
 	if lazy {
@@ -172,6 +183,12 @@ func testNavigator(t *testing.T, n app.Navigator, lazy bool) {
 
 	assert.False(t, n.CanPrevious())
 	assert.False(t, n.CanNext())
+
+	n.Previous()
+	assert.Error(t, n.Err())
+
+	n.Next()
+	assert.Error(t, n.Err())
 
 	n.Load("tests.World")
 	assert.True(t, n.CanPrevious())

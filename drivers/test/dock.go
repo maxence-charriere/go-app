@@ -45,4 +45,5 @@ func (d *DockTile) SetIcon(path string) {
 // SetBadge satisfies the app.DockTile interface.
 func (d *DockTile) SetBadge(v interface{}) {
 	d.SetErr(nil)
+	d.driver.setElemErr(d)
 }

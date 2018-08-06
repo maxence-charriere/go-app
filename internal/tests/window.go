@@ -49,12 +49,12 @@ func testWindow(t *testing.T, w app.Window) {
 		t.Log(err)
 	})
 
-	t.Run("compo", func(t *testing.T) {
-		testElemWithCompo(t, w)
-	})
-
 	t.Run("navigator", func(t *testing.T) {
 		testNavigator(t, w, false)
+	})
+
+	t.Run("compo", func(t *testing.T) {
+		testElemWithCompo(t, w)
 	})
 
 	w.Position()

@@ -206,4 +206,5 @@ func (w *Window) Close() {
 
 	w.driver.elems.Delete(w)
 	w.SetErr(nil)
+	w.driver.setElemErr(w)
 }

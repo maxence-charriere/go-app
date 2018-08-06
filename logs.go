@@ -33,8 +33,10 @@ func (d *driverWithLogs) Run(f *Factory) error {
 }
 
 func (d *driverWithLogs) Render(c Compo) {
-	e := d.ElemByCompo(c).(ElemWithCompo)
-	e.Render(c)
+	e := d.ElemByCompo(c)
+	if e.Err() == nil {
+		e.(ElemWithCompo).Render(c)
+	}
 }
 
 func (d *driverWithLogs) ElemByCompo(c Compo) Elem {
@@ -88,7 +90,7 @@ func (d *driverWithLogs) NewPage(c PageConfig) Page {
 		Log("creating page failed: %s", p.Err())
 	}
 
-	return p
+	return &pageWithLogs{Page: p}
 }
 
 func (d *driverWithLogs) NewContextMenu(c MenuConfig) Menu {
@@ -458,12 +460,6 @@ func (p *pageWithLogs) Previous() {
 	})
 
 	p.Page.Previous()
-	if p.Err() != nil {
-		Log("page %s failed to load previous: %s",
-			p.ID(),
-			p.Err(),
-		)
-	}
 }
 
 func (p *pageWithLogs) Next() {
@@ -472,12 +468,6 @@ func (p *pageWithLogs) Next() {
 	})
 
 	p.Page.Next()
-	if p.Err() != nil {
-		Log("page %s failed to load next: %s",
-			p.ID(),
-			p.Err(),
-		)
-	}
 }
 
 // Menu logs.
