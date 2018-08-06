@@ -5,11 +5,10 @@ package mac
 import (
 	"fmt"
 	"os"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/html"
+	"github.com/murlokswarm/app/internal/html"
 )
 
 // DockTile implements the app.DockTile interface.
@@ -17,15 +16,12 @@ type DockTile struct {
 	Menu
 }
 
-func newDockTile(c app.MenuConfig) (app.DockTile, error) {
-	var markup app.Markup = html.NewMarkup(driver.factory)
-	markup = app.ConcurrentMarkup(markup)
-
-	dock := &DockTile{
+func newDockTile(c app.MenuConfig) *DockTile {
+	d := &DockTile{
 		Menu: Menu{
+			markup:         app.ConcurrentMarkup(html.NewMarkup(driver.factory)),
 			id:             uuid.New().String(),
-			markup:         markup,
-			lastFocus:      time.Now(),
+			typ:            "dock tile",
 			keepWhenClosed: true,
 		},
 	}
@@ -33,69 +29,70 @@ func newDockTile(c app.MenuConfig) (app.DockTile, error) {
 	if err := driver.macRPC.Call("menus.New", nil, struct {
 		ID string
 	}{
-		ID: dock.ID(),
+		ID: d.id,
 	}); err != nil {
-		return nil, err
+		d.SetErr(err)
+		return d
 	}
 
-	driver.elems.Put(dock)
+	driver.elems.Put(d)
 
-	if len(c.DefaultURL) != 0 {
-		if err := dock.Load(c.DefaultURL); err != nil {
-			return nil, err
-		}
+	if len(c.URL) != 0 {
+		d.Load(c.URL)
 	}
 
-	return dock, nil
+	return d
 }
 
-// Load satisfies the app.DockTile interface.
-func (d *DockTile) Load(url string, v ...interface{}) error {
-	if err := d.Menu.Load(url, v...); err != nil {
-		return err
+// WhenDockTile satisfies the app.DockTile interface.
+func (d *DockTile) WhenDockTile(f func(app.DockTile)) {
+	f(d)
+}
+
+// Load the app.StatusMenu interface.
+func (d *DockTile) Load(urlFmt string, v ...interface{}) {
+	d.Menu.Load(urlFmt, v...)
+	if d.Err() != nil {
+		return
 	}
 
-	return driver.macRPC.Call("docks.SetMenu", nil, struct {
+	err := driver.macRPC.Call("docks.SetMenu", nil, struct {
 		ID string
 	}{
-		ID: d.ID(),
+		ID: d.id,
 	})
+
+	d.SetErr(err)
 }
 
 // SetIcon satisfies the app.DockTile interface.
-func (d *DockTile) SetIcon(name string) error {
-	if _, err := os.Stat(name); err != nil && len(name) != 0 {
-		return err
+func (d *DockTile) SetIcon(path string) {
+	if _, err := os.Stat(path); err != nil && len(path) != 0 {
+		d.SetErr(err)
+		return
 	}
 
-	return driver.macRPC.Call("docks.SetIcon", nil, struct {
+	err := driver.macRPC.Call("docks.SetIcon", nil, struct {
 		Icon string
 	}{
-		Icon: name,
+		Icon: path,
 	})
+
+	d.SetErr(err)
 }
 
 // SetBadge satisfies the app.DockTile interface.
-func (d *DockTile) SetBadge(v interface{}) error {
+func (d *DockTile) SetBadge(v interface{}) {
 	var badge string
 	if v != nil {
 		badge = fmt.Sprint(v)
 	}
 
-	return driver.macRPC.Call("docks.SetBadge", nil, struct {
+	err := driver.macRPC.Call("docks.SetBadge", nil, struct {
 		Badge string
 	}{
 		Badge: badge,
 	})
-}
 
-// WhenMenu override the embedded Menu.WhenMenu to do nothing.
-// It satisfies the app.ElemWithCompo interface.
-func (d *DockTile) WhenMenu(f func(app.Menu)) {
-}
-
-// WhenDockTile calls the given handler.
-// It satisfies the app.ElemWithCompo interface.
-func (d *DockTile) WhenDockTile(f func(app.DockTile)) {
-	f(d)
+	d.SetErr(err)
 }

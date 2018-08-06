@@ -4,6 +4,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"testing"
+	"time"
 
 	"github.com/murlokswarm/app"
 	"github.com/stretchr/testify/assert"
@@ -90,8 +91,11 @@ func testStatusMenu(t *testing.T, m app.StatusMenu) {
 	m.SetText("test")
 	assertElem(t, m)
 
+	time.Sleep(time.Second * 5)
+
 	m.Close()
 	assertElem(t, m)
+
 }
 
 func testDock(t *testing.T, d app.DockTile) {

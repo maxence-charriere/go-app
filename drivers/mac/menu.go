@@ -251,15 +251,15 @@ func handleMenu(h func(m *Menu, in map[string]interface{}) interface{}) bridge.G
 		id, _ := in["ID"].(string)
 		e := driver.elems.GetByID(id)
 
-		switch menu := e.(type) {
+		switch m := e.(type) {
 		case *Menu:
-			return h(menu, in)
+			return h(m, in)
 
-		// case *DockTile:
-		// 	return h(&menu.Menu, in)
+		case *DockTile:
+			return h(&m.Menu, in)
 
-		// case *StatusMenu:
-		// 	return h(&menu.Menu, in)
+		case *StatusMenu:
+			return h(&m.Menu, in)
 
 		default:
 			panic("menu not supported")
