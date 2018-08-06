@@ -225,7 +225,11 @@ func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
 
 // NewContextMenu satisfies the app.Driver interface.
 func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
-	return newMenu(c, "context menu")
+	m := newMenu(c, "context menu")
+
+	err := d.macRPC.Call("driver.SetContextMenu", nil, m.ID())
+	m.SetErr(err)
+	return m
 }
 
 // NewFilePanel satisfies the app.Driver interface.

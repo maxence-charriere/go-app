@@ -15,9 +15,9 @@ func main() {
 
 		OnRun: func() {
 			app.NewStatusMenu(app.StatusMenuConfig{
-				Icon:       app.Resources("logo.png"),
-				Text:       "Background app",
-				DefaultURL: "/Menu",
+				Icon: app.Resources("logo.png"),
+				Text: "Background app",
+				URL:  "/Menu",
 			})
 		},
 	}, app.Logs())

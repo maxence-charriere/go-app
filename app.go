@@ -34,9 +34,14 @@ func Import(c Compo) {
 
 // Run runs the app with the given driver as backend.
 func Run(d Driver, addons ...Addon) error {
+	if len(addons) == 0 {
+		addons = append(addons, Logs())
+	}
+
 	for _, addon := range addons {
 		d = addon(d)
 	}
+
 	driver = d
 	return driver.Run(factory)
 }

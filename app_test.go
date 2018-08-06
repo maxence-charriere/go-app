@@ -59,6 +59,6 @@ func TestApp(t *testing.T) {
 
 	err := app.Run(&test.Driver{
 		OnRun: onRun,
-	}, app.Logs())
+	})
 	assert.Error(t, err)
 }

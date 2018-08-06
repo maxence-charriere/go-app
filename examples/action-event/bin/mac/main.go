@@ -32,6 +32,6 @@ func newWindow() {
 		Width:           1280,
 		Height:          768,
 		BackgroundColor: "#21252b",
-		DefaultURL:      "/actionevent.Clickbox",
+		URL:             "/actionevent.Clickbox",
 	})
 }

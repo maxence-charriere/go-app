@@ -37,45 +37,45 @@ func main() {
 			testWindow(false)
 
 			app.NewStatusMenu(app.StatusMenuConfig{
-				Text:       "only text",
-				DefaultURL: "/test.Menu",
+				Text: "only text",
+				URL:  "/test.Menu",
 			})
 
 			app.NewStatusMenu(app.StatusMenuConfig{
-				Icon:       app.Resources("logo.png"),
-				DefaultURL: "/test.Menu",
+				Icon: app.Resources("logo.png"),
+				URL:  "/test.Menu",
 			})
 
-			if statMenu, err := app.NewStatusMenu(app.StatusMenuConfig{
-				Text:       "text + ",
-				Icon:       app.Resources("logo.png"),
-				DefaultURL: "/test.Menu",
-			}); err == nil {
-				go func() {
-					time.Sleep(time.Second)
-					statMenu.SetText("")
+			statMenu := app.NewStatusMenu(app.StatusMenuConfig{
+				Text: "text + ",
+				Icon: app.Resources("logo.png"),
+				URL:  "/test.Menu",
+			})
 
-					time.Sleep(time.Second)
-					statMenu.SetText("Hello")
+			go func() {
+				time.Sleep(time.Second)
+				statMenu.SetText("")
 
-					time.Sleep(time.Second)
-					statMenu.SetIcon("")
+				time.Sleep(time.Second)
+				statMenu.SetText("Hello")
 
-					time.Sleep(time.Second)
-					statMenu.SetIcon(app.Resources("logo.png"))
+				time.Sleep(time.Second)
+				statMenu.SetIcon("")
 
-					time.Sleep(time.Second)
-					statMenu.SetText("")
-					statMenu.SetIcon("")
+				time.Sleep(time.Second)
+				statMenu.SetIcon(app.Resources("logo.png"))
 
-					time.Sleep(time.Second)
-					statMenu.SetIcon(app.Resources("logo.png"))
-					statMenu.SetText("Bye bye")
+				time.Sleep(time.Second)
+				statMenu.SetText("")
+				statMenu.SetIcon("")
 
-					time.Sleep(time.Second)
-					statMenu.Close()
-				}()
-			}
+				time.Sleep(time.Second)
+				statMenu.SetIcon(app.Resources("logo.png"))
+				statMenu.SetText("Bye bye")
+
+				time.Sleep(time.Second)
+				statMenu.Close()
+			}()
 		},
 		OnFocus: func() {
 			fmt.Println("OnFocus")
@@ -102,7 +102,7 @@ func main() {
 }
 
 func testWindow(close bool) {
-	win, _ := app.NewWindow(app.WindowConfig{
+	win := app.NewWindow(app.WindowConfig{
 		Title:    "test window",
 		X:        42,
 		Y:        42,
@@ -119,7 +119,7 @@ func testWindow(close bool) {
 		Mac: app.MacWindowConfig{
 			BackgroundVibrancy: app.VibeUltraDark,
 		},
-		DefaultURL: "/test.Webview",
+		URL: "/test.Webview",
 
 		OnMove: func(x, y float64) {
 			fmt.Printf("Window moved to x:%v y:%v\n", x, y)
