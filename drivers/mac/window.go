@@ -202,7 +202,7 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		LoadURL string
 		BaseURL string
 	}{
-		ID:      w.ID(),
+		ID:      w.id,
 		Title:   pageConfig.Title,
 		Page:    html.NewPage(pageConfig),
 		LoadURL: u,
@@ -307,7 +307,7 @@ func (w *Window) Position() (x, y float64) {
 	err := driver.macRPC.Call("windows.Position", &out, struct {
 		ID string
 	}{
-		ID: w.ID(),
+		ID: w.id,
 	})
 
 	w.SetErr(err)
@@ -321,7 +321,7 @@ func (w *Window) Move(x, y float64) {
 		X  float64
 		Y  float64
 	}{
-		ID: w.ID(),
+		ID: w.id,
 		X:  x,
 		Y:  y,
 	})
@@ -334,7 +334,7 @@ func (w *Window) Center() {
 	err := driver.macRPC.Call("windows.Center", nil, struct {
 		ID string
 	}{
-		ID: w.ID(),
+		ID: w.id,
 	})
 
 	w.SetErr(err)
@@ -350,7 +350,7 @@ func (w *Window) Size() (width, height float64) {
 	err := driver.macRPC.Call("windows.Size", &out, struct {
 		ID string
 	}{
-		ID: w.ID(),
+		ID: w.id,
 	})
 
 	w.SetErr(err)
@@ -364,7 +364,7 @@ func (w *Window) Resize(width, height float64) {
 		Width  float64
 		Height float64
 	}{
-		ID:     w.ID(),
+		ID:     w.id,
 		Width:  width,
 		Height: height,
 	})
@@ -377,7 +377,7 @@ func (w *Window) Focus() {
 	err := driver.macRPC.Call("windows.Focus", nil, struct {
 		ID string
 	}{
-		ID: w.ID(),
+		ID: w.id,
 	})
 
 	w.SetErr(err)
@@ -393,7 +393,7 @@ func (w *Window) FullScreen() {
 	err := driver.macRPC.Call("windows.ToggleFullScreen", nil, struct {
 		ID string
 	}{
-		ID: w.ID(),
+		ID: w.id,
 	})
 
 	w.SetErr(err)
@@ -409,7 +409,7 @@ func (w *Window) ExitFullScreen() {
 	err := driver.macRPC.Call("windows.ToggleFullScreen", nil, struct {
 		ID string
 	}{
-		ID: w.ID(),
+		ID: w.id,
 	})
 
 	w.SetErr(err)
@@ -425,7 +425,7 @@ func (w *Window) Minimize() {
 	err := driver.macRPC.Call("windows.ToggleMinimize", nil, struct {
 		ID string
 	}{
-		ID: w.ID(),
+		ID: w.id,
 	})
 
 	w.SetErr(err)
@@ -441,7 +441,7 @@ func (w *Window) Deminimize() {
 	err := driver.macRPC.Call("windows.ToggleMinimize", nil, struct {
 		ID string
 	}{
-		ID: w.ID(),
+		ID: w.id,
 	})
 
 	w.SetErr(err)
@@ -452,7 +452,7 @@ func (w *Window) Close() {
 	err := driver.macRPC.Call("windows.Close", nil, struct {
 		ID string
 	}{
-		ID: w.ID(),
+		ID: w.id,
 	})
 
 	w.SetErr(err)
@@ -481,7 +481,7 @@ func (w *Window) render(sync app.TagSync) error {
 		ID     string
 		Render string
 	}{
-		ID:     w.ID(),
+		ID:     w.id,
 		Render: string(render),
 	})
 }
@@ -513,7 +513,7 @@ func (w *Window) renderAttributes(sync app.TagSync) error {
 		ID     string
 		Render string
 	}{
-		ID:     w.ID(),
+		ID:     w.id,
 		Render: string(render),
 	})
 }

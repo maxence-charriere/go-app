@@ -243,10 +243,10 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 // 	panic("not implemented")
 // }
 
-// // MenuBar satisfies the app.Driver interface.
-// func (d *Driver) MenuBar() app.Menu {
-// 	panic("not implemented")
-// }
+// MenuBar satisfies the app.Driver interface.
+func (d *Driver) MenuBar() app.Menu {
+	return d.menubar
+}
 
 // // NewStatusMenu satisfies the app.Driver interface.
 // func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) app.StatusMenu {
@@ -308,6 +308,8 @@ func (d *Driver) onRun(in map[string]interface{}) interface{} {
 	// }); err != nil {
 	// 	panic(err)
 	// }
+
+	d.menubar = newMenuBar(d.MenubarConfig)
 
 	if d.OnRun != nil {
 		d.OnRun()

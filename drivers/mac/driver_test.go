@@ -10,15 +10,11 @@ import (
 )
 
 func TestDriver(t *testing.T) {
-	d := &Driver{
-		MenubarConfig: MenuBarConfig{
-			URL: "tests.menubar",
-		},
-		DockURL: "tests.menu",
+	setup := func(onRun func()) app.Driver {
+		return &Driver{
+			OnRun: onRun,
+		}
 	}
 
-	tests.TestDriver(t, func(onRun func()) app.Driver {
-		d.OnRun = onRun
-		return d
-	}, d.Close)
+	tests.TestDriver(t, setup)
 }
