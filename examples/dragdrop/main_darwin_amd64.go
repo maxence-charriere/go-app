@@ -28,6 +28,6 @@ func newWindow() {
 		MinHeight:       550,
 		Height:          768,
 		BackgroundColor: "#21252b",
-		DefaultURL:      "/DragDrop",
+		URL:             "/DragDrop",
 	})
 }

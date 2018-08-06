@@ -4,30 +4,28 @@ package mac
 
 import (
 	"os"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/html"
+	"github.com/murlokswarm/app/internal/html"
 )
 
 // StatusMenu represents a menu that lives in the status bar.
 type StatusMenu struct {
 	Menu
+
 	onClose func()
 }
 
-func newStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
-	var markup app.Markup = html.NewMarkup(driver.factory)
-	markup = app.ConcurrentMarkup(markup)
-
-	menu := &StatusMenu{
+func newStatusMenu(c app.StatusMenuConfig) *StatusMenu {
+	s := &StatusMenu{
 		Menu: Menu{
+			markup:         app.ConcurrentMarkup(html.NewMarkup(driver.factory)),
 			id:             uuid.New().String(),
-			markup:         markup,
-			lastFocus:      time.Now(),
+			typ:            "status menu",
 			keepWhenClosed: true,
 		},
+
 		onClose: c.OnClose,
 	}
 
@@ -36,81 +34,83 @@ func newStatusMenu(c app.StatusMenuConfig) (app.StatusMenu, error) {
 		Text string
 		Icon string
 	}{
-		ID:   menu.ID(),
+		ID:   s.id,
 		Text: c.Text,
 		Icon: c.Icon,
 	}); err != nil {
-		return nil, err
+		s.SetErr(err)
+		return s
 	}
 
-	driver.elems.Put(menu)
+	driver.elems.Put(s)
 
-	if len(c.DefaultURL) != 0 {
-		return menu, menu.Load(c.DefaultURL)
+	if len(c.URL) != 0 {
+		s.Load(c.URL)
 	}
-	return menu, nil
+
+	return s
 }
 
-// Load loads the component targeted by the given url.
-// It satisfies the app.StatusMenu interface.
-func (s *StatusMenu) Load(url string, v ...interface{}) error {
-	if err := s.Menu.Load(url, v...); err != nil {
-		return err
+// WhenStatusMenu satisfies the app.StatusMenu interface.
+func (s *StatusMenu) WhenStatusMenu(f func(app.StatusMenu)) {
+	f(s)
+}
+
+// Load the app.StatusMenu interface.
+func (s *StatusMenu) Load(urlFmt string, v ...interface{}) {
+	s.Menu.Load(urlFmt, v...)
+	if s.Err() != nil {
+		return
 	}
 
-	return driver.macRPC.Call("statusMenus.SetMenu", nil, struct {
+	err := driver.macRPC.Call("statusMenus.SetMenu", nil, struct {
 		ID string
 	}{
-		ID: s.ID(),
+		ID: s.id,
 	})
+
+	s.SetErr(err)
 }
 
-// SetText set the status menu text.
-// It satisfies the app.StatusMenu interface.
-func (s *StatusMenu) SetText(text string) error {
-	return driver.macRPC.Call("statusMenus.SetText", nil, struct {
-		ID   string
-		Text string
-	}{
-		ID:   s.ID(),
-		Text: text,
-	})
-}
-
-// SetIcon set the status menu icon.
-// It satisfies the app.StatusMenu interface.
-func (s *StatusMenu) SetIcon(name string) error {
-	if _, err := os.Stat(name); err != nil && len(name) != 0 {
-		return err
+// SetIcon satisfies the app.StatusMenu interface.
+func (s *StatusMenu) SetIcon(path string) {
+	if _, err := os.Stat(path); err != nil && len(path) != 0 {
+		s.SetErr(err)
+		return
 	}
 
-	return driver.macRPC.Call("statusMenus.SetIcon", nil, struct {
+	err := driver.macRPC.Call("statusMenus.SetIcon", nil, struct {
 		ID   string
 		Icon string
 	}{
-		ID:   s.ID(),
-		Icon: name,
+		ID:   s.id,
+		Icon: path,
 	})
+
+	s.SetErr(err)
 }
 
-// Close closes the status menu, releasing allocated resources and removing
-// it from the status bar.
-// It satisfies the app.StatusMenu interface.
-func (s *StatusMenu) Close() error {
-	return driver.macRPC.Call("statusMenus.Close", nil, struct {
+// SetText satisfies the app.StatusMenu interface.
+func (s *StatusMenu) SetText(text string) {
+	err := driver.macRPC.Call("statusMenus.SetText", nil, struct {
+		ID   string
+		Text string
+	}{
+		ID:   s.id,
+		Text: text,
+	})
+
+	s.SetErr(err)
+}
+
+// Close satisfies the app.StatusMenu interface.
+func (s *StatusMenu) Close() {
+	err := driver.macRPC.Call("statusMenus.Close", nil, struct {
 		ID string
 	}{
-		ID: s.ID(),
+		ID: s.id,
 	})
-}
 
-// WhenMenu override the embedded Menu.WhenMenu to do nothing.
-// It satisfies the app.ElemWithCompo interface.
-func (s *StatusMenu) WhenMenu(f func(app.Menu)) {
-}
-
-// WhenStatusMenu calls the given func.
-// It satisfies the app.ElemWithCompo interface.
-func (s *StatusMenu) WhenStatusMenu(f func(app.StatusMenu)) {
-	f(s)
+	s.SetErr(err)
+	driver.elems.Delete(s)
 }

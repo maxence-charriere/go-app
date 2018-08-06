@@ -42,6 +42,14 @@ func TestHistory(t *testing.T) {
 			expectedLen: 1,
 		},
 		{
+			scenario: "set a new empty entry",
+			actions: []historyAction{
+				{new, ""},
+			},
+			expectedURL: "",
+			expectedLen: 0,
+		},
+		{
 			scenario: "set a multiple new entries",
 			actions: []historyAction{
 				{new, "hello"},

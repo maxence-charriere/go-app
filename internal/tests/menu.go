@@ -92,6 +92,7 @@ func testStatusMenu(t *testing.T, m app.StatusMenu) {
 
 	m.Close()
 	assertElem(t, m)
+
 }
 
 func testDock(t *testing.T, d app.DockTile) {

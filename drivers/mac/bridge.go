@@ -20,6 +20,7 @@ import (
 func macCall(call string) error {
 	ccall := C.CString(call)
 	defer C.free(unsafe.Pointer(ccall))
+
 	C.macCall(ccall)
 	return nil
 }
@@ -43,6 +44,7 @@ func goCall(ccall *C.char, ui C.BOOL) (cout *C.char) {
 				panic(errors.Wrap(err, "go call"))
 			}
 		})
+
 		return nil
 	}
 

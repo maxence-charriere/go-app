@@ -147,60 +147,28 @@ func (m *Menu) OnButtonWithIconClick() {
 // dock badge" is clicked.
 func (m *Menu) OnSetDockBadge() {
 	app.Log("button set dock badge clicked")
-
-	dock, err := app.Dock()
-	if err != nil {
-		app.Log("%s", err)
-		return
-	}
-	if err = dock.SetBadge(uuid.New().String()); err != nil {
-		app.Log("%s", err)
-	}
+	app.Dock().SetBadge(uuid.New().String())
 }
 
 // OnUnsetDockBadge is the function that is called when the button labelled
 // "unset dock badge" is clicked.
 func (m *Menu) OnUnsetDockBadge() {
 	app.Log("button unset dock badge clicked")
-
-	dock, err := app.Dock()
-	if err != nil {
-		app.Log("%s", err)
-		return
-	}
-	if err = dock.SetBadge(nil); err != nil {
-		app.Log("%s", err)
-	}
+	app.Dock().SetBadge(nil)
 }
 
 // OnSetDockIcon is the function that is called when the button labelled "set
 // dock icon" is clicked.
 func (m *Menu) OnSetDockIcon() {
 	app.Log("button set dock icon clicked")
-
-	dock, err := app.Dock()
-	if err != nil {
-		app.Log("%s", err)
-		return
-	}
-	if err = dock.SetIcon(app.Resources("logo.png")); err != nil {
-		app.Log("%s", err)
-	}
+	app.Dock().SetIcon(app.Resources("logo.png"))
 }
 
 // OnUnsetDockIcon is the function that is called when the button labelled
 // "unset dock icon" is clicked.
 func (m *Menu) OnUnsetDockIcon() {
 	app.Log("button unset dock icon clicked")
-
-	dock, err := app.Dock()
-	if err != nil {
-		app.Log("%s", err)
-		return
-	}
-	if err = dock.SetIcon(""); err != nil {
-		app.Log("%s", err)
-	}
+	app.Dock().SetIcon("")
 }
 
 // OnButtonWithRandomTitleClicked is the function that is called when the button

@@ -40,10 +40,6 @@ func (d *driverWithLogs) Render(c Compo) {
 }
 
 func (d *driverWithLogs) ElemByCompo(c Compo) Elem {
-	WhenDebug(func() {
-		Debug("getting element from %T", c)
-	})
-
 	switch e := d.Driver.ElemByCompo(c).(type) {
 	case Window:
 		return &windowWithLogs{Window: e}

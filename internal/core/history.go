@@ -44,13 +44,16 @@ func (h *History) Current() (url string) {
 // The entry is added after the current one.
 // All the entries that was after the current one are removed.
 func (h *History) NewEntry(url string) {
-	l := h.Len()
+	if len(url) == 0 {
+		return
+	}
 
 	h.mutex.Lock()
 	defer h.mutex.Unlock()
 
 	var history []string
-	if l == 0 {
+
+	if len(h.history) == 0 {
 		history = h.history
 	} else {
 		history = h.history[:h.index+1]

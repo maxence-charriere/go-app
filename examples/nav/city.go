@@ -96,9 +96,7 @@ func (c *City) Render() string {
 // is clicked.
 func (c *City) OnPrevious() {
 	app.ElemByCompo(c).WhenNavigator(func(n app.Navigator) {
-		if err := n.Previous(); err != nil {
-			app.Log("%s", err)
-		}
+		n.Previous()
 	})
 }
 
@@ -106,8 +104,6 @@ func (c *City) OnPrevious() {
 // clicked.
 func (c *City) OnNext() {
 	app.ElemByCompo(c).WhenNavigator(func(n app.Navigator) {
-		if err := n.Next(); err != nil {
-			app.Log("%s", err)
-		}
+		n.Next()
 	})
 }

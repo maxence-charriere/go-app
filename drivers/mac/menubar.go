@@ -7,6 +7,8 @@ import (
 	"os/exec"
 
 	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/internal/core"
+	"github.com/pkg/errors"
 )
 
 // MenuBarConfig contains the menu bar configuration.
@@ -46,7 +48,6 @@ type MenuBarConfig struct {
 
 	// OnPreference is the function that is called when the Preference button
 	// from the default app menu is clicked.
-	// It does not work if URL is set with a custom component.
 	OnPreference func()
 }
 
@@ -70,31 +71,31 @@ type MenuBar struct {
 // OnNavigate setup the menu bar sections.
 func (m *MenuBar) OnNavigate(u *url.URL) {
 	m.AppURL = u.Query().Get("appurl")
-	m.AppURL = app.CompoNameFromURLString(m.AppURL)
+	m.AppURL = core.CompoNameFromURLString(m.AppURL)
 	if len(m.AppURL) == 0 {
 		m.AppURL = "mac.appmenu"
 	}
 
 	m.EditURL = u.Query().Get("editurl")
-	m.EditURL = app.CompoNameFromURLString(m.EditURL)
+	m.EditURL = core.CompoNameFromURLString(m.EditURL)
 	if len(m.EditURL) == 0 {
 		m.EditURL = "mac.editmenu"
 	}
 
 	m.WindowURL = u.Query().Get("windowurl")
-	m.WindowURL = app.CompoNameFromURLString(m.WindowURL)
+	m.WindowURL = core.CompoNameFromURLString(m.WindowURL)
 	if len(m.WindowURL) == 0 {
 		m.WindowURL = "mac.windowmenu"
 	}
 
 	m.HelpURL = u.Query().Get("helpurl")
-	m.HelpURL = app.CompoNameFromURLString(m.HelpURL)
+	m.HelpURL = core.CompoNameFromURLString(m.HelpURL)
 	if len(m.HelpURL) == 0 {
 		m.HelpURL = "mac.helpmenu"
 	}
 
 	for _, u := range u.Query()["custom"] {
-		customURL := app.CompoNameFromURLString(u)
+		customURL := core.CompoNameFromURLString(u)
 		if len(customURL) != 0 {
 			m.CutomURLs = append(m.CutomURLs, customURL)
 		}
@@ -147,12 +148,12 @@ func (m *AppMenu) Render() string {
 	return `
 <menu>
 	<menuitem label="About {{.AppName}}" selector="orderFrontStandardAboutPanel:"></menuitem>
-	<menuitem separator></menuitem>	
-	<menuitem label="Preferences…" 
-			  keys="cmdorctrl+," 
+	<menuitem separator></menuitem>
+	<menuitem label="Preferences…"
+			  keys="cmdorctrl+,"
 			  {{if .OnPreference}}onclick="OnPreference"{{end}}>
 	</menuitem>
-	<menuitem separator></menuitem>	
+	<menuitem separator></menuitem>
 	<menuitem label="Hide {{.AppName}}" keys="cmdorctrl+h" selector="hide:"></menuitem>
 	<menuitem label="Hide Others" keys="cmdorctrl+alt+h" selector="hideOtherApplications:"></menuitem>
 	<menuitem label="Show All" selector="unhideAllApplications:"></menuitem>
@@ -217,4 +218,38 @@ func (m *HelpMenu) OnBuiltWith() {
 	if err := cmd.Run(); err != nil {
 		app.Log("opening https://github.com/murlokswarm/app failed: %s", err)
 	}
+}
+
+func newMenuBar(c MenuBarConfig) *Menu {
+	m := newMenu(app.MenuConfig{}, "menu bar")
+	if m.Err() != nil {
+		return m
+	}
+
+	if len(c.URL) == 0 {
+		format := "mac.menubar?appurl=%s&editurl=%s&windowurl=%s&helpurl=%s"
+		for _, u := range c.CustomURLs {
+			format += "&custom=" + u
+		}
+
+		m.Load(
+			format,
+			c.AppURL,
+			c.EditURL,
+			c.WindowURL,
+			c.HelpURL,
+		)
+	} else {
+		m.Load(c.URL)
+	}
+
+	if m.Err() != nil {
+		return m
+	}
+
+	if err := driver.macRPC.Call("driver.SetMenubar", nil, m.id); err != nil {
+		m.SetErr(errors.Wrap(err, "set menu bar"))
+	}
+
+	return m
 }
