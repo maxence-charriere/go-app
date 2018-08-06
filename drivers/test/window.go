@@ -15,7 +15,7 @@ type Window struct {
 	core.Window
 
 	driver  *Driver
-	markup  *html.Markup
+	markup  app.Markup
 	history *core.History
 	id      string
 	compo   app.Compo
@@ -30,7 +30,7 @@ type Window struct {
 func newWindow(d *Driver, c app.WindowConfig) *Window {
 	w := &Window{
 		driver:  d,
-		markup:  html.NewMarkup(d.factory),
+		markup:  app.ConcurrentMarkup(html.NewMarkup(d.factory)),
 		history: core.NewHistory(),
 		id:      uuid.New().String(),
 
@@ -58,8 +58,10 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		w.SetErr(err)
 	}()
 
-	w.markup.Dismount(w.compo)
-	w.compo = nil
+	if w.compo != nil {
+		w.markup.Dismount(w.compo)
+		w.compo = nil
+	}
 
 	u := fmt.Sprintf(urlFmt, v...)
 	n := core.CompoNameFromURLString(u)

@@ -16,7 +16,7 @@ type Page struct {
 	core.Page
 
 	driver  *Driver
-	markup  *html.Markup
+	markup  app.Markup
 	history *core.History
 	id      string
 	compo   app.Compo
@@ -25,7 +25,7 @@ type Page struct {
 func newPage(d *Driver, c app.PageConfig) *Page {
 	p := &Page{
 		driver:  d,
-		markup:  html.NewMarkup(d.factory),
+		markup:  app.ConcurrentMarkup(html.NewMarkup(d.factory)),
 		history: core.NewHistory(),
 		id:      uuid.New().String(),
 	}
@@ -51,8 +51,10 @@ func (p *Page) Load(urlFmt string, v ...interface{}) {
 		p.SetErr(err)
 	}()
 
-	p.markup.Dismount(p.compo)
-	p.compo = nil
+	if p.compo != nil {
+		p.markup.Dismount(p.compo)
+		p.compo = nil
+	}
 
 	u := fmt.Sprintf(urlFmt, v...)
 	n := core.CompoNameFromURLString(u)

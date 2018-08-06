@@ -14,7 +14,7 @@ type Menu struct {
 	core.Menu
 
 	driver *Driver
-	markup *html.Markup
+	markup app.Markup
 	id     string
 	compo  app.Compo
 }
@@ -22,7 +22,7 @@ type Menu struct {
 func newMenu(d *Driver, c app.MenuConfig) *Menu {
 	m := &Menu{
 		driver: d,
-		markup: html.NewMarkup(d.factory),
+		markup: app.ConcurrentMarkup(html.NewMarkup(d.factory)),
 		id:     uuid.New().String(),
 	}
 
@@ -47,8 +47,10 @@ func (m *Menu) Load(urlFmt string, v ...interface{}) {
 		m.SetErr(err)
 	}()
 
-	m.markup.Dismount(m.compo)
-	m.compo = nil
+	if m.compo != nil {
+		m.markup.Dismount(m.compo)
+		m.compo = nil
+	}
 
 	u := fmt.Sprintf(urlFmt, v...)
 	n := core.CompoNameFromURLString(u)
