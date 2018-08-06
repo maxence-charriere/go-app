@@ -165,6 +165,10 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 
 	w.compo = c
 
+	if u != w.history.Current() {
+		w.history.NewEntry(u)
+	}
+
 	if nav, ok := c.(app.Navigable); ok {
 		navURL, _ := url.Parse(u)
 		nav.OnNavigate(navURL)
@@ -195,7 +199,7 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 	pageConfig.DefaultCompo = template.HTML(buffer.String())
 	pageConfig.AppJS = appjs.AppJS("window.webkit.messageHandlers.golangRequest.postMessage")
 
-	if err = driver.macRPC.Call("windows.Load", nil, struct {
+	err = driver.macRPC.Call("windows.Load", nil, struct {
 		ID      string
 		Title   string
 		Page    string
@@ -207,13 +211,7 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		Page:    html.NewPage(pageConfig),
 		LoadURL: u,
 		BaseURL: driver.Resources(),
-	}); err != nil {
-		return
-	}
-
-	if u != w.history.Current() {
-		w.history.NewEntry(u)
-	}
+	})
 }
 
 // Compo satisfies the app.Window interface.
