@@ -3,181 +3,153 @@ package test
 import (
 	"fmt"
 	"net/url"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/html"
 	"github.com/murlokswarm/app/internal/core"
+	"github.com/murlokswarm/app/internal/html"
 	"github.com/pkg/errors"
 )
 
-type page struct {
-	core.Elem
+// Page is a test page that implements the app.Page interface.
+type Page struct {
+	core.Page
 
-	id        string
-	factory   app.Factory
-	markup    app.Markup
-	history   *core.History
-	lastFocus time.Time
-	component app.Compo
-
-	onClose func()
+	driver  *Driver
+	markup  *html.Markup
+	history *core.History
+	id      string
+	compo   app.Compo
 }
 
-func newPage(d *Driver, c app.PageConfig) (app.Page, error) {
-	var markup app.Markup = html.NewMarkup(d.factory)
-	markup = app.ConcurrentMarkup(markup)
-
-	page := &page{
-		id:        uuid.New().String(),
-		factory:   d.factory,
-		markup:    markup,
-		history:   core.NewHistory(),
-		lastFocus: time.Now(),
+func newPage(d *Driver, c app.PageConfig) *Page {
+	p := &Page{
+		driver:  d,
+		markup:  html.NewMarkup(d.factory),
+		history: core.NewHistory(),
+		id:      uuid.New().String(),
 	}
 
-	d.elems.Put(page)
-	page.onClose = func() {
-		d.elems.Delete(page)
+	d.elems.Put(p)
+
+	if len(c.URL) != 0 {
+		p.Load(c.URL)
 	}
 
-	var err error
-	if len(c.DefaultURL) != 0 {
-		err = page.Load(c.DefaultURL)
-	}
-	return page, err
+	return p
 }
 
 // ID satisfies the app.Page interface.
-func (p *page) ID() string {
+func (p *Page) ID() string {
 	return p.id
 }
 
+// Load satisfies the app.Page interface.
+func (p *Page) Load(urlFmt string, v ...interface{}) {
+	var err error
+	defer func() {
+		p.SetErr(err)
+	}()
+
+	p.markup.Dismount(p.compo)
+	p.compo = nil
+
+	u := fmt.Sprintf(urlFmt, v...)
+	n := core.CompoNameFromURLString(u)
+
+	var c app.Compo
+	if c, err = p.driver.factory.NewCompo(n); err != nil {
+		return
+	}
+
+	if _, err = p.markup.Mount(c); err != nil {
+		return
+	}
+
+	p.compo = c
+
+	if u != p.history.Current() {
+		p.history.NewEntry(u)
+	}
+}
+
 // Compo satisfies the app.Page interface.
-func (p *page) Compo() app.Compo {
-	return p.component
+func (p *Page) Compo() app.Compo {
+	return p.compo
 }
 
 // Contains satisfies the app.Page interface.
-func (p *page) Contains(c app.Compo) bool {
+func (p *Page) Contains(c app.Compo) bool {
 	return p.markup.Contains(c)
 }
 
-// Load satisfies the app.Page interface.
-func (p *page) Load(rawurl string, v ...interface{}) error {
-	rawurl = fmt.Sprintf(rawurl, v...)
-	u, err := url.Parse(rawurl)
-	if err != nil {
-		return err
-	}
-
-	var currentURL string
-	if currentURL, err = p.history.Current(); err != nil || currentURL != u.String() {
-		p.history.NewEntry(u.String())
-	}
-	return p.load(u)
-}
-
-func (p *page) load(u *url.URL) error {
-	if p.component != nil {
-		p.markup.Dismount(p.component)
-	}
-
-	compo, err := p.factory.New(app.CompoNameFromURL(u))
-	if err != nil {
-		return err
-	}
-
-	if _, err = p.markup.Mount(compo); err != nil {
-		return errors.Wrapf(err, "loading %s in test page %p failed", u, p)
-	}
-
-	p.component = compo
-	return nil
-}
-
 // Render satisfies the app.Page interface.
-func (p *page) Render(compo app.Compo) error {
-	_, err := p.markup.Update(compo)
-	return err
+func (p *Page) Render(c app.Compo) {
+	_, err := p.markup.Update(c)
+	p.SetErr(err)
 }
 
 // Reload satisfies the app.Page interface.
-func (p *page) Reload() error {
-	rawurl, err := p.history.Current()
-	if err != nil {
-		return err
+func (p *Page) Reload() {
+	u := p.history.Current()
+
+	if len(u) == 0 {
+		p.SetErr(errors.New("no component loaded"))
+		return
 	}
 
-	u, err := url.Parse(rawurl)
-	if err != nil {
-		return err
-	}
-	return p.load(u)
-}
-
-// LastFocus satisfies the app.Page interface.
-func (p *page) LastFocus() time.Time {
-	return p.lastFocus
+	p.Load(u)
 }
 
 // CanPrevious satisfies the app.Page interface.
-func (p *page) CanPrevious() bool {
+func (p *Page) CanPrevious() bool {
 	return p.history.CanPrevious()
 }
 
 // Previous satisfies the app.Page interface.
-func (p *page) Previous() error {
-	rawurl, err := p.history.Previous()
-	if err != nil {
-		return err
+func (p *Page) Previous() {
+	u := p.history.Previous()
+
+	if len(u) == 0 {
+		p.SetErr(nil)
+		return
 	}
 
-	u, err := url.Parse(rawurl)
-	if err != nil {
-		return err
-	}
-	return p.load(u)
+	p.Load(u)
 }
 
 // CanNext satisfies the app.Page interface.
-func (p *page) CanNext() bool {
+func (p *Page) CanNext() bool {
 	return p.history.CanNext()
 }
 
 // Next satisfies the app.Page interface.
-func (p *page) Next() error {
-	rawurl, err := p.history.Next()
-	if err != nil {
-		return err
+func (p *Page) Next() {
+	u := p.history.Next()
+
+	if len(u) == 0 {
+		p.SetErr(nil)
+		return
 	}
 
-	u, err := url.Parse(rawurl)
-	if err != nil {
-		return err
-	}
-	return p.load(u)
+	p.Load(u)
 }
 
-func (p *page) URL() *url.URL {
-	rawurl, _ := p.history.Current()
-	u, _ := url.Parse(rawurl)
-	return u
+// URL satisfies the app.Page interface.
+func (p *Page) URL() url.URL {
+	u, err := url.Parse(p.history.Current())
+	p.SetErr(err)
+	return *u
 }
 
-func (p *page) Referer() *url.URL {
-	rawurl, err := p.history.Previous()
-	if err != nil {
-		return nil
-	}
-	u, _ := url.Parse(rawurl)
-
-	p.history.Next()
-	return u
+// Referer satisfies the app.Page interface.
+func (p *Page) Referer() url.URL {
+	p.SetErr(nil)
+	return url.URL{}
 }
 
-func (p *page) Close() error {
-	p.onClose()
-	return nil
+// Close satisfies the app.Page interface.
+func (p *Page) Close() {
+	p.driver.elems.Delete(p)
+	p.SetErr(nil)
 }

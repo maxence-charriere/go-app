@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"io"
+	"sync"
 	"time"
 )
 
@@ -21,6 +22,7 @@ type Logger interface {
 
 // NewLogger creates a logger that writes on the given writers.
 // Logs that contain errors are logged on werr.
+// Sage for concurrent operations.
 func NewLogger(wout, werr io.Writer, debug, colors bool) Logger {
 	whenDebug := func(f func()) {}
 
@@ -39,6 +41,7 @@ func NewLogger(wout, werr io.Writer, debug, colors bool) Logger {
 }
 
 type logger struct {
+	mutex     sync.Mutex
 	wout      io.Writer
 	werr      io.Writer
 	whenDebug func(func())
@@ -64,6 +67,9 @@ func (l *logger) WhenDebug(f func()) {
 }
 
 func (l *logger) print(level int, format string, v ...interface{}) {
+	l.mutex.Lock()
+	defer l.mutex.Unlock()
+
 	format = l.prefix(level) + format
 
 	if format[len(format)-1] != '\n' {

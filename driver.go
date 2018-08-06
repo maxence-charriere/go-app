@@ -18,48 +18,52 @@ type Driver interface {
 	Storage(path ...string) string
 
 	// Render renders the given component.
-	Render(c Compo) error
+	Render(Compo)
 
 	// ElemByCompo returns the element where the given component is mounted.
-	ElemByCompo(c Compo) Elem
+	ElemByCompo(Compo) Elem
 
 	// NewWindow creates and displays the window described by the given
 	// configuration.
-	NewWindow(c WindowConfig) Window
+	NewWindow(WindowConfig) Window
 
 	// NewPage creates the webpage described in the given configuration.
-	NewPage(c PageConfig) Elem
+	NewPage(PageConfig) Page
 
 	// NewContextMenu creates and displays the context menu described by the
 	// given configuration.
-	NewContextMenu(c MenuConfig) Menu
+	NewContextMenu(MenuConfig) Menu
 
 	// NewFilePanel creates and displays the file panel described by the given
 	// configuration.
-	NewFilePanel(c FilePanelConfig) Elem
+	NewFilePanel(FilePanelConfig) Elem
 
 	// NewSaveFilePanel creates and displays the save file panel described in
 	// the given configuration.
-	NewSaveFilePanel(c SaveFilePanelConfig) Elem
+	NewSaveFilePanel(SaveFilePanelConfig) Elem
 
 	// NewShare creates and display the share pannel to share the given value.
-	NewShare(v interface{}) Elem
+	NewShare(interface{}) Elem
 
 	// NewNotification creates and displays the notification described in the
 	// given configuration.
-	NewNotification(c NotificationConfig) Elem
+	NewNotification(NotificationConfig) Elem
 
 	// MenuBar returns the menu bar.
 	MenuBar() Menu
 
 	// NewStatusMenu creates a status menu.
-	NewStatusMenu(c StatusMenuConfig) StatusMenu
+	NewStatusMenu(StatusMenuConfig) StatusMenu
 
 	// Dock returns the dock tile.
-	Dock() DockTile
+	DockTile() DockTile
 
 	// CallOnUIGoroutine calls a function on the UI goroutine.
-	CallOnUIGoroutine(f func())
+	CallOnUIGoroutine(func())
+
+	// Stop stops the driver.
+	// Calling it make run return with an error.
+	Stop()
 }
 
 // Addon represents a driver addon.

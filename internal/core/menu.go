@@ -39,26 +39,6 @@ func (m *Menu) Type() string {
 	return "menu"
 }
 
-// DockTile is a base struct to embed in app.DockTile implementations.
-type DockTile struct {
-	Menu
-}
-
-// WhenDockTile satisfies the app.DockTile interface.
-func (d *DockTile) WhenDockTile(f func(app.DockTile)) {
-	f(d)
-}
-
-// SetIcon satisfies the app.DockTile interface.
-func (d *DockTile) SetIcon(path string) {
-	d.SetErr(app.ErrNotSupported)
-}
-
-// SetBadge satisfies the app.DockTile interface.
-func (d *DockTile) SetBadge(v interface{}) {
-	d.SetErr(app.ErrNotSupported)
-}
-
 // StatusMenu is a base struct to embed in app.StatusMenu implementations.
 type StatusMenu struct {
 	Menu
@@ -67,6 +47,11 @@ type StatusMenu struct {
 // WhenStatusMenu satisfies the app.StatusMenu interface.
 func (s *StatusMenu) WhenStatusMenu(f func(app.StatusMenu)) {
 	f(s)
+}
+
+// Type satisfies the app.Menu interface.
+func (s *StatusMenu) Type() string {
+	return "status menu"
 }
 
 // SetIcon satisfies the app.StatusMenu interface.
@@ -82,4 +67,29 @@ func (s *StatusMenu) SetText(text string) {
 // Close satisfies the app.StatusMenu interface.
 func (s *StatusMenu) Close() {
 	s.SetErr(app.ErrNotSupported)
+}
+
+// DockTile is a base struct to embed in app.DockTile implementations.
+type DockTile struct {
+	Menu
+}
+
+// WhenDockTile satisfies the app.DockTile interface.
+func (d *DockTile) WhenDockTile(f func(app.DockTile)) {
+	f(d)
+}
+
+// Type satisfies the app.DockTile interface.
+func (d *DockTile) Type() string {
+	return "dock tile"
+}
+
+// SetIcon satisfies the app.DockTile interface.
+func (d *DockTile) SetIcon(path string) {
+	d.SetErr(app.ErrNotSupported)
+}
+
+// SetBadge satisfies the app.DockTile interface.
+func (d *DockTile) SetBadge(v interface{}) {
+	d.SetErr(app.ErrNotSupported)
 }

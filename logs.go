@@ -32,16 +32,11 @@ func (d *driverWithLogs) Run(f *Factory) error {
 	return err
 }
 
-func (d *driverWithLogs) Render(c Compo) error {
-	WhenDebug(func() {
-		Debug("rendering %T", c)
-	})
-
-	err := d.Driver.Render(c)
-	if err != nil {
-		Log("rendering %T failed: %s", err)
+func (d *driverWithLogs) Render(c Compo) {
+	e := d.ElemByCompo(c)
+	if e.Err() == nil {
+		e.(ElemWithCompo).Render(c)
 	}
-	return err
 }
 
 func (d *driverWithLogs) ElemByCompo(c Compo) Elem {
@@ -84,7 +79,7 @@ func (d *driverWithLogs) NewWindow(c WindowConfig) Window {
 	return &windowWithLogs{Window: w}
 }
 
-func (d *driverWithLogs) NewPage(c PageConfig) Elem {
+func (d *driverWithLogs) NewPage(c PageConfig) Page {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "  ")
 		Debug("creating page: %s", config)
@@ -95,7 +90,7 @@ func (d *driverWithLogs) NewPage(c PageConfig) Elem {
 		Log("creating page failed: %s", p.Err())
 	}
 
-	return p
+	return &pageWithLogs{Page: p}
 }
 
 func (d *driverWithLogs) NewContextMenu(c MenuConfig) Menu {
@@ -194,17 +189,25 @@ func (d *driverWithLogs) NewStatusMenu(c StatusMenuConfig) StatusMenu {
 	return &statusMenuWithLogs{StatusMenu: m}
 }
 
-func (d *driverWithLogs) Dock() DockTile {
+func (d *driverWithLogs) DockTile() DockTile {
 	WhenDebug(func() {
 		Debug("getting dock tile")
 	})
 
-	dt := d.Driver.Dock()
+	dt := d.Driver.DockTile()
 	if dt.Err() != nil {
 		Log("getting dock tile failed: %s", dt.Err())
 	}
 
 	return &dockWithLogs{DockTile: dt}
+}
+
+func (d *driverWithLogs) Stop() {
+	WhenDebug(func() {
+		Debug("stopping driver")
+	})
+
+	d.Driver.Stop()
 }
 
 // Window logs.
@@ -457,12 +460,6 @@ func (p *pageWithLogs) Previous() {
 	})
 
 	p.Page.Previous()
-	if p.Err() != nil {
-		Log("page %s failed to load previous: %s",
-			p.ID(),
-			p.Err(),
-		)
-	}
 }
 
 func (p *pageWithLogs) Next() {
@@ -471,12 +468,6 @@ func (p *pageWithLogs) Next() {
 	})
 
 	p.Page.Next()
-	if p.Err() != nil {
-		Log("page %s failed to load next: %s",
-			p.ID(),
-			p.Err(),
-		)
-	}
 }
 
 // Menu logs.

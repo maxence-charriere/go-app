@@ -1,6 +1,7 @@
 package core
 
 import (
+	"os"
 	"path/filepath"
 
 	"github.com/murlokswarm/app"
@@ -17,7 +18,8 @@ func (d *Driver) Run(f *app.Factory) error {
 
 // AppName satisfies the app.Driver interface.
 func (d *Driver) AppName() string {
-	return ""
+	wd, _ := os.Getwd()
+	return filepath.Base(wd)
 }
 
 // Resources satisfies the app.Driver interface.
@@ -35,8 +37,7 @@ func (d *Driver) Storage(p ...string) string {
 }
 
 // Render satisfies the app.Driver interface.
-func (d *Driver) Render(c app.Compo) error {
-	return app.ErrNotSupported
+func (d *Driver) Render(c app.Compo) {
 }
 
 // ElemByCompo satisfies the app.Driver interface.
@@ -52,7 +53,7 @@ func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
 }
 
 // NewPage satisfies the app.Driver interface.
-func (d *Driver) NewPage(c app.PageConfig) app.Elem {
+func (d *Driver) NewPage(c app.PageConfig) app.Page {
 	p := &Page{}
 	p.SetErr(app.ErrNotSupported)
 	return p
@@ -99,8 +100,8 @@ func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) app.StatusMenu {
 	return s
 }
 
-// Dock satisfies the app.Driver interface.
-func (d *Driver) Dock() app.DockTile {
+// DockTile satisfies the app.Driver interface.
+func (d *Driver) DockTile() app.DockTile {
 	dt := &DockTile{}
 	dt.SetErr(app.ErrNotSupported)
 	return dt
@@ -109,4 +110,8 @@ func (d *Driver) Dock() app.DockTile {
 // CallOnUIGoroutine satisfies the app.Driver interface.
 func (d *Driver) CallOnUIGoroutine(f func()) {
 	f()
+}
+
+// Stop satisfies the app.Driver interface.
+func (d *Driver) Stop() {
 }

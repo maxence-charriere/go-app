@@ -1,72 +1,68 @@
 package tests
 
-// // PageTester is the interface that wraps the NewTestPage inteface.
-// type PageTester interface {
-// 	// NewTestPage creates a page for test.
-// 	NewTestPage(c app.PageConfig) (app.Page, error)
-// }
+import (
+	"testing"
 
-// func testPage(t *testing.T, d app.Driver) {
-// 	tester, ok := d.(PageTester)
-// 	if !ok {
-// 		return
-// 	}
+	"github.com/murlokswarm/app"
+	"github.com/stretchr/testify/assert"
+)
 
-// 	tests := []struct {
-// 		scenario string
-// 		config   app.PageConfig
-// 		function func(t *testing.T, w app.Page)
-// 	}{
-// 		{
-// 			scenario: "create",
-// 		},
-// 		{
-// 			scenario: "create with a default component",
-// 			config: app.PageConfig{
-// 				DefaultURL: "tests.hello",
-// 			},
-// 		},
-// 		{
-// 			scenario: "url",
-// 			function: testPageURL,
-// 		},
-// 		{
-// 			scenario: "referer",
-// 			function: testPageReferer,
-// 		},
-// 	}
+func testPage(t *testing.T, p app.Page) {
+	// app.Elem
+	called := false
+	p.WhenWindow(func(w app.Window) {
+		called = true
+	})
+	assert.False(t, called)
 
-// 	for _, test := range tests {
-// 		t.Run(test.scenario, func(t *testing.T) {
-// 			p, err := tester.NewTestPage(test.config)
-// 			if err == app.ErrNotSupported {
-// 				return
-// 			}
-// 			if err != nil {
-// 				t.Fatal(err)
-// 			}
-// 			if test.function == nil {
-// 				return
-// 			}
-// 			test.function(t, p)
-// 		})
-// 	}
+	called = false
+	p.WhenPage(func(p app.Page) {
+		called = true
+	})
+	assert.True(t, called)
 
-// 	testElemWithCompo(t, func() app.ElemWithCompo {
-// 		p, _ := tester.NewTestPage(app.PageConfig{})
-// 		return p
-// 	})
+	called = false
+	p.WhenNavigator(func(n app.Navigator) {
+		called = true
+	})
+	assert.True(t, called)
 
-// 	testElementWithNavigation(t, func() app.Navigator {
-// 		p, _ := tester.NewTestPage(app.PageConfig{})
-// 		return p
-// 	})
-// }
+	called = false
+	p.WhenMenu(func(m app.Menu) {
+		called = true
+	})
+	assert.False(t, called)
 
-// func testPageURL(t *testing.T, p app.Page) {
-// 	t.Log(p.URL())
-// }
+	called = false
+	p.WhenDockTile(func(d app.DockTile) {
+		called = true
+	})
+	assert.False(t, called)
 
-// func testPageReferer(t *testing.T, p app.Page) {
-// 	t.Log(p.Referer())
-// }
+	called = false
+	p.WhenStatusMenu(func(s app.StatusMenu) {
+		called = true
+	})
+	assert.False(t, called)
+
+	p.WhenErr(func(err error) {
+		t.Log(err)
+	})
+
+	t.Run("navigator", func(t *testing.T) {
+		testNavigator(t, p, true)
+	})
+
+	t.Run("compo", func(t *testing.T) {
+		testElemWithCompo(t, p)
+	})
+
+	p.URL()
+	assertElem(t, p)
+
+	p.Referer()
+	assertElem(t, p)
+
+	p.Close()
+	assertElem(t, p)
+}

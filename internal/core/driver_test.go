@@ -13,10 +13,10 @@ func TestDriver(t *testing.T) {
 	require.Implements(t, (*app.Driver)(nil), d)
 
 	assert.Error(t, d.Run(nil))
-	assert.Empty(t, d.AppName())
+	assert.NotEmpty(t, d.AppName())
 	assert.Equal(t, "resources", d.Resources())
 	assert.Equal(t, "storage", d.Storage())
-	assert.Error(t, d.Render(nil))
+	d.Render(nil)
 	assert.Error(t, d.ElemByCompo(nil).Err())
 
 	w := d.NewWindow(app.WindowConfig{})
@@ -46,10 +46,12 @@ func TestDriver(t *testing.T) {
 	sm := d.NewStatusMenu(app.StatusMenuConfig{})
 	assert.Error(t, sm.Err())
 
-	dt := d.Dock()
+	dt := d.DockTile()
 	assert.Error(t, dt.Err())
 
 	d.CallOnUIGoroutine(func() {
 		t.Log("call from ui goroutine")
 	})
+
+	d.Stop()
 }
