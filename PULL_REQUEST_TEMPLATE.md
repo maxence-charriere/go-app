@@ -1,3 +1,3 @@
-## summary
+## Summary
 
 ## Fixes
