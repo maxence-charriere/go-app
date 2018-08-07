@@ -11,6 +11,6 @@ func main() {
 	app.Import(&test.Menu{})
 
 	app.Run(&web.Driver{
-		DefaultURL: "/test.Webview",
+		URL: "/test.Webview",
 	}, app.Logs())
 }

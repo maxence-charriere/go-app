@@ -138,16 +138,16 @@ func (p *Page) Next() {
 }
 
 // URL satisfies the app.Page interface.
-func (p *Page) URL() url.URL {
+func (p *Page) URL() *url.URL {
 	u, err := url.Parse(p.history.Current())
 	p.SetErr(err)
-	return *u
+	return u
 }
 
 // Referer satisfies the app.Page interface.
-func (p *Page) Referer() url.URL {
+func (p *Page) Referer() *url.URL {
 	p.SetErr(nil)
-	return url.URL{}
+	return nil
 }
 
 // Close satisfies the app.Page interface.

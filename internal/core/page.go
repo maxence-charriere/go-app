@@ -67,13 +67,13 @@ func (p *Page) Next() {
 }
 
 // URL satisfies the app.Page interface.
-func (p *Page) URL() url.URL {
-	return url.URL{}
+func (p *Page) URL() *url.URL {
+	return nil
 }
 
 // Referer satisfies the app.Page interface.
-func (p *Page) Referer() url.URL {
-	return url.URL{}
+func (p *Page) Referer() *url.URL {
+	return nil
 }
 
 // Close satisfies the app.Page interface.

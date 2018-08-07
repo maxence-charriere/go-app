@@ -10,6 +10,6 @@ func main() {
 	app.Import(&hello.Hello{})
 
 	app.Run(&web.Driver{
-		DefaultURL: "/hello.Hello",
+		URL: "/hello.Hello",
 	})
 }
