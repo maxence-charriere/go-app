@@ -8,12 +8,12 @@ import (
 	"html/template"
 	"net/http"
 	"os"
-	"path"
-
-	"github.com/murlokswarm/app/appjs"
 
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/html"
+	"github.com/murlokswarm/app/internal/appjs"
+	"github.com/murlokswarm/app/internal/core"
+	"github.com/murlokswarm/app/internal/file"
+	"github.com/murlokswarm/app/internal/html"
 )
 
 func init() {
@@ -23,7 +23,7 @@ func init() {
 }
 
 // Run satisfies the app.Driver interface.
-func (d *Driver) Run(f app.Factory) error {
+func (d *Driver) Run(f *app.Factory) error {
 	d.factory = f
 
 	if len(d.NotFoundURL) == 0 {
@@ -63,10 +63,10 @@ func (d *Driver) Run(f app.Factory) error {
 // resource.
 func (d *Driver) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	if req.URL.Path == "/" || len(req.URL.Path) == 0 {
-		req.URL.Path = d.DefaultURL
+		req.URL.Path = d.URL
 	}
 
-	if compoName := app.CompoNameFromURL(req.URL); d.factory.Registered(compoName) {
+	if n := core.CompoNameFromURL(req.URL); d.factory.IsCompoRegistered(n) {
 		d.handleCompo(res, req)
 		return
 	}
@@ -76,7 +76,7 @@ func (d *Driver) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 }
 
 func (d *Driver) handleCompo(res http.ResponseWriter, req *http.Request) {
-	compo, err := d.factory.New(app.CompoNameFromURL(req.URL))
+	compo, err := d.factory.NewCompo(core.CompoNameFromURL(req.URL))
 	if err != nil {
 		http.NotFound(res, req)
 		return
@@ -88,12 +88,11 @@ func (d *Driver) handleCompo(res http.ResponseWriter, req *http.Request) {
 	}
 
 	if len(config.CSS) == 0 {
-		config.CSS = app.CSSResources()
+		config.CSS = file.CSS(d.Resources("css"))
 	}
 
 	config.Javascripts = append(config.Javascripts, d.Resources("goapp.js"))
 	config.AppJS = appjs.AppJS("console.log")
-
 	page := html.NewPage(config)
 
 	res.WriteHeader(http.StatusOK)
@@ -101,7 +100,7 @@ func (d *Driver) handleCompo(res http.ResponseWriter, req *http.Request) {
 }
 
 func (d *Driver) handleNotFound(res http.ResponseWriter, req *http.Request) {
-	compo, err := d.factory.New(app.CompoNameFromURL(req.URL))
+	compo, err := d.factory.NewCompo(core.CompoNameFromURL(req.URL))
 	if err != nil {
 		http.NotFound(res, req)
 		return
@@ -134,14 +133,7 @@ func (d *Driver) handleNotFound(res http.ResponseWriter, req *http.Request) {
 
 // AppName satisfies the app.Driver interface.
 func (d *Driver) AppName() string {
-	return "goapp"
-}
-
-// Resources satisfies the app.Driver interface.
-func (d *Driver) Resources(p ...string) string {
-	resources := path.Join(p...)
-	resources = path.Join("resources", resources)
-	return resources
+	return "go webapp"
 }
 
 // Storage satisfies the app.Driver interface.
@@ -149,22 +141,12 @@ func (d *Driver) Storage(p ...string) string {
 	return ""
 }
 
-// Render satisfies the app.Driver interface.
-func (d *Driver) Render(c app.Compo) error {
-	return app.ErrNotSupported
-}
-
-// ElemByCompo satisfies the app.Driver interface.
-func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
-	return d.elems.GetByCompo(c)
-}
-
 // CallOnUIGoroutine satisfies the app.Driver interface.
 func (d *Driver) CallOnUIGoroutine(f func()) {
 	app.Log("CallOnUIGoroutine is not supported on server side")
 }
 
-// Close shutdown the server.
-func (d *Driver) Close() error {
-	return d.Server.Shutdown(context.Background())
+// Stop shutdown the server.
+func (d *Driver) Stop() {
+	d.Server.Shutdown(context.Background())
 }
