@@ -153,7 +153,6 @@ Other drivers will come in the future.
 
 - [GoDoc](https://godoc.org/github.com/murlokswarm/app)
 - [Last changes](https://github.com/murlokswarm/app/blob/master/History.md)
-- [v1 to v2 migration guide](https://github.com/murlokswarm/app/wiki/V1ToV2)
 
 <a name="examples"></a>
 
