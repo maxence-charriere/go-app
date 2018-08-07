@@ -2,99 +2,73 @@ package app
 
 import (
 	"reflect"
+	"strings"
 	"sync"
 
 	"github.com/pkg/errors"
 )
 
-// Factory is the interface that describes a component factory.
-type Factory interface {
-	// Register registers the given component under its type name lowercased.
-	Register(c Compo) (name string, err error)
-
-	// Registered reports wheter the named component is registered.
-	Registered(name string) bool
-
-	// New creates the named component.
-	New(name string) (Compo, error)
-}
-
 // NewFactory creates a component factory.
-func NewFactory() Factory {
-	return make(factory)
+func NewFactory() *Factory {
+	return &Factory{
+		types: make(map[string]reflect.Type),
+	}
 }
 
-type factory map[string]reflect.Type
+// Factory represents a factory that creates components.
+// It is safe for concurrent operations.
+type Factory struct {
+	mutex sync.Mutex
+	types map[string]reflect.Type
+}
 
-func (f factory) Register(c Compo) (name string, err error) {
-	rval := reflect.ValueOf(c)
-	if rval.Kind() != reflect.Ptr {
+// RegisterCompo registers the given component.
+func (f *Factory) RegisterCompo(c Compo) (name string, err error) {
+	f.mutex.Lock()
+	defer f.mutex.Unlock()
+
+	v := reflect.ValueOf(c)
+	if v.Kind() != reflect.Ptr {
 		return "", errors.New("component is not a pointer")
 	}
 
-	if rval = rval.Elem(); rval.Kind() != reflect.Struct {
-		return "", errors.New("component does not point to a struct")
+	if v = v.Elem(); v.Kind() != reflect.Struct {
+		return "", errors.New("component is not based on a struct")
 	}
 
-	if rval.NumField() == 0 {
-		return "", errors.New("component does not have field")
+	if v.NumField() == 0 {
+		return "", errors.New("component does not have fields")
 	}
 
-	rtype := rval.Type()
-	name = normalizeCompoName(rtype.String())
-	f[name] = rtype
+	t := v.Type()
+	name = strings.ToLower(t.String())
+	name = strings.TrimPrefix(name, "main.")
+	f.types[name] = t
 	return name, nil
+
 }
 
-func (f factory) Registered(name string) bool {
-	_, ok := f[name]
+// IsCompoRegistered reports whether the named component is registered.
+func (f *Factory) IsCompoRegistered(name string) bool {
+	f.mutex.Lock()
+	defer f.mutex.Unlock()
+
+	_, ok := f.types[name]
 	return ok
 }
 
-func (f factory) New(name string) (Compo, error) {
-	rtype, ok := f[name]
+// NewCompo creates the named component.
+func (f *Factory) NewCompo(name string) (Compo, error) {
+	f.mutex.Lock()
+	defer f.mutex.Unlock()
+
+	t, ok := f.types[name]
 	if !ok {
 		return nil, errors.Errorf("component %s is not registered", name)
 	}
 
-	rval := reflect.New(rtype)
+	v := reflect.New(t)
+	c := v.Interface().(Compo)
 
-	// Here we are not checking the cast because only component cant go in the
-	// factory.
-	c := rval.Interface().(Compo)
 	return c, nil
-}
-
-// ConcurrentFactory returns a decorated version of the given factory that
-// is safe for concurrent operations.
-func ConcurrentFactory(f Factory) Factory {
-	return &concurrentFactory{
-		base: f,
-	}
-}
-
-type concurrentFactory struct {
-	mutex sync.RWMutex
-	base  Factory
-}
-
-func (f *concurrentFactory) Register(c Compo) (name string, err error) {
-	f.mutex.Lock()
-	name, err = f.base.Register(c)
-	f.mutex.Unlock()
-	return name, err
-}
-
-func (f *concurrentFactory) Registered(name string) bool {
-	f.mutex.RLock()
-	ok := f.base.Registered(name)
-	f.mutex.RUnlock()
-	return ok
-}
-
-func (f *concurrentFactory) New(name string) (Compo, error) {
-	f.mutex.RLock()
-	c, err := f.base.New(name)
-	f.mutex.RUnlock()
-	return c, err
 }

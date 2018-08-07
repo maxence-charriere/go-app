@@ -18,16 +18,16 @@ import (
 type Markup struct {
 	components       map[string]app.Compo
 	roots            map[app.Compo]*app.Tag
-	eventSubscribers map[app.Compo]app.EventSubscriber
-	factory          app.Factory
+	eventSubscribers map[app.Compo]*app.EventSubscriber
+	factory          *app.Factory
 }
 
 // NewMarkup creates a markup with the given factory.
-func NewMarkup(factory app.Factory) *Markup {
+func NewMarkup(factory *app.Factory) *Markup {
 	return &Markup{
 		components:       make(map[string]app.Compo),
 		roots:            make(map[app.Compo]*app.Tag),
-		eventSubscribers: make(map[app.Compo]app.EventSubscriber),
+		eventSubscribers: make(map[app.Compo]*app.EventSubscriber),
 		factory:          factory,
 	}
 }
@@ -38,7 +38,7 @@ func (m *Markup) Len() int {
 }
 
 // Factory satisfies the app.Markup interface.
-func (m *Markup) Factory() app.Factory {
+func (m *Markup) Factory() *app.Factory {
 	return m.factory
 }
 
@@ -177,7 +177,7 @@ func (m *Markup) mountTag(tag *app.Tag, id string, compoID string) error {
 	}
 
 	if tag.Is(app.CompoTag) {
-		compo, err := m.factory.New(tag.Name)
+		compo, err := m.factory.NewCompo(tag.Name)
 		if err != nil {
 			return err
 		}

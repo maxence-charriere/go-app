@@ -7,45 +7,36 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/html"
 	"github.com/murlokswarm/app/internal/core"
+	"github.com/murlokswarm/app/internal/html"
 )
 
 type Page struct {
-	core.Elem
+	core.Page
 
-	id         string
 	markup     app.Markup
-	component  app.Compo
-	lastFocus  time.Time
+	id         string
+	compo      app.Compo
 	currentURL string
 }
 
-func newPage(c app.PageConfig) (app.Page, error) {
-	var markup app.Markup = html.NewMarkup(driver.factory)
-	markup = app.ConcurrentMarkup(markup)
-
-	page := &Page{
-		id:        uuid.New().String(),
-		markup:    markup,
-		lastFocus: time.Now(),
+func newPage(c app.PageConfig) app.Page {
+	p := &Page{
+		markup: app.ConcurrentMarkup(html.NewMarkup(driver.factory)),
+		id:     uuid.New().String(),
 	}
 
-	driver.elems.Put(page)
+	driver.elems.Put(p)
 
-	js.Global.Set("golangRequest", page.onPageRequest)
+	js.Global.Set("golangRequest", p.onPageRequest)
+	js.Global.Call("addEventListener", "unload", p.onClose)
 
-	js.Global.Call("addEventListener", "unload", func() {
-		driver.elems.Delete(page)
-	})
-
-	err := page.Load(page.URL().String())
-	return page, err
+	p.Load(p.URL().String())
+	return p
 }
 
 // ID satisfies the app.Page interface.
@@ -53,69 +44,86 @@ func (p *Page) ID() string {
 	return p.id
 }
 
-func (p *Page) Load(rawurl string, v ...interface{}) error {
-	if p.component != nil {
-		p.markup.Dismount(p.component)
+func (p *Page) Load(urlFmt string, v ...interface{}) {
+	var err error
+	defer func() {
+		p.SetErr(err)
+	}()
+
+	if p.compo != nil {
+		p.markup.Dismount(p.compo)
+		p.compo = nil
 	}
 
-	rawurl = fmt.Sprintf(rawurl, v...)
+	rawurl := fmt.Sprintf(urlFmt, v...)
 	if len(p.currentURL) != 0 && p.currentURL != rawurl {
-		return driver.NewPage(app.PageConfig{
-			DefaultURL: rawurl,
-		})
+		driver.NewPage(app.PageConfig{URL: rawurl})
+		return
 	}
 	p.currentURL = rawurl
 
-	u, err := url.Parse(rawurl)
-	if err != nil {
-		return err
+	var u *url.URL
+	if u, err = url.Parse(rawurl); err != nil {
+		return
 	}
-	if len(u.Path) == 0 || u.Path == "/" {
-		u.Path = driver.DefaultURL
+
+	if len(rawurl) == 0 || u.Path == "/" {
+		u, err = url.Parse(driver.URL)
+		if err != nil {
+			return
+		}
 	}
+
 	u.Scheme = "compo"
+	p.currentURL = u.String()
+	n := core.CompoNameFromURL(u)
 
-	var compo app.Compo
-	if compo, err = driver.factory.New(app.CompoNameFromURL(u)); err != nil {
-		return err
+	var c app.Compo
+	if c, err = driver.factory.NewCompo(n); err != nil {
+		return
 	}
 
-	if _, err = p.markup.Mount(compo); err != nil {
-		return err
+	if _, err = p.markup.Mount(c); err != nil {
+		return
 	}
-	p.component = compo
 
-	if navigable, ok := compo.(app.Navigable); ok {
-		navigable.OnNavigate(u)
+	p.compo = c
+
+	if nav, ok := c.(app.Navigable); ok {
+		nav.OnNavigate(u)
 	}
 
 	var root app.Tag
-	if root, err = p.markup.Root(compo); err != nil {
-		return err
+	if root, err = p.markup.Root(c); err != nil {
+		return
 	}
 
 	var buffer bytes.Buffer
 	enc := html.NewEncoder(&buffer, p.markup, false)
 	if err = enc.Encode(root); err != nil {
-		return err
+		return
 	}
 
 	js.Global.Get("document").Get("body").Set("innerHTML", buffer.String())
-	return nil
 }
 
 func (p *Page) Compo() app.Compo {
-	return p.component
+	return p.compo
 }
 
 func (p *Page) Contains(c app.Compo) bool {
 	return p.markup.Contains(c)
 }
 
-func (p *Page) Render(c app.Compo) error {
-	syncs, err := p.markup.Update(c)
-	if err != nil {
-		return err
+func (p *Page) Render(c app.Compo) {
+	var err error
+	defer func() {
+		p.SetErr(err)
+	}()
+
+	var syncs []app.TagSync
+	if syncs, err = p.markup.Update(c); err != nil {
+		return
 	}
 
 	for _, sync := range syncs {
@@ -126,10 +134,9 @@ func (p *Page) Render(c app.Compo) error {
 		}
 
 		if err != nil {
-			return err
+			return
 		}
 	}
-	return nil
 }
 
 func (p *Page) render(sync app.TagSync) error {
@@ -178,31 +185,24 @@ func (p *Page) renderAttributes(sync app.TagSync) error {
 	return nil
 }
 
-func (p *Page) LastFocus() time.Time {
-	return p.lastFocus
-}
-
-func (p *Page) Reload() error {
+func (p *Page) Reload() {
 	js.Global.Get("location").Call("reload")
-	return nil
 }
 
 func (p *Page) CanPrevious() bool {
 	return true
 }
 
-func (p *Page) Previous() error {
+func (p *Page) Previous() {
 	js.Global.Get("history").Call("back")
-	return nil
 }
 
 func (p *Page) CanNext() bool {
 	return true
 }
 
-func (p *Page) Next() error {
+func (p *Page) Next() {
 	js.Global.Get("history").Call("forward")
-	return nil
 }
 
 func (p *Page) URL() *url.URL {
@@ -225,17 +225,8 @@ func (p *Page) Referer() *url.URL {
 	return u
 }
 
-func (p *Page) Close() error {
+func (p *Page) Close() {
 	js.Global.Call("close")
-	return nil
-}
-
-func (p *Page) WhenPage(f func(app.Page)) {
-	f(p)
-}
-
-func (p *Page) WhenNavigator(f func(app.Navigator)) {
-	f(p)
 }
 
 func (p *Page) onPageRequest(j string) {
@@ -256,13 +247,18 @@ func (p *Page) onPageRequest(j string) {
 		return
 	}
 
-	var compo app.Compo
-	if compo, err = p.markup.Compo(mapping.CompoID); err != nil {
+	var c app.Compo
+	if c, err = p.markup.Compo(mapping.CompoID); err != nil {
 		app.Log("page request failed: %s", err)
 		return
 	}
 
-	if err = p.Render(compo); err != nil {
+	p.Render(c)
+	if p.Err() != nil {
 		app.Log("page request failed: %s", err)
 	}
+}
+
+func (p *Page) onClose() {
+	driver.elems.Delete(p)
 }

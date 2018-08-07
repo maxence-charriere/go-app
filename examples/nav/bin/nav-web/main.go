@@ -10,6 +10,6 @@ func main() {
 	app.Import(&nav.City{})
 
 	app.Run(&web.Driver{
-		DefaultURL: "/nav.City",
+		URL: "/nav.City",
 	})
 }

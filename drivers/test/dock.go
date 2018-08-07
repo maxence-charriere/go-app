@@ -1,53 +1,49 @@
 package test
 
 import (
-	"encoding/json"
 	"os"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/html"
+	"github.com/murlokswarm/app/internal/html"
 )
 
-// A DockTile implementation for tests.
+// DockTile is a teststatus menu that implements the app.DockTile interface.
 type DockTile struct {
 	Menu
 }
 
-func newDockTile(d *Driver) app.DockTile {
-	var markup app.Markup = html.NewMarkup(d.factory)
-	markup = app.ConcurrentMarkup(markup)
-
-	dock := &DockTile{
-		Menu: Menu{
-			id:          uuid.New().String(),
-			typ:         "dock tile",
-			factory:     d.factory,
-			markup:      markup,
-			lastFocus:   time.Now(),
-			simulateErr: d.SimulateElemErr,
+func newDockTile(d *Driver) *DockTile {
+	dt := &DockTile{
+		Menu{
+			driver: d,
+			markup: html.NewMarkup(d.factory),
+			id:     uuid.New().String(),
 		},
 	}
 
-	d.elems.Put(dock)
-	return dock
+	d.elems.Put(dt)
+	return dt
+}
+
+// WhenDockTile satisfies the app.DockTile interface.
+func (d *DockTile) WhenDockTile(f func(app.DockTile)) {
+	f(d)
+}
+
+// Type satisfies the app.Menu interface.
+func (d *DockTile) Type() string {
+	return "dock tile"
 }
 
 // SetIcon satisfies the app.DockTile interface.
-func (d *DockTile) SetIcon(name string) error {
-	if d.simulateErr {
-		return ErrSimulated
-	}
-	_, err := os.Stat(name)
-	return err
+func (d *DockTile) SetIcon(path string) {
+	_, err := os.Stat(path)
+	d.SetErr(err)
 }
 
 // SetBadge satisfies the app.DockTile interface.
-func (d *DockTile) SetBadge(v interface{}) error {
-	if d.simulateErr {
-		return ErrSimulated
-	}
-	_, err := json.Marshal(v)
-	return err
+func (d *DockTile) SetBadge(v interface{}) {
+	d.SetErr(nil)
+	d.driver.setElemErr(d)
 }

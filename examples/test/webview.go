@@ -10,7 +10,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/html"
+	"github.com/murlokswarm/app/internal/html"
 )
 
 // Webview is a component to test webview based elements.
@@ -102,7 +102,7 @@ func (c *Webview) Render() string {
 // requested.
 func (c *Webview) OnContextMenu() {
 	app.NewContextMenu(app.MenuConfig{
-		DefaultURL: "/test.Menu",
+		URL: "/test.Menu",
 		OnClose: func() {
 			app.Log("context menu is closed")
 		},

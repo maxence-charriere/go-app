@@ -1,31 +1,109 @@
-package app_test
+package app
 
 import (
 	"testing"
 
-	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/tests"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestEventRegistry(t *testing.T) {
-	tests.TestEventRegistry(t, func() app.EventRegistry {
-		return app.NewEventRegistry(func(f func()) {
-			f()
-		})
-	})
-}
+	tests := []struct {
+		scenario string
+		subName  string
+		handler  func(*bool) interface{}
+		called   bool
+		dispName string
+		dispArg  interface{}
+		panic    bool
+	}{
+		{
+			scenario: "register and dispatch without arg",
+			subName:  "test",
+			handler: func(called *bool) interface{} {
+				return func() {
+					*called = true
+				}
+			},
+			called:   true,
+			dispName: "test",
+			dispArg:  nil,
+		},
+		{
+			scenario: "register without arg and dispatch with arg",
+			subName:  "test",
+			handler: func(called *bool) interface{} {
+				return func() {
+					*called = true
+				}
+			},
+			called:   true,
+			dispName: "test",
+			dispArg:  "foobar",
+		},
+		{
+			scenario: "register and dispatch with arg",
+			subName:  "test",
+			handler: func(called *bool) interface{} {
+				return func(arg string) {
+					*called = true
 
-func TestConcurrentEventRegistry(t *testing.T) {
-	tests.TestEventRegistry(t, func() app.EventRegistry {
-		r := app.NewEventRegistry(func(f func()) {
-			f()
+					if arg != "hello" {
+						panic("greet is not hello")
+					}
+				}
+			},
+			called:   true,
+			dispName: "test",
+			dispArg:  "hello",
+		},
+		{
+			scenario: "register and dispatch with bad arg",
+			subName:  "test",
+			handler: func(called *bool) interface{} {
+				return func(arg int) {
+					*called = true
+				}
+			},
+			called:   false,
+			dispName: "test",
+			dispArg:  "hello",
+		},
+		{
+			scenario: "register non func handler",
+			subName:  "test",
+			handler:  func(called *bool) interface{} { return nil },
+			panic:    true,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.scenario, func(t *testing.T) {
+			defer func() {
+				err := recover()
+				if test.panic {
+					assert.NotNil(t, err)
+					return
+				}
+				assert.Nil(t, err)
+			}()
+
+			called := false
+
+			r := newEventRegistry(func(f func()) {
+				f()
+			})
+
+			unsub := r.Subscribe(test.subName, test.handler(&called))
+			defer unsub()
+
+			r.Dispatch(test.dispName, test.dispArg)
+			assert.Equal(t, test.called, called)
 		})
-		return app.ConcurrentEventRegistry(r)
-	})
+	}
 }
 
 func TestEventSubscriber(t *testing.T) {
-	s := app.NewEventSubscriber()
+	s := NewEventSubscriber()
 	defer s.Close()
 
 	s.Subscribe("test-event-subscriber", func() {})

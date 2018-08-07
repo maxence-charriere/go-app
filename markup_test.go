@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/html"
+	"github.com/murlokswarm/app/internal/html"
 	"github.com/murlokswarm/app/internal/tests"
 )
 
@@ -23,7 +23,7 @@ func TestTag(t *testing.T) {
 }
 
 func TestConcurrentMarkup(t *testing.T) {
-	tests.TestMarkup(t, func(factory app.Factory) app.Markup {
+	tests.TestMarkup(t, func(factory *app.Factory) app.Markup {
 		return app.ConcurrentMarkup(html.NewMarkup(factory))
 	})
 }

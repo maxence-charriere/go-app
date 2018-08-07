@@ -9,20 +9,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-var (
-	// DefaultEventRegistry is the default event registry.
-	DefaultEventRegistry EventRegistry
-)
-
-// EventRegistry is the interface that describes an event registry.
-type EventRegistry interface {
-	// Subscribe subscribes the given handler to the named event.
-	// It panics if handler is not a func.
-	Subscribe(name string, handler interface{}) (unsuscribe func())
-
-	EventDispatcher
-}
-
 // EventDispatcher is the interface that describes an event dispatcher.
 type EventDispatcher interface {
 	// Dispatch dispatches the named event with the given argument.
@@ -35,8 +21,7 @@ type eventHandler struct {
 	Handler interface{}
 }
 
-// NewEventRegistry creates an event registry.
-func NewEventRegistry(dispatcher func(func())) EventRegistry {
+func newEventRegistry(dispatcher func(func())) *eventRegistry {
 	return &eventRegistry{
 		handlers:   make(map[string][]eventHandler),
 		dispatcher: dispatcher,
@@ -44,11 +29,15 @@ func NewEventRegistry(dispatcher func(func())) EventRegistry {
 }
 
 type eventRegistry struct {
+	mutex      sync.RWMutex
 	handlers   map[string][]eventHandler
 	dispatcher func(f func())
 }
 
 func (m *eventRegistry) Subscribe(name string, handler interface{}) (unsuscribe func()) {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
 	if reflect.ValueOf(handler).Kind() != reflect.Func {
 		panic(errors.Errorf("can't subscribe event %s: handler is not a func: %T",
 			name,
@@ -71,6 +60,9 @@ func (m *eventRegistry) Subscribe(name string, handler interface{}) (unsuscribe 
 }
 
 func (m *eventRegistry) Unsubscribe(name string, id string) {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
 	handlers := m.handlers[name]
 
 	for i, h := range handlers {
@@ -87,6 +79,9 @@ func (m *eventRegistry) Unsubscribe(name string, id string) {
 }
 
 func (m *eventRegistry) Dispatch(name string, arg interface{}) {
+	m.mutex.RLock()
+	defer m.mutex.RUnlock()
+
 	for _, h := range m.handlers[name] {
 		val := reflect.ValueOf(h.Handler)
 		typ := val.Type()
@@ -117,65 +112,22 @@ func (m *eventRegistry) Dispatch(name string, arg interface{}) {
 	}
 }
 
-// ConcurrentEventRegistry returns a decorated version of the given event
-// registry that ensure concurrency safety.
-func ConcurrentEventRegistry(r EventRegistry) EventRegistry {
-	return &concurrentEventRegistry{
-		base: r,
-	}
-}
-
-type concurrentEventRegistry struct {
-	mutex sync.RWMutex
-	base  EventRegistry
-}
-
-func (r *concurrentEventRegistry) Subscribe(name string, handler interface{}) func() {
-	r.mutex.Lock()
-	unsubscribe := r.base.Subscribe(name, handler)
-	r.mutex.Unlock()
-
-	return func() {
-		r.mutex.Lock()
-		unsubscribe()
-		r.mutex.Unlock()
-	}
-}
-
-func (r *concurrentEventRegistry) Dispatch(name string, arg interface{}) {
-	r.mutex.RLock()
-	r.base.Dispatch(name, arg)
-	r.mutex.RUnlock()
-}
-
-// EventSubscriber is the interface that describes an event subscriber.
-type EventSubscriber interface {
-	// Subscribe subscribes the given handler to the named event.
-	// It panics if handler is not a func.
-	Subscribe(name string, handler interface{})
-
-	// Close closes the event handler and unsubscribe all its events.
-	Close() error
-}
-
-// NewEventSubscriber creates an event subscriber.
-func NewEventSubscriber() EventSubscriber {
-	return &eventSubscriber{
-		registry: DefaultEventRegistry,
-	}
-}
-
-type eventSubscriber struct {
-	registry    EventRegistry
+// EventSubscriber represents an event subscriber.
+type EventSubscriber struct {
+	registry    *eventRegistry
 	unsuscribes []func()
 }
 
-func (s *eventSubscriber) Subscribe(name string, handler interface{}) {
-	unsubscribe := s.registry.Subscribe(name, handler)
+// Subscribe subscribes a function to the named event.
+// It panics if f is not a func.
+func (s *EventSubscriber) Subscribe(name string, f interface{}) *EventSubscriber {
+	unsubscribe := s.registry.Subscribe(name, f)
 	s.unsuscribes = append(s.unsuscribes, unsubscribe)
+	return s
 }
 
-func (s *eventSubscriber) Close() error {
+// Close closes the event handler and unsubscribe all its events.
+func (s *EventSubscriber) Close() error {
 	for _, unsuscribe := range s.unsuscribes {
 		unsuscribe()
 	}

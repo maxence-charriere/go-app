@@ -11,6 +11,6 @@ func main() {
 	app.Import(&actionevent.ClickListener{})
 
 	app.Run(&web.Driver{
-		DefaultURL: "/actionevent.Clickbox",
+		URL: "/actionevent.Clickbox",
 	})
 }

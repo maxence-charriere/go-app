@@ -3,22 +3,26 @@
 package mac
 
 import (
+	"fmt"
+	"net/url"
+
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 )
 
-// FilePanel implements the app.Element interface.
+// FilePanel implements the app.Elem interface.
 type FilePanel struct {
 	core.Elem
+
 	id string
 
 	onSelect func(filenames []string)
 }
 
-func newFilePanel(c app.FilePanelConfig) error {
-	panel := &FilePanel{
+func newFilePanel(c app.FilePanelConfig) *FilePanel {
+	p := &FilePanel{
 		id:       uuid.New().String(),
 		onSelect: c.OnSelect,
 	}
@@ -31,21 +35,22 @@ func newFilePanel(c app.FilePanelConfig) error {
 		ShowHiddenFiles   bool
 		FileTypes         []string `json:",omitempty"`
 	}{
-		ID:                panel.ID(),
+		ID:                p.id,
 		MultipleSelection: c.MultipleSelection,
 		IgnoreDirectories: c.IgnoreDirectories,
 		IgnoreFiles:       c.IgnoreFiles,
 		ShowHiddenFiles:   c.ShowHiddenFiles,
 		FileTypes:         c.FileTypes,
 	}); err != nil {
-		return err
+		p.SetErr(err)
+		return p
 	}
 
-	driver.elems.Put(panel)
-	return nil
+	driver.elems.Put(p)
+	return p
 }
 
-// ID satistfies the app.Element interface.
+// ID satistfies the app.Elem interface.
 func (p *FilePanel) ID() string {
 	return p.id
 }
@@ -64,26 +69,28 @@ func handleFilePanel(h func(p *FilePanel, in map[string]interface{}) interface{}
 		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
-		if e.IsNotSet() {
+		if e.Err() == app.ErrElemNotSet {
 			return nil
 		}
 
-		panel := e.(*FilePanel)
-		return h(panel, in)
+		p := e.(*FilePanel)
+		return h(p, in)
 	}
 }
 
-// SaveFilePanel implements the app.Element interface.
+// SaveFilePanel implements the app.Elem interface.
 type SaveFilePanel struct {
 	core.Elem
+
 	id string
 
 	onSelect func(filename string)
 }
 
-func newSaveFilePanel(c app.SaveFilePanelConfig) error {
-	panel := &SaveFilePanel{
-		id:       uuid.New().String(),
+func newSaveFilePanel(c app.SaveFilePanelConfig) *SaveFilePanel {
+	p := &SaveFilePanel{
+		id: uuid.New().String(),
+
 		onSelect: c.OnSelect,
 	}
 
@@ -92,18 +99,19 @@ func newSaveFilePanel(c app.SaveFilePanelConfig) error {
 		ShowHiddenFiles bool
 		FileTypes       []string `json:",omitempty"`
 	}{
-		ID:              panel.ID(),
+		ID:              p.id,
 		ShowHiddenFiles: c.ShowHiddenFiles,
 		FileTypes:       c.FileTypes,
 	}); err != nil {
-		return err
+		p.SetErr(err)
+		return p
 	}
 
-	driver.elems.Put(panel)
-	return nil
+	driver.elems.Put(p)
+	return p
 }
 
-// ID satistfies the app.Element interface.
+// ID satistfies the app.Elem interface.
 func (p *SaveFilePanel) ID() string {
 	return p.id
 }
@@ -122,11 +130,49 @@ func handleSaveFilePanel(h func(p *SaveFilePanel, in map[string]interface{}) int
 		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
-		if e.IsNotSet() {
+		if e.Err() == app.ErrElemNotSet {
 			return nil
 		}
 
-		panel := e.(*SaveFilePanel)
-		return h(panel, in)
+		p := e.(*SaveFilePanel)
+		return h(p, in)
 	}
+}
+
+// SharePanel implements the app.Elem interface.
+type SharePanel struct {
+	core.Elem
+
+	id string
+}
+
+func newSharePanel(v interface{}) *SharePanel {
+	p := &SharePanel{
+		id: uuid.New().String(),
+	}
+
+	in := struct {
+		Share string
+		Type  string
+	}{
+		Share: fmt.Sprint(v),
+	}
+
+	switch v.(type) {
+	case url.URL, *url.URL:
+		in.Type = "url"
+
+	default:
+		in.Type = "string"
+	}
+
+	err := driver.macRPC.Call("driver.Share", nil, in)
+	p.SetErr(err)
+
+	return p
+}
+
+// ID satisfies the app.Elem interface.
+func (p *SharePanel) ID() string {
+	return p.id
 }

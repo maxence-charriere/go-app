@@ -6,12 +6,10 @@ package web
 import (
 	"context"
 	"os"
-	"path"
 
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/pkg/errors"
 )
 
 var (
@@ -25,49 +23,37 @@ func init() {
 }
 
 // Run satisfies the app.Driver interface.
-func (d *Driver) Run(f app.Factory) error {
+func (d *Driver) Run(f *app.Factory) error {
 	d.factory = f
 	d.elems = core.NewElemDB()
-	d.uichan = make(chan func(), 255)
+	d.uichan = make(chan func(), 256)
 	driver = d
 
-	var ctx context.Context
-	ctx, d.cancel = context.WithCancel(context.Background())
+	go func() {
+		defer close(d.uichan)
 
-	go d.runLoop(ctx)
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+		d.stop = cancel
 
-	var err error
-	page, err := newPage(app.PageConfig{})
-	if err != nil {
-		return err
-	}
-	d.page = page
+		for {
+			select {
+			case <-ctx.Done():
+				return
 
-	return nil
-}
-
-func (d *Driver) runLoop(ctx context.Context) {
-	for {
-		select {
-		case f := <-d.uichan:
-			f()
-
-		case <-ctx.Done():
-			return
+			case fn := <-d.uichan:
+				fn()
+			}
 		}
-	}
+	}()
+
+	p := newPage(app.PageConfig{})
+	return p.Err()
 }
 
 // AppName satisfies the app.Driver interface.
 func (d *Driver) AppName() string {
-	return "goapp"
-}
-
-// Resources satisfies the app.Driver interface.
-func (d *Driver) Resources(p ...string) string {
-	resources := path.Join(p...)
-	resources = path.Join("resources", resources)
-	return resources
+	return "go webapp"
 }
 
 // Storage satisfies the app.Driver interface.
@@ -75,19 +61,17 @@ func (d *Driver) Storage(p ...string) string {
 	return ""
 }
 
-func (d *Driver) NewPage(c app.PageConfig) error {
-	js.Global.Get("location").Set("href", c.DefaultURL)
-	return nil
+func (d *Driver) NewPage(c app.PageConfig) app.Page {
+	js.Global.Get("location").Set("href", c.URL)
+	return d.Driver.NewPage(c)
 }
 
 // Render satisfies the app.Driver interface.
-func (d *Driver) Render(c app.Compo) error {
-	e := d.elems.GetByCompo(c)
-	if e.IsNotSet() {
-		return errors.New("element not set")
+func (d *Driver) Render(c app.Compo) {
+	e := d.ElemByCompo(c)
+	if e.Err() == nil {
+		e.(app.ElemWithCompo).Render(c)
 	}
-
-	return e.Render(c)
 }
 
 // ElemByCompo satisfies the app.Driver interface.

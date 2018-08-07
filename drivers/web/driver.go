@@ -11,10 +11,10 @@ import (
 
 // Driver is an app.Driver implementation for web.
 type Driver struct {
-	app.BaseDriver
+	core.Driver
 
 	// The URL of the component to load when a navigating on the website root.
-	DefaultURL string
+	URL string
 
 	// The URL of the component to load when a 404 errors occurs.
 	// Default is /web.NotFound
@@ -28,11 +28,11 @@ type Driver struct {
 	// http.Handler overrides should be performed here.
 	OnServerRun func()
 
-	factory     app.Factory
+	factory     *app.Factory
 	elems       *core.ElemDB
 	page        app.Page
 	uichan      chan func()
-	cancel      func()
+	stop        func()
 	fileHandler http.Handler
 }
 

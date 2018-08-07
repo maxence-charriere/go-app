@@ -12,8 +12,8 @@ import (
 
 func TestEncoder(t *testing.T) {
 	factory := app.NewFactory()
-	factory.Register(&tests.Hello{})
-	factory.Register(&tests.World{})
+	factory.RegisterCompo(&tests.Hello{})
+	factory.RegisterCompo(&tests.World{})
 
 	tests := []struct {
 		scenario string
@@ -113,8 +113,8 @@ func testEncoderEncodeNotMountedCompo(t *testing.T, markup *Markup) {
 
 func BenchmarkEncoder(b *testing.B) {
 	factory := app.NewFactory()
-	factory.Register(&tests.Hello{})
-	factory.Register(&tests.World{})
+	factory.RegisterCompo(&tests.Hello{})
+	factory.RegisterCompo(&tests.World{})
 
 	markup := NewMarkup(factory)
 
@@ -133,7 +133,7 @@ func BenchmarkEncoder(b *testing.B) {
 
 func TestAttrValueFormatter(t *testing.T) {
 	factory := app.NewFactory()
-	factory.Register(&tests.World{})
+	factory.RegisterCompo(&tests.World{})
 	compoID := uuid.New().String()
 
 	tests := []struct {

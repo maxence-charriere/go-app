@@ -8,7 +8,7 @@ import (
 
 func init() {
 	// Set the handler to be called when an action is created.
-	app.Handle("click-action", func(e app.EventDispatcher, a app.Action) {
+	app.HandleAction("click-action", func(e app.EventDispatcher, a app.Action) {
 		// Dispatch the event to all event subcriber.
 		e.Dispatch("click-event", a.Arg)
 	})
@@ -35,7 +35,7 @@ func (b *Clickbox) Render() string {
 // OnClick is called when a click on the click area occurs.
 func (b *Clickbox) OnClick(e app.MouseEvent) {
 	// Create a new action.
-	app.NewAction("click-action", e)
+	app.PostAction("click-action", e)
 }
 
 // ClickListener is a component that listen for click-action and display
@@ -46,17 +46,13 @@ type ClickListener struct {
 
 // Subscribe satisfie the app.Subscriber interface.
 // It is where event subscription have to be setup.
-func (l *ClickListener) Subscribe() app.EventSubscriber {
-	// Create an event subscriber.
-	events := app.NewEventSubscriber()
-
-	// Subscribe to the click-event.
-	events.Subscribe("click-event", l.OnClickEvent)
-
+func (l *ClickListener) Subscribe() *app.EventSubscriber {
 	// Returns the subscriber.
 	// No need to close/unsubscribe, this is internally handled.
 	// No memory leak here!
-	return events
+	return app.NewEventSubscriber().
+		Subscribe("click-event", l.OnClickEvent)
+
 }
 
 // Render returns the markup that describe the component.

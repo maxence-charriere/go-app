@@ -3,9 +3,8 @@
 package mac
 
 import (
-	"github.com/murlokswarm/app"
-
 	"github.com/google/uuid"
+	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 )
@@ -14,13 +13,15 @@ import (
 type Notification struct {
 	core.Elem
 
-	id      string
+	id string
+
 	onReply func(reply string)
 }
 
-func newNotification(c app.NotificationConfig) error {
+func newNotification(c app.NotificationConfig) *Notification {
 	n := &Notification{
-		id:      uuid.New().String(),
+		id: uuid.New().String(),
+
 		onReply: c.OnReply,
 	}
 
@@ -28,7 +29,7 @@ func newNotification(c app.NotificationConfig) error {
 		driver.elems.Put(n)
 	}
 
-	return driver.macRPC.Call("notifications.New", nil, struct {
+	err := driver.macRPC.Call("notifications.New", nil, struct {
 		ID        string
 		Title     string
 		Subtitle  string
@@ -45,6 +46,9 @@ func newNotification(c app.NotificationConfig) error {
 		Sound:     c.Sound,
 		Reply:     c.OnReply != nil,
 	})
+
+	n.SetErr(err)
+	return n
 }
 
 // ID satisfies the app.Element interface.
@@ -66,7 +70,7 @@ func handleNotification(h func(n *Notification, in map[string]interface{}) inter
 		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
-		if e.IsNotSet() {
+		if e.Err() == app.ErrElemNotSet {
 			return nil
 		}
 

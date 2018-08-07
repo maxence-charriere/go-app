@@ -2,8 +2,6 @@ package core
 
 import (
 	"sync"
-
-	"github.com/pkg/errors"
 )
 
 // NewHistory creates an history.
@@ -30,29 +28,32 @@ func (h *History) Len() int {
 }
 
 // Current returns the current entry.
-func (h *History) Current() (url string, err error) {
+func (h *History) Current() (url string) {
 	if h.Len() == 0 {
-		return "", errors.New("history does not have entries")
+		return ""
 	}
 
 	h.mutex.RLock()
 	defer h.mutex.RUnlock()
 
 	url = h.history[h.index]
-	return url, nil
+	return url
 }
 
 // NewEntry adds an entry to the history.
 // The entry is added after the current one.
 // All the entries that was after the current one are removed.
 func (h *History) NewEntry(url string) {
-	l := h.Len()
+	if len(url) == 0 {
+		return
+	}
 
 	h.mutex.Lock()
 	defer h.mutex.Unlock()
 
 	var history []string
-	if l == 0 {
+
+	if len(h.history) == 0 {
 		history = h.history
 	} else {
 		history = h.history[:h.index+1]
@@ -71,9 +72,9 @@ func (h *History) CanPrevious() bool {
 }
 
 // Previous returns the previous entry.
-func (h *History) Previous() (url string, err error) {
+func (h *History) Previous() (url string) {
 	if !h.CanPrevious() {
-		return "", errors.New("history does not have a previous entry to return")
+		return ""
 	}
 
 	h.mutex.Lock()
@@ -81,7 +82,7 @@ func (h *History) Previous() (url string, err error) {
 
 	h.index--
 	url = h.history[h.index]
-	return url, nil
+	return url
 }
 
 // CanNext reports whether there is a next entry.
@@ -93,9 +94,9 @@ func (h *History) CanNext() bool {
 }
 
 // Next returns the next entry.
-func (h *History) Next() (url string, err error) {
+func (h *History) Next() (url string) {
 	if !h.CanNext() {
-		return "", errors.New("history does not have a next entry to return")
+		return ""
 	}
 
 	h.mutex.Lock()
@@ -103,5 +104,5 @@ func (h *History) Next() (url string, err error) {
 
 	h.index++
 	url = h.history[h.index]
-	return url, nil
+	return url
 }

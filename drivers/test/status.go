@@ -2,58 +2,60 @@ package test
 
 import (
 	"os"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/html"
+	"github.com/murlokswarm/app/internal/html"
 )
 
-// A StatusMenu implementation for tests.
+// StatusMenu is a teststatus menu that implements the app.StatusMenu interface.
 type StatusMenu struct {
 	Menu
 }
 
-func newStatusMenu(d *Driver, c app.StatusMenuConfig) app.StatusMenu {
-	var markup app.Markup = html.NewMarkup(d.factory)
-	markup = app.ConcurrentMarkup(markup)
-
-	menu := &StatusMenu{
-		Menu: Menu{
-			id:          uuid.New().String(),
-			typ:         "status menu",
-			factory:     d.factory,
-			markup:      markup,
-			lastFocus:   time.Now(),
-			simulateErr: d.SimulateElemErr,
+func newStatusMenu(d *Driver, c app.StatusMenuConfig) *StatusMenu {
+	s := &StatusMenu{
+		Menu{
+			driver: d,
+			markup: html.NewMarkup(d.factory),
+			id:     uuid.New().String(),
 		},
 	}
 
-	d.elems.Put(menu)
-	return menu
+	d.elems.Put(s)
+
+	if len(c.URL) != 0 {
+		s.Load(c.URL)
+	}
+
+	return s
 }
 
-// SetText satisfies the app.StatusBar interface.
-func (s *StatusMenu) SetText(text string) error {
-	if s.simulateErr {
-		return ErrSimulated
-	}
-	return nil
+// WhenStatusMenu satisfies the app.StatusMenu interface.
+func (s *StatusMenu) WhenStatusMenu(f func(app.StatusMenu)) {
+	f(s)
 }
 
-// SetIcon satisfies the app.StatusBar interface.
-func (s *StatusMenu) SetIcon(name string) error {
-	if s.simulateErr {
-		return ErrSimulated
-	}
-	_, err := os.Stat(name)
-	return err
+// Type satisfies the app.Menu interface.
+func (s *StatusMenu) Type() string {
+	return "status menu"
 }
 
-// Close satisfies the app.StatusBar interface.
-func (s *StatusMenu) Close() error {
-	if s.simulateErr {
-		return ErrSimulated
-	}
-	return nil
+// SetIcon satisfies the app.StatusMenu interface.
+func (s *StatusMenu) SetIcon(path string) {
+	_, err := os.Stat(path)
+	s.SetErr(err)
+}
+
+// SetText satisfies the app.StatusMenu interface.
+func (s *StatusMenu) SetText(text string) {
+	s.SetErr(nil)
+	s.driver.setElemErr(s)
+}
+
+// Close satisfies the app.StatusMenu interface.
+func (s *StatusMenu) Close() {
+	s.driver.elems.Delete(s)
+	s.SetErr(nil)
+	s.driver.setElemErr(s)
 }

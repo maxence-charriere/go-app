@@ -6,39 +6,33 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/html"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
+	"github.com/murlokswarm/app/internal/html"
 	"github.com/pkg/errors"
 )
 
 // Menu implements the app.Menu interface.
 type Menu struct {
-	core.Elem
+	core.Menu
 
+	markup         app.Markup
 	id             string
 	typ            string
-	markup         app.Markup
-	lastFocus      time.Time
-	component      app.Compo
+	compo          app.Compo
 	keepWhenClosed bool
 
 	onClose func()
 }
 
-func newMenu(c app.MenuConfig) (app.Menu, error) {
-	var markup app.Markup = html.NewMarkup(driver.factory)
-	markup = app.ConcurrentMarkup(markup)
-
-	menu := &Menu{
-		id:        uuid.New().String(),
-		typ:       c.Type,
-		markup:    markup,
-		lastFocus: time.Now(),
+func newMenu(c app.MenuConfig, typ string) *Menu {
+	m := &Menu{
+		markup: app.ConcurrentMarkup(html.NewMarkup(driver.factory)),
+		id:     uuid.New().String(),
+		typ:    typ,
 
 		onClose: c.OnClose,
 	}
@@ -46,19 +40,19 @@ func newMenu(c app.MenuConfig) (app.Menu, error) {
 	if err := driver.macRPC.Call("menus.New", nil, struct {
 		ID string
 	}{
-		ID: menu.ID(),
+		ID: m.id,
 	}); err != nil {
-		return nil, err
+		m.SetErr(err)
+		return m
 	}
 
-	driver.elems.Put(menu)
+	driver.elems.Put(m)
 
-	if len(c.DefaultURL) != 0 {
-		if err := menu.Load(c.DefaultURL); err != nil {
-			return nil, err
-		}
+	if len(c.URL) != 0 {
+		m.Load(c.URL)
 	}
-	return menu, nil
+
+	return m
 }
 
 // ID satisfies the app.Menu interface.
@@ -66,84 +60,93 @@ func (m *Menu) ID() string {
 	return m.id
 }
 
-// Type satisfies the app.Menu interface.
-func (m *Menu) Type() string {
-	return m.typ
-}
-
 // Load satisfies the app.Menu interface.
-func (m *Menu) Load(rawurl string, v ...interface{}) error {
-	rawurl = fmt.Sprintf(rawurl, v...)
-	u, err := url.Parse(rawurl)
-	if err != nil {
-		return err
+func (m *Menu) Load(urlFmt string, v ...interface{}) {
+	var err error
+	defer func() {
+		m.SetErr(err)
+	}()
+
+	if m.compo != nil {
+		m.markup.Dismount(m.compo)
+		m.compo = nil
 	}
 
-	var compo app.Compo
-	compo, err = driver.factory.New(app.CompoNameFromURL(u))
-	if err != nil {
-		return err
+	u := fmt.Sprintf(urlFmt, v...)
+	n := core.CompoNameFromURLString(u)
+
+	var c app.Compo
+	if c, err = driver.factory.NewCompo(n); err != nil {
+		return
 	}
 
-	if m.component != nil {
-		m.markup.Dismount(m.component)
+	if _, err = m.markup.Mount(c); err != nil {
+		return
 	}
 
-	if _, err = m.markup.Mount(compo); err != nil {
-		return err
-	}
-	m.component = compo
-
-	if navigable, ok := compo.(app.Navigable); ok {
-		navigable.OnNavigate(u)
+	if nav, ok := c.(app.Navigable); ok {
+		navURL, _ := url.Parse(u)
+		nav.OnNavigate(navURL)
 	}
 
 	var root app.Tag
-	if root, err = m.markup.Root(compo); err != nil {
-		return err
-	}
-	if root, err = m.markup.FullRoot(root); err != nil {
-		return err
+	if root, err = m.markup.Root(c); err != nil {
+		return
 	}
 
-	return driver.macRPC.Call("menus.Load", nil, struct {
+	if root, err = m.markup.FullRoot(root); err != nil {
+		return
+	}
+
+	m.compo = c
+
+	err = driver.macRPC.Call("menus.Load", nil, struct {
 		ID  string
 		Tag app.Tag
 	}{
-		ID:  m.ID(),
+		ID:  m.id,
 		Tag: root,
 	})
 }
 
 // Compo satisfies the app.Menu interface.
 func (m *Menu) Compo() app.Compo {
-	return m.component
+	return m.compo
 }
 
 // Contains satisfies the app.Menu interface.
-func (m *Menu) Contains(compo app.Compo) bool {
-	return m.markup.Contains(compo)
+func (m *Menu) Contains(c app.Compo) bool {
+	return m.markup.Contains(c)
 }
 
 // Render satisfies the app.Menu interface.
-func (m *Menu) Render(compo app.Compo) error {
-	syncs, err := m.markup.Update(compo)
-	if err != nil {
-		return err
+func (m *Menu) Render(c app.Compo) {
+	var err error
+	defer func() {
+		m.SetErr(err)
+	}()
+
+	var syncs []app.TagSync
+	if syncs, err = m.markup.Update(c); err != nil {
+		return
 	}
 
-	for _, sync := range syncs {
-		if sync.Replace {
-			err = m.render(sync)
+	for _, s := range syncs {
+		if s.Replace {
+			err = m.render(s)
 		} else {
-			err = m.renderAttributes(compo, sync)
+			err = m.renderAttributes(c, s)
 		}
 
 		if err != nil {
-			return err
+			return
 		}
 	}
-	return nil
+}
+
+// Type satisfies the app.Menu interface.
+func (m *Menu) Type() string {
+	return m.typ
 }
 
 func (m *Menu) render(sync app.TagSync) error {
@@ -156,13 +159,13 @@ func (m *Menu) render(sync app.TagSync) error {
 		ID  string
 		Tag app.Tag
 	}{
-		ID:  m.ID(),
+		ID:  m.id,
 		Tag: tag,
 	})
 }
 
-func (m *Menu) renderAttributes(compo app.Compo, sync app.TagSync) error {
-	root, err := m.markup.Root(compo)
+func (m *Menu) renderAttributes(c app.Compo, sync app.TagSync) error {
+	root, err := m.markup.Root(c)
 	if err != nil {
 		return err
 	}
@@ -177,41 +180,9 @@ func (m *Menu) renderAttributes(compo app.Compo, sync app.TagSync) error {
 		ID  string
 		Tag app.Tag
 	}{
-		ID:  m.ID(),
+		ID:  m.id,
 		Tag: tag,
 	})
-}
-
-// LastFocus satisfies the app.Menu interface.
-func (m *Menu) LastFocus() time.Time {
-	return m.lastFocus
-}
-
-func onMenuClose(m *Menu, in map[string]interface{}) interface{} {
-	if m.keepWhenClosed {
-		return nil
-	}
-
-	// menuDidClose: is called before clicked:.
-	// We call CallOnUIGoroutine in order to defer the close operation
-	// after the clicked one.
-	driver.CallOnUIGoroutine(func() {
-		if m.onClose != nil {
-			m.onClose()
-		}
-
-		if err := driver.macRPC.Call("menus.Delete", nil, struct {
-			ID string
-		}{
-			ID: m.ID(),
-		}); err != nil {
-			panic(errors.Wrap(err, "onMenuClose"))
-		}
-
-		driver.elems.Delete(m)
-	})
-
-	return nil
 }
 
 func onMenuCallback(m *Menu, in map[string]interface{}) interface{} {
@@ -234,15 +205,44 @@ func onMenuCallback(m *Menu, in map[string]interface{}) interface{} {
 		return nil
 	}
 
-	var compo app.Compo
-	if compo, err = m.markup.Compo(mapping.CompoID); err != nil {
+	var c app.Compo
+	if c, err = m.markup.Compo(mapping.CompoID); err != nil {
 		app.Log("menu callback failed: %s", err)
 		return nil
 	}
 
-	if err = m.Render(compo); err != nil {
+	m.Render(c)
+	if m.Err() != nil {
 		app.Log("menu callback failed: %s", err)
 	}
+
+	return nil
+}
+
+func onMenuClose(m *Menu, in map[string]interface{}) interface{} {
+	if m.keepWhenClosed {
+		return nil
+	}
+
+	// menuDidClose: is called before clicked:.
+	// We call CallOnUIGoroutine in order to defer the close operation
+	// after the clicked one.
+	driver.CallOnUIGoroutine(func() {
+		if m.onClose != nil {
+			m.onClose()
+		}
+
+		if err := driver.macRPC.Call("menus.Delete", nil, struct {
+			ID string
+		}{
+			ID: m.id,
+		}); err != nil {
+			panic(errors.Wrap(err, "onMenuClose"))
+		}
+
+		driver.elems.Delete(m)
+	})
+
 	return nil
 }
 
@@ -251,15 +251,15 @@ func handleMenu(h func(m *Menu, in map[string]interface{}) interface{}) bridge.G
 		id, _ := in["ID"].(string)
 		e := driver.elems.GetByID(id)
 
-		switch menu := e.(type) {
+		switch m := e.(type) {
 		case *Menu:
-			return h(menu, in)
+			return h(m, in)
 
 		case *DockTile:
-			return h(&menu.Menu, in)
+			return h(&m.Menu, in)
 
 		case *StatusMenu:
-			return h(&menu.Menu, in)
+			return h(&m.Menu, in)
 
 		default:
 			panic("menu not supported")

@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/murlokswarm/app/html"
+	"github.com/murlokswarm/app/internal/html"
 )
 
 func TestAppJS(t *testing.T) {

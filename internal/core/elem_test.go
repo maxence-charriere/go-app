@@ -16,20 +16,16 @@ func TestElem(t *testing.T) {
 	e.WhenMenu(func(app.Menu) {})
 	e.WhenDockTile(func(app.DockTile) {})
 	e.WhenStatusMenu(func(app.StatusMenu) {})
-	e.WhenNotSet(func() {
-		t.Error("WhenNotSet called")
+	e.WhenErr(func(err error) {
+		t.Error("WhenErr called:", err)
 	})
 
-	assert.NoError(t, e.Render(&compo{}))
-
-	e.notSet = true
-	e.WhenNotSet(func() {
-		t.Log("not set")
+	e.SetErr(app.ErrElemNotSet)
+	e.WhenErr(func(err error) {
+		t.Log("WhenErr called:", err)
 	})
 
-	assert.False(t, e.Contains(&compo{}))
 	assert.Equal(t, "", e.ID())
-	assert.Error(t, e.Render(&compo{}))
 }
 
 type elem struct {
@@ -55,10 +51,6 @@ func (e *elemWithCompo) Contains(c app.Compo) bool {
 	return c != nil && c == e.compo
 }
 
-func (e *elemWithCompo) Render(app.Compo) error {
-	return nil
-}
-
 type compo app.ZeroCompo
 
 func (c *compo) Render() string {
@@ -76,12 +68,12 @@ func TestElemDB(t *testing.T) {
 	db.Put(e)
 
 	e2 := db.GetByID(e.ID())
-	assert.False(t, e2.IsNotSet())
+	assert.NoError(t, e2.Err())
 	assert.Equal(t, e, e2)
 
 	db.Delete(e)
 	e3 := db.GetByID(e.ID())
-	assert.True(t, e3.IsNotSet())
+	assert.Error(t, e3.Err())
 
 	// Element with components.
 	ec := &elemWithCompo{
@@ -93,14 +85,14 @@ func TestElemDB(t *testing.T) {
 
 	c := &compo{}
 	ec2 := db.GetByCompo(c)
-	assert.True(t, ec2.IsNotSet())
+	assert.Error(t, ec2.Err())
 
 	ec.compo = c
 	ec3 := db.GetByCompo(c)
-	assert.False(t, ec3.IsNotSet())
+	assert.NoError(t, ec3.Err())
 	assert.Equal(t, ec, ec3)
 
 	db.Delete(ec)
 	ec4 := db.GetByCompo(c)
-	assert.True(t, ec4.IsNotSet())
+	assert.Error(t, ec4.Err())
 }
