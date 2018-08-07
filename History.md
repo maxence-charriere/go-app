@@ -1,4 +1,101 @@
 
+3.0.0 / 2018-08-07
+==================
+
+## API changes
+
+### General
+
+|v2|v3|
+|---|---|
+|func NewWindow(c WindowConfig) (Window, error)|func NewWindow(c WindowConfig) Window|
+|func NewPage(c PageConfig) error|func NewPage(c PageConfig) Page|
+|func NewContextMenu(c MenuConfig) (Menu, error)|func NewContextMenu(c MenuConfig) Menu|
+|func NewFilePanel(c FilePanelConfig) error|func NewFilePanel(c FilePanelConfig) Elem|
+|func NewSaveFilePanel(c SaveFilePanelConfig) error|func NewSaveFilePanel(c SaveFilePanelConfig) Elem|
+|func NewShare(v interface{}) error|func NewShare(v interface{}) Elem|
+|func NewNotification(c NotificationConfig) error|func NewNotification(c NotificationConfig) Elem|
+|func MenuBar() (Menu, error)|func MenuBar() Menu|
+|func NewStatusMenu(c StatusMenuConfig) (StatusMenu, error)|func NewStatusMenu(c StatusMenuConfig) StatusMenu|
+|func Dock() (DockTile, error)|func Dock() DockTile|
+|func NewAction(name string, arg interface{})|func PostAction(name string, arg interface{})|
+|func NewActions(a ...Action)|func PostActions(a ...Action)|
+|func Handle(name string, h ActionHandler)|func HandleAction(name string, h ActionHandler)|
+|func NewEventSubscriber() EventSubscriber|func NewEventSubscriber() *EventSubscriber|
+|func CSSResources() []string|*removed*|
+|func CompoNameFromURL(u *url.URL) string|*removed*|
+|func CompoNameFromURLString(rawurl string) string|*removed*|
+|func NewErrNotFound(object string) error|*removed*|
+|func NotFound(err error) bool|*removed*|
+|func NewErrNotSupported(feature string) error|*removed*|
+|func NotSupported(err error) bool|*removed*|
+
+### Window
+
+|v2|v3|
+|---|---|
+|Load(url string, v ...interface{}) error|Load(url string, v ...interface{})|
+|Render(Compo) error|Render(Compo)|
+|LastFocus() time.Time|*removed*|
+|Reload() error|Reload()|
+|Previous() error|Previous()|
+|Next() error|Next()|
+|Move(x, y float64) error|Move(x, y float64)|
+|Center() error|Center()|
+|Resize(width, height float64) error|Resize(width, height float64)|
+|Focus() error|Focus()|
+|ToggleFullScreen() error|FullScreen()|
+||ExitFullScreen()|
+|ToggleMinimize() error|Minimize()|
+||Deminimize()|
+|Close() error|Close()|
+
+### Page
+
+|v2|v3|
+|---|---|
+|Load(url string, v ...interface{}) error|Load(url string, v ...interface{})|
+|Render(Compo) error|Render(Compo)|
+|LastFocus() time.Time|*removed*|
+|Reload() error|Reload()|
+|Previous() error|Previous()|
+|Next() error|Next()|
+|Close() error|Close()|
+
+### Menu
+
+|v2|v3|
+|---|---|
+|Load(url string, v ...interface{}) error|Load(url string, v ...interface{})|
+|Render(Compo) error|Render(Compo)|
+|LastFocus() time.Time|*removed*|
+
+### StatusMenu
+
+|v2|v3|
+|---|---|
+|Load(url string, v ...interface{}) error|Load(url string, v ...interface{})|
+|Render(Compo) error|Render(Compo)|
+|LastFocus() time.Time|*removed*|
+|SetIcon(name string) error|SetIcon(path string)|
+|SetText(text string) error|SetText(text string)|
+|Close() error|Close()|
+
+### DockTile
+
+|v2|v3|
+|---|---|
+|Load(url string, v ...interface{}) error|Load(url string, v ...interface{})|
+|Render(Compo) error|Render(Compo)|
+|LastFocus() time.Time|*removed*|
+|SetIcon(name string) error|SetIcon(path string)|
+|SetBadge(v interface{}) error|SetBadge(v interface{})|
+
+## Misc
+
+- A lot of code has been refactored.
+- `appjs` and `html` has been moved to `internal`.
+
 2.6.3 / 2018-07-14
 ==================
 
