@@ -1,7 +1,7 @@
 
-#include "file.h"
 #include "driver.h"
 #include "json.h"
+#include "panel.h"
 
 @implementation FilePanel
 + (void)newFilePanel:(NSDictionary *)in return:(NSString *)returnID {
@@ -80,9 +80,7 @@
         @"Filename" : panel.URL.absoluteString,
       };
 
-      [driver.goRPC call:@"saveFilePanels.OnSelect"
-               withInput:in
-                    onUI:YES];
+      [driver.goRPC call:@"saveFilePanels.OnSelect" withInput:in onUI:YES];
     };
 
     NSWindow *win = NSApp.keyWindow;

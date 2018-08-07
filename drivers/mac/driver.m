@@ -1,6 +1,6 @@
 #include "driver.h"
 #include "dock.h"
-#include "file.h"
+#include "panel.h"
 #include "json.h"
 #include "menu.h"
 #include "notification.h"
