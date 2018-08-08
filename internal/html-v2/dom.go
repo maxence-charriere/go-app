@@ -9,25 +9,25 @@ import (
 // manages node states.
 type DOM interface {
 	// Returns the component with the given identifier.
-	ComponentByID(id string) (app.Component, error)
+	ComponentByID(id string) (app.Compo, error)
 
 	// Reports whether the given component is in the dom.
-	Contains(c app.Component) bool
+	Contains(c app.Compo) bool
 
 	// The amount of components in the DOM.
 	Len() int
 
 	// Create or update the nodes of the given component.
 	// Component must be a pointer and not based on an empty struct.
-	Render(c app.Component) ([]Change, error)
+	Render(c app.Compo) ([]Change, error)
 }
 
 // NewDOM create a document object model store.
-func NewDOM(f app.Factory, controlID string) DOM {
+func NewDOM(f *app.Factory, controlID string) DOM {
 	return newDOM(f, controlID)
 }
 
-func newDOM(f app.Factory, controlID string) *dom {
+func newDOM(f *app.Factory, controlID string) *dom {
 	return &dom{
 		factory:   f,
 		controlID: controlID,
@@ -35,37 +35,37 @@ func newDOM(f app.Factory, controlID string) *dom {
 			id: "goapp-root",
 		},
 		compoRowByID:    make(map[string]compoRow),
-		compoRowByCompo: make(map[app.Component]compoRow),
+		compoRowByCompo: make(map[app.Compo]compoRow),
 	}
 }
 
 type dom struct {
-	factory         app.Factory
+	factory         *app.Factory
 	controlID       string
 	root            *elemNode
 	compoRowByID    map[string]compoRow
-	compoRowByCompo map[app.Component]compoRow
+	compoRowByCompo map[app.Compo]compoRow
 }
 
-func (d *dom) ComponentByID(id string) (app.Component, error) {
+func (d *dom) ComponentByID(id string) (app.Compo, error) {
 	r, ok := d.compoRowByID[id]
 	if !ok {
-		return nil, app.ErrNotFound
+		return nil, app.ErrCompoNotMounted
 	}
-	return r.component, nil
+	return r.compo, nil
 }
 
-func (d *dom) Contains(c app.Component) bool {
+func (d *dom) Contains(c app.Compo) bool {
 	_, ok := d.compoRowByCompo[c]
 	return ok
 }
 
 func (d *dom) insertCompoRow(r compoRow) {
-	if sub, ok := r.component.(app.Subscriber); ok {
+	if sub, ok := r.compo.(app.Subscriber); ok {
 		r.events = sub.Subscribe()
 	}
 	d.compoRowByID[r.id] = r
-	d.compoRowByCompo[r.component] = r
+	d.compoRowByCompo[r.compo] = r
 }
 
 func (d *dom) deleteCompoRow(id string) {
@@ -73,7 +73,7 @@ func (d *dom) deleteCompoRow(id string) {
 		if r.events != nil {
 			r.events.Close()
 		}
-		delete(d.compoRowByCompo, r.component)
+		delete(d.compoRowByCompo, r.compo)
 		delete(d.compoRowByID, id)
 	}
 }
@@ -82,8 +82,8 @@ func (d *dom) Len() int {
 	return len(d.compoRowByCompo)
 }
 
-func (d *dom) Render(c app.Component) ([]Change, error) {
-	if err := validateComponent(c); err != nil {
+func (d *dom) Render(c app.Compo) ([]Change, error) {
+	if err := validateCompo(c); err != nil {
 		return nil, err
 	}
 
@@ -108,7 +108,7 @@ func (d *dom) Render(c app.Component) ([]Change, error) {
 	old := row.root
 	parent := old.Parent()
 
-	new, err := decodeComponent(c)
+	new, err := decodeCompo(c)
 	if err != nil {
 		return nil, err
 	}
@@ -119,8 +119,8 @@ func (d *dom) Render(c app.Component) ([]Change, error) {
 	return parent.(node).ConsumeChanges(), nil
 }
 
-func (d *dom) mountCompo(c app.Component, parent *compoNode) error {
-	root, err := decodeComponent(c)
+func (d *dom) mountCompo(c app.Compo, parent *compoNode) error {
+	root, err := decodeCompo(c)
 	if err != nil {
 		return err
 	}
@@ -130,9 +130,9 @@ func (d *dom) mountCompo(c app.Component, parent *compoNode) error {
 		return err
 	}
 	d.insertCompoRow(compoRow{
-		id:        compoID,
-		component: c,
-		root:      root,
+		id:    compoID,
+		compo: c,
+		root:  root,
 	})
 
 	if parent != nil {
@@ -165,22 +165,22 @@ func (d *dom) mountNode(n node, compoID string) error {
 		n.compoID = compoID
 		n.controlID = d.controlID
 
-		c, err := d.factory.New(n.Name())
+		c, err := d.factory.NewCompo(n.Name())
 		if err != nil {
 			return err
 		}
 
-		if err = mapComponentFields(c, n.fields); err != nil {
+		if err = mapCompoFields(c, n.fields); err != nil {
 			return err
 		}
 
-		n.component = c
+		n.compo = c
 		return d.mountCompo(c, n)
 	}
 	return nil
 }
 
-func (d *dom) dismountCompo(c app.Component) {
+func (d *dom) dismountCompo(c app.Compo) {
 	row, _ := d.compoRowByCompo[c]
 	d.dismountNode(row.root)
 	d.deleteCompoRow(row.id)
@@ -198,7 +198,7 @@ func (d *dom) dismountNode(n node) {
 		}
 
 	case *compoNode:
-		d.dismountCompo(n.component)
+		d.dismountCompo(n.compo)
 	}
 }
 
@@ -279,11 +279,11 @@ func (d *dom) syncCompoNodes(old, new *compoNode) error {
 
 	if !attrsEqual(old.fields, new.fields) {
 		old.fields = new.fields
-		if err := mapComponentFields(old.component, new.fields); err != nil {
+		if err := mapCompoFields(old.compo, new.fields); err != nil {
 			return err
 		}
 
-		newRoot, err := decodeComponent(old.component)
+		newRoot, err := decodeCompo(old.compo)
 		if err != nil {
 			return err
 		}

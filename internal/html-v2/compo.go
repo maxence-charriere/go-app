@@ -10,7 +10,7 @@ type compoNode struct {
 	compoID   string
 	controlID string
 	name      string
-	component app.Component
+	compo     app.Compo
 	fields    map[string]string
 	parent    node
 	root      node

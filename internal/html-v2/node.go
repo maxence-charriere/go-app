@@ -192,9 +192,15 @@ func setCompoRootChange(id, rootID string) Change {
 	}
 }
 
+type deleteValue struct {
+	ID string
+}
+
 func deleteNodeChange(id string) Change {
 	return Change{
-		Type:  deleteNode,
-		Value: id,
+		Type: deleteNode,
+		Value: deleteValue{
+			ID: id,
+		},
 	}
 }

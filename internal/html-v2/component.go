@@ -14,13 +14,13 @@ import (
 )
 
 type compoRow struct {
-	id        string
-	component app.Component
-	events    app.EventSubscriber
-	root      node
+	id     string
+	compo  app.Compo
+	events *app.EventSubscriber
+	root   node
 }
 
-func validateComponent(c app.Component) error {
+func validateCompo(c app.Compo) error {
 	v := reflect.ValueOf(c)
 	if v.Kind() != reflect.Ptr {
 		return errors.New("component is not a pointer")
@@ -33,10 +33,10 @@ func validateComponent(c app.Component) error {
 	return nil
 }
 
-func decodeComponent(c app.Component) (node, error) {
+func decodeCompo(c app.Compo) (node, error) {
 	var funcs template.FuncMap
 
-	if compoExtRend, ok := c.(app.ComponentWithExtendedRender); ok {
+	if compoExtRend, ok := c.(app.CompoWithExtendedRender); ok {
 		funcs = compoExtRend.Funcs()
 	}
 
@@ -76,7 +76,7 @@ func decodeComponent(c app.Component) (node, error) {
 	return decodeNodes(w.String())
 }
 
-func mapComponentFields(c app.Component, fields map[string]string) error {
+func mapCompoFields(c app.Compo, fields map[string]string) error {
 	v := reflect.ValueOf(c).Elem()
 	t := v.Type()
 
@@ -104,14 +104,14 @@ func mapComponentFields(c app.Component, fields map[string]string) error {
 			continue
 		}
 
-		if err := mapComponentField(fv, value); err != nil {
+		if err := mapCompoField(fv, value); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func mapComponentField(field reflect.Value, value string) error {
+func mapCompoField(field reflect.Value, value string) error {
 	switch field.Kind() {
 	case reflect.String:
 		field.SetString(value)

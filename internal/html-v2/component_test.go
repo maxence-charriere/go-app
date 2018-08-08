@@ -82,7 +82,7 @@ func TestDecodeComponent(t *testing.T) {
 	}
 	sjson := string(data)
 
-	n, err := decodeComponent(&CompoWithFields{
+	n, err := decodeCompo(&CompoWithFields{
 		String: "<br>",
 		Time:   time.Now(),
 		Struct: s,
@@ -103,10 +103,10 @@ func TestDecodeComponent(t *testing.T) {
 	hello := root.children[9].(*elemNode).children[0].(*textNode)
 	assert.Equal(t, "hello", hello.Text())
 
-	_, err = decodeComponent(&CompoBadTemplate{})
+	_, err = decodeCompo(&CompoBadTemplate{})
 	assert.Error(t, err)
 
-	_, err = decodeComponent(&CompoBadTemplate2{})
+	_, err = decodeCompo(&CompoBadTemplate2{})
 	assert.Error(t, err)
 }
 
@@ -215,7 +215,7 @@ func TestMapComponentFields(t *testing.T) {
 		t.Run(test.scenario, func(t *testing.T) {
 			var c CompoWithFields
 
-			err := mapComponentFields(&c, test.attrs)
+			err := mapCompoFields(&c, test.attrs)
 			if test.err {
 				assert.Error(t, err)
 				return

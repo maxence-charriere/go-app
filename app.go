@@ -12,6 +12,10 @@ var (
 	// ErrElemNotSet describes an error that reports if an element is set.
 	ErrElemNotSet = errors.New("element not set")
 
+	// ErrCompoNotMounted describes an error that reports whether a component
+	// is mounted.
+	ErrCompoNotMounted = errors.New("component not mounted")
+
 	// Loggers contains the loggers used by the app.
 	Loggers []Logger
 

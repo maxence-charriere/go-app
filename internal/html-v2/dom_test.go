@@ -21,7 +21,7 @@ func (f *Foo) OnMount() {
 func (f *Foo) OnDismount() {
 }
 
-func (f *Foo) Subscribe() app.EventSubscriber {
+func (f *Foo) Subscribe() *app.EventSubscriber {
 	return app.NewEventSubscriber()
 }
 
@@ -191,21 +191,21 @@ func (e *EmptyStructErr) Render() string {
 
 func TestDOM(t *testing.T) {
 	f := app.NewFactory()
-	f.Register(&Foo{})
-	f.Register(&Bar{})
-	f.Register(&Boo{})
-	f.Register(&Oob{})
-	f.Register(&Nested{})
-	f.Register(&NestedNested{})
-	f.Register(&CompoErr{})
-	f.Register(&DecodeErr{})
-	f.Register(NoPtrErr(0))
-	f.Register(&EmptyStructErr{})
+	f.RegisterCompo(&Foo{})
+	f.RegisterCompo(&Bar{})
+	f.RegisterCompo(&Boo{})
+	f.RegisterCompo(&Oob{})
+	f.RegisterCompo(&Nested{})
+	f.RegisterCompo(&NestedNested{})
+	f.RegisterCompo(&CompoErr{})
+	f.RegisterCompo(&DecodeErr{})
+	f.RegisterCompo(NoPtrErr(0))
+	f.RegisterCompo(&EmptyStructErr{})
 
 	tests := []struct {
 		scenario   string
-		compo      app.Component
-		modifier   func(c app.Component)
+		compo      app.Compo
+		modifier   func(c app.Compo)
 		changes    []Change
 		compoCount int
 		err        bool
@@ -227,7 +227,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "update simple compo",
 			compo:    &Foo{Value: "hello"},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*Foo).Value = "world"
 			},
 			changes: []Change{
@@ -238,7 +238,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "append simple compo child",
 			compo:    &Foo{},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*Foo).Value = "hello"
 			},
 			changes: []Change{
@@ -251,7 +251,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "remove simple compo child",
 			compo:    &Foo{Value: "hello"},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*Foo).Value = ""
 			},
 			changes: []Change{
@@ -263,7 +263,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "change simple compo root attrs",
 			compo:    &Foo{},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*Foo).Disabled = true
 			},
 			changes: []Change{
@@ -300,7 +300,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "replace compo text by elem",
 			compo:    &Bar{},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*Bar).ReplaceTextByElem = true
 			},
 			changes: []Change{
@@ -318,7 +318,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "replace compo elem by text",
 			compo:    &Bar{ReplaceTextByElem: true},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*Bar).ReplaceTextByElem = false
 			},
 			changes: []Change{
@@ -333,7 +333,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "replace compo elem by elem",
 			compo:    &Bar{},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*Bar).ReplaceElemByElem = true
 			},
 			changes: []Change{
@@ -370,7 +370,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "add compo to elem",
 			compo:    &Boo{},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*Boo).AddCompo = true
 			},
 			changes: []Change{
@@ -385,7 +385,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "remove compo from elem",
 			compo:    &Boo{AddCompo: true},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*Boo).AddCompo = false
 			},
 			changes: []Change{
@@ -398,7 +398,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "replace compo type",
 			compo:    &Boo{},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*Boo).ReplaceCompoType = true
 			},
 			changes: []Change{
@@ -416,7 +416,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "change compo attrs",
 			compo:    &Boo{Value: "hello"},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*Boo).Value = "world"
 			},
 			changes: []Change{
@@ -427,7 +427,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "replace compo by elem",
 			compo:    &Boo{},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*Boo).ReplaceCompoByElem = true
 			},
 			changes: []Change{
@@ -446,7 +446,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "replace elem by compo",
 			compo:    &Boo{ReplaceCompoByElem: true},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*Boo).ReplaceCompoByElem = false
 			},
 			changes: []Change{
@@ -478,7 +478,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "replace nested",
 			compo:    &Nested{},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*Nested).Foo = true
 			},
 			changes: []Change{
@@ -512,7 +512,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "replace nested nested",
 			compo:    &NestedNested{},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*NestedNested).Foo = true
 			},
 			changes: []Change{
@@ -538,7 +538,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "fail decode update",
 			compo:    &DecodeErr{NoErr: true},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*DecodeErr).NoErr = false
 			},
 			err: true,
@@ -551,7 +551,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "fail decode child update",
 			compo:    &CompoErr{Int: 0},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*CompoErr).DecodeErr = true
 			},
 			err: true,
@@ -564,7 +564,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "fail update child fields",
 			compo:    &CompoErr{Int: 42},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*CompoErr).Int = 42.42
 			},
 			err: true,
@@ -577,7 +577,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "replace compo err",
 			compo:    &CompoErr{Int: 0},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*CompoErr).ReplaceCompoErr = true
 			},
 			err: true,
@@ -585,7 +585,7 @@ func TestDOM(t *testing.T) {
 		{
 			scenario: "fail add child",
 			compo:    &CompoErr{Int: 42},
-			modifier: func(c app.Component) {
+			modifier: func(c app.Compo) {
 				c.(*CompoErr).AddChildErr = true
 			},
 			err: true,
@@ -635,7 +635,7 @@ func TestDOM(t *testing.T) {
 
 func TestRenderNewRoot(t *testing.T) {
 	f := app.NewFactory()
-	f.Register(&Oob{})
+	f.RegisterCompo(&Oob{})
 
 	dom := newDOM(f, "test")
 	_, err := dom.Render(&Oob{})
@@ -664,7 +664,7 @@ func TestRenderNewRoot(t *testing.T) {
 
 func TestDOMComponentByID(t *testing.T) {
 	f := app.NewFactory()
-	f.Register(&Foo{})
+	f.RegisterCompo(&Foo{})
 
 	dom := newDOM(f, "test")
 	foo := &Foo{}
@@ -676,9 +676,9 @@ func TestDOMComponentByID(t *testing.T) {
 		row = r
 		break
 	}
-	require.Equal(t, foo, row.component)
+	require.Equal(t, foo, row.compo)
 
-	var c app.Component
+	var c app.Compo
 	c, err = dom.ComponentByID(row.id)
 	require.NoError(t, err)
 	require.Equal(t, foo, c)
