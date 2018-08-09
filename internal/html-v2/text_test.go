@@ -28,5 +28,5 @@ func TestTextNode(t *testing.T) {
 	text.Close()
 	assert.Len(t, text.changes, 1)
 	assert.Equal(t, deleteNode, text.changes[0].Type)
-	assert.Equal(t, text.ID(), text.changes[0].Value)
+	assert.Equal(t, text.ID(), text.changes[0].Value.(deleteValue).ID)
 }

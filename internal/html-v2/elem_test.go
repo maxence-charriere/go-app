@@ -41,7 +41,7 @@ func TestElemNode(t *testing.T) {
 	assert.Equal(t, removeChild, e.changes[3].Type)
 	assert.Equal(t, childValue{ParentID: e.ID(), ChildID: c1.ID()}, e.changes[3].Value)
 	assert.Equal(t, deleteNode, e.changes[4].Type)
-	assert.Equal(t, c1.ID(), e.changes[4].Value)
+	assert.Equal(t, c1.ID(), e.changes[4].Value.(deleteValue).ID)
 
 	changes := e.ConsumeChanges()
 	assert.Len(t, changes, 6)
@@ -56,12 +56,12 @@ func TestElemNode(t *testing.T) {
 	assert.Equal(t, replaceChild, e.changes[0].Type)
 	assert.Equal(t, childValue{ParentID: e.ID(), ChildID: c3.ID(), OldID: c2.ID()}, e.changes[0].Value)
 	assert.Equal(t, deleteNode, e.changes[1].Type)
-	assert.Equal(t, c2.ID(), e.changes[1].Value)
+	assert.Equal(t, c2.ID(), e.changes[1].Value.(deleteValue).ID)
 
 	e.Close()
 	assert.Len(t, e.changes, 2)
 	assert.Equal(t, deleteNode, e.changes[0].Type)
-	assert.Equal(t, c3.ID(), e.changes[0].Value)
+	assert.Equal(t, c3.ID(), e.changes[0].Value.(deleteValue).ID)
 	assert.Equal(t, deleteNode, e.changes[1].Type)
-	assert.Equal(t, e.ID(), e.changes[1].Value)
+	assert.Equal(t, e.ID(), e.changes[1].Value.(deleteValue).ID)
 }
