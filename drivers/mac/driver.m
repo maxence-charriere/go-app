@@ -1,9 +1,9 @@
 #include "driver.h"
 #include "dock.h"
-#include "panel.h"
 #include "json.h"
 #include "menu.h"
 #include "notification.h"
+#include "panel.h"
 #include "sandbox.h"
 #include "status.h"
 #include "window.h"
@@ -67,10 +67,6 @@
   [self.macRPC handle:@"windows.Render"
           withHandler:^(id in, NSString *returnID) {
             return [Window render:in return:returnID];
-          }];
-  [self.macRPC handle:@"windows.RenderAttributes"
-          withHandler:^(id in, NSString *returnID) {
-            return [Window renderAttributes:in return:returnID];
           }];
   [self.macRPC handle:@"windows.Position"
           withHandler:^(id in, NSString *returnID) {

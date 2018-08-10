@@ -1,6 +1,8 @@
 
 var goapp = {
-    nodes: {}
+    nodes: {
+        "goapp-root": document.body
+    }
 };
 
 function render(changes = []) {
@@ -125,7 +127,7 @@ function appendChild(change = {}) {
         return;
     }
 
-    const child = childRoot(goapp.nodes[ChildID]);
+    const child = childElem(goapp.nodes[ChildID]);
     if (!child) {
         return;
     }
@@ -141,7 +143,7 @@ function removeChild(change = {}) {
         return;
     }
 
-    const child = childRoot(goapp.nodes[ChildID]);
+    const child = childElem(goapp.nodes[ChildID]);
     if (!child) {
         return;
     }
@@ -157,13 +159,13 @@ function replaceChild(change = {}) {
         return;
     }
 
-    const newChild = childRoot(goapp.nodes[ChildID]);
+    const newChild = childElem(goapp.nodes[ChildID]);
     if (!newChild) {
         return;
     }
 
 
-    const oldChild = childRoot(goapp.nodes[OldID]);
+    const oldChild = childElem(goapp.nodes[OldID]);
     if (!oldChild) {
         return;
     }
@@ -195,7 +197,8 @@ function deleteNode(change = {}) {
     delete goapp.nodes[ID];
 }
 
-function childRoot(node) {
+
+function childElem(node) {
     if (!node || !node.IsCompo) {
         return node;
     }
