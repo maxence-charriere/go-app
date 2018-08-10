@@ -248,6 +248,21 @@
   decisionHandler(WKNavigationActionPolicyCancel);
 }
 
+- (void)webView:(WKWebView *)webView
+    runJavaScriptAlertPanelWithMessage:(NSString *)message
+                      initiatedByFrame:(WKFrameInfo *)frame
+                     completionHandler:(void (^)(void))completionHandler {
+  Driver *driver = [Driver current];
+
+  NSDictionary *in = @{
+    @"ID" : self.ID,
+    @"Alert" : message,
+  };
+
+  [driver.goRPC call:@"windows.OnAlert" withInput:in onUI:YES];
+  completionHandler();
+}
+
 + (void)render:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];

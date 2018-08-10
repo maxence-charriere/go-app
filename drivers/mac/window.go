@@ -559,6 +559,11 @@ func onWindowNavigate(w *Window, in map[string]interface{}) interface{} {
 	return nil
 }
 
+func onWindowAlert(w *Window, in map[string]interface{}) interface{} {
+	app.Debug("%s", in["Alert"])
+	return nil
+}
+
 func onWindowMove(w *Window, in map[string]interface{}) interface{} {
 	if w.onMove != nil {
 		w.onMove(
