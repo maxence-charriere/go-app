@@ -74,6 +74,10 @@ function render(changes = []) {
                 replaceChild(c);
                 break;
 
+            case 'mountElem':
+                mountElem(c);
+                break;
+
             case 'createCompo':
                 createCompo(c);
                 break;
@@ -211,6 +215,17 @@ function replaceChild(change = {}) {
     parent.replaceChild(newChild, oldChild);
 }
 
+function mountElem(change = {}) {
+    const { ID, compoID } = change.Value;
+
+    const n = goapp.nodes[ID];
+    if (!n) {
+        return;
+    }
+
+    n.compoID = compoID;
+}
+
 function createCompo(change = {}) {
     const { ID, Name } = change.Value;
 
@@ -267,54 +282,54 @@ function mapObject(obj) {
     return map;
 }
 
-function callCompoHandler(compoID, target, src, event) {
+function callCompoHandler(elem, event, fieldOrMethod) {
     switch (event.type) {
         case 'change':
-            onchangeToGolang(compoID, target, src, event);
+            onchangeToGolang(elem, fieldOrMethod);
             break;
 
         case 'drag':
         case 'dragstart':
         case 'dragend':
         case 'dragexit':
-            onDragStartToGolang(compoID, target, src, event);
+            onDragStartToGolang(elem, event, fieldOrMethod);
             break;
 
         case 'dragenter':
         case 'dragleave':
         case 'dragover':
         case 'drop':
-            ondropToGolang(compoID, target, src, event);
+            ondropToGolang(elem, event, fieldOrMethod);
             break;
 
         default:
-            eventToGolang(compoID, target, src, event);
+            eventToGolang(elem, event, fieldOrMethod);
             break;
     }
 }
 
-function onchangeToGolang(compoID, target, src, event) {
+function onchangeToGolang(elem, fieldOrMethod) {
     golangRequest(JSON.stringify({
-        'compo-id': compoID,
-        'target': target,
-        'json-value': JSON.stringify(src.value)
+        'CompoID': elem.compoID,
+        'FieldOrMethod': fieldOrMethod,
+        'JSONValue': JSON.stringify(elem.value)
     }));
 }
 
-function onDragStartToGolang(compoID, target, src, event) {
+function onDragStartToGolang(elem, event, fieldOrMethod) {
     const payload = mapObject(event.dataTransfer);
     payload['Data'] = src.dataset.drag;
 
     event.dataTransfer.setData('text', src.dataset.drag);
 
     golangRequest(JSON.stringify({
-        'compo-id': compoID,
-        'target': target,
-        'json-value': JSON.stringify(payload)
+        'CompoID': elem.compoID,
+        'FieldOrMethod': fieldOrMethod,
+        'JSONValue': JSON.stringify(payload)
     }));
 }
 
-function ondropToGolang(compoID, target, src, event) {
+function ondropToGolang(elem, event, fieldOrMethod) {
     event.preventDefault();
 
     const payload = mapObject(event.dataTransfer);
@@ -322,14 +337,14 @@ function ondropToGolang(compoID, target, src, event) {
     payload['file-override'] = 'xxx';
 
     golangRequest(JSON.stringify({
-        'compo-id': compoID,
-        'target': target,
-        'json-value': JSON.stringify(payload),
+        'CompoID': elem.compoID,
+        'FieldOrMethod': fieldOrMethod,
+        'JSONValue': JSON.stringify(payload),
         'override': 'Files'
     }));
 }
 
-function eventToGolang(compoID, target, src, event) {
+function eventToGolang(elem, event, fieldOrMethod) {
     const payload = mapObject(event);
 
     if (src.contentEditable === 'true') {
@@ -337,9 +352,9 @@ function eventToGolang(compoID, target, src, event) {
     }
 
     golangRequest(JSON.stringify({
-        'compo-id': compoID,
-        'target': target,
-        'json-value': JSON.stringify(payload)
+        'CompoID': elem.compoID,
+        'FieldOrMethod': fieldOrMethod,
+        'JSONValue': JSON.stringify(payload)
     }));
 }
 `

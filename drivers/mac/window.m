@@ -141,7 +141,7 @@
 
   NSDictionary *in = @{
     @"ID" : self.ID,
-    @"Mapping" : message.body,
+    @"Call" : message.body,
   };
 
   [driver.goRPC call:@"windows.OnCallback" withInput:in onUI:YES];

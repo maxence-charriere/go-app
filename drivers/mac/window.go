@@ -443,85 +443,31 @@ func (w *Window) Close() {
 	w.SetErr(err)
 }
 
-// func (w *Window) render(sync app.TagSync) error {
-// 	var buffer bytes.Buffer
-
-// 	enc := html.NewEncoder(&buffer, w.markup, true)
-// 	if err := enc.Encode(sync.Tag); err != nil {
-// 		return err
-// 	}
-
-// 	render, err := json.Marshal(struct {
-// 		ID    string `json:"id"`
-// 		Compo string `json:"component"`
-// 	}{
-// 		ID:    sync.Tag.ID,
-// 		Compo: buffer.String(),
-// 	})
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	return driver.macRPC.Call("windows.Render", nil, struct {
-// 		ID     string
-// 		Render string
-// 	}{
-// 		ID:     w.id,
-// 		Render: string(render),
-// 	})
-// }
-
-// func (w *Window) renderAttributes(sync app.TagSync) error {
-// 	attrs := make(app.AttributeMap, len(sync.Tag.Attributes))
-// 	for name, val := range sync.Tag.Attributes {
-// 		attrs[name] = html.AttrValueFormatter{
-// 			Name:       name,
-// 			Value:      val,
-// 			FormatHref: true,
-// 			CompoID:    sync.Tag.CompoID,
-// 			Factory:    driver.factory,
-// 		}.Format()
-// 	}
-
-// 	render, err := json.Marshal(struct {
-// 		ID         string           `json:"id"`
-// 		Attributes app.AttributeMap `json:"attributes"`
-// 	}{
-// 		ID:         sync.Tag.ID,
-// 		Attributes: attrs,
-// 	})
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	return driver.macRPC.Call("windows.RenderAttributes", nil, struct {
-// 		ID     string
-// 		Render string
-// 	}{
-// 		ID:     w.id,
-// 		Render: string(render),
-// 	})
-// }
-
 func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
-	mappingString := in["Mapping"].(string)
+	callStr := in["Call"].(string)
 
-	var mapping app.Mapping
-	if err := json.Unmarshal([]byte(mappingString), &mapping); err != nil {
+	var call html.Call
+	if err := json.Unmarshal([]byte(callStr), &call); err != nil {
 		app.Log("window callback failed: %s", err)
 		return nil
 	}
 
-	if mapping.Override == "Files" {
+	if call.Override == "Files" {
 		data, _ := json.Marshal(driver.droppedFiles)
 		driver.droppedFiles = nil
 
-		mapping.JSONValue = strings.Replace(
-			mapping.JSONValue,
+		call.JSONValue = strings.Replace(
+			call.JSONValue,
 			`"FileOverride":"xxx"`,
 			fmt.Sprintf(`"Files":%s`, data),
 			1,
 		)
+	}
+
+	c, err := w.dom.CompoByID(call.ID)
+	if err != nil {
+		app.Log("window callback failed: %s", err)
+		return nil
 	}
 
 	// function, err := w.markup.Map(mapping)

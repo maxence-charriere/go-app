@@ -9,7 +9,7 @@ import (
 // manages node states.
 type DOM interface {
 	// Returns the component with the given identifier.
-	ComponentByID(id string) (app.Compo, error)
+	CompoByID(id string) (app.Compo, error)
 
 	// Reports whether the given component is in the dom.
 	Contains(c app.Compo) bool
@@ -47,7 +47,7 @@ type dom struct {
 	compoRowByCompo map[app.Compo]compoRow
 }
 
-func (d *dom) ComponentByID(id string) (app.Compo, error) {
+func (d *dom) CompoByID(id string) (app.Compo, error) {
 	r, ok := d.compoRowByID[id]
 	if !ok {
 		return nil, app.ErrCompoNotMounted
@@ -154,6 +154,10 @@ func (d *dom) mountNode(n node, compoID string) error {
 	case *elemNode:
 		n.compoID = compoID
 		n.controlID = d.controlID
+		n.changes = append(n.changes, mountElemChange(
+			n.id,
+			n.compoID,
+		))
 
 		for _, c := range n.children {
 			if err := d.mountNode(c, compoID); err != nil {

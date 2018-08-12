@@ -13,7 +13,7 @@ func TestDecodeNodes(t *testing.T) {
 			<!-- Comment -->	
 			<h1>hello</h1>
 			<br>
-			<input type="text" required>
+			<input type="text" required onchange="Test">
 			<lib.Foo Bar="42">
 			<lib.bar />
 			<svg>

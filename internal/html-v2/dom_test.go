@@ -220,6 +220,7 @@ func TestDOM(t *testing.T) {
 				createElemChange("", "div"),
 				setAttrsChange("", map[string]string{"class": "test"}),
 				appendChildChange("", ""),
+				mountElemChange("", ""),
 				appendChildChange("", ""), // div -> root
 			},
 			compoCount: 1,
@@ -288,11 +289,14 @@ func TestDOM(t *testing.T) {
 				createElemChange("", "h1"),
 				setAttrsChange("", nil),
 				appendChildChange("", ""), // world -> h1
+				mountElemChange("", ""),
 
 				createElemChange("", "div"),
 				setAttrsChange("", nil),
 				appendChildChange("", ""), // hello -> div
 				appendChildChange("", ""), // h1 -> div
+				mountElemChange("", ""),
+
 				appendChildChange("", ""), // div -> root
 			},
 			compoCount: 1,
@@ -309,6 +313,7 @@ func TestDOM(t *testing.T) {
 				createElemChange("", "span"),
 				setAttrsChange("", nil),
 				appendChildChange("", ""), // hello -> span
+				mountElemChange("", ""),
 
 				replaceChildChange("", "", ""),
 				deleteNodeChange(""),
@@ -342,6 +347,7 @@ func TestDOM(t *testing.T) {
 				createElemChange("", "h2"),
 				setAttrsChange("", nil),
 				appendChildChange("", ""), // world -> h2
+				mountElemChange("", ""),
 
 				replaceChildChange("", "", ""),
 				deleteNodeChange(""), // delete h1.world
@@ -357,12 +363,14 @@ func TestDOM(t *testing.T) {
 			changes: []Change{
 				createElemChange("", "div"),
 				setAttrsChange("", map[string]string{"class": "test"}),
+				mountElemChange("", ""),
 				createCompoChange("", "html.foo"),
 				setCompoRootChange("", ""),
 
 				createElemChange("", "div"),
 				setAttrsChange("", nil),
 				appendChildChange("", ""), // foo.div -> div
+				mountElemChange("", ""),
 				appendChildChange("", ""), // div -> root
 			},
 			compoCount: 2,
@@ -376,6 +384,7 @@ func TestDOM(t *testing.T) {
 			changes: []Change{
 				createElemChange("", "div"),
 				setAttrsChange("", map[string]string{"class": "test"}),
+				mountElemChange("", ""),
 				createCompoChange("", "html.foo"),
 				setCompoRootChange("", ""),
 				appendChildChange("", ""), // foo2 -> div
@@ -404,6 +413,7 @@ func TestDOM(t *testing.T) {
 			changes: []Change{
 				createElemChange("", "p"), // oob.p
 				setAttrsChange("", nil),
+				mountElemChange("", ""),
 				createCompoChange("", "html.oob"),
 				setCompoRootChange("", ""), // oob.p -> oob
 
@@ -436,6 +446,7 @@ func TestDOM(t *testing.T) {
 				createElemChange("", "p"),
 				setAttrsChange("", nil),
 				appendChildChange("", ""), // "foo" -> p
+				mountElemChange("", ""),
 
 				replaceChildChange("", "", ""), // foo <-> p
 				deleteNodeChange(""),           // foo.div
@@ -452,6 +463,7 @@ func TestDOM(t *testing.T) {
 			changes: []Change{
 				createElemChange("", "div"),
 				setAttrsChange("", map[string]string{"class": "test"}),
+				mountElemChange("", ""),
 				createCompoChange("", "html.foo"),
 				setCompoRootChange("", ""),
 
@@ -469,6 +481,7 @@ func TestDOM(t *testing.T) {
 			changes: []Change{
 				createElemChange("", "div"), // foo.div
 				setAttrsChange("", map[string]string{"class": "test"}),
+				mountElemChange("", ""),
 				createCompoChange("", "html.foo"),
 				setCompoRootChange("", ""),
 				appendChildChange("", ""), // foo -> root
@@ -484,6 +497,7 @@ func TestDOM(t *testing.T) {
 			changes: []Change{
 				createElemChange("", "div"), // foo.div
 				setAttrsChange("", map[string]string{"class": "test"}),
+				mountElemChange("", ""),
 				createCompoChange("", "html.foo"),
 				setCompoRootChange("", ""),
 				replaceChildChange("", "", ""), // oob <=> foo
@@ -499,6 +513,7 @@ func TestDOM(t *testing.T) {
 			changes: []Change{
 				createElemChange("", "p"), // oob.p
 				setAttrsChange("", nil),
+				mountElemChange("", ""),
 				createCompoChange("", "html.oob"),
 				setCompoRootChange("", ""),
 
@@ -518,6 +533,8 @@ func TestDOM(t *testing.T) {
 			changes: []Change{
 				createElemChange("", "div"), // foo.div
 				setAttrsChange("", map[string]string{"class": "test"}),
+				mountElemChange("", ""),
+
 				createCompoChange("", "html.foo"),
 				setCompoRootChange("", ""),
 
@@ -651,6 +668,8 @@ func TestRenderNewRoot(t *testing.T) {
 	expected := []Change{
 		createElemChange("", "p"),
 		setAttrsChange("", nil),
+		mountElemChange("", ""),
+
 		removeChildChange("", ""), // old oob.p
 		deleteNodeChange(""),      // old oob.p
 		appendChildChange("", ""), // new oob.p
@@ -679,11 +698,11 @@ func TestDOMComponentByID(t *testing.T) {
 	require.Equal(t, foo, row.compo)
 
 	var c app.Compo
-	c, err = dom.ComponentByID(row.id)
+	c, err = dom.CompoByID(row.id)
 	require.NoError(t, err)
 	require.Equal(t, foo, c)
 
-	_, err = dom.ComponentByID("hello")
+	_, err = dom.CompoByID("hello")
 	require.Error(t, err)
 }
 
@@ -698,8 +717,6 @@ func requireEqualChange(t require.TestingT, expected, actual Change) {
 		require.Equal(t, expected.Value.(elemValue).TagName, actual.Value.(elemValue).TagName)
 
 	case setAttrs:
-		attrs := actual.Value.(elemValue).Attrs
-		delete(attrs, "data-goapp-id")
 		require.Equal(t, expected.Value.(elemValue).Attrs, actual.Value.(elemValue).Attrs)
 
 	case createCompo:

@@ -2,6 +2,7 @@ package html
 
 import (
 	"bytes"
+	"fmt"
 	"strings"
 
 	"golang.org/x/net/html"
@@ -78,7 +79,14 @@ func (d *decoder) decodeAttrs(hasAttr bool) map[string]string {
 	attrs := make(map[string]string)
 	for {
 		name, val, moreAttr := d.tokenizer.TagAttr()
-		attrs[string(name)] = string(val)
+		n := string(name)
+		v := string(val)
+
+		if strings.HasPrefix(n, "on") && !strings.HasPrefix(v, "js:") {
+			v = fmt.Sprintf(`callCompoHandler(this, event, '%s')`, v)
+		}
+
+		attrs[n] = v
 
 		if !moreAttr {
 			break

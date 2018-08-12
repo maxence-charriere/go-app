@@ -72,6 +72,7 @@ const (
 	appendChild  = "appendChild"
 	removeChild  = "removeChild"
 	replaceChild = "replaceChild"
+	mountElem    = "mountElem"
 
 	createCompo  = "createCompo"
 	setCompoRoot = "setCompoRoot"
@@ -105,6 +106,7 @@ func setTextChange(id, text string) Change {
 
 type elemValue struct {
 	ID      string
+	CompoID string            `json:",omitempty"`
 	TagName string            `json:",omitempty"`
 	Attrs   map[string]string `json:",omitempty"`
 }
@@ -162,6 +164,16 @@ func replaceChildChange(parentID, oldID, newID string) Change {
 			ParentID: parentID,
 			ChildID:  newID,
 			OldID:    oldID,
+		},
+	}
+}
+
+func mountElemChange(id, compoID string) Change {
+	return Change{
+		Type: mountElem,
+		Value: elemValue{
+			ID:      id,
+			CompoID: compoID,
 		},
 	}
 }
