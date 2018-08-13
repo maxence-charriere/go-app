@@ -3,15 +3,17 @@ package html
 import (
 	"bytes"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
 )
 
-func decodeNodes(s string) (node, error) {
+func decodeNodes(s string, hrefFmt bool) (node, error) {
 	d := &decoder{
 		tokenizer: html.NewTokenizer(bytes.NewBufferString(s)),
+		hrefFmt:   hrefFmt,
 	}
 	return d.decode()
 }
@@ -19,6 +21,7 @@ func decodeNodes(s string) (node, error) {
 type decoder struct {
 	tokenizer   *html.Tokenizer
 	decodingSVG bool
+	hrefFmt     bool
 }
 
 func (d *decoder) decode() (node, error) {
@@ -82,8 +85,19 @@ func (d *decoder) decodeAttrs(hasAttr bool) map[string]string {
 		n := string(name)
 		v := string(val)
 
-		if strings.HasPrefix(n, "on") && !strings.HasPrefix(v, "js:") {
+		switch {
+		case strings.HasPrefix(n, "on") && !strings.HasPrefix(v, "js:"):
 			v = fmt.Sprintf(`callCompoHandler(this, event, '%s')`, v)
+
+		case n == "href" && d.hrefFmt:
+			if u, err := url.Parse(v); err == nil && len(u.Scheme) == 0 {
+				if len(u.Path) != 0 && u.Path[0] != '/' {
+					u.Path = "/" + u.Path
+				}
+
+				u.Scheme = "compo"
+				v = u.String()
+			}
 		}
 
 		attrs[n] = v

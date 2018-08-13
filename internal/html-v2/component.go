@@ -33,7 +33,7 @@ func validateCompo(c app.Compo) error {
 	return nil
 }
 
-func decodeCompo(c app.Compo) (node, error) {
+func decodeCompo(c app.Compo, hrefFmt bool) (node, error) {
 	var funcs template.FuncMap
 
 	if compoExtRend, ok := c.(app.CompoWithExtendedRender); ok {
@@ -73,7 +73,8 @@ func decodeCompo(c app.Compo) (node, error) {
 	if err = tmpl.Execute(&w, c); err != nil {
 		return nil, err
 	}
-	return decodeNodes(w.String())
+
+	return decodeNodes(w.String(), hrefFmt)
 }
 
 func mapCompoFields(c app.Compo, fields map[string]string) error {

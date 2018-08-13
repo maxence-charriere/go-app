@@ -621,7 +621,7 @@ func TestDOM(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
-			dom := NewDOM(f, "test")
+			dom := NewDOM(f, "test", true)
 			changes, err := dom.Render(test.compo)
 
 			if test.modifier != nil {
@@ -654,7 +654,7 @@ func TestRenderNewRoot(t *testing.T) {
 	f := app.NewFactory()
 	f.RegisterCompo(&Oob{})
 
-	dom := newDOM(f, "test")
+	dom := newDOM(f, "test", true)
 	_, err := dom.Render(&Oob{})
 	require.NoError(t, err)
 
@@ -685,7 +685,7 @@ func TestDOMComponentByID(t *testing.T) {
 	f := app.NewFactory()
 	f.RegisterCompo(&Foo{})
 
-	dom := newDOM(f, "test")
+	dom := newDOM(f, "test", true)
 	foo := &Foo{}
 	_, err := dom.Render(foo)
 	require.NoError(t, err)

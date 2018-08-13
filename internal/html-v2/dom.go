@@ -23,11 +23,11 @@ type DOM interface {
 }
 
 // NewDOM create a document object model store.
-func NewDOM(f *app.Factory, controlID string) DOM {
-	return newDOM(f, controlID)
+func NewDOM(f *app.Factory, controlID string, hrefFmt bool) DOM {
+	return newDOM(f, controlID, hrefFmt)
 }
 
-func newDOM(f *app.Factory, controlID string) *dom {
+func newDOM(f *app.Factory, controlID string, hrefFmt bool) *dom {
 	return &dom{
 		factory:   f,
 		controlID: controlID,
@@ -36,6 +36,7 @@ func newDOM(f *app.Factory, controlID string) *dom {
 		},
 		compoRowByID:    make(map[string]compoRow),
 		compoRowByCompo: make(map[app.Compo]compoRow),
+		hrefFmt:         hrefFmt,
 	}
 }
 
@@ -45,6 +46,7 @@ type dom struct {
 	root            *elemNode
 	compoRowByID    map[string]compoRow
 	compoRowByCompo map[app.Compo]compoRow
+	hrefFmt         bool
 }
 
 func (d *dom) CompoByID(id string) (app.Compo, error) {
@@ -108,7 +110,7 @@ func (d *dom) Render(c app.Compo) ([]Change, error) {
 	old := row.root
 	parent := old.Parent()
 
-	new, err := decodeCompo(c)
+	new, err := decodeCompo(c, d.hrefFmt)
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +122,7 @@ func (d *dom) Render(c app.Compo) ([]Change, error) {
 }
 
 func (d *dom) mountCompo(c app.Compo, parent *compoNode) error {
-	root, err := decodeCompo(c)
+	root, err := decodeCompo(c, d.hrefFmt)
 	if err != nil {
 		return err
 	}
@@ -287,7 +289,7 @@ func (d *dom) syncCompoNodes(old, new *compoNode) error {
 			return err
 		}
 
-		newRoot, err := decodeCompo(old.compo)
+		newRoot, err := decodeCompo(old.compo, d.hrefFmt)
 		if err != nil {
 			return err
 		}

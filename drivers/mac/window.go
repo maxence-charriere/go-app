@@ -187,7 +187,7 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	w.dom = html.NewDOM(driver.factory, w.id)
+	w.dom = html.NewDOM(driver.factory, w.id, true)
 
 	w.Render(c)
 	if w.Err() != nil {
