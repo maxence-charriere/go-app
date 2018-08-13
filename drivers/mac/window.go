@@ -180,7 +180,7 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 	}{
 		ID:      w.id,
 		Title:   htmlConf.Title,
-		Page:    html.Page(htmlConf),
+		Page:    html.Page(htmlConf, "window.webkit.messageHandlers.golangRequest.postMessage"),
 		LoadURL: u,
 		BaseURL: driver.Resources(),
 	}); err != nil {
@@ -444,54 +444,44 @@ func (w *Window) Close() {
 }
 
 func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
-	callStr := in["Call"].(string)
+	mappingStr := in["Mapping"].(string)
 
-	var call html.Call
-	if err := json.Unmarshal([]byte(callStr), &call); err != nil {
+	var m html.Mapping
+	if err := json.Unmarshal([]byte(mappingStr), &m); err != nil {
 		app.Log("window callback failed: %s", err)
 		return nil
 	}
 
-	if call.Override == "Files" {
+	if m.Override == "Files" {
 		data, _ := json.Marshal(driver.droppedFiles)
 		driver.droppedFiles = nil
 
-		call.JSONValue = strings.Replace(
-			call.JSONValue,
+		m.JSONValue = strings.Replace(
+			m.JSONValue,
 			`"FileOverride":"xxx"`,
 			fmt.Sprintf(`"Files":%s`, data),
 			1,
 		)
 	}
 
-	c, err := w.dom.CompoByID(call.ID)
+	c, err := w.dom.CompoByID(m.CompoID)
 	if err != nil {
 		app.Log("window callback failed: %s", err)
 		return nil
 	}
 
-	// function, err := w.markup.Map(mapping)
-	// if err != nil {
-	// 	app.Log("window callback failed: %s", err)
-	// 	return nil
-	// }
+	var f func()
+	if f, err = m.Map(c); err != nil {
+		app.Log("window callback failed: %s", err)
+		return nil
+	}
 
-	// if function != nil {
-	// 	function()
-	// 	return nil
-	// }
+	if f != nil {
+		f()
+		return nil
+	}
 
-	// var c app.Compo
-	// if c, err = w.markup.Compo(mapping.CompoID); err != nil {
-	// 	app.Log("window callback failed: %s", err)
-	// 	return nil
-	// }
-
-	// w.Render(c)
-	// if w.Err() != nil {
-	// 	app.Log("window callback failed: %s", w.Err())
-	// }
-
+	app.Render(c)
 	return nil
 }
 

@@ -29,6 +29,7 @@ const htmlTemplate = `
 <body>
     <script>{{.JS}}
     </script>
+    
     {{range .Javascripts}}
     <script src="{{.}}"></script>{{end}}
 </body>
@@ -216,14 +217,14 @@ function replaceChild(change = {}) {
 }
 
 function mountElem(change = {}) {
-    const { ID, compoID } = change.Value;
+    const { ID, CompoID } = change.Value;
 
     const n = goapp.nodes[ID];
     if (!n) {
         return;
     }
 
-    n.compoID = compoID;
+    n.compoID = CompoID;
 }
 
 function createCompo(change = {}) {
@@ -318,9 +319,9 @@ function onchangeToGolang(elem, fieldOrMethod) {
 
 function onDragStartToGolang(elem, event, fieldOrMethod) {
     const payload = mapObject(event.dataTransfer);
-    payload['Data'] = src.dataset.drag;
+    payload['Data'] = elem.dataset.drag;
 
-    event.dataTransfer.setData('text', src.dataset.drag);
+    event.dataTransfer.setData('text', elem.dataset.drag);
 
     golangRequest(JSON.stringify({
         'CompoID': elem.compoID,
@@ -334,21 +335,21 @@ function ondropToGolang(elem, event, fieldOrMethod) {
 
     const payload = mapObject(event.dataTransfer);
     payload['Data'] = event.dataTransfer.getData('text');
-    payload['file-override'] = 'xxx';
+    payload['FileOverride'] = 'xxx';
 
     golangRequest(JSON.stringify({
         'CompoID': elem.compoID,
         'FieldOrMethod': fieldOrMethod,
         'JSONValue': JSON.stringify(payload),
-        'override': 'Files'
+        'Override': 'Files'
     }));
 }
 
 function eventToGolang(elem, event, fieldOrMethod) {
     const payload = mapObject(event);
 
-    if (src.contentEditable === 'true') {
-        payload['InnerText'] = src.innerText;
+    if (elem.contentEditable === 'true') {
+        payload['InnerText'] = elem.innerText;
     }
 
     golangRequest(JSON.stringify({
