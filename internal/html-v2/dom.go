@@ -43,7 +43,7 @@ func newDOM(f *app.Factory, controlID string, hrefFmt bool) *dom {
 }
 
 type dom struct {
-	mutex           sync.RWMutex
+	mutex           sync.Mutex
 	factory         *app.Factory
 	controlID       string
 	root            *elemNode
@@ -53,8 +53,8 @@ type dom struct {
 }
 
 func (d *dom) CompoByID(id string) (app.Compo, error) {
-	d.mutex.RLock()
-	defer d.mutex.RUnlock()
+	d.mutex.Lock()
+	defer d.mutex.Unlock()
 
 	r, ok := d.compoRowByID[id]
 	if !ok {
@@ -64,8 +64,8 @@ func (d *dom) CompoByID(id string) (app.Compo, error) {
 }
 
 func (d *dom) Contains(c app.Compo) bool {
-	d.mutex.RLock()
-	defer d.mutex.RUnlock()
+	d.mutex.Lock()
+	defer d.mutex.Unlock()
 
 	_, ok := d.compoRowByCompo[c]
 	return ok
@@ -90,8 +90,8 @@ func (d *dom) deleteCompoRow(id string) {
 }
 
 func (d *dom) Len() int {
-	d.mutex.RLock()
-	defer d.mutex.RUnlock()
+	d.mutex.Lock()
+	defer d.mutex.Unlock()
 
 	return len(d.compoRowByCompo)
 }
