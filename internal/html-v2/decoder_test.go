@@ -20,13 +20,14 @@ func TestDecodeNodes(t *testing.T) {
 				<path d="M 42.42 Z "></path>
 				<path d="M 21.21 Z " />
 			</svg>
+			<a href="html.Foo"></a>
 		</div>
 		`, true)
 	require.NoError(t, err)
 
 	div := root.(*elemNode)
 	require.Equal(t, "div", div.TagName())
-	require.Len(t, div.Children(), 6)
+	require.Len(t, div.Children(), 7)
 
 	h1 := div.Children()[0].(*elemNode)
 	require.Equal(t, "h1", h1.TagName())
@@ -63,6 +64,10 @@ func TestDecodeNodes(t *testing.T) {
 	require.Equal(t, "path", pathB.TagName())
 	require.Equal(t, "M 21.21 Z ", pathB.Attrs()["d"])
 	require.Empty(t, pathB.Children())
+
+	a := div.Children()[6].(*elemNode)
+	require.Equal(t, "a", a.TagName())
+	require.Equal(t, "compo:///html.Foo", a.Attrs()["href"])
 }
 
 func TestDecodeNodesError(t *testing.T) {
