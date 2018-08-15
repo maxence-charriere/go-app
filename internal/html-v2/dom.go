@@ -7,30 +7,20 @@ import (
 	"github.com/murlokswarm/app"
 )
 
-// DOM is the interface that describes a document object model store that
-// manages node states.
-type DOM interface {
-	// Returns the component with the given identifier.
-	CompoByID(id string) (app.Compo, error)
-
-	// Reports whether the given component is in the dom.
-	Contains(c app.Compo) bool
-
-	// The amount of components in the DOM.
-	Len() int
-
-	// Create or update the nodes of the given component.
-	// Component must be a pointer and not based on an empty struct.
-	Render(c app.Compo) ([]Change, error)
+// DOM describes a document object model store that manages node states.
+type DOM struct {
+	mutex           sync.Mutex
+	factory         *app.Factory
+	controlID       string
+	root            *elemNode
+	compoRowByID    map[string]compoRow
+	compoRowByCompo map[app.Compo]compoRow
+	hrefFmt         bool
 }
 
 // NewDOM create a document object model store.
-func NewDOM(f *app.Factory, controlID string, hrefFmt bool) DOM {
-	return newDOM(f, controlID, hrefFmt)
-}
-
-func newDOM(f *app.Factory, controlID string, hrefFmt bool) *dom {
-	return &dom{
+func NewDOM(f *app.Factory, controlID string, hrefFmt bool) *DOM {
+	return &DOM{
 		factory:   f,
 		controlID: controlID,
 		root: &elemNode{
@@ -42,17 +32,8 @@ func newDOM(f *app.Factory, controlID string, hrefFmt bool) *dom {
 	}
 }
 
-type dom struct {
-	mutex           sync.Mutex
-	factory         *app.Factory
-	controlID       string
-	root            *elemNode
-	compoRowByID    map[string]compoRow
-	compoRowByCompo map[app.Compo]compoRow
-	hrefFmt         bool
-}
-
-func (d *dom) CompoByID(id string) (app.Compo, error) {
+// CompoByID returns the component with the given identifier.
+func (d *DOM) CompoByID(id string) (app.Compo, error) {
 	d.mutex.Lock()
 	defer d.mutex.Unlock()
 
@@ -63,7 +44,8 @@ func (d *dom) CompoByID(id string) (app.Compo, error) {
 	return r.compo, nil
 }
 
-func (d *dom) Contains(c app.Compo) bool {
+// Contains reports whether the given component is in the dom.
+func (d *DOM) Contains(c app.Compo) bool {
 	d.mutex.Lock()
 	defer d.mutex.Unlock()
 
@@ -71,32 +53,37 @@ func (d *dom) Contains(c app.Compo) bool {
 	return ok
 }
 
-func (d *dom) insertCompoRow(r compoRow) {
+func (d *DOM) insertCompoRow(r compoRow) {
 	if sub, ok := r.compo.(app.Subscriber); ok {
 		r.events = sub.Subscribe()
 	}
+
 	d.compoRowByID[r.id] = r
 	d.compoRowByCompo[r.compo] = r
 }
 
-func (d *dom) deleteCompoRow(id string) {
+func (d *DOM) deleteCompoRow(id string) {
 	if r, ok := d.compoRowByID[id]; ok {
 		if r.events != nil {
 			r.events.Close()
 		}
+
 		delete(d.compoRowByCompo, r.compo)
 		delete(d.compoRowByID, id)
 	}
 }
 
-func (d *dom) Len() int {
+// Len returns the amount of components in the DOM.
+func (d *DOM) Len() int {
 	d.mutex.Lock()
 	defer d.mutex.Unlock()
 
 	return len(d.compoRowByCompo)
 }
 
-func (d *dom) Render(c app.Compo) ([]Change, error) {
+// Render create or update the nodes of the given component.
+// Component must be a pointer and not based on an empty struct.
+func (d *DOM) Render(c app.Compo) ([]Change, error) {
 	d.mutex.Lock()
 	defer d.mutex.Unlock()
 
@@ -136,7 +123,7 @@ func (d *dom) Render(c app.Compo) ([]Change, error) {
 	return parent.(node).ConsumeChanges(), nil
 }
 
-func (d *dom) mountCompo(c app.Compo, parent *compoNode) error {
+func (d *DOM) mountCompo(c app.Compo, parent *compoNode) error {
 	root, err := decodeCompo(c, d.hrefFmt)
 	if err != nil {
 		return err
@@ -162,7 +149,7 @@ func (d *dom) mountCompo(c app.Compo, parent *compoNode) error {
 	return nil
 }
 
-func (d *dom) mountNode(n node, compoID string) error {
+func (d *DOM) mountNode(n node, compoID string) error {
 	switch n := n.(type) {
 	case *textNode:
 		n.compoID = compoID
@@ -201,7 +188,7 @@ func (d *dom) mountNode(n node, compoID string) error {
 	return nil
 }
 
-func (d *dom) dismountCompo(c app.Compo) {
+func (d *DOM) dismountCompo(c app.Compo) {
 	row, _ := d.compoRowByCompo[c]
 	d.dismountNode(row.root)
 	d.deleteCompoRow(row.id)
@@ -211,7 +198,7 @@ func (d *dom) dismountCompo(c app.Compo) {
 	}
 }
 
-func (d *dom) dismountNode(n node) {
+func (d *DOM) dismountNode(n node) {
 	switch n := n.(type) {
 	case *elemNode:
 		for _, c := range n.children {
@@ -223,7 +210,7 @@ func (d *dom) dismountNode(n node) {
 	}
 }
 
-func (d *dom) syncNodes(old, new node) error {
+func (d *DOM) syncNodes(old, new node) error {
 	switch old := old.(type) {
 	case *textNode:
 		if new, ok := new.(*textNode); ok {
@@ -245,14 +232,14 @@ func (d *dom) syncNodes(old, new node) error {
 	}
 }
 
-func (d *dom) syncTextNodes(old, new *textNode) error {
+func (d *DOM) syncTextNodes(old, new *textNode) error {
 	if old.Text() != new.Text() {
 		old.SetText(new.Text())
 	}
 	return nil
 }
 
-func (d *dom) syncElemNodes(old, new *elemNode) error {
+func (d *DOM) syncElemNodes(old, new *elemNode) error {
 	if old.TagName() != new.TagName() {
 		return d.replaceNode(old, new)
 	}
@@ -293,7 +280,7 @@ func (d *dom) syncElemNodes(old, new *elemNode) error {
 	return nil
 }
 
-func (d *dom) syncCompoNodes(old, new *compoNode) error {
+func (d *DOM) syncCompoNodes(old, new *compoNode) error {
 	if old.Name() != new.Name() {
 		return d.replaceNode(old, new)
 	}
@@ -313,7 +300,7 @@ func (d *dom) syncCompoNodes(old, new *compoNode) error {
 	return nil
 }
 
-func (d *dom) replaceNode(old, new node) error {
+func (d *DOM) replaceNode(old, new node) error {
 	d.dismountNode(old)
 
 	if err := d.mountNode(new, old.CompoID()); err != nil {

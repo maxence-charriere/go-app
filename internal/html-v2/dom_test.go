@@ -654,7 +654,7 @@ func TestRenderNewRoot(t *testing.T) {
 	f := app.NewFactory()
 	f.RegisterCompo(&Oob{})
 
-	dom := newDOM(f, "test", true)
+	dom := NewDOM(f, "test", true)
 	_, err := dom.Render(&Oob{})
 	require.NoError(t, err)
 
@@ -685,7 +685,7 @@ func TestDOMComponentByID(t *testing.T) {
 	f := app.NewFactory()
 	f.RegisterCompo(&Foo{})
 
-	dom := newDOM(f, "test", true)
+	dom := NewDOM(f, "test", true)
 	foo := &Foo{}
 	_, err := dom.Render(foo)
 	require.NoError(t, err)

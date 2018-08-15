@@ -23,7 +23,7 @@ import (
 type Window struct {
 	core.Window
 
-	dom          html.DOM
+	dom          *html.DOM
 	history      *core.History
 	id           string
 	compo        app.Compo
