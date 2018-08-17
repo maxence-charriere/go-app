@@ -17,32 +17,22 @@ import (
 type compo struct {
 	id      string
 	compoID string
-	parent  node
-	changes changer
 	name    string
 	fields  map[string]string
+	parent  node
 	root    node
+	changes []Change
 }
 
-func newCompo(ch changer, name string, fields map[string]string) *compo {
+func newCompo(name string, fields map[string]string) *compo {
 	c := &compo{
-		id:      strings.Replace(name, ".", "-", 1) + uuid.New().String(),
-		changes: ch,
-		name:    name,
-		fields:  fields,
+		id:     strings.Replace(name, ".", "-", 1) + uuid.New().String(),
+		name:   name,
+		fields: fields,
 	}
 
-	c.changes.appendChanges(createCompoChange(c.id, name))
+	c.changes = append(c.changes, createCompoChange(c.id, name))
 	return c
-}
-
-func (c *compo) Close() {
-	if c.root != nil {
-		c.root.Close()
-	}
-
-	c.SetParent(nil)
-	c.changes.appendChanges(deleteNodeChange(c.id))
 }
 
 func (c *compo) ID() string {
@@ -64,12 +54,37 @@ func (c *compo) SetParent(p node) {
 func (c *compo) SetRoot(root node) {
 	root.SetParent(c)
 	c.root = root
-	c.changes.appendChanges(setCompoRootChange(c.id, root.ID()))
+
+	c.changes = append(c.changes, root.Flush()...)
+	c.changes = append(c.changes, setCompoRootChange(c.id, root.ID()))
 }
 
 func (c *compo) RemoveRoot() {
 	c.root.Close()
+	c.changes = append(c.changes, c.root.Flush()...)
 	c.root = nil
+}
+
+func (c *compo) Flush() []Change {
+	changes := make([]Change, 0, len(c.changes))
+
+	if c.root != nil {
+		changes = append(changes, c.root.Flush()...)
+	}
+
+	changes = append(changes, c.changes...)
+	c.changes = c.changes[:0]
+	return changes
+}
+
+func (c *compo) Close() {
+	if c.root != nil {
+		c.root.Close()
+		c.changes = append(c.changes, c.root.Flush()...)
+	}
+
+	c.SetParent(nil)
+	c.changes = append(c.changes, deleteNodeChange(c.id))
 }
 
 func validateCompo(c app.Compo) error {
@@ -85,7 +100,7 @@ func validateCompo(c app.Compo) error {
 	return nil
 }
 
-func decodeCompo(c app.Compo, hrefFmt bool) (node, []Change, error) {
+func decodeCompo(c app.Compo, hrefFmt bool) (node, error) {
 	var funcs template.FuncMap
 
 	if compoExtRend, ok := c.(app.CompoWithExtendedRender); ok {
@@ -118,12 +133,12 @@ func decodeCompo(c app.Compo, hrefFmt bool) (node, []Change, error) {
 		Funcs(funcs).
 		Parse(c.Render())
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	var w bytes.Buffer
 	if err = tmpl.Execute(&w, c); err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	return decodeNodes(w.String(), hrefFmt)

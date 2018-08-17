@@ -10,32 +10,19 @@ import (
 	"golang.org/x/net/html/atom"
 )
 
-func decodeNodes(s string, hrefFmt bool) (node, []Change, error) {
+func decodeNodes(s string, hrefFmt bool) (node, error) {
 	d := &decoder{
 		tokenizer: html.NewTokenizer(bytes.NewBufferString(s)),
 		hrefFmt:   hrefFmt,
 	}
 
-	root, err := d.decode()
-	changes := d.ReadChanges()
-	return root, changes, err
+	return d.decode()
 }
 
 type decoder struct {
-	changes     []Change
 	tokenizer   *html.Tokenizer
 	decodingSVG bool
 	hrefFmt     bool
-}
-
-func (d *decoder) ReadChanges() []Change {
-	changes := d.changes
-	d.changes = nil
-	return changes
-}
-
-func (d *decoder) appendChanges(c ...Change) {
-	d.changes = append(d.changes, c...)
 }
 
 func (d *decoder) decode() (node, error) {
@@ -70,7 +57,7 @@ func (d *decoder) decodeText() (node, error) {
 		return d.decode()
 	}
 
-	t := newText(d)
+	t := newText()
 	t.SetText(text)
 	return t, nil
 }
@@ -80,12 +67,12 @@ func (d *decoder) decodeSelfClosingElem() (node, error) {
 	tagName := string(name)
 
 	if isCompoTagName(tagName, d.decodingSVG) {
-		return newCompo(d, tagName, d.decodeAttrs(hasAttr)), nil
+		return newCompo(tagName, d.decodeAttrs(hasAttr)), nil
 	}
 
-	elem := newElem(d, tagName)
-	elem.SetAttrs(d.decodeAttrs(hasAttr))
-	return elem, nil
+	e := newElem(tagName)
+	e.SetAttrs(d.decodeAttrs(hasAttr))
+	return e, nil
 }
 
 func (d *decoder) decodeElem() (node, error) {
@@ -93,18 +80,18 @@ func (d *decoder) decodeElem() (node, error) {
 	tagName := string(name)
 
 	if isCompoTagName(tagName, d.decodingSVG) {
-		return newCompo(d, tagName, d.decodeAttrs(hasAttr)), nil
+		return newCompo(tagName, d.decodeAttrs(hasAttr)), nil
 	}
 
 	if tagName == "svg" {
 		d.decodingSVG = true
 	}
 
-	elem := newElem(d, tagName)
-	elem.SetAttrs(d.decodeAttrs(hasAttr))
+	e := newElem(tagName)
+	e.SetAttrs(d.decodeAttrs(hasAttr))
 
 	if isVoidElem(tagName) {
-		return elem, nil
+		return e, nil
 	}
 
 	for {
@@ -115,10 +102,10 @@ func (d *decoder) decodeElem() (node, error) {
 		if child == nil {
 			break
 		}
-		elem.appendChild(child)
+		e.appendChild(child)
 	}
 
-	return elem, nil
+	return e, nil
 }
 
 func (d *decoder) decodeAttrs(hasAttr bool) map[string]string {

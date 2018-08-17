@@ -8,7 +8,7 @@ import (
 )
 
 func TestDecodeNodes(t *testing.T) {
-	root, _, err := decodeNodes(`
+	root, err := decodeNodes(`
 		<div>
 			<!-- Comment -->	
 			<h1>hello</h1>
@@ -71,7 +71,7 @@ func TestDecodeNodes(t *testing.T) {
 }
 
 func TestDecodeNodesError(t *testing.T) {
-	_, _, err := decodeNodes(`
+	_, err := decodeNodes(`
 		<div>
 			<div %error>
 		</div>

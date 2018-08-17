@@ -12,11 +12,9 @@ import (
 )
 
 func TestCompo(t *testing.T) {
-	dom := NewDOM()
-	p := newElem(dom, "p")
-	dom.ReadChanges()
+	p := newElem("p")
 
-	c := newCompo(dom, "foo", map[string]string{"hello": "world"})
+	c := newCompo("foo", map[string]string{"hello": "world"})
 	assert.NotEmpty(t, c.ID())
 	assert.Empty(t, c.CompoID())
 	assert.Nil(t, c.Parent())
@@ -24,7 +22,7 @@ func TestCompo(t *testing.T) {
 	c.SetParent(p)
 	assert.Equal(t, p, c.Parent())
 
-	root := newText(dom)
+	root := newText()
 	root.SetText("hello")
 	c.SetRoot(root)
 	assert.Equal(t, root, c.root)
@@ -34,8 +32,8 @@ func TestCompo(t *testing.T) {
 	assert.Nil(t, root.Parent())
 	assert.Nil(t, c.root)
 
-	root2 := newText(dom)
-	root.SetText("world")
+	root2 := newText()
+	root2.SetText("world")
 	c.SetRoot(root2)
 
 	assert.Equal(t, root2, c.root)
@@ -43,7 +41,7 @@ func TestCompo(t *testing.T) {
 
 	c.Close()
 
-	changes := dom.ReadChanges()
+	changes := c.Flush()
 	t.Log(prettyChanges(changes))
 
 	assertChangesEqual(t, []Change{
@@ -134,7 +132,7 @@ func TestDecodeCompo(t *testing.T) {
 	}
 	sjson := string(data)
 
-	n, _, err := decodeCompo(&CompoWithFields{
+	n, err := decodeCompo(&CompoWithFields{
 		String: "<br>",
 		Time:   time.Now(),
 		Struct: s,
@@ -155,10 +153,10 @@ func TestDecodeCompo(t *testing.T) {
 	hello := root.children[9].(*elem).children[0].(*text)
 	assert.Equal(t, "hello", hello.text)
 
-	_, _, err = decodeCompo(&CompoBadTemplate{}, true)
+	_, err = decodeCompo(&CompoBadTemplate{}, true)
 	assert.Error(t, err)
 
-	_, _, err = decodeCompo(&CompoBadTemplate2{}, true)
+	_, err = decodeCompo(&CompoBadTemplate2{}, true)
 	assert.Error(t, err)
 }
 

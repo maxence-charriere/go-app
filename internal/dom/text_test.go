@@ -7,12 +7,9 @@ import (
 )
 
 func TestText(t *testing.T) {
-	dom := NewDOM()
-	p := newElem(dom, "p")
-	dom.ReadChanges()
+	p := newElem("p")
 
-	text := newText(dom)
-
+	text := newText()
 	assert.NotEmpty(t, text.ID())
 	assert.Empty(t, text.CompoID())
 	assert.Nil(t, text.Parent())
@@ -23,7 +20,7 @@ func TestText(t *testing.T) {
 	text.SetText("hello")
 	text.Close()
 
-	changes := dom.ReadChanges()
+	changes := text.Flush()
 	t.Log(prettyChanges(changes))
 
 	assertChangesEqual(t, []Change{

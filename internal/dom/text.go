@@ -8,24 +8,18 @@ import (
 type text struct {
 	id      string
 	compoID string
-	parent  node
-	changes changer
 	text    string
+	parent  node
+	changes []Change
 }
 
-func newText(ch changer) *text {
+func newText() *text {
 	t := &text{
-		id:      "text-" + uuid.New().String(),
-		changes: ch,
+		id: "text-" + uuid.New().String(),
 	}
 
-	t.changes.appendChanges(createTextChange(t.id))
+	t.changes = append(t.changes, createTextChange(t.id))
 	return t
-}
-
-func (t *text) Close() {
-	t.SetParent(nil)
-	t.changes.appendChanges(deleteNodeChange(t.id))
 }
 
 func (t *text) ID() string {
@@ -36,6 +30,12 @@ func (t *text) CompoID() string {
 	return t.compoID
 }
 
+func (t *text) SetText(text string) {
+	t.text = text
+	t.SetParent(nil)
+	t.changes = append(t.changes, setTextChange(t.id, t.text))
+}
+
 func (t *text) Parent() app.Node {
 	return t.parent
 }
@@ -44,8 +44,13 @@ func (t *text) SetParent(p node) {
 	t.parent = p
 }
 
-func (t *text) SetText(text string) {
-	t.text = text
+func (t *text) Flush() []Change {
+	c := t.changes
+	t.changes = nil
+	return c
+}
+
+func (t *text) Close() {
 	t.SetParent(nil)
-	t.changes.appendChanges(setTextChange(t.id, t.text))
+	t.changes = append(t.changes, deleteNodeChange(t.id))
 }
