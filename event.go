@@ -127,11 +127,10 @@ func (s *EventSubscriber) Subscribe(name string, f interface{}) *EventSubscriber
 }
 
 // Close closes the event handler and unsubscribe all its events.
-func (s *EventSubscriber) Close() error {
+func (s *EventSubscriber) Close() {
 	for _, unsuscribe := range s.unsuscribes {
 		unsuscribe()
 	}
-	return nil
 }
 
 // MouseEvent represents an onmouse event arg.

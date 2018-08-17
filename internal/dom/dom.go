@@ -51,6 +51,26 @@ func (dom *DOM) Contains(c app.Compo) bool {
 	return ok
 }
 
+func (dom *DOM) insertCompo(c *component) {
+	if sub, ok := c.compo.(app.Subscriber); ok {
+		c.events = sub.Subscribe()
+	}
+
+	dom.compoByID[c.id] = c
+	dom.compoByCompo[c.compo] = c
+}
+
+func (dom *DOM) deleteCompo(id string) {
+	if c, ok := dom.compoByID[id]; ok {
+		if c.events != nil {
+			c.events.Close()
+		}
+
+		delete(dom.compoByCompo, c.compo)
+		delete(dom.compoByID, id)
+	}
+}
+
 // Len returns the amount of components in the DOM.
 func (dom *DOM) Len() int {
 	dom.mutex.Lock()
