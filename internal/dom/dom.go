@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/murlokswarm/app"
+	"github.com/pkg/errors"
 )
 
 // DOM is a dom (document object model) engine that contains html nodes state.
@@ -28,19 +29,94 @@ func NewDOM(f *app.Factory, hrefFmt bool) *DOM {
 	}
 }
 
+// CompoByID returns the component with the given identifier.
+func (dom *DOM) CompoByID(id string) (app.Compo, error) {
+	dom.mutex.Lock()
+	defer dom.mutex.Unlock()
+
+	r, ok := dom.compoByID[id]
+	if !ok {
+		return nil, app.ErrCompoNotMounted
+	}
+
+	return r.compo, nil
+}
+
+// Contains reports whether the given component is in the dom.
+func (dom *DOM) Contains(c app.Compo) bool {
+	dom.mutex.Lock()
+	defer dom.mutex.Unlock()
+
+	_, ok := dom.compoByCompo[c]
+	return ok
+}
+
+// Len returns the amount of components in the DOM.
+func (dom *DOM) Len() int {
+	dom.mutex.Lock()
+	defer dom.mutex.Unlock()
+
+	return len(dom.compoByID)
+}
+
 // New creates the nodes for the given component and use it as its root.
 func (dom *DOM) New(c app.Compo) ([]Change, error) {
 	dom.mutex.Lock()
 	defer dom.mutex.Unlock()
 
+	dom.clean()
+
+	if err := validateCompo(c); err != nil {
+		return nil, err
+	}
+
+	if err := dom.mountCompo(c, nil); err != nil {
+		return nil, errors.Wrap(err, "mounting compo failed")
+	}
+
+	compo := dom.compoByCompo[c]
+	dom.root.appendChild(compo.root)
+	return dom.root.Flush(), nil
+}
+
+func (dom *DOM) mountCompo(c app.Compo, parent *compo) error {
+	panic("not implemented")
+}
+
+func (dom *DOM) mountNode(n node, compoID string) error {
 	panic("not implemented")
 }
 
 // Update updates the state of the given component.
-func (dom *DOM) Update([]Change, error) {
+func (dom *DOM) Update(c app.Compo) ([]Change, error) {
 	dom.mutex.Lock()
 	defer dom.mutex.Unlock()
 
+	if err := validateCompo(c); err != nil {
+		return nil, err
+	}
+
+	compo, ok := dom.compoByCompo[c]
+	if !ok {
+		return nil, app.ErrCompoNotMounted
+	}
+
+	old := compo.root
+	p := old.Parent()
+
+	new, err := decodeCompo(c, dom.hrefFmt)
+	if err != nil {
+		return nil, errors.Wrap(err, "decoding compo failed")
+	}
+
+	if err = dom.updateNode(old, new); err != nil {
+		return nil, errors.Wrapf(err, "updating %s with %s failed", old.ID(), new.ID())
+	}
+
+	return p.(node).Flush(), nil
+}
+
+func (dom *DOM) updateNode(old, new node) error {
 	panic("not implemented")
 }
 
@@ -53,6 +129,14 @@ func (dom *DOM) Clean() error {
 }
 
 func (dom *DOM) clean() error {
+	panic("not implemented")
+}
+
+func (dom *DOM) dismountCompo(c app.Compo) {
+	panic("not implemented")
+}
+
+func (dom *DOM) dismountNode(c app.Compo) {
 	panic("not implemented")
 }
 

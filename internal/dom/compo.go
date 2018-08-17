@@ -90,12 +90,12 @@ func (c *compo) Close() {
 func validateCompo(c app.Compo) error {
 	v := reflect.ValueOf(c)
 	if v.Kind() != reflect.Ptr {
-		return errors.New("component is not a pointer")
+		return errors.New("compo is not a pointer")
 	}
 
 	v = v.Elem()
 	if v.NumField() == 0 {
-		return errors.New("component is based on a struct without field. use app.ZeroCompo instead of struct{}")
+		return errors.New("compo is based on a struct without field. use app.ZeroCompo instead of struct{}")
 	}
 	return nil
 }
