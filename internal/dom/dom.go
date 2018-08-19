@@ -61,15 +61,13 @@ func (dom *DOM) insertCompo(c *component) {
 	dom.compoByCompo[c.compo] = c
 }
 
-func (dom *DOM) deleteCompo(id string) {
-	if c, ok := dom.compoByID[id]; ok {
-		if c.events != nil {
-			c.events.Close()
-		}
-
-		delete(dom.compoByCompo, c.compo)
-		delete(dom.compoByID, id)
+func (dom *DOM) deleteCompo(c *component) {
+	if c.events != nil {
+		c.events.Close()
 	}
+
+	delete(dom.compoByCompo, c.compo)
+	delete(dom.compoByID, c.id)
 }
 
 // Len returns the amount of components in the DOM.
@@ -197,23 +195,42 @@ func (dom *DOM) updateNode(old, new node) error {
 }
 
 // Clean removes all the node from the dom, putting it clean state.
-func (dom *DOM) Clean() error {
+func (dom *DOM) Clean() {
 	dom.mutex.Lock()
 	defer dom.mutex.Unlock()
 
-	return dom.clean()
+	dom.clean()
 }
 
-func (dom *DOM) clean() error {
-	panic("not implemented")
+func (dom *DOM) clean() {
+	if len(dom.root.children) != 0 {
+		dom.dismountCompo(dom.root.children[0])
+	}
 }
 
-func (dom *DOM) dismountCompo(c app.Compo) {
-	panic("not implemented")
+func (dom *DOM) dismountCompo(root node) {
+	if c, ok := dom.compoByID[root.CompoID()]; ok {
+		dom.dismountNode(root)
+		dom.deleteCompo(c)
+
+		if dismounter, ok := c.compo.(app.Dismounter); ok {
+			dismounter.OnDismount()
+		}
+	}
 }
 
 func (dom *DOM) dismountNode(n node) {
-	panic("not implemented")
+	switch n := n.(type) {
+	case *elem:
+		for _, c := range n.children {
+			dom.dismountNode(c)
+		}
+
+	case *compo:
+		if n.root != nil {
+			dom.dismountCompo(n.root)
+		}
+	}
 }
 
 type component struct {
