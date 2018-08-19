@@ -3,6 +3,7 @@ package dom
 import (
 	"sync"
 
+	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/pkg/errors"
 )
@@ -100,11 +101,66 @@ func (dom *DOM) New(c app.Compo) ([]Change, error) {
 }
 
 func (dom *DOM) mountCompo(c app.Compo, parent *compo) error {
-	panic("not implemented")
+	root, err := decodeCompo(c, dom.hrefFmt)
+	if err != nil {
+		return errors.Wrap(err, "decoding compo failed")
+	}
+
+	compoID := "compo-" + uuid.New().String()
+
+	if err = dom.mountNode(root, compoID); err != nil {
+		dom.dismountNode(root)
+		return err
+	}
+
+	dom.insertCompo(&component{
+		id:    compoID,
+		root:  root,
+		compo: c,
+	})
+
+	if parent != nil {
+		parent.SetRoot(root)
+	}
+
+	if mounter, ok := c.(app.Mounter); ok {
+		mounter.OnMount()
+	}
+
+	return nil
 }
 
 func (dom *DOM) mountNode(n node, compoID string) error {
-	panic("not implemented")
+	switch n := n.(type) {
+	case *text:
+		n.compoID = compoID
+
+	case *elem:
+		n.compoID = compoID
+		n.changes = append(n.changes, mountElemChange(n.id, n.compoID))
+
+		for _, c := range n.children {
+			if err := dom.mountNode(c, compoID); err != nil {
+				return err
+			}
+		}
+
+	case *compo:
+		n.compoID = compoID
+
+		c, err := dom.factory.NewCompo(n.name)
+		if err != nil {
+			return err
+		}
+
+		if err = mapCompoFields(c, n.fields); err != nil {
+			return err
+		}
+
+		return dom.mountCompo(c, n)
+	}
+
+	return nil
 }
 
 // Update updates the state of the given component.
@@ -156,7 +212,7 @@ func (dom *DOM) dismountCompo(c app.Compo) {
 	panic("not implemented")
 }
 
-func (dom *DOM) dismountNode(c app.Compo) {
+func (dom *DOM) dismountNode(n node) {
 	panic("not implemented")
 }
 
