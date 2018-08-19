@@ -15,7 +15,7 @@ type text struct {
 
 func newText() *text {
 	t := &text{
-		id: "text-" + uuid.New().String(),
+		id: "text:" + uuid.New().String(),
 	}
 
 	t.changes = append(t.changes, createTextChange(t.id))

@@ -10,11 +10,6 @@ type Change struct {
 	Value interface{}
 }
 
-type changer interface {
-	ReadChanges() []Change
-	appendChanges(c ...Change)
-}
-
 const (
 	createText = "createText"
 	setText    = "setText"

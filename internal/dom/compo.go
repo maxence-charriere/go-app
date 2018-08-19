@@ -26,7 +26,7 @@ type compo struct {
 
 func newCompo(name string, fields map[string]string) *compo {
 	c := &compo{
-		id:     strings.Replace(name, ".", "-", 1) + "-" + uuid.New().String(),
+		id:     name + ":" + uuid.New().String(),
 		name:   name,
 		fields: fields,
 	}

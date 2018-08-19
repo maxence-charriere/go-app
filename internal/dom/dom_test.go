@@ -213,13 +213,15 @@ func TestDOM(t *testing.T) {
 			scenario: "create simple compo",
 			compo:    &Foo{Value: "hello"},
 			changes: []Change{
-				createTextChange(""),
-				setTextChange("", "hello"),
-				createElemChange("", "div"),
-				setAttrsChange("", map[string]string{"class": "test"}),
-				appendChildChange("", ""),
-				mountElemChange("", ""),
-				appendChildChange("", ""), // div -> root
+				createTextChange("text:"),
+				setTextChange("text:", "hello"),
+
+				createElemChange("div:", "div"),
+				setAttrsChange("div:", map[string]string{"class": "test"}),
+				appendChildChange("div:", "text:"),
+				mountElemChange("div:", ""),
+
+				appendChildChange("root:", "div:"), // div -> root
 			},
 			compoCount: 1,
 		},
@@ -279,23 +281,24 @@ func TestDOM(t *testing.T) {
 			scenario: "create compo",
 			compo:    &Bar{},
 			changes: []Change{
-				createTextChange(""),
-				setTextChange("", "hello"),
+				createTextChange("text:"),
+				setTextChange("text:", "hello"),
 
-				createTextChange(""),
-				setTextChange("", "world"),
-				createElemChange("", "h1"),
-				setAttrsChange("", nil),
-				appendChildChange("", ""), // world -> h1
-				mountElemChange("", ""),
+				createTextChange("text:"),
+				setTextChange("text:", "world"),
 
-				createElemChange("", "div"),
-				setAttrsChange("", nil),
-				appendChildChange("", ""), // hello -> div
-				appendChildChange("", ""), // h1 -> div
-				mountElemChange("", ""),
+				createElemChange("h1:", "h1"),
+				setAttrsChange("h1:", nil),
+				appendChildChange("h1:", "text:"),
+				mountElemChange("h1:", ""),
 
-				appendChildChange("", ""), // div -> root
+				createElemChange("div:", "div"),
+				setAttrsChange("div:", nil),
+				appendChildChange("div:", "text:"),
+				appendChildChange("div:", "h1:"),
+				mountElemChange("div:", ""),
+
+				appendChildChange("root:", "div:"),
 			},
 			compoCount: 1,
 		},
@@ -359,17 +362,19 @@ func TestDOM(t *testing.T) {
 			scenario: "create compo with nested compo",
 			compo:    &Boo{},
 			changes: []Change{
-				createElemChange("", "div"),
-				setAttrsChange("", map[string]string{"class": "test"}),
-				mountElemChange("", ""),
-				createCompoChange("", "dom.foo"),
-				setCompoRootChange("", ""),
+				createElemChange("div:", "div"),
+				setAttrsChange("div:", map[string]string{"class": "test"}),
+				mountElemChange("div:", ""),
 
-				createElemChange("", "div"),
-				setAttrsChange("", nil),
-				appendChildChange("", ""), // foo.div -> div
-				mountElemChange("", ""),
-				appendChildChange("", ""), // div -> root
+				createCompoChange("dom.foo:", "dom.foo"),
+				setCompoRootChange("dom.foo:", "div:"),
+
+				createElemChange("div:", "div"),
+				setAttrsChange("div:", nil),
+				appendChildChange("div:", "dom.foo:"),
+				mountElemChange("div:", ""),
+
+				appendChildChange("root:", "div:"),
 			},
 			compoCount: 2,
 		},
@@ -477,12 +482,14 @@ func TestDOM(t *testing.T) {
 			scenario: "create nested",
 			compo:    &Nested{Foo: true},
 			changes: []Change{
-				createElemChange("", "div"), // foo.div
-				setAttrsChange("", map[string]string{"class": "test"}),
-				mountElemChange("", ""),
-				createCompoChange("", "dom.foo"),
-				setCompoRootChange("", ""),
-				appendChildChange("", ""), // foo -> root
+				createElemChange("div:", "div"),
+				setAttrsChange("div:", map[string]string{"class": "test"}),
+				mountElemChange("div:", ""),
+
+				createCompoChange("dom.foo:", "dom.foo"),
+				setCompoRootChange("dom.foo:", "div:"),
+
+				appendChildChange("root:", "dom.foo:"),
 			},
 			compoCount: 2,
 		},
@@ -509,16 +516,17 @@ func TestDOM(t *testing.T) {
 			scenario: "create nested nested",
 			compo:    &NestedNested{},
 			changes: []Change{
-				createElemChange("", "p"), // oob.p
-				setAttrsChange("", nil),
-				mountElemChange("", ""),
-				createCompoChange("", "dom.oob"),
-				setCompoRootChange("", ""),
+				createElemChange("p:", "p"),
+				setAttrsChange("p:", nil),
+				mountElemChange("p:", ""),
 
-				createCompoChange("", "dom.nested"),
-				setCompoRootChange("", ""), // nested.oob => nested
+				createCompoChange("dom:oob:", "dom.oob"),
+				setCompoRootChange("dom:oob:", "p:"),
 
-				appendChildChange("", ""), // nestednested -> root
+				createCompoChange("dom.nested:", "dom.nested"),
+				setCompoRootChange("dom.nested:", "dom.oob:"),
+
+				appendChildChange("root:", "dom.nested:"),
 			},
 			compoCount: 3,
 		},

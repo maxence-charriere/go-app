@@ -26,7 +26,7 @@ func NewDOM(f *app.Factory, hrefFmt bool) *DOM {
 		hrefFmt:      hrefFmt,
 		compoByID:    make(map[string]*component),
 		compoByCompo: make(map[app.Compo]*component),
-		root:         &elem{id: "goapp-root"},
+		root:         &elem{id: "root:"},
 	}
 }
 

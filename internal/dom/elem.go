@@ -17,7 +17,7 @@ type elem struct {
 
 func newElem(tagName string) *elem {
 	e := &elem{
-		id:      tagName + "-" + uuid.New().String(),
+		id:      tagName + ":" + uuid.New().String(),
 		tagName: tagName,
 	}
 

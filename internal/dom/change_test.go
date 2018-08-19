@@ -2,6 +2,7 @@ package dom
 
 import (
 	"encoding/json"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -11,20 +12,62 @@ import (
 func assertChangeEqual(t *testing.T, expected, actual Change) {
 	require.Equal(t, expected.Type, actual.Type)
 
+	assertIDs := func(expected, actual string) {
+		sep := strings.IndexByte(expected, ':')
+		// fmt.Println("-", expected, actual, sep)
+
+		assert.Equal(t, expected[:sep], actual[:sep])
+	}
+
 	switch expected.Type {
 	case setText:
-		assert.Equal(t, expected.Value.(textValue).Text, actual.Value.(textValue).Text)
+		exp := expected.Value.(textValue)
+		act := actual.Value.(textValue)
+
+		assertIDs(exp.ID, act.ID)
+		assert.Equal(t, exp.Text, act.Text)
 
 	case createElem:
-		assert.Equal(t, expected.Value.(elemValue).TagName, actual.Value.(elemValue).TagName)
+		exp := expected.Value.(elemValue)
+		act := actual.Value.(elemValue)
+
+		assertIDs(exp.ID, act.ID)
+		assert.Equal(t, exp.TagName, act.TagName)
 
 	case setAttrs:
-		assert.Equal(t, expected.Value.(elemValue).Attrs, actual.Value.(elemValue).Attrs)
+		exp := expected.Value.(elemValue)
+		act := actual.Value.(elemValue)
+
+		assertIDs(exp.ID, act.ID)
+		assert.Equal(t, exp.Attrs, act.Attrs)
+
+	case appendChild:
+		exp := expected.Value.(childValue)
+		act := actual.Value.(childValue)
+
+		assertIDs(exp.ParentID, act.ParentID)
+		assertIDs(exp.ChildID, act.ChildID)
 
 	case createCompo:
-		assert.Equal(t, expected.Value.(compoValue).Name, actual.Value.(compoValue).Name)
+		exp := expected.Value.(compoValue)
+		act := actual.Value.(compoValue)
 
-	default:
+		assertIDs(exp.ID, act.ID)
+		assert.Equal(t, exp.Name, act.Name)
+
+	case setCompoRoot:
+		exp := expected.Value.(compoValue)
+		act := actual.Value.(compoValue)
+
+		assertIDs(exp.ID, act.ID)
+		assertIDs(exp.RootID, act.RootID)
+		assert.Equal(t, exp.Name, act.Name)
+
+	case mountElem:
+		exp := expected.Value.(elemValue)
+		act := actual.Value.(elemValue)
+
+		assertIDs(exp.ID, act.ID)
 	}
 }
 
