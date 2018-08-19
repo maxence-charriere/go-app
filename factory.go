@@ -2,7 +2,6 @@ package app
 
 import (
 	"reflect"
-	"strings"
 	"sync"
 
 	"github.com/pkg/errors"
@@ -40,10 +39,8 @@ func (f *Factory) RegisterCompo(c Compo) (name string, err error) {
 		return "", errors.New("component does not have fields")
 	}
 
-	t := v.Type()
-	name = strings.ToLower(t.String())
-	name = strings.TrimPrefix(name, "main.")
-	f.types[name] = t
+	name = CompoName(c)
+	f.types[name] = v.Type()
 	return name, nil
 
 }

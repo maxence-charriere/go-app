@@ -1,6 +1,9 @@
 package app
 
 import (
+	"reflect"
+	"strings"
+
 	"github.com/pkg/errors"
 )
 
@@ -236,4 +239,14 @@ func WhenDebug(f func()) {
 	for _, l := range Loggers {
 		l.WhenDebug(f)
 	}
+}
+
+// CompoName returns the name of the given component.
+// The returned name is the one to use in html tags.
+func CompoName(c Compo) string {
+	v := reflect.ValueOf(c)
+	v = reflect.Indirect(v)
+
+	name := strings.ToLower(v.Type().String())
+	return strings.TrimPrefix(name, "main.")
 }
