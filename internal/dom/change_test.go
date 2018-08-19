@@ -5,10 +5,11 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func assertChangeEqual(t *testing.T, expected, actual Change) {
-	assert.Equal(t, expected.Type, actual.Type)
+	require.Equal(t, expected.Type, actual.Type)
 
 	switch expected.Type {
 	case setText:

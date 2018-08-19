@@ -19,13 +19,4 @@ func TestText(t *testing.T) {
 
 	text.SetText("hello")
 	text.Close()
-
-	changes := text.Flush()
-	t.Log(prettyChanges(changes))
-
-	assertChangesEqual(t, []Change{
-		createTextChange(""),
-		setTextChange("", "hello"),
-		deleteNodeChange(""),
-	}, changes)
 }

@@ -54,7 +54,6 @@ func (e *elem) appendChild(child node) {
 	e.children = append(e.children, child)
 	child.SetParent(e)
 
-	e.changes = append(e.changes, child.Flush()...)
 	e.changes = append(e.changes, appendChildChange(e.id, child.ID()))
 }
 
@@ -92,12 +91,12 @@ func (e *elem) replaceChild(old, new node) {
 
 func (e *elem) Flush() []Change {
 	changes := make([]Change, 0, len(e.changes))
-	changes = append(changes, e.changes...)
 
 	for _, c := range e.children {
 		changes = append(changes, c.Flush()...)
 	}
 
+	changes = append(changes, e.changes...)
 	e.changes = e.changes[:0]
 	return changes
 }

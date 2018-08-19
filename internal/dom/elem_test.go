@@ -40,29 +40,4 @@ func TestElem(t *testing.T) {
 	assert.Len(t, e.children, 1)
 
 	e.Close()
-
-	changes := e.Flush()
-	t.Log(prettyChanges(changes))
-
-	assertChangesEqual(t, []Change{
-		createElemChange("", "div"),
-		setAttrsChange("", map[string]string{"foo": "bar"}),
-
-		createElemChange("", "h1"),
-		appendChildChange("", ""),
-
-		createElemChange("", "p"),
-		appendChildChange("", ""),
-
-		createElemChange("", "span"),
-		replaceChildChange("", "", ""),
-		deleteNodeChange(c2.id),
-
-		removeChildChange("", ""),
-		deleteNodeChange(c1.id),
-
-		deleteNodeChange(c3.id),
-		deleteNodeChange(e.id),
-	}, changes)
-
 }

@@ -40,26 +40,6 @@ func TestCompo(t *testing.T) {
 	assert.Equal(t, c, root2.Parent())
 
 	c.Close()
-
-	changes := c.Flush()
-	t.Log(prettyChanges(changes))
-
-	assertChangesEqual(t, []Change{
-		createCompoChange("", "foo"),
-
-		createTextChange(""),
-		setTextChange("", "hello"),
-		setCompoRootChange("", root.id),
-
-		deleteNodeChange(root.id),
-
-		createTextChange(""),
-		setTextChange("", "world"),
-		setCompoRootChange("", root2.id),
-
-		deleteNodeChange(root2.id),
-		deleteNodeChange(c.id),
-	}, changes)
 }
 
 type CompoWithFields struct {
