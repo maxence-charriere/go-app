@@ -14,8 +14,8 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
+	"github.com/murlokswarm/app/internal/dom"
 	"github.com/murlokswarm/app/internal/file"
-	html "github.com/murlokswarm/app/internal/html-v2"
 	"github.com/pkg/errors"
 )
 
@@ -23,7 +23,7 @@ import (
 type Window struct {
 	core.Window
 
-	dom          *html.DOM
+	dom          *dom.DOM
 	history      *core.History
 	id           string
 	compo        app.Compo
@@ -45,6 +45,7 @@ func newWindow(c app.WindowConfig) *Window {
 	id := uuid.New().String()
 
 	w := &Window{
+		dom:     dom.NewDOM(driver.factory, true),
 		history: core.NewHistory(),
 		id:      id,
 
@@ -153,7 +154,7 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 	}
 
 	if w.compo != nil {
-		// Close dom.
+		w.dom.Clean()
 	}
 
 	w.compo = c
@@ -180,17 +181,20 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 	}{
 		ID:      w.id,
 		Title:   htmlConf.Title,
-		Page:    html.Page(htmlConf, "window.webkit.messageHandlers.golangRequest.postMessage"),
+		Page:    dom.Page(htmlConf, "window.webkit.messageHandlers.golangRequest.postMessage"),
 		LoadURL: u,
 		BaseURL: driver.Resources(),
 	}); err != nil {
 		return
 	}
 
-	w.dom = html.NewDOM(driver.factory, w.id, true)
+	var changes []dom.Change
+	changes, err = w.dom.New(c)
+	if err != nil {
+		return
+	}
 
-	w.Render(c)
-	if w.Err() != nil {
+	if err = w.render(changes); err != nil {
 		return
 	}
 
@@ -212,22 +216,23 @@ func (w *Window) Contains(c app.Compo) bool {
 
 // Render satisfies the app.Window interface.
 func (w *Window) Render(c app.Compo) {
-	var err error
-	defer func() {
-		w.SetErr(err)
-	}()
+	changes, err := w.dom.Update(c)
+	w.SetErr(err)
 
-	var changes []html.Change
-	if changes, err = w.dom.Render(c); err != nil {
+	if w.Err() != nil {
 		return
 	}
 
-	var b []byte
-	if b, err = json.Marshal(changes); err != nil {
-		return
+	w.render(changes)
+}
+
+func (w *Window) render(c []dom.Change) error {
+	b, err := json.Marshal(c)
+	if err != nil {
+		return errors.Wrap(err, "marshal changes failed")
 	}
 
-	err = driver.macRPC.Call("windows.Render", nil, struct {
+	return driver.macRPC.Call("windows.Render", nil, struct {
 		ID     string
 		Render string
 	}{
@@ -446,7 +451,7 @@ func (w *Window) Close() {
 func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 	mappingStr := in["Mapping"].(string)
 
-	var m html.Mapping
+	var m dom.Mapping
 	if err := json.Unmarshal([]byte(mappingStr), &m); err != nil {
 		app.Log("window callback failed: %s", err)
 		return nil
