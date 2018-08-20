@@ -14,9 +14,7 @@ func assertChangeEqual(t *testing.T, expected, actual Change) {
 
 	assertIDs := func(expected, actual string) {
 		sep := strings.IndexByte(expected, ':')
-		// fmt.Println("-", expected, actual, sep)
-
-		assert.Equal(t, expected[:sep], actual[:sep])
+		require.Equal(t, expected[:sep], actual[:sep])
 	}
 
 	switch expected.Type {
@@ -48,6 +46,27 @@ func assertChangeEqual(t *testing.T, expected, actual Change) {
 		assertIDs(exp.ParentID, act.ParentID)
 		assertIDs(exp.ChildID, act.ChildID)
 
+	case removeChild:
+		exp := expected.Value.(childValue)
+		act := actual.Value.(childValue)
+
+		assertIDs(exp.ParentID, act.ParentID)
+		assertIDs(exp.ChildID, act.ChildID)
+
+	case replaceChild:
+		exp := expected.Value.(childValue)
+		act := actual.Value.(childValue)
+
+		assertIDs(exp.ParentID, act.ParentID)
+		assertIDs(exp.ChildID, act.ChildID)
+		assertIDs(exp.OldID, act.OldID)
+
+	case mountElem:
+		exp := expected.Value.(elemValue)
+		act := actual.Value.(elemValue)
+
+		assertIDs(exp.ID, act.ID)
+
 	case createCompo:
 		exp := expected.Value.(compoValue)
 		act := actual.Value.(compoValue)
@@ -63,9 +82,9 @@ func assertChangeEqual(t *testing.T, expected, actual Change) {
 		assertIDs(exp.RootID, act.RootID)
 		assert.Equal(t, exp.Name, act.Name)
 
-	case mountElem:
-		exp := expected.Value.(elemValue)
-		act := actual.Value.(elemValue)
+	case deleteNode:
+		exp := expected.Value.(deleteValue)
+		act := actual.Value.(deleteValue)
 
 		assertIDs(exp.ID, act.ID)
 	}

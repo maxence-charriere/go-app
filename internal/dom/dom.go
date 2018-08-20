@@ -26,7 +26,10 @@ func NewDOM(f *app.Factory, hrefFmt bool) *DOM {
 		hrefFmt:      hrefFmt,
 		compoByID:    make(map[string]*component),
 		compoByCompo: make(map[app.Compo]*component),
-		root:         &elem{id: "root:"},
+		root: &elem{
+			id:      "root:",
+			tagName: "body",
+		},
 	}
 }
 
@@ -104,7 +107,10 @@ func (dom *DOM) mountCompo(c app.Compo, parent *compo) error {
 		return errors.Wrap(err, "decoding compo failed")
 	}
 
-	compoID := "compo-" + uuid.New().String()
+	compoID := app.CompoName(c) + ":" + uuid.New().String()
+	if parent != nil {
+		compoID = parent.id
+	}
 
 	if err = dom.mountNode(root, compoID); err != nil {
 		dom.dismountNode(root)
@@ -191,7 +197,122 @@ func (dom *DOM) Update(c app.Compo) ([]Change, error) {
 }
 
 func (dom *DOM) updateNode(old, new node) error {
-	panic("not implemented")
+	switch old := old.(type) {
+	case *text:
+		if new, ok := new.(*text); ok {
+			return dom.updateText(old, new)
+		}
+
+	case *elem:
+		if new, ok := new.(*elem); ok {
+			return dom.updateElem(old, new)
+		}
+
+	case *compo:
+		if new, ok := new.(*compo); ok {
+			return dom.updateCompo(old, new)
+		}
+	}
+
+	return dom.replaceNode(old, new)
+}
+
+func (dom *DOM) updateText(old, new *text) error {
+	if old.text != new.text {
+		old.SetText(new.text)
+	}
+
+	return nil
+}
+
+func (dom *DOM) updateElem(old, new *elem) error {
+	if old.tagName != new.tagName {
+		return dom.replaceNode(old, new)
+	}
+
+	if !attrsEqual(old.attrs, new.attrs) {
+		old.SetAttrs(new.attrs)
+	}
+
+	oc := old.children
+	nc := new.children
+
+	// Sync children.
+	for len(oc) != 0 && len(nc) != 0 {
+		if err := dom.updateNode(oc[0], nc[0]); err != nil {
+			return err
+		}
+
+		oc = oc[1:]
+		nc = nc[1:]
+	}
+
+	// Remove children.
+	for len(oc) != 0 {
+		c := oc[0]
+		dom.dismountNode(c)
+		old.removeChild(c)
+		oc = oc[1:]
+	}
+
+	// Add children.
+	for len(nc) != 0 {
+		c := nc[0]
+		if err := dom.mountNode(c, old.CompoID()); err != nil {
+			return err
+		}
+
+		old.appendChild(c)
+		nc = nc[1:]
+	}
+
+	return nil
+}
+
+func (dom *DOM) updateCompo(old, new *compo) error {
+	if old.name != new.name {
+		return dom.replaceNode(old, new)
+	}
+
+	if !attrsEqual(old.fields, new.fields) {
+		old.fields = new.fields
+		c := dom.compoByID[old.id]
+
+		if err := mapCompoFields(c.compo, old.fields); err != nil {
+			return err
+		}
+
+		newRoot, err := decodeCompo(c.compo, dom.hrefFmt)
+		if err != nil {
+			return err
+		}
+
+		return dom.updateNode(old.root, newRoot)
+	}
+
+	return nil
+}
+
+func (dom *DOM) replaceNode(old, new node) error {
+	dom.dismountNode(old)
+
+	if err := dom.mountNode(new, old.CompoID()); err != nil {
+		return err
+	}
+
+	switch p := old.Parent().(type) {
+	case *elem:
+		p.replaceChild(old, new)
+
+	case *compo:
+		p.RemoveRoot()
+		p.SetRoot(new)
+
+		c, _ := dom.compoByID[old.CompoID()]
+		c.root = new
+	}
+
+	return nil
 }
 
 // Clean removes all the node from the dom, putting it clean state.

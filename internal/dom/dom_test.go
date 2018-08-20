@@ -32,9 +32,8 @@ func (f *Foo) Render() string {
 }
 
 type Bar struct {
-	ReplaceTextByElem  bool
-	ReplaceElemByElem  bool
-	ReplaceCompoByElem bool
+	ReplaceTextByElem bool
+	ReplaceElemByElem bool
 }
 
 func (b *Bar) Render() string {
@@ -225,56 +224,56 @@ func TestDOM(t *testing.T) {
 			},
 			compoCount: 1,
 		},
-		// {
-		// 	scenario: "update simple compo",
-		// 	compo:    &Foo{Value: "hello"},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*Foo).Value = "world"
-		// 	},
-		// 	changes: []Change{
-		// 		setTextChange("", "world"),
-		// 	},
-		// 	compoCount: 1,
-		// },
-		// {
-		// 	scenario: "append simple compo child",
-		// 	compo:    &Foo{},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*Foo).Value = "hello"
-		// 	},
-		// 	changes: []Change{
-		// 		createTextChange(""),
-		// 		setTextChange("", "hello"),
-		// 		appendChildChange("", ""),
-		// 	},
-		// 	compoCount: 1,
-		// },
-		// {
-		// 	scenario: "remove simple compo child",
-		// 	compo:    &Foo{Value: "hello"},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*Foo).Value = ""
-		// 	},
-		// 	changes: []Change{
-		// 		removeChildChange("", ""),
-		// 		deleteNodeChange(""),
-		// 	},
-		// 	compoCount: 1,
-		// },
-		// {
-		// 	scenario: "change simple compo root attrs",
-		// 	compo:    &Foo{},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*Foo).Disabled = true
-		// 	},
-		// 	changes: []Change{
-		// 		setAttrsChange("", map[string]string{
-		// 			"class":    "test",
-		// 			"disabled": "",
-		// 		}),
-		// 	},
-		// 	compoCount: 1,
-		// },
+		{
+			scenario: "update simple compo",
+			compo:    &Foo{Value: "hello"},
+			modifier: func(c app.Compo) {
+				c.(*Foo).Value = "world"
+			},
+			changes: []Change{
+				setTextChange("text:", "world"),
+			},
+			compoCount: 1,
+		},
+		{
+			scenario: "append simple compo child",
+			compo:    &Foo{},
+			modifier: func(c app.Compo) {
+				c.(*Foo).Value = "hello"
+			},
+			changes: []Change{
+				createTextChange("text:"),
+				setTextChange("text:", "hello"),
+				appendChildChange("div:", "text:"),
+			},
+			compoCount: 1,
+		},
+		{
+			scenario: "remove simple compo child",
+			compo:    &Foo{Value: "hello"},
+			modifier: func(c app.Compo) {
+				c.(*Foo).Value = ""
+			},
+			changes: []Change{
+				removeChildChange("div:", "text:"),
+				deleteNodeChange("text:"),
+			},
+			compoCount: 1,
+		},
+		{
+			scenario: "change simple compo root attrs",
+			compo:    &Foo{},
+			modifier: func(c app.Compo) {
+				c.(*Foo).Disabled = true
+			},
+			changes: []Change{
+				setAttrsChange("div:", map[string]string{
+					"class":    "test",
+					"disabled": "",
+				}),
+			},
+			compoCount: 1,
+		},
 
 		// Bar:
 		{
@@ -302,60 +301,63 @@ func TestDOM(t *testing.T) {
 			},
 			compoCount: 1,
 		},
-		// {
-		// 	scenario: "replace compo text by elem",
-		// 	compo:    &Bar{},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*Bar).ReplaceTextByElem = true
-		// 	},
-		// 	changes: []Change{
-		// 		createTextChange(""),
-		// 		setTextChange("", "hello"),
-		// 		createElemChange("", "span"),
-		// 		setAttrsChange("", nil),
-		// 		appendChildChange("", ""), // hello -> span
-		// 		mountElemChange("", ""),
+		{
+			scenario: "replace text by elem",
+			compo:    &Bar{},
+			modifier: func(c app.Compo) {
+				c.(*Bar).ReplaceTextByElem = true
+			},
+			changes: []Change{
+				createTextChange("text:"),
+				setTextChange("text:", "hello"),
 
-		// 		replaceChildChange("", "", ""),
-		// 		deleteNodeChange(""),
-		// 	},
-		// 	compoCount: 1,
-		// },
-		// {
-		// 	scenario: "replace compo elem by text",
-		// 	compo:    &Bar{ReplaceTextByElem: true},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*Bar).ReplaceTextByElem = false
-		// 	},
-		// 	changes: []Change{
-		// 		createTextChange(""),
-		// 		setTextChange("", "hello"),
-		// 		replaceChildChange("", "", ""), // hello -> span
-		// 		deleteNodeChange(""),           // delete span.hello
-		// 		deleteNodeChange(""),           // delete span
-		// 	},
-		// 	compoCount: 1,
-		// },
-		// {
-		// 	scenario: "replace compo elem by elem",
-		// 	compo:    &Bar{},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*Bar).ReplaceElemByElem = true
-		// 	},
-		// 	changes: []Change{
-		// 		createTextChange(""),
-		// 		setTextChange("", "world"),
-		// 		createElemChange("", "h2"),
-		// 		setAttrsChange("", nil),
-		// 		appendChildChange("", ""), // world -> h2
-		// 		mountElemChange("", ""),
+				createElemChange("span:", "span"),
+				setAttrsChange("span:", nil),
+				appendChildChange("span:", "text:"),
+				mountElemChange("span:", ""),
 
-		// 		replaceChildChange("", "", ""),
-		// 		deleteNodeChange(""), // delete h1.world
-		// 		deleteNodeChange(""), // delete h1
-		// 	},
-		// 	compoCount: 1,
-		// },
+				replaceChildChange("div:", "text:", "span:"),
+				deleteNodeChange("text:"),
+			},
+			compoCount: 1,
+		},
+		{
+			scenario: "replace elem by text",
+			compo:    &Bar{ReplaceTextByElem: true},
+			modifier: func(c app.Compo) {
+				c.(*Bar).ReplaceTextByElem = false
+			},
+			changes: []Change{
+				createTextChange("text:"),
+				setTextChange("text:", "hello"),
+				replaceChildChange("div:", "span:", "text:"),
+
+				deleteNodeChange("text:"),
+				deleteNodeChange("span:"),
+			},
+			compoCount: 1,
+		},
+		{
+			scenario: "replace elem by elem",
+			compo:    &Bar{},
+			modifier: func(c app.Compo) {
+				c.(*Bar).ReplaceElemByElem = true
+			},
+			changes: []Change{
+				createTextChange("text:"),
+				setTextChange("text:", "world"),
+
+				createElemChange("h2:", "h2"),
+				setAttrsChange("h2:", nil),
+				appendChildChange("h2:", "text:"),
+				mountElemChange("h2:", ""),
+
+				replaceChildChange("div:", "h1:", "h2:"),
+				deleteNodeChange("text:"),
+				deleteNodeChange("h1:"),
+			},
+			compoCount: 1,
+		},
 
 		// Boo:
 		{
@@ -378,104 +380,109 @@ func TestDOM(t *testing.T) {
 			},
 			compoCount: 2,
 		},
-		// {
-		// 	scenario: "add compo to elem",
-		// 	compo:    &Boo{},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*Boo).AddCompo = true
-		// 	},
-		// 	changes: []Change{
-		// 		createElemChange("", "div"),
-		// 		setAttrsChange("", map[string]string{"class": "test"}),
-		// 		mountElemChange("", ""),
-		// 		createCompoChange("", "dom.foo"),
-		// 		setCompoRootChange("", ""),
-		// 		appendChildChange("", ""), // foo2 -> div
-		// 	},
-		// 	compoCount: 3,
-		// },
-		// {
-		// 	scenario: "remove compo from elem",
-		// 	compo:    &Boo{AddCompo: true},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*Boo).AddCompo = false
-		// 	},
-		// 	changes: []Change{
-		// 		removeChildChange("", ""), // foo2
-		// 		deleteNodeChange(""),      // foo2.div
-		// 		deleteNodeChange(""),      // foo2
-		// 	},
-		// 	compoCount: 2,
-		// },
-		// {
-		// 	scenario: "replace compo type",
-		// 	compo:    &Boo{},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*Boo).ReplaceCompoType = true
-		// 	},
-		// 	changes: []Change{
-		// 		createElemChange("", "p"), // oob.p
-		// 		setAttrsChange("", nil),
-		// 		mountElemChange("", ""),
-		// 		createCompoChange("", "dom.oob"),
-		// 		setCompoRootChange("", ""), // oob.p -> oob
+		{
+			scenario: "add compo to elem",
+			compo:    &Boo{},
+			modifier: func(c app.Compo) {
+				c.(*Boo).AddCompo = true
+			},
+			changes: []Change{
+				createElemChange("div:", "div"),
+				setAttrsChange("div:", map[string]string{"class": "test"}),
+				mountElemChange("div:", ""),
 
-		// 		replaceChildChange("", "", ""), // foo <-> oob
-		// 		deleteNodeChange(""),           // foo.text
-		// 		deleteNodeChange(""),           // foo
-		// 	},
-		// 	compoCount: 2,
-		// },
-		// {
-		// 	scenario: "change compo attrs",
-		// 	compo:    &Boo{Value: "hello"},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*Boo).Value = "world"
-		// 	},
-		// 	changes: []Change{
-		// 		setTextChange("", "world"),
-		// 	},
-		// 	compoCount: 2,
-		// },
-		// {
-		// 	scenario: "replace compo by elem",
-		// 	compo:    &Boo{},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*Boo).ReplaceCompoByElem = true
-		// 	},
-		// 	changes: []Change{
-		// 		createTextChange(""),
-		// 		setTextChange("", "foo"),
-		// 		createElemChange("", "p"),
-		// 		setAttrsChange("", nil),
-		// 		appendChildChange("", ""), // "foo" -> p
-		// 		mountElemChange("", ""),
+				createCompoChange("dom.foo:", "dom.foo"),
+				setCompoRootChange("dom.foo:", "div:"),
 
-		// 		replaceChildChange("", "", ""), // foo <-> p
-		// 		deleteNodeChange(""),           // foo.div
-		// 		deleteNodeChange(""),           // foo
-		// 	},
-		// 	compoCount: 1,
-		// },
-		// {
-		// 	scenario: "replace elem by compo",
-		// 	compo:    &Boo{ReplaceCompoByElem: true},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*Boo).ReplaceCompoByElem = false
-		// 	},
-		// 	changes: []Change{
-		// 		createElemChange("", "div"),
-		// 		setAttrsChange("", map[string]string{"class": "test"}),
-		// 		mountElemChange("", ""),
-		// 		createCompoChange("", "dom.foo"),
-		// 		setCompoRootChange("", ""),
+				appendChildChange("div:", "dom.foo:"),
+			},
+			compoCount: 3,
+		},
+		{
+			scenario: "remove compo from elem",
+			compo:    &Boo{AddCompo: true},
+			modifier: func(c app.Compo) {
+				c.(*Boo).AddCompo = false
+			},
+			changes: []Change{
+				removeChildChange("div:", "dom.foo:"),
+				deleteNodeChange("div:"),
+				deleteNodeChange("dom.foo:"),
+			},
+			compoCount: 2,
+		},
+		{
+			scenario: "replace compo type",
+			compo:    &Boo{},
+			modifier: func(c app.Compo) {
+				c.(*Boo).ReplaceCompoType = true
+			},
+			changes: []Change{
+				createElemChange("p:", "p"),
+				setAttrsChange("p:", nil),
+				mountElemChange("p:", ""),
 
-		// 		replaceChildChange("", "", ""), // p <-> foo
-		// 		deleteNodeChange(""),           // "foo"
-		// 		deleteNodeChange(""),           // p
-		// 	},
-		// 	compoCount: 2,
-		// },
+				createCompoChange("dom.oob:", "dom.oob"),
+				setCompoRootChange("dom.oob:", "p:"),
+
+				replaceChildChange("div:", "dom.foo:", "dom.oob:"),
+				deleteNodeChange("div:"),
+				deleteNodeChange("dom.foo:"),
+			},
+			compoCount: 2,
+		},
+		{
+			scenario: "change compo attrs",
+			compo:    &Boo{Value: "hello"},
+			modifier: func(c app.Compo) {
+				c.(*Boo).Value = "world"
+			},
+			changes: []Change{
+				setTextChange("text:", "world"),
+			},
+			compoCount: 2,
+		},
+		{
+			scenario: "replace compo by elem",
+			compo:    &Boo{},
+			modifier: func(c app.Compo) {
+				c.(*Boo).ReplaceCompoByElem = true
+			},
+			changes: []Change{
+				createTextChange("text:"),
+				setTextChange("text:", "foo"),
+
+				createElemChange("p:", "p"),
+				setAttrsChange("p:", nil),
+				appendChildChange("p:", "text:"),
+				mountElemChange("p:", ""),
+
+				replaceChildChange("div:", "dom.foo:", "p:"),
+				deleteNodeChange("div:"),
+				deleteNodeChange("dom.foo:"),
+			},
+			compoCount: 1,
+		},
+		{
+			scenario: "replace elem by compo",
+			compo:    &Boo{ReplaceCompoByElem: true},
+			modifier: func(c app.Compo) {
+				c.(*Boo).ReplaceCompoByElem = false
+			},
+			changes: []Change{
+				createElemChange("div:", "div"),
+				setAttrsChange("div:", map[string]string{"class": "test"}),
+				mountElemChange("div:", ""),
+
+				createCompoChange("dom.foo:", "dom.foo"),
+				setCompoRootChange("dom.foo:", "div:"),
+
+				replaceChildChange("div:", "p:", "dom.foo:"),
+				deleteNodeChange("text:"),
+				deleteNodeChange("p:"),
+			},
+			compoCount: 2,
+		},
 
 		// Nested:
 		{
@@ -493,25 +500,27 @@ func TestDOM(t *testing.T) {
 			},
 			compoCount: 2,
 		},
-		// {
-		// 	scenario: "replace nested",
-		// 	compo:    &Nested{},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*Nested).Foo = true
-		// 	},
-		// 	changes: []Change{
-		// 		createElemChange("", "div"), // foo.div
-		// 		setAttrsChange("", map[string]string{"class": "test"}),
-		// 		mountElemChange("", ""),
-		// 		createCompoChange("", "dom.foo"),
-		// 		setCompoRootChange("", ""),
-		// 		replaceChildChange("", "", ""), // oob <=> foo
+		{
+			scenario: "replace nested",
+			compo:    &Nested{},
+			modifier: func(c app.Compo) {
+				c.(*Nested).Foo = true
+			},
+			changes: []Change{
+				createElemChange("div:", "div"), // foo.div
+				setAttrsChange("div:", map[string]string{"class": "test"}),
+				mountElemChange("div:", ""),
 
-		// 		deleteNodeChange(""), // oob.p
-		// 		deleteNodeChange(""), // oob
-		// 	},
-		// 	compoCount: 2,
-		// },
+				createCompoChange("dom.foo:", "dom.foo"),
+				setCompoRootChange("dom.foo:", "div:"),
+
+				replaceChildChange("root:", "dom.oob:", "dom.foo:"), // oob <=> foo
+
+				deleteNodeChange("p:"),
+				deleteNodeChange("dom.oob:"),
+			},
+			compoCount: 2,
+		},
 		{
 			scenario: "create nested nested",
 			compo:    &NestedNested{},
@@ -530,27 +539,27 @@ func TestDOM(t *testing.T) {
 			},
 			compoCount: 3,
 		},
-		// {
-		// 	scenario: "replace nested nested",
-		// 	compo:    &NestedNested{},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*NestedNested).Foo = true
-		// 	},
-		// 	changes: []Change{
-		// 		createElemChange("", "div"), // foo.div
-		// 		setAttrsChange("", map[string]string{"class": "test"}),
-		// 		mountElemChange("", ""),
+		{
+			scenario: "replace nested nested",
+			compo:    &NestedNested{},
+			modifier: func(c app.Compo) {
+				c.(*NestedNested).Foo = true
+			},
+			changes: []Change{
+				createElemChange("div:", "div"),
+				setAttrsChange("div:", map[string]string{"class": "test"}),
+				mountElemChange("div:", ""),
 
-		// 		createCompoChange("", "dom.foo"),
-		// 		setCompoRootChange("", ""),
+				createCompoChange("dom.foo:", "dom.foo"),
+				setCompoRootChange("dom.foo:", "div:"),
 
-		// 		deleteNodeChange(""), // oob.p
-		// 		deleteNodeChange(""), // oob
+				deleteNodeChange("p:"),
+				deleteNodeChange("dom.oob:"),
 
-		// 		setCompoRootChange("", ""), // foo => nested
-		// 	},
-		// 	compoCount: 3,
-		// },
+				setCompoRootChange("dom.nested:", "dom.foo:"),
+			},
+			compoCount: 3,
+		},
 
 		// Err:
 		{
@@ -558,61 +567,61 @@ func TestDOM(t *testing.T) {
 			compo:    &DecodeErr{},
 			err:      true,
 		},
-		// {
-		// 	scenario: "fail decode update",
-		// 	compo:    &DecodeErr{NoErr: true},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*DecodeErr).NoErr = false
-		// 	},
-		// 	err: true,
-		// },
-		// {
-		// 	scenario: "fail decode child",
-		// 	compo:    &CompoErr{DecodeErr: true},
-		// 	err:      true,
-		// },
-		// {
-		// 	scenario: "fail decode child update",
-		// 	compo:    &CompoErr{Int: 0},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*CompoErr).DecodeErr = true
-		// 	},
-		// 	err: true,
-		// },
-		// {
-		// 	scenario: "fail map child fields",
-		// 	compo:    &CompoErr{Int: 42.42},
-		// 	err:      true,
-		// },
-		// {
-		// 	scenario: "fail update child fields",
-		// 	compo:    &CompoErr{Int: 42},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*CompoErr).Int = 42.42
-		// 	},
-		// 	err: true,
-		// },
-		// {
-		// 	scenario: "fail child no import",
-		// 	compo:    &CompoErr{NoImport: true},
-		// 	err:      true,
-		// },
-		// {
-		// 	scenario: "replace compo err",
-		// 	compo:    &CompoErr{Int: 0},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*CompoErr).ReplaceCompoErr = true
-		// 	},
-		// 	err: true,
-		// },
-		// {
-		// 	scenario: "fail add child",
-		// 	compo:    &CompoErr{Int: 42},
-		// 	modifier: func(c app.Compo) {
-		// 		c.(*CompoErr).AddChildErr = true
-		// 	},
-		// 	err: true,
-		// },
+		{
+			scenario: "fail decode update",
+			compo:    &DecodeErr{NoErr: true},
+			modifier: func(c app.Compo) {
+				c.(*DecodeErr).NoErr = false
+			},
+			err: true,
+		},
+		{
+			scenario: "fail decode child",
+			compo:    &CompoErr{DecodeErr: true},
+			err:      true,
+		},
+		{
+			scenario: "fail decode child update",
+			compo:    &CompoErr{Int: 0},
+			modifier: func(c app.Compo) {
+				c.(*CompoErr).DecodeErr = true
+			},
+			err: true,
+		},
+		{
+			scenario: "fail map child fields",
+			compo:    &CompoErr{Int: 42.42},
+			err:      true,
+		},
+		{
+			scenario: "fail update child fields",
+			compo:    &CompoErr{Int: 42},
+			modifier: func(c app.Compo) {
+				c.(*CompoErr).Int = 42.42
+			},
+			err: true,
+		},
+		{
+			scenario: "fail child no import",
+			compo:    &CompoErr{NoImport: true},
+			err:      true,
+		},
+		{
+			scenario: "replace compo err",
+			compo:    &CompoErr{Int: 0},
+			modifier: func(c app.Compo) {
+				c.(*CompoErr).ReplaceCompoErr = true
+			},
+			err: true,
+		},
+		{
+			scenario: "fail add child",
+			compo:    &CompoErr{Int: 42},
+			modifier: func(c app.Compo) {
+				c.(*CompoErr).AddChildErr = true
+			},
+			err: true,
+		},
 		{
 			scenario: "no ptr compo",
 			compo:    NoPtrErr(42),
@@ -654,6 +663,21 @@ func TestDOM(t *testing.T) {
 			assertChangesEqual(t, test.changes, changes)
 		})
 	}
+}
+
+func TestDOMUpdateErrors(t *testing.T) {
+	dom := NewDOM(app.NewFactory(), true)
+	defer func() {
+		dom.Clean()
+		assert.Empty(t, dom.compoByID)
+		assert.Empty(t, dom.compoByCompo)
+	}()
+
+	_, err := dom.Update(&EmptyStructErr{})
+	assert.Error(t, err)
+
+	_, err = dom.Update(&Foo{})
+	assert.Error(t, err)
 }
 
 func TestDOMCompoByID(t *testing.T) {
