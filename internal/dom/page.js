@@ -264,6 +264,9 @@ function callCompoHandler(elem, event, fieldOrMethod) {
             ondropToGolang(elem, event, fieldOrMethod);
             break;
 
+        case 'contextmenu':
+            event.preventDefault();
+
         default:
             eventToGolang(elem, event, fieldOrMethod);
             break;
