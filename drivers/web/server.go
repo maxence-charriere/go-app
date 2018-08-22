@@ -10,8 +10,8 @@ import (
 	"os"
 
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/appjs"
 	"github.com/murlokswarm/app/internal/core"
+	"github.com/murlokswarm/app/internal/dom"
 	"github.com/murlokswarm/app/internal/file"
 	"github.com/murlokswarm/app/internal/html"
 )
@@ -76,24 +76,23 @@ func (d *Driver) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 }
 
 func (d *Driver) handleCompo(res http.ResponseWriter, req *http.Request) {
-	compo, err := d.factory.NewCompo(core.CompoNameFromURL(req.URL))
+	c, err := d.factory.NewCompo(core.CompoNameFromURL(req.URL))
 	if err != nil {
 		http.NotFound(res, req)
 		return
 	}
 
-	var config html.PageConfig
-	if page, ok := compo.(html.Page); ok {
-		config = page.PageConfig()
+	htmlConf := app.HTMLConfig{}
+	if configurator, ok := c.(app.Configurator); ok {
+		htmlConf = configurator.Config()
 	}
 
-	if len(config.CSS) == 0 {
-		config.CSS = file.CSS(d.Resources("css"))
+	if len(htmlConf.CSS) == 0 {
+		htmlConf.CSS = file.CSS(d.Resources("css"))
 	}
 
-	config.Javascripts = append(config.Javascripts, d.Resources("goapp.js"))
-	config.AppJS = appjs.AppJS("console.log")
-	page := html.NewPage(config)
+	htmlConf.Javascripts = append(htmlConf.Javascripts, d.Resources("goapp.js"))
+	page := dom.Page(htmlConf, "console.log")
 
 	res.WriteHeader(http.StatusOK)
 	res.Write([]byte(page))

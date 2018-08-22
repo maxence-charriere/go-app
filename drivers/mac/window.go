@@ -223,7 +223,8 @@ func (w *Window) Render(c app.Compo) {
 		return
 	}
 
-	w.render(changes)
+	err = w.render(changes)
+	w.SetErr(err)
 }
 
 func (w *Window) render(c []dom.Change) error {
