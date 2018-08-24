@@ -266,14 +266,14 @@
 + (void)render:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
-
     NSString *ID = in[@"ID"];
+
     Window *win = driver.elements[ID];
     if (win == nil) {
       [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
     }
 
-    NSString *js = [NSString stringWithFormat:@"render(%@)", in[@"Render"]];
+    NSString *js = [NSString stringWithFormat:@"render(%@)", in[@"Changes"]];
     [win.webview evaluateJavaScript:js completionHandler:nil];
 
     [driver.macRPC return:returnID withOutput:nil andError:nil];

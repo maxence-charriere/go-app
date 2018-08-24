@@ -234,11 +234,11 @@ func (w *Window) render(c []dom.Change) error {
 	}
 
 	return driver.macRPC.Call("windows.Render", nil, struct {
-		ID     string
-		Render string
+		ID      string
+		Changes string
 	}{
-		ID:     w.id,
-		Render: string(b),
+		ID:      w.id,
+		Changes: string(b),
 	})
 }
 

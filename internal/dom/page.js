@@ -53,7 +53,7 @@ function render(changes = []) {
                 break;
 
             default:
-                console.log('unknown change: ' + c.Type);
+                console.log(c.Type + ' change is not supported');
         }
     });
 }
