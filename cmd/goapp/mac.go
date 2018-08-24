@@ -259,7 +259,7 @@ func createAppBundle(bundle driver.Bundle, root, appName string) error {
 	}
 
 	execName := filepath.Base(root)
-	if err := os.Rename(execName, filepath.Join(appName, "Contents", "MacOS", execName)); err != nil {
+	if err := os.Rename(execName, filepath.Join(appName, "Contents", "MacOS", bundle.AppName)); err != nil {
 		return err
 	}
 
