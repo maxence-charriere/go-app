@@ -1,4 +1,9 @@
 
+3.0.1 / 2018-08-24
+==================
+
+* `goapp mac build -bundle` now produces a valid package when specifying an `AppName`.
+
 3.0.0 / 2018-08-07
 ==================
 
