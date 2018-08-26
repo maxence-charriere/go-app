@@ -3,10 +3,8 @@
 package mac
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
-	"html/template"
 	"math"
 	"net/url"
 	"os/exec"
@@ -14,11 +12,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/appjs"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
+	"github.com/murlokswarm/app/internal/dom"
 	"github.com/murlokswarm/app/internal/file"
-	"github.com/murlokswarm/app/internal/html"
 	"github.com/pkg/errors"
 )
 
@@ -26,7 +23,7 @@ import (
 type Window struct {
 	core.Window
 
-	markup       app.Markup
+	dom          *dom.DOM
 	history      *core.History
 	id           string
 	compo        app.Compo
@@ -45,10 +42,12 @@ type Window struct {
 }
 
 func newWindow(c app.WindowConfig) *Window {
+	id := uuid.New().String()
+
 	w := &Window{
-		markup:  app.ConcurrentMarkup(html.NewMarkup(driver.factory)),
+		dom:     dom.NewDOM(driver.factory, true, true),
 		history: core.NewHistory(),
-		id:      uuid.New().String(),
+		id:      id,
 
 		onMove:           c.OnMove,
 		onResize:         c.OnResize,
@@ -140,11 +139,6 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		w.SetErr(err)
 	}()
 
-	if w.compo != nil {
-		w.markup.Dismount(w.compo)
-		w.compo = nil
-	}
-
 	u := fmt.Sprintf(urlFmt, v...)
 	n := core.CompoNameFromURLString(u)
 
@@ -159,8 +153,8 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	if _, err = w.markup.Mount(c); err != nil {
-		return
+	if w.compo != nil {
+		w.dom.Clean()
 	}
 
 	w.compo = c
@@ -169,37 +163,16 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		w.history.NewEntry(u)
 	}
 
-	if nav, ok := c.(app.Navigable); ok {
-		navURL, _ := url.Parse(u)
-		nav.OnNavigate(navURL)
+	htmlConf := app.HTMLConfig{}
+	if configurator, ok := c.(app.Configurator); ok {
+		htmlConf = configurator.Config()
 	}
 
-	var root app.Tag
-	if root, err = w.markup.Root(c); err != nil {
-		return
+	if len(htmlConf.CSS) == 0 {
+		htmlConf.CSS = file.CSS(driver.Resources("css"))
 	}
 
-	var buffer bytes.Buffer
-	enc := html.NewEncoder(&buffer, w.markup, true)
-	if err = enc.Encode(root); err != nil {
-		return
-	}
-
-	pageConfig := html.PageConfig{
-		DisableDefaultContextMenu: true,
-	}
-	if page, ok := c.(html.Page); ok {
-		pageConfig = page.PageConfig()
-	}
-
-	if len(pageConfig.CSS) == 0 {
-		pageConfig.CSS = file.CSS(driver.Resources("css"))
-	}
-
-	pageConfig.DefaultCompo = template.HTML(buffer.String())
-	pageConfig.AppJS = appjs.AppJS("window.webkit.messageHandlers.golangRequest.postMessage")
-
-	err = driver.macRPC.Call("windows.Load", nil, struct {
+	if err = driver.macRPC.Call("windows.Load", nil, struct {
 		ID      string
 		Title   string
 		Page    string
@@ -207,11 +180,28 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		BaseURL string
 	}{
 		ID:      w.id,
-		Title:   pageConfig.Title,
-		Page:    html.NewPage(pageConfig),
+		Title:   htmlConf.Title,
+		Page:    dom.Page(htmlConf, "window.webkit.messageHandlers.golangRequest.postMessage", n),
 		LoadURL: u,
 		BaseURL: driver.Resources(),
-	})
+	}); err != nil {
+		return
+	}
+
+	var changes []dom.Change
+	changes, err = w.dom.New(c)
+	if err != nil {
+		return
+	}
+
+	if err = w.render(changes); err != nil {
+		return
+	}
+
+	if nav, ok := c.(app.Navigable); ok {
+		navURL, _ := url.Parse(u)
+		nav.OnNavigate(navURL)
+	}
 }
 
 // Compo satisfies the app.Window interface.
@@ -221,32 +211,35 @@ func (w *Window) Compo() app.Compo {
 
 // Contains satisfies the app.Window interface.
 func (w *Window) Contains(c app.Compo) bool {
-	return w.markup.Contains(c)
+	return w.dom.Contains(c)
 }
 
 // Render satisfies the app.Window interface.
 func (w *Window) Render(c app.Compo) {
-	var err error
-	defer func() {
-		w.SetErr(err)
-	}()
+	changes, err := w.dom.Update(c)
+	w.SetErr(err)
 
-	var syncs []app.TagSync
-	if syncs, err = w.markup.Update(c); err != nil {
+	if w.Err() != nil {
 		return
 	}
 
-	for _, s := range syncs {
-		if s.Replace {
-			err = w.render(s)
-		} else {
-			err = w.renderAttributes(s)
-		}
+	err = w.render(changes)
+	w.SetErr(err)
+}
 
-		if err != nil {
-			return
-		}
+func (w *Window) render(c []dom.Change) error {
+	b, err := json.Marshal(c)
+	if err != nil {
+		return errors.Wrap(err, "marshal changes failed")
 	}
+
+	return driver.macRPC.Call("windows.Render", nil, struct {
+		ID      string
+		Changes string
+	}{
+		ID:      w.id,
+		Changes: string(b),
+	})
 }
 
 // Reload satisfies the app.Window interface.
@@ -456,109 +449,45 @@ func (w *Window) Close() {
 	w.SetErr(err)
 }
 
-func (w *Window) render(sync app.TagSync) error {
-	var buffer bytes.Buffer
-
-	enc := html.NewEncoder(&buffer, w.markup, true)
-	if err := enc.Encode(sync.Tag); err != nil {
-		return err
-	}
-
-	render, err := json.Marshal(struct {
-		ID    string `json:"id"`
-		Compo string `json:"component"`
-	}{
-		ID:    sync.Tag.ID,
-		Compo: buffer.String(),
-	})
-	if err != nil {
-		return err
-	}
-
-	return driver.macRPC.Call("windows.Render", nil, struct {
-		ID     string
-		Render string
-	}{
-		ID:     w.id,
-		Render: string(render),
-	})
-}
-
-func (w *Window) renderAttributes(sync app.TagSync) error {
-	attrs := make(app.AttributeMap, len(sync.Tag.Attributes))
-	for name, val := range sync.Tag.Attributes {
-		attrs[name] = html.AttrValueFormatter{
-			Name:       name,
-			Value:      val,
-			FormatHref: true,
-			CompoID:    sync.Tag.CompoID,
-			Factory:    driver.factory,
-		}.Format()
-	}
-
-	render, err := json.Marshal(struct {
-		ID         string           `json:"id"`
-		Attributes app.AttributeMap `json:"attributes"`
-	}{
-		ID:         sync.Tag.ID,
-		Attributes: attrs,
-	})
-	if err != nil {
-		return err
-	}
-
-	return driver.macRPC.Call("windows.RenderAttributes", nil, struct {
-		ID     string
-		Render string
-	}{
-		ID:     w.id,
-		Render: string(render),
-	})
-}
-
 func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
-	mappingString := in["Mapping"].(string)
+	mappingStr := in["Mapping"].(string)
 
-	var mapping app.Mapping
-	if err := json.Unmarshal([]byte(mappingString), &mapping); err != nil {
+	var m dom.Mapping
+	if err := json.Unmarshal([]byte(mappingStr), &m); err != nil {
 		app.Log("window callback failed: %s", err)
 		return nil
 	}
 
-	if mapping.Override == "Files" {
+	if m.Override == "Files" {
 		data, _ := json.Marshal(driver.droppedFiles)
 		driver.droppedFiles = nil
 
-		mapping.JSONValue = strings.Replace(
-			mapping.JSONValue,
+		m.JSONValue = strings.Replace(
+			m.JSONValue,
 			`"FileOverride":"xxx"`,
 			fmt.Sprintf(`"Files":%s`, data),
 			1,
 		)
 	}
 
-	function, err := w.markup.Map(mapping)
+	c, err := w.dom.CompoByID(m.CompoID)
 	if err != nil {
 		app.Log("window callback failed: %s", err)
 		return nil
 	}
 
-	if function != nil {
-		function()
-		return nil
-	}
-
-	var c app.Compo
-	if c, err = w.markup.Compo(mapping.CompoID); err != nil {
+	var f func()
+	if f, err = m.Map(c); err != nil {
 		app.Log("window callback failed: %s", err)
 		return nil
 	}
 
-	w.Render(c)
-	if w.Err() != nil {
-		app.Log("window callback failed: %s", w.Err())
+	if f != nil {
+		f()
+		return nil
 	}
 
+	app.Render(c)
 	return nil
 }
 
@@ -569,6 +498,11 @@ func onWindowNavigate(w *Window, in map[string]interface{}) interface{} {
 		w.Load(in["URL"].(string))
 	})
 
+	return nil
+}
+
+func onWindowAlert(w *Window, in map[string]interface{}) interface{} {
+	app.Debug("%s", in["Alert"])
 	return nil
 }
 
@@ -653,9 +587,7 @@ func onWindowClose(w *Window, in map[string]interface{}) interface{} {
 	}
 
 	if shouldClose {
-		if w.compo != nil {
-			w.markup.Dismount(w.compo)
-		}
+		// dom.Close()
 		driver.elems.Delete(w)
 	}
 

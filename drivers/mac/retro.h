@@ -1,11 +1,13 @@
 #ifndef retro_h
 #define retro_h
 
-#if MAC_OS_X_VERSION_MAX_ALLOWED < 101200 
-
 #import <Cocoa/Cocoa.h>
+
+#if MAC_OS_X_VERSION_MAX_ALLOWED < 101200
+
 /* image.h */
-static const NSCompositingOperation NSCompositingOperationCopy = NSCompositeCopy;
+static const NSCompositingOperation NSCompositingOperationCopy =
+    NSCompositeCopy;
 
 /* window.h */
 #define NSWindowStyleMaskResizable NSResizableWindowMask

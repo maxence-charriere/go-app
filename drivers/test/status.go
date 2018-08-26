@@ -5,7 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/html"
+	"github.com/murlokswarm/app/internal/dom"
 )
 
 // StatusMenu is a teststatus menu that implements the app.StatusMenu interface.
@@ -17,7 +17,7 @@ func newStatusMenu(d *Driver, c app.StatusMenuConfig) *StatusMenu {
 	s := &StatusMenu{
 		Menu{
 			driver: d,
-			markup: html.NewMarkup(d.factory),
+			dom:    dom.NewDOM(d.factory, false, false),
 			id:     uuid.New().String(),
 		},
 	}

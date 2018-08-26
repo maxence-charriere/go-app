@@ -11,7 +11,7 @@
     NSString *text = in[@"Text"];
     NSString *icon = in[@"Icon"];
 
-    StatusMenu *menu = [[StatusMenu alloc] init];
+    StatusMenu *menu = [[StatusMenu alloc] initWithID:ID];
 
     menu.item = [NSStatusBar.systemStatusBar
         statusItemWithLength:NSVariableStatusItemLength];
@@ -27,9 +27,7 @@
           text.length == 0 ? NSImageOnly : NSImageRight;
     }
 
-    menu.ID = ID;
     driver.elements[ID] = menu;
-
     [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
 }

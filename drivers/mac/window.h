@@ -2,8 +2,8 @@
 #define window_h
 
 #import "bridge.h"
-#import "webview.h"
 #import "retro.h"
+#import "webview.h"
 
 @interface Window : NSWindowController <NSWindowDelegate, WKNavigationDelegate,
                                         WKUIDelegate, WKScriptMessageHandler>
@@ -20,7 +20,6 @@
 - (void)configTitlebar:(NSString *)title hidden:(BOOL)isHidden;
 + (void)load:(NSDictionary *)in return:(NSString *)returnID;
 + (void)render:(NSDictionary *)in return:(NSString *)returnID;
-+ (void)renderAttributes:(NSDictionary *)in return:(NSString *)returnID;
 + (void)position:(NSDictionary *)in return:(NSString *)returnID;
 + (void)move:(NSDictionary *)in return:(NSString *)returnID;
 + (void)center:(NSDictionary *)in return:(NSString *)returnID;

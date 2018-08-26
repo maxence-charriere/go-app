@@ -3,61 +3,62 @@
 #include "json.h"
 
 @implementation MenuItem
-- (instancetype)initWithMenuID:(NSString *)menuID andTag:(NSDictionary *)tag {
-  self = [super init];
++ (instancetype)create:(NSString *)ID inMenu:(NSString *)elemID {
+  MenuItem *i =
+      [[MenuItem alloc] initWithTitle:@"" action:NULL keyEquivalent:@""];
+  i.ID = ID;
+  i.elemID = elemID;
+  return i;
+}
 
-  NSString *name = tag[@"Name"];
-  if (![name isEqual:@"menuitem"] && ![name isEqual:@"menu"]) {
-    NSString *err = [NSString
-        stringWithFormat:@"cannot create a MenuItem from a %@ tag", name];
-    @throw
-        [NSException exceptionWithName:@"ErrMenuItem" reason:err userInfo:nil];
+- (void)setAttrs:(NSDictionary<NSString *, NSString *> *)attrs {
+  BOOL separator = attrs[@"separator"] != nil ? YES : NO;
+  if (separator && self.separator == nil) {
+    [self setSeparator];
+  } else if (!separator && self.separator != nil) {
+    [self unsetSeparator];
   }
 
-  self.elemID = menuID;
-  self.ID = tag[@"ID"];
-  self.compoID = tag[@"CompoID"];
-  self.separator = nil;
-  self.title = @"";
-  self.enabled = YES;
-  self.toolTip = nil;
-  self.onClick = nil;
-  self.selector = nil;
-  self.keys = nil;
+  NSString *label = attrs[@"label"];
+  label = label != nil ? label : @"";
+  self.title = label;
 
-  NSDictionary *attributes = tag[@"Attributes"];
-  if (attributes != nil) {
-    BOOL separator = attributes[@"separator"] != nil ? YES : NO;
-    if (separator) {
-      self.separator = [NSMenuItem separatorItem];
-      return self;
-    }
-
-    NSString *label = attributes[@"label"];
-    if (label != nil) {
-      self.title = label;
-      if (self.submenu != nil) {
-        self.submenu.title = label;
-      }
-    }
-
-    if (attributes[@"disabled"] != nil) {
-      self.enabled = false;
-    }
-
-    self.toolTip = attributes[@"title"];
-    self.onClick = attributes[@"onclick"];
-    self.selector = attributes[@"selector"];
-    self.keys = attributes[@"keys"];
-  }
+  self.enabled = attrs[@"disabled"] == nil ? true : false;
+  self.toolTip = attrs[@"title"];
+  self.onClick = attrs[@"onclick"];
+  self.selector = attrs[@"selector"];
+  self.keys = attrs[@"keys"];
 
   [self setupOnClick];
   [self setupKeys];
-  return self;
 }
 
-- (BOOL)isSeparator {
-  return self.separator != nil;
+- (void)setSeparator {
+  NSMenuItem *sep = [NSMenuItem separatorItem];
+  self.separator = sep;
+
+  MenuContainer *parent = (MenuContainer *)self.menu;
+  if (parent == nil) {
+    return;
+  }
+
+  NSInteger index = [parent indexOfItem:self];
+  [parent removeItemAtIndex:index];
+  [parent insertItem:sep atIndex:index];
+}
+
+- (void)unsetSeparator {
+  NSMenuItem *sep = self.separator;
+  self.separator = nil;
+
+  MenuContainer *parent = (MenuContainer *)sep.menu;
+  if (parent == nil) {
+    return;
+  }
+
+  NSInteger index = [parent indexOfItem:sep];
+  [parent removeItemAtIndex:index];
+  [parent insertItem:self atIndex:index];
 }
 
 - (void)setupOnClick {
@@ -89,7 +90,7 @@
 
   NSDictionary *mapping = @{
     @"CompoID" : self.compoID,
-    @"Target" : self.onClick,
+    @"FieldOrMethod" : self.onClick,
     @"JSONValue" : @"{}",
   };
 
@@ -131,98 +132,132 @@
 @end
 
 @implementation MenuContainer
-- (instancetype)initWithMenuID:(NSString *)menuID andTag:(NSDictionary *)tag {
-  NSString *name = tag[@"Name"];
-  if (![name isEqual:@"menu"]) {
-    NSString *err = [NSString
-        stringWithFormat:@"cannot create a MenuContainer from a %@", name];
-    @throw [NSException exceptionWithName:@"ErrMenuContainer"
-                                   reason:err
-                                 userInfo:nil];
-  }
-
-  self.elemID = menuID;
-  self.ID = tag[@"ID"];
-  self.compoID = tag[@"CompoID"];
-  self.title = @"";
-
-  [self removeAllItems];
-  self.children = [[NSMutableArray alloc] init];
-
-  NSDictionary *attributes = tag[@"Attributes"];
-  if (attributes != nil) {
-    NSString *label = attributes[@"label"];
-    if (label != nil) {
-      self.title = label;
-    }
-  }
-
-  NSArray *children = tag[@"Children"];
-  if (children == nil) {
-    return self;
-  }
-
-  for (NSDictionary *child in children) {
-    MenuItem *childItem = [[MenuItem alloc] initWithMenuID:menuID andTag:child];
-
-    NSString *childName = child[@"Name"];
-    if ([childName isEqual:@"menu"]) {
-      childItem.submenu =
-          [[MenuContainer alloc] initWithMenuID:menuID andTag:child];
-    }
-
-    [self addChild:childItem];
-  }
-
-  return self;
++ (instancetype)create:(NSString *)ID inMenu:(NSString *)elemID {
+  MenuContainer *m = [[MenuContainer alloc] initWithTitle:@""];
+  m.ID = ID;
+  m.elemID = elemID;
+  return m;
 }
 
-- (instancetype)init {
-  self = [super init];
-  self.children = [[NSMutableArray alloc] init];
-  return self;
-}
+- (void)setAttrs:(NSDictionary<NSString *, NSString *> *)attrs {
+  NSString *label = attrs[@"label"];
+  label = label != nil ? label : @"";
+  self.title = label;
 
-- (void)addChild:(MenuItem *)child {
-  [self.children addObject:child];
+  self.disabled = attrs[@"disabled"] != nil ? true : false;
 
-  if ([child isSeparator]) {
-    [self addItem:child.separator];
-    child.menu = self;
+  MenuContainer *supermenu = (MenuContainer *)self.supermenu;
+  if (supermenu == nil) {
     return;
   }
 
-  [self addItem:child];
-}
-
-- (void)insertChild:(MenuItem *)child atIndex:(NSInteger)index {
-  [self.children insertObject:child atIndex:index];
-
-  if ([child isSeparator]) {
-    [self insertItem:child.separator atIndex:index];
-    child.menu = self;
-  } else {
-    [self insertItem:child atIndex:index];
+  // Updating parent menuitem title.
+  for (NSMenuItem *i in supermenu.itemArray) {
+    if (i.submenu == self) {
+      i.title = label;
+      i.enabled = !self.disabled;
+      return;
+    }
   }
 }
 
-- (void)removeChildAtIndex:(NSInteger)index {
-  [self.children removeObjectAtIndex:index];
-  [self removeItemAtIndex:index];
+- (void)insertChild:(id)child atIndex:(NSInteger)index {
+  if ([child isKindOfClass:[MenuContainer class]]) {
+    MenuContainer *c = child;
+    NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:c.title
+                                                  action:NULL
+                                           keyEquivalent:@""];
+
+    item.submenu = c;
+    item.enabled = !c.disabled;
+    [self insertItem:item atIndex:index];
+    return;
+  }
+
+  MenuItem *item = child;
+
+  if (item.separator != nil) {
+    [self insertItem:item.separator atIndex:index];
+    return;
+  }
+
+  [self insertItem:item atIndex:index];
 }
 
+- (void)appendChild:(id)child {
+  [self insertChild:child atIndex:self.numberOfItems];
+}
+
+- (void)removeChild:(id)child {
+  if ([child isKindOfClass:[MenuContainer class]]) {
+    for (NSMenuItem *c in self.itemArray) {
+      if (c.submenu == child) {
+        [self removeItem:c];
+        return;
+      }
+    }
+
+    return;
+  }
+
+  MenuItem *item = child;
+
+  if (item.separator != nil) {
+    [self removeItem:item.separator];
+    return;
+  }
+
+  [self removeItem:item];
+}
+
+- (void)replaceChild:(id)old with:(id) new {
+  NSInteger index = -1;
+
+  if ([old isKindOfClass:[MenuContainer class]]) {
+    NSArray<NSMenuItem *> *children = self.itemArray;
+
+    for (int i = 0; i < children.count; ++i) {
+      if (children[i].submenu == old) {
+        index = i;
+        break;
+      }
+    }
+  } else {
+    MenuItem *item = old;
+
+    if (item.separator != nil) {
+      index = [self indexOfItem:item.separator];
+    } else {
+      index = [self indexOfItem:item];
+    }
+  }
+
+  if (index < 0) {
+    return;
+  }
+
+  [self removeItemAtIndex:index];
+  [self insertChild:new atIndex:index];
+}
 @end
 
 @implementation Menu
+- (instancetype)initWithID:(NSString *)ID {
+  self = [super init];
+
+  self.ID = ID;
+  self.nodes = [[NSMutableDictionary alloc] init];
+
+  return self;
+}
+
 + (void) new:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
-    Driver *driver = [Driver current];
     NSString *ID = in[@"ID"];
+    Menu *menu = [[Menu alloc] initWithID:ID];
 
-    Menu *menu = [[Menu alloc] init];
-    menu.ID = ID;
+    Driver *driver = [Driver current];
     driver.elements[ID] = menu;
-
     [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
 }
@@ -230,18 +265,14 @@
 + (void)load:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
-
     NSString *ID = in[@"ID"];
-    NSDictionary *tag = in[@"Tag"];
 
     Menu *menu = driver.elements[ID];
     if (menu == nil) {
       [NSException raise:@"ErrNoMenu" format:@"no menu with id %@", ID];
     }
 
-    menu.root = [[MenuContainer alloc] initWithMenuID:ID andTag:tag];
-    menu.root.delegate = menu;
-
+    menu.root = nil;
     [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
 }
@@ -249,158 +280,265 @@
 + (void)render:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
-
     NSString *ID = in[@"ID"];
-    NSDictionary *tag = in[@"Tag"];
-
-    NSString *tagID = tag[@"ID"];
-    NSString *name = tag[@"Name"];
+    NSArray *changes = [JSONDecoder decode:in[@"Changes"]];
 
     Menu *menu = driver.elements[ID];
     if (menu == nil) {
       [NSException raise:@"ErrNoMenu" format:@"no menu with id %@", ID];
     }
 
-    id elem = [menu elementByID:tagID];
-    if (elem == nil) {
-      [NSException raise:@"ErrElemNotFound"
-                  format:@"no element with id %@", tagID];
-    }
+    NSDictionary<NSString *, NSNumber *> *typeMap = @{
+      @"createText" : @0,
+      @"setText" : @1,
+      @"createElem" : @2,
+      @"setAttrs" : @3,
+      @"appendChild" : @4,
+      @"removeChild" : @5,
+      @"replaceChild" : @6,
+      @"mountElem" : @7,
+      @"createCompo" : @8,
+      @"setCompoRoot" : @9,
+      @"deleteNode" : @10
+    };
 
-    // Menu container.
-    // Should occur only for the root menu container.
-    if ([elem isKindOfClass:[MenuContainer class]]) {
-      if (![name isEqual:@"menu"]) {
-        [NSException raise:@"ErrNoMenu"
-                    format:@"root tag must be a menu: %@", name];
+    for (NSDictionary *c in changes) {
+      NSString *type = c[@"Type"];
+
+      switch (typeMap[type].intValue) {
+      case 2:
+        [menu createElem:c[@"Value"]];
+        break;
+
+      case 3:
+        [menu setAttrs:c[@"Value"]];
+        break;
+
+      case 4:
+        [menu appendChild:c[@"Value"]];
+        break;
+
+      case 5:
+        [menu removeChild:c[@"Value"]];
+        break;
+
+      case 6:
+        [menu replaceChild:c[@"Value"]];
+        break;
+
+      case 7:
+        [menu mountElem:c[@"Value"]];
+        break;
+
+      case 8:
+        [menu createCompo:c[@"Value"]];
+        break;
+
+      case 9:
+        [menu setCompoRoot:c[@"Value"]];
+        break;
+
+      case 10:
+        [menu deleteNode:c[@"Value"]];
+        break;
+
+      default:
+        [NSException raise:@"ErrChange"
+                    format:@"%@ change is not supported", type];
       }
-
-      MenuContainer *container = (MenuContainer *)elem;
-      container = [container initWithMenuID:menu.ID andTag:tag];
-
-      [driver.macRPC return:returnID withOutput:nil andError:nil];
-      return;
     }
-
-    MenuItem *item = (MenuItem *)elem;
-    MenuContainer *container = (MenuContainer *)item.menu;
-    NSInteger index = [container.children indexOfObject:item];
-    [container removeChildAtIndex:index];
-
-    MenuItem *newItem = [[MenuItem alloc] initWithMenuID:menu.ID andTag:tag];
-
-    if ([name isEqual:@"menu"]) {
-      newItem.submenu =
-          [[MenuContainer alloc] initWithMenuID:menu.ID andTag:tag];
-    }
-
-    [container insertChild:newItem atIndex:index];
 
     [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
 }
 
-+ (void)renderAttributes:(NSDictionary *)in return:(NSString *)returnID {
-  defer(returnID, ^{
-    Driver *driver = [Driver current];
+- (void)createElem:(NSDictionary *)change {
+  NSString *ID = change[@"ID"];
+  NSString *TagName = change[@"TagName"];
 
-    NSString *ID = in[@"ID"];
-    NSDictionary *tag = in[@"Tag"];
-    NSString *tagID = tag[@"ID"];
-    NSDictionary *attributes = tag[@"Attributes"];
+  if ([TagName isEqual:@"menu"]) {
+    self.nodes[ID] = [MenuContainer create:ID inMenu:self.ID];
+    return;
+  }
 
-    BOOL separator = NO;
-    if (attributes != nil) {
-      separator = attributes[@"separator"] != nil ? YES : NO;
-    }
+  if ([TagName isEqual:@"menuitem"]) {
+    self.nodes[ID] = [MenuItem create:ID inMenu:self.ID];
+    return;
+  }
 
-    Menu *menu = driver.elements[ID];
-    if (menu == nil) {
-      [NSException raise:@"ErrNoMenu" format:@"no menu with id %@", ID];
-    }
-
-    id elem = [menu elementByID:tagID];
-    if (elem == nil) {
-      [NSException raise:@"ErrElemNotFound"
-                  format:@"no element with id %@", tagID];
-    }
-
-    // Menu container.
-    // Should occur only for the root menu container.
-    if ([elem isKindOfClass:[MenuContainer class]]) {
-      MenuContainer *container = (MenuContainer *)elem;
-      container = [container initWithMenuID:menu.ID andTag:tag];
-
-      [driver.macRPC return:returnID withOutput:nil andError:nil];
-      return;
-    }
-
-    // Menu item.
-    MenuItem *item = (MenuItem *)elem;
-
-    if ([item isSeparator] != separator) {
-      MenuItem *newItem = [[MenuItem alloc] initWithMenuID:menu.ID andTag:tag];
-      MenuContainer *container = (MenuContainer *)item.menu;
-      NSInteger index = [container.children indexOfObject:item];
-
-      [container removeChildAtIndex:index];
-      [container insertChild:newItem atIndex:index];
-    }
-
-    item = [item initWithMenuID:menu.ID andTag:tag];
-
-    [driver.macRPC return:returnID withOutput:nil andError:nil];
-  });
+  [NSException raise:@"ErrMenu"
+              format:@"menu does not support %@ tag", TagName];
 }
 
-- (id)elementByID:(NSString *)ID {
-  return [self elementFromContainer:self.root ID:ID];
-}
-
-- (id)elementFromContainer:(MenuContainer *)container ID:(NSString *)ID {
-  if ([container.ID isEqual:ID]) {
-    return container;
+- (void)setAttrs:(NSDictionary *)change {
+  NSDictionary<NSString *, NSString *> *attrs = change[@"Attrs"];
+  if (attrs == nil) {
+    return;
   }
 
-  for (MenuItem *child in container.children) {
-    id elem = [self elementFromItem:child ID:ID];
+  id node = self.nodes[change[@"ID"]];
+  if (node == nil) {
+    return;
+  }
 
-    if (elem != nil) {
-      return elem;
+  if ([node isKindOfClass:[MenuContainer class]]) {
+    MenuContainer *m = node;
+    [m setAttrs:attrs];
+    return;
+  }
+
+  if ([node isKindOfClass:[MenuItem class]]) {
+    MenuItem *mi = node;
+    [mi setAttrs:attrs];
+    return;
+  }
+
+  [NSException raise:@"ErrMenu" format:@"unknown menu element"];
+}
+
+- (void)appendChild:(NSDictionary *)change {
+  id child = self.nodes[change[@"ChildID"]];
+  child = [self childElem:child];
+  if (child == nil) {
+    return;
+  }
+
+  NSString *parentID = change[@"ParentID"];
+
+  if ([parentID isEqual:@"root:"]) {
+    if ([child isKindOfClass:[MenuItem class]]) {
+      [NSException raise:@"ErrMenu" format:@"menu root is a menuitem"];
     }
+
+    MenuContainer *m = child;
+    m.delegate = self;
+    self.root = m;
+    return;
   }
 
-  return nil;
+  MenuContainer *parent = self.nodes[parentID];
+  if (parent == nil) {
+    return;
+  }
+
+  [parent appendChild:child];
 }
 
-- (id)elementFromItem:(MenuItem *)item ID:(NSString *)ID {
-  if ([item.ID isEqual:ID]) {
-    return item;
+- (void)removeChild:(NSDictionary *)change {
+  NSString *parentID = change[@"ParentID"];
+
+  if ([parentID isEqual:@"root:"]) {
+    self.root = nil;
+    return;
   }
 
-  if (item.submenu == nil) {
-    return nil;
+  MenuContainer *parent = self.nodes[parentID];
+  if (parent == nil) {
+    return;
   }
 
-  return [self elementFromContainer:(MenuContainer *)item.submenu ID:ID];
+  id child = self.nodes[change[@"ChildID"]];
+  child = [self childElem:child];
+  if (child == nil) {
+    return;
+  }
+
+  [parent removeChild:child];
+}
+
+- (void)replaceChild:(NSDictionary *)change {
+  NSString *parentID = change[@"ParentID"];
+
+  if ([parentID isEqual:@"root:"]) {
+    [NSException raise:@"ErrMenu" format:@"root menu can't be replaced"];
+  }
+
+  MenuContainer *parent = self.nodes[parentID];
+  if (parent == nil) {
+    return;
+  }
+
+  id newChild = self.nodes[change[@"ChildID"]];
+  newChild = [self childElem:newChild];
+  if (newChild == nil) {
+    return;
+  }
+
+  id oldChild = self.nodes[change[@"OldID"]];
+  oldChild = [self childElem:oldChild];
+  if (oldChild == nil) {
+    return;
+  }
+
+  [parent replaceChild:oldChild with:newChild];
+}
+
+- (void)mountElem:(NSDictionary *)change {
+  id node = self.nodes[change[@"ID"]];
+  if (node == nil) {
+    return;
+  }
+
+  NSString *compoID = change[@"CompoID"];
+
+  if ([node isKindOfClass:[MenuContainer class]]) {
+    MenuContainer *m = node;
+    m.compoID = compoID;
+    return;
+  }
+
+  MenuItem *i = node;
+  i.compoID = compoID;
+}
+
+- (void)createCompo:(NSDictionary *)change {
+  MenuCompo *c = [[MenuCompo alloc] init];
+  c.ID = change[@"ID"];
+  c.name = change[@"Name"];
+  self.nodes[c.ID] = c;
+}
+
+- (void)setCompoRoot:(NSDictionary *)change {
+  MenuCompo *c = self.nodes[change[@"ID"]];
+  if (c == nil) {
+    return;
+  }
+
+  c.rootID = change[@"RootID"];
+}
+
+- (void)deleteNode:(NSDictionary *)change {
+  [self.nodes removeObjectForKey:change[@"ID"]];
+}
+
+- (id)childElem:(id)node {
+  if (![node isKindOfClass:[MenuCompo class]]) {
+    return node;
+  }
+
+  MenuCompo *c = node;
+  return self.nodes[c.rootID];
 }
 
 - (void)menuDidClose:(NSMenu *)menu {
-  Driver *driver = [Driver current];
-
   NSDictionary *in = @{
     @"ID" : self.ID,
   };
 
+  Driver *driver = [Driver current];
   [driver.goRPC call:@"menus.OnClose" withInput:in onUI:YES];
 }
 
 + (void) delete:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
-    Driver *driver = [Driver current];
     NSString *ID = in[@"ID"];
+
+    Driver *driver = [Driver current];
     [driver.elements removeObjectForKey:ID];
     [driver.macRPC return:returnID withOutput:nil andError:nil];
   });
 }
+@end
+
+@implementation MenuCompo
 @end

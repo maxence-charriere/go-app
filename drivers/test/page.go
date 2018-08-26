@@ -7,7 +7,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/murlokswarm/app/internal/html"
+	"github.com/murlokswarm/app/internal/dom"
 	"github.com/pkg/errors"
 )
 
@@ -16,7 +16,7 @@ type Page struct {
 	core.Page
 
 	driver  *Driver
-	markup  app.Markup
+	dom     *dom.DOM
 	history *core.History
 	id      string
 	compo   app.Compo
@@ -25,7 +25,7 @@ type Page struct {
 func newPage(d *Driver, c app.PageConfig) *Page {
 	p := &Page{
 		driver:  d,
-		markup:  app.ConcurrentMarkup(html.NewMarkup(d.factory)),
+		dom:     dom.NewDOM(d.factory, false, true),
 		history: core.NewHistory(),
 		id:      uuid.New().String(),
 	}
@@ -51,11 +51,6 @@ func (p *Page) Load(urlFmt string, v ...interface{}) {
 		p.SetErr(err)
 	}()
 
-	if p.compo != nil {
-		p.markup.Dismount(p.compo)
-		p.compo = nil
-	}
-
 	u := fmt.Sprintf(urlFmt, v...)
 	n := core.CompoNameFromURLString(u)
 
@@ -64,8 +59,8 @@ func (p *Page) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	if _, err = p.markup.Mount(c); err != nil {
-		return
+	if p.compo != nil {
+		p.dom.Clean()
 	}
 
 	p.compo = c
@@ -73,6 +68,8 @@ func (p *Page) Load(urlFmt string, v ...interface{}) {
 	if u != p.history.Current() {
 		p.history.NewEntry(u)
 	}
+
+	_, err = p.dom.New(c)
 }
 
 // Compo satisfies the app.Page interface.
@@ -82,12 +79,12 @@ func (p *Page) Compo() app.Compo {
 
 // Contains satisfies the app.Page interface.
 func (p *Page) Contains(c app.Compo) bool {
-	return p.markup.Contains(c)
+	return p.dom.Contains(c)
 }
 
 // Render satisfies the app.Page interface.
 func (p *Page) Render(c app.Compo) {
-	_, err := p.markup.Update(c)
+	_, err := p.dom.Update(c)
 	p.SetErr(err)
 }
 

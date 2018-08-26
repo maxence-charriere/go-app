@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/murlokswarm/app/internal/html"
+	"github.com/murlokswarm/app/internal/dom"
 )
 
 // Menu is a test menu that implements the app.Menu interface.
@@ -14,7 +14,7 @@ type Menu struct {
 	core.Menu
 
 	driver *Driver
-	markup app.Markup
+	dom    *dom.DOM
 	id     string
 	compo  app.Compo
 }
@@ -22,7 +22,7 @@ type Menu struct {
 func newMenu(d *Driver, c app.MenuConfig) *Menu {
 	m := &Menu{
 		driver: d,
-		markup: app.ConcurrentMarkup(html.NewMarkup(d.factory)),
+		dom:    dom.NewDOM(d.factory, false, false),
 		id:     uuid.New().String(),
 	}
 
@@ -47,11 +47,6 @@ func (m *Menu) Load(urlFmt string, v ...interface{}) {
 		m.SetErr(err)
 	}()
 
-	if m.compo != nil {
-		m.markup.Dismount(m.compo)
-		m.compo = nil
-	}
-
 	u := fmt.Sprintf(urlFmt, v...)
 	n := core.CompoNameFromURLString(u)
 
@@ -60,11 +55,12 @@ func (m *Menu) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	if _, err = m.markup.Mount(c); err != nil {
-		return
+	if m.compo != nil {
+		m.dom.Clean()
 	}
 
 	m.compo = c
+	_, err = m.dom.New(c)
 }
 
 // Compo satisfies the app.Menu interface.
@@ -74,11 +70,11 @@ func (m *Menu) Compo() app.Compo {
 
 // Contains satisfies the app.Menu interface.
 func (m *Menu) Contains(c app.Compo) bool {
-	return m.markup.Contains(c)
+	return m.dom.Contains(c)
 }
 
 // Render satisfies the app.Menu interface.
 func (m *Menu) Render(c app.Compo) {
-	_, err := m.markup.Update(c)
+	_, err := m.dom.Update(c)
 	m.SetErr(err)
 }

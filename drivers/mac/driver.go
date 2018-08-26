@@ -123,12 +123,13 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.goRPC.Handle("windows.OnClose", handleWindow(onWindowClose))
 	d.goRPC.Handle("windows.OnCallback", handleWindow(onWindowCallback))
 	d.goRPC.Handle("windows.OnNavigate", handleWindow(onWindowNavigate))
+	d.goRPC.Handle("windows.OnAlert", handleWindow(onWindowAlert))
 
 	d.goRPC.Handle("menus.OnClose", handleMenu(onMenuClose))
 	d.goRPC.Handle("menus.OnCallback", handleMenu(onMenuCallback))
 
 	d.goRPC.Handle("filePanels.OnSelect", handleFilePanel(onFilePanelSelect))
-	// 	d.goRPC.Handle("saveFilePanels.OnSelect", handleSaveFilePanel(onSaveFilePanelSelect))
+	d.goRPC.Handle("saveFilePanels.OnSelect", handleSaveFilePanel(onSaveFilePanelSelect))
 
 	d.goRPC.Handle("notifications.OnReply", handleNotification(onNotificationReply))
 
@@ -226,6 +227,9 @@ func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
 // NewContextMenu satisfies the app.Driver interface.
 func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 	m := newMenu(c, "context menu")
+	if m.Err() != nil {
+		return m
+	}
 
 	err := d.macRPC.Call("driver.SetContextMenu", nil, m.ID())
 	m.SetErr(err)

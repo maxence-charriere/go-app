@@ -1,5 +1,3 @@
-// +build !js
-
 package web
 
 import (
@@ -34,8 +32,7 @@ func (n *NotFound) Render() string {
 		margin: 0">
 		4
 		<svg version="1.1" id="Calque_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 			width="100px" height="100px" viewBox="0 0 186.179 186.18" style="enable-background:new 0 0 186.179 186.18;"
-	 			xml:space="preserve">
+	 			width="100px" height="100px" viewBox="0 0 186.179 186.18" style="enable-background:new 0 0 186.179 186.18;">
 			<circle style="fill:#7FE5D1;" cx="93.089" cy="93.088" r="93.089"/>
 			<path style="fill:#79D1C0;" d="M171.303,143.77c-16.638-25.322-45.285-42.047-77.848-42.047c-32.721,0-61.488,16.891-78.088,42.424
 				c16.637,25.314,45.285,42.033,77.844,42.033C125.93,186.18,154.701,169.297,171.303,143.77z"/>

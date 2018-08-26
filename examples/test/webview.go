@@ -10,7 +10,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/html"
 )
 
 // Webview is a component to test webview based elements.
@@ -129,10 +128,9 @@ func (c *Webview) OnNavigate(u *url.URL) {
 
 // PageConfig return allow to set page information like title or meta when the
 // component is mounted as the root component.
-func (c *Webview) PageConfig() html.PageConfig {
-	return html.PageConfig{
+func (c *Webview) PageConfig() app.HTMLConfig {
+	return app.HTMLConfig{
 		Title: fmt.Sprintf("Test component %v", c.Page),
-		DisableDefaultContextMenu: true,
 	}
 }
 
