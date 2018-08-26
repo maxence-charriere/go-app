@@ -1,4 +1,12 @@
 
+3.1.1 / 2018-08-26
+==================
+
+## Mac
+
+* menuitem icon support.
+* menuitem checked support.
+
 3.1.0 / 2018-08-25
 ==================
 
