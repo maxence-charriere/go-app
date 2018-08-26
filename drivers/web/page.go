@@ -36,7 +36,9 @@ func newPage(c app.PageConfig) app.Page {
 	js.Global.Set("golangRequest", p.onPageRequest)
 	js.Global.Call("addEventListener", "unload", p.onClose)
 
-	p.Load(p.URL().String())
+	u := p.URL()
+	u.Path = js.Global.Get("loadedComp").String()
+	p.Load(u.String())
 	return p
 }
 

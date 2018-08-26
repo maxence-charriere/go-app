@@ -3,9 +3,7 @@
 package web
 
 import (
-	"bytes"
 	"context"
-	"html/template"
 	"net/http"
 	"os"
 
@@ -13,7 +11,6 @@ import (
 	"github.com/murlokswarm/app/internal/core"
 	"github.com/murlokswarm/app/internal/dom"
 	"github.com/murlokswarm/app/internal/file"
-	"github.com/murlokswarm/app/internal/html"
 )
 
 func init() {
@@ -27,7 +24,7 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.factory = f
 
 	if len(d.NotFoundURL) == 0 {
-		d.NotFoundURL = "web.NotFound"
+		d.NotFoundURL = "/web.NotFound"
 	}
 
 	if d.Server == nil {
@@ -66,17 +63,23 @@ func (d *Driver) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 		req.URL.Path = d.URL
 	}
 
-	if n := core.CompoNameFromURL(req.URL); d.factory.IsCompoRegistered(n) {
-		d.handleCompo(res, req)
+	if n := core.CompoNameFromURL(req.URL); !d.factory.IsCompoRegistered(n) {
+		req.URL.Path = d.NotFoundURL
+		d.handle(res, req, http.StatusNotFound)
 		return
 	}
 
-	req.URL.Path = d.NotFoundURL
-	d.handleNotFound(res, req)
+	d.handle(res, req, http.StatusOK)
 }
 
-func (d *Driver) handleCompo(res http.ResponseWriter, req *http.Request) {
-	c, err := d.factory.NewCompo(core.CompoNameFromURL(req.URL))
+func (d *Driver) handle(res http.ResponseWriter, req *http.Request, status int) {
+	app.WhenDebug(func() {
+		app.Debug("serving %s", req.URL)
+	})
+
+	compoName := core.CompoNameFromURL(req.URL)
+
+	c, err := d.factory.NewCompo(compoName)
 	if err != nil {
 		http.NotFound(res, req)
 		return
@@ -92,41 +95,9 @@ func (d *Driver) handleCompo(res http.ResponseWriter, req *http.Request) {
 	}
 
 	htmlConf.Javascripts = append(htmlConf.Javascripts, d.Resources("goapp.js"))
-	page := dom.Page(htmlConf, "console.log")
+	page := dom.Page(htmlConf, "console.log", compoName)
 
-	res.WriteHeader(http.StatusOK)
-	res.Write([]byte(page))
-}
-
-func (d *Driver) handleNotFound(res http.ResponseWriter, req *http.Request) {
-	compo, err := d.factory.NewCompo(core.CompoNameFromURL(req.URL))
-	if err != nil {
-		http.NotFound(res, req)
-		return
-	}
-
-	markup := html.NewMarkup(d.factory)
-
-	var root app.Tag
-	if root, err = markup.Mount(compo); err != nil {
-		http.NotFound(res, req)
-		return
-	}
-
-	var b bytes.Buffer
-	enc := html.NewEncoder(&b, markup, false)
-
-	if err = enc.Encode(root); err != nil {
-		http.NotFound(res, req)
-		return
-	}
-
-	page := html.NewPage(html.PageConfig{
-		Title:        "not found",
-		DefaultCompo: template.HTML(b.String()),
-	})
-
-	res.WriteHeader(http.StatusNotFound)
+	res.WriteHeader(status)
 	res.Write([]byte(page))
 }
 

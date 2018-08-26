@@ -181,7 +181,7 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 	}{
 		ID:      w.id,
 		Title:   htmlConf.Title,
-		Page:    dom.Page(htmlConf, "window.webkit.messageHandlers.golangRequest.postMessage"),
+		Page:    dom.Page(htmlConf, "window.webkit.messageHandlers.golangRequest.postMessage", n),
 		LoadURL: u,
 		BaseURL: driver.Resources(),
 	}); err != nil {
