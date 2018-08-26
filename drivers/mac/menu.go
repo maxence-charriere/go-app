@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"net/url"
 
+	"github.com/davecgh/go-spew/spew"
+
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
@@ -30,7 +32,7 @@ type Menu struct {
 
 func newMenu(c app.MenuConfig, typ string) *Menu {
 	m := &Menu{
-		dom: dom.NewDOM(driver.factory, true),
+		dom: dom.NewDOM(driver.factory, false, false),
 		id:  uuid.New().String(),
 		typ: typ,
 
@@ -152,10 +154,12 @@ func onMenuCallback(m *Menu, in map[string]interface{}) interface{} {
 	mappingStr := in["Mapping"].(string)
 
 	var mapping dom.Mapping
-	if err := json.Unmarshal([]byte(mappingStr), &m); err != nil {
+	if err := json.Unmarshal([]byte(mappingStr), &mapping); err != nil {
 		app.Log("menu callback failed: %s", err)
 		return nil
 	}
+
+	spew.Dump(mapping)
 
 	c, err := m.dom.CompoByID(mapping.CompoID)
 	if err != nil {

@@ -10,10 +10,11 @@ import (
 	"golang.org/x/net/html/atom"
 )
 
-func decodeNodes(s string, hrefFmt bool) (node, error) {
+func decodeNodes(s string, hrefFmt, handlerFmt bool) (node, error) {
 	d := &decoder{
-		tokenizer: html.NewTokenizer(bytes.NewBufferString(s)),
-		hrefFmt:   hrefFmt,
+		tokenizer:  html.NewTokenizer(bytes.NewBufferString(s)),
+		hrefFmt:    hrefFmt,
+		handlerFmt: handlerFmt,
 	}
 
 	return d.decode()
@@ -23,6 +24,7 @@ type decoder struct {
 	tokenizer   *html.Tokenizer
 	decodingSVG bool
 	hrefFmt     bool
+	handlerFmt  bool
 }
 
 func (d *decoder) decode() (node, error) {
@@ -120,7 +122,7 @@ func (d *decoder) decodeAttrs(hasAttr bool) map[string]string {
 		v := string(val)
 
 		switch {
-		case strings.HasPrefix(n, "on") && !strings.HasPrefix(v, "js:"):
+		case d.handlerFmt && strings.HasPrefix(n, "on") && !strings.HasPrefix(v, "js:"):
 			v = fmt.Sprintf(`callCompoHandler(this, event, '%s')`, v)
 
 		case n == "href" && d.hrefFmt:

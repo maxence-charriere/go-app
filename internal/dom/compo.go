@@ -98,7 +98,7 @@ func validateCompo(c app.Compo) error {
 	return nil
 }
 
-func decodeCompo(c app.Compo, hrefFmt bool) (node, error) {
+func decodeCompo(c app.Compo, hrefFmt, handlerFmt bool) (node, error) {
 	var funcs template.FuncMap
 
 	if compoExtRend, ok := c.(app.CompoWithExtendedRender); ok {
@@ -139,7 +139,7 @@ func decodeCompo(c app.Compo, hrefFmt bool) (node, error) {
 		return nil, err
 	}
 
-	return decodeNodes(w.String(), hrefFmt)
+	return decodeNodes(w.String(), hrefFmt, handlerFmt)
 }
 
 func mapCompoFields(c app.Compo, fields map[string]string) error {

@@ -116,7 +116,10 @@ func TestDecodeCompo(t *testing.T) {
 		String: "<br>",
 		Time:   time.Now(),
 		Struct: s,
-	}, true)
+	},
+		true,
+		true,
+	)
 	require.NoError(t, err)
 
 	root := n.(*elem)
@@ -133,10 +136,10 @@ func TestDecodeCompo(t *testing.T) {
 	hello := root.children[9].(*elem).children[0].(*text)
 	assert.Equal(t, "hello", hello.text)
 
-	_, err = decodeCompo(&CompoBadTemplate{}, true)
+	_, err = decodeCompo(&CompoBadTemplate{}, true, true)
 	assert.Error(t, err)
 
-	_, err = decodeCompo(&CompoBadTemplate2{}, true)
+	_, err = decodeCompo(&CompoBadTemplate2{}, true, true)
 	assert.Error(t, err)
 }
 

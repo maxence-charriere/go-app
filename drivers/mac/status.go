@@ -20,7 +20,7 @@ type StatusMenu struct {
 func newStatusMenu(c app.StatusMenuConfig) *StatusMenu {
 	s := &StatusMenu{
 		Menu: Menu{
-			dom:            dom.NewDOM(driver.factory, true),
+			dom:            dom.NewDOM(driver.factory, false, false),
 			id:             uuid.New().String(),
 			typ:            "status menu",
 			keepWhenClosed: true,

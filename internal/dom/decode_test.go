@@ -22,7 +22,10 @@ func TestDecodeNodes(t *testing.T) {
 			</svg>
 			<a href="html.Foo"></a>
 		</div>
-		`, true)
+		`,
+		true,
+		true,
+	)
 	require.NoError(t, err)
 
 	div := root.(*elem)
@@ -75,7 +78,10 @@ func TestDecodeNodesError(t *testing.T) {
 		<div>
 			<div %error>
 		</div>
-		`, true)
+		`,
+		true,
+		true,
+	)
 	assert.Error(t, err)
 }
 

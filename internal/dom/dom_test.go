@@ -636,7 +636,7 @@ func TestDOM(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
-			dom := NewDOM(f, true)
+			dom := NewDOM(f, true, true)
 			defer func() {
 				dom.Clean()
 				assert.Empty(t, dom.compoByID)
@@ -666,7 +666,7 @@ func TestDOM(t *testing.T) {
 }
 
 func TestDOMUpdateErrors(t *testing.T) {
-	dom := NewDOM(app.NewFactory(), true)
+	dom := NewDOM(app.NewFactory(), true, true)
 	defer func() {
 		dom.Clean()
 		assert.Empty(t, dom.compoByID)
@@ -684,7 +684,7 @@ func TestDOMCompoByID(t *testing.T) {
 	f := app.NewFactory()
 	f.RegisterCompo(&Foo{})
 
-	dom := NewDOM(f, true)
+	dom := NewDOM(f, true, true)
 	foo := &Foo{}
 
 	_, err := dom.New(foo)

@@ -25,7 +25,7 @@
 
   self.enabled = attrs[@"disabled"] == nil ? true : false;
   self.toolTip = attrs[@"title"];
-  // self.onClick = attrs[@"onclick"];
+  self.onClick = attrs[@"onclick"];
   self.selector = attrs[@"selector"];
   self.keys = attrs[@"keys"];
 
