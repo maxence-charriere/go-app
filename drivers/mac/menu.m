@@ -51,7 +51,7 @@
   NSMenuItem *sep = self.separator;
   self.separator = nil;
 
-  MenuContainer *parent = (MenuContainer *)self.menu;
+  MenuContainer *parent = (MenuContainer *)sep.menu;
   if (parent == nil) {
     return;
   }
