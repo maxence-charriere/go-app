@@ -66,7 +66,7 @@ func newWindow() {
 		Width:           1280,
 		Height:          768,
 		BackgroundColor: "#21252b",
-		DefaultURL:      "/Hello",
+		URL:             "/Hello",
 	})
 }
 
