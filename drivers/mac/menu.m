@@ -242,13 +242,19 @@
 @end
 
 @implementation Menu
+- (instancetype)initWithID:(NSString *)ID {
+  self = [super init];
+
+  self.ID = ID;
+  self.nodes = [[NSMutableDictionary alloc] init];
+
+  return self;
+}
+
 + (void) new:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     NSString *ID = in[@"ID"];
-
-    Menu *menu = [[Menu alloc] init];
-    menu.ID = ID;
-    menu.nodes = [[NSMutableDictionary alloc] init];
+    Menu *menu = [[Menu alloc] initWithID:ID];
 
     Driver *driver = [Driver current];
     driver.elements[ID] = menu;
@@ -404,7 +410,9 @@
       [NSException raise:@"ErrMenu" format:@"menu root is a menuitem"];
     }
 
-    self.root = child;
+    MenuContainer *m = child;
+    m.delegate = self;
+    self.root = m;
     return;
   }
 

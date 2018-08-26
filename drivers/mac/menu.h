@@ -41,6 +41,7 @@
 @property NSMutableDictionary<NSString *, id> *nodes;
 @property MenuContainer *root;
 
+- (instancetype)initWithID:(NSString *)ID;
 + (void) new:(NSDictionary *)in return:(NSString *)returnID;
 + (void)load:(NSDictionary *)in return:(NSString *)returnID;
 + (void)render:(NSDictionary *)in return:(NSString *)returnID;
