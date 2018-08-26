@@ -11,12 +11,14 @@
 @property NSString *onClick;
 @property NSString *selector;
 @property NSString *keys;
+@property NSString *icon;
 @property NSMenuItem *separator;
 
 + (instancetype)create:(NSString *)ID inMenu:(NSString *)elemID;
 - (void)setAttrs:(NSDictionary<NSString *, NSString *> *)attrs;
 - (void)setSeparator;
 - (void)unsetSeparator;
+- (void)setIconWithPath:(NSString *)icon;
 - (void)setupOnClick;
 - (void)clicked:(id)sender;
 - (void)setupKeys;

@@ -5,7 +5,7 @@
 #import "retro.h"
  
 @interface NSImage (ImageCategory)
-+ (NSImage *)resizedImage:(NSImage *)sourceImage
++ (NSImage *)resizeImage:(NSImage *)sourceImage
         toPixelDimensions:(NSSize)newSize;
 @end
 

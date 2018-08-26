@@ -1,5 +1,6 @@
 #include "menu.h"
 #include "driver.h"
+#include "image.h"
 #include "json.h"
 
 @implementation MenuItem
@@ -28,6 +29,25 @@
   self.onClick = attrs[@"onclick"];
   self.selector = attrs[@"selector"];
   self.keys = attrs[@"keys"];
+
+  if (attrs[@"checked"] != nil) {
+    self.state = NSControlStateValueOn;
+  } else {
+    self.state = NSControlStateValueOff;
+  }
+
+  NSString *icon = attrs[@"icon"];
+  icon = icon != nil ? icon : @"";
+
+  if (icon.length != 0) {
+    NSBundle *mainBundle = [NSBundle mainBundle];
+    icon = [NSString stringWithFormat:@"%@/%@", mainBundle.resourcePath, icon];
+  }
+
+  if (![self.icon isEqual:icon]) {
+    self.icon = icon;
+    [self setIconWithPath:icon];
+  }
 
   [self setupOnClick];
   [self setupKeys];
@@ -59,6 +79,19 @@
   NSInteger index = [parent indexOfItem:sep];
   [parent removeItemAtIndex:index];
   [parent insertItem:self atIndex:index];
+}
+
+- (void)setIconWithPath:(NSString *)icon {
+  if (icon.length == 0) {
+    self.image = nil;
+    return;
+  }
+
+  CGFloat menuBarHeight = [[NSApp mainMenu] menuBarHeight];
+
+  NSImage *img = [[NSImage alloc] initByReferencingFile:icon];
+  self.image = [NSImage resizeImage:img
+                  toPixelDimensions:NSMakeSize(menuBarHeight, menuBarHeight)];
 }
 
 - (void)setupOnClick {

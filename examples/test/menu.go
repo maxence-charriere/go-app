@@ -15,6 +15,7 @@ func init() {
 type Menu struct {
 	Name             string
 	DisableAll       bool
+	Checked          bool
 	RandomTitle      string
 	Separator        bool
 	RenderRootToggle bool
@@ -30,9 +31,15 @@ func (m *Menu) Render() string {
 			  onclick="OnButtonClick"
 			  {{if .DisableAll}}disabled{{end}}>
 	</menuitem>
-	<menuitem label="button with icon" 
+	<menuitem label="button with icon"
+			  icon="logo.png"
 			  onclick="OnButtonWithIconClick" 
 			  {{if .DisableAll}}disabled{{end}}>
+	</menuitem>
+	<menuitem label="checkable button"
+			  onclick="OnCheckableButton"
+			  {{if .Checked}}checked{{end}}
+	          {{if .DisableAll}}disabled{{end}}>
 	</menuitem>
 
 	<menuitem separator></menuitem>
@@ -141,6 +148,14 @@ func (m *Menu) OnButtonClick() {
 // "button with icon" is clicked.
 func (m *Menu) OnButtonWithIconClick() {
 	app.Log("button with icon clicked")
+}
+
+// OnCheckableButton is the function that is called when the button labelled
+// "checkable button" is clicked.
+func (m *Menu) OnCheckableButton() {
+	app.Log("checkable button clicked")
+	m.Checked = !m.Checked
+	app.Render(m)
 }
 
 // OnSetDockBadge is the function that is called when the button labelled "set
