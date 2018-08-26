@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/murlokswarm/app/internal/html"
+	"github.com/murlokswarm/app/internal/dom"
 	"github.com/pkg/errors"
 )
 
@@ -15,7 +15,7 @@ type Window struct {
 	core.Window
 
 	driver  *Driver
-	markup  app.Markup
+	dom     *dom.DOM
 	history *core.History
 	id      string
 	compo   app.Compo
@@ -30,7 +30,7 @@ type Window struct {
 func newWindow(d *Driver, c app.WindowConfig) *Window {
 	w := &Window{
 		driver:  d,
-		markup:  app.ConcurrentMarkup(html.NewMarkup(d.factory)),
+		dom:     dom.NewDOM(d.factory, true, true),
 		history: core.NewHistory(),
 		id:      uuid.New().String(),
 
@@ -58,11 +58,6 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		w.SetErr(err)
 	}()
 
-	if w.compo != nil {
-		w.markup.Dismount(w.compo)
-		w.compo = nil
-	}
-
 	u := fmt.Sprintf(urlFmt, v...)
 	n := core.CompoNameFromURLString(u)
 
@@ -71,8 +66,8 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	if _, err = w.markup.Mount(c); err != nil {
-		return
+	if w.compo != nil {
+		w.dom.Clean()
 	}
 
 	w.compo = c
@@ -80,6 +75,8 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 	if u != w.history.Current() {
 		w.history.NewEntry(u)
 	}
+
+	_, err = w.dom.New(c)
 }
 
 // Compo satisfies the app.Window interface.
@@ -89,12 +86,12 @@ func (w *Window) Compo() app.Compo {
 
 // Contains satisfies the app.Window interface.
 func (w *Window) Contains(c app.Compo) bool {
-	return w.markup.Contains(c)
+	return w.dom.Contains(c)
 }
 
 // Render satisfies the app.Window interface.
 func (w *Window) Render(c app.Compo) {
-	_, err := w.markup.Update(c)
+	_, err := w.dom.Update(c)
 	w.SetErr(err)
 }
 
