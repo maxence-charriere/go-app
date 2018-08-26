@@ -12,7 +12,7 @@ import (
 )
 
 // Page generate an HTML page from the given configuration.
-func Page(c app.HTMLConfig, bridge string) string {
+func Page(c app.HTMLConfig, bridge, loadedCompo string) string {
 	var w bytes.Buffer
 
 	tmpl := template.Must(template.New(c.Title).Parse(htmlTemplate))
@@ -20,12 +20,14 @@ func Page(c app.HTMLConfig, bridge string) string {
 		Title       string
 		Metas       []app.Meta
 		CSS         []string
+		LoadedCompo template.JS
 		JS          template.JS
 		Javascripts []string
 	}{
 		Title:       c.Title,
 		Metas:       c.Metas,
 		CSS:         c.CSS,
+		LoadedCompo: template.JS(loadedCompo),
 		JS:          js(bridge),
 		Javascripts: c.Javascripts,
 	})

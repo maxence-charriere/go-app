@@ -7,6 +7,6 @@ import (
 )
 
 func TestPage(t *testing.T) {
-	p := Page(app.HTMLConfig{}, "alert")
+	p := Page(app.HTMLConfig{}, "alert", "")
 	t.Log(p)
 }

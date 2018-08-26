@@ -27,7 +27,10 @@ const htmlTemplate = `
     <link type="text/css" rel="stylesheet" href="{{.}}">{{end}}
 </head>
 <body>
-    <script>{{.JS}}
+    <script>
+    {{if .LoadedCompo}}var loadedComp = '{{.LoadedCompo}}'{{end}}
+
+    {{.JS}}
     </script>
     
     {{range .Javascripts}}
