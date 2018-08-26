@@ -52,10 +52,11 @@ func setTextChange(id, text string) Change {
 }
 
 type elemValue struct {
-	ID      string
-	CompoID string            `json:",omitempty"`
-	TagName string            `json:",omitempty"`
-	Attrs   map[string]string `json:",omitempty"`
+	ID        string
+	CompoID   string            `json:",omitempty"`
+	TagName   string            `json:",omitempty"`
+	Namespace string            `json:",omitempty"`
+	Attrs     map[string]string `json:",omitempty"`
 }
 
 type childValue struct {
@@ -64,12 +65,13 @@ type childValue struct {
 	OldID    string `json:",omitempty"`
 }
 
-func createElemChange(id, tagName string) Change {
+func createElemChange(id, tagName, namespace string) Change {
 	return Change{
 		Type: createElem,
 		Value: elemValue{
-			ID:      id,
-			TagName: tagName,
+			ID:        id,
+			TagName:   tagName,
+			Namespace: namespace,
 		},
 	}
 }

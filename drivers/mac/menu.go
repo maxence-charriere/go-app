@@ -7,8 +7,6 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/davecgh/go-spew/spew"
-
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
@@ -158,8 +156,6 @@ func onMenuCallback(m *Menu, in map[string]interface{}) interface{} {
 		app.Log("menu callback failed: %s", err)
 		return nil
 	}
-
-	spew.Dump(mapping)
 
 	c, err := m.dom.CompoByID(mapping.CompoID)
 	if err != nil {

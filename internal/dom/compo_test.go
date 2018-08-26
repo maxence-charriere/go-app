@@ -12,7 +12,7 @@ import (
 )
 
 func TestCompo(t *testing.T) {
-	p := newElem("p")
+	p := newElem("p", "")
 
 	c := newCompo("foo", map[string]string{"hello": "world"})
 	assert.NotEmpty(t, c.ID())

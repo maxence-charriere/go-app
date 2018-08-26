@@ -78,8 +78,14 @@ function setText(change = {}) {
 }
 
 function createElem(change = {}) {
-    const { ID, TagName } = change.Value;
-    const n = document.createElement(TagName);
+    const { ID, TagName, Namespace } = change.Value;
+
+    var n = null;
+    if (Namespace) {
+        n = document.createElementNS(Namespace, TagName);
+    } else {
+        n = document.createElement(TagName);
+    }
 
     n.ID = ID;
     goapp.nodes[ID] = n;

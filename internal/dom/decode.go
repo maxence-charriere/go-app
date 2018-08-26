@@ -10,6 +10,10 @@ import (
 	"golang.org/x/net/html/atom"
 )
 
+const (
+	svgNamespace = "http://www.w3.org/2000/svg"
+)
+
 func decodeNodes(s string, hrefFmt, handlerFmt bool) (node, error) {
 	d := &decoder{
 		tokenizer:  html.NewTokenizer(bytes.NewBufferString(s)),
@@ -67,12 +71,17 @@ func (d *decoder) decodeText() (node, error) {
 func (d *decoder) decodeSelfClosingElem() (node, error) {
 	name, hasAttr := d.tokenizer.TagName()
 	tagName := string(name)
+	namespace := ""
 
 	if isCompoTagName(tagName, d.decodingSVG) {
 		return newCompo(tagName, d.decodeAttrs(hasAttr)), nil
 	}
 
-	e := newElem(tagName)
+	if d.decodingSVG {
+		namespace = svgNamespace
+	}
+
+	e := newElem(tagName, namespace)
 	e.SetAttrs(d.decodeAttrs(hasAttr))
 	return e, nil
 }
@@ -80,6 +89,7 @@ func (d *decoder) decodeSelfClosingElem() (node, error) {
 func (d *decoder) decodeElem() (node, error) {
 	name, hasAttr := d.tokenizer.TagName()
 	tagName := string(name)
+	namespace := ""
 
 	if isCompoTagName(tagName, d.decodingSVG) {
 		return newCompo(tagName, d.decodeAttrs(hasAttr)), nil
@@ -89,7 +99,11 @@ func (d *decoder) decodeElem() (node, error) {
 		d.decodingSVG = true
 	}
 
-	e := newElem(tagName)
+	if d.decodingSVG {
+		namespace = svgNamespace
+	}
+
+	e := newElem(tagName, namespace)
 	e.SetAttrs(d.decodeAttrs(hasAttr))
 
 	if isVoidElem(tagName) {
@@ -118,7 +132,7 @@ func (d *decoder) decodeAttrs(hasAttr bool) map[string]string {
 	attrs := make(map[string]string)
 	for {
 		name, val, moreAttr := d.tokenizer.TagAttr()
-		n := string(name)
+		n := tagName(string(name))
 		v := string(val)
 
 		switch {
@@ -187,4 +201,106 @@ var voidElems = map[string]struct{}{
 func isVoidElem(tagName string) bool {
 	_, ok := voidElems[tagName]
 	return ok
+}
+
+var specialTagNames map[string]string
+
+func init() {
+	svgSpecialTagNames := []string{
+		"allowReorder",
+		"attributeName",
+		"attributeType",
+		"autoReverse",
+
+		"baseFrequency",
+		"baseProfile",
+
+		"calcMode",
+		"clipPathUnits",
+		"contentScriptType",
+		"contentStyleType",
+
+		"diffuseConstant",
+
+		"externalResourcesRequired",
+
+		"filterRes",
+		"filterUnits",
+
+		"glyphRef",
+		"gradientTransform",
+		"gradientUnits",
+
+		"kernelMatrix",
+		"kernelUnitLength",
+		"keyPoints",
+		"keySplines",
+		"keyTimes",
+
+		"lengthAdjust",
+		"limitingConeAngle",
+
+		"markerHeight",
+		"markerUnits",
+		"markerWidth",
+		"maskContentUnits",
+		"maskUnits",
+
+		"numOctaves",
+
+		"pathLength",
+		"patternContentUnits",
+		"patternTransform",
+		"patternUnits",
+		"pointsAtX",
+		"pointsAtY",
+		"pointsAtZ",
+		"preserveAlpha",
+		"preserveAspectRatio",
+		"primitiveUnits",
+
+		"referrerPolicy",
+		"refX",
+		"refY",
+		"repeatCount",
+		"repeatDur",
+		"requiredExtensions",
+		"requiredFeatures",
+
+		"specularConstant",
+		"specularExponent",
+		"spreadMethod",
+		"startOffset",
+		"stdDeviation",
+		"stitchTiles",
+		"surfaceScale",
+		"systemLanguage",
+
+		"tableValues",
+		"targetX",
+		"targetY",
+		"textLength",
+
+		"viewBox",
+		"viewTarget",
+
+		"xChannelSelector",
+
+		"yChannelSelector",
+
+		"zoomAndPan",
+	}
+
+	specialTagNames = make(map[string]string, len(svgSpecialTagNames))
+	for _, n := range svgSpecialTagNames {
+		specialTagNames[strings.ToLower(n)] = n
+	}
+}
+
+func tagName(n string) string {
+	if sn, ok := specialTagNames[n]; ok {
+		return sn
+	}
+
+	return n
 }

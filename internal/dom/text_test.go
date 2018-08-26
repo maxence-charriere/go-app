@@ -7,7 +7,7 @@ import (
 )
 
 func TestText(t *testing.T) {
-	p := newElem("p")
+	p := newElem("p", "")
 
 	text := newText()
 	assert.NotEmpty(t, text.ID())

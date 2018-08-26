@@ -215,7 +215,7 @@ func TestDOM(t *testing.T) {
 				createTextChange("text:"),
 				setTextChange("text:", "hello"),
 
-				createElemChange("div:", "div"),
+				createElemChange("div:", "div", ""),
 				setAttrsChange("div:", map[string]string{"class": "test"}),
 				appendChildChange("div:", "text:"),
 				mountElemChange("div:", ""),
@@ -286,12 +286,12 @@ func TestDOM(t *testing.T) {
 				createTextChange("text:"),
 				setTextChange("text:", "world"),
 
-				createElemChange("h1:", "h1"),
+				createElemChange("h1:", "h1", ""),
 				setAttrsChange("h1:", nil),
 				appendChildChange("h1:", "text:"),
 				mountElemChange("h1:", ""),
 
-				createElemChange("div:", "div"),
+				createElemChange("div:", "div", ""),
 				setAttrsChange("div:", nil),
 				appendChildChange("div:", "text:"),
 				appendChildChange("div:", "h1:"),
@@ -311,7 +311,7 @@ func TestDOM(t *testing.T) {
 				createTextChange("text:"),
 				setTextChange("text:", "hello"),
 
-				createElemChange("span:", "span"),
+				createElemChange("span:", "span", ""),
 				setAttrsChange("span:", nil),
 				appendChildChange("span:", "text:"),
 				mountElemChange("span:", ""),
@@ -347,7 +347,7 @@ func TestDOM(t *testing.T) {
 				createTextChange("text:"),
 				setTextChange("text:", "world"),
 
-				createElemChange("h2:", "h2"),
+				createElemChange("h2:", "h2", ""),
 				setAttrsChange("h2:", nil),
 				appendChildChange("h2:", "text:"),
 				mountElemChange("h2:", ""),
@@ -364,14 +364,14 @@ func TestDOM(t *testing.T) {
 			scenario: "create compo with nested compo",
 			compo:    &Boo{},
 			changes: []Change{
-				createElemChange("div:", "div"),
+				createElemChange("div:", "div", ""),
 				setAttrsChange("div:", map[string]string{"class": "test"}),
 				mountElemChange("div:", ""),
 
 				createCompoChange("dom.foo:", "dom.foo"),
 				setCompoRootChange("dom.foo:", "div:"),
 
-				createElemChange("div:", "div"),
+				createElemChange("div:", "div", ""),
 				setAttrsChange("div:", nil),
 				appendChildChange("div:", "dom.foo:"),
 				mountElemChange("div:", ""),
@@ -387,7 +387,7 @@ func TestDOM(t *testing.T) {
 				c.(*Boo).AddCompo = true
 			},
 			changes: []Change{
-				createElemChange("div:", "div"),
+				createElemChange("div:", "div", ""),
 				setAttrsChange("div:", map[string]string{"class": "test"}),
 				mountElemChange("div:", ""),
 
@@ -418,7 +418,7 @@ func TestDOM(t *testing.T) {
 				c.(*Boo).ReplaceCompoType = true
 			},
 			changes: []Change{
-				createElemChange("p:", "p"),
+				createElemChange("p:", "p", ""),
 				setAttrsChange("p:", nil),
 				mountElemChange("p:", ""),
 
@@ -452,7 +452,7 @@ func TestDOM(t *testing.T) {
 				createTextChange("text:"),
 				setTextChange("text:", "foo"),
 
-				createElemChange("p:", "p"),
+				createElemChange("p:", "p", ""),
 				setAttrsChange("p:", nil),
 				appendChildChange("p:", "text:"),
 				mountElemChange("p:", ""),
@@ -470,7 +470,7 @@ func TestDOM(t *testing.T) {
 				c.(*Boo).ReplaceCompoByElem = false
 			},
 			changes: []Change{
-				createElemChange("div:", "div"),
+				createElemChange("div:", "div", ""),
 				setAttrsChange("div:", map[string]string{"class": "test"}),
 				mountElemChange("div:", ""),
 
@@ -489,7 +489,7 @@ func TestDOM(t *testing.T) {
 			scenario: "create nested",
 			compo:    &Nested{Foo: true},
 			changes: []Change{
-				createElemChange("div:", "div"),
+				createElemChange("div:", "div", ""),
 				setAttrsChange("div:", map[string]string{"class": "test"}),
 				mountElemChange("div:", ""),
 
@@ -507,7 +507,7 @@ func TestDOM(t *testing.T) {
 				c.(*Nested).Foo = true
 			},
 			changes: []Change{
-				createElemChange("div:", "div"), // foo.div
+				createElemChange("div:", "div", ""), // foo.div
 				setAttrsChange("div:", map[string]string{"class": "test"}),
 				mountElemChange("div:", ""),
 
@@ -525,7 +525,7 @@ func TestDOM(t *testing.T) {
 			scenario: "create nested nested",
 			compo:    &NestedNested{},
 			changes: []Change{
-				createElemChange("p:", "p"),
+				createElemChange("p:", "p", ""),
 				setAttrsChange("p:", nil),
 				mountElemChange("p:", ""),
 
@@ -546,7 +546,7 @@ func TestDOM(t *testing.T) {
 				c.(*NestedNested).Foo = true
 			},
 			changes: []Change{
-				createElemChange("div:", "div"),
+				createElemChange("div:", "div", ""),
 				setAttrsChange("div:", map[string]string{"class": "test"}),
 				mountElemChange("div:", ""),
 

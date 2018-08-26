@@ -6,22 +6,24 @@ import (
 )
 
 type elem struct {
-	id       string
-	compoID  string
-	tagName  string
-	attrs    map[string]string
-	parent   node
-	children []node
-	changes  []Change
+	id        string
+	compoID   string
+	tagName   string
+	namespace string
+	attrs     map[string]string
+	parent    node
+	children  []node
+	changes   []Change
 }
 
-func newElem(tagName string) *elem {
+func newElem(tagName string, namespace string) *elem {
 	e := &elem{
-		id:      tagName + ":" + uuid.New().String(),
-		tagName: tagName,
+		id:        tagName + ":" + uuid.New().String(),
+		tagName:   tagName,
+		namespace: namespace,
 	}
 
-	e.changes = append(e.changes, createElemChange(e.id, e.tagName))
+	e.changes = append(e.changes, createElemChange(e.id, e.tagName, e.namespace))
 	return e
 }
 
