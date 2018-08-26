@@ -37,7 +37,8 @@ func (c *CustomMenu) Render() string {
 	return `
 <menu label="Custom">
 	<menuitem label="MenuItem with Go callback" onclick="OnClick"></menuitem>
-	<menuitem label="MenuItem with keys" keys="cmdorctrl+e" onclick="OnMenuItemWithShorcutClick"></menuitem>
+	<menuitem label="MenuItem with icon" onclick="OnClickWithIcon" icon="logo.png" checked></menuitem>
+	<menuitem label="MenuItem with keys" keys="cmdorctrl+e" onclick="OnMenuItemWithShorcutClick" checked></menuitem>
 	<menuitem separator></menuitem>
 	<menuitem label="MenuItem disabled" onclick="OnClick" disabled="true"></menuitem>
 </menu>
@@ -47,6 +48,11 @@ func (c *CustomMenu) Render() string {
 // OnClick is called when MenuItem with Go callback is clicked.
 func (c *CustomMenu) OnClick() {
 	fmt.Println("MenuItem with Go callback clicked")
+}
+
+// OnClickWithIcon is called when MenuItem with Go callback is clicked.
+func (c *CustomMenu) OnClickWithIcon() {
+	fmt.Println("MenuItem with icon clicked")
 }
 
 // OnMenuItemWithShorcutClick is called when MenuItem with keysis clicked.

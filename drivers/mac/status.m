@@ -21,7 +21,7 @@
       CGFloat menuBarHeight = [[NSApp mainMenu] menuBarHeight];
       NSImage *img = [[NSImage alloc] initByReferencingFile:icon];
       menu.item.button.image =
-          [NSImage resizedImage:img
+          [NSImage resizeImage:img
               toPixelDimensions:NSMakeSize(menuBarHeight, menuBarHeight)];
       menu.item.button.imagePosition =
           text.length == 0 ? NSImageOnly : NSImageRight;
@@ -73,7 +73,7 @@
       CGFloat menuBarHeight = [[NSApp mainMenu] menuBarHeight];
       NSImage *img = [[NSImage alloc] initByReferencingFile:icon];
       menu.item.button.image =
-          [NSImage resizedImage:img
+          [NSImage resizeImage:img
               toPixelDimensions:NSMakeSize(menuBarHeight, menuBarHeight)];
 
       NSString *text = menu.item.button.title;

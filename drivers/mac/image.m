@@ -1,8 +1,8 @@
 #include "image.h"
 
 @implementation NSImage (ImageCategory)
-+ (NSImage *)resizedImage:(NSImage *)sourceImage
-        toPixelDimensions:(NSSize)newSize {
++ (NSImage *)resizeImage:(NSImage *)sourceImage
+       toPixelDimensions:(NSSize)newSize {
   if (!sourceImage.isValid)
     return nil;
 
