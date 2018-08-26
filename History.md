@@ -1,4 +1,15 @@
 
+3.1.0 / 2018-08-25
+==================
+
+## General
+
+* New dom engine.
+
+## Web
+
+* Notfound component is now rendered on the client side.
+
 3.0.1 / 2018-08-24
 ==================
 
