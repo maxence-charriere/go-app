@@ -1,12 +1,11 @@
-# app
+# app: a Go package to build GUI
+
 [![Build Status](https://travis-ci.org/murlokswarm/app.svg?branch=master)](https://travis-ci.org/murlokswarm/app)
 [![Go Report Card](https://goreportcard.com/badge/github.com/murlokswarm/app)](https://goreportcard.com/report/github.com/murlokswarm/app)
 [![Coverage Status](https://coveralls.io/repos/github/murlokswarm/app/badge.svg?branch=master)](https://coveralls.io/github/murlokswarm/app?branch=master)
 [![GoDoc](https://godoc.org/github.com/murlokswarm/app?status.svg)](https://godoc.org/github.com/murlokswarm/app)
 [![Contribute Bitcoin](https://img.shields.io/badge/contribute-bitcoin-fd9426.svg)](https://www.coinbase.com/addresses/5b483f32bec71f034450c264)
 [![Contribute Ethereum](https://img.shields.io/badge/contribute-ethereum-4e92df.svg)](https://www.coinbase.com/addresses/5b483b8df2ba04096454ea62)
-
-Package to build MacOS and Web apps using **Go**, **HTML** and **CSS**.
 
 ![hello](https://github.com/murlokswarm/app/wiki/assets/app.gif)
 
@@ -103,20 +102,20 @@ goapp mac build
 
 ## How it works?
 
-[app.Run](https://godoc.org/github.com/murlokswarm/app#Run) starts the app. 
-It takes an 
-[app.Driver](https://godoc.org/github.com/murlokswarm/app#Driver) as argument. 
+[app.Run](https://godoc.org/github.com/murlokswarm/app#Run) starts the app.
+It takes an
+[app.Driver](https://godoc.org/github.com/murlokswarm/app#Driver) as argument.
 Here we use the
-[MacOS driver](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver) 
+[MacOS driver](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver)
 implementation.
 See [other drivers](#drivers).
 
-When creating the window, we set the ```DefaultURL``` to our Hello component 
+When creating the window, we set the ```DefaultURL``` to our Hello component
 struct name: ```/Hello```.
 It will load the ```Hello``` component when the window is displayed.
 
 Components are structs that implement the 
-[app.Compo](https://godoc.org/github.com/murlokswarm/app#Compo) 
+[app.Compo](https://godoc.org/github.com/murlokswarm/app#Compo)
 interface.
 
 Render method returns a string that contains HTML5.
@@ -125,7 +124,7 @@ It can be templated following Go standard template syntax:
 - [text/template](https://golang.org/pkg/text/template/)
 - [html/template](https://golang.org/pkg/html/template/)
 
-HTML events like ```onchange``` are mapped to the targetted component 
+HTML events like ```onchange``` are mapped to the targetted component
 field or method.
 Here, ```onchange``` is mapped to the field ```Name```.
 
@@ -139,7 +138,7 @@ See the
 <a name="drivers"></a>
 
 ## Drivers
-A driver contains specific code that allows the app package to work on multiple 
+A driver contains specific code that allows the app package to work on multiple
 platforms.
 
 - [MacOS](https://godoc.org/github.com/murlokswarm/app/drivers/mac)

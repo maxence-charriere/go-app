@@ -1,3 +1,4 @@
+// Package app is a package to build GUI apps with Go, HTML and CSS.
 package app
 
 import (
