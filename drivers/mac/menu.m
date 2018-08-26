@@ -214,7 +214,7 @@
   NSInteger index = -1;
 
   if ([old isKindOfClass:[MenuContainer class]]) {
-    NSArray<NSMenuItem *> *children;
+    NSArray<NSMenuItem *> *children = self.itemArray;
 
     for (int i = 0; i < children.count; ++i) {
       if (children[i].submenu == old) {
