@@ -142,12 +142,9 @@
 - (void)setAttrs:(NSDictionary<NSString *, NSString *> *)attrs {
   NSString *label = attrs[@"label"];
   label = label != nil ? label : @"";
-
-  if ([self.title isEqual:label]) {
-    return;
-  }
-
   self.title = label;
+
+  self.disabled = attrs[@"disabled"] != nil ? true : false;
 
   MenuContainer *supermenu = (MenuContainer *)self.supermenu;
   if (supermenu == nil) {
@@ -158,6 +155,7 @@
   for (NSMenuItem *i in supermenu.itemArray) {
     if (i.submenu == self) {
       i.title = label;
+      i.enabled = !self.disabled;
       return;
     }
   }
@@ -169,7 +167,9 @@
     NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:c.title
                                                   action:NULL
                                            keyEquivalent:@""];
+
     item.submenu = c;
+    item.enabled = !c.disabled;
     [self insertItem:item atIndex:index];
     return;
   }

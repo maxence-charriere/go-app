@@ -565,7 +565,7 @@ func (d *dockWithLogs) SetIcon(name string) {
 
 func (d *dockWithLogs) SetBadge(v interface{}) {
 	WhenDebug(func() {
-		Debug("dock tile is setting its badge to %d", v)
+		Debug("dock tile is setting its badge to %v", v)
 	})
 
 	d.DockTile.SetBadge(v)

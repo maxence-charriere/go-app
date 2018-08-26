@@ -26,6 +26,7 @@
 @property NSString *ID;
 @property NSString *compoID;
 @property NSString *elemID;
+@property BOOL disabled;
 
 + (instancetype)create:(NSString *)ID inMenu:(NSString *)elemID;
 - (void)setAttrs:(NSDictionary<NSString *, NSString *> *)attrs;
