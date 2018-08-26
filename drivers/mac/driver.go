@@ -227,6 +227,9 @@ func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
 // NewContextMenu satisfies the app.Driver interface.
 func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 	m := newMenu(c, "context menu")
+	if m.Err() != nil {
+		return m
+	}
 
 	err := d.macRPC.Call("driver.SetContextMenu", nil, m.ID())
 	m.SetErr(err)

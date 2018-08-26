@@ -110,6 +110,10 @@
           withHandler:^(id in, NSString *returnID) {
             return [Menu new:in return:returnID];
           }];
+  [self.macRPC handle:@"menus.Load"
+          withHandler:^(id in, NSString *returnID) {
+            return [Menu load:in return:returnID];
+          }];
   [self.macRPC handle:@"menus.Render"
           withHandler:^(id in, NSString *returnID) {
             return [Menu render:in return:returnID];

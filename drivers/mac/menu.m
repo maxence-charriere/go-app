@@ -25,7 +25,7 @@
 
   self.enabled = attrs[@"disabled"] == nil ? true : false;
   self.toolTip = attrs[@"title"];
-  self.onClick = attrs[@"onclick"];
+  // self.onClick = attrs[@"onclick"];
   self.selector = attrs[@"selector"];
   self.keys = attrs[@"keys"];
 
@@ -256,10 +256,24 @@
   });
 }
 
++ (void)load:(NSDictionary *)in return:(NSString *)returnID {
+  defer(returnID, ^{
+    Driver *driver = [Driver current];
+    NSString *ID = in[@"ID"];
+
+    Menu *menu = driver.elements[ID];
+    if (menu == nil) {
+      [NSException raise:@"ErrNoMenu" format:@"no menu with id %@", ID];
+    }
+
+    menu.root = nil;
+    [driver.macRPC return:returnID withOutput:nil andError:nil];
+  });
+}
+
 + (void)render:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
-
     NSString *ID = in[@"ID"];
     NSArray *changes = [JSONDecoder decode:in[@"Changes"]];
 
@@ -287,39 +301,39 @@
 
       switch (typeMap[type].intValue) {
       case 2:
-        [menu createElem:c];
+        [menu createElem:c[@"Value"]];
         break;
 
       case 3:
-        [menu setAttrs:c];
+        [menu setAttrs:c[@"Value"]];
         break;
 
       case 4:
-        [menu appendChild:c];
+        [menu appendChild:c[@"Value"]];
         break;
 
       case 5:
-        [menu removeChild:c];
+        [menu removeChild:c[@"Value"]];
         break;
 
       case 6:
-        [menu replaceChild:c];
+        [menu replaceChild:c[@"Value"]];
         break;
 
       case 7:
-        [menu mountElem:c];
+        [menu mountElem:c[@"Value"]];
         break;
 
       case 8:
-        [menu createCompo:c];
+        [menu createCompo:c[@"Value"]];
         break;
 
       case 9:
-        [menu setCompoRoot:c];
+        [menu setCompoRoot:c[@"Value"]];
         break;
 
       case 10:
-        [menu deleteNode:c];
+        [menu deleteNode:c[@"Value"]];
         break;
 
       default:
@@ -333,8 +347,8 @@
 }
 
 - (void)createElem:(NSDictionary *)change {
-  NSString *ID = change[@"Value"][@"ID"];
-  NSString *TagName = change[@"Value"][@"TagName"];
+  NSString *ID = change[@"ID"];
+  NSString *TagName = change[@"TagName"];
 
   if ([TagName isEqual:@"menu"]) {
     self.nodes[ID] = [MenuContainer create:ID inMenu:self.ID];

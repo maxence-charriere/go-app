@@ -11,7 +11,7 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/murlokswarm/app/internal/html"
+	"github.com/murlokswarm/app/internal/dom"
 	"github.com/pkg/errors"
 )
 
@@ -19,7 +19,7 @@ import (
 type Menu struct {
 	core.Menu
 
-	markup         app.Markup
+	dom            *dom.DOM
 	id             string
 	typ            string
 	compo          app.Compo
@@ -30,9 +30,9 @@ type Menu struct {
 
 func newMenu(c app.MenuConfig, typ string) *Menu {
 	m := &Menu{
-		markup: app.ConcurrentMarkup(html.NewMarkup(driver.factory)),
-		id:     uuid.New().String(),
-		typ:    typ,
+		dom: dom.NewDOM(driver.factory, true),
+		id:  uuid.New().String(),
+		typ: typ,
 
 		onClose: c.OnClose,
 	}
@@ -67,11 +67,6 @@ func (m *Menu) Load(urlFmt string, v ...interface{}) {
 		m.SetErr(err)
 	}()
 
-	if m.compo != nil {
-		m.markup.Dismount(m.compo)
-		m.compo = nil
-	}
-
 	u := fmt.Sprintf(urlFmt, v...)
 	n := core.CompoNameFromURLString(u)
 
@@ -80,7 +75,27 @@ func (m *Menu) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	if _, err = m.markup.Mount(c); err != nil {
+	if m.compo != nil {
+		m.dom.Clean()
+	}
+
+	m.compo = c
+
+	if err = driver.macRPC.Call("menus.Load", nil, struct {
+		ID string
+	}{
+		ID: m.id,
+	}); err != nil {
+		return
+	}
+
+	var changes []dom.Change
+	changes, err = m.dom.New(c)
+	if err != nil {
+		return
+	}
+
+	if err = m.render(changes); err != nil {
 		return
 	}
 
@@ -88,25 +103,6 @@ func (m *Menu) Load(urlFmt string, v ...interface{}) {
 		navURL, _ := url.Parse(u)
 		nav.OnNavigate(navURL)
 	}
-
-	var root app.Tag
-	if root, err = m.markup.Root(c); err != nil {
-		return
-	}
-
-	if root, err = m.markup.FullRoot(root); err != nil {
-		return
-	}
-
-	m.compo = c
-
-	err = driver.macRPC.Call("menus.Load", nil, struct {
-		ID  string
-		Tag app.Tag
-	}{
-		ID:  m.id,
-		Tag: root,
-	})
 }
 
 // Compo satisfies the app.Menu interface.
@@ -116,32 +112,35 @@ func (m *Menu) Compo() app.Compo {
 
 // Contains satisfies the app.Menu interface.
 func (m *Menu) Contains(c app.Compo) bool {
-	return m.markup.Contains(c)
+	return m.dom.Contains(c)
 }
 
 // Render satisfies the app.Menu interface.
 func (m *Menu) Render(c app.Compo) {
-	var err error
-	defer func() {
-		m.SetErr(err)
-	}()
+	changes, err := m.dom.Update(c)
+	m.SetErr(err)
 
-	var syncs []app.TagSync
-	if syncs, err = m.markup.Update(c); err != nil {
+	if m.Err() != nil {
 		return
 	}
 
-	for _, s := range syncs {
-		if s.Replace {
-			err = m.render(s)
-		} else {
-			err = m.renderAttributes(c, s)
-		}
+	err = m.render(changes)
+	m.SetErr(err)
+}
 
-		if err != nil {
-			return
-		}
+func (m *Menu) render(c []dom.Change) error {
+	b, err := json.Marshal(c)
+	if err != nil {
+		return errors.Wrap(err, "marshal changes failed")
 	}
+
+	return driver.macRPC.Call("menus.Render", nil, struct {
+		ID      string
+		Changes string
+	}{
+		ID:      m.id,
+		Changes: string(b),
+	})
 }
 
 // Type satisfies the app.Menu interface.
@@ -149,73 +148,33 @@ func (m *Menu) Type() string {
 	return m.typ
 }
 
-func (m *Menu) render(sync app.TagSync) error {
-	tag, err := m.markup.FullRoot(sync.Tag)
-	if err != nil {
-		return err
-	}
-
-	return driver.macRPC.Call("menus.Render", nil, struct {
-		ID  string
-		Tag app.Tag
-	}{
-		ID:  m.id,
-		Tag: tag,
-	})
-}
-
-func (m *Menu) renderAttributes(c app.Compo, sync app.TagSync) error {
-	root, err := m.markup.Root(c)
-	if err != nil {
-		return err
-	}
-
-	tag := sync.Tag
-	if root.ID != tag.ID {
-		// Ensure that objc will not do extra initializations.
-		tag.Children = nil
-	}
-
-	return driver.macRPC.Call("menus.RenderAttributes", nil, struct {
-		ID  string
-		Tag app.Tag
-	}{
-		ID:  m.id,
-		Tag: tag,
-	})
-}
-
 func onMenuCallback(m *Menu, in map[string]interface{}) interface{} {
-	mappingString := in["Mapping"].(string)
+	mappingStr := in["Mapping"].(string)
 
-	var mapping app.Mapping
-	if err := json.Unmarshal([]byte(mappingString), &mapping); err != nil {
+	var mapping dom.Mapping
+	if err := json.Unmarshal([]byte(mappingStr), &m); err != nil {
 		app.Log("menu callback failed: %s", err)
 		return nil
 	}
 
-	function, err := m.markup.Map(mapping)
+	c, err := m.dom.CompoByID(mapping.CompoID)
 	if err != nil {
 		app.Log("menu callback failed: %s", err)
 		return nil
 	}
 
-	if function != nil {
-		function()
-		return nil
-	}
-
-	var c app.Compo
-	if c, err = m.markup.Compo(mapping.CompoID); err != nil {
+	var f func()
+	if f, err = mapping.Map(c); err != nil {
 		app.Log("menu callback failed: %s", err)
 		return nil
 	}
 
-	m.Render(c)
-	if m.Err() != nil {
-		app.Log("menu callback failed: %s", err)
+	if f != nil {
+		f()
+		return nil
 	}
 
+	app.Render(c)
 	return nil
 }
 

@@ -41,6 +41,7 @@
 @property MenuContainer *root;
 
 + (void) new:(NSDictionary *)in return:(NSString *)returnID;
++ (void)load:(NSDictionary *)in return:(NSString *)returnID;
 + (void)render:(NSDictionary *)in return:(NSString *)returnID;
 - (void)createElem:(NSDictionary *)change;
 - (void)setAttrs:(NSDictionary *)change;
