@@ -56,7 +56,7 @@ func newWindow() {
 		Width:           1280,
 		Height:          768,
 		BackgroundColor: "#21252b",
-		DefaultURL:      "/hello.Hello",
+		URL:             "/hello.Hello",
 	})
 }
 ```
@@ -80,7 +80,7 @@ func main() {
 	app.Import(&hello.Hello{})
 
 	app.Run(&web.Driver{
-		DefaultURL: "/hello.Hello",
+		URL: "/hello.Hello",
 	})
 }
 ```
