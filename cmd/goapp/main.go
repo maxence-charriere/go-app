@@ -99,14 +99,20 @@ func goBuild(target string, args ...string) error {
 	return execute("go", args...)
 }
 
+var (
+	greenColor   = "\033[92m"
+	redColor     = "\033[91m"
+	defaultColor = "\033[00m"
+)
+
 func printSuccess(format string, v ...interface{}) {
-	fmt.Print("\033[92m")
+	fmt.Print(greenColor)
 	fmt.Printf(format, v...)
-	fmt.Println("\033[00m")
+	fmt.Println(defaultColor)
 }
 
 func printErr(format string, v ...interface{}) {
-	fmt.Print("\033[91m")
+	fmt.Print(redColor)
 	fmt.Printf(format, v...)
-	fmt.Println("\033[00m")
+	fmt.Println(defaultColor)
 }

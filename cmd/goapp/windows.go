@@ -19,3 +19,9 @@ func mac(ctx context.Context, args []string) {
 	printErr("you are not on MacOS!")
 	os.Exit(-1)
 }
+
+func init() {
+	greenColor = ""
+	redColor = ""
+	defaultColor = ""
+}
