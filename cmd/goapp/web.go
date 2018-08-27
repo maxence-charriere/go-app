@@ -127,7 +127,7 @@ func gopherJSBuild(target string, minify bool) error {
 	cmd := []string{}
 
 	if runtime.GOOS == "windows" {
-		os.Setenv("GOOS", "linux")
+		os.Setenv("GOOS", "darwin")
 	}
 
 	cmd = append(cmd, "gopherjs", "build", "-v")
