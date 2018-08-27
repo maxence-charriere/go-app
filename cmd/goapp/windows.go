@@ -2,15 +2,18 @@
 
 package main
 
-import "github.com/segmentio/conf"
-
-func commands() []conf.Command {
-	return []conf.Command{
-		{Name: "web", Help: "Build app for web."},
-		{Name: "help", Help: "Show the help."},
-	}
-}
+import (
+	"context"
+)
 
 func openCommand() string {
 	return "explorer"
+}
+
+func win(ctx context.Context, args []string) {
+	printErr("work in progress")
+}
+
+func mac(ctx context.Context, args []string) {
+	printErr("you are not on a mac")
 }
