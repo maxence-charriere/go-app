@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"path/filepath"
+	"runtime"
 
 	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
@@ -123,15 +124,19 @@ func buildWeb(ctx context.Context, args []string) {
 }
 
 func gopherJSBuild(target string, minify bool) error {
-	args := []string{
-		"build",
-		"-v",
+	cmd := []string{}
+
+	if runtime.GOOS == "windows" {
+		os.Setenv("GOOS", "linux")
 	}
 
+	cmd = append(cmd, "gopherjs", "build", "-v")
+
 	if minify {
-		args = append(args, "-m")
+		cmd = append(cmd, "-m")
 	}
-	args = append(args, "-o", filepath.Join(target, "resources", "goapp.js"))
-	args = append(args, target)
-	return execute("gopherjs", args...)
+
+	cmd = append(cmd, "-o", filepath.Join(target, "resources", "goapp.js"))
+	cmd = append(cmd, target)
+	return execute(cmd[0], cmd[1:]...)
 }
