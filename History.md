@@ -1,4 +1,11 @@
 
+3.1.2 / 2018-08-27
+==================
+
+* goapp is building on Windows and Linux.
+* `goapp web init` is now working on Windows.
+* `goapp web build` is now working on Windows.
+
 3.1.1 / 2018-08-26
 ==================
 
