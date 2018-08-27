@@ -111,12 +111,12 @@ func buildWeb(ctx context.Context, args []string) {
 	root := roots[0]
 
 	if err := goBuild(root); err != nil {
-		printErr("go build:", err)
+		printErr("go build failed: %s", err)
 		return
 	}
 
 	if err := gopherJSBuild(root, config.Minify); err != nil {
-		printErr("gopherjs build:", err)
+		printErr("gopherjs build failed: %s", err)
 		return
 	}
 
