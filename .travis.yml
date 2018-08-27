@@ -11,6 +11,7 @@ install:
 script:
   - go test . -covermode count -coverprofile cover.out
   - go test ./internal/...
+  - go test ./cmd/goapp
   - goveralls -service travis-ci -repotoken $COVERALLS_TOKEN -coverprofile cover.out
 
 notifications:
