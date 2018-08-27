@@ -539,3 +539,8 @@ const entitlements = `
 func openCommand() string {
 	return "open"
 }
+
+func win(ctx context.Context, args []string) {
+	printErr("you are not on Windows!")
+	os.Exit(-1)
+}

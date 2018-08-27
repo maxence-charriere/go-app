@@ -4,6 +4,7 @@ package main
 
 import (
 	"context"
+	"os"
 )
 
 func openCommand() string {
@@ -15,5 +16,6 @@ func win(ctx context.Context, args []string) {
 }
 
 func mac(ctx context.Context, args []string) {
-	printErr("you are not on a mac")
+	printErr("you are not on MacOS!")
+	os.Exit(-1)
 }
