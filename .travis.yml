@@ -5,6 +5,8 @@ go:
 
 install:
   - go get -v -t .
+  = go get -v github.com/disintegration/imaging
+  = go get -v github.com/segmentio/conf
   - go get -v github.com/mattn/goveralls
   - go install -v github.com/mattn/goveralls
 
