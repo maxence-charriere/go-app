@@ -6,6 +6,7 @@ import (
 	"context"
 	"net/http"
 	"os"
+	"runtime"
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/core"
@@ -14,8 +15,13 @@ import (
 )
 
 func init() {
+	showColors := true
+	if runtime.GOOS == "windows" {
+		showColors = false
+	}
+
 	app.Loggers = []app.Logger{
-		app.NewLogger(os.Stdout, os.Stderr, true, true),
+		app.NewLogger(os.Stdout, os.Stderr, true, showColors),
 	}
 }
 

@@ -16,20 +16,28 @@ const (
 
 func main() {
 	ld := conf.Loader{
-		Name:     "goapp",
-		Args:     os.Args[1:],
-		Commands: commands(),
+		Name: "goapp",
+		Args: os.Args[1:],
+		Commands: []conf.Command{
+			{Name: "mac", Help: "Build app for MacOS."},
+			{Name: "web", Help: "Build app for web."},
+			{Name: "win", Help: "Build app for Windows."},
+			{Name: "help", Help: "Show the help."},
+		},
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
 	switch cmd, args := conf.LoadWith(nil, ld); cmd {
+	case "mac":
+		mac(ctx, args)
+
 	case "web":
 		web(ctx, args)
 
-	case "mac":
-		mac(ctx, args)
+	case "win":
+		win(ctx, args)
 
 	case "help":
 		ld.PrintHelp(nil)
@@ -91,14 +99,20 @@ func goBuild(target string, args ...string) error {
 	return execute("go", args...)
 }
 
+var (
+	greenColor   = "\033[92m"
+	redColor     = "\033[91m"
+	defaultColor = "\033[00m"
+)
+
 func printSuccess(format string, v ...interface{}) {
-	fmt.Print("\033[92m")
+	fmt.Print(greenColor)
 	fmt.Printf(format, v...)
-	fmt.Println("\033[00m")
+	fmt.Println(defaultColor)
 }
 
 func printErr(format string, v ...interface{}) {
-	fmt.Print("\033[91m")
+	fmt.Print(redColor)
 	fmt.Printf(format, v...)
-	fmt.Println("\033[00m")
+	fmt.Println(defaultColor)
 }

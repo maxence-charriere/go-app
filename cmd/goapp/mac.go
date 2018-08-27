@@ -25,14 +25,6 @@ type macBuildConfig struct {
 	AppStore bool   `conf:"appstore" help:"Report whether the app will be packaged to be uploaded on the app store."`
 }
 
-func commands() []conf.Command {
-	return []conf.Command{
-		{Name: "web", Help: "Build app for web."},
-		{Name: "mac", Help: "Build app for macOS."},
-		{Name: "help", Help: "Show the help."},
-	}
-}
-
 func mac(ctx context.Context, args []string) {
 	ld := conf.Loader{
 		Name: "goapp mac",
@@ -546,4 +538,9 @@ const entitlements = `
 
 func openCommand() string {
 	return "open"
+}
+
+func win(ctx context.Context, args []string) {
+	printErr("you are not on Windows!")
+	os.Exit(-1)
 }
