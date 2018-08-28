@@ -23,7 +23,7 @@ func main() {
 
 		MenubarConfig: mac.MenuBarConfig{
 			OnPreference: func() {
-				app.Log("Preferences clicked")
+				app.Logf("Preferences clicked")
 			},
 		},
 		DockURL: "/test.Menu",

@@ -10,6 +10,7 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/core"
+	"github.com/murlokswarm/app/internal/log"
 )
 
 var (
@@ -17,9 +18,9 @@ var (
 )
 
 func init() {
-	app.Loggers = []app.Logger{
-		app.NewLogger(os.Stdout, os.Stderr, true, false),
-	}
+	logger := log.FromWriter(os.Stderr)
+	logger = log.WithPrompt(logger)
+	app.Logger = logger
 }
 
 // Run satisfies the app.Driver interface.

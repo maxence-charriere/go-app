@@ -103,7 +103,7 @@ func (c *Webview) OnContextMenu() {
 	app.NewContextMenu(app.MenuConfig{
 		URL: "/test.Menu",
 		OnClose: func() {
-			app.Log("context menu is closed")
+			app.Logf("context menu is closed")
 		},
 	})
 }
@@ -182,7 +182,7 @@ func (c *Webview) OnShare() {
 func (c *Webview) OnShareURL() {
 	u, err := url.Parse("https://github.com/murlokswarm/app")
 	if err != nil {
-		app.Log("%s", err)
+		app.Logf("%s", err)
 	}
 	app.NewShare(u)
 }
@@ -193,7 +193,7 @@ func (c *Webview) OnDirPanel() {
 	app.NewFilePanel(app.FilePanelConfig{
 		IgnoreFiles: true,
 		OnSelect: func(filenames []string) {
-			app.Log("filenames: %v", filenames)
+			app.Logf("filenames: %v", filenames)
 		},
 	})
 }
@@ -206,7 +206,7 @@ func (c *Webview) OnFilePanel() {
 		ShowHiddenFiles:   true,
 		FileTypes:         []string{"public.jpeg", "gif"},
 		OnSelect: func(filenames []string) {
-			app.Log("filenames: %v", filenames)
+			app.Logf("filenames: %v", filenames)
 		},
 	})
 }
@@ -218,7 +218,7 @@ func (c *Webview) OnMultipleFilePanel() {
 		IgnoreDirectories: true,
 		MultipleSelection: true,
 		OnSelect: func(filenames []string) {
-			app.Log("filenames: %v", filenames)
+			app.Logf("filenames: %v", filenames)
 		},
 	})
 }
@@ -266,7 +266,7 @@ func (c *Webview) OnNotificationWithReply() {
 			})
 		},
 	}); err != nil {
-		app.Log("%s", err)
+		app.Logf("%s", err)
 	}
 }
 
@@ -295,12 +295,12 @@ func (c *Webview) OnNext() {
 // OnDragStart is the function that is called when the node is dragged.
 func (c *Webview) OnDragStart(e app.DragAndDropEvent) {
 	data, _ := json.MarshalIndent(e, "", "  ")
-	app.Log("drag: %s", data)
+	app.Logf("drag: %s", data)
 }
 
 // OnDrop is the function that is called when something is dropped to the
 // drop zone.
 func (c *Webview) OnDrop(e app.DragAndDropEvent) {
 	data, _ := json.MarshalIndent(e, "", "  ")
-	app.Log("drop: %s", data)
+	app.Logf("drop: %s", data)
 }

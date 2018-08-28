@@ -10,12 +10,12 @@ import (
 )
 
 func TestLogs(t *testing.T) {
-	app.Log = func(format string, a ...interface{}) {
+	app.Logger = func(format string, a ...interface{}) {
 		log := fmt.Sprintf(format, a...)
 		t.Log(log)
 	}
 
-	app.DebugEnabled(true)
+	app.EnableDebug(true)
 
 	setup := func(onRun func()) app.Driver {
 		d := &test.Driver{
@@ -30,7 +30,7 @@ func TestLogs(t *testing.T) {
 }
 
 func TestLogsErrors(t *testing.T) {
-	app.Log = func(format string, a ...interface{}) {
+	app.Logger = func(format string, a ...interface{}) {
 		log := fmt.Sprintf(format, a...)
 		t.Log(log)
 	}

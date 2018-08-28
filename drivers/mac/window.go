@@ -454,7 +454,7 @@ func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 
 	var m dom.Mapping
 	if err := json.Unmarshal([]byte(mappingStr), &m); err != nil {
-		app.Log("window callback failed: %s", err)
+		app.Logf("window callback failed: %s", err)
 		return nil
 	}
 
@@ -472,13 +472,13 @@ func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 
 	c, err := w.dom.CompoByID(m.CompoID)
 	if err != nil {
-		app.Log("window callback failed: %s", err)
+		app.Logf("window callback failed: %s", err)
 		return nil
 	}
 
 	var f func()
 	if f, err = m.Map(c); err != nil {
-		app.Log("window callback failed: %s", err)
+		app.Logf("window callback failed: %s", err)
 		return nil
 	}
 
@@ -502,7 +502,7 @@ func onWindowNavigate(w *Window, in map[string]interface{}) interface{} {
 }
 
 func onWindowAlert(w *Window, in map[string]interface{}) interface{} {
-	app.Debug("%s", in["Alert"])
+	app.Logf("%s", in["Alert"])
 	return nil
 }
 

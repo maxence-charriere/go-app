@@ -216,7 +216,7 @@ func (m *HelpMenu) Render() string {
 func (m *HelpMenu) OnBuiltWith() {
 	cmd := exec.Command("open", "https://github.com/murlokswarm/app")
 	if err := cmd.Run(); err != nil {
-		app.Log("opening https://github.com/murlokswarm/app failed: %s", err)
+		app.Logf("opening https://github.com/murlokswarm/app failed: %s", err)
 	}
 }
 

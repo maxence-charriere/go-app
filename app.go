@@ -2,6 +2,7 @@
 package app
 
 import (
+	"fmt"
 	"reflect"
 	"strings"
 
@@ -20,17 +21,22 @@ var (
 	// is mounted.
 	ErrCompoNotMounted = errors.New("component not mounted")
 
-	// Log is a function that formats according to a format specifier and
-	// write to a log.
-	// It is used by Log and Debug to generate app logs.
-	Log func(format string, a ...interface{})
+	// Logger is a function that formats using the default formats for its
+	// operands and logs the resulting string.
+	// It is used by Log, Logf, Panic and Panicf to generate logs.
+	Logger func(format string, a ...interface{})
 
-	driver    Driver
-	factory   = NewFactory()
-	events    = newEventRegistry(CallOnUIGoroutine)
-	actions   = newActionRegistry(events)
-	whenDebug = func(f func()) {}
+	driver  Driver
+	factory = NewFactory()
+	events  = newEventRegistry(CallOnUIGoroutine)
+	actions = newActionRegistry(events)
+
+	whenDebug func(func())
 )
+
+func init() {
+	EnableDebug(true)
+}
 
 // Import imports the component into the app.
 // Components must be imported in order the be used by the app package.
@@ -38,8 +44,7 @@ var (
 // markup.
 func Import(c Compo) {
 	if _, err := factory.RegisterCompo(c); err != nil {
-		err = errors.Wrap(err, "import component failed")
-		panic(err)
+		Panicf("import component failed: %s", err)
 	}
 }
 
@@ -218,8 +223,39 @@ func NewEventSubscriber() *EventSubscriber {
 	}
 }
 
-// DebugEnabled is a function that set whether debug mode is enabled.
-func DebugEnabled(v bool) {
+// Log formats using the default formats for its operands and logs the resulting
+// string.
+// Spaces are always added between operands and a newline is appended.
+func Log(a ...interface{}) {
+	format := ""
+
+	for range a {
+		format += "%v "
+	}
+
+	format = format[:len(format)-1]
+	Logger(format, a...)
+}
+
+// Logf formats according to a format specifier and logs the resulting string.
+func Logf(format string, a ...interface{}) {
+	Logger(format, a...)
+}
+
+// Panic is equivalent to Log() followed by a call to panic().
+func Panic(a ...interface{}) {
+	Log(a...)
+	panic(strings.TrimSpace(fmt.Sprintln(a...)))
+}
+
+// Panicf is equivalent to Logf() followed by a call to panic().
+func Panicf(format string, a ...interface{}) {
+	Logf(format, a...)
+	panic(fmt.Sprintf(format, a...))
+}
+
+// EnableDebug is a function that set whether debug mode is enabled.
+func EnableDebug(v bool) {
 	whenDebug = func(f func()) {}
 
 	if v {

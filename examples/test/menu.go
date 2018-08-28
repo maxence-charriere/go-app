@@ -141,19 +141,19 @@ func (m *Menu) OnNavigate(u *url.URL) {
 // OnButtonClick is the function that is called when the button labelled
 // "button" is clicked.
 func (m *Menu) OnButtonClick() {
-	app.Log("button clicked")
+	app.Logf("button clicked")
 }
 
 // OnButtonWithIconClick is the function that is called when the button labelled
 // "button with icon" is clicked.
 func (m *Menu) OnButtonWithIconClick() {
-	app.Log("button with icon clicked")
+	app.Logf("button with icon clicked")
 }
 
 // OnCheckableButton is the function that is called when the button labelled
 // "checkable button" is clicked.
 func (m *Menu) OnCheckableButton() {
-	app.Log("checkable button clicked")
+	app.Logf("checkable button clicked")
 	m.Checked = !m.Checked
 	app.Render(m)
 }
@@ -161,35 +161,35 @@ func (m *Menu) OnCheckableButton() {
 // OnSetDockBadge is the function that is called when the button labelled "set
 // dock badge" is clicked.
 func (m *Menu) OnSetDockBadge() {
-	app.Log("button set dock badge clicked")
+	app.Logf("button set dock badge clicked")
 	app.Dock().SetBadge(uuid.New().String())
 }
 
 // OnUnsetDockBadge is the function that is called when the button labelled
 // "unset dock badge" is clicked.
 func (m *Menu) OnUnsetDockBadge() {
-	app.Log("button unset dock badge clicked")
+	app.Logf("button unset dock badge clicked")
 	app.Dock().SetBadge(nil)
 }
 
 // OnSetDockIcon is the function that is called when the button labelled "set
 // dock icon" is clicked.
 func (m *Menu) OnSetDockIcon() {
-	app.Log("button set dock icon clicked")
+	app.Logf("button set dock icon clicked")
 	app.Dock().SetIcon(app.Resources("logo.png"))
 }
 
 // OnUnsetDockIcon is the function that is called when the button labelled
 // "unset dock icon" is clicked.
 func (m *Menu) OnUnsetDockIcon() {
-	app.Log("button unset dock icon clicked")
+	app.Logf("button unset dock icon clicked")
 	app.Dock().SetIcon("")
 }
 
 // OnButtonWithRandomTitleClicked is the function that is called when the button
 // with randow title is clicked.
 func (m *Menu) OnButtonWithRandomTitleClicked() {
-	app.Log("button with random title clicked")
+	app.Logf("button with random title clicked")
 	m.RandomTitle = uuid.New().String()
 	app.Render(m)
 }
@@ -197,13 +197,13 @@ func (m *Menu) OnButtonWithRandomTitleClicked() {
 // OnSubButtonClick is the function that is called when the button labelled "sub
 // button" is clicked.
 func (m *Menu) OnSubButtonClick() {
-	app.Log("sub button clicked")
+	app.Logf("sub button clicked")
 }
 
 // OnEnableAllClick is the function that is called when the button labelled
 // "enable all" is clicked.
 func (m *Menu) OnEnableAllClick() {
-	app.Log("button enable all clicked")
+	app.Logf("button enable all clicked")
 	m.DisableAll = false
 	app.Render(m)
 }
@@ -211,7 +211,7 @@ func (m *Menu) OnEnableAllClick() {
 // OnDisableAllClick is the function that is called when the button labelled
 // "disable all" is clicked.
 func (m *Menu) OnDisableAllClick() {
-	app.Log("button disable all clicked")
+	app.Logf("button disable all clicked")
 	m.DisableAll = true
 	app.Render(m)
 }
@@ -219,7 +219,7 @@ func (m *Menu) OnDisableAllClick() {
 // OnSwitchSeparatorClick is the function that is called when the button
 // labelled "switch separator" is clicked.
 func (m *Menu) OnSwitchSeparatorClick() {
-	app.Log("button switch separator clicked")
+	app.Logf("button switch separator clicked")
 	m.Separator = !m.Separator
 	app.Render(m)
 }
@@ -227,7 +227,7 @@ func (m *Menu) OnSwitchSeparatorClick() {
 // OnRenderRootClicked is the function that is called when the button labelled
 // "render root" is clicked.
 func (m *Menu) OnRenderRootClicked() {
-	app.Log("button render root clicked")
+	app.Logf("button render root clicked")
 	m.RenderRootToggle = !m.RenderRootToggle
 	app.Render(m)
 }
@@ -235,7 +235,7 @@ func (m *Menu) OnRenderRootClicked() {
 // OnRenderRootAttributeClicked is the function that is called when the button
 // labelled "render root attribute" is clicked.
 func (m *Menu) OnRenderRootAttributeClicked() {
-	app.Log("button render root attribute clicked")
+	app.Logf("button render root attribute clicked")
 	m.Name = uuid.New().String()
 	app.Render(m)
 }

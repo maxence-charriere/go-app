@@ -22,12 +22,12 @@ type driverWithLogs struct {
 
 func (d *driverWithLogs) Run(f *Factory) error {
 	WhenDebug(func() {
-		Log("running %T driver", d)
+		Logf("running %T driver", d)
 	})
 
 	err := d.Driver.Run(f)
 	if err != nil {
-		Log("driver stopped running: %s", err)
+		Logf("driver stopped running: %s", err)
 	}
 	return err
 }
@@ -64,12 +64,12 @@ func (d *driverWithLogs) ElemByCompo(c Compo) Elem {
 func (d *driverWithLogs) NewWindow(c WindowConfig) Window {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "    ")
-		Log("creating window: %s", config)
+		Logf("creating window: %s", config)
 	})
 
 	w := d.Driver.NewWindow(c)
 	if w.Err() != nil {
-		Log("creating window failed: %s", w.Err())
+		Logf("creating window failed: %s", w.Err())
 	}
 
 	return &windowWithLogs{Window: w}
@@ -78,12 +78,12 @@ func (d *driverWithLogs) NewWindow(c WindowConfig) Window {
 func (d *driverWithLogs) NewPage(c PageConfig) Page {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "  ")
-		Log("creating page: %s", config)
+		Logf("creating page: %s", config)
 	})
 
 	p := d.Driver.NewPage(c)
 	if p.Err() != nil {
-		Log("creating page failed: %s", p.Err())
+		Logf("creating page failed: %s", p.Err())
 	}
 
 	return &pageWithLogs{Page: p}
@@ -92,12 +92,12 @@ func (d *driverWithLogs) NewPage(c PageConfig) Page {
 func (d *driverWithLogs) NewContextMenu(c MenuConfig) Menu {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "  ")
-		Log("creating context menu: %s", config)
+		Logf("creating context menu: %s", config)
 	})
 
 	m := d.Driver.NewContextMenu(c)
 	if m.Err() != nil {
-		Log("creating context menu failed: %s", m.Err())
+		Logf("creating context menu failed: %s", m.Err())
 	}
 
 	return &menuWithLogs{Menu: m}
@@ -106,12 +106,12 @@ func (d *driverWithLogs) NewContextMenu(c MenuConfig) Menu {
 func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) Elem {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "  ")
-		Log("creating file panel: %s", config)
+		Logf("creating file panel: %s", config)
 	})
 
 	p := d.Driver.NewFilePanel(c)
 	if p.Err() != nil {
-		Log("creating file panel failed: %s", p.Err())
+		Logf("creating file panel failed: %s", p.Err())
 	}
 
 	return p
@@ -120,12 +120,12 @@ func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) Elem {
 func (d *driverWithLogs) NewSaveFilePanel(c SaveFilePanelConfig) Elem {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "  ")
-		Log("creating save file panel: %s", config)
+		Logf("creating save file panel: %s", config)
 	})
 
 	p := d.Driver.NewSaveFilePanel(c)
 	if p.Err() != nil {
-		Log("creating save file panel failed: %s", p.Err())
+		Logf("creating save file panel failed: %s", p.Err())
 	}
 
 	return p
@@ -133,12 +133,12 @@ func (d *driverWithLogs) NewSaveFilePanel(c SaveFilePanelConfig) Elem {
 
 func (d *driverWithLogs) NewShare(v interface{}) Elem {
 	WhenDebug(func() {
-		Log("creating share: %v", v)
+		Logf("creating share: %v", v)
 	})
 
 	s := d.Driver.NewShare(v)
 	if s.Err() != nil {
-		Log("creating share failed: %s", s.Err())
+		Logf("creating share failed: %s", s.Err())
 	}
 
 	return s
@@ -147,12 +147,12 @@ func (d *driverWithLogs) NewShare(v interface{}) Elem {
 func (d *driverWithLogs) NewNotification(c NotificationConfig) Elem {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "  ")
-		Log("creating notification: %s", config)
+		Logf("creating notification: %s", config)
 	})
 
 	n := d.Driver.NewNotification(c)
 	if n.Err() != nil {
-		Log("creating notification failed: %s", n.Err())
+		Logf("creating notification failed: %s", n.Err())
 	}
 
 	return n
@@ -160,12 +160,12 @@ func (d *driverWithLogs) NewNotification(c NotificationConfig) Elem {
 
 func (d *driverWithLogs) MenuBar() Menu {
 	WhenDebug(func() {
-		Log("getting menubar")
+		Logf("getting menubar")
 	})
 
 	m := d.Driver.MenuBar()
 	if m.Err() != nil {
-		Log("getting menubar failed: %s", m.Err())
+		Logf("getting menubar failed: %s", m.Err())
 	}
 
 	return &menuWithLogs{Menu: m}
@@ -174,12 +174,12 @@ func (d *driverWithLogs) MenuBar() Menu {
 func (d *driverWithLogs) NewStatusMenu(c StatusMenuConfig) StatusMenu {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "  ")
-		Log("creating status menu: %s", config)
+		Logf("creating status menu: %s", config)
 	})
 
 	m := d.Driver.NewStatusMenu(c)
 	if m.Err() != nil {
-		Log("getting status menu failed: %s", m.Err())
+		Logf("getting status menu failed: %s", m.Err())
 	}
 
 	return &statusMenuWithLogs{StatusMenu: m}
@@ -187,12 +187,12 @@ func (d *driverWithLogs) NewStatusMenu(c StatusMenuConfig) StatusMenu {
 
 func (d *driverWithLogs) DockTile() DockTile {
 	WhenDebug(func() {
-		Log("getting dock tile")
+		Logf("getting dock tile")
 	})
 
 	dt := d.Driver.DockTile()
 	if dt.Err() != nil {
-		Log("getting dock tile failed: %s", dt.Err())
+		Logf("getting dock tile failed: %s", dt.Err())
 	}
 
 	return &dockWithLogs{DockTile: dt}
@@ -200,7 +200,7 @@ func (d *driverWithLogs) DockTile() DockTile {
 
 func (d *driverWithLogs) Stop() {
 	WhenDebug(func() {
-		Log("stopping driver")
+		Logf("stopping driver")
 	})
 
 	d.Driver.Stop()
@@ -223,7 +223,7 @@ func (w *windowWithLogs) Load(url string, v ...interface{}) {
 	parsedURL := fmt.Sprintf(url, v...)
 
 	WhenDebug(func() {
-		Log("window %s is loading %s",
+		Logf("window %s is loading %s",
 			w.ID(),
 			parsedURL,
 		)
@@ -231,7 +231,7 @@ func (w *windowWithLogs) Load(url string, v ...interface{}) {
 
 	w.Window.Load(url, v...)
 	if w.Err() != nil {
-		Log("window %s failed to load %s: %s",
+		Logf("window %s failed to load %s: %s",
 			w.ID(),
 			parsedURL,
 			w.Err(),
@@ -241,7 +241,7 @@ func (w *windowWithLogs) Load(url string, v ...interface{}) {
 
 func (w *windowWithLogs) Render(c Compo) {
 	WhenDebug(func() {
-		Log("window %s is rendering %T",
+		Logf("window %s is rendering %T",
 			w.ID(),
 			c,
 		)
@@ -249,7 +249,7 @@ func (w *windowWithLogs) Render(c Compo) {
 
 	w.Window.Render(c)
 	if w.Err() != nil {
-		Log("window %s failed to render %T: %s",
+		Logf("window %s failed to render %T: %s",
 			w.ID(),
 			c,
 			w.Err(),
@@ -259,12 +259,12 @@ func (w *windowWithLogs) Render(c Compo) {
 
 func (w *windowWithLogs) Reload() {
 	WhenDebug(func() {
-		Log("window %s is reloading", w.ID())
+		Logf("window %s is reloading", w.ID())
 	})
 
 	w.Window.Reload()
 	if w.Err() != nil {
-		Log("window %s failed to reload: %s",
+		Logf("window %s failed to reload: %s",
 			w.ID(),
 			w.Err(),
 		)
@@ -273,12 +273,12 @@ func (w *windowWithLogs) Reload() {
 
 func (w *windowWithLogs) Previous() {
 	WhenDebug(func() {
-		Log("window %s is loading previous", w.ID())
+		Logf("window %s is loading previous", w.ID())
 	})
 
 	w.Window.Previous()
 	if w.Err() != nil {
-		Log("window %s failed to load previous: %s",
+		Logf("window %s failed to load previous: %s",
 			w.ID(),
 			w.Err(),
 		)
@@ -287,12 +287,12 @@ func (w *windowWithLogs) Previous() {
 
 func (w *windowWithLogs) Next() {
 	WhenDebug(func() {
-		Log("window %s is loading next", w.ID())
+		Logf("window %s is loading next", w.ID())
 	})
 
 	w.Window.Next()
 	if w.Err() != nil {
-		Log("window %s failed to load next: %s",
+		Logf("window %s failed to load next: %s",
 			w.ID(),
 			w.Err(),
 		)
@@ -301,7 +301,7 @@ func (w *windowWithLogs) Next() {
 
 func (w *windowWithLogs) Move(x, y float64) {
 	WhenDebug(func() {
-		Log("window %s is moving to x:%.2f y:%.2f",
+		Logf("window %s is moving to x:%.2f y:%.2f",
 			w.ID(),
 			x,
 			y,
@@ -313,7 +313,7 @@ func (w *windowWithLogs) Move(x, y float64) {
 
 func (w *windowWithLogs) Center() {
 	WhenDebug(func() {
-		Log("window %s is moving to center", w.ID())
+		Logf("window %s is moving to center", w.ID())
 	})
 
 	w.Window.Center()
@@ -321,7 +321,7 @@ func (w *windowWithLogs) Center() {
 
 func (w *windowWithLogs) Resize(width, height float64) {
 	WhenDebug(func() {
-		Log("window %s is resizing to width:%.2f height:%.2f",
+		Logf("window %s is resizing to width:%.2f height:%.2f",
 			w.ID(),
 			width,
 			height,
@@ -333,7 +333,7 @@ func (w *windowWithLogs) Resize(width, height float64) {
 
 func (w *windowWithLogs) Focus() {
 	WhenDebug(func() {
-		Log("window %s is getting focus", w.ID())
+		Logf("window %s is getting focus", w.ID())
 	})
 
 	w.Window.Focus()
@@ -341,7 +341,7 @@ func (w *windowWithLogs) Focus() {
 
 func (w *windowWithLogs) FullScreen() {
 	WhenDebug(func() {
-		Log("window %s is entering full screen", w.ID())
+		Logf("window %s is entering full screen", w.ID())
 	})
 
 	w.Window.FullScreen()
@@ -349,7 +349,7 @@ func (w *windowWithLogs) FullScreen() {
 
 func (w *windowWithLogs) ExitFullScreen() {
 	WhenDebug(func() {
-		Log("window %s is exiting full screen", w.ID())
+		Logf("window %s is exiting full screen", w.ID())
 	})
 
 	w.Window.ExitFullScreen()
@@ -357,7 +357,7 @@ func (w *windowWithLogs) ExitFullScreen() {
 
 func (w *windowWithLogs) Minimize() {
 	WhenDebug(func() {
-		Log("window %s is minimizing", w.ID())
+		Logf("window %s is minimizing", w.ID())
 	})
 
 	w.Window.Minimize()
@@ -365,7 +365,7 @@ func (w *windowWithLogs) Minimize() {
 
 func (w *windowWithLogs) Deminimize() {
 	WhenDebug(func() {
-		Log("window %s is deminimizing", w.ID())
+		Logf("window %s is deminimizing", w.ID())
 	})
 
 	w.Window.Deminimize()
@@ -373,12 +373,12 @@ func (w *windowWithLogs) Deminimize() {
 
 func (w *windowWithLogs) Close() {
 	WhenDebug(func() {
-		Log("window %s is closing", w.ID())
+		Logf("window %s is closing", w.ID())
 	})
 
 	w.Window.Close()
 	if w.Err() != nil {
-		Log("window %s failed to close: %s",
+		Logf("window %s failed to close: %s",
 			w.ID(),
 			w.Err(),
 		)
@@ -402,7 +402,7 @@ func (p *pageWithLogs) Load(url string, v ...interface{}) {
 	parsedURL := fmt.Sprintf(url, v...)
 
 	WhenDebug(func() {
-		Log("page %s is loading %s",
+		Logf("page %s is loading %s",
 			p.ID(),
 			parsedURL,
 		)
@@ -410,7 +410,7 @@ func (p *pageWithLogs) Load(url string, v ...interface{}) {
 
 	p.Page.Load(url, v...)
 	if p.Err() != nil {
-		Log("page %s failed to load %s: %s",
+		Logf("page %s failed to load %s: %s",
 			p.ID(),
 			parsedURL,
 			p.Err(),
@@ -420,7 +420,7 @@ func (p *pageWithLogs) Load(url string, v ...interface{}) {
 
 func (p *pageWithLogs) Render(c Compo) {
 	WhenDebug(func() {
-		Log("page %s is rendering %T",
+		Logf("page %s is rendering %T",
 			p.ID(),
 			c,
 		)
@@ -428,7 +428,7 @@ func (p *pageWithLogs) Render(c Compo) {
 
 	p.Page.Render(c)
 	if p.Err() != nil {
-		Log("page %s failed to render %T: %s",
+		Logf("page %s failed to render %T: %s",
 			p.ID(),
 			c,
 			p.Err(),
@@ -438,12 +438,12 @@ func (p *pageWithLogs) Render(c Compo) {
 
 func (p *pageWithLogs) Reload() {
 	WhenDebug(func() {
-		Log("page %s is reloading", p.ID())
+		Logf("page %s is reloading", p.ID())
 	})
 
 	p.Page.Reload()
 	if p.Err() != nil {
-		Log("page %s failed to reload: %s",
+		Logf("page %s failed to reload: %s",
 			p.ID(),
 			p.Err(),
 		)
@@ -452,7 +452,7 @@ func (p *pageWithLogs) Reload() {
 
 func (p *pageWithLogs) Previous() {
 	WhenDebug(func() {
-		Log("page %s is loading previous", p.ID())
+		Logf("page %s is loading previous", p.ID())
 	})
 
 	p.Page.Previous()
@@ -460,7 +460,7 @@ func (p *pageWithLogs) Previous() {
 
 func (p *pageWithLogs) Next() {
 	WhenDebug(func() {
-		Log("page %s is loading next", p.ID())
+		Logf("page %s is loading next", p.ID())
 	})
 
 	p.Page.Next()
@@ -475,7 +475,7 @@ func (m *menuWithLogs) Load(url string, v ...interface{}) {
 	parsedURL := fmt.Sprintf(url, v...)
 
 	WhenDebug(func() {
-		Log("%s %s is loading %s",
+		Logf("%s %s is loading %s",
 			m.Type(),
 			m.ID(),
 			parsedURL,
@@ -484,7 +484,7 @@ func (m *menuWithLogs) Load(url string, v ...interface{}) {
 
 	m.Menu.Load(url, v...)
 	if m.Err() != nil {
-		Log("%s %s failed to load %s: %s",
+		Logf("%s %s failed to load %s: %s",
 			m.Type(),
 			m.ID(),
 			parsedURL,
@@ -495,7 +495,7 @@ func (m *menuWithLogs) Load(url string, v ...interface{}) {
 
 func (m *menuWithLogs) Render(c Compo) {
 	WhenDebug(func() {
-		Log("%s %s is rendering %T",
+		Logf("%s %s is rendering %T",
 			m.Type(),
 			m.ID(),
 			c,
@@ -504,7 +504,7 @@ func (m *menuWithLogs) Render(c Compo) {
 
 	m.Menu.Render(c)
 	if m.Err() != nil {
-		Log("%s %s failed to render %T: %s",
+		Logf("%s %s failed to render %T: %s",
 			m.Type(),
 			m.ID(),
 			c,
@@ -526,12 +526,12 @@ func (d *dockWithLogs) Load(url string, v ...interface{}) {
 	parsedURL := fmt.Sprintf(url, v...)
 
 	WhenDebug(func() {
-		Log("dock tile is loading %s", parsedURL)
+		Logf("dock tile is loading %s", parsedURL)
 	})
 
 	d.DockTile.Load(url, v...)
 	if d.Err() != nil {
-		Log("dock tile failed to load %s: %s",
+		Logf("dock tile failed to load %s: %s",
 			parsedURL,
 			d.Err(),
 		)
@@ -540,12 +540,12 @@ func (d *dockWithLogs) Load(url string, v ...interface{}) {
 
 func (d *dockWithLogs) Render(c Compo) {
 	WhenDebug(func() {
-		Log("dock tile is rendering %T", c)
+		Logf("dock tile is rendering %T", c)
 	})
 
 	d.DockTile.Render(c)
 	if d.Err() != nil {
-		Log("dock tile failed to render %T: %s",
+		Logf("dock tile failed to render %T: %s",
 			c,
 			d.Err(),
 		)
@@ -554,23 +554,23 @@ func (d *dockWithLogs) Render(c Compo) {
 
 func (d *dockWithLogs) SetIcon(name string) {
 	WhenDebug(func() {
-		Log("dock tile is setting its icon to %s", name)
+		Logf("dock tile is setting its icon to %s", name)
 	})
 
 	d.DockTile.SetIcon(name)
 	if d.Err() != nil {
-		Log("dock tile failed to set its icon: %s", d.Err())
+		Logf("dock tile failed to set its icon: %s", d.Err())
 	}
 }
 
 func (d *dockWithLogs) SetBadge(v interface{}) {
 	WhenDebug(func() {
-		Log("dock tile is setting its badge to %v", v)
+		Logf("dock tile is setting its badge to %v", v)
 	})
 
 	d.DockTile.SetBadge(v)
 	if d.Err() != nil {
-		Log("dock tile failed to set its badge: %s", d.Err())
+		Logf("dock tile failed to set its badge: %s", d.Err())
 	}
 }
 
@@ -587,7 +587,7 @@ func (s *statusMenuWithLogs) Load(url string, v ...interface{}) {
 	parsedURL := fmt.Sprintf(url, v...)
 
 	WhenDebug(func() {
-		Log("status menu %s is loading %s",
+		Logf("status menu %s is loading %s",
 			s.ID(),
 			parsedURL,
 		)
@@ -595,7 +595,7 @@ func (s *statusMenuWithLogs) Load(url string, v ...interface{}) {
 
 	s.StatusMenu.Load(url, v...)
 	if s.Err() != nil {
-		Log("status menu %T failed to load %s: %s",
+		Logf("status menu %T failed to load %s: %s",
 			s.ID(),
 			parsedURL,
 			s.Err(),
@@ -605,7 +605,7 @@ func (s *statusMenuWithLogs) Load(url string, v ...interface{}) {
 
 func (s *statusMenuWithLogs) Render(c Compo) {
 	WhenDebug(func() {
-		Log("status menu %s is rendering %T",
+		Logf("status menu %s is rendering %T",
 			s.ID(),
 			c,
 		)
@@ -613,7 +613,7 @@ func (s *statusMenuWithLogs) Render(c Compo) {
 
 	s.StatusMenu.Render(c)
 	if s.Err() != nil {
-		Log("status menu %s failed to render %T: %s",
+		Logf("status menu %s failed to render %T: %s",
 			s.ID(),
 			c,
 			s.Err(),
@@ -623,7 +623,7 @@ func (s *statusMenuWithLogs) Render(c Compo) {
 
 func (s *statusMenuWithLogs) SetIcon(name string) {
 	WhenDebug(func() {
-		Log("status menu %s is setting icon to %s",
+		Logf("status menu %s is setting icon to %s",
 			s.ID(),
 			name,
 		)
@@ -631,7 +631,7 @@ func (s *statusMenuWithLogs) SetIcon(name string) {
 
 	s.StatusMenu.SetIcon(name)
 	if s.Err() != nil {
-		Log("status menu %s failed to set icon: %s",
+		Logf("status menu %s failed to set icon: %s",
 			s.ID(),
 			s.Err(),
 		)
@@ -640,7 +640,7 @@ func (s *statusMenuWithLogs) SetIcon(name string) {
 
 func (s *statusMenuWithLogs) SetText(text string) {
 	WhenDebug(func() {
-		Log("status menu %s is setting text to %s",
+		Logf("status menu %s is setting text to %s",
 			s.ID(),
 			text,
 		)
@@ -648,7 +648,7 @@ func (s *statusMenuWithLogs) SetText(text string) {
 
 	s.StatusMenu.SetText(text)
 	if s.Err() != nil {
-		Log("status menu %s failed to set text: %s",
+		Logf("status menu %s failed to set text: %s",
 			s.ID(),
 			s.Err(),
 		)
@@ -657,12 +657,12 @@ func (s *statusMenuWithLogs) SetText(text string) {
 
 func (s *statusMenuWithLogs) Close() {
 	WhenDebug(func() {
-		Log("status menu %s is closing", s.ID())
+		Logf("status menu %s is closing", s.ID())
 	})
 
 	s.StatusMenu.Close()
 	if s.Err() != nil {
-		Log("status menu %s failed to close: %s",
+		Logf("status menu %s failed to close: %s",
 			s.ID(),
 			s.Err(),
 		)

@@ -153,19 +153,19 @@ func onMenuCallback(m *Menu, in map[string]interface{}) interface{} {
 
 	var mapping dom.Mapping
 	if err := json.Unmarshal([]byte(mappingStr), &mapping); err != nil {
-		app.Log("menu callback failed: %s", err)
+		app.Logf("menu callback failed: %s", err)
 		return nil
 	}
 
 	c, err := m.dom.CompoByID(mapping.CompoID)
 	if err != nil {
-		app.Log("menu callback failed: %s", err)
+		app.Logf("menu callback failed: %s", err)
 		return nil
 	}
 
 	var f func()
 	if f, err = mapping.Map(c); err != nil {
-		app.Log("menu callback failed: %s", err)
+		app.Logf("menu callback failed: %s", err)
 		return nil
 	}
 
@@ -196,7 +196,7 @@ func onMenuClose(m *Menu, in map[string]interface{}) interface{} {
 		}{
 			ID: m.id,
 		}); err != nil {
-			panic(errors.Wrap(err, "onMenuClose"))
+			app.Panic(errors.Wrap(err, "onMenuClose"))
 		}
 
 		driver.elems.Delete(m)
@@ -221,7 +221,8 @@ func handleMenu(h func(m *Menu, in map[string]interface{}) interface{}) bridge.G
 			return h(&m.Menu, in)
 
 		default:
-			panic("menu not supported")
+			app.Panic("menu not supported")
+			return nil
 		}
 	}
 }

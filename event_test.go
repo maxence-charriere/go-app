@@ -8,7 +8,7 @@ import (
 )
 
 func TestEventRegistry(t *testing.T) {
-	Log = func(format string, a ...interface{}) {
+	Logger = func(format string, a ...interface{}) {
 		log := fmt.Sprintf(format, a...)
 		t.Log(log)
 	}

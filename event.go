@@ -39,7 +39,7 @@ func (m *eventRegistry) Subscribe(name string, handler interface{}) (unsuscribe 
 	defer m.mutex.Unlock()
 
 	if reflect.ValueOf(handler).Kind() != reflect.Func {
-		panic(errors.Errorf("can't subscribe event %s: handler is not a func: %T",
+		Panic(errors.Errorf("can't subscribe event %s: handler is not a func: %T",
 			name,
 			handler,
 		))

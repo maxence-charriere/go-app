@@ -7,6 +7,7 @@ import (
 	"io"
 	"net"
 	"sync"
+	"time"
 
 	"github.com/murlokswarm/app"
 )
@@ -102,5 +103,6 @@ func ListenAndWriteLogs(ctx context.Context) error {
 
 	<-ctx.Done()
 	_, err = conn.WriteTo([]byte("bye"), appAddr)
+	time.Sleep(time.Millisecond * 10)
 	return err
 }
