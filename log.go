@@ -34,7 +34,7 @@ func NewLogger(wout, werr io.Writer, debug, colors bool) Logger {
 
 	return &logger{
 		wout:      wout,
-		werr:      wout,
+		werr:      werr,
 		whenDebug: whenDebug,
 		colors:    colors,
 	}
@@ -72,15 +72,14 @@ func (l *logger) print(level int, format string, v ...interface{}) {
 
 	format = l.prefix(level) + format
 
-	if format[len(format)-1] != '\n' {
-		format += "\n"
-	}
-
 	if level == levelError {
 		fmt.Fprintf(l.werr, format, v...)
+		fmt.Fprintln(l.werr)
 		return
 	}
+
 	fmt.Fprintf(l.wout, format, v...)
+	fmt.Fprintln(l.wout)
 }
 
 func (l *logger) prefix(level int) string {
