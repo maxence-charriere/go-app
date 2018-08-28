@@ -1,6 +1,7 @@
 package app_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/murlokswarm/app"
@@ -9,6 +10,13 @@ import (
 )
 
 func TestLogs(t *testing.T) {
+	app.Log = func(format string, a ...interface{}) {
+		log := fmt.Sprintf(format, a...)
+		t.Log(log)
+	}
+
+	app.DebugEnabled(true)
+
 	setup := func(onRun func()) app.Driver {
 		d := &test.Driver{
 			OnRun: onRun,
@@ -22,6 +30,11 @@ func TestLogs(t *testing.T) {
 }
 
 func TestLogsErrors(t *testing.T) {
+	app.Log = func(format string, a ...interface{}) {
+		log := fmt.Sprintf(format, a...)
+		t.Log(log)
+	}
+
 	setup := func(onRun func()) app.Driver {
 		d := &test.Driver{
 			Err:   true,

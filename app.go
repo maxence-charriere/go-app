@@ -20,13 +20,16 @@ var (
 	// is mounted.
 	ErrCompoNotMounted = errors.New("component not mounted")
 
-	// Loggers contains the loggers used by the app.
-	Loggers []Logger
+	// Log is a function that formats according to a format specifier and
+	// write to a log.
+	// It is used by Log and Debug to generate app logs.
+	Log func(format string, a ...interface{})
 
-	driver  Driver
-	factory = NewFactory()
-	events  = newEventRegistry(CallOnUIGoroutine)
-	actions = newActionRegistry(events)
+	driver    Driver
+	factory   = NewFactory()
+	events    = newEventRegistry(CallOnUIGoroutine)
+	actions   = newActionRegistry(events)
+	whenDebug = func(f func()) {}
 )
 
 // Import imports the component into the app.
@@ -215,31 +218,20 @@ func NewEventSubscriber() *EventSubscriber {
 	}
 }
 
-// Log logs a message according to a format specifier.
-// It is a helper function that calls Log() for all the loggers set in
-// app.Loggers.
-func Log(format string, v ...interface{}) {
-	for _, l := range Loggers {
-		l.Log(format, v...)
-	}
-}
+// DebugEnabled is a function that set whether debug mode is enabled.
+func DebugEnabled(v bool) {
+	whenDebug = func(f func()) {}
 
-// Debug logs a debug message according to a format specifier.
-// It is a helper function that calls Debug() for all the loggers set in
-// app.Loggers.
-func Debug(format string, v ...interface{}) {
-	for _, l := range Loggers {
-		l.Debug(format, v...)
+	if v {
+		whenDebug = func(f func()) {
+			f()
+		}
 	}
 }
 
 // WhenDebug execute the given function when debug mode is enabled.
-// It is a helper function that calls WhenDebug() for all the loggers set in
-// app.Loggers.
 func WhenDebug(f func()) {
-	for _, l := range Loggers {
-		l.WhenDebug(f)
-	}
+	whenDebug(f)
 }
 
 // CompoName returns the name of the given component.

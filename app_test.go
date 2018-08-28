@@ -1,7 +1,7 @@
 package app_test
 
 import (
-	"bytes"
+	"fmt"
 	"path/filepath"
 	"testing"
 	"time"
@@ -21,8 +21,10 @@ func TestImport(t *testing.T) {
 }
 
 func TestApp(t *testing.T) {
-	output := &bytes.Buffer{}
-	app.Loggers = []app.Logger{app.NewLogger(output, output, true, true)}
+	app.Log = func(format string, a ...interface{}) {
+		log := fmt.Sprintf(format, a...)
+		t.Log(log)
+	}
 
 	app.Import(&tests.Foo{})
 	app.Import(&tests.Bar{})
