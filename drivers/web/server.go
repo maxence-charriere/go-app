@@ -16,7 +16,7 @@ import (
 )
 
 func init() {
-	logger := logs.ToWritter(os.Stderr)
+	logger := logs.ToWriter(os.Stderr)
 
 	if runtime.GOOS == "windows" {
 		logger = logs.WithPrompt(logger)

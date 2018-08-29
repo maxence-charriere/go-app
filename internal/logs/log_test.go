@@ -8,7 +8,7 @@ import (
 
 func TestFromWriter(t *testing.T) {
 	b := &bytes.Buffer{}
-	l := ToWritter(b)
+	l := ToWriter(b)
 
 	testLogger(t, l)
 	t.Log(b.String())
@@ -16,7 +16,7 @@ func TestFromWriter(t *testing.T) {
 
 func TestWithPromt(t *testing.T) {
 	b := &bytes.Buffer{}
-	l := ToWritter(b)
+	l := ToWriter(b)
 	l = WithPrompt(l)
 
 	testLogger(t, l)
@@ -25,7 +25,7 @@ func TestWithPromt(t *testing.T) {
 
 func TestWithColoredPromt(t *testing.T) {
 	b := &bytes.Buffer{}
-	l := ToWritter(b)
+	l := ToWriter(b)
 	l = WithColoredPrompt(l)
 
 	testLogger(t, l)

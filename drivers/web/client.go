@@ -18,7 +18,7 @@ var (
 )
 
 func init() {
-	logger := logs.ToWritter(os.Stderr)
+	logger := logs.ToWriter(os.Stderr)
 	logger = logs.WithPrompt(logger)
 	app.Logger = logger
 }
