@@ -4,15 +4,39 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"sync"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
+type concurrentBuffer struct {
+	buffer bytes.Buffer
+	mutex  sync.Mutex
+}
+
+func (b *concurrentBuffer) Write(d []byte) (int, error) {
+	b.mutex.Lock()
+	defer b.mutex.Unlock()
+	return b.buffer.Write(d)
+}
+
+func (b *concurrentBuffer) Read(d []byte) (int, error) {
+	b.mutex.Lock()
+	defer b.mutex.Unlock()
+	return b.buffer.Read(d)
+}
+
+func (b *concurrentBuffer) String() string {
+	b.mutex.Lock()
+	defer b.mutex.Unlock()
+	return b.buffer.String()
+}
+
 func TestGoapp(t *testing.T) {
 	addr := ":9000"
-	b := &bytes.Buffer{}
+	b := &concurrentBuffer{}
 
 	s := GoappServer{
 		Addr:   addr,
@@ -22,7 +46,8 @@ func TestGoapp(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	clientStopped := false
+	stopc := make(chan struct{})
+	defer close(stopc)
 
 	go func() {
 		time.Sleep(time.Millisecond * 5)
@@ -32,11 +57,10 @@ func TestGoapp(t *testing.T) {
 
 		c.Logger()("hello")
 		c.Logger()("my name is %s", "Maxence")
-		c.Logger()("no: %s", errors.New("i don't want to go"))
+		c.Logger()("%s", errors.New("bye"))
 
 		c.WaitForStop(func() {
-			c.Logger()("bye")
-			clientStopped = true
+			stopc <- struct{}{}
 		})
 	}()
 
@@ -47,7 +71,8 @@ func TestGoapp(t *testing.T) {
 
 	err := s.ListenAndLog(ctx)
 	assert.NoError(t, err)
-	assert.True(t, clientStopped)
+
+	<-stopc
 	t.Log(b.String())
 
 }

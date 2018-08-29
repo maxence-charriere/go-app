@@ -5,7 +5,6 @@ import (
 	"io"
 	"net"
 	"sync"
-	"time"
 
 	"github.com/murlokswarm/app"
 )
@@ -69,11 +68,11 @@ func (s *GoappServer) ListenAndLog(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-
 	defer conn.Close()
 
 	var once sync.Once
-	var appAddr net.Addr
+	addrc := make(chan net.Addr)
+	defer close(addrc)
 
 	go func() {
 		for {
@@ -85,7 +84,7 @@ func (s *GoappServer) ListenAndLog(ctx context.Context) error {
 			}
 
 			once.Do(func() {
-				appAddr = addr
+				addrc <- addr
 			})
 
 			if _, err = s.Writer.Write(log[:n]); err != nil {
@@ -94,11 +93,9 @@ func (s *GoappServer) ListenAndLog(ctx context.Context) error {
 		}
 	}()
 
+	addr := <-addrc
 	<-ctx.Done()
 
-	time.Sleep(time.Millisecond * 5)
-	_, err = conn.WriteTo([]byte("q"), appAddr)
-	time.Sleep(time.Millisecond * 50)
-
+	_, err = conn.WriteTo([]byte("q"), addr)
 	return err
 }

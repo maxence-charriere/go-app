@@ -3,6 +3,7 @@ package logs
 import (
 	"fmt"
 	"io"
+	"sync"
 	"time"
 )
 
@@ -11,10 +12,15 @@ import (
 type Logger func(format string, a ...interface{})
 
 // ToWriter returns a logger that writes on the given writer.
+// It is safe for concurrent operations.
 func ToWriter(w io.Writer) Logger {
+	var mu sync.Mutex
+
 	return func(format string, a ...interface{}) {
+		mu.Lock()
 		fmt.Fprintf(w, format, a...)
 		fmt.Fprintln(w)
+		mu.Unlock()
 	}
 }
 
