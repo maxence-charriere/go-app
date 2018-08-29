@@ -71,15 +71,20 @@ func (s *GoappServer) ListenAndLog(ctx context.Context) error {
 	defer conn.Close()
 
 	var once sync.Once
+
 	addrc := make(chan net.Addr)
-	defer close(addrc)
+	errc := make(chan error)
 
 	go func() {
+		defer close(addrc)
+		defer close(errc)
+
 		for {
 			log := make([]byte, 1024)
 
 			n, addr, err := conn.ReadFrom(log)
 			if err != nil {
+				errc <- err
 				return
 			}
 
@@ -88,14 +93,29 @@ func (s *GoappServer) ListenAndLog(ctx context.Context) error {
 			})
 
 			if _, err = s.Writer.Write(log[:n]); err != nil {
+				errc <- err
 				return
 			}
 		}
 	}()
 
-	addr := <-addrc
-	<-ctx.Done()
+	var addr net.Addr
 
-	_, err = conn.WriteTo([]byte("q"), addr)
+	select {
+	case addr = <-addrc:
+	case err = <-errc:
+	}
+
+	if err != nil {
+		return err
+	}
+
+	select {
+	case <-ctx.Done():
+		_, err = conn.WriteTo([]byte("q"), addr)
+
+	case err = <-errc:
+	}
+
 	return err
 }
