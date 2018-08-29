@@ -23,7 +23,7 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/murlokswarm/app/internal/log"
+	"github.com/murlokswarm/app/internal/logs"
 	"github.com/pkg/errors"
 )
 
@@ -31,12 +31,11 @@ var (
 	driver        *Driver
 	isGoappBundle = os.Getenv("GOAPP_BUNDLE") == "true"
 	isGoappRun    = os.Getenv("GOAPP_RUN") == "true"
-	isGoappDebug  = os.Getenv("GOAPP_DEBUG") == "true"
 )
 
 func init() {
-	logger := log.FromWriter(os.Stderr)
-	logger = log.WithColoredPrompt(logger)
+	logger := logs.ToWritter(os.Stderr)
+	logger = logs.WithColoredPrompt(logger)
 	app.Logger = logger
 }
 

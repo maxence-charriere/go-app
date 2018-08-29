@@ -10,7 +10,7 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/murlokswarm/app/internal/log"
+	"github.com/murlokswarm/app/internal/logs"
 )
 
 var (
@@ -18,8 +18,8 @@ var (
 )
 
 func init() {
-	logger := log.FromWriter(os.Stderr)
-	logger = log.WithPrompt(logger)
+	logger := logs.ToWritter(os.Stderr)
+	logger = logs.WithPrompt(logger)
 	app.Logger = logger
 }
 

@@ -12,16 +12,16 @@ import (
 	"github.com/murlokswarm/app/internal/core"
 	"github.com/murlokswarm/app/internal/dom"
 	"github.com/murlokswarm/app/internal/file"
-	"github.com/murlokswarm/app/internal/log"
+	"github.com/murlokswarm/app/internal/logs"
 )
 
 func init() {
-	logger := log.FromWriter(os.Stderr)
+	logger := logs.ToWritter(os.Stderr)
 
 	if runtime.GOOS == "windows" {
-		logger = log.WithPrompt(logger)
+		logger = logs.WithPrompt(logger)
 	} else {
-		logger = log.WithColoredPrompt(logger)
+		logger = logs.WithColoredPrompt(logger)
 	}
 
 	app.Logger = logger

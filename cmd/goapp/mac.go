@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"strings"
 	"text/template"
@@ -15,6 +16,7 @@ import (
 
 	driver "github.com/murlokswarm/app/drivers/mac"
 	"github.com/murlokswarm/app/internal/file"
+	"github.com/murlokswarm/app/internal/goapp"
 	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
 )
@@ -30,21 +32,25 @@ func mac(ctx context.Context, args []string) {
 		Name: "goapp mac",
 		Args: args,
 		Commands: []conf.Command{
-			{Name: "help", Help: "Show the macOS help"},
-			{Name: "init", Help: "Download macOS SDK and create required file and directories."},
-			{Name: "build", Help: "Build the macOS app."},
+			{Name: "init", Help: "Download MacOS SDK and create required file and directories."},
+			{Name: "build", Help: "Build the MacOS app."},
+			{Name: "run", Help: "Run a MacOS app."},
+			{Name: "help", Help: "Show the MacOS help"},
 		},
 	}
 
 	switch cmd, args := conf.LoadWith(nil, ld); cmd {
-	case "help":
-		ld.PrintHelp(nil)
-
 	case "init":
 		initMac(ctx, args)
 
 	case "build":
 		buildMac(ctx, args)
+
+	case "run":
+		runMac(ctx, args)
+
+	case "help":
+		ld.PrintHelp(nil)
 
 	default:
 		panic("unreachable")
@@ -535,6 +541,36 @@ const entitlements = `
 </dict>
 </plist>
 `
+
+func runMac(ctx context.Context, args []string) {
+	config := macBuildConfig{}
+
+	ld := conf.Loader{
+		Name:    "mac run",
+		Args:    args,
+		Usage:   "[options...] [package]",
+		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
+	}
+
+	ctx, cancel = context.WithCancel(ctx)
+	defer cancel()
+
+	sigc := make(chan os.Signal)
+	defer close(sigc)
+
+	signal.Notify(sigc, os.Interrupt)
+
+	go func() {
+		<-sigc
+		cancel()
+	}()
+
+	goapp.ListenAndWriteLogs(ctx)
+}
+
+func runApp() {
+
+}
 
 func openCommand() string {
 	return "open"

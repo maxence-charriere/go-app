@@ -1,4 +1,4 @@
-package log
+package logs
 
 import (
 	"fmt"
@@ -10,8 +10,8 @@ import (
 // operands and logs the resulting string.
 type Logger func(format string, a ...interface{})
 
-// FromWriter returns a logger that writes on the given writer.
-func FromWriter(w io.Writer) Logger {
+// ToWritter returns a logger that writes on the given writer.
+func ToWritter(w io.Writer) Logger {
 	return func(format string, a ...interface{}) {
 		fmt.Fprintf(w, format, a...)
 		fmt.Fprintln(w)
