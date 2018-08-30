@@ -14,9 +14,10 @@ import (
 	"text/template"
 	"time"
 
+	"github.com/murlokswarm/app/internal/logs"
+
 	driver "github.com/murlokswarm/app/drivers/mac"
 	"github.com/murlokswarm/app/internal/file"
-	"github.com/murlokswarm/app/internal/goapp"
 	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
 )
@@ -542,34 +543,65 @@ const entitlements = `
 </plist>
 `
 
+type macRunConfig struct {
+	LogsAddr string `conf:"logs-addr" help:"The address used to listen app logs." validate:"nonzero"`
+	Debug    bool   `conf:"debug"     help:"Reports whether debug mode is enabled."`
+}
+
 func runMac(ctx context.Context, args []string) {
-	config := macBuildConfig{}
+	c := macRunConfig{
+		LogsAddr: ":9000",
+	}
 
 	ld := conf.Loader{
 		Name:    "mac run",
 		Args:    args,
-		Usage:   "[options...] [package]",
+		Usage:   "[options...] [.app path]",
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	ctx, cancel = context.WithCancel(ctx)
-	defer cancel()
+	_, unusedArgs := conf.LoadWith(&c, ld)
+
+	if len(unusedArgs) == 0 {
+		ld.PrintHelp(nil)
+		printErr("no app to run")
+		os.Exit(-1)
+	}
+
+	appname := unusedArgs[0]
 
 	sigc := make(chan os.Signal)
 	defer close(sigc)
-
 	signal.Notify(sigc, os.Interrupt)
+
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
 
 	go func() {
 		<-sigc
 		cancel()
 	}()
 
-	goapp.ListenAndWriteLogs(ctx)
+	go listenLogs(ctx, c.LogsAddr)
+
+	os.Setenv("GOAPP_LOGS_ADDR", c.LogsAddr)
+	time.Sleep(time.Millisecond * 1000)
+
+	if err := execute("open", "--wait-apps", appname); err != nil {
+		printErr("%s", err)
+	}
 }
 
-func runApp() {
+func listenLogs(ctx context.Context, addr string) {
+	logs := logs.GoappServer{
+		Addr:   addr,
+		Writer: os.Stderr,
+	}
 
+	err := logs.ListenAndLog(ctx)
+	if err != nil {
+		printErr("listening logs failed: %s", err)
+	}
 }
 
 func openCommand() string {

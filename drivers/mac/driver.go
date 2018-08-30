@@ -30,13 +30,19 @@ import (
 var (
 	driver        *Driver
 	isGoappBundle = os.Getenv("GOAPP_BUNDLE") == "true"
-	goappLogAddr  = os.Getenv("GOAPP_LOG_ADDR")
+	goappLogAddr  = os.Getenv("GOAPP_LOGS_ADDR")
+	goappLogs     *logs.GoappClient
 )
 
 func init() {
+	if len(goappLogAddr) != 0 {
+		goappLogs = logs.NewGoappClient(goappLogAddr, logs.WithColoredPrompt)
+		app.Logger = goappLogs.Logger()
+		return
+	}
+
 	logger := logs.ToWriter(os.Stderr)
-	logger = logs.WithColoredPrompt(logger)
-	app.Logger = logger
+	app.Logger = logs.WithColoredPrompt(logger)
 }
 
 // Driver is the app.Driver implementation for MacOS.
@@ -141,6 +147,10 @@ func (d *Driver) Run(f *app.Factory) error {
 	defer close(d.stopchan)
 
 	driver = d
+
+	if goappLogs != nil {
+		go goappLogs.WaitForStop(d.Stop)
+	}
 
 	go func() {
 		d.stopchan <- d.macRPC.Call("driver.Run", nil, nil)
@@ -388,6 +398,11 @@ func (d *Driver) onExit(in map[string]interface{}) interface{} {
 	if d.OnExit != nil {
 		d.OnExit()
 	}
+
+	if goappLogs != nil {
+		goappLogs.Close()
+	}
+
 	return nil
 }
 
