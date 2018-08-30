@@ -27,7 +27,7 @@ func mac(ctx context.Context, args []string) {
 		Commands: []conf.Command{
 			{Name: "init", Help: "Download MacOS SDK and create required file and directories."},
 			{Name: "build", Help: "Build the MacOS app."},
-			{Name: "run", Help: "Run a MacOS app."},
+			{Name: "run", Help: "Run a MacOS app and capture its logs."},
 			{Name: "help", Help: "Show the MacOS help"},
 		},
 	}
