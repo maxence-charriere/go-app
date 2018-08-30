@@ -30,12 +30,14 @@ import (
 var (
 	driver        *Driver
 	isGoappBundle = os.Getenv("GOAPP_BUNDLE") == "true"
+	debug         = os.Getenv("GOAPP_DEBUG") == "true"
 	goappLogAddr  = os.Getenv("GOAPP_LOGS_ADDR")
 	goappLogs     *logs.GoappClient
 )
 
 func init() {
 	if len(goappLogAddr) != 0 {
+		app.EnableDebug(debug)
 		goappLogs = logs.NewGoappClient(goappLogAddr, logs.WithColoredPrompt)
 		app.Logger = goappLogs.Logger()
 		return

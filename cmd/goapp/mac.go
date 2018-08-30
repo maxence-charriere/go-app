@@ -520,23 +520,23 @@ const entitlements = `
 
 	<!-- FileAccess -->
 	{{if len .FilePickers}}
-	<key>com.apple.security.files.user-selected.{{.FileAccess.UserSelected}}</key>
+	<key>com.apple.security.files.user-selected.{{.FilePickers}}</key>
 	<true/>
 	{{end}}
 	{{if len .Downloads}}
-	<key>com.apple.security.files.downloads.{{.FileAccess.Downloads}}</key>
+	<key>com.apple.security.files.downloads.{{.Downloads}}</key>
 	<true/>
 	{{end}}
 	{{if len .Pictures}}
-	<key>com.apple.security.assets.pictures.{{.FileAccess.Pictures}}/key>
+	<key>com.apple.security.assets.pictures.{{.Pictures}}/key>
 	<true/>
 	{{end}}
 	{{if len .Music}}
-	<key>com.apple.security.assets.music.{{.FileAccess.Music}}</key>
+	<key>com.apple.security.assets.music.{{.Music}}</key>
 	<true/>
 	{{end}}
 	{{if len .Movies}}
-	<key>com.apple.security.assets.movies.{{.FileAccess.Movies}}/key>
+	<key>com.apple.security.assets.movies.{{.Movies}}/key>
 	<true/>
 	{{end}}
 </dict>
@@ -583,9 +583,10 @@ func runMac(ctx context.Context, args []string) {
 	}()
 
 	go listenLogs(ctx, c.LogsAddr)
+	time.Sleep(time.Millisecond * 100)
 
 	os.Setenv("GOAPP_LOGS_ADDR", c.LogsAddr)
-	time.Sleep(time.Millisecond * 1000)
+	os.Setenv("GOAPP_DEBUG", fmt.Sprintf("%v", c.Debug))
 
 	if err := execute("open", "--wait-apps", appname); err != nil {
 		printErr("%s", err)
@@ -602,10 +603,6 @@ func listenLogs(ctx context.Context, addr string) {
 	if err != nil {
 		printErr("listening logs failed: %s", err)
 	}
-}
-
-func openCommand() string {
-	return "open"
 }
 
 func win(ctx context.Context, args []string) {
