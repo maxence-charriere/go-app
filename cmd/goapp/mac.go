@@ -11,22 +11,14 @@ import (
 	"os/signal"
 	"path/filepath"
 	"strings"
-	"text/template"
 	"time"
 
 	"github.com/murlokswarm/app/internal/logs"
 
 	driver "github.com/murlokswarm/app/drivers/mac"
 	"github.com/murlokswarm/app/internal/file"
-	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
 )
-
-type macBuildConfig struct {
-	Bundle   bool   `conf:"bundle"   help:"Bundles the application into a .app."`
-	Sign     string `conf:"sign"     help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
-	AppStore bool   `conf:"appstore" help:"Report whether the app will be packaged to be uploaded on the app store."`
-}
 
 func mac(ctx context.Context, args []string) {
 	ld := conf.Loader{
@@ -58,8 +50,12 @@ func mac(ctx context.Context, args []string) {
 	}
 }
 
+type macInitConfig struct {
+	Verbose bool `conf:"v" help:"Enable verbose mode."`
+}
+
 func initMac(ctx context.Context, args []string) {
-	config := struct{}{}
+	c := macInitConfig{}
 
 	ld := conf.Loader{
 		Name:    "mac init",
@@ -68,36 +64,34 @@ func initMac(ctx context.Context, args []string) {
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	defer func() {
-		err := recover()
-		if err != nil {
-			ld.PrintHelp(nil)
-			ld.PrintError(errors.Errorf("%s", err))
-			os.Exit(-1)
-		}
-	}()
+	_, unusedArgs := conf.LoadWith(&c, ld)
+	verbose = c.Verbose
 
-	_, unusedArgs := conf.LoadWith(&config, ld)
 	roots, err := packageRoots(unusedArgs)
 	if err != nil {
-		panic(err)
+		failWithHelp(&ld, "%s", err)
 	}
 
-	fmt.Println("checking for xcode-select...")
+	printVerbose("checking for xcode-select...")
 	execute("xcode-select", "--install")
 
 	for _, root := range roots {
 		if err = initPackage(root); err != nil {
-			printErr("%s", errors.Wrap(err, "init package"))
-			return
+			fail("init %s failed: %s", root, err)
 		}
 	}
 
 	printSuccess("init succeeded")
 }
 
+type macBuildConfig struct {
+	Sign     string `conf:"sign"     help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
+	AppStore bool   `conf:"appstore" help:"Report whether the app will be packaged to be uploaded on the app store."`
+	Verbose  bool   `conf:"v"        help:"Enable verbose mode."`
+}
+
 func buildMac(ctx context.Context, args []string) {
-	config := macBuildConfig{}
+	c := macBuildConfig{}
 
 	ld := conf.Loader{
 		Name:    "mac build",
@@ -106,84 +100,99 @@ func buildMac(ctx context.Context, args []string) {
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	_, roots := conf.LoadWith(&config, ld)
+	_, roots := conf.LoadWith(&c, ld)
+	verbose = c.Verbose
+
 	if len(roots) == 0 {
 		roots = []string{"."}
 	}
+
 	root := roots[0]
 
-	if err := goBuild(root, "-ldflags", "-s"); err != nil {
-		printErr("%s", err)
-		return
+	if _, err := buildMacApp(root, c); err != nil {
+		fail("%s", err)
 	}
 
-	if config.Bundle {
-		if err := bundleMacApp(root, config); err != nil {
-			printErr("%s", err)
-			return
-		}
-	}
 	printSuccess("build succeeded")
 }
 
-func bundleMacApp(root string, c macBuildConfig) error {
+func buildMacApp(root string, c macBuildConfig) (string, error) {
+	printVerbose("building go exec")
+	if err := goBuild(root, "-ldflags", "-s"); err != nil {
+		return "", err
+	}
+
+	printVerbose("building .app")
+	return bundleMacApp(root, c)
+}
+
+func bundleMacApp(root string, c macBuildConfig) (string, error) {
 	err := os.Setenv("GOAPP_BUNDLE", "true")
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	if root, err = filepath.Abs(root); err != nil {
-		return err
+		return "", err
 	}
 
 	var wd string
 	if wd, err = os.Getwd(); err != nil {
-		return err
+		return "", err
 	}
 
 	if err = execute(filepath.Join(
 		wd,
 		filepath.Base(root),
 	)); err != nil {
-		return err
+		return "", err
 	}
 
 	var data []byte
 	if data, err = ioutil.ReadFile("goapp-mac.json"); err != nil {
-		return err
+		return "", err
 	}
 	defer os.Remove("goapp-mac.json")
 
 	var bundle driver.Bundle
 	if err = json.Unmarshal(data, &bundle); err != nil {
-		return err
+		return "", err
 	}
 
 	if bundle.Sandbox && len(c.Sign) == 0 {
-		return errors.New("sanboxed app require to be signed")
+		printWarn("sanboxed app require to be signed")
+		printWarn("sandbox set to false")
+		bundle.Sandbox = false
+	}
+
+	if c.AppStore && !bundle.Sandbox {
+		fail("app store require app to run in sandbox mode")
 	}
 
 	bundle = fillBundle(bundle, root)
-	data, _ = json.MarshalIndent(bundle, "", "  ")
-	fmt.Println("bundle configuration:", string(data))
+	data, _ = json.MarshalIndent(bundle, "", "    ")
+	printVerbose("bundle configuration %s", data)
 
 	appName := bundle.AppName + ".app"
 	if err = createAppBundle(bundle, root, appName); err != nil {
 		os.RemoveAll(appName)
-		return err
+		return "", err
 	}
 
 	if len(c.Sign) != 0 {
+		printVerbose("signing app")
 		if err = signAppBundle(bundle, c.Sign, root, appName); err != nil {
 			os.RemoveAll(appName)
-			return err
+			return "", err
 		}
 
 		if c.AppStore {
-			return createAppPkg(bundle, c.Sign, appName)
+			printVerbose("packaging for the app store")
+			return appName, createAppPkg(bundle, c.Sign, appName)
 		}
 	}
-	return nil
+
+	return appName, nil
 }
 
 func fillBundle(b driver.Bundle, root string) driver.Bundle {
@@ -258,14 +267,16 @@ func createAppBundle(bundle driver.Bundle, root, appName string) error {
 	}
 
 	execName := filepath.Base(root)
-	if err := os.Rename(execName, filepath.Join(appName, "Contents", "MacOS", bundle.AppName)); err != nil {
+	if err := file.Copy(filepath.Join(appName, "Contents", "MacOS", bundle.AppName), execName); err != nil {
 		return err
 	}
 
+	printVerbose("syncing resources")
 	if err := file.Sync(appResources, resources); err != nil {
 		return err
 	}
 
+	printVerbose("generating icons")
 	if len(bundle.Icon) != 0 {
 		return generateAppIcons(bundle.Icon, appResources)
 	}
@@ -279,6 +290,8 @@ func generateAppIcons(icon, appResources string) error {
 	iconset = strings.TrimSuffix(iconset, filepath.Ext(iconset))
 	iconset = filepath.Join(appResources, iconset)
 	iconset += ".iconset"
+
+	fmt.Println(iconset)
 
 	if err := os.Mkdir(iconset, os.ModeDir|0755); err != nil {
 		return err
@@ -353,199 +366,11 @@ func createAppPkg(bundle driver.Bundle, sign, appName string) error {
 	)
 }
 
-func generatePlist(filename string, plistTmpl string, bundle driver.Bundle) error {
-	f, err := os.Create(filename)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	tmpl := template.Must(template.
-		New("plist").
-		Funcs(template.FuncMap{
-			"icon": func(icon string) string {
-				icon = filepath.Base(icon)
-				return strings.TrimSuffix(icon, filepath.Ext(icon))
-			},
-		}).
-		Parse(plistTmpl))
-
-	return tmpl.Execute(f, bundle)
-}
-
-const plist = `
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>{{.DevRegion}}</string>
-
-	<key>CFBundleExecutable</key>
-	<string>{{.AppName}}</string>
-
-	<key>CFBundleIconFile</key>
-	<string>{{icon .Icon}}</string>
-
-	<key>CFBundleIdentifier</key>
-	<string>{{.ID}}</string>
-
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-
-	<key>CFBundleName</key>
-	<string>{{.AppName}}</string>
-
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-
-	<key>CFBundleSupportedPlatforms</key>
-	<array>
-		<string>MacOSX</string>
-	</array>
-
-	<key>CFBundleShortVersionString</key>
-	<string>{{.Version}}</string>
-
-	<key>CFBundleVersion</key>
-	<string>{{.BuildNumber}}</string>
-
-	<key>LSMinimumSystemVersion</key>
-	<string>{{.DeploymentTarget}}</string>
-
-	<key>LSApplicationCategoryType</key>
-	<string>{{.Category}}</string>
-
-	{{if .Background}}
-	<key>LSUIElement</key>
-	<true/>
-	{{end}}
-
-	<key>NSHumanReadableCopyright</key>
-	<string>{{html .Copyright}}</string>
-
-	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
-
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoadsInWebContent</key>
-		<true/>
-	</dict>
-
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>Supported files</string>
-			<key>CFBundleTypeRole</key>
-			<string>{{.Role}}</string>
-			<key>LSItemContentTypes</key>
-			<array>{{range .SupportedFiles}}
-				<string>{{.}}</string>{{end}}
-			</array>
-		</dict>
-	</array>
-
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>{{.ID}}</string>
-			<key>CFBundleTypeRole</key>
-			<string>{{.Role}}</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>{{.URLScheme}}</string>
-			</array>
-		</dict>
-	</array>
-</dict>
-</plist>
-`
-
-const entitlements = `
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	{{if .Sandbox}}
-	<key>com.apple.security.app-sandbox</key>
-	<true/>
-	{{end}}
-
-	<!-- Network -->
-	{{if .Server}}
-	<key>com.apple.security.network.server</key>
-	<true/>
-	{{end}}
-	<key>com.apple.security.network.client</key>
-	<true/>
-
-	<!-- Hadrware -->
-	{{if .Camera}}
-	<key>com.apple.security.device.camera</key>
-	<true/>
-	{{end}}
-	{{if .Microphone}}
-	<key>com.apple.security.device.microphone</key>
-	<true/>
-	{{end}}
-	{{if .USB}}
-	<key>com.apple.security.device.usb</key>
-	<true/>
-	{{end}}
-	{{if .Printers}}
-	<key>com.apple.security.print</key>
-	<true/>
-	{{end}}
-	{{if .Bluetooth}}
-	<key>com.apple.security.device.bluetooth</key>
-	<true/>
-	{{end}}
-
-	<!-- AppData -->
-	{{if .Contacts}}
-	<key>com.apple.security.personal-information.addressbook</key>
-	<true/>
-	{{end}}
-	{{if .Location}}
-	<key>com.apple.security.personal-information.location</key>
-	<true/>
-	{{end}}
-	{{if .Calendar}}
-	<key>com.apple.security.personal-information.calendars</key>
-	<true/>
-	{{end}}
-
-	<!-- FileAccess -->
-	{{if len .FilePickers}}
-	<key>com.apple.security.files.user-selected.{{.FilePickers}}</key>
-	<true/>
-	{{end}}
-	{{if len .Downloads}}
-	<key>com.apple.security.files.downloads.{{.Downloads}}</key>
-	<true/>
-	{{end}}
-	{{if len .Pictures}}
-	<key>com.apple.security.assets.pictures.{{.Pictures}}/key>
-	<true/>
-	{{end}}
-	{{if len .Music}}
-	<key>com.apple.security.assets.music.{{.Music}}</key>
-	<true/>
-	{{end}}
-	{{if len .Movies}}
-	<key>com.apple.security.assets.movies.{{.Movies}}/key>
-	<true/>
-	{{end}}
-</dict>
-</plist>
-`
-
 type macRunConfig struct {
 	LogsAddr string `conf:"logs-addr" help:"The address used to listen app logs." validate:"nonzero"`
+	Sign     string `conf:"sign"      help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
 	Debug    bool   `conf:"debug"     help:"Reports whether debug mode is enabled."`
+	Verbose  bool   `conf:"v"         help:"Enable verbose mode."`
 }
 
 func runMac(ctx context.Context, args []string) {
@@ -560,15 +385,22 @@ func runMac(ctx context.Context, args []string) {
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	_, unusedArgs := conf.LoadWith(&c, ld)
+	_, roots := conf.LoadWith(&c, ld)
+	verbose = c.Verbose
 
-	if len(unusedArgs) == 0 {
-		ld.PrintHelp(nil)
-		printErr("no app to run")
-		os.Exit(-1)
+	if len(roots) == 0 {
+		roots = []string{"."}
 	}
 
-	appname := unusedArgs[0]
+	appname := roots[0]
+	if !strings.HasSuffix(appname, ".app") {
+		var err error
+		if appname, err = buildMacApp(appname, macBuildConfig{
+			Sign: c.Sign,
+		}); err != nil {
+			fail("building app failed: %s", err)
+		}
+	}
 
 	sigc := make(chan os.Signal)
 	defer close(sigc)
@@ -583,11 +415,13 @@ func runMac(ctx context.Context, args []string) {
 	}()
 
 	go listenLogs(ctx, c.LogsAddr)
-	time.Sleep(time.Millisecond * 100)
+	time.Sleep(time.Millisecond * 500)
 
+	os.Unsetenv("GOAPP_BUNDLE")
 	os.Setenv("GOAPP_LOGS_ADDR", c.LogsAddr)
 	os.Setenv("GOAPP_DEBUG", fmt.Sprintf("%v", c.Debug))
 
+	printVerbose("running %s", appname)
 	if err := execute("open", "--wait-apps", appname); err != nil {
 		printErr("%s", err)
 	}

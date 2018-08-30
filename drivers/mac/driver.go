@@ -36,6 +36,11 @@ var (
 )
 
 func init() {
+	if isGoappBundle {
+		app.Logger = func(format string, a ...interface{}) {}
+		return
+	}
+
 	if len(goappLogAddr) != 0 {
 		app.EnableDebug(debug)
 		goappLogs = logs.NewGoappClient(goappLogAddr, logs.WithColoredPrompt)

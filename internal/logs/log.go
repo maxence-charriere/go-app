@@ -62,7 +62,7 @@ func prompt(colors bool, a ...interface{}) string {
 		}
 	}
 
-	return fmt.Sprintf("%s%s%s %s %s|>%s ",
+	return fmt.Sprintf("%s%s%s %s %s‣%s ",
 		color,
 		level,
 		defaultColor,

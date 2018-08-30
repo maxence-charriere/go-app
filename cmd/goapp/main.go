@@ -14,6 +14,10 @@ const (
 	dirPerm os.FileMode = 0777
 )
 
+var (
+	verbose = false
+)
+
 func main() {
 	ld := conf.Loader{
 		Name: "goapp",
@@ -76,6 +80,7 @@ func packageRoots(packages []string) ([]string, error) {
 }
 
 func initPackage(root string) error {
+	printVerbose("set up resources")
 	if err := os.MkdirAll(
 		filepath.Join(root, "resources"),
 		dirPerm,
@@ -83,6 +88,7 @@ func initPackage(root string) error {
 		return err
 	}
 
+	printVerbose("set up resources/css")
 	if err := os.Mkdir(
 		filepath.Join(root, "resources", "css"),
 		dirPerm,
@@ -95,24 +101,65 @@ func initPackage(root string) error {
 
 func goBuild(target string, args ...string) error {
 	args = append([]string{"build"}, args...)
-	args = append(args, "-v", target)
+
+	if verbose {
+		args = append(args, "-v", target)
+	}
+
 	return execute("go", args...)
 }
 
 var (
 	greenColor   = "\033[92m"
 	redColor     = "\033[91m"
+	orangeColor  = "\033[93m"
 	defaultColor = "\033[00m"
 )
 
+func printVerbose(format string, v ...interface{}) {
+	if verbose {
+		format = "‣ " + format
+		fmt.Printf(format, v...)
+		fmt.Println()
+	}
+}
+
 func printSuccess(format string, v ...interface{}) {
 	fmt.Print(greenColor)
+	format = "✔ " + format
 	fmt.Printf(format, v...)
 	fmt.Println(defaultColor)
 }
 
 func printErr(format string, v ...interface{}) {
 	fmt.Print(redColor)
+	format = "x " + format
 	fmt.Printf(format, v...)
 	fmt.Println(defaultColor)
+}
+
+func printWarn(format string, v ...interface{}) {
+	fmt.Print(orangeColor)
+	format = "! " + format
+	fmt.Printf(format, v...)
+	fmt.Println(defaultColor)
+}
+
+func fail(format string, v ...interface{}) {
+	printErr(format, v...)
+	os.Exit(-1)
+}
+
+func failWithHelp(ld *conf.Loader, format string, v ...interface{}) {
+	ld.PrintHelp(nil)
+	ld.PrintError(errors.Errorf(format, v...))
+	os.Exit(-1)
+}
+
+func verboseFlag(v bool) string {
+	if v {
+		return "-v"
+	}
+
+	return ""
 }
