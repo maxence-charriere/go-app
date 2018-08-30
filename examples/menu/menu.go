@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/murlokswarm/app"
 )
 
@@ -47,15 +45,15 @@ func (c *CustomMenu) Render() string {
 
 // OnClick is called when MenuItem with Go callback is clicked.
 func (c *CustomMenu) OnClick() {
-	fmt.Println("MenuItem with Go callback clicked")
+	app.Log("MenuItem with Go callback clicked")
 }
 
 // OnClickWithIcon is called when MenuItem with Go callback is clicked.
 func (c *CustomMenu) OnClickWithIcon() {
-	fmt.Println("MenuItem with icon clicked")
+	app.Log("MenuItem with icon clicked")
 }
 
 // OnMenuItemWithShorcutClick is called when MenuItem with keysis clicked.
 func (c *CustomMenu) OnMenuItemWithShorcutClick() {
-	fmt.Println("MenuItem with keys clicked")
+	app.Log("MenuItem with keys clicked")
 }

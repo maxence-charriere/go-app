@@ -91,11 +91,8 @@ func (h *Hello) Render() string {
 ```
 
 ```bash
-# Build the app.
-goapp mac build
-
-# Launch the app.
-./hello
+# Run the app.
+goapp mac run
 ```
 
 <a name="howto"></a>
@@ -167,4 +164,3 @@ From package:
 From community:
 - [grocid/mistlur](https://github.com/grocid/mistlur) - use v1
 - [grocid/passdesktop](https://github.com/grocid/passdesktop) - use v1
-

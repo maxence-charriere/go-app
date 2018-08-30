@@ -200,19 +200,19 @@ func (p *Page) Close() {
 func (p *Page) onPageRequest(mappingStr string) {
 	var m dom.Mapping
 	if err := json.Unmarshal([]byte(mappingStr), &m); err != nil {
-		app.Log("page callback failed: %s", err)
+		app.Logf("page callback failed: %s", err)
 		return
 	}
 
 	c, err := p.dom.CompoByID(m.CompoID)
 	if err != nil {
-		app.Log("page callback failed: %s", err)
+		app.Logf("page callback failed: %s", err)
 		return
 	}
 
 	var f func()
 	if f, err = m.Map(c); err != nil {
-		app.Log("page callback failed: %s", err)
+		app.Logf("page callback failed: %s", err)
 		return
 	}
 

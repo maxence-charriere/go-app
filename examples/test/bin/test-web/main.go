@@ -12,5 +12,5 @@ func main() {
 
 	app.Run(&web.Driver{
 		URL: "/test.Webview",
-	}, app.Logs())
+	})
 }

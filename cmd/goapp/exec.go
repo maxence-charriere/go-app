@@ -44,6 +44,11 @@ func printOutput(r io.Reader, output io.Writer) {
 			printErr("%s", err)
 			continue
 		}
+
+		if verbose {
+			output.Write([]byte("    "))
+		}
+
 		output.Write(b[:n])
 	}
 }

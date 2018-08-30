@@ -12,17 +12,19 @@ import (
 	"github.com/murlokswarm/app/internal/core"
 	"github.com/murlokswarm/app/internal/dom"
 	"github.com/murlokswarm/app/internal/file"
+	"github.com/murlokswarm/app/internal/logs"
 )
 
 func init() {
-	showColors := true
+	logger := logs.ToWriter(os.Stderr)
+
 	if runtime.GOOS == "windows" {
-		showColors = false
+		logger = logs.WithPrompt(logger)
+	} else {
+		logger = logs.WithColoredPrompt(logger)
 	}
 
-	app.Loggers = []app.Logger{
-		app.NewLogger(os.Stdout, os.Stderr, true, showColors),
-	}
+	app.Logger = logger
 }
 
 // Run satisfies the app.Driver interface.
@@ -80,7 +82,7 @@ func (d *Driver) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 
 func (d *Driver) handle(res http.ResponseWriter, req *http.Request, status int) {
 	app.WhenDebug(func() {
-		app.Debug("serving %s", req.URL)
+		app.Logf("serving %s", req.URL)
 	})
 
 	compoName := core.CompoNameFromURL(req.URL)
@@ -119,7 +121,7 @@ func (d *Driver) Storage(p ...string) string {
 
 // CallOnUIGoroutine satisfies the app.Driver interface.
 func (d *Driver) CallOnUIGoroutine(f func()) {
-	app.Log("CallOnUIGoroutine is not supported on server side")
+	app.Logf("CallOnUIGoroutine is not supported on server side")
 }
 
 // Stop shutdown the server.

@@ -1,12 +1,18 @@
 package app
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestEventRegistry(t *testing.T) {
+	Logger = func(format string, a ...interface{}) {
+		log := fmt.Sprintf(format, a...)
+		t.Log(log)
+	}
+
 	tests := []struct {
 		scenario string
 		subName  string

@@ -14,6 +14,7 @@ import "C"
 import (
 	"unsafe"
 
+	"github.com/murlokswarm/app"
 	"github.com/pkg/errors"
 )
 
@@ -41,7 +42,7 @@ func goCall(ccall *C.char, ui C.BOOL) (cout *C.char) {
 	if ui == 1 {
 		driver.CallOnUIGoroutine(func() {
 			if _, err := driver.goRPC.Call(call); err != nil {
-				panic(errors.Wrap(err, "go call"))
+				app.Panic(errors.Wrap(err, "go call failed"))
 			}
 		})
 
@@ -50,7 +51,7 @@ func goCall(ccall *C.char, ui C.BOOL) (cout *C.char) {
 
 	ret, err := driver.goRPC.Call(call)
 	if err != nil {
-		panic(errors.Wrap(err, "go call"))
+		app.Panic(errors.Wrap(err, "go call failed"))
 	}
 
 	// Returned string must be free in objc code.

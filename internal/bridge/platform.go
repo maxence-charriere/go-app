@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/google/uuid"
+	"github.com/murlokswarm/app"
 	"github.com/pkg/errors"
 )
 
@@ -73,7 +74,7 @@ func (r *PlatformRPC) Return(retID string, out string, errString string) {
 	r.mutex.RUnlock()
 
 	if !ok {
-		panic("no async call for " + retID)
+		app.Panic("no async call for " + retID)
 	}
 
 	var err error

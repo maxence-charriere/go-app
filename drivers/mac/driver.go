@@ -23,18 +23,33 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
+	"github.com/murlokswarm/app/internal/logs"
 	"github.com/pkg/errors"
 )
 
 var (
 	driver        *Driver
 	isGoappBundle = os.Getenv("GOAPP_BUNDLE") == "true"
+	debug         = os.Getenv("GOAPP_DEBUG") == "true"
+	goappLogAddr  = os.Getenv("GOAPP_LOGS_ADDR")
+	goappLogs     *logs.GoappClient
 )
 
 func init() {
-	app.Loggers = []app.Logger{
-		app.NewLogger(os.Stdout, os.Stderr, true, true),
+	if isGoappBundle {
+		app.Logger = func(format string, a ...interface{}) {}
+		return
 	}
+
+	if len(goappLogAddr) != 0 {
+		app.EnableDebug(debug)
+		goappLogs = logs.NewGoappClient(goappLogAddr, logs.WithColoredPrompt)
+		app.Logger = goappLogs.Logger()
+		return
+	}
+
+	logger := logs.ToWriter(os.Stderr)
+	app.Logger = logs.WithColoredPrompt(logger)
 }
 
 // Driver is the app.Driver implementation for MacOS.
@@ -140,6 +155,10 @@ func (d *Driver) Run(f *app.Factory) error {
 
 	driver = d
 
+	if goappLogs != nil {
+		go goappLogs.WaitForStop(d.Stop)
+	}
+
 	go func() {
 		d.stopchan <- d.macRPC.Call("driver.Run", nil, nil)
 	}()
@@ -162,7 +181,7 @@ func (d *Driver) AppName() string {
 	}
 
 	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
-		panic(err)
+		app.Panic(err)
 	}
 
 	if len(out.AppName) != 0 {
@@ -171,7 +190,7 @@ func (d *Driver) AppName() string {
 
 	wd, err := os.Getwd()
 	if err != nil {
-		panic(errors.Wrap(err, "app name unreachable"))
+		app.Panic(errors.Wrap(err, "app name unreachable"))
 	}
 
 	return filepath.Base(wd)
@@ -184,12 +203,12 @@ func (d *Driver) Resources(path ...string) string {
 	}
 
 	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
-		panic(err)
+		app.Panic(err)
 	}
 
 	wd, err := os.Getwd()
 	if err != nil {
-		panic(errors.Wrap(err, "resources unreachable"))
+		app.Panic(errors.Wrap(err, "resources unreachable"))
 	}
 
 	if filepath.Dir(out.Resources) == wd {
@@ -298,14 +317,14 @@ func (d *Driver) support() string {
 	}
 
 	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
-		panic(err)
+		app.Panic(err)
 	}
 
 	// Set up the support directory in case of the app is not bundled.
 	if strings.HasSuffix(out.Support, "{appname}") {
 		wd, err := os.Getwd()
 		if err != nil {
-			panic(errors.Wrap(err, "support unreachable"))
+			app.Panic(errors.Wrap(err, "support unreachable"))
 		}
 
 		appname := filepath.Base(wd) + "-" + d.devID
@@ -357,7 +376,7 @@ func (d *Driver) onURLOpen(in map[string]interface{}) interface{} {
 	if d.OnURLOpen != nil {
 		u, err := url.Parse(in["URL"].(string))
 		if err != nil {
-			panic(errors.Wrap(err, "onURLOpen"))
+			app.Panic(errors.Wrap(err, "onURLOpen"))
 		}
 		d.OnURLOpen(u)
 	}
@@ -386,6 +405,11 @@ func (d *Driver) onExit(in map[string]interface{}) interface{} {
 	if d.OnExit != nil {
 		d.OnExit()
 	}
+
+	if goappLogs != nil {
+		goappLogs.Close()
+	}
+
 	return nil
 }
 
