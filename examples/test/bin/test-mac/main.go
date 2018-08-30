@@ -3,7 +3,6 @@
 package main
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/murlokswarm/app"
@@ -30,7 +29,7 @@ func main() {
 		DockURL: "/test.Menu",
 
 		OnRun: func() {
-			fmt.Println("OnRun")
+			app.Log("OnRun")
 			app.Resources()
 			app.Storage()
 
@@ -79,27 +78,27 @@ func main() {
 			}()
 		},
 		OnFocus: func() {
-			fmt.Println("OnFocus")
+			app.Log("OnFocus")
 		},
 		OnBlur: func() {
-			fmt.Println("OnBlur")
+			app.Log("OnBlur")
 		},
 		OnReopen: func(hasVisibleWindows bool) {
-			fmt.Println("OnReopen hasVisibleWIndow:", hasVisibleWindows)
+			app.Log("OnReopen hasVisibleWIndow:", hasVisibleWindows)
 			if hasVisibleWindows {
 				return
 			}
 			testWindow(false)
 		},
 		OnQuit: func() bool {
-			fmt.Println("OnQuit")
+			app.Log("OnQuit")
 			return true
 			// return false
 		},
 		OnExit: func() {
-			fmt.Println("OnExit")
+			app.Log("OnExit")
 		},
-	}, app.Logs())
+	})
 }
 
 func testWindow(close bool) {
@@ -123,72 +122,72 @@ func testWindow(close bool) {
 		URL: "/test.Webview",
 
 		OnMove: func(x, y float64) {
-			fmt.Printf("Window moved to x:%v y:%v\n", x, y)
+			app.Logf("Window moved to x:%v y:%v\n", x, y)
 		},
 		OnResize: func(width, height float64) {
-			fmt.Printf("Window resized to width:%v height:%v\n", width, height)
+			app.Logf("Window resized to width:%v height:%v\n", width, height)
 		},
 		OnFocus: func() {
-			fmt.Println("Window focused")
+			app.Log("Window focused")
 		},
 		OnBlur: func() {
-			fmt.Println("Window blured")
+			app.Log("Window blured")
 		},
 		OnFullScreen: func() {
-			fmt.Println("Window full screen")
+			app.Log("Window full screen")
 		},
 		OnExitFullScreen: func() {
-			fmt.Println("Window exit full screen")
+			app.Log("Window exit full screen")
 		},
 		OnMinimize: func() {
-			fmt.Println("Window minimized")
+			app.Log("Window minimized")
 		},
 		OnDeminimize: func() {
-			fmt.Println("Window deminimized")
+			app.Log("Window deminimized")
 		},
 		OnClose: func() bool {
-			fmt.Println("Window close")
+			app.Log("Window close")
 			return true
 			// return false
 		},
 	})
 
 	x, y := win.Position()
-	fmt.Printf("win.Positon() x:%v, x:%v\n", x, y)
+	app.Logf("win.Positon() x:%v, x:%v\n", x, y)
 
-	fmt.Printf("win.Move(x:%v, y: %v)\n", 42, 42)
+	app.Logf("win.Move(x:%v, y: %v)\n", 42, 42)
 	win.Move(42, 42)
 
-	fmt.Println("win.Center()")
+	app.Log("win.Center()")
 	win.Center()
 
 	width, height := win.Size()
-	fmt.Printf("win.Size() width:%v, height:%v\n", width, height)
+	app.Logf("win.Size() width:%v, height:%v\n", width, height)
 
-	// fmt.Printf("win.Resize(x:%v, y: %v)\n", 1340, 720)
+	// app.Logf("win.Resize(x:%v, y: %v)\n", 1340, 720)
 	// win.Resize(1340, 720)
 
-	// fmt.Println("win.ToggleFullScreen()")
+	// app.Log("win.ToggleFullScreen()")
 	// win.ToggleFullScreen()
 
 	// go func() {
-	// 	fmt.Println("win.ToggleFullScreen()")
+	// 	app.Log("win.ToggleFullScreen()")
 	// 	time.Sleep(2 * time.Second)
 	// 	win.ToggleFullScreen()
 	// }()
 
-	// fmt.Println("win.ToggleMinimize()")
+	// app.Log("win.ToggleMinimize()")
 	// win.ToggleMinimize()
 
-	// fmt.Println("win.ToggleMinimize()")
+	// app.Log("win.ToggleMinimize()")
 	// win.ToggleMinimize()
 
 	// win.Focus()
 
 	if close {
-		fmt.Println("win.Close()")
+		app.Log("win.Close()")
 		win.Close()
 	}
 
-	fmt.Println("Window tests OK")
+	app.Log("Window tests OK")
 }
