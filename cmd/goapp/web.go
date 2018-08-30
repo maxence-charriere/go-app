@@ -6,16 +6,8 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
 )
-
-type webInitConfig struct {
-}
-
-type webBuildConfig struct {
-	Minify bool `conf:"m" help:"Minify gopherjs file."`
-}
 
 func web(ctx context.Context, args []string) {
 	ld := conf.Loader{
@@ -44,8 +36,12 @@ func web(ctx context.Context, args []string) {
 
 }
 
+type webInitConfig struct {
+	Verbose bool `conf:"v" help:"Enable verbose mode."`
+}
+
 func initWeb(ctx context.Context, args []string) {
-	config := webInitConfig{}
+	c := webInitConfig{}
 
 	ld := conf.Loader{
 		Name:    "web init",
@@ -54,28 +50,22 @@ func initWeb(ctx context.Context, args []string) {
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	defer func() {
-		err := recover()
-		if err != nil {
-			ld.PrintHelp(config)
-			ld.PrintError(errors.Errorf("%s", err))
-			os.Exit(-1)
-		}
-	}()
+	_, unusedArgs := conf.LoadWith(&c, ld)
+	verbose = c.Verbose
 
-	_, unusedArgs := conf.LoadWith(&config, ld)
 	roots, err := packageRoots(unusedArgs)
 	if err != nil {
-		panic(err)
+		failWithHelp(&ld, "%s", err)
 	}
 
+	printVerbose("get gopherjs")
 	if err = goGetGopherJS(); err != nil {
-		panic(err)
+		failWithHelp(&ld, "%s", err)
 	}
 
 	for _, root := range roots {
 		if err = initPackage(root); err != nil {
-			panic(err)
+			failWithHelp(&ld, "%s", err)
 		}
 	}
 
@@ -83,16 +73,23 @@ func initWeb(ctx context.Context, args []string) {
 }
 
 func goGetGopherJS() error {
-	return execute("go",
-		"get",
-		"-u",
-		"-v",
-		"github.com/gopherjs/gopherjs",
-	)
+	args := []string{"get", "-u"}
+
+	if verbose {
+		args = append(args, "-v")
+	}
+
+	args = append(args, "github.com/gopherjs/gopherjs")
+	return execute("go", args...)
+}
+
+type webBuildConfig struct {
+	Minify  bool `conf:"m" help:"Minify gopherjs file."`
+	Verbose bool `conf:"v" help:"Enable verbose mode."`
 }
 
 func buildWeb(ctx context.Context, args []string) {
-	config := webBuildConfig{
+	c := webBuildConfig{
 		Minify: true,
 	}
 
@@ -103,19 +100,23 @@ func buildWeb(ctx context.Context, args []string) {
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	_, roots := conf.LoadWith(&config, ld)
+	_, roots := conf.LoadWith(&c, ld)
+	verbose = c.Verbose
+
 	if len(roots) == 0 {
 		roots = []string{"."}
 	}
 
 	root := roots[0]
 
+	printVerbose("building go server")
 	if err := goBuild(root); err != nil {
 		printErr("go build failed: %s", err)
 		return
 	}
 
-	if err := gopherJSBuild(root, config.Minify); err != nil {
+	printVerbose("building gopherjs client")
+	if err := gopherJSBuild(root, c.Minify); err != nil {
 		printErr("gopherjs build failed: %s", err)
 		return
 	}
@@ -134,6 +135,10 @@ func gopherJSBuild(target string, minify bool) error {
 
 	if minify {
 		cmd = append(cmd, "-m")
+	}
+
+	if verbose {
+		cmd = append(cmd, "-v")
 	}
 
 	cmd = append(cmd, "-o", filepath.Join(target, "resources", "goapp.js"))
