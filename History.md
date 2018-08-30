@@ -1,4 +1,38 @@
 
+3.2.0 / 2018-08-29
+==================
+
+## General
+
+* Logger interface become a function:
+
+  ```go
+  var Logger func(format string, a ...interface{}
+  ```
+
+* Log functions have been modified:
+
+  ```go
+  Log()    // Behave like fmt.Println.
+  Logf()   // New - behave like fmt.Printf.
+  Panic()  // New - behave like Log followed by panic.
+  Panicf() // New - behave like Logf followed by panic.
+
+  Debug() // Removed.
+  ```
+
+  The reason of this change is because packaged app like a .app (MacOS) or
+  .appx (Windows) does not print their log into the terminal.
+  These functions embed the logic to make terminal logs possible.
+
+* `goapp` commands now have verbose mode.
+
+## Mac
+
+* `goapp mac build` now produces a `.app`.
+* `goapp mac run` command has been added. It runs a `.app` and capture the
+  logs in the terminal.
+
 3.1.2 / 2018-08-27
 ==================
 
