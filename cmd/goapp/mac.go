@@ -369,7 +369,7 @@ func createAppPkg(bundle driver.Bundle, sign, appName string) error {
 type macRunConfig struct {
 	LogsAddr string `conf:"logs-addr" help:"The address used to listen app logs." validate:"nonzero"`
 	Sign     string `conf:"sign"      help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
-	Debug    bool   `conf:"debug"     help:"Reports whether debug mode is enabled."`
+	Debug    bool   `conf:"d"         help:"Enable debug mode is enabled."`
 	Verbose  bool   `conf:"v"         help:"Enable verbose mode."`
 }
 

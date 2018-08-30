@@ -33,7 +33,6 @@ func web(ctx context.Context, args []string) {
 	default:
 		panic("unreachable")
 	}
-
 }
 
 type webInitConfig struct {
