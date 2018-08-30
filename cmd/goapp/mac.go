@@ -291,8 +291,6 @@ func generateAppIcons(icon, appResources string) error {
 	iconset = filepath.Join(appResources, iconset)
 	iconset += ".iconset"
 
-	fmt.Println(iconset)
-
 	if err := os.Mkdir(iconset, os.ModeDir|0755); err != nil {
 		return err
 	}
