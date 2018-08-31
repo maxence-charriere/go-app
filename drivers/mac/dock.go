@@ -19,7 +19,7 @@ type DockTile struct {
 func newDockTile(c app.MenuConfig) *DockTile {
 	d := &DockTile{
 		Menu: Menu{
-			dom:            dom.NewDOM(driver.factory, false, false),
+			dom:            dom.NewDOM(driver.factory),
 			id:             uuid.New().String(),
 			typ:            "dock tile",
 			keepWhenClosed: true,

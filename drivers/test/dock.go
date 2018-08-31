@@ -17,7 +17,7 @@ func newDockTile(d *Driver) *DockTile {
 	dt := &DockTile{
 		Menu{
 			driver: d,
-			dom:    dom.NewDOM(d.factory, false, false),
+			dom:    dom.NewDOM(d.factory),
 			id:     uuid.New().String(),
 		},
 	}

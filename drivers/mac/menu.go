@@ -30,7 +30,7 @@ type Menu struct {
 
 func newMenu(c app.MenuConfig, typ string) *Menu {
 	m := &Menu{
-		dom: dom.NewDOM(driver.factory, false, false),
+		dom: dom.NewDOM(driver.factory),
 		id:  uuid.New().String(),
 		typ: typ,
 

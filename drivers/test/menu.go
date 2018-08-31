@@ -22,7 +22,7 @@ type Menu struct {
 func newMenu(d *Driver, c app.MenuConfig) *Menu {
 	m := &Menu{
 		driver: d,
-		dom:    dom.NewDOM(d.factory, false, false),
+		dom:    dom.NewDOM(d.factory),
 		id:     uuid.New().String(),
 	}
 

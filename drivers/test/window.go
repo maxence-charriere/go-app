@@ -30,7 +30,7 @@ type Window struct {
 func newWindow(d *Driver, c app.WindowConfig) *Window {
 	w := &Window{
 		driver:  d,
-		dom:     dom.NewDOM(d.factory, true, true),
+		dom:     dom.NewDOM(d.factory, dom.JsToGoHandler, dom.HrefCompoFmt),
 		history: core.NewHistory(),
 		id:      uuid.New().String(),
 

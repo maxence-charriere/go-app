@@ -45,7 +45,7 @@ func newWindow(c app.WindowConfig) *Window {
 	id := uuid.New().String()
 
 	w := &Window{
-		dom:     dom.NewDOM(driver.factory, true, true),
+		dom:     dom.NewDOM(driver.factory, dom.JsToGoHandler, dom.HrefCompoFmt),
 		history: core.NewHistory(),
 		id:      id,
 
