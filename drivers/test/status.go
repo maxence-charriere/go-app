@@ -17,7 +17,7 @@ func newStatusMenu(d *Driver, c app.StatusMenuConfig) *StatusMenu {
 	s := &StatusMenu{
 		Menu{
 			driver: d,
-			dom:    dom.NewDOM(d.factory, false, false),
+			dom:    dom.NewDOM(d.factory),
 			id:     uuid.New().String(),
 		},
 	}

@@ -27,7 +27,7 @@ type Page struct {
 
 func newPage(c app.PageConfig) app.Page {
 	p := &Page{
-		dom: dom.NewDOM(driver.factory, false, true),
+		dom: dom.NewDOM(driver.factory, dom.JsToGoHandler),
 		id:  uuid.New().String(),
 	}
 

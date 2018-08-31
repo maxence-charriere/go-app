@@ -13,19 +13,17 @@ import (
 type DOM struct {
 	mutex        sync.Mutex
 	factory      *app.Factory
-	hrefFmt      bool
-	handlerFmt   bool
+	transforms   []Transform
 	compoByID    map[string]*component
 	compoByCompo map[app.Compo]*component
 	root         *elem
 }
 
 // NewDOM creates a dom engine.
-func NewDOM(f *app.Factory, hrefFmt, handlerFmt bool) *DOM {
+func NewDOM(f *app.Factory, t ...Transform) *DOM {
 	return &DOM{
 		factory:      f,
-		hrefFmt:      hrefFmt,
-		handlerFmt:   handlerFmt,
+		transforms:   t,
 		compoByID:    make(map[string]*component),
 		compoByCompo: make(map[app.Compo]*component),
 		root: &elem{
@@ -104,7 +102,7 @@ func (dom *DOM) New(c app.Compo) ([]Change, error) {
 }
 
 func (dom *DOM) mountCompo(c app.Compo, parent *compo) error {
-	root, err := decodeCompo(c, dom.hrefFmt, dom.handlerFmt)
+	root, err := decodeCompo(c, dom.transforms...)
 	if err != nil {
 		return errors.Wrap(err, "decoding compo failed")
 	}
@@ -186,7 +184,7 @@ func (dom *DOM) Update(c app.Compo) ([]Change, error) {
 	old := compo.root
 	p := old.Parent()
 
-	new, err := decodeCompo(c, dom.hrefFmt, dom.handlerFmt)
+	new, err := decodeCompo(c, dom.transforms...)
 	if err != nil {
 		return nil, errors.Wrap(err, "decoding compo failed")
 	}
@@ -284,7 +282,7 @@ func (dom *DOM) updateCompo(old, new *compo) error {
 			return err
 		}
 
-		newRoot, err := decodeCompo(c.compo, dom.hrefFmt, dom.handlerFmt)
+		newRoot, err := decodeCompo(c.compo, dom.transforms...)
 		if err != nil {
 			return err
 		}
