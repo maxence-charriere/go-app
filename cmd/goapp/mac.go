@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"os/signal"
 	"path/filepath"
 	"strings"
 	"time"
@@ -400,18 +399,6 @@ func runMac(ctx context.Context, args []string) {
 			fail("building app failed: %s", err)
 		}
 	}
-
-	sigc := make(chan os.Signal)
-	defer close(sigc)
-	signal.Notify(sigc, os.Interrupt)
-
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
-
-	go func() {
-		<-sigc
-		cancel()
-	}()
 
 	go listenLogs(ctx, c.LogsAddr)
 	time.Sleep(time.Millisecond * 500)

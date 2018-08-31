@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"os/signal"
 	"path/filepath"
 
 	"github.com/pkg/errors"
@@ -26,11 +27,12 @@ func main() {
 			{Name: "mac", Help: "Build app for MacOS."},
 			{Name: "web", Help: "Build app for web."},
 			{Name: "win", Help: "Build app for Windows."},
+			{Name: "update", Help: "Update goapp to the latest version."},
 			{Name: "help", Help: "Show the help."},
 		},
 	}
 
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := ctxWithSignals(context.Background(), os.Interrupt)
 	defer cancel()
 
 	switch cmd, args := conf.LoadWith(nil, ld); cmd {
@@ -43,12 +45,61 @@ func main() {
 	case "win":
 		win(ctx, args)
 
+	case "update":
+		update(ctx, args)
+
 	case "help":
 		ld.PrintHelp(nil)
 
 	default:
 		panic("unreachable")
 	}
+}
+
+func ctxWithSignals(parent context.Context, s ...os.Signal) (ctx context.Context, cancel func()) {
+	ctx, cancel = context.WithCancel(parent)
+	sigc := make(chan os.Signal)
+	signal.Notify(sigc, s...)
+
+	go func() {
+		defer close(sigc)
+
+		<-sigc
+		cancel()
+	}()
+
+	return ctx, cancel
+}
+
+type updateConfig struct {
+	Verbose bool `conf:"v" help:"Enable verbose mode."`
+}
+
+func update(ctx context.Context, args []string) {
+	c := macInitConfig{}
+
+	ld := conf.Loader{
+		Name:    "goapp update",
+		Args:    args,
+		Usage:   "[options...]",
+		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
+	}
+
+	conf.LoadWith(&c, ld)
+	verbose = c.Verbose
+
+	cmd := []string{"go", "get", "-u"}
+	if verbose {
+		cmd = append(cmd, "-v")
+	}
+	cmd = append(cmd, "github.com/murlokswarm/app/...")
+
+	printVerbose("get https://github.com/murlokswarm/app latest version")
+	if err := execute(ctx, cmd[0], cmd[1:]...); err != nil {
+		fail("%s", err)
+	}
+
+	printSuccess("goapp successfully updated")
 }
 
 func packageRoots(packages []string) ([]string, error) {
