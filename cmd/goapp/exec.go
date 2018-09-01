@@ -2,13 +2,14 @@ package main
 
 import (
 	"bufio"
+	"context"
 	"io"
 	"os"
 	"os/exec"
 )
 
-func execute(cmd string, args ...string) error {
-	command := exec.Command(cmd, args...)
+func execute(ctx context.Context, cmd string, args ...string) error {
+	command := exec.CommandContext(ctx, cmd, args...)
 
 	cmdout, err := command.StdoutPipe()
 	if err != nil {

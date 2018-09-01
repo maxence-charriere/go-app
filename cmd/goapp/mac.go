@@ -73,7 +73,7 @@ func initMac(ctx context.Context, args []string) {
 	}
 
 	printVerbose("checking for xcode-select...")
-	execute("xcode-select", "--install")
+	execute(ctx, "xcode-select", "--install")
 
 	for _, root := range roots {
 		if err = initPackage(root); err != nil {
@@ -109,24 +109,24 @@ func buildMac(ctx context.Context, args []string) {
 
 	root := roots[0]
 
-	if _, err := buildMacApp(root, c); err != nil {
+	if _, err := buildMacApp(ctx, root, c); err != nil {
 		fail("%s", err)
 	}
 
 	printSuccess("build succeeded")
 }
 
-func buildMacApp(root string, c macBuildConfig) (string, error) {
+func buildMacApp(ctx context.Context, root string, c macBuildConfig) (string, error) {
 	printVerbose("building go exec")
-	if err := goBuild(root, "-ldflags", "-s"); err != nil {
+	if err := goBuild(ctx, root, "-ldflags", "-s"); err != nil {
 		return "", err
 	}
 
 	printVerbose("building .app")
-	return bundleMacApp(root, c)
+	return bundleMacApp(ctx, root, c)
 }
 
-func bundleMacApp(root string, c macBuildConfig) (string, error) {
+func bundleMacApp(ctx context.Context, root string, c macBuildConfig) (string, error) {
 	err := os.Setenv("GOAPP_BUNDLE", "true")
 	if err != nil {
 		return "", err
@@ -141,7 +141,7 @@ func bundleMacApp(root string, c macBuildConfig) (string, error) {
 		return "", err
 	}
 
-	if err = execute(filepath.Join(
+	if err = execute(ctx, filepath.Join(
 		wd,
 		filepath.Base(root),
 	)); err != nil {
@@ -174,21 +174,21 @@ func bundleMacApp(root string, c macBuildConfig) (string, error) {
 	printVerbose("bundle configuration %s", data)
 
 	appName := bundle.AppName + ".app"
-	if err = createAppBundle(bundle, root, appName); err != nil {
+	if err = createAppBundle(ctx, bundle, root, appName); err != nil {
 		os.RemoveAll(appName)
 		return "", err
 	}
 
 	if len(c.Sign) != 0 {
 		printVerbose("signing app")
-		if err = signAppBundle(bundle, c.Sign, root, appName); err != nil {
+		if err = signAppBundle(ctx, bundle, c.Sign, root, appName); err != nil {
 			os.RemoveAll(appName)
 			return "", err
 		}
 
 		if c.AppStore {
 			printVerbose("packaging for the app store")
-			return appName, createAppPkg(bundle, c.Sign, appName)
+			return appName, createAppPkg(ctx, bundle, c.Sign, appName)
 		}
 	}
 
@@ -242,7 +242,7 @@ func fillBundle(b driver.Bundle, root string) driver.Bundle {
 	return b
 }
 
-func createAppBundle(bundle driver.Bundle, root, appName string) error {
+func createAppBundle(ctx context.Context, bundle driver.Bundle, root, appName string) error {
 	os.RemoveAll(appName)
 
 	appContents := filepath.Join(appName, "Contents")
@@ -278,12 +278,12 @@ func createAppBundle(bundle driver.Bundle, root, appName string) error {
 
 	printVerbose("generating icons")
 	if len(bundle.Icon) != 0 {
-		return generateAppIcons(bundle.Icon, appResources)
+		return generateAppIcons(ctx, bundle.Icon, appResources)
 	}
 	return nil
 }
 
-func generateAppIcons(icon, appResources string) error {
+func generateAppIcons(ctx context.Context, icon, appResources string) error {
 	appIcon := filepath.Join(appResources, icon)
 
 	iconset := filepath.Base(icon)
@@ -323,17 +323,17 @@ func generateAppIcons(icon, appResources string) error {
 		return err
 	}
 
-	return execute("iconutil", "-c", "icns", iconset)
+	return execute(ctx, "iconutil", "-c", "icns", iconset)
 }
 
-func signAppBundle(bundle driver.Bundle, sign, root, appName string) error {
+func signAppBundle(ctx context.Context, bundle driver.Bundle, sign, root, appName string) error {
 	entitlementsName := filepath.Join(root, ".entitlements")
 	if err := generatePlist(entitlementsName, entitlements, bundle); err != nil {
 		return err
 	}
 	defer os.Remove(entitlementsName)
 
-	if err := execute("codesign",
+	if err := execute(ctx, "codesign",
 		"--force",
 		"--sign",
 		sign,
@@ -344,7 +344,7 @@ func signAppBundle(bundle driver.Bundle, sign, root, appName string) error {
 		return err
 	}
 
-	return execute("codesign",
+	return execute(ctx, "codesign",
 		"--verify",
 		"--deep",
 		"--strict",
@@ -353,8 +353,9 @@ func signAppBundle(bundle driver.Bundle, sign, root, appName string) error {
 	)
 }
 
-func createAppPkg(bundle driver.Bundle, sign, appName string) error {
-	return execute("productbuild",
+func createAppPkg(ctx context.Context, bundle driver.Bundle, sign, appName string) error {
+	return execute(ctx,
+		"productbuild",
 		"--component",
 		appName,
 		"/Applications",
@@ -393,7 +394,7 @@ func runMac(ctx context.Context, args []string) {
 	appname := roots[0]
 	if !strings.HasSuffix(appname, ".app") {
 		var err error
-		if appname, err = buildMacApp(appname, macBuildConfig{
+		if appname, err = buildMacApp(ctx, appname, macBuildConfig{
 			Sign: c.Sign,
 		}); err != nil {
 			fail("building app failed: %s", err)
@@ -420,7 +421,7 @@ func runMac(ctx context.Context, args []string) {
 	os.Setenv("GOAPP_DEBUG", fmt.Sprintf("%v", c.Debug))
 
 	printVerbose("running %s", appname)
-	if err := execute("open", "--wait-apps", appname); err != nil {
+	if err := execute(ctx, "open", "--wait-apps", appname); err != nil {
 		printErr("%s", err)
 	}
 }

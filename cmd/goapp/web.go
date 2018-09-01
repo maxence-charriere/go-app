@@ -58,7 +58,7 @@ func initWeb(ctx context.Context, args []string) {
 	}
 
 	printVerbose("get gopherjs")
-	if err = goGetGopherJS(); err != nil {
+	if err = goGetGopherJS(ctx); err != nil {
 		failWithHelp(&ld, "%s", err)
 	}
 
@@ -71,7 +71,7 @@ func initWeb(ctx context.Context, args []string) {
 	printSuccess("init succeeded")
 }
 
-func goGetGopherJS() error {
+func goGetGopherJS(ctx context.Context) error {
 	args := []string{"get", "-u"}
 
 	if verbose {
@@ -79,7 +79,7 @@ func goGetGopherJS() error {
 	}
 
 	args = append(args, "github.com/gopherjs/gopherjs")
-	return execute("go", args...)
+	return execute(ctx, "go", args...)
 }
 
 type webBuildConfig struct {
@@ -109,13 +109,13 @@ func buildWeb(ctx context.Context, args []string) {
 	root := roots[0]
 
 	printVerbose("building go server")
-	if err := goBuild(root); err != nil {
+	if err := goBuild(ctx, root); err != nil {
 		printErr("go build failed: %s", err)
 		return
 	}
 
 	printVerbose("building gopherjs client")
-	if err := gopherJSBuild(root, c.Minify); err != nil {
+	if err := gopherJSBuild(ctx, root, c.Minify); err != nil {
 		printErr("gopherjs build failed: %s", err)
 		return
 	}
@@ -123,7 +123,7 @@ func buildWeb(ctx context.Context, args []string) {
 	printSuccess("build succeeded")
 }
 
-func gopherJSBuild(target string, minify bool) error {
+func gopherJSBuild(ctx context.Context, target string, minify bool) error {
 	cmd := []string{}
 
 	if runtime.GOOS == "windows" {
@@ -142,5 +142,5 @@ func gopherJSBuild(target string, minify bool) error {
 
 	cmd = append(cmd, "-o", filepath.Join(target, "resources", "goapp.js"))
 	cmd = append(cmd, target)
-	return execute(cmd[0], cmd[1:]...)
+	return execute(ctx, cmd[0], cmd[1:]...)
 }

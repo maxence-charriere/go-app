@@ -99,14 +99,14 @@ func initPackage(root string) error {
 	return nil
 }
 
-func goBuild(target string, args ...string) error {
+func goBuild(ctx context.Context, target string, args ...string) error {
 	args = append([]string{"build"}, args...)
 
 	if verbose {
 		args = append(args, "-v", target)
 	}
 
-	return execute("go", args...)
+	return execute(ctx, "go", args...)
 }
 
 var (
