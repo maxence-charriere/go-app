@@ -181,6 +181,9 @@ func (pkg *macPackage) readBundleInfo(ctx context.Context) error {
 		b.Role = driver.NoRole
 	}
 
+	d, _ := json.MarshalIndent(b, "", "    ")
+	printVerbose("bundle: %s", d)
+
 	pkg.bundle = b
 	return nil
 }
