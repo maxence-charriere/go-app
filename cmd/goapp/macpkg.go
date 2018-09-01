@@ -78,7 +78,7 @@ func (pkg *macPackage) Build(ctx context.Context, c macBuildConfig) error {
 		return err
 	}
 
-	if len(c.Sign) == 0 {
+	if len(pkg.sign) == 0 {
 		if c.AppStore {
 			return errors.New("app store apps require to be signed")
 		}

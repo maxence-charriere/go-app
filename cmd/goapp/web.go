@@ -2,10 +2,12 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
 
+	"github.com/murlokswarm/app/internal/file"
 	"github.com/segmentio/conf"
 )
 
@@ -106,33 +108,115 @@ func buildWeb(ctx context.Context, args []string) {
 		roots = []string{"."}
 	}
 
-	root := roots[0]
-
-	printVerbose("building go server")
-	if err := goBuild(ctx, root); err != nil {
-		printErr("go build failed: %s", err)
-		return
+	pkg, err := newWebPackage(roots[0])
+	if err != nil {
+		fail("%s", err)
 	}
 
-	printVerbose("building gopherjs client")
-	if err := gopherJSBuild(ctx, root, c.Minify); err != nil {
-		printErr("gopherjs build failed: %s", err)
-		return
+	if err = pkg.Build(ctx, c); err != nil {
+		fail("%s", err)
 	}
 
 	printSuccess("build succeeded")
 }
 
-func gopherJSBuild(ctx context.Context, target string, minify bool) error {
-	cmd := []string{}
+func runWeb(ctx context.Context, args []string) {
 
-	if runtime.GOOS == "windows" {
-		os.Setenv("GOOS", "darwin")
+}
+
+type webPackage struct {
+	workingDir       string
+	buildDir         string
+	gopherJSBuildDir string
+	buildResources   string
+	name             string
+	resources        string
+	goExec           string
+	gopherJS         string
+	minify           bool
+}
+
+func newWebPackage(buildDir string) (*webPackage, error) {
+	wd, err := os.Getwd()
+	if err != nil {
+		return nil, err
 	}
 
-	cmd = append(cmd, "gopherjs", "build", "-v")
+	gopherJSBuildDIr := buildDir
 
-	if minify {
+	if buildDir, err = filepath.Abs(buildDir); err != nil {
+		return nil, err
+	}
+
+	name := filepath.Base(buildDir) + ".wapp"
+
+	return &webPackage{
+		workingDir:       wd,
+		buildDir:         buildDir,
+		gopherJSBuildDir: gopherJSBuildDIr,
+		buildResources:   filepath.Join(buildDir, "resources"),
+		name:             filepath.Join(wd, name),
+		resources:        filepath.Join(wd, name, "resources"),
+		goExec:           filepath.Join(wd, name, filepath.Base(buildDir)),
+		gopherJS:         filepath.Join(wd, name, "resources", "goapp.js"),
+	}, nil
+}
+
+func (pkg *webPackage) Build(ctx context.Context, c webBuildConfig) error {
+	pkg.minify = c.Minify
+	name := filepath.Base(pkg.name)
+
+	printVerbose("creating %s", name)
+	if err := pkg.createPackage(); err != nil {
+		return err
+	}
+
+	printVerbose("building go server")
+	if err := pkg.buildGoExec(ctx); err != nil {
+		return err
+	}
+
+	printVerbose("building gopherjs client")
+	if err := pkg.buildGopherJS(ctx); err != nil {
+		return err
+	}
+
+	printVerbose("syncing resources")
+	return pkg.syncResources()
+}
+
+func (pkg *webPackage) createPackage() error {
+	dirs := []string{
+		pkg.name,
+		pkg.resources,
+	}
+
+	for _, d := range dirs {
+		if err := os.MkdirAll(d, os.ModeDir|0755); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (pkg *webPackage) buildGoExec(ctx context.Context) error {
+	if err := goBuild(ctx, pkg.buildDir, "-o", pkg.goExec); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (pkg *webPackage) buildGopherJS(ctx context.Context) error {
+	if runtime.GOOS == "windows" {
+		os.Setenv("GOOS", "linux")
+		defer os.Unsetenv("GOOS")
+	}
+
+	cmd := []string{"gopherjs", "build", "-o", pkg.gopherJS}
+
+	if pkg.minify {
 		cmd = append(cmd, "-m")
 	}
 
@@ -140,7 +224,12 @@ func gopherJSBuild(ctx context.Context, target string, minify bool) error {
 		cmd = append(cmd, "-v")
 	}
 
-	cmd = append(cmd, "-o", filepath.Join(target, "resources", "goapp.js"))
-	cmd = append(cmd, target)
+	cmd = append(cmd, pkg.gopherJSBuildDir)
+
+	fmt.Println(cmd)
 	return execute(ctx, cmd[0], cmd[1:]...)
+}
+
+func (pkg *webPackage) syncResources() error {
+	return file.Sync(pkg.resources, pkg.buildResources)
 }

@@ -150,11 +150,11 @@ func initPackage(root string) error {
 	return nil
 }
 
-func goBuild(ctx context.Context, target string, args ...string) error {
+func goBuild(ctx context.Context, buildDir string, args ...string) error {
 	args = append([]string{"build"}, args...)
 
 	if verbose {
-		args = append(args, "-v", target)
+		args = append(args, "-v", buildDir)
 	}
 
 	return execute(ctx, "go", args...)
