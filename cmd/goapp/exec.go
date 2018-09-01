@@ -21,8 +21,8 @@ func execute(ctx context.Context, cmd string, args ...string) error {
 		return err
 	}
 
-	go printOutput(cmdout, os.Stdout)
-	go printOutput(cmderr, os.Stderr)
+	go printOutput(ctx, cmdout, os.Stdout)
+	go printOutput(ctx, cmderr, os.Stderr)
 
 	if err = command.Start(); err != nil {
 		return err
@@ -32,15 +32,22 @@ func execute(ctx context.Context, cmd string, args ...string) error {
 	return err
 }
 
-func printOutput(r io.Reader, output io.Writer) {
+func printOutput(ctx context.Context, r io.Reader, output io.Writer) {
 	reader := bufio.NewReader(r)
 	b := make([]byte, 1024)
 
 	for {
+		select {
+		case <-ctx.Done():
+			return
+		default:
+		}
+
 		n, err := reader.Read(b)
 		if err == io.EOF {
 			return
 		}
+
 		if err != nil {
 			printErr("%s", err)
 			continue
