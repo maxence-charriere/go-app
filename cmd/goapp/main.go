@@ -76,7 +76,7 @@ type updateConfig struct {
 }
 
 func update(ctx context.Context, args []string) {
-	c := macInitConfig{}
+	c := updateConfig{}
 
 	ld := conf.Loader{
 		Name:    "goapp update",
