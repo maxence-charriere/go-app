@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
+	"time"
 
 	"github.com/murlokswarm/app/internal/file"
 	"github.com/segmentio/conf"
@@ -16,9 +18,10 @@ func web(ctx context.Context, args []string) {
 		Name: "goapp web",
 		Args: args,
 		Commands: []conf.Command{
-			{Name: "help", Help: "Show the web help"},
 			{Name: "init", Help: "Download gopherjs and create the required files and directories."},
 			{Name: "build", Help: "Build the web server and generate Gopher.js file."},
+			{Name: "run", Help: "Run the server and launch the client in the default browser."},
+			{Name: "help", Help: "Show the web help"},
 		},
 	}
 
@@ -31,6 +34,9 @@ func web(ctx context.Context, args []string) {
 
 	case "build":
 		buildWeb(ctx, args)
+
+	case "run":
+		runWeb(ctx, args)
 
 	default:
 		panic("unreachable")
@@ -120,8 +126,80 @@ func buildWeb(ctx context.Context, args []string) {
 	printSuccess("build succeeded")
 }
 
-func runWeb(ctx context.Context, args []string) {
+type webRunConfig struct {
+	Addr    string   `conf:"addr"    help:"The server bind address."`
+	Args    []string `conf:"args"    help:"The arguments to launch the server."`
+	Browser string   `conf:"browser" help:"The browser to use."`
+	Minify  bool     `conf:"m"       help:"Minify gopherjs file."`
+	Verbose bool     `conf:"v"       help:"Enable verbose mode."`
+}
 
+func runWeb(ctx context.Context, args []string) {
+	c := webRunConfig{
+		Addr:   "http://127.0.0.1:7042",
+		Minify: true,
+	}
+
+	ld := conf.Loader{
+		Name:    "web run",
+		Args:    args,
+		Usage:   "[options...] [*.wapp]",
+		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
+	}
+
+	_, roots := conf.LoadWith(&c, ld)
+	verbose = c.Verbose
+
+	wappname := "."
+	if len(roots) != 0 {
+		wappname = roots[0]
+	}
+
+	if !strings.HasSuffix(wappname, ".wapp") {
+		printVerbose("building package")
+		pkg, err := newWebPackage(wappname)
+		if err != nil {
+			fail("%s", err)
+		}
+
+		if err = pkg.Build(ctx, webBuildConfig{
+			Minify: c.Minify,
+		}); err != nil {
+			fail("%s", err)
+		}
+
+		wappname = pkg.name
+	}
+
+	server := filepath.Base(wappname)
+	server = strings.TrimSuffix(server, ".wapp")
+	server = filepath.Join(wappname, server)
+
+	go launchNavigator(ctx, c.Addr)
+
+	printVerbose("starting server")
+	if err := execute(ctx, server, args...); err != nil {
+		fail("%s", err)
+	}
+}
+
+func launchNavigator(ctx context.Context, url string) {
+	time.Sleep(time.Millisecond * 200)
+	printVerbose("starting client")
+	
+	// switch runtime.GOOS{
+	// case "darwin":
+	// 	open = "open"
+
+	// case "windows":
+
+	// case "linux":
+
+	// default:
+	// 	fail("you are not on Linux, MacOS or Windows")
+	// }
+
+	execute(ctx, "open", url)
 }
 
 type webPackage struct {
