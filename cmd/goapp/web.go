@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -136,7 +137,7 @@ type webRunConfig struct {
 
 func runWeb(ctx context.Context, args []string) {
 	c := webRunConfig{
-		Addr:   "http://127.0.0.1:7042",
+		Addr:   ":9001",
 		Minify: true,
 	}
 
@@ -177,29 +178,50 @@ func runWeb(ctx context.Context, args []string) {
 
 	go launchNavigator(ctx, c.Addr)
 
+	os.Setenv("GOAPP_SERVER_ADDR", c.Addr)
+	defer os.Unsetenv("GOAPP_SERVER_ADDR")
+
 	printVerbose("starting server")
 	if err := execute(ctx, server, args...); err != nil {
 		fail("%s", err)
 	}
 }
 
-func launchNavigator(ctx context.Context, url string) {
-	time.Sleep(time.Millisecond * 200)
+func launchNavigator(ctx context.Context, browser, rawurl string) {
+	time.Sleep(time.Millisecond * 100)
 	printVerbose("starting client")
-	
-	// switch runtime.GOOS{
-	// case "darwin":
-	// 	open = "open"
 
-	// case "windows":
+	if !strings.HasPrefix(rawurl, "http://") {
+		rawurl = "http://" + rawurl
+	}
 
-	// case "linux":
+	u, err := url.Parse(rawurl)
+	if err != nil {
+		printErr("%s", err)
+		return
+	}
 
-	// default:
-	// 	fail("you are not on Linux, MacOS or Windows")
-	// }
+	if len(u.Host) != 0 && u.Host[0] == ':' {
+		u.Host = "127.0.0.1" + u.Host
+	}
 
-	execute(ctx, "open", url)
+	var cmd []string
+
+	switch runtime.GOOS {
+	case "darwin":
+		cmd = []string{"open"}
+
+	case "windows":
+		cmd = []string{}
+
+	case "linux":
+		cmd = []string{}
+
+	default:
+		fail("you are not on Linux, MacOS or Windows")
+	}
+
+	execute(ctx, cmd[0], cmd[1:])
 }
 
 type webPackage struct {
