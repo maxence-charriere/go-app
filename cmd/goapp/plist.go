@@ -22,8 +22,8 @@ type bundle struct {
 	DevRegion        string
 	DeploymentTarget string
 	Copyright        string
-	Role             driver.Role
-	Category         driver.Category
+	Role             string
+	Category         string
 	Sandbox          bool
 	Background       bool
 	Server           bool

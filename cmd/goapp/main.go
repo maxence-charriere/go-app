@@ -214,3 +214,19 @@ func verboseFlag(v bool) string {
 
 	return ""
 }
+
+func stringWithDefault(value, defaultValue string) string {
+	if len(value) == 0 {
+		return defaultValue
+	}
+
+	return value
+}
+
+func intWithDefault(value, defaultValue int) int {
+	if value == 0 {
+		return defaultValue
+	}
+
+	return value
+}
