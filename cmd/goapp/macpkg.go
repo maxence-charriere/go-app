@@ -142,53 +142,23 @@ func (pkg *macPackage) readBundleInfo(ctx context.Context) error {
 
 	b.ExecName = filepath.Base(pkg.goExec)
 	b.Sandbox = pkg.config.Sandbox
-
-	if len(b.AppName) == 0 {
-		b.AppName = filepath.Base(pkg.goExec)
-	}
-
-	if len(b.ID) == 0 {
-		b.ID = fmt.Sprintf("%v.%v", os.Getenv("USER"), b.AppName)
-	}
-
-	if len(b.URLScheme) == 0 {
-		b.URLScheme = strings.ToLower(b.AppName)
-	}
-
-	if len(b.Version) == 0 {
-		b.Version = "1.0"
-	}
-
-	if b.BuildNumber == 0 {
-		b.BuildNumber = 1
-	}
-
-	if len(b.DevRegion) == 0 {
-		b.DevRegion = "en"
-	}
-
-	if len(b.DeploymentTarget) == 0 {
-		b.DeploymentTarget = "10.13"
-	}
-
-	if len(b.Category) == 0 {
-		b.Category = driver.DeveloperToolsApp
-	}
-
-	if len(b.Copyright) == 0 {
-		b.Copyright = fmt.Sprintf("Copyright © %v %s. All rights reserved.",
-			time.Now().Year(),
-			os.Getenv("USER"),
-		)
-	}
+	b.AppName = stringWithDefault(b.AppName, filepath.Base(pkg.goExec))
+	b.ID = stringWithDefault(b.ID, fmt.Sprintf("%v.%v", os.Getenv("USER"), b.AppName))
+	b.URLScheme = stringWithDefault(b.URLScheme, strings.ToLower(b.AppName))
+	b.Version = stringWithDefault(b.Version, "1.0")
+	b.BuildNumber = intWithDefault(b.BuildNumber, 1)
+	b.DevRegion = stringWithDefault(b.DevRegion, "en")
+	b.DeploymentTarget = stringWithDefault(b.DeploymentTarget, "10.13")
+	b.Category = stringWithDefault(b.Category, driver.DeveloperToolsApp)
+	b.Copyright = stringWithDefault(b.Copyright, fmt.Sprintf("Copyright © %v %s. All rights reserved.",
+		time.Now().Year(),
+		os.Getenv("USER"),
+	))
+	b.Role = stringWithDefault(b.Role, string(driver.NoRole))
 
 	if b.Sandbox && len(pkg.config.Sign) == 0 {
 		printWarn("desactivating sandbox: sanboxed apps require to be signed")
 		b.Sandbox = false
-	}
-
-	if len(b.Role) == 0 {
-		b.Role = driver.NoRole
 	}
 
 	d, _ := json.MarshalIndent(b, "", "    ")
