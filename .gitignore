@@ -38,6 +38,7 @@ examples/nav/nav
 examples/dragdrop/dragdrop
 examples/test/test
 *.app
+*.wapp
 *.exe
 *goapp.js
 *.map

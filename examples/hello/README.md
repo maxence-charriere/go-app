@@ -63,12 +63,8 @@ func newWindow() {
 
 ```bash
 # In $GOPATH/src/github.com/murlokswarm/app/examples/hello/bin/hello-mac
-
-# Build app
-go build
-
-## Launch app
-./hello-mac
+# Build and launch the app
+goapp mac run
 ```
 
 
@@ -87,15 +83,6 @@ func main() {
 
 ```bash
 # In $GOPATH/src/github.com/murlokswarm/app/examples/hello/bin/hello-web
-
-# Build server and client
-goapp web build
-
-# Launch server
-./hello-web
-
-# Launch client
-open http://localhost:7042     # MacOS
-explorer http://localhost:7042 # Windows
-xdg-open http://localhost:7042 # Linux
+# Build/launch server and client
+goapp web run -b
 ```
