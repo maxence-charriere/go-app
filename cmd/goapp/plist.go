@@ -11,6 +11,38 @@ import (
 	driver "github.com/murlokswarm/app/drivers/mac"
 )
 
+type bundle struct {
+	ExecName         string
+	AppName          string
+	ID               string
+	URLScheme        string
+	Version          string
+	BuildNumber      int
+	Icon             string
+	DevRegion        string
+	DeploymentTarget string
+	Copyright        string
+	Role             driver.Role
+	Category         driver.Category
+	Sandbox          bool
+	Background       bool
+	Server           bool
+	Camera           bool
+	Microphone       bool
+	USB              bool
+	Printers         bool
+	Bluetooth        bool
+	Contacts         bool
+	Location         bool
+	Calendar         bool
+	FilePickers      driver.FileAccess
+	Downloads        driver.FileAccess
+	Pictures         driver.FileAccess
+	Music            driver.FileAccess
+	Movies           driver.FileAccess
+	SupportedFiles   []string
+}
+
 const plist = `
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -20,7 +52,7 @@ const plist = `
 	<string>{{.DevRegion}}</string>
 
 	<key>CFBundleExecutable</key>
-	<string>{{.AppName}}</string>
+	<string>{{.ExecName}}</string>
 
 	<key>CFBundleIconFile</key>
 	<string>{{icon .Icon}}</string>
@@ -181,7 +213,7 @@ const entitlements = `
 </plist>
 `
 
-func generatePlist(filename string, plistTmpl string, bundle driver.Bundle) error {
+func generatePlist(filename string, plistTmpl string, b bundle) error {
 	f, err := os.Create(filename)
 	if err != nil {
 		return err
@@ -198,5 +230,5 @@ func generatePlist(filename string, plistTmpl string, bundle driver.Bundle) erro
 		}).
 		Parse(plistTmpl))
 
-	return tmpl.Execute(f, bundle)
+	return tmpl.Execute(f, b)
 }

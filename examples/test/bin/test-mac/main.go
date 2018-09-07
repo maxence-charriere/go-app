@@ -16,7 +16,6 @@ func main() {
 
 	app.Run(&mac.Driver{
 		Bundle: mac.Bundle{
-			Sandbox:     true,
 			Icon:        "logo.png",
 			FilePickers: mac.FileReadWriteAccess,
 		},
