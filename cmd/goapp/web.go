@@ -131,6 +131,7 @@ func buildWeb(ctx context.Context, args []string) {
 type webRunConfig struct {
 	Addr    string   `conf:"addr"   help:"The server bind address."`
 	Args    []string `conf:"args"   help:"The arguments to launch the server."`
+	Browser bool     `conf:"b"      help:"Run the client."`
 	Chrome  bool     `conf:"chrome" help:"Run the client with Google Chrome."`
 	Minify  bool     `conf:"m"      help:"Minify gopherjs file."`
 	Verbose bool     `conf:"v"      help:"Enable verbose mode."`
@@ -177,7 +178,9 @@ func runWeb(ctx context.Context, args []string) {
 	server = strings.TrimSuffix(server, ".wapp")
 	server = filepath.Join(wappname, server)
 
-	go launchNavigator(ctx, c)
+	if c.Browser || c.Chrome {
+		go launchNavigator(ctx, c)
+	}
 
 	os.Setenv("GOAPP_SERVER_ADDR", c.Addr)
 	defer os.Unsetenv("GOAPP_SERVER_ADDR")
