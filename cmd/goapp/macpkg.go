@@ -26,11 +26,11 @@ type macPackage struct {
 	contents       string
 	macOS          string
 	resources      string
-	sign           string
-	bundle         driver.Bundle
+	config         macBuildConfig
+	bundle         bundle
 }
 
-func newMacPackage(buildDir string) (*macPackage, error) {
+func newMacPackage(buildDir, name string) (*macPackage, error) {
 	wd, err := os.Getwd()
 	if err != nil {
 		return nil, err
@@ -40,16 +40,29 @@ func newMacPackage(buildDir string) (*macPackage, error) {
 		return nil, err
 	}
 
+	if len(name) == 0 {
+		name = filepath.Base(buildDir) + ".app"
+		name = filepath.Join(wd, name)
+	}
+
+	if !strings.HasSuffix(name, ".app") {
+		name += ".app"
+	}
+
 	return &macPackage{
 		workingDir:     wd,
 		buildDir:       buildDir,
 		buildResources: filepath.Join(buildDir, "resources"),
 		goExec:         filepath.Join(wd, filepath.Base(buildDir)),
+		name:           name,
+		contents:       filepath.Join(name, "Contents"),
+		macOS:          filepath.Join(name, "Contents", "MacOS"),
+		resources:      filepath.Join(name, "Contents", "Resources"),
 	}, nil
 }
 
 func (pkg *macPackage) Build(ctx context.Context, c macBuildConfig) error {
-	pkg.sign = c.Sign
+	pkg.config = c
 
 	printVerbose("building go executable")
 	if err := pkg.buildGoExecutable(ctx); err != nil {
@@ -78,7 +91,7 @@ func (pkg *macPackage) Build(ctx context.Context, c macBuildConfig) error {
 		return err
 	}
 
-	if len(pkg.sign) == 0 {
+	if len(c.Sign) == 0 {
 		if c.AppStore {
 			return errors.New("app store apps require to be signed")
 		}
@@ -100,7 +113,7 @@ func (pkg *macPackage) Build(ctx context.Context, c macBuildConfig) error {
 }
 
 func (pkg *macPackage) buildGoExecutable(ctx context.Context) error {
-	if err := goBuild(ctx, pkg.buildDir, "-ldflags", "-s"); err != nil {
+	if err := goBuild(ctx, pkg.buildDir, "-ldflags", "-s", "-o", pkg.goExec); err != nil {
 		return err
 	}
 
@@ -108,77 +121,44 @@ func (pkg *macPackage) buildGoExecutable(ctx context.Context) error {
 }
 
 func (pkg *macPackage) readBundleInfo(ctx context.Context) error {
-	os.Setenv("GOAPP_BUNDLE", "true")
+	bundleJSON := filepath.Join(pkg.workingDir, ".bundle.json")
+	os.Setenv("GOAPP_BUNDLE", bundleJSON)
+	defer os.Remove(bundleJSON)
 	defer os.Unsetenv("GOAPP_BUNDLE")
 
 	if err := execute(ctx, pkg.goExec); err != nil {
 		return err
 	}
 
-	bundleJSON := filepath.Join(pkg.workingDir, "goapp-mac.json")
-	defer os.Remove(bundleJSON)
-
 	data, err := ioutil.ReadFile(bundleJSON)
 	if err != nil {
 		return err
 	}
 
-	var b driver.Bundle
+	var b bundle
 	if err = json.Unmarshal(data, &b); err != nil {
 		return err
 	}
 
-	if len(b.AppName) == 0 {
-		b.AppName = filepath.Base(pkg.goExec)
-	}
+	b.ExecName = filepath.Base(pkg.goExec)
+	b.Sandbox = pkg.config.Sandbox
+	b.AppName = stringWithDefault(b.AppName, filepath.Base(pkg.goExec))
+	b.ID = stringWithDefault(b.ID, fmt.Sprintf("%v.%v", os.Getenv("USER"), b.AppName))
+	b.URLScheme = stringWithDefault(b.URLScheme, strings.ToLower(b.AppName))
+	b.Version = stringWithDefault(b.Version, "1.0")
+	b.BuildNumber = intWithDefault(b.BuildNumber, 1)
+	b.DevRegion = stringWithDefault(b.DevRegion, "en")
+	b.DeploymentTarget = stringWithDefault(b.DeploymentTarget, "10.13")
+	b.Category = stringWithDefault(b.Category, driver.DeveloperToolsApp)
+	b.Copyright = stringWithDefault(b.Copyright, fmt.Sprintf("Copyright © %v %s. All rights reserved.",
+		time.Now().Year(),
+		os.Getenv("USER"),
+	))
+	b.Role = stringWithDefault(b.Role, string(driver.NoRole))
 
-	pkg.name = filepath.Join(pkg.workingDir, b.AppName+".app")
-	pkg.contents = filepath.Join(pkg.name, "Contents")
-	pkg.macOS = filepath.Join(pkg.contents, "MacOS")
-	pkg.resources = filepath.Join(pkg.contents, "Resources")
-
-	if len(b.ID) == 0 {
-		b.ID = fmt.Sprintf("%v.%v", os.Getenv("USER"), b.AppName)
-	}
-
-	if len(b.URLScheme) == 0 {
-		b.URLScheme = strings.ToLower(b.AppName)
-	}
-
-	if len(b.Version) == 0 {
-		b.Version = "1.0"
-	}
-
-	if b.BuildNumber == 0 {
-		b.BuildNumber = 1
-	}
-
-	if len(b.DevRegion) == 0 {
-		b.DevRegion = "en"
-	}
-
-	if len(b.DeploymentTarget) == 0 {
-		b.DeploymentTarget = "10.13"
-	}
-
-	if len(b.Category) == 0 {
-		b.Category = driver.DeveloperToolsApp
-	}
-
-	if len(b.Copyright) == 0 {
-		b.Copyright = fmt.Sprintf("Copyright © %v %s. All rights reserved.",
-			time.Now().Year(),
-			os.Getenv("USER"),
-		)
-	}
-
-	if b.Sandbox && len(pkg.sign) == 0 {
+	if b.Sandbox && len(pkg.config.Sign) == 0 {
 		printWarn("desactivating sandbox: sanboxed apps require to be signed")
 		b.Sandbox = false
-	}
-
-	if len(b.Role) == 0 {
-		b.Role = driver.NoRole
 	}
 
 	d, _ := json.MarshalIndent(b, "", "    ")
@@ -189,6 +169,8 @@ func (pkg *macPackage) readBundleInfo(ctx context.Context) error {
 }
 
 func (pkg *macPackage) createPackage() error {
+	os.RemoveAll(filepath.Join(pkg.contents, "_CodeSignature"))
+
 	dirs := []string{
 		pkg.name,
 		pkg.contents,
@@ -202,8 +184,10 @@ func (pkg *macPackage) createPackage() error {
 		}
 	}
 
-	exec := filepath.Join(pkg.macOS, pkg.bundle.AppName)
-	if err := file.Copy(exec, pkg.goExec); err != nil {
+	if err := file.Copy(
+		filepath.Join(pkg.macOS, pkg.bundle.ExecName),
+		pkg.goExec,
+	); err != nil {
 		return err
 	}
 
@@ -273,7 +257,7 @@ func (pkg *macPackage) signPackage(ctx context.Context) error {
 		"codesign",
 		"--force",
 		"--sign",
-		pkg.sign,
+		pkg.config.Sign,
 		"--entitlements",
 		ents,
 		pkg.name,
@@ -309,7 +293,7 @@ func (pkg *macPackage) packForAppStore(ctx context.Context) error {
 		pkg.name,
 		"/Applications",
 		"--sign",
-		pkg.sign,
+		pkg.config.Sign,
 		pkg.bundle.AppName+".pkg",
 	)
 }

@@ -40,11 +40,6 @@ type Bundle struct {
 	// The application category.
 	Category Category
 
-	// Reports whether the app runs in sandbox mode.
-	// It is set to false by goapp if no signing identifier is provided when
-	// building.
-	Sandbox bool
-
 	// Reports wheter the app runs in background mode.
 	// Background apps does not appear in the dock and menubar.
 	Background bool

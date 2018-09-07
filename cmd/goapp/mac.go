@@ -79,7 +79,9 @@ func initMac(ctx context.Context, args []string) {
 }
 
 type macBuildConfig struct {
+	Output   string `conf:"o"        help:"The output."`
 	Sign     string `conf:"sign"     help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
+	Sandbox  bool   `conf:"sandbox"  help:"Setup the app to run in sandbox mode."`
 	AppStore bool   `conf:"appstore" help:"Report whether the app will be packaged to be uploaded on the app store."`
 	Verbose  bool   `conf:"v"        help:"Enable verbose mode."`
 }
@@ -102,7 +104,7 @@ func buildMac(ctx context.Context, args []string) {
 	}
 
 	printVerbose("building package")
-	pkg, err := newMacPackage(roots[0])
+	pkg, err := newMacPackage(roots[0], c.Output)
 	if err != nil {
 		fail("%s", err)
 	}
@@ -117,6 +119,7 @@ func buildMac(ctx context.Context, args []string) {
 type macRunConfig struct {
 	LogsAddr string `conf:"logs-addr" help:"The address used to listen app logs." validate:"nonzero"`
 	Sign     string `conf:"sign"      help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
+	Sandbox  bool   `conf:"sandbox"   help:"Setup the app to run in sandbox mode."`
 	Debug    bool   `conf:"d"         help:"Enable debug mode is enabled."`
 	Verbose  bool   `conf:"v"         help:"Enable verbose mode."`
 }
@@ -141,15 +144,17 @@ func runMac(ctx context.Context, args []string) {
 	}
 
 	appname := roots[0]
+
 	if !strings.HasSuffix(appname, ".app") {
 		printVerbose("building package")
-		pkg, err := newMacPackage(roots[0])
+		pkg, err := newMacPackage(roots[0], "")
 		if err != nil {
 			fail("%s", err)
 		}
 
 		if err = pkg.Build(ctx, macBuildConfig{
-			Sign: c.Sign,
+			Sign:    c.Sign,
+			Sandbox: c.Sandbox,
 		}); err != nil {
 			fail("%s", err)
 		}
@@ -158,7 +163,7 @@ func runMac(ctx context.Context, args []string) {
 	}
 
 	go listenLogs(ctx, c.LogsAddr)
-	time.Sleep(time.Millisecond * 500)
+	time.Sleep(time.Millisecond * 200)
 
 	os.Unsetenv("GOAPP_BUNDLE")
 	os.Setenv("GOAPP_LOGS_ADDR", c.LogsAddr)
