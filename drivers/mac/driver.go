@@ -28,15 +28,15 @@ import (
 )
 
 var (
-	driver        *Driver
-	isGoappBundle = os.Getenv("GOAPP_BUNDLE") == "true"
-	debug         = os.Getenv("GOAPP_DEBUG") == "true"
-	goappLogAddr  = os.Getenv("GOAPP_LOGS_ADDR")
-	goappLogs     *logs.GoappClient
+	driver       *Driver
+	goappBundle  = os.Getenv("GOAPP_BUNDLE")
+	debug        = os.Getenv("GOAPP_DEBUG") == "true"
+	goappLogAddr = os.Getenv("GOAPP_LOGS_ADDR")
+	goappLogs    *logs.GoappClient
 )
 
 func init() {
-	if isGoappBundle {
+	if len(goappBundle) != 0 {
 		app.Logger = func(format string, a ...interface{}) {}
 		return
 	}
@@ -104,7 +104,7 @@ type Driver struct {
 
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(f *app.Factory) error {
-	if isGoappBundle {
+	if len(goappBundle) != 0 {
 		return d.runGoappBundle()
 	}
 
@@ -308,7 +308,7 @@ func (d *Driver) runGoappBundle() error {
 		return err
 	}
 
-	return ioutil.WriteFile("goapp-mac.json", b, 0777)
+	return ioutil.WriteFile(goappBundle, b, 0777)
 }
 
 func (d *Driver) support() string {
