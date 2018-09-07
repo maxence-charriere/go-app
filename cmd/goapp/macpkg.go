@@ -104,6 +104,10 @@ func (pkg *macPackage) Build(ctx context.Context, c macBuildConfig) error {
 		return err
 	}
 
+	if !c.Sandbox {
+		return errors.New("app store apps require sandbox mode")
+	}
+
 	if c.AppStore {
 		printVerbose("packaging for app store")
 		return pkg.packForAppStore(ctx)
@@ -287,6 +291,9 @@ func (pkg *macPackage) signPackage(ctx context.Context) error {
 }
 
 func (pkg *macPackage) packForAppStore(ctx context.Context) error {
+	name := filepath.Base(pkg.name)
+	name = strings.TrimSuffix(name, ".app")
+
 	return execute(ctx,
 		"productbuild",
 		"--component",
@@ -294,6 +301,6 @@ func (pkg *macPackage) packForAppStore(ctx context.Context) error {
 		"/Applications",
 		"--sign",
 		pkg.config.Sign,
-		pkg.bundle.AppName+".pkg",
+		name+".pkg",
 	)
 }
