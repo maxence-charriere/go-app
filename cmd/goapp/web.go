@@ -189,7 +189,7 @@ func runWeb(ctx context.Context, args []string) {
 }
 
 func launchNavigator(ctx context.Context, c webRunConfig) {
-	time.Sleep(time.Millisecond * 100)
+	time.Sleep(time.Millisecond * 250)
 	printVerbose("starting client")
 
 	rawurl := c.Addr
