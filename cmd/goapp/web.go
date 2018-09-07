@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -368,8 +367,6 @@ func (pkg *webPackage) buildGopherJS(ctx context.Context) error {
 	}
 
 	cmd = append(cmd, pkg.gopherJSBuildDir)
-
-	fmt.Println(cmd)
 	return execute(ctx, cmd[0], cmd[1:]...)
 }
 
