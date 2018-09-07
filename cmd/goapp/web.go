@@ -92,8 +92,9 @@ func goGetGopherJS(ctx context.Context) error {
 }
 
 type webBuildConfig struct {
-	Minify  bool `conf:"m" help:"Minify gopherjs file."`
-	Verbose bool `conf:"v" help:"Enable verbose mode."`
+	Output  string `conf:"o" help:"The output."`
+	Minify  bool   `conf:"m" help:"Minify gopherjs file."`
+	Verbose bool   `conf:"v" help:"Enable verbose mode."`
 }
 
 func buildWeb(ctx context.Context, args []string) {
@@ -115,7 +116,7 @@ func buildWeb(ctx context.Context, args []string) {
 		roots = []string{"."}
 	}
 
-	pkg, err := newWebPackage(roots[0])
+	pkg, err := newWebPackage(roots[0], c.Output)
 	if err != nil {
 		fail("%s", err)
 	}
@@ -158,7 +159,7 @@ func runWeb(ctx context.Context, args []string) {
 
 	if !strings.HasSuffix(wappname, ".wapp") {
 		printVerbose("building package")
-		pkg, err := newWebPackage(wappname)
+		pkg, err := newWebPackage(wappname, "")
 		if err != nil {
 			fail("%s", err)
 		}
@@ -266,7 +267,7 @@ type webPackage struct {
 	minify           bool
 }
 
-func newWebPackage(buildDir string) (*webPackage, error) {
+func newWebPackage(buildDir, name string) (*webPackage, error) {
 	wd, err := os.Getwd()
 	if err != nil {
 		return nil, err
@@ -278,7 +279,16 @@ func newWebPackage(buildDir string) (*webPackage, error) {
 		return nil, err
 	}
 
-	name := filepath.Base(buildDir) + ".wapp"
+	if len(name) == 0 {
+		name = filepath.Base(buildDir) + ".wapp"
+	}
+
+	if !strings.HasSuffix(name, ".wapp") {
+		name += ".wapp"
+	}
+
+	goExec := filepath.Base(name)
+	goExec = strings.TrimSuffix(goExec, ".wapp")
 
 	return &webPackage{
 		workingDir:       wd,
@@ -287,7 +297,7 @@ func newWebPackage(buildDir string) (*webPackage, error) {
 		buildResources:   filepath.Join(buildDir, "resources"),
 		name:             filepath.Join(wd, name),
 		resources:        filepath.Join(wd, name, "resources"),
-		goExec:           filepath.Join(wd, name, filepath.Base(buildDir)),
+		goExec:           filepath.Join(wd, name, goExec),
 		gopherJS:         filepath.Join(wd, name, "resources", "goapp.js"),
 	}, nil
 }
