@@ -128,11 +128,11 @@ func buildWeb(ctx context.Context, args []string) {
 }
 
 type webRunConfig struct {
-	Addr    string   `conf:"addr"    help:"The server bind address."`
-	Args    []string `conf:"args"    help:"The arguments to launch the server."`
-	Browser string   `conf:"browser" help:"The browser to use."`
-	Minify  bool     `conf:"m"       help:"Minify gopherjs file."`
-	Verbose bool     `conf:"v"       help:"Enable verbose mode."`
+	Addr    string   `conf:"addr"   help:"The server bind address."`
+	Args    []string `conf:"args"   help:"The arguments to launch the server."`
+	Chrome  bool     `conf:"chrome" help:"Run the client with Google Chrome."`
+	Minify  bool     `conf:"m"      help:"Minify gopherjs file."`
+	Verbose bool     `conf:"v"      help:"Enable verbose mode."`
 }
 
 func runWeb(ctx context.Context, args []string) {
@@ -176,7 +176,7 @@ func runWeb(ctx context.Context, args []string) {
 	server = strings.TrimSuffix(server, ".wapp")
 	server = filepath.Join(wappname, server)
 
-	go launchNavigator(ctx, c.Addr)
+	go launchNavigator(ctx, c)
 
 	os.Setenv("GOAPP_SERVER_ADDR", c.Addr)
 	defer os.Unsetenv("GOAPP_SERVER_ADDR")
@@ -187,10 +187,11 @@ func runWeb(ctx context.Context, args []string) {
 	}
 }
 
-func launchNavigator(ctx context.Context, browser, rawurl string) {
+func launchNavigator(ctx context.Context, c webRunConfig) {
 	time.Sleep(time.Millisecond * 100)
 	printVerbose("starting client")
 
+	rawurl := c.Addr
 	if !strings.HasPrefix(rawurl, "http://") {
 		rawurl = "http://" + rawurl
 	}
@@ -205,23 +206,52 @@ func launchNavigator(ctx context.Context, browser, rawurl string) {
 		u.Host = "127.0.0.1" + u.Host
 	}
 
+	if c.Chrome {
+		launchWithGoogleChrome(ctx, u.String())
+		return
+	}
+
+	launchWithDefaultBrowser(ctx, u.String())
+}
+
+func launchWithGoogleChrome(ctx context.Context, url string) {
 	var cmd []string
 
 	switch runtime.GOOS {
 	case "darwin":
-		cmd = []string{"open"}
+		cmd = []string{"open", "-a", "Google Chrome", url}
 
 	case "windows":
-		cmd = []string{}
+		cmd = []string{"chrome.exe", url}
 
 	case "linux":
-		cmd = []string{}
+		cmd = []string{"google-chrome", url}
 
 	default:
 		fail("you are not on Linux, MacOS or Windows")
 	}
 
-	execute(ctx, cmd[0], cmd[1:])
+	execute(ctx, cmd[0], cmd[1:]...)
+}
+
+func launchWithDefaultBrowser(ctx context.Context, url string) {
+	var cmd []string
+
+	switch runtime.GOOS {
+	case "darwin":
+		cmd = []string{"open", url}
+
+	case "windows":
+		cmd = []string{"start", url}
+
+	case "linux":
+		cmd = []string{"xdg-open", url}
+
+	default:
+		fail("you are not on Linux, MacOS or Windows")
+	}
+
+	execute(ctx, cmd[0], cmd[1:]...)
 }
 
 type webPackage struct {
