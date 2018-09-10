@@ -41,7 +41,7 @@ func (d *Driver) Run(f *app.Factory) error {
 		}
 	}
 
-	if addr := os.Getenv("GOAPP_SERVER_ADDR"); len(addr) != 0{
+	if addr := os.Getenv("GOAPP_SERVER_ADDR"); len(addr) != 0 {
 		d.Server.Addr = addr
 	}
 
