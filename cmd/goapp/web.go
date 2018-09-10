@@ -185,6 +185,10 @@ func runWeb(ctx context.Context, args []string) {
 	defer os.Unsetenv("GOAPP_SERVER_ADDR")
 
 	printVerbose("starting server")
+	if err := os.Chdir(wappname); err != nil {
+		fail("%s", err)
+	}
+
 	if err := execute(ctx, server, args...); err != nil {
 		fail("%s", err)
 	}
