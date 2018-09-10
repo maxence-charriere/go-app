@@ -343,11 +343,7 @@ func (pkg *webPackage) createPackage() error {
 }
 
 func (pkg *webPackage) buildGoExec(ctx context.Context) error {
-	if err := goBuild(ctx, pkg.buildDir, "-o", pkg.goExec); err != nil {
-		return err
-	}
-
-	return nil
+	return goBuild(ctx, pkg.buildDir, "-o", pkg.goExec)
 }
 
 func (pkg *webPackage) buildGopherJS(ctx context.Context) error {

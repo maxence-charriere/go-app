@@ -117,11 +117,7 @@ func (pkg *macPackage) Build(ctx context.Context, c macBuildConfig) error {
 }
 
 func (pkg *macPackage) buildGoExecutable(ctx context.Context) error {
-	if err := goBuild(ctx, pkg.buildDir, "-ldflags", "-s", "-o", pkg.goExec); err != nil {
-		return err
-	}
-
-	return nil
+	return goBuild(ctx, pkg.buildDir, "-ldflags", "-s", "-o", pkg.goExec)
 }
 
 func (pkg *macPackage) readBundleInfo(ctx context.Context) error {
