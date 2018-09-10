@@ -63,6 +63,10 @@ type Driver struct {
 	// Menubar configuration
 	MenubarConfig MenuBarConfig
 
+	// The URL of the component to load in the main window.
+	// The main window is not created when OnRun or OnReopen are set.
+	URL string
+
 	// The URL of the component to load in the dock.
 	DockURL string
 
@@ -338,9 +342,11 @@ func (d *Driver) onRun(in map[string]interface{}) interface{} {
 	d.menubar = newMenuBar(d.MenubarConfig)
 	d.docktile = newDockTile(app.MenuConfig{URL: d.DockURL})
 
-	if d.OnRun != nil {
-		d.OnRun()
+	if d.OnRun == nil {
+		d.OnRun = d.newMainWindow
 	}
+
+	d.OnRun()
 	return nil
 }
 
@@ -359,9 +365,15 @@ func (d *Driver) onBlur(in map[string]interface{}) interface{} {
 }
 
 func (d *Driver) onReopen(in map[string]interface{}) interface{} {
-	if d.OnReopen != nil {
-		d.OnReopen(in["HasVisibleWindows"].(bool))
+	if d.OnReopen == nil {
+		d.OnReopen = func(hasVisibleWindows bool) {
+			if !hasVisibleWindows {
+				d.newMainWindow()
+			}
+		}
 	}
+
+	d.OnReopen(in["HasVisibleWindows"].(bool))
 	return nil
 }
 
@@ -411,6 +423,19 @@ func (d *Driver) onExit(in map[string]interface{}) interface{} {
 	}
 
 	return nil
+}
+
+func (d *Driver) newMainWindow() {
+	app.NewWindow(app.WindowConfig{
+		Title:           d.AppName(),
+		TitlebarHidden:  true,
+		MinWidth:        480,
+		Width:           1280,
+		MinHeight:       480,
+		Height:          768,
+		BackgroundColor: "#21252b",
+		URL:             d.URL,
+	})
 }
 
 func generateDevID() string {
