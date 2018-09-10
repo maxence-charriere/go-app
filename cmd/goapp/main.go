@@ -154,9 +154,10 @@ func goBuild(ctx context.Context, buildDir string, args ...string) error {
 	args = append([]string{"build"}, args...)
 
 	if verbose {
-		args = append(args, "-v", buildDir)
+		args = append(args, "-v")
 	}
 
+	args = append(args, buildDir)
 	return execute(ctx, "go", args...)
 }
 
