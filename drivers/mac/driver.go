@@ -64,7 +64,7 @@ type Driver struct {
 	MenubarConfig MenuBarConfig
 
 	// The URL of the component to load in the main window.
-	// This is overridden when OnRun and/or OnReopen are set.
+	// The main window is not created when OnRun or OnReopen are set.
 	URL string
 
 	// The URL of the component to load in the dock.
