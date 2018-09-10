@@ -7,6 +7,8 @@ import (
 
 func main() {
 	app.Run(&mac.Driver{
-		DockURL: "/DockMenu",
+		DockURL:  "/DockMenu",
+		OnRun:    func() {},
+		OnReopen: func(bool) {},
 	})
 }
