@@ -429,7 +429,7 @@ func (d *Driver) newMainWindow() {
 	app.NewWindow(app.WindowConfig{
 		Title:           d.AppName(),
 		TitlebarHidden:  true,
-		MaxWidth:        480,
+		MinWidth:        480,
 		Width:           1280,
 		MinHeight:       480,
 		Height:          768,
