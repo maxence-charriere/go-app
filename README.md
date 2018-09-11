@@ -201,6 +201,6 @@ goapp web run -b # Run a web server and launch the main page in the default brow
 
 If this project helps you build awesome UI, you can help me grow my cryptos :)
 |Crypto|Address|
-|-|-|-|
+|-|-|
 |[Ethereum (ETH)](https://www.coinbase.com/addresses/5b483b8df2ba04096454ea62)|0x789D63B8869783a15bbFb43331a192DdeC4bDE53|
 |[Bitcoin (BTC)](https://www.coinbase.com/addresses/5b483f32bec71f034450c264)|3PRMM9fj7yq9gHxgk2svewWF9BkzzGPa1b|
