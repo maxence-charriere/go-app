@@ -21,9 +21,7 @@ type driverWithLogs struct {
 }
 
 func (d *driverWithLogs) Run(f *Factory) error {
-	WhenDebug(func() {
-		Logf("running %T driver", d)
-	})
+	Logf("running %T driver", d.Driver)
 
 	err := d.Driver.Run(f)
 	if err != nil {

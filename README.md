@@ -1,166 +1,206 @@
-# app: a Go package to build GUI
+# app
 
 [![Build Status](https://travis-ci.org/murlokswarm/app.svg?branch=master)](https://travis-ci.org/murlokswarm/app)
 [![Go Report Card](https://goreportcard.com/badge/github.com/murlokswarm/app)](https://goreportcard.com/report/github.com/murlokswarm/app)
 [![Coverage Status](https://coveralls.io/repos/github/murlokswarm/app/badge.svg?branch=master)](https://coveralls.io/github/murlokswarm/app?branch=master)
+[![awesome-go](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/avelino/awesome-go#readme)
 [![GoDoc](https://godoc.org/github.com/murlokswarm/app?status.svg)](https://godoc.org/github.com/murlokswarm/app)
-[![Contribute Bitcoin](https://img.shields.io/badge/contribute-bitcoin-fd9426.svg)](https://www.coinbase.com/addresses/5b483f32bec71f034450c264)
-[![Contribute Ethereum](https://img.shields.io/badge/contribute-ethereum-4e92df.svg)](https://www.coinbase.com/addresses/5b483b8df2ba04096454ea62)
 
-![hello](https://github.com/murlokswarm/app/wiki/assets/app.gif)
+A multi-platform UI framework that uses
+[Go](https://golang.org), [HTML](https://en.wikipedia.org/wiki/HTML5) and
+[CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets).
+
+![ui demo](https://github.com/murlokswarm/app/wiki/assets/ui-demo-large.gif)
 
 ## Table of Contents
 
-- [Install](#install)
-- [Hello world](#hello)
-- [How it works?](#howto)
-- [Drivers](#drivers)
-- [Documentation](#doc)
-- [Examples](#examples)
+* [Install](#install)
+* [Supported platforms](#support)
+* [Hello world](#hello)
+* [Architecture](#architecture)
+* [Goapp](#goapp)
+* [Documentation](#doc)
+* [Donate](#donate)
 
 <a name="install"></a>
 
 ## Install
 
-```bash
-# Get package.
+```sh
+# Install:
 go get -u -v github.com/murlokswarm/app/...
+
+# Update:
+goapp update -v
 ```
+
+<a name="support"></a>
+
+## Supported platforms
+
+|Platform|Status|
+|:-|:-:|
+|[MacOS](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver)|✔|
+|[Web](https://godoc.org/github.com/murlokswarm/app/drivers/web#Driver)|✔|
+|Windows|[🔨](https://github.com/murlokswarm/app/issues/141)|
+|Linux|✖|
 
 <a name="hello"></a>
 
 ## Hello world
 
-```bash
-# Go to your go package.
-cd $GOPATH/src/github.com/USERNAME/hello
+### Setup
 
-# Install the required frameworks and generate the app structure.
+```sh
+# Go to your repository:
+cd YOUR_REPO
+
+# Init the repo:
 goapp mac init
 ```
 
+### Code
+
 ```go
-// main.go
+// YOUR_REPO/main.go
 
-func main() {
-	app.Import(&Hello{})
-
-	app.Run(&mac.Driver{
-		OnRun: func() {
-			newWindow()
-		},
-
-		OnReopen: func(hasVisibleWindow bool) {
-			if !hasVisibleWindow {
-				newWindow()
-			}
-		},
-	})
-}
-
-func newWindow() {
-	app.NewWindow(app.WindowConfig{
-		Title:           "hello world",
-		TitlebarHidden:  true,
-		Width:           1280,
-		Height:          768,
-		BackgroundColor: "#21252b",
-		URL:             "/Hello",
-	})
-}
-
+// Hello compo.
 type Hello struct {
-	Name string
+    Name string
 }
 
 func (h *Hello) Render() string {
-	return `
+    return `
 <div class="Hello">
-	<h1>
-		Hello
-		{{if .Name}}
-			{{.Name}}
-		{{else}}
-			world
-		{{end}}!
-	</h1>
-	<input value="{{.Name}}" placeholder="Say something..." onchange="Name" autofocus>
+    <h1>
+        Hello
+        {{if .Name}}
+            {{.Name}}
+        {{else}}
+            world
+        {{end}}!
+    </h1>
+    <input value="{{.Name}}" placeholder="Write a name..." onchange="Name" autofocus>
 </div>
-	`
+    `
+}
+
+func main() {
+    app.Import(&Hello{})
+
+    // Use mac driver with Hello compo.
+    app.Run(&mac.Driver{
+        URL: "/hello",
+    })
 }
 ```
 
-```bash
-# Run the app.
-goapp mac run
+### Build and run
+
+```sh
+# Build and run with debug mode:
+goapp mac run -d
 ```
 
-<a name="howto"></a>
+View [full example](https://github.com/murlokswarm/app/tree/master/examples/hello).
 
-## How it works?
+<a name="architecture"></a>
 
-[app.Run](https://godoc.org/github.com/murlokswarm/app#Run) starts the app.
-It takes an
-[app.Driver](https://godoc.org/github.com/murlokswarm/app#Driver) as argument.
-Here we use the
-[MacOS driver](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver)
-implementation.
-See [other drivers](#drivers).
+## Architecture
 
-When creating the window, we set the ```DefaultURL``` to our Hello component
-struct name: ```/Hello```.
-It will load the ```Hello``` component when the window is displayed.
+![ui architecture](https://github.com/murlokswarm/app/wiki/assets/architecture.png)
 
-Components are structs that implement the 
-[app.Compo](https://godoc.org/github.com/murlokswarm/app#Compo)
-interface.
+### Elem
 
-Render method returns a string that contains HTML5.
-It can be templated following Go standard template syntax:
+An [elem](https://godoc.org/github.com/murlokswarm/app#Elem) represents an UI
+element to be displayed. Some can be
+[customized with HTML](https://godoc.org/github.com/murlokswarm/app#ElemWithCompo)
+content:
 
-- [text/template](https://golang.org/pkg/text/template/)
-- [html/template](https://golang.org/pkg/html/template/)
+* [Windows](https://godoc.org/github.com/murlokswarm/app#NewWindow)
+* [Pages](https://godoc.org/github.com/murlokswarm/app#NewPage)
+* [Context menus](https://godoc.org/github.com/murlokswarm/app#NewContextMenu)
+* [Menubar](https://godoc.org/github.com/murlokswarm/app#MenuBar)
+* [Status menu](https://godoc.org/github.com/murlokswarm/app#NewStatusMenu)
+* [Dock](https://godoc.org/github.com/murlokswarm/app#Dock)
 
-HTML events like ```onchange``` are mapped to the targetted component
-field or method.
-Here, ```onchange``` is mapped to the field ```Name```.
+Others are simple:
 
+* [Notifications](https://godoc.org/github.com/murlokswarm/app#NewNotification)
+* [FilePanel](https://godoc.org/github.com/murlokswarm/app#NewFilePanel)
+* [SaveFilePanel](https://godoc.org/github.com/murlokswarm/app#NewSaveFilePanel)
+* [Share](https://godoc.org/github.com/murlokswarm/app#NewShare)
 
-Additionally, CSS files can be dropped in ```PACKAGEPATH/resources/css/``` directory.
-All .css files within that directory will be included.
+### Compo
 
-See the 
-[full example](https://github.com/murlokswarm/app/tree/master/examples/hello).
+A [compo](https://godoc.org/github.com/murlokswarm/app#Compo) represents an
+independent and reusable piece of UI. It exposes an HTML representation of the
+UI that can be customized by the
+[template syntax](https://golang.org/pkg/text/template/) defined in the Go
+standard library. Compos are loaded into
+[elems](https://godoc.org/github.com/murlokswarm/app#ElemWithCompo) that support
+HTML customization.
 
-<a name="drivers"></a>
+### Driver
 
-## Drivers
-A driver contains specific code that allows the app package to work on multiple
-platforms.
+A [driver](https://godoc.org/github.com/murlokswarm/app#Driver) represents the
+app backend. It exposes Go operations to create/modify the UI and calls their
+platform specific implementations.
 
-- [MacOS](https://godoc.org/github.com/murlokswarm/app/drivers/mac)
-- [Web](https://godoc.org/github.com/murlokswarm/app/drivers/web) - *run on the top of [gopherjs](https://github.com/gopherjs/gopherjs)*
+<a name="goapp"></a>
 
-Other drivers will come in the future.
+## Goapp
+
+Goapp is a CLI tool to build and run apps built with the app package.
+
+Depending on the platform, apps must be packaged in order to be deployed and
+distributed. Packaged applications are usually not managed by a terminal, which
+can be an issue when we want to monitor the logs or stop their execution with
+system signals.
+
+Goapp can package apps and allows to run them while keeping logs and managing
+their lyfecycle within the terminal.
+
+Examples:
+
+```sh
+goapp -h         # Help.
+goapp mac -h     # Help for MasOS commands.
+goapp mac run -h # Help for MasOS run command.
+
+goapp mac run    # Run MacOS .app.
+goapp mac run -d # Run MacOS .app with debug.
+
+goapp web run    # Run a web server.
+goapp web run -b # Run a web server and launch the main page in the default browser.
+```
 
 <a name="doc"></a>
 
 ## Documentation
 
-- [GoDoc](https://godoc.org/github.com/murlokswarm/app)
-- [Last changes](https://github.com/murlokswarm/app/blob/master/History.md)
+* [Godoc](https://godoc.org/github.com/murlokswarm/app)
+  * [mac](https://godoc.org/github.com/murlokswarm/app/drivers/mac)
+  * [web](https://godoc.org/github.com/murlokswarm/app/drivers/web)
+* [Wiki](https://github.com/murlokswarm/app/wiki)
+  * [Getting started with MacOS](https://github.com/murlokswarm/app/wiki/Getting-started-with-MacOS)
+  * [Getting started with web](https://github.com/murlokswarm/app/wiki/Getting-started-with-web)
+* [Examples](https://github.com/murlokswarm/app/tree/master/examples)
+  * [hello](https://github.com/murlokswarm/app/tree/master/examples/hello)
+  * [nav](https://github.com/murlokswarm/app/tree/master/examples/nav)
+  * [menu](https://github.com/murlokswarm/app/tree/master/examples/menu)
+  * [status menu](https://github.com/murlokswarm/app/tree/master/examples/statusmenu)
+  * [dock](https://github.com/murlokswarm/app/tree/master/examples/dock)
+  * [drag and drop](https://github.com/murlokswarm/app/tree/master/examples/dragdrop)
+  * [actions/events](https://github.com/murlokswarm/app/tree/master/examples/action-event)
+  * [test](https://github.com/murlokswarm/app/tree/master/examples/test)
 
-<a name="examples"></a>
+<a name="donate"></a>
 
-## Examples
-From package:
-- [hello](https://github.com/murlokswarm/app/tree/master/examples/hello)
-- [nav](https://github.com/murlokswarm/app/tree/master/examples/nav)
-- [menu](https://github.com/murlokswarm/app/tree/master/examples/menu)
-- [dock](https://github.com/murlokswarm/app/tree/master/examples/dock)
-- [drag and drop](https://github.com/murlokswarm/app/tree/master/examples/dragdrop)
-- [test](https://github.com/murlokswarm/app/tree/master/examples/test)
+## Donate
 
-From community:
-- [grocid/mistlur](https://github.com/grocid/mistlur) - use v1
-- [grocid/passdesktop](https://github.com/grocid/passdesktop) - use v1
+If this project helps you build awesome UI, you can help me grow my cryptos :)
+|Crypto|Address|
+|-|-|-|
+|[Ethereum (ETH)](https://www.coinbase.com/addresses/5b483b8df2ba04096454ea62)|0x789D63B8869783a15bbFb43331a192DdeC4bDE53|
+|[Bitcoin (BTC)](https://www.coinbase.com/addresses/5b483f32bec71f034450c264)|3PRMM9fj7yq9gHxgk2svewWF9BkzzGPa1b|

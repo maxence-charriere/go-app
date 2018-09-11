@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"testing"
 
-	driver "github.com/murlokswarm/app/drivers/mac"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -37,7 +36,7 @@ func TestGeneratePlist(t *testing.T) {
 
 			filename := filepath.Join(dir, test.filename)
 
-			err = generatePlist(filename, test.template, driver.Bundle{})
+			err = generatePlist(filename, test.template, bundle{})
 			assert.NoError(t, err)
 
 			var b []byte
