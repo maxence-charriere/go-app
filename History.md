@@ -1,4 +1,28 @@
 
+3.2.1 / 2018-09-10
+==================
+
+## General
+
+* `goapp update` command has been added.
+* Readme has been rewritten.
+* Small dom internal refactors.
+
+## mac
+
+* `goapp mac build` has been refactored to be more maintainable and reliable.
+* `goapp mac` got various bug fixes.
+* `mac.Driver.URL` field has been added. It allows to run and reopen a
+  main window without having to do in by hand with `driver.OnRun` and
+  `driver.OnReopen`.
+
+## web
+
+* `goapp web build` has been refactored. It now produces a .wapp that contains
+  the executable and the resources.
+* `goapp web run` command has been added. It can launch the web server and the
+  the gopherjs client in the default web browser.
+
 3.2.0 / 2018-08-29
 ==================
 
