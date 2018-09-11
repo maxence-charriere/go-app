@@ -185,6 +185,7 @@ goapp web run -b # Run a web server and launch the main page in the default brow
 * [Wiki](https://github.com/murlokswarm/app/wiki)
   * [Getting started with MacOS](https://github.com/murlokswarm/app/wiki/Getting-started-with-MacOS)
   * [Getting started with web](https://github.com/murlokswarm/app/wiki/Getting-started-with-web)
+  * [How to use CSS](https://github.com/murlokswarm/app/wiki/CSS)
 * [Examples](https://github.com/murlokswarm/app/tree/master/examples)
   * [hello](https://github.com/murlokswarm/app/tree/master/examples/hello)
   * [nav](https://github.com/murlokswarm/app/tree/master/examples/nav)
