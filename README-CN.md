@@ -8,7 +8,7 @@
 
 一个使用
 [Go](https://golang.org), [HTML](https://en.wikipedia.org/wiki/HTML5),
-[CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets)构建的多平台UI框架
+[CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets)构建的多平台UI框架
 
 ![ui demo](https://github.com/murlokswarm/app/wiki/assets/ui-demo-large.gif)
 
@@ -29,10 +29,10 @@
 ## 安装
 
 ```sh
-# Install:
+# 安装:
 go get -u -v github.com/murlokswarm/app/...
 
-# Update:
+# 更新:
 goapp update -v
 ```
 
@@ -54,17 +54,17 @@ goapp update -v
 ### 创建步骤
 
 ```sh
-# Go to your repository:
+# 进入你的项目目录:
 cd YOUR_REPO
 
-# Init the repo:
+# 初始化目录:
 goapp mac init
 ```
 
 ### 代码
 
 ```go
-// YOUR_REPO/main.go
+// 你的项目目录/main.go
 
 // Hello compo.
 type Hello struct {
@@ -90,7 +90,7 @@ func (h *Hello) Render() string {
 func main() {
     app.Import(&Hello{})
 
-    // Use mac driver with Hello compo.
+    // 使用mac驱动去运行Hello组件.
     app.Run(&mac.Driver{
         URL: "/hello",
     })
@@ -100,7 +100,7 @@ func main() {
 ### 构建并运行
 
 ```sh
-# Build and run with debug mode:
+# 构建并运行debug模式:
 goapp mac run -d
 ```
 
@@ -114,7 +114,7 @@ goapp mac run -d
 
 ### 元素
 
-一个 [Elem](https://godoc.org/github.com/murlokswarm/app#Elem) 代表一个UI组件. 部分元素可以
+一个 [元素](https://godoc.org/github.com/murlokswarm/app#Elem)代表一个UI组件, 部分元素可以
 [使用HTML去自定义](https://godoc.org/github.com/murlokswarm/app#ElemWithCompo)
 
 目录:
@@ -135,20 +135,18 @@ goapp mac run -d
 
 ### 组件
 
-[compo](https://godoc.org/github.com/murlokswarm/app#Compo) 代表一个可以独立、可复用的UI组件. 它暴露的UI的HTML可以通过Go的一些基础库中提供的模板语法去进行自定义。
-[模板语法](https://golang.org/pkg/text/template/) defined in the Go
-standard library. 组件能够在
-[elems](https://godoc.org/github.com/murlokswarm/app#ElemWithCompo) 里使用并且支持HTML自定义化。
+[组件](https://godoc.org/github.com/murlokswarm/app#Compo)代表一个可以独立、可复用的UI组件. 它暴露的UI的HTML可以通过Go的一些基础库中提供的[模板语法](https://golang.org/pkg/text/template/)去进行自定义。
+组件能够在
+[元素](https://godoc.org/github.com/murlokswarm/app#ElemWithCompo) 里使用并且支持HTML自定义化。
 
 ### 驱动
 
-[driver](https://godoc.org/github.com/murlokswarm/app#Driver) 代表app后台的具体运行方式。它暴露一些`Go`的操作方法去创建/修改UI和调用它们，并且会针对于特定于平台进行实现。
+[驱动](https://godoc.org/github.com/murlokswarm/app#Driver)代表app后台的具体运行方式。它暴露一些`Go`的操作方法去创建/修改UI和调用它们，并且会针对于特定于平台进行实现。
 <a name="goapp"></a>
 
 ## 官方cli工具:Goapp
 
 Goapp是一个用来构建和运行通过`app`生成pakage的应用的官方命令行工具。
-Goapp is a CLI tool to build and run apps built with the app package.
 
 根据平台的不同，必须打包应用程序才能进行部署
 和发布。打包的应用程序通常不由终端管理
