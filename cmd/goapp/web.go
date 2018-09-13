@@ -229,7 +229,7 @@ func launchWithGoogleChrome(ctx context.Context, url string) {
 		cmd = []string{"open", "-a", "Google Chrome", url}
 
 	case "windows":
-		cmd = []string{"chrome.exe", url}
+		cmd = []string{"powershell", "start", "chrome", url}
 
 	case "linux":
 		cmd = []string{"google-chrome", url}
@@ -249,7 +249,7 @@ func launchWithDefaultBrowser(ctx context.Context, url string) {
 		cmd = []string{"open", url}
 
 	case "windows":
-		cmd = []string{"start", url}
+		cmd = []string{"powershell", "start", url}
 
 	case "linux":
 		cmd = []string{"xdg-open", url}
@@ -296,6 +296,10 @@ func newWebPackage(buildDir, name string) (*webPackage, error) {
 	goExec := filepath.Base(name)
 	goExec = strings.TrimSuffix(goExec, ".wapp")
 
+	if runtime.GOOS == "windows" {
+		goExec += ".exe"
+	}
+
 	return &webPackage{
 		workingDir:       wd,
 		buildDir:         buildDir,
@@ -304,7 +308,7 @@ func newWebPackage(buildDir, name string) (*webPackage, error) {
 		name:             filepath.Join(wd, name),
 		resources:        filepath.Join(wd, name, "resources"),
 		goExec:           filepath.Join(wd, name, goExec),
-		gopherJS:         filepath.Join(wd, name, "resources", "goapp.js"),
+		gopherJS:         filepath.Join(buildDir, "resources", "goapp.js"),
 	}, nil
 }
 
