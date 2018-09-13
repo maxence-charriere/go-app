@@ -6,40 +6,41 @@
 [![awesome-go](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/avelino/awesome-go#readme)
 [![GoDoc](https://godoc.org/github.com/murlokswarm/app?status.svg)](https://godoc.org/github.com/murlokswarm/app)
 
-A multi-platform UI framework that uses
-[Go](https://golang.org), [HTML](https://en.wikipedia.org/wiki/HTML5) and
-[CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets).
+一个使用
+[Go](https://golang.org), [HTML](https://en.wikipedia.org/wiki/HTML5),
+[CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets)构建的多平台UI框架
 
 ![ui demo](https://github.com/murlokswarm/app/wiki/assets/ui-demo-large.gif)
 
+[English](../../README.md) | 中文
 
-## Table of Contents
+## 目录
 
-* [Install](#install)
-* [Supported platforms](#support)
-* [Hello world](#hello)
-* [Architecture](#architecture)
-* [Goapp](#goapp)
-* [Documentation](#doc)
-* [Donate](#donate)
+* [安装](#install)
+* [支持平台](#support)
+* [示例：Hello world](#hello)
+* [架构](#architecture)
+* [开发工具：Goapp](#goapp)
+* [文档](#doc)
+* [捐赠](#donate)
 
 <a name="install"></a>
 
-## Install
+## 安装
 
 ```sh
-# Install:
+# 安装:
 go get -u -v github.com/murlokswarm/app/...
 
-# Update:
+# 更新:
 goapp update -v
 ```
 
 <a name="support"></a>
 
-## Supported platforms
+## 支持平台
 
-|Platform|Status|
+|平台|状态|
 |:-|:-:|
 |[MacOS](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver)|✔|
 |[Web](https://godoc.org/github.com/murlokswarm/app/drivers/web#Driver)|✔|
@@ -50,20 +51,20 @@ goapp update -v
 
 ## Hello world
 
-### Setup
+### 创建步骤
 
 ```sh
-# Go to your repository:
+# 进入你的项目目录:
 cd YOUR_REPO
 
-# Init the repo:
+# 初始化目录:
 goapp mac init
 ```
 
-### Code
+### 代码
 
 ```go
-// YOUR_REPO/main.go
+// 你的项目目录/main.go
 
 // Hello compo.
 type Hello struct {
@@ -89,34 +90,34 @@ func (h *Hello) Render() string {
 func main() {
     app.Import(&Hello{})
 
-    // Use mac driver with Hello compo.
+    // 使用mac驱动去运行Hello组件.
     app.Run(&mac.Driver{
         URL: "/hello",
     })
 }
 ```
 
-### Build and run
+### 构建并运行
 
 ```sh
-# Build and run with debug mode:
+# 构建并运行debug模式:
 goapp mac run -d
 ```
 
-View [full example](https://github.com/murlokswarm/app/tree/master/examples/hello).
+查看 [完整示例](https://github.com/murlokswarm/app/tree/master/examples/hello).
 
 <a name="architecture"></a>
 
-## Architecture
+## 架构
 
 ![ui architecture](https://github.com/murlokswarm/app/wiki/assets/architecture.png)
 
-### Elem
+### 元素
 
-An [elem](https://godoc.org/github.com/murlokswarm/app#Elem) represents an UI
-element to be displayed. Some can be
-[customized with HTML](https://godoc.org/github.com/murlokswarm/app#ElemWithCompo)
-content:
+一个 [元素](https://godoc.org/github.com/murlokswarm/app#Elem)代表一个UI组件, 部分元素可以
+[使用HTML去自定义](https://godoc.org/github.com/murlokswarm/app#ElemWithCompo)
+
+目录:
 
 * [Windows](https://godoc.org/github.com/murlokswarm/app#NewWindow)
 * [Pages](https://godoc.org/github.com/murlokswarm/app#NewPage)
@@ -125,44 +126,35 @@ content:
 * [Status menu](https://godoc.org/github.com/murlokswarm/app#NewStatusMenu)
 * [Dock](https://godoc.org/github.com/murlokswarm/app#Dock)
 
-Others are simple:
+其余的一些简单示例:
 
 * [Notifications](https://godoc.org/github.com/murlokswarm/app#NewNotification)
 * [FilePanel](https://godoc.org/github.com/murlokswarm/app#NewFilePanel)
 * [SaveFilePanel](https://godoc.org/github.com/murlokswarm/app#NewSaveFilePanel)
 * [Share](https://godoc.org/github.com/murlokswarm/app#NewShare)
 
-### Compo
+### 组件
 
-A [compo](https://godoc.org/github.com/murlokswarm/app#Compo) represents an
-independent and reusable piece of UI. It exposes an HTML representation of the
-UI that can be customized by the
-[template syntax](https://golang.org/pkg/text/template/) defined in the Go
-standard library. Compos are loaded into
-[elems](https://godoc.org/github.com/murlokswarm/app#ElemWithCompo) that support
-HTML customization.
+[组件](https://godoc.org/github.com/murlokswarm/app#Compo)代表一个可以独立、可复用的UI组件. 它暴露的UI的HTML可以通过Go的一些基础库中提供的[模板语法](https://golang.org/pkg/text/template/)去进行自定义。
+组件能够在
+[元素](https://godoc.org/github.com/murlokswarm/app#ElemWithCompo) 里使用并且支持HTML自定义化。
 
-### Driver
+### 驱动
 
-A [driver](https://godoc.org/github.com/murlokswarm/app#Driver) represents the
-app backend. It exposes Go operations to create/modify the UI and calls their
-platform specific implementations.
-
+[驱动](https://godoc.org/github.com/murlokswarm/app#Driver)代表app后台的具体运行方式。它暴露一些`Go`的操作方法去创建/修改UI和调用它们，并且会针对于特定于平台进行实现。
 <a name="goapp"></a>
 
-## Goapp
+## 官方cli工具:Goapp
 
-Goapp is a CLI tool to build and run apps built with the app package.
+Goapp是一个用来构建和运行通过`app`生成pakage的应用的官方命令行工具。
 
-Depending on the platform, apps must be packaged in order to be deployed and
-distributed. Packaged applications are usually not managed by a terminal, which
-can be an issue when we want to monitor the logs or stop their execution with
-system signals.
+根据平台的不同，必须打包应用程序才能进行部署
+和发布。打包的应用程序通常不由终端管理
+当我们想要监视日志或停止执行时，可能会出现问题。
 
-Goapp can package apps and allows to run them while keeping logs and managing
-their lyfecycle within the terminal.
+`Goapp`可以通过终端打包应用程序以及运行他们,于此同时还能保持日志并管理它们的生命周期。
 
-Examples:
+示例:
 
 ```sh
 goapp -h         # Help.
@@ -178,16 +170,16 @@ goapp web run -b # Run a web server and launch the main page in the default brow
 
 <a name="doc"></a>
 
-## Documentation
+## 文档
 
 * [Godoc](https://godoc.org/github.com/murlokswarm/app)
   * [mac](https://godoc.org/github.com/murlokswarm/app/drivers/mac)
   * [web](https://godoc.org/github.com/murlokswarm/app/drivers/web)
 * [Wiki](https://github.com/murlokswarm/app/wiki)
-  * [Getting started with MacOS](https://github.com/murlokswarm/app/wiki/Getting-started-with-MacOS)
-  * [Getting started with web](https://github.com/murlokswarm/app/wiki/Getting-started-with-web)
-  * [How to use CSS](https://github.com/murlokswarm/app/wiki/CSS)
-* [Examples](https://github.com/murlokswarm/app/tree/master/examples)
+  * [快速开始：MacOS](https://github.com/murlokswarm/app/wiki/Getting-started-with-MacOS)
+  * [快速开始： web](https://github.com/murlokswarm/app/wiki/Getting-started-with-web)
+  * [如何使用css？](https://github.com/murlokswarm/app/wiki/CSS)
+* [示例](https://github.com/murlokswarm/app/tree/master/examples)
   * [hello](https://github.com/murlokswarm/app/tree/master/examples/hello)
   * [nav](https://github.com/murlokswarm/app/tree/master/examples/nav)
   * [menu](https://github.com/murlokswarm/app/tree/master/examples/menu)
@@ -196,15 +188,12 @@ goapp web run -b # Run a web server and launch the main page in the default brow
   * [drag and drop](https://github.com/murlokswarm/app/tree/master/examples/dragdrop)
   * [actions/events](https://github.com/murlokswarm/app/tree/master/examples/action-event)
   * [test](https://github.com/murlokswarm/app/tree/master/examples/test)
-* README
-  * English
-  * [Chinese](./internal/docs/README-CN.md)
 
 <a name="donate"></a>
 
-## Donate
+## 捐赠
 
-If this project helps you build awesome UI, you can help me grow my cryptos :)
+如果这个项目可以帮助你建立好的用户界面，你可以通过以下方式赞助我！ :)
 
 |Crypto|Address|
 |-|-|
