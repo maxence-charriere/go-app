@@ -12,7 +12,7 @@
 
 ![ui demo](https://github.com/murlokswarm/app/wiki/assets/ui-demo-large.gif)
 
-[English](./README.md) | 中文
+[English](../../README.md) | 中文
 
 ## 目录
 
