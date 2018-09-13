@@ -196,8 +196,7 @@ goapp web run -b # Run a web server and launch the main page in the default brow
   * [drag and drop](https://github.com/murlokswarm/app/tree/master/examples/dragdrop)
   * [actions/events](https://github.com/murlokswarm/app/tree/master/examples/action-event)
   * [test](https://github.com/murlokswarm/app/tree/master/examples/test)
-* README
-  * English
+* Readme (other languages)
   * [Chinese](./internal/docs/README-CN.md)
 
 <a name="donate"></a>
