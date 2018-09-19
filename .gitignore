@@ -39,6 +39,7 @@ examples/dragdrop/dragdrop
 examples/test/test
 *.app
 *.wapp
+*.appx
 *.exe
 *goapp.js
 *.map
