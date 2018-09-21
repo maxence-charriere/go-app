@@ -1,3 +1,7 @@
+<p align="center">
+    <img alt="ui demo" src="https://github.com/murlokswarm/app/wiki/assets/ui-demo-large.gif">
+</p>
+
 # app
 
 [![Build Status](https://travis-ci.org/murlokswarm/app.svg?branch=master)](https://travis-ci.org/murlokswarm/app)
@@ -9,8 +13,6 @@
 A multi-platform UI framework that uses
 [Go](https://golang.org), [HTML](https://en.wikipedia.org/wiki/HTML5) and
 [CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets).
-
-![ui demo](https://github.com/murlokswarm/app/wiki/assets/ui-demo-large.gif)
 
 
 ## Table of Contents
