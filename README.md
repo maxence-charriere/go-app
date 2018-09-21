@@ -10,6 +10,8 @@
     <a href="https://coveralls.io/github/murlokswarm/app?branch=master"><img src="https://coveralls.io/repos/github/murlokswarm/app/badge.svg?branch=master" alt="Coverage Status"></a>
     <a href="https://github.com/avelino/awesome-go#readme"><img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg" alt="awesome-go"></a>
     <a href="https://godoc.org/github.com/murlokswarm/app"><img src="https://godoc.org/github.com/murlokswarm/app?status.svg" alt="GoDoc"></a>
+    <a href="https://en.cryptobadges.io/donate/3PRMM9fj7yq9gHxgk2svewWF9BkzzGPa1b"><img src="https://en.cryptobadges.io/badge/micro/3PRMM9fj7yq9gHxgk2svewWF9BkzzGPa1b" alt="Donate with Bitcoin"></a>
+    <a href="https://en.cryptobadges.io/donate/0x789D63B8869783a15bbFb43331a192DdeC4bDE53"><img src="https://en.cryptobadges.io/badge/micro/0x789D63B8869783a15bbFb43331a192DdeC4bDE53" alt="Donate with Ethereum"></a>
 </p>
 
 A multi-platform UI framework that uses
