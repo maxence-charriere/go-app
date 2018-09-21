@@ -4,11 +4,13 @@
 
 # app
 
-[![Build Status](https://travis-ci.org/murlokswarm/app.svg?branch=master)](https://travis-ci.org/murlokswarm/app)
-[![Go Report Card](https://goreportcard.com/badge/github.com/murlokswarm/app)](https://goreportcard.com/report/github.com/murlokswarm/app)
-[![Coverage Status](https://coveralls.io/repos/github/murlokswarm/app/badge.svg?branch=master)](https://coveralls.io/github/murlokswarm/app?branch=master)
-[![awesome-go](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/avelino/awesome-go#readme)
-[![GoDoc](https://godoc.org/github.com/murlokswarm/app?status.svg)](https://godoc.org/github.com/murlokswarm/app)
+<p align="center">
+	<a href="https://travis-ci.org/murlokswarm/app"><img src="https://travis-ci.org/murlokswarm/app.svg?branch=master" alt="Build Status"></a>
+    <a href="https://goreportcard.com/report/github.com/murlokswarm/app"><img src="https://goreportcard.com/badge/github.com/murlokswarm/app" alt="Go Report Card"></a>
+    <a href="https://coveralls.io/github/murlokswarm/app?branch=master"><img src="https://coveralls.io/repos/github/murlokswarm/app/badge.svg?branch=master" alt="Coverage Status"></a>
+    <a href="https://github.com/avelino/awesome-go#readme"><img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg" alt="awesome-go"></a>
+    <a href="https://godoc.org/github.com/murlokswarm/app"><img src="https://godoc.org/github.com/murlokswarm/app?status.svg" alt="GoDoc"></a>
+</p>
 
 A multi-platform UI framework that uses
 [Go](https://golang.org), [HTML](https://en.wikipedia.org/wiki/HTML5) and
