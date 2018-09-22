@@ -5,6 +5,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -92,6 +93,11 @@ func (pkg *winPackage) Build(ctx context.Context, c winBuilConfig) error {
 		return err
 	}
 
+	printVerbose("generating icons")
+	if err := pkg.generateIcons(ctx); err != nil {
+		return err
+	}
+
 	printVerbose("converting to appx")
 	return pkg.convertToAppx(ctx)
 }
@@ -125,6 +131,7 @@ func (pkg *winPackage) readSettings(ctx context.Context) error {
 	m.Executable = filepath.Base(pkg.goExec)
 	m.Description = stringWithDefault(m.Description, m.Name)
 	m.Publisher = stringWithDefault(m.Publisher, "goapp")
+	m.Icon = stringWithDefault(m.Icon, filepath.Join(murlokswarm(), "logo.png"))
 
 	d, _ := json.MarshalIndent(m, "", "    ")
 	printVerbose("settings: %s", d)
@@ -158,6 +165,78 @@ func (pkg *winPackage) createPackage() error {
 
 func (pkg *winPackage) syncResources() error {
 	return file.Sync(pkg.resources, pkg.buildResources)
+}
+
+func (pkg *winPackage) generateIcons(ctx context.Context) error {
+	icon := pkg.manifest.Icon
+
+	scaled := func(n string, s int) string {
+		return filepath.Join(
+			pkg.assets,
+			fmt.Sprintf("%s.scale-%v.png", n, s),
+		)
+	}
+
+	targetSized := func(n string, s int, alt bool) string {
+		altstr := ""
+		if alt {
+			altstr = "_altform-unplated"
+		}
+
+		return filepath.Join(
+			pkg.assets,
+			fmt.Sprintf("%s.targetsize-%v%s.png", n, s, altstr),
+		)
+	}
+
+	return generateIcons(icon, []iconInfo{
+		{Name: scaled("Square44x44Logo", 100), Width: 44, Height: 44, Scale: 1, Padding: true},
+		{Name: scaled("Square44x44Logo", 125), Width: 44, Height: 44, Scale: 1.25, Padding: true},
+		{Name: scaled("Square44x44Logo", 150), Width: 44, Height: 44, Scale: 1.5, Padding: true},
+		{Name: scaled("Square44x44Logo", 200), Width: 44, Height: 44, Scale: 2, Padding: true},
+		{Name: scaled("Square44x44Logo", 400), Width: 44, Height: 44, Scale: 4, Padding: true},
+
+		{Name: targetSized("Square44x44Logo", 16, false), Width: 16, Height: 16, Scale: 1, Padding: true},
+		{Name: targetSized("Square44x44Logo", 16, true), Width: 16, Height: 16, Scale: 1, Padding: true},
+		{Name: targetSized("Square44x44Logo", 24, false), Width: 24, Height: 24, Scale: 1, Padding: true},
+		{Name: targetSized("Square44x44Logo", 24, true), Width: 24, Height: 24, Scale: 1, Padding: true},
+		{Name: targetSized("Square44x44Logo", 32, false), Width: 32, Height: 32, Scale: 1, Padding: true},
+		{Name: targetSized("Square44x44Logo", 32, true), Width: 32, Height: 32, Scale: 1, Padding: true},
+		{Name: targetSized("Square44x44Logo", 48, false), Width: 48, Height: 48, Scale: 1, Padding: true},
+		{Name: targetSized("Square44x44Logo", 48, true), Width: 48, Height: 48, Scale: 1, Padding: true},
+		{Name: targetSized("Square44x44Logo", 256, false), Width: 256, Height: 256, Scale: 1, Padding: true},
+		{Name: targetSized("Square44x44Logo", 256, true), Width: 256, Height: 256, Scale: 1, Padding: true},
+
+		{Name: scaled("Square71x71Logo", 100), Width: 71, Height: 71, Scale: 1, Padding: true},
+		{Name: scaled("Square71x71Logo", 125), Width: 71, Height: 71, Scale: 1.25, Padding: true},
+		{Name: scaled("Square71x71Logo", 150), Width: 71, Height: 71, Scale: 1.5, Padding: true},
+		{Name: scaled("Square71x71Logo", 200), Width: 71, Height: 71, Scale: 2, Padding: true},
+		{Name: scaled("Square71x71Logo", 400), Width: 71, Height: 71, Scale: 4, Padding: true},
+
+		{Name: scaled("Square150x150Logo", 100), Width: 150, Height: 150, Scale: 1, Padding: true},
+		{Name: scaled("Square150x150Logo", 125), Width: 150, Height: 150, Scale: 1.25, Padding: true},
+		{Name: scaled("Square150x150Logo", 150), Width: 150, Height: 150, Scale: 1.5, Padding: true},
+		{Name: scaled("Square150x150Logo", 200), Width: 150, Height: 150, Scale: 2, Padding: true},
+		{Name: scaled("Square150x150Logo", 400), Width: 150, Height: 150, Scale: 4, Padding: true},
+
+		{Name: scaled("Square310x310Logo", 100), Width: 310, Height: 310, Scale: 1, Padding: true},
+		{Name: scaled("Square310x310Logo", 125), Width: 310, Height: 310, Scale: 1.25, Padding: true},
+		{Name: scaled("Square310x310Logo", 150), Width: 310, Height: 310, Scale: 1.5, Padding: true},
+		{Name: scaled("Square310x310Logo", 200), Width: 310, Height: 310, Scale: 2, Padding: true},
+		{Name: scaled("Square310x310Logo", 400), Width: 310, Height: 310, Scale: 4, Padding: true},
+
+		{Name: scaled("StoreLogo", 100), Width: 50, Height: 50, Scale: 1, Padding: true},
+		{Name: scaled("StoreLogo", 125), Width: 50, Height: 50, Scale: 1.25, Padding: true},
+		{Name: scaled("StoreLogo", 150), Width: 50, Height: 50, Scale: 1.5, Padding: true},
+		{Name: scaled("StoreLogo", 200), Width: 50, Height: 50, Scale: 2, Padding: true},
+		{Name: scaled("StoreLogo", 400), Width: 50, Height: 50, Scale: 4, Padding: true},
+
+		{Name: scaled("Wide310x150Logo", 100), Width: 310, Height: 150, Scale: 1, Padding: true},
+		{Name: scaled("Wide310x150Logo", 125), Width: 310, Height: 150, Scale: 1.25, Padding: true},
+		{Name: scaled("Wide310x150Logo", 150), Width: 310, Height: 150, Scale: 1.5, Padding: true},
+		{Name: scaled("Wide310x150Logo", 200), Width: 310, Height: 150, Scale: 2, Padding: true},
+		{Name: scaled("Wide310x150Logo", 400), Width: 310, Height: 150, Scale: 4, Padding: true},
+	})
 }
 
 func (pkg *winPackage) convertToAppx(ctx context.Context) error {

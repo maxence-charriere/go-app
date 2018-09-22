@@ -245,3 +245,13 @@ func generateTemplate(filename string, tmpl string, v interface{}) error {
 	t := template.Must(template.New("").Parse(tmpl))
 	return t.Execute(f, v)
 }
+
+func murlokswarm() string {
+	return filepath.Join(
+		os.Getenv("GOPATH"),
+		"src",
+		"github.com",
+		"murlokswarm",
+		"app",
+	)
+}

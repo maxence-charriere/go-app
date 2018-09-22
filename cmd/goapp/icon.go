@@ -2,6 +2,7 @@ package main
 
 import (
 	"image"
+	"image/color"
 	"image/png"
 	"os"
 
@@ -9,10 +10,11 @@ import (
 )
 
 type iconInfo struct {
-	Name   string
-	Width  int
-	Height int
-	Scale  int
+	Name    string
+	Width   float64
+	Height  float64
+	Scale   float64
+	Padding bool
 }
 
 func generateIcons(original string, resizes []iconInfo) error {
@@ -28,7 +30,23 @@ func generateIcons(original string, resizes []iconInfo) error {
 	}
 
 	for _, r := range resizes {
-		rimg := imaging.Resize(img, r.Width*r.Scale, r.Height*r.Scale, imaging.Lanczos)
+		ow := int(r.Width * r.Scale)
+		oh := int(r.Height * r.Scale)
+
+		p := 0
+		if r.Padding {
+			p = int((25 * r.Height / 100) * r.Scale)
+		}
+
+		w := ow - p
+		h := oh - p
+
+		rimg := imaging.Fit(img, w, h, imaging.Lanczos)
+
+		if p != 0 {
+			background := imaging.New(ow, oh, color.NRGBA{0, 0, 0, 0})
+			rimg = imaging.PasteCenter(background, rimg)
+		}
 
 		var icon *os.File
 		if icon, err = os.Create(r.Name); err != nil {

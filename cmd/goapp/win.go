@@ -147,11 +147,7 @@ func certMgr() string {
 
 func certificate() string {
 	return filepath.Join(
-		os.Getenv("GOPATH"),
-		"src",
-		"github.com",
-		"murlokswarm",
-		"app",
+		murlokswarm(),
 		"cmd",
 		"goapp",
 		"certificates",
