@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"strings"
 	"text/template"
 
 	"github.com/pkg/errors"
@@ -242,6 +243,7 @@ func generateTemplate(filename string, tmpl string, v interface{}) error {
 	}
 	defer f.Close()
 
+	tmpl = strings.TrimSpace(tmpl)
 	t := template.Must(template.New("").Parse(tmpl))
 	return t.Execute(f, v)
 }

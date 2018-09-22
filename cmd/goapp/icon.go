@@ -10,11 +10,10 @@ import (
 )
 
 type iconInfo struct {
-	Name    string
-	Width   float64
-	Height  float64
-	Scale   float64
-	Padding bool
+	Name   string
+	Width  float64
+	Height float64
+	Scale  float64
 }
 
 func generateIcons(original string, resizes []iconInfo) error {
@@ -30,21 +29,13 @@ func generateIcons(original string, resizes []iconInfo) error {
 	}
 
 	for _, r := range resizes {
-		ow := int(r.Width * r.Scale)
-		oh := int(r.Height * r.Scale)
-
-		p := 0
-		if r.Padding {
-			p = int((25 * r.Height / 100) * r.Scale)
-		}
-
-		w := ow - p
-		h := oh - p
+		w := int(r.Width * r.Scale)
+		h := int(r.Height * r.Scale)
 
 		rimg := imaging.Fit(img, w, h, imaging.Lanczos)
 
-		if p != 0 {
-			background := imaging.New(ow, oh, color.NRGBA{0, 0, 0, 0})
+		if w != h {
+			background := imaging.New(w, h, color.NRGBA{0, 0, 0, 0})
 			rimg = imaging.PasteCenter(background, rimg)
 		}
 

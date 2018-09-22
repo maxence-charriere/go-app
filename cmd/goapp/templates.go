@@ -26,8 +26,8 @@ const appxManifestTmpl = `
     <Capability Name="internetClient" />
   </Capabilities>
   <Applications>
-    <Application Id="{{.Name}}" Executable="{{.Executable}}" EntryPoint="Windows.FullTrustApplication">
-      <uap:VisualElements DisplayName="boo.app" Description="{{.Description}}" BackgroundColor="transparent" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png">
+    <Application Id="{{.ID}}" Executable="{{.Executable}}" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements DisplayName="{{.Name}}" Description="{{.Description}}" BackgroundColor="transparent" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\Square310x310Logo.png" Square71x71Logo="Assets\Square71x71Logo.png">
           <uap:ShowNameOnTiles>
             <uap:ShowOn Tile="square150x150Logo" />

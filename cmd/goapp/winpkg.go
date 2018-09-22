@@ -21,6 +21,7 @@ type winPackage struct {
 	goPackageName  string
 	goExec         string
 	name           string
+	namex          string
 	resources      string
 	assets         string
 	config         winBuilConfig
@@ -29,6 +30,7 @@ type winPackage struct {
 
 type manifest struct {
 	Name        string
+	ID          string
 	Executable  string
 	Description string
 	Publisher   string
@@ -66,6 +68,7 @@ func newWinPackage(buildDir, name string) (*winPackage, error) {
 		resources:      filepath.Join(name, "Resources"),
 		assets:         filepath.Join(name, "Assets"),
 		name:           name,
+		namex:          strings.Replace(name, ".app", ".appx", 1),
 	}, nil
 }
 
@@ -98,8 +101,13 @@ func (pkg *winPackage) Build(ctx context.Context, c winBuilConfig) error {
 		return err
 	}
 
-	printVerbose("converting to appx")
-	return pkg.convertToAppx(ctx)
+	printVerbose("creating appx")
+	if err := pkg.makeToAppx(ctx); err != nil {
+		return err
+	}
+
+	printVerbose("signing package")
+	return pkg.sign(ctx)
 }
 
 func (pkg *winPackage) buildGoExecutable(ctx context.Context) error {
@@ -127,7 +135,14 @@ func (pkg *winPackage) readSettings(ctx context.Context) error {
 		return err
 	}
 
+	idFmt := func(n string) string {
+		n = strings.Replace(n, "-", "", -1)
+		n = strings.Replace(n, "_", "", -1)
+		return n
+	}
+
 	m.Name = stringWithDefault(m.Name, pkg.goPackageName)
+	m.ID = idFmt(m.Name)
 	m.Executable = filepath.Base(pkg.goExec)
 	m.Description = stringWithDefault(m.Description, m.Name)
 	m.Publisher = stringWithDefault(m.Publisher, "goapp")
@@ -171,98 +186,133 @@ func (pkg *winPackage) generateIcons(ctx context.Context) error {
 	icon := pkg.manifest.Icon
 
 	scaled := func(n string, s int) string {
+		if s <= 1 {
+			return filepath.Join(pkg.assets, fmt.Sprintf("%s.png", n))
+		}
+
 		return filepath.Join(
 			pkg.assets,
 			fmt.Sprintf("%s.scale-%v.png", n, s),
 		)
 	}
 
-	targetSized := func(n string, s int, alt bool) string {
-		altstr := ""
-		if alt {
-			altstr = "_altform-unplated"
-		}
+	// targetSized := func(n string, s int, alt bool) string {
+	// 	altstr := ""
+	// 	if alt {
+	// 		altstr = "_altform-unplated"
+	// 	}
 
-		return filepath.Join(
-			pkg.assets,
-			fmt.Sprintf("%s.targetsize-%v%s.png", n, s, altstr),
-		)
-	}
+	// 	return filepath.Join(
+	// 		pkg.assets,
+	// 		fmt.Sprintf("%s.targetsize-%v%s.png", n, s, altstr),
+	// 	)
+	// }
 
 	return generateIcons(icon, []iconInfo{
-		{Name: scaled("Square44x44Logo", 100), Width: 44, Height: 44, Scale: 1, Padding: true},
-		{Name: scaled("Square44x44Logo", 125), Width: 44, Height: 44, Scale: 1.25, Padding: true},
-		{Name: scaled("Square44x44Logo", 150), Width: 44, Height: 44, Scale: 1.5, Padding: true},
-		{Name: scaled("Square44x44Logo", 200), Width: 44, Height: 44, Scale: 2, Padding: true},
-		{Name: scaled("Square44x44Logo", 400), Width: 44, Height: 44, Scale: 4, Padding: true},
+		{Name: scaled("Square44x44Logo", 1), Width: 44, Height: 44, Scale: 1},
+		// {Name: scaled("Square44x44Logo", 100), Width: 44, Height: 44, Scale: 1},
+		// {Name: scaled("Square44x44Logo", 125), Width: 44, Height: 44, Scale: 1.25},
+		// {Name: scaled("Square44x44Logo", 150), Width: 44, Height: 44, Scale: 1.5},
+		// {Name: scaled("Square44x44Logo", 200), Width: 44, Height: 44, Scale: 2},
+		// {Name: scaled("Square44x44Logo", 400), Width: 44, Height: 44, Scale: 4},
 
-		{Name: targetSized("Square44x44Logo", 16, false), Width: 16, Height: 16, Scale: 1, Padding: true},
-		{Name: targetSized("Square44x44Logo", 16, true), Width: 16, Height: 16, Scale: 1, Padding: true},
-		{Name: targetSized("Square44x44Logo", 24, false), Width: 24, Height: 24, Scale: 1, Padding: true},
-		{Name: targetSized("Square44x44Logo", 24, true), Width: 24, Height: 24, Scale: 1, Padding: true},
-		{Name: targetSized("Square44x44Logo", 32, false), Width: 32, Height: 32, Scale: 1, Padding: true},
-		{Name: targetSized("Square44x44Logo", 32, true), Width: 32, Height: 32, Scale: 1, Padding: true},
-		{Name: targetSized("Square44x44Logo", 48, false), Width: 48, Height: 48, Scale: 1, Padding: true},
-		{Name: targetSized("Square44x44Logo", 48, true), Width: 48, Height: 48, Scale: 1, Padding: true},
-		{Name: targetSized("Square44x44Logo", 256, false), Width: 256, Height: 256, Scale: 1, Padding: true},
-		{Name: targetSized("Square44x44Logo", 256, true), Width: 256, Height: 256, Scale: 1, Padding: true},
+		// {Name: targetSized("Square44x44Logo", 16, false), Width: 16, Height: 16, Scale: 1},
+		// {Name: targetSized("Square44x44Logo", 16, true), Width: 16, Height: 16, Scale: 1},
+		// {Name: targetSized("Square44x44Logo", 24, false), Width: 24, Height: 24, Scale: 1},
+		// {Name: targetSized("Square44x44Logo", 24, true), Width: 24, Height: 24, Scale: 1},
+		// {Name: targetSized("Square44x44Logo", 32, false), Width: 32, Height: 32, Scale: 1},
+		// {Name: targetSized("Square44x44Logo", 32, true), Width: 32, Height: 32, Scale: 1},
+		// {Name: targetSized("Square44x44Logo", 48, false), Width: 48, Height: 48, Scale: 1},
+		// {Name: targetSized("Square44x44Logo", 48, true), Width: 48, Height: 48, Scale: 1},
+		// {Name: targetSized("Square44x44Logo", 256, false), Width: 256, Height: 256, Scale: 1},
+		// {Name: targetSized("Square44x44Logo", 256, true), Width: 256, Height: 256, Scale: 1},
 
-		{Name: scaled("Square71x71Logo", 100), Width: 71, Height: 71, Scale: 1, Padding: true},
-		{Name: scaled("Square71x71Logo", 125), Width: 71, Height: 71, Scale: 1.25, Padding: true},
-		{Name: scaled("Square71x71Logo", 150), Width: 71, Height: 71, Scale: 1.5, Padding: true},
-		{Name: scaled("Square71x71Logo", 200), Width: 71, Height: 71, Scale: 2, Padding: true},
-		{Name: scaled("Square71x71Logo", 400), Width: 71, Height: 71, Scale: 4, Padding: true},
+		{Name: scaled("Square71x71Logo", 1), Width: 71, Height: 71, Scale: 1},
+		// {Name: scaled("Square71x71Logo", 100), Width: 71, Height: 71, Scale: 1},
+		// {Name: scaled("Square71x71Logo", 125), Width: 71, Height: 71, Scale: 1.25},
+		// {Name: scaled("Square71x71Logo", 150), Width: 71, Height: 71, Scale: 1.5},
+		// {Name: scaled("Square71x71Logo", 200), Width: 71, Height: 71, Scale: 2},
+		// {Name: scaled("Square71x71Logo", 400), Width: 71, Height: 71, Scale: 4},
 
-		{Name: scaled("Square150x150Logo", 100), Width: 150, Height: 150, Scale: 1, Padding: true},
-		{Name: scaled("Square150x150Logo", 125), Width: 150, Height: 150, Scale: 1.25, Padding: true},
-		{Name: scaled("Square150x150Logo", 150), Width: 150, Height: 150, Scale: 1.5, Padding: true},
-		{Name: scaled("Square150x150Logo", 200), Width: 150, Height: 150, Scale: 2, Padding: true},
-		{Name: scaled("Square150x150Logo", 400), Width: 150, Height: 150, Scale: 4, Padding: true},
+		{Name: scaled("Square150x150Logo", 1), Width: 150, Height: 150, Scale: 1},
+		// {Name: scaled("Square150x150Logo", 100), Width: 150, Height: 150, Scale: 1},
+		// {Name: scaled("Square150x150Logo", 125), Width: 150, Height: 150, Scale: 1.25},
+		// {Name: scaled("Square150x150Logo", 150), Width: 150, Height: 150, Scale: 1.5},
+		// {Name: scaled("Square150x150Logo", 200), Width: 150, Height: 150, Scale: 2},
+		// {Name: scaled("Square150x150Logo", 400), Width: 150, Height: 150, Scale: 4},
 
-		{Name: scaled("Square310x310Logo", 100), Width: 310, Height: 310, Scale: 1, Padding: true},
-		{Name: scaled("Square310x310Logo", 125), Width: 310, Height: 310, Scale: 1.25, Padding: true},
-		{Name: scaled("Square310x310Logo", 150), Width: 310, Height: 310, Scale: 1.5, Padding: true},
-		{Name: scaled("Square310x310Logo", 200), Width: 310, Height: 310, Scale: 2, Padding: true},
-		{Name: scaled("Square310x310Logo", 400), Width: 310, Height: 310, Scale: 4, Padding: true},
+		{Name: scaled("Square310x310Logo", 1), Width: 310, Height: 310, Scale: 1},
+		// {Name: scaled("Square310x310Logo", 100), Width: 310, Height: 310, Scale: 1},
+		// {Name: scaled("Square310x310Logo", 125), Width: 310, Height: 310, Scale: 1.25},
+		// {Name: scaled("Square310x310Logo", 150), Width: 310, Height: 310, Scale: 1.5},
+		// {Name: scaled("Square310x310Logo", 200), Width: 310, Height: 310, Scale: 2},
+		// {Name: scaled("Square310x310Logo", 400), Width: 310, Height: 310, Scale: 4},
 
-		{Name: scaled("StoreLogo", 100), Width: 50, Height: 50, Scale: 1, Padding: true},
-		{Name: scaled("StoreLogo", 125), Width: 50, Height: 50, Scale: 1.25, Padding: true},
-		{Name: scaled("StoreLogo", 150), Width: 50, Height: 50, Scale: 1.5, Padding: true},
-		{Name: scaled("StoreLogo", 200), Width: 50, Height: 50, Scale: 2, Padding: true},
-		{Name: scaled("StoreLogo", 400), Width: 50, Height: 50, Scale: 4, Padding: true},
+		{Name: scaled("StoreLogo", 1), Width: 50, Height: 50, Scale: 1},
+		// {Name: scaled("StoreLogo", 100), Width: 50, Height: 50, Scale: 1},
+		// {Name: scaled("StoreLogo", 125), Width: 50, Height: 50, Scale: 1.25},
+		// {Name: scaled("StoreLogo", 150), Width: 50, Height: 50, Scale: 1.5},
+		// {Name: scaled("StoreLogo", 200), Width: 50, Height: 50, Scale: 2},
+		// {Name: scaled("StoreLogo", 400), Width: 50, Height: 50, Scale: 4},
 
-		{Name: scaled("Wide310x150Logo", 100), Width: 310, Height: 150, Scale: 1, Padding: true},
-		{Name: scaled("Wide310x150Logo", 125), Width: 310, Height: 150, Scale: 1.25, Padding: true},
-		{Name: scaled("Wide310x150Logo", 150), Width: 310, Height: 150, Scale: 1.5, Padding: true},
-		{Name: scaled("Wide310x150Logo", 200), Width: 310, Height: 150, Scale: 2, Padding: true},
-		{Name: scaled("Wide310x150Logo", 400), Width: 310, Height: 150, Scale: 4, Padding: true},
+		{Name: scaled("Wide310x150Logo", 1), Width: 310, Height: 150, Scale: 1},
+		// {Name: scaled("Wide310x150Logo", 100), Width: 310, Height: 150, Scale: 1},
+		// {Name: scaled("Wide310x150Logo", 125), Width: 310, Height: 150, Scale: 1.25},
+		// {Name: scaled("Wide310x150Logo", 150), Width: 310, Height: 150, Scale: 1.5},
+		// {Name: scaled("Wide310x150Logo", 200), Width: 310, Height: 150, Scale: 2},
+		// {Name: scaled("Wide310x150Logo", 400), Width: 310, Height: 150, Scale: 4},
 	})
 }
 
-func (pkg *winPackage) convertToAppx(ctx context.Context) error {
-	// if err := os.RemoveAll(pkg.name); err != nil {
-	// 	return err
-	// }
+func (pkg *winPackage) makeToAppx(ctx context.Context) error {
+	os.Chdir(win10SDKBin())
 
-	// if err := os.MkdirAll(pkg.name, 0755); err != nil {
-	// 	return err
-	// }
+	cmd := []string{
+		"makeappx.exe", "pack",
+		"-d", pkg.name,
+		"-p", pkg.namex,
+		"-o",
+	}
 
-	// cmd := []string{"powershell", "DesktopAppConverter.exe",
-	// 	"-Installer", pkg.tmpDir,
-	// 	"-AppExecutable", filepath.Base(pkg.goExec),
-	// 	"-Destination", pkg.workingDir,
-	// 	"-PackageName", filepath.Base(pkg.name),
-	// 	"-Publisher", "CN=goapp",
-	// 	"-Version", "1.0.0.0",
-	// 	"-MakeAppx",
-	// 	"-Sign",
-	// }
+	if verbose {
+		cmd = append(cmd, "-v")
+	}
 
-	// if verbose {
-	// 	cmd = append(cmd, "-Verbose")
-	// }
+	return execute(ctx, cmd[0], cmd[1:]...)
+}
 
-	// return execute(ctx, cmd[0], cmd[1:]...)
-	return nil
+func (pkg *winPackage) sign(ctx context.Context) error {
+	os.Chdir(win10SDKBin())
+
+	cmd := []string{
+		"signtool.exe", "sign", "/a",
+		"/fd", "SHA256",
+		"/f", filepath.Join(
+			murlokswarm(),
+			"cmd",
+			"goapp",
+			"certificates",
+			"win.pfx",
+		),
+		"/p", "123456",
+	}
+
+	if verbose {
+		cmd = append(cmd, "/v")
+	}
+
+	cmd = append(cmd, pkg.namex)
+	return execute(ctx, cmd[0], cmd[1:]...)
+}
+
+func win10SDKBin() string {
+	return filepath.Join(
+		`C:\`,
+		"Program Files (x86)",
+		"Windows Kits",
+		"10",
+		"bin",
+		"10.0.17134.0",
+		"x64",
+	)
 }
