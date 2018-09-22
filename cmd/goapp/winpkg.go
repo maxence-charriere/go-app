@@ -209,7 +209,7 @@ func (pkg *winPackage) generateIcons(ctx context.Context) error {
 	// }
 
 	return generateIcons(icon, []iconInfo{
-		{Name: scaled("Square44x44Logo", 1), Width: 44, Height: 44, Scale: 1},
+		{Name: scaled("Square44x44Logo", 1), Width: 44, Height: 44, Scale: 1, Padding: true},
 		// {Name: scaled("Square44x44Logo", 100), Width: 44, Height: 44, Scale: 1},
 		// {Name: scaled("Square44x44Logo", 125), Width: 44, Height: 44, Scale: 1.25},
 		// {Name: scaled("Square44x44Logo", 150), Width: 44, Height: 44, Scale: 1.5},
@@ -227,35 +227,35 @@ func (pkg *winPackage) generateIcons(ctx context.Context) error {
 		// {Name: targetSized("Square44x44Logo", 256, false), Width: 256, Height: 256, Scale: 1},
 		// {Name: targetSized("Square44x44Logo", 256, true), Width: 256, Height: 256, Scale: 1},
 
-		{Name: scaled("Square71x71Logo", 1), Width: 71, Height: 71, Scale: 1},
+		{Name: scaled("Square71x71Logo", 1), Width: 71, Height: 71, Scale: 1, Padding: true},
 		// {Name: scaled("Square71x71Logo", 100), Width: 71, Height: 71, Scale: 1},
 		// {Name: scaled("Square71x71Logo", 125), Width: 71, Height: 71, Scale: 1.25},
 		// {Name: scaled("Square71x71Logo", 150), Width: 71, Height: 71, Scale: 1.5},
 		// {Name: scaled("Square71x71Logo", 200), Width: 71, Height: 71, Scale: 2},
 		// {Name: scaled("Square71x71Logo", 400), Width: 71, Height: 71, Scale: 4},
 
-		{Name: scaled("Square150x150Logo", 1), Width: 150, Height: 150, Scale: 1},
+		{Name: scaled("Square150x150Logo", 1), Width: 150, Height: 150, Scale: 1, Padding: true},
 		// {Name: scaled("Square150x150Logo", 100), Width: 150, Height: 150, Scale: 1},
 		// {Name: scaled("Square150x150Logo", 125), Width: 150, Height: 150, Scale: 1.25},
 		// {Name: scaled("Square150x150Logo", 150), Width: 150, Height: 150, Scale: 1.5},
 		// {Name: scaled("Square150x150Logo", 200), Width: 150, Height: 150, Scale: 2},
 		// {Name: scaled("Square150x150Logo", 400), Width: 150, Height: 150, Scale: 4},
 
-		{Name: scaled("Square310x310Logo", 1), Width: 310, Height: 310, Scale: 1},
+		{Name: scaled("Square310x310Logo", 1), Width: 310, Height: 310, Scale: 1, Padding: true},
 		// {Name: scaled("Square310x310Logo", 100), Width: 310, Height: 310, Scale: 1},
 		// {Name: scaled("Square310x310Logo", 125), Width: 310, Height: 310, Scale: 1.25},
 		// {Name: scaled("Square310x310Logo", 150), Width: 310, Height: 310, Scale: 1.5},
 		// {Name: scaled("Square310x310Logo", 200), Width: 310, Height: 310, Scale: 2},
 		// {Name: scaled("Square310x310Logo", 400), Width: 310, Height: 310, Scale: 4},
 
-		{Name: scaled("StoreLogo", 1), Width: 50, Height: 50, Scale: 1},
+		{Name: scaled("StoreLogo", 1), Width: 50, Height: 50, Scale: 1, Padding: true},
 		// {Name: scaled("StoreLogo", 100), Width: 50, Height: 50, Scale: 1},
 		// {Name: scaled("StoreLogo", 125), Width: 50, Height: 50, Scale: 1.25},
 		// {Name: scaled("StoreLogo", 150), Width: 50, Height: 50, Scale: 1.5},
 		// {Name: scaled("StoreLogo", 200), Width: 50, Height: 50, Scale: 2},
 		// {Name: scaled("StoreLogo", 400), Width: 50, Height: 50, Scale: 4},
 
-		{Name: scaled("Wide310x150Logo", 1), Width: 310, Height: 150, Scale: 1},
+		{Name: scaled("Wide310x150Logo", 1), Width: 310, Height: 150, Scale: 1, Padding: true},
 		// {Name: scaled("Wide310x150Logo", 100), Width: 310, Height: 150, Scale: 1},
 		// {Name: scaled("Wide310x150Logo", 125), Width: 310, Height: 150, Scale: 1.25},
 		// {Name: scaled("Wide310x150Logo", 150), Width: 310, Height: 150, Scale: 1.5},
