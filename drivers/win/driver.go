@@ -6,7 +6,6 @@ package win
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"time"
@@ -58,7 +57,7 @@ func (d *Driver) Run(f *app.Factory) error {
 		return d.runGoappBuild()
 	}
 
-	fmt.Println("hello")
+	app.Log("hello world")
 	time.Sleep(time.Second * 5)
 	return nil
 }

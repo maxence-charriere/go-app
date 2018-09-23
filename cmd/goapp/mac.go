@@ -9,8 +9,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/murlokswarm/app/internal/logs"
-
 	"github.com/segmentio/conf"
 )
 
@@ -172,18 +170,6 @@ func runMac(ctx context.Context, args []string) {
 	printVerbose("running %s", appname)
 	if err := execute(ctx, "open", "--wait-apps", appname); err != nil {
 		printErr("%s", err)
-	}
-}
-
-func listenLogs(ctx context.Context, addr string) {
-	logs := logs.GoappServer{
-		Addr:   addr,
-		Writer: os.Stderr,
-	}
-
-	err := logs.ListenAndLog(ctx)
-	if err != nil {
-		printErr("listening logs failed: %s", err)
 	}
 }
 

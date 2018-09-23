@@ -3,7 +3,20 @@ package main
 
 const appxManifestTmpl = `
 <?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap2="http://schemas.microsoft.com/appx/manifest/uap/windows10/2" xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3" xmlns:uap4="http://schemas.microsoft.com/appx/manifest/uap/windows10/4" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" xmlns:rescap3="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities/3" xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" xmlns:desktop2="http://schemas.microsoft.com/appx/manifest/desktop/windows10/2" xmlns:desktop3="http://schemas.microsoft.com/appx/manifest/desktop/windows10/3" xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10" xmlns:wincap3="http://schemas.microsoft.com/appx/manifest/foundation/windows10/windowscapabilities/3" IgnorableNamespaces="uap4 wincap3 rescap3 desktop2 desktop3 com">
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" 
+         xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+         xmlns:uap2="http://schemas.microsoft.com/appx/manifest/uap/windows10/2"
+         xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+         xmlns:uap4="http://schemas.microsoft.com/appx/manifest/uap/windows10/4"
+         xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
+         xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+         xmlns:rescap3="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities/3"
+         xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+         xmlns:desktop2="http://schemas.microsoft.com/appx/manifest/desktop/windows10/2"
+         xmlns:desktop3="http://schemas.microsoft.com/appx/manifest/desktop/windows10/3"
+         xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
+         xmlns:wincap3="http://schemas.microsoft.com/appx/manifest/foundation/windows10/windowscapabilities/3"
+         IgnorableNamespaces="uap4 wincap3 rescap3 desktop2 desktop3 com">
   <Identity Name="{{.Name}}" ProcessorArchitecture="x64" Publisher="CN={{.Publisher}}" Version="1.0.0.0" />
   <Properties>
     <DisplayName>{{.Name}}</DisplayName>
@@ -36,6 +49,15 @@ const appxManifestTmpl = `
           </uap:ShowNameOnTiles>
         </uap:DefaultTile>
       </uap:VisualElements>
+      <Extensions>
+        <uap5:Extension Category="windows.appExecutionAlias"
+                        Executable="{{.Executable}}"   
+                        EntryPoint="{{.EntryPoint}}">  
+            <uap5:AppExecutionAlias>  
+                <uap5:ExecutionAlias Alias="{{.Executable}}" />  
+            </uap5:AppExecutionAlias>  
+        </uap5:Extension>
+      </Extensions>
     </Application>
   </Applications>
 </Package>`

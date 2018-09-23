@@ -4,8 +4,11 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
+	"time"
 
 	"github.com/segmentio/conf"
 )
@@ -88,8 +91,9 @@ func initWin(ctx context.Context, args []string) {
 }
 
 type winBuilConfig struct {
-	Output  string `conf:"o" help:"The output."`
-	Verbose bool   `conf:"v" help:"Enable verbose mode."`
+	AppX    bool   `conf:"appx" help:"Build an appx package."`
+	Output  string `conf:"o"    help:"The output."`
+	Verbose bool   `conf:"v"    help:"Enable verbose mode."`
 }
 
 func buildWin(ctx context.Context, args []string) {
@@ -122,8 +126,65 @@ func buildWin(ctx context.Context, args []string) {
 	printSuccess("build succeeded")
 }
 
+type winRunConfig struct {
+	LogsAddr string `conf:"logs-addr" help:"The address used to listen app logs." validate:"nonzero"`
+	Debug    bool   `conf:"d"         help:"Enable debug mode is enabled."`
+	Verbose  bool   `conf:"v"         help:"Enable verbose mode."`
+}
+
 func runWin(ctx context.Context, args []string) {
-	panic("not implemented")
+	c := winRunConfig{
+		LogsAddr: ":9000",
+	}
+
+	ld := conf.Loader{
+		Name:    "win run",
+		Args:    args,
+		Usage:   "[options...] [app name]",
+		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
+	}
+
+	_, roots := conf.LoadWith(&c, ld)
+	verbose = c.Verbose
+
+	if len(roots) == 0 {
+		roots = []string{"."}
+	}
+
+	appname := roots[0]
+
+	if !strings.HasSuffix(appname, ".app") {
+		printVerbose("building package")
+		pkg, err := newWinPackage(roots[0], "")
+		if err != nil {
+			fail("%s", err)
+		}
+
+		if err = pkg.Build(ctx, winBuilConfig{}); err != nil {
+			fail("%s", err)
+		}
+
+		appname = pkg.name
+	}
+
+	_, appname = filepath.Split(appname)
+	appname = strings.TrimSuffix(appname, ".app")
+
+	go listenLogs(ctx, c.LogsAddr)
+	time.Sleep(time.Millisecond * 200)
+
+	os.Setenv("GOAPP_LOGS_ADDR", c.LogsAddr)
+	os.Setenv("GOAPP_DEBUG", fmt.Sprintf("%v", c.Debug))
+
+	printVerbose("running %s", appname)
+	if err := execute(ctx, "powershell", "start", appname); err != nil {
+		fail("%s", err)
+	}
+
+	<-ctx.Done()
+	if err := ctx.Err(); err != nil {
+		printErr("%s", ctx.Err())
+	}
 }
 
 func mac(ctx context.Context, args []string) {

@@ -32,6 +32,7 @@ type manifest struct {
 	Name        string
 	ID          string
 	Executable  string
+	EntryPoint  string
 	Description string
 	Publisher   string
 	Icon        string
@@ -101,12 +102,17 @@ func (pkg *winPackage) Build(ctx context.Context, c winBuilConfig) error {
 		return err
 	}
 
+	if !c.AppX {
+		printVerbose("deploying")
+		return pkg.deploy(ctx)
+	}
+
 	printVerbose("creating appx")
 	if err := pkg.makeToAppx(ctx); err != nil {
 		return err
 	}
 
-	printVerbose("signing package")
+	printVerbose("signing")
 	return pkg.sign(ctx)
 }
 
@@ -144,6 +150,7 @@ func (pkg *winPackage) readSettings(ctx context.Context) error {
 	m.Name = stringWithDefault(m.Name, pkg.goPackageName)
 	m.ID = idFmt(m.Name)
 	m.Executable = filepath.Base(pkg.goExec)
+	m.EntryPoint = strings.Replace(m.Executable, ".exe", ".app", 1)
 	m.Description = stringWithDefault(m.Description, m.Name)
 	m.Publisher = stringWithDefault(m.Publisher, "goapp")
 	m.Icon = stringWithDefault(m.Icon, filepath.Join(murlokswarm(), "logo.png"))
@@ -264,8 +271,19 @@ func (pkg *winPackage) generateIcons(ctx context.Context) error {
 	})
 }
 
+func (pkg *winPackage) deploy(ctx context.Context) error {
+	cmd := []string{"powershell",
+		"Add-AppxPackage",
+		"-Path", filepath.Join(pkg.name, "AppxManifest.xml"),
+		"-Register",
+	}
+
+	return execute(ctx, cmd[0], cmd[1:]...)
+}
+
 func (pkg *winPackage) makeToAppx(ctx context.Context) error {
-	os.Chdir(win10SDKBin())
+	os.Chdir(win10SDKBinX64())
+	defer os.Chdir(pkg.workingDir)
 
 	cmd := []string{
 		"makeappx.exe", "pack",
@@ -282,7 +300,8 @@ func (pkg *winPackage) makeToAppx(ctx context.Context) error {
 }
 
 func (pkg *winPackage) sign(ctx context.Context) error {
-	os.Chdir(win10SDKBin())
+	os.Chdir(win10SDKBinX64())
+	defer os.Chdir(pkg.workingDir)
 
 	cmd := []string{
 		"signtool.exe", "sign", "/a",
@@ -305,7 +324,7 @@ func (pkg *winPackage) sign(ctx context.Context) error {
 	return execute(ctx, cmd[0], cmd[1:]...)
 }
 
-func win10SDKBin() string {
+func win10SDKBinX64() string {
 	return filepath.Join(
 		`C:\`,
 		"Program Files (x86)",
@@ -314,5 +333,17 @@ func win10SDKBin() string {
 		"bin",
 		"10.0.17134.0",
 		"x64",
+	)
+}
+
+func win10SDKBinX86() string {
+	return filepath.Join(
+		`C:\`,
+		"Program Files (x86)",
+		"Windows Kits",
+		"10",
+		"bin",
+		"10.0.17134.0",
+		"x86",
 	)
 }
