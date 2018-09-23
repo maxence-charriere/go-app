@@ -171,13 +171,13 @@ func runWin(ctx context.Context, args []string) {
 	appname = strings.TrimSuffix(appname, ".app")
 
 	go listenLogs(ctx, c.LogsAddr)
-	time.Sleep(time.Millisecond * 200)
+	time.Sleep(time.Millisecond * 500)
 
 	os.Setenv("GOAPP_LOGS_ADDR", c.LogsAddr)
 	os.Setenv("GOAPP_DEBUG", fmt.Sprintf("%v", c.Debug))
 
 	printVerbose("running %s", appname)
-	if err := execute(ctx, "powershell", "start", appname); err != nil {
+	if err := execute(ctx, appname); err != nil {
 		fail("%s", err)
 	}
 
