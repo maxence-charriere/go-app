@@ -1,4 +1,15 @@
 
+3.2.4 / 2018-09-24
+==================
+
+* mac default main window background take the system default color.
+
+3.2.3 / 2018-09-23
+==================
+
+* EventArgs structs now have info about the source element that invoked the
+  event.
+
 3.2.2 / 2018-09-13
 ==================
 
