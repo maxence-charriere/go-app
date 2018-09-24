@@ -1,4 +1,12 @@
 
+3.2.3 / 2018-09-23
+==================
+
+* EventArgs structs now have info about the source element that invoked the 
+  event.
+* Update README.md
+
+
 3.2.2 / 2018-09-13
 ==================
 
