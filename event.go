@@ -185,7 +185,7 @@ type DragAndDropEvent struct {
 	Source        EventSource
 }
 
-// EventSource represent a descriptor to an event source.
+// EventSource represents a descriptor to an event source.
 type EventSource struct {
 	GoappID string
 	CompoID string
