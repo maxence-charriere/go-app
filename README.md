@@ -45,12 +45,12 @@ goapp update -v
 
 ## Supported platforms
 
-|Platform|Status|
-|:-|:-:|
-|[MacOS](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver)|✔|
-|[Web](https://godoc.org/github.com/murlokswarm/app/drivers/web#Driver)|✔|
-|Windows|[🔨](https://github.com/murlokswarm/app/issues/141)|
-|Linux|✖|
+|Platform|Minimum OS|Minimum Go version|Status|
+|:-|:-:|:-:|:-:|
+|[MacOS](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver)|MacOS 10.12|1.11|✔|
+|[Web](https://godoc.org/github.com/murlokswarm/app/drivers/web#Driver)|MacOS 10.12, Windows 10 (April 2018 Update) or Linux|1.11|✔|
+|Windows|Windows 10 (April 2018 Update)|1.11|[🔨](https://github.com/murlokswarm/app/issues/141)|
+|Linux|||✖|
 
 <a name="hello"></a>
 
