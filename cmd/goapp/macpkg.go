@@ -12,7 +12,6 @@ import (
 	"strings"
 	"time"
 
-	driver "github.com/murlokswarm/app/drivers/mac"
 	"github.com/murlokswarm/app/internal/file"
 	"github.com/pkg/errors"
 )
@@ -117,7 +116,13 @@ func (pkg *macPackage) Build(ctx context.Context, c macBuildConfig) error {
 }
 
 func (pkg *macPackage) buildGoExecutable(ctx context.Context) error {
-	return goBuild(ctx, pkg.buildDir, "-ldflags", "-s", "-o", pkg.goExec)
+	sdk := fmt.Sprintf("MacOSX%s.sdk", pkg.config.DeploymentTarget)
+	os.Setenv("CGO_CFLAGS", "-isysroot /Library/Developer/CommandLineTools/SDKs/"+sdk)
+
+	return goBuild(ctx, pkg.buildDir,
+		"-ldflags", "-s", "-o",
+		pkg.goExec,
+	)
 }
 
 func (pkg *macPackage) readBundleInfo(ctx context.Context) error {
@@ -148,13 +153,13 @@ func (pkg *macPackage) readBundleInfo(ctx context.Context) error {
 	b.Version = stringWithDefault(b.Version, "1.0")
 	b.BuildNumber = intWithDefault(b.BuildNumber, 1)
 	b.DevRegion = stringWithDefault(b.DevRegion, "en")
-	b.DeploymentTarget = stringWithDefault(b.DeploymentTarget, "10.13")
-	b.Category = stringWithDefault(b.Category, driver.DeveloperToolsApp)
+	b.DeploymentTarget = pkg.config.DeploymentTarget
+	b.Category = stringWithDefault(b.Category, "public.app-category.developer-tools")
 	b.Copyright = stringWithDefault(b.Copyright, fmt.Sprintf("Copyright © %v %s. All rights reserved.",
 		time.Now().Year(),
 		os.Getenv("USER"),
 	))
-	b.Role = stringWithDefault(b.Role, string(driver.NoRole))
+	b.Role = stringWithDefault(b.Role, "None")
 
 	if b.Sandbox && len(pkg.config.Sign) == 0 {
 		printWarn("desactivating sandbox: sanboxed apps require to be signed")
