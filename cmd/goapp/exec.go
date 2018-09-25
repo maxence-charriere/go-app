@@ -45,13 +45,8 @@ func printOutput(ctx context.Context, r io.Reader, output io.Writer) {
 		}
 
 		n, err := reader.Read(b)
-		if err == io.EOF {
-			return
-		}
-
 		if err != nil {
-			printErr("%s", err)
-			continue
+			return
 		}
 
 		if verbose {

@@ -84,6 +84,8 @@ type macBuildConfig struct {
 	Sign             string `conf:"sign"              help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
 	Sandbox          bool   `conf:"sandbox"           help:"Setup the app to run in sandbox mode."`
 	AppStore         bool   `conf:"appstore"          help:"Report whether the app will be packaged to be uploaded on the app store."`
+	Force            bool   `conf:"a"                 help:"Force rebuilding of packages that are already up-to-date."`
+	Race             bool   `conf:"race"              help:"Enable data race detection."`
 	Verbose          bool   `conf:"v"                 help:"Enable verbose mode."`
 }
 
@@ -125,6 +127,8 @@ type macRunConfig struct {
 	Sign             string `conf:"sign"              help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
 	Sandbox          bool   `conf:"sandbox"           help:"Setup the app to run in sandbox mode."`
 	Debug            bool   `conf:"d"                 help:"Enable debug mode is enabled."`
+	Force            bool   `conf:"a"                 help:"Force rebuilding of packages that are already up-to-date."`
+	Race             bool   `conf:"race"              help:"Enable data race detection."`
 	Verbose          bool   `conf:"v"                 help:"Enable verbose mode."`
 }
 
@@ -161,6 +165,9 @@ func runMac(ctx context.Context, args []string) {
 			DeploymentTarget: c.DeploymentTarget,
 			Sign:             c.Sign,
 			Sandbox:          c.Sandbox,
+			Force:            c.Force,
+			Race:             c.Race,
+			Verbose:          c.Verbose,
 		}); err != nil {
 			fail("%s", err)
 		}

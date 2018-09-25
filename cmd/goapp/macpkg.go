@@ -116,13 +116,26 @@ func (pkg *macPackage) Build(ctx context.Context, c macBuildConfig) error {
 }
 
 func (pkg *macPackage) buildGoExecutable(ctx context.Context) error {
-	sdk := fmt.Sprintf("MacOSX%s.sdk", pkg.config.DeploymentTarget)
-	os.Setenv("CGO_CFLAGS", "-isysroot /Library/Developer/CommandLineTools/SDKs/"+sdk)
+	os.Setenv("MACOSX_DEPLOYMENT_TARGET", pkg.config.DeploymentTarget)
 
-	return goBuild(ctx, pkg.buildDir,
-		"-ldflags", "-s", "-o",
-		pkg.goExec,
-	)
+	cmd := []string{"go", "build",
+		"-ldflags", "-s",
+		"-o", pkg.goExec,
+	}
+
+	if verbose {
+		cmd = append(cmd, "-v")
+	}
+
+	if pkg.config.Force {
+		cmd = append(cmd, "-a")
+	}
+
+	if pkg.config.Race {
+		cmd = append(cmd, "-race")
+	}
+
+	return execute(ctx, cmd[0], cmd[1:]...)
 }
 
 func (pkg *macPackage) readBundleInfo(ctx context.Context) error {
