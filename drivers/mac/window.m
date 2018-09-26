@@ -19,11 +19,11 @@
     NSNumber *minHeight = in[@"MinHeight"];
     NSNumber *maxHeight = in[@"MaxHeight"];
     NSString *backgroundColor = in[@"BackgroundColor"];
+    BOOL frostedBackground = [in[@"FrostedBackground"] boolValue];
     BOOL fixedSize = [in[@"FixedSize"] boolValue];
     BOOL closeHidden = [in[@"CloseHidden"] boolValue];
     BOOL minimizeHidden = [in[@"MinimizeHidden"] boolValue];
     BOOL titlebarHidden = [in[@"TitlebarHidden"] boolValue];
-    NSNumber *backgroundVibrancy = in[@"BackgroundVibrancy"];
 
     NSRect rect = NSMakeRect(x.floatValue, y.floatValue, width.floatValue,
                              height.floatValue);
@@ -61,8 +61,7 @@
     win.window.maxSize =
         NSMakeSize(maxWidth.doubleValue, maxHeight.doubleValue);
 
-    [win configBackgroundColor:backgroundColor
-                      vibrancy:backgroundVibrancy.integerValue];
+    [win configBackgroundColor:backgroundColor frosted:frostedBackground];
     [win configWebview];
     [win configTitlebar:title hidden:titlebarHidden];
 
@@ -74,15 +73,13 @@
   });
 }
 
-- (void)configBackgroundColor:(NSString *)color
-                     vibrancy:(NSVisualEffectMaterial)vibrancy {
-  if (vibrancy != NSVisualEffectMaterialAppearanceBased) {
+- (void)configBackgroundColor:(NSString *)color frosted:(BOOL)frosted {
+  if (frosted) {
     NSVisualEffectView *visualEffectView =
         [[NSVisualEffectView alloc] initWithFrame:self.window.frame];
-    visualEffectView.material = vibrancy;
+    visualEffectView.material = NSVisualEffectMaterialSidebar;
     visualEffectView.blendingMode = NSVisualEffectBlendingModeBehindWindow;
-    visualEffectView.state = NSVisualEffectStateActive;
-
+    visualEffectView.state = NSVisualEffectStateFollowsWindowActiveState;
     self.window.contentView = visualEffectView;
     return;
   }
