@@ -113,11 +113,9 @@ func testWindow(close bool) {
 		// FixedSize: true,
 		// CloseHidden:    true,
 		// MinimizeHidden: true,
-		TitlebarHidden: true,
-		// Mac: app.MacWindowConfig{
-		// 	BackgroundVibrancy: app.VibeUltraDark,
-		// },
-		URL: "/test.Webview",
+		TitlebarHidden:    true,
+		FrostedBackground: true,
+		URL:               "/test.Webview",
 
 		OnMove: func(x, y float64) {
 			app.Logf("Window moved to x:%v y:%v\n", x, y)

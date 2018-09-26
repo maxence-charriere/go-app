@@ -44,6 +44,10 @@ type Window struct {
 func newWindow(c app.WindowConfig) *Window {
 	id := uuid.New().String()
 
+	if c.Mac != (app.MacWindowConfig{}) {
+		app.Log(errors.New("app.WindowConfig.Mac is deprecrated"))
+	}
+
 	w := &Window{
 		dom:     dom.NewDOM(driver.factory, dom.JsToGoHandler, dom.HrefCompoFmt),
 		history: core.NewHistory(),
@@ -61,39 +65,39 @@ func newWindow(c app.WindowConfig) *Window {
 	}
 
 	in := struct {
-		ID                 string
-		Title              string
-		X                  float64
-		Y                  float64
-		Width              float64
-		MinWidth           float64
-		MaxWidth           float64
-		Height             float64
-		MinHeight          float64
-		MaxHeight          float64
-		BackgroundColor    string
-		FixedSize          bool
-		CloseHidden        bool
-		MinimizeHidden     bool
-		TitlebarHidden     bool
-		BackgroundVibrancy app.Vibrancy
+		ID                string
+		Title             string
+		X                 float64
+		Y                 float64
+		Width             float64
+		MinWidth          float64
+		MaxWidth          float64
+		Height            float64
+		MinHeight         float64
+		MaxHeight         float64
+		BackgroundColor   string
+		FrostedBackground bool
+		FixedSize         bool
+		CloseHidden       bool
+		MinimizeHidden    bool
+		TitlebarHidden    bool
 	}{
-		ID:                 w.id,
-		Title:              c.Title,
-		X:                  c.X,
-		Y:                  c.Y,
-		Width:              c.Width,
-		MinWidth:           c.MinWidth,
-		MaxWidth:           c.MaxWidth,
-		Height:             c.Height,
-		MinHeight:          c.MinHeight,
-		MaxHeight:          c.MaxHeight,
-		BackgroundColor:    c.BackgroundColor,
-		FixedSize:          c.FixedSize,
-		CloseHidden:        c.CloseHidden,
-		MinimizeHidden:     c.MinimizeHidden,
-		TitlebarHidden:     c.TitlebarHidden,
-		BackgroundVibrancy: c.Mac.BackgroundVibrancy,
+		ID:                w.id,
+		Title:             c.Title,
+		X:                 c.X,
+		Y:                 c.Y,
+		Width:             c.Width,
+		MinWidth:          c.MinWidth,
+		MaxWidth:          c.MaxWidth,
+		Height:            c.Height,
+		MinHeight:         c.MinHeight,
+		MaxHeight:         c.MaxHeight,
+		BackgroundColor:   c.BackgroundColor,
+		FrostedBackground: c.FrostedBackground,
+		FixedSize:         c.FixedSize,
+		CloseHidden:       c.CloseHidden,
+		MinimizeHidden:    c.MinimizeHidden,
+		TitlebarHidden:    c.TitlebarHidden,
 	}
 
 	in.MinWidth, in.MaxWidth = normalizeWidowSize(in.MinWidth, in.MaxWidth)

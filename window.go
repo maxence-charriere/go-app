@@ -69,6 +69,9 @@ type WindowConfig struct {
 	// The background color (#rrggbb).
 	BackgroundColor string
 
+	// Report whether the background have a frosted effect.
+	FrostedBackground bool
+
 	// Reports whether the window is resizable.
 	FixedSize bool
 
@@ -83,9 +86,6 @@ type WindowConfig struct {
 
 	// The URL of the component to load when the window is created.
 	URL string
-
-	// The MacOS window specific configuration.
-	Mac MacWindowConfig
 
 	// The function that is called when the window is moved.
 	OnMove func(x, y float64) `json:"-"`
@@ -114,17 +114,21 @@ type WindowConfig struct {
 	// The function that is called when the window is closed.
 	// Returning bool prevents the window to be closed.
 	OnClose func() bool `json:"-"`
+
+	// Deprecated - Will be removed on 2018/12.
+	Mac MacWindowConfig
 }
 
-// MacWindowConfig is a struct that describes window fields specific to MacOS.
+// MacWindowConfig is deprecated. It will be removed on 2018/12.
 type MacWindowConfig struct {
 	BackgroundVibrancy Vibrancy
 }
 
-// Vibrancy represents a constant that define Apple's frost glass effects.
+// Vibrancy is deprecated. It will be removed on 2018/12.
 type Vibrancy uint8
 
-// Constants to specify vibrancy effects to use in Apple application elements.
+// Constants to specify vibrancy effects.
+// Deprecated. It will be removed on 2018/12.
 const (
 	VibeNone Vibrancy = iota
 	VibeLight
