@@ -1,4 +1,21 @@
 
+3.2.5 / 2018-09-25
+==================
+
+## general
+
+* In HTML based elements (windows and pages):
+  * `font-family`: Default is the system font.
+  * `font-size`: Default is 11px.
+
+## mac
+
+* Fix MacOS Mojave deprecated warnings.
+* `goapp mac build` and `goapp mac run`:
+  * `-deployment-target`: Specify for which version of MacOS is the build.
+  * `-a`: Force rebuild go executable.
+  * `-race`: Build with data race detection.
+
 3.2.4 / 2018-09-24
 ==================
 
