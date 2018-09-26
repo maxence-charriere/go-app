@@ -113,11 +113,10 @@ func testWindow(close bool) {
 		// FixedSize: true,
 		// CloseHidden:    true,
 		// MinimizeHidden: true,
-		TitlebarHidden:  true,
-		BackgroundColor: "#282c34",
-		Mac: app.MacWindowConfig{
-			BackgroundVibrancy: app.VibeUltraDark,
-		},
+		TitlebarHidden: true,
+		// Mac: app.MacWindowConfig{
+		// 	BackgroundVibrancy: app.VibeUltraDark,
+		// },
 		URL: "/test.Webview",
 
 		OnMove: func(x, y float64) {

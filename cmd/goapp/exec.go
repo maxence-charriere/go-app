@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 func execute(ctx context.Context, cmd string, args ...string) error {
@@ -44,13 +45,8 @@ func printOutput(ctx context.Context, r io.Reader, output io.Writer) {
 		}
 
 		n, err := reader.Read(b)
-		if err == io.EOF {
-			return
-		}
-
 		if err != nil {
-			printErr("%s", err)
-			continue
+			return
 		}
 
 		if verbose {
@@ -59,4 +55,15 @@ func printOutput(ctx context.Context, r io.Reader, output io.Writer) {
 
 		output.Write(b[:n])
 	}
+}
+
+func executeString(cmd string, args ...string) string {
+	c := exec.Command(cmd, args...)
+
+	out, err := c.Output()
+	if err != nil {
+		return ""
+	}
+
+	return strings.TrimSpace(string(out))
 }

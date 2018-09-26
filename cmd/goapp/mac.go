@@ -79,15 +79,20 @@ func initMac(ctx context.Context, args []string) {
 }
 
 type macBuildConfig struct {
-	Output   string `conf:"o"        help:"The output."`
-	Sign     string `conf:"sign"     help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
-	Sandbox  bool   `conf:"sandbox"  help:"Setup the app to run in sandbox mode."`
-	AppStore bool   `conf:"appstore" help:"Report whether the app will be packaged to be uploaded on the app store."`
-	Verbose  bool   `conf:"v"        help:"Enable verbose mode."`
+	Output           string `conf:"o"                 help:"The output."`
+	DeploymentTarget string `conf:"deployment-target" help:"The MacOS version."`
+	Sign             string `conf:"sign"              help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
+	Sandbox          bool   `conf:"sandbox"           help:"Setup the app to run in sandbox mode."`
+	AppStore         bool   `conf:"appstore"          help:"Report whether the app will be packaged to be uploaded on the app store."`
+	Force            bool   `conf:"a"                 help:"Force rebuilding of packages that are already up-to-date."`
+	Race             bool   `conf:"race"              help:"Enable data race detection."`
+	Verbose          bool   `conf:"v"                 help:"Enable verbose mode."`
 }
 
 func buildMac(ctx context.Context, args []string) {
-	c := macBuildConfig{}
+	c := macBuildConfig{
+		DeploymentTarget: macOSVersion(),
+	}
 
 	ld := conf.Loader{
 		Name:    "mac build",
@@ -117,16 +122,20 @@ func buildMac(ctx context.Context, args []string) {
 }
 
 type macRunConfig struct {
-	LogsAddr string `conf:"logs-addr" help:"The address used to listen app logs." validate:"nonzero"`
-	Sign     string `conf:"sign"      help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
-	Sandbox  bool   `conf:"sandbox"   help:"Setup the app to run in sandbox mode."`
-	Debug    bool   `conf:"d"         help:"Enable debug mode is enabled."`
-	Verbose  bool   `conf:"v"         help:"Enable verbose mode."`
+	LogsAddr         string `conf:"logs-addr"         help:"The address used to listen app logs." validate:"nonzero"`
+	DeploymentTarget string `conf:"deployment-target" help:"The MacOS version."`
+	Sign             string `conf:"sign"              help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
+	Sandbox          bool   `conf:"sandbox"           help:"Setup the app to run in sandbox mode."`
+	Debug            bool   `conf:"d"                 help:"Enable debug mode is enabled."`
+	Force            bool   `conf:"a"                 help:"Force rebuilding of packages that are already up-to-date."`
+	Race             bool   `conf:"race"              help:"Enable data race detection."`
+	Verbose          bool   `conf:"v"                 help:"Enable verbose mode."`
 }
 
 func runMac(ctx context.Context, args []string) {
 	c := macRunConfig{
-		LogsAddr: ":9000",
+		LogsAddr:         ":9000",
+		DeploymentTarget: macOSVersion(),
 	}
 
 	ld := conf.Loader{
@@ -153,8 +162,12 @@ func runMac(ctx context.Context, args []string) {
 		}
 
 		if err = pkg.Build(ctx, macBuildConfig{
-			Sign:    c.Sign,
-			Sandbox: c.Sandbox,
+			DeploymentTarget: c.DeploymentTarget,
+			Sign:             c.Sign,
+			Sandbox:          c.Sandbox,
+			Force:            c.Force,
+			Race:             c.Race,
+			Verbose:          c.Verbose,
 		}); err != nil {
 			fail("%s", err)
 		}
@@ -185,6 +198,10 @@ func listenLogs(ctx context.Context, addr string) {
 	if err != nil {
 		printErr("listening logs failed: %s", err)
 	}
+}
+
+func macOSVersion() string {
+	return executeString("sw_vers", "-productVersion")
 }
 
 func win(ctx context.Context, args []string) {
