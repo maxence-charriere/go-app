@@ -1,4 +1,37 @@
 
+3.2.6 / 2018-09-26
+==================
+
+## mac
+
+* The way to make a window translucent changed:
+
+```go
+win := app.NewWindow(app.WindowConfig{
+  Title:             "frosted window",
+  Width:             1024,
+  Height:            720,
+  TitlebarHidden:    true,
+  FrostedBackground: true, // Enable translucent effect.
+  URL:               "/MyCompo",
+})
+```
+
+* `WindowConfig.Mac` is deprecated.
+* `MacWindowConfig` is deprecated.
+* `Vibrancy` is deprecated.
+* Vibrancy const are deprecated:
+  * `VibeNone`
+  * `VibeLight`
+  * `VibeDark`
+  * `VibeTitlebar`
+  * `VibeSelection`
+  * `VibeMenu`
+  * `VibePopover`
+  * `VibeSidebar`
+  * `VibeMediumLight`
+  * `VibeUltraDark`
+
 3.2.5 / 2018-09-25
 ==================
 
