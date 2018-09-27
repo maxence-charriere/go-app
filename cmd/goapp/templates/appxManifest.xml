@@ -1,59 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" 
-         xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
-         xmlns:uap2="http://schemas.microsoft.com/appx/manifest/uap/windows10/2"
-         xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
-         xmlns:uap4="http://schemas.microsoft.com/appx/manifest/uap/windows10/4"
-         xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
-         xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-         xmlns:rescap3="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities/3"
-         xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
-         xmlns:desktop2="http://schemas.microsoft.com/appx/manifest/desktop/windows10/2"
-         xmlns:desktop3="http://schemas.microsoft.com/appx/manifest/desktop/windows10/3"
-         xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
-         xmlns:wincap3="http://schemas.microsoft.com/appx/manifest/foundation/windows10/windowscapabilities/3"
-         IgnorableNamespaces="uap4 wincap3 rescap3 desktop2 desktop3 com">
-  <Identity Name="{{.Name}}" ProcessorArchitecture="x64" Publisher="CN={{.Publisher}}" Version="1.0.0.0" />
-  <Properties>
-    <DisplayName>{{.Name}}</DisplayName>
-    <PublisherDisplayName>{{.Publisher}}</PublisherDisplayName>
-    <Logo>Assets\StoreLogo.png</Logo>
-  </Properties>
-  <Resources>
-    <Resource Language="en-us" />
-    <Resource uap:Scale="100" />
-    <Resource uap:Scale="125" />
-    <Resource uap:Scale="150" />
-    <Resource uap:Scale="200" />
-    <Resource uap:Scale="400" />
-  </Resources>
-  <Dependencies>
-    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.14393.0" MaxVersionTested="10.0.16299.15" />
-  </Dependencies>
-  <Capabilities>
-    <rescap:Capability Name="runFullTrust" />
-    <Capability Name="internetClient" />
-  </Capabilities>
-  <Applications>
-    <Application Id="{{.ID}}" Executable="{{.Executable}}" EntryPoint="Windows.FullTrustApplication">
-      <uap:VisualElements DisplayName="{{.Name}}" Description="{{.Description}}" BackgroundColor="transparent" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\Square310x310Logo.png" Square71x71Logo="Assets\Square71x71Logo.png">
-          <uap:ShowNameOnTiles>
-            <uap:ShowOn Tile="square150x150Logo" />
-            <uap:ShowOn Tile="wide310x150Logo" />
-            <uap:ShowOn Tile="square310x310Logo" />
-          </uap:ShowNameOnTiles>
-        </uap:DefaultTile>
-      </uap:VisualElements>
-      <Extensions>
-        <uap5:Extension Category="windows.appExecutionAlias"
-                        Executable="{{.Executable}}"   
-                        EntryPoint="{{.EntryPoint}}">  
-            <uap5:AppExecutionAlias>  
-                <uap5:ExecutionAlias Alias="{{.Executable}}" />  
-            </uap5:AppExecutionAlias>  
-        </uap5:Extension>
-      </Extensions>
-    </Application>
-  </Applications>
+    xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" 
+    xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" 
+    xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" 
+    xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" IgnorableNamespaces="uap mp rescap desktop">
+    <Identity Name="4a99c091-2185-434d-8088-4b6c643f38fc" Publisher="CN=Maxence" Version="1.0.0.0" />
+    <mp:PhoneIdentity PhoneProductId="4a99c091-2185-434d-8088-4b6c643f38fc" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+    <Properties>
+        <DisplayName>{{.Name}}</DisplayName>
+        <PublisherDisplayName>{{.Publisher}}</PublisherDisplayName>
+        <Logo>Assets\StoreLogo.png</Logo>
+    </Properties>
+    <Dependencies>
+        <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.14393.0" MaxVersionTested="10.0.16299.15" />
+    </Dependencies>
+    <Resources>
+        <Resource Language="en-us" />
+        <Resource uap:Scale="100" />
+        <Resource uap:Scale="125" />
+        <Resource uap:Scale="150" />
+        <Resource uap:Scale="200" />
+        <Resource uap:Scale="400" />
+    </Resources>
+    <Applications>
+        <Application Id="{{.ID}}" Executable="uwp.exe" EntryPoint="uwp.App">
+            <uap:VisualElements DisplayName="{{.Name}}" Description="{{.Description}}" BackgroundColor="transparent" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png">
+                <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\Square310x310Logo.png" Square71x71Logo="Assets\Square71x71Logo.png">
+                    <uap:ShowNameOnTiles>
+                        <uap:ShowOn Tile="square150x150Logo" />
+                        <uap:ShowOn Tile="wide310x150Logo" />
+                        <uap:ShowOn Tile="square310x310Logo" />
+                    </uap:ShowNameOnTiles>
+                </uap:DefaultTile>
+            </uap:VisualElements>
+            <Extensions>
+                <desktop:Extension Category="windows.fullTrustProcess" Executable="{{.Executable}}" />
+                <uap:Extension Category="windows.appService">
+                    <uap:AppService Name="goapp" />
+                </uap:Extension>
+                <uap5:Extension Category="windows.appExecutionAlias" Executable="uwp.exe" EntryPoint="uwp.App}">
+                    <uap5:AppExecutionAlias>
+                        <uap5:ExecutionAlias Alias="{{.Executable}}" />
+                    </uap5:AppExecutionAlias>
+                </uap5:Extension>
+            </Extensions>
+        </Application>
+    </Applications>
+    <Capabilities>
+        <Capability Name="internetClient" />
+        <rescap:Capability Name="runFullTrust"/>
+    </Capabilities>
 </Package>
