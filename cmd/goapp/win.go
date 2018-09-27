@@ -1,5 +1,7 @@
 // +build windows
 
+//go:generate go run uwp/main.go
+
 package main
 
 import (
