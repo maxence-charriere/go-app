@@ -2,8 +2,9 @@
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" 
     xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" 
     xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" 
+    xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" 
     xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" 
-    xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" IgnorableNamespaces="uap mp rescap desktop">
+    xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" IgnorableNamespaces="uap uap5 mp rescap desktop">
     <Identity Name="4a99c091-2185-434d-8088-4b6c643f38fc" Publisher="CN=Maxence" Version="1.0.0.0" />
     <mp:PhoneIdentity PhoneProductId="4a99c091-2185-434d-8088-4b6c643f38fc" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
     <Properties>
@@ -12,10 +13,13 @@
         <Logo>Assets\StoreLogo.png</Logo>
     </Properties>
     <Dependencies>
-        <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.14393.0" MaxVersionTested="10.0.16299.15" />
+        <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.15063.0" MaxVersionTested="10.0.17134.0" />
+        <PackageDependency Name="Microsoft.NET.Native.Framework.1.7" MinVersion="1.7.25531.0" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" />
+        <PackageDependency Name="Microsoft.NET.Native.Runtime.1.7" MinVersion="1.7.25531.0" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" />
+        <PackageDependency Name="Microsoft.VCLibs.140.00" MinVersion="14.0.22929.0" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" />
     </Dependencies>
     <Resources>
-        <Resource Language="en-us" />
+        <Resource Language="EN-US" />
         <Resource uap:Scale="100" />
         <Resource uap:Scale="125" />
         <Resource uap:Scale="150" />

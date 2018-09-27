@@ -24,6 +24,7 @@ func main() {
 
 	files := []string{
 		"clrcompression.dll",
+		"resources.pri",
 		"uwp.dll",
 		"uwp.exe",
 	}
