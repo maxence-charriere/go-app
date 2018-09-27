@@ -1,10 +1,10 @@
 
-3.2.7 / 2018-09-26
+3.2.7 - 3.2.8 / 2018-09-26
 ==================
 
 ## mac
 
-* fix MacOS retro compatibility up to 10.11 (El Capitan) (part 2).
+* fix MacOS retro compatibility up to 10.11 (El Capitan).
 
 3.2.6 / 2018-09-26
 ==================
