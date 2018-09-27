@@ -37,6 +37,8 @@ static const NSCompositingOperation NSCompositingOperationCopy =
 #define NSEventModifierFlagOption NSAlternateKeyMask
 #define NSEventModifierFlagCommand NSCommandKeyMask
 #define NSEventModifierFlagFunction NSFunctionKeyMask
+#define NSControlStateValueOn NSOnState
+#define NSControlStateValueOff NSOffState
 
 #endif
 
