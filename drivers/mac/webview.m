@@ -2,15 +2,16 @@
 #include "driver.h"
 #include "json.h"
 
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= 101300
+
 @implementation AppWebView
 - (BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender {
   NSPasteboard *pasteboard = [sender draggingPasteboard];
   NSMutableArray<NSString *> *filenames = [[NSMutableArray alloc] init];
-  NSArray<NSURL *> *url =
-      [pasteboard propertyListForType:NSPasteboardTypeURL];
+  NSArray<NSURL *> *url = [pasteboard propertyListForType:NSPasteboardTypeURL];
 
   for (NSPasteboardItem *item in pasteboard.pasteboardItems) {
-    NSData *data = [item dataForType:NSPasteboardTypeFileURL];
+    NSData *data = [item dataForType:NSPasteboardTypeURL];
     if (data == nil) {
       continue;
     }
@@ -40,3 +41,24 @@
   return [super prepareForDragOperation:sender];
 }
 @end
+
+#else
+
+@implementation AppWebView
+- (BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender {
+  NSPasteboard *pboard = [sender draggingPasteboard];
+
+  if ([[pboard types] containsObject:NSFilenamesPboardType]) {
+    Driver *driver = [Driver current];
+
+    NSDictionary *in = @{
+      @"Filenames" : [pboard propertyListForType:NSFilenamesPboardType],
+    };
+
+    [driver.goRPC call:@"driver.OnFileDrop" withInput:in onUI:YES];
+  }
+  return [super prepareForDragOperation:sender];
+}
+@end
+
+#endif
