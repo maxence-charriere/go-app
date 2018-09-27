@@ -4,7 +4,7 @@
 
 ## mac
 
-* fix MacOS retro compatibility up to 10.11.
+* fix MacOS retro compatibility up to 10.11 (El Capitan).
 
 3.2.6 / 2018-09-26
 ==================
