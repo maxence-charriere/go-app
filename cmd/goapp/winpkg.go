@@ -107,6 +107,11 @@ func (pkg *winPackage) Build(ctx context.Context, c winBuilConfig) error {
 		return err
 	}
 
+	printVerbose("generating resources.pri")
+	if err := pkg.generatePri(ctx); err != nil {
+		return err
+	}
+
 	if !c.AppX {
 		printVerbose("deploying")
 		return pkg.deploy(ctx)
@@ -153,7 +158,7 @@ func (pkg *winPackage) readSettings(ctx context.Context) error {
 	}
 
 	m.Name = stringWithDefault(m.Name, pkg.goPackageName)
-	m.ID = idFmt(m.Name)
+	m.ID = "goapp." + idFmt(m.Name)
 	m.Executable = filepath.Base(pkg.goExec)
 	m.EntryPoint = strings.Replace(m.Executable, ".exe", ".app", 1)
 	m.Description = stringWithDefault(m.Description, m.Name)
@@ -189,9 +194,10 @@ func (pkg *winPackage) createPackage() error {
 	uwpDir := filepath.Join(murlokswarm(), "cmd", "goapp", "uwp")
 	uwpFiles := []string{
 		"clrcompression.dll",
-		"resources.pri",
 		"uwp.dll",
 		"uwp.exe",
+		"App.xbf",
+		"WindowPage.xbf",
 	}
 
 	for _, f := range uwpFiles {
@@ -293,6 +299,36 @@ func (pkg *winPackage) generateIcons(ctx context.Context) error {
 	})
 }
 
+func (pkg *winPackage) generatePri(ctx context.Context) error {
+	os.Chdir(win10SDKBinX64())
+	defer os.Chdir(pkg.workingDir)
+
+	configName := filepath.Join(pkg.workingDir, "priconfig.xml")
+	config := []string{
+		"MakePri.exe", "createconfig",
+		"/cf", configName,
+		"/dq", "lang-en-US",
+		"/pv", "10.0.0",
+		"/o",
+	}
+
+	if err := execute(ctx, config[0], config[1:]...); err != nil {
+		return errors.Wrap(err, "generating pri config failed")
+	}
+	defer os.RemoveAll(configName)
+
+	new := []string{
+		"MakePri.exe", "new",
+		"/cf", configName,
+		"/pr", pkg.name,
+		"/mn", filepath.Join(pkg.name, "AppxManifest.xml"),
+		"/of", filepath.Join(pkg.name, "resources.pri"),
+		"/o",
+	}
+
+	return execute(ctx, new[0], new[1:]...)
+}
+
 func (pkg *winPackage) deploy(ctx context.Context) error {
 	cmd := []string{"powershell",
 		"Add-AppxPackage",
@@ -321,21 +357,46 @@ func (pkg *winPackage) makeToAppx(ctx context.Context) error {
 	return execute(ctx, cmd[0], cmd[1:]...)
 }
 
+func (pkg *winPackage) createCertificate(ctx context.Context) error {
+	pub := pkg.manifest.Publisher
+
+	cmd := []string{
+		"powershell", "New-SelfSignedCertificate",
+		"-Type", "Custom",
+		"-Subject", fmt.Sprintf(`"CN=%s"`, pub),
+		"-KeyUsage", "DigitalSignature",
+		"-FriendlyName", pkg.goPackageName,
+		"-CertStoreLocation ", `"Cert:\LocalMachine\My"`,
+	}
+
+	if err := execute(ctx, cmd[0], cmd[1:]...); err != nil {
+		return err
+	}
+
+	cmd = []string{
+		"powershell",
+		"$pwd", "=", "ConvertTo-SecureString",
+		"-String", "goapp",
+		"-Force",
+		"-AsPlainText",
+		";", "Export-PfxCertificate",
+		"-cert", `"Cert:\LocalMachine\My\042EC428CB83AB2667D04467DBDA2858E536B023"`,
+		"-FilePath", filepath.Join(pkg.workingDir, "goapp.pfx"),
+		"-Password", "$pwd",
+	}
+
+	return execute(ctx, cmd[0], cmd[1:]...)
+}
+
 func (pkg *winPackage) sign(ctx context.Context) error {
 	os.Chdir(win10SDKBinX64())
 	defer os.Chdir(pkg.workingDir)
 
 	cmd := []string{
-		"signtool.exe", "sign", "/a",
-		"/fd", "SHA256",
-		"/f", filepath.Join(
-			murlokswarm(),
-			"cmd",
-			"goapp",
-			"certificates",
-			"win.pfx",
-		),
-		"/p", "123456",
+		"signtool.exe", "sign",
+		"/fd", "SHA256", "/a",
+		"/f", filepath.Join(pkg.workingDir, "goapp.pfx"),
+		"/p", "goapp",
 	}
 
 	if verbose {

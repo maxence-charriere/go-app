@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	appx := filepath.Join(
+	release := filepath.Join(
 		os.Getenv("GOPATH"),
 		"src",
 		"github.com",
@@ -19,19 +19,19 @@ func main() {
 		"bin",
 		"x64",
 		"Release",
-		"AppX",
 	)
 
 	files := []string{
-		"clrcompression.dll",
-		"resources.pri",
-		"uwp.dll",
-		"uwp.exe",
+		"App.xbf",
+		"WindowPage.xbf",
+		filepath.Join("AppX", "clrcompression.dll"),
+		filepath.Join("AppX", "uwp.dll"),
+		filepath.Join("AppX", "uwp.exe"),
 	}
 
 	for _, f := range files {
-		src := filepath.Join(appx, f)
-		dst := filepath.Join("uwp", f)
+		src := filepath.Join(release, f)
+		dst := filepath.Join("uwp", filepath.Base(f))
 
 		if err := file.Copy(dst, src); err != nil {
 			fmt.Println(err)
