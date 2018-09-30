@@ -166,7 +166,7 @@ func runWin(ctx context.Context, args []string) {
 			fail("%s", err)
 		}
 
-		appname = pkg.name
+		appname = pkg.manifest.Scheme
 	}
 
 	_, appname = filepath.Split(appname)
@@ -179,7 +179,7 @@ func runWin(ctx context.Context, args []string) {
 	os.Setenv("GOAPP_DEBUG", fmt.Sprintf("%v", c.Debug))
 
 	printVerbose("running %s", appname)
-	if err := execute(ctx, appname); err != nil {
+	if err := execute(ctx, "powershell", "start", fmt.Sprintf("%s://goapp", appname)); err != nil {
 		fail("%s", err)
 	}
 

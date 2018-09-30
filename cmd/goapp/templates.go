@@ -5,9 +5,8 @@ const appxManifestTmpl = `
 <?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" 
     xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" 
-    xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" 
     xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" 
-    xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" IgnorableNamespaces="uap uap5 rescap desktop">
+    xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" IgnorableNamespaces="uap rescap desktop">
     <Identity Name="{{.ID}}" Publisher="CN={{.Publisher}}" Version="1.0.0.0" />
     <Properties>
         <DisplayName>{{.Name}}</DisplayName>
@@ -44,11 +43,9 @@ const appxManifestTmpl = `
                 <uap:Extension Category="windows.appService">
                     <uap:AppService Name="goapp" />
                 </uap:Extension>
-                <uap5:Extension Category="windows.appExecutionAlias" Executable="uwp.exe" EntryPoint="uwp.App}">
-                    <uap5:AppExecutionAlias>
-                        <uap5:ExecutionAlias Alias="{{.Executable}}" />
-                    </uap5:AppExecutionAlias>
-                </uap5:Extension>
+                <uap:Extension Category="windows.protocol">
+                    <uap:Protocol Name="{{.Scheme}}" />
+                </uap:Extension>
             </Extensions>
         </Application>
     </Applications>

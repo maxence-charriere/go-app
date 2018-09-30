@@ -11,6 +11,9 @@ type Settings struct {
 	// The app publisher.
 	Publisher string
 
+	// The URL scheme to call the app.
+	Scheme string
+
 	// The app icon path relative to the resources directory as .png file.
 	// Provide a big one! Other required icon sizes will be auto generated.
 	Icon string

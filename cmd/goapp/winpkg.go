@@ -36,6 +36,7 @@ type manifest struct {
 	EntryPoint  string
 	Description string
 	Publisher   string
+	Scheme      string
 	Icon        string
 }
 
@@ -163,6 +164,7 @@ func (pkg *winPackage) readSettings(ctx context.Context) error {
 	m.EntryPoint = strings.Replace(m.Executable, ".exe", ".app", 1)
 	m.Description = stringWithDefault(m.Description, m.Name)
 	m.Publisher = stringWithDefault(m.Publisher, "goapp")
+	m.Scheme = stringWithDefault(m.Scheme, pkg.goPackageName)
 	m.Icon = stringWithDefault(m.Icon, filepath.Join(murlokswarm(), "logo.png"))
 
 	d, _ := json.MarshalIndent(m, "", "    ")
@@ -231,18 +233,6 @@ func (pkg *winPackage) generateIcons(ctx context.Context) error {
 		)
 	}
 
-	targetSized := func(n string, s int, alt bool) string {
-		altstr := ""
-		if alt {
-			altstr = "_altform-unplated"
-		}
-
-		return filepath.Join(
-			pkg.assets,
-			fmt.Sprintf("%s.targetsize-%v%s.png", n, s, altstr),
-		)
-	}
-
 	return generateIcons(icon, []iconInfo{
 		{Name: scaled("Square44x44Logo", 1), Width: 44, Height: 44, Scale: 1, Padding: true},
 		{Name: scaled("Square44x44Logo", 100), Width: 44, Height: 44, Scale: 1},
@@ -250,17 +240,6 @@ func (pkg *winPackage) generateIcons(ctx context.Context) error {
 		{Name: scaled("Square44x44Logo", 150), Width: 44, Height: 44, Scale: 1.5},
 		{Name: scaled("Square44x44Logo", 200), Width: 44, Height: 44, Scale: 2},
 		{Name: scaled("Square44x44Logo", 400), Width: 44, Height: 44, Scale: 4},
-
-		{Name: targetSized("Square44x44Logo", 16, false), Width: 16, Height: 16, Scale: 1},
-		{Name: targetSized("Square44x44Logo", 16, true), Width: 16, Height: 16, Scale: 1},
-		{Name: targetSized("Square44x44Logo", 24, false), Width: 24, Height: 24, Scale: 1},
-		{Name: targetSized("Square44x44Logo", 24, true), Width: 24, Height: 24, Scale: 1},
-		{Name: targetSized("Square44x44Logo", 32, false), Width: 32, Height: 32, Scale: 1},
-		{Name: targetSized("Square44x44Logo", 32, true), Width: 32, Height: 32, Scale: 1},
-		{Name: targetSized("Square44x44Logo", 48, false), Width: 48, Height: 48, Scale: 1},
-		{Name: targetSized("Square44x44Logo", 48, true), Width: 48, Height: 48, Scale: 1},
-		{Name: targetSized("Square44x44Logo", 256, false), Width: 256, Height: 256, Scale: 1},
-		{Name: targetSized("Square44x44Logo", 256, true), Width: 256, Height: 256, Scale: 1},
 
 		{Name: scaled("Square71x71Logo", 1), Width: 71, Height: 71, Scale: 1, Padding: true},
 		{Name: scaled("Square71x71Logo", 100), Width: 71, Height: 71, Scale: 1},
@@ -305,20 +284,20 @@ func (pkg *winPackage) generatePri(ctx context.Context) error {
 
 	configName := filepath.Join(pkg.workingDir, "priconfig.xml")
 	config := []string{
-		"MakePri.exe", "createconfig",
+		"makepri.exe", "createconfig",
 		"/cf", configName,
 		"/dq", "lang-en-US",
 		"/pv", "10.0.0",
 		"/o",
 	}
 
-	if err := execute(ctx, config[0], config[1:]...); err != nil {
+	if _, err := executeQuiet(config[0], config[1:]...); err != nil {
 		return errors.Wrap(err, "generating pri config failed")
 	}
 	defer os.RemoveAll(configName)
 
 	new := []string{
-		"MakePri.exe", "new",
+		"makepri.exe", "new",
 		"/cf", configName,
 		"/pr", pkg.name,
 		"/mn", filepath.Join(pkg.name, "AppxManifest.xml"),
@@ -326,7 +305,8 @@ func (pkg *winPackage) generatePri(ctx context.Context) error {
 		"/o",
 	}
 
-	return execute(ctx, new[0], new[1:]...)
+	_, err := executeQuiet(new[0], new[1:]...)
+	return err
 }
 
 func (pkg *winPackage) deploy(ctx context.Context) error {

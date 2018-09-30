@@ -60,6 +60,17 @@ func printOutput(ctx context.Context, r io.Reader, output io.Writer) {
 	}
 }
 
+func executeQuiet(cmd string, args ...string) (string, error) {
+	c := exec.Command(cmd, args...)
+
+	out, err := c.Output()
+	if err != nil {
+		return strings.TrimSpace(string(out)), err
+	}
+
+	return "", nil
+}
+
 func executeString(cmd string, args ...string) string {
 	c := exec.Command(cmd, args...)
 
