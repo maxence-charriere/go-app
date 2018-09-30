@@ -14,8 +14,7 @@
 @property NSString *loadReturnID;
 
 + (void) new:(NSDictionary *)in return:(NSString *)returnID;
-- (void)configBackgroundColor:(NSString *)color
-                     vibrancy:(NSVisualEffectMaterial)vibrancy;
+- (void)configBackgroundColor:(NSString *)color frosted:(BOOL)frosted;
 - (void)configWebview;
 - (void)configTitlebar:(NSString *)title hidden:(BOOL)isHidden;
 + (void)load:(NSDictionary *)in return:(NSString *)returnID;

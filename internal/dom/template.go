@@ -14,6 +14,8 @@ const htmlTemplate = `
             height: 100%;
             width: 100%;
             margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-size: 11pt;
         }
         
         body {
@@ -332,6 +334,7 @@ function onchangeToGolang(elem, fieldOrMethod) {
 function onDragStartToGolang(elem, event, fieldOrMethod) {
     const payload = mapObject(event.dataTransfer);
     payload['Data'] = elem.dataset.drag;
+    setPayloadSource(payload, elem);
 
     event.dataTransfer.setData('text', elem.dataset.drag);
 
@@ -348,6 +351,7 @@ function ondropToGolang(elem, event, fieldOrMethod) {
     const payload = mapObject(event.dataTransfer);
     payload['Data'] = event.dataTransfer.getData('text');
     payload['FileOverride'] = 'xxx';
+    setPayloadSource(payload, elem);
 
     golangRequest(JSON.stringify({
         'CompoID': elem.compoID,
@@ -359,6 +363,7 @@ function ondropToGolang(elem, event, fieldOrMethod) {
 
 function eventToGolang(elem, event, fieldOrMethod) {
     const payload = mapObject(event);
+    setPayloadSource(payload, elem);
 
     if (elem.contentEditable === 'true') {
         payload['InnerText'] = elem.innerText;
@@ -370,4 +375,13 @@ function eventToGolang(elem, event, fieldOrMethod) {
         'JSONValue': JSON.stringify(payload)
     }));
 }
-`
+
+function setPayloadSource(payload, elem) {
+    payload['Source'] = {
+        'GoappID': elem.ID,
+        'CompoID': elem.compoID,
+        'ID': elem.id,
+        'Class': elem.className,
+        'Data': elem.dataset
+    };
+}`

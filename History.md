@@ -1,4 +1,72 @@
 
+3.2.7 - 3.2.8 / 2018-09-26
+==================
+
+## mac
+
+* fix MacOS retro compatibility up to 10.11 (El Capitan).
+
+3.2.6 / 2018-09-26
+==================
+
+## mac
+
+* The way to make a window translucent changed:
+
+```go
+win := app.NewWindow(app.WindowConfig{
+  Title:             "frosted window",
+  Width:             1024,
+  Height:            720,
+  TitlebarHidden:    true,
+  FrostedBackground: true, // Enable translucent effect.
+  URL:               "/MyCompo",
+})
+```
+
+* `WindowConfig.Mac` is deprecated.
+* `MacWindowConfig` is deprecated.
+* `Vibrancy` is deprecated.
+* Vibrancy const are deprecated:
+  * `VibeNone`
+  * `VibeLight`
+  * `VibeDark`
+  * `VibeTitlebar`
+  * `VibeSelection`
+  * `VibeMenu`
+  * `VibePopover`
+  * `VibeSidebar`
+  * `VibeMediumLight`
+  * `VibeUltraDark`
+
+3.2.5 / 2018-09-25
+==================
+
+## general
+
+* In HTML based elements (windows and pages):
+  * `font-family`: Default is the system font.
+  * `font-size`: Default is 11px.
+
+## mac
+
+* Fix MacOS Mojave deprecated warnings.
+* `goapp mac build` and `goapp mac run`:
+  * `-deployment-target`: Specify for which version of MacOS is the build.
+  * `-a`: Force rebuild go executable.
+  * `-race`: Build with data race detection.
+
+3.2.4 / 2018-09-24
+==================
+
+* mac default main window background take the system default color.
+
+3.2.3 / 2018-09-23
+==================
+
+* EventArgs structs now have info about the source element that invoked the
+  event.
+
 3.2.2 / 2018-09-13
 ==================
 

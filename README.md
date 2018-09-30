@@ -1,16 +1,22 @@
+<p align="center">
+    <img alt="ui demo" src="https://github.com/murlokswarm/app/wiki/assets/ui-demo-large.gif">
+</p>
+
 # app
 
-[![Build Status](https://travis-ci.org/murlokswarm/app.svg?branch=master)](https://travis-ci.org/murlokswarm/app)
-[![Go Report Card](https://goreportcard.com/badge/github.com/murlokswarm/app)](https://goreportcard.com/report/github.com/murlokswarm/app)
-[![Coverage Status](https://coveralls.io/repos/github/murlokswarm/app/badge.svg?branch=master)](https://coveralls.io/github/murlokswarm/app?branch=master)
-[![awesome-go](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/avelino/awesome-go#readme)
-[![GoDoc](https://godoc.org/github.com/murlokswarm/app?status.svg)](https://godoc.org/github.com/murlokswarm/app)
+<p align="center">
+	<a href="https://travis-ci.org/murlokswarm/app"><img src="https://travis-ci.org/murlokswarm/app.svg?branch=master" alt="Build Status"></a>
+    <a href="https://goreportcard.com/report/github.com/murlokswarm/app"><img src="https://goreportcard.com/badge/github.com/murlokswarm/app" alt="Go Report Card"></a>
+    <a href="https://coveralls.io/github/murlokswarm/app?branch=master"><img src="https://coveralls.io/repos/github/murlokswarm/app/badge.svg?branch=master" alt="Coverage Status"></a>
+    <a href="https://github.com/avelino/awesome-go#readme"><img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg" alt="awesome-go"></a>
+    <a href="https://godoc.org/github.com/murlokswarm/app"><img src="https://godoc.org/github.com/murlokswarm/app?status.svg" alt="GoDoc"></a>
+    <a href="https://en.cryptobadges.io/donate/3PRMM9fj7yq9gHxgk2svewWF9BkzzGPa1b"><img src="https://en.cryptobadges.io/badge/micro/3PRMM9fj7yq9gHxgk2svewWF9BkzzGPa1b" alt="Donate with Bitcoin"></a>
+    <a href="https://en.cryptobadges.io/donate/0x789D63B8869783a15bbFb43331a192DdeC4bDE53"><img src="https://en.cryptobadges.io/badge/micro/0x789D63B8869783a15bbFb43331a192DdeC4bDE53" alt="Donate with Ethereum"></a>
+</p>
 
 A multi-platform UI framework that uses
 [Go](https://golang.org), [HTML](https://en.wikipedia.org/wiki/HTML5) and
 [CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets).
-
-![ui demo](https://github.com/murlokswarm/app/wiki/assets/ui-demo-large.gif)
 
 
 ## Table of Contents
@@ -39,12 +45,12 @@ goapp update -v
 
 ## Supported platforms
 
-|Platform|Status|
-|:-|:-:|
-|[MacOS](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver)|✔|
-|[Web](https://godoc.org/github.com/murlokswarm/app/drivers/web#Driver)|✔|
-|Windows|[🔨](https://github.com/murlokswarm/app/issues/141)|
-|Linux|✖|
+|Platform|Minimum OS|Minimum Go version|Status|
+|:-|:-:|:-:|:-:|
+|[MacOS](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver)|MacOS 10.11 (El Capitan)|1.11|✔|
+|[Web](https://godoc.org/github.com/murlokswarm/app/drivers/web#Driver)|MacOS 10.11, Windows 10 (April 2018 Update) or Linux|1.11|✔|
+|Windows|Windows 10 (April 2018 Update)|1.11|[🔨](https://github.com/murlokswarm/app/issues/141)|
+|Linux|||✖|
 
 <a name="hello"></a>
 
@@ -205,7 +211,6 @@ goapp web run -b # Run a web server and launch the main page in the default brow
 
 If this project helps you build awesome UI, you can help me grow my cryptos :)
 
-|Crypto|Address|
-|-|-|
-|[Ethereum (ETH)](https://www.coinbase.com/addresses/5b483b8df2ba04096454ea62)|0x789D63B8869783a15bbFb43331a192DdeC4bDE53|
-|[Bitcoin (BTC)](https://www.coinbase.com/addresses/5b483f32bec71f034450c264)|3PRMM9fj7yq9gHxgk2svewWF9BkzzGPa1b|
+[![Donate with Bitcoin](https://en.cryptobadges.io/badge/small/3PRMM9fj7yq9gHxgk2svewWF9BkzzGPa1b)](https://en.cryptobadges.io/donate/3PRMM9fj7yq9gHxgk2svewWF9BkzzGPa1b)
+
+[![Donate with Ethereum](https://en.cryptobadges.io/badge/small/0x789D63B8869783a15bbFb43331a192DdeC4bDE53)](https://en.cryptobadges.io/donate/0x789D63B8869783a15bbFb43331a192DdeC4bDE53)

@@ -427,14 +427,13 @@ func (d *Driver) onExit(in map[string]interface{}) interface{} {
 
 func (d *Driver) newMainWindow() {
 	app.NewWindow(app.WindowConfig{
-		Title:           d.AppName(),
-		TitlebarHidden:  true,
-		MinWidth:        480,
-		Width:           1280,
-		MinHeight:       480,
-		Height:          768,
-		BackgroundColor: "#21252b",
-		URL:             d.URL,
+		Title:          d.AppName(),
+		TitlebarHidden: true,
+		MinWidth:       480,
+		Width:          1280,
+		MinHeight:      480,
+		Height:         768,
+		URL:            d.URL,
 	})
 }
 

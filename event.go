@@ -148,6 +148,7 @@ type MouseEvent struct {
 	MetaKey   bool
 	ShiftKey  bool
 	InnerText string
+	Source    EventSource
 }
 
 // WheelEvent represents an onwheel event arg.
@@ -156,6 +157,7 @@ type WheelEvent struct {
 	DeltaY    float64
 	DeltaZ    float64
 	DeltaMode DeltaMode
+	Source    EventSource
 }
 
 // DeltaMode is an indication of the units of measurement for a delta value.
@@ -171,6 +173,7 @@ type KeyboardEvent struct {
 	MetaKey   bool
 	ShiftKey  bool
 	InnerText string
+	Source    EventSource
 }
 
 // DragAndDropEvent represents an ondrop event arg.
@@ -179,4 +182,14 @@ type DragAndDropEvent struct {
 	Data          string
 	DropEffect    string
 	EffectAllowed string
+	Source        EventSource
+}
+
+// EventSource represents a descriptor to an event source.
+type EventSource struct {
+	GoappID string
+	CompoID string
+	ID      string
+	Class   string
+	Data    map[string]string
 }

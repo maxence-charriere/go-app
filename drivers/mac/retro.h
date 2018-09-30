@@ -3,6 +3,14 @@
 
 #import <Cocoa/Cocoa.h>
 
+#if MAC_OS_X_VERSION_MAX_ALLOWED < 101300
+
+/* menu.h */
+#define NSControlStateValueOn NSOnState
+#define NSControlStateValueOff NSOffState
+
+#endif
+
 #if MAC_OS_X_VERSION_MAX_ALLOWED < 101200
 
 /* image.h */
@@ -37,6 +45,8 @@ static const NSCompositingOperation NSCompositingOperationCopy =
 #define NSEventModifierFlagOption NSAlternateKeyMask
 #define NSEventModifierFlagCommand NSCommandKeyMask
 #define NSEventModifierFlagFunction NSFunctionKeyMask
+#define NSControlStateValueOn NSOnState
+#define NSControlStateValueOff NSOffState
 
 #endif
 

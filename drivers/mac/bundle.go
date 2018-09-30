@@ -28,9 +28,6 @@ type Bundle struct {
 	// The development region.
 	DevRegion string
 
-	// The MacOS version.
-	DeploymentTarget string
-
 	// A human readable copyright.
 	Copyright string
 

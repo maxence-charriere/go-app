@@ -49,8 +49,7 @@ func printOutput(ctx context.Context, r io.Reader, output io.Writer) {
 		}
 
 		if err != nil {
-			printErr("%s", err)
-			continue
+			return
 		}
 
 		if verbose {
@@ -66,9 +65,7 @@ func executeString(cmd string, args ...string) string {
 
 	out, err := c.Output()
 	if err != nil {
-
 		return ""
-
 	}
 
 	return strings.TrimSpace(string(out))

@@ -7,8 +7,6 @@ import (
 	"path/filepath"
 	"strings"
 	"text/template"
-
-	driver "github.com/murlokswarm/app/drivers/mac"
 )
 
 type bundle struct {
@@ -35,11 +33,11 @@ type bundle struct {
 	Contacts         bool
 	Location         bool
 	Calendar         bool
-	FilePickers      driver.FileAccess
-	Downloads        driver.FileAccess
-	Pictures         driver.FileAccess
-	Music            driver.FileAccess
-	Movies           driver.FileAccess
+	FilePickers      string
+	Downloads        string
+	Pictures         string
+	Music            string
+	Movies           string
 	SupportedFiles   []string
 }
 
