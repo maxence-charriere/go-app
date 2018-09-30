@@ -37,4 +37,23 @@ func main() {
 			fmt.Println(err)
 		}
 	}
+
+	goappDLL := filepath.Join(
+		os.Getenv("GOPATH"),
+		"src",
+		"github.com",
+		"murlokswarm",
+		"uwp",
+		"x64",
+		"Release",
+		"goapp.dll",
+	)
+
+	if err := file.Copy(
+		filepath.Join("uwp", "goapp.dll"),
+		filepath.Join(goappDLL),
+	); err != nil {
+		fmt.Println(err)
+	}
+
 }

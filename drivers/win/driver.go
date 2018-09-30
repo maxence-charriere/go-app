@@ -13,6 +13,7 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/core"
 	"github.com/murlokswarm/app/internal/logs"
+	"github.com/pkg/errors"
 )
 
 var (
@@ -49,6 +50,11 @@ type Driver struct {
 
 	// The settings used to generate the app package.
 	Settings Settings
+
+	factory  *app.Factory
+	elems    *core.ElemDB
+	uichan   chan func()
+	stopchan chan error
 }
 
 // Run satisfies the app.Driver interface.
@@ -57,9 +63,46 @@ func (d *Driver) Run(f *app.Factory) error {
 		return d.runGoappBuild()
 	}
 
-	app.Log("hello world")
-	time.Sleep(time.Second * 5)
-	return nil
+	if err := loadDLL(); err != nil {
+		return errors.Wrap(err, "loading goapp.dll failed")
+	}
+	defer closeDLL()
+
+	d.factory = f
+	d.elems = core.NewElemDB()
+
+	d.uichan = make(chan func(), 256)
+	defer close(d.uichan)
+
+	d.uichan = make(chan func(), 256)
+	d.stopchan = make(chan error)
+	aliveTicker := time.NewTicker(time.Minute)
+	defer close(d.uichan)
+	defer close(d.stopchan)
+	defer aliveTicker.Stop()
+
+	driver = d
+
+	if err := initBridge(); err != nil {
+		return err
+	}
+
+	for {
+		select {
+		case err := <-d.stopchan:
+			return err
+
+		case fn := <-d.uichan:
+			fn()
+
+		case <-aliveTicker.C:
+		}
+	}
+}
+
+// CallOnUIGoroutine satisfies the app.Driver interface.
+func (d *Driver) CallOnUIGoroutine(f func()) {
+	d.uichan <- f
 }
 
 func (d *Driver) runGoappBuild() error {

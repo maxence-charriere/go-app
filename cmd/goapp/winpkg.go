@@ -196,6 +196,7 @@ func (pkg *winPackage) createPackage() error {
 	uwpDir := filepath.Join(murlokswarm(), "cmd", "goapp", "uwp")
 	uwpFiles := []string{
 		"clrcompression.dll",
+		"goapp.dll",
 		"uwp.dll",
 		"uwp.exe",
 		"App.xbf",
