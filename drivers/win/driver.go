@@ -8,9 +8,11 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"runtime"
 	"time"
 
 	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 	"github.com/murlokswarm/app/internal/logs"
 	"github.com/pkg/errors"
@@ -25,6 +27,8 @@ var (
 )
 
 func init() {
+	runtime.LockOSThread()
+
 	if len(goappBuild) != 0 {
 		app.Logger = func(format string, a ...interface{}) {}
 		return
@@ -53,6 +57,8 @@ type Driver struct {
 
 	factory  *app.Factory
 	elems    *core.ElemDB
+	winRPC   bridge.PlatformRPC
+	goRPC    bridge.GoRPC
 	uichan   chan func()
 	stopchan chan error
 }
@@ -63,6 +69,11 @@ func (d *Driver) Run(f *app.Factory) error {
 		return d.runGoappBuild()
 	}
 
+	defer func() {
+		recover()
+		time.Sleep(time.Second * 30)
+	}()
+
 	if err := loadDLL(); err != nil {
 		return errors.Wrap(err, "loading goapp.dll failed")
 	}
@@ -70,6 +81,7 @@ func (d *Driver) Run(f *app.Factory) error {
 
 	d.factory = f
 	d.elems = core.NewElemDB()
+	d.winRPC.Handler = winCall
 
 	d.uichan = make(chan func(), 256)
 	defer close(d.uichan)

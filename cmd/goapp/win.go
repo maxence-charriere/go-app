@@ -74,7 +74,8 @@ func initWin(ctx context.Context, args []string) {
 	}
 
 	printWarn("install Windows 10 SDK: https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk")
-	printWarn("install Desktop app converter: https://aka.ms/converter")
+	// printWarn("install Desktop app converter: https://aka.ms/converter")
+	printWarn("install mingw64: http://mingw-w64.org/doku.php/download/mingw-builds")
 
 	printVerbose("installing dev certificate")
 	os.Chdir(certMgr())
