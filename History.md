@@ -1,4 +1,22 @@
 
+3.2.9 / 2018-09-30
+==================
+
+## General
+
+* `EventSource` now maps source value.
+
+```go
+type EventSource struct {
+  GoappID string
+  CompoID string
+  ID      string
+  Class   string
+  Data    map[string]string
+  Value   string
+}
+```
+
 3.2.7 - 3.2.8 / 2018-09-26
 ==================
 
