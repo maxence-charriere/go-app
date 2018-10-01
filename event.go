@@ -192,4 +192,5 @@ type EventSource struct {
 	ID      string
 	Class   string
 	Data    map[string]string
+	Value   string
 }
