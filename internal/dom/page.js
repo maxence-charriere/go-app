@@ -338,6 +338,7 @@ function setPayloadSource(payload, elem) {
         'CompoID': elem.compoID,
         'ID': elem.id,
         'Class': elem.className,
-        'Data': elem.dataset
+        'Data': elem.dataset,
+        'Value': elem.value
     };
 }
