@@ -130,9 +130,10 @@ func (e *Engine) renderText(r rendering) (node, error) {
 	n, ok := e.nodes[r.nodeID]
 	if !ok || n.Type != "text" {
 		n = node{
-			ID:   "text:" + uuid.New().String(),
-			Type: "text",
-			Dom:  e,
+			ID:      "text:" + uuid.New().String(),
+			CompoID: r.compoID,
+			Type:    "text",
+			Dom:     e,
 		}
 		e.newNode(n)
 	}
@@ -156,10 +157,83 @@ func (e *Engine) renderText(r rendering) (node, error) {
 }
 
 func (e *Engine) renderSelfClosingTag(r rendering) (node, error) {
-	panic("not implemented")
+	tagName, hasAttr := r.dec.TagName()
+	typ := string(tagName)
+
+	if isCompoNode(typ, r.namespace) {
+		return e.renderCompo(r, typ, hasAttr)
+	}
+
+	if typ == "svg" {
+		r.namespace = svgNamespace
+	}
+
+	n, ok := e.nodes[r.nodeID]
+	if !ok || n.Type != typ {
+		n = node{
+			ID:      typ + ":" + uuid.New().String(),
+			CompoID: r.compoID,
+			Type:    typ,
+			Dom:     e,
+		}
+		e.newNode(n)
+	}
+
+	if hasAttr {
+		n = e.renderTagAttrs(r, n)
+	}
+
+	for _, childID := range n.ChildrenIDs {
+		e.deleteNode(childID)
+	}
+
+	n.ChildrenIDs = n.ChildrenIDs[:0]
+	e.nodes[n.ID] = n
+	return n, nil
 }
 
-func (e *Engine) renderCompo(r rendering, typ string) (node, error) {
+func (e *Engine) renderTagAttrs(r rendering, n node) node {
+	attrs := make(map[string]string)
+	for {
+		key, val, moreAttr := r.dec.TagAttr()
+		k := string(key)
+		v := string(val)
+
+		for _, t := range e.AttrTransforms {
+			k, v = t(k, v)
+		}
+
+		attrs[k] = v
+		e.changes = append(e.changes, change{
+			Action: setAttr,
+			NodeID: n.ID,
+			Key:    k,
+			Value:  v,
+		})
+
+		if !moreAttr {
+			break
+		}
+	}
+
+	for k := range n.Attrs {
+		if _, ok := attrs[k]; !ok {
+			continue
+		}
+
+		e.changes = append(e.changes, change{
+			Action: delAttr,
+			NodeID: n.ID,
+			Key:    k,
+		})
+	}
+
+	n.Attrs = attrs
+	e.nodes[n.ID] = n
+	return n
+}
+
+func (e *Engine) renderCompo(r rendering, typ string, hasAttr bool) (node, error) {
 	panic("not implemented")
 }
 
