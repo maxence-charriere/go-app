@@ -146,42 +146,38 @@ func (e *Engine) compoToHTML(c app.Compo) (string, error) {
 	return w.String(), nil
 }
 
-func (e *Engine) render(it iterator) (iterator, error) {
-	var err error
+func (e *Engine) render(z *html.Tokenizer, n node, namespace string) (node, bool) {
+	switch z.Next() {
+	case html.TextToken:
+		return e.renderText(z, n, namespace)
 
-	for {
-		switch it.tokenizer.Next() {
-		case html.TextToken:
-			e.renderText(it)
+	case html.SelfClosingTagToken:
+		return e.renderSelfClosingTag(z, n, namespace)
 
-			// case html.SelfClosingTagToken:
-			// 	return e.renderSelfClosingTag(it)
+	case html.StartTagToken:
+		return e.renderStartTag(z, n, namespace)
 
-			// case html.StartTagToken:
-			// 	return e.renderStartTag(it)
+	case html.EndTagToken:
+		return node{}, false
 
-			// case html.EndTagToken:
-
-			// case html.ErrorToken:
-			// 	return node{}, it.tokenizer.Err()
-		}
+	default:
+		return e.render(z, n, namespace)
 	}
 }
 
-func (e *Engine) renderText(it iterator) (iterator, error) {
-	text := string(it.tokenizer.Text())
+func (e *Engine) renderText(z *html.Tokenizer, n node, namespace string) (node, bool) {
+	text := string(z.Text())
 	text = strings.TrimSpace(text)
 
-	if len(text) == 0 || len(it.namespace) != 0 {
+	if len(text) == 0 || len(namespace) != 0 {
 		// Invalid text, iterator next node.
-		return e.render(it)
+		return e.render(z, n, namespace)
 	}
 
-	n, ok := e.nodes[it.nodeID]
-	if !ok || n.Type != "text" {
+	if len(n.ID) == 0 || n.Type != "text" {
 		n = node{
 			ID:      "text:" + uuid.New().String(),
-			CompoID: it.compoID,
+			CompoID: n.CompoID,
 			Type:    "text",
 			Dom:     e,
 		}
@@ -198,121 +194,173 @@ func (e *Engine) renderText(it iterator) (iterator, error) {
 		e.nodes[n.ID] = n
 	}
 
-	return n, nil
+	return n, true
 }
 
-// func (e *Engine) renderSelfClosingTag(it iterator) (node, error) {
-// 	tagName, hasAttr := it.tokenizer.TagName()
-// 	typ := string(tagName)
+func (e *Engine) renderSelfClosingTag(z *html.Tokenizer, n node, namespace string) (node, bool) {
+	tagName, hasAttr := z.TagName()
+	typ := string(tagName)
 
-// 	if typ == "svg" {
-// 		it.namespace = svgNamespace
-// 	}
+	if typ == "svg" {
+		namespace = svg
+	}
 
-// 	if isCompoNode(typ, it.namespace) {
-// 		return e.renderCompo(it, typ, hasAttr)
-// 	}
+	if isCompoNode(typ, namespace) {
+		return e.renderCompo(z, typ, hasAttr)
+	}
 
-// 	n, ok := e.nodes[it.nodeID]
-// 	if !ok || n.Type != typ {
-// 		n = node{
-// 			ID:      typ + ":" + uuid.New().String(),
-// 			CompoID: it.compoID,
-// 			Type:    typ,
-// 			Dom:     e,
-// 		}
-// 		e.newNode(n)
-// 	}
+	if len(n.ID) == 0 || n.Type != typ {
+		n = node{
+			ID:      typ + ":" + uuid.New().String(),
+			CompoID: n.CompoID,
+			Type:    typ,
+			Dom:     e,
+		}
+		e.newNode(n)
+	}
 
-// 	if hasAttr {
-// 		n = e.renderTagAttrs(it, n)
-// 	}
+	n = e.renderTagAttrs(z, n, hasAttr)
 
-// 	for _, childID := range n.ChildIDs {
-// 		e.deleteNode(childID)
-// 	}
+	for _, childID := range n.ChildIDs {
+		e.deleteNode(childID)
+	}
 
-// 	n.ChildIDs = n.ChildIDs[:0]
-// 	e.nodes[n.ID] = n
-// 	return n, nil
-// }
+	n.ChildIDs = n.ChildIDs[:0]
+	e.nodes[n.ID] = n
+	return n, true
+}
 
-// func (e *Engine) renderStartTag(it iterator) (node, error) {
-// 	tagName, hasAttr := it.tokenizer.TagName()
-// 	typ := string(tagName)
+func (e *Engine) renderStartTag(z *html.Tokenizer, n node, namespace string) (node, bool) {
+	tagName, hasAttr := z.TagName()
+	typ := string(tagName)
 
-// 	if typ == "svg" {
-// 		it.namespace = svgNamespace
-// 	}
+	if typ == "svg" {
+		namespace = svg
+	}
 
-// 	if isCompoNode(typ, it.namespace) {
-// 		return e.renderCompo(it, typ, hasAttr)
-// 	}
+	if isCompoNode(typ, namespace) {
+		return e.renderCompo(z, typ, hasAttr)
+	}
 
-// 	n, ok := e.nodes[it.nodeID]
-// 	if !ok || n.Type != typ {
-// 		n = node{
-// 			ID:      typ + ":" + uuid.New().String(),
-// 			CompoID: it.compoID,
-// 			Type:    typ,
-// 			Dom:     e,
-// 		}
-// 		e.newNode(n)
-// 	}
+	if len(n.ID) == 0 || n.Type != typ {
+		n = node{
+			ID:      typ + ":" + uuid.New().String(),
+			CompoID: n.CompoID,
+			Type:    typ,
+			Dom:     e,
+		}
+		e.newNode(n)
+	}
 
-// 	if hasAttr {
-// 		n = e.renderTagAttrs(it, n)
-// 	}
+	n = e.renderTagAttrs(z, n, hasAttr)
 
-// 	// children := e.nodesByIDs(n.ChildIDs...)
-// 	// for _, c := range children {
-// 	// }
+	childIDs := n.ChildIDs
+	moreChild := true
+	count := 0
 
-// 	panic("not implemented")
-// }
+	// Replace children:
+	for len(childIDs) != 0 {
+		old := e.nodes[childIDs[0]]
+		new := node{}
 
-// func (e *Engine) renderTagAttrs(it iterator, n node) node {
-// 	attrs := make(map[string]string)
-// 	for {
-// 		key, val, moreAttr := it.tokenizer.TagAttr()
-// 		k := string(key)
-// 		v := string(val)
+		if new, moreChild = e.render(z, old, namespace); !moreChild {
+			break
+		}
 
-// 		for _, t := range e.AttrTransforms {
-// 			k, v = t(k, v)
-// 		}
+		if new.ID != old.ID {
+			e.changes = append(e.changes, change{
+				Action:     replaceChild,
+				NodeID:     n.ID,
+				ChildID:    old.ID,
+				NewChildID: new.ID,
+			})
 
-// 		attrs[k] = v
-// 		e.changes = append(e.changes, change{
-// 			Action: setAttr,
-// 			NodeID: n.ID,
-// 			Key:    k,
-// 			Value:  v,
-// 		})
+			childIDs[0] = new.ID
+			e.deleteNode(old.ID)
+		}
 
-// 		if !moreAttr {
-// 			break
-// 		}
-// 	}
+		count++
+		childIDs = childIDs[1:]
+	}
 
-// 	for k := range n.Attrs {
-// 		if _, ok := attrs[k]; !ok {
-// 			continue
-// 		}
+	// Remove children:
+	for i := count; i < len(childIDs); i++ {
+		childID := childIDs[i]
 
-// 		e.changes = append(e.changes, change{
-// 			Action: delAttr,
-// 			NodeID: n.ID,
-// 			Key:    k,
-// 		})
-// 	}
+		e.deleteNode(childID)
+		e.changes = append(e.changes, change{
+			Action:  removeChild,
+			NodeID:  n.ID,
+			ChildID: childID,
+		})
 
-// 	n.Attrs = attrs
-// 	e.nodes[n.ID] = n
-// 	return n
-// }
+	}
+	childIDs = childIDs[:count]
 
-func (e *Engine) renderCompo(it iterator, typ string, hasAttr bool) (node, error) {
+	// Add children
+	for moreChild {
+		c := node{CompoID: n.CompoID}
+		c, moreChild = e.render(z, c, namespace)
+
+		if !moreChild {
+			break
+		}
+
+		childIDs = append(childIDs, c.ID)
+		e.changes = append(e.changes, change{
+			Action:  appendChild,
+			NodeID:  n.ID,
+			ChildID: c.ID,
+		})
+	}
+
+	n.ChildIDs = childIDs
+	e.nodes[n.ID] = n
+	return n, true
+}
+
+func (e *Engine) renderTagAttrs(z *html.Tokenizer, n node, moreAttr bool) node {
+	attrs := make(map[string]string)
+
+	for moreAttr {
+		var rk []byte
+		var rv []byte
+
+		rk, rv, moreAttr = z.TagAttr()
+		k := string(rk)
+		v := string(rv)
+
+		for _, t := range e.AttrTransforms {
+			k, v = t(k, v)
+		}
+
+		attrs[k] = v
+		e.changes = append(e.changes, change{
+			Action: setAttr,
+			NodeID: n.ID,
+			Key:    k,
+			Value:  v,
+		})
+	}
+
+	for k := range n.Attrs {
+		if _, ok := attrs[k]; !ok {
+			continue
+		}
+
+		e.changes = append(e.changes, change{
+			Action: delAttr,
+			NodeID: n.ID,
+			Key:    k,
+		})
+	}
+
+	n.Attrs = attrs
+	e.nodes[n.ID] = n
+	return n
+}
+
+func (e *Engine) renderCompo(z *html.Tokenizer, typ string, hasAttr bool) (node, bool) {
 	panic("not implemented")
 }
 
@@ -334,38 +382,6 @@ func (e *Engine) newNode(n node) {
 		Type:      n.Type,
 		Namespace: n.Namespace,
 	})
-}
-
-func (e *Engine) replaceNode(oldID, newID string) {
-	old, ok := e.nodes[oldID]
-	if !ok {
-		return
-	}
-
-	new, ok := e.nodes[newID]
-	if !ok {
-		return
-	}
-
-	parent, ok := e.nodes[old.ParentID]
-	if !ok {
-		return
-	}
-
-	for i, childID := range parent.ChildIDs {
-		if childID == old.ID {
-			parent.ChildIDs[i] = newID
-
-			e.changes = append(e.changes, change{
-				Action:     replaceChild,
-				NodeID:     parent.ID,
-				ChildID:    old.ID,
-				NewChildID: new.ID,
-			})
-
-			return
-		}
-	}
 }
 
 func (e *Engine) deleteNode(id string) {
@@ -399,12 +415,4 @@ func (e *Engine) deleteNode(id string) {
 	delete(e.nodes, n.ID)
 	delete(e.compos, c.compo)
 	delete(e.compoIDs, c.ID)
-}
-
-type iterator struct {
-	tokenizer *html.Tokenizer
-	compoID   string
-	nodeID    string
-	parentID  string
-	namespace string
 }

@@ -43,7 +43,7 @@ const (
 )
 
 var (
-	svgNamespace    = "http://www.w3.org/2000/svg"
+	svg             = "http://www.w3.org/2000/svg"
 	specialTagNames map[string]string
 	voidElems       = map[string]struct{}{
 		"area":   {},
