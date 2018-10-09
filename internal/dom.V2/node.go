@@ -7,15 +7,15 @@ import (
 )
 
 type node struct {
-	ID          string
-	ParentID    string
-	CompoID     string
-	Type        string
-	Namespace   string
-	Text        string
-	Attrs       map[string]string
-	ChildrenIDs []string
-	Dom         *Engine
+	ID        string
+	ParentID  string
+	CompoID   string
+	Type      string
+	Namespace string
+	Text      string
+	Attrs     map[string]string
+	ChildIDs  []string
+	Dom       *Engine
 }
 
 type change struct {

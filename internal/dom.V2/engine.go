@@ -61,12 +61,53 @@ func (e *Engine) init() {
 func (e *Engine) Render(c app.Compo) error {
 	e.once.Do(e.init)
 
-	// markup, err := e.compoToHTML(c)
-	// if err != nil {
-	// 	return err
+	// ic, mounted := e.compos[c]
+	// if !mounted {
+	// 	ic = compo{
+	// 		ID: app.CompoName(c) + ":" + uuid.New().String(),
+	// 	}
+
+	// 	e.compos[c] = ic
+	// 	e.compoIDs[ic.ID] = ic
 	// }
 
-	// dec := html.NewTokenizer(bytes.NewBufferString(markup))
+	// markup, err := e.compoToHTML(c)
+	// if err != nil {
+	// 	return errors.Wrap(err, "reading html failed")
+	// }
+
+	// oldRoot := e.nodes[ic.rootID]
+	// newRoot := node{}
+
+	// newRoot, err = e.render(iterator{
+	// 	tokenizer: html.NewTokenizer(bytes.NewBufferString(markup)),
+	// 	compoID:   ic.ID,
+	// 	nodeID:    ic.rootID,
+	// })
+	// if err == io.EOF {
+	// 	err = nil
+	// }
+	// if err != nil {
+	// 	return errors.Wrap(err, markup)
+	// }
+
+	// ic.rootID = newRoot.ID
+	// e.compos[c] = ic
+	// e.compoIDs[ic.ID] = ic
+
+	// if len(oldRoot.ParentID) != 0 {
+	// 	e.replaceNode(oldRoot.ID, newRoot.ID)
+	// } else {
+	// 	e.deleteNode(oldRoot.ID)
+	// }
+
+	// if mounted {
+	// 	return nil
+	// }
+
+	// if mounter, ok := c.(app.Mounter); ok {
+	// 	mounter.OnMount()
+	// }
 
 	return nil
 }
@@ -105,33 +146,42 @@ func (e *Engine) compoToHTML(c app.Compo) (string, error) {
 	return w.String(), nil
 }
 
-func (e *Engine) render(r rendering) (node, error) {
-	switch r.dec.Next() {
-	case html.TextToken:
-		return e.renderText(r)
+func (e *Engine) render(it iterator) (iterator, error) {
+	var err error
 
-	case html.SelfClosingTagToken:
-		return e.renderSelfClosingTag(r)
+	for {
+		switch it.tokenizer.Next() {
+		case html.TextToken:
+			e.renderText(it)
 
-	default:
-		return e.render(r)
+			// case html.SelfClosingTagToken:
+			// 	return e.renderSelfClosingTag(it)
+
+			// case html.StartTagToken:
+			// 	return e.renderStartTag(it)
+
+			// case html.EndTagToken:
+
+			// case html.ErrorToken:
+			// 	return node{}, it.tokenizer.Err()
+		}
 	}
 }
 
-func (e *Engine) renderText(r rendering) (node, error) {
-	text := string(r.dec.Text())
+func (e *Engine) renderText(it iterator) (iterator, error) {
+	text := string(it.tokenizer.Text())
 	text = strings.TrimSpace(text)
 
-	if len(text) == 0 || len(r.namespace) != 0 {
-		// Invalid text, rendering next node.
-		return e.render(r)
+	if len(text) == 0 || len(it.namespace) != 0 {
+		// Invalid text, iterator next node.
+		return e.render(it)
 	}
 
-	n, ok := e.nodes[r.nodeID]
+	n, ok := e.nodes[it.nodeID]
 	if !ok || n.Type != "text" {
 		n = node{
 			ID:      "text:" + uuid.New().String(),
-			CompoID: r.compoID,
+			CompoID: it.compoID,
 			Type:    "text",
 			Dom:     e,
 		}
@@ -148,93 +198,131 @@ func (e *Engine) renderText(r rendering) (node, error) {
 		e.nodes[n.ID] = n
 	}
 
-	if n.ID != r.nodeID {
-		e.replaceNode(r.nodeID, n.ID)
-		e.deleteNode(r.nodeID)
-	}
-
 	return n, nil
 }
 
-func (e *Engine) renderSelfClosingTag(r rendering) (node, error) {
-	tagName, hasAttr := r.dec.TagName()
-	typ := string(tagName)
+// func (e *Engine) renderSelfClosingTag(it iterator) (node, error) {
+// 	tagName, hasAttr := it.tokenizer.TagName()
+// 	typ := string(tagName)
 
-	if isCompoNode(typ, r.namespace) {
-		return e.renderCompo(r, typ, hasAttr)
-	}
+// 	if typ == "svg" {
+// 		it.namespace = svgNamespace
+// 	}
 
-	if typ == "svg" {
-		r.namespace = svgNamespace
-	}
+// 	if isCompoNode(typ, it.namespace) {
+// 		return e.renderCompo(it, typ, hasAttr)
+// 	}
 
-	n, ok := e.nodes[r.nodeID]
-	if !ok || n.Type != typ {
-		n = node{
-			ID:      typ + ":" + uuid.New().String(),
-			CompoID: r.compoID,
-			Type:    typ,
-			Dom:     e,
-		}
-		e.newNode(n)
-	}
+// 	n, ok := e.nodes[it.nodeID]
+// 	if !ok || n.Type != typ {
+// 		n = node{
+// 			ID:      typ + ":" + uuid.New().String(),
+// 			CompoID: it.compoID,
+// 			Type:    typ,
+// 			Dom:     e,
+// 		}
+// 		e.newNode(n)
+// 	}
 
-	if hasAttr {
-		n = e.renderTagAttrs(r, n)
-	}
+// 	if hasAttr {
+// 		n = e.renderTagAttrs(it, n)
+// 	}
 
-	for _, childID := range n.ChildrenIDs {
-		e.deleteNode(childID)
-	}
+// 	for _, childID := range n.ChildIDs {
+// 		e.deleteNode(childID)
+// 	}
 
-	n.ChildrenIDs = n.ChildrenIDs[:0]
-	e.nodes[n.ID] = n
-	return n, nil
-}
+// 	n.ChildIDs = n.ChildIDs[:0]
+// 	e.nodes[n.ID] = n
+// 	return n, nil
+// }
 
-func (e *Engine) renderTagAttrs(r rendering, n node) node {
-	attrs := make(map[string]string)
-	for {
-		key, val, moreAttr := r.dec.TagAttr()
-		k := string(key)
-		v := string(val)
+// func (e *Engine) renderStartTag(it iterator) (node, error) {
+// 	tagName, hasAttr := it.tokenizer.TagName()
+// 	typ := string(tagName)
 
-		for _, t := range e.AttrTransforms {
-			k, v = t(k, v)
-		}
+// 	if typ == "svg" {
+// 		it.namespace = svgNamespace
+// 	}
 
-		attrs[k] = v
-		e.changes = append(e.changes, change{
-			Action: setAttr,
-			NodeID: n.ID,
-			Key:    k,
-			Value:  v,
-		})
+// 	if isCompoNode(typ, it.namespace) {
+// 		return e.renderCompo(it, typ, hasAttr)
+// 	}
 
-		if !moreAttr {
-			break
-		}
-	}
+// 	n, ok := e.nodes[it.nodeID]
+// 	if !ok || n.Type != typ {
+// 		n = node{
+// 			ID:      typ + ":" + uuid.New().String(),
+// 			CompoID: it.compoID,
+// 			Type:    typ,
+// 			Dom:     e,
+// 		}
+// 		e.newNode(n)
+// 	}
 
-	for k := range n.Attrs {
-		if _, ok := attrs[k]; !ok {
-			continue
-		}
+// 	if hasAttr {
+// 		n = e.renderTagAttrs(it, n)
+// 	}
 
-		e.changes = append(e.changes, change{
-			Action: delAttr,
-			NodeID: n.ID,
-			Key:    k,
-		})
-	}
+// 	// children := e.nodesByIDs(n.ChildIDs...)
+// 	// for _, c := range children {
+// 	// }
 
-	n.Attrs = attrs
-	e.nodes[n.ID] = n
-	return n
-}
+// 	panic("not implemented")
+// }
 
-func (e *Engine) renderCompo(r rendering, typ string, hasAttr bool) (node, error) {
+// func (e *Engine) renderTagAttrs(it iterator, n node) node {
+// 	attrs := make(map[string]string)
+// 	for {
+// 		key, val, moreAttr := it.tokenizer.TagAttr()
+// 		k := string(key)
+// 		v := string(val)
+
+// 		for _, t := range e.AttrTransforms {
+// 			k, v = t(k, v)
+// 		}
+
+// 		attrs[k] = v
+// 		e.changes = append(e.changes, change{
+// 			Action: setAttr,
+// 			NodeID: n.ID,
+// 			Key:    k,
+// 			Value:  v,
+// 		})
+
+// 		if !moreAttr {
+// 			break
+// 		}
+// 	}
+
+// 	for k := range n.Attrs {
+// 		if _, ok := attrs[k]; !ok {
+// 			continue
+// 		}
+
+// 		e.changes = append(e.changes, change{
+// 			Action: delAttr,
+// 			NodeID: n.ID,
+// 			Key:    k,
+// 		})
+// 	}
+
+// 	n.Attrs = attrs
+// 	e.nodes[n.ID] = n
+// 	return n
+// }
+
+func (e *Engine) renderCompo(it iterator, typ string, hasAttr bool) (node, error) {
 	panic("not implemented")
+}
+
+func (e *Engine) nodesByIDs(ids ...string) []node {
+	nodes := make([]node, 0, len(ids))
+	for _, id := range ids {
+		nodes = append(nodes, e.nodes[id])
+	}
+
+	return nodes
 }
 
 func (e *Engine) newNode(n node) {
@@ -264,9 +352,9 @@ func (e *Engine) replaceNode(oldID, newID string) {
 		return
 	}
 
-	for i, childID := range parent.ChildrenIDs {
+	for i, childID := range parent.ChildIDs {
 		if childID == old.ID {
-			parent.ChildrenIDs[i] = newID
+			parent.ChildIDs[i] = newID
 
 			e.changes = append(e.changes, change{
 				Action:     replaceChild,
@@ -286,7 +374,7 @@ func (e *Engine) deleteNode(id string) {
 		return
 	}
 
-	for _, childID := range n.ChildrenIDs {
+	for _, childID := range n.ChildIDs {
 		e.deleteNode(childID)
 	}
 
@@ -313,8 +401,8 @@ func (e *Engine) deleteNode(id string) {
 	delete(e.compoIDs, c.ID)
 }
 
-type rendering struct {
-	dec       *html.Tokenizer
+type iterator struct {
+	tokenizer *html.Tokenizer
 	compoID   string
 	nodeID    string
 	parentID  string
