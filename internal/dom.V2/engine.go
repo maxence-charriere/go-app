@@ -7,7 +7,6 @@ import (
 	"sync"
 
 	"github.com/alecthomas/template"
-	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/pkg/errors"
 	"golang.org/x/net/html"
@@ -16,6 +15,7 @@ import (
 // Engine represents a dom (document object model) engine.
 // It manages components an nodes lifecycle and keep track of node changes.
 // The engine can be synchronized with a remote dom like a web browser document.
+// It is safe for concurrent operations.
 type Engine struct {
 	// The factory to decode component from html.
 	Factory *app.Factory
@@ -33,9 +33,11 @@ type Engine struct {
 	Sync func(v interface{}) error
 
 	once     sync.Once
+	mutex    sync.RWMutex
 	compos   map[app.Compo]compo
 	compoIDs map[string]compo
 	nodes    map[string]node
+	rootID   string
 	creates  []change
 	changes  []change
 	deletes  []change
@@ -56,58 +58,100 @@ func (e *Engine) init() {
 	e.deletes = make([]change, 64)
 }
 
+// New renders the given component and set it as the dom root.
+func (e *Engine) New(c app.Compo) error {
+	e.once.Do(e.init)
+
+	e.mutex.Lock()
+	defer e.mutex.Unlock()
+
+	if len(e.rootID) != 0 {
+		e.deleteNode(e.rootID)
+		e.rootID = ""
+	}
+
+	if err := e.render(c); err != nil {
+		return err
+	}
+
+	ic := e.compos[c]
+	e.rootID = ic.ID
+
+	e.changes = append(e.changes, change{
+		Action: setRoot,
+		NodeID: ic.ID,
+	})
+
+	return nil
+}
+
 // Render renders the given component by updating the state described within
 // c.Render().
 func (e *Engine) Render(c app.Compo) error {
 	e.once.Do(e.init)
 
-	// ic, mounted := e.compos[c]
-	// if !mounted {
-	// 	ic = compo{
-	// 		ID: app.CompoName(c) + ":" + uuid.New().String(),
-	// 	}
+	e.mutex.Lock()
+	err := e.render(c)
+	e.mutex.Unlock()
 
-	// 	e.compos[c] = ic
-	// 	e.compoIDs[ic.ID] = ic
-	// }
+	return err
+}
 
-	// markup, err := e.compoToHTML(c)
-	// if err != nil {
-	// 	return errors.Wrap(err, "reading html failed")
-	// }
+func (e *Engine) render(c app.Compo) error {
+	ic, ok := e.compos[c]
+	if !ok {
+		typ := app.CompoName(c)
 
-	// oldRoot := e.nodes[ic.rootID]
-	// newRoot := node{}
+		if err := e.newCompo(c, node{
+			ID:       genNodeID(typ),
+			Type:     typ,
+			ChildIDs: make([]string, 1),
+		}); err != nil {
+			return err
+		}
 
-	// newRoot, err = e.render(iterator{
-	// 	tokenizer: html.NewTokenizer(bytes.NewBufferString(markup)),
-	// 	compoID:   ic.ID,
-	// 	nodeID:    ic.rootID,
-	// })
-	// if err == io.EOF {
-	// 	err = nil
-	// }
-	// if err != nil {
-	// 	return errors.Wrap(err, markup)
-	// }
+		ic = e.compos[c]
+	}
 
-	// ic.rootID = newRoot.ID
-	// e.compos[c] = ic
-	// e.compoIDs[ic.ID] = ic
+	n := e.nodes[ic.ID]
+	root := node{}
+	newRoot := node{}
 
-	// if len(oldRoot.ParentID) != 0 {
-	// 	e.replaceNode(oldRoot.ID, newRoot.ID)
-	// } else {
-	// 	e.deleteNode(oldRoot.ID)
-	// }
+	if len(n.ChildIDs) != 0 {
+		root = e.nodes[n.ChildIDs[0]]
+	}
 
-	// if mounted {
-	// 	return nil
-	// }
+	markup, err := e.compoToHTML(c)
+	if err != nil {
+		return errors.Wrap(err, "reading component failed")
+	}
 
-	// if mounter, ok := c.(app.Mounter); ok {
-	// 	mounter.OnMount()
-	// }
+	if newRoot, _, err = e.renderNode(rendering{
+		Tokenizer: html.NewTokenizer(bytes.NewBufferString(markup)),
+		CompoID:   n.CompoID,
+	}); err != nil {
+		return err
+	}
+
+	n.ChildIDs[0] = newRoot.ID
+	e.nodes[n.ID] = n
+
+	switch {
+	case len(root.ID) == 0:
+		e.changes = append(e.changes, change{
+			Action:  appendChild,
+			NodeID:  n.ID,
+			ChildID: newRoot.ID,
+		})
+
+	case root.ID != newRoot.ID:
+		e.changes = append(e.changes, change{
+			Action:     replaceChild,
+			NodeID:     n.ID,
+			ChildID:    root.ID,
+			NewChildID: newRoot.ID,
+		})
+	}
 
 	return nil
 }
@@ -146,38 +190,40 @@ func (e *Engine) compoToHTML(c app.Compo) (string, error) {
 	return w.String(), nil
 }
 
-func (e *Engine) render(z *html.Tokenizer, n node, namespace string) (node, bool) {
-	switch z.Next() {
+func (e *Engine) renderNode(r rendering) (node, bool, error) {
+	switch r.Tokenizer.Next() {
 	case html.TextToken:
-		return e.renderText(z, n, namespace)
+		return e.renderText(r)
 
 	case html.SelfClosingTagToken:
-		return e.renderSelfClosingTag(z, n, namespace)
+		return e.renderSelfClosingTag(r)
 
 	case html.StartTagToken:
-		return e.renderStartTag(z, n, namespace)
+		return e.renderStartTag(r)
 
 	case html.EndTagToken:
-		return node{}, false
+		return node{}, false, nil
 
 	default:
-		return e.render(z, n, namespace)
+		return e.renderNode(r)
 	}
 }
 
-func (e *Engine) renderText(z *html.Tokenizer, n node, namespace string) (node, bool) {
-	text := string(z.Text())
+func (e *Engine) renderText(r rendering) (node, bool, error) {
+	text := string(r.Tokenizer.Text())
 	text = strings.TrimSpace(text)
 
-	if len(text) == 0 || len(namespace) != 0 {
+	if len(text) == 0 || len(r.Namespace) != 0 {
 		// Invalid text, iterator next node.
-		return e.render(z, n, namespace)
+		return e.renderNode(r)
 	}
 
-	if len(n.ID) == 0 || n.Type != "text" {
+	n := r.NodeToSync
+
+	if len(r.NodeToSync.ID) == 0 || r.NodeToSync.Type != "text" {
 		n = node{
-			ID:      "text:" + uuid.New().String(),
-			CompoID: n.CompoID,
+			ID:      genNodeID("text"),
+			CompoID: r.CompoID,
 			Type:    "text",
 			Dom:     e,
 		}
@@ -194,32 +240,34 @@ func (e *Engine) renderText(z *html.Tokenizer, n node, namespace string) (node, 
 		e.nodes[n.ID] = n
 	}
 
-	return n, true
+	return n, true, nil
 }
 
-func (e *Engine) renderSelfClosingTag(z *html.Tokenizer, n node, namespace string) (node, bool) {
-	tagName, hasAttr := z.TagName()
+func (e *Engine) renderSelfClosingTag(r rendering) (node, bool, error) {
+	tagName, hasAttr := r.Tokenizer.TagName()
 	typ := string(tagName)
 
 	if typ == "svg" {
-		namespace = svg
+		r.Namespace = svg
 	}
 
-	if isCompoNode(typ, namespace) {
-		return e.renderCompo(z, typ, hasAttr)
+	if isCompoNode(typ, r.Namespace) {
+		return e.renderCompoNode(r, typ, hasAttr)
 	}
+
+	n := r.NodeToSync
 
 	if len(n.ID) == 0 || n.Type != typ {
 		n = node{
-			ID:      typ + ":" + uuid.New().String(),
-			CompoID: n.CompoID,
+			ID:      genNodeID(typ),
+			CompoID: r.CompoID,
 			Type:    typ,
 			Dom:     e,
 		}
 		e.newNode(n)
 	}
 
-	n = e.renderTagAttrs(z, n, hasAttr)
+	n = e.renderTagAttrs(r, n, hasAttr)
 
 	for _, childID := range n.ChildIDs {
 		e.deleteNode(childID)
@@ -227,32 +275,34 @@ func (e *Engine) renderSelfClosingTag(z *html.Tokenizer, n node, namespace strin
 
 	n.ChildIDs = n.ChildIDs[:0]
 	e.nodes[n.ID] = n
-	return n, true
+	return n, true, nil
 }
 
-func (e *Engine) renderStartTag(z *html.Tokenizer, n node, namespace string) (node, bool) {
-	tagName, hasAttr := z.TagName()
+func (e *Engine) renderStartTag(r rendering) (node, bool, error) {
+	tagName, hasAttr := r.Tokenizer.TagName()
 	typ := string(tagName)
 
 	if typ == "svg" {
-		namespace = svg
+		r.Namespace = svg
 	}
 
-	if isCompoNode(typ, namespace) {
-		return e.renderCompo(z, typ, hasAttr)
+	if isCompoNode(typ, r.Namespace) {
+		return e.renderCompoNode(r, typ, hasAttr)
 	}
+
+	n := r.NodeToSync
 
 	if len(n.ID) == 0 || n.Type != typ {
 		n = node{
-			ID:      typ + ":" + uuid.New().String(),
-			CompoID: n.CompoID,
+			ID:      genNodeID(typ),
+			CompoID: r.CompoID,
 			Type:    typ,
 			Dom:     e,
 		}
 		e.newNode(n)
 	}
 
-	n = e.renderTagAttrs(z, n, hasAttr)
+	n = e.renderTagAttrs(r, n, hasAttr)
 
 	childIDs := n.ChildIDs
 	moreChild := true
@@ -260,10 +310,23 @@ func (e *Engine) renderStartTag(z *html.Tokenizer, n node, namespace string) (no
 
 	// Replace children:
 	for len(childIDs) != 0 {
+		var err error
+
 		old := e.nodes[childIDs[0]]
 		new := node{}
 
-		if new, moreChild = e.render(z, old, namespace); !moreChild {
+		new, moreChild, err = e.renderNode(rendering{
+			Tokenizer:  r.Tokenizer,
+			CompoID:    r.CompoID,
+			Namespace:  r.Namespace,
+			NodeToSync: old,
+		})
+
+		if err != nil {
+			return node{}, false, err
+		}
+
+		if !moreChild {
 			break
 		}
 
@@ -276,6 +339,8 @@ func (e *Engine) renderStartTag(z *html.Tokenizer, n node, namespace string) (no
 			})
 
 			childIDs[0] = new.ID
+			new.ParentID = n.ID
+			e.nodes[new.ID] = new
 			e.deleteNode(old.ID)
 		}
 
@@ -299,34 +364,44 @@ func (e *Engine) renderStartTag(z *html.Tokenizer, n node, namespace string) (no
 
 	// Add children
 	for moreChild {
-		c := node{CompoID: n.CompoID}
-		c, moreChild = e.render(z, c, namespace)
+		var child node
+		var err error
+
+		child, moreChild, err = e.renderNode(rendering{
+			Tokenizer: r.Tokenizer,
+			CompoID:   r.CompoID,
+			Namespace: r.Namespace,
+		})
+
+		if err != nil {
+			return node{}, false, err
+		}
 
 		if !moreChild {
 			break
 		}
 
-		childIDs = append(childIDs, c.ID)
+		childIDs = append(childIDs, child.ID)
 		e.changes = append(e.changes, change{
 			Action:  appendChild,
 			NodeID:  n.ID,
-			ChildID: c.ID,
+			ChildID: child.ID,
 		})
 	}
 
 	n.ChildIDs = childIDs
 	e.nodes[n.ID] = n
-	return n, true
+	return n, true, nil
 }
 
-func (e *Engine) renderTagAttrs(z *html.Tokenizer, n node, moreAttr bool) node {
+func (e *Engine) renderTagAttrs(r rendering, n node, moreAttr bool) node {
 	attrs := make(map[string]string)
 
 	for moreAttr {
 		var rk []byte
 		var rv []byte
 
-		rk, rv, moreAttr = z.TagAttr()
+		rk, rv, moreAttr = r.Tokenizer.TagAttr()
 		k := string(rk)
 		v := string(rv)
 
@@ -360,8 +435,48 @@ func (e *Engine) renderTagAttrs(z *html.Tokenizer, n node, moreAttr bool) node {
 	return n
 }
 
-func (e *Engine) renderCompo(z *html.Tokenizer, typ string, hasAttr bool) (node, bool) {
-	panic("not implemented")
+func (e *Engine) renderCompoNode(r rendering, typ string, hasAttr bool) (node, bool, error) {
+	n := r.NodeToSync
+
+	if len(n.ID) == 0 || n.Type != typ {
+		n = node{
+			ID:       genNodeID(typ),
+			CompoID:  r.CompoID,
+			Type:     typ,
+			ChildIDs: make([]string, 1),
+			IsCompo:  true,
+			Dom:      e,
+		}
+
+		if err := e.newCompo(nil, n); err != nil {
+			return node{}, false, err
+		}
+	}
+
+	attrs := make(map[string]string)
+
+	for hasAttr {
+		var k []byte
+		var v []byte
+
+		k, v, hasAttr = r.Tokenizer.TagAttr()
+		attrs[string(k)] = string(v)
+	}
+
+	n.Attrs = attrs
+	e.nodes[n.ID] = n
+
+	c := e.compoIDs[n.ID]
+
+	if err := mapCompoFields(c.Compo, attrs); err != nil {
+		return node{}, false, err
+	}
+
+	if err := e.render(c.Compo); err != nil {
+		return n, false, errors.Wrapf(err, "rendering %s failed", n.Type)
+	}
+
+	return n, true, nil
 }
 
 func (e *Engine) nodesByIDs(ids ...string) []node {
@@ -381,7 +496,32 @@ func (e *Engine) newNode(n node) {
 		NodeID:    n.ID,
 		Type:      n.Type,
 		Namespace: n.Namespace,
+		IsCompo:   n.IsCompo,
 	})
+}
+
+func (e *Engine) newCompo(c app.Compo, n node) error {
+	e.newNode(n)
+
+	var err error
+	if c == nil {
+		if c, err = e.Factory.NewCompo(n.Type); err != nil {
+			return err
+		}
+	}
+
+	ic := compo{
+		ID:    n.ID,
+		Compo: c,
+	}
+
+	if sub, ok := c.(app.Subscriber); ok {
+		ic.Events = sub.Subscribe()
+	}
+
+	e.compoIDs[n.ID] = ic
+	e.compos[c] = ic
+	return nil
 }
 
 func (e *Engine) deleteNode(id string) {
@@ -394,25 +534,27 @@ func (e *Engine) deleteNode(id string) {
 		e.deleteNode(childID)
 	}
 
-	c, mounted := e.compoIDs[n.CompoID]
-	if !mounted {
-		return
+	if n.IsCompo {
+		if c, ok := e.compoIDs[n.ID]; ok {
+			if dismounter, ok := c.Compo.(app.Dismounter); ok {
+				dismounter.OnDismount()
+			}
+
+			delete(e.compos, c.Compo)
+			delete(e.compoIDs, c.ID)
+		}
 	}
 
-	if c.rootID != n.ID {
-		return
-	}
-
-	if dismounter, ok := c.compo.(app.Dismounter); ok {
-		dismounter.OnDismount()
-	}
-
+	delete(e.nodes, n.ID)
 	e.deletes = append(e.deletes, change{
 		Action: delNode,
 		NodeID: n.ID,
 	})
+}
 
-	delete(e.nodes, n.ID)
-	delete(e.compos, c.compo)
-	delete(e.compoIDs, c.ID)
+type rendering struct {
+	Tokenizer  *html.Tokenizer
+	CompoID    string
+	Namespace  string
+	NodeToSync node
 }

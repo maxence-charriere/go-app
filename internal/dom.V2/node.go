@@ -3,6 +3,7 @@ package dom
 import (
 	"strings"
 
+	"github.com/google/uuid"
 	"golang.org/x/net/html/atom"
 )
 
@@ -15,6 +16,7 @@ type node struct {
 	Text      string
 	Attrs     map[string]string
 	ChildIDs  []string
+	IsCompo   bool
 	Dom       *Engine
 }
 
@@ -27,12 +29,14 @@ type change struct {
 	Value      string `json:",omitempty"`
 	ChildID    string `json:",omitempty"`
 	NewChildID string `json:",omitempty"`
+	IsCompo    bool   `json:",omitempty"`
 }
 
 type changeAction int
 
 const (
-	newNode changeAction = iota
+	setRoot changeAction = iota
+	newNode
 	delNode
 	setAttr
 	delAttr
@@ -177,4 +181,8 @@ func isCompoNode(tagName, namespace string) bool {
 		return false
 	}
 	return !isHTMLNode(tagName)
+}
+
+func genNodeID(typ string) string {
+	return typ + ":" + uuid.New().String()
 }
