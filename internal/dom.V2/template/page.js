@@ -2,54 +2,58 @@
 var goapp = {
     nodes: {
         "root:": document.body
-    }
+    },
+
+    actions: Object.freeze({
+        "setRoot": 0,
+        "newNode": 1,
+        "delNode": 2,
+        "setAttr": 3,
+        "delAttr": 4,
+        "setText": 5,
+        "appendChild": 6,
+        "removeChild": 7,
+        "replaceChild": 8,
+    })
 };
 
 function render(changes = []) {
     changes.forEach(c => {
-        switch (c.Type) {
-            case 'createText':
-                createText(c);
+        switch (c.Action) {
+            case goapp.actions.setRoot:
+                setRoot(c);
                 break;
 
-            case 'setText':
+            case goapp.actions.newNode:
+                newNode(c);
+                break;
+
+            case goapp.actions.delNode:
+                delNode(c);
+                break;
+
+            case goapp.actions.setAttr:
+                setAttr(c);
+                break;
+
+            case goapp.actions.delAttr:
+                delAttr(c);
+                break;
+
+            case goapp.actions.setText:
                 setText(c);
                 break;
 
-            case 'createElem':
-                createElem(c);
-                break;
-
-            case 'setAttrs':
-                setAttrs(c);
-                break;
-
-            case 'appendChild':
+            case goapp.actions.appendChild:
                 appendChild(c);
                 break;
 
-            case 'removeChild':
+            case goapp.actions.removeChild:
                 removeChild(c);
                 break;
 
-            case 'replaceChild':
+            case goapp.actions.replaceChild:
                 replaceChild(c);
-                break;
-
-            case 'mountElem':
-                mountElem(c);
-                break;
-
-            case 'createCompo':
-                createCompo(c);
-                break;
-
-            case 'setCompoRoot':
-                setCompoRoot(c);
-                break;
-
-            case 'deleteNode':
-                deleteNode(c);
                 break;
 
             default:
@@ -58,173 +62,154 @@ function render(changes = []) {
     });
 }
 
-function createText(change = {}) {
-    const { ID } = change.Value;
-    const n = document.createTextNode("");
+function setRoot(change = {}) {
+    const { NodeID } = change;
 
-    n.ID = ID;
-    goapp.nodes[ID] = n;
+    const n = goapp.nodes[NodeID];
+    const root = compoRoot(n);
+
+    if (!root) {
+        return;
+    }
+
+    document.body.replaceChild(root, document.body.firstChild());
+}
+
+function newNode(change = {}) {
+    const { IsCompo, Type, NodeID, Namespace } = change;
+
+    if (IsCompo) {
+        goapp.nodes[NodeID] = {
+            Type: Type,
+            ID: NodeID,
+            IsCompo: true
+        };
+
+        return;
+    }
+
+    var n = null
+
+    if (Type === 'text') {
+        n = document.createTextNode("");
+    } else if (change.Namespace) {
+        n = document.createElementNS(Namespace, Type);
+    } else {
+        n = document.createElement(Type);
+    }
+
+    n.ID = NodeID;
+    goapp.nodes[NodeID] = n;
+}
+
+function delNode(change = {}) {
+    const { NodeID } = change;
+    delete goapp.nodes[NodeID];
+}
+
+function setAttr(change = {}) {
+    const { NodeID, Key, Value = '' } = change;
+
+    const n = goapp.nodes[NodeID];
+    if (!n) {
+        return;
+    }
+
+    n.setAttribute(Key, Value);
+}
+
+function delAttr(change = {}) {
+    const { NodeID, Key } = change;
+
+    const n = goapp.nodes[NodeID];
+    if (!n) {
+        return;
+    }
+
+    n.removeAttribute(Key);
 }
 
 function setText(change = {}) {
-    const { ID, Text } = change.Value;
+    const { NodeID, Value } = change;
 
-    const n = goapp.nodes[ID];
+    const n = goapp.nodes[NodeID];
     if (!n) {
         return;
     }
 
-    n.nodeValue = Text;
-}
-
-function createElem(change = {}) {
-    const { ID, TagName, Namespace } = change.Value;
-
-    var n = null;
-    if (Namespace) {
-        n = document.createElementNS(Namespace, TagName);
-    } else {
-        n = document.createElement(TagName);
-    }
-
-    n.ID = ID;
-    goapp.nodes[ID] = n;
-}
-
-function setAttrs(change = {}) {
-    const { ID, Attrs } = change.Value;
-
-    const n = goapp.nodes[ID];
-    if (!n) {
-        return;
-    }
-
-    const nAttrs = n.attributes;
-    const toDelete = [];
-
-    for (var i = 0; i < nAttrs.length; i++) {
-        const name = nAttrs[i].name;
-
-        if (Attrs[name] === undefined) {
-            toDelete.push(name);
-        }
-    }
-
-    toDelete.forEach(name => {
-        n.removeAttribute(name);
-    });
-
-    for (var name in Attrs) {
-        const curVal = n.getAttribute(name);
-        const newVal = Attrs[name];
-
-        if (name === 'value') {
-            n.value = newVal;
-            continue;
-        }
-
-        if (curVal !== newVal) {
-            n.setAttribute(name, newVal);
-        }
-    }
+    n.nodeValue = Value;
 }
 
 function appendChild(change = {}) {
-    const { ParentID, ChildID } = change.Value;
+    const { NodeID, ChildID } = change;
 
-    const parent = goapp.nodes[ParentID];
-    if (!parent) {
-        return;
-    }
-
-    const child = childElem(goapp.nodes[ChildID]);
-    if (!child) {
-        return;
-    }
-
-    parent.appendChild(child);
-}
-
-function removeChild(change = {}) {
-    const { ParentID, ChildID } = change.Value;
-
-    const parent = goapp.nodes[ParentID];
-    if (!parent) {
-        return;
-    }
-
-    const child = childElem(goapp.nodes[ChildID]);
-    if (!child) {
-        return;
-    }
-
-    parent.removeChild(child);
-}
-
-function replaceChild(change = {}) {
-    const { ParentID, ChildID, OldID } = change.Value;
-
-    const parent = goapp.nodes[ParentID];
-    if (!parent) {
-        return;
-    }
-
-    const newChild = childElem(goapp.nodes[ChildID]);
-    if (!newChild) {
-        return;
-    }
-
-
-    const oldChild = childElem(goapp.nodes[OldID]);
-    if (!oldChild) {
-        return;
-    }
-
-    parent.replaceChild(newChild, oldChild);
-}
-
-function mountElem(change = {}) {
-    const { ID, CompoID } = change.Value;
-
-    const n = goapp.nodes[ID];
+    const n = goapp.nodes[NodeID];
     if (!n) {
         return;
     }
 
-    n.compoID = CompoID;
-}
-
-function createCompo(change = {}) {
-    const { ID, Name } = change.Value;
-
-    const compo = {
-        ID,
-        Name,
-        IsCompo: true
+    const c = compoRoot(goapp.nodes[ChildID]);
+    if (!c) {
+        return;
     }
 
-    goapp.nodes[ID] = compo;
+    if (n.IsCompo) {
+        n.RootID = ChildID;
+        return;
+    }
+
+    n.appendChild(c)
 }
 
-function setCompoRoot(change = {}) {
-    const { ID, RootID } = change.Value;
-    const compo = goapp.nodes[ID];
+function removeChild(change = {}) {
+    const { NodeID, ChildID } = change;
 
-    compo.RootID = RootID;
+    const n = goapp.nodes[NodeID];
+    if (!n) {
+        return;
+    }
+
+    const c = compoRoot(goapp.nodes[ChildID]);
+    if (!c) {
+        return;
+    }
+
+    n.removeChild(c);
 }
 
-function deleteNode(change = {}) {
-    const { ID } = change.Value;
-    delete goapp.nodes[ID];
+function replaceChild(change = {}) {
+    const { NodeID, ChildID, NewChildID } = change;
+
+    const n = goapp.nodes[NodeID];
+    if (!n) {
+        return;
+    }
+
+    const c = compoRoot(goapp.nodes[ChildID]);
+    if (!c) {
+        return;
+    }
+
+    const nc = compoRoot(goapp.nodes[NewChildID]);
+    if (!nc) {
+        return;
+    }
+
+    if (n.IsCompo) {
+        n.RootID = NewChildID;
+        return;
+    }
+
+    n.replaceChild(nc, c);
 }
 
-
-function childElem(node) {
+function compoRoot(node) {
     if (!node || !node.IsCompo) {
         return node;
     }
 
-    return goapp.nodes[node.RootID];
+    const n = goapp.nodes[node.RootID];
+    return compoRoot(n);
 }
 
 function mapObject(obj) {
@@ -247,6 +232,7 @@ function mapObject(obj) {
                 break;
         }
     }
+
     return map;
 }
 
