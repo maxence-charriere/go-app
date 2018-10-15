@@ -3,10 +3,10 @@ package dom
 import (
 	"bytes"
 	"fmt"
+	"html/template"
 	"strings"
 	"sync"
 
-	"github.com/alecthomas/template"
 	"github.com/murlokswarm/app"
 	"github.com/pkg/errors"
 	"golang.org/x/net/html"
