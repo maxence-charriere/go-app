@@ -82,7 +82,7 @@ func (e *Engine) New(c app.Compo) error {
 		NodeID: ic.ID,
 	})
 
-	return nil
+	return e.sync()
 }
 
 // Render renders the given component by updating the state described within
@@ -91,10 +91,13 @@ func (e *Engine) Render(c app.Compo) error {
 	e.once.Do(e.init)
 
 	e.mutex.Lock()
-	err := e.render(c)
-	e.mutex.Unlock()
+	defer e.mutex.Unlock()
 
-	return err
+	if err := e.render(c); err != nil {
+		return err
+	}
+
+	return e.sync()
 }
 
 func (e *Engine) render(c app.Compo) error {
@@ -550,6 +553,20 @@ func (e *Engine) deleteNode(id string) {
 		Action: delNode,
 		NodeID: n.ID,
 	})
+}
+
+func (e *Engine) sync() error {
+	n := len(e.creates) + len(e.changes) + len(e.deletes)
+	changes := make([]change, 0, n)
+	changes = append(changes, e.creates...)
+	changes = append(changes, e.changes...)
+	changes = append(changes, e.deletes...)
+
+	e.creates = e.creates[:0]
+	e.changes = e.changes[:0]
+	e.creates = e.deletes[:0]
+
+	return e.Sync(changes)
 }
 
 type rendering struct {
