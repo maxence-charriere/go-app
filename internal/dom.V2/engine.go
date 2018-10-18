@@ -24,23 +24,24 @@ type Engine struct {
 	// attributes.
 	AttrTransforms []func(k, v string) (string, string)
 
-	// AllowedNodeTypes restricts allowed nodes by the given types.
-	// No restrictions are enforced if the array is empty.
-	AllowedNodeTypes []string
+	// AllowedNodes define the allowed node type.
+	// All node type is allowed when the slice is empty.
+	AllowedNodes []string
 
 	// Sync is the function used to synchronize node changes with a remote dom.
 	// No synchronisations are performed if the func in nil.
 	Sync func(v interface{}) error
 
-	once     sync.Once
-	mutex    sync.RWMutex
-	compos   map[app.Compo]compo
-	compoIDs map[string]compo
-	nodes    map[string]node
-	rootID   string
-	creates  []change
-	changes  []change
-	deletes  []change
+	once          sync.Once
+	mutex         sync.RWMutex
+	compos        map[app.Compo]compo
+	compoIDs      map[string]compo
+	nodes         map[string]node
+	allowdedNodes map[string]struct{}
+	rootID        string
+	creates       []change
+	changes       []change
+	deletes       []change
 }
 
 func (e *Engine) init() {
@@ -53,6 +54,11 @@ func (e *Engine) init() {
 	e.compos = make(map[app.Compo]compo)
 	e.compoIDs = make(map[string]compo)
 	e.nodes = make(map[string]node)
+
+	if len(e.AllowedNodes) != 0 {
+		e.allowdedNodes = make(map[string]struct{}, len(e.AllowedNodes))
+	}
+
 	e.creates = make([]change, 64)
 	e.changes = make([]change, 64)
 	e.deletes = make([]change, 64)
@@ -258,6 +264,10 @@ func (e *Engine) renderSelfClosingTag(r rendering) (node, bool, error) {
 		return e.renderCompoNode(r, typ, hasAttr)
 	}
 
+	if !e.isAllowedNode(typ) {
+		return node{}, false, errors.Errorf("%s is not allowed", typ)
+	}
+
 	n := r.NodeToSync
 
 	if len(n.ID) == 0 || n.Type != typ {
@@ -291,6 +301,10 @@ func (e *Engine) renderStartTag(r rendering) (node, bool, error) {
 
 	if isCompoNode(typ, r.Namespace) {
 		return e.renderCompoNode(r, typ, hasAttr)
+	}
+
+	if !e.isAllowedNode(typ) {
+		return node{}, false, errors.Errorf("%s is not allowed", typ)
 	}
 
 	n := r.NodeToSync
@@ -567,6 +581,15 @@ func (e *Engine) sync() error {
 	e.creates = e.deletes[:0]
 
 	return e.Sync(changes)
+}
+
+func (e *Engine) isAllowedNode(typ string) bool {
+	if len(e.allowdedNodes) == 0 {
+		return true
+	}
+
+	_, ok := e.allowdedNodes[typ]
+	return ok
 }
 
 type rendering struct {
