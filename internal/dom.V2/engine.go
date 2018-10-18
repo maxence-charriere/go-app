@@ -42,6 +42,7 @@ type Engine struct {
 	creates       []change
 	changes       []change
 	deletes       []change
+	toSync        []change
 }
 
 func (e *Engine) init() {
@@ -62,6 +63,7 @@ func (e *Engine) init() {
 	e.creates = make([]change, 64)
 	e.changes = make([]change, 64)
 	e.deletes = make([]change, 64)
+	e.toSync = make([]change, 64)
 }
 
 // New renders the given component and set it as the dom root.
@@ -570,17 +572,19 @@ func (e *Engine) deleteNode(id string) {
 }
 
 func (e *Engine) sync() error {
-	n := len(e.creates) + len(e.changes) + len(e.deletes)
-	changes := make([]change, 0, n)
-	changes = append(changes, e.creates...)
-	changes = append(changes, e.changes...)
-	changes = append(changes, e.deletes...)
+	e.toSync = append(e.toSync, e.creates...)
+	e.toSync = append(e.toSync, e.changes...)
+	e.toSync = append(e.toSync, e.deletes...)
+
+	if err := e.Sync(e.toSync); err != nil {
+		return errors.Wrap(err, "syncing dom failed")
+	}
 
 	e.creates = e.creates[:0]
 	e.changes = e.changes[:0]
 	e.creates = e.deletes[:0]
-
-	return e.Sync(changes)
+	e.toSync = e.toSync[:0]
+	return nil
 }
 
 func (e *Engine) isAllowedNode(typ string) bool {
