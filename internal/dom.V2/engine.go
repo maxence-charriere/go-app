@@ -153,8 +153,9 @@ func (e *Engine) render(c app.Compo) error {
 	}
 
 	if newRoot, _, err = e.renderNode(rendering{
-		Tokenizer: html.NewTokenizer(bytes.NewBufferString(markup)),
-		CompoID:   n.CompoID,
+		Tokenizer:  html.NewTokenizer(bytes.NewBufferString(markup)),
+		CompoID:    n.CompoID,
+		NodeToSync: root,
 	}); err != nil {
 		return err
 	}
@@ -444,6 +445,11 @@ func (e *Engine) renderTagAttrs(r rendering, n node, moreAttr bool) node {
 		}
 
 		attrs[k] = v
+
+		if currentVal, ok := n.Attrs[k]; ok && currentVal == v {
+			continue
+		}
+
 		e.changes = append(e.changes, change{
 			Action: setAttr,
 			NodeID: n.ID,
@@ -453,7 +459,7 @@ func (e *Engine) renderTagAttrs(r rendering, n node, moreAttr bool) node {
 	}
 
 	for k := range n.Attrs {
-		if _, ok := attrs[k]; !ok {
+		if _, ok := attrs[k]; ok {
 			continue
 		}
 

@@ -228,6 +228,21 @@ func TestEngine(t *testing.T) {
 			compoCount: 1,
 			nodeCount:  3,
 		},
+		{
+			scenario: "append simple compo child",
+			compo:    &Foo{},
+			mutate: func(c app.Compo) {
+				c.(*Foo).Value = "hello"
+			},
+			changes: []change{
+				{Action: newNode, NodeID: "text:", Type: "text"},
+
+				{Action: setText, NodeID: "text:", Value: "hello"},
+				{Action: appendChild, NodeID: "div:", ChildID: "text:"},
+			},
+			compoCount: 1,
+			nodeCount:  3,
+		},
 	}
 
 	for _, test := range tests {
@@ -246,14 +261,14 @@ func TestEngine(t *testing.T) {
 			defer func() {
 				e.Close()
 
-				assert.Empty(t, e.compos)
-				assert.Empty(t, e.compoIDs)
-				assert.Empty(t, e.nodes)
+				require.Empty(t, e.compos)
+				require.Empty(t, e.compoIDs)
+				require.Empty(t, e.nodes)
 
-				assert.Empty(t, e.creates)
-				assert.Empty(t, e.changes)
-				assert.Empty(t, e.deletes)
-				assert.Empty(t, e.toSync)
+				require.Empty(t, e.creates)
+				require.Empty(t, e.changes)
+				require.Empty(t, e.deletes)
+				require.Empty(t, e.toSync)
 			}()
 
 			err := e.New(test.compo)
@@ -272,10 +287,10 @@ func TestEngine(t *testing.T) {
 
 			t.Log(pretty(changes))
 
-			assert.Len(t, e.compos, test.compoCount)
-			assert.Len(t, e.compoIDs, test.compoCount)
-			assert.Len(t, e.nodes, test.nodeCount)
-			assert.NotEmpty(t, e.rootID)
+			require.Len(t, e.compos, test.compoCount)
+			require.Len(t, e.compoIDs, test.compoCount)
+			require.Len(t, e.nodes, test.nodeCount)
+			require.NotEmpty(t, e.rootID)
 			requireChangesMatches(t, test.changes, changes)
 		})
 	}
