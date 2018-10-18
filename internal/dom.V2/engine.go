@@ -384,9 +384,7 @@ func (e *Engine) renderStartTag(r rendering) (node, bool, error) {
 	}
 
 	// Remove children:
-	for i := count; i < len(childIDs); i++ {
-		childID := childIDs[i]
-
+	for _, childID := range childIDs {
 		e.deleteNode(childID)
 		e.changes = append(e.changes, change{
 			Action:  removeChild,
@@ -395,7 +393,7 @@ func (e *Engine) renderStartTag(r rendering) (node, bool, error) {
 		})
 
 	}
-	childIDs = childIDs[:count]
+	childIDs = n.ChildIDs[:count]
 
 	// Add children
 	for moreChild {

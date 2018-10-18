@@ -229,6 +229,18 @@ func TestEngine(t *testing.T) {
 			nodeCount:  3,
 		},
 		{
+			scenario: "update simple compo",
+			compo:    &Foo{Value: "hello"},
+			mutate: func(c app.Compo) {
+				c.(*Foo).Value = "world"
+			},
+			changes: []change{
+				{Action: setText, NodeID: "text:", Value: "world"},
+			},
+			compoCount: 1,
+			nodeCount:  3,
+		},
+		{
 			scenario: "append simple compo child",
 			compo:    &Foo{},
 			mutate: func(c app.Compo) {
