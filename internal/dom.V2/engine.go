@@ -60,23 +60,19 @@ func (e *Engine) init() {
 		e.allowdedNodes = make(map[string]struct{}, len(e.AllowedNodes))
 	}
 
-	e.creates = make([]change, 64)
-	e.changes = make([]change, 64)
-	e.deletes = make([]change, 64)
-	e.toSync = make([]change, 64)
+	e.creates = make([]change, 0, 64)
+	e.changes = make([]change, 0, 64)
+	e.deletes = make([]change, 0, 64)
+	e.toSync = make([]change, 0, 64)
 }
 
 // New renders the given component and set it as the dom root.
 func (e *Engine) New(c app.Compo) error {
 	e.once.Do(e.init)
-
 	e.mutex.Lock()
 	defer e.mutex.Unlock()
 
-	if len(e.rootID) != 0 {
-		e.deleteNode(e.rootID)
-		e.rootID = ""
-	}
+	e.close()
 
 	if err := e.render(c); err != nil {
 		return err
@@ -93,11 +89,29 @@ func (e *Engine) New(c app.Compo) error {
 	return e.sync()
 }
 
+// Close deletes the components and nodes from the dom.
+func (e *Engine) Close() {
+	e.once.Do(e.init)
+	e.mutex.Lock()
+	defer e.mutex.Unlock()
+
+	e.close()
+}
+
+func (e *Engine) close() {
+	e.deleteNode(e.rootID)
+	e.rootID = ""
+
+	e.creates = e.creates[:0]
+	e.changes = e.changes[:0]
+	e.deletes = e.deletes[:0]
+	e.toSync = e.toSync[:0]
+}
+
 // Render renders the given component by updating the state described within
 // c.Render().
 func (e *Engine) Render(c app.Compo) error {
 	e.once.Do(e.init)
-
 	e.mutex.Lock()
 	defer e.mutex.Unlock()
 
@@ -117,6 +131,7 @@ func (e *Engine) render(c app.Compo) error {
 			ID:       genNodeID(typ),
 			Type:     typ,
 			ChildIDs: make([]string, 1),
+			IsCompo:  true,
 		}); err != nil {
 			return err
 		}
@@ -582,7 +597,7 @@ func (e *Engine) sync() error {
 
 	e.creates = e.creates[:0]
 	e.changes = e.changes[:0]
-	e.creates = e.deletes[:0]
+	e.deletes = e.deletes[:0]
 	e.toSync = e.toSync[:0]
 	return nil
 }
