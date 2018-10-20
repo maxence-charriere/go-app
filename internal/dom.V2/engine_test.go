@@ -832,6 +832,8 @@ func TestEngine(t *testing.T) {
 			require.Len(t, e.nodes, test.nodeCount)
 			require.NotEmpty(t, e.rootID)
 			requireChangesMatches(t, test.changes, changes)
+
+			require.True(t, e.Contains(test.compo))
 		})
 	}
 }

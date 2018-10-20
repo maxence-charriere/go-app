@@ -125,6 +125,15 @@ func (e *Engine) close() {
 	e.toSync = e.toSync[:0]
 }
 
+// Contains reports whether the given component is in the dom.
+func (e *Engine) Contains(c app.Compo) bool {
+	e.mutex.RLock()
+	defer e.mutex.RUnlock()
+
+	_, ok := e.compos[c]
+	return ok
+}
+
 // Render renders the given component by updating the state described within
 // c.Render().
 func (e *Engine) Render(c app.Compo) error {
