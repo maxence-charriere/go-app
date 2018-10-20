@@ -23,7 +23,7 @@ type Engine struct {
 
 	// AttrTransforms describes a set of transformation to apply to parsed node
 	// attributes.
-	AttrTransforms []func(k, v string) (string, string)
+	AttrTransforms []Transform
 
 	// AllowedNodes define the allowed node type.
 	// All node type is allowed when the slice is empty.
@@ -311,10 +311,11 @@ func (e *Engine) renderSelfClosingTag(r rendering) (node, bool, error) {
 
 	if len(n.ID) == 0 || n.Type != typ {
 		n = node{
-			ID:      genNodeID(typ),
-			CompoID: r.CompoID,
-			Type:    typ,
-			Dom:     e,
+			ID:        genNodeID(typ),
+			CompoID:   r.CompoID,
+			Type:      nodeType(typ),
+			Namespace: r.Namespace,
+			Dom:       e,
 		}
 		e.newNode(n)
 	}
@@ -323,6 +324,11 @@ func (e *Engine) renderSelfClosingTag(r rendering) (node, bool, error) {
 
 	for _, childID := range n.ChildIDs {
 		e.deleteNode(childID)
+		e.changes = append(e.changes, change{
+			Action:  removeChild,
+			NodeID:  n.ID,
+			ChildID: childID,
+		})
 	}
 
 	n.ChildIDs = n.ChildIDs[:0]
@@ -350,15 +356,20 @@ func (e *Engine) renderStartTag(r rendering) (node, bool, error) {
 
 	if len(n.ID) == 0 || n.Type != typ {
 		n = node{
-			ID:      genNodeID(typ),
-			CompoID: r.CompoID,
-			Type:    typ,
-			Dom:     e,
+			ID:        genNodeID(typ),
+			CompoID:   r.CompoID,
+			Type:      nodeType(typ),
+			Namespace: r.Namespace,
+			Dom:       e,
 		}
 		e.newNode(n)
 	}
 
 	n = e.renderTagAttrs(r, n, hasAttr)
+
+	if isVoidElem(n.Type) {
+		return n, true, nil
+	}
 
 	childIDs := n.ChildIDs
 	moreChild := true

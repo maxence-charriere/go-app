@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/murlokswarm/app"
+	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -70,7 +71,7 @@ func (b *Boo) Render() string {
 		{{if .ReplaceCompoByNode}}
 			<p>foo</p>
 		{{else if .ReplaceCompoByCompo}}
-			<dom.Oob>
+			<dom.Oob />
 		{{else}}
 			<dom.Foo value="{{.Value}}">
 		{{end}}
@@ -136,6 +137,53 @@ func (n *NestedNested) Render() string {
 	`
 }
 
+type Svg struct {
+	Path string
+}
+
+func (s *Svg) Render() string {
+	return `
+	<svg>
+		<path data="{{.Path}}"></path>
+		<path data="" />
+	</svg>
+	`
+}
+
+type SelfClosing struct {
+	NoClose bool
+	Svg     bool
+}
+
+func (c *SelfClosing) Render() string {
+	return `
+	<div>
+		{{if .NoClose}}
+			<div>
+				<p></p>
+			</div>
+		{{else}}
+			<div />
+		{{end}}
+
+		{{if .Svg}}
+		<svg />
+		{{end}}
+	</div>
+	`
+}
+
+type VoidElem app.ZeroCompo
+
+func (v *VoidElem) Render() string {
+	return `
+	<div>
+		<img>
+		<p></p>
+	</div>
+	`
+}
+
 type CompoErr struct {
 	TemplateReadErr bool
 	TemplateExecErr bool
@@ -161,6 +209,7 @@ func (c *CompoErr) Funcs() map[string]interface{} {
 
 func (c *CompoErr) Render() string {
 	return `
+	<!DOCTYPE html>
 	<div>
 		{{if .TemplateReadErr}}
 			<dom.BadTemplateRead err>
@@ -249,6 +298,9 @@ func TestEngine(t *testing.T) {
 	f.RegisterCompo(&Oob{})
 	f.RegisterCompo(&Nested{})
 	f.RegisterCompo(&NestedNested{})
+	f.RegisterCompo(&Svg{})
+	f.RegisterCompo(&SelfClosing{})
+	f.RegisterCompo(&VoidElem{})
 	f.RegisterCompo(&CompoErr{})
 	f.RegisterCompo(&BadTemplateRead{})
 	f.RegisterCompo(&BadTemplateExec{})
@@ -574,6 +626,93 @@ func TestEngine(t *testing.T) {
 			nodeCount:  4,
 		},
 
+		// Svg:
+		{
+			scenario: "create node with namespace",
+			compo:    &Svg{},
+			changes: []change{
+				{Action: newNode, NodeID: "dom.svg:", Type: "dom.svg", IsCompo: true},
+				{Action: newNode, NodeID: "svg:", Type: "svg", Namespace: svg},
+				{Action: newNode, NodeID: "path:", Type: "path", Namespace: svg},
+				{Action: newNode, NodeID: "path:", Type: "path", Namespace: svg},
+
+				{Action: setAttr, NodeID: "path:", Key: "data"},
+				{Action: appendChild, NodeID: "svg:", ChildID: "path:"},
+				{Action: setAttr, NodeID: "path:", Key: "data"},
+				{Action: appendChild, NodeID: "svg:", ChildID: "path:"},
+				{Action: appendChild, NodeID: "dom.svg:", ChildID: "svg:"},
+
+				{Action: setRoot, NodeID: "dom.svg:"},
+			},
+			compoCount: 1,
+			nodeCount:  4,
+		},
+		{
+			scenario: "update node with namespace",
+			compo:    &Svg{},
+			mutate: func(c app.Compo) {
+				c.(*Svg).Path = "M42"
+			},
+			changes: []change{
+				{Action: setAttr, NodeID: "path:", Key: "data", Value: "M42"},
+			},
+			compoCount: 1,
+			nodeCount:  4,
+		},
+
+		// Self closing:
+		{
+			scenario: "replace node by self closing node",
+			compo:    &SelfClosing{NoClose: true},
+			mutate: func(c app.Compo) {
+				c.(*SelfClosing).NoClose = false
+			},
+			changes: []change{
+				{Action: removeChild, NodeID: "div:", ChildID: "p:"},
+				{Action: delNode, NodeID: "p:"},
+			},
+			compoCount: 1,
+			nodeCount:  3,
+		},
+		{
+			scenario: "self closing svg",
+			compo:    &SelfClosing{Svg: true},
+			changes: []change{
+				{Action: newNode, NodeID: "dom.selfclosing:", Type: "dom.selfclosing", IsCompo: true},
+				{Action: newNode, NodeID: "div:", Type: "div"},
+				{Action: newNode, NodeID: "div:", Type: "div"},
+				{Action: newNode, NodeID: "svg:", Type: "svg", Namespace: svg},
+
+				{Action: appendChild, NodeID: "div:", ChildID: "div:"},
+				{Action: appendChild, NodeID: "div:", ChildID: "svg:"},
+				{Action: appendChild, NodeID: "dom.selfclosing:", ChildID: "div:"},
+
+				{Action: setRoot, NodeID: "dom.selfclosing:"},
+			},
+			compoCount: 1,
+			nodeCount:  4,
+		},
+
+		// Void elem:
+		{
+			scenario: "void elem node",
+			compo:    &VoidElem{},
+			changes: []change{
+				{Action: newNode, NodeID: "dom.voidelem:", Type: "dom.voidelem", IsCompo: true},
+				{Action: newNode, NodeID: "div:", Type: "div"},
+				{Action: newNode, NodeID: "img:", Type: "img"},
+				{Action: newNode, NodeID: "p:", Type: "p"},
+
+				{Action: appendChild, NodeID: "div:", ChildID: "img:"},
+				{Action: appendChild, NodeID: "div:", ChildID: "p:"},
+				{Action: appendChild, NodeID: "dom.voidelem:", ChildID: "div:"},
+
+				{Action: setRoot, NodeID: "dom.voidelem:"},
+			},
+			compoCount: 1,
+			nodeCount:  4,
+		},
+
 		// Errors:
 		{
 			scenario: "fail no import",
@@ -599,9 +738,15 @@ func TestEngine(t *testing.T) {
 			err:      true,
 		},
 		{
-			scenario:     "fail with not allowed nodes",
+			scenario:     "fail with not allowed node",
 			allowedNodes: []string{"menu", "menuitem"},
 			compo:        &CompoErr{},
+			err:          true,
+		},
+		{
+			scenario:     "fail with not allowed self closing node",
+			allowedNodes: []string{"div"},
+			compo:        &SelfClosing{Svg: true},
 			err:          true,
 		},
 		{
@@ -644,6 +789,10 @@ func TestEngine(t *testing.T) {
 			e := Engine{
 				Factory:      f,
 				AllowedNodes: test.allowedNodes,
+				AttrTransforms: []Transform{
+					JsToGoHandler,
+					HrefCompoFmt,
+				},
 				Sync: func(v interface{}) error {
 					changes, _ = v.([]change)
 					return nil
@@ -685,6 +834,30 @@ func TestEngine(t *testing.T) {
 			requireChangesMatches(t, test.changes, changes)
 		})
 	}
+}
+
+func TestEngineSyncError(t *testing.T) {
+	f := app.NewFactory()
+	f.RegisterCompo(&Foo{})
+
+	e := Engine{
+		Factory: f,
+		Sync: func(v interface{}) error {
+			return errors.New("simulated err")
+		},
+	}
+
+	err := e.New(&Foo{})
+	assert.Error(t, err)
+}
+
+func TestEngineEmptySync(t *testing.T) {
+	f := app.NewFactory()
+	f.RegisterCompo(&Foo{})
+
+	e := Engine{Factory: f}
+	err := e.New(&Foo{})
+	assert.NoError(t, err)
 }
 
 func pretty(v interface{}) string {

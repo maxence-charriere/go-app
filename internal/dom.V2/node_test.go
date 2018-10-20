@@ -4,6 +4,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -39,5 +40,38 @@ func requireChangesMatches(t *testing.T, expected, actual []change) {
 
 	for i := range expected {
 		requireChangeMatch(t, expected[i], actual[i])
+	}
+}
+
+func TestIsHTMLNode(t *testing.T) {
+	assert.True(t, isHTMLNode("div"))
+	assert.False(t, isHTMLNode("foo"))
+}
+
+func TestIsCompoNode(t *testing.T) {
+	assert.True(t, isCompoNode("hello", ""))
+	assert.False(t, isCompoNode("hello", svg))
+	assert.False(t, isCompoNode("div", ""))
+	assert.False(t, isCompoNode("div", svg))
+}
+
+func TestNodeType(t *testing.T) {
+	tests := []struct {
+		name     string
+		expected string
+	}{
+		{
+			name:     "div",
+			expected: "div",
+		},
+		{
+			name:     "viewbox",
+			expected: "viewBox",
+		},
+	}
+
+	for _, test := range tests {
+		n := nodeType(test.name)
+		assert.Equal(t, test.expected, n)
 	}
 }
