@@ -17,17 +17,16 @@ type Page struct {
 
 	driver  *Driver
 	dom     *dom.DOM
-	history *core.History
+	history core.History
 	id      string
 	compo   app.Compo
 }
 
 func newPage(d *Driver, c app.PageConfig) *Page {
 	p := &Page{
-		driver:  d,
-		dom:     dom.NewDOM(d.factory, dom.JsToGoHandler),
-		history: core.NewHistory(),
-		id:      uuid.New().String(),
+		driver: d,
+		dom:    dom.NewDOM(d.factory, dom.JsToGoHandler),
+		id:     uuid.New().String(),
 	}
 
 	d.elems.Put(p)

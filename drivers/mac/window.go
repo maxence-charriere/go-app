@@ -14,7 +14,7 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/murlokswarm/app/internal/dom"
+	"github.com/murlokswarm/app/internal/dom.v2"
 	"github.com/murlokswarm/app/internal/file"
 	"github.com/pkg/errors"
 )
@@ -23,9 +23,9 @@ import (
 type Window struct {
 	core.Window
 
-	dom          *dom.DOM
-	history      *core.History
 	id           string
+	dom          dom.Engine
+	history      core.History
 	compo        app.Compo
 	isFullscreen bool
 	isMinimized  bool
@@ -49,9 +49,14 @@ func newWindow(c app.WindowConfig) *Window {
 	}
 
 	w := &Window{
-		dom:     dom.NewDOM(driver.factory, dom.JsToGoHandler, dom.HrefCompoFmt),
-		history: core.NewHistory(),
-		id:      id,
+		id: id,
+		dom: dom.Engine{
+			Factory: driver.factory,
+			AttrTransforms: []dom.Transform{
+				dom.JsToGoHandler,
+				dom.HrefCompoFmt,
+			},
+		},
 
 		onMove:           c.OnMove,
 		onResize:         c.OnResize,

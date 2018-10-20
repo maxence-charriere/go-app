@@ -16,7 +16,7 @@ type Window struct {
 
 	driver  *Driver
 	dom     *dom.DOM
-	history *core.History
+	history core.History
 	id      string
 	compo   app.Compo
 	x       float64
@@ -29,10 +29,9 @@ type Window struct {
 
 func newWindow(d *Driver, c app.WindowConfig) *Window {
 	w := &Window{
-		driver:  d,
-		dom:     dom.NewDOM(d.factory, dom.JsToGoHandler, dom.HrefCompoFmt),
-		history: core.NewHistory(),
-		id:      uuid.New().String(),
+		driver: d,
+		dom:    dom.NewDOM(d.factory, dom.JsToGoHandler, dom.HrefCompoFmt),
+		id:     uuid.New().String(),
 
 		onClose: c.OnClose,
 	}
