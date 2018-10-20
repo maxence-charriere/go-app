@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
+	"reflect"
 	"strings"
 	"sync"
 
@@ -58,6 +59,10 @@ func (e *Engine) init() {
 
 	if len(e.AllowedNodes) != 0 {
 		e.allowdedNodes = make(map[string]struct{}, len(e.AllowedNodes))
+
+		for _, a := range e.AllowedNodes {
+			e.allowdedNodes[a] = struct{}{}
+		}
 	}
 
 	e.creates = make([]change, 0, 64)
@@ -101,6 +106,18 @@ func (e *Engine) Close() {
 func (e *Engine) close() {
 	e.deleteNode(e.rootID)
 	e.rootID = ""
+
+	for k := range e.compos {
+		delete(e.compos, k)
+	}
+
+	for k := range e.compoIDs {
+		delete(e.compoIDs, k)
+	}
+
+	for k := range e.nodes {
+		delete(e.nodes, k)
+	}
 
 	e.creates = e.creates[:0]
 	e.changes = e.changes[:0]
@@ -172,6 +189,7 @@ func (e *Engine) render(c app.Compo) error {
 		})
 
 	case root.ID != newRoot.ID:
+		e.deleteNode(root.ID)
 		e.changes = append(e.changes, change{
 			Action:     replaceChild,
 			NodeID:     n.ID,
@@ -230,6 +248,9 @@ func (e *Engine) renderNode(r rendering) (node, bool, error) {
 
 	case html.EndTagToken:
 		return node{}, false, nil
+
+	case html.ErrorToken:
+		return node{}, false, r.Tokenizer.Err()
 
 	default:
 		return e.renderNode(r)
@@ -517,15 +538,6 @@ func (e *Engine) renderCompoNode(r rendering, typ string, hasAttr bool) (node, b
 	return n, true, nil
 }
 
-func (e *Engine) nodesByIDs(ids ...string) []node {
-	nodes := make([]node, 0, len(ids))
-	for _, id := range ids {
-		nodes = append(nodes, e.nodes[id])
-	}
-
-	return nodes
-}
-
 func (e *Engine) newNode(n node) {
 	e.nodes[n.ID] = n
 
@@ -539,14 +551,18 @@ func (e *Engine) newNode(n node) {
 }
 
 func (e *Engine) newCompo(c app.Compo, n node) error {
-	e.newNode(n)
-
 	var err error
 	if c == nil {
 		if c, err = e.Factory.NewCompo(n.Type); err != nil {
 			return err
 		}
 	}
+
+	if err := validateCompo(c); err != nil {
+		return err
+	}
+
+	e.newNode(n)
 
 	ic := compo{
 		ID:    n.ID,
@@ -613,6 +629,19 @@ func (e *Engine) isAllowedNode(typ string) bool {
 
 	_, ok := e.allowdedNodes[typ]
 	return ok
+}
+
+func validateCompo(c app.Compo) error {
+	v := reflect.ValueOf(c)
+	if v.Kind() != reflect.Ptr {
+		return errors.New("compo is not a pointer")
+	}
+
+	v = v.Elem()
+	if v.NumField() == 0 {
+		return errors.New("compo is based on a struct without field. use app.ZeroCompo instead of struct{}")
+	}
+	return nil
 }
 
 type rendering struct {

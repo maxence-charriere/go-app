@@ -33,20 +33,20 @@ func (f *Foo) Render() string {
 }
 
 type Bar struct {
-	ReplaceTextByElem bool
-	ReplaceElemByElem bool
+	ReplaceTextByNode bool
+	ReplaceNodeByNode bool
 }
 
 func (b *Bar) Render() string {
 	return `
 	<div>
-		{{if .ReplaceTextByElem}}
+		{{if .ReplaceTextByNode}}
 			<span>hello</span>
 		{{else}}
 			hello
 		{{end}}
 
-		{{if .ReplaceElemByElem}}
+		{{if .ReplaceNodeByNode}}
 			<h2>world</h2>
 		{{else}}
 			<h1>world</h1>
@@ -56,20 +56,20 @@ func (b *Bar) Render() string {
 }
 
 type Boo struct {
-	ReplaceCompoByElem bool
-	ReplaceCompoType   bool
-	AddCompo           bool
-	ChildErr           bool
-	ChildNoImport      bool
-	Value              string
+	ReplaceCompoByNode  bool
+	ReplaceCompoByCompo bool
+	AddCompo            bool
+	ChildErr            bool
+	ChildNoImport       bool
+	Value               string
 }
 
 func (b *Boo) Render() string {
 	return `
 	<div>
-		{{if .ReplaceCompoByElem}}
+		{{if .ReplaceCompoByNode}}
 			<p>foo</p>
-		{{else if .ReplaceCompoType}}
+		{{else if .ReplaceCompoByCompo}}
 			<dom.Oob>
 		{{else}}
 			<dom.Foo value="{{.Value}}">
@@ -92,7 +92,16 @@ func (b *Boo) Render() string {
 }
 
 type Oob struct {
-	Int int
+	Int             int
+	BadExtendedFunc bool
+}
+
+func (o *Oob) Funcs() map[string]interface{} {
+	return map[string]interface{}{
+		"hello": func(s string) string {
+			return "hello " + s
+		},
+	}
 }
 
 func (o *Oob) Render() string {
@@ -128,20 +137,41 @@ func (n *NestedNested) Render() string {
 }
 
 type CompoErr struct {
+	TemplateReadErr bool
+	TemplateExecErr bool
 	DecodeErr       bool
+	BadExtendedFunc bool
 	NoImport        bool
 	ReplaceCompoErr bool
 	AddChildErr     bool
 	Int             interface{}
 }
 
+func (c *CompoErr) Funcs() map[string]interface{} {
+	if c.BadExtendedFunc {
+		return map[string]interface{}{
+			"raw": func(s string) string {
+				panic("should not be overriden")
+			},
+		}
+	}
+
+	return nil
+}
+
 func (c *CompoErr) Render() string {
 	return `
 	<div>
+		{{if .TemplateReadErr}}
+			<dom.BadTemplateRead err>
+		{{end}}
+
+		{{if .TemplateExecErr}}
+			<dom.BadTemplateExec err>
+		{{end}}
+
 		{{if .DecodeErr}}
 			<dom.DecodeErr>
-		{{else}}
-			<dom.DecodeErr noerr>
 		{{end}}
 
 		{{if .NoImport}}
@@ -149,7 +179,7 @@ func (c *CompoErr) Render() string {
 		{{end}}
 
 		{{if .ReplaceCompoErr}}
-			<dom.DecodeErr>
+			<dom.badtemplate TemplateExecErr>
 		{{else}}
 			<dom.Oob int="{{.Int}}">
 		{{end}}
@@ -161,17 +191,35 @@ func (c *CompoErr) Render() string {
 	`
 }
 
-type DecodeErr struct {
-	NoErr bool
+type BadTemplateRead struct {
+	Err bool
 }
 
-func (d *DecodeErr) Render() string {
+func (b *BadTemplateRead) Render() string {
 	return `
-	{{if .NoErr}}
-		<div></div>
-	{{else}}
-		<div><div %error></div>
-	{{end}}
+	<div>
+		{{if .Err}}
+			{{print :)}}
+		{{else}}
+			<div></div>
+		{{end}}
+	</div>
+	`
+}
+
+type BadTemplateExec struct {
+	Err bool
+}
+
+func (b *BadTemplateExec) Render() string {
+	return `
+	<div>
+		{{if .Err}}
+			{{.KDNDSLndslj}}
+		{{else}}
+			<div></div>
+		{{end}}
+	</div>
 	`
 }
 
@@ -187,6 +235,12 @@ func (e *EmptyStructErr) Render() string {
 	return `<p></p>`
 }
 
+type DecodeErr app.ZeroCompo
+
+func (d *DecodeErr) Render() string {
+	return `<div %error="42">`
+}
+
 func TestEngine(t *testing.T) {
 	f := app.NewFactory()
 	f.RegisterCompo(&Foo{})
@@ -196,6 +250,8 @@ func TestEngine(t *testing.T) {
 	f.RegisterCompo(&Nested{})
 	f.RegisterCompo(&NestedNested{})
 	f.RegisterCompo(&CompoErr{})
+	f.RegisterCompo(&BadTemplateRead{})
+	f.RegisterCompo(&BadTemplateExec{})
 	f.RegisterCompo(&DecodeErr{})
 	f.RegisterCompo(NoPtrErr(0))
 	f.RegisterCompo(&EmptyStructErr{})
@@ -212,7 +268,7 @@ func TestEngine(t *testing.T) {
 	}{
 		// Foo:
 		{
-			scenario: "create simple compo",
+			scenario: "create compo nodes",
 			compo:    &Foo{Value: "hello"},
 			changes: []change{
 				{Action: newNode, NodeID: "dom.foo:", Type: "dom.foo", IsCompo: true},
@@ -229,7 +285,7 @@ func TestEngine(t *testing.T) {
 			nodeCount:  3,
 		},
 		{
-			scenario: "update simple compo",
+			scenario: "update node",
 			compo:    &Foo{Value: "hello"},
 			mutate: func(c app.Compo) {
 				c.(*Foo).Value = "world"
@@ -241,7 +297,7 @@ func TestEngine(t *testing.T) {
 			nodeCount:  3,
 		},
 		{
-			scenario: "append simple compo child",
+			scenario: "append child",
 			compo:    &Foo{},
 			mutate: func(c app.Compo) {
 				c.(*Foo).Value = "hello"
@@ -254,6 +310,330 @@ func TestEngine(t *testing.T) {
 			},
 			compoCount: 1,
 			nodeCount:  3,
+		},
+		{
+			scenario: "remove child",
+			compo:    &Foo{Value: "hello"},
+			mutate: func(c app.Compo) {
+				c.(*Foo).Value = ""
+			},
+			changes: []change{
+				{Action: removeChild, NodeID: "div:", ChildID: "text:"},
+				{Action: delNode, NodeID: "text:"},
+			},
+			compoCount: 1,
+			nodeCount:  2,
+		},
+		{
+			scenario: "set attr",
+			compo:    &Foo{},
+			mutate: func(c app.Compo) {
+				c.(*Foo).Disabled = true
+			},
+			changes: []change{
+				{Action: setAttr, NodeID: "div:", Key: "disabled"},
+			},
+			compoCount: 1,
+			nodeCount:  2,
+		},
+		{
+			scenario: "delete attr",
+			compo:    &Foo{Disabled: true},
+			mutate: func(c app.Compo) {
+				c.(*Foo).Disabled = false
+			},
+			changes: []change{
+				{Action: delAttr, NodeID: "div:", Key: "disabled"},
+			},
+			compoCount: 1,
+			nodeCount:  2,
+		},
+
+		// Bar:
+		{
+			scenario: "replace text by node",
+			compo:    &Bar{},
+			mutate: func(c app.Compo) {
+				c.(*Bar).ReplaceTextByNode = true
+			},
+			changes: []change{
+				{Action: newNode, NodeID: "span:", Type: "span"},
+				{Action: newNode, NodeID: "text:", Type: "text"},
+
+				{Action: setText, NodeID: "text:", Value: "hello"},
+				{Action: appendChild, NodeID: "span:", ChildID: "text:"},
+				{Action: replaceChild, NodeID: "div:", ChildID: "text:", NewChildID: "span:"},
+
+				{Action: delNode, NodeID: "text:"},
+			},
+			compoCount: 1,
+			nodeCount:  6,
+		},
+		{
+			scenario: "replace node by text",
+			compo:    &Bar{ReplaceTextByNode: true},
+			mutate: func(c app.Compo) {
+				c.(*Bar).ReplaceTextByNode = false
+			},
+			changes: []change{
+				{Action: newNode, NodeID: "text:", Type: "text"},
+
+				{Action: setText, NodeID: "text:", Value: "hello"},
+				{Action: replaceChild, NodeID: "div:", ChildID: "span:", NewChildID: "text:"},
+
+				{Action: delNode, NodeID: "text:"},
+				{Action: delNode, NodeID: "span:"},
+			},
+			compoCount: 1,
+			nodeCount:  5,
+		},
+		{
+			scenario: "replace node by node",
+			compo:    &Bar{},
+			mutate: func(c app.Compo) {
+				c.(*Bar).ReplaceNodeByNode = true
+			},
+			changes: []change{
+				{Action: newNode, NodeID: "h2:", Type: "h2"},
+				{Action: newNode, NodeID: "text:", Type: "text"},
+
+				{Action: setText, NodeID: "text:", Value: "world"},
+				{Action: appendChild, NodeID: "h2:", ChildID: "text:"},
+				{Action: replaceChild, NodeID: "div:", ChildID: "h1:", NewChildID: "h2:"},
+
+				{Action: delNode, NodeID: "text:"},
+				{Action: delNode, NodeID: "h1:"},
+			},
+			compoCount: 1,
+			nodeCount:  5,
+		},
+
+		// Boo:
+		{
+			scenario: "create nested compo",
+			compo:    &Boo{},
+			changes: []change{
+				{Action: newNode, NodeID: "dom.boo:", Type: "dom.boo", IsCompo: true},
+				{Action: newNode, NodeID: "div:", Type: "div"},
+
+				{Action: newNode, NodeID: "dom.foo:", Type: "dom.foo", IsCompo: true},
+				{Action: newNode, NodeID: "div:", Type: "div"},
+				{Action: setAttr, NodeID: "div:", Key: "class", Value: "test"},
+				{Action: appendChild, NodeID: "dom.foo:", ChildID: "div:"},
+
+				{Action: appendChild, NodeID: "div:", ChildID: "dom.foo:"},
+				{Action: appendChild, NodeID: "dom.boo:", ChildID: "div:"},
+				{Action: setRoot, NodeID: "dom.boo:"},
+			},
+			compoCount: 2,
+			nodeCount:  4,
+		},
+		{
+			scenario: "add compo",
+			compo:    &Boo{},
+			mutate: func(c app.Compo) {
+				c.(*Boo).AddCompo = true
+			},
+			changes: []change{
+				{Action: newNode, NodeID: "dom.foo:", Type: "dom.foo", IsCompo: true},
+				{Action: newNode, NodeID: "div:", Type: "div"},
+
+				{Action: setAttr, NodeID: "div:", Key: "class", Value: "test"},
+				{Action: appendChild, NodeID: "dom.foo:", ChildID: "div:"},
+				{Action: appendChild, NodeID: "div:", ChildID: "dom.foo:"},
+			},
+			compoCount: 3,
+			nodeCount:  6,
+		},
+		{
+			scenario: "remove compo",
+			compo:    &Boo{AddCompo: true},
+			mutate: func(c app.Compo) {
+				c.(*Boo).AddCompo = false
+			},
+			changes: []change{
+				{Action: removeChild, NodeID: "div:", ChildID: "dom.foo:"},
+
+				{Action: delNode, NodeID: "div:"},
+				{Action: delNode, NodeID: "dom.foo:"},
+			},
+			compoCount: 2,
+			nodeCount:  4,
+		},
+		{
+			scenario: "replace compo by compo",
+			compo:    &Boo{},
+			mutate: func(c app.Compo) {
+				c.(*Boo).ReplaceCompoByCompo = true
+			},
+			changes: []change{
+				{Action: newNode, NodeID: "dom.oob:", Type: "dom.oob", IsCompo: true},
+				{Action: newNode, NodeID: "p:", Type: "p"},
+
+				{Action: appendChild, NodeID: "dom.oob:", ChildID: "p:"},
+				{Action: replaceChild, NodeID: "div:", ChildID: "dom.foo:", NewChildID: "dom.oob:"},
+
+				{Action: delNode, NodeID: "div:"},
+				{Action: delNode, NodeID: "dom.foo:"},
+			},
+			compoCount: 2,
+			nodeCount:  4,
+		},
+		{
+			scenario: "set compo attr",
+			compo:    &Boo{Value: "hello"},
+			mutate: func(c app.Compo) {
+				c.(*Boo).Value = "world"
+			},
+			changes: []change{
+				{Action: setText, NodeID: "text:", Value: "world"},
+			},
+			compoCount: 2,
+			nodeCount:  5,
+		},
+		{
+			scenario: "replace compo by node",
+			compo:    &Boo{},
+			mutate: func(c app.Compo) {
+				c.(*Boo).ReplaceCompoByNode = true
+			},
+			changes: []change{
+				{Action: newNode, NodeID: "p:", Type: "p"},
+				{Action: newNode, NodeID: "text:", Type: "text"},
+
+				{Action: setText, NodeID: "text:", Value: "foo"},
+				{Action: appendChild, NodeID: "p:", ChildID: "text:"},
+				{Action: replaceChild, NodeID: "div:", ChildID: "dom.foo:", NewChildID: "p:"},
+
+				{Action: delNode, NodeID: "div:"},
+				{Action: delNode, NodeID: "dom.foo:"},
+			},
+			compoCount: 1,
+			nodeCount:  4,
+		},
+		{
+			scenario: "replace node by compo",
+			compo:    &Boo{ReplaceCompoByNode: true},
+			mutate: func(c app.Compo) {
+				c.(*Boo).ReplaceCompoByNode = false
+			},
+			changes: []change{
+				{Action: newNode, NodeID: "dom.foo:", Type: "dom.foo", IsCompo: true},
+				{Action: newNode, NodeID: "div:", Type: "div"},
+
+				{Action: setAttr, NodeID: "div:", Key: "class", Value: "test"},
+				{Action: appendChild, NodeID: "dom.foo:", ChildID: "div:"},
+				{Action: replaceChild, NodeID: "div:", ChildID: "p:", NewChildID: "dom.foo:"},
+
+				{Action: delNode, NodeID: "text:"},
+				{Action: delNode, NodeID: "p:"},
+			},
+			compoCount: 2,
+			nodeCount:  4,
+		},
+
+		// Nested:
+		{
+			scenario: "replace compo first child",
+			compo:    &Nested{},
+			mutate: func(c app.Compo) {
+				c.(*Nested).Foo = true
+			},
+			changes: []change{
+				{Action: newNode, NodeID: "dom.foo:", Type: "dom.foo", IsCompo: true},
+				{Action: newNode, NodeID: "div:", Type: "div"},
+
+				{Action: setAttr, NodeID: "div:", Key: "class", Value: "test"},
+				{Action: appendChild, NodeID: "dom.foo:", ChildID: "div:"},
+				{Action: replaceChild, NodeID: "dom.nested:", ChildID: "dom.oob:", NewChildID: "dom.foo:"},
+
+				{Action: delNode, NodeID: "p:"},
+				{Action: delNode, NodeID: "dom.oob:"},
+			},
+			compoCount: 2,
+			nodeCount:  3,
+		},
+		{
+			scenario: "replace nested compo first child",
+			compo:    &NestedNested{},
+			mutate: func(c app.Compo) {
+				c.(*NestedNested).Foo = true
+			},
+			changes: []change{
+				{Action: newNode, NodeID: "dom.foo:", Type: "dom.foo", IsCompo: true},
+				{Action: newNode, NodeID: "div:", Type: "div"},
+
+				{Action: setAttr, NodeID: "div:", Key: "class", Value: "test"},
+				{Action: appendChild, NodeID: "dom.foo:", ChildID: "div:"},
+				{Action: replaceChild, NodeID: "dom.nested:", ChildID: "dom.oob:", NewChildID: "dom.foo:"},
+
+				{Action: delNode, NodeID: "p:"},
+				{Action: delNode, NodeID: "dom.oob:"},
+			},
+			compoCount: 3,
+			nodeCount:  4,
+		},
+
+		// Errors:
+		{
+			scenario: "fail no import",
+			compo:    &CompoErr{NoImport: true},
+			err:      true,
+		},
+		{
+			scenario: "fail read template",
+			compo:    &CompoErr{TemplateReadErr: true},
+			err:      true,
+		},
+		{
+			scenario: "fail exec template",
+			compo:    &CompoErr{},
+			mutate: func(c app.Compo) {
+				c.(*CompoErr).TemplateExecErr = true
+			},
+			err: true,
+		},
+		{
+			scenario: "fail bad extended func",
+			compo:    &CompoErr{BadExtendedFunc: true},
+			err:      true,
+		},
+		{
+			scenario:     "fail with not allowed nodes",
+			allowedNodes: []string{"menu", "menuitem"},
+			compo:        &CompoErr{},
+			err:          true,
+		},
+		{
+			scenario: "fail map child fields",
+			compo:    &CompoErr{Int: 42.42},
+			err:      true,
+		},
+		{
+			scenario: "replace compo err",
+			compo:    &CompoErr{Int: 0},
+			mutate: func(c app.Compo) {
+				c.(*CompoErr).ReplaceCompoErr = true
+			},
+			err: true,
+		},
+		{
+			scenario: "fail add child",
+			compo:    &CompoErr{Int: 42},
+			mutate: func(c app.Compo) {
+				c.(*CompoErr).AddChildErr = true
+			},
+			err: true,
+		},
+		{
+			scenario: "no ptr compo",
+			compo:    NoPtrErr(42),
+			err:      true,
+		},
+		{
+			scenario: "empty compo",
+			compo:    &EmptyStructErr{},
+			err:      true,
 		},
 	}
 
@@ -296,7 +676,6 @@ func TestEngine(t *testing.T) {
 			}
 
 			require.NoError(t, err)
-
 			t.Log(pretty(changes))
 
 			require.Len(t, e.compos, test.compoCount)
