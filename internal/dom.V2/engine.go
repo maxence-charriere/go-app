@@ -180,7 +180,7 @@ func (e *Engine) render(c app.Compo) error {
 
 	if newRoot, _, err = e.renderNode(rendering{
 		Tokenizer:  html.NewTokenizer(bytes.NewBufferString(markup)),
-		CompoID:    n.CompoID,
+		CompoID:    n.ID,
 		NodeToSync: root,
 	}); err != nil {
 		return err
@@ -564,6 +564,7 @@ func (e *Engine) newNode(n node) {
 	e.creates = append(e.creates, change{
 		Action:    newNode,
 		NodeID:    n.ID,
+		CompoID:   n.CompoID,
 		Type:      n.Type,
 		Namespace: n.Namespace,
 		IsCompo:   n.IsCompo,

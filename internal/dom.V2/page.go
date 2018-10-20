@@ -1,3 +1,6 @@
+//go:generate go run page_gen.go
+//go:generate go fmt
+
 package dom
 
 import (

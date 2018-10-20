@@ -26,6 +26,7 @@ func requireChangeMatch(t *testing.T, expected, actual change) {
 
 	require.Equal(t, expected.Action, actual.Action)
 	requireIDsMatch(expected.NodeID, actual.NodeID)
+	requireIDsMatch(expected.CompoID, actual.CompoID)
 	require.Equal(t, expected.Type, actual.Type)
 	require.Equal(t, expected.Namespace, actual.Namespace)
 	require.Equal(t, expected.Key, actual.Key)

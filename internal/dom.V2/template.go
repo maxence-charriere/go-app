@@ -119,7 +119,7 @@ function setRoot(change = {}) {
 }
 
 function newNode(change = {}) {
-    const { IsCompo, Type, NodeID, Namespace } = change;
+    const { IsCompo, Type, NodeID, CompoID, Namespace } = change;
 
     if (IsCompo) {
         goapp.nodes[NodeID] = {
@@ -142,6 +142,7 @@ function newNode(change = {}) {
     }
 
     n.ID = NodeID;
+    n.CompoID = CompoID;
     goapp.nodes[NodeID] = n;
 }
 
@@ -310,7 +311,7 @@ function callCompoHandler(elem, event, fieldOrMethod) {
 
 function onchangeToGolang(elem, fieldOrMethod) {
     golangRequest(JSON.stringify({
-        'CompoID': elem.compoID,
+        'CompoID': elem.CompoID,
         'FieldOrMethod': fieldOrMethod,
         'JSONValue': JSON.stringify(elem.value)
     }));
@@ -324,7 +325,7 @@ function onDragStartToGolang(elem, event, fieldOrMethod) {
     event.dataTransfer.setData('text', elem.dataset.drag);
 
     golangRequest(JSON.stringify({
-        'CompoID': elem.compoID,
+        'CompoID': elem.CompoID,
         'FieldOrMethod': fieldOrMethod,
         'JSONValue': JSON.stringify(payload)
     }));
@@ -339,7 +340,7 @@ function ondropToGolang(elem, event, fieldOrMethod) {
     setPayloadSource(payload, elem);
 
     golangRequest(JSON.stringify({
-        'CompoID': elem.compoID,
+        'CompoID': elem.CompoID,
         'FieldOrMethod': fieldOrMethod,
         'JSONValue': JSON.stringify(payload),
         'Override': 'Files'
@@ -355,7 +356,7 @@ function eventToGolang(elem, event, fieldOrMethod) {
     }
 
     golangRequest(JSON.stringify({
-        'CompoID': elem.compoID,
+        'CompoID': elem.CompoID,
         'FieldOrMethod': fieldOrMethod,
         'JSONValue': JSON.stringify(payload)
     }));
@@ -364,7 +365,7 @@ function eventToGolang(elem, event, fieldOrMethod) {
 function setPayloadSource(payload, elem) {
     payload['Source'] = {
         'GoappID': elem.ID,
-        'CompoID': elem.compoID,
+        'CompoID': elem.CompoID,
         'ID': elem.id,
         'Class': elem.className,
         'Data': elem.dataset,

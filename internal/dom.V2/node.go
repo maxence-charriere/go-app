@@ -23,6 +23,7 @@ type node struct {
 type change struct {
 	Action     changeAction
 	NodeID     string
+	CompoID    string `json:",omitempty"`
 	Type       string `json:",omitempty"`
 	Namespace  string `json:",omitempty"`
 	Key        string `json:",omitempty"`

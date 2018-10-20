@@ -1,10 +1,11 @@
+// +build ignore
+
 package main
 
 import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"path/filepath"
 )
 
 func main() {
@@ -21,8 +22,8 @@ func main() {
 		Var      string
 		Filename string
 	}{
-		{Var: "htmlTmpl", Filename: filepath.Join("template", "page.html")},
-		{Var: "jsTmpl", Filename: filepath.Join("template", "page.js")},
+		{Var: "htmlTmpl", Filename: "page.html"},
+		{Var: "jsTmpl", Filename: "page.js"},
 	}
 
 	for _, g := range gen {

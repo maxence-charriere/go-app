@@ -324,8 +324,8 @@ func TestEngine(t *testing.T) {
 			compo:    &Foo{Value: "hello"},
 			changes: []change{
 				{Action: newNode, NodeID: "dom.foo:", Type: "dom.foo", IsCompo: true},
-				{Action: newNode, NodeID: "div:", Type: "div"},
-				{Action: newNode, NodeID: "text:", Type: "text"},
+				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "dom.foo:"},
+				{Action: newNode, NodeID: "text:", Type: "text", CompoID: "dom.foo:"},
 
 				{Action: setAttr, NodeID: "div:", Key: "class", Value: "test"},
 				{Action: setText, NodeID: "text:", Value: "hello"},
@@ -355,7 +355,7 @@ func TestEngine(t *testing.T) {
 				c.(*Foo).Value = "hello"
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "text:", Type: "text"},
+				{Action: newNode, NodeID: "text:", Type: "text", CompoID: "dom.foo:"},
 
 				{Action: setText, NodeID: "text:", Value: "hello"},
 				{Action: appendChild, NodeID: "div:", ChildID: "text:"},
@@ -409,8 +409,8 @@ func TestEngine(t *testing.T) {
 				c.(*Bar).ReplaceTextByNode = true
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "span:", Type: "span"},
-				{Action: newNode, NodeID: "text:", Type: "text"},
+				{Action: newNode, NodeID: "span:", Type: "span", CompoID: "dom.bar:"},
+				{Action: newNode, NodeID: "text:", Type: "text", CompoID: "dom.bar:"},
 
 				{Action: setText, NodeID: "text:", Value: "hello"},
 				{Action: appendChild, NodeID: "span:", ChildID: "text:"},
@@ -428,7 +428,7 @@ func TestEngine(t *testing.T) {
 				c.(*Bar).ReplaceTextByNode = false
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "text:", Type: "text"},
+				{Action: newNode, NodeID: "text:", Type: "text", CompoID: "dom.bar:"},
 
 				{Action: setText, NodeID: "text:", Value: "hello"},
 				{Action: replaceChild, NodeID: "div:", ChildID: "span:", NewChildID: "text:"},
@@ -446,8 +446,8 @@ func TestEngine(t *testing.T) {
 				c.(*Bar).ReplaceNodeByNode = true
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "h2:", Type: "h2"},
-				{Action: newNode, NodeID: "text:", Type: "text"},
+				{Action: newNode, NodeID: "h2:", Type: "h2", CompoID: "dom.bar:"},
+				{Action: newNode, NodeID: "text:", Type: "text", CompoID: "dom.bar:"},
 
 				{Action: setText, NodeID: "text:", Value: "world"},
 				{Action: appendChild, NodeID: "h2:", ChildID: "text:"},
@@ -466,10 +466,10 @@ func TestEngine(t *testing.T) {
 			compo:    &Boo{},
 			changes: []change{
 				{Action: newNode, NodeID: "dom.boo:", Type: "dom.boo", IsCompo: true},
-				{Action: newNode, NodeID: "div:", Type: "div"},
+				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "dom.boo:"},
 
-				{Action: newNode, NodeID: "dom.foo:", Type: "dom.foo", IsCompo: true},
-				{Action: newNode, NodeID: "div:", Type: "div"},
+				{Action: newNode, NodeID: "dom.foo:", Type: "dom.foo", IsCompo: true, CompoID: "dom.boo:"},
+				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "dom.foo:"},
 				{Action: setAttr, NodeID: "div:", Key: "class", Value: "test"},
 				{Action: appendChild, NodeID: "dom.foo:", ChildID: "div:"},
 
@@ -487,8 +487,8 @@ func TestEngine(t *testing.T) {
 				c.(*Boo).AddCompo = true
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "dom.foo:", Type: "dom.foo", IsCompo: true},
-				{Action: newNode, NodeID: "div:", Type: "div"},
+				{Action: newNode, NodeID: "dom.foo:", Type: "dom.foo", IsCompo: true, CompoID: "dom.boo:"},
+				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "dom.foo:"},
 
 				{Action: setAttr, NodeID: "div:", Key: "class", Value: "test"},
 				{Action: appendChild, NodeID: "dom.foo:", ChildID: "div:"},
@@ -519,8 +519,8 @@ func TestEngine(t *testing.T) {
 				c.(*Boo).ReplaceCompoByCompo = true
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "dom.oob:", Type: "dom.oob", IsCompo: true},
-				{Action: newNode, NodeID: "p:", Type: "p"},
+				{Action: newNode, NodeID: "dom.oob:", Type: "dom.oob", IsCompo: true, CompoID: "dom.boo:"},
+				{Action: newNode, NodeID: "p:", Type: "p", CompoID: "dom.oob:"},
 
 				{Action: appendChild, NodeID: "dom.oob:", ChildID: "p:"},
 				{Action: replaceChild, NodeID: "div:", ChildID: "dom.foo:", NewChildID: "dom.oob:"},
@@ -550,8 +550,8 @@ func TestEngine(t *testing.T) {
 				c.(*Boo).ReplaceCompoByNode = true
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "p:", Type: "p"},
-				{Action: newNode, NodeID: "text:", Type: "text"},
+				{Action: newNode, NodeID: "p:", Type: "p", CompoID: "dom.boo:"},
+				{Action: newNode, NodeID: "text:", Type: "text", CompoID: "dom.boo:"},
 
 				{Action: setText, NodeID: "text:", Value: "foo"},
 				{Action: appendChild, NodeID: "p:", ChildID: "text:"},
@@ -570,8 +570,8 @@ func TestEngine(t *testing.T) {
 				c.(*Boo).ReplaceCompoByNode = false
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "dom.foo:", Type: "dom.foo", IsCompo: true},
-				{Action: newNode, NodeID: "div:", Type: "div"},
+				{Action: newNode, NodeID: "dom.foo:", Type: "dom.foo", IsCompo: true, CompoID: "dom.boo:"},
+				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "dom.foo:"},
 
 				{Action: setAttr, NodeID: "div:", Key: "class", Value: "test"},
 				{Action: appendChild, NodeID: "dom.foo:", ChildID: "div:"},
@@ -592,8 +592,8 @@ func TestEngine(t *testing.T) {
 				c.(*Nested).Foo = true
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "dom.foo:", Type: "dom.foo", IsCompo: true},
-				{Action: newNode, NodeID: "div:", Type: "div"},
+				{Action: newNode, NodeID: "dom.foo:", Type: "dom.foo", IsCompo: true, CompoID: "dom.nested:"},
+				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "dom.foo:"},
 
 				{Action: setAttr, NodeID: "div:", Key: "class", Value: "test"},
 				{Action: appendChild, NodeID: "dom.foo:", ChildID: "div:"},
@@ -612,8 +612,8 @@ func TestEngine(t *testing.T) {
 				c.(*NestedNested).Foo = true
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "dom.foo:", Type: "dom.foo", IsCompo: true},
-				{Action: newNode, NodeID: "div:", Type: "div"},
+				{Action: newNode, NodeID: "dom.foo:", Type: "dom.foo", IsCompo: true, CompoID: "dom.nested:"},
+				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "dom.foo:"},
 
 				{Action: setAttr, NodeID: "div:", Key: "class", Value: "test"},
 				{Action: appendChild, NodeID: "dom.foo:", ChildID: "div:"},
@@ -632,9 +632,9 @@ func TestEngine(t *testing.T) {
 			compo:    &Svg{},
 			changes: []change{
 				{Action: newNode, NodeID: "dom.svg:", Type: "dom.svg", IsCompo: true},
-				{Action: newNode, NodeID: "svg:", Type: "svg", Namespace: svg},
-				{Action: newNode, NodeID: "path:", Type: "path", Namespace: svg},
-				{Action: newNode, NodeID: "path:", Type: "path", Namespace: svg},
+				{Action: newNode, NodeID: "svg:", Type: "svg", Namespace: svg, CompoID: "dom.svg:"},
+				{Action: newNode, NodeID: "path:", Type: "path", Namespace: svg, CompoID: "dom.svg:"},
+				{Action: newNode, NodeID: "path:", Type: "path", Namespace: svg, CompoID: "dom.svg:"},
 
 				{Action: setAttr, NodeID: "path:", Key: "data"},
 				{Action: appendChild, NodeID: "svg:", ChildID: "path:"},
@@ -679,9 +679,9 @@ func TestEngine(t *testing.T) {
 			compo:    &SelfClosing{Svg: true},
 			changes: []change{
 				{Action: newNode, NodeID: "dom.selfclosing:", Type: "dom.selfclosing", IsCompo: true},
-				{Action: newNode, NodeID: "div:", Type: "div"},
-				{Action: newNode, NodeID: "div:", Type: "div"},
-				{Action: newNode, NodeID: "svg:", Type: "svg", Namespace: svg},
+				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "dom.selfclosing:"},
+				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "dom.selfclosing:"},
+				{Action: newNode, NodeID: "svg:", Type: "svg", Namespace: svg, CompoID: "dom.selfclosing:"},
 
 				{Action: appendChild, NodeID: "div:", ChildID: "div:"},
 				{Action: appendChild, NodeID: "div:", ChildID: "svg:"},
@@ -699,9 +699,9 @@ func TestEngine(t *testing.T) {
 			compo:    &VoidElem{},
 			changes: []change{
 				{Action: newNode, NodeID: "dom.voidelem:", Type: "dom.voidelem", IsCompo: true},
-				{Action: newNode, NodeID: "div:", Type: "div"},
-				{Action: newNode, NodeID: "img:", Type: "img"},
-				{Action: newNode, NodeID: "p:", Type: "p"},
+				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "dom.voidelem:"},
+				{Action: newNode, NodeID: "img:", Type: "img", CompoID: "dom.voidelem:"},
+				{Action: newNode, NodeID: "p:", Type: "p", CompoID: "dom.voidelem:"},
 
 				{Action: appendChild, NodeID: "div:", ChildID: "img:"},
 				{Action: appendChild, NodeID: "div:", ChildID: "p:"},
