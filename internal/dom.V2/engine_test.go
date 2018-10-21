@@ -840,7 +840,6 @@ func TestEngine(t *testing.T) {
 
 func TestEngineRenderNotMounted(t *testing.T) {
 	e := Engine{
-		Factory: f,
 		Sync: func(v interface{}) error {
 			return errors.New("simulated err")
 		},
@@ -872,6 +871,29 @@ func TestEngineEmptySync(t *testing.T) {
 	e := Engine{Factory: f}
 	err := e.New(&Foo{})
 	assert.NoError(t, err)
+}
+
+func TestDOMCompoByID(t *testing.T) {
+	f := app.NewFactory()
+	f.RegisterCompo(&Foo{})
+
+	e := Engine{Factory: f}
+	foo := &Foo{}
+
+	err := e.New(foo)
+	require.NoError(t, err)
+
+	c, ok := e.compos[foo]
+	require.True(t, ok)
+	require.Equal(t, foo, c.Compo)
+
+	var foo2 app.Compo
+	foo2, err = e.CompoByID(c.ID)
+	require.NoError(t, err)
+	require.Equal(t, foo, foo2)
+
+	_, err = e.CompoByID("unknownID")
+	require.Error(t, err)
 }
 
 func pretty(v interface{}) string {

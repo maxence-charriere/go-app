@@ -71,6 +71,28 @@ func (e *Engine) init() {
 	e.toSync = make([]change, 0, 64)
 }
 
+// Contains reports whether the given component is in the dom.
+func (e *Engine) Contains(c app.Compo) bool {
+	e.mutex.RLock()
+	defer e.mutex.RUnlock()
+
+	_, ok := e.compos[c]
+	return ok
+}
+
+// CompoByID returns the component with the given identifier.
+func (e *Engine) CompoByID(id string) (app.Compo, error) {
+	e.mutex.RLock()
+	defer e.mutex.RUnlock()
+
+	c, ok := e.compoIDs[id]
+	if !ok {
+		return nil, app.ErrCompoNotMounted
+	}
+
+	return c.Compo, nil
+}
+
 // New renders the given component and set it as the dom root.
 func (e *Engine) New(c app.Compo) error {
 	e.once.Do(e.init)
@@ -123,15 +145,6 @@ func (e *Engine) close() {
 	e.changes = e.changes[:0]
 	e.deletes = e.deletes[:0]
 	e.toSync = e.toSync[:0]
-}
-
-// Contains reports whether the given component is in the dom.
-func (e *Engine) Contains(c app.Compo) bool {
-	e.mutex.RLock()
-	defer e.mutex.RUnlock()
-
-	_, ok := e.compos[c]
-	return ok
 }
 
 // Render renders the given component by updating the state described within
