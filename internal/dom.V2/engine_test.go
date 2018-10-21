@@ -838,6 +838,18 @@ func TestEngine(t *testing.T) {
 	}
 }
 
+func TestEngineRenderNotMounted(t *testing.T) {
+	e := Engine{
+		Factory: f,
+		Sync: func(v interface{}) error {
+			return errors.New("simulated err")
+		},
+	}
+
+	err := e.Render(&Foo{})
+	assert.Error(t, err)
+}
+
 func TestEngineSyncError(t *testing.T) {
 	f := app.NewFactory()
 	f.RegisterCompo(&Foo{})

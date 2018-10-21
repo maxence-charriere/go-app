@@ -5,7 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/dom"
+	"github.com/murlokswarm/app/internal/dom.v2"
 )
 
 // DockTile is a teststatus menu that implements the app.DockTile interface.
@@ -17,8 +17,10 @@ func newDockTile(d *Driver) *DockTile {
 	dt := &DockTile{
 		Menu{
 			driver: d,
-			dom:    dom.NewDOM(d.factory),
 			id:     uuid.New().String(),
+			dom: dom.Engine{
+				Factory: d.factory,
+			},
 		},
 	}
 

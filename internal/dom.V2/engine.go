@@ -141,6 +141,10 @@ func (e *Engine) Render(c app.Compo) error {
 	e.mutex.Lock()
 	defer e.mutex.Unlock()
 
+	if _, ok := e.compos[c]; !ok {
+		return app.ErrCompoNotMounted
+	}
+
 	if err := e.render(c); err != nil {
 		return err
 	}

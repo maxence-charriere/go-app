@@ -7,7 +7,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/murlokswarm/app/internal/dom"
+	"github.com/murlokswarm/app/internal/dom.v2"
 	"github.com/pkg/errors"
 )
 
@@ -16,7 +16,7 @@ type Page struct {
 	core.Page
 
 	driver  *Driver
-	dom     *dom.DOM
+	dom     dom.Engine
 	history core.History
 	id      string
 	compo   app.Compo
@@ -25,8 +25,12 @@ type Page struct {
 func newPage(d *Driver, c app.PageConfig) *Page {
 	p := &Page{
 		driver: d,
-		dom:    dom.NewDOM(d.factory, dom.JsToGoHandler),
 		id:     uuid.New().String(),
+		dom: dom.Engine{
+			AttrTransforms: []dom.Transform{
+				dom.JsToGoHandler,
+			},
+		},
 	}
 
 	d.elems.Put(p)
@@ -58,17 +62,13 @@ func (p *Page) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	if p.compo != nil {
-		p.dom.Clean()
-	}
-
 	p.compo = c
 
 	if u != p.history.Current() {
 		p.history.NewEntry(u)
 	}
 
-	_, err = p.dom.New(c)
+	err = p.dom.New(c)
 }
 
 // Compo satisfies the app.Page interface.
@@ -83,8 +83,7 @@ func (p *Page) Contains(c app.Compo) bool {
 
 // Render satisfies the app.Page interface.
 func (p *Page) Render(c app.Compo) {
-	_, err := p.dom.Update(c)
-	p.SetErr(err)
+	p.SetErr(p.dom.Render(c))
 }
 
 // Reload satisfies the app.Page interface.
