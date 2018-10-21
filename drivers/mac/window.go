@@ -69,6 +69,8 @@ func newWindow(c app.WindowConfig) *Window {
 		onClose:          c.OnClose,
 	}
 
+	w.dom.Sync = w.render
+
 	in := struct {
 		ID                string
 		Title             string
@@ -162,10 +164,6 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	if w.compo != nil {
-		w.dom.Clean()
-	}
-
 	w.compo = c
 
 	if u != w.history.Current() {
@@ -197,13 +195,8 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	var changes []dom.Change
-	changes, err = w.dom.New(c)
+	err = w.dom.New(c)
 	if err != nil {
-		return
-	}
-
-	if err = w.render(changes); err != nil {
 		return
 	}
 
@@ -225,21 +218,13 @@ func (w *Window) Contains(c app.Compo) bool {
 
 // Render satisfies the app.Window interface.
 func (w *Window) Render(c app.Compo) {
-	changes, err := w.dom.Update(c)
-	w.SetErr(err)
-
-	if w.Err() != nil {
-		return
-	}
-
-	err = w.render(changes)
-	w.SetErr(err)
+	w.SetErr(w.dom.Render(c))
 }
 
-func (w *Window) render(c []dom.Change) error {
-	b, err := json.Marshal(c)
+func (w *Window) render(arg interface{}) error {
+	b, err := json.Marshal(arg)
 	if err != nil {
-		return errors.Wrap(err, "marshal changes failed")
+		return errors.Wrap(err, "encode argument failed")
 	}
 
 	return driver.macRPC.Call("windows.Render", nil, struct {

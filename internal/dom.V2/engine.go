@@ -31,7 +31,7 @@ type Engine struct {
 
 	// Sync is the function used to synchronize node changes with a remote dom.
 	// No synchronisations are performed if the func in nil.
-	Sync func(v interface{}) error
+	Sync func(arg interface{}) error
 
 	once          sync.Once
 	mutex         sync.RWMutex

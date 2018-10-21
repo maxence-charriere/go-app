@@ -42,10 +42,8 @@ const htmlTmpl = `<!DOCTYPE html>
 </html>
 `
 const jsTmpl = `
-var goapp = {
-    nodes: {
-        "root:": document.body
-    },
+const goapp = {
+    nodes: {},
 
     actions: Object.freeze({
         "setRoot": 0,
@@ -115,23 +113,24 @@ function setRoot(change = {}) {
         return;
     }
 
-    document.body.replaceChild(root, document.body.firstChild());
+    document.body.replaceChild(root, document.body.firstChild);
 }
 
 function newNode(change = {}) {
-    const { IsCompo, Type, NodeID, CompoID, Namespace } = change;
+    const { IsCompo = false, Type, NodeID, CompoID, Namespace } = change;
+
 
     if (IsCompo) {
         goapp.nodes[NodeID] = {
-            Type: Type,
+            Type,
             ID: NodeID,
-            IsCompo: true
+            IsCompo
         };
 
         return;
     }
 
-    var n = null
+    var n = null;
 
     if (Type === 'text') {
         n = document.createTextNode("");
@@ -192,13 +191,13 @@ function appendChild(change = {}) {
         return;
     }
 
-    const c = compoRoot(goapp.nodes[ChildID]);
-    if (!c) {
+    if (n.IsCompo) {
+        n.RootID = ChildID;
         return;
     }
 
-    if (n.IsCompo) {
-        n.RootID = ChildID;
+    const c = compoRoot(goapp.nodes[ChildID]);
+    if (!c) {
         return;
     }
 
