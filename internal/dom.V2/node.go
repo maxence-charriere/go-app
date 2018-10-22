@@ -20,6 +20,18 @@ type node struct {
 	Dom       *Engine
 }
 
+func clearNodeIDs(ids []string) []string {
+	return clearNodesIDsFrom(ids, 0)
+}
+
+func clearNodesIDsFrom(ids []string, index int) []string {
+	for i := index; i < len(ids); i++ {
+		ids[i] = ""
+	}
+
+	return ids[:index]
+}
+
 type change struct {
 	Action     changeAction
 	NodeID     string
@@ -46,6 +58,14 @@ const (
 	removeChild
 	replaceChild
 )
+
+func clearChanges(c []change) []change {
+	for i := range c {
+		c[i] = change{}
+	}
+
+	return c[:0]
+}
 
 var (
 	svg             = "http://www.w3.org/2000/svg"

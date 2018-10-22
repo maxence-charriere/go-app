@@ -794,7 +794,9 @@ func TestEngine(t *testing.T) {
 					HrefCompoFmt,
 				},
 				Sync: func(v interface{}) error {
-					changes, _ = v.([]change)
+					c := v.([]change)
+					changes = make([]change, len(c))
+					copy(changes, c)
 					return nil
 				},
 			}

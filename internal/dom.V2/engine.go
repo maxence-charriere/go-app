@@ -44,6 +44,7 @@ type Engine struct {
 	changes       []change
 	deletes       []change
 	toSync        []change
+	decodeAttrs   map[string]string
 }
 
 func (e *Engine) init() {
@@ -69,6 +70,8 @@ func (e *Engine) init() {
 	e.changes = make([]change, 0, 64)
 	e.deletes = make([]change, 0, 64)
 	e.toSync = make([]change, 0, 64)
+
+	e.decodeAttrs = make(map[string]string)
 }
 
 // Contains reports whether the given component is in the dom.
@@ -141,10 +144,10 @@ func (e *Engine) close() {
 		delete(e.nodes, k)
 	}
 
-	e.creates = e.creates[:0]
-	e.changes = e.changes[:0]
-	e.deletes = e.deletes[:0]
-	e.toSync = e.toSync[:0]
+	e.creates = clearChanges(e.creates)
+	e.changes = clearChanges(e.changes)
+	e.deletes = clearChanges(e.deletes)
+	e.toSync = clearChanges(e.toSync)
 }
 
 // Render renders the given component by updating the state described within
@@ -346,7 +349,7 @@ func (e *Engine) renderSelfClosingTag(r rendering) (node, bool, error) {
 		e.newNode(n)
 	}
 
-	n = e.renderTagAttrs(r, n, hasAttr)
+	n = e.renderTagAttrs(r, n, hasAttr, true)
 
 	for _, childID := range n.ChildIDs {
 		e.deleteNode(childID)
@@ -357,7 +360,7 @@ func (e *Engine) renderSelfClosingTag(r rendering) (node, bool, error) {
 		})
 	}
 
-	n.ChildIDs = n.ChildIDs[:0]
+	n.ChildIDs = clearNodeIDs(n.ChildIDs)
 	e.nodes[n.ID] = n
 	return n, true, nil
 }
@@ -391,7 +394,7 @@ func (e *Engine) renderStartTag(r rendering) (node, bool, error) {
 		e.newNode(n)
 	}
 
-	n = e.renderTagAttrs(r, n, hasAttr)
+	n = e.renderTagAttrs(r, n, hasAttr, true)
 
 	if isVoidElem(n.Type) {
 		return n, true, nil
@@ -451,7 +454,7 @@ func (e *Engine) renderStartTag(r rendering) (node, bool, error) {
 		})
 
 	}
-	childIDs = n.ChildIDs[:count]
+	childIDs = clearNodesIDsFrom(n.ChildIDs, count)
 
 	// Add children
 	for moreChild {
@@ -485,8 +488,14 @@ func (e *Engine) renderStartTag(r rendering) (node, bool, error) {
 	return n, true, nil
 }
 
-func (e *Engine) renderTagAttrs(r rendering, n node, moreAttr bool) node {
-	attrs := make(map[string]string)
+func (e *Engine) renderTagAttrs(r rendering, n node, moreAttr, changes bool) node {
+	if !moreAttr {
+		return n
+	}
+
+	if len(n.Attrs) == 0 {
+		n.Attrs = make(map[string]string)
+	}
 
 	for moreAttr {
 		var rk []byte
@@ -500,33 +509,41 @@ func (e *Engine) renderTagAttrs(r rendering, n node, moreAttr bool) node {
 			k, v = t(k, v)
 		}
 
-		attrs[k] = v
-
+		e.decodeAttrs[k] = v
 		if currentVal, ok := n.Attrs[k]; ok && currentVal == v {
 			continue
 		}
 
-		e.changes = append(e.changes, change{
-			Action: setAttr,
-			NodeID: n.ID,
-			Key:    k,
-			Value:  v,
-		})
+		n.Attrs[k] = v
+
+		if changes {
+			e.changes = append(e.changes, change{
+				Action: setAttr,
+				NodeID: n.ID,
+				Key:    k,
+				Value:  v,
+			})
+		}
 	}
 
 	for k := range n.Attrs {
-		if _, ok := attrs[k]; ok {
+		if _, ok := e.decodeAttrs[k]; ok {
 			continue
 		}
 
-		e.changes = append(e.changes, change{
-			Action: delAttr,
-			NodeID: n.ID,
-			Key:    k,
-		})
+		if changes {
+			e.changes = append(e.changes, change{
+				Action: delAttr,
+				NodeID: n.ID,
+				Key:    k,
+			})
+		}
 	}
 
-	n.Attrs = attrs
+	for k := range e.decodeAttrs {
+		delete(e.decodeAttrs, k)
+	}
+
 	e.nodes[n.ID] = n
 	return n
 }
@@ -549,22 +566,11 @@ func (e *Engine) renderCompoNode(r rendering, typ string, hasAttr bool) (node, b
 		}
 	}
 
-	attrs := make(map[string]string)
-
-	for hasAttr {
-		var k []byte
-		var v []byte
-
-		k, v, hasAttr = r.Tokenizer.TagAttr()
-		attrs[string(k)] = string(v)
-	}
-
-	n.Attrs = attrs
 	e.nodes[n.ID] = n
-
+	n = e.renderTagAttrs(r, n, hasAttr, false)
 	c := e.compoIDs[n.ID]
 
-	if err := mapCompoFields(c.Compo, attrs); err != nil {
+	if err := mapCompoFields(c.Compo, n.Attrs); err != nil {
 		return node{}, false, err
 	}
 
@@ -653,10 +659,10 @@ func (e *Engine) sync() error {
 		return errors.Wrap(err, "syncing dom failed")
 	}
 
-	e.creates = e.creates[:0]
-	e.changes = e.changes[:0]
-	e.deletes = e.deletes[:0]
-	e.toSync = e.toSync[:0]
+	e.creates = clearChanges(e.creates)
+	e.changes = clearChanges(e.changes)
+	e.deletes = clearChanges(e.deletes)
+	e.toSync = clearChanges(e.toSync)
 	return nil
 }
 
