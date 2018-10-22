@@ -11,7 +11,7 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/murlokswarm/app/internal/dom"
+	"github.com/murlokswarm/app/internal/dom.v2"
 	"github.com/pkg/errors"
 )
 
@@ -19,8 +19,8 @@ import (
 type Menu struct {
 	core.Menu
 
-	dom            *dom.DOM
 	id             string
+	dom            dom.Engine
 	typ            string
 	compo          app.Compo
 	keepWhenClosed bool
@@ -30,7 +30,7 @@ type Menu struct {
 
 func newMenu(c app.MenuConfig, typ string) *Menu {
 	m := &Menu{
-		dom: dom.NewDOM(driver.factory),
+		dom: dom.Engine{Factory: driver.factory},
 		id:  uuid.New().String(),
 		typ: typ,
 
@@ -75,10 +75,6 @@ func (m *Menu) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	if m.compo != nil {
-		m.dom.Clean()
-	}
-
 	m.compo = c
 
 	if err = driver.macRPC.Call("menus.Load", nil, struct {
@@ -89,13 +85,8 @@ func (m *Menu) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	var changes []dom.Change
-	changes, err = m.dom.New(c)
+	err = m.dom.New(c)
 	if err != nil {
-		return
-	}
-
-	if err = m.render(changes); err != nil {
 		return
 	}
 
@@ -117,21 +108,13 @@ func (m *Menu) Contains(c app.Compo) bool {
 
 // Render satisfies the app.Menu interface.
 func (m *Menu) Render(c app.Compo) {
-	changes, err := m.dom.Update(c)
-	m.SetErr(err)
-
-	if m.Err() != nil {
-		return
-	}
-
-	err = m.render(changes)
-	m.SetErr(err)
+	m.SetErr(m.dom.Render(c))
 }
 
-func (m *Menu) render(c []dom.Change) error {
-	b, err := json.Marshal(c)
+func (m *Menu) render(changes interface{}) error {
+	b, err := json.Marshal(changes)
 	if err != nil {
-		return errors.Wrap(err, "marshal changes failed")
+		return errors.Wrap(err, "encode changes failed")
 	}
 
 	return driver.macRPC.Call("menus.Render", nil, struct {

@@ -42,20 +42,21 @@
 @property NSString *ID;
 @property NSMutableDictionary<NSString *, id> *nodes;
 @property MenuContainer *root;
+@property NSDictionary<NSString *, NSNumber *> *actions;
 
 - (instancetype)initWithID:(NSString *)ID;
 + (void) new:(NSDictionary *)in return:(NSString *)returnID;
 + (void)load:(NSDictionary *)in return:(NSString *)returnID;
 + (void)render:(NSDictionary *)in return:(NSString *)returnID;
-- (void)createElem:(NSDictionary *)change;
-- (void)setAttrs:(NSDictionary *)change;
+- (void)setRootNode:(NSDictionary *)change;
+- (void)newNode:(NSDictionary *)change;
+- (void)delNode:(NSDictionary *)change;
+- (void)setAttr:(NSDictionary *)change;
+- (void)delAttr:(NSDictionary *)change;
+- (void)setText:(NSDictionary *)change;
 - (void)appendChild:(NSDictionary *)change;
 - (void)removeChild:(NSDictionary *)change;
 - (void)replaceChild:(NSDictionary *)change;
-- (void)mountElem:(NSDictionary *)change;
-- (void)createCompo:(NSDictionary *)change;
-- (void)setCompoRoot:(NSDictionary *)change;
-- (void)deleteNode:(NSDictionary *)change;
 - (id)childElem:(id)node;
 + (void) delete:(NSDictionary *)in return:(NSString *)returnID;
 @end
@@ -63,7 +64,7 @@
 @interface MenuCompo : NSObject
 @property NSString *ID;
 @property NSString *rootID;
-@property NSString *name;
+@property NSString *type;
 @end
 
 #endif /* menu_h */

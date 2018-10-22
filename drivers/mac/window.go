@@ -221,10 +221,10 @@ func (w *Window) Render(c app.Compo) {
 	w.SetErr(w.dom.Render(c))
 }
 
-func (w *Window) render(arg interface{}) error {
-	b, err := json.Marshal(arg)
+func (w *Window) render(changes interface{}) error {
+	b, err := json.Marshal(changes)
 	if err != nil {
-		return errors.Wrap(err, "encode argument failed")
+		return errors.Wrap(err, "encode changes failed")
 	}
 
 	return driver.macRPC.Call("windows.Render", nil, struct {

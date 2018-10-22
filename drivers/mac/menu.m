@@ -281,6 +281,18 @@
   self.ID = ID;
   self.nodes = [[NSMutableDictionary alloc] init];
 
+  self.actions = @{
+    @"setRoot" : @0,
+    @"newNode" : @1,
+    @"delNode" : @2,
+    @"setAttr" : @3,
+    @"delAttr" : @4,
+    @"setText" : @5,
+    @"appendChild" : @6,
+    @"removeChild" : @7,
+    @"replaceChild" : @8,
+  };
+
   return self;
 }
 
@@ -322,62 +334,56 @@
     }
 
     NSDictionary<NSString *, NSNumber *> *typeMap = @{
-      @"createText" : @0,
-      @"setText" : @1,
-      @"createElem" : @2,
-      @"setAttrs" : @3,
-      @"appendChild" : @4,
-      @"removeChild" : @5,
-      @"replaceChild" : @6,
-      @"mountElem" : @7,
-      @"createCompo" : @8,
-      @"setCompoRoot" : @9,
-      @"deleteNode" : @10
+      @"setRoot" : @0,
+      @"newNode" : @1,
+      @"delNode" : @2,
+      @"setAttr" : @3,
+      @"delAttr" : @4,
+      @"setText" : @5,
+      @"appendChild" : @6,
+      @"removeChild" : @7,
+      @"replaceChild" : @8,
     };
 
     for (NSDictionary *c in changes) {
-      NSString *type = c[@"Type"];
+      NSString *action = c[@"Action"];
 
-      switch (typeMap[type].intValue) {
+      switch (menu.actions[action].intValue) {
+      case 0:
+        [menu setRootNode:c;
+        break;
+
+      case 1:
+        [menu newNode:c;
+        break;
+
       case 2:
-        [menu createElem:c[@"Value"]];
+        [menu delNode:c;
         break;
 
       case 3:
-        [menu setAttrs:c[@"Value"]];
+        [menu setAttr:c;
         break;
 
       case 4:
-        [menu appendChild:c[@"Value"]];
-        break;
-
-      case 5:
-        [menu removeChild:c[@"Value"]];
+        [menu delAttr:c];
         break;
 
       case 6:
-        [menu replaceChild:c[@"Value"]];
+        [menu appendChild:c];
         break;
 
       case 7:
-        [menu mountElem:c[@"Value"]];
+        [menu removeChild:c];
         break;
 
       case 8:
-        [menu createCompo:c[@"Value"]];
-        break;
-
-      case 9:
-        [menu setCompoRoot:c[@"Value"]];
-        break;
-
-      case 10:
-        [menu deleteNode:c[@"Value"]];
+        [menu replaceChild:c;
         break;
 
       default:
         [NSException raise:@"ErrChange"
-                    format:@"%@ change is not supported", type];
+                    format:@"%@ change is not supported", action];
       }
     }
 
@@ -385,22 +391,73 @@
   });
 }
 
-- (void)createElem:(NSDictionary *)change {
-  NSString *ID = change[@"ID"];
-  NSString *TagName = change[@"TagName"];
+- (void)setRootNode:(NSDictionary *)change {
+}
 
-  if ([TagName isEqual:@"menu"]) {
-    self.nodes[ID] = [MenuContainer create:ID inMenu:self.ID];
+- (void)newNode:(NSDictionary *)change {
+  NSString *nodeID = change[@"NodeID"];
+  NSString *type = change[@"Type"];
+  BOOL isCompo = [change[@"IsCompo"] boolValue];
+
+  if (isCompo) {
+    MenuCompo *c = [[MenuCompo alloc] init];
+    c.ID = nodeID;
+    c.type = type;
+    self.nodes[nodeID] = c;
     return;
   }
 
-  if ([TagName isEqual:@"menuitem"]) {
-    self.nodes[ID] = [MenuItem create:ID inMenu:self.ID];
+  if ([type isEqual:@"menu"]) {
+    self.nodes[nodeID] = [MenuContainer create:nodeID inMenu:self.ID];
     return;
   }
 
-  [NSException raise:@"ErrMenu"
-              format:@"menu does not support %@ tag", TagName];
+  if ([type isEqual:@"menuitem"]) {
+    self.nodes[nodeID] = [MenuItem create:nodeID inMenu:self.ID];
+    return;
+  }
+
+  [NSException raise:@"ErrMenu" format:@"menu does not support %@ tag", type];
+}
+
+- (void)delNode:(NSDictionary *)change {
+  [self.nodes removeObjectForKey:change[@"NodeID"]];
+}
+
+- (void)setAttr:(NSDictionary *)change {
+  id node = self.nodes[change[@"NodeID"]];
+  if (node == nil) {
+    return;
+  }
+
+  // if ([node isKindOfClass:[MenuContainer class]]) {
+  //   MenuContainer *m = node;
+  //   [m setAttrs:attrs];
+  //   return;
+  // }
+
+  // if ([node isKindOfClass:[MenuItem class]]) {
+  //   MenuItem *mi = node;
+  //   [mi setAttrs:attrs];
+  //   return;
+  // }
+
+  [NSException raise:@"ErrMenu" format:@"unknown menu element"];
+}
+
+- (void)delAttr:(NSDictionary *)change {
+}
+
+- (void)setText:(NSDictionary *)change {
+}
+
+- (void)appendChild:(NSDictionary *)change {
+}
+
+- (void)removeChild:(NSDictionary *)change {
+}
+
+- (void)replaceChild:(NSDictionary *)change {
 }
 
 - (void)setAttrs:(NSDictionary *)change {

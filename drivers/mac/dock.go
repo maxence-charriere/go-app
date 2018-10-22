@@ -8,7 +8,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/dom"
+	"github.com/murlokswarm/app/internal/dom.v2"
 )
 
 // DockTile implements the app.DockTile interface.
@@ -19,8 +19,8 @@ type DockTile struct {
 func newDockTile(c app.MenuConfig) *DockTile {
 	d := &DockTile{
 		Menu: Menu{
-			dom:            dom.NewDOM(driver.factory),
 			id:             uuid.New().String(),
+			dom:            dom.Engine{Factory: driver.factory},
 			typ:            "dock tile",
 			keepWhenClosed: true,
 		},

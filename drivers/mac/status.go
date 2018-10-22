@@ -7,7 +7,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/dom"
+	"github.com/murlokswarm/app/internal/dom.v2"
 )
 
 // StatusMenu represents a menu that lives in the status bar.
@@ -20,7 +20,7 @@ type StatusMenu struct {
 func newStatusMenu(c app.StatusMenuConfig) *StatusMenu {
 	s := &StatusMenu{
 		Menu: Menu{
-			dom:            dom.NewDOM(driver.factory),
+			dom:            dom.Engine{Factory: driver.factory},
 			id:             uuid.New().String(),
 			typ:            "status menu",
 			keepWhenClosed: true,
