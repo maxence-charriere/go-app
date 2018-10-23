@@ -19,7 +19,6 @@
                 inMenu:(NSString *)elemID;
 - (void)setAttr:(NSString *)key value:(NSString *)value;
 - (void)delAttr:(NSString *)key;
-- (void)setAttrs:(NSDictionary<NSString *, NSString *> *)attrs;
 - (void)setSeparator;
 - (void)unsetSeparator;
 - (void)setIconWithPath:(NSString *)icon;

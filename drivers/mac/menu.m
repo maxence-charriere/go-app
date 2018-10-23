@@ -26,11 +26,6 @@
     return;
   }
 
-  if ([key isEqual:@"label"]) {
-    self.title = value != nil ? value : @"";
-    return;
-  }
-
   if ([key isEqual:@"disabled"]) {
     self.enabled = NO;
     return;
@@ -47,7 +42,8 @@
   }
 
   if ([key isEqual:@"keys"]) {
-    self.state = NSControlStateValueOn;
+    self.keys = value;
+    [self setupKeys];
     return;
   }
 
@@ -103,12 +99,11 @@
   }
 
   if ([key isEqual:@"checked"]) {
-    self.keys = value;
-    [self setupKeys];
+    self.state = NSControlStateValueOff;
     return;
   }
 
-  if ([key isEqual:@"checked"]) {
+  if ([key isEqual:@"keys"]) {
     self.keys = nil;
     [self setupKeys];
     return;
@@ -285,7 +280,7 @@
   // Updating parent menuitem title.
   for (NSMenuItem *i in supermenu.itemArray) {
     if (i.submenu == self) {
-      i.title = label;
+      i.title = self.title;
       i.enabled = !self.disabled;
       return;
     }
@@ -436,19 +431,19 @@
 
       switch (menu.actions[action].intValue) {
       case 0:
-        [menu setRootNode:c;
+        [menu setRootNode:c];
         break;
 
       case 1:
-        [menu newNode:c;
+        [menu newNode:c];
         break;
 
       case 2:
-        [menu delNode:c;
+        [menu delNode:c];
         break;
 
       case 3:
-        [menu setAttr:c;
+        [menu setAttr:c];
         break;
 
       case 4:
@@ -464,7 +459,7 @@
         break;
 
       case 8:
-        [menu replaceChild:c;
+        [menu replaceChild:c];
         break;
 
       default:
@@ -569,32 +564,6 @@
 - (void)replaceChild:(NSDictionary *)change {
 }
 
-- (void)setAttrs:(NSDictionary *)change {
-  NSDictionary<NSString *, NSString *> *attrs = change[@"Attrs"];
-  if (attrs == nil) {
-    return;
-  }
-
-  id node = self.nodes[change[@"ID"]];
-  if (node == nil) {
-    return;
-  }
-
-  if ([node isKindOfClass:[MenuContainer class]]) {
-    MenuContainer *m = node;
-    [m setAttrs:attrs];
-    return;
-  }
-
-  if ([node isKindOfClass:[MenuItem class]]) {
-    MenuItem *mi = node;
-    [mi setAttrs:attrs];
-    return;
-  }
-
-  [NSException raise:@"ErrMenu" format:@"unknown menu element"];
-}
-
 - (void)appendChild:(NSDictionary *)change {
   id child = self.nodes[change[@"ChildID"]];
   child = [self childElem:child];
@@ -688,13 +657,6 @@
 
   MenuItem *i = node;
   i.compoID = compoID;
-}
-
-- (void)createCompo:(NSDictionary *)change {
-  MenuCompo *c = [[MenuCompo alloc] init];
-  c.ID = change[@"ID"];
-  c.name = change[@"Name"];
-  self.nodes[c.ID] = c;
 }
 
 - (void)setCompoRoot:(NSDictionary *)change {
