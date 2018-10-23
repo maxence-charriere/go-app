@@ -14,7 +14,11 @@
 @property NSString *icon;
 @property NSMenuItem *separator;
 
-+ (instancetype)create:(NSString *)ID inMenu:(NSString *)elemID;
++ (instancetype)create:(NSString *)ID
+               compoID:(NSString *)compoID
+                inMenu:(NSString *)elemID;
+- (void)setAttr:(NSString *)key value:(NSString *)value;
+- (void)delAttr:(NSString *)key;
 - (void)setAttrs:(NSDictionary<NSString *, NSString *> *)attrs;
 - (void)setSeparator;
 - (void)unsetSeparator;
@@ -30,8 +34,12 @@
 @property NSString *elemID;
 @property BOOL disabled;
 
-+ (instancetype)create:(NSString *)ID inMenu:(NSString *)elemID;
-- (void)setAttrs:(NSDictionary<NSString *, NSString *> *)attrs;
++ (instancetype)create:(NSString *)ID
+               compoID:(NSString *)compoID
+                inMenu:(NSString *)elemID;
+- (void)setAttr:(NSString *)key value:(NSString *)value;
+- (void)delAttr:(NSString *)key;
+- (void)updateParentItem;
 - (void)insertChild:(id)child atIndex:(NSInteger)index;
 - (void)appendChild:(id)child;
 - (void)removeChild:(id)child;
@@ -53,7 +61,6 @@
 - (void)delNode:(NSDictionary *)change;
 - (void)setAttr:(NSDictionary *)change;
 - (void)delAttr:(NSDictionary *)change;
-- (void)setText:(NSDictionary *)change;
 - (void)appendChild:(NSDictionary *)change;
 - (void)removeChild:(NSDictionary *)change;
 - (void)replaceChild:(NSDictionary *)change;

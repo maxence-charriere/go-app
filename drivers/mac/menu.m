@@ -4,53 +4,134 @@
 #include "json.h"
 
 @implementation MenuItem
-+ (instancetype)create:(NSString *)ID inMenu:(NSString *)elemID {
++ (instancetype)create:(NSString *)ID
+               compoID:(NSString *)compoID
+                inMenu:(NSString *)elemID {
   MenuItem *i =
       [[MenuItem alloc] initWithTitle:@"" action:NULL keyEquivalent:@""];
   i.ID = ID;
+  i.compoID = compoID;
   i.elemID = elemID;
   return i;
 }
 
-- (void)setAttrs:(NSDictionary<NSString *, NSString *> *)attrs {
-  BOOL separator = attrs[@"separator"] != nil ? YES : NO;
-  if (separator && self.separator == nil) {
+- (void)setAttr:(NSString *)key value:(NSString *)value {
+  if ([key isEqual:@"separator"] && self.separator == nil) {
     [self setSeparator];
-  } else if (!separator && self.separator != nil) {
-    [self unsetSeparator];
+    return;
   }
 
-  NSString *label = attrs[@"label"];
-  label = label != nil ? label : @"";
-  self.title = label;
+  if ([key isEqual:@"label"]) {
+    self.title = value != nil ? value : @"";
+    return;
+  }
 
-  self.enabled = attrs[@"disabled"] == nil ? true : false;
-  self.toolTip = attrs[@"title"];
-  self.onClick = attrs[@"onclick"];
-  self.selector = attrs[@"selector"];
-  self.keys = attrs[@"keys"];
+  if ([key isEqual:@"label"]) {
+    self.title = value != nil ? value : @"";
+    return;
+  }
 
-  if (attrs[@"checked"] != nil) {
+  if ([key isEqual:@"disabled"]) {
+    self.enabled = NO;
+    return;
+  }
+
+  if ([key isEqual:@"title"]) {
+    self.toolTip = value;
+    return;
+  }
+
+  if ([key isEqual:@"checked"]) {
     self.state = NSControlStateValueOn;
-  } else {
-    self.state = NSControlStateValueOff;
+    return;
   }
 
-  NSString *icon = attrs[@"icon"];
-  icon = icon != nil ? icon : @"";
-
-  if (icon.length != 0) {
-    NSBundle *mainBundle = [NSBundle mainBundle];
-    icon = [NSString stringWithFormat:@"%@/%@", mainBundle.resourcePath, icon];
+  if ([key isEqual:@"keys"]) {
+    self.state = NSControlStateValueOn;
+    return;
   }
 
-  if (![self.icon isEqual:icon]) {
+  if ([key isEqual:@"icon"]) {
+    NSString *icon = value;
+    icon = icon != nil ? icon : @"";
+
+    if (icon.length != 0) {
+      NSBundle *mainBundle = [NSBundle mainBundle];
+      icon =
+          [NSString stringWithFormat:@"%@/%@", mainBundle.resourcePath, icon];
+    }
+
+    if (![self.icon isEqual:icon]) {
+      self.icon = icon;
+      [self setIconWithPath:icon];
+    }
+    return;
+  }
+
+  if ([key isEqual:@"onclick"]) {
+    self.onClick = value;
+    [self setupOnClick];
+    return;
+  }
+
+  if ([key isEqual:@"selector"]) {
+    self.selector = value;
+    [self setupOnClick];
+    return;
+  }
+}
+
+- (void)delAttr:(NSString *)key {
+  if ([key isEqual:@"separator"] && self.separator != nil) {
+    [self unsetSeparator];
+    return;
+  }
+
+  if ([key isEqual:@"label"]) {
+    self.title = @"";
+    return;
+  }
+
+  if ([key isEqual:@"disabled"]) {
+    self.enabled = YES;
+    return;
+  }
+
+  if ([key isEqual:@"title"]) {
+    self.toolTip = nil;
+    return;
+  }
+
+  if ([key isEqual:@"checked"]) {
+    self.keys = value;
+    [self setupKeys];
+    return;
+  }
+
+  if ([key isEqual:@"checked"]) {
+    self.keys = nil;
+    [self setupKeys];
+    return;
+  }
+
+  if ([key isEqual:@"icon"]) {
+    NSString *icon = @"";
     self.icon = icon;
     [self setIconWithPath:icon];
+    return;
   }
 
-  [self setupOnClick];
-  [self setupKeys];
+  if ([key isEqual:@"onclick"]) {
+    self.onClick = nil;
+    [self setupOnClick];
+    return;
+  }
+
+  if ([key isEqual:@"selector"]) {
+    self.selector = nil;
+    [self setupOnClick];
+    return;
+  }
 }
 
 - (void)setSeparator {
@@ -165,21 +246,38 @@
 @end
 
 @implementation MenuContainer
-+ (instancetype)create:(NSString *)ID inMenu:(NSString *)elemID {
++ (instancetype)create:(NSString *)ID
+               compoID:(NSString *)compoID
+                inMenu:(NSString *)elemID {
   MenuContainer *m = [[MenuContainer alloc] initWithTitle:@""];
   m.ID = ID;
+  m.compoID = compoID;
   m.elemID = elemID;
   return m;
 }
 
-- (void)setAttrs:(NSDictionary<NSString *, NSString *> *)attrs {
-  NSString *label = attrs[@"label"];
-  label = label != nil ? label : @"";
-  self.title = label;
+- (void)setAttr:(NSString *)key value:(NSString *)value {
+  if ([key isEqual:@"label"]) {
+    self.title = value != nil ? value : @"";
+  } else if ([key isEqual:@"disabled"]) {
+    self.disabled = true;
+  }
 
-  self.disabled = attrs[@"disabled"] != nil ? true : false;
+  [self updateParentItem];
+}
 
-  MenuContainer *supermenu = (MenuContainer *)self.supermenu;
+- (void)delAttr:(NSString *)key {
+  if ([key isEqual:@"label"]) {
+    self.title = @"";
+  } else if ([key isEqual:@"disabled"]) {
+    self.disabled = false;
+  }
+
+  [self updateParentItem];
+}
+
+- (void)updateParentItem {
+  NSMenu *supermenu = self.supermenu;
   if (supermenu == nil) {
     return;
   }
@@ -333,18 +431,6 @@
       [NSException raise:@"ErrNoMenu" format:@"no menu with id %@", ID];
     }
 
-    NSDictionary<NSString *, NSNumber *> *typeMap = @{
-      @"setRoot" : @0,
-      @"newNode" : @1,
-      @"delNode" : @2,
-      @"setAttr" : @3,
-      @"delAttr" : @4,
-      @"setText" : @5,
-      @"appendChild" : @6,
-      @"removeChild" : @7,
-      @"replaceChild" : @8,
-    };
-
     for (NSDictionary *c in changes) {
       NSString *action = c[@"Action"];
 
@@ -396,6 +482,7 @@
 
 - (void)newNode:(NSDictionary *)change {
   NSString *nodeID = change[@"NodeID"];
+  NSString *compoID = change[@"CompoID"];
   NSString *type = change[@"Type"];
   BOOL isCompo = [change[@"IsCompo"] boolValue];
 
@@ -408,12 +495,14 @@
   }
 
   if ([type isEqual:@"menu"]) {
-    self.nodes[nodeID] = [MenuContainer create:nodeID inMenu:self.ID];
+    self.nodes[nodeID] =
+        [MenuContainer create:nodeID compoID:compoID inMenu:self.ID];
     return;
   }
 
   if ([type isEqual:@"menuitem"]) {
-    self.nodes[nodeID] = [MenuItem create:nodeID inMenu:self.ID];
+    self.nodes[nodeID] =
+        [MenuItem create:nodeID compoID:compoID inMenu:self.ID];
     return;
   }
 
@@ -430,25 +519,45 @@
     return;
   }
 
-  // if ([node isKindOfClass:[MenuContainer class]]) {
-  //   MenuContainer *m = node;
-  //   [m setAttrs:attrs];
-  //   return;
-  // }
+  NSString *key = change[@"Key"];
+  NSString *value = change[@"Value"];
 
-  // if ([node isKindOfClass:[MenuItem class]]) {
-  //   MenuItem *mi = node;
-  //   [mi setAttrs:attrs];
-  //   return;
-  // }
+  if ([node isKindOfClass:[MenuContainer class]]) {
+    MenuContainer *m = node;
+    [m setAttr:key value:value];
+    return;
+  }
+
+  if ([node isKindOfClass:[MenuItem class]]) {
+    MenuItem *mi = node;
+    [mi setAttr:key value:value];
+    return;
+  }
 
   [NSException raise:@"ErrMenu" format:@"unknown menu element"];
 }
 
 - (void)delAttr:(NSDictionary *)change {
-}
+  id node = self.nodes[change[@"NodeID"]];
+  if (node == nil) {
+    return;
+  }
 
-- (void)setText:(NSDictionary *)change {
+  NSString *key = change[@"Key"];
+
+  if ([node isKindOfClass:[MenuContainer class]]) {
+    MenuContainer *m = node;
+    [m delAttr:key];
+    return;
+  }
+
+  if ([node isKindOfClass:[MenuItem class]]) {
+    MenuItem *mi = node;
+    [mi delAttr:key];
+    return;
+  }
+
+  [NSException raise:@"ErrMenu" format:@"unknown menu element"];
 }
 
 - (void)appendChild:(NSDictionary *)change {
