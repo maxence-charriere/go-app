@@ -290,6 +290,12 @@ func (d *DecodeErr) Render() string {
 	return `<div %error="42">`
 }
 
+type EmptyRender app.ZeroCompo
+
+func (e *EmptyRender) Render() string {
+	return ""
+}
+
 func TestEngine(t *testing.T) {
 	f := app.NewFactory()
 	f.RegisterCompo(&Foo{})
@@ -307,6 +313,7 @@ func TestEngine(t *testing.T) {
 	f.RegisterCompo(&DecodeErr{})
 	f.RegisterCompo(NoPtrErr(0))
 	f.RegisterCompo(&EmptyStructErr{})
+	f.RegisterCompo(&EmptyRender{})
 
 	tests := []struct {
 		scenario     string
@@ -778,6 +785,11 @@ func TestEngine(t *testing.T) {
 		{
 			scenario: "empty compo",
 			compo:    &EmptyStructErr{},
+			err:      true,
+		},
+		{
+			scenario: "empty render",
+			compo:    &EmptyRender{},
 			err:      true,
 		},
 	}

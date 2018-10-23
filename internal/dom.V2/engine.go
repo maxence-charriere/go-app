@@ -261,7 +261,12 @@ func (e *Engine) compoToHTML(c app.Compo) (string, error) {
 		return "", err
 	}
 
-	return w.String(), nil
+	html := strings.TrimSpace(w.String())
+	if len(html) == 0 {
+		return "", errors.New("component does not render anything")
+	}
+
+	return html, nil
 }
 
 func (e *Engine) renderNode(r rendering) (node, bool, error) {
