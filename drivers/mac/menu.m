@@ -556,62 +556,49 @@
 }
 
 - (void)appendChild:(NSDictionary *)change {
+  NSString *nodeID = change[@"NodeID"];
+  NSString *childID = change[@"ChildID"];
+
+  id node = self.nodes[nodeID];
+  if (node == nil) {
+    return;
+  }
+
+  if ([node isKindOfClass:[MenuCompo class]]) {
+    MenuCompo *compo = node;
+    compo.rootID = childID;
+    return;
+  }
+
+  id child = self.nodes[childID];
+  child = [self childElem:child];
+  if (child == nil) {
+    return;
+  }
+
+  MenuContainer *m = node;
+  [m appendChild:child];
 }
 
 - (void)removeChild:(NSDictionary *)change {
+  NSString *nodeID = change[@"NodeID"];
+  NSString *childID = change[@"ChildID"];
+
+  MenuContainer *node = self.nodes[nodeID];
+  if (node == nil) {
+    return;
+  }
+
+  id child = self.nodes[childID];
+  child = [self childElem:child];
+  if (child == nil) {
+    return;
+  }
+
+  [node removeChild:child];
 }
 
 - (void)replaceChild:(NSDictionary *)change {
-}
-
-- (void)appendChild:(NSDictionary *)change {
-  id child = self.nodes[change[@"ChildID"]];
-  child = [self childElem:child];
-  if (child == nil) {
-    return;
-  }
-
-  NSString *parentID = change[@"ParentID"];
-
-  if ([parentID isEqual:@"root:"]) {
-    if ([child isKindOfClass:[MenuItem class]]) {
-      [NSException raise:@"ErrMenu" format:@"menu root is a menuitem"];
-    }
-
-    MenuContainer *m = child;
-    m.delegate = self;
-    self.root = m;
-    return;
-  }
-
-  MenuContainer *parent = self.nodes[parentID];
-  if (parent == nil) {
-    return;
-  }
-
-  [parent appendChild:child];
-}
-
-- (void)removeChild:(NSDictionary *)change {
-  NSString *parentID = change[@"ParentID"];
-
-  if ([parentID isEqual:@"root:"]) {
-    self.root = nil;
-    return;
-  }
-
-  MenuContainer *parent = self.nodes[parentID];
-  if (parent == nil) {
-    return;
-  }
-
-  id child = self.nodes[change[@"ChildID"]];
-  child = [self childElem:child];
-  if (child == nil) {
-    return;
-  }
-
-  [parent removeChild:child];
 }
 
 - (void)replaceChild:(NSDictionary *)change {
