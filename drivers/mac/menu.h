@@ -63,7 +63,7 @@
 - (void)appendChild:(NSDictionary *)change;
 - (void)removeChild:(NSDictionary *)change;
 - (void)replaceChild:(NSDictionary *)change;
-- (id)childElem:(id)node;
+- (id)compoRoot:(id)node;
 + (void) delete:(NSDictionary *)in return:(NSString *)returnID;
 @end
 

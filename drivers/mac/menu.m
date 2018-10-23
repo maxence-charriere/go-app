@@ -571,7 +571,7 @@
   }
 
   id child = self.nodes[childID];
-  child = [self childElem:child];
+  child = [self compoRoot:child];
   if (child == nil) {
     return;
   }
@@ -590,7 +590,7 @@
   }
 
   id child = self.nodes[childID];
-  child = [self childElem:child];
+  child = [self compoRoot:child];
   if (child == nil) {
     return;
   }
@@ -599,33 +599,35 @@
 }
 
 - (void)replaceChild:(NSDictionary *)change {
-}
+  NSString *nodeID = change[@"NodeID"];
+  NSString *childID = change[@"ChildID"];
+  NSString *newChildID = change[@"NewChildID"];
 
-- (void)replaceChild:(NSDictionary *)change {
-  NSString *parentID = change[@"ParentID"];
-
-  if ([parentID isEqual:@"root:"]) {
-    [NSException raise:@"ErrMenu" format:@"root menu can't be replaced"];
-  }
-
-  MenuContainer *parent = self.nodes[parentID];
-  if (parent == nil) {
+  id node = self.nodes[nodeID];
+  if (node == nil) {
     return;
   }
 
-  id newChild = self.nodes[change[@"ChildID"]];
-  newChild = [self childElem:newChild];
+  id child = self.nodes[childID];
+  child = [self compoRoot:child];
+  if (child == nil) {
+    return;
+  }
+
+  id newChild = self.nodes[newChildID];
+  newChild = [self compoRoot:newChild];
   if (newChild == nil) {
     return;
   }
 
-  id oldChild = self.nodes[change[@"OldID"]];
-  oldChild = [self childElem:oldChild];
-  if (oldChild == nil) {
+  if ([node isKindOfClass:[MenuCompo class]]) {
+    MenuCompo *compo = node;
+    compo.rootID = newChildID;
     return;
   }
 
-  [parent replaceChild:oldChild with:newChild];
+  MenuContainer *m = node;
+  [m replaceChild:child with:newChild];
 }
 
 - (void)setCompoRoot:(NSDictionary *)change {
@@ -637,13 +639,13 @@
   c.rootID = change[@"RootID"];
 }
 
-- (id)childElem:(id)node {
+- (id)compoRoot:(id)node {
   if (node == nil || ![node isKindOfClass:[MenuCompo class]]) {
     return node;
   }
 
   MenuCompo *c = node;
-  return [self childElem:self.nodes[c.rootID]];
+  return [self compoRoot:self.nodes[c.rootID]];
 }
 
 - (void)menuDidClose:(NSMenu *)menu {
