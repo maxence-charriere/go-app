@@ -641,24 +641,6 @@
   [parent replaceChild:oldChild with:newChild];
 }
 
-- (void)mountElem:(NSDictionary *)change {
-  id node = self.nodes[change[@"ID"]];
-  if (node == nil) {
-    return;
-  }
-
-  NSString *compoID = change[@"CompoID"];
-
-  if ([node isKindOfClass:[MenuContainer class]]) {
-    MenuContainer *m = node;
-    m.compoID = compoID;
-    return;
-  }
-
-  MenuItem *i = node;
-  i.compoID = compoID;
-}
-
 - (void)setCompoRoot:(NSDictionary *)change {
   MenuCompo *c = self.nodes[change[@"ID"]];
   if (c == nil) {
@@ -668,17 +650,13 @@
   c.rootID = change[@"RootID"];
 }
 
-- (void)deleteNode:(NSDictionary *)change {
-  [self.nodes removeObjectForKey:change[@"ID"]];
-}
-
 - (id)childElem:(id)node {
-  if (![node isKindOfClass:[MenuCompo class]]) {
+  if (node == nil || ![node isKindOfClass:[MenuCompo class]]) {
     return node;
   }
 
   MenuCompo *c = node;
-  return self.nodes[c.rootID];
+  return [self childElem:self.nodes[c.rootID]];
 }
 
 - (void)menuDidClose:(NSMenu *)menu {
