@@ -64,8 +64,9 @@ function setRoot(change = {}) {
     const { NodeID } = change;
 
     const n = goapp.nodes[NodeID];
-    const root = compoRoot(n);
+    n.IsRootCompo = true;
 
+    const root = compoRoot(n);
     if (!root) {
         return;
     }
@@ -197,6 +198,11 @@ function replaceChild(change = {}) {
 
     if (n.IsCompo) {
         n.RootID = NewChildID;
+
+        if (n.IsRootCompo) {
+            setRoot({ NodeID: n.ID });
+        }
+
         return;
     }
 
