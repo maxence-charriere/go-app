@@ -536,6 +536,8 @@ func (e *Engine) renderTagAttrs(r rendering, n node, moreAttr, changes bool) nod
 			continue
 		}
 
+		delete(n.Attrs, k)
+
 		if changes {
 			e.changes = append(e.changes, change{
 				Action: delAttr,

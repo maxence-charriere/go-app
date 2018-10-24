@@ -28,6 +28,7 @@
 
   if ([key isEqual:@"disabled"]) {
     self.enabled = NO;
+    [self setupOnClick];
     return;
   }
 
@@ -90,6 +91,7 @@
 
   if ([key isEqual:@"disabled"]) {
     self.enabled = YES;
+    [self setupOnClick];
     return;
   }
 
@@ -483,8 +485,6 @@
   NSString *compoID = change[@"CompoID"];
   NSString *type = change[@"Type"];
   BOOL isCompo = [change[@"IsCompo"] boolValue];
-
-  NSLog(@"newNode: %@", nodeID);
 
   if (isCompo) {
     MenuCompo *c = [[MenuCompo alloc] init];
