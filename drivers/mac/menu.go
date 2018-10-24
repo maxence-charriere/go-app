@@ -30,12 +30,20 @@ type Menu struct {
 
 func newMenu(c app.MenuConfig, typ string) *Menu {
 	m := &Menu{
-		dom: dom.Engine{Factory: driver.factory},
-		id:  uuid.New().String(),
+		id: uuid.New().String(),
+		dom: dom.Engine{
+			Factory: driver.factory,
+			AllowedNodes: []string{
+				"menu",
+				"menuitem",
+			},
+		},
 		typ: typ,
 
 		onClose: c.OnClose,
 	}
+
+	m.dom.Sync = m.render
 
 	if err := driver.macRPC.Call("menus.New", nil, struct {
 		ID string

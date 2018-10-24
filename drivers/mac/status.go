@@ -20,14 +20,22 @@ type StatusMenu struct {
 func newStatusMenu(c app.StatusMenuConfig) *StatusMenu {
 	s := &StatusMenu{
 		Menu: Menu{
-			dom:            dom.Engine{Factory: driver.factory},
-			id:             uuid.New().String(),
+			id: uuid.New().String(),
+			dom: dom.Engine{
+				Factory: driver.factory,
+				AllowedNodes: []string{
+					"menu",
+					"menuitem",
+				},
+			},
 			typ:            "status menu",
 			keepWhenClosed: true,
 		},
 
 		onClose: c.OnClose,
 	}
+
+	s.dom.Sync = s.render
 
 	if err := driver.macRPC.Call("statusMenus.New", nil, struct {
 		ID   string

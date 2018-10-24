@@ -49,7 +49,6 @@
 @property NSString *ID;
 @property NSMutableDictionary<NSString *, id> *nodes;
 @property MenuContainer *root;
-@property NSDictionary<NSString *, NSNumber *> *actions;
 
 - (instancetype)initWithID:(NSString *)ID;
 + (void) new:(NSDictionary *)in return:(NSString *)returnID;
@@ -71,6 +70,7 @@
 @property NSString *ID;
 @property NSString *rootID;
 @property NSString *type;
+@property BOOL isRootCompo;
 @end
 
 #endif /* menu_h */

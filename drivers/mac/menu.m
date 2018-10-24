@@ -374,18 +374,6 @@
   self.ID = ID;
   self.nodes = [[NSMutableDictionary alloc] init];
 
-  self.actions = @{
-    @"setRoot" : @0,
-    @"newNode" : @1,
-    @"delNode" : @2,
-    @"setAttr" : @3,
-    @"delAttr" : @4,
-    @"setText" : @5,
-    @"appendChild" : @6,
-    @"removeChild" : @7,
-    @"replaceChild" : @8,
-  };
-
   return self;
 }
 
@@ -427,9 +415,9 @@
     }
 
     for (NSDictionary *c in changes) {
-      NSString *action = c[@"Action"];
+      NSNumber *action = c[@"Action"];
 
-      switch (menu.actions[action].intValue) {
+      switch (action.intValue) {
       case 0:
         [menu setRootNode:c];
         break;
@@ -473,6 +461,21 @@
 }
 
 - (void)setRootNode:(NSDictionary *)change {
+  NSString *nodeID = change[@"NodeID"];
+
+  MenuCompo *node = self.nodes[nodeID];
+  node.isRootCompo = YES;
+
+  id root = [self compoRoot:node];
+  if (root == nil) {
+    return;
+  }
+
+  if (![root isKindOfClass:[MenuContainer class]]) {
+    [NSException raise:@"ErrMenu" format:@"menu base is not a menuitem"];
+  }
+
+  self.root = root;
 }
 
 - (void)newNode:(NSDictionary *)change {
@@ -481,10 +484,13 @@
   NSString *type = change[@"Type"];
   BOOL isCompo = [change[@"IsCompo"] boolValue];
 
+  NSLog(@"newNode: %@", nodeID);
+
   if (isCompo) {
     MenuCompo *c = [[MenuCompo alloc] init];
     c.ID = nodeID;
     c.type = type;
+    c.isRootCompo = NO;
     self.nodes[nodeID] = c;
     return;
   }
@@ -623,20 +629,16 @@
   if ([node isKindOfClass:[MenuCompo class]]) {
     MenuCompo *compo = node;
     compo.rootID = newChildID;
+
+    if (compo.isRootCompo) {
+      [self setRootNode:@{ @"NodeID" : compo.ID }];
+    }
+
     return;
   }
 
   MenuContainer *m = node;
   [m replaceChild:child with:newChild];
-}
-
-- (void)setCompoRoot:(NSDictionary *)change {
-  MenuCompo *c = self.nodes[change[@"ID"]];
-  if (c == nil) {
-    return;
-  }
-
-  c.rootID = change[@"RootID"];
 }
 
 - (id)compoRoot:(id)node {

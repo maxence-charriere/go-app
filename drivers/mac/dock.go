@@ -19,12 +19,20 @@ type DockTile struct {
 func newDockTile(c app.MenuConfig) *DockTile {
 	d := &DockTile{
 		Menu: Menu{
-			id:             uuid.New().String(),
-			dom:            dom.Engine{Factory: driver.factory},
+			id: uuid.New().String(),
+			dom: dom.Engine{
+				Factory: driver.factory,
+				AllowedNodes: []string{
+					"menu",
+					"menuitem",
+				},
+			},
 			typ:            "dock tile",
 			keepWhenClosed: true,
 		},
 	}
+
+	d.dom.Sync = d.render
 
 	if err := driver.macRPC.Call("menus.New", nil, struct {
 		ID string
