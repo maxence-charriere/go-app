@@ -5,7 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/dom.v2"
+	"github.com/murlokswarm/app/internal/dom"
 )
 
 // StatusMenu is a teststatus menu that implements the app.StatusMenu interface.

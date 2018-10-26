@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/murlokswarm/app/internal/dom.v2"
+	"github.com/murlokswarm/app/internal/dom"
 )
 
 // Menu is a test menu that implements the app.Menu interface.

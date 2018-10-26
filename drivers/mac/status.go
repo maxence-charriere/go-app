@@ -7,7 +7,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/dom.v2"
+	"github.com/murlokswarm/app/internal/dom"
 )
 
 // StatusMenu represents a menu that lives in the status bar.

@@ -11,7 +11,7 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/murlokswarm/app/internal/dom.v2"
+	"github.com/murlokswarm/app/internal/dom"
 	"github.com/pkg/errors"
 )
 

@@ -5,7 +5,6 @@ import (
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/dom"
-	// "github.com/murlokswarm/app/internal/dom.v2"
 )
 
 type BenchCompo struct {
@@ -45,7 +44,13 @@ func BenchmarkDom(b *testing.B) {
 	f.RegisterCompo(&BenchCompo{})
 	f.RegisterCompo(&BenchSubCompo{})
 
-	d := dom.NewDOM(f, dom.JsToGoHandler, dom.HrefCompoFmt)
+	d := &dom.Engine{
+		Factory: f,
+		AttrTransforms: []dom.Transform{
+			dom.JsToGoHandler,
+			dom.HrefCompoFmt,
+		},
+	}
 
 	c := &BenchCompo{}
 
@@ -53,47 +58,14 @@ func BenchmarkDom(b *testing.B) {
 		c.N = n
 
 		if n == 0 {
-			if _, err := d.New(c); err != nil {
+			if err := d.New(c); err != nil {
 				b.Fatal(err)
 			}
 			continue
 		}
 
-		if _, err := d.Update(c); err != nil {
+		if err := d.Render(c); err != nil {
 			b.Fatal(err)
 		}
 	}
 }
-
-// func BenchmarkDom(b *testing.B) {
-// 	b.ReportAllocs()
-
-// 	f := app.NewFactory()
-// 	f.RegisterCompo(&BenchCompo{})
-// 	f.RegisterCompo(&BenchSubCompo{})
-
-// 	d := &dom.Engine{
-// 		Factory: f,
-// 		AttrTransforms: []dom.Transform{
-// 			dom.JsToGoHandler,
-// 			dom.HrefCompoFmt,
-// 		},
-// 	}
-
-// 	c := &BenchCompo{}
-
-// 	for n := 0; n < b.N; n++ {
-// 		c.N = n
-
-// 		if n == 0 {
-// 			if err := d.New(c); err != nil {
-// 				b.Fatal(err)
-// 			}
-// 			continue
-// 		}
-
-// 		if err := d.Render(c); err != nil {
-// 			b.Fatal(err)
-// 		}
-// 	}
-// }
