@@ -14,16 +14,16 @@ type Menu struct {
 	core.Menu
 
 	driver *Driver
-	dom    *dom.DOM
 	id     string
+	dom    dom.Engine
 	compo  app.Compo
 }
 
 func newMenu(d *Driver, c app.MenuConfig) *Menu {
 	m := &Menu{
 		driver: d,
-		dom:    dom.NewDOM(d.factory),
 		id:     uuid.New().String(),
+		dom:    dom.Engine{Factory: d.factory},
 	}
 
 	d.elems.Put(m)
@@ -55,12 +55,8 @@ func (m *Menu) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	if m.compo != nil {
-		m.dom.Clean()
-	}
-
 	m.compo = c
-	_, err = m.dom.New(c)
+	err = m.dom.New(c)
 }
 
 // Compo satisfies the app.Menu interface.
@@ -75,6 +71,5 @@ func (m *Menu) Contains(c app.Compo) bool {
 
 // Render satisfies the app.Menu interface.
 func (m *Menu) Render(c app.Compo) {
-	_, err := m.dom.Update(c)
-	m.SetErr(err)
+	m.SetErr(m.dom.Render(c))
 }

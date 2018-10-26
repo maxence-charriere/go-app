@@ -19,17 +19,22 @@ import (
 type Page struct {
 	core.Page
 
-	dom        *dom.DOM
 	id         string
+	dom        dom.Engine
 	compo      app.Compo
 	currentURL string
 }
 
 func newPage(c app.PageConfig) app.Page {
 	p := &Page{
-		dom: dom.NewDOM(driver.factory, dom.JsToGoHandler),
-		id:  uuid.New().String(),
+		id: uuid.New().String(),
+		dom: dom.Engine{
+			Factory:        driver.factory,
+			AttrTransforms: []dom.Transform{dom.JsToGoHandler},
+		},
 	}
+
+	p.dom.Sync = p.render
 
 	driver.elems.Put(p)
 
@@ -81,18 +86,9 @@ func (p *Page) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	if p.compo != nil {
-		p.dom.Clean()
-	}
-
 	p.compo = c
 
-	var changes []dom.Change
-	if changes, err = p.dom.New(c); err != nil {
-		return
-	}
-
-	if err = p.render(changes); err != nil {
+	if err = p.dom.New(c); err != nil {
 		return
 	}
 
@@ -110,48 +106,19 @@ func (p *Page) Contains(c app.Compo) bool {
 }
 
 func (p *Page) Render(c app.Compo) {
-	changes, err := p.dom.Update(c)
-	p.SetErr(err)
-
-	if p.Err() != nil {
-		return
-	}
-
-	err = p.render(changes)
-	p.SetErr(err)
+	p.SetErr(p.dom.Render(c))
 }
 
-func (p *Page) render(c []dom.Change) error {
-	b, err := json.Marshal(c)
+func (p *Page) render(changes interface{}) error {
+	b, err := json.Marshal(changes)
 	if err != nil {
 		return errors.Wrap(err, "marshal changes failed")
 	}
 
-	changes := js.Global.Get("JSON").Call("parse", string(b))
-	js.Global.Call("render", changes)
+	c := js.Global.Get("JSON").Call("parse", string(b))
+	js.Global.Call("render", c)
 	return nil
 }
-
-// func (p *Page) render(sync app.TagSync) error {
-// 	var buffer bytes.Buffer
-// 	enc := html.NewEncoder(&buffer, p.markup, false)
-// 	if err := enc.Encode(sync.Tag); err != nil {
-// 		return err
-// 	}
-
-// 	payload := &struct {
-// 		*js.Object
-// 		ID    string `js:"id"`
-// 		Compo string `js:"component"`
-// 	}{
-// 		Object: js.Global.Get("Object").New(),
-// 	}
-// 	payload.ID = sync.Tag.ID
-// 	payload.Compo = buffer.String()
-
-// 	js.Global.Call("render", payload)
-// 	return nil
-// }
 
 func (p *Page) Reload() {
 	js.Global.Get("location").Call("reload")

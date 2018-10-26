@@ -8,10 +8,9 @@
 - (BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender {
   NSPasteboard *pasteboard = [sender draggingPasteboard];
   NSMutableArray<NSString *> *filenames = [[NSMutableArray alloc] init];
-  NSArray<NSURL *> *url = [pasteboard propertyListForType:NSPasteboardTypeURL];
 
   for (NSPasteboardItem *item in pasteboard.pasteboardItems) {
-    NSData *data = [item dataForType:NSPasteboardTypeURL];
+    NSData *data = [item dataForType:NSPasteboardTypeFileURL];
     if (data == nil) {
       continue;
     }

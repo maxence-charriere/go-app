@@ -1,7 +1,7 @@
-package dom
-
-//go:generate go run gen.go
+//go:generate go run page_gen.go
 //go:generate go fmt
+
+package dom
 
 import (
 	"bytes"
@@ -19,7 +19,7 @@ func Page(c app.HTMLConfig, bridge, loadedCompo string) string {
 	c.CSS = cleanWindowsPath(c.CSS)
 	c.Javascripts = cleanWindowsPath(c.Javascripts)
 
-	tmpl := template.Must(template.New(c.Title).Parse(htmlTemplate))
+	tmpl := template.Must(template.New(c.Title).Parse(htmlTmpl))
 	tmpl.Execute(&w, struct {
 		Title       string
 		Metas       []app.Meta
@@ -44,7 +44,7 @@ func js(bridge string) template.JS {
 	var golangRequest = function (payload) {
 		%s(payload);
 	}
-	%s`, bridge, jsTemplate))
+	%s`, bridge, jsTmpl))
 }
 
 func cleanWindowsPath(paths []string) []string {
