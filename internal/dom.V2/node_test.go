@@ -56,14 +56,14 @@ func TestIsCompoNode(t *testing.T) {
 	assert.False(t, isCompoNode("div", svg))
 }
 
-func TestNodeType(t *testing.T) {
+func TestSvgAttr(t *testing.T) {
 	tests := []struct {
 		name     string
 		expected string
 	}{
 		{
-			name:     "div",
-			expected: "div",
+			name:     "name",
+			expected: "name",
 		},
 		{
 			name:     "viewbox",
@@ -72,7 +72,7 @@ func TestNodeType(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		n := nodeType(test.name)
+		n := svgAttr(test.name)
 		assert.Equal(t, test.expected, n)
 	}
 }

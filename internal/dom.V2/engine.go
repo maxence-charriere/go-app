@@ -347,7 +347,7 @@ func (e *Engine) renderSelfClosingTag(r rendering) (node, bool, error) {
 		n = node{
 			ID:        genNodeID(typ),
 			CompoID:   r.CompoID,
-			Type:      nodeType(typ),
+			Type:      typ,
 			Namespace: r.Namespace,
 			Dom:       e,
 		}
@@ -392,7 +392,7 @@ func (e *Engine) renderStartTag(r rendering) (node, bool, error) {
 		n = node{
 			ID:        genNodeID(typ),
 			CompoID:   r.CompoID,
-			Type:      nodeType(typ),
+			Type:      typ,
 			Namespace: r.Namespace,
 			Dom:       e,
 		}
@@ -507,8 +507,12 @@ func (e *Engine) renderTagAttrs(r rendering, n node, moreAttr, changes bool) nod
 		var rv []byte
 
 		rk, rv, moreAttr = r.Tokenizer.TagAttr()
-		k := string(rk)
 		v := string(rv)
+
+		k := string(rk)
+		if r.Namespace == svg {
+			k = svgAttr(k)
+		}
 
 		for _, t := range e.AttrTransforms {
 			k, v = t(k, v)

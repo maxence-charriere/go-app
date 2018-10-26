@@ -69,7 +69,7 @@ func clearChanges(c []change) []change {
 
 var (
 	svg             = "http://www.w3.org/2000/svg"
-	specialTagNames map[string]string
+	svgSpecialAttrs map[string]string
 	voidElems       = map[string]struct{}{
 		"area":   {},
 		"base":   {},
@@ -90,7 +90,7 @@ var (
 )
 
 func init() {
-	svgSpecialTagNames := []string{
+	svgSpecialAttrNames := []string{
 		"allowReorder",
 		"attributeName",
 		"attributeType",
@@ -175,17 +175,18 @@ func init() {
 		"zoomAndPan",
 	}
 
-	specialTagNames = make(map[string]string, len(svgSpecialTagNames))
-	for _, n := range svgSpecialTagNames {
-		specialTagNames[strings.ToLower(n)] = n
+	svgSpecialAttrs = make(map[string]string, len(svgSpecialAttrNames))
+	for _, n := range svgSpecialAttrNames {
+		svgSpecialAttrs[strings.ToLower(n)] = n
 	}
 }
 
-func nodeType(n string) string {
-	if sn, ok := specialTagNames[n]; ok {
-		return sn
+func svgAttr(k string) string {
+	if sk, ok := svgSpecialAttrs[k]; ok {
+		return sk
 	}
-	return n
+
+	return k
 }
 
 func isHTMLNode(tagName string) bool {
