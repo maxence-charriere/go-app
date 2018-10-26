@@ -199,7 +199,7 @@ func (c *CompoErr) Funcs() map[string]interface{} {
 	if c.BadExtendedFunc {
 		return map[string]interface{}{
 			"raw": func(s string) string {
-				panic("should not be overriden")
+				panic("should not be overridden")
 			},
 		}
 	}
