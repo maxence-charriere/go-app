@@ -10,6 +10,7 @@ package mac
 */
 import "C"
 import (
+	"context"
 	"crypto/md5"
 	"encoding/json"
 	"fmt"
@@ -100,7 +101,7 @@ type Driver struct {
 	macRPC       bridge.PlatformRPC
 	goRPC        bridge.GoRPC
 	uichan       chan func()
-	stopchan     chan error
+	stop         func()
 	menubar      *Menu
 	docktile     *DockTile
 	droppedFiles []string
@@ -153,29 +154,30 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.goRPC.Handle("notifications.OnReply", handleNotification(onNotificationReply))
 
 	d.uichan = make(chan func(), 256)
-	d.stopchan = make(chan error)
-	defer close(d.uichan)
-	defer close(d.stopchan)
-
 	driver = d
 
 	if goappLogs != nil {
 		go goappLogs.WaitForStop(d.Stop)
 	}
 
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	d.stop = cancel
+
 	go func() {
-		d.stopchan <- d.macRPC.Call("driver.Run", nil, nil)
+		for {
+			select {
+			case <-ctx.Done():
+				close(d.uichan)
+				return
+
+			case fn := <-d.uichan:
+				fn()
+			}
+		}
 	}()
 
-	for {
-		select {
-		case err := <-d.stopchan:
-			return err
-
-		case fn := <-d.uichan:
-			fn()
-		}
-	}
+	return d.macRPC.Call("driver.Run", nil, nil)
 }
 
 // AppName satisfies the app.Driver interface.
@@ -302,7 +304,8 @@ func (d *Driver) CallOnUIGoroutine(f func()) {
 // Stop satisfies the app.Driver interface.
 func (d *Driver) Stop() {
 	if err := d.macRPC.Call("driver.Quit", nil, nil); err != nil {
-		d.stopchan <- err
+		app.Log("stop failed:", err)
+		d.stop()
 	}
 }
 
