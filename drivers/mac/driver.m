@@ -19,6 +19,7 @@
       app.delegate = driver;
     }
   }
+
   return driver;
 }
 
