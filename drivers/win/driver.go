@@ -102,6 +102,8 @@ func (d *Driver) Run(f *app.Factory) error {
 		return err
 	}
 
+	d.onRun()
+
 	for {
 		select {
 		case err := <-d.stopchan:
@@ -147,13 +149,12 @@ func (d *Driver) runGoappBuild() error {
 	return ioutil.WriteFile(goappBuild, b, 0777)
 }
 
-func (d *Driver) onRun(in map[string]interface{}) interface{} {
+func (d *Driver) onRun() {
 	if d.OnRun == nil {
 		d.OnRun = d.newMainWindow
 	}
 
 	d.OnRun()
-	return nil
 }
 
 func (d *Driver) newMainWindow() {

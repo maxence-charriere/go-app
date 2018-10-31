@@ -5,6 +5,7 @@ package win
 */
 import "C"
 import (
+	"fmt"
 	"syscall"
 	"unsafe"
 
@@ -58,6 +59,8 @@ func winCall(call string) error {
 
 //export winCallReturn
 func winCallReturn(retID, ret, err *C.char) {
+	fmt.Println("winCallReturn")
+
 	driver.winRPC.Return(
 		C.GoString(retID),
 		C.GoString(ret),
