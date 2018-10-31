@@ -46,7 +46,7 @@ func initBridge() error {
 		return errors.Wrap(err, "init win return func failed")
 	}
 
-	return winCall("POUETTTTTTTETETE")
+	return nil
 }
 
 func winCall(call string) error {

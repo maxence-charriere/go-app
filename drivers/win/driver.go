@@ -55,6 +55,9 @@ type Driver struct {
 	// The settings used to generate the app package.
 	Settings Settings
 
+	// The func called right after app.Run.
+	OnRun func()
+
 	factory  *app.Factory
 	elems    *core.ElemDB
 	winRPC   bridge.PlatformRPC
@@ -112,6 +115,24 @@ func (d *Driver) Run(f *app.Factory) error {
 	}
 }
 
+// Render satisfies the app.Driver interface.
+func (d *Driver) Render(c app.Compo) {
+	e := d.ElemByCompo(c)
+	if e.Err() == nil {
+		e.(app.ElemWithCompo).Render(c)
+	}
+}
+
+// ElemByCompo satisfies the app.Driver interface.
+func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
+	return d.elems.GetByCompo(c)
+}
+
+// NewWindow satisfies the app.Driver interface.
+func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
+	return newWindow(c)
+}
+
 // CallOnUIGoroutine satisfies the app.Driver interface.
 func (d *Driver) CallOnUIGoroutine(f func()) {
 	d.uichan <- f
@@ -124,4 +145,25 @@ func (d *Driver) runGoappBuild() error {
 	}
 
 	return ioutil.WriteFile(goappBuild, b, 0777)
+}
+
+func (d *Driver) onRun(in map[string]interface{}) interface{} {
+	if d.OnRun == nil {
+		d.OnRun = d.newMainWindow
+	}
+
+	d.OnRun()
+	return nil
+}
+
+func (d *Driver) newMainWindow() {
+	app.NewWindow(app.WindowConfig{
+		Title:          d.AppName(),
+		TitlebarHidden: true,
+		MinWidth:       480,
+		Width:          1280,
+		MinHeight:      480,
+		Height:         768,
+		URL:            d.URL,
+	})
 }
