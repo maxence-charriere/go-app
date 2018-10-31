@@ -1,46 +1,12 @@
 package dom
 
 import (
-	"encoding/json"
-	"strconv"
 	"testing"
 	"time"
 
 	"github.com/murlokswarm/app"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
-
-func TestCompo(t *testing.T) {
-	p := newElem("p", "")
-
-	c := newCompo("foo", map[string]string{"hello": "world"})
-	assert.NotEmpty(t, c.ID())
-	assert.Empty(t, c.CompoID())
-	assert.Nil(t, c.Parent())
-
-	c.SetParent(p)
-	assert.Equal(t, p, c.Parent())
-
-	root := newText()
-	root.SetText("hello")
-	c.SetRoot(root)
-	assert.Equal(t, root, c.root)
-	assert.Equal(t, c, root.Parent())
-
-	c.RemoveRoot()
-	assert.Nil(t, root.Parent())
-	assert.Nil(t, c.root)
-
-	root2 := newText()
-	root2.SetText("world")
-	c.SetRoot(root2)
-
-	assert.Equal(t, root2, c.root)
-	assert.Equal(t, c, root2.Parent())
-
-	c.Close()
-}
 
 type CompoWithFields struct {
 	app.ZeroCompo
@@ -77,67 +43,6 @@ func (c *CompoWithFields) Render() string {
 	<div>compo String: {{compo "html.compo"}}</div>	
 </div>
 	`
-}
-
-func (c *CompoWithFields) Funcs() map[string]interface{} {
-	return map[string]interface{}{
-		"hello": func(string) string { return "hello" },
-	}
-}
-
-type CompoBadTemplate app.ZeroCompo
-
-func (c *CompoBadTemplate) Render() string {
-	return `{{}}`
-}
-
-type CompoBadTemplate2 app.ZeroCompo
-
-func (c *CompoBadTemplate2) Render() string {
-	return `{{.Bye}}`
-}
-
-func TestDecodeCompo(t *testing.T) {
-	s := struct {
-		A int
-		B string
-	}{
-		A: 42,
-		B: "foobar",
-	}
-
-	data, err := json.Marshal(s)
-	if err != nil {
-		t.Fatal(err)
-	}
-	sjson := string(data)
-
-	n, err := decodeCompo(&CompoWithFields{
-		String: "<br>",
-		Time:   time.Now(),
-		Struct: s,
-	}, JsToGoHandler, HrefCompoFmt)
-	require.NoError(t, err)
-
-	root := n.(*elem)
-	raw := root.children[1].(*elem).children[1].(*elem)
-	assert.Equal(t, "br", raw.TagName())
-
-	compo := root.children[7].(*compo)
-	assert.Equal(t, sjson, compo.fields["obj"])
-
-	year := strconv.Itoa(time.Now().Year())
-	timetext := root.children[8].(*elem).children[0].(*text)
-	assert.Equal(t, "Time: "+year, timetext.text)
-
-	hello := root.children[9].(*elem).children[0].(*text)
-	assert.Equal(t, "hello", hello.text)
-
-	_, err = decodeCompo(&CompoBadTemplate{}, JsToGoHandler, HrefCompoFmt)
-	assert.Error(t, err)
-
-	_, err = decodeCompo(&CompoBadTemplate2{}, JsToGoHandler, HrefCompoFmt)
-	assert.Error(t, err)
 }
 
 func TestMapComponentFields(t *testing.T) {

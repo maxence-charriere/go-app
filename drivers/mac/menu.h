@@ -14,8 +14,11 @@
 @property NSString *icon;
 @property NSMenuItem *separator;
 
-+ (instancetype)create:(NSString *)ID inMenu:(NSString *)elemID;
-- (void)setAttrs:(NSDictionary<NSString *, NSString *> *)attrs;
++ (instancetype)create:(NSString *)ID
+               compoID:(NSString *)compoID
+                inMenu:(NSString *)elemID;
+- (void)setAttr:(NSString *)key value:(NSString *)value;
+- (void)delAttr:(NSString *)key;
 - (void)setSeparator;
 - (void)unsetSeparator;
 - (void)setIconWithPath:(NSString *)icon;
@@ -30,8 +33,12 @@
 @property NSString *elemID;
 @property BOOL disabled;
 
-+ (instancetype)create:(NSString *)ID inMenu:(NSString *)elemID;
-- (void)setAttrs:(NSDictionary<NSString *, NSString *> *)attrs;
++ (instancetype)create:(NSString *)ID
+               compoID:(NSString *)compoID
+                inMenu:(NSString *)elemID;
+- (void)setAttr:(NSString *)key value:(NSString *)value;
+- (void)delAttr:(NSString *)key;
+- (void)updateParentItem;
 - (void)insertChild:(id)child atIndex:(NSInteger)index;
 - (void)appendChild:(id)child;
 - (void)removeChild:(id)child;
@@ -47,23 +54,23 @@
 + (void) new:(NSDictionary *)in return:(NSString *)returnID;
 + (void)load:(NSDictionary *)in return:(NSString *)returnID;
 + (void)render:(NSDictionary *)in return:(NSString *)returnID;
-- (void)createElem:(NSDictionary *)change;
-- (void)setAttrs:(NSDictionary *)change;
+- (void)setRootNode:(NSDictionary *)change;
+- (void)newNode:(NSDictionary *)change;
+- (void)delNode:(NSDictionary *)change;
+- (void)setAttr:(NSDictionary *)change;
+- (void)delAttr:(NSDictionary *)change;
 - (void)appendChild:(NSDictionary *)change;
 - (void)removeChild:(NSDictionary *)change;
 - (void)replaceChild:(NSDictionary *)change;
-- (void)mountElem:(NSDictionary *)change;
-- (void)createCompo:(NSDictionary *)change;
-- (void)setCompoRoot:(NSDictionary *)change;
-- (void)deleteNode:(NSDictionary *)change;
-- (id)childElem:(id)node;
+- (id)compoRoot:(id)node;
 + (void) delete:(NSDictionary *)in return:(NSString *)returnID;
 @end
 
 @interface MenuCompo : NSObject
 @property NSString *ID;
 @property NSString *rootID;
-@property NSString *name;
+@property NSString *type;
+@property BOOL isRootCompo;
 @end
 
 #endif /* menu_h */

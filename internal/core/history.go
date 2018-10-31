@@ -4,23 +4,22 @@ import (
 	"sync"
 )
 
-// NewHistory creates an history.
-func NewHistory() *History {
-	return &History{
-		index:   -1,
-		history: make([]string, 0, 32),
-	}
-}
-
 // History represents a store that contains URL ordered chronologically.
 type History struct {
+	once    sync.Once
 	mutex   sync.RWMutex
 	index   int
 	history []string
 }
 
+func (h *History) init() {
+	h.index = -1
+	h.history = make([]string, 0, 32)
+}
+
 // Len returns the number of entries recorded in the history.
 func (h *History) Len() int {
+	h.once.Do(h.init)
 	h.mutex.RLock()
 	defer h.mutex.RUnlock()
 
@@ -29,6 +28,8 @@ func (h *History) Len() int {
 
 // Current returns the current entry.
 func (h *History) Current() (url string) {
+	h.once.Do(h.init)
+
 	if h.Len() == 0 {
 		return ""
 	}
@@ -44,6 +45,8 @@ func (h *History) Current() (url string) {
 // The entry is added after the current one.
 // All the entries that was after the current one are removed.
 func (h *History) NewEntry(url string) {
+	h.once.Do(h.init)
+
 	if len(url) == 0 {
 		return
 	}
@@ -65,6 +68,7 @@ func (h *History) NewEntry(url string) {
 
 // CanPrevious reports whether there is a previous entry.
 func (h *History) CanPrevious() bool {
+	h.once.Do(h.init)
 	h.mutex.RLock()
 	defer h.mutex.RUnlock()
 
@@ -73,6 +77,8 @@ func (h *History) CanPrevious() bool {
 
 // Previous returns the previous entry.
 func (h *History) Previous() (url string) {
+	h.once.Do(h.init)
+
 	if !h.CanPrevious() {
 		return ""
 	}
@@ -87,6 +93,7 @@ func (h *History) Previous() (url string) {
 
 // CanNext reports whether there is a next entry.
 func (h *History) CanNext() bool {
+	h.once.Do(h.init)
 	h.mutex.RLock()
 	defer h.mutex.RUnlock()
 
@@ -95,6 +102,8 @@ func (h *History) CanNext() bool {
 
 // Next returns the next entry.
 func (h *History) Next() (url string) {
+	h.once.Do(h.init)
+
 	if !h.CanNext() {
 		return ""
 	}

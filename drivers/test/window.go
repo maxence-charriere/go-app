@@ -15,9 +15,9 @@ type Window struct {
 	core.Window
 
 	driver  *Driver
-	dom     *dom.DOM
-	history *core.History
 	id      string
+	dom     dom.Engine
+	history core.History
 	compo   app.Compo
 	x       float64
 	y       float64
@@ -29,10 +29,15 @@ type Window struct {
 
 func newWindow(d *Driver, c app.WindowConfig) *Window {
 	w := &Window{
-		driver:  d,
-		dom:     dom.NewDOM(d.factory, dom.JsToGoHandler, dom.HrefCompoFmt),
-		history: core.NewHistory(),
-		id:      uuid.New().String(),
+		driver: d,
+		id:     uuid.New().String(),
+		dom: dom.Engine{
+			Factory: d.factory,
+			AttrTransforms: []dom.Transform{
+				dom.JsToGoHandler,
+				dom.HrefCompoFmt,
+			},
+		},
 
 		onClose: c.OnClose,
 	}
@@ -66,17 +71,13 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	if w.compo != nil {
-		w.dom.Clean()
-	}
-
 	w.compo = c
 
 	if u != w.history.Current() {
 		w.history.NewEntry(u)
 	}
 
-	_, err = w.dom.New(c)
+	err = w.dom.New(c)
 }
 
 // Compo satisfies the app.Window interface.
@@ -91,8 +92,7 @@ func (w *Window) Contains(c app.Compo) bool {
 
 // Render satisfies the app.Window interface.
 func (w *Window) Render(c app.Compo) {
-	_, err := w.dom.Update(c)
-	w.SetErr(err)
+	w.SetErr(w.dom.Render(c))
 }
 
 // Reload satisfies the app.Window interface.

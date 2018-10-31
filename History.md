@@ -1,4 +1,53 @@
 
+3.2.11 / 2018-10-27
+===================
+
+## mac
+
+* fix mac main thread assertion crash.
+
+3.2.10 / 2018-10-26
+===================
+
+## general
+
+* Go dom engine has been rewritten. It is now slightly faster and more memory
+  efficient.
+
+```sh
+▶ benchcmp bench_dom_v1.txt bench_dom_v2.txt
+benchmark          old ns/op     new ns/op     delta
+BenchmarkDom-8     101266        86335         -14.74%
+
+benchmark          old allocs     new allocs     delta
+BenchmarkDom-8     431            281            -34.80%
+
+benchmark          old bytes     new bytes     delta
+BenchmarkDom-8     44661         33773         -24.38%
+```
+
+## mac
+
+* Dropping files from finder has been fixed.
+
+3.2.9 / 2018-09-30
+==================
+
+## general
+
+* `EventSource` now maps source value.
+
+```go
+type EventSource struct {
+  GoappID string
+  CompoID string
+  ID      string
+  Class   string
+  Data    map[string]string
+  Value   string
+}
+```
+
 3.2.7 - 3.2.8 / 2018-09-26
 ==================
 
@@ -76,7 +125,7 @@ win := app.NewWindow(app.WindowConfig{
 3.2.1 / 2018-09-10
 ==================
 
-## General
+## general
 
 * `goapp update` command has been added.
 * Readme has been rewritten.
@@ -100,7 +149,7 @@ win := app.NewWindow(app.WindowConfig{
 3.2.0 / 2018-08-29
 ==================
 
-## General
+## general
 
 * Logger interface become a function:
 
@@ -149,7 +198,7 @@ win := app.NewWindow(app.WindowConfig{
 3.1.0 / 2018-08-25
 ==================
 
-## General
+## general
 
 * New dom engine.
 
@@ -167,7 +216,7 @@ win := app.NewWindow(app.WindowConfig{
 
 ## API changes
 
-### General
+### general
 
 |v2|v3|
 |---|---|

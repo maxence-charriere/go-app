@@ -1,145 +1,19 @@
 package dom
 
 import (
-	"bytes"
 	"encoding/json"
-	"errors"
-	"html/template"
 	"reflect"
 	"strconv"
 	"strings"
-	"time"
 
-	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
 )
 
 type compo struct {
-	id      string
-	compoID string
-	name    string
-	fields  map[string]string
-	parent  node
-	root    node
-	changes []Change
-}
-
-func newCompo(name string, fields map[string]string) *compo {
-	c := &compo{
-		id:     name + ":" + uuid.New().String(),
-		name:   name,
-		fields: fields,
-	}
-
-	c.changes = append(c.changes, createCompoChange(c.id, name))
-	return c
-}
-
-func (c *compo) ID() string {
-	return c.id
-}
-
-func (c *compo) CompoID() string {
-	return c.compoID
-}
-
-func (c *compo) Parent() app.Node {
-	return c.parent
-}
-
-func (c *compo) SetParent(p node) {
-	c.parent = p
-}
-
-func (c *compo) SetRoot(root node) {
-	root.SetParent(c)
-	c.root = root
-	c.changes = append(c.changes, setCompoRootChange(c.id, root.ID()))
-}
-
-func (c *compo) RemoveRoot() {
-	c.root.Close()
-	c.changes = append(c.changes, c.root.Flush()...)
-	c.root = nil
-}
-
-func (c *compo) Flush() []Change {
-	changes := make([]Change, 0, len(c.changes))
-
-	if c.root != nil {
-		changes = append(changes, c.root.Flush()...)
-	}
-
-	changes = append(changes, c.changes...)
-	c.changes = c.changes[:0]
-	return changes
-}
-
-func (c *compo) Close() {
-	if c.root != nil {
-		c.root.Close()
-		c.changes = append(c.changes, c.root.Flush()...)
-	}
-
-	c.SetParent(nil)
-	c.changes = append(c.changes, deleteNodeChange(c.id))
-}
-
-func validateCompo(c app.Compo) error {
-	v := reflect.ValueOf(c)
-	if v.Kind() != reflect.Ptr {
-		return errors.New("compo is not a pointer")
-	}
-
-	v = v.Elem()
-	if v.NumField() == 0 {
-		return errors.New("compo is based on a struct without field. use app.ZeroCompo instead of struct{}")
-	}
-	return nil
-}
-
-func decodeCompo(c app.Compo, t ...Transform) (node, error) {
-	var funcs template.FuncMap
-
-	if compoExtRend, ok := c.(app.CompoWithExtendedRender); ok {
-		funcs = compoExtRend.Funcs()
-	}
-
-	if len(funcs) == 0 {
-		funcs = make(template.FuncMap, 4)
-	}
-
-	funcs["raw"] = func(s string) template.HTML {
-		return template.HTML(s)
-	}
-
-	funcs["compo"] = func(s string) template.HTML {
-		return template.HTML("<" + s + ">")
-	}
-
-	funcs["time"] = func(t time.Time, layout string) string {
-		return t.Format(layout)
-	}
-
-	funcs["json"] = func(v interface{}) string {
-		b, _ := json.Marshal(v)
-		return string(b)
-	}
-
-	tmpl, err := template.
-		New("").
-		Funcs(funcs).
-		Parse(c.Render())
-	if err != nil {
-		return nil, err
-	}
-
-	var w bytes.Buffer
-	if err = tmpl.Execute(&w, c); err != nil {
-		return nil, err
-	}
-
-	return decodeNodes(w.String(), t...)
+	ID       string
+	ParentID string
+	Compo    app.Compo
+	Events   *app.EventSubscriber
 }
 
 func mapCompoFields(c app.Compo, fields map[string]string) error {

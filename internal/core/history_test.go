@@ -127,7 +127,7 @@ func TestHistory(t *testing.T) {
 		t.Run(test.scenario, func(t *testing.T) {
 			var url string
 
-			h := NewHistory()
+			h := History{}
 
 			for _, action := range test.actions {
 				switch action.name {

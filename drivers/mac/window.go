@@ -23,9 +23,9 @@ import (
 type Window struct {
 	core.Window
 
-	dom          *dom.DOM
-	history      *core.History
 	id           string
+	dom          dom.Engine
+	history      core.History
 	compo        app.Compo
 	isFullscreen bool
 	isMinimized  bool
@@ -49,9 +49,14 @@ func newWindow(c app.WindowConfig) *Window {
 	}
 
 	w := &Window{
-		dom:     dom.NewDOM(driver.factory, dom.JsToGoHandler, dom.HrefCompoFmt),
-		history: core.NewHistory(),
-		id:      id,
+		id: id,
+		dom: dom.Engine{
+			Factory: driver.factory,
+			AttrTransforms: []dom.Transform{
+				dom.JsToGoHandler,
+				dom.HrefCompoFmt,
+			},
+		},
 
 		onMove:           c.OnMove,
 		onResize:         c.OnResize,
@@ -63,6 +68,8 @@ func newWindow(c app.WindowConfig) *Window {
 		onDeminimize:     c.OnDeminimize,
 		onClose:          c.OnClose,
 	}
+
+	w.dom.Sync = w.render
 
 	in := struct {
 		ID                string
@@ -157,10 +164,6 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	if w.compo != nil {
-		w.dom.Clean()
-	}
-
 	w.compo = c
 
 	if u != w.history.Current() {
@@ -192,13 +195,8 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	var changes []dom.Change
-	changes, err = w.dom.New(c)
+	err = w.dom.New(c)
 	if err != nil {
-		return
-	}
-
-	if err = w.render(changes); err != nil {
 		return
 	}
 
@@ -220,21 +218,13 @@ func (w *Window) Contains(c app.Compo) bool {
 
 // Render satisfies the app.Window interface.
 func (w *Window) Render(c app.Compo) {
-	changes, err := w.dom.Update(c)
-	w.SetErr(err)
-
-	if w.Err() != nil {
-		return
-	}
-
-	err = w.render(changes)
-	w.SetErr(err)
+	w.SetErr(w.dom.Render(c))
 }
 
-func (w *Window) render(c []dom.Change) error {
-	b, err := json.Marshal(c)
+func (w *Window) render(changes interface{}) error {
+	b, err := json.Marshal(changes)
 	if err != nil {
-		return errors.Wrap(err, "marshal changes failed")
+		return errors.Wrap(err, "encode changes failed")
 	}
 
 	return driver.macRPC.Call("windows.Render", nil, struct {

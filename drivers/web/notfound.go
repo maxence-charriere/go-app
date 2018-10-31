@@ -24,8 +24,7 @@ func (n *NotFound) Render() string {
 		height: 100%;
 		overflow: hidden;
 		background-color: #21252b;
-		color: white;
-		font-family: 'Helvetica Neue', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif">
+		color: white">
 	<h1 style="
 		font-size: 100pt; 
 		font-weight: 100;
