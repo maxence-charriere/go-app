@@ -176,7 +176,11 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 	}
 
 	if len(htmlConf.CSS) == 0 {
-		htmlConf.CSS = file.CSS(driver.Resources("css"))
+		htmlConf.CSS = file.Filenames(driver.Resources("css"), ".css")
+	}
+
+	if len(htmlConf.Javascripts) == 0 {
+		htmlConf.Javascripts = file.Filenames(driver.Resources("js"), ".js")
 	}
 
 	if err = driver.macRPC.Call("windows.Load", nil, struct {

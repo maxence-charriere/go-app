@@ -2,6 +2,7 @@ package file
 
 import (
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -164,4 +165,21 @@ func createFile(name string) error {
 
 	_, err = f.WriteString(uuid.New().String())
 	return err
+}
+
+func TestFilenames(t *testing.T) {
+	dir := "css-test"
+	os.MkdirAll(dir, 0777)
+	defer os.RemoveAll(dir)
+
+	assert.Len(t, Filenames(dir, ".css"), 0)
+
+	os.MkdirAll(filepath.Join(dir, "sub"), 0777)
+	os.Create(filepath.Join(dir, "test.css"))
+	os.Create(filepath.Join(dir, "test.scss"))
+	os.Create(filepath.Join(dir, "sub", "sub.css"))
+
+	assert.Contains(t, Filenames(dir, ".css"), filepath.Join(dir, "test.css"))
+	assert.NotContains(t, Filenames(dir, ".css"), filepath.Join(dir, "test.scss"))
+	assert.Contains(t, Filenames(dir, ".css"), filepath.Join(dir, "sub", "sub.css"))
 }

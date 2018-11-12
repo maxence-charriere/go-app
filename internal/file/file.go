@@ -116,3 +116,34 @@ func Sync(dst, src string) error {
 
 	return filepath.Walk(dst, walkRemove)
 }
+
+// Filenames returns the filenames within the directory and its subdirectories
+// that have the given extensions.
+func Filenames(dirname string, extensions ...string) []string {
+	var filenames []string
+
+	exts := make(map[string]struct{})
+	for _, ext := range extensions {
+		exts[ext] = struct{}{}
+	}
+
+	walker := func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		if _, ok := exts[filepath.Ext(path)]; !ok {
+			return nil
+		}
+
+		filenames = append(filenames, path)
+		return nil
+	}
+
+	filepath.Walk(dirname, walker)
+	return filenames
+}

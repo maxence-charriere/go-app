@@ -103,7 +103,11 @@ func (d *Driver) handle(res http.ResponseWriter, req *http.Request, status int) 
 	}
 
 	if len(htmlConf.CSS) == 0 {
-		htmlConf.CSS = file.CSS(d.Resources("css"))
+		htmlConf.CSS = file.Filenames(d.Resources("css"), ".css")
+	}
+
+	if len(htmlConf.Javascripts) == 0 {
+		htmlConf.Javascripts = file.Filenames(d.Resources("js"), ".js")
 	}
 
 	htmlConf.Javascripts = append(htmlConf.Javascripts, d.Resources("goapp.js"))
