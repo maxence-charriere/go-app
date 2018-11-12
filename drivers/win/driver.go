@@ -102,7 +102,7 @@ func (d *Driver) Run(f *app.Factory) error {
 		return err
 	}
 
-	d.onRun()
+	d.CallOnUIGoroutine(d.onRun)
 
 	for {
 		select {

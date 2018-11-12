@@ -41,7 +41,7 @@ const appxManifestTmpl = `
             <Extensions>
                 <desktop:Extension Category="windows.fullTrustProcess" Executable="{{.Executable}}" />
                 <uap:Extension Category="windows.appService">
-                    <uap:AppService Name="goapp" />
+                    <uap:AppService Name="InProcessAppService" />
                 </uap:Extension>
                 <uap:Extension Category="windows.protocol">
                     <uap:Protocol Name="{{.Scheme}}" />
