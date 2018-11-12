@@ -1,4 +1,12 @@
 
+3.2.12 / 2018-11-11
+===================
+
+## general
+
+* Javascript files located in `resources/js` are included by default when
+  javascripts page field is not set.
+
 3.2.11 / 2018-10-27
 ===================
 
