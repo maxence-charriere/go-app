@@ -35,7 +35,14 @@ func execute(ctx context.Context, cmd string, args ...string) error {
 
 func printOutput(ctx context.Context, r io.Reader, output io.Writer) {
 	reader := bufio.NewReader(r)
-	b := make([]byte, 1024)
+
+	write := func(b []byte) {
+		if verbose {
+			output.Write([]byte("    "))
+		}
+
+		output.Write(b)
+	}
 
 	for {
 		select {
@@ -44,16 +51,12 @@ func printOutput(ctx context.Context, r io.Reader, output io.Writer) {
 		default:
 		}
 
-		n, err := reader.Read(b)
+		b, err := reader.ReadBytes('\n')
 		if err != nil {
 			return
 		}
 
-		if verbose {
-			output.Write([]byte("    "))
-		}
-
-		output.Write(b[:n])
+		write(b)
 	}
 }
 
