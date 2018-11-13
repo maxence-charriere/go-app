@@ -86,6 +86,13 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 	return m
 }
 
+// NewController satisfies the app.Driver interface.
+func (d *Driver) NewController(c app.ControllerConfig) app.Controller {
+	m := newController(d, c)
+	d.setElemErr(m)
+	return m
+}
+
 // MenuBar satisfies the app.Driver interface.
 func (d *Driver) MenuBar() app.Menu {
 	d.setElemErr(d.menubar)

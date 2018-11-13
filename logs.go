@@ -101,6 +101,20 @@ func (d *driverWithLogs) NewContextMenu(c MenuConfig) Menu {
 	return &menuWithLogs{Menu: m}
 }
 
+func (d *driverWithLogs) NewController(c ControllerConfig) Controller {
+	WhenDebug(func() {
+		config, _ := json.MarshalIndent(c, "", "  ")
+		Logf("creating controller: %s", config)
+	})
+
+	controller := d.Driver.NewController(c)
+	if controller.Err() != nil {
+		Logf("creating controller failed: %s", controller.Err())
+	}
+
+	return &controllerWithLogs{Controller: controller}
+}
+
 func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) Elem {
 	WhenDebug(func() {
 		config, _ := json.MarshalIndent(c, "", "  ")
@@ -379,6 +393,25 @@ func (w *windowWithLogs) Close() {
 		Logf("window %s failed to close: %s",
 			w.ID(),
 			w.Err(),
+		)
+	}
+}
+
+// Controller logs.
+type controllerWithLogs struct {
+	Controller
+}
+
+func (c *controllerWithLogs) Close() {
+	WhenDebug(func() {
+		Logf("controller %s is closing", c.ID())
+	})
+
+	c.Controller.Close()
+	if c.Err() != nil {
+		Logf("controller %s failed to close: %s",
+			c.ID(),
+			c.Err(),
 		)
 	}
 }

@@ -8,6 +8,7 @@ package mac
 #cgo LDFLAGS: -framework WebKit
 #cgo LDFLAGS: -framework CoreImage
 #cgo LDFLAGS: -framework Security
+#cgo LDFLAGS: -framework GameController
 #include "bridge.h"
 */
 import "C"

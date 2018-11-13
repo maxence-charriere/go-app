@@ -148,6 +148,13 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.goRPC.Handle("menus.OnClose", handleMenu(onMenuClose))
 	d.goRPC.Handle("menus.OnCallback", handleMenu(onMenuCallback))
 
+	d.goRPC.Handle("controller.OnButtonChange", handleController(onControllerButtonChange))
+	d.goRPC.Handle("controller.OnDpadChange", handleController(onControllerDpadChange))
+	d.goRPC.Handle("controller.OnConnected", handleController(onControllerConnected))
+	d.goRPC.Handle("controller.OnDisconnected", handleController(onControllerDisconnected))
+	d.goRPC.Handle("controller.OnPause", handleController(onControllerPause))
+	d.goRPC.Handle("controller.OnClose", handleController(onControllerClose))
+
 	d.goRPC.Handle("filePanels.OnSelect", handleFilePanel(onFilePanelSelect))
 	d.goRPC.Handle("saveFilePanels.OnSelect", handleSaveFilePanel(onSaveFilePanelSelect))
 
@@ -259,6 +266,11 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 	err := d.macRPC.Call("driver.SetContextMenu", nil, m.ID())
 	m.SetErr(err)
 	return m
+}
+
+// NewController statisfies the app.Driver interface.
+func (d *Driver) NewController(c app.ControllerConfig) app.Controller {
+	return newController(c)
 }
 
 // NewFilePanel satisfies the app.Driver interface.
