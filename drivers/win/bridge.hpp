@@ -8,7 +8,8 @@ extern "C" {
 
 #endif
 
-void winReturn(char *retID, char *ret, char *err);
+void winCallReturn(char *retID, char *ret, char *err);
+char *goCall(char *in, char *ui);
 
 #ifdef __cplusplus
 }

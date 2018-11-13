@@ -5,16 +5,18 @@ package win
 */
 import "C"
 import (
-	"fmt"
+	"strconv"
 	"syscall"
 	"unsafe"
 
+	"github.com/murlokswarm/app"
 	"github.com/pkg/errors"
 )
 
 var (
-	dll          *syscall.DLL
-	winReturnPtr unsafe.Pointer
+	dll              *syscall.DLL
+	winCallReturnPtr unsafe.Pointer
+	goCallPtr        unsafe.Pointer
 )
 
 func loadDLL() error {
@@ -42,9 +44,14 @@ func initBridge() error {
 		return errors.Wrap(err, "init bridge connection failed")
 	}
 
-	winReturnPtr = C.winReturn
-	if _, err := callDllFunc("Bridge_SetReturn", uintptr(winReturnPtr)); err != nil {
-		return errors.Wrap(err, "init win return func failed")
+	winCallReturnPtr = C.winCallReturn
+	if _, err := callDllFunc("Bridge_SetWinCallReturn", uintptr(winCallReturnPtr)); err != nil {
+		return errors.Wrap(err, "init winReturn func failed")
+	}
+
+	goCallPtr = C.goCall
+	if _, err := callDllFunc("Bridge_SetGoCall", uintptr(goCallPtr)); err != nil {
+		return errors.Wrap(err, "init goCall func failed")
 	}
 
 	return nil
@@ -57,13 +64,35 @@ func winCall(call string) error {
 	return err
 }
 
-//export winCallReturn
-func winCallReturn(retID, ret, err *C.char) {
-	fmt.Println("winCallReturn")
-
+//export onWinCallReturn
+func onWinCallReturn(retID, ret, err *C.char) {
 	driver.winRPC.Return(
 		C.GoString(retID),
 		C.GoString(ret),
 		C.GoString(err),
 	)
+}
+
+//export onGoCall
+func onGoCall(ccall *C.char, cui *C.char) (cout *C.char) {
+	call := C.GoString(ccall)
+	ui, _ := strconv.ParseBool(C.GoString(cui))
+
+	if ui {
+		driver.CallOnUIGoroutine(func() {
+			if _, err := driver.goRPC.Call(call); err != nil {
+				app.Panic(errors.Wrap(err, "go call failed"))
+			}
+		})
+
+		return nil
+	}
+
+	ret, err := driver.goRPC.Call(call)
+	if err != nil {
+		app.Panic(errors.Wrap(err, "go call failed"))
+	}
+
+	// Returned string must be free in c++ code.
+	return C.CString(ret)
 }

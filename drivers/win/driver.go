@@ -86,6 +86,8 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.elems = core.NewElemDB()
 	d.winRPC.Handler = winCall
 
+	d.goRPC.Handle("driver.Log", d.log)
+
 	d.uichan = make(chan func(), 256)
 	defer close(d.uichan)
 
@@ -102,7 +104,8 @@ func (d *Driver) Run(f *app.Factory) error {
 		return err
 	}
 
-	d.CallOnUIGoroutine(d.onRun)
+	time.Sleep(time.Second)
+	d.onRun()
 
 	for {
 		select {
@@ -147,6 +150,12 @@ func (d *Driver) runGoappBuild() error {
 	}
 
 	return ioutil.WriteFile(goappBuild, b, 0777)
+}
+
+func (d *Driver) log(in map[string]interface{}) interface{} {
+	msg := in["Msg"].(string)
+	app.Log(msg)
+	return nil
 }
 
 func (d *Driver) onRun() {
