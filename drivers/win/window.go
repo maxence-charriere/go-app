@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"net/url"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
@@ -58,6 +59,8 @@ func newWindow(c app.WindowConfig) *Window {
 		onDeminimize:     c.OnDeminimize,
 		onClose:          c.OnClose,
 	}
+
+	w.dom.Sync = w.render
 
 	in := struct {
 		ID                string
@@ -168,28 +171,28 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		htmlConf.CSS = file.CSS(driver.Resources("css"))
 	}
 
-	// if err = driver.winRPC.Call("windows.Load", nil, struct {
-	// 	ID      string
-	// 	Title   string
-	// 	Page    string
-	// 	LoadURL string
-	// 	BaseURL string
-	// }{
-	// 	ID:      w.id,
-	// 	Title:   htmlConf.Title,
-	// 	Page:    dom.Page(htmlConf, "alert", n),
-	// 	LoadURL: u,
-	// 	BaseURL: driver.Resources(),
-	// }); err != nil {
-	// 	return
-	// }
+	if err = driver.winRPC.Call("windows.Load", nil, struct {
+		ID      string
+		Title   string
+		Page    string
+		LoadURL string
+		BaseURL string
+	}{
+		ID:      w.id,
+		Title:   htmlConf.Title,
+		Page:    dom.Page(htmlConf, "console.log", n),
+		LoadURL: u,
+		BaseURL: driver.Resources(),
+	}); err != nil {
+		return
+	}
 
-	// err = w.dom.New(c)
+	err = w.dom.New(c)
 
-	// if nav, ok := c.(app.Navigable); ok {
-	// 	navURL, _ := url.Parse(u)
-	// 	nav.OnNavigate(navURL)
-	// }
+	if nav, ok := c.(app.Navigable); ok {
+		navURL, _ := url.Parse(u)
+		nav.OnNavigate(navURL)
+	}
 }
 
 // Compo satisfies the app.Window interface.

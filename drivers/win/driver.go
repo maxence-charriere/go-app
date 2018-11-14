@@ -104,7 +104,6 @@ func (d *Driver) Run(f *app.Factory) error {
 		return err
 	}
 
-	time.Sleep(time.Second)
 	d.onRun()
 
 	for {
