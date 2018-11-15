@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"runtime"
 	"time"
 
@@ -88,6 +89,8 @@ func (d *Driver) Run(f *app.Factory) error {
 
 	d.goRPC.Handle("driver.Log", d.log)
 
+	d.goRPC.Handle("windows.OnCallback", handleWindow(onWindowCallback))
+
 	d.uichan = make(chan func(), 256)
 	defer close(d.uichan)
 
@@ -117,6 +120,18 @@ func (d *Driver) Run(f *app.Factory) error {
 		case <-aliveTicker.C:
 		}
 	}
+}
+
+// Resources satisfies the app.Driver interface.
+func (d *Driver) Resources(path ...string) string {
+	appdir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		app.Log(err)
+	}
+
+	r := filepath.Join(path...)
+	r = filepath.Join(appdir, "Resources", r)
+	return r
 }
 
 // Render satisfies the app.Driver interface.

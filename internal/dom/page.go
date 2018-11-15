@@ -6,8 +6,8 @@ package dom
 import (
 	"bytes"
 	"fmt"
-	"html/template"
 	"strings"
+	"text/template"
 
 	"github.com/murlokswarm/app"
 )
@@ -24,14 +24,14 @@ func Page(c app.HTMLConfig, bridge, loadedCompo string) string {
 		Title       string
 		Metas       []app.Meta
 		CSS         []string
-		LoadedCompo template.JS
-		JS          template.JS
+		LoadedCompo string
+		JS          string
 		Javascripts []string
 	}{
 		Title:       c.Title,
 		Metas:       c.Metas,
 		CSS:         c.CSS,
-		LoadedCompo: template.JS(loadedCompo),
+		LoadedCompo: loadedCompo,
 		JS:          js(bridge),
 		Javascripts: c.Javascripts,
 	})
@@ -39,12 +39,12 @@ func Page(c app.HTMLConfig, bridge, loadedCompo string) string {
 	return w.String()
 }
 
-func js(bridge string) template.JS {
-	return template.JS(fmt.Sprintf(`
+func js(bridge string) string {
+	return fmt.Sprintf(`
 	var golangRequest = function (payload) {
 		%s(payload);
 	}
-	%s`, bridge, jsTmpl))
+	%s`, bridge, jsTmpl)
 }
 
 func cleanWindowsPath(paths []string) []string {

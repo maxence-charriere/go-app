@@ -5,9 +5,13 @@ import (
 	"fmt"
 	"math"
 	"net/url"
+	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 	"github.com/murlokswarm/app/internal/dom"
 	"github.com/murlokswarm/app/internal/file"
@@ -171,6 +175,17 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		htmlConf.CSS = file.CSS(driver.Resources("css"))
 	}
 
+	appdir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
+	for i, css := range htmlConf.CSS {
+		css = strings.TrimPrefix(css, appdir)
+		css = strings.Replace(css, "\\", "/", -1)
+		css = "ms-appx-web://" + css
+		htmlConf.CSS[i] = css
+	}
+
+	app.Log(htmlConf.CSS)
+	app.Log(dom.Page(htmlConf, "window.external.notify", n))
+
 	if err = driver.winRPC.Call("windows.Load", nil, struct {
 		ID      string
 		Title   string
@@ -180,7 +195,7 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 	}{
 		ID:      w.id,
 		Title:   htmlConf.Title,
-		Page:    dom.Page(htmlConf, "console.log", n),
+		Page:    dom.Page(htmlConf, "window.external.notify", n),
 		LoadURL: u,
 		BaseURL: driver.Resources(),
 	}); err != nil {
@@ -269,4 +284,47 @@ func (w *Window) Next() {
 	}
 
 	w.Load(u)
+}
+
+func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
+	mappingStr := in["Mapping"].(string)
+
+	var m dom.Mapping
+	if err := json.Unmarshal([]byte(mappingStr), &m); err != nil {
+		app.Logf("window callback failed: %s", err)
+		return nil
+	}
+
+	c, err := w.dom.CompoByID(m.CompoID)
+	if err != nil {
+		app.Logf("window callback failed: %s", err)
+		return nil
+	}
+
+	var f func()
+	if f, err = m.Map(c); err != nil {
+		app.Logf("window callback failed: %s", err)
+		return nil
+	}
+
+	if f != nil {
+		f()
+		return nil
+	}
+
+	app.Render(c)
+	return nil
+}
+
+func handleWindow(h func(w *Window, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
+	return func(in map[string]interface{}) interface{} {
+		id, _ := in["ID"].(string)
+
+		e := driver.elems.GetByID(id)
+		if e.Err() == app.ErrElemNotSet {
+			return nil
+		}
+
+		return h(e.(*Window), in)
+	}
 }
