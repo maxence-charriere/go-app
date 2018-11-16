@@ -20,9 +20,8 @@ import (
 
 func macCall(call string) error {
 	ccall := C.CString(call)
-	defer C.free(unsafe.Pointer(ccall))
-
 	C.macCall(ccall)
+	C.free(unsafe.Pointer(ccall))
 	return nil
 }
 
