@@ -288,10 +288,10 @@ func (w *Window) Next() {
 
 // Position satisfies the app.Window interface.
 func (w *Window) Position() (x, y float64) {
-	var out struct {
+	out := struct {
 		X float64
 		Y float64
-	}
+	}{}
 
 	err := driver.macRPC.Call("windows.Position", &out, struct {
 		ID string
@@ -331,10 +331,10 @@ func (w *Window) Center() {
 
 // Size satisfies the app.Window interface.
 func (w *Window) Size() (width, height float64) {
-	var out struct {
+	out := struct {
 		Width  float64
 		Heigth float64
-	}
+	}{}
 
 	err := driver.macRPC.Call("windows.Size", &out, struct {
 		ID string

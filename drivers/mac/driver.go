@@ -182,9 +182,9 @@ func (d *Driver) Run(f *app.Factory) error {
 
 // AppName satisfies the app.Driver interface.
 func (d *Driver) AppName() string {
-	var out struct {
+	out := struct {
 		AppName string
-	}
+	}{}
 
 	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
 		app.Panic(err)
@@ -204,21 +204,12 @@ func (d *Driver) AppName() string {
 
 // Resources satisfies the app.Driver interface.
 func (d *Driver) Resources(path ...string) string {
-	var out struct {
+	out := struct {
 		Resources string
-	}
+	}{}
 
 	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
 		app.Panic(err)
-	}
-
-	wd, err := os.Getwd()
-	if err != nil {
-		app.Panic(errors.Wrap(err, "resources unreachable"))
-	}
-
-	if filepath.Dir(out.Resources) == wd {
-		out.Resources = filepath.Join(wd, "resources")
 	}
 
 	r := filepath.Join(path...)
@@ -319,9 +310,9 @@ func (d *Driver) runGoappBundle() error {
 }
 
 func (d *Driver) support() string {
-	var out struct {
+	out := struct {
 		Support string
-	}
+	}{}
 
 	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
 		app.Panic(err)
