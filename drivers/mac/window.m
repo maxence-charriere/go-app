@@ -277,24 +277,6 @@
   });
 }
 
-+ (void)renderAttributes:(NSDictionary *)in return:(NSString *)returnID {
-  defer(returnID, ^{
-    Driver *driver = [Driver current];
-
-    NSString *ID = in[@"ID"];
-    Window *win = driver.elements[ID];
-    if (win == nil) {
-      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
-    }
-
-    NSString *js =
-        [NSString stringWithFormat:@"renderAttributes(%@)", in[@"Render"]];
-    [win.webview evaluateJavaScript:js completionHandler:nil];
-
-    [driver.macRPC return:returnID withOutput:nil andError:nil];
-  });
-}
-
 + (void)position:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
