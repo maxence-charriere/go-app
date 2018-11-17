@@ -51,7 +51,7 @@ func newWindow(c app.WindowConfig) *Window {
 	w := &Window{
 		id: id,
 		dom: dom.Engine{
-			Factory: driver.factory,
+			Factory:   driver.factory,
 			Resources: driver.Resources,
 			AttrTransforms: []dom.Transform{
 				dom.JsToGoHandler,
