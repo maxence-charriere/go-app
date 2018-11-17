@@ -19,7 +19,8 @@ func newDockTile(d *Driver) *DockTile {
 			driver: d,
 			id:     uuid.New().String(),
 			dom: dom.Engine{
-				Factory: d.factory,
+				Factory:   d.factory,
+				Resources: d.Resources,
 			},
 		},
 	}

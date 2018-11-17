@@ -35,7 +35,7 @@ func (c *CustomMenu) Render() string {
 	return `
 <menu label="Custom">
 	<menuitem label="MenuItem with Go callback" onclick="OnClick"></menuitem>
-	<menuitem label="MenuItem with icon" onclick="OnClickWithIcon" icon="logo.png" checked></menuitem>
+	<menuitem label="MenuItem with icon" onclick="OnClickWithIcon" icon="{{resources "logo.png"}}" checked></menuitem>
 	<menuitem label="MenuItem with keys" keys="cmdorctrl+e" onclick="OnMenuItemWithShorcutClick" checked></menuitem>
 	<menuitem separator></menuitem>
 	<menuitem label="MenuItem disabled" onclick="OnClick" disabled="true"></menuitem>

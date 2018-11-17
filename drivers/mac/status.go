@@ -22,7 +22,8 @@ func newStatusMenu(c app.StatusMenuConfig) *StatusMenu {
 		Menu: Menu{
 			id: uuid.New().String(),
 			dom: dom.Engine{
-				Factory: driver.factory,
+				Factory:   driver.factory,
+				Resources: driver.Resources,
 				AllowedNodes: []string{
 					"menu",
 					"menuitem",

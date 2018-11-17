@@ -33,6 +33,7 @@ func newMenu(c app.MenuConfig, typ string) *Menu {
 		id: uuid.New().String(),
 		dom: dom.Engine{
 			Factory: driver.factory,
+			Resources: driver.Resources,
 			AllowedNodes: []string{
 				"menu",
 				"menuitem",

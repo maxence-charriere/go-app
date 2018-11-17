@@ -21,6 +21,9 @@ type Engine struct {
 	// The factory to decode component from html.
 	Factory *app.Factory
 
+	// The func that generates a resources directory path usable in html.
+	Resources func(...string) string
+
 	// AttrTransforms describes a set of transformation to apply to parsed node
 	// attributes.
 	AttrTransforms []Transform
@@ -236,7 +239,14 @@ func (e *Engine) compoToHTML(c app.Compo) (string, error) {
 		extendedFuncs = extended.Funcs()
 	}
 
-	funcs := make(template.FuncMap, len(converters)+len(extendedFuncs))
+	// The number of template functions. It contains the
+	// component extended functions, the converters and
+	// the resources accessor.
+	funcsCount := len(converters) + len(extendedFuncs) + 1
+
+	funcs := make(template.FuncMap, funcsCount)
+	funcs["resources"] = e.Resources
+
 	for k, v := range converters {
 		funcs[k] = v
 	}
