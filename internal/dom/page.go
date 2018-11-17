@@ -5,54 +5,53 @@ package dom
 
 import (
 	"bytes"
-	"fmt"
-	"html/template"
-	"strings"
+	"text/template"
 
 	"github.com/murlokswarm/app"
 )
 
-// Page generate an HTML page from the given configuration.
-func Page(c app.HTMLConfig, bridge, loadedCompo string) string {
-	var w bytes.Buffer
+// Page represents a html page.
+type Page struct {
+	// The title.
+	Title string
 
-	c.CSS = cleanWindowsPath(c.CSS)
-	c.Javascripts = cleanWindowsPath(c.Javascripts)
+	// The metadata.
+	Metas []app.Meta
 
-	tmpl := template.Must(template.New(c.Title).Parse(htmlTmpl))
-	tmpl.Execute(&w, struct {
-		Title       string
-		Metas       []app.Meta
-		CSS         []string
-		LoadedCompo template.JS
-		JS          template.JS
-		Javascripts []string
+	// The css file paths to include.
+	CSS []string
+
+	// The javascript file paths to include.
+	Javascripts []string
+
+	// The name of the javascript function to pass data to Go.
+	GoRequest string
+
+	// The name of the root component.
+	RootCompoName string
+}
+
+func (p Page) String() string {
+	var b bytes.Buffer
+
+	tmpl := template.Must(template.New(p.Title).Parse(htmlTmpl))
+	tmpl.Execute(&b, struct {
+		Title         string
+		Metas         []app.Meta
+		CSS           []string
+		Javascripts   []string
+		PageJS        string
+		GoRequest     string
+		RootCompoName string
 	}{
-		Title:       c.Title,
-		Metas:       c.Metas,
-		CSS:         c.CSS,
-		LoadedCompo: template.JS(loadedCompo),
-		JS:          js(bridge),
-		Javascripts: c.Javascripts,
+		Title:         p.Title,
+		Metas:         p.Metas,
+		CSS:           p.CSS,
+		Javascripts:   p.Javascripts,
+		PageJS:        jsTmpl,
+		GoRequest:     p.GoRequest,
+		RootCompoName: p.RootCompoName,
 	})
 
-	return w.String()
-}
-
-func js(bridge string) template.JS {
-	return template.JS(fmt.Sprintf(`
-	var golangRequest = function (payload) {
-		%s(payload);
-	}
-	%s`, bridge, jsTmpl))
-}
-
-func cleanWindowsPath(paths []string) []string {
-	c := make([]string, len(paths))
-
-	for i, p := range paths {
-		c[i] = strings.Replace(p, `\`, "/", -1)
-	}
-
-	return c
+	return b.String()
 }

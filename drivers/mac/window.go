@@ -52,6 +52,7 @@ func newWindow(c app.WindowConfig) *Window {
 		id: id,
 		dom: dom.Engine{
 			Factory: driver.factory,
+			Resources: driver.Resources,
 			AttrTransforms: []dom.Transform{
 				dom.JsToGoHandler,
 				dom.HrefCompoFmt,
@@ -183,6 +184,15 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		htmlConf.Javascripts = file.Filenames(driver.Resources("js"), ".js")
 	}
 
+	page := dom.Page{
+		Title:         htmlConf.Title,
+		Metas:         htmlConf.Metas,
+		CSS:           htmlConf.CSS,
+		Javascripts:   htmlConf.Javascripts,
+		GoRequest:     "window.webkit.messageHandlers.golangRequest.postMessage",
+		RootCompoName: n,
+	}
+
 	if err = driver.macRPC.Call("windows.Load", nil, struct {
 		ID      string
 		Title   string
@@ -192,7 +202,7 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 	}{
 		ID:      w.id,
 		Title:   htmlConf.Title,
-		Page:    dom.Page(htmlConf, "window.webkit.messageHandlers.golangRequest.postMessage", n),
+		Page:    page.String(),
 		LoadURL: u,
 		BaseURL: driver.Resources(),
 	}); err != nil {

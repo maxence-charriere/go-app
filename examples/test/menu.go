@@ -32,7 +32,7 @@ func (m *Menu) Render() string {
 			  {{if .DisableAll}}disabled{{end}}>
 	</menuitem>
 	<menuitem label="button with icon"
-			  icon="logo.png"
+			  icon="{{resources "logo.png"}}"
 			  onclick="OnButtonWithIconClick" 
 			  {{if .DisableAll}}disabled{{end}}>
 	</menuitem>

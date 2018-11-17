@@ -32,7 +32,8 @@ func newWindow(d *Driver, c app.WindowConfig) *Window {
 		driver: d,
 		id:     uuid.New().String(),
 		dom: dom.Engine{
-			Factory: d.factory,
+			Factory:   d.factory,
+			Resources: d.Resources,
 			AttrTransforms: []dom.Transform{
 				dom.JsToGoHandler,
 				dom.HrefCompoFmt,

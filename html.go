@@ -8,11 +8,11 @@ type HTMLConfig struct {
 	// The meta data.
 	Metas []Meta
 
-	// The CSS filenames to include.
+	// The css file paths to include.
 	// Inludes all .css files in resources/css if nil no set.
 	CSS []string
 
-	// The javascript filenames to include.
+	// The javascript file paths to include.
 	// Inludes all .js files in resources/js if not set.
 	Javascripts []string
 }

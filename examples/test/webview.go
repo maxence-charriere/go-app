@@ -38,6 +38,8 @@ func (c *Webview) Render() string {
 	</p>
 	
 	<ul>
+		<li>resources: {{resources}}</li>
+		<li>resources with args: {{resources "hello" "world"}}</li>
 		<li><a href="test.Webview?page=42">To page 42</a></li>
 		<li><a href="unknown?page=42">Unknown compopent</a></li>
 		<li><a href="http://theverge.com">external hyperlink</a></li>

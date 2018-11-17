@@ -30,6 +30,7 @@ func newPage(c app.PageConfig) app.Page {
 		id: uuid.New().String(),
 		dom: dom.Engine{
 			Factory:        driver.factory,
+			Resources:      driver.Resources,
 			AttrTransforms: []dom.Transform{dom.JsToGoHandler},
 		},
 	}
