@@ -2,6 +2,8 @@
 #ifndef bridge_h
 #define bridge_h
 
+#include <stdlib.h>
+
 #ifdef __cplusplus
 
 extern "C" {

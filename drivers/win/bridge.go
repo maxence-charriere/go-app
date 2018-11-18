@@ -29,13 +29,19 @@ func closeDLL() {
 	dll.Release()
 }
 
-func callDllFunc(name string, a ...uintptr) (uintptr, error) {
+//go:uintptrescapes
+func callDllFunc(name string, a ...unsafe.Pointer) (uintptr, error) {
+	args := make([]uintptr, len(a))
+	for i, arg := range a {
+		args[i] = uintptr(arg)
+	}
+
 	proc, err := dll.FindProc(name)
 	if err != nil {
 		return 0, err
 	}
 
-	r, _, _ := proc.Call(a...)
+	r, _, _ := proc.Call(args...)
 	return r, nil
 }
 
@@ -45,12 +51,12 @@ func initBridge() error {
 	}
 
 	winCallReturnPtr = C.winCallReturn
-	if _, err := callDllFunc("Bridge_SetWinCallReturn", uintptr(winCallReturnPtr)); err != nil {
+	if _, err := callDllFunc("Bridge_SetWinCallReturn", winCallReturnPtr); err != nil {
 		return errors.Wrap(err, "init winReturn func failed")
 	}
 
 	goCallPtr = C.goCall
-	if _, err := callDllFunc("Bridge_SetGoCall", uintptr(goCallPtr)); err != nil {
+	if _, err := callDllFunc("Bridge_SetGoCall", goCallPtr); err != nil {
 		return errors.Wrap(err, "init goCall func failed")
 	}
 
@@ -58,9 +64,10 @@ func initBridge() error {
 }
 
 func winCall(call string) error {
-	c := []byte(call)
-	ptr := unsafe.Pointer(&c[0])
-	_, err := callDllFunc("Bridge_Call", uintptr(ptr))
+	ccall := C.CString(call)
+	ptr := unsafe.Pointer(ccall)
+	_, err := callDllFunc("Bridge_Call", ptr)
+	C.free(ptr)
 	return err
 }
 
