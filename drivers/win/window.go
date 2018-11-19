@@ -188,8 +188,6 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		RootCompoName: n,
 	}
 
-	fmt.Println(page.String())
-
 	if err = driver.winRPC.Call("windows.Load", nil, struct {
 		ID      string
 		Title   string
@@ -290,6 +288,104 @@ func (w *Window) Next() {
 	w.Load(u)
 }
 
+// Position satisfies the app.Window interface.
+func (w *Window) Position() (x, y float64) {
+	out := struct {
+		X float64
+		Y float64
+	}{}
+
+	err := driver.winRPC.Call("windows.Position", &out, struct {
+		ID string
+	}{
+		ID: w.id,
+	})
+
+	w.SetErr(err)
+	return out.X, out.Y
+}
+
+// Size satisfies the app.Window interface.
+func (w *Window) Size() (width, height float64) {
+	out := struct {
+		Width  float64
+		Heigth float64
+	}{}
+
+	err := driver.winRPC.Call("windows.Size", &out, struct {
+		ID string
+	}{
+		ID: w.id,
+	})
+
+	w.SetErr(err)
+	return out.Width, out.Heigth
+}
+
+// Resize satisfies the app.Window interface.
+func (w *Window) Resize(width, height float64) {
+	err := driver.winRPC.Call("windows.Resize", nil, struct {
+		ID     string
+		Width  float64
+		Height float64
+	}{
+		ID:     w.id,
+		Width:  width,
+		Height: height,
+	})
+
+	w.SetErr(err)
+}
+
+// Focus satisfies the app.Window interface.
+func (w *Window) Focus() {
+	err := driver.winRPC.Call("windows.Focus", nil, struct {
+		ID string
+	}{
+		ID: w.id,
+	})
+
+	w.SetErr(err)
+}
+
+// FullScreen satisfies the app.Window interface.
+func (w *Window) FullScreen() {
+	err := driver.winRPC.Call("windows.FullScreen", nil, struct {
+		ID string
+	}{
+		ID: w.id,
+	})
+
+	w.SetErr(err)
+}
+
+// ExitFullScreen satisfies the app.Window interface.
+func (w *Window) ExitFullScreen() {
+	err := driver.winRPC.Call("windows.ExitFullScreen", nil, struct {
+		ID string
+	}{
+		ID: w.id,
+	})
+
+	w.SetErr(err)
+}
+
+func onWindowFocus(w *Window, in map[string]interface{}) interface{} {
+	if w.onFocus != nil {
+		w.onFocus()
+	}
+
+	return nil
+}
+
+func onWindowBlur(w *Window, in map[string]interface{}) interface{} {
+	if w.onBlur != nil {
+		w.onBlur()
+	}
+
+	return nil
+}
+
 func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 	mappingStr := in["Mapping"].(string)
 
@@ -317,6 +413,24 @@ func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 	}
 
 	app.Render(c)
+	return nil
+}
+
+func onWindowFullScreen(w *Window, in map[string]interface{}) interface{} {
+	if w.onFullScreen != nil {
+		w.onFullScreen()
+	}
+
+	w.isFullscreen = true
+	return nil
+}
+
+func onWindowExitFullScreen(w *Window, in map[string]interface{}) interface{} {
+	if w.onExitFullScreen != nil {
+		w.onExitFullScreen()
+	}
+
+	w.isFullscreen = false
 	return nil
 }
 

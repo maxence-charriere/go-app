@@ -89,6 +89,11 @@ func (d *Driver) Run(f *app.Factory) error {
 
 	d.goRPC.Handle("driver.Log", d.log)
 
+	d.goRPC.Handle("windows.OnResize", handleWindow(onWindowResize))
+	d.goRPC.Handle("windows.OnFocus", handleWindow(onWindowFocus))
+	d.goRPC.Handle("windows.OnBlur", handleWindow(onWindowBlur))
+	d.goRPC.Handle("windows.OnFullScreen", handleWindow(onWindowFullScreen))
+	d.goRPC.Handle("windows.OnExitFullScreen", handleWindow(onWindowExitFullScreen))
 	d.goRPC.Handle("windows.OnCallback", handleWindow(onWindowCallback))
 
 	d.uichan = make(chan func(), 256)
@@ -178,6 +183,17 @@ func (d *Driver) onRun() {
 	}
 
 	d.OnRun()
+}
+
+func onWindowResize(w *Window, in map[string]interface{}) interface{} {
+	if w.onResize != nil {
+		w.onResize(
+			in["Width"].(float64),
+			in["Height"].(float64),
+		)
+	}
+
+	return nil
 }
 
 func (d *Driver) newMainWindow() {
