@@ -5,8 +5,7 @@ import (
 	"fmt"
 	"math"
 	"net/url"
-	"os"
-	"path/filepath"
+	"path"
 	"strings"
 
 	"github.com/google/uuid"
@@ -46,7 +45,8 @@ func newWindow(c app.WindowConfig) *Window {
 	w := &Window{
 		id: id,
 		dom: dom.Engine{
-			Factory: driver.factory,
+			Factory:   driver.factory,
+			Resources: resourcesDir,
 			AttrTransforms: []dom.Transform{
 				dom.JsToGoHandler,
 				dom.HrefCompoFmt,
@@ -172,19 +172,23 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 	}
 
 	if len(htmlConf.CSS) == 0 {
-		htmlConf.CSS = file.CSS(driver.Resources("css"))
+		htmlConf.CSS = file.Filenames(driver.Resources("css"), ".css")
 	}
 
-	appdir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
-	for i, css := range htmlConf.CSS {
-		css = strings.TrimPrefix(css, appdir)
-		css = strings.Replace(css, "\\", "/", -1)
-		css = "ms-appx-web://" + css
-		htmlConf.CSS[i] = css
+	if len(htmlConf.Javascripts) == 0 {
+		htmlConf.Javascripts = file.Filenames(driver.Resources("js"), ".js")
 	}
 
-	app.Log(htmlConf.CSS)
-	app.Log(dom.Page(htmlConf, "window.external.notify", n))
+	page := dom.Page{
+		Title:         htmlConf.Title,
+		Metas:         htmlConf.Metas,
+		CSS:           pageFiles(htmlConf.CSS),
+		Javascripts:   pageFiles(htmlConf.Javascripts),
+		GoRequest:     "window.external.notify",
+		RootCompoName: n,
+	}
+
+	fmt.Println(page.String())
 
 	if err = driver.winRPC.Call("windows.Load", nil, struct {
 		ID      string
@@ -195,7 +199,7 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 	}{
 		ID:      w.id,
 		Title:   htmlConf.Title,
-		Page:    dom.Page(htmlConf, "window.external.notify", n),
+		Page:    page.String(),
 		LoadURL: u,
 		BaseURL: driver.Resources(),
 	}); err != nil {
@@ -327,4 +331,23 @@ func handleWindow(h func(w *Window, in map[string]interface{}) interface{}) brid
 
 		return h(e.(*Window), in)
 	}
+}
+
+func resourcesDir(p ...string) string {
+	r := path.Join(p...)
+	r = strings.TrimLeft(r, "/")
+	return "ms-appx-web:///Resources/" + r
+}
+
+func pageFiles(files []string) []string {
+	pfiles := make([]string, len(files))
+	resources := driver.Resources()
+
+	for i, f := range files {
+		f = strings.TrimPrefix(f, resources)
+		f = strings.Replace(f, "\\", "/", -1)
+		pfiles[i] = resourcesDir(f)
+	}
+
+	return pfiles
 }
