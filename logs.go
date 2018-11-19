@@ -75,7 +75,7 @@ func (d *driverWithLogs) NewWindow(c WindowConfig) Window {
 
 func (d *driverWithLogs) NewPage(c PageConfig) Page {
 	WhenDebug(func() {
-		config, _ := json.MarshalIndent(c, "", "  ")
+		config := prettyConf(c)
 		Logf("creating page: %s", config)
 	})
 
@@ -89,7 +89,7 @@ func (d *driverWithLogs) NewPage(c PageConfig) Page {
 
 func (d *driverWithLogs) NewContextMenu(c MenuConfig) Menu {
 	WhenDebug(func() {
-		config, _ := json.MarshalIndent(c, "", "  ")
+		config := prettyConf(c)
 		Logf("creating context menu: %s", config)
 	})
 
@@ -103,7 +103,7 @@ func (d *driverWithLogs) NewContextMenu(c MenuConfig) Menu {
 
 func (d *driverWithLogs) NewController(c ControllerConfig) Controller {
 	WhenDebug(func() {
-		config, _ := json.MarshalIndent(c, "", "  ")
+		config := prettyConf(c)
 		Logf("creating controller: %s", config)
 	})
 
@@ -117,7 +117,7 @@ func (d *driverWithLogs) NewController(c ControllerConfig) Controller {
 
 func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) Elem {
 	WhenDebug(func() {
-		config, _ := json.MarshalIndent(c, "", "  ")
+		config := prettyConf(c)
 		Logf("creating file panel: %s", config)
 	})
 
@@ -131,7 +131,7 @@ func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) Elem {
 
 func (d *driverWithLogs) NewSaveFilePanel(c SaveFilePanelConfig) Elem {
 	WhenDebug(func() {
-		config, _ := json.MarshalIndent(c, "", "  ")
+		config := prettyConf(c)
 		Logf("creating save file panel: %s", config)
 	})
 
@@ -158,7 +158,7 @@ func (d *driverWithLogs) NewShare(v interface{}) Elem {
 
 func (d *driverWithLogs) NewNotification(c NotificationConfig) Elem {
 	WhenDebug(func() {
-		config, _ := json.MarshalIndent(c, "", "  ")
+		config := prettyConf(c)
 		Logf("creating notification: %s", config)
 	})
 
@@ -185,7 +185,7 @@ func (d *driverWithLogs) MenuBar() Menu {
 
 func (d *driverWithLogs) NewStatusMenu(c StatusMenuConfig) StatusMenu {
 	WhenDebug(func() {
-		config, _ := json.MarshalIndent(c, "", "  ")
+		config := prettyConf(c)
 		Logf("creating status menu: %s", config)
 	})
 
@@ -698,4 +698,9 @@ func (s *statusMenuWithLogs) Close() {
 			s.Err(),
 		)
 	}
+}
+
+func prettyConf(c interface{}) string {
+	b, _ := json.MarshalIndent(c, "", "    ")
+	return string(b)
 }

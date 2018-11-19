@@ -148,8 +148,8 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.goRPC.Handle("menus.OnClose", handleMenu(onMenuClose))
 	d.goRPC.Handle("menus.OnCallback", handleMenu(onMenuCallback))
 
-	d.goRPC.Handle("controller.OnButtonChange", handleController(onControllerButtonChange))
-	d.goRPC.Handle("controller.OnDpadChange", handleController(onControllerDpadChange))
+	d.goRPC.Handle("controller.OnDirectionChange", handleController(onControllerDirectionChange))
+	d.goRPC.Handle("controller.OnButtonPressed", handleController(onControllerButtonPressed))
 	d.goRPC.Handle("controller.OnConnected", handleController(onControllerConnected))
 	d.goRPC.Handle("controller.OnDisconnected", handleController(onControllerDisconnected))
 	d.goRPC.Handle("controller.OnPause", handleController(onControllerPause))

@@ -131,8 +131,7 @@ func NewContextMenu(c MenuConfig) Menu {
 	return driver.NewContextMenu(c)
 }
 
-// NewController creates the controller described by the given
-// configuration.
+// NewController creates the controller described by the given configuration.
 //
 // It panics if called before Run.
 func NewController(c ControllerConfig) Controller {

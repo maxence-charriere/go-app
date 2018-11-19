@@ -34,7 +34,8 @@ type Driver interface {
 	// given configuration.
 	NewContextMenu(MenuConfig) Menu
 
-	// NewController creates the controller described by the given configuration.
+	// NewController creates the controller described by the given
+	// configuration.
 	NewController(ControllerConfig) Controller
 
 	// NewFilePanel creates and displays the file panel described by the given
