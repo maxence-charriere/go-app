@@ -43,6 +43,9 @@ func TestDriver(t *testing.T) {
 	mb := d.MenuBar()
 	assert.Error(t, mb.Err())
 
+	c := d.NewController(app.ControllerConfig{})
+	assert.Error(t, c.Err())
+
 	sm := d.NewStatusMenu(app.StatusMenuConfig{})
 	assert.Error(t, sm.Err())
 
