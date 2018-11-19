@@ -31,9 +31,13 @@ const htmlTmpl = `<!DOCTYPE html>
     <div></div>
 
     <script>
-    {{if .LoadedCompo}}var loadedComp = '{{.LoadedCompo}}'{{end}}
+{{if .RootCompoName}}var loadedComp = '{{.RootCompoName}}';{{end}}
 
-    {{.JS}}
+var golangRequest = function (payload) {
+    {{.GoRequest}}(payload)
+}
+
+{{.PageJS}}
     </script>
     
     {{range .Javascripts}}

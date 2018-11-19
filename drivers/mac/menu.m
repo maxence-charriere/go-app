@@ -52,12 +52,6 @@
     NSString *icon = value;
     icon = icon != nil ? icon : @"";
 
-    if (icon.length != 0) {
-      NSBundle *mainBundle = [NSBundle mainBundle];
-      icon =
-          [NSString stringWithFormat:@"%@/%@", mainBundle.resourcePath, icon];
-    }
-
     if (![self.icon isEqual:icon]) {
       self.icon = icon;
       [self setIconWithPath:icon];

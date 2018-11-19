@@ -1,4 +1,40 @@
 
+3.3.0 / 2018-11-16
+==================
+
+## general
+
+Resources directory can now be refered within compo.Render.
+
+```go
+func (c *Compo) Render() string {
+  return `
+<div>
+  <img src="{{resources "my_image.jpg"}}">
+</div>
+  `
+}
+```
+
+## mac
+
+When using the `icon` attribute in menu based components,
+path is not resolved anymore to the resource directory.
+Use `<menuitem icon="{{resources "ICON_PATH"}}"></menuitem>` instead.
+
+The reason of this change is to uniformize the way resources are accessed.
+Other platform (Windows) does not allow to use raw path to access resources and
+I prefer to stick with the mechanism of using a resource func everywhere rather
+than introduce hidden behaviors.
+ 
+3.2.12 / 2018-11-11
+===================
+
+## general
+
+* Javascript files located in `resources/js` are included by default when
+  javascripts page field is not set.
+
 3.2.11 / 2018-10-27
 ===================
 

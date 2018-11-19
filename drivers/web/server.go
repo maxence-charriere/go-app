@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"runtime"
+	"strings"
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/core"
@@ -103,14 +104,26 @@ func (d *Driver) handle(res http.ResponseWriter, req *http.Request, status int) 
 	}
 
 	if len(htmlConf.CSS) == 0 {
-		htmlConf.CSS = file.CSS(d.Resources("css"))
+		htmlConf.CSS = file.Filenames(d.Resources("css"), ".css")
+	}
+
+	if len(htmlConf.Javascripts) == 0 {
+		htmlConf.Javascripts = file.Filenames(d.Resources("js"), ".js")
 	}
 
 	htmlConf.Javascripts = append(htmlConf.Javascripts, d.Resources("goapp.js"))
-	page := dom.Page(htmlConf, "console.log", compoName)
+
+	page := dom.Page{
+		Title:         htmlConf.Title,
+		Metas:         htmlConf.Metas,
+		CSS:           cleanWindowsPath(htmlConf.CSS),
+		Javascripts:   cleanWindowsPath(htmlConf.Javascripts),
+		GoRequest:     "console.log", // Overloaded in client.go.
+		RootCompoName: compoName,
+	}
 
 	res.WriteHeader(status)
-	res.Write([]byte(page))
+	res.Write([]byte(page.String()))
 }
 
 // AppName satisfies the app.Driver interface.
@@ -131,4 +144,14 @@ func (d *Driver) CallOnUIGoroutine(f func()) {
 // Stop shutdown the server.
 func (d *Driver) Stop() {
 	d.Server.Shutdown(context.Background())
+}
+
+func cleanWindowsPath(paths []string) []string {
+	c := make([]string, len(paths))
+
+	for i, p := range paths {
+		c[i] = strings.Replace(p, `\`, "/", -1)
+	}
+
+	return c
 }

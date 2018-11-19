@@ -51,7 +51,8 @@ func newWindow(c app.WindowConfig) *Window {
 	w := &Window{
 		id: id,
 		dom: dom.Engine{
-			Factory: driver.factory,
+			Factory:   driver.factory,
+			Resources: driver.Resources,
 			AttrTransforms: []dom.Transform{
 				dom.JsToGoHandler,
 				dom.HrefCompoFmt,
@@ -176,7 +177,20 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 	}
 
 	if len(htmlConf.CSS) == 0 {
-		htmlConf.CSS = file.CSS(driver.Resources("css"))
+		htmlConf.CSS = file.Filenames(driver.Resources("css"), ".css")
+	}
+
+	if len(htmlConf.Javascripts) == 0 {
+		htmlConf.Javascripts = file.Filenames(driver.Resources("js"), ".js")
+	}
+
+	page := dom.Page{
+		Title:         htmlConf.Title,
+		Metas:         htmlConf.Metas,
+		CSS:           htmlConf.CSS,
+		Javascripts:   htmlConf.Javascripts,
+		GoRequest:     "window.webkit.messageHandlers.golangRequest.postMessage",
+		RootCompoName: n,
 	}
 
 	if err = driver.macRPC.Call("windows.Load", nil, struct {
@@ -188,7 +202,7 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 	}{
 		ID:      w.id,
 		Title:   htmlConf.Title,
-		Page:    dom.Page(htmlConf, "window.webkit.messageHandlers.golangRequest.postMessage", n),
+		Page:    page.String(),
 		LoadURL: u,
 		BaseURL: driver.Resources(),
 	}); err != nil {
@@ -284,10 +298,10 @@ func (w *Window) Next() {
 
 // Position satisfies the app.Window interface.
 func (w *Window) Position() (x, y float64) {
-	var out struct {
+	out := struct {
 		X float64
 		Y float64
-	}
+	}{}
 
 	err := driver.macRPC.Call("windows.Position", &out, struct {
 		ID string
@@ -327,10 +341,10 @@ func (w *Window) Center() {
 
 // Size satisfies the app.Window interface.
 func (w *Window) Size() (width, height float64) {
-	var out struct {
+	out := struct {
 		Width  float64
 		Heigth float64
-	}
+	}{}
 
 	err := driver.macRPC.Call("windows.Size", &out, struct {
 		ID string
