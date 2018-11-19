@@ -1,5 +1,5 @@
-#include "controller.h"
 #include "driver.h"
+#include "controller.h"
 #include "dock.h"
 #include "json.h"
 #include "menu.h"

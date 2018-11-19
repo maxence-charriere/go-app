@@ -8,8 +8,6 @@ const (
 	DirectionalPad ControllerInput = iota
 	LeftThumbstick
 	RightThumbstick
-	LeftThumbstickButton
-	RightThumbstickButton
 	A
 	B
 	X
@@ -23,11 +21,12 @@ const (
 
 // ControllerConfig is a struct that describes a controller.
 type ControllerConfig struct {
-	// The function that is called when when the directional pad is pressed.
-	OnDpadChange func(in ControllerInput, x float64, y float64) `json:"-"`
+	// The function that is called when a directional pad or a thumbstick is
+	// used.
+	OnDirectionChange func(in ControllerInput, x float64, y float64) `json:"-"`
 
 	// The function that is called when a button in pressed.
-	OnButtonChange func(in ControllerInput, value float64, pressed bool) `json:"-"`
+	OnButtonPressed func(in ControllerInput, value float64, pressed bool) `json:"-"`
 
 	// The function that is called when the controller is connected.
 	OnConnected func() `json:"-"`
@@ -42,7 +41,7 @@ type ControllerConfig struct {
 	OnClose func() `json:"-"`
 }
 
-// Controller is the interface that describes the controller.
+// Controller is the interface that describes a controller.
 type Controller interface {
 	Elem
 	Closer

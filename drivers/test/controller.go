@@ -14,24 +14,24 @@ type Controller struct {
 	driver *Driver
 
 	// event handlers
-	onDpadChange   func(app.ControllerInput, float64, float64)
-	onButtonChange func(app.ControllerInput, float64, bool)
-	onConnected    func()
-	onDisconnected func()
-	onPause        func()
-	onClose        func()
+	onDirectionChange func(app.ControllerInput, float64, float64)
+	onButtonPressed   func(app.ControllerInput, float64, bool)
+	onConnected       func()
+	onDisconnected    func()
+	onPause           func()
+	onClose           func()
 }
 
 func newController(d *Driver, c app.ControllerConfig) *Controller {
 	controller := &Controller{
-		id:             uuid.New().String(),
-		driver:         d,
-		onDpadChange:   c.OnDpadChange,
-		onButtonChange: c.OnButtonChange,
-		onConnected:    c.OnConnected,
-		onDisconnected: c.OnDisconnected,
-		onPause:        c.OnPause,
-		onClose:        c.OnClose,
+		id:                uuid.New().String(),
+		driver:            d,
+		onDirectionChange: c.OnDirectionChange,
+		onButtonPressed:   c.OnButtonPressed,
+		onConnected:       c.OnConnected,
+		onDisconnected:    c.OnDisconnected,
+		onPause:           c.OnPause,
+		onClose:           c.OnClose,
 	}
 
 	d.elems.Put(controller)
@@ -44,22 +44,22 @@ func (c *Controller) ID() string {
 }
 
 func onControllerDpadChange(c *Controller, in map[string]interface{}) interface{} {
-	if c.onDpadChange != nil {
+	if c.onDirectionChange != nil {
 		input := app.ControllerInput(in["Input"].(float64))
 		x := in["X"].(float64)
 		y := in["Y"].(float64)
-		c.onDpadChange(input, x, y)
+		c.onDirectionChange(input, x, y)
 	}
 
 	return nil
 }
 
 func onControllerButtonChange(c *Controller, in map[string]interface{}) interface{} {
-	if c.onButtonChange != nil {
+	if c.onButtonPressed != nil {
 		input := app.ControllerInput(in["Input"].(float64))
 		value := in["Value"].(float64)
 		pressed := in["Pressed"].(bool)
-		c.onButtonChange(input, value, pressed)
+		c.onButtonPressed(input, value, pressed)
 	}
 
 	return nil
