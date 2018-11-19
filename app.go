@@ -131,6 +131,13 @@ func NewContextMenu(c MenuConfig) Menu {
 	return driver.NewContextMenu(c)
 }
 
+// NewController creates the controller described by the given configuration.
+//
+// It panics if called before Run.
+func NewController(c ControllerConfig) Controller {
+	return driver.NewController(c)
+}
+
 // NewFilePanel creates and displays the file panel described by the given
 // configuration.
 //

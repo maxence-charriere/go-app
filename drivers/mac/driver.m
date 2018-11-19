@@ -1,4 +1,5 @@
 #include "driver.h"
+#include "controller.h"
 #include "dock.h"
 #include "json.h"
 #include "menu.h"
@@ -158,6 +159,20 @@
   [self.macRPC handle:@"docks.SetIcon"
           withHandler:^(id in, NSString *returnID) {
             return [Dock setIcon:in return:returnID];
+          }];
+
+  // Controller handlers.
+  [self.macRPC handle:@"controller.New"
+          withHandler:^(id in, NSString *returnID) {
+            return [Controller new:in return:returnID];
+          }];
+  [self.macRPC handle:@"controller.Listen"
+          withHandler:^(id in, NSString *returnID) {
+            return [Controller listen:in return:returnID];
+          }];
+  [self.macRPC handle:@"controller.Close"
+          withHandler:^(id in, NSString *returnID) {
+            return [Controller close:in return:returnID];
           }];
 
   // File panel handlers.

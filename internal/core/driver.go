@@ -93,6 +93,13 @@ func (d *Driver) MenuBar() app.Menu {
 	return m
 }
 
+// NewController satisfies the app.Driver interface.
+func (d *Driver) NewController(c app.ControllerConfig) app.Controller {
+	controller := &Controller{}
+	controller.SetErr(app.ErrNotSupported)
+	return controller
+}
+
 // NewStatusMenu satisfies the app.Driver interface.
 func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) app.StatusMenu {
 	s := &StatusMenu{}
