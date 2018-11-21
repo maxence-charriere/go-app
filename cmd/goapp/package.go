@@ -9,4 +9,7 @@ type Package interface {
 
 	// Run builds and run the package.
 	Run(ctx context.Context) error
+
+	// Clean delete the package and its temporary build files.
+	Clean(ctx context.Context) error
 }

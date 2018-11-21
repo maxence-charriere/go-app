@@ -1,11 +1,14 @@
 package main
 
+//go:generate go run templates/main.go
+
 import (
 	"context"
 	"fmt"
 	"os"
 	"os/signal"
 	"path/filepath"
+	"text/template"
 
 	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
@@ -230,4 +233,19 @@ func intWithDefault(value, defaultValue int) int {
 	}
 
 	return value
+}
+
+func generateTemplatedFile(path, tmpl string, data interface{}) error {
+	t, err := template.New("test").Parse(tmpl)
+	if err != nil {
+		return err
+	}
+
+	f, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	return t.Execute(f, data)
 }
