@@ -11,9 +11,3 @@ func openCommand() string {
 func win(ctx context.Context, args []string) {
 	printErr("work in progress")
 }
-
-func init() {
-	greenColor = ""
-	redColor = ""
-	defaultColor = ""
-}

@@ -16,13 +16,17 @@ import (
 	"github.com/segmentio/conf"
 )
 
+type macInitConfig struct {
+	Verbose bool `conf:"v" help:"Enable verbose mode."`
+}
+
 type macBuildConfig struct {
 	Output           string `conf:"o"                 help:"The path where the package is saved."`
 	DeploymentTarget string `conf:"deployment-target" help:"The version on MacOS the build is for."`
 	SignID           string `conf:"sign-id"           help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
 	Sandbox          bool   `conf:"sandbox"           help:"Configure the app to run in sandbox mode."`
 	AppStore         bool   `conf:"appstore"          help:"Creates a .pkg to be uploaded on the app store."`
-	Force            bool   `conf:"force"                 help:"Force rebuilding of packages that are already up-to-date."`
+	Force            bool   `conf:"force"             help:"Force rebuilding of packages that are already up-to-date."`
 	Race             bool   `conf:"race"              help:"Enable data race detection."`
 	Verbose          bool   `conf:"v"                 help:"Enable verbose mode."`
 }
@@ -32,7 +36,7 @@ type macRunConfig struct {
 	DeploymentTarget string `conf:"deployment-target" help:"The version on MacOS the build is for."`
 	SignID           string `conf:"sign-id"           help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
 	Sandbox          bool   `conf:"sandbox"           help:"Configure the app to run in sandbox mode."`
-	Force            bool   `conf:"force"                 help:"Force rebuilding of packages that are already up-to-date."`
+	Force            bool   `conf:"force"             help:"Force rebuilding of packages that are already up-to-date."`
 	Race             bool   `conf:"race"              help:"Enable data race detection."`
 	Verbose          bool   `conf:"v"                 help:"Enable verbose mode."`
 }
@@ -47,7 +51,7 @@ func mac(ctx context.Context, args []string) {
 		Name: "goapp mac",
 		Args: args,
 		Commands: []conf.Command{
-			{Name: "init", Help: "Download MacOS SDK and create required files and directories."},
+			{Name: "init", Help: "Download MacOS SDK and create required directories."},
 			{Name: "build", Help: "Build a MacOS app."},
 			{Name: "run", Help: "Run a MacOS app."},
 			{Name: "clean", Help: "Delete a MacOS app and its temporary build files."},
@@ -76,35 +80,32 @@ func mac(ctx context.Context, args []string) {
 	}
 }
 
-type macInitConfig struct {
-	Verbose bool `conf:"v" help:"Enable verbose mode."`
-}
-
 func initMac(ctx context.Context, args []string) {
 	c := macInitConfig{}
 
 	ld := conf.Loader{
 		Name:    "mac init",
 		Args:    args,
-		Usage:   "[options...] [packages...]",
+		Usage:   "[options...] [package]",
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	_, unusedArgs := conf.LoadWith(&c, ld)
+	_, args = conf.LoadWith(&c, ld)
 	verbose = c.Verbose
 
-	roots, err := packageRoots(unusedArgs)
-	if err != nil {
-		failWithHelp(&ld, "%s", err)
+	sources := "."
+	if len(args) != 0 {
+		sources = args[0]
 	}
 
-	printVerbose("checking for xcode-select...")
-	execute(ctx, "xcode-select", "--install")
+	pkg := MacPackage{
+		Sources: sources,
+		Verbose: c.Verbose,
+		Log:     printVerbose,
+	}
 
-	for _, root := range roots {
-		if err = initPackage(root); err != nil {
-			fail("init %s failed: %s", root, err)
-		}
+	if err := pkg.Init(ctx); err != nil {
+		fail("%s", err)
 	}
 
 	printSuccess("init succeeded")
@@ -268,6 +269,58 @@ type MacPackage struct {
 	settings            macSettings
 }
 
+// Init satisfies the Package interface.
+func (pkg *MacPackage) Init(ctx context.Context) error {
+	pkg.init()
+
+	pkg.Log("creating resources directory")
+	if err := os.MkdirAll(filepath.Join(pkg.Sources, "resources", "css"), 0755); err != nil {
+		return err
+	}
+
+	pkg.Log("installing Xcode command line tools")
+	execute(ctx, "xcode-select", "--install")
+	return nil
+}
+
+func (pkg *MacPackage) init() (err error) {
+	if len(pkg.Sources) == 0 || pkg.Sources == "." || pkg.Sources == "./" {
+		pkg.Sources = "."
+	}
+	if pkg.Sources, err = filepath.Abs(pkg.Sources); err != nil {
+		return err
+	}
+
+	execName := filepath.Base(pkg.Sources)
+
+	if len(pkg.Output) == 0 {
+		pkg.Output = execName
+	}
+	if !strings.HasSuffix(pkg.Output, ".app") {
+		pkg.Output += ".app"
+	}
+
+	pkg.name = filepath.Base(pkg.Output)
+
+	if pkg.workingDir, err = os.Getwd(); err != nil {
+		return err
+	}
+
+	pkg.sourcesResourcesDir = filepath.Join(pkg.Sources, "resources")
+
+	if pkg.tmpDir = os.Getenv("TMPDIR"); len(pkg.tmpDir) == 0 {
+		return errors.New("tmp dir not set")
+	}
+	pkg.tmpDir = filepath.Join(pkg.tmpDir, "goapp")
+	pkg.tmpExecutable = filepath.Join(pkg.tmpDir, execName)
+
+	pkg.contentsDir = filepath.Join(pkg.Output, "Contents")
+	pkg.macOSDir = filepath.Join(pkg.Output, "Contents", "MacOS")
+	pkg.resourcesDir = filepath.Join(pkg.Output, "Contents", "Resources")
+	pkg.executable = filepath.Join(pkg.Output, "Contents", "MacOS", execName)
+	return nil
+}
+
 // Build satisfies the Package interface.
 func (pkg *MacPackage) Build(ctx context.Context) error {
 	pkg.init()
@@ -329,44 +382,6 @@ func (pkg *MacPackage) Build(ctx context.Context) error {
 
 	pkg.Log("packing for app store", pkg.name)
 	return pkg.packForAppStore(ctx)
-}
-
-func (pkg *MacPackage) init() (err error) {
-	if len(pkg.Sources) == 0 || pkg.Sources == "." || pkg.Sources == "./" {
-		pkg.Sources = "."
-	}
-	if pkg.Sources, err = filepath.Abs(pkg.Sources); err != nil {
-		return err
-	}
-
-	execName := filepath.Base(pkg.Sources)
-
-	if len(pkg.Output) == 0 {
-		pkg.Output = execName
-	}
-	if !strings.HasSuffix(pkg.Output, ".app") {
-		pkg.Output += ".app"
-	}
-
-	pkg.name = filepath.Base(pkg.Output)
-
-	if pkg.workingDir, err = os.Getwd(); err != nil {
-		return err
-	}
-
-	pkg.sourcesResourcesDir = filepath.Join(pkg.Sources, "resources")
-
-	if pkg.tmpDir = os.Getenv("TMPDIR"); len(pkg.tmpDir) == 0 {
-		return errors.New("tmp dir not set")
-	}
-	pkg.tmpDir = filepath.Join(pkg.tmpDir, "goapp")
-	pkg.tmpExecutable = filepath.Join(pkg.tmpDir, execName)
-
-	pkg.contentsDir = filepath.Join(pkg.Output, "Contents")
-	pkg.macOSDir = filepath.Join(pkg.Output, "Contents", "MacOS")
-	pkg.resourcesDir = filepath.Join(pkg.Output, "Contents", "Resources")
-	pkg.executable = filepath.Join(pkg.Output, "Contents", "MacOS", execName)
-	return nil
 }
 
 func (pkg *MacPackage) create() error {

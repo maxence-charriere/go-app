@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"runtime"
 	"text/template"
 
 	"github.com/pkg/errors"
@@ -170,6 +171,14 @@ var (
 	orangeColor  = "\033[93m"
 	defaultColor = "\033[00m"
 )
+
+func init() {
+	if runtime.GOOS == "windows" {
+		greenColor = ""
+		redColor = ""
+		defaultColor = ""
+	}
+}
 
 func printVerbose(format string, v ...interface{}) {
 	if verbose {
