@@ -298,3 +298,13 @@ func (pkg *WebPackage) launchWithDefaultBrowser(ctx context.Context, url string)
 
 	return execute(ctx, cmd[0], cmd[1:]...)
 }
+
+// Clean satisfies the Package interface.
+func (pkg *WebPackage) Clean(ctx context.Context) error {
+	if err := pkg.init(); err != nil {
+		return err
+	}
+
+	pkg.Log("removing %s", pkg.Output)
+	return os.RemoveAll(pkg.Output)
+}

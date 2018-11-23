@@ -15,9 +15,12 @@ func main() {
 	app.Import(&test.Menu{})
 
 	app.Run(&mac.Driver{
-		Bundle: mac.Bundle{
-			Icon:        "logo.png",
-			FilePickers: mac.FileReadWriteAccess,
+		Settings: mac.Settings{
+			Icon: "logo.png",
+			FilePickers: mac.FileAccess{
+				Read:  true,
+				Write: true,
+			},
 		},
 
 		MenubarConfig: mac.MenuBarConfig{
