@@ -18,6 +18,9 @@ type Page struct {
 	// The metadata.
 	Metas []app.Meta
 
+	// The path of the favicon.
+	Icon string
+
 	// The css file paths to include.
 	CSS []string
 
@@ -38,6 +41,7 @@ func (p Page) String() string {
 	tmpl.Execute(&b, struct {
 		Title         string
 		Metas         []app.Meta
+		Icon          string
 		CSS           []string
 		Javascripts   []string
 		PageJS        string
@@ -46,6 +50,7 @@ func (p Page) String() string {
 	}{
 		Title:         p.Title,
 		Metas:         p.Metas,
+		Icon:          p.Icon,
 		CSS:           p.CSS,
 		Javascripts:   p.Javascripts,
 		PageJS:        jsTmpl,

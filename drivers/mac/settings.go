@@ -2,12 +2,13 @@
 
 package mac
 
-// Bundle is the struct that describes the app bundle.
-// It is used to set .app variables and capabilities.
-// Only applied when the app is build with goapp mac build -bundle.
-type Bundle struct {
-	// The app name and menu bar/dock display name.
-	AppName string
+// Settings contains settings that define how the app is set up and what are its
+// capabilities.
+// It is used by goapp to define how the app is built and packaged.
+type Settings struct {
+	// The app name.
+	// It is displayed in the menubar and dock.
+	Name string
 
 	// The UTI representing the app.
 	ID string
@@ -21,7 +22,9 @@ type Bundle struct {
 	// The build number.
 	BuildNumber int
 
-	// The app icon path relative to the resources directory as .png file.
+	// The app icon name:
+	// - Must be located at the root of the resources directory.
+	// - Must be a .png.
 	// Provide a big one! Other required icon sizes will be auto generated.
 	Icon string
 
@@ -98,16 +101,6 @@ const (
 	ShellRole  Role = "Shell"
 )
 
-// FileAccess represents a file access mode.
-type FileAccess string
-
-// Constants that enumerate file access modes.
-const (
-	FileNoAccess        FileAccess = ""
-	FileReadAccess      FileAccess = "read-only"
-	FileReadWriteAccess FileAccess = "read-write"
-)
-
 // Category represents the app style.
 // The App Store uses this string to determine the appropriate categorization
 // for the app.
@@ -155,4 +148,14 @@ const (
 	StrategyGamesApp                 = "public.app-category.strategy-games"
 	TriviaGamesApp                   = "public.app-category.trivia-games"
 	WordGamesApp                     = "public.app-category.word-games"
+)
+
+// FileAccess represents a file access mode.
+type FileAccess string
+
+// Constants that enumerate file access modes.
+const (
+	NoAccess  FileAccess = ""
+	ReadOnly  FileAccess = "read-only"
+	ReadWrite FileAccess = "read-write"
 )

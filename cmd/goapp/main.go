@@ -1,11 +1,15 @@
 package main
 
+//go:generate go run templates/main.go
+
 import (
 	"context"
 	"fmt"
 	"os"
 	"os/signal"
 	"path/filepath"
+	"runtime"
+	"text/template"
 
 	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
@@ -168,6 +172,14 @@ var (
 	defaultColor = "\033[00m"
 )
 
+func init() {
+	if runtime.GOOS == "windows" {
+		greenColor = ""
+		redColor = ""
+		defaultColor = ""
+	}
+}
+
 func printVerbose(format string, v ...interface{}) {
 	if verbose {
 		format = "‣ " + format
@@ -230,4 +242,19 @@ func intWithDefault(value, defaultValue int) int {
 	}
 
 	return value
+}
+
+func generateTemplatedFile(path, tmpl string, data interface{}) error {
+	t, err := template.New("test").Parse(tmpl)
+	if err != nil {
+		return err
+	}
+
+	f, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	return t.Execute(f, data)
 }
