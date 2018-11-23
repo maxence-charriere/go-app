@@ -151,21 +151,11 @@ const (
 )
 
 // FileAccess represents a file access mode.
-type FileAccess struct {
-	Read  bool
-	Write bool
-}
+type FileAccess string
 
-// MarshalJSON satisfies the json.Marshaler interface.
-func (f FileAccess) MarshalJSON() ([]byte, error) {
-	switch {
-	case f.Read && f.Write:
-		return []byte(`"read-write"`), nil
-
-	case f.Read && !f.Write:
-		return []byte(`"read-only"`), nil
-
-	default:
-		return []byte(`""`), nil
-	}
-}
+// Constants that enumerate file access modes.
+const (
+	NoAccess  FileAccess = ""
+	ReadOnly  FileAccess = "read-only"
+	ReadWrite FileAccess = "read-write"
+)

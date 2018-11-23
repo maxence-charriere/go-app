@@ -16,11 +16,8 @@ func main() {
 
 	app.Run(&mac.Driver{
 		Settings: mac.Settings{
-			Icon: "logo.png",
-			FilePickers: mac.FileAccess{
-				Read:  true,
-				Write: true,
-			},
+			Icon:        "logo.png",
+			FilePickers: mac.ReadWrite,
 		},
 
 		MenubarConfig: mac.MenuBarConfig{
