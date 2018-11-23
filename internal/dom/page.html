@@ -21,6 +21,7 @@
             overflow: hidden;
         }
     </style>
+    {{if .Icon}}<link rel="icon" type="image/png" href="{{.Icon}}">{{end}}
     {{range .CSS}}
     <link type="text/css" rel="stylesheet" href="{{.}}">{{end}}
 </head>

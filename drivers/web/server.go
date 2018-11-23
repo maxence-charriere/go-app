@@ -72,6 +72,10 @@ func (d *Driver) Run(f *app.Factory) error {
 // ServeHTTP is the http.Handler that route wether to serve a page or a
 // resource.
 func (d *Driver) ServeHTTP(res http.ResponseWriter, req *http.Request) {
+	app.WhenDebug(func() {
+		app.Logf("serving %s", req.URL)
+	})
+
 	if req.URL.Path == "/" || len(req.URL.Path) == 0 {
 		req.URL.Path = d.URL
 	}
@@ -86,10 +90,6 @@ func (d *Driver) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 }
 
 func (d *Driver) handle(res http.ResponseWriter, req *http.Request, status int) {
-	app.WhenDebug(func() {
-		app.Logf("serving %s", req.URL)
-	})
-
 	compoName := core.CompoNameFromURL(req.URL)
 
 	c, err := d.factory.NewCompo(compoName)
@@ -116,6 +116,7 @@ func (d *Driver) handle(res http.ResponseWriter, req *http.Request, status int) 
 	page := dom.Page{
 		Title:         htmlConf.Title,
 		Metas:         htmlConf.Metas,
+		Icon:          d.Icon,
 		CSS:           cleanWindowsPath(htmlConf.CSS),
 		Javascripts:   cleanWindowsPath(htmlConf.Javascripts),
 		GoRequest:     "console.log", // Overloaded in client.go.

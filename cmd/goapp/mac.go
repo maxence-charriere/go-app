@@ -26,7 +26,7 @@ type macBuildConfig struct {
 	SignID           string `conf:"sign-id"           help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
 	Sandbox          bool   `conf:"sandbox"           help:"Configure the app to run in sandbox mode."`
 	AppStore         bool   `conf:"appstore"          help:"Creates a .pkg to be uploaded on the app store."`
-	Force            bool   `conf:"force"             help:"Force rebuilding of packages that are already up-to-date."`
+	Force            bool   `conf:"force"             help:"Force rebuilding of package that are already up-to-date."`
 	Race             bool   `conf:"race"              help:"Enable data race detection."`
 	Verbose          bool   `conf:"v"                 help:"Enable verbose mode."`
 }
@@ -36,7 +36,7 @@ type macRunConfig struct {
 	DeploymentTarget string `conf:"deployment-target" help:"The version on MacOS the build is for."`
 	SignID           string `conf:"sign-id"           help:"The signing identifier to sign the app.\n\t\033[95msecurity find-identity -v -p codesigning\033[00m to see signing identifiers.\n\thttps://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html to create one."`
 	Sandbox          bool   `conf:"sandbox"           help:"Configure the app to run in sandbox mode."`
-	Force            bool   `conf:"force"             help:"Force rebuilding of packages that are already up-to-date."`
+	Force            bool   `conf:"force"             help:"Force rebuilding of package that are already up-to-date."`
 	Race             bool   `conf:"race"              help:"Enable data race detection."`
 	Verbose          bool   `conf:"v"                 help:"Enable verbose mode."`
 }
@@ -244,14 +244,14 @@ type MacPackage struct {
 	// Creates a .pkg to be uploaed on the app store.
 	AppStore bool
 
-	// Enable verbose mode.
-	Verbose bool
-
-	// Force rebuilding of packages that are already up-to-date.
+	// Force rebuilding of package that are already up-to-date.
 	Force bool
 
 	// Enable data race detection.
 	Race bool
+
+	// Enable verbose mode.
+	Verbose bool
 
 	// The function to log events.
 	Log func(string, ...interface{})
@@ -271,7 +271,9 @@ type MacPackage struct {
 
 // Init satisfies the Package interface.
 func (pkg *MacPackage) Init(ctx context.Context) error {
-	pkg.init()
+	if err := pkg.init(); err != nil {
+		return err
+	}
 
 	pkg.Log("creating resources directory")
 	if err := os.MkdirAll(filepath.Join(pkg.Sources, "resources", "css"), 0755); err != nil {
@@ -284,6 +286,10 @@ func (pkg *MacPackage) Init(ctx context.Context) error {
 }
 
 func (pkg *MacPackage) init() (err error) {
+	if runtime.GOOS != "darwin" {
+		return errors.New("operating system is not MacOS")
+	}
+
 	if len(pkg.Sources) == 0 || pkg.Sources == "." || pkg.Sources == "./" {
 		pkg.Sources = "."
 	}
@@ -323,12 +329,6 @@ func (pkg *MacPackage) init() (err error) {
 
 // Build satisfies the Package interface.
 func (pkg *MacPackage) Build(ctx context.Context) error {
-	pkg.init()
-
-	if runtime.GOOS != "darwin" {
-		return errors.New("operating system is not MacOS")
-	}
-
 	if err := pkg.init(); err != nil {
 		return err
 	}

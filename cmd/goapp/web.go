@@ -13,6 +13,29 @@ import (
 	"github.com/segmentio/conf"
 )
 
+type webInitConfig struct {
+	Verbose bool `conf:"v" help:"Enable verbose mode."`
+}
+
+type webBuildConfig struct {
+	Output  string `conf:"o"      help:"The path where the package is saved."`
+	Minify  bool   `conf:"minify" help:"Minify gopherjs file."`
+	Force   bool   `conf:"force"  help:"Force rebuilding of package that are already up-to-date."`
+	Race    bool   `conf:"race"   help:"Enable data race detection."`
+	Verbose bool   `conf:"v"      help:"Enable verbose mode."`
+}
+
+type webRunConfig struct {
+	Output  string `conf:"o"      help:"The path where the package is saved."`
+	Addr    string `conf:"addr"   help:"The server bind address."`
+	Browser bool   `conf:"b"      help:"Run the client."`
+	Chrome  bool   `conf:"chrome" help:"Run the client with Google Chrome."`
+	Minify  bool   `conf:"minify" help:"Minify gopherjs file."`
+	Force   bool   `conf:"force"  help:"Force rebuilding of package that are already up-to-date."`
+	Race    bool   `conf:"race"   help:"Enable data race detection."`
+	Verbose bool   `conf:"v"      help:"Enable verbose mode."`
+}
+
 func web(ctx context.Context, args []string) {
 	ld := conf.Loader{
 		Name: "goapp web",
@@ -43,57 +66,35 @@ func web(ctx context.Context, args []string) {
 	}
 }
 
-type webInitConfig struct {
-	Verbose bool `conf:"v" help:"Enable verbose mode."`
-}
-
 func initWeb(ctx context.Context, args []string) {
 	c := webInitConfig{}
 
 	ld := conf.Loader{
 		Name:    "web init",
 		Args:    args,
-		Usage:   "[options...] [packages...]",
+		Usage:   "[options...] [package]",
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	_, unusedArgs := conf.LoadWith(&c, ld)
+	_, args = conf.LoadWith(&c, ld)
 	verbose = c.Verbose
 
-	roots, err := packageRoots(unusedArgs)
-	if err != nil {
-		failWithHelp(&ld, "%s", err)
+	sources := "."
+	if len(args) != 0 {
+		sources = args[0]
 	}
 
-	printVerbose("get gopherjs")
-	if err = goGetGopherJS(ctx); err != nil {
-		failWithHelp(&ld, "%s", err)
+	pkg := WebPackage{
+		Sources: sources,
+		Verbose: c.Verbose,
+		Log:     printVerbose,
 	}
 
-	for _, root := range roots {
-		if err = initPackage(root); err != nil {
-			failWithHelp(&ld, "%s", err)
-		}
+	if err := pkg.Init(ctx); err != nil {
+		fail("%s", err)
 	}
 
 	printSuccess("init succeeded")
-}
-
-func goGetGopherJS(ctx context.Context) error {
-	args := []string{"get", "-u"}
-
-	if verbose {
-		args = append(args, "-v")
-	}
-
-	args = append(args, "github.com/gopherjs/gopherjs")
-	return execute(ctx, "go", args...)
-}
-
-type webBuildConfig struct {
-	Output  string `conf:"o" help:"The output."`
-	Minify  bool   `conf:"m" help:"Minify gopherjs file."`
-	Verbose bool   `conf:"v" help:"Enable verbose mode."`
 }
 
 func buildWeb(ctx context.Context, args []string) {
@@ -108,32 +109,28 @@ func buildWeb(ctx context.Context, args []string) {
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	_, roots := conf.LoadWith(&c, ld)
+	_, args = conf.LoadWith(&c, ld)
 	verbose = c.Verbose
 
-	if len(roots) == 0 {
-		roots = []string{"."}
+	sources := "."
+	if len(args) != 0 {
+		sources = args[0]
 	}
 
-	pkg, err := newWebPackage(roots[0], c.Output)
-	if err != nil {
-		fail("%s", err)
+	pkg := WebPackage{
+		Sources: sources,
+		Minify:  c.Minify,
+		Force:   c.Force,
+		Race:    c.Race,
+		Verbose: c.Verbose,
+		Log:     printVerbose,
 	}
 
-	if err = pkg.Build(ctx, c); err != nil {
+	if err := pkg.Build(ctx); err != nil {
 		fail("%s", err)
 	}
 
 	printSuccess("build succeeded")
-}
-
-type webRunConfig struct {
-	Addr    string   `conf:"addr"   help:"The server bind address."`
-	Args    []string `conf:"args"   help:"The arguments to launch the server."`
-	Browser bool     `conf:"b"      help:"Run the client."`
-	Chrome  bool     `conf:"chrome" help:"Run the client with Google Chrome."`
-	Minify  bool     `conf:"m"      help:"Minify gopherjs file."`
-	Verbose bool     `conf:"v"      help:"Enable verbose mode."`
 }
 
 func runWeb(ctx context.Context, args []string) {
@@ -145,57 +142,40 @@ func runWeb(ctx context.Context, args []string) {
 	ld := conf.Loader{
 		Name:    "web run",
 		Args:    args,
-		Usage:   "[options...] [*.wapp]",
+		Usage:   "[options...] [package]",
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	_, roots := conf.LoadWith(&c, ld)
+	_, args = conf.LoadWith(&c, ld)
 	verbose = c.Verbose
 
-	wappname := "."
-	if len(roots) != 0 {
-		wappname = roots[0]
+	sources := "."
+	if len(args) != 0 {
+		sources = args[0]
 	}
 
-	if !strings.HasSuffix(wappname, ".wapp") {
-		printVerbose("building package")
-		pkg, err := newWebPackage(wappname, "")
-		if err != nil {
-			fail("%s", err)
-		}
-
-		if err = pkg.Build(ctx, webBuildConfig{
-			Minify: c.Minify,
-		}); err != nil {
-			fail("%s", err)
-		}
-
-		wappname = pkg.name
-	}
-
-	server := filepath.Base(wappname)
-	server = strings.TrimSuffix(server, ".wapp")
-	server = filepath.Join(wappname, server)
-
-	if c.Browser || c.Chrome {
-		go launchNavigator(ctx, c)
+	pkg := WebPackage{
+		Sources: sources,
+		Addr:    c.Addr,
+		Chrome:  c.Chrome,
+		Browser: c.Browser,
+		Minify:  c.Minify,
+		Force:   c.Force,
+		Race:    c.Race,
+		Verbose: c.Verbose,
+		Log:     printVerbose,
 	}
 
 	os.Setenv("GOAPP_SERVER_ADDR", c.Addr)
 	defer os.Unsetenv("GOAPP_SERVER_ADDR")
 
-	printVerbose("starting server")
-	if err := os.Chdir(wappname); err != nil {
-		fail("%s", err)
-	}
-
-	if err := execute(ctx, server, args...); err != nil {
+	if err := pkg.Run(ctx); err != nil {
 		fail("%s", err)
 	}
 }
 
 func launchNavigator(ctx context.Context, c webRunConfig) {
-	time.Sleep(time.Millisecond * 250)
+	time.Sleep(time.Millisecond * 500)
 	printVerbose("starting client")
 
 	rawurl := c.Addr
