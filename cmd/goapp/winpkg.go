@@ -213,7 +213,7 @@ func (pkg *winPackage) createPackage() error {
 	}
 
 	appxManifest := filepath.Join(pkg.name, "AppxManifest.xml")
-	return generateTemplate(appxManifest, appxManifestTmpl, pkg.manifest)
+	return generateTemplatedFile(appxManifest, appxManifestTmpl, pkg.manifest)
 }
 
 func (pkg *winPackage) syncResources() error {
