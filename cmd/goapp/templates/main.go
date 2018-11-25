@@ -26,6 +26,14 @@ func main() {
 		template string
 	}{
 		{
+			variable: "infoPlistTmpl",
+			template: filepath.Join("templates", "info.plist"),
+		},
+		{
+			variable: "entitlementsPlistTmpl",
+			template: filepath.Join("templates", "entitlements.plist"),
+		},
+		{
 			variable: "appxManifestTmpl",
 			template: filepath.Join("templates", "appxManifest.xml"),
 		},

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	{{if .Sandbox}}
+	<key>com.apple.security.app-sandbox</key>
+	<true/>
+	{{end}}
+
+	<!-- Network -->
+	{{if .Server}}
+	<key>com.apple.security.network.server</key>
+	<true/>
+	{{end}}
+	<key>com.apple.security.network.client</key>
+	<true/>
+
+	<!-- Hadrware -->
+	{{if .Camera}}
+	<key>com.apple.security.device.camera</key>
+	<true/>
+	{{end}}
+	{{if .Microphone}}
+	<key>com.apple.security.device.microphone</key>
+	<true/>
+	{{end}}
+	{{if .USB}}
+	<key>com.apple.security.device.usb</key>
+	<true/>
+	{{end}}
+	{{if .Printers}}
+	<key>com.apple.security.print</key>
+	<true/>
+	{{end}}
+	{{if .Bluetooth}}
+	<key>com.apple.security.device.bluetooth</key>
+	<true/>
+	{{end}}
+
+	<!-- AppData -->
+	{{if .Contacts}}
+	<key>com.apple.security.personal-information.addressbook</key>
+	<true/>
+	{{end}}
+	{{if .Location}}
+	<key>com.apple.security.personal-information.location</key>
+	<true/>
+	{{end}}
+	{{if .Calendar}}
+	<key>com.apple.security.personal-information.calendars</key>
+	<true/>
+	{{end}}
+
+	<!-- FileAccess -->
+	{{if len .FilePickers}}
+	<key>com.apple.security.files.user-selected.{{.FilePickers}}</key>
+	<true/>
+	{{end}}
+	{{if len .Downloads}}
+	<key>com.apple.security.files.downloads.{{.Downloads}}</key>
+	<true/>
+	{{end}}
+	{{if len .Pictures}}
+	<key>com.apple.security.assets.pictures.{{.Pictures}}/key>
+	<true/>
+	{{end}}
+	{{if len .Music}}
+	<key>com.apple.security.assets.music.{{.Music}}</key>
+	<true/>
+	{{end}}
+	{{if len .Movies}}
+	<key>com.apple.security.assets.movies.{{.Movies}}/key>
+	<true/>
+	{{end}}
+</dict>
+</plist>

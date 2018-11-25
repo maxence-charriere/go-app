@@ -9,7 +9,7 @@ func main() {
 	app.Import(&Menu{})
 
 	app.Run(&mac.Driver{
-		Bundle: mac.Bundle{
+		Settings: mac.Settings{
 			Background: true,
 		},
 

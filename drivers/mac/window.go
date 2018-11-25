@@ -44,10 +44,6 @@ type Window struct {
 func newWindow(c app.WindowConfig) *Window {
 	id := uuid.New().String()
 
-	if c.Mac != (app.MacWindowConfig{}) {
-		app.Log(errors.New("app.WindowConfig.Mac is deprecrated"))
-	}
-
 	w := &Window{
 		id: id,
 		dom: dom.Engine{

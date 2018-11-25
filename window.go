@@ -114,30 +114,4 @@ type WindowConfig struct {
 	// The function that is called when the window is closed.
 	// Returning bool prevents the window to be closed.
 	OnClose func() bool `json:"-"`
-
-	// Deprecated - Will be removed on 2018/12.
-	Mac MacWindowConfig
 }
-
-// MacWindowConfig is deprecated. It will be removed on 2018/12.
-type MacWindowConfig struct {
-	BackgroundVibrancy Vibrancy
-}
-
-// Vibrancy is deprecated. It will be removed on 2018/12.
-type Vibrancy uint8
-
-// Constants to specify vibrancy effects.
-// Deprecated. It will be removed on 2018/12.
-const (
-	VibeNone Vibrancy = iota
-	VibeLight
-	VibeDark
-	VibeTitlebar
-	VibeSelection
-	VibeMenu
-	VibePopover
-	VibeSidebar
-	VibeMediumLight
-	VibeUltraDark
-)

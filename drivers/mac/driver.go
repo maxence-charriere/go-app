@@ -29,37 +29,30 @@ import (
 )
 
 var (
-	driver       *Driver
-	goappBundle  = os.Getenv("GOAPP_BUNDLE")
-	debug        = os.Getenv("GOAPP_DEBUG") == "true"
-	goappLogAddr = os.Getenv("GOAPP_LOGS_ADDR")
-	goappLogs    *logs.GoappClient
+	driver     *Driver
+	goappBuild = os.Getenv("GOAPP_BUILD")
+	debug      = os.Getenv("GOAPP_DEBUG") == "true"
+	goappLogs  *logs.GoappClient
 )
 
 func init() {
-	if len(goappBundle) != 0 {
+	if len(goappBuild) != 0 {
 		app.Logger = func(format string, a ...interface{}) {}
-		return
-	}
-
-	if len(goappLogAddr) != 0 {
-		app.EnableDebug(debug)
-		goappLogs = logs.NewGoappClient(goappLogAddr, logs.WithColoredPrompt)
-		app.Logger = goappLogs.Logger()
 		return
 	}
 
 	logger := logs.ToWriter(os.Stderr)
 	app.Logger = logs.WithColoredPrompt(logger)
+	app.EnableDebug(debug)
 }
 
 // Driver is the app.Driver implementation for MacOS.
 type Driver struct {
 	core.Driver
 
-	// The bundle configuration.
-	// Only applied when the app is build with goapp mac build -bundle.
-	Bundle Bundle
+	// The app package settings.
+	// It is used by goapp to define how the app is built and packaged.
+	Settings Settings
 
 	// Menubar configuration
 	MenubarConfig MenuBarConfig
@@ -109,8 +102,8 @@ type Driver struct {
 
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(f *app.Factory) error {
-	if len(goappBundle) != 0 {
-		return d.runGoappBundle()
+	if len(goappBuild) != 0 {
+		return d.runGoappBuild()
 	}
 
 	if driver != nil {
@@ -147,6 +140,13 @@ func (d *Driver) Run(f *app.Factory) error {
 
 	d.goRPC.Handle("menus.OnClose", handleMenu(onMenuClose))
 	d.goRPC.Handle("menus.OnCallback", handleMenu(onMenuCallback))
+
+	d.goRPC.Handle("controller.OnDirectionChange", handleController(onControllerDirectionChange))
+	d.goRPC.Handle("controller.OnButtonPressed", handleController(onControllerButtonPressed))
+	d.goRPC.Handle("controller.OnConnected", handleController(onControllerConnected))
+	d.goRPC.Handle("controller.OnDisconnected", handleController(onControllerDisconnected))
+	d.goRPC.Handle("controller.OnPause", handleController(onControllerPause))
+	d.goRPC.Handle("controller.OnClose", handleController(onControllerClose))
 
 	d.goRPC.Handle("filePanels.OnSelect", handleFilePanel(onFilePanelSelect))
 	d.goRPC.Handle("saveFilePanels.OnSelect", handleSaveFilePanel(onSaveFilePanelSelect))
@@ -252,6 +252,11 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 	return m
 }
 
+// NewController statisfies the app.Driver interface.
+func (d *Driver) NewController(c app.ControllerConfig) app.Controller {
+	return newController(c)
+}
+
 // NewFilePanel satisfies the app.Driver interface.
 func (d *Driver) NewFilePanel(c app.FilePanelConfig) app.Elem {
 	return newFilePanel(c)
@@ -300,13 +305,13 @@ func (d *Driver) Stop() {
 	}
 }
 
-func (d *Driver) runGoappBundle() error {
-	b, err := json.MarshalIndent(d.Bundle, "", "  ")
+func (d *Driver) runGoappBuild() error {
+	b, err := json.MarshalIndent(d.Settings, "", "    ")
 	if err != nil {
 		return err
 	}
 
-	return ioutil.WriteFile(goappBundle, b, 0777)
+	return ioutil.WriteFile(goappBuild, b, 0777)
 }
 
 func (d *Driver) support() string {

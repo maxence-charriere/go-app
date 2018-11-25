@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -10,8 +11,37 @@ import (
 	"time"
 
 	"github.com/murlokswarm/app/internal/file"
+	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
 )
+
+type webInitConfig struct {
+	Verbose bool `conf:"v" help:"Enable verbose mode."`
+}
+
+type webBuildConfig struct {
+	Output  string `conf:"o"      help:"The path where the package is saved."`
+	Minify  bool   `conf:"minify" help:"Minify gopherjs file."`
+	Force   bool   `conf:"force"  help:"Force rebuilding of package that are already up-to-date."`
+	Race    bool   `conf:"race"   help:"Enable data race detection."`
+	Verbose bool   `conf:"v"      help:"Enable verbose mode."`
+}
+
+type webRunConfig struct {
+	Output  string `conf:"o"      help:"The path where the package is saved."`
+	Addr    string `conf:"addr"   help:"The server bind address."`
+	Browser bool   `conf:"b"      help:"Run the client."`
+	Chrome  bool   `conf:"chrome" help:"Run the client with Google Chrome."`
+	Minify  bool   `conf:"minify" help:"Minify gopherjs file."`
+	Force   bool   `conf:"force"  help:"Force rebuilding of package that are already up-to-date."`
+	Race    bool   `conf:"race"   help:"Enable data race detection."`
+	Verbose bool   `conf:"v"      help:"Enable verbose mode."`
+}
+
+type webCleanConfig struct {
+	Output  string `conf:"o" help:"The path where the package is saved."`
+	Verbose bool   `conf:"v" help:"Enable verbose mode."`
+}
 
 func web(ctx context.Context, args []string) {
 	ld := conf.Loader{
@@ -19,8 +49,9 @@ func web(ctx context.Context, args []string) {
 		Args: args,
 		Commands: []conf.Command{
 			{Name: "init", Help: "Download gopherjs and create the required files and directories."},
-			{Name: "build", Help: "Build the web server and generate Gopher.js file."},
+			{Name: "build", Help: "Build a web app."},
 			{Name: "run", Help: "Run the server and launch the client in the default browser."},
+			{Name: "clean", Help: "Delete a web app."},
 			{Name: "help", Help: "Show the web help"},
 		},
 	}
@@ -38,13 +69,12 @@ func web(ctx context.Context, args []string) {
 	case "run":
 		runWeb(ctx, args)
 
+	case "clean":
+		cleanWeb(ctx, args)
+
 	default:
 		panic("unreachable")
 	}
-}
-
-type webInitConfig struct {
-	Verbose bool `conf:"v" help:"Enable verbose mode."`
 }
 
 func initWeb(ctx context.Context, args []string) {
@@ -53,47 +83,29 @@ func initWeb(ctx context.Context, args []string) {
 	ld := conf.Loader{
 		Name:    "web init",
 		Args:    args,
-		Usage:   "[options...] [packages...]",
+		Usage:   "[options...] [package]",
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	_, unusedArgs := conf.LoadWith(&c, ld)
+	_, args = conf.LoadWith(&c, ld)
 	verbose = c.Verbose
 
-	roots, err := packageRoots(unusedArgs)
-	if err != nil {
-		failWithHelp(&ld, "%s", err)
+	sources := "."
+	if len(args) != 0 {
+		sources = args[0]
 	}
 
-	printVerbose("get gopherjs")
-	if err = goGetGopherJS(ctx); err != nil {
-		failWithHelp(&ld, "%s", err)
+	pkg := WebPackage{
+		Sources: sources,
+		Verbose: c.Verbose,
+		Log:     printVerbose,
 	}
 
-	for _, root := range roots {
-		if err = initPackage(root); err != nil {
-			failWithHelp(&ld, "%s", err)
-		}
+	if err := pkg.Init(ctx); err != nil {
+		fail("%s", err)
 	}
 
 	printSuccess("init succeeded")
-}
-
-func goGetGopherJS(ctx context.Context) error {
-	args := []string{"get", "-u"}
-
-	if verbose {
-		args = append(args, "-v")
-	}
-
-	args = append(args, "github.com/gopherjs/gopherjs")
-	return execute(ctx, "go", args...)
-}
-
-type webBuildConfig struct {
-	Output  string `conf:"o" help:"The output."`
-	Minify  bool   `conf:"m" help:"Minify gopherjs file."`
-	Verbose bool   `conf:"v" help:"Enable verbose mode."`
 }
 
 func buildWeb(ctx context.Context, args []string) {
@@ -108,32 +120,29 @@ func buildWeb(ctx context.Context, args []string) {
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	_, roots := conf.LoadWith(&c, ld)
+	_, args = conf.LoadWith(&c, ld)
 	verbose = c.Verbose
 
-	if len(roots) == 0 {
-		roots = []string{"."}
+	sources := "."
+	if len(args) != 0 {
+		sources = args[0]
 	}
 
-	pkg, err := newWebPackage(roots[0], c.Output)
-	if err != nil {
-		fail("%s", err)
+	pkg := WebPackage{
+		Sources: sources,
+		Output:  c.Output,
+		Minify:  c.Minify,
+		Force:   c.Force,
+		Race:    c.Race,
+		Verbose: c.Verbose,
+		Log:     printVerbose,
 	}
 
-	if err = pkg.Build(ctx, c); err != nil {
+	if err := pkg.Build(ctx); err != nil {
 		fail("%s", err)
 	}
 
 	printSuccess("build succeeded")
-}
-
-type webRunConfig struct {
-	Addr    string   `conf:"addr"   help:"The server bind address."`
-	Args    []string `conf:"args"   help:"The arguments to launch the server."`
-	Browser bool     `conf:"b"      help:"Run the client."`
-	Chrome  bool     `conf:"chrome" help:"Run the client with Google Chrome."`
-	Minify  bool     `conf:"m"      help:"Minify gopherjs file."`
-	Verbose bool     `conf:"v"      help:"Enable verbose mode."`
 }
 
 func runWeb(ctx context.Context, args []string) {
@@ -145,83 +154,315 @@ func runWeb(ctx context.Context, args []string) {
 	ld := conf.Loader{
 		Name:    "web run",
 		Args:    args,
-		Usage:   "[options...] [*.wapp]",
+		Usage:   "[options...] [package]",
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	_, roots := conf.LoadWith(&c, ld)
+	_, args = conf.LoadWith(&c, ld)
 	verbose = c.Verbose
 
-	wappname := "."
-	if len(roots) != 0 {
-		wappname = roots[0]
+	sources := "."
+	if len(args) != 0 {
+		sources = args[0]
 	}
 
-	if !strings.HasSuffix(wappname, ".wapp") {
-		printVerbose("building package")
-		pkg, err := newWebPackage(wappname, "")
-		if err != nil {
-			fail("%s", err)
-		}
-
-		if err = pkg.Build(ctx, webBuildConfig{
-			Minify: c.Minify,
-		}); err != nil {
-			fail("%s", err)
-		}
-
-		wappname = pkg.name
-	}
-
-	server := filepath.Base(wappname)
-	server = strings.TrimSuffix(server, ".wapp")
-	server = filepath.Join(wappname, server)
-
-	if c.Browser || c.Chrome {
-		go launchNavigator(ctx, c)
+	pkg := WebPackage{
+		Sources: sources,
+		Output:  c.Output,
+		Addr:    c.Addr,
+		Chrome:  c.Chrome,
+		Browser: c.Browser,
+		Minify:  c.Minify,
+		Force:   c.Force,
+		Race:    c.Race,
+		Verbose: c.Verbose,
+		Log:     printVerbose,
 	}
 
 	os.Setenv("GOAPP_SERVER_ADDR", c.Addr)
 	defer os.Unsetenv("GOAPP_SERVER_ADDR")
 
-	printVerbose("starting server")
-	if err := os.Chdir(wappname); err != nil {
-		fail("%s", err)
-	}
-
-	if err := execute(ctx, server, args...); err != nil {
+	if err := pkg.Run(ctx); err != nil {
 		fail("%s", err)
 	}
 }
 
-func launchNavigator(ctx context.Context, c webRunConfig) {
-	time.Sleep(time.Millisecond * 250)
-	printVerbose("starting client")
+func cleanWeb(ctx context.Context, args []string) {
+	c := webCleanConfig{}
 
-	rawurl := c.Addr
-	if !strings.HasPrefix(rawurl, "http://") {
-		rawurl = "http://" + rawurl
+	ld := conf.Loader{
+		Name:    "web run",
+		Args:    args,
+		Usage:   "[options...] [package]",
+		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	u, err := url.Parse(rawurl)
+	_, args = conf.LoadWith(&c, ld)
+	verbose = c.Verbose
+
+	sources := "."
+	if len(args) != 0 {
+		sources = args[0]
+	}
+
+	pkg := WebPackage{
+		Sources: sources,
+		Output:  c.Output,
+		Verbose: c.Verbose,
+		Log:     printVerbose,
+	}
+
+	if err := pkg.Clean(ctx); err != nil {
+		fail("%s", err)
+	}
+}
+
+// WebPackage represents a directory that contains a website.
+// It implements the Package interface.
+type WebPackage struct {
+	// The path where the sources are.
+	// It must refer to a Go main package.
+	// Default is ".".
+	Sources string
+
+	// The path where the package is saved.
+	// If not set, the ".app" extension is added.
+	Output string
+
+	// Minify the gopher js client.
+	Minify bool
+
+	// The bind address used when run.
+	Addr string
+
+	// Rune the client with the default browser.
+	Browser bool
+
+	// Run the client with chrome.
+	Chrome bool
+
+	// Enable verbose mode.
+	Verbose bool
+
+	// Force rebuilding of package that are already up-to-date.
+	Force bool
+
+	// Enable data race detection.
+	Race bool
+
+	// The function to log events.
+	Log func(string, ...interface{})
+
+	name                string
+	workingDir          string
+	sourcesResourcesDir string
+	resourcesDir        string
+	executable          string
+	goappjs             string
+}
+
+// Init satisfies the Package interface.
+func (pkg *WebPackage) Init(ctx context.Context) error {
+	if err := pkg.init(); err != nil {
+		return err
+	}
+
+	pkg.Log("creating resources directory")
+	if err := os.MkdirAll(filepath.Join(pkg.Sources, "resources", "css"), 0755); err != nil {
+		return err
+	}
+
+	pkg.Log("installing gopherjs")
+	return pkg.installGopherJS(ctx)
+}
+
+func (pkg *WebPackage) installGopherJS(ctx context.Context) error {
+	cmd := []string{"go", "get", "-u"}
+
+	if pkg.Verbose {
+		cmd = append(cmd, "-v")
+	}
+
+	cmd = append(cmd, "github.com/gopherjs/gopherjs")
+	return execute(ctx, cmd[0], cmd[1:]...)
+}
+
+func (pkg *WebPackage) init() (err error) {
+	if len(pkg.Sources) == 0 || pkg.Sources == "." || pkg.Sources == "./" {
+		pkg.Sources = "."
+	}
+	if pkg.Sources, err = filepath.Abs(pkg.Sources); err != nil {
+		return err
+	}
+
+	execName := filepath.Base(pkg.Sources)
+
+	if len(pkg.Output) == 0 {
+		pkg.Output = execName
+	}
+	if !strings.HasSuffix(pkg.Output, ".wapp") {
+		pkg.Output += ".wapp"
+	}
+
+	pkg.name = filepath.Base(pkg.Output)
+
+	if pkg.workingDir, err = os.Getwd(); err != nil {
+		return err
+	}
+
+	pkg.sourcesResourcesDir = filepath.Join(pkg.Sources, "resources")
+	pkg.resourcesDir = filepath.Join(pkg.Output, "resources")
+
+	pkg.executable = filepath.Join(pkg.Output, execName)
+	if runtime.GOOS == "windows" {
+		pkg.executable += ".exe"
+	}
+
+	pkg.goappjs = filepath.Join(pkg.resourcesDir, "goapp.js")
+	return nil
+}
+
+// Build satisfies the Package interface.
+func (pkg *WebPackage) Build(ctx context.Context) error {
+	if err := pkg.init(); err != nil {
+		return err
+	}
+
+	pkg.Log("creating %s", pkg.name)
+	if err := pkg.create(); err != nil {
+		return err
+	}
+
+	pkg.Log("building executable")
+	if err := pkg.buildExecutable(ctx); err != nil {
+		return err
+	}
+
+	pkg.Log("building javascript client")
+	if err := pkg.buildJavascriptClient(ctx); err != nil {
+		return err
+	}
+
+	pkg.Log("syncing resources")
+	if err := pkg.syncResources(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (pkg *WebPackage) create() error {
+	dirs := []string{
+		pkg.Output,
+		pkg.resourcesDir,
+	}
+
+	for _, d := range dirs {
+		if err := os.MkdirAll(d, 0755); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (pkg *WebPackage) buildExecutable(ctx context.Context) error {
+	args := []string{"go", "build", "-o", pkg.executable}
+
+	if pkg.Verbose {
+		args = append(args, "-v")
+	}
+
+	if pkg.Force {
+		args = append(args, "-a")
+	}
+
+	if pkg.Race {
+		args = append(args, "-race")
+	}
+
+	return execute(ctx, args[0], args[1:]...)
+}
+
+func (pkg *WebPackage) buildJavascriptClient(ctx context.Context) error {
+	if runtime.GOOS == "windows" {
+		os.Setenv("GOOS", "linux")
+		defer os.Unsetenv("GOOS")
+	}
+
+	args := []string{"gopherjs", "build", "-o", pkg.goappjs}
+
+	if pkg.Minify {
+		args = append(args, "-m")
+	}
+
+	if pkg.Verbose {
+		args = append(args, "-v")
+	}
+
+	return execute(ctx, args[0], args[1:]...)
+}
+
+func (pkg *WebPackage) syncResources() error {
+	return file.Sync(pkg.resourcesDir, pkg.sourcesResourcesDir)
+}
+
+// Run satisfies the Package interface.
+func (pkg *WebPackage) Run(ctx context.Context) error {
+	if err := pkg.Build(ctx); err != nil {
+		return err
+	}
+
+	executable, err := filepath.Abs(pkg.executable)
 	if err != nil {
-		printErr("%s", err)
-		return
+		return err
 	}
 
-	if len(u.Host) != 0 && u.Host[0] == ':' {
+	if err = os.Chdir(pkg.Output); err != nil {
+		return err
+	}
+
+	if pkg.Browser || pkg.Chrome {
+		go func() {
+			time.Sleep(time.Millisecond * 250)
+
+			if err := pkg.launchWithBrowser(ctx); err != nil {
+				panic(err)
+			}
+		}()
+	}
+
+	pkg.Log("running server")
+	return execute(ctx, executable)
+}
+
+func (pkg *WebPackage) launchWithBrowser(ctx context.Context) error {
+	addr := pkg.Addr
+	if !strings.HasPrefix(addr, "http://") {
+		addr = "http://" + addr
+	}
+
+	u, err := url.Parse(addr)
+	if err != nil {
+		return err
+	}
+	if strings.HasPrefix(u.Host, ":") {
 		u.Host = "127.0.0.1" + u.Host
 	}
+	addr = u.String()
 
-	if c.Chrome {
-		launchWithGoogleChrome(ctx, u.String())
-		return
+	fmt.Println("ADDR:", addr)
+
+	if pkg.Chrome {
+		pkg.Log("running client in google chrome")
+		return pkg.launchWithChrome(ctx, addr)
 	}
 
-	launchWithDefaultBrowser(ctx, u.String())
+	pkg.Log("running client in default browser")
+	return pkg.launchWithDefaultBrowser(ctx, addr)
 }
 
-func launchWithGoogleChrome(ctx context.Context, url string) {
+func (pkg *WebPackage) launchWithChrome(ctx context.Context, url string) error {
 	var cmd []string
 
 	switch runtime.GOOS {
@@ -235,13 +476,13 @@ func launchWithGoogleChrome(ctx context.Context, url string) {
 		cmd = []string{"google-chrome", url}
 
 	default:
-		fail("you are not on Linux, MacOS or Windows")
+		return errors.New("unsuported operation system")
 	}
 
-	execute(ctx, cmd[0], cmd[1:]...)
+	return execute(ctx, cmd[0], cmd[1:]...)
 }
 
-func launchWithDefaultBrowser(ctx context.Context, url string) {
+func (pkg *WebPackage) launchWithDefaultBrowser(ctx context.Context, url string) error {
 	var cmd []string
 
 	switch runtime.GOOS {
@@ -255,125 +496,18 @@ func launchWithDefaultBrowser(ctx context.Context, url string) {
 		cmd = []string{"xdg-open", url}
 
 	default:
-		fail("you are not on Linux, MacOS or Windows")
+		return errors.New("unsuported operation system")
 	}
 
-	execute(ctx, cmd[0], cmd[1:]...)
-}
-
-type webPackage struct {
-	workingDir       string
-	buildDir         string
-	gopherJSBuildDir string
-	buildResources   string
-	name             string
-	resources        string
-	goExec           string
-	gopherJS         string
-	minify           bool
-}
-
-func newWebPackage(buildDir, name string) (*webPackage, error) {
-	wd, err := os.Getwd()
-	if err != nil {
-		return nil, err
-	}
-
-	gopherJSBuildDIr := buildDir
-
-	if buildDir, err = filepath.Abs(buildDir); err != nil {
-		return nil, err
-	}
-
-	if len(name) == 0 {
-		name = filepath.Base(buildDir) + ".wapp"
-	}
-
-	if !strings.HasSuffix(name, ".wapp") {
-		name += ".wapp"
-	}
-
-	goExec := filepath.Base(name)
-	goExec = strings.TrimSuffix(goExec, ".wapp")
-
-	if runtime.GOOS == "windows" {
-		goExec += ".exe"
-	}
-
-	return &webPackage{
-		workingDir:       wd,
-		buildDir:         buildDir,
-		gopherJSBuildDir: gopherJSBuildDIr,
-		buildResources:   filepath.Join(buildDir, "resources"),
-		name:             filepath.Join(wd, name),
-		resources:        filepath.Join(wd, name, "resources"),
-		goExec:           filepath.Join(wd, name, goExec),
-		gopherJS:         filepath.Join(buildDir, "resources", "goapp.js"),
-	}, nil
-}
-
-func (pkg *webPackage) Build(ctx context.Context, c webBuildConfig) error {
-	pkg.minify = c.Minify
-	name := filepath.Base(pkg.name)
-
-	printVerbose("creating %s", name)
-	if err := pkg.createPackage(); err != nil {
-		return err
-	}
-
-	printVerbose("building go server")
-	if err := pkg.buildGoExec(ctx); err != nil {
-		return err
-	}
-
-	printVerbose("building gopherjs client")
-	if err := pkg.buildGopherJS(ctx); err != nil {
-		return err
-	}
-
-	printVerbose("syncing resources")
-	return pkg.syncResources()
-}
-
-func (pkg *webPackage) createPackage() error {
-	dirs := []string{
-		pkg.name,
-		pkg.resources,
-	}
-
-	for _, d := range dirs {
-		if err := os.MkdirAll(d, os.ModeDir|0755); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-func (pkg *webPackage) buildGoExec(ctx context.Context) error {
-	return goBuild(ctx, pkg.buildDir, "-o", pkg.goExec)
-}
-
-func (pkg *webPackage) buildGopherJS(ctx context.Context) error {
-	if runtime.GOOS == "windows" {
-		os.Setenv("GOOS", "linux")
-		defer os.Unsetenv("GOOS")
-	}
-
-	cmd := []string{"gopherjs", "build", "-o", pkg.gopherJS}
-
-	if pkg.minify {
-		cmd = append(cmd, "-m")
-	}
-
-	if verbose {
-		cmd = append(cmd, "-v")
-	}
-
-	cmd = append(cmd, pkg.gopherJSBuildDir)
 	return execute(ctx, cmd[0], cmd[1:]...)
 }
 
-func (pkg *webPackage) syncResources() error {
-	return file.Sync(pkg.resources, pkg.buildResources)
+// Clean satisfies the Package interface.
+func (pkg *WebPackage) Clean(ctx context.Context) error {
+	if err := pkg.init(); err != nil {
+		return err
+	}
+
+	pkg.Log("removing %s", pkg.Output)
+	return os.RemoveAll(pkg.Output)
 }

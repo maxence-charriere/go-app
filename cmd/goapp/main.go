@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"text/template"
 
@@ -173,6 +174,14 @@ var (
 	defaultColor = "\033[00m"
 )
 
+func init() {
+	if runtime.GOOS == "windows" {
+		greenColor = ""
+		redColor = ""
+		defaultColor = ""
+	}
+}
+
 func printVerbose(format string, v ...interface{}) {
 	if verbose {
 		format = "‣ " + format
@@ -237,18 +246,6 @@ func intWithDefault(value, defaultValue int) int {
 	return value
 }
 
-func generateTemplate(filename string, tmpl string, v interface{}) error {
-	f, err := os.Create(filename)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	tmpl = strings.TrimSpace(tmpl)
-	t := template.Must(template.New("").Parse(tmpl))
-	return t.Execute(f, v)
-}
-
 func listenLogs(ctx context.Context, addr string) {
 	logs := logs.GoappServer{
 		Addr:   addr,
@@ -269,4 +266,19 @@ func murlokswarm() string {
 		"murlokswarm",
 		"app",
 	)
+}
+
+func generateTemplatedFile(path, tmpl string, data interface{}) error {
+	t, err := template.New("").Parse(strings.TrimSpace(tmpl))
+	if err != nil {
+		return err
+	}
+
+	f, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	return t.Execute(f, data)
 }

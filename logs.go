@@ -75,7 +75,7 @@ func (d *driverWithLogs) NewWindow(c WindowConfig) Window {
 
 func (d *driverWithLogs) NewPage(c PageConfig) Page {
 	WhenDebug(func() {
-		config, _ := json.MarshalIndent(c, "", "  ")
+		config := prettyConf(c)
 		Logf("creating page: %s", config)
 	})
 
@@ -89,7 +89,7 @@ func (d *driverWithLogs) NewPage(c PageConfig) Page {
 
 func (d *driverWithLogs) NewContextMenu(c MenuConfig) Menu {
 	WhenDebug(func() {
-		config, _ := json.MarshalIndent(c, "", "  ")
+		config := prettyConf(c)
 		Logf("creating context menu: %s", config)
 	})
 
@@ -101,9 +101,23 @@ func (d *driverWithLogs) NewContextMenu(c MenuConfig) Menu {
 	return &menuWithLogs{Menu: m}
 }
 
+func (d *driverWithLogs) NewController(c ControllerConfig) Controller {
+	WhenDebug(func() {
+		config := prettyConf(c)
+		Logf("creating controller: %s", config)
+	})
+
+	controller := d.Driver.NewController(c)
+	if controller.Err() != nil {
+		Logf("creating controller failed: %s", controller.Err())
+	}
+
+	return &controllerWithLogs{Controller: controller}
+}
+
 func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) Elem {
 	WhenDebug(func() {
-		config, _ := json.MarshalIndent(c, "", "  ")
+		config := prettyConf(c)
 		Logf("creating file panel: %s", config)
 	})
 
@@ -117,7 +131,7 @@ func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) Elem {
 
 func (d *driverWithLogs) NewSaveFilePanel(c SaveFilePanelConfig) Elem {
 	WhenDebug(func() {
-		config, _ := json.MarshalIndent(c, "", "  ")
+		config := prettyConf(c)
 		Logf("creating save file panel: %s", config)
 	})
 
@@ -144,7 +158,7 @@ func (d *driverWithLogs) NewShare(v interface{}) Elem {
 
 func (d *driverWithLogs) NewNotification(c NotificationConfig) Elem {
 	WhenDebug(func() {
-		config, _ := json.MarshalIndent(c, "", "  ")
+		config := prettyConf(c)
 		Logf("creating notification: %s", config)
 	})
 
@@ -171,7 +185,7 @@ func (d *driverWithLogs) MenuBar() Menu {
 
 func (d *driverWithLogs) NewStatusMenu(c StatusMenuConfig) StatusMenu {
 	WhenDebug(func() {
-		config, _ := json.MarshalIndent(c, "", "  ")
+		config := prettyConf(c)
 		Logf("creating status menu: %s", config)
 	})
 
@@ -379,6 +393,25 @@ func (w *windowWithLogs) Close() {
 		Logf("window %s failed to close: %s",
 			w.ID(),
 			w.Err(),
+		)
+	}
+}
+
+// Controller logs.
+type controllerWithLogs struct {
+	Controller
+}
+
+func (c *controllerWithLogs) Close() {
+	WhenDebug(func() {
+		Logf("controller %s is closing", c.ID())
+	})
+
+	c.Controller.Close()
+	if c.Err() != nil {
+		Logf("controller %s failed to close: %s",
+			c.ID(),
+			c.Err(),
 		)
 	}
 }
@@ -665,4 +698,9 @@ func (s *statusMenuWithLogs) Close() {
 			s.Err(),
 		)
 	}
+}
+
+func prettyConf(c interface{}) string {
+	b, _ := json.MarshalIndent(c, "", "    ")
+	return string(b)
 }

@@ -20,6 +20,9 @@ type Driver struct {
 	// Default is /web.NotFound
 	NotFoundURL string
 
+	// The app icon name.
+	Icon string
+
 	// The server used to save request.
 	// Default is a server that listens on port 7042.
 	Server *http.Server

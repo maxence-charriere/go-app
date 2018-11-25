@@ -36,6 +36,10 @@ func TestDriver(t *testing.T, setup DriverSetup) {
 		assertElem(t, w)
 		t.Run("window", func(t *testing.T) { testWindow(t, w) })
 
+		c := d.NewController(app.ControllerConfig{})
+		assertElem(t, c)
+		t.Run("controller", func(t *testing.T) { testController(t, c) })
+
 		p := d.NewPage(app.PageConfig{})
 		assertElem(t, p)
 		t.Run("page", func(t *testing.T) { testPage(t, p) })

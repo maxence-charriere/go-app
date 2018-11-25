@@ -4,7 +4,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/disintegration/imaging v1.5.0
 	github.com/google/uuid v1.0.0
-	github.com/gopherjs/gopherjs v0.0.0-20181004151105-1babbf986f6f
+	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e
 	github.com/pkg/errors v0.8.0
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/segmentio/conf v1.0.0
