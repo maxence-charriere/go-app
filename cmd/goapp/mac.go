@@ -241,7 +241,7 @@ type MacPackage struct {
 	// Configure the app to run in sandbox mode.
 	Sandbox bool
 
-	// Creates a .pkg to be uploaed on the app store.
+	// Creates a .pkg to be uploaed on the App Store.
 	AppStore bool
 
 	// Force rebuilding of package that are already up-to-date.
