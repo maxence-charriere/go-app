@@ -4,23 +4,49 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
-	"time"
 
 	"github.com/segmentio/conf"
 )
+
+type winInitConfig struct {
+	Verbose bool `conf:"v" help:"Enable verbose mode."`
+}
+
+type winBuildConfig struct {
+	Output       string `conf:"o"        help:"The path where the package is saved."`
+	Architecture string `conf:"arch"     help:"The targetted architecture."`
+	SDK          string `conf:"sdk"      help:"The path of the Windows 10 SDK directory."`
+	AppStore     bool   `conf:"appstore" help:"Creates a .pkg to be uploaded on the app store."`
+	Force        bool   `conf:"force"    help:"Force rebuilding of package that are already up-to-date."`
+	Race         bool   `conf:"race"     help:"Enable data race detection."`
+	Verbose      bool   `conf:"v"        help:"Enable verbose mode."`
+}
+
+type winRunConfig struct {
+	Output       string `conf:"o"     help:"The path where the package is saved."`
+	Architecture string `conf:"arch"  help:"The targetted architecture."`
+	SDK          string `conf:"sdk"   help:"The path of the Windows 10 SDK directory."`
+	Force        bool   `conf:"force" help:"Force rebuilding of package that are already up-to-date."`
+	Race         bool   `conf:"race"  help:"Enable data race detection."`
+	Verbose      bool   `conf:"v"     help:"Enable verbose mode."`
+}
+
+type winCleanConfig struct {
+	Output  string `conf:"o" help:"The path where the package is saved."`
+	Verbose bool   `conf:"v" help:"Enable verbose mode."`
+}
 
 func win(ctx context.Context, args []string) {
 	ld := conf.Loader{
 		Name: "goapp win",
 		Args: args,
 		Commands: []conf.Command{
-			{Name: "init", Help: "Download the Windows dev tools and create required files and directories."},
+			{Name: "init", Help: "Download the Windows 10 dev tools and create required directories."},
 			{Name: "build", Help: "Build the Windows app."},
-			{Name: "run", Help: "Run a Windows app and capture its logs."},
+			{Name: "run", Help: "Run a Windows app."},
+			{Name: "clean", Help: "Delete a Windows app and its temporary build files."},
 			{Name: "help", Help: "Show the Windows help"},
 		},
 	}
@@ -35,6 +61,9 @@ func win(ctx context.Context, args []string) {
 	case "run":
 		runWin(ctx, args)
 
+	case "clean":
+		cleanWin(ctx, args)
+
 	case "help":
 		ld.PrintHelp(nil)
 
@@ -43,62 +72,42 @@ func win(ctx context.Context, args []string) {
 	}
 }
 
-type winInitConfig struct {
-	Verbose bool `conf:"v" help:"Enable verbose mode."`
-}
-
 func initWin(ctx context.Context, args []string) {
 	c := winInitConfig{}
 
 	ld := conf.Loader{
 		Name:    "win init",
 		Args:    args,
-		Usage:   "[options...] [packages...]",
+		Usage:   "[options...] [package]",
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	_, unusedArgs := conf.LoadWith(&c, ld)
+	_, args = conf.LoadWith(&c, ld)
 	verbose = c.Verbose
 
-	roots, err := packageRoots(unusedArgs)
-	if err != nil {
-		failWithHelp(&ld, "%s", err)
+	sources := "."
+	if len(args) != 0 {
+		sources = args[0]
 	}
 
-	for _, root := range roots {
-		if err = initPackage(root); err != nil {
-			fail("init %s failed: %s", root, err)
-		}
+	pkg := WinPackage{
+		Sources: sources,
+		Verbose: c.Verbose,
+		Log:     printVerbose,
 	}
 
-	printWarn("install Windows 10 SDK: https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk")
-	// printWarn("install Desktop app converter: https://aka.ms/converter")
-	printWarn("install mingw64: http://mingw-w64.org/doku.php/download/mingw-builds")
-
-	printVerbose("installing dev certificate")
-	os.Chdir(certMgr())
-
-	if err = execute(ctx, "powershell",
-		`.\Certmgr.exe`,
-		"/add", certificate(),
-		"/s", "/r",
-		"localMachine",
-		"root",
-	); err != nil {
-		fail("installing dev certificate failed: %s", err)
+	if err := pkg.Init(ctx); err != nil {
+		fail("%s", err)
 	}
 
 	printSuccess("init succeeded")
 }
 
-type winBuilConfig struct {
-	AppX    bool   `conf:"appx" help:"Build an appx package."`
-	Output  string `conf:"o"    help:"The output."`
-	Verbose bool   `conf:"v"    help:"Enable verbose mode."`
-}
-
 func buildWin(ctx context.Context, args []string) {
-	c := winBuilConfig{}
+	c := winBuildConfig{
+		Architecture: defaultWinArchitecture(),
+		SDK:          winSDKDirectory(defaultWinSSDKRoot),
+	}
 
 	ld := conf.Loader{
 		Name:    "win build",
@@ -107,86 +116,156 @@ func buildWin(ctx context.Context, args []string) {
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	_, roots := conf.LoadWith(&c, ld)
+	_, args = conf.LoadWith(&c, ld)
 	verbose = c.Verbose
 
-	if len(roots) == 0 {
-		roots = []string{"."}
+	sources := "."
+	if len(args) != 0 {
+		sources = args[0]
 	}
 
-	printVerbose("building package")
-	pkg, err := newWinPackage(roots[0], c.Output)
-	if err != nil {
-		fail("%s", err)
+	pkg := WinPackage{
+		Sources:      sources,
+		Output:       c.Output,
+		Architecture: c.Architecture,
+		SDK:          c.SDK,
+		AppStore:     c.AppStore,
+		Verbose:      c.Verbose,
+		Force:        c.Force,
+		Race:         c.Race,
+		Log:          printVerbose,
 	}
 
-	if err = pkg.Build(ctx, c); err != nil {
+	if err := pkg.Build(ctx); err != nil {
 		fail("%s", err)
 	}
 
 	printSuccess("build succeeded")
 }
 
-type winRunConfig struct {
-	LogsAddr string `conf:"logs-addr" help:"The address used to listen app logs." validate:"nonzero"`
-	Debug    bool   `conf:"d"         help:"Enable debug mode is enabled."`
-	Verbose  bool   `conf:"v"         help:"Enable verbose mode."`
-}
-
 func runWin(ctx context.Context, args []string) {
 	c := winRunConfig{
-		LogsAddr: ":9000",
+		Architecture: defaultWinArchitecture(),
+		SDK:          winSDKDirectory(defaultWinSSDKRoot),
 	}
 
 	ld := conf.Loader{
 		Name:    "win run",
 		Args:    args,
-		Usage:   "[options...] [app name]",
+		Usage:   "[options...] [package]",
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	_, roots := conf.LoadWith(&c, ld)
+	_, args = conf.LoadWith(&c, ld)
 	verbose = c.Verbose
 
-	if len(roots) == 0 {
-		roots = []string{"."}
+	sources := "."
+	if len(args) != 0 {
+		sources = args[0]
 	}
 
-	appname := roots[0]
-
-	if !strings.HasSuffix(appname, ".app") {
-		printVerbose("building package")
-		pkg, err := newWinPackage(roots[0], "")
-		if err != nil {
-			fail("%s", err)
-		}
-
-		if err = pkg.Build(ctx, winBuilConfig{}); err != nil {
-			fail("%s", err)
-		}
-
-		appname = pkg.manifest.Scheme
+	pkg := WinPackage{
+		Sources:      sources,
+		Output:       c.Output,
+		Architecture: c.Architecture,
+		SDK:          c.SDK,
+		Verbose:      c.Verbose,
+		Force:        c.Force,
+		Race:         c.Race,
+		Log:          printVerbose,
 	}
 
-	_, appname = filepath.Split(appname)
-	appname = strings.TrimSuffix(appname, ".app")
+	if err := pkg.Run(ctx); err != nil {
+		fail("%s", err)
+	}
+}
 
-	go listenLogs(ctx, c.LogsAddr)
-	time.Sleep(time.Millisecond * 500)
+func cleanWin(ctx context.Context, args []string) {
+	c := winCleanConfig{}
 
-	os.Setenv("GOAPP_LOGS_ADDR", c.LogsAddr)
-	os.Setenv("GOAPP_DEBUG", fmt.Sprintf("%v", c.Debug))
+	ld := conf.Loader{
+		Name:    "win clean",
+		Args:    args,
+		Usage:   "[options...] [package]",
+		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
+	}
 
-	printVerbose("running %s", appname)
-	if err := execute(ctx, "powershell", "start", fmt.Sprintf("%s://goapp", appname)); err != nil {
+	_, args = conf.LoadWith(&c, ld)
+	verbose = c.Verbose
+
+	sources := "."
+	if len(args) != 0 {
+		sources = args[0]
+	}
+
+	pkg := WinPackage{
+		Sources: sources,
+		Output:  c.Output,
+		Verbose: c.Verbose,
+		Log:     printVerbose,
+	}
+
+	if err := pkg.Clean(ctx); err != nil {
 		fail("%s", err)
 	}
 
-	<-ctx.Done()
-	if err := ctx.Err(); err != nil {
-		printErr("%s", ctx.Err())
-	}
+	printSuccess("clean succeeded")
 }
+
+// func runWin(ctx context.Context, args []string) {
+// 	c := winRunConfig{
+// 		LogsAddr: ":9000",
+// 	}
+
+// 	ld := conf.Loader{
+// 		Name:    "win run",
+// 		Args:    args,
+// 		Usage:   "[options...] [app name]",
+// 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
+// 	}
+
+// 	_, roots := conf.LoadWith(&c, ld)
+// 	verbose = c.Verbose
+
+// 	if len(roots) == 0 {
+// 		roots = []string{"."}
+// 	}
+
+// 	appname := roots[0]
+
+// 	if !strings.HasSuffix(appname, ".app") {
+// 		printVerbose("building package")
+// 		pkg, err := newWinPackage(roots[0], "")
+// 		if err != nil {
+// 			fail("%s", err)
+// 		}
+
+// 		if err = pkg.Build(ctx, winBuilConfig{}); err != nil {
+// 			fail("%s", err)
+// 		}
+
+// 		appname = pkg.manifest.Scheme
+// 	}
+
+// 	_, appname = filepath.Split(appname)
+// 	appname = strings.TrimSuffix(appname, ".app")
+
+// 	go listenLogs(ctx, c.LogsAddr)
+// 	time.Sleep(time.Millisecond * 500)
+
+// 	os.Setenv("GOAPP_LOGS_ADDR", c.LogsAddr)
+// 	os.Setenv("GOAPP_DEBUG", fmt.Sprintf("%v", c.Debug))
+
+// 	printVerbose("running %s", appname)
+// 	if err := execute(ctx, "powershell", "start", fmt.Sprintf("%s://goapp", appname)); err != nil {
+// 		fail("%s", err)
+// 	}
+
+// 	<-ctx.Done()
+// 	if err := ctx.Err(); err != nil {
+// 		printErr("%s", ctx.Err())
+// 	}
+// }
 
 func init() {
 	greenColor = ""

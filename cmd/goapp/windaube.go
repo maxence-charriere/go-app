@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -31,7 +32,7 @@ type WinPackage struct {
 	// - x86
 	Architecture string
 
-	// The path of the Windows 10 SDK dir.
+	// The path of the Windows 10 SDK directory.
 	SDK string
 
 	// Creates a .appx to be uploaed on the Windows Store.
@@ -82,11 +83,11 @@ func (pkg *WinPackage) init() (err error) {
 	}
 
 	if len(pkg.Architecture) == 0 {
-		return errors.New("archecture not set")
+		pkg.Architecture = runtime.GOARCH
 	}
 
 	if len(pkg.SDK) == 0 {
-		return errors.New("windows 10 sdk not set")
+		pkg.SDK = winSDKDirectory(defaultWinSSDKRoot)
 	}
 
 	if len(pkg.Sources) == 0 || pkg.Sources == "." || pkg.Sources == "./" {
@@ -117,7 +118,7 @@ func (pkg *WinPackage) init() (err error) {
 	if pkg.tmpDir = os.Getenv("TEMP"); len(pkg.tmpDir) == 0 {
 		return errors.New("tmp dir not set")
 	}
-	pkg.tmpDir = filepath.Join(pkg.tmpDir, "goapp")
+	pkg.tmpDir = filepath.Join(pkg.tmpDir, "goapp", name)
 	pkg.tmpExecutable = filepath.Join(pkg.tmpDir, execName)
 
 	pkg.assetsDir = filepath.Join(pkg.Output, "Assets")
@@ -144,6 +145,21 @@ func (pkg *WinPackage) Build(ctx context.Context) error {
 
 	pkg.Log("reading settings")
 	if err := pkg.readSettings(ctx); err != nil {
+		return err
+	}
+
+	pkg.Log("generating AppxManifest.xml")
+	if err := pkg.generateAppxManifest(); err != nil {
+		return err
+	}
+
+	pkg.Log("syncing resources")
+	if err := pkg.syncResources(); err != nil {
+		return err
+	}
+
+	pkg.Log("generating icons")
+	if err := pkg.generateIcons(ctx); err != nil {
 		return err
 	}
 
@@ -214,13 +230,14 @@ func (pkg *WinPackage) readSettings(ctx context.Context) error {
 		return err
 	}
 
+	s.Executable = filepath.Base(pkg.executable)
 	name := strings.TrimSuffix(s.Executable, ".exe")
-	user := strings.Replace(os.Getenv("USER"), " ", "", -1)
+	user := filepath.Base(os.Getenv("USERPROFILE"))
+	user = strings.Replace(user, " ", "", -1)
 	user = strings.Replace(user, "\t", "", -1)
 
-	s.Executable = filepath.Base(pkg.executable)
 	s.Name = stringWithDefault(s.Name, name)
-	s.ID = stringWithDefault(s.ID, user)
+	s.ID = stringWithDefault(s.ID, fmt.Sprintf("%v.%v", user, s.Name))
 	s.EntryPoint = strings.Replace(s.Executable, ".exe", ".app", 1)
 	s.Description = stringWithDefault(s.Description, s.Name)
 	s.Publisher = stringWithDefault(s.Publisher, user)
@@ -235,6 +252,84 @@ func (pkg *WinPackage) readSettings(ctx context.Context) error {
 
 	pkg.Log("settings: %s", b)
 	return nil
+}
+
+func (pkg *WinPackage) generateAppxManifest() error {
+	manifest := filepath.Join(pkg.Output, "AppxManifest.xml")
+	return generateTemplatedFile(manifest, appxManifestTmpl, pkg.settings)
+}
+
+func (pkg *WinPackage) syncResources() error {
+	return file.Sync(pkg.resourcesDir, pkg.sourcesResourcesDir)
+}
+
+func (pkg *WinPackage) generateIcons(ctx context.Context) error {
+	icon := filepath.Join(pkg.resourcesDir, pkg.settings.Icon)
+	if _, err := os.Stat(icon); os.IsNotExist(err) {
+		file.Copy(icon, filepath.Join(murlokswarm(), "logo.png"))
+	}
+
+	scaled := func(n string, s int) string {
+		if s <= 1 {
+			return filepath.Join(pkg.assetsDir, fmt.Sprintf("%s.png", n))
+		}
+
+		return filepath.Join(pkg.assetsDir, fmt.Sprintf("%s.scale-%v.png", n, s))
+	}
+
+	return generateIcons(icon, []iconInfo{
+		{Name: scaled("Square44x44Logo", 1), Width: 44, Height: 44, Scale: 1, Padding: true},
+		{Name: scaled("Square44x44Logo", 100), Width: 44, Height: 44, Scale: 1},
+		{Name: scaled("Square44x44Logo", 125), Width: 44, Height: 44, Scale: 1.25},
+		{Name: scaled("Square44x44Logo", 150), Width: 44, Height: 44, Scale: 1.5},
+		{Name: scaled("Square44x44Logo", 200), Width: 44, Height: 44, Scale: 2},
+		{Name: scaled("Square44x44Logo", 400), Width: 44, Height: 44, Scale: 4},
+
+		{Name: scaled("Square71x71Logo", 1), Width: 71, Height: 71, Scale: 1, Padding: true},
+		{Name: scaled("Square71x71Logo", 100), Width: 71, Height: 71, Scale: 1},
+		{Name: scaled("Square71x71Logo", 125), Width: 71, Height: 71, Scale: 1.25},
+		{Name: scaled("Square71x71Logo", 150), Width: 71, Height: 71, Scale: 1.5},
+		{Name: scaled("Square71x71Logo", 200), Width: 71, Height: 71, Scale: 2},
+		{Name: scaled("Square71x71Logo", 400), Width: 71, Height: 71, Scale: 4},
+
+		{Name: scaled("Square150x150Logo", 1), Width: 150, Height: 150, Scale: 1, Padding: true},
+		{Name: scaled("Square150x150Logo", 100), Width: 150, Height: 150, Scale: 1},
+		{Name: scaled("Square150x150Logo", 125), Width: 150, Height: 150, Scale: 1.25},
+		{Name: scaled("Square150x150Logo", 150), Width: 150, Height: 150, Scale: 1.5},
+		{Name: scaled("Square150x150Logo", 200), Width: 150, Height: 150, Scale: 2},
+		{Name: scaled("Square150x150Logo", 400), Width: 150, Height: 150, Scale: 4},
+
+		{Name: scaled("Square310x310Logo", 1), Width: 310, Height: 310, Scale: 1, Padding: true},
+		{Name: scaled("Square310x310Logo", 100), Width: 310, Height: 310, Scale: 1},
+		{Name: scaled("Square310x310Logo", 125), Width: 310, Height: 310, Scale: 1.25},
+		{Name: scaled("Square310x310Logo", 150), Width: 310, Height: 310, Scale: 1.5},
+		{Name: scaled("Square310x310Logo", 200), Width: 310, Height: 310, Scale: 2},
+		{Name: scaled("Square310x310Logo", 400), Width: 310, Height: 310, Scale: 4},
+
+		{Name: scaled("StoreLogo", 1), Width: 50, Height: 50, Scale: 1, Padding: true},
+		{Name: scaled("StoreLogo", 100), Width: 50, Height: 50, Scale: 1},
+		{Name: scaled("StoreLogo", 125), Width: 50, Height: 50, Scale: 1.25},
+		{Name: scaled("StoreLogo", 150), Width: 50, Height: 50, Scale: 1.5},
+		{Name: scaled("StoreLogo", 200), Width: 50, Height: 50, Scale: 2},
+		{Name: scaled("StoreLogo", 400), Width: 50, Height: 50, Scale: 4},
+
+		{Name: scaled("Wide310x150Logo", 1), Width: 310, Height: 150, Scale: 1, Padding: true},
+		{Name: scaled("Wide310x150Logo", 100), Width: 310, Height: 150, Scale: 1},
+		{Name: scaled("Wide310x150Logo", 125), Width: 310, Height: 150, Scale: 1.25},
+		{Name: scaled("Wide310x150Logo", 150), Width: 310, Height: 150, Scale: 1.5},
+		{Name: scaled("Wide310x150Logo", 200), Width: 310, Height: 150, Scale: 2},
+		{Name: scaled("Wide310x150Logo", 400), Width: 310, Height: 150, Scale: 4},
+	})
+}
+
+// Run satisfies the Package interface.
+func (pkg *WinPackage) Run(ctx context.Context) error {
+	panic("not implemented")
+}
+
+// Clean satisfies the Package interface.
+func (pkg *WinPackage) Clean(ctx context.Context) error {
+	panic("not implemented")
 }
 
 type winSettings struct {
@@ -261,7 +356,9 @@ func winSDKDirectory(sdkRoot string) string {
 	builds := make([]string, 0, len(dirs))
 
 	for _, fi := range dirs {
-		builds = append(builds, fi.Name())
+		if name := fi.Name(); strings.HasPrefix(name, "10.") {
+			builds = append(builds, fi.Name())
+		}
 	}
 
 	if len(builds) == 0 {
@@ -273,4 +370,17 @@ func winSDKDirectory(sdkRoot string) string {
 	})
 
 	return filepath.Join(sdkRoot, builds[0])
+}
+
+func defaultWinArchitecture() string {
+	switch arch := runtime.GOARCH; arch {
+	case "386":
+		return "x86"
+
+	case "amd64":
+		return "x64"
+
+	default:
+		return arch
+	}
 }

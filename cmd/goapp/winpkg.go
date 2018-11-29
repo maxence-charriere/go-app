@@ -23,7 +23,7 @@ type winPackage struct {
 	namex          string
 	resources      string
 	assets         string
-	config         winBuilConfig
+	config         winBuildConfig
 	manifest       manifest
 }
 
@@ -77,7 +77,7 @@ func newWinPackage(buildDir, name string) (*winPackage, error) {
 	}, nil
 }
 
-func (pkg *winPackage) Build(ctx context.Context, c winBuilConfig) error {
+func (pkg *winPackage) Build(ctx context.Context, c winBuildConfig) error {
 	pkg.config = c
 	name := filepath.Base(pkg.name)
 
@@ -111,10 +111,10 @@ func (pkg *winPackage) Build(ctx context.Context, c winBuilConfig) error {
 		return err
 	}
 
-	if !c.AppX {
-		printVerbose("deploying")
-		return pkg.deploy(ctx)
-	}
+	// if !c.AppX {
+	// 	printVerbose("deploying")
+	// 	return pkg.deploy(ctx)
+	// }
 
 	printVerbose("creating appx")
 	if err := pkg.makeToAppx(ctx); err != nil {
