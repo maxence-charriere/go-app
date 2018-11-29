@@ -317,7 +317,7 @@ func (pkg *MacPackage) init() (err error) {
 	if pkg.tmpDir = os.Getenv("TMPDIR"); len(pkg.tmpDir) == 0 {
 		return errors.New("tmp dir not set")
 	}
-	pkg.tmpDir = filepath.Join(pkg.tmpDir, "goapp")
+	pkg.tmpDir = filepath.Join(pkg.tmpDir, "goapp", execName)
 	pkg.tmpExecutable = filepath.Join(pkg.tmpDir, execName)
 
 	pkg.contentsDir = filepath.Join(pkg.Output, "Contents")
