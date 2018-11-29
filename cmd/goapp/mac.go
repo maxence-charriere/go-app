@@ -434,7 +434,7 @@ func (pkg *MacPackage) buildExecutable(ctx context.Context) error {
 }
 
 func (pkg *MacPackage) readSettings(ctx context.Context) error {
-	settingsPath := filepath.Join(pkg.tmpDir, "s.json")
+	settingsPath := filepath.Join(pkg.tmpDir, "settings.json")
 	defer os.RemoveAll(settingsPath)
 
 	os.Setenv("GOAPP_BUILD", settingsPath)
@@ -461,6 +461,7 @@ func (pkg *MacPackage) readSettings(ctx context.Context) error {
 	s.Version = stringWithDefault(s.Version, "1.0")
 	s.BuildNumber = intWithDefault(s.BuildNumber, 1)
 
+	s.Icon = stringWithDefault(s.Icon, "logo.png")
 	pkg.icon = s.Icon
 	s.Icon = filepath.Base(s.Icon)
 	s.Icon = strings.TrimSuffix(s.Icon, filepath.Ext(s.Icon))
@@ -500,11 +501,10 @@ func (pkg *MacPackage) syncResources() error {
 }
 
 func (pkg *MacPackage) generateIcons(ctx context.Context) error {
-	if len(pkg.icon) == 0 {
-		return nil
-	}
-
 	icon := filepath.Join(pkg.resourcesDir, pkg.icon)
+	if _, err := os.Stat(icon); os.IsNotExist(err) {
+		file.Copy(icon, filepath.Join(murlokswarm(), "logo.png"))
+	}
 
 	iconset := filepath.Base(icon)
 	iconset = strings.TrimSuffix(iconset, filepath.Ext(iconset))
