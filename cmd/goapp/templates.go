@@ -212,7 +212,7 @@ const appxManifestTmpl = `
                     <uap:AppService Name="InProcessAppService" />
                 </uap:Extension>
                 <uap:Extension Category="windows.protocol">
-                    <uap:Protocol Name="{{.Scheme}}" />
+                    <uap:Protocol Name="{{.URLScheme}}" />
                 </uap:Extension>
             </Extensions>
         </Application>
