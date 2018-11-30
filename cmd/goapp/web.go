@@ -419,7 +419,7 @@ func (pkg *WebPackage) syncResources() error {
 }
 
 func (pkg *WebPackage) buildJavascriptClient(ctx context.Context) error {
-	if runtime.GOOS == "linux" {
+	if runtime.GOOS == "windows" {
 		os.Setenv("GOOS", "linux")
 		defer os.Unsetenv("GOOS")
 	}
