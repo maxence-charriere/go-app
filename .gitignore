@@ -91,6 +91,3 @@ examples/test/test
 .DS_Store
 examples/action-event/bin/web/web
 examples/nav/nav-mac
-
-# Uwp
-drivers/win/uwp/uwp/Assets
