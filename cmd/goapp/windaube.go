@@ -188,11 +188,15 @@ func (pkg *WinPackage) buildExecutable(ctx context.Context) error {
 		"-o", pkg.tmpExecutable,
 	}
 
+	ldflags := []string{"-X github.com/murlokswarm/app.Kind=desktop"}
+
 	if pkg.Verbose {
 		args = append(args, "-v")
 	} else {
-		args = append(args, "-ldflags", "-H=windowsgui")
+		ldflags = append(ldflags, "-H=windowsgui")
 	}
+
+	args = append(args, "-ldflags", strings.Join(ldflags, " "))
 
 	if pkg.Force {
 		args = append(args, "-a")
@@ -329,7 +333,17 @@ func (pkg *WinPackage) Run(ctx context.Context) error {
 
 // Clean satisfies the Package interface.
 func (pkg *WinPackage) Clean(ctx context.Context) error {
-	panic("not implemented")
+	if err := pkg.init(); err != nil {
+		return err
+	}
+
+	pkg.Log("removing %s", pkg.Output)
+	if err := os.RemoveAll(pkg.Output); err != nil {
+		return err
+	}
+
+	pkg.Log("removing %s", pkg.tmpDir)
+	return os.RemoveAll(pkg.tmpDir)
 }
 
 type winSettings struct {

@@ -367,7 +367,10 @@ func (pkg *WebPackage) create() error {
 }
 
 func (pkg *WebPackage) buildExecutable(ctx context.Context) error {
-	args := []string{"go", "build", "-o", pkg.executable}
+	args := []string{"go", "build",
+		"-ldflags", "-X github.com/murlokswarm/app.Kind=web",
+		"-o", pkg.executable,
+	}
 
 	if pkg.Verbose {
 		args = append(args, "-v")
