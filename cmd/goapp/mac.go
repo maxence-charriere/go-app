@@ -426,6 +426,8 @@ func (pkg *MacPackage) buildExecutable(ctx context.Context) error {
 		args = append(args, "-race")
 	}
 
+	args = append(args, pkg.Sources)
+
 	if err := execute(ctx, args[0], args[1:]...); err != nil {
 		return err
 	}

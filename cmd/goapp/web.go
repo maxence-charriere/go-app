@@ -295,11 +295,13 @@ func (pkg *WebPackage) init() (err error) {
 	if len(pkg.Sources) == 0 || pkg.Sources == "." || pkg.Sources == "./" {
 		pkg.Sources = "."
 	}
-	if pkg.Sources, err = filepath.Abs(pkg.Sources); err != nil {
+
+	sources, err := filepath.Abs(pkg.Sources)
+	if err != nil {
 		return err
 	}
 
-	name := filepath.Base(pkg.Sources)
+	name := filepath.Base(sources)
 
 	if len(pkg.Output) == 0 {
 		pkg.Output = name
@@ -408,6 +410,7 @@ func (pkg *WebPackage) buildExecutable(ctx context.Context) error {
 		args = append(args, "-race")
 	}
 
+	args = append(args, pkg.Sources)
 	return execute(ctx, args[0], args[1:]...)
 }
 
@@ -430,6 +433,8 @@ func (pkg *WebPackage) buildJavascriptClient(ctx context.Context) error {
 	if pkg.Verbose {
 		args = append(args, "-v")
 	}
+
+	args = append(args, pkg.Sources)
 
 	if err := execute(ctx, args[0], args[1:]...); err != nil {
 		return err
