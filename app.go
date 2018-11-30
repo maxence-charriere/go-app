@@ -41,7 +41,7 @@ var (
 func init() {
 	EnableDebug(true)
 
-	if runtime.GOOS == "web" {
+	if runtime.GOARCH == "js" {
 		Kind = "web"
 	}
 }

@@ -5,7 +5,9 @@ import (
 	"github.com/murlokswarm/app/drivers/mac"
 )
 
-func mainDesktop() {
+func main() {
+	app.Import(&Hello{})
+
 	app.Run(&mac.Driver{
 		URL: "/Hello",
 	})

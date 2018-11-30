@@ -191,7 +191,7 @@ func cleanWeb(ctx context.Context, args []string) {
 	c := webCleanConfig{}
 
 	ld := conf.Loader{
-		Name:    "web run",
+		Name:    "web clean",
 		Args:    args,
 		Usage:   "[options...] [package]",
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},

@@ -1,3 +1,5 @@
+// +build !js
+
 package main
 
 import (
@@ -5,7 +7,9 @@ import (
 	"github.com/murlokswarm/app/drivers/win"
 )
 
-func mainDesktop() {
+func main() {
+	app.Import(&Hello{})
+
 	app.Run(&win.Driver{
 		URL: "/Hello",
 	})
