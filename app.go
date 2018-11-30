@@ -4,6 +4,7 @@ package app
 import (
 	"fmt"
 	"reflect"
+	"runtime"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -39,6 +40,10 @@ var (
 
 func init() {
 	EnableDebug(true)
+
+	if runtime.GOOS == "web" {
+		Kind = "web"
+	}
 }
 
 // Import imports the component into the app.
