@@ -21,7 +21,7 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
       <Extensions>
-        <desktop:Extension Category="windows.fullTrustProcess" Executable="hello-win.exe" />
+        <desktop:Extension Category="windows.fullTrustProcess" Executable="demo.exe" />
         <uap:Extension Category="windows.appService">
           <uap:AppService Name="InProcessAppService" />
         </uap:Extension>

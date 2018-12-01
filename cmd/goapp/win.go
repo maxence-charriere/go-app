@@ -1,5 +1,3 @@
-//go:generate go run uwp/main.go
-
 package main
 
 import (
@@ -7,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/murlokswarm/app/internal/file"
 	"github.com/segmentio/conf"
 )
 
@@ -283,7 +282,7 @@ func certMgr() string {
 
 func certificate() string {
 	return filepath.Join(
-		murlokswarm(),
+		file.RepoPath(),
 		"cmd",
 		"goapp",
 		"certificates",

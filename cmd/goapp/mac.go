@@ -505,7 +505,7 @@ func (pkg *MacPackage) syncResources() error {
 func (pkg *MacPackage) generateIcons(ctx context.Context) error {
 	icon := filepath.Join(pkg.resourcesDir, pkg.icon)
 	if _, err := os.Stat(icon); os.IsNotExist(err) {
-		file.Copy(icon, filepath.Join(murlokswarm(), "logo.png"))
+		file.Copy(icon, file.RepoPath("logo.png"))
 	}
 
 	iconset := filepath.Base(icon)

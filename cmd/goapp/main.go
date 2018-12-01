@@ -1,6 +1,7 @@
 package main
 
 //go:generate go run templates/main.go
+//go:generate go run uwp/main.go
 
 import (
 	"context"
@@ -256,16 +257,6 @@ func listenLogs(ctx context.Context, addr string) {
 	if err != nil {
 		printErr("listening logs failed: %s", err)
 	}
-}
-
-func murlokswarm() string {
-	return filepath.Join(
-		os.Getenv("GOPATH"),
-		"src",
-		"github.com",
-		"murlokswarm",
-		"app",
-	)
 }
 
 func generateTemplatedFile(path, tmpl string, data interface{}) error {

@@ -163,7 +163,7 @@ func (pkg *winPackage) readSettings(ctx context.Context) error {
 	m.Description = stringWithDefault(m.Description, m.Name)
 	m.Publisher = stringWithDefault(m.Publisher, "goapp")
 	m.Scheme = stringWithDefault(m.Scheme, pkg.goPackageName)
-	m.Icon = stringWithDefault(m.Icon, filepath.Join(murlokswarm(), "logo.png"))
+	m.Icon = stringWithDefault(m.Icon, file.RepoPath("logo.png"))
 
 	d, _ := json.MarshalIndent(m, "", "    ")
 	printVerbose("settings: %s", d)
@@ -191,7 +191,7 @@ func (pkg *winPackage) createPackage() error {
 		return err
 	}
 
-	uwpDir := filepath.Join(murlokswarm(), "cmd", "goapp", "uwp")
+	uwpDir := file.RepoPath("cmd", "goapp", "uwp")
 	uwpFiles := []string{
 		"clrcompression.dll",
 		"goapp.dll",

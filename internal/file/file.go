@@ -147,3 +147,17 @@ func Filenames(dirname string, extensions ...string) []string {
 	filepath.Walk(dirname, walker)
 	return filenames
 }
+
+// RepoPath returns the app package repository path.
+func RepoPath(p ...string) string {
+	path := []string{
+		os.Getenv("GOPATH"),
+		"src",
+		"github.com",
+		"murlokswarm",
+		"app",
+	}
+
+	path = append(path, p...)
+	return filepath.Join(path...)
+}

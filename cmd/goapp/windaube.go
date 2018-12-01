@@ -272,7 +272,7 @@ func (pkg *WinPackage) syncResources() error {
 func (pkg *WinPackage) generateIcons(ctx context.Context) error {
 	icon := filepath.Join(pkg.resourcesDir, pkg.settings.Icon)
 	if _, err := os.Stat(icon); os.IsNotExist(err) {
-		file.Copy(icon, filepath.Join(murlokswarm(), "logo.png"))
+		file.Copy(icon, file.RepoPath("logo.png"))
 	}
 
 	scaled := func(n string, s int) string {
