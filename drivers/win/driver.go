@@ -17,7 +17,6 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/murlokswarm/app/internal/logs"
 	"github.com/pkg/errors"
 )
 
@@ -27,7 +26,7 @@ var (
 	dev           string
 	goappBuild    = os.Getenv("GOAPP_BUILD")
 	goappLogsAddr = os.Getenv("GOAPP_LOGS_ADDR")
-	goappLogs     *logs.GoappClient
+	goappLogs     *core.GoappClient
 )
 
 func init() {
@@ -40,13 +39,13 @@ func init() {
 
 	if len(goappLogsAddr) != 0 {
 		app.EnableDebug(debug)
-		goappLogs = logs.NewGoappClient(goappLogsAddr, logs.WithPrompt)
+		goappLogs = core.NewGoappClient(goappLogsAddr, core.WithPrompt)
 		app.Logger = goappLogs.Logger()
 		return
 	}
 
-	logger := logs.ToWriter(os.Stderr)
-	app.Logger = logs.WithPrompt(logger)
+	logger := core.ToWriter(os.Stderr)
+	app.Logger = core.WithPrompt(logger)
 }
 
 // Driver is the app.Driver implementation for Windows.

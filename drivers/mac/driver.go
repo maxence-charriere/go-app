@@ -24,7 +24,6 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/murlokswarm/app/internal/logs"
 	"github.com/pkg/errors"
 )
 
@@ -40,8 +39,8 @@ func init() {
 		return
 	}
 
-	logger := logs.ToWriter(os.Stderr)
-	app.Logger = logs.WithColoredPrompt(logger)
+	logger := core.ToWriter(os.Stderr)
+	app.Logger = core.WithColoredPrompt(logger)
 	app.EnableDebug(debug)
 }
 

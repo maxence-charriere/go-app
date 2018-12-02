@@ -549,5 +549,10 @@ func (pkg *WebPackage) Clean(ctx context.Context) error {
 	}
 
 	pkg.Log("removing %s", pkg.Output)
-	return os.RemoveAll(pkg.Output)
+	if err := os.RemoveAll(pkg.Output); err != nil {
+		return err
+	}
+
+	pkg.Log("removing %s", pkg.tmpDir)
+	return os.RemoveAll(pkg.tmpDir)
 }
