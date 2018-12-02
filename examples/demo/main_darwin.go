@@ -3,8 +3,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/drivers/mac"
 	"github.com/murlokswarm/app/drivers/web"
@@ -12,8 +10,6 @@ import (
 
 func main() {
 	app.Import(&Hello{})
-
-	fmt.Println("kind:", app.Kind)
 
 	switch app.Kind {
 	case "web":
