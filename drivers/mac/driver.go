@@ -32,7 +32,6 @@ var (
 	driver     *Driver
 	goappBuild = os.Getenv("GOAPP_BUILD")
 	debug      = os.Getenv("GOAPP_DEBUG") == "true"
-	goappLogs  *logs.GoappClient
 )
 
 func init() {
@@ -67,25 +66,25 @@ type Driver struct {
 	// The func called right after app.Run.
 	OnRun func()
 
-	// The handler called when the app is focused.
+	// The func called when the app is focused.
 	OnFocus func()
 
-	// The handler called when the app loses focus.
+	// The func called when the app loses focus.
 	OnBlur func()
 
-	// The handler called when the app is reopened.
+	// The func called when the app is reopened.
 	OnReopen func(hasVisibleWindows bool)
 
-	// The handler called when a file associated with the app is opened.
+	// The func called when a file associated with the app is opened.
 	OnFilesOpen func(filenames []string)
 
-	// The handler called when the app URI is invoked.
+	// The func called when the app URI is invoked.
 	OnURLOpen func(u *url.URL)
 
-	// The handler called when the quit button is clicked.
+	// The func called when the quit button is clicked.
 	OnQuit func() bool
 
-	// The handler called when the app is about to exit.
+	// The func called when the app is about to exit.
 	OnExit func()
 
 	factory      *app.Factory
@@ -155,10 +154,6 @@ func (d *Driver) Run(f *app.Factory) error {
 
 	d.uichan = make(chan func(), 256)
 	driver = d
-
-	if goappLogs != nil {
-		go goappLogs.WaitForStop(d.Stop)
-	}
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -415,10 +410,6 @@ func (d *Driver) onQuit(in map[string]interface{}) interface{} {
 func (d *Driver) onExit(in map[string]interface{}) interface{} {
 	if d.OnExit != nil {
 		d.OnExit()
-	}
-
-	if goappLogs != nil {
-		goappLogs.Close()
 	}
 
 	return nil
