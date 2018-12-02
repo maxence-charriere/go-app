@@ -4,7 +4,6 @@ package app
 import (
 	"fmt"
 	"reflect"
-	"runtime"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -39,11 +38,7 @@ var (
 )
 
 func init() {
-	EnableDebug(true)
-
-	if runtime.GOARCH == "js" {
-		Kind = "web"
-	}
+	EnableDebug(false)
 }
 
 // Import imports the component into the app.

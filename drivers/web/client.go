@@ -20,6 +20,7 @@ func init() {
 	logger := core.ToWriter(os.Stderr)
 	logger = core.WithPrompt(logger)
 	app.Logger = logger
+	app.Kind = "web"
 }
 
 // Run satisfies the app.Driver interface.
