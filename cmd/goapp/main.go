@@ -13,7 +13,6 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/murlokswarm/app/internal/logs"
 	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
 )
@@ -245,18 +244,6 @@ func intWithDefault(value, defaultValue int) int {
 	}
 
 	return value
-}
-
-func listenLogs(ctx context.Context, addr string) {
-	logs := logs.GoappServer{
-		Addr:   addr,
-		Writer: os.Stderr,
-	}
-
-	err := logs.ListenAndLog(ctx)
-	if err != nil {
-		printErr("listening logs failed: %s", err)
-	}
 }
 
 func generateTemplatedFile(path, tmpl string, data interface{}) error {
