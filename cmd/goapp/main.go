@@ -1,6 +1,7 @@
 package main
 
 //go:generate go run templates/main.go
+//go:generate go run uwp/main.go
 
 import (
 	"context"
@@ -9,6 +10,7 @@ import (
 	"os/signal"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"text/template"
 
 	"github.com/pkg/errors"
@@ -245,7 +247,7 @@ func intWithDefault(value, defaultValue int) int {
 }
 
 func generateTemplatedFile(path, tmpl string, data interface{}) error {
-	t, err := template.New("test").Parse(tmpl)
+	t, err := template.New("").Parse(strings.TrimSpace(tmpl))
 	if err != nil {
 		return err
 	}

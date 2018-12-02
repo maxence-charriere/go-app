@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -191,7 +190,7 @@ func cleanWeb(ctx context.Context, args []string) {
 	c := webCleanConfig{}
 
 	ld := conf.Loader{
-		Name:    "web run",
+		Name:    "web clean",
 		Args:    args,
 		Usage:   "[options...] [package]",
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
@@ -256,9 +255,13 @@ type WebPackage struct {
 	name                string
 	workingDir          string
 	sourcesResourcesDir string
+	tmpDir              string
+	tmpGoappjs          string
+	tmpGoappjsMap       string
 	resourcesDir        string
 	executable          string
 	goappjs             string
+	goappjsMap          string
 }
 
 // Init satisfies the Package interface.
@@ -291,14 +294,16 @@ func (pkg *WebPackage) init() (err error) {
 	if len(pkg.Sources) == 0 || pkg.Sources == "." || pkg.Sources == "./" {
 		pkg.Sources = "."
 	}
-	if pkg.Sources, err = filepath.Abs(pkg.Sources); err != nil {
+
+	sources, err := filepath.Abs(pkg.Sources)
+	if err != nil {
 		return err
 	}
 
-	execName := filepath.Base(pkg.Sources)
+	name := filepath.Base(sources)
 
 	if len(pkg.Output) == 0 {
-		pkg.Output = execName
+		pkg.Output = name
 	}
 	if !strings.HasSuffix(pkg.Output, ".wapp") {
 		pkg.Output += ".wapp"
@@ -313,12 +318,32 @@ func (pkg *WebPackage) init() (err error) {
 	pkg.sourcesResourcesDir = filepath.Join(pkg.Sources, "resources")
 	pkg.resourcesDir = filepath.Join(pkg.Output, "resources")
 
-	pkg.executable = filepath.Join(pkg.Output, execName)
+	pkg.executable = filepath.Join(pkg.Output, name)
 	if runtime.GOOS == "windows" {
 		pkg.executable += ".exe"
 	}
 
+	tmp := ""
+	switch runtime.GOOS {
+	case "darwin":
+		tmp = "TMPDIR"
+
+	case "windows":
+		tmp = "TEMP"
+
+	default:
+		tmp = "/tmp"
+	}
+
+	if pkg.tmpDir = os.Getenv(tmp); len(pkg.tmpDir) == 0 {
+		return errors.New("tmp dir not set")
+	}
+	pkg.tmpDir = filepath.Join(pkg.tmpDir, "goapp", name)
+	pkg.tmpGoappjs = filepath.Join(pkg.tmpDir, "goapp.js")
+	pkg.tmpGoappjsMap = pkg.tmpGoappjs + ".map"
+
 	pkg.goappjs = filepath.Join(pkg.resourcesDir, "goapp.js")
+	pkg.goappjsMap = pkg.goappjs + ".map"
 	return nil
 }
 
@@ -338,13 +363,13 @@ func (pkg *WebPackage) Build(ctx context.Context) error {
 		return err
 	}
 
-	pkg.Log("building javascript client")
-	if err := pkg.buildJavascriptClient(ctx); err != nil {
+	pkg.Log("syncing resources")
+	if err := pkg.syncResources(); err != nil {
 		return err
 	}
 
-	pkg.Log("syncing resources")
-	if err := pkg.syncResources(); err != nil {
+	pkg.Log("building javascript client")
+	if err := pkg.buildJavascriptClient(ctx); err != nil {
 		return err
 	}
 
@@ -367,7 +392,10 @@ func (pkg *WebPackage) create() error {
 }
 
 func (pkg *WebPackage) buildExecutable(ctx context.Context) error {
-	args := []string{"go", "build", "-o", pkg.executable}
+	args := []string{"go", "build",
+		"-ldflags", "-X github.com/murlokswarm/app.Kind=web",
+		"-o", pkg.executable,
+	}
 
 	if pkg.Verbose {
 		args = append(args, "-v")
@@ -381,7 +409,12 @@ func (pkg *WebPackage) buildExecutable(ctx context.Context) error {
 		args = append(args, "-race")
 	}
 
+	args = append(args, pkg.Sources)
 	return execute(ctx, args[0], args[1:]...)
+}
+
+func (pkg *WebPackage) syncResources() error {
+	return file.Sync(pkg.resourcesDir, pkg.sourcesResourcesDir)
 }
 
 func (pkg *WebPackage) buildJavascriptClient(ctx context.Context) error {
@@ -390,7 +423,7 @@ func (pkg *WebPackage) buildJavascriptClient(ctx context.Context) error {
 		defer os.Unsetenv("GOOS")
 	}
 
-	args := []string{"gopherjs", "build", "-o", pkg.goappjs}
+	args := []string{"gopherjs", "build", "-o", pkg.tmpGoappjs}
 
 	if pkg.Minify {
 		args = append(args, "-m")
@@ -400,11 +433,17 @@ func (pkg *WebPackage) buildJavascriptClient(ctx context.Context) error {
 		args = append(args, "-v")
 	}
 
-	return execute(ctx, args[0], args[1:]...)
-}
+	args = append(args, pkg.Sources)
 
-func (pkg *WebPackage) syncResources() error {
-	return file.Sync(pkg.resourcesDir, pkg.sourcesResourcesDir)
+	if err := execute(ctx, args[0], args[1:]...); err != nil {
+		return err
+	}
+
+	if err := file.Copy(pkg.goappjs, pkg.tmpGoappjs); err != nil {
+		return err
+	}
+
+	return file.Copy(pkg.goappjsMap, pkg.tmpGoappjsMap)
 }
 
 // Run satisfies the Package interface.
@@ -450,8 +489,6 @@ func (pkg *WebPackage) launchWithBrowser(ctx context.Context) error {
 		u.Host = "127.0.0.1" + u.Host
 	}
 	addr = u.String()
-
-	fmt.Println("ADDR:", addr)
 
 	if pkg.Chrome {
 		pkg.Log("running client in google chrome")
@@ -509,5 +546,10 @@ func (pkg *WebPackage) Clean(ctx context.Context) error {
 	}
 
 	pkg.Log("removing %s", pkg.Output)
-	return os.RemoveAll(pkg.Output)
+	if err := os.RemoveAll(pkg.Output); err != nil {
+		return err
+	}
+
+	pkg.Log("removing %s", pkg.tmpDir)
+	return os.RemoveAll(pkg.tmpDir)
 }

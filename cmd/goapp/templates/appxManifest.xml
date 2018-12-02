@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" 
+    xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" 
+    xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" 
+    xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" IgnorableNamespaces="uap rescap desktop">
+    <Identity Name="{{.ID}}" Publisher="CN={{.Publisher}}" Version="1.0.0.0" />
+    <Properties>
+        <DisplayName>{{.Name}}</DisplayName>
+        <PublisherDisplayName>{{.Publisher}}</PublisherDisplayName>
+        <Logo>Assets\StoreLogo.png</Logo>
+    </Properties>
+    <Dependencies>
+        <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.15063.0" MaxVersionTested="10.0.17134.0" />
+        <PackageDependency Name="Microsoft.NET.Native.Framework.1.7" MinVersion="1.7.25531.0" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" />
+        <PackageDependency Name="Microsoft.NET.Native.Runtime.1.7" MinVersion="1.7.25531.0" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" />
+        <PackageDependency Name="Microsoft.VCLibs.140.00" MinVersion="14.0.22929.0" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" />
+    </Dependencies>
+    <Resources>
+        <Resource Language="EN-US" />
+        <Resource uap:Scale="100" />
+        <Resource uap:Scale="125" />
+        <Resource uap:Scale="150" />
+        <Resource uap:Scale="200" />
+        <Resource uap:Scale="400" />
+    </Resources>
+    <Applications>
+        <Application Id="{{.ID}}" Executable="uwp.exe" EntryPoint="uwp.App">
+            <uap:VisualElements DisplayName="{{.Name}}" Description="{{.Description}}" BackgroundColor="transparent" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png">
+                <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\Square310x310Logo.png" Square71x71Logo="Assets\Square71x71Logo.png">
+                    <uap:ShowNameOnTiles>
+                        <uap:ShowOn Tile="square150x150Logo" />
+                        <uap:ShowOn Tile="wide310x150Logo" />
+                        <uap:ShowOn Tile="square310x310Logo" />
+                    </uap:ShowNameOnTiles>
+                </uap:DefaultTile>
+            </uap:VisualElements>
+            <Extensions>
+                <desktop:Extension Category="windows.fullTrustProcess" Executable="{{.Executable}}" />
+                <uap:Extension Category="windows.appService">
+                    <uap:AppService Name="InProcessAppService" />
+                </uap:Extension>
+                <uap:Extension Category="windows.protocol">
+                    <uap:Protocol Name="{{.URLScheme}}" />
+                </uap:Extension>
+            </Extensions>
+        </Application>
+    </Applications>
+    <Capabilities>
+        <Capability Name="internetClient" />
+        <rescap:Capability Name="runFullTrust"/>
+    </Capabilities>
+</Package>

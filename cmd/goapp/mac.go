@@ -241,7 +241,7 @@ type MacPackage struct {
 	// Configure the app to run in sandbox mode.
 	Sandbox bool
 
-	// Creates a .pkg to be uploaed on the app store.
+	// Creates a .pkg to be uploaed on the App Store.
 	AppStore bool
 
 	// Force rebuilding of package that are already up-to-date.
@@ -317,7 +317,7 @@ func (pkg *MacPackage) init() (err error) {
 	if pkg.tmpDir = os.Getenv("TMPDIR"); len(pkg.tmpDir) == 0 {
 		return errors.New("tmp dir not set")
 	}
-	pkg.tmpDir = filepath.Join(pkg.tmpDir, "goapp")
+	pkg.tmpDir = filepath.Join(pkg.tmpDir, "goapp", execName)
 	pkg.tmpExecutable = filepath.Join(pkg.tmpDir, execName)
 
 	pkg.contentsDir = filepath.Join(pkg.Output, "Contents")
@@ -410,7 +410,7 @@ func (pkg *MacPackage) buildExecutable(ctx context.Context) error {
 
 	args := []string{
 		"go", "build",
-		"-ldflags", "-s",
+		"-ldflags", "-s -X github.com/murlokswarm/app.Kind=desktop",
 		"-o", pkg.tmpExecutable,
 	}
 
@@ -426,6 +426,8 @@ func (pkg *MacPackage) buildExecutable(ctx context.Context) error {
 		args = append(args, "-race")
 	}
 
+	args = append(args, pkg.Sources)
+
 	if err := execute(ctx, args[0], args[1:]...); err != nil {
 		return err
 	}
@@ -434,7 +436,7 @@ func (pkg *MacPackage) buildExecutable(ctx context.Context) error {
 }
 
 func (pkg *MacPackage) readSettings(ctx context.Context) error {
-	settingsPath := filepath.Join(pkg.tmpDir, "s.json")
+	settingsPath := filepath.Join(pkg.tmpDir, "settings.json")
 	defer os.RemoveAll(settingsPath)
 
 	os.Setenv("GOAPP_BUILD", settingsPath)
@@ -461,6 +463,7 @@ func (pkg *MacPackage) readSettings(ctx context.Context) error {
 	s.Version = stringWithDefault(s.Version, "1.0")
 	s.BuildNumber = intWithDefault(s.BuildNumber, 1)
 
+	s.Icon = stringWithDefault(s.Icon, "logo.png")
 	pkg.icon = s.Icon
 	s.Icon = filepath.Base(s.Icon)
 	s.Icon = strings.TrimSuffix(s.Icon, filepath.Ext(s.Icon))
@@ -500,11 +503,10 @@ func (pkg *MacPackage) syncResources() error {
 }
 
 func (pkg *MacPackage) generateIcons(ctx context.Context) error {
-	if len(pkg.icon) == 0 {
-		return nil
-	}
-
 	icon := filepath.Join(pkg.resourcesDir, pkg.icon)
+	if _, err := os.Stat(icon); os.IsNotExist(err) {
+		file.Copy(icon, file.RepoPath("logo.png"))
+	}
 
 	iconset := filepath.Base(icon)
 	iconset = strings.TrimSuffix(iconset, filepath.Ext(iconset))

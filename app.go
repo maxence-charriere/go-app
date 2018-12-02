@@ -26,6 +26,9 @@ var (
 	// It is used by Log, Logf, Panic and Panicf to generate logs.
 	Logger func(format string, a ...interface{})
 
+	// Kind describes the app kind (desktop|mobile|web).
+	Kind string
+
 	driver  Driver
 	factory = NewFactory()
 	events  = newEventRegistry(CallOnUIGoroutine)
@@ -35,7 +38,7 @@ var (
 )
 
 func init() {
-	EnableDebug(true)
+	EnableDebug(false)
 }
 
 // Import imports the component into the app.

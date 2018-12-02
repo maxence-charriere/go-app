@@ -33,6 +33,10 @@ func main() {
 			variable: "entitlementsPlistTmpl",
 			template: filepath.Join("templates", "entitlements.plist"),
 		},
+		{
+			variable: "appxManifestTmpl",
+			template: filepath.Join("templates", "appxManifest.xml"),
+		},
 	}
 
 	for _, t := range templates {

@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "uwp", "uwp\uwp.csproj", "{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "goapp", "goapp\goapp.vcxproj", "{D6331B7A-7A36-4C3F-A340-2209C9D7624C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|ARM = Release|ARM
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Debug|ARM.ActiveCfg = Debug|ARM
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Debug|ARM.Build.0 = Debug|ARM
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Debug|ARM.Deploy.0 = Debug|ARM
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Debug|x64.ActiveCfg = Debug|x64
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Debug|x64.Build.0 = Debug|x64
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Debug|x64.Deploy.0 = Debug|x64
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Debug|x86.ActiveCfg = Debug|x86
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Debug|x86.Build.0 = Debug|x86
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Debug|x86.Deploy.0 = Debug|x86
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Release|ARM.ActiveCfg = Release|ARM
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Release|ARM.Build.0 = Release|ARM
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Release|ARM.Deploy.0 = Release|ARM
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Release|x64.ActiveCfg = Release|x64
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Release|x64.Build.0 = Release|x64
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Release|x64.Deploy.0 = Release|x64
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Release|x86.ActiveCfg = Release|x86
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Release|x86.Build.0 = Release|x86
+		{72E4CC81-D0CB-49CF-83EC-8C683748EBCE}.Release|x86.Deploy.0 = Release|x86
+		{D6331B7A-7A36-4C3F-A340-2209C9D7624C}.Debug|ARM.ActiveCfg = Debug|Win32
+		{D6331B7A-7A36-4C3F-A340-2209C9D7624C}.Debug|x64.ActiveCfg = Debug|x64
+		{D6331B7A-7A36-4C3F-A340-2209C9D7624C}.Debug|x64.Build.0 = Debug|x64
+		{D6331B7A-7A36-4C3F-A340-2209C9D7624C}.Debug|x86.ActiveCfg = Debug|Win32
+		{D6331B7A-7A36-4C3F-A340-2209C9D7624C}.Debug|x86.Build.0 = Debug|Win32
+		{D6331B7A-7A36-4C3F-A340-2209C9D7624C}.Release|ARM.ActiveCfg = Release|Win32
+		{D6331B7A-7A36-4C3F-A340-2209C9D7624C}.Release|x64.ActiveCfg = Release|x64
+		{D6331B7A-7A36-4C3F-A340-2209C9D7624C}.Release|x64.Build.0 = Release|x64
+		{D6331B7A-7A36-4C3F-A340-2209C9D7624C}.Release|x86.ActiveCfg = Release|Win32
+		{D6331B7A-7A36-4C3F-A340-2209C9D7624C}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7ADF8BE1-2692-4719-8BC1-E8A9D9A82360}
+	EndGlobalSection
+EndGlobal
