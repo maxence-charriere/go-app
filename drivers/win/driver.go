@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -17,16 +18,18 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
+	"github.com/murlokswarm/app/internal/file"
 	"github.com/pkg/errors"
 )
 
 var (
-	driver        *Driver
-	debug         bool
-	dev           string
-	goappBuild    = os.Getenv("GOAPP_BUILD")
-	goappLogsAddr = os.Getenv("GOAPP_LOGS_ADDR")
-	goappLogs     *core.GoappClient
+	driver     *Driver
+	debug      bool
+	dev        string
+	logsURL    string
+	logsWriter *file.HTTPWriter
+	logsCancel func()
+	goappBuild = os.Getenv("GOAPP_BUILD")
 )
 
 func init() {
@@ -37,11 +40,22 @@ func init() {
 		return
 	}
 
-	if len(goappLogsAddr) != 0 {
+	if len(logsURL) != 0 {
 		app.EnableDebug(debug)
-		goappLogs = core.NewGoappClient(goappLogsAddr, core.WithPrompt)
-		app.Logger = goappLogs.Logger()
-		return
+
+		logWriter = &file.HTTPWriter{
+			URL: logsURL,
+			Client: &http.Client{
+				Timeout: time.Second,
+			},
+		}
+
+		cancel, err := file.CaptureOutput(logsWriter)
+		if err != nil {
+			panic(err)
+		}
+
+		logsCancel = cancel
 	}
 
 	logger := core.ToWriter(os.Stderr)
@@ -134,6 +148,11 @@ func (d *Driver) Run(f *app.Factory) error {
 
 		case <-aliveTicker.C:
 		}
+	}
+
+	if logsCancel != nil {
+		time.Sleep(time.Second)
+		logsCancel()
 	}
 }
 

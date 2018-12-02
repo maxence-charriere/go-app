@@ -3,7 +3,6 @@ package file
 import (
 	"bufio"
 	"bytes"
-	"context"
 	"io"
 	"net/http"
 	"os"
@@ -12,7 +11,7 @@ import (
 
 // CaptureOutput read from os.Stdout and os.Stderr and writes on the given
 // writer.
-func CaptureOutput(ctx context.Context, w io.Writer) (func(), error) {
+func CaptureOutput(w io.Writer) (func(), error) {
 	outr, outw, err := os.Pipe()
 	if err != nil {
 		return nil, err

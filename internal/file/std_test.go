@@ -2,7 +2,6 @@ package file
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -27,7 +26,7 @@ func TestCaptureOutput(t *testing.T) {
 	result := bytes.Buffer{}
 	expected := bytes.Buffer{}
 
-	cancel, err := CaptureOutput(context.Background(), &result)
+	cancel, err := CaptureOutput(&result)
 	require.NoError(t, err)
 
 	fmt.Fprintln(os.Stdout, "hello")
