@@ -24,29 +24,35 @@ func CaptureOutput(w io.Writer) (func(), error) {
 		return nil, err
 	}
 
+	mutex := sync.Mutex{}
+	stdout := os.Stdout
+	stderr := os.Stderr
+
 	cancel := func() {
-		outr.Close()
 		outw.Close()
-		errr.Close()
+		outr.Close()
 		errw.Close()
+		errr.Close()
+
+		os.Stdout = stdout
+		os.Stderr = stderr
 	}
 
 	os.Stdout = outw
 	os.Stderr = errw
-	mutex := sync.Mutex{}
 
 	scanOutput := func(f io.Reader) {
 		scanner := bufio.NewScanner(f)
 
 		for scanner.Scan() {
-			l := scanner.Bytes()
+			line := scanner.Bytes()
 
 			if scanner.Err() != nil {
 				return
 			}
 
 			mutex.Lock()
-			if _, err := w.Write(l); err != nil {
+			if _, err := w.Write(line); err != nil {
 				mutex.Unlock()
 				return
 			}
@@ -76,4 +82,14 @@ func (w *HTTPWriter) Write(p []byte) (n int, err error) {
 	defer res.Body.Close()
 
 	return int(res.Request.ContentLength), nil
+}
+
+// Close sends a message that request a server to shutdown.
+func (w *HTTPWriter) Close() error {
+	res, err := w.Client.Get(w.URL + "/close")
+	if err != nil {
+		return err
+	}
+
+	return res.Body.Close()
 }

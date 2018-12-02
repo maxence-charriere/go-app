@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -490,8 +489,6 @@ func (pkg *WebPackage) launchWithBrowser(ctx context.Context) error {
 		u.Host = "127.0.0.1" + u.Host
 	}
 	addr = u.String()
-
-	fmt.Println("ADDR:", addr)
 
 	if pkg.Chrome {
 		pkg.Log("running client in google chrome")

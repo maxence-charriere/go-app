@@ -15,14 +15,6 @@ import (
 )
 
 func TestCaptureOutput(t *testing.T) {
-	stdout := os.Stdout
-	stderr := os.Stderr
-
-	defer func() {
-		os.Stdout = stdout
-		os.Stderr = stderr
-	}()
-
 	result := bytes.Buffer{}
 	expected := bytes.Buffer{}
 
@@ -33,7 +25,8 @@ func TestCaptureOutput(t *testing.T) {
 	fmt.Fprintln(os.Stderr, "world")
 	fmt.Fprint(&expected, "helloworld")
 
-	time.Sleep(time.Millisecond * 10)
+	time.Sleep(time.Millisecond * 100)
+
 	cancel()
 	require.Equal(t, expected.String(), result.String())
 }
@@ -46,8 +39,12 @@ func TestHTTPWriter(t *testing.T) {
 	wg.Add(1)
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/close" {
+			wg.Done()
+			return
+		}
+
 		result, err = ioutil.ReadAll(r.Body)
-		wg.Done()
 	}))
 	defer ts.Close()
 
@@ -60,6 +57,7 @@ func TestHTTPWriter(t *testing.T) {
 	n, werr := w.Write(expected)
 	require.NoError(t, werr)
 	require.Equal(t, len(expected), n)
+	require.NoError(t, w.Close())
 
 	wg.Wait()
 

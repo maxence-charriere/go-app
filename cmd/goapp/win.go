@@ -5,11 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"runtime"
 	"sort"
 	"strings"
+	"sync"
 
 	"github.com/murlokswarm/app/internal/file"
 	"github.com/pkg/errors"
@@ -141,7 +144,7 @@ func buildWin(ctx context.Context, args []string) {
 		Verbose:      c.Verbose,
 		Force:        c.Force,
 		Race:         c.Race,
-		Dev:          c.Dev,
+		dev:          c.Dev,
 		Log:          printVerbose,
 	}
 
@@ -179,7 +182,7 @@ func runWin(ctx context.Context, args []string) {
 		Verbose: c.Verbose,
 		Force:   c.Force,
 		Race:    c.Race,
-		Dev:     c.Dev,
+		dev:     c.Dev,
 		Log:     printVerbose,
 	}
 
@@ -258,10 +261,6 @@ type WinPackage struct {
 	// Enable verbose mode.
 	Verbose bool
 
-	// Enable goapp dev mode.
-	// Dev mode displays the go program native console.
-	Dev bool
-
 	// The function to log events.
 	Log func(string, ...interface{})
 
@@ -277,6 +276,8 @@ type WinPackage struct {
 	resourcesPri        string
 	appx                string
 	settings            winSettings
+	dev                 bool
+	logsURL             string
 }
 
 // Init satisfies the Package interface.
@@ -445,12 +446,18 @@ func (pkg *WinPackage) buildExecutable(ctx context.Context) error {
 
 	if pkg.Verbose {
 		args = append(args, "-v")
+		ldflags = append(ldflags, "-X github.com/murlokswarm/app/drivers/win.debug=true")
 	}
 
-	if pkg.Dev {
+	if pkg.dev {
 		ldflags = append(ldflags, "-X github.com/murlokswarm/app/drivers/win.dev=true")
 	} else {
+		if len(pkg.logsURL) != 0 {
+			ldflags = append(ldflags, "-X github.com/murlokswarm/app/drivers/win.logsURL="+pkg.logsURL)
+		}
+
 		ldflags = append(ldflags, "-H=windowsgui")
+
 	}
 
 	args = append(args, "-ldflags", strings.Join(ldflags, " "))
@@ -688,11 +695,44 @@ func (pkg *WinPackage) signAppx(ctx context.Context) error {
 
 // Run satisfies the Package interface.
 func (pkg *WinPackage) Run(ctx context.Context) error {
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+
+	handleLogs := func(res http.ResponseWriter, req *http.Request) {
+		if req.URL.Path == "/close" {
+			wg.Done()
+			return
+		}
+
+		line, err := ioutil.ReadAll(req.Body)
+		if err != nil {
+			return
+		}
+
+		if pkg.Verbose {
+			fmt.Fprint(os.Stderr, "    ")
+		}
+
+		fmt.Fprintln(os.Stderr, string(line))
+	}
+
+	server := httptest.NewServer(http.HandlerFunc(handleLogs))
+	defer server.Close()
+	pkg.logsURL = server.URL
+
 	if err := pkg.Build(ctx); err != nil {
 		return err
 	}
 
-	return execute(ctx, "powershell", "start", fmt.Sprintf("%s://", pkg.settings.URLScheme))
+	if err := execute(ctx, "powershell", "start", fmt.Sprintf("%s://", pkg.settings.URLScheme)); err != nil {
+		return err
+	}
+
+	if !pkg.dev {
+		wg.Wait()
+	}
+
+	return nil
 }
 
 // Clean satisfies the Package interface.

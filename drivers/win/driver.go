@@ -24,7 +24,7 @@ import (
 
 var (
 	driver     *Driver
-	debug      bool
+	debug      string
 	dev        string
 	logsURL    string
 	logsWriter *file.HTTPWriter
@@ -41,9 +41,9 @@ func init() {
 	}
 
 	if len(logsURL) != 0 {
-		app.EnableDebug(debug)
+		app.EnableDebug(len(debug) != 0)
 
-		logWriter = &file.HTTPWriter{
+		logsWriter = &file.HTTPWriter{
 			URL: logsURL,
 			Client: &http.Client{
 				Timeout: time.Second,
@@ -141,6 +141,12 @@ func (d *Driver) Run(f *app.Factory) error {
 	for {
 		select {
 		case <-ctx.Done():
+			if logsCancel != nil {
+				time.Sleep(time.Second)
+				logsCancel()
+				logsWriter.Close()
+			}
+
 			return nil
 
 		case fn := <-d.uichan:
@@ -148,11 +154,6 @@ func (d *Driver) Run(f *app.Factory) error {
 
 		case <-aliveTicker.C:
 		}
-	}
-
-	if logsCancel != nil {
-		time.Sleep(time.Second)
-		logsCancel()
 	}
 }
 
