@@ -6,6 +6,7 @@ package win
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -59,6 +60,9 @@ type Driver struct {
 	// The func called right after app.Run.
 	OnRun func()
 
+	// The func called when the app is about to exit.
+	OnExit func()
+
 	factory  *app.Factory
 	elems    *core.ElemDB
 	winRPC   bridge.PlatformRPC
@@ -74,8 +78,12 @@ func (d *Driver) Run(f *app.Factory) error {
 	}
 
 	defer func() {
-		recover()
-		time.Sleep(time.Second * 30)
+		err := recover()
+		fmt.Println(err)
+
+		fmt.Println("press a key to exit")
+		b := make([]byte, 1)
+		os.Stdin.Read(b)
 	}()
 
 	if err := loadDLL(); err != nil {
@@ -87,6 +95,8 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.elems = core.NewElemDB()
 	d.winRPC.Handler = winCall
 
+	d.goRPC.Handle("driver.OnRun", d.onRun)
+	d.goRPC.Handle("driver.OnExit", d.onExit)
 	d.goRPC.Handle("driver.Log", d.log)
 
 	d.goRPC.Handle("windows.OnResize", handleWindow(onWindowResize))
@@ -112,7 +122,7 @@ func (d *Driver) Run(f *app.Factory) error {
 		return err
 	}
 
-	d.onRun()
+	d.onRun(nil)
 
 	for {
 		select {
@@ -177,20 +187,20 @@ func (d *Driver) log(in map[string]interface{}) interface{} {
 	return nil
 }
 
-func (d *Driver) onRun() {
+func (d *Driver) onRun(in map[string]interface{}) interface{} {
 	if d.OnRun == nil {
 		d.OnRun = d.newMainWindow
 	}
 
 	d.OnRun()
+	return nil
 }
 
-func onWindowResize(w *Window, in map[string]interface{}) interface{} {
-	if w.onResize != nil {
-		w.onResize(
-			in["Width"].(float64),
-			in["Height"].(float64),
-		)
+func (d *Driver) onExit(in map[string]interface{}) interface{} {
+	fmt.Println("gonna exit")
+
+	if d.OnExit != nil {
+		d.OnExit()
 	}
 
 	return nil

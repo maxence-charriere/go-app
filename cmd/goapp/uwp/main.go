@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"path/filepath"
 
 	"github.com/murlokswarm/app/internal/file"
@@ -14,27 +15,27 @@ func windowsFiles(arch string) {
 	synchronize([]sync{
 		{
 			src: file.RepoPath("drivers", "win", "uwp", arch, "Release", "goapp.dll"),
-			dst: filepath.Join("bin", arch, "goapp.dll"),
+			dst: filepath.Join("uwp", arch, "goapp.dll"),
 		},
 		{
 			src: file.RepoPath("drivers", "win", "uwp", "uwp", "bin", arch, "Release", "AppX", "clrcompression.dll"),
-			dst: filepath.Join("bin", arch, "clrcompression.dll"),
+			dst: filepath.Join("uwp", arch, "clrcompression.dll"),
 		},
 		{
 			src: file.RepoPath("drivers", "win", "uwp", "uwp", "bin", arch, "Release", "AppX", "uwp.dll"),
-			dst: filepath.Join("bin", arch, "uwp.dll"),
+			dst: filepath.Join("uwp", arch, "uwp.dll"),
 		},
 		{
 			src: file.RepoPath("drivers", "win", "uwp", "uwp", "bin", arch, "Release", "AppX", "uwp.exe"),
-			dst: filepath.Join("bin", arch, "uwp.exe"),
+			dst: filepath.Join("uwp", arch, "uwp.exe"),
 		},
 		{
 			src: file.RepoPath("drivers", "win", "uwp", "uwp", "bin", arch, "Release", "App.xbf"),
-			dst: filepath.Join("bin", arch, "App.xbf"),
+			dst: filepath.Join("uwp", arch, "App.xbf"),
 		},
 		{
 			src: file.RepoPath("drivers", "win", "uwp", "uwp", "bin", arch, "Release", "WindowPage.xbf"),
-			dst: filepath.Join("bin", arch, "WindowPage.xbf"),
+			dst: filepath.Join("uwp", arch, "WindowPage.xbf"),
 		},
 		{
 			src: filepath.Join("uwp", arch, "goapp.dll"),
@@ -62,6 +63,8 @@ type sync struct {
 
 func synchronize(syncs []sync) {
 	for _, s := range syncs {
-		file.Copy(s.dst, s.src)
+		if err := file.Copy(s.dst, s.src); err != nil {
+			fmt.Println("copy", s.src, "failed:", err)
+		}
 	}
 }

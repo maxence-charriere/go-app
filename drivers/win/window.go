@@ -418,6 +418,17 @@ func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 	return nil
 }
 
+func onWindowResize(w *Window, in map[string]interface{}) interface{} {
+	if w.onResize != nil {
+		w.onResize(
+			in["Width"].(float64),
+			in["Height"].(float64),
+		)
+	}
+
+	return nil
+}
+
 func onWindowFullScreen(w *Window, in map[string]interface{}) interface{} {
 	if w.onFullScreen != nil {
 		w.onFullScreen()

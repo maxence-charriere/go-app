@@ -48,10 +48,6 @@ func callDllFunc(name string, a ...unsafe.Pointer) (uintptr, error) {
 }
 
 func initBridge() error {
-	if _, err := callDllFunc("Bridge_Init"); err != nil {
-		return errors.Wrap(err, "init bridge connection failed")
-	}
-
 	winCallReturnPtr = C.winCallReturn
 	if _, err := callDllFunc("Bridge_SetWinCallReturn", winCallReturnPtr); err != nil {
 		return errors.Wrap(err, "init winReturn func failed")
@@ -60,6 +56,10 @@ func initBridge() error {
 	goCallPtr = C.goCall
 	if _, err := callDllFunc("Bridge_SetGoCall", goCallPtr); err != nil {
 		return errors.Wrap(err, "init goCall func failed")
+	}
+
+	if _, err := callDllFunc("Bridge_Init"); err != nil {
+		return errors.Wrap(err, "init bridge connection failed")
 	}
 
 	return nil
