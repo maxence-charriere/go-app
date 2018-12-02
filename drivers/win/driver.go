@@ -5,6 +5,7 @@
 package win
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -22,8 +23,9 @@ import (
 
 var (
 	driver        *Driver
+	debug         bool
+	dev           string
 	goappBuild    = os.Getenv("GOAPP_BUILD")
-	debug         = os.Getenv("GOAPP_DEBUG") == "true"
 	goappLogsAddr = os.Getenv("GOAPP_LOGS_ADDR")
 	goappLogs     *logs.GoappClient
 )
@@ -63,12 +65,12 @@ type Driver struct {
 	// The func called when the app is about to exit.
 	OnExit func()
 
-	factory  *app.Factory
-	elems    *core.ElemDB
-	winRPC   bridge.PlatformRPC
-	goRPC    bridge.GoRPC
-	uichan   chan func()
-	stopchan chan error
+	factory *app.Factory
+	elems   *core.ElemDB
+	winRPC  bridge.PlatformRPC
+	goRPC   bridge.GoRPC
+	uichan  chan func()
+	stop    func()
 }
 
 // Run satisfies the app.Driver interface.
@@ -77,14 +79,15 @@ func (d *Driver) Run(f *app.Factory) error {
 		return d.runGoappBuild()
 	}
 
-	defer func() {
-		err := recover()
-		fmt.Println(err)
-
-		fmt.Println("press a key to exit")
-		b := make([]byte, 1)
-		os.Stdin.Read(b)
-	}()
+	if len(dev) != 0 {
+		defer func() {
+			if err := recover(); err != nil {
+				fmt.Println("press 'Enter' to exit")
+				b := make([]byte, 1)
+				os.Stdin.Read(b)
+			}
+		}()
+	}
 
 	if err := loadDLL(); err != nil {
 		return errors.Wrap(err, "loading goapp.dll failed")
@@ -109,25 +112,23 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.uichan = make(chan func(), 256)
 	defer close(d.uichan)
 
-	d.uichan = make(chan func(), 256)
-	d.stopchan = make(chan error)
 	aliveTicker := time.NewTicker(time.Minute)
-	defer close(d.uichan)
-	defer close(d.stopchan)
 	defer aliveTicker.Stop()
 
 	driver = d
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	d.stop = cancel
 
 	if err := initBridge(); err != nil {
 		return err
 	}
 
-	d.onRun(nil)
-
 	for {
 		select {
-		case err := <-d.stopchan:
-			return err
+		case <-ctx.Done():
+			return nil
 
 		case fn := <-d.uichan:
 			fn()
@@ -197,12 +198,11 @@ func (d *Driver) onRun(in map[string]interface{}) interface{} {
 }
 
 func (d *Driver) onExit(in map[string]interface{}) interface{} {
-	fmt.Println("gonna exit")
-
 	if d.OnExit != nil {
 		d.OnExit()
 	}
 
+	d.stop()
 	return nil
 }
 

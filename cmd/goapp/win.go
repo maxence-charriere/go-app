@@ -29,6 +29,7 @@ type winBuildConfig struct {
 	Force        bool   `conf:"force"         help:"Force rebuilding of package that are already up-to-date."`
 	Race         bool   `conf:"race"          help:"Enable data race detection."`
 	Verbose      bool   `conf:"v"             help:"Enable verbose mode."`
+	Dev          bool   `conf:"dev"           help:"Enable goapp dev mode."`
 }
 
 type winRunConfig struct {
@@ -38,6 +39,7 @@ type winRunConfig struct {
 	Force        bool   `conf:"force" help:"Force rebuilding of package that are already up-to-date."`
 	Race         bool   `conf:"race"  help:"Enable data race detection."`
 	Verbose      bool   `conf:"v"     help:"Enable verbose mode."`
+	Dev          bool   `conf:"dev"   help:"Enable goapp dev mode."`
 }
 
 type winCleanConfig struct {
@@ -139,6 +141,7 @@ func buildWin(ctx context.Context, args []string) {
 		Verbose:      c.Verbose,
 		Force:        c.Force,
 		Race:         c.Race,
+		Dev:          c.Dev,
 		Log:          printVerbose,
 	}
 
@@ -176,6 +179,7 @@ func runWin(ctx context.Context, args []string) {
 		Verbose: c.Verbose,
 		Force:   c.Force,
 		Race:    c.Race,
+		Dev:     c.Dev,
 		Log:     printVerbose,
 	}
 
@@ -253,6 +257,10 @@ type WinPackage struct {
 
 	// Enable verbose mode.
 	Verbose bool
+
+	// Enable goapp dev mode.
+	// Dev mode displays the go program native console.
+	Dev bool
 
 	// The function to log events.
 	Log func(string, ...interface{})
@@ -437,6 +445,10 @@ func (pkg *WinPackage) buildExecutable(ctx context.Context) error {
 
 	if pkg.Verbose {
 		args = append(args, "-v")
+	}
+
+	if pkg.Dev {
+		ldflags = append(ldflags, "-X github.com/murlokswarm/app/drivers/win.dev=true")
 	} else {
 		ldflags = append(ldflags, "-H=windowsgui")
 	}
