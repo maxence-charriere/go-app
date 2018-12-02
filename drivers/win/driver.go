@@ -41,8 +41,6 @@ func init() {
 	}
 
 	if len(logsURL) != 0 {
-		app.EnableDebug(len(debug) != 0)
-
 		logsWriter = &file.HTTPWriter{
 			URL: logsURL,
 			Client: &http.Client{
@@ -60,6 +58,8 @@ func init() {
 
 	logger := core.ToWriter(os.Stderr)
 	app.Logger = core.WithPrompt(logger)
+	app.EnableDebug(len(debug) != 0)
+
 }
 
 // Driver is the app.Driver implementation for Windows.
