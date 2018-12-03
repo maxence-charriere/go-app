@@ -214,6 +214,25 @@ const appxManifestTmpl = `
                 <uap:Extension Category="windows.protocol">
                     <uap:Protocol Name="{{.URLScheme}}" />
                 </uap:Extension>
+                {{range .SupportedFiles}}
+                <uap:Extension Category="windows.fileTypeAssociation">
+                    <uap:FileTypeAssociation Name="{{.Name}}">
+                        <uap:InfoTip>{{.Help}}</uap:InfoTip>
+                        {{if .Icon}}
+                        <uap:Logo>{{.Icon}}</uap:Logo>
+                        {{end}}
+                        {{range .Extensions}}
+                        <uap:SupportedFileTypes>
+                            {{if .Mime}}
+                            <uap:FileType ContentType="{{.Mime}}">{{.Ext}}</uap:FileType>
+                            {{else}}
+                            <uap:FileType>{{.Ext}}</uap:FileType>
+                            {{end}}
+                        </uap:SupportedFileTypes>
+                        {{end}}
+                    </uap:FileTypeAssociation>
+                </uap:Extension>
+                {{end}}
             </Extensions>
         </Application>
     </Applications>

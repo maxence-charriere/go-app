@@ -22,6 +22,7 @@ func TestCaptureOutput(t *testing.T) {
 	require.NoError(t, err)
 
 	fmt.Fprintln(os.Stdout, "hello")
+	time.Sleep(time.Millisecond * 5)
 	fmt.Fprintln(os.Stderr, "world")
 	fmt.Fprint(&expected, "helloworld")
 

@@ -386,11 +386,6 @@ func (pkg *WinPackage) Build(ctx context.Context) error {
 		return err
 	}
 
-	pkg.Log("generating AppxManifest.xml")
-	if err := pkg.generateAppxManifest(); err != nil {
-		return err
-	}
-
 	pkg.Log("syncing resources")
 	if err := pkg.syncResources(); err != nil {
 		return err
@@ -398,6 +393,15 @@ func (pkg *WinPackage) Build(ctx context.Context) error {
 
 	pkg.Log("generating icons")
 	if err := pkg.generateIcons(ctx); err != nil {
+		return err
+	}
+
+	if err := pkg.generateSupportedFilesIcons(ctx); err != nil {
+		return err
+	}
+
+	pkg.Log("generating AppxManifest.xml")
+	if err := pkg.generateAppxManifest(); err != nil {
 		return err
 	}
 
@@ -531,8 +535,12 @@ func (pkg *WinPackage) readSettings(ctx context.Context) error {
 	s.EntryPoint = strings.Replace(s.Executable, ".exe", ".app", 1)
 	s.Description = stringWithDefault(s.Description, s.Name)
 	s.Publisher = stringWithDefault(s.Publisher, user)
-	s.URLScheme = stringWithDefault(s.URLScheme, name)
+	s.URLScheme = stringWithDefault(s.URLScheme, "goapp-"+name)
 	s.Icon = stringWithDefault(s.Icon, "logo.png")
+
+	if err = validateWinFileTypes(s.SupportedFiles); err != nil {
+		return err
+	}
 
 	pkg.settings = s
 
@@ -544,26 +552,22 @@ func (pkg *WinPackage) readSettings(ctx context.Context) error {
 	return nil
 }
 
-func (pkg *WinPackage) generateAppxManifest() error {
-	return generateTemplatedFile(pkg.manifest, appxManifestTmpl, pkg.settings)
-}
-
 func (pkg *WinPackage) syncResources() error {
 	return file.Sync(pkg.resourcesDir, pkg.sourcesResourcesDir)
 }
 
 func (pkg *WinPackage) generateIcons(ctx context.Context) error {
-	icon := filepath.Join(pkg.resourcesDir, pkg.settings.Icon)
-	if _, err := os.Stat(icon); os.IsNotExist(err) {
-		file.Copy(icon, file.RepoPath("logo.png"))
-	}
-
 	scaled := func(n string, s int) string {
 		if s <= 1 {
 			return filepath.Join(pkg.assetsDir, fmt.Sprintf("%s.png", n))
 		}
 
 		return filepath.Join(pkg.assetsDir, fmt.Sprintf("%s.scale-%v.png", n, s))
+	}
+
+	icon := filepath.Join(pkg.resourcesDir, pkg.settings.Icon)
+	if _, err := os.Stat(icon); os.IsNotExist(err) {
+		file.Copy(icon, file.RepoPath("logo.png"))
 	}
 
 	return generateIcons(icon, []iconInfo{
@@ -609,6 +613,54 @@ func (pkg *WinPackage) generateIcons(ctx context.Context) error {
 		{Name: scaled("Wide310x150Logo", 200), Width: 310, Height: 150, Scale: 2},
 		{Name: scaled("Wide310x150Logo", 400), Width: 310, Height: 150, Scale: 4},
 	})
+}
+
+func (pkg *WinPackage) generateSupportedFilesIcons(ctx context.Context) error {
+	scaled := func(n string, s int) string {
+		if s <= 1 {
+			return filepath.Join(pkg.assetsDir, fmt.Sprintf("%s.png", n))
+		}
+
+		return filepath.Join(pkg.assetsDir, fmt.Sprintf("%s.scale-%v.png", n, s))
+	}
+
+	for _, f := range pkg.settings.SupportedFiles {
+		if len(f.Icon) == 0 {
+			continue
+		}
+
+		icon := filepath.Join(pkg.resourcesDir, f.Icon)
+		if _, err := os.Stat(icon); os.IsNotExist(err) {
+			return err
+		}
+
+		ext := filepath.Ext(f.Icon)
+		iconName := strings.TrimSuffix(f.Icon, ext)
+
+		if err := generateIcons(icon, []iconInfo{
+			{Name: scaled(iconName, 1), Width: 44, Height: 44, Scale: 1},
+			{Name: scaled(iconName, 100), Width: 44, Height: 44, Scale: 1},
+			{Name: scaled(iconName, 125), Width: 44, Height: 44, Scale: 1.25},
+			{Name: scaled(iconName, 150), Width: 44, Height: 44, Scale: 1.5},
+			{Name: scaled(iconName, 200), Width: 44, Height: 44, Scale: 2},
+			{Name: scaled(iconName, 400), Width: 44, Height: 44, Scale: 4},
+		}); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (pkg *WinPackage) generateAppxManifest() error {
+	for i, f := range pkg.settings.SupportedFiles {
+		if len(f.Icon) != 0 {
+			f.Icon = filepath.Join("Assets", f.Icon)
+			pkg.settings.SupportedFiles[i] = f
+		}
+	}
+
+	return generateTemplatedFile(pkg.manifest, appxManifestTmpl, pkg.settings)
 }
 
 func (pkg *WinPackage) generatePri(ctx context.Context) error {
@@ -756,14 +808,51 @@ func (pkg *WinPackage) Clean(ctx context.Context) error {
 }
 
 type winSettings struct {
-	Executable  string
-	Name        string
-	ID          string
-	EntryPoint  string
-	Description string
-	Publisher   string
-	URLScheme   string
-	Icon        string
+	Executable     string        `json:",omitempty"`
+	Name           string        `json:",omitempty"`
+	ID             string        `json:",omitempty"`
+	EntryPoint     string        `json:",omitempty"`
+	Description    string        `json:",omitempty"`
+	Publisher      string        `json:",omitempty"`
+	URLScheme      string        `json:",omitempty"`
+	Icon           string        `json:",omitempty"`
+	SupportedFiles []winFileType `json:",omitempty"`
+}
+
+type winFileType struct {
+	Name       string             `json:",omitempty"`
+	Help       string             `json:",omitempty"`
+	Icon       string             `json:",omitempty"`
+	Extensions []winFileExtension `json:",omitempty"`
+}
+
+type winFileExtension struct {
+	Ext  string `json:",omitempty"`
+	Mime string `json:",omitempty"`
+}
+
+func validateWinFileTypes(fileTypes []winFileType) error {
+	for i, f := range fileTypes {
+		if len(f.Name) == 0 {
+			return errors.Errorf("file type at index %v: name is not set", i)
+		}
+
+		if len(f.Extensions) == 0 {
+			return errors.Errorf("file type at index %v: no extensions", i)
+		}
+
+		for j, e := range f.Extensions {
+			if len(e.Ext) == 0 {
+				return errors.Errorf("file type at index %v: extension at index %v: ext not set", i, j)
+			}
+
+			if !strings.HasPrefix(e.Ext, ".") {
+				return errors.Errorf(`file type at index %v: extension at index %v: ext not valid, change it to ".%s"`, i, j, e.Ext)
+			}
+		}
+	}
+
+	return nil
 }
 
 var (

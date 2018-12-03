@@ -12,12 +12,14 @@ namespace uwp
 {
     class Bridge
     {
-        private static AppServiceConnection conn = null;
-        private static bool launched = false;
-        private static object locker = new object();
-        private static BackgroundTaskDeferral deferral = null;
-        private static Dictionary<string, Action<JsonObject, string>> handlers = new Dictionary<string, Action<JsonObject, string>>();
-        private static Dictionary<string, object> elems = new Dictionary<string, object>();
+        static AppServiceConnection conn = null;
+        static bool launched = false;
+        static bool connected = false;
+        static object locker = new object();
+        static BackgroundTaskDeferral deferral = null;
+        static Dictionary<string, Action<JsonObject, string>> handlers = new Dictionary<string, Action<JsonObject, string>>();
+        static Dictionary<string, object> elems = new Dictionary<string, object>();
+        static Queue<deferredGoCall> deferredGoCalls = new Queue<deferredGoCall>();
 
         public static async void TryLaunchGoApp()
         {
@@ -45,6 +47,16 @@ namespace uwp
             conn.RequestReceived += Conn_RequestReceived;
             conn.ServiceClosed += Conn_ServiceClosed;
 
+            lock (locker)
+            {
+                connected = true;
+            }
+
+            while (deferredGoCalls.Count != 0)
+            {
+                var call = deferredGoCalls.Dequeue();
+                GoCall(call.Method, call.Input, call.UI);
+            }
         }
 
         private static async void Conn_RequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
@@ -114,6 +126,21 @@ namespace uwp
 
         public static async void GoCall(string method, JsonObject input, bool ui)
         {
+            lock (locker)
+            {
+                if (!connected)
+                {
+                    deferredGoCalls.Enqueue(new deferredGoCall() {
+                        Method = method,
+                        Input = input,
+                        UI = ui,
+                    });
+
+                    return;
+                }
+            }
+
+
             var data = new ValueSet();
             data["Operation"] = "Call";
             data["Method"] = method;
@@ -174,5 +201,12 @@ namespace uwp
                 return tElem;
             }
         }
+    }
+
+    struct deferredGoCall
+    {
+        public string Method;
+        public JsonObject Input;
+        public bool UI;
     }
 }

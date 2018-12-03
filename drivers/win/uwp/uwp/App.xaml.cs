@@ -66,22 +66,41 @@ namespace uwp
             Bridge.TryLaunchGoApp();
         }
 
-        protected override void OnActivated(IActivatedEventArgs ie)
+        protected override void OnActivated(IActivatedEventArgs e)
         {
-            base.OnActivated(ie);
+            base.OnActivated(e);
             Bridge.TryLaunchGoApp();
           
 
-            ProtocolActivatedEventArgs e = (ProtocolActivatedEventArgs)ie;
-            Uri uri = e.Uri;
-
-            if (e.Kind == ActivationKind.Protocol)
+            switch (e.Kind)
             {
-                if (uri.Host == "goapp")
-                {
-                    // REPLACE BY GO CALLBACK
-                }
+                case ActivationKind.Protocol:
+                    var pe = e as ProtocolActivatedEventArgs;
+
+                    var input = new JsonObject();
+                    input["URL"] = JsonValue.CreateStringValue(pe.Uri.ToString());
+
+                    Bridge.GoCall("driver.OnURLOpen", input, true);
+                    break;
             }
+        }
+
+        protected override void OnFileActivated(FileActivatedEventArgs args)
+        {
+            base.OnFileActivated(args);
+            Bridge.TryLaunchGoApp();
+
+            var filenames = new JsonArray();
+
+            foreach (var f in args.Files)
+            {
+                filenames.Add(JsonValue.CreateStringValue(f.Path));
+            }
+
+            var input = new JsonObject();
+            input["Filenames"] = filenames;
+
+            Bridge.GoCall("driver.OnFilesOpen", input, true);
         }
 
         /// <summary>
@@ -91,6 +110,7 @@ namespace uwp
         /// <param name="e">Details about the navigation failure</param>
         void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
+            Bridge.Log("uwp => navigation failed: {0}", e.SourcePageType.FullName);
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
@@ -103,6 +123,8 @@ namespace uwp
         /// <param name="e">Details about the suspend request.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
+            Bridge.Log("uwp => on suspending");
+
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();

@@ -74,10 +74,10 @@ type Driver struct {
 	// The func called when the app is reopened.
 	OnReopen func(hasVisibleWindows bool)
 
-	// The func called when a file associated with the app is opened.
+	// The func called when files associated with the app are opened.
 	OnFilesOpen func(filenames []string)
 
-	// The func called when the app URI is invoked.
+	// The func called when the app URLScheme is invoked.
 	OnURLOpen func(u *url.URL)
 
 	// The func called when the quit button is clicked.
@@ -347,6 +347,7 @@ func (d *Driver) onFocus(in map[string]interface{}) interface{} {
 	if d.OnFocus != nil {
 		d.OnFocus()
 	}
+
 	return nil
 }
 
@@ -354,6 +355,7 @@ func (d *Driver) onBlur(in map[string]interface{}) interface{} {
 	if d.OnBlur != nil {
 		d.OnBlur()
 	}
+
 	return nil
 }
 
@@ -374,6 +376,7 @@ func (d *Driver) onFilesOpen(in map[string]interface{}) interface{} {
 	if d.OnFilesOpen != nil {
 		d.OnFilesOpen(bridge.Strings(in["Filenames"]))
 	}
+
 	return nil
 }
 
@@ -383,6 +386,7 @@ func (d *Driver) onURLOpen(in map[string]interface{}) interface{} {
 		if err != nil {
 			app.Panic(errors.Wrap(err, "onURLOpen"))
 		}
+
 		d.OnURLOpen(u)
 	}
 	return nil
@@ -403,6 +407,7 @@ func (d *Driver) onQuit(in map[string]interface{}) interface{} {
 	if d.OnQuit != nil {
 		out.Quit = d.OnQuit()
 	}
+
 	return out
 }
 

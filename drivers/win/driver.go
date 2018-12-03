@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -59,18 +60,23 @@ func init() {
 	logger := core.ToWriter(os.Stderr)
 	app.Logger = core.WithPrompt(logger)
 	app.EnableDebug(len(debug) != 0)
-
 }
 
 // Driver is the app.Driver implementation for Windows.
 type Driver struct {
 	core.Driver
 
+	// The settings used to generate the app package.
+	Settings Settings
+
 	// The URL of the component to load in the main window.
 	URL string
 
-	// The settings used to generate the app package.
-	Settings Settings
+	// The func called when files associated with the app are opened.
+	OnFilesOpen func(filenames []string)
+
+	// The func called when the app URLScheme is invoked.
+	OnURLOpen func(u *url.URL)
 
 	// The func called right after app.Run.
 	OnRun func()
@@ -94,11 +100,9 @@ func (d *Driver) Run(f *app.Factory) error {
 
 	if len(dev) != 0 {
 		defer func() {
-			if err := recover(); err != nil {
-				fmt.Println("press 'Enter' to exit")
-				b := make([]byte, 1)
-				os.Stdin.Read(b)
-			}
+			fmt.Println("press 'Enter' to exit")
+			b := make([]byte, 1)
+			os.Stdin.Read(b)
 		}()
 	}
 
@@ -112,6 +116,8 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.winRPC.Handler = winCall
 
 	d.goRPC.Handle("driver.OnRun", d.onRun)
+	d.goRPC.Handle("driver.OnFilesOpen", d.onFilesOpen)
+	d.goRPC.Handle("driver.OnURLOpen", d.onURLOpen)
 	d.goRPC.Handle("driver.OnExit", d.onExit)
 	d.goRPC.Handle("driver.Log", d.log)
 
@@ -213,6 +219,26 @@ func (d *Driver) onRun(in map[string]interface{}) interface{} {
 	}
 
 	d.OnRun()
+	return nil
+}
+
+func (d *Driver) onFilesOpen(in map[string]interface{}) interface{} {
+	if d.OnFilesOpen != nil {
+		d.OnFilesOpen(bridge.Strings(in["Filenames"]))
+	}
+
+	return nil
+}
+
+func (d *Driver) onURLOpen(in map[string]interface{}) interface{} {
+	if d.OnURLOpen != nil {
+		u, err := url.Parse(in["URL"].(string))
+		if err != nil {
+			app.Panic(errors.Wrap(err, "onURLOpen"))
+		}
+
+		d.OnURLOpen(u)
+	}
 	return nil
 }
 
