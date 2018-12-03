@@ -74,7 +74,7 @@ type Driver struct {
 	// The func called when the app is reopened.
 	OnReopen func(hasVisibleWindows bool)
 
-	// The func called when a file associated with the app is opened.
+	// The func called when files associated with the app are opened.
 	OnFilesOpen func(filenames []string)
 
 	// The func called when the app URLScheme is invoked.

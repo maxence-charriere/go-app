@@ -21,7 +21,24 @@ func main() {
 
 	default:
 		app.Run(&win.Driver{
+			Settings: win.Settings{
+				SupportedFiles: []win.FileType{
+					{
+						Name: "murlok",
+						Help: "A test extension for goapp",
+						Icon: "like.png",
+						Extensions: []win.FileExtension{
+							{Ext: ".murlok"},
+						},
+					},
+				},
+			},
+
 			URL: "/Hello",
+
+			OnFilesOpen: func(filenames []string) {
+				app.Log("opened from:", filenames)
+			},
 
 			OnURLOpen: func(u *url.URL) {
 				app.Log("opened with", u)

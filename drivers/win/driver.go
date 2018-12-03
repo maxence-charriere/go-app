@@ -72,6 +72,9 @@ type Driver struct {
 	// The URL of the component to load in the main window.
 	URL string
 
+	// The func called when files associated with the app are opened.
+	OnFilesOpen func(filenames []string)
+
 	// The func called when the app URLScheme is invoked.
 	OnURLOpen func(u *url.URL)
 
@@ -113,6 +116,7 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.winRPC.Handler = winCall
 
 	d.goRPC.Handle("driver.OnRun", d.onRun)
+	d.goRPC.Handle("driver.OnFilesOpen", d.onFilesOpen)
 	d.goRPC.Handle("driver.OnURLOpen", d.onURLOpen)
 	d.goRPC.Handle("driver.OnExit", d.onExit)
 	d.goRPC.Handle("driver.Log", d.log)
@@ -215,6 +219,14 @@ func (d *Driver) onRun(in map[string]interface{}) interface{} {
 	}
 
 	d.OnRun()
+	return nil
+}
+
+func (d *Driver) onFilesOpen(in map[string]interface{}) interface{} {
+	if d.OnFilesOpen != nil {
+		d.OnFilesOpen(bridge.Strings(in["Filenames"]))
+	}
+
 	return nil
 }
 

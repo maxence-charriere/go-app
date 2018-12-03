@@ -85,6 +85,24 @@ namespace uwp
             }
         }
 
+        protected override void OnFileActivated(FileActivatedEventArgs args)
+        {
+            base.OnFileActivated(args);
+            Bridge.TryLaunchGoApp();
+
+            var filenames = new JsonArray();
+
+            foreach (var f in args.Files)
+            {
+                filenames.Add(JsonValue.CreateStringValue(f.Path));
+            }
+
+            var input = new JsonObject();
+            input["Filenames"] = filenames;
+
+            Bridge.GoCall("driver.OnFilesOpen", input, true);
+        }
+
         /// <summary>
         /// Invoked when Navigation to a certain page fails
         /// </summary>
