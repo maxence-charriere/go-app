@@ -3,6 +3,8 @@
 package main
 
 import (
+	"net/url"
+
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/drivers/web"
 	"github.com/murlokswarm/app/drivers/win"
@@ -20,6 +22,10 @@ func main() {
 	default:
 		app.Run(&win.Driver{
 			URL: "/Hello",
+
+			OnURLOpen: func(u *url.URL) {
+				app.Log("opened with", u)
+			},
 		})
 	}
 }
