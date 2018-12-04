@@ -80,11 +80,8 @@ type Driver struct {
 	// The func called when the app URLScheme is invoked.
 	OnURLOpen func(u *url.URL)
 
-	// The func called when the quit button is clicked.
+	// The func called when the app is about to quit.
 	OnQuit func() bool
-
-	// The func called when the app is about to exit.
-	OnExit func()
 
 	factory      *app.Factory
 	elems        *core.ElemDB
@@ -121,7 +118,6 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.goRPC.Handle("driver.OnURLOpen", d.onURLOpen)
 	d.goRPC.Handle("driver.OnFileDrop", d.onFileDrop)
 	d.goRPC.Handle("driver.OnQuit", d.onQuit)
-	d.goRPC.Handle("driver.OnExit", d.onExit)
 
 	d.goRPC.Handle("windows.OnMove", handleWindow(onWindowMove))
 	d.goRPC.Handle("windows.OnResize", handleWindow(onWindowResize))
@@ -409,14 +405,6 @@ func (d *Driver) onQuit(in map[string]interface{}) interface{} {
 	}
 
 	return out
-}
-
-func (d *Driver) onExit(in map[string]interface{}) interface{} {
-	if d.OnExit != nil {
-		d.OnExit()
-	}
-
-	return nil
 }
 
 func (d *Driver) newMainWindow() {
