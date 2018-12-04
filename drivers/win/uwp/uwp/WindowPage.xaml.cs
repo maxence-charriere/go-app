@@ -102,13 +102,13 @@ namespace uwp
             }
         }
 
-        private void Webview_ScriptNotify(object sender, NotifyEventArgs e)
+        private async void Webview_ScriptNotify(object sender, NotifyEventArgs e)
         {
             var input = new JsonObject();
             input["ID"] = JsonValue.CreateStringValue(this.ID);
             input["Mapping"] = JsonValue.CreateStringValue(e.Value);
 
-            Bridge.GoCall("windows.OnCallback", input, true);
+            await Bridge.GoCall("windows.OnCallback", input, true);
         }
 
         internal static async void Render(JsonObject input, string returnID)
@@ -156,32 +156,33 @@ namespace uwp
             Bridge.Return(returnID, null, "");
         }
 
-        private void OnResized(object sender, WindowSizeChangedEventArgs e)
+        private async void OnResized(object sender, WindowSizeChangedEventArgs e)
         {
             var input = new JsonObject();
             input["Width"] = JsonValue.CreateNumberValue(e.Size.Width);
             input["Heigth"] = JsonValue.CreateNumberValue(e.Size.Height);
-            Bridge.GoCall("windows.OnResize", input, true);
+            await Bridge.GoCall("windows.OnResize", input, true);
 
             var view = ApplicationView.GetForCurrentView();
+            var fullScreen = view.IsFullScreenMode;
 
-            lock(this.locker)
+            lock (this.locker)
             {
-                var fullScreen = view.IsFullScreenMode;
                 if (fullScreen == this.fullScreen)
                 {
                     return;
                 }
-                this.fullScreen = fullScreen;
 
-                if (fullScreen)
-                {
-                    Bridge.GoCall("windows.OnFullScreen", input, true);
-                }
-                else
-                {
-                    Bridge.GoCall("windows.OnExitFullScreen", input, true);
-                }
+                this.fullScreen = fullScreen;
+            }
+
+            if (fullScreen)
+            {
+                await Bridge.GoCall("windows.OnFullScreen", input, true);
+            }
+            else
+            {
+                await Bridge.GoCall("windows.OnExitFullScreen", input, true);
             }
         }
 
@@ -192,17 +193,17 @@ namespace uwp
             Window.Current.Activate();
         }
 
-        private void OnActivated(object sender, WindowActivatedEventArgs e)
+        private async void OnActivated(object sender, WindowActivatedEventArgs e)
         {
             switch (e.WindowActivationState)
             {
                 case CoreWindowActivationState.CodeActivated:
                 case CoreWindowActivationState.PointerActivated:
-                    Bridge.GoCall("windows.OnFocus", null, true);
+                    await Bridge.GoCall("windows.OnFocus", null, true);
                     break;
 
                 case CoreWindowActivationState.Deactivated:
-                    Bridge.GoCall("windows.OnBlur", null, true);
+                    await Bridge.GoCall("windows.OnBlur", null, true);
                     break;
 
                 default:
