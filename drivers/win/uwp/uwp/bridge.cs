@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.AppService;
 using Windows.ApplicationModel.Background;
@@ -32,7 +33,7 @@ namespace uwp
             launched = true;
         }
 
-        public static void NewConn(IBackgroundTaskInstance task)
+        public static async void NewConn(IBackgroundTaskInstance task)
         {
             AppServiceTriggerDetails appService = task.TriggerDetails as AppServiceTriggerDetails;
             if (appService == null)
@@ -55,7 +56,7 @@ namespace uwp
             while (deferredGoCalls.Count != 0)
             {
                 var call = deferredGoCalls.Dequeue();
-                GoCall(call.Method, call.Input, call.UI);
+                await GoCall(call.Method, call.Input, call.UI);
             }
         }
 
@@ -124,7 +125,7 @@ namespace uwp
             await conn.SendMessageAsync(data);
         }
 
-        public static async void GoCall(string method, JsonObject input, bool ui)
+        public static async Task<JsonObject> GoCall(string method, JsonObject input, bool ui)
         {
             lock (locker)
             {
@@ -136,31 +137,42 @@ namespace uwp
                         UI = ui,
                     });
 
-                    return;
+                    return null;
                 }
             }
 
 
-            var data = new ValueSet();
-            data["Operation"] = "Call";
-            data["Method"] = method;
-            data["Input"] = "";
-            data["Ui"] = ui.ToString();
+            var msg = new ValueSet();
+            msg["Operation"] = "Call";
+            msg["Method"] = method;
+            msg["Input"] = "";
+            msg["Ui"] = ui.ToString();
 
             if (input != null)
             {
-                data["Input"] = input.ToString();
+                msg["Input"] = input.ToString();
             }
 
-            await conn.SendMessageAsync(data);
+            var res = await conn.SendMessageAsync(msg);
+            if (res.Status != AppServiceResponseStatus.Success)
+            {
+                return null;
+            }
+
+            var resMsg = res.Message;
+            if (!resMsg.ContainsKey("Value")) {
+                return null;
+            }
+
+            return JsonObject.Parse(resMsg["Value"] as string);
         }
 
-        public static void Log(string format, params object[] v)
+        public static async void Log(string format, params object[] v)
         {
             var msg = string.Format(format, v);
             JsonObject input = new JsonObject();
             input["Msg"] = JsonValue.CreateStringValue(msg);
-            GoCall("driver.Log", input, false);
+            await GoCall("driver.Log", input, false);
         }
 
         public static void PutElem(string ID, object elem)
