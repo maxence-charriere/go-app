@@ -379,10 +379,6 @@
   return quit.boolValue;
 }
 
-- (void)applicationWillTerminate:(NSNotification *)aNotification {
-  [self.goRPC call:@"driver.OnExit" withInput:nil onUI:YES];
-}
-
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {
   return self.dock;
 }

@@ -94,9 +94,6 @@ func main() {
 			return true
 			// return false
 		},
-		OnExit: func() {
-			app.Log("OnExit")
-		},
 	})
 }
 
