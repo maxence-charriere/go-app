@@ -23,7 +23,7 @@ func Matches(l, r string) bool {
 	return li.Name() == ri.Name() &&
 		li.Size() == ri.Size() &&
 		li.Mode() == ri.Mode() &&
-		li.ModTime() == ri.ModTime() &&
+		li.ModTime().Equal(ri.ModTime()) &&
 		li.IsDir() == ri.IsDir()
 
 }
@@ -36,8 +36,13 @@ func Copy(dst, src string) error {
 	}
 	defer sf.Close()
 
+	var sinfo os.FileInfo
+	if sinfo, err = sf.Stat(); err != nil {
+		return err
+	}
+
 	var df *os.File
-	if df, err = os.Create(dst); err != nil {
+	if df, err = os.OpenFile(dst, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, sinfo.Mode()); err != nil {
 		return err
 	}
 	defer df.Close()
@@ -46,16 +51,7 @@ func Copy(dst, src string) error {
 		return err
 	}
 
-	if err = df.Sync(); err != nil {
-		return err
-	}
-
-	var sinfo os.FileInfo
-	if sinfo, err = sf.Stat(); err != nil {
-		return err
-	}
-
-	if err = os.Chmod(dst, sinfo.Mode()); err != nil {
+	if err = df.Close(); err != nil {
 		return err
 	}
 
@@ -64,27 +60,33 @@ func Copy(dst, src string) error {
 
 // Sync synchronize src and dst.
 func Sync(dst, src string) error {
+	dst = filepath.Clean(dst)
+	src = filepath.Clean(src)
+
 	walkCopy := func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
 
-		dstPath := strings.Replace(path, src, dst, 1)
+		dstPath := filepath.Join(dst, path[len(src):])
 
 		if info.IsDir() {
-			var fi os.FileInfo
-			if fi, err = os.Stat(dstPath); err != nil && !os.IsNotExist(err) {
-				return err
-			}
+			var dstInfo os.FileInfo
+			dstInfo, err = os.Stat(dstPath)
 
 			if os.IsNotExist(err) {
 				return os.Mkdir(dstPath, info.Mode())
 			}
 
-			if !fi.IsDir() {
+			if err != nil {
+				return err
+			}
+
+			if !dstInfo.IsDir() {
 				os.Remove(dstPath)
 				return os.Mkdir(dstPath, info.Mode())
 			}
+
 			return nil
 		}
 
