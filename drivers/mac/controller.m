@@ -128,7 +128,7 @@
           [Controller emitDirection:ID input:RightThumbstick x:x y:y];
         };
 
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= 101400
+#if MAC_OS_X_VERSION_MIN_ALLOWED > 101400
     controller.profile.leftThumbstickButton.pressedChangedHandler =
         ^(GCControllerButtonInput *button, float value, BOOL pressed) {
           [Controller emitButton:ID
