@@ -45,6 +45,7 @@ func Copy(dst, src string) error {
 	if df, err = os.OpenFile(dst, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, sinfo.Mode()); err != nil {
 		return err
 	}
+	defer df.Close()
 
 	if _, err = io.Copy(df, sf); err != nil {
 		return err
