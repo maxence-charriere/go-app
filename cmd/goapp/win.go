@@ -538,7 +538,7 @@ func (pkg *WinPackage) readSettings(ctx context.Context) error {
 	s.URLScheme = stringWithDefault(s.URLScheme, "goapp-"+name)
 	s.Icon = stringWithDefault(s.Icon, "logo.png")
 
-	if err = validateWinFileTypes(s.SupportedFiles); err != nil {
+	if err = validateWinFileTypes(s.SupportedFiles...); err != nil {
 		return err
 	}
 
@@ -634,8 +634,7 @@ func (pkg *WinPackage) generateSupportedFilesIcons(ctx context.Context) error {
 			return err
 		}
 
-		ext := filepath.Ext(f.Icon)
-		iconName := strings.TrimSuffix(f.Icon, ext)
+		iconName := trimExt(f.Icon)
 
 		if err := generateIcons(icon, []iconInfo{
 			{Name: scaled(iconName, 1), Width: 44, Height: 44, Scale: 1},
@@ -831,10 +830,15 @@ type winFileExtension struct {
 	Mime string `json:",omitempty"`
 }
 
-func validateWinFileTypes(fileTypes []winFileType) error {
+func validateWinFileTypes(fileTypes ...winFileType) error {
 	for i, f := range fileTypes {
 		if len(f.Name) == 0 {
 			return errors.Errorf("file type at index %v: name is not set", i)
+		}
+		f.Name = strings.ToLower(f.Name)
+
+		if len(f.Icon) > 0 && filepath.Ext(f.Icon) != ".png" {
+			return errors.Errorf(`file type at index %v: icon is not a ".png"`, i)
 		}
 
 		if len(f.Extensions) == 0 {
@@ -850,6 +854,8 @@ func validateWinFileTypes(fileTypes []winFileType) error {
 				return errors.Errorf(`file type at index %v: extension at index %v: ext not valid, change it to ".%s"`, i, j, e.Ext)
 			}
 		}
+
+		fileTypes[i] = f
 	}
 
 	return nil

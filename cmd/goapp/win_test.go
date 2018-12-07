@@ -38,6 +38,7 @@ func TestValidateWinFileTypes(t *testing.T) {
 			scenario: "valid file type",
 			fileType: winFileType{
 				Name: "test",
+				Icon: "test.png",
 				Extensions: []winFileExtension{
 					{Ext: ".test"},
 				},
@@ -49,16 +50,39 @@ func TestValidateWinFileTypes(t *testing.T) {
 			err:      true,
 		},
 		{
+			scenario: "no png icon returns an error",
+			fileType: winFileType{
+				Name: "test",
+				Icon: "test.jpg",
+			},
+			err: true,
+		},
+		{
 			scenario: "no extensions returns an error",
-			fileType: winFileType{Name: "test"},
-			err:      true,
+			fileType: winFileType{
+				Name: "test",
+				Icon: "test.png",
+			},
+			err: true,
 		},
 		{
 			scenario: "extension without '.' prefix returns an error",
 			fileType: winFileType{
 				Name: "test",
+				Icon: "test.png",
 				Extensions: []winFileExtension{
 					{Ext: "test"},
+				},
+			},
+			err: true,
+		},
+		{
+			scenario: "empty extension returns an error",
+			fileType: winFileType{
+				Name: "test",
+				Icon: "test.png",
+				Extensions: []winFileExtension{
+					{Ext: ""},
 				},
 			},
 			err: true,
@@ -67,7 +91,7 @@ func TestValidateWinFileTypes(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run("test.scenario", func(t *testing.T) {
-			err := validateWinFileTypes([]winFileType{test.fileType})
+			err := validateWinFileTypes(test.fileType)
 
 			if test.err {
 				assert.Error(t, err)

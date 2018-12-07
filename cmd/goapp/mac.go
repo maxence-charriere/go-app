@@ -265,7 +265,6 @@ type MacPackage struct {
 	macOSDir            string
 	resourcesDir        string
 	executable          string
-	icon                string
 	settings            macSettings
 }
 
@@ -348,11 +347,6 @@ func (pkg *MacPackage) Build(ctx context.Context) error {
 		return err
 	}
 
-	pkg.Log("generating Info.plist")
-	if err := pkg.generateInfoPlist(); err != nil {
-		return err
-	}
-
 	pkg.Log("syncing resources")
 	if err := pkg.syncResources(); err != nil {
 		return err
@@ -360,6 +354,11 @@ func (pkg *MacPackage) Build(ctx context.Context) error {
 
 	pkg.Log("generating icons")
 	if err := pkg.generateIcons(ctx); err != nil {
+		return err
+	}
+
+	pkg.Log("generating Info.plist")
+	if err := pkg.generateInfoPlist(); err != nil {
 		return err
 	}
 
@@ -462,25 +461,22 @@ func (pkg *MacPackage) readSettings(ctx context.Context) error {
 	s.URLScheme = stringWithDefault(s.URLScheme, strings.ToLower(s.Name))
 	s.Version = stringWithDefault(s.Version, "1.0")
 	s.BuildNumber = intWithDefault(s.BuildNumber, 1)
-
 	s.Icon = stringWithDefault(s.Icon, "logo.png")
-	pkg.icon = s.Icon
-	s.Icon = filepath.Base(s.Icon)
-	s.Icon = strings.TrimSuffix(s.Icon, filepath.Ext(s.Icon))
-
 	s.DevRegion = stringWithDefault(s.DevRegion, "en")
 	s.Category = stringWithDefault(s.Category, "public.app-category.developer-tools")
 	s.Copyright = stringWithDefault(s.Copyright, fmt.Sprintf("Copyright © %v %s. All rights reserved.",
 		time.Now().Year(),
 		os.Getenv("USER"),
 	))
-	s.Role = stringWithDefault(s.Role, "None")
-
 	s.DeploymentTarget = pkg.DeploymentTarget
 	s.Sandbox = pkg.Sandbox
 
 	if s.Sandbox && len(pkg.SignID) == 0 {
 		return errors.New("sandbox requires a sign id")
+	}
+
+	if err = validateMacFileTypes(s.SupportedFiles...); err != nil {
+		return err
 	}
 
 	pkg.settings = s
@@ -493,26 +489,37 @@ func (pkg *MacPackage) readSettings(ctx context.Context) error {
 	return nil
 }
 
-func (pkg *MacPackage) generateInfoPlist() error {
-	plist := filepath.Join(pkg.contentsDir, "Info.plist")
-	return generateTemplatedFile(plist, infoPlistTmpl, pkg.settings)
-}
-
 func (pkg *MacPackage) syncResources() error {
 	return file.Sync(pkg.resourcesDir, pkg.sourcesResourcesDir)
 }
 
 func (pkg *MacPackage) generateIcons(ctx context.Context) error {
-	icon := filepath.Join(pkg.resourcesDir, pkg.icon)
-	if _, err := os.Stat(icon); os.IsNotExist(err) {
-		file.Copy(icon, file.RepoPath("logo.png"))
+	appIcon := filepath.Join(pkg.resourcesDir, pkg.settings.Icon)
+	if _, err := os.Stat(appIcon); os.IsNotExist(err) {
+		file.Copy(appIcon, file.RepoPath("logo.png"))
 	}
 
-	iconset := filepath.Base(icon)
-	iconset = strings.TrimSuffix(iconset, filepath.Ext(iconset))
-	iconset = filepath.Join(pkg.resourcesDir, iconset) + ".iconset"
+	icons := []string{
+		appIcon,
+	}
 
-	if err := os.Mkdir(iconset, os.ModeDir|0755); err != nil {
+	for _, i := range icons {
+		if err := pkg.generateIcon(ctx, i); err != nil {
+			return errors.Wrapf(err, "generating icon for %q failed", i)
+		}
+	}
+
+	return nil
+}
+
+func (pkg *MacPackage) generateIcon(ctx context.Context, path string) error {
+	if _, err := os.Stat(path); err != nil {
+		return err
+	}
+
+	iconset := trimExt(path) + ".iconset"
+
+	if err := os.Mkdir(iconset, 0755); err != nil {
 		return err
 	}
 	defer os.RemoveAll(iconset)
@@ -525,7 +532,7 @@ func (pkg *MacPackage) generateIcons(ctx context.Context) error {
 		return filepath.Join(iconset, fmt.Sprintf("icon_%vx%v.png", w, h))
 	}
 
-	if err := generateIcons(icon, []iconInfo{
+	if err := generateIcons(path, []iconInfo{
 		{Name: retinaIcon(512, 512, 2), Width: 512, Height: 512, Scale: 2},
 		{Name: standardIcon(512, 512), Width: 512, Height: 512, Scale: 1},
 
@@ -545,6 +552,18 @@ func (pkg *MacPackage) generateIcons(ctx context.Context) error {
 	}
 
 	return execute(ctx, "iconutil", "-c", "icns", iconset)
+}
+
+func (pkg *MacPackage) generateInfoPlist() error {
+	pkg.settings.Icon = trimExt(pkg.settings.Icon)
+
+	for i, f := range pkg.settings.SupportedFiles {
+		f.Icon = trimExt(f.Icon)
+		pkg.settings.SupportedFiles[i] = f
+	}
+
+	plist := filepath.Join(pkg.contentsDir, "Info.plist")
+	return generateTemplatedFile(plist, infoPlistTmpl, pkg.settings)
 }
 
 func (pkg *MacPackage) signing(ctx context.Context) error {
@@ -634,35 +653,68 @@ func (pkg *MacPackage) Clean(ctx context.Context) error {
 }
 
 type macSettings struct {
-	Executable       string
-	Name             string
-	ID               string
-	URLScheme        string
-	Version          string
+	Executable       string `json:",omitempty"`
+	Name             string `json:",omitempty"`
+	ID               string `json:",omitempty"`
+	URLScheme        string `json:",omitempty"`
+	Version          string `json:",omitempty"`
 	BuildNumber      int
-	Icon             string
-	DevRegion        string
-	DeploymentTarget string
-	Copyright        string
-	Role             string
-	Category         string
-	Sandbox          bool
-	Background       bool
-	Server           bool
-	Camera           bool
-	Microphone       bool
-	USB              bool
-	Printers         bool
-	Bluetooth        bool
-	Contacts         bool
-	Location         bool
-	Calendar         bool
-	FilePickers      string
-	Downloads        string
-	Pictures         string
-	Music            string
-	Movies           string
-	SupportedFiles   []string
+	Icon             string        `json:",omitempty"`
+	DevRegion        string        `json:",omitempty"`
+	DeploymentTarget string        `json:",omitempty"`
+	Copyright        string        `json:",omitempty"`
+	Category         string        `json:",omitempty"`
+	Sandbox          bool          `json:",omitempty"`
+	Background       bool          `json:",omitempty"`
+	Server           bool          `json:",omitempty"`
+	Camera           bool          `json:",omitempty"`
+	Microphone       bool          `json:",omitempty"`
+	USB              bool          `json:",omitempty"`
+	Printers         bool          `json:",omitempty"`
+	Bluetooth        bool          `json:",omitempty"`
+	Contacts         bool          `json:",omitempty"`
+	Location         bool          `json:",omitempty"`
+	Calendar         bool          `json:",omitempty"`
+	FilePickers      string        `json:",omitempty"`
+	Downloads        string        `json:",omitempty"`
+	Pictures         string        `json:",omitempty"`
+	Music            string        `json:",omitempty"`
+	Movies           string        `json:",omitempty"`
+	SupportedFiles   []macFileType `json:",omitempty"`
+}
+
+type macFileType struct {
+	Name string   `json:",omitempty"`
+	Role string   `json:",omitempty"`
+	Icon string   `json:",omitempty"`
+	UTIs []string `json:",omitempty"`
+}
+
+func validateMacFileTypes(fileTypes ...macFileType) error {
+	for i, f := range fileTypes {
+		if len(f.Name) == 0 {
+			return errors.Errorf("file type at index %v: name is not set", i)
+		}
+
+		if len(f.Icon) > 0 && filepath.Ext(f.Icon) != ".png" {
+			return errors.Errorf(`file type at index %v: icon is not a ".png"`, i)
+		}
+
+		if len(f.UTIs) == 0 {
+			return errors.Errorf("file type at index %v: no uti", i)
+		}
+
+		for j, u := range f.UTIs {
+			if len(u) == 0 {
+				return errors.Errorf("file type at index %v: uti at index %v: uti not set", i, j)
+			}
+		}
+
+		f.Role = stringWithDefault(f.Role, "None")
+		fileTypes[i] = f
+	}
+
+	return nil
 }
 
 func macOSVersion() string {

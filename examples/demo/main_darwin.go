@@ -23,7 +23,18 @@ func main() {
 		app.Run(&mac.Driver{
 			URL: "/Hello",
 			Settings: mac.Settings{
+				SupportedFiles: []mac.FileType{
+					{
+						Name: "image",
+						Role: mac.Viewer,
+						UTIs: []string{"public.jpeg"},
+					},
+				},
 				URLScheme: "goapp-demo",
+			},
+
+			OnFilesOpen: func(filenames []string) {
+				app.Log("opened from:", filenames)
 			},
 
 			OnURLOpen: func(u *url.URL) {
