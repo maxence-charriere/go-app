@@ -54,7 +54,10 @@ func init() {
 			panic(err)
 		}
 
-		logsCancel = cancel
+		logsCancel = func() {
+			cancel()
+			logsWriter.Close()
+		}
 	}
 
 	logger := core.ToWriter(os.Stderr)
@@ -81,8 +84,8 @@ type Driver struct {
 	// The func called right after app.Run.
 	OnRun func()
 
-	// The func called when the app is about to exit.
-	OnExit func()
+	// The func called when the app is about to quit.
+	OnQuit func()
 
 	factory *app.Factory
 	elems   *core.ElemDB
@@ -118,7 +121,7 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.goRPC.Handle("driver.OnRun", d.onRun)
 	d.goRPC.Handle("driver.OnFilesOpen", d.onFilesOpen)
 	d.goRPC.Handle("driver.OnURLOpen", d.onURLOpen)
-	d.goRPC.Handle("driver.OnExit", d.onExit)
+	d.goRPC.Handle("driver.OnQuit", d.onQuit)
 	d.goRPC.Handle("driver.Log", d.log)
 
 	d.goRPC.Handle("windows.OnResize", handleWindow(onWindowResize))
@@ -150,7 +153,6 @@ func (d *Driver) Run(f *app.Factory) error {
 			if logsCancel != nil {
 				time.Sleep(time.Second)
 				logsCancel()
-				logsWriter.Close()
 			}
 
 			return nil
@@ -242,9 +244,9 @@ func (d *Driver) onURLOpen(in map[string]interface{}) interface{} {
 	return nil
 }
 
-func (d *Driver) onExit(in map[string]interface{}) interface{} {
-	if d.OnExit != nil {
-		d.OnExit()
+func (d *Driver) onQuit(in map[string]interface{}) interface{} {
+	if d.OnQuit != nil {
+		d.OnQuit()
 	}
 
 	d.stop()

@@ -123,8 +123,6 @@ namespace uwp
         /// <param name="e">Details about the suspend request.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
-            Bridge.Log("uwp => on suspending");
-
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
@@ -136,6 +134,7 @@ namespace uwp
             if (frame == null)
             {
                 frame = new Frame();
+
                 frame.NavigationFailed += OnNavigationFailed;
                 Window.Current.Content = frame;
             }
