@@ -27,7 +27,8 @@ type winBuildConfig struct {
 	Output       string `conf:"o"             help:"The path where the package is saved."`
 	Architecture string `conf:"arch"          help:"The targetted architecture."`
 	SDK          string `conf:"sdk"           help:"The path of the Windows 10 SDK directory."`
-	AppxPfx      string `conf:"appx-pfx"      help:"The path of the certificate to sign the app. Creates a .appx if set."`
+	Appx         bool   `conf:"appx"          help:"Generates an .appx package."`
+	AppxPfx      string `conf:"appx-pfx"      help:"The path of the certificate to sign the app."`
 	AppxPassword string `conf:"appx-password" help:"The passord to use with the provided certificate."`
 	Force        bool   `conf:"force"         help:"Force rebuilding of package that are already up-to-date."`
 	Race         bool   `conf:"race"          help:"Enable data race detection."`
@@ -139,6 +140,7 @@ func buildWin(ctx context.Context, args []string) {
 		Sources:      sources,
 		Output:       c.Output,
 		SDK:          c.SDK,
+		Appx:         c.Appx,
 		AppxPfx:      c.AppxPfx,
 		AppxPassword: c.AppxPassword,
 		Verbose:      c.Verbose,
@@ -245,8 +247,11 @@ type WinPackage struct {
 	// The path of the Windows 10 SDK directory.
 	SDK string
 
+	// Reports whether to creates a .appx package.
+	Appx bool
+
 	// The path of the certificate (.pfx) to sign the app.
-	// When set, the app is packaged as a .appx that can be distributed.
+	// Sings the package when set.
 	AppxPfx string
 
 	// The password to use with the .pfx in order to sign the app.
@@ -410,7 +415,7 @@ func (pkg *WinPackage) Build(ctx context.Context) error {
 		return err
 	}
 
-	if len(pkg.AppxPfx) == 0 {
+	if !pkg.Appx {
 		printVerbose("deploying dev version")
 		return pkg.deployDev(ctx)
 	}
@@ -420,8 +425,12 @@ func (pkg *WinPackage) Build(ctx context.Context) error {
 		return err
 	}
 
-	printVerbose("signing %sx", pkg.name)
-	return pkg.signAppx(ctx)
+	if len(pkg.AppxPfx) != 0 {
+		printVerbose("signing %sx", pkg.name)
+		return pkg.signAppx(ctx)
+	}
+
+	return nil
 }
 
 func (pkg *WinPackage) create() error {
