@@ -41,13 +41,15 @@ func init() {
 	EnableDebug(false)
 }
 
-// Import imports the component into the app.
+// Import imports the given components into the app.
 // Components must be imported in order the be used by the app package.
 // This allows components to be created dynamically when they are found into
 // markup.
-func Import(c Compo) {
-	if _, err := factory.RegisterCompo(c); err != nil {
-		Panicf("import component failed: %s", err)
+func Import(c ...Compo) {
+	for _, compo := range c {
+		if _, err := factory.RegisterCompo(compo); err != nil {
+			Panicf("import component failed: %s", err)
+		}
 	}
 }
 
