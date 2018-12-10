@@ -22,9 +22,9 @@ type Settings struct {
 	// The build number.
 	BuildNumber int
 
-	// The app icon name:
-	// - Must be located at the root of the resources directory.
-	// - Must be a .png.
+	// The app icon path:
+	// - Must be relative to the resources directory.
+	// - Must be a ".png".
 	// Provide a big one! Other required icon sizes will be auto generated.
 	Icon string
 
@@ -33,9 +33,6 @@ type Settings struct {
 
 	// A human readable copyright.
 	Copyright string
-
-	// The application role.
-	Role Role
 
 	// The application category.
 	Category Category
@@ -86,8 +83,8 @@ type Settings struct {
 	// The Movies directory access mode.
 	Movies FileAccess
 
-	// The UTIs representing the file types that the app can open.
-	SupportedFiles []string
+	// The file types that can be opened by the app.
+	SupportedFiles []FileType
 }
 
 // Role represents the role of an application.
@@ -95,10 +92,9 @@ type Role string
 
 // Constants that enumerate application roles.
 const (
-	NoRole     Role = "None"
-	EditorRole Role = "Editor"
-	ViewerRole Role = "Viewer"
-	ShellRole  Role = "Shell"
+	Editor Role = "Editor"
+	Viewer Role = "Viewer"
+	Shell  Role = "Shell"
 )
 
 // Category represents the app style.
@@ -159,3 +155,22 @@ const (
 	ReadOnly  FileAccess = "read-only"
 	ReadWrite FileAccess = "read-write"
 )
+
+// FileType describes a file type that can be opened by the app.
+type FileType struct {
+	// The  name.
+	// Must be non empty, a single word and lowercased.
+	Name string
+
+	// The app’s role with respect to the type.
+	Role Role
+
+	// The icon path:
+	// - Must be relative to the resources directory.
+	// - Must be a ".png".
+	Icon string
+
+	// A list of UTI defining a supported file type.
+	// Eg. "public.png" for ".png" files.
+	UTIs []string
+}

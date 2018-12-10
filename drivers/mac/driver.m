@@ -350,6 +350,7 @@
     @"Filenames" : filenames,
   };
 
+  [NSApp activateIgnoringOtherApps:YES];
   [self.goRPC call:@"driver.OnFilesOpen" withInput:in onUI:YES];
 }
 

@@ -260,3 +260,7 @@ func generateTemplatedFile(path, tmpl string, data interface{}) error {
 
 	return t.Execute(f, data)
 }
+
+func trimExt(path string) string {
+	return strings.TrimSuffix(path, filepath.Ext(path))
+}
