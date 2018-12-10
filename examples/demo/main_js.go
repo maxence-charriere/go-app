@@ -6,7 +6,10 @@ import (
 )
 
 func main() {
-	app.Import(&Hello{})
+	app.Import(
+		&NavPane{},
+		&Hello{},
+	)
 
 	app.Run(&web.Driver{
 		URL: "/Hello",

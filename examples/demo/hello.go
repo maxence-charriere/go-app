@@ -8,16 +8,19 @@ type Hello struct {
 // Render returns a string that describes the component markup.
 func (h *Hello) Render() string {
 	return `
-<div class="Hello">
-	<h1>
-		Hello
-		{{if .Name}}
-			{{.Name}}
-		{{else}}
-			world
-		{{end}}!
-	</h1>
-	<input value="{{.Name}}" placeholder="Say something..." onchange="Name" autofocus>
+<div class="Layout Hello">
+	<navpane current="hello">
+	<div class="Hello-Content">
+		<h1>
+			Hello
+			{{if .Name}}
+				{{.Name}}
+			{{else}}
+				world
+			{{end}}!
+		</h1>
+		<input class="Hello-Input" value="{{.Name}}" placeholder="Say something..." onchange="Name" autofocus>
+	</div>
 </div>
 	`
 }

@@ -1,40 +1,32 @@
 body {
-    font-family: 'Helvetica Neue', 'Segoe UI';
+    color: rgb(240, 240, 240);
+    font-size: 11pt;
+    font-weight: 300;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(240, 240, 240);
+}
+
+a:hover {
     color: white;
 }
 
 h1 {
-    font-weight: 300;
-    font-size: 42pt;
-    max-width: calc(100% - 80px);
-    padding: 0 40px;
+    letter-spacing: 1px;
+    font-weight: 200;
+    text-transform: lowercase;
 }
 
-input {
-    width: 265px;
-    padding: 8pt;
-    margin-bottom: 5%;
-    border: 0;
-    border-left: 2px solid silver;
-    outline: none;
-    font-size: 14px;
-    background: transparent;
-    color: white;
-}
-
-input:focus {
-    border-left-color: deepskyblue;
-}
-
-.Hello {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    background-image: url('../space.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 100%;
+.Layout {
     width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+}
+
+.Selected a {
+    color: deepskyblue;
 }
