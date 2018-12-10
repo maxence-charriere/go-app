@@ -640,6 +640,11 @@ func (e *Engine) newCompo(c app.Compo, n node) error {
 
 	e.compoIDs[n.ID] = ic
 	e.compos[c] = ic
+
+	if mounter, ok := c.(app.Mounter); ok {
+		mounter.OnMount()
+	}
+
 	return nil
 }
 
