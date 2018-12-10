@@ -8,8 +8,8 @@ type Hello struct {
 // Render returns a string that describes the component markup.
 func (h *Hello) Render() string {
 	return `
-<div class="Layout">
-	<navpane>
+<div class="Layout Hello">
+	<navpane current="hello">
 	<div class="Hello-Content">
 		<h1>
 			Hello

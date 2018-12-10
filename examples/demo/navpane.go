@@ -1,10 +1,6 @@
 package main
 
-import (
-	"fmt"
-
-	"github.com/murlokswarm/app"
-)
+import "github.com/murlokswarm/app"
 
 // NavPane is a component that describes the navigation pane.
 type NavPane struct {
@@ -16,20 +12,25 @@ type NavPane struct {
 func (n *NavPane) OnMount() {
 	n.Examples = []string{
 		"hello",
+		"driver",
+		"window",
 	}
 
 	app.Render(n)
-	fmt.Println("bwa")
 }
 
 // Render returns the html that describes the nav pane content.
 func (n *NavPane) Render() string {
 	return `
 <div class="NavPane">
-	<h1 class="NavPane-Title">Demo</h1>
-	<ul>
+	<h1>Demo</h1>
+	<ul class="NavPane-List">
+		{{$current := .Current}}
+
 		{{range .Examples}}
-		<li class="NavPane-Elem {{if eq . .Current}}NavPane-Selected{{end}}"><{{.}}/li>
+		<li class="NavPane-Elem {{if eq . $current}}Selected{{end}}">
+			<a href="{{.}}">{{.}}</a>
+		</li>
 		{{end}}
 	</ul>
 </div>

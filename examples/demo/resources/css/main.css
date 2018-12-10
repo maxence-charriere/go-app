@@ -1,6 +1,22 @@
 body {
-    font-family: 'Helvetica Neue', 'Segoe UI';
+    color: rgb(240, 240, 240);
+    font-size: 11pt;
+    font-weight: 300;
+}
+
+a {
+    text-decoration: none;
+    color: rgb(240, 240, 240);
+}
+
+a:hover {
     color: white;
+}
+
+h1 {
+    letter-spacing: 1px;
+    font-weight: 100;
+    text-transform: lowercase;
 }
 
 .Layout {
@@ -9,5 +25,8 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: row;
-    background-color: red;
+}
+
+.Selected a {
+    color: deepskyblue;
 }

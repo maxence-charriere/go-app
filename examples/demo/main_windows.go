@@ -11,7 +11,10 @@ import (
 )
 
 func main() {
-	app.Import(&Hello{})
+	app.Import(
+		&NavPane{},
+		&Hello{},
+	)
 
 	switch app.Kind {
 	case "web":
