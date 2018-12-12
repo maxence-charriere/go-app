@@ -23,7 +23,6 @@
     BOOL fixedSize = [in[@"FixedSize"] boolValue];
     BOOL closeHidden = [in[@"CloseHidden"] boolValue];
     BOOL minimizeHidden = [in[@"MinimizeHidden"] boolValue];
-    BOOL titlebarHidden = [in[@"TitlebarHidden"] boolValue];
 
     NSRect rect = NSMakeRect(x.floatValue, y.floatValue, width.floatValue,
                              height.floatValue);
@@ -63,7 +62,7 @@
 
     [win configBackgroundColor:backgroundColor frosted:frostedBackground];
     [win configWebview];
-    [win configTitlebar:title hidden:titlebarHidden];
+    [win configTitlebar:title hidden:YES];
 
     driver.elements[ID] = win;
     [win showWindow:nil];

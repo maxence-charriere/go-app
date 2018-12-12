@@ -5,7 +5,7 @@ type Hello struct {
 	Name string
 }
 
-// Render returns a string that describes the component markup.
+// Render returns a html string that describes the component.
 func (h *Hello) Render() string {
 	return `
 <div class="Layout Hello">
@@ -19,7 +19,7 @@ func (h *Hello) Render() string {
 				world
 			{{end}}!
 		</h1>
-		<input class="Hello-Input" value="{{.Name}}" placeholder="Say something..." onchange="Name" autofocus>
+		<input class="Hello-Input" value="{{.Name}}" placeholder="Say something..." onchange="{{to "Name"}}" autofocus>
 	</div>
 </div>
 	`

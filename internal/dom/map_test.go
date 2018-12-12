@@ -202,6 +202,16 @@ func TestMapping(t *testing.T) {
 			},
 		},
 		{
+			scenario: "map array index",
+			mapping: Mapping{
+				FieldOrMethod: "Array.0",
+				JSONValue:     "42",
+			},
+			expected: M{
+				Array: [5]int{42},
+			},
+		},
+		{
 			scenario: "map func with arg",
 			mapping: Mapping{
 				FieldOrMethod: "FuncWithArg",

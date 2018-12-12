@@ -9,9 +9,10 @@ func main() {
 	app.Import(
 		&NavPane{},
 		&Hello{},
+		&Window{},
 	)
 
 	app.Run(&web.Driver{
-		URL: "/Hello",
+		URL: "window",
 	})
 }

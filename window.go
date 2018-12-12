@@ -24,17 +24,26 @@ type Window interface {
 	// The window will be put in front, above the other elements.
 	Focus()
 
-	// FullScreen takes the window into fullscreen mode.
+	// Reports whether the window is the focus.
+	IsFocus() bool
+
+	// FullScreen takes the window into full screen mode.
 	FullScreen()
 
-	// ExitFullScreen takes the window out of fullscreen mode.
+	// ExitFullScreen takes the window out of full screen mode.
 	ExitFullScreen()
 
-	// Minimize takes the window into minimized mode
+	// Reports whether the window is in full screen mode.
+	IsFullScreen() bool
+
+	// Minimize takes the window into minimized mode.
 	Minimize()
 
-	// Deminimize takes the window out of minimized mode
+	// Deminimize takes the window out of minimized mode.
 	Deminimize()
+
+	// Reports whether the window is minimized.
+	IsMinimized() bool
 }
 
 // WindowConfig is a struct that describes a window.
@@ -69,7 +78,7 @@ type WindowConfig struct {
 	// The background color (#rrggbb).
 	BackgroundColor string
 
-	// Report whether the background have a frosted effect.
+	// Enables frosted effect.
 	FrostedBackground bool
 
 	// Reports whether the window is resizable.
@@ -81,37 +90,34 @@ type WindowConfig struct {
 	// Reports whether the minimize button is hidden.
 	MinimizeHidden bool
 
-	// Reports whether the title bar is hidden.
-	TitlebarHidden bool
-
 	// The URL of the component to load when the window is created.
 	URL string
 
 	// The function that is called when the window is moved.
-	OnMove func(x, y float64) `json:"-"`
+	OnMove func(w Window) `json:"-"`
 
 	// The function that is called when the window is resized.
-	OnResize func(width float64, height float64) `json:"-"`
+	OnResize func(w Window) `json:"-"`
 
 	// The function that is called when the window get focus.
-	OnFocus func() `json:"-"`
+	OnFocus func(w Window) `json:"-"`
 
 	// The function that is called when the window lose focus.
-	OnBlur func() `json:"-"`
+	OnBlur func(w Window) `json:"-"`
 
 	// The function that is called when the window goes full screen.
-	OnFullScreen func() `json:"-"`
+	OnFullScreen func(w Window) `json:"-"`
 
 	// The function that is called when the window exit full screen.
-	OnExitFullScreen func() `json:"-"`
+	OnExitFullScreen func(w Window) `json:"-"`
 
 	// The function that is called when the window is minimized.
-	OnMinimize func() `json:"-"`
+	OnMinimize func(w Window) `json:"-"`
 
 	// The function that is called when the window is deminimized.
-	OnDeminimize func() `json:"-"`
+	OnDeminimize func(w Window) `json:"-"`
 
 	// The function that is called when the window is closed.
 	// Returning bool prevents the window to be closed.
-	OnClose func() bool `json:"-"`
+	OnClose func(w Window) bool `json:"-"`
 }

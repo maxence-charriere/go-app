@@ -24,11 +24,11 @@ func (n *NavPane) Render() string {
 	return `
 <div class="NavPane">
 	<h1>Demo</h1>
-	<ul class="NavPane-List">
+	<ul>
 		{{$current := .Current}}
 
 		{{range .Examples}}
-		<li class="NavPane-Elem {{if eq . $current}}Selected{{end}}">
+		<li class="{{if eq . $current}}Selected{{end}}">
 			<a href="{{.}}">{{.}}</a>
 		</li>
 		{{end}}
