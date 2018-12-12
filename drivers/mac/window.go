@@ -27,18 +27,19 @@ type Window struct {
 	dom          dom.Engine
 	history      core.History
 	compo        app.Compo
+	isFocus      bool
 	isFullscreen bool
 	isMinimized  bool
 
-	onMove           func(x, y float64)
-	onResize         func(width, height float64)
-	onFocus          func()
-	onBlur           func()
-	onFullScreen     func()
-	onExitFullScreen func()
-	onMinimize       func()
-	onDeminimize     func()
-	onClose          func() bool
+	onMove           func(app.Window)
+	onResize         func(app.Window)
+	onFocus          func(app.Window)
+	onBlur           func(app.Window)
+	onFullScreen     func(app.Window)
+	onExitFullScreen func(app.Window)
+	onMinimize       func(app.Window)
+	onDeminimize     func(app.Window)
+	onClose          func(app.Window) bool
 }
 
 func newWindow(c app.WindowConfig) *Window {
@@ -53,6 +54,7 @@ func newWindow(c app.WindowConfig) *Window {
 				dom.JsToGoHandler,
 				dom.HrefCompoFmt,
 			},
+			CallOnUI: driver.CallOnUIGoroutine,
 		},
 
 		onMove:           c.OnMove,
@@ -101,7 +103,6 @@ func newWindow(c app.WindowConfig) *Window {
 		FixedSize:         c.FixedSize,
 		CloseHidden:       c.CloseHidden,
 		MinimizeHidden:    c.MinimizeHidden,
-		TitlebarHidden:    c.TitlebarHidden,
 	}
 
 	in.MinWidth, in.MaxWidth = normalizeWidowSize(in.MinWidth, in.MaxWidth)
@@ -378,6 +379,11 @@ func (w *Window) Focus() {
 	w.SetErr(err)
 }
 
+// IsFocus satisfies the app.Window interface.
+func (w *Window) IsFocus() bool {
+	return w.isFocus
+}
+
 // FullScreen satisfies the app.Window interface.
 func (w *Window) FullScreen() {
 	if w.isFullscreen {
@@ -410,6 +416,11 @@ func (w *Window) ExitFullScreen() {
 	w.SetErr(err)
 }
 
+// IsFullScreen satisfies the app.Window interface.
+func (w *Window) IsFullScreen() bool {
+	return w.isFullscreen
+}
+
 // Minimize satisfies the app.Window interface.
 func (w *Window) Minimize() {
 	if w.isMinimized {
@@ -440,6 +451,11 @@ func (w *Window) Deminimize() {
 	})
 
 	w.SetErr(err)
+}
+
+// IsMinimized satisfies the app.Window interface.
+func (w *Window) IsMinimized() bool {
+	return w.isMinimized
 }
 
 // Close satisfies the app.Window interface.
@@ -512,10 +528,7 @@ func onWindowAlert(w *Window, in map[string]interface{}) interface{} {
 
 func onWindowMove(w *Window, in map[string]interface{}) interface{} {
 	if w.onMove != nil {
-		w.onMove(
-			in["X"].(float64),
-			in["Y"].(float64),
-		)
+		w.onMove(w)
 	}
 
 	return nil
@@ -523,75 +536,80 @@ func onWindowMove(w *Window, in map[string]interface{}) interface{} {
 
 func onWindowResize(w *Window, in map[string]interface{}) interface{} {
 	if w.onResize != nil {
-		w.onResize(
-			in["Width"].(float64),
-			in["Height"].(float64),
-		)
+		w.onResize(w)
 	}
 
 	return nil
 }
 
 func onWindowFocus(w *Window, in map[string]interface{}) interface{} {
+	w.isFocus = true
+
 	if w.onFocus != nil {
-		w.onFocus()
+		w.onFocus(w)
 	}
 
 	return nil
 }
 
 func onWindowBlur(w *Window, in map[string]interface{}) interface{} {
+	w.isFocus = false
+
 	if w.onBlur != nil {
-		w.onBlur()
+		w.onBlur(w)
 	}
 
 	return nil
 }
 
 func onWindowFullScreen(w *Window, in map[string]interface{}) interface{} {
+	w.isFullscreen = true
+
 	if w.onFullScreen != nil {
-		w.onFullScreen()
+		w.onFullScreen(w)
 	}
 
-	w.isFullscreen = true
 	return nil
 }
 
 func onWindowExitFullScreen(w *Window, in map[string]interface{}) interface{} {
+	w.isFullscreen = false
+
 	if w.onExitFullScreen != nil {
-		w.onExitFullScreen()
+		w.onExitFullScreen(w)
 	}
 
-	w.isFullscreen = false
 	return nil
 }
 
 func onWindowMinimize(w *Window, in map[string]interface{}) interface{} {
+	w.isMinimized = true
+
 	if w.onMinimize != nil {
-		w.onMinimize()
+		w.onMinimize(w)
 	}
 
-	w.isMinimized = true
 	return nil
 }
 
 func onWindowDeminimize(w *Window, in map[string]interface{}) interface{} {
+	w.isMinimized = false
+
 	if w.onDeminimize != nil {
-		w.onDeminimize()
+		w.onDeminimize(w)
 	}
 
-	w.isMinimized = false
 	return nil
 }
 
 func onWindowClose(w *Window, in map[string]interface{}) interface{} {
 	shouldClose := true
 	if w.onClose != nil {
-		shouldClose = w.onClose()
+		shouldClose = w.onClose(w)
 	}
 
 	if shouldClose {
-		// dom.Close()
+		w.dom.Close()
 		driver.elems.Delete(w)
 	}
 

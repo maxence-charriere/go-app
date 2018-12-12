@@ -96,6 +96,11 @@ func (w *Window) Focus() {
 	w.SetErr(app.ErrNotSupported)
 }
 
+// IsFocus satisfies the app.Window interface.
+func (w *Window) IsFocus() bool {
+	return false
+}
+
 // FullScreen satisfies the app.Window interface.
 func (w *Window) FullScreen() {
 	w.SetErr(app.ErrNotSupported)
@@ -106,6 +111,11 @@ func (w *Window) ExitFullScreen() {
 	w.SetErr(app.ErrNotSupported)
 }
 
+// IsFullScreen satisfies the app.Window interface.
+func (w *Window) IsFullScreen() bool {
+	return false
+}
+
 // Minimize satisfies the app.Window interface.
 func (w *Window) Minimize() {
 	w.SetErr(app.ErrNotSupported)
@@ -114,6 +124,11 @@ func (w *Window) Minimize() {
 // Deminimize satisfies the app.Window interface.
 func (w *Window) Deminimize() {
 	w.SetErr(app.ErrNotSupported)
+}
+
+// IsMinimized satisfies the app.Window interface.
+func (w *Window) IsMinimized() bool {
+	return false
 }
 
 // Close satisfies the app.Window interface.
