@@ -73,3 +73,8 @@ td {
 tr:last-child td {
     border-bottom: 0;
 }
+
+.NotSupported {
+    font-style: italic;
+    color: #e93937;
+}

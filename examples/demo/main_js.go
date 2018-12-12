@@ -13,6 +13,6 @@ func main() {
 	)
 
 	app.Run(&web.Driver{
-		URL: "/Hello",
+		URL: "window",
 	})
 }

@@ -201,9 +201,17 @@ func (w *Window) Render() string {
 		<div class="Window-Action-List">
 			{{range $idx, $v := .Actions}}
 			<div class="Window-Action" onclick="{{to "Actions" $idx "Action"}}">
-				<h2>{{.Name}}</h2>
+				<h2>
+					{{.Name}}
+
+					{{if .NotSupported}} 
+					<span class="NotSupported">- Not supported</span>
+					{{end}}
+				</h2>
 				<p>{{.Description}}</p>
 			</div>
+			{{else}}
+				<h2 class="NotSupported">Not supported</h2>
 			{{end}}
 		</div>
 	</div>
