@@ -6,10 +6,13 @@
 .Window-Actions {
     background-color: rgba(0, 0, 0, 0.5);
     flex-grow: 1;
+    height: 100%;
 }
 
 .Window-Action-List {
     margin: 6px 0 0;
+    overflow-y: scroll;
+    height: calc(100% - 6px - 32px - 38px);
 }
 
 .Window-Action {

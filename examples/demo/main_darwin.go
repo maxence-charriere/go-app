@@ -39,12 +39,12 @@ func main() {
 			},
 
 			OnRun: func() {
-				newWindow("main", entryCompo)
+				newWindow("main", entryCompo, false)
 			},
 
 			OnReopen: func(hasVisibleWindow bool) {
 				if !hasVisibleWindow {
-					newWindow("main", entryCompo)
+					newWindow("main", entryCompo, false)
 				}
 			},
 

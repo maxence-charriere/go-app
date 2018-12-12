@@ -10,18 +10,19 @@ func init() {
 	})
 }
 
-func newWindow(title, url string) {
+func newWindow(title, url string, frosted bool) {
 	updateInfo := func(w app.Window) {
 		app.PostAction("window-update-info", w.ID())
 	}
 
 	app.NewWindow(app.WindowConfig{
-		Title:     title,
-		URL:       url,
-		Width:     1440,
-		MinWidth:  1024,
-		Height:    720,
-		MinHeight: 500,
+		Title:             title,
+		URL:               url,
+		Width:             1440,
+		MinWidth:          1024,
+		Height:            720,
+		MinHeight:         500,
+		FrostedBackground: frosted,
 
 		OnMove:           updateInfo,
 		OnResize:         updateInfo,
@@ -83,7 +84,7 @@ func (w *Window) OnMount() {
 		w.Actions = []windowAction{
 			{
 				Name:        "Move",
-				Description: "Moves the window to position {x: 100, y: 100}.",
+				Description: "Move the window to position {x: 100, y: 100}.",
 				Action: func() {
 					win.Move(100, 100)
 					checkSupport(0)
@@ -92,7 +93,7 @@ func (w *Window) OnMount() {
 			},
 			{
 				Name:        "Center",
-				Description: "Moves the window to the center of the screen.",
+				Description: "Move the window to the center of the screen.",
 				Action: func() {
 					win.Center()
 					checkSupport(1)
@@ -110,7 +111,7 @@ func (w *Window) OnMount() {
 			},
 			{
 				Name:        "FullScreen",
-				Description: "Takes the window in full screen mode.",
+				Description: "Take the window in full screen mode.",
 				Action: func() {
 					win.FullScreen()
 					checkSupport(3)
@@ -119,7 +120,7 @@ func (w *Window) OnMount() {
 			},
 			{
 				Name:        "ExitFullScreen",
-				Description: "Takes the window out of fullscreen mode",
+				Description: "Take the window out of fullscreen mode",
 				Action: func() {
 					win.ExitFullScreen()
 					checkSupport(4)
@@ -128,7 +129,7 @@ func (w *Window) OnMount() {
 			},
 			{
 				Name:        "Minimize",
-				Description: "Takes the window into minimized mode.",
+				Description: "Take the window into minimized mode.",
 				Action: func() {
 					win.Minimize()
 					checkSupport(5)
@@ -137,7 +138,7 @@ func (w *Window) OnMount() {
 			},
 			{
 				Name:        "Minimize/Deminimize",
-				Description: "Takes and take out the window out of minimized mode.",
+				Description: "Take and take out the window out of minimized mode.",
 				Action: func() {
 					win.Minimize()
 					checkSupport(6)
@@ -148,9 +149,20 @@ func (w *Window) OnMount() {
 						app.Render(w)
 					})
 
-					checkSupport(6)
 					app.Render(w)
 				},
+			},
+			{
+				Name:        "Frosted window",
+				Description: "Create a window with frosted effect.",
+				Action: func() {
+					newWindow("frosted", "window", true)
+				},
+			},
+			{
+				Name:        "Close",
+				Description: "Close the window.",
+				Action:      win.Close,
 			},
 		}
 
