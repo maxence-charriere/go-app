@@ -27,3 +27,8 @@ func TestJSONFormat(t *testing.T) {
 	s, _ := jsonFormat(42)
 	assert.Equal(t, "42", s)
 }
+
+func TestTarget(t *testing.T) {
+	s := target("Hello", 42)
+	assert.Equal(t, template.JS("Hello.42"), s)
+}
