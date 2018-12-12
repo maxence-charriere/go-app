@@ -3,6 +3,7 @@ package dom
 import (
 	"encoding/json"
 	"reflect"
+	"strconv"
 	"strings"
 	"unicode"
 
@@ -139,6 +140,13 @@ func (m *Mapping) mapToMap(mapv reflect.Value) (func(), error) {
 func (m *Mapping) mapToSlice(slice reflect.Value) (func(), error) {
 	if len(m.currentPipeline()) == 0 {
 		return m.mapToValue(slice)
+	}
+
+	if idx, err := strconv.Atoi(m.target()); err == nil && idx < slice.Len() {
+		if child := slice.Index(idx); child.IsValid() {
+			m.index++
+			return m.mapTo(child)
+		}
 	}
 
 	if isExported(m.target()) {

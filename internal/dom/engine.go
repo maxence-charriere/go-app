@@ -36,6 +36,9 @@ type Engine struct {
 	// No synchronisations are performed if the func in nil.
 	Sync func(arg interface{}) error
 
+	// CallOnUI the function to execute the given function on the ui goroutine.
+	CallOnUI func(func())
+
 	once          sync.Once
 	mutex         sync.RWMutex
 	compos        map[app.Compo]compo
@@ -67,6 +70,10 @@ func (e *Engine) init() {
 		for _, a := range e.AllowedNodes {
 			e.allowdedNodes[a] = struct{}{}
 		}
+	}
+
+	if e.CallOnUI == nil {
+		e.CallOnUI = func(f func()) {}
 	}
 
 	e.creates = make([]change, 0, 64)
@@ -642,7 +649,7 @@ func (e *Engine) newCompo(c app.Compo, n node) error {
 	e.compos[c] = ic
 
 	if mounter, ok := c.(app.Mounter); ok {
-		mounter.OnMount()
+		e.CallOnUI(mounter.OnMount)
 	}
 
 	return nil
