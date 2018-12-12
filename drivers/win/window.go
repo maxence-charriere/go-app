@@ -53,6 +53,7 @@ func newWindow(c app.WindowConfig) *Window {
 				dom.JsToGoHandler,
 				dom.HrefCompoFmt,
 			},
+			CallOnUI: driver.CallOnUIGoroutine,
 		},
 
 		onMove:           c.OnMove,
