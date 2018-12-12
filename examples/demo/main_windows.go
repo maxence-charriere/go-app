@@ -14,6 +14,7 @@ func main() {
 	app.Import(
 		&NavPane{},
 		&Hello{},
+		&Window{},
 	)
 
 	switch app.Kind {

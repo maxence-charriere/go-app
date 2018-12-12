@@ -1,0 +1,24 @@
+.Window-Tracking {
+    background-color: rgba(0, 0, 0, 0.25);
+    width: 400px;
+}
+
+.Window-Actions {
+    background-color: rgba(0, 0, 0, 0.5);
+    flex-grow: 1;
+}
+
+.Window-Action-List {
+    margin: 6px 0 0;
+}
+
+.Window-Action {
+    margin: 0;
+    padding: 12px 0;
+    cursor: pointer;
+    -webkit-user-select: none;
+}
+
+.Window-Action:hover {
+    background-color: deepskyblue;
+}

@@ -17,6 +17,21 @@ h1 {
     letter-spacing: 1px;
     font-weight: 200;
     text-transform: lowercase;
+    margin: 0;
+    padding: 38px 24px 0;
+}
+
+h2 {
+    font-weight: 200;
+    text-transform: lowercase;
+    margin: 0;
+    padding: 0 24px;
+}
+
+p {
+    padding: 6px 24px 0;
+    margin: 0;
+    outline: 0;
 }
 
 .Layout {
@@ -29,4 +44,32 @@ h1 {
 
 .Selected a {
     color: deepskyblue;
+}
+
+ul {
+    margin: 0;
+    padding: 12px 0 0;
+}
+
+ul li {
+    margin: 0;
+    padding: 6px 24px 3px;
+}
+
+table {
+    width: calc(100% - 48px);
+    border-collapse: collapse;
+    margin: 12px 24px;
+    table-layout: fixed;
+}
+
+td {
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.3);
+    padding: 12px;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+tr:last-child td {
+    border-bottom: 0;
 }

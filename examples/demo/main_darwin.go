@@ -14,17 +14,19 @@ func main() {
 	app.Import(
 		&NavPane{},
 		&Hello{},
+		&Window{},
 	)
+
+	entryCompo := "window"
 
 	switch app.Kind {
 	case "web":
 		app.Run(&web.Driver{
-			URL: "/Hello",
+			URL: entryCompo,
 		})
 
 	default:
 		app.Run(&mac.Driver{
-			URL: "/Hello",
 			Settings: mac.Settings{
 				SupportedFiles: []mac.FileType{
 					{
@@ -34,6 +36,16 @@ func main() {
 					},
 				},
 				URLScheme: "goapp-demo",
+			},
+
+			OnRun: func() {
+				newWindow("main", entryCompo)
+			},
+
+			OnReopen: func(hasVisibleWindow bool) {
+				if !hasVisibleWindow {
+					newWindow("main", entryCompo)
+				}
 			},
 
 			OnFilesOpen: func(filenames []string) {
