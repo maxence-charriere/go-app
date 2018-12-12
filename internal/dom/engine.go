@@ -668,7 +668,7 @@ func (e *Engine) deleteNode(id string) {
 	if n.IsCompo {
 		if c, ok := e.compoIDs[n.ID]; ok {
 			if dismounter, ok := c.Compo.(app.Dismounter); ok {
-				dismounter.OnDismount()
+				e.CallOnUI(dismounter.OnDismount)
 			}
 
 			delete(e.compos, c.Compo)
