@@ -2,10 +2,58 @@ package app
 
 import (
 	"fmt"
+	"sync"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+func TestHandle(t *testing.T) {
+	wg := sync.WaitGroup{}
+
+	Handle("test", func(e Emitter, m Msg) {
+		t.Logf("key: %s value: %v", m.Key(), m.Value())
+		wg.Done()
+	})
+
+	wg.Add(3)
+
+	NewMsg("test").WithValue(42).Post()
+
+	Post(
+		NewMsg("test").WithValue(21),
+		NewMsg("test").WithValue(84),
+	)
+
+	wg.Wait()
+}
+
+func TestMsgRegistry(t *testing.T) {
+	d := newEventRegistry(func(f func()) {
+		f()
+	})
+
+	r := newMsgRegistry(d)
+	wg := sync.WaitGroup{}
+
+	r.handle("test", func(e Emitter, m Msg) {
+		wg.Done()
+	})
+
+	r.post(NewMsg("unknown"))
+
+	wg.Add(1)
+	r.post(NewMsg("test").WithValue(42))
+
+	wg.Add(3)
+	r.post(
+		NewMsg("test"),
+		NewMsg("test").WithValue("hello"),
+		NewMsg("test").WithValue(21),
+	)
+
+	wg.Wait()
+}
 
 func TestEventRegistry(t *testing.T) {
 	Logger = func(format string, a ...interface{}) {
@@ -99,17 +147,17 @@ func TestEventRegistry(t *testing.T) {
 				f()
 			})
 
-			unsub := r.Subscribe(test.subName, test.handler(&called))
+			unsub := r.subscribe(test.subName, test.handler(&called))
 			defer unsub()
 
-			r.Dispatch(test.dispName, test.dispArg)
+			r.Emit(test.dispName, test.dispArg)
 			assert.Equal(t, test.called, called)
 		})
 	}
 }
 
-func TestEventSubscriber(t *testing.T) {
-	s := NewEventSubscriber()
+func TestSubscriber(t *testing.T) {
+	s := NewSubscriber()
 	defer s.Close()
 
 	s.Subscribe("test-event-subscriber", func() {})

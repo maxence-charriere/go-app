@@ -641,7 +641,7 @@ func (e *Engine) newCompo(c app.Compo, n node) error {
 		Compo: c,
 	}
 
-	if sub, ok := c.(app.Subscriber); ok {
+	if sub, ok := c.(app.EventSubscriber); ok {
 		ic.Events = sub.Subscribe()
 	}
 

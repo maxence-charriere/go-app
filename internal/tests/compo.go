@@ -17,9 +17,9 @@ func (c *Foo) OnMount() {}
 // OnDismount satisfies the app.Dismounter interface.
 func (c *Foo) OnDismount() {}
 
-// Subscribe satisfies the app.Subscriber interface.
-func (c *Foo) Subscribe() *app.EventSubscriber {
-	return app.NewEventSubscriber()
+// Subscribe satisfies the app.EventSubscriber interface.
+func (c *Foo) Subscribe() app.Subscriber {
+	return app.NewSubscriber()
 }
 
 // Funcs satisfies the app.CompoWithExtendedRender interface.

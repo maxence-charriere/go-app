@@ -29,11 +29,10 @@ var (
 	// Kind describes the app kind (desktop|mobile|web).
 	Kind string
 
-	driver  Driver
-	factory = NewFactory()
-	events  = newEventRegistry(CallOnUIGoroutine)
-	actions = newActionRegistry(events)
-
+	driver    Driver
+	factory   = NewFactory()
+	events    = newEventRegistry(CallOnUIGoroutine)
+	messages  = newMsgRegistry(events)
 	whenDebug func(func())
 )
 
@@ -210,27 +209,26 @@ func CallOnUIGoroutine(f func()) {
 	driver.CallOnUIGoroutine(f)
 }
 
-// HandleAction handles the named action with the given handler.
-func HandleAction(name string, h ActionHandler) {
-	actions.Handle(name, h)
+// Handle handles the message for the given key.
+func Handle(key string, h Handler) {
+	messages.handle(key, h)
 }
 
-// PostAction creates and posts the named action with the given arg.
-// The action is handled in its own goroutine.
-func PostAction(name string, arg interface{}) {
-	actions.Post(name, arg)
+// Post posts the given messages.
+// Messages are handled in another goroutine.
+func Post(msgs ...Msg) {
+	messages.post(msgs...)
 }
 
-// PostActions creates and posts a batch of actions.
-// All the actions are handled sequentially in a separate goroutine.
-func PostActions(a ...Action) {
-	actions.PostBatch(a...)
+// NewMsg creates a message.
+func NewMsg(key string) Msg {
+	return &msg{key: key}
 }
 
-// NewEventSubscriber creates an event subscriber to return when
-// implementing the app.Subscriber interface.
-func NewEventSubscriber() *EventSubscriber {
-	return &EventSubscriber{
+// NewSubscriber creates an event subscriber to return when implementing the
+// app.EventSubscriber interface.
+func NewSubscriber() Subscriber {
+	return &subscriber{
 		registry: events,
 	}
 }
