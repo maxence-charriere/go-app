@@ -1,37 +1,5 @@
 body {
     color: rgb(240, 240, 240);
-    font-size: 11pt;
-    font-weight: 300;
-}
-
-a {
-    text-decoration: none;
-    color: rgb(240, 240, 240);
-}
-
-a:hover {
-    color: white;
-}
-
-h1 {
-    letter-spacing: 1px;
-    font-weight: 200;
-    text-transform: lowercase;
-    margin: 0;
-    padding: 38px 24px 0;
-}
-
-h2 {
-    font-weight: 200;
-    text-transform: lowercase;
-    margin: 0;
-    padding: 0 24px;
-}
-
-p {
-    padding: 6px 24px 0;
-    margin: 0;
-    outline: 0;
 }
 
 .Layout {
@@ -46,31 +14,26 @@ p {
     color: deepskyblue;
 }
 
-ul {
-    margin: 0;
-    padding: 12px 0 0;
-}
-
-ul li {
-    margin: 0;
-    padding: 6px 24px 3px;
-}
-
 table {
     width: calc(100% - 48px);
+    margin: 0 24px;
+    padding: 3px 0 6px;
     border-collapse: collapse;
-    margin: 12px 24px;
     table-layout: fixed;
 }
 
 td {
-    border-bottom: 0.5px solid rgba(255, 255, 255, 0.3);
     padding: 12px;
+    border-bottom: 0.1px solid darkgrey;
     text-align: center;
-    border-collapse: collapse;
+}
+
+tr:first-child td {
+    padding: 0 12px 12px;
 }
 
 tr:last-child td {
+    padding: 12px 12px 0;
     border-bottom: 0;
 }
 

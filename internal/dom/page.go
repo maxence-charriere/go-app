@@ -44,6 +44,7 @@ func (p Page) String() string {
 		Icon          string
 		CSS           []string
 		Javascripts   []string
+		PageCSS       string
 		PageJS        string
 		GoRequest     string
 		RootCompoName string
@@ -53,6 +54,7 @@ func (p Page) String() string {
 		Icon:          p.Icon,
 		CSS:           p.CSS,
 		Javascripts:   p.Javascripts,
+		PageCSS:       cssTmpl,
 		PageJS:        jsTmpl,
 		GoRequest:     p.GoRequest,
 		RootCompoName: p.RootCompoName,
