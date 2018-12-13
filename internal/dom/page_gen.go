@@ -24,6 +24,7 @@ func main() {
 	}{
 		{Var: "htmlTmpl", Filename: "page.html"},
 		{Var: "jsTmpl", Filename: "page.js"},
+		{Var: "cssTmpl", Filename: "page.css"},
 	}
 
 	for _, g := range gen {

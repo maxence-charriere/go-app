@@ -4,7 +4,18 @@
     background-color: rgba(0, 0, 0, 0.50);
 }
 
-.NavPane-Elem a {
-    display: block;
-    width: 100%;
+.NavPane ul {
+    padding: 3px 0 6px;
+}
+
+.NavPane ul li {
+    padding: 3px 24px;
+}
+
+.NavPane ul li:first-child {
+    padding: 0 24px 3px;
+}
+
+.NavPane ul li:last-child {
+    padding: 3px 24px 0;
 }

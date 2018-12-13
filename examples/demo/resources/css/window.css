@@ -10,14 +10,14 @@
 }
 
 .Window-Action-List {
-    margin: 6px 0 0;
+    margin: 0;
     overflow-y: scroll;
     height: calc(100% - 6px - 32px - 38px);
 }
 
 .Window-Action {
     margin: 0;
-    padding: 12px 0;
+    padding: 6px 0 12px;
     cursor: pointer;
     -webkit-user-select: none;
 }
