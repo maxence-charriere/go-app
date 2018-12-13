@@ -7,6 +7,7 @@ using Windows.ApplicationModel.Core;
 using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Foundation.Metadata;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
@@ -74,6 +75,29 @@ namespace uwp
 
             JsonObject input = e.Parameter as JsonObject;
             this.ID = input.GetNamedString("ID");
+            var frosted = input.GetNamedBoolean("FrostedBackground");
+
+
+            Color bg = Color.FromArgb(255, 50, 52, 54);
+
+            if (Application.Current.RequestedTheme == ApplicationTheme.Light)
+            {
+                bg = Color.FromArgb(255, 236, 236, 236);
+            }
+
+            if (frosted && ApiInformation.IsTypePresent("Windows.UI.Xaml.Media.XamlCompositionBrushBase"))
+            {
+                AcrylicBrush frostedBrush = new AcrylicBrush();
+                frostedBrush.BackgroundSource = Windows.UI.Xaml.Media.AcrylicBackgroundSource.HostBackdrop;
+                frostedBrush.TintColor = bg;
+                frostedBrush.FallbackColor = bg;
+                frostedBrush.TintOpacity = 0.85;
+                this.Root.Background = frostedBrush;
+            }
+            else
+            {
+                this.Root.Background = new SolidColorBrush(bg);
+            }
 
             Bridge.PutElem(this.ID, this);
         }
