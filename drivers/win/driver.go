@@ -16,6 +16,7 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
@@ -180,9 +181,8 @@ func (d *Driver) Resources(path ...string) string {
 // Render satisfies the app.Driver interface.
 func (d *Driver) Render(c app.Compo) {
 	e := d.ElemByCompo(c)
-	if e.Err() == nil {
-		e.(app.ElemWithCompo).Render(c)
-	}
+	spew.Dump(e)
+	e.(app.ElemWithCompo).Render(c)
 }
 
 // ElemByCompo satisfies the app.Driver interface.
@@ -255,12 +255,11 @@ func (d *Driver) onQuit(in map[string]interface{}) interface{} {
 
 func (d *Driver) newMainWindow() {
 	app.NewWindow(app.WindowConfig{
-		Title:          d.AppName(),
-		TitlebarHidden: true,
-		MinWidth:       480,
-		Width:          1280,
-		MinHeight:      480,
-		Height:         768,
-		URL:            d.URL,
+		Title:     d.AppName(),
+		MinWidth:  480,
+		Width:     1280,
+		MinHeight: 480,
+		Height:    768,
+		URL:       d.URL,
 	})
 }

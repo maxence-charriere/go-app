@@ -30,15 +30,15 @@ type Window struct {
 	isFullscreen bool
 	isMinimized  bool
 
-	onMove           func(x, y float64)
-	onResize         func(width, height float64)
-	onFocus          func()
-	onBlur           func()
-	onFullScreen     func()
-	onExitFullScreen func()
-	onMinimize       func()
-	onDeminimize     func()
-	onClose          func() bool
+	onMove           func(app.Window)
+	onResize         func(app.Window)
+	onFocus          func(app.Window)
+	onBlur           func(app.Window)
+	onFullScreen     func(app.Window)
+	onExitFullScreen func(app.Window)
+	onMinimize       func(app.Window)
+	onDeminimize     func(app.Window)
+	onClose          func(app.Window) bool
 }
 
 func newWindow(c app.WindowConfig) *Window {
@@ -102,7 +102,6 @@ func newWindow(c app.WindowConfig) *Window {
 		FixedSize:         c.FixedSize,
 		CloseHidden:       c.CloseHidden,
 		MinimizeHidden:    c.MinimizeHidden,
-		TitlebarHidden:    c.TitlebarHidden,
 	}
 
 	in.MinWidth, in.MaxWidth = normalizeWidowSize(in.MinWidth, in.MaxWidth)
@@ -375,7 +374,7 @@ func (w *Window) ExitFullScreen() {
 
 func onWindowFocus(w *Window, in map[string]interface{}) interface{} {
 	if w.onFocus != nil {
-		w.onFocus()
+		w.onFocus(w)
 	}
 
 	return nil
@@ -383,7 +382,7 @@ func onWindowFocus(w *Window, in map[string]interface{}) interface{} {
 
 func onWindowBlur(w *Window, in map[string]interface{}) interface{} {
 	if w.onBlur != nil {
-		w.onBlur()
+		w.onBlur(w)
 	}
 
 	return nil
@@ -421,10 +420,7 @@ func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 
 func onWindowResize(w *Window, in map[string]interface{}) interface{} {
 	if w.onResize != nil {
-		w.onResize(
-			in["Width"].(float64),
-			in["Height"].(float64),
-		)
+		w.onResize(w)
 	}
 
 	return nil
@@ -432,7 +428,7 @@ func onWindowResize(w *Window, in map[string]interface{}) interface{} {
 
 func onWindowFullScreen(w *Window, in map[string]interface{}) interface{} {
 	if w.onFullScreen != nil {
-		w.onFullScreen()
+		w.onFullScreen(w)
 	}
 
 	w.isFullscreen = true
@@ -441,7 +437,7 @@ func onWindowFullScreen(w *Window, in map[string]interface{}) interface{} {
 
 func onWindowExitFullScreen(w *Window, in map[string]interface{}) interface{} {
 	if w.onExitFullScreen != nil {
-		w.onExitFullScreen()
+		w.onExitFullScreen(w)
 	}
 
 	w.isFullscreen = false

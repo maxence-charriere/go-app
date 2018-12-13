@@ -215,9 +215,7 @@ func (d *Driver) Storage(path ...string) string {
 // Render satisfies the app.Driver interface.
 func (d *Driver) Render(c app.Compo) {
 	e := d.ElemByCompo(c)
-	if e.Err() == nil {
-		e.(app.ElemWithCompo).Render(c)
-	}
+	e.(app.ElemWithCompo).Render(c)
 }
 
 // ElemByCompo satisfies the app.Driver interface.
