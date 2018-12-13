@@ -463,4 +463,12 @@ tr:first-child td {
 tr:last-child td {
     padding: 12px 12px 0;
     border-bottom: 0;
+}
+
+::-webkit-scrollbar {
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.05);
 }`
