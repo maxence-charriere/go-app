@@ -159,6 +159,7 @@ namespace uwp
         private async void OnResized(object sender, WindowSizeChangedEventArgs e)
         {
             var input = new JsonObject();
+            input["ID"] = JsonValue.CreateStringValue(this.ID);
             input["Width"] = JsonValue.CreateNumberValue(e.Size.Width);
             input["Heigth"] = JsonValue.CreateNumberValue(e.Size.Height);
             await Bridge.GoCall("windows.OnResize", input, true);
@@ -195,15 +196,18 @@ namespace uwp
 
         private async void OnActivated(object sender, WindowActivatedEventArgs e)
         {
+            var input = new JsonObject();
+            input["ID"] = JsonValue.CreateStringValue(this.ID);
+
             switch (e.WindowActivationState)
             {
                 case CoreWindowActivationState.CodeActivated:
                 case CoreWindowActivationState.PointerActivated:
-                    await Bridge.GoCall("windows.OnFocus", null, true);
+                    await Bridge.GoCall("windows.OnFocus", input, true);
                     break;
 
                 case CoreWindowActivationState.Deactivated:
-                    await Bridge.GoCall("windows.OnBlur", null, true);
+                    await Bridge.GoCall("windows.OnBlur", input, true);
                     break;
 
                 default:

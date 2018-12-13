@@ -217,7 +217,7 @@ func (w *Window) Render() string {
 					{{.Name}}
 
 					{{if .NotSupported}} 
-					<span class="NotSupported">- Not supported</span>
+					- Not supported
 					{{end}}
 				</h2>
 				<p>{{.Description}}</p>

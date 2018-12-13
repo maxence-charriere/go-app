@@ -16,7 +16,6 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
@@ -181,7 +180,6 @@ func (d *Driver) Resources(path ...string) string {
 // Render satisfies the app.Driver interface.
 func (d *Driver) Render(c app.Compo) {
 	e := d.ElemByCompo(c)
-	spew.Dump(e)
 	e.(app.ElemWithCompo).Render(c)
 }
 
