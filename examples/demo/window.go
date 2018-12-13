@@ -5,14 +5,14 @@ import (
 )
 
 func init() {
-	app.HandleAction("window-update-info", func(e app.EventDispatcher, a app.Action) {
-		e.Dispatch("window-updated", a.Arg)
+	app.Handle("window-update-info", func(e app.Emitter, m app.Msg) {
+		e.Emit("window-updated", m.Value())
 	})
 }
 
 func newWindow(title, url string, frosted bool) {
 	updateInfo := func(w app.Window) {
-		app.PostAction("window-update-info", w.ID())
+		app.NewMsg("window-update-info").WithValue(w.ID()).Post()
 	}
 
 	app.NewWindow(app.WindowConfig{
@@ -49,9 +49,9 @@ type Window struct {
 }
 
 // Subscribe is the func to set up event listeners.
-// It satisfies the app.Subscriber interface.
-func (w *Window) Subscribe() *app.EventSubscriber {
-	return app.NewEventSubscriber().
+// It satisfies the app.EventSubscriber interface.
+func (w *Window) Subscribe() app.Subscriber {
+	return app.NewSubscriber().
 		Subscribe("window-updated", w.onUpdate)
 }
 

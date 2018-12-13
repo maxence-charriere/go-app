@@ -13,7 +13,7 @@ type compo struct {
 	ID       string
 	ParentID string
 	Compo    app.Compo
-	Events   *app.EventSubscriber
+	Events   app.Subscriber
 }
 
 func mapCompoFields(c app.Compo, fields map[string]string) error {

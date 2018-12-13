@@ -21,8 +21,8 @@ func (f *Foo) OnMount() {
 func (f *Foo) OnDismount() {
 }
 
-func (f *Foo) Subscribe() *app.EventSubscriber {
-	return app.NewEventSubscriber()
+func (f *Foo) Subscribe() app.Subscriber {
+	return app.NewSubscriber()
 }
 
 func (f *Foo) Render() string {

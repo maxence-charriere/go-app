@@ -49,15 +49,15 @@ type Navigable interface {
 	OnNavigate(u *url.URL)
 }
 
-// Subscriber is the interface that describes a component that subscribes to
-// events generated from actions.
-type Subscriber interface {
+// EventSubscriber is the interface that describes a component that subscribes
+// to events emitted from messages.
+type EventSubscriber interface {
 	// Subscribe is called when a component is mounted.
-	// The returned event subscriber is used to subscribe to events generated
-	// from actions.
+	// The returned subscriber is used to subscribe to events emitted from
+	// messages.
 	// All the event subscribed are automatically unsuscribed when the component
 	// is dismounted.
-	Subscribe() *EventSubscriber
+	Subscribe() Subscriber
 }
 
 // CompoWithExtendedRender is the interface that wraps Funcs method.
