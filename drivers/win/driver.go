@@ -131,7 +131,7 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.goRPC.Handle("windows.OnExitFullScreen", handleWindow(onWindowExitFullScreen))
 	d.goRPC.Handle("windows.OnCallback", handleWindow(onWindowCallback))
 
-	d.uichan = make(chan func(), 256)
+	d.uichan = make(chan func(), 4096)
 	defer close(d.uichan)
 
 	aliveTicker := time.NewTicker(time.Minute)
@@ -147,22 +147,28 @@ func (d *Driver) Run(f *app.Factory) error {
 		return err
 	}
 
-	for {
-		select {
-		case <-ctx.Done():
-			if logsCancel != nil {
-				time.Sleep(time.Second)
-				logsCancel()
+	go func() {
+		for {
+			select {
+			case <-ctx.Done():
+				return
+
+			case fn := <-d.uichan:
+				fn()
+
+			case <-aliveTicker.C:
 			}
-
-			return nil
-
-		case fn := <-d.uichan:
-			fn()
-
-		case <-aliveTicker.C:
 		}
+	}()
+
+	<-ctx.Done()
+
+	if logsCancel != nil {
+		time.Sleep(time.Second)
+		logsCancel()
 	}
+
+	return nil
 }
 
 // Resources satisfies the app.Driver interface.
