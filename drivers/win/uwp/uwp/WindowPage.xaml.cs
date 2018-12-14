@@ -91,7 +91,7 @@ namespace uwp
                 frostedBrush.BackgroundSource = Windows.UI.Xaml.Media.AcrylicBackgroundSource.HostBackdrop;
                 frostedBrush.TintColor = bg;
                 frostedBrush.FallbackColor = bg;
-                frostedBrush.TintOpacity = 0.85;
+                frostedBrush.TintOpacity = 0.80;
                 this.Root.Background = frostedBrush;
             }
             else
