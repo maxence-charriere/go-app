@@ -147,7 +147,7 @@ func (d *Driver) Run(f *app.Factory) error {
 
 	d.goRPC.Handle("notifications.OnReply", handleNotification(onNotificationReply))
 
-	d.uichan = make(chan func(), 256)
+	d.uichan = make(chan func(), 4096)
 	driver = d
 
 	ctx, cancel := context.WithCancel(context.Background())
