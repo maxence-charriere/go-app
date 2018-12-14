@@ -11,8 +11,8 @@
 
 .Window-Action-List {
     margin: 0;
-    overflow-y: scroll;
-    height: calc(100% - 6px - 32px - 38px);
+    overflow-y: auto;
+    height: calc(100% - 1px - 32px - 38px);
 }
 
 .Window-Action {
