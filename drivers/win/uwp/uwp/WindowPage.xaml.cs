@@ -20,20 +20,18 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace uwp
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// The page that describes a window content.
     /// </summary>
     public sealed partial class WindowPage : Page
     {
-        private string ID = "";
-        private string loadReturnID = "";
-        private bool fullScreen = false;
+        string ID = "";
+        string loadReturnID = "";
+        bool fullScreen = false;
 
-        private static Window currentWindow = null;
+        static Window currentWindow = null;
 
         internal static async void NewWindow(JsonObject input, string returnID)
         {
@@ -50,7 +48,8 @@ namespace uwp
                 view = CoreApplication.CreateNewView();
             }
 
-            await view.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+            await view.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
                 var frame = new Frame();
                 frame.NavigationFailed += OnNavigationFailed;
                 frame.Navigate(typeof(WindowPage), input);
@@ -62,19 +61,20 @@ namespace uwp
                 SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += OnClose;
             });
 
-            await currentWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => {
+            await currentWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            {
                 await ApplicationViewSwitcher.TryShowAsStandaloneAsync(viewID);
             });
 
             Bridge.Return(returnID, null, null);
         }
 
-        private static void OnClose(object sender, SystemNavigationCloseRequestedPreviewEventArgs e)
+        static void OnClose(object sender, SystemNavigationCloseRequestedPreviewEventArgs e)
         {
             SystemNavigationManagerPreview.GetForCurrentView().CloseRequested -= OnClose;
         }
 
-        private static void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        static void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
@@ -106,9 +106,9 @@ namespace uwp
             this.Unloaded += this.OnUnload;
         }
 
-    
 
-        private void OnUnload(object sender, RoutedEventArgs e)
+
+        void OnUnload(object sender, RoutedEventArgs e)
         {
             var win = Window.Current;
             win.SizeChanged -= this.OnResized;
@@ -156,20 +156,21 @@ namespace uwp
             var page = input.GetNamedString("Page");
             var w = Bridge.GetElem<WindowPage>(ID);
 
-            await w.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+            await w.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
                 w.loadReturnID = returnID;
                 w.Webview.NavigateToString(page);
             });
         }
 
-        private void OnLoad(object sender, NavigationEventArgs e)
+        void OnLoad(object sender, NavigationEventArgs e)
         {
             var returnID = this.loadReturnID;
             this.loadReturnID = "";
             Bridge.Return(returnID, null, null);
         }
 
-        private async void Webview_ScriptNotify(object sender, NotifyEventArgs e)
+        async void Webview_ScriptNotify(object sender, NotifyEventArgs e)
         {
             var input = new JsonObject();
             input["ID"] = JsonValue.CreateStringValue(this.ID);
@@ -187,7 +188,8 @@ namespace uwp
             changes = string.Format("render({0})", changes);
             var args = new string[] { changes };
 
-            await w.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => {
+            await w.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            {
                 await w.Webview.InvokeScriptAsync("eval", args);
                 Bridge.Return(returnID, null, null);
             });
@@ -198,7 +200,8 @@ namespace uwp
             var ID = input.GetNamedString("ID");
             var w = Bridge.GetElem<WindowPage>(ID);
 
-            await w.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+            await w.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
                 var bounds = Window.Current.Bounds;
 
                 var output = new JsonObject();
@@ -221,13 +224,14 @@ namespace uwp
             var y = input.GetNamedNumber("Height");
             var size = new Size(x, y);
 
-            await w.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+            await w.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
                 ApplicationView.GetForCurrentView().TryResizeView(size);
                 Bridge.Return(returnID, null, null);
             });
         }
 
-        private async void OnResized(object sender, WindowSizeChangedEventArgs e)
+        async void OnResized(object sender, WindowSizeChangedEventArgs e)
         {
             var input = new JsonObject();
             input["ID"] = JsonValue.CreateStringValue(this.ID);
@@ -260,13 +264,14 @@ namespace uwp
             var ID = input.GetNamedString("ID");
             var w = Bridge.GetElem<WindowPage>(ID);
 
-            await w.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+            await w.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
                 Window.Current.Activate();
                 Bridge.Return(returnID, null, null);
             });
         }
 
-        private async void OnActivated(object sender, WindowActivatedEventArgs e)
+        async void OnActivated(object sender, WindowActivatedEventArgs e)
         {
             var input = new JsonObject();
             input["ID"] = JsonValue.CreateStringValue(this.ID);
@@ -277,7 +282,8 @@ namespace uwp
                 case CoreWindowActivationState.PointerActivated:
                     var w = Window.Current;
 
-                    await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+                    await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
                         currentWindow = w;
                     });
 
@@ -298,7 +304,8 @@ namespace uwp
             var ID = input.GetNamedString("ID");
             var w = Bridge.GetElem<WindowPage>(ID);
 
-            await w.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+            await w.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
                 ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
                 Bridge.Return(returnID, null, null);
             });
@@ -309,7 +316,8 @@ namespace uwp
             var ID = input.GetNamedString("ID");
             var w = Bridge.GetElem<WindowPage>(ID);
 
-            await w.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+            await w.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
                 ApplicationView.GetForCurrentView().ExitFullScreenMode();
                 Bridge.Return(returnID, null, null);
             });

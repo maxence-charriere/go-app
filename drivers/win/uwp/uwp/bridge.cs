@@ -60,7 +60,7 @@ namespace uwp
             }
         }
 
-        private static async void Conn_RequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
+        static async void Conn_RequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
         {
             AppServiceDeferral msgDeferral = args.GetDeferral();
 
@@ -94,12 +94,12 @@ namespace uwp
             });
         }
 
-        private static void Conn_ServiceClosed(AppServiceConnection sender, AppServiceClosedEventArgs args)
+        static void Conn_ServiceClosed(AppServiceConnection sender, AppServiceClosedEventArgs args)
         {
             deferral.Complete();
         }
 
-        private static void Task_Canceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason)
+        static void Task_Canceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason)
         {
             deferral.Complete();
         }
@@ -131,7 +131,8 @@ namespace uwp
             {
                 if (!connected)
                 {
-                    deferredGoCalls.Enqueue(new deferredGoCall() {
+                    deferredGoCalls.Enqueue(new deferredGoCall()
+                    {
                         Method = method,
                         Input = input,
                         UI = ui,
@@ -160,7 +161,8 @@ namespace uwp
             }
 
             var resMsg = res.Message;
-            if (!resMsg.ContainsKey("Value")) {
+            if (!resMsg.ContainsKey("Value"))
+            {
                 return null;
             }
 
