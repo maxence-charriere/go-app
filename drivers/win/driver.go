@@ -14,6 +14,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"sync"
 	"time"
 
 	"github.com/murlokswarm/app"
@@ -147,10 +148,18 @@ func (d *Driver) Run(f *app.Factory) error {
 		return err
 	}
 
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+
 	go func() {
 		for {
 			select {
 			case <-ctx.Done():
+				if logsCancel != nil {
+					logsCancel()
+				}
+
+				wg.Done()
 				return
 
 			case fn := <-d.uichan:
@@ -161,13 +170,7 @@ func (d *Driver) Run(f *app.Factory) error {
 		}
 	}()
 
-	<-ctx.Done()
-
-	if logsCancel != nil {
-		time.Sleep(time.Second)
-		logsCancel()
-	}
-
+	wg.Wait()
 	return nil
 }
 
