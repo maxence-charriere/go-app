@@ -3,7 +3,9 @@
 package main
 
 import (
+	"fmt"
 	"net/url"
+	"time"
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/drivers/mac"
@@ -14,10 +16,11 @@ func main() {
 	app.Import(
 		&NavPane{},
 		&Hello{},
+		&Open{},
 		&Window{},
 	)
 
-	entryCompo := "window"
+	entryCompo := "open"
 
 	switch app.Kind {
 	case "web":
@@ -40,20 +43,36 @@ func main() {
 
 			OnRun: func() {
 				newWindow("main", entryCompo, false)
+
+				app.NewMsg("app-open").WithValue(appOpen{
+					From: "OnRun()",
+					Time: time.Now(),
+				}).Post()
 			},
 
 			OnReopen: func(hasVisibleWindow bool) {
 				if !hasVisibleWindow {
 					newWindow("main", entryCompo, false)
 				}
+
+				app.NewMsg("app-open").WithValue(appOpen{
+					From: fmt.Sprintf("OnReopen(%v)", hasVisibleWindow),
+					Time: time.Now(),
+				}).Post()
 			},
 
 			OnFilesOpen: func(filenames []string) {
-				app.Log("opened from:", filenames)
+				app.NewMsg("app-open").WithValue(appOpen{
+					From: fmt.Sprintf("OnFilesOpen(%v)", app.Pretty(filenames)),
+					Time: time.Now(),
+				}).Post()
 			},
 
 			OnURLOpen: func(u *url.URL) {
-				app.Log("app opened with:", u)
+				app.NewMsg("app-open").WithValue(appOpen{
+					From: fmt.Sprintf("OnURLOpen(%s)", u),
+					Time: time.Now(),
+				}).Post()
 			},
 		})
 	}

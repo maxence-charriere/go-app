@@ -450,19 +450,27 @@ table {
     table-layout: fixed;
 }
 
-td {
+table th {
+    padding: 0 12px 12px;
+    border-bottom: 1px solid darkgray;
+    font-size: 11pt;
+    font-weight: bold;
+    /* text-transform: lowercase; */
+}
+
+table td {
     padding: 12px;
-    border-bottom: 0.1px solid darkgrey;
+    border-bottom: 0.1px solid darkgray;
     text-align: center;
 }
 
-tr:first-child td {
+table tr:first-child td {
     padding: 0 12px 12px;
 }
 
-tr:last-child td {
-    padding: 12px 12px 0;
+table tr:last-child td {
     border-bottom: 0;
+    padding: 12px;
 }
 
 ::-webkit-scrollbar {
