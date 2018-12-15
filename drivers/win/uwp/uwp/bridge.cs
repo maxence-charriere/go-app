@@ -64,7 +64,7 @@ namespace uwp
         {
             AppServiceDeferral msgDeferral = args.GetDeferral();
 
-            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 string value = args.Request.Message["Value"].ToString();
                 var req = JsonObject.Parse(value);

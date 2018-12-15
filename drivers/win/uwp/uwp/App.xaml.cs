@@ -39,7 +39,7 @@ namespace uwp
             this.InitializeComponent();
             this.Suspending += OnSuspending;
 
-            Bridge.Handle("windows.New", this.newWindow);
+            Bridge.Handle("windows.New", WindowPage.NewWindow);
             Bridge.Handle("windows.Load", WindowPage.Load);
             Bridge.Handle("windows.Render", WindowPage.Render);
             Bridge.Handle("windows.Position", WindowPage.Bounds);
@@ -126,39 +126,6 @@ namespace uwp
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
-        }
-
-        private void newWindow(JsonObject input, string returnID)
-        {
-            Frame frame = Window.Current.Content as Frame;
-            if (frame == null)
-            {
-                frame = new Frame();
-
-                frame.NavigationFailed += OnNavigationFailed;
-                Window.Current.Content = frame;
-            }
-
-
-            frame.Navigate(typeof(WindowPage), input);
-            Window.Current.Activate();
-
-            Bridge.Return(returnID, null, "");
-            return;
-
-            //CoreApplicationView view = CoreApplication.CreateNewView();
-            //int viewID = 0;
-
-            //await view.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            //{
-            //    Frame frame = new Frame();
-            //    frame.Navigate(typeof(WindowPage));
-            //    Window.Current.Content = frame;
-            //    Window.Current.Activate();
-            //    viewID = ApplicationView.GetForCurrentView().Id;
-            //});
-
-            //bool viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(viewID);
         }
     }
 }

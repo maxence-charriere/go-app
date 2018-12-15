@@ -245,6 +245,7 @@ const appxManifestTmpl = `
     <Capabilities>
         <Capability Name="internetClient" />
         <rescap:Capability Name="runFullTrust"/>
+        <rescap:Capability Name="confirmAppClose"/>
     </Capabilities>
 </Package>`
 
