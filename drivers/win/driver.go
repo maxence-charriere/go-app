@@ -135,9 +135,6 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.uichan = make(chan func(), 4096)
 	defer close(d.uichan)
 
-	aliveTicker := time.NewTicker(time.Minute)
-	defer aliveTicker.Stop()
-
 	driver = d
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -164,8 +161,6 @@ func (d *Driver) Run(f *app.Factory) error {
 
 			case fn := <-d.uichan:
 				fn()
-
-			case <-aliveTicker.C:
 			}
 		}
 	}()
