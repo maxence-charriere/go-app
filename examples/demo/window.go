@@ -32,6 +32,9 @@ func newWindow(title, url string, frosted bool) {
 		OnExitFullScreen: updateInfo,
 		OnMinimize:       updateInfo,
 		OnDeminimize:     updateInfo,
+		OnClose: func(w app.Window) {
+			app.Logf("window %q is closed", w.ID())
+		},
 	})
 }
 
@@ -217,7 +220,7 @@ func (w *Window) Render() string {
 					{{.Name}}
 
 					{{if .NotSupported}} 
-					- Not supported
+					<span class="NotSupported">- Not supported</span>
 					{{end}}
 				</h2>
 				<p>{{.Description}}</p>
