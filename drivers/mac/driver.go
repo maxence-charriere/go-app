@@ -20,6 +20,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
@@ -81,7 +82,7 @@ type Driver struct {
 	OnURLOpen func(u *url.URL)
 
 	// The func called when the app is about to quit.
-	OnQuit func() bool
+	OnQuit func()
 
 	factory      *app.Factory
 	elems        *core.ElemDB
@@ -148,17 +149,22 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.goRPC.Handle("notifications.OnReply", handleNotification(onNotificationReply))
 
 	d.uichan = make(chan func(), 4096)
+	defer close(d.uichan)
+
 	driver = d
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	d.stop = cancel
 
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+
 	go func() {
 		for {
 			select {
 			case <-ctx.Done():
-				close(d.uichan)
+				wg.Done()
 				return
 
 			case fn := <-d.uichan:
@@ -167,7 +173,9 @@ func (d *Driver) Run(f *app.Factory) error {
 		}
 	}()
 
-	return d.macRPC.Call("driver.Run", nil, nil)
+	err := d.macRPC.Call("driver.Run", nil, nil)
+	wg.Wait()
+	return err
 }
 
 // AppName satisfies the app.Driver interface.
@@ -215,9 +223,7 @@ func (d *Driver) Storage(path ...string) string {
 // Render satisfies the app.Driver interface.
 func (d *Driver) Render(c app.Compo) {
 	e := d.ElemByCompo(c)
-	if e.Err() == nil {
-		e.(app.ElemWithCompo).Render(c)
-	}
+	e.(app.ElemWithCompo).Render(c)
 }
 
 // ElemByCompo satisfies the app.Driver interface.
@@ -394,17 +400,12 @@ func (d *Driver) onFileDrop(in map[string]interface{}) interface{} {
 }
 
 func (d *Driver) onQuit(in map[string]interface{}) interface{} {
-	out := struct {
-		Quit bool
-	}{
-		Quit: true,
-	}
-
 	if d.OnQuit != nil {
-		out.Quit = d.OnQuit()
+		d.OnQuit()
 	}
 
-	return out
+	d.stop()
+	return nil
 }
 
 func (d *Driver) newMainWindow() {

@@ -373,11 +373,8 @@
   [self.goRPC call:@"driver.OnURLOpen" withInput:in onUI:YES];
 }
 
-- (NSApplicationTerminateReply)applicationShouldTerminate:
-    (NSApplication *)sender {
-  NSDictionary *out = [self.goRPC call:@"driver.OnQuit" withInput:nil onUI:NO];
-  NSNumber *quit = out[@"Quit"];
-  return quit.boolValue;
+- (void)applicationWillTerminate:(NSNotification *)notification {
+  [self.goRPC call:@"driver.OnQuit" withInput:nil onUI:YES];
 }
 
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {

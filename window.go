@@ -118,6 +118,5 @@ type WindowConfig struct {
 	OnDeminimize func(w Window) `json:"-"`
 
 	// The function that is called when the window is closed.
-	// Returning bool prevents the window to be closed.
-	OnClose func(w Window) bool `json:"-"`
+	OnClose func(w Window) `json:"-"`
 }

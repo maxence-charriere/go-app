@@ -55,6 +55,10 @@ func main() {
 			OnURLOpen: func(u *url.URL) {
 				app.Log("app opened with:", u)
 			},
+
+			OnQuit: func() {
+				app.Log("Goodbye")
+			},
 		})
 	}
 }

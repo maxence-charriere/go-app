@@ -67,17 +67,23 @@ func TestWindow(t *testing.T) {
 	w.Focus()
 	assert.Error(t, w.Err())
 
+	assert.False(t, w.IsFocus())
+
 	w.FullScreen()
 	assert.Error(t, w.Err())
 
 	w.ExitFullScreen()
 	assert.Error(t, w.Err())
 
+	assert.False(t, w.IsFullScreen())
+
 	w.Minimize()
 	assert.Error(t, w.Err())
 
 	w.Deminimize()
 	assert.Error(t, w.Err())
+
+	assert.False(t, w.IsMinimized())
 
 	w.Close()
 	assert.Error(t, w.Err())

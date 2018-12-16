@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"math"
 	"net/url"
+	"os/exec"
 	"path"
 	"strings"
 
@@ -27,18 +28,19 @@ type Window struct {
 	dom          dom.Engine
 	history      core.History
 	compo        app.Compo
-	isFullscreen bool
+	isFullScreen bool
 	isMinimized  bool
+	isFocus      bool
 
-	onMove           func(x, y float64)
-	onResize         func(width, height float64)
-	onFocus          func()
-	onBlur           func()
-	onFullScreen     func()
-	onExitFullScreen func()
-	onMinimize       func()
-	onDeminimize     func()
-	onClose          func() bool
+	onMove           func(app.Window)
+	onResize         func(app.Window)
+	onFocus          func(app.Window)
+	onBlur           func(app.Window)
+	onFullScreen     func(app.Window)
+	onExitFullScreen func(app.Window)
+	onMinimize       func(app.Window)
+	onDeminimize     func(app.Window)
+	onClose          func(app.Window)
 }
 
 func newWindow(c app.WindowConfig) *Window {
@@ -55,6 +57,7 @@ func newWindow(c app.WindowConfig) *Window {
 			},
 			CallOnUI: driver.CallOnUIGoroutine,
 		},
+		isFocus: true,
 
 		onMove:           c.OnMove,
 		onResize:         c.OnResize,
@@ -102,7 +105,6 @@ func newWindow(c app.WindowConfig) *Window {
 		FixedSize:         c.FixedSize,
 		CloseHidden:       c.CloseHidden,
 		MinimizeHidden:    c.MinimizeHidden,
-		TitlebarHidden:    c.TitlebarHidden,
 	}
 
 	in.MinWidth, in.MaxWidth = normalizeWidowSize(in.MinWidth, in.MaxWidth)
@@ -153,9 +155,8 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 
 	// Redirect web page to default web browser.
 	if !driver.factory.IsCompoRegistered(n) {
-		// err = exec.Command("open", u).Run()
-		panic("not implemented")
-		// return
+		err = exec.Command("start", u).Run()
+		return
 	}
 
 	var c app.Compo
@@ -351,6 +352,11 @@ func (w *Window) Focus() {
 	w.SetErr(err)
 }
 
+// IsFocus satisfies the app.Window interface.
+func (w *Window) IsFocus() bool {
+	return w.isFocus
+}
+
 // FullScreen satisfies the app.Window interface.
 func (w *Window) FullScreen() {
 	err := driver.winRPC.Call("windows.FullScreen", nil, struct {
@@ -373,20 +379,9 @@ func (w *Window) ExitFullScreen() {
 	w.SetErr(err)
 }
 
-func onWindowFocus(w *Window, in map[string]interface{}) interface{} {
-	if w.onFocus != nil {
-		w.onFocus()
-	}
-
-	return nil
-}
-
-func onWindowBlur(w *Window, in map[string]interface{}) interface{} {
-	if w.onBlur != nil {
-		w.onBlur()
-	}
-
-	return nil
+// IsFullScreen satisfies the app.Window interface.
+func (w *Window) IsFullScreen() bool {
+	return w.isFullScreen
 }
 
 func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
@@ -419,32 +414,71 @@ func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 	return nil
 }
 
+func onWindowNavigate(w *Window, in map[string]interface{}) interface{} {
+	e := app.ElemByCompo(w.Compo())
+
+	e.WhenWindow(func(w app.Window) {
+		w.Load(in["URL"].(string))
+	})
+
+	return nil
+}
+
+func onWindowFocus(w *Window, in map[string]interface{}) interface{} {
+	w.isFocus = true
+
+	if w.onFocus != nil {
+		w.onFocus(w)
+	}
+
+	return nil
+}
+
+func onWindowBlur(w *Window, in map[string]interface{}) interface{} {
+	w.isFocus = false
+
+	if w.onBlur != nil {
+		w.onBlur(w)
+	}
+
+	return nil
+}
+
 func onWindowResize(w *Window, in map[string]interface{}) interface{} {
 	if w.onResize != nil {
-		w.onResize(
-			in["Width"].(float64),
-			in["Height"].(float64),
-		)
+		w.onResize(w)
 	}
 
 	return nil
 }
 
 func onWindowFullScreen(w *Window, in map[string]interface{}) interface{} {
+	w.isFullScreen = true
+
 	if w.onFullScreen != nil {
-		w.onFullScreen()
+		w.onFullScreen(w)
 	}
 
-	w.isFullscreen = true
 	return nil
 }
 
 func onWindowExitFullScreen(w *Window, in map[string]interface{}) interface{} {
+	w.isFullScreen = false
+
 	if w.onExitFullScreen != nil {
-		w.onExitFullScreen()
+		w.onExitFullScreen(w)
 	}
 
-	w.isFullscreen = false
+	return nil
+}
+
+func onWindowClose(w *Window, in map[string]interface{}) interface{} {
+	if w.onClose != nil {
+		w.onClose(w)
+	}
+
+	w.dom.Close()
+	driver.elems.Delete(w)
 	return nil
 }
 

@@ -6,6 +6,7 @@ using Windows.ApplicationModel.AppService;
 using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Core;
 using Windows.Data.Json;
+using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Core;
 
@@ -60,11 +61,11 @@ namespace uwp
             }
         }
 
-        private static async void Conn_RequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
+        static async void Conn_RequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
         {
             AppServiceDeferral msgDeferral = args.GetDeferral();
 
-            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            await CoreApplication.MainView.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 string value = args.Request.Message["Value"].ToString();
                 var req = JsonObject.Parse(value);
@@ -75,7 +76,9 @@ namespace uwp
                     string method = req.GetNamedValue("Method").GetString();
                     JsonObject input = req.GetNamedObject("Input");
 
-                    var handler = handlers[method];
+                    Action<JsonObject, string> handler = null;
+                    handlers.TryGetValue(method, out handler);
+
                     if (handler == null)
                     {
                         throw new Exception(string.Format("{0} is not handled", method));
@@ -94,12 +97,12 @@ namespace uwp
             });
         }
 
-        private static void Conn_ServiceClosed(AppServiceConnection sender, AppServiceClosedEventArgs args)
+        static void Conn_ServiceClosed(AppServiceConnection sender, AppServiceClosedEventArgs args)
         {
             deferral.Complete();
         }
 
-        private static void Task_Canceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason)
+        static void Task_Canceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason)
         {
             deferral.Complete();
         }
@@ -131,7 +134,8 @@ namespace uwp
             {
                 if (!connected)
                 {
-                    deferredGoCalls.Enqueue(new deferredGoCall() {
+                    deferredGoCalls.Enqueue(new deferredGoCall()
+                    {
                         Method = method,
                         Input = input,
                         UI = ui,
@@ -160,7 +164,8 @@ namespace uwp
             }
 
             var resMsg = res.Message;
-            if (!resMsg.ContainsKey("Value")) {
+            if (!resMsg.ContainsKey("Value"))
+            {
                 return null;
             }
 
@@ -195,15 +200,15 @@ namespace uwp
         {
             lock (locker)
             {
-                var elem = elems[ID];
+                object elem = null;
+                elems.TryGetValue(ID, out elem);
+
                 if (elem == null)
                 {
                     throw new Exception(string.Format("elem {0} is not found", ID));
                 }
 
                 var tElem = elem as T;
-
-
 
                 if (!(elem is T))
                 {
