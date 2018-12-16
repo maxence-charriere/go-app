@@ -32,7 +32,10 @@ func (d *driverWithLogs) Run(f *Factory) error {
 
 func (d *driverWithLogs) Render(c Compo) {
 	e := d.ElemByCompo(c)
-	e.(ElemWithCompo).Render(c)
+
+	if withCompo, ok := e.(ElemWithCompo); ok {
+		withCompo.(ElemWithCompo).Render(c)
+	}
 }
 
 func (d *driverWithLogs) ElemByCompo(c Compo) Elem {
