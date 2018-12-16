@@ -80,17 +80,13 @@ func (w *Window) OnMount() {
 	app.ElemByCompo(w).WhenWindow(func(win app.Window) {
 		w.onUpdate(win.ID())
 
-		checkSupport := func(idx int) {
-			w.Actions[idx].NotSupported = win.Err() == app.ErrNotSupported
-		}
-
 		w.Actions = []windowAction{
 			{
 				Name:        "Move",
 				Description: "Move the window to position {x: 100, y: 100}.",
 				Action: func() {
 					win.Move(100, 100)
-					checkSupport(0)
+					w.Actions[0].Err = win.Err()
 					app.Render(w)
 				},
 			},
@@ -99,7 +95,7 @@ func (w *Window) OnMount() {
 				Description: "Move the window to the center of the screen.",
 				Action: func() {
 					win.Center()
-					checkSupport(1)
+					w.Actions[1].Err = win.Err()
 					app.Render(w)
 				},
 			},
@@ -108,7 +104,7 @@ func (w *Window) OnMount() {
 				Description: "Resize the window to its original size {width: 1440, height: 720}.",
 				Action: func() {
 					win.Resize(1440, 720)
-					checkSupport(2)
+					w.Actions[2].Err = win.Err()
 					app.Render(w)
 				},
 			},
@@ -117,7 +113,7 @@ func (w *Window) OnMount() {
 				Description: "Take the window in full screen mode.",
 				Action: func() {
 					win.FullScreen()
-					checkSupport(3)
+					w.Actions[3].Err = win.Err()
 					app.Render(w)
 				},
 			},
@@ -126,7 +122,7 @@ func (w *Window) OnMount() {
 				Description: "Take the window out of fullscreen mode",
 				Action: func() {
 					win.ExitFullScreen()
-					checkSupport(4)
+					w.Actions[4].Err = win.Err()
 					app.Render(w)
 				},
 			},
@@ -135,7 +131,7 @@ func (w *Window) OnMount() {
 				Description: "Take the window into minimized mode.",
 				Action: func() {
 					win.Minimize()
-					checkSupport(5)
+					w.Actions[5].Err = win.Err()
 					app.Render(w)
 				},
 			},
@@ -144,11 +140,15 @@ func (w *Window) OnMount() {
 				Description: "Take and take out the window out of minimized mode.",
 				Action: func() {
 					win.Minimize()
-					checkSupport(6)
+
+					if win.Err() != nil {
+						w.Actions[6].Err = win.Err()
+						return
+					}
 
 					app.CallOnUIGoroutine(func() {
 						win.Deminimize()
-						checkSupport(6)
+						w.Actions[6].Err = win.Err()
 						app.Render(w)
 					})
 
@@ -160,12 +160,16 @@ func (w *Window) OnMount() {
 				Description: "Create a window with frosted effect.",
 				Action: func() {
 					newWindow("frosted", "window", true)
+					w.Actions[7].Err = win.Err()
 				},
 			},
 			{
 				Name:        "Close",
 				Description: "Close the window.",
-				Action:      win.Close,
+				Action: func() {
+					win.Close()
+					w.Actions[8].Err = win.Err()
+				},
 			},
 		}
 
@@ -217,16 +221,16 @@ func (w *Window) Render() string {
 			{{range $idx, $v := .Actions}}
 			<div class="Window-Action" onclick="{{to "Actions" $idx "Action"}}">
 				<h2>
-					{{.Name}}
-
-					{{if .NotSupported}} 
-					<span class="NotSupported">- Not supported</span>
-					{{end}}
+					{{.Name}}	
 				</h2>
 				<p>{{.Description}}</p>
+
+				{{if .Err}} 
+					<p class="Error">{{.Err.Error}}</p>
+				{{end}}
 			</div>
 			{{else}}
-				<h2 class="NotSupported">Not supported</h2>
+				<h2>Not supported</h2>
 			{{end}}
 		</div>
 	</div>
@@ -235,8 +239,8 @@ func (w *Window) Render() string {
 }
 
 type windowAction struct {
-	Name         string
-	Description  string
-	Action       func()
-	NotSupported bool
+	Name        string
+	Description string
+	Action      func()
+	Err         error
 }
