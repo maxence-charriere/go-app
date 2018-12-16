@@ -6,6 +6,7 @@ using Windows.ApplicationModel.AppService;
 using Windows.ApplicationModel.Background;
 using Windows.ApplicationModel.Core;
 using Windows.Data.Json;
+using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Core;
 

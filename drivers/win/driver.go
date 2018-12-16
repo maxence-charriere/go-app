@@ -130,6 +130,7 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.goRPC.Handle("windows.OnBlur", handleWindow(onWindowBlur))
 	d.goRPC.Handle("windows.OnFullScreen", handleWindow(onWindowFullScreen))
 	d.goRPC.Handle("windows.OnExitFullScreen", handleWindow(onWindowExitFullScreen))
+	d.goRPC.Handle("windows.OnClose", handleWindow(onWindowClose))
 	d.goRPC.Handle("windows.OnCallback", handleWindow(onWindowCallback))
 
 	d.uichan = make(chan func(), 4096)

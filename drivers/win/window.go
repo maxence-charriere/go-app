@@ -39,7 +39,7 @@ type Window struct {
 	onExitFullScreen func(app.Window)
 	onMinimize       func(app.Window)
 	onDeminimize     func(app.Window)
-	onClose          func(app.Window) bool
+	onClose          func(app.Window)
 }
 
 func newWindow(c app.WindowConfig) *Window {
@@ -384,6 +384,17 @@ func (w *Window) IsFullScreen() bool {
 	return w.isFullScreen
 }
 
+// Close satisfies the app.Window interface.
+func (w *Window) Close() {
+	err := driver.winRPC.Call("windows.Close", nil, struct {
+		ID string
+	}{
+		ID: w.id,
+	})
+
+	w.SetErr(err)
+}
+
 func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 	mappingStr := in["Mapping"].(string)
 
@@ -459,6 +470,16 @@ func onWindowExitFullScreen(w *Window, in map[string]interface{}) interface{} {
 		w.onExitFullScreen(w)
 	}
 
+	return nil
+}
+
+func onWindowClose(w *Window, in map[string]interface{}) interface{} {
+	if w.onClose != nil {
+		w.onClose(w)
+	}
+
+	w.dom.Close()
+	driver.elems.Delete(w)
 	return nil
 }
 

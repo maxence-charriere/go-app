@@ -48,6 +48,7 @@ namespace uwp
             Bridge.Handle("windows.Focus", WindowPage.Focus);
             Bridge.Handle("windows.FullScreen", WindowPage.FullScreen);
             Bridge.Handle("windows.ExitFullScreen", WindowPage.ExitFullScreen);
+            Bridge.Handle("windows.Close", WindowPage.Close);
         }
 
         protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)

@@ -69,9 +69,42 @@ namespace uwp
             Bridge.Return(returnID, null, null);
         }
 
-        static void OnClose(object sender, SystemNavigationCloseRequestedPreviewEventArgs e)
+        internal static async void Close(JsonObject input, string returnID)
         {
+            var ID = input.GetNamedString("ID");
+            var w = Bridge.GetElem<WindowPage>(ID);
+
+            await w.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                try
+                {
+                    Window.Current.Close();
+                    Bridge.Return(returnID, null, null);
+                }
+                catch (Exception e)
+                {
+                    Bridge.Return(returnID, null, e.Message);
+                }
+            });
+        }
+
+        static async void OnClose(object sender, SystemNavigationCloseRequestedPreviewEventArgs e)
+        {
+            var deferral = e.GetDeferral();
+
+            var frame = Window.Current.Content as Frame;
+            if (frame != null)
+            {
+                var win = frame.Content as WindowPage;
+
+                var input = new JsonObject();
+                input["ID"] = JsonValue.CreateStringValue(win.ID);
+
+                await Bridge.GoCall("windows.OnClose", input, true);
+            }
+
             SystemNavigationManagerPreview.GetForCurrentView().CloseRequested -= OnClose;
+            deferral.Complete();
         }
 
         static void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
