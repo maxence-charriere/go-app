@@ -143,6 +143,7 @@ func (w *Window) OnMount() {
 
 					if win.Err() != nil {
 						w.Actions[6].Err = win.Err()
+						app.Render(w)
 						return
 					}
 
@@ -160,7 +161,6 @@ func (w *Window) OnMount() {
 				Description: "Create a window with frosted effect.",
 				Action: func() {
 					newWindow("frosted", "window", true)
-					w.Actions[7].Err = win.Err()
 				},
 			},
 			{
@@ -169,6 +169,7 @@ func (w *Window) OnMount() {
 				Action: func() {
 					win.Close()
 					w.Actions[8].Err = win.Err()
+					app.Render(w)
 				},
 			},
 		}

@@ -76,7 +76,9 @@ namespace uwp
                     string method = req.GetNamedValue("Method").GetString();
                     JsonObject input = req.GetNamedObject("Input");
 
-                    var handler = handlers[method];
+                    Action<JsonObject, string> handler = null;
+                    handlers.TryGetValue(method, out handler);
+
                     if (handler == null)
                     {
                         throw new Exception(string.Format("{0} is not handled", method));
@@ -198,15 +200,15 @@ namespace uwp
         {
             lock (locker)
             {
-                var elem = elems[ID];
+                object elem = null;
+                elems.TryGetValue(ID, out elem);
+
                 if (elem == null)
                 {
                     throw new Exception(string.Format("elem {0} is not found", ID));
                 }
 
                 var tElem = elem as T;
-
-
 
                 if (!(elem is T))
                 {

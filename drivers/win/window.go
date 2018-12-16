@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"math"
 	"net/url"
+	"os/exec"
 	"path"
 	"strings"
 
@@ -154,9 +155,8 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 
 	// Redirect web page to default web browser.
 	if !driver.factory.IsCompoRegistered(n) {
-		// err = exec.Command("open", u).Run()
-		panic("not implemented")
-		// return
+		err = exec.Command("start", u).Run()
+		return
 	}
 
 	var c app.Compo
@@ -384,17 +384,6 @@ func (w *Window) IsFullScreen() bool {
 	return w.isFullScreen
 }
 
-// Close satisfies the app.Window interface.
-func (w *Window) Close() {
-	err := driver.winRPC.Call("windows.Close", nil, struct {
-		ID string
-	}{
-		ID: w.id,
-	})
-
-	w.SetErr(err)
-}
-
 func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 	mappingStr := in["Mapping"].(string)
 
@@ -422,6 +411,16 @@ func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 	}
 
 	app.Render(c)
+	return nil
+}
+
+func onWindowNavigate(w *Window, in map[string]interface{}) interface{} {
+	e := app.ElemByCompo(w.Compo())
+
+	e.WhenWindow(func(w app.Window) {
+		w.Load(in["URL"].(string))
+	})
+
 	return nil
 }
 

@@ -104,6 +104,11 @@ func (d *Driver) Run(f *app.Factory) error {
 
 	if len(dev) != 0 {
 		defer func() {
+			err := recover()
+			if err != nil {
+				app.Log(errors.Errorf("%v", err))
+			}
+
 			fmt.Println("press 'Enter' to exit")
 			b := make([]byte, 1)
 			os.Stdin.Read(b)
@@ -132,6 +137,7 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.goRPC.Handle("windows.OnExitFullScreen", handleWindow(onWindowExitFullScreen))
 	d.goRPC.Handle("windows.OnClose", handleWindow(onWindowClose))
 	d.goRPC.Handle("windows.OnCallback", handleWindow(onWindowCallback))
+	d.goRPC.Handle("windows.OnNavigate", handleWindow(onWindowNavigate))
 
 	d.uichan = make(chan func(), 4096)
 	defer close(d.uichan)
