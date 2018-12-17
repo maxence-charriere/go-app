@@ -74,6 +74,10 @@ func main() {
 					Time: time.Now(),
 				}).Post()
 			},
+
+			OnQuit: func() {
+				app.Log("Goodbye")
+			},
 		})
 	}
 }

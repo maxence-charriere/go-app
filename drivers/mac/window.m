@@ -507,25 +507,16 @@
   });
 }
 
-- (BOOL)windowShouldClose:(NSWindow *)sender {
+- (void)windowWillClose:(NSNotification *)notification {
   Driver *driver = [Driver current];
 
   NSDictionary *in = @{
     @"ID" : self.ID,
   };
 
-  NSDictionary *out =
-      [driver.goRPC call:@"windows.OnClose" withInput:in onUI:NO];
-
-  NSNumber *shouldClose = out[@"ShouldClose"];
-  return shouldClose.boolValue;
-}
-
-- (void)windowWillClose:(NSNotification *)notification {
-  self.window = nil;
-
-  Driver *driver = [Driver current];
+  [driver.goRPC call:@"windows.OnClose" withInput:in onUI:YES];
   [driver.elements removeObjectForKey:self.ID];
+  self.window = nil;
 }
 @end
 

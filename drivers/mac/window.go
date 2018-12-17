@@ -39,7 +39,7 @@ type Window struct {
 	onExitFullScreen func(app.Window)
 	onMinimize       func(app.Window)
 	onDeminimize     func(app.Window)
-	onClose          func(app.Window) bool
+	onClose          func(app.Window)
 }
 
 func newWindow(c app.WindowConfig) *Window {
@@ -603,21 +603,13 @@ func onWindowDeminimize(w *Window, in map[string]interface{}) interface{} {
 }
 
 func onWindowClose(w *Window, in map[string]interface{}) interface{} {
-	shouldClose := true
 	if w.onClose != nil {
-		shouldClose = w.onClose(w)
+		w.onClose(w)
 	}
 
-	if shouldClose {
-		w.dom.Close()
-		driver.elems.Delete(w)
-	}
-
-	return struct {
-		ShouldClose bool
-	}{
-		ShouldClose: shouldClose,
-	}
+	w.dom.Close()
+	driver.elems.Delete(w)
+	return nil
 }
 
 func handleWindow(h func(w *Window, in map[string]interface{}) interface{}) bridge.GoRPCHandler {

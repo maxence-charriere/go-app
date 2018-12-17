@@ -14,6 +14,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"sync"
 	"time"
 
 	"github.com/murlokswarm/app"
@@ -103,6 +104,11 @@ func (d *Driver) Run(f *app.Factory) error {
 
 	if len(dev) != 0 {
 		defer func() {
+			err := recover()
+			if err != nil {
+				app.Log(errors.Errorf("%v", err))
+			}
+
 			fmt.Println("press 'Enter' to exit")
 			b := make([]byte, 1)
 			os.Stdin.Read(b)
@@ -129,13 +135,12 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.goRPC.Handle("windows.OnBlur", handleWindow(onWindowBlur))
 	d.goRPC.Handle("windows.OnFullScreen", handleWindow(onWindowFullScreen))
 	d.goRPC.Handle("windows.OnExitFullScreen", handleWindow(onWindowExitFullScreen))
+	d.goRPC.Handle("windows.OnClose", handleWindow(onWindowClose))
 	d.goRPC.Handle("windows.OnCallback", handleWindow(onWindowCallback))
+	d.goRPC.Handle("windows.OnNavigate", handleWindow(onWindowNavigate))
 
-	d.uichan = make(chan func(), 256)
+	d.uichan = make(chan func(), 4096)
 	defer close(d.uichan)
-
-	aliveTicker := time.NewTicker(time.Minute)
-	defer aliveTicker.Stop()
 
 	driver = d
 
@@ -147,22 +152,28 @@ func (d *Driver) Run(f *app.Factory) error {
 		return err
 	}
 
-	for {
-		select {
-		case <-ctx.Done():
-			if logsCancel != nil {
-				time.Sleep(time.Second)
-				logsCancel()
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+
+	go func() {
+		for {
+			select {
+			case <-ctx.Done():
+				if logsCancel != nil {
+					logsCancel()
+				}
+
+				wg.Done()
+				return
+
+			case fn := <-d.uichan:
+				fn()
 			}
-
-			return nil
-
-		case fn := <-d.uichan:
-			fn()
-
-		case <-aliveTicker.C:
 		}
-	}
+	}()
+
+	wg.Wait()
+	return nil
 }
 
 // Resources satisfies the app.Driver interface.
@@ -180,9 +191,7 @@ func (d *Driver) Resources(path ...string) string {
 // Render satisfies the app.Driver interface.
 func (d *Driver) Render(c app.Compo) {
 	e := d.ElemByCompo(c)
-	if e.Err() == nil {
-		e.(app.ElemWithCompo).Render(c)
-	}
+	e.(app.ElemWithCompo).Render(c)
 }
 
 // ElemByCompo satisfies the app.Driver interface.
@@ -255,12 +264,11 @@ func (d *Driver) onQuit(in map[string]interface{}) interface{} {
 
 func (d *Driver) newMainWindow() {
 	app.NewWindow(app.WindowConfig{
-		Title:          d.AppName(),
-		TitlebarHidden: true,
-		MinWidth:       480,
-		Width:          1280,
-		MinHeight:      480,
-		Height:         768,
-		URL:            d.URL,
+		Title:     d.AppName(),
+		MinWidth:  480,
+		Width:     1280,
+		MinHeight: 480,
+		Height:    768,
+		URL:       d.URL,
 	})
 }

@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -758,7 +757,7 @@ func (pkg *WinPackage) Run(ctx context.Context) error {
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 
-	handleLogs := func(res http.ResponseWriter, req *http.Request) {
+	http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
 		if req.URL.Path == "/close" {
 			wg.Done()
 			return
@@ -774,11 +773,14 @@ func (pkg *WinPackage) Run(ctx context.Context) error {
 		}
 
 		fmt.Fprintln(os.Stderr, string(line))
-	}
+	})
 
-	server := httptest.NewServer(http.HandlerFunc(handleLogs))
-	defer server.Close()
-	pkg.logsURL = server.URL
+	server := &http.Server{
+		Addr: ":8042",
+	}
+	defer server.Shutdown(context.Background())
+
+	pkg.logsURL = "http://" + server.Addr
 
 	if err := pkg.Build(ctx); err != nil {
 		return err
@@ -789,6 +791,7 @@ func (pkg *WinPackage) Run(ctx context.Context) error {
 	}
 
 	if !pkg.dev {
+		go server.ListenAndServe()
 		wg.Wait()
 	}
 

@@ -24,7 +24,7 @@ type Window struct {
 	width   float64
 	height  float64
 
-	onClose func(app.Window) bool
+	onClose func(app.Window)
 }
 
 func newWindow(d *Driver, c app.WindowConfig) *Window {
@@ -200,8 +200,8 @@ func (w *Window) Deminimize() {
 
 // Close satisfies the app.Window interface.
 func (w *Window) Close() {
-	if w.onClose != nil && !w.onClose(w) {
-		return
+	if w.onClose != nil {
+		w.onClose(w)
 	}
 
 	w.driver.elems.Delete(w)

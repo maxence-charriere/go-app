@@ -17,10 +17,12 @@ func main() {
 		&Window{},
 	)
 
+	entryCompo := "window"
+
 	switch app.Kind {
 	case "web":
 		app.Run(&web.Driver{
-			URL: "/Hello",
+			URL: entryCompo,
 		})
 
 	default:
@@ -38,7 +40,9 @@ func main() {
 				},
 			},
 
-			URL: "/Hello",
+			OnRun: func() {
+				newWindow("main", entryCompo, false)
+			},
 
 			OnFilesOpen: func(filenames []string) {
 				app.Log("opened from:", filenames)
@@ -46,6 +50,10 @@ func main() {
 
 			OnURLOpen: func(u *url.URL) {
 				app.Log("opened with", u)
+			},
+
+			OnQuit: func() {
+				app.Log("Goodbye")
 			},
 		})
 	}
