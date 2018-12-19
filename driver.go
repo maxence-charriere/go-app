@@ -4,7 +4,7 @@ package app
 type Driver interface {
 	// Run runs the application with the components registered in the given
 	// factory.
-	Run(f *Factory) error
+	Run(f *Factory, ui chan func()) error
 
 	// AppName returns the appliction name.
 	AppName() string
@@ -62,8 +62,8 @@ type Driver interface {
 	// Dock returns the dock tile.
 	DockTile() DockTile
 
-	// CallOnUIGoroutine calls a function on the UI goroutine.
-	CallOnUIGoroutine(func())
+	// UI calls a function on the UI goroutine.
+	UI(func())
 
 	// Stop stops the driver.
 	// Calling it make run return with an error.

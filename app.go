@@ -30,8 +30,9 @@ var (
 	Kind string
 
 	driver    Driver
+	ui        = make(chan func(), 4096)
 	factory   = NewFactory()
-	events    = newEventRegistry(CallOnUIGoroutine)
+	events    = newEventRegistry(UI)
 	messages  = newMsgRegistry()
 	whenDebug func(func())
 )
@@ -69,7 +70,7 @@ func Run(d Driver, addons ...Addon) error {
 	}
 
 	driver = d
-	return driver.Run(factory)
+	return driver.Run(factory, ui)
 }
 
 // RunningDriver returns the running driver.
@@ -106,7 +107,7 @@ func Storage(path ...string) string {
 //
 // It panics if called before Run.
 func Render(c Compo) {
-	driver.CallOnUIGoroutine(func() {
+	driver.UI(func() {
 		driver.Render(c)
 	})
 }
@@ -209,10 +210,9 @@ func Stop() {
 	driver.Stop()
 }
 
-// CallOnUIGoroutine calls a function on the UI goroutine.
-// UI goroutine is the running application main thread.
-func CallOnUIGoroutine(f func()) {
-	driver.CallOnUIGoroutine(f)
+// UI calls a function on the UI goroutine.
+func UI(f func()) {
+	driver.UI(f)
 }
 
 // Handle handles the message for the given key.

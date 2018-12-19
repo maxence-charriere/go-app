@@ -12,7 +12,7 @@ type Driver struct {
 }
 
 // Run satisfies the app.Driver interface.
-func (d *Driver) Run(f *app.Factory) error {
+func (d *Driver) Run(f *app.Factory, ui chan func()) error {
 	return app.ErrNotSupported
 }
 
@@ -114,8 +114,8 @@ func (d *Driver) DockTile() app.DockTile {
 	return dt
 }
 
-// CallOnUIGoroutine satisfies the app.Driver interface.
-func (d *Driver) CallOnUIGoroutine(f func()) {
+// UI satisfies the app.Driver interface.
+func (d *Driver) UI(f func()) {
 	f()
 }
 

@@ -80,8 +80,11 @@ func TestDriver(t *testing.T, setup DriverSetup) {
 	f.RegisterCompo(&World{})
 	f.RegisterCompo(&Menu{})
 
+	ui := make(chan func(), 32)
+	defer close(ui)
+
 	d = setup(onRun)
-	d.Run(f)
+	d.Run(f, ui)
 
 }
 

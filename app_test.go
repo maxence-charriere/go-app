@@ -55,7 +55,7 @@ func TestApp(t *testing.T) {
 
 		app.Emit("test", nil)
 
-		app.CallOnUIGoroutine(func() {
+		app.UI(func() {
 			app.Logf("hello")
 		})
 

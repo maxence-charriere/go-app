@@ -20,10 +20,10 @@ type driverWithLogs struct {
 	Driver
 }
 
-func (d *driverWithLogs) Run(f *Factory) error {
+func (d *driverWithLogs) Run(f *Factory, ui chan func()) error {
 	Logf("running %T driver", d.Driver)
 
-	err := d.Driver.Run(f)
+	err := d.Driver.Run(f, ui)
 	if err != nil {
 		Logf("driver stopped running: %s", err)
 	}

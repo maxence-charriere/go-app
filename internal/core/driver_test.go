@@ -12,7 +12,7 @@ func TestDriver(t *testing.T) {
 	d := &Driver{}
 	require.Implements(t, (*app.Driver)(nil), d)
 
-	assert.Error(t, d.Run(nil))
+	assert.Error(t, d.Run(nil, nil))
 	assert.NotEmpty(t, d.AppName())
 	assert.Equal(t, "resources", d.Resources())
 	assert.Equal(t, "storage", d.Storage())
@@ -52,7 +52,7 @@ func TestDriver(t *testing.T) {
 	dt := d.DockTile()
 	assert.Error(t, dt.Err())
 
-	d.CallOnUIGoroutine(func() {
+	d.UI(func() {
 		t.Log("call from ui goroutine")
 	})
 

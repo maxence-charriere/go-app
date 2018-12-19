@@ -20,16 +20,16 @@ type Driver struct {
 	factory  *app.Factory
 	elems    *core.ElemDB
 	stop     func()
-	uichan   chan func()
+	ui       chan func()
 	menubar  *Menu
 	docktile *DockTile
 }
 
 // Run satisfies the app.Driver interface.
-func (d *Driver) Run(f *app.Factory) error {
+func (d *Driver) Run(f *app.Factory, ui chan func()) error {
 	d.factory = f
+	d.ui = ui
 	d.elems = core.NewElemDB()
-	d.uichan = make(chan func(), 64)
 	d.menubar = newMenu(d, app.MenuConfig{})
 	d.docktile = newDockTile(d)
 
@@ -38,7 +38,7 @@ func (d *Driver) Run(f *app.Factory) error {
 	d.stop = cancel
 
 	if d.OnRun != nil {
-		d.CallOnUIGoroutine(d.OnRun)
+		d.UI(d.OnRun)
 	}
 
 	for {
@@ -46,7 +46,7 @@ func (d *Driver) Run(f *app.Factory) error {
 		case <-ctx.Done():
 			return ctx.Err()
 
-		case fn := <-d.uichan:
+		case fn := <-d.ui:
 			fn()
 		}
 	}
@@ -112,9 +112,9 @@ func (d *Driver) DockTile() app.DockTile {
 	return d.docktile
 }
 
-// CallOnUIGoroutine satisfies the app.Driver interface.
-func (d *Driver) CallOnUIGoroutine(f func()) {
-	d.uichan <- f
+// UI satisfies the app.Driver interface.
+func (d *Driver) UI(f func()) {
+	d.ui <- f
 }
 
 // Stop satisfies the app.Driver interface.
