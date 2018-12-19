@@ -62,3 +62,20 @@ func main() {
 		})
 	}
 }
+
+func nain() {
+	app.Import(
+		&NavPane{},
+		&Hello{},
+		&Window{},
+	)
+
+	defer app.NewSubscriber().
+		Subscribe("files-openened", nil).
+		Close()
+
+	app.Run(
+		mac.Config{},
+		web.Config{},
+	)
+}

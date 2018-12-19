@@ -30,16 +30,6 @@ type Window struct {
 	isFocus      bool
 	isFullscreen bool
 	isMinimized  bool
-
-	onMove           func(app.Window)
-	onResize         func(app.Window)
-	onFocus          func(app.Window)
-	onBlur           func(app.Window)
-	onFullScreen     func(app.Window)
-	onExitFullScreen func(app.Window)
-	onMinimize       func(app.Window)
-	onDeminimize     func(app.Window)
-	onClose          func(app.Window)
 }
 
 func newWindow(c app.WindowConfig) *Window {
@@ -56,16 +46,6 @@ func newWindow(c app.WindowConfig) *Window {
 			},
 			CallOnUI: driver.CallOnUIGoroutine,
 		},
-
-		onMove:           c.OnMove,
-		onResize:         c.OnResize,
-		onFocus:          c.OnFocus,
-		onBlur:           c.OnBlur,
-		onFullScreen:     c.OnFullScreen,
-		onExitFullScreen: c.OnExitFullScreen,
-		onMinimize:       c.OnMinimize,
-		onDeminimize:     c.OnDeminimize,
-		onClose:          c.OnClose,
 	}
 
 	w.dom.Sync = w.render
@@ -527,88 +507,55 @@ func onWindowAlert(w *Window, in map[string]interface{}) interface{} {
 }
 
 func onWindowMove(w *Window, in map[string]interface{}) interface{} {
-	if w.onMove != nil {
-		w.onMove(w)
-	}
-
+	app.Emit(app.WindowMoved, w)
 	return nil
 }
 
 func onWindowResize(w *Window, in map[string]interface{}) interface{} {
-	if w.onResize != nil {
-		w.onResize(w)
-	}
-
+	app.Emit(app.WindowResized, w)
 	return nil
 }
 
 func onWindowFocus(w *Window, in map[string]interface{}) interface{} {
 	w.isFocus = true
-
-	if w.onFocus != nil {
-		w.onFocus(w)
-	}
-
+	app.Emit(app.WindowFocused, w)
 	return nil
 }
 
 func onWindowBlur(w *Window, in map[string]interface{}) interface{} {
 	w.isFocus = false
-
-	if w.onBlur != nil {
-		w.onBlur(w)
-	}
-
+	app.Emit(app.WindowBlurred, w)
 	return nil
 }
 
 func onWindowFullScreen(w *Window, in map[string]interface{}) interface{} {
 	w.isFullscreen = true
-
-	if w.onFullScreen != nil {
-		w.onFullScreen(w)
-	}
-
+	app.Emit(app.WindowEnteredFullScreen, w)
 	return nil
 }
 
 func onWindowExitFullScreen(w *Window, in map[string]interface{}) interface{} {
 	w.isFullscreen = false
-
-	if w.onExitFullScreen != nil {
-		w.onExitFullScreen(w)
-	}
-
+	app.Emit(app.WindowExitedFullScreen, w)
 	return nil
 }
 
 func onWindowMinimize(w *Window, in map[string]interface{}) interface{} {
 	w.isMinimized = true
-
-	if w.onMinimize != nil {
-		w.onMinimize(w)
-	}
-
+	app.Emit(app.WindowMinimized, w)
 	return nil
 }
 
 func onWindowDeminimize(w *Window, in map[string]interface{}) interface{} {
 	w.isMinimized = false
-
-	if w.onDeminimize != nil {
-		w.onDeminimize(w)
-	}
-
+	app.Emit(app.WindowDeminimized, w)
 	return nil
 }
 
 func onWindowClose(w *Window, in map[string]interface{}) interface{} {
-	if w.onClose != nil {
-		w.onClose(w)
-	}
-
 	w.dom.Close()
 	driver.elems.Delete(w)
+	app.Emit(app.WindowClosed, w)
 	return nil
 }
 

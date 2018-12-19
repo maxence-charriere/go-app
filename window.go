@@ -92,31 +92,33 @@ type WindowConfig struct {
 
 	// The URL of the component to load when the window is created.
 	URL string
-
-	// The function that is called when the window is moved.
-	OnMove func(w Window) `json:"-"`
-
-	// The function that is called when the window is resized.
-	OnResize func(w Window) `json:"-"`
-
-	// The function that is called when the window get focus.
-	OnFocus func(w Window) `json:"-"`
-
-	// The function that is called when the window lose focus.
-	OnBlur func(w Window) `json:"-"`
-
-	// The function that is called when the window goes full screen.
-	OnFullScreen func(w Window) `json:"-"`
-
-	// The function that is called when the window exit full screen.
-	OnExitFullScreen func(w Window) `json:"-"`
-
-	// The function that is called when the window is minimized.
-	OnMinimize func(w Window) `json:"-"`
-
-	// The function that is called when the window is deminimized.
-	OnDeminimize func(w Window) `json:"-"`
-
-	// The function that is called when the window is closed.
-	OnClose func(w Window) `json:"-"`
 }
+
+const (
+	// WindowMoved is the event emitted when a window is moved.
+	WindowMoved Event = "window-moved"
+
+	// WindowResized is the event emitted when a window is resized.
+	WindowResized Event = "window-resized"
+
+	// WindowFocused is the event emitted when a window gets focus.
+	WindowFocused Event = "window-focused"
+
+	// WindowBlurred is the event emitted when a window loses focus.
+	WindowBlurred Event = "window-blurred"
+
+	// WindowEnteredFullScreen is the event emitted when a window goes full screen.
+	WindowEnteredFullScreen Event = "window-entered-fullscreen"
+
+	// WindowExitedFullScreen is the event emitted when a window exits full screen.
+	WindowExitedFullScreen Event = "window-exited-fullscreen"
+
+	// WindowMinimized is the event emitted when a window is minimized.
+	WindowMinimized Event = "window-minimized"
+
+	// WindowDeminimized is the event emitted when a window is deminimized.
+	WindowDeminimized Event = "window-deminimized"
+
+	// WindowClosed is the event emitted when a window is closed.
+	WindowClosed Event = "window-closed"
+)

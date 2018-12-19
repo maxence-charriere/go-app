@@ -53,6 +53,8 @@ func TestApp(t *testing.T) {
 		assert.NotNil(t, app.Dock())
 		assert.NotNil(t, app.NewStatusMenu(app.StatusMenuConfig{}))
 
+		app.Emit("test", nil)
+
 		app.CallOnUIGoroutine(func() {
 			app.Logf("hello")
 		})

@@ -16,3 +16,7 @@ func main() {
 		URL: "window",
 	})
 }
+
+func main2() {
+
+}

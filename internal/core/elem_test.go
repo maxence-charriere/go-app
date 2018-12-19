@@ -10,6 +10,7 @@ import (
 
 func TestElem(t *testing.T) {
 	e := &Elem{}
+
 	e.WhenWindow(func(app.Window) {})
 	e.WhenPage(func(app.Page) {})
 	e.WhenNavigator(func(app.Navigator) {})
@@ -26,6 +27,7 @@ func TestElem(t *testing.T) {
 	})
 
 	assert.Equal(t, "", e.ID())
+	assert.False(t, e.Contains(nil))
 }
 
 type elem struct {

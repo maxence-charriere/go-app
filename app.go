@@ -225,6 +225,11 @@ func NewMsg(key string) Msg {
 	return &msg{key: key}
 }
 
+// Emit emits the event with the given value.
+func Emit(e Event, value interface{}) {
+	events.Emit(e, value)
+}
+
 // NewSubscriber creates an event subscriber to return when implementing the
 // app.EventSubscriber interface.
 func NewSubscriber() Subscriber {

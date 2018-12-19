@@ -63,10 +63,10 @@ func TestEventRegistry(t *testing.T) {
 
 	tests := []struct {
 		scenario string
-		subName  string
+		subName  Event
 		handler  func(*bool) interface{}
 		called   bool
-		dispName string
+		dispName Event
 		dispArg  interface{}
 		panic    bool
 	}{
