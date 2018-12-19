@@ -32,7 +32,7 @@ var (
 	driver    Driver
 	factory   = NewFactory()
 	events    = newEventRegistry(CallOnUIGoroutine)
-	messages  = newMsgRegistry(events)
+	messages  = newMsgRegistry()
 	whenDebug func(func())
 )
 
