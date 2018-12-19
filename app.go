@@ -36,6 +36,12 @@ var (
 	whenDebug func(func())
 )
 
+const (
+	// Running is the event emitted when the app starts to run. Argument passed
+	// to subscribed funcs is a app.Driver.
+	Running Event = "app.running"
+)
+
 func init() {
 	EnableDebug(false)
 }
