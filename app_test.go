@@ -30,7 +30,7 @@ func TestApp(t *testing.T) {
 	app.Import(&tests.Bar{})
 
 	onRun := func() {
-		d := app.RunningDriver()
+		d := app.CurrentDriver()
 		require.NotNil(t, d)
 
 		assert.NotEmpty(t, app.Name())

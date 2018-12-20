@@ -90,8 +90,8 @@ func Run(d Driver, addons ...Addon) error {
 	})
 }
 
-// RunningDriver returns the running driver.
-func RunningDriver() Driver {
+// CurrentDriver returns the current driver.
+func CurrentDriver() Driver {
 	return driver
 }
 
