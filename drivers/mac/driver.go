@@ -334,17 +334,17 @@ func (d *Driver) onRun(in map[string]interface{}) interface{} {
 		app.NewWindow(d.DefaultWindow)
 	}
 
-	d.events.Emit(app.Running, d)
+	d.events.Emit(app.Running, nil)
 	return nil
 }
 
 func (d *Driver) onFocus(in map[string]interface{}) interface{} {
-	d.events.Emit(app.Focused, d)
+	d.events.Emit(app.Focused, nil)
 	return nil
 }
 
 func (d *Driver) onBlur(in map[string]interface{}) interface{} {
-	d.events.Emit(app.Blurred, d)
+	d.events.Emit(app.Blurred, nil)
 	return nil
 }
 
@@ -355,7 +355,7 @@ func (d *Driver) onReopen(in map[string]interface{}) interface{} {
 		app.NewWindow(d.DefaultWindow)
 	}
 
-	d.events.Emit(app.Reopened, d)
+	d.events.Emit(app.Reopened, nil)
 	return nil
 }
 

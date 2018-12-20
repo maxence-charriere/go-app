@@ -36,7 +36,7 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	defer cancel()
 	d.stop = cancel
 
-	d.events.Emit(app.Running, d)
+	d.events.Emit(app.Running, nil)
 
 	for {
 		select {

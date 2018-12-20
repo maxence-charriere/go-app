@@ -38,20 +38,16 @@ var (
 )
 
 const (
-	// Running is the event emitted when the app starts to run. Argument passed
-	// to subscribed funcs is a app.Driver.
+	// Running is the event emitted when the app starts to run.
 	Running Event = "app.running"
 
-	// Reopened is the event emitted when the app is reopened. Argument passed
-	// to subscribed funcs is a app.Driver.
+	// Reopened is the event emitted when the app is reopened.
 	Reopened Event = "app.reopened"
 
-	// Focused is the event emitted when the app gets focus. Argument passed
-	// to subscribed funcs is a app.Driver.
+	// Focused is the event emitted when the app gets focus.
 	Focused Event = "app.focused"
 
-	// Blurred is the event emitted when the app loses focus. Argument passed
-	// to subscribed funcs is a app.Driver.
+	// Blurred is the event emitted when the app loses focus.
 	Blurred Event = "app.blurred"
 )
 
