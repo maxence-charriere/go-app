@@ -53,27 +53,25 @@ type Driver struct {
 	// It is used by goapp to define how the app is built and packaged.
 	Settings Settings
 
+	// The URL of the component to load in the default window. A non empty value
+	// triggers the creation of the default window when the app in openened. It
+	// overrides the DefaultWindow.URL value.
+	URL string
+
+	// The default window configuration.
+	DefaultWindow app.WindowConfig
+
 	// Menubar configuration
 	MenubarConfig MenuBarConfig
 
-	// The URL of the component to load in the main window.
-	// The main window is not created when OnRun or OnReopen are set.
-	URL string
-
 	// The URL of the component to load in the dock.
 	DockURL string
-
-	// The func called right after app.Run.
-	OnRun func()
 
 	// The func called when the app is focused.
 	OnFocus func()
 
 	// The func called when the app loses focus.
 	OnBlur func()
-
-	// The func called when the app is reopened.
-	OnReopen func(hasVisibleWindows bool)
 
 	// The func called when files associated with the app are opened.
 	OnFilesOpen func(filenames []string)
@@ -334,16 +332,15 @@ func (d *Driver) support() string {
 }
 
 func (d *Driver) onRun(in map[string]interface{}) interface{} {
+	d.configureDefaultWindow()
 	d.menubar = newMenuBar(d.MenubarConfig)
 	d.docktile = newDockTile(app.MenuConfig{URL: d.DockURL})
 
-	d.events.Emit(app.Running, d)
-
-	if d.OnRun == nil {
-		d.OnRun = d.newMainWindow
+	if len(d.URL) != 0 {
+		app.NewWindow(d.DefaultWindow)
 	}
 
-	d.OnRun()
+	d.events.Emit(app.Running, d)
 	return nil
 }
 
@@ -364,15 +361,13 @@ func (d *Driver) onBlur(in map[string]interface{}) interface{} {
 }
 
 func (d *Driver) onReopen(in map[string]interface{}) interface{} {
-	if d.OnReopen == nil {
-		d.OnReopen = func(hasVisibleWindows bool) {
-			if !hasVisibleWindows {
-				d.newMainWindow()
-			}
-		}
+	hasVisibleWindow := in["HasVisibleWindows"].(bool)
+
+	if !hasVisibleWindow && len(d.URL) != 0 {
+		app.NewWindow(d.DefaultWindow)
 	}
 
-	d.OnReopen(in["HasVisibleWindows"].(bool))
+	d.events.Emit(app.Reopened, d)
 	return nil
 }
 
@@ -410,15 +405,21 @@ func (d *Driver) onQuit(in map[string]interface{}) interface{} {
 	return nil
 }
 
-func (d *Driver) newMainWindow() {
-	app.NewWindow(app.WindowConfig{
-		Title:     d.AppName(),
-		MinWidth:  480,
-		Width:     1280,
-		MinHeight: 480,
-		Height:    768,
-		URL:       d.URL,
-	})
+func (d *Driver) configureDefaultWindow() {
+	if d.DefaultWindow == (app.WindowConfig{}) {
+		d.DefaultWindow = app.WindowConfig{
+			Title:     d.AppName(),
+			MinWidth:  480,
+			Width:     1280,
+			MinHeight: 480,
+			Height:    768,
+			URL:       d.URL,
+		}
+	}
+
+	if len(d.DefaultWindow.URL) == 0 {
+		d.DefaultWindow.URL = d.URL
+	}
 }
 
 func generateDevID() string {

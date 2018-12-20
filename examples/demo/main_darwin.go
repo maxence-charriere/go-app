@@ -38,15 +38,7 @@ func main() {
 				URLScheme: "goapp-demo",
 			},
 
-			OnRun: func() {
-				newWindow("main", entryCompo, false)
-			},
-
-			OnReopen: func(hasVisibleWindow bool) {
-				if !hasVisibleWindow {
-					newWindow("main", entryCompo, false)
-				}
-			},
+			URL: "window",
 
 			OnFilesOpen: func(filenames []string) {
 				app.Log("opened from:", filenames)

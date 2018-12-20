@@ -41,6 +41,10 @@ const (
 	// Running is the event emitted when the app starts to run. Argument passed
 	// to subscribed funcs is a app.Driver.
 	Running Event = "app.running"
+
+	// Reopened is the event emitted when the app is reopened. Argument passed
+	// to subscribed funcs is a app.Driver.
+	Reopened Event = "app.reopened"
 )
 
 func init() {
