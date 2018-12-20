@@ -507,55 +507,55 @@ func onWindowAlert(w *Window, in map[string]interface{}) interface{} {
 }
 
 func onWindowMove(w *Window, in map[string]interface{}) interface{} {
-	app.Emit(app.WindowMoved, w)
+	driver.events.Emit(app.WindowMoved, w)
 	return nil
 }
 
 func onWindowResize(w *Window, in map[string]interface{}) interface{} {
-	app.Emit(app.WindowResized, w)
+	driver.events.Emit(app.WindowResized, w)
 	return nil
 }
 
 func onWindowFocus(w *Window, in map[string]interface{}) interface{} {
 	w.isFocus = true
-	app.Emit(app.WindowFocused, w)
+	driver.events.Emit(app.WindowFocused, w)
 	return nil
 }
 
 func onWindowBlur(w *Window, in map[string]interface{}) interface{} {
 	w.isFocus = false
-	app.Emit(app.WindowBlurred, w)
+	driver.events.Emit(app.WindowBlurred, w)
 	return nil
 }
 
 func onWindowFullScreen(w *Window, in map[string]interface{}) interface{} {
 	w.isFullscreen = true
-	app.Emit(app.WindowEnteredFullScreen, w)
+	driver.events.Emit(app.WindowEnteredFullScreen, w)
 	return nil
 }
 
 func onWindowExitFullScreen(w *Window, in map[string]interface{}) interface{} {
 	w.isFullscreen = false
-	app.Emit(app.WindowExitedFullScreen, w)
+	driver.events.Emit(app.WindowExitedFullScreen, w)
 	return nil
 }
 
 func onWindowMinimize(w *Window, in map[string]interface{}) interface{} {
 	w.isMinimized = true
-	app.Emit(app.WindowMinimized, w)
+	driver.events.Emit(app.WindowMinimized, w)
 	return nil
 }
 
 func onWindowDeminimize(w *Window, in map[string]interface{}) interface{} {
 	w.isMinimized = false
-	app.Emit(app.WindowDeminimized, w)
+	driver.events.Emit(app.WindowDeminimized, w)
 	return nil
 }
 
 func onWindowClose(w *Window, in map[string]interface{}) interface{} {
 	w.dom.Close()
 	driver.elems.Delete(w)
-	app.Emit(app.WindowClosed, w)
+	driver.events.Emit(app.WindowClosed, w)
 	return nil
 }
 

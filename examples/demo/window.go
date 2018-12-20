@@ -121,27 +121,6 @@ func (c *Window) OnMount() {
 				},
 			},
 			{
-				Name:        "Minimize/Deminimize",
-				Description: "Take and take out the window out of minimized mode.",
-				Action: func() {
-					w.Minimize()
-
-					if w.Err() != nil {
-						c.Actions[6].Err = w.Err()
-						app.Render(c)
-						return
-					}
-
-					app.UI(func() {
-						w.Deminimize()
-						c.Actions[6].Err = w.Err()
-						app.Render(c)
-					})
-
-					app.Render(c)
-				},
-			},
-			{
 				Name:        "Frosted window",
 				Description: "Create a window with frosted effect.",
 				Action: func() {
@@ -153,7 +132,7 @@ func (c *Window) OnMount() {
 				Description: "Close the window.",
 				Action: func() {
 					w.Close()
-					c.Actions[8].Err = w.Err()
+					c.Actions[7].Err = w.Err()
 					app.Render(c)
 				},
 			},
