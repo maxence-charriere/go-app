@@ -96,39 +96,39 @@ type WindowConfig struct {
 
 // Constants that enumerates window events.
 const (
-	// WindowMoved is the event emitted when a window is moved. Argument passed
+	// WindowMoved is the event emitted when a window is moved. The arg passed
 	// to subscribed funcs is a app.Window.
 	WindowMoved Event = "app.window.moved"
 
-	// WindowResized is the event emitted when a window is resized. Argument
+	// WindowResized is the event emitted when a window is resized. The arg
 	// passed to subscribed funcs is a app.Window.
 	WindowResized Event = "app.window.resized"
 
-	// WindowFocused is the event emitted when a window gets focus. Argument
+	// WindowFocused is the event emitted when a window gets focus. The arg
 	// passed to subscribed funcs is a app.Window.
 	WindowFocused Event = "app.window.focused"
 
-	// WindowBlurred is the event emitted when a window loses focus. Argument
+	// WindowBlurred is the event emitted when a window loses focus. The arg
 	// passed to subscribed funcs is a app.Window.
 	WindowBlurred Event = "app.window.blurred"
 
 	// WindowEnteredFullScreen is the event emitted when a window goes full
-	// screen. Argument passed to subscribed funcs is a app.Window.
+	// screen. The arg passed to subscribed funcs is a app.Window.
 	WindowEnteredFullScreen Event = "app.window.enteredFullscreen"
 
 	// WindowExitedFullScreen is the event emitted when a window exits full
-	// screen. Argument passed to subscribed funcs is a app.Window.
+	// screen. The arg passed to subscribed funcs is a app.Window.
 	WindowExitedFullScreen Event = "app.window.exitedFullscreen"
 
-	// WindowMinimized is the event emitted when a window is minimized. Argument
+	// WindowMinimized is the event emitted when a window is minimized. The arg
 	// passed to subscribed funcs is a app.Window.
 	WindowMinimized Event = "app.window.minimized"
 
-	// WindowDeminimized is the event emitted when a window is deminimized.
-	// Argument passed to subscribed funcs is a app.Window.
+	// WindowDeminimized is the event emitted when a window is deminimized. The
+	// arg passed to subscribed funcs is a app.Window.
 	WindowDeminimized Event = "app.window.deminimized"
 
-	// WindowClosed is the event emitted when a window is closed. Argument
-	// passed to subscribed funcs is a app.Window.
+	// WindowClosed is the event emitted when a window is closed. The arg passed
+	// to subscribed funcs is a app.Window.
 	WindowClosed Event = "app.window.closed"
 )

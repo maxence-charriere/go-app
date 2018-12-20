@@ -3,8 +3,6 @@
 package main
 
 import (
-	"net/url"
-
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/drivers/mac"
 	"github.com/murlokswarm/app/drivers/web"
@@ -39,14 +37,6 @@ func main() {
 			},
 
 			URL: "window",
-
-			OnFilesOpen: func(filenames []string) {
-				app.Log("opened from:", filenames)
-			},
-
-			OnURLOpen: func(u *url.URL) {
-				app.Log("app opened with:", u)
-			},
 
 			OnQuit: func() {
 				app.Log("Goodbye")

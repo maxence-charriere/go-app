@@ -67,12 +67,6 @@ type Driver struct {
 	// The URL of the component to load in the dock.
 	DockURL string
 
-	// The func called when files associated with the app are opened.
-	OnFilesOpen func(filenames []string)
-
-	// The func called when the app URLScheme is invoked.
-	OnURLOpen func(u *url.URL)
-
 	// The func called when the app is about to quit.
 	OnQuit func()
 
@@ -360,22 +354,15 @@ func (d *Driver) onReopen(in map[string]interface{}) interface{} {
 }
 
 func (d *Driver) onFilesOpen(in map[string]interface{}) interface{} {
-	if d.OnFilesOpen != nil {
-		d.OnFilesOpen(bridge.Strings(in["Filenames"]))
-	}
-
+	d.events.Emit(app.OpenFilesRequested, bridge.Strings(in["Filenames"]))
 	return nil
 }
 
 func (d *Driver) onURLOpen(in map[string]interface{}) interface{} {
-	if d.OnURLOpen != nil {
-		u, err := url.Parse(in["URL"].(string))
-		if err != nil {
-			app.Panic(errors.Wrap(err, "onURLOpen"))
-		}
-
-		d.OnURLOpen(u)
+	if u, err := url.Parse(in["URL"].(string)); err != nil {
+		d.events.Emit(app.OpenURLRequested, u)
 	}
+
 	return nil
 }
 

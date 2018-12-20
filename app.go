@@ -49,6 +49,15 @@ const (
 
 	// Blurred is the event emitted when the app loses focus.
 	Blurred Event = "app.blurred"
+
+	// OpenFilesRequested is the event emitted when the app is requested to
+	// open files. The arg passed to subscribed funcs is a []string containing
+	// the path of the requested files.
+	OpenFilesRequested Event = "app.openFilesRequested"
+
+	// OpenURLRequested is the event emitted when the app is requested to open
+	// an URL. The arg passed to subscribed funcs is a *url.URL.
+	OpenURLRequested Event = "app.openURLrequested"
 )
 
 func init() {
