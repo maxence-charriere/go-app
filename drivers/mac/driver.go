@@ -67,12 +67,6 @@ type Driver struct {
 	// The URL of the component to load in the dock.
 	DockURL string
 
-	// The func called when the app is focused.
-	OnFocus func()
-
-	// The func called when the app loses focus.
-	OnBlur func()
-
 	// The func called when files associated with the app are opened.
 	OnFilesOpen func(filenames []string)
 
@@ -345,18 +339,12 @@ func (d *Driver) onRun(in map[string]interface{}) interface{} {
 }
 
 func (d *Driver) onFocus(in map[string]interface{}) interface{} {
-	if d.OnFocus != nil {
-		d.OnFocus()
-	}
-
+	d.events.Emit(app.Focused, d)
 	return nil
 }
 
 func (d *Driver) onBlur(in map[string]interface{}) interface{} {
-	if d.OnBlur != nil {
-		d.OnBlur()
-	}
-
+	d.events.Emit(app.Blurred, d)
 	return nil
 }
 

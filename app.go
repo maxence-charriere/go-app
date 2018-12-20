@@ -45,6 +45,14 @@ const (
 	// Reopened is the event emitted when the app is reopened. Argument passed
 	// to subscribed funcs is a app.Driver.
 	Reopened Event = "app.reopened"
+
+	// Focused is the event emitted when the app gets focus. Argument passed
+	// to subscribed funcs is a app.Driver.
+	Focused Event = "app.focused"
+
+	// Blurred is the event emitted when the app loses focus. Argument passed
+	// to subscribed funcs is a app.Driver.
+	Blurred Event = "app.blurred"
 )
 
 func init() {
