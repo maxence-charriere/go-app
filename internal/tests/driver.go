@@ -83,8 +83,14 @@ func TestDriver(t *testing.T, setup DriverSetup) {
 	ui := make(chan func(), 32)
 	defer close(ui)
 
+	e := app.NewEventRegistry(ui)
+
 	d = setup(onRun)
-	d.Run(f, ui)
+	d.Run(app.DriverConfig{
+		UI:      ui,
+		Factory: f,
+		Events:  e,
+	})
 
 }
 

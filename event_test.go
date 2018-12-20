@@ -95,14 +95,23 @@ func TestEventRegistry(t *testing.T) {
 
 			called := false
 
-			r := newEventRegistry(func(f func()) {
-				f()
-			})
+			ui := make(chan func(), 32)
+			defer close(ui)
+
+			r := NewEventRegistry(ui)
 
 			unsub := r.subscribe(test.subName, test.handler(&called))
 			defer unsub()
 
 			r.Emit(test.dispName, test.dispArg)
+
+			select {
+			case f := <-ui:
+				f()
+
+			default:
+			}
+
 			assert.Equal(t, test.called, called)
 		})
 	}

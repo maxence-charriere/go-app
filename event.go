@@ -22,7 +22,7 @@ type Subscriber interface {
 }
 
 type subscriber struct {
-	registry    *eventRegistry
+	registry    *EventRegistry
 	unsuscribes []func()
 }
 
@@ -43,20 +43,22 @@ type eventHandler struct {
 	Handler interface{}
 }
 
-type eventRegistry struct {
+// EventRegistry is a struct that manages event flow.
+type EventRegistry struct {
 	mutex    sync.RWMutex
 	handlers map[Event][]eventHandler
-	callOnUI func(f func())
+	ui       chan func()
 }
 
-func newEventRegistry(callOnUI func(func())) *eventRegistry {
-	return &eventRegistry{
+// NewEventRegistry creates a event registry.
+func NewEventRegistry(ui chan func()) *EventRegistry {
+	return &EventRegistry{
 		handlers: make(map[Event][]eventHandler),
-		callOnUI: callOnUI,
+		ui:       ui,
 	}
 }
 
-func (r *eventRegistry) subscribe(e Event, handler interface{}) func() {
+func (r *EventRegistry) subscribe(e Event, handler interface{}) func() {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -82,7 +84,7 @@ func (r *eventRegistry) subscribe(e Event, handler interface{}) func() {
 	}
 }
 
-func (r *eventRegistry) unsubscribe(e Event, id string) {
+func (r *EventRegistry) unsubscribe(e Event, id string) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -101,7 +103,8 @@ func (r *eventRegistry) unsubscribe(e Event, id string) {
 	}
 }
 
-func (r *eventRegistry) Emit(e Event, v interface{}) {
+// Emit emits the event with the given value.
+func (r *EventRegistry) Emit(e Event, v interface{}) {
 	r.mutex.RLock()
 	defer r.mutex.RUnlock()
 
@@ -110,10 +113,7 @@ func (r *eventRegistry) Emit(e Event, v interface{}) {
 		typ := val.Type()
 
 		if typ.NumIn() == 0 {
-			r.callOnUI(func() {
-				val.Call(nil)
-			})
-
+			r.ui <- func() { val.Call(nil) }
 			return
 		}
 
@@ -128,10 +128,10 @@ func (r *eventRegistry) Emit(e Event, v interface{}) {
 			return
 		}
 
-		r.callOnUI(func() {
+		r.ui <- func() {
 			val.Call([]reflect.Value{
 				argVal.Convert(argTyp),
 			})
-		})
+		}
 	}
 }

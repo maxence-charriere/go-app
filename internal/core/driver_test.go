@@ -12,7 +12,7 @@ func TestDriver(t *testing.T) {
 	d := &Driver{}
 	require.Implements(t, (*app.Driver)(nil), d)
 
-	assert.Error(t, d.Run(nil, nil))
+	assert.Error(t, d.Run(app.DriverConfig{}))
 	assert.NotEmpty(t, d.AppName())
 	assert.Equal(t, "resources", d.Resources())
 	assert.Equal(t, "storage", d.Storage())

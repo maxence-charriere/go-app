@@ -17,18 +17,20 @@ type Driver struct {
 	// The function executed after a Run call.
 	OnRun func()
 
+	ui       chan func()
 	factory  *app.Factory
+	events   *app.EventRegistry
 	elems    *core.ElemDB
 	stop     func()
-	ui       chan func()
 	menubar  *Menu
 	docktile *DockTile
 }
 
 // Run satisfies the app.Driver interface.
-func (d *Driver) Run(f *app.Factory, ui chan func()) error {
-	d.factory = f
-	d.ui = ui
+func (d *Driver) Run(c app.DriverConfig) error {
+	d.ui = c.UI
+	d.factory = c.Factory
+	d.events = c.Events
 	d.elems = core.NewElemDB()
 	d.menubar = newMenu(d, app.MenuConfig{})
 	d.docktile = newDockTile(d)

@@ -32,7 +32,7 @@ var (
 	driver    Driver
 	ui        = make(chan func(), 4096)
 	factory   = NewFactory()
-	events    = newEventRegistry(UI)
+	events    = NewEventRegistry(ui)
 	messages  = newMsgRegistry()
 	whenDebug func(func())
 )
@@ -70,7 +70,12 @@ func Run(d Driver, addons ...Addon) error {
 	}
 
 	driver = d
-	return driver.Run(factory, ui)
+
+	return driver.Run(DriverConfig{
+		UI:      ui,
+		Factory: factory,
+		Events:  events,
+	})
 }
 
 // RunningDriver returns the running driver.

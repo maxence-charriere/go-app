@@ -4,7 +4,7 @@ package app
 type Driver interface {
 	// Run runs the application with the components registered in the given
 	// factory.
-	Run(f *Factory, ui chan func()) error
+	Run(DriverConfig) error
 
 	// AppName returns the appliction name.
 	AppName() string
@@ -68,6 +68,18 @@ type Driver interface {
 	// Stop stops the driver.
 	// Calling it make run return with an error.
 	Stop()
+}
+
+// DriverConfig contains driver configuration.
+type DriverConfig struct {
+	// The channel to send function to execute on UI goroutine.
+	UI chan func()
+
+	// The factory used to create components.
+	Factory *Factory
+
+	// The event registery to emit events.
+	Events *EventRegistry
 }
 
 // Addon represents a driver addon.
