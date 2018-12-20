@@ -62,9 +62,11 @@ func TestApp(t *testing.T) {
 		go time.AfterFunc(time.Millisecond, app.Stop)
 	}
 
-	err := app.Run(&test.Driver{
-		OnRun: onRun,
-	})
+	defer app.NewSubscriber().
+		Subscribe(app.Running, onRun).
+		Close()
+
+	err := app.Run(&test.Driver{})
 	assert.Error(t, err)
 }
 

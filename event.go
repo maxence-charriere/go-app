@@ -11,28 +11,26 @@ import (
 // Event is a string that identifies an app event.
 type Event string
 
-// Subscriber is the interface that describes an event subscriber.
-type Subscriber interface {
-	// Subscribe subscribes a function to the given key.
-	// It panics if f is not a func.
-	Subscribe(e Event, f interface{}) Subscriber
+// Subscriber is a struct to subscribe to events emitted by a event registry.
+type Subscriber struct {
+	// The event restry that emits events. By default tt uses the app default
+	// event registry.
+	// This should be set only for testing purpose.
+	Events *EventRegistry
 
-	// Close unsubscribes all the subscriptions.
-	Close()
-}
-
-type subscriber struct {
-	registry    *EventRegistry
 	unsuscribes []func()
 }
 
-func (s *subscriber) Subscribe(e Event, f interface{}) Subscriber {
-	unsubscribe := s.registry.subscribe(e, f)
+// Subscribe subscribes a function to the given key.
+// It panics if f is not a func.
+func (s *Subscriber) Subscribe(e Event, f interface{}) *Subscriber {
+	unsubscribe := s.Events.subscribe(e, f)
 	s.unsuscribes = append(s.unsuscribes, unsubscribe)
 	return s
 }
 
-func (s *subscriber) Close() {
+// Close unsubscribes all the subscriptions.
+func (s *Subscriber) Close() {
 	for _, unsuscribe := range s.unsuscribes {
 		unsuscribe()
 	}

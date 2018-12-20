@@ -8,7 +8,7 @@ import (
 )
 
 // DriverSetup is the definition of a function that creates a driver.
-type DriverSetup func(onRun func()) app.Driver
+type DriverSetup func() app.Driver
 
 // TestDriver is a test suite that ensure that all driver implementations behave
 // the same.
@@ -85,7 +85,12 @@ func TestDriver(t *testing.T, setup DriverSetup) {
 
 	e := app.NewEventRegistry(ui)
 
-	d = setup(onRun)
+	s := &app.Subscriber{
+		Events: e,
+	}
+	defer s.Subscribe(app.Running, onRun).Close()
+
+	d = setup()
 	d.Run(app.DriverConfig{
 		UI:      ui,
 		Factory: f,

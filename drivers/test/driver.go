@@ -14,9 +14,6 @@ type Driver struct {
 	// A boolean that reports whether driver set element errors.
 	Err bool
 
-	// The function executed after a Run call.
-	OnRun func()
-
 	ui       chan func()
 	factory  *app.Factory
 	events   *app.EventRegistry
@@ -39,9 +36,7 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	defer cancel()
 	d.stop = cancel
 
-	if d.OnRun != nil {
-		d.UI(d.OnRun)
-	}
+	d.events.Emit(app.Running, d)
 
 	for {
 		select {

@@ -243,9 +243,9 @@ func Emit(e Event, value interface{}) {
 
 // NewSubscriber creates an event subscriber to return when implementing the
 // app.EventSubscriber interface.
-func NewSubscriber() Subscriber {
-	return &subscriber{
-		registry: events,
+func NewSubscriber() *Subscriber {
+	return &Subscriber{
+		Events: events,
 	}
 }
 
