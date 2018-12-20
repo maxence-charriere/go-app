@@ -31,10 +31,11 @@ type Driver struct {
 	// http.Handler overrides should be performed here.
 	OnServerRun func()
 
+	ui          chan func()
 	factory     *app.Factory
+	events      *app.EventRegistry
 	elems       *core.ElemDB
 	page        app.Page
-	uichan      chan func()
 	stop        func()
 	fileHandler http.Handler
 }

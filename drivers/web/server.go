@@ -28,8 +28,8 @@ func init() {
 }
 
 // Run satisfies the app.Driver interface.
-func (d *Driver) Run(f *app.Factory) error {
-	d.factory = f
+func (d *Driver) Run(c app.DriverConfig) error {
+	d.factory = c.Factory
 
 	if len(d.NotFoundURL) == 0 {
 		d.NotFoundURL = "/web.NotFound"

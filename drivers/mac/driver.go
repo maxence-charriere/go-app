@@ -84,12 +84,13 @@ type Driver struct {
 	// The func called when the app is about to quit.
 	OnQuit func()
 
+	ui           chan func()
 	factory      *app.Factory
+	events       *app.EventRegistry
 	elems        *core.ElemDB
 	devID        string
 	macRPC       bridge.PlatformRPC
 	goRPC        bridge.GoRPC
-	uichan       chan func()
 	stop         func()
 	menubar      *Menu
 	docktile     *DockTile
@@ -97,7 +98,7 @@ type Driver struct {
 }
 
 // Run satisfies the app.Driver interface.
-func (d *Driver) Run(f *app.Factory) error {
+func (d *Driver) Run(c app.DriverConfig) error {
 	if len(goappBuild) != 0 {
 		return d.runGoappBuild()
 	}
@@ -106,7 +107,9 @@ func (d *Driver) Run(f *app.Factory) error {
 		return errors.New("running already")
 	}
 
-	d.factory = f
+	d.ui = c.UI
+	d.factory = c.Factory
+	d.events = c.Events
 	d.elems = core.NewElemDB()
 	d.devID = generateDevID()
 	d.macRPC.Handler = macCall
@@ -148,9 +151,6 @@ func (d *Driver) Run(f *app.Factory) error {
 
 	d.goRPC.Handle("notifications.OnReply", handleNotification(onNotificationReply))
 
-	d.uichan = make(chan func(), 4096)
-	defer close(d.uichan)
-
 	driver = d
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -167,7 +167,7 @@ func (d *Driver) Run(f *app.Factory) error {
 				wg.Done()
 				return
 
-			case fn := <-d.uichan:
+			case fn := <-d.ui:
 				fn()
 			}
 		}
@@ -290,7 +290,7 @@ func (d *Driver) DockTile() app.DockTile {
 
 // CallOnUIGoroutine satisfies the app.Driver interface.
 func (d *Driver) CallOnUIGoroutine(f func()) {
-	d.uichan <- f
+	d.ui <- f
 }
 
 // Stop satisfies the app.Driver interface.
@@ -336,6 +336,8 @@ func (d *Driver) support() string {
 func (d *Driver) onRun(in map[string]interface{}) interface{} {
 	d.menubar = newMenuBar(d.MenubarConfig)
 	d.docktile = newDockTile(app.MenuConfig{URL: d.DockURL})
+
+	d.events.Emit(app.Running, d)
 
 	if d.OnRun == nil {
 		d.OnRun = d.newMainWindow

@@ -24,15 +24,14 @@ func init() {
 }
 
 // Run satisfies the app.Driver interface.
-func (d *Driver) Run(f *app.Factory) error {
-	d.factory = f
+func (d *Driver) Run(c app.DriverConfig) error {
+	d.ui = c.UI
+	d.factory = c.Factory
+	d.events = c.Events
 	d.elems = core.NewElemDB()
-	d.uichan = make(chan func(), 256)
 	driver = d
 
 	go func() {
-		defer close(d.uichan)
-
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 		d.stop = cancel
@@ -42,7 +41,7 @@ func (d *Driver) Run(f *app.Factory) error {
 			case <-ctx.Done():
 				return
 
-			case fn := <-d.uichan:
+			case fn := <-d.ui:
 				fn()
 			}
 		}
@@ -80,5 +79,5 @@ func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
 
 // CallOnUIGoroutine satisfies the app.Driver interface.
 func (d *Driver) CallOnUIGoroutine(f func()) {
-	d.uichan <- f
+	d.ui <- f
 }

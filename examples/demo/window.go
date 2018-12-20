@@ -31,7 +31,7 @@ type Window struct {
 
 // Subscribe is the func to set up event listeners.
 // It satisfies the app.EventSubscriber interface.
-func (c *Window) Subscribe() app.Subscriber {
+func (c *Window) Subscribe() *app.Subscriber {
 	return app.NewSubscriber().
 		Subscribe(app.WindowMoved, c.onUpdate).
 		Subscribe(app.WindowResized, c.onUpdate).
@@ -132,7 +132,7 @@ func (c *Window) OnMount() {
 						return
 					}
 
-					app.CallOnUIGoroutine(func() {
+					app.UI(func() {
 						w.Deminimize()
 						c.Actions[6].Err = w.Err()
 						app.Render(c)
