@@ -29,6 +29,8 @@ func TestApp(t *testing.T) {
 	app.Import(&tests.Foo{})
 	app.Import(&tests.Bar{})
 
+	app.Addons(app.Logs())
+
 	onRun := func() {
 		d := app.CurrentDriver()
 		require.NotNil(t, d)
@@ -66,7 +68,9 @@ func TestApp(t *testing.T) {
 		Subscribe(app.Running, onRun).
 		Close()
 
-	err := app.Run(&test.Driver{})
+	err := app.Run()
+	assert.Error(t, err)
+	err = app.Run(&test.Driver{})
 	assert.Error(t, err)
 }
 

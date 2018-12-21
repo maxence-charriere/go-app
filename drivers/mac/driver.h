@@ -19,7 +19,8 @@
 - (void)setContextMenu:(NSString *)menuID return:(NSString *)returnID;
 - (void)setMenubar:(NSString *)menuID return:(NSString *)returnID;
 - (void)share:(NSDictionary *)in return:(NSString *)returnID;
-- (void)quit:(id)in return:(NSString *)returnID;
+- (void)close:(id)in return:(NSString *)returnID;
+- (void)terminate:(id)in return:(NSString *)returnID;
 @end
 
 #endif /* driver_h */

@@ -20,7 +20,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"sync"
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
@@ -83,6 +82,11 @@ type Driver struct {
 	droppedFiles []string
 }
 
+// Target satisfies the app.Driver interface.
+func (d *Driver) Target() string {
+	return "macos"
+}
+
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(c app.DriverConfig) error {
 	if len(goappBuild) != 0 {
@@ -107,7 +111,7 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	d.goRPC.Handle("driver.OnFilesOpen", d.onFilesOpen)
 	d.goRPC.Handle("driver.OnURLOpen", d.onURLOpen)
 	d.goRPC.Handle("driver.OnFileDrop", d.onFileDrop)
-	d.goRPC.Handle("driver.OnQuit", d.onQuit)
+	d.goRPC.Handle("driver.OnClose", d.onClose)
 
 	d.goRPC.Handle("windows.OnMove", handleWindow(onWindowMove))
 	d.goRPC.Handle("windows.OnResize", handleWindow(onWindowResize))
@@ -140,17 +144,15 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	driver = d
 
 	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
 	d.stop = cancel
 
-	wg := sync.WaitGroup{}
-	wg.Add(1)
-
 	go func() {
+		defer cancel()
+
 		for {
 			select {
 			case <-ctx.Done():
-				wg.Done()
+				d.macRPC.Call("driver.Terminate", nil, nil)
 				return
 
 			case fn := <-d.ui:
@@ -160,8 +162,24 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	}()
 
 	err := d.macRPC.Call("driver.Run", nil, nil)
-	wg.Wait()
 	return err
+}
+
+func (d *Driver) configureDefaultWindow() {
+	if d.DefaultWindow == (app.WindowConfig{}) {
+		d.DefaultWindow = app.WindowConfig{
+			Title:     d.AppName(),
+			MinWidth:  480,
+			Width:     1280,
+			MinHeight: 480,
+			Height:    768,
+			URL:       d.URL,
+		}
+	}
+
+	if len(d.DefaultWindow.URL) == 0 {
+		d.DefaultWindow.URL = d.URL
+	}
 }
 
 // AppName satisfies the app.Driver interface.
@@ -274,14 +292,14 @@ func (d *Driver) DockTile() app.DockTile {
 	return d.docktile
 }
 
-// CallOnUIGoroutine satisfies the app.Driver interface.
-func (d *Driver) CallOnUIGoroutine(f func()) {
+// UI satisfies the app.Driver interface.
+func (d *Driver) UI(f func()) {
 	d.ui <- f
 }
 
 // Stop satisfies the app.Driver interface.
 func (d *Driver) Stop() {
-	if err := d.macRPC.Call("driver.Quit", nil, nil); err != nil {
+	if err := d.macRPC.Call("driver.Close", nil, nil); err != nil {
 		app.Log("stop failed:", err)
 		d.stop()
 	}
@@ -371,30 +389,14 @@ func (d *Driver) onFileDrop(in map[string]interface{}) interface{} {
 	return nil
 }
 
-func (d *Driver) onQuit(in map[string]interface{}) interface{} {
-	if d.OnQuit != nil {
-		d.OnQuit()
-	}
+func (d *Driver) onClose(in map[string]interface{}) interface{} {
+	d.events.Emit(app.Closed, nil)
 
-	d.stop()
+	d.UI(func() {
+		d.stop()
+	})
+
 	return nil
-}
-
-func (d *Driver) configureDefaultWindow() {
-	if d.DefaultWindow == (app.WindowConfig{}) {
-		d.DefaultWindow = app.WindowConfig{
-			Title:     d.AppName(),
-			MinWidth:  480,
-			Width:     1280,
-			MinHeight: 480,
-			Height:    768,
-			URL:       d.URL,
-		}
-	}
-
-	if len(d.DefaultWindow.URL) == 0 {
-		d.DefaultWindow.URL = d.URL
-	}
 }
 
 func generateDevID() string {

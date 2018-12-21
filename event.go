@@ -111,7 +111,9 @@ func (r *EventRegistry) Emit(e Event, v interface{}) {
 		typ := val.Type()
 
 		if typ.NumIn() == 0 {
-			r.ui <- func() { val.Call(nil) }
+			r.ui <- func() {
+				val.Call(nil)
+			}
 			return
 		}
 

@@ -134,8 +134,8 @@ func (e *Engine) Close() {
 	e.once.Do(e.init)
 	e.mutex.Lock()
 	defer e.mutex.Unlock()
-
 	e.close()
+
 }
 
 func (e *Engine) close() {

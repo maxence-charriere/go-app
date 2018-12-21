@@ -178,7 +178,7 @@ func onMenuClose(m *Menu, in map[string]interface{}) interface{} {
 	// menuDidClose: is called before clicked:.
 	// We call CallOnUIGoroutine in order to defer the close operation
 	// after the clicked one.
-	driver.CallOnUIGoroutine(func() {
+	driver.UI(func() {
 		if m.onClose != nil {
 			m.onClose()
 		}

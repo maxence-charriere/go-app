@@ -26,10 +26,9 @@ var (
 	// It is used by Log, Logf, Panic and Panicf to generate logs.
 	Logger func(format string, a ...interface{})
 
-	// Kind describes the app kind (desktop|mobile|web).
-	Kind string
-
 	driver    Driver
+	target    string
+	addons    = []Addon{Logs()}
 	ui        = make(chan func(), 4096)
 	factory   = NewFactory()
 	events    = NewEventRegistry(ui)
@@ -58,6 +57,10 @@ const (
 	// OpenURLRequested is the event emitted when the app is requested to open
 	// an URL. The arg passed to subscribed funcs is a *url.URL.
 	OpenURLRequested Event = "app.openURLrequested"
+
+	// Closed is the event emitted when the app is closed. Final cleanups
+	// should be done by subscribing to this event.
+	Closed Event = "app.closed"
 )
 
 func init() {
@@ -76,17 +79,29 @@ func Import(c ...Compo) {
 	}
 }
 
+// Addons set up the given addons.
+func Addons(a ...Addon) {
+	for _, add := range a {
+		addons = append(addons, add)
+	}
+}
+
 // Run runs the app with the given driver as backend.
-func Run(d Driver, addons ...Addon) error {
-	if len(addons) == 0 {
-		addons = append(addons, Logs())
+func Run(drivers ...Driver) error {
+	for _, d := range drivers {
+		if d.Target() == target {
+			driver = d
+			break
+		}
 	}
 
-	for _, addon := range addons {
-		d = addon(d)
+	if driver == nil {
+		return errors.Errorf("no driver set for %s", target)
 	}
 
-	driver = d
+	for _, a := range addons {
+		driver = a(driver)
+	}
 
 	return driver.Run(DriverConfig{
 		UI:      ui,

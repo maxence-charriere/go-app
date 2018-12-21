@@ -10,10 +10,8 @@ import (
 )
 
 func TestDriver(t *testing.T) {
-	setup := func(onRun func()) app.Driver {
-		return &Driver{
-			OnRun: onRun,
-		}
+	setup := func() app.Driver {
+		return &Driver{}
 	}
 
 	tests.TestDriver(t, setup)

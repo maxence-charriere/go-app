@@ -409,7 +409,7 @@ func (pkg *MacPackage) buildExecutable(ctx context.Context) error {
 
 	args := []string{
 		"go", "build",
-		"-ldflags", "-s -X github.com/murlokswarm/app.Kind=desktop",
+		"-ldflags", "-s -X github.com/murlokswarm/app.target=macos",
 		"-o", pkg.tmpExecutable,
 	}
 

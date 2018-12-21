@@ -40,7 +40,7 @@ func goCall(ccall *C.char, ui C.BOOL) (cout *C.char) {
 	call := C.GoString(ccall)
 
 	if ui == 1 {
-		driver.CallOnUIGoroutine(func() {
+		driver.UI(func() {
 			if _, err := driver.goRPC.Call(call); err != nil {
 				app.Panic(errors.Wrap(err, "go call failed"))
 			}

@@ -44,7 +44,7 @@ func newWindow(c app.WindowConfig) *Window {
 				dom.JsToGoHandler,
 				dom.HrefCompoFmt,
 			},
-			CallOnUI: driver.CallOnUIGoroutine,
+			CallOnUI: driver.UI,
 		},
 	}
 
@@ -449,6 +449,16 @@ func (w *Window) Close() {
 	w.SetErr(err)
 }
 
+// WhenWindow satisfies the app.Window interface.
+func (w *Window) WhenWindow(f func(app.Window)) {
+	f(w)
+}
+
+// WhenNavigator satisfies the app.Window interface.
+func (w *Window) WhenNavigator(f func(app.Navigator)) {
+	f(w)
+}
+
 func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 	mappingStr := in["Mapping"].(string)
 
@@ -553,9 +563,9 @@ func onWindowDeminimize(w *Window, in map[string]interface{}) interface{} {
 }
 
 func onWindowClose(w *Window, in map[string]interface{}) interface{} {
+	driver.events.Emit(app.WindowClosed, w)
 	w.dom.Close()
 	driver.elems.Delete(w)
-	driver.events.Emit(app.WindowClosed, w)
 	return nil
 }
 

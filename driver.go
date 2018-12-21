@@ -2,6 +2,9 @@ package app
 
 // Driver is the interface that describes a backend for app rendering.
 type Driver interface {
+	// The operating system the driver is for.
+	Target() string
+
 	// Run runs the application with the components registered in the given
 	// factory.
 	Run(DriverConfig) error

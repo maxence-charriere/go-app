@@ -52,9 +52,13 @@
           withHandler:^(id in, NSString *returnID) {
             return [self share:in return:returnID];
           }];
-  [self.macRPC handle:@"driver.Quit"
+  [self.macRPC handle:@"driver.Close"
           withHandler:^(id in, NSString *returnID) {
-            return [self quit:in return:returnID];
+            return [self close:in return:returnID];
+          }];
+  [self.macRPC handle:@"driver.Terminate"
+          withHandler:^(id in, NSString *returnID) {
+            return [self terminate:in return:returnID];
           }];
 
   // Window handlers.
@@ -315,9 +319,16 @@
   });
 }
 
-- (void)quit:(id)in return:(NSString *)returnID {
+- (void)close:(id)in return:(NSString *)returnID {
   defer(returnID, ^{
     [NSApp terminate:self];
+    [self.macRPC return:returnID withOutput:nil andError:nil];
+  });
+}
+
+- (void)terminate:(id)in return:(NSString *)returnID {
+  defer(returnID, ^{
+    [NSApp replyToApplicationShouldTerminate:YES];
     [self.macRPC return:returnID withOutput:nil andError:nil];
   });
 }
@@ -373,8 +384,10 @@
   [self.goRPC call:@"driver.OnURLOpen" withInput:in onUI:YES];
 }
 
-- (void)applicationWillTerminate:(NSNotification *)notification {
-  [self.goRPC call:@"driver.OnQuit" withInput:nil onUI:YES];
+- (NSApplicationTerminateReply)applicationShouldTerminate:
+    (NSApplication *)sender {
+  [self.goRPC call:@"driver.OnClose" withInput:nil onUI:YES];
+  return NSTerminateLater;
 }
 
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {
