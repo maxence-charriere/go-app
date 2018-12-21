@@ -32,7 +32,7 @@ func newPage(c app.PageConfig) app.Page {
 			Factory:        driver.factory,
 			Resources:      driver.Resources,
 			AttrTransforms: []dom.Transform{dom.JsToGoHandler},
-			UI:             driver.CallOnUIGoroutine,
+			UI:             driver.UI,
 		},
 	}
 

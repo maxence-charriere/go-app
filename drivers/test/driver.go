@@ -23,6 +23,11 @@ type Driver struct {
 	docktile *DockTile
 }
 
+// Target satisfies the app.Driver interface.
+func (d *Driver) Target() string {
+	return "web"
+}
+
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(c app.DriverConfig) error {
 	d.ui = c.UI

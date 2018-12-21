@@ -40,6 +40,11 @@ type Driver struct {
 	fileHandler http.Handler
 }
 
+// Target satisfies the app.Driver interface.
+func (d *Driver) Target() string {
+	return "web"
+}
+
 // Name satisfies the app.Driver interface.
 func (d *Driver) Name() string {
 	return "Web"

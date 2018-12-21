@@ -27,7 +27,7 @@ var (
 	Logger func(format string, a ...interface{})
 
 	driver    Driver
-	target    string
+	target    = "web"
 	addons    = []Addon{Logs()}
 	ui        = make(chan func(), 4096)
 	factory   = NewFactory()
@@ -98,6 +98,8 @@ func Run(drivers ...Driver) error {
 	if driver == nil {
 		return errors.Errorf("no driver set for %s", target)
 	}
+
+	Logf("%T", driver)
 
 	for _, a := range addons {
 		driver = a(driver)

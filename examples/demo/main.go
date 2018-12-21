@@ -20,16 +20,14 @@ func main() {
 
 	app.Run(
 		&mac.Driver{
-			URL: defaultURL,
-			Settings: mac.Settings{
-				SupportedFiles: []mac.FileType{
-					{
-						Name: "image",
-						Role: mac.Viewer,
-						UTIs: []string{"public.jpeg"},
-					},
+			URL:       defaultURL,
+			URLScheme: "goapp-demo",
+			SupportedFiles: []mac.FileType{
+				{
+					Name: "image",
+					Role: mac.Viewer,
+					UTIs: []string{"public.jpeg"},
 				},
-				URLScheme: "goapp-demo",
 			},
 		},
 		&web.Driver{

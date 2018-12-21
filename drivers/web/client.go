@@ -20,11 +20,12 @@ func init() {
 	logger := core.ToWriter(os.Stderr)
 	logger = core.WithPrompt(logger)
 	app.Logger = logger
-	app.Kind = "web"
 }
 
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(c app.DriverConfig) error {
+	app.Log("hello")
+
 	d.ui = c.UI
 	d.factory = c.Factory
 	d.events = c.Events
@@ -78,6 +79,6 @@ func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
 }
 
 // CallOnUIGoroutine satisfies the app.Driver interface.
-func (d *Driver) CallOnUIGoroutine(f func()) {
+func (d *Driver) UI(f func()) {
 	d.ui <- f
 }
