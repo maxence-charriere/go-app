@@ -38,6 +38,7 @@ func newMenu(c app.MenuConfig, typ string) *Menu {
 				"menu",
 				"menuitem",
 			},
+			UI: driver.UI,
 		},
 		typ: typ,
 

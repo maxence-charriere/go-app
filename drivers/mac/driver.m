@@ -320,10 +320,8 @@
 }
 
 - (void)close:(id)in return:(NSString *)returnID {
-  defer(returnID, ^{
-    [NSApp terminate:self];
-    [self.macRPC return:returnID withOutput:nil andError:nil];
-  });
+  [NSApp terminate:self];
+  [self.macRPC return:returnID withOutput:nil andError:nil];
 }
 
 - (void)terminate:(id)in return:(NSString *)returnID {

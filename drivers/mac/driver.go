@@ -227,6 +227,11 @@ func (d *Driver) Storage(path ...string) string {
 // Render satisfies the app.Driver interface.
 func (d *Driver) Render(c app.Compo) {
 	e := d.ElemByCompo(c)
+
+	if e.Err() == app.ErrElemNotSet {
+		return
+	}
+
 	e.(app.ElemWithCompo).Render(c)
 }
 
@@ -390,6 +395,8 @@ func (d *Driver) onFileDrop(in map[string]interface{}) interface{} {
 }
 
 func (d *Driver) onClose(in map[string]interface{}) interface{} {
+	fmt.Println("on close")
+
 	d.events.Emit(app.Closed, nil)
 
 	d.UI(func() {
