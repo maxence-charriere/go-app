@@ -9,6 +9,8 @@ import (
 )
 
 func TestDriver(t *testing.T) {
+	app.Logger = t.Logf
+
 	d := &Driver{}
 	require.Implements(t, (*app.Driver)(nil), d)
 

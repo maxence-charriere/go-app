@@ -279,17 +279,17 @@ func (d *Driver) onRun(in map[string]interface{}) interface{} {
 		app.NewWindow(d.DefaultWindow)
 	}
 
-	d.events.Emit(app.Running, nil)
+	d.events.Emit(app.Running)
 	return nil
 }
 
 func (d *Driver) onFocus(in map[string]interface{}) interface{} {
-	d.events.Emit(app.Focused, nil)
+	d.events.Emit(app.Focused)
 	return nil
 }
 
 func (d *Driver) onBlur(in map[string]interface{}) interface{} {
-	d.events.Emit(app.Blurred, nil)
+	d.events.Emit(app.Blurred)
 	return nil
 }
 
@@ -300,7 +300,7 @@ func (d *Driver) onReopen(in map[string]interface{}) interface{} {
 		app.NewWindow(d.DefaultWindow)
 	}
 
-	d.events.Emit(app.Reopened, nil)
+	d.events.Emit(app.Reopened)
 	return nil
 }
 
@@ -323,7 +323,7 @@ func (d *Driver) onFileDrop(in map[string]interface{}) interface{} {
 }
 
 func (d *Driver) onClose(in map[string]interface{}) interface{} {
-	d.events.Emit(app.Closed, nil)
+	d.events.Emit(app.Closed)
 
 	d.UI(func() {
 		d.stop()

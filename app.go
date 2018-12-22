@@ -270,9 +270,9 @@ func NewMsg(key string) Msg {
 	return &msg{key: key}
 }
 
-// Emit emits the event with the given value.
-func Emit(e Event, value interface{}) {
-	events.Emit(e, value)
+// Emit emits the event with the given arguments.
+func Emit(e Event, args ...interface{}) {
+	events.Emit(e, args...)
 }
 
 // NewSubscriber creates an event subscriber to return when implementing the

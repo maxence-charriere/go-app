@@ -21,8 +21,10 @@ type Subscriber struct {
 	unsuscribes []func()
 }
 
-// Subscribe subscribes a function to the given key.
-// It panics if f is not a func.
+// Subscribe subscribes a function to the given event. Emit fails if the
+// subscribbed func have more arguments than the emitted event.
+//
+// Panics if f is not a func.
 func (s *Subscriber) Subscribe(e Event, f interface{}) *Subscriber {
 	unsubscribe := s.Events.subscribe(e, f)
 	s.unsuscribes = append(s.unsuscribes, unsubscribe)
@@ -101,37 +103,42 @@ func (r *EventRegistry) unsubscribe(e Event, id string) {
 	}
 }
 
-// Emit emits the event with the given value.
-func (r *EventRegistry) Emit(e Event, v interface{}) {
+// Emit emits the event with the given arguments.
+func (r *EventRegistry) Emit(e Event, args ...interface{}) {
 	r.mutex.RLock()
 	defer r.mutex.RUnlock()
 
 	for _, h := range r.handlers[e] {
-		val := reflect.ValueOf(h.Handler)
-		typ := val.Type()
-
-		if typ.NumIn() == 0 {
-			r.ui <- func() {
-				val.Call(nil)
-			}
-			return
-		}
-
-		argVal := reflect.ValueOf(v)
-		argTyp := typ.In(0)
-
-		if !argVal.Type().ConvertibleTo(argTyp) {
-			Log("dispatching event %s failed: %s",
-				e,
-				errors.Errorf("can't convert %s to %s", argVal.Type(), argTyp),
-			)
-			return
-		}
-
-		r.ui <- func() {
-			val.Call([]reflect.Value{
-				argVal.Convert(argTyp),
-			})
+		if err := r.callHandler(h.Handler, args...); err != nil {
+			Log("emitting %s failed: %s", e, err)
 		}
 	}
+}
+
+func (r *EventRegistry) callHandler(h interface{}, args ...interface{}) error {
+	v := reflect.ValueOf(h)
+	t := v.Type()
+
+	argsv := make([]reflect.Value, t.NumIn())
+
+	for i := 0; i < t.NumIn(); i++ {
+		argt := t.In(i)
+
+		if i >= len(args) {
+			return errors.Errorf("missing %v at index %v", argt, i)
+		}
+
+		argv := reflect.ValueOf(args[i])
+		if !argv.Type().ConvertibleTo(argt) {
+			return errors.Errorf("arg at index %v is not a %v: %v", i, argt, argv.Type())
+		}
+
+		argsv[i] = argv.Convert(argt)
+	}
+
+	r.ui <- func() {
+		v.Call(argsv)
+	}
+
+	return nil
 }

@@ -23,7 +23,7 @@ func TestEventRegistry(t *testing.T) {
 		panic    bool
 	}{
 		{
-			scenario: "register and dispatch without arg",
+			scenario: "register and emit without arg",
 			subName:  "test",
 			handler: func(called *bool) interface{} {
 				return func() {
@@ -35,7 +35,7 @@ func TestEventRegistry(t *testing.T) {
 			dispArg:  nil,
 		},
 		{
-			scenario: "register without arg and dispatch with arg",
+			scenario: "register without arg and emit with arg",
 			subName:  "test",
 			handler: func(called *bool) interface{} {
 				return func() {
@@ -47,7 +47,7 @@ func TestEventRegistry(t *testing.T) {
 			dispArg:  "foobar",
 		},
 		{
-			scenario: "register and dispatch with arg",
+			scenario: "register and emit with arg",
 			subName:  "test",
 			handler: func(called *bool) interface{} {
 				return func(arg string) {
@@ -63,7 +63,19 @@ func TestEventRegistry(t *testing.T) {
 			dispArg:  "hello",
 		},
 		{
-			scenario: "register and dispatch with bad arg",
+			scenario: "register and emit without enough args",
+			subName:  "test",
+			handler: func(called *bool) interface{} {
+				return func(string, bool) {
+					*called = true
+				}
+			},
+			called:   false,
+			dispName: "test",
+			dispArg:  "hello",
+		},
+		{
+			scenario: "register and emit with bad arg",
 			subName:  "test",
 			handler: func(called *bool) interface{} {
 				return func(arg int) {

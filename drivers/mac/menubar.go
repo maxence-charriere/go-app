@@ -123,7 +123,7 @@ func (m *AppMenu) Render() string {
 
 // OnPreferences is the function called when the Preferences button is clicked.
 func (m *AppMenu) OnPreferences() {
-	app.Emit(PreferencesRequested, nil)
+	app.Emit(PreferencesRequested)
 }
 
 // EditMenu is a component that describes the default edit menu.

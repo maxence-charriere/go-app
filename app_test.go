@@ -55,7 +55,7 @@ func TestApp(t *testing.T) {
 		assert.NotNil(t, app.Dock())
 		assert.NotNil(t, app.NewStatusMenu(app.StatusMenuConfig{}))
 
-		app.Emit("test", nil)
+		app.Emit("test")
 
 		app.UI(func() {
 			app.Logf("hello")
