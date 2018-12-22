@@ -9,7 +9,7 @@ package mac
 #cgo LDFLAGS: -framework CoreImage
 #cgo LDFLAGS: -framework Security
 #cgo LDFLAGS: -framework GameController
-#include "objc/bridge.h"
+#include "bridge.h"
 */
 import "C"
 import (

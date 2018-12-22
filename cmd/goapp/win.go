@@ -454,7 +454,7 @@ func (pkg *WinPackage) buildExecutable(ctx context.Context) error {
 		"-o", pkg.tmpExecutable,
 	}
 
-	ldflags := []string{"-X github.com/murlokswarm/app.target=windows"}
+	ldflags := []string{"-X github.com/murlokswarm/app.Kind=desktop"}
 
 	if pkg.Verbose {
 		args = append(args, "-v")

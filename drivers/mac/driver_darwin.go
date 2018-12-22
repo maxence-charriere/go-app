@@ -2,6 +2,12 @@
 
 package mac
 
+/*
+#include "driver.h"
+#include "bridge.h"
+*/
+import "C"
+
 import (
 	"context"
 	"crypto/md5"
