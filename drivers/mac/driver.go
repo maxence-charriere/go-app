@@ -5,35 +5,11 @@ package mac
 import (
 	"encoding/json"
 	"io/ioutil"
-	"os"
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 )
-
-var (
-	driver     *Driver
-	goappBuild = os.Getenv("GOAPP_BUILD")
-	debug      = os.Getenv("GOAPP_DEBUG") == "true"
-)
-
-const (
-	// PreferencesRequested is the event emitted when the menubar Preferences
-	// button is clicked.
-	PreferencesRequested app.Event = "app.mac.preferencesRequested"
-)
-
-func init() {
-	if len(goappBuild) != 0 {
-		app.Logger = func(format string, a ...interface{}) {}
-		return
-	}
-
-	logger := core.ToWriter(os.Stderr)
-	app.Logger = core.WithColoredPrompt(logger)
-	app.EnableDebug(debug)
-}
 
 // Driver is the app.Driver implementation for MacOS.
 type Driver struct {
@@ -187,8 +163,8 @@ type Driver struct {
 	events       *app.EventRegistry
 	elems        *core.ElemDB
 	devID        string
-	macRPC       bridge.PlatformRPC
-	goRPC        bridge.GoRPC
+	macRPC       *bridge.PlatformRPC
+	goRPC        *bridge.GoRPC
 	stop         func()
 	menubar      app.Menu
 	docktile     app.DockTile

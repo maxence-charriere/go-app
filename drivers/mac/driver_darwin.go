@@ -13,10 +13,34 @@ import (
 	"strings"
 
 	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/drivers/mac/objc"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 	"github.com/pkg/errors"
 )
+
+var (
+	driver     *Driver
+	goappBuild = os.Getenv("GOAPP_BUILD")
+	debug      = os.Getenv("GOAPP_DEBUG") == "true"
+)
+
+const (
+	// PreferencesRequested is the event emitted when the menubar Preferences
+	// button is clicked.
+	PreferencesRequested app.Event = "app.mac.preferencesRequested"
+)
+
+func init() {
+	if len(goappBuild) != 0 {
+		app.Logger = func(format string, a ...interface{}) {}
+		return
+	}
+
+	logger := core.ToWriter(os.Stderr)
+	app.Logger = core.WithColoredPrompt(logger)
+	app.EnableDebug(debug)
+}
 
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(c app.DriverConfig) error {
@@ -33,7 +57,8 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	d.events = c.Events
 	d.elems = core.NewElemDB()
 	d.devID = generateDevID()
-	d.macRPC.Handler = macCall
+	d.macRPC, d.goRPC = objc.RPC(d.UI)
+	driver = d
 
 	d.goRPC.Handle("driver.OnRun", d.onRun)
 	d.goRPC.Handle("driver.OnFocus", d.onFocus)
@@ -71,8 +96,6 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	d.goRPC.Handle("saveFilePanels.OnSelect", handleSaveFilePanel(onSaveFilePanelSelect))
 
 	d.goRPC.Handle("notifications.OnReply", handleNotification(onNotificationReply))
-
-	driver = d
 
 	ctx, cancel := context.WithCancel(context.Background())
 	d.stop = cancel
