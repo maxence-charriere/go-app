@@ -88,7 +88,7 @@ func onGoCall(ccall *C.char, cui *C.char) (cout *C.char) {
 	ui, _ := strconv.ParseBool(C.GoString(cui))
 
 	if ui {
-		driver.CallOnUIGoroutine(func() {
+		driver.UI(func() {
 			if _, err := driver.goRPC.Call(call); err != nil {
 				app.Panic(errors.Wrap(err, "go call failed"))
 			}

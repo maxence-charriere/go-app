@@ -10,7 +10,7 @@ import (
 
 // Driver is the app.Driver implementation for MacOS.
 type Driver struct {
-	core.Driver
+	core.Driver `json:"-"`
 
 	// The URL of the component to load in the default window. A non empty value
 	// triggers the creation of the default window when the app in openened. It
@@ -37,7 +37,7 @@ type Driver struct {
 	// It is used only for goapp packaging.
 	ID string `json:",omitempty"`
 
-	// The URL scheme that launches the app."
+	// The URL scheme that launches the app.
 	//
 	// It is used only for goapp packaging.
 	URLScheme string `json:",omitempty"`
