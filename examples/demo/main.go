@@ -4,6 +4,7 @@ import (
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/drivers/mac"
 	"github.com/murlokswarm/app/drivers/web"
+	"github.com/murlokswarm/app/drivers/win"
 )
 
 func main() {
@@ -27,6 +28,20 @@ func main() {
 					Name: "image",
 					Role: mac.Viewer,
 					UTIs: []string{"public.jpeg"},
+				},
+			},
+		},
+		&win.Driver{
+			URL:       defaultURL,
+			URLScheme: "goapp-demo",
+			SupportedFiles: []win.FileType{
+				{
+					Name: "murlok",
+					Help: "A test extension for goapp",
+					Icon: "like.png",
+					Extensions: []win.FileExtension{
+						{Ext: ".murlok"},
+					},
 				},
 			},
 		},
