@@ -5,8 +5,10 @@ package mac
 import (
 	"context"
 	"crypto/md5"
+	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -117,6 +119,15 @@ func (d *Driver) Run(c app.DriverConfig) error {
 
 	err := d.macRPC.Call("driver.Run", nil, nil)
 	return err
+}
+
+func (d *Driver) runGoappBuild() error {
+	b, err := json.MarshalIndent(d, "", "    ")
+	if err != nil {
+		return err
+	}
+
+	return ioutil.WriteFile(goappBuild, b, 0777)
 }
 
 func (d *Driver) configureDefaultWindow() {

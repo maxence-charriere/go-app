@@ -3,9 +3,6 @@
 package mac
 
 import (
-	"encoding/json"
-	"io/ioutil"
-
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
@@ -174,15 +171,6 @@ type Driver struct {
 // Target satisfies the app.Driver interface.
 func (d *Driver) Target() string {
 	return "macos"
-}
-
-func (d *Driver) runGoappBuild() error {
-	b, err := json.MarshalIndent(d, "", "    ")
-	if err != nil {
-		return err
-	}
-
-	return ioutil.WriteFile(goappBuild, b, 0777)
 }
 
 // MenuBarConfig contains the menu bar configuration.
