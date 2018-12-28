@@ -222,7 +222,7 @@ func (d *Driver) onFilesOpen(in map[string]interface{}) interface{} {
 }
 
 func (d *Driver) onURLOpen(in map[string]interface{}) interface{} {
-	if u, err := url.Parse(in["URL"].(string)); err != nil {
+	if u, err := url.Parse(in["URL"].(string)); err == nil {
 		d.events.Emit(app.OpenURLRequested, u)
 	}
 
