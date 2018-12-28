@@ -11,10 +11,11 @@ func main() {
 	app.Import(
 		&NavPane{},
 		&Hello{},
+		&Open{},
 		&Window{},
 	)
 
-	defaultURL := "window"
+	defaultURL := "open"
 
 	app.NewSubscriber().
 		Subscribe(app.Closed, func() { app.Log("goodbye") })

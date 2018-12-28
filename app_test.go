@@ -121,3 +121,7 @@ func TestPanicf(t *testing.T) {
 	app.Panicf("%s %s", "bye", "world")
 	assert.Fail(t, "no panic")
 }
+
+func TestPretty(t *testing.T) {
+	t.Log(app.Pretty(app.WindowConfig{}))
+}

@@ -326,7 +326,7 @@ func (d *Driver) onReopen(in map[string]interface{}) interface{} {
 		app.NewWindow(d.DefaultWindow)
 	}
 
-	d.events.Emit(app.Reopened)
+	d.events.Emit(app.Reopened, hasVisibleWindow)
 	return nil
 }
 
@@ -336,7 +336,7 @@ func (d *Driver) onFilesOpen(in map[string]interface{}) interface{} {
 }
 
 func (d *Driver) onURLOpen(in map[string]interface{}) interface{} {
-	if u, err := url.Parse(in["URL"].(string)); err != nil {
+	if u, err := url.Parse(in["URL"].(string)); err == nil {
 		d.events.Emit(app.OpenURLRequested, u)
 	}
 

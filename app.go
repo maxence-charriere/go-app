@@ -2,6 +2,7 @@
 package app
 
 import (
+	"encoding/json"
 	"fmt"
 	"reflect"
 	"strings"
@@ -338,4 +339,12 @@ func CompoName(c Compo) string {
 
 	name := strings.ToLower(v.Type().String())
 	return strings.TrimPrefix(name, "main.")
+}
+
+// Pretty is an helper function that returns a prettified string representation
+// of the given value.
+// Returns an empty string if the value can't be prettified.
+func Pretty(v interface{}) string {
+	b, _ := json.MarshalIndent(v, "", "    ")
+	return string(b)
 }

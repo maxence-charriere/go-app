@@ -12,7 +12,7 @@ type NavPane struct {
 func (n *NavPane) OnMount() {
 	n.Examples = []string{
 		"hello",
-		"driver",
+		"open",
 		"window",
 	}
 

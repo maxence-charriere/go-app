@@ -110,7 +110,7 @@ func (r *EventRegistry) Emit(e Event, args ...interface{}) {
 
 	for _, h := range r.handlers[e] {
 		if err := r.callHandler(h.Handler, args...); err != nil {
-			Log("emitting %s failed: %s", e, err)
+			Logf("emitting %s failed: %s", e, err)
 		}
 	}
 }
