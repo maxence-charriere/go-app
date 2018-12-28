@@ -58,8 +58,8 @@ type Driver struct {
 	factory *app.Factory
 	events  *app.EventRegistry
 	elems   *core.ElemDB
-	winRPC  bridge.PlatformRPC
-	goRPC   bridge.GoRPC
+	winRPC  *bridge.PlatformRPC
+	goRPC   *bridge.GoRPC
 	stop    func()
 }
 

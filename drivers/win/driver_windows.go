@@ -18,6 +18,7 @@ import (
 	"time"
 
 	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/drivers/win/uwp"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 	"github.com/murlokswarm/app/internal/file"
@@ -85,17 +86,15 @@ func (d *Driver) Run(c app.DriverConfig) error {
 		}()
 	}
 
-	if err := loadDLL(); err != nil {
-		return errors.Wrap(err, "loading goapp.dll failed")
-	}
-	defer closeDLL()
-
 	d.ui = c.UI
 	d.factory = c.Factory
 	d.events = c.Events
 	d.elems = core.NewElemDB()
-	d.winRPC.Handler = winCall
+	d.winRPC, d.goRPC = uwp.RPC(d.UI)
 	driver = d
+
+	disconnect := uwp.Connect()
+	defer disconnect()
 
 	d.goRPC.Handle("driver.OnRun", d.onRun)
 	d.goRPC.Handle("driver.OnFilesOpen", d.onFilesOpen)
@@ -113,12 +112,8 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	d.goRPC.Handle("windows.OnNavigate", handleWindow(onWindowNavigate))
 
 	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
 	d.stop = cancel
-
-	if err := initBridge(); err != nil {
-		return err
-	}
+	defer cancel()
 
 	wg := sync.WaitGroup{}
 	wg.Add(1)
@@ -185,6 +180,11 @@ func (d *Driver) Resources(path ...string) string {
 // Render satisfies the app.Driver interface.
 func (d *Driver) Render(c app.Compo) {
 	e := d.ElemByCompo(c)
+
+	if e.Err() == app.ErrElemNotSet {
+		return
+	}
+
 	e.(app.ElemWithCompo).Render(c)
 }
 
