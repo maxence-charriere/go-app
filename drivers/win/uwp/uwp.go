@@ -8,7 +8,6 @@ package uwp
 import "C"
 
 import (
-	"fmt"
 	"strconv"
 	"syscall"
 	"unsafe"
@@ -82,9 +81,7 @@ func callDllFunc(name string, a ...unsafe.Pointer) (uintptr, error) {
 		return 0, err
 	}
 
-	r, _, errp := proc.Call(args...)
-	fmt.Println(errp)
-
+	r, _, _ := proc.Call(args...)
 	return r, nil
 }
 
