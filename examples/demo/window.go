@@ -94,7 +94,7 @@ func (c *Window) OnMount() {
 				},
 			},
 			{
-				Name:        "FullScreen",
+				Name:        "Full Screen",
 				Description: "Take the window in full screen mode.",
 				Action: func() {
 					w.FullScreen()
@@ -103,7 +103,7 @@ func (c *Window) OnMount() {
 				},
 			},
 			{
-				Name:        "ExitFullScreen",
+				Name:        "Exit Full Screen",
 				Description: "Take the window out of fullscreen mode",
 				Action: func() {
 					w.ExitFullScreen()

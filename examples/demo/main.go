@@ -32,10 +32,7 @@ func main() {
 			},
 		},
 		&win.Driver{
-			URL: defaultURL,
-			DefaultWindow: app.WindowConfig{
-				BackgroundColor: "#ff0000",
-			},
+			URL:       defaultURL,
 			URLScheme: "goapp-demo",
 			SupportedFiles: []win.FileType{
 				{
