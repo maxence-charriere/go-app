@@ -28,6 +28,7 @@ func newStatusMenu(c app.StatusMenuConfig) *StatusMenu {
 					"menu",
 					"menuitem",
 				},
+				UI: driver.UI,
 			},
 			typ:            "status menu",
 			keepWhenClosed: true,

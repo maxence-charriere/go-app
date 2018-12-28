@@ -23,8 +23,6 @@ type Window struct {
 	y       float64
 	width   float64
 	height  float64
-
-	onClose func(app.Window)
 }
 
 func newWindow(d *Driver, c app.WindowConfig) *Window {
@@ -39,8 +37,6 @@ func newWindow(d *Driver, c app.WindowConfig) *Window {
 				dom.HrefCompoFmt,
 			},
 		},
-
-		onClose: c.OnClose,
 	}
 
 	d.elems.Put(w)
@@ -200,10 +196,6 @@ func (w *Window) Deminimize() {
 
 // Close satisfies the app.Window interface.
 func (w *Window) Close() {
-	if w.onClose != nil {
-		w.onClose(w)
-	}
-
 	w.driver.elems.Delete(w)
 	w.SetErr(nil)
 	w.driver.setElemErr(w)

@@ -2,9 +2,12 @@ package app
 
 // Driver is the interface that describes a backend for app rendering.
 type Driver interface {
+	// The operating system the driver is for.
+	Target() string
+
 	// Run runs the application with the components registered in the given
 	// factory.
-	Run(f *Factory) error
+	Run(DriverConfig) error
 
 	// AppName returns the appliction name.
 	AppName() string
@@ -62,12 +65,24 @@ type Driver interface {
 	// Dock returns the dock tile.
 	DockTile() DockTile
 
-	// CallOnUIGoroutine calls a function on the UI goroutine.
-	CallOnUIGoroutine(func())
+	// UI calls a function on the UI goroutine.
+	UI(func())
 
 	// Stop stops the driver.
 	// Calling it make run return with an error.
 	Stop()
+}
+
+// DriverConfig contains driver configuration.
+type DriverConfig struct {
+	// The channel to send function to execute on UI goroutine.
+	UI chan func()
+
+	// The factory used to create components.
+	Factory *Factory
+
+	// The event registery to emit events.
+	Events *EventRegistry
 }
 
 // Addon represents a driver addon.

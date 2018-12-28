@@ -38,6 +38,7 @@ func newMenu(c app.MenuConfig, typ string) *Menu {
 				"menu",
 				"menuitem",
 			},
+			UI: driver.UI,
 		},
 		typ: typ,
 
@@ -178,7 +179,7 @@ func onMenuClose(m *Menu, in map[string]interface{}) interface{} {
 	// menuDidClose: is called before clicked:.
 	// We call CallOnUIGoroutine in order to defer the close operation
 	// after the clicked one.
-	driver.CallOnUIGoroutine(func() {
+	driver.UI(func() {
 		if m.onClose != nil {
 			m.onClose()
 		}

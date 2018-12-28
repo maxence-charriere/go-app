@@ -1,4 +1,4 @@
-#include "bridge.hpp"
+#include "uwp.hpp"
 #include "_cgo_export.h"
 
 void winCallReturn(char *retID, char *ret, char *err)

@@ -11,8 +11,13 @@ import (
 type Driver struct {
 }
 
+// Target satisfies the app.Driver interface.
+func (d *Driver) Target() string {
+	return ""
+}
+
 // Run satisfies the app.Driver interface.
-func (d *Driver) Run(f *app.Factory) error {
+func (d *Driver) Run(c app.DriverConfig) error {
 	return app.ErrNotSupported
 }
 
@@ -114,8 +119,9 @@ func (d *Driver) DockTile() app.DockTile {
 	return dt
 }
 
-// CallOnUIGoroutine satisfies the app.Driver interface.
-func (d *Driver) CallOnUIGoroutine(f func()) {
+// UI satisfies the app.Driver interface.
+func (d *Driver) UI(f func()) {
+	app.Log("warning: func is not called on ui goroutine")
 	f()
 }
 

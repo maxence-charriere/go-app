@@ -1,6 +1,6 @@
 
-#ifndef bridge_h
-#define bridge_h
+#ifndef uwp_h
+#define uwp_h
 
 #include <stdlib.h>
 
@@ -17,4 +17,4 @@ char *goCall(char *in, char *ui);
 }
 
 #endif
-#endif /* bridge_h */
+#endif /* uwp_h */

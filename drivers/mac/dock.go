@@ -27,6 +27,7 @@ func newDockTile(c app.MenuConfig) *DockTile {
 					"menu",
 					"menuitem",
 				},
+				UI: driver.UI,
 			},
 			typ:            "dock tile",
 			keepWhenClosed: true,

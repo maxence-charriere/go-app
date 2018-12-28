@@ -57,7 +57,7 @@ type EventSubscriber interface {
 	// messages.
 	// All the event subscribed are automatically unsuscribed when the component
 	// is dismounted.
-	Subscribe() Subscriber
+	Subscribe() *Subscriber
 }
 
 // CompoWithExtendedRender is the interface that wraps Funcs method.

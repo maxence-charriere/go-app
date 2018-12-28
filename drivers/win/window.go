@@ -31,16 +31,6 @@ type Window struct {
 	isFullScreen bool
 	isMinimized  bool
 	isFocus      bool
-
-	onMove           func(app.Window)
-	onResize         func(app.Window)
-	onFocus          func(app.Window)
-	onBlur           func(app.Window)
-	onFullScreen     func(app.Window)
-	onExitFullScreen func(app.Window)
-	onMinimize       func(app.Window)
-	onDeminimize     func(app.Window)
-	onClose          func(app.Window)
 }
 
 func newWindow(c app.WindowConfig) *Window {
@@ -55,19 +45,9 @@ func newWindow(c app.WindowConfig) *Window {
 				dom.JsToGoHandler,
 				dom.HrefCompoFmt,
 			},
-			CallOnUI: driver.CallOnUIGoroutine,
+			UI: driver.UI,
 		},
 		isFocus: true,
-
-		onMove:           c.OnMove,
-		onResize:         c.OnResize,
-		onFocus:          c.OnFocus,
-		onBlur:           c.OnBlur,
-		onFullScreen:     c.OnFullScreen,
-		onExitFullScreen: c.OnExitFullScreen,
-		onMinimize:       c.OnMinimize,
-		onDeminimize:     c.OnDeminimize,
-		onClose:          c.OnClose,
 	}
 
 	w.dom.Sync = w.render
@@ -424,59 +404,37 @@ func onWindowNavigate(w *Window, in map[string]interface{}) interface{} {
 	return nil
 }
 
+func onWindowResize(w *Window, in map[string]interface{}) interface{} {
+	driver.events.Emit(app.WindowResized, w)
+	return nil
+}
+
 func onWindowFocus(w *Window, in map[string]interface{}) interface{} {
 	w.isFocus = true
-
-	if w.onFocus != nil {
-		w.onFocus(w)
-	}
-
+	driver.events.Emit(app.WindowFocused, w)
 	return nil
 }
 
 func onWindowBlur(w *Window, in map[string]interface{}) interface{} {
 	w.isFocus = false
-
-	if w.onBlur != nil {
-		w.onBlur(w)
-	}
-
-	return nil
-}
-
-func onWindowResize(w *Window, in map[string]interface{}) interface{} {
-	if w.onResize != nil {
-		w.onResize(w)
-	}
-
+	driver.events.Emit(app.WindowBlurred, w)
 	return nil
 }
 
 func onWindowFullScreen(w *Window, in map[string]interface{}) interface{} {
 	w.isFullScreen = true
-
-	if w.onFullScreen != nil {
-		w.onFullScreen(w)
-	}
-
+	driver.events.Emit(app.WindowEnteredFullScreen, w)
 	return nil
 }
 
 func onWindowExitFullScreen(w *Window, in map[string]interface{}) interface{} {
 	w.isFullScreen = false
-
-	if w.onExitFullScreen != nil {
-		w.onExitFullScreen(w)
-	}
-
+	driver.events.Emit(app.WindowExitedFullScreen, w)
 	return nil
 }
 
 func onWindowClose(w *Window, in map[string]interface{}) interface{} {
-	if w.onClose != nil {
-		w.onClose(w)
-	}
-
+	driver.events.Emit(app.WindowClosed, w)
 	w.dom.Close()
 	driver.elems.Delete(w)
 	return nil
