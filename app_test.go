@@ -29,8 +29,10 @@ func TestApp(t *testing.T) {
 	app.Import(&tests.Foo{})
 	app.Import(&tests.Bar{})
 
+	app.Addons(app.Logs())
+
 	onRun := func() {
-		d := app.RunningDriver()
+		d := app.CurrentDriver()
 		require.NotNil(t, d)
 
 		assert.NotEmpty(t, app.Name())
@@ -53,16 +55,22 @@ func TestApp(t *testing.T) {
 		assert.NotNil(t, app.Dock())
 		assert.NotNil(t, app.NewStatusMenu(app.StatusMenuConfig{}))
 
-		app.CallOnUIGoroutine(func() {
+		app.Emit("test")
+
+		app.UI(func() {
 			app.Logf("hello")
 		})
 
 		go time.AfterFunc(time.Millisecond, app.Stop)
 	}
 
-	err := app.Run(&test.Driver{
-		OnRun: onRun,
-	})
+	defer app.NewSubscriber().
+		Subscribe(app.Running, onRun).
+		Close()
+
+	err := app.Run()
+	assert.Error(t, err)
+	err = app.Run(&test.Driver{})
 	assert.Error(t, err)
 }
 

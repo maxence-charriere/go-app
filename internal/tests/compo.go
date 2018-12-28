@@ -18,7 +18,7 @@ func (c *Foo) OnMount() {}
 func (c *Foo) OnDismount() {}
 
 // Subscribe satisfies the app.EventSubscriber interface.
-func (c *Foo) Subscribe() app.Subscriber {
+func (c *Foo) Subscribe() *app.Subscriber {
 	return app.NewSubscriber()
 }
 

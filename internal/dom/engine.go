@@ -28,16 +28,16 @@ type Engine struct {
 	// attributes.
 	AttrTransforms []Transform
 
-	// AllowedNodes define the allowed node type.
-	// All node type is allowed when the slice is empty.
+	// AllowedNodes define the allowed node type. All node type is allowed when
+	// the slice is empty.
 	AllowedNodes []string
 
 	// Sync is the function used to synchronize node changes with a remote dom.
 	// No synchronisations are performed if the func in nil.
 	Sync func(arg interface{}) error
 
-	// CallOnUI the function to execute the given function on the ui goroutine.
-	CallOnUI func(func())
+	// UI the function to execute the given func on the ui goroutine.
+	UI func(func())
 
 	once          sync.Once
 	mutex         sync.RWMutex
@@ -72,8 +72,8 @@ func (e *Engine) init() {
 		}
 	}
 
-	if e.CallOnUI == nil {
-		e.CallOnUI = func(f func()) {}
+	if e.UI == nil {
+		e.UI = func(f func()) {}
 	}
 
 	e.creates = make([]change, 0, 64)
@@ -134,8 +134,8 @@ func (e *Engine) Close() {
 	e.once.Do(e.init)
 	e.mutex.Lock()
 	defer e.mutex.Unlock()
-
 	e.close()
+
 }
 
 func (e *Engine) close() {
@@ -649,7 +649,7 @@ func (e *Engine) newCompo(c app.Compo, n node) error {
 	e.compos[c] = ic
 
 	if mounter, ok := c.(app.Mounter); ok {
-		e.CallOnUI(mounter.OnMount)
+		e.UI(mounter.OnMount)
 	}
 
 	return nil
@@ -667,8 +667,12 @@ func (e *Engine) deleteNode(id string) {
 
 	if n.IsCompo {
 		if c, ok := e.compoIDs[n.ID]; ok {
+			if c.Events != nil {
+				c.Events.Close()
+			}
+
 			if dismounter, ok := c.Compo.(app.Dismounter); ok {
-				e.CallOnUI(dismounter.OnDismount)
+				e.UI(dismounter.OnDismount)
 			}
 
 			delete(e.compos, c.Compo)

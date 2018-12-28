@@ -5,6 +5,9 @@ type Elem interface {
 	// ID returns the element identifier.
 	ID() string
 
+	// Contains reports whether the component is mounted in the element.
+	Contains(Compo) bool
+
 	// WhenWindow calls the given func when the element is a window.
 	WhenWindow(func(Window))
 
@@ -45,9 +48,6 @@ type ElemWithCompo interface {
 
 	// Compo returns the loaded component.
 	Compo() Compo
-
-	// Contains reports whether the component is mounted in the element.
-	Contains(Compo) bool
 
 	// Render renders the component.
 	Render(Compo)

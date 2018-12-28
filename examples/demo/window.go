@@ -4,17 +4,7 @@ import (
 	"github.com/murlokswarm/app"
 )
 
-func init() {
-	app.Handle("window-update-info", func(e app.Emitter, m app.Msg) {
-		e.Emit("window-updated", m.Value())
-	})
-}
-
 func newWindow(title, url string, frosted bool) {
-	updateInfo := func(w app.Window) {
-		app.NewMsg("window-update-info").WithValue(w.ID()).Post()
-	}
-
 	app.NewWindow(app.WindowConfig{
 		Title:             title,
 		URL:               url,
@@ -23,18 +13,6 @@ func newWindow(title, url string, frosted bool) {
 		Height:            720,
 		MinHeight:         500,
 		FrostedBackground: frosted,
-
-		OnMove:           updateInfo,
-		OnResize:         updateInfo,
-		OnFocus:          updateInfo,
-		OnBlur:           updateInfo,
-		OnFullScreen:     updateInfo,
-		OnExitFullScreen: updateInfo,
-		OnMinimize:       updateInfo,
-		OnDeminimize:     updateInfo,
-		OnClose: func(w app.Window) {
-			app.Logf("window %q is closed", w.ID())
-		},
 	})
 }
 
@@ -53,107 +31,93 @@ type Window struct {
 
 // Subscribe is the func to set up event listeners.
 // It satisfies the app.EventSubscriber interface.
-func (w *Window) Subscribe() app.Subscriber {
+func (c *Window) Subscribe() *app.Subscriber {
 	return app.NewSubscriber().
-		Subscribe("window-updated", w.onUpdate)
+		Subscribe(app.WindowMoved, c.onUpdate).
+		Subscribe(app.WindowResized, c.onUpdate).
+		Subscribe(app.WindowFocused, c.onUpdate).
+		Subscribe(app.WindowBlurred, c.onUpdate).
+		Subscribe(app.WindowEnteredFullScreen, c.onUpdate).
+		Subscribe(app.WindowExitedFullScreen, c.onUpdate).
+		Subscribe(app.WindowMinimized, c.onUpdate).
+		Subscribe(app.WindowDeminimized, c.onUpdate)
 }
 
-func (w *Window) onUpdate(id string) {
-	app.ElemByCompo(w).WhenWindow(func(win app.Window) {
-		if win.ID() != id {
-			return
-		}
+func (c *Window) onUpdate(e app.Window) {
+	if !e.Contains(c) {
+		return
+	}
 
-		w.ID = app.ElemByCompo(w).ID()
-		w.X, w.Y = win.Position()
-		w.Width, w.Height = win.Size()
-		w.IsFocus = win.IsFocus()
-		w.IsFullScreen = win.IsFullScreen()
-		w.IsMinified = win.IsMinimized()
+	app.ElemByCompo(c).WhenWindow(func(w app.Window) {
+		c.ID = app.ElemByCompo(c).ID()
+		c.X, c.Y = w.Position()
+		c.Width, c.Height = w.Size()
+		c.IsFocus = w.IsFocus()
+		c.IsFullScreen = w.IsFullScreen()
+		c.IsMinified = w.IsMinimized()
 
-		app.Render(w)
+		app.Render(c)
 	})
 }
 
 // OnMount initializes the available actions.
-func (w *Window) OnMount() {
-	app.ElemByCompo(w).WhenWindow(func(win app.Window) {
-		w.onUpdate(win.ID())
+func (c *Window) OnMount() {
+	app.ElemByCompo(c).WhenWindow(func(w app.Window) {
+		c.onUpdate(w)
 
-		w.Actions = []windowAction{
+		c.Actions = []windowAction{
 			{
 				Name:        "Move",
 				Description: "Move the window to position {x: 100, y: 100}.",
 				Action: func() {
-					win.Move(100, 100)
-					w.Actions[0].Err = win.Err()
-					app.Render(w)
+					w.Move(100, 100)
+					c.Actions[0].Err = w.Err()
+					app.Render(c)
 				},
 			},
 			{
 				Name:        "Center",
 				Description: "Move the window to the center of the screen.",
 				Action: func() {
-					win.Center()
-					w.Actions[1].Err = win.Err()
-					app.Render(w)
+					w.Center()
+					c.Actions[1].Err = w.Err()
+					app.Render(c)
 				},
 			},
 			{
 				Name:        "Resize",
 				Description: "Resize the window to its original size {width: 1440, height: 720}.",
 				Action: func() {
-					win.Resize(1440, 720)
-					w.Actions[2].Err = win.Err()
-					app.Render(w)
+					w.Resize(1440, 720)
+					c.Actions[2].Err = w.Err()
+					app.Render(c)
 				},
 			},
 			{
-				Name:        "FullScreen",
+				Name:        "Full Screen",
 				Description: "Take the window in full screen mode.",
 				Action: func() {
-					win.FullScreen()
-					w.Actions[3].Err = win.Err()
-					app.Render(w)
+					w.FullScreen()
+					c.Actions[3].Err = w.Err()
+					app.Render(c)
 				},
 			},
 			{
-				Name:        "ExitFullScreen",
+				Name:        "Exit Full Screen",
 				Description: "Take the window out of fullscreen mode",
 				Action: func() {
-					win.ExitFullScreen()
-					w.Actions[4].Err = win.Err()
-					app.Render(w)
+					w.ExitFullScreen()
+					c.Actions[4].Err = w.Err()
+					app.Render(c)
 				},
 			},
 			{
 				Name:        "Minimize",
 				Description: "Take the window into minimized mode.",
 				Action: func() {
-					win.Minimize()
-					w.Actions[5].Err = win.Err()
-					app.Render(w)
-				},
-			},
-			{
-				Name:        "Minimize/Deminimize",
-				Description: "Take and take out the window out of minimized mode.",
-				Action: func() {
-					win.Minimize()
-
-					if win.Err() != nil {
-						w.Actions[6].Err = win.Err()
-						app.Render(w)
-						return
-					}
-
-					app.CallOnUIGoroutine(func() {
-						win.Deminimize()
-						w.Actions[6].Err = win.Err()
-						app.Render(w)
-					})
-
-					app.Render(w)
+					w.Minimize()
+					c.Actions[5].Err = w.Err()
+					app.Render(c)
 				},
 			},
 			{
@@ -167,19 +131,19 @@ func (w *Window) OnMount() {
 				Name:        "Close",
 				Description: "Close the window.",
 				Action: func() {
-					win.Close()
-					w.Actions[8].Err = win.Err()
-					app.Render(w)
+					w.Close()
+					c.Actions[7].Err = w.Err()
+					app.Render(c)
 				},
 			},
 		}
 
-		app.Render(w)
+		app.Render(c)
 	})
 }
 
 // Render returns a html string that describes the component.
-func (w *Window) Render() string {
+func (c *Window) Render() string {
 	return `
 <div class="Layout">
 	<navpane current="window">

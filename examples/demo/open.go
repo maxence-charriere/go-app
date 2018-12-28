@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/url"
 	"sync"
 	"time"
 
@@ -9,23 +10,32 @@ import (
 	"github.com/pkg/errors"
 )
 
-type appOpen struct {
+const (
+	appOpen             = "appOpen"
+	appOpened app.Event = "appOpened"
+)
+
+var (
+	appOpenList appOpenings
+)
+
+type appOpenInfo struct {
 	From string
 	Time time.Time
 }
 
 type appOpenings struct {
 	mutex    sync.Mutex
-	openings []appOpen
+	openings []appOpenInfo
 }
 
-func (o *appOpenings) Add(open appOpen) {
+func (o *appOpenings) Add(open appOpenInfo) {
 	o.mutex.Lock()
 	o.openings = append(o.openings, open)
 	o.mutex.Unlock()
 }
 
-func (o *appOpenings) Openings() []appOpen {
+func (o *appOpenings) Openings() []appOpenInfo {
 	o.mutex.Lock()
 	defer o.mutex.Unlock()
 
@@ -33,41 +43,70 @@ func (o *appOpenings) Openings() []appOpen {
 		return nil
 	}
 
-	openings := make([]appOpen, len(o.openings))
+	openings := make([]appOpenInfo, len(o.openings))
 	copy(openings, o.openings)
 	return openings
 }
 
-var (
-	appOpenList appOpenings
-)
-
 func init() {
-	app.Handle("app-open", func(e app.Emitter, m app.Msg) {
-		open, ok := m.Value().(appOpen)
+	app.NewSubscriber().
+		Subscribe(app.Running, func() {
+			app.NewMsg(appOpen).
+				WithValue(appOpenInfo{
+					From: string(app.Running),
+					Time: time.Now(),
+				}).
+				Post()
+		}).
+		Subscribe(app.Reopened, func(hasWindows bool) {
+			app.NewMsg(appOpen).
+				WithValue(appOpenInfo{
+					From: string(app.Reopened),
+					Time: time.Now(),
+				}).
+				Post()
+		}).
+		Subscribe(app.OpenFilesRequested, func(filenames []string) {
+			app.NewMsg(appOpen).
+				WithValue(appOpenInfo{
+					From: fmt.Sprintf("%s(%v)", app.OpenFilesRequested, app.Pretty(filenames)),
+					Time: time.Now(),
+				}).
+				Post()
+		}).
+		Subscribe(app.OpenURLRequested, func(u *url.URL) {
+			app.NewMsg(appOpen).
+				WithValue(appOpenInfo{
+					From: fmt.Sprintf("%s(%s)", app.OpenURLRequested, u),
+					Time: time.Now(),
+				}).
+				Post()
+		})
+
+	app.Handle(appOpen, func(m app.Msg) {
+		open, ok := m.Value().(appOpenInfo)
 		if !ok {
 			app.Log(errors.Errorf("msg value for %q is not a %T: %T", m.Key(), open, m.Value()))
 			return
 		}
 
 		appOpenList.Add(open)
-		fmt.Println(app.Pretty(appOpenList.Openings()))
-		e.Emit("app-opened", appOpenList.Openings())
+		app.Emit(appOpened, appOpenList.Openings())
 	})
 }
 
 // Open is a component that shows app opening behavior.
 type Open struct {
-	Openings []appOpen
+	Openings []appOpenInfo
 }
 
 // Subscribe is the func to set up event listeners.
 // It satisfies the app.EventSubscriber interface.
-func (o *Open) Subscribe() app.Subscriber {
-	return app.NewSubscriber().Subscribe("app-opened", o.onAppOpen)
+func (o *Open) Subscribe() *app.Subscriber {
+	return app.NewSubscriber().Subscribe(appOpened, o.onAppOpen)
 }
 
-func (o *Open) onAppOpen(openings []appOpen) {
+func (o *Open) onAppOpen(openings []appOpenInfo) {
 	o.Openings = openings
 	app.Render(o)
 }

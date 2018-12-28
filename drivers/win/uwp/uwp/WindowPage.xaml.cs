@@ -162,6 +162,12 @@ namespace uwp
             else
             {
                 this.Root.Background = new SolidColorBrush(bg);
+
+                var backgroundColor = input.GetNamedString("BackgroundColor");
+                if (backgroundColor.Length != 0)
+                {
+                    this.Root.Background = color.GetSolidColorBrush(backgroundColor);
+                }
             }
 
             Bridge.PutElem(this.ID, this);

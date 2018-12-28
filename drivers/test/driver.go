@@ -14,22 +14,26 @@ type Driver struct {
 	// A boolean that reports whether driver set element errors.
 	Err bool
 
-	// The function executed after a Run call.
-	OnRun func()
-
+	ui       chan func()
 	factory  *app.Factory
+	events   *app.EventRegistry
 	elems    *core.ElemDB
 	stop     func()
-	uichan   chan func()
 	menubar  *Menu
 	docktile *DockTile
 }
 
+// Target satisfies the app.Driver interface.
+func (d *Driver) Target() string {
+	return "web"
+}
+
 // Run satisfies the app.Driver interface.
-func (d *Driver) Run(f *app.Factory) error {
-	d.factory = f
+func (d *Driver) Run(c app.DriverConfig) error {
+	d.ui = c.UI
+	d.factory = c.Factory
+	d.events = c.Events
 	d.elems = core.NewElemDB()
-	d.uichan = make(chan func(), 64)
 	d.menubar = newMenu(d, app.MenuConfig{})
 	d.docktile = newDockTile(d)
 
@@ -37,16 +41,14 @@ func (d *Driver) Run(f *app.Factory) error {
 	defer cancel()
 	d.stop = cancel
 
-	if d.OnRun != nil {
-		d.CallOnUIGoroutine(d.OnRun)
-	}
+	d.events.Emit(app.Running)
 
 	for {
 		select {
 		case <-ctx.Done():
 			return ctx.Err()
 
-		case fn := <-d.uichan:
+		case fn := <-d.ui:
 			fn()
 		}
 	}
@@ -112,9 +114,9 @@ func (d *Driver) DockTile() app.DockTile {
 	return d.docktile
 }
 
-// CallOnUIGoroutine satisfies the app.Driver interface.
-func (d *Driver) CallOnUIGoroutine(f func()) {
-	d.uichan <- f
+// UI satisfies the app.Driver interface.
+func (d *Driver) UI(f func()) {
+	d.ui <- f
 }
 
 // Stop satisfies the app.Driver interface.

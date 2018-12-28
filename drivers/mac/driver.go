@@ -1,427 +1,298 @@
-// +build darwin,amd64
-
 // Package mac is the driver to be used for apps that run on MacOS.
 // It is build on the top of Cocoa and Webkit.
 package mac
 
-/*
-#include "driver.h"
-#include "bridge.h"
-*/
-import "C"
 import (
-	"context"
-	"crypto/md5"
-	"encoding/json"
-	"fmt"
-	"io"
-	"io/ioutil"
-	"net/url"
-	"os"
-	"path/filepath"
-	"strings"
-	"sync"
-
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/pkg/errors"
 )
-
-var (
-	driver     *Driver
-	goappBuild = os.Getenv("GOAPP_BUILD")
-	debug      = os.Getenv("GOAPP_DEBUG") == "true"
-)
-
-func init() {
-	if len(goappBuild) != 0 {
-		app.Logger = func(format string, a ...interface{}) {}
-		return
-	}
-
-	logger := core.ToWriter(os.Stderr)
-	app.Logger = core.WithColoredPrompt(logger)
-	app.EnableDebug(debug)
-}
 
 // Driver is the app.Driver implementation for MacOS.
 type Driver struct {
-	core.Driver
+	core.Driver `json:"-"`
 
-	// The app package settings.
-	// It is used by goapp to define how the app is built and packaged.
-	Settings Settings
+	// The URL of the component to load in the default window. A non empty value
+	// triggers the creation of the default window when the app in openened. It
+	// overrides the DefaultWindow.URL value.
+	URL string `json:"-"`
+
+	// The default window configuration.
+	DefaultWindow app.WindowConfig `json:"-"`
 
 	// Menubar configuration
-	MenubarConfig MenuBarConfig
-
-	// The URL of the component to load in the main window.
-	// The main window is not created when OnRun or OnReopen are set.
-	URL string
+	MenubarConfig MenuBarConfig `json:"-"`
 
 	// The URL of the component to load in the dock.
-	DockURL string
+	DockURL string `json:"-"`
 
-	// The func called right after app.Run.
-	OnRun func()
+	// The app name. It is displayed in the menubar and dock. The default value
+	// is the package directory name.
+	//
+	// It is used only for goapp packaging.
+	Name string `json:",omitempty"`
 
-	// The func called when the app is focused.
-	OnFocus func()
+	// The UTI representing the app.
+	//
+	// It is used only for goapp packaging.
+	ID string `json:",omitempty"`
 
-	// The func called when the app loses focus.
-	OnBlur func()
+	// The URL scheme that launches the app.
+	//
+	// It is used only for goapp packaging.
+	URLScheme string `json:",omitempty"`
 
-	// The func called when the app is reopened.
-	OnReopen func(hasVisibleWindows bool)
+	// The version of the app (minified form eg. 1.42).
+	//
+	// It is used only for goapp packaging.
+	Version string `json:",omitempty"`
 
-	// The func called when files associated with the app are opened.
-	OnFilesOpen func(filenames []string)
+	// The build number.
+	//
+	// It is used only for goapp packaging.
+	BuildNumber int `json:",omitempty"`
 
-	// The func called when the app URLScheme is invoked.
-	OnURLOpen func(u *url.URL)
+	// The app icon path relative to the resources directory. It must be a
+	// ".png". Provide a big one! Other required icon sizes will be auto
+	// generated.
+	//
+	// It is used only for goapp packaging.
+	Icon string `json:",omitempty"`
 
-	// The func called when the app is about to quit.
-	OnQuit func()
+	// The development region.
+	//
+	// It is used only for goapp packaging.
+	DevRegion string `json:",omitempty"`
 
+	// A human readable copyright.
+	//
+	// It is used only for goapp packaging.
+	Copyright string `json:",omitempty"`
+
+	// The application category.
+	//
+	// It is used only for goapp packaging.
+	Category Category `json:",omitempty"`
+
+	// Reports wheter the app runs in background mode. Background apps does not
+	// appear in the dock and menubar.
+	//
+	// It is used only for goapp packaging.
+	Background bool `json:",omitempty"`
+
+	// Reports whether the app is a server (accepts incoming connections).
+	//
+	// It is used only for goapp packaging.
+	Server bool `json:",omitempty"`
+
+	// Reports whether the app uses the camera.
+	//
+	// It is used only for goapp packaging.
+	Camera bool `json:",omitempty"`
+
+	// Reports whether the app uses the microphone.
+	//
+	// It is used only for goapp packaging.
+	Microphone bool `json:",omitempty"`
+
+	// Reports whether the app uses the USB devices.
+	//
+	// It is used only for goapp packaging.
+	USB bool `json:",omitempty"`
+
+	// Reports whether the app uses printers.
+	//
+	// It is used only for goapp packaging.
+	Printers bool `json:",omitempty"`
+
+	// Reports whether the app uses bluetooth.
+	//
+	// It is used only for goapp packaging.
+	Bluetooth bool `json:",omitempty"`
+
+	// Reports whether the app has access to contacts.
+	//
+	// It is used only for goapp packaging.
+	Contacts bool `json:",omitempty"`
+
+	// Reports whether the app has access to device location.
+	//
+	// It is used only for goapp packaging.
+	Location bool `json:",omitempty"`
+
+	// Reports whether the app has access to calendars.
+	//
+	// It is used only for goapp packaging.
+	Calendar bool `json:",omitempty"`
+
+	// The file picker access mode.
+	//
+	// It is used only for goapp packaging.
+	FilePickers FileAccess `json:",omitempty"`
+
+	// The Download directory access mode.
+	//
+	// It is used only for goapp packaging.
+	Downloads FileAccess `json:",omitempty"`
+
+	// The Pictures directory access mode.
+	//
+	// It is used only for goapp packaging.
+	Pictures FileAccess `json:",omitempty"`
+
+	// The Music directory access mode.
+	//
+	// It is used only for goapp packaging.
+	Music FileAccess `json:",omitempty"`
+
+	// The Movies directory access mode.
+	//
+	// It is used only for goapp packaging.
+	Movies FileAccess `json:",omitempty"`
+
+	// The file types that can be opened by the app.
+	//
+	// It is used only for goapp packaging.
+	SupportedFiles []FileType `json:",omitempty"`
+
+	ui           chan func()
 	factory      *app.Factory
+	events       *app.EventRegistry
 	elems        *core.ElemDB
 	devID        string
-	macRPC       bridge.PlatformRPC
-	goRPC        bridge.GoRPC
-	uichan       chan func()
+	macRPC       *bridge.PlatformRPC
+	goRPC        *bridge.GoRPC
 	stop         func()
-	menubar      *Menu
-	docktile     *DockTile
+	menubar      app.Menu
+	docktile     app.DockTile
 	droppedFiles []string
 }
 
-// Run satisfies the app.Driver interface.
-func (d *Driver) Run(f *app.Factory) error {
-	if len(goappBuild) != 0 {
-		return d.runGoappBuild()
-	}
-
-	if driver != nil {
-		return errors.New("running already")
-	}
-
-	d.factory = f
-	d.elems = core.NewElemDB()
-	d.devID = generateDevID()
-	d.macRPC.Handler = macCall
-
-	d.goRPC.Handle("driver.OnRun", d.onRun)
-	d.goRPC.Handle("driver.OnFocus", d.onFocus)
-	d.goRPC.Handle("driver.OnBlur", d.onBlur)
-	d.goRPC.Handle("driver.OnReopen", d.onReopen)
-	d.goRPC.Handle("driver.OnFilesOpen", d.onFilesOpen)
-	d.goRPC.Handle("driver.OnURLOpen", d.onURLOpen)
-	d.goRPC.Handle("driver.OnFileDrop", d.onFileDrop)
-	d.goRPC.Handle("driver.OnQuit", d.onQuit)
-
-	d.goRPC.Handle("windows.OnMove", handleWindow(onWindowMove))
-	d.goRPC.Handle("windows.OnResize", handleWindow(onWindowResize))
-	d.goRPC.Handle("windows.OnFocus", handleWindow(onWindowFocus))
-	d.goRPC.Handle("windows.OnBlur", handleWindow(onWindowBlur))
-	d.goRPC.Handle("windows.OnFullScreen", handleWindow(onWindowFullScreen))
-	d.goRPC.Handle("windows.OnExitFullScreen", handleWindow(onWindowExitFullScreen))
-	d.goRPC.Handle("windows.OnMinimize", handleWindow(onWindowMinimize))
-	d.goRPC.Handle("windows.OnDeminimize", handleWindow(onWindowDeminimize))
-	d.goRPC.Handle("windows.OnClose", handleWindow(onWindowClose))
-	d.goRPC.Handle("windows.OnCallback", handleWindow(onWindowCallback))
-	d.goRPC.Handle("windows.OnNavigate", handleWindow(onWindowNavigate))
-	d.goRPC.Handle("windows.OnAlert", handleWindow(onWindowAlert))
-
-	d.goRPC.Handle("menus.OnClose", handleMenu(onMenuClose))
-	d.goRPC.Handle("menus.OnCallback", handleMenu(onMenuCallback))
-
-	d.goRPC.Handle("controller.OnDirectionChange", handleController(onControllerDirectionChange))
-	d.goRPC.Handle("controller.OnButtonPressed", handleController(onControllerButtonPressed))
-	d.goRPC.Handle("controller.OnConnected", handleController(onControllerConnected))
-	d.goRPC.Handle("controller.OnDisconnected", handleController(onControllerDisconnected))
-	d.goRPC.Handle("controller.OnPause", handleController(onControllerPause))
-	d.goRPC.Handle("controller.OnClose", handleController(onControllerClose))
-
-	d.goRPC.Handle("filePanels.OnSelect", handleFilePanel(onFilePanelSelect))
-	d.goRPC.Handle("saveFilePanels.OnSelect", handleSaveFilePanel(onSaveFilePanelSelect))
-
-	d.goRPC.Handle("notifications.OnReply", handleNotification(onNotificationReply))
-
-	d.uichan = make(chan func(), 4096)
-	defer close(d.uichan)
-
-	driver = d
-
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-	d.stop = cancel
-
-	wg := sync.WaitGroup{}
-	wg.Add(1)
-
-	go func() {
-		for {
-			select {
-			case <-ctx.Done():
-				wg.Done()
-				return
-
-			case fn := <-d.uichan:
-				fn()
-			}
-		}
-	}()
-
-	err := d.macRPC.Call("driver.Run", nil, nil)
-	wg.Wait()
-	return err
+// Target satisfies the app.Driver interface.
+func (d *Driver) Target() string {
+	return "macos"
 }
 
-// AppName satisfies the app.Driver interface.
-func (d *Driver) AppName() string {
-	out := struct {
-		AppName string
-	}{}
+// MenuBarConfig contains the menu bar configuration.
+type MenuBarConfig struct {
+	// The URL of the component to load in the menu bar.
+	// Set this to customize the whole menu bar.
+	//
+	// Default is mac.menubar.
+	URL string
 
-	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
-		app.Panic(err)
-	}
+	// The URL of the app menu.
+	// Set this to customize only the app menu.
+	//
+	// Default is mac.appmenu.
+	AppURL string
 
-	if len(out.AppName) != 0 {
-		return out.AppName
-	}
+	// The URL of the edit menu.
+	// Set this to customize only the edit menu.
+	//
+	// Default is mac.editmenu.
+	EditURL string
 
-	wd, err := os.Getwd()
-	if err != nil {
-		app.Panic(errors.Wrap(err, "app name unreachable"))
-	}
+	// The URL of the window menu.
+	// Set this to customize only the window menu.
+	//
+	// Default is mac.windowmenu.
+	WindowURL string
 
-	return filepath.Base(wd)
+	// An array that contains additional menu URLs.
+	CustomURLs []string
+
+	// The URL of the help menu.
+	// Set this to customize only the help menu.
+	//
+	// Default is mac.helpmenu.
+	HelpURL string
 }
 
-// Resources satisfies the app.Driver interface.
-func (d *Driver) Resources(path ...string) string {
-	out := struct {
-		Resources string
-	}{}
+// Role represents the role of an application.
+type Role string
 
-	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
-		app.Panic(err)
-	}
+// Constants that enumerate application roles.
+const (
+	Editor Role = "Editor"
+	Viewer Role = "Viewer"
+	Shell  Role = "Shell"
+)
 
-	r := filepath.Join(path...)
-	return filepath.Join(out.Resources, r)
-}
+// Category represents the app style.
+// The App Store uses this string to determine the appropriate categorization
+// for the app.
+type Category string
 
-// Storage satisfies the app.Driver interface.
-func (d *Driver) Storage(path ...string) string {
-	s := filepath.Join(path...)
-	return filepath.Join(d.support(), "storage", s)
-}
+// Constants that enumerate application categories.
+const (
+	BusinessApp             Category = "public.app-category.business"
+	DeveloperToolsApp                = "public.app-category.developer-tools"
+	EducationApp                     = "public.app-category.education"
+	EntertainmentApp                 = "public.app-category.entertainment"
+	FinanceApp                       = "public.app-category.finance"
+	GamesApp                         = "public.app-category.games"
+	GraphicsAndDesignApp             = "public.app-category.graphics-design"
+	HealthcareAndFitnessApp          = "public.app-category.healthcare-fitness"
+	LifestyleApp                     = "public.app-category.lifestyle"
+	MedicalApp                       = "public.app-category.medical"
+	MusicApp                         = "public.app-category.music"
+	NewsApp                          = "public.app-category.news"
+	PhotographyApp                   = "public.app-category.photography"
+	ProductivityApp                  = "public.app-category.productivity"
+	ReferenceApp                     = "public.app-category.reference"
+	SocialNetworkingApp              = "public.app-category.social-networking"
+	SportsApp                        = "public.app-category.sports"
+	TravelApp                        = "public.app-category.travel"
+	UtilitiesApp                     = "public.app-category.utilities"
+	VideoApp                         = "public.app-category.video"
+	WeatherApp                       = "public.app-category.weather"
+	ActionGamesApp                   = "public.app-category.action-games"
+	AdventureGamesApp                = "public.app-category.adventure-games"
+	ArcadeGamesApp                   = "public.app-category.arcade-games"
+	BoardGamesApp                    = "public.app-category.board-games"
+	CardGamesApp                     = "public.app-category.card-games"
+	CasinoGamesApp                   = "public.app-category.casino-games"
+	DiceGamesApp                     = "public.app-category.dice-games"
+	EducationalGamesApp              = "public.app-category.educational-games"
+	FamilyGamesApp                   = "public.app-category.family-games"
+	KidsGamesApp                     = "public.app-category.kids-games"
+	MusicGamesApp                    = "public.app-category.music-games"
+	PuzzleGamesApp                   = "public.app-category.puzzle-games"
+	RacingGamesApp                   = "public.app-category.racing-games"
+	RolePlayingGamesApp              = "public.app-category.role-playing-games"
+	SimulationGamesApp               = "public.app-category.simulation-games"
+	SportsGamesApp                   = "public.app-category.sports-games"
+	StrategyGamesApp                 = "public.app-category.strategy-games"
+	TriviaGamesApp                   = "public.app-category.trivia-games"
+	WordGamesApp                     = "public.app-category.word-games"
+)
 
-// Render satisfies the app.Driver interface.
-func (d *Driver) Render(c app.Compo) {
-	e := d.ElemByCompo(c)
-	e.(app.ElemWithCompo).Render(c)
-}
+// FileAccess represents a file access mode.
+type FileAccess string
 
-// ElemByCompo satisfies the app.Driver interface.
-func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
-	return d.elems.GetByCompo(c)
-}
+// Constants that enumerate file access modes.
+const (
+	NoAccess  FileAccess = ""
+	ReadOnly  FileAccess = "read-only"
+	ReadWrite FileAccess = "read-write"
+)
 
-// NewWindow satisfies the app.Driver interface.
-func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
-	return newWindow(c)
-}
+// FileType describes a file type that can be opened by the app.
+type FileType struct {
+	// The  name.
+	// Must be non empty, a single word and lowercased.
+	Name string
 
-// NewContextMenu satisfies the app.Driver interface.
-func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
-	m := newMenu(c, "context menu")
-	if m.Err() != nil {
-		return m
-	}
+	// The app’s role with respect to the type.
+	Role Role
 
-	err := d.macRPC.Call("driver.SetContextMenu", nil, m.ID())
-	m.SetErr(err)
-	return m
-}
+	// The icon path:
+	// - Must be relative to the resources directory.
+	// - Must be a ".png".
+	Icon string
 
-// NewController statisfies the app.Driver interface.
-func (d *Driver) NewController(c app.ControllerConfig) app.Controller {
-	return newController(c)
-}
-
-// NewFilePanel satisfies the app.Driver interface.
-func (d *Driver) NewFilePanel(c app.FilePanelConfig) app.Elem {
-	return newFilePanel(c)
-}
-
-// NewSaveFilePanel satisfies the app.Driver interface.
-func (d *Driver) NewSaveFilePanel(c app.SaveFilePanelConfig) app.Elem {
-	return newSaveFilePanel(c)
-}
-
-// NewShare satisfies the app.Driver interface.
-func (d *Driver) NewShare(v interface{}) app.Elem {
-	return newSharePanel(v)
-}
-
-// NewNotification satisfies the app.Driver interface.
-func (d *Driver) NewNotification(c app.NotificationConfig) app.Elem {
-	return newNotification(c)
-}
-
-// MenuBar satisfies the app.Driver interface.
-func (d *Driver) MenuBar() app.Menu {
-	return d.menubar
-}
-
-// NewStatusMenu satisfies the app.Driver interface.
-func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) app.StatusMenu {
-	return newStatusMenu(c)
-}
-
-// DockTile satisfies the app.Driver interface.
-func (d *Driver) DockTile() app.DockTile {
-	return d.docktile
-}
-
-// CallOnUIGoroutine satisfies the app.Driver interface.
-func (d *Driver) CallOnUIGoroutine(f func()) {
-	d.uichan <- f
-}
-
-// Stop satisfies the app.Driver interface.
-func (d *Driver) Stop() {
-	if err := d.macRPC.Call("driver.Quit", nil, nil); err != nil {
-		app.Log("stop failed:", err)
-		d.stop()
-	}
-}
-
-func (d *Driver) runGoappBuild() error {
-	b, err := json.MarshalIndent(d.Settings, "", "    ")
-	if err != nil {
-		return err
-	}
-
-	return ioutil.WriteFile(goappBuild, b, 0777)
-}
-
-func (d *Driver) support() string {
-	out := struct {
-		Support string
-	}{}
-
-	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
-		app.Panic(err)
-	}
-
-	// Set up the support directory in case of the app is not bundled.
-	if strings.HasSuffix(out.Support, "{appname}") {
-		wd, err := os.Getwd()
-		if err != nil {
-			app.Panic(errors.Wrap(err, "support unreachable"))
-		}
-
-		appname := filepath.Base(wd) + "-" + d.devID
-		out.Support = strings.Replace(out.Support, "{appname}", appname, 1)
-	}
-
-	return out.Support
-}
-
-func (d *Driver) onRun(in map[string]interface{}) interface{} {
-	d.menubar = newMenuBar(d.MenubarConfig)
-	d.docktile = newDockTile(app.MenuConfig{URL: d.DockURL})
-
-	if d.OnRun == nil {
-		d.OnRun = d.newMainWindow
-	}
-
-	d.OnRun()
-	return nil
-}
-
-func (d *Driver) onFocus(in map[string]interface{}) interface{} {
-	if d.OnFocus != nil {
-		d.OnFocus()
-	}
-
-	return nil
-}
-
-func (d *Driver) onBlur(in map[string]interface{}) interface{} {
-	if d.OnBlur != nil {
-		d.OnBlur()
-	}
-
-	return nil
-}
-
-func (d *Driver) onReopen(in map[string]interface{}) interface{} {
-	if d.OnReopen == nil {
-		d.OnReopen = func(hasVisibleWindows bool) {
-			if !hasVisibleWindows {
-				d.newMainWindow()
-			}
-		}
-	}
-
-	d.OnReopen(in["HasVisibleWindows"].(bool))
-	return nil
-}
-
-func (d *Driver) onFilesOpen(in map[string]interface{}) interface{} {
-	if d.OnFilesOpen != nil {
-		d.OnFilesOpen(bridge.Strings(in["Filenames"]))
-	}
-
-	return nil
-}
-
-func (d *Driver) onURLOpen(in map[string]interface{}) interface{} {
-	if d.OnURLOpen != nil {
-		u, err := url.Parse(in["URL"].(string))
-		if err != nil {
-			app.Panic(errors.Wrap(err, "onURLOpen"))
-		}
-
-		d.OnURLOpen(u)
-	}
-	return nil
-}
-
-func (d *Driver) onFileDrop(in map[string]interface{}) interface{} {
-	d.droppedFiles = bridge.Strings(in["Filenames"])
-	return nil
-}
-
-func (d *Driver) onQuit(in map[string]interface{}) interface{} {
-	if d.OnQuit != nil {
-		d.OnQuit()
-	}
-
-	d.stop()
-	return nil
-}
-
-func (d *Driver) newMainWindow() {
-	app.NewWindow(app.WindowConfig{
-		Title:     d.AppName(),
-		MinWidth:  480,
-		Width:     1280,
-		MinHeight: 480,
-		Height:    768,
-		URL:       d.URL,
-	})
-}
-
-func generateDevID() string {
-	h := md5.New()
-	wd, _ := os.Getwd()
-	io.WriteString(h, wd)
-	return fmt.Sprintf("%x", h.Sum(nil))
+	// A list of UTI defining a supported file type.
+	// Eg. "public.png" for ".png" files.
+	UTIs []string
 }

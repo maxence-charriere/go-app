@@ -27,14 +27,41 @@ var (
 	// It is used by Log, Logf, Panic and Panicf to generate logs.
 	Logger func(format string, a ...interface{})
 
-	// Kind describes the app kind (desktop|mobile|web).
-	Kind string
-
 	driver    Driver
+	target    = "web"
+	addons    = []Addon{Logs()}
+	ui        = make(chan func(), 4096)
 	factory   = NewFactory()
-	events    = newEventRegistry(CallOnUIGoroutine)
-	messages  = newMsgRegistry(events)
+	events    = NewEventRegistry(ui)
+	messages  = newMsgRegistry()
 	whenDebug func(func())
+)
+
+const (
+	// Running is the event emitted when the app starts to run.
+	Running Event = "app.running"
+
+	// Reopened is the event emitted when the app is reopened.
+	Reopened Event = "app.reopened"
+
+	// Focused is the event emitted when the app gets focus.
+	Focused Event = "app.focused"
+
+	// Blurred is the event emitted when the app loses focus.
+	Blurred Event = "app.blurred"
+
+	// OpenFilesRequested is the event emitted when the app is requested to
+	// open files. The arg passed to subscribed funcs is a []string containing
+	// the path of the requested files.
+	OpenFilesRequested Event = "app.openFilesRequested"
+
+	// OpenURLRequested is the event emitted when the app is requested to open
+	// an URL. The arg passed to subscribed funcs is a *url.URL.
+	OpenURLRequested Event = "app.openURLrequested"
+
+	// Closed is the event emitted when the app is closed. Final cleanups
+	// should be done by subscribing to this event.
+	Closed Event = "app.closed"
 )
 
 func init() {
@@ -53,22 +80,41 @@ func Import(c ...Compo) {
 	}
 }
 
-// Run runs the app with the given driver as backend.
-func Run(d Driver, addons ...Addon) error {
-	if len(addons) == 0 {
-		addons = append(addons, Logs())
+// Addons set up the given addons.
+func Addons(a ...Addon) {
+	for _, add := range a {
+		addons = append(addons, add)
 	}
-
-	for _, addon := range addons {
-		d = addon(d)
-	}
-
-	driver = d
-	return driver.Run(factory)
 }
 
-// RunningDriver returns the running driver.
-func RunningDriver() Driver {
+// Run runs the app with the given driver as backend.
+func Run(drivers ...Driver) error {
+	for _, d := range drivers {
+		if d.Target() == target {
+			driver = d
+			break
+		}
+	}
+
+	if driver == nil {
+		return errors.Errorf("no driver set for %s", target)
+	}
+
+	Logf("%T", driver)
+
+	for _, a := range addons {
+		driver = a(driver)
+	}
+
+	return driver.Run(DriverConfig{
+		UI:      ui,
+		Factory: factory,
+		Events:  events,
+	})
+}
+
+// CurrentDriver returns the current driver.
+func CurrentDriver() Driver {
 	return driver
 }
 
@@ -101,7 +147,7 @@ func Storage(path ...string) string {
 //
 // It panics if called before Run.
 func Render(c Compo) {
-	driver.CallOnUIGoroutine(func() {
+	driver.UI(func() {
 		driver.Render(c)
 	})
 }
@@ -204,10 +250,9 @@ func Stop() {
 	driver.Stop()
 }
 
-// CallOnUIGoroutine calls a function on the UI goroutine.
-// UI goroutine is the running application main thread.
-func CallOnUIGoroutine(f func()) {
-	driver.CallOnUIGoroutine(f)
+// UI calls a function on the UI goroutine.
+func UI(f func()) {
+	driver.UI(f)
 }
 
 // Handle handles the message for the given key.
@@ -226,11 +271,16 @@ func NewMsg(key string) Msg {
 	return &msg{key: key}
 }
 
+// Emit emits the event with the given arguments.
+func Emit(e Event, args ...interface{}) {
+	events.Emit(e, args...)
+}
+
 // NewSubscriber creates an event subscriber to return when implementing the
 // app.EventSubscriber interface.
-func NewSubscriber() Subscriber {
-	return &subscriber{
-		registry: events,
+func NewSubscriber() *Subscriber {
+	return &Subscriber{
+		Events: events,
 	}
 }
 

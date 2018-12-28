@@ -1,7 +1,7 @@
 module github.com/murlokswarm/app
 
 require (
-	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/davecgh/go-spew v1.1.1
 	github.com/disintegration/imaging v1.5.0
 	github.com/google/uuid v1.0.0
 	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e

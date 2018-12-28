@@ -92,31 +92,43 @@ type WindowConfig struct {
 
 	// The URL of the component to load when the window is created.
 	URL string
-
-	// The function that is called when the window is moved.
-	OnMove func(w Window) `json:"-"`
-
-	// The function that is called when the window is resized.
-	OnResize func(w Window) `json:"-"`
-
-	// The function that is called when the window get focus.
-	OnFocus func(w Window) `json:"-"`
-
-	// The function that is called when the window lose focus.
-	OnBlur func(w Window) `json:"-"`
-
-	// The function that is called when the window goes full screen.
-	OnFullScreen func(w Window) `json:"-"`
-
-	// The function that is called when the window exit full screen.
-	OnExitFullScreen func(w Window) `json:"-"`
-
-	// The function that is called when the window is minimized.
-	OnMinimize func(w Window) `json:"-"`
-
-	// The function that is called when the window is deminimized.
-	OnDeminimize func(w Window) `json:"-"`
-
-	// The function that is called when the window is closed.
-	OnClose func(w Window) `json:"-"`
 }
+
+// Constants that enumerates window events.
+const (
+	// WindowMoved is the event emitted when a window is moved. The arg passed
+	// to subscribed funcs is a app.Window.
+	WindowMoved Event = "app.window.moved"
+
+	// WindowResized is the event emitted when a window is resized. The arg
+	// passed to subscribed funcs is a app.Window.
+	WindowResized Event = "app.window.resized"
+
+	// WindowFocused is the event emitted when a window gets focus. The arg
+	// passed to subscribed funcs is a app.Window.
+	WindowFocused Event = "app.window.focused"
+
+	// WindowBlurred is the event emitted when a window loses focus. The arg
+	// passed to subscribed funcs is a app.Window.
+	WindowBlurred Event = "app.window.blurred"
+
+	// WindowEnteredFullScreen is the event emitted when a window goes full
+	// screen. The arg passed to subscribed funcs is a app.Window.
+	WindowEnteredFullScreen Event = "app.window.enteredFullscreen"
+
+	// WindowExitedFullScreen is the event emitted when a window exits full
+	// screen. The arg passed to subscribed funcs is a app.Window.
+	WindowExitedFullScreen Event = "app.window.exitedFullscreen"
+
+	// WindowMinimized is the event emitted when a window is minimized. The arg
+	// passed to subscribed funcs is a app.Window.
+	WindowMinimized Event = "app.window.minimized"
+
+	// WindowDeminimized is the event emitted when a window is deminimized. The
+	// arg passed to subscribed funcs is a app.Window.
+	WindowDeminimized Event = "app.window.deminimized"
+
+	// WindowClosed is the event emitted when a window is closed. The arg passed
+	// to subscribed funcs is a app.Window.
+	WindowClosed Event = "app.window.closed"
+)

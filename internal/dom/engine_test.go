@@ -21,7 +21,7 @@ func (f *Foo) OnMount() {
 func (f *Foo) OnDismount() {
 }
 
-func (f *Foo) Subscribe() app.Subscriber {
+func (f *Foo) Subscribe() *app.Subscriber {
 	return app.NewSubscriber()
 }
 

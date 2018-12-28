@@ -1,6 +1,6 @@
-// +build darwin,amd64
+// +build darwin
 
-package mac
+package objc
 
 /*
 #cgo CFLAGS: -x objective-c -fobjc-arc
@@ -12,12 +12,30 @@ package mac
 #include "bridge.h"
 */
 import "C"
+
 import (
 	"unsafe"
+
+	"github.com/murlokswarm/app/internal/bridge"
 
 	"github.com/murlokswarm/app"
 	"github.com/pkg/errors"
 )
+
+var (
+	callOnUI func(func())
+	goRPC    bridge.GoRPC
+	macRPC   = bridge.PlatformRPC{
+		Handler: macCall,
+	}
+)
+
+// RPC returns rpc objects to achieve two way communication between Objective C
+// and Go.
+func RPC(ui func(func())) (*bridge.PlatformRPC, *bridge.GoRPC) {
+	callOnUI = ui
+	return &macRPC, &goRPC
+}
 
 func macCall(call string) error {
 	ccall := C.CString(call)
@@ -28,7 +46,7 @@ func macCall(call string) error {
 
 //export macCallReturn
 func macCallReturn(retID, ret, err *C.char) {
-	driver.macRPC.Return(
+	macRPC.Return(
 		C.GoString(retID),
 		C.GoString(ret),
 		C.GoString(err),
@@ -40,8 +58,8 @@ func goCall(ccall *C.char, ui C.BOOL) (cout *C.char) {
 	call := C.GoString(ccall)
 
 	if ui == 1 {
-		driver.CallOnUIGoroutine(func() {
-			if _, err := driver.goRPC.Call(call); err != nil {
+		callOnUI(func() {
+			if _, err := goRPC.Call(call); err != nil {
 				app.Panic(errors.Wrap(err, "go call failed"))
 			}
 		})
@@ -49,7 +67,7 @@ func goCall(ccall *C.char, ui C.BOOL) (cout *C.char) {
 		return nil
 	}
 
-	ret, err := driver.goRPC.Call(call)
+	ret, err := goRPC.Call(call)
 	if err != nil {
 		app.Panic(errors.Wrap(err, "go call failed"))
 	}

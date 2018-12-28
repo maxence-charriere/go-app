@@ -86,6 +86,7 @@
   if (color.length == 0) {
     return;
   }
+
   self.window.backgroundColor =
       [NSColor colorWithCIColor:[CIColor colorWithHexString:color]];
 }

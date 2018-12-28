@@ -17,11 +17,8 @@ func TestLogs(t *testing.T) {
 
 	app.EnableDebug(true)
 
-	setup := func(onRun func()) app.Driver {
-		d := &test.Driver{
-			OnRun: onRun,
-		}
-
+	setup := func() app.Driver {
+		d := &test.Driver{}
 		withLogs := app.Logs()
 		return withLogs(d)
 	}
@@ -35,12 +32,8 @@ func TestLogsErrors(t *testing.T) {
 		t.Log(log)
 	}
 
-	setup := func(onRun func()) app.Driver {
-		d := &test.Driver{
-			Err:   true,
-			OnRun: onRun,
-		}
-
+	setup := func() app.Driver {
+		d := &test.Driver{Err: true}
 		withLogs := app.Logs()
 		return withLogs(d)
 	}
