@@ -85,6 +85,14 @@ func newWindow(c app.WindowConfig) *Window {
 		MinimizeHidden:    c.MinimizeHidden,
 	}
 
+	if in.Width == 0 {
+		in.Width = 1280
+	}
+
+	if in.Height == 0 {
+		in.Height = 720
+	}
+
 	in.MinWidth, in.MaxWidth = normalizeWidowSize(in.MinWidth, in.MaxWidth)
 	in.MinHeight, in.MaxHeight = normalizeWidowSize(in.MinHeight, in.MaxHeight)
 

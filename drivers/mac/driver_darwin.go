@@ -135,9 +135,7 @@ func (d *Driver) configureDefaultWindow() {
 		d.DefaultWindow = app.WindowConfig{
 			Title:     d.AppName(),
 			MinWidth:  480,
-			Width:     1280,
 			MinHeight: 480,
-			Height:    768,
 			URL:       d.URL,
 		}
 	}
