@@ -24,8 +24,6 @@ type Menu struct {
 	typ            string
 	compo          app.Compo
 	keepWhenClosed bool
-
-	onClose func()
 }
 
 func newMenu(c app.MenuConfig, typ string) *Menu {
@@ -41,8 +39,6 @@ func newMenu(c app.MenuConfig, typ string) *Menu {
 			UI: driver.UI,
 		},
 		typ: typ,
-
-		onClose: c.OnClose,
 	}
 
 	m.dom.Sync = m.render
@@ -180,10 +176,6 @@ func onMenuClose(m *Menu, in map[string]interface{}) interface{} {
 	// We call CallOnUIGoroutine in order to defer the close operation
 	// after the clicked one.
 	driver.UI(func() {
-		if m.onClose != nil {
-			m.onClose()
-		}
-
 		if err := driver.macRPC.Call("menus.Delete", nil, struct {
 			ID string
 		}{

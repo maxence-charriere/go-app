@@ -13,9 +13,6 @@ type Menu interface {
 type MenuConfig struct {
 	// The URL of the component to load when the menu is created.
 	URL string
-
-	// The function that is called when the menu is closed.
-	OnClose func() `json:"-"`
 }
 
 // StatusMenu is the interface that describes a status menu menu.

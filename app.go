@@ -174,12 +174,14 @@ func NewPage(c PageConfig) Page {
 	return driver.NewPage(c)
 }
 
-// NewContextMenu creates and displays the context menu described by the
-// given configuration.
+// NewContextMenu creates and displays the context menu with the given component
+// URL.
 //
 // It panics if called before Run.
-func NewContextMenu(c MenuConfig) Menu {
-	return driver.NewContextMenu(c)
+func NewContextMenu(url string) Menu {
+	return driver.NewContextMenu(MenuConfig{
+		URL: url,
+	})
 }
 
 // NewController creates the controller described by the given configuration.

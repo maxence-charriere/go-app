@@ -14,6 +14,7 @@ func (n *NavPane) OnMount() {
 		"hello",
 		"open",
 		"window",
+		"menu",
 	}
 
 	app.Render(n)

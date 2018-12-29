@@ -16,7 +16,7 @@ func newWindow(title, url string, frosted bool) {
 	})
 }
 
-// Window is a component that contain window related examples.
+// Window is a component that contains window related examples.
 type Window struct {
 	ID           string
 	X            float64

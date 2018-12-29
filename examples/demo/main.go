@@ -13,9 +13,11 @@ func main() {
 		&Hello{},
 		&Open{},
 		&Window{},
+		&Menu{},
+		&ContextMenu{},
 	)
 
-	defaultURL := "open"
+	defaultURL := "menu"
 
 	app.NewSubscriber().
 		Subscribe(app.Closed, func() { app.Log("goodbye") })
