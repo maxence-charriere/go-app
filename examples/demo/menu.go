@@ -25,7 +25,7 @@ func (m *Menu) Render() string {
 		<p>Right click and paste in the area below.</p>
 		<textarea class="Menu-CopyPasteArea" contenteditable oncontextmenu="OnContextMenu"></textarea>
 	</div>
-	<div>
+	<div class="Menu-Others">
 		<h1>Other menus</h1>
 	</div>
 </div>

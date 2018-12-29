@@ -18,3 +18,9 @@
     background-color: rgba(0, 0, 0, 0.3);
     font-size: 11pt;
 }
+
+.Menu-Others {
+    background-color: rgba(0, 0, 0, 0.5);
+    flex-grow: 1;
+    height: 100%;
+}
