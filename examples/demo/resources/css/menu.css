@@ -17,6 +17,8 @@
     color: currentColor;
     background-color: rgba(0, 0, 0, 0.3);
     font-size: 11pt;
+    font-weight: 300;
+    font-family: inherit;
 }
 
 .Menu-Others {

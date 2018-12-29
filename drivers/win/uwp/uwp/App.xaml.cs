@@ -39,6 +39,8 @@ namespace uwp
             this.InitializeComponent();
             this.Suspending += OnSuspending;
 
+            Bridge.Handle("driver.SetContextMenu", this.setContextMenu);
+
             Bridge.Handle("windows.New", WindowPage.NewWindow);
             Bridge.Handle("windows.Load", WindowPage.Load);
             Bridge.Handle("windows.Render", WindowPage.Render);
@@ -48,6 +50,30 @@ namespace uwp
             Bridge.Handle("windows.Focus", WindowPage.Focus);
             Bridge.Handle("windows.FullScreen", WindowPage.FullScreen);
             Bridge.Handle("windows.ExitFullScreen", WindowPage.ExitFullScreen);
+
+            Bridge.Handle("menus.New", Menu.New);
+            Bridge.Handle("menus.Load", Menu.Load);
+            Bridge.Handle("menus.Render", Menu.Render);
+        }
+
+        private async void setContextMenu(JsonObject input, string returnID)
+        {
+            await Window.Current.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                try
+                {
+                    var frame = Window.Current.Content as Frame;
+                    var win = frame.Content as WindowPage;
+                    var menu = Bridge.GetElem<Menu>(input.GetNamedString("ID"));
+
+                    win.setContextMenu(menu);
+                    Bridge.Return(returnID, null, null);
+                }
+                catch (Exception e)
+                {
+                    Bridge.Return(returnID, null, e.Message);
+                }
+            });
         }
 
         protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)

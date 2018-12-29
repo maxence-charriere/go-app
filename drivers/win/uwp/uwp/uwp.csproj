@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="bridge.cs" />
     <Compile Include="color.cs" />
+    <Compile Include="menu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WindowPage.xaml.cs">
       <DependentUpon>WindowPage.xaml</DependentUpon>

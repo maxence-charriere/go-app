@@ -9,6 +9,10 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid x:Name="Root">
-        <WebView x:Name="Webview" DefaultBackgroundColor="Transparent"  />
+        <WebView x:Name="Webview" DefaultBackgroundColor="Transparent">
+            <FlyoutBase.AttachedFlyout>
+                <MenuFlyout></MenuFlyout>
+            </FlyoutBase.AttachedFlyout>
+        </WebView>
     </Grid>
 </Page>

@@ -111,6 +111,9 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	d.goRPC.Handle("windows.OnCallback", handleWindow(onWindowCallback))
 	d.goRPC.Handle("windows.OnNavigate", handleWindow(onWindowNavigate))
 
+	d.goRPC.Handle("menus.OnClose", handleMenu(onMenuClose))
+	d.goRPC.Handle("menus.OnCallback", handleMenu(onMenuCallback))
+
 	ctx, cancel := context.WithCancel(context.Background())
 	d.stop = cancel
 	defer cancel()
@@ -192,6 +195,23 @@ func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
 // NewWindow satisfies the app.Driver interface.
 func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
 	return newWindow(c)
+}
+
+// NewContextMenu satisfies the app.Driver interface.
+func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
+	m := newMenu(c, "context menu")
+	if m.Err() != nil {
+		return m
+	}
+
+	err := d.winRPC.Call("driver.SetContextMenu", nil, struct {
+		ID string
+	}{
+		ID: m.ID(),
+	})
+
+	m.SetErr(err)
+	return m
 }
 
 // UI satisfies the app.Driver interface.

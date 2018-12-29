@@ -427,5 +427,33 @@ namespace uwp
                 }
             });
         }
+
+        public void setContextMenu(Menu menu)
+        {
+            var pos = Window.Current.CoreWindow.PointerPosition;
+            pos.X -= Window.Current.Bounds.X;
+            pos.Y -= Window.Current.Bounds.Y;
+
+            var root = menu.CompoRoot(menu.Root) as MenuContainer;
+            var flyout = new MenuFlyout();
+
+            flyout.Closed += async (s, e) =>
+            {
+                Bridge.DeleteElem(menu.ID);
+
+                var input = new JsonObject();
+                input["ID"] = JsonValue.CreateStringValue(menu.ID);
+
+                await Bridge.GoCall("menus.OnClose", input, true);
+            };
+
+            foreach (var item in root.item.Items)
+            {
+                flyout.Items.Add(item);
+            }
+
+            FlyoutBase.SetAttachedFlyout(this.Webview, flyout);
+            flyout.ShowAt(this.Webview, pos);
+        }
     }
 }
