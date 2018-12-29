@@ -259,6 +259,13 @@ namespace uwp
             if (child is MenuItem)
             {
                 var item = child as MenuItem;
+                    
+                if (item.separator != null)
+                {
+                    this.item.Items.Add(item.separator);
+                    return;
+                }
+
                 this.item.Items.Add(item.item);
                 return;
             }
@@ -273,6 +280,7 @@ namespace uwp
         public string compoID { get; set; }
         public string elemID { get; set; }
         public MenuFlyoutItem item { get; set; }
+        public MenuFlyoutSeparator separator { get; set; }
 
         public void setAttr(string key, string value)
         {
@@ -280,7 +288,21 @@ namespace uwp
             {
                 case "label":
                     item.Text = value;
-                    break;
+                    return;
+
+                case "separator":
+                    this.separator = new MenuFlyoutSeparator();
+
+                    if (this.item.Parent == null)
+                    {
+                        return;
+                    }
+
+                    var parent = this.item.Parent as MenuFlyoutSubItem;
+                    var idx = parent.Items.IndexOf(this.item);
+                    parent.Items.Insert(idx, this.separator);
+                    parent.Items.Remove(this.item);
+                    return;
             }
         }
 
@@ -290,7 +312,21 @@ namespace uwp
             {
                 case "label":
                     item.Text = "";
-                    break;
+                    return;
+
+                case "separator":
+                    if (this.item.Parent == null)
+                    {
+                        return;
+                    }
+
+                    var parent = this.item.Parent as MenuFlyoutSubItem;
+                    var idx = parent.Items.IndexOf(this.separator);
+                    parent.Items.Insert(idx, this.item);
+                    parent.Items.Remove(this.separator);
+
+                    this.separator = null;
+                    return;
             }
         }
     }
