@@ -60,7 +60,8 @@ func (c *Window) onUpdate(e app.Window) {
 	})
 }
 
-// OnMount initializes the available actions.
+// OnMount is the func called when the component is mounted. It initializes the
+// available actions.
 func (c *Window) OnMount() {
 	app.ElemByCompo(c).WhenWindow(func(w app.Window) {
 		c.onUpdate(w)
@@ -88,7 +89,7 @@ func (c *Window) OnMount() {
 				Name:        "Resize",
 				Description: "Resize the window to its original size {width: 1440, height: 720}.",
 				Action: func() {
-					w.Resize(1440, 720)
+					w.Resize(1280, 720)
 					c.Actions[2].Err = w.Err()
 					app.Render(c)
 				},
@@ -182,7 +183,7 @@ func (c *Window) Render() string {
 	</div>
 	<div class="Window-Actions">
 		<h1 class="TopTitle">Actions</h1>
-		<div class="Window-Action-List">
+		<div class="Window-ActionList">
 			{{range $idx, $v := .Actions}}
 			<div class="Window-Action" onclick="{{to "Actions" $idx "Action"}}">
 				<h2>

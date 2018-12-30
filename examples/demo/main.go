@@ -15,6 +15,7 @@ func main() {
 		&Window{},
 		&Menu{},
 		&ContextMenu{},
+		&TestMenu{},
 	)
 
 	defaultURL := "menu"
@@ -24,7 +25,11 @@ func main() {
 
 	app.Run(
 		&mac.Driver{
-			URL:       defaultURL,
+			URL: defaultURL,
+			MenubarConfig: mac.MenuBarConfig{
+				CustomURLs: []string{"testmenu"},
+			},
+			DockURL:   "testmenu",
 			URLScheme: "goapp-demo",
 			SupportedFiles: []mac.FileType{
 				{

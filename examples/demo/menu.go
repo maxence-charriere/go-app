@@ -5,7 +5,19 @@ import (
 )
 
 // Menu is a component that contains menu related examples.
-type Menu app.ZeroCompo
+type Menu struct {
+	SupportsMenuBar bool
+	SupportsDock    bool
+	DockBadge       bool
+	DockCustomIcon  bool
+}
+
+// OnMount is the func called when the component is mounted.
+func (m *Menu) OnMount() {
+	m.SupportsMenuBar = app.MenuBar().Err() != app.ErrNotSupported
+	m.SupportsDock = app.Dock().Err() != app.ErrNotSupported
+	app.Render(m)
+}
 
 // Render returns a html string that describes the component.
 func (m *Menu) Render() string {
@@ -27,6 +39,40 @@ func (m *Menu) Render() string {
 	</div>
 	<div class="Menu-Others">
 		<h1>Other menus</h1>
+		<div class="Menu-OthersContent">
+			{{if .SupportsMenuBar}}
+			<div class="Menu-OthersItem">
+				<h2>Menu Bar</h2>
+				<p>
+					Take a look in the menu bar at the top of the screen and click
+					on the "Test menu" section to show the testing menu.
+				</p>
+			</div>
+			{{end}}
+
+			{{if .SupportsDock}}
+			<div class="Menu-OthersItem">
+				<h2>Dock</h2>
+				<p>
+					Right click on the app dock icon to show the testing menu. Other
+					docks actions are available below.
+				</p>
+				<ul>
+					{{if .DockBadge}}
+					<li><a onclick="OnRemoveDockBadge">Remove bagde</a></li>
+					{{else}}
+					<li><a onclick="OnSetDockBadge">Set badge</a></li>
+					{{end}}
+
+					{{if .DockCustomIcon}}
+					<li><a onclick="OnRemoveDockCustomIcon">Remove custom icon</a></li>
+					{{else}}
+					<li><a onclick="OnSetDockCustomIcon">Set custom icon</a></li>
+					{{end}}
+				</ul>
+			</div>
+			{{end}}
+		</div>
 	</div>
 </div>
 	`
@@ -35,6 +81,35 @@ func (m *Menu) Render() string {
 // OnContextMenu is the function called to display a context menu.
 func (m *Menu) OnContextMenu() {
 	app.NewContextMenu("contextmenu")
+}
+
+// OnSetDockBadge is the function called when "Set badge" is clicked.
+func (m *Menu) OnSetDockBadge() {
+	app.Dock().SetBadge("hello")
+	m.DockBadge = true
+	app.Render(m)
+}
+
+// OnRemoveDockBadge is the function called when "Remove bagde" is clicked.
+func (m *Menu) OnRemoveDockBadge() {
+	app.Dock().SetBadge(nil)
+	m.DockBadge = false
+	app.Render(m)
+}
+
+// OnSetDockCustomIcon is the function called when "Set custom icon" is clicked.
+func (m *Menu) OnSetDockCustomIcon() {
+	app.Dock().SetIcon(app.Resources("like.png"))
+	m.DockCustomIcon = true
+	app.Render(m)
+}
+
+// OnRemoveDockCustomIcon is the function called when "Remove custom icon" is
+// clicked.
+func (m *Menu) OnRemoveDockCustomIcon() {
+	app.Dock().SetIcon("")
+	m.DockCustomIcon = false
+	app.Render(m)
 }
 
 // ContextMenu is a component that describes a context menu.
@@ -49,6 +124,21 @@ func (m *ContextMenu) Render() string {
 	<menuitem label="Paste" keys="cmdorctrl+v" selector="paste:"></menuitem>
 	<menuitem separator></menuitem>
 	<menuitem label="Select All" keys="cmdorctrl+a" selector="selectAll:"></menuitem>
+</menu>
+	`
+}
+
+// TestMenu is a component that describes a menu for testing.
+type TestMenu struct {
+	ShowSeparator bool
+}
+
+// Render returns a html string that describes the component.
+func (m *TestMenu) Render() string {
+	return `
+<menu label="Test menu">
+	<menuitem label="Hello"></menuitem>
+	<menuitem label="Hello with Icon" icon="{{resources "logo.png"}}"></menuitem>
 </menu>
 	`
 }
