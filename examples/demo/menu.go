@@ -131,14 +131,45 @@ func (m *ContextMenu) Render() string {
 // TestMenu is a component that describes a menu for testing.
 type TestMenu struct {
 	ShowSeparator bool
+	Disable       string
 }
 
 // Render returns a html string that describes the component.
 func (m *TestMenu) Render() string {
 	return `
 <menu label="Test menu">
-	<menuitem label="Hello"></menuitem>
-	<menuitem label="Hello with Icon" icon="{{resources "logo.png"}}"></menuitem>
+	<menuitem label="Hello" onclick="OnHelloClick" {{.Disable}}></menuitem>
+	<menuitem label="Hello with Icon" 
+			  icon="{{resources "logo.png"}}" 
+			  onclick="OnHelloClick"
+			  {{.Disable}}></menuitem>
+	<menuitem label="Hello with bad onclick" onclick="unknown" {{.Disable}}></menuitem>
+	<menuitem label="Hello without onclick" {{.Disable}}></menuitem>
+	<menuitem label="Disabled Hello" onclick="OnHelloClick" disabled></menuitem>
+	<menuitem separator></menuitem>
+
+	{{if .Disable}}
+	<menuitem label="Enable all" onclick="OnEnableAll"></menuitem>
+	{{else}}
+	<menuitem label="Disable all" onclick="OnDisableAll"></menuitem>
+	{{end}}
 </menu>
 	`
+}
+
+// OnHelloClick is the function called when a hello button is clicked.
+func (m *TestMenu) OnHelloClick() {
+	app.Log("hello clicked")
+}
+
+// OnEnableAll is the function called when the "Enable all" button is clicked.
+func (m *TestMenu) OnEnableAll() {
+	m.Disable = ""
+	app.Render(m)
+}
+
+// OnDisableAll is the function called when the "Disable all" button is clicked.
+func (m *TestMenu) OnDisableAll() {
+	m.Disable = "disabled"
+	app.Render(m)
 }
