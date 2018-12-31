@@ -119,11 +119,11 @@ type ContextMenu app.ZeroCompo
 func (m *ContextMenu) Render() string {
 	return `
 <menu>
-	<menuitem label="Cut" keys="cmdorctrl+x" selector="cut:"></menuitem>
-	<menuitem label="Copy" keys="cmdorctrl+c" selector="copy:"></menuitem>
-	<menuitem label="Paste" keys="cmdorctrl+v" selector="paste:"></menuitem>
-	<menuitem separator></menuitem>
-	<menuitem label="Select All" keys="cmdorctrl+a" selector="selectAll:"></menuitem>
+	<menuitem label="Cut" keys="cmdorctrl+x" selector="cut:">
+	<menuitem label="Copy" keys="cmdorctrl+c" selector="copy:">
+	<menuitem label="Paste" keys="cmdorctrl+v" selector="paste:">
+	<menuitem separator>
+	<menuitem label="Select All" keys="cmdorctrl+a" selector="selectAll:">
 </menu>
 	`
 }
@@ -131,27 +131,51 @@ func (m *ContextMenu) Render() string {
 // TestMenu is a component that describes a menu for testing.
 type TestMenu struct {
 	ShowSeparator bool
-	Disable       string
+	ShowSubMenu   bool
+
+	Disable string
 }
 
 // Render returns a html string that describes the component.
 func (m *TestMenu) Render() string {
 	return `
 <menu label="Test menu">
-	<menuitem label="Hello" onclick="OnHelloClick" {{.Disable}}></menuitem>
+	<menuitem label="Hello" onclick="OnHelloClick" {{.Disable}}>
 	<menuitem label="Hello with Icon" 
 			  icon="{{resources "logo.png"}}" 
 			  onclick="OnHelloClick"
-			  {{.Disable}}></menuitem>
-	<menuitem label="Hello with bad onclick" onclick="unknown" {{.Disable}}></menuitem>
-	<menuitem label="Hello without onclick" {{.Disable}}></menuitem>
-	<menuitem label="Disabled Hello" onclick="OnHelloClick" disabled></menuitem>
-	<menuitem separator></menuitem>
+			  {{.Disable}}>
+	<menuitem label="Hello with bad onclick" onclick="unknown" {{.Disable}}>
+	<menuitem label="Hello without onclick" {{.Disable}}>
+	<menuitem label="Disabled Hello" onclick="OnHelloClick" disabled>
+	<menuitem separator>
+
+	<menu label="Sub hello" {{.Disable}}>
+		<menuitem label="World">
+
+		{{if .ShowSeparator}}
+		<menuitem separator>
+		<menuitem label="Remove separator above" onclick="ToggleSeparator">
+		{{else}}
+		<menuitem label="Add separator below" onclick="ToggleSeparator">
+		{{end}}
+
+		<menuitem separator>
+		{{if .ShowSubMenu}}
+		<menu label="Sub menu">
+			<menuitem label="Transform to item" onclick="ToggleSubMenu">
+		</menu>
+		{{else}}
+		<menuitem label="Transform to menu" onclick="ToggleSubMenu">
+		{{end}}
+		
+	</menu>
+	<menuitem separator>
 
 	{{if .Disable}}
-	<menuitem label="Enable all" onclick="OnEnableAll"></menuitem>
+	<menuitem label="Enable all" onclick="ToggleEnableAll">
 	{{else}}
-	<menuitem label="Disable all" onclick="OnDisableAll"></menuitem>
+	<menuitem label="Disable all" onclick="ToggleEnableAll">
 	{{end}}
 </menu>
 	`
@@ -162,14 +186,27 @@ func (m *TestMenu) OnHelloClick() {
 	app.Log("hello clicked")
 }
 
-// OnEnableAll is the function called when the "Enable all" button is clicked.
-func (m *TestMenu) OnEnableAll() {
-	m.Disable = ""
+// ToggleEnableAll is the function called to enable or disable all the menu
+// buttons.
+func (m *TestMenu) ToggleEnableAll() {
+	if len(m.Disable) != 0 {
+		m.Disable = ""
+	} else {
+		m.Disable = "disabled"
+	}
+
 	app.Render(m)
 }
 
-// OnDisableAll is the function called when the "Disable all" button is clicked.
-func (m *TestMenu) OnDisableAll() {
-	m.Disable = "disabled"
+// ToggleSeparator is the function called to show or hide the Sub hello
+// separator.
+func (m *TestMenu) ToggleSeparator() {
+	m.ShowSeparator = !m.ShowSeparator
+	app.Render(m)
+}
+
+// ToggleSubMenu is the function called to perform item/submenu transforms.
+func (m *TestMenu) ToggleSubMenu() {
+	m.ShowSubMenu = !m.ShowSubMenu
 	app.Render(m)
 }
