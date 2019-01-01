@@ -13,8 +13,6 @@ import (
 // StatusMenu represents a menu that lives in the status bar.
 type StatusMenu struct {
 	Menu
-
-	onClose func()
 }
 
 func newStatusMenu(c app.StatusMenuConfig) *StatusMenu {
@@ -33,8 +31,6 @@ func newStatusMenu(c app.StatusMenuConfig) *StatusMenu {
 			typ:            "status menu",
 			keepWhenClosed: true,
 		},
-
-		onClose: c.OnClose,
 	}
 
 	s.dom.Sync = s.render

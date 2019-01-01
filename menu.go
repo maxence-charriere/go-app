@@ -40,9 +40,6 @@ type StatusMenuConfig struct {
 
 	// The URL of the component to load when the status menu is created.
 	URL string
-
-	// The function that is called when the status menu is closed.
-	OnClose func() `json:"-"`
 }
 
 // DockTile is the interface that describes a dock tile.

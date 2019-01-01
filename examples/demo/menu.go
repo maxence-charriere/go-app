@@ -7,16 +7,35 @@ import (
 // Menu is a component that contains menu related examples.
 type Menu struct {
 	SupportsMenuBar bool
-	SupportsDock    bool
-	DockBadge       bool
-	DockCustomIcon  bool
+
+	SupportsDock   bool
+	DockBadge      bool
+	DockCustomIcon bool
+
+	SupportsStatusMenu bool
+	StatusText         bool
+	StatusIcon         bool
+	statusMenu         app.StatusMenu
 }
 
 // OnMount is the func called when the component is mounted.
 func (m *Menu) OnMount() {
 	m.SupportsMenuBar = app.MenuBar().Err() != app.ErrNotSupported
 	m.SupportsDock = app.Dock().Err() != app.ErrNotSupported
+
+	m.statusMenu = app.NewStatusMenu(app.StatusMenuConfig{
+		Icon: app.Resources("logo.png"),
+		URL:  "testmenu",
+	})
+	m.StatusIcon = true
+	m.SupportsStatusMenu = m.statusMenu.Err() != app.ErrNotSupported
+
 	app.Render(m)
+}
+
+// OnDismount is the func called when the component is dismounted.
+func (m *Menu) OnDismount() {
+	m.statusMenu.Close()
 }
 
 // Render returns a html string that describes the component.
@@ -44,8 +63,8 @@ func (m *Menu) Render() string {
 			<div class="Menu-OthersItem">
 				<h2>Menu Bar</h2>
 				<p>
-					Take a look in the menu bar at the top of the screen and click
-					on the "Test menu" section to show the testing menu.
+					Take a look in the menu bar at the top of the screen and 
+					click on the "Test menu" section to show the testing menu.
 				</p>
 			</div>
 			{{end}}
@@ -54,20 +73,43 @@ func (m *Menu) Render() string {
 			<div class="Menu-OthersItem">
 				<h2>Dock</h2>
 				<p>
-					Right click on the app dock icon to show the testing menu. Other
-					docks actions are available below.
+					Right click on the app dock icon to show the testing menu. 
+					Other docks actions are available below.
 				</p>
 				<ul>
 					{{if .DockBadge}}
-					<li><a onclick="OnRemoveDockBadge">Remove bagde</a></li>
+					<li><a onclick="ToggleDockBadge">Remove bagde</a></li>
 					{{else}}
-					<li><a onclick="OnSetDockBadge">Set badge</a></li>
+					<li><a onclick="ToggleDockBadge">Set badge</a></li>
 					{{end}}
 
 					{{if .DockCustomIcon}}
-					<li><a onclick="OnRemoveDockCustomIcon">Remove custom icon</a></li>
+					<li><a onclick="ToggleDockCustomIcon">Remove custom icon</a></li>
 					{{else}}
-					<li><a onclick="OnSetDockCustomIcon">Set custom icon</a></li>
+					<li><a onclick="ToggleDockCustomIcon">Set custom icon</a></li>
+					{{end}}
+				</ul>
+			</div>
+			{{end}}
+
+			{{if .SupportsStatusMenu}}
+			<div class="Menu-OthersItem">
+				<h2>Status menu</h2>
+				<p>
+					Click on the app icon in the status menu to show the testing 
+					menu. Other status menu actions are available below.
+				</p>
+				<ul>
+					{{if .DockBadge}}
+					<li><a onclick="ToggleStatusText">Remove text</a></li>
+					{{else}}
+					<li><a onclick="ToggleStatusText">Set text</a></li>
+					{{end}}
+
+					{{if .DockCustomIcon}}
+					<li><a onclick="ToggleStatusIcon">Remove icon</a></li>
+					{{else}}
+					<li><a onclick="ToggleStatusIcon">Set icon</a></li>
 					{{end}}
 				</ul>
 			</div>
@@ -83,32 +125,60 @@ func (m *Menu) OnContextMenu() {
 	app.NewContextMenu("contextmenu")
 }
 
-// OnSetDockBadge is the function called when "Set badge" is clicked.
-func (m *Menu) OnSetDockBadge() {
-	app.Dock().SetBadge("hello")
-	m.DockBadge = true
+// ToggleDockBadge is the function called the show/hide the dock badge.
+func (m *Menu) ToggleDockBadge() {
+	if m.DockBadge {
+		app.Dock().SetBadge(nil)
+	} else {
+		app.Dock().SetBadge("hello")
+	}
+
+	m.DockBadge = !m.DockBadge
 	app.Render(m)
 }
 
-// OnRemoveDockBadge is the function called when "Remove bagde" is clicked.
-func (m *Menu) OnRemoveDockBadge() {
-	app.Dock().SetBadge(nil)
-	m.DockBadge = false
-	app.Render(m)
-}
+// ToggleDockCustomIcon is the function called the show/hide the dock custom
+// icon.
+func (m *Menu) ToggleDockCustomIcon() {
+	if m.DockCustomIcon {
+		app.Dock().SetIcon("")
+	} else {
+		app.Dock().SetIcon(app.Resources("like.png"))
+	}
 
-// OnSetDockCustomIcon is the function called when "Set custom icon" is clicked.
-func (m *Menu) OnSetDockCustomIcon() {
-	app.Dock().SetIcon(app.Resources("like.png"))
 	m.DockCustomIcon = true
 	app.Render(m)
 }
 
-// OnRemoveDockCustomIcon is the function called when "Remove custom icon" is
-// clicked.
-func (m *Menu) OnRemoveDockCustomIcon() {
-	app.Dock().SetIcon("")
-	m.DockCustomIcon = false
+// ToggleStatusText is the function called the show/hide the status menu text.
+func (m *Menu) ToggleStatusText() {
+	if m.StatusText {
+		m.statusMenu.SetText("")
+
+		if !m.StatusIcon {
+			m.ToggleStatusIcon()
+		}
+	} else {
+		m.statusMenu.SetText("goapp-demo")
+	}
+
+	m.StatusText = !m.StatusText
+	app.Render(m)
+}
+
+// ToggleStatusIcon is the function called the show/hide the status menu icon.
+func (m *Menu) ToggleStatusIcon() {
+	if m.StatusIcon {
+		m.statusMenu.SetIcon("")
+
+		if !m.StatusText {
+			m.ToggleStatusText()
+		}
+	} else {
+		m.statusMenu.SetIcon(app.Resources("logo.png"))
+	}
+
+	m.StatusIcon = !m.StatusIcon
 	app.Render(m)
 }
 
