@@ -417,6 +417,7 @@ p {
 a {
     color: currentColor;
     text-decoration: none;
+    cursor: pointer;
 }
 
 a:hover {

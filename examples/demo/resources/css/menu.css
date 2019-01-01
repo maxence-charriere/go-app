@@ -1,0 +1,40 @@
+.Menu-ContextMenu {
+    background-color: rgba(0, 0, 0, 0.25);
+    min-width: 400px;
+    max-width: 400px;
+}
+
+.Menu-CopyPasteArea {
+    display: block;
+    width: calc(100% - 48px - 24px);
+    height: 110px;
+    resize: none;
+    margin: 3px 24px 6px;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    overflow: hidden;
+    outline: none;
+    color: currentColor;
+    background-color: rgba(0, 0, 0, 0.3);
+    font-size: 11pt;
+    font-weight: 300;
+    font-family: inherit;
+}
+
+.Menu-Others {
+    background-color: rgba(0, 0, 0, 0.5);
+    flex-grow: 1;
+    height: 100%;
+    width: 100%;
+}
+
+.Menu-OthersContent {
+    margin: 0;
+    overflow-y: auto;
+    height: calc(100% - 1px - 32px - 38px);
+}
+
+.Menu-OthersItem {
+    margin-bottom: 6px;
+}

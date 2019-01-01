@@ -1,6 +1,6 @@
-// +build darwin,amd64
+// +build windows
 
-package mac
+package win
 
 import (
 	"encoding/json"
@@ -43,7 +43,7 @@ func newMenu(c app.MenuConfig, typ string) *Menu {
 
 	m.dom.Sync = m.render
 
-	if err := driver.macRPC.Call("menus.New", nil, struct {
+	if err := driver.winRPC.Call("menus.New", nil, struct {
 		ID string
 	}{
 		ID: m.id,
@@ -83,7 +83,7 @@ func (m *Menu) Load(urlFmt string, v ...interface{}) {
 
 	m.compo = c
 
-	if err = driver.macRPC.Call("menus.Load", nil, struct {
+	if err = driver.winRPC.Call("menus.Load", nil, struct {
 		ID string
 	}{
 		ID: m.id,
@@ -123,7 +123,7 @@ func (m *Menu) render(changes interface{}) error {
 		return errors.Wrap(err, "encode changes failed")
 	}
 
-	return driver.macRPC.Call("menus.Render", nil, struct {
+	return driver.winRPC.Call("menus.Render", nil, struct {
 		ID      string
 		Changes string
 	}{
@@ -168,25 +168,7 @@ func onMenuCallback(m *Menu, in map[string]interface{}) interface{} {
 }
 
 func onMenuClose(m *Menu, in map[string]interface{}) interface{} {
-	if m.keepWhenClosed {
-		return nil
-	}
-
-	// menuDidClose: is called before clicked:.
-	// We call CallOnUIGoroutine in order to defer the close operation
-	// after the clicked one.
-	driver.UI(func() {
-		if err := driver.macRPC.Call("menus.Delete", nil, struct {
-			ID string
-		}{
-			ID: m.id,
-		}); err != nil {
-			app.Panic(errors.Wrap(err, "onMenuClose"))
-		}
-
-		driver.elems.Delete(m)
-	})
-
+	driver.elems.Delete(m)
 	return nil
 }
 
@@ -198,12 +180,6 @@ func handleMenu(h func(m *Menu, in map[string]interface{}) interface{}) bridge.G
 		switch m := e.(type) {
 		case *Menu:
 			return h(m, in)
-
-		case *DockTile:
-			return h(&m.Menu, in)
-
-		case *StatusMenu:
-			return h(&m.Menu, in)
 
 		default:
 			app.Panic("menu not supported")

@@ -13,16 +13,23 @@ func main() {
 		&Hello{},
 		&Open{},
 		&Window{},
+		&Menu{},
+		&ContextMenu{},
+		&TestMenu{},
 	)
 
-	defaultURL := "open"
+	defaultURL := "menu"
 
 	app.NewSubscriber().
 		Subscribe(app.Closed, func() { app.Log("goodbye") })
 
 	app.Run(
 		&mac.Driver{
-			URL:       defaultURL,
+			URL: defaultURL,
+			MenubarConfig: mac.MenuBarConfig{
+				CustomURLs: []string{"testmenu"},
+			},
+			DockURL:   "testmenu",
 			URLScheme: "goapp-demo",
 			SupportedFiles: []mac.FileType{
 				{

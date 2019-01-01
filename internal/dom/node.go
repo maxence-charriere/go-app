@@ -71,21 +71,22 @@ var (
 	svg             = "http://www.w3.org/2000/svg"
 	svgSpecialAttrs map[string]string
 	voidElems       = map[string]struct{}{
-		"area":   {},
-		"base":   {},
-		"br":     {},
-		"col":    {},
-		"embed":  {},
-		"hr":     {},
-		"img":    {},
-		"input":  {},
-		"keygen": {},
-		"link":   {},
-		"meta":   {},
-		"param":  {},
-		"source": {},
-		"track":  {},
-		"wbr":    {},
+		"area":     {},
+		"base":     {},
+		"br":       {},
+		"col":      {},
+		"embed":    {},
+		"hr":       {},
+		"img":      {},
+		"input":    {},
+		"keygen":   {},
+		"link":     {},
+		"meta":     {},
+		"param":    {},
+		"source":   {},
+		"track":    {},
+		"wbr":      {},
+		"menuitem": {},
 	}
 )
 
