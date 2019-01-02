@@ -65,8 +65,8 @@
     return;
   }
 
-  if ([key isEqual:@"selector"]) {
-    self.selector = value;
+  if ([key isEqual:@"role"]) {
+    self.selector = [[Driver current] selectorFromRole:value];
     [self setupOnClick];
     return;
   }
@@ -118,7 +118,7 @@
     return;
   }
 
-  if ([key isEqual:@"selector"]) {
+  if ([key isEqual:@"role"]) {
     self.selector = nil;
     [self setupOnClick];
     return;
@@ -177,8 +177,8 @@
     return;
   }
 
-  if (self.selector != nil && self.selector.length > 0) {
-    self.action = NSSelectorFromString(self.selector);
+  if (self.selector != nil) {
+    self.action = self.selector;
     return;
   }
 
