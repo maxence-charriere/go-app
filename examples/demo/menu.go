@@ -189,11 +189,11 @@ type ContextMenu app.ZeroCompo
 func (m *ContextMenu) Render() string {
 	return `
 <menu>
-	<menuitem label="Cut" keys="cmdorctrl+x" selector="cut:">
-	<menuitem label="Copy" keys="cmdorctrl+c" selector="copy:">
-	<menuitem label="Paste" keys="cmdorctrl+v" selector="paste:">
+	<menuitem label="Cut" keys="cmdorctrl+x" role="cut">
+	<menuitem label="Copy" keys="cmdorctrl+c" role="copy">
+	<menuitem label="Paste" keys="cmdorctrl+v" role="paste">
 	<menuitem separator>
-	<menuitem label="Select All" keys="cmdorctrl+a" selector="selectAll:">
+	<menuitem label="Select All" keys="cmdorctrl+a" role="selectAll">
 </menu>
 	`
 }

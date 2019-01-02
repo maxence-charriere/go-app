@@ -31,6 +31,32 @@
   self.macRPC = [[MacRPC alloc] init];
   self.goRPC = [[GoRPC alloc] init];
 
+  self.roles = @{
+    @"undo" : @"undo:",
+    @"redo" : @"redo:",
+    @"cut" : @"cut:",
+    @"copy" : @"copy:",
+    @"paste" : @"paste:",
+    @"pasteAndMatchStyle" : @"pasteAsPlainText:",
+    @"selectAll" : @"selectAll:",
+    @"delete" : @"delete:",
+    @"minimize" : @"performMiniaturize:",
+    @"close" : @"performClose:",
+    @"quit" : @"terminate:",
+    @"reload" : @"reload:",
+    @"forceReload" : @"reloadFromOrigin:",
+    @"toggleFullScreen" : @"toggleFullScreen:",
+
+    @"about" : @"orderFrontStandardAboutPanel:",
+    @"hide" : @"hide:",
+    @"hideOthers" : @"hideOtherApplications:",
+    @"unhide" : @"unhideAllApplications:",
+    @"startSpeaking" : @"startSpeaking:",
+    @"stopSpeaking" : @"stopSpeaking:",
+    @"front" : @"arrangeInFront:",
+    @"zoom" : @"performZoom:",
+  };
+
   // Driver handlers.
   [self.macRPC handle:@"driver.Run"
           withHandler:^(id in, NSString *returnID) {
@@ -236,6 +262,16 @@
   }
   return [NSString stringWithFormat:@"%@/%@", applicationSupportDirectory,
                                     mainBundle.bundleIdentifier];
+}
+
+- (SEL)selectorFromRole:(NSString *)role {
+  NSString *selector = self.roles[role];
+
+  if (selector == nil) {
+    return nil;
+  }
+
+  return NSSelectorFromString(selector);
 }
 
 - (void)setContextMenu:(NSString *)menuID return:(NSString *)returnID {

@@ -9,7 +9,7 @@
 @property NSString *compoID;
 @property NSString *elemID;
 @property NSString *onClick;
-@property NSString *selector;
+@property SEL selector;
 @property NSString *keys;
 @property NSString *icon;
 @property NSMenuItem *separator;

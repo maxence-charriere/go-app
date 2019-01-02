@@ -105,18 +105,18 @@ func (m *AppMenu) OnMount() {
 func (m *AppMenu) Render() string {
 	return `
 <menu>
-	<menuitem label="About {{.AppName}}" selector="orderFrontStandardAboutPanel:">
+	<menuitem label="About {{.AppName}}" role="about">
 	<menuitem separator>
 
 	<menuitem label="Preferences…" keys="cmdorctrl+," onclick="OnPreferences">
 	<menuitem separator>
 
-	<menuitem label="Hide {{.AppName}}" keys="cmdorctrl+h" selector="hide:">
-	<menuitem label="Hide Others" keys="cmdorctrl+alt+h" selector="hideOtherApplications:">
-	<menuitem label="Show All" selector="unhideAllApplications:">
+	<menuitem label="Hide {{.AppName}}" keys="cmdorctrl+h" role="hide">
+	<menuitem label="Hide Others" keys="cmdorctrl+alt+h" role="hideOthers">
+	<menuitem label="Show All" role="unhide">
 	<menuitem separator>
 
-	<menuitem label="Quit {{.AppName}}" keys="cmdorctrl+q" selector="terminate:">
+	<menuitem label="Quit {{.AppName}}" keys="cmdorctrl+q" role="quit">
 </menu>
 	`
 }
@@ -133,15 +133,15 @@ type EditMenu app.ZeroCompo
 func (m *EditMenu) Render() string {
 	return `
 <menu label="Edit">
-	<menuitem label="Undo" keys="cmdorctrl+z" selector="undo:">
-	<menuitem label="Redo" keys="cmdorctrl+shift+z" selector="redo:">
+	<menuitem label="Undo" keys="cmdorctrl+z" role="undo">
+	<menuitem label="Redo" keys="cmdorctrl+shift+z" role="redo">
 	<menuitem separator>
-	<menuitem label="Cut" keys="cmdorctrl+x" selector="cut:">
-	<menuitem label="Copy" keys="cmdorctrl+c" selector="copy:">
-	<menuitem label="Paste" keys="cmdorctrl+v" selector="paste:">
-	<menuitem label="Paste and Match Style" keys="shift+alt+cmdorctrl+v" selector="pasteAsPlainText:">
-	<menuitem label="Delete" selector="delete:">
-	<menuitem label="Select All" keys="cmdorctrl+a" selector="selectAll:">
+	<menuitem label="Cut" keys="cmdorctrl+x" role="cut">
+	<menuitem label="Copy" keys="cmdorctrl+c" role="copy">
+	<menuitem label="Paste" keys="cmdorctrl+v" role="paste">
+	<menuitem label="Paste and Match Style" keys="shift+alt+cmdorctrl+v" role="pasteAndMatchStyle">
+	<menuitem label="Delete" role="delete">
+	<menuitem label="Select All" keys="cmdorctrl+a" role="selectAll">
 </menu>
 	`
 }
@@ -153,11 +153,11 @@ type WindowMenu app.ZeroCompo
 func (m *WindowMenu) Render() string {
 	return `
 <menu label="Window">
-	<menuitem label="Minimize" keys="cmdorctrl+m" selector="performMiniaturize:">
-	<menuitem label="Zoom" selector="performZoom:">
+	<menuitem label="Minimize" keys="cmdorctrl+m" role="minimize">
+	<menuitem label="Zoom" role="zoom">
 	<menuitem separator>
-	<menuitem label="Bring All to Front" selector="arrangeInFront:">
-	<menuitem label="Close" keys="cmdorctrl+w" selector="performClose:">
+	<menuitem label="Bring All to Front" role="arrangeInFront">
+	<menuitem label="Close" keys="cmdorctrl+w" role="close">
 </menu>
 	`
 }
