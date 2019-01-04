@@ -16,7 +16,6 @@ import (
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/drivers/mac/objc"
-	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 	"github.com/pkg/errors"
 )
@@ -59,45 +58,45 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	d.events = c.Events
 	d.elems = core.NewElemDB()
 	d.devID = generateDevID()
-	d.macRPC, d.goRPC = objc.RPC(d.UI)
+	d.platform, d.golang = objc.RPC(d.UI)
 	driver = d
 
-	d.goRPC.Handle("driver.OnRun", d.onRun)
-	d.goRPC.Handle("driver.OnFocus", d.onFocus)
-	d.goRPC.Handle("driver.OnBlur", d.onBlur)
-	d.goRPC.Handle("driver.OnReopen", d.onReopen)
-	d.goRPC.Handle("driver.OnFilesOpen", d.onFilesOpen)
-	d.goRPC.Handle("driver.OnURLOpen", d.onURLOpen)
-	d.goRPC.Handle("driver.OnFileDrop", d.onFileDrop)
-	d.goRPC.Handle("driver.OnClose", d.onClose)
+	d.golang.Handle("driver.OnRun", d.onRun)
+	d.golang.Handle("driver.OnFocus", d.onFocus)
+	d.golang.Handle("driver.OnBlur", d.onBlur)
+	d.golang.Handle("driver.OnReopen", d.onReopen)
+	d.golang.Handle("driver.OnFilesOpen", d.onFilesOpen)
+	d.golang.Handle("driver.OnURLOpen", d.onURLOpen)
+	d.golang.Handle("driver.OnFileDrop", d.onFileDrop)
+	d.golang.Handle("driver.OnClose", d.onClose)
 
-	d.goRPC.Handle("windows.OnMove", handleWindow(onWindowMove))
-	d.goRPC.Handle("windows.OnResize", handleWindow(onWindowResize))
-	d.goRPC.Handle("windows.OnFocus", handleWindow(onWindowFocus))
-	d.goRPC.Handle("windows.OnBlur", handleWindow(onWindowBlur))
-	d.goRPC.Handle("windows.OnFullScreen", handleWindow(onWindowFullScreen))
-	d.goRPC.Handle("windows.OnExitFullScreen", handleWindow(onWindowExitFullScreen))
-	d.goRPC.Handle("windows.OnMinimize", handleWindow(onWindowMinimize))
-	d.goRPC.Handle("windows.OnDeminimize", handleWindow(onWindowDeminimize))
-	d.goRPC.Handle("windows.OnClose", handleWindow(onWindowClose))
-	d.goRPC.Handle("windows.OnCallback", handleWindow(onWindowCallback))
-	d.goRPC.Handle("windows.OnNavigate", handleWindow(onWindowNavigate))
-	d.goRPC.Handle("windows.OnAlert", handleWindow(onWindowAlert))
+	d.golang.Handle("windows.OnMove", handleWindow(onWindowMove))
+	d.golang.Handle("windows.OnResize", handleWindow(onWindowResize))
+	d.golang.Handle("windows.OnFocus", handleWindow(onWindowFocus))
+	d.golang.Handle("windows.OnBlur", handleWindow(onWindowBlur))
+	d.golang.Handle("windows.OnFullScreen", handleWindow(onWindowFullScreen))
+	d.golang.Handle("windows.OnExitFullScreen", handleWindow(onWindowExitFullScreen))
+	d.golang.Handle("windows.OnMinimize", handleWindow(onWindowMinimize))
+	d.golang.Handle("windows.OnDeminimize", handleWindow(onWindowDeminimize))
+	d.golang.Handle("windows.OnClose", handleWindow(onWindowClose))
+	d.golang.Handle("windows.OnCallback", handleWindow(onWindowCallback))
+	d.golang.Handle("windows.OnNavigate", handleWindow(onWindowNavigate))
+	d.golang.Handle("windows.OnAlert", handleWindow(onWindowAlert))
 
-	d.goRPC.Handle("menus.OnClose", handleMenu(onMenuClose))
-	d.goRPC.Handle("menus.OnCallback", handleMenu(onMenuCallback))
+	d.golang.Handle("menus.OnClose", handleMenu(onMenuClose))
+	d.golang.Handle("menus.OnCallback", handleMenu(onMenuCallback))
 
-	d.goRPC.Handle("controller.OnDirectionChange", handleController(onControllerDirectionChange))
-	d.goRPC.Handle("controller.OnButtonPressed", handleController(onControllerButtonPressed))
-	d.goRPC.Handle("controller.OnConnected", handleController(onControllerConnected))
-	d.goRPC.Handle("controller.OnDisconnected", handleController(onControllerDisconnected))
-	d.goRPC.Handle("controller.OnPause", handleController(onControllerPause))
-	d.goRPC.Handle("controller.OnClose", handleController(onControllerClose))
+	d.golang.Handle("controller.OnDirectionChange", handleController(onControllerDirectionChange))
+	d.golang.Handle("controller.OnButtonPressed", handleController(onControllerButtonPressed))
+	d.golang.Handle("controller.OnConnected", handleController(onControllerConnected))
+	d.golang.Handle("controller.OnDisconnected", handleController(onControllerDisconnected))
+	d.golang.Handle("controller.OnPause", handleController(onControllerPause))
+	d.golang.Handle("controller.OnClose", handleController(onControllerClose))
 
-	d.goRPC.Handle("filePanels.OnSelect", handleFilePanel(onFilePanelSelect))
-	d.goRPC.Handle("saveFilePanels.OnSelect", handleSaveFilePanel(onSaveFilePanelSelect))
+	d.golang.Handle("filePanels.OnSelect", handleFilePanel(onFilePanelSelect))
+	d.golang.Handle("saveFilePanels.OnSelect", handleSaveFilePanel(onSaveFilePanelSelect))
 
-	d.goRPC.Handle("notifications.OnReply", handleNotification(onNotificationReply))
+	d.golang.Handle("notifications.OnReply", handleNotification(onNotificationReply))
 
 	ctx, cancel := context.WithCancel(context.Background())
 	d.stop = cancel
@@ -108,7 +107,7 @@ func (d *Driver) Run(c app.DriverConfig) error {
 		for {
 			select {
 			case <-ctx.Done():
-				d.macRPC.Call("driver.Terminate", nil, nil)
+				d.platform.Call("driver.Terminate", nil, nil)
 				return
 
 			case fn := <-d.ui:
@@ -117,7 +116,7 @@ func (d *Driver) Run(c app.DriverConfig) error {
 		}
 	}()
 
-	err := d.macRPC.Call("driver.Run", nil, nil)
+	err := d.platform.Call("driver.Run", nil, nil)
 	return err
 }
 
@@ -151,7 +150,7 @@ func (d *Driver) AppName() string {
 		AppName string
 	}{}
 
-	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
+	if err := d.platform.Call("driver.Bundle", &out, nil); err != nil {
 		app.Panic(err)
 	}
 
@@ -173,7 +172,7 @@ func (d *Driver) Resources(path ...string) string {
 		Resources string
 	}{}
 
-	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
+	if err := d.platform.Call("driver.Bundle", &out, nil); err != nil {
 		app.Panic(err)
 	}
 
@@ -215,7 +214,7 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 		return m
 	}
 
-	err := d.macRPC.Call("driver.SetContextMenu", nil, m.ID())
+	err := d.platform.Call("driver.SetContextMenu", nil, m.ID())
 	m.SetErr(err)
 	return m
 }
@@ -267,7 +266,7 @@ func (d *Driver) UI(f func()) {
 
 // Stop satisfies the app.Driver interface.
 func (d *Driver) Stop() {
-	if err := d.macRPC.Call("driver.Close", nil, nil); err != nil {
+	if err := d.platform.Call("driver.Close", nil, nil); err != nil {
 		app.Log("stop failed:", err)
 		d.stop()
 	}
@@ -278,7 +277,7 @@ func (d *Driver) support() string {
 		Support string
 	}{}
 
-	if err := d.macRPC.Call("driver.Bundle", &out, nil); err != nil {
+	if err := d.platform.Call("driver.Bundle", &out, nil); err != nil {
 		app.Panic(err)
 	}
 
@@ -296,7 +295,7 @@ func (d *Driver) support() string {
 	return out.Support
 }
 
-func (d *Driver) onRun(in map[string]interface{}) interface{} {
+func (d *Driver) onRun(in map[string]interface{}) {
 	d.configureDefaultWindow()
 	d.menubar = newMenuBar(d.MenubarConfig)
 	d.docktile = newDockTile(app.MenuConfig{URL: d.DockURL})
@@ -306,20 +305,17 @@ func (d *Driver) onRun(in map[string]interface{}) interface{} {
 	}
 
 	d.events.Emit(app.Running)
-	return nil
 }
 
-func (d *Driver) onFocus(in map[string]interface{}) interface{} {
+func (d *Driver) onFocus(in map[string]interface{}) {
 	d.events.Emit(app.Focused)
-	return nil
 }
 
-func (d *Driver) onBlur(in map[string]interface{}) interface{} {
+func (d *Driver) onBlur(in map[string]interface{}) {
 	d.events.Emit(app.Blurred)
-	return nil
 }
 
-func (d *Driver) onReopen(in map[string]interface{}) interface{} {
+func (d *Driver) onReopen(in map[string]interface{}) {
 	hasVisibleWindow := in["HasVisibleWindows"].(bool)
 
 	if !hasVisibleWindow && len(d.URL) != 0 {
@@ -327,35 +323,28 @@ func (d *Driver) onReopen(in map[string]interface{}) interface{} {
 	}
 
 	d.events.Emit(app.Reopened, hasVisibleWindow)
-	return nil
 }
 
-func (d *Driver) onFilesOpen(in map[string]interface{}) interface{} {
-	d.events.Emit(app.OpenFilesRequested, bridge.Strings(in["Filenames"]))
-	return nil
+func (d *Driver) onFilesOpen(in map[string]interface{}) {
+	d.events.Emit(app.OpenFilesRequested, core.ConvertToStringSlice(in["Filenames"]))
 }
 
-func (d *Driver) onURLOpen(in map[string]interface{}) interface{} {
+func (d *Driver) onURLOpen(in map[string]interface{}) {
 	if u, err := url.Parse(in["URL"].(string)); err == nil {
 		d.events.Emit(app.OpenURLRequested, u)
 	}
-
-	return nil
 }
 
-func (d *Driver) onFileDrop(in map[string]interface{}) interface{} {
-	d.droppedFiles = bridge.Strings(in["Filenames"])
-	return nil
+func (d *Driver) onFileDrop(in map[string]interface{}) {
+	d.droppedFiles = core.ConvertToStringSlice(in["Filenames"])
 }
 
-func (d *Driver) onClose(in map[string]interface{}) interface{} {
+func (d *Driver) onClose(in map[string]interface{}) {
 	d.events.Emit(app.Closed)
 
 	d.UI(func() {
 		d.stop()
 	})
-
-	return nil
 }
 
 func generateDevID() string {

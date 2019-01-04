@@ -8,7 +8,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 )
 
@@ -27,7 +26,7 @@ func newFilePanel(c app.FilePanelConfig) *FilePanel {
 		onSelect: c.OnSelect,
 	}
 
-	if err := driver.macRPC.Call("files.NewPanel", nil, struct {
+	if err := driver.platform.Call("files.NewPanel", nil, struct {
 		ID                string
 		MultipleSelection bool
 		IgnoreDirectories bool
@@ -55,26 +54,25 @@ func (p *FilePanel) ID() string {
 	return p.id
 }
 
-func onFilePanelSelect(p *FilePanel, in map[string]interface{}) interface{} {
+func onFilePanelSelect(p *FilePanel, in map[string]interface{}) {
 	if p.onSelect != nil {
-		p.onSelect(bridge.Strings(in["Filenames"]))
+		p.onSelect(core.ConvertToStringSlice(in["Filenames"]))
 	}
 
 	driver.elems.Delete(p)
-	return nil
 }
 
-func handleFilePanel(h func(p *FilePanel, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
-	return func(in map[string]interface{}) interface{} {
+func handleFilePanel(h func(p *FilePanel, in map[string]interface{})) core.GoHandler {
+	return func(in map[string]interface{}) {
 		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
 		if e.Err() == app.ErrElemNotSet {
-			return nil
+			return
 		}
 
 		p := e.(*FilePanel)
-		return h(p, in)
+		h(p, in)
 	}
 }
 
@@ -94,7 +92,7 @@ func newSaveFilePanel(c app.SaveFilePanelConfig) *SaveFilePanel {
 		onSelect: c.OnSelect,
 	}
 
-	if err := driver.macRPC.Call("files.NewSavePanel", nil, struct {
+	if err := driver.platform.Call("files.NewSavePanel", nil, struct {
 		ID              string
 		ShowHiddenFiles bool
 		FileTypes       []string `json:",omitempty"`
@@ -125,17 +123,17 @@ func onSaveFilePanelSelect(p *SaveFilePanel, in map[string]interface{}) interfac
 	return nil
 }
 
-func handleSaveFilePanel(h func(p *SaveFilePanel, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
-	return func(in map[string]interface{}) interface{} {
+func handleSaveFilePanel(h func(p *SaveFilePanel, in map[string]interface{}) interface{}) core.GoHandler {
+	return func(in map[string]interface{}) {
 		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
 		if e.Err() == app.ErrElemNotSet {
-			return nil
+			return
 		}
 
 		p := e.(*SaveFilePanel)
-		return h(p, in)
+		h(p, in)
 	}
 }
 
@@ -166,7 +164,7 @@ func newSharePanel(v interface{}) *SharePanel {
 		in.Type = "string"
 	}
 
-	err := driver.macRPC.Call("driver.Share", nil, in)
+	err := driver.platform.Call("driver.Share", nil, in)
 	p.SetErr(err)
 
 	return p

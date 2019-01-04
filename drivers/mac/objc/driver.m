@@ -368,15 +368,15 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-  [self.goRPC call:@"driver.OnRun" withInput:nil onUI:YES];
+  [self.goRPC call:@"driver.OnRun" withInput:nil ];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)aNotification {
-  [self.goRPC call:@"driver.OnFocus" withInput:nil onUI:YES];
+  [self.goRPC call:@"driver.OnFocus" withInput:nil ];
 }
 
 - (void)applicationDidResignActive:(NSNotification *)aNotification {
-  [self.goRPC call:@"driver.OnBlur" withInput:nil onUI:YES];
+  [self.goRPC call:@"driver.OnBlur" withInput:nil ];
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender
@@ -385,7 +385,7 @@
     @"HasVisibleWindows" : [NSNumber numberWithBool:flag],
   };
 
-  [self.goRPC call:@"driver.OnReopen" withInput:in onUI:YES];
+  [self.goRPC call:@"driver.OnReopen" withInput:in ];
   return YES;
 }
 
@@ -396,7 +396,7 @@
   };
 
   [NSApp activateIgnoringOtherApps:YES];
-  [self.goRPC call:@"driver.OnFilesOpen" withInput:in onUI:YES];
+  [self.goRPC call:@"driver.OnFilesOpen" withInput:in ];
 }
 
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
@@ -415,12 +415,12 @@
     @"URL" : [event paramDescriptorForKeyword:keyDirectObject].stringValue,
   };
 
-  [self.goRPC call:@"driver.OnURLOpen" withInput:in onUI:YES];
+  [self.goRPC call:@"driver.OnURLOpen" withInput:in ];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:
     (NSApplication *)sender {
-  [self.goRPC call:@"driver.OnClose" withInput:nil onUI:YES];
+  [self.goRPC call:@"driver.OnClose" withInput:nil ];
   return NSTerminateLater;
 }
 
@@ -440,7 +440,7 @@
 
   if (notification.activationType == NSUserNotificationActivationTypeReplied) {
     in[@"Reply"] = notification.response.string;
-    [self.goRPC call:@"notifications.OnReply" withInput:in onUI:YES];
+    [self.goRPC call:@"notifications.OnReply" withInput:in ];
   }
 }
 @end

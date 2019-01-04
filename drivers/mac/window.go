@@ -12,7 +12,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 	"github.com/murlokswarm/app/internal/dom"
 	"github.com/murlokswarm/app/internal/file"
@@ -96,7 +95,7 @@ func newWindow(c app.WindowConfig) *Window {
 	in.MinWidth, in.MaxWidth = normalizeWidowSize(in.MinWidth, in.MaxWidth)
 	in.MinHeight, in.MaxHeight = normalizeWidowSize(in.MinHeight, in.MaxHeight)
 
-	if err := driver.macRPC.Call("windows.New", nil, in); err != nil {
+	if err := driver.platform.Call("windows.New", nil, in); err != nil {
 		w.SetErr(err)
 		return w
 	}
@@ -178,7 +177,7 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		RootCompoName: n,
 	}
 
-	if err = driver.macRPC.Call("windows.Load", nil, struct {
+	if err = driver.platform.Call("windows.Load", nil, struct {
 		ID      string
 		Title   string
 		Page    string
@@ -226,7 +225,7 @@ func (w *Window) render(changes interface{}) error {
 		return errors.Wrap(err, "encode changes failed")
 	}
 
-	return driver.macRPC.Call("windows.Render", nil, struct {
+	return driver.platform.Call("windows.Render", nil, struct {
 		ID      string
 		Changes string
 	}{
@@ -288,7 +287,7 @@ func (w *Window) Position() (x, y float64) {
 		Y float64
 	}{}
 
-	err := driver.macRPC.Call("windows.Position", &out, struct {
+	err := driver.platform.Call("windows.Position", &out, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -300,7 +299,7 @@ func (w *Window) Position() (x, y float64) {
 
 // Move satisfies the app.Window interface.
 func (w *Window) Move(x, y float64) {
-	err := driver.macRPC.Call("windows.Move", nil, struct {
+	err := driver.platform.Call("windows.Move", nil, struct {
 		ID string
 		X  float64
 		Y  float64
@@ -315,7 +314,7 @@ func (w *Window) Move(x, y float64) {
 
 // Center satisfies the app.Window interface.
 func (w *Window) Center() {
-	err := driver.macRPC.Call("windows.Center", nil, struct {
+	err := driver.platform.Call("windows.Center", nil, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -331,7 +330,7 @@ func (w *Window) Size() (width, height float64) {
 		Heigth float64
 	}{}
 
-	err := driver.macRPC.Call("windows.Size", &out, struct {
+	err := driver.platform.Call("windows.Size", &out, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -343,7 +342,7 @@ func (w *Window) Size() (width, height float64) {
 
 // Resize satisfies the app.Window interface.
 func (w *Window) Resize(width, height float64) {
-	err := driver.macRPC.Call("windows.Resize", nil, struct {
+	err := driver.platform.Call("windows.Resize", nil, struct {
 		ID     string
 		Width  float64
 		Height float64
@@ -358,7 +357,7 @@ func (w *Window) Resize(width, height float64) {
 
 // Focus satisfies the app.Window interface.
 func (w *Window) Focus() {
-	err := driver.macRPC.Call("windows.Focus", nil, struct {
+	err := driver.platform.Call("windows.Focus", nil, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -379,7 +378,7 @@ func (w *Window) FullScreen() {
 		return
 	}
 
-	err := driver.macRPC.Call("windows.ToggleFullScreen", nil, struct {
+	err := driver.platform.Call("windows.ToggleFullScreen", nil, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -395,7 +394,7 @@ func (w *Window) ExitFullScreen() {
 		return
 	}
 
-	err := driver.macRPC.Call("windows.ToggleFullScreen", nil, struct {
+	err := driver.platform.Call("windows.ToggleFullScreen", nil, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -416,7 +415,7 @@ func (w *Window) Minimize() {
 		return
 	}
 
-	err := driver.macRPC.Call("windows.ToggleMinimize", nil, struct {
+	err := driver.platform.Call("windows.ToggleMinimize", nil, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -432,7 +431,7 @@ func (w *Window) Deminimize() {
 		return
 	}
 
-	err := driver.macRPC.Call("windows.ToggleMinimize", nil, struct {
+	err := driver.platform.Call("windows.ToggleMinimize", nil, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -448,7 +447,7 @@ func (w *Window) IsMinimized() bool {
 
 // Close satisfies the app.Window interface.
 func (w *Window) Close() {
-	err := driver.macRPC.Call("windows.Close", nil, struct {
+	err := driver.platform.Call("windows.Close", nil, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -467,13 +466,13 @@ func (w *Window) WhenNavigator(f func(app.Navigator)) {
 	f(w)
 }
 
-func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
+func onWindowCallback(w *Window, in map[string]interface{}) {
 	mappingStr := in["Mapping"].(string)
 
 	var m dom.Mapping
 	if err := json.Unmarshal([]byte(mappingStr), &m); err != nil {
 		app.Logf("window callback failed: %s", err)
-		return nil
+		return
 	}
 
 	if m.Override == "Files" {
@@ -491,101 +490,88 @@ func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
 	c, err := w.dom.CompoByID(m.CompoID)
 	if err != nil {
 		app.Logf("window callback failed: %s", err)
-		return nil
+		return
 	}
 
 	var f func()
 	if f, err = m.Map(c); err != nil {
 		app.Logf("window callback failed: %s", err)
-		return nil
+		return
 	}
 
 	if f != nil {
 		f()
-		return nil
+		return
 	}
 
 	app.Render(c)
-	return nil
 }
 
-func onWindowNavigate(w *Window, in map[string]interface{}) interface{} {
+func onWindowNavigate(w *Window, in map[string]interface{}) {
 	e := app.ElemByCompo(w.Compo())
 
 	e.WhenWindow(func(w app.Window) {
 		w.Load(in["URL"].(string))
 	})
-
-	return nil
 }
 
-func onWindowAlert(w *Window, in map[string]interface{}) interface{} {
+func onWindowAlert(w *Window, in map[string]interface{}) {
 	app.Logf("%s", in["Alert"])
-	return nil
 }
 
-func onWindowMove(w *Window, in map[string]interface{}) interface{} {
+func onWindowMove(w *Window, in map[string]interface{}) {
 	driver.events.Emit(app.WindowMoved, w)
-	return nil
 }
 
-func onWindowResize(w *Window, in map[string]interface{}) interface{} {
+func onWindowResize(w *Window, in map[string]interface{}) {
 	driver.events.Emit(app.WindowResized, w)
-	return nil
 }
 
-func onWindowFocus(w *Window, in map[string]interface{}) interface{} {
+func onWindowFocus(w *Window, in map[string]interface{}) {
 	w.isFocus = true
 	driver.events.Emit(app.WindowFocused, w)
-	return nil
 }
 
-func onWindowBlur(w *Window, in map[string]interface{}) interface{} {
+func onWindowBlur(w *Window, in map[string]interface{}) {
 	w.isFocus = false
 	driver.events.Emit(app.WindowBlurred, w)
-	return nil
 }
 
-func onWindowFullScreen(w *Window, in map[string]interface{}) interface{} {
+func onWindowFullScreen(w *Window, in map[string]interface{}) {
 	w.isFullscreen = true
 	driver.events.Emit(app.WindowEnteredFullScreen, w)
-	return nil
 }
 
-func onWindowExitFullScreen(w *Window, in map[string]interface{}) interface{} {
+func onWindowExitFullScreen(w *Window, in map[string]interface{}) {
 	w.isFullscreen = false
 	driver.events.Emit(app.WindowExitedFullScreen, w)
-	return nil
 }
 
-func onWindowMinimize(w *Window, in map[string]interface{}) interface{} {
+func onWindowMinimize(w *Window, in map[string]interface{}) {
 	w.isMinimized = true
 	driver.events.Emit(app.WindowMinimized, w)
-	return nil
 }
 
-func onWindowDeminimize(w *Window, in map[string]interface{}) interface{} {
+func onWindowDeminimize(w *Window, in map[string]interface{}) {
 	w.isMinimized = false
 	driver.events.Emit(app.WindowDeminimized, w)
-	return nil
 }
 
-func onWindowClose(w *Window, in map[string]interface{}) interface{} {
+func onWindowClose(w *Window, in map[string]interface{}) {
 	driver.events.Emit(app.WindowClosed, w)
 	w.dom.Close()
 	driver.elems.Delete(w)
-	return nil
 }
 
-func handleWindow(h func(w *Window, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
-	return func(in map[string]interface{}) interface{} {
+func handleWindow(h func(w *Window, in map[string]interface{})) core.GoHandler {
+	return func(in map[string]interface{}) {
 		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
 		if e.Err() == app.ErrElemNotSet {
-			return nil
+			return
 		}
 
-		return h(e.(*Window), in)
+		h(e.(*Window), in)
 	}
 }

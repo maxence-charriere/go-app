@@ -204,7 +204,7 @@
     @"Mapping" : [JSONEncoder encode:mapping],
   };
 
-  [driver.goRPC call:@"menus.OnCallback" withInput:in onUI:YES];
+  [driver.goRPC call:@"menus.OnCallback" withInput:in];
 }
 
 - (void)setupKeys {
@@ -650,7 +650,7 @@
   };
 
   Driver *driver = [Driver current];
-  [driver.goRPC call:@"menus.OnClose" withInput:in onUI:YES];
+  [driver.goRPC call:@"menus.OnClose" withInput:in];
 }
 
 + (void) delete:(NSDictionary *)in return:(NSString *)returnID {

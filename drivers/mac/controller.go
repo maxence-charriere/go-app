@@ -5,7 +5,6 @@ package mac
 import (
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 )
 
@@ -38,7 +37,7 @@ func newController(c app.ControllerConfig) *Controller {
 		onClose:           c.OnClose,
 	}
 
-	if err := driver.macRPC.Call("controller.New", nil, struct {
+	if err := driver.platform.Call("controller.New", nil, struct {
 		ID string
 	}{
 		ID: controller.id,
@@ -58,7 +57,7 @@ func (c *Controller) ID() string {
 
 // Close satisfies the app.Controller interface.
 func (c *Controller) Close() {
-	err := driver.macRPC.Call("controller.Close", nil, struct {
+	err := driver.platform.Call("controller.Close", nil, struct {
 		ID string
 	}{
 		ID: c.id,
@@ -68,7 +67,7 @@ func (c *Controller) Close() {
 	driver.elems.Delete(c)
 }
 
-func onControllerDirectionChange(c *Controller, in map[string]interface{}) interface{} {
+func onControllerDirectionChange(c *Controller, in map[string]interface{}) {
 	if c.onDirectionChange != nil {
 		c.onDirectionChange(
 			app.ControllerInput(in["Input"].(float64)),
@@ -76,11 +75,9 @@ func onControllerDirectionChange(c *Controller, in map[string]interface{}) inter
 			in["Y"].(float64),
 		)
 	}
-
-	return nil
 }
 
-func onControllerButtonPressed(c *Controller, in map[string]interface{}) interface{} {
+func onControllerButtonPressed(c *Controller, in map[string]interface{}) {
 	if c.onButtonPressed != nil {
 		c.onButtonPressed(
 			app.ControllerInput(in["Input"].(float64)),
@@ -88,60 +85,50 @@ func onControllerButtonPressed(c *Controller, in map[string]interface{}) interfa
 			in["Pressed"].(bool),
 		)
 	}
-
-	return nil
 }
 
-func onControllerPause(c *Controller, in map[string]interface{}) interface{} {
+func onControllerPause(c *Controller, in map[string]interface{}) {
 	if c.onPause != nil {
 		c.onPause()
 	}
-
-	return nil
 }
 
-func onControllerClose(c *Controller, in map[string]interface{}) interface{} {
+func onControllerClose(c *Controller, in map[string]interface{}) {
 	if c.onClose != nil {
 		c.onClose()
 	}
-
-	return nil
 }
 
-func onControllerConnected(c *Controller, in map[string]interface{}) interface{} {
-	if err := driver.macRPC.Call("controller.Listen", nil, struct {
+func onControllerConnected(c *Controller, in map[string]interface{}) {
+	if err := driver.platform.Call("controller.Listen", nil, struct {
 		ID string
 	}{
 		ID: c.id,
 	}); err != nil {
 		c.SetErr(err)
-		return c
+		return
 	}
 
 	if c.onConnected != nil {
 		c.onConnected()
 	}
-
-	return nil
 }
 
-func onControllerDisconnected(c *Controller, in map[string]interface{}) interface{} {
+func onControllerDisconnected(c *Controller, in map[string]interface{}) {
 	if c.onDisconnected != nil {
 		c.onDisconnected()
 	}
-
-	return nil
 }
 
-func handleController(h func(c *Controller, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
-	return func(in map[string]interface{}) interface{} {
+func handleController(h func(c *Controller, in map[string]interface{})) core.GoHandler {
+	return func(in map[string]interface{}) {
 		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
 		if e.Err() == app.ErrElemNotSet {
-			return nil
+			return
 		}
 
-		return h(e.(*Controller), in)
+		h(e.(*Controller), in)
 	}
 }

@@ -8,7 +8,7 @@ void macCall(char *rawCall) {
       [JSONDecoder decode:[NSString stringWithUTF8String:rawCall]];
 
   NSString *method = call[@"Method"];
-  id in = call[@"Input"];
+  id in = call[@"In"];
   NSString *returnID = call[@"ReturnID"];
 
   @try {
@@ -61,21 +61,12 @@ void defer(NSString *returnID, dispatch_block_t block) {
 @end
 
 @implementation GoRPC
-- (id)call:(NSString *)method withInput:(id)in onUI:(BOOL)ui {
+- (void)call:(NSString *)method withInput:(id)in {
   NSMutableDictionary *call = [[NSMutableDictionary alloc] init];
   call[@"Method"] = method;
-  call[@"Input"] = in;
+  call[@"In"] = in;
 
   NSString *callString = [JSONEncoder encode:call];
-
-  char *cout = goCall((char *)callString.UTF8String, ui);
-
-  if (cout == nil) {
-    return nil;
-  }
-
-  NSString *out = [NSString stringWithUTF8String:cout];
-  free(cout);
-  return [JSONDecoder decode:out];
+  goCall((char *)callString.UTF8String);
 }
 @end

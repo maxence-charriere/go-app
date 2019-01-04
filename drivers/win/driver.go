@@ -2,7 +2,6 @@ package win
 
 import (
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 )
 
@@ -58,8 +57,8 @@ type Driver struct {
 	factory *app.Factory
 	events  *app.EventRegistry
 	elems   *core.ElemDB
-	winRPC  *bridge.PlatformRPC
-	goRPC   *bridge.GoRPC
+	winRPC  *core.Platform
+	goRPC   *core.Go
 	stop    func()
 }
 

@@ -5,7 +5,6 @@ package mac
 import (
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 )
 
@@ -29,7 +28,7 @@ func newNotification(c app.NotificationConfig) *Notification {
 		driver.elems.Put(n)
 	}
 
-	err := driver.macRPC.Call("notifications.New", nil, struct {
+	err := driver.platform.Call("notifications.New", nil, struct {
 		ID        string
 		Title     string
 		Subtitle  string
@@ -56,24 +55,23 @@ func (n *Notification) ID() string {
 	return n.id
 }
 
-func onNotificationReply(n *Notification, in map[string]interface{}) interface{} {
+func onNotificationReply(n *Notification, in map[string]interface{}) {
 	if reply := in["Reply"].(string); n.onReply != nil && len(reply) != 0 {
 		n.onReply(reply)
 	}
 
 	driver.elems.Delete(n)
-	return nil
 }
 
-func handleNotification(h func(n *Notification, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
-	return func(in map[string]interface{}) interface{} {
+func handleNotification(h func(n *Notification, in map[string]interface{})) core.GoHandler {
+	return func(in map[string]interface{}) {
 		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
 		if e.Err() == app.ErrElemNotSet {
-			return nil
+			return
 		}
 
-		return h(e.(*Notification), in)
+		h(e.(*Notification), in)
 	}
 }
