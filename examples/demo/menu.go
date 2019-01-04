@@ -146,7 +146,7 @@ func (m *Menu) ToggleDockCustomIcon() {
 		app.Dock().SetIcon(app.Resources("like.png"))
 	}
 
-	m.DockCustomIcon = true
+	m.DockCustomIcon = !m.DockCustomIcon
 	app.Render(m)
 }
 
