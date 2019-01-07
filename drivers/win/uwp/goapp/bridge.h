@@ -7,11 +7,11 @@ using namespace Windows::Foundation;
 using namespace Windows::ApplicationModel::AppService;
 
 typedef void (*funcWinReturn)(char *retID, char *ret, char *err);
-typedef char *(*funcGoCall)(char *call, char *ui);
+typedef void (*funcGoCall)(char *call);
 
 IAsyncAction ^ BridgeConnectAsync();
 void Bridge_WinCallReturn(String ^ retID, String ^ ret, String ^ err);
-String ^ Bridge_GoCall(String ^ method, String ^ input, String ^ ui);
+void Bridge_GoCall(String ^ method, String ^ input);
 
 void BridgeRequestReceived(AppServiceConnection ^ connection,
                            AppServiceRequestReceivedEventArgs ^ args);
