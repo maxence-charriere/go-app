@@ -19,7 +19,6 @@ import (
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/drivers/win/uwp"
-	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 	"github.com/murlokswarm/app/internal/file"
 	"github.com/pkg/errors"
@@ -219,13 +218,12 @@ func (d *Driver) UI(f func()) {
 	d.ui <- f
 }
 
-func (d *Driver) log(in map[string]interface{}) interface{} {
+func (d *Driver) log(in map[string]interface{}) {
 	msg := in["Msg"].(string)
 	app.Log(msg)
-	return nil
 }
 
-func (d *Driver) onRun(in map[string]interface{}) interface{} {
+func (d *Driver) onRun(in map[string]interface{}) {
 	d.configureDefaultWindow()
 
 	if len(d.URL) != 0 {
@@ -233,28 +231,22 @@ func (d *Driver) onRun(in map[string]interface{}) interface{} {
 	}
 
 	d.events.Emit(app.Running)
-	return nil
 }
 
-func (d *Driver) onFilesOpen(in map[string]interface{}) interface{} {
-	d.events.Emit(app.OpenFilesRequested, bridge.Strings(in["Filenames"]))
-	return nil
+func (d *Driver) onFilesOpen(in map[string]interface{}) {
+	d.events.Emit(app.OpenFilesRequested, core.ConvertToStringSlice(in["Filenames"]))
 }
 
-func (d *Driver) onURLOpen(in map[string]interface{}) interface{} {
+func (d *Driver) onURLOpen(in map[string]interface{}) {
 	if u, err := url.Parse(in["URL"].(string)); err == nil {
 		d.events.Emit(app.OpenURLRequested, u)
 	}
-
-	return nil
 }
 
-func (d *Driver) onClose(in map[string]interface{}) interface{} {
+func (d *Driver) onClose(in map[string]interface{}) {
 	d.events.Emit(app.Closed)
 
 	d.UI(func() {
 		d.stop()
 	})
-
-	return nil
 }
