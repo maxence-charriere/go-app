@@ -3,6 +3,7 @@ package file
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -53,8 +54,7 @@ func CaptureOutput(w io.Writer) (func(), error) {
 
 			mutex.Lock()
 			if _, err := w.Write(line); err != nil {
-				mutex.Unlock()
-				return
+				fmt.Println(err)
 			}
 			mutex.Unlock()
 		}

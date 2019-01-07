@@ -34,7 +34,7 @@ namespace uwp
             launched = true;
         }
 
-        public static async void NewConn(IBackgroundTaskInstance task)
+        public static void NewConn(IBackgroundTaskInstance task)
         {
             AppServiceTriggerDetails appService = task.TriggerDetails as AppServiceTriggerDetails;
             if (appService == null)
@@ -57,7 +57,7 @@ namespace uwp
             while (deferredGoCalls.Count != 0)
             {
                 var call = deferredGoCalls.Dequeue();
-                await GoCall(call.Method, call.Input, call.UI);
+                GoCall(call.Method, call.Input);
             }
         }
 
@@ -74,7 +74,7 @@ namespace uwp
                 try
                 {
                     string method = req.GetNamedValue("Method").GetString();
-                    JsonObject input = req.GetNamedObject("Input");
+                    JsonObject input = req.GetNamedObject("In");
 
                     Action<JsonObject, string> handler = null;
                     handlers.TryGetValue(method, out handler);
@@ -117,18 +117,18 @@ namespace uwp
             var data = new ValueSet();
             data["Operation"] = "Return";
             data["ReturnID"] = returnID;
-            data["Input"] = "";
+            data["In"] = "";
             data["Err"] = err;
 
             if (input != null)
             {
-                data["Input"] = input.ToString();
+                data["In"] = input.ToString();
             }
 
             await conn.SendMessageAsync(data);
         }
 
-        public static async Task<JsonObject> GoCall(string method, JsonObject input, bool ui)
+        public static async void GoCall(string method, JsonObject input)
         {
             lock (locker)
             {
@@ -138,10 +138,9 @@ namespace uwp
                     {
                         Method = method,
                         Input = input,
-                        UI = ui,
                     });
 
-                    return null;
+                    return;
                 }
             }
 
@@ -149,35 +148,22 @@ namespace uwp
             var msg = new ValueSet();
             msg["Operation"] = "Call";
             msg["Method"] = method;
-            msg["Input"] = "";
-            msg["Ui"] = ui.ToString();
+            msg["In"] = "";
 
             if (input != null)
             {
-                msg["Input"] = input.ToString();
+                msg["In"] = input.ToString();
             }
 
-            var res = await conn.SendMessageAsync(msg);
-            if (res.Status != AppServiceResponseStatus.Success)
-            {
-                return null;
-            }
-
-            var resMsg = res.Message;
-            if (!resMsg.ContainsKey("Value"))
-            {
-                return null;
-            }
-
-            return JsonObject.Parse(resMsg["Value"] as string);
+            await conn.SendMessageAsync(msg);
         }
 
-        public static async void Log(string format, params object[] v)
+        public static void Log(string format, params object[] v)
         {
             var msg = string.Format(format, v);
             JsonObject input = new JsonObject();
             input["Msg"] = JsonValue.CreateStringValue(msg);
-            await GoCall("driver.Log", input, false);
+            GoCall("driver.Log", input);
         }
 
         public static void PutElem(string ID, object elem)
@@ -224,6 +210,5 @@ namespace uwp
     {
         public string Method;
         public JsonObject Input;
-        public bool UI;
     }
 }

@@ -46,7 +46,7 @@ func init() {
 		logsWriter = &file.HTTPWriter{
 			URL: logsURL,
 			Client: &http.Client{
-				Timeout: time.Second,
+				Timeout: time.Millisecond * 100,
 			},
 		}
 

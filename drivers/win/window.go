@@ -425,9 +425,11 @@ func onWindowExitFullScreen(w *Window, in map[string]interface{}) {
 }
 
 func onWindowClose(w *Window, in map[string]interface{}) {
+	fmt.Println("gonna close window")
 	driver.events.Emit(app.WindowClosed, w)
 	w.dom.Close()
 	driver.elems.Delete(w)
+	fmt.Println("bye")
 }
 
 func handleWindow(h func(w *Window, in map[string]interface{})) core.GoHandler {
