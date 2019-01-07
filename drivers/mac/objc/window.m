@@ -141,7 +141,7 @@
     @"Mapping" : message.body,
   };
 
-  [driver.goRPC call:@"windows.OnCallback" withInput:in onUI:YES];
+  [driver.goRPC call:@"windows.OnCallback" withInput:in];
 }
 
 - (void)configTitlebar:(NSString *)title hidden:(BOOL)isHidden {
@@ -241,7 +241,7 @@
     @"URL" : url.absoluteString,
   };
 
-  [driver.goRPC call:@"windows.OnNavigate" withInput:in onUI:YES];
+  [driver.goRPC call:@"windows.OnNavigate" withInput:in];
   decisionHandler(WKNavigationActionPolicyCancel);
 }
 
@@ -256,7 +256,7 @@
     @"Alert" : message,
   };
 
-  [driver.goRPC call:@"windows.OnAlert" withInput:in onUI:YES];
+  [driver.goRPC call:@"windows.OnAlert" withInput:in];
   completionHandler();
 }
 
@@ -339,7 +339,7 @@
     @"Y" : [NSNumber numberWithDouble:self.window.frame.origin.y],
   };
 
-  [driver.goRPC call:@"windows.OnMove" withInput:in onUI:YES];
+  [driver.goRPC call:@"windows.OnMove" withInput:in];
 }
 
 + (void)size:(NSDictionary *)in return:(NSString *)returnID {
@@ -387,7 +387,7 @@
     @"Height" : [NSNumber numberWithDouble:self.window.frame.size.height],
   };
 
-  [driver.goRPC call:@"windows.OnResize" withInput:in onUI:YES];
+  [driver.goRPC call:@"windows.OnResize" withInput:in];
 }
 
 + (void)focus:(NSDictionary *)in return:(NSString *)returnID {
@@ -408,7 +408,7 @@
     @"ID" : self.ID,
   };
 
-  [driver.goRPC call:@"windows.OnFocus" withInput:in onUI:YES];
+  [driver.goRPC call:@"windows.OnFocus" withInput:in];
 }
 
 - (void)windowDidResignKey:(NSNotification *)notification {
@@ -418,7 +418,7 @@
     @"ID" : self.ID,
   };
 
-  [driver.goRPC call:@"windows.OnBlur" withInput:in onUI:YES];
+  [driver.goRPC call:@"windows.OnBlur" withInput:in];
 }
 
 + (void)toggleFullScreen:(NSDictionary *)in return:(NSString *)returnID {
@@ -439,7 +439,7 @@
     @"ID" : self.ID,
   };
 
-  [driver.goRPC call:@"windows.OnFullScreen" withInput:in onUI:YES];
+  [driver.goRPC call:@"windows.OnFullScreen" withInput:in];
 }
 
 - (void)windowDidExitFullScreen:(NSNotification *)notification {
@@ -449,7 +449,7 @@
     @"ID" : self.ID,
   };
 
-  [driver.goRPC call:@"windows.OnExitFullScreen" withInput:in onUI:YES];
+  [driver.goRPC call:@"windows.OnExitFullScreen" withInput:in];
 }
 
 + (void)toggleMinimize:(NSDictionary *)in return:(NSString *)returnID {
@@ -479,7 +479,7 @@
     @"ID" : self.ID,
   };
 
-  [driver.goRPC call:@"windows.OnMinimize" withInput:in onUI:YES];
+  [driver.goRPC call:@"windows.OnMinimize" withInput:in];
 }
 
 - (void)windowDidDeminiaturize:(NSNotification *)notification {
@@ -489,7 +489,7 @@
     @"ID" : self.ID,
   };
 
-  [driver.goRPC call:@"windows.OnDeminimize" withInput:in onUI:YES];
+  [driver.goRPC call:@"windows.OnDeminimize" withInput:in];
 }
 
 + (void)close:(NSDictionary *)in return:(NSString *)returnID {
@@ -515,7 +515,7 @@
     @"ID" : self.ID,
   };
 
-  [driver.goRPC call:@"windows.OnClose" withInput:in onUI:YES];
+  [driver.goRPC call:@"windows.OnClose" withInput:in];
   [driver.elements removeObjectForKey:self.ID];
   self.window = nil;
 }

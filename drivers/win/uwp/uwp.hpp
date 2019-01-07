@@ -11,7 +11,7 @@ extern "C" {
 #endif
 
 void winCallReturn(char *retID, char *ret, char *err);
-char *goCall(char *in, char *ui);
+void goCall(char *in);
 
 #ifdef __cplusplus
 }

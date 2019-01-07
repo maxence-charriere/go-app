@@ -34,7 +34,7 @@
     };
 
     Driver *driver = [Driver current];
-    [driver.goRPC call:@"driver.OnFileDrop" withInput:in onUI:YES];
+    [driver.goRPC call:@"driver.OnFileDrop" withInput:in];
   }
 
   return [super prepareForDragOperation:sender];
@@ -54,7 +54,7 @@
       @"Filenames" : [pboard propertyListForType:NSFilenamesPboardType],
     };
 
-    [driver.goRPC call:@"driver.OnFileDrop" withInput:in onUI:YES];
+    [driver.goRPC call:@"driver.OnFileDrop" withInput:in];
   }
   return [super prepareForDragOperation:sender];
 }

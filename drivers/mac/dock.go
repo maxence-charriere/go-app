@@ -36,7 +36,7 @@ func newDockTile(c app.MenuConfig) *DockTile {
 
 	d.dom.Sync = d.render
 
-	if err := driver.macRPC.Call("menus.New", nil, struct {
+	if err := driver.platform.Call("menus.New", nil, struct {
 		ID string
 	}{
 		ID: d.id,
@@ -66,7 +66,7 @@ func (d *DockTile) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	err := driver.macRPC.Call("docks.SetMenu", nil, struct {
+	err := driver.platform.Call("docks.SetMenu", nil, struct {
 		ID string
 	}{
 		ID: d.id,
@@ -82,7 +82,7 @@ func (d *DockTile) SetIcon(path string) {
 		return
 	}
 
-	err := driver.macRPC.Call("docks.SetIcon", nil, struct {
+	err := driver.platform.Call("docks.SetIcon", nil, struct {
 		Icon string
 	}{
 		Icon: path,
@@ -98,7 +98,7 @@ func (d *DockTile) SetBadge(v interface{}) {
 		badge = fmt.Sprint(v)
 	}
 
-	err := driver.macRPC.Call("docks.SetBadge", nil, struct {
+	err := driver.platform.Call("docks.SetBadge", nil, struct {
 		Badge string
 	}{
 		Badge: badge,

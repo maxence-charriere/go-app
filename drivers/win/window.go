@@ -13,7 +13,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 	"github.com/murlokswarm/app/internal/dom"
 	"github.com/murlokswarm/app/internal/file"
@@ -364,92 +363,85 @@ func (w *Window) IsFullScreen() bool {
 	return w.isFullScreen
 }
 
-func onWindowCallback(w *Window, in map[string]interface{}) interface{} {
+func onWindowCallback(w *Window, in map[string]interface{}) {
 	mappingStr := in["Mapping"].(string)
 
 	var m dom.Mapping
 	if err := json.Unmarshal([]byte(mappingStr), &m); err != nil {
 		app.Logf("window callback failed: %s", err)
-		return nil
+		return
 	}
 
 	c, err := w.dom.CompoByID(m.CompoID)
 	if err != nil {
 		app.Logf("window callback failed: %s", err)
-		return nil
+		return
 	}
 
 	var f func()
 	if f, err = m.Map(c); err != nil {
 		app.Logf("window callback failed: %s", err)
-		return nil
+		return
 	}
 
 	if f != nil {
 		f()
-		return nil
+		return
 	}
 
 	app.Render(c)
-	return nil
 }
 
-func onWindowNavigate(w *Window, in map[string]interface{}) interface{} {
+func onWindowNavigate(w *Window, in map[string]interface{}) {
 	e := app.ElemByCompo(w.Compo())
 
 	e.WhenWindow(func(w app.Window) {
 		w.Load(in["URL"].(string))
 	})
-
-	return nil
 }
 
-func onWindowResize(w *Window, in map[string]interface{}) interface{} {
+func onWindowResize(w *Window, in map[string]interface{}) {
 	driver.events.Emit(app.WindowResized, w)
-	return nil
 }
 
-func onWindowFocus(w *Window, in map[string]interface{}) interface{} {
+func onWindowFocus(w *Window, in map[string]interface{}) {
 	w.isFocus = true
 	driver.events.Emit(app.WindowFocused, w)
-	return nil
 }
 
-func onWindowBlur(w *Window, in map[string]interface{}) interface{} {
+func onWindowBlur(w *Window, in map[string]interface{}) {
 	w.isFocus = false
 	driver.events.Emit(app.WindowBlurred, w)
-	return nil
 }
 
-func onWindowFullScreen(w *Window, in map[string]interface{}) interface{} {
+func onWindowFullScreen(w *Window, in map[string]interface{}) {
 	w.isFullScreen = true
 	driver.events.Emit(app.WindowEnteredFullScreen, w)
-	return nil
 }
 
-func onWindowExitFullScreen(w *Window, in map[string]interface{}) interface{} {
+func onWindowExitFullScreen(w *Window, in map[string]interface{}) {
 	w.isFullScreen = false
 	driver.events.Emit(app.WindowExitedFullScreen, w)
-	return nil
 }
 
-func onWindowClose(w *Window, in map[string]interface{}) interface{} {
+func onWindowClose(w *Window, in map[string]interface{}) {
+	fmt.Println("gonna close window")
 	driver.events.Emit(app.WindowClosed, w)
 	w.dom.Close()
 	driver.elems.Delete(w)
-	return nil
+	fmt.Println("bye")
 }
 
-func handleWindow(h func(w *Window, in map[string]interface{}) interface{}) bridge.GoRPCHandler {
-	return func(in map[string]interface{}) interface{} {
+func handleWindow(h func(w *Window, in map[string]interface{})) core.GoHandler {
+	return func(in map[string]interface{}) {
 		id, _ := in["ID"].(string)
 
 		e := driver.elems.GetByID(id)
 		if e.Err() == app.ErrElemNotSet {
-			return nil
+			return
 		}
 
-		return h(e.(*Window), in)
+		h(e.(*Window), in)
 	}
 }
 

@@ -92,7 +92,7 @@ namespace uwp
             Bridge.TryLaunchGoApp();
         }
 
-        protected override async void OnActivated(IActivatedEventArgs e)
+        protected override void OnActivated(IActivatedEventArgs e)
         {
             base.OnActivated(e);
             Bridge.TryLaunchGoApp();
@@ -106,12 +106,12 @@ namespace uwp
                     var input = new JsonObject();
                     input["URL"] = JsonValue.CreateStringValue(pe.Uri.ToString());
 
-                    await Bridge.GoCall("driver.OnURLOpen", input, true);
+                    Bridge.GoCall("driver.OnURLOpen", input);
                     break;
             }
         }
 
-        protected override async void OnFileActivated(FileActivatedEventArgs args)
+        protected override void OnFileActivated(FileActivatedEventArgs args)
         {
             base.OnFileActivated(args);
             Bridge.TryLaunchGoApp();
@@ -126,7 +126,7 @@ namespace uwp
             var input = new JsonObject();
             input["Filenames"] = filenames;
 
-            await Bridge.GoCall("driver.OnFilesOpen", input, true);
+            Bridge.GoCall("driver.OnFilesOpen", input);
         }
 
         /// <summary>

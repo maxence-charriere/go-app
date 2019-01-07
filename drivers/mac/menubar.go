@@ -210,7 +210,7 @@ func newMenuBar(c MenuBarConfig) *Menu {
 		return m
 	}
 
-	if err := driver.macRPC.Call("driver.SetMenubar", nil, m.id); err != nil {
+	if err := driver.platform.Call("driver.SetMenubar", nil, m.id); err != nil {
 		m.SetErr(errors.Wrap(err, "set menu bar"))
 	}
 

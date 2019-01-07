@@ -35,7 +35,7 @@ func newStatusMenu(c app.StatusMenuConfig) *StatusMenu {
 
 	s.dom.Sync = s.render
 
-	if err := driver.macRPC.Call("statusMenus.New", nil, struct {
+	if err := driver.platform.Call("statusMenus.New", nil, struct {
 		ID   string
 		Text string
 		Icon string
@@ -69,7 +69,7 @@ func (s *StatusMenu) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	err := driver.macRPC.Call("statusMenus.SetMenu", nil, struct {
+	err := driver.platform.Call("statusMenus.SetMenu", nil, struct {
 		ID string
 	}{
 		ID: s.id,
@@ -85,7 +85,7 @@ func (s *StatusMenu) SetIcon(path string) {
 		return
 	}
 
-	err := driver.macRPC.Call("statusMenus.SetIcon", nil, struct {
+	err := driver.platform.Call("statusMenus.SetIcon", nil, struct {
 		ID   string
 		Icon string
 	}{
@@ -98,7 +98,7 @@ func (s *StatusMenu) SetIcon(path string) {
 
 // SetText satisfies the app.StatusMenu interface.
 func (s *StatusMenu) SetText(text string) {
-	err := driver.macRPC.Call("statusMenus.SetText", nil, struct {
+	err := driver.platform.Call("statusMenus.SetText", nil, struct {
 		ID   string
 		Text string
 	}{
@@ -111,7 +111,7 @@ func (s *StatusMenu) SetText(text string) {
 
 // Close satisfies the app.StatusMenu interface.
 func (s *StatusMenu) Close() {
-	err := driver.macRPC.Call("statusMenus.Close", nil, struct {
+	err := driver.platform.Call("statusMenus.Close", nil, struct {
 		ID string
 	}{
 		ID: s.id,

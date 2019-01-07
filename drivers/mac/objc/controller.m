@@ -42,7 +42,7 @@
     @"ID" : self.ID,
   };
 
-  [driver.goRPC call:@"controller.OnConnected" withInput:in onUI:YES];
+  [driver.goRPC call:@"controller.OnConnected" withInput:in];
 }
 
 - (void)disconnected {
@@ -51,7 +51,7 @@
     @"ID" : self.ID,
   };
 
-  [driver.goRPC call:@"controller.OnDisconnected" withInput:in onUI:YES];
+  [driver.goRPC call:@"controller.OnDisconnected" withInput:in];
 }
 
 + (void)close:(NSDictionary *)in return:(NSString *)returnID {
@@ -64,7 +64,7 @@
                 format:@"no controller with id %@", ID];
   }
 
-  [driver.goRPC call:@"controller.OnClose" withInput:in onUI:NO];
+  [driver.goRPC call:@"controller.OnClose" withInput:in];
 
   controller.context = nil;
   controller.profile = nil;
@@ -85,7 +85,7 @@
     @"Y" : @(y),
   };
 
-  [driver.goRPC call:@"controller.OnDirectionChange" withInput:in onUI:YES];
+  [driver.goRPC call:@"controller.OnDirectionChange" withInput:in];
 }
 
 + (void)emitButton:(NSString *)elemID
@@ -101,7 +101,7 @@
     @"Pressed" : @(pressed),
   };
 
-  [driver.goRPC call:@"controller.OnButtonPressed" withInput:in onUI:YES];
+  [driver.goRPC call:@"controller.OnButtonPressed" withInput:in];
 }
 
 + (void)listen:(NSDictionary *)in return:(NSString *)returnID {
@@ -112,7 +112,7 @@
     Controller *controller = driver.elements[ID];
 
     controller.context.controllerPausedHandler = ^(GCController *controller) {
-      [driver.goRPC call:@"controller.OnPause" withInput:in onUI:YES];
+      [driver.goRPC call:@"controller.OnPause" withInput:in];
     };
 
     controller.profile.dpad.valueChangedHandler =

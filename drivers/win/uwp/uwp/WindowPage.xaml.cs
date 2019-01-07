@@ -104,7 +104,7 @@ namespace uwp
             coreTitleBar.ExtendViewIntoTitleBar = true;
         }
 
-        static async void OnClose(object sender, SystemNavigationCloseRequestedPreviewEventArgs e)
+        static void OnClose(object sender, SystemNavigationCloseRequestedPreviewEventArgs e)
         {
             var deferral = e.GetDeferral();
 
@@ -116,7 +116,7 @@ namespace uwp
                 var input = new JsonObject();
                 input["ID"] = JsonValue.CreateStringValue(win.ID);
 
-                await Bridge.GoCall("windows.OnClose", input, true);
+                Bridge.GoCall("windows.OnClose", input);
                 Bridge.DeleteElem(win.ID);
             }
 
@@ -200,7 +200,7 @@ namespace uwp
             Bridge.Return(returnID, null, null);
         }
 
-       async void OnUnsupportedUriSchemeIdentified(WebView sender, WebViewUnsupportedUriSchemeIdentifiedEventArgs args)
+        void OnUnsupportedUriSchemeIdentified(WebView sender, WebViewUnsupportedUriSchemeIdentifiedEventArgs args)
         {
             if (args.Uri != null)
             {
@@ -209,11 +209,11 @@ namespace uwp
                 input["ID"] = JsonValue.CreateStringValue(this.ID);
                 input["URL"] = JsonValue.CreateStringValue(args.Uri.ToString());
 
-                await Bridge.GoCall("windows.OnNavigate", input, true);
+                Bridge.GoCall("windows.OnNavigate", input);
             }
         }
 
-        async void OnNavigationStart(WebView sender, WebViewNavigationStartingEventArgs args)
+        void OnNavigationStart(WebView sender, WebViewNavigationStartingEventArgs args)
         {
             if (args.Uri != null)
             {
@@ -221,18 +221,18 @@ namespace uwp
                 input["ID"] = JsonValue.CreateStringValue(this.ID);
                 input["URL"] = JsonValue.CreateStringValue(args.Uri.ToString());
 
-                await Bridge.GoCall("windows.OnNavigate", input, true);
+                Bridge.GoCall("windows.OnNavigate", input);
                 args.Cancel = true;
             }
         }
 
-        async void Webview_ScriptNotify(object sender, NotifyEventArgs e)
+        void Webview_ScriptNotify(object sender, NotifyEventArgs e)
         {
             var input = new JsonObject();
             input["ID"] = JsonValue.CreateStringValue(this.ID);
             input["Mapping"] = JsonValue.CreateStringValue(e.Value);
 
-            await Bridge.GoCall("windows.OnCallback", input, true);
+            Bridge.GoCall("windows.OnCallback", input);
         }
 
         internal static async void Render(JsonObject input, string returnID)
@@ -308,16 +308,16 @@ namespace uwp
             });
         }
 
-        static async void OnResized(object sender, WindowSizeChangedEventArgs e)
+        static void OnResized(object sender, WindowSizeChangedEventArgs e)
         {
             var frame = Window.Current.Content as Frame;
             var win = frame.Content as WindowPage;
-            
+
             var input = new JsonObject();
             input["ID"] = JsonValue.CreateStringValue(win.ID);
             input["Width"] = JsonValue.CreateNumberValue(e.Size.Width);
             input["Heigth"] = JsonValue.CreateNumberValue(e.Size.Height);
-            await Bridge.GoCall("windows.OnResize", input, true);
+            Bridge.GoCall("windows.OnResize", input);
 
             var view = ApplicationView.GetForCurrentView();
             var fullScreen = view.IsFullScreenMode;
@@ -331,11 +331,11 @@ namespace uwp
 
             if (fullScreen)
             {
-                await Bridge.GoCall("windows.OnFullScreen", input, true);
+                Bridge.GoCall("windows.OnFullScreen", input);
             }
             else
             {
-                await Bridge.GoCall("windows.OnExitFullScreen", input, true);
+                Bridge.GoCall("windows.OnExitFullScreen", input);
             }
         }
 
@@ -377,11 +377,11 @@ namespace uwp
                         currentWindow = w;
                     });
 
-                    await Bridge.GoCall("windows.OnFocus", input, true);
+                    Bridge.GoCall("windows.OnFocus", input);
                     break;
 
                 case CoreWindowActivationState.Deactivated:
-                    await Bridge.GoCall("windows.OnBlur", input, true);
+                    Bridge.GoCall("windows.OnBlur", input);
                     break;
 
                 default:
@@ -437,15 +437,15 @@ namespace uwp
             var root = menu.CompoRoot(menu.Root) as MenuContainer;
             var flyout = new MenuFlyout();
 
-            flyout.Closed += async (s, e) =>
-            {
-                Bridge.DeleteElem(menu.ID);
+            flyout.Closed += (s, e) =>
+           {
+               Bridge.DeleteElem(menu.ID);
 
-                var input = new JsonObject();
-                input["ID"] = JsonValue.CreateStringValue(menu.ID);
+               var input = new JsonObject();
+               input["ID"] = JsonValue.CreateStringValue(menu.ID);
 
-                await Bridge.GoCall("menus.OnClose", input, true);
-            };
+               Bridge.GoCall("menus.OnClose", input);
+           };
 
             foreach (var item in root.item.Items)
             {

@@ -4,7 +4,6 @@ package mac
 
 import (
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/bridge"
 	"github.com/murlokswarm/app/internal/core"
 )
 
@@ -160,8 +159,8 @@ type Driver struct {
 	events       *app.EventRegistry
 	elems        *core.ElemDB
 	devID        string
-	macRPC       *bridge.PlatformRPC
-	goRPC        *bridge.GoRPC
+	platform     *core.Platform
+	golang       *core.Go
 	stop         func()
 	menubar      app.Menu
 	docktile     app.DockTile

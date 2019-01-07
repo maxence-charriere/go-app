@@ -6,7 +6,4 @@ void winCallReturn(char *retID, char *ret, char *err)
   onWinCallReturn(retID, ret, err);
 }
 
-char *goCall(char *in, char *ui)
-{
-  return onGoCall(in, ui);
-}
+void goCall(char *in) { return onGoCall(in); }

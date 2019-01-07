@@ -40,7 +40,7 @@
         @"Filenames" : filenames,
       };
 
-      [driver.goRPC call:@"filePanels.OnSelect" withInput:in onUI:YES];
+      [driver.goRPC call:@"filePanels.OnSelect" withInput:in ];
     };
 
     NSWindow *win = NSApp.keyWindow;
@@ -80,7 +80,7 @@
         @"Filename" : panel.URL.absoluteString,
       };
 
-      [driver.goRPC call:@"saveFilePanels.OnSelect" withInput:in onUI:YES];
+      [driver.goRPC call:@"saveFilePanels.OnSelect" withInput:in ];
     };
 
     NSWindow *win = NSApp.keyWindow;

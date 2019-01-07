@@ -8,22 +8,18 @@ package uwp
 import "C"
 
 import (
-	"strconv"
 	"syscall"
 	"unsafe"
 
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/bridge"
+	"github.com/murlokswarm/app/internal/core"
 	"github.com/pkg/errors"
 )
 
 var (
-	callOnUI func(func())
-	goRPC    bridge.GoRPC
-	winRPC   = bridge.PlatformRPC{
-		Handler: winCall,
-	}
-
+	callOnUI         func(func())
+	platform         = core.Platform{Handler: winCall}
+	golang           core.Go
 	dll              *syscall.DLL
 	winCallReturnPtr unsafe.Pointer
 	goCallPtr        unsafe.Pointer
@@ -56,9 +52,9 @@ func Connect() func() {
 }
 
 // RPC returns rpc objects to achieve two way communication between uwp and Go.
-func RPC(ui func(func())) (*bridge.PlatformRPC, *bridge.GoRPC) {
+func RPC(ui func(func())) (*core.Platform, *core.Go) {
 	callOnUI = ui
-	return &winRPC, &goRPC
+	return &platform, &golang
 }
 
 func winCall(call string) error {
@@ -87,7 +83,7 @@ func callDllFunc(name string, a ...unsafe.Pointer) (uintptr, error) {
 
 //export onWinCallReturn
 func onWinCallReturn(retID, ret, err *C.char) {
-	winRPC.Return(
+	platform.Return(
 		C.GoString(retID),
 		C.GoString(ret),
 		C.GoString(err),
@@ -95,25 +91,12 @@ func onWinCallReturn(retID, ret, err *C.char) {
 }
 
 //export onGoCall
-func onGoCall(ccall *C.char, cui *C.char) (cout *C.char) {
+func onGoCall(ccall *C.char) {
 	call := C.GoString(ccall)
-	ui, _ := strconv.ParseBool(C.GoString(cui))
 
-	if ui {
-		callOnUI(func() {
-			if _, err := goRPC.Call(call); err != nil {
-				app.Panic(errors.Wrap(err, "go call failed"))
-			}
-		})
-
-		return nil
-	}
-
-	ret, err := goRPC.Call(call)
-	if err != nil {
-		app.Panic(errors.Wrap(err, "go call failed"))
-	}
-
-	// Returned string must be free in c++ code.
-	return C.CString(ret)
+	callOnUI(func() {
+		if err := golang.Call(call); err != nil {
+			app.Panic(errors.Wrap(err, "go call failed"))
+		}
+	})
 }
