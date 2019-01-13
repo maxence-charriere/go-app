@@ -3,7 +3,7 @@ package app
 // Menu is the interface that describes a menu.
 // Accept only components that contain menu and menuitem tags.
 type Menu interface {
-	ElemWithCompo
+	View
 
 	// The menu type.
 	Type() string

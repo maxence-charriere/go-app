@@ -194,7 +194,7 @@ func (d *Driver) Render(c app.Compo) {
 		return
 	}
 
-	e.(app.ElemWithCompo).Render(c)
+	e.(app.View).Render(c)
 }
 
 // ElemByCompo satisfies the app.Driver interface.

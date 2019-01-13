@@ -11,9 +11,8 @@ import (
 func TestElem(t *testing.T) {
 	e := &Elem{}
 
+	e.WhenView(func(app.View) {})
 	e.WhenWindow(func(app.Window) {})
-	e.WhenPage(func(app.Page) {})
-	e.WhenNavigator(func(app.Navigator) {})
 	e.WhenMenu(func(app.Menu) {})
 	e.WhenDockTile(func(app.DockTile) {})
 	e.WhenStatusMenu(func(app.StatusMenu) {})

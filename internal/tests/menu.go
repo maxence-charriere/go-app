@@ -13,19 +13,13 @@ func testMenu(t *testing.T, m app.Menu) {
 	assert.NotEmpty(t, m.ID())
 
 	called := false
+	m.WhenView(func(p app.View) {
+		called = true
+	})
+	assert.False(t, called)
+
+	called = false
 	m.WhenWindow(func(w app.Window) {
-		called = true
-	})
-	assert.False(t, called)
-
-	called = false
-	m.WhenPage(func(p app.Page) {
-		called = true
-	})
-	assert.False(t, called)
-
-	called = false
-	m.WhenNavigator(func(n app.Navigator) {
 		called = true
 	})
 	assert.False(t, called)

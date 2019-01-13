@@ -28,9 +28,6 @@ func TestDriver(t *testing.T) {
 	m := d.NewContextMenu(app.MenuConfig{})
 	assert.Error(t, m.Err())
 
-	p := d.NewPage(app.PageConfig{})
-	assert.Error(t, p.Err())
-
 	fp := d.NewFilePanel(app.FilePanelConfig{})
 	assert.Error(t, fp.Err())
 

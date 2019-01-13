@@ -33,8 +33,8 @@ func (d *driverWithLogs) Run(c DriverConfig) error {
 func (d *driverWithLogs) Render(c Compo) {
 	e := d.ElemByCompo(c)
 
-	if withCompo, ok := e.(ElemWithCompo); ok {
-		withCompo.(ElemWithCompo).Render(c)
+	if view, ok := e.(View); ok {
+		view.(View).Render(c)
 	}
 }
 
@@ -42,9 +42,6 @@ func (d *driverWithLogs) ElemByCompo(c Compo) Elem {
 	switch e := d.Driver.ElemByCompo(c).(type) {
 	case Window:
 		return &windowWithLogs{Window: e}
-
-	case Page:
-		return &pageWithLogs{Page: e}
 
 	case DockTile:
 		return &dockWithLogs{DockTile: e}
@@ -72,20 +69,6 @@ func (d *driverWithLogs) NewWindow(c WindowConfig) Window {
 	}
 
 	return &windowWithLogs{Window: w}
-}
-
-func (d *driverWithLogs) NewPage(c PageConfig) Page {
-	WhenDebug(func() {
-		config := prettyConf(c)
-		Logf("creating page: %s", config)
-	})
-
-	p := d.Driver.NewPage(c)
-	if p.Err() != nil {
-		Logf("creating page failed: %s", p.Err())
-	}
-
-	return &pageWithLogs{Page: p}
 }
 
 func (d *driverWithLogs) NewContextMenu(c MenuConfig) Menu {
@@ -224,11 +207,11 @@ type windowWithLogs struct {
 	Window
 }
 
-func (w *windowWithLogs) WhenWindow(f func(Window)) {
+func (w *windowWithLogs) WhenView(f func(View)) {
 	f(w)
 }
 
-func (w *windowWithLogs) WhenNavigator(f func(Navigator)) {
+func (w *windowWithLogs) WhenWindow(f func(Window)) {
 	f(w)
 }
 
@@ -415,87 +398,6 @@ func (c *controllerWithLogs) Close() {
 			c.Err(),
 		)
 	}
-}
-
-// Page logs.
-type pageWithLogs struct {
-	Page
-}
-
-func (p *pageWithLogs) WhenPage(f func(Page)) {
-	f(p)
-}
-
-func (p *pageWithLogs) WhenNavigator(f func(Navigator)) {
-	f(p)
-}
-
-func (p *pageWithLogs) Load(url string, v ...interface{}) {
-	parsedURL := fmt.Sprintf(url, v...)
-
-	WhenDebug(func() {
-		Logf("page %s is loading %s",
-			p.ID(),
-			parsedURL,
-		)
-	})
-
-	p.Page.Load(url, v...)
-	if p.Err() != nil {
-		Logf("page %s failed to load %s: %s",
-			p.ID(),
-			parsedURL,
-			p.Err(),
-		)
-	}
-}
-
-func (p *pageWithLogs) Render(c Compo) {
-	WhenDebug(func() {
-		Logf("page %s is rendering %T",
-			p.ID(),
-			c,
-		)
-	})
-
-	p.Page.Render(c)
-	if p.Err() != nil {
-		Logf("page %s failed to render %T: %s",
-			p.ID(),
-			c,
-			p.Err(),
-		)
-	}
-}
-
-func (p *pageWithLogs) Reload() {
-	WhenDebug(func() {
-		Logf("page %s is reloading", p.ID())
-	})
-
-	p.Page.Reload()
-	if p.Err() != nil {
-		Logf("page %s failed to reload: %s",
-			p.ID(),
-			p.Err(),
-		)
-	}
-}
-
-func (p *pageWithLogs) Previous() {
-	WhenDebug(func() {
-		Logf("page %s is loading previous", p.ID())
-	})
-
-	p.Page.Previous()
-}
-
-func (p *pageWithLogs) Next() {
-	WhenDebug(func() {
-		Logf("page %s is loading next", p.ID())
-	})
-
-	p.Page.Next()
 }
 
 // Menu logs.

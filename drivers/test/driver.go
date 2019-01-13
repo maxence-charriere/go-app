@@ -58,7 +58,7 @@ func (d *Driver) Run(c app.DriverConfig) error {
 func (d *Driver) Render(c app.Compo) {
 	e := d.ElemByCompo(c)
 	if e.Err() == nil {
-		e.(app.ElemWithCompo).Render(c)
+		e.(app.View).Render(c)
 	}
 }
 
@@ -72,13 +72,6 @@ func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
 	w := newWindow(d, c)
 	d.setElemErr(w)
 	return w
-}
-
-// NewPage satisfies the app.Driver interface.
-func (d *Driver) NewPage(c app.PageConfig) app.Page {
-	p := newPage(d, c)
-	d.setElemErr(p)
-	return p
 }
 
 // NewContextMenu satisfies the app.Driver interface.

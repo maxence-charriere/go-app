@@ -34,6 +34,31 @@ func (m *Menu) Render(c app.Compo) {
 	m.SetErr(app.ErrNotSupported)
 }
 
+// Reload satisfies the app.Menu interface.
+func (m *Menu) Reload() {
+	m.SetErr(app.ErrNotSupported)
+}
+
+// CanPrevious satisfies the app.Menu interface.
+func (m *Menu) CanPrevious() bool {
+	return false
+}
+
+// Previous satisfies the app.Menu interface.
+func (m *Menu) Previous() {
+	m.SetErr(app.ErrNotSupported)
+}
+
+// CanNext satisfies the app.Menu interface.
+func (m *Menu) CanNext() bool {
+	return false
+}
+
+// Next satisfies the app.Menu interface.
+func (m *Menu) Next() {
+	m.SetErr(app.ErrNotSupported)
+}
+
 // Type satisfies the app.Menu interface.
 func (m *Menu) Type() string {
 	return "menu"

@@ -456,13 +456,13 @@ func (w *Window) Close() {
 	w.SetErr(err)
 }
 
-// WhenWindow satisfies the app.Window interface.
-func (w *Window) WhenWindow(f func(app.Window)) {
+// WhenView satisfies the app.Window interface.
+func (w *Window) WhenView(f func(app.View)) {
 	f(w)
 }
 
-// WhenNavigator satisfies the app.Window interface.
-func (w *Window) WhenNavigator(f func(app.Navigator)) {
+// WhenWindow satisfies the app.Window interface.
+func (w *Window) WhenWindow(f func(app.Window)) {
 	f(w)
 }
 
