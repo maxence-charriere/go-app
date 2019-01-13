@@ -30,9 +30,6 @@ type Driver interface {
 	// configuration.
 	NewWindow(WindowConfig) Window
 
-	// NewPage creates the webpage described in the given configuration.
-	NewPage(PageConfig) Page
-
 	// NewContextMenu creates and displays the context menu described by the
 	// given configuration.
 	NewContextMenu(MenuConfig) Menu

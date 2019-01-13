@@ -10,19 +10,13 @@ import (
 func testWindow(t *testing.T, w app.Window) {
 	// app.Elem
 	called := false
-	w.WhenWindow(func(w app.Window) {
+	w.WhenView(func(n app.View) {
 		called = true
 	})
 	assert.True(t, called)
 
 	called = false
-	w.WhenPage(func(p app.Page) {
-		called = true
-	})
-	assert.False(t, called)
-
-	called = false
-	w.WhenNavigator(func(n app.Navigator) {
+	w.WhenWindow(func(w app.Window) {
 		called = true
 	})
 	assert.True(t, called)
@@ -49,12 +43,12 @@ func testWindow(t *testing.T, w app.Window) {
 		t.Log(err)
 	})
 
-	t.Run("navigator", func(t *testing.T) {
-		testNavigator(t, w, false)
+	t.Run("view navigation", func(t *testing.T) {
+		testViewNav(t, w, false)
 	})
 
 	t.Run("compo", func(t *testing.T) {
-		testElemWithCompo(t, w)
+		testView(t, w)
 	})
 
 	w.Position()

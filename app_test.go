@@ -43,7 +43,6 @@ func TestApp(t *testing.T) {
 		assert.NotNil(t, app.ElemByCompo(&tests.Hello{}))
 
 		assert.NotNil(t, app.NewWindow(app.WindowConfig{}))
-		assert.NotNil(t, app.NewPage(app.PageConfig{}))
 		assert.NotNil(t, app.NewContextMenu(""))
 		assert.NotNil(t, app.NewController(app.ControllerConfig{}))
 		assert.NotNil(t, app.NewFilePanel(app.FilePanelConfig{}))

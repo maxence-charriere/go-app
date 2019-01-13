@@ -57,13 +57,6 @@ func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
 	return w
 }
 
-// NewPage satisfies the app.Driver interface.
-func (d *Driver) NewPage(c app.PageConfig) app.Page {
-	p := &Page{}
-	p.SetErr(app.ErrNotSupported)
-	return p
-}
-
 // NewContextMenu satisfies the app.Driver interface.
 func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 	m := &Menu{}

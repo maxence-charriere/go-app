@@ -35,7 +35,6 @@ type Driver struct {
 	factory     *app.Factory
 	events      *app.EventRegistry
 	elems       *core.ElemDB
-	page        app.Page
 	stop        func()
 	fileHandler http.Handler
 }

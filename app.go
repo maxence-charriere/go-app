@@ -167,13 +167,6 @@ func NewWindow(c WindowConfig) Window {
 	return driver.NewWindow(c)
 }
 
-// NewPage creates the page described by the given configuration.
-//
-// It panics if called before Run.
-func NewPage(c PageConfig) Page {
-	return driver.NewPage(c)
-}
-
 // NewContextMenu creates and displays the context menu with the given component
 // URL.
 //

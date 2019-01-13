@@ -21,14 +21,11 @@ func (e *Elem) Contains(app.Compo) bool {
 	return false
 }
 
+// WhenView satisfies the app.Elem interface.
+func (e *Elem) WhenView(func(app.View)) {}
+
 // WhenWindow satisfies the app.Elem interface.
 func (e *Elem) WhenWindow(func(app.Window)) {}
-
-// WhenPage satisfies the app.Elem interface.
-func (e *Elem) WhenPage(func(app.Page)) {}
-
-// WhenNavigator satisfies the app.Elem interface.
-func (e *Elem) WhenNavigator(func(app.Navigator)) {}
 
 // WhenMenu satisfies the app.Elem interface.
 func (e *Elem) WhenMenu(func(app.Menu)) {}

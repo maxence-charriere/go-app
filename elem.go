@@ -8,14 +8,11 @@ type Elem interface {
 	// Contains reports whether the component is mounted in the element.
 	Contains(Compo) bool
 
+	// WhenPage calls the given func when the element is a view.
+	WhenView(func(View))
+
 	// WhenWindow calls the given func when the element is a window.
 	WhenWindow(func(Window))
-
-	// WhenPage calls the given func when the element is a page.
-	WhenPage(func(Page))
-
-	// WhenPage calls the given func when the element supports navigation.
-	WhenNavigator(func(Navigator))
 
 	// WhenStatusMenu calls the given func when the element is a menu.
 	WhenMenu(func(Menu))
@@ -33,9 +30,8 @@ type Elem interface {
 	Err() error
 }
 
-// ElemWithCompo is the interface that describes an element that hosts
-// components.
-type ElemWithCompo interface {
+// View is the interface that describe an element that hosts components.
+type View interface {
 	Elem
 
 	// Load loads the page specified by the URL.
@@ -45,18 +41,6 @@ type ElemWithCompo interface {
 	// e.g. hello will load the component named hello.
 	// It returns an error if the component is not imported.
 	Load(url string, v ...interface{})
-
-	// Compo returns the loaded component.
-	Compo() Compo
-
-	// Render renders the component.
-	Render(Compo)
-}
-
-// Navigator is the interface that describes an element that supports
-// navigation.
-type Navigator interface {
-	ElemWithCompo
 
 	// Reload reloads the current page.
 	Reload()
@@ -72,6 +56,12 @@ type Navigator interface {
 
 	// Next loads the next page.
 	Next()
+
+	// Compo returns the loaded component.
+	Compo() Compo
+
+	// Render renders the component.
+	Render(Compo)
 }
 
 // Closer is the interface that describes an element that can be closed.

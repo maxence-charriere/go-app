@@ -40,10 +40,6 @@ func TestDriver(t *testing.T, setup DriverSetup) {
 		assertElem(t, c)
 		t.Run("controller", func(t *testing.T) { testController(t, c) })
 
-		p := d.NewPage(app.PageConfig{})
-		assertElem(t, p)
-		t.Run("page", func(t *testing.T) { testPage(t, p) })
-
 		cm := d.NewContextMenu(app.MenuConfig{})
 		assertElem(t, cm)
 		t.Run("context menu", func(t *testing.T) { testMenu(t, cm) })
@@ -102,15 +98,11 @@ func TestDriver(t *testing.T, setup DriverSetup) {
 func testElemByCompo(t *testing.T, d app.Driver) {
 	tests := []struct {
 		scenario string
-		elem     app.ElemWithCompo
+		elem     app.View
 	}{
 		{
 			scenario: "window",
 			elem:     d.NewWindow(app.WindowConfig{URL: "tests.Hello"}),
-		},
-		{
-			scenario: "page",
-			elem:     d.NewPage(app.PageConfig{URL: "tests.Hello"}),
 		},
 		{
 			scenario: "context menu",
@@ -150,77 +142,77 @@ func testElemByCompo(t *testing.T, d app.Driver) {
 	}
 }
 
-func testElemWithCompo(t *testing.T, e app.ElemWithCompo) {
-	assert.NotEmpty(t, e.ID())
+func testView(t *testing.T, v app.View) {
+	assert.NotEmpty(t, v.ID())
 
-	e.Load("tests.Unknown")
-	assert.Error(t, e.Err())
+	v.Load("tests.Unknown")
+	assert.Error(t, v.Err())
 
-	e.Load("tests.Hello")
-	assertElem(t, e)
+	v.Load("tests.Hello")
+	assertElem(t, v)
 
-	c := e.Compo()
-	if e.Err() == app.ErrNotSupported {
+	c := v.Compo()
+	if v.Err() == app.ErrNotSupported {
 		assert.Nil(t, c)
 	} else {
-		assertElem(t, e)
+		assertElem(t, v)
 		assert.NotNil(t, c)
 	}
 
-	assert.True(t, e.Contains(c))
-	assert.False(t, e.Contains(&Hello{}))
+	assert.True(t, v.Contains(c))
+	assert.False(t, v.Contains(&Hello{}))
 
-	e.Render(c)
-	assertElem(t, e)
+	v.Render(c)
+	assertElem(t, v)
 
-	e.Render(&Hello{})
-	assert.Error(t, e.Err())
+	v.Render(&Hello{})
+	assert.Error(t, v.Err())
 }
 
-func testNavigator(t *testing.T, n app.Navigator, lazy bool) {
-	n.Reload()
-	assert.Error(t, n.Err())
+func testViewNav(t *testing.T, v app.View, lazy bool) {
+	v.Reload()
+	assert.Error(t, v.Err())
 
-	n.Load("tests.Hello")
-	assertElem(t, n)
+	v.Load("tests.Hello")
+	assertElem(t, v)
 
 	if lazy {
-		n.CanPrevious()
-		assert.NoError(t, n.Err())
+		v.CanPrevious()
+		assert.NoError(t, v.Err())
 
-		n.Previous()
-		assert.NoError(t, n.Err())
+		v.Previous()
+		assert.NoError(t, v.Err())
 
-		n.CanNext()
-		assert.NoError(t, n.Err())
+		v.CanNext()
+		assert.NoError(t, v.Err())
 
-		n.Next()
-		assert.NoError(t, n.Err())
+		v.Next()
+		assert.NoError(t, v.Err())
 		return
 	}
 
-	assert.False(t, n.CanPrevious())
-	assert.False(t, n.CanNext())
+	assert.False(t, v.CanPrevious())
+	assert.False(t, v.CanNext())
 
-	n.Previous()
-	assert.Error(t, n.Err())
+	v.Previous()
+	assert.Error(t, v.Err())
 
-	n.Next()
-	assert.Error(t, n.Err())
+	v.Next()
+	assert.Error(t, v.Err())
 
-	n.Load("tests.World")
-	assert.True(t, n.CanPrevious())
-	assert.False(t, n.CanNext())
+	v.Load("tests.World")
+	assert.True(t, v.CanPrevious())
+	assert.False(t, v.CanNext())
 
-	n.Previous()
-	assertElem(t, n)
-	assert.False(t, n.CanPrevious())
-	assert.True(t, n.CanNext())
+	v.Previous()
+	assertElem(t, v)
+	assert.False(t, v.CanPrevious())
+	assert.True(t, v.CanNext())
 
-	n.Next()
-	assertElem(t, n)
-	assert.True(t, n.CanPrevious())
-	assert.False(t, n.CanNext())
+	v.Next()
+	assertElem(t, v)
+	assert.True(t, v.CanPrevious())
+	assert.False(t, v.CanNext())
 }
 
 func assertElem(t *testing.T, e app.Elem) {
