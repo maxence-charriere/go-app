@@ -30,10 +30,6 @@ func testMenu(t *testing.T, m app.Menu) {
 	})
 	assert.True(t, called)
 
-	m.WhenErr(func(err error) {
-		t.Log(err)
-	})
-
 	m.Load("tests.Unknown")
 	assert.Error(t, m.Err())
 

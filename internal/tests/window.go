@@ -39,10 +39,6 @@ func testWindow(t *testing.T, w app.Window) {
 	})
 	assert.False(t, called)
 
-	w.WhenErr(func(err error) {
-		t.Log(err)
-	})
-
 	t.Run("view navigation", func(t *testing.T) {
 		testViewNav(t, w, false)
 	})
