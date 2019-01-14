@@ -9,12 +9,39 @@ import (
 
 // Driver is a base struct to embed in app.Driver implementations.
 type Driver struct {
-	Elems    *ElemDB
-	Events   *app.EventRegistry
-	Factory  *app.Factory
-	Go       *Go
+	// The database that contain the created elements.
+	Elems *ElemDB
+
+	// The event registry that emit events.
+	Events *app.EventRegistry
+
+	// The factory used to import and create components.
+	Factory *app.Factory
+
+	// The RPC object to deliver procedure calls to Go.
+	Go *Go
+
+	// The function name that javascript use to send data to the targetted
+	// platform.
+	JSToPlatform string
+
+	// The function to open an URL in the targetted platform default browser.
+	OpenDefaultBrowser func(string) error
+
+	WindowFactory func(*Driver) *Window
+
+	// The RPC object to call targetted platform procedures.
 	Platform *Platform
-	UIChan   chan func()
+
+	// A function that returns the targetted platform resources directory
+	// path.
+	ResourcesPath func() string
+
+	// A function that returns the targetted platform storage directory path.
+	StoragePath func() string
+
+	// The channel used to execute function on the UI goroutine.
+	UIChan chan func()
 }
 
 // Target satisfies the app.Driver interface.
@@ -36,14 +63,14 @@ func (d *Driver) AppName() string {
 // Resources satisfies the app.Driver interface.
 func (d *Driver) Resources(p ...string) string {
 	r := filepath.Join(p...)
-	r = filepath.Join("resources", r)
+	r = filepath.Join(d.ResourcesPath(), r)
 	return r
 }
 
 // Storage satisfies the app.Driver interface.
 func (d *Driver) Storage(p ...string) string {
 	s := filepath.Join(p...)
-	s = filepath.Join("storage", s)
+	s = filepath.Join(d.StoragePath(), s)
 	return s
 }
 
@@ -63,8 +90,14 @@ func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
 
 // NewWindow satisfies the app.Driver interface.
 func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
-	w := &Window{}
-	w.SetErr(app.ErrNotSupported)
+	if d.WindowFactory == nil {
+		w := &Window{}
+		w.err = app.ErrNotSupported
+		return w
+	}
+
+	w := d.WindowFactory(d)
+	w.Create(c)
 	return w
 }
 

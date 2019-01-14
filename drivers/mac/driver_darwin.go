@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -53,6 +54,10 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	d.Events = c.Events
 	d.Factory = c.Factory
 	d.Platform, d.Go = objc.RPC(d.UI)
+	d.JSToPlatform = "window.webkit.messageHandlers.golangRequest.postMessage"
+	d.OpenDefaultBrowser = openDefaultBrowser
+	d.ResourcesPath = d.resources
+	d.StoragePath = d.storage
 	d.UIChan = c.UI
 	driver = d
 
@@ -161,26 +166,6 @@ func (d *Driver) AppName() string {
 	return filepath.Base(wd)
 }
 
-// Resources satisfies the app.Driver interface.
-func (d *Driver) Resources(path ...string) string {
-	out := struct {
-		Resources string
-	}{}
-
-	if err := d.Platform.Call("driver.Bundle", &out, nil); err != nil {
-		app.Panic(err)
-	}
-
-	r := filepath.Join(path...)
-	return filepath.Join(out.Resources, r)
-}
-
-// Storage satisfies the app.Driver interface.
-func (d *Driver) Storage(path ...string) string {
-	s := filepath.Join(path...)
-	return filepath.Join(d.support(), "storage", s)
-}
-
 // NewWindow satisfies the app.Driver interface.
 func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
 	return newWindow(c)
@@ -246,6 +231,18 @@ func (d *Driver) Stop() {
 	}
 }
 
+func (d *Driver) resources() string {
+	out := struct {
+		Resources string
+	}{}
+
+	if err := d.Platform.Call("driver.Bundle", &out, nil); err != nil {
+		app.Panic(err)
+	}
+
+	return out.Resources
+}
+
 func (d *Driver) support() string {
 	out := struct {
 		Support string
@@ -267,6 +264,10 @@ func (d *Driver) support() string {
 	}
 
 	return out.Support
+}
+
+func (d *Driver) storage() string {
+	return filepath.Join(d.support(), "storage")
 }
 
 func (d *Driver) onRun(in map[string]interface{}) {
@@ -326,4 +327,8 @@ func generateDevID() string {
 	wd, _ := os.Getwd()
 	io.WriteString(h, wd)
 	return fmt.Sprintf("%x", h.Sum(nil))
+}
+
+func openDefaultBrowser(url string) error {
+	return exec.Command("open", url).Run()
 }

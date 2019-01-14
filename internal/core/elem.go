@@ -43,6 +43,7 @@ func (e *Elem) Err() error {
 }
 
 // SetErr set the element error state with the given error.
+// TODO: remove it.
 func (e *Elem) SetErr(err error) {
 	e.err = err
 }
