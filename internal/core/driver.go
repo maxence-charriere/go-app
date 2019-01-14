@@ -62,6 +62,10 @@ func (d *Driver) AppName() string {
 
 // Resources satisfies the app.Driver interface.
 func (d *Driver) Resources(p ...string) string {
+	if d.ResourcesFunc == nil {
+		d.StorageFunc = func() string { return "resources" }
+	}
+
 	r := filepath.Join(p...)
 	r = filepath.Join(d.ResourcesFunc(), r)
 	return r
@@ -69,6 +73,10 @@ func (d *Driver) Resources(p ...string) string {
 
 // Storage satisfies the app.Driver interface.
 func (d *Driver) Storage(p ...string) string {
+	if d.StorageFunc == nil {
+		d.StorageFunc = func() string { return "storage" }
+	}
+
 	s := filepath.Join(p...)
 	s = filepath.Join(d.StorageFunc(), s)
 	return s

@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 	"sync"
@@ -89,6 +90,11 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	d.Events = c.Events
 	d.Factory = c.Factory
 	d.Platform, d.Go = uwp.RPC(d.UI)
+	d.JSToPlatform = "window.external.notify"
+	d.OpenDefaultBrowser = openDefaultBrowser
+	d.NewWindowFunc = newWindow
+	d.ResourcesFunc = d.resources
+	// d.StorageFunc = d.storage
 	d.UIChan = c.UI
 	driver = d
 
@@ -163,23 +169,6 @@ func (d *Driver) configureDefaultWindow() {
 	}
 }
 
-// Resources satisfies the app.Driver interface.
-func (d *Driver) Resources(path ...string) string {
-	appdir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	if err != nil {
-		app.Log(err)
-	}
-
-	r := filepath.Join(path...)
-	r = filepath.Join(appdir, "Resources", r)
-	return r
-}
-
-// NewWindow satisfies the app.Driver interface.
-func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
-	return newWindow(c)
-}
-
 // NewContextMenu satisfies the app.Driver interface.
 func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 	m := newMenu(c, "context menu")
@@ -200,6 +189,15 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 func (d *Driver) log(in map[string]interface{}) {
 	msg := in["Msg"].(string)
 	app.Log(msg)
+}
+
+func (d *Driver) resources() string {
+	appdir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		app.Log(err)
+	}
+
+	return filepath.Join(appdir, "Resources")
 }
 
 func (d *Driver) onRun(in map[string]interface{}) {
@@ -228,4 +226,8 @@ func (d *Driver) onClose(in map[string]interface{}) {
 	d.UI(func() {
 		d.stop()
 	})
+}
+
+func openDefaultBrowser(url string) error {
+	return exec.Command("start", url).Run()
 }

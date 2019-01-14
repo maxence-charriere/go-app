@@ -17,11 +17,12 @@ import (
 type Window struct {
 	Elem
 
-	DefaultWidth  float64
-	DefaultHeight float64
-	DOM           dom.Engine
-	Driver        *Driver
-	History       History
+	ConvertHTMLPaths func([]string) []string
+	DefaultWidth     float64
+	DefaultHeight    float64
+	DOM              dom.Engine
+	Driver           *Driver
+	History          History
 
 	compo        app.Compo
 	x            float64
@@ -37,6 +38,12 @@ type Window struct {
 func (w *Window) Create(c app.WindowConfig) {
 	w.id = uuid.New().String()
 	w.DOM.Sync = w.render
+
+	if w.ConvertHTMLPaths == nil {
+		w.ConvertHTMLPaths = func(paths []string) []string {
+			return paths
+		}
+	}
 
 	if c.Width == 0 {
 		c.Width = w.DefaultWidth
@@ -159,8 +166,8 @@ func (w *Window) Load(rawurl string, v ...interface{}) {
 	page := dom.Page{
 		Title:         htmlConf.Title,
 		Metas:         htmlConf.Metas,
-		CSS:           htmlConf.CSS,
-		Javascripts:   htmlConf.Javascripts,
+		CSS:           w.ConvertHTMLPaths(htmlConf.CSS),
+		Javascripts:   w.ConvertHTMLPaths(htmlConf.Javascripts),
 		GoRequest:     w.Driver.JSToPlatform,
 		RootCompoName: compoName,
 	}
