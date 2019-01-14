@@ -46,7 +46,7 @@ func init() {
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(c app.DriverConfig) error {
 	if len(goappBuild) != 0 {
-		return d.runGoappBuild()
+		return d.build()
 	}
 
 	d.Elems = core.NewElemDB()
@@ -115,7 +115,7 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	return err
 }
 
-func (d *Driver) runGoappBuild() error {
+func (d *Driver) build() error {
 	b, err := json.MarshalIndent(d, "", "    ")
 	if err != nil {
 		return err
@@ -179,22 +179,6 @@ func (d *Driver) Resources(path ...string) string {
 func (d *Driver) Storage(path ...string) string {
 	s := filepath.Join(path...)
 	return filepath.Join(d.support(), "storage", s)
-}
-
-// Render satisfies the app.Driver interface.
-func (d *Driver) Render(c app.Compo) {
-	e := d.ElemByCompo(c)
-
-	if e.Err() == app.ErrElemNotSet {
-		return
-	}
-
-	e.(app.View).Render(c)
-}
-
-// ElemByCompo satisfies the app.Driver interface.
-func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
-	return d.Elems.GetByCompo(c)
 }
 
 // NewWindow satisfies the app.Driver interface.
