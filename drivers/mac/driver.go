@@ -154,13 +154,7 @@ type Driver struct {
 	// It is used only for goapp packaging.
 	SupportedFiles []FileType `json:",omitempty"`
 
-	ui           chan func()
-	factory      *app.Factory
-	events       *app.EventRegistry
-	elems        *core.ElemDB
 	devID        string
-	platform     *core.Platform
-	golang       *core.Go
 	stop         func()
 	menubar      app.Menu
 	docktile     app.DockTile

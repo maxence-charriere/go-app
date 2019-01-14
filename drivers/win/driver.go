@@ -53,13 +53,7 @@ type Driver struct {
 	// It is used only for goapp packaging.
 	SupportedFiles []FileType `json:",omitempty"`
 
-	ui      chan func()
-	factory *app.Factory
-	events  *app.EventRegistry
-	elems   *core.ElemDB
-	winRPC  *core.Platform
-	goRPC   *core.Go
-	stop    func()
+	stop func()
 }
 
 // Target satisfies the app.Driver interface.

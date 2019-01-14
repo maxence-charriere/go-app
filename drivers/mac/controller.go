@@ -37,7 +37,7 @@ func newController(c app.ControllerConfig) *Controller {
 		onClose:           c.OnClose,
 	}
 
-	if err := driver.platform.Call("controller.New", nil, struct {
+	if err := driver.Platform.Call("controller.New", nil, struct {
 		ID string
 	}{
 		ID: controller.id,
@@ -46,7 +46,7 @@ func newController(c app.ControllerConfig) *Controller {
 		return controller
 	}
 
-	driver.elems.Put(controller)
+	driver.Elems.Put(controller)
 	return controller
 }
 
@@ -57,14 +57,14 @@ func (c *Controller) ID() string {
 
 // Close satisfies the app.Controller interface.
 func (c *Controller) Close() {
-	err := driver.platform.Call("controller.Close", nil, struct {
+	err := driver.Platform.Call("controller.Close", nil, struct {
 		ID string
 	}{
 		ID: c.id,
 	})
 
 	c.SetErr(err)
-	driver.elems.Delete(c)
+	driver.Elems.Delete(c)
 }
 
 func onControllerDirectionChange(c *Controller, in map[string]interface{}) {
@@ -100,7 +100,7 @@ func onControllerClose(c *Controller, in map[string]interface{}) {
 }
 
 func onControllerConnected(c *Controller, in map[string]interface{}) {
-	if err := driver.platform.Call("controller.Listen", nil, struct {
+	if err := driver.Platform.Call("controller.Listen", nil, struct {
 		ID string
 	}{
 		ID: c.id,
@@ -124,7 +124,7 @@ func handleController(h func(c *Controller, in map[string]interface{})) core.GoH
 	return func(in map[string]interface{}) {
 		id, _ := in["ID"].(string)
 
-		e := driver.elems.GetByID(id)
+		e := driver.Elems.GetByID(id)
 		if e.Err() == app.ErrElemNotSet {
 			return
 		}

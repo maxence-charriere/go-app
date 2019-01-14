@@ -29,7 +29,7 @@ func newMenu(c app.MenuConfig, typ string) *Menu {
 	m := &Menu{
 		id: uuid.New().String(),
 		dom: dom.Engine{
-			Factory:   driver.factory,
+			Factory:   driver.Factory,
 			Resources: driver.Resources,
 			AllowedNodes: []string{
 				"menu",
@@ -42,7 +42,7 @@ func newMenu(c app.MenuConfig, typ string) *Menu {
 
 	m.dom.Sync = m.render
 
-	if err := driver.platform.Call("menus.New", nil, struct {
+	if err := driver.Platform.Call("menus.New", nil, struct {
 		ID string
 	}{
 		ID: m.id,
@@ -51,7 +51,7 @@ func newMenu(c app.MenuConfig, typ string) *Menu {
 		return m
 	}
 
-	driver.elems.Put(m)
+	driver.Elems.Put(m)
 
 	if len(c.URL) != 0 {
 		m.Load(c.URL)
@@ -76,13 +76,13 @@ func (m *Menu) Load(urlFmt string, v ...interface{}) {
 	n := core.CompoNameFromURLString(u)
 
 	var c app.Compo
-	if c, err = driver.factory.NewCompo(n); err != nil {
+	if c, err = driver.Factory.NewCompo(n); err != nil {
 		return
 	}
 
 	m.compo = c
 
-	if err = driver.platform.Call("menus.Load", nil, struct {
+	if err = driver.Platform.Call("menus.Load", nil, struct {
 		ID string
 	}{
 		ID: m.id,
@@ -122,7 +122,7 @@ func (m *Menu) render(changes interface{}) error {
 		return errors.Wrap(err, "encode changes failed")
 	}
 
-	return driver.platform.Call("menus.Render", nil, struct {
+	return driver.Platform.Call("menus.Render", nil, struct {
 		ID      string
 		Changes string
 	}{
@@ -174,7 +174,7 @@ func onMenuClose(m *Menu, in map[string]interface{}) {
 	// We call CallOnUIGoroutine in order to defer the close operation
 	// after the clicked one.
 	driver.UI(func() {
-		if err := driver.platform.Call("menus.Delete", nil, struct {
+		if err := driver.Platform.Call("menus.Delete", nil, struct {
 			ID string
 		}{
 			ID: m.id,
@@ -182,14 +182,14 @@ func onMenuClose(m *Menu, in map[string]interface{}) {
 			app.Panic(errors.Wrap(err, "onMenuClose"))
 		}
 
-		driver.elems.Delete(m)
+		driver.Elems.Delete(m)
 	})
 }
 
 func handleMenu(h func(m *Menu, in map[string]interface{})) core.GoHandler {
 	return func(in map[string]interface{}) {
 		id, _ := in["ID"].(string)
-		e := driver.elems.GetByID(id)
+		e := driver.Elems.GetByID(id)
 
 		switch m := e.(type) {
 		case *Menu:

@@ -21,7 +21,7 @@ func newDockTile(c app.MenuConfig) *DockTile {
 		Menu: Menu{
 			id: uuid.New().String(),
 			dom: dom.Engine{
-				Factory:   driver.factory,
+				Factory:   driver.Factory,
 				Resources: driver.Resources,
 				AllowedNodes: []string{
 					"menu",
@@ -36,7 +36,7 @@ func newDockTile(c app.MenuConfig) *DockTile {
 
 	d.dom.Sync = d.render
 
-	if err := driver.platform.Call("menus.New", nil, struct {
+	if err := driver.Platform.Call("menus.New", nil, struct {
 		ID string
 	}{
 		ID: d.id,
@@ -45,7 +45,7 @@ func newDockTile(c app.MenuConfig) *DockTile {
 		return d
 	}
 
-	driver.elems.Put(d)
+	driver.Elems.Put(d)
 
 	if len(c.URL) != 0 {
 		d.Load(c.URL)
@@ -66,7 +66,7 @@ func (d *DockTile) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	err := driver.platform.Call("docks.SetMenu", nil, struct {
+	err := driver.Platform.Call("docks.SetMenu", nil, struct {
 		ID string
 	}{
 		ID: d.id,
@@ -82,7 +82,7 @@ func (d *DockTile) SetIcon(path string) {
 		return
 	}
 
-	err := driver.platform.Call("docks.SetIcon", nil, struct {
+	err := driver.Platform.Call("docks.SetIcon", nil, struct {
 		Icon string
 	}{
 		Icon: path,
@@ -98,7 +98,7 @@ func (d *DockTile) SetBadge(v interface{}) {
 		badge = fmt.Sprint(v)
 	}
 
-	err := driver.platform.Call("docks.SetBadge", nil, struct {
+	err := driver.Platform.Call("docks.SetBadge", nil, struct {
 		Badge string
 	}{
 		Badge: badge,
