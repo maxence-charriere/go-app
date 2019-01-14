@@ -8,12 +8,13 @@ import (
 
 // Elem is a base struct to embed in app.Elem implementations.
 type Elem struct {
+	id  string
 	err error
 }
 
 // ID satisfies the app.Elem interface.
 func (e *Elem) ID() string {
-	return ""
+	return e.id
 }
 
 // Contains satisfies the app.Elem interface.
@@ -36,19 +37,13 @@ func (e *Elem) WhenDockTile(func(app.DockTile)) {}
 // WhenStatusMenu satisfies the app.Elem interface.
 func (e *Elem) WhenStatusMenu(func(app.StatusMenu)) {}
 
-// WhenErr satisfies the app.Elem interface.
-func (e *Elem) WhenErr(f func(error)) {
-	if e.err != nil {
-		f(e.err)
-	}
-}
-
 // Err satisfies the app.Elem interface.
 func (e *Elem) Err() error {
 	return e.err
 }
 
 // SetErr set the element error state with the given error.
+// TODO: remove it.
 func (e *Elem) SetErr(err error) {
 	e.err = err
 }

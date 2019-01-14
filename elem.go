@@ -23,9 +23,6 @@ type Elem interface {
 	// WhenStatusMenu calls the given func when the element is a status menu.
 	WhenStatusMenu(func(StatusMenu))
 
-	// WhenErr call the given func when the element is in an error state.
-	WhenErr(func(err error))
-
 	// Err returns the error that prevent the element to work.
 	Err() error
 }

@@ -73,14 +73,22 @@ namespace uwp
                 try
                 {
                     await ApplicationViewSwitcher.TryShowAsStandaloneAsync(viewID);
+
+                    var bounds = Window.Current.Bounds;
+                    var output = new JsonObject();
+
+                    output["X"] = JsonValue.CreateNumberValue(bounds.X);
+                    output["Y"] = JsonValue.CreateNumberValue(bounds.Y);
+                    output["Width"] = JsonValue.CreateNumberValue(bounds.Width);
+                    output["Heigth"] = JsonValue.CreateNumberValue(bounds.Height);
+
+                    Bridge.Return(returnID, output, null);
                 }
                 catch (Exception e)
                 {
                     Bridge.Return(returnID, null, e.Message);
                 }
             });
-
-            Bridge.Return(returnID, null, null);
         }
 
         static void setupWindow(JsonObject input)
@@ -316,7 +324,7 @@ namespace uwp
             var input = new JsonObject();
             input["ID"] = JsonValue.CreateStringValue(win.ID);
             input["Width"] = JsonValue.CreateNumberValue(e.Size.Width);
-            input["Heigth"] = JsonValue.CreateNumberValue(e.Size.Height);
+            input["Height"] = JsonValue.CreateNumberValue(e.Size.Height);
             Bridge.GoCall("windows.OnResize", input);
 
             var view = ApplicationView.GetForCurrentView();
@@ -390,35 +398,25 @@ namespace uwp
             }
         }
 
-        internal static async void FullScreen(JsonObject input, string returnID)
+        internal static async void SetFullScreen(JsonObject input, string returnID)
         {
             var ID = input.GetNamedString("ID");
+            var enable = input.GetNamedBoolean("Enable");
             var w = Bridge.GetElem<WindowPage>(ID);
 
             await w.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 try
                 {
-                    ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
-                    Bridge.Return(returnID, null, null);
-                }
-                catch (Exception e)
-                {
-                    Bridge.Return(returnID, null, e.Message);
-                }
-            });
-        }
+                    if (enable)
+                    {
+                        ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
+                    }
+                    else
+                    {
+                        ApplicationView.GetForCurrentView().ExitFullScreenMode();
+                    }
 
-        internal static async void ExitFullScreen(JsonObject input, string returnID)
-        {
-            var ID = input.GetNamedString("ID");
-            var w = Bridge.GetElem<WindowPage>(ID);
-
-            await w.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                try
-                {
-                    ApplicationView.GetForCurrentView().ExitFullScreenMode();
                     Bridge.Return(returnID, null, null);
                 }
                 catch (Exception e)

@@ -9,12 +9,39 @@ import (
 
 // Driver is a base struct to embed in app.Driver implementations.
 type Driver struct {
-	Elems    *ElemDB
-	Events   *app.EventRegistry
-	Factory  *app.Factory
-	Go       *Go
+	// The database that contain the created elements.
+	Elems *ElemDB
+
+	// The event registry that emit events.
+	Events *app.EventRegistry
+
+	// The factory used to import and create components.
+	Factory *app.Factory
+
+	// The RPC object to deliver procedure calls to Go.
+	Go *Go
+
+	// The function name that javascript use to send data to the targetted
+	// platform.
+	JSToPlatform string
+
+	// The function to open an URL in the targetted platform default browser.
+	OpenDefaultBrowser func(string) error
+
+	NewWindowFunc func(*Driver) *Window
+
+	// The RPC object to call targetted platform procedures.
 	Platform *Platform
-	UIChan   chan func()
+
+	// A function that returns the targetted platform resources directory
+	// path.
+	ResourcesFunc func() string
+
+	// A function that returns the targetted platform storage directory path.
+	StorageFunc func() string
+
+	// The channel used to execute function on the UI goroutine.
+	UIChan chan func()
 }
 
 // Target satisfies the app.Driver interface.
@@ -35,15 +62,23 @@ func (d *Driver) AppName() string {
 
 // Resources satisfies the app.Driver interface.
 func (d *Driver) Resources(p ...string) string {
+	if d.ResourcesFunc == nil {
+		d.StorageFunc = func() string { return "resources" }
+	}
+
 	r := filepath.Join(p...)
-	r = filepath.Join("resources", r)
+	r = filepath.Join(d.ResourcesFunc(), r)
 	return r
 }
 
 // Storage satisfies the app.Driver interface.
 func (d *Driver) Storage(p ...string) string {
+	if d.StorageFunc == nil {
+		d.StorageFunc = func() string { return "storage" }
+	}
+
 	s := filepath.Join(p...)
-	s = filepath.Join("storage", s)
+	s = filepath.Join(d.StorageFunc(), s)
 	return s
 }
 
@@ -63,8 +98,14 @@ func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
 
 // NewWindow satisfies the app.Driver interface.
 func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
-	w := &Window{}
-	w.SetErr(app.ErrNotSupported)
+	if d.NewWindowFunc == nil {
+		w := &Window{}
+		w.err = app.ErrNotSupported
+		return w
+	}
+
+	w := d.NewWindowFunc(d)
+	w.Create(c)
 	return w
 }
 

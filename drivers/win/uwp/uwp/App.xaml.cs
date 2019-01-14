@@ -45,11 +45,9 @@ namespace uwp
             Bridge.Handle("windows.Load", WindowPage.Load);
             Bridge.Handle("windows.Render", WindowPage.Render);
             Bridge.Handle("windows.Position", WindowPage.Bounds);
-            Bridge.Handle("windows.Size", WindowPage.Bounds);
             Bridge.Handle("windows.Resize", WindowPage.Resize);
             Bridge.Handle("windows.Focus", WindowPage.Focus);
-            Bridge.Handle("windows.FullScreen", WindowPage.FullScreen);
-            Bridge.Handle("windows.ExitFullScreen", WindowPage.ExitFullScreen);
+            Bridge.Handle("windows.SetFullScreen", WindowPage.SetFullScreen);
 
             Bridge.Handle("menus.New", Menu.New);
             Bridge.Handle("menus.Load", Menu.Load);

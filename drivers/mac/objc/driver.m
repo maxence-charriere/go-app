@@ -100,10 +100,6 @@
           withHandler:^(id in, NSString *returnID) {
             return [Window render:in return:returnID];
           }];
-  [self.macRPC handle:@"windows.Position"
-          withHandler:^(id in, NSString *returnID) {
-            return [Window position:in return:returnID];
-          }];
   [self.macRPC handle:@"windows.Move"
           withHandler:^(id in, NSString *returnID) {
             return [Window move:in return:returnID];
@@ -111,10 +107,6 @@
   [self.macRPC handle:@"windows.Center"
           withHandler:^(id in, NSString *returnID) {
             return [Window center:in return:returnID];
-          }];
-  [self.macRPC handle:@"windows.Size"
-          withHandler:^(id in, NSString *returnID) {
-            return [Window size:in return:returnID];
           }];
   [self.macRPC handle:@"windows.Resize"
           withHandler:^(id in, NSString *returnID) {
@@ -124,11 +116,11 @@
           withHandler:^(id in, NSString *returnID) {
             return [Window focus:in return:returnID];
           }];
-  [self.macRPC handle:@"windows.ToggleFullScreen"
+  [self.macRPC handle:@"windows.SetFullScreen"
           withHandler:^(id in, NSString *returnID) {
             return [Window toggleFullScreen:in return:returnID];
           }];
-  [self.macRPC handle:@"windows.ToggleMinimize"
+  [self.macRPC handle:@"windows.SetMinimize"
           withHandler:^(id in, NSString *returnID) {
             return [Window toggleMinimize:in return:returnID];
           }];
@@ -368,15 +360,15 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-  [self.goRPC call:@"driver.OnRun" withInput:nil ];
+  [self.goRPC call:@"driver.OnRun" withInput:nil];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)aNotification {
-  [self.goRPC call:@"driver.OnFocus" withInput:nil ];
+  [self.goRPC call:@"driver.OnFocus" withInput:nil];
 }
 
 - (void)applicationDidResignActive:(NSNotification *)aNotification {
-  [self.goRPC call:@"driver.OnBlur" withInput:nil ];
+  [self.goRPC call:@"driver.OnBlur" withInput:nil];
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender
@@ -385,7 +377,7 @@
     @"HasVisibleWindows" : [NSNumber numberWithBool:flag],
   };
 
-  [self.goRPC call:@"driver.OnReopen" withInput:in ];
+  [self.goRPC call:@"driver.OnReopen" withInput:in];
   return YES;
 }
 
@@ -396,7 +388,7 @@
   };
 
   [NSApp activateIgnoringOtherApps:YES];
-  [self.goRPC call:@"driver.OnFilesOpen" withInput:in ];
+  [self.goRPC call:@"driver.OnFilesOpen" withInput:in];
 }
 
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification {
@@ -415,12 +407,12 @@
     @"URL" : [event paramDescriptorForKeyword:keyDirectObject].stringValue,
   };
 
-  [self.goRPC call:@"driver.OnURLOpen" withInput:in ];
+  [self.goRPC call:@"driver.OnURLOpen" withInput:in];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:
     (NSApplication *)sender {
-  [self.goRPC call:@"driver.OnClose" withInput:nil ];
+  [self.goRPC call:@"driver.OnClose" withInput:nil];
   return NSTerminateLater;
 }
 
@@ -440,7 +432,7 @@
 
   if (notification.activationType == NSUserNotificationActivationTypeReplied) {
     in[@"Reply"] = notification.response.string;
-    [self.goRPC call:@"notifications.OnReply" withInput:in ];
+    [self.goRPC call:@"notifications.OnReply" withInput:in];
   }
 }
 @end

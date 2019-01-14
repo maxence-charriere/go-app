@@ -68,7 +68,15 @@
     [win showWindow:nil];
 
     [NSApp activateIgnoringOtherApps:YES];
-    [driver.macRPC return:returnID withOutput:nil andError:nil];
+
+    NSDictionary *out = @{
+      @"X" : @(rawWindow.frame.origin.x),
+      @"Y" : @(rawWindow.frame.origin.y),
+      @"Width" : @(rawWindow.frame.size.width),
+      @"Height" : @(rawWindow.frame.size.height),
+    };
+
+    [driver.macRPC return:returnID withOutput:out andError:nil];
   });
 }
 
@@ -277,25 +285,6 @@
   });
 }
 
-+ (void)position:(NSDictionary *)in return:(NSString *)returnID {
-  defer(returnID, ^{
-    Driver *driver = [Driver current];
-
-    NSString *ID = in[@"ID"];
-    Window *win = driver.elements[ID];
-    if (win == nil) {
-      [NSException raise:@"ErrNoWindow" format:@"no window with id %@", ID];
-    }
-
-    NSDictionary *out = @{
-      @"X" : [NSNumber numberWithDouble:win.window.frame.origin.x],
-      @"Y" : [NSNumber numberWithDouble:win.window.frame.origin.y],
-    };
-
-    [driver.macRPC return:returnID withOutput:out andError:nil];
-  });
-}
-
 + (void)move:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
     Driver *driver = [Driver current];
@@ -340,20 +329,6 @@
   };
 
   [driver.goRPC call:@"windows.OnMove" withInput:in];
-}
-
-+ (void)size:(NSDictionary *)in return:(NSString *)returnID {
-  defer(returnID, ^{
-    Driver *driver = [Driver current];
-    Window *win = driver.elements[in[@"ID"]];
-
-    NSDictionary *out = @{
-      @"Width" : [NSNumber numberWithDouble:win.window.frame.size.width],
-      @"Heigth" : [NSNumber numberWithDouble:win.window.frame.size.height],
-    };
-
-    [driver.macRPC return:returnID withOutput:out andError:nil];
-  });
 }
 
 + (void)resize:(NSDictionary *)in return:(NSString *)returnID {
