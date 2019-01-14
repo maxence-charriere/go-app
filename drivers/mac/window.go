@@ -29,6 +29,25 @@ func newWindow(d *core.Driver) *core.Window {
 	}
 }
 
+func handleWindow(h func(w *core.Window, in map[string]interface{})) core.GoHandler {
+	return func(in map[string]interface{}) {
+		e := driver.Elems.GetByID(in["ID"].(string))
+		if e.Err() == app.ErrElemNotSet {
+			return
+		}
+
+		h(e.(*core.Window), in)
+	}
+}
+
+func onWindowNavigate(w *core.Window, in map[string]interface{}) {
+	e := app.ElemByCompo(w.Compo())
+
+	e.WhenWindow(func(w app.Window) {
+		w.Load(in["URL"].(string))
+	})
+}
+
 func onWindowCallback(w *core.Window, in map[string]interface{}) {
 	mappingStr := in["Mapping"].(string)
 
@@ -68,14 +87,6 @@ func onWindowCallback(w *core.Window, in map[string]interface{}) {
 	}
 
 	app.Render(c)
-}
-
-func onWindowNavigate(w *core.Window, in map[string]interface{}) {
-	e := app.ElemByCompo(w.Compo())
-
-	e.WhenWindow(func(w app.Window) {
-		w.Load(in["URL"].(string))
-	})
 }
 
 func onWindowAlert(w *core.Window, in map[string]interface{}) {
@@ -122,15 +133,4 @@ func onWindowDeminimize(w *core.Window, in map[string]interface{}) {
 
 func onWindowClose(w *core.Window, in map[string]interface{}) {
 	w.Release()
-}
-
-func handleWindow(h func(w *core.Window, in map[string]interface{})) core.GoHandler {
-	return func(in map[string]interface{}) {
-		e := driver.Elems.GetByID(in["ID"].(string))
-		if e.Err() == app.ErrElemNotSet {
-			return
-		}
-
-		h(e.(*core.Window), in)
-	}
 }
