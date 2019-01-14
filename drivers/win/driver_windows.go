@@ -69,7 +69,7 @@ func init() {
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(c app.DriverConfig) error {
 	if len(goappBuild) != 0 {
-		return d.runGoappBuild()
+		return d.build()
 	}
 
 	if len(dev) != 0 {
@@ -85,33 +85,33 @@ func (d *Driver) Run(c app.DriverConfig) error {
 		}()
 	}
 
-	d.ui = c.UI
-	d.factory = c.Factory
-	d.events = c.Events
-	d.elems = core.NewElemDB()
-	d.winRPC, d.goRPC = uwp.RPC(d.UI)
+	d.Elems = core.NewElemDB()
+	d.Events = c.Events
+	d.Factory = c.Factory
+	d.Platform, d.Go = uwp.RPC(d.UI)
+	d.UIChan = c.UI
 	driver = d
 
 	disconnect := uwp.Connect()
 	defer disconnect()
 
-	d.goRPC.Handle("driver.OnRun", d.onRun)
-	d.goRPC.Handle("driver.OnFilesOpen", d.onFilesOpen)
-	d.goRPC.Handle("driver.OnURLOpen", d.onURLOpen)
-	d.goRPC.Handle("driver.OnClose", d.onClose)
-	d.goRPC.Handle("driver.Log", d.log)
+	d.Go.Handle("driver.OnRun", d.onRun)
+	d.Go.Handle("driver.OnFilesOpen", d.onFilesOpen)
+	d.Go.Handle("driver.OnURLOpen", d.onURLOpen)
+	d.Go.Handle("driver.OnClose", d.onClose)
+	d.Go.Handle("driver.Log", d.log)
 
-	d.goRPC.Handle("windows.OnResize", handleWindow(onWindowResize))
-	d.goRPC.Handle("windows.OnFocus", handleWindow(onWindowFocus))
-	d.goRPC.Handle("windows.OnBlur", handleWindow(onWindowBlur))
-	d.goRPC.Handle("windows.OnFullScreen", handleWindow(onWindowFullScreen))
-	d.goRPC.Handle("windows.OnExitFullScreen", handleWindow(onWindowExitFullScreen))
-	d.goRPC.Handle("windows.OnClose", handleWindow(onWindowClose))
-	d.goRPC.Handle("windows.OnCallback", handleWindow(onWindowCallback))
-	d.goRPC.Handle("windows.OnNavigate", handleWindow(onWindowNavigate))
+	d.Go.Handle("windows.OnResize", handleWindow(onWindowResize))
+	d.Go.Handle("windows.OnFocus", handleWindow(onWindowFocus))
+	d.Go.Handle("windows.OnBlur", handleWindow(onWindowBlur))
+	d.Go.Handle("windows.OnFullScreen", handleWindow(onWindowFullScreen))
+	d.Go.Handle("windows.OnExitFullScreen", handleWindow(onWindowExitFullScreen))
+	d.Go.Handle("windows.OnClose", handleWindow(onWindowClose))
+	d.Go.Handle("windows.OnCallback", handleWindow(onWindowCallback))
+	d.Go.Handle("windows.OnNavigate", handleWindow(onWindowNavigate))
 
-	d.goRPC.Handle("menus.OnClose", handleMenu(onMenuClose))
-	d.goRPC.Handle("menus.OnCallback", handleMenu(onMenuCallback))
+	d.Go.Handle("menus.OnClose", handleMenu(onMenuClose))
+	d.Go.Handle("menus.OnCallback", handleMenu(onMenuCallback))
 
 	ctx, cancel := context.WithCancel(context.Background())
 	d.stop = cancel
@@ -131,7 +131,7 @@ func (d *Driver) Run(c app.DriverConfig) error {
 				wg.Done()
 				return
 
-			case fn := <-d.ui:
+			case fn := <-d.UIChan:
 				fn()
 			}
 		}
@@ -141,7 +141,7 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	return nil
 }
 
-func (d *Driver) runGoappBuild() error {
+func (d *Driver) build() error {
 	b, err := json.MarshalIndent(d, "", "    ")
 	if err != nil {
 		return err
@@ -175,22 +175,6 @@ func (d *Driver) Resources(path ...string) string {
 	return r
 }
 
-// Render satisfies the app.Driver interface.
-func (d *Driver) Render(c app.Compo) {
-	e := d.ElemByCompo(c)
-
-	if e.Err() == app.ErrElemNotSet {
-		return
-	}
-
-	e.(app.ElemWithCompo).Render(c)
-}
-
-// ElemByCompo satisfies the app.Driver interface.
-func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
-	return d.elems.GetByCompo(c)
-}
-
 // NewWindow satisfies the app.Driver interface.
 func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
 	return newWindow(c)
@@ -203,7 +187,7 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 		return m
 	}
 
-	err := d.winRPC.Call("driver.SetContextMenu", nil, struct {
+	err := d.Platform.Call("driver.SetContextMenu", nil, struct {
 		ID string
 	}{
 		ID: m.ID(),
@@ -211,11 +195,6 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 
 	m.SetErr(err)
 	return m
-}
-
-// UI satisfies the app.Driver interface.
-func (d *Driver) UI(f func()) {
-	d.ui <- f
 }
 
 func (d *Driver) log(in map[string]interface{}) {
@@ -230,21 +209,21 @@ func (d *Driver) onRun(in map[string]interface{}) {
 		app.NewWindow(d.DefaultWindow)
 	}
 
-	d.events.Emit(app.Running)
+	d.Events.Emit(app.Running)
 }
 
 func (d *Driver) onFilesOpen(in map[string]interface{}) {
-	d.events.Emit(app.OpenFilesRequested, core.ConvertToStringSlice(in["Filenames"]))
+	d.Events.Emit(app.OpenFilesRequested, core.ConvertToStringSlice(in["Filenames"]))
 }
 
 func (d *Driver) onURLOpen(in map[string]interface{}) {
 	if u, err := url.Parse(in["URL"].(string)); err == nil {
-		d.events.Emit(app.OpenURLRequested, u)
+		d.Events.Emit(app.OpenURLRequested, u)
 	}
 }
 
 func (d *Driver) onClose(in map[string]interface{}) {
-	d.events.Emit(app.Closed)
+	d.Events.Emit(app.Closed)
 
 	d.UI(func() {
 		d.stop()
