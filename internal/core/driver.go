@@ -28,17 +28,17 @@ type Driver struct {
 	// The function to open an URL in the targetted platform default browser.
 	OpenDefaultBrowser func(string) error
 
-	WindowFactory func(*Driver) *Window
+	NewWindowFunc func(*Driver) *Window
 
 	// The RPC object to call targetted platform procedures.
 	Platform *Platform
 
 	// A function that returns the targetted platform resources directory
 	// path.
-	ResourcesPath func() string
+	ResourcesFunc func() string
 
 	// A function that returns the targetted platform storage directory path.
-	StoragePath func() string
+	StorageFunc func() string
 
 	// The channel used to execute function on the UI goroutine.
 	UIChan chan func()
@@ -63,14 +63,14 @@ func (d *Driver) AppName() string {
 // Resources satisfies the app.Driver interface.
 func (d *Driver) Resources(p ...string) string {
 	r := filepath.Join(p...)
-	r = filepath.Join(d.ResourcesPath(), r)
+	r = filepath.Join(d.ResourcesFunc(), r)
 	return r
 }
 
 // Storage satisfies the app.Driver interface.
 func (d *Driver) Storage(p ...string) string {
 	s := filepath.Join(p...)
-	s = filepath.Join(d.StoragePath(), s)
+	s = filepath.Join(d.StorageFunc(), s)
 	return s
 }
 
@@ -90,13 +90,13 @@ func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
 
 // NewWindow satisfies the app.Driver interface.
 func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
-	if d.WindowFactory == nil {
+	if d.NewWindowFunc == nil {
 		w := &Window{}
 		w.err = app.ErrNotSupported
 		return w
 	}
 
-	w := d.WindowFactory(d)
+	w := d.NewWindowFunc(d)
 	w.Create(c)
 	return w
 }

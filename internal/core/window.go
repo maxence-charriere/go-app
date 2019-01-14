@@ -3,6 +3,7 @@ package core
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"net/url"
 
 	"github.com/google/uuid"
@@ -45,7 +46,22 @@ func (w *Window) Create(c app.WindowConfig) {
 		c.Height = w.DefaultHeight
 	}
 
-	if w.err = w.Driver.Platform.Call("windows.New", nil, struct {
+	if c.MaxWidth == 0 {
+		c.MaxWidth = math.MaxFloat64
+	}
+
+	if c.MaxHeight == 0 {
+		c.MaxHeight = math.MaxFloat64
+	}
+
+	out := struct {
+		X      float64
+		Y      float64
+		Width  float64
+		Height float64
+	}{}
+
+	if w.err = w.Driver.Platform.Call("windows.New", &out, struct {
 		ID                string
 		Title             string
 		X                 float64
@@ -81,6 +97,11 @@ func (w *Window) Create(c app.WindowConfig) {
 	}); w.err != nil {
 		return
 	}
+
+	w.x = out.X
+	w.y = out.Y
+	w.width = out.Width
+	w.height = out.Height
 
 	w.Driver.Elems.Put(w)
 
@@ -128,7 +149,7 @@ func (w *Window) Load(rawurl string, v ...interface{}) {
 	}
 
 	if len(htmlConf.CSS) == 0 {
-		htmlConf.CSS = file.Filenames(w.Driver.Resources("js"), ".js")
+		htmlConf.CSS = file.Filenames(w.Driver.Resources("css"), ".css")
 	}
 
 	if len(htmlConf.Javascripts) == 0 {

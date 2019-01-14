@@ -56,8 +56,9 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	d.Platform, d.Go = objc.RPC(d.UI)
 	d.JSToPlatform = "window.webkit.messageHandlers.golangRequest.postMessage"
 	d.OpenDefaultBrowser = openDefaultBrowser
-	d.ResourcesPath = d.resources
-	d.StoragePath = d.storage
+	d.NewWindowFunc = newWindow
+	d.ResourcesFunc = d.resources
+	d.StorageFunc = d.storage
 	d.UIChan = c.UI
 	driver = d
 
@@ -164,11 +165,6 @@ func (d *Driver) AppName() string {
 	}
 
 	return filepath.Base(wd)
-}
-
-// NewWindow satisfies the app.Driver interface.
-func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
-	return newWindow(c)
 }
 
 // NewContextMenu satisfies the app.Driver interface.
