@@ -49,54 +49,49 @@ func (d *Driver) Run(c app.DriverConfig) error {
 		return d.runGoappBuild()
 	}
 
-	if driver != nil {
-		return errors.New("running already")
-	}
-
-	d.ui = c.UI
-	d.factory = c.Factory
-	d.events = c.Events
-	d.elems = core.NewElemDB()
-	d.devID = generateDevID()
-	d.platform, d.golang = objc.RPC(d.UI)
+	d.Elems = core.NewElemDB()
+	d.Events = c.Events
+	d.Factory = c.Factory
+	d.Platform, d.Go = objc.RPC(d.UI)
+	d.UIChan = c.UI
 	driver = d
 
-	d.golang.Handle("driver.OnRun", d.onRun)
-	d.golang.Handle("driver.OnFocus", d.onFocus)
-	d.golang.Handle("driver.OnBlur", d.onBlur)
-	d.golang.Handle("driver.OnReopen", d.onReopen)
-	d.golang.Handle("driver.OnFilesOpen", d.onFilesOpen)
-	d.golang.Handle("driver.OnURLOpen", d.onURLOpen)
-	d.golang.Handle("driver.OnFileDrop", d.onFileDrop)
-	d.golang.Handle("driver.OnClose", d.onClose)
+	d.Go.Handle("driver.OnRun", d.onRun)
+	d.Go.Handle("driver.OnFocus", d.onFocus)
+	d.Go.Handle("driver.OnBlur", d.onBlur)
+	d.Go.Handle("driver.OnReopen", d.onReopen)
+	d.Go.Handle("driver.OnFilesOpen", d.onFilesOpen)
+	d.Go.Handle("driver.OnURLOpen", d.onURLOpen)
+	d.Go.Handle("driver.OnFileDrop", d.onFileDrop)
+	d.Go.Handle("driver.OnClose", d.onClose)
 
-	d.golang.Handle("windows.OnMove", handleWindow(onWindowMove))
-	d.golang.Handle("windows.OnResize", handleWindow(onWindowResize))
-	d.golang.Handle("windows.OnFocus", handleWindow(onWindowFocus))
-	d.golang.Handle("windows.OnBlur", handleWindow(onWindowBlur))
-	d.golang.Handle("windows.OnFullScreen", handleWindow(onWindowFullScreen))
-	d.golang.Handle("windows.OnExitFullScreen", handleWindow(onWindowExitFullScreen))
-	d.golang.Handle("windows.OnMinimize", handleWindow(onWindowMinimize))
-	d.golang.Handle("windows.OnDeminimize", handleWindow(onWindowDeminimize))
-	d.golang.Handle("windows.OnClose", handleWindow(onWindowClose))
-	d.golang.Handle("windows.OnCallback", handleWindow(onWindowCallback))
-	d.golang.Handle("windows.OnNavigate", handleWindow(onWindowNavigate))
-	d.golang.Handle("windows.OnAlert", handleWindow(onWindowAlert))
+	d.Go.Handle("windows.OnMove", handleWindow(onWindowMove))
+	d.Go.Handle("windows.OnResize", handleWindow(onWindowResize))
+	d.Go.Handle("windows.OnFocus", handleWindow(onWindowFocus))
+	d.Go.Handle("windows.OnBlur", handleWindow(onWindowBlur))
+	d.Go.Handle("windows.OnFullScreen", handleWindow(onWindowFullScreen))
+	d.Go.Handle("windows.OnExitFullScreen", handleWindow(onWindowExitFullScreen))
+	d.Go.Handle("windows.OnMinimize", handleWindow(onWindowMinimize))
+	d.Go.Handle("windows.OnDeminimize", handleWindow(onWindowDeminimize))
+	d.Go.Handle("windows.OnClose", handleWindow(onWindowClose))
+	d.Go.Handle("windows.OnCallback", handleWindow(onWindowCallback))
+	d.Go.Handle("windows.OnNavigate", handleWindow(onWindowNavigate))
+	d.Go.Handle("windows.OnAlert", handleWindow(onWindowAlert))
 
-	d.golang.Handle("menus.OnClose", handleMenu(onMenuClose))
-	d.golang.Handle("menus.OnCallback", handleMenu(onMenuCallback))
+	d.Go.Handle("menus.OnClose", handleMenu(onMenuClose))
+	d.Go.Handle("menus.OnCallback", handleMenu(onMenuCallback))
 
-	d.golang.Handle("controller.OnDirectionChange", handleController(onControllerDirectionChange))
-	d.golang.Handle("controller.OnButtonPressed", handleController(onControllerButtonPressed))
-	d.golang.Handle("controller.OnConnected", handleController(onControllerConnected))
-	d.golang.Handle("controller.OnDisconnected", handleController(onControllerDisconnected))
-	d.golang.Handle("controller.OnPause", handleController(onControllerPause))
-	d.golang.Handle("controller.OnClose", handleController(onControllerClose))
+	d.Go.Handle("controller.OnDirectionChange", handleController(onControllerDirectionChange))
+	d.Go.Handle("controller.OnButtonPressed", handleController(onControllerButtonPressed))
+	d.Go.Handle("controller.OnConnected", handleController(onControllerConnected))
+	d.Go.Handle("controller.OnDisconnected", handleController(onControllerDisconnected))
+	d.Go.Handle("controller.OnPause", handleController(onControllerPause))
+	d.Go.Handle("controller.OnClose", handleController(onControllerClose))
 
-	d.golang.Handle("filePanels.OnSelect", handleFilePanel(onFilePanelSelect))
-	d.golang.Handle("saveFilePanels.OnSelect", handleSaveFilePanel(onSaveFilePanelSelect))
+	d.Go.Handle("filePanels.OnSelect", handleFilePanel(onFilePanelSelect))
+	d.Go.Handle("saveFilePanels.OnSelect", handleSaveFilePanel(onSaveFilePanelSelect))
 
-	d.golang.Handle("notifications.OnReply", handleNotification(onNotificationReply))
+	d.Go.Handle("notifications.OnReply", handleNotification(onNotificationReply))
 
 	ctx, cancel := context.WithCancel(context.Background())
 	d.stop = cancel
@@ -107,16 +102,16 @@ func (d *Driver) Run(c app.DriverConfig) error {
 		for {
 			select {
 			case <-ctx.Done():
-				d.platform.Call("driver.Terminate", nil, nil)
+				d.Platform.Call("driver.Terminate", nil, nil)
 				return
 
-			case fn := <-d.ui:
+			case fn := <-d.UIChan:
 				fn()
 			}
 		}
 	}()
 
-	err := d.platform.Call("driver.Run", nil, nil)
+	err := d.Platform.Call("driver.Run", nil, nil)
 	return err
 }
 
@@ -150,7 +145,7 @@ func (d *Driver) AppName() string {
 		AppName string
 	}{}
 
-	if err := d.platform.Call("driver.Bundle", &out, nil); err != nil {
+	if err := d.Platform.Call("driver.Bundle", &out, nil); err != nil {
 		app.Panic(err)
 	}
 
@@ -172,7 +167,7 @@ func (d *Driver) Resources(path ...string) string {
 		Resources string
 	}{}
 
-	if err := d.platform.Call("driver.Bundle", &out, nil); err != nil {
+	if err := d.Platform.Call("driver.Bundle", &out, nil); err != nil {
 		app.Panic(err)
 	}
 
@@ -199,7 +194,7 @@ func (d *Driver) Render(c app.Compo) {
 
 // ElemByCompo satisfies the app.Driver interface.
 func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
-	return d.elems.GetByCompo(c)
+	return d.Elems.GetByCompo(c)
 }
 
 // NewWindow satisfies the app.Driver interface.
@@ -214,7 +209,7 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 		return m
 	}
 
-	err := d.platform.Call("driver.SetContextMenu", nil, m.ID())
+	err := d.Platform.Call("driver.SetContextMenu", nil, m.ID())
 	m.SetErr(err)
 	return m
 }
@@ -259,14 +254,9 @@ func (d *Driver) DockTile() app.DockTile {
 	return d.docktile
 }
 
-// UI satisfies the app.Driver interface.
-func (d *Driver) UI(f func()) {
-	d.ui <- f
-}
-
 // Stop satisfies the app.Driver interface.
 func (d *Driver) Stop() {
-	if err := d.platform.Call("driver.Close", nil, nil); err != nil {
+	if err := d.Platform.Call("driver.Close", nil, nil); err != nil {
 		app.Log("stop failed:", err)
 		d.stop()
 	}
@@ -277,7 +267,7 @@ func (d *Driver) support() string {
 		Support string
 	}{}
 
-	if err := d.platform.Call("driver.Bundle", &out, nil); err != nil {
+	if err := d.Platform.Call("driver.Bundle", &out, nil); err != nil {
 		app.Panic(err)
 	}
 
@@ -304,15 +294,15 @@ func (d *Driver) onRun(in map[string]interface{}) {
 		app.NewWindow(d.DefaultWindow)
 	}
 
-	d.events.Emit(app.Running)
+	d.Events.Emit(app.Running)
 }
 
 func (d *Driver) onFocus(in map[string]interface{}) {
-	d.events.Emit(app.Focused)
+	d.Events.Emit(app.Focused)
 }
 
 func (d *Driver) onBlur(in map[string]interface{}) {
-	d.events.Emit(app.Blurred)
+	d.Events.Emit(app.Blurred)
 }
 
 func (d *Driver) onReopen(in map[string]interface{}) {
@@ -322,16 +312,16 @@ func (d *Driver) onReopen(in map[string]interface{}) {
 		app.NewWindow(d.DefaultWindow)
 	}
 
-	d.events.Emit(app.Reopened, hasVisibleWindow)
+	d.Events.Emit(app.Reopened, hasVisibleWindow)
 }
 
 func (d *Driver) onFilesOpen(in map[string]interface{}) {
-	d.events.Emit(app.OpenFilesRequested, core.ConvertToStringSlice(in["Filenames"]))
+	d.Events.Emit(app.OpenFilesRequested, core.ConvertToStringSlice(in["Filenames"]))
 }
 
 func (d *Driver) onURLOpen(in map[string]interface{}) {
 	if u, err := url.Parse(in["URL"].(string)); err == nil {
-		d.events.Emit(app.OpenURLRequested, u)
+		d.Events.Emit(app.OpenURLRequested, u)
 	}
 }
 
@@ -340,7 +330,7 @@ func (d *Driver) onFileDrop(in map[string]interface{}) {
 }
 
 func (d *Driver) onClose(in map[string]interface{}) {
-	d.events.Emit(app.Closed)
+	d.Events.Emit(app.Closed)
 
 	d.UI(func() {
 		d.stop()

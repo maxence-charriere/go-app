@@ -37,7 +37,7 @@ func newWindow(c app.WindowConfig) *Window {
 	w := &Window{
 		id: id,
 		dom: dom.Engine{
-			Factory:   driver.factory,
+			Factory:   driver.Factory,
 			Resources: driver.Resources,
 			AttrTransforms: []dom.Transform{
 				dom.JsToGoHandler,
@@ -95,12 +95,12 @@ func newWindow(c app.WindowConfig) *Window {
 	in.MinWidth, in.MaxWidth = normalizeWidowSize(in.MinWidth, in.MaxWidth)
 	in.MinHeight, in.MaxHeight = normalizeWidowSize(in.MinHeight, in.MaxHeight)
 
-	if err := driver.platform.Call("windows.New", nil, in); err != nil {
+	if err := driver.Platform.Call("windows.New", nil, in); err != nil {
 		w.SetErr(err)
 		return w
 	}
 
-	driver.elems.Put(w)
+	driver.Elems.Put(w)
 
 	if len(c.URL) != 0 {
 		w.Load(c.URL)
@@ -139,13 +139,13 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 	n := core.CompoNameFromURLString(u)
 
 	// Redirect web page to default web browser.
-	if !driver.factory.IsCompoRegistered(n) {
+	if !driver.Factory.IsCompoRegistered(n) {
 		err = exec.Command("open", u).Run()
 		return
 	}
 
 	var c app.Compo
-	if c, err = driver.factory.NewCompo(n); err != nil {
+	if c, err = driver.Factory.NewCompo(n); err != nil {
 		return
 	}
 
@@ -177,7 +177,7 @@ func (w *Window) Load(urlFmt string, v ...interface{}) {
 		RootCompoName: n,
 	}
 
-	if err = driver.platform.Call("windows.Load", nil, struct {
+	if err = driver.Platform.Call("windows.Load", nil, struct {
 		ID      string
 		Title   string
 		Page    string
@@ -225,7 +225,7 @@ func (w *Window) render(changes interface{}) error {
 		return errors.Wrap(err, "encode changes failed")
 	}
 
-	return driver.platform.Call("windows.Render", nil, struct {
+	return driver.Platform.Call("windows.Render", nil, struct {
 		ID      string
 		Changes string
 	}{
@@ -287,7 +287,7 @@ func (w *Window) Position() (x, y float64) {
 		Y float64
 	}{}
 
-	err := driver.platform.Call("windows.Position", &out, struct {
+	err := driver.Platform.Call("windows.Position", &out, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -299,7 +299,7 @@ func (w *Window) Position() (x, y float64) {
 
 // Move satisfies the app.Window interface.
 func (w *Window) Move(x, y float64) {
-	err := driver.platform.Call("windows.Move", nil, struct {
+	err := driver.Platform.Call("windows.Move", nil, struct {
 		ID string
 		X  float64
 		Y  float64
@@ -314,7 +314,7 @@ func (w *Window) Move(x, y float64) {
 
 // Center satisfies the app.Window interface.
 func (w *Window) Center() {
-	err := driver.platform.Call("windows.Center", nil, struct {
+	err := driver.Platform.Call("windows.Center", nil, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -330,7 +330,7 @@ func (w *Window) Size() (width, height float64) {
 		Heigth float64
 	}{}
 
-	err := driver.platform.Call("windows.Size", &out, struct {
+	err := driver.Platform.Call("windows.Size", &out, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -342,7 +342,7 @@ func (w *Window) Size() (width, height float64) {
 
 // Resize satisfies the app.Window interface.
 func (w *Window) Resize(width, height float64) {
-	err := driver.platform.Call("windows.Resize", nil, struct {
+	err := driver.Platform.Call("windows.Resize", nil, struct {
 		ID     string
 		Width  float64
 		Height float64
@@ -357,7 +357,7 @@ func (w *Window) Resize(width, height float64) {
 
 // Focus satisfies the app.Window interface.
 func (w *Window) Focus() {
-	err := driver.platform.Call("windows.Focus", nil, struct {
+	err := driver.Platform.Call("windows.Focus", nil, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -378,7 +378,7 @@ func (w *Window) FullScreen() {
 		return
 	}
 
-	err := driver.platform.Call("windows.ToggleFullScreen", nil, struct {
+	err := driver.Platform.Call("windows.ToggleFullScreen", nil, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -394,7 +394,7 @@ func (w *Window) ExitFullScreen() {
 		return
 	}
 
-	err := driver.platform.Call("windows.ToggleFullScreen", nil, struct {
+	err := driver.Platform.Call("windows.ToggleFullScreen", nil, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -415,7 +415,7 @@ func (w *Window) Minimize() {
 		return
 	}
 
-	err := driver.platform.Call("windows.ToggleMinimize", nil, struct {
+	err := driver.Platform.Call("windows.ToggleMinimize", nil, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -431,7 +431,7 @@ func (w *Window) Deminimize() {
 		return
 	}
 
-	err := driver.platform.Call("windows.ToggleMinimize", nil, struct {
+	err := driver.Platform.Call("windows.ToggleMinimize", nil, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -447,7 +447,7 @@ func (w *Window) IsMinimized() bool {
 
 // Close satisfies the app.Window interface.
 func (w *Window) Close() {
-	err := driver.platform.Call("windows.Close", nil, struct {
+	err := driver.Platform.Call("windows.Close", nil, struct {
 		ID string
 	}{
 		ID: w.id,
@@ -520,54 +520,54 @@ func onWindowAlert(w *Window, in map[string]interface{}) {
 }
 
 func onWindowMove(w *Window, in map[string]interface{}) {
-	driver.events.Emit(app.WindowMoved, w)
+	driver.Events.Emit(app.WindowMoved, w)
 }
 
 func onWindowResize(w *Window, in map[string]interface{}) {
-	driver.events.Emit(app.WindowResized, w)
+	driver.Events.Emit(app.WindowResized, w)
 }
 
 func onWindowFocus(w *Window, in map[string]interface{}) {
 	w.isFocus = true
-	driver.events.Emit(app.WindowFocused, w)
+	driver.Events.Emit(app.WindowFocused, w)
 }
 
 func onWindowBlur(w *Window, in map[string]interface{}) {
 	w.isFocus = false
-	driver.events.Emit(app.WindowBlurred, w)
+	driver.Events.Emit(app.WindowBlurred, w)
 }
 
 func onWindowFullScreen(w *Window, in map[string]interface{}) {
 	w.isFullscreen = true
-	driver.events.Emit(app.WindowEnteredFullScreen, w)
+	driver.Events.Emit(app.WindowEnteredFullScreen, w)
 }
 
 func onWindowExitFullScreen(w *Window, in map[string]interface{}) {
 	w.isFullscreen = false
-	driver.events.Emit(app.WindowExitedFullScreen, w)
+	driver.Events.Emit(app.WindowExitedFullScreen, w)
 }
 
 func onWindowMinimize(w *Window, in map[string]interface{}) {
 	w.isMinimized = true
-	driver.events.Emit(app.WindowMinimized, w)
+	driver.Events.Emit(app.WindowMinimized, w)
 }
 
 func onWindowDeminimize(w *Window, in map[string]interface{}) {
 	w.isMinimized = false
-	driver.events.Emit(app.WindowDeminimized, w)
+	driver.Events.Emit(app.WindowDeminimized, w)
 }
 
 func onWindowClose(w *Window, in map[string]interface{}) {
-	driver.events.Emit(app.WindowClosed, w)
+	driver.Events.Emit(app.WindowClosed, w)
 	w.dom.Close()
-	driver.elems.Delete(w)
+	driver.Elems.Delete(w)
 }
 
 func handleWindow(h func(w *Window, in map[string]interface{})) core.GoHandler {
 	return func(in map[string]interface{}) {
 		id, _ := in["ID"].(string)
 
-		e := driver.elems.GetByID(id)
+		e := driver.Elems.GetByID(id)
 		if e.Err() == app.ErrElemNotSet {
 			return
 		}

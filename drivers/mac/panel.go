@@ -26,7 +26,7 @@ func newFilePanel(c app.FilePanelConfig) *FilePanel {
 		onSelect: c.OnSelect,
 	}
 
-	if err := driver.platform.Call("files.NewPanel", nil, struct {
+	if err := driver.Platform.Call("files.NewPanel", nil, struct {
 		ID                string
 		MultipleSelection bool
 		IgnoreDirectories bool
@@ -45,7 +45,7 @@ func newFilePanel(c app.FilePanelConfig) *FilePanel {
 		return p
 	}
 
-	driver.elems.Put(p)
+	driver.Elems.Put(p)
 	return p
 }
 
@@ -59,14 +59,14 @@ func onFilePanelSelect(p *FilePanel, in map[string]interface{}) {
 		p.onSelect(core.ConvertToStringSlice(in["Filenames"]))
 	}
 
-	driver.elems.Delete(p)
+	driver.Elems.Delete(p)
 }
 
 func handleFilePanel(h func(p *FilePanel, in map[string]interface{})) core.GoHandler {
 	return func(in map[string]interface{}) {
 		id, _ := in["ID"].(string)
 
-		e := driver.elems.GetByID(id)
+		e := driver.Elems.GetByID(id)
 		if e.Err() == app.ErrElemNotSet {
 			return
 		}
@@ -92,7 +92,7 @@ func newSaveFilePanel(c app.SaveFilePanelConfig) *SaveFilePanel {
 		onSelect: c.OnSelect,
 	}
 
-	if err := driver.platform.Call("files.NewSavePanel", nil, struct {
+	if err := driver.Platform.Call("files.NewSavePanel", nil, struct {
 		ID              string
 		ShowHiddenFiles bool
 		FileTypes       []string `json:",omitempty"`
@@ -105,7 +105,7 @@ func newSaveFilePanel(c app.SaveFilePanelConfig) *SaveFilePanel {
 		return p
 	}
 
-	driver.elems.Put(p)
+	driver.Elems.Put(p)
 	return p
 }
 
@@ -119,7 +119,7 @@ func onSaveFilePanelSelect(p *SaveFilePanel, in map[string]interface{}) interfac
 		p.onSelect(in["Filename"].(string))
 	}
 
-	driver.elems.Delete(p)
+	driver.Elems.Delete(p)
 	return nil
 }
 
@@ -127,7 +127,7 @@ func handleSaveFilePanel(h func(p *SaveFilePanel, in map[string]interface{}) int
 	return func(in map[string]interface{}) {
 		id, _ := in["ID"].(string)
 
-		e := driver.elems.GetByID(id)
+		e := driver.Elems.GetByID(id)
 		if e.Err() == app.ErrElemNotSet {
 			return
 		}
@@ -164,7 +164,7 @@ func newSharePanel(v interface{}) *SharePanel {
 		in.Type = "string"
 	}
 
-	err := driver.platform.Call("driver.Share", nil, in)
+	err := driver.Platform.Call("driver.Share", nil, in)
 	p.SetErr(err)
 
 	return p

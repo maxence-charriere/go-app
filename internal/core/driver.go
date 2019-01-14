@@ -9,11 +9,17 @@ import (
 
 // Driver is a base struct to embed in app.Driver implementations.
 type Driver struct {
+	Elems    *ElemDB
+	Events   *app.EventRegistry
+	Factory  *app.Factory
+	Go       *Go
+	Platform *Platform
+	UIChan   chan func()
 }
 
 // Target satisfies the app.Driver interface.
 func (d *Driver) Target() string {
-	return ""
+	return "test"
 }
 
 // Run satisfies the app.Driver interface.
@@ -43,11 +49,16 @@ func (d *Driver) Storage(p ...string) string {
 
 // Render satisfies the app.Driver interface.
 func (d *Driver) Render(c app.Compo) {
+	e := d.ElemByCompo(c)
+
+	e.WhenView(func(v app.View) {
+		v.Render(c)
+	})
 }
 
 // ElemByCompo satisfies the app.Driver interface.
 func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
-	return &Elem{err: app.ErrNotSupported}
+	return d.Elems.GetByCompo(c)
 }
 
 // NewWindow satisfies the app.Driver interface.
@@ -62,6 +73,13 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 	m := &Menu{}
 	m.SetErr(app.ErrNotSupported)
 	return m
+}
+
+// NewStatusMenu satisfies the app.Driver interface.
+func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) app.StatusMenu {
+	s := &StatusMenu{}
+	s.SetErr(app.ErrNotSupported)
+	return s
 }
 
 // NewFilePanel satisfies the app.Driver interface.
@@ -84,13 +102,6 @@ func (d *Driver) NewNotification(c app.NotificationConfig) app.Elem {
 	return &Elem{err: app.ErrNotSupported}
 }
 
-// MenuBar satisfies the app.Driver interface.
-func (d *Driver) MenuBar() app.Menu {
-	m := &Menu{}
-	m.SetErr(app.ErrNotSupported)
-	return m
-}
-
 // NewController satisfies the app.Driver interface.
 func (d *Driver) NewController(c app.ControllerConfig) app.Controller {
 	controller := &Controller{}
@@ -98,11 +109,11 @@ func (d *Driver) NewController(c app.ControllerConfig) app.Controller {
 	return controller
 }
 
-// NewStatusMenu satisfies the app.Driver interface.
-func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) app.StatusMenu {
-	s := &StatusMenu{}
-	s.SetErr(app.ErrNotSupported)
-	return s
+// MenuBar satisfies the app.Driver interface.
+func (d *Driver) MenuBar() app.Menu {
+	m := &Menu{}
+	m.SetErr(app.ErrNotSupported)
+	return m
 }
 
 // DockTile satisfies the app.Driver interface.
@@ -114,8 +125,7 @@ func (d *Driver) DockTile() app.DockTile {
 
 // UI satisfies the app.Driver interface.
 func (d *Driver) UI(f func()) {
-	app.Log("warning: func is not called on ui goroutine")
-	f()
+	d.UIChan <- f
 }
 
 // Stop satisfies the app.Driver interface.

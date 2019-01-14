@@ -25,10 +25,10 @@ func newNotification(c app.NotificationConfig) *Notification {
 	}
 
 	if n.onReply != nil {
-		driver.elems.Put(n)
+		driver.Elems.Put(n)
 	}
 
-	err := driver.platform.Call("notifications.New", nil, struct {
+	err := driver.Platform.Call("notifications.New", nil, struct {
 		ID        string
 		Title     string
 		Subtitle  string
@@ -60,14 +60,14 @@ func onNotificationReply(n *Notification, in map[string]interface{}) {
 		n.onReply(reply)
 	}
 
-	driver.elems.Delete(n)
+	driver.Elems.Delete(n)
 }
 
 func handleNotification(h func(n *Notification, in map[string]interface{})) core.GoHandler {
 	return func(in map[string]interface{}) {
 		id, _ := in["ID"].(string)
 
-		e := driver.elems.GetByID(id)
+		e := driver.Elems.GetByID(id)
 		if e.Err() == app.ErrElemNotSet {
 			return
 		}

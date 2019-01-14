@@ -20,7 +20,7 @@ func newStatusMenu(c app.StatusMenuConfig) *StatusMenu {
 		Menu: Menu{
 			id: uuid.New().String(),
 			dom: dom.Engine{
-				Factory:   driver.factory,
+				Factory:   driver.Factory,
 				Resources: driver.Resources,
 				AllowedNodes: []string{
 					"menu",
@@ -35,7 +35,7 @@ func newStatusMenu(c app.StatusMenuConfig) *StatusMenu {
 
 	s.dom.Sync = s.render
 
-	if err := driver.platform.Call("statusMenus.New", nil, struct {
+	if err := driver.Platform.Call("statusMenus.New", nil, struct {
 		ID   string
 		Text string
 		Icon string
@@ -48,7 +48,7 @@ func newStatusMenu(c app.StatusMenuConfig) *StatusMenu {
 		return s
 	}
 
-	driver.elems.Put(s)
+	driver.Elems.Put(s)
 
 	if len(c.URL) != 0 {
 		s.Load(c.URL)
@@ -69,7 +69,7 @@ func (s *StatusMenu) Load(urlFmt string, v ...interface{}) {
 		return
 	}
 
-	err := driver.platform.Call("statusMenus.SetMenu", nil, struct {
+	err := driver.Platform.Call("statusMenus.SetMenu", nil, struct {
 		ID string
 	}{
 		ID: s.id,
@@ -85,7 +85,7 @@ func (s *StatusMenu) SetIcon(path string) {
 		return
 	}
 
-	err := driver.platform.Call("statusMenus.SetIcon", nil, struct {
+	err := driver.Platform.Call("statusMenus.SetIcon", nil, struct {
 		ID   string
 		Icon string
 	}{
@@ -98,7 +98,7 @@ func (s *StatusMenu) SetIcon(path string) {
 
 // SetText satisfies the app.StatusMenu interface.
 func (s *StatusMenu) SetText(text string) {
-	err := driver.platform.Call("statusMenus.SetText", nil, struct {
+	err := driver.Platform.Call("statusMenus.SetText", nil, struct {
 		ID   string
 		Text string
 	}{
@@ -111,12 +111,12 @@ func (s *StatusMenu) SetText(text string) {
 
 // Close satisfies the app.StatusMenu interface.
 func (s *StatusMenu) Close() {
-	err := driver.platform.Call("statusMenus.Close", nil, struct {
+	err := driver.Platform.Call("statusMenus.Close", nil, struct {
 		ID string
 	}{
 		ID: s.id,
 	})
 
 	s.SetErr(err)
-	driver.elems.Delete(s)
+	driver.Elems.Delete(s)
 }
