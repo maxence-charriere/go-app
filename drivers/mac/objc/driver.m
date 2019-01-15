@@ -266,9 +266,10 @@
   return NSSelectorFromString(selector);
 }
 
-- (void)setContextMenu:(NSString *)menuID return:(NSString *)returnID {
+- (void)setContextMenu:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
-    Menu *menu = self.elements[menuID];
+
+    Menu *menu = self.elements[in[@"ID"]];
     NSWindow *win = NSApp.keyWindow;
 
     if (win == nil) {
@@ -284,9 +285,9 @@
   });
 }
 
-- (void)setMenubar:(NSString *)menuID return:(NSString *)returnID {
+- (void)setMenubar:(NSDictionary *)in return:(NSString *)returnID {
   defer(returnID, ^{
-    Menu *menu = self.elements[menuID];
+    Menu *menu = self.elements[in[@"ID"]];
     NSApp.mainMenu = menu.root;
     [self.macRPC return:returnID withOutput:nil andError:nil];
   });

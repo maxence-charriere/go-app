@@ -8,7 +8,6 @@ import (
 
 	"github.com/murlokswarm/app"
 	"github.com/murlokswarm/app/internal/core"
-	"github.com/pkg/errors"
 )
 
 func init() {
@@ -183,36 +182,36 @@ func (m *HelpMenu) OnBuiltWith() {
 	}
 }
 
-func newMenuBar(c MenuBarConfig) *Menu {
-	m := newMenu(app.MenuConfig{}, "menu bar")
-	if m.Err() != nil {
-		return m
-	}
+// func newMenuBar(c MenuBarConfig) *Menu {
+// 	m := newMenu(app.MenuConfig{}, "menu bar")
+// 	if m.Err() != nil {
+// 		return m
+// 	}
 
-	if len(c.URL) == 0 {
-		format := "mac.menubar?appurl=%s&editurl=%s&windowurl=%s&helpurl=%s"
-		for _, u := range c.CustomURLs {
-			format += "&custom=" + u
-		}
+// 	if len(c.URL) == 0 {
+// 		format := "mac.menubar?appurl=%s&editurl=%s&windowurl=%s&helpurl=%s"
+// 		for _, u := range c.CustomURLs {
+// 			format += "&custom=" + u
+// 		}
 
-		m.Load(
-			format,
-			c.AppURL,
-			c.EditURL,
-			c.WindowURL,
-			c.HelpURL,
-		)
-	} else {
-		m.Load(c.URL)
-	}
+// 		m.Load(
+// 			format,
+// 			c.AppURL,
+// 			c.EditURL,
+// 			c.WindowURL,
+// 			c.HelpURL,
+// 		)
+// 	} else {
+// 		m.Load(c.URL)
+// 	}
 
-	if m.Err() != nil {
-		return m
-	}
+// 	if m.Err() != nil {
+// 		return m
+// 	}
 
-	if err := driver.Platform.Call("driver.SetMenubar", nil, m.id); err != nil {
-		m.SetErr(errors.Wrap(err, "set menu bar"))
-	}
+// 	if err := driver.Platform.Call("driver.SetMenubar", nil, m.id); err != nil {
+// 		m.SetErr(errors.Wrap(err, "set menu bar"))
+// 	}
 
-	return m
-}
+// 	return m
+// }

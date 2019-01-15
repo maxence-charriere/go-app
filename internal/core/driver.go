@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/murlokswarm/app"
+	"github.com/pkg/errors"
 )
 
 // Driver is a modular implementation of the app.Driver interface that provide
@@ -17,21 +18,12 @@ type Driver struct {
 	Go                 *Go
 	JSToPlatform       string
 	OpenDefaultBrowser func(string) error
+	NewContextMenuFunc func(*Driver) *Menu
 	NewWindowFunc      func(*Driver) *Window
 	Platform           *Platform
 	ResourcesFunc      func() string
 	StorageFunc        func() string
 	UIChan             chan func()
-}
-
-// Target satisfies the app.Driver interface.
-func (d *Driver) Target() string {
-	return "test"
-}
-
-// Run satisfies the app.Driver interface.
-func (d *Driver) Run(c app.DriverConfig) error {
-	return app.ErrNotSupported
 }
 
 // AppName satisfies the app.Driver interface.
@@ -40,35 +32,11 @@ func (d *Driver) AppName() string {
 	return filepath.Base(wd)
 }
 
-// Resources satisfies the app.Driver interface.
-func (d *Driver) Resources(p ...string) string {
-	if d.ResourcesFunc == nil {
-		d.StorageFunc = func() string { return "resources" }
-	}
-
-	r := filepath.Join(p...)
-	r = filepath.Join(d.ResourcesFunc(), r)
-	return r
-}
-
-// Storage satisfies the app.Driver interface.
-func (d *Driver) Storage(p ...string) string {
-	if d.StorageFunc == nil {
-		d.StorageFunc = func() string { return "storage" }
-	}
-
-	s := filepath.Join(p...)
-	s = filepath.Join(d.StorageFunc(), s)
-	return s
-}
-
-// Render satisfies the app.Driver interface.
-func (d *Driver) Render(c app.Compo) {
-	e := d.ElemByCompo(c)
-
-	e.WhenView(func(v app.View) {
-		v.Render(c)
-	})
+// DockTile satisfies the app.Driver interface.
+func (d *Driver) DockTile() app.DockTile {
+	dt := &DockTile{}
+	dt.SetErr(app.ErrNotSupported)
+	return dt
 }
 
 // ElemByCompo satisfies the app.Driver interface.
@@ -76,35 +44,80 @@ func (d *Driver) ElemByCompo(c app.Compo) app.Elem {
 	return d.Elems.GetByCompo(c)
 }
 
-// NewWindow satisfies the app.Driver interface.
-func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
-	if d.NewWindowFunc == nil {
-		w := &Window{}
-		w.err = app.ErrNotSupported
-		return w
-	}
+// HandleMenu returns a go RPC handler that handle menu requests.
+func (d *Driver) HandleMenu(h func(m *Menu, in map[string]interface{})) GoHandler {
+	return func(in map[string]interface{}) {
+		e := d.Elems.GetByID(in["ID"].(string))
+		if e.Err() != nil {
+			return
+		}
 
-	w := d.NewWindowFunc(d)
-	w.Create(c)
-	return w
+		switch m := e.(type) {
+		case *Menu:
+			h(m, in)
+
+		default:
+			app.Panic(errors.Errorf("%T is not a supported menu"))
+		}
+	}
 }
 
-// NewContextMenu satisfies the app.Driver interface.
-func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
+// HandleWindow returns a go RPC handler that handle window requests.
+func (d *Driver) HandleWindow(h func(w *Window, in map[string]interface{})) GoHandler {
+	return func(in map[string]interface{}) {
+		e := d.Elems.GetByID(in["ID"].(string))
+		if e.Err() == app.ErrElemNotSet {
+			return
+		}
+
+		h(e.(*Window), in)
+	}
+}
+
+// MenuBar satisfies the app.Driver interface.
+func (d *Driver) MenuBar() app.Menu {
 	m := &Menu{}
 	m.SetErr(app.ErrNotSupported)
 	return m
 }
 
-// NewStatusMenu satisfies the app.Driver interface.
-func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) app.StatusMenu {
-	s := &StatusMenu{}
-	s.SetErr(app.ErrNotSupported)
-	return s
+// NewContextMenu satisfies the app.Driver interface.
+func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
+	if d.NewContextMenu == nil {
+		return &Menu{Elem: Elem{err: app.ErrNotSupported}}
+	}
+
+	m := d.NewContextMenuFunc(d)
+	m.kind = "context menu"
+	m.Create(c)
+
+	if m.err != nil {
+		return m
+	}
+
+	m.err = d.Platform.Call("driver.SetContextMenu", nil, struct {
+		ID string
+	}{
+		ID: m.id,
+	})
+
+	return m
+}
+
+// NewController satisfies the app.Driver interface.
+func (d *Driver) NewController(c app.ControllerConfig) app.Controller {
+	controller := &Controller{}
+	controller.SetErr(app.ErrNotSupported)
+	return controller
 }
 
 // NewFilePanel satisfies the app.Driver interface.
 func (d *Driver) NewFilePanel(c app.FilePanelConfig) app.Elem {
+	return &Elem{err: app.ErrNotSupported}
+}
+
+// NewNotification satisfies the app.Driver interface.
+func (d *Driver) NewNotification(c app.NotificationConfig) app.Elem {
 	return &Elem{err: app.ErrNotSupported}
 }
 
@@ -118,37 +131,70 @@ func (d *Driver) NewShare(v interface{}) app.Elem {
 	return &Elem{err: app.ErrNotSupported}
 }
 
-// NewNotification satisfies the app.Driver interface.
-func (d *Driver) NewNotification(c app.NotificationConfig) app.Elem {
-	return &Elem{err: app.ErrNotSupported}
+// NewStatusMenu satisfies the app.Driver interface.
+func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) app.StatusMenu {
+	s := &StatusMenu{}
+	s.SetErr(app.ErrNotSupported)
+	return s
 }
 
-// NewController satisfies the app.Driver interface.
-func (d *Driver) NewController(c app.ControllerConfig) app.Controller {
-	controller := &Controller{}
-	controller.SetErr(app.ErrNotSupported)
-	return controller
+// NewWindow satisfies the app.Driver interface.
+func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
+	if d.NewWindowFunc == nil {
+		return &Window{Elem: Elem{err: app.ErrNotSupported}}
+	}
+
+	w := d.NewWindowFunc(d)
+	w.Create(c)
+	return w
 }
 
-// MenuBar satisfies the app.Driver interface.
-func (d *Driver) MenuBar() app.Menu {
-	m := &Menu{}
-	m.SetErr(app.ErrNotSupported)
-	return m
+// Render satisfies the app.Driver interface.
+func (d *Driver) Render(c app.Compo) {
+	e := d.ElemByCompo(c)
+
+	e.WhenView(func(v app.View) {
+		v.Render(c)
+	})
 }
 
-// DockTile satisfies the app.Driver interface.
-func (d *Driver) DockTile() app.DockTile {
-	dt := &DockTile{}
-	dt.SetErr(app.ErrNotSupported)
-	return dt
+// Resources satisfies the app.Driver interface.
+func (d *Driver) Resources(p ...string) string {
+	if d.ResourcesFunc == nil {
+		d.StorageFunc = func() string { return "resources" }
+	}
+
+	r := filepath.Join(p...)
+	r = filepath.Join(d.ResourcesFunc(), r)
+	return r
+}
+
+// Run satisfies the app.Driver interface.
+func (d *Driver) Run(c app.DriverConfig) error {
+	return app.ErrNotSupported
+}
+
+// Stop satisfies the app.Driver interface.
+func (d *Driver) Stop() {
+}
+
+// Storage satisfies the app.Driver interface.
+func (d *Driver) Storage(p ...string) string {
+	if d.StorageFunc == nil {
+		d.StorageFunc = func() string { return "storage" }
+	}
+
+	s := filepath.Join(p...)
+	s = filepath.Join(d.StorageFunc(), s)
+	return s
+}
+
+// Target satisfies the app.Driver interface.
+func (d *Driver) Target() string {
+	return "test"
 }
 
 // UI satisfies the app.Driver interface.
 func (d *Driver) UI(f func()) {
 	d.UIChan <- f
-}
-
-// Stop satisfies the app.Driver interface.
-func (d *Driver) Stop() {
 }

@@ -2,107 +2,98 @@
 
 package mac
 
-import (
-	"fmt"
-	"os"
+// // DockTile implements the app.DockTile interface.
+// type DockTile struct {
+// 	Menu
+// }
 
-	"github.com/google/uuid"
-	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/dom"
-)
+// func newDockTile(c app.MenuConfig) *DockTile {
+// 	d := &DockTile{
+// 		Menu: Menu{
+// 			id: uuid.New().String(),
+// 			dom: dom.Engine{
+// 				Factory:   driver.Factory,
+// 				Resources: driver.Resources,
+// 				AllowedNodes: []string{
+// 					"menu",
+// 					"menuitem",
+// 				},
+// 				UI: driver.UI,
+// 			},
+// 			typ:            "dock tile",
+// 			keepWhenClosed: true,
+// 		},
+// 	}
 
-// DockTile implements the app.DockTile interface.
-type DockTile struct {
-	Menu
-}
+// 	d.dom.Sync = d.render
 
-func newDockTile(c app.MenuConfig) *DockTile {
-	d := &DockTile{
-		Menu: Menu{
-			id: uuid.New().String(),
-			dom: dom.Engine{
-				Factory:   driver.Factory,
-				Resources: driver.Resources,
-				AllowedNodes: []string{
-					"menu",
-					"menuitem",
-				},
-				UI: driver.UI,
-			},
-			typ:            "dock tile",
-			keepWhenClosed: true,
-		},
-	}
+// 	if err := driver.Platform.Call("menus.New", nil, struct {
+// 		ID string
+// 	}{
+// 		ID: d.id,
+// 	}); err != nil {
+// 		d.SetErr(err)
+// 		return d
+// 	}
 
-	d.dom.Sync = d.render
+// 	driver.Elems.Put(d)
 
-	if err := driver.Platform.Call("menus.New", nil, struct {
-		ID string
-	}{
-		ID: d.id,
-	}); err != nil {
-		d.SetErr(err)
-		return d
-	}
+// 	if len(c.URL) != 0 {
+// 		d.Load(c.URL)
+// 	}
 
-	driver.Elems.Put(d)
+// 	return d
+// }
 
-	if len(c.URL) != 0 {
-		d.Load(c.URL)
-	}
+// // WhenDockTile satisfies the app.DockTile interface.
+// func (d *DockTile) WhenDockTile(f func(app.DockTile)) {
+// 	f(d)
+// }
 
-	return d
-}
+// // Load the app.StatusMenu interface.
+// func (d *DockTile) Load(urlFmt string, v ...interface{}) {
+// 	d.Menu.Load(urlFmt, v...)
+// 	if d.Err() != nil {
+// 		return
+// 	}
 
-// WhenDockTile satisfies the app.DockTile interface.
-func (d *DockTile) WhenDockTile(f func(app.DockTile)) {
-	f(d)
-}
+// 	err := driver.Platform.Call("docks.SetMenu", nil, struct {
+// 		ID string
+// 	}{
+// 		ID: d.id,
+// 	})
 
-// Load the app.StatusMenu interface.
-func (d *DockTile) Load(urlFmt string, v ...interface{}) {
-	d.Menu.Load(urlFmt, v...)
-	if d.Err() != nil {
-		return
-	}
+// 	d.SetErr(err)
+// }
 
-	err := driver.Platform.Call("docks.SetMenu", nil, struct {
-		ID string
-	}{
-		ID: d.id,
-	})
+// // SetIcon satisfies the app.DockTile interface.
+// func (d *DockTile) SetIcon(path string) {
+// 	if _, err := os.Stat(path); err != nil && len(path) != 0 {
+// 		d.SetErr(err)
+// 		return
+// 	}
 
-	d.SetErr(err)
-}
+// 	err := driver.Platform.Call("docks.SetIcon", nil, struct {
+// 		Icon string
+// 	}{
+// 		Icon: path,
+// 	})
 
-// SetIcon satisfies the app.DockTile interface.
-func (d *DockTile) SetIcon(path string) {
-	if _, err := os.Stat(path); err != nil && len(path) != 0 {
-		d.SetErr(err)
-		return
-	}
+// 	d.SetErr(err)
+// }
 
-	err := driver.Platform.Call("docks.SetIcon", nil, struct {
-		Icon string
-	}{
-		Icon: path,
-	})
+// // SetBadge satisfies the app.DockTile interface.
+// func (d *DockTile) SetBadge(v interface{}) {
+// 	var badge string
+// 	if v != nil {
+// 		badge = fmt.Sprint(v)
+// 	}
 
-	d.SetErr(err)
-}
+// 	err := driver.Platform.Call("docks.SetBadge", nil, struct {
+// 		Badge string
+// 	}{
+// 		Badge: badge,
+// 	})
 
-// SetBadge satisfies the app.DockTile interface.
-func (d *DockTile) SetBadge(v interface{}) {
-	var badge string
-	if v != nil {
-		badge = fmt.Sprint(v)
-	}
-
-	err := driver.Platform.Call("docks.SetBadge", nil, struct {
-		Badge string
-	}{
-		Badge: badge,
-	})
-
-	d.SetErr(err)
-}
+// 	d.SetErr(err)
+// }

@@ -2,121 +2,113 @@
 
 package mac
 
-import (
-	"os"
+// // StatusMenu represents a menu that lives in the status bar.
+// type StatusMenu struct {
+// 	Menu
+// }
 
-	"github.com/google/uuid"
-	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/dom"
-)
+// func newStatusMenu(c app.StatusMenuConfig) *StatusMenu {
+// 	s := &StatusMenu{
+// 		Menu: Menu{
+// 			id: uuid.New().String(),
+// 			dom: dom.Engine{
+// 				Factory:   driver.Factory,
+// 				Resources: driver.Resources,
+// 				AllowedNodes: []string{
+// 					"menu",
+// 					"menuitem",
+// 				},
+// 				UI: driver.UI,
+// 			},
+// 			typ:            "status menu",
+// 			keepWhenClosed: true,
+// 		},
+// 	}
 
-// StatusMenu represents a menu that lives in the status bar.
-type StatusMenu struct {
-	Menu
-}
+// 	s.dom.Sync = s.render
 
-func newStatusMenu(c app.StatusMenuConfig) *StatusMenu {
-	s := &StatusMenu{
-		Menu: Menu{
-			id: uuid.New().String(),
-			dom: dom.Engine{
-				Factory:   driver.Factory,
-				Resources: driver.Resources,
-				AllowedNodes: []string{
-					"menu",
-					"menuitem",
-				},
-				UI: driver.UI,
-			},
-			typ:            "status menu",
-			keepWhenClosed: true,
-		},
-	}
+// 	if err := driver.Platform.Call("statusMenus.New", nil, struct {
+// 		ID   string
+// 		Text string
+// 		Icon string
+// 	}{
+// 		ID:   s.id,
+// 		Text: c.Text,
+// 		Icon: c.Icon,
+// 	}); err != nil {
+// 		s.SetErr(err)
+// 		return s
+// 	}
 
-	s.dom.Sync = s.render
+// 	driver.Elems.Put(s)
 
-	if err := driver.Platform.Call("statusMenus.New", nil, struct {
-		ID   string
-		Text string
-		Icon string
-	}{
-		ID:   s.id,
-		Text: c.Text,
-		Icon: c.Icon,
-	}); err != nil {
-		s.SetErr(err)
-		return s
-	}
+// 	if len(c.URL) != 0 {
+// 		s.Load(c.URL)
+// 	}
 
-	driver.Elems.Put(s)
+// 	return s
+// }
 
-	if len(c.URL) != 0 {
-		s.Load(c.URL)
-	}
+// // WhenStatusMenu satisfies the app.StatusMenu interface.
+// func (s *StatusMenu) WhenStatusMenu(f func(app.StatusMenu)) {
+// 	f(s)
+// }
 
-	return s
-}
+// // Load the app.StatusMenu interface.
+// func (s *StatusMenu) Load(urlFmt string, v ...interface{}) {
+// 	s.Menu.Load(urlFmt, v...)
+// 	if s.Err() != nil {
+// 		return
+// 	}
 
-// WhenStatusMenu satisfies the app.StatusMenu interface.
-func (s *StatusMenu) WhenStatusMenu(f func(app.StatusMenu)) {
-	f(s)
-}
+// 	err := driver.Platform.Call("statusMenus.SetMenu", nil, struct {
+// 		ID string
+// 	}{
+// 		ID: s.id,
+// 	})
 
-// Load the app.StatusMenu interface.
-func (s *StatusMenu) Load(urlFmt string, v ...interface{}) {
-	s.Menu.Load(urlFmt, v...)
-	if s.Err() != nil {
-		return
-	}
+// 	s.SetErr(err)
+// }
 
-	err := driver.Platform.Call("statusMenus.SetMenu", nil, struct {
-		ID string
-	}{
-		ID: s.id,
-	})
+// // SetIcon satisfies the app.StatusMenu interface.
+// func (s *StatusMenu) SetIcon(path string) {
+// 	if _, err := os.Stat(path); err != nil && len(path) != 0 {
+// 		s.SetErr(err)
+// 		return
+// 	}
 
-	s.SetErr(err)
-}
+// 	err := driver.Platform.Call("statusMenus.SetIcon", nil, struct {
+// 		ID   string
+// 		Icon string
+// 	}{
+// 		ID:   s.id,
+// 		Icon: path,
+// 	})
 
-// SetIcon satisfies the app.StatusMenu interface.
-func (s *StatusMenu) SetIcon(path string) {
-	if _, err := os.Stat(path); err != nil && len(path) != 0 {
-		s.SetErr(err)
-		return
-	}
+// 	s.SetErr(err)
+// }
 
-	err := driver.Platform.Call("statusMenus.SetIcon", nil, struct {
-		ID   string
-		Icon string
-	}{
-		ID:   s.id,
-		Icon: path,
-	})
+// // SetText satisfies the app.StatusMenu interface.
+// func (s *StatusMenu) SetText(text string) {
+// 	err := driver.Platform.Call("statusMenus.SetText", nil, struct {
+// 		ID   string
+// 		Text string
+// 	}{
+// 		ID:   s.id,
+// 		Text: text,
+// 	})
 
-	s.SetErr(err)
-}
+// 	s.SetErr(err)
+// }
 
-// SetText satisfies the app.StatusMenu interface.
-func (s *StatusMenu) SetText(text string) {
-	err := driver.Platform.Call("statusMenus.SetText", nil, struct {
-		ID   string
-		Text string
-	}{
-		ID:   s.id,
-		Text: text,
-	})
+// // Close satisfies the app.StatusMenu interface.
+// func (s *StatusMenu) Close() {
+// 	err := driver.Platform.Call("statusMenus.Close", nil, struct {
+// 		ID string
+// 	}{
+// 		ID: s.id,
+// 	})
 
-	s.SetErr(err)
-}
-
-// Close satisfies the app.StatusMenu interface.
-func (s *StatusMenu) Close() {
-	err := driver.Platform.Call("statusMenus.Close", nil, struct {
-		ID string
-	}{
-		ID: s.id,
-	})
-
-	s.SetErr(err)
-	driver.Elems.Delete(s)
-}
+// 	s.SetErr(err)
+// 	driver.Elems.Delete(s)
+// }
