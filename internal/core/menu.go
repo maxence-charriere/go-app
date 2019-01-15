@@ -72,9 +72,11 @@ func (m *Menu) Load(rawurl string, v ...interface{}) {
 	}
 
 	if m.err = m.Driver.Platform.Call("menus.Load", nil, struct {
-		ID string
+		ID   string
+		Kind string
 	}{
-		ID: m.id,
+		ID:   m.id,
+		Kind: m.kind,
 	}); m.err != nil {
 		return
 	}
