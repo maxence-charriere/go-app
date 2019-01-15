@@ -7,41 +7,21 @@ import (
 	"github.com/murlokswarm/app"
 )
 
-// Driver is a base struct to embed in app.Driver implementations.
+// Driver is a modular implementation of the app.Driver interface that provide
+// the common driver logic. It used as a base for platform specific driver
+// implementations.
 type Driver struct {
-	// The database that contain the created elements.
-	Elems *ElemDB
-
-	// The event registry that emit events.
-	Events *app.EventRegistry
-
-	// The factory used to import and create components.
-	Factory *app.Factory
-
-	// The RPC object to deliver procedure calls to Go.
-	Go *Go
-
-	// The function name that javascript use to send data to the targetted
-	// platform.
-	JSToPlatform string
-
-	// The function to open an URL in the targetted platform default browser.
+	Elems              *ElemDB
+	Events             *app.EventRegistry
+	Factory            *app.Factory
+	Go                 *Go
+	JSToPlatform       string
 	OpenDefaultBrowser func(string) error
-
-	NewWindowFunc func(*Driver) *Window
-
-	// The RPC object to call targetted platform procedures.
-	Platform *Platform
-
-	// A function that returns the targetted platform resources directory
-	// path.
-	ResourcesFunc func() string
-
-	// A function that returns the targetted platform storage directory path.
-	StorageFunc func() string
-
-	// The channel used to execute function on the UI goroutine.
-	UIChan chan func()
+	NewWindowFunc      func(*Driver) *Window
+	Platform           *Platform
+	ResourcesFunc      func() string
+	StorageFunc        func() string
+	UIChan             chan func()
 }
 
 // Target satisfies the app.Driver interface.

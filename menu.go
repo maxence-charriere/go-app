@@ -6,7 +6,7 @@ type Menu interface {
 	View
 
 	// The menu type.
-	Type() string
+	Kind() string
 }
 
 // MenuConfig is a struct that describes a menu.

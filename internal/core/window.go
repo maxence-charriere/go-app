@@ -13,7 +13,8 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Window is a base struct to embed in app.Window implementations.
+// Window is a modular implementation of the app.Window interface that can be
+// configured address the different drivers needs.
 type Window struct {
 	Elem
 

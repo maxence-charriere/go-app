@@ -4,9 +4,22 @@ import (
 	"github.com/murlokswarm/app"
 )
 
-// Menu is a base struct to embed in app.Window implementations.
+// Menu is a modular implementation of the app.Menu interface that can be
+// configured address the different drivers needs.
 type Menu struct {
 	Elem
+
+	kind string
+}
+
+// Kind satisfies the app.Menu interface.
+func (m *Menu) Kind() string {
+	return m.kind
+}
+
+// Create creates and display the menu.
+func (m *Menu) Create(c app.MenuConfig) {
+
 }
 
 // WhenMenu satisfies the app.Menu interface.

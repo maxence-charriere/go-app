@@ -410,7 +410,7 @@ func (m *menuWithLogs) Load(url string, v ...interface{}) {
 
 	WhenDebug(func() {
 		Logf("%s %s is loading %s",
-			m.Type(),
+			m.Kind(),
 			m.ID(),
 			parsedURL,
 		)
@@ -419,7 +419,7 @@ func (m *menuWithLogs) Load(url string, v ...interface{}) {
 	m.Menu.Load(url, v...)
 	if m.Err() != nil {
 		Logf("%s %s failed to load %s: %s",
-			m.Type(),
+			m.Kind(),
 			m.ID(),
 			parsedURL,
 			m.Err(),
@@ -430,7 +430,7 @@ func (m *menuWithLogs) Load(url string, v ...interface{}) {
 func (m *menuWithLogs) Render(c Compo) {
 	WhenDebug(func() {
 		Logf("%s %s is rendering %T",
-			m.Type(),
+			m.Kind(),
 			m.ID(),
 			c,
 		)
@@ -439,7 +439,7 @@ func (m *menuWithLogs) Render(c Compo) {
 	m.Menu.Render(c)
 	if m.Err() != nil {
 		Logf("%s %s failed to render %T: %s",
-			m.Type(),
+			m.Kind(),
 			m.ID(),
 			c,
 			m.Err(),
