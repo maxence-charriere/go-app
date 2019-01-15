@@ -19,13 +19,11 @@ func newWindow(d *core.Driver) *core.Window {
 		DefaultWidth:     1280,
 		DefaultHeight:    720,
 		DOM: dom.Engine{
-			Factory:   d.Factory,
 			Resources: resourcesDir,
 			AttrTransforms: []dom.Transform{
 				dom.JsToGoHandler,
 				dom.HrefCompoFmt,
 			},
-			UI: d.UI,
 		},
 		Driver: d,
 	}

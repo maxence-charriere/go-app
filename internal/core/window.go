@@ -14,7 +14,7 @@ import (
 )
 
 // Window is a modular implementation of the app.Window interface that can be
-// configured address the different drivers needs.
+// configured to address the different drivers needs.
 type Window struct {
 	Elem
 
@@ -26,19 +26,21 @@ type Window struct {
 	History          History
 
 	compo        app.Compo
-	x            float64
-	y            float64
-	width        float64
-	height       float64
 	isFocus      bool
 	isFullScreen bool
 	isMinimized  bool
+	width        float64
+	height       float64
+	x            float64
+	y            float64
 }
 
 // Create creates and display the window.
 func (w *Window) Create(c app.WindowConfig) {
 	w.id = uuid.New().String()
+	w.DOM.Factory = w.Driver.Factory
 	w.DOM.Sync = w.render
+	w.DOM.UI = w.Driver.UI
 
 	if w.ConvertHTMLPaths == nil {
 		w.ConvertHTMLPaths = func(paths []string) []string {
