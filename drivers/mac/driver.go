@@ -20,7 +20,7 @@ type Driver struct {
 	DefaultWindow app.WindowConfig `json:"-"`
 
 	// Menubar configuration
-	MenubarConfig MenuBarConfig `json:"-"`
+	MenubarConfig app.MenuBarConfig `json:"-"`
 
 	// The URL of the component to load in the dock.
 	DockURL string `json:"-"`
@@ -155,10 +155,10 @@ type Driver struct {
 	SupportedFiles []FileType `json:",omitempty"`
 
 	devID        string
-	stop         func()
-	menubar      app.Menu
+	menubar      *core.Menu
 	docktile     app.DockTile
 	droppedFiles []string
+	stop         func()
 }
 
 // Target satisfies the app.Driver interface.

@@ -19,6 +19,7 @@ type Driver struct {
 	JSToPlatform       string
 	OpenDefaultBrowser func(string) error
 	NewContextMenuFunc func(*Driver) *Menu
+	NewMenuBarFunc     func(*Driver) *Menu
 	NewWindowFunc      func(*Driver) *Window
 	Platform           *Platform
 	ResourcesFunc      func() string
@@ -76,9 +77,7 @@ func (d *Driver) HandleWindow(h func(w *Window, in map[string]interface{})) GoHa
 
 // MenuBar satisfies the app.Driver interface.
 func (d *Driver) MenuBar() app.Menu {
-	m := &Menu{}
-	m.SetErr(app.ErrNotSupported)
-	return m
+	return &Menu{Elem: Elem{err: app.ErrNotSupported}}
 }
 
 // NewContextMenu satisfies the app.Driver interface.
@@ -96,6 +95,29 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 	}
 
 	m.err = d.Platform.Call("driver.SetContextMenu", nil, struct {
+		ID string
+	}{
+		ID: m.id,
+	})
+
+	return m
+}
+
+// NewMenuBar creates a menu bar.
+func (d *Driver) NewMenuBar(c app.MenuBarConfig) *Menu {
+	if d.NewMenuBarFunc == nil {
+		return &Menu{Elem: Elem{err: app.ErrNotSupported}}
+	}
+
+	m := d.NewMenuBarFunc(d)
+	m.kind = "menu bar"
+	m.Create(app.MenuConfig{URL: menuBarConfigToAddr(c)})
+
+	if m.err != nil {
+		return m
+	}
+
+	m.err = d.Platform.Call("driver.SetMenubar", nil, struct {
 		ID string
 	}{
 		ID: m.id,

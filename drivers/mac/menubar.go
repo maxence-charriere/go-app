@@ -181,37 +181,3 @@ func (m *HelpMenu) OnBuiltWith() {
 		app.Logf("opening https://github.com/murlokswarm/app failed: %s", err)
 	}
 }
-
-// func newMenuBar(c MenuBarConfig) *Menu {
-// 	m := newMenu(app.MenuConfig{}, "menu bar")
-// 	if m.Err() != nil {
-// 		return m
-// 	}
-
-// 	if len(c.URL) == 0 {
-// 		format := "mac.menubar?appurl=%s&editurl=%s&windowurl=%s&helpurl=%s"
-// 		for _, u := range c.CustomURLs {
-// 			format += "&custom=" + u
-// 		}
-
-// 		m.Load(
-// 			format,
-// 			c.AppURL,
-// 			c.EditURL,
-// 			c.WindowURL,
-// 			c.HelpURL,
-// 		)
-// 	} else {
-// 		m.Load(c.URL)
-// 	}
-
-// 	if m.Err() != nil {
-// 		return m
-// 	}
-
-// 	if err := driver.Platform.Call("driver.SetMenubar", nil, m.id); err != nil {
-// 		m.SetErr(errors.Wrap(err, "set menu bar"))
-// 	}
-
-// 	return m
-// }

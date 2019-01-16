@@ -26,7 +26,7 @@ func main() {
 	app.Run(
 		&mac.Driver{
 			URL: defaultURL,
-			MenubarConfig: mac.MenuBarConfig{
+			MenubarConfig: app.MenuBarConfig{
 				CustomURLs: []string{"testmenu"},
 			},
 			DockURL:   "testmenu",

@@ -18,6 +18,14 @@ func newContextMenu(d *core.Driver) *core.Menu {
 	}
 }
 
+func newMenuBar(d *core.Driver) *core.Menu {
+	return &core.Menu{
+		DOM:       dom.Engine{Resources: d.Resources},
+		Driver:    d,
+		NoDestroy: true,
+	}
+}
+
 func onMenuCallback(m *core.Menu, in map[string]interface{}) {
 	mappingStr := in["Mapping"].(string)
 
