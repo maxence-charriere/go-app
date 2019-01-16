@@ -11,44 +11,42 @@ import (
 )
 
 var (
-	// ErrNotSupported describes an error that occurs when an unsupported
-	// feature is used.
-	ErrNotSupported = errors.New("not supported")
+	// ErrCompoNotMounted describes an error that reports whether a component
+	// is mounted.
+	ErrCompoNotMounted = errors.New("component not mounted")
 
 	// ErrElemNotSet describes an error that reports if an element is set.
 	ErrElemNotSet = errors.New("element not set")
 
-	// ErrCompoNotMounted describes an error that reports whether a component
-	// is mounted.
-	ErrCompoNotMounted = errors.New("component not mounted")
+	// ErrNotSupported describes an error that occurs when an unsupported
+	// feature is used.
+	ErrNotSupported = errors.New("not supported")
 
 	// Logger is a function that formats using the default formats for its
 	// operands and logs the resulting string.
 	// It is used by Log, Logf, Panic and Panicf to generate logs.
 	Logger func(format string, a ...interface{})
 
-	driver    Driver
-	target    = "web"
 	addons    = []Addon{Logs()}
-	ui        = make(chan func(), 4096)
+	driver    Driver
 	factory   = NewFactory()
-	events    = NewEventRegistry(ui)
 	messages  = newMsgRegistry()
+	target    = "web"
+	ui        = make(chan func(), 4096)
+	events    = NewEventRegistry(ui)
 	whenDebug func(func())
 )
 
 const (
-	// Running is the event emitted when the app starts to run.
-	Running Event = "app.running"
+	// Blurred is the event emitted when the app loses focus.
+	Blurred Event = "app.blurred"
 
-	// Reopened is the event emitted when the app is reopened.
-	Reopened Event = "app.reopened"
+	// Closed is the event emitted when the app is closed. Final cleanups
+	// should be done by subscribing to this event.
+	Closed Event = "app.closed"
 
 	// Focused is the event emitted when the app gets focus.
 	Focused Event = "app.focused"
-
-	// Blurred is the event emitted when the app loses focus.
-	Blurred Event = "app.blurred"
 
 	// OpenFilesRequested is the event emitted when the app is requested to
 	// open files. The arg passed to subscribed funcs is a []string containing
@@ -59,13 +57,76 @@ const (
 	// an URL. The arg passed to subscribed funcs is a *url.URL.
 	OpenURLRequested Event = "app.openURLrequested"
 
-	// Closed is the event emitted when the app is closed. Final cleanups
-	// should be done by subscribing to this event.
-	Closed Event = "app.closed"
+	// PreferencesRequested is the event emitted when the app Preferences is
+	// requested to be displayed.
+	PreferencesRequested Event = "app.preferencesRequested"
+
+	// Reopened is the event emitted when the app is reopened.
+	Reopened Event = "app.reopened"
+
+	// Running is the event emitted when the app starts to run.
+	Running Event = "app.running"
 )
 
 func init() {
 	EnableDebug(false)
+}
+
+// Addons set up the given addons.
+func Addons(a ...Addon) {
+	for _, add := range a {
+		addons = append(addons, add)
+	}
+}
+
+// CompoName returns the name of the given component.
+// The returned name is the one to use in html tags.
+func CompoName(c Compo) string {
+	v := reflect.ValueOf(c)
+	v = reflect.Indirect(v)
+
+	name := strings.ToLower(v.Type().String())
+	return strings.TrimPrefix(name, "main.")
+}
+
+// CurrentDriver returns the current driver.
+func CurrentDriver() Driver {
+	return driver
+}
+
+// Dock returns the dock tile.
+//
+// It panics if called before Run.
+func Dock() DockTile {
+	return driver.DockTile()
+}
+
+// ElemByCompo returns the element where the given component is mounted.
+//
+// It panics if called before Run.
+func ElemByCompo(c Compo) Elem {
+	return driver.ElemByCompo(c)
+}
+
+// Emit emits the event with the given arguments.
+func Emit(e Event, args ...interface{}) {
+	events.Emit(e, args...)
+}
+
+// EnableDebug is a function that set whether debug mode is enabled.
+func EnableDebug(v bool) {
+	whenDebug = func(f func()) {}
+
+	if v {
+		whenDebug = func(f func()) {
+			f()
+		}
+	}
+}
+
+// Handle handles the message for the given key.
+func Handle(key string, h Handler) {
+	messages.handle(key, h)
 }
 
 // Import imports the given components into the app.
@@ -80,11 +141,165 @@ func Import(c ...Compo) {
 	}
 }
 
-// Addons set up the given addons.
-func Addons(a ...Addon) {
-	for _, add := range a {
-		addons = append(addons, add)
+// Log formats using the default formats for its operands and logs the resulting
+// string.
+// Spaces are always added between operands and a newline is appended.
+func Log(a ...interface{}) {
+	format := ""
+
+	for range a {
+		format += "%v "
 	}
+
+	format = format[:len(format)-1]
+	Logger(format, a...)
+}
+
+// Logf formats according to a format specifier and logs the resulting string.
+func Logf(format string, a ...interface{}) {
+	Logger(format, a...)
+}
+
+// MenuBar returns the menu bar.
+//
+// It panics if called before Run.
+func MenuBar() Menu {
+	return driver.MenuBar()
+}
+
+// Name returns the application name.
+//
+// It panics if called before Run.
+func Name() string {
+	return driver.AppName()
+}
+
+// NewContextMenu creates and displays the context menu with the given component
+// URL.
+//
+// It panics if called before Run.
+func NewContextMenu(url string) Menu {
+	return driver.NewContextMenu(MenuConfig{
+		URL: url,
+	})
+}
+
+// NewController creates the controller described by the given configuration.
+//
+// It panics if called before Run.
+func NewController(c ControllerConfig) Controller {
+	return driver.NewController(c)
+}
+
+// NewFilePanel creates and displays the file panel described by the given
+// configuration.
+//
+// It panics if called before Run.
+func NewFilePanel(c FilePanelConfig) Elem {
+	return driver.NewFilePanel(c)
+}
+
+// NewMsg creates a message.
+func NewMsg(key string) Msg {
+	return &msg{key: key}
+}
+
+// NewNotification creates and displays the notification described in the
+// given configuration.
+//
+// It panics if called before Run.
+func NewNotification(c NotificationConfig) Elem {
+	return driver.NewNotification(c)
+}
+
+// NewSaveFilePanel creates and displays the save file panel described by the
+// given configuration.
+//
+// It panics if called before Run.
+func NewSaveFilePanel(c SaveFilePanelConfig) Elem {
+	return driver.NewSaveFilePanel(c)
+}
+
+// NewShare creates and display the share pannel to share the given value.
+//
+// It panics if called before Run.
+func NewShare(v interface{}) Elem {
+	return driver.NewShare(v)
+}
+
+// NewStatusMenu creates and displays the status menu described in the given
+// configuration.
+//
+// It panics if called before Run.
+func NewStatusMenu(c StatusMenuConfig) StatusMenu {
+	return driver.NewStatusMenu(c)
+}
+
+// NewSubscriber creates an event subscriber to return when implementing the
+// app.EventSubscriber interface.
+func NewSubscriber() *Subscriber {
+	return &Subscriber{
+		Events: events,
+	}
+}
+
+// NewWindow creates and displays the window described by the given
+// configuration.
+//
+// It panics if called before Run.
+func NewWindow(c WindowConfig) Window {
+	return driver.NewWindow(c)
+}
+
+// OpenDefaultBrowser opens the given URL on the operating system default
+// browser.
+func OpenDefaultBrowser(url string) {
+	driver.OpenDefaultBrowser(url)
+}
+
+// Panic is equivalent to Log() followed by a call to panic().
+func Panic(a ...interface{}) {
+	Log(a...)
+	panic(strings.TrimSpace(fmt.Sprintln(a...)))
+}
+
+// Panicf is equivalent to Logf() followed by a call to panic().
+func Panicf(format string, a ...interface{}) {
+	Logf(format, a...)
+	panic(fmt.Sprintf(format, a...))
+}
+
+// Post posts the given messages.
+// Messages are handled in another goroutine.
+func Post(msgs ...Msg) {
+	messages.post(msgs...)
+}
+
+// Pretty is an helper function that returns a prettified string representation
+// of the given value.
+// Returns an empty string if the value can't be prettified.
+func Pretty(v interface{}) string {
+	b, _ := json.MarshalIndent(v, "", "    ")
+	return string(b)
+}
+
+// Render renders the given component.
+// It should be called when the display of component c have to be updated.
+//
+// It panics if called before Run.
+func Render(c Compo) {
+	driver.UI(func() {
+		driver.Render(c)
+	})
+}
+
+// Resources returns the given path prefixed by the resources directory
+// location.
+// Resources should be used only for read only operations.
+//
+// It panics if called before Run.
+func Resources(path ...string) string {
+	return driver.Resources(path...)
 }
 
 // Run runs the app with the given driver as backend.
@@ -113,128 +328,12 @@ func Run(drivers ...Driver) error {
 	})
 }
 
-// CurrentDriver returns the current driver.
-func CurrentDriver() Driver {
-	return driver
-}
-
-// Name returns the application name.
-//
-// It panics if called before Run.
-func Name() string {
-	return driver.AppName()
-}
-
-// Resources returns the given path prefixed by the resources directory
-// location.
-// Resources should be used only for read only operations.
-//
-// It panics if called before Run.
-func Resources(path ...string) string {
-	return driver.Resources(path...)
-}
-
 // Storage returns the given path prefixed by the storage directory
 // location.
 //
 // It panics if called before Run.
 func Storage(path ...string) string {
 	return driver.Storage(path...)
-}
-
-// Render renders the given component.
-// It should be called when the display of component c have to be updated.
-//
-// It panics if called before Run.
-func Render(c Compo) {
-	driver.UI(func() {
-		driver.Render(c)
-	})
-}
-
-// ElemByCompo returns the element where the given component is mounted.
-//
-// It panics if called before Run.
-func ElemByCompo(c Compo) Elem {
-	return driver.ElemByCompo(c)
-}
-
-// NewWindow creates and displays the window described by the given
-// configuration.
-//
-// It panics if called before Run.
-func NewWindow(c WindowConfig) Window {
-	return driver.NewWindow(c)
-}
-
-// NewContextMenu creates and displays the context menu with the given component
-// URL.
-//
-// It panics if called before Run.
-func NewContextMenu(url string) Menu {
-	return driver.NewContextMenu(MenuConfig{
-		URL: url,
-	})
-}
-
-// NewController creates the controller described by the given configuration.
-//
-// It panics if called before Run.
-func NewController(c ControllerConfig) Controller {
-	return driver.NewController(c)
-}
-
-// NewFilePanel creates and displays the file panel described by the given
-// configuration.
-//
-// It panics if called before Run.
-func NewFilePanel(c FilePanelConfig) Elem {
-	return driver.NewFilePanel(c)
-}
-
-// NewSaveFilePanel creates and displays the save file panel described by the
-// given configuration.
-//
-// It panics if called before Run.
-func NewSaveFilePanel(c SaveFilePanelConfig) Elem {
-	return driver.NewSaveFilePanel(c)
-}
-
-// NewShare creates and display the share pannel to share the given value.
-//
-// It panics if called before Run.
-func NewShare(v interface{}) Elem {
-	return driver.NewShare(v)
-}
-
-// NewNotification creates and displays the notification described in the
-// given configuration.
-//
-// It panics if called before Run.
-func NewNotification(c NotificationConfig) Elem {
-	return driver.NewNotification(c)
-}
-
-// MenuBar returns the menu bar.
-//
-// It panics if called before Run.
-func MenuBar() Menu {
-	return driver.MenuBar()
-}
-
-// NewStatusMenu creates and displays the status menu described in the given
-// configuration.
-//
-// It panics if called before Run.
-func NewStatusMenu(c StatusMenuConfig) StatusMenu {
-	return driver.NewStatusMenu(c)
-}
-
-// Dock returns the dock tile.
-//
-// It panics if called before Run.
-func Dock() DockTile {
-	return driver.DockTile()
 }
 
 // Stop stops the app.
@@ -250,96 +349,7 @@ func UI(f func()) {
 	driver.UI(f)
 }
 
-// Handle handles the message for the given key.
-func Handle(key string, h Handler) {
-	messages.handle(key, h)
-}
-
-// Post posts the given messages.
-// Messages are handled in another goroutine.
-func Post(msgs ...Msg) {
-	messages.post(msgs...)
-}
-
-// NewMsg creates a message.
-func NewMsg(key string) Msg {
-	return &msg{key: key}
-}
-
-// Emit emits the event with the given arguments.
-func Emit(e Event, args ...interface{}) {
-	events.Emit(e, args...)
-}
-
-// NewSubscriber creates an event subscriber to return when implementing the
-// app.EventSubscriber interface.
-func NewSubscriber() *Subscriber {
-	return &Subscriber{
-		Events: events,
-	}
-}
-
-// Log formats using the default formats for its operands and logs the resulting
-// string.
-// Spaces are always added between operands and a newline is appended.
-func Log(a ...interface{}) {
-	format := ""
-
-	for range a {
-		format += "%v "
-	}
-
-	format = format[:len(format)-1]
-	Logger(format, a...)
-}
-
-// Logf formats according to a format specifier and logs the resulting string.
-func Logf(format string, a ...interface{}) {
-	Logger(format, a...)
-}
-
-// Panic is equivalent to Log() followed by a call to panic().
-func Panic(a ...interface{}) {
-	Log(a...)
-	panic(strings.TrimSpace(fmt.Sprintln(a...)))
-}
-
-// Panicf is equivalent to Logf() followed by a call to panic().
-func Panicf(format string, a ...interface{}) {
-	Logf(format, a...)
-	panic(fmt.Sprintf(format, a...))
-}
-
-// EnableDebug is a function that set whether debug mode is enabled.
-func EnableDebug(v bool) {
-	whenDebug = func(f func()) {}
-
-	if v {
-		whenDebug = func(f func()) {
-			f()
-		}
-	}
-}
-
 // WhenDebug execute the given function when debug mode is enabled.
 func WhenDebug(f func()) {
 	whenDebug(f)
-}
-
-// CompoName returns the name of the given component.
-// The returned name is the one to use in html tags.
-func CompoName(c Compo) string {
-	v := reflect.ValueOf(c)
-	v = reflect.Indirect(v)
-
-	name := strings.ToLower(v.Type().String())
-	return strings.TrimPrefix(name, "main.")
-}
-
-// Pretty is an helper function that returns a prettified string representation
-// of the given value.
-// Returns an empty string if the value can't be prettified.
-func Pretty(v interface{}) string {
-	b, _ := json.MarshalIndent(v, "", "    ")
-	return string(b)
 }

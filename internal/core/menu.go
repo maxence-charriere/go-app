@@ -144,7 +144,7 @@ func (m *Menu) Compo() app.Compo {
 
 // Render satisfies the app.Menu interface.
 func (m *Menu) Render(c app.Compo) {
-	m.SetErr(app.ErrNotSupported)
+	m.err = m.DOM.Render(c)
 }
 
 func (m *Menu) render(changes interface{}) error {

@@ -30,7 +30,7 @@ func bind(v ...interface{}) template.JS {
 func urlToHTMLTag(s string) template.HTML {
 	u, _ := url.Parse(s)
 
-	b := make([]byte, 0, len(s)+len(s)/2)
+	b := make([]byte, 0, 64)
 	b = append(b, '<')
 
 	tag := strings.TrimPrefix(u.Path, "/")

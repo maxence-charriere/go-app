@@ -12,19 +12,19 @@ import (
 // the common driver logic. It used as a base for platform specific driver
 // implementations.
 type Driver struct {
-	Elems              *ElemDB
-	Events             *app.EventRegistry
-	Factory            *app.Factory
-	Go                 *Go
-	JSToPlatform       string
-	OpenDefaultBrowser func(string) error
-	NewContextMenuFunc func(*Driver) *Menu
-	NewMenuBarFunc     func(*Driver) *Menu
-	NewWindowFunc      func(*Driver) *Window
-	Platform           *Platform
-	ResourcesFunc      func() string
-	StorageFunc        func() string
-	UIChan             chan func()
+	Elems                  *ElemDB
+	Events                 *app.EventRegistry
+	Factory                *app.Factory
+	Go                     *Go
+	JSToPlatform           string
+	OpenDefaultBrowserFunc func(string) error
+	NewContextMenuFunc     func(*Driver) *Menu
+	NewMenuBarFunc         func(*Driver) *Menu
+	NewWindowFunc          func(*Driver) *Window
+	Platform               *Platform
+	ResourcesFunc          func() string
+	StorageFunc            func() string
+	UIChan                 chan func()
 }
 
 // AppName satisfies the app.Driver interface.
@@ -169,6 +169,15 @@ func (d *Driver) NewWindow(c app.WindowConfig) app.Window {
 	w := d.NewWindowFunc(d)
 	w.Create(c)
 	return w
+}
+
+// OpenDefaultBrowser satisfies the app.Driver interface.
+func (d *Driver) OpenDefaultBrowser(url string) error {
+	if d.OpenDefaultBrowserFunc == nil {
+		return app.ErrNotSupported
+	}
+
+	return d.OpenDefaultBrowserFunc(url)
 }
 
 // Render satisfies the app.Driver interface.

@@ -20,22 +20,17 @@ type driverWithLogs struct {
 	Driver
 }
 
-func (d *driverWithLogs) Run(c DriverConfig) error {
-	Logf("running %T driver", d.Driver)
+func (d *driverWithLogs) DockTile() DockTile {
+	WhenDebug(func() {
+		Logf("getting dock tile")
+	})
 
-	err := d.Driver.Run(c)
-	if err != nil {
-		Logf("driver stopped running: %s", err)
+	dt := d.Driver.DockTile()
+	if dt.Err() != nil {
+		Logf("getting dock tile failed: %s", dt.Err())
 	}
-	return err
-}
 
-func (d *driverWithLogs) Render(c Compo) {
-	e := d.ElemByCompo(c)
-
-	if view, ok := e.(View); ok {
-		view.(View).Render(c)
-	}
+	return &dockWithLogs{DockTile: dt}
 }
 
 func (d *driverWithLogs) ElemByCompo(c Compo) Elem {
@@ -57,18 +52,17 @@ func (d *driverWithLogs) ElemByCompo(c Compo) Elem {
 	}
 }
 
-func (d *driverWithLogs) NewWindow(c WindowConfig) Window {
+func (d *driverWithLogs) MenuBar() Menu {
 	WhenDebug(func() {
-		config, _ := json.MarshalIndent(c, "", "    ")
-		Logf("creating window: %s", config)
+		Logf("getting menubar")
 	})
 
-	w := d.Driver.NewWindow(c)
-	if w.Err() != nil {
-		Logf("creating window failed: %s", w.Err())
+	m := d.Driver.MenuBar()
+	if m.Err() != nil {
+		Logf("getting menubar failed: %s", m.Err())
 	}
 
-	return &windowWithLogs{Window: w}
+	return &menuWithLogs{Menu: m}
 }
 
 func (d *driverWithLogs) NewContextMenu(c MenuConfig) Menu {
@@ -113,6 +107,20 @@ func (d *driverWithLogs) NewFilePanel(c FilePanelConfig) Elem {
 	return p
 }
 
+func (d *driverWithLogs) NewNotification(c NotificationConfig) Elem {
+	WhenDebug(func() {
+		config := prettyConf(c)
+		Logf("creating notification: %s", config)
+	})
+
+	n := d.Driver.NewNotification(c)
+	if n.Err() != nil {
+		Logf("creating notification failed: %s", n.Err())
+	}
+
+	return n
+}
+
 func (d *driverWithLogs) NewSaveFilePanel(c SaveFilePanelConfig) Elem {
 	WhenDebug(func() {
 		config := prettyConf(c)
@@ -140,31 +148,18 @@ func (d *driverWithLogs) NewShare(v interface{}) Elem {
 	return s
 }
 
-func (d *driverWithLogs) NewNotification(c NotificationConfig) Elem {
+func (d *driverWithLogs) NewWindow(c WindowConfig) Window {
 	WhenDebug(func() {
-		config := prettyConf(c)
-		Logf("creating notification: %s", config)
+		config, _ := json.MarshalIndent(c, "", "    ")
+		Logf("creating window: %s", config)
 	})
 
-	n := d.Driver.NewNotification(c)
-	if n.Err() != nil {
-		Logf("creating notification failed: %s", n.Err())
+	w := d.Driver.NewWindow(c)
+	if w.Err() != nil {
+		Logf("creating window failed: %s", w.Err())
 	}
 
-	return n
-}
-
-func (d *driverWithLogs) MenuBar() Menu {
-	WhenDebug(func() {
-		Logf("getting menubar")
-	})
-
-	m := d.Driver.MenuBar()
-	if m.Err() != nil {
-		Logf("getting menubar failed: %s", m.Err())
-	}
-
-	return &menuWithLogs{Menu: m}
+	return &windowWithLogs{Window: w}
 }
 
 func (d *driverWithLogs) NewStatusMenu(c StatusMenuConfig) StatusMenu {
@@ -181,17 +176,35 @@ func (d *driverWithLogs) NewStatusMenu(c StatusMenuConfig) StatusMenu {
 	return &statusMenuWithLogs{StatusMenu: m}
 }
 
-func (d *driverWithLogs) DockTile() DockTile {
+func (d *driverWithLogs) OpenDefaultBrowser(url string) error {
 	WhenDebug(func() {
-		Logf("getting dock tile")
+		Logf("opening %s on default browser", url)
 	})
 
-	dt := d.Driver.DockTile()
-	if dt.Err() != nil {
-		Logf("getting dock tile failed: %s", dt.Err())
+	err := d.Driver.OpenDefaultBrowser(url)
+	if err != nil {
+		Logf("opening %s on default browser failed: %s", url, err)
 	}
 
-	return &dockWithLogs{DockTile: dt}
+	return err
+}
+
+func (d *driverWithLogs) Run(c DriverConfig) error {
+	Logf("running %T driver", d.Driver)
+
+	err := d.Driver.Run(c)
+	if err != nil {
+		Logf("driver stopped running: %s", err)
+	}
+	return err
+}
+
+func (d *driverWithLogs) Render(c Compo) {
+	e := d.ElemByCompo(c)
+
+	if view, ok := e.(View); ok {
+		view.(View).Render(c)
+	}
 }
 
 func (d *driverWithLogs) Stop() {

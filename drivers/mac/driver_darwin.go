@@ -27,12 +27,6 @@ var (
 	debug      = os.Getenv("GOAPP_DEBUG") == "true"
 )
 
-const (
-	// PreferencesRequested is the event emitted when the menubar Preferences
-	// button is clicked.
-	PreferencesRequested app.Event = "app.mac.preferencesRequested"
-)
-
 func init() {
 	if len(goappBuild) != 0 {
 		app.Logger = func(format string, a ...interface{}) {}
@@ -55,7 +49,7 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	d.Factory = c.Factory
 	d.Platform, d.Go = objc.RPC(d.UI)
 	d.JSToPlatform = "window.webkit.messageHandlers.golangRequest.postMessage"
-	d.OpenDefaultBrowser = openDefaultBrowser
+	d.OpenDefaultBrowserFunc = openDefaultBrowser
 	d.NewContextMenuFunc = newContextMenu
 	d.NewMenuBarFunc = newMenuBar
 	d.NewWindowFunc = newWindow
@@ -192,6 +186,11 @@ func (d *Driver) NewShare(v interface{}) app.Elem {
 // NewNotification satisfies the app.Driver interface.
 func (d *Driver) NewNotification(c app.NotificationConfig) app.Elem {
 	return newNotification(c)
+}
+
+// MenuBar satisfies the app.Driver interface.
+func (d *Driver) MenuBar() app.Menu {
+	return d.menubar
 }
 
 // Stop satisfies the app.Driver interface.
