@@ -81,8 +81,7 @@ func (m *MenuBar) Render() string {
 	</menu>
 	{{end}}
 
-	{{range .CustomURLs}}
-	{{compo .}}
+	{{range .CustomURLs}}{{compo .}}
 	{{end}}
 
 	{{if .WindowURL}}
