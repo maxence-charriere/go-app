@@ -156,7 +156,6 @@ type Driver struct {
 
 	devID        string
 	menubar      *core.Menu
-	docktile     app.DockTile
 	droppedFiles []string
 	stop         func()
 }

@@ -25,6 +25,20 @@ type MenuBar struct {
 // OnNavigate satisfies the app.Navigable interface.
 func (m *MenuBar) OnNavigate(u *url.URL) {
 	m.AppName = app.Name()
+
+	q := u.Query()
+	m.AppName = q.Get("AppURL")
+	m.EditURL = q.Get("EditURL")
+	m.FileURL = q.Get("FileURL")
+	m.HelpURL = q.Get("HelpURL")
+	m.WindowURL = q.Get("WindowURL")
+
+	if customURLs := q.Get("CustomURLs"); customURLs != "" {
+		if err := json.Unmarshal([]byte(customURLs), &m.CustomURLs); err != nil {
+			app.Log("decoding menu bar custom component urls failed", err)
+		}
+	}
+
 	app.Render(m)
 }
 
@@ -108,14 +122,16 @@ func (m *MenuBar) OnBuiltWith() {
 
 func menuBarConfigToAddr(c app.MenuBarConfig) string {
 	u, _ := url.Parse(app.CompoName(&MenuBar{}))
-	u.Query().Set("AppURL", c.AppURL)
-	u.Query().Set("EditURL", c.EditURL)
-	u.Query().Set("FileURL", c.FileURL)
-	u.Query().Set("HelpURL", c.HelpURL)
-	u.Query().Set("WindowURL", c.WindowURL)
-
 	customURLs, _ := json.Marshal(c.CustomURLs)
-	u.Query().Set("CustomURLs", string(customURLs))
 
+	q := u.Query()
+	q.Set("AppURL", c.AppURL)
+	q.Set("CustomURLs", string(customURLs))
+	q.Set("EditURL", c.EditURL)
+	q.Set("FileURL", c.FileURL)
+	q.Set("HelpURL", c.HelpURL)
+	q.Set("WindowURL", c.WindowURL)
+
+	u.RawQuery = q.Encode()
 	return u.String()
 }

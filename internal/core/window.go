@@ -2,7 +2,6 @@ package core
 
 import (
 	"encoding/json"
-	"fmt"
 	"math"
 	"net/url"
 
@@ -136,8 +135,7 @@ func (w *Window) WhenWindow(f func(app.Window)) {
 }
 
 // Load satisfies the app.Window interface.
-func (w *Window) Load(rawurl string, v ...interface{}) {
-	rawurl = fmt.Sprintf(rawurl, v...)
+func (w *Window) Load(rawurl string) {
 	compoName := CompoNameFromURLString(rawurl)
 
 	if !w.Driver.Factory.IsCompoRegistered(compoName) {

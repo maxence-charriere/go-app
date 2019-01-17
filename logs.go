@@ -2,7 +2,6 @@ package app
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 // Logs returns an addons that logs all the driver operations.
@@ -228,23 +227,14 @@ func (w *windowWithLogs) WhenWindow(f func(Window)) {
 	f(w)
 }
 
-func (w *windowWithLogs) Load(url string, v ...interface{}) {
-	parsedURL := fmt.Sprintf(url, v...)
-
+func (w *windowWithLogs) Load(url string) {
 	WhenDebug(func() {
-		Logf("window %s is loading %s",
-			w.ID(),
-			parsedURL,
-		)
+		Logf("window %s is loading %s", w.ID(), url)
 	})
 
-	w.Window.Load(url, v...)
+	w.Window.Load(url)
 	if w.Err() != nil {
-		Logf("window %s failed to load %s: %s",
-			w.ID(),
-			parsedURL,
-			w.Err(),
-		)
+		Logf("window %s failed to load %s: %s", w.ID(), url, w.Err())
 	}
 }
 
@@ -418,23 +408,21 @@ type menuWithLogs struct {
 	Menu
 }
 
-func (m *menuWithLogs) Load(url string, v ...interface{}) {
-	parsedURL := fmt.Sprintf(url, v...)
-
+func (m *menuWithLogs) Load(url string) {
 	WhenDebug(func() {
 		Logf("%s %s is loading %s",
 			m.Kind(),
 			m.ID(),
-			parsedURL,
+			url,
 		)
 	})
 
-	m.Menu.Load(url, v...)
+	m.Menu.Load(url)
 	if m.Err() != nil {
 		Logf("%s %s failed to load %s: %s",
 			m.Kind(),
 			m.ID(),
-			parsedURL,
+			url,
 			m.Err(),
 		)
 	}
@@ -469,17 +457,15 @@ func (d *dockWithLogs) WhenDockTile(f func(DockTile)) {
 	f(d)
 }
 
-func (d *dockWithLogs) Load(url string, v ...interface{}) {
-	parsedURL := fmt.Sprintf(url, v...)
-
+func (d *dockWithLogs) Load(url string) {
 	WhenDebug(func() {
-		Logf("dock tile is loading %s", parsedURL)
+		Logf("dock tile is loading %s", url)
 	})
 
-	d.DockTile.Load(url, v...)
+	d.DockTile.Load(url)
 	if d.Err() != nil {
 		Logf("dock tile failed to load %s: %s",
-			parsedURL,
+			url,
 			d.Err(),
 		)
 	}
@@ -530,21 +516,19 @@ func (s *statusMenuWithLogs) WhenStatusMenu(f func(StatusMenu)) {
 	f(s)
 }
 
-func (s *statusMenuWithLogs) Load(url string, v ...interface{}) {
-	parsedURL := fmt.Sprintf(url, v...)
-
+func (s *statusMenuWithLogs) Load(url string) {
 	WhenDebug(func() {
 		Logf("status menu %s is loading %s",
 			s.ID(),
-			parsedURL,
+			url,
 		)
 	})
 
-	s.StatusMenu.Load(url, v...)
+	s.StatusMenu.Load(url)
 	if s.Err() != nil {
 		Logf("status menu %T failed to load %s: %s",
 			s.ID(),
-			parsedURL,
+			url,
 			s.Err(),
 		)
 	}

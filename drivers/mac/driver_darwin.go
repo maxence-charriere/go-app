@@ -51,6 +51,7 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	d.JSToPlatform = "window.webkit.messageHandlers.golangRequest.postMessage"
 	d.OpenDefaultBrowserFunc = openDefaultBrowser
 	d.NewContextMenuFunc = newContextMenu
+	d.NewDockTileFunc = newDockTile
 	d.NewMenuBarFunc = newMenuBar
 	d.NewWindowFunc = newWindow
 	d.ResourcesFunc = d.resources
@@ -242,7 +243,7 @@ func (d *Driver) storage() string {
 
 func (d *Driver) onRun(in map[string]interface{}) {
 	d.menubar = d.NewMenuBar(d.MenubarConfig)
-	// d.docktile = newDockTile(app.MenuConfig{URL: d.DockURL})
+	d.NewDockTile(app.MenuConfig{URL: d.DockURL})
 
 	d.configureDefaultWindow()
 

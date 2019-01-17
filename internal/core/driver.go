@@ -14,11 +14,13 @@ import (
 type Driver struct {
 	Elems                  *ElemDB
 	Events                 *app.EventRegistry
+	dockTile               *DockTile
 	Factory                *app.Factory
 	Go                     *Go
 	JSToPlatform           string
 	OpenDefaultBrowserFunc func(string) error
 	NewContextMenuFunc     func(*Driver) *Menu
+	NewDockTileFunc        func(*Driver) *DockTile
 	NewMenuBarFunc         func(*Driver) *Menu
 	NewWindowFunc          func(*Driver) *Window
 	Platform               *Platform
@@ -35,9 +37,11 @@ func (d *Driver) AppName() string {
 
 // DockTile satisfies the app.Driver interface.
 func (d *Driver) DockTile() app.DockTile {
-	dt := &DockTile{}
-	dt.SetErr(app.ErrNotSupported)
-	return dt
+	if d.dockTile == nil {
+		return &DockTile{Menu: Menu{Elem: Elem{err: app.ErrNotSupported}}}
+	}
+
+	return d.dockTile
 }
 
 // ElemByCompo satisfies the app.Driver interface.
@@ -56,6 +60,9 @@ func (d *Driver) HandleMenu(h func(m *Menu, in map[string]interface{})) GoHandle
 		switch m := e.(type) {
 		case *Menu:
 			h(m, in)
+
+		case *DockTile:
+			h(&m.Menu, in)
 
 		default:
 			app.Panic(errors.Errorf("%T is not a supported menu"))
@@ -101,6 +108,26 @@ func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
 	})
 
 	return m
+}
+
+// NewDockTile creates  a dock tile.
+func (d *Driver) NewDockTile(c app.MenuConfig) *DockTile {
+	if d.NewDockTileFunc == nil {
+		return &DockTile{Menu: Menu{Elem: Elem{err: app.ErrNotSupported}}}
+	}
+
+	dt := d.NewDockTileFunc(d)
+	dt.kind = "dock tile"
+	dt.Create(c)
+
+	dt.err = d.Platform.Call("docks.SetMenu", nil, struct {
+		ID string
+	}{
+		ID: dt.id,
+	})
+
+	d.dockTile = dt
+	return dt
 }
 
 // NewMenuBar creates a menu bar.

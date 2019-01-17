@@ -26,6 +26,16 @@ func newMenuBar(d *core.Driver) *core.Menu {
 	}
 }
 
+func newDockTile(d *core.Driver) *core.DockTile {
+	return &core.DockTile{
+		core.Menu{
+			DOM:       dom.Engine{Resources: d.Resources},
+			Driver:    d,
+			NoDestroy: true,
+		},
+	}
+}
+
 func onMenuCallback(m *core.Menu, in map[string]interface{}) {
 	mappingStr := in["Mapping"].(string)
 

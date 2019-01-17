@@ -37,7 +37,7 @@ type View interface {
 	// component.
 	// e.g. hello will load the component named hello.
 	// It returns an error if the component is not imported.
-	Load(url string, v ...interface{})
+	Load(url string)
 
 	// Reload reloads the current page.
 	Reload()

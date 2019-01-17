@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"os"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
@@ -12,7 +13,7 @@ import (
 )
 
 // Menu is a modular implementation of the app.Menu interface that can be
-// configured address the different drivers needs.
+// configured to address the different drivers needs.
 type Menu struct {
 	Elem
 
@@ -59,8 +60,7 @@ func (m *Menu) WhenMenu(f func(app.Menu)) {
 }
 
 // Load satisfies the app.Menu interface.
-func (m *Menu) Load(rawurl string, v ...interface{}) {
-	rawurl = fmt.Sprintf(rawurl, v...)
+func (m *Menu) Load(rawurl string) {
 	compoName := CompoNameFromURLString(rawurl)
 
 	if m.compo, m.err = m.Driver.Factory.NewCompo(compoName); m.err != nil {
@@ -167,6 +167,44 @@ func (m *Menu) Kind() string {
 	return m.kind
 }
 
+// DockTile is a modular implementation of the app.DockTile interface that can
+// be configured to address the different drivers needs.
+type DockTile struct {
+	Menu
+}
+
+// WhenDockTile satisfies the app.DockTile interface.
+func (d *DockTile) WhenDockTile(f func(app.DockTile)) {
+	f(d)
+}
+
+// SetIcon satisfies the app.DockTile interface.
+func (d *DockTile) SetIcon(path string) {
+	if _, d.err = os.Stat(path); path != "" && d.err != nil {
+		return
+	}
+
+	d.err = d.Driver.Platform.Call("docks.SetIcon", nil, struct {
+		Icon string
+	}{
+		Icon: path,
+	})
+}
+
+// SetBadge satisfies the app.DockTile interface.
+func (d *DockTile) SetBadge(v interface{}) {
+	badge := ""
+	if v != nil {
+		badge = fmt.Sprint(v)
+	}
+
+	d.err = d.Driver.Platform.Call("docks.SetBadge", nil, struct {
+		Badge string
+	}{
+		Badge: badge,
+	})
+}
+
 // StatusMenu is a base struct to embed in app.StatusMenu implementations.
 type StatusMenu struct {
 	Menu
@@ -195,29 +233,4 @@ func (s *StatusMenu) SetText(text string) {
 // Close satisfies the app.StatusMenu interface.
 func (s *StatusMenu) Close() {
 	s.SetErr(app.ErrNotSupported)
-}
-
-// DockTile is a base struct to embed in app.DockTile implementations.
-type DockTile struct {
-	Menu
-}
-
-// WhenDockTile satisfies the app.DockTile interface.
-func (d *DockTile) WhenDockTile(f func(app.DockTile)) {
-	f(d)
-}
-
-// Type satisfies the app.DockTile interface.
-func (d *DockTile) Type() string {
-	return "dock tile"
-}
-
-// SetIcon satisfies the app.DockTile interface.
-func (d *DockTile) SetIcon(path string) {
-	d.SetErr(app.ErrNotSupported)
-}
-
-// SetBadge satisfies the app.DockTile interface.
-func (d *DockTile) SetBadge(v interface{}) {
-	d.SetErr(app.ErrNotSupported)
 }
