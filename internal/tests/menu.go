@@ -53,7 +53,7 @@ func testMenu(t *testing.T, m app.Menu) {
 	m.Render(&Menu{})
 	assert.Error(t, m.Err())
 
-	assert.NotEmpty(t, m.Type())
+	assert.NotEmpty(t, m.Kind())
 }
 
 func testStatusMenu(t *testing.T, m app.StatusMenu) {

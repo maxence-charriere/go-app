@@ -201,8 +201,12 @@ func (d *driverWithLogs) Run(c DriverConfig) error {
 func (d *driverWithLogs) Render(c Compo) {
 	e := d.ElemByCompo(c)
 
-	if view, ok := e.(View); ok {
-		view.(View).Render(c)
+	e.WhenView(func(v View) {
+		v.Render(c)
+	})
+
+	if e.Err() != nil {
+		Logf("rendering %T failed: %s", c, e.Err())
 	}
 }
 

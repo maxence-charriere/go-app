@@ -54,6 +54,11 @@ func (m *Menu) Contains(c app.Compo) bool {
 	return m.DOM.Contains(c)
 }
 
+// WhenView satisfies the app.Menu interface.
+func (m *Menu) WhenView(f func(app.View)) {
+	f(m)
+}
+
 // WhenMenu satisfies the app.Menu interface.
 func (m *Menu) WhenMenu(f func(app.Menu)) {
 	f(m)

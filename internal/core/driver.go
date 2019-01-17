@@ -65,7 +65,7 @@ func (d *Driver) HandleMenu(h func(m *Menu, in map[string]interface{})) GoHandle
 			h(&m.Menu, in)
 
 		default:
-			app.Panic(errors.Errorf("%T is not a supported menu"))
+			app.Panic(errors.Errorf("%T is not a supported menu", e))
 		}
 	}
 }
@@ -89,7 +89,7 @@ func (d *Driver) MenuBar() app.Menu {
 
 // NewContextMenu satisfies the app.Driver interface.
 func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
-	if d.NewContextMenu == nil {
+	if d.NewContextMenuFunc == nil {
 		return &Menu{Elem: Elem{err: app.ErrNotSupported}}
 	}
 

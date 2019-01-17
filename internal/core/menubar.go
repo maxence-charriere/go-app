@@ -27,7 +27,7 @@ func (m *MenuBar) OnNavigate(u *url.URL) {
 	m.AppName = app.Name()
 
 	q := u.Query()
-	m.AppName = q.Get("AppURL")
+	m.AppURL = q.Get("AppURL")
 	m.EditURL = q.Get("EditURL")
 	m.FileURL = q.Get("FileURL")
 	m.HelpURL = q.Get("HelpURL")
@@ -45,7 +45,7 @@ func (m *MenuBar) OnNavigate(u *url.URL) {
 // Render satisfies the app.Compo interface.
 func (m *MenuBar) Render() string {
 	return `
-<menu label="{{.AppName}}">
+<menu>
 	{{if .AppURL}}
 	{{compo .AppURL}}
 	{{else}}
@@ -97,10 +97,11 @@ func (m *MenuBar) Render() string {
 	</menu>
 	{{end}}
 
-	{{if .WindowURL}}
-	{{compo .WindowURL}}
+	{{if .HelpURL}}
+	{{compo .HelpURL}}
 	{{else}}
 	<menu label="Help">
+		<menuitem label="{{.AppName}} Help">
 		<menuitem label="Built with github.com/murlokswarm/app" onclick="OnBuiltWith">
 	</menu>
 	{{end}}
