@@ -205,6 +205,10 @@ func (d *driverWithLogs) Render(c Compo) {
 		v.Render(c)
 	})
 
+	if e.Err() == ErrElemNotSet {
+		return
+	}
+
 	if e.Err() != nil {
 		Logf("rendering %T failed: %s", c, e.Err())
 	}
