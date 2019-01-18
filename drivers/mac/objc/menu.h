@@ -43,6 +43,7 @@
 - (void)appendChild:(id)child;
 - (void)removeChild:(id)child;
 - (void)replaceChild:(id)old with:(id) new;
+- (void)refreshMenuBarOrder;
 @end
 
 @interface Menu : NSObject <NSMenuDelegate>

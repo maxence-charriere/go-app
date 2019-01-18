@@ -19,7 +19,7 @@ func (h *Hello) Render() string {
 				world
 			{{end}}!
 		</h1>
-		<input class="Hello-Input" value="{{.Name}}" placeholder="Say something..." onchange="{{to "Name"}}" autofocus>
+		<input class="Hello-Input" value="{{.Name}}" placeholder="Say something..." onchange="{{bind "Name"}}" autofocus>
 	</div>
 </div>
 	`

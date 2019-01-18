@@ -27,12 +27,6 @@ var (
 	debug      = os.Getenv("GOAPP_DEBUG") == "true"
 )
 
-const (
-	// PreferencesRequested is the event emitted when the menubar Preferences
-	// button is clicked.
-	PreferencesRequested app.Event = "app.mac.preferencesRequested"
-)
-
 func init() {
 	if len(goappBuild) != 0 {
 		app.Logger = func(format string, a ...interface{}) {}
@@ -55,7 +49,11 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	d.Factory = c.Factory
 	d.Platform, d.Go = objc.RPC(d.UI)
 	d.JSToPlatform = "window.webkit.messageHandlers.golangRequest.postMessage"
-	d.OpenDefaultBrowser = openDefaultBrowser
+	d.OpenDefaultBrowserFunc = openDefaultBrowser
+	d.NewContextMenuFunc = newContextMenu
+	d.NewDockTileFunc = newDockTile
+	d.NewMenuBarFunc = newMenuBar
+	d.NewStatusMenuFunc = newStatusMenu
 	d.NewWindowFunc = newWindow
 	d.ResourcesFunc = d.resources
 	d.StorageFunc = d.storage
@@ -71,21 +69,21 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	d.Go.Handle("driver.OnFileDrop", d.onFileDrop)
 	d.Go.Handle("driver.OnClose", d.onClose)
 
-	d.Go.Handle("windows.OnMove", handleWindow(onWindowMove))
-	d.Go.Handle("windows.OnResize", handleWindow(onWindowResize))
-	d.Go.Handle("windows.OnFocus", handleWindow(onWindowFocus))
-	d.Go.Handle("windows.OnBlur", handleWindow(onWindowBlur))
-	d.Go.Handle("windows.OnFullScreen", handleWindow(onWindowFullScreen))
-	d.Go.Handle("windows.OnExitFullScreen", handleWindow(onWindowExitFullScreen))
-	d.Go.Handle("windows.OnMinimize", handleWindow(onWindowMinimize))
-	d.Go.Handle("windows.OnDeminimize", handleWindow(onWindowDeminimize))
-	d.Go.Handle("windows.OnClose", handleWindow(onWindowClose))
-	d.Go.Handle("windows.OnCallback", handleWindow(onWindowCallback))
-	d.Go.Handle("windows.OnNavigate", handleWindow(onWindowNavigate))
-	d.Go.Handle("windows.OnAlert", handleWindow(onWindowAlert))
+	d.Go.Handle("windows.OnMove", d.HandleWindow(onWindowMove))
+	d.Go.Handle("windows.OnResize", d.HandleWindow(onWindowResize))
+	d.Go.Handle("windows.OnFocus", d.HandleWindow(onWindowFocus))
+	d.Go.Handle("windows.OnBlur", d.HandleWindow(onWindowBlur))
+	d.Go.Handle("windows.OnFullScreen", d.HandleWindow(onWindowFullScreen))
+	d.Go.Handle("windows.OnExitFullScreen", d.HandleWindow(onWindowExitFullScreen))
+	d.Go.Handle("windows.OnMinimize", d.HandleWindow(onWindowMinimize))
+	d.Go.Handle("windows.OnDeminimize", d.HandleWindow(onWindowDeminimize))
+	d.Go.Handle("windows.OnClose", d.HandleWindow(onWindowClose))
+	d.Go.Handle("windows.OnCallback", d.HandleWindow(onWindowCallback))
+	d.Go.Handle("windows.OnNavigate", d.HandleWindow(onWindowNavigate))
+	d.Go.Handle("windows.OnAlert", d.HandleWindow(onWindowAlert))
 
-	d.Go.Handle("menus.OnClose", handleMenu(onMenuClose))
-	d.Go.Handle("menus.OnCallback", handleMenu(onMenuCallback))
+	d.Go.Handle("menus.OnClose", d.HandleMenu(onMenuClose))
+	d.Go.Handle("menus.OnCallback", d.HandleMenu(onMenuCallback))
 
 	d.Go.Handle("controller.OnDirectionChange", handleController(onControllerDirectionChange))
 	d.Go.Handle("controller.OnButtonPressed", handleController(onControllerButtonPressed))
@@ -167,18 +165,6 @@ func (d *Driver) AppName() string {
 	return filepath.Base(wd)
 }
 
-// NewContextMenu satisfies the app.Driver interface.
-func (d *Driver) NewContextMenu(c app.MenuConfig) app.Menu {
-	m := newMenu(c, "context menu")
-	if m.Err() != nil {
-		return m
-	}
-
-	err := d.Platform.Call("driver.SetContextMenu", nil, m.ID())
-	m.SetErr(err)
-	return m
-}
-
 // NewController statisfies the app.Driver interface.
 func (d *Driver) NewController(c app.ControllerConfig) app.Controller {
 	return newController(c)
@@ -207,16 +193,6 @@ func (d *Driver) NewNotification(c app.NotificationConfig) app.Elem {
 // MenuBar satisfies the app.Driver interface.
 func (d *Driver) MenuBar() app.Menu {
 	return d.menubar
-}
-
-// NewStatusMenu satisfies the app.Driver interface.
-func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) app.StatusMenu {
-	return newStatusMenu(c)
-}
-
-// DockTile satisfies the app.Driver interface.
-func (d *Driver) DockTile() app.DockTile {
-	return d.docktile
 }
 
 // Stop satisfies the app.Driver interface.
@@ -267,9 +243,10 @@ func (d *Driver) storage() string {
 }
 
 func (d *Driver) onRun(in map[string]interface{}) {
+	d.menubar = d.NewMenuBar(d.MenubarConfig)
+	d.NewDockTile(app.MenuConfig{URL: d.DockURL})
+
 	d.configureDefaultWindow()
-	d.menubar = newMenuBar(d.MenubarConfig)
-	d.docktile = newDockTile(app.MenuConfig{URL: d.DockURL})
 
 	if len(d.URL) != 0 {
 		app.NewWindow(d.DefaultWindow)

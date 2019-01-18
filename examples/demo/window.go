@@ -185,7 +185,7 @@ func (c *Window) Render() string {
 		<h1 class="TopTitle">Actions</h1>
 		<div class="Window-ActionList">
 			{{range $idx, $v := .Actions}}
-			<div class="Window-Action" onclick="{{to "Actions" $idx "Action"}}">
+			<div class="Window-Action" onclick="{{bind "Actions" $idx "Action"}}">
 				<h2>
 					{{.Name}}	
 				</h2>

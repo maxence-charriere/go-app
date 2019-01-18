@@ -308,6 +308,7 @@
 
 - (void)appendChild:(id)child {
   [self insertChild:child atIndex:self.numberOfItems];
+  [self refreshMenuBarOrder];
 }
 
 - (void)removeChild:(id)child {
@@ -315,6 +316,7 @@
     for (NSMenuItem *c in self.itemArray) {
       if (c.submenu == child) {
         [self removeItem:c];
+        [self refreshMenuBarOrder];
         return;
       }
     }
@@ -326,10 +328,12 @@
 
   if (item.separator != nil) {
     [self removeItem:item.separator];
+    [self refreshMenuBarOrder];
     return;
   }
 
   [self removeItem:item];
+  [self refreshMenuBarOrder];
 }
 
 - (void)replaceChild:(id)old with:(id) new {
@@ -360,6 +364,13 @@
 
   [self removeItemAtIndex:index];
   [self insertChild:new atIndex:index];
+}
+
+- (void)refreshMenuBarOrder {
+  if (NSApp.mainMenu == self) {
+    NSApp.mainMenu = nil;
+    NSApp.mainMenu = self;
+  }
 }
 @end
 

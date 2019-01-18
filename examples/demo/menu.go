@@ -100,13 +100,13 @@ func (m *Menu) Render() string {
 					menu. Other status menu actions are available below.
 				</p>
 				<ul>
-					{{if .DockBadge}}
+					{{if .StatusText}}
 					<li><a onclick="ToggleStatusText">Remove text</a></li>
 					{{else}}
 					<li><a onclick="ToggleStatusText">Set text</a></li>
 					{{end}}
 
-					{{if .DockCustomIcon}}
+					{{if .StatusIcon}}
 					<li><a onclick="ToggleStatusIcon">Remove icon</a></li>
 					{{else}}
 					<li><a onclick="ToggleStatusIcon">Set icon</a></li>

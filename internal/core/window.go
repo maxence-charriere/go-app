@@ -2,7 +2,6 @@ package core
 
 import (
 	"encoding/json"
-	"fmt"
 	"math"
 	"net/url"
 
@@ -13,7 +12,8 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Window is a base struct to embed in app.Window implementations.
+// Window is a modular implementation of the app.Window interface that can be
+// configured to address the different drivers needs.
 type Window struct {
 	Elem
 
@@ -25,19 +25,21 @@ type Window struct {
 	History          History
 
 	compo        app.Compo
-	x            float64
-	y            float64
-	width        float64
-	height       float64
 	isFocus      bool
 	isFullScreen bool
 	isMinimized  bool
+	width        float64
+	height       float64
+	x            float64
+	y            float64
 }
 
 // Create creates and display the window.
 func (w *Window) Create(c app.WindowConfig) {
 	w.id = uuid.New().String()
+	w.DOM.Factory = w.Driver.Factory
 	w.DOM.Sync = w.render
+	w.DOM.UI = w.Driver.UI
 
 	if w.ConvertHTMLPaths == nil {
 		w.ConvertHTMLPaths = func(paths []string) []string {
@@ -133,8 +135,7 @@ func (w *Window) WhenWindow(f func(app.Window)) {
 }
 
 // Load satisfies the app.Window interface.
-func (w *Window) Load(rawurl string, v ...interface{}) {
-	rawurl = fmt.Sprintf(rawurl, v...)
+func (w *Window) Load(rawurl string) {
 	compoName := CompoNameFromURLString(rawurl)
 
 	if !w.Driver.Factory.IsCompoRegistered(compoName) {

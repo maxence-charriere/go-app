@@ -18,8 +18,8 @@
 - (void)bundle:(id)in return:(NSString *)returnID;
 - (NSString *)support;
 - (SEL)selectorFromRole:(NSString *)role;
-- (void)setContextMenu:(NSString *)menuID return:(NSString *)returnID;
-- (void)setMenubar:(NSString *)menuID return:(NSString *)returnID;
+- (void)setContextMenu:(NSDictionary *)in return:(NSString *)returnID;
+- (void)setMenubar:(NSDictionary *)in return:(NSString *)returnID;
 - (void)share:(NSDictionary *)in return:(NSString *)returnID;
 - (void)close:(id)in return:(NSString *)returnID;
 - (void)terminate:(id)in return:(NSString *)returnID;
