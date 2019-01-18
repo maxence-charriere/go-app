@@ -57,12 +57,12 @@ type StatusMenu interface {
 // StatusMenuConfig is a struct that describes a status menu.
 // Accept only components that contain menu and menuitem tags.
 type StatusMenuConfig struct {
-	// The menu button text.
-	Text string
-
 	// The menu button icon.
 	// Should be a .png file.
 	Icon string
+
+	// The menu button text.
+	Text string
 
 	// The URL of the component to load when the status menu is created.
 	URL string

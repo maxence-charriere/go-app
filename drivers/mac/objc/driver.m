@@ -6,7 +6,7 @@
 #include "notification.h"
 #include "panel.h"
 #include "sandbox.h"
-#include "status.h"
+#include "statusmenu.h"
 #include "window.h"
 
 @implementation Driver

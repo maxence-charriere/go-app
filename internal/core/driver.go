@@ -22,6 +22,7 @@ type Driver struct {
 	NewContextMenuFunc     func(*Driver) *Menu
 	NewDockTileFunc        func(*Driver) *DockTile
 	NewMenuBarFunc         func(*Driver) *Menu
+	NewStatusMenuFunc      func(*Driver) *StatusMenu
 	NewWindowFunc          func(*Driver) *Window
 	Platform               *Platform
 	ResourcesFunc          func() string
@@ -62,6 +63,9 @@ func (d *Driver) HandleMenu(h func(m *Menu, in map[string]interface{})) GoHandle
 			h(m, in)
 
 		case *DockTile:
+			h(&m.Menu, in)
+
+		case *StatusMenu:
 			h(&m.Menu, in)
 
 		default:
@@ -182,8 +186,13 @@ func (d *Driver) NewShare(v interface{}) app.Elem {
 
 // NewStatusMenu satisfies the app.Driver interface.
 func (d *Driver) NewStatusMenu(c app.StatusMenuConfig) app.StatusMenu {
-	s := &StatusMenu{}
-	s.SetErr(app.ErrNotSupported)
+	if d.NewStatusMenuFunc == nil {
+		return &StatusMenu{Menu: Menu{Elem: Elem{err: app.ErrNotSupported}}}
+	}
+
+	s := d.NewStatusMenuFunc(d)
+	s.kind = "status menu"
+	s.Create(c)
 	return s
 }
 

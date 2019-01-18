@@ -36,6 +36,15 @@ func newDockTile(d *core.Driver) *core.DockTile {
 	}
 }
 
+func newStatusMenu(d *core.Driver) *core.StatusMenu {
+	return &core.StatusMenu{
+		core.Menu{
+			DOM:    dom.Engine{Resources: d.Resources},
+			Driver: d,
+		},
+	}
+}
+
 func onMenuCallback(m *core.Menu, in map[string]interface{}) {
 	mappingStr := in["Mapping"].(string)
 

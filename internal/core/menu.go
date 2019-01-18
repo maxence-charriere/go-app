@@ -2,9 +2,7 @@ package core
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/url"
-	"os"
 
 	"github.com/google/uuid"
 	"github.com/murlokswarm/app"
@@ -170,72 +168,4 @@ func (m *Menu) render(changes interface{}) error {
 // Kind satisfies the app.Menu interface.
 func (m *Menu) Kind() string {
 	return m.kind
-}
-
-// DockTile is a modular implementation of the app.DockTile interface that can
-// be configured to address the different drivers needs.
-type DockTile struct {
-	Menu
-}
-
-// WhenDockTile satisfies the app.DockTile interface.
-func (d *DockTile) WhenDockTile(f func(app.DockTile)) {
-	f(d)
-}
-
-// SetIcon satisfies the app.DockTile interface.
-func (d *DockTile) SetIcon(path string) {
-	if _, d.err = os.Stat(path); path != "" && d.err != nil {
-		return
-	}
-
-	d.err = d.Driver.Platform.Call("docks.SetIcon", nil, struct {
-		Icon string
-	}{
-		Icon: path,
-	})
-}
-
-// SetBadge satisfies the app.DockTile interface.
-func (d *DockTile) SetBadge(v interface{}) {
-	badge := ""
-	if v != nil {
-		badge = fmt.Sprint(v)
-	}
-
-	d.err = d.Driver.Platform.Call("docks.SetBadge", nil, struct {
-		Badge string
-	}{
-		Badge: badge,
-	})
-}
-
-// StatusMenu is a base struct to embed in app.StatusMenu implementations.
-type StatusMenu struct {
-	Menu
-}
-
-// WhenStatusMenu satisfies the app.StatusMenu interface.
-func (s *StatusMenu) WhenStatusMenu(f func(app.StatusMenu)) {
-	f(s)
-}
-
-// Type satisfies the app.Menu interface.
-func (s *StatusMenu) Type() string {
-	return "status menu"
-}
-
-// SetIcon satisfies the app.StatusMenu interface.
-func (s *StatusMenu) SetIcon(path string) {
-	s.SetErr(app.ErrNotSupported)
-}
-
-// SetText satisfies the app.StatusMenu interface.
-func (s *StatusMenu) SetText(text string) {
-	s.SetErr(app.ErrNotSupported)
-}
-
-// Close satisfies the app.StatusMenu interface.
-func (s *StatusMenu) Close() {
-	s.SetErr(app.ErrNotSupported)
 }

@@ -53,6 +53,7 @@ func (d *Driver) Run(c app.DriverConfig) error {
 	d.NewContextMenuFunc = newContextMenu
 	d.NewDockTileFunc = newDockTile
 	d.NewMenuBarFunc = newMenuBar
+	d.NewStatusMenuFunc = newStatusMenu
 	d.NewWindowFunc = newWindow
 	d.ResourcesFunc = d.resources
 	d.StorageFunc = d.storage

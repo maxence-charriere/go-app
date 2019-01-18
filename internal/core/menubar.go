@@ -33,7 +33,7 @@ func (m *MenuBar) OnNavigate(u *url.URL) {
 	m.HelpURL = q.Get("HelpURL")
 	m.WindowURL = q.Get("WindowURL")
 
-	if customURLs := q.Get("CustomURLs"); customURLs != "" {
+	if customURLs := q.Get("CustomURLs"); len(customURLs) != 0 {
 		if err := json.Unmarshal([]byte(customURLs), &m.CustomURLs); err != nil {
 			app.Log("decoding menu bar custom component urls failed", err)
 		}

@@ -1,5 +1,5 @@
-#ifndef status_h
-#define status_h
+#ifndef statusmenu_h
+#define statusmenu_h
 
 #import "menu.h"
 #import <Cocoa/Cocoa.h>
@@ -12,4 +12,4 @@
 + (void)setIcon:(NSDictionary *)in return:(NSString *)returnID;
 + (void)close:(NSDictionary *)in return:(NSString *)returnID;
 @end
-#endif /* status_h */
+#endif /* statusmenu_h */
