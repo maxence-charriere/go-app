@@ -16,7 +16,7 @@ void macCall(char *rawCall) {
     MacRPCHandler handler = driver.macRPC.handlers[method];
 
     if (handler == nil) {
-      [NSException raise:@"rpcNotHandled" format:@"%@ is not handled", method];
+      [NSException raise:@"not supported" format:@"not supported"];
     }
 
     handler(in, returnID);
