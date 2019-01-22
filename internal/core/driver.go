@@ -1,8 +1,10 @@
 package core
 
 import (
+	"context"
 	"os"
 	"path/filepath"
+	"sync"
 
 	"github.com/murlokswarm/app"
 	"github.com/pkg/errors"
@@ -14,7 +16,6 @@ import (
 type Driver struct {
 	Elems                  *ElemDB
 	Events                 *app.EventRegistry
-	dockTile               *DockTile
 	Factory                *app.Factory
 	Go                     *Go
 	JSToPlatform           string
@@ -28,6 +29,9 @@ type Driver struct {
 	ResourcesFunc          func() string
 	StorageFunc            func() string
 	UIChan                 chan func()
+
+	dockTile *DockTile
+	stop     func()
 }
 
 // AppName satisfies the app.Driver interface.
@@ -228,7 +232,7 @@ func (d *Driver) Render(c app.Compo) {
 // Resources satisfies the app.Driver interface.
 func (d *Driver) Resources(p ...string) string {
 	if d.ResourcesFunc == nil {
-		d.StorageFunc = func() string { return "resources" }
+		d.ResourcesFunc = func() string { return "resources" }
 	}
 
 	r := filepath.Join(p...)
@@ -238,11 +242,38 @@ func (d *Driver) Resources(p ...string) string {
 
 // Run satisfies the app.Driver interface.
 func (d *Driver) Run(c app.DriverConfig) error {
-	return app.ErrNotSupported
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	d.stop = cancel
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+
+	go func() {
+		for {
+			select {
+			case f := <-d.UIChan:
+				f()
+
+			case <-ctx.Done():
+				wg.Done()
+				return
+			}
+		}
+	}()
+
+	d.Events.Emit(app.Running)
+	wg.Wait()
+	return ctx.Err()
 }
 
 // Stop satisfies the app.Driver interface.
 func (d *Driver) Stop() {
+	d.Events.Emit(app.Closed)
+
+	d.UI(func() {
+		d.stop()
+	})
 }
 
 // Storage satisfies the app.Driver interface.
