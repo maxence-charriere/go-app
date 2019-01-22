@@ -83,6 +83,8 @@ func testMenu(t *testing.T, m app.Menu) {
 		return
 	}
 
+	testElem(t, m)
+
 	isMenu := false
 	m.WhenMenu(func(app.Menu) { isMenu = true })
 	assert.True(t, isMenu)
@@ -119,9 +121,13 @@ func testMenu(t *testing.T, m app.Menu) {
 
 	compo := m.Compo()
 	assert.NotNil(t, compo)
+	assert.True(t, m.Contains(compo))
 
 	m.Render(compo)
 	assert.NoError(t, m.Err())
+
+	m.Load("tests.foo")
+	assert.Error(t, m.Err())
 }
 
 func testStatusMenu(t *testing.T, s app.StatusMenu) {
@@ -140,9 +146,91 @@ func testStatusMenu(t *testing.T, s app.StatusMenu) {
 
 	s.SetText("hello")
 	assertSupported(t, s.Err())
+
+	s.Close()
 }
 
 func testWindow(t *testing.T, w app.Window) {
+	if !assertSupported(t, w.Err()) {
+		return
+	}
+
+	testElem(t, w)
+
+	isView := false
+	w.WhenView(func(app.View) { isView = true })
+	assert.True(t, isView)
+
+	isWindow := false
+	w.WhenWindow(func(app.Window) { isWindow = true })
+	assert.True(t, isWindow)
+
+	assert.False(t, w.CanPrevious())
+	assert.False(t, w.CanNext())
+
+	w.Previous()
+	assert.Error(t, w.Err())
+
+	w.Next()
+	assert.Error(t, w.Err())
+
+	w.Load("tests.foo")
+	assert.NoError(t, w.Err())
+
+	w.Reload()
+	assert.NoError(t, w.Err())
+
+	w.Load("tests.foo?idx=1")
+	assert.NoError(t, w.Err())
+
+	w.Previous()
+	assert.NoError(t, w.Err())
+
+	w.Next()
+	assert.NoError(t, w.Err())
+
+	compo := w.Compo()
+	assert.NotNil(t, compo)
+	assert.True(t, w.Contains(compo))
+
+	w.Render(compo)
+	assert.NoError(t, w.Err())
+
+	w.Move(42, 42)
+	assertSupported(t, w.Err())
+
+	w.Center()
+	assertSupported(t, w.Err())
+
+	w.Resize(42, 42)
+	assertSupported(t, w.Err())
+
+	w.Focus()
+	assertSupported(t, w.Err())
+
+	w.FullScreen()
+	assertSupported(t, w.Err())
+
+	w.ExitFullScreen()
+	assertSupported(t, w.Err())
+
+	w.Minimize()
+	assertSupported(t, w.Err())
+
+	w.Deminimize()
+	assertSupported(t, w.Err())
+
+	x, y := w.Position()
+	t.Logf("positon: %v, %v", x, y)
+
+	width, height := w.Size()
+	t.Logf("size: %vx%v", width, height)
+
+	t.Log("is focus:", w.IsFocus())
+	t.Log("is full screen:", w.IsFullScreen())
+	t.Log("is minimized:", w.IsMinimized())
+
+	w.Close()
 }
 
 func assertSupported(t *testing.T, err error) bool {
