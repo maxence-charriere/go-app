@@ -1,15 +1,121 @@
 package tests
 
 import (
+	"os"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
 	"github.com/murlokswarm/app"
+	"github.com/murlokswarm/app/internal/core"
+	"github.com/murlokswarm/app/internal/dom"
+	"github.com/murlokswarm/app/internal/file"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+	"github.com/tidwall/gjson"
 )
+
+// NewMinimalDriver creates a driver that have nearly nothing supported.
+func NewMinimalDriver(c app.DriverConfig) *core.Driver {
+	d := &core.Driver{
+		Elems:    core.NewElemDB(),
+		Events:   c.Events,
+		Factory:  c.Factory,
+		Platform: &core.Platform{},
+		UIChan:   c.UI,
+	}
+
+	d.Platform.Handler = func(call string) error {
+		returnID := gjson.Get(call, "ReturnID").Str
+		d.Platform.Return(returnID, "", "not supported")
+		return nil
+	}
+
+	return d
+}
+
+// NewDriver creates a driver that covers general test cases.
+func NewDriver(c app.DriverConfig) *core.Driver {
+	d := &core.Driver{
+		Elems:   core.NewElemDB(),
+		Events:  c.Events,
+		Factory: c.Factory,
+		OpenDefaultBrowserFunc: func(string) error {
+			return nil
+		},
+		NewContextMenuFunc: func(d *core.Driver) *core.Menu {
+			return &core.Menu{
+				DOM:    dom.Engine{Resources: d.Resources},
+				Driver: d,
+			}
+		},
+		NewDockTileFunc: func(d *core.Driver) *core.DockTile {
+			return &core.DockTile{
+				Menu: core.Menu{
+					DOM:       dom.Engine{Resources: d.Resources},
+					Driver:    d,
+					NoDestroy: true,
+				},
+			}
+		},
+		NewMenuBarFunc: func(d *core.Driver) *core.Menu {
+			return &core.Menu{
+				DOM:       dom.Engine{Resources: d.Resources},
+				Driver:    d,
+				NoDestroy: true,
+			}
+		},
+		NewStatusMenuFunc: func(d *core.Driver) *core.StatusMenu {
+			return &core.StatusMenu{
+				Menu: core.Menu{
+					DOM:    dom.Engine{Resources: d.Resources},
+					Driver: d,
+				},
+			}
+		},
+		NewWindowFunc: func(d *core.Driver) *core.Window {
+			w := &core.Window{
+				DOM: dom.Engine{
+					Resources: d.Resources,
+					AttrTransforms: []dom.Transform{
+						dom.JsToGoHandler,
+						dom.HrefCompoFmt,
+					},
+				},
+				Driver: d,
+			}
+
+			w.SetPosition(42, 42)
+			w.SetSize(42, 42)
+			w.SetIsFocus(false)
+			w.SetIsFullScreen(false)
+			w.SetIsMinimized(false)
+			return w
+		},
+		Platform: &core.Platform{},
+		UIChan:   c.UI,
+	}
+
+	d.Platform.Handler = func(call string) error {
+		returnID := gjson.Get(call, "ReturnID").Str
+		d.Platform.Return(returnID, "", "")
+		return nil
+	}
+
+	return d
+}
 
 // TestDriver is a test suite that test a app.Driver.
 func TestDriver(t *testing.T, d app.Driver, c app.DriverConfig) {
+	defer os.RemoveAll(d.Resources())
+	err := os.MkdirAll(d.Resources(), 0755)
+	require.NoError(t, err)
+
+	err = file.Copy(d.Resources("logo.png"), file.RepoPath("logo.png"))
+	require.NoError(t, err)
+
+	c.Factory.RegisterCompo(&Foo{})
+	c.Factory.RegisterCompo(&Bar{})
+	c.Factory.RegisterCompo(&Menu{})
+
 	sub := app.Subscriber{Events: c.Events}
 
 	sub.Subscribe(app.Running, func() {
@@ -18,14 +124,14 @@ func TestDriver(t *testing.T, d app.Driver, c app.DriverConfig) {
 		notSetElem := d.ElemByCompo(&Foo{})
 		assert.Equal(t, app.ErrElemNotSet, notSetElem.Err())
 
-		testDockTile(t, d.DockTile())
+		testDockTile(t, d, d.DockTile())
 		testMenu(t, d.MenuBar())
 		testMenu(t, d.NewContextMenu(app.MenuConfig{URL: "tests.menu"}))
 		testController(t, d.NewController(app.ControllerConfig{}))
 		testElem(t, d.NewFilePanel(app.FilePanelConfig{}))
 		testElem(t, d.NewNotification(app.NotificationConfig{}))
 		testElem(t, d.NewSaveFilePanel(app.SaveFilePanelConfig{}))
-		testStatusMenu(t, d.NewStatusMenu(app.StatusMenuConfig{URL: "test.menu"}))
+		testStatusMenu(t, d, d.NewStatusMenu(app.StatusMenuConfig{URL: "tests.menu"}))
 		testElem(t, d.NewShare(nil))
 		testWindow(t, d.NewWindow(app.WindowConfig{URL: "tests.foo"}))
 
@@ -39,7 +145,7 @@ func TestDriver(t *testing.T, d app.Driver, c app.DriverConfig) {
 		d.UI(d.Stop)
 	})
 
-	err := d.Run(c)
+	err = d.Run(c)
 	t.Log(err)
 }
 
@@ -52,22 +158,22 @@ func testElem(t *testing.T, e app.Elem) {
 	assert.False(t, e.Contains(&Foo{}))
 }
 
-func testDockTile(t *testing.T, d app.DockTile) {
-	if !assertSupported(t, d.Err()) {
+func testDockTile(t *testing.T, d app.Driver, dt app.DockTile) {
+	if !assertSupported(t, dt.Err()) {
 		return
 	}
 
-	testMenu(t, d)
+	testMenu(t, dt)
 
 	isDockTile := false
-	d.WhenDockTile(func(app.DockTile) { isDockTile = true })
+	dt.WhenDockTile(func(app.DockTile) { isDockTile = true })
 	assert.True(t, isDockTile)
 
-	d.SetIcon("logo.png")
-	assertSupported(t, d.Err())
+	dt.SetIcon(d.Resources("logo.png"))
+	assertSupported(t, dt.Err())
 
-	d.SetBadge("hello")
-	assertSupported(t, d.Err())
+	dt.SetBadge("hello")
+	assertSupported(t, dt.Err())
 }
 
 func testController(t *testing.T, c app.Controller) {
@@ -130,7 +236,7 @@ func testMenu(t *testing.T, m app.Menu) {
 	assert.Error(t, m.Err())
 }
 
-func testStatusMenu(t *testing.T, s app.StatusMenu) {
+func testStatusMenu(t *testing.T, d app.Driver, s app.StatusMenu) {
 	if !assertSupported(t, s.Err()) {
 		return
 	}
@@ -141,7 +247,7 @@ func testStatusMenu(t *testing.T, s app.StatusMenu) {
 	s.WhenStatusMenu(func(app.StatusMenu) { isStatusMenu = true })
 	assert.True(t, isStatusMenu)
 
-	s.SetIcon("logo.png")
+	s.SetIcon(d.Resources("logo.png"))
 	assertSupported(t, s.Err())
 
 	s.SetText("hello")
