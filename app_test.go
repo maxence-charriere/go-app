@@ -9,6 +9,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestAddons(t *testing.T) {
+	app.Addons(func(d app.Driver) app.Driver {
+		return d
+	})
+}
+
+func TestEmit(t *testing.T) {
+	app.Emit("hello")
+}
+
 func TestImport(t *testing.T) {
 	app.Import(&tests.Foo{})
 

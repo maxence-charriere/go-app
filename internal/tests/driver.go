@@ -100,6 +100,7 @@ func NewDriver(c app.DriverConfig) *core.Driver {
 		return nil
 	}
 
+	d.NewDockTile(app.MenuConfig{})
 	return d
 }
 
