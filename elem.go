@@ -2,29 +2,29 @@ package app
 
 // Elem is the interface that describes an app element.
 type Elem interface {
+	// Contains reports whether the component is mounted in the element.
+	Contains(Compo) bool
+
+	// Err returns the error that prevent the element to work.
+	Err() error
+
 	// ID returns the element identifier.
 	ID() string
 
-	// Contains reports whether the component is mounted in the element.
-	Contains(Compo) bool
+	// WhenDockTile calls the given func when the element is a dock tile.
+	WhenDockTile(func(DockTile))
+
+	// WhenStatusMenu calls the given func when the element is a menu.
+	WhenMenu(func(Menu))
+
+	// WhenStatusMenu calls the given func when the element is a status menu.
+	WhenStatusMenu(func(StatusMenu))
 
 	// WhenPage calls the given func when the element is a view.
 	WhenView(func(View))
 
 	// WhenWindow calls the given func when the element is a window.
 	WhenWindow(func(Window))
-
-	// WhenStatusMenu calls the given func when the element is a menu.
-	WhenMenu(func(Menu))
-
-	// WhenDockTile calls the given func when the element is a dock tile.
-	WhenDockTile(func(DockTile))
-
-	// WhenStatusMenu calls the given func when the element is a status menu.
-	WhenStatusMenu(func(StatusMenu))
-
-	// Err returns the error that prevent the element to work.
-	Err() error
 }
 
 // View is the interface that describe an element that hosts components.

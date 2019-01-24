@@ -5,6 +5,8 @@ import (
 	"errors"
 	"sync"
 
+	"github.com/murlokswarm/app"
+
 	"github.com/google/uuid"
 )
 
@@ -81,6 +83,11 @@ func (p *Platform) Return(returnID string, out string, err string) {
 	}
 
 	if len(err) != 0 {
+		if err == "not supported" {
+			returnChan <- platformReturn{Err: app.ErrNotSupported}
+			return
+		}
+
 		returnChan <- platformReturn{Err: errors.New(err)}
 		return
 	}

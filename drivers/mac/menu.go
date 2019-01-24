@@ -28,7 +28,7 @@ func newMenuBar(d *core.Driver) *core.Menu {
 
 func newDockTile(d *core.Driver) *core.DockTile {
 	return &core.DockTile{
-		core.Menu{
+		Menu: core.Menu{
 			DOM:       dom.Engine{Resources: d.Resources},
 			Driver:    d,
 			NoDestroy: true,
@@ -38,7 +38,7 @@ func newDockTile(d *core.Driver) *core.DockTile {
 
 func newStatusMenu(d *core.Driver) *core.StatusMenu {
 	return &core.StatusMenu{
-		core.Menu{
+		Menu: core.Menu{
 			DOM:    dom.Engine{Resources: d.Resources},
 			Driver: d,
 		},

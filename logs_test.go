@@ -1,42 +1,36 @@
 package app_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/drivers/test"
 	"github.com/murlokswarm/app/internal/tests"
 )
 
-func TestLogs(t *testing.T) {
-	app.Logger = func(format string, a ...interface{}) {
-		log := fmt.Sprintf(format, a...)
-		t.Log(log)
-	}
-
+func TestDriverWithLogsMinimal(t *testing.T) {
 	app.EnableDebug(true)
+	ui := make(chan func(), 64)
 
-	setup := func() app.Driver {
-		d := &test.Driver{}
-		withLogs := app.Logs()
-		return withLogs(d)
+	c := app.DriverConfig{
+		Events:  app.NewEventRegistry(ui),
+		Factory: app.NewFactory(),
+		UI:      ui,
 	}
 
-	tests.TestDriver(t, setup)
+	d := tests.NewMinimalDriver(c)
+	tests.TestDriver(t, app.Logs()(d), c)
 }
 
-func TestLogsErrors(t *testing.T) {
-	app.Logger = func(format string, a ...interface{}) {
-		log := fmt.Sprintf(format, a...)
-		t.Log(log)
+func TestDriverWithLogs(t *testing.T) {
+	app.EnableDebug(true)
+	ui := make(chan func(), 64)
+
+	c := app.DriverConfig{
+		Events:  app.NewEventRegistry(ui),
+		Factory: app.NewFactory(),
+		UI:      ui,
 	}
 
-	setup := func() app.Driver {
-		d := &test.Driver{Err: true}
-		withLogs := app.Logs()
-		return withLogs(d)
-	}
-
-	tests.TestDriver(t, setup)
+	d := tests.NewDriver(c)
+	tests.TestDriver(t, app.Logs()(d), c)
 }

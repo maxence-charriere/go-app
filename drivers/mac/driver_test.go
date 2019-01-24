@@ -10,9 +10,13 @@ import (
 )
 
 func TestDriver(t *testing.T) {
-	setup := func() app.Driver {
-		return &Driver{}
+	ui := make(chan func(), 64)
+
+	c := app.DriverConfig{
+		Events:  app.NewEventRegistry(ui),
+		Factory: app.NewFactory(),
+		UI:      ui,
 	}
 
-	tests.TestDriver(t, setup)
+	tests.TestDriver(t, &Driver{}, c)
 }

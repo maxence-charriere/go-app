@@ -1,4 +1,4 @@
-package core
+package core_test
 
 import (
 	"testing"
@@ -7,13 +7,28 @@ import (
 	"github.com/murlokswarm/app/internal/tests"
 )
 
-func TestDriver(t *testing.T) {
-	setup := func() app.Driver {
-		return &Driver{
-			Elems:  NewElemDB(),
-			UIChan: make(chan func(), 32),
-		}
+func TestDriverMinimal(t *testing.T) {
+	ui := make(chan func(), 64)
+
+	c := app.DriverConfig{
+		Events:  app.NewEventRegistry(ui),
+		Factory: app.NewFactory(),
+		UI:      ui,
 	}
 
-	tests.TestDriver(t, setup)
+	d := tests.NewMinimalDriver(c)
+	tests.TestDriver(t, d, c)
+}
+
+func TestDriver(t *testing.T) {
+	ui := make(chan func(), 64)
+
+	c := app.DriverConfig{
+		Events:  app.NewEventRegistry(ui),
+		Factory: app.NewFactory(),
+		UI:      ui,
+	}
+
+	d := tests.NewDriver(c)
+	tests.TestDriver(t, d, c)
 }

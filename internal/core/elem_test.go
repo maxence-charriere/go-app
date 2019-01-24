@@ -8,20 +8,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestElem(t *testing.T) {
-	e := &Elem{}
-
-	e.WhenView(func(app.View) {})
-	e.WhenWindow(func(app.Window) {})
-	e.WhenMenu(func(app.Menu) {})
-	e.WhenDockTile(func(app.DockTile) {})
-	e.WhenStatusMenu(func(app.StatusMenu) {})
-	e.SetErr(app.ErrElemNotSet)
-
-	assert.Equal(t, "", e.ID())
-	assert.False(t, e.Contains(nil))
-}
-
 type elem struct {
 	Elem
 	id string
