@@ -12,9 +12,10 @@ type NavPane struct {
 func (n *NavPane) OnMount() {
 	n.Examples = []string{
 		"hello",
+		"menu",
+		"notification",
 		"open",
 		"window",
-		"menu",
 	}
 
 	app.Render(n)

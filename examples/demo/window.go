@@ -185,14 +185,19 @@ func (c *Window) Render() string {
 		<h1 class="TopTitle">Actions</h1>
 		<div class="Window-ActionList">
 			{{range $idx, $v := .Actions}}
+			<!-- 
+				bind format a field or method binding. The below call will give
+				"Actions.0.Action"
+				"Actions.1.Action"
+				"Actions.2.Action"
+				...
+			-->
 			<div class="Window-Action" onclick="{{bind "Actions" $idx "Action"}}">
-				<h2>
-					{{.Name}}	
-				</h2>
+				<h2>{{.Name}}</h2>
 				<p>{{.Description}}</p>
 
 				{{if .Err}} 
-					<p class="Error">{{.Err.Error}}</p>
+				<p class="Error">{{.Err.Error}}</p>
 				{{end}}
 			</div>
 			{{else}}
