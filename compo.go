@@ -33,13 +33,6 @@ type Dismounter interface {
 	OnDismount()
 }
 
-// Configurator is the interface that describes a component that override the
-// HTML page head content when mounted as root component.
-type Configurator interface {
-	// Config returns the custom page configuration.
-	Config() HTMLConfig
-}
-
 // Navigable is the interface that wraps OnNavigate method.
 type Navigable interface {
 	Compo

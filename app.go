@@ -27,56 +27,15 @@ var (
 	// It is used by Log, Logf, Panic and Panicf to generate logs.
 	Logger func(format string, a ...interface{})
 
-	addons    = []Addon{Logs()}
-	driver    Driver
 	factory   = NewFactory()
 	messages  = newMsgRegistry()
-	target    = "web"
 	ui        = make(chan func(), 4096)
 	events    = NewEventRegistry(ui)
 	whenDebug func(func())
 )
 
-const (
-	// Blurred is the event emitted when the app loses focus.
-	Blurred Event = "app.blurred"
-
-	// Closed is the event emitted when the app is closed. Final cleanups
-	// should be done by subscribing to this event.
-	Closed Event = "app.closed"
-
-	// Focused is the event emitted when the app gets focus.
-	Focused Event = "app.focused"
-
-	// OpenFilesRequested is the event emitted when the app is requested to
-	// open files. The arg passed to subscribed funcs is a []string containing
-	// the path of the requested files.
-	OpenFilesRequested Event = "app.openFilesRequested"
-
-	// OpenURLRequested is the event emitted when the app is requested to open
-	// an URL. The arg passed to subscribed funcs is a *url.URL.
-	OpenURLRequested Event = "app.openURLrequested"
-
-	// PreferencesRequested is the event emitted when the app Preferences is
-	// requested to be displayed.
-	PreferencesRequested Event = "app.preferencesRequested"
-
-	// Reopened is the event emitted when the app is reopened.
-	Reopened Event = "app.reopened"
-
-	// Running is the event emitted when the app starts to run.
-	Running Event = "app.running"
-)
-
 func init() {
 	EnableDebug(false)
-}
-
-// Addons set up the given addons.
-func Addons(a ...Addon) {
-	for _, add := range a {
-		addons = append(addons, add)
-	}
 }
 
 // CompoName returns the name of the given component.
@@ -87,25 +46,6 @@ func CompoName(c Compo) string {
 
 	name := strings.ToLower(v.Type().String())
 	return strings.TrimPrefix(name, "main.")
-}
-
-// CurrentDriver returns the current driver.
-func CurrentDriver() Driver {
-	return driver
-}
-
-// Dock returns the dock tile.
-//
-// It panics if called before Run.
-func Dock() DockTile {
-	return driver.DockTile()
-}
-
-// ElemByCompo returns the element where the given component is mounted.
-//
-// It panics if called before Run.
-func ElemByCompo(c Compo) Elem {
-	return driver.ElemByCompo(c)
 }
 
 // Emit emits the event with the given arguments.
@@ -160,79 +100,9 @@ func Logf(format string, a ...interface{}) {
 	Logger(format, a...)
 }
 
-// MenuBar returns the menu bar.
-//
-// It panics if called before Run.
-func MenuBar() Menu {
-	return driver.MenuBar()
-}
-
-// Name returns the application name.
-//
-// It panics if called before Run.
-func Name() string {
-	return driver.AppName()
-}
-
-// NewContextMenu creates and displays the context menu with the given component
-// URL.
-//
-// It panics if called before Run.
-func NewContextMenu(url string) Menu {
-	return driver.NewContextMenu(MenuConfig{
-		URL: url,
-	})
-}
-
-// NewController creates the controller described by the given configuration.
-//
-// It panics if called before Run.
-func NewController(c ControllerConfig) Controller {
-	return driver.NewController(c)
-}
-
-// NewFilePanel creates and displays the file panel described by the given
-// configuration.
-//
-// It panics if called before Run.
-func NewFilePanel(c FilePanelConfig) Elem {
-	return driver.NewFilePanel(c)
-}
-
 // NewMsg creates a message.
 func NewMsg(key string) Msg {
 	return &msg{key: key}
-}
-
-// NewNotification creates and displays the notification described in the
-// given configuration.
-//
-// It panics if called before Run.
-func NewNotification(c NotificationConfig) Elem {
-	return driver.NewNotification(c)
-}
-
-// NewSaveFilePanel creates and displays the save file panel described by the
-// given configuration.
-//
-// It panics if called before Run.
-func NewSaveFilePanel(c SaveFilePanelConfig) Elem {
-	return driver.NewSaveFilePanel(c)
-}
-
-// NewShare creates and display the share pannel to share the given value.
-//
-// It panics if called before Run.
-func NewShare(v interface{}) Elem {
-	return driver.NewShare(v)
-}
-
-// NewStatusMenu creates and displays the status menu described in the given
-// configuration.
-//
-// It panics if called before Run.
-func NewStatusMenu(c StatusMenuConfig) StatusMenu {
-	return driver.NewStatusMenu(c)
 }
 
 // NewSubscriber creates an event subscriber to return when implementing the
@@ -241,20 +111,6 @@ func NewSubscriber() *Subscriber {
 	return &Subscriber{
 		Events: events,
 	}
-}
-
-// NewWindow creates and displays the window described by the given
-// configuration.
-//
-// It panics if called before Run.
-func NewWindow(c WindowConfig) Window {
-	return driver.NewWindow(c)
-}
-
-// OpenDefaultBrowser opens the given URL on the operating system default
-// browser.
-func OpenDefaultBrowser(url string) {
-	driver.OpenDefaultBrowser(url)
 }
 
 // Panic is equivalent to Log() followed by a call to panic().
@@ -288,65 +144,17 @@ func Pretty(v interface{}) string {
 //
 // It panics if called before Run.
 func Render(c Compo) {
-	driver.UI(func() {
-		driver.Render(c)
-	})
+	panic("NOT IMPLEMENTED")
 }
 
-// Resources returns the given path prefixed by the resources directory
-// location.
-// Resources should be used only for read only operations.
-//
-// It panics if called before Run.
-func Resources(path ...string) string {
-	return driver.Resources(path...)
-}
-
-// Run runs the app with the given driver as backend.
-func Run(drivers ...Driver) error {
-	for _, d := range drivers {
-		if d.Target() == target {
-			driver = d
-			break
-		}
-	}
-
-	if driver == nil {
-		return errors.Errorf("no driver set for %s", target)
-	}
-
-	Logf("%T", driver)
-
-	for _, a := range addons {
-		driver = a(driver)
-	}
-
-	return driver.Run(DriverConfig{
-		UI:      ui,
-		Factory: factory,
-		Events:  events,
-	})
-}
-
-// Storage returns the given path prefixed by the storage directory
-// location.
-//
-// It panics if called before Run.
-func Storage(path ...string) string {
-	return driver.Storage(path...)
-}
-
-// Stop stops the app.
-// Calling stop make Run return an error.
-//
-// It panics if called before Run.
-func Stop() {
-	driver.Stop()
+// Run runs the app with the loaded URL.
+func Run() error {
+	panic("NOT IMPLEMENTED")
 }
 
 // UI calls a function on the UI goroutine.
 func UI(f func()) {
-	driver.UI(f)
+	ui <- f
 }
 
 // WhenDebug execute the given function when debug mode is enabled.

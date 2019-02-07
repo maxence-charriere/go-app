@@ -9,12 +9,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestAddons(t *testing.T) {
-	app.Addons(func(d app.Driver) app.Driver {
-		return d
-	})
-}
-
 func TestEmit(t *testing.T) {
 	app.Emit("hello")
 }
@@ -75,5 +69,8 @@ func TestPanicf(t *testing.T) {
 }
 
 func TestPretty(t *testing.T) {
-	t.Log(app.Pretty(app.WindowConfig{}))
+	t.Log(app.Pretty(struct {
+		Hello string
+		World string
+	}{}))
 }
