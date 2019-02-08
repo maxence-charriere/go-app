@@ -2,7 +2,6 @@ package app
 
 import (
 	"encoding/json"
-	"net/url"
 	"reflect"
 	"strconv"
 	"strings"
@@ -35,15 +34,6 @@ type Dismounter interface {
 	// OnDismount is called when a component is dismounted.
 	// App.Render should not be called inside.
 	OnDismount()
-}
-
-// Navigable is the interface that wraps OnNavigate method.
-type Navigable interface {
-	Compo
-
-	// OnNavigate is called when a component is loaded or navigated to.
-	// It is called just after the component is mounted.
-	OnNavigate(u *url.URL)
 }
 
 // EventSubscriber is the interface that describes a component that subscribes
