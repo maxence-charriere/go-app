@@ -801,8 +801,7 @@ func TestEngine(t *testing.T) {
 				CompoBuilder: f,
 				AllowedNodes: test.allowedNodes,
 				AttrTransforms: []attrTransform{
-					JsToGoHandler,
-					HrefCompoFmt,
+					jsToGoHandler,
 				},
 				Sync: func(v []change) error {
 					changes = make([]change, len(v))

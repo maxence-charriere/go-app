@@ -65,7 +65,7 @@ func EnableDebug(v bool) {
 }
 
 // Handle handles the message for the given key.
-func Handle(key string, h Handler) {
+func Handle(key string, h MsgHandler) {
 	messages.handle(key, h)
 }
 

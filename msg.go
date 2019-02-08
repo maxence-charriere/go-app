@@ -20,9 +20,9 @@ type Msg interface {
 	Post()
 }
 
-// Handler is the interface that describes a message handler.
+// MsgHandler is the interface that describes a message handler.
 // It is used to respond to a Msg.
-type Handler func(Msg)
+type MsgHandler func(Msg)
 
 type msg struct {
 	key   string
@@ -48,16 +48,16 @@ func (m *msg) Post() {
 
 type msgRegistry struct {
 	mutex sync.RWMutex
-	msgs  map[string]Handler
+	msgs  map[string]MsgHandler
 }
 
 func newMsgRegistry() *msgRegistry {
 	return &msgRegistry{
-		msgs: make(map[string]Handler),
+		msgs: make(map[string]MsgHandler),
 	}
 }
 
-func (r *msgRegistry) handle(key string, h Handler) {
+func (r *msgRegistry) handle(key string, h MsgHandler) {
 	r.mutex.Lock()
 	r.msgs[key] = h
 	r.mutex.Unlock()

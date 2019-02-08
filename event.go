@@ -40,7 +40,7 @@ func (s *Subscriber) Close() {
 
 type eventHandler struct {
 	ID      string
-	Handler interface{}
+	MsgHandler interface{}
 }
 
 // EventRegistry is a struct that manages event flow.
@@ -74,7 +74,7 @@ func (r *EventRegistry) subscribe(e Event, handler interface{}) func() {
 
 	handlers = append(handlers, eventHandler{
 		ID:      id,
-		Handler: handler,
+		MsgHandler: handler,
 	})
 
 	r.handlers[e] = handlers
@@ -109,7 +109,7 @@ func (r *EventRegistry) Emit(e Event, args ...interface{}) {
 	defer r.mutex.RUnlock()
 
 	for _, h := range r.handlers[e] {
-		if err := r.callHandler(h.Handler, args...); err != nil {
+		if err := r.callHandler(h.MsgHandler, args...); err != nil {
 			Logf("emitting %s failed: %s", e, err)
 		}
 	}
