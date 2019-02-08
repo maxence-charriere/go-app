@@ -1,6 +1,0 @@
-goos: darwin
-goarch: amd64
-pkg: github.com/murlokswarm/app/internal/tests
-BenchmarkDom-8   	  100000	    101266 ns/op	   44661 B/op	     431 allocs/op
-PASS
-ok  	github.com/murlokswarm/app/internal/tests	11.167s

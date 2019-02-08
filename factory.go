@@ -7,22 +7,18 @@ import (
 	"github.com/pkg/errors"
 )
 
-// NewFactory creates a component factory.
-func NewFactory() *Factory {
-	return &Factory{
-		types: make(map[string]reflect.Type),
-	}
-}
-
-// Factory represents a factory that creates components.
-// It is safe for concurrent operations.
-type Factory struct {
+type compoBuilder struct {
 	mutex sync.Mutex
 	types map[string]reflect.Type
 }
 
-// RegisterCompo registers the given component.
-func (f *Factory) RegisterCompo(c Compo) (name string, err error) {
+func newCompoBuilder() *compoBuilder {
+	return &compoBuilder{
+		types: make(map[string]reflect.Type),
+	}
+}
+
+func (f *compoBuilder) register(c Compo) (name string, err error) {
 	f.mutex.Lock()
 	defer f.mutex.Unlock()
 
@@ -45,8 +41,7 @@ func (f *Factory) RegisterCompo(c Compo) (name string, err error) {
 
 }
 
-// IsCompoRegistered reports whether the named component is registered.
-func (f *Factory) IsCompoRegistered(name string) bool {
+func (f *compoBuilder) isRegistered(name string) bool {
 	f.mutex.Lock()
 	defer f.mutex.Unlock()
 
@@ -54,8 +49,7 @@ func (f *Factory) IsCompoRegistered(name string) bool {
 	return ok
 }
 
-// NewCompo creates the named component.
-func (f *Factory) NewCompo(name string) (Compo, error) {
+func (f *compoBuilder) new(name string) (Compo, error) {
 	f.mutex.Lock()
 	defer f.mutex.Unlock()
 

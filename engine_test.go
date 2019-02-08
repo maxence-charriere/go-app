@@ -9,22 +9,22 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-type Foo struct {
+type Mur struct {
 	Value    string
 	Disabled bool
 }
 
-func (f *Foo) OnMount() {
+func (f *Mur) OnMount() {
 }
 
-func (f *Foo) OnDismount() {
+func (f *Mur) OnDismount() {
 }
 
-func (f *Foo) Subscribe() *Subscriber {
+func (f *Mur) Subscribe() *Subscriber {
 	return NewSubscriber()
 }
 
-func (f *Foo) Render() string {
+func (f *Mur) Render() string {
 	return `
 	<div class="test" {{if .Disabled}}disabled{{end}}>
 		{{.Value}}
@@ -32,12 +32,12 @@ func (f *Foo) Render() string {
 	`
 }
 
-type Bar struct {
+type Lok struct {
 	ReplaceTextByNode bool
 	ReplaceNodeByNode bool
 }
 
-func (b *Bar) Render() string {
+func (b *Lok) Render() string {
 	return `
 	<div>
 		{{if .ReplaceTextByNode}}
@@ -72,11 +72,11 @@ func (b *Boo) Render() string {
 		{{else if .ReplaceCompoByCompo}}
 			<app.Oob />
 		{{else}}
-			<app.Foo value="{{.Value}}">
+			<app.Mur value="{{.Value}}">
 		{{end}}
 
 		{{if .AddCompo}}
-			<app.Foo>
+			<app.Mur>
 		{{end}}
 
 
@@ -109,13 +109,13 @@ func (o *Oob) Render() string {
 }
 
 type Nested struct {
-	Foo bool
+	Mur bool
 }
 
 func (n *Nested) Render() string {
 	return `
-		{{if .Foo}}
-			<app.Foo>
+		{{if .Mur}}
+			<app.Mur>
 		{{else}}
 			<app.Oob>
 		{{end}}
@@ -123,13 +123,13 @@ func (n *Nested) Render() string {
 }
 
 type NestedNested struct {
-	Foo bool
+	Mur bool
 }
 
 func (n *NestedNested) Render() string {
 	return `
-		{{if .Foo}}
-			<app.Nested foo>
+		{{if .Mur}}
+			<app.Nested mur>
 		{{else}}
 			<app.Nested>
 		{{end}}
@@ -296,23 +296,23 @@ func (e *EmptyRender) Render() string {
 }
 
 func TestEngine(t *testing.T) {
-	f := NewFactory()
-	f.RegisterCompo(&Foo{})
-	f.RegisterCompo(&Bar{})
-	f.RegisterCompo(&Boo{})
-	f.RegisterCompo(&Oob{})
-	f.RegisterCompo(&Nested{})
-	f.RegisterCompo(&NestedNested{})
-	f.RegisterCompo(&Svg{})
-	f.RegisterCompo(&SelfClosing{})
-	f.RegisterCompo(&VoidElem{})
-	f.RegisterCompo(&CompoErr{})
-	f.RegisterCompo(&BadTemplateRead{})
-	f.RegisterCompo(&BadTemplateExec{})
-	f.RegisterCompo(&DecodeErr{})
-	f.RegisterCompo(NoPtrErr(0))
-	f.RegisterCompo(&EmptyStructErr{})
-	f.RegisterCompo(&EmptyRender{})
+	f := newCompoBuilder()
+	f.register(&Mur{})
+	f.register(&Lok{})
+	f.register(&Boo{})
+	f.register(&Oob{})
+	f.register(&Nested{})
+	f.register(&NestedNested{})
+	f.register(&Svg{})
+	f.register(&SelfClosing{})
+	f.register(&VoidElem{})
+	f.register(&CompoErr{})
+	f.register(&BadTemplateRead{})
+	f.register(&BadTemplateExec{})
+	f.register(&DecodeErr{})
+	f.register(NoPtrErr(0))
+	f.register(&EmptyStructErr{})
+	f.register(&EmptyRender{})
 
 	tests := []struct {
 		scenario     string
@@ -324,29 +324,29 @@ func TestEngine(t *testing.T) {
 		nodeCount    int
 		err          bool
 	}{
-		// Foo:
+		// Mur:
 		{
 			scenario: "create compo nodes",
-			compo:    &Foo{Value: "hello"},
+			compo:    &Mur{Value: "hello"},
 			changes: []change{
-				{Action: newNode, NodeID: "app.foo:", Type: "app.foo", IsCompo: true},
-				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "app.foo:"},
-				{Action: newNode, NodeID: "text:", Type: "text", CompoID: "app.foo:"},
+				{Action: newNode, NodeID: "app.mur:", Type: "app.mur", IsCompo: true},
+				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "app.mur:"},
+				{Action: newNode, NodeID: "text:", Type: "text", CompoID: "app.mur:"},
 
 				{Action: setAttr, NodeID: "div:", Key: "class", Value: "test"},
 				{Action: setText, NodeID: "text:", Value: "hello"},
 				{Action: appendChild, NodeID: "div:", ChildID: "text:"},
-				{Action: appendChild, NodeID: "app.foo:", ChildID: "div:"},
-				{Action: setRoot, NodeID: "app.foo:"},
+				{Action: appendChild, NodeID: "app.mur:", ChildID: "div:"},
+				{Action: setRoot, NodeID: "app.mur:"},
 			},
 			compoCount: 1,
 			nodeCount:  3,
 		},
 		{
 			scenario: "update node",
-			compo:    &Foo{Value: "hello"},
+			compo:    &Mur{Value: "hello"},
 			mutate: func(c Compo) {
-				c.(*Foo).Value = "world"
+				c.(*Mur).Value = "world"
 			},
 			changes: []change{
 				{Action: setText, NodeID: "text:", Value: "world"},
@@ -356,12 +356,12 @@ func TestEngine(t *testing.T) {
 		},
 		{
 			scenario: "append child",
-			compo:    &Foo{},
+			compo:    &Mur{},
 			mutate: func(c Compo) {
-				c.(*Foo).Value = "hello"
+				c.(*Mur).Value = "hello"
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "text:", Type: "text", CompoID: "app.foo:"},
+				{Action: newNode, NodeID: "text:", Type: "text", CompoID: "app.mur:"},
 
 				{Action: setText, NodeID: "text:", Value: "hello"},
 				{Action: appendChild, NodeID: "div:", ChildID: "text:"},
@@ -371,9 +371,9 @@ func TestEngine(t *testing.T) {
 		},
 		{
 			scenario: "remove child",
-			compo:    &Foo{Value: "hello"},
+			compo:    &Mur{Value: "hello"},
 			mutate: func(c Compo) {
-				c.(*Foo).Value = ""
+				c.(*Mur).Value = ""
 			},
 			changes: []change{
 				{Action: removeChild, NodeID: "div:", ChildID: "text:"},
@@ -384,9 +384,9 @@ func TestEngine(t *testing.T) {
 		},
 		{
 			scenario: "set attr",
-			compo:    &Foo{},
+			compo:    &Mur{},
 			mutate: func(c Compo) {
-				c.(*Foo).Disabled = true
+				c.(*Mur).Disabled = true
 			},
 			changes: []change{
 				{Action: setAttr, NodeID: "div:", Key: "disabled"},
@@ -396,9 +396,9 @@ func TestEngine(t *testing.T) {
 		},
 		{
 			scenario: "delete attr",
-			compo:    &Foo{Disabled: true},
+			compo:    &Mur{Disabled: true},
 			mutate: func(c Compo) {
-				c.(*Foo).Disabled = false
+				c.(*Mur).Disabled = false
 			},
 			changes: []change{
 				{Action: delAttr, NodeID: "div:", Key: "disabled"},
@@ -407,16 +407,16 @@ func TestEngine(t *testing.T) {
 			nodeCount:  2,
 		},
 
-		// Bar:
+		// Lok:
 		{
 			scenario: "replace text by node",
-			compo:    &Bar{},
+			compo:    &Lok{},
 			mutate: func(c Compo) {
-				c.(*Bar).ReplaceTextByNode = true
+				c.(*Lok).ReplaceTextByNode = true
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "span:", Type: "span", CompoID: "app.bar:"},
-				{Action: newNode, NodeID: "text:", Type: "text", CompoID: "app.bar:"},
+				{Action: newNode, NodeID: "span:", Type: "span", CompoID: "app.lok:"},
+				{Action: newNode, NodeID: "text:", Type: "text", CompoID: "app.lok:"},
 
 				{Action: setText, NodeID: "text:", Value: "hello"},
 				{Action: appendChild, NodeID: "span:", ChildID: "text:"},
@@ -429,12 +429,12 @@ func TestEngine(t *testing.T) {
 		},
 		{
 			scenario: "replace node by text",
-			compo:    &Bar{ReplaceTextByNode: true},
+			compo:    &Lok{ReplaceTextByNode: true},
 			mutate: func(c Compo) {
-				c.(*Bar).ReplaceTextByNode = false
+				c.(*Lok).ReplaceTextByNode = false
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "text:", Type: "text", CompoID: "app.bar:"},
+				{Action: newNode, NodeID: "text:", Type: "text", CompoID: "app.lok:"},
 
 				{Action: setText, NodeID: "text:", Value: "hello"},
 				{Action: replaceChild, NodeID: "div:", ChildID: "span:", NewChildID: "text:"},
@@ -447,13 +447,13 @@ func TestEngine(t *testing.T) {
 		},
 		{
 			scenario: "replace node by node",
-			compo:    &Bar{},
+			compo:    &Lok{},
 			mutate: func(c Compo) {
-				c.(*Bar).ReplaceNodeByNode = true
+				c.(*Lok).ReplaceNodeByNode = true
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "h2:", Type: "h2", CompoID: "app.bar:"},
-				{Action: newNode, NodeID: "text:", Type: "text", CompoID: "app.bar:"},
+				{Action: newNode, NodeID: "h2:", Type: "h2", CompoID: "app.lok:"},
+				{Action: newNode, NodeID: "text:", Type: "text", CompoID: "app.lok:"},
 
 				{Action: setText, NodeID: "text:", Value: "world"},
 				{Action: appendChild, NodeID: "h2:", ChildID: "text:"},
@@ -474,12 +474,12 @@ func TestEngine(t *testing.T) {
 				{Action: newNode, NodeID: "app.boo:", Type: "app.boo", IsCompo: true},
 				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "app.boo:"},
 
-				{Action: newNode, NodeID: "app.foo:", Type: "app.foo", IsCompo: true, CompoID: "app.boo:"},
-				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "app.foo:"},
+				{Action: newNode, NodeID: "app.mur:", Type: "app.mur", IsCompo: true, CompoID: "app.boo:"},
+				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "app.mur:"},
 				{Action: setAttr, NodeID: "div:", Key: "class", Value: "test"},
-				{Action: appendChild, NodeID: "app.foo:", ChildID: "div:"},
+				{Action: appendChild, NodeID: "app.mur:", ChildID: "div:"},
 
-				{Action: appendChild, NodeID: "div:", ChildID: "app.foo:"},
+				{Action: appendChild, NodeID: "div:", ChildID: "app.mur:"},
 				{Action: appendChild, NodeID: "app.boo:", ChildID: "div:"},
 				{Action: setRoot, NodeID: "app.boo:"},
 			},
@@ -493,12 +493,12 @@ func TestEngine(t *testing.T) {
 				c.(*Boo).AddCompo = true
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "app.foo:", Type: "app.foo", IsCompo: true, CompoID: "app.boo:"},
-				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "app.foo:"},
+				{Action: newNode, NodeID: "app.mur:", Type: "app.mur", IsCompo: true, CompoID: "app.boo:"},
+				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "app.mur:"},
 
 				{Action: setAttr, NodeID: "div:", Key: "class", Value: "test"},
-				{Action: appendChild, NodeID: "app.foo:", ChildID: "div:"},
-				{Action: appendChild, NodeID: "div:", ChildID: "app.foo:"},
+				{Action: appendChild, NodeID: "app.mur:", ChildID: "div:"},
+				{Action: appendChild, NodeID: "div:", ChildID: "app.mur:"},
 			},
 			compoCount: 3,
 			nodeCount:  6,
@@ -510,10 +510,10 @@ func TestEngine(t *testing.T) {
 				c.(*Boo).AddCompo = false
 			},
 			changes: []change{
-				{Action: removeChild, NodeID: "div:", ChildID: "app.foo:"},
+				{Action: removeChild, NodeID: "div:", ChildID: "app.mur:"},
 
 				{Action: delNode, NodeID: "div:"},
-				{Action: delNode, NodeID: "app.foo:"},
+				{Action: delNode, NodeID: "app.mur:"},
 			},
 			compoCount: 2,
 			nodeCount:  4,
@@ -529,10 +529,10 @@ func TestEngine(t *testing.T) {
 				{Action: newNode, NodeID: "p:", Type: "p", CompoID: "app.oob:"},
 
 				{Action: appendChild, NodeID: "app.oob:", ChildID: "p:"},
-				{Action: replaceChild, NodeID: "div:", ChildID: "app.foo:", NewChildID: "app.oob:"},
+				{Action: replaceChild, NodeID: "div:", ChildID: "app.mur:", NewChildID: "app.oob:"},
 
 				{Action: delNode, NodeID: "div:"},
-				{Action: delNode, NodeID: "app.foo:"},
+				{Action: delNode, NodeID: "app.mur:"},
 			},
 			compoCount: 2,
 			nodeCount:  4,
@@ -561,10 +561,10 @@ func TestEngine(t *testing.T) {
 
 				{Action: setText, NodeID: "text:", Value: "foo"},
 				{Action: appendChild, NodeID: "p:", ChildID: "text:"},
-				{Action: replaceChild, NodeID: "div:", ChildID: "app.foo:", NewChildID: "p:"},
+				{Action: replaceChild, NodeID: "div:", ChildID: "app.mur:", NewChildID: "p:"},
 
 				{Action: delNode, NodeID: "div:"},
-				{Action: delNode, NodeID: "app.foo:"},
+				{Action: delNode, NodeID: "app.mur:"},
 			},
 			compoCount: 1,
 			nodeCount:  4,
@@ -576,12 +576,12 @@ func TestEngine(t *testing.T) {
 				c.(*Boo).ReplaceCompoByNode = false
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "app.foo:", Type: "app.foo", IsCompo: true, CompoID: "app.boo:"},
-				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "app.foo:"},
+				{Action: newNode, NodeID: "app.mur:", Type: "app.mur", IsCompo: true, CompoID: "app.boo:"},
+				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "app.mur:"},
 
 				{Action: setAttr, NodeID: "div:", Key: "class", Value: "test"},
-				{Action: appendChild, NodeID: "app.foo:", ChildID: "div:"},
-				{Action: replaceChild, NodeID: "div:", ChildID: "p:", NewChildID: "app.foo:"},
+				{Action: appendChild, NodeID: "app.mur:", ChildID: "div:"},
+				{Action: replaceChild, NodeID: "div:", ChildID: "p:", NewChildID: "app.mur:"},
 
 				{Action: delNode, NodeID: "text:"},
 				{Action: delNode, NodeID: "p:"},
@@ -595,15 +595,15 @@ func TestEngine(t *testing.T) {
 			scenario: "replace compo first child",
 			compo:    &Nested{},
 			mutate: func(c Compo) {
-				c.(*Nested).Foo = true
+				c.(*Nested).Mur = true
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "app.foo:", Type: "app.foo", IsCompo: true, CompoID: "app.nested:"},
-				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "app.foo:"},
+				{Action: newNode, NodeID: "app.mur:", Type: "app.mur", IsCompo: true, CompoID: "app.nested:"},
+				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "app.mur:"},
 
 				{Action: setAttr, NodeID: "div:", Key: "class", Value: "test"},
-				{Action: appendChild, NodeID: "app.foo:", ChildID: "div:"},
-				{Action: replaceChild, NodeID: "app.nested:", ChildID: "app.oob:", NewChildID: "app.foo:"},
+				{Action: appendChild, NodeID: "app.mur:", ChildID: "div:"},
+				{Action: replaceChild, NodeID: "app.nested:", ChildID: "app.oob:", NewChildID: "app.mur:"},
 
 				{Action: delNode, NodeID: "p:"},
 				{Action: delNode, NodeID: "app.oob:"},
@@ -615,15 +615,15 @@ func TestEngine(t *testing.T) {
 			scenario: "replace nested compo first child",
 			compo:    &NestedNested{},
 			mutate: func(c Compo) {
-				c.(*NestedNested).Foo = true
+				c.(*NestedNested).Mur = true
 			},
 			changes: []change{
-				{Action: newNode, NodeID: "app.foo:", Type: "app.foo", IsCompo: true, CompoID: "app.nested:"},
-				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "app.foo:"},
+				{Action: newNode, NodeID: "app.mur:", Type: "app.mur", IsCompo: true, CompoID: "app.nested:"},
+				{Action: newNode, NodeID: "div:", Type: "div", CompoID: "app.mur:"},
 
 				{Action: setAttr, NodeID: "div:", Key: "class", Value: "test"},
-				{Action: appendChild, NodeID: "app.foo:", ChildID: "div:"},
-				{Action: replaceChild, NodeID: "app.nested:", ChildID: "app.oob:", NewChildID: "app.foo:"},
+				{Action: appendChild, NodeID: "app.mur:", ChildID: "div:"},
+				{Action: replaceChild, NodeID: "app.nested:", ChildID: "app.oob:", NewChildID: "app.mur:"},
 
 				{Action: delNode, NodeID: "p:"},
 				{Action: delNode, NodeID: "app.oob:"},
@@ -798,7 +798,7 @@ func TestEngine(t *testing.T) {
 			changes := []change{}
 
 			e := domEngine{
-				Factory:      f,
+				CompoBuilder: f,
 				AllowedNodes: test.allowedNodes,
 				AttrTransforms: []Transform{
 					JsToGoHandler,
@@ -858,40 +858,40 @@ func TestEngineRenderNotMounted(t *testing.T) {
 		},
 	}
 
-	err := e.Render(&Foo{})
+	err := e.Render(&Mur{})
 	assert.Error(t, err)
 }
 
 func TestEngineSyncError(t *testing.T) {
-	f := NewFactory()
-	f.RegisterCompo(&Foo{})
+	f := newCompoBuilder()
+	f.register(&Mur{})
 
 	e := domEngine{
-		Factory: f,
+		CompoBuilder: f,
 		Sync: func(v interface{}) error {
 			return errors.New("simulated err")
 		},
 	}
 
-	err := e.New(&Foo{})
+	err := e.New(&Mur{})
 	assert.Error(t, err)
 }
 
 func TestEngineEmptySync(t *testing.T) {
-	f := NewFactory()
-	f.RegisterCompo(&Foo{})
+	f := newCompoBuilder()
+	f.register(&Mur{})
 
-	e := domEngine{Factory: f}
-	err := e.New(&Foo{})
+	e := domEngine{CompoBuilder: f}
+	err := e.New(&Mur{})
 	assert.NoError(t, err)
 }
 
 func TestDOMCompoByID(t *testing.T) {
-	f := NewFactory()
-	f.RegisterCompo(&Foo{})
+	f := newCompoBuilder()
+	f.register(&Mur{})
 
-	e := domEngine{Factory: f}
-	foo := &Foo{}
+	e := domEngine{CompoBuilder: f}
+	foo := &Mur{}
 
 	err := e.New(foo)
 	require.NoError(t, err)

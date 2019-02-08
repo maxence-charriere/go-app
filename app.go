@@ -27,11 +27,11 @@ var (
 	// It is used by Log, Logf, Panic and Panicf to generate logs.
 	Logger func(format string, a ...interface{})
 
-	factory   = NewFactory()
-	messages  = newMsgRegistry()
-	ui        = make(chan func(), 4096)
-	events    = NewEventRegistry(ui)
-	whenDebug func(func())
+	components = newCompoBuilder()
+	messages   = newMsgRegistry()
+	ui         = make(chan func(), 4096)
+	events     = NewEventRegistry(ui)
+	whenDebug  func(func())
 )
 
 func init() {
@@ -75,7 +75,7 @@ func Handle(key string, h Handler) {
 // markup.
 func Import(c ...Compo) {
 	for _, compo := range c {
-		if _, err := factory.RegisterCompo(compo); err != nil {
+		if _, err := components.register(compo); err != nil {
 			Panicf("import component failed: %s", err)
 		}
 	}

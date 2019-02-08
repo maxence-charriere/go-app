@@ -32,34 +32,6 @@ func (m *M) Render() string {
 	return `<div>Some mappings</div>`
 }
 
-type MappingStruct struct {
-	Exported   int
-	unexported int
-	method     func()
-}
-
-func (s MappingStruct) Method() {
-	s.method()
-}
-
-type MappingMap map[string]func()
-
-func (m MappingMap) Method() {
-	m["method"]()
-}
-
-type MappingSlice []func()
-
-func (s MappingSlice) Method() {
-	s[0]()
-}
-
-type MappingInt int
-
-func (i MappingInt) Method(nb int) {
-	mappedInt = nb
-}
-
 func TestMapping(t *testing.T) {
 	intv := 42
 
@@ -312,8 +284,6 @@ func TestMapping(t *testing.T) {
 		})
 	}
 }
-
-var mappedInt int
 
 func assertM(t *testing.T, expected, actual M) {
 	assert.Equal(t, expected.String, actual.String)

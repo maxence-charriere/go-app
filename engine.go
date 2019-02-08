@@ -15,8 +15,7 @@ import (
 // The domEngine represents a dom (document object model) engine. It manages
 // components an nodes lifecycle and keep track of node changes.
 type domEngine struct {
-	// The factory to decode component from html.
-	Factory *Factory
+	CompoBuilder *compoBuilder
 
 	// AttrTransforms describes a set of transformation to apply to parsed node
 	// attributes.
@@ -618,7 +617,7 @@ func (e *domEngine) newNode(n node) {
 func (e *domEngine) newCompo(c Compo, n node) error {
 	var err error
 	if c == nil {
-		if c, err = e.Factory.NewCompo(n.Type); err != nil {
+		if c, err = e.CompoBuilder.new(n.Type); err != nil {
 			return err
 		}
 	}
