@@ -797,7 +797,7 @@ func TestEngine(t *testing.T) {
 		t.Run(test.scenario, func(t *testing.T) {
 			changes := []change{}
 
-			e := Engine{
+			e := domEngine{
 				Factory:      f,
 				AllowedNodes: test.allowedNodes,
 				AttrTransforms: []Transform{
@@ -852,7 +852,7 @@ func TestEngine(t *testing.T) {
 }
 
 func TestEngineRenderNotMounted(t *testing.T) {
-	e := Engine{
+	e := domEngine{
 		Sync: func(v interface{}) error {
 			return errors.New("simulated err")
 		},
@@ -866,7 +866,7 @@ func TestEngineSyncError(t *testing.T) {
 	f := NewFactory()
 	f.RegisterCompo(&Foo{})
 
-	e := Engine{
+	e := domEngine{
 		Factory: f,
 		Sync: func(v interface{}) error {
 			return errors.New("simulated err")
@@ -881,7 +881,7 @@ func TestEngineEmptySync(t *testing.T) {
 	f := NewFactory()
 	f.RegisterCompo(&Foo{})
 
-	e := Engine{Factory: f}
+	e := domEngine{Factory: f}
 	err := e.New(&Foo{})
 	assert.NoError(t, err)
 }
@@ -890,7 +890,7 @@ func TestDOMCompoByID(t *testing.T) {
 	f := NewFactory()
 	f.RegisterCompo(&Foo{})
 
-	e := Engine{Factory: f}
+	e := domEngine{Factory: f}
 	foo := &Foo{}
 
 	err := e.New(foo)

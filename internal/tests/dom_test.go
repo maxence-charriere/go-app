@@ -43,7 +43,7 @@ func BenchmarkDom(b *testing.B) {
 	f.RegisterCompo(&BenchCompo{})
 	f.RegisterCompo(&BenchSubCompo{})
 
-	d := &app.Engine{
+	d := &app.domEngine{
 		Factory: f,
 		AttrTransforms: []app.Transform{
 			app.JsToGoHandler,

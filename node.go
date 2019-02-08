@@ -17,7 +17,7 @@ type node struct {
 	Attrs     map[string]string
 	ChildIDs  []string
 	IsCompo   bool
-	Dom       *Engine
+	Dom       *domEngine
 }
 
 func clearNodeIDs(ids []string) []string {

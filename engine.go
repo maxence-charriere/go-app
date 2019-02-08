@@ -12,11 +12,11 @@ import (
 	"golang.org/x/net/html"
 )
 
-// Engine represents a dom (document object model) engine.
+// domEngine represents a dom (document object model) engine.
 // It manages components an nodes lifecycle and keep track of node changes.
 // The engine can be synchronized with a remote dom like a web browser document.
 // It is safe for concurrent operations.
-type Engine struct {
+type domEngine struct {
 	// The factory to decode component from html.
 	Factory *Factory
 
@@ -52,7 +52,7 @@ type Engine struct {
 	decodeAttrs   map[string]string
 }
 
-func (e *Engine) init() {
+func (e *domEngine) init() {
 	if e.Sync == nil {
 		e.Sync = func(v interface{}) error {
 			return nil
@@ -84,7 +84,7 @@ func (e *Engine) init() {
 }
 
 // Contains reports whether the given component is in the dom.
-func (e *Engine) Contains(c Compo) bool {
+func (e *domEngine) Contains(c Compo) bool {
 	e.mutex.RLock()
 	defer e.mutex.RUnlock()
 
@@ -93,7 +93,7 @@ func (e *Engine) Contains(c Compo) bool {
 }
 
 // CompoByID returns the component with the given identifier.
-func (e *Engine) CompoByID(id string) (Compo, error) {
+func (e *domEngine) CompoByID(id string) (Compo, error) {
 	e.mutex.RLock()
 	defer e.mutex.RUnlock()
 
@@ -106,7 +106,7 @@ func (e *Engine) CompoByID(id string) (Compo, error) {
 }
 
 // New renders the given component and set it as the dom root.
-func (e *Engine) New(c Compo) error {
+func (e *domEngine) New(c Compo) error {
 	e.once.Do(e.init)
 	e.mutex.Lock()
 	defer e.mutex.Unlock()
@@ -129,7 +129,7 @@ func (e *Engine) New(c Compo) error {
 }
 
 // Close deletes the components and nodes from the dom.
-func (e *Engine) Close() {
+func (e *domEngine) Close() {
 	e.once.Do(e.init)
 	e.mutex.Lock()
 	defer e.mutex.Unlock()
@@ -137,7 +137,7 @@ func (e *Engine) Close() {
 
 }
 
-func (e *Engine) close() {
+func (e *domEngine) close() {
 	e.deleteNode(e.rootID)
 	e.rootID = ""
 
@@ -161,7 +161,7 @@ func (e *Engine) close() {
 
 // Render renders the given component by updating the state described within
 // c.Render().
-func (e *Engine) Render(c Compo) error {
+func (e *domEngine) Render(c Compo) error {
 	e.once.Do(e.init)
 	e.mutex.Lock()
 	defer e.mutex.Unlock()
@@ -177,7 +177,7 @@ func (e *Engine) Render(c Compo) error {
 	return e.sync()
 }
 
-func (e *Engine) render(c Compo) error {
+func (e *domEngine) render(c Compo) error {
 	ic, ok := e.compos[c]
 	if !ok {
 		typ := CompoName(c)
@@ -239,7 +239,7 @@ func (e *Engine) render(c Compo) error {
 	return nil
 }
 
-func (e *Engine) compoToHTML(c Compo) (string, error) {
+func (e *domEngine) compoToHTML(c Compo) (string, error) {
 	var extendedFuncs map[string]interface{}
 	if extended, ok := c.(CompoWithExtendedRender); ok {
 		extendedFuncs = extended.Funcs()
@@ -285,7 +285,7 @@ func (e *Engine) compoToHTML(c Compo) (string, error) {
 	return html, nil
 }
 
-func (e *Engine) renderNode(r rendering) (node, bool, error) {
+func (e *domEngine) renderNode(r rendering) (node, bool, error) {
 	switch r.Tokenizer.Next() {
 	case html.TextToken:
 		return e.renderText(r)
@@ -307,7 +307,7 @@ func (e *Engine) renderNode(r rendering) (node, bool, error) {
 	}
 }
 
-func (e *Engine) renderText(r rendering) (node, bool, error) {
+func (e *domEngine) renderText(r rendering) (node, bool, error) {
 	text := string(r.Tokenizer.Text())
 	text = strings.TrimSpace(text)
 
@@ -341,7 +341,7 @@ func (e *Engine) renderText(r rendering) (node, bool, error) {
 	return n, true, nil
 }
 
-func (e *Engine) renderSelfClosingTag(r rendering) (node, bool, error) {
+func (e *domEngine) renderSelfClosingTag(r rendering) (node, bool, error) {
 	tagName, hasAttr := r.Tokenizer.TagName()
 	typ := string(tagName)
 
@@ -386,7 +386,7 @@ func (e *Engine) renderSelfClosingTag(r rendering) (node, bool, error) {
 	return n, true, nil
 }
 
-func (e *Engine) renderStartTag(r rendering) (node, bool, error) {
+func (e *domEngine) renderStartTag(r rendering) (node, bool, error) {
 	tagName, hasAttr := r.Tokenizer.TagName()
 	typ := string(tagName)
 
@@ -509,7 +509,7 @@ func (e *Engine) renderStartTag(r rendering) (node, bool, error) {
 	return n, true, nil
 }
 
-func (e *Engine) renderTagAttrs(r rendering, n node, moreAttr, changes bool) node {
+func (e *domEngine) renderTagAttrs(r rendering, n node, moreAttr, changes bool) node {
 	if !moreAttr {
 		return n
 	}
@@ -575,7 +575,7 @@ func (e *Engine) renderTagAttrs(r rendering, n node, moreAttr, changes bool) nod
 	return n
 }
 
-func (e *Engine) renderCompoNode(r rendering, typ string, hasAttr bool) (node, bool, error) {
+func (e *domEngine) renderCompoNode(r rendering, typ string, hasAttr bool) (node, bool, error) {
 	n := r.NodeToSync
 
 	if len(n.ID) == 0 || n.Type != typ {
@@ -608,7 +608,7 @@ func (e *Engine) renderCompoNode(r rendering, typ string, hasAttr bool) (node, b
 	return n, true, nil
 }
 
-func (e *Engine) newNode(n node) {
+func (e *domEngine) newNode(n node) {
 	e.nodes[n.ID] = n
 
 	e.creates = append(e.creates, change{
@@ -621,7 +621,7 @@ func (e *Engine) newNode(n node) {
 	})
 }
 
-func (e *Engine) newCompo(c Compo, n node) error {
+func (e *domEngine) newCompo(c Compo, n node) error {
 	var err error
 	if c == nil {
 		if c, err = e.Factory.NewCompo(n.Type); err != nil {
@@ -654,7 +654,7 @@ func (e *Engine) newCompo(c Compo, n node) error {
 	return nil
 }
 
-func (e *Engine) deleteNode(id string) {
+func (e *domEngine) deleteNode(id string) {
 	n, ok := e.nodes[id]
 	if !ok {
 		return
@@ -686,7 +686,7 @@ func (e *Engine) deleteNode(id string) {
 	})
 }
 
-func (e *Engine) sync() error {
+func (e *domEngine) sync() error {
 	e.toSync = append(e.toSync, e.creates...)
 	e.toSync = append(e.toSync, e.changes...)
 	e.toSync = append(e.toSync, e.deletes...)
@@ -702,7 +702,7 @@ func (e *Engine) sync() error {
 	return nil
 }
 
-func (e *Engine) isAllowedNode(typ string) bool {
+func (e *domEngine) isAllowedNode(typ string) bool {
 	if len(e.allowdedNodes) == 0 {
 		return true
 	}
