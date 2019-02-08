@@ -13,11 +13,7 @@ type Event string
 
 // Subscriber is a struct to subscribe to events emitted by a event registry.
 type Subscriber struct {
-	// The event restry that emits events. By default tt uses the app default
-	// event registry.
-	// This should be set only for testing purpose.
-	Events *EventRegistry
-
+	events      *eventRegistry
 	unsuscribes []func()
 }
 
@@ -26,7 +22,7 @@ type Subscriber struct {
 //
 // Panics if f is not a func.
 func (s *Subscriber) Subscribe(e Event, f interface{}) *Subscriber {
-	unsubscribe := s.Events.subscribe(e, f)
+	unsubscribe := s.events.subscribe(e, f)
 	s.unsuscribes = append(s.unsuscribes, unsubscribe)
 	return s
 }
@@ -39,26 +35,24 @@ func (s *Subscriber) Close() {
 }
 
 type eventHandler struct {
-	ID      string
+	ID         string
 	MsgHandler interface{}
 }
 
-// EventRegistry is a struct that manages event flow.
-type EventRegistry struct {
+type eventRegistry struct {
 	mutex    sync.RWMutex
 	handlers map[Event][]eventHandler
 	ui       chan func()
 }
 
-// NewEventRegistry creates a event registry.
-func NewEventRegistry(ui chan func()) *EventRegistry {
-	return &EventRegistry{
+func newEventRegistry(ui chan func()) *eventRegistry {
+	return &eventRegistry{
 		handlers: make(map[Event][]eventHandler),
 		ui:       ui,
 	}
 }
 
-func (r *EventRegistry) subscribe(e Event, handler interface{}) func() {
+func (r *eventRegistry) subscribe(e Event, handler interface{}) func() {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -73,7 +67,7 @@ func (r *EventRegistry) subscribe(e Event, handler interface{}) func() {
 	handlers := r.handlers[e]
 
 	handlers = append(handlers, eventHandler{
-		ID:      id,
+		ID:         id,
 		MsgHandler: handler,
 	})
 
@@ -84,7 +78,7 @@ func (r *EventRegistry) subscribe(e Event, handler interface{}) func() {
 	}
 }
 
-func (r *EventRegistry) unsubscribe(e Event, id string) {
+func (r *eventRegistry) unsubscribe(e Event, id string) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
 
@@ -104,7 +98,7 @@ func (r *EventRegistry) unsubscribe(e Event, id string) {
 }
 
 // Emit emits the event with the given arguments.
-func (r *EventRegistry) Emit(e Event, args ...interface{}) {
+func (r *eventRegistry) Emit(e Event, args ...interface{}) {
 	r.mutex.RLock()
 	defer r.mutex.RUnlock()
 
@@ -115,7 +109,7 @@ func (r *EventRegistry) Emit(e Event, args ...interface{}) {
 	}
 }
 
-func (r *EventRegistry) callHandler(h interface{}, args ...interface{}) error {
+func (r *eventRegistry) callHandler(h interface{}, args ...interface{}) error {
 	v := reflect.ValueOf(h)
 	t := v.Type()
 

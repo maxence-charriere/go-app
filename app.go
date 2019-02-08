@@ -28,7 +28,7 @@ var (
 	components = newCompoBuilder()
 	messages   = newMsgRegistry()
 	ui         = make(chan func(), 4096)
-	events     = NewEventRegistry(ui)
+	events     = newEventRegistry(ui)
 	whenDebug  func(func())
 )
 
@@ -96,9 +96,7 @@ func NewMsg(key string) Msg {
 // NewSubscriber creates an event subscriber to return when implementing the
 // app.EventSubscriber interface.
 func NewSubscriber() *Subscriber {
-	return &Subscriber{
-		Events: events,
-	}
+	return &Subscriber{events: events}
 }
 
 // Panic is equivalent to Log() followed by a call to panic().

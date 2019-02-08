@@ -110,7 +110,7 @@ func TestEventRegistry(t *testing.T) {
 			ui := make(chan func(), 32)
 			defer close(ui)
 
-			r := NewEventRegistry(ui)
+			r := newEventRegistry(ui)
 
 			unsub := r.subscribe(test.subName, test.handler(&called))
 			defer unsub()
