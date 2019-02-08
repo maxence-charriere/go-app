@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="{{.Description}}">
+    <meta name="keywords" content="{{.Keywords}}">
+    <meta name="author" content="{{.Author}}">
+    <title>{{.Name}}</title>
+
+    <style media="all" type="text/css">
+{{.DefaultCSS}}
+    </style>
+    {{range .CSS}}<link type="text/css" rel="stylesheet" href="{{.}}">
+    {{end}}
+    <link rel="icon" type="image/png" href="{{.Icon}}">
+    {{range .Scripts}}<script src="{{.}}"></script>
+    {{end}}
+    <script>
+if (!WebAssembly.instantiateStreaming) {
+    WebAssembly.instantiateStreaming = async (resp, importObject) => {
+        const source = await (await resp).arrayBuffer();
+        return await WebAssembly.instantiate(source, importObject);
+    };
+}
+
+const go = new Go();
+
+WebAssembly
+    .instantiateStreaming(fetch("{{.Wasm}}"), go.importObject)
+    .then((result) => {
+        go.run(result.instance);
+    });
+    </script>
+</head>
+<body>
+    <h1></h1>
+</body>
+</html>
