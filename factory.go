@@ -35,7 +35,7 @@ func (f *compoBuilder) register(c Compo) (name string, err error) {
 		return "", errors.New("component does not have fields")
 	}
 
-	name = CompoName(c)
+	name = compoName(c)
 	f.types[name] = v.Type()
 	return name, nil
 

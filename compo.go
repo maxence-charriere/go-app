@@ -74,6 +74,14 @@ type compo struct {
 	Events   *Subscriber
 }
 
+func compoName(c Compo) string {
+	v := reflect.ValueOf(c)
+	v = reflect.Indirect(v)
+
+	name := strings.ToLower(v.Type().String())
+	return strings.TrimPrefix(name, "main.")
+}
+
 func mapCompoFields(c Compo, fields map[string]string) error {
 	v := reflect.ValueOf(c).Elem()
 	t := v.Type()

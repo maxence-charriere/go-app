@@ -3,7 +3,6 @@ package app
 
 import (
 	"fmt"
-	"reflect"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -35,16 +34,6 @@ var (
 
 func init() {
 	EnableDebug(false)
-}
-
-// CompoName returns the name of the given component.
-// The returned name is the one to use in html tags.
-func CompoName(c Compo) string {
-	v := reflect.ValueOf(c)
-	v = reflect.Indirect(v)
-
-	name := strings.ToLower(v.Type().String())
-	return strings.TrimPrefix(name, "main.")
 }
 
 // Emit emits the event with the given arguments.

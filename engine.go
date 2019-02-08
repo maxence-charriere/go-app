@@ -163,7 +163,7 @@ func (e *domEngine) Render(c Compo) error {
 func (e *domEngine) render(c Compo) error {
 	ic, ok := e.compos[c]
 	if !ok {
-		typ := CompoName(c)
+		typ := compoName(c)
 
 		if err := e.newCompo(c, node{
 			ID:       genNodeID(typ),
