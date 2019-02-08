@@ -12,16 +12,11 @@ import (
 	"golang.org/x/net/html"
 )
 
-// domEngine represents a dom (document object model) engine.
-// It manages components an nodes lifecycle and keep track of node changes.
-// The engine can be synchronized with a remote dom like a web browser document.
-// It is safe for concurrent operations.
+// The domEngine represents a dom (document object model) engine. It manages
+// components an nodes lifecycle and keep track of node changes.
 type domEngine struct {
 	// The factory to decode component from html.
 	Factory *Factory
-
-	// The func that generates a resources directory path usable in html.
-	Resources func(...string) string
 
 	// AttrTransforms describes a set of transformation to apply to parsed node
 	// attributes.
@@ -251,7 +246,6 @@ func (e *domEngine) compoToHTML(c Compo) (string, error) {
 	funcsCount := len(converters) + len(extendedFuncs) + 1
 
 	funcs := make(template.FuncMap, funcsCount)
-	funcs["resources"] = e.Resources
 
 	for k, v := range converters {
 		funcs[k] = v
