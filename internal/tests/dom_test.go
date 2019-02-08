@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/dom"
 )
 
 type BenchCompo struct {
@@ -44,11 +43,11 @@ func BenchmarkDom(b *testing.B) {
 	f.RegisterCompo(&BenchCompo{})
 	f.RegisterCompo(&BenchSubCompo{})
 
-	d := &dom.Engine{
+	d := &app.Engine{
 		Factory: f,
-		AttrTransforms: []dom.Transform{
-			dom.JsToGoHandler,
-			dom.HrefCompoFmt,
+		AttrTransforms: []app.Transform{
+			app.JsToGoHandler,
+			app.HrefCompoFmt,
 		},
 	}
 
