@@ -15,22 +15,11 @@ import (
 // The domEngine represents a dom (document object model) engine. It manages
 // components an nodes lifecycle and keep track of node changes.
 type domEngine struct {
-	CompoBuilder *compoBuilder
-
-	// AttrTransforms describes a set of transformation to apply to parsed node
-	// attributes.
-	AttrTransforms []Transform
-
-	// AllowedNodes define the allowed node type. All node type is allowed when
-	// the slice is empty.
-	AllowedNodes []string
-
-	// Sync is the function used to synchronize node changes with a remote dom.
-	// No synchronisations are performed if the func in nil.
-	Sync func(arg interface{}) error
-
-	// UI the function to execute the given func on the ui goroutine.
-	UI func(func())
+	AllowedNodes   []string
+	AttrTransforms []attrTransform
+	CompoBuilder   *compoBuilder
+	Sync           func([]change) error
+	UI             func(func())
 
 	once          sync.Once
 	mutex         sync.RWMutex
@@ -48,7 +37,7 @@ type domEngine struct {
 
 func (e *domEngine) init() {
 	if e.Sync == nil {
-		e.Sync = func(v interface{}) error {
+		e.Sync = func([]change) error {
 			return nil
 		}
 	}

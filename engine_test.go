@@ -800,14 +800,13 @@ func TestEngine(t *testing.T) {
 			e := domEngine{
 				CompoBuilder: f,
 				AllowedNodes: test.allowedNodes,
-				AttrTransforms: []Transform{
+				AttrTransforms: []attrTransform{
 					JsToGoHandler,
 					HrefCompoFmt,
 				},
-				Sync: func(v interface{}) error {
-					c := v.([]change)
-					changes = make([]change, len(c))
-					copy(changes, c)
+				Sync: func(v []change) error {
+					changes = make([]change, len(v))
+					copy(changes, v)
 					return nil
 				},
 			}
@@ -853,7 +852,7 @@ func TestEngine(t *testing.T) {
 
 func TestEngineRenderNotMounted(t *testing.T) {
 	e := domEngine{
-		Sync: func(v interface{}) error {
+		Sync: func([]change) error {
 			return errors.New("simulated err")
 		},
 	}
@@ -868,7 +867,7 @@ func TestEngineSyncError(t *testing.T) {
 
 	e := domEngine{
 		CompoBuilder: f,
-		Sync: func(v interface{}) error {
+		Sync: func([]change) error {
 			return errors.New("simulated err")
 		},
 	}

@@ -6,8 +6,8 @@ import (
 	"strings"
 )
 
-// Transform perform transformation for a given attribute.
-type Transform func(name, value string) (string, string)
+// attrTransform perform transformation for a given attribute.
+type attrTransform func(name, value string) (string, string)
 
 // JsToGoHandler convert a javascript handler to a go component handler.
 func JsToGoHandler(name, value string) (string, string) {
