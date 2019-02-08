@@ -2,7 +2,6 @@
 package app
 
 import (
-	"encoding/json"
 	"fmt"
 	"reflect"
 	"strings"
@@ -129,14 +128,6 @@ func Panicf(format string, a ...interface{}) {
 // Messages are handled in another goroutine.
 func Post(msgs ...Msg) {
 	messages.post(msgs...)
-}
-
-// Pretty is an helper function that returns a prettified string representation
-// of the given value.
-// Returns an empty string if the value can't be prettified.
-func Pretty(v interface{}) string {
-	b, _ := json.MarshalIndent(v, "", "    ")
-	return string(b)
 }
 
 // Render renders the given component.

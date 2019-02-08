@@ -65,10 +65,3 @@ func TestPanicf(t *testing.T) {
 	Panicf("%s %s", "bye", "world")
 	assert.Fail(t, "no panic")
 }
-
-func TestPretty(t *testing.T) {
-	t.Log(Pretty(struct {
-		Hello string
-		World string
-	}{}))
-}
