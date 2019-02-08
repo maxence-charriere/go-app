@@ -10,8 +10,8 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Mapping represents a component method or field descriptor.
-type Mapping struct {
+// mapping represents a component method or field descriptor.
+type mapping struct {
 	// The component identifier.
 	CompoID string
 
@@ -29,7 +29,7 @@ type Mapping struct {
 }
 
 // Map performs the mapping to the given component.
-func (m *Mapping) Map(c Compo) (f func(), err error) {
+func (m *mapping) Map(c Compo) (f func(), err error) {
 	if m.pipeline, err = pipeline(m.FieldOrMethod); err != nil {
 		return nil, err
 	}
@@ -37,19 +37,19 @@ func (m *Mapping) Map(c Compo) (f func(), err error) {
 	return m.mapTo(reflect.ValueOf(c))
 }
 
-func (m *Mapping) currentPipeline() []string {
+func (m *mapping) currentPipeline() []string {
 	return m.pipeline[m.index:]
 }
 
-func (m *Mapping) target() string {
+func (m *mapping) target() string {
 	return m.pipeline[m.index]
 }
 
-func (m *Mapping) fullTarget() string {
+func (m *mapping) fullTarget() string {
 	return strings.Join(m.pipeline[:m.index+1], ".")
 }
 
-func (m *Mapping) mapTo(value reflect.Value) (func(), error) {
+func (m *mapping) mapTo(value reflect.Value) (func(), error) {
 	switch value.Kind() {
 	case reflect.Ptr:
 		return m.mapToPointer(value)
@@ -71,7 +71,7 @@ func (m *Mapping) mapTo(value reflect.Value) (func(), error) {
 	}
 }
 
-func (m *Mapping) mapToPointer(ptr reflect.Value) (func(), error) {
+func (m *mapping) mapToPointer(ptr reflect.Value) (func(), error) {
 	if len(m.currentPipeline()) == 0 {
 		return m.mapToValue(ptr)
 	}
@@ -89,7 +89,7 @@ func (m *Mapping) mapToPointer(ptr reflect.Value) (func(), error) {
 	return m.mapTo(ptr.Elem())
 }
 
-func (m *Mapping) mapToStruct(structure reflect.Value) (func(), error) {
+func (m *mapping) mapToStruct(structure reflect.Value) (func(), error) {
 	if len(m.currentPipeline()) == 0 {
 		return m.mapToValue(structure)
 	}
@@ -118,7 +118,7 @@ func (m *Mapping) mapToStruct(structure reflect.Value) (func(), error) {
 	return m.mapTo(field)
 }
 
-func (m *Mapping) mapToMap(mapv reflect.Value) (func(), error) {
+func (m *mapping) mapToMap(mapv reflect.Value) (func(), error) {
 	if len(m.currentPipeline()) == 0 {
 		return m.mapToValue(mapv)
 	}
@@ -136,7 +136,7 @@ func (m *Mapping) mapToMap(mapv reflect.Value) (func(), error) {
 	)
 }
 
-func (m *Mapping) mapToSlice(slice reflect.Value) (func(), error) {
+func (m *mapping) mapToSlice(slice reflect.Value) (func(), error) {
 	if len(m.currentPipeline()) == 0 {
 		return m.mapToValue(slice)
 	}
@@ -161,7 +161,7 @@ func (m *Mapping) mapToSlice(slice reflect.Value) (func(), error) {
 	)
 }
 
-func (m *Mapping) mapToFunction(fn reflect.Value) (func(), error) {
+func (m *mapping) mapToFunction(fn reflect.Value) (func(), error) {
 	if len(m.currentPipeline()) != 0 {
 		return nil, errors.Errorf(
 			"%s is mapped to a unsuported method",
@@ -194,7 +194,7 @@ func (m *Mapping) mapToFunction(fn reflect.Value) (func(), error) {
 	}, nil
 }
 
-func (m *Mapping) mapToValue(value reflect.Value) (func(), error) {
+func (m *mapping) mapToValue(value reflect.Value) (func(), error) {
 	if len(m.currentPipeline()) == 0 {
 		newValue := reflect.New(value.Type())
 

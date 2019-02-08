@@ -37,19 +37,19 @@ func TestMapping(t *testing.T) {
 
 	tests := []struct {
 		scenario string
-		mapping  Mapping
+		mapping  mapping
 		expected M
 		err      bool
 		isFunc   bool
 	}{
 		{
 			scenario: "map invalid field or method",
-			mapping:  Mapping{FieldOrMethod: "String..Hello"},
+			mapping:  mapping{FieldOrMethod: "String..Hello"},
 			err:      true,
 		},
 		{
 			scenario: "map field",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "String",
 				JSONValue:     `"hello"`,
 			},
@@ -57,20 +57,20 @@ func TestMapping(t *testing.T) {
 		},
 		{
 			scenario: "map method",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "Method",
 			},
 		},
 		{
 			scenario: "map unexported method",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "method",
 			},
 			err: true,
 		},
 		{
 			scenario: "map pointer",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "IntPtr",
 				JSONValue:     "42",
 			},
@@ -78,7 +78,7 @@ func TestMapping(t *testing.T) {
 		},
 		{
 			scenario: "map struct",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "Struct",
 				JSONValue:     `{"Exported": 42}`,
 			},
@@ -86,7 +86,7 @@ func TestMapping(t *testing.T) {
 		},
 		{
 			scenario: "map struct field",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "Struct.Exported",
 				JSONValue:     "42",
 			},
@@ -94,7 +94,7 @@ func TestMapping(t *testing.T) {
 		},
 		{
 			scenario: "map struct unexported field",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "Struct.unexported",
 				JSONValue:     "42",
 			},
@@ -102,21 +102,21 @@ func TestMapping(t *testing.T) {
 		},
 		{
 			scenario: "map nonexistent struct field",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "Struct.Nonexistent",
 			},
 			err: true,
 		},
 		{
 			scenario: "map struct method",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "Struct.Method",
 			},
 			isFunc: true,
 		},
 		{
 			scenario: "map map",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "Map",
 				JSONValue:     `{"foo": "bar"}`,
 			},
@@ -126,7 +126,7 @@ func TestMapping(t *testing.T) {
 		},
 		{
 			scenario: "map map method",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "MapWithMethod.Method",
 				JSONValue:     `{"foo": "bar"}`,
 			},
@@ -134,14 +134,14 @@ func TestMapping(t *testing.T) {
 		},
 		{
 			scenario: "map nonexistent map key",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "Map.hello",
 			},
 			err: true,
 		},
 		{
 			scenario: "map slice",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "Slice",
 				JSONValue:     `[1, 2, 3, 4, 5]`,
 			},
@@ -151,21 +151,21 @@ func TestMapping(t *testing.T) {
 		},
 		{
 			scenario: "map slice method",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "SliceWithMethod.Method",
 			},
 			isFunc: true,
 		},
 		{
 			scenario: "map slice out of range",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "Slice.0",
 			},
 			err: true,
 		},
 		{
 			scenario: "map array",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "Array",
 				JSONValue:     `[1, 2, 3, 4, 5]`,
 			},
@@ -175,7 +175,7 @@ func TestMapping(t *testing.T) {
 		},
 		{
 			scenario: "map array index",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "Array.0",
 				JSONValue:     "42",
 			},
@@ -185,7 +185,7 @@ func TestMapping(t *testing.T) {
 		},
 		{
 			scenario: "map func with arg",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "FuncWithArg",
 				JSONValue:     `42`,
 			},
@@ -193,21 +193,21 @@ func TestMapping(t *testing.T) {
 		},
 		{
 			scenario: "map func with arg impossible field",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "FuncWithArg.Unkown",
 			},
 			err: true,
 		},
 		{
 			scenario: "map func with multiple arg",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "FuncWithMultipleArg",
 			},
 			err: true,
 		},
 		{
 			scenario: "map func with arg with bad json",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "FuncWithArg",
 				JSONValue:     `}{`,
 			},
@@ -215,7 +215,7 @@ func TestMapping(t *testing.T) {
 		},
 		{
 			scenario: "map value with bad json",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "Int",
 				JSONValue:     `}{`,
 			},
@@ -223,7 +223,7 @@ func TestMapping(t *testing.T) {
 		},
 		{
 			scenario: "map value method",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "IntWithMethod.Method",
 				JSONValue:     `42`,
 			},
@@ -231,14 +231,14 @@ func TestMapping(t *testing.T) {
 		},
 		{
 			scenario: "map value nonexported method",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "IntWithMethod.method",
 			},
 			err: true,
 		},
 		{
 			scenario: "map value undefined method",
-			mapping: Mapping{
+			mapping: mapping{
 				FieldOrMethod: "IntWithMethod.UndefinedMethod",
 			},
 			err: true,
