@@ -50,6 +50,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.once.Do(h.init)
 
 	path := filepath.Join(h.webDir, r.URL.Path)
+
 	if fi, err := os.Stat(path); err == nil && !fi.IsDir() {
 		h.fileHandler.ServeHTTP(w, r)
 		return
@@ -68,7 +69,11 @@ func (h *Handler) init() {
 		h.Icon = "/logo.png"
 	}
 
-	h.webDir = h.WebDir()
+	h.webDir = "."
+	if h.WebDir != nil {
+		h.webDir = h.WebDir()
+	}
+
 	h.fileHandler = h.newFileHandler()
 	h.page = h.newPage()
 }
