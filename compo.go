@@ -2,6 +2,7 @@ package app
 
 import (
 	"encoding/json"
+	"net/url"
 	"reflect"
 	"strconv"
 	"strings"
@@ -80,6 +81,26 @@ func compoName(c Compo) string {
 
 	name := strings.ToLower(v.Type().String())
 	return strings.TrimPrefix(name, "main.")
+}
+
+func compoNameFromURL(u *url.URL) string {
+	p := u.Path
+	p = strings.TrimPrefix(p, "/")
+
+	path := strings.SplitN(p, "/", 2)
+	if len(path[0]) == 0 {
+		return ""
+	}
+
+	names := strings.SplitN(path[0], "?", 2)
+	name := names[0]
+	name = strings.ToLower(name)
+	return strings.TrimPrefix(name, "main.")
+}
+
+func compoNameFromURLString(rawurl string) string {
+	u, _ := url.Parse(rawurl)
+	return compoNameFromURL(u)
 }
 
 func mapCompoFields(c Compo, fields map[string]string) error {
