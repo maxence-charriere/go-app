@@ -37,6 +37,14 @@ type Dismounter interface {
 	OnDismount()
 }
 
+// Navigable is the interface that wraps OnNavigate method.
+type Navigable interface {
+	Compo
+
+	// OnNavigate is called when a component is navigated to.
+	OnNavigate(u *url.URL)
+}
+
 // EventSubscriber is the interface that describes a component that subscribes
 // to events emitted from messages.
 type EventSubscriber interface {

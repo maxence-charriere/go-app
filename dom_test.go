@@ -295,7 +295,7 @@ func (e *EmptyRender) Render() string {
 	return ""
 }
 
-func TestEngine(t *testing.T) {
+func TestDomEngine(t *testing.T) {
 	f := newCompoBuilder()
 	f.register(&Mur{})
 	f.register(&Lok{})
