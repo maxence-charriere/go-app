@@ -34,10 +34,11 @@ type Handler struct {
 	// The app name.
 	Name string
 
-	// The path of the go web assembly file to serve. Default is "/app.wasm".
+	// The path of the go web assembly file to serve.
 	Wasm string
 
-	// The function that returns the path of the web directory.
+	// The function that returns the path of the web directory. Default is the
+	// working directory.
 	WebDir func() string
 
 	once        sync.Once
@@ -62,7 +63,13 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) init() {
 	if h.Wasm == "" {
-		h.Wasm = "/app.wasm"
+		wasm, _ := os.Getwd()
+		wasm = filepath.Base(wasm)
+		if wasm == "" {
+			wasm = "app"
+		}
+
+		h.Wasm = "/" + wasm + ".wasm"
 	}
 
 	if h.Icon == "" {
@@ -73,6 +80,7 @@ func (h *Handler) init() {
 	if h.WebDir != nil {
 		h.webDir = h.WebDir()
 	}
+	h.webDir, _ = filepath.Abs(h.webDir)
 
 	h.fileHandler = h.newFileHandler()
 	h.page = h.newPage()

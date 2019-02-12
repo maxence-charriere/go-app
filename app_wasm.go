@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"net/url"
 	"syscall/js"
 )
@@ -9,7 +10,7 @@ import (
 var dom = domEngine{
 	AttrTransforms: []attrTransform{jsToGoHandler},
 	CompoBuilder:   components,
-	Sync:           sync,
+	Sync:           syncDom,
 	UI:             UI,
 }
 
@@ -46,19 +47,26 @@ func run() error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	for {
-		select {
-		case f := <-ui:
-			f()
+	go func() {
 
-		case <-ctx.Done():
-			return
+		for {
+			select {
+			case f := <-ui:
+				f()
+
+			case <-ctx.Done():
+				return
+			}
 		}
-	}
+	}()
 
-	return ctx.Err()
+	return nil
 }
 
-func sync(changes []change) error {
-	return erros.New("not implemented")
+func syncDom(changes []change) error {
+	for _, c := range changes {
+		fmt.Printf("%+v\n", c)
+	}
+
+	return nil
 }
