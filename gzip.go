@@ -5,7 +5,6 @@ package app
 import (
 	"compress/gzip"
 	"net/http"
-	"strings"
 )
 
 type gzipResponseWriter struct {
@@ -39,10 +38,7 @@ func newGzipHandler(h http.Handler) http.Handler {
 }
 
 func (h *gzipHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	if accept := req.Header.Get("Accept-Encoding"); !strings.Contains(accept, "gzip") {
-		h.Handler.ServeHTTP(res, req)
-		return
-	}
+	res.Header().Set("Content-Encoding", "gzip")
 
 	w := newGzipWriter(res)
 	defer w.Close()

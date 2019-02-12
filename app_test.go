@@ -2,13 +2,26 @@ package app
 
 import (
 	"fmt"
+	"runtime"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestEmit(t *testing.T) {
 	Emit("hello")
+}
+
+func TestEnableDebug(t *testing.T) {
+	EnableDebug(true)
+	called := false
+
+	WhenDebug(func() {
+		called = true
+	})
+
+	assert.True(t, called)
 }
 
 func TestImport(t *testing.T) {
@@ -64,4 +77,21 @@ func TestPanicf(t *testing.T) {
 
 	Panicf("%s %s", "bye", "world")
 	assert.Fail(t, "no panic")
+}
+
+func TestRun(t *testing.T) {
+	err := Run()
+
+	if runtime.GOARCH != "wasm" {
+		require.Error(t, err)
+		return
+	}
+
+	require.NoError(t, err)
+}
+
+func TestUI(t *testing.T) {
+	UI(func() {
+		t.Log("boo")
+	})
 }

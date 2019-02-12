@@ -3,11 +3,14 @@
 package app
 
 import (
+	"compress/gzip"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestHandler(t *testing.T) {
@@ -48,69 +51,34 @@ func testHandler(t *testing.T, h *Handler) {
 
 func testHandlerServePage(t *testing.T, serv *httptest.Server) {
 	res, err := serv.Client().Get(serv.URL)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 
 	t.Log("body:", string(body))
 }
 
 func testHandlerServeFile(t *testing.T, serv *httptest.Server) {
 	defer os.RemoveAll("test.txt")
-	ioutil.WriteFile("test.txt", []byte("hello"), 0666)
-
-	client := serv.Client()
-	url := serv.URL + "/test.txt"
-
-	res, err := client.Get(url)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer res.Body.Close()
-
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if s := string(body); s != "hello" {
-		t.Error("expected body:", "hello")
-		t.Fatal("returned body:", s)
-	}
-}
-
-func testHandlerServeGzipFile(t *testing.T, serv *httptest.Server) {
-	defer os.RemoveAll("test.txt")
-	ioutil.WriteFile("test.txt", []byte("hello"), 0666)
+	ioutil.WriteFile("test.txt", []byte("hello world"), 0666)
 
 	client := serv.Client()
 	url := serv.URL + "/test.txt"
 
 	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 	req.Header.Set("Accept-Encoding", "gzip")
 
 	res, err := client.Do(req)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 	defer res.Body.Close()
 
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		t.Fatal(err)
-	}
+	gzipReader, err := gzip.NewReader(res.Body)
+	require.NoError(t, err)
 
-	if s := string(body); s != "hello" {
-		t.Error("expected body:", "hello")
-		t.Fatal("returned body:", s)
-	}
+	body, err := ioutil.ReadAll(gzipReader)
+	require.NoError(t, err)
+	require.Equal(t, "hello world", string(body))
 }

@@ -127,7 +127,7 @@ func Render(c Compo) {
 
 // Run runs the app with the loaded URL.
 func Run() error {
-	panic("NOT IMPLEMENTED")
+	return run()
 }
 
 // UI calls a function on the UI goroutine.
