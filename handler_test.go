@@ -3,7 +3,6 @@
 package app
 
 import (
-	"compress/gzip"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -69,16 +68,12 @@ func testHandlerServeFile(t *testing.T, serv *httptest.Server) {
 
 	req, err := http.NewRequest("GET", url, nil)
 	require.NoError(t, err)
-	req.Header.Set("Accept-Encoding", "gzip")
 
 	res, err := client.Do(req)
 	require.NoError(t, err)
 	defer res.Body.Close()
 
-	gzipReader, err := gzip.NewReader(res.Body)
-	require.NoError(t, err)
-
-	body, err := ioutil.ReadAll(gzipReader)
+	body, err := ioutil.ReadAll(res.Body)
 	require.NoError(t, err)
 	require.Equal(t, "hello world", string(body))
 }
