@@ -20,6 +20,10 @@ var (
 	// feature is used.
 	ErrNotSupported = errors.New("not supported")
 
+	// ErrNoWasm describes an error that occurs when Run or Render are called
+	// in a non wasm environment.
+	ErrNoWasm = errors.New("go architecture is not wasm")
+
 	// Logger is a function that formats using the default formats for its
 	// operands and logs the resulting string.
 	// It is used by Log, Logf, Panic and Panicf to generate logs.
@@ -118,11 +122,13 @@ func Post(msgs ...Msg) {
 }
 
 // Render renders the given component.
-// It should be called when the display of component c have to be updated.
+// It should be called whenever a component is modified.
 //
 // It panics if called before Run.
 func Render(c Compo) {
-	panic("NOT IMPLEMENTED")
+	if err := render(c); err != nil {
+		Log(err)
+	}
 }
 
 // Run runs the app with the loaded URL.

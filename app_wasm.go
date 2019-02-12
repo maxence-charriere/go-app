@@ -6,6 +6,17 @@ import (
 	"syscall/js"
 )
 
+var dom = domEngine{
+	AttrTransforms: []attrTransform{jsToGoHandler},
+	CompoBuilder:   components,
+	Sync:           sync,
+	UI:             UI,
+}
+
+func render(c Compo) error {
+	return dom.Render(c)
+}
+
 func run() error {
 	rawurl := js.Global().
 		Get("location").
@@ -20,13 +31,6 @@ func run() error {
 	var compo Compo
 	if compo, err = components.new(compoNameFromURLString(rawurl)); err != nil {
 		return err
-	}
-
-	dom := domEngine{
-		AttrTransforms: []attrTransform{jsToGoHandler},
-		CompoBuilder:   components,
-		Sync:           sync,
-		UI:             UI,
 	}
 
 	if err = dom.New(compo); err != nil {

@@ -2,8 +2,10 @@
 
 package app
 
-import "github.com/pkg/errors"
+func render(c Compo) error {
+	return ErrNoWasm
+}
 
 func run() error {
-	return errors.New("go architecture is not wasm")
+	return ErrNoWasm
 }
