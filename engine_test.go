@@ -315,14 +315,13 @@ func TestEngine(t *testing.T) {
 	f.register(&EmptyRender{})
 
 	tests := []struct {
-		scenario     string
-		allowedNodes []string
-		compo        Compo
-		mutate       func(c Compo)
-		changes      []change
-		compoCount   int
-		nodeCount    int
-		err          bool
+		scenario   string
+		compo      Compo
+		mutate     func(c Compo)
+		changes    []change
+		compoCount int
+		nodeCount  int
+		err        bool
 	}{
 		// Mur:
 		{
@@ -744,18 +743,6 @@ func TestEngine(t *testing.T) {
 			err:      true,
 		},
 		{
-			scenario:     "fail with not allowed node",
-			allowedNodes: []string{"menu", "menuitem"},
-			compo:        &CompoErr{},
-			err:          true,
-		},
-		{
-			scenario:     "fail with not allowed self closing node",
-			allowedNodes: []string{"div"},
-			compo:        &SelfClosing{Svg: true},
-			err:          true,
-		},
-		{
 			scenario: "fail map child fields",
 			compo:    &CompoErr{Int: 42.42},
 			err:      true,
@@ -799,7 +786,6 @@ func TestEngine(t *testing.T) {
 
 			e := domEngine{
 				CompoBuilder: f,
-				AllowedNodes: test.allowedNodes,
 				AttrTransforms: []attrTransform{
 					jsToGoHandler,
 				},

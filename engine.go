@@ -15,24 +15,22 @@ import (
 // The domEngine represents a dom (document object model) engine. It manages
 // components an nodes lifecycle and keep track of node changes.
 type domEngine struct {
-	AllowedNodes   []string
 	AttrTransforms []attrTransform
 	CompoBuilder   *compoBuilder
 	Sync           func([]change) error
 	UI             func(func())
 
-	once          sync.Once
-	mutex         sync.RWMutex
-	compos        map[Compo]compo
-	compoIDs      map[string]compo
-	nodes         map[string]node
-	allowdedNodes map[string]struct{}
-	rootID        string
-	creates       []change
-	changes       []change
-	deletes       []change
-	toSync        []change
-	decodeAttrs   map[string]string
+	once        sync.Once
+	mutex       sync.RWMutex
+	compos      map[Compo]compo
+	compoIDs    map[string]compo
+	nodes       map[string]node
+	rootID      string
+	creates     []change
+	changes     []change
+	deletes     []change
+	toSync      []change
+	decodeAttrs map[string]string
 }
 
 func (e *domEngine) init() {
@@ -45,14 +43,6 @@ func (e *domEngine) init() {
 	e.compos = make(map[Compo]compo)
 	e.compoIDs = make(map[string]compo)
 	e.nodes = make(map[string]node)
-
-	if len(e.AllowedNodes) != 0 {
-		e.allowdedNodes = make(map[string]struct{}, len(e.AllowedNodes))
-
-		for _, a := range e.AllowedNodes {
-			e.allowdedNodes[a] = struct{}{}
-		}
-	}
 
 	if e.UI == nil {
 		e.UI = func(f func()) {}
@@ -335,10 +325,6 @@ func (e *domEngine) renderSelfClosingTag(r rendering) (node, bool, error) {
 		return e.renderCompoNode(r, typ, hasAttr)
 	}
 
-	if !e.isAllowedNode(typ) {
-		return node{}, false, errors.Errorf("%s is not allowed", typ)
-	}
-
 	n := r.NodeToSync
 
 	if len(n.ID) == 0 || n.Type != typ {
@@ -378,10 +364,6 @@ func (e *domEngine) renderStartTag(r rendering) (node, bool, error) {
 
 	if isCompoNode(typ, r.Namespace) {
 		return e.renderCompoNode(r, typ, hasAttr)
-	}
-
-	if !e.isAllowedNode(typ) {
-		return node{}, false, errors.Errorf("%s is not allowed", typ)
 	}
 
 	n := r.NodeToSync
@@ -682,15 +664,6 @@ func (e *domEngine) sync() error {
 	e.deletes = clearChanges(e.deletes)
 	e.toSync = clearChanges(e.toSync)
 	return nil
-}
-
-func (e *domEngine) isAllowedNode(typ string) bool {
-	if len(e.allowdedNodes) == 0 {
-		return true
-	}
-
-	_, ok := e.allowdedNodes[typ]
-	return ok
 }
 
 func validateCompo(c Compo) error {

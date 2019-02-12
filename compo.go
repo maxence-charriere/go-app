@@ -83,6 +83,11 @@ func compoName(c Compo) string {
 	return strings.TrimPrefix(name, "main.")
 }
 
+func compoNameFromURLString(rawurl string) string {
+	u, _ := url.Parse(rawurl)
+	return compoNameFromURL(u)
+}
+
 func compoNameFromURL(u *url.URL) string {
 	p := u.Path
 	p = strings.TrimPrefix(p, "/")
@@ -96,11 +101,6 @@ func compoNameFromURL(u *url.URL) string {
 	name := names[0]
 	name = strings.ToLower(name)
 	return strings.TrimPrefix(name, "main.")
-}
-
-func compoNameFromURLString(rawurl string) string {
-	u, _ := url.Parse(rawurl)
-	return compoNameFromURL(u)
 }
 
 func mapCompoFields(c Compo, fields map[string]string) error {
