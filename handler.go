@@ -15,6 +15,7 @@ import (
 	"strings"
 	"sync"
 	"text/template"
+	"time"
 )
 
 // Handler is a http handler that serves UI components created with this
@@ -43,10 +44,11 @@ type Handler struct {
 	// working directory.
 	WebDir func() string
 
-	once        sync.Once
-	fileHandler http.Handler
-	page        []byte
-	webDir      string
+	once         sync.Once
+	fileHandler  http.Handler
+	lastModified string
+	page         []byte
+	webDir       string
 }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -59,6 +61,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Last-Modified", h.lastModified)
 	w.WriteHeader(http.StatusOK)
 	w.Write(h.page)
 }
@@ -77,6 +80,8 @@ func (h *Handler) init() {
 	if h.Icon == "" {
 		h.Icon = "/logo.png"
 	}
+
+	h.lastModified = time.Now().UTC().Format("Mon, 02 Jan 2006 15:04:05 GMT")
 
 	h.webDir = "."
 	if h.WebDir != nil {
