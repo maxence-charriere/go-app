@@ -18,7 +18,7 @@ func TestHandler(t *testing.T) {
 
 func TestHandlerWithWebDir(t *testing.T) {
 	testHandler(t, &Handler{
-		WebDir: func() string { return "." },
+		WebDirFunc: func() string { return "." },
 	})
 }
 

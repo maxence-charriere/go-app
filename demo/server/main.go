@@ -11,18 +11,9 @@ import (
 
 func main() {
 	http.Handle("/", &app.Handler{
-		Author:      "Maxence Charriere",
-		Description: "A demo that shows what the app package can build.",
-		Keywords: []string{
-			"go",
-			"golang",
-			"app",
-			"ui",
-			"gui",
-			"wasm",
-			"web assembly",
-		},
-		Name: "app demo",
+		Name:   "app demo",
+		Wasm:   "demo.wasm",
+		WebDir: "web",
 	})
 
 	if err := http.ListenAndServe(":3000", nil); err != nil {

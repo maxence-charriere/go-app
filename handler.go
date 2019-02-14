@@ -27,8 +27,7 @@ type Handler struct {
 	// The app description.
 	Description string
 
-	// The path of the icon relative to the web directory. Default is
-	// "/logo.png".
+	// The path of the icon relative to the web directory.
 	Icon string
 
 	// The app keywords.
@@ -37,24 +36,27 @@ type Handler struct {
 	// The app name.
 	Name string
 
-	// The path of the go web assembly file to serve.
+	// The path of the go web assembly file to serve relative to the web
+	// directory.
 	Wasm string
 
-	// The function that returns the path of the web directory. Default is the
-	// working directory.
-	WebDir func() string
+	// The he path of the web directory. Default is the working directory.
+	WebDir string
+
+	// WebDirFunc is a func that returns the path of the web directory. The
+	// returned string overrides WebDir when defined.
+	WebDirFunc func() string
 
 	once         sync.Once
 	fileHandler  http.Handler
 	lastModified string
 	page         []byte
-	webDir       string
 }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.once.Do(h.init)
 
-	path := filepath.Join(h.webDir, r.URL.Path)
+	path := filepath.Join(h.WebDir, r.URL.Path)
 
 	if fi, err := os.Stat(path); err == nil && !fi.IsDir() {
 		h.fileHandler.ServeHTTP(w, r)
@@ -67,34 +69,35 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) init() {
-	if h.Wasm == "" {
-		wasm, _ := os.Getwd()
-		wasm = filepath.Base(wasm)
-		if wasm == "" {
-			wasm = "app"
-		}
-
-		h.Wasm = "/" + wasm + ".wasm"
-	}
-
-	if h.Icon == "" {
-		h.Icon = "/logo.png"
-	}
-
+	h.Wasm = h.getWasm()
+	h.WebDir = h.getWebDir()
+	h.fileHandler = h.newFileHandler(h.WebDir)
 	h.lastModified = time.Now().UTC().Format("Mon, 02 Jan 2006 15:04:05 GMT")
-
-	h.webDir = "."
-	if h.WebDir != nil {
-		h.webDir = h.WebDir()
-	}
-	h.webDir, _ = filepath.Abs(h.webDir)
-
-	h.fileHandler = h.newFileHandler()
 	h.page = h.newPage()
 }
 
-func (h *Handler) newFileHandler() http.Handler {
-	handler := http.FileServer(http.Dir(h.webDir))
+func (h *Handler) getWasm() string {
+	wasm := h.Wasm
+	if !strings.HasSuffix(wasm, ".wasm") {
+		wasm += ".wasm"
+	}
+	return "/" + wasm
+}
+
+func (h *Handler) getWebDir() string {
+	webdir := h.WebDir
+	if h.WebDirFunc != nil {
+		webdir = h.WebDirFunc()
+	}
+	if webdir == "" {
+		webdir = "."
+	}
+	webdir, _ = filepath.Abs(webdir)
+	return webdir
+}
+
+func (h *Handler) newFileHandler(webDir string) http.Handler {
+	handler := http.FileServer(http.Dir(webDir))
 	handler = newGzipHandler(handler)
 	return handler
 }
@@ -118,13 +121,13 @@ func (h *Handler) newPage() []byte {
 	}{
 		AppJS:       pageJS,
 		Author:      h.Author,
-		CSS:         h.filepathsFromDir(h.webDir, ".css"),
+		CSS:         h.filepathsFromDir(h.WebDir, ".css"),
 		DefaultCSS:  pageCSS,
 		Description: h.Description,
 		Icon:        h.Icon,
 		Keywords:    strings.Join(h.Keywords, ", "),
 		Name:        h.Name,
-		Scripts:     h.filepathsFromDir(h.webDir, ".js"),
+		Scripts:     h.filepathsFromDir(h.WebDir, ".js"),
 		Wasm:        h.Wasm,
 		WasmExecJS:  wasmExecJS(),
 	}); err != nil {
@@ -155,7 +158,7 @@ func (h *Handler) filepathsFromDir(dirPath string, extensions ...string) []strin
 			return nil
 		}
 
-		path = path[len(h.webDir):]
+		path = path[len(dirPath):]
 		filepaths = append(filepaths, path)
 		return nil
 	}
