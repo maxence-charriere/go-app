@@ -25,6 +25,10 @@ var (
 	// in a non wasm environment.
 	ErrNoWasm = errors.New("go architecture is not wasm")
 
+	// DefaultPath is the path to the component to be  loaded when no path is
+	// specified.
+	DefaultPath string
+
 	// Logger is a function that formats using the default formats for its
 	// operands and logs the resulting string.
 	// It is used by Log, Logf, Panic and Panicf to generate logs.

@@ -31,8 +31,12 @@ func run() error {
 		return err
 	}
 
+	if url.Path == "" || url.Path == "/" {
+		url.Path = DefaultPath
+	}
+
 	var compo Compo
-	if compo, err = components.new(compoNameFromURLString(rawurl)); err != nil {
+	if compo, err = components.new(compoNameFromURL(url)); err != nil {
 		return err
 	}
 

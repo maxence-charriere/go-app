@@ -9,6 +9,8 @@ import (
 func main() {
 	app.Import(&Hello{})
 
+	app.DefaultPath = "/hello"
+
 	if err := app.Run(); err != nil {
 		log.Print(err)
 	}
