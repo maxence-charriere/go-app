@@ -29,6 +29,10 @@ var (
 	// specified.
 	DefaultPath string
 
+	// NotFoundPath is the path to the component to be  loaded when an non
+	// imported component is requested.
+	NotFoundPath = "/app.notfound"
+
 	// Logger is a function that formats using the default formats for its
 	// operands and logs the resulting string.
 	// It is used by Log, Logf, Panic and Panicf to generate logs.

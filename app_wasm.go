@@ -21,22 +21,13 @@ func render(c Compo) error {
 func run() error {
 	initEmit()
 
-	rawurl := js.Global().
-		Get("location").
-		Get("href").
-		String()
-
-	url, err := url.Parse(rawurl)
+	url, err := getURL()
 	if err != nil {
 		return err
 	}
 
-	if url.Path == "" || url.Path == "/" {
-		url.Path = DefaultPath
-	}
-
-	var compo Compo
-	if compo, err = components.new(compoNameFromURL(url)); err != nil {
+	compo, err := components.new(compoNameFromURL(url))
+	if err != nil {
 		return err
 	}
 
@@ -62,6 +53,25 @@ func run() error {
 			return nil
 		}
 	}
+}
+
+func getURL() (*url.URL, error) {
+	rawurl := js.Global().
+		Get("location").
+		Get("href").
+		String()
+
+	url, err := url.Parse(rawurl)
+	if err != nil {
+		return nil, err
+	}
+	if url.Path == "" || url.Path == "/" {
+		url.Path = DefaultPath
+	}
+	if !components.isRegistered(compoNameFromURL(url)) {
+		url.Path = NotFoundPath
+	}
+	return url, nil
 }
 
 func syncDom(changes []change) error {
