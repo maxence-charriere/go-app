@@ -97,6 +97,7 @@ func (h *Handler) newPage() []byte {
 	tmpl := template.Must(template.New("page").Parse(pageHTML))
 
 	if err := tmpl.Execute(&b, struct {
+		AppJS       string
 		Author      string
 		CSS         []string
 		DefaultCSS  string
@@ -107,6 +108,7 @@ func (h *Handler) newPage() []byte {
 		Scripts     []string
 		Wasm        string
 	}{
+		AppJS:       pageJS,
 		Author:      h.Author,
 		CSS:         h.filepathsFromDir(h.webDir, ".css"),
 		DefaultCSS:  pageCSS,

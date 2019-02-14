@@ -10,6 +10,65 @@ import (
 	"github.com/pkg/errors"
 )
 
+// MouseArg represents an onmouse event arg.
+type MouseArg struct {
+	ClientX   float64
+	ClientY   float64
+	PageX     float64
+	PageY     float64
+	ScreenX   float64
+	ScreenY   float64
+	Button    int
+	Detail    int
+	AltKey    bool
+	CtrlKey   bool
+	MetaKey   bool
+	ShiftKey  bool
+	InnerText string
+	Node      NodeArg
+}
+
+// WheelArg represents an onwheel event arg.
+type WheelArg struct {
+	DeltaX    float64
+	DeltaY    float64
+	DeltaZ    float64
+	DeltaMode int
+	Node      NodeArg
+}
+
+// KeyboardArg represents an onkey event arg.
+type KeyboardArg struct {
+	CharCode  rune
+	KeyCode   int
+	Location  int
+	AltKey    bool
+	CtrlKey   bool
+	MetaKey   bool
+	ShiftKey  bool
+	InnerText string
+	Node      NodeArg
+}
+
+// DragAndDropArg represents an ondrop event arg.
+type DragAndDropArg struct {
+	Files         []string
+	Data          string
+	DropEffect    string
+	EffectAllowed string
+	Node          NodeArg
+}
+
+// NodeArg represents a descriptor to an event source.
+type NodeArg struct {
+	GoappID string
+	CompoID string
+	ID      string
+	Class   string
+	Data    map[string]string
+	Value   string
+}
+
 // mapping represents a component method or field descriptor.
 type mapping struct {
 	// The component identifier.

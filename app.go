@@ -3,6 +3,7 @@ package app
 
 import (
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -27,7 +28,7 @@ var (
 	// Logger is a function that formats using the default formats for its
 	// operands and logs the resulting string.
 	// It is used by Log, Logf, Panic and Panicf to generate logs.
-	Logger func(format string, a ...interface{})
+	Logger = log.Printf
 
 	components = newCompoBuilder()
 	messages   = newMsgRegistry()

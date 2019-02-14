@@ -17,6 +17,8 @@
     {{range .Scripts}}<script src="{{.}}"></script>
     {{end}}
     <script>
+{{.AppJS}}
+
 if (!WebAssembly.instantiateStreaming) {
     WebAssembly.instantiateStreaming = async (resp, importObject) => {
         const source = await (await resp).arrayBuffer();
