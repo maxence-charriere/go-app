@@ -127,6 +127,10 @@ func Post(msgs ...Msg) {
 //
 // It panics if called before Run.
 func Render(c Compo) {
+	WhenDebug(func() {
+		Logf("rendering %T")
+	})
+
 	if err := render(c); err != nil {
 		Log(err)
 	}
