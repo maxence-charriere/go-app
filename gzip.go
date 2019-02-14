@@ -38,8 +38,6 @@ func newGzipHandler(h http.Handler) http.Handler {
 }
 
 func (h *gzipHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	res.Header().Set("Content-Encoding", "gzip")
-
 	w := newGzipWriter(res)
 	defer w.Close()
 
