@@ -62,12 +62,8 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 11pt;
     font-weight: 300;
-}
-
-@media (prefers-color-scheme: dark) {
-    body {
-        color: white;
-    }
+    color: white;
+    background-color: #21252a;
 }
 
 h1 {
