@@ -15,3 +15,4 @@ wasm_exec.js
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+demo/demo
