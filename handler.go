@@ -7,11 +7,9 @@ package app
 
 import (
 	"bytes"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"sync"
 	"text/template"
@@ -117,7 +115,6 @@ func (h *Handler) newPage() []byte {
 		Name        string
 		Scripts     []string
 		Wasm        string
-		WasmExecJS  string
 	}{
 		AppJS:       pageJS,
 		Author:      h.Author,
@@ -129,7 +126,6 @@ func (h *Handler) newPage() []byte {
 		Name:        h.Name,
 		Scripts:     h.filepathsFromDir(h.WebDir, ".js"),
 		Wasm:        h.Wasm,
-		WasmExecJS:  wasmExecJS(),
 	}); err != nil {
 		panic(err)
 	}
@@ -165,16 +161,4 @@ func (h *Handler) filepathsFromDir(dirPath string, extensions ...string) []strin
 
 	filepath.Walk(dirPath, walker)
 	return filepaths
-}
-
-func wasmExecJS() string {
-	path := filepath.Join(
-		runtime.GOROOT(),
-		"misc",
-		"wasm",
-		"wasm_exec.js",
-	)
-
-	js, _ := ioutil.ReadFile(path)
-	return string(js)
 }

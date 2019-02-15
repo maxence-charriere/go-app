@@ -25,8 +25,6 @@ const pageHTML = `<!DOCTYPE html>
     <script>
 {{.AppJS}}
 
-{{.WasmExecJS}}
-
 if (!WebAssembly.instantiateStreaming) {
     WebAssembly.instantiateStreaming = async (resp, importObject) => {
         const source = await (await resp).arrayBuffer();

@@ -1,12 +1,10 @@
 build:
-	@go build -o demo ./server 
-	@GOOS=js GOARCH=wasm go build -o web/demo.wasm ./client
-	@cp client/*.css ./web/
-
+	@go build
+	@GOOS=js GOARCH=wasm go build -o web/demo.wasm ./app
 
 clean:
 	-@rm demo
-	-@rm -r web
+	-@rm web/demo.wasm
 
 run: build
 	./demo
