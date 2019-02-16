@@ -61,7 +61,7 @@ body {
     overflow: hidden;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 10pt;
-    font-weight: 300;
+    font-weight: 400;
     color: white;
     background-color: #21252a;
 }

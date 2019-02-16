@@ -88,6 +88,7 @@ func convertKeys(k string) string {
 		k = strings.Replace(k, "cmdorctrl", "ctrl", -1)
 		k = strings.Replace(k, "cmd", "win", -1)
 		k = strings.Replace(k, "command", "win", -1)
+		k = strings.Replace(k, "control", "ctrl", -1)
 	}
 
 	return k
