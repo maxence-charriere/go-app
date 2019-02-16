@@ -1,11 +1,11 @@
 package app
 
-// NotFound is component that displays a not found page.
-type NotFound ZeroCompo
-
 func init() {
 	Import(&NotFound{})
 }
+
+// NotFound is a component that displays a not found page.
+type NotFound ZeroCompo
 
 // Render returns the markup that describes the page.
 func (n *NotFound) Render() string {

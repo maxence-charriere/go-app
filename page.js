@@ -12,7 +12,12 @@ var goapp = {
         "appendChild": 6,
         "removeChild": 7,
         "replaceChild": 8,
-    })
+    }),
+
+    pointer: {
+        x: 0,
+        y: 0
+    }
 };
 
 function render(changes = []) {
@@ -267,6 +272,7 @@ function callCompoHandler(elem, event, fieldOrMethod) {
 
         default:
             eventToGolang(elem, event, fieldOrMethod);
+            trackPointerPosition(event);
             break;
     }
 }
@@ -333,4 +339,56 @@ function setPayloadSource(payload, elem) {
         'Data': elem.dataset,
         'Value': elem.value
     };
+}
+
+function trackPointerPosition(event) {
+    if (event.clientX != undefined) {
+        goapp.pointer.x = event.clientX;
+    }
+
+    if (event.clientY != undefined) {
+        goapp.pointer.y = event.clientY;
+    }
+}
+
+function showContextMenu() {
+    const bg = document.getElementById('App_ContextMenuBackground');
+    if (!bg) {
+        console.log('no context menu declared')
+        return;
+    }
+    bg.style.display = 'block';
+
+    const menu = document.getElementById('App_ContextMenu');
+
+    const width = window.innerWidth
+        || document.documentElement.clientWidth
+        || document.body.clientWidth;
+
+    const height = window.innerHeight
+        || document.documentElement.clientHeight
+        || document.body.clientHeight;
+
+
+    var x = goapp.pointer.x
+    if (x + menu.offsetWidth > width) {
+        x = width - menu.offsetWidth - 1
+    }
+
+    var y = goapp.pointer.y
+    if (y + menu.offsetHeight > height) {
+        y = height - menu.offsetHeight - 1
+    }
+
+    menu.style.left = x + 'px';
+    menu.style.top = y + 'px';
+}
+
+function hideContextMenu() {
+    const bg = document.getElementById("App_ContextMenuBackground");
+    if (!bg) {
+        console.log("no context menu declared")
+        return;
+    }
+    bg.style.display = "none";
 }

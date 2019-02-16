@@ -101,6 +101,26 @@ func Logf(format string, a ...interface{}) {
 	Logger(format, a...)
 }
 
+// Navigate navigates to the given URL.
+func Navigate(url string) {
+	navigate(url)
+}
+
+// NewContextMenu displays a context menu filled with the given menu items.
+//
+// Context menu requires an app.contextmenu component in the loaded page.
+// 	func (c *Compo) Render() string {
+// 		return `
+// 	<div>
+// 		<!-- ... -->
+// 		<app.contextmenu>
+// 	</div>
+// 		`
+// 	}
+func NewContextMenu(items ...MenuItem) {
+	Emit("app.NewContextMenu", items)
+}
+
 // NewMsg creates a message.
 func NewMsg(key string) Msg {
 	return &msg{key: key}
@@ -128,6 +148,11 @@ func Panicf(format string, a ...interface{}) {
 // Messages are handled in another goroutine.
 func Post(msgs ...Msg) {
 	messages.post(msgs...)
+}
+
+// Reload reloads the current page.
+func Reload() {
+	reload()
 }
 
 // Render renders the given component.

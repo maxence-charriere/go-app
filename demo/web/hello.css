@@ -30,3 +30,16 @@ input:focus {
     height: 100%;
     width: 100%;
 }
+
+.Menu {
+    position: fixed;
+    left: 12px;
+    top: 12px;
+    padding: 12px;
+    font-size: 24px;
+    font-weight: 200;
+}
+
+.Menu:hover {
+    color: deepskyblue;
+}

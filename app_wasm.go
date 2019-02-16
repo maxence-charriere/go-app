@@ -14,6 +14,14 @@ var dom = domEngine{
 	UI:             UI,
 }
 
+func navigate(url string) {
+	js.Global().Get("location").Set("href", url)
+}
+
+func reload() {
+	js.Global().Get("location").Call("reload")
+}
+
 func render(c Compo) error {
 	return dom.Render(c)
 }

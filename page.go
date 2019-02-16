@@ -60,7 +60,7 @@ body {
     padding: 0;
     overflow: hidden;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 11pt;
+    font-size: 10pt;
     font-weight: 300;
     color: white;
     background-color: #21252a;
@@ -153,12 +153,83 @@ table tr:last-child td {
     padding: 12px;
 }
 
+button {
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    font-size: inherit;
+    outline: inherit;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
 ::-webkit-scrollbar {
     background-color: rgba(255, 255, 255, 0.04);
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, 0.05);
+}
+
+#App_ContextMenuBackground {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: transparent;
+}
+
+#App_ContextMenu {
+    position: absolute;
+    min-width: 150px;
+    max-width: 480px;
+    padding: 6px 0;
+    border-radius: 6px;
+    border: solid 1px rgba(255, 255, 255, 0.1);
+    background: #21252a;
+    color: white;
+    -webkit-box-shadow: -1px 12px 38px 0px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: -1px 12px 38px 0px rgba(0, 0, 0, 0.6);
+    box-shadow: -1px 12px 38px 0px rgba(0, 0, 0, 0.6);
+}
+
+.App_MenuItemSeparator {
+    width: 100%;
+    height: 0;
+    margin: 6px 0;
+    border-top: solid 1px rgba(255, 255, 255, 0.1);
+}
+
+.App_MenuItem {
+    display: flex;
+    padding: 3px 24px;
+    width: 100%;
+    text-align: left;
+}
+
+.App_MenuItem:disabled {
+    opacity: 0.15;
+    background-color: transparent;
+}
+
+.App_MenuItemLabel {
+    user-select: none;
+    flex-grow: 1;
+}
+
+.App_MenuItemKeys {
+    flex-grow: 0;
+    margin-left: 12px;
+    text-transform: capitalize;
+}
+
+.App_MenuItem:hover {
+    background-color: deepskyblue;
 }`
 
 const pageJS = `
@@ -175,7 +246,12 @@ var goapp = {
         "appendChild": 6,
         "removeChild": 7,
         "replaceChild": 8,
-    })
+    }),
+
+    pointer: {
+        x: 0,
+        y: 0
+    }
 };
 
 function render(changes = []) {
@@ -430,6 +506,7 @@ function callCompoHandler(elem, event, fieldOrMethod) {
 
         default:
             eventToGolang(elem, event, fieldOrMethod);
+            trackPointerPosition(event);
             break;
     }
 }
@@ -496,4 +573,56 @@ function setPayloadSource(payload, elem) {
         'Data': elem.dataset,
         'Value': elem.value
     };
+}
+
+function trackPointerPosition(event) {
+    if (event.clientX != undefined) {
+        goapp.pointer.x = event.clientX;
+    }
+
+    if (event.clientY != undefined) {
+        goapp.pointer.y = event.clientY;
+    }
+}
+
+function showContextMenu() {
+    const bg = document.getElementById('App_ContextMenuBackground');
+    if (!bg) {
+        console.log('no context menu declared')
+        return;
+    }
+    bg.style.display = 'block';
+
+    const menu = document.getElementById('App_ContextMenu');
+
+    const width = window.innerWidth
+        || document.documentElement.clientWidth
+        || document.body.clientWidth;
+
+    const height = window.innerHeight
+        || document.documentElement.clientHeight
+        || document.body.clientHeight;
+
+
+    var x = goapp.pointer.x
+    if (x + menu.offsetWidth > width) {
+        x = width - menu.offsetWidth - 1
+    }
+
+    var y = goapp.pointer.y
+    if (y + menu.offsetHeight > height) {
+        y = height - menu.offsetHeight - 1
+    }
+
+    menu.style.left = x + 'px';
+    menu.style.top = y + 'px';
+}
+
+function hideContextMenu() {
+    const bg = document.getElementById("App_ContextMenuBackground");
+    if (!bg) {
+        console.log("no context menu declared")
+        return;
+    }
+    bg.style.display = "none";
 }`
