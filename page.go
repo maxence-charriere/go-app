@@ -12,6 +12,7 @@ const pageHTML = `<!DOCTYPE html>
     <meta name="description" content="{{.Description}}">
     <meta name="keywords" content="{{.Keywords}}">
     <meta name="author" content="{{.Author}}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{.Name}}</title>
 
     <style media="all" type="text/css">
@@ -38,7 +39,11 @@ WebAssembly
     .instantiateStreaming(fetch("{{.Wasm}}"), go.importObject)
     .then((result) => {
         go.run(result.instance);
+    })
+    .catch(err => {
+        console.log("wasm run failed: " + err);
     });
+
     </script>
 </head>
 <body>
