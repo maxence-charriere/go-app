@@ -16,7 +16,7 @@ body {
     font-size: 10pt;
     font-weight: 400;
     color: white;
-    background-color: #21252a;
+    background-color: #21252b;
 }
 
 h1 {
@@ -197,13 +197,13 @@ button {
 .App_Loader img {
     max-width: 100px;
     max-height: 100px;
-    user-drag: none;
     user-select: none;
     -moz-user-select: none;
     -webkit-user-drag: none;
     -webkit-user-select: none;
     -ms-user-select: none;
     animation: app_loader_rotation 10s infinite linear;
+    user-drag: none;
 }
 
 @keyframes app_loader_rotation {
