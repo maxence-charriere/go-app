@@ -24,7 +24,7 @@ func (h *Hello) Render() string {
 			world
 		{{end}}!
 	</h1>
-	<input value="{{.Name}}" placeholder="Say something..." onchange="Name" autofocus>
+	<input value="{{.Name}}" placeholder="What is your name?" onchange="Name" autofocus>
 </div>
 	`
 }
