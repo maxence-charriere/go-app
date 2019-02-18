@@ -13,9 +13,11 @@ import (
 
 func main() {
 	http.Handle("/", &app.Handler{
-		Name:   "app demo",
-		Wasm:   "demo.wasm",
-		WebDir: "web",
+		Icon:    "logo.png",
+		Loading: "loading",
+		Name:    "app demo",
+		Wasm:    "demo.wasm",
+		WebDir:  "web",
 	})
 
 	port := os.Getenv("PORT")

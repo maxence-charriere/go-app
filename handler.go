@@ -31,6 +31,9 @@ type Handler struct {
 	// The app keywords.
 	Keywords []string
 
+	// The text displayed while loading the a page.
+	Loading string
+
 	// The app name.
 	Name string
 
@@ -112,6 +115,7 @@ func (h *Handler) newPage() []byte {
 		Description string
 		Icon        string
 		Keywords    string
+		Loading     string
 		Name        string
 		Scripts     []string
 		Wasm        string
@@ -123,6 +127,7 @@ func (h *Handler) newPage() []byte {
 		Description: h.Description,
 		Icon:        h.Icon,
 		Keywords:    strings.Join(h.Keywords, ", "),
+		Loading:     h.Loading,
 		Name:        h.Name,
 		Scripts:     h.filepathsFromDir(h.WebDir, ".js"),
 		Wasm:        h.Wasm,

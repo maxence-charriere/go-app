@@ -20,7 +20,7 @@ func (n *NotFound) Render() string {
 		overflow: hidden;
 		background-color: #21252b;
 		color: white">
-	<h1 style="
+	<div style="
 		font-size: 100pt; 
 		font-weight: 100;
 		margin: 0">
@@ -47,13 +47,15 @@ func (n *NotFound) Render() string {
 			</g>
 		</svg>
 		4
-	</h1>
-	<p style="
-		font-size: 12pt; 
-		font-weight: 300;
-		margin: 0 0 50px">
+	</div>
+	<div style="
+		margin-top: -16px;
+    	font-size: 16pt;
+    	font-weight: 100;
+    	text-transform: lowercase;
+    	letter-spacing: 1px">
 		not found
-	</p>
+	</div>
 </div>
 	`
 }

@@ -47,7 +47,10 @@ WebAssembly
     </script>
 </head>
 <body>
-    <h1></h1>
+    <div class="App_Loader">
+        <img src="{{.Icon}}">
+        <p>{{.Loading}}</p>
+    </div>
 </body>
 </html>`
 
@@ -235,6 +238,38 @@ button {
 
 .App_MenuItem:hover {
     background-color: deepskyblue;
+}
+
+.App_Loader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.App_Loader img {
+    max-width: 100px;
+    max-height: 100px;
+    animation: app_loader_rotation 10s infinite linear;
+}
+
+@keyframes app_loader_rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+.App_Loader p {
+    margin-top: 6px;
+    font-size: 16pt;
+    font-weight: 100;
+    text-transform: lowercase;
+    letter-spacing: 1px;
 }`
 
 const pageJS = `
