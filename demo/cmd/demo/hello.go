@@ -49,7 +49,7 @@ func (h *Hello) OnMenuClick() {
 		app.MenuItem{
 			Label: "Source code",
 			OnClick: func() {
-				app.Navigate("https://github.com/maxence-charriere/app/tree/master/demo/app")
+				app.Navigate("https://github.com/maxence-charriere/app/blob/master/demo/cmd/demo/hello.go")
 			}},
 	)
 }
