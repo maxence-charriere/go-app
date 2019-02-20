@@ -18,7 +18,7 @@ type Subscriber struct {
 }
 
 // Subscribe subscribes a function to the given event. Emit fails if the
-// subscribbed func have more arguments than the emitted event.
+// subscribed func have more arguments than the emitted event.
 //
 // Panics if f is not a func.
 func (s *Subscriber) Subscribe(e Event, f interface{}) *Subscriber {
