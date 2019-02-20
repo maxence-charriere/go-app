@@ -5,9 +5,8 @@
 # app
 
 <p align="center">
-	<a href="https://travis-ci.org/maxence-charriere/app"><img src="https://travis-ci.org/maxence-charriere/app.svg?branch=master" alt="Build Status"></a>
+	<a href="https://circleci.com/gh/maxence-charriere/app"><img src="https://circleci.com/gh/maxence-charriere/app.svg?style=svg" alt="Circle CI Go build"></a>
     <a href="https://goreportcard.com/report/github.com/maxence-charriere/app"><img src="https://goreportcard.com/badge/github.com/maxence-charriere/app" alt="Go Report Card"></a>
-    <a href="https://github.com/avelino/awesome-go#readme"><img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg" alt="awesome-go"></a>
     <a href="https://godoc.org/github.com/maxence-charriere/app"><img src="https://godoc.org/github.com/maxence-charriere/app?status.svg" alt="GoDoc"></a>
 </p>
 
