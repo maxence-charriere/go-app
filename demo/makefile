@@ -6,7 +6,7 @@ build-app:
 build-server:
 	@go build ./cmd/demo-server
 
-deploy:
+deploy: build
 	@cp -r web cmd/demo-server/web
 	gcloud app deploy cmd/demo-server 
 	@rm -r cmd/demo-server/web

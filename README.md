@@ -160,6 +160,8 @@ go build ./cmd/demo-server
 
 # Launch the server:
 ./demo-server
+
+# Open http://localhost:3000 to see the result.
 ```
 
 Once built, the directory tree should look like:
