@@ -46,11 +46,13 @@ This layout follows the project layout defined in [golang-standards/project-layo
 - The `demo-server` directory contains the server that serves the **wasm** app and its resources.
 - The `web` directory contrains the app resources like style sheets (css), images and other static resources.
 
-### App - *root/cmd/demo/main.go*
+### App
 
 The app is the Go code compiled in web assembly and executed in the browser.
 
 ```go
+// root/cmd/demo/main.go
+
 package main
 
 import (
@@ -107,11 +109,12 @@ func main() {
 }
 ```
 
-### Server - *root/cmd/demo-server/main.go*
+### Server
 
 The server serves the web assembly Go program and the other resources.
 
 ```go
+// root/cmd/demo-server/main.go
 
 package main
 
@@ -191,5 +194,5 @@ Requires [Go 1.11](https://golang.org/doc/go1.11).
 
 Issues:
 
-- Go wasm currently trigger out of memory errors. This will be fix with Go 1.12.
+- Go wasm currently triggers out of memory errors. This will be fix with Go 1.12.
 - Edge support is worked on.
