@@ -11,68 +11,64 @@
     <a href="https://godoc.org/github.com/murlokswarm/app"><img src="https://godoc.org/github.com/murlokswarm/app?status.svg" alt="GoDoc"></a>
 </p>
 
-A multi-platform UI framework that uses
+A [WebAssembly](https://webassembly.org) framework to build GUI with
 [Go](https://golang.org), [HTML](https://en.wikipedia.org/wiki/HTML5) and
 [CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets).
-
-
-## Table of Contents
-
-* [Install](#install)
-* [Supported platforms](#support)
-* [Hello world](#hello)
-* [Architecture](#architecture)
-* [Goapp](#goapp)
-* [Documentation](#doc)
-* [Donate](#donate)
-
-<a name="install"></a>
 
 ## Install
 
 ```sh
-# Install:
-go get -u -v github.com/murlokswarm/app/...
-
-# Update:
-goapp update -v
+go get -u github.com/maxence-charriere/app
 ```
 
-<a name="support"></a>
+## How it works
 
-## Supported platforms
+### Project layout
 
-|Platform|Minimum OS|Minimum Go version|Status|
-|:-|:-:|:-:|:-:|
-|[MacOS](https://godoc.org/github.com/murlokswarm/app/drivers/mac#Driver)|MacOS 10.11 (El Capitan)|1.11|✔|
-|[Web](https://godoc.org/github.com/murlokswarm/app/drivers/web#Driver)|MacOS 10.11, Windows 10 (April 2018 Update) or Linux|1.11|✔|
-|Windows|Windows 10 (April 2018 Update)|1.11|[🔨](https://github.com/murlokswarm/app/issues/141)|
-|Linux|||✖|
-
-<a name="hello"></a>
-
-## Hello world
-
-### Setup
-
-```sh
-# Go to your repository:
-cd YOUR_REPO
-
-# Init the repo:
-goapp mac init
+```bash
+root
+├── cmd
+│   ├── demo
+│   │   └── main.go
+│   └── demo-server
+│       └── main.go
+└── web
+    ├── wasm_exec.js
+    ├── style sheets...
+    ├── images...
+    └── etc...
 ```
 
-### Code
+This layout follows the project layout defined in [golang-standards/project-layout](https://github.com/golang-standards/project-layout):
+
+- The `cmd` directory contains the project main applications.
+- The `demo` directory contains the app that is compiled in **wasm** and that will run in the browser.
+- The `demo-server` directory contains the server that serves the **wasm** app and its resources.
+- The `web` directory contrains the app resources like style sheets (css), images and other static resources.
+
+### App - *root/cmd/demo/main.go*
+
+The app is the Go code compiled in web assembly and executed in the browser.
 
 ```go
-// YOUR_REPO/main.go
+package main
 
-// Hello compo.
+import (
+    "log"
+
+    "github.com/murlokswarm/app"
+)
+
+// Hello is a component that describes a hello world. It implements the
+// app.Compo interface.
 type Hello struct {
     Name string
 }
 
+// Render returns UI to display.
+//
+// The onchange="{{bind "Name"}}" binds the onchange value to the Hello.Name
+// field.
 func (h *Hello) Render() string {
     return `
 <div class="Hello">
@@ -84,130 +80,113 @@ func (h *Hello) Render() string {
             world
         {{end}}!
     </h1>
-    <input value="{{.Name}}" placeholder="Write a name..." onchange="Name" autofocus>
+    <input value="{{.Name}}" placeholder="What is your name?" onchange="{{bind "Name"}}" autofocus>
 </div>
     `
 }
 
+// The app entry point.
 func main() {
+    // Imports the hello component declared above in order to make it loadable
+    // in a page or usable in other components.
+    //
+    // Imported component can be use as URL or html tags by referencing them by
+    // their lowercased names.
+    // E.g:
+    //  Hello   => hello
+    //  foo.Bar => foo.bar
     app.Import(&Hello{})
 
-    // Use mac driver with Hello compo.
-    app.Run(&mac.Driver{
-        URL: "/hello",
-    })
+    // Defines the component to load when an URL without path is loaded.
+    app.DefaultPath = "/hello"
+
+    // Runs the app in the browser.
+    if err := app.Run(); err != nil {
+        log.Print(err)
+    }
 }
 ```
 
-### Build and run
+### Server - *root/cmd/demo-server/main.go*
 
-```sh
-# Build and run with debug mode:
-goapp mac run -d
+The server serves the web assembly Go program and the other resources.
+
+```go
+
+package main
+
+import (
+    "fmt"
+    "log"
+    "net/http"
+    "os"
+
+    "github.com/murlokswarm/app"
+)
+
+func main() {
+    // Setup the http handler to serve the web assembly app.
+    http.Handle("/", &app.Handler{
+        // The path of the directory that contains the wasm app file and the
+        // other resources like .css files.
+        WebDir:  "web",
+
+        // The name of the wasm file that contains the app.
+        Wasm:    "demo.wasm",
+    })
+
+    // Launches the server.
+    if err := http.ListenAndServe(":3000", nil); err != nil {
+        log.Fatal(err)
+    }
+}
 ```
 
-View [full example](https://github.com/murlokswarm/app/tree/master/examples/hello).
+### Build
 
-<a name="architecture"></a>
+Assuming the working directory is the root directory:
 
-## Architecture
+```bash
+# Build the app:
+GOOS=js GOARCH=wasm go build -o web/demo.wasm ./cmd/demo
 
-![ui architecture](https://github.com/murlokswarm/app/wiki/assets/architecture.png)
+# Copy the javascript support file:
+cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" ./web
 
-### Elem
+# Build the server:
+go build ./cmd/demo-server
 
-An [elem](https://godoc.org/github.com/murlokswarm/app#Elem) represents an UI
-element to be displayed. Some can be
-[customized with HTML](https://godoc.org/github.com/murlokswarm/app#ElemWithCompo)
-content:
-
-* [Windows](https://godoc.org/github.com/murlokswarm/app#NewWindow)
-* [Pages](https://godoc.org/github.com/murlokswarm/app#NewPage)
-* [Context menus](https://godoc.org/github.com/murlokswarm/app#NewContextMenu)
-* [Menubar](https://godoc.org/github.com/murlokswarm/app#MenuBar)
-* [Status menu](https://godoc.org/github.com/murlokswarm/app#NewStatusMenu)
-* [Dock](https://godoc.org/github.com/murlokswarm/app#Dock)
-
-Others are simple:
-
-* [Notifications](https://godoc.org/github.com/murlokswarm/app#NewNotification)
-* [FilePanel](https://godoc.org/github.com/murlokswarm/app#NewFilePanel)
-* [SaveFilePanel](https://godoc.org/github.com/murlokswarm/app#NewSaveFilePanel)
-* [Share](https://godoc.org/github.com/murlokswarm/app#NewShare)
-
-### Compo
-
-A [compo](https://godoc.org/github.com/murlokswarm/app#Compo) represents an
-independent and reusable piece of UI. It exposes an HTML representation of the
-UI that can be customized by the
-[template syntax](https://golang.org/pkg/text/template/) defined in the Go
-standard library. Compos are loaded into
-[elems](https://godoc.org/github.com/murlokswarm/app#ElemWithCompo) that support
-HTML customization.
-
-### Driver
-
-A [driver](https://godoc.org/github.com/murlokswarm/app#Driver) represents the
-app backend. It exposes Go operations to create/modify the UI and calls their
-platform specific implementations.
-
-<a name="goapp"></a>
-
-## Goapp
-
-Goapp is a CLI tool to build and run apps built with the app package.
-
-Depending on the platform, apps must be packaged in order to be deployed and
-distributed. Packaged applications are usually not managed by a terminal, which
-can be an issue when we want to monitor the logs or stop their execution with
-system signals.
-
-Goapp can package apps and allows to run them while keeping logs and managing
-their lyfecycle within the terminal.
-
-Examples:
-
-```sh
-goapp -h         # Help.
-goapp mac -h     # Help for MasOS commands.
-goapp mac run -h # Help for MasOS run command.
-
-goapp mac run    # Run MacOS .app.
-goapp mac run -d # Run MacOS .app with debug.
-
-goapp web run    # Run a web server.
-goapp web run -b # Run a web server and launch the main page in the default browser.
+# Launch the server:
+./demo-server
 ```
 
-<a name="doc"></a>
+Once built, the directory tree should look like:
 
-## Documentation
+```bash
+root
+├── cmd
+│   ├── demo
+│   │   └── main.go
+│   └── demo-server
+│       └── main.go
+├── demo-server (server)
+└── web
+    ├── demo.wasm (app)
+    ├── wasm_exec.js
+    ├── style sheets...
+    ├── images...
+    └── etc...
+```
 
-* [Godoc](https://godoc.org/github.com/murlokswarm/app)
-  * [mac](https://godoc.org/github.com/murlokswarm/app/drivers/mac)
-  * [web](https://godoc.org/github.com/murlokswarm/app/drivers/web)
-* [Wiki](https://github.com/murlokswarm/app/wiki)
-  * [Getting started with MacOS](https://github.com/murlokswarm/app/wiki/Getting-started-with-MacOS)
-  * [Getting started with web](https://github.com/murlokswarm/app/wiki/Getting-started-with-web)
-  * [How to use CSS](https://github.com/murlokswarm/app/wiki/CSS)
-* [Examples](https://github.com/murlokswarm/app/tree/master/examples)
-  * [hello](https://github.com/murlokswarm/app/tree/master/examples/hello)
-  * [nav](https://github.com/murlokswarm/app/tree/master/examples/nav)
-  * [menu](https://github.com/murlokswarm/app/tree/master/examples/menu)
-  * [status menu](https://github.com/murlokswarm/app/tree/master/examples/statusmenu)
-  * [dock](https://github.com/murlokswarm/app/tree/master/examples/dock)
-  * [drag and drop](https://github.com/murlokswarm/app/tree/master/examples/dragdrop)
-  * [actions/events](https://github.com/murlokswarm/app/tree/master/examples/action-event)
-  * [test](https://github.com/murlokswarm/app/tree/master/examples/test)
-* Readme (other languages)
-  * [Chinese](./internal/docs/README-CN.md)
+## Support
 
-<a name="donate"></a>
+Requires [Go 1.11](https://golang.org/doc/go1.11).
 
-## Donate
+|Platform|Chrome|Edge|Firefox|Safari|
+|:-|:-:|:-:|:-:|:-:|
+|Desktop|✔|✖|✔|✔|
+|Mobile|✖|✖|✖|✖|
 
-If this project helps you build awesome UI, you can help me grow my cryptos :)
-
-[![Donate with Bitcoin](https://en.cryptobadges.io/badge/small/3PRMM9fj7yq9gHxgk2svewWF9BkzzGPa1b)](https://en.cryptobadges.io/donate/3PRMM9fj7yq9gHxgk2svewWF9BkzzGPa1b)
-
-[![Donate with Ethereum](https://en.cryptobadges.io/badge/small/0x789D63B8869783a15bbFb43331a192DdeC4bDE53)](https://en.cryptobadges.io/donate/0x789D63B8869783a15bbFb43331a192DdeC4bDE53)
+Issues:
+- Go wasm currently trigger out of memory errors. This will be fix with Go 1.12.
+- Edge support is worked on.
