@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/murlokswarm/app"
+	"github.com/maxence-charriere/app"
 )
 
 func main() {

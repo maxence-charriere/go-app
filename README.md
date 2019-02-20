@@ -1,14 +1,14 @@
 <p align="center">
-    <img alt="ui demo" src="https://github.com/murlokswarm/app/wiki/assets/ui-demo-large.gif">
+    <img alt="ui demo" src="https://github.com/maxence-charriere/app/wiki/assets/ui-demo-large.gif">
 </p>
 
 # app
 
 <p align="center">
-	<a href="https://travis-ci.org/murlokswarm/app"><img src="https://travis-ci.org/murlokswarm/app.svg?branch=master" alt="Build Status"></a>
-    <a href="https://goreportcard.com/report/github.com/murlokswarm/app"><img src="https://goreportcard.com/badge/github.com/murlokswarm/app" alt="Go Report Card"></a>
+	<a href="https://travis-ci.org/maxence-charriere/app"><img src="https://travis-ci.org/maxence-charriere/app.svg?branch=master" alt="Build Status"></a>
+    <a href="https://goreportcard.com/report/github.com/maxence-charriere/app"><img src="https://goreportcard.com/badge/github.com/maxence-charriere/app" alt="Go Report Card"></a>
     <a href="https://github.com/avelino/awesome-go#readme"><img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg" alt="awesome-go"></a>
-    <a href="https://godoc.org/github.com/murlokswarm/app"><img src="https://godoc.org/github.com/murlokswarm/app?status.svg" alt="GoDoc"></a>
+    <a href="https://godoc.org/github.com/maxence-charriere/app"><img src="https://godoc.org/github.com/maxence-charriere/app?status.svg" alt="GoDoc"></a>
 </p>
 
 A [WebAssembly](https://webassembly.org) framework to build GUI with
@@ -56,7 +56,7 @@ package main
 import (
     "log"
 
-    "github.com/murlokswarm/app"
+    "github.com/maxence-charriere/app"
 )
 
 // Hello is a component that describes a hello world. It implements the
@@ -121,7 +121,7 @@ import (
     "net/http"
     "os"
 
-    "github.com/murlokswarm/app"
+    "github.com/maxence-charriere/app"
 )
 
 func main() {

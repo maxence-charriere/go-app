@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/murlokswarm/app"
+	"github.com/maxence-charriere/app"
 )
 
 // The app entry point.

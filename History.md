@@ -396,7 +396,7 @@ win := app.NewWindow(app.WindowConfig{
   })
   ```
 
-  See [Elem](https://godoc.org/github.com/murlokswarm/app#Elem) definition for more info.
+  See [Elem](https://godoc.org/github.com/maxence-charriere/app#Elem) definition for more info.
 
 * Add compatibility with 10.11 (#144)
 

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/murlokswarm/app"
+	"github.com/maxence-charriere/app"
 )
 
 // Hello is a component that describes a hello world. It implements the
