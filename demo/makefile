@@ -1,15 +1,15 @@
 build: build-app build-server
 
 build-app:
-	@GOOS=js GOARCH=wasm go build -o web/demo.wasm ./bin/demo
+	@GOOS=js GOARCH=wasm go build -o web/demo.wasm ./cmd/demo
 
 build-server:
-	@go build ./bin/demo-server
+	@go build ./cmd/demo-server
 
 deploy:
-	@cp -r web bin/demo-server/web
-	gcloud app deploy bin/demo-server 
-	@rm -r bin/demo-server/web
+	@cp -r web cmd/demo-server/web
+	gcloud app deploy cmd/demo-server 
+	@rm -r cmd/demo-server/web
 
 clean:
 	-@rm demo-server

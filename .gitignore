@@ -14,3 +14,4 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 demo/demo
+demo/demo-server
