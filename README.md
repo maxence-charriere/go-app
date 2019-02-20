@@ -91,7 +91,7 @@ func main() {
     // Imports the hello component declared above in order to make it loadable
     // in a page or usable in other components.
     //
-    // Imported component can be use as URL or html tags by referencing them by
+    // Imported component can be used as URL or html tags by referencing them by
     // their lowercased names.
     // E.g:
     //  Hello   => hello
