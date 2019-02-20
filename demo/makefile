@@ -14,6 +14,7 @@ deploy: build
 clean:
 	-@rm demo-server
 	-@rm web/demo.wasm
+	-@rm -r cmd/demo-server/web
 
 run: build
 	./demo-server
