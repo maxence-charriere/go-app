@@ -1,48 +1,17 @@
-# Compiled Object files, Static and Dynamic libs (Shared Objects)
-*.o
-*.a
-*.so
-
-# Folders
-_obj
-_test
-
-# Architecture specific extensions/prefixes
-*.[568vq]
-[568vq].out
-
-*.cgo1.go
-*.cgo2.c
-_cgo_defun.c
-_cgo_gotypes.go
-_cgo_export.*
-
-_testmain.go
-
-*.test
-*.prof
-
-# Executables
-cmd/goapp/goapp
-examples/hello/bin/hello-mac/hello-mac
-examples/hello/bin/hello-web/hello-web
-examples/nav/bin/nav-mac/nav-mac
-examples/nav/bin/nav-web/nav-web
-examples/test/bin/test-mac/test-mac
-examples/test/bin/test-web/test-web
-examples/menu/menu
-examples/action-event/bin/mac/mac
-examples/statusmenu/statusmenu
-examples/dock/dock
-examples/nav/nav
-examples/dragdrop/dragdrop
-examples/test/test
-*.app
-*.wapp
+# Binaries for programs and plugins
 *.exe
-*goapp.js
-*.map
+*.exe~
+*.dll
+*.so
+*.dylib
+*.app
+*.wasm
 
-.DS_Store
-examples/action-event/bin/web/web
-examples/nav/nav-mac
+# Test binary, build with `go test -c`
+*.test
+
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+demo/demo
+demo/demo-server

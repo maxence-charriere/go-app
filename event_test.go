@@ -15,15 +15,15 @@ func TestEventRegistry(t *testing.T) {
 
 	tests := []struct {
 		scenario string
-		subName  string
+		subName  Event
 		handler  func(*bool) interface{}
 		called   bool
-		dispName string
+		dispName Event
 		dispArg  interface{}
 		panic    bool
 	}{
 		{
-			scenario: "register and dispatch without arg",
+			scenario: "register and emit without arg",
 			subName:  "test",
 			handler: func(called *bool) interface{} {
 				return func() {
@@ -35,7 +35,7 @@ func TestEventRegistry(t *testing.T) {
 			dispArg:  nil,
 		},
 		{
-			scenario: "register without arg and dispatch with arg",
+			scenario: "register without arg and emit with arg",
 			subName:  "test",
 			handler: func(called *bool) interface{} {
 				return func() {
@@ -47,7 +47,7 @@ func TestEventRegistry(t *testing.T) {
 			dispArg:  "foobar",
 		},
 		{
-			scenario: "register and dispatch with arg",
+			scenario: "register and emit with arg",
 			subName:  "test",
 			handler: func(called *bool) interface{} {
 				return func(arg string) {
@@ -63,7 +63,19 @@ func TestEventRegistry(t *testing.T) {
 			dispArg:  "hello",
 		},
 		{
-			scenario: "register and dispatch with bad arg",
+			scenario: "register and emit without enough args",
+			subName:  "test",
+			handler: func(called *bool) interface{} {
+				return func(string, bool) {
+					*called = true
+				}
+			},
+			called:   false,
+			dispName: "test",
+			dispArg:  "hello",
+		},
+		{
+			scenario: "register and emit with bad arg",
 			subName:  "test",
 			handler: func(called *bool) interface{} {
 				return func(arg int) {
@@ -95,21 +107,30 @@ func TestEventRegistry(t *testing.T) {
 
 			called := false
 
-			r := newEventRegistry(func(f func()) {
-				f()
-			})
+			ui := make(chan func(), 32)
+			defer close(ui)
 
-			unsub := r.Subscribe(test.subName, test.handler(&called))
+			r := newEventRegistry(ui)
+
+			unsub := r.subscribe(test.subName, test.handler(&called))
 			defer unsub()
 
-			r.Dispatch(test.dispName, test.dispArg)
+			r.Emit(test.dispName, test.dispArg)
+
+			select {
+			case f := <-ui:
+				f()
+
+			default:
+			}
+
 			assert.Equal(t, test.called, called)
 		})
 	}
 }
 
-func TestEventSubscriber(t *testing.T) {
-	s := NewEventSubscriber()
+func TestSubscriber(t *testing.T) {
+	s := NewSubscriber()
 	defer s.Close()
 
 	s.Subscribe("test-event-subscriber", func() {})

@@ -1,0 +1,55 @@
+h1 {
+    max-width: calc(100% - 48px);
+    font-size: 56pt;
+    font-weight: 200;
+    margin: 0;
+    padding: 0 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+input {
+    max-width: 100%;
+    border: 0;
+    border-left: 2px solid silver;
+    padding: 6px;
+    margin: 12px 0;
+    outline: none;
+    font-size: 11pt;
+    font-weight: 300;
+    background: transparent;
+    color: rgb(240, 240, 240);
+    border-radius: 0;
+    box-shadow: none;
+}
+
+input:focus {
+    border-left-color: deepskyblue;
+}
+
+.Hello {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-image: url('space.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+}
+
+.Menu {
+    position: fixed;
+    left: 12px;
+    top: 12px;
+    padding: 12px;
+    font-size: 24px;
+    font-weight: 200;
+}
+
+.Menu:hover {
+    color: deepskyblue;
+}

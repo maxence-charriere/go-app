@@ -1,7 +1,11 @@
 package app
 
 import (
+	"encoding/json"
 	"net/url"
+	"reflect"
+	"strconv"
+	"strings"
 )
 
 // Compo is the interface that describes a component.
@@ -33,31 +37,23 @@ type Dismounter interface {
 	OnDismount()
 }
 
-// Configurator is the interface that describes a component that override the
-// HTML page head content when mounted as root component.
-type Configurator interface {
-	// Config returns the custom page configuration.
-	Config() HTMLConfig
-}
-
 // Navigable is the interface that wraps OnNavigate method.
 type Navigable interface {
 	Compo
 
-	// OnNavigate is called when a component is loaded or navigated to.
-	// It is called just after the component is mounted.
+	// OnNavigate is called when a component is navigated to.
 	OnNavigate(u *url.URL)
 }
 
-// Subscriber is the interface that describes a component that subscribes to
-// events generated from actions.
-type Subscriber interface {
+// EventSubscriber is the interface that describes a component that subscribes
+// to events emitted from messages.
+type EventSubscriber interface {
 	// Subscribe is called when a component is mounted.
-	// The returned event subscriber is used to subscribe to events generated
-	// from actions.
+	// The returned subscriber is used to subscribe to events emitted from
+	// messages.
 	// All the event subscribed are automatically unsuscribed when the component
 	// is dismounted.
-	Subscribe() *EventSubscriber
+	Subscribe() *Subscriber
 }
 
 // CompoWithExtendedRender is the interface that wraps Funcs method.
@@ -78,4 +74,120 @@ type CompoWithExtendedRender interface {
 // ZeroCompo have a placeholder field to avoid that.
 type ZeroCompo struct {
 	placeholder byte
+}
+
+type compo struct {
+	ID       string
+	ParentID string
+	Compo    Compo
+	Events   *Subscriber
+}
+
+func compoName(c Compo) string {
+	v := reflect.ValueOf(c)
+	v = reflect.Indirect(v)
+
+	name := strings.ToLower(v.Type().String())
+	return strings.TrimPrefix(name, "main.")
+}
+
+func compoNameFromURLString(rawurl string) string {
+	u, _ := url.Parse(rawurl)
+	return compoNameFromURL(u)
+}
+
+func compoNameFromURL(u *url.URL) string {
+	p := u.Path
+	p = strings.TrimPrefix(p, "/")
+
+	path := strings.SplitN(p, "/", 2)
+	if len(path[0]) == 0 {
+		return ""
+	}
+
+	names := strings.SplitN(path[0], "?", 2)
+	name := names[0]
+	name = strings.ToLower(name)
+	return strings.TrimPrefix(name, "main.")
+}
+
+func mapCompoFields(c Compo, fields map[string]string) error {
+	v := reflect.ValueOf(c).Elem()
+	t := v.Type()
+
+	for i, numfields := 0, t.NumField(); i < numfields; i++ {
+		fv := v.Field(i)
+		ft := t.Field(i)
+
+		if ft.Anonymous {
+			continue
+		}
+
+		// Ignore non exported field.
+		if len(ft.PkgPath) != 0 {
+			continue
+		}
+
+		name := strings.ToLower(ft.Name)
+		value, ok := fields[name]
+
+		// Remove not set boolean.
+		if !ok && fv.Kind() == reflect.Bool {
+			fv.SetBool(false)
+			continue
+		} else if !ok {
+			continue
+		}
+
+		if err := mapCompoField(fv, value); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func mapCompoField(field reflect.Value, value string) error {
+	switch field.Kind() {
+	case reflect.String:
+		field.SetString(value)
+
+	case reflect.Bool:
+		if len(value) == 0 {
+			value = "true"
+		}
+		b, err := strconv.ParseBool(value)
+		if err != nil {
+			return err
+		}
+		field.SetBool(b)
+
+	case reflect.Int, reflect.Int64, reflect.Int32, reflect.Int16, reflect.Int8:
+		n, err := strconv.ParseInt(value, 0, 64)
+		if err != nil {
+			return err
+		}
+		field.SetInt(n)
+
+	case reflect.Uint, reflect.Uint64, reflect.Uint32, reflect.Uint16, reflect.Uint8, reflect.Uintptr:
+		n, err := strconv.ParseUint(value, 0, 64)
+		if err != nil {
+			return err
+		}
+		field.SetUint(n)
+
+	case reflect.Float64, reflect.Float32:
+		n, err := strconv.ParseFloat(value, 64)
+		if err != nil {
+			return err
+		}
+		field.SetFloat(n)
+
+	default:
+		addr := field.Addr()
+		i := addr.Interface()
+		if err := json.Unmarshal([]byte(value), i); err != nil {
+			return err
+		}
+	}
+	return nil
 }

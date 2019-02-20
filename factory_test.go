@@ -1,10 +1,8 @@
-package app_test
+package app
 
 import (
 	"testing"
 
-	"github.com/murlokswarm/app"
-	"github.com/murlokswarm/app/internal/tests"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -12,59 +10,59 @@ import (
 func TestFactory(t *testing.T) {
 	tests := []struct {
 		scenario string
-		compo    app.Compo
+		compo    Compo
 		name     string
 		err      bool
 	}{
 		{
 			scenario: "registering and creating a component",
-			compo:    &tests.Bar{},
-			name:     "tests.bar",
+			compo:    &Bar{},
+			name:     "app.bar",
 		},
 		{
 			scenario: "registering a non pointer component",
-			compo:    tests.NoPointerCompo{},
-			name:     "tests.nopointercompo",
+			compo:    NoPointerCompo{},
+			name:     "app.nopointercompo",
 			err:      true,
 		},
 		{
 			scenario: "registering a non pointer to struct component",
-			compo: func() *tests.IntCompo {
-				intc := tests.IntCompo(42)
+			compo: func() *IntCompo {
+				intc := IntCompo(42)
 				return &intc
 			}(),
-			name: "tests.intcompo",
+			name: "app.intcompo",
 			err:  true,
 		},
 		{
 			scenario: "registering a component with no field",
-			compo:    &tests.EmptyCompo{},
-			name:     "tests.emptycompo",
+			compo:    &EmptyCompo{},
+			name:     "app.emptycompo",
 			err:      true,
 		},
 	}
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
-			f := app.NewFactory()
+			f := newCompoBuilder()
 
-			name, err := f.RegisterCompo(test.compo)
+			name, err := f.register(test.compo)
 
 			if test.err {
 				assert.Error(t, err)
-				assert.False(t, f.IsCompoRegistered(test.name))
+				assert.False(t, f.isRegistered(test.name))
 
-				_, err = f.NewCompo(test.name)
+				_, err = f.new(test.name)
 				assert.Error(t, err)
 				return
 			}
 
 			require.NoError(t, err)
 			assert.Equal(t, test.name, name)
-			assert.True(t, f.IsCompoRegistered(test.name))
+			assert.True(t, f.isRegistered(test.name))
 
-			var c app.Compo
-			c, err = f.NewCompo(test.name)
+			var c Compo
+			c, err = f.new(test.name)
 
 			require.NoError(t, err)
 			assert.IsType(t, test.compo, c)

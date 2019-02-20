@@ -5,65 +5,84 @@ import (
 	"sync"
 
 	"github.com/google/uuid"
-	"github.com/murlokswarm/app/key"
 	"github.com/pkg/errors"
 )
 
-// EventDispatcher is the interface that describes an event dispatcher.
-type EventDispatcher interface {
-	// Dispatch dispatches the named event with the given argument.
-	// It is done on the UI goroutine.
-	Dispatch(name string, arg interface{})
+// Event is a string that identifies an app event.
+type Event string
+
+// Subscriber is a struct to subscribe to events emitted by a event registry.
+type Subscriber struct {
+	events      *eventRegistry
+	unsuscribes []func()
 }
 
-type eventHandler struct {
-	ID      string
-	Handler interface{}
+// Subscribe subscribes a function to the given event. Emit fails if the
+// subscribbed func have more arguments than the emitted event.
+//
+// Panics if f is not a func.
+func (s *Subscriber) Subscribe(e Event, f interface{}) *Subscriber {
+	unsubscribe := s.events.subscribe(e, f)
+	s.unsuscribes = append(s.unsuscribes, unsubscribe)
+	return s
 }
 
-func newEventRegistry(dispatcher func(func())) *eventRegistry {
-	return &eventRegistry{
-		handlers:   make(map[string][]eventHandler),
-		dispatcher: dispatcher,
+// Close unsubscribes all the subscriptions.
+func (s *Subscriber) Close() {
+	for _, unsuscribe := range s.unsuscribes {
+		unsuscribe()
 	}
 }
 
-type eventRegistry struct {
-	mutex      sync.RWMutex
-	handlers   map[string][]eventHandler
-	dispatcher func(f func())
+type eventHandler struct {
+	ID         string
+	MsgHandler interface{}
 }
 
-func (m *eventRegistry) Subscribe(name string, handler interface{}) (unsuscribe func()) {
-	m.mutex.Lock()
-	defer m.mutex.Unlock()
+type eventRegistry struct {
+	mutex    sync.RWMutex
+	handlers map[Event][]eventHandler
+	ui       chan func()
+}
+
+func newEventRegistry(ui chan func()) *eventRegistry {
+	return &eventRegistry{
+		handlers: make(map[Event][]eventHandler),
+		ui:       ui,
+	}
+}
+
+func (r *eventRegistry) subscribe(e Event, handler interface{}) func() {
+	r.mutex.Lock()
+	defer r.mutex.Unlock()
 
 	if reflect.ValueOf(handler).Kind() != reflect.Func {
-		Panic(errors.Errorf("can't subscribe event %s: handler is not a func: %T",
-			name,
+		Panic(errors.Errorf("can't subscribe to event %s: handler is not a func: %T",
+			e,
 			handler,
 		))
 	}
 
 	id := uuid.New().String()
+	handlers := r.handlers[e]
 
-	handlers := m.handlers[name]
 	handlers = append(handlers, eventHandler{
-		ID:      id,
-		Handler: handler,
+		ID:         id,
+		MsgHandler: handler,
 	})
-	m.handlers[name] = handlers
+
+	r.handlers[e] = handlers
 
 	return func() {
-		m.Unsubscribe(name, id)
+		r.unsubscribe(e, id)
 	}
 }
 
-func (m *eventRegistry) Unsubscribe(name string, id string) {
-	m.mutex.Lock()
-	defer m.mutex.Unlock()
+func (r *eventRegistry) unsubscribe(e Event, id string) {
+	r.mutex.Lock()
+	defer r.mutex.Unlock()
 
-	handlers := m.handlers[name]
+	handlers := r.handlers[e]
 
 	for i, h := range handlers {
 		if h.ID == id {
@@ -72,125 +91,48 @@ func (m *eventRegistry) Unsubscribe(name string, id string) {
 			handlers[end] = eventHandler{}
 			handlers = handlers[:end]
 
-			m.handlers[name] = handlers
+			r.handlers[e] = handlers
 			return
 		}
 	}
 }
 
-func (m *eventRegistry) Dispatch(name string, arg interface{}) {
-	m.mutex.RLock()
-	defer m.mutex.RUnlock()
+// Emit emits the event with the given arguments.
+func (r *eventRegistry) Emit(e Event, args ...interface{}) {
+	r.mutex.RLock()
+	defer r.mutex.RUnlock()
 
-	for _, h := range m.handlers[name] {
-		val := reflect.ValueOf(h.Handler)
-		typ := val.Type()
-
-		if typ.NumIn() == 0 {
-			m.dispatcher(func() {
-				val.Call(nil)
-			})
-			return
+	for _, h := range r.handlers[e] {
+		if err := r.callHandler(h.MsgHandler, args...); err != nil {
+			Logf("emitting %s failed: %s", e, err)
 		}
-
-		argVal := reflect.ValueOf(arg)
-		argTyp := typ.In(0)
-
-		if !argVal.Type().ConvertibleTo(argTyp) {
-			Log("dispatching event %s failed: %s",
-				name,
-				errors.Errorf("can't convert %s to %s", argVal.Type(), argTyp),
-			)
-			return
-		}
-
-		m.dispatcher(func() {
-			val.Call([]reflect.Value{
-				argVal.Convert(argTyp),
-			})
-		})
 	}
 }
 
-// EventSubscriber represents an event subscriber.
-type EventSubscriber struct {
-	registry    *eventRegistry
-	unsuscribes []func()
-}
+func (r *eventRegistry) callHandler(h interface{}, args ...interface{}) error {
+	v := reflect.ValueOf(h)
+	t := v.Type()
 
-// Subscribe subscribes a function to the named event.
-// It panics if f is not a func.
-func (s *EventSubscriber) Subscribe(name string, f interface{}) *EventSubscriber {
-	unsubscribe := s.registry.Subscribe(name, f)
-	s.unsuscribes = append(s.unsuscribes, unsubscribe)
-	return s
-}
+	argsv := make([]reflect.Value, t.NumIn())
 
-// Close closes the event handler and unsubscribe all its events.
-func (s *EventSubscriber) Close() {
-	for _, unsuscribe := range s.unsuscribes {
-		unsuscribe()
+	for i := 0; i < t.NumIn(); i++ {
+		argt := t.In(i)
+
+		if i >= len(args) {
+			return errors.Errorf("missing %v at index %v", argt, i)
+		}
+
+		argv := reflect.ValueOf(args[i])
+		if !argv.Type().ConvertibleTo(argt) {
+			return errors.Errorf("arg at index %v is not a %v: %v", i, argt, argv.Type())
+		}
+
+		argsv[i] = argv.Convert(argt)
 	}
-}
 
-// MouseEvent represents an onmouse event arg.
-type MouseEvent struct {
-	ClientX   float64
-	ClientY   float64
-	PageX     float64
-	PageY     float64
-	ScreenX   float64
-	ScreenY   float64
-	Button    int
-	Detail    int
-	AltKey    bool
-	CtrlKey   bool
-	MetaKey   bool
-	ShiftKey  bool
-	InnerText string
-	Source    EventSource
-}
+	r.ui <- func() {
+		v.Call(argsv)
+	}
 
-// WheelEvent represents an onwheel event arg.
-type WheelEvent struct {
-	DeltaX    float64
-	DeltaY    float64
-	DeltaZ    float64
-	DeltaMode DeltaMode
-	Source    EventSource
-}
-
-// DeltaMode is an indication of the units of measurement for a delta value.
-type DeltaMode uint64
-
-// KeyboardEvent represents an onkey event arg.
-type KeyboardEvent struct {
-	CharCode  rune
-	KeyCode   key.Code
-	Location  key.Location
-	AltKey    bool
-	CtrlKey   bool
-	MetaKey   bool
-	ShiftKey  bool
-	InnerText string
-	Source    EventSource
-}
-
-// DragAndDropEvent represents an ondrop event arg.
-type DragAndDropEvent struct {
-	Files         []string
-	Data          string
-	DropEffect    string
-	EffectAllowed string
-	Source        EventSource
-}
-
-// EventSource represents a descriptor to an event source.
-type EventSource struct {
-	GoappID string
-	CompoID string
-	ID      string
-	Class   string
-	Data    map[string]string
-	Value   string
+	return nil
 }
