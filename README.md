@@ -195,5 +195,5 @@ Requires [Go 1.11](https://golang.org/doc/go1.11).
 
 Issues:
 
-- Go wasm currently triggers out of memory errors. This will be fix with Go 1.12.
+- Go wasm currently triggers out of memory errors on mobile platforms. This will be fix with Go 1.12.
 - Edge support is worked on.
