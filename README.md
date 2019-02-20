@@ -1,5 +1,5 @@
 <p align="center">
-    <img alt="ui demo" src="https://github.com/maxence-charriere/app/wiki/assets/ui.png">
+    <a href="https://app-demo-232021.appspot.com"><img alt="ui demo" src="https://github.com/maxence-charriere/app/wiki/assets/ui.png"></a>
 </p>
 
 # app
@@ -178,6 +178,8 @@ root
     └── etc...
 ```
 
+See the [full example code](https://github.com/maxence-charriere/app/tree/master/demo) and the [online demo](https://app-demo-232021.appspot.com).
+
 ## Support
 
 Requires [Go 1.11](https://golang.org/doc/go1.11).
@@ -188,5 +190,6 @@ Requires [Go 1.11](https://golang.org/doc/go1.11).
 |Mobile|✖|✖|✖|✖|
 
 Issues:
+
 - Go wasm currently trigger out of memory errors. This will be fix with Go 1.12.
 - Edge support is worked on.
