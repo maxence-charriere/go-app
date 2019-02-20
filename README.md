@@ -1,5 +1,5 @@
 <p align="center">
-    <img alt="ui demo" src="https://github.com/maxence-charriere/app/wiki/assets/ui-demo-large.gif">
+    <img alt="ui demo" src="https://github.com/maxence-charriere/app/wiki/assets/ui.png">
 </p>
 
 # app
