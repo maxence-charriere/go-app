@@ -4,9 +4,7 @@ package app
 
 import (
 	"compress/gzip"
-	"fmt"
 	"net/http"
-	"time"
 )
 
 type gzipResponseWriter struct {
@@ -40,9 +38,6 @@ func newGzipHandler(h http.Handler) http.Handler {
 }
 
 func (h *gzipHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	t := time.Now()
-	defer fmt.Println(req.URL, "served in", time.Now().Sub(t))
-
 	w := newGzipWriter(res)
 	defer w.Close()
 
