@@ -7,6 +7,7 @@ package app
 
 import (
 	"bytes"
+	"compress/gzip"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -106,10 +107,12 @@ func (h *Handler) newFileHandler(webDir string) http.Handler {
 
 func (h *Handler) newPage() []byte {
 	b := bytes.Buffer{}
+	gz := gzip.NewWriter(&b)
+	defer gz.Close()
 
 	tmpl := template.Must(template.New("page").Parse(pageHTML))
 
-	if err := tmpl.Execute(&b, struct {
+	if err := tmpl.Execute(gz, struct {
 		AppJS       string
 		Author      string
 		CSS         []string
@@ -137,6 +140,7 @@ func (h *Handler) newPage() []byte {
 		panic(err)
 	}
 
+	gz.Close()
 	return b.Bytes()
 }
 
