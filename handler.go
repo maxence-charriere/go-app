@@ -65,6 +65,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Last-Modified", h.lastModified)
+	w.Header().Set("Context-Type", "text/html")
 	w.WriteHeader(http.StatusOK)
 	w.Write(h.page)
 }
@@ -105,6 +106,7 @@ func (h *Handler) newFileHandler(webDir string) http.Handler {
 
 func (h *Handler) newPage() []byte {
 	b := bytes.Buffer{}
+
 	tmpl := template.Must(template.New("page").Parse(pageHTML))
 
 	if err := tmpl.Execute(&b, struct {
