@@ -7,6 +7,7 @@ package app
 
 import (
 	"bytes"
+	"compress/gzip"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -64,6 +65,8 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Content-Type", "text/html")
+	w.Header().Set("Content-Encoding", "gzip")
 	w.Header().Set("Last-Modified", h.lastModified)
 	w.WriteHeader(http.StatusOK)
 	w.Write(h.page)
@@ -105,9 +108,12 @@ func (h *Handler) newFileHandler(webDir string) http.Handler {
 
 func (h *Handler) newPage() []byte {
 	b := bytes.Buffer{}
+	gz := gzip.NewWriter(&b)
+	defer gz.Close()
+
 	tmpl := template.Must(template.New("page").Parse(pageHTML))
 
-	if err := tmpl.Execute(&b, struct {
+	if err := tmpl.Execute(gz, struct {
 		AppJS       string
 		Author      string
 		CSS         []string
@@ -135,6 +141,7 @@ func (h *Handler) newPage() []byte {
 		panic(err)
 	}
 
+	gz.Close()
 	return b.Bytes()
 }
 
