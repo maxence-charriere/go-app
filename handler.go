@@ -65,8 +65,9 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Content-Type", "text/html")
+	w.Header().Set("Content-Encoding", "gzip")
 	w.Header().Set("Last-Modified", h.lastModified)
-	w.Header().Set("Context-Type", "text/html")
 	w.WriteHeader(http.StatusOK)
 	w.Write(h.page)
 }
