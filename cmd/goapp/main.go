@@ -35,8 +35,8 @@ func main() {
 	case "run":
 		runProject(ctx, args)
 
-	// case "clean":
-	// 	clean(ctx, args)
+	case "clean":
+		cleanProject(ctx, args)
 
 	case "help":
 		ld.PrintHelp(nil)
