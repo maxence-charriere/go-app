@@ -17,7 +17,11 @@ A [WebAssembly](https://webassembly.org) framework to build GUI with
 ## Install
 
 ```sh
+# Package sources:
 go get -u github.com/maxence-charriere/app
+
+# Goapp cli tool:
+go get -u github.com/maxence-charriere/app/cmd/goapp
 ```
 
 ## How it works
@@ -27,9 +31,9 @@ go get -u github.com/maxence-charriere/app
 ```bash
 root
 ├── cmd
-│   ├── demo
+│   ├── demo-server
 │   │   └── main.go
-│   └── demo-server
+│   └── demo-wasm
 │       └── main.go
 └── web
     ├── wasm_exec.js
@@ -45,12 +49,18 @@ This layout follows the project layout defined in [golang-standards/project-layo
 - The `demo-server` directory contains the server that serves the **wasm** app and its resources.
 - The `web` directory contrains the app resources like style sheets (css), images and other static resources.
 
+Project layout can be initialized by running this command in the repository root.
+
+```bash
+goapp init -v
+```
+
 ### App
 
 The app is the Go code compiled in web assembly and executed in the browser.
 
 ```go
-// root/cmd/demo/main.go
+// root/cmd/demo-wasm/main.go
 
 package main
 
@@ -128,14 +138,7 @@ import (
 
 func main() {
     // Setup the http handler to serve the web assembly app.
-    http.Handle("/", &app.Handler{
-        // The path of the directory that contains the wasm app file and the
-        // other resources like .css files.
-        WebDir:  "web",
-
-        // The name of the wasm file that contains the app.
-        Wasm:    "demo.wasm",
-    })
+    http.Handle("/", &app.Handler{})
 
     // Launches the server.
     if err := http.ListenAndServe(":3000", nil); err != nil {
@@ -146,22 +149,21 @@ func main() {
 
 ### Build
 
-Assuming the working directory is the root directory:
+The whole project is built with the
+[goapp](https://github.com/maxence-charriere/app/tree/master/cmd/goapp/main.go)
+CLI tool.
+Goapp builds the server, the wasm app, imports the required javascript
+support file and puts the pieces together to provide a ready to use project.
 
 ```bash
-# Build the app:
-GOOS=js GOARCH=wasm go build -o web/demo.wasm ./cmd/demo
+# Get the goapp CLI tool:
+go get -u github.com/maxence-charriere/app/cmd/goapp
 
-# Copy the javascript support file:
-cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" ./web
+# Builds a server ready to serve the wasm app and its resources:
+goapp build -v
 
-# Build the server:
-go build ./cmd/demo-server
-
-# Launch the server:
-./demo-server
-
-# Open http://localhost:3000 to see the result.
+# Launches the server and app in the default browser:
+goapp run -v -b default
 ```
 
 Once built, the directory tree should look like:
@@ -169,13 +171,13 @@ Once built, the directory tree should look like:
 ```bash
 root
 ├── cmd
-│   ├── demo
+│   ├── demo-server
 │   │   └── main.go
-│   └── demo-server
+│   └── demo-wasm
 │       └── main.go
 ├── demo-server (server)
 └── web
-    ├── demo.wasm (app)
+    ├── goapp.wasm (app)
     ├── wasm_exec.js
     ├── style sheets...
     ├── images...
@@ -195,5 +197,5 @@ Requires [Go 1.11](https://golang.org/doc/go1.11).
 
 Issues:
 
-- Go wasm currently triggers out of memory errors on mobile platforms. This should be fixed with Go 1.12.
-- Edge support is worked on.
+- Go wasm currently triggers out of memory errors on mobile platforms (https://github.com/golang/go/issues/27462).
+- Edge does not support `TextEncoder` which is used by the javascript support file.
