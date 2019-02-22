@@ -1,10 +1,5 @@
-build: build-app build-server
-
-build-app:
-	@GOOS=js GOARCH=wasm go build -o web/demo.wasm ./cmd/demo
-
-build-server:
-	@go build ./cmd/demo-server
+build:
+	@goapp build -v 
 
 deploy: build
 	@cp -r web cmd/demo-server/web
@@ -12,9 +7,10 @@ deploy: build
 	@rm -r cmd/demo-server/web
 
 clean:
-	-@rm demo-server
-	-@rm web/demo.wasm
-	-@rm -r cmd/demo-server/web
+	@goapp clean -v 
 
-run: build
-	./demo-server
+run:
+	@goapp run -v -b chrome
+
+install:
+	@go get -u -v github.com/maxence-charriere/app/cmd/goapp
