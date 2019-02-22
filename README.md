@@ -18,10 +18,10 @@ A [WebAssembly](https://webassembly.org) framework to build GUI with
 
 ```sh
 # Package sources:
-go get -u github.com/maxence-charriere/app
+go get -u -v github.com/maxence-charriere/app
 
 # Goapp cli tool:
-go get -u github.com/maxence-charriere/app/cmd/goapp
+go get -u -v github.com/maxence-charriere/app/cmd/goapp
 ```
 
 ## How it works
