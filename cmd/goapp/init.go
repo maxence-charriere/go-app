@@ -26,6 +26,8 @@ func initProject(ctx context.Context, args []string) {
 	}
 
 	_, args = conf.LoadWith(&c, ld)
+	verbose = c.Verbose
+
 	pkg := "."
 	if len(args) != 0 {
 		pkg = args[0]
@@ -69,7 +71,7 @@ func initProjectDirectories(rootDir string) error {
 
 func installWasmExec(rootDir string) error {
 	wasmExec := filepath.Join(runtime.GOROOT(), "misc", "wasm", "wasm_exec.js")
-	webWasmExec := filepath.Join(rootDir, filepath.Base(wasmExec))
+	webWasmExec := filepath.Join(rootDir, "web", filepath.Base(wasmExec))
 
 	src, err := os.Open(wasmExec)
 	if err != nil {
