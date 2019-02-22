@@ -70,16 +70,10 @@ import (
     "github.com/maxence-charriere/app"
 )
 
-// Hello is a component that describes a hello world. It implements the
-// app.Compo interface.
 type Hello struct {
     Name string
 }
 
-// Render returns UI to display.
-//
-// The onchange="{{bind "Name"}}" binds the onchange value to the Hello.Name
-// field.
 func (h *Hello) Render() string {
     return `
 <div class="Hello">
@@ -96,22 +90,11 @@ func (h *Hello) Render() string {
     `
 }
 
-// The app entry point.
 func main() {
-    // Imports the hello component declared above in order to make it loadable
-    // in a page or usable in other components.
-    //
-    // Imported component can be used as URL or html tags by referencing them by
-    // their lowercased names.
-    // E.g:
-    //  Hello   => hello
-    //  foo.Bar => foo.bar
     app.Import(&Hello{})
 
-    // Defines the component to load when an URL without path is loaded.
     app.DefaultPath = "/hello"
 
-    // Runs the app in the browser.
     if err := app.Run(); err != nil {
         log.Print(err)
     }
@@ -137,10 +120,8 @@ import (
 )
 
 func main() {
-    // Setup the http handler to serve the web assembly app.
     http.Handle("/", &app.Handler{})
 
-    // Launches the server.
     if err := http.ListenAndServe(":3000", nil); err != nil {
         log.Fatal(err)
     }
