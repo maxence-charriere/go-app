@@ -38,6 +38,13 @@ func success(format string, v ...interface{}) {
 	fmt.Println(defaultColor)
 }
 
+func warn(format string, v ...interface{}) {
+	fmt.Print(warnColor)
+	format = "! " + format
+	fmt.Printf(format, v...)
+	fmt.Println(defaultColor)
+}
+
 func fail(format string, v ...interface{}) {
 	fmt.Print(errorColor)
 	format = "x " + format

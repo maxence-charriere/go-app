@@ -82,6 +82,10 @@ func (h *Handler) init() {
 
 func (h *Handler) getWasm() string {
 	wasm := h.Wasm
+	if wasm == "" {
+		wasm = "goapp"
+	}
+
 	if !strings.HasSuffix(wasm, ".wasm") {
 		wasm += ".wasm"
 	}

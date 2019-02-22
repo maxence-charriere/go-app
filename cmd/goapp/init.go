@@ -2,12 +2,9 @@ package main
 
 import (
 	"context"
-	"io"
 	"os"
 	"path/filepath"
-	"runtime"
 
-	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
 )
 
@@ -43,11 +40,6 @@ func initProject(ctx context.Context, args []string) {
 		fail("%s", err)
 	}
 
-	log("installing wasm_exec.js")
-	if err = installWasmExec(rootDir); err != nil {
-		fail("%s", err)
-	}
-
 	success("initialization succeeded")
 }
 
@@ -66,27 +58,5 @@ func initProjectDirectories(rootDir string) error {
 		}
 	}
 
-	return nil
-}
-
-func installWasmExec(rootDir string) error {
-	wasmExec := filepath.Join(runtime.GOROOT(), "misc", "wasm", "wasm_exec.js")
-	webWasmExec := filepath.Join(rootDir, "web", filepath.Base(wasmExec))
-
-	src, err := os.Open(wasmExec)
-	if err != nil {
-		return errors.Wrapf(err, "opening %q failed", wasmExec)
-	}
-	defer src.Close()
-
-	dst, err := os.Create(webWasmExec)
-	if err != nil {
-		return errors.Wrapf(err, "creating %q failed", webWasmExec)
-	}
-	defer src.Close()
-
-	if _, err := io.Copy(dst, src); err != nil {
-		return errors.Wrapf(err, "copying %q failed", wasmExec)
-	}
 	return nil
 }

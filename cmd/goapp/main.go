@@ -29,11 +29,11 @@ func main() {
 	case "init":
 		initProject(ctx, args)
 
-	// case "build":
-	// 	build(ctx, args)
+	case "build":
+		buildProject(ctx, args)
 
-	// case "run":
-	// 	run(ctx, args)
+	case "run":
+		runProject(ctx, args)
 
 	// case "clean":
 	// 	clean(ctx, args)
