@@ -19,31 +19,12 @@
     {{end}}
     <script>
 {{.AppJS}}
-
-if (!WebAssembly.instantiateStreaming) {
-    WebAssembly.instantiateStreaming = async (resp, importObject) => {
-        const source = await (await resp).arrayBuffer();
-        return await WebAssembly.instantiate(source, importObject);
-    };
-}
-
-const go = new Go();
-
-WebAssembly
-    .instantiateStreaming(fetch("{{.Wasm}}"), go.importObject)
-    .then((result) => {
-        go.run(result.instance);
-    })
-    .catch(err => {
-        console.log("wasm run failed: " + err);
-    });
-
     </script>
 </head>
 <body>
     <div class="App_Loader">
-        <img src="{{.Icon}}">
-        <p>{{.Loading}}</p>
+        <img id="App_LoadingIcon" class="App_InfiniteSpin" src="{{.Icon}}">
+        <p id="App_LoadingLabel">{{.Loading}}</p>
     </div>
 </body>
 </html>
