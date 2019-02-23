@@ -4,9 +4,11 @@ import (
 	"compress/gzip"
 	"context"
 	"io"
+	"mime"
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
@@ -156,11 +158,9 @@ func compressStaticResources(rootDir string) error {
 			return nil
 		}
 
-		if filepath.Ext(path) == ".gz" {
+		if !gzipRequired(path) {
 			return nil
 		}
-
-		filename := path + ".gz"
 
 		log("gzipping %s", path)
 
@@ -170,6 +170,7 @@ func compressStaticResources(rootDir string) error {
 		}
 		defer src.Close()
 
+		filename := path + ".gz"
 		dst, err := os.Create(filename)
 		if err != nil {
 			return errors.Wrapf(err, "creating %s failed", filename)
@@ -186,4 +187,29 @@ func compressStaticResources(rootDir string) error {
 	}
 
 	return filepath.Walk(filepath.Join(rootDir, "web"), walk)
+}
+
+func gzipRequired(filename string) bool {
+	mimeType := mime.TypeByExtension(filepath.Ext(filename))
+
+	allowedMimeTypes := []string{
+		"application/javascript",
+		"application/json",
+		"application/wasm",
+		"application/x-javascript",
+		"application/x-tar",
+		"image/svg+xml",
+		"text/css",
+		"text/html",
+		"text/plain",
+		"text/xml",
+	}
+
+	for _, m := range allowedMimeTypes {
+		if strings.Contains(mimeType, m) {
+			return true
+		}
+	}
+
+	return false
 }
