@@ -38,10 +38,6 @@ type Handler struct {
 	// The app name.
 	Name string
 
-	// The path of the go web assembly file to serve relative to the web
-	// directory.
-	Wasm string
-
 	// The he path of the web directory. Default is the working directory.
 	WebDir string
 
@@ -73,23 +69,10 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) init() {
-	h.Wasm = h.getWasm()
 	h.WebDir = h.getWebDir()
 	h.fileHandler = h.newFileHandler(h.WebDir)
 	h.lastModified = time.Now().UTC().Format("Mon, 02 Jan 2006 15:04:05 GMT")
 	h.page = h.newPage()
-}
-
-func (h *Handler) getWasm() string {
-	wasm := h.Wasm
-	if wasm == "" {
-		wasm = "goapp"
-	}
-
-	if !strings.HasSuffix(wasm, ".wasm") {
-		wasm += ".wasm"
-	}
-	return "/" + wasm
 }
 
 func (h *Handler) getWebDir() string {
@@ -128,7 +111,6 @@ func (h *Handler) newPage() []byte {
 		Loading     string
 		Name        string
 		Scripts     []string
-		Wasm        string
 	}{
 		AppJS:       pageJS,
 		Author:      h.Author,
@@ -140,7 +122,6 @@ func (h *Handler) newPage() []byte {
 		Loading:     h.Loading,
 		Name:        h.Name,
 		Scripts:     h.filepathsFromDir(h.WebDir, ".js"),
-		Wasm:        h.Wasm,
 	}); err != nil {
 		panic(err)
 	}
