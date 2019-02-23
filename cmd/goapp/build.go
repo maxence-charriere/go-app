@@ -1,6 +1,7 @@
 package main
 
 import (
+	"compress/gzip"
 	"context"
 	"io"
 	"os"
@@ -58,11 +59,16 @@ func build(ctx context.Context, c buildConfig) error {
 
 	log("building server")
 	if err := buildServer(ctx, c); err != nil {
-		fail("%s", err)
+		return err
 	}
 
 	log("installing wasm_exec.js")
-	return installWasmExec(c.rootDir)
+	if err := installWasmExec(c.rootDir); err != nil {
+		return err
+	}
+
+	log("compressing static resources")
+	return compressStaticResources(c.rootDir)
 }
 
 func buildWasm(ctx context.Context, c buildConfig) error {
@@ -128,18 +134,56 @@ func installWasmExec(rootDir string) error {
 
 	src, err := os.Open(wasmExec)
 	if err != nil {
-		return errors.Wrapf(err, "opening %q failed", wasmExec)
+		return errors.Wrapf(err, "opening %s failed", wasmExec)
 	}
 	defer src.Close()
 
 	dst, err := os.Create(webWasmExec)
 	if err != nil {
-		return errors.Wrapf(err, "creating %q failed", webWasmExec)
+		return errors.Wrapf(err, "creating %s failed", webWasmExec)
 	}
 	defer src.Close()
 
 	if _, err := io.Copy(dst, src); err != nil {
-		return errors.Wrapf(err, "copying %q failed", wasmExec)
+		return errors.Wrapf(err, "copying %s failed", wasmExec)
 	}
 	return nil
+}
+
+func compressStaticResources(rootDir string) error {
+	walk := func(path string, info os.FileInfo, err error) error {
+		if info.IsDir() {
+			return nil
+		}
+
+		if filepath.Ext(path) == ".gz" {
+			return nil
+		}
+
+		filename := path + ".gz"
+
+		log("gzipping %s", path)
+
+		src, err := os.Open(path)
+		if err != nil {
+			return errors.Wrapf(err, "opening %s failed", path)
+		}
+		defer src.Close()
+
+		dst, err := os.Create(filename)
+		if err != nil {
+			return errors.Wrapf(err, "creating %s failed", filename)
+		}
+		defer dst.Close()
+
+		w := gzip.NewWriter(dst)
+		defer w.Close()
+
+		if _, err := io.Copy(dst, src); err != nil {
+			return errors.Wrapf(err, "compressing %s failed", path)
+		}
+		return nil
+	}
+
+	return filepath.Walk(filepath.Join(rootDir, "web"), walk)
 }
