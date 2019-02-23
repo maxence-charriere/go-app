@@ -29,8 +29,8 @@ const pageHTML = `<!DOCTYPE html>
 </head>
 <body>
     <div class="App_Loader">
-        <img src="{{.Icon}}">
-        <p>{{.Loading}}</p>
+        <img id="App_LoadingIcon" class="App_InfiniteSpin" src="{{.Icon}}">
+        <p id="App_LoadingLabel">{{.Loading}}</p>
     </div>
 </body>
 </html>`
@@ -231,7 +231,7 @@ button {
     height: 100%;
 }
 
-.App_Loader img {
+#App_LoadingIcon {
     max-width: 100px;
     max-height: 100px;
     user-select: none;
@@ -239,25 +239,30 @@ button {
     -webkit-user-drag: none;
     -webkit-user-select: none;
     -ms-user-select: none;
-    animation: app_loader_rotation 10s infinite linear;
     user-drag: none;
 }
 
-@keyframes app_loader_rotation {
+#App_LoadingLabel {
+    margin-top: 6px;
+    font-size: 16pt;
+    font-weight: 100;
+    text-transform: lowercase;
+    letter-spacing: 1px;
+    max-width: 480px;
+    text-align: center;
+}
+
+.App_InfiniteSpin {
+    animation: App_InfiniteSpinFrames 10s infinite linear;
+}
+
+@keyframes App_InfiniteSpinFrames {
     from {
         transform: rotate(0deg);
     }
     to {
         transform: rotate(359deg);
     }
-}
-
-.App_Loader p {
-    margin-top: 6px;
-    font-size: 16pt;
-    font-weight: 100;
-    text-transform: lowercase;
-    letter-spacing: 1px;
 }`
 
 const pageJS = `// -----------------------------------------------------------------------------
@@ -679,6 +684,11 @@ WebAssembly
     go.run(result.instance)
   })
   .catch(err => {
+    const loadingIcon = document.getElementById('App_LoadingIcon')
+    loadingIcon.className = ''
+
+    const loadingLabel = document.getElementById('App_LoadingLabel')
+    loadingLabel.innerText = err
     console.log('wasm run failed: ' + err)
   })
 `

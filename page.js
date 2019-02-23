@@ -417,5 +417,10 @@ WebAssembly
     go.run(result.instance)
   })
   .catch(err => {
+    const loadingIcon = document.getElementById('App_LoadingIcon')
+    loadingIcon.className = ''
+
+    const loadingLabel = document.getElementById('App_LoadingLabel')
+    loadingLabel.innerText = err
     console.log('wasm run failed: ' + err)
   })
