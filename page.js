@@ -422,5 +422,5 @@ WebAssembly
 
     const loadingLabel = document.getElementById('App_LoadingLabel')
     loadingLabel.innerText = err
-    console.log('wasm run failed: ' + err)
+    console.error('wasm run failed: ' + err)
   })
