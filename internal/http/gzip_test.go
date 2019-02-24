@@ -40,6 +40,10 @@ func TestGzipHandler(t *testing.T) {
 	require.NoError(t, os.Mkdir("test", 0755))
 	defer os.RemoveAll("test")
 
+	filename := filepath.Join("test", "hello.txt")
+	err := ioutil.WriteFile(filename, []byte("hello world"), 0666)
+	require.NoError(t, err)
+
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
 			test.function(t, serv)
@@ -65,11 +69,6 @@ func testGzipHandlerServeWithoutAcceptEncoding(t *testing.T, serv *httptest.Serv
 }
 
 func testGzipHandlerServeNonGzippedFile(t *testing.T, serv *httptest.Server) {
-	filename := filepath.Join("test", "hello.txt")
-	err := ioutil.WriteFile(filename, []byte("hello world"), 0666)
-	require.NoError(t, err)
-	defer os.Remove(filename)
-
 	req, err := http.NewRequest(http.MethodGet, serv.URL+"/hello.txt", nil)
 	require.NoError(t, err)
 	req.Header.Set("Accept-Encoding", "gzip")
@@ -83,15 +82,9 @@ func testGzipHandlerServeNonGzippedFile(t *testing.T, serv *httptest.Server) {
 }
 
 func testGzipHandlerServeGzippedFile(t *testing.T, serv *httptest.Server) {
-	filename := filepath.Join("test", "hello.txt")
-	err := ioutil.WriteFile(filename, []byte("hello world"), 0666)
+	gzipname := filepath.Join("test", "hello.txt.gz")
+	err := ioutil.WriteFile(gzipname, []byte("qsdcvfbnmj"), 0666)
 	require.NoError(t, err)
-	defer os.Remove(filename)
-
-	gzipname := filename + ".gz"
-	err = ioutil.WriteFile(gzipname, []byte("qsdcvfbnmj"), 0666)
-	require.NoError(t, err)
-	defer os.Remove(gzipname)
 
 	req, err := http.NewRequest(http.MethodGet, serv.URL+"/hello.txt", nil)
 	require.NoError(t, err)

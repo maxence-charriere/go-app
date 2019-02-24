@@ -5,6 +5,7 @@ package app
 import (
 	"net/http"
 	"sync"
+	"time"
 
 	apphttp "github.com/maxence-charriere/app/internal/http"
 )
@@ -29,6 +30,10 @@ type Handler struct {
 	// The text displayed while loading a page.
 	LoadingLabel string
 
+	// The duration (in seconds) a resource is cached by a browser browser.
+	// Default is 5 min. Negative value set a no-cache policy.
+	MaxAge time.Duration
+
 	// The app name.
 	Name string
 
@@ -49,20 +54,29 @@ func (h *Handler) init() {
 		webDir = "web"
 	}
 
+	maxAge := h.MaxAge
+	if maxAge == 0 {
+		maxAge = time.Minute * 5
+	}
+
 	files := apphttp.FileHandler(webDir)
 	files = apphttp.GzipHandler(files, webDir)
+	files = apphttp.CacheHandler(files, webDir, maxAge)
+
+	var pages http.Handler = &apphttp.PageHandler{
+		Author:       h.Author,
+		Description:  h.Description,
+		Icon:         h.Icon,
+		Keywords:     h.Keywords,
+		LoadingLabel: h.LoadingLabel,
+		Name:         h.Name,
+		WebDir:       webDir,
+	}
+	pages = apphttp.CacheHandler(pages, webDir, maxAge)
 
 	h.Handler = &apphttp.RouteHandler{
-		Files: files,
-		Pages: &apphttp.PageHandler{
-			Author:       h.Author,
-			Description:  h.Description,
-			Icon:         h.Icon,
-			Keywords:     h.Keywords,
-			LoadingLabel: h.LoadingLabel,
-			Name:         h.Name,
-			WebDir:       webDir,
-		},
+		Files:  files,
+		Pages:  pages,
 		WebDir: webDir,
 	}
 }

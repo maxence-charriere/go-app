@@ -4,12 +4,14 @@ import (
 	"compress/gzip"
 	"context"
 	"io"
+	"io/ioutil"
 	"mime"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
 
+	"github.com/maxence-charriere/app/internal/http"
 	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
 )
@@ -66,6 +68,11 @@ func build(ctx context.Context, c buildConfig) error {
 
 	log("installing wasm_exec.js")
 	if err := installWasmExec(c.rootDir); err != nil {
+		return err
+	}
+
+	log("generating etag")
+	if err := generateEtag(c.rootDir); err != nil {
 		return err
 	}
 
@@ -212,4 +219,12 @@ func gzipRequired(filename string) bool {
 	}
 
 	return false
+}
+
+func generateEtag(rootDir string) error {
+	etagname := filepath.Join(rootDir, "web", ".etag")
+	if err := ioutil.WriteFile(etagname, []byte(http.GenerateEtag()), 0666); err != nil {
+		return errors.Wrap(err, "generating etag failed")
+	}
+	return nil
 }
