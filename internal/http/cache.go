@@ -41,7 +41,7 @@ func (h *cacheHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("ETag", h.etag)
-	w.Header().Set("Cache-Control", "private, max-age=60")
+	w.Header().Set("Cache-Control", "private, max-age=300")
 
 	etag := r.Header.Get("If-None-Match")
 	if etag == h.etag {
