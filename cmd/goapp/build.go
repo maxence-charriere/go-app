@@ -177,10 +177,10 @@ func compressStaticResources(rootDir string) error {
 		}
 		defer dst.Close()
 
-		w := gzip.NewWriter(dst)
-		defer w.Close()
+		gz := gzip.NewWriter(dst)
+		defer gz.Close()
 
-		if _, err := io.Copy(dst, src); err != nil {
+		if _, err := io.Copy(gz, src); err != nil {
 			return errors.Wrapf(err, "compressing %s failed", path)
 		}
 		return nil
