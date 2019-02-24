@@ -39,5 +39,5 @@ func update(ctx context.Context, args []string) {
 		fail("%s", err)
 	}
 
-	success("initialization succeeded")
+	success("update succeeded")
 }
