@@ -51,18 +51,22 @@ func (h *Handler) init() {
 
 	files := apphttp.FileHandler(webDir)
 	files = apphttp.GzipHandler(files, webDir)
+	files = apphttp.CacheHandler(files, webDir)
+
+	var pages http.Handler = &apphttp.PageHandler{
+		Author:       h.Author,
+		Description:  h.Description,
+		Icon:         h.Icon,
+		Keywords:     h.Keywords,
+		LoadingLabel: h.LoadingLabel,
+		Name:         h.Name,
+		WebDir:       webDir,
+	}
+	pages = apphttp.CacheHandler(pages, webDir)
 
 	h.Handler = &apphttp.RouteHandler{
-		Files: files,
-		Pages: &apphttp.PageHandler{
-			Author:       h.Author,
-			Description:  h.Description,
-			Icon:         h.Icon,
-			Keywords:     h.Keywords,
-			LoadingLabel: h.LoadingLabel,
-			Name:         h.Name,
-			WebDir:       webDir,
-		},
+		Files:  files,
+		Pages:  pages,
 		WebDir: webDir,
 	}
 }
