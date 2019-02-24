@@ -412,7 +412,7 @@ if (!WebAssembly.instantiateStreaming) {
 const go = new Go()
 
 WebAssembly
-  .instantiateStreaming(fetch('goapp.wasm'), go.importObject)
+  .instantiateStreaming(fetch('/goapp.wasm'), go.importObject)
   .then((result) => {
     go.run(result.instance)
   })
