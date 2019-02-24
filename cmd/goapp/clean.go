@@ -42,6 +42,7 @@ func cleanProject(ctx context.Context, args []string) {
 		filepath.Join(rootDir, pkgName+"-server"),
 		filepath.Join(rootDir, "web", "goapp.wasm"),
 		filepath.Join(rootDir, "web", "wasm_exec.js"),
+		filepath.Join(rootDir, "web", ".etag"),
 	}
 
 	for _, f := range filenames {
