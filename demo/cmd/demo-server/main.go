@@ -14,9 +14,9 @@ import (
 func main() {
 	// Setup the http handler to serve the web assembly app.
 	http.Handle("/", &app.Handler{
-		Icon:    "logo.png",
-		Loading: "loading",
-		Name:    "app demo",
+		Icon:         "logo.png",
+		LoadingLabel: "loading",
+		Name:         "app demo",
 
 		// The path of the directory that contains the wasm app file and the
 		// other resources like css files.

@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/segmentio/conf"
 )
@@ -49,4 +50,30 @@ func cleanProject(ctx context.Context, args []string) {
 			warn("%s", err)
 		}
 	}
+
+	if err := cleanCompressedStaticResources(rootDir); err != nil {
+		fail("%s", err)
+	}
+
+	success("cleaning succeeded")
+}
+
+func cleanCompressedStaticResources(rootDir string) error {
+	walk := func(path string, info os.FileInfo, err error) error {
+		if info.IsDir() {
+			return nil
+		}
+
+		ext := filepath.Ext(path)
+		originalExt := filepath.Ext(strings.TrimSuffix(path, ".gz"))
+
+		if ext != ".gz" || originalExt == "" {
+			return nil
+		}
+
+		log("removing %s", path)
+		return os.Remove(path)
+	}
+
+	return filepath.Walk(filepath.Join(rootDir, "web"), walk)
 }

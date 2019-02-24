@@ -16,3 +16,6 @@
 demo/demo
 demo/demo-server
 demo/web/wasm_exec.js
+
+# Static generated files
+*.gz
