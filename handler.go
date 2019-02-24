@@ -49,8 +49,8 @@ func (h *Handler) init() {
 		webDir = "web"
 	}
 
-	files := apphttp.FileHandler(h.WebDir)
-	files = apphttp.GzipHandler(files, h.WebDir)
+	files := apphttp.FileHandler(webDir)
+	files = apphttp.GzipHandler(files, webDir)
 
 	h.Handler = &apphttp.RouteHandler{
 		Files: files,
@@ -61,8 +61,8 @@ func (h *Handler) init() {
 			Keywords:     h.Keywords,
 			LoadingLabel: h.LoadingLabel,
 			Name:         h.Name,
-			WebDir:       h.WebDir,
+			WebDir:       webDir,
 		},
-		WebDir: h.WebDir,
+		WebDir: webDir,
 	}
 }

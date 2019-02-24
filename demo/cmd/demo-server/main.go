@@ -17,10 +17,6 @@ func main() {
 		Icon:         "logo.png",
 		LoadingLabel: "loading",
 		Name:         "app demo",
-
-		// The path of the directory that contains the wasm app file and the
-		// other resources like css files.
-		WebDir: "web",
 	})
 
 	port := os.Getenv("PORT")
