@@ -21,7 +21,7 @@ func update(ctx context.Context, args []string) {
 		Sources: []conf.Source{conf.NewEnvSource("GOAPP", os.Environ()...)},
 	}
 
-	_, args = conf.LoadWith(&c, ld)
+	conf.LoadWith(&c, ld)
 	verbose = c.Verbose
 
 	cmd := []string{
