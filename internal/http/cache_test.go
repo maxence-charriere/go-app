@@ -63,7 +63,7 @@ func TestGenerateEtag(t *testing.T) {
 
 func testCacheHandlerRequestEtagFile(t *testing.T) {
 	handler := FileHandler("test")
-	handler = CacheHandler(handler, "test")
+	handler = CacheHandler(handler, "test", 0)
 	serv := httptest.NewServer(handler)
 	defer serv.Close()
 
@@ -83,7 +83,7 @@ func testCacheHandlerRequestNoEtag(t *testing.T) {
 	require.NoError(t, err)
 
 	handler := FileHandler("test")
-	handler = CacheHandler(handler, "test")
+	handler = CacheHandler(handler, "test", 0)
 	serv := httptest.NewServer(handler)
 	defer serv.Close()
 
@@ -110,7 +110,7 @@ func testCacheHandlerRequestWithEtagMatch(t *testing.T) {
 	require.NoError(t, err)
 
 	handler := FileHandler("test")
-	handler = CacheHandler(handler, "test")
+	handler = CacheHandler(handler, "test", 60)
 	serv := httptest.NewServer(handler)
 	defer serv.Close()
 
@@ -140,7 +140,7 @@ func testCacheHandlerRequestWithEtagNoMatch(t *testing.T) {
 	require.NoError(t, err)
 
 	handler := FileHandler("test")
-	handler = CacheHandler(handler, "test")
+	handler = CacheHandler(handler, "test", 60)
 	serv := httptest.NewServer(handler)
 	defer serv.Close()
 
