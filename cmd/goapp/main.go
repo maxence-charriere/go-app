@@ -18,6 +18,7 @@ func main() {
 			{Name: "build", Help: "Build the wasm app and its server."},
 			{Name: "run", Help: "Build and run the wasm app and its server."},
 			{Name: "clean", Help: "Delete the wasm app and its server."},
+			{Name: "update", Help: "Update to the latest version."},
 			{Name: "help", Help: "Show the help."},
 		},
 	}
@@ -37,6 +38,9 @@ func main() {
 
 	case "clean":
 		cleanProject(ctx, args)
+
+	case "update":
+		update(ctx, args)
 
 	case "help":
 		ld.PrintHelp(nil)
