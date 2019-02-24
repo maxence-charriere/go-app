@@ -1,8 +1,4 @@
 // +build !wasm
-
-//go:generate go run page_gen.go
-//go:generate go fmt
-
 package app
 
 import (

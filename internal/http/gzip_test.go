@@ -32,9 +32,10 @@ func TestGzipHandler(t *testing.T) {
 		},
 	}
 
-	handler := http.FileServer(http.Dir("test"))
+	handler := FileHandler("test")
 	handler = GzipHandler(handler, "test")
 	serv := httptest.NewServer(handler)
+	defer serv.Close()
 
 	require.NoError(t, os.Mkdir("test", 0755))
 	defer os.RemoveAll("test")
@@ -44,8 +45,6 @@ func TestGzipHandler(t *testing.T) {
 			test.function(t, serv)
 		})
 	}
-
-	serv.Close()
 }
 
 func testGzipHandlerServeWithoutAcceptEncoding(t *testing.T, serv *httptest.Server) {
@@ -59,6 +58,7 @@ func testGzipHandlerServeWithoutAcceptEncoding(t *testing.T, serv *httptest.Serv
 
 	res, err := serv.Client().Do(req)
 	require.NoError(t, err)
+	defer res.Body.Close()
 
 	assert.Empty(t, res.Header.Get("Content-Encoding"))
 	assert.Equal(t, "text/plain; charset=utf-8", res.Header.Get("Content-Type"))
@@ -76,6 +76,7 @@ func testGzipHandlerServeNonGzippedFile(t *testing.T, serv *httptest.Server) {
 
 	res, err := serv.Client().Do(req)
 	require.NoError(t, err)
+	defer res.Body.Close()
 
 	assert.Empty(t, res.Header.Get("Content-Encoding"))
 	assert.Equal(t, "text/plain; charset=utf-8", res.Header.Get("Content-Type"))
@@ -98,6 +99,7 @@ func testGzipHandlerServeGzippedFile(t *testing.T, serv *httptest.Server) {
 
 	res, err := serv.Client().Do(req)
 	require.NoError(t, err)
+	defer res.Body.Close()
 
 	assert.Equal(t, "gzip", res.Header.Get("Content-Encoding"))
 	assert.Equal(t, "text/plain; charset=utf-8", res.Header.Get("Content-Type"))
