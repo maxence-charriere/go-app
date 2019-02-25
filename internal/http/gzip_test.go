@@ -30,12 +30,11 @@ func TestGzipHandler(t *testing.T) {
 			scenario: "request serves a gzipped file",
 			function: testGzipHandlerServeGzippedFile,
 		},
+		// {
+		// 	scenario: "request serves a gzipped versioned file",
+		// 	function: testGzipHandlerServeGzippedVersionedFile,
+		// },
 	}
-
-	handler := FileHandler("test")
-	handler = GzipHandler(handler, "test")
-	serv := httptest.NewServer(handler)
-	defer serv.Close()
 
 	require.NoError(t, os.Mkdir("test", 0755))
 	defer os.RemoveAll("test")
@@ -46,6 +45,11 @@ func TestGzipHandler(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
+			handler := FileHandler("test")
+			handler = GzipHandler(handler, "test")
+			serv := httptest.NewServer(handler)
+			defer serv.Close()
+
 			test.function(t, serv)
 		})
 	}
@@ -84,6 +88,27 @@ func testGzipHandlerServeNonGzippedFile(t *testing.T, serv *httptest.Server) {
 func testGzipHandlerServeGzippedFile(t *testing.T, serv *httptest.Server) {
 	gzipname := filepath.Join("test", "hello.txt.gz")
 	err := ioutil.WriteFile(gzipname, []byte("qsdcvfbnmj"), 0666)
+	require.NoError(t, err)
+
+	req, err := http.NewRequest(http.MethodGet, serv.URL+"/hello.txt", nil)
+	require.NoError(t, err)
+	req.Header.Set("Accept-Encoding", "gzip")
+
+	res, err := serv.Client().Do(req)
+	require.NoError(t, err)
+	defer res.Body.Close()
+
+	assert.Equal(t, "gzip", res.Header.Get("Content-Encoding"))
+	assert.Equal(t, "text/plain; charset=utf-8", res.Header.Get("Content-Type"))
+}
+
+func testGzipHandlerServeGzippedVersionedFile(t *testing.T, serv *httptest.Server) {
+	gzipname := filepath.Join("test", "hello.txt.wHilE42.gz")
+	err := ioutil.WriteFile(gzipname, []byte("qsdcvfbnmj"), 0666)
+	require.NoError(t, err)
+
+	etagname := filepath.Join("test", ".etag")
+	err = ioutil.WriteFile(etagname, []byte(`"wHilE42"`), 0666)
 	require.NoError(t, err)
 
 	req, err := http.NewRequest(http.MethodGet, serv.URL+"/hello.txt", nil)

@@ -56,18 +56,8 @@ func (h *cacheHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *cacheHandler) init() {
-	h.etag = h.getEtag()
+	h.etag = GetEtag(h.webDir)
 	h.cacheControl = h.getCacheControl()
-}
-
-func (h *cacheHandler) getEtag() string {
-	filename := filepath.Join(h.webDir, ".etag")
-
-	etag, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return ""
-	}
-	return string(etag)
 }
 
 func (h *cacheHandler) getCacheControl() string {
@@ -81,4 +71,15 @@ func (h *cacheHandler) getCacheControl() string {
 func GenerateEtag() string {
 	t := time.Now().UTC().String()
 	return fmt.Sprintf(`"%x"`, sha1.Sum([]byte(t)))
+}
+
+// GetEtag returns the etag for the given web directory.
+func GetEtag(webDir string) string {
+	filename := filepath.Join(webDir, ".etag")
+
+	etag, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return ""
+	}
+	return string(etag)
 }
