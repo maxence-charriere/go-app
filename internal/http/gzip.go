@@ -1,7 +1,6 @@
 package http
 
 import (
-	"fmt"
 	"mime"
 	"net/http"
 	"os"
@@ -43,8 +42,6 @@ func (h *gzipHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		gzipname += "." + h.version
 	}
 	gzipname += ".gz"
-
-	fmt.Println(gzipname)
 
 	if _, err := os.Stat(gzipname); err != nil {
 		h.Handler.ServeHTTP(w, r)

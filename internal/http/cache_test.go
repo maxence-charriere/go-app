@@ -94,6 +94,7 @@ func testCacheHandlerRequestWithEtagMatch(t *testing.T) {
 	defer os.RemoveAll("test")
 
 	etag := GenerateEtag()
+	etagHeaderValue := etagHeaderValue(etag)
 	etagname := filepath.Join("test", ".etag")
 	err := ioutil.WriteFile(etagname, []byte(etag), 0666)
 	require.NoError(t, err)
@@ -105,14 +106,14 @@ func testCacheHandlerRequestWithEtagMatch(t *testing.T) {
 
 	req, err := http.NewRequest(http.MethodGet, serv.URL+"/hello.txt", nil)
 	require.NoError(t, err)
-	req.Header.Set("If-None-Match", etag)
+	req.Header.Set("If-None-Match", etagHeaderValue)
 
 	res, err := serv.Client().Do(req)
 	require.NoError(t, err)
 	defer res.Body.Close()
 
 	assert.Equal(t, http.StatusNotModified, res.StatusCode)
-	assert.Equal(t, etag, res.Header.Get("ETag"))
+	assert.Equal(t, etagHeaderValue, res.Header.Get("ETag"))
 	assert.Equal(t, "private, max-age=60", res.Header.Get("Cache-Control"))
 }
 
@@ -122,6 +123,7 @@ func testCacheHandlerRequestWithEtagAndNoMaxAgeMatch(t *testing.T) {
 
 	etag := GenerateEtag()
 	etagname := filepath.Join("test", ".etag")
+	etagHeaderValue := etagHeaderValue(etag)
 	err := ioutil.WriteFile(etagname, []byte(etag), 0666)
 	require.NoError(t, err)
 
@@ -132,14 +134,14 @@ func testCacheHandlerRequestWithEtagAndNoMaxAgeMatch(t *testing.T) {
 
 	req, err := http.NewRequest(http.MethodGet, serv.URL+"/hello.txt", nil)
 	require.NoError(t, err)
-	req.Header.Set("If-None-Match", etag)
+	req.Header.Set("If-None-Match", etagHeaderValue)
 
 	res, err := serv.Client().Do(req)
 	require.NoError(t, err)
 	defer res.Body.Close()
 
 	assert.Equal(t, http.StatusNotModified, res.StatusCode)
-	assert.Equal(t, etag, res.Header.Get("ETag"))
+	assert.Equal(t, etagHeaderValue, res.Header.Get("ETag"))
 	assert.Equal(t, "no-cache", res.Header.Get("Cache-Control"))
 }
 
@@ -163,13 +165,13 @@ func testCacheHandlerRequestWithEtagNoMatch(t *testing.T) {
 
 	req, err := http.NewRequest(http.MethodGet, serv.URL+"/hello.txt", nil)
 	require.NoError(t, err)
-	req.Header.Set("If-None-Match", GenerateEtag())
+	req.Header.Set("If-None-Match", etagHeaderValue(GenerateEtag()))
 
 	res, err := serv.Client().Do(req)
 	require.NoError(t, err)
 	defer res.Body.Close()
 
 	assert.Equal(t, http.StatusOK, res.StatusCode)
-	assert.Equal(t, etag, res.Header.Get("ETag"))
+	assert.Equal(t, etagHeaderValue(etag), res.Header.Get("ETag"))
 	assert.Equal(t, "private, max-age=60", res.Header.Get("Cache-Control"))
 }

@@ -30,10 +30,10 @@ func TestGzipHandler(t *testing.T) {
 			scenario: "request serves a gzipped file",
 			function: testGzipHandlerServeGzippedFile,
 		},
-		// {
-		// 	scenario: "request serves a gzipped versioned file",
-		// 	function: testGzipHandlerServeGzippedVersionedFile,
-		// },
+		{
+			scenario: "request serves a gzipped versioned file",
+			function: testGzipHandlerServeGzippedVersionedFile,
+		},
 	}
 
 	require.NoError(t, os.Mkdir("test", 0755))
@@ -103,12 +103,13 @@ func testGzipHandlerServeGzippedFile(t *testing.T, serv *httptest.Server) {
 }
 
 func testGzipHandlerServeGzippedVersionedFile(t *testing.T, serv *httptest.Server) {
-	gzipname := filepath.Join("test", "hello.txt.wHilE42.gz")
+	etag := GenerateEtag()
+	gzipname := filepath.Join("test", "hello.txt."+etag+".gz")
 	err := ioutil.WriteFile(gzipname, []byte("qsdcvfbnmj"), 0666)
 	require.NoError(t, err)
 
 	etagname := filepath.Join("test", ".etag")
-	err = ioutil.WriteFile(etagname, []byte(`"wHilE42"`), 0666)
+	err = ioutil.WriteFile(etagname, []byte(etag), 0666)
 	require.NoError(t, err)
 
 	req, err := http.NewRequest(http.MethodGet, serv.URL+"/hello.txt", nil)
