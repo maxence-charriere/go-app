@@ -37,19 +37,19 @@ func (h *gzipHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	filename = filepath.Join(h.webDir, filename)
 	mimeType := mime.TypeByExtension(filepath.Ext(filename))
 
-	gzipname := filename
+	ext := ".gz"
 	if h.version != "" {
-		gzipname += "." + h.version
+		ext = "." + h.version + ".gz"
 	}
-	gzipname += ".gz"
 
+	gzipname := filename + ext
 	if _, err := os.Stat(gzipname); err != nil {
 		h.Handler.ServeHTTP(w, r)
 		return
 	}
 
 	r = r.WithContext(r.Context())
-	r.URL.Path += ".gz"
+	r.URL.Path += ext
 	w.Header().Set("Content-Encoding", "gzip")
 	w.Header().Set("Content-Type", mimeType)
 	h.Handler.ServeHTTP(w, r)

@@ -12,10 +12,9 @@ import (
 
 // CacheHandler returns a decorated version of the given cache that injects
 // cache related headers.
-func CacheHandler(h http.Handler, webDir string, maxAge time.Duration) http.Handler {
+func CacheHandler(h http.Handler, webDir string) http.Handler {
 	return &cacheHandler{
 		Handler: h,
-		maxAge:  maxAge,
 		webDir:  webDir,
 	}
 }
@@ -26,7 +25,6 @@ type cacheHandler struct {
 	once         sync.Once
 	etag         string
 	cacheControl string
-	maxAge       time.Duration
 	webDir       string
 }
 
@@ -64,10 +62,8 @@ func (h *cacheHandler) init() {
 }
 
 func (h *cacheHandler) getCacheControl() string {
-	if h.maxAge > 0 {
-		return fmt.Sprintf("private, max-age=%.f", h.maxAge.Seconds())
-	}
-	return "no-cache"
+	maxAge := time.Hour * 24 * 30 * 6
+	return fmt.Sprintf("private, max-age=%.f", maxAge.Seconds())
 }
 
 // GenerateEtag generates an etag.
