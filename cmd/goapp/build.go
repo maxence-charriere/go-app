@@ -66,8 +66,13 @@ func build(ctx context.Context, c buildConfig) error {
 		return err
 	}
 
-	log("installing wasm_exec.js")
+	log("installing go wasm support file")
 	if err := installWasmExec(c.rootDir); err != nil {
+		return err
+	}
+
+	log("installing offline support")
+	if err := installOfflineSupport(c.rootDir); err != nil {
 		return err
 	}
 
@@ -156,6 +161,14 @@ func installWasmExec(rootDir string) error {
 
 	if _, err := io.Copy(dst, src); err != nil {
 		return errors.Wrapf(err, "copying %s failed", wasmExec)
+	}
+	return nil
+}
+
+func installOfflineSupport(rootDir string) error {
+	filename := filepath.Join(rootDir, "web", "goapp_offline.js")
+	if err := ioutil.WriteFile(filename, []byte(goappOfflineJS), 0666); err != nil {
+		return errors.Wrapf(err, "creating %s failed", filename)
 	}
 	return nil
 }

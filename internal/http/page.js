@@ -400,6 +400,17 @@ function hideContextMenu () {
 }
 
 // -----------------------------------------------------------------------------
+// Init offline web worker
+// -----------------------------------------------------------------------------
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register('/goapp_offline.js')
+    .then(function () {
+      console.log('offline service worker registered')
+    })
+}
+
+// -----------------------------------------------------------------------------
 // Init Web Assembly
 // -----------------------------------------------------------------------------
 if (!WebAssembly.instantiateStreaming) {
