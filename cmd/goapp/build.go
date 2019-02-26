@@ -72,12 +72,13 @@ func build(ctx context.Context, c buildConfig) error {
 	}
 
 	log("generating etag")
-	if err := generateEtag(c.rootDir); err != nil {
+	etag := http.GenerateEtag()
+	if err := generateEtag(c.rootDir, etag); err != nil {
 		return err
 	}
 
 	log("compressing static resources")
-	return compressStaticResources(c.rootDir)
+	return compressStaticResources(c.rootDir, etag)
 }
 
 func buildWasm(ctx context.Context, c buildConfig) error {
@@ -159,7 +160,19 @@ func installWasmExec(rootDir string) error {
 	return nil
 }
 
-func compressStaticResources(rootDir string) error {
+func generateEtag(rootDir string, etag string) error {
+	etagname := filepath.Join(rootDir, "web", ".etag")
+	if err := ioutil.WriteFile(etagname, []byte(etag), 0666); err != nil {
+		return errors.Wrap(err, "generating etag failed")
+	}
+	return nil
+}
+
+func compressStaticResources(rootDir string, etag string) error {
+	if err := cleanCompressedStaticResources(rootDir); err != nil {
+		return err
+	}
+
 	walk := func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() {
 			return nil
@@ -177,7 +190,12 @@ func compressStaticResources(rootDir string) error {
 		}
 		defer src.Close()
 
-		filename := path + ".gz"
+		filename := path
+		if etag != "" {
+			filename += "." + etag
+		}
+		filename += ".gz"
+
 		dst, err := os.Create(filename)
 		if err != nil {
 			return errors.Wrapf(err, "creating %s failed", filename)
@@ -219,12 +237,4 @@ func gzipRequired(filename string) bool {
 	}
 
 	return false
-}
-
-func generateEtag(rootDir string) error {
-	etagname := filepath.Join(rootDir, "web", ".etag")
-	if err := ioutil.WriteFile(etagname, []byte(http.GenerateEtag()), 0666); err != nil {
-		return errors.Wrap(err, "generating etag failed")
-	}
-	return nil
 }

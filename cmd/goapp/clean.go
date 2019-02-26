@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/maxence-charriere/app/internal/http"
 	"github.com/segmentio/conf"
 )
 
@@ -60,13 +61,19 @@ func cleanProject(ctx context.Context, args []string) {
 }
 
 func cleanCompressedStaticResources(rootDir string) error {
+	webDir := filepath.Join(rootDir, "web")
+
 	walk := func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() {
 			return nil
 		}
 
 		ext := filepath.Ext(path)
+
 		originalExt := filepath.Ext(strings.TrimSuffix(path, ".gz"))
+		if etag := http.GetEtag(webDir); etag != "" {
+			originalExt = "." + etag + originalExt
+		}
 
 		if ext != ".gz" || originalExt == "" {
 			return nil
@@ -76,5 +83,5 @@ func cleanCompressedStaticResources(rootDir string) error {
 		return os.Remove(path)
 	}
 
-	return filepath.Walk(filepath.Join(rootDir, "web"), walk)
+	return filepath.Walk(webDir, walk)
 }

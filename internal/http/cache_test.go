@@ -7,7 +7,6 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 
@@ -32,10 +31,6 @@ func TestCacheHandler(t *testing.T) {
 			function: testCacheHandlerRequestWithEtagMatch,
 		},
 		{
-			scenario: "request with etag and without max-age returns 304",
-			function: testCacheHandlerRequestWithEtagAndNoMaxAgeMatch,
-		},
-		{
 			scenario: "request with etag returns a 200",
 			function: testCacheHandlerRequestWithEtagNoMatch,
 		},
@@ -52,7 +47,7 @@ func TestGenerateEtag(t *testing.T) {
 
 func testCacheHandlerRequestEtagFile(t *testing.T) {
 	handler := FileHandler("test")
-	handler = CacheHandler(handler, "test", 0)
+	handler = CacheHandler(handler, "test")
 	serv := httptest.NewServer(handler)
 	defer serv.Close()
 
@@ -72,7 +67,7 @@ func testCacheHandlerRequestNoEtag(t *testing.T) {
 	require.NoError(t, err)
 
 	handler := FileHandler("test")
-	handler = CacheHandler(handler, "test", 0)
+	handler = CacheHandler(handler, "test")
 	serv := httptest.NewServer(handler)
 	defer serv.Close()
 
@@ -94,53 +89,27 @@ func testCacheHandlerRequestWithEtagMatch(t *testing.T) {
 	defer os.RemoveAll("test")
 
 	etag := GenerateEtag()
+	etagHeaderValue := etagHeaderValue(etag)
 	etagname := filepath.Join("test", ".etag")
 	err := ioutil.WriteFile(etagname, []byte(etag), 0666)
 	require.NoError(t, err)
 
 	handler := FileHandler("test")
-	handler = CacheHandler(handler, "test", time.Second*60)
+	handler = CacheHandler(handler, "test")
 	serv := httptest.NewServer(handler)
 	defer serv.Close()
 
 	req, err := http.NewRequest(http.MethodGet, serv.URL+"/hello.txt", nil)
 	require.NoError(t, err)
-	req.Header.Set("If-None-Match", etag)
+	req.Header.Set("If-None-Match", etagHeaderValue)
 
 	res, err := serv.Client().Do(req)
 	require.NoError(t, err)
 	defer res.Body.Close()
 
 	assert.Equal(t, http.StatusNotModified, res.StatusCode)
-	assert.Equal(t, etag, res.Header.Get("ETag"))
-	assert.Equal(t, "private, max-age=60", res.Header.Get("Cache-Control"))
-}
-
-func testCacheHandlerRequestWithEtagAndNoMaxAgeMatch(t *testing.T) {
-	require.NoError(t, os.Mkdir("test", 0755))
-	defer os.RemoveAll("test")
-
-	etag := GenerateEtag()
-	etagname := filepath.Join("test", ".etag")
-	err := ioutil.WriteFile(etagname, []byte(etag), 0666)
-	require.NoError(t, err)
-
-	handler := FileHandler("test")
-	handler = CacheHandler(handler, "test", 0)
-	serv := httptest.NewServer(handler)
-	defer serv.Close()
-
-	req, err := http.NewRequest(http.MethodGet, serv.URL+"/hello.txt", nil)
-	require.NoError(t, err)
-	req.Header.Set("If-None-Match", etag)
-
-	res, err := serv.Client().Do(req)
-	require.NoError(t, err)
-	defer res.Body.Close()
-
-	assert.Equal(t, http.StatusNotModified, res.StatusCode)
-	assert.Equal(t, etag, res.Header.Get("ETag"))
-	assert.Equal(t, "no-cache", res.Header.Get("Cache-Control"))
+	assert.Equal(t, etagHeaderValue, res.Header.Get("ETag"))
+	assert.Equal(t, "private, max-age=15552000", res.Header.Get("Cache-Control"))
 }
 
 func testCacheHandlerRequestWithEtagNoMatch(t *testing.T) {
@@ -157,19 +126,19 @@ func testCacheHandlerRequestWithEtagNoMatch(t *testing.T) {
 	require.NoError(t, err)
 
 	handler := FileHandler("test")
-	handler = CacheHandler(handler, "test", time.Second*60)
+	handler = CacheHandler(handler, "test")
 	serv := httptest.NewServer(handler)
 	defer serv.Close()
 
 	req, err := http.NewRequest(http.MethodGet, serv.URL+"/hello.txt", nil)
 	require.NoError(t, err)
-	req.Header.Set("If-None-Match", GenerateEtag())
+	req.Header.Set("If-None-Match", etagHeaderValue(GenerateEtag()))
 
 	res, err := serv.Client().Do(req)
 	require.NoError(t, err)
 	defer res.Body.Close()
 
 	assert.Equal(t, http.StatusOK, res.StatusCode)
-	assert.Equal(t, etag, res.Header.Get("ETag"))
-	assert.Equal(t, "private, max-age=60", res.Header.Get("Cache-Control"))
+	assert.Equal(t, etagHeaderValue(etag), res.Header.Get("ETag"))
+	assert.Equal(t, "private, max-age=15552000", res.Header.Get("Cache-Control"))
 }
