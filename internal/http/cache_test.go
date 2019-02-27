@@ -109,7 +109,7 @@ func testCacheHandlerRequestWithEtagMatch(t *testing.T) {
 
 	assert.Equal(t, http.StatusNotModified, res.StatusCode)
 	assert.Equal(t, etagHeaderValue, res.Header.Get("ETag"))
-	assert.Equal(t, "private, max-age=15552000", res.Header.Get("Cache-Control"))
+	assert.Equal(t, "no-cache", res.Header.Get("Cache-Control"))
 }
 
 func testCacheHandlerRequestWithEtagNoMatch(t *testing.T) {
@@ -140,5 +140,5 @@ func testCacheHandlerRequestWithEtagNoMatch(t *testing.T) {
 
 	assert.Equal(t, http.StatusOK, res.StatusCode)
 	assert.Equal(t, etagHeaderValue(etag), res.Header.Get("ETag"))
-	assert.Equal(t, "private, max-age=15552000", res.Header.Get("Cache-Control"))
+	assert.Equal(t, "no-cache", res.Header.Get("Cache-Control"))
 }

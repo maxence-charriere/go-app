@@ -42,7 +42,7 @@ func (h *cacheHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("ETag", h.etag)
-	w.Header().Set("Cache-Control", h.cacheControl)
+	w.Header().Set("Cache-Control", "no-cache")
 
 	etag := r.Header.Get("If-None-Match")
 	if etag == h.etag {
@@ -57,13 +57,6 @@ func (h *cacheHandler) init() {
 	if etag := GetEtag(h.webDir); etag != "" {
 		h.etag = etagHeaderValue(etag)
 	}
-
-	h.cacheControl = h.getCacheControl()
-}
-
-func (h *cacheHandler) getCacheControl() string {
-	maxAge := time.Hour * 24 * 30 * 6
-	return fmt.Sprintf("private, max-age=%.f", maxAge.Seconds())
 }
 
 // GenerateEtag generates an etag.
