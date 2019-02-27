@@ -405,8 +405,11 @@ function hideContextMenu () {
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
     .register('/goapp_offline.js')
-    .then(function () {
+    .then(reg => {
       console.log('offline service worker registered')
+    })
+    .catch(err => {
+      console.error('offline service worker registration failed', err)
     })
 }
 

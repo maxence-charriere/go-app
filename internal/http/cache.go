@@ -42,7 +42,7 @@ func (h *cacheHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("ETag", h.etag)
-	w.Header().Set("Cache-Control", h.cacheControl)
+	w.Header().Set("Cache-Control", "no-cache")
 
 	etag := r.Header.Get("If-None-Match")
 	if etag == h.etag {

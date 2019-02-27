@@ -69,14 +69,12 @@ func cleanCompressedStaticResources(rootDir string) error {
 			return nil
 		}
 
-		ext := filepath.Ext(path)
-
-		originalExt := filepath.Ext(strings.TrimSuffix(path, ".gz"))
+		staticExt := ".gz"
 		if etag := http.GetEtag(webDir); etag != "" {
-			originalExt = "." + etag + originalExt
+			staticExt = "." + etag + staticExt
 		}
 
-		if ext != ".gz" || originalExt == "" {
+		if !strings.HasSuffix(path, staticExt) {
 			return nil
 		}
 
