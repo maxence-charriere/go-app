@@ -15,7 +15,7 @@ self.addEventListener('install', function (e) {
 })
 
 self.addEventListener('activate', event => {
-  console.log('new version activated')
+  console.log('goapp worker', etag, 'is activated')
 })
 
 self.addEventListener('fetch', event => {
