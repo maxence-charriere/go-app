@@ -42,6 +42,7 @@ func cleanProject(ctx context.Context, args []string) {
 	filenames := []string{
 		filepath.Join(rootDir, pkgName+"-server"),
 		filepath.Join(rootDir, "web", "goapp.wasm"),
+		filepath.Join(rootDir, "web", "goapp.js"),
 		filepath.Join(rootDir, "web", "wasm_exec.js"),
 		filepath.Join(rootDir, "web", ".etag"),
 	}
@@ -68,14 +69,12 @@ func cleanCompressedStaticResources(rootDir string) error {
 			return nil
 		}
 
-		ext := filepath.Ext(path)
-
-		originalExt := filepath.Ext(strings.TrimSuffix(path, ".gz"))
+		staticExt := ".gz"
 		if etag := http.GetEtag(webDir); etag != "" {
-			originalExt = "." + etag + originalExt
+			staticExt = "." + etag + staticExt
 		}
 
-		if ext != ".gz" || originalExt == "" {
+		if !strings.HasSuffix(path, staticExt) {
 			return nil
 		}
 

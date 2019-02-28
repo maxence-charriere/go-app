@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"text/template"
 
 	"github.com/maxence-charriere/app/internal/http"
 	"github.com/pkg/errors"
@@ -66,14 +67,23 @@ func build(ctx context.Context, c buildConfig) error {
 		return err
 	}
 
-	log("installing wasm_exec.js")
+	log("installing go wasm support file")
 	if err := installWasmExec(c.rootDir); err != nil {
+		return err
+	}
+
+	if err := cleanCompressedStaticResources(c.rootDir); err != nil {
 		return err
 	}
 
 	log("generating etag")
 	etag := http.GenerateEtag()
 	if err := generateEtag(c.rootDir, etag); err != nil {
+		return err
+	}
+
+	log("generating service worker")
+	if err := generateServiceWorker(c.rootDir, etag); err != nil {
 		return err
 	}
 
@@ -160,6 +170,63 @@ func installWasmExec(rootDir string) error {
 	return nil
 }
 
+func generateServiceWorker(rootDir, etag string) error {
+	webDir := filepath.Join(rootDir, "web")
+	filename := filepath.Join(webDir, "goapp.js")
+	cachePaths := []string{}
+
+	walk := func(path string, info os.FileInfo, err error) error {
+		if info.IsDir() {
+			return nil
+		}
+
+		staticExt := ".gz"
+		if etag := http.GetEtag(webDir); etag != "" {
+			staticExt = "." + etag + staticExt
+		}
+
+		if strings.HasSuffix(path, staticExt) {
+			return nil
+		}
+
+		cachePath := strings.Replace(path, webDir, "", 1)
+		if strings.HasPrefix(cachePath, "/.") {
+			return nil
+		}
+		if cachePath == "/goapp.js" {
+			return nil
+		}
+
+		cachePaths = append(cachePaths, cachePath)
+		return nil
+	}
+
+	if err := filepath.Walk(webDir, walk); err != nil {
+		return errors.Wrap(err, "getting caching routes failed")
+	}
+
+	f, err := os.Create(filename)
+	if err != nil {
+		return errors.Wrapf(err, "creating %s failed", filename)
+	}
+	defer f.Close()
+
+	tmpl, err := template.New(filename).Parse(goappOfflineJS)
+	if err != nil {
+		return errors.Wrapf(err, "generating %s failed", filename)
+	}
+	if err := tmpl.Execute(f, struct {
+		ETag  string
+		Paths []string
+	}{
+		ETag:  etag,
+		Paths: cachePaths,
+	}); err != nil {
+		return errors.Wrapf(err, "generating %s failed", filename)
+	}
+	return nil
+}
+
 func generateEtag(rootDir string, etag string) error {
 	etagname := filepath.Join(rootDir, "web", ".etag")
 	if err := ioutil.WriteFile(etagname, []byte(etag), 0666); err != nil {
@@ -169,10 +236,6 @@ func generateEtag(rootDir string, etag string) error {
 }
 
 func compressStaticResources(rootDir string, etag string) error {
-	if err := cleanCompressedStaticResources(rootDir); err != nil {
-		return err
-	}
-
 	walk := func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() {
 			return nil

@@ -1,3 +1,6 @@
+//go:generate go run goapp_gen.go
+//go:generate go fmt
+
 package main
 
 import (

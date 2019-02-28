@@ -400,6 +400,20 @@ function hideContextMenu () {
 }
 
 // -----------------------------------------------------------------------------
+// Init service worker
+// -----------------------------------------------------------------------------
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register('/goapp.js')
+    .then(reg => {
+      console.log('offline service worker registered')
+    })
+    .catch(err => {
+      console.error('offline service worker registration failed', err)
+    })
+}
+
+// -----------------------------------------------------------------------------
 // Init Web Assembly
 // -----------------------------------------------------------------------------
 if (!WebAssembly.instantiateStreaming) {
