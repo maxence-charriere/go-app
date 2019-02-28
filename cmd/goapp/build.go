@@ -82,8 +82,8 @@ func build(ctx context.Context, c buildConfig) error {
 		return err
 	}
 
-	log("installing offline support")
-	if err := installOfflineSupport(c.rootDir, etag); err != nil {
+	log("generating service worker")
+	if err := generateServiceWorker(c.rootDir, etag); err != nil {
 		return err
 	}
 
@@ -170,9 +170,9 @@ func installWasmExec(rootDir string) error {
 	return nil
 }
 
-func installOfflineSupport(rootDir, etag string) error {
+func generateServiceWorker(rootDir, etag string) error {
 	webDir := filepath.Join(rootDir, "web")
-	filename := filepath.Join(webDir, "goapp_offline.js")
+	filename := filepath.Join(webDir, "goapp.js")
 	cachePaths := []string{}
 
 	walk := func(path string, info os.FileInfo, err error) error {
@@ -193,7 +193,7 @@ func installOfflineSupport(rootDir, etag string) error {
 		if strings.HasPrefix(cachePath, "/.") {
 			return nil
 		}
-		if cachePath == "/goapp_offline.js" {
+		if cachePath == "/goapp.js" {
 			return nil
 		}
 

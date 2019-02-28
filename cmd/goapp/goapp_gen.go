@@ -23,7 +23,7 @@ func main() {
 		Var      string
 		Filename string
 	}{
-		{Var: "goappOfflineJS", Filename: "goapp_offline.js"},
+		{Var: "goappOfflineJS", Filename: "goapp.js"},
 	}
 
 	for _, g := range gen {

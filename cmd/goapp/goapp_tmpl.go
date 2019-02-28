@@ -27,18 +27,7 @@ self.addEventListener('fetch', event => {
     caches
       .match(event.request)
       .then(response => {
-        if (response) {
-          console.log('fetch from cache')
-          return response
-        }
-
-        console.log('fetch from network')
-        // event.request.headers.set('If-None-Match', '"' + etag + '"')
-        if (event.request.headers) {
-          console.log('headers found:', event.request.headers)
-        }
-
-        return fetch(event.request)
+        return response || fetch(event.request)
       })
   )
 })

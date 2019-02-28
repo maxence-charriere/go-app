@@ -665,11 +665,11 @@ function hideContextMenu () {
 }
 
 // -----------------------------------------------------------------------------
-// Init offline web worker
+// Init service worker
 // -----------------------------------------------------------------------------
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
-    .register('/goapp_offline.js')
+    .register('/goapp.js')
     .then(reg => {
       console.log('offline service worker registered')
     })

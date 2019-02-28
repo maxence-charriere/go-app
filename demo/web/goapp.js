@@ -1,4 +1,4 @@
-const etag = 'f37d3d8b0d9dd0485db87921a35fe9bd3b6ef59b'
+const etag = '6dbf9374cd238f5692099816e582e488a265957e'
 
 self.addEventListener('install', function (e) {
   console.log('intalling goapp worker', etag)
@@ -27,18 +27,7 @@ self.addEventListener('fetch', event => {
     caches
       .match(event.request)
       .then(response => {
-        if (response) {
-          console.log('fetch from cache')
-          return response
-        }
-
-        console.log('fetch from network')
-        // event.request.headers.set('If-None-Match', '"' + etag + '"')
-        if (event.request.headers) {
-          console.log('headers found:', event.request.headers)
-        }
-
-        return fetch(event.request)
+        return response || fetch(event.request)
       })
   )
 })
