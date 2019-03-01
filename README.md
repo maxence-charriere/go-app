@@ -169,7 +169,7 @@ See the [full example code](https://github.com/maxence-charriere/app/tree/master
 
 ## Support
 
-Requires [Go 1.11](https://golang.org/doc/go1.11).
+Requires [Go 1.12](https://golang.org/doc/go1.12).
 
 |Platform|Chrome|Edge|Firefox|Safari|
 |:-|:-:|:-:|:-:|:-:|
