@@ -119,32 +119,33 @@ func syncDom(changes []change) error {
 func initEmit() {
 	js.Global().
 		Get("goapp").
-		Set("emit", js.NewCallback(emit))
+		Set("emit", js.FuncOf(emit))
 }
 
-func emit(args []js.Value) {
+func emit(this js.Value, args []js.Value) interface{} {
 	var m mapping
 	if err := json.Unmarshal([]byte(args[0].String()), &m); err != nil {
 		Logf("go callback failed: %s", err)
-		return
+		return nil
 	}
 
 	c, err := dom.CompoByID(m.CompoID)
 	if err != nil {
 		Logf("go callback failed: %s", err)
-		return
+		return nil
 	}
 
 	var f func()
 	if f, err = m.Map(c); err != nil {
 		Logf("go callback failed: %s", err)
-		return
+		return nil
 	}
 
 	if f != nil {
 		f()
-		return
+		return nil
 	}
 
 	Render(c)
+	return nil
 }
