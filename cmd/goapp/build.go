@@ -211,7 +211,7 @@ func generateServiceWorker(rootDir, etag string) error {
 	}
 	defer f.Close()
 
-	tmpl, err := template.New(filename).Parse(goappOfflineJS)
+	tmpl, err := template.New(filename).Parse(goappJS)
 	if err != nil {
 		return errors.Wrapf(err, "generating %s failed", filename)
 	}

@@ -19,6 +19,7 @@ const pageHTML = `<!DOCTYPE html>
     {{range .CSS}}<link type="text/css" rel="stylesheet" href="{{.}}">
     {{end}}
     <link rel="icon" type="image/png" href="{{.Icon}}">
+    <link rel="manifest" href="/manifest.json">
     {{range .Scripts}}<script src="{{.}}"></script>
     {{end}}
     <script>

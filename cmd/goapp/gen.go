@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	f, err := os.Create("goapp_tmpl.go")
+	f, err := os.Create("templates.go")
 	if err != nil {
 		panic(err)
 	}
@@ -23,7 +23,8 @@ func main() {
 		Var      string
 		Filename string
 	}{
-		{Var: "goappOfflineJS", Filename: "goapp.js"},
+		{Var: "goappJS", Filename: "goapp.js"},
+		{Var: "manifest", Filename: "manifest.json"},
 	}
 
 	for _, g := range gen {
