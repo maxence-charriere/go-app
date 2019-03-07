@@ -18,7 +18,7 @@ const pageHTML = `<!DOCTYPE html>
     </style>
     {{range .CSS}}<link type="text/css" rel="stylesheet" href="{{.}}">
     {{end}}
-    <link rel="icon" type="image/png" href="/icon.png">
+    <link rel="icon" type="image/png" href="/icon-192.png">
     <link rel="manifest" href="/manifest.json">
     {{range .Scripts}}<script src="{{.}}"></script>
     {{end}}
@@ -28,7 +28,7 @@ const pageHTML = `<!DOCTYPE html>
 </head>
 <body>
     <div class="App_Loader">
-        <img id="App_LoadingIcon" class="App_InfiniteSpin" src="/icon.png">
+        <img id="App_LoadingIcon" class="App_InfiniteSpin" src="/icon-512.png">
         <p id="App_LoadingLabel">{{.LoadingLabel}}</p>
     </div>
 </body>

@@ -38,12 +38,12 @@ const manifest = `{
     "name": "{{.Name}}",
     "icons": [
         {
-            "src": "{{.Icon}}-192.png",
+            "src": "/icon-192.png",
             "type": "image/png",
             "sizes": "192x192"
         },
         {
-            "src": "{{.Icon}}-512.png",
+            "src": "/icon-512.png",
             "type": "image/png",
             "sizes": "512x512"
         }
