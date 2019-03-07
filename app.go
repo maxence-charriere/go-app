@@ -144,6 +144,11 @@ func Panicf(format string, a ...interface{}) {
 	panic(fmt.Sprintf(format, a...))
 }
 
+// Path returns the path to the given component.
+func Path(c Compo) string {
+	return "/" + compoName(c)
+}
+
 // Post posts the given messages.
 // Messages are handled in another goroutine.
 func Post(msgs ...Msg) {
