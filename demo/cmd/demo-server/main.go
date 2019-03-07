@@ -12,7 +12,6 @@ import (
 func main() {
 	// Setup the http handler to serve the web assembly app.
 	http.Handle("/", &app.Handler{
-		Icon:         "logo.png",
 		LoadingLabel: "loading",
 		Name:         "app demo",
 	})

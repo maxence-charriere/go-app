@@ -20,9 +20,6 @@ type Handler struct {
 	// The app description.
 	Description string
 
-	// The path of the icon relative to the web directory.
-	Icon string
-
 	// The app keywords.
 	Keywords []string
 
@@ -56,7 +53,6 @@ func (h *Handler) init() {
 	var pages http.Handler = &apphttp.PageHandler{
 		Author:       h.Author,
 		Description:  h.Description,
-		Icon:         h.Icon,
 		Keywords:     h.Keywords,
 		LoadingLabel: h.LoadingLabel,
 		Name:         h.Name,
