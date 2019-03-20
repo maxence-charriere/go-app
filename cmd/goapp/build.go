@@ -92,11 +92,6 @@ func build(ctx context.Context, c buildConfig) error {
 		return err
 	}
 
-	log("generating manifest")
-	if err := generateManifest(c.rootDir); err != nil {
-		return err
-	}
-
 	log("compressing static resources")
 	return compressStaticResources(c.rootDir, etag)
 }
@@ -267,44 +262,6 @@ func generateProgressiveAppIcons(rootDir string) error {
 			Scale:  1,
 		},
 	)
-}
-
-func generateManifest(rootDir string) error {
-	webDir := filepath.Join(rootDir, "web")
-	filename := filepath.Join(webDir, "manifest.json")
-
-	f, err := os.Create(filename)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	tmpl, err := template.New(filename).Parse(manifest)
-	if err != nil {
-		return errors.Wrapf(err, "generating %s failed", filename)
-	}
-	if err := tmpl.Execute(f, struct {
-		ShortName       string
-		Name            string
-		StartURL        string
-		BackgroundColor string
-		Display         string
-		Scope           string
-		Orientation     string
-		ThemeColor      string
-	}{
-		ShortName:       "",
-		Name:            "",
-		StartURL:        "",
-		BackgroundColor: "",
-		Display:         "",
-		Scope:           "",
-		Orientation:     "",
-		ThemeColor:      "",
-	}); err != nil {
-		return errors.Wrapf(err, "generating %s failed", filename)
-	}
-	return nil
 }
 
 func compressStaticResources(rootDir string, etag string) error {

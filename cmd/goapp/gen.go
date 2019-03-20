@@ -24,7 +24,6 @@ func main() {
 		Filename string
 	}{
 		{Var: "goappJS", Filename: "goapp.js"},
-		{Var: "manifest", Filename: "manifest.json"},
 	}
 
 	for _, g := range gen {

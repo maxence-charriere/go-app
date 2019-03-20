@@ -1,4 +1,4 @@
-//go:generate go run page_gen.go
+//go:generate go run gen.go
 //go:generate go fmt
 
 package http
@@ -15,6 +15,8 @@ import (
 	"time"
 )
 
+var lastModified = time.Now().UTC().Format("Mon, 02 Jan 2006 15:04:05 GMT")
+
 // PageHandler is a handler that serves pages that works with wasm app.
 type PageHandler struct {
 	Author       string
@@ -25,9 +27,8 @@ type PageHandler struct {
 	Name         string
 	WebDir       string
 
-	once         sync.Once
-	lastModified string
-	page         []byte
+	once sync.Once
+	page []byte
 }
 
 func (h *PageHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -35,7 +36,7 @@ func (h *PageHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/html")
 	w.Header().Set("Content-Encoding", "gzip")
-	w.Header().Set("Last-Modified", h.lastModified)
+	w.Header().Set("Last-Modified", lastModified)
 	w.Write(h.page)
 }
 
@@ -72,7 +73,6 @@ func (h *PageHandler) initPage() {
 
 	writer.Close()
 	h.page = buffer.Bytes()
-	h.lastModified = time.Now().UTC().Format("Mon, 02 Jan 2006 15:04:05 GMT")
 }
 
 func filepathsFromDir(dirPath string, extensions ...string) []string {
