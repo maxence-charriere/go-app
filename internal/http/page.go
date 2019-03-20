@@ -25,6 +25,7 @@ type PageHandler struct {
 	Keywords     []string
 	LoadingLabel string
 	Name         string
+	ThemeColor   string
 	WebDir       string
 
 	once sync.Once
@@ -55,6 +56,7 @@ func (h *PageHandler) initPage() {
 		Keywords     string
 		LoadingLabel string
 		Name         string
+		ThemeColor   string
 		Scripts      []string
 	}{
 		AppJS:        pageJS,
@@ -66,6 +68,7 @@ func (h *PageHandler) initPage() {
 		Keywords:     strings.Join(h.Keywords, ", "),
 		LoadingLabel: h.LoadingLabel,
 		Name:         h.Name,
+		ThemeColor:   h.ThemeColor,
 		Scripts:      filepathsFromDir(h.WebDir, ".js"),
 	}); err != nil {
 		panic(err)

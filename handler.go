@@ -94,24 +94,30 @@ func (h *Handler) init() {
 	files = apphttp.GzipHandler(files, webDir)
 	files = apphttp.CacheHandler(files, webDir)
 
+	themeColor := h.ProgressiveApp.ThemeColor
+	if themeColor == "" {
+		themeColor = "#21252b"
+	}
+
 	var pages http.Handler = &apphttp.PageHandler{
 		Author:       h.Author,
 		Description:  h.Description,
 		Keywords:     h.Keywords,
 		LoadingLabel: h.LoadingLabel,
 		Name:         h.Name,
+		ThemeColor:   themeColor,
 		WebDir:       webDir,
 	}
 	pages = apphttp.CacheHandler(pages, webDir)
 
 	var manifest http.Handler = &apphttp.ManifestHandler{
-		BackgroundColor: backgroundColor(h.ProgressiveApp.BackgroundColor),
+		BackgroundColor: themeColor,
 		Name:            h.Name,
 		Orientation:     orientation(h.ProgressiveApp.LanscapeMode),
 		ShortName:       shortName(h.Name, h.ProgressiveApp.ShortName),
 		Scope:           entryPoint(h.ProgressiveApp.Scope),
 		StartURL:        entryPoint(h.ProgressiveApp.StartURL),
-		ThemeColor:      backgroundColor(h.ProgressiveApp.ThemeColor),
+		ThemeColor:      themeColor,
 	}
 	manifest = apphttp.CacheHandler(manifest, webDir)
 
@@ -146,11 +152,4 @@ func entryPoint(entryPoint string) string {
 		return "/"
 	}
 	return entryPoint
-}
-
-func backgroundColor(color string) string {
-	if color == "" {
-		return "#21252b"
-	}
-	return color
 }
