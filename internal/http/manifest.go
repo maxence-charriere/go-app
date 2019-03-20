@@ -56,12 +56,14 @@ func (h *ManifestHandler) init() {
 				Type:  "image/png",
 			},
 		},
-		Name:        h.Name,
-		Orientation: h.Orientation,
-		ShortName:   h.ShortName,
-		Scope:       h.Scope,
-		StartURL:    h.StartURL,
-		ThemeColor:  h.ThemeColor,
+		Name:                      h.Name,
+		Orientation:               h.Orientation,
+		PreferRelatedApplications: true,
+		RelatedApplications:       []interface{}{},
+		ShortName:                 h.ShortName,
+		Scope:                     h.Scope,
+		StartURL:                  h.StartURL,
+		ThemeColor:                h.ThemeColor,
 	}); err != nil {
 		panic(err)
 	}
@@ -71,15 +73,17 @@ func (h *ManifestHandler) init() {
 }
 
 type manifest struct {
-	BackgroundColor string         `json:"background_color"`
-	Display         string         `json:"display"`
-	Icons           []manifestIcon `json:"icons"`
-	Name            string         `json:"name"`
-	Orientation     string         `json:"orientation"`
-	ShortName       string         `json:"short_name"`
-	Scope           string         `json:"scope"`
-	StartURL        string         `json:"start_url"`
-	ThemeColor      string         `json:"theme_color"`
+	BackgroundColor           string         `json:"background_color"`
+	Display                   string         `json:"display"`
+	Icons                     []manifestIcon `json:"icons"`
+	Name                      string         `json:"name"`
+	Orientation               string         `json:"orientation"`
+	PreferRelatedApplications bool           `json:"prefer_related_applications"`
+	RelatedApplications       []interface{}  `json:"related_applications"`
+	ShortName                 string         `json:"short_name"`
+	Scope                     string         `json:"scope"`
+	StartURL                  string         `json:"start_url"`
+	ThemeColor                string         `json:"theme_color"`
 }
 
 type manifestIcon struct {

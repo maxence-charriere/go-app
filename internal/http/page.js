@@ -414,6 +414,17 @@ if ('serviceWorker' in navigator) {
 }
 
 // -----------------------------------------------------------------------------
+// Init progressive app
+// -----------------------------------------------------------------------------
+let deferredPrompt
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault()
+  deferredPrompt = e
+  console.log('beforeinstallprompt')
+})
+
+// -----------------------------------------------------------------------------
 // Init Web Assembly
 // -----------------------------------------------------------------------------
 if (!WebAssembly.instantiateStreaming) {

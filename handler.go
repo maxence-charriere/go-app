@@ -135,7 +135,7 @@ func (h *Handler) init() {
 
 	var manifest http.Handler = &apphttp.ManifestHandler{
 		BackgroundColor: backgroundColor(h.ProgressiveApp.BackgroundColor),
-		Display:         string(h.ProgressiveApp.Display),
+		Display:         display(string(h.ProgressiveApp.Display)),
 		Name:            h.Name,
 		Orientation:     orientation(h.ProgressiveApp.LanscapeMode),
 		ShortName:       shortName(h.Name, h.ProgressiveApp.ShortName),
