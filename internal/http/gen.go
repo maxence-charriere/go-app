@@ -26,7 +26,6 @@ func main() {
 		{Var: "pageHTML", Filename: "page.html"},
 		{Var: "pageCSS", Filename: "page.css"},
 		{Var: "pageJS", Filename: "page.js"},
-		{Var: "manifestJSON", Filename: "manifest.json"},
 	}
 
 	for _, g := range gen {
