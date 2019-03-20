@@ -25,15 +25,20 @@ func TestRouteHandler(t *testing.T) {
 			function: testRouteHandlerServePage,
 		},
 		{
+			scenario: "request is routed to a manifest",
+			function: testRouteHandlerServeManifest,
+		},
+		{
 			scenario: "request to root is routed to a page",
 			function: testRouteHandlerServeRootPage,
 		},
 	}
 
 	serv := httptest.NewServer(&RouteHandler{
-		Files:  FileHandler("test"),
-		Pages:  &PageHandler{WebDir: "test"},
-		WebDir: "test",
+		Files:    FileHandler("test"),
+		Manifest: &ManifestHandler{},
+		Pages:    &PageHandler{WebDir: "test"},
+		WebDir:   "test",
 	})
 	defer serv.Close()
 
@@ -57,6 +62,14 @@ func testRouteHandlerServeFile(t *testing.T, serv *httptest.Server) {
 	defer res.Body.Close()
 
 	assert.Equal(t, "text/plain; charset=utf-8", res.Header.Get("Content-Type"))
+}
+
+func testRouteHandlerServeManifest(t *testing.T, serv *httptest.Server) {
+	res, err := serv.Client().Get(serv.URL + "/manifest.json")
+	require.NoError(t, err)
+	defer res.Body.Close()
+
+	assert.Equal(t, "application/json", res.Header.Get("Content-Type"))
 }
 
 func testRouteHandlerServePage(t *testing.T, serv *httptest.Server) {

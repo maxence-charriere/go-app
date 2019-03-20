@@ -11,6 +11,7 @@ const pageHTML = `<!DOCTYPE html>
     <meta name="keywords" content="{{.Keywords}}">
     <meta name="author" content="{{.Author}}">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <meta name="theme-color" content="{{.ThemeColor}}"/>
     <title>{{.Name}}</title>
 
     <style media="all" type="text/css">
@@ -18,7 +19,8 @@ const pageHTML = `<!DOCTYPE html>
     </style>
     {{range .CSS}}<link type="text/css" rel="stylesheet" href="{{.}}">
     {{end}}
-    <link rel="icon" type="image/png" href="{{.Icon}}">
+    <link rel="icon" type="image/png" href="/icon-192.png">
+    <link rel="manifest" href="/manifest.json">
     {{range .Scripts}}<script src="{{.}}"></script>
     {{end}}
     <script>
@@ -27,7 +29,7 @@ const pageHTML = `<!DOCTYPE html>
 </head>
 <body>
     <div class="App_Loader">
-        <img id="App_LoadingIcon" class="App_InfiniteSpin" src="{{.Icon}}">
+        <img id="App_LoadingIcon" class="App_InfiniteSpin" src="/icon-512.png">
         <p id="App_LoadingLabel">{{.LoadingLabel}}</p>
     </div>
 </body>
@@ -677,6 +679,17 @@ if ('serviceWorker' in navigator) {
       console.error('offline service worker registration failed', err)
     })
 }
+
+// -----------------------------------------------------------------------------
+// Init progressive app
+// -----------------------------------------------------------------------------
+let deferredPrompt
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault()
+  deferredPrompt = e
+  console.log('beforeinstallprompt')
+})
 
 // -----------------------------------------------------------------------------
 // Init Web Assembly

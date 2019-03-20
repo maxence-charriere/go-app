@@ -9,9 +9,10 @@ import (
 
 // RouteHandler is a handler that routes requests to the appropriate handler.
 type RouteHandler struct {
-	Files  http.Handler
-	Pages  http.Handler
-	WebDir string
+	Files    http.Handler
+	Pages    http.Handler
+	Manifest http.Handler
+	WebDir   string
 }
 
 func (h *RouteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -20,6 +21,11 @@ func (h *RouteHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if info, err := os.Stat(filename); err == nil && !info.IsDir() {
 		h.Files.ServeHTTP(w, r)
+		return
+	}
+
+	if r.URL.Path == "/manifest.json" {
+		h.Manifest.ServeHTTP(w, r)
 		return
 	}
 

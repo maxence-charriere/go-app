@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	f, err := os.Create("page_tmpl.go")
+	f, err := os.Create("templates.go")
 	if err != nil {
 		panic(err)
 	}

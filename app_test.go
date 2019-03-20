@@ -95,3 +95,7 @@ func TestUI(t *testing.T) {
 		t.Log("boo")
 	})
 }
+
+func TestPath(t *testing.T) {
+	assert.Equal(t, "/app.foo", Path(&Foo{}))
+}

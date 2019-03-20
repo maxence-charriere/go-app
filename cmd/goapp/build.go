@@ -87,6 +87,11 @@ func build(ctx context.Context, c buildConfig) error {
 		return err
 	}
 
+	log("generating icons")
+	if err := generateProgressiveAppIcons(c.rootDir); err != nil {
+		return err
+	}
+
 	log("compressing static resources")
 	return compressStaticResources(c.rootDir, etag)
 }
@@ -211,7 +216,7 @@ func generateServiceWorker(rootDir, etag string) error {
 	}
 	defer f.Close()
 
-	tmpl, err := template.New(filename).Parse(goappOfflineJS)
+	tmpl, err := template.New(filename).Parse(goappJS)
 	if err != nil {
 		return errors.Wrapf(err, "generating %s failed", filename)
 	}
@@ -233,6 +238,30 @@ func generateEtag(rootDir string, etag string) error {
 		return errors.Wrap(err, "generating etag failed")
 	}
 	return nil
+}
+
+func generateProgressiveAppIcons(rootDir string) error {
+	webDir := filepath.Join(rootDir, "web")
+
+	iconname := filepath.Join(webDir, "icon.png")
+	if _, err := os.Stat(iconname); err != nil {
+		iconname = filepath.Join(os.Getenv("GOPATH"), "src", "github.com", "maxence-charriere", "app", "logo.png")
+	}
+
+	return generateIcons(iconname,
+		iconInfo{
+			Name:   filepath.Join(webDir, "icon-192.png"),
+			Width:  192,
+			Height: 192,
+			Scale:  1,
+		},
+		iconInfo{
+			Name:   filepath.Join(webDir, "icon-512.png"),
+			Width:  512,
+			Height: 512,
+			Scale:  1,
+		},
+	)
 }
 
 func compressStaticResources(rootDir string, etag string) error {
