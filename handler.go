@@ -13,14 +13,6 @@ import (
 // ProgressiveAppConfig represents the configuration used to describe a
 // progressive app.
 type ProgressiveAppConfig struct {
-	// Defines the expected “background color” for the website. This value
-	// repeats what is already available in the site’s CSS, but can be used by
-	// browsers to draw the background color of a shortcut when the manifest is
-	// available before the stylesheet has loaded. This creates a smooth
-	// transition between launching the web application and loading the site's
-	// content.
-	BackgroundColor string
-
 	// Enforces landscape mode.
 	LanscapeMode bool
 
