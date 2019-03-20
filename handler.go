@@ -165,9 +165,9 @@ func shortName(name, shortName string) string {
 		return shortName
 	}
 
-	shortName = strings.ReplaceAll(name, " ", "")
-	shortName = strings.ReplaceAll(shortName, "\n", "")
-	shortName = strings.ReplaceAll(shortName, "\t", "")
+	shortName = strings.Replace(name, " ", "", -1)
+	shortName = strings.Replace(shortName, "\n", "", -1)
+	shortName = strings.Replace(shortName, "\t", "", -1)
 	return shortName
 }
 
