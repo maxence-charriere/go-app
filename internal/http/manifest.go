@@ -73,7 +73,7 @@ func (h *ManifestHandler) init() {
 }
 
 type manifest struct {
-	BackgroundColor           string         `json:"background_color"`
+	BackgroundColor           string         `json:"background_color,omitempty"`
 	Display                   string         `json:"display"`
 	Icons                     []manifestIcon `json:"icons"`
 	Name                      string         `json:"name"`
@@ -83,7 +83,7 @@ type manifest struct {
 	ShortName                 string         `json:"short_name"`
 	Scope                     string         `json:"scope"`
 	StartURL                  string         `json:"start_url"`
-	ThemeColor                string         `json:"theme_color"`
+	ThemeColor                string         `json:"theme_color,omitempty"`
 }
 
 type manifestIcon struct {

@@ -134,14 +134,14 @@ func (h *Handler) init() {
 	pages = apphttp.CacheHandler(pages, webDir)
 
 	var manifest http.Handler = &apphttp.ManifestHandler{
-		BackgroundColor: backgroundColor(h.ProgressiveApp.BackgroundColor),
+		BackgroundColor: h.ProgressiveApp.BackgroundColor,
 		Display:         display(string(h.ProgressiveApp.Display)),
 		Name:            h.Name,
 		Orientation:     orientation(h.ProgressiveApp.LanscapeMode),
 		ShortName:       shortName(h.Name, h.ProgressiveApp.ShortName),
 		Scope:           entryPoint(h.ProgressiveApp.Scope),
 		StartURL:        entryPoint(h.ProgressiveApp.StartURL),
-		ThemeColor:      backgroundColor(h.ProgressiveApp.ThemeColor),
+		ThemeColor:      h.ProgressiveApp.ThemeColor,
 	}
 	manifest = apphttp.CacheHandler(manifest, webDir)
 
@@ -183,11 +183,4 @@ func entryPoint(entryPoint string) string {
 		return "/"
 	}
 	return entryPoint
-}
-
-func backgroundColor(color string) string {
-	if color == "" {
-		return "#21252b"
-	}
-	return color
 }
