@@ -12,7 +12,6 @@ import (
 // webapp support.
 type ManifestHandler struct {
 	BackgroundColor string
-	Display         string
 	Name            string
 	Orientation     string
 	ShortName       string
@@ -43,7 +42,7 @@ func (h *ManifestHandler) init() {
 
 	if err := enc.Encode(manifest{
 		BackgroundColor: h.BackgroundColor,
-		Display:         h.Display,
+		Display:         "standalone",
 		Icons: []manifestIcon{
 			{
 				Sizes: "192x192",

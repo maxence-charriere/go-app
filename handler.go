@@ -21,11 +21,6 @@ type ProgressiveAppConfig struct {
 	// content.
 	BackgroundColor string
 
-	// Defines the preferred display mode for the website.
-	//
-	// Default is Standalone.
-	Display Display
-
 	// Enforces landscape mode.
 	LanscapeMode bool
 
@@ -54,30 +49,6 @@ type ProgressiveAppConfig struct {
 	// the theme color surrounds the site).
 	ThemeColor string
 }
-
-// Display describes how progressive webapp is displayed.
-type Display string
-
-const (
-	// FullScreen opens the web application without any browser UI and takes up
-	// the entirety of the available display area.
-	FullScreen Display = "fullscreen"
-
-	// Standalone opens the web app to look and feel like a standalone native
-	// app. The app runs in its own window, separate from the browser, and hides
-	// standard browser UI elements like the URL bar, etc.
-	Standalone = "standalone"
-
-	// MinimalUI is similar to fullscreen, but provides the user with some means
-	// to access a minimal set of UI elements for controlling navigation (i.e.,
-	// back, forward, reload, etc).
-	//
-	// It is only supported by Chrome on mobile.
-	MinimalUI = "minimal-ui"
-
-	// Browser provides a standard browser experience.
-	Browser = "browser"
-)
 
 // Handler is a http handler that serves UI components created with this
 // package.
@@ -135,7 +106,6 @@ func (h *Handler) init() {
 
 	var manifest http.Handler = &apphttp.ManifestHandler{
 		BackgroundColor: h.ProgressiveApp.BackgroundColor,
-		Display:         display(string(h.ProgressiveApp.Display)),
 		Name:            h.Name,
 		Orientation:     orientation(h.ProgressiveApp.LanscapeMode),
 		ShortName:       shortName(h.Name, h.ProgressiveApp.ShortName),
@@ -151,13 +121,6 @@ func (h *Handler) init() {
 		Pages:    pages,
 		WebDir:   webDir,
 	}
-}
-
-func display(display string) string {
-	if display == "" {
-		return "standalone"
-	}
-	return display
 }
 
 func shortName(name, shortName string) string {
