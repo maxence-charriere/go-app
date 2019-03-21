@@ -35,7 +35,7 @@ func generateIcons(original string, resizes ...iconInfo) error {
 
 		p := 0
 		if r.Padding {
-			p = int((42 * r.Height / 100) * r.Scale)
+			p = int((8 * r.Height / 100) * r.Scale)
 		}
 
 		w := ow - p
