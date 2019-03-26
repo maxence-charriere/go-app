@@ -538,13 +538,13 @@ function callCompoHandler (elem, event, fieldOrMethod) {
 
     case 'contextmenu':
       event.preventDefault()
-      eventToGolang(elem, event, fieldOrMethod)
       trackPointerPosition(event)
+      eventToGolang(elem, event, fieldOrMethod)
       break
 
     default:
-      eventToGolang(elem, event, fieldOrMethod)
       trackPointerPosition(event)
+      eventToGolang(elem, event, fieldOrMethod)
   }
 }
 
