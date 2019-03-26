@@ -176,7 +176,7 @@ button {
 }
 
 #App_ContextMenu {
-    position: absolute;
+    position: fixed;
     min-width: 150px;
     max-width: 480px;
     padding: 6px 0;
