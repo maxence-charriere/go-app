@@ -7,6 +7,7 @@ h1 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: white;
 }
 
 input {
@@ -48,6 +49,7 @@ input:focus {
     padding: 12px;
     font-size: 24px;
     font-weight: 200;
+    color: white;
 }
 
 .Menu:hover {
