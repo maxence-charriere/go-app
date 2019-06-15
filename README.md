@@ -112,11 +112,8 @@ The server serves the web assembly Go program and the other resources.
 package main
 
 import (
-    "fmt"
     "log"
     "net/http"
-    "os"
-
     "github.com/maxence-charriere/app"
 )
 
@@ -127,6 +124,7 @@ func main() {
         log.Fatal(err)
     }
 }
+
 ```
 
 ### Build
