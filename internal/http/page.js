@@ -78,7 +78,11 @@ function setRoot (change = {}) {
     return
   }
 
-  document.body.replaceChild(root, document.body.firstChild)
+  while (document.body.firstChild) {
+    document.body.removeChild(document.body.firstChild)
+  }
+
+  document.body.appendChild(root)
 }
 
 function newNode (change = {}) {
