@@ -7,6 +7,7 @@ const pageHTML = `<!DOCTYPE html>
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="description" content="{{.Description}}">
     <meta name="keywords" content="{{.Keywords}}">
     <meta name="author" content="{{.Author}}">
