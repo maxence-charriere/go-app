@@ -10,10 +10,10 @@ import (
 type JSNode interface {
 	new(string, string) error
 	newText(string) error
-	updateText(s string) error
+	updateText(s string)
 	changeType(typ, namespace string) error
-	upsertAttr() error
-	deleteAttr() error
+	upsertAttr(string, string)
+	deleteAttr(string)
 	delete() error
 }
 

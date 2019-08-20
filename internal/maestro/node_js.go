@@ -31,9 +31,8 @@ func (n jsNode) newText(s string) error {
 	return nil
 }
 
-func (n jsNode) updateText(s string) error {
+func (n jsNode) updateText(s string) {
 	n.Set("nodeValue", s)
-	return nil
 }
 
 func (n jsNode) changeType(typ, namespace string) error {
@@ -59,12 +58,12 @@ func (n jsNode) changeType(typ, namespace string) error {
 	return nil
 }
 
-func (n jsNode) upsertAttr() error {
-	panic("not implemented")
+func (n jsNode) upsertAttr(k, v string) {
+	n.Call("setAttribute", k, v)
 }
 
-func (n jsNode) deleteAttr() error {
-	panic("not implemented")
+func (n jsNode) deleteAttr(k string) {
+	n.Call("removeAttribute", k)
 }
 
 func (n jsNode) delete() error {

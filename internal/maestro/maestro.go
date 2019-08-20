@@ -81,14 +81,14 @@ func (m *Maestro) renderText(ctx renderContext, n *Node) error {
 		if err := n.changeType("text", ""); err != nil {
 			return err
 		}
-		return n.updateText(text)
+		n.updateText(text)
+		return nil
 	}
 
 	if n.Text != text {
 		n.Text = text
-		return n.updateText(text)
+		n.updateText(text)
 	}
-
 	return nil
 }
 
@@ -128,11 +128,54 @@ func (m *Maestro) renderSelfClosingTag(ctx renderContext, n *Node) error {
 		}
 	}
 
-	return m.renderTagAttrs(ctx, n)
+	return m.renderTagAttrs(ctx, n, hasAttr)
 }
 
-func (m *Maestro) renderTagAttrs(ctx renderContext, n *Node) error {
-	panic("not implemented")
+func (m *Maestro) renderTagAttrs(ctx renderContext, n *Node, hasAttr bool) error {
+	var attrs map[string]string
+	if hasAttr {
+		attrs = make(map[string]string)
+	}
+
+	for hasAttr {
+		var tmpK []byte
+		var tmpV []byte
+
+		tmpK, tmpV, hasAttr = ctx.Tokenizer.TagAttr()
+		k := string(tmpK)
+		v := string(tmpV)
+
+		if ctx.Namespace != "" {
+			switch k {
+			case svgNamespace:
+				k = svgAttr(k)
+			}
+		}
+
+		// TODO: attr transform.
+		attrs[k] = v
+	}
+
+	for k := range n.Attrs {
+		if _, ok := attrs[k]; !ok {
+			n.deleteAttr(k)
+			delete(n.Attrs, k)
+		}
+	}
+
+	if n.Attrs == nil {
+		n.Attrs = make(map[string]string, len(attrs))
+	}
+
+	for k, v := range attrs {
+		if oldv, ok := n.Attrs[k]; ok && oldv == v {
+			continue
+		}
+		n.upsertAttr(k, v)
+		n.Attrs[k] = v
+	}
+
+	return nil
 }
 
 func (m *Maestro) renderCompoNode(ctx renderContext, n *Node) error {
