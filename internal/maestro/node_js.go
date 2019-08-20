@@ -35,6 +35,10 @@ func (n jsNode) updateText(s string) {
 	n.Set("nodeValue", s)
 }
 
+func (n jsNode) removeChild(c JSNode) {
+	n.Call("removeChild", c)
+}
+
 func (n jsNode) changeType(typ, namespace string) error {
 	parent := n.Get("parentNode")
 	if t := parent.Type(); t == js.TypeUndefined || t == js.TypeNull {

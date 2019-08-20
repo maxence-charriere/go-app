@@ -9,9 +9,11 @@ import (
 // JSNode is the interface that describes a javascript node.
 type JSNode interface {
 	new(string, string) error
-	newText(string) error
+	newText(s string) error
 	updateText(s string)
-	changeType(typ, namespace string) error
+	appendChild(c JSNode)
+	removeChild(c JSNode)
+	changeType(string, string) error
 	upsertAttr(string, string)
 	deleteAttr(string)
 	delete() error
@@ -19,16 +21,24 @@ type JSNode interface {
 
 // Node represents a dom node.
 type Node struct {
-	JSNode
+	Type     string
+	Text     string
+	IsCompo  bool
+	Attrs    map[string]string
+	Compo    Compo
+	Parent   *Node
+	Children []*Node
 
-	Type      string
-	Namespace string
-	Text      string
-	IsCompo   bool
-	Attrs     map[string]string
-	Compo     Compo
-	Parent    *Node
-	Children  []*Node
+	jsNode JSNode
+}
+
+// JSNode returns the underlying javascript node.
+func (n *Node) JSNode() JSNode {
+	if !n.IsCompo {
+		return n.jsNode
+	}
+
+	panic("not implemented")
 }
 
 var (
