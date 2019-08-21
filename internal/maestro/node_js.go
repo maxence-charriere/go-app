@@ -21,7 +21,7 @@ func (n jsNode) new(tag, namespace string) {
 	n.Value = v
 }
 
-func (n jsNode) newText(s string) error {
+func (n jsNode) newText(s string) {
 	v := js.Global().Call("createTextNode", s)
 	if v.Type() == js.TypeUndefined {
 		panic("createTextNode returned an undefined value")
@@ -33,24 +33,25 @@ func (n jsNode) updateText(s string) {
 	n.Set("nodeValue", s)
 }
 
-func (n JSNode) appendChild(c JSNode) {
-	n.Call("appendChild", c.Value)
+func (n jsNode) appendChild(c JSNode) {
+	n.Call("appendChild", c.(jsNode).Value)
 }
 
 func (n jsNode) removeChild(c JSNode) {
-	n.Call("removeChild", c.Value)
+	n.Call("removeChild", c.(jsNode).Value)
 }
 
 func (n jsNode) replaceChild(old, new JSNode) {
-	n.Call("replaceChild", new.Value, old.Value)
+	n.Call("replaceChild", new.(jsNode).Value, old.(jsNode).Value)
 }
 
 func (n jsNode) replace(new JSNode) {
 	parent := n.Get("parentNode")
+
 	if t := parent.Type(); t == js.TypeUndefined || t == js.TypeNull {
 		panic("parentNode is not set")
 	}
-	parent.Call("replaceChild", new.Value, n.Value)
+	parent.Call("replaceChild", new.(jsNode).Value, n.Value)
 }
 
 func (n jsNode) upsertAttr(k, v string) {

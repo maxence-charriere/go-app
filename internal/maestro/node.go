@@ -10,7 +10,7 @@ import (
 // JSNode is the interface that describes a javascript node.
 type JSNode interface {
 	new(tag string, namespace string)
-	newText(s string) error
+	newText(s string)
 	updateText(s string)
 	appendChild(c JSNode)
 	removeChild(c JSNode)
@@ -26,24 +26,20 @@ type Node struct {
 	Name     string
 	Text     string
 	Attrs    map[string]string
-	Compo    Compo
 	Children []*Node
 
 	jsNode JSNode
 	compo  Compo
-	isEnd  bool
 }
 
 func (n *Node) isZero() bool {
-	return n.Name == "" &&
+	return n.Kind == StdNode &&
+		n.Name == "" &&
 		n.Text == "" &&
-		!n.IsCompo &&
 		n.Attrs == nil &&
-		n.Compo == nil &&
-		n.Parent == nil &&
 		n.Children == nil &&
 		n.jsNode == nil &&
-		!n.isEnd
+		n.compo == nil
 }
 
 func (n *Node) jsRoot() JSNode {
@@ -72,6 +68,8 @@ func (n *Node) appendChild(c *Node) error {
 	case CompoNode:
 		n.Children = append(n.Children, c)
 	}
+
+	return nil
 }
 
 func (n *Node) removeChild(c *Node) error {
