@@ -1,6 +1,7 @@
 package maestro
 
 import (
+	"errors"
 	"strings"
 
 	"golang.org/x/net/html/atom"
@@ -8,38 +9,125 @@ import (
 
 // JSNode is the interface that describes a javascript node.
 type JSNode interface {
-	new(string, string) error
+	new(tag string, namespace string)
 	newText(s string) error
 	updateText(s string)
 	appendChild(c JSNode)
 	removeChild(c JSNode)
-	changeType(string, string) error
-	upsertAttr(string, string)
-	deleteAttr(string)
-	delete() error
+	replaceChild(old, new JSNode)
+	replace(new JSNode)
+	upsertAttr(k string, v string)
+	deleteAttr(k string)
 }
 
 // Node represents a dom node.
 type Node struct {
-	Type     string
+	Kind     NodeKind
+	Name     string
 	Text     string
-	IsCompo  bool
 	Attrs    map[string]string
 	Compo    Compo
-	Parent   *Node
 	Children []*Node
 
 	jsNode JSNode
+	compo  Compo
+	isEnd  bool
 }
 
-// JSNode returns the underlying javascript node.
-func (n *Node) JSNode() JSNode {
-	if !n.IsCompo {
+func (n *Node) isZero() bool {
+	return n.Name == "" &&
+		n.Text == "" &&
+		!n.IsCompo &&
+		n.Attrs == nil &&
+		n.Compo == nil &&
+		n.Parent == nil &&
+		n.Children == nil &&
+		n.jsNode == nil &&
+		!n.isEnd
+}
+
+func (n *Node) jsRoot() JSNode {
+	switch n.Kind {
+	case CompoNode:
+		return n.Children[0].jsRoot()
+
+	default:
 		return n.jsNode
 	}
-
-	panic("not implemented")
 }
+
+func (n *Node) appendChild(c *Node) error {
+	if n.Kind == CompoNode && len(n.Children) >= 1 {
+		return errors.New("component can't have more than a child")
+	}
+
+	switch n.Kind {
+	case StdNode:
+		n.Children = append(n.Children, c)
+		n.jsNode.appendChild(c.jsRoot())
+
+	case TextNode:
+		return errors.New("text can't have children")
+
+	case CompoNode:
+		n.Children = append(n.Children, c)
+	}
+}
+
+func (n *Node) removeChild(c *Node) error {
+	if n.Kind == TextNode || n.Kind == CompoNode {
+		return errors.New("child can't be removed from node")
+	}
+
+	children := c.Children
+	for i, child := range children {
+		if child == c {
+			copy(children[i:], children[i+1:])
+			children[len(children)-1] = nil
+			children = children[:len(children)-1]
+
+			n.Children = children
+			n.jsNode.removeChild(c.jsRoot())
+			return nil
+		}
+	}
+
+	return errors.New("child to remove not found in node")
+}
+
+func (n *Node) replaceChild(old, new *Node) error {
+	if n.Kind == TextNode {
+		return errors.New("text node child can't be replaced")
+	}
+
+	for i, c := range n.Children {
+		if c == old {
+			n.Children[i] = new
+
+			switch n.Kind {
+			case StdNode:
+				n.jsNode.replaceChild(old.jsRoot(), new.jsRoot())
+
+			case CompoNode:
+				old.jsRoot().replace(new.jsRoot())
+			}
+
+			return nil
+		}
+	}
+
+	return errors.New("child to replace not found in node")
+}
+
+// NodeKind represents a node kind.
+type NodeKind byte
+
+// Constants that enumerate nodes kind.
+const (
+	StdNode NodeKind = iota
+	TextNode
+	CompoNode
+)
 
 var (
 	svgNamespace    = "http://www.w3.org/2000/svg"
