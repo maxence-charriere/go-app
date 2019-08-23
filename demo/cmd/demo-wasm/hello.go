@@ -18,7 +18,7 @@ func (h *Hello) Render() string {
 	return `
 <div class="Hello">
 	<button class="Menu" onclick="OnMenuClick" oncontextmenu="OnMenuClick">☰</button>
-	<app.contextmenu>
+	<app.contextmenu />
 
 	<h1>
 		Hello

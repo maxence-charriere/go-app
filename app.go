@@ -6,6 +6,7 @@ import (
 	"log"
 	"strings"
 
+	"github.com/maxence-charriere/app/internal/maestro"
 	"github.com/pkg/errors"
 )
 
@@ -38,6 +39,7 @@ var (
 	// It is used by Log, Logf, Panic and Panicf to generate logs.
 	Logger = log.Printf
 
+	maestre    = maestro.NewMaestro()
 	components = newCompoBuilder()
 	messages   = newMsgRegistry()
 	ui         = make(chan func(), 4096)
@@ -76,8 +78,12 @@ func Handle(key string, h MsgHandler) {
 // markup.
 func Import(c ...Compo) {
 	for _, compo := range c {
-		if _, err := components.register(compo); err != nil {
-			Panicf("import component failed: %s", err)
+		// if _, err := components.register(compo); err != nil {
+		// 	Panicf("import component failed: %s", err)
+		// }
+
+		if err := maestre.Import(compo); err != nil {
+			panic(err)
 		}
 	}
 }

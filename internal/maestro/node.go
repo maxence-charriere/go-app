@@ -6,19 +6,6 @@ import (
 	"golang.org/x/net/html/atom"
 )
 
-// JSNode is the interface that describes a javascript node.
-type JSNode interface {
-	new(tag, namespace string)
-	newText()
-	change(tag, namespace string)
-	appendChild(c JSNode)
-	removeChild(c JSNode)
-	updateText(s string)
-	upsertAttr(k string, v string)
-	deleteAttr(k string)
-	addToBody()
-}
-
 // Node represents a dom node.
 type Node struct {
 	Name      string
@@ -28,7 +15,7 @@ type Node struct {
 	CompoName string
 
 	compo  Compo
-	jsNode JSNode
+	jsNode jsNode
 	isEnd  bool
 }
 
@@ -39,7 +26,6 @@ func (n *Node) isZero() bool {
 		n.Children == nil &&
 		n.CompoName == "" &&
 		n.compo == nil &&
-		n.jsNode == nil &&
 		!n.isEnd
 
 }
@@ -172,18 +158,18 @@ func svgAttr(k string) string {
 	return k
 }
 
-func isCompoNode(tagName, namespace string) bool {
+func isCompoNode(name, namespace string) bool {
 	if len(namespace) != 0 {
 		return false
 	}
-	return !isHTMLNode(tagName)
+	return !isHTMLNode(name)
 }
 
-func isHTMLNode(tagName string) bool {
-	return atom.Lookup([]byte(tagName)) != 0
+func isHTMLNode(name string) bool {
+	return atom.Lookup([]byte(name)) != 0
 }
 
-func isVoidElem(tagName string) bool {
-	_, ok := voidElems[tagName]
+func isVoidElem(name string) bool {
+	_, ok := voidElems[name]
 	return ok
 }

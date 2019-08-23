@@ -3,8 +3,11 @@ package maestro
 import (
 	"bytes"
 	"errors"
+	"fmt"
+	"io"
 	"reflect"
 	"strings"
+	"text/template"
 
 	"golang.org/x/net/html"
 )
@@ -13,13 +16,21 @@ import (
 type Maestro struct {
 	compoBuilders map[string]reflect.Type
 	components    map[Compo]*Node
-	root          *Node
+	converters    map[string]interface{}
 }
 
 // NewMaestro creates a maestro.
 func NewMaestro() *Maestro {
 	return &Maestro{
-		components: make(map[Compo]*Node),
+		compoBuilders: make(map[string]reflect.Type),
+		components:    make(map[Compo]*Node),
+		converters: map[string]interface{}{
+			"bind":  bind,
+			"compo": urlToHTMLTag,
+			"json":  jsonFormat,
+			"raw":   rawHTML,
+			"time":  timeFormat,
+		},
 	}
 }
 
@@ -77,8 +88,13 @@ func (m *Maestro) Render(c Compo) error {
 func (m *Maestro) render(c Compo, n *Node) error {
 	requireMount := c != n.compo
 
+	rendering, err := m.compoToHTML(c)
+	if err != nil {
+		return err
+	}
+
 	if err := m.renderNode(renderContext{
-		Tokenizer: html.NewTokenizer(bytes.NewBufferString(c.Render())),
+		Tokenizer: html.NewTokenizer(bytes.NewBufferString(rendering)),
 		Compo:     c,
 	}, n); err != nil {
 		return nil
@@ -92,22 +108,68 @@ func (m *Maestro) render(c Compo, n *Node) error {
 	return nil
 }
 
+func (m *Maestro) compoToHTML(c Compo) (string, error) {
+	var extendedFuncs map[string]interface{}
+	if extended, ok := c.(compoWithExtendedRender); ok {
+		extendedFuncs = extended.Funcs()
+	}
+
+	// The number of template functions. It contains the
+	// component extended functions, the converters and
+	// the resources accessor.
+	funcsCount := len(m.converters) + len(extendedFuncs) + 1
+
+	funcs := make(template.FuncMap, funcsCount)
+
+	for k, v := range m.converters {
+		funcs[k] = v
+	}
+
+	for k, v := range extendedFuncs {
+		if _, ok := funcs[k]; ok {
+			return "", errors.New("template extension can't be named: " + k)
+		}
+		funcs[k] = v
+	}
+
+	tmpl, err := template.
+		New(fmt.Sprintf("%T", c)).
+		Funcs(funcs).
+		Parse(c.Render())
+	if err != nil {
+		return "", err
+	}
+
+	var w bytes.Buffer
+	if err = tmpl.Execute(&w, c); err != nil {
+		return "", err
+	}
+
+	html := strings.TrimSpace(w.String())
+	if len(html) == 0 {
+		return "", errors.New("component does not render anything")
+	}
+
+	return html, nil
+}
+
 func (m *Maestro) renderNode(ctx renderContext, n *Node) error {
-	switch ctx.Tokenizer.Next() {
+	switch typ := ctx.Tokenizer.Next(); typ {
 	case html.TextToken:
 		return m.renderText(ctx, n)
 
-	case html.SelfClosingTagToken:
-		return m.renderSelfClosingTag(ctx, n)
-
-	case html.StartTagToken:
-		return m.renderStartTag(ctx, n)
+	case html.SelfClosingTagToken, html.StartTagToken:
+		return m.renderTag(ctx, n, typ)
 
 	case html.EndTagToken:
 		return m.renderEndTag(ctx, n)
 
 	case html.ErrorToken:
-		return ctx.Tokenizer.Err()
+		err := ctx.Tokenizer.Err()
+		if err == io.EOF {
+			return m.renderEndTag(ctx, n)
+		}
+		return err
 
 	default:
 		return m.renderNode(ctx, n)
@@ -144,15 +206,32 @@ func (m *Maestro) renderText(ctx renderContext, n *Node) error {
 	return nil
 }
 
-func (m *Maestro) renderSelfClosingTag(ctx renderContext, n *Node) error {
+func (m *Maestro) renderTag(ctx renderContext, n *Node, typ html.TokenType) error {
 	tagName, hasAttr := ctx.Tokenizer.TagName()
 	name := string(tagName)
-	ctx.Namespace = namespaces[name]
+
+	if ctx.Namespace == "" {
+		ctx.Namespace = namespaces[name]
+	}
+
+	if isVoidElem(name) {
+		return m.renderSelfClosingTag(ctx, n, name, hasAttr)
+	}
 
 	if isCompoNode(name, ctx.Namespace) {
 		return m.renderCompoNode(ctx, n, name, hasAttr)
 	}
 
+	switch typ {
+	case html.SelfClosingTagToken:
+		return m.renderSelfClosingTag(ctx, n, name, hasAttr)
+
+	default:
+		return m.renderStartTag(ctx, n, name, hasAttr)
+	}
+}
+
+func (m *Maestro) renderSelfClosingTag(ctx renderContext, n *Node, name string, hasAttr bool) error {
 	if n.isZero() {
 		n.Name = name
 		n.compo = ctx.Compo
@@ -178,15 +257,7 @@ func (m *Maestro) renderSelfClosingTag(ctx renderContext, n *Node) error {
 	return nil
 }
 
-func (m *Maestro) renderStartTag(ctx renderContext, n *Node) error {
-	tagName, hasAttr := ctx.Tokenizer.TagName()
-	name := string(tagName)
-	ctx.Namespace = namespaces[name]
-
-	if isCompoNode(name, ctx.Namespace) {
-		return errors.New("component " + name + " is not a self closing tag")
-	}
-
+func (m *Maestro) renderStartTag(ctx renderContext, n *Node, name string, hasAttr bool) error {
 	if n.isZero() {
 		n.Name = name
 		n.Text = ""
@@ -228,12 +299,13 @@ func (m *Maestro) renderStartTag(ctx renderContext, n *Node) error {
 	for {
 		var c Node
 		m.renderNode(ctx, &c)
-		n.Children = append(n.Children)
-		n.jsNode.appendChild(c.jsNode)
 
 		if c.isEnd {
 			return nil
 		}
+
+		n.Children = append(n.Children, &c)
+		n.jsNode.appendChild(c.jsNode)
 	}
 }
 
@@ -257,8 +329,9 @@ func (m *Maestro) renderTagAttrs(ctx renderContext, n *Node, hasAttr bool) {
 
 		default:
 			// TODO: attr transform.
-			attrs[k] = v
 		}
+
+		attrs[k] = v
 	}
 
 	for k := range n.Attrs {

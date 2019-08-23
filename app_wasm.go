@@ -23,7 +23,8 @@ func reload() {
 }
 
 func render(c Compo) error {
-	return dom.Render(c)
+	// return dom.Render(c)
+	return maestre.Render(c)
 }
 
 func run() error {
@@ -34,20 +35,29 @@ func run() error {
 		return err
 	}
 
-	compo, err := components.new(compoNameFromURL(url))
+	compo, err := maestre.New(compoNameFromURL(url))
 	if err != nil {
 		return err
 	}
 
-	if err = dom.New(compo); err != nil {
+	if err := maestre.NewBody(compo); err != nil {
 		return err
 	}
 
-	if nav, ok := compo.(Navigable); ok {
-		UI(func() {
-			nav.OnNavigate(url)
-		})
-	}
+	// compo, err := components.new(compoNameFromURL(url))
+	// if err != nil {
+	// 	return err
+	// }
+
+	// if err = dom.New(compo); err != nil {
+	// 	return err
+	// }
+
+	// if nav, ok := compo.(Navigable); ok {
+	// 	UI(func() {
+	// 		nav.OnNavigate(url)
+	// 	})
+	// }
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -76,9 +86,9 @@ func getURL() (*url.URL, error) {
 	if url.Path == "" || url.Path == "/" {
 		url.Path = DefaultPath
 	}
-	if !components.isRegistered(compoNameFromURL(url)) {
-		url.Path = NotFoundPath
-	}
+	// if !components.isRegistered(compoNameFromURL(url)) {
+	// 	url.Path = NotFoundPath
+	// }
 	return url, nil
 }
 

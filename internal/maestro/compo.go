@@ -24,6 +24,10 @@ type dismounter interface {
 	OnDismount()
 }
 
+type compoWithExtendedRender interface {
+	Funcs() map[string]interface{}
+}
+
 func compoName(c Compo) string {
 	v := reflect.ValueOf(c)
 	v = reflect.Indirect(v)
