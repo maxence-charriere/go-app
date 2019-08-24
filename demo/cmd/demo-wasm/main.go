@@ -17,6 +17,7 @@ func main() {
 	//  Hello   => hello
 	//  foo.Bar => foo.bar
 	app.Import(&Hello{})
+	app.Import(&app.ContextMenu{})
 
 	// Defines the component to load when an URL without path is loaded.
 	app.DefaultPath = "/hello"

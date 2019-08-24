@@ -1,3 +1,5 @@
+// +build js
+
 package maestro
 
 import (
@@ -5,8 +7,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"reflect"
 	"strings"
+	"sync"
+	"syscall/js"
 	"text/template"
 
 	"golang.org/x/net/html"
@@ -14,50 +17,26 @@ import (
 
 // Maestro is a document object model that manage components and html nodes.
 type Maestro struct {
-	compoBuilders map[string]reflect.Type
-	components    map[Compo]*Node
-	converters    map[string]interface{}
+	CompoBuilder   CompoBuilder
+	components     map[Compo]*Node
+	converters     map[string]interface{}
+	attrTransforms []attrTransform
+	mutex          sync.Mutex
 }
 
 // NewMaestro creates a maestro.
-func NewMaestro() *Maestro {
+func NewMaestro(compoBuilder CompoBuilder) *Maestro {
 	return &Maestro{
-		compoBuilders: make(map[string]reflect.Type),
-		components:    make(map[Compo]*Node),
+		CompoBuilder: compoBuilder,
+		components:   make(map[Compo]*Node),
 		converters: map[string]interface{}{
-			"bind":  bind,
 			"compo": urlToHTMLTag,
 			"json":  jsonFormat,
 			"raw":   rawHTML,
 			"time":  timeFormat,
 		},
+		attrTransforms: []attrTransform{eventTransform},
 	}
-}
-
-// Import creates a builder that can build the given component.
-func (m *Maestro) Import(c Compo) error {
-	v := reflect.ValueOf(c)
-	if v.Kind() != reflect.Ptr {
-		return errors.New("component is not a pointer")
-	}
-	if v = v.Elem(); v.Kind() != reflect.Struct {
-		return errors.New("component is not implemented on a struct")
-	}
-	if v.NumField() == 0 {
-		return errors.New("component does not have fields")
-	}
-
-	m.compoBuilders[compoName(c)] = v.Type()
-	return nil
-}
-
-// New creates the named component.
-func (m *Maestro) New(name string) (Compo, error) {
-	t, ok := m.compoBuilders[name]
-	if !ok {
-		return nil, errors.New("component " + name + " is not imported")
-	}
-	return reflect.New(t).Interface().(Compo), nil
 }
 
 // NewBody insert the given component into the document body.
@@ -66,17 +45,33 @@ func (m *Maestro) NewBody(c Compo) error {
 		return err
 	}
 
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
 	root, ok := m.components[c]
 	if !ok {
 		return errors.New("root not found")
 	}
 
-	root.jsNode.addToBody()
+	body := js.Global().Get("document").Get("body")
+
+	for {
+		firstChild := body.Get("firstChild")
+		if !firstChild.Truthy() {
+			break
+		}
+		body.Call("removeChild", firstChild)
+	}
+
+	body.Call("appendChild", root)
 	return nil
 }
 
 // Render renders the given component.
 func (m *Maestro) Render(c Compo) error {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+
 	n, ok := m.components[c]
 	if !ok {
 		n = &Node{}
@@ -96,6 +91,7 @@ func (m *Maestro) render(c Compo, n *Node) error {
 	if err := m.renderNode(renderContext{
 		Tokenizer: html.NewTokenizer(bytes.NewBufferString(rendering)),
 		Compo:     c,
+		Maestro:   m,
 	}, n); err != nil {
 		return nil
 	}
@@ -186,21 +182,21 @@ func (m *Maestro) renderText(ctx renderContext, n *Node) error {
 	}
 
 	if n.isZero() {
-		n.compo = ctx.Compo
-		n.jsNode.newText()
+		n.newText()
 	}
 
 	if n.Name != "" {
 		m.dismount(n)
 		n.Name = ""
 		n.Attrs = nil
-		n.compo = ctx.Compo
-		n.jsNode.change("", "")
+		n.change("", "")
 	}
+
+	n.compo = ctx.Compo
 
 	if n.Text != text {
 		n.Text = text
-		n.jsNode.updateText(text)
+		n.updateText(text)
 	}
 
 	return nil
@@ -234,13 +230,12 @@ func (m *Maestro) renderTag(ctx renderContext, n *Node, typ html.TokenType) erro
 func (m *Maestro) renderSelfClosingTag(ctx renderContext, n *Node, name string, hasAttr bool) error {
 	if n.isZero() {
 		n.Name = name
-		n.compo = ctx.Compo
-		n.jsNode.new(name, ctx.Namespace)
+		n.new(name, ctx.Namespace)
 	}
 
 	for _, c := range n.Children {
 		m.dismount(c)
-		c.jsNode.removeChild(c.jsNode)
+		c.removeChild(c)
 	}
 	n.Children = nil
 
@@ -249,10 +244,10 @@ func (m *Maestro) renderSelfClosingTag(ctx renderContext, n *Node, name string, 
 		n.Name = name
 		n.Text = ""
 		n.Attrs = nil
-		n.compo = ctx.Compo
-		n.jsNode.change(name, ctx.Namespace)
+		n.change(name, ctx.Namespace)
 	}
 
+	n.compo = ctx.Compo
 	m.renderTagAttrs(ctx, n, hasAttr)
 	return nil
 }
@@ -261,8 +256,7 @@ func (m *Maestro) renderStartTag(ctx renderContext, n *Node, name string, hasAtt
 	if n.isZero() {
 		n.Name = name
 		n.Text = ""
-		n.compo = ctx.Compo
-		n.jsNode.new(name, ctx.Namespace)
+		n.new(name, ctx.Namespace)
 	}
 
 	if n.Name != name {
@@ -271,9 +265,10 @@ func (m *Maestro) renderStartTag(ctx renderContext, n *Node, name string, hasAtt
 		n.Text = ""
 		n.Attrs = nil
 		n.compo = ctx.Compo
-		n.jsNode.change(name, ctx.Namespace)
+		n.change(name, ctx.Namespace)
 	}
 
+	n.compo = ctx.Compo
 	m.renderTagAttrs(ctx, n, hasAttr)
 
 	var childrenToDelete []*Node
@@ -290,7 +285,7 @@ func (m *Maestro) renderStartTag(ctx renderContext, n *Node, name string, hasAtt
 	if childrenToDelete != nil {
 		for i, c := range childrenToDelete {
 			m.dismount(c)
-			n.jsNode.removeChild(c.jsNode)
+			n.removeChild(c)
 			childrenToDelete[i] = nil
 		}
 		return nil
@@ -305,7 +300,7 @@ func (m *Maestro) renderStartTag(ctx renderContext, n *Node, name string, hasAtt
 		}
 
 		n.Children = append(n.Children, &c)
-		n.jsNode.appendChild(c.jsNode)
+		n.appendChild(&c)
 	}
 }
 
@@ -326,18 +321,25 @@ func (m *Maestro) renderTagAttrs(ctx renderContext, n *Node, hasAttr bool) {
 		switch ctx.Namespace {
 		case namespaces["svg"]:
 			k = svgAttr(k)
+		}
 
-		default:
-			// TODO: attr transform.
+		for _, transform := range m.attrTransforms {
+			k, v = transform(k, v)
 		}
 
 		attrs[k] = v
 	}
 
-	for k := range n.Attrs {
+	for k, v := range n.Attrs {
 		if _, ok := attrs[k]; !ok {
-			n.jsNode.deleteAttr(k)
+			n.deleteAttr(k)
+
+			if isGoEventAttr(k, v) {
+				m.closeEventHandler(ctx, n, k)
+			}
+
 			delete(n.Attrs, k)
+
 		}
 	}
 
@@ -349,9 +351,39 @@ func (m *Maestro) renderTagAttrs(ctx renderContext, n *Node, hasAttr bool) {
 		if oldv, ok := n.Attrs[k]; ok && oldv == v {
 			continue
 		}
-		n.jsNode.upsertAttr(k, v)
+
+		if isGoEventAttr(k, v) {
+			m.closeEventHandler(ctx, n, k)
+			m.setEventHandler(ctx, n, k, v)
+		}
+
+		n.upsertAttr(k, v)
 		n.Attrs[k] = v
 	}
+}
+
+func (m *Maestro) setEventHandler(ctx renderContext, n *Node, k, v string) {
+	k = strings.TrimPrefix(k, "on")
+
+	if n.eventCloses == nil {
+		n.eventCloses = make(map[string]func())
+	}
+
+	n.eventCloses[k] = n.addEventListener(
+		ctx,
+		k,
+		strings.TrimPrefix(v, "//go: "),
+	)
+}
+
+func (m *Maestro) closeEventHandler(ctx renderContext, n *Node, k string) {
+	close, ok := n.eventCloses[k]
+	if !ok {
+		return
+	}
+
+	close()
+	delete(n.eventCloses, k)
 }
 
 func (m *Maestro) renderEndTag(ctx renderContext, n *Node) error {
@@ -364,19 +396,19 @@ func (m *Maestro) renderCompoNode(ctx renderContext, n *Node, name string, hasAt
 	var err error
 
 	if n.isZero() {
-		compo, err = m.New(name)
-	} else if name != compoName(compo) {
+		compo, err = m.CompoBuilder.New(name)
+	} else if name != compoName(n.compo) {
 		m.dismount(n)
-		compo, err = m.New(name)
+		compo, err = m.CompoBuilder.New(name)
 	} else {
 		compo = n.compo
 	}
-
 	if err != nil {
 		return err
 	}
 
 	attrs := m.getCompoAttrs(ctx, hasAttr)
+
 	if err = mapCompoFields(compo, attrs); err != nil {
 		return err
 	}
@@ -412,6 +444,12 @@ func (m *Maestro) dismount(n *Node) {
 		m.dismount(c)
 	}
 
+	for k, close := range n.eventCloses {
+		close()
+		delete(n.eventCloses, k)
+	}
+	n.Attrs = nil
+
 	if !n.isCompoRoot() {
 		return
 	}
@@ -428,4 +466,5 @@ type renderContext struct {
 	Tokenizer *html.Tokenizer
 	Compo     Compo
 	Namespace string
+	Maestro   *Maestro
 }

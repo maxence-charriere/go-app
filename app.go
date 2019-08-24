@@ -39,8 +39,7 @@ var (
 	// It is used by Log, Logf, Panic and Panicf to generate logs.
 	Logger = log.Printf
 
-	maestre    = maestro.NewMaestro()
-	components = newCompoBuilder()
+	components = make(maestro.CompoBuilder)
 	messages   = newMsgRegistry()
 	ui         = make(chan func(), 4096)
 	events     = newEventRegistry(ui)
@@ -82,7 +81,7 @@ func Import(c ...Compo) {
 		// 	Panicf("import component failed: %s", err)
 		// }
 
-		if err := maestre.Import(compo); err != nil {
+		if err := components.Import(compo); err != nil {
 			panic(err)
 		}
 	}
@@ -110,21 +109,6 @@ func Logf(format string, a ...interface{}) {
 // Navigate navigates to the given URL.
 func Navigate(url string) {
 	navigate(url)
-}
-
-// NewContextMenu displays a context menu filled with the given menu items.
-//
-// Context menu requires an app.contextmenu component in the loaded page.
-// 	func (c *Compo) Render() string {
-// 		return `
-// 	<div>
-// 		<!-- ... -->
-// 		<app.contextmenu>
-// 	</div>
-// 		`
-// 	}
-func NewContextMenu(items ...MenuItem) {
-	Emit("app.NewContextMenu", items)
 }
 
 // NewMsg creates a message.
@@ -159,11 +143,6 @@ func Path(c Compo) string {
 // Messages are handled in another goroutine.
 func Post(msgs ...Msg) {
 	messages.post(msgs...)
-}
-
-// Reload reloads the current page.
-func Reload() {
-	reload()
 }
 
 // Render renders the given component.

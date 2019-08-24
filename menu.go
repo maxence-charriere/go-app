@@ -1,4 +1,8 @@
+// +build js
+
 package app
+
+import "syscall/js"
 
 // MenuItem represents a menu item.
 type MenuItem struct {
@@ -6,6 +10,6 @@ type MenuItem struct {
 	Keys      string
 	Icon      string
 	Label     string
-	OnClick   func()
+	OnClick   func(s, e js.Value)
 	Separator bool
 }

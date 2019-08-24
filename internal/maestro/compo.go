@@ -2,6 +2,7 @@ package maestro
 
 import (
 	"encoding/json"
+	"errors"
 	"reflect"
 	"strconv"
 	"strings"
@@ -26,6 +27,41 @@ type dismounter interface {
 
 type compoWithExtendedRender interface {
 	Funcs() map[string]interface{}
+}
+
+// CompoBuilder is a factory that can create components.
+type CompoBuilder map[string]reflect.Type
+
+// Import creates a builder that can build the given component.
+func (b CompoBuilder) Import(c Compo) error {
+	v := reflect.ValueOf(c)
+	if v.Kind() != reflect.Ptr {
+		return errors.New("component is not a pointer")
+	}
+	if v = v.Elem(); v.Kind() != reflect.Struct {
+		return errors.New("component is not implemented on a struct")
+	}
+	if v.NumField() == 0 {
+		return errors.New("component is based on a struct without field. use ZeroCompo instead of struct{}")
+	}
+
+	b[compoName(c)] = v.Type()
+	return nil
+}
+
+// IsImported report wether a component has been imported.
+func (b CompoBuilder) IsImported(name string) bool {
+	_, ok := b[name]
+	return ok
+}
+
+// New creates the named component.
+func (b CompoBuilder) New(name string) (Compo, error) {
+	t, ok := b[name]
+	if !ok {
+		return nil, errors.New("component " + name + " is not imported")
+	}
+	return reflect.New(t).Interface().(Compo), nil
 }
 
 func compoName(c Compo) string {

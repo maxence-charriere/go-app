@@ -1,22 +1,30 @@
+// +build js
+
 package maestro
 
 import (
+	"fmt"
+	"reflect"
+	"strconv"
 	"strings"
+	"syscall/js"
 
 	"golang.org/x/net/html/atom"
 )
 
 // Node represents a dom node.
 type Node struct {
+	js.Value
+
 	Name      string
 	Text      string
 	Attrs     map[string]string
 	Children  []*Node
 	CompoName string
 
-	compo  Compo
-	jsNode jsNode
-	isEnd  bool
+	compo       Compo
+	eventCloses map[string]func()
+	isEnd       bool
 }
 
 func (n *Node) isZero() bool {
@@ -26,13 +34,150 @@ func (n *Node) isZero() bool {
 		n.Children == nil &&
 		n.CompoName == "" &&
 		n.compo == nil &&
+		n.eventCloses == nil &&
 		!n.isEnd
-
 }
 
 func (n *Node) isCompoRoot() bool {
 	return n.CompoName != ""
 }
+
+func (n *Node) new(tag, namespace string) {
+	if namespace != "" {
+		n.Value = js.Global().Get("document").Call("createElementNS", namespace, tag)
+	} else {
+		n.Value = js.Global().Get("document").Call("createElement", tag)
+	}
+}
+
+func (n *Node) newText() {
+	n.Value = js.Global().Get("document").Call("createTextNode", "")
+}
+
+func (n *Node) change(tag, namespace string) {
+	parent := n.Get("parentNode")
+	if t := parent.Type(); t == js.TypeUndefined || t == js.TypeNull {
+		panic("parentNode is not set")
+	}
+
+	old := n.Value
+
+	if tag == "" {
+		n.Value = js.Global().Get("document").Call("createTextNode", "")
+	} else if namespace != "" {
+		n.Value = js.Global().Get("document").Call("createElementNS", namespace, tag)
+	} else {
+		n.Value = js.Global().Get("document").Call("createElement", tag)
+	}
+
+	parent.Call("replaceChild", n, old)
+}
+
+func (n *Node) updateText(s string) {
+	n.Set("nodeValue", s)
+}
+
+func (n *Node) appendChild(c *Node) {
+	n.Call("appendChild", c)
+}
+
+func (n *Node) removeChild(c *Node) {
+	n.Call("removeChild", c)
+}
+
+func (n *Node) upsertAttr(k, v string) {
+	n.Call("setAttribute", k, v)
+}
+
+func (n *Node) deleteAttr(k string) {
+	n.Call("removeAttribute", k)
+}
+
+func (n *Node) addEventListener(ctx renderContext, event string, target string) func() {
+	preventDefault := event == "contextmenu"
+
+	execBinding := func(this js.Value, args []js.Value) interface{} {
+		var event js.Value
+		if len(args) >= 1 {
+			event = args[0]
+		}
+
+		if preventDefault {
+			event.Call("preventDefault")
+		}
+
+		recv, err := getReceiver(ctx.Compo, target)
+		if err != nil {
+			fmt.Printf("binding with %s failed: %v\n", target, err)
+			return nil
+		}
+
+		switch recv.Kind() {
+		case reflect.Func:
+			if reflect.TypeOf(func(s, e js.Value) {}) == recv.Type() {
+				recv.Call([]reflect.Value{
+					reflect.ValueOf(this),
+					reflect.ValueOf(event),
+				})
+			}
+
+		case reflect.String:
+			value := this.Get("value")
+			recv.SetString(value.String())
+			ctx.Maestro.Render(ctx.Compo)
+
+		case reflect.Int, reflect.Int64, reflect.Int32, reflect.Int16, reflect.Int8:
+			value := this.Get("value").String()
+			i, err := strconv.ParseInt(value, 10, 64)
+			if err != nil {
+				fmt.Printf("binding with %s failed: %v\n", target, err)
+				return nil
+			}
+			recv.SetInt(i)
+
+		case reflect.Uint, reflect.Uint64, reflect.Uint32, reflect.Uint16, reflect.Uint8:
+			value := this.Get("value").String()
+			u, err := strconv.ParseUint(value, 10, 64)
+			if err != nil {
+				fmt.Printf("binding with %s failed: %v\n", target, err)
+				return nil
+			}
+			recv.SetUint(u)
+
+		case reflect.Float64, reflect.Float32:
+			value := this.Get("value").String()
+			f, err := strconv.ParseFloat(value, 64)
+			if err != nil {
+				fmt.Printf("binding with %s failed: %v\n", target, err)
+				return nil
+			}
+			recv.SetFloat(f)
+
+		case reflect.Bool:
+			value := this.Get("value").String()
+			b, err := strconv.ParseBool(value)
+			if err != nil {
+				fmt.Printf("binding with %s failed: %v\n", target, err)
+				return nil
+			}
+			recv.SetBool(b)
+
+		default:
+			fmt.Printf("binding with %s failed: bad receiver %v\n", target, recv.Type())
+		}
+		return nil
+	}
+
+	cb := js.FuncOf(execBinding)
+	n.Call("addEventListener", event, cb)
+
+	return func() {
+		n.Call("removeEventListener", event, cb)
+		cb.Release()
+	}
+}
+
+type eventHandler func(js.Value)
 
 var (
 	namespaces = map[string]string{
@@ -172,4 +317,8 @@ func isHTMLNode(name string) bool {
 func isVoidElem(name string) bool {
 	_, ok := voidElems[name]
 	return ok
+}
+
+func isGoEventAttr(k, v string) bool {
+	return strings.HasPrefix(k, "on") && strings.HasPrefix(v, "//go: ")
 }

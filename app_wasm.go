@@ -2,40 +2,56 @@ package app
 
 import (
 	"context"
-	"encoding/json"
 	"net/url"
 	"syscall/js"
+
+	"github.com/maxence-charriere/app/internal/maestro"
 )
 
-var dom = domEngine{
-	AttrTransforms: []attrTransform{jsToGoHandler},
-	CompoBuilder:   components,
-	Sync:           syncDom,
-	UI:             UI,
+var (
+	maestre *maestro.Maestro
+)
+
+func init() {
+	maestre = maestro.NewMaestro(components)
 }
 
 func navigate(url string) {
 	js.Global().Get("location").Set("href", url)
 }
 
-func reload() {
+// Reload reloads the current page.
+func Reload(s, e js.Value) {
 	js.Global().Get("location").Call("reload")
+
+}
+
+// NewContextMenu displays a context menu filled with the given menu items.
+//
+// Context menu requires an app.contextmenu component in the loaded page.
+// 	func (c *Compo) Render() string {
+// 		return `
+// 	<div>
+// 		<!-- ... -->
+// 		<app.contextmenu>
+// 	</div>
+// 		`
+// 	}
+func NewContextMenu(items ...MenuItem) {
+	Emit("app.NewContextMenu", items)
 }
 
 func render(c Compo) error {
-	// return dom.Render(c)
 	return maestre.Render(c)
 }
 
 func run() error {
-	initEmit()
-
 	url, err := getURL()
 	if err != nil {
 		return err
 	}
 
-	compo, err := maestre.New(compoNameFromURL(url))
+	compo, err := components.New(compoNameFromURL(url))
 	if err != nil {
 		return err
 	}
@@ -43,15 +59,6 @@ func run() error {
 	if err := maestre.NewBody(compo); err != nil {
 		return err
 	}
-
-	// compo, err := components.new(compoNameFromURL(url))
-	// if err != nil {
-	// 	return err
-	// }
-
-	// if err = dom.New(compo); err != nil {
-	// 	return err
-	// }
 
 	// if nav, ok := compo.(Navigable); ok {
 	// 	UI(func() {
@@ -86,9 +93,9 @@ func getURL() (*url.URL, error) {
 	if url.Path == "" || url.Path == "/" {
 		url.Path = DefaultPath
 	}
-	// if !components.isRegistered(compoNameFromURL(url)) {
-	// 	url.Path = NotFoundPath
-	// }
+	if !components.IsImported(compoNameFromURL(url)) {
+		url.Path = NotFoundPath
+	}
 	return url, nil
 }
 
@@ -123,39 +130,5 @@ func syncDom(changes []change) error {
 	}
 
 	js.Global().Call("render", jsChanges)
-	return nil
-}
-
-func initEmit() {
-	js.Global().
-		Get("goapp").
-		Set("emit", js.FuncOf(emit))
-}
-
-func emit(this js.Value, args []js.Value) interface{} {
-	var m mapping
-	if err := json.Unmarshal([]byte(args[0].String()), &m); err != nil {
-		Logf("go callback failed: %s", err)
-		return nil
-	}
-
-	c, err := dom.CompoByID(m.CompoID)
-	if err != nil {
-		Logf("go callback failed: %s", err)
-		return nil
-	}
-
-	var f func()
-	if f, err = m.Map(c); err != nil {
-		Logf("go callback failed: %s", err)
-		return nil
-	}
-
-	if f != nil {
-		f()
-		return nil
-	}
-
-	Render(c)
 	return nil
 }

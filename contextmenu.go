@@ -32,7 +32,7 @@ func (m *ContextMenu) Render() string {
 		{{if .Separator}}
 		<div class="App_MenuItemSeparator"></div>
 		{{else}}
-		<button class="App_MenuItem" onclick="{{bind "Items" $idx "OnClick"}}" {{if .Disabled}}disabled{{end}}>
+		<button class="App_MenuItem" onclick="Items.{{$idx}}.OnClick" {{if .Disabled}}disabled{{end}}>
 			<div class="App_MenuItemLabel">{{.Label}}</div>
 			<div class="App_MenuItemKeys">{{.Keys}}</div>
 		</button>
@@ -58,12 +58,14 @@ func (m *ContextMenu) new(items []MenuItem) {
 	Render(m)
 
 	UI(func() {
-		js.Global().Call("showContextMenu")
+		bg := js.Global().Get("document").Call("App_ContextMenuBackground")
+		bg.Get("style").Set("display", "block")
 	})
 }
 
-func (m *ContextMenu) Hide() {
-	js.Global().Call("hideContextMenu")
+func (m *ContextMenu) Hide(js.Value) {
+	bg := js.Global().Get("document").Call("App_ContextMenuBackground")
+	bg.Get("style").Set("display", "none")
 }
 
 func convertKeys(k string) string {

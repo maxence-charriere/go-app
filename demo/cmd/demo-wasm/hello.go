@@ -1,6 +1,8 @@
 package main
 
 import (
+	"syscall/js"
+
 	"github.com/maxence-charriere/app"
 )
 
@@ -12,7 +14,7 @@ type Hello struct {
 
 // Render returns what to display.
 //
-// The onchange="{{bind "Name"}}" binds the onchange value to the Hello.Name
+// The onchange="Name" binds the onchange value to the Hello.Name
 // field.
 func (h *Hello) Render() string {
 	return `
@@ -28,7 +30,7 @@ func (h *Hello) Render() string {
 			world
 		{{end}}!
 	</h1>
-	<input value="{{.Name}}" placeholder="What is your name?" onchange="{{bind "Name"}}" autofocus>
+	<input value="{{.Name}}" placeholder="What is your name?" onchange="Name" autofocus>
 </div>
 	`
 }
@@ -43,12 +45,12 @@ func (h *Hello) OnMenuClick() {
 		app.MenuItem{Separator: true},
 		app.MenuItem{
 			Label: "Go to repository",
-			OnClick: func() {
+			OnClick: func(s, e js.Value) {
 				app.Navigate("https://github.com/maxence-charriere/app")
 			}},
 		app.MenuItem{
 			Label: "Source code",
-			OnClick: func() {
+			OnClick: func(s, e js.Value) {
 				app.Navigate("https://github.com/maxence-charriere/app/blob/master/demo/cmd/demo-wasm/hello.go")
 			}},
 	)
