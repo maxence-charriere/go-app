@@ -2,11 +2,10 @@
 package app
 
 import (
-	"fmt"
-	"log"
-	"strings"
+	"reflect"
 
 	"github.com/maxence-charriere/app/internal/maestro"
+	"github.com/maxence-charriere/app/pkg/log"
 	"github.com/pkg/errors"
 )
 
@@ -33,11 +32,6 @@ var (
 	// NotFoundPath is the path to the component to be  loaded when an non
 	// imported component is requested.
 	NotFoundPath = "/app.notfound"
-
-	// Logger is a function that formats using the default formats for its
-	// operands and logs the resulting string.
-	// It is used by Log, Logf, Panic and Panicf to generate logs.
-	Logger = log.Printf
 
 	components = make(maestro.CompoBuilder)
 	ui         = make(chan func(), 4096)
@@ -75,40 +69,9 @@ func Import(c ...Compo) {
 	}
 }
 
-// Log formats using the default formats for its operands and logs the resulting
-// string.
-// Spaces are always added between operands and a newline is appended.
-func Log(a ...interface{}) {
-	format := ""
-
-	for range a {
-		format += "%v "
-	}
-
-	format = format[:len(format)-1]
-	Logger(format, a...)
-}
-
-// Logf formats according to a format specifier and logs the resulting string.
-func Logf(format string, a ...interface{}) {
-	Logger(format, a...)
-}
-
 // Navigate navigates to the given URL.
 func Navigate(url string) {
 	navigate(url)
-}
-
-// Panic is equivalent to Log() followed by a call to panic().
-func Panic(a ...interface{}) {
-	Log(a...)
-	panic(strings.TrimSpace(fmt.Sprintln(a...)))
-}
-
-// Panicf is equivalent to Logf() followed by a call to panic().
-func Panicf(format string, a ...interface{}) {
-	Logf(format, a...)
-	panic(fmt.Sprintf(format, a...))
 }
 
 // Path returns the path to the given component.
@@ -121,12 +84,10 @@ func Path(c Compo) string {
 //
 // It panics if called before Run.
 func Render(c Compo) {
-	WhenDebug(func() {
-		Logf("rendering %T")
-	})
-
 	if err := render(c); err != nil {
-		Log(err)
+		log.Error("rendering component failed").
+			T("reason", err).
+			T("component", reflect.TypeOf(c))
 	}
 }
 

@@ -6,6 +6,7 @@ import (
 	"syscall/js"
 
 	"github.com/maxence-charriere/app/internal/maestro"
+	"github.com/maxence-charriere/app/pkg/log"
 )
 
 var (
@@ -14,6 +15,11 @@ var (
 
 func init() {
 	maestre = maestro.NewMaestro(components)
+	log.DefaultColor = ""
+	log.InfoColor = ""
+	log.ErrorColor = ""
+	log.WarnColor = ""
+	log.DebugColor = ""
 }
 
 func navigate(url string) {
@@ -59,11 +65,11 @@ func run() error {
 		return err
 	}
 
-	// if nav, ok := compo.(Navigable); ok {
-	// 	UI(func() {
-	// 		nav.OnNavigate(url)
-	// 	})
-	// }
+	if nav, ok := compo.(Navigable); ok {
+		UI(func() {
+			nav.OnNavigate(url)
+		})
+	}
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()

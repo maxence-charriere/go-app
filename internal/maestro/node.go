@@ -3,12 +3,12 @@
 package maestro
 
 import (
-	"fmt"
 	"reflect"
 	"strconv"
 	"strings"
 	"syscall/js"
 
+	"github.com/maxence-charriere/app/pkg/log"
 	"golang.org/x/net/html/atom"
 )
 
@@ -108,7 +108,10 @@ func (n *Node) addEventListener(ctx renderContext, event string, target string) 
 
 		recv, err := getReceiver(ctx.Compo, target)
 		if err != nil {
-			fmt.Printf("binding with %s failed: %v\n", target, err)
+			log.Error("adding event listener failed").
+				T("reason", err).
+				T("component", reflect.TypeOf(ctx.Compo)).
+				T("target", target)
 			return nil
 		}
 
@@ -130,7 +133,10 @@ func (n *Node) addEventListener(ctx renderContext, event string, target string) 
 			value := this.Get("value").String()
 			i, err := strconv.ParseInt(value, 10, 64)
 			if err != nil {
-				fmt.Printf("binding with %s failed: %v\n", target, err)
+				log.Error("adding event listener failed").
+					T("reason", err).
+					T("component", reflect.TypeOf(ctx.Compo)).
+					T("target", target)
 				return nil
 			}
 			recv.SetInt(i)
@@ -139,7 +145,10 @@ func (n *Node) addEventListener(ctx renderContext, event string, target string) 
 			value := this.Get("value").String()
 			u, err := strconv.ParseUint(value, 10, 64)
 			if err != nil {
-				fmt.Printf("binding with %s failed: %v\n", target, err)
+				log.Error("adding event listener failed").
+					T("reason", err).
+					T("component", reflect.TypeOf(ctx.Compo)).
+					T("target", target)
 				return nil
 			}
 			recv.SetUint(u)
@@ -148,7 +157,10 @@ func (n *Node) addEventListener(ctx renderContext, event string, target string) 
 			value := this.Get("value").String()
 			f, err := strconv.ParseFloat(value, 64)
 			if err != nil {
-				fmt.Printf("binding with %s failed: %v\n", target, err)
+				log.Error("adding event listener failed").
+					T("reason", err).
+					T("component", reflect.TypeOf(ctx.Compo)).
+					T("target", target)
 				return nil
 			}
 			recv.SetFloat(f)
@@ -157,13 +169,20 @@ func (n *Node) addEventListener(ctx renderContext, event string, target string) 
 			value := this.Get("value").String()
 			b, err := strconv.ParseBool(value)
 			if err != nil {
-				fmt.Printf("binding with %s failed: %v\n", target, err)
+				log.Error("adding event listener failed").
+					T("reason", err).
+					T("component", reflect.TypeOf(ctx.Compo)).
+					T("target", target)
 				return nil
 			}
 			recv.SetBool(b)
 
 		default:
-			fmt.Printf("binding with %s failed: bad receiver %v\n", target, recv.Type())
+			log.Error("adding event listener failed").
+				T("reason", "unsupported target kind").
+				T("component", reflect.TypeOf(ctx.Compo)).
+				T("target", target).
+				T("target type", recv.Type())
 		}
 		return nil
 	}
