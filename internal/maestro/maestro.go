@@ -97,7 +97,7 @@ func (m *Maestro) render(c Compo, n *Node) error {
 	}
 
 	if requireMount {
-		n.CompoName = compoName(c)
+		n.CompoName = CompoName(c)
 		m.mount(n)
 	}
 
@@ -397,7 +397,7 @@ func (m *Maestro) renderCompoNode(ctx renderContext, n *Node, name string, hasAt
 
 	if n.isZero() {
 		compo, err = m.CompoBuilder.New(name)
-	} else if name != compoName(n.compo) {
+	} else if name != CompoName(n.compo) {
 		m.dismount(n)
 		compo, err = m.CompoBuilder.New(name)
 	} else {

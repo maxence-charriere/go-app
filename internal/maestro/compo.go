@@ -45,7 +45,7 @@ func (b CompoBuilder) Import(c Compo) error {
 		return errors.New("component is based on a struct without field. use ZeroCompo instead of struct{}")
 	}
 
-	b[compoName(c)] = v.Type()
+	b[CompoName(c)] = v.Type()
 	return nil
 }
 
@@ -64,7 +64,8 @@ func (b CompoBuilder) New(name string) (Compo, error) {
 	return reflect.New(t).Interface().(Compo), nil
 }
 
-func compoName(c Compo) string {
+// CompoName returns the name of the given component.
+func CompoName(c Compo) string {
 	v := reflect.ValueOf(c)
 	v = reflect.Indirect(v)
 	name := strings.ToLower(v.Type().String())

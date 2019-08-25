@@ -2,7 +2,6 @@ package app
 
 import (
 	"net/url"
-	"reflect"
 	"strings"
 )
 
@@ -61,14 +60,6 @@ type CompoWithExtendedRender interface {
 // ZeroCompo have a placeholder field to avoid that.
 type ZeroCompo struct {
 	placeholder byte
-}
-
-func compoName(c Compo) string {
-	v := reflect.ValueOf(c)
-	v = reflect.Indirect(v)
-
-	name := strings.ToLower(v.Type().String())
-	return strings.TrimPrefix(name, "main.")
 }
 
 func compoNameFromURLString(rawurl string) string {

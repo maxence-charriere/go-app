@@ -10,17 +10,6 @@ import (
 )
 
 var (
-	// ErrCompoNotMounted describes an error that reports whether a component
-	// is mounted.
-	ErrCompoNotMounted = errors.New("component not mounted")
-
-	// ErrElemNotSet describes an error that reports if an element is set.
-	ErrElemNotSet = errors.New("element not set")
-
-	// ErrNotSupported describes an error that occurs when an unsupported
-	// feature is used.
-	ErrNotSupported = errors.New("not supported")
-
 	// ErrNoWasm describes an error that occurs when Run or Render are called
 	// in a non wasm environment.
 	ErrNoWasm = errors.New("go architecture is not wasm")
@@ -35,23 +24,7 @@ var (
 
 	components = make(maestro.CompoBuilder)
 	ui         = make(chan func(), 4096)
-	whenDebug  func(func())
 )
-
-func init() {
-	EnableDebug(false)
-}
-
-// EnableDebug is a function that set whether debug mode is enabled.
-func EnableDebug(v bool) {
-	whenDebug = func(f func()) {}
-
-	if v {
-		whenDebug = func(f func()) {
-			f()
-		}
-	}
-}
 
 // Import imports the given components into the app.
 // Components must be imported in order the be used by the app package.
@@ -59,10 +32,6 @@ func EnableDebug(v bool) {
 // markup.
 func Import(c ...Compo) {
 	for _, compo := range c {
-		// if _, err := components.register(compo); err != nil {
-		// 	Panicf("import component failed: %s", err)
-		// }
-
 		if err := components.Import(compo); err != nil {
 			panic(err)
 		}
@@ -76,7 +45,7 @@ func Navigate(url string) {
 
 // Path returns the path to the given component.
 func Path(c Compo) string {
-	return "/" + compoName(c)
+	return "/" + maestro.CompoName(c)
 }
 
 // Render renders the given component.
@@ -99,9 +68,4 @@ func Run() error {
 // UI calls a function on the UI goroutine.
 func UI(f func()) {
 	ui <- f
-}
-
-// WhenDebug execute the given function when debug mode is enabled.
-func WhenDebug(f func()) {
-	whenDebug(f)
 }
