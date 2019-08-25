@@ -38,7 +38,6 @@ func Reload(s, e js.Value) {
 // 		`
 // 	}
 func NewContextMenu(items ...MenuItem) {
-	Emit("app.NewContextMenu", items)
 }
 
 func render(c Compo) error {
@@ -97,38 +96,4 @@ func getURL() (*url.URL, error) {
 		url.Path = NotFoundPath
 	}
 	return url, nil
-}
-
-func syncDom(changes []change) error {
-	jsChanges := make([]interface{}, len(changes))
-
-	for i, c := range changes {
-		jsChange := make(map[string]interface{}, 10)
-
-		setValue := func(k, v string) {
-			if v != "" {
-				jsChange[k] = v
-			}
-		}
-
-		jsChange["Action"] = int(c.Action)
-		jsChange["NodeID"] = c.NodeID
-
-		setValue("CompoID", c.CompoID)
-		setValue("Type", c.Type)
-		setValue("Namespace", c.Namespace)
-		setValue("Key", c.Key)
-		setValue("Value", c.Value)
-		setValue("ChildID", c.ChildID)
-		setValue("NewChildID", c.NewChildID)
-
-		if c.IsCompo {
-			jsChange["IsCompo"] = c.IsCompo
-		}
-
-		jsChanges[i] = jsChange
-	}
-
-	js.Global().Call("render", jsChanges)
-	return nil
 }

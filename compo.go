@@ -45,17 +45,6 @@ type Navigable interface {
 	OnNavigate(u *url.URL)
 }
 
-// EventSubscriber is the interface that describes a component that subscribes
-// to events emitted from messages.
-type EventSubscriber interface {
-	// Subscribe is called when a component is mounted.
-	// The returned subscriber is used to subscribe to events emitted from
-	// messages.
-	// All the event subscribed are automatically unsuscribed when the component
-	// is dismounted.
-	Subscribe() *Subscriber
-}
-
 // CompoWithExtendedRender is the interface that wraps Funcs method.
 type CompoWithExtendedRender interface {
 	Compo
@@ -74,13 +63,6 @@ type CompoWithExtendedRender interface {
 // ZeroCompo have a placeholder field to avoid that.
 type ZeroCompo struct {
 	placeholder byte
-}
-
-type compo struct {
-	ID       string
-	ParentID string
-	Compo    Compo
-	Events   *Subscriber
 }
 
 func compoName(c Compo) string {

@@ -40,19 +40,12 @@ var (
 	Logger = log.Printf
 
 	components = make(maestro.CompoBuilder)
-	messages   = newMsgRegistry()
 	ui         = make(chan func(), 4096)
-	events     = newEventRegistry(ui)
 	whenDebug  func(func())
 )
 
 func init() {
 	EnableDebug(false)
-}
-
-// Emit emits the event with the given arguments.
-func Emit(e Event, args ...interface{}) {
-	events.Emit(e, args...)
 }
 
 // EnableDebug is a function that set whether debug mode is enabled.
@@ -64,11 +57,6 @@ func EnableDebug(v bool) {
 			f()
 		}
 	}
-}
-
-// Handle handles the message for the given key.
-func Handle(key string, h MsgHandler) {
-	messages.handle(key, h)
 }
 
 // Import imports the given components into the app.
@@ -111,17 +99,6 @@ func Navigate(url string) {
 	navigate(url)
 }
 
-// NewMsg creates a message.
-func NewMsg(key string) Msg {
-	return &msg{key: key}
-}
-
-// NewSubscriber creates an event subscriber to return when implementing the
-// app.EventSubscriber interface.
-func NewSubscriber() *Subscriber {
-	return &Subscriber{events: events}
-}
-
 // Panic is equivalent to Log() followed by a call to panic().
 func Panic(a ...interface{}) {
 	Log(a...)
@@ -137,12 +114,6 @@ func Panicf(format string, a ...interface{}) {
 // Path returns the path to the given component.
 func Path(c Compo) string {
 	return "/" + compoName(c)
-}
-
-// Post posts the given messages.
-// Messages are handled in another goroutine.
-func Post(msgs ...Msg) {
-	messages.post(msgs...)
 }
 
 // Render renders the given component.

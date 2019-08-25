@@ -6,11 +6,11 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"html/template"
 	"io"
 	"strings"
 	"sync"
 	"syscall/js"
-	"text/template"
 
 	"golang.org/x/net/html"
 )

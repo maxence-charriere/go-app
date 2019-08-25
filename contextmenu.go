@@ -17,11 +17,6 @@ type ContextMenu struct {
 	Visible bool
 }
 
-// Subscribe set up the context menu listened events.
-func (m *ContextMenu) Subscribe() *Subscriber {
-	return NewSubscriber().Subscribe("app.NewContextMenu", m.new)
-}
-
 // Render returns the markup that describes the context menu.
 func (m *ContextMenu) Render() string {
 	return `
