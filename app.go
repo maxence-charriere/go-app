@@ -23,7 +23,7 @@ var (
 	NotFoundPath = "/app.notfound"
 
 	components = make(maestro.CompoBuilder)
-	ui         = make(chan func(), 4096)
+	ui         = make(chan func(), 256)
 )
 
 // Import imports the given components into the app.

@@ -97,93 +97,100 @@ func (n *Node) addEventListener(ctx renderContext, event string, target string) 
 	preventDefault := event == "contextmenu"
 
 	execBinding := func(this js.Value, args []js.Value) interface{} {
-		var event js.Value
-		if len(args) >= 1 {
-			event = args[0]
-		}
-
-		if preventDefault {
-			event.Call("preventDefault")
-		}
-
-		recv, err := getReceiver(ctx.Compo, target)
-		if err != nil {
-			log.Error("adding event listener failed").
-				T("reason", err).
-				T("component", reflect.TypeOf(ctx.Compo)).
-				T("target", target)
-			return nil
-		}
-
-		switch recv.Kind() {
-		case reflect.Func:
-			if reflect.TypeOf(func(s, e js.Value) {}) == recv.Type() {
-				recv.Call([]reflect.Value{
-					reflect.ValueOf(this),
-					reflect.ValueOf(event),
-				})
+		ctx.Dom.CallOnUI(func() {
+			var event js.Value
+			if len(args) >= 1 {
+				event = args[0]
 			}
 
-		case reflect.String:
-			value := this.Get("value")
-			recv.SetString(value.String())
-			ctx.Maestro.Render(ctx.Compo)
+			if preventDefault {
+				event.Call("preventDefault")
+			}
 
-		case reflect.Int, reflect.Int64, reflect.Int32, reflect.Int16, reflect.Int8:
-			value := this.Get("value").String()
-			i, err := strconv.ParseInt(value, 10, 64)
+			recv, err := getReceiver(ctx.Compo, target)
 			if err != nil {
 				log.Error("adding event listener failed").
 					T("reason", err).
 					T("component", reflect.TypeOf(ctx.Compo)).
 					T("target", target)
-				return nil
+				return
 			}
-			recv.SetInt(i)
 
-		case reflect.Uint, reflect.Uint64, reflect.Uint32, reflect.Uint16, reflect.Uint8:
-			value := this.Get("value").String()
-			u, err := strconv.ParseUint(value, 10, 64)
-			if err != nil {
+			switch recv.Kind() {
+			case reflect.Func:
+				if reflect.TypeOf(func(s, e js.Value) {}) == recv.Type() {
+					recv.Call([]reflect.Value{
+						reflect.ValueOf(this),
+						reflect.ValueOf(event),
+					})
+				}
+
+			case reflect.String:
+				value := this.Get("value")
+				recv.SetString(value.String())
+				ctx.Dom.Render(ctx.Compo)
+
+			case reflect.Int, reflect.Int64, reflect.Int32, reflect.Int16, reflect.Int8:
+				value := this.Get("value").String()
+				i, err := strconv.ParseInt(value, 10, 64)
+				if err != nil {
+					log.Error("adding event listener failed").
+						T("reason", err).
+						T("component", reflect.TypeOf(ctx.Compo)).
+						T("target", target)
+					return
+				}
+				recv.SetInt(i)
+				ctx.Dom.Render(ctx.Compo)
+
+			case reflect.Uint, reflect.Uint64, reflect.Uint32, reflect.Uint16, reflect.Uint8:
+				value := this.Get("value").String()
+				u, err := strconv.ParseUint(value, 10, 64)
+				if err != nil {
+					log.Error("adding event listener failed").
+						T("reason", err).
+						T("component", reflect.TypeOf(ctx.Compo)).
+						T("target", target)
+					return
+				}
+				recv.SetUint(u)
+				ctx.Dom.Render(ctx.Compo)
+
+			case reflect.Float64, reflect.Float32:
+				value := this.Get("value").String()
+				f, err := strconv.ParseFloat(value, 64)
+				if err != nil {
+					log.Error("adding event listener failed").
+						T("reason", err).
+						T("component", reflect.TypeOf(ctx.Compo)).
+						T("target", target)
+					return
+				}
+				recv.SetFloat(f)
+				ctx.Dom.Render(ctx.Compo)
+
+			case reflect.Bool:
+				value := this.Get("value").String()
+				b, err := strconv.ParseBool(value)
+				if err != nil {
+					log.Error("adding event listener failed").
+						T("reason", err).
+						T("component", reflect.TypeOf(ctx.Compo)).
+						T("target", target)
+					return
+				}
+				recv.SetBool(b)
+				ctx.Dom.Render(ctx.Compo)
+
+			default:
 				log.Error("adding event listener failed").
-					T("reason", err).
+					T("reason", "unsupported target kind").
 					T("component", reflect.TypeOf(ctx.Compo)).
-					T("target", target)
-				return nil
+					T("target", target).
+					T("target type", recv.Type())
 			}
-			recv.SetUint(u)
+		})
 
-		case reflect.Float64, reflect.Float32:
-			value := this.Get("value").String()
-			f, err := strconv.ParseFloat(value, 64)
-			if err != nil {
-				log.Error("adding event listener failed").
-					T("reason", err).
-					T("component", reflect.TypeOf(ctx.Compo)).
-					T("target", target)
-				return nil
-			}
-			recv.SetFloat(f)
-
-		case reflect.Bool:
-			value := this.Get("value").String()
-			b, err := strconv.ParseBool(value)
-			if err != nil {
-				log.Error("adding event listener failed").
-					T("reason", err).
-					T("component", reflect.TypeOf(ctx.Compo)).
-					T("target", target)
-				return nil
-			}
-			recv.SetBool(b)
-
-		default:
-			log.Error("adding event listener failed").
-				T("reason", "unsupported target kind").
-				T("component", reflect.TypeOf(ctx.Compo)).
-				T("target", target).
-				T("target type", recv.Type())
-		}
 		return nil
 	}
 

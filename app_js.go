@@ -10,11 +10,11 @@ import (
 )
 
 var (
-	maestre *maestro.Maestro
+	dom *maestro.Dom
 )
 
 func init() {
-	maestre = maestro.NewMaestro(components)
+	dom = maestro.NewMaestro(components, UI)
 	log.DefaultColor = ""
 	log.InfoColor = ""
 	log.ErrorColor = ""
@@ -47,7 +47,7 @@ func NewContextMenu(items ...MenuItem) {
 }
 
 func render(c Compo) error {
-	return maestre.Render(c)
+	return dom.Render(c)
 }
 
 func run() error {
@@ -61,7 +61,7 @@ func run() error {
 		return err
 	}
 
-	if err := maestre.NewBody(compo); err != nil {
+	if err := dom.NewBody(compo); err != nil {
 		return err
 	}
 
