@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/maxence-charriere/app"
+	"github.com/maxence-charriere/app/pkg/app"
 )
 
 // The app entry point.

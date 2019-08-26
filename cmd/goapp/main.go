@@ -8,7 +8,7 @@ import (
 	"os"
 	"os/signal"
 
-	_ "github.com/maxence-charriere/app"
+	_ "github.com/maxence-charriere/app/pkg/app"
 	"github.com/segmentio/conf"
 )
 

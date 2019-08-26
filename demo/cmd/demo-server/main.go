@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/maxence-charriere/app"
+	"github.com/maxence-charriere/app/pkg/app"
 )
 
 func main() {
