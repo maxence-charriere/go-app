@@ -51,6 +51,7 @@ func Bind(msg string, c Compo) *Binding {
 	return b
 }
 
+// Emit emits a message that triggers the associated bindings.
 func Emit(ctx context.Context, msg string, args ...interface{}) {
 	go msgs.emit(ctx, msg, args...)
 }
