@@ -60,8 +60,50 @@ func (b *Binding) Do(f interface{}) *Binding {
 }
 
 func (b *Binding) exec(ctx context.Context, args ...interface{}) {
-	for _, f := range b.funcs {
-		f.Call([]reflect.Value{reflect.ValueOf(ctx)})
+	ctxv := reflect.ValueOf(ctx)
+
+	argsv := make([]reflect.Value, 0, len(args)+1)
+	argsv = append(argsv, ctxv)
+	for _, arg := range args {
+		argsv = append(argsv, reflect.ValueOf(arg))
+	}
+
+	for doIdx, f := range b.funcs {
+		ftype := f.Type()
+
+		i := 0
+		for i < ftype.NumIn() && i < len(argsv) {
+			if !argsv[i].Type().AssignableTo(ftype.In(i)) {
+				log.Error("executing binding function failed").
+					T("reason", "non assignable arg").
+					T("message", b.msg).
+					T("function index", doIdx).
+					T("function type", ftype).
+					T("arg index", i).
+					T("expected type", ftype.In(i)).
+					T("arg type", argsv[i].Type())
+				return
+			}
+			i++
+		}
+
+		for i < ftype.NumIn() {
+			log.Warn("binding function argument missing").
+				T("message", b.msg).
+				T("function index", doIdx).
+				T("function type", ftype).
+				T("arg index", i).
+				T("arg type", ftype.In(i)).
+				T("pkg fix", "assigned to zero value")
+			argsv = append(argsv, reflect.Zero(ftype.In(i)))
+			i++
+		}
+
+		argsv = argsv[:i]
+		retv := f.Call(argsv)
+		argsv = make([]reflect.Value, 0, len(retv)+1)
+		argsv = append(argsv, ctxv)
+		argsv = append(argsv, retv...)
 	}
 }
 

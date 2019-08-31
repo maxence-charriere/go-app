@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/pkg/errors"
 	"github.com/stretchr/testify/require"
 )
 
@@ -70,6 +71,83 @@ func TestBindingDo(t *testing.T) {
 
 			b.Do(test.function)
 			require.Len(t, b.funcs, 1)
+		})
+	}
+}
+
+func TestBindingExec(t *testing.T) {
+	tests := []struct {
+		scenario  string
+		args      []interface{}
+		functions []interface{}
+	}{
+		{
+			scenario: "execute function with matching args",
+			args:     []interface{}{"hello", 42},
+			functions: []interface{}{
+				func(ctx context.Context, s string, i int) {
+					require.Equal(t, "hello", s)
+					require.Equal(t, 42, i)
+				},
+			},
+		},
+		{
+			scenario: "execute function with less matching args",
+			args:     []interface{}{"hello", 42},
+			functions: []interface{}{
+				func(ctx context.Context, s string) {
+					require.Equal(t, "hello", s)
+				},
+			},
+		},
+		{
+			scenario: "execute function with more matching args",
+			args:     []interface{}{"hello"},
+			functions: []interface{}{
+				func(ctx context.Context, s string, i int) {
+					require.Equal(t, "hello", s)
+					require.Equal(t, 0, i)
+				},
+			},
+		},
+		{
+			scenario: "execute function with non matching args",
+			args:     []interface{}{"hello", 42},
+			functions: []interface{}{
+				func(ctx context.Context, s string, i int32) {
+					require.Equal(t, "hello", s)
+					require.Equal(t, 42, i)
+				},
+			},
+		},
+		{
+			scenario: "execute multiple functions with matching args",
+			args:     []interface{}{"hello", 42},
+			functions: []interface{}{
+				func(ctx context.Context, s string, i int) (bool, error) {
+					return true, nil
+				},
+				func(ctx context.Context, b bool, err error) error {
+					require.True(t, b)
+					require.NoError(t, err)
+					return errors.New("test")
+				},
+				func(ctx context.Context, err error) {
+					require.Error(t, err)
+				},
+			},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.scenario, func(t *testing.T) {
+			b := Binding{msg: "test"}
+
+			for _, f := range test.functions {
+				b.Do(f)
+			}
+
+			b.exec(context.TODO(), test.args...)
 		})
 	}
 }
