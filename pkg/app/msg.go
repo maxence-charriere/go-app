@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"reflect"
 	"sync"
 
@@ -37,33 +36,13 @@ func (b *Binding) Do(f interface{}) *Binding {
 			T("index", len(b.funcs)).
 			Panic()
 	}
-	if typ.NumIn() < 1 {
-		log.Error("adding function to binding failed").
-			T("reason", "function does not have a context argument").
-			T("function type", typ).
-			T("message", b.msg).
-			T("index", len(b.funcs)).
-			Panic()
-	}
-
-	if !typ.In(0).Implements(reflect.TypeOf((*context.Context)(nil)).Elem()) {
-		log.Error("adding function to binding failed").
-			T("reason", "first argument does not implement context.Context").
-			T("function type", typ).
-			T("message", b.msg).
-			T("index", len(b.funcs)).
-			Panic()
-	}
 
 	b.funcs = append(b.funcs, v)
 	return b
 }
 
-func (b *Binding) exec(ctx context.Context, args ...interface{}) {
-	ctxv := reflect.ValueOf(ctx)
-
-	argsv := make([]reflect.Value, 0, len(args)+1)
-	argsv = append(argsv, ctxv)
+func (b *Binding) exec(args ...interface{}) {
+	argsv := make([]reflect.Value, 0, len(args))
 	for _, arg := range args {
 		argsv = append(argsv, reflect.ValueOf(arg))
 	}
@@ -100,10 +79,7 @@ func (b *Binding) exec(ctx context.Context, args ...interface{}) {
 		}
 
 		argsv = argsv[:i]
-		retv := f.Call(argsv)
-		argsv = make([]reflect.Value, 0, len(retv)+1)
-		argsv = append(argsv, ctxv)
-		argsv = append(argsv, retv...)
+		argsv = f.Call(argsv)
 	}
 }
 
@@ -112,12 +88,12 @@ type messenger struct {
 	bindings map[string][]*Binding
 }
 
-func (m *messenger) emit(ctx context.Context, msg string, args ...interface{}) {
+func (m *messenger) emit(msg string, args ...interface{}) {
 	m.mutex.RLock()
 	defer m.mutex.RUnlock()
 
 	for _, b := range m.bindings[msg] {
-		b.exec(ctx, args...)
+		b.exec(args...)
 	}
 }
 

@@ -9,6 +9,7 @@ import (
 	"html/template"
 	"io"
 	"strings"
+	"sync"
 	"syscall/js"
 
 	"golang.org/x/net/html"
@@ -16,39 +17,46 @@ import (
 
 // Dom is a document object model that manage components and html nodes.
 type Dom struct {
-	CompoBuilder CompoBuilder
-	CallOnUI     func(func())
+	CompoBuilder        CompoBuilder
+	CallOnUI            func(func())
+	TrackCursorPosition func(js.Value)
+	ContextMenu         Compo
 
+	once           sync.Once
 	components     map[Compo]*Node
 	converters     map[string]interface{}
 	attrTransforms []attrTransform
 }
 
-// NewMaestro creates a maestro.
-func NewMaestro(compoBuilder CompoBuilder, callOnUI func(func())) *Dom {
-	return &Dom{
-		CompoBuilder: compoBuilder,
-		CallOnUI:     callOnUI,
-		components:   make(map[Compo]*Node),
-		converters: map[string]interface{}{
-			"compo": urlToHTMLTag,
-			"json":  jsonFormat,
-			"raw":   rawHTML,
-			"time":  timeFormat,
-		},
-		attrTransforms: []attrTransform{eventTransform},
+func (d *Dom) init() {
+	d.components = make(map[Compo]*Node)
+	d.converters = map[string]interface{}{
+		"compo": urlToHTMLTag,
+		"json":  jsonFormat,
+		"raw":   rawHTML,
+		"time":  timeFormat,
 	}
+	d.attrTransforms = []attrTransform{eventTransform}
 }
 
 // NewBody insert the given component into the document body.
 func (d *Dom) NewBody(c Compo) error {
+	d.once.Do(d.init)
+
 	if err := d.Render(c); err != nil {
 		return err
 	}
-
 	root, ok := d.components[c]
 	if !ok {
 		return errors.New("root not found")
+	}
+
+	if err := d.Render(d.ContextMenu); err != nil {
+		return err
+	}
+	ctxMenu, ok := d.components[d.ContextMenu]
+	if !ok {
+		return errors.New("context menu not found")
 	}
 
 	body := js.Global().Get("document").Get("body")
@@ -62,6 +70,7 @@ func (d *Dom) NewBody(c Compo) error {
 	}
 
 	body.Call("appendChild", root)
+	body.Call("appendChild", ctxMenu)
 	return nil
 }
 
@@ -364,11 +373,9 @@ func (d *Dom) setEventHandler(ctx renderContext, n *Node, k, v string) {
 		n.eventCloses = make(map[string]func())
 	}
 
-	n.eventCloses[k] = n.addEventListener(
-		ctx,
-		k,
-		strings.TrimPrefix(v, "//go: "),
-	)
+	v = strings.TrimPrefix(v, "//go: ")
+	v = strings.ReplaceAll(v, " ", "")
+	n.eventCloses[k] = n.addEventListener(ctx, k, v)
 }
 
 func (d *Dom) closeEventHandler(ctx renderContext, n *Node, k string) {

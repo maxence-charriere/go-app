@@ -21,7 +21,7 @@ func TestMessenger(t *testing.T) {
 		bindingCalled = true
 	})
 
-	m.emit(context.TODO(), "test")
+	m.emit("test")
 	require.True(t, bindingCalled)
 
 	close()
@@ -37,25 +37,15 @@ func TestBindingDo(t *testing.T) {
 	}{
 		{
 			scenario: "function is added to binding",
-			function: func(context.Context) {},
+			function: func() {},
 		},
 		{
 			scenario: "function with args is added to binding",
-			function: func(context.Context, int, bool) {},
+			function: func(int, bool) {},
 		},
 		{
 			scenario: "non function added to binding panics",
 			function: 42,
-			panic:    true,
-		},
-		{
-			scenario: "function without context added to binding panics",
-			function: func() {},
-			panic:    true,
-		},
-		{
-			scenario: "function without context as 1st arg added to binding panics",
-			function: func(int) {},
 			panic:    true,
 		},
 	}
@@ -85,7 +75,7 @@ func TestBindingExec(t *testing.T) {
 			scenario: "execute function with matching args",
 			args:     []interface{}{"hello", 42},
 			functions: []interface{}{
-				func(ctx context.Context, s string, i int) {
+				func(s string, i int) {
 					require.Equal(t, "hello", s)
 					require.Equal(t, 42, i)
 				},
@@ -95,7 +85,7 @@ func TestBindingExec(t *testing.T) {
 			scenario: "execute function with less matching args",
 			args:     []interface{}{"hello", 42},
 			functions: []interface{}{
-				func(ctx context.Context, s string) {
+				func(s string) {
 					require.Equal(t, "hello", s)
 				},
 			},
@@ -104,7 +94,7 @@ func TestBindingExec(t *testing.T) {
 			scenario: "execute function with more matching args",
 			args:     []interface{}{"hello"},
 			functions: []interface{}{
-				func(ctx context.Context, s string, i int) {
+				func(s string, i int) {
 					require.Equal(t, "hello", s)
 					require.Equal(t, 0, i)
 				},
@@ -114,7 +104,7 @@ func TestBindingExec(t *testing.T) {
 			scenario: "execute function with non matching args",
 			args:     []interface{}{"hello", 42},
 			functions: []interface{}{
-				func(ctx context.Context, s string, i int32) {
+				func(s string, i int32) {
 					require.Equal(t, "hello", s)
 					require.Equal(t, 42, i)
 				},
@@ -124,15 +114,15 @@ func TestBindingExec(t *testing.T) {
 			scenario: "execute multiple functions with matching args",
 			args:     []interface{}{"hello", 42},
 			functions: []interface{}{
-				func(ctx context.Context, s string, i int) (bool, error) {
+				func(s string, i int) (bool, error) {
 					return true, nil
 				},
-				func(ctx context.Context, b bool, err error) error {
+				func(b bool, err error) error {
 					require.True(t, b)
 					require.NoError(t, err)
 					return errors.New("test")
 				},
-				func(ctx context.Context, err error) {
+				func(err error) {
 					require.Error(t, err)
 				},
 			},
@@ -147,7 +137,7 @@ func TestBindingExec(t *testing.T) {
 				b.Do(f)
 			}
 
-			b.exec(context.TODO(), test.args...)
+			b.exec(test.args...)
 		})
 	}
 }

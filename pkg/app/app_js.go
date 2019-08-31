@@ -11,12 +11,19 @@ import (
 )
 
 var (
-	dom  *maestro.Dom
-	msgs *messenger
+	dom     *maestro.Dom
+	msgs    *messenger
+	cursorX int
+	cursorY int
 )
 
 func init() {
-	dom = maestro.NewMaestro(components, UI)
+	dom = &maestro.Dom{
+		CompoBuilder:        components,
+		CallOnUI:            UI,
+		TrackCursorPosition: trackCursorPosition,
+		ContextMenu:         &ContextMenu{},
+	}
 	msgs = &messenger{}
 
 	log.DefaultColor = ""
@@ -52,22 +59,23 @@ func Bind(msg string, c Compo) *Binding {
 }
 
 // Emit emits a message that triggers the associated bindings.
-func Emit(ctx context.Context, msg string, args ...interface{}) {
-	go msgs.emit(ctx, msg, args...)
+func Emit(msg string, args ...interface{}) {
+	go msgs.emit(msg, args...)
 }
 
 // NewContextMenu displays a context menu filled with the given menu items.
-//
-// Context menu requires an app.contextmenu component in the loaded page.
-// 	func (c *Compo) Render() string {
-// 		return `
-// 	<div>
-// 		<!-- ... -->
-// 		<app.contextmenu>
-// 	</div>
-// 		`
-// 	}
 func NewContextMenu(items ...MenuItem) {
+	Emit("__app.NewContextMenu", items)
+}
+
+// MenuItem represents a menu item.
+type MenuItem struct {
+	Disabled  bool
+	Keys      string
+	Icon      string
+	Label     string
+	OnClick   func(s, e js.Value)
+	Separator bool
 }
 
 func render(c Compo) error {
@@ -126,4 +134,18 @@ func getURL() (*url.URL, error) {
 		url.Path = NotFoundPath
 	}
 	return url, nil
+}
+
+func trackCursorPosition(e js.Value) {
+	x := e.Get("clientX")
+	if !x.Truthy() {
+		return
+	}
+	cursorX = x.Int()
+
+	y := e.Get("clientY")
+	if !y.Truthy() {
+		return
+	}
+	cursorY = y.Int()
 }

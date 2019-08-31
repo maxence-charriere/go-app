@@ -3,6 +3,8 @@
 package app
 
 import (
+	"fmt"
+	"strconv"
 	"strings"
 	"syscall/js"
 )
@@ -15,6 +17,10 @@ func init() {
 type ContextMenu struct {
 	Items   []MenuItem
 	Visible bool
+}
+
+func (m *ContextMenu) OnMount() {
+	Bind("__app.NewContextMenu", m).Do(m.new)
 }
 
 // Render returns the markup that describes the context menu.
@@ -52,14 +58,43 @@ func (m *ContextMenu) new(items []MenuItem) {
 	m.Visible = true
 	Render(m)
 
-	UI(func() {
-		bg := js.Global().Get("document").Call("App_ContextMenuBackground")
-		bg.Get("style").Set("display", "block")
-	})
+	UI(m.Show)
 }
 
-func (m *ContextMenu) Hide(js.Value) {
-	bg := js.Global().Get("document").Call("App_ContextMenuBackground")
+func (m *ContextMenu) Show() {
+	bg := js.Global().
+		Get("document").
+		Call("getElementById", "App_ContextMenuBackground")
+	bg.Get("style").Set("display", "block")
+
+	menu := js.Global().
+		Get("document").
+		Call("getElementById", "App_ContextMenu")
+	menuWidth := menu.Get("offsetWidth").Int()
+	menuHeight := menu.Get("offsetHeight").Int()
+
+	winWidth := getWindowWidth()
+	winHeight := getWindowHeight()
+
+	x := cursorX
+	if x+menuWidth > winWidth {
+		x = winWidth - menuWidth
+	}
+
+	y := cursorY
+	if y+menuHeight > winHeight {
+		y = winHeight - menuHeight
+	}
+
+	menu.Get("style").Set("left", strconv.Itoa(x)+"px")
+	menu.Get("style").Set("top", strconv.Itoa(y)+"px")
+}
+
+func (m *ContextMenu) Hide(s, e js.Value) {
+	fmt.Println("gonna hide")
+	bg := js.Global().
+		Get("document").
+		Call("getElementById", "App_ContextMenuBackground")
 	bg.Get("style").Set("display", "none")
 }
 
@@ -92,4 +127,44 @@ func convertKeys(k string) string {
 	}
 
 	return k
+}
+
+func getWindowWidth() int {
+	w := js.Global().Get("innerWidth")
+	if !w.Truthy() {
+		w = js.Global().
+			Get("document").
+			Get("documentElement").
+			Get("clientWidth")
+	}
+	if !w.Truthy() {
+		w = js.Global().
+			Get("document").
+			Get("body").
+			Get("clientWidth")
+	}
+	if w.Type() != js.TypeNumber {
+		return 0
+	}
+	return w.Int()
+}
+
+func getWindowHeight() int {
+	h := js.Global().Get("innerHeight")
+	if !h.Truthy() {
+		h = js.Global().
+			Get("document").
+			Get("documentElement").
+			Get("clientHeight")
+	}
+	if !h.Truthy() {
+		h = js.Global().
+			Get("document").
+			Get("body").
+			Get("clientHeight")
+	}
+	if h.Type() != js.TypeNumber {
+		return 0
+	}
+	return h.Int()
 }

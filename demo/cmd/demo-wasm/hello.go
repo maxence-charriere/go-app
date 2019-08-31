@@ -20,7 +20,6 @@ func (h *Hello) Render() string {
 	return `
 <div class="Hello">
 	<button class="Menu" onclick="OnMenuClick" oncontextmenu="OnMenuClick">☰</button>
-	<app.contextmenu />
 
 	<h1>
 		Hello
@@ -36,7 +35,7 @@ func (h *Hello) Render() string {
 }
 
 // OnMenuClick creates a context menu when the menu button is clicked.
-func (h *Hello) OnMenuClick() {
+func (h *Hello) OnMenuClick(s, e js.Value) {
 	app.NewContextMenu(
 		app.MenuItem{
 			Label:   "Reload",

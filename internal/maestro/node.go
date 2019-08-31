@@ -104,6 +104,7 @@ func (n *Node) addEventListener(ctx renderContext, event string, target string) 
 			if len(args) >= 1 {
 				event = args[0]
 			}
+			ctx.Dom.TrackCursorPosition(event)
 
 			if preventDefault {
 				event.Call("preventDefault")
@@ -111,7 +112,7 @@ func (n *Node) addEventListener(ctx renderContext, event string, target string) 
 
 			recv, err := getReceiver(ctx.Compo, target)
 			if err != nil {
-				log.Error("adding event listener failed").
+				log.Error("calling event listener failed").
 					T("reason", err).
 					T("component", reflect.TypeOf(ctx.Compo)).
 					T("target", target)
@@ -120,12 +121,19 @@ func (n *Node) addEventListener(ctx renderContext, event string, target string) 
 
 			switch recv.Kind() {
 			case reflect.Func:
-				if reflect.TypeOf(func(s, e js.Value) {}) == recv.Type() {
-					recv.Call([]reflect.Value{
-						reflect.ValueOf(this),
-						reflect.ValueOf(event),
-					})
+				if jsHandlerType != recv.Type() {
+					log.Error("calling event listener failed").
+						T("reason", "bad receiver function type").
+						T("component", reflect.TypeOf(ctx.Compo)).
+						T("target", target).
+						T("expected type", jsHandlerType).
+						T("receiver type", recv.Type())
+					return
 				}
+				recv.Call([]reflect.Value{
+					reflect.ValueOf(this),
+					reflect.ValueOf(event),
+				})
 
 			case reflect.String:
 				value := this.Get("value")
@@ -206,6 +214,10 @@ func (n *Node) addEventListener(ctx renderContext, event string, target string) 
 }
 
 type eventHandler func(js.Value)
+
+var (
+	jsHandlerType = reflect.TypeOf(func(s, e js.Value) {})
+)
 
 var (
 	namespaces = map[string]string{
