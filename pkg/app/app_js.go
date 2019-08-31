@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"net/url"
+	"reflect"
 	"syscall/js"
 
 	"github.com/maxence-charriere/app/internal/maestro"
@@ -10,11 +11,14 @@ import (
 )
 
 var (
-	dom *maestro.Dom
+	dom  *maestro.Dom
+	msgs *messenger
 )
 
 func init() {
 	dom = maestro.NewMaestro(components, UI)
+	msgs = &messenger{}
+
 	log.DefaultColor = ""
 	log.InfoColor = ""
 	log.ErrorColor = ""
@@ -30,6 +34,25 @@ func navigate(url string) {
 func Reload(s, e js.Value) {
 	js.Global().Get("location").Call("reload")
 
+}
+
+// Bind creates a binding between a message and the given component.
+func Bind(msg string, c Compo) *Binding {
+	b, close := msgs.bind(msg, c)
+
+	if err := dom.SetBindingClose(c, close); err != nil {
+		log.Error("creating a binding failed").
+			T("reason", err).
+			T("component", reflect.TypeOf(c)).
+			T("message", msg).
+			Panic()
+	}
+
+	return b
+}
+
+func Emit(ctx context.Context, msg string, args ...interface{}) {
+	go msgs.emit(ctx, msg, args...)
 }
 
 // NewContextMenu displays a context menu filled with the given menu items.

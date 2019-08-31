@@ -22,9 +22,10 @@ type Node struct {
 	Children  []*Node
 	CompoName string
 
-	compo       Compo
-	eventCloses map[string]func()
-	isEnd       bool
+	compo         Compo
+	eventCloses   map[string]func()
+	bindingCloses []func()
+	isEnd         bool
 }
 
 func (n *Node) isZero() bool {
@@ -35,6 +36,7 @@ func (n *Node) isZero() bool {
 		n.CompoName == "" &&
 		n.compo == nil &&
 		n.eventCloses == nil &&
+		n.bindingCloses == nil &&
 		!n.isEnd
 }
 

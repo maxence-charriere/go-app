@@ -443,6 +443,12 @@ func (d *Dom) dismount(n *Node) {
 		close()
 		delete(n.eventCloses, k)
 	}
+
+	for _, close := range n.bindingCloses {
+		close()
+	}
+	n.bindingCloses = nil
+
 	n.Attrs = nil
 
 	if !n.isCompoRoot() {
@@ -455,6 +461,16 @@ func (d *Dom) dismount(n *Node) {
 	if d, ok := n.compo.(dismounter); ok {
 		d.OnDismount()
 	}
+}
+
+func (d *Dom) SetBindingClose(c Compo, close func()) error {
+	n, ok := d.components[c]
+	if !ok {
+		return errors.New("root not found")
+	}
+
+	n.bindingCloses = append(n.bindingCloses, close)
+	return nil
 }
 
 type renderContext struct {
