@@ -3,8 +3,6 @@
 package main
 
 import (
-	"log"
-
 	"github.com/maxence-charriere/app/pkg/app"
 )
 
@@ -25,7 +23,5 @@ func main() {
 	app.DefaultPath = "/hello"
 
 	// Runs the app in the browser.
-	if err := app.Run(); err != nil {
-		log.Print(err)
-	}
+	app.Run()
 }
