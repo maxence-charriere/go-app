@@ -1,6 +1,4 @@
-// +build js
-
-package maestro
+package app
 
 import (
 	"reflect"
@@ -12,39 +10,39 @@ import (
 	"golang.org/x/net/html/atom"
 )
 
-// Node represents a dom node.
-type Node struct {
+// JSHandler represents a function that can
+type CompoHandler func(src, event js.Value)
+
+type node struct {
 	js.Value
-
-	Name      string
-	Text      string
-	Attrs     map[string]string
-	Children  []*Node
-	CompoName string
-
+	name          string
+	text          string
+	attrs         map[string]string
+	children      []*node
+	compoName     string
 	compo         Compo
 	eventCloses   map[string]func()
 	bindingCloses []func()
 	isEnd         bool
 }
 
-func (n *Node) isZero() bool {
-	return n.Name == "" &&
-		n.Text == "" &&
-		n.Attrs == nil &&
-		n.Children == nil &&
-		n.CompoName == "" &&
+func (n *node) isZero() bool {
+	return n.name == "" &&
+		n.text == "" &&
+		n.attrs == nil &&
+		n.children == nil &&
+		n.compoName == "" &&
 		n.compo == nil &&
 		n.eventCloses == nil &&
 		n.bindingCloses == nil &&
 		!n.isEnd
 }
 
-func (n *Node) isCompoRoot() bool {
-	return n.CompoName != ""
+func (n *node) isCompoRoot() bool {
+	return n.compoName != ""
 }
 
-func (n *Node) new(tag, namespace string) {
+func (n *node) new(tag, namespace string) {
 	if namespace != "" {
 		n.Value = js.Global().Get("document").Call("createElementNS", namespace, tag)
 	} else {
@@ -52,11 +50,11 @@ func (n *Node) new(tag, namespace string) {
 	}
 }
 
-func (n *Node) newText() {
+func (n *node) newText() {
 	n.Value = js.Global().Get("document").Call("createTextNode", "")
 }
 
-func (n *Node) change(tag, namespace string) {
+func (n *node) change(tag, namespace string) {
 	parent := n.Get("parentNode")
 	if t := parent.Type(); t == js.TypeUndefined || t == js.TypeNull {
 		panic("parentNode is not set")
@@ -75,46 +73,46 @@ func (n *Node) change(tag, namespace string) {
 	parent.Call("replaceChild", n, old)
 }
 
-func (n *Node) updateText(s string) {
+func (n *node) updateText(s string) {
 	n.Set("nodeValue", s)
 }
 
-func (n *Node) appendChild(c *Node) {
+func (n *node) appendChild(c *node) {
 	n.Call("appendChild", c)
 }
 
-func (n *Node) removeChild(c *Node) {
+func (n *node) removeChild(c *node) {
 	n.Call("removeChild", c)
 }
 
-func (n *Node) upsertAttr(k, v string) {
+func (n *node) upsertAttr(k, v string) {
 	n.Call("setAttribute", k, v)
 }
 
-func (n *Node) deleteAttr(k string) {
+func (n *node) deleteAttr(k string) {
 	n.Call("removeAttribute", k)
 }
 
-func (n *Node) addEventListener(ctx renderContext, event string, target string) func() {
+func (n *node) addEventListener(ctx renderContext, event string, target string) func() {
 	preventDefault := event == "contextmenu"
 
 	execBinding := func(this js.Value, args []js.Value) interface{} {
-		ctx.Dom.CallOnUI(func() {
+		ctx.dom.callOnUI(func() {
 			var event js.Value
 			if len(args) >= 1 {
 				event = args[0]
 			}
-			ctx.Dom.TrackCursorPosition(event)
+			ctx.dom.trackCursorPosition(event)
 
 			if preventDefault {
 				event.Call("preventDefault")
 			}
 
-			recv, err := getReceiver(ctx.Compo, target)
+			recv, err := getReceiver(ctx.compo, target)
 			if err != nil {
 				log.Error("calling event listener failed").
 					T("reason", err).
-					T("component", reflect.TypeOf(ctx.Compo)).
+					T("component", reflect.TypeOf(ctx.compo)).
 					T("target", target)
 				return
 			}
@@ -124,7 +122,7 @@ func (n *Node) addEventListener(ctx renderContext, event string, target string) 
 				if jsHandlerType != recv.Type() {
 					log.Error("calling event listener failed").
 						T("reason", "bad receiver function type").
-						T("component", reflect.TypeOf(ctx.Compo)).
+						T("component", reflect.TypeOf(ctx.compo)).
 						T("target", target).
 						T("expected type", jsHandlerType).
 						T("receiver type", recv.Type())
@@ -138,7 +136,7 @@ func (n *Node) addEventListener(ctx renderContext, event string, target string) 
 			case reflect.String:
 				value := this.Get("value")
 				recv.SetString(value.String())
-				ctx.Dom.Render(ctx.Compo)
+				ctx.dom.render(ctx.compo)
 
 			case reflect.Int, reflect.Int64, reflect.Int32, reflect.Int16, reflect.Int8:
 				value := this.Get("value").String()
@@ -146,12 +144,12 @@ func (n *Node) addEventListener(ctx renderContext, event string, target string) 
 				if err != nil {
 					log.Error("adding event listener failed").
 						T("reason", err).
-						T("component", reflect.TypeOf(ctx.Compo)).
+						T("component", reflect.TypeOf(ctx.compo)).
 						T("target", target)
 					return
 				}
 				recv.SetInt(i)
-				ctx.Dom.Render(ctx.Compo)
+				ctx.dom.render(ctx.compo)
 
 			case reflect.Uint, reflect.Uint64, reflect.Uint32, reflect.Uint16, reflect.Uint8:
 				value := this.Get("value").String()
@@ -159,12 +157,12 @@ func (n *Node) addEventListener(ctx renderContext, event string, target string) 
 				if err != nil {
 					log.Error("adding event listener failed").
 						T("reason", err).
-						T("component", reflect.TypeOf(ctx.Compo)).
+						T("component", reflect.TypeOf(ctx.compo)).
 						T("target", target)
 					return
 				}
 				recv.SetUint(u)
-				ctx.Dom.Render(ctx.Compo)
+				ctx.dom.render(ctx.compo)
 
 			case reflect.Float64, reflect.Float32:
 				value := this.Get("value").String()
@@ -172,12 +170,12 @@ func (n *Node) addEventListener(ctx renderContext, event string, target string) 
 				if err != nil {
 					log.Error("adding event listener failed").
 						T("reason", err).
-						T("component", reflect.TypeOf(ctx.Compo)).
+						T("component", reflect.TypeOf(ctx.compo)).
 						T("target", target)
 					return
 				}
 				recv.SetFloat(f)
-				ctx.Dom.Render(ctx.Compo)
+				ctx.dom.render(ctx.compo)
 
 			case reflect.Bool:
 				value := this.Get("value").String()
@@ -185,17 +183,17 @@ func (n *Node) addEventListener(ctx renderContext, event string, target string) 
 				if err != nil {
 					log.Error("adding event listener failed").
 						T("reason", err).
-						T("component", reflect.TypeOf(ctx.Compo)).
+						T("component", reflect.TypeOf(ctx.compo)).
 						T("target", target)
 					return
 				}
 				recv.SetBool(b)
-				ctx.Dom.Render(ctx.Compo)
+				ctx.dom.render(ctx.compo)
 
 			default:
 				log.Error("adding event listener failed").
 					T("reason", "unsupported target kind").
-					T("component", reflect.TypeOf(ctx.Compo)).
+					T("component", reflect.TypeOf(ctx.compo)).
 					T("target", target).
 					T("target type", recv.Type())
 			}
@@ -212,8 +210,6 @@ func (n *Node) addEventListener(ctx renderContext, event string, target string) 
 		cb.Release()
 	}
 }
-
-type eventHandler func(js.Value)
 
 var (
 	jsHandlerType = reflect.TypeOf(func(s, e js.Value) {})

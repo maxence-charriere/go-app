@@ -6,7 +6,6 @@ import (
 	"reflect"
 	"syscall/js"
 
-	"github.com/maxence-charriere/app/internal/maestro"
 	"github.com/maxence-charriere/app/pkg/log"
 )
 
@@ -20,19 +19,19 @@ var (
 	NotFoundPath = "/app.notfound"
 
 	ui         = make(chan func(), 256)
-	components = make(maestro.CompoBuilder)
+	components = make(compoBuilder)
 	msgs       = &messenger{}
-	dom        *maestro.Dom
+	page       *dom
 	cursorX    int
 	cursorY    int
 )
 
 func init() {
-	dom = &maestro.Dom{
-		CompoBuilder:        components,
-		CallOnUI:            UI,
-		TrackCursorPosition: trackCursorPosition,
-		ContextMenu:         &ContextMenu{},
+	page = &dom{
+		compoBuilder:        components,
+		callOnUI:            UI,
+		trackCursorPosition: trackCursorPosition,
+		contextMenu:         &ContextMenu{},
 	}
 
 	log.DefaultColor = ""
@@ -48,7 +47,7 @@ func init() {
 // markup.
 func Import(c ...Compo) {
 	for _, compo := range c {
-		if err := components.Import(compo); err != nil {
+		if err := components.imports(compo); err != nil {
 			panic(err)
 		}
 	}
@@ -62,7 +61,7 @@ func Run() {
 			return
 		}
 
-		compo, err := components.New(compoNameFromURL(url))
+		compo, err := components.new(compoNameFromURL(url))
 		if err != nil {
 			log.Error("creating component failed").
 				T("reason", err).
@@ -70,18 +69,12 @@ func Run() {
 			return
 		}
 
-		if err := dom.NewBody(compo); err != nil {
+		if err := page.newBody(compo); err != nil {
 			log.Error("creating page failed").
 				T("reason", err).
 				T("url", url.String()).
 				T("component", reflect.TypeOf(compo))
 			return
-		}
-
-		if nav, ok := compo.(Navigable); ok {
-			UI(func() {
-				nav.OnNavigate(url)
-			})
 		}
 
 		ctx, cancel := context.WithCancel(context.Background())
@@ -108,7 +101,7 @@ func Run() {
 //
 // It panics if called before Run.
 func Render(c Compo) {
-	if err := dom.Render(c); err != nil {
+	if err := page.render(c); err != nil {
 		log.Error("rendering component failed").
 			T("reason", err).
 			T("component", reflect.TypeOf(c))
@@ -135,7 +128,7 @@ func Reload(s, e js.Value) {
 func Bind(msg string, c Compo) *Binding {
 	b, close := msgs.bind(msg, c)
 
-	if err := dom.SetBindingClose(c, close); err != nil {
+	if err := page.setBindingClose(c, close); err != nil {
 		log.Error("creating a binding failed").
 			T("reason", err).
 			T("component", reflect.TypeOf(c)).
@@ -179,7 +172,7 @@ func getURL() (*url.URL, error) {
 	if url.Path == "" || url.Path == "/" {
 		url.Path = DefaultPath
 	}
-	if !components.IsImported(compoNameFromURL(url)) {
+	if !components.isImported(compoNameFromURL(url)) {
 		url.Path = NotFoundPath
 	}
 	return url, nil

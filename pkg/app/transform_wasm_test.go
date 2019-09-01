@@ -1,4 +1,4 @@
-package maestro
+package app
 
 import (
 	"testing"

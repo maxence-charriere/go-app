@@ -1,6 +1,4 @@
-// +build js
-
-package maestro
+package app
 
 import (
 	"bytes"
@@ -15,21 +13,21 @@ import (
 	"golang.org/x/net/html"
 )
 
-// Dom is a document object model that manage components and html nodes.
-type Dom struct {
-	CompoBuilder        CompoBuilder
-	CallOnUI            func(func())
-	TrackCursorPosition func(js.Value)
-	ContextMenu         Compo
+type dom struct {
+	compoBuilder        compoBuilder
+	callOnUI            func(func())
+	trackCursorPosition func(js.Value)
+	root                Compo
+	contextMenu         Compo
 
 	once           sync.Once
-	components     map[Compo]*Node
+	components     map[Compo]*node
 	converters     map[string]interface{}
 	attrTransforms []attrTransform
 }
 
-func (d *Dom) init() {
-	d.components = make(map[Compo]*Node)
+func (d *dom) init() {
+	d.components = make(map[Compo]*node)
 	d.converters = map[string]interface{}{
 		"compo": urlToHTMLTag,
 		"json":  jsonFormat,
@@ -39,11 +37,10 @@ func (d *Dom) init() {
 	d.attrTransforms = []attrTransform{eventTransform}
 }
 
-// NewBody insert the given component into the document body.
-func (d *Dom) NewBody(c Compo) error {
+func (d *dom) newBody(c Compo) error {
 	d.once.Do(d.init)
 
-	if err := d.Render(c); err != nil {
+	if err := d.render(c); err != nil {
 		return err
 	}
 	root, ok := d.components[c]
@@ -51,10 +48,10 @@ func (d *Dom) NewBody(c Compo) error {
 		return errors.New("root not found")
 	}
 
-	if err := d.Render(d.ContextMenu); err != nil {
+	if err := d.render(d.contextMenu); err != nil {
 		return err
 	}
-	ctxMenu, ok := d.components[d.ContextMenu]
+	ctxMenu, ok := d.components[d.contextMenu]
 	if !ok {
 		return errors.New("context menu not found")
 	}
@@ -74,17 +71,16 @@ func (d *Dom) NewBody(c Compo) error {
 	return nil
 }
 
-// Render renders the given component.
-func (d *Dom) Render(c Compo) error {
+func (d *dom) render(c Compo) error {
 	n, ok := d.components[c]
 	if !ok {
-		n = &Node{}
+		n = &node{}
 	}
 
-	return d.render(c, n)
+	return d.renderCompo(c, n)
 }
 
-func (d *Dom) render(c Compo, n *Node) error {
+func (d *dom) renderCompo(c Compo, n *node) error {
 	requireMount := c != n.compo
 
 	rendering, err := d.compoToHTML(c)
@@ -93,24 +89,24 @@ func (d *Dom) render(c Compo, n *Node) error {
 	}
 
 	if err := d.renderNode(renderContext{
-		Tokenizer: html.NewTokenizer(bytes.NewBufferString(rendering)),
-		Compo:     c,
-		Dom:       d,
+		tokenizer: html.NewTokenizer(bytes.NewBufferString(rendering)),
+		compo:     c,
+		dom:       d,
 	}, n); err != nil {
 		return nil
 	}
 
 	if requireMount {
-		n.CompoName = CompoName(c)
+		n.compoName = compoName(c)
 		d.mount(n)
 	}
 
 	return nil
 }
 
-func (d *Dom) compoToHTML(c Compo) (string, error) {
+func (d *dom) compoToHTML(c Compo) (string, error) {
 	var extendedFuncs map[string]interface{}
-	if extended, ok := c.(compoWithExtendedRender); ok {
+	if extended, ok := c.(CompoWithExtendedRender); ok {
 		extendedFuncs = extended.Funcs()
 	}
 
@@ -153,8 +149,8 @@ func (d *Dom) compoToHTML(c Compo) (string, error) {
 	return html, nil
 }
 
-func (d *Dom) renderNode(ctx renderContext, n *Node) error {
-	switch typ := ctx.Tokenizer.Next(); typ {
+func (d *dom) renderNode(ctx renderContext, n *node) error {
+	switch typ := ctx.tokenizer.Next(); typ {
 	case html.TextToken:
 		return d.renderText(ctx, n)
 
@@ -165,7 +161,7 @@ func (d *Dom) renderNode(ctx renderContext, n *Node) error {
 		return d.renderEndTag(ctx, n)
 
 	case html.ErrorToken:
-		err := ctx.Tokenizer.Err()
+		err := ctx.tokenizer.Err()
 		if err == io.EOF {
 			return d.renderEndTag(ctx, n)
 		}
@@ -176,8 +172,8 @@ func (d *Dom) renderNode(ctx renderContext, n *Node) error {
 	}
 }
 
-func (d *Dom) renderText(ctx renderContext, n *Node) error {
-	text := string(ctx.Tokenizer.Text())
+func (d *dom) renderText(ctx renderContext, n *node) error {
+	text := string(ctx.tokenizer.Text())
 	text = strings.TrimSpace(text)
 
 	// Skip empty text.
@@ -189,36 +185,36 @@ func (d *Dom) renderText(ctx renderContext, n *Node) error {
 		n.newText()
 	}
 
-	if n.Name != "" {
+	if n.name != "" {
 		d.dismount(n)
-		n.Name = ""
-		n.Attrs = nil
+		n.name = ""
+		n.attrs = nil
 		n.change("", "")
 	}
 
-	n.compo = ctx.Compo
+	n.compo = ctx.compo
 
-	if n.Text != text {
-		n.Text = text
+	if n.text != text {
+		n.text = text
 		n.updateText(text)
 	}
 
 	return nil
 }
 
-func (d *Dom) renderTag(ctx renderContext, n *Node, typ html.TokenType) error {
-	tagName, hasAttr := ctx.Tokenizer.TagName()
+func (d *dom) renderTag(ctx renderContext, n *node, typ html.TokenType) error {
+	tagName, hasAttr := ctx.tokenizer.TagName()
 	name := string(tagName)
 
-	if ctx.Namespace == "" {
-		ctx.Namespace = namespaces[name]
+	if ctx.namespace == "" {
+		ctx.namespace = namespaces[name]
 	}
 
 	if isVoidElem(name) {
 		return d.renderSelfClosingTag(ctx, n, name, hasAttr)
 	}
 
-	if isCompoNode(name, ctx.Namespace) {
+	if isCompoNode(name, ctx.namespace) {
 		return d.renderCompoNode(ctx, n, name, hasAttr)
 	}
 
@@ -231,57 +227,57 @@ func (d *Dom) renderTag(ctx renderContext, n *Node, typ html.TokenType) error {
 	}
 }
 
-func (d *Dom) renderSelfClosingTag(ctx renderContext, n *Node, name string, hasAttr bool) error {
+func (d *dom) renderSelfClosingTag(ctx renderContext, n *node, name string, hasAttr bool) error {
 	if n.isZero() {
-		n.Name = name
-		n.new(name, ctx.Namespace)
+		n.name = name
+		n.new(name, ctx.namespace)
 	}
 
-	for _, c := range n.Children {
+	for _, c := range n.children {
 		d.dismount(c)
 		c.removeChild(c)
 	}
-	n.Children = nil
+	n.children = nil
 
-	if n.Name != name {
+	if n.name != name {
 		d.dismount(n)
-		n.Name = name
-		n.Text = ""
-		n.Attrs = nil
-		n.change(name, ctx.Namespace)
+		n.name = name
+		n.text = ""
+		n.attrs = nil
+		n.change(name, ctx.namespace)
 	}
 
-	n.compo = ctx.Compo
+	n.compo = ctx.compo
 	d.renderTagAttrs(ctx, n, hasAttr)
 	return nil
 }
 
-func (d *Dom) renderStartTag(ctx renderContext, n *Node, name string, hasAttr bool) error {
+func (d *dom) renderStartTag(ctx renderContext, n *node, name string, hasAttr bool) error {
 	if n.isZero() {
-		n.Name = name
-		n.Text = ""
-		n.new(name, ctx.Namespace)
+		n.name = name
+		n.text = ""
+		n.new(name, ctx.namespace)
 	}
 
-	if n.Name != name {
+	if n.name != name {
 		d.dismount(n)
-		n.Name = name
-		n.Text = ""
-		n.Attrs = nil
-		n.compo = ctx.Compo
-		n.change(name, ctx.Namespace)
+		n.name = name
+		n.text = ""
+		n.attrs = nil
+		n.compo = ctx.compo
+		n.change(name, ctx.namespace)
 	}
 
-	n.compo = ctx.Compo
+	n.compo = ctx.compo
 	d.renderTagAttrs(ctx, n, hasAttr)
 
-	var childrenToDelete []*Node
-	for i, c := range n.Children {
+	var childrenToDelete []*node
+	for i, c := range n.children {
 		d.renderNode(ctx, c)
 
 		if c.isEnd {
-			childrenToDelete = n.Children[i:]
-			n.Children = n.Children[:i]
+			childrenToDelete = n.children[i:]
+			n.children = n.children[:i]
 			break
 		}
 	}
@@ -296,19 +292,19 @@ func (d *Dom) renderStartTag(ctx renderContext, n *Node, name string, hasAttr bo
 	}
 
 	for {
-		var c Node
+		var c node
 		d.renderNode(ctx, &c)
 
 		if c.isEnd {
 			return nil
 		}
 
-		n.Children = append(n.Children, &c)
+		n.children = append(n.children, &c)
 		n.appendChild(&c)
 	}
 }
 
-func (d *Dom) renderTagAttrs(ctx renderContext, n *Node, hasAttr bool) {
+func (d *dom) renderTagAttrs(ctx renderContext, n *node, hasAttr bool) {
 	var attrs map[string]string
 	if hasAttr {
 		attrs = make(map[string]string)
@@ -318,11 +314,11 @@ func (d *Dom) renderTagAttrs(ctx renderContext, n *Node, hasAttr bool) {
 		var tmpK []byte
 		var tmpV []byte
 
-		tmpK, tmpV, hasAttr = ctx.Tokenizer.TagAttr()
+		tmpK, tmpV, hasAttr = ctx.tokenizer.TagAttr()
 		k := string(tmpK)
 		v := string(tmpV)
 
-		switch ctx.Namespace {
+		switch ctx.namespace {
 		case namespaces["svg"]:
 			k = svgAttr(k)
 		}
@@ -334,7 +330,7 @@ func (d *Dom) renderTagAttrs(ctx renderContext, n *Node, hasAttr bool) {
 		attrs[k] = v
 	}
 
-	for k, v := range n.Attrs {
+	for k, v := range n.attrs {
 		if _, ok := attrs[k]; !ok {
 			n.deleteAttr(k)
 
@@ -342,17 +338,17 @@ func (d *Dom) renderTagAttrs(ctx renderContext, n *Node, hasAttr bool) {
 				d.closeEventHandler(ctx, n, k)
 			}
 
-			delete(n.Attrs, k)
+			delete(n.attrs, k)
 
 		}
 	}
 
-	if n.Attrs == nil {
-		n.Attrs = make(map[string]string, len(attrs))
+	if n.attrs == nil {
+		n.attrs = make(map[string]string, len(attrs))
 	}
 
 	for k, v := range attrs {
-		if oldv, ok := n.Attrs[k]; ok && oldv == v {
+		if oldv, ok := n.attrs[k]; ok && oldv == v {
 			continue
 		}
 
@@ -362,11 +358,11 @@ func (d *Dom) renderTagAttrs(ctx renderContext, n *Node, hasAttr bool) {
 		}
 
 		n.upsertAttr(k, v)
-		n.Attrs[k] = v
+		n.attrs[k] = v
 	}
 }
 
-func (d *Dom) setEventHandler(ctx renderContext, n *Node, k, v string) {
+func (d *dom) setEventHandler(ctx renderContext, n *node, k, v string) {
 	k = strings.TrimPrefix(k, "on")
 
 	if n.eventCloses == nil {
@@ -378,7 +374,7 @@ func (d *Dom) setEventHandler(ctx renderContext, n *Node, k, v string) {
 	n.eventCloses[k] = n.addEventListener(ctx, k, v)
 }
 
-func (d *Dom) closeEventHandler(ctx renderContext, n *Node, k string) {
+func (d *dom) closeEventHandler(ctx renderContext, n *node, k string) {
 	close, ok := n.eventCloses[k]
 	if !ok {
 		return
@@ -388,20 +384,20 @@ func (d *Dom) closeEventHandler(ctx renderContext, n *Node, k string) {
 	delete(n.eventCloses, k)
 }
 
-func (d *Dom) renderEndTag(ctx renderContext, n *Node) error {
+func (d *dom) renderEndTag(ctx renderContext, n *node) error {
 	n.isEnd = true
 	return nil
 }
 
-func (d *Dom) renderCompoNode(ctx renderContext, n *Node, name string, hasAttr bool) error {
+func (d *dom) renderCompoNode(ctx renderContext, n *node, name string, hasAttr bool) error {
 	var compo Compo
 	var err error
 
 	if n.isZero() {
-		compo, err = d.CompoBuilder.New(name)
-	} else if name != CompoName(n.compo) {
+		compo, err = d.compoBuilder.new(name)
+	} else if name != compoName(n.compo) {
 		d.dismount(n)
-		compo, err = d.CompoBuilder.New(name)
+		compo, err = d.compoBuilder.new(name)
 	} else {
 		compo = n.compo
 	}
@@ -415,10 +411,10 @@ func (d *Dom) renderCompoNode(ctx renderContext, n *Node, name string, hasAttr b
 		return err
 	}
 
-	return d.render(compo, n)
+	return d.renderCompo(compo, n)
 }
 
-func (d *Dom) getCompoAttrs(ctx renderContext, hasAttr bool) map[string]string {
+func (d *dom) getCompoAttrs(ctx renderContext, hasAttr bool) map[string]string {
 	var attrs map[string]string
 	if hasAttr {
 		attrs = make(map[string]string)
@@ -427,22 +423,22 @@ func (d *Dom) getCompoAttrs(ctx renderContext, hasAttr bool) map[string]string {
 	for hasAttr {
 		var k []byte
 		var v []byte
-		k, v, hasAttr = ctx.Tokenizer.TagAttr()
+		k, v, hasAttr = ctx.tokenizer.TagAttr()
 		attrs[string(k)] = string(v)
 	}
 	return attrs
 }
 
-func (d *Dom) mount(n *Node) {
+func (d *dom) mount(n *node) {
 	d.components[n.compo] = n
 
-	if m, ok := n.compo.(mounter); ok {
+	if m, ok := n.compo.(Mounter); ok {
 		m.OnMount()
 	}
 }
 
-func (d *Dom) dismount(n *Node) {
-	for _, c := range n.Children {
+func (d *dom) dismount(n *node) {
+	for _, c := range n.children {
 		d.dismount(c)
 	}
 
@@ -456,21 +452,21 @@ func (d *Dom) dismount(n *Node) {
 	}
 	n.bindingCloses = nil
 
-	n.Attrs = nil
+	n.attrs = nil
 
 	if !n.isCompoRoot() {
 		return
 	}
 
-	n.CompoName = ""
+	n.compoName = ""
 	d.components[n.compo] = nil
 
-	if d, ok := n.compo.(dismounter); ok {
+	if d, ok := n.compo.(Dismounter); ok {
 		d.OnDismount()
 	}
 }
 
-func (d *Dom) SetBindingClose(c Compo, close func()) error {
+func (d *dom) setBindingClose(c Compo, close func()) error {
 	n, ok := d.components[c]
 	if !ok {
 		return errors.New("root not found")
@@ -481,8 +477,8 @@ func (d *Dom) SetBindingClose(c Compo, close func()) error {
 }
 
 type renderContext struct {
-	Tokenizer *html.Tokenizer
-	Compo     Compo
-	Namespace string
-	Dom       *Dom
+	tokenizer *html.Tokenizer
+	compo     Compo
+	namespace string
+	dom       *dom
 }
