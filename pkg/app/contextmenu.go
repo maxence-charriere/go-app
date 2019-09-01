@@ -3,7 +3,6 @@
 package app
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 	"syscall/js"
@@ -91,7 +90,6 @@ func (m *ContextMenu) Show() {
 }
 
 func (m *ContextMenu) Hide(s, e js.Value) {
-	fmt.Println("gonna hide")
 	bg := js.Global().
 		Get("document").
 		Call("getElementById", "App_ContextMenuBackground")

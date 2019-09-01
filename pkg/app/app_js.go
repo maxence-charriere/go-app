@@ -83,38 +83,51 @@ func render(c Compo) error {
 }
 
 func run() error {
-	url, err := getURL()
-	if err != nil {
-		return err
-	}
-
-	compo, err := components.New(compoNameFromURL(url))
-	if err != nil {
-		return err
-	}
-
-	if err := dom.NewBody(compo); err != nil {
-		return err
-	}
-
-	if nav, ok := compo.(Navigable); ok {
-		UI(func() {
-			nav.OnNavigate(url)
-		})
-	}
-
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	for {
-		select {
-		case f := <-ui:
-			f()
-
-		case <-ctx.Done():
-			return nil
+	go func() {
+		url, err := getURL()
+		if err != nil {
+			return
 		}
-	}
+
+		compo, err := components.New(compoNameFromURL(url))
+		if err != nil {
+			log.Error("creating component failed").
+				T("reason", err).
+				T("url", url.String())
+			return
+		}
+
+		if err := dom.NewBody(compo); err != nil {
+			log.Error("creating page failed").
+				T("reason", err).
+				T("url", url.String()).
+				T("component", reflect.TypeOf(compo))
+			return
+		}
+
+		if nav, ok := compo.(Navigable); ok {
+			UI(func() {
+				nav.OnNavigate(url)
+			})
+		}
+
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		for {
+			select {
+			case <-ctx.Done():
+				return
+
+			case f := <-ui:
+				f()
+			}
+		}
+	}()
+
+	select {}
+	log.Info("wasm exit")
+	return nil
 }
 
 func getURL() (*url.URL, error) {
