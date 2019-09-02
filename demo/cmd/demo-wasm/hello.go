@@ -32,6 +32,8 @@ func (h *Hello) Render() string {
 		{{end}}!
 	</h1>
 	<input value="{{.Name}}" placeholder="What is your name?" onchange="Name" autofocus>
+	<a href="dasgjh">Not Found</a>
+	<a href="#inline">Inline</a>
 </div>
 	`
 }

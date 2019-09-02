@@ -17,12 +17,13 @@ type dom struct {
 	compoBuilder        compoBuilder
 	callOnUI            func(func())
 	trackCursorPosition func(js.Value)
-	root                Compo
 	contextMenu         Compo
 
 	once           sync.Once
 	components     map[Compo]*node
 	converters     map[string]interface{}
+	root           *node
+	ctxMenuRoot    *node
 	attrTransforms []attrTransform
 }
 
@@ -47,6 +48,7 @@ func (d *dom) newBody(c Compo) error {
 	if !ok {
 		return errors.New("root not found")
 	}
+	d.root = root
 
 	if err := d.render(d.contextMenu); err != nil {
 		return err
@@ -55,6 +57,7 @@ func (d *dom) newBody(c Compo) error {
 	if !ok {
 		return errors.New("context menu not found")
 	}
+	d.ctxMenuRoot = ctxMenu
 
 	body := js.Global().Get("document").Get("body")
 
@@ -474,6 +477,16 @@ func (d *dom) setBindingClose(c Compo, close func()) error {
 
 	n.bindingCloses = append(n.bindingCloses, close)
 	return nil
+}
+
+func (d *dom) clean() {
+	for c, n := range d.components {
+		d.dismount(n)
+		delete(d.components, c)
+	}
+	d.root = nil
+	d.ctxMenuRoot = nil
+
 }
 
 type renderContext struct {
