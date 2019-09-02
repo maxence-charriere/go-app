@@ -30,7 +30,7 @@ cafe culture and designer boutiques along the Rue du Faubourg Saint-Honoré.
 			`,
 		},
 		"sf": city{
-			Name:  "San Francisco",
+			Name:  "SF",
 			Image: "sf.jpg",
 			Description: `
 San Francisco, officially City and County of San Francisco and colloquially

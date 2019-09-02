@@ -1,14 +1,12 @@
 package app
 
 func init() {
-	Import(&NotFound{})
+	Import(&notFound{})
 }
 
-// NotFound is a component that displays a not found page.
-type NotFound ZeroCompo
+type notFound ZeroCompo
 
-// Render returns the markup that describes the page.
-func (n *NotFound) Render() string {
+func (n *notFound) Render() string {
 	return `
 <div style="
 		display: flex;

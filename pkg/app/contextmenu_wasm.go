@@ -7,21 +7,20 @@ import (
 )
 
 func init() {
-	Import(&ContextMenu{})
+	Import(&contextMenu{})
 }
 
-// ContextMenu is a component that displays a context menu.
-type ContextMenu struct {
+type contextMenu struct {
 	Items   []MenuItem
 	Visible bool
 }
 
-func (m *ContextMenu) OnMount() {
+func (m *contextMenu) OnMount() {
 	Bind("__app.NewContextMenu", m).Do(m.new)
 }
 
 // Render returns the markup that describes the context menu.
-func (m *ContextMenu) Render() string {
+func (m *contextMenu) Render() string {
 	return `
 <div id="App_ContextMenuBackground" onclick="Hide">
 	<div id="App_ContextMenu">
@@ -42,7 +41,7 @@ func (m *ContextMenu) Render() string {
 	`
 }
 
-func (m *ContextMenu) new(items []MenuItem) {
+func (m *contextMenu) new(items []MenuItem) {
 	for i := range items {
 		if items[i].OnClick == nil {
 			items[i].Disabled = true
@@ -58,7 +57,7 @@ func (m *ContextMenu) new(items []MenuItem) {
 	UI(m.Show)
 }
 
-func (m *ContextMenu) Show() {
+func (m *contextMenu) Show() {
 	bg := js.Global().
 		Get("document").
 		Call("getElementById", "App_ContextMenuBackground")
@@ -87,7 +86,7 @@ func (m *ContextMenu) Show() {
 	menu.Get("style").Set("top", strconv.Itoa(y)+"px")
 }
 
-func (m *ContextMenu) Hide(s, e js.Value) {
+func (m *contextMenu) Hide(s, e js.Value) {
 	bg := js.Global().
 		Get("document").
 		Call("getElementById", "App_ContextMenuBackground")

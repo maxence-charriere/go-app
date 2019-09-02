@@ -31,7 +31,7 @@ func init() {
 		compoBuilder:        components,
 		callOnUI:            UI,
 		trackCursorPosition: trackCursorPosition,
-		contextMenu:         &ContextMenu{},
+		contextMenu:         &contextMenu{},
 	}
 
 	log.DefaultColor = ""
