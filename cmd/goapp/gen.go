@@ -24,6 +24,8 @@ func main() {
 		Filename string
 	}{
 		{Var: "goappJS", Filename: "goapp.js"},
+		{Var: "mainServer", Filename: "main-server.go.tmpl"},
+		{Var: "mainWasm", Filename: "main-wasm.go.tmpl"},
 	}
 
 	for _, g := range gen {
@@ -33,7 +35,6 @@ func main() {
 		}
 
 		fmt.Fprintln(f)
-		fmt.Fprintln(f)
-		fmt.Fprintf(f, "const %s = `%s`", g.Var, b)
+		fmt.Fprintf(f, "const %s = %q", g.Var, b)
 	}
 }

@@ -10,7 +10,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
-	"text/template"
 
 	"github.com/maxence-charriere/app/internal/http"
 	"github.com/pkg/errors"
@@ -210,26 +209,13 @@ func generateServiceWorker(rootDir, etag string) error {
 		return errors.Wrap(err, "getting caching routes failed")
 	}
 
-	f, err := os.Create(filename)
-	if err != nil {
-		return errors.Wrapf(err, "creating %s failed", filename)
-	}
-	defer f.Close()
-
-	tmpl, err := template.New(filename).Parse(goappJS)
-	if err != nil {
-		return errors.Wrapf(err, "generating %s failed", filename)
-	}
-	if err := tmpl.Execute(f, struct {
+	return generateTemplate(filename, goappJS, struct {
 		ETag  string
 		Paths []string
 	}{
 		ETag:  etag,
 		Paths: cachePaths,
-	}); err != nil {
-		return errors.Wrapf(err, "generating %s failed", filename)
-	}
-	return nil
+	})
 }
 
 func generateEtag(rootDir string, etag string) error {

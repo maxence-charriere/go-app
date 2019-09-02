@@ -36,19 +36,22 @@ func initProject(ctx context.Context, args []string) {
 	}
 
 	log("initializing project layout")
-	if err = initProjectDirectories(rootDir); err != nil {
+	if err = initProjectLayout(rootDir); err != nil {
 		fail("%s", err)
 	}
 
 	success("initialization succeeded")
 }
 
-func initProjectDirectories(rootDir string) error {
+func initProjectLayout(rootDir string) error {
 	pkgName := filepath.Base(rootDir)
 
+	serverdir := filepath.Join(rootDir, "cmd", pkgName+"-server")
+	wasmdir := filepath.Join(rootDir, "cmd", pkgName+"-wasm")
+
 	dirs := []string{
-		filepath.Join(rootDir, "cmd", pkgName+"-server"),
-		filepath.Join(rootDir, "cmd", pkgName+"-wasm"),
+		serverdir,
+		wasmdir,
 		filepath.Join(rootDir, "web"),
 	}
 
@@ -58,5 +61,20 @@ func initProjectDirectories(rootDir string) error {
 		}
 	}
 
-	return nil
+	serverMainName := filepath.Join(serverdir, "main.go")
+	wasmMainName := filepath.Join(wasmdir, "main.go")
+
+	if err := initMain(serverMainName, mainServer); err != nil {
+		return err
+	}
+	return initMain(wasmMainName, mainWasm)
+}
+
+func initMain(filename, tmpl string) error {
+	if _, err := os.Stat(filename); err == nil {
+		return nil
+	}
+
+	log("generating %s", filename)
+	return generateTemplate(filename, tmpl, nil)
 }
