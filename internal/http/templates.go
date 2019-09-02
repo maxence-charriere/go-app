@@ -185,7 +185,7 @@ button {
     padding: 6px 0;
     border-radius: 6px;
     border: solid 1px rgba(255, 255, 255, 0.1);
-    background: #21252a;
+    background-color: rgba(40, 38, 37, 0.90);
     color: currentColor;
     -webkit-box-shadow: -1px 12px 38px 0px rgba(0, 0, 0, 0.6);
     -moz-box-shadow: -1px 12px 38px 0px rgba(0, 0, 0, 0.6);
@@ -277,12 +277,20 @@ button {
     }
 
     #App_ContextMenu {
-        background-color: #f8f8f8;
+        background-color: rgba(221, 221, 221, 0.90);
         border: solid 1px rgba(0, 0, 0, 0.2);
+    }
+
+    .App_MenuItem {
+        color: black;
     }
 
     .App_MenuItemSeparator {
         border-top: solid 1px rgba(0, 0, 0, 0.2);
+    }
+
+    .App_Loader {
+        color: black;
     }
 }`
 
@@ -334,6 +342,6 @@ WebAssembly
 
     const loadingLabel = document.getElementById('App_LoadingLabel')
     loadingLabel.innerText = err
-    console.error('wasm run failed: ' + err)
+    console.error('loading wasm failed: ' + err)
   })
 `
