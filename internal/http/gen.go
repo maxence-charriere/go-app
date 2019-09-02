@@ -35,7 +35,6 @@ func main() {
 		}
 
 		fmt.Fprintln(f)
-		fmt.Fprintln(f)
-		fmt.Fprintf(f, "const %s = `%s`", g.Var, b)
+		fmt.Fprintf(f, "const %s = %q", g.Var, b)
 	}
 }

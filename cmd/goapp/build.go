@@ -153,25 +153,8 @@ func buildServer(ctx context.Context, c buildConfig) error {
 }
 
 func installWasmExec(rootDir string) error {
-	wasmExec := filepath.Join(runtime.GOROOT(), "misc", "wasm", "wasm_exec.js")
-	webWasmExec := filepath.Join(rootDir, "web", filepath.Base(wasmExec))
-
-	src, err := os.Open(wasmExec)
-	if err != nil {
-		return errors.Wrapf(err, "opening %s failed", wasmExec)
-	}
-	defer src.Close()
-
-	dst, err := os.Create(webWasmExec)
-	if err != nil {
-		return errors.Wrapf(err, "creating %s failed", webWasmExec)
-	}
-	defer src.Close()
-
-	if _, err := io.Copy(dst, src); err != nil {
-		return errors.Wrapf(err, "copying %s failed", wasmExec)
-	}
-	return nil
+	webWasmExec := filepath.Join(rootDir, "web", "wasm_exec.js")
+	return generateTemplate(webWasmExec, wasmExecJS, nil)
 }
 
 func generateServiceWorker(rootDir, etag string) error {

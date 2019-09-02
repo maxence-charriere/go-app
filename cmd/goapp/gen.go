@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
+	"runtime"
 )
 
 func main() {
@@ -24,6 +26,12 @@ func main() {
 		Filename string
 	}{
 		{Var: "goappJS", Filename: "goapp.js"},
+		{Var: "wasmExecJS", Filename: filepath.Join(
+			runtime.GOROOT(),
+			"misc",
+			"wasm",
+			"wasm_exec.js",
+		)},
 		{Var: "mainServer", Filename: "main-server.go.tmpl"},
 		{Var: "mainWasm", Filename: "main-wasm.go.tmpl"},
 	}
