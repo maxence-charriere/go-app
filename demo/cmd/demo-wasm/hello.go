@@ -40,9 +40,12 @@ func (h *Hello) Render() string {
 func (h *Hello) OnMenuClick(s, e js.Value) {
 	app.NewContextMenu(
 		app.MenuItem{
-			Label:   "Reload",
-			Keys:    "cmdorctrl+r",
-			OnClick: app.Reload},
+			Label: "Reload",
+			Keys:  "cmdorctrl+r",
+			OnClick: func(s, e js.Value) {
+				app.Reload()
+			},
+		},
 		app.MenuItem{Separator: true},
 		app.MenuItem{
 			Label: "Go to repository",

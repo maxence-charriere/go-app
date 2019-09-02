@@ -10,20 +10,9 @@ import (
 )
 
 var (
-	// DefaultPath is the path to the component to be  loaded when no path is
-	// specified.
-	DefaultPath string
-
-	// NotFoundPath is the path to the component to be  loaded when an non
-	// imported component is requested.
-	NotFoundPath = "/app.notfound"
-
-	ui         = make(chan func(), 256)
-	components = make(compoBuilder)
-	msgs       = &messenger{}
-	page       *dom
-	cursorX    int
-	cursorY    int
+	page    *dom
+	cursorX int
+	cursorY int
 )
 
 func init() {
@@ -42,20 +31,7 @@ func init() {
 	log.CurrentLevel = log.DebugLevel
 }
 
-// Import imports the given components into the app.
-// Components must be imported in order the be used by the app package.
-// This allows components to be created dynamically when they are found into
-// markup.
-func Import(c ...Compo) {
-	for _, compo := range c {
-		if err := components.imports(compo); err != nil {
-			panic(err)
-		}
-	}
-}
-
-// Run runs the app with the loaded URL.
-func Run() {
+func run() {
 	go func() {
 		defer page.clean()
 
@@ -96,34 +72,19 @@ func Run() {
 	return
 }
 
-// Render renders the given component. It should be called whenever a component
-// is modified. Render is always excecuted on the UI goroutine.
-//
-// It panics if called before Run.
-func Render(c Compo) {
-	UI(func() {
-		if err := page.render(c); err != nil {
-			log.Error("rendering component failed").
-				T("reason", err).
-				T("component", reflect.TypeOf(c))
-		}
-	})
+func render(c Compo) {
+	if err := page.render(c); err != nil {
+		log.Error("rendering component failed").
+			T("reason", err).
+			T("component", reflect.TypeOf(c))
+	}
 }
 
-// UI calls a function on the UI goroutine.
-func UI(f func()) {
-	ui <- f
+func reload() {
+	js.Global().Get("location").Call("reload")
 }
 
-// Reload reloads the current page.
-func Reload(s, e js.Value) {
-	UI(func() {
-		js.Global().Get("location").Call("reload")
-	})
-}
-
-// Bind creates a binding between a message and the given component.
-func Bind(msg string, c Compo) *Binding {
+func bind(msg string, c Compo) *Binding {
 	b, close := msgs.bind(msg, c)
 
 	if err := page.setBindingClose(c, close); err != nil {
@@ -135,11 +96,6 @@ func Bind(msg string, c Compo) *Binding {
 	}
 
 	return b
-}
-
-// Emit emits a message that triggers the associated bindings.
-func Emit(msg string, args ...interface{}) {
-	go msgs.emit(msg, args...)
 }
 
 // NewContextMenu displays a context menu filled with the given menu items.
