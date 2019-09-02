@@ -55,3 +55,42 @@ input:focus {
 .Menu:hover {
     color: deepskyblue;
 }
+
+.Nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+}
+
+.Nav main {
+    max-width: 720px;
+    text-align: justify;
+}
+
+.Nav h1 {
+    text-align: center;
+}
+
+.Links {
+    text-align: center;
+}
+
+.Links a {
+    display: inline-block;
+    padding: 8px;
+    margin: 3px;
+    border: 1px solid currentColor;
+    border-radius: 6px;
+    min-width: 100px;
+    text-align: center;
+    text-transform: lowercase;
+}

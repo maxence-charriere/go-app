@@ -39,6 +39,7 @@ func init() {
 	log.ErrorColor = ""
 	log.WarnColor = ""
 	log.DebugColor = ""
+	log.CurrentLevel = log.DebugLevel
 }
 
 // Import imports the given components into the app.
@@ -58,6 +59,14 @@ func Run() {
 	go func() {
 		defer page.clean()
 
+		overrideAnchorClick := js.FuncOf(overrideAnchorClick)
+		defer overrideAnchorClick.Release()
+		js.Global().Set("onclick", overrideAnchorClick)
+
+		onpopstate := js.FuncOf(onPopState)
+		defer onpopstate.Release()
+		js.Global().Set("onpopstate", onpopstate)
+
 		url := getURL()
 
 		if err := renderPage(url); err != nil {
@@ -69,14 +78,6 @@ func Run() {
 
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
-
-		overrideAnchorClick := js.FuncOf(overrideAnchorClick)
-		defer overrideAnchorClick.Release()
-		js.Global().Set("onclick", overrideAnchorClick)
-
-		onpopstate := js.FuncOf(onPopState)
-		defer onpopstate.Release()
-		js.Global().Set("onpopstate", onpopstate)
 
 		for {
 			select {
@@ -100,11 +101,13 @@ func Run() {
 //
 // It panics if called before Run.
 func Render(c Compo) {
-	if err := page.render(c); err != nil {
-		log.Error("rendering component failed").
-			T("reason", err).
-			T("component", reflect.TypeOf(c))
-	}
+	UI(func() {
+		if err := page.render(c); err != nil {
+			log.Error("rendering component failed").
+				T("reason", err).
+				T("component", reflect.TypeOf(c))
+		}
+	})
 }
 
 // UI calls a function on the UI goroutine.
@@ -114,8 +117,9 @@ func UI(f func()) {
 
 // Reload reloads the current page.
 func Reload(s, e js.Value) {
-	js.Global().Get("location").Call("reload")
-
+	UI(func() {
+		js.Global().Get("location").Call("reload")
+	})
 }
 
 // Bind creates a binding between a message and the given component.
@@ -173,17 +177,16 @@ func renderPage(url *url.URL) error {
 	if url.Path == "" || url.Path == "/" {
 		url.Path = DefaultPath
 	}
-
 	if !components.isImported(compoNameFromURL(url)) {
 		url.Path = NotFoundPath
 	}
 
 	compoName := compoNameFromURL(url)
-
 	compo, err := components.new(compoName)
 	if err != nil {
 		return err
 	}
+	mapCompoFieldFromURLQuery(compo, url.Query())
 
 	return page.newBody(compo)
 }
@@ -204,10 +207,14 @@ func trackCursorPosition(e js.Value) {
 
 // Navigate navigates to the given URL.
 func Navigate(rawurl string) {
-	navigate(rawurl, true)
+	UI(func() {
+		navigate(rawurl, true)
+	})
 }
 
 func navigate(rawurl string, updateHistory bool) {
+	currentURL := getURL()
+
 	u, err := url.Parse(rawurl)
 	if err != nil {
 		log.Error("navigating failed").
@@ -215,11 +222,16 @@ func navigate(rawurl string, updateHistory bool) {
 			T("url", rawurl)
 		return
 	}
-	currentURL := getURL()
+
+	if u.Host == "" && u.Scheme == "" {
+		u.Scheme = currentURL.Scheme
+		u.Host = currentURL.Host
+	}
 
 	fragmentNav := u.Host == currentURL.Host &&
 		u.Path == currentURL.Path &&
-		u.Fragment != currentURL.Fragment
+		u.Fragment != currentURL.Fragment &&
+		u.Fragment != ""
 
 	otherHostNav := u.Host != currentURL.Host
 
@@ -260,7 +272,9 @@ func overrideAnchorClick(this js.Value, args []js.Value) interface{} {
 }
 
 func onPopState(this js.Value, args []js.Value) interface{} {
-	rawurl := js.Global().Get("location").Get("href").String()
-	navigate(rawurl, false)
+	UI(func() {
+		rawurl := js.Global().Get("location").Get("href").String()
+		navigate(rawurl, false)
+	})
 	return nil
 }

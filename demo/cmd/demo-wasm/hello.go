@@ -32,8 +32,6 @@ func (h *Hello) Render() string {
 		{{end}}!
 	</h1>
 	<input value="{{.Name}}" placeholder="What is your name?" onchange="Name" autofocus>
-	<a href="dasgjh">Not Found</a>
-	<a href="#inline">Inline</a>
 </div>
 	`
 }
@@ -55,6 +53,12 @@ func (h *Hello) OnMenuClick(s, e js.Value) {
 			Label: "Source code",
 			OnClick: func(s, e js.Value) {
 				app.Navigate("https://github.com/maxence-charriere/app/blob/master/demo/cmd/demo-wasm/hello.go")
+			}},
+		app.MenuItem{Separator: true},
+		app.MenuItem{
+			Label: "Navigation example",
+			OnClick: func(s, e js.Value) {
+				app.Navigate("nav")
 			}},
 	)
 }

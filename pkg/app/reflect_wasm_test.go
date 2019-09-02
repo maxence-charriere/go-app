@@ -1,6 +1,7 @@
 package app
 
 import (
+	"net/url"
 	"reflect"
 	"testing"
 
@@ -320,4 +321,17 @@ func TestMapComponentFields(t *testing.T) {
 			assert.Equal(t, test.expected, c)
 		})
 	}
+}
+
+func TestMapCompoFieldFromURLQuery(t *testing.T) {
+	u, err := url.Parse("https://localhost/compo?string=JonhyMaxoo&Bool=true&int=42")
+	require.NoError(t, err)
+
+	c := &CompoWithFields{}
+
+	err = mapCompoFieldFromURLQuery(c, u.Query())
+	require.NoError(t, err)
+	require.Equal(t, "JonhyMaxoo", c.String)
+	require.Equal(t, 42, c.Int)
+	require.True(t, c.Bool)
 }

@@ -3,6 +3,7 @@ package app
 import (
 	"encoding/json"
 	"errors"
+	"net/url"
 	"reflect"
 	"strconv"
 	"strings"
@@ -215,4 +216,14 @@ func mapCompoField(field reflect.Value, value string) error {
 		}
 	}
 	return nil
+}
+
+func mapCompoFieldFromURLQuery(c Compo, query url.Values) error {
+	attrs := make(map[string]string, len(query))
+	for k := range query {
+		v := query.Get(k)
+		k = strings.ToLower(k)
+		attrs[k] = v
+	}
+	return mapCompoFields(c, attrs)
 }
