@@ -10,7 +10,8 @@ import (
 	"golang.org/x/net/html/atom"
 )
 
-// JSHandler represents a function that can
+// CompoHandler represents a function that can be associated to an html node
+// event.
 type CompoHandler func(src, event js.Value)
 
 type node struct {
