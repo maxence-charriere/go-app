@@ -15,11 +15,13 @@ type CompoHandler func(src, event js.Value)
 
 type node struct {
 	js.Value
-	name          string
-	text          string
-	attrs         map[string]string
-	children      []*node
-	compoName     string
+
+	Name      string
+	Text      string
+	CompoName string
+	Attrs     map[string]string
+	Children  []*node
+
 	compo         Compo
 	eventCloses   map[string]func()
 	bindingCloses []func()
@@ -27,11 +29,11 @@ type node struct {
 }
 
 func (n *node) isZero() bool {
-	return n.name == "" &&
-		n.text == "" &&
-		n.attrs == nil &&
-		n.children == nil &&
-		n.compoName == "" &&
+	return n.Name == "" &&
+		n.Text == "" &&
+		n.Attrs == nil &&
+		n.Children == nil &&
+		n.CompoName == "" &&
 		n.compo == nil &&
 		n.eventCloses == nil &&
 		n.bindingCloses == nil &&
@@ -39,7 +41,7 @@ func (n *node) isZero() bool {
 }
 
 func (n *node) isCompoRoot() bool {
-	return n.compoName != ""
+	return n.CompoName != ""
 }
 
 func (n *node) new(tag, namespace string) {

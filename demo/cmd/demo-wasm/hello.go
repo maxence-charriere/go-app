@@ -59,9 +59,15 @@ func (h *Hello) OnMenuClick(s, e js.Value) {
 			}},
 		app.MenuItem{Separator: true},
 		app.MenuItem{
-			Label: "Navigation example",
+			Label: "City example",
 			OnClick: func(s, e js.Value) {
-				app.Navigate("nav")
+				app.Navigate("city")
 			}},
 	)
+}
+
+type Nav app.ZeroCompo
+
+func (n *Nav) Render() string {
+	return `<p>nav</p>`
 }

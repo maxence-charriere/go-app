@@ -79,7 +79,6 @@ func (d *dom) render(c Compo) error {
 	if !ok {
 		n = &node{}
 	}
-
 	return d.renderCompo(c, n)
 }
 
@@ -100,7 +99,7 @@ func (d *dom) renderCompo(c Compo, n *node) error {
 	}
 
 	if requireMount {
-		n.compoName = compoName(c)
+		n.CompoName = compoName(c)
 		d.mount(n)
 	}
 
@@ -188,17 +187,17 @@ func (d *dom) renderText(ctx renderContext, n *node) error {
 		n.newText()
 	}
 
-	if n.name != "" {
+	if n.Name != "" {
 		d.dismount(n)
-		n.name = ""
-		n.attrs = nil
+		n.Name = ""
+		n.Attrs = nil
 		n.change("", "")
 	}
 
 	n.compo = ctx.compo
 
-	if n.text != text {
-		n.text = text
+	if n.Text != text {
+		n.Text = text
 		n.updateText(text)
 	}
 
@@ -232,21 +231,21 @@ func (d *dom) renderTag(ctx renderContext, n *node, typ html.TokenType) error {
 
 func (d *dom) renderSelfClosingTag(ctx renderContext, n *node, name string, hasAttr bool) error {
 	if n.isZero() {
-		n.name = name
+		n.Name = name
 		n.new(name, ctx.namespace)
 	}
 
-	for _, c := range n.children {
+	for _, c := range n.Children {
 		d.dismount(c)
 		c.removeChild(c)
 	}
-	n.children = nil
+	n.Children = nil
 
-	if n.name != name {
+	if n.Name != name {
 		d.dismount(n)
-		n.name = name
-		n.text = ""
-		n.attrs = nil
+		n.Name = name
+		n.Text = ""
+		n.Attrs = nil
 		n.change(name, ctx.namespace)
 	}
 
@@ -257,16 +256,16 @@ func (d *dom) renderSelfClosingTag(ctx renderContext, n *node, name string, hasA
 
 func (d *dom) renderStartTag(ctx renderContext, n *node, name string, hasAttr bool) error {
 	if n.isZero() {
-		n.name = name
-		n.text = ""
+		n.Name = name
+		n.Text = ""
 		n.new(name, ctx.namespace)
 	}
 
-	if n.name != name {
+	if n.Name != name {
 		d.dismount(n)
-		n.name = name
-		n.text = ""
-		n.attrs = nil
+		n.Name = name
+		n.Text = ""
+		n.Attrs = nil
 		n.compo = ctx.compo
 		n.change(name, ctx.namespace)
 	}
@@ -275,12 +274,12 @@ func (d *dom) renderStartTag(ctx renderContext, n *node, name string, hasAttr bo
 	d.renderTagAttrs(ctx, n, hasAttr)
 
 	var childrenToDelete []*node
-	for i, c := range n.children {
+	for i, c := range n.Children {
 		d.renderNode(ctx, c)
 
 		if c.isEnd {
-			childrenToDelete = n.children[i:]
-			n.children = n.children[:i]
+			childrenToDelete = n.Children[i:]
+			n.Children = n.Children[:i]
 			break
 		}
 	}
@@ -302,7 +301,7 @@ func (d *dom) renderStartTag(ctx renderContext, n *node, name string, hasAttr bo
 			return nil
 		}
 
-		n.children = append(n.children, &c)
+		n.Children = append(n.Children, &c)
 		n.appendChild(&c)
 	}
 }
@@ -333,7 +332,7 @@ func (d *dom) renderTagAttrs(ctx renderContext, n *node, hasAttr bool) {
 		attrs[k] = v
 	}
 
-	for k, v := range n.attrs {
+	for k, v := range n.Attrs {
 		if _, ok := attrs[k]; !ok {
 			n.deleteAttr(k)
 
@@ -341,17 +340,17 @@ func (d *dom) renderTagAttrs(ctx renderContext, n *node, hasAttr bool) {
 				d.closeEventHandler(ctx, n, k)
 			}
 
-			delete(n.attrs, k)
+			delete(n.Attrs, k)
 
 		}
 	}
 
-	if n.attrs == nil {
-		n.attrs = make(map[string]string, len(attrs))
+	if n.Attrs == nil {
+		n.Attrs = make(map[string]string, len(attrs))
 	}
 
 	for k, v := range attrs {
-		if oldv, ok := n.attrs[k]; ok && oldv == v {
+		if oldv, ok := n.Attrs[k]; ok && oldv == v {
 			continue
 		}
 
@@ -361,7 +360,7 @@ func (d *dom) renderTagAttrs(ctx renderContext, n *node, hasAttr bool) {
 		}
 
 		n.upsertAttr(k, v)
-		n.attrs[k] = v
+		n.Attrs[k] = v
 	}
 }
 
@@ -441,7 +440,7 @@ func (d *dom) mount(n *node) {
 }
 
 func (d *dom) dismount(n *node) {
-	for _, c := range n.children {
+	for _, c := range n.Children {
 		d.dismount(c)
 	}
 
@@ -455,14 +454,14 @@ func (d *dom) dismount(n *node) {
 	}
 	n.bindingCloses = nil
 
-	n.attrs = nil
+	n.Attrs = nil
 
 	if !n.isCompoRoot() {
 		return
 	}
 
-	n.compoName = ""
-	d.components[n.compo] = nil
+	n.CompoName = ""
+	delete(d.components, n.compo)
 
 	if d, ok := n.compo.(Dismounter); ok {
 		d.OnDismount()
@@ -480,9 +479,8 @@ func (d *dom) setBindingClose(c Compo, close func()) error {
 }
 
 func (d *dom) clean() {
-	for c, n := range d.components {
+	for _, n := range d.components {
 		d.dismount(n)
-		delete(d.components, c)
 	}
 	d.root = nil
 	d.ctxMenuRoot = nil

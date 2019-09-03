@@ -18,7 +18,7 @@ func main() {
 	//  foo.Bar => foo.bar
 	app.Import(
 		&Hello{},
-		&Nav{},
+		&City{},
 	)
 
 	// Defines the component to load when an URL without path is loaded.

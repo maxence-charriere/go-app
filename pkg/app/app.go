@@ -1,5 +1,11 @@
 package app
 
+import (
+	"reflect"
+
+	"github.com/maxence-charriere/app/pkg/log"
+)
+
 var (
 	// DefaultPath is the path to the component to be  loaded when no path is
 	// specified.
@@ -21,7 +27,12 @@ var (
 func Import(c ...Compo) {
 	for _, compo := range c {
 		if err := components.imports(compo); err != nil {
-			panic(err)
+			log.Error("importing component failed").
+				T("reason", err).
+				T("html tag", compoName(compo)).
+				T("component type", reflect.TypeOf(compo)).
+				T("fix", "rename component").
+				Panic()
 		}
 	}
 }

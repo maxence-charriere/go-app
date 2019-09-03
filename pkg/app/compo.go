@@ -5,6 +5,8 @@ import (
 	"net/url"
 	"reflect"
 	"strings"
+
+	"golang.org/x/net/html/atom"
 )
 
 // Compo is the interface that describes a component.
@@ -63,7 +65,12 @@ func (b compoBuilder) imports(c Compo) error {
 		return errors.New("component is based on a struct without field. use ZeroCompo instead of struct{}")
 	}
 
-	b[compoName(c)] = v.Type()
+	name := compoName(c)
+	if atom.Lookup([]byte(name)) != 0 {
+		return errors.New("component have an html tag name")
+	}
+
+	b[name] = v.Type()
 	return nil
 }
 

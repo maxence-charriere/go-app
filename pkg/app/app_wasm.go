@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"encoding/json"
 	"net/url"
 	"reflect"
 	"syscall/js"
@@ -233,4 +234,9 @@ func onPopState(this js.Value, args []js.Value) interface{} {
 		navigate(rawurl, false)
 	})
 	return nil
+}
+
+func pretty(v interface{}) string {
+	d, _ := json.MarshalIndent(v, "", "    ")
+	return string(d)
 }

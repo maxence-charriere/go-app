@@ -8,15 +8,15 @@ import (
 	"github.com/maxence-charriere/app/pkg/app"
 )
 
-// Nav is a component that shows how navigation works.
-type Nav struct {
+// City is a component that shows how navigation works.
+type City struct {
 	City    string
 	Current city
 	Store   map[string]city
 }
 
 // OnMount initializes the component when it is mounted.
-func (n *Nav) OnMount() {
+func (n *City) OnMount() {
 	n.Store = map[string]city{
 		"paris": city{
 			Name:  "Paris",
@@ -62,9 +62,9 @@ collection of cultural relics.
 }
 
 // Render returns what to display.
-func (n *Nav) Render() string {
+func (n *City) Render() string {
 	return `
-<div class="Nav" style="background-image: url('{{.Current.Image}}')">
+<div class="City" style="background-image: url('{{.Current.Image}}')">
 	<button class="Menu" onclick="OnMenuClick" oncontextmenu="OnMenuClick">☰</button>
 
 	<main>
@@ -72,7 +72,7 @@ func (n *Nav) Render() string {
 		<p>{{.Current.Description}}</p>
 		<p class="Links">
 			{{range $k, $v := .Store}}
-				<a href="nav?city={{$k}}">{{$v.Name}}</a>
+				<a href="city?city={{$k}}">{{$v.Name}}</a>
 			{{end}}
 			<br>
 		</p>
@@ -82,7 +82,7 @@ func (n *Nav) Render() string {
 }
 
 // OnMenuClick creates a context menu when the menu button is clicked.
-func (n *Nav) OnMenuClick(s, e js.Value) {
+func (n *City) OnMenuClick(s, e js.Value) {
 	app.NewContextMenu(
 		app.MenuItem{
 			Label: "Reload",

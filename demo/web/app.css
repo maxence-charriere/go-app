@@ -60,7 +60,7 @@ input:focus {
     color: deepskyblue;
 }
 
-.Nav {
+.City {
     position: fixed;
     top: 0;
     left: 0;
@@ -75,12 +75,12 @@ input:focus {
     width: 100%;
 }
 
-.Nav main {
+.City main {
     max-width: 720px;
     text-align: justify;
 }
 
-.Nav h1 {
+.City h1 {
     text-align: center;
 }
 
