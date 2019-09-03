@@ -18,7 +18,7 @@ type City struct {
 // OnMount initializes the component when it is mounted.
 func (n *City) OnMount() {
 	n.Store = map[string]city{
-		"paris": city{
+		"paris": {
 			Name:  "Paris",
 			Image: "paris.jpg",
 			Description: `
@@ -29,7 +29,7 @@ and the 12th-century, Gothic Notre-Dame cathedral, the city is known for its
 cafe culture and designer boutiques along the Rue du Faubourg Saint-Honoré.
 			`,
 		},
-		"sf": city{
+		"sf": {
 			Name:  "SF",
 			Image: "sf.jpg",
 			Description: `
@@ -38,7 +38,7 @@ known as SF, San Fran or "The City", is a city in—and the cultural, commercial
 and financial center of—Northern California.
 			`,
 		},
-		"beijing": city{
+		"beijing": {
 			Name:  "北京市",
 			Image: "beijing.jpg",
 			Description: `

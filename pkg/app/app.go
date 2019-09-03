@@ -43,7 +43,7 @@ func Run() {
 }
 
 // Render renders the given component. It should be called whenever a component
-// is modified. Render is always excecuted on the UI goroutine.
+// is modified. Render is always executed on the UI goroutine.
 //
 // It panics if called before Run.
 func Render(c Compo) {
