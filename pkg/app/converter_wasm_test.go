@@ -9,11 +9,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestBind(t *testing.T) {
-	s := bind("Hello", 42)
-	assert.Equal(t, template.JS("Hello.42"), s)
-}
-
 func TestCompoHTMLTag(t *testing.T) {
 	tests := []struct {
 		url         string

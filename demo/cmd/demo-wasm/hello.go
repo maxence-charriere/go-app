@@ -1,7 +1,11 @@
+// +build wasm
+
 package main
 
 import (
-	"github.com/maxence-charriere/app"
+	"syscall/js"
+
+	"github.com/maxence-charriere/app/pkg/app"
 )
 
 // Hello is a component that describes a hello world. It implements the
@@ -12,13 +16,12 @@ type Hello struct {
 
 // Render returns what to display.
 //
-// The onchange="{{bind "Name"}}" binds the onchange value to the Hello.Name
+// The onchange="Name" binds the onchange value to the Hello.Name
 // field.
 func (h *Hello) Render() string {
 	return `
 <div class="Hello">
 	<button class="Menu" onclick="OnMenuClick" oncontextmenu="OnMenuClick">☰</button>
-	<app.contextmenu>
 
 	<h1>
 		Hello
@@ -28,28 +31,43 @@ func (h *Hello) Render() string {
 			world
 		{{end}}!
 	</h1>
-	<input value="{{.Name}}" placeholder="What is your name?" onchange="{{bind "Name"}}" autofocus>
+	<input value="{{.Name}}" placeholder="What is your name?" onchange="Name" autofocus>
 </div>
 	`
 }
 
 // OnMenuClick creates a context menu when the menu button is clicked.
-func (h *Hello) OnMenuClick() {
+func (h *Hello) OnMenuClick(s, e js.Value) {
 	app.NewContextMenu(
 		app.MenuItem{
-			Label:   "Reload",
-			Keys:    "cmdorctrl+r",
-			OnClick: app.Reload},
+			Label: "Reload",
+			Keys:  "cmdorctrl+r",
+			OnClick: func(s, e js.Value) {
+				app.Reload()
+			},
+		},
 		app.MenuItem{Separator: true},
 		app.MenuItem{
 			Label: "Go to repository",
-			OnClick: func() {
+			OnClick: func(s, e js.Value) {
 				app.Navigate("https://github.com/maxence-charriere/app")
 			}},
 		app.MenuItem{
 			Label: "Source code",
-			OnClick: func() {
+			OnClick: func(s, e js.Value) {
 				app.Navigate("https://github.com/maxence-charriere/app/blob/master/demo/cmd/demo-wasm/hello.go")
 			}},
+		app.MenuItem{Separator: true},
+		app.MenuItem{
+			Label: "City example",
+			OnClick: func(s, e js.Value) {
+				app.Navigate("city")
+			}},
 	)
+}
+
+type Nav app.ZeroCompo
+
+func (n *Nav) Render() string {
+	return `<p>nav</p>`
 }

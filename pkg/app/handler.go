@@ -82,6 +82,10 @@ func (h *Handler) init() {
 		webDir = "web"
 	}
 
+	if h.LoadingLabel == "" {
+		h.LoadingLabel = "loading"
+	}
+
 	files := apphttp.FileHandler(webDir)
 	files = apphttp.GzipHandler(files, webDir)
 	files = apphttp.CacheHandler(files, webDir)

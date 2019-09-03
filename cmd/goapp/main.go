@@ -7,8 +7,10 @@ import (
 	"context"
 	"os"
 	"os/signal"
+	"text/template"
 
-	_ "github.com/maxence-charriere/app"
+	_ "github.com/maxence-charriere/app/pkg/app"
+	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
 )
 
@@ -65,4 +67,21 @@ func ctxWithSignals(ctx context.Context, sigs ...os.Signal) (context.Context, fu
 	}()
 
 	return ctx, cancel
+}
+
+func generateTemplate(filename, temp string, v interface{}) error {
+	f, err := os.Create(filename)
+	if err != nil {
+		return errors.Wrapf(err, "creating %s failed", filename)
+	}
+	defer f.Close()
+
+	tmpl, err := template.New(filename).Parse(temp)
+	if err != nil {
+		return errors.Wrapf(err, "generating %s failed", filename)
+	}
+	if err := tmpl.Execute(f, v); err != nil {
+		return errors.Wrapf(err, "generating %s failed", filename)
+	}
+	return nil
 }

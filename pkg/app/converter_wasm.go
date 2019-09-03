@@ -2,30 +2,11 @@ package app
 
 import (
 	"encoding/json"
-	"fmt"
 	"html/template"
 	"net/url"
 	"strings"
 	"time"
 )
-
-var converters = map[string]interface{}{
-	"bind":  bind,
-	"compo": urlToHTMLTag,
-	"json":  jsonFormat,
-	"raw":   rawHTML,
-	"time":  timeFormat,
-}
-
-func bind(v ...interface{}) template.JS {
-	targets := make([]string, len(v))
-
-	for i, t := range v {
-		targets[i] = fmt.Sprint(t)
-	}
-
-	return template.JS(strings.Join(targets, "."))
-}
 
 func urlToHTMLTag(s string) template.HTML {
 	u, _ := url.Parse(s)

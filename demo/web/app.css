@@ -1,3 +1,7 @@
+body {
+    color: white;
+}
+
 h1 {
     max-width: calc(100% - 48px);
     font-size: 56pt;
@@ -7,7 +11,7 @@ h1 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: white;
+    color: currentColor;
 }
 
 input {
@@ -20,7 +24,7 @@ input {
     font-size: 11pt;
     font-weight: 300;
     background: transparent;
-    color: rgb(240, 240, 240);
+    color: currentColor;
     border-radius: 0;
     box-shadow: none;
 }
@@ -49,9 +53,48 @@ input:focus {
     padding: 12px;
     font-size: 24px;
     font-weight: 200;
-    color: white;
+    color: currentColor;
 }
 
 .Menu:hover {
     color: deepskyblue;
+}
+
+.City {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+}
+
+.City main {
+    max-width: 720px;
+    text-align: justify;
+}
+
+.City h1 {
+    text-align: center;
+}
+
+.Links {
+    text-align: center;
+}
+
+.Links a {
+    display: inline-block;
+    padding: 8px;
+    margin: 3px;
+    border: 1px solid currentColor;
+    border-radius: 6px;
+    min-width: 100px;
+    text-align: center;
+    text-transform: lowercase;
 }

@@ -10,7 +10,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
-	"text/template"
 
 	"github.com/maxence-charriere/app/internal/http"
 	"github.com/pkg/errors"
@@ -154,25 +153,8 @@ func buildServer(ctx context.Context, c buildConfig) error {
 }
 
 func installWasmExec(rootDir string) error {
-	wasmExec := filepath.Join(runtime.GOROOT(), "misc", "wasm", "wasm_exec.js")
-	webWasmExec := filepath.Join(rootDir, "web", filepath.Base(wasmExec))
-
-	src, err := os.Open(wasmExec)
-	if err != nil {
-		return errors.Wrapf(err, "opening %s failed", wasmExec)
-	}
-	defer src.Close()
-
-	dst, err := os.Create(webWasmExec)
-	if err != nil {
-		return errors.Wrapf(err, "creating %s failed", webWasmExec)
-	}
-	defer src.Close()
-
-	if _, err := io.Copy(dst, src); err != nil {
-		return errors.Wrapf(err, "copying %s failed", wasmExec)
-	}
-	return nil
+	webWasmExec := filepath.Join(rootDir, "web", "wasm_exec.js")
+	return generateTemplate(webWasmExec, wasmExecJS, nil)
 }
 
 func generateServiceWorker(rootDir, etag string) error {
@@ -210,26 +192,13 @@ func generateServiceWorker(rootDir, etag string) error {
 		return errors.Wrap(err, "getting caching routes failed")
 	}
 
-	f, err := os.Create(filename)
-	if err != nil {
-		return errors.Wrapf(err, "creating %s failed", filename)
-	}
-	defer f.Close()
-
-	tmpl, err := template.New(filename).Parse(goappJS)
-	if err != nil {
-		return errors.Wrapf(err, "generating %s failed", filename)
-	}
-	if err := tmpl.Execute(f, struct {
+	return generateTemplate(filename, goappJS, struct {
 		ETag  string
 		Paths []string
 	}{
 		ETag:  etag,
 		Paths: cachePaths,
-	}); err != nil {
-		return errors.Wrapf(err, "generating %s failed", filename)
-	}
-	return nil
+	})
 }
 
 func generateEtag(rootDir string, etag string) error {

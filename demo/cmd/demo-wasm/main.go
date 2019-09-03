@@ -1,9 +1,9 @@
+// +build wasm
+
 package main
 
 import (
-	"log"
-
-	"github.com/maxence-charriere/app"
+	"github.com/maxence-charriere/app/pkg/app"
 )
 
 // The app entry point.
@@ -16,13 +16,14 @@ func main() {
 	// E.g:
 	//  Hello   => hello
 	//  foo.Bar => foo.bar
-	app.Import(&Hello{})
+	app.Import(
+		&Hello{},
+		&City{},
+	)
 
 	// Defines the component to load when an URL without path is loaded.
 	app.DefaultPath = "/hello"
 
 	// Runs the app in the browser.
-	if err := app.Run(); err != nil {
-		log.Print(err)
-	}
+	app.Run()
 }
