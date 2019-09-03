@@ -7,7 +7,7 @@
 <p align="center">
 	<a href="https://circleci.com/gh/maxence-charriere/app"><img src="https://circleci.com/gh/maxence-charriere/app.svg?style=svg" alt="Circle CI Go build"></a>
     <a href="https://goreportcard.com/report/github.com/maxence-charriere/app"><img src="https://goreportcard.com/badge/github.com/maxence-charriere/app" alt="Go Report Card"></a>
-    <a href="https://godoc.org/github.com/maxence-charriere/app"><img src="https://godoc.org/github.com/maxence-charriere/app?status.svg" alt="GoDoc"></a>
+    <a href="https://godoc.org/github.com/maxence-charriere/app/pkg/app"><img src="https://godoc.org/github.com/maxence-charriere/app/pkg/app?status.svg" alt="GoDoc"></a>
     <a href="https://www.patreon.com/maxencecharriere"><img alt="Custom badge" src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.herokuapp.com%2Fmaxencecharriere" alt="patreon"></a>
 </p>
 
@@ -18,11 +18,25 @@ A [WebAssembly](https://webassembly.org) framework to build GUI with
 ## Install
 
 ```sh
-# Package sources:
-go get -u -v github.com/maxence-charriere/app
-
-# Goapp cli tool:
+# Package sources + goapp CLI:
 go get -u -v github.com/maxence-charriere/app/cmd/goapp
+
+# Package sources only:
+go get -u -v github.com/maxence-charriere/app/pkg/app
+
+```
+
+## Getting started
+
+```sh
+# Create and go to your project directory:
+mkdir myproject && cd myproject
+
+# Init project layout:
+goapp init -v
+
+# Run the app:
+goapp run -v -b chrome
 ```
 
 ## How it works
@@ -68,7 +82,8 @@ package main
 import (
     "log"
 
-    "github.com/maxence-charriere/app"
+    "github.com/maxence-charriere/app/pkg/app"
+    "github.com/maxence-charriere/app/pkg/log"
 )
 
 type Hello struct {
@@ -97,7 +112,7 @@ func main() {
     app.DefaultPath = "/hello"
 
     if err := app.Run(); err != nil {
-        log.Print(err)
+        log.Error(err)
     }
 }
 ```
@@ -129,10 +144,10 @@ func main() {
 
 ### Build
 
-The whole project is built with the
+The whole project can be built with the
 [goapp](https://github.com/maxence-charriere/app/tree/master/cmd/goapp/main.go)
 CLI tool.
-Goapp builds the server, the wasm app, imports the required javascript
+**goapp** builds the server, the wasm app, imports the required javascript
 support file and puts the pieces together to provide a ready to use project.
 
 ```bash
@@ -164,7 +179,10 @@ root
     └── etc...
 ```
 
-See the [full example code](https://github.com/maxence-charriere/app/tree/master/demo) and the [online demo](https://app-demo-232021.appspot.com).
+See the [full example code](https://github.com/maxence-charriere/app/tree/master/demo) and the online demo:
+
+- [Hello](https://app-demo-232021.appspot.com)
+- [City](https://app-demo-232021.appspot.com/city)
 
 ## Support
 
