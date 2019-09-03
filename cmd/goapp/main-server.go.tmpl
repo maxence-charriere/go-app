@@ -23,6 +23,7 @@ func main() {
 	addr := fmt.Sprintf(":%s", port)
 
 	// Launching server:
+	log.Info("starting server").T("addr", addr)
 	if err := http.ListenAndServe(addr, nil); err != nil {
 		log.Error("listening and serving http requests failed").
 			T("reason", err).
