@@ -96,121 +96,126 @@ func (n *node) deleteAttr(k string) {
 	n.Call("removeAttribute", k)
 }
 
-func (n *node) addEventListener(ctx renderContext, event string, target string) func() {
-	preventDefault := event == "contextmenu"
+func (n *node) addEventListener(ctx renderContext, eventname string, target string) func() {
+	cb := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		var event js.Value
+		if len(args) >= 1 {
+			event = args[0]
+		}
+		ctx.dom.trackCursorPosition(event)
 
-	execBinding := func(this js.Value, args []js.Value) interface{} {
+		if eventname == "contextmenu" {
+			event.Call("preventDefault")
+		}
+
+		if strings.HasPrefix(target, "emit:") {
+			msg := strings.TrimPrefix(target, "emit:")
+			go ctx.dom.msgs.emit(msg, this, event)
+			return nil
+		}
+
 		ctx.dom.callOnUI(func() {
-			var event js.Value
-			if len(args) >= 1 {
-				event = args[0]
-			}
-			ctx.dom.trackCursorPosition(event)
-
-			if preventDefault {
-				event.Call("preventDefault")
-			}
-
-			recv, err := getReceiver(ctx.compo, target)
-			if err != nil {
-				log.Error("calling event listener failed").
-					T("reason", err).
-					T("component", reflect.TypeOf(ctx.compo)).
-					T("target", target)
-				return
-			}
-
-			switch recv.Kind() {
-			case reflect.Func:
-				if jsHandlerType != recv.Type() {
-					log.Error("calling event listener failed").
-						T("reason", "bad receiver function type").
-						T("component", reflect.TypeOf(ctx.compo)).
-						T("target", target).
-						T("expected type", jsHandlerType).
-						T("receiver type", recv.Type())
-					return
-				}
-				recv.Call([]reflect.Value{
-					reflect.ValueOf(this),
-					reflect.ValueOf(event),
-				})
-
-			case reflect.String:
-				value := this.Get("value")
-				recv.SetString(value.String())
-				ctx.dom.render(ctx.compo)
-
-			case reflect.Int, reflect.Int64, reflect.Int32, reflect.Int16, reflect.Int8:
-				value := this.Get("value").String()
-				i, err := strconv.ParseInt(value, 10, 64)
-				if err != nil {
-					log.Error("adding event listener failed").
-						T("reason", err).
-						T("component", reflect.TypeOf(ctx.compo)).
-						T("target", target)
-					return
-				}
-				recv.SetInt(i)
-				ctx.dom.render(ctx.compo)
-
-			case reflect.Uint, reflect.Uint64, reflect.Uint32, reflect.Uint16, reflect.Uint8:
-				value := this.Get("value").String()
-				u, err := strconv.ParseUint(value, 10, 64)
-				if err != nil {
-					log.Error("adding event listener failed").
-						T("reason", err).
-						T("component", reflect.TypeOf(ctx.compo)).
-						T("target", target)
-					return
-				}
-				recv.SetUint(u)
-				ctx.dom.render(ctx.compo)
-
-			case reflect.Float64, reflect.Float32:
-				value := this.Get("value").String()
-				f, err := strconv.ParseFloat(value, 64)
-				if err != nil {
-					log.Error("adding event listener failed").
-						T("reason", err).
-						T("component", reflect.TypeOf(ctx.compo)).
-						T("target", target)
-					return
-				}
-				recv.SetFloat(f)
-				ctx.dom.render(ctx.compo)
-
-			case reflect.Bool:
-				value := this.Get("value").String()
-				b, err := strconv.ParseBool(value)
-				if err != nil {
-					log.Error("adding event listener failed").
-						T("reason", err).
-						T("component", reflect.TypeOf(ctx.compo)).
-						T("target", target)
-					return
-				}
-				recv.SetBool(b)
-				ctx.dom.render(ctx.compo)
-
-			default:
-				log.Error("adding event listener failed").
-					T("reason", "unsupported target kind").
-					T("component", reflect.TypeOf(ctx.compo)).
-					T("target", target).
-					T("target type", recv.Type())
-			}
+			n.executeGoCallback(ctx, target, this, event)
 		})
-
 		return nil
-	}
-
-	cb := js.FuncOf(execBinding)
-	n.Call("addEventListener", event, cb)
+	})
+	n.Call("addEventListener", eventname, cb)
 
 	return func() {
-		n.Call("removeEventListener", event, cb)
+		n.Call("removeEventListener", eventname, cb)
 		cb.Release()
+	}
+}
+
+func (n *node) executeGoCallback(ctx renderContext, target string, this, event js.Value) {
+	recv, err := getReceiver(ctx.compo, target)
+	if err != nil {
+		log.Error("calling event listener failed").
+			T("reason", err).
+			T("component", reflect.TypeOf(ctx.compo)).
+			T("target", target)
+		return
+	}
+
+	switch recv.Kind() {
+	case reflect.Func:
+		if jsHandlerType != recv.Type() {
+			log.Error("calling event listener failed").
+				T("reason", "bad receiver function type").
+				T("component", reflect.TypeOf(ctx.compo)).
+				T("target", target).
+				T("expected type", jsHandlerType).
+				T("receiver type", recv.Type())
+			return
+		}
+		recv.Call([]reflect.Value{
+			reflect.ValueOf(this),
+			reflect.ValueOf(event),
+		})
+
+	case reflect.String:
+		value := this.Get("value")
+		recv.SetString(value.String())
+		ctx.dom.render(ctx.compo)
+
+	case reflect.Int, reflect.Int64, reflect.Int32, reflect.Int16, reflect.Int8:
+		value := this.Get("value").String()
+		i, err := strconv.ParseInt(value, 10, 64)
+		if err != nil {
+			log.Error("adding event listener failed").
+				T("reason", err).
+				T("component", reflect.TypeOf(ctx.compo)).
+				T("target", target)
+			return
+		}
+		recv.SetInt(i)
+		ctx.dom.render(ctx.compo)
+
+	case reflect.Uint, reflect.Uint64, reflect.Uint32, reflect.Uint16, reflect.Uint8:
+		value := this.Get("value").String()
+		u, err := strconv.ParseUint(value, 10, 64)
+		if err != nil {
+			log.Error("adding event listener failed").
+				T("reason", err).
+				T("component", reflect.TypeOf(ctx.compo)).
+				T("target", target)
+			return
+		}
+		recv.SetUint(u)
+		ctx.dom.render(ctx.compo)
+
+	case reflect.Float64, reflect.Float32:
+		value := this.Get("value").String()
+		f, err := strconv.ParseFloat(value, 64)
+		if err != nil {
+			log.Error("adding event listener failed").
+				T("reason", err).
+				T("component", reflect.TypeOf(ctx.compo)).
+				T("target", target)
+			return
+		}
+		recv.SetFloat(f)
+		ctx.dom.render(ctx.compo)
+
+	case reflect.Bool:
+		value := this.Get("value").String()
+		b, err := strconv.ParseBool(value)
+		if err != nil {
+			log.Error("adding event listener failed").
+				T("reason", err).
+				T("component", reflect.TypeOf(ctx.compo)).
+				T("target", target)
+			return
+		}
+		recv.SetBool(b)
+		ctx.dom.render(ctx.compo)
+
+	default:
+		log.Error("adding event listener failed").
+			T("reason", "unsupported target kind").
+			T("component", reflect.TypeOf(ctx.compo)).
+			T("target", target).
+			T("target type", recv.Type())
 	}
 }
 
@@ -359,5 +364,5 @@ func isVoidElem(name string) bool {
 }
 
 func isGoEventAttr(k, v string) bool {
-	return strings.HasPrefix(k, "on") && strings.HasPrefix(v, "//go: ")
+	return strings.HasPrefix(k, "on") && strings.HasPrefix(v, "//go:")
 }

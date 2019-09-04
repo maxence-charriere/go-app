@@ -15,6 +15,7 @@ import (
 
 type dom struct {
 	compoBuilder        compoBuilder
+	msgs                *messenger
 	callOnUI            func(func())
 	trackCursorPosition func(js.Value)
 	contextMenu         Compo
@@ -34,6 +35,7 @@ func (d *dom) init() {
 		"json":  jsonFormat,
 		"raw":   rawHTML,
 		"time":  timeFormat,
+		"emit":  emitter,
 	}
 	d.attrTransforms = []attrTransform{eventTransform}
 }
@@ -326,7 +328,10 @@ func (d *dom) renderTagAttrs(ctx renderContext, n *node, hasAttr bool) {
 		}
 
 		for _, transform := range d.attrTransforms {
+			fmt.Println("----")
+			fmt.Println("before transform", k, v)
 			k, v = transform(k, v)
+			fmt.Println("after transform", k, v)
 		}
 
 		attrs[k] = v
@@ -371,7 +376,7 @@ func (d *dom) setEventHandler(ctx renderContext, n *node, k, v string) {
 		n.eventCloses = make(map[string]func())
 	}
 
-	v = strings.TrimPrefix(v, "//go: ")
+	v = strings.TrimPrefix(v, "//go:")
 	v = strings.ReplaceAll(v, " ", "")
 	n.eventCloses[k] = n.addEventListener(ctx, k, v)
 }

@@ -65,9 +65,3 @@ func (h *Hello) OnMenuClick(s, e js.Value) {
 			}},
 	)
 }
-
-type Nav app.ZeroCompo
-
-func (n *Nav) Render() string {
-	return `<p>nav</p>`
-}

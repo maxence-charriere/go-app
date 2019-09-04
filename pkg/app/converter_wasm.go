@@ -49,3 +49,7 @@ func rawHTML(s string) template.HTML {
 func timeFormat(t time.Time, layout string) string {
 	return t.Format(layout)
 }
+
+func emitter(msg string) template.JS {
+	return template.JS("emit:" + msg)
+}

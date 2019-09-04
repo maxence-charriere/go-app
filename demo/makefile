@@ -3,7 +3,7 @@ build:
 
 deploy: build
 	@cp -r web cmd/demo-server/web
-	gcloud app deploy cmd/demo-server 
+	gcloud app deploy cmd/demo-server --project=app-demo-232021
 	@rm -r cmd/demo-server/web
 
 clean:
