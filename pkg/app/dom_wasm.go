@@ -328,10 +328,7 @@ func (d *dom) renderTagAttrs(ctx renderContext, n *node, hasAttr bool) {
 		}
 
 		for _, transform := range d.attrTransforms {
-			fmt.Println("----")
-			fmt.Println("before transform", k, v)
 			k, v = transform(k, v)
-			fmt.Println("after transform", k, v)
 		}
 
 		attrs[k] = v
