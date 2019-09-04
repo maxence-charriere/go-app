@@ -70,8 +70,8 @@ func (b *Binding) exec(args ...interface{}) {
 			time.Sleep(action)
 
 		case do:
-			ok := false
-			if argsv, ok = b.execDo(idx, action, argsv); !ok {
+			var next bool
+			if argsv, next = b.execDo(idx, action, argsv); !next {
 				return
 			}
 		}
