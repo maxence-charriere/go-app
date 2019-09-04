@@ -52,3 +52,8 @@ func TestTimeFormat(t *testing.T) {
 	s := timeFormat(time.Date(1986, 2, 14, 0, 0, 0, 0, time.UTC), "2006")
 	assert.Equal(t, "1986", s)
 }
+
+func TestEmitter(t *testing.T) {
+	s := emitter("app.test")
+	assert.Equal(t, "//go:emit:app.test", s)
+}

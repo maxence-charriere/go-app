@@ -16,13 +16,6 @@ var (
 )
 
 func init() {
-	page = &dom{
-		compoBuilder:        components,
-		callOnUI:            UI,
-		trackCursorPosition: trackCursorPosition,
-		contextMenu:         &contextMenu{},
-	}
-
 	log.DefaultColor = ""
 	log.InfoColor = ""
 	log.ErrorColor = ""
@@ -33,6 +26,13 @@ func init() {
 
 func run() {
 	go func() {
+		page = &dom{
+			compoBuilder:        components,
+			callOnUI:            UI,
+			msgs:                msgs,
+			trackCursorPosition: trackCursorPosition,
+			contextMenu:         &contextMenu{},
+		}
 		defer page.clean()
 
 		overrideAnchorClick := js.FuncOf(overrideAnchorClick)

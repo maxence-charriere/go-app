@@ -17,5 +17,5 @@ func TestEventTransform(t *testing.T) {
 
 	k, v = eventTransform("onchange", "OnChange")
 	assert.Equal(t, "onchange", k)
-	assert.Equal(t, "//go: OnChange", v)
+	assert.Equal(t, "//go:OnChange", v)
 }
