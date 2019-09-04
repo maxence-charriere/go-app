@@ -69,8 +69,7 @@ func (m *contextMenu) Show() {
 	menuWidth := menu.Get("offsetWidth").Int()
 	menuHeight := menu.Get("offsetHeight").Int()
 
-	winWidth := getWindowWidth()
-	winHeight := getWindowHeight()
+	winWidth, winHeight := WindowSize()
 
 	x := cursorX
 	if x+menuWidth > winWidth {
@@ -122,44 +121,4 @@ func convertKeys(k string) string {
 	}
 
 	return k
-}
-
-func getWindowWidth() int {
-	w := js.Global().Get("innerWidth")
-	if !w.Truthy() {
-		w = js.Global().
-			Get("document").
-			Get("documentElement").
-			Get("clientWidth")
-	}
-	if !w.Truthy() {
-		w = js.Global().
-			Get("document").
-			Get("body").
-			Get("clientWidth")
-	}
-	if w.Type() != js.TypeNumber {
-		return 0
-	}
-	return w.Int()
-}
-
-func getWindowHeight() int {
-	h := js.Global().Get("innerHeight")
-	if !h.Truthy() {
-		h = js.Global().
-			Get("document").
-			Get("documentElement").
-			Get("clientHeight")
-	}
-	if !h.Truthy() {
-		h = js.Global().
-			Get("document").
-			Get("body").
-			Get("clientHeight")
-	}
-	if h.Type() != js.TypeNumber {
-		return 0
-	}
-	return h.Int()
 }
