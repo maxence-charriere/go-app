@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"encoding/json"
 	"net/url"
 	"reflect"
 	"syscall/js"
@@ -236,7 +235,46 @@ func onPopState(this js.Value, args []js.Value) interface{} {
 	return nil
 }
 
-func pretty(v interface{}) string {
-	d, _ := json.MarshalIndent(v, "", "    ")
-	return string(d)
+func windowSize() (w, h int) {
+	return windowWidth(), windowHeight()
+}
+
+func windowWidth() int {
+	w := js.Global().Get("innerWidth")
+	if !w.Truthy() {
+		w = js.Global().
+			Get("document").
+			Get("documentElement").
+			Get("clientWidth")
+	}
+	if !w.Truthy() {
+		w = js.Global().
+			Get("document").
+			Get("body").
+			Get("clientWidth")
+	}
+	if w.Type() != js.TypeNumber {
+		return 0
+	}
+	return w.Int()
+}
+
+func windowHeight() int {
+	h := js.Global().Get("innerHeight")
+	if !h.Truthy() {
+		h = js.Global().
+			Get("document").
+			Get("documentElement").
+			Get("clientHeight")
+	}
+	if !h.Truthy() {
+		h = js.Global().
+			Get("document").
+			Get("body").
+			Get("clientHeight")
+	}
+	if h.Type() != js.TypeNumber {
+		return 0
+	}
+	return h.Int()
 }

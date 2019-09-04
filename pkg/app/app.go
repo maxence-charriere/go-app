@@ -69,3 +69,8 @@ func Bind(msg string, c Compo) *Binding {
 func Emit(msg string, args ...interface{}) {
 	go msgs.emit(msg, args...)
 }
+
+// WindowSize returns the window width and height.
+func WindowSize() (w, h int) {
+	return windowSize()
+}
