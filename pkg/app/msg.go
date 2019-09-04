@@ -135,6 +135,7 @@ type do struct {
 type messenger struct {
 	mutex    sync.RWMutex
 	bindings map[string][]*Binding
+	callOnUI func(func())
 }
 
 func (m *messenger) emit(msg string, args ...interface{}) {
@@ -154,7 +155,10 @@ func (m *messenger) bind(msg string, c Compo) (*Binding, func()) {
 		m.bindings = make(map[string][]*Binding)
 	}
 
-	b := &Binding{msg: msg}
+	b := &Binding{
+		msg:      msg,
+		callOnUI: m.callOnUI,
+	}
 	m.bindings[msg] = append(m.bindings[msg], b)
 
 	close := func() {

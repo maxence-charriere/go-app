@@ -17,7 +17,7 @@ var (
 
 	ui         = make(chan func(), 256)
 	components = make(compoBuilder)
-	msgs       = &messenger{}
+	msgs       = &messenger{callOnUI: UI}
 )
 
 // Import imports the given components into the app.
