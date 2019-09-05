@@ -82,14 +82,14 @@ func TestDom(t *testing.T) {
 }
 
 func compareNode(t *testing.T, x, y *node) {
-	require.Equal(t, x.name, y.name)
-	require.Equal(t, x.text, y.text)
-	require.Equal(t, x.attrs, y.attrs)
-	require.Equal(t, x.compoName, y.compoName)
+	require.Equal(t, x.Name, y.Name)
+	require.Equal(t, x.Text, y.Text)
+	require.Equal(t, x.Attrs, y.Attrs)
+	require.Equal(t, x.CompoName, y.CompoName)
 	require.Equal(t, x.isEnd, y.isEnd)
 
-	require.Equal(t, len(x.children), len(x.children), "children len")
-	for i := 0; i < len(x.children); i++ {
-		compareNode(t, x.children[i], y.children[i])
+	require.Equal(t, len(x.Children), len(x.Children), "children len")
+	for i := 0; i < len(x.Children); i++ {
+		compareNode(t, x.Children[i], y.Children[i])
 	}
 }

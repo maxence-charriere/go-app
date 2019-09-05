@@ -10,8 +10,13 @@ import (
 )
 
 func TestMessenger(t *testing.T) {
+	m := messenger{
+		callExec: func(f func(a ...interface{}), a ...interface{}) {
+			f(a...)
+		},
+	}
+
 	foo := &Foo{}
-	m := messenger{}
 	bindingCalled := false
 
 	bind, close := m.bind("test", foo)

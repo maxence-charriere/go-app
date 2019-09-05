@@ -8,27 +8,34 @@ import (
 	"github.com/maxence-charriere/app/pkg/log"
 )
 
-// Binding represents a series of functions that are executed successively when
-// a message is emitted.
+// Binding represents a serie of actions that are executed successively when a
+// message is emitted.
 type Binding struct {
 	msg      string
 	actions  []interface{}
 	callOnUI func(func())
 }
 
-// Do adds a function to be executed when a message is emitted.
+// Do adds the given function to the actions of the binding. The function will
+// be executed on the goroutine used to perform the binding.
 //
-// Functions arguments are mapped to the emitted arguments or the return values
-// of the previous function added with Do.
-//
-// Functions added with Do are executed on a different goroutine.
+// If the function is the first one to be added to the binding, its arguments
+// are mapped with the ones emitted with the binded message. Otherwise with the
+// return values of the previous function registered with Do or DoOnUI.
 //
 // It panics if f is not a function.
 func (b *Binding) Do(f interface{}) *Binding {
 	return b.do(f, false)
 }
 
-// DoOnUI is like Do but the added function is executed on the UI goroutine.
+// DoOnUI adds the given function to the actions of the binding. The function
+// will be executed on the UI goroutine.
+//
+// If the function is the first one to be added to the binding, its arguments
+// are mapped with the ones emitted with the binded message. Otherwise with the
+// return values of the previous function registered with Do or DoOnUI.
+//
+// It panics if f is not a function.
 func (b *Binding) DoOnUI(f interface{}) *Binding {
 	return b.do(f, true)
 }
@@ -51,11 +58,18 @@ func (b *Binding) do(f interface{}, callOnUI bool) *Binding {
 	return b
 }
 
-// Wait adds the given duration before the execution of the next function added
-// with Do.
+// Wait delays the execution of the next function registered with Do or DoOnUI
+// for the given duration.
 func (b *Binding) Wait(d time.Duration) *Binding {
 	b.actions = append(b.actions, d)
 	return b
+}
+
+// Defer postpones the execution of the binding after the given duration. If a
+// message occurs while the binding is deferred, arguments and duration are
+// updated with the latest message emitted.
+func (b *Binding) Defer(d time.Duration) *Binding {
+	panic("not implemented")
 }
 
 func (b *Binding) exec(args ...interface{}) {
@@ -135,6 +149,7 @@ type do struct {
 type messenger struct {
 	mutex    sync.RWMutex
 	bindings map[string][]*Binding
+	callExec func(func(...interface{}), ...interface{})
 	callOnUI func(func())
 }
 
@@ -143,7 +158,7 @@ func (m *messenger) emit(msg string, args ...interface{}) {
 	defer m.mutex.RUnlock()
 
 	for _, b := range m.bindings[msg] {
-		b.exec(args...)
+		m.callExec(b.exec, args...)
 	}
 }
 
