@@ -11,9 +11,15 @@ import (
 // Binding represents a serie of actions that are executed successively when a
 // message is emitted.
 type Binding struct {
-	msg      string
-	actions  []interface{}
-	callOnUI func(func())
+	msg           string
+	actions       []interface{}
+	callOnUI      func(func())
+	deferDuration time.Duration
+	deferEnd      time.Time
+
+	mutex      sync.Mutex
+	args       []interface{}
+	deferTimer *time.Timer
 }
 
 // Do adds the given function to the actions of the binding. The function will
@@ -69,10 +75,32 @@ func (b *Binding) Wait(d time.Duration) *Binding {
 // message occurs while the binding is deferred, arguments and duration are
 // updated with the latest message emitted.
 func (b *Binding) Defer(d time.Duration) *Binding {
-	panic("not implemented")
+	b.deferDuration = d
+	return b
 }
 
 func (b *Binding) exec(args ...interface{}) {
+	if b.deferDuration == 0 {
+		b.execActions(args...)
+		return
+	}
+
+	b.mutex.Lock()
+	b.args = args
+	if b.deferTimer != nil {
+		b.deferTimer.Reset(b.deferDuration)
+		b.mutex.Unlock()
+		return
+	}
+	b.deferTimer = time.NewTimer(b.deferDuration)
+	b.mutex.Unlock()
+
+	<-b.deferTimer.C
+	b.execActions(b.args...)
+	b.deferTimer = nil
+}
+
+func (b *Binding) execActions(args ...interface{}) {
 	argsv := make([]reflect.Value, 0, len(args))
 	for _, arg := range args {
 		argsv = append(argsv, reflect.ValueOf(arg))
