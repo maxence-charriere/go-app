@@ -224,3 +224,19 @@ func makeDoTest(callOnUI bool, f interface{}) doTest {
 		function: f,
 	}
 }
+
+func TestBindingDefer(t *testing.T) {
+	b := Binding{
+		callOnUI: func(f func()) { f() },
+	}
+
+	b.Defer(time.Millisecond * 200).
+		Do(func(i int) {
+			require.Equal(t, 99, i)
+		})
+
+	for i := 0; i < 100; i++ {
+		go b.exec(i)
+		time.Sleep(time.Millisecond)
+	}
+}
