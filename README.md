@@ -29,14 +29,10 @@ go get -u -v github.com/maxence-charriere/app/pkg/app
 ## Getting started
 
 ```sh
-# Create and go to your project directory:
-mkdir demo && cd demo
-
-# Init project layout:
-goapp init -v
-
-# Run the app:
-goapp run -v -b chrome
+cd $GOPATH/src          # go to your gopath sources (optionnal)
+mkdir demo && cd demo   # create ang go to your go package
+goapp init -v           # init project layout
+goapp run -v -b chrome  # run the app and launch the main page on chrome
 ```
 
 ## How it works
@@ -44,7 +40,7 @@ goapp run -v -b chrome
 ### Project layout
 
 ```bash
-root
+demo
 ├── cmd
 │   ├── demo-server
 │   │   └── main.go
@@ -74,7 +70,7 @@ goapp init -v
 The app is the Go code compiled in web assembly and executed in the browser.
 
 ```go
-// demo/cmd/demo-wasm/main.go
+// cmd/demo-wasm/main.go
 
 package main
 
@@ -118,7 +114,7 @@ func main() {
 The server serves the web assembly Go program and the other resources.
 
 ```go
-// demo/cmd/demo-server/main.go
+// cmd/demo-server/main.go
 
 package main
 
@@ -160,7 +156,7 @@ goapp run -v -b default
 Once built, the directory tree should look like:
 
 ```bash
-root
+demo
 ├── cmd
 │   ├── demo-server
 │   │   └── main.go
