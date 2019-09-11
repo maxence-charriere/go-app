@@ -189,9 +189,9 @@ Requires [Go 1.13](https://golang.org/doc/go1.13).
 
 |Platform|Chrome|Edge|Firefox|Safari|
 |:-|:-:|:-:|:-:|:-:|
-|Desktop|✔|✖|✔|✔|
-|Mobile|✔|✖|✔|✔|
+|Desktop|✔|✔*|✔|✔|
+|Mobile|✔|✔|✔|✔|
 
 Issues:
 
-- Edge does not support `TextEncoder` which is used by the javascript support file.
+- Non Chromiun based Edge does not support `TextEncoder` which is used by the javascript support file provided by Go.
