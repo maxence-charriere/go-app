@@ -178,7 +178,7 @@ root
     └── etc...
 ```
 
-See the [full example code](https://github.com/maxence-charriere/app/tree/master/demo) and the online demo:
+See a [full example](https://github.com/maxence-charriere/app/tree/master/demo) and its online demo:
 
 - [Hello](https://app-demo-232021.appspot.com)
 - [City](https://app-demo-232021.appspot.com/city)
