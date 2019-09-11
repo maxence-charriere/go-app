@@ -55,5 +55,5 @@ func TestTimeFormat(t *testing.T) {
 
 func TestEmitter(t *testing.T) {
 	s := emitter("app.test")
-	assert.Equal(t, "//go:emit:app.test", s)
+	assert.Equal(t, template.JS("emit:app.test"), s)
 }

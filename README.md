@@ -30,7 +30,7 @@ go get -u -v github.com/maxence-charriere/app/pkg/app
 
 ```sh
 # Create and go to your project directory:
-mkdir myproject && cd myproject
+mkdir demo && cd demo
 
 # Init project layout:
 goapp init -v
@@ -51,7 +51,6 @@ root
 │   └── demo-wasm
 │       └── main.go
 └── web
-    ├── wasm_exec.js
     ├── style sheets...
     ├── images...
     └── etc...
@@ -75,7 +74,7 @@ goapp init -v
 The app is the Go code compiled in web assembly and executed in the browser.
 
 ```go
-// root/cmd/demo-wasm/main.go
+// demo/cmd/demo-wasm/main.go
 
 package main
 
@@ -122,7 +121,7 @@ func main() {
 The server serves the web assembly Go program and the other resources.
 
 ```go
-// root/cmd/demo-server/main.go
+// demo/cmd/demo-server/main.go
 
 package main
 
@@ -179,21 +178,20 @@ root
     └── etc...
 ```
 
-See the [full example code](https://github.com/maxence-charriere/app/tree/master/demo) and the online demo:
+See a [full example](https://github.com/maxence-charriere/app/tree/master/demo) and its online demo:
 
 - [Hello](https://app-demo-232021.appspot.com)
 - [City](https://app-demo-232021.appspot.com/city)
 
 ## Support
 
-Requires [Go 1.12](https://golang.org/doc/go1.12).
+Requires [Go 1.13](https://golang.org/doc/go1.13).
 
 |Platform|Chrome|Edge|Firefox|Safari|
 |:-|:-:|:-:|:-:|:-:|
-|Desktop|✔|✖|✔|✔|
-|Mobile|✖|✖|✖|✖|
+|Desktop|✔|✔*|✔|✔|
+|Mobile|✔|✔|✔|✔|
 
 Issues:
 
-- Go wasm currently triggers out of memory errors on mobile platforms (https://github.com/golang/go/issues/27462).
-- Edge does not support `TextEncoder` which is used by the javascript support file.
+- Non Chromiun based Edge does not support `TextEncoder` which is used by the javascript support file provided by Go.
