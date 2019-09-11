@@ -15,7 +15,16 @@ A [WebAssembly](https://webassembly.org) framework to build GUI with
 [Go](https://golang.org), [HTML](https://en.wikipedia.org/wiki/HTML5) and
 [CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets).
 
+It features:
+
+- [PWA support](https://developers.google.com/web/progressive-web-apps/)
+- [Build tool](https://github.com/maxence-charriere/app/tree/master/cmd/goapp/main.go) that removes the hassle of packaging wasm apps
+- [React](https://reactjs.org) flavored API
+
+
 ## Install
+
+Requires [Go 1.13](https://golang.org/doc/go1.13)
 
 ```sh
 # Package sources + goapp CLI:
@@ -177,9 +186,6 @@ See a [full example](https://github.com/maxence-charriere/app/tree/master/demo) 
 - [City](https://app-demo-232021.appspot.com/city)
 
 ## Support
-
-Requires [Go 1.13](https://golang.org/doc/go1.13).
-
 |Platform|Chrome|Edge|Firefox|Safari|
 |:-|:-:|:-:|:-:|:-:|
 |Desktop|✔|✔*|✔|✔|
