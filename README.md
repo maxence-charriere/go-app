@@ -30,7 +30,7 @@ go get -u -v github.com/maxence-charriere/app/pkg/app
 
 ```sh
 cd $GOPATH/src          # go to your gopath sources (optionnal)
-mkdir demo && cd demo   # create ang go to your go package
+mkdir demo && cd demo   # create and go to your go package
 goapp init -v           # init project layout
 goapp run -v -b chrome  # run the app and launch the main page on chrome
 ```
