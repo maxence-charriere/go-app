@@ -1,6 +1,7 @@
 package app
 
 import (
+	"net/url"
 	"reflect"
 
 	"github.com/maxence-charriere/app/pkg/log"
@@ -78,4 +79,16 @@ func Emit(msg string, args ...interface{}) {
 // WindowSize returns the window width and height.
 func WindowSize() (w, h int) {
 	return windowSize()
+}
+
+// Navigate navigates to the given URL.
+func Navigate(rawurl string) {
+	UI(func() {
+		navigate(rawurl, true)
+	})
+}
+
+// LocationURL returns the current location url.
+func LocationURL() *url.URL {
+	return locationURL()
 }

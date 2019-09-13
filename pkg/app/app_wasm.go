@@ -43,7 +43,7 @@ func run() {
 		defer onpopstate.Release()
 		js.Global().Set("onpopstate", onpopstate)
 
-		url := getURL()
+		url := LocationURL()
 
 		if err := renderPage(url); err != nil {
 			log.Error("rendering page failed").
@@ -113,7 +113,7 @@ type MenuItem struct {
 	Separator bool
 }
 
-func getURL() *url.URL {
+func locationURL() *url.URL {
 	rawurl := js.Global().
 		Get("location").
 		Get("href").
@@ -161,15 +161,8 @@ func trackCursorPosition(e js.Value) {
 	cursorY = y.Int()
 }
 
-// Navigate navigates to the given URL.
-func Navigate(rawurl string) {
-	UI(func() {
-		navigate(rawurl, true)
-	})
-}
-
 func navigate(rawurl string, updateHistory bool) {
-	currentURL := getURL()
+	currentURL := LocationURL()
 
 	u, err := url.Parse(rawurl)
 	if err != nil {
