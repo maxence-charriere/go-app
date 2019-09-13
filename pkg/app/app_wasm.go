@@ -162,7 +162,7 @@ func trackCursorPosition(e js.Value) {
 }
 
 func navigate(rawurl string, updateHistory bool) {
-	currentURL := LocationURL()
+	currentURL := locationURL()
 
 	u, err := url.Parse(rawurl)
 	if err != nil {
