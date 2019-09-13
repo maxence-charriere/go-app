@@ -43,7 +43,7 @@ func run() {
 		defer onpopstate.Release()
 		js.Global().Set("onpopstate", onpopstate)
 
-		url := LocationURL()
+		url := locationURL()
 
 		if err := renderPage(url); err != nil {
 			log.Error("rendering page failed").
