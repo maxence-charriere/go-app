@@ -75,13 +75,13 @@ func TestBindingExec(t *testing.T) {
 	tests := []struct {
 		scenario string
 		args     []interface{}
-		actions  []interface{}
+		actions  []actionTest
 	}{
 		{
 			scenario: "execute function with matching args",
 			args:     []interface{}{"hello", 42},
-			actions: []interface{}{
-				makeDoTest(false, func(s string, i int) {
+			actions: []actionTest{
+				doTest(func(s string, i int) {
 					require.Equal(t, "hello", s)
 					require.Equal(t, 42, i)
 				}),
@@ -90,8 +90,8 @@ func TestBindingExec(t *testing.T) {
 		{
 			scenario: "execute function with matching args on ui",
 			args:     []interface{}{"hello", 42},
-			actions: []interface{}{
-				makeDoTest(true, func(s string, i int) {
+			actions: []actionTest{
+				doOnUITest(func(s string, i int) {
 					require.Equal(t, "hello", s)
 					require.Equal(t, 42, i)
 				}),
@@ -100,9 +100,9 @@ func TestBindingExec(t *testing.T) {
 		{
 			scenario: "execute function with wait and matching args",
 			args:     []interface{}{"hello", 42},
-			actions: []interface{}{
-				time.Millisecond,
-				makeDoTest(false, func(s string, i int) {
+			actions: []actionTest{
+				waitTest(time.Millisecond),
+				doTest(func(s string, i int) {
 					require.Equal(t, "hello", s)
 					require.Equal(t, 42, i)
 				}),
@@ -111,9 +111,9 @@ func TestBindingExec(t *testing.T) {
 		{
 			scenario: "execute function with negative wait and matching args",
 			args:     []interface{}{"hello", 42},
-			actions: []interface{}{
-				-time.Millisecond,
-				makeDoTest(false, func(s string, i int) {
+			actions: []actionTest{
+				waitTest(-time.Millisecond),
+				doTest(func(s string, i int) {
 					require.Equal(t, "hello", s)
 					require.Equal(t, 42, i)
 				}),
@@ -122,8 +122,8 @@ func TestBindingExec(t *testing.T) {
 		{
 			scenario: "execute function with less matching args",
 			args:     []interface{}{"hello", 42},
-			actions: []interface{}{
-				makeDoTest(false, func(s string) {
+			actions: []actionTest{
+				doTest(func(s string) {
 					require.Equal(t, "hello", s)
 				}),
 			},
@@ -131,8 +131,8 @@ func TestBindingExec(t *testing.T) {
 		{
 			scenario: "execute function with more matching args",
 			args:     []interface{}{"hello"},
-			actions: []interface{}{
-				makeDoTest(false, func(s string, i int) {
+			actions: []actionTest{
+				doTest(func(s string, i int) {
 					require.Equal(t, "hello", s)
 					require.Equal(t, 0, i)
 				}),
@@ -141,8 +141,8 @@ func TestBindingExec(t *testing.T) {
 		{
 			scenario: "execute function with non matching args",
 			args:     []interface{}{"hello", 42},
-			actions: []interface{}{
-				makeDoTest(false, func(s string, i int32) {
+			actions: []actionTest{
+				doTest(func(s string, i int32) {
 					require.Equal(t, "hello", s)
 					require.Equal(t, 42, i)
 				}),
@@ -151,16 +151,16 @@ func TestBindingExec(t *testing.T) {
 		{
 			scenario: "execute multiple functions with matching args",
 			args:     []interface{}{"hello", 42},
-			actions: []interface{}{
-				makeDoTest(false, func(s string, i int) (bool, error) {
+			actions: []actionTest{
+				doTest(func(s string, i int) (bool, error) {
 					return true, nil
 				}),
-				makeDoTest(false, func(b bool, err error) error {
+				doTest(func(b bool, err error) error {
 					require.True(t, b)
 					require.NoError(t, err)
 					return errors.New("test")
 				}),
-				makeDoTest(false, func(err error) {
+				doTest(func(err error) {
 					require.Error(t, err)
 				}),
 			},
@@ -168,19 +168,37 @@ func TestBindingExec(t *testing.T) {
 		{
 			scenario: "execute multiple functions with matching args and wait",
 			args:     []interface{}{"hello", 42},
-			actions: []interface{}{
-				makeDoTest(false, func(s string, i int) (bool, error) {
+			actions: []actionTest{
+				doTest(func(s string, i int) (bool, error) {
 					return true, nil
 				}),
-				time.Millisecond,
-				makeDoTest(true, func(b bool, err error) error {
+				waitTest(time.Millisecond),
+				doOnUITest(func(b bool, err error) error {
 					require.True(t, b)
 					require.NoError(t, err)
 					return errors.New("test")
 				}),
-				time.Millisecond,
-				makeDoTest(false, func(err error) {
+				waitTest(time.Millisecond),
+				doTest(func(err error) {
 					require.Error(t, err)
+				}),
+			},
+		},
+		{
+			scenario: "execute state",
+			args:     []interface{}{"hello", 42},
+			actions: []actionTest{
+				doTest(func(s string, i int) (bool, error) {
+					return true, nil
+				}),
+				stateTest(func(b bool, err error) int {
+					require.True(t, b)
+					require.NoError(t, err)
+					return 42
+				}),
+				doTest(func(b bool, err error) {
+					require.True(t, b)
+					require.NoError(t, err)
 				}),
 			},
 		},
@@ -194,17 +212,18 @@ func TestBindingExec(t *testing.T) {
 			}
 
 			for _, a := range test.actions {
-				switch i := a.(type) {
-				case time.Duration:
-					b.Wait(i)
+				switch a.name {
+				case "Wait":
+					b.Wait(a.duration)
 
-				case doTest:
-					if i.callOnUI {
-						b.DoOnUI(i.function)
-					} else {
-						b.Do(i.function)
-					}
+				case "Do":
+					b.Do(a.function)
 
+				case "DoOnUI":
+					b.DoOnUI(a.function)
+
+				case "State":
+					b.State(a.function)
 				}
 			}
 
@@ -213,15 +232,37 @@ func TestBindingExec(t *testing.T) {
 	}
 }
 
-type doTest struct {
-	callOnUI bool
+type actionTest struct {
+	name     string
 	function interface{}
+	duration time.Duration
 }
 
-func makeDoTest(callOnUI bool, f interface{}) doTest {
-	return doTest{
-		callOnUI: callOnUI,
+func doTest(f interface{}) actionTest {
+	return actionTest{
+		name:     "Do",
 		function: f,
+	}
+}
+
+func doOnUITest(f interface{}) actionTest {
+	return actionTest{
+		name:     "DoOnUI",
+		function: f,
+	}
+}
+
+func stateTest(f interface{}) actionTest {
+	return actionTest{
+		name:     "State",
+		function: f,
+	}
+}
+
+func waitTest(d time.Duration) actionTest {
+	return actionTest{
+		name:     "Wait",
+		duration: d,
 	}
 }
 

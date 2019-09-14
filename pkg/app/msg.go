@@ -31,7 +31,7 @@ type Binding struct {
 //
 // It panics if f is not a function.
 func (b *Binding) Do(f interface{}) *Binding {
-	return b.do(f, false)
+	return b.do(f, false, false)
 }
 
 // DoOnUI adds the given function to the actions of the binding. The function
@@ -43,10 +43,21 @@ func (b *Binding) Do(f interface{}) *Binding {
 //
 // It panics if f is not a function.
 func (b *Binding) DoOnUI(f interface{}) *Binding {
-	return b.do(f, true)
+	return b.do(f, true, false)
 }
 
-func (b *Binding) do(f interface{}, callOnUI bool) *Binding {
+// State adds the given function to the actions of the binding. The function
+// will be executed on the UI goroutine and a rendering of the component is
+// automatically triggered.
+//
+// It is meant to execute functions that only modify the component appearance.
+//
+// Unlike DoOnUI, return values are not passed to the next action.
+func (b *Binding) State(f interface{}) *Binding {
+	return b.do(f, true, true)
+}
+
+func (b *Binding) do(f interface{}, callOnUI, noLink bool) *Binding {
 	v := reflect.ValueOf(f)
 	if v.Kind() != reflect.Func {
 		log.Error("adding function to binding failed").
@@ -59,8 +70,9 @@ func (b *Binding) do(f interface{}, callOnUI bool) *Binding {
 
 	b.actions = append(b.actions, do{
 		function: v,
-		callOnUI: callOnUI},
-	)
+		callOnUI: callOnUI,
+		noLink:   noLink,
+	})
 	return b
 }
 
@@ -112,10 +124,14 @@ func (b *Binding) execActions(args ...interface{}) {
 			time.Sleep(action)
 
 		case do:
-			var next bool
-			if argsv, next = b.execDo(idx, action, argsv); !next {
+			retsv, next := b.execDo(idx, action, argsv)
+			if !next {
 				return
 			}
+			if action.noLink {
+				continue
+			}
+			argsv = retsv
 		}
 	}
 }
@@ -172,6 +188,7 @@ func (b *Binding) execDo(idx int, do do, args []reflect.Value) ([]reflect.Value,
 type do struct {
 	function reflect.Value
 	callOnUI bool
+	noLink   bool
 }
 
 type messenger struct {
