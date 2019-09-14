@@ -16,6 +16,16 @@ var (
 	// imported component is requested.
 	NotFoundPath = "/app.notfound"
 
+	// LocalStorage is a storage that uses the browser local storage associated
+	// to the document origin. Data stored are encrypted and has no expiration
+	// time.
+	LocalStorage BrowserStorage
+
+	// SessionStorage is a storage that uses the browser session storage
+	// associated to the document origin. Data stored are encrypted and expire
+	// when the page session ends.
+	SessionStorage BrowserStorage
+
 	ui         = make(chan func(), 256)
 	components = make(compoBuilder)
 	msgs       = &messenger{

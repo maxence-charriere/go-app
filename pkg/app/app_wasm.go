@@ -16,6 +16,9 @@ var (
 )
 
 func init() {
+	LocalStorage = newJSStorage("localStorage")
+	SessionStorage = newJSStorage("sessionStorage")
+
 	log.DefaultColor = ""
 	log.InfoColor = ""
 	log.ErrorColor = ""
