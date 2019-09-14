@@ -23,7 +23,7 @@ func TestMessenger(t *testing.T) {
 	require.Len(t, m.bindings, 1)
 	require.Len(t, m.bindings["test"], 1)
 
-	bind.Do(func(ctx context.Context) {
+	bind.Do(func() {
 		bindingCalled = true
 	})
 
@@ -82,6 +82,28 @@ func TestBindingExec(t *testing.T) {
 			args:     []interface{}{"hello", 42},
 			actions: []actionTest{
 				doTest(func(s string, i int) {
+					require.Equal(t, "hello", s)
+					require.Equal(t, 42, i)
+				}),
+			},
+		},
+		{
+			scenario: "execute function with matching bind context and args",
+			args:     []interface{}{"hello", 42},
+			actions: []actionTest{
+				doTest(func(ctx BindContext, s string, i int) {
+					require.NotNil(t, ctx)
+					require.Equal(t, "hello", s)
+					require.Equal(t, 42, i)
+				}),
+			},
+		},
+		{
+			scenario: "execute function with matching context and args",
+			args:     []interface{}{"hello", 42},
+			actions: []actionTest{
+				doTest(func(ctx context.Context, s string, i int) {
+					require.NotNil(t, ctx)
 					require.Equal(t, "hello", s)
 					require.Equal(t, 42, i)
 				}),
@@ -202,6 +224,36 @@ func TestBindingExec(t *testing.T) {
 				}),
 			},
 		},
+		{
+			scenario: "execute and cancel",
+			args:     []interface{}{"hello", 42},
+			actions: []actionTest{
+				doTest(func(ctx BindContext) {
+					ctx.Cancel(nil)
+				}),
+				stateTest(func() {
+					t.Fatal("action called in cancelled binding")
+				}),
+				whenCancelTest(func(err error) {
+					require.Error(t, err)
+				}),
+			},
+		},
+		{
+			scenario: "execute and cancel with err",
+			args:     []interface{}{"hello", 42},
+			actions: []actionTest{
+				doTest(func(ctx BindContext) {
+					ctx.Cancel(errors.New("test cancel"))
+				}),
+				stateTest(func() {
+					t.Fatal("action called in cancelled binding")
+				}),
+				whenCancelTest(func(err error) {
+					require.Error(t, err)
+				}),
+			},
+		},
 	}
 
 	for _, test := range tests {
@@ -224,6 +276,9 @@ func TestBindingExec(t *testing.T) {
 
 				case "State":
 					b.State(a.function)
+
+				case "WhenCancel":
+					b.WhenCancel(a.whenCancel)
 				}
 			}
 
@@ -233,9 +288,10 @@ func TestBindingExec(t *testing.T) {
 }
 
 type actionTest struct {
-	name     string
-	function interface{}
-	duration time.Duration
+	name       string
+	function   interface{}
+	whenCancel func(error)
+	duration   time.Duration
 }
 
 func doTest(f interface{}) actionTest {
@@ -263,6 +319,13 @@ func waitTest(d time.Duration) actionTest {
 	return actionTest{
 		name:     "Wait",
 		duration: d,
+	}
+}
+
+func whenCancelTest(f func(error)) actionTest {
+	return actionTest{
+		name:       "WhenCancel",
+		whenCancel: f,
 	}
 }
 
