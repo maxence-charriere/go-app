@@ -169,8 +169,9 @@ actionLoop:
 	}
 
 	if b.whenCancel != nil {
+		err := ctx.Err()
 		b.callOnUI(func() {
-			b.whenCancel(ctx.Err())
+			b.whenCancel(err)
 		})
 	}
 }
@@ -297,7 +298,8 @@ func (m *messenger) removeBinding(b *Binding) {
 	m.bindings[b.msg] = bindings
 }
 
-// BindContext is the interface that describes a context passed when a binding is executed.
+// BindContext is the interface that describes a context passed when a binding
+// is executed.
 type BindContext interface {
 	context.Context
 
