@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"reflect"
 	"sync"
 	"time"
@@ -12,10 +13,12 @@ import (
 // message is emitted.
 type Binding struct {
 	msg           string
+	compo         Compo
 	actions       []interface{}
 	callOnUI      func(func())
 	deferDuration time.Duration
 	deferEnd      time.Time
+	whenCancel    func(error)
 
 	mutex      sync.Mutex
 	args       []interface{}
@@ -29,9 +32,12 @@ type Binding struct {
 // are mapped with the ones emitted with the binded message. Otherwise with the
 // return values of the previous function registered with Do or DoOnUI.
 //
+// The binding execution context can be passed if the function first argument is
+// a BindContext or a context.Context.
+//
 // It panics if f is not a function.
 func (b *Binding) Do(f interface{}) *Binding {
-	return b.do(f, false)
+	return b.do(f, false, false)
 }
 
 // DoOnUI adds the given function to the actions of the binding. The function
@@ -41,12 +47,36 @@ func (b *Binding) Do(f interface{}) *Binding {
 // are mapped with the ones emitted with the binded message. Otherwise with the
 // return values of the previous function registered with Do or DoOnUI.
 //
+// The binding execution context can be passed if the function first argument is
+// a BindContext or a context.Context.
+//
 // It panics if f is not a function.
 func (b *Binding) DoOnUI(f interface{}) *Binding {
-	return b.do(f, true)
+	return b.do(f, true, false)
 }
 
-func (b *Binding) do(f interface{}, callOnUI bool) *Binding {
+// State adds the given function to the actions of the binding. The function
+// will be executed on the UI goroutine.It is meant to execute functions that
+// only modify the component appearance.
+//
+// The binding execution context can be passed if the function first argument is
+// a BindContext or a context.Context.
+//
+// Unlike DoOnUI, return values are not passed to the next action.
+//
+// It panics if f is not a function.
+func (b *Binding) State(f interface{}) *Binding {
+	return b.do(f, true, true)
+}
+
+// WhenCancel setup the given function to be called when the binding is
+// cancelled with a BindContext. The function will be executed on the UI
+// goroutine.
+func (b *Binding) WhenCancel(f func(error)) {
+	b.whenCancel = f
+}
+
+func (b *Binding) do(f interface{}, callOnUI, isState bool) *Binding {
 	v := reflect.ValueOf(f)
 	if v.Kind() != reflect.Func {
 		log.Error("adding function to binding failed").
@@ -59,8 +89,9 @@ func (b *Binding) do(f interface{}, callOnUI bool) *Binding {
 
 	b.actions = append(b.actions, do{
 		function: v,
-		callOnUI: callOnUI},
-	)
+		callOnUI: callOnUI,
+		isState:  isState,
+	})
 	return b
 }
 
@@ -101,22 +132,49 @@ func (b *Binding) exec(args ...interface{}) {
 }
 
 func (b *Binding) execActions(args ...interface{}) {
-	argsv := make([]reflect.Value, 0, len(args))
+	ctx := newBindContext()
+	defer ctx.Cancel(nil)
+	ctxv := reflect.ValueOf(ctx)
+	cancelled := false
+
+	argsv := make([]reflect.Value, 0, len(args)+1)
+	argsv = append(argsv, ctxv)
 	for _, arg := range args {
 		argsv = append(argsv, reflect.ValueOf(arg))
 	}
 
+actionLoop:
 	for idx, a := range b.actions {
+		select {
+		default:
+		case <-ctx.Done():
+			cancelled = true
+			break actionLoop
+		}
+
 		switch action := a.(type) {
 		case time.Duration:
 			time.Sleep(action)
 
 		case do:
-			var next bool
-			if argsv, next = b.execDo(idx, action, argsv); !next {
+			retsv, next := b.execDo(idx, action, argsv)
+			if !next {
 				return
 			}
+			if action.isState {
+				continue
+			}
+			argsv = make([]reflect.Value, 0, len(retsv)+1)
+			argsv = append(argsv, ctxv)
+			argsv = append(argsv, retsv...)
 		}
+	}
+
+	if cancelled && b.whenCancel != nil {
+		err := ctx.Err()
+		b.callOnUI(func() {
+			b.whenCancel(err)
+		})
 	}
 }
 
@@ -125,15 +183,28 @@ func (b *Binding) execDo(idx int, do do, args []reflect.Value) ([]reflect.Value,
 	fntype := fnval.Type()
 
 	i := 0
+	ctxHandled := false
+
 	for i < fntype.NumIn() && i < len(args) {
-		if !args[i].Type().AssignableTo(fntype.In(i)) {
+		intype := fntype.In(i)
+
+		// Ignore missing context in function args.
+		if !ctxHandled && !intype.Implements(reflect.TypeOf((*context.Context)(nil)).Elem()) {
+			args = args[1:]
+			ctxHandled = true
+			continue
+		} else {
+			ctxHandled = true
+		}
+
+		if !args[i].Type().AssignableTo(intype) {
 			log.Error("executing binding function failed").
 				T("reason", "non assignable arg").
 				T("message", b.msg).
 				T("function index", idx).
 				T("function type", fntype).
 				T("arg index", i).
-				T("expected type", fntype.In(i)).
+				T("expected type", intype).
 				T("arg type", args[i].Type())
 			return nil, false
 		}
@@ -172,6 +243,7 @@ func (b *Binding) execDo(idx int, do do, args []reflect.Value) ([]reflect.Value,
 type do struct {
 	function reflect.Value
 	callOnUI bool
+	isState  bool
 }
 
 type messenger struct {
@@ -200,6 +272,7 @@ func (m *messenger) bind(msg string, c Compo) (*Binding, func()) {
 
 	b := &Binding{
 		msg:      msg,
+		compo:    c,
 		callOnUI: m.callOnUI,
 	}
 	m.bindings[msg] = append(m.bindings[msg], b)
@@ -225,4 +298,39 @@ func (m *messenger) removeBinding(b *Binding) {
 		}
 	}
 	m.bindings[b.msg] = bindings
+}
+
+// BindContext is the interface that describes a context passed when a binding
+// is executed.
+type BindContext interface {
+	context.Context
+
+	// Cancel stop the binding execution.
+	Cancel(error)
+}
+
+type bindContext struct {
+	context.Context
+	cancel func()
+	err    error
+}
+
+func newBindContext() *bindContext {
+	ctx, cancel := context.WithCancel(context.Background())
+	return &bindContext{
+		Context: ctx,
+		cancel:  cancel,
+	}
+}
+
+func (ctx *bindContext) Cancel(err error) {
+	ctx.cancel()
+	ctx.err = err
+}
+
+func (ctx *bindContext) Err() error {
+	if ctx.err != nil {
+		return ctx.err
+	}
+	return ctx.Context.Err()
 }
