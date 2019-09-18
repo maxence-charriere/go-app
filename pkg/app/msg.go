@@ -135,6 +135,7 @@ func (b *Binding) execActions(args ...interface{}) {
 	ctx := newBindContext()
 	defer ctx.Cancel(nil)
 	ctxv := reflect.ValueOf(ctx)
+	cancelled := false
 
 	argsv := make([]reflect.Value, 0, len(args)+1)
 	argsv = append(argsv, ctxv)
@@ -147,6 +148,7 @@ actionLoop:
 		select {
 		default:
 		case <-ctx.Done():
+			cancelled = true
 			break actionLoop
 		}
 
@@ -168,7 +170,7 @@ actionLoop:
 		}
 	}
 
-	if b.whenCancel != nil {
+	if cancelled && b.whenCancel != nil {
 		err := ctx.Err()
 		b.callOnUI(func() {
 			b.whenCancel(err)
