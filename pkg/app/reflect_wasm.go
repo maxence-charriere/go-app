@@ -209,9 +209,13 @@ func mapCompoField(field reflect.Value, value string) error {
 		field.SetFloat(n)
 
 	default:
+		var err error
+		if value, err = url.QueryUnescape(value); err != nil {
+			return err
+		}
 		addr := field.Addr()
 		i := addr.Interface()
-		if err := json.Unmarshal([]byte(value), i); err != nil {
+		if err = json.Unmarshal([]byte(value), i); err != nil {
 			return err
 		}
 	}
