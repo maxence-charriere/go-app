@@ -97,7 +97,7 @@ func (d *dom) renderCompo(c Compo, n *node) error {
 		compo:     c,
 		dom:       d,
 	}, n); err != nil {
-		return nil
+		return err
 	}
 
 	if requireMount {
@@ -277,7 +277,9 @@ func (d *dom) renderStartTag(ctx renderContext, n *node, name string, hasAttr bo
 
 	var childrenToDelete []*node
 	for i, c := range n.Children {
-		d.renderNode(ctx, c)
+		if err := d.renderNode(ctx, c); err != nil {
+			return err
+		}
 
 		if c.isEnd {
 			childrenToDelete = n.Children[i:]
@@ -297,7 +299,9 @@ func (d *dom) renderStartTag(ctx renderContext, n *node, name string, hasAttr bo
 
 	for {
 		var c node
-		d.renderNode(ctx, &c)
+		if err := d.renderNode(ctx, &c); err != nil {
+			return err
+		}
 
 		if c.isEnd {
 			return nil
@@ -410,11 +414,9 @@ func (d *dom) renderCompoNode(ctx renderContext, n *node, name string, hasAttr b
 	}
 
 	attrs := d.getCompoAttrs(ctx, hasAttr)
-
 	if err = mapCompoFields(compo, attrs); err != nil {
 		return err
 	}
-
 	return d.renderCompo(compo, n)
 }
 
