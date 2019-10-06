@@ -13,7 +13,7 @@ body {
     padding: 0;
     overflow: hidden;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 10pt;
+    font-size: 9pt;
     font-weight: 400;
     color: white;
     background-color: #21252b;
@@ -21,7 +21,7 @@ body {
 
 h1 {
     margin: 0;
-    padding: 30px 24px 6px;
+    padding: 0 24px 12px;
     outline: 0;
     font-weight: 200;
     text-transform: lowercase;
@@ -34,7 +34,7 @@ h4,
 h5,
 h6 {
     margin: 0;
-    padding: 3px 24px 6px;
+    padding: 0 24px 12px;
     outline: 0;
     font-weight: 200;
     text-transform: lowercase;
@@ -42,7 +42,7 @@ h6 {
 
 p {
     margin: 0;
-    padding: 3px 24px 6px;
+    padding: 0 24px 12px;
     outline: 0;
 }
 
@@ -54,6 +54,33 @@ a {
 
 a:hover {
     color: deepskyblue;
+}
+
+input {
+    display: block;
+    border: 0;
+    border-bottom: 1px solid currentColor;
+    background-color: transparent;
+    outline: none;
+    border-radius: 0;
+    box-shadow: none;
+
+    margin: 0 24px 12px;
+    padding: 0 0 3px;
+    font-size: inherit;
+    font-family: inherit;
+    color: currentColor;
+}
+
+input:focus {
+    caret-color: deepskyblue;
+    border-color: deepskyblue;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 ul {
@@ -76,11 +103,10 @@ ul li:last-child {
 }
 
 table {
-    width: calc(100% - 48px);
-    margin: 0 24px;
-    padding: 3px 0 6px;
+    margin: 0 24px 12px;
     border-collapse: collapse;
     table-layout: fixed;
+    font-size: inherit;
 }
 
 table th {
@@ -89,12 +115,13 @@ table th {
     font-size: 12pt;
     font-weight: 200;
     text-transform: lowercase;
+    text-align: start;
 }
 
 table td {
     padding: 12px;
     border-bottom: 0.1px solid currentColor;
-    text-align: center;
+    /* text-align: center; */
 }
 
 table tr:first-child td {
@@ -107,12 +134,19 @@ table tr:last-child td {
 }
 
 button {
+    display: inline-block;
     background: none;
-    border: 0;
+    border: 1px solid currentColor;
+    border-radius: 8px;
+    padding: 8px;
+    margin: 0 6px 12px 0;
+    min-width: 100px;
+    text-align: center;
+    text-transform: lowercase;
     color: inherit;
     font: inherit;
     font-size: inherit;
-    outline: inherit;
+    outline: none;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
