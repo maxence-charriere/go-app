@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 
 	"github.com/maxence-charriere/app/internal/http"
@@ -11,7 +12,8 @@ import (
 )
 
 type cleanConfig struct {
-	Verbose bool `conf:"v" help:"Enable verbose mode."`
+	Name    string `conf:"name" help:"The name of the app."`
+	Verbose bool   `conf:"v"    help:"Enable verbose mode."`
 }
 
 func cleanProject(ctx context.Context, args []string) {
@@ -37,16 +39,26 @@ func cleanProject(ctx context.Context, args []string) {
 		fail("%s", err)
 	}
 
-	pkgName := filepath.Base(rootDir)
+	if c.Name == "" {
+		c.Name = filepath.Base(rootDir)
+	}
+
+	pkgDir := filepath.Join(rootDir, "cmd", c.Name+"-server")
+	webDir := filepath.Join(pkgDir, "web")
+
+	serverExec := filepath.Join(pkgDir, c.Name+"-server")
+	if runtime.GOOS == "windows" {
+		serverExec += ".exe"
+	}
 
 	filenames := []string{
-		filepath.Join(rootDir, pkgName+"-server"),
-		filepath.Join(rootDir, "web", "goapp.wasm"),
-		filepath.Join(rootDir, "web", "goapp.js"),
-		filepath.Join(rootDir, "web", "wasm_exec.js"),
-		filepath.Join(rootDir, "web", ".etag"),
-		filepath.Join(rootDir, "web", "icon-192.png"),
-		filepath.Join(rootDir, "web", "icon-512.png"),
+		serverExec,
+		filepath.Join(webDir, "goapp.wasm"),
+		filepath.Join(webDir, "goapp.js"),
+		filepath.Join(webDir, "wasm_exec.js"),
+		filepath.Join(webDir, ".etag"),
+		filepath.Join(webDir, "icon-192.png"),
+		filepath.Join(webDir, "icon-512.png"),
 	}
 
 	for _, f := range filenames {
@@ -56,16 +68,14 @@ func cleanProject(ctx context.Context, args []string) {
 		}
 	}
 
-	if err := cleanCompressedStaticResources(rootDir); err != nil {
+	if err := cleanCompressedStaticResources(webDir); err != nil {
 		fail("%s", err)
 	}
 
 	success("cleaning succeeded")
 }
 
-func cleanCompressedStaticResources(rootDir string) error {
-	webDir := filepath.Join(rootDir, "web")
-
+func cleanCompressedStaticResources(webDir string) error {
 	walk := func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() {
 			return nil

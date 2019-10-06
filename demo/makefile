@@ -2,9 +2,7 @@ build:
 	@goapp build -v 
 
 deploy: build
-	@cp -r web cmd/demo-server/web
 	gcloud app deploy cmd/demo-server --project=murlok
-	@rm -r cmd/demo-server/web
 
 clean:
 	@goapp clean -v 

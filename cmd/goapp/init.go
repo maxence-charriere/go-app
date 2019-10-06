@@ -9,7 +9,8 @@ import (
 )
 
 type initConfig struct {
-	Verbose bool `conf:"v" help:"Enable verbose mode."`
+	Name    string `conf:"name" help:"The name of the app."`
+	Verbose bool   `conf:"v" help:"Enable verbose mode."`
 }
 
 func initProject(ctx context.Context, args []string) {
@@ -36,23 +37,25 @@ func initProject(ctx context.Context, args []string) {
 	}
 
 	log("initializing project layout")
-	if err = initProjectLayout(rootDir); err != nil {
+	if err = initProjectLayout(rootDir, c.Name); err != nil {
 		fail("%s", err)
 	}
 
 	success("initialization succeeded")
 }
 
-func initProjectLayout(rootDir string) error {
-	pkgName := filepath.Base(rootDir)
+func initProjectLayout(rootDir, name string) error {
+	if name == "" {
+		name = filepath.Base(rootDir)
+	}
 
-	serverdir := filepath.Join(rootDir, "cmd", pkgName+"-server")
-	wasmdir := filepath.Join(rootDir, "cmd", pkgName+"-wasm")
+	serverdir := filepath.Join(rootDir, "cmd", name+"-server")
+	wasmdir := filepath.Join(rootDir, "cmd", name+"-wasm")
 
 	dirs := []string{
 		serverdir,
 		wasmdir,
-		filepath.Join(rootDir, "web"),
+		filepath.Join(serverdir, "web"),
 	}
 
 	for _, dir := range dirs {
