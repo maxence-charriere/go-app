@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://app-demo-232021.appspot.com"><img alt="ui demo" src="https://github.com/maxence-charriere/app/wiki/assets/ui.png"></a>
+    <a href="https://demo.murlok.io"><img alt="ui demo" src="https://github.com/maxence-charriere/app/wiki/assets/ui.png"></a>
 </p>
 
 # app
@@ -182,8 +182,8 @@ demo
 
 See a [full example](https://github.com/maxence-charriere/app/tree/master/demo) and its online demo:
 
-- [Hello](https://app-demo-232021.appspot.com)
-- [City](https://app-demo-232021.appspot.com/city)
+- [Hello](https://demo.murlok.io)
+- [City](https://demo.murlok.io/city)
 
 ## Support
 |Platform|Chrome|Edge|Firefox|Safari|
