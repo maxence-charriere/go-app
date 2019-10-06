@@ -61,8 +61,6 @@ demo
         └── main.go
 ```
 
-This layout follows the project layout defined in [golang-standards/project-layout](https://github.com/golang-standards/project-layout):
-
 - The `cmd` directory contains the project main applications.
 - The `demo-wasm` directory contains the app that is compiled in **wasm** and that will run in the browser.
 - The `demo-server` directory contains the server that serves the **wasm** app and its resources.
