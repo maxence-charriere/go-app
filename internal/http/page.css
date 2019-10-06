@@ -85,15 +85,15 @@ table {
 
 table th {
     padding: 0 12px 12px;
-    border-bottom: 1px solid darkgray;
-    font-size: 11pt;
-    font-weight: bold;
-    /* text-transform: lowercase; */
+    border-bottom: 1px solid currentColor;
+    font-size: 12pt;
+    font-weight: 200;
+    text-transform: lowercase;
 }
 
 table td {
     padding: 12px;
-    border-bottom: 0.1px solid darkgray;
+    border-bottom: 0.1px solid currentColor;
     text-align: center;
 }
 
