@@ -11,6 +11,7 @@ import (
 )
 
 type runConfig struct {
+	Name    string `conf:"name"  help:"The name of the app."`
 	Browser string `conf:"b"     help:"The browser to open to display the app. (default, chrome, firefox or safari)"`
 	Force   bool   `conf:"force" help:"Force rebuilding of package that are already up-to-date."`
 	URL     string `conf:"url"   help:"The URL to load in the browser."`
@@ -46,7 +47,12 @@ func runProject(ctx context.Context, args []string) {
 	}
 	c.rootDir = rootDir
 
+	if c.Name == "" {
+		c.Name = filepath.Base(rootDir)
+	}
+
 	if err := build(ctx, buildConfig{
+		Name:    c.Name,
 		Force:   c.Force,
 		Race:    c.Race,
 		Verbose: c.Verbose,
@@ -63,16 +69,16 @@ func runProject(ctx context.Context, args []string) {
 	}
 
 	log("running server")
-	if err := runServer(ctx, rootDir); err != nil {
+	if err := runServer(ctx, c); err != nil {
 		fail("%s", err)
 	}
 }
 
-func runServer(ctx context.Context, rootDir string) error {
-	serverName := filepath.Base(rootDir) + "-server"
-	serverPath := filepath.Join(rootDir, serverName)
-	os.Chdir(rootDir)
-	return execute(ctx, serverPath)
+func runServer(ctx context.Context, c runConfig) error {
+	serverName := c.Name + "-server"
+	serverDir := filepath.Join(c.rootDir, "cmd", serverName)
+	os.Chdir(serverDir)
+	return execute(ctx, filepath.Join(serverDir, serverName))
 }
 
 func launchBrowser(ctx context.Context, c runConfig) {

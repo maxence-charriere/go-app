@@ -50,15 +50,15 @@ goapp run -v -b chrome  # run the app and launch the main page on chrome
 
 ```bash
 demo
-├── cmd
-│   ├── demo-server
-│   │   └── main.go
-│   └── demo-wasm
-│       └── main.go
-└── web
-    ├── style sheets...
-    ├── images...
-    └── etc...
+└── cmd
+    ├── demo-server
+    │   ├── main.go
+    │   └── web
+    │       ├── style sheets...
+    │       ├── images...
+    │       └── etc...
+    └── demo-wasm
+        └── main.go
 ```
 
 This layout follows the project layout defined in [golang-standards/project-layout](https://github.com/golang-standards/project-layout):
@@ -166,18 +166,17 @@ Once built, the directory tree should look like:
 
 ```bash
 demo
-├── cmd
-│   ├── demo-server
-│   │   └── main.go
-│   └── demo-wasm
-│       └── main.go
-├── demo-server (server)
-└── web
-    ├── goapp.wasm (app)
-    ├── wasm_exec.js
-    ├── style sheets...
-    ├── images...
-    └── etc...
+└── cmd
+    ├── demo-server
+    │   ├── demo-server (server)
+    │   ├── main.go
+    │   └── web
+    │       ├── goapp.wasm (app)
+    │       ├── wasm_exec.js
+    │       ├── images...
+    │       └── etc...
+    └── demo-wasm
+        └── main.go
 ```
 
 See a [full example](https://github.com/maxence-charriere/app/tree/master/demo) and its online demo:

@@ -17,11 +17,15 @@ import (
 )
 
 type buildConfig struct {
-	Force   bool `conf:"force" help:"Force rebuilding of package that are already up-to-date."`
-	Race    bool `conf:"race"  help:"Enable data race detection."`
-	Verbose bool `conf:"v"     help:"Enable verbose mode."`
+	Name    string `conf:"name"  help:"The name of the app."`
+	Force   bool   `conf:"force" help:"Force rebuilding of package that are already up-to-date."`
+	Race    bool   `conf:"race"  help:"Enable data race detection."`
+	Verbose bool   `conf:"v"     help:"Enable verbose mode."`
 
-	rootDir string
+	rootDir   string
+	serverDir string
+	webDir    string
+	wasmDir   string
 }
 
 func buildProject(ctx context.Context, args []string) {
@@ -48,6 +52,10 @@ func buildProject(ctx context.Context, args []string) {
 	}
 	c.rootDir = rootDir
 
+	if c.Name == "" {
+		c.Name = filepath.Base(rootDir)
+	}
+
 	if err := build(ctx, c); err != nil {
 		fail("%s", err)
 	}
@@ -56,6 +64,10 @@ func buildProject(ctx context.Context, args []string) {
 }
 
 func build(ctx context.Context, c buildConfig) error {
+	c.serverDir = filepath.Join(c.rootDir, "cmd", c.Name+"-server")
+	c.webDir = filepath.Join(c.serverDir, "web")
+	c.wasmDir = filepath.Join(c.rootDir, "cmd", c.Name+"-wasm")
+
 	log("building wasm app")
 	if err := buildWasm(ctx, c); err != nil {
 		return err
@@ -67,38 +79,36 @@ func build(ctx context.Context, c buildConfig) error {
 	}
 
 	log("installing go wasm support file")
-	if err := installWasmExec(c.rootDir); err != nil {
+	if err := installWasmExec(c); err != nil {
 		return err
 	}
 
-	if err := cleanCompressedStaticResources(c.rootDir); err != nil {
+	if err := cleanCompressedStaticResources(c.webDir); err != nil {
 		return err
 	}
 
 	log("generating etag")
 	etag := http.GenerateEtag()
-	if err := generateEtag(c.rootDir, etag); err != nil {
+	if err := generateEtag(etag, c.webDir); err != nil {
 		return err
 	}
 
 	log("generating service worker")
-	if err := generateServiceWorker(c.rootDir, etag); err != nil {
+	if err := generateServiceWorker(etag, c.webDir); err != nil {
 		return err
 	}
 
 	log("generating icons")
-	if err := generateProgressiveAppIcons(c.rootDir); err != nil {
+	if err := generateProgressiveAppIcons(c); err != nil {
 		return err
 	}
 
 	log("compressing static resources")
-	return compressStaticResources(c.rootDir, etag)
+	return compressStaticResources(etag, c.webDir)
 }
 
 func buildWasm(ctx context.Context, c buildConfig) error {
-	pkgName := filepath.Base(c.rootDir) + "-wasm"
-	pkg := filepath.Join(c.rootDir, "cmd", pkgName)
-	out := filepath.Join(c.rootDir, "web", "goapp.wasm")
+	out := filepath.Join(c.webDir, "goapp.wasm")
 
 	os.Setenv("GOOS", "js")
 	os.Setenv("GOARCH", "wasm")
@@ -118,15 +128,12 @@ func buildWasm(ctx context.Context, c buildConfig) error {
 		cmd = append(cmd, "-v")
 	}
 
-	cmd = append(cmd, pkg)
+	cmd = append(cmd, c.wasmDir)
 	return execute(ctx, cmd[0], cmd[1:]...)
 }
 
 func buildServer(ctx context.Context, c buildConfig) error {
-	pkgName := filepath.Base(c.rootDir) + "-server"
-	pkg := filepath.Join(c.rootDir, "cmd", pkgName)
-
-	out := filepath.Join(c.rootDir, pkgName)
+	out := filepath.Join(c.serverDir, c.Name+"-server")
 	if runtime.GOOS == "windows" {
 		out += ".exe"
 	}
@@ -148,17 +155,16 @@ func buildServer(ctx context.Context, c buildConfig) error {
 		cmd = append(cmd, "-v")
 	}
 
-	cmd = append(cmd, pkg)
+	cmd = append(cmd, c.serverDir)
 	return execute(ctx, cmd[0], cmd[1:]...)
 }
 
-func installWasmExec(rootDir string) error {
-	webWasmExec := filepath.Join(rootDir, "web", "wasm_exec.js")
+func installWasmExec(c buildConfig) error {
+	webWasmExec := filepath.Join(c.webDir, "wasm_exec.js")
 	return generateTemplate(webWasmExec, wasmExecJS, nil)
 }
 
-func generateServiceWorker(rootDir, etag string) error {
-	webDir := filepath.Join(rootDir, "web")
+func generateServiceWorker(etag, webDir string) error {
 	filename := filepath.Join(webDir, "goapp.js")
 	cachePaths := []string{}
 
@@ -201,31 +207,29 @@ func generateServiceWorker(rootDir, etag string) error {
 	})
 }
 
-func generateEtag(rootDir string, etag string) error {
-	etagname := filepath.Join(rootDir, "web", ".etag")
+func generateEtag(etag, webDir string) error {
+	etagname := filepath.Join(webDir, ".etag")
 	if err := ioutil.WriteFile(etagname, []byte(etag), 0666); err != nil {
 		return errors.Wrap(err, "generating etag failed")
 	}
 	return nil
 }
 
-func generateProgressiveAppIcons(rootDir string) error {
-	webDir := filepath.Join(rootDir, "web")
-
-	iconname := filepath.Join(webDir, "icon.png")
+func generateProgressiveAppIcons(c buildConfig) error {
+	iconname := filepath.Join(c.webDir, "icon.png")
 	if _, err := os.Stat(iconname); err != nil {
 		iconname = filepath.Join(os.Getenv("GOPATH"), "src", "github.com", "maxence-charriere", "app", "logo.png")
 	}
 
 	return generateIcons(iconname,
 		iconInfo{
-			Name:   filepath.Join(webDir, "icon-192.png"),
+			Name:   filepath.Join(c.webDir, "icon-192.png"),
 			Width:  192,
 			Height: 192,
 			Scale:  1,
 		},
 		iconInfo{
-			Name:   filepath.Join(webDir, "icon-512.png"),
+			Name:   filepath.Join(c.webDir, "icon-512.png"),
 			Width:  512,
 			Height: 512,
 			Scale:  1,
@@ -233,7 +237,7 @@ func generateProgressiveAppIcons(rootDir string) error {
 	)
 }
 
-func compressStaticResources(rootDir string, etag string) error {
+func compressStaticResources(etag, webDir string) error {
 	walk := func(path string, info os.FileInfo, err error) error {
 		if info.IsDir() {
 			return nil
@@ -272,7 +276,7 @@ func compressStaticResources(rootDir string, etag string) error {
 		return nil
 	}
 
-	return filepath.Walk(filepath.Join(rootDir, "web"), walk)
+	return filepath.Walk(webDir, walk)
 }
 
 func gzipRequired(filename string) bool {
