@@ -24,7 +24,6 @@ h1 {
     padding: 0 24px 12px;
     outline: 0;
     font-weight: 200;
-    text-transform: lowercase;
     letter-spacing: 1px;
 }
 
@@ -37,7 +36,6 @@ h6 {
     padding: 0 24px 12px;
     outline: 0;
     font-weight: 200;
-    text-transform: lowercase;
 }
 
 p {
@@ -58,8 +56,8 @@ a:hover {
 
 input {
     display: block;
-    border: 0;
-    border-bottom: 1px solid currentColor;
+    border: 0 solid currentColor;
+    border-bottom-width: 1px;
     background-color: transparent;
     outline: none;
     border-radius: 0;
@@ -72,6 +70,7 @@ input {
     color: currentColor;
 }
 
+input:hover,
 input:focus {
     caret-color: deepskyblue;
     border-color: deepskyblue;
@@ -110,27 +109,25 @@ table {
 }
 
 table th {
-    padding: 0 12px 12px;
+    padding: 0 12px 12px 0;
     border-bottom: 1px solid currentColor;
     font-size: 12pt;
     font-weight: 200;
-    text-transform: lowercase;
     text-align: start;
 }
 
 table td {
-    padding: 12px;
+    padding: 12px 12px 12px 0;
     border-bottom: 0.1px solid currentColor;
-    /* text-align: center; */
 }
 
 table tr:first-child td {
-    padding: 0 12px 12px;
+    padding: 0 12px 12px 0;
 }
 
 table tr:last-child td {
     border-bottom: 0;
-    padding: 12px;
+    padding: 12px 12px 0 0;
 }
 
 button {
@@ -142,7 +139,6 @@ button {
     margin: 0 6px 12px 0;
     min-width: 100px;
     text-align: center;
-    text-transform: lowercase;
     color: inherit;
     font: inherit;
     font-size: inherit;
@@ -245,7 +241,6 @@ button {
     margin-top: 6px;
     font-size: 16pt;
     font-weight: 100;
-    text-transform: lowercase;
     letter-spacing: 1px;
     max-width: 480px;
     text-align: center;
