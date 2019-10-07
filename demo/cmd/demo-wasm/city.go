@@ -65,7 +65,7 @@ collection of cultural relics.
 func (n *City) Render() string {
 	return `
 <div class="City" style="background-image: url('{{.Current.Image}}')">
-	<button class="Menu" onclick="OnMenuClick" oncontextmenu="OnMenuClick">☰</button>
+	<div class="Menu" onclick="OnMenuClick" oncontextmenu="OnMenuClick">☰</div>
 
 	<main>
 		<h1>{{.Current.Name}}</h1>

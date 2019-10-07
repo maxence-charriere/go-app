@@ -4,13 +4,15 @@ body {
 
 .Menu {
     position: fixed;
-    left: 12px;
-    top: 12px;
+    left: 0;
+    top: 0;
     padding: 12px;
+    margin: 0 12px 12px;
+    border: 0;
     font-size: 24px;
     font-weight: 200;
     color: currentColor;
-    border: 0;
+    cursor: pointer;
 }
 
 .Menu:hover {
@@ -18,7 +20,7 @@ body {
 }
 
 main {
-    max-width: 720px;
+    max-width: 100%;
     max-height: 100%;
     text-align: justify;
 }
@@ -45,6 +47,7 @@ input {
     width: 100%;
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -68,6 +71,10 @@ input {
     width: 100%;
 }
 
+
+.City main {
+    max-width: 720px;
+}
 
 .City h1 {
     text-align: center;

@@ -21,7 +21,7 @@ type Hello struct {
 func (h *Hello) Render() string {
 	return `
 <div class="Hello">
-	<button class="Menu" onclick="OnMenuClick" oncontextmenu="OnMenuClick">☰</button>
+	<div class="Menu" onclick="OnMenuClick" oncontextmenu="OnMenuClick">☰</div>
 
 	<main class="content">
 		<h1>
