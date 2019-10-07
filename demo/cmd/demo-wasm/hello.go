@@ -23,15 +23,17 @@ func (h *Hello) Render() string {
 <div class="Hello">
 	<button class="Menu" onclick="OnMenuClick" oncontextmenu="OnMenuClick">☰</button>
 
-	<h1>
-		Hello
-		{{if .Name}}
-			{{.Name}}
-		{{else}}
-			world
-		{{end}}!
-	</h1>
-	<input value="{{.Name}}" placeholder="What is your name?" onchange="Name" autofocus>
+	<main class="content">
+		<h1>
+			Hello
+			{{if .Name}}
+				{{.Name}}
+			{{else}}
+				world
+			{{end}}!
+		</h1>
+		<input value="{{.Name}}" placeholder="What is your name?" onchange="Name" autofocus>
+	</main>
 </div>
 	`
 }

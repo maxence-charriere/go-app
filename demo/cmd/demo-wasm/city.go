@@ -72,7 +72,7 @@ func (n *City) Render() string {
 		<p>{{.Current.Description}}</p>
 		<p class="Links">
 			{{range $k, $v := .Store}}
-				<a href="city?city={{$k}}">{{$v.Name}}</a>
+				<a class="app_button" href="city?city={{$k}}">{{$v.Name}}</a>
 			{{end}}
 			<br>
 		</p>

@@ -20,9 +20,11 @@ body {
 }
 
 h1 {
+    width: calc(100% - 24px - 24px);
     margin: 0;
     padding: 0 24px 12px;
     outline: 0;
+    font-size: 2.7em;
     font-weight: 200;
     letter-spacing: 1px;
 }
@@ -32,6 +34,7 @@ h3,
 h4,
 h5,
 h6 {
+    width: calc(100% - 24px - 24px);
     margin: 0;
     padding: 0 24px 12px;
     outline: 0;
@@ -39,6 +42,7 @@ h6 {
 }
 
 p {
+    width: calc(100% - 24px - 24px);
     margin: 0;
     padding: 0 24px 12px;
     outline: 0;
@@ -55,25 +59,25 @@ a:hover {
 }
 
 input {
-    display: block;
-    border: 0 solid currentColor;
-    border-bottom-width: 1px;
-    background-color: transparent;
-    outline: none;
-    border-radius: 0;
-    box-shadow: none;
-
+    width: calc(100% - 24px - 24px);
     margin: 0 24px 12px;
     padding: 0 0 3px;
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid currentColor;
+    outline: none;
+    box-shadow: none;
+    display: block;
+    background-color: transparent;
+    color: currentColor;
     font-size: inherit;
     font-family: inherit;
-    color: currentColor;
 }
 
 input:hover,
 input:focus {
-    caret-color: deepskyblue;
     border-bottom-color: deepskyblue;
+    caret-color: deepskyblue;
 }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -102,7 +106,8 @@ ul li:last-child {
 }
 
 table {
-    margin: 0 24px 12px;
+    width: calc(100% - 24px - 24px);
+    margin: 0 24px;
     border-collapse: collapse;
     table-layout: fixed;
     font-size: inherit;
@@ -127,22 +132,24 @@ table tr:first-child td {
 
 table tr:last-child td {
     border-bottom: 0;
-    padding: 12px 12px 0 0;
+    padding: 12px 12px 12px 0;
 }
 
-button {
-    display: inline-block;
-    background: none;
+button,
+.app_button {
+    min-width: 100px;
+    margin: 0 6px 12px 0;
+    padding: 8px;
     border: 1px solid currentColor;
     border-radius: 8px;
-    padding: 8px;
-    margin: 0 6px 12px 0;
-    min-width: 100px;
-    text-align: center;
+    outline: none;
+    display: inline-block;
+    background: none;
     color: inherit;
     font: inherit;
     font-size: inherit;
-    outline: none;
+    text-align: center;
+    cursor: pointer;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -181,6 +188,12 @@ button {
     -webkit-box-shadow: -1px 12px 38px 0px rgba(0, 0, 0, 0.6);
     -moz-box-shadow: -1px 12px 38px 0px rgba(0, 0, 0, 0.6);
     box-shadow: -1px 12px 38px 0px rgba(0, 0, 0, 0.6);
+}
+
+#App_ContextMenu button {
+    border: 0;
+    border-radius: 0;
+    margin: 0;
 }
 
 .App_MenuItemSeparator {
