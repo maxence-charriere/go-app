@@ -73,7 +73,7 @@ input {
 input:hover,
 input:focus {
     caret-color: deepskyblue;
-    border-color: deepskyblue;
+    border-bottom-color: deepskyblue;
 }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -118,7 +118,7 @@ table th {
 
 table td {
     padding: 12px 12px 12px 0;
-    border-bottom: 0.1px solid currentColor;
+    border-bottom: 1px solid currentColor;
 }
 
 table tr:first-child td {
