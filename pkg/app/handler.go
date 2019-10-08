@@ -59,6 +59,9 @@ type Handler struct {
 	// The text displayed while loading a page.
 	LoadingLabel string
 
+	// Additional headers to be added in <head></head>.
+	Headers []string
+
 	// The app name.
 	Name string
 
@@ -98,6 +101,7 @@ func (h *Handler) init() {
 	var pages http.Handler = &apphttp.PageHandler{
 		Author:       h.Author,
 		Description:  h.Description,
+		Headers:      h.Headers,
 		Keywords:     h.Keywords,
 		LoadingLabel: h.LoadingLabel,
 		Name:         h.Name,
