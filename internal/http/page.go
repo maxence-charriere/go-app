@@ -21,6 +21,7 @@ var lastModified = time.Now().UTC().Format("Mon, 02 Jan 2006 15:04:05 GMT")
 type PageHandler struct {
 	Author       string
 	Description  string
+	Headers      []string
 	Icon         string
 	Keywords     []string
 	LoadingLabel string
@@ -52,6 +53,7 @@ func (h *PageHandler) initPage() {
 		CSS          []string
 		DefaultCSS   string
 		Description  string
+		Headers      []string
 		Icon         string
 		Keywords     string
 		LoadingLabel string
@@ -64,6 +66,7 @@ func (h *PageHandler) initPage() {
 		CSS:          filepathsFromDir(h.WebDir, ".css"),
 		DefaultCSS:   pageCSS,
 		Description:  h.Description,
+		Headers:      h.Headers,
 		Icon:         h.Icon,
 		Keywords:     strings.Join(h.Keywords, ", "),
 		LoadingLabel: h.LoadingLabel,

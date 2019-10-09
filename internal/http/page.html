@@ -24,6 +24,8 @@
     <script>
 {{.AppJS}}
     </script>
+    {{range .Headers}}{{.}}
+    {{end}}
 </head>
 <body>
     <div class="App_Loader">

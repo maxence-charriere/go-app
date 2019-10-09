@@ -16,9 +16,6 @@ var (
 )
 
 func init() {
-	LocalStorage = newJSStorage("localStorage")
-	SessionStorage = newJSStorage("sessionStorage")
-
 	log.DefaultColor = ""
 	log.InfoColor = ""
 	log.ErrorColor = ""
@@ -37,6 +34,9 @@ func run() {
 			contextMenu:         &contextMenu{},
 		}
 		defer page.clean()
+
+		LocalStorage = newJSStorage("localStorage")
+		SessionStorage = newJSStorage("sessionStorage")
 
 		overrideAnchorClick := js.FuncOf(overrideAnchorClick)
 		defer overrideAnchorClick.Release()
