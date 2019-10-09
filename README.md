@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://demo.murlok.io"><img alt="ui demo" src="https://github.com/maxence-charriere/app/wiki/assets/ui.png"></a>
+    <a href="https://luck.murlok.io"><img alt="ui demo" src="https://luck.murlok.io/demo.gif"></a>
 </p>
 
 # app
