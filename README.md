@@ -1,4 +1,4 @@
-<p align="center">
+<p align="center" style="border-radius:6px">
     <a href="https://luck.murlok.io"><img alt="ui demo" src="https://luck.murlok.io/demo.gif"></a>
 </p>
 
@@ -20,7 +20,6 @@ It features:
 - [PWA support](https://developers.google.com/web/progressive-web-apps/)
 - [Build tool](https://github.com/maxence-charriere/app/tree/master/cmd/goapp/main.go) that removes the hassle of packaging wasm apps
 - [React](https://reactjs.org) flavored API
-
 
 ## Install
 
@@ -183,10 +182,11 @@ See a [full example](https://github.com/maxence-charriere/app/tree/master/demo) 
 - [City](https://demo.murlok.io/city)
 
 ## Support
-|Platform|Chrome|Edge|Firefox|Safari|
-|:-|:-:|:-:|:-:|:-:|
-|Desktop|✔|✔*|✔|✔|
-|Mobile|✔|✔|✔|✔|
+
+| Platform | Chrome | Edge | Firefox | Safari |
+| :------- | :----: | :--: | :-----: | :----: |
+| Desktop  |   ✔    | ✔\*  |    ✔    |   ✔    |
+| Mobile   |   ✔    |  ✔   |    ✔    |   ✔    |
 
 Issues:
 
