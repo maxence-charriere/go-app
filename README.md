@@ -180,7 +180,7 @@ See a [full example](https://github.com/maxence-charriere/app/tree/master/demo).
 
 ## Live demo
 
-- [Luck](https://luck.murlok.com)
+- [Luck](https://luck.murlok.io)
 - [Hello](https://demo.murlok.io)
 - [City](https://demo.murlok.io/city)
 
