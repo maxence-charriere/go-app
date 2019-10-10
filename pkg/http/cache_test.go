@@ -22,13 +22,16 @@ func TestManifestServeHTTP(t *testing.T) {
 
 	r := httptest.NewRequest("GET", "http://localhost/hello", nil)
 	cache := MemoryCache(http.HandlerFunc(handler), 42).(*memoryCache)
-	cache.ServeHTTP(httptest.NewRecorder(), r)
+	rec := httptest.NewRecorder()
+	cache.ServeHTTP(rec, r)
 
 	v, cached := cache.get("/hello")
+	require.Equal(t, http.StatusOK, rec.Code)
 	require.True(t, cached)
 	require.Equal(t, "text/plain", v.contentType)
 	require.Equal(t, "5", v.contentLength)
 	require.Equal(t, body, v.body)
+	require.Equal(t, body, rec.Body.Bytes())
 }
 
 func TestManifestServeHTTPCachedContent(t *testing.T) {
@@ -51,6 +54,28 @@ func TestManifestServeHTTPCachedContent(t *testing.T) {
 	require.Equal(t, "text/plain", v.contentType)
 	require.Equal(t, "5", v.contentLength)
 	require.Equal(t, body, v.body)
+}
+
+func TestManifestServeHTTPNotCache(t *testing.T) {
+	body := []byte("simulate image")
+
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "image/png")
+		w.Header().Set("Content-Length", fmt.Sprint(len(body)))
+		w.WriteHeader(http.StatusOK)
+		w.Write(body)
+	}
+
+	r := httptest.NewRequest("GET", "http://localhost/hello", nil)
+	cache := MemoryCache(http.HandlerFunc(handler), 42).(*memoryCache)
+	rec := httptest.NewRecorder()
+	cache.ServeHTTP(rec, r)
+
+	_, cached := cache.get("/hello")
+	require.False(t, cached)
+	require.Equal(t, "image/png", rec.Header().Get("Content-Type"))
+	require.Equal(t, fmt.Sprint(len(body)), rec.Header().Get("Content-Length"))
+	require.Equal(t, body, rec.Body.Bytes())
 }
 
 func TestManifestServeHTTPCacheError(t *testing.T) {

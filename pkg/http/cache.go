@@ -10,17 +10,24 @@ import (
 )
 
 // MemoryCache returns a decorated version of the given http.Handler that caches
-// and serves responses bodies.
-func MemoryCache(h http.Handler, capacity int) http.Handler {
+// and serves responses bodies with the given contents type. It uses
+// DefaultContentTypes when there is no content types specified.
+func MemoryCache(h http.Handler, capacity int, contentTypes ...string) http.Handler {
+	if len(contentTypes) == 0 {
+		contentTypes = DefaultContentTypes
+	}
+
 	return &memoryCache{
-		handler:  h,
-		capacity: capacity,
+		handler:      h,
+		capacity:     capacity,
+		contentTypes: contentTypes,
 	}
 }
 
 type memoryCache struct {
-	handler  http.Handler
-	capacity int
+	handler      http.Handler
+	capacity     int
+	contentTypes []string
 
 	once   sync.Once
 	mu     sync.RWMutex
@@ -52,19 +59,33 @@ func (c *memoryCache) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	c.mu.RUnlock()
 
+	var once sync.Once
+	var isCacheable bool
 	var buffer bytes.Buffer
 
 	proxy := proxyWriter{
 		header: w.Header,
 		write: func(b []byte) (int, error) {
-			if n, err := w.Write(b); err != nil {
-				return n, err
+			once.Do(func() {
+				contentType := w.Header().Get("Content-Type")
+				isCacheable = isCacheableOrCompressibleContentType(c.contentTypes, contentType)
+			})
+
+			if isCacheable {
+				if n, err := buffer.Write(b); err != nil {
+					return n, err
+				}
 			}
-			return buffer.Write(b)
+			return w.Write(b)
+
 		},
 		writeHeader: w.WriteHeader,
 	}
 	c.handler.ServeHTTP(proxy, r)
+
+	if !isCacheable {
+		return
+	}
 
 	c.mu.Lock()
 	if _, cached := c.get(path); cached {
