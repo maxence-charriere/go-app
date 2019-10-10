@@ -10,7 +10,7 @@ import (
 )
 
 // MemoryCache returns a decorated version of the given http.Handler that caches
-// request bodies.
+// and serves responses bodies.
 func MemoryCache(h http.Handler, capacity int) http.Handler {
 	return &memoryCache{
 		handler:  h,
@@ -52,8 +52,19 @@ func (c *memoryCache) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	c.mu.RUnlock()
 
-	writer := responseWriter{writer: w}
-	c.handler.ServeHTTP(&writer, r)
+	var buffer bytes.Buffer
+
+	proxy := proxyWriter{
+		header: w.Header,
+		write: func(b []byte) (int, error) {
+			if n, err := w.Write(b); err != nil {
+				return n, err
+			}
+			return buffer.Write(b)
+		},
+		writeHeader: w.WriteHeader,
+	}
+	c.handler.ServeHTTP(proxy, r)
 
 	c.mu.Lock()
 	if _, cached := c.get(path); cached {
@@ -64,7 +75,7 @@ func (c *memoryCache) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		contentEncoding: w.Header().Get("Content-Encoding"),
 		contentType:     w.Header().Get("Content-Type"),
 		contentLength:   w.Header().Get("Content-Length"),
-		body:            writer.buffer.Bytes(),
+		body:            buffer.Bytes(),
 	}
 
 	if err := c.set(path, v); err != nil {
@@ -102,24 +113,4 @@ type cacheValue struct {
 	contentType     string
 	contentLength   string
 	body            []byte
-}
-
-type responseWriter struct {
-	writer http.ResponseWriter
-	buffer bytes.Buffer
-}
-
-func (w *responseWriter) Header() http.Header {
-	return w.writer.Header()
-}
-
-func (w *responseWriter) Write(b []byte) (int, error) {
-	if n, err := w.writer.Write(b); err != nil {
-		return n, err
-	}
-	return w.buffer.Write(b)
-}
-
-func (w *responseWriter) WriteHeader(statusCode int) {
-	w.writer.WriteHeader(statusCode)
 }
