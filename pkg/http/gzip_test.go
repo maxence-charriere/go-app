@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestGzipServeHttp(t *testing.T) {
+func TestGzipServeHTTP(t *testing.T) {
 	body := []byte("hello gzip world")
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +38,7 @@ func TestGzipServeHttp(t *testing.T) {
 	require.Equal(t, body, res)
 }
 
-func TestGzipServeHttpNoCompressible(t *testing.T) {
+func TestGzipServeHTTPNotCompressible(t *testing.T) {
 	body := []byte("simulated image")
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
@@ -56,10 +56,11 @@ func TestGzipServeHttpNoCompressible(t *testing.T) {
 	require.Equal(t, http.StatusOK, rec.Code)
 	require.Equal(t, "image/png", rec.Header().Get("Content-Type"))
 	require.Empty(t, rec.Header().Get("Content-Encoding"))
+	require.Equal(t, fmt.Sprint(len(body)), rec.Header().Get("Content-Length"))
 	require.Equal(t, body, rec.Body.Bytes())
 }
 
-func TestGzipServeHttpNoWrite(t *testing.T) {
+func TestGzipServeHTTPNoWrite(t *testing.T) {
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	}
@@ -72,10 +73,11 @@ func TestGzipServeHttpNoWrite(t *testing.T) {
 	require.Equal(t, http.StatusOK, rec.Code)
 	require.Empty(t, rec.Header().Get("Content-Encoding"))
 	require.Empty(t, rec.Header().Get("Content-Type"))
+	require.Empty(t, rec.Header().Get("Content-Length"))
 	require.Empty(t, rec.Body.Len())
 }
 
-func TestGzipServeHttpNoContentType(t *testing.T) {
+func TestGzipServeHTTPNoContentType(t *testing.T) {
 	body := []byte("simulated image")
 
 	handler := func(w http.ResponseWriter, r *http.Request) {

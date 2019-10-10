@@ -2,7 +2,6 @@ package http
 
 import (
 	"compress/gzip"
-	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -74,8 +73,6 @@ func (z *zip) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (z *zip) isCompressible(contentType string) bool {
-	fmt.Println("is comp:", contentType)
-
 	if contentType == "" {
 		return false
 	}
