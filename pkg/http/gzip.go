@@ -2,22 +2,17 @@ package http
 
 import (
 	"compress/gzip"
-	"io"
 	"net/http"
-	"sync"
+	"strings"
+
+	"github.com/maxence-charriere/app/pkg/log"
 )
 
 // Gzip returns a decorated version of the given handler that gzip responses
-// bodies with the given content types. It uses DefaultContentTypes when there
-// is no content types specified.
-func Gzip(h http.Handler, contentTypes ...string) http.Handler {
-	if len(contentTypes) == 0 {
-		contentTypes = DefaultContentTypes
-	}
-
+// bodies.
+func Gzip(h http.Handler) http.Handler {
 	return &zip{
-		handler:      h,
-		contentTypes: contentTypes,
+		handler: h,
 	}
 }
 
@@ -27,32 +22,24 @@ type zip struct {
 }
 
 func (z *zip) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var writer io.Writer = w
-	var once sync.Once
-	var gz *gzip.Writer
-
-	defer func() {
-		if gz != nil {
-			gz.Close()
-		}
-	}()
-
-	proxy := proxyWriter{
-		header: w.Header,
-		write: func(b []byte) (int, error) {
-			once.Do(func() {
-				contentType := w.Header().Get("Content-Type")
-				if isCacheableOrCompressibleContentType(z.contentTypes, contentType) {
-					gz = gzip.NewWriter(w)
-					writer = gz
-					w.Header().Set("Content-Encoding", "gzip")
-				}
-			})
-
-			return writer.Write(b)
-		},
-		writeHeader: w.WriteHeader,
+	acceptEncoding := r.Header.Get("Accept-Encoding")
+	if !strings.Contains(acceptEncoding, "gzip") {
+		z.handler.ServeHTTP(w, r)
+		return
 	}
 
-	z.handler.ServeHTTP(proxy, r)
+	log.Info("gzipping").
+		T("path", r.URL.Path)
+
+	gz := gzip.NewWriter(w)
+	proxy := proxyWriter{
+		header:      w.Header,
+		write:       gz.Write,
+		writeHeader: w.WriteHeader,
+		close:       gz.Close,
+	}
+
+	w.Header().Set("Content-Encoding", "gzip")
+	z.handler.ServeHTTP(&proxy, r)
+	proxy.Close()
 }

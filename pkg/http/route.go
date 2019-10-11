@@ -1,6 +1,8 @@
 package http
 
-import "net/http"
+import (
+	"net/http"
+)
 
 // RouteHandler is the interface that describe a routable http.Handler.
 type RouteHandler interface {
@@ -19,9 +21,9 @@ func Route(handlers ...RouteHandler) http.Handler {
 type route []RouteHandler
 
 func (r route) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	for _, route := range r {
-		if route.CanHandle(req) {
-			route.ServeHTTP(w, req)
+	for _, h := range r {
+		if h.CanHandle(req) {
+			h.ServeHTTP(w, req)
 			return
 		}
 	}

@@ -21,10 +21,11 @@ func TestGzipServeHTTP(t *testing.T) {
 		w.Write(body)
 	}
 
-	r := httptest.NewRequest("GET", "http://localhost/hello", nil)
 	gz := Gzip(http.HandlerFunc(handler))
 	rec := httptest.NewRecorder()
-	gz.ServeHTTP(rec, r)
+	req := httptest.NewRequest("GET", "http://localhost/hello", nil)
+	req.Header.Set("Accept-Encoding", "gzip")
+	gz.ServeHTTP(rec, req)
 
 	require.Equal(t, http.StatusOK, rec.Code)
 	require.Equal(t, "gzip", rec.Header().Get("Content-Encoding"))
@@ -57,41 +58,5 @@ func TestGzipServeHTTPNotCompressible(t *testing.T) {
 	require.Equal(t, "image/png", rec.Header().Get("Content-Type"))
 	require.Empty(t, rec.Header().Get("Content-Encoding"))
 	require.Equal(t, fmt.Sprint(len(body)), rec.Header().Get("Content-Length"))
-	require.Equal(t, body, rec.Body.Bytes())
-}
-
-func TestGzipServeHTTPNoWrite(t *testing.T) {
-	handler := func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-	}
-
-	r := httptest.NewRequest("GET", "http://localhost/hello", nil)
-	gz := Gzip(http.HandlerFunc(handler))
-	rec := httptest.NewRecorder()
-	gz.ServeHTTP(rec, r)
-
-	require.Equal(t, http.StatusOK, rec.Code)
-	require.Empty(t, rec.Header().Get("Content-Encoding"))
-	require.Empty(t, rec.Header().Get("Content-Type"))
-	require.Empty(t, rec.Header().Get("Content-Length"))
-	require.Empty(t, rec.Body.Len())
-}
-
-func TestGzipServeHTTPNoContentType(t *testing.T) {
-	body := []byte("simulated image")
-
-	handler := func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write(body)
-	}
-
-	r := httptest.NewRequest("GET", "http://localhost/hello", nil)
-	gz := Gzip(http.HandlerFunc(handler))
-	rec := httptest.NewRecorder()
-	gz.ServeHTTP(rec, r)
-
-	require.Equal(t, http.StatusOK, rec.Code)
-	require.Empty(t, rec.Header().Get("Content-Encoding"))
-	require.Empty(t, rec.Header().Get("Content-Type"))
 	require.Equal(t, body, rec.Body.Bytes())
 }

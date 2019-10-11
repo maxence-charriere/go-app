@@ -2,15 +2,16 @@ package http
 
 import (
 	"bytes"
-	"compress/gzip"
 	"encoding/json"
 	"net/http"
-	"sync"
+	"strconv"
+
+	"github.com/maxence-charriere/app/pkg/log"
 )
 
-// ManifestHandler is a handler that serves a manifest file for progressive
-// webapp support.
-type ManifestHandler struct {
+// Manifest is a handler that serves a manifest file for progressive webapp
+// support.
+type Manifest struct {
 	BackgroundColor string
 	Name            string
 	Orientation     string
@@ -18,30 +19,19 @@ type ManifestHandler struct {
 	Scope           string
 	StartURL        string
 	ThemeColor      string
-
-	once         sync.Once
-	lastModified string
-	manifest     []byte
 }
 
-func (h *ManifestHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	h.once.Do(h.init)
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Content-Encoding", "gzip")
-	w.Header().Set("Last-Modified", lastModified)
-	w.Write(h.manifest)
+// CanHandle returns whether it can handle the given request.
+func (m Manifest) CanHandle(r *http.Request) bool {
+	return r.URL.Path == "/manifest.json"
 }
 
-func (h *ManifestHandler) init() {
-	buffer := bytes.Buffer{}
-	writer := gzip.NewWriter(&buffer)
+func (m Manifest) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	var b bytes.Buffer
 
-	enc := json.NewEncoder(writer)
-	enc.SetIndent("", "    ")
-
+	enc := json.NewEncoder(&b)
 	if err := enc.Encode(manifest{
-		BackgroundColor: h.BackgroundColor,
+		BackgroundColor: m.BackgroundColor,
 		Display:         "standalone",
 		Icons: []manifestIcon{
 			{
@@ -55,20 +45,32 @@ func (h *ManifestHandler) init() {
 				Type:  "image/png",
 			},
 		},
-		Name:                      h.Name,
-		Orientation:               h.Orientation,
+		Name:                      m.Name,
+		Orientation:               m.Orientation,
 		PreferRelatedApplications: true,
 		RelatedApplications:       []interface{}{},
-		ShortName:                 h.ShortName,
-		Scope:                     h.Scope,
-		StartURL:                  h.StartURL,
-		ThemeColor:                h.ThemeColor,
+		ShortName:                 m.ShortName,
+		Scope:                     m.Scope,
+		StartURL:                  m.StartURL,
+		ThemeColor:                m.ThemeColor,
 	}); err != nil {
-		panic(err)
+		log.Error("generating manifest.json failed").
+			T("error", err).
+			T("path", r.URL.Path)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 
-	writer.Close()
-	h.manifest = buffer.Bytes()
+	w.Header().Set("Content-Length", strconv.Itoa(b.Len()))
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Last-Modified", lastModified)
+	w.WriteHeader(http.StatusOK)
+
+	if _, err := w.Write(b.Bytes()); err != nil {
+		log.Error("writing response failed").
+			T("error", err).
+			T("path", r.URL.Path)
+	}
 }
 
 type manifest struct {

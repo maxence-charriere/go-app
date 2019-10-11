@@ -7,7 +7,8 @@ import (
 	"strings"
 	"sync"
 
-	apphttp "github.com/maxence-charriere/app/internal/http"
+	inthttp "github.com/maxence-charriere/app/internal/http"
+	pkghttp "github.com/maxence-charriere/app/pkg/http"
 )
 
 // ProgressiveAppConfig represents the configuration used to describe a
@@ -71,6 +72,9 @@ type Handler struct {
 	// The he path of the web directory. Default is web.
 	WebDir string
 
+	// The max size of the internal cache. Default is 64mb.
+	CacheMaxSize int
+
 	once sync.Once
 }
 
@@ -89,44 +93,41 @@ func (h *Handler) init() {
 		h.LoadingLabel = "loading"
 	}
 
-	files := apphttp.FileHandler(webDir)
-	files = apphttp.GzipHandler(files, webDir)
-	files = apphttp.CacheHandler(files, webDir)
-
 	themeColor := h.ProgressiveApp.ThemeColor
 	if themeColor == "" {
 		themeColor = "#21252b"
 	}
 
-	var pages http.Handler = &apphttp.PageHandler{
-		Author:       h.Author,
-		Description:  h.Description,
-		Headers:      h.Headers,
-		Keywords:     h.Keywords,
-		LoadingLabel: h.LoadingLabel,
-		Name:         h.Name,
-		ThemeColor:   themeColor,
-		WebDir:       webDir,
+	cacheMaxSize := h.CacheMaxSize
+	if cacheMaxSize == 0 {
+		cacheMaxSize = 64000000
 	}
-	pages = apphttp.CacheHandler(pages, webDir)
 
-	var manifest http.Handler = &apphttp.ManifestHandler{
-		BackgroundColor: themeColor,
-		Name:            h.Name,
-		Orientation:     orientation(h.ProgressiveApp.LanscapeMode),
-		ShortName:       shortName(h.Name, h.ProgressiveApp.ShortName),
-		Scope:           entryPoint(h.ProgressiveApp.Scope),
-		StartURL:        entryPoint(h.ProgressiveApp.StartURL),
-		ThemeColor:      themeColor,
-	}
-	manifest = apphttp.CacheHandler(manifest, webDir)
-
-	h.Handler = &apphttp.RouteHandler{
-		Files:    files,
-		Manifest: manifest,
-		Pages:    pages,
-		WebDir:   webDir,
-	}
+	handler := pkghttp.Route(
+		pkghttp.Files(webDir),
+		inthttp.Manifest{
+			BackgroundColor: themeColor,
+			Name:            h.Name,
+			Orientation:     orientation(h.ProgressiveApp.LanscapeMode),
+			ShortName:       shortName(h.Name, h.ProgressiveApp.ShortName),
+			Scope:           entryPoint(h.ProgressiveApp.Scope),
+			StartURL:        entryPoint(h.ProgressiveApp.StartURL),
+			ThemeColor:      themeColor,
+		},
+		inthttp.Page{
+			Author:       h.Author,
+			Description:  h.Description,
+			Headers:      h.Headers,
+			Keywords:     h.Keywords,
+			LoadingLabel: h.LoadingLabel,
+			Name:         h.Name,
+			ThemeColor:   themeColor,
+			WebDir:       webDir,
+		},
+	)
+	handler = pkghttp.Gzip(handler)
+	handler = pkghttp.Version(handler, inthttp.GetEtag(webDir))
+	h.Handler = handler
 }
 
 func shortName(name, shortName string) string {
