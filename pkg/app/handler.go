@@ -126,7 +126,8 @@ func (h *Handler) init() {
 		},
 	)
 	handler = pkghttp.Gzip(handler)
-	handler = pkghttp.Version(handler, inthttp.GetEtag(webDir))
+	// handler = pkghttp.Version(handler, inthttp.GetEtag(webDir))
+	handler = pkghttp.Watch(handler)
 	h.Handler = handler
 }
 

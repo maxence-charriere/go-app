@@ -7,10 +7,15 @@ import (
 )
 
 // Gzip returns a decorated version of the given handler that gzip responses
-// bodies.
-func Gzip(h http.Handler) http.Handler {
+// bodies whit the given content-types.
+func Gzip(h http.Handler, contentTypes ...string) http.Handler {
+	if len(contentTypes) == 0 {
+		contentTypes = DefaultContentTypes
+	}
+
 	return &zip{
-		handler: h,
+		handler:      h,
+		contentTypes: contentTypes,
 	}
 }
 
@@ -26,15 +31,19 @@ func (z *zip) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	gz := gzip.NewWriter(w)
-	proxy := proxyWriter{
-		header:      w.Header,
-		write:       gz.Write,
-		writeHeader: w.WriteHeader,
-		close:       gz.Close,
+	proxy := ProxyWriter{
+		Writer:       w,
+		HeaderWriter: w,
+		BeforeWrite: func(p *ProxyWriter) {
+			contentType := p.HeaderWriter.Header().Get("Content-Type")
+			if isCacheableOrCompressibleContentType(z.contentTypes, contentType) {
+				p.HeaderWriter.Header().Set("Content-Encoding", "gzip")
+				p.HeaderWriter.Header().Del("Content-Lenght")
+				p.Writer = gzip.NewWriter(w)
+			}
+		},
 	}
 
-	w.Header().Set("Content-Encoding", "gzip")
 	z.handler.ServeHTTP(&proxy, r)
 	proxy.Close()
 }
