@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+	"sync"
 
 	"github.com/maxence-charriere/app/pkg/log"
 )
@@ -19,14 +20,32 @@ type Manifest struct {
 	Scope           string
 	StartURL        string
 	ThemeColor      string
+
+	once sync.Once
+	body []byte
 }
 
 // CanHandle returns whether it can handle the given request.
-func (m Manifest) CanHandle(r *http.Request) bool {
+func (m *Manifest) CanHandle(r *http.Request) bool {
 	return r.URL.Path == "/manifest.json"
 }
 
-func (m Manifest) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (m *Manifest) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	m.once.Do(m.init)
+
+	w.Header().Set("Content-Length", strconv.Itoa(len(m.body)))
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Last-Modified", lastModified)
+	w.WriteHeader(http.StatusOK)
+
+	if _, err := w.Write(m.body); err != nil {
+		log.Error("writing response failed").
+			T("error", err).
+			T("path", r.URL.Path)
+	}
+}
+
+func (m *Manifest) init() {
 	var b bytes.Buffer
 
 	enc := json.NewEncoder(&b)
@@ -56,21 +75,10 @@ func (m Manifest) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}); err != nil {
 		log.Error("generating manifest.json failed").
 			T("error", err).
-			T("path", r.URL.Path)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+			Panic()
 	}
 
-	w.Header().Set("Content-Length", strconv.Itoa(b.Len()))
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Last-Modified", lastModified)
-	w.WriteHeader(http.StatusOK)
-
-	if _, err := w.Write(b.Bytes()); err != nil {
-		log.Error("writing response failed").
-			T("error", err).
-			T("path", r.URL.Path)
-	}
+	m.body = b.Bytes()
 }
 
 type manifest struct {

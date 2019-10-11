@@ -72,9 +72,6 @@ type Handler struct {
 	// The he path of the web directory. Default is web.
 	WebDir string
 
-	// The max size of the internal cache. Default is 64mb.
-	CacheMaxSize int
-
 	once sync.Once
 }
 
@@ -98,14 +95,9 @@ func (h *Handler) init() {
 		themeColor = "#21252b"
 	}
 
-	cacheMaxSize := h.CacheMaxSize
-	if cacheMaxSize == 0 {
-		cacheMaxSize = 64000000
-	}
-
 	handler := pkghttp.Route(
 		pkghttp.Files(webDir),
-		inthttp.Manifest{
+		&inthttp.Manifest{
 			BackgroundColor: themeColor,
 			Name:            h.Name,
 			Orientation:     orientation(h.ProgressiveApp.LanscapeMode),
@@ -114,7 +106,7 @@ func (h *Handler) init() {
 			StartURL:        entryPoint(h.ProgressiveApp.StartURL),
 			ThemeColor:      themeColor,
 		},
-		inthttp.Page{
+		&inthttp.Page{
 			Author:       h.Author,
 			Description:  h.Description,
 			Headers:      h.Headers,
@@ -125,8 +117,7 @@ func (h *Handler) init() {
 			WebDir:       webDir,
 		},
 	)
-	handler = pkghttp.Gzip(handler)
-	// handler = pkghttp.Version(handler, inthttp.GetEtag(webDir))
+	handler = pkghttp.Version(handler, inthttp.GetEtag(webDir))
 	handler = pkghttp.Watch(handler)
 	h.Handler = handler
 }

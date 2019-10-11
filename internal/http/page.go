@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
 	"text/template"
 	"time"
 
@@ -29,14 +30,33 @@ type Page struct {
 	Name         string
 	ThemeColor   string
 	WebDir       string
+
+	once sync.Once
+	body []byte
 }
 
 // CanHandle returns whether it can handle the given request.
-func (p Page) CanHandle(r *http.Request) bool {
+func (p *Page) CanHandle(r *http.Request) bool {
 	return true
 }
 
-func (p Page) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (p *Page) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	p.once.Do(p.init)
+
+	w.Header().Set("Content-Length", strconv.Itoa(len(p.body)))
+	w.Header().Set("Content-Type", "text/html")
+	w.Header().Set("Last-Modified", lastModified)
+	w.Header().Set("Cache-Path-Override", "/")
+	w.WriteHeader(http.StatusOK)
+
+	if _, err := w.Write(p.body); err != nil {
+		log.Error("writing response failed").
+			T("error", err).
+			T("path", r.URL.Path)
+	}
+}
+
+func (p *Page) init() {
 	var b bytes.Buffer
 
 	tmpl := template.Must(template.New("page").Parse(pageHTML))
@@ -69,20 +89,10 @@ func (p Page) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}); err != nil {
 		log.Error("generating page failed").
 			T("error", err).
-			T("path", r.URL.Path)
+			Panic()
 	}
 
-	w.Header().Set("Content-Length", strconv.Itoa(b.Len()))
-	w.Header().Set("Content-Type", "text/html")
-	w.Header().Set("Last-Modified", lastModified)
-	w.Header().Set("Cache-Path-Override", "/")
-	w.WriteHeader(http.StatusOK)
-
-	if _, err := w.Write(b.Bytes()); err != nil {
-		log.Error("writing response failed").
-			T("error", err).
-			T("path", r.URL.Path)
-	}
+	p.body = b.Bytes()
 }
 
 func filepathsFromDir(dirPath string, extensions ...string) []string {
