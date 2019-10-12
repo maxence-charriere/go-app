@@ -305,12 +305,24 @@ func (m *messenger) removeBinding(b *Binding) {
 type BindContext interface {
 	context.Context
 
-	// Cancel stop the binding execution.
+	// Get returns a value from the current binding chain.
+	Get(k string) interface{}
+
+	// Lookup looks for a value from the current binding chain.
+	Lookup(k string) (interface{}, bool)
+
+	// Set sets a value in the current binding chain.
+	Set(k string, v interface{})
+
+	// Cancel stop the binding chain execution.
 	Cancel(error)
 }
 
 type bindContext struct {
 	context.Context
+
+	mu     sync.RWMutex
+	values map[string]interface{}
 	cancel func()
 	err    error
 }
@@ -323,12 +335,44 @@ func newBindContext() *bindContext {
 	}
 }
 
+func (ctx *bindContext) Get(k string) interface{} {
+	ctx.mu.RLock()
+	defer ctx.mu.RUnlock()
+
+	v := ctx.values[k]
+	return v
+}
+
+func (ctx *bindContext) Lookup(k string) (interface{}, bool) {
+	ctx.mu.RLock()
+	defer ctx.mu.RUnlock()
+
+	v, ok := ctx.values[k]
+	return v, ok
+}
+
+func (ctx *bindContext) Set(k string, v interface{}) {
+	ctx.mu.Lock()
+	defer ctx.mu.Unlock()
+
+	if ctx.values == nil {
+		ctx.values = make(map[string]interface{})
+	}
+	ctx.values[k] = v
+}
+
 func (ctx *bindContext) Cancel(err error) {
-	ctx.cancel()
+	ctx.mu.Lock()
+	defer ctx.mu.Unlock()
+
 	ctx.err = err
+	ctx.cancel()
 }
 
 func (ctx *bindContext) Err() error {
+	ctx.mu.RLock()
+	defer ctx.mu.RUnlock()
+
 	if ctx.err != nil {
 		return ctx.err
 	}

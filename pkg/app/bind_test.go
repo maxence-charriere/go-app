@@ -344,3 +344,23 @@ func TestBindingDefer(t *testing.T) {
 		time.Sleep(time.Millisecond)
 	}
 }
+
+func TestBindingContext(t *testing.T) {
+	b := newBindContext()
+	require.Nil(t, b.Get("test"))
+
+	_, exists := b.Lookup("test")
+	require.False(t, exists)
+
+	b.Set("test", 42)
+	require.Equal(t, 42, b.Get("test"))
+	v, exists := b.Lookup("test")
+	require.Equal(t, 42, v)
+	require.True(t, exists)
+
+	require.NoError(t, b.Err())
+	b.Cancel(nil)
+	require.Equal(t, context.Canceled, b.Err())
+	b.Cancel(errors.New("test"))
+	require.Error(t, b.Err())
+}
