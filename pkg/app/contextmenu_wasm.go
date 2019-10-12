@@ -16,7 +16,7 @@ type contextMenu struct {
 }
 
 func (m *contextMenu) OnMount() {
-	Bind("__app.NewContextMenu", m).DoOnUI(m.new)
+	Bind("__app.NewContextMenu", m).Do(m.new)
 }
 
 // Render returns the markup that describes the context menu.

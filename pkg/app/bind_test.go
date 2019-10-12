@@ -11,6 +11,7 @@ import (
 
 func TestMessenger(t *testing.T) {
 	m := messenger{
+		callOnUI: func(f func()) { f() },
 		callExec: func(f func(a ...interface{}), a ...interface{}) {
 			f(a...)
 		},
@@ -110,10 +111,10 @@ func TestBindingExec(t *testing.T) {
 			},
 		},
 		{
-			scenario: "execute function with matching args on ui",
+			scenario: "execute async function with matching args on ui",
 			args:     []interface{}{"hello", 42},
 			actions: []actionTest{
-				doOnUITest(func(s string, i int) {
+				doAsyncTest(func(s string, i int) {
 					require.Equal(t, "hello", s)
 					require.Equal(t, 42, i)
 				}),
@@ -171,56 +172,34 @@ func TestBindingExec(t *testing.T) {
 			},
 		},
 		{
-			scenario: "execute multiple functions with matching args",
+			scenario: "execute multiple functions",
 			args:     []interface{}{"hello", 42},
 			actions: []actionTest{
 				doTest(func(s string, i int) (bool, error) {
 					return true, nil
 				}),
-				doTest(func(b bool, err error) error {
-					require.True(t, b)
-					require.NoError(t, err)
-					return errors.New("test")
+				doTest(func(ctx BindContext) {
+					require.NotNil(t, ctx)
 				}),
-				doTest(func(err error) {
-					require.Error(t, err)
+				doTest(func() {
+					require.True(t, true)
 				}),
 			},
 		},
 		{
-			scenario: "execute multiple functions with matching args and wait",
+			scenario: "execute multiple functions and wait",
 			args:     []interface{}{"hello", 42},
 			actions: []actionTest{
-				doTest(func(s string, i int) (bool, error) {
+				doAsyncTest(func(s string, i int) (bool, error) {
 					return true, nil
 				}),
 				waitTest(time.Millisecond),
-				doOnUITest(func(b bool, err error) error {
-					require.True(t, b)
-					require.NoError(t, err)
-					return errors.New("test")
+				doAsyncTest(func(ctx BindContext) {
+					require.NotNil(t, ctx)
 				}),
 				waitTest(time.Millisecond),
-				doTest(func(err error) {
-					require.Error(t, err)
-				}),
-			},
-		},
-		{
-			scenario: "execute state",
-			args:     []interface{}{"hello", 42},
-			actions: []actionTest{
-				doTest(func(s string, i int) (bool, error) {
-					return true, nil
-				}),
-				stateTest(func(b bool, err error) int {
-					require.True(t, b)
-					require.NoError(t, err)
-					return 42
-				}),
-				doTest(func(b bool, err error) {
-					require.True(t, b)
-					require.NoError(t, err)
+				doTest(func() {
+					require.True(t, true)
 				}),
 			},
 		},
@@ -231,11 +210,11 @@ func TestBindingExec(t *testing.T) {
 				doTest(func(ctx BindContext) {
 					ctx.Cancel(nil)
 				}),
-				stateTest(func() {
+				doTest(func() {
 					t.Fatal("action called in cancelled binding")
 				}),
-				whenCancelTest(func(err error) {
-					require.Error(t, err)
+				whenCancelTest(func(ctx BindContext) {
+					require.Equal(t, context.Canceled, ctx.Err())
 				}),
 			},
 		},
@@ -246,11 +225,11 @@ func TestBindingExec(t *testing.T) {
 				doTest(func(ctx BindContext) {
 					ctx.Cancel(errors.New("test cancel"))
 				}),
-				stateTest(func() {
+				doTest(func() {
 					t.Fatal("action called in cancelled binding")
 				}),
-				whenCancelTest(func(err error) {
-					require.Error(t, err)
+				whenCancelTest(func(ctx BindContext) {
+					require.Error(t, ctx.Err())
 				}),
 			},
 		},
@@ -271,11 +250,8 @@ func TestBindingExec(t *testing.T) {
 				case "Do":
 					b.Do(a.function)
 
-				case "DoOnUI":
-					b.DoOnUI(a.function)
-
-				case "State":
-					b.State(a.function)
+				case "DoAsync":
+					b.DoAsync(a.function)
 
 				case "WhenCancel":
 					b.WhenCancel(a.whenCancel)
@@ -290,7 +266,7 @@ func TestBindingExec(t *testing.T) {
 type actionTest struct {
 	name       string
 	function   interface{}
-	whenCancel func(error)
+	whenCancel func(BindContext)
 	duration   time.Duration
 }
 
@@ -301,16 +277,9 @@ func doTest(f interface{}) actionTest {
 	}
 }
 
-func doOnUITest(f interface{}) actionTest {
+func doAsyncTest(f interface{}) actionTest {
 	return actionTest{
-		name:     "DoOnUI",
-		function: f,
-	}
-}
-
-func stateTest(f interface{}) actionTest {
-	return actionTest{
-		name:     "State",
+		name:     "DoAsync",
 		function: f,
 	}
 }
@@ -322,7 +291,7 @@ func waitTest(d time.Duration) actionTest {
 	}
 }
 
-func whenCancelTest(f func(error)) actionTest {
+func whenCancelTest(f func(BindContext)) actionTest {
 	return actionTest{
 		name:       "WhenCancel",
 		whenCancel: f,
