@@ -63,9 +63,7 @@ func cleanProject(ctx context.Context, args []string) {
 
 	for _, f := range filenames {
 		log("removing %s", f)
-		if err := os.Remove(f); err != nil {
-			warn("%s", err)
-		}
+		os.Remove(f)
 	}
 
 	if err := cleanCompressedStaticResources(webDir); err != nil {

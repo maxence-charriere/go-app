@@ -1,11 +1,8 @@
 package main
 
 import (
-	"compress/gzip"
 	"context"
-	"io"
 	"io/ioutil"
-	"mime"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -83,10 +80,6 @@ func build(ctx context.Context, c buildConfig) error {
 		return err
 	}
 
-	if err := cleanCompressedStaticResources(c.webDir); err != nil {
-		return err
-	}
-
 	log("generating etag")
 	etag := http.GenerateEtag()
 	if err := generateEtag(etag, c.webDir); err != nil {
@@ -99,12 +92,7 @@ func build(ctx context.Context, c buildConfig) error {
 	}
 
 	log("generating icons")
-	if err := generateProgressiveAppIcons(c); err != nil {
-		return err
-	}
-
-	log("compressing static resources")
-	return compressStaticResources(etag, c.webDir)
+	return generateProgressiveAppIcons(c)
 }
 
 func buildWasm(ctx context.Context, c buildConfig) error {
@@ -173,15 +161,6 @@ func generateServiceWorker(etag, webDir string) error {
 			return nil
 		}
 
-		staticExt := ".gz"
-		if etag := http.GetEtag(webDir); etag != "" {
-			staticExt = "." + etag + staticExt
-		}
-
-		if strings.HasSuffix(path, staticExt) {
-			return nil
-		}
-
 		cachePath := strings.Replace(path, webDir, "", 1)
 		if strings.HasPrefix(cachePath, "/.") {
 			return nil
@@ -235,71 +214,4 @@ func generateProgressiveAppIcons(c buildConfig) error {
 			Scale:  1,
 		},
 	)
-}
-
-func compressStaticResources(etag, webDir string) error {
-	walk := func(path string, info os.FileInfo, err error) error {
-		if info.IsDir() {
-			return nil
-		}
-
-		if !gzipRequired(path) {
-			return nil
-		}
-
-		log("gzipping %s", path)
-
-		src, err := os.Open(path)
-		if err != nil {
-			return errors.Wrapf(err, "opening %s failed", path)
-		}
-		defer src.Close()
-
-		filename := path
-		if etag != "" {
-			filename += "." + etag
-		}
-		filename += ".gz"
-
-		dst, err := os.Create(filename)
-		if err != nil {
-			return errors.Wrapf(err, "creating %s failed", filename)
-		}
-		defer dst.Close()
-
-		gz := gzip.NewWriter(dst)
-		defer gz.Close()
-
-		if _, err := io.Copy(gz, src); err != nil {
-			return errors.Wrapf(err, "compressing %s failed", path)
-		}
-		return nil
-	}
-
-	return filepath.Walk(webDir, walk)
-}
-
-func gzipRequired(filename string) bool {
-	mimeType := mime.TypeByExtension(filepath.Ext(filename))
-
-	allowedMimeTypes := []string{
-		"application/javascript",
-		"application/json",
-		"application/wasm",
-		"application/x-javascript",
-		"application/x-tar",
-		"image/svg+xml",
-		"text/css",
-		"text/html",
-		"text/plain",
-		"text/xml",
-	}
-
-	for _, m := range allowedMimeTypes {
-		if strings.Contains(mimeType, m) {
-			return true
-		}
-	}
-
-	return false
 }

@@ -2,22 +2,22 @@ package http
 
 import (
 	"io/ioutil"
+	"net/http"
 	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-
 	"github.com/stretchr/testify/require"
 )
 
-func TestPageHandler(t *testing.T) {
-	serv := httptest.NewServer(&PageHandler{
-		WebDir: "test",
-	})
-	defer serv.Close()
+func TestPageCanHandle(t *testing.T) {
+	p := Page{WebDir: "test"}
+	require.True(t, p.CanHandle(nil))
+}
 
+func TestPageServeHTTP(t *testing.T) {
 	require.NoError(t, os.Mkdir("test", 0755))
 	defer os.RemoveAll("test")
 
@@ -29,14 +29,16 @@ func TestPageHandler(t *testing.T) {
 	err = ioutil.WriteFile(jsname, []byte("alert('hello')"), 0666)
 	require.NoError(t, err)
 
-	res, err := serv.Client().Get(serv.URL)
-	require.NoError(t, err)
-	defer res.Body.Close()
+	handler := Page{WebDir: "test"}
+	req := httptest.NewRequest(http.MethodGet, "http://localhost/index.html", nil)
+	rec := httptest.NewRecorder()
+	handler.ServeHTTP(rec, req)
 
-	body, err := ioutil.ReadAll(res.Body)
-	bodyString := string(body)
-	require.NoError(t, err)
-	assert.Contains(t, bodyString, `<link type="text/css" rel="stylesheet" href="/test.css">`)
-	assert.Contains(t, bodyString, `<script src="/test.js"></script>`)
-	t.Logf("page: %s", body)
+	body := rec.Body.String()
+	require.Equal(t, http.StatusOK, rec.Code)
+	require.Equal(t, "text/html", rec.Header().Get("Content-Type"))
+	require.Equal(t, lastModified, rec.Header().Get("Last-Modified"))
+	assert.Contains(t, body, `<link type="text/css" rel="stylesheet" href="/test.css">`)
+	assert.Contains(t, body, `<script src="/test.js"></script>`)
+	t.Log(body)
 }

@@ -18,7 +18,7 @@ type Binding struct {
 	callOnUI      func(func())
 	deferDuration time.Duration
 	deferEnd      time.Time
-	whenCancel    func(error)
+	whenCancel    func(BindContext)
 
 	mutex      sync.Mutex
 	args       []interface{}
@@ -26,57 +26,41 @@ type Binding struct {
 }
 
 // Do adds the given function to the actions of the binding. The function will
-// be executed on the goroutine used to perform the binding.
+// be executed on the ui goroutine.
 //
 // If the function is the first one to be added to the binding, its arguments
-// are mapped with the ones emitted with the binded message. Otherwise with the
-// return values of the previous function registered with Do or DoOnUI.
+// are mapped with the ones emitted with the binded message.
 //
 // The binding execution context can be passed if the function first argument is
 // a BindContext or a context.Context.
 //
 // It panics if f is not a function.
 func (b *Binding) Do(f interface{}) *Binding {
-	return b.do(f, false, false)
+	return b.do(f, true)
 }
 
-// DoOnUI adds the given function to the actions of the binding. The function
-// will be executed on the UI goroutine.
+// DoAsync adds the given function to the actions of the binding. The function
+// will be executed on the goroutine used to perform the binding.
 //
 // If the function is the first one to be added to the binding, its arguments
-// are mapped with the ones emitted with the binded message. Otherwise with the
-// return values of the previous function registered with Do or DoOnUI.
+// are mapped with the ones emitted with the binded message.
 //
 // The binding execution context can be passed if the function first argument is
 // a BindContext or a context.Context.
 //
 // It panics if f is not a function.
-func (b *Binding) DoOnUI(f interface{}) *Binding {
-	return b.do(f, true, false)
-}
-
-// State adds the given function to the actions of the binding. The function
-// will be executed on the UI goroutine.It is meant to execute functions that
-// only modify the component appearance.
-//
-// The binding execution context can be passed if the function first argument is
-// a BindContext or a context.Context.
-//
-// Unlike DoOnUI, return values are not passed to the next action.
-//
-// It panics if f is not a function.
-func (b *Binding) State(f interface{}) *Binding {
-	return b.do(f, true, true)
+func (b *Binding) DoAsync(f interface{}) *Binding {
+	return b.do(f, false)
 }
 
 // WhenCancel setup the given function to be called when the binding is
 // cancelled with a BindContext. The function will be executed on the UI
 // goroutine.
-func (b *Binding) WhenCancel(f func(error)) {
+func (b *Binding) WhenCancel(f func(BindContext)) {
 	b.whenCancel = f
 }
 
-func (b *Binding) do(f interface{}, callOnUI, isState bool) *Binding {
+func (b *Binding) do(f interface{}, callOnUI bool) *Binding {
 	v := reflect.ValueOf(f)
 	if v.Kind() != reflect.Func {
 		log.Error("adding function to binding failed").
@@ -90,7 +74,6 @@ func (b *Binding) do(f interface{}, callOnUI, isState bool) *Binding {
 	b.actions = append(b.actions, do{
 		function: v,
 		callOnUI: callOnUI,
-		isState:  isState,
 	})
 	return b
 }
@@ -135,7 +118,6 @@ func (b *Binding) execActions(args ...interface{}) {
 	ctx := newBindContext()
 	defer ctx.Cancel(nil)
 	ctxv := reflect.ValueOf(ctx)
-	cancelled := false
 
 	argsv := make([]reflect.Value, 0, len(args)+1)
 	argsv = append(argsv, ctxv)
@@ -143,13 +125,14 @@ func (b *Binding) execActions(args ...interface{}) {
 		argsv = append(argsv, reflect.ValueOf(arg))
 	}
 
-actionLoop:
 	for idx, a := range b.actions {
 		select {
 		default:
 		case <-ctx.Done():
-			cancelled = true
-			break actionLoop
+			if b.whenCancel != nil {
+				b.callOnUI(func() { b.whenCancel(ctx) })
+			}
+			return
 		}
 
 		switch action := a.(type) {
@@ -157,28 +140,16 @@ actionLoop:
 			time.Sleep(action)
 
 		case do:
-			retsv, next := b.execDo(idx, action, argsv)
+			next := b.execDo(idx, action, argsv)
 			if !next {
 				return
 			}
-			if action.isState {
-				continue
-			}
-			argsv = make([]reflect.Value, 0, len(retsv)+1)
-			argsv = append(argsv, ctxv)
-			argsv = append(argsv, retsv...)
+			argsv = []reflect.Value{ctxv}
 		}
-	}
-
-	if cancelled && b.whenCancel != nil {
-		err := ctx.Err()
-		b.callOnUI(func() {
-			b.whenCancel(err)
-		})
 	}
 }
 
-func (b *Binding) execDo(idx int, do do, args []reflect.Value) ([]reflect.Value, bool) {
+func (b *Binding) execDo(idx int, do do, args []reflect.Value) bool {
 	fnval := do.function
 	fntype := fnval.Type()
 
@@ -206,7 +177,7 @@ func (b *Binding) execDo(idx int, do do, args []reflect.Value) ([]reflect.Value,
 				T("arg index", i).
 				T("expected type", intype).
 				T("arg type", args[i].Type())
-			return nil, false
+			return false
 		}
 		i++
 	}
@@ -224,7 +195,6 @@ func (b *Binding) execDo(idx int, do do, args []reflect.Value) ([]reflect.Value,
 	}
 
 	args = args[:i]
-
 	if do.callOnUI {
 		retchan := make(chan []reflect.Value, 1)
 		defer close(retchan)
@@ -237,13 +207,12 @@ func (b *Binding) execDo(idx int, do do, args []reflect.Value) ([]reflect.Value,
 	} else {
 		args = fnval.Call(args)
 	}
-	return args, true
+	return true
 }
 
 type do struct {
 	function reflect.Value
 	callOnUI bool
-	isState  bool
 }
 
 type messenger struct {
@@ -305,12 +274,24 @@ func (m *messenger) removeBinding(b *Binding) {
 type BindContext interface {
 	context.Context
 
-	// Cancel stop the binding execution.
+	// Get returns a value from the current binding chain.
+	Get(k string) interface{}
+
+	// Lookup looks for a value from the current binding chain.
+	Lookup(k string) (interface{}, bool)
+
+	// Set sets a value in the current binding chain.
+	Set(k string, v interface{})
+
+	// Cancel stop the binding chain execution.
 	Cancel(error)
 }
 
 type bindContext struct {
 	context.Context
+
+	mu     sync.RWMutex
+	values map[string]interface{}
 	cancel func()
 	err    error
 }
@@ -323,12 +304,46 @@ func newBindContext() *bindContext {
 	}
 }
 
+func (ctx *bindContext) Get(k string) interface{} {
+	ctx.mu.RLock()
+	defer ctx.mu.RUnlock()
+
+	v := ctx.values[k]
+	return v
+}
+
+func (ctx *bindContext) Lookup(k string) (interface{}, bool) {
+	ctx.mu.RLock()
+	defer ctx.mu.RUnlock()
+
+	v, ok := ctx.values[k]
+	return v, ok
+}
+
+func (ctx *bindContext) Set(k string, v interface{}) {
+	ctx.mu.Lock()
+	defer ctx.mu.Unlock()
+
+	if ctx.values == nil {
+		ctx.values = make(map[string]interface{})
+	}
+	ctx.values[k] = v
+}
+
 func (ctx *bindContext) Cancel(err error) {
+	ctx.mu.Lock()
+	defer ctx.mu.Unlock()
+
+	if err != nil {
+		ctx.err = err
+	}
 	ctx.cancel()
-	ctx.err = err
 }
 
 func (ctx *bindContext) Err() error {
+	ctx.mu.RLock()
+	defer ctx.mu.RUnlock()
+
 	if ctx.err != nil {
 		return ctx.err
 	}

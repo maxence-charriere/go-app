@@ -1,24 +1,32 @@
 package http
 
 import (
-	"io/ioutil"
+	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-func TestManifestHandler(t *testing.T) {
-	serv := httptest.NewServer(&ManifestHandler{})
-	defer serv.Close()
+func TestManifestCanHandle(t *testing.T) {
+	man := Manifest{}
 
-	res, err := serv.Client().Get(serv.URL)
-	require.NoError(t, err)
-	defer res.Body.Close()
+	req := httptest.NewRequest(http.MethodGet, "http://localhost/manifest.json", nil)
+	require.True(t, man.CanHandle(req))
 
-	body, err := ioutil.ReadAll(res.Body)
-	require.NoError(t, err)
-	assert.NotEmpty(t, body)
-	t.Logf("manifest: %s", body)
+	req = httptest.NewRequest(http.MethodGet, "http://localhost/manifest", nil)
+	require.False(t, man.CanHandle(req))
+}
+
+func TestManifestServeHTTP(t *testing.T) {
+	handler := Manifest{}
+	req := httptest.NewRequest(http.MethodGet, "http://localhost/manifest.json", nil)
+	rec := httptest.NewRecorder()
+	handler.ServeHTTP(rec, req)
+
+	require.Equal(t, http.StatusOK, rec.Code)
+	require.Equal(t, "application/json", rec.Header().Get("Content-Type"))
+	require.Equal(t, lastModified, rec.Header().Get("Last-Modified"))
+
+	t.Log(rec.Body.String())
 }
