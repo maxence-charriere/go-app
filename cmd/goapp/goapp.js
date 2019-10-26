@@ -3,7 +3,7 @@ const etag = '{{.ETag}}'
 const goappCache = {
   name: 'goapp-cache',
   urls: [
-    {{range. Paths}}'{{.}}',
+    {{range .Paths}}'{{.}}',
     {{end}}'/'
   ]
 }
