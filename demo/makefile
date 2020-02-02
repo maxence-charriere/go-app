@@ -1,14 +1,14 @@
 build:
-	@goapp build -v 
+	@go build
+	@GOOS=js GOARCH=wasm go build -o ./web/app.wasm ./app
+
+run: build
+	./demo
 
 deploy: build
-	gcloud app deploy cmd/demo-server --project=murlok
+	rm demo
+	gcloud app deploy . --project=murlok
 
 clean:
-	@goapp clean -v 
-
-run:
-	@goapp run -v -b chrome
-
-install:
-	@go get -u -v github.com/maxence-charriere/app/cmd/goapp
+	@go clean -v
+	@rm ./web/app.wasm

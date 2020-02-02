@@ -219,7 +219,7 @@ func (h *Handler) initPage() {
 						Type("image/png").
 						Href(h.Icon.Default),
 					Link().
-						Rel("iconapple-touch-icon").
+						Rel("apple-touch-icon").
 						Href(h.Icon.AppleTouch),
 					Link().
 						Rel("manifest").
