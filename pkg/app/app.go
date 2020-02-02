@@ -57,6 +57,11 @@ func Navigate(rawurl string) {
 	}
 }
 
+// Reload reloads the current page.
+func Reload() {
+	reload()
+}
+
 // Window returns the JavaScript "window" object.
 func Window() BrowserWindow {
 	return window

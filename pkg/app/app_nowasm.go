@@ -21,6 +21,10 @@ func navigate(u *url.URL, updateHistory bool) error {
 	panic(errNoWasm)
 }
 
+func reload() {
+	panic(errNoWasm)
+}
+
 func newContextMenu(menuItems ...MenuItemNode) {
 	panic(errNoWasm)
 }

@@ -116,6 +116,10 @@ func isPWANavigation(u *url.URL) bool {
 	return !externalNav && !fragmentNav
 }
 
+func reload() {
+	Window().Get("location").Call("reload")
+}
+
 func newContextMenu(menuItems ...MenuItemNode) {
 	contextMenu.show(menuItems...)
 }
