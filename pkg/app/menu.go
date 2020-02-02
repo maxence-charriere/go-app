@@ -1,0 +1,209 @@
+package app
+
+import (
+	"strconv"
+	"strings"
+)
+
+// MenuItemNode is the interface that describes a menu node.
+type MenuItemNode interface {
+	Node
+
+	// Disabled specifies whether the menu item is disabled.
+	Disabled(bool) MenuItemNode
+
+	// Keys set the menu item keys.
+	Keys(string) MenuItemNode
+
+	// Icon set the menu item icon.
+	// "cmdorctrl" is replaced by the platform corresponding key.
+	Icon(string) MenuItemNode
+
+	// Label set the menu item label.
+	Label(string) MenuItemNode
+
+	// OnClick calls the given handler when there is a mouse click on the element.
+	OnClick(EventHandler) MenuItemNode
+
+	// Separator specifies that the menu item is a separator.
+	Separator() MenuItemNode
+
+	// Title specifies extra information about the item.
+	Title(string) MenuItemNode
+}
+
+// MenuItem returns a menu item.
+func MenuItem() MenuItemNode {
+	return &menuItem{}
+}
+
+type menuItem struct {
+	Compo
+
+	disabled  bool
+	keys      string
+	icon      string
+	label     string
+	onClick   EventHandler
+	separator bool
+	title     string
+}
+
+func (m *menuItem) Disabled(v bool) MenuItemNode {
+	m.disabled = v
+	return m
+}
+
+func (m *menuItem) Keys(k string) MenuItemNode {
+	k = strings.ToLower(k)
+
+	switch Window().Get("navigator").Get("platform").String() {
+	case "Macintosh", "MacIntel", "MacPPC", "Mac68K":
+		k = strings.Replace(k, "cmdorctrl", "⌘", -1)
+		k = strings.Replace(k, "cmd", "⌘", -1)
+		k = strings.Replace(k, "command", "⌘", -1)
+		k = strings.Replace(k, "ctrl", "⌃", -1)
+		k = strings.Replace(k, "control", "⌃", -1)
+		k = strings.Replace(k, "alt", "⌥", -1)
+		k = strings.Replace(k, "option", "⌥", -1)
+		k = strings.Replace(k, "shift", "⇧", -1)
+		k = strings.Replace(k, "capslock", "⇪", -1)
+		k = strings.Replace(k, "del", "⌫", -1)
+		k = strings.Replace(k, "delete", "⌫", -1)
+		k = strings.Replace(k, "+", "", -1)
+
+	default:
+		k = strings.Replace(k, "cmdorctrl", "ctrl", -1)
+		k = strings.Replace(k, "cmd", "win", -1)
+		k = strings.Replace(k, "command", "win", -1)
+		k = strings.Replace(k, "control", "ctrl", -1)
+	}
+
+	m.keys = k
+	return m
+}
+
+func (m *menuItem) Icon(src string) MenuItemNode {
+	m.icon = src
+	return m
+}
+
+func (m *menuItem) Label(l string) MenuItemNode {
+	m.label = l
+	return m
+}
+
+func (m *menuItem) OnClick(h EventHandler) MenuItemNode {
+	m.onClick = h
+	return m
+}
+
+func (m *menuItem) Separator() MenuItemNode {
+	m.separator = true
+	return m
+}
+
+func (m *menuItem) Title(t string) MenuItemNode {
+	m.title = t
+	return m
+}
+
+func (m *menuItem) Render() ValueNode {
+	if m.separator {
+		return Div().Class("app-menuitem-separator")
+	}
+
+	item := Button().
+		Class("app-menuitem").
+		Disabled(m.disabled).
+		Body(
+			If(m.icon != "",
+				Img().
+					Class("app-menuitem-icon").
+					Src(m.icon)),
+			Div().
+				Class("app-menuitem-label").
+				Body(
+					Text(m.label),
+				),
+			Div().
+				Class("app-menuitem-keys").
+				Body(
+					Text(m.keys),
+				),
+		)
+
+	if m.onClick != nil {
+		item = item.OnClick(m.onClick)
+	} else {
+		item = item.Disabled(true)
+	}
+
+	if m.title != "" {
+		item = item.Title(m.title)
+	}
+
+	return item
+}
+
+type contextMenuLayout struct {
+	Compo
+	visible bool
+	items   []MenuItemNode
+}
+
+func (l *contextMenuLayout) Render() ValueNode {
+	class := "app-contextmenu-hidden"
+	if l.visible {
+		class = "app-contextmenu-visible"
+	}
+
+	return Div().
+		ID("app-contextmenu-background").
+		Class(class).
+		OnClick(l.hide).
+		Body(
+			Div().
+				ID("app-contextmenu").
+				Class("app-contextmenu").
+				Body(
+					Range(l.items).
+						Slice(func(i int) Node {
+							return l.items[i]
+						}),
+				),
+		)
+}
+
+func (l *contextMenuLayout) hide(src Value, e Event) {
+	l.visible = false
+	l.Update()
+}
+
+func (l *contextMenuLayout) show(items ...MenuItemNode) {
+	l.items = items
+	l.visible = true
+	l.Update()
+
+	menu := Window().
+		Get("document").
+		Call("getElementById", "app-contextmenu")
+	menuWidth := menu.Get("offsetWidth").Int()
+	menuHeight := menu.Get("offsetHeight").Int()
+
+	winWidth, winHeight := Window().Size()
+	cursorX, cursorY := Window().CursorPosition()
+
+	x := cursorX
+	if x+menuWidth > winWidth {
+		x = winWidth - menuWidth
+	}
+
+	y := cursorY
+	if y+menuHeight > winHeight {
+		y = winHeight - menuHeight
+	}
+
+	menu.Get("style").Set("left", strconv.Itoa(x)+"px")
+	menu.Get("style").Set("top", strconv.Itoa(y)+"px")
+}
