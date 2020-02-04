@@ -105,9 +105,11 @@ func (e *elem) setEventHandler(k string, h EventHandler) {
 
 func (e *elem) setEventHandlerValue(k string, h eventHandler) {
 	callback := FuncOf(func(this Value, args []Value) interface{} {
-		event := Event{Value: args[0]}
-		trackMousePosition(event)
-		h.function(this, event)
+		Dispatch(func() {
+			event := Event{Value: args[0]}
+			trackMousePosition(event)
+			h.function(this, event)
+		})
 		return nil
 	})
 

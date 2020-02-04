@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"net/url"
+	"strings"
 	"syscall/js"
 )
 
@@ -11,7 +12,6 @@ var (
 	body                  = Body()
 	content     ValueNode = Div()
 	contextMenu           = &contextMenuLayout{}
-	lastURL               = ""
 )
 
 func run() {
@@ -35,7 +35,12 @@ func run() {
 		panic(fmt.Errorf("navigating to %s failed: %w", url, err))
 	}
 
-	select {}
+	for {
+		select {
+		case f := <-uiChan:
+			f()
+		}
+	}
 }
 
 func initContent() {
@@ -58,7 +63,7 @@ func initContextMenu() {
 }
 
 func onNavigate(this Value, args []Value) interface{} {
-	event := args[0]
+	event := Event{Value: args[0]}
 	elem := event.Get("target")
 	if !elem.Truthy() {
 		elem = event.Get("srcElement")
@@ -73,7 +78,7 @@ func onNavigate(this Value, args []Value) interface{} {
 		return nil
 	}
 
-	event.Call("preventDefault")
+	event.PreventDefault()
 	Navigate(u)
 	return nil
 
@@ -81,7 +86,7 @@ func onNavigate(this Value, args []Value) interface{} {
 
 func onPopState(this Value, args []Value) interface{} {
 	if u := Window().URL(); u.Fragment == "" {
-		navigate(Window().URL(), false)
+		navigate(u, false)
 	}
 	return nil
 }
@@ -92,7 +97,12 @@ func navigate(u *url.URL, updateHistory bool) error {
 		return nil
 	}
 
-	root, ok := routes[u.Path]
+	path := u.Path
+	if !strings.HasPrefix(path, "/") {
+		path = "/" + path
+	}
+
+	root, ok := routes[path]
 	if !ok {
 		root = NotFound
 	}
@@ -102,8 +112,7 @@ func navigate(u *url.URL, updateHistory bool) error {
 			nav.OnNav(u)
 		}
 
-		if updateHistory && u.String() != lastURL {
-			lastURL = u.String()
+		if updateHistory {
 			Window().Get("history").Call("pushState", nil, "", u.String())
 		}
 	}()

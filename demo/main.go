@@ -25,8 +25,8 @@ func main() {
 	err := http.ListenAndServe(":"+port, &app.Handler{
 		Title: "App Demo",
 		Styles: []string{
-			"hello.css",
-			"city.css",
+			"/hello.css",
+			"/city.css",
 		},
 		Version: version,
 	})
