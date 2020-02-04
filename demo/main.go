@@ -23,11 +23,10 @@ func main() {
 		T("version", version)
 
 	err := http.ListenAndServe(":"+port, &app.Handler{
-		Title:           "App Demo",
-		ThemeColor:      "#000000",
-		BackgroundColor: "#000000",
+		Title: "App Demo",
 		Styles: []string{
 			"hello.css",
+			"city.css",
 		},
 		Version: version,
 	})

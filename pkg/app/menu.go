@@ -40,17 +40,19 @@ func MenuItem() MenuItemNode {
 type menuItem struct {
 	Compo
 
-	disabled  bool
-	keys      string
-	icon      string
-	label     string
-	onClick   EventHandler
-	separator bool
-	title     string
+	Props struct {
+		disabled  bool
+		keys      string
+		icon      string
+		label     string
+		onClick   EventHandler
+		separator bool
+		title     string
+	}
 }
 
 func (m *menuItem) Disabled(v bool) MenuItemNode {
-	m.disabled = v
+	m.Props.disabled = v
 	return m
 }
 
@@ -79,68 +81,68 @@ func (m *menuItem) Keys(k string) MenuItemNode {
 		k = strings.Replace(k, "control", "ctrl", -1)
 	}
 
-	m.keys = k
+	m.Props.keys = k
 	return m
 }
 
 func (m *menuItem) Icon(src string) MenuItemNode {
-	m.icon = src
+	m.Props.icon = src
 	return m
 }
 
 func (m *menuItem) Label(l string) MenuItemNode {
-	m.label = l
+	m.Props.label = l
 	return m
 }
 
 func (m *menuItem) OnClick(h EventHandler) MenuItemNode {
-	m.onClick = h
+	m.Props.onClick = h
 	return m
 }
 
 func (m *menuItem) Separator() MenuItemNode {
-	m.separator = true
+	m.Props.separator = true
 	return m
 }
 
 func (m *menuItem) Title(t string) MenuItemNode {
-	m.title = t
+	m.Props.title = t
 	return m
 }
 
 func (m *menuItem) Render() ValueNode {
-	if m.separator {
+	if m.Props.separator {
 		return Div().Class("app-menuitem-separator")
 	}
 
 	item := Button().
 		Class("app-menuitem").
-		Disabled(m.disabled).
+		Disabled(m.Props.disabled).
 		Body(
-			If(m.icon != "",
+			If(m.Props.icon != "",
 				Img().
 					Class("app-menuitem-icon").
-					Src(m.icon)),
+					Src(m.Props.icon)),
 			Div().
 				Class("app-menuitem-label").
 				Body(
-					Text(m.label),
+					Text(m.Props.label),
 				),
 			Div().
 				Class("app-menuitem-keys").
 				Body(
-					Text(m.keys),
+					Text(m.Props.keys),
 				),
 		)
 
-	if m.onClick != nil {
-		item = item.OnClick(m.onClick)
+	if m.Props.onClick != nil {
+		item = item.OnClick(m.Props.onClick)
 	} else {
 		item = item.Disabled(true)
 	}
 
-	if m.title != "" {
-		item = item.Title(m.title)
+	if m.Props.title != "" {
+		item = item.Title(m.Props.title)
 	}
 
 	return item

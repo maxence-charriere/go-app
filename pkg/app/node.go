@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"io"
+	"net/url"
 	"reflect"
 )
 
@@ -103,6 +104,15 @@ type Dismounter interface {
 
 	// The function that is called when the component is dismounted.
 	OnDismount()
+}
+
+// Navigator is the interface that describes a component node that can perform
+// additional actions when navigated on.
+type Navigator interface {
+	CompoNode
+
+	// The function that is called when the component is navigated on.
+	OnNav(u *url.URL)
 }
 
 type writableNode interface {

@@ -29,7 +29,7 @@ func (h *hello) Render() app.ValueNode {
 							app.If(h.Name != "",
 								app.Text(h.Name),
 							).Else(
-								app.Text("world"),
+								app.Text("World"),
 							),
 						),
 					app.Input().
@@ -49,6 +49,12 @@ func (h *hello) OnMenuClick(src app.Value, e app.Event) {
 			Keys("cmdorctrl+r").
 			OnClick(func(src app.Value, e app.Event) {
 				app.Reload()
+			}),
+		app.MenuItem().Separator(),
+		app.MenuItem().
+			Label("City demo").
+			OnClick(func(src app.Value, e app.Event) {
+				app.Navigate("/city")
 			}),
 		app.MenuItem().Separator(),
 		app.MenuItem().

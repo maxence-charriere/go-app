@@ -13,10 +13,7 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
-demo/demo-server
-demo/web/goapp.js
-demo/web/wasm_exec.js
+demo/demo
 
 # Static generated files
 *.gz
-demo/web/.etag
