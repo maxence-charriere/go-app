@@ -1,0 +1,32 @@
+.city {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-size: cover;
+  background-position: center;
+}
+
+.city-title {
+  font-size: 56pt;
+  font-weight: 200;
+  text-align: center;
+}
+
+.city-description {
+  max-width: 480px;
+  text-align: justify;
+}
+
+.city-links {
+  margin-top: 12px;
+  text-align: center;
+}

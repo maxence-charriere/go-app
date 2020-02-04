@@ -10,5 +10,6 @@ const (
 
 func main() {
 	app.Route("/", &hello{})
+	app.Route("/city", &city{})
 	app.Run()
 }

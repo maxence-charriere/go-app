@@ -26,6 +26,7 @@ func main() {
 		Title: "App Demo",
 		Styles: []string{
 			"hello.css",
+			"city.css",
 		},
 		Version: version,
 	})

@@ -11,6 +11,7 @@ var (
 	body                  = Body()
 	content     ValueNode = Div()
 	contextMenu           = &contextMenuLayout{}
+	lastURL               = ""
 )
 
 func run() {
@@ -95,6 +96,18 @@ func navigate(u *url.URL, updateHistory bool) error {
 	if !ok {
 		root = NotFound
 	}
+
+	defer func() {
+		if nav, ok := root.(Navigator); ok {
+			nav.OnNav(u)
+		}
+
+		if updateHistory && u.String() != lastURL {
+			lastURL = u.String()
+			Window().Get("history").Call("pushState", nil, "", u.String())
+		}
+	}()
+
 	if content == root {
 		return nil
 	}
@@ -102,10 +115,6 @@ func navigate(u *url.URL, updateHistory bool) error {
 		return err
 	}
 	content = root
-
-	if updateHistory {
-		Window().Get("history").Call("pushState", nil, "", u.String())
-	}
 
 	return nil
 }
