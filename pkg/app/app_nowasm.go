@@ -31,7 +31,7 @@ func newContextMenu(menuItems ...MenuItemNode) {
 }
 
 func panicNoWasm() {
-	log.Errorf("bad go architecture").
+	log.Errorf("invalid go architecture").
 		T("required", "wasm").
 		T("current", runtime.GOARCH).
 		Panic()
