@@ -15,6 +15,8 @@ import (
 	"sync"
 	"text/template"
 	"time"
+
+	"github.com/maxence-charriere/app/pkg/log"
 )
 
 const (
@@ -99,10 +101,10 @@ type Handler struct {
 	etag         string
 	page         bytes.Buffer
 	manifestJSON bytes.Buffer
-	viJS         bytes.Buffer
-	viWorkerJS   bytes.Buffer
+	appJS        bytes.Buffer
+	appWorkerJS  bytes.Buffer
 	wasmExecJS   []byte
-	viCSS        []byte
+	appCSS       []byte
 }
 
 func (h *Handler) init() {
@@ -114,11 +116,11 @@ func (h *Handler) init() {
 	h.initPWA()
 	h.initPage()
 	h.initWasmJS()
-	h.initViJS()
+	h.initAppJS()
 	h.initWorkerJS()
 	h.initManifestJSON()
 	h.initScripts()
-	h.initViCSS()
+	h.initAppCSS()
 }
 
 func (h *Handler) initVersion() {
@@ -267,20 +269,22 @@ func (h *Handler) initWasmJS() {
 	h.wasmExecJS = []byte(wasmExecJS)
 }
 
-func (h *Handler) initViJS() {
+func (h *Handler) initAppJS() {
 	if h.Wasm == "" {
 		h.Wasm = "app.wasm"
 	}
 	h.Wasm = h.staticResource(h.Wasm)
 
 	if err := template.
-		Must(template.New("app.js").Parse(viJS)).
-		Execute(&h.viJS, struct {
+		Must(template.New("app.js").Parse(appJS)).
+		Execute(&h.appJS, struct {
 			Wasm string
 		}{
 			Wasm: h.Wasm,
 		}); err != nil {
-		panic(err)
+		log.Error("initializing app.js failed").
+			T("error", err).
+			Panic()
 	}
 }
 
@@ -303,15 +307,17 @@ func (h *Handler) initWorkerJS() {
 	cacheableResources["/"] = struct{}{}
 
 	if err := template.
-		Must(template.New("app-worker.js").Parse(viWorkerJS)).
-		Execute(&h.viWorkerJS, struct {
+		Must(template.New("app-worker.js").Parse(appWorkerJS)).
+		Execute(&h.appWorkerJS, struct {
 			Version          string
 			ResourcesToCache map[string]struct{}
 		}{
 			Version:          h.Version,
 			ResourcesToCache: cacheableResources,
 		}); err != nil {
-		panic(err)
+		log.Error("initializing app-worker.js failed").
+			T("error", err).
+			Panic()
 	}
 }
 
@@ -333,12 +339,14 @@ func (h *Handler) initManifestJSON() {
 			BackgroundColor: h.BackgroundColor,
 			ThemeColor:      h.ThemeColor,
 		}); err != nil {
-		panic(err)
+		log.Error("initializing manifest.json failed").
+			T("error", err).
+			Panic()
 	}
 }
 
-func (h *Handler) initViCSS() {
-	h.viCSS = []byte(viCSS)
+func (h *Handler) initAppCSS() {
+	h.appCSS = []byte(appCSS)
 }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -359,11 +367,11 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case "/app.js":
-		h.serveViJS(w, r)
+		h.serveAppJS(w, r)
 		return
 
 	case "/app-worker.js":
-		h.serveViWorkerJS(w, r)
+		h.serveAppWorkerJS(w, r)
 		return
 
 	case "/manifest.json":
@@ -371,7 +379,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case "/app.css":
-		h.serveViCSS(w, r)
+		h.serveAppCSS(w, r)
 		return
 	}
 
@@ -402,18 +410,18 @@ func (h *Handler) serveWasmExecJS(w http.ResponseWriter, r *http.Request) {
 	w.Write(h.wasmExecJS)
 }
 
-func (h *Handler) serveViJS(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Length", strconv.Itoa(h.viJS.Len()))
+func (h *Handler) serveAppJS(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Length", strconv.Itoa(h.appJS.Len()))
 	w.Header().Set("Content-Type", "application/javascript")
 	w.WriteHeader(http.StatusOK)
-	w.Write(h.viJS.Bytes())
+	w.Write(h.appJS.Bytes())
 }
 
-func (h *Handler) serveViWorkerJS(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Length", strconv.Itoa(h.viWorkerJS.Len()))
+func (h *Handler) serveAppWorkerJS(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Length", strconv.Itoa(h.appWorkerJS.Len()))
 	w.Header().Set("Content-Type", "application/javascript")
 	w.WriteHeader(http.StatusOK)
-	w.Write(h.viWorkerJS.Bytes())
+	w.Write(h.appWorkerJS.Bytes())
 }
 
 func (h *Handler) serveManifestJSON(w http.ResponseWriter, r *http.Request) {
@@ -423,11 +431,11 @@ func (h *Handler) serveManifestJSON(w http.ResponseWriter, r *http.Request) {
 	w.Write(h.manifestJSON.Bytes())
 }
 
-func (h *Handler) serveViCSS(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Length", strconv.Itoa(len(h.viCSS)))
+func (h *Handler) serveAppCSS(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Length", strconv.Itoa(len(h.appCSS)))
 	w.Header().Set("Content-Type", "text/css")
 	w.WriteHeader(http.StatusOK)
-	w.Write(h.viCSS)
+	w.Write(h.appCSS)
 }
 
 func (h *Handler) staticResource(path string) string {

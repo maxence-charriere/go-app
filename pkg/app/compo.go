@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"reflect"
 	"unicode"
+
+	"github.com/maxence-charriere/app/pkg/log"
 )
 
 // Compo represents the base struct to use in order to build a component.
@@ -56,7 +58,10 @@ func (c *Compo) Update() {
 		incoming := c.compo.Render().(ValueNode)
 
 		if err := update(current, incoming); err != nil {
-			panic(fmt.Errorf("%T: updating component failed: %w", c.compo, err))
+			log.Error("updating component failed").
+				T("component-type", reflect.TypeOf(c.compo)).
+				T("error", err).
+				Panic()
 		}
 	})
 }

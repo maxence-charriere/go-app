@@ -3,28 +3,36 @@
 package app
 
 import (
-	"fmt"
 	"net/url"
 	"runtime"
+
+	"github.com/maxence-charriere/app/pkg/log"
 )
 
 var (
-	errNoWasm = fmt.Errorf("go architecture is not %q: %q", "wasm", runtime.GOARCH)
-	window    *browserWindow
+	window *browserWindow
 )
 
 func run() {
-	panic(errNoWasm)
+	panicNoWasm()
 }
 
 func navigate(u *url.URL, updateHistory bool) error {
-	panic(errNoWasm)
+	panicNoWasm()
+	return nil
 }
 
 func reload() {
-	panic(errNoWasm)
+	panicNoWasm()
 }
 
 func newContextMenu(menuItems ...MenuItemNode) {
-	panic(errNoWasm)
+	panicNoWasm()
+}
+
+func panicNoWasm() {
+	log.Errorf("bad go architecture").
+		T("required", "wasm").
+		T("current", runtime.GOARCH).
+		Panic()
 }
