@@ -92,6 +92,8 @@ func onPopState(this Value, args []Value) interface{} {
 }
 
 func navigate(u *url.URL, updateHistory bool) error {
+	contextMenu.hide(nil, Event{Value: Null()})
+
 	if !isPWANavigation(u) {
 		Window().Get("location").Set("href", u.String())
 		return nil

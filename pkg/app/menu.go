@@ -179,6 +179,7 @@ func (l *contextMenuLayout) Render() ValueNode {
 
 func (l *contextMenuLayout) hide(src Value, e Event) {
 	l.visible = false
+	l.items = nil
 	l.Update()
 }
 
