@@ -51,12 +51,14 @@ func (c *Compo) replaceChild(old, new ValueNode) {
 // Update update the component appearance. It should be called when a field
 // used to render the component has been modified.
 func (c *Compo) Update() {
-	current := c.root
-	incoming := c.compo.Render().(ValueNode)
+	Dispatch(func() {
+		current := c.root
+		incoming := c.compo.Render().(ValueNode)
 
-	if err := update(current, incoming); err != nil {
-		panic(fmt.Errorf("%T: updating component failed: %w", c.compo, err))
-	}
+		if err := update(current, incoming); err != nil {
+			panic(fmt.Errorf("%T: updating component failed: %w", c.compo, err))
+		}
+	})
 }
 
 func (c *Compo) mount(compo CompoNode) error {

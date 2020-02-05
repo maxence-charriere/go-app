@@ -24,6 +24,7 @@ var (
 	NotFound ValueNode = &notFound{}
 
 	routes = make(map[string]ValueNode)
+	uiChan = make(chan func(), 256)
 )
 
 // EventHandler represents a function that can handle HTML events.
@@ -47,19 +48,27 @@ func Run() {
 
 // Navigate navigates to the given URL.
 func Navigate(rawurl string) {
-	u, err := url.Parse(rawurl)
-	if err != nil {
-		panic(err)
-	}
+	Dispatch(func() {
+		u, err := url.Parse(rawurl)
+		if err != nil {
+			panic(err)
+		}
 
-	if err = navigate(u, true); err != nil {
-		panic(err)
-	}
+		if u.String() == Window().URL().String() {
+			return
+		}
+
+		if err = navigate(u, true); err != nil {
+			panic(err)
+		}
+	})
 }
 
 // Reload reloads the current page.
 func Reload() {
-	reload()
+	Dispatch(func() {
+		reload()
+	})
 }
 
 // Window returns the JavaScript "window" object.
@@ -69,5 +78,12 @@ func Window() BrowserWindow {
 
 // NewContextMenu displays a context menu filled with the given menu items.
 func NewContextMenu(menuItems ...MenuItemNode) {
-	newContextMenu(menuItems...)
+	Dispatch(func() {
+		newContextMenu(menuItems...)
+	})
+}
+
+// Dispatch executes the given function on the UI goroutine.
+func Dispatch(f func()) {
+	uiChan <- f
 }

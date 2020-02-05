@@ -119,8 +119,6 @@ func (c *city) Render() app.ValueNode {
 }
 
 func (c *city) OnMenuClick(src app.Value, e app.Event) {
-	fmt.Println("city show hello context menu")
-
 	app.NewContextMenu(
 		app.MenuItem().
 			Label("Reload").

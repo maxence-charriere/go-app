@@ -294,6 +294,7 @@ func (h *Handler) initWorkerJS() {
 	}
 	cacheableResources["/wasm_exec.js"] = struct{}{}
 	cacheableResources["/app.js"] = struct{}{}
+	cacheableResources["/app.css"] = struct{}{}
 	cacheableResources["/manifest.json"] = struct{}{}
 	cacheableResources[h.Wasm] = struct{}{}
 	cacheableResources[h.Icon.Default] = struct{}{}
