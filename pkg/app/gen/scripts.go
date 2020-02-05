@@ -34,10 +34,10 @@ func main() {
 			"wasm",
 			"wasm_exec.js",
 		)},
-		{Var: "viJS", Filename: "gen/app.js"},
-		{Var: "viWorkerJS", Filename: "gen/app-worker.js"},
+		{Var: "appJS", Filename: "gen/app.js"},
+		{Var: "appWorkerJS", Filename: "gen/app-worker.js"},
 		{Var: "manifestJSON", Filename: "gen/manifest.json"},
-		{Var: "viCSS", Filename: "gen/app.css"},
+		{Var: "appCSS", Filename: "gen/app.css"},
 	}
 
 	fmt.Fprintln(f, "const(")

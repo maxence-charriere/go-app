@@ -3,6 +3,8 @@ package app
 import (
 	"net/url"
 	"syscall/js"
+
+	"github.com/maxence-charriere/app/pkg/log"
 )
 
 type value struct {
@@ -175,6 +177,9 @@ func jsval(v Value) js.Value {
 		return jsval(v.Value)
 
 	default:
-		panic("unknown js value")
+		log.Error("converting to js value failed").
+			T("value-type", v).
+			Panic()
+		return js.Undefined()
 	}
 }

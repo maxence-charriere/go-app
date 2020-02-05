@@ -1,10 +1,11 @@
 package app
 
 import (
-	"fmt"
 	"net/url"
 	"strings"
 	"syscall/js"
+
+	"github.com/maxence-charriere/app/pkg/log"
 )
 
 var (
@@ -13,6 +14,15 @@ var (
 	content     ValueNode = Div()
 	contextMenu           = &contextMenuLayout{}
 )
+
+func init() {
+	log.DefaultColor = ""
+	log.InfoColor = ""
+	log.ErrorColor = ""
+	log.WarnColor = ""
+	log.DebugColor = ""
+	log.CurrentLevel = log.DebugLevel
+}
 
 func run() {
 	initContent()
@@ -32,7 +42,10 @@ func run() {
 	url := Window().URL()
 
 	if err := navigate(url, false); err != nil {
-		panic(fmt.Errorf("navigating to %s failed: %w", url, err))
+		log.Error("loading page failed").
+			T("error", err).
+			T("url", url).
+			Panic()
 	}
 
 	for {
@@ -57,8 +70,11 @@ func initContextMenu() {
 		Call("getElementById", "app-context-menu")
 	rawContextMenu.setParent(body)
 	body.appendChild(rawContextMenu)
+
 	if err := update(rawContextMenu, contextMenu); err != nil {
-		panic(fmt.Errorf("initializing context menu failed: %w", err))
+		log.Error("initializing context menu failed").
+			T("error", err).
+			Panic()
 	}
 }
 

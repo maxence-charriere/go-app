@@ -2,6 +2,8 @@ package app
 
 import (
 	"reflect"
+
+	"github.com/maxence-charriere/app/pkg/log"
 )
 
 // IfCondition represents a control structure that displays nodes depending on a
@@ -81,7 +83,9 @@ func Range(src interface{}) RangeCondition {
 func (c RangeCondition) Slice(f func(int) Node) RangeCondition {
 	v := reflect.ValueOf(c.source)
 	if v.Kind() != reflect.Slice && v.Kind() != reflect.Array {
-		panic("range performed on source that is not a slice or array")
+		log.Error("range source is not a slice or array").
+			T("source-type", v.Type()).
+			Panic()
 	}
 
 	c.body = nil
@@ -98,13 +102,17 @@ func (c RangeCondition) Slice(f func(int) Node) RangeCondition {
 func (c RangeCondition) Map(f func(string) Node) RangeCondition {
 	v := reflect.ValueOf(c.source)
 	if v.Kind() != reflect.Map {
-		panic("range performed on source that is not a map")
+		log.Error("range source is not a map").
+			T("source-type", v.Type()).
+			Panic()
 	}
 
 	c.body = nil
 	for _, key := range v.MapKeys() {
 		if key.Kind() != reflect.String {
-			panic("map key is not a string")
+			log.Error("range source keys is not a string").
+				T("key-type", key.Type()).
+				Panic()
 		}
 
 		c.body = append(c.body, indirect(f(key.String()))...)

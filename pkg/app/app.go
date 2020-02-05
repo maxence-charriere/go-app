@@ -6,6 +6,8 @@ package app
 
 import (
 	"net/url"
+
+	"github.com/maxence-charriere/app/pkg/log"
 )
 
 var (
@@ -51,7 +53,10 @@ func Navigate(rawurl string) {
 	Dispatch(func() {
 		u, err := url.Parse(rawurl)
 		if err != nil {
-			panic(err)
+			log.Error("navigating to page failed").
+				T("url", rawurl).
+				T("error", err).
+				Panic()
 		}
 
 		if u.String() == Window().URL().String() {
@@ -59,7 +64,10 @@ func Navigate(rawurl string) {
 		}
 
 		if err = navigate(u, true); err != nil {
-			panic(err)
+			log.Error("navigating to page failed").
+				T("url", u).
+				T("error", err).
+				Panic()
 		}
 	})
 }

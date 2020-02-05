@@ -87,7 +87,7 @@ func TestHandlerServeWasmExecJS(t *testing.T) {
 	require.Equal(t, wasmExecJS, w.Body.String())
 }
 
-func TestHandlerServeViJS(t *testing.T) {
+func TestHandlerServeAppJS(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/app.js", nil)
 	w := httptest.NewRecorder()
 
@@ -96,10 +96,10 @@ func TestHandlerServeViJS(t *testing.T) {
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Equal(t, strings.ReplaceAll(viJS, "{{.Wasm}}", "/web/app.wasm"), w.Body.String())
+	require.Equal(t, strings.ReplaceAll(appJS, "{{.Wasm}}", "/web/app.wasm"), w.Body.String())
 }
 
-func TestHandlerServeViWorkerJS(t *testing.T) {
+func TestHandlerServeAppWorkerJS(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/app-worker.js", nil)
 	w := httptest.NewRecorder()
 
@@ -148,7 +148,7 @@ func TestHandlerServeManifestJSON(t *testing.T) {
 	require.Contains(t, body, `"theme_color": "#0000ff"`)
 }
 
-func TestHandlerServeViCSS(t *testing.T) {
+func TestHandlerServeAppCSS(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/app.css", nil)
 	w := httptest.NewRecorder()
 
@@ -157,7 +157,7 @@ func TestHandlerServeViCSS(t *testing.T) {
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "text/css", w.Header().Get("Content-Type"))
-	require.Equal(t, viCSS, w.Body.String())
+	require.Equal(t, appCSS, w.Body.String())
 }
 
 func TestHandlerServeFile(t *testing.T) {

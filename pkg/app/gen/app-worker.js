@@ -1,7 +1,7 @@
 const cacheName = "app-" + "{{.Version}}";
 
 self.addEventListener("install", event => {
-  console.log("installing app worker");
+  console.log("installing app worker {{.Version}}");
   self.skipWaiting();
 
   event.waitUntil(
@@ -15,7 +15,6 @@ self.addEventListener("install", event => {
 });
 
 self.addEventListener("activate", event => {
-  console.log("app worker is activating");
   event.waitUntil(
     caches.keys().then(keyList => {
       return Promise.all(
@@ -27,6 +26,7 @@ self.addEventListener("activate", event => {
       );
     })
   );
+  console.log("app worker {{.Version}} is activated");
 });
 
 self.addEventListener("fetch", event => {
