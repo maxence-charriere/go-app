@@ -2,6 +2,7 @@ package app
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -88,6 +89,14 @@ func TestMount(t *testing.T) {
 					return Div()
 				}),
 			err: true,
+		},
+		{
+			scenario: "raw node is mounted",
+			node:     Raw("<p>hello</p>"),
+		},
+		{
+			scenario: "svg node is mounted",
+			node:     Raw("<svg></svg>"),
 		},
 	}
 
@@ -203,4 +212,56 @@ func TestUpdateChildComponent(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, "foo", c.Text)
 	require.Equal(t, 42, c.Bar.Int)
+}
+
+func TestUpdateRawNode(t *testing.T) {
+	parent := Div()
+
+	araw := `
+<svg width="100" height="100">
+    <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+</svg>
+	`
+	a := Raw(araw)
+	parent.Body(a)
+	err := mount(parent)
+	require.NoError(t, err)
+	require.Equal(t, strings.TrimSpace(araw), a.(rawNode).raw())
+
+	braw := `
+	<svg width="150" height="150">
+	    <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+	</svg>
+		`
+	b := Raw(braw)
+	err = update(a, b)
+	require.NoError(t, err)
+
+	require.Len(t, parent.children(), 1)
+	require.Equal(t, b, parent.children()[0])
+	require.NotNil(t, b.JSValue())
+}
+
+func TestUpdateRawNodeWithDifferentType(t *testing.T) {
+	parent := Div()
+
+	araw := `
+<svg width="100" height="100">
+    <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+</svg>
+	`
+	a := Raw(araw)
+	parent.Body(a)
+	err := mount(parent)
+	require.NoError(t, err)
+	require.Equal(t, strings.TrimSpace(araw), a.(rawNode).raw())
+
+	braw := `<div>hello</div>`
+	b := Raw(braw)
+	err = update(a, b)
+	require.NoError(t, err)
+
+	require.Len(t, parent.children(), 1)
+	require.Equal(t, b, parent.children()[0])
+	require.NotNil(t, b.JSValue())
 }
