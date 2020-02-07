@@ -58,6 +58,13 @@ type textNode interface {
 	update(t textNode)
 }
 
+type rawNode interface {
+	ValueNode
+
+	raw() string
+	mount() error
+}
+
 // CompoNode is the interface that describes a component node that is built on
 // the top of a Compo.
 //
@@ -163,6 +170,9 @@ func mount(n Node) error {
 	case standardNode:
 		return t.mount()
 
+	case rawNode:
+		return t.mount()
+
 	case CompoNode:
 		return t.mount(t)
 
@@ -182,6 +192,9 @@ func update(a, b ValueNode) error {
 
 	case standardNode:
 		return updateStandardNode(t, b.(standardNode))
+
+	case rawNode:
+		return updateRawNode(t, b.(rawNode))
 
 	case CompoNode:
 		t.update(b.(CompoNode))
@@ -248,5 +261,12 @@ func updateStandardNode(a, b standardNode) error {
 		bchildren = bchildren[1:]
 	}
 
+	return nil
+}
+
+func updateRawNode(a, b rawNode) error {
+	if a.raw() != b.raw() {
+		return replace(a, b)
+	}
 	return nil
 }
