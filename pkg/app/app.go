@@ -32,9 +32,6 @@ var (
 // EventHandler represents a function that can handle HTML events.
 type EventHandler func(src Value, e Event)
 
-// Implement Raw(string)
-// Implement Svg(string)
-
 // Route binds the requested path to the given UI node.
 func Route(path string, n ValueNode) {
 	routes[path] = n

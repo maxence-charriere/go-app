@@ -22,7 +22,7 @@ func (n *notFound) OnMount() {
 }
 
 func (n *notFound) Render() ValueNode {
-	return Main().
+	return Div().
 		Class("app-wasm-layout").
 		Body(
 			Div().
