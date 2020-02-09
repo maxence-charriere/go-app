@@ -22,14 +22,14 @@ func init() {
 	log.WarnColor = ""
 	log.DebugColor = ""
 	log.CurrentLevel = log.DebugLevel
+
+	LocalStorage = newJSStorage("localStorage")
+	SessionStorage = newJSStorage("sessionStorage")
 }
 
 func run() {
 	initContent()
 	initContextMenu()
-
-	LocalStorage = newJSStorage("localStorage")
-	SessionStorage = newJSStorage("sessionStorage")
 
 	onnav := FuncOf(onNavigate)
 	defer onnav.Release()
