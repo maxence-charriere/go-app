@@ -9,7 +9,7 @@ import (
 )
 
 // Raw returns a node from the given raw value.
-func Raw(v string) ValueNode {
+func Raw(v string) UI {
 	v = strings.TrimSpace(v)
 
 	tag := rawOpenTag(v)

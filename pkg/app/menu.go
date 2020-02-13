@@ -110,7 +110,7 @@ func (m *menuItem) Title(t string) MenuItemNode {
 	return m
 }
 
-func (m *menuItem) Render() ValueNode {
+func (m *menuItem) Render() UI {
 	if m.Props.separator {
 		return Div().Class("app-menuitem-separator")
 	}
@@ -154,7 +154,7 @@ type contextMenuLayout struct {
 	items   []MenuItemNode
 }
 
-func (l *contextMenuLayout) Render() ValueNode {
+func (l *contextMenuLayout) Render() UI {
 	class := "app-contextmenu-hidden"
 	if l.visible {
 		class = "app-contextmenu-visible"

@@ -8,7 +8,7 @@ import (
 )
 
 // Text returns a text node.
-func Text(v string) ValueNode {
+func Text(v string) UI {
 	return &text{textValue: v}
 }
 

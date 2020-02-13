@@ -9,10 +9,10 @@ import (
 )
 
 var (
-	window                = &browserWindow{value: value{Value: js.Global()}}
-	body                  = Body()
-	content     ValueNode = Div()
-	contextMenu           = &contextMenuLayout{}
+	window         = &browserWindow{value: value{Value: js.Global()}}
+	body           = Body()
+	content     UI = Div()
+	contextMenu    = &contextMenuLayout{}
 )
 
 func init() {
