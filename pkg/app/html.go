@@ -47,8 +47,8 @@ func (e *HTMLA) ContentEditable(v bool) *HTMLA {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLA) DataSet(k, v string) *HTMLA {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLA) DataSet(k string, v interface{}) *HTMLA {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -395,8 +395,8 @@ func (e *HTMLAbbr) ContentEditable(v bool) *HTMLAbbr {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLAbbr) DataSet(k, v string) *HTMLAbbr {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLAbbr) DataSet(k string, v interface{}) *HTMLAbbr {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -695,8 +695,8 @@ func (e *HTMLAddress) ContentEditable(v bool) *HTMLAddress {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLAddress) DataSet(k, v string) *HTMLAddress {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLAddress) DataSet(k string, v interface{}) *HTMLAddress {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -1001,8 +1001,8 @@ func (e *HTMLArea) Coords(v string) *HTMLArea {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLArea) DataSet(k, v string) *HTMLArea {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLArea) DataSet(k string, v interface{}) *HTMLArea {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -1349,8 +1349,8 @@ func (e *HTMLArticle) ContentEditable(v bool) *HTMLArticle {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLArticle) DataSet(k, v string) *HTMLArticle {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLArticle) DataSet(k string, v interface{}) *HTMLArticle {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -1649,8 +1649,8 @@ func (e *HTMLAside) ContentEditable(v bool) *HTMLAside {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLAside) DataSet(k, v string) *HTMLAside {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLAside) DataSet(k string, v interface{}) *HTMLAside {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -1961,8 +1961,8 @@ func (e *HTMLAudio) Controls(v bool) *HTMLAudio {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLAudio) DataSet(k, v string) *HTMLAudio {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLAudio) DataSet(k string, v interface{}) *HTMLAudio {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -2423,8 +2423,8 @@ func (e *HTMLB) ContentEditable(v bool) *HTMLB {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLB) DataSet(k, v string) *HTMLB {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLB) DataSet(k string, v interface{}) *HTMLB {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -2717,8 +2717,8 @@ func (e *HTMLBase) ContentEditable(v bool) *HTMLBase {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLBase) DataSet(k, v string) *HTMLBase {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLBase) DataSet(k string, v interface{}) *HTMLBase {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -3029,8 +3029,8 @@ func (e *HTMLBdi) ContentEditable(v bool) *HTMLBdi {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLBdi) DataSet(k, v string) *HTMLBdi {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLBdi) DataSet(k string, v interface{}) *HTMLBdi {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -3329,8 +3329,8 @@ func (e *HTMLBdo) ContentEditable(v bool) *HTMLBdo {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLBdo) DataSet(k, v string) *HTMLBdo {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLBdo) DataSet(k string, v interface{}) *HTMLBdo {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -3635,8 +3635,8 @@ func (e *HTMLBlockquote) ContentEditable(v bool) *HTMLBlockquote {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLBlockquote) DataSet(k, v string) *HTMLBlockquote {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLBlockquote) DataSet(k string, v interface{}) *HTMLBlockquote {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -3935,8 +3935,8 @@ func (e *HTMLBody) ContentEditable(v bool) *HTMLBody {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLBody) DataSet(k, v string) *HTMLBody {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLBody) DataSet(k string, v interface{}) *HTMLBody {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -4319,8 +4319,8 @@ func (e *HTMLBr) ContentEditable(v bool) *HTMLBr {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLBr) DataSet(k, v string) *HTMLBr {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLBr) DataSet(k string, v interface{}) *HTMLBr {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -4625,8 +4625,8 @@ func (e *HTMLButton) ContentEditable(v bool) *HTMLButton {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLButton) DataSet(k, v string) *HTMLButton {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLButton) DataSet(k string, v interface{}) *HTMLButton {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -4985,8 +4985,8 @@ func (e *HTMLCanvas) ContentEditable(v bool) *HTMLCanvas {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLCanvas) DataSet(k, v string) *HTMLCanvas {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLCanvas) DataSet(k string, v interface{}) *HTMLCanvas {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -5297,8 +5297,8 @@ func (e *HTMLCaption) ContentEditable(v bool) *HTMLCaption {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLCaption) DataSet(k, v string) *HTMLCaption {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLCaption) DataSet(k string, v interface{}) *HTMLCaption {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -5597,8 +5597,8 @@ func (e *HTMLCite) ContentEditable(v bool) *HTMLCite {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLCite) DataSet(k, v string) *HTMLCite {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLCite) DataSet(k string, v interface{}) *HTMLCite {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -5897,8 +5897,8 @@ func (e *HTMLCode) ContentEditable(v bool) *HTMLCode {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLCode) DataSet(k, v string) *HTMLCode {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLCode) DataSet(k string, v interface{}) *HTMLCode {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -6191,8 +6191,8 @@ func (e *HTMLCol) ContentEditable(v bool) *HTMLCol {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLCol) DataSet(k, v string) *HTMLCol {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLCol) DataSet(k string, v interface{}) *HTMLCol {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -6497,8 +6497,8 @@ func (e *HTMLColGroup) ContentEditable(v bool) *HTMLColGroup {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLColGroup) DataSet(k, v string) *HTMLColGroup {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLColGroup) DataSet(k string, v interface{}) *HTMLColGroup {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -6803,8 +6803,8 @@ func (e *HTMLData) ContentEditable(v bool) *HTMLData {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLData) DataSet(k, v string) *HTMLData {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLData) DataSet(k string, v interface{}) *HTMLData {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -6917,8 +6917,8 @@ func (e *HTMLDataList) ContentEditable(v bool) *HTMLDataList {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLDataList) DataSet(k, v string) *HTMLDataList {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLDataList) DataSet(k string, v interface{}) *HTMLDataList {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -7217,8 +7217,8 @@ func (e *HTMLDd) ContentEditable(v bool) *HTMLDd {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLDd) DataSet(k, v string) *HTMLDd {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLDd) DataSet(k string, v interface{}) *HTMLDd {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -7523,8 +7523,8 @@ func (e *HTMLDel) ContentEditable(v bool) *HTMLDel {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLDel) DataSet(k, v string) *HTMLDel {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLDel) DataSet(k string, v interface{}) *HTMLDel {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -7829,8 +7829,8 @@ func (e *HTMLDetails) ContentEditable(v bool) *HTMLDetails {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLDetails) DataSet(k, v string) *HTMLDetails {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLDetails) DataSet(k string, v interface{}) *HTMLDetails {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -8141,8 +8141,8 @@ func (e *HTMLDfn) ContentEditable(v bool) *HTMLDfn {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLDfn) DataSet(k, v string) *HTMLDfn {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLDfn) DataSet(k string, v interface{}) *HTMLDfn {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -8441,8 +8441,8 @@ func (e *HTMLDialog) ContentEditable(v bool) *HTMLDialog {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLDialog) DataSet(k, v string) *HTMLDialog {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLDialog) DataSet(k string, v interface{}) *HTMLDialog {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -8747,8 +8747,8 @@ func (e *HTMLDiv) ContentEditable(v bool) *HTMLDiv {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLDiv) DataSet(k, v string) *HTMLDiv {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLDiv) DataSet(k string, v interface{}) *HTMLDiv {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -9047,8 +9047,8 @@ func (e *HTMLDl) ContentEditable(v bool) *HTMLDl {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLDl) DataSet(k, v string) *HTMLDl {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLDl) DataSet(k string, v interface{}) *HTMLDl {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -9347,8 +9347,8 @@ func (e *HTMLDt) ContentEditable(v bool) *HTMLDt {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLDt) DataSet(k, v string) *HTMLDt {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLDt) DataSet(k string, v interface{}) *HTMLDt {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -9647,8 +9647,8 @@ func (e *HTMLEm) ContentEditable(v bool) *HTMLEm {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLEm) DataSet(k, v string) *HTMLEm {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLEm) DataSet(k string, v interface{}) *HTMLEm {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -9941,8 +9941,8 @@ func (e *HTMLEmbed) ContentEditable(v bool) *HTMLEmbed {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLEmbed) DataSet(k, v string) *HTMLEmbed {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLEmbed) DataSet(k string, v interface{}) *HTMLEmbed {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -10403,8 +10403,8 @@ func (e *HTMLFieldSet) ContentEditable(v bool) *HTMLFieldSet {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLFieldSet) DataSet(k, v string) *HTMLFieldSet {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLFieldSet) DataSet(k string, v interface{}) *HTMLFieldSet {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -10721,8 +10721,8 @@ func (e *HTMLFigCaption) ContentEditable(v bool) *HTMLFigCaption {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLFigCaption) DataSet(k, v string) *HTMLFigCaption {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLFigCaption) DataSet(k string, v interface{}) *HTMLFigCaption {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -11021,8 +11021,8 @@ func (e *HTMLFigure) ContentEditable(v bool) *HTMLFigure {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLFigure) DataSet(k, v string) *HTMLFigure {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLFigure) DataSet(k string, v interface{}) *HTMLFigure {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -11321,8 +11321,8 @@ func (e *HTMLFooter) ContentEditable(v bool) *HTMLFooter {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLFooter) DataSet(k, v string) *HTMLFooter {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLFooter) DataSet(k string, v interface{}) *HTMLFooter {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -11644,8 +11644,8 @@ func (e *HTMLForm) ContentEditable(v bool) *HTMLForm {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLForm) DataSet(k, v string) *HTMLForm {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLForm) DataSet(k string, v interface{}) *HTMLForm {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -11974,8 +11974,8 @@ func (e *HTMLH1) ContentEditable(v bool) *HTMLH1 {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLH1) DataSet(k, v string) *HTMLH1 {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLH1) DataSet(k string, v interface{}) *HTMLH1 {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -12274,8 +12274,8 @@ func (e *HTMLH2) ContentEditable(v bool) *HTMLH2 {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLH2) DataSet(k, v string) *HTMLH2 {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLH2) DataSet(k string, v interface{}) *HTMLH2 {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -12574,8 +12574,8 @@ func (e *HTMLH3) ContentEditable(v bool) *HTMLH3 {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLH3) DataSet(k, v string) *HTMLH3 {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLH3) DataSet(k string, v interface{}) *HTMLH3 {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -12874,8 +12874,8 @@ func (e *HTMLH4) ContentEditable(v bool) *HTMLH4 {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLH4) DataSet(k, v string) *HTMLH4 {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLH4) DataSet(k string, v interface{}) *HTMLH4 {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -13174,8 +13174,8 @@ func (e *HTMLH5) ContentEditable(v bool) *HTMLH5 {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLH5) DataSet(k, v string) *HTMLH5 {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLH5) DataSet(k string, v interface{}) *HTMLH5 {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -13474,8 +13474,8 @@ func (e *HTMLH6) ContentEditable(v bool) *HTMLH6 {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLH6) DataSet(k, v string) *HTMLH6 {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLH6) DataSet(k string, v interface{}) *HTMLH6 {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -13774,8 +13774,8 @@ func (e *HTMLHead) ContentEditable(v bool) *HTMLHead {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLHead) DataSet(k, v string) *HTMLHead {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLHead) DataSet(k string, v interface{}) *HTMLHead {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -13882,8 +13882,8 @@ func (e *HTMLHeader) ContentEditable(v bool) *HTMLHeader {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLHeader) DataSet(k, v string) *HTMLHeader {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLHeader) DataSet(k string, v interface{}) *HTMLHeader {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -14176,8 +14176,8 @@ func (e *HTMLHr) ContentEditable(v bool) *HTMLHr {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLHr) DataSet(k, v string) *HTMLHr {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLHr) DataSet(k string, v interface{}) *HTMLHr {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -14476,8 +14476,8 @@ func (e *HTMLHtml) ContentEditable(v bool) *HTMLHtml {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLHtml) DataSet(k, v string) *HTMLHtml {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLHtml) DataSet(k string, v interface{}) *HTMLHtml {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -14584,8 +14584,8 @@ func (e *HTMLI) ContentEditable(v bool) *HTMLI {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLI) DataSet(k, v string) *HTMLI {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLI) DataSet(k string, v interface{}) *HTMLI {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -14884,8 +14884,8 @@ func (e *HTMLIFrame) ContentEditable(v bool) *HTMLIFrame {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLIFrame) DataSet(k, v string) *HTMLIFrame {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLIFrame) DataSet(k string, v interface{}) *HTMLIFrame {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -15220,8 +15220,8 @@ func (e *HTMLImg) ContentEditable(v bool) *HTMLImg {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLImg) DataSet(k, v string) *HTMLImg {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLImg) DataSet(k string, v interface{}) *HTMLImg {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -15729,8 +15729,8 @@ func (e *HTMLInput) ContentEditable(v bool) *HTMLInput {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLInput) DataSet(k, v string) *HTMLInput {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLInput) DataSet(k string, v interface{}) *HTMLInput {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -16179,8 +16179,8 @@ func (e *HTMLIns) ContentEditable(v bool) *HTMLIns {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLIns) DataSet(k, v string) *HTMLIns {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLIns) DataSet(k string, v interface{}) *HTMLIns {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -16479,8 +16479,8 @@ func (e *HTMLKbd) ContentEditable(v bool) *HTMLKbd {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLKbd) DataSet(k, v string) *HTMLKbd {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLKbd) DataSet(k string, v interface{}) *HTMLKbd {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -16779,8 +16779,8 @@ func (e *HTMLLabel) ContentEditable(v bool) *HTMLLabel {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLLabel) DataSet(k, v string) *HTMLLabel {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLLabel) DataSet(k string, v interface{}) *HTMLLabel {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -17091,8 +17091,8 @@ func (e *HTMLLegends) ContentEditable(v bool) *HTMLLegends {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLLegends) DataSet(k, v string) *HTMLLegends {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLLegends) DataSet(k string, v interface{}) *HTMLLegends {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -17391,8 +17391,8 @@ func (e *HTMLLi) ContentEditable(v bool) *HTMLLi {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLLi) DataSet(k, v string) *HTMLLi {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLLi) DataSet(k string, v interface{}) *HTMLLi {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -17691,8 +17691,8 @@ func (e *HTMLLink) ContentEditable(v bool) *HTMLLink {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLLink) DataSet(k, v string) *HTMLLink {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLLink) DataSet(k string, v interface{}) *HTMLLink {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -18027,8 +18027,8 @@ func (e *HTMLMain) ContentEditable(v bool) *HTMLMain {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLMain) DataSet(k, v string) *HTMLMain {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLMain) DataSet(k string, v interface{}) *HTMLMain {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -18327,8 +18327,8 @@ func (e *HTMLMap) ContentEditable(v bool) *HTMLMap {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLMap) DataSet(k, v string) *HTMLMap {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLMap) DataSet(k string, v interface{}) *HTMLMap {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -18633,8 +18633,8 @@ func (e *HTMLMark) ContentEditable(v bool) *HTMLMark {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLMark) DataSet(k, v string) *HTMLMark {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLMark) DataSet(k string, v interface{}) *HTMLMark {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -18939,8 +18939,8 @@ func (e *HTMLMeta) ContentEditable(v bool) *HTMLMeta {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLMeta) DataSet(k, v string) *HTMLMeta {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLMeta) DataSet(k string, v interface{}) *HTMLMeta {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -19059,8 +19059,8 @@ func (e *HTMLMeter) ContentEditable(v bool) *HTMLMeter {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLMeter) DataSet(k, v string) *HTMLMeter {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLMeter) DataSet(k string, v interface{}) *HTMLMeter {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -19401,8 +19401,8 @@ func (e *HTMLNav) ContentEditable(v bool) *HTMLNav {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLNav) DataSet(k, v string) *HTMLNav {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLNav) DataSet(k string, v interface{}) *HTMLNav {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -19701,8 +19701,8 @@ func (e *HTMLNoScript) ContentEditable(v bool) *HTMLNoScript {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLNoScript) DataSet(k, v string) *HTMLNoScript {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLNoScript) DataSet(k string, v interface{}) *HTMLNoScript {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -19815,8 +19815,8 @@ func (e *HTMLObject) Data(v string) *HTMLObject {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLObject) DataSet(k, v string) *HTMLObject {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLObject) DataSet(k string, v interface{}) *HTMLObject {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -20289,8 +20289,8 @@ func (e *HTMLOl) ContentEditable(v bool) *HTMLOl {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLOl) DataSet(k, v string) *HTMLOl {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLOl) DataSet(k string, v interface{}) *HTMLOl {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -20607,8 +20607,8 @@ func (e *HTMLOptGroup) ContentEditable(v bool) *HTMLOptGroup {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLOptGroup) DataSet(k, v string) *HTMLOptGroup {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLOptGroup) DataSet(k string, v interface{}) *HTMLOptGroup {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -20919,8 +20919,8 @@ func (e *HTMLOption) ContentEditable(v bool) *HTMLOption {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLOption) DataSet(k, v string) *HTMLOption {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLOption) DataSet(k string, v interface{}) *HTMLOption {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -21243,8 +21243,8 @@ func (e *HTMLOutput) ContentEditable(v bool) *HTMLOutput {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLOutput) DataSet(k, v string) *HTMLOutput {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLOutput) DataSet(k string, v interface{}) *HTMLOutput {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -21561,8 +21561,8 @@ func (e *HTMLP) ContentEditable(v bool) *HTMLP {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLP) DataSet(k, v string) *HTMLP {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLP) DataSet(k string, v interface{}) *HTMLP {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -21855,8 +21855,8 @@ func (e *HTMLParam) ContentEditable(v bool) *HTMLParam {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLParam) DataSet(k, v string) *HTMLParam {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLParam) DataSet(k string, v interface{}) *HTMLParam {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -22167,8 +22167,8 @@ func (e *HTMLPicture) ContentEditable(v bool) *HTMLPicture {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLPicture) DataSet(k, v string) *HTMLPicture {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLPicture) DataSet(k string, v interface{}) *HTMLPicture {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -22467,8 +22467,8 @@ func (e *HTMLPre) ContentEditable(v bool) *HTMLPre {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLPre) DataSet(k, v string) *HTMLPre {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLPre) DataSet(k string, v interface{}) *HTMLPre {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -22767,8 +22767,8 @@ func (e *HTMLProgress) ContentEditable(v bool) *HTMLProgress {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLProgress) DataSet(k, v string) *HTMLProgress {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLProgress) DataSet(k string, v interface{}) *HTMLProgress {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -23085,8 +23085,8 @@ func (e *HTMLQ) ContentEditable(v bool) *HTMLQ {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLQ) DataSet(k, v string) *HTMLQ {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLQ) DataSet(k string, v interface{}) *HTMLQ {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -23385,8 +23385,8 @@ func (e *HTMLRp) ContentEditable(v bool) *HTMLRp {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLRp) DataSet(k, v string) *HTMLRp {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLRp) DataSet(k string, v interface{}) *HTMLRp {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -23685,8 +23685,8 @@ func (e *HTMLRt) ContentEditable(v bool) *HTMLRt {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLRt) DataSet(k, v string) *HTMLRt {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLRt) DataSet(k string, v interface{}) *HTMLRt {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -23985,8 +23985,8 @@ func (e *HTMLRuby) ContentEditable(v bool) *HTMLRuby {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLRuby) DataSet(k, v string) *HTMLRuby {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLRuby) DataSet(k string, v interface{}) *HTMLRuby {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -24285,8 +24285,8 @@ func (e *HTMLS) ContentEditable(v bool) *HTMLS {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLS) DataSet(k, v string) *HTMLS {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLS) DataSet(k string, v interface{}) *HTMLS {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -24585,8 +24585,8 @@ func (e *HTMLSamp) ContentEditable(v bool) *HTMLSamp {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLSamp) DataSet(k, v string) *HTMLSamp {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLSamp) DataSet(k string, v interface{}) *HTMLSamp {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -24897,8 +24897,8 @@ func (e *HTMLScript) ContentEditable(v bool) *HTMLScript {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLScript) DataSet(k, v string) *HTMLScript {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLScript) DataSet(k string, v interface{}) *HTMLScript {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -25023,8 +25023,8 @@ func (e *HTMLSection) ContentEditable(v bool) *HTMLSection {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLSection) DataSet(k, v string) *HTMLSection {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLSection) DataSet(k string, v interface{}) *HTMLSection {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -25329,8 +25329,8 @@ func (e *HTMLSelect) ContentEditable(v bool) *HTMLSelect {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLSelect) DataSet(k, v string) *HTMLSelect {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLSelect) DataSet(k string, v interface{}) *HTMLSelect {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -25665,8 +25665,8 @@ func (e *HTMLSmall) ContentEditable(v bool) *HTMLSmall {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLSmall) DataSet(k, v string) *HTMLSmall {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLSmall) DataSet(k string, v interface{}) *HTMLSmall {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -25959,8 +25959,8 @@ func (e *HTMLSource) ContentEditable(v bool) *HTMLSource {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLSource) DataSet(k, v string) *HTMLSource {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLSource) DataSet(k string, v interface{}) *HTMLSource {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -26289,8 +26289,8 @@ func (e *HTMLSpan) ContentEditable(v bool) *HTMLSpan {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLSpan) DataSet(k, v string) *HTMLSpan {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLSpan) DataSet(k string, v interface{}) *HTMLSpan {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -26589,8 +26589,8 @@ func (e *HTMLStrong) ContentEditable(v bool) *HTMLStrong {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLStrong) DataSet(k, v string) *HTMLStrong {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLStrong) DataSet(k string, v interface{}) *HTMLStrong {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -26889,8 +26889,8 @@ func (e *HTMLStyle) ContentEditable(v bool) *HTMLStyle {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLStyle) DataSet(k, v string) *HTMLStyle {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLStyle) DataSet(k string, v interface{}) *HTMLStyle {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -27201,8 +27201,8 @@ func (e *HTMLSub) ContentEditable(v bool) *HTMLSub {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLSub) DataSet(k, v string) *HTMLSub {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLSub) DataSet(k string, v interface{}) *HTMLSub {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -27501,8 +27501,8 @@ func (e *HTMLSummary) ContentEditable(v bool) *HTMLSummary {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLSummary) DataSet(k, v string) *HTMLSummary {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLSummary) DataSet(k string, v interface{}) *HTMLSummary {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -27801,8 +27801,8 @@ func (e *HTMLSup) ContentEditable(v bool) *HTMLSup {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLSup) DataSet(k, v string) *HTMLSup {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLSup) DataSet(k string, v interface{}) *HTMLSup {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -28101,8 +28101,8 @@ func (e *HTMLTable) ContentEditable(v bool) *HTMLTable {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLTable) DataSet(k, v string) *HTMLTable {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLTable) DataSet(k string, v interface{}) *HTMLTable {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -28401,8 +28401,8 @@ func (e *HTMLTBody) ContentEditable(v bool) *HTMLTBody {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLTBody) DataSet(k, v string) *HTMLTBody {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLTBody) DataSet(k string, v interface{}) *HTMLTBody {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -28707,8 +28707,8 @@ func (e *HTMLTd) ContentEditable(v bool) *HTMLTd {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLTd) DataSet(k, v string) *HTMLTd {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLTd) DataSet(k string, v interface{}) *HTMLTd {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -29019,8 +29019,8 @@ func (e *HTMLTemplate) ContentEditable(v bool) *HTMLTemplate {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLTemplate) DataSet(k, v string) *HTMLTemplate {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLTemplate) DataSet(k string, v interface{}) *HTMLTemplate {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -29139,8 +29139,8 @@ func (e *HTMLTextarea) ContentEditable(v bool) *HTMLTextarea {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLTextarea) DataSet(k, v string) *HTMLTextarea {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLTextarea) DataSet(k string, v interface{}) *HTMLTextarea {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -29499,8 +29499,8 @@ func (e *HTMLtfoot) ContentEditable(v bool) *HTMLtfoot {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLtfoot) DataSet(k, v string) *HTMLtfoot {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLtfoot) DataSet(k string, v interface{}) *HTMLtfoot {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -29811,8 +29811,8 @@ func (e *HTMLTh) ContentEditable(v bool) *HTMLTh {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLTh) DataSet(k, v string) *HTMLTh {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLTh) DataSet(k string, v interface{}) *HTMLTh {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -30129,8 +30129,8 @@ func (e *HTMLTime) ContentEditable(v bool) *HTMLTime {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLTime) DataSet(k, v string) *HTMLTime {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLTime) DataSet(k string, v interface{}) *HTMLTime {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -30435,8 +30435,8 @@ func (e *HTMLTitle) ContentEditable(v bool) *HTMLTitle {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLTitle) DataSet(k, v string) *HTMLTitle {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLTitle) DataSet(k string, v interface{}) *HTMLTitle {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -30543,8 +30543,8 @@ func (e *HTMLTr) ContentEditable(v bool) *HTMLTr {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLTr) DataSet(k, v string) *HTMLTr {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLTr) DataSet(k string, v interface{}) *HTMLTr {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -30843,8 +30843,8 @@ func (e *HTMLU) ContentEditable(v bool) *HTMLU {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLU) DataSet(k, v string) *HTMLU {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLU) DataSet(k string, v interface{}) *HTMLU {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -31143,8 +31143,8 @@ func (e *HTMLUl) ContentEditable(v bool) *HTMLUl {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLUl) DataSet(k, v string) *HTMLUl {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLUl) DataSet(k string, v interface{}) *HTMLUl {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -31443,8 +31443,8 @@ func (e *HTMLVar) ContentEditable(v bool) *HTMLVar {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLVar) DataSet(k, v string) *HTMLVar {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLVar) DataSet(k string, v interface{}) *HTMLVar {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -31755,8 +31755,8 @@ func (e *HTMLVideo) Controls(v bool) *HTMLVideo {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLVideo) DataSet(k, v string) *HTMLVideo {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLVideo) DataSet(k string, v interface{}) *HTMLVideo {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -32235,8 +32235,8 @@ func (e *HTMLWbr) ContentEditable(v bool) *HTMLWbr {
 }
 
 // DataSet stores custom data private to the page or application.
-func (e *HTMLWbr) DataSet(k, v string) *HTMLWbr {
-	e.elem.setAttribute("dataset-"+k, v)
+func (e *HTMLWbr) DataSet(k string, v interface{}) *HTMLWbr {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 

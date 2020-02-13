@@ -1087,7 +1087,7 @@ var attrs = map[string]attr{
 	},
 	"data-*": {
 		Name: "DataSet",
-		Type: "string|string",
+		Type: "data|value",
 		Doc:  "stores custom data private to the page or application.",
 	},
 	"datetime": {
@@ -2015,16 +2015,16 @@ import (
 			fmt.Fprintf(f, "// %s %s", a.Name, a.Doc)
 
 			switch a.Type {
-			case "string|string":
+			case "data|value":
 				fmt.Fprintf(f, `
-				func (e *HTML%s) %s(k, v string) *HTML%s {
-					e.elem.setAttribute("%s-"+k, v)
+				func (e *HTML%s) %s(k string, v interface{}) *HTML%s {
+					e.elem.setAttribute("data-"+k, fmt.Sprintf("%s", v))
 					return e
 				}`,
 					t.Name,
 					a.Name,
 					t.Name,
-					strings.ToLower(a.Name),
+					"%v",
 				)
 
 			case "string|value":
