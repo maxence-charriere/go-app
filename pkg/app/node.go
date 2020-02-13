@@ -12,9 +12,9 @@ type Node interface {
 	nodeType() reflect.Type
 }
 
-// ValueNode is the interface that describes a node that holds a value. HTML
-// nodes and component nodes are value nodes.
-type ValueNode interface {
+// UI is the interface that describes a node that is a user interface element.
+// eg. HTML elements and components.
+type UI interface {
 	Node
 	Wrapper
 
@@ -24,13 +24,13 @@ type ValueNode interface {
 }
 
 type nodeWithChildren interface {
-	ValueNode
+	UI
 
-	replaceChild(old, new ValueNode)
+	replaceChild(old, new UI)
 }
 
 type standardNode interface {
-	ValueNode
+	UI
 
 	attributes() map[string]string
 	setAttribute(k string, v interface{})
@@ -41,17 +41,17 @@ type standardNode interface {
 	setEventHandlerValue(k string, h eventHandler)
 	removeEventHandlerValue(k string, h eventHandler)
 	mount() error
-	children() []ValueNode
-	appendChild(child ValueNode)
-	appendChildValue(child ValueNode)
-	removeChild(child ValueNode)
-	removeChildValue(child ValueNode)
-	replaceChildValue(old, new ValueNode)
+	children() []UI
+	appendChild(child UI)
+	appendChildValue(child UI)
+	removeChild(child UI)
+	removeChildValue(child UI)
+	replaceChildValue(old, new UI)
 	update(n standardNode)
 }
 
 type textNode interface {
-	ValueNode
+	UI
 
 	text() string
 	mount() error
@@ -59,64 +59,62 @@ type textNode interface {
 }
 
 type rawNode interface {
-	ValueNode
+	UI
 
 	raw() string
 	mount() error
 }
 
-// CompoNode is the interface that describes a component node that is built on
-// the top of a Compo.
+// Composer is the interface that describes a component that embeds other nodes.
+//
+// Satisfying this interface is done by embedding app.Compo into a struct and
+// implementing the Render function.
 //
 // Example:
 //  type Hello struct {
 //      app.Compo
 //  }
 //
-//  func (c *Hello) Render() app.Node {
+//  func (c *Hello) Render() app.UI {
 //      return app.Text("hello")
 //  }
-type CompoNode interface {
-	ValueNode
+type Composer interface {
+	UI
 
 	// Render returns the node tree that define how the component is desplayed.
-	//
-	// Returned node must be a standard HTML node or another component node.
-	// Mounting a component node that returns a condition node as root triggers
-	// a panic.
-	Render() ValueNode
+	Render() UI
 
 	// Update update the component appearance. It should be called when a field
 	// used to render the component has been modified.
 	Update()
 
-	setCompo(n CompoNode)
-	mount(c CompoNode) error
-	update(n CompoNode)
+	setCompo(n Composer)
+	mount(c Composer) error
+	update(n Composer)
 }
 
-// Mounter is the interface that describes a component node that can perform
+// Mounter is the interface that describes a component that can perform
 // additional actions when mounted.
 type Mounter interface {
-	CompoNode
+	Composer
 
 	// The function that is called when the component is mounted.
 	OnMount()
 }
 
-// Dismounter is the interface that describes a component node that can perform
+// Dismounter is the interface that describes a component that can perform
 // additional actions when dismounted.
 type Dismounter interface {
-	CompoNode
+	Composer
 
 	// The function that is called when the component is dismounted.
 	OnDismount()
 }
 
-// Navigator is the interface that describes a component node that can perform
+// Navigator is the interface that describes a component that can perform
 // additional actions when navigated on.
 type Navigator interface {
-	CompoNode
+	Composer
 
 	// The function that is called when the component is navigated on.
 	OnNav(u *url.URL)
@@ -130,7 +128,7 @@ type writableNode interface {
 type conditionNode interface {
 	Node
 
-	nodes() []ValueNode
+	nodes() []UI
 }
 
 type eventHandler struct {
@@ -142,19 +140,19 @@ func (h eventHandler) equals(o eventHandler) bool {
 	return fmt.Sprintf("%p", h.function) == fmt.Sprintf("%p", o.function)
 }
 
-func indirect(nodes ...Node) []ValueNode {
-	inodes := make([]ValueNode, 0, len(nodes))
+func indirect(nodes ...Node) []UI {
+	inodes := make([]UI, 0, len(nodes))
 
 	for _, n := range nodes {
 		switch t := n.(type) {
 		case conditionNode:
 			inodes = append(inodes, t.nodes()...)
 
-		case CompoNode:
+		case Composer:
 			t.setCompo(t)
 			inodes = append(inodes, t)
 
-		case ValueNode:
+		case UI:
 			inodes = append(inodes, t)
 		}
 	}
@@ -173,7 +171,7 @@ func mount(n Node) error {
 	case rawNode:
 		return t.mount()
 
-	case CompoNode:
+	case Composer:
 		return t.mount(t)
 
 	default:
@@ -181,7 +179,7 @@ func mount(n Node) error {
 	}
 }
 
-func update(a, b ValueNode) error {
+func update(a, b UI) error {
 	if a.nodeType() != b.nodeType() {
 		return replace(a, b)
 	}
@@ -196,8 +194,8 @@ func update(a, b ValueNode) error {
 	case rawNode:
 		return updateRawNode(t, b.(rawNode))
 
-	case CompoNode:
-		t.update(b.(CompoNode))
+	case Composer:
+		t.update(b.(Composer))
 		t.Update()
 
 	default:
@@ -207,7 +205,7 @@ func update(a, b ValueNode) error {
 	return nil
 }
 
-func replace(a, b ValueNode) error {
+func replace(a, b UI) error {
 	if err := mount(b); err != nil {
 		return err
 	}

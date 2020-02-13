@@ -119,7 +119,7 @@ type foo struct {
 	notExported bool
 }
 
-func (f *foo) Render() ValueNode {
+func (f *foo) Render() UI {
 	return Text(f.Text)
 }
 

@@ -8,7 +8,7 @@ import (
 type elem struct {
 	parentNode  nodeWithChildren
 	value       Value
-	body        []ValueNode
+	body        []UI
 	tag         string
 	attrs       map[string]string
 	events      map[string]eventHandler
@@ -39,7 +39,7 @@ func (e *elem) dismount() {
 	e.value = nil
 }
 
-func (e *elem) replaceChild(old, new ValueNode) {
+func (e *elem) replaceChild(old, new UI) {
 	for i, c := range e.body {
 		if c == old {
 			e.body[i] = new
@@ -158,19 +158,19 @@ func (e *elem) mount() error {
 	return nil
 }
 
-func (e *elem) children() []ValueNode {
+func (e *elem) children() []UI {
 	return e.body
 }
 
-func (e *elem) appendChild(child ValueNode) {
+func (e *elem) appendChild(child UI) {
 	e.body = append(e.body, child)
 }
 
-func (e *elem) appendChildValue(child ValueNode) {
+func (e *elem) appendChildValue(child UI) {
 	e.value.Call("appendChild", child)
 }
 
-func (e *elem) removeChild(child ValueNode) {
+func (e *elem) removeChild(child UI) {
 	children := e.body
 	for i, c := range children {
 		if c == child {
@@ -183,11 +183,11 @@ func (e *elem) removeChild(child ValueNode) {
 	}
 }
 
-func (e *elem) removeChildValue(child ValueNode) {
+func (e *elem) removeChildValue(child UI) {
 	e.value.Call("removeChild", child)
 }
 
-func (e *elem) replaceChildValue(old, new ValueNode) {
+func (e *elem) replaceChildValue(old, new UI) {
 	e.value.Call("replaceChild", new, old)
 }
 

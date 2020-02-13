@@ -10,7 +10,7 @@ type hello struct {
 	Name string
 }
 
-func (h *hello) Render() app.ValueNode {
+func (h *hello) Render() app.UI {
 	return app.Div().
 		Body(
 			app.Div().

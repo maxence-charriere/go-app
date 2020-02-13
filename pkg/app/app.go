@@ -23,9 +23,9 @@ var (
 
 	// NotFound is the ui element that is displayed when a request is not
 	// routed.
-	NotFound ValueNode = &notFound{}
+	NotFound UI = &notFound{}
 
-	routes = make(map[string]ValueNode)
+	routes = make(map[string]UI)
 	uiChan = make(chan func(), 256)
 )
 
@@ -33,7 +33,7 @@ var (
 type EventHandler func(src Value, e Event)
 
 // Route binds the requested path to the given UI node.
-func Route(path string, n ValueNode) {
+func Route(path string, n UI) {
 	routes[path] = n
 }
 

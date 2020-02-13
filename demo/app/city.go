@@ -69,7 +69,7 @@ func (c *city) OnNav(u *url.URL) {
 	c.Update()
 }
 
-func (c *city) Render() app.ValueNode {
+func (c *city) Render() app.UI {
 	return app.Div().
 		Body(
 			app.Div().

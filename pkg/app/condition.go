@@ -9,7 +9,7 @@ import (
 // IfCondition represents a control structure that displays nodes depending on a
 // given expression.
 type IfCondition struct {
-	body []ValueNode
+	body []UI
 	eval bool
 }
 
@@ -17,7 +17,7 @@ func (c IfCondition) nodeType() reflect.Type {
 	return reflect.TypeOf(c)
 }
 
-func (c IfCondition) nodes() []ValueNode {
+func (c IfCondition) nodes() []UI {
 	return c.body
 }
 
@@ -59,14 +59,14 @@ func (c IfCondition) Else(nodes ...Node) IfCondition {
 // an array or a map.
 type RangeCondition struct {
 	source interface{}
-	body   []ValueNode
+	body   []UI
 }
 
 func (c RangeCondition) nodeType() reflect.Type {
 	return reflect.TypeOf(c)
 }
 
-func (c RangeCondition) nodes() []ValueNode {
+func (c RangeCondition) nodes() []UI {
 	return c.body
 }
 

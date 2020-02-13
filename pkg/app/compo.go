@@ -10,9 +10,9 @@ import (
 
 // Compo represents the base struct to use in order to build a component.
 type Compo struct {
-	compo      CompoNode
+	compo      Composer
 	parentNode nodeWithChildren
-	root       ValueNode
+	root       UI
 }
 
 func (c *Compo) nodeType() reflect.Type {
@@ -32,7 +32,7 @@ func (c *Compo) setParent(p nodeWithChildren) {
 	c.parentNode = p
 }
 
-func (c *Compo) setCompo(n CompoNode) {
+func (c *Compo) setCompo(n Composer) {
 	c.compo = n
 }
 
@@ -44,7 +44,7 @@ func (c *Compo) dismount() {
 	}
 }
 
-func (c *Compo) replaceChild(old, new ValueNode) {
+func (c *Compo) replaceChild(old, new UI) {
 	if old == c.root {
 		c.root = new
 	}
@@ -55,7 +55,7 @@ func (c *Compo) replaceChild(old, new ValueNode) {
 func (c *Compo) Update() {
 	Dispatch(func() {
 		current := c.root
-		incoming := c.compo.Render().(ValueNode)
+		incoming := c.compo.Render().(UI)
 
 		if err := update(current, incoming); err != nil {
 			log.Error("updating component failed").
@@ -66,7 +66,7 @@ func (c *Compo) Update() {
 	})
 }
 
-func (c *Compo) mount(compo CompoNode) error {
+func (c *Compo) mount(compo Composer) error {
 	c.setCompo(compo)
 
 	root := compo.Render()
@@ -82,7 +82,7 @@ func (c *Compo) mount(compo CompoNode) error {
 	return nil
 }
 
-func (c *Compo) update(n CompoNode) {
+func (c *Compo) update(n Composer) {
 	aval := reflect.Indirect(reflect.ValueOf(c.compo))
 	bval := reflect.Indirect(reflect.ValueOf(n))
 	compotype := reflect.ValueOf(c).Elem().Type()
