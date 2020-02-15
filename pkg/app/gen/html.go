@@ -1452,8 +1452,8 @@ var attrs = map[string]attr{
 	},
 	"style": {
 		Name: "Style",
-		Type: "string",
-		Doc:  "specifies an inline CSS style for an element.",
+		Type: "style",
+		Doc:  "specifies a CSS style for an element. Can be called multiple times to set multiple css styles.",
 	},
 
 	// T:
@@ -1488,7 +1488,7 @@ var attrs = map[string]attr{
 	// V:
 	"value": {
 		Name: "Value",
-		Type: "string|value",
+		Type: "any",
 		Doc:  "specifies the value of the element.",
 	},
 
@@ -2027,17 +2027,27 @@ import (
 					"%v",
 				)
 
-			case "string|value":
+			case "any":
 				fmt.Fprintf(f, `
 				func (e *HTML%s) %s(v interface{}) *HTML%s {
-					e.elem.setAttribute("%s", fmt.Sprintf("%s", v))
+					e.elem.setAttribute("%s", v)
 					return e
 				}`,
 					t.Name,
 					a.Name,
 					t.Name,
 					strings.ToLower(a.Name),
-					"%v",
+				)
+
+			case "style":
+				fmt.Fprintf(f, `
+				func (e *HTML%s) %s(k, v string) *HTML%s {
+					e.elem.setAttribute("style", k+":"+v)
+					return e
+				}`,
+					t.Name,
+					a.Name,
+					t.Name,
 				)
 
 			case "on/off":

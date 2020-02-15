@@ -129,9 +129,9 @@ func (e *HTMLA) Spellcheck(v bool) *HTMLA {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLA) Style(v string) *HTMLA {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLA) Style(k, v string) *HTMLA {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -441,9 +441,9 @@ func (e *HTMLAbbr) Spellcheck(v bool) *HTMLAbbr {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLAbbr) Style(v string) *HTMLAbbr {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLAbbr) Style(k, v string) *HTMLAbbr {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -741,9 +741,9 @@ func (e *HTMLAddress) Spellcheck(v bool) *HTMLAddress {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLAddress) Style(v string) *HTMLAddress {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLAddress) Style(k, v string) *HTMLAddress {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -1083,9 +1083,9 @@ func (e *HTMLArea) Spellcheck(v bool) *HTMLArea {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLArea) Style(v string) *HTMLArea {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLArea) Style(k, v string) *HTMLArea {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -1395,9 +1395,9 @@ func (e *HTMLArticle) Spellcheck(v bool) *HTMLArticle {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLArticle) Style(v string) *HTMLArticle {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLArticle) Style(k, v string) *HTMLArticle {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -1695,9 +1695,9 @@ func (e *HTMLAside) Spellcheck(v bool) *HTMLAside {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLAside) Style(v string) *HTMLAside {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLAside) Style(k, v string) *HTMLAside {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -2031,9 +2031,9 @@ func (e *HTMLAudio) Src(v string) *HTMLAudio {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLAudio) Style(v string) *HTMLAudio {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLAudio) Style(k, v string) *HTMLAudio {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -2469,9 +2469,9 @@ func (e *HTMLB) Spellcheck(v bool) *HTMLB {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLB) Style(v string) *HTMLB {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLB) Style(k, v string) *HTMLB {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -2769,9 +2769,9 @@ func (e *HTMLBase) Spellcheck(v bool) *HTMLBase {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLBase) Style(v string) *HTMLBase {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLBase) Style(k, v string) *HTMLBase {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -3075,9 +3075,9 @@ func (e *HTMLBdi) Spellcheck(v bool) *HTMLBdi {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLBdi) Style(v string) *HTMLBdi {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLBdi) Style(k, v string) *HTMLBdi {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -3375,9 +3375,9 @@ func (e *HTMLBdo) Spellcheck(v bool) *HTMLBdo {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLBdo) Style(v string) *HTMLBdo {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLBdo) Style(k, v string) *HTMLBdo {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -3681,9 +3681,9 @@ func (e *HTMLBlockquote) Spellcheck(v bool) *HTMLBlockquote {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLBlockquote) Style(v string) *HTMLBlockquote {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLBlockquote) Style(k, v string) *HTMLBlockquote {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -3981,9 +3981,9 @@ func (e *HTMLBody) Spellcheck(v bool) *HTMLBody {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLBody) Style(v string) *HTMLBody {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLBody) Style(k, v string) *HTMLBody {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -4365,9 +4365,9 @@ func (e *HTMLBr) Spellcheck(v bool) *HTMLBr {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLBr) Style(v string) *HTMLBr {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLBr) Style(k, v string) *HTMLBr {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -4719,9 +4719,9 @@ func (e *HTMLButton) Spellcheck(v bool) *HTMLButton {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLButton) Style(v string) *HTMLButton {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLButton) Style(k, v string) *HTMLButton {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -4745,7 +4745,7 @@ func (e *HTMLButton) Type(v string) *HTMLButton {
 
 // Value specifies the value of the element.
 func (e *HTMLButton) Value(v interface{}) *HTMLButton {
-	e.elem.setAttribute("value", fmt.Sprintf("%v", v))
+	e.elem.setAttribute("value", v)
 	return e
 }
 
@@ -5037,9 +5037,9 @@ func (e *HTMLCanvas) Spellcheck(v bool) *HTMLCanvas {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLCanvas) Style(v string) *HTMLCanvas {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLCanvas) Style(k, v string) *HTMLCanvas {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -5343,9 +5343,9 @@ func (e *HTMLCaption) Spellcheck(v bool) *HTMLCaption {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLCaption) Style(v string) *HTMLCaption {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLCaption) Style(k, v string) *HTMLCaption {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -5643,9 +5643,9 @@ func (e *HTMLCite) Spellcheck(v bool) *HTMLCite {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLCite) Style(v string) *HTMLCite {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLCite) Style(k, v string) *HTMLCite {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -5943,9 +5943,9 @@ func (e *HTMLCode) Spellcheck(v bool) *HTMLCode {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLCode) Style(v string) *HTMLCode {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLCode) Style(k, v string) *HTMLCode {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -6243,9 +6243,9 @@ func (e *HTMLCol) Spellcheck(v bool) *HTMLCol {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLCol) Style(v string) *HTMLCol {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLCol) Style(k, v string) *HTMLCol {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -6549,9 +6549,9 @@ func (e *HTMLColGroup) Spellcheck(v bool) *HTMLColGroup {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLColGroup) Style(v string) *HTMLColGroup {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLColGroup) Style(k, v string) *HTMLColGroup {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -6849,9 +6849,9 @@ func (e *HTMLData) Spellcheck(v bool) *HTMLData {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLData) Style(v string) *HTMLData {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLData) Style(k, v string) *HTMLData {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -6869,7 +6869,7 @@ func (e *HTMLData) Title(v string) *HTMLData {
 
 // Value specifies the value of the element.
 func (e *HTMLData) Value(v interface{}) *HTMLData {
-	e.elem.setAttribute("value", fmt.Sprintf("%v", v))
+	e.elem.setAttribute("value", v)
 	return e
 }
 
@@ -6963,9 +6963,9 @@ func (e *HTMLDataList) Spellcheck(v bool) *HTMLDataList {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLDataList) Style(v string) *HTMLDataList {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLDataList) Style(k, v string) *HTMLDataList {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -7263,9 +7263,9 @@ func (e *HTMLDd) Spellcheck(v bool) *HTMLDd {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLDd) Style(v string) *HTMLDd {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLDd) Style(k, v string) *HTMLDd {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -7575,9 +7575,9 @@ func (e *HTMLDel) Spellcheck(v bool) *HTMLDel {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLDel) Style(v string) *HTMLDel {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLDel) Style(k, v string) *HTMLDel {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -7881,9 +7881,9 @@ func (e *HTMLDetails) Spellcheck(v bool) *HTMLDetails {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLDetails) Style(v string) *HTMLDetails {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLDetails) Style(k, v string) *HTMLDetails {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -8187,9 +8187,9 @@ func (e *HTMLDfn) Spellcheck(v bool) *HTMLDfn {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLDfn) Style(v string) *HTMLDfn {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLDfn) Style(k, v string) *HTMLDfn {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -8493,9 +8493,9 @@ func (e *HTMLDialog) Spellcheck(v bool) *HTMLDialog {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLDialog) Style(v string) *HTMLDialog {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLDialog) Style(k, v string) *HTMLDialog {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -8793,9 +8793,9 @@ func (e *HTMLDiv) Spellcheck(v bool) *HTMLDiv {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLDiv) Style(v string) *HTMLDiv {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLDiv) Style(k, v string) *HTMLDiv {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -9093,9 +9093,9 @@ func (e *HTMLDl) Spellcheck(v bool) *HTMLDl {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLDl) Style(v string) *HTMLDl {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLDl) Style(k, v string) *HTMLDl {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -9393,9 +9393,9 @@ func (e *HTMLDt) Spellcheck(v bool) *HTMLDt {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLDt) Style(v string) *HTMLDt {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLDt) Style(k, v string) *HTMLDt {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -9693,9 +9693,9 @@ func (e *HTMLEm) Spellcheck(v bool) *HTMLEm {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLEm) Style(v string) *HTMLEm {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLEm) Style(k, v string) *HTMLEm {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -9999,9 +9999,9 @@ func (e *HTMLEmbed) Src(v string) *HTMLEmbed {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLEmbed) Style(v string) *HTMLEmbed {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLEmbed) Style(k, v string) *HTMLEmbed {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -10467,9 +10467,9 @@ func (e *HTMLFieldSet) Spellcheck(v bool) *HTMLFieldSet {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLFieldSet) Style(v string) *HTMLFieldSet {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLFieldSet) Style(k, v string) *HTMLFieldSet {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -10767,9 +10767,9 @@ func (e *HTMLFigCaption) Spellcheck(v bool) *HTMLFigCaption {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLFigCaption) Style(v string) *HTMLFigCaption {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLFigCaption) Style(k, v string) *HTMLFigCaption {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -11067,9 +11067,9 @@ func (e *HTMLFigure) Spellcheck(v bool) *HTMLFigure {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLFigure) Style(v string) *HTMLFigure {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLFigure) Style(k, v string) *HTMLFigure {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -11367,9 +11367,9 @@ func (e *HTMLFooter) Spellcheck(v bool) *HTMLFooter {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLFooter) Style(v string) *HTMLFooter {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLFooter) Style(k, v string) *HTMLFooter {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -11714,9 +11714,9 @@ func (e *HTMLForm) Spellcheck(v bool) *HTMLForm {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLForm) Style(v string) *HTMLForm {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLForm) Style(k, v string) *HTMLForm {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -12020,9 +12020,9 @@ func (e *HTMLH1) Spellcheck(v bool) *HTMLH1 {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLH1) Style(v string) *HTMLH1 {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLH1) Style(k, v string) *HTMLH1 {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -12320,9 +12320,9 @@ func (e *HTMLH2) Spellcheck(v bool) *HTMLH2 {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLH2) Style(v string) *HTMLH2 {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLH2) Style(k, v string) *HTMLH2 {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -12620,9 +12620,9 @@ func (e *HTMLH3) Spellcheck(v bool) *HTMLH3 {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLH3) Style(v string) *HTMLH3 {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLH3) Style(k, v string) *HTMLH3 {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -12920,9 +12920,9 @@ func (e *HTMLH4) Spellcheck(v bool) *HTMLH4 {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLH4) Style(v string) *HTMLH4 {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLH4) Style(k, v string) *HTMLH4 {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -13220,9 +13220,9 @@ func (e *HTMLH5) Spellcheck(v bool) *HTMLH5 {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLH5) Style(v string) *HTMLH5 {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLH5) Style(k, v string) *HTMLH5 {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -13520,9 +13520,9 @@ func (e *HTMLH6) Spellcheck(v bool) *HTMLH6 {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLH6) Style(v string) *HTMLH6 {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLH6) Style(k, v string) *HTMLH6 {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -13820,9 +13820,9 @@ func (e *HTMLHead) Spellcheck(v bool) *HTMLHead {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLHead) Style(v string) *HTMLHead {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLHead) Style(k, v string) *HTMLHead {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -13928,9 +13928,9 @@ func (e *HTMLHeader) Spellcheck(v bool) *HTMLHeader {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLHeader) Style(v string) *HTMLHeader {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLHeader) Style(k, v string) *HTMLHeader {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -14222,9 +14222,9 @@ func (e *HTMLHr) Spellcheck(v bool) *HTMLHr {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLHr) Style(v string) *HTMLHr {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLHr) Style(k, v string) *HTMLHr {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -14522,9 +14522,9 @@ func (e *HTMLHtml) Spellcheck(v bool) *HTMLHtml {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLHtml) Style(v string) *HTMLHtml {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLHtml) Style(k, v string) *HTMLHtml {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -14630,9 +14630,9 @@ func (e *HTMLI) Spellcheck(v bool) *HTMLI {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLI) Style(v string) *HTMLI {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLI) Style(k, v string) *HTMLI {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -14960,9 +14960,9 @@ func (e *HTMLIFrame) SrcDoc(v string) *HTMLIFrame {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLIFrame) Style(v string) *HTMLIFrame {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLIFrame) Style(k, v string) *HTMLIFrame {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -15296,9 +15296,9 @@ func (e *HTMLImg) SrcSet(v string) *HTMLImg {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLImg) Style(v string) *HTMLImg {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLImg) Style(k, v string) *HTMLImg {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -15907,9 +15907,9 @@ func (e *HTMLInput) Step(v int) *HTMLInput {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLInput) Style(v string) *HTMLInput {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLInput) Style(k, v string) *HTMLInput {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -15933,7 +15933,7 @@ func (e *HTMLInput) Type(v string) *HTMLInput {
 
 // Value specifies the value of the element.
 func (e *HTMLInput) Value(v interface{}) *HTMLInput {
-	e.elem.setAttribute("value", fmt.Sprintf("%v", v))
+	e.elem.setAttribute("value", v)
 	return e
 }
 
@@ -16225,9 +16225,9 @@ func (e *HTMLIns) Spellcheck(v bool) *HTMLIns {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLIns) Style(v string) *HTMLIns {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLIns) Style(k, v string) *HTMLIns {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -16525,9 +16525,9 @@ func (e *HTMLKbd) Spellcheck(v bool) *HTMLKbd {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLKbd) Style(v string) *HTMLKbd {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLKbd) Style(k, v string) *HTMLKbd {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -16837,9 +16837,9 @@ func (e *HTMLLabel) Spellcheck(v bool) *HTMLLabel {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLLabel) Style(v string) *HTMLLabel {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLLabel) Style(k, v string) *HTMLLabel {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -17137,9 +17137,9 @@ func (e *HTMLLegends) Spellcheck(v bool) *HTMLLegends {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLLegends) Style(v string) *HTMLLegends {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLLegends) Style(k, v string) *HTMLLegends {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -17437,9 +17437,9 @@ func (e *HTMLLi) Spellcheck(v bool) *HTMLLi {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLLi) Style(v string) *HTMLLi {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLLi) Style(k, v string) *HTMLLi {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -17457,7 +17457,7 @@ func (e *HTMLLi) Title(v string) *HTMLLi {
 
 // Value specifies the value of the element.
 func (e *HTMLLi) Value(v interface{}) *HTMLLi {
-	e.elem.setAttribute("value", fmt.Sprintf("%v", v))
+	e.elem.setAttribute("value", v)
 	return e
 }
 
@@ -17767,9 +17767,9 @@ func (e *HTMLLink) Spellcheck(v bool) *HTMLLink {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLLink) Style(v string) *HTMLLink {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLLink) Style(k, v string) *HTMLLink {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -18073,9 +18073,9 @@ func (e *HTMLMain) Spellcheck(v bool) *HTMLMain {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLMain) Style(v string) *HTMLMain {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLMain) Style(k, v string) *HTMLMain {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -18379,9 +18379,9 @@ func (e *HTMLMap) Spellcheck(v bool) *HTMLMap {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLMap) Style(v string) *HTMLMap {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLMap) Style(k, v string) *HTMLMap {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -18679,9 +18679,9 @@ func (e *HTMLMark) Spellcheck(v bool) *HTMLMark {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLMark) Style(v string) *HTMLMark {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLMark) Style(k, v string) *HTMLMark {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -18997,9 +18997,9 @@ func (e *HTMLMeta) Spellcheck(v bool) *HTMLMeta {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLMeta) Style(v string) *HTMLMeta {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLMeta) Style(k, v string) *HTMLMeta {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -19141,9 +19141,9 @@ func (e *HTMLMeter) Spellcheck(v bool) *HTMLMeter {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLMeter) Style(v string) *HTMLMeter {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLMeter) Style(k, v string) *HTMLMeter {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -19161,7 +19161,7 @@ func (e *HTMLMeter) Title(v string) *HTMLMeter {
 
 // Value specifies the value of the element.
 func (e *HTMLMeter) Value(v interface{}) *HTMLMeter {
-	e.elem.setAttribute("value", fmt.Sprintf("%v", v))
+	e.elem.setAttribute("value", v)
 	return e
 }
 
@@ -19447,9 +19447,9 @@ func (e *HTMLNav) Spellcheck(v bool) *HTMLNav {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLNav) Style(v string) *HTMLNav {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLNav) Style(k, v string) *HTMLNav {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -19747,9 +19747,9 @@ func (e *HTMLNoScript) Spellcheck(v bool) *HTMLNoScript {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLNoScript) Style(v string) *HTMLNoScript {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLNoScript) Style(k, v string) *HTMLNoScript {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -19879,9 +19879,9 @@ func (e *HTMLObject) Spellcheck(v bool) *HTMLObject {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLObject) Style(v string) *HTMLObject {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLObject) Style(k, v string) *HTMLObject {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -20347,9 +20347,9 @@ func (e *HTMLOl) Start(v int) *HTMLOl {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLOl) Style(v string) *HTMLOl {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLOl) Style(k, v string) *HTMLOl {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -20665,9 +20665,9 @@ func (e *HTMLOptGroup) Spellcheck(v bool) *HTMLOptGroup {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLOptGroup) Style(v string) *HTMLOptGroup {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLOptGroup) Style(k, v string) *HTMLOptGroup {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -20983,9 +20983,9 @@ func (e *HTMLOption) Spellcheck(v bool) *HTMLOption {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLOption) Style(v string) *HTMLOption {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLOption) Style(k, v string) *HTMLOption {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -21003,7 +21003,7 @@ func (e *HTMLOption) Title(v string) *HTMLOption {
 
 // Value specifies the value of the element.
 func (e *HTMLOption) Value(v interface{}) *HTMLOption {
-	e.elem.setAttribute("value", fmt.Sprintf("%v", v))
+	e.elem.setAttribute("value", v)
 	return e
 }
 
@@ -21307,9 +21307,9 @@ func (e *HTMLOutput) Spellcheck(v bool) *HTMLOutput {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLOutput) Style(v string) *HTMLOutput {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLOutput) Style(k, v string) *HTMLOutput {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -21607,9 +21607,9 @@ func (e *HTMLP) Spellcheck(v bool) *HTMLP {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLP) Style(v string) *HTMLP {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLP) Style(k, v string) *HTMLP {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -21907,9 +21907,9 @@ func (e *HTMLParam) Spellcheck(v bool) *HTMLParam {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLParam) Style(v string) *HTMLParam {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLParam) Style(k, v string) *HTMLParam {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -21927,7 +21927,7 @@ func (e *HTMLParam) Title(v string) *HTMLParam {
 
 // Value specifies the value of the element.
 func (e *HTMLParam) Value(v interface{}) *HTMLParam {
-	e.elem.setAttribute("value", fmt.Sprintf("%v", v))
+	e.elem.setAttribute("value", v)
 	return e
 }
 
@@ -22213,9 +22213,9 @@ func (e *HTMLPicture) Spellcheck(v bool) *HTMLPicture {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLPicture) Style(v string) *HTMLPicture {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLPicture) Style(k, v string) *HTMLPicture {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -22513,9 +22513,9 @@ func (e *HTMLPre) Spellcheck(v bool) *HTMLPre {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLPre) Style(v string) *HTMLPre {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLPre) Style(k, v string) *HTMLPre {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -22819,9 +22819,9 @@ func (e *HTMLProgress) Spellcheck(v bool) *HTMLProgress {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLProgress) Style(v string) *HTMLProgress {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLProgress) Style(k, v string) *HTMLProgress {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -22839,7 +22839,7 @@ func (e *HTMLProgress) Title(v string) *HTMLProgress {
 
 // Value specifies the value of the element.
 func (e *HTMLProgress) Value(v interface{}) *HTMLProgress {
-	e.elem.setAttribute("value", fmt.Sprintf("%v", v))
+	e.elem.setAttribute("value", v)
 	return e
 }
 
@@ -23131,9 +23131,9 @@ func (e *HTMLQ) Spellcheck(v bool) *HTMLQ {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLQ) Style(v string) *HTMLQ {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLQ) Style(k, v string) *HTMLQ {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -23431,9 +23431,9 @@ func (e *HTMLRp) Spellcheck(v bool) *HTMLRp {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLRp) Style(v string) *HTMLRp {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLRp) Style(k, v string) *HTMLRp {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -23731,9 +23731,9 @@ func (e *HTMLRt) Spellcheck(v bool) *HTMLRt {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLRt) Style(v string) *HTMLRt {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLRt) Style(k, v string) *HTMLRt {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -24031,9 +24031,9 @@ func (e *HTMLRuby) Spellcheck(v bool) *HTMLRuby {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLRuby) Style(v string) *HTMLRuby {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLRuby) Style(k, v string) *HTMLRuby {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -24331,9 +24331,9 @@ func (e *HTMLS) Spellcheck(v bool) *HTMLS {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLS) Style(v string) *HTMLS {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLS) Style(k, v string) *HTMLS {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -24631,9 +24631,9 @@ func (e *HTMLSamp) Spellcheck(v bool) *HTMLSamp {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLSamp) Style(v string) *HTMLSamp {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLSamp) Style(k, v string) *HTMLSamp {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -24955,9 +24955,9 @@ func (e *HTMLScript) Src(v string) *HTMLScript {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLScript) Style(v string) *HTMLScript {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLScript) Style(k, v string) *HTMLScript {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -25069,9 +25069,9 @@ func (e *HTMLSection) Spellcheck(v bool) *HTMLSection {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLSection) Style(v string) *HTMLSection {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLSection) Style(k, v string) *HTMLSection {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -25411,9 +25411,9 @@ func (e *HTMLSelect) Spellcheck(v bool) *HTMLSelect {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLSelect) Style(v string) *HTMLSelect {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLSelect) Style(k, v string) *HTMLSelect {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -25711,9 +25711,9 @@ func (e *HTMLSmall) Spellcheck(v bool) *HTMLSmall {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLSmall) Style(v string) *HTMLSmall {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLSmall) Style(k, v string) *HTMLSmall {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -26029,9 +26029,9 @@ func (e *HTMLSource) SrcSet(v string) *HTMLSource {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLSource) Style(v string) *HTMLSource {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLSource) Style(k, v string) *HTMLSource {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -26335,9 +26335,9 @@ func (e *HTMLSpan) Spellcheck(v bool) *HTMLSpan {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLSpan) Style(v string) *HTMLSpan {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLSpan) Style(k, v string) *HTMLSpan {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -26635,9 +26635,9 @@ func (e *HTMLStrong) Spellcheck(v bool) *HTMLStrong {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLStrong) Style(v string) *HTMLStrong {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLStrong) Style(k, v string) *HTMLStrong {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -26941,9 +26941,9 @@ func (e *HTMLStyle) Spellcheck(v bool) *HTMLStyle {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLStyle) Style(v string) *HTMLStyle {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLStyle) Style(k, v string) *HTMLStyle {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -27247,9 +27247,9 @@ func (e *HTMLSub) Spellcheck(v bool) *HTMLSub {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLSub) Style(v string) *HTMLSub {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLSub) Style(k, v string) *HTMLSub {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -27547,9 +27547,9 @@ func (e *HTMLSummary) Spellcheck(v bool) *HTMLSummary {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLSummary) Style(v string) *HTMLSummary {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLSummary) Style(k, v string) *HTMLSummary {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -27847,9 +27847,9 @@ func (e *HTMLSup) Spellcheck(v bool) *HTMLSup {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLSup) Style(v string) *HTMLSup {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLSup) Style(k, v string) *HTMLSup {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -28147,9 +28147,9 @@ func (e *HTMLTable) Spellcheck(v bool) *HTMLTable {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLTable) Style(v string) *HTMLTable {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLTable) Style(k, v string) *HTMLTable {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -28447,9 +28447,9 @@ func (e *HTMLTBody) Spellcheck(v bool) *HTMLTBody {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLTBody) Style(v string) *HTMLTBody {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLTBody) Style(k, v string) *HTMLTBody {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -28765,9 +28765,9 @@ func (e *HTMLTd) Spellcheck(v bool) *HTMLTd {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLTd) Style(v string) *HTMLTd {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLTd) Style(k, v string) *HTMLTd {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -29065,9 +29065,9 @@ func (e *HTMLTemplate) Spellcheck(v bool) *HTMLTemplate {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLTemplate) Style(v string) *HTMLTemplate {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLTemplate) Style(k, v string) *HTMLTemplate {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -29239,9 +29239,9 @@ func (e *HTMLTextarea) Spellcheck(v bool) *HTMLTextarea {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLTextarea) Style(v string) *HTMLTextarea {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLTextarea) Style(k, v string) *HTMLTextarea {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -29545,9 +29545,9 @@ func (e *HTMLtfoot) Spellcheck(v bool) *HTMLtfoot {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLtfoot) Style(v string) *HTMLtfoot {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLtfoot) Style(k, v string) *HTMLtfoot {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -29875,9 +29875,9 @@ func (e *HTMLTh) Spellcheck(v bool) *HTMLTh {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLTh) Style(v string) *HTMLTh {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLTh) Style(k, v string) *HTMLTh {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -30181,9 +30181,9 @@ func (e *HTMLTime) Spellcheck(v bool) *HTMLTime {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLTime) Style(v string) *HTMLTime {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLTime) Style(k, v string) *HTMLTime {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -30481,9 +30481,9 @@ func (e *HTMLTitle) Spellcheck(v bool) *HTMLTitle {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLTitle) Style(v string) *HTMLTitle {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLTitle) Style(k, v string) *HTMLTitle {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -30589,9 +30589,9 @@ func (e *HTMLTr) Spellcheck(v bool) *HTMLTr {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLTr) Style(v string) *HTMLTr {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLTr) Style(k, v string) *HTMLTr {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -30889,9 +30889,9 @@ func (e *HTMLU) Spellcheck(v bool) *HTMLU {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLU) Style(v string) *HTMLU {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLU) Style(k, v string) *HTMLU {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -31189,9 +31189,9 @@ func (e *HTMLUl) Spellcheck(v bool) *HTMLUl {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLUl) Style(v string) *HTMLUl {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLUl) Style(k, v string) *HTMLUl {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -31489,9 +31489,9 @@ func (e *HTMLVar) Spellcheck(v bool) *HTMLVar {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLVar) Style(v string) *HTMLVar {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLVar) Style(k, v string) *HTMLVar {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -31837,9 +31837,9 @@ func (e *HTMLVideo) Src(v string) *HTMLVideo {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLVideo) Style(v string) *HTMLVideo {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLVideo) Style(k, v string) *HTMLVideo {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
@@ -32281,9 +32281,9 @@ func (e *HTMLWbr) Spellcheck(v bool) *HTMLWbr {
 	return e
 }
 
-// Style specifies an inline CSS style for an element.
-func (e *HTMLWbr) Style(v string) *HTMLWbr {
-	e.elem.setAttribute("style", v)
+// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+func (e *HTMLWbr) Style(k, v string) *HTMLWbr {
+	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
