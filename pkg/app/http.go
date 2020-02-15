@@ -53,6 +53,9 @@ type Handler struct {
 	// The name of the web application as it is usually displayed to the user.
 	Name string
 
+	// Additional headers to be added in head element.
+	RawHeaders []string
+
 	// The paths or urls of the JavaScript files to use with the page.
 	//
 	// Paths are relative to the web directory.
@@ -230,20 +233,21 @@ func (h *Handler) initPage() {
 						Type("text/css").
 						Rel("stylesheet").
 						Href("/app.css"),
-					Range(h.Styles).
-						Slice(func(i int) Node {
-							return Link().
-								Type("text/css").
-								Rel("stylesheet").
-								Href(h.Styles[i])
-						}),
+					Range(h.Styles).Slice(func(i int) Node {
+						return Link().
+							Type("text/css").
+							Rel("stylesheet").
+							Href(h.Styles[i])
+					}),
 					Script().Src("/wasm_exec.js"),
 					Script().Src("/app.js"),
-					Range(h.Scripts).
-						Slice(func(i int) Node {
-							return Script().
-								Src(h.Scripts[i])
-						}),
+					Range(h.Scripts).Slice(func(i int) Node {
+						return Script().
+							Src(h.Scripts[i])
+					}),
+					Range(h.RawHeaders).Slice(func(i int) Node {
+						return Raw(h.RawHeaders[i])
+					}),
 				),
 			Body().
 				Body(

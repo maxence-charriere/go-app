@@ -65,16 +65,6 @@ func TestRaw(t *testing.T) {
 			panic:    true,
 		},
 		{
-			scenario: "missing closing tag",
-			raw:      "<div>",
-			panic:    true,
-		},
-		{
-			scenario: "different closing tag",
-			raw:      "<div></span>",
-			panic:    true,
-		},
-		{
 			scenario: "well formed value",
 			raw:      "<div></div>",
 		},
