@@ -69,7 +69,18 @@ func (e *elem) setAttribute(k string, v interface{}) {
 
 	switch t := v.(type) {
 	case string:
-		e.attrs[k] = t
+		switch k {
+		case "style":
+			style := e.attrs[k]
+			if style != "" {
+				style += ";"
+			}
+			style += t
+			e.attrs[k] = style
+
+		default:
+			e.attrs[k] = t
+		}
 
 	case bool:
 		if t {

@@ -80,7 +80,7 @@ func (c *city) Render() app.UI {
 				),
 			app.Main().
 				Class("city").
-				Style(fmt.Sprintf("background-image: url('%s')", c.data.image)).
+				Style("background-image", fmt.Sprintf("url('%s')", c.data.image)).
 				Body(
 					app.H1().
 						Class("city-title").
