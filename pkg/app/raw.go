@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"io"
 	"reflect"
 	"strings"
 
@@ -9,6 +10,9 @@ import (
 )
 
 // Raw returns a node from the given raw value.
+//
+// Note that it is not recommended to use this kind of node since there is no
+// check on the raw string content.
 func Raw(v string) UI {
 	v = strings.TrimSpace(v)
 
@@ -16,13 +20,6 @@ func Raw(v string) UI {
 	if tag == "" {
 		log.Error("creating raw node failed").
 			T("error", "no opening tag").
-			Panic()
-		return nil
-	}
-
-	if !strings.HasSuffix(v, "</"+tag+">") {
-		log.Error("creating raw node failed").
-			T("error", "no ending tag").
 			Panic()
 		return nil
 	}
@@ -87,6 +84,16 @@ func (r *raw) mount() error {
 
 	r.jsValue = tmpParent.Get("firstChild")
 	return nil
+}
+
+func (r *raw) html(w io.Writer) {
+	r.htmlWithIndent(w, 0)
+}
+
+func (r *raw) htmlWithIndent(w io.Writer, indent int) {
+	writeIndent(w, indent)
+	w.Write(stob(r.outerHTML))
+	w.Write(ln())
 }
 
 func rawOpenTag(raw string) string {

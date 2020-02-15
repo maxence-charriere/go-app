@@ -31,6 +31,9 @@ func TestHandlerServePage(t *testing.T) {
 		},
 		Wasm: "test.wasm",
 		Web:  "web",
+		RawHeaders: []string{
+			`<meta http-equiv="refresh" content="30">`,
+		},
 	}
 	h.Icon.AppleTouch = "ios.png"
 
@@ -45,6 +48,7 @@ func TestHandlerServePage(t *testing.T) {
 	require.Contains(t, body, `<script src="http://boo.com/bar.js">`)
 	require.Contains(t, body, `href="/manifest.json"`)
 	require.Contains(t, body, `href="/app.css"`)
+	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
 
 	t.Log(body)
 }
