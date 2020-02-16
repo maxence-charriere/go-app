@@ -1,195 +1,94 @@
-<p align="center" style="border-radius:6px">
-    <a href="https://luck.murlok.io"><img alt="ui demo" src="https://storage.googleapis.com/murlok-github/demo.gif"></a>
-</p>
+<h1 style="text-align:center">
+    <a href="https://github.com/maxence-charriere/app">
+        <img alt="app" align="center" style="width:150px;height:150px" src="https://storage.googleapis.com/murlok-github/icon-192.png">
+    </a>
+</h1>
 
-# app
-
-<p align="center">
+<p style="text-align:center">
 	<a href="https://circleci.com/gh/maxence-charriere/app"><img src="https://circleci.com/gh/maxence-charriere/app.svg?style=svg" alt="Circle CI Go build"></a>
     <a href="https://goreportcard.com/report/github.com/maxence-charriere/app"><img src="https://goreportcard.com/badge/github.com/maxence-charriere/app" alt="Go Report Card"></a>
     <a href="https://godoc.org/github.com/maxence-charriere/app/pkg/app"><img src="https://godoc.org/github.com/maxence-charriere/app/pkg/app?status.svg" alt="GoDoc"></a>
 </p>
 
-A [WebAssembly](https://webassembly.org) framework to build GUI with
-[Go](https://golang.org), [HTML](https://en.wikipedia.org/wiki/HTML5) and
-[CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets).
+**app** is a package to build [progressive web apps (PWA)](https://developers.google.com/web/progressive-web-apps/) with [Go programming language](https://golang.org) and [WebAssembly](https://webassembly.org).
 
-It features:
+It uses a [declarative syntax](#declarative-syntax) that allows creating and dealing with HTML elements only by using Go, and without writing any HTML markup.
 
-- [PWA support](https://developers.google.com/web/progressive-web-apps/)
-- [Build tool](https://github.com/maxence-charriere/app/tree/master/cmd/goapp/main.go) that removes the hassle of packaging wasm apps
-- [React](https://reactjs.org) flavored API
+The package also provides an [http.handler](#http-handler) ready to serve all the required resources to run Go-based progressive web apps.
 
 ## Install
 
-Requires [Go 1.13](https://golang.org/doc/go1.13)
+**app** requires [Go 1.13](https://golang.org/doc/go1.13) or newer.
 
 ```sh
-# Package sources + goapp CLI:
-go get -u -v github.com/maxence-charriere/app/cmd/goapp
-
-# Package sources only:
 go get -u -v github.com/maxence-charriere/app/pkg/app
+```
+
+## Declarative syntax
+
+**app** uses a declarative syntax so you can write component-based UI elements just by using the Go programming language.
+
+```go
+package main
+
+import "github.com/maxence-charriere/app/pkg/app"
+
+type hello struct {
+	app.Compo
+	name string
+}
+
+func (h *hello) Render() app.UI {
+	return app.Div().Body(
+		app.Main().Body(
+			app.H1().Body(
+				app.Text("Hello, "),
+				app.If(h.name != "",
+					app.Text(h.name),
+				).Else(
+					app.Text("World"),
+				),
+			),
+			app.Input().
+				Value(h.name).
+				Placeholder("What is your name?").
+				AutoFocus(true).
+				OnChange(h.OnInputChange),
+		),
+	)
+}
+
+func (h *hello) OnInputChange(src app.Value, e app.Event) {
+	h.name = src.Get("value").String()
+	h.Update()
+}
+
+func main() {
+	app.Route("/", &hello{})
+	app.Run()
+}
 
 ```
 
-## Getting started
+Then you can build your user interface by using the Go build tool:
 
 ```sh
-cd $GOPATH/src          # go to your gopath sources (optional)
-mkdir demo && cd demo   # create and go to your go package
-goapp init -v           # init project layout
-goapp run -v -b chrome  # run the app and launch the main page on chrome
+GOOS=js GOARCH=wasm go build -o app.wasm
 ```
 
-## How it works
+## HTTP handler
 
-### Project layout
+## Works on mainstream browsers
 
-```bash
-demo
-└── cmd
-    ├── demo-server
-    │   ├── main.go
-    │   └── web
-    │       ├── style sheets...
-    │       ├── images...
-    │       └── etc...
-    └── demo-wasm
-        └── main.go
-```
+|         | Chrome | Edge | Firefox | Opera | Safari |
+| :------ | :----: | :--: | :-----: | :---: | :----: |
+| Desktop |   ✔    | ✔\*  |    ✔    |   ✔   |   ✔    |
+| Mobile  |   ✔    |  ✔   |    ✔    |   ✔   |   ✔    |
 
-- The `cmd` directory contains the project main applications.
-- The `demo-wasm` directory contains the app that is compiled in **wasm** and that will run in the browser.
-- The `demo-server` directory contains the server that serves the **wasm** app and its resources.
-- The `web` directory contrains the app resources like style sheets (css), images and other static resources.
-
-Project layout can be initialized by running this command in the repository root.
-
-```bash
-goapp init -v
-```
-
-### App
-
-The app is the Go code compiled in web assembly and executed in the browser.
-
-```go
-// cmd/demo-wasm/main.go
-
-package main
-
-import (
-    "log"
-
-    "github.com/maxence-charriere/app/pkg/app"
-    "github.com/maxence-charriere/app/pkg/log"
-)
-
-type Hello struct {
-    Name string
-}
-
-func (h *Hello) Render() string {
-    return `
-<div class="Hello">
-    <h1>
-        Hello
-        {{if .Name}}
-            {{.Name}}
-        {{else}}
-            world
-        {{end}}!
-    </h1>
-    <input value="{{.Name}}" placeholder="What is your name?" onchange="Name" autofocus>
-</div>
-    `
-}
-
-func main() {
-    app.Import(&Hello{})
-
-    app.DefaultPath = "/hello"
-    app.Run()
-}
-```
-
-### Server
-
-The server serves the web assembly Go program and the other resources.
-
-```go
-// cmd/demo-server/main.go
-
-package main
-
-import (
-    "log"
-    "net/http"
-    "github.com/maxence-charriere/app"
-)
-
-func main() {
-    http.Handle("/", &app.Handler{})
-
-    if err := http.ListenAndServe(":3000", nil); err != nil {
-        log.Fatal(err)
-    }
-}
-
-```
-
-### Build
-
-The whole project can be built with the
-[goapp](https://github.com/maxence-charriere/app/tree/master/cmd/goapp/main.go)
-CLI tool.
-**goapp** builds the server, the wasm app, imports the required javascript
-support file and puts the pieces together to provide a ready to use project.
-
-```bash
-# Get the goapp CLI tool:
-go get -u github.com/maxence-charriere/app/cmd/goapp
-
-# Builds a server ready to serve the wasm app and its resources:
-goapp build -v
-
-# Launches the server and app in the default browser:
-goapp run -v -b default
-```
-
-Once built, the directory tree should look like:
-
-```bash
-demo
-└── cmd
-    ├── demo-server
-    │   ├── demo-server (server)
-    │   ├── main.go
-    │   └── web
-    │       ├── goapp.wasm (app)
-    │       ├── wasm_exec.js
-    │       ├── images...
-    │       └── etc...
-    └── demo-wasm
-        └── main.go
-```
-
-See a [full example](https://github.com/maxence-charriere/app/tree/master/demo).
+\*_only Chromium based [Edge](https://www.microsoft.com/edge)_
 
 ## Live demo
 
 - [Luck](https://luck.murlok.io)
 - [Hello](https://demo.murlok.io)
 - [City](https://demo.murlok.io/city)
-
-## Support
-
-| Platform | Chrome | Edge | Firefox | Safari |
-| :------- | :----: | :--: | :-----: | :----: |
-| Desktop  |   ✔    | ✔\*  |    ✔    |   ✔    |
-| Mobile   |   ✔    |  ✔   |    ✔    |   ✔    |
-
-Issues:
-
-- Non Chromiun based Edge does not support `TextEncoder` which is used by the javascript support file provided by Go.
