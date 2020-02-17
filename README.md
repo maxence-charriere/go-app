@@ -82,25 +82,24 @@ GOOS=js GOARCH=wasm go build -o app.wasm
 package main
 
 import (
-	"fmt"
-	"net/http"
+    "fmt"
+    "net/http"
 
-	"github.com/maxence-charriere/app/pkg/app"
+    "github.com/maxence-charriere/app/pkg/app"
 )
 
 func main() {
-	fmt.Println("starting local server")
+    fmt.Println("starting local server")
 
-	h := &app.Handler{
-		Title:  "Hello Demo",
-		Author: "Maxence Charriere",
-	}
+    h := &app.Handler{
+        Title:  "Hello Demo",
+        Author: "Maxence Charriere",
+    }
 
-	if err := http.ListenAndServe(":7777", h); err != nil {
-		panic(err)
-	}
+    if err := http.ListenAndServe(":7777", h); err != nil {
+        panic(err)
+    }
 }
-
 ```
 
 ## Works on mainstream browsers
