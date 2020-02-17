@@ -59,13 +59,13 @@ func (h *hello) Render() app.UI {
 }
 
 func (h *hello) OnInputChange(src app.Value, e app.Event) {
-	h.name = src.Get("value").String()
-	h.Update()
+    h.name = src.Get("value").String()
+    h.Update()
 }
 
 func main() {
-	app.Route("/", &hello{})
-	app.Run()
+    app.Route("/", &hello{})
+    app.Run()
 }
 
 ```
