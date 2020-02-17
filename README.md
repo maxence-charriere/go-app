@@ -1,10 +1,10 @@
-<h1 style="text-align:center">
+<h1 align="center">
     <a href="https://github.com/maxence-charriere/app">
-        <img alt="app" align="center" style="width:150px;height:150px" src="https://storage.googleapis.com/murlok-github/icon-192.png">
+        <img alt="app"  width="150" height="150" src="https://storage.googleapis.com/murlok-github/icon-192.png">
     </a>
 </h1>
 
-<p style="text-align:center">
+<p align="center">>
 	<a href="https://circleci.com/gh/maxence-charriere/app"><img src="https://circleci.com/gh/maxence-charriere/app.svg?style=svg" alt="Circle CI Go build"></a>
     <a href="https://goreportcard.com/report/github.com/maxence-charriere/app"><img src="https://goreportcard.com/badge/github.com/maxence-charriere/app" alt="Go Report Card"></a>
     <a href="https://godoc.org/github.com/maxence-charriere/app/pkg/app"><img src="https://godoc.org/github.com/maxence-charriere/app/pkg/app?status.svg" alt="GoDoc"></a>
