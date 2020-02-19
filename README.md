@@ -79,13 +79,19 @@ func main() {
 
 ```
 
-Then you can build your user interface by using the Go build tool:
+The app is built with the Go build tool by specifying WebAssembly as architecture and javascript as operating system:
 
 ```sh
-GOOS=js GOARCH=wasm go build -o app.wasm
+GOARCH=wasm GOOS=js go build -o app.wasm
 ```
 
 ## HTTP handler
+
+Once your app is built, the next step is to serve it.
+
+This package provides an [http.Handler implementation](https://pkg.go.dev/github.com/maxence-charriere/app/pkg/app#Handler) ready to serve your PWA and all the required resources to make it work in a web browser.
+
+The handler can be used to create either a web server or a cloud function (AWS Lambda, GCloud function or Azure function).
 
 ```go
 package main
@@ -103,12 +109,19 @@ func main() {
     h := &app.Handler{
         Title:  "Hello Demo",
         Author: "Maxence Charriere",
+        Wasm:   "app.wasm",          // The path of the wasm binary.
     }
 
     if err := http.ListenAndServe(":7777", h); err != nil {
         panic(err)
     }
 }
+```
+
+The server is built as a standard Go programs:
+
+```sh
+go build
 ```
 
 ## Works on mainstream browsers
@@ -120,7 +133,17 @@ func main() {
 
 \*_only Chromium based [Edge](https://www.microsoft.com/edge)_
 
-## Live demo
+## Demo
+
+### Hello app
+
+The hello example introduced above:
+
+| app code                                                                 | server code                                                                          |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| [hello](https://github.com/maxence-charriere/app/tree/master/demo/hello) | [hello-local](https://github.com/maxence-charriere/app/tree/master/demo/hello-local) |
+
+### live apps
 
 - [Luck](https://luck.murlok.io)
 - [Hello](https://demo.murlok.io)
