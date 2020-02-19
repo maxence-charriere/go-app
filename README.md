@@ -147,13 +147,13 @@ The hello example introduced above:
 
 <p align="center">
     <a href="https://luck.murlok.io">
-        <img alt="app"  width="300" src="https://storage.googleapis.com/murlok-github/luck-thumb.png">
+        <img alt="app"  width="400" src="https://storage.googleapis.com/murlok-github/luck-thumb.png">
     </a>
     <a href="https://demo.murlok.io">
-        <img alt="app"  width="300" src="https://storage.googleapis.com/murlok-github/hello-thumb.png">
+        <img alt="app"  width="400" src="https://storage.googleapis.com/murlok-github/hello-thumb.png">
     </a>
     <a href="https://demo.murlok.io/city">
-        <img alt="app"  width="300" src="https://storage.googleapis.com/murlok-github/city-thumb.png">
+        <img alt="app"  width="400" src="https://storage.googleapis.com/murlok-github/city-thumb.png">
     </a>
 </p>
 
