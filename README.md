@@ -99,15 +99,12 @@ The handler can be used to create either a web server or a cloud function (AWS L
 package main
 
 import (
-    "fmt"
     "net/http"
 
     "github.com/maxence-charriere/app/pkg/app"
 )
 
 func main() {
-    fmt.Println("starting local server")
-
     h := &app.Handler{
         Title:  "Hello Demo",
         Author: "Maxence Charriere",
