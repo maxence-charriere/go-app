@@ -148,3 +148,12 @@ The hello example introduced above:
 - [Luck](https://luck.murlok.io)
 - [Hello](https://demo.murlok.io)
 - [City](https://demo.murlok.io/city)
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo or profile picture will show up here with a link to your website or Github page.
+
+Become a sponsor with:
+
+- [Github](https://github.com/sponsors/maxence-charriere)
+- [Patreon](https://www.patreon.com/maxencecharriere)
