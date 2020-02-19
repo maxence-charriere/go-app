@@ -26,7 +26,9 @@ go get -u -v github.com/maxence-charriere/app/pkg/app
 
 ## How it works
 
-![app diagram](https://storage.googleapis.com/murlok-github/app.png)
+<p align="center">
+     <img alt="app diagram"  width="680" src="https://storage.googleapis.com/murlok-github/app.png">
+</p>
 
 - **Users:** The users of your app. They request pages and resources from their web browser.
 - **[app.Handler](https://pkg.go.dev/github.com/maxence-charriere/app/pkg/app#Handler)**: An [http.Handler](https://golang.org/pkg/net/http/#Handler) used by your server or cloud function. It serves your app, its static resources, and all the required files to make it work on user browsers.
@@ -147,13 +149,13 @@ The hello example introduced above:
 
 <p align="center">
     <a href="https://luck.murlok.io">
-        <img alt="app"  width="400" src="https://storage.googleapis.com/murlok-github/luck-thumb.png">
+        <img alt="luck app"  width="400" src="https://storage.googleapis.com/murlok-github/luck-thumb.png">
     </a>
     <a href="https://demo.murlok.io">
-        <img alt="app"  width="400" src="https://storage.googleapis.com/murlok-github/hello-thumb.png">
+        <img alt="hello app"  width="400" src="https://storage.googleapis.com/murlok-github/hello-thumb.png">
     </a>
     <a href="https://demo.murlok.io/city">
-        <img alt="app"  width="400" src="https://storage.googleapis.com/murlok-github/city-thumb.png">
+        <img alt="city app"  width="400" src="https://storage.googleapis.com/murlok-github/city-thumb.png">
     </a>
 </p>
 
