@@ -145,13 +145,21 @@ The hello example introduced above:
 
 ### Live apps
 
-- [Luck](https://luck.murlok.io)
-- [Hello](https://demo.murlok.io)
-- [City](https://demo.murlok.io/city)
+<p align="center">
+    <a href="https://luck.murlok.io">
+        <img alt="app"  width="300" src="https://storage.googleapis.com/murlok-github/luck-thumb.png">
+    </a>
+    <a href="https://demo.murlok.io">
+        <img alt="app"  width="300" src="https://storage.googleapis.com/murlok-github/hello-thumb.png">
+    </a>
+    <a href="https://demo.murlok.io/city">
+        <img alt="app"  width="300" src="https://storage.googleapis.com/murlok-github/city-thumb.png">
+    </a>
+</p>
 
 ## Sponsors
 
-Support this project by becoming a sponsor. Your logo or profile picture will show up here with a link to your website or Github page.
+Support this project by becoming a sponsor. Your logo picture will show up here with a link to your website.
 
 Become a sponsor with:
 
