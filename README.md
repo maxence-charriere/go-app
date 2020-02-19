@@ -7,7 +7,7 @@
 <p align="center">
 	<a href="https://circleci.com/gh/maxence-charriere/app"><img src="https://circleci.com/gh/maxence-charriere/app.svg?style=svg" alt="Circle CI Go build"></a>
     <a href="https://goreportcard.com/report/github.com/maxence-charriere/app"><img src="https://goreportcard.com/badge/github.com/maxence-charriere/app" alt="Go Report Card"></a>
-    <a href="https://godoc.org/github.com/maxence-charriere/app/pkg/app"><img src="https://godoc.org/github.com/maxence-charriere/app/pkg/app?status.svg" alt="GoDoc"></a>
+    <a href="https://pkg.go.dev/github.com/maxence-charriere/app/pkg/app"><img src="https://godoc.org/github.com/maxence-charriere/app/pkg/app?status.svg" alt="GoDoc"></a>
 </p>
 
 **app** is a package to build [progressive web apps (PWA)](https://developers.google.com/web/progressive-web-apps/) with [Go programming language](https://golang.org) and [WebAssembly](https://webassembly.org).
@@ -29,9 +29,9 @@ go get -u -v github.com/maxence-charriere/app/pkg/app
 ![app diagram](https://storage.googleapis.com/murlok-github/app.png)
 
 - **Users:** The users of your app. They request pages and resources from their web browser.
-- **[app.Handler](https://godoc.org/github.com/maxence-charriere/app/pkg/app#Handler)**: An [http.Handler](https://golang.org/pkg/net/http/#Handler) used by your server or cloud function. It serves your app, its static resources, and all the required files to make it work on user browsers.
-- **Application**: Your app built with this package. It is built as a WebAssembly (.wasm) binary and is served by the [app.Handler](https://godoc.org/github.com/maxence-charriere/app/pkg/app#Handler).
-- **Other static resources**: Styles, images, and scripts used by your app. They are also served by the [app.Handler](https://godoc.org/github.com/maxence-charriere/app/pkg/app#Handler).
+- **[app.Handler](https://pkg.go.dev/github.com/maxence-charriere/app/pkg/app#Handler)**: An [http.Handler](https://golang.org/pkg/net/http/#Handler) used by your server or cloud function. It serves your app, its static resources, and all the required files to make it work on user browsers.
+- **Application**: Your app built with this package. It is built as a WebAssembly (.wasm) binary and is served by the [app.Handler](https://pkg.go.dev/github.com/maxence-charriere/app/pkg/app#Handler).
+- **Other static resources**: Styles, images, and scripts used by your app. They are also served by the [app.Handler](https://pkg.go.dev/github.com/maxence-charriere/app/pkg/app#Handler).
 
 ## Declarative syntax
 
