@@ -24,6 +24,15 @@ The package also provides an [http.handler](#http-handler) ready to serve all th
 go get -u -v github.com/maxence-charriere/app/pkg/app
 ```
 
+## How it works
+
+![app diagram](https://storage.googleapis.com/murlok-github/app.png)
+
+- **Users:** The users of your app. They request pages and resources from their web browser.
+- **[app.Handler](https://godoc.org/github.com/maxence-charriere/app/pkg/app#Handler)**: An [http.Handler](https://golang.org/pkg/net/http/#Handler) used by your server or cloud function. It serves your app, its static resources, and all the required files to make it work on user browsers.
+- **Application**: Your app built with this package. It is built as a WebAssembly (.wasm) binary and is served by the [app.Handler](https://godoc.org/github.com/maxence-charriere/app/pkg/app#Handler).
+- **Other static resources**: Styles, images, and scripts used by your app. They are also served by the [app.Handler](https://godoc.org/github.com/maxence-charriere/app/pkg/app#Handler).
+
 ## Declarative syntax
 
 **app** uses a declarative syntax so you can write component-based UI elements just by using the Go programming language.
