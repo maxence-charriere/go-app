@@ -161,7 +161,7 @@ The hello example introduced above:
 
 ## Sponsors
 
-Support this project by becoming a sponsor. Your logo picture will show up here with a link to your website.
+Support this project by becoming a sponsor. Your logo/picture will show up here with a link to your website.
 
 Become a sponsor with:
 
