@@ -13,7 +13,7 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
-demo/demo
+demo/hello-local/hello-local
 
 # Static generated files
 *.gz
