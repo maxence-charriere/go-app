@@ -76,6 +76,7 @@ func (h *hello) OnInputChange(src app.Value, e app.Event) {
 
 func main() {
     app.Route("/", &hello{})
+    app.Route("/hello", &hello{})
     app.Run()
 }
 
@@ -138,9 +139,9 @@ go build
 
 The hello example introduced above:
 
-| app code                                                                 | server code                                                                          |
-| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| [hello](https://github.com/maxence-charriere/app/tree/master/demo/hello) | [hello-local](https://github.com/maxence-charriere/app/tree/master/demo/hello-local) |
+| App sources                                                              | Server sources                                                                       | Description                            |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | -------------------------------------- |
+| [hello](https://github.com/maxence-charriere/app/tree/master/demo/hello) | [hello-local](https://github.com/maxence-charriere/app/tree/master/demo/hello-local) | Hello app that runs on a local server. |
 
 ### Live apps
 
