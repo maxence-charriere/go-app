@@ -118,7 +118,7 @@ func main() {
 }
 ```
 
-The server is built as a standard Go programs:
+The server is built as a standard Go program:
 
 ```sh
 go build
@@ -143,7 +143,7 @@ The hello example introduced above:
 | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
 | [hello](https://github.com/maxence-charriere/app/tree/master/demo/hello) | [hello-local](https://github.com/maxence-charriere/app/tree/master/demo/hello-local) |
 
-### live apps
+### Live apps
 
 - [Luck](https://luck.murlok.io)
 - [Hello](https://demo.murlok.io)
