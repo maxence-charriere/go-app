@@ -433,13 +433,6 @@ func (h *Handler) staticResource(path string) string {
 	return path
 }
 
-func normalizePath(path string) string {
-	if runtime.GOOS == "windows" {
-		return strings.ReplaceAll(path, `\`, "/")
-	}
-	return path
-}
-
 func normalizeFilePath(path string) string {
 	if runtime.GOOS == "windows" {
 		return strings.ReplaceAll(path, "/", `\`)
