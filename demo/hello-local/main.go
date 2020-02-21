@@ -13,7 +13,6 @@ func main() {
 	h := &app.Handler{
 		Title:  "Hello Demo",
 		Author: "Maxence Charriere",
-		Wasm:   "app.wasm",
 	}
 
 	if err := http.ListenAndServe(":7777", h); err != nil {

@@ -88,6 +88,8 @@ The app is built with the Go build tool by specifying WebAssembly as architectur
 GOARCH=wasm GOOS=js go build -o app.wasm
 ```
 
+Note that we named the build output `app.wasm`. The reason is that the HTTP handler requires the web assembly app to be named this way in order to be served.
+
 ## HTTP handler
 
 Once your app is built, the next step is to serve it.
@@ -109,7 +111,6 @@ func main() {
     h := &app.Handler{
         Title:  "Hello Demo",
         Author: "Maxence Charriere",
-        Wasm:   "app.wasm",          // The path of the wasm binary.
     }
 
     if err := http.ListenAndServe(":7777", h); err != nil {
@@ -122,6 +123,15 @@ The server is built as a standard Go program:
 
 ```sh
 go build
+```
+
+Note that **you need to add `app.wasm` to the server location**. The reason is that [app.Handler](https://pkg.go.dev/github.com/maxence-charriere/app/pkg/app#Handler) is looking for a file named `app.wasm` in the server directory in order to serve the web assembly binary.
+
+```sh
+hello-local        # Server directory
+├── app.wasm       # Wasm binary
+├── hello-local    # Server binary
+└── main.go        # Server code
 ```
 
 ## Works on mainstream browsers

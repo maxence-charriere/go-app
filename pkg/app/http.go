@@ -40,8 +40,6 @@ type Handler struct {
 
 	// The icon that is used for the PWA, favicon, loading and default not
 	// found component.
-	//
-	// DEFAULT: app default and large icons.
 	Icon Icon
 
 	// The page keywords.
@@ -58,7 +56,7 @@ type Handler struct {
 
 	// The paths or urls of the JavaScript files to use with the page.
 	//
-	// Paths are relative to the web directory.
+	// Paths are relative to the program location.
 	Scripts []string
 
 	// The name of the web application displayed to the user when there is not
@@ -67,7 +65,7 @@ type Handler struct {
 
 	// The paths or urls of the CSS files to use with the page.
 	//
-	// Paths are relative to the web directory.
+	// Paths are relative to the program location.
 	Styles []string
 
 	// The theme color for the application. This affects how the OS displays the
@@ -87,19 +85,6 @@ type Handler struct {
 	// development sytem.
 	Version string
 
-	// The path of the directory where static resources like wasm program,
-	// images, styles or scripts are located.
-	//
-	// DEFAULT: "web".
-	Web string
-
-	// The path the wasm program.
-	//
-	// Path is relative to the web directory.
-	//
-	// DEFAULT: "app.wasm".
-	Wasm string
-
 	once         sync.Once
 	etag         string
 	page         bytes.Buffer
@@ -112,7 +97,6 @@ type Handler struct {
 
 func (h *Handler) init() {
 	h.initVersion()
-	h.initWebDir()
 	h.initStyles()
 	h.initScripts()
 	h.initIcon()
@@ -132,15 +116,6 @@ func (h *Handler) initVersion() {
 		h.Version = fmt.Sprintf(`%x`, sha1.Sum([]byte(t)))
 	}
 	h.etag = `"` + h.Version + `"`
-}
-
-func (h *Handler) initWebDir() {
-	if h.Web == "" {
-		h.Web = "web"
-	}
-	h.Web = strings.TrimPrefix(h.Web, ".")
-	h.Web = strings.TrimPrefix(h.Web, "/")
-	h.Web = strings.TrimSuffix(h.Web, "/")
 }
 
 func (h *Handler) initStyles() {
@@ -274,17 +249,12 @@ func (h *Handler) initWasmJS() {
 }
 
 func (h *Handler) initAppJS() {
-	if h.Wasm == "" {
-		h.Wasm = "app.wasm"
-	}
-	h.Wasm = h.staticResource(h.Wasm)
-
 	if err := template.
 		Must(template.New("app.js").Parse(appJS)).
 		Execute(&h.appJS, struct {
 			Wasm string
 		}{
-			Wasm: h.Wasm,
+			Wasm: "/app.wasm",
 		}); err != nil {
 		log.Error("initializing app.js failed").
 			T("error", err).
@@ -304,7 +274,7 @@ func (h *Handler) initWorkerJS() {
 	cacheableResources["/app.js"] = struct{}{}
 	cacheableResources["/app.css"] = struct{}{}
 	cacheableResources["/manifest.json"] = struct{}{}
-	cacheableResources[h.Wasm] = struct{}{}
+	cacheableResources["/app.wasm"] = struct{}{}
 	cacheableResources[h.Icon.Default] = struct{}{}
 	cacheableResources[h.Icon.Large] = struct{}{}
 	cacheableResources[h.Icon.AppleTouch] = struct{}{}
@@ -365,12 +335,14 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	switch r.URL.Path {
+	path := r.URL.Path
+
+	switch path {
 	case "/wasm_exec.js":
 		h.serveWasmExecJS(w, r)
 		return
 
-	case "/app.js":
+	case "/app.js", "/goapp.js":
 		h.serveAppJS(w, r)
 		return
 
@@ -385,12 +357,15 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "/app.css":
 		h.serveAppCSS(w, r)
 		return
+
+	case "/app.wasm", "/goapp.wasm":
+		http.ServeFile(w, r, "app.wasm")
+		return
 	}
 
-	if strings.HasPrefix(r.URL.Path, "/"+h.Web) {
-		filename := strings.TrimPrefix(r.URL.Path, "/")
+	if strings.HasPrefix(path, "/web/") {
+		filename := strings.TrimPrefix(path, "/")
 		filename = normalizeFilePath(filename)
-
 		if fi, err := os.Stat(filename); err == nil && !fi.IsDir() {
 			http.ServeFile(w, r, filename)
 			return
@@ -451,13 +426,6 @@ func (h *Handler) staticResource(path string) string {
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
 	}
-	return "/" + normalizePath(h.Web) + path
-}
-
-func normalizePath(path string) string {
-	if runtime.GOOS == "windows" {
-		return strings.ReplaceAll(path, `\`, "/")
-	}
 	return path
 }
 
@@ -473,19 +441,19 @@ func normalizeFilePath(path string) string {
 type Icon struct {
 	// The path or url to a square image/png file. It must have a side of 192px.
 	//
-	// Paths are relative to the web directory.
+	// Path is relative to the program location.
 	Default string
 
 	// The path or url to larger square image/png file. It must have a side of
 	// 512px.
 	//
-	// Path is relative to the web directory.
+	// Path is relative to the program location.
 	Large string
 
 	// The path or url to a square image/png file that is used for IOS/IPadOS
 	// home screen icon. It must have a side of 192px.
 	//
-	// Path is relative to the web directory.
+	// Path is relative to the program location.
 	//
 	// DEFAULT: Icon.Default
 	AppleTouch string
