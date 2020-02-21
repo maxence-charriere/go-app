@@ -30,7 +30,6 @@ func TestHandlerServePage(t *testing.T) {
 			"http://boo.com/bar.css",
 		},
 		Wasm: "test.wasm",
-		Web:  "web",
 		RawHeaders: []string{
 			`<meta http-equiv="refresh" content="30">`,
 		},
@@ -41,41 +40,15 @@ func TestHandlerServePage(t *testing.T) {
 
 	body := w.Body.String()
 	require.Equal(t, http.StatusOK, w.Code)
-	require.Contains(t, body, `href="/web/foo.css"`)
-	require.Contains(t, body, `href="/web/bar.css"`)
+	require.Contains(t, body, `href="/foo.css"`)
+	require.Contains(t, body, `href="/bar.css"`)
 	require.Contains(t, body, `href="http://boo.com/bar.css"`)
-	require.Contains(t, body, `<script src="/web/hello.js">`)
+	require.Contains(t, body, `<script src="/hello.js">`)
 	require.Contains(t, body, `<script src="http://boo.com/bar.js">`)
 	require.Contains(t, body, `href="/manifest.json"`)
 	require.Contains(t, body, `href="/app.css"`)
 	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
 
-	t.Log(body)
-}
-
-func TestHandlerServePageWithLocalWebDir(t *testing.T) {
-	r := httptest.NewRequest(http.MethodGet, "/", nil)
-	w := httptest.NewRecorder()
-
-	h := Handler{
-		Title: "Handler testing",
-		Scripts: []string{
-			"hello.js",
-		},
-		Styles: []string{
-			"foo.css",
-			"/bar.css",
-		},
-		Wasm: "test.wasm",
-		Web:  "web",
-	}
-	h.ServeHTTP(w, r)
-
-	body := w.Body.String()
-	require.Equal(t, http.StatusOK, w.Code)
-	require.Contains(t, body, `href="/web/foo.css"`)
-	require.Contains(t, body, `href="/web/bar.css"`)
-	require.Contains(t, body, `<script src="/web/hello.js">`)
 	t.Log(body)
 }
 
@@ -100,7 +73,7 @@ func TestHandlerServeAppJS(t *testing.T) {
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Equal(t, strings.ReplaceAll(appJS, "{{.Wasm}}", "/web/app.wasm"), w.Body.String())
+	require.Equal(t, strings.ReplaceAll(appJS, "{{.Wasm}}", "/app.wasm"), w.Body.String())
 }
 
 func TestHandlerServeAppWorkerJS(t *testing.T) {
@@ -108,7 +81,6 @@ func TestHandlerServeAppWorkerJS(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	h := Handler{
-		Web:     "/web",
 		Scripts: []string{"hello.js"},
 		Styles:  []string{"hello.css"},
 	}
@@ -120,11 +92,11 @@ func TestHandlerServeAppWorkerJS(t *testing.T) {
 	require.Contains(t, body, `self.addEventListener("install", event => {`)
 	require.Contains(t, body, `self.addEventListener("activate", event => {`)
 	require.Contains(t, body, `self.addEventListener("fetch", event => {`)
-	require.Contains(t, body, `"/web/hello.css",`)
-	require.Contains(t, body, `"/web/hello.js",`)
+	require.Contains(t, body, `"/hello.css",`)
+	require.Contains(t, body, `"/hello.js",`)
 	require.Contains(t, body, `"/wasm_exec.js",`)
 	require.Contains(t, body, `"/app.js",`)
-	require.Contains(t, body, `"/web/app.wasm",`)
+	require.Contains(t, body, `"/app.wasm",`)
 	require.Contains(t, body, `"/",`)
 }
 
@@ -175,7 +147,7 @@ func TestHandlerServeFile(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/test/web/hello.txt", nil)
 	w := httptest.NewRecorder()
 
-	h := Handler{Web: "./test/web"}
+	h := Handler{}
 	h.ServeHTTP(w, r)
 
 	require.Equal(t, http.StatusOK, w.Code)
