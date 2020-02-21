@@ -85,13 +85,6 @@ type Handler struct {
 	// development sytem.
 	Version string
 
-	// The path the wasm program.
-	//
-	// Path is relative to the program location.
-	//
-	// DEFAULT: "app.wasm".
-	Wasm string
-
 	once         sync.Once
 	etag         string
 	page         bytes.Buffer
@@ -256,17 +249,12 @@ func (h *Handler) initWasmJS() {
 }
 
 func (h *Handler) initAppJS() {
-	if h.Wasm == "" {
-		h.Wasm = "app.wasm"
-	}
-	h.Wasm = h.staticResource(h.Wasm)
-
 	if err := template.
 		Must(template.New("app.js").Parse(appJS)).
 		Execute(&h.appJS, struct {
 			Wasm string
 		}{
-			Wasm: h.Wasm,
+			Wasm: "/app.wasm",
 		}); err != nil {
 		log.Error("initializing app.js failed").
 			T("error", err).
@@ -286,7 +274,7 @@ func (h *Handler) initWorkerJS() {
 	cacheableResources["/app.js"] = struct{}{}
 	cacheableResources["/app.css"] = struct{}{}
 	cacheableResources["/manifest.json"] = struct{}{}
-	cacheableResources[h.Wasm] = struct{}{}
+	cacheableResources["/app.wasm"] = struct{}{}
 	cacheableResources[h.Icon.Default] = struct{}{}
 	cacheableResources[h.Icon.Large] = struct{}{}
 	cacheableResources[h.Icon.AppleTouch] = struct{}{}
@@ -347,7 +335,9 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	switch r.URL.Path {
+	path := r.URL.Path
+
+	switch path {
 	case "/wasm_exec.js":
 		h.serveWasmExecJS(w, r)
 		return
@@ -367,13 +357,19 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "/app.css":
 		h.serveAppCSS(w, r)
 		return
+
+	case "/app.wasm":
+		http.ServeFile(w, r, "app.wasm")
+		return
 	}
 
-	filename := strings.TrimPrefix(r.URL.Path, "/")
-	filename = normalizeFilePath(filename)
-	if fi, err := os.Stat(filename); err == nil && !fi.IsDir() {
-		http.ServeFile(w, r, filename)
-		return
+	if strings.HasPrefix(path, "/web/") {
+		filename := strings.TrimPrefix(path, "/")
+		filename = normalizeFilePath(filename)
+		if fi, err := os.Stat(filename); err == nil && !fi.IsDir() {
+			http.ServeFile(w, r, filename)
+			return
+		}
 	}
 
 	h.servePage(w, r)

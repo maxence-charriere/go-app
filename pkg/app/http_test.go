@@ -29,7 +29,6 @@ func TestHandlerServePage(t *testing.T) {
 			"/bar.css",
 			"http://boo.com/bar.css",
 		},
-		Wasm: "test.wasm",
 		RawHeaders: []string{
 			`<meta http-equiv="refresh" content="30">`,
 		},
@@ -137,14 +136,14 @@ func TestHandlerServeAppCSS(t *testing.T) {
 }
 
 func TestHandlerServeFile(t *testing.T) {
-	err := os.MkdirAll(filepath.Join("test", "web"), 0755)
+	err := os.MkdirAll(filepath.Join("web"), 0755)
 	require.NoError(t, err)
-	defer os.RemoveAll("test")
+	defer os.RemoveAll("web")
 
-	err = ioutil.WriteFile(filepath.Join("test", "web", "hello.txt"), []byte("hello!"), 0666)
+	err = ioutil.WriteFile(filepath.Join("web", "hello.txt"), []byte("hello!"), 0666)
 	require.NoError(t, err)
 
-	r := httptest.NewRequest(http.MethodGet, "/test/web/hello.txt", nil)
+	r := httptest.NewRequest(http.MethodGet, "/web/hello.txt", nil)
 	w := httptest.NewRecorder()
 
 	h := Handler{}
