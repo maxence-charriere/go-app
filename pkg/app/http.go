@@ -342,7 +342,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		h.serveWasmExecJS(w, r)
 		return
 
-	case "/app.js":
+	case "/app.js", "/goapp.js":
 		h.serveAppJS(w, r)
 		return
 
@@ -358,7 +358,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		h.serveAppCSS(w, r)
 		return
 
-	case "/app.wasm":
+	case "/app.wasm", "/goapp.wasm":
 		http.ServeFile(w, r, "app.wasm")
 		return
 	}
