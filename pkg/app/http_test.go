@@ -135,6 +135,21 @@ func TestHandlerServeAppCSS(t *testing.T) {
 	require.Equal(t, appCSS, w.Body.String())
 }
 
+func TestHandlerServeAppWasm(t *testing.T) {
+	err := ioutil.WriteFile("app.wasm", []byte("wasm!"), 0666)
+	require.NoError(t, err)
+	defer os.Remove("app.wasm")
+
+	r := httptest.NewRequest(http.MethodGet, "/app.wasm", nil)
+	w := httptest.NewRecorder()
+
+	h := Handler{}
+	h.ServeHTTP(w, r)
+
+	require.Equal(t, http.StatusOK, w.Code)
+	require.Equal(t, "wasm!", w.Body.String())
+}
+
 func TestHandlerServeFile(t *testing.T) {
 	err := os.MkdirAll(filepath.Join("web"), 0755)
 	require.NoError(t, err)
