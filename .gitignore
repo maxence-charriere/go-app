@@ -6,6 +6,8 @@
 *.dylib
 *.app
 *.wasm
+demo/hello-docker/hello-docker
+demo/hello-local/hello-local
 
 # Test binary, build with `go test -c`
 *.test
@@ -13,7 +15,6 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
-demo/hello-local/hello-local
 
 # Static generated files
 *.gz
