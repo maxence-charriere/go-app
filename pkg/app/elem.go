@@ -3,10 +3,12 @@ package app
 import (
 	"fmt"
 	"io"
+
+	"github.com/maxence-charriere/app/pkg/log"
 )
 
 type elem struct {
-	parentNode  nodeWithChildren
+	parentNode  UI
 	value       Value
 	body        []UI
 	tag         string
@@ -19,11 +21,11 @@ func (e *elem) JSValue() Value {
 	return e.value
 }
 
-func (e *elem) parent() nodeWithChildren {
+func (e *elem) parent() UI {
 	return e.parentNode
 }
 
-func (e *elem) setParent(p nodeWithChildren) {
+func (e *elem) setParent(p UI) {
 	e.parentNode = p
 }
 
@@ -40,6 +42,13 @@ func (e *elem) dismount() {
 }
 
 func (e *elem) replaceChild(old, new UI) {
+	if e.selfClosing {
+		log.Error("replacing child failed").
+			T("error", "self closing tag can't have children").
+			T("tag", e.tag).
+			Panic()
+	}
+
 	for i, c := range e.body {
 		if c == old {
 			e.body[i] = new
@@ -48,11 +57,18 @@ func (e *elem) replaceChild(old, new UI) {
 	}
 }
 
-func (e *elem) setBody(parent nodeWithChildren, body []Node) {
+func (e *elem) setBody(parent UI, body []Node) {
+	if e.selfClosing {
+		log.Error("set body failed").
+			T("error", "self closing tag can't have children").
+			T("tag", e.tag).
+			Panic()
+	}
+
 	ibody := indirect(body...)
 
 	for _, n := range ibody {
-		n.setParent(parent.(nodeWithChildren))
+		n.setParent(parent)
 	}
 
 	e.body = ibody
