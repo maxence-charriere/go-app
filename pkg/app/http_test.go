@@ -76,6 +76,20 @@ func TestHandlerServeAppJS(t *testing.T) {
 }
 
 func TestHandlerServeAppWorkerJS(t *testing.T) {
+	err := os.MkdirAll("web", 0755)
+	require.NoError(t, err)
+	defer os.RemoveAll("web")
+
+	files := []string{
+		filepath.Join("web", "hello.css"),
+		filepath.Join("web", "hello.js"),
+	}
+
+	for _, f := range files {
+		err = ioutil.WriteFile(f, []byte("hello"), 0666)
+		require.NoError(t, err)
+	}
+
 	r := httptest.NewRequest(http.MethodGet, "/app-worker.js", nil)
 	w := httptest.NewRecorder()
 
@@ -91,8 +105,8 @@ func TestHandlerServeAppWorkerJS(t *testing.T) {
 	require.Contains(t, body, `self.addEventListener("install", event => {`)
 	require.Contains(t, body, `self.addEventListener("activate", event => {`)
 	require.Contains(t, body, `self.addEventListener("fetch", event => {`)
-	require.Contains(t, body, `"/hello.css",`)
-	require.Contains(t, body, `"/hello.js",`)
+	require.Contains(t, body, `"/web/hello.css",`)
+	require.Contains(t, body, `"/web/hello.js",`)
 	require.Contains(t, body, `"/wasm_exec.js",`)
 	require.Contains(t, body, `"/app.js",`)
 	require.Contains(t, body, `"/app.wasm",`)
@@ -166,4 +180,63 @@ func TestHandlerServeFile(t *testing.T) {
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "hello!", w.Body.String())
+}
+
+func BenchmarkHandlerColdRun(b *testing.B) {
+	r := httptest.NewRequest(http.MethodGet, "/hello", nil)
+	w := httptest.NewRecorder()
+
+	for i := 0; i < b.N; i++ {
+		h := Handler{}
+		h.ServeHTTP(w, r)
+		h.ServeHTTP(w, r)
+	}
+}
+
+func BenchmarkHandlerHotRun(b *testing.B) {
+	r := httptest.NewRequest(http.MethodGet, "/hello", nil)
+	w := httptest.NewRecorder()
+	h := Handler{}
+	h.ServeHTTP(w, r)
+
+	for i := 0; i < b.N; i++ {
+		h.ServeHTTP(w, r)
+	}
+}
+
+func TestStaticResources(t *testing.T) {
+	err := os.MkdirAll(filepath.Join("test", "web", "css"), 0755)
+	require.NoError(t, err)
+	defer os.RemoveAll("test")
+
+	files := []string{
+		filepath.Join("test", "notaresource.txt"),
+		filepath.Join("test", "web", "hello.txt"),
+		filepath.Join("test", "web", "css", "hello.css"),
+		filepath.Join("test", "web", ".hidden"),
+	}
+
+	for _, f := range files {
+		err = ioutil.WriteFile(f, []byte("hello"), 0666)
+		require.NoError(t, err)
+	}
+
+	expectedFilenames := []string{
+		"/web/.hidden",
+		"/web/css/hello.css",
+		"/web/hello.txt",
+	}
+
+	filenames := staticResources("test")
+	require.NoError(t, err)
+	require.Equal(t, expectedFilenames, filenames)
+}
+
+func TestStaticResourcesWebNotExists(t *testing.T) {
+	err := os.MkdirAll("test", 0755)
+	require.NoError(t, err)
+	defer os.RemoveAll("test")
+
+	filenames := staticResources("test")
+	require.Empty(t, filenames)
 }
