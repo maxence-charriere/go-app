@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path/filepath"
 	"runtime"
 	"strconv"
 	"strings"
@@ -264,12 +265,6 @@ func (h *Handler) initAppJS() {
 
 func (h *Handler) initWorkerJS() {
 	cacheableResources := make(map[string]struct{})
-	for _, s := range h.Scripts {
-		cacheableResources[s] = struct{}{}
-	}
-	for _, s := range h.Styles {
-		cacheableResources[s] = struct{}{}
-	}
 	cacheableResources["/wasm_exec.js"] = struct{}{}
 	cacheableResources["/app.js"] = struct{}{}
 	cacheableResources["/app.css"] = struct{}{}
@@ -279,6 +274,10 @@ func (h *Handler) initWorkerJS() {
 	cacheableResources[h.Icon.Large] = struct{}{}
 	cacheableResources[h.Icon.AppleTouch] = struct{}{}
 	cacheableResources["/"] = struct{}{}
+
+	for _, resource := range staticResources(".") {
+		cacheableResources[resource] = struct{}{}
+	}
 
 	if err := template.
 		Must(template.New("app-worker.js").Parse(appWorkerJS)).
@@ -429,13 +428,6 @@ func (h *Handler) staticResource(path string) string {
 	return path
 }
 
-func normalizeFilePath(path string) string {
-	if runtime.GOOS == "windows" {
-		return strings.ReplaceAll(path, "/", `\`)
-	}
-	return path
-}
-
 // Icon describes a square image that is used in various places such as
 // application icon, favicon or loading icon.
 type Icon struct {
@@ -457,4 +449,38 @@ type Icon struct {
 	//
 	// DEFAULT: Icon.Default
 	AppleTouch string
+}
+
+func normalizeFilePath(path string) string {
+	if runtime.GOOS == "windows" {
+		return strings.ReplaceAll(path, "/", `\`)
+	}
+	return path
+}
+
+func staticResources(basedir string) []string {
+	var filenames []string
+	webdir := filepath.Join(basedir, "web")
+
+	filepath.Walk(webdir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		path = strings.TrimPrefix(path, basedir)
+		if !strings.HasPrefix(path, "/") {
+			path = "/" + path
+		}
+		if runtime.GOOS == "windows" {
+			path = strings.ReplaceAll(path, `\`, "/")
+		}
+		filenames = append(filenames, path)
+		return nil
+	})
+
+	return filenames
 }
