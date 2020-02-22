@@ -18,19 +18,18 @@ type UI interface {
 	Node
 	Wrapper
 
-	parent() nodeWithChildren
-	setParent(p nodeWithChildren)
+	parent() UI
+	setParent(p UI)
 	dismount()
 }
 
 type nodeWithChildren interface {
-	UI
-
 	replaceChild(old, new UI)
 }
 
 type standardNode interface {
 	UI
+	nodeWithChildren
 
 	attributes() map[string]string
 	setAttribute(k string, v interface{})
@@ -80,6 +79,7 @@ type rawNode interface {
 //  }
 type Composer interface {
 	UI
+	nodeWithChildren
 
 	// Render returns the node tree that define how the component is desplayed.
 	Render() UI
@@ -212,7 +212,7 @@ func replace(a, b UI) error {
 
 	parent := a.parent()
 	b.setParent(parent)
-	parent.replaceChild(a, b)
+	parent.(nodeWithChildren).replaceChild(a, b)
 
 	for {
 		parentValue, ok := parent.(standardNode)

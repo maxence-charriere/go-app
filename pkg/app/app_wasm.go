@@ -57,15 +57,15 @@ func run() {
 }
 
 func initContent() {
-	body.value = Window().Get("document").Get("body")
-	content.(*HTMLDiv).value = body.value.Get("firstElementChild")
+	body.(*htmlBody).value = Window().Get("document").Get("body")
+	content.(*htmlDiv).value = body.JSValue().Get("firstElementChild")
 	content.setParent(body)
 	body.appendChild(content)
 }
 
 func initContextMenu() {
 	rawContextMenu := Div().ID("app-context-menu")
-	rawContextMenu.value = Window().
+	rawContextMenu.(*htmlDiv).value = Window().
 		Get("document").
 		Call("getElementById", "app-context-menu")
 	rawContextMenu.setParent(body)

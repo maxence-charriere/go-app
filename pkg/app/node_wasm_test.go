@@ -131,16 +131,16 @@ func TestUpdateStandardNode(t *testing.T) {
 	a := Div()
 	err := mount(a)
 	require.NoError(t, err)
-	require.Empty(t, a.attrs)
-	require.Empty(t, a.events)
+	require.Empty(t, a.attributes())
+	require.Empty(t, a.eventHandlers())
 
 	b := Div().
 		Class("foo").
 		OnClick(func(src Value, e Event) {})
 	err = update(a, b)
 	require.NoError(t, err)
-	require.Equal(t, b.attrs, a.attrs)
-	require.Len(t, a.events, 1)
+	require.Equal(t, b.attributes(), a.attributes())
+	require.Len(t, a.eventHandlers(), 1)
 }
 
 func TestUpdateStandardNodeAddChild(t *testing.T) {
@@ -156,10 +156,10 @@ func TestUpdateStandardNodeAddChild(t *testing.T) {
 	err = update(a, b)
 	require.NoError(t, err)
 	require.Len(t, a.children(), 2)
-	require.Equal(t, reflect.TypeOf(Text("")), a.body[0].nodeType())
-	require.NotNil(t, a.body[0].JSValue())
-	require.Equal(t, reflect.TypeOf(Br()), a.body[1].nodeType())
-	require.NotNil(t, a.body[1].JSValue())
+	require.Equal(t, reflect.TypeOf(Text("")), a.children()[0].nodeType())
+	require.NotNil(t, a.children()[0].JSValue())
+	require.Equal(t, reflect.TypeOf(Br()), a.children()[1].nodeType())
+	require.NotNil(t, a.children()[1].JSValue())
 }
 
 func TestUpdateStandardNodeRemoveChild(t *testing.T) {

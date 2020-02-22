@@ -11,7 +11,7 @@ import (
 // Compo represents the base struct to use in order to build a component.
 type Compo struct {
 	compo      Composer
-	parentNode nodeWithChildren
+	parentNode UI
 	root       UI
 }
 
@@ -24,11 +24,11 @@ func (c *Compo) JSValue() Value {
 	return c.root.JSValue()
 }
 
-func (c *Compo) parent() nodeWithChildren {
+func (c *Compo) parent() UI {
 	return c.parentNode
 }
 
-func (c *Compo) setParent(p nodeWithChildren) {
+func (c *Compo) setParent(p UI) {
 	c.parentNode = p
 }
 

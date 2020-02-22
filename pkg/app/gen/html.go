@@ -4,6 +4,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"sort"
 	"strings"
@@ -1970,21 +1971,12 @@ import (
 		`)
 
 	for _, t := range tags {
-		fmt.Fprintf(f, `
-		// HTML%s represents an HTML element <%s>.
-		type HTML%s struct {
-			elem
-		}`,
-			t.Name,
-			strings.ToLower(t.Name),
-			t.Name,
-		)
-		fmt.Fprintln(f)
+		writeInterface(f, t)
 
 		fmt.Fprintf(f, `
 		// %s returns an HTML element that %s
-		func %s() *HTML%s {
-			return &HTML%s{
+		func %s() HTML%s {
+			return &html%s{
 				elem: elem{
 					tag: "%s",
 					selfClosing: %v,
@@ -2000,126 +1992,166 @@ import (
 			strings.ToLower(t.Name),
 			t.SelfClosing,
 		)
+
+		fmt.Fprintln(f)
+		fmt.Fprintln(f)
+		writeStruct(f, t)
+		fmt.Fprintln(f)
 		fmt.Fprintln(f)
 
-		if !t.SelfClosing {
-			fmt.Fprintf(f, `
+		fmt.Fprintf(f, `
+			func (e *html%s) nodeType() reflect.Type {
+				return reflect.TypeOf(e)
+			}`, t.Name)
+		fmt.Fprintln(f)
+	}
+}
+
+func writeInterface(w io.Writer, t tag) {
+	fmt.Fprintf(w, `
+		// HTML%s is the interface that describes a <%s> HTML element.
+		type HTML%s interface {
+			standardNode
+			writableNode
+		`,
+		t.Name,
+		strings.ToLower(t.Name),
+		t.Name,
+	)
+
+	if !t.SelfClosing {
+		fmt.Fprintf(w, `
 			// Body set the content of the element.
-			func (e *HTML%s) Body(nodes ...Node) *HTML%s {
+			Body(nodes ...Node) HTML%s 
+		`, t.Name)
+	}
+
+	for _, a := range t.Attrs {
+		fmt.Fprintln(w)
+		fmt.Fprintln(w)
+
+		fmt.Fprintf(w, "// %s %s\n", a.Name, a.Doc)
+		writeAttrFunction(w, a, t, true)
+	}
+
+	for _, e := range t.EventHandlers {
+		fmt.Fprintln(w)
+		fmt.Fprintln(w)
+
+		fmt.Fprintf(w, "// %s %s\n", e.Name, e.Doc)
+		writeEventFunction(w, e, t, true)
+	}
+
+	fmt.Fprintln(w)
+	fmt.Fprintln(w, "}")
+}
+
+func writeStruct(w io.Writer, t tag) {
+	fmt.Fprintf(w, `type html%s struct {
+			elem
+		}`, t.Name)
+
+	if !t.SelfClosing {
+		fmt.Fprintf(w, `
+			func (e *html%s) Body(nodes ...Node) HTML%s {
 				e.setBody(e, nodes)
 				return e
 			}
 			`,
-				t.Name,
-				t.Name,
-			)
-			fmt.Fprintln(f)
-		}
-
-		for _, a := range t.Attrs {
-			fmt.Fprintf(f, "// %s %s", a.Name, a.Doc)
-
-			switch a.Type {
-			case "data|value":
-				fmt.Fprintf(f, `
-				func (e *HTML%s) %s(k string, v interface{}) *HTML%s {
-					e.elem.setAttribute("data-"+k, fmt.Sprintf("%s", v))
-					return e
-				}`,
-					t.Name,
-					a.Name,
-					t.Name,
-					"%v",
-				)
-
-			case "style":
-				fmt.Fprintf(f, `
-				func (e *HTML%s) %s(k, v string) *HTML%s {
-					e.elem.setAttribute("style", k+":"+v)
-					return e
-				}`,
-					t.Name,
-					a.Name,
-					t.Name,
-				)
-
-			case "on/off":
-				fmt.Fprintf(f, `
-				func (e *HTML%s) %s(v bool) *HTML%s {
-					s := "off"
-					if (v) {
-						s = "on"
-					}
-
-					e.elem.setAttribute("%s", s)
-					return e
-				}`,
-					t.Name,
-					a.Name,
-					t.Name,
-					strings.ToLower(a.Name),
-				)
-
-			case "bool|force":
-				fmt.Fprintf(f, `
-				func (e *HTML%s) %s(v bool) *HTML%s {
-					s := "false"
-					if (v) {
-						s = "true"
-					}
-
-					e.elem.setAttribute("%s", s)
-					return e
-				}`,
-					t.Name,
-					a.Name,
-					t.Name,
-					strings.ToLower(a.Name),
-				)
-
-			default:
-				fmt.Fprintf(f, `
-				func (e *HTML%s) %s(v %s) *HTML%s {
-					e.elem.setAttribute("%s", v)
-					return e
-				}`,
-					t.Name,
-					a.Name,
-					a.Type,
-					t.Name,
-					strings.ToLower(a.Name),
-				)
-			}
-
-			fmt.Fprintln(f)
-		}
-
-		for _, h := range t.EventHandlers {
-			fmt.Fprintf(f, `
-			// %s %s
-			func (e *HTML%s) %s (h EventHandler) *HTML%s {
-				e.setEventHandler("%s", h)
-				return e
-			}
-			`,
-				h.Name,
-				h.Doc,
-				t.Name,
-				h.Name,
-				t.Name,
-				strings.TrimPrefix(strings.ToLower(h.Name), "on"),
-			)
-		}
-		fmt.Fprintln(f)
-
-		fmt.Fprintf(f, `
-			func (e *HTML%s) nodeType() reflect.Type {
-				return reflect.TypeOf(e)
-			}
-			`,
+			t.Name,
 			t.Name,
 		)
-		fmt.Fprintln(f)
+	}
+
+	for _, a := range t.Attrs {
+		fmt.Fprintln(w)
+		fmt.Fprintln(w)
+
+		writeAttrFunction(w, a, t, false)
+	}
+
+	for _, e := range t.EventHandlers {
+		fmt.Fprintln(w)
+		fmt.Fprintln(w)
+
+		writeEventFunction(w, e, t, false)
+	}
+}
+
+func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
+	if !isInterface {
+		fmt.Fprintf(w, "func (e *html%s)", t.Name)
+	}
+
+	switch a.Type {
+	case "data|value":
+		fmt.Fprintf(w, `%s(k string, v interface{}) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintf(w, `{
+				e.elem.setAttribute("data-"+k, fmt.Sprintf("%s", v))
+				return e
+			}`, "%v")
+		}
+
+	case "style":
+		fmt.Fprintf(w, `%s(k, v string) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintf(w, `{
+				e.elem.setAttribute("style", k+":"+v)
+				return e
+			}`)
+		}
+
+	case "on/off":
+		fmt.Fprintf(w, `%s(v bool) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintf(w, `{
+				s := "off"
+				if (v) {
+					s = "on"
+				}
+	
+				e.elem.setAttribute("%s", s)
+				return e
+			}`, strings.ToLower(a.Name))
+		}
+
+	case "bool|force":
+		fmt.Fprintf(w, `%s(v bool) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintf(w, `{
+				s := "false"
+				if (v) {
+					s = "true"
+				}
+	
+				e.elem.setAttribute("%s", s)
+				return e
+			}`, strings.ToLower(a.Name))
+		}
+
+	default:
+		fmt.Fprintf(w, `%s(v %s) HTML%s`, a.Name, a.Type, t.Name)
+		if !isInterface {
+			fmt.Fprintf(w, `{
+				e.elem.setAttribute("%s", v)
+				return e
+			}`, strings.ToLower(a.Name))
+		}
+	}
+}
+
+func writeEventFunction(w io.Writer, e eventHandler, t tag, isInterface bool) {
+	if !isInterface {
+		fmt.Fprintf(w, `func (e *html%s)`, t.Name)
+	}
+
+	fmt.Fprintf(w, `%s (h EventHandler) HTML%s`, e.Name, t.Name)
+	if !isInterface {
+		fmt.Fprintf(w, `{
+			e.setEventHandler("%s", h)
+			return e
+		}`, strings.TrimPrefix(strings.ToLower(e.Name), "on"))
 	}
 }
 

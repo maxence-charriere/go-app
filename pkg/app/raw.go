@@ -31,7 +31,7 @@ func Raw(v string) UI {
 }
 
 type raw struct {
-	parentNode nodeWithChildren
+	parentNode UI
 	jsValue    Value
 	tagName    string
 	outerHTML  string
@@ -45,11 +45,11 @@ func (r *raw) JSValue() Value {
 	return r.jsValue
 }
 
-func (r *raw) parent() nodeWithChildren {
+func (r *raw) parent() UI {
 	return r.parentNode
 }
 
-func (r *raw) setParent(p nodeWithChildren) {
+func (r *raw) setParent(p UI) {
 	r.parentNode = p
 }
 

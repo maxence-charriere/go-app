@@ -13,7 +13,7 @@ func Text(v string) UI {
 }
 
 type text struct {
-	parentNode nodeWithChildren
+	parentNode UI
 	jsValue    Value
 	textValue  string
 }
@@ -26,11 +26,11 @@ func (t *text) JSValue() Value {
 	return t.jsValue
 }
 
-func (t *text) parent() nodeWithChildren {
+func (t *text) parent() UI {
 	return t.parentNode
 }
 
-func (t *text) setParent(p nodeWithChildren) {
+func (t *text) setParent(p UI) {
 	t.parentNode = p
 }
 
