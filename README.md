@@ -176,8 +176,6 @@ Support this project by becoming a sponsor. Your logo/picture will show up here 
 
 Become a sponsor with:
 
-- [Github](https://github.com/sponsors/maxence-charriere)
 - [Open Collective](https://opencollective.com/go-app)
+- [Github](https://github.com/sponsors/maxence-charriere)
 - [Patreon](https://www.patreon.com/maxencecharriere)
-
-<script src="https://opencollective.com/go-app/banner.js"></script>
