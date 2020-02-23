@@ -22,7 +22,7 @@ Build the server:
 go build
 ```
 
-Your directory should look like the following:
+The current directory should look like the following:
 
 ```sh
 # github.com/maxence-charriere/app/demo/hello-local

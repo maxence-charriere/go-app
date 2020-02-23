@@ -22,7 +22,7 @@ Build the hello app:
 GOARCH=wasm GOOS=js go build -o app.wasm ../hello
 ```
 
-Your directory should look like the following:
+The current directory should look like the following:
 
 ```sh
 # github.com/maxence-charriere/app/demo/hello-appengine
