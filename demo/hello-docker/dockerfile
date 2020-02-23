@@ -16,5 +16,8 @@ RUN go build -o app .
 # Expose server port:
 EXPOSE 7000
 
+# App version (uncomment if the image is for non-development ends):
+# ENV APP_VERSION "YOUR_VERSION"
+
 # Run the server:
 CMD ["./app"]

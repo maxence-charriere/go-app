@@ -5,20 +5,19 @@ hello-docker is a demo that shows how to deploy a progressive web app created wi
 ## Prerequisites
 
 - [Docker](https://www.docker.com) installed on your machine
-- [hello example](https://github.com/maxence-charriere/app/tree/master/demo/hello) built and copied in the current directory:
 
-  ```sh
-  GOARCH=wasm GOOS=js go build -o app.wasm ../hello
-  ```
-
-## Build Docker image
+## Build and run Docker contrainer
 
 ```sh
+# Go to the hello-local directory:
+cd $GOPATH/src/github.com/maxence-charriere/app/demo/hello-local
+
+# Build the hello app:
+GOARCH=wasm GOOS=js go build -o app.wasm ../hello
+
+# Build Docker image:
 docker build -t hello-docker .
-```
 
-## Run Docker contrainer
-
-```sh
-docker run -d -p 7000:7000 go-docker
+# Run the Docker container:
+docker run -d -p 7000:7000 hello-docker
 ```
