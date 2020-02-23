@@ -6,6 +6,7 @@
 *.dylib
 *.app
 *.wasm
+demo/hello-appengine/hello-appengine
 demo/hello-docker/hello-docker
 demo/hello-local/hello-local
 
@@ -18,3 +19,4 @@ demo/hello-local/hello-local
 
 # Static generated files
 *.gz
+*.gcloudignore
