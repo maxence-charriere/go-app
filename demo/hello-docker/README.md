@@ -58,3 +58,8 @@ Run the Docker container:
 ```sh
 docker run -d -p 7000:7000 hello-docker
 ```
+
+## Contribute
+
+Help to develop the [app](https://github.com/maxence-charriere/app) package by becoming a sponsor.
+<br>[Become a sponsor](https://opencollective.com/go-app).

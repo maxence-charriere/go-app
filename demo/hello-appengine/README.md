@@ -39,3 +39,8 @@ Deploy on Google Cloud App Engine:
 ```sh
 gcloud app deploy . --project YOUR_PROJECT_ID
 ```
+
+## Contribute
+
+Help to develop the [app](https://github.com/maxence-charriere/app) package by becoming a sponsor.
+<br>[Become a sponsor](https://opencollective.com/go-app).

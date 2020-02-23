@@ -12,3 +12,8 @@ Note that `app.wasm` binary requires to be moved at the server location that wil
 
 - [hello-docker](https://github.com/maxence-charriere/app/tree/master/demo/hello-docker)
 - [hello-local](https://github.com/maxence-charriere/app/tree/master/demo/hello-local)
+
+## Contribute
+
+Help to develop the [app](https://github.com/maxence-charriere/app) package by becoming a sponsor.
+<br>[Become a sponsor](https://opencollective.com/go-app).
