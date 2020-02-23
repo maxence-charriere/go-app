@@ -179,3 +179,5 @@ Become a sponsor with:
 - [Github](https://github.com/sponsors/maxence-charriere)
 - [Open Collective](https://opencollective.com/go-app)
 - [Patreon](https://www.patreon.com/maxencecharriere)
+
+<script src="https://opencollective.com/go-app/banner.js"></script>
