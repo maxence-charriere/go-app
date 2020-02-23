@@ -30,7 +30,6 @@ Your directory should look like the following:
 ├── README.md
 ├── app.wasm
 ├── app.yaml
-├── hello-appengine
 └── main.go
 
 ```
