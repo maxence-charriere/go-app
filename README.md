@@ -174,8 +174,4 @@ The hello example introduced above:
 
 Support this project by becoming a sponsor. Your logo/picture will show up here with a link to your website.
 
-Become a sponsor with:
-
-- [Open Collective](https://opencollective.com/go-app)
-- [Github](https://github.com/sponsors/maxence-charriere)
-- [Patreon](https://www.patreon.com/maxencecharriere)
+Become a sponsor with [Open Collective](https://opencollective.com/go-app).
