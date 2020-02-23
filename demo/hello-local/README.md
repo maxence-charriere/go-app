@@ -4,16 +4,37 @@ hello-local is a demo that shows how to run a progressive web app created with t
 
 ## Build and run
 
+Go to the hello-local directory:
+
 ```sh
-# Go to the hello-local directory:
 cd $GOPATH/src/github.com/maxence-charriere/app/demo/hello-local
+```
 
-# Build the hello app:
+Build the hello app:
+
+```sh
 GOARCH=wasm GOOS=js go build -o app.wasm ../hello
+```
 
-# Build the server:
+Build the server:
+
+```sh
 go build
+```
 
-# Run the server:
+The current directory should look like the following:
+
+```sh
+# github.com/maxence-charriere/app/demo/hello-local
+.
+├── README.md
+├── app.wasm
+├── hello-local
+└── main.go
+```
+
+Run the server:
+
+```sh
 ./hello-local
 ```
