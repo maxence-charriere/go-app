@@ -12,6 +12,10 @@ hello-docker is a demo that shows how to deploy a progressive web app created wi
 # Go to the hello-local directory:
 cd $GOPATH/src/github.com/maxence-charriere/app/demo/hello-local
 
+# Set dependencies:
+go mod init
+go mod tidy
+
 # Build the hello app:
 GOARCH=wasm GOOS=js go build -o app.wasm ../hello
 
