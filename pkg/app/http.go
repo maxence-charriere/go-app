@@ -78,9 +78,9 @@ type Handler struct {
 	// The page title.
 	Title string
 
-	// The version number. This is used in order to update the pwa application
-	// in the browser. It must be set when deployed on a scalable system in
-	// order to prevent constant updates.
+	// The version number. This is used in order to update the PWA application
+	// in the browser. It must be set when deployed on a live system in order to
+	// prevent recurring updates.
 	//
 	// Default: Auto-generated in order to trigger pwa update on a local
 	// development sytem.
