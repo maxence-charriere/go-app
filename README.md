@@ -7,8 +7,10 @@
 <p align="center">
 	<a href="https://circleci.com/gh/maxence-charriere/app"><img src="https://circleci.com/gh/maxence-charriere/app.svg?style=svg" alt="Circle CI Go build"></a>
     <a href="https://goreportcard.com/report/github.com/maxence-charriere/app"><img src="https://goreportcard.com/badge/github.com/maxence-charriere/app" alt="Go Report Card"></a>
-	<a href="https://pkg.go.dev/github.com/maxence-charriere/app/pkg/app?tab=doc"><img src="https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat" alt="pkg.go.dev docs"></a>
-    <a href="https://twitter.com/jonhymaxoo"><img alt="Twitter URL" src="https://img.shields.io/twitter/url?label=follow&style=social&url=https%3A%2F%2Ftwitter.com%2Fjonhymaxoo"></a>
+	<a href="https://GitHub.com/maxence-charriere/app/releases/"><img src="https://img.shields.io/github/release/maxence-charriere/app.svg" alt="GitHub release"></a>
+	<a href="https://pkg.go.dev/github.com/maxence-charriere/app/pkg/app"><img src="https://img.shields.io/badge/dev-reference-007d9c?logo=go&logoColor=white&style=flat" alt="pkg.go.dev docs"></a>
+	<a href="https://github.com/maxence-charriere/app/wiki"><img src="https://img.shields.io/badge/github-wiki-6E7AF8?logo=github&style=flat" alt="pkg.go.dev docs"></a>
+    <a href="https://twitter.com/jonhymaxoo"><img alt="Twitter URL" src="https://img.shields.io/badge/twitter-@jonhymaxoo-35A9F8?logo=twitter&style=flat"></a>
 </p>
 
 **app** is a package to build [progressive web apps (PWA)](https://developers.google.com/web/progressive-web-apps/) with [Go programming language](https://golang.org) and [WebAssembly](https://webassembly.org).
