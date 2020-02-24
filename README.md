@@ -176,4 +176,4 @@ The hello example introduced above:
 
 Support this project by becoming a sponsor. Your logo/picture will show up here with a link to your website.
 
-Become a sponsor with [Open Collective](https://opencollective.com/go-app).
+<a href="https://opencollective.com/go-app" target="_blank"><img src="https://opencollective.com/go-app/contribute/button@2x.png?color=blue" width=250 /></a>
