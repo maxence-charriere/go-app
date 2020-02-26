@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"syscall/js"
 
-	"github.com/maxence-charriere/app/pkg/log"
+	"github.com/maxence-charriere/go-app/pkg/log"
 )
 
 var (

@@ -5,7 +5,7 @@ package main
 import (
 	"syscall/js"
 
-	"github.com/maxence-charriere/app/pkg/app"
+	"github.com/maxence-charriere/go-app/pkg/app"
 )
 
 // City is a component that shows how navigation works.
@@ -95,12 +95,12 @@ func (n *City) OnMenuClick(s, e js.Value) {
 		app.MenuItem{
 			Label: "Go to repository",
 			OnClick: func(s, e js.Value) {
-				app.Navigate("https://github.com/maxence-charriere/app")
+				app.Navigate("https://github.com/maxence-charriere/go-app")
 			}},
 		app.MenuItem{
 			Label: "Source code",
 			OnClick: func(s, e js.Value) {
-				app.Navigate("https://github.com/maxence-charriere/app/blob/master/demo/cmd/demo-wasm/hello.go")
+				app.Navigate("https://github.com/maxence-charriere/go-app/blob/master/demo/cmd/demo-wasm/hello.go")
 			}},
 		app.MenuItem{Separator: true},
 		app.MenuItem{

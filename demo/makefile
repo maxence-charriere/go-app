@@ -11,4 +11,4 @@ run:
 	@goapp run -v -b chrome
 
 install:
-	@go get -u -v github.com/maxence-charriere/app/cmd/goapp
+	@go get -u -v github.com/maxence-charriere/go-app/cmd/goapp
