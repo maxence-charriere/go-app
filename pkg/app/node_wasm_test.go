@@ -38,7 +38,7 @@ func TestIndirect(t *testing.T) {
 		{
 			scenario: "indirect range condition node returns a standard nodes",
 			node: Range([]int{1, 2, 3}).
-				Slice(func(i int) Node {
+				Slice(func(i int) UI {
 					return Div()
 				}),
 			expected: []reflect.Type{
@@ -85,7 +85,7 @@ func TestMount(t *testing.T) {
 		{
 			scenario: "mounting range condition node returns an error",
 			node: Range([]int{42}).
-				Slice(func(int) Node {
+				Slice(func(int) UI {
 					return Div()
 				}),
 			err: true,

@@ -15,7 +15,7 @@ func TestRangeConditionSlice(t *testing.T) {
 	}
 
 	rs := Range(s).
-		Slice(func(i int) Node {
+		Slice(func(i int) UI {
 			return Text(s[i])
 		})
 	require.Equal(t, reflect.TypeOf(rs), rs.nodeType())
@@ -26,7 +26,7 @@ func TestRangeConditionSlice(t *testing.T) {
 
 	require.Panics(t, func() {
 		Range(42).
-			Slice(func(int) Node {
+			Slice(func(int) UI {
 				return nil
 			})
 	})
@@ -40,21 +40,21 @@ func TestRangeConditionMap(t *testing.T) {
 	}
 
 	rm := Range(m).
-		Map(func(k string) Node {
+		Map(func(k string) UI {
 			return Text(m[k])
 		})
 	require.Len(t, rm.nodes(), 3)
 
 	require.Panics(t, func() {
 		Range(42).
-			Map(func(string) Node {
+			Map(func(string) UI {
 				return nil
 			})
 	})
 
 	require.Panics(t, func() {
 		Range(map[int]string{42: ""}).
-			Map(func(string) Node {
+			Map(func(string) UI {
 				return nil
 			})
 	})
