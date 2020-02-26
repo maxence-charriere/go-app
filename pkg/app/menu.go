@@ -170,8 +170,8 @@ func (l *contextMenuLayout) Render() UI {
 				Class("app-contextmenu").
 				Body(
 					Range(l.items).
-						Slice(func(i int) Node {
-							return l.items[i]
+						Slice(func(i int) UI {
+							return l.items[i].(UI)
 						}),
 				),
 		)

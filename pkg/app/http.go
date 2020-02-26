@@ -209,7 +209,7 @@ func (h *Handler) initPage() {
 						Type("text/css").
 						Rel("stylesheet").
 						Href("/app.css"),
-					Range(h.Styles).Slice(func(i int) Node {
+					Range(h.Styles).Slice(func(i int) UI {
 						return Link().
 							Type("text/css").
 							Rel("stylesheet").
@@ -217,11 +217,11 @@ func (h *Handler) initPage() {
 					}),
 					Script().Src("/wasm_exec.js"),
 					Script().Src("/app.js"),
-					Range(h.Scripts).Slice(func(i int) Node {
+					Range(h.Scripts).Slice(func(i int) UI {
 						return Script().
 							Src(h.Scripts[i])
 					}),
-					Range(h.RawHeaders).Slice(func(i int) Node {
+					Range(h.RawHeaders).Slice(func(i int) UI {
 						return Raw(h.RawHeaders[i])
 					}),
 				),
