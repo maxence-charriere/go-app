@@ -21,7 +21,7 @@ The package also provides an [http.handler](#http-handler) ready to serve all th
 
 ## Install
 
-**app** requires [Go 1.13](https://golang.org/doc/go1.13) or newer.
+**go-app** requires [Go 1.13](https://golang.org/doc/go1.13) or newer.
 
 ```sh
 go get -u -v github.com/maxence-charriere/go-app/pkg/app
