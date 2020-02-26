@@ -1,19 +1,19 @@
 # hello-appengine
 
-hello-appengine is a demo that shows how to run a progressive web app created with the [app package](https://github.com/maxence-charriere/app) on [Google Cloud App Engine](https://cloud.google.com/appengine).
+hello-appengine is a demo that shows how to run a progressive web app created with the [app package](https://github.com/maxence-charriere/go-app) on [Google Cloud App Engine](https://cloud.google.com/appengine).
 
 ## Prerequisites
 
 - [Google Cloud SDK](https://cloud.google.com/sdk) installed on your machine
 - A [Google Cloud project](https://console.cloud.google.com/cloud-resource-manager)
-- An [app.yaml file](https://github.com/maxence-charriere/app/tree/master/demo/hello-appengine/app.yaml)
+- An [app.yaml file](https://github.com/maxence-charriere/go-app/tree/master/demo/hello-appengine/app.yaml)
 
 ## Build and deploy
 
 Go to the hello-appengine directory:
 
 ```sh
-cd $GOPATH/src/github.com/maxence-charriere/app/demo/hello-appengine
+cd $GOPATH/src/github.com/maxence-charriere/go-app/demo/hello-appengine
 ```
 
 Build the hello app:
@@ -25,7 +25,7 @@ GOARCH=wasm GOOS=js go build -o app.wasm ../hello
 The current directory should look like the following:
 
 ```sh
-# github.com/maxence-charriere/app/demo/hello-appengine
+# github.com/maxence-charriere/go-app/demo/hello-appengine
 .
 ├── README.md
 ├── app.wasm
@@ -42,5 +42,5 @@ gcloud app deploy . --project YOUR_PROJECT_ID
 
 ## Contribute
 
-Help to develop the [app](https://github.com/maxence-charriere/app) package by becoming a sponsor.
+Help to develop the [app](https://github.com/maxence-charriere/go-app) package by becoming a sponsor.
 <br>[Become a sponsor](https://opencollective.com/go-app).

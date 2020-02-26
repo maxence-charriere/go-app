@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"sort"
 
-	"github.com/maxence-charriere/app/pkg/log"
+	"github.com/maxence-charriere/go-app/pkg/log"
 )
 
 // RangeLoop represents a control structure that iterates within a slice, an

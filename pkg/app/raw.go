@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/maxence-charriere/app/pkg/log"
+	"github.com/maxence-charriere/go-app/pkg/log"
 )
 
 // Raw returns a node from the given raw value.

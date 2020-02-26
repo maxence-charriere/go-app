@@ -1,15 +1,15 @@
 <h1 align="center">
-    <a href="https://github.com/maxence-charriere/app">
-        <img alt="app"  width="150" height="150" src="https://storage.googleapis.com/murlok-github/icon-192.png">
+    <a href="https://github.com/maxence-charriere/go-app">
+        <img alt="go-app"  width="150" height="150" src="https://storage.googleapis.com/murlok-github/icon-192.png">
     </a>
 </h1>
 
 <p align="center">
-	<a href="https://circleci.com/gh/maxence-charriere/app"><img src="https://circleci.com/gh/maxence-charriere/app.svg?style=svg" alt="Circle CI Go build"></a>
-    <a href="https://goreportcard.com/report/github.com/maxence-charriere/app"><img src="https://goreportcard.com/badge/github.com/maxence-charriere/app" alt="Go Report Card"></a>
-	<a href="https://GitHub.com/maxence-charriere/app/releases/"><img src="https://img.shields.io/github/release/maxence-charriere/app.svg" alt="GitHub release"></a>
-	<a href="https://pkg.go.dev/github.com/maxence-charriere/app/pkg/app"><img src="https://img.shields.io/badge/dev-reference-007d9c?logo=go&logoColor=white&style=flat" alt="pkg.go.dev docs"></a>
-	<a href="https://github.com/maxence-charriere/app/wiki"><img src="https://img.shields.io/badge/github-wiki-6E7AF8?logo=github&style=flat" alt="pkg.go.dev docs"></a>
+	<a href="https://circleci.com/gh/maxence-charriere/go-app"><img src="https://circleci.com/gh/maxence-charriere/go-app.svg?style=svg" alt="Circle CI Go build"></a>
+    <a href="https://goreportcard.com/report/github.com/maxence-charriere/go-app"><img src="https://goreportcard.com/badge/github.com/maxence-charriere/go-app" alt="Go Report Card"></a>
+	<a href="https://GitHub.com/maxence-charriere/go-app/releases/"><img src="https://img.shields.io/github/release/maxence-charriere/go-app.svg" alt="GitHub release"></a>
+	<a href="https://pkg.go.dev/github.com/maxence-charriere/go-app/pkg/app"><img src="https://img.shields.io/badge/dev-reference-007d9c?logo=go&logoColor=white&style=flat" alt="pkg.go.dev docs"></a>
+	<a href="https://github.com/maxence-charriere/go-app/wiki"><img src="https://img.shields.io/badge/github-wiki-6E7AF8?logo=github&style=flat" alt="pkg.go.dev docs"></a>
     <a href="https://twitter.com/jonhymaxoo"><img alt="Twitter URL" src="https://img.shields.io/badge/twitter-@jonhymaxoo-35A9F8?logo=twitter&style=flat"></a>
 </p>
 
@@ -24,7 +24,7 @@ The package also provides an [http.handler](#http-handler) ready to serve all th
 **app** requires [Go 1.13](https://golang.org/doc/go1.13) or newer.
 
 ```sh
-go get -u -v github.com/maxence-charriere/app/pkg/app
+go get -u -v github.com/maxence-charriere/go-app/pkg/app
 ```
 
 ## How it works
@@ -34,18 +34,18 @@ go get -u -v github.com/maxence-charriere/app/pkg/app
 </p>
 
 - **Users:** The users of your app. They request pages and resources from their web browser.
-- **[app.Handler](https://pkg.go.dev/github.com/maxence-charriere/app/pkg/app#Handler)**: An [http.Handler](https://golang.org/pkg/net/http/#Handler) used by your server or cloud function. It serves your app, its static resources, and all the required files to make it work on user browsers.
-- **Application**: Your app built with this package. It is built as a WebAssembly (.wasm) binary and is served by the [app.Handler](https://pkg.go.dev/github.com/maxence-charriere/app/pkg/app#Handler).
-- **Other static resources**: Styles, images, and scripts used by your app. They are also served by the [app.Handler](https://pkg.go.dev/github.com/maxence-charriere/app/pkg/app#Handler).
+- **[app.Handler](https://pkg.go.dev/github.com/maxence-charriere/go-app/pkg/app#Handler)**: An [http.Handler](https://golang.org/pkg/net/http/#Handler) used by your server or cloud function. It serves your app, its static resources, and all the required files to make it work on user browsers.
+- **Application**: Your app built with this package. It is built as a WebAssembly (.wasm) binary and is served by the [app.Handler](https://pkg.go.dev/github.com/maxence-charriere/go-app/pkg/app#Handler).
+- **Other static resources**: Styles, images, and scripts used by your app. They are also served by the [app.Handler](https://pkg.go.dev/github.com/maxence-charriere/go-app/pkg/app#Handler).
 
 ## Declarative syntax
 
-**app** uses a declarative syntax so you can write component-based UI elements just by using the Go programming language.
+**go-app** uses a declarative syntax so you can write component-based UI elements just by using the Go programming language.
 
 ```go
 package main
 
-import "github.com/maxence-charriere/app/pkg/app"
+import "github.com/maxence-charriere/go-app/pkg/app"
 
 type hello struct {
     app.Compo
@@ -97,7 +97,7 @@ Note that we named the build output `app.wasm`. The reason is that the HTTP hand
 
 Once your app is built, the next step is to serve it.
 
-This package provides an [http.Handler implementation](https://pkg.go.dev/github.com/maxence-charriere/app/pkg/app#Handler) ready to serve your PWA and all the required resources to make it work in a web browser.
+This package provides an [http.Handler implementation](https://pkg.go.dev/github.com/maxence-charriere/go-app/pkg/app#Handler) ready to serve your PWA and all the required resources to make it work in a web browser.
 
 The handler can be used to create either a web server or a cloud function (AWS Lambda, GCloud function or Azure function).
 
@@ -107,7 +107,7 @@ package main
 import (
     "net/http"
 
-    "github.com/maxence-charriere/app/pkg/app"
+    "github.com/maxence-charriere/go-app/pkg/app"
 )
 
 func main() {
@@ -128,7 +128,7 @@ The server is built as a standard Go program:
 go build
 ```
 
-Note that **you need to add `app.wasm` to the server location**. The reason is that [app.Handler](https://pkg.go.dev/github.com/maxence-charriere/app/pkg/app#Handler) is looking for a file named `app.wasm` in the server directory in order to serve the web assembly binary.
+Note that **you need to add `app.wasm` to the server location**. The reason is that [app.Handler](https://pkg.go.dev/github.com/maxence-charriere/go-app/pkg/app#Handler) is looking for a file named `app.wasm` in the server directory in order to serve the web assembly binary.
 
 ```sh
 hello-local        # Server directory
@@ -154,9 +154,9 @@ The hello example introduced above:
 
 | App sources                                                              | Server sources                                                                               | Description                                                                                     |
 | ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| [hello](https://github.com/maxence-charriere/app/tree/master/demo/hello) | [hello-local](https://github.com/maxence-charriere/app/tree/master/demo/hello-local)         | Hello app that runs on a local server.                                                          |
-|                                                                          | [hello-docker](https://github.com/maxence-charriere/app/tree/master/demo/hello-docker)       | Hello app that run in a Docker container.                                                       |
-|                                                                          | [hello-appengine](https://github.com/maxence-charriere/app/tree/master/demo/hello-appengine) | Hello app that run on Google Cloud App Engine.<br> [See live](https://goapp-269110.appspot.com) |
+| [hello](https://github.com/maxence-charriere/go-app/tree/master/demo/hello) | [hello-local](https://github.com/maxence-charriere/go-app/tree/master/demo/hello-local)         | Hello app that runs on a local server.                                                          |
+|                                                                          | [hello-docker](https://github.com/maxence-charriere/go-app/tree/master/demo/hello-docker)       | Hello app that run in a Docker container.                                                       |
+|                                                                          | [hello-appengine](https://github.com/maxence-charriere/go-app/tree/master/demo/hello-appengine) | Hello app that run on Google Cloud App Engine.<br> [See live](https://goapp-269110.appspot.com) |
 
 ### Live apps
 

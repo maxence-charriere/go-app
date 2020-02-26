@@ -1,6 +1,6 @@
 package main
 
-import "github.com/maxence-charriere/app/pkg/app"
+import "github.com/maxence-charriere/go-app/pkg/app"
 
 type hello struct {
 	app.Compo
