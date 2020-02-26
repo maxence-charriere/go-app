@@ -125,12 +125,6 @@ type writableNode interface {
 	htmlWithIndent(w io.Writer, indent int)
 }
 
-type conditionNode interface {
-	Node
-
-	nodes() []UI
-}
-
 type eventHandler struct {
 	function   EventHandler
 	jsFunction Func
@@ -145,7 +139,10 @@ func indirect(nodes ...Node) []UI {
 
 	for _, n := range nodes {
 		switch t := n.(type) {
-		case conditionNode:
+		case Condition:
+			inodes = append(inodes, t.nodes()...)
+
+		case RangeLoop:
 			inodes = append(inodes, t.nodes()...)
 
 		case Composer:
