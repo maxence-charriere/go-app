@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/maxence-charriere/app/pkg/log"
+	"github.com/maxence-charriere/go-app/pkg/log"
 )
 
 // Manifest is a handler that serves a manifest file for progressive webapp

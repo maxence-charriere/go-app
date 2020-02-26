@@ -7,8 +7,8 @@ import (
 	"strings"
 	"sync"
 
-	inthttp "github.com/maxence-charriere/app/internal/http"
-	pkghttp "github.com/maxence-charriere/app/pkg/http"
+	inthttp "github.com/maxence-charriere/go-app/internal/http"
+	pkghttp "github.com/maxence-charriere/go-app/pkg/http"
 )
 
 // ProgressiveAppConfig represents the configuration used to describe a
