@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/maxence-charriere/app/pkg/app"
-	"github.com/maxence-charriere/app/pkg/log"
+	"github.com/maxence-charriere/go-app/pkg/app"
+	"github.com/maxence-charriere/go-app/pkg/log"
 )
 
 func main() {

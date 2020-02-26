@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/maxence-charriere/app/pkg/log"
+	"github.com/maxence-charriere/go-app/pkg/log"
 )
 
 type elem struct {

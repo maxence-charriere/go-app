@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/maxence-charriere/app/pkg/app"
+	"github.com/maxence-charriere/go-app/pkg/app"
 )
 
 func main() {
