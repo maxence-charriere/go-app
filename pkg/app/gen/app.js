@@ -36,14 +36,17 @@ const go = new Go();
 
 WebAssembly.instantiateStreaming(fetch("{{.Wasm}}"), go.importObject)
   .then(result => {
+    const loaderIcon = document.getElementById("app-wasm-loader-icon");
+    loaderIcon.className = "app-wasm-icon";
+
     go.run(result.instance);
   })
   .catch(err => {
     const loaderIcon = document.getElementById("app-wasm-loader-icon");
-    loaderIcon.className = "";
+    loaderIcon.className = "app-wasm-icon";
 
     const loaderLabel = document.getElementById("app-wasm-loader-label");
-    loadingLabel.innerText = err;
+    loaderLabel.innerText = err;
 
     console.error("loading wasm failed: " + err);
   });
