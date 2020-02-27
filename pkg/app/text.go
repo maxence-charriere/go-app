@@ -7,6 +7,14 @@ import (
 	"reflect"
 )
 
+type textNode interface {
+	UI
+
+	text() string
+	mount() error
+	update(t textNode)
+}
+
 // Text returns a text node.
 func Text(v string) UI {
 	return &text{textValue: v}

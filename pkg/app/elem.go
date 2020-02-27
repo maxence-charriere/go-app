@@ -7,6 +7,28 @@ import (
 	"github.com/maxence-charriere/go-app/pkg/log"
 )
 
+type standardNode interface {
+	UI
+	nodeWithChildren
+
+	attributes() map[string]string
+	setAttribute(k string, v interface{})
+	setAttributeValue(k, v string)
+	removeAttributeValue(k string)
+	eventHandlers() map[string]eventHandler
+	setEventHandler(k string, h EventHandler)
+	setEventHandlerValue(k string, h eventHandler)
+	removeEventHandlerValue(k string, h eventHandler)
+	mount() error
+	children() []UI
+	appendChild(child UI)
+	appendChildValue(child UI)
+	removeChild(child UI)
+	removeChildValue(child UI)
+	replaceChildValue(old, new UI)
+	update(n standardNode)
+}
+
 type elem struct {
 	parentNode  UI
 	value       Value
@@ -302,4 +324,13 @@ func trackMousePosition(e Event) {
 	}
 
 	window.setCursorPosition(x.Int(), y.Int())
+}
+
+type eventHandler struct {
+	function   EventHandler
+	jsFunction Func
+}
+
+func (h eventHandler) equals(o eventHandler) bool {
+	return fmt.Sprintf("%p", h.function) == fmt.Sprintf("%p", o.function)
 }

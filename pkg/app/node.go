@@ -3,7 +3,6 @@ package app
 import (
 	"fmt"
 	"io"
-	"net/url"
 	"reflect"
 )
 
@@ -27,111 +26,9 @@ type nodeWithChildren interface {
 	replaceChild(old, new UI)
 }
 
-type standardNode interface {
-	UI
-	nodeWithChildren
-
-	attributes() map[string]string
-	setAttribute(k string, v interface{})
-	setAttributeValue(k, v string)
-	removeAttributeValue(k string)
-	eventHandlers() map[string]eventHandler
-	setEventHandler(k string, h EventHandler)
-	setEventHandlerValue(k string, h eventHandler)
-	removeEventHandlerValue(k string, h eventHandler)
-	mount() error
-	children() []UI
-	appendChild(child UI)
-	appendChildValue(child UI)
-	removeChild(child UI)
-	removeChildValue(child UI)
-	replaceChildValue(old, new UI)
-	update(n standardNode)
-}
-
-type textNode interface {
-	UI
-
-	text() string
-	mount() error
-	update(t textNode)
-}
-
-type rawNode interface {
-	UI
-
-	raw() string
-	mount() error
-}
-
-// Composer is the interface that describes a component that embeds other nodes.
-//
-// Satisfying this interface is done by embedding app.Compo into a struct and
-// implementing the Render function.
-//
-// Example:
-//  type Hello struct {
-//      app.Compo
-//  }
-//
-//  func (c *Hello) Render() app.UI {
-//      return app.Text("hello")
-//  }
-type Composer interface {
-	UI
-	nodeWithChildren
-
-	// Render returns the node tree that define how the component is desplayed.
-	Render() UI
-
-	// Update update the component appearance. It should be called when a field
-	// used to render the component has been modified.
-	Update()
-
-	setCompo(n Composer)
-	mount(c Composer) error
-	update(n Composer)
-}
-
-// Mounter is the interface that describes a component that can perform
-// additional actions when mounted.
-type Mounter interface {
-	Composer
-
-	// The function that is called when the component is mounted.
-	OnMount()
-}
-
-// Dismounter is the interface that describes a component that can perform
-// additional actions when dismounted.
-type Dismounter interface {
-	Composer
-
-	// The function that is called when the component is dismounted.
-	OnDismount()
-}
-
-// Navigator is the interface that describes a component that can perform
-// additional actions when navigated on.
-type Navigator interface {
-	Composer
-
-	// The function that is called when the component is navigated on.
-	OnNav(u *url.URL)
-}
-
 type writableNode interface {
 	html(w io.Writer)
 	htmlWithIndent(w io.Writer, indent int)
-}
-
-type eventHandler struct {
-	function   EventHandler
-	jsFunction Func
-}
-
-func (h eventHandler) equals(o eventHandler) bool {
-	return fmt.Sprintf("%p", h.function) == fmt.Sprintf("%p", o.function)
 }
 
 func indirect(nodes ...Node) []UI {

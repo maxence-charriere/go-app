@@ -9,6 +9,13 @@ import (
 	"github.com/maxence-charriere/go-app/pkg/log"
 )
 
+type rawNode interface {
+	UI
+
+	raw() string
+	mount() error
+}
+
 // Raw returns a node from the given raw value.
 //
 // Note that it is not recommended to use this kind of node since there is no

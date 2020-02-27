@@ -2,11 +2,68 @@ package app
 
 import (
 	"fmt"
+	"net/url"
 	"reflect"
 	"unicode"
 
 	"github.com/maxence-charriere/go-app/pkg/log"
 )
+
+// Composer is the interface that describes a component that embeds other nodes.
+//
+// Satisfying this interface is done by embedding app.Compo into a struct and
+// implementing the Render function.
+//
+// Example:
+//  type Hello struct {
+//      app.Compo
+//  }
+//
+//  func (c *Hello) Render() app.UI {
+//      return app.Text("hello")
+//  }
+type Composer interface {
+	UI
+	nodeWithChildren
+
+	// Render returns the node tree that define how the component is desplayed.
+	Render() UI
+
+	// Update update the component appearance. It should be called when a field
+	// used to render the component has been modified.
+	Update()
+
+	setCompo(n Composer)
+	mount(c Composer) error
+	update(n Composer)
+}
+
+// Mounter is the interface that describes a component that can perform
+// additional actions when mounted.
+type Mounter interface {
+	Composer
+
+	// The function that is called when the component is mounted.
+	OnMount()
+}
+
+// Dismounter is the interface that describes a component that can perform
+// additional actions when dismounted.
+type Dismounter interface {
+	Composer
+
+	// The function that is called when the component is dismounted.
+	OnDismount()
+}
+
+// Navigator is the interface that describes a component that can perform
+// additional actions when navigated on.
+type Navigator interface {
+	Composer
+
+	// The function that is called when the component is navigated on.
+	OnNav(u *url.URL)
+}
 
 // Compo represents the base struct to use in order to build a component.
 type Compo struct {
