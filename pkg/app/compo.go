@@ -163,7 +163,9 @@ func (c *Compo) update(n Composer) {
 	}
 }
 
-// Render describes the component content.
+// Render describes the component content. This is a default implementation to
+// satisfy the app.Composer interface. It should be redefined when app.Compo is
+// embedded.
 func (c *Compo) Render() UI {
 	compoType := reflect.TypeOf(c)
 	if c.compo != nil {
