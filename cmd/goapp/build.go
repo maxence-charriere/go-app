@@ -197,7 +197,7 @@ func generateEtag(etag, webDir string) error {
 func generateProgressiveAppIcons(c buildConfig) error {
 	iconname := filepath.Join(c.webDir, "icon.png")
 	if _, err := os.Stat(iconname); err != nil {
-		iconname = filepath.Join(os.Getenv("GOPATH"), "src", "github.com", "maxence-charriere", "app", "logo.png")
+		iconname = filepath.Join(os.Getenv("GOPATH"), "src", "github.com", "maxence-charriere", "go-app", "logo.png")
 	}
 
 	return generateIcons(iconname,
