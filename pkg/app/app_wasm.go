@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"net/url"
 	"strings"
 	"syscall/js"
@@ -28,6 +29,12 @@ func init() {
 }
 
 func run() {
+	defer func() {
+		err := recover()
+		displayLoadError(err)
+		panic(err)
+	}()
+
 	initContent()
 	initContextMenu()
 
@@ -54,6 +61,16 @@ func run() {
 			f()
 		}
 	}
+}
+
+func displayLoadError(err interface{}) {
+	loadingLabel := Window().
+		Get("document").
+		Call("getElementById", "app-wasm-loader-label")
+	if !loadingLabel.Truthy() {
+		return
+	}
+	loadingLabel.Set("innerText", fmt.Sprint(err))
 }
 
 func initContent() {
