@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
+	"strings"
 	"unicode"
 
 	"github.com/maxence-charriere/go-app/pkg/log"
@@ -160,6 +161,35 @@ func (c *Compo) update(n Composer) {
 			a.Set(b)
 		}
 	}
+}
+
+// Render describes the component content.
+func (c *Compo) Render() UI {
+	compoType := reflect.TypeOf(c)
+	if c.compo != nil {
+		compoType = reflect.TypeOf(c.compo)
+	}
+	compoName := compoType.String()
+	compoName = strings.ReplaceAll(compoName, "main.", "")
+
+	return Div().
+		DataSet("compo-type", compoType).
+		Style("border", "1px solid currentColor").
+		Style("padding", "12px 0").
+		Body(
+			H1().Body(
+				Text("Component "+strings.TrimPrefix(compoName, "*")),
+			),
+			P().Body(
+				Text("Change appearance by implementing: "),
+				Code().
+					Style("color", "deepskyblue").
+					Style("margin", "0 6px").
+					Body(
+						Text("func (c "+compoName+") Render() app.UI"),
+					),
+			),
+		)
 }
 
 func isExported(fieldOrMethod string) bool {
