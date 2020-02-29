@@ -60,6 +60,15 @@ type Value interface {
 	// JavaScript values according to the ValueOf function.
 	Invoke(args ...interface{}) Value
 
+	// IsNaN reports whether v is the JavaScript value "NaN".
+	IsNaN() bool
+
+	// IsNull reports whether v is the JavaScript value "null".
+	IsNull() bool
+
+	// IsUndefined reports whether v is the JavaScript value "undefined".
+	IsUndefined() bool
+
 	// JSValue implements Wrapper interface.
 	JSValue() Value
 
