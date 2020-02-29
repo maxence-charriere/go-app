@@ -38982,153 +38982,153 @@ func (e *htmlTextarea) nodeType() reflect.Type {
 	return reflect.TypeOf(e)
 }
 
-// HTMLtfoot is the interface that describes a <tfoot> HTML element.
-type HTMLtfoot interface {
+// HTMLTfoot is the interface that describes a <tfoot> HTML element.
+type HTMLTfoot interface {
 	standardNode
 	writableNode
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLtfoot
+	Body(nodes ...Node) HTMLTfoot
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLtfoot
+	AccessKey(v string) HTMLTfoot
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLtfoot
+	Class(v string) HTMLTfoot
 
 	// ContentEditable specifies whether the content of an element is editable or not.
-	ContentEditable(v bool) HTMLtfoot
+	ContentEditable(v bool) HTMLTfoot
 
 	// DataSet stores custom data private to the page or application.
-	DataSet(k string, v interface{}) HTMLtfoot
+	DataSet(k string, v interface{}) HTMLTfoot
 
 	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLtfoot
+	Dir(v string) HTMLTfoot
 
 	// Draggable specifies whether an element is draggable or not.
-	Draggable(v bool) HTMLtfoot
+	Draggable(v bool) HTMLTfoot
 
 	// Hidden specifies that an element is not yet, or is no longer relevant.
-	Hidden(v bool) HTMLtfoot
+	Hidden(v bool) HTMLTfoot
 
 	// ID specifies a unique id for an element.
-	ID(v string) HTMLtfoot
+	ID(v string) HTMLTfoot
 
 	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLtfoot
+	Lang(v string) HTMLTfoot
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
-	Spellcheck(v bool) HTMLtfoot
+	Spellcheck(v bool) HTMLTfoot
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLtfoot
+	Style(k, v string) HTMLTfoot
 
 	// TabIndex specifies the tabbing order of an element.
-	TabIndex(v int) HTMLtfoot
+	TabIndex(v int) HTMLTfoot
 
 	// Title specifies extra information about an element.
-	Title(v string) HTMLtfoot
+	Title(v string) HTMLTfoot
 
 	// OnBlur calls the given handler when the element loses focus.
-	OnBlur(h EventHandler) HTMLtfoot
+	OnBlur(h EventHandler) HTMLTfoot
 
 	// OnChange calls the given handler when the value of the element is changed.
-	OnChange(h EventHandler) HTMLtfoot
+	OnChange(h EventHandler) HTMLTfoot
 
 	// OnClick calls the given handler when there is a mouse click on the element.
-	OnClick(h EventHandler) HTMLtfoot
+	OnClick(h EventHandler) HTMLTfoot
 
 	// OnContextMenu calls the given handler when a context menu is triggered.
-	OnContextMenu(h EventHandler) HTMLtfoot
+	OnContextMenu(h EventHandler) HTMLTfoot
 
 	// OnCopy calls the given handler when the user copies the content of an element.
-	OnCopy(h EventHandler) HTMLtfoot
+	OnCopy(h EventHandler) HTMLTfoot
 
 	// OnCut calls the given handler when the user cuts the content of an element.
-	OnCut(h EventHandler) HTMLtfoot
+	OnCut(h EventHandler) HTMLTfoot
 
 	// OnDblClick calls the given handler when there is a mouse double-click on the element.
-	OnDblClick(h EventHandler) HTMLtfoot
+	OnDblClick(h EventHandler) HTMLTfoot
 
 	// OnDrag calls the given handler when an element is dragged.
-	OnDrag(h EventHandler) HTMLtfoot
+	OnDrag(h EventHandler) HTMLTfoot
 
 	// OnDragEnd calls the given handler at the end of a drag operation.
-	OnDragEnd(h EventHandler) HTMLtfoot
+	OnDragEnd(h EventHandler) HTMLTfoot
 
 	// OnDragEnter calls the given handler when an element has been dragged to a valid drop target.
-	OnDragEnter(h EventHandler) HTMLtfoot
+	OnDragEnter(h EventHandler) HTMLTfoot
 
 	// OnDragLeave calls the given handler when an element leaves a valid drop target.
-	OnDragLeave(h EventHandler) HTMLtfoot
+	OnDragLeave(h EventHandler) HTMLTfoot
 
 	// OnDragOver calls the given handler when an element is being dragged over a valid drop target.
-	OnDragOver(h EventHandler) HTMLtfoot
+	OnDragOver(h EventHandler) HTMLTfoot
 
 	// OnDragStart calls the given handler at the start of a drag operation.
-	OnDragStart(h EventHandler) HTMLtfoot
+	OnDragStart(h EventHandler) HTMLTfoot
 
 	// OnDrop calls the given handler when dragged element is being dropped.
-	OnDrop(h EventHandler) HTMLtfoot
+	OnDrop(h EventHandler) HTMLTfoot
 
 	// OnFocus calls the given handler when the element gets focus.
-	OnFocus(h EventHandler) HTMLtfoot
+	OnFocus(h EventHandler) HTMLTfoot
 
 	// OnInput calls the given handler when an element gets user input.
-	OnInput(h EventHandler) HTMLtfoot
+	OnInput(h EventHandler) HTMLTfoot
 
 	// OnInvalid calls the given handler when an element is invalid.
-	OnInvalid(h EventHandler) HTMLtfoot
+	OnInvalid(h EventHandler) HTMLTfoot
 
 	// OnKeyDown calls the given handler when a user is pressing a key.
-	OnKeyDown(h EventHandler) HTMLtfoot
+	OnKeyDown(h EventHandler) HTMLTfoot
 
 	// OnKeyPress calls the given handler when a user presses a key.
-	OnKeyPress(h EventHandler) HTMLtfoot
+	OnKeyPress(h EventHandler) HTMLTfoot
 
 	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler) HTMLtfoot
+	OnKeyup(h EventHandler) HTMLTfoot
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
-	OnMouseDown(h EventHandler) HTMLtfoot
+	OnMouseDown(h EventHandler) HTMLTfoot
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
-	OnMouseMove(h EventHandler) HTMLtfoot
+	OnMouseMove(h EventHandler) HTMLTfoot
 
 	// OnMouseOut calls the given handler when the mouse pointer moves out of an element.
-	OnMouseOut(h EventHandler) HTMLtfoot
+	OnMouseOut(h EventHandler) HTMLTfoot
 
 	// OnMouseOver calls the given handler when the mouse pointer moves over an element.
-	OnMouseOver(h EventHandler) HTMLtfoot
+	OnMouseOver(h EventHandler) HTMLTfoot
 
 	// OnMouseUp calls the given handler when a mouse button is released over an element.
-	OnMouseUp(h EventHandler) HTMLtfoot
+	OnMouseUp(h EventHandler) HTMLTfoot
 
 	// OnPaste calls the given handler when the user pastes some content in an element.
-	OnPaste(h EventHandler) HTMLtfoot
+	OnPaste(h EventHandler) HTMLTfoot
 
 	// OnReset calls the given handler when the Reset button in a form is clicked.
-	OnReset(h EventHandler) HTMLtfoot
+	OnReset(h EventHandler) HTMLTfoot
 
 	// OnScroll calls the given handler when an element's scrollbar is being scrolled.
-	OnScroll(h EventHandler) HTMLtfoot
+	OnScroll(h EventHandler) HTMLTfoot
 
 	// OnSearch calls the given handler when the user writes something in a search field.
-	OnSearch(h EventHandler) HTMLtfoot
+	OnSearch(h EventHandler) HTMLTfoot
 
 	// OnSelect calls the given handler after some text has been selected in an element.
-	OnSelect(h EventHandler) HTMLtfoot
+	OnSelect(h EventHandler) HTMLTfoot
 
 	// OnSubmit calls the given handler when a form is submitted.
-	OnSubmit(h EventHandler) HTMLtfoot
+	OnSubmit(h EventHandler) HTMLTfoot
 
 	// OnWheel calls the given handler when the mouse wheel rolls up or down over an element.
-	OnWheel(h EventHandler) HTMLtfoot
+	OnWheel(h EventHandler) HTMLTfoot
 }
 
-// tfoot returns an HTML element that groups the footer content in a table.
-func tfoot() HTMLtfoot {
-	return &htmltfoot{
+// Tfoot returns an HTML element that groups the footer content in a table.
+func Tfoot() HTMLTfoot {
+	return &htmlTfoot{
 		elem: elem{
 			tag:         "tfoot",
 			selfClosing: false,
@@ -39136,61 +39136,61 @@ func tfoot() HTMLtfoot {
 	}
 }
 
-type htmltfoot struct {
+type htmlTfoot struct {
 	elem
 }
 
-func (e *htmltfoot) Body(nodes ...Node) HTMLtfoot {
+func (e *htmlTfoot) Body(nodes ...Node) HTMLTfoot {
 	e.setBody(e, nodes)
 	return e
 }
 
-func (e *htmltfoot) AccessKey(v string) HTMLtfoot {
+func (e *htmlTfoot) AccessKey(v string) HTMLTfoot {
 	e.elem.setAttribute("accesskey", v)
 	return e
 }
 
-func (e *htmltfoot) Class(v string) HTMLtfoot {
+func (e *htmlTfoot) Class(v string) HTMLTfoot {
 	e.elem.setAttribute("class", v)
 	return e
 }
 
-func (e *htmltfoot) ContentEditable(v bool) HTMLtfoot {
+func (e *htmlTfoot) ContentEditable(v bool) HTMLTfoot {
 	e.elem.setAttribute("contenteditable", v)
 	return e
 }
 
-func (e *htmltfoot) DataSet(k string, v interface{}) HTMLtfoot {
+func (e *htmlTfoot) DataSet(k string, v interface{}) HTMLTfoot {
 	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
-func (e *htmltfoot) Dir(v string) HTMLtfoot {
+func (e *htmlTfoot) Dir(v string) HTMLTfoot {
 	e.elem.setAttribute("dir", v)
 	return e
 }
 
-func (e *htmltfoot) Draggable(v bool) HTMLtfoot {
+func (e *htmlTfoot) Draggable(v bool) HTMLTfoot {
 	e.elem.setAttribute("draggable", v)
 	return e
 }
 
-func (e *htmltfoot) Hidden(v bool) HTMLtfoot {
+func (e *htmlTfoot) Hidden(v bool) HTMLTfoot {
 	e.elem.setAttribute("hidden", v)
 	return e
 }
 
-func (e *htmltfoot) ID(v string) HTMLtfoot {
+func (e *htmlTfoot) ID(v string) HTMLTfoot {
 	e.elem.setAttribute("id", v)
 	return e
 }
 
-func (e *htmltfoot) Lang(v string) HTMLtfoot {
+func (e *htmlTfoot) Lang(v string) HTMLTfoot {
 	e.elem.setAttribute("lang", v)
 	return e
 }
 
-func (e *htmltfoot) Spellcheck(v bool) HTMLtfoot {
+func (e *htmlTfoot) Spellcheck(v bool) HTMLTfoot {
 	s := "false"
 	if v {
 		s = "true"
@@ -39200,182 +39200,182 @@ func (e *htmltfoot) Spellcheck(v bool) HTMLtfoot {
 	return e
 }
 
-func (e *htmltfoot) Style(k, v string) HTMLtfoot {
+func (e *htmlTfoot) Style(k, v string) HTMLTfoot {
 	e.elem.setAttribute("style", k+":"+v)
 	return e
 }
 
-func (e *htmltfoot) TabIndex(v int) HTMLtfoot {
+func (e *htmlTfoot) TabIndex(v int) HTMLTfoot {
 	e.elem.setAttribute("tabindex", v)
 	return e
 }
 
-func (e *htmltfoot) Title(v string) HTMLtfoot {
+func (e *htmlTfoot) Title(v string) HTMLTfoot {
 	e.elem.setAttribute("title", v)
 	return e
 }
 
-func (e *htmltfoot) OnBlur(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnBlur(h EventHandler) HTMLTfoot {
 	e.setEventHandler("blur", h)
 	return e
 }
 
-func (e *htmltfoot) OnChange(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnChange(h EventHandler) HTMLTfoot {
 	e.setEventHandler("change", h)
 	return e
 }
 
-func (e *htmltfoot) OnClick(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnClick(h EventHandler) HTMLTfoot {
 	e.setEventHandler("click", h)
 	return e
 }
 
-func (e *htmltfoot) OnContextMenu(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnContextMenu(h EventHandler) HTMLTfoot {
 	e.setEventHandler("contextmenu", h)
 	return e
 }
 
-func (e *htmltfoot) OnCopy(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnCopy(h EventHandler) HTMLTfoot {
 	e.setEventHandler("copy", h)
 	return e
 }
 
-func (e *htmltfoot) OnCut(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnCut(h EventHandler) HTMLTfoot {
 	e.setEventHandler("cut", h)
 	return e
 }
 
-func (e *htmltfoot) OnDblClick(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnDblClick(h EventHandler) HTMLTfoot {
 	e.setEventHandler("dblclick", h)
 	return e
 }
 
-func (e *htmltfoot) OnDrag(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnDrag(h EventHandler) HTMLTfoot {
 	e.setEventHandler("drag", h)
 	return e
 }
 
-func (e *htmltfoot) OnDragEnd(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnDragEnd(h EventHandler) HTMLTfoot {
 	e.setEventHandler("dragend", h)
 	return e
 }
 
-func (e *htmltfoot) OnDragEnter(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnDragEnter(h EventHandler) HTMLTfoot {
 	e.setEventHandler("dragenter", h)
 	return e
 }
 
-func (e *htmltfoot) OnDragLeave(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnDragLeave(h EventHandler) HTMLTfoot {
 	e.setEventHandler("dragleave", h)
 	return e
 }
 
-func (e *htmltfoot) OnDragOver(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnDragOver(h EventHandler) HTMLTfoot {
 	e.setEventHandler("dragover", h)
 	return e
 }
 
-func (e *htmltfoot) OnDragStart(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnDragStart(h EventHandler) HTMLTfoot {
 	e.setEventHandler("dragstart", h)
 	return e
 }
 
-func (e *htmltfoot) OnDrop(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnDrop(h EventHandler) HTMLTfoot {
 	e.setEventHandler("drop", h)
 	return e
 }
 
-func (e *htmltfoot) OnFocus(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnFocus(h EventHandler) HTMLTfoot {
 	e.setEventHandler("focus", h)
 	return e
 }
 
-func (e *htmltfoot) OnInput(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnInput(h EventHandler) HTMLTfoot {
 	e.setEventHandler("input", h)
 	return e
 }
 
-func (e *htmltfoot) OnInvalid(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnInvalid(h EventHandler) HTMLTfoot {
 	e.setEventHandler("invalid", h)
 	return e
 }
 
-func (e *htmltfoot) OnKeyDown(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnKeyDown(h EventHandler) HTMLTfoot {
 	e.setEventHandler("keydown", h)
 	return e
 }
 
-func (e *htmltfoot) OnKeyPress(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnKeyPress(h EventHandler) HTMLTfoot {
 	e.setEventHandler("keypress", h)
 	return e
 }
 
-func (e *htmltfoot) OnKeyup(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnKeyup(h EventHandler) HTMLTfoot {
 	e.setEventHandler("keyup", h)
 	return e
 }
 
-func (e *htmltfoot) OnMouseDown(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnMouseDown(h EventHandler) HTMLTfoot {
 	e.setEventHandler("mousedown", h)
 	return e
 }
 
-func (e *htmltfoot) OnMouseMove(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnMouseMove(h EventHandler) HTMLTfoot {
 	e.setEventHandler("mousemove", h)
 	return e
 }
 
-func (e *htmltfoot) OnMouseOut(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnMouseOut(h EventHandler) HTMLTfoot {
 	e.setEventHandler("mouseout", h)
 	return e
 }
 
-func (e *htmltfoot) OnMouseOver(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnMouseOver(h EventHandler) HTMLTfoot {
 	e.setEventHandler("mouseover", h)
 	return e
 }
 
-func (e *htmltfoot) OnMouseUp(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnMouseUp(h EventHandler) HTMLTfoot {
 	e.setEventHandler("mouseup", h)
 	return e
 }
 
-func (e *htmltfoot) OnPaste(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnPaste(h EventHandler) HTMLTfoot {
 	e.setEventHandler("paste", h)
 	return e
 }
 
-func (e *htmltfoot) OnReset(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnReset(h EventHandler) HTMLTfoot {
 	e.setEventHandler("reset", h)
 	return e
 }
 
-func (e *htmltfoot) OnScroll(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnScroll(h EventHandler) HTMLTfoot {
 	e.setEventHandler("scroll", h)
 	return e
 }
 
-func (e *htmltfoot) OnSearch(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnSearch(h EventHandler) HTMLTfoot {
 	e.setEventHandler("search", h)
 	return e
 }
 
-func (e *htmltfoot) OnSelect(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnSelect(h EventHandler) HTMLTfoot {
 	e.setEventHandler("select", h)
 	return e
 }
 
-func (e *htmltfoot) OnSubmit(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnSubmit(h EventHandler) HTMLTfoot {
 	e.setEventHandler("submit", h)
 	return e
 }
 
-func (e *htmltfoot) OnWheel(h EventHandler) HTMLtfoot {
+func (e *htmlTfoot) OnWheel(h EventHandler) HTMLTfoot {
 	e.setEventHandler("wheel", h)
 	return e
 }
 
-func (e *htmltfoot) nodeType() reflect.Type {
+func (e *htmlTfoot) nodeType() reflect.Type {
 	return reflect.TypeOf(e)
 }
 

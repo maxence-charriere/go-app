@@ -5519,8 +5519,8 @@ func TestTextarea(t *testing.T) {
 	elem.Body(Text("hello"))
 }
 
-func Testtfoot(t *testing.T) {
-	elem := tfoot()
+func TestTfoot(t *testing.T) {
+	elem := Tfoot()
 	elem.AccessKey("foo")
 	elem.Class("foo")
 	elem.ContentEditable(true)
