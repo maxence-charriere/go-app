@@ -46,6 +46,21 @@ func (v value) Invoke(args ...interface{}) Value {
 	return nil
 }
 
+func (v value) IsNaN() bool {
+	panicNoWasm()
+	return false
+}
+
+func (v value) IsNull() bool {
+	panicNoWasm()
+	return false
+}
+
+func (v value) IsUndefined() bool {
+	panicNoWasm()
+	return false
+}
+
 func (v value) JSValue() Value {
 	panicNoWasm()
 	return nil

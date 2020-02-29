@@ -884,7 +884,7 @@ var tags = []tag{
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
-		Name:          "tfoot",
+		Name:          "Tfoot",
 		Doc:           "groups the footer content in a table.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
