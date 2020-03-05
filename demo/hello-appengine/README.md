@@ -40,6 +40,8 @@ Deploy on Google Cloud App Engine:
 gcloud app deploy . --project YOUR_PROJECT_ID
 ```
 
+See the [live demo](https://demo.murlok.io).
+
 ## Contribute
 
 Help to develop the [app](https://github.com/maxence-charriere/go-app) package by becoming a sponsor.
