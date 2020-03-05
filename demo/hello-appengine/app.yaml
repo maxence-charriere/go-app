@@ -1,3 +1,4 @@
+service: demo
 runtime: go113
 
 handlers:
