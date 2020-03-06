@@ -8,6 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Download dependencies:
+RUN mv go.mod.demo go.mod
 RUN go mod download
 
 # Build server:
