@@ -7,6 +7,11 @@ WORKDIR /app
 # Copy program files:
 COPY . .
 
+# Rename go.mod.demo to go.mod
+# (Required for demo purposes since we can't have multiple go.mod files within 
+# the same module.).
+RUN mv go.mod.demo go.mod
+
 # Download dependencies:
 RUN go mod download
 
