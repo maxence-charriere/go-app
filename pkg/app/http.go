@@ -83,7 +83,7 @@ type Handler struct {
 	// prevent recurring updates.
 	//
 	// Default: Auto-generated in order to trigger pwa update on a local
-	// development sytem.
+	// development system.
 	Version string
 
 	once         sync.Once
