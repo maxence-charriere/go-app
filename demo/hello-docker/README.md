@@ -56,7 +56,7 @@ docker build -t hello-docker .
 Run the Docker container:
 
 ```sh
-docker run -d -p 7000:7000 hello-docker
+docker run -p 7000:7000 hello-docker
 ```
 
 ## Contribute
