@@ -24,7 +24,7 @@ The package also provides an [http.handler](#http-handler) ready to serve all th
 **go-app** requires [Go 1.14](https://golang.org/doc/go1.14) or newer.
 
 ```sh
-go get -u -v github.com/maxence-charriere/go-app/pkg/app
+go get -u -v github.com/maxence-charriere/go-app
 ```
 
 ## How it works
