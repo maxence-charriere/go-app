@@ -6,6 +6,5 @@ jobs:
     working_directory: /go/src/github.com/maxence-charriere/go-app
     steps:
       - checkout
-      - run: go mod download
       - run: go vet ./...
       - run: go test -v -race ./...
