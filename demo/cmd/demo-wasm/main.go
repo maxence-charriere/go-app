@@ -3,7 +3,7 @@
 package main
 
 import (
-	"github.com/maxence-charriere/app/pkg/app"
+	"github.com/maxence-charriere/go-app/pkg/app"
 )
 
 // The app entry point.

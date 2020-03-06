@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/golang:1.12
-    working_directory: /go/src/github.com/maxence-charriere/app
+    working_directory: /go/src/github.com/maxence-charriere/go-app
     steps:
       - checkout
       - run: go get -v -t -d ./...
