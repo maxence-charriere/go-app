@@ -1,21 +1,16 @@
+//go:generate go run gen/html.go
+//go:generate go run gen/scripts.go
+//go:generate go fmt
+
 package app
 
 import (
 	"net/url"
-	"reflect"
 
 	"github.com/maxence-charriere/go-app/pkg/log"
 )
 
 var (
-	// DefaultPath is the path to the component to be  loaded when no path is
-	// specified.
-	DefaultPath string
-
-	// NotFoundPath is the path to the component to be  loaded when an non
-	// imported component is requested.
-	NotFoundPath = "/app.notfound"
-
 	// LocalStorage is a storage that uses the browser local storage associated
 	// to the document origin. Data stored are encrypted and has no expiration
 	// time.
@@ -26,79 +21,74 @@ var (
 	// when the page session ends.
 	SessionStorage BrowserStorage
 
-	ui         = make(chan func(), 256)
-	components = make(compoBuilder)
-	msgs       = &messenger{
-		callExec: func(f func(...interface{}), args ...interface{}) {
-			go f(args...)
-		},
-		callOnUI: UI,
-	}
+	// NotFound is the ui element that is displayed when a request is not
+	// routed.
+	NotFound UI = &notFound{}
+
+	routes = make(map[string]UI)
+	uiChan = make(chan func(), 256)
 )
 
-// Import imports the given components into the app.
-// Components must be imported in order the be used by the app package.
-// This allows components to be created dynamically when they are found into
-// markup.
-func Import(c ...Compo) {
-	for _, compo := range c {
-		if err := components.imports(compo); err != nil {
-			log.Error("importing component failed").
-				T("reason", err).
-				T("html tag", compoName(compo)).
-				T("component type", reflect.TypeOf(compo)).
-				T("fix", "rename component").
-				Panic()
-		}
-	}
+// EventHandler represents a function that can handle HTML events.
+type EventHandler func(src Value, e Event)
+
+// Route binds the requested path to the given UI node.
+func Route(path string, n UI) {
+	routes[path] = n
 }
 
-// Run runs the app with the loaded URL.
+// Run starts the wasm app and displays the UI node associated with the
+// requested URL path.
+//
+// It panics if Go architecture is not wasm.
 func Run() {
 	run()
 }
 
-// Render renders the given component. It should be called whenever a component
-// is modified. Render is always executed on the UI goroutine.
-//
-// It panics if called before Run.
-func Render(c Compo) {
-	UI(func() { render(c) })
-}
+// Navigate navigates to the given URL.
+func Navigate(rawurl string) {
+	Dispatch(func() {
+		u, err := url.Parse(rawurl)
+		if err != nil {
+			log.Error("navigating to page failed").
+				T("url", rawurl).
+				T("error", err).
+				Panic()
+		}
 
-// UI calls a function on the UI goroutine.
-func UI(f func()) {
-	ui <- f
+		if u.String() == Window().URL().String() {
+			return
+		}
+
+		if err = navigate(u, true); err != nil {
+			log.Error("navigating to page failed").
+				T("url", u).
+				T("error", err).
+				Panic()
+		}
+	})
 }
 
 // Reload reloads the current page.
 func Reload() {
-	UI(func() { reload() })
-}
-
-// Bind creates a binding between a message and the given component.
-func Bind(msg string, c Compo) *Binding {
-	return bind(msg, c)
-}
-
-// Emit emits a message that triggers the associated bindings.
-func Emit(msg string, args ...interface{}) {
-	go msgs.emit(msg, args...)
-}
-
-// WindowSize returns the window width and height.
-func WindowSize() (w, h int) {
-	return windowSize()
-}
-
-// Navigate navigates to the given URL.
-func Navigate(rawurl string) {
-	UI(func() {
-		navigate(rawurl, true)
+	Dispatch(func() {
+		reload()
 	})
 }
 
-// LocationURL returns the current location url.
-func LocationURL() *url.URL {
-	return locationURL()
+// Window returns the JavaScript "window" object.
+func Window() BrowserWindow {
+	return window
+}
+
+// NewContextMenu displays a context menu filled with the given menu items.
+func NewContextMenu(menuItems ...MenuItemNode) {
+	Dispatch(func() {
+		newContextMenu(menuItems...)
+	})
+}
+
+// Dispatch executes the given function on the UI goroutine.
+func Dispatch(f func()) {
+	uiChan <- f
 }

@@ -1,18 +1,19 @@
 package app
 
 import (
-	"context"
+	"fmt"
 	"net/url"
-	"reflect"
+	"strings"
 	"syscall/js"
 
 	"github.com/maxence-charriere/go-app/pkg/log"
 )
 
 var (
-	page    *dom
-	cursorX int
-	cursorY int
+	window         = &browserWindow{value: value{Value: js.Global()}}
+	body           = Body()
+	content     UI = Div()
+	contextMenu    = &contextMenuLayout{}
 )
 
 func init() {
@@ -22,255 +23,156 @@ func init() {
 	log.WarnColor = ""
 	log.DebugColor = ""
 	log.CurrentLevel = log.DebugLevel
+
+	LocalStorage = newJSStorage("localStorage")
+	SessionStorage = newJSStorage("sessionStorage")
 }
 
 func run() {
-	go func() {
-		page = &dom{
-			compoBuilder:        components,
-			callOnUI:            UI,
-			msgs:                msgs,
-			trackCursorPosition: trackCursorPosition,
-			contextMenu:         &contextMenu{},
-		}
-		defer page.clean()
-
-		LocalStorage = newJSStorage("localStorage")
-		SessionStorage = newJSStorage("sessionStorage")
-
-		overrideAnchorClick := js.FuncOf(overrideAnchorClick)
-		defer overrideAnchorClick.Release()
-		js.Global().Set("onclick", overrideAnchorClick)
-
-		onpopstate := js.FuncOf(onPopState)
-		defer onpopstate.Release()
-		js.Global().Set("onpopstate", onpopstate)
-
-		url := locationURL()
-
-		if err := renderPage(url); err != nil {
-			log.Error("rendering page failed").
-				T("reason", err).
-				T("url", url).
-				Panic()
-		}
-
-		ctx, cancel := context.WithCancel(context.Background())
-		defer cancel()
-
-		for {
-			select {
-			case <-ctx.Done():
-				return
-
-			case f := <-ui:
-				f()
-			}
-		}
+	defer func() {
+		err := recover()
+		displayLoadError(err)
+		panic(err)
 	}()
 
-	select {}
+	initContent()
+	initContextMenu()
 
-	log.Info("wasm exit")
-	return
-}
+	onnav := FuncOf(onNavigate)
+	defer onnav.Release()
+	Window().Set("onclick", onnav)
 
-func render(c Compo) {
-	if err := page.render(c); err != nil {
-		log.Error("rendering component failed").
-			T("reason", err).
-			T("component", reflect.TypeOf(c))
-	}
-}
+	onpopstate := FuncOf(onPopState)
+	defer onpopstate.Release()
+	Window().Set("onpopstate", onpopstate)
 
-func reload() {
-	js.Global().Get("location").Call("reload")
-}
+	url := Window().URL()
 
-func bind(msg string, c Compo) *Binding {
-	b, close := msgs.bind(msg, c)
-
-	if err := page.setBindingClose(c, close); err != nil {
-		log.Error("creating a binding failed").
-			T("reason", err).
-			T("component", reflect.TypeOf(c)).
-			T("message", msg).
+	if err := navigate(url, false); err != nil {
+		log.Error("loading page failed").
+			T("error", err).
+			T("url", url).
 			Panic()
 	}
 
-	return b
+	for {
+		select {
+		case f := <-uiChan:
+			f()
+		}
+	}
 }
 
-// NewContextMenu displays a context menu filled with the given menu items.
-func NewContextMenu(items ...MenuItem) {
-	Emit("__app.NewContextMenu", items)
+func displayLoadError(err interface{}) {
+	loadingLabel := Window().
+		Get("document").
+		Call("getElementById", "app-wasm-loader-label")
+	if !loadingLabel.Truthy() {
+		return
+	}
+	loadingLabel.Set("innerText", fmt.Sprint(err))
 }
 
-// MenuItem represents a menu item.
-type MenuItem struct {
-	Disabled  bool
-	Keys      string
-	Icon      string
-	Label     string
-	OnClick   func(s, e js.Value)
-	Separator bool
+func initContent() {
+	body.(*htmlBody).value = Window().Get("document").Get("body")
+	content.(*htmlDiv).value = body.JSValue().Get("firstElementChild")
+	content.setParent(body)
+	body.appendChild(content)
 }
 
-func locationURL() *url.URL {
-	rawurl := js.Global().
-		Get("location").
-		Get("href").
-		String()
+func initContextMenu() {
+	rawContextMenu := Div().ID("app-context-menu")
+	rawContextMenu.(*htmlDiv).value = Window().
+		Get("document").
+		Call("getElementById", "app-context-menu")
+	rawContextMenu.setParent(body)
+	body.appendChild(rawContextMenu)
 
-	url, err := url.Parse(rawurl)
-	if err != nil {
-		log.Error("getting current url failed").
-			T("reason", err).
+	if err := update(rawContextMenu, contextMenu); err != nil {
+		log.Error("initializing context menu failed").
+			T("error", err).
 			Panic()
 	}
-
-	return url
 }
 
-func renderPage(url *url.URL) error {
-	if url.Path == "" || url.Path == "/" {
-		url.Path = DefaultPath
-	}
-	if !components.isImported(compoNameFromURL(url)) {
-		url.Path = NotFoundPath
-	}
-
-	compoName := compoNameFromURL(url)
-	compo, err := components.new(compoName)
-	if err != nil {
-		return err
-	}
-	mapCompoFieldFromURLQuery(compo, url.Query())
-
-	return page.newBody(compo)
-}
-
-func trackCursorPosition(e js.Value) {
-	x := e.Get("clientX")
-	if !x.Truthy() {
-		return
-	}
-	cursorX = x.Int()
-
-	y := e.Get("clientY")
-	if !y.Truthy() {
-		return
-	}
-	cursorY = y.Int()
-}
-
-func navigate(rawurl string, updateHistory bool) {
-	currentURL := locationURL()
-
-	u, err := url.Parse(rawurl)
-	if err != nil {
-		log.Error("navigating failed").
-			T("reason", err).
-			T("url", rawurl)
-		return
-	}
-
-	if u.Host == "" && u.Scheme == "" {
-		u.Scheme = currentURL.Scheme
-		u.Host = currentURL.Host
-	}
-
-	fragmentNav := u.Host == currentURL.Host &&
-		u.Path == currentURL.Path &&
-		u.Fragment != currentURL.Fragment &&
-		u.Fragment != ""
-
-	otherHostNav := u.Host != currentURL.Host
-
-	if otherHostNav || fragmentNav {
-		js.Global().Get("location").Set("href", u.String())
-		return
-	}
-
-	page.clean()
-	if err := renderPage(u); err != nil {
-		log.Error("rendering page failed").
-			T("reason", err).
-			T("url", u).
-			Panic()
-		return
-	}
-
-	if updateHistory {
-		js.Global().Get("history").Call("pushState", nil, "", rawurl)
-	}
-}
-
-func overrideAnchorClick(this js.Value, args []js.Value) interface{} {
-	event := args[0]
-
+func onNavigate(this Value, args []Value) interface{} {
+	event := Event{Value: args[0]}
 	elem := event.Get("target")
 	if !elem.Truthy() {
 		elem = event.Get("srcElement")
 	}
 
-	if elem.Get("tagName").String() != "A" {
+	var u string
+	switch elem.Get("tagName").String() {
+	case "A":
+		u = elem.Get("href").String()
+
+	default:
 		return nil
 	}
 
-	event.Call("preventDefault")
-	Navigate(elem.Get("href").String())
+	event.PreventDefault()
+	Navigate(u)
+	return nil
+
+}
+
+func onPopState(this Value, args []Value) interface{} {
+	if u := Window().URL(); u.Fragment == "" {
+		navigate(u, false)
+	}
 	return nil
 }
 
-func onPopState(this js.Value, args []js.Value) interface{} {
-	UI(func() {
-		rawurl := js.Global().Get("location").Get("href").String()
-		navigate(rawurl, false)
-	})
+func navigate(u *url.URL, updateHistory bool) error {
+	contextMenu.hide(nil, Event{Value: Null()})
+
+	if !isPWANavigation(u) {
+		Window().Get("location").Set("href", u.String())
+		return nil
+	}
+
+	path := u.Path
+	if !strings.HasPrefix(path, "/") {
+		path = "/" + path
+	}
+
+	root, ok := routes[path]
+	if !ok {
+		root = NotFound
+	}
+
+	defer func() {
+		if nav, ok := root.(Navigator); ok {
+			nav.OnNav(u)
+		}
+
+		if updateHistory {
+			Window().Get("history").Call("pushState", nil, "", u.String())
+		}
+	}()
+
+	if content == root {
+		return nil
+	}
+	if err := replace(content, root); err != nil {
+		return err
+	}
+	content = root
+
 	return nil
 }
 
-func windowSize() (w, h int) {
-	return windowWidth(), windowHeight()
+func isPWANavigation(u *url.URL) bool {
+	externalNav := u.Host != "" && u.Host != Window().URL().Host
+	fragmentNav := u.Fragment != ""
+	return !externalNav && !fragmentNav
 }
 
-func windowWidth() int {
-	w := js.Global().Get("innerWidth")
-	if !w.Truthy() {
-		w = js.Global().
-			Get("document").
-			Get("documentElement").
-			Get("clientWidth")
-	}
-	if !w.Truthy() {
-		w = js.Global().
-			Get("document").
-			Get("body").
-			Get("clientWidth")
-	}
-	if w.Type() != js.TypeNumber {
-		return 0
-	}
-	return w.Int()
+func reload() {
+	Window().Get("location").Call("reload")
 }
 
-func windowHeight() int {
-	h := js.Global().Get("innerHeight")
-	if !h.Truthy() {
-		h = js.Global().
-			Get("document").
-			Get("documentElement").
-			Get("clientHeight")
-	}
-	if !h.Truthy() {
-		h = js.Global().
-			Get("document").
-			Get("body").
-			Get("clientHeight")
-	}
-	if h.Type() != js.TypeNumber {
-		return 0
-	}
-	return h.Int()
+func newContextMenu(menuItems ...MenuItemNode) {
+	contextMenu.show(menuItems...)
 }

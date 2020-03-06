@@ -1,0 +1,23 @@
+# Set the latest golang base image:
+FROM golang:latest
+
+# Set the Current Working Directory inside the container
+WORKDIR /app
+
+# Copy program files:
+COPY . .
+
+# Download dependencies:
+RUN go mod download
+
+# Build server:
+RUN go build -o app .
+
+# Expose server port:
+EXPOSE 7000
+
+# App version (uncomment if the image is for non-development ends):
+# ENV APP_VERSION "YOUR_VERSION"
+
+# Run the server:
+CMD ["./app"]

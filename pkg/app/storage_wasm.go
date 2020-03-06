@@ -9,7 +9,6 @@ import (
 	"errors"
 	"io"
 	"sync"
-	"syscall/js"
 )
 
 type jsStorage struct {
@@ -19,7 +18,7 @@ type jsStorage struct {
 }
 
 func newJSStorage(name string) *jsStorage {
-	u := locationURL()
+	u := Window().URL()
 
 	key := []byte(u.Scheme + "(*_*)" + u.Host)
 	for len(key) < 32 {
@@ -48,7 +47,7 @@ func (s *jsStorage) Set(k string, i interface{}) error {
 	}
 
 	item := base64.StdEncoding.EncodeToString(b)
-	js.Global().Get(s.name).Call("setItem", k, item)
+	Window().Get(s.name).Call("setItem", k, item)
 	return nil
 }
 
@@ -56,7 +55,7 @@ func (s *jsStorage) Get(k string, v interface{}) error {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 
-	item := js.Global().Get(s.name).Call("getItem", k)
+	item := Window().Get(s.name).Call("getItem", k)
 	if !item.Truthy() {
 		return nil
 	}
@@ -77,14 +76,14 @@ func (s *jsStorage) Del(k string) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
-	js.Global().Get(s.name).Call("removeItem", k)
+	Window().Get(s.name).Call("removeItem", k)
 }
 
 func (s *jsStorage) Clear() {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
-	js.Global().Get(s.name).Call("clear")
+	Window().Get(s.name).Call("clear")
 }
 
 func encrypt(v []byte, key []byte) ([]byte, error) {

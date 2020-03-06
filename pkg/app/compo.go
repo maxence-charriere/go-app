@@ -1,115 +1,199 @@
 package app
 
 import (
-	"errors"
+	"fmt"
 	"net/url"
 	"reflect"
 	"strings"
+	"unicode"
 
-	"golang.org/x/net/html/atom"
+	"github.com/maxence-charriere/go-app/pkg/log"
 )
 
-// Compo is the interface that describes a component.
-// Must be implemented on a non empty struct pointer.
-type Compo interface {
-	// Render must return a HTML5 string. It supports standard Go html/template
-	// API. The pipeline is based on the component struct. See
-	// https://golang.org/pkg/text/template and
-	// https://golang.org/pkg/html/template for template usage.
-	Render() string
+// Composer is the interface that describes a component that embeds other nodes.
+//
+// Satisfying this interface is done by embedding app.Compo into a struct and
+// implementing the Render function.
+//
+// Example:
+//  type Hello struct {
+//      app.Compo
+//  }
+//
+//  func (c *Hello) Render() app.UI {
+//      return app.Text("hello")
+//  }
+type Composer interface {
+	UI
+	nodeWithChildren
+
+	// Render returns the node tree that define how the component is desplayed.
+	Render() UI
+
+	// Update update the component appearance. It should be called when a field
+	// used to render the component has been modified.
+	Update()
+
+	setCompo(n Composer)
+	mount(c Composer) error
+	update(n Composer)
 }
 
-// Mounter is the interface that wraps OnMount method.
+// Mounter is the interface that describes a component that can perform
+// additional actions when mounted.
 type Mounter interface {
-	// OnMount is called when a component is mounted.
-	// App.Render should not be called inside.
+	Composer
+
+	// The function that is called when the component is mounted.
 	OnMount()
 }
 
-// Dismounter is the interface that wraps OnDismount method.
+// Dismounter is the interface that describes a component that can perform
+// additional actions when dismounted.
 type Dismounter interface {
-	// OnDismount is called when a component is dismounted.
-	// App.Render should not be called inside.
+	Composer
+
+	// The function that is called when the component is dismounted.
 	OnDismount()
 }
 
-// CompoWithExtendedRender is the interface that wraps Funcs method.
-type CompoWithExtendedRender interface {
-	// Funcs returns a map of funcs to use when rendering a component.
-	// Funcs named raw, json and time are reserved.
-	// They handle raw html code, json conversions and time format.
-	// They can't be overloaded.
-	// See https://golang.org/pkg/text/template/#Template.Funcs for more details.
-	Funcs() map[string]interface{}
+// Navigator is the interface that describes a component that can perform
+// additional actions when navigated on.
+type Navigator interface {
+	Composer
+
+	// The function that is called when the component is navigated on.
+	OnNav(u *url.URL)
 }
 
-// ZeroCompo is the type to use as base for empty components.
-// Every instances of an empty struct is given the same memory address, which
-// causes problem for indexing components.
-// ZeroCompo have a placeholder field to avoid that.
-type ZeroCompo struct {
-	placeholder byte
+// Compo represents the base struct to use in order to build a component.
+type Compo struct {
+	compo      Composer
+	parentNode UI
+	root       UI
 }
 
-type compoBuilder map[string]reflect.Type
+func (c *Compo) nodeType() reflect.Type {
+	return reflect.TypeOf(c.compo)
+}
 
-func (b compoBuilder) imports(c Compo) error {
-	v := reflect.ValueOf(c)
-	if v.Kind() != reflect.Ptr {
-		return errors.New("component is not a pointer")
+// JSValue returns the component root javascript value.
+func (c *Compo) JSValue() Value {
+	return c.root.JSValue()
+}
+
+func (c *Compo) parent() UI {
+	return c.parentNode
+}
+
+func (c *Compo) setParent(p UI) {
+	c.parentNode = p
+}
+
+func (c *Compo) setCompo(n Composer) {
+	c.compo = n
+}
+
+func (c *Compo) dismount() {
+	c.root.dismount()
+
+	if dismounter, ok := c.root.(Dismounter); ok {
+		dismounter.OnDismount()
 	}
-	if v = v.Elem(); v.Kind() != reflect.Struct {
-		return errors.New("component is not implemented on a struct")
+}
+
+func (c *Compo) replaceChild(old, new UI) {
+	if old == c.root {
+		c.root = new
 	}
-	if v.NumField() == 0 {
-		return errors.New("component is based on a struct without field. use ZeroCompo instead of struct{}")
+}
+
+// Update update the component appearance. It should be called when a field
+// used to render the component has been modified.
+func (c *Compo) Update() {
+	Dispatch(func() {
+		current := c.root
+		incoming := c.compo.Render().(UI)
+
+		if err := update(current, incoming); err != nil {
+			log.Error("updating component failed").
+				T("component-type", reflect.TypeOf(c.compo)).
+				T("error", err).
+				Panic()
+		}
+	})
+}
+
+func (c *Compo) mount(compo Composer) error {
+	c.setCompo(compo)
+
+	root := compo.Render()
+	if err := mount(root); err != nil {
+		return fmt.Errorf("%T: invalid root: %w", compo, err)
+	}
+	c.root = root
+
+	if mounter, ok := compo.(Mounter); ok {
+		mounter.OnMount()
 	}
 
-	name := compoName(c)
-	if atom.Lookup([]byte(name)) != 0 {
-		return errors.New("component have an html tag name")
-	}
-
-	b[name] = v.Type()
 	return nil
 }
 
-func (b compoBuilder) isImported(name string) bool {
-	_, ok := b[name]
-	return ok
-}
+func (c *Compo) update(n Composer) {
+	aval := reflect.Indirect(reflect.ValueOf(c.compo))
+	bval := reflect.Indirect(reflect.ValueOf(n))
+	compotype := reflect.ValueOf(c).Elem().Type()
 
-func (b compoBuilder) new(name string) (Compo, error) {
-	t, ok := b[name]
-	if !ok {
-		return nil, errors.New("component " + name + " is not imported")
+	for i := 0; i < aval.NumField(); i++ {
+		a := aval.Field(i)
+		b := bval.Field(i)
+
+		if a.Type() == compotype {
+			continue
+		}
+
+		if !isExported(aval.Type().Field(i).Name) {
+			continue
+		}
+
+		if !reflect.DeepEqual(a.Interface(), b.Interface()) && a.CanSet() {
+			a.Set(b)
+		}
 	}
-	return reflect.New(t).Interface().(Compo), nil
 }
 
-func compoName(c Compo) string {
-	v := reflect.ValueOf(c)
-	v = reflect.Indirect(v)
-	name := strings.ToLower(v.Type().String())
-	return strings.TrimPrefix(name, "main.")
-}
-
-func compoNameFromURLString(rawurl string) string {
-	u, _ := url.Parse(rawurl)
-	return compoNameFromURL(u)
-}
-
-func compoNameFromURL(u *url.URL) string {
-	p := u.Path
-	p = strings.TrimPrefix(p, "/")
-
-	path := strings.SplitN(p, "/", 2)
-	if len(path[0]) == 0 {
-		return ""
+// Render describes the component content. This is a default implementation to
+// satisfy the app.Composer interface. It should be redefined when app.Compo is
+// embedded.
+func (c *Compo) Render() UI {
+	compoType := reflect.TypeOf(c)
+	if c.compo != nil {
+		compoType = reflect.TypeOf(c.compo)
 	}
+	compoName := compoType.String()
+	compoName = strings.ReplaceAll(compoName, "main.", "")
 
-	names := strings.SplitN(path[0], "?", 2)
-	name := names[0]
-	name = strings.ToLower(name)
-	return strings.TrimPrefix(name, "main.")
+	return Div().
+		DataSet("compo-type", compoType).
+		Style("border", "1px solid currentColor").
+		Style("padding", "12px 0").
+		Body(
+			H1().Body(
+				Text("Component "+strings.TrimPrefix(compoName, "*")),
+			),
+			P().Body(
+				Text("Change appearance by implementing: "),
+				Code().
+					Style("color", "deepskyblue").
+					Style("margin", "0 6px").
+					Body(
+						Text("func (c "+compoName+") Render() app.UI"),
+					),
+			),
+		)
+}
+
+func isExported(fieldOrMethod string) bool {
+	return !unicode.IsLower(rune(fieldOrMethod[0]))
 }
