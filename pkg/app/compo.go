@@ -7,7 +7,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/maxence-charriere/go-app/pkg/log"
+	"github.com/maxence-charriere/go-app/v6/pkg/log"
 )
 
 // Composer is the interface that describes a component that embeds other nodes.
