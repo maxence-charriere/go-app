@@ -24,7 +24,7 @@ The package also provides an [http.handler](#http-handler) ready to serve all th
 **go-app** requires [Go 1.14](https://golang.org/doc/go1.14) or newer.
 
 ```sh
-go get -u -v github.com/maxence-charriere/go-app
+go get -u -v github.com/maxence-charriere/go-app/v6
 ```
 
 ## How it works
@@ -45,7 +45,7 @@ go get -u -v github.com/maxence-charriere/go-app
 ```go
 package main
 
-import "github.com/maxence-charriere/go-app/pkg/app"
+import "github.com/maxence-charriere/go-app/v6/pkg/app"
 
 type hello struct {
     app.Compo
@@ -107,7 +107,7 @@ package main
 import (
     "net/http"
 
-    "github.com/maxence-charriere/go-app/pkg/app"
+    "github.com/maxence-charriere/go-app/v6/pkg/app"
 )
 
 func main() {

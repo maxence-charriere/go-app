@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"runtime"
 
-	"github.com/maxence-charriere/go-app/pkg/log"
+	"github.com/maxence-charriere/go-app/v6/pkg/log"
 )
 
 var (
