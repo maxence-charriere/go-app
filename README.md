@@ -152,11 +152,13 @@ hello-local        # Server directory
 
 The hello example introduced above:
 
-| App sources                                                                 | Server sources                                                                                  | Description                                                                           |
-| --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| [hello](https://github.com/maxence-charriere/go-app/tree/master/demo/hello) | [hello-local](https://github.com/maxence-charriere/go-app/tree/master/demo/hello-local)         | Hello app that runs on a local server.                                                |
-|                                                                             | [hello-docker](https://github.com/maxence-charriere/go-app/tree/master/demo/hello-docker)       | Hello app that run in a Docker container.                                             |
-|                                                                             | [hello-appengine](https://github.com/maxence-charriere/go-app/tree/master/demo/hello-appengine) | Hello app that run on Google Cloud App Engine.<br> [See live](https://demo.murlok.io) |
+| Sources                                                                                   | Description                               |
+| ----------------------------------------------------------------------------------------- | ----------------------------------------- |
+| [hello](https://github.com/maxence-charriere/go-app-demo/tree/master/hello)               | Hello app.                                |
+| [hello-local](https://github.com/maxence-charriere/go-app-demo/tree/master/hello-local)   | Hello app that runs on a local server.    |
+| [hello-docker](https://github.com/maxence-charriere/go-app-demo/tree/master/hello-docker) | Hello app that run in a Docker container. |
+
+<!-- | [hello-appengine](https://github.com/maxence-charriere/go-app-demo/tree/master/hello-appengine) | Hello app that run on Google Cloud App Engine.<br> [See live](https://demo.murlok.io) | -->
 
 ### Live apps
 
