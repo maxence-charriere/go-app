@@ -21,9 +21,16 @@ The package also provides an [http.handler](#http-handler) ready to serve all th
 
 ## Install
 
-**go-app** requires [Go 1.14](https://golang.org/doc/go1.14) or newer.
+**go-app** requirements:
+
+- [Go 1.14](https://golang.org/doc/go1.14) or newer
+- [Go module](https://github.com/golang/go/wiki/Modules)
 
 ```sh
+# Init go module (if not initialized):
+go mod init
+
+# Get package:
 go get -u -v github.com/maxence-charriere/go-app/v6
 ```
 
