@@ -25,11 +25,7 @@ It features:
 Requires [Go 1.13](https://golang.org/doc/go1.13)
 
 ```sh
-# Package sources + goapp CLI:
-go get -u -v github.com/maxence-charriere/go-app/cmd/goapp
-
-# Package sources only:
-go get -u -v github.com/maxence-charriere/go-app/pkg/app
+go get -u -v github.com/maxence-charriere/go-app/v5
 
 ```
 
@@ -126,7 +122,7 @@ package main
 import (
     "log"
     "net/http"
-    "github.com/maxence-charriere/go-app/v5"
+    "github.com/maxence-charriere/go-app/v5/pkg/app"
 )
 
 func main() {
