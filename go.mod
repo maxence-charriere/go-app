@@ -1,6 +1,6 @@
 module github.com/maxence-charriere/go-app/v5
 
-go 1.13
+go 1.14
 
 require (
 	github.com/disintegration/imaging v1.6.2
