@@ -6,7 +6,7 @@ import (
 	"strings"
 	"syscall/js"
 
-	"github.com/maxence-charriere/go-app/pkg/log"
+	"github.com/maxence-charriere/go-app/v5/pkg/log"
 	"golang.org/x/net/html/atom"
 )
 

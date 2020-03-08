@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/maxence-charriere/go-app/internal/http"
+	"github.com/maxence-charriere/go-app/v5/internal/http"
 	"github.com/pkg/errors"
 	"github.com/segmentio/conf"
 )

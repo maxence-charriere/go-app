@@ -32,7 +32,7 @@ func update(ctx context.Context, args []string) {
 		cmd = append(cmd, "-v")
 	}
 
-	cmd = append(cmd, "github.com/maxence-charriere/go-app/cmd/goapp")
+	cmd = append(cmd, "github.com/maxence-charriere/go-app/v5/cmd/goapp")
 
 	log("updating to the latest version")
 	if err := execute(ctx, cmd[0], cmd[1:]...); err != nil {

@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/maxence-charriere/go-app/pkg/log"
+	"github.com/maxence-charriere/go-app/v5/pkg/log"
 )
 
 // Binding represents a serie of actions that are executed successively when a

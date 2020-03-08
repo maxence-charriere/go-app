@@ -5,7 +5,7 @@ package main
 import (
 	"syscall/js"
 
-	"github.com/maxence-charriere/go-app/pkg/app"
+	"github.com/maxence-charriere/go-app/v5/pkg/app"
 )
 
 // Hello is a component that describes a hello world. It implements the

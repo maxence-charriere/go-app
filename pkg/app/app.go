@@ -4,7 +4,7 @@ import (
 	"net/url"
 	"reflect"
 
-	"github.com/maxence-charriere/go-app/pkg/log"
+	"github.com/maxence-charriere/go-app/v5/pkg/log"
 )
 
 var (

@@ -82,8 +82,8 @@ package main
 import (
     "log"
 
-    "github.com/maxence-charriere/go-app/pkg/app"
-    "github.com/maxence-charriere/go-app/pkg/log"
+    "github.com/maxence-charriere/go-app/v5/pkg/app"
+    "github.com/maxence-charriere/go-app/v5/pkg/log"
 )
 
 type Hello struct {
@@ -126,7 +126,7 @@ package main
 import (
     "log"
     "net/http"
-    "github.com/maxence-charriere/go-app"
+    "github.com/maxence-charriere/go-app/v5"
 )
 
 func main() {

@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/maxence-charriere/go-app/pkg/log"
+	"github.com/maxence-charriere/go-app/v5/pkg/log"
 )
 
 // Watch returns a decorated version of the given handler that provide

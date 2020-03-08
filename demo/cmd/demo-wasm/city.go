@@ -5,7 +5,7 @@ package main
 import (
 	"syscall/js"
 
-	"github.com/maxence-charriere/go-app/pkg/app"
+	"github.com/maxence-charriere/go-app/v5/pkg/app"
 )
 
 // City is a component that shows how navigation works.
