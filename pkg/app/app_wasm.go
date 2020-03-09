@@ -139,7 +139,18 @@ func navigate(u *url.URL, updateHistory bool) error {
 
 	root, ok := routes[path]
 	if !ok {
-		root = NotFound
+		for i := range routesRe {
+			s := routesRe[i].re.FindString(path)
+			if len(s) != len(path) {
+				continue
+			}
+			ok = true
+			root = routesRe[i].n
+			break
+		}
+		if !ok {
+			root = NotFound
+		}
 	}
 
 	defer func() {
