@@ -15,10 +15,12 @@ const (
 // testComp is a very simple test component that renders as a text node containing its name
 type testComp struct {
 	Compo
-	name string
+	name       string
+	hitCounter int
 }
 
 func (c *testComp) Render() UI {
+	c.hitCounter++
 	return Div().Body(Text(c.name))
 }
 
@@ -97,6 +99,27 @@ func TestRouteWithRegexpDirs3(t *testing.T) {
 	navExpect(t, "/color/red", "color")
 	navExpect(t, "/color/blue", "color")
 	navExpect(t, "/color/fuschia", NOT_FOUND)
+}
+
+// TestRouteWithRegexpSharedHandler tests that a handler with internal state
+// can be re-used and shared among multiple route patterns
+func TestRouteWithRegexpHandlerWithState(t *testing.T) {
+	resetRoutes()
+
+	singleton := &testComp{name: "common"}
+
+	RouteWithRegexp("/boo/.*", singleton)
+	RouteWithRegexp("/baz/.*", singleton)
+
+	navExpect(t, "/boo/1", "common")
+	navExpect(t, "/boo/2", "common")
+
+	navExpect(t, "/baz/3", "common")
+	navExpect(t, "/baz/4", "common")
+
+	if singleton.hitCounter != 4 {
+		t.Errorf("FAIL: hitCounter unexpected value: %d", singleton.hitCounter)
+	}
 }
 
 // navExpect does the test case that simulates navigating to a new url via route tables.
