@@ -159,13 +159,13 @@ hello-local        # Server directory
 
 The hello example introduced above:
 
-| Sources                                                                                   | Description                               |
-| ----------------------------------------------------------------------------------------- | ----------------------------------------- |
-| [hello](https://github.com/maxence-charriere/go-app-demo/tree/master/hello)               | Hello app.                                |
-| [hello-local](https://github.com/maxence-charriere/go-app-demo/tree/master/hello-local)   | Hello app that runs on a local server.    |
-| [hello-docker](https://github.com/maxence-charriere/go-app-demo/tree/master/hello-docker) | Hello app that run in a Docker container. |
-
-<!-- | [hello-appengine](https://github.com/maxence-charriere/go-app-demo/tree/master/hello-appengine) | Hello app that run on Google Cloud App Engine.<br> [See live](https://demo.murlok.io) | -->
+| Sources                                                                                                   | Description                                                                                           |
+| --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| [hello](https://github.com/maxence-charriere/go-app-demo/tree/v6/hello)                                   | Hello app.                                                                                            |
+| [hello-local](https://github.com/maxence-charriere/go-app-demo/tree/v6/hello-local)                       | Hello app that runs on a local server.                                                                |
+| [hello-docker](https://github.com/maxence-charriere/go-app-demo/tree/v6/hello-docker)                     | Hello app that run in a Docker container.                                                             |
+| [hello-gcloud-appengine](https://github.com/maxence-charriere/go-app-demo/tree/v6/hello-gcloud-appengine) | Hello app that run on Google Cloud App Engine.<br> [See live](https://go-app-demo-42.appspot.com)     |
+| [hello-gcloud-func](https://github.com/maxence-charriere/go-app-demo/tree/v6/hello-gcloud-func)           | Hello app that run on Google a Cloud Function.<br> [See live](https://go-app-demo-42.firebaseapp.com) |
 
 ### Live apps
 
