@@ -26,14 +26,14 @@ var (
 	// routed.
 	NotFound UI = &notFound{}
 
-	routes   = make(map[string]UI)
-	routesRe = make([]regexRoute, 0)
-	uiChan   = make(chan func(), 256)
+	routes           = make(map[string]UI)
+	routesWithRegexp = make([]regexpRoute, 0)
+	uiChan           = make(chan func(), 256)
 )
 
-type regexRoute struct {
-	re *regexp.Regexp
-	n  UI
+type regexpRoute struct {
+	regexp *regexp.Regexp
+	node   UI
 }
 
 // EventHandler represents a function that can handle HTML events.
@@ -45,9 +45,11 @@ func Route(path string, n UI) {
 }
 
 // RouteRe binds the regular expression pattern to the given UI node.
-func RouteRe(pattern string, n UI) {
-	re := regexp.MustCompilePOSIX(pattern)
-	routesRe = append(routesRe, regexRoute{re, n})
+func RouteWithRegexp(pattern string, node UI) {
+	routesWithRegexp = append(routesWithRegexp, regexpRoute{
+		regexp: regexp.MustCompile(pattern),
+		node:   node,
+	})
 }
 
 // Run starts the wasm app and displays the UI node associated with the

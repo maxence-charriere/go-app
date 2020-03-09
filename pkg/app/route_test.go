@@ -38,16 +38,16 @@ func TestRoute(t *testing.T) {
 	navExpect(t, "/abc?foo=bar", "abc") // query is not used in route lookup
 }
 
-// TestRouteRe tests some basic regex patterns and priority of Route vs RouteRe
-func TestRouteRe(t *testing.T) {
+// TestRouteWithRegexp tests some basic regex patterns and priority of Route vs RouteWithRegexp
+func TestRouteWithRegexp(t *testing.T) {
 
 	resetRoutes()
 	Route("/a", &testComp{name: "a"})
 	Route("/abc", &testComp{name: "abc"})
 	Route("/123", &testComp{name: "123"})
 
-	RouteRe("/x.*", &testComp{name: "x-star"})
-	RouteRe("/a.*", &testComp{name: "a-star"}) // test match when not first regex route
+	RouteWithRegexp("/x.*", &testComp{name: "x-star"})
+	RouteWithRegexp("/a.*", &testComp{name: "a-star"}) // test match when not first regex route
 
 	navExpect(t, "/a", "a") // specific routes should be found before regex
 	navExpect(t, "/ab", "a-star")
@@ -57,27 +57,30 @@ func TestRouteRe(t *testing.T) {
 	navExpect(t, "/.*c", NOT_FOUND)
 
 	navExpect(t, "/123", "123")
-	// these two test cases confirm that regex needs full string, not just subset
-	navExpect(t, "/4/123", NOT_FOUND)
+
+	// the followingtest cases confirm that regex needs full string, not just subset
+	navExpect(t, "4/123", NOT_FOUND)
 	navExpect(t, "/123/123", NOT_FOUND)
+	navExpect(t, "/1234", NOT_FOUND)
+	navExpect(t, "/123/", NOT_FOUND)
 }
 
-// TestRouteReDirs1 tests regex paths with inner wildcard
-func TestRouteReDirs1(t *testing.T) {
+// TestRouteWithRegexpDirs1 tests regex paths with inner wildcard
+func TestRouteWithRegexpDirs1(t *testing.T) {
 
 	resetRoutes()
-	RouteRe("/user/.*/settings", &testComp{name: "settings"})
+	RouteWithRegexp("/user/.*/settings", &testComp{name: "settings"})
 
 	navExpect(t, "/user/1001/settings", "settings")
 	navExpect(t, "/user/1/settings", "settings")
 	navExpect(t, "/user/1001/settings/", NOT_FOUND) // extra trailing slash
 }
 
-// TestRouteReDirs2 test regex wildcard at end and middle
-func TestRouteReDirs2(t *testing.T) {
+// TestRouteWithRegexpDirs2 test regex wildcard at end and middle
+func TestRouteWithRegexpDirs2(t *testing.T) {
 
 	resetRoutes()
-	RouteRe("/user/.*/files/.*", &testComp{name: "files"})
+	RouteWithRegexp("/user/.*/files/.*", &testComp{name: "files"})
 
 	navExpect(t, "/user/1001/files/", "files")
 	navExpect(t, "/user/1001/files/index.html", "files")
@@ -85,11 +88,11 @@ func TestRouteReDirs2(t *testing.T) {
 	navExpect(t, "/user/team/green/files/index.html", "files")
 }
 
-// TestRouteReDirs3 tests regex with "OR" condition
-func TestRouteReDirs3(t *testing.T) {
+// TestRouteWithRegexpDirs3 tests regex with "OR" condition
+func TestRouteWithRegexpDirs3(t *testing.T) {
 
 	resetRoutes()
-	RouteRe("/color/(red|green|blue)", &testComp{name: "color"})
+	RouteWithRegexp("/color/(red|green|blue)", &testComp{name: "color"})
 
 	navExpect(t, "/color/red", "color")
 	navExpect(t, "/color/blue", "color")
@@ -100,6 +103,7 @@ func TestRouteReDirs3(t *testing.T) {
 // Parameters are the url input and the text string to look for in the new DOM.
 func navExpect(t *testing.T, path string, result string) {
 
+	t.Helper()
 	resetDOM(t)
 	u, err := url.Parse(path)
 	if err != nil {
@@ -124,7 +128,7 @@ func navExpect(t *testing.T, path string, result string) {
 // resetRoutes empties routing tables, and is called at beginning of each test function
 func resetRoutes() {
 	routes = make(map[string]UI)
-	routesRe = make([]regexRoute, 0)
+	routesWithRegexp = make([]regexpRoute, 0)
 }
 
 // resetDOM initializes body and content - should be called before navigate
@@ -137,6 +141,7 @@ func resetDOM(t *testing.T) {
 
 // drill traverses down DOM tree to leaf text node and return its contents
 func drill(t *testing.T, node UI) string {
+	t.Helper()
 	if tc, ok := node.(*testComp); ok {
 		node = tc.root
 	}
