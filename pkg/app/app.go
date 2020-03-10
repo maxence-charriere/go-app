@@ -38,6 +38,7 @@ func Route(path string, node UI) {
 }
 
 // RouteWithRegexp binds the regular expression pattern to the given UI node.
+// Patterns use the Go standard regexp format.
 func RouteWithRegexp(pattern string, node UI) {
 	routes.routeWithRegexp(pattern, node)
 }
