@@ -137,20 +137,9 @@ func navigate(u *url.URL, updateHistory bool) error {
 		path = "/" + path
 	}
 
-	root, ok := routes[path]
+	root, ok := routes.ui(path)
 	if !ok {
-		for _, r := range routesWithRegexp {
-			// tried MatchString below but it fails one unit test
-			//if r.regexp.MatchString(path) {
-			if s := r.regexp.FindString(path); len(s) == len(path) {
-				ok = true
-				root = r.node
-				break
-			}
-		}
-		if !ok {
-			root = NotFound
-		}
+		root = NotFound
 	}
 
 	defer func() {

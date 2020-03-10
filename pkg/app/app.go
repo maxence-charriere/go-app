@@ -6,7 +6,6 @@ package app
 
 import (
 	"net/url"
-	"regexp"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/log"
 )
@@ -26,30 +25,21 @@ var (
 	// routed.
 	NotFound UI = &notFound{}
 
-	routes           = make(map[string]UI)
-	routesWithRegexp = make([]regexpRoute, 0)
-	uiChan           = make(chan func(), 256)
+	routes router
+	uiChan = make(chan func(), 256)
 )
-
-type regexpRoute struct {
-	regexp *regexp.Regexp
-	node   UI
-}
 
 // EventHandler represents a function that can handle HTML events.
 type EventHandler func(src Value, e Event)
 
 // Route binds the requested path to the given UI node.
-func Route(path string, n UI) {
-	routes[path] = n
+func Route(path string, node UI) {
+	routes.route(path, node)
 }
 
-// RouteRe binds the regular expression pattern to the given UI node.
+// RouteWithRegexp binds the regular expression pattern to the given UI node.
 func RouteWithRegexp(pattern string, node UI) {
-	routesWithRegexp = append(routesWithRegexp, regexpRoute{
-		regexp: regexp.MustCompile(pattern),
-		node:   node,
-	})
+	routes.routeWithRegexp(pattern, node)
 }
 
 // Run starts the wasm app and displays the UI node associated with the
