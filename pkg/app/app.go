@@ -25,7 +25,7 @@ var (
 	// routed.
 	NotFound UI = &notFound{}
 
-	routes = make(map[string]UI)
+	routes router
 	uiChan = make(chan func(), 256)
 )
 
@@ -33,8 +33,14 @@ var (
 type EventHandler func(src Value, e Event)
 
 // Route binds the requested path to the given UI node.
-func Route(path string, n UI) {
-	routes[path] = n
+func Route(path string, node UI) {
+	routes.route(path, node)
+}
+
+// RouteWithRegexp binds the regular expression pattern to the given UI node.
+// Patterns use the Go standard regexp format.
+func RouteWithRegexp(pattern string, node UI) {
+	routes.routeWithRegexp(pattern, node)
 }
 
 // Run starts the wasm app and displays the UI node associated with the

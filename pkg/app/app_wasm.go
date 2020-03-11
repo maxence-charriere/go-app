@@ -137,7 +137,7 @@ func navigate(u *url.URL, updateHistory bool) error {
 		path = "/" + path
 	}
 
-	root, ok := routes[path]
+	root, ok := routes.ui(path)
 	if !ok {
 		root = NotFound
 	}
