@@ -52,6 +52,16 @@ type Handler struct {
 	// The name of the web application as it is usually displayed to the user.
 	Name string
 
+	// The path prefix (directory) to load the public files (css, images, scripts)
+	//
+	// DEFAULT: web
+	PublicPathPrefix string
+
+	// The url prefix to load the public files (css, images, scripts)
+	//
+	// DEFAULT: /web/
+	PublicURLPrefix string
+
 	// Additional headers to be added in head element.
 	RawHeaders []string
 
@@ -85,6 +95,11 @@ type Handler struct {
 	// Default: Auto-generated in order to trigger pwa update on a local
 	// development system.
 	Version string
+
+	// The path of the compiled wasm to be served when accessing /app.wasm
+	//
+	// DEFAULT: app.wasm
+	WASMPath string
 
 	once         sync.Once
 	etag         string
@@ -166,6 +181,19 @@ func (h *Handler) initPWA() {
 
 	if h.LoadingLabel == "" {
 		h.LoadingLabel = "Loading"
+	}
+
+	if h.PublicURLPrefix == "" {
+		// only set public path prefix if url prefix is unset,
+		// so it's backwards compatible
+		if h.PublicPathPrefix == "" {
+			h.PublicPathPrefix = "web"
+		}
+		h.PublicURLPrefix = "/web/"
+	}
+
+	if h.WASMPath == "" {
+		h.WASMPath = "app.wasm"
 	}
 }
 
@@ -358,12 +386,12 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case "/app.wasm", "/goapp.wasm":
-		http.ServeFile(w, r, "app.wasm")
+		http.ServeFile(w, r, h.WASMPath)
 		return
 	}
 
-	if strings.HasPrefix(path, "/web/") {
-		filename := strings.TrimPrefix(path, "/")
+	if strings.HasPrefix(path, h.PublicURLPrefix) {
+		filename := filepath.Join(h.PublicPathPrefix, strings.TrimPrefix(path, h.PublicURLPrefix))
 		filename = normalizeFilePath(filename)
 		if fi, err := os.Stat(filename); err == nil && !fi.IsDir() {
 			http.ServeFile(w, r, filename)
