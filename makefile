@@ -3,6 +3,7 @@ bootstrap:
 	go get -u github.com/agnivade/wasmbrowsertest
 	mv ${GOPATH}/bin/wasmbrowsertest ${GOPATH}/bin/go_js_wasm_exec
 
+.PHONY: test
 test:
 	@echo "\033[94m• Running Go vet\033[00m"
 	go vet ./...

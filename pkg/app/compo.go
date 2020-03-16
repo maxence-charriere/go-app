@@ -5,7 +5,6 @@ import (
 	"net/url"
 	"reflect"
 	"strings"
-	"unicode"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/log"
 )
@@ -153,11 +152,11 @@ func (c *Compo) update(n Composer) {
 			continue
 		}
 
-		if !isExported(aval.Type().Field(i).Name) {
+		if !a.CanSet() {
 			continue
 		}
 
-		if !reflect.DeepEqual(a.Interface(), b.Interface()) && a.CanSet() {
+		if !reflect.DeepEqual(a.Interface(), b.Interface()) {
 			a.Set(b)
 		}
 	}
@@ -192,8 +191,4 @@ func (c *Compo) Render() UI {
 					),
 			),
 		)
-}
-
-func isExported(fieldOrMethod string) bool {
-	return !unicode.IsLower(rune(fieldOrMethod[0]))
 }
