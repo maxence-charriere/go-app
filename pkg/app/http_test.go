@@ -237,6 +237,7 @@ func TestHandlerServeAppWasm(t *testing.T) {
 	h := Handler{}
 	h.ServeHTTP(w, r)
 
+	require.Equal(t, "application/wasm", w.Header().Get("Content-Type"))
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "wasm!", w.Body.String())
 }
