@@ -58,7 +58,7 @@ type Handler struct {
 	// The URL or path of the root directory. The root directory is the location
 	// where app resources are located.
 	//
-	// DEFAULT: os.Getwd().
+	// DEFAULT: ".".
 	RootDir string
 
 	// The paths or urls of the JavaScript files to use with the page.
@@ -129,28 +129,9 @@ func (h *Handler) initVersion() {
 
 func (h *Handler) initRootDir() {
 	rootDir := h.RootDir
-
 	if rootDir == "" {
-		wd, err := os.Getwd()
-		if err != nil {
-			log.Error("initializing root directory failed").
-				T("operation", "get working directory").
-				T("error", err).
-				Panic()
-			return
-		}
-		rootDir = wd
+		rootDir = "."
 	}
-
-	rootDir, err := filepath.Abs(rootDir)
-	if err != nil {
-		log.Error("initializing root directory failed").
-			T("operation", "get absolute path").
-			T("error", err).
-			Panic()
-		return
-	}
-
 	h.RootDir = rootDir
 	h.appWasmPath = filepath.Join(rootDir, "app.wasm")
 }
