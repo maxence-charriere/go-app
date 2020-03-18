@@ -92,15 +92,16 @@ type Handler struct {
 	// development system.
 	Version string
 
-	once         sync.Once
-	etag         string
-	appWasmPath  string
-	page         bytes.Buffer
-	manifestJSON bytes.Buffer
-	appJS        bytes.Buffer
-	appWorkerJS  bytes.Buffer
-	wasmExecJS   []byte
-	appCSS       []byte
+	once             sync.Once
+	etag             string
+	appWasmPath      string
+	hasRemoteRootDir bool
+	page             bytes.Buffer
+	manifestJSON     bytes.Buffer
+	appJS            bytes.Buffer
+	appWorkerJS      bytes.Buffer
+	wasmExecJS       []byte
+	appCSS           []byte
 }
 
 func (h *Handler) init() {
@@ -132,7 +133,11 @@ func (h *Handler) initRootDir() {
 	if rootDir == "" {
 		rootDir = "."
 	}
+	rootDir = strings.TrimSuffix(rootDir, "/")
+	rootDir = strings.TrimSuffix(rootDir, `\`)
 	h.RootDir = rootDir
+
+	h.hasRemoteRootDir = isRemoteLocation(rootDir)
 	h.appWasmPath = filepath.Join(rootDir, "app.wasm")
 }
 
@@ -267,12 +272,17 @@ func (h *Handler) initWasmJS() {
 }
 
 func (h *Handler) initAppJS() {
+	wasmURL := "/app.wasm"
+	if h.hasRemoteRootDir {
+		wasmURL = h.RootDir + wasmURL
+	}
+
 	if err := template.
 		Must(template.New("app.js").Parse(appJS)).
 		Execute(&h.appJS, struct {
 			Wasm string
 		}{
-			Wasm: "/app.wasm",
+			Wasm: wasmURL,
 		}); err != nil {
 		log.Error("initializing app.js failed").
 			T("error", err).
@@ -434,13 +444,15 @@ func (h *Handler) serveAppCSS(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) staticResource(path string) string {
-	u, _ := url.Parse(path)
-	if u.Scheme != "" {
+	if isRemoteLocation(path) {
 		return path
 	}
 
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
+	}
+	if h.hasRemoteRootDir {
+		path = h.RootDir + path
 	}
 	return path
 }
@@ -473,6 +485,11 @@ func normalizeFilePath(path string) string {
 		return strings.ReplaceAll(path, "/", `\`)
 	}
 	return path
+}
+
+func isRemoteLocation(path string) bool {
+	u, _ := url.Parse(path)
+	return u.Scheme != ""
 }
 
 func staticResources(basedir string) []string {

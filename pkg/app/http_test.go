@@ -21,12 +21,12 @@ func TestHandlerServePage(t *testing.T) {
 	h := Handler{
 		Title: "Handler testing",
 		Scripts: []string{
-			"hello.js",
+			"web/hello.js",
 			"http://boo.com/bar.js",
 		},
 		Styles: []string{
-			"foo.css",
-			"/bar.css",
+			"web/foo.css",
+			"/web/bar.css",
 			"http://boo.com/bar.css",
 		},
 		RawHeaders: []string{
@@ -39,10 +39,48 @@ func TestHandlerServePage(t *testing.T) {
 
 	body := w.Body.String()
 	require.Equal(t, http.StatusOK, w.Code)
-	require.Contains(t, body, `href="/foo.css"`)
-	require.Contains(t, body, `href="/bar.css"`)
+	require.Contains(t, body, `href="/web/foo.css"`)
+	require.Contains(t, body, `href="/web/bar.css"`)
 	require.Contains(t, body, `href="http://boo.com/bar.css"`)
-	require.Contains(t, body, `<script src="/hello.js">`)
+	require.Contains(t, body, `<script src="/web/hello.js">`)
+	require.Contains(t, body, `<script src="http://boo.com/bar.js">`)
+	require.Contains(t, body, `href="/manifest.json"`)
+	require.Contains(t, body, `href="/app.css"`)
+	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
+
+	t.Log(body)
+}
+
+func TestHandlerServePageWithRemoteRootDir(t *testing.T) {
+	r := httptest.NewRequest(http.MethodGet, "/", nil)
+	w := httptest.NewRecorder()
+
+	h := Handler{
+		Title:   "Handler testing",
+		RootDir: "https://storage.googleapis.com/murlok/",
+		Scripts: []string{
+			"/web/hello.js",
+			"http://boo.com/bar.js",
+		},
+		Styles: []string{
+			"web/foo.css",
+			"/web/bar.css",
+			"http://boo.com/bar.css",
+		},
+		RawHeaders: []string{
+			`<meta http-equiv="refresh" content="30">`,
+		},
+	}
+	h.Icon.AppleTouch = "ios.png"
+
+	h.ServeHTTP(w, r)
+
+	body := w.Body.String()
+	require.Equal(t, http.StatusOK, w.Code)
+	require.Contains(t, body, `href="https://storage.googleapis.com/murlok/web/foo.css"`)
+	require.Contains(t, body, `href="https://storage.googleapis.com/murlok/web/bar.css"`)
+	require.Contains(t, body, `href="http://boo.com/bar.css"`)
+	require.Contains(t, body, `<script src="https://storage.googleapis.com/murlok/web/hello.js">`)
 	require.Contains(t, body, `<script src="http://boo.com/bar.js">`)
 	require.Contains(t, body, `href="/manifest.json"`)
 	require.Contains(t, body, `href="/app.css"`)
@@ -73,6 +111,20 @@ func TestHandlerServeAppJS(t *testing.T) {
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
 	require.Equal(t, strings.ReplaceAll(appJS, "{{.Wasm}}", "/app.wasm"), w.Body.String())
+}
+
+func TestHandlerServeAppJSWithRemoteRootDir(t *testing.T) {
+	r := httptest.NewRequest(http.MethodGet, "/app.js", nil)
+	w := httptest.NewRecorder()
+
+	h := Handler{
+		RootDir: "https://storage.googleapis.com/murlok/",
+	}
+	h.ServeHTTP(w, r)
+
+	require.Equal(t, http.StatusOK, w.Code)
+	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
+	require.Equal(t, strings.ReplaceAll(appJS, "{{.Wasm}}", "https://storage.googleapis.com/murlok/app.wasm"), w.Body.String())
 }
 
 func TestHandlerServeAppWorkerJS(t *testing.T) {
@@ -239,4 +291,50 @@ func TestStaticResourcesWebNotExists(t *testing.T) {
 
 	filenames := staticResources("test")
 	require.Empty(t, filenames)
+}
+
+func TestIsRemoteLocation(t *testing.T) {
+	tests := []struct {
+		scenario string
+		path     string
+		expected bool
+	}{
+		{
+			scenario: "path with http scheme is a remote location",
+			path:     "http://localhost/hello",
+			expected: true,
+		},
+		{
+			scenario: "path with https scheme is a remote location",
+			path:     "https://localhost/hello",
+			expected: true,
+		},
+		{
+			scenario: "empty path is not a remote location",
+			path:     "",
+			expected: false,
+		},
+		{
+			scenario: "working dir path is not a remote location",
+			path:     ".",
+			expected: false,
+		},
+		{
+			scenario: "absolute path is not a remote location",
+			path:     "/User/hello",
+			expected: false,
+		},
+		{
+			scenario: "relative path is not a remote location",
+			path:     "./hello",
+			expected: false,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.scenario, func(t *testing.T) {
+			res := isRemoteLocation(test.path)
+			require.Equal(t, test.expected, res)
+		})
+	}
 }
