@@ -200,78 +200,82 @@ func (h *Handler) initPWA() {
 }
 
 func (h *Handler) initPage() {
+	remoteRootDir := "false"
+	if h.hasRemoteRootDir {
+		remoteRootDir = h.RootDir
+	}
+
 	h.page.WriteString("<!DOCTYPE html>\n")
-	Html().
-		Body(
-			Head().
+	Html().Body(
+		Head().Body(
+			Meta().Charset("UTF-8"),
+			Meta().
+				HTTPEquiv("Content-Type").
+				Content("text/html; charset=utf-8"),
+			Meta().
+				Name("author").
+				Content(h.Author),
+			Meta().
+				Name("description").
+				Content(h.Description),
+			Meta().
+				Name("keywords").
+				Content(strings.Join(h.Keywords, ", ")),
+			Meta().
+				Name("viewport").
+				Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
+			Title().
 				Body(
-					Meta().Charset("UTF-8"),
-					Meta().
-						HTTPEquiv("Content-Type").
-						Content("text/html; charset=utf-8"),
-					Meta().
-						Name("author").
-						Content(h.Author),
-					Meta().
-						Name("description").
-						Content(h.Description),
-					Meta().
-						Name("keywords").
-						Content(strings.Join(h.Keywords, ", ")),
-					Meta().
-						Name("viewport").
-						Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
-					Title().
-						Body(
-							Text(h.Title),
-						),
-					Link().
-						Rel("icon").
-						Type("image/png").
-						Href(h.Icon.Default),
-					Link().
-						Rel("apple-touch-icon").
-						Href(h.Icon.AppleTouch),
-					Link().
-						Rel("manifest").
-						Href("/manifest.json"),
-					Link().
-						Type("text/css").
-						Rel("stylesheet").
-						Href("/app.css"),
-					Range(h.Styles).Slice(func(i int) UI {
-						return Link().
-							Type("text/css").
-							Rel("stylesheet").
-							Href(h.Styles[i])
-					}),
-					Script().Src("/wasm_exec.js"),
-					Script().Src("/app.js"),
-					Range(h.Scripts).Slice(func(i int) UI {
-						return Script().
-							Src(h.Scripts[i])
-					}),
-					Range(h.RawHeaders).Slice(func(i int) UI {
-						return Raw(h.RawHeaders[i])
-					}),
+					Text(h.Title),
 				),
-			Body().
-				Body(
-					Div().
-						Class("app-wasm-layout").
-						Body(
-							Img().
-								ID("app-wasm-loader-icon").
-								Class("app-wasm-icon app-spin").
-								Src(h.Icon.Default),
-							P().
-								ID("app-wasm-loader-label").
-								Class("app-wasm-label").
-								Body(Text(h.LoadingLabel)),
-						),
-					Div().ID("app-context-menu"),
-				),
-		).
+			Link().
+				Rel("icon").
+				Type("image/png").
+				Href(h.Icon.Default),
+			Link().
+				Rel("apple-touch-icon").
+				Href(h.Icon.AppleTouch),
+			Link().
+				Rel("manifest").
+				Href("/manifest.json"),
+			Link().
+				Type("text/css").
+				Rel("stylesheet").
+				Href("/app.css"),
+			Range(h.Styles).Slice(func(i int) UI {
+				return Link().
+					Type("text/css").
+					Rel("stylesheet").
+					Href(h.Styles[i])
+			}),
+			Script().Src("/wasm_exec.js"),
+			Script().Src("/app.js"),
+			Range(h.Scripts).Slice(func(i int) UI {
+				return Script().
+					Src(h.Scripts[i])
+			}),
+			Range(h.RawHeaders).Slice(func(i int) UI {
+				return Raw(h.RawHeaders[i])
+			}),
+		),
+		Body().
+			DataSet("go-app-remote-root-dir", remoteRootDir).
+			Body(
+				Div().
+					Class("app-wasm-layout").
+					Body(
+						Img().
+							ID("app-wasm-loader-icon").
+							Class("app-wasm-icon app-spin").
+							Src(h.Icon.Default),
+						P().
+							ID("app-wasm-loader-label").
+							Class("app-wasm-label").
+							Body(Text(h.LoadingLabel)),
+					),
+				Div().ID("app-context-menu"),
+			),
+	).
 		html(&h.page)
 }
 

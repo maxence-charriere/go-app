@@ -47,6 +47,7 @@ func TestHandlerServePage(t *testing.T) {
 	require.Contains(t, body, `href="/manifest.json"`)
 	require.Contains(t, body, `href="/app.css"`)
 	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
+	require.Contains(t, body, `<body data-go-app-remote-root-dir="false"`)
 
 	t.Log(body)
 }
@@ -85,6 +86,7 @@ func TestHandlerServePageWithRemoteRootDir(t *testing.T) {
 	require.Contains(t, body, `href="/manifest.json"`)
 	require.Contains(t, body, `href="/app.css"`)
 	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
+	require.Contains(t, body, `<body data-go-app-remote-root-dir="https://storage.googleapis.com/go-app"`)
 
 	t.Log(body)
 }
