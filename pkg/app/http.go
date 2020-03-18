@@ -55,9 +55,15 @@ type Handler struct {
 	// Additional headers to be added in head element.
 	RawHeaders []string
 
+	// The URL or path of the root directory. The root directory is the location
+	// where app resources are located.
+	//
+	// DEFAULT: os.Getwd().
+	RootDir string
+
 	// The paths or urls of the JavaScript files to use with the page.
 	//
-	// Paths are relative to the program location.
+	// Paths are relative to the root directory..
 	Scripts []string
 
 	// The name of the web application displayed to the user when there is not
@@ -66,7 +72,7 @@ type Handler struct {
 
 	// The paths or urls of the CSS files to use with the page.
 	//
-	// Paths are relative to the program location.
+	// Paths are relative to the root directory..
 	Styles []string
 
 	// The theme color for the application. This affects how the OS displays the
@@ -88,6 +94,7 @@ type Handler struct {
 
 	once         sync.Once
 	etag         string
+	appWasmPath  string
 	page         bytes.Buffer
 	manifestJSON bytes.Buffer
 	appJS        bytes.Buffer
@@ -98,6 +105,7 @@ type Handler struct {
 
 func (h *Handler) init() {
 	h.initVersion()
+	h.initRootDir()
 	h.initStyles()
 	h.initScripts()
 	h.initIcon()
@@ -117,6 +125,34 @@ func (h *Handler) initVersion() {
 		h.Version = fmt.Sprintf(`%x`, sha1.Sum([]byte(t)))
 	}
 	h.etag = `"` + h.Version + `"`
+}
+
+func (h *Handler) initRootDir() {
+	rootDir := h.RootDir
+
+	if rootDir == "" {
+		wd, err := os.Getwd()
+		if err != nil {
+			log.Error("initializing root directory failed").
+				T("operation", "get working directory").
+				T("error", err).
+				Panic()
+			return
+		}
+		rootDir = wd
+	}
+
+	rootDir, err := filepath.Abs(rootDir)
+	if err != nil {
+		log.Error("initializing root directory failed").
+			T("operation", "get absolute path").
+			T("error", err).
+			Panic()
+		return
+	}
+
+	h.RootDir = rootDir
+	h.appWasmPath = filepath.Join(rootDir, "app.wasm")
 }
 
 func (h *Handler) initStyles() {
@@ -358,13 +394,13 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case "/app.wasm", "/goapp.wasm":
-		http.ServeFile(w, r, "app.wasm")
+		http.ServeFile(w, r, h.appWasmPath)
 		return
 	}
 
 	if strings.HasPrefix(path, "/web/") {
-		filename := strings.TrimPrefix(path, "/")
-		filename = normalizeFilePath(filename)
+		filename := normalizeFilePath(path)
+		filename = filepath.Join(h.RootDir, filename)
 		if fi, err := os.Stat(filename); err == nil && !fi.IsDir() {
 			http.ServeFile(w, r, filename)
 			return
@@ -433,19 +469,19 @@ func (h *Handler) staticResource(path string) string {
 type Icon struct {
 	// The path or url to a square image/png file. It must have a side of 192px.
 	//
-	// Path is relative to the program location.
+	// Path is relative to the root directory..
 	Default string
 
 	// The path or url to larger square image/png file. It must have a side of
 	// 512px.
 	//
-	// Path is relative to the program location.
+	// Path is relative to the root directory..
 	Large string
 
 	// The path or url to a square image/png file that is used for IOS/IPadOS
 	// home screen icon. It must have a side of 192px.
 	//
-	// Path is relative to the program location.
+	// Path is relative to the root directory..
 	//
 	// DEFAULT: Icon.Default
 	AppleTouch string
