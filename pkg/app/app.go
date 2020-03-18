@@ -6,6 +6,7 @@ package app
 
 import (
 	"net/url"
+	"strings"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/log"
 )
@@ -97,4 +98,12 @@ func NewContextMenu(menuItems ...MenuItemNode) {
 // Dispatch executes the given function on the UI goroutine.
 func Dispatch(f func()) {
 	uiChan <- f
+}
+
+func Web(path string) string {
+	if !strings.HasPrefix(path, "/") {
+		path = "/" + path
+	}
+	path = "/web" + path
+	return web(path)
 }

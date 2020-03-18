@@ -259,7 +259,7 @@ func (h *Handler) initPage() {
 			}),
 		),
 		Body().
-			DataSet("go-app-remote-root-dir", remoteRootDir).
+			DataSet("goapp-remoteRootDir", remoteRootDir).
 			Body(
 				Div().
 					Class("app-wasm-layout").

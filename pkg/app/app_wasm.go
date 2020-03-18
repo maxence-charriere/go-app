@@ -14,6 +14,7 @@ var (
 	body           = Body()
 	content     UI = Div()
 	contextMenu    = &contextMenuLayout{}
+	rootDir        = ""
 )
 
 func init() {
@@ -35,6 +36,7 @@ func run() {
 		panic(err)
 	}()
 
+	initRootDir()
 	initContent()
 	initContextMenu()
 
@@ -71,6 +73,17 @@ func displayLoadError(err interface{}) {
 		return
 	}
 	loadingLabel.Set("innerText", fmt.Sprint(err))
+}
+
+func initRootDir() {
+	body := Window().Get("document").Get("body")
+	jsRootDir := body.Call("getAttribute", "data-goapp-remoteRootDir").String()
+
+	if jsRootDir != "false" {
+		rootDir = jsRootDir
+	}
+
+	log.Info("init root dir").T("root dir", rootDir)
 }
 
 func initContent() {
@@ -175,4 +188,8 @@ func reload() {
 
 func newContextMenu(menuItems ...MenuItemNode) {
 	contextMenu.show(menuItems...)
+}
+
+func web(path string) string {
+	return rootDir + path
 }
