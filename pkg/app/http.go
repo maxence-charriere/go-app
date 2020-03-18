@@ -134,7 +134,6 @@ func (h *Handler) initRootDir() {
 	}
 	h.RootDir = rootDir
 	h.appWasmPath = filepath.Join(rootDir, "app.wasm")
-	log.Infof("app.wasm path: %q", h.appWasmPath)
 }
 
 func (h *Handler) initStyles() {
