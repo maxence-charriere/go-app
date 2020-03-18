@@ -57,7 +57,7 @@ func TestHandlerServePageWithRemoteRootDir(t *testing.T) {
 
 	h := Handler{
 		Title:   "Handler testing",
-		RootDir: "https://storage.googleapis.com/murlok/",
+		RootDir: "https://storage.googleapis.com/go-app/",
 		Scripts: []string{
 			"/web/hello.js",
 			"http://boo.com/bar.js",
@@ -77,10 +77,10 @@ func TestHandlerServePageWithRemoteRootDir(t *testing.T) {
 
 	body := w.Body.String()
 	require.Equal(t, http.StatusOK, w.Code)
-	require.Contains(t, body, `href="https://storage.googleapis.com/murlok/web/foo.css"`)
-	require.Contains(t, body, `href="https://storage.googleapis.com/murlok/web/bar.css"`)
+	require.Contains(t, body, `href="https://storage.googleapis.com/go-app/web/foo.css"`)
+	require.Contains(t, body, `href="https://storage.googleapis.com/go-app/web/bar.css"`)
 	require.Contains(t, body, `href="http://boo.com/bar.css"`)
-	require.Contains(t, body, `<script src="https://storage.googleapis.com/murlok/web/hello.js">`)
+	require.Contains(t, body, `<script src="https://storage.googleapis.com/go-app/web/hello.js">`)
 	require.Contains(t, body, `<script src="http://boo.com/bar.js">`)
 	require.Contains(t, body, `href="/manifest.json"`)
 	require.Contains(t, body, `href="/app.css"`)
@@ -118,36 +118,26 @@ func TestHandlerServeAppJSWithRemoteRootDir(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	h := Handler{
-		RootDir: "https://storage.googleapis.com/murlok/",
+		RootDir: "https://storage.googleapis.com/go-app/",
 	}
 	h.ServeHTTP(w, r)
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Equal(t, strings.ReplaceAll(appJS, "{{.Wasm}}", "https://storage.googleapis.com/murlok/app.wasm"), w.Body.String())
+	require.Equal(t, strings.ReplaceAll(appJS, "{{.Wasm}}", "https://storage.googleapis.com/go-app/app.wasm"), w.Body.String())
 }
 
 func TestHandlerServeAppWorkerJS(t *testing.T) {
-	err := os.MkdirAll("web", 0755)
-	require.NoError(t, err)
-	defer os.RemoveAll("web")
-
-	files := []string{
-		filepath.Join("web", "hello.css"),
-		filepath.Join("web", "hello.js"),
-	}
-
-	for _, f := range files {
-		err = ioutil.WriteFile(f, []byte("hello"), 0666)
-		require.NoError(t, err)
-	}
-
 	r := httptest.NewRequest(http.MethodGet, "/app-worker.js", nil)
 	w := httptest.NewRecorder()
 
 	h := Handler{
-		Scripts: []string{"hello.js"},
-		Styles:  []string{"hello.css"},
+		Scripts: []string{"web/hello.js"},
+		Styles:  []string{"/web/hello.css"},
+		CacheableResources: []string{
+			"web/hello.png",
+			"http://test.io/hello.png",
+		},
 	}
 	h.ServeHTTP(w, r)
 
@@ -159,9 +149,42 @@ func TestHandlerServeAppWorkerJS(t *testing.T) {
 	require.Contains(t, body, `self.addEventListener("fetch", event => {`)
 	require.Contains(t, body, `"/web/hello.css",`)
 	require.Contains(t, body, `"/web/hello.js",`)
+	require.Contains(t, body, `"/web/hello.png",`)
+	require.Contains(t, body, `"http://test.io/hello.png",`)
 	require.Contains(t, body, `"/wasm_exec.js",`)
 	require.Contains(t, body, `"/app.js",`)
 	require.Contains(t, body, `"/app.wasm",`)
+	require.Contains(t, body, `"/",`)
+}
+
+func TestHandlerServeAppWorkerJSWithRemoteRootDir(t *testing.T) {
+	r := httptest.NewRequest(http.MethodGet, "/app-worker.js", nil)
+	w := httptest.NewRecorder()
+
+	h := Handler{
+		RootDir: "https://storage.googleapis.com/go-app/",
+		Scripts: []string{"web/hello.js"},
+		Styles:  []string{"/web/hello.css"},
+		CacheableResources: []string{
+			"web/hello.png",
+			"http://test.io/hello.png",
+		},
+	}
+	h.ServeHTTP(w, r)
+
+	body := w.Body.String()
+	require.Equal(t, http.StatusOK, w.Code)
+	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
+	require.Contains(t, body, `self.addEventListener("install", event => {`)
+	require.Contains(t, body, `self.addEventListener("activate", event => {`)
+	require.Contains(t, body, `self.addEventListener("fetch", event => {`)
+	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/hello.css",`)
+	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/hello.js",`)
+	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/hello.png",`)
+	require.Contains(t, body, `"http://test.io/hello.png",`)
+	require.Contains(t, body, `"/wasm_exec.js",`)
+	require.Contains(t, body, `"/app.js",`)
+	require.Contains(t, body, `"https://storage.googleapis.com/go-app/app.wasm",`)
 	require.Contains(t, body, `"/",`)
 }
 
@@ -254,43 +277,6 @@ func BenchmarkHandlerHotRun(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		h.ServeHTTP(w, r)
 	}
-}
-
-func TestStaticResources(t *testing.T) {
-	err := os.MkdirAll(filepath.Join("test", "web", "css"), 0755)
-	require.NoError(t, err)
-	defer os.RemoveAll("test")
-
-	files := []string{
-		filepath.Join("test", "notaresource.txt"),
-		filepath.Join("test", "web", "hello.txt"),
-		filepath.Join("test", "web", "css", "hello.css"),
-		filepath.Join("test", "web", ".hidden"),
-	}
-
-	for _, f := range files {
-		err = ioutil.WriteFile(f, []byte("hello"), 0666)
-		require.NoError(t, err)
-	}
-
-	expectedFilenames := []string{
-		"/web/.hidden",
-		"/web/css/hello.css",
-		"/web/hello.txt",
-	}
-
-	filenames := staticResources("test")
-	require.NoError(t, err)
-	require.Equal(t, expectedFilenames, filenames)
-}
-
-func TestStaticResourcesWebNotExists(t *testing.T) {
-	err := os.MkdirAll("test", 0755)
-	require.NoError(t, err)
-	defer os.RemoveAll("test")
-
-	filenames := staticResources("test")
-	require.Empty(t, filenames)
 }
 
 func TestIsRemoteLocation(t *testing.T) {

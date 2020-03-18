@@ -36,6 +36,14 @@ type Handler struct {
 	// DEFAULT: #2d2c2c.
 	BackgroundColor string
 
+	// The path of the static resources that the browser is caching in order to
+	// provide offline mode.
+	//
+	// Note that Styles and Scripts are already cached by default.
+	//
+	// Paths are relative to the root directory.
+	CacheableResources []string
+
 	// The page description.
 	Description string
 
@@ -63,7 +71,7 @@ type Handler struct {
 
 	// The paths or urls of the JavaScript files to use with the page.
 	//
-	// Paths are relative to the root directory..
+	// Paths are relative to the root directory.
 	Scripts []string
 
 	// The name of the web application displayed to the user when there is not
@@ -72,7 +80,7 @@ type Handler struct {
 
 	// The paths or urls of the CSS files to use with the page.
 	//
-	// Paths are relative to the root directory..
+	// Paths are relative to the root directory.
 	Styles []string
 
 	// The theme color for the application. This affects how the OS displays the
@@ -296,15 +304,26 @@ func (h *Handler) initWorkerJS() {
 	cacheableResources["/app.js"] = struct{}{}
 	cacheableResources["/app.css"] = struct{}{}
 	cacheableResources["/manifest.json"] = struct{}{}
-	cacheableResources["/app.wasm"] = struct{}{}
 	cacheableResources[h.Icon.Default] = struct{}{}
 	cacheableResources[h.Icon.Large] = struct{}{}
 	cacheableResources[h.Icon.AppleTouch] = struct{}{}
 	cacheableResources["/"] = struct{}{}
 
-	for _, resource := range staticResources(".") {
-		cacheableResources[resource] = struct{}{}
+	wasmPath := "/app.wasm"
+	if h.hasRemoteRootDir {
+		wasmPath = h.RootDir + wasmPath
 	}
+	cacheableResources[wasmPath] = struct{}{}
+
+	cacheResources := func(res []string) {
+		for _, r := range res {
+			r = h.staticResource(r)
+			cacheableResources[r] = struct{}{}
+		}
+	}
+	cacheResources(h.Styles)
+	cacheResources(h.Scripts)
+	cacheResources(h.CacheableResources)
 
 	if err := template.
 		Must(template.New("app-worker.js").Parse(appWorkerJS)).
@@ -462,19 +481,19 @@ func (h *Handler) staticResource(path string) string {
 type Icon struct {
 	// The path or url to a square image/png file. It must have a side of 192px.
 	//
-	// Path is relative to the root directory..
+	// Path is relative to the root directory.
 	Default string
 
 	// The path or url to larger square image/png file. It must have a side of
 	// 512px.
 	//
-	// Path is relative to the root directory..
+	// Path is relative to the root directory.
 	Large string
 
 	// The path or url to a square image/png file that is used for IOS/IPadOS
 	// home screen icon. It must have a side of 192px.
 	//
-	// Path is relative to the root directory..
+	// Path is relative to the root directory.
 	//
 	// DEFAULT: Icon.Default
 	AppleTouch string
@@ -490,31 +509,4 @@ func normalizeFilePath(path string) string {
 func isRemoteLocation(path string) bool {
 	u, _ := url.Parse(path)
 	return u.Scheme != ""
-}
-
-func staticResources(basedir string) []string {
-	var filenames []string
-	webdir := filepath.Join(basedir, "web")
-
-	filepath.Walk(webdir, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if info.IsDir() {
-			return nil
-		}
-
-		path = strings.TrimPrefix(path, basedir)
-		if !strings.HasPrefix(path, "/") {
-			path = "/" + path
-		}
-		if runtime.GOOS == "windows" {
-			path = strings.ReplaceAll(path, `\`, "/")
-		}
-		filenames = append(filenames, path)
-		return nil
-	})
-
-	return filenames
 }
