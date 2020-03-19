@@ -141,3 +141,13 @@ func (w browserWindow) CursorPosition() (x, y int) {
 func (w browserWindow) setCursorPosition(x, y int) {
 	panicNoWasm()
 }
+
+func copyBytesToGo(dst []byte, src Value) int {
+	panicNoWasm()
+	return 0
+}
+
+func copyBytesToJS(dst Value, src []byte) int {
+	panicNoWasm()
+	return 0
+}
