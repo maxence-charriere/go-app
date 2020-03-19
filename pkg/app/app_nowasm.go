@@ -36,7 +36,3 @@ func panicNoWasm() {
 		T("current", runtime.GOARCH).
 		Panic()
 }
-
-func web(path string) string {
-	return path
-}

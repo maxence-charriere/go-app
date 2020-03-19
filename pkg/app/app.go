@@ -26,8 +26,9 @@ var (
 	// routed.
 	NotFound UI = &notFound{}
 
-	routes router
-	uiChan = make(chan func(), 256)
+	remoteRootDir string
+	routes        router
+	uiChan        = make(chan func(), 256)
 )
 
 // EventHandler represents a function that can handle HTML events.
@@ -100,10 +101,25 @@ func Dispatch(f func()) {
 	uiChan <- f
 }
 
-func Web(path string) string {
+// ResolveStaticResourcePath makes a static resource path point to the right
+// location whether the root directory is remote or not.
+//
+// Static resources are resources located in the web directory.
+//
+// This call is used internally to resolve paths within Cite, Data, Href, Src,
+// and SrcSet. Paths already resolved are skipped.
+func ResolveStaticResourcePath(path string) string {
+	if !strings.HasPrefix(path, "/web/") &&
+		!strings.HasPrefix(path, "web/") ||
+		remoteRootDir == "" {
+		return path
+	}
+
+	path = strings.TrimPrefix(path, "/")
+
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
 	}
-	path = "/web" + path
-	return web(path)
+
+	return remoteRootDir + path
 }

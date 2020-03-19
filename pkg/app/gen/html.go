@@ -1041,7 +1041,7 @@ var attrs = map[string]attr{
 	},
 	"cite": {
 		Name: "Cite",
-		Type: "string",
+		Type: "url",
 		Doc:  "specifies a URL which explains the quote/deleted/inserted text.",
 	},
 	"class": {
@@ -1083,7 +1083,7 @@ var attrs = map[string]attr{
 	// D:
 	"data": {
 		Name: "Data",
-		Type: "string",
+		Type: "url",
 		Doc:  "specifies the URL of the resource to be used by the object.",
 	},
 	"data-*": {
@@ -1199,7 +1199,7 @@ var attrs = map[string]attr{
 	},
 	"href": {
 		Name: "Href",
-		Type: "string",
+		Type: "url",
 		Doc:  "specifies the URL of the page the link goes to.",
 	},
 	"hreflang": {
@@ -1423,7 +1423,7 @@ var attrs = map[string]attr{
 	},
 	"src": {
 		Name: "Src",
-		Type: "string",
+		Type: "url",
 		Doc:  "specifies the URL of the media file.",
 	},
 	"srcdoc": {
@@ -1438,7 +1438,7 @@ var attrs = map[string]attr{
 	},
 	"srcset": {
 		Name: "SrcSet",
-		Type: "string",
+		Type: "url",
 		Doc:  "specifies the URL of the image to use in different situations.",
 	},
 	"start": {
@@ -2130,6 +2130,15 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 			}`, strings.ToLower(a.Name))
 		}
 
+	case "url":
+		fmt.Fprintf(w, `%s(v string) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintf(w, `{
+				e.elem.setAttribute("%s", ResolveStaticResourcePath(v))
+				return e
+			}`, strings.ToLower(a.Name))
+		}
+
 	default:
 		fmt.Fprintf(w, `%s(v %s) HTML%s`, a.Name, a.Type, t.Name)
 		if !isInterface {
@@ -2201,6 +2210,9 @@ import (
 
 			case "string":
 				fmt.Fprintln(f, `"foo")`)
+
+			case "url":
+				fmt.Fprintln(f, `"http://foo.com")`)
 
 			default:
 				fmt.Fprintln(f, `42)`)
