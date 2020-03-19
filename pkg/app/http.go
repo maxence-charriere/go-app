@@ -39,7 +39,7 @@ type Handler struct {
 	// The path of the static resources that the browser is caching in order to
 	// provide offline mode.
 	//
-	// Note that Styles and Scripts are already cached by default.
+	// Note that Icon, Styles and Scripts are already cached by default.
 	//
 	// Paths are relative to the root directory.
 	CacheableResources []string
