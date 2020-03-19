@@ -36,6 +36,14 @@ type Handler struct {
 	// DEFAULT: #2d2c2c.
 	BackgroundColor string
 
+	// The path of the static resources that the browser is caching in order to
+	// provide offline mode.
+	//
+	// Note that Icon, Styles and Scripts are already cached by default.
+	//
+	// Paths are relative to the root directory.
+	CacheableResources []string
+
 	// The page description.
 	Description string
 
@@ -55,9 +63,15 @@ type Handler struct {
 	// Additional headers to be added in head element.
 	RawHeaders []string
 
+	// The URL or path of the root directory. The root directory is the location
+	// where app resources are located.
+	//
+	// DEFAULT: ".".
+	RootDir string
+
 	// The paths or urls of the JavaScript files to use with the page.
 	//
-	// Paths are relative to the program location.
+	// Paths are relative to the root directory.
 	Scripts []string
 
 	// The name of the web application displayed to the user when there is not
@@ -66,7 +80,7 @@ type Handler struct {
 
 	// The paths or urls of the CSS files to use with the page.
 	//
-	// Paths are relative to the program location.
+	// Paths are relative to the root directory.
 	Styles []string
 
 	// The theme color for the application. This affects how the OS displays the
@@ -86,18 +100,21 @@ type Handler struct {
 	// development system.
 	Version string
 
-	once         sync.Once
-	etag         string
-	page         bytes.Buffer
-	manifestJSON bytes.Buffer
-	appJS        bytes.Buffer
-	appWorkerJS  bytes.Buffer
-	wasmExecJS   []byte
-	appCSS       []byte
+	once             sync.Once
+	etag             string
+	appWasmPath      string
+	hasRemoteRootDir bool
+	page             bytes.Buffer
+	manifestJSON     bytes.Buffer
+	appJS            bytes.Buffer
+	appWorkerJS      bytes.Buffer
+	wasmExecJS       []byte
+	appCSS           []byte
 }
 
 func (h *Handler) init() {
 	h.initVersion()
+	h.initRootDir()
 	h.initStyles()
 	h.initScripts()
 	h.initIcon()
@@ -117,6 +134,19 @@ func (h *Handler) initVersion() {
 		h.Version = fmt.Sprintf(`%x`, sha1.Sum([]byte(t)))
 	}
 	h.etag = `"` + h.Version + `"`
+}
+
+func (h *Handler) initRootDir() {
+	rootDir := h.RootDir
+	if rootDir == "" {
+		rootDir = "."
+	}
+	rootDir = strings.TrimSuffix(rootDir, "/")
+	rootDir = strings.TrimSuffix(rootDir, `\`)
+	h.RootDir = rootDir
+
+	h.hasRemoteRootDir = isRemoteLocation(rootDir)
+	h.appWasmPath = filepath.Join(rootDir, "app.wasm")
 }
 
 func (h *Handler) initStyles() {
@@ -170,78 +200,82 @@ func (h *Handler) initPWA() {
 }
 
 func (h *Handler) initPage() {
+	remoteRootDir := "false"
+	if h.hasRemoteRootDir {
+		remoteRootDir = h.RootDir
+	}
+
 	h.page.WriteString("<!DOCTYPE html>\n")
-	Html().
-		Body(
-			Head().
+	Html().Body(
+		Head().Body(
+			Meta().Charset("UTF-8"),
+			Meta().
+				HTTPEquiv("Content-Type").
+				Content("text/html; charset=utf-8"),
+			Meta().
+				Name("author").
+				Content(h.Author),
+			Meta().
+				Name("description").
+				Content(h.Description),
+			Meta().
+				Name("keywords").
+				Content(strings.Join(h.Keywords, ", ")),
+			Meta().
+				Name("viewport").
+				Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
+			Title().
 				Body(
-					Meta().Charset("UTF-8"),
-					Meta().
-						HTTPEquiv("Content-Type").
-						Content("text/html; charset=utf-8"),
-					Meta().
-						Name("author").
-						Content(h.Author),
-					Meta().
-						Name("description").
-						Content(h.Description),
-					Meta().
-						Name("keywords").
-						Content(strings.Join(h.Keywords, ", ")),
-					Meta().
-						Name("viewport").
-						Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
-					Title().
-						Body(
-							Text(h.Title),
-						),
-					Link().
-						Rel("icon").
-						Type("image/png").
-						Href(h.Icon.Default),
-					Link().
-						Rel("apple-touch-icon").
-						Href(h.Icon.AppleTouch),
-					Link().
-						Rel("manifest").
-						Href("/manifest.json"),
-					Link().
-						Type("text/css").
-						Rel("stylesheet").
-						Href("/app.css"),
-					Range(h.Styles).Slice(func(i int) UI {
-						return Link().
-							Type("text/css").
-							Rel("stylesheet").
-							Href(h.Styles[i])
-					}),
-					Script().Src("/wasm_exec.js"),
-					Script().Src("/app.js"),
-					Range(h.Scripts).Slice(func(i int) UI {
-						return Script().
-							Src(h.Scripts[i])
-					}),
-					Range(h.RawHeaders).Slice(func(i int) UI {
-						return Raw(h.RawHeaders[i])
-					}),
+					Text(h.Title),
 				),
-			Body().
-				Body(
-					Div().
-						Class("app-wasm-layout").
-						Body(
-							Img().
-								ID("app-wasm-loader-icon").
-								Class("app-wasm-icon app-spin").
-								Src(h.Icon.Default),
-							P().
-								ID("app-wasm-loader-label").
-								Class("app-wasm-label").
-								Body(Text(h.LoadingLabel)),
-						),
-					Div().ID("app-context-menu"),
-				),
-		).
+			Link().
+				Rel("icon").
+				Type("image/png").
+				Href(h.Icon.Default),
+			Link().
+				Rel("apple-touch-icon").
+				Href(h.Icon.AppleTouch),
+			Link().
+				Rel("manifest").
+				Href("/manifest.json"),
+			Link().
+				Type("text/css").
+				Rel("stylesheet").
+				Href("/app.css"),
+			Range(h.Styles).Slice(func(i int) UI {
+				return Link().
+					Type("text/css").
+					Rel("stylesheet").
+					Href(h.Styles[i])
+			}),
+			Script().Src("/wasm_exec.js"),
+			Script().Src("/app.js"),
+			Range(h.Scripts).Slice(func(i int) UI {
+				return Script().
+					Src(h.Scripts[i])
+			}),
+			Range(h.RawHeaders).Slice(func(i int) UI {
+				return Raw(h.RawHeaders[i])
+			}),
+		),
+		Body().
+			DataSet("goapp-remoteRootDir", remoteRootDir).
+			Body(
+				Div().
+					Class("app-wasm-layout").
+					Body(
+						Img().
+							ID("app-wasm-loader-icon").
+							Class("app-wasm-icon app-spin").
+							Src(h.Icon.Default),
+						P().
+							ID("app-wasm-loader-label").
+							Class("app-wasm-label").
+							Body(Text(h.LoadingLabel)),
+					),
+				Div().ID("app-context-menu"),
+			),
+	).
 		html(&h.page)
 }
 
@@ -250,12 +284,17 @@ func (h *Handler) initWasmJS() {
 }
 
 func (h *Handler) initAppJS() {
+	wasmURL := "/app.wasm"
+	if h.hasRemoteRootDir {
+		wasmURL = h.RootDir + wasmURL
+	}
+
 	if err := template.
 		Must(template.New("app.js").Parse(appJS)).
 		Execute(&h.appJS, struct {
 			Wasm string
 		}{
-			Wasm: "/app.wasm",
+			Wasm: wasmURL,
 		}); err != nil {
 		log.Error("initializing app.js failed").
 			T("error", err).
@@ -269,15 +308,26 @@ func (h *Handler) initWorkerJS() {
 	cacheableResources["/app.js"] = struct{}{}
 	cacheableResources["/app.css"] = struct{}{}
 	cacheableResources["/manifest.json"] = struct{}{}
-	cacheableResources["/app.wasm"] = struct{}{}
 	cacheableResources[h.Icon.Default] = struct{}{}
 	cacheableResources[h.Icon.Large] = struct{}{}
 	cacheableResources[h.Icon.AppleTouch] = struct{}{}
 	cacheableResources["/"] = struct{}{}
 
-	for _, resource := range staticResources(".") {
-		cacheableResources[resource] = struct{}{}
+	wasmPath := "/app.wasm"
+	if h.hasRemoteRootDir {
+		wasmPath = h.RootDir + wasmPath
 	}
+	cacheableResources[wasmPath] = struct{}{}
+
+	cacheResources := func(res []string) {
+		for _, r := range res {
+			r = h.staticResource(r)
+			cacheableResources[r] = struct{}{}
+		}
+	}
+	cacheResources(h.Styles)
+	cacheResources(h.Scripts)
+	cacheResources(h.CacheableResources)
 
 	if err := template.
 		Must(template.New("app-worker.js").Parse(appWorkerJS)).
@@ -358,13 +408,13 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case "/app.wasm", "/goapp.wasm":
-		http.ServeFile(w, r, "app.wasm")
+		http.ServeFile(w, r, h.appWasmPath)
 		return
 	}
 
 	if strings.HasPrefix(path, "/web/") {
-		filename := strings.TrimPrefix(path, "/")
-		filename = normalizeFilePath(filename)
+		filename := normalizeFilePath(path)
+		filename = filepath.Join(h.RootDir, filename)
 		if fi, err := os.Stat(filename); err == nil && !fi.IsDir() {
 			http.ServeFile(w, r, filename)
 			return
@@ -417,13 +467,15 @@ func (h *Handler) serveAppCSS(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) staticResource(path string) string {
-	u, _ := url.Parse(path)
-	if u.Scheme != "" {
+	if isRemoteLocation(path) {
 		return path
 	}
 
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
+	}
+	if h.hasRemoteRootDir {
+		path = h.RootDir + path
 	}
 	return path
 }
@@ -433,19 +485,19 @@ func (h *Handler) staticResource(path string) string {
 type Icon struct {
 	// The path or url to a square image/png file. It must have a side of 192px.
 	//
-	// Path is relative to the program location.
+	// Path is relative to the root directory.
 	Default string
 
 	// The path or url to larger square image/png file. It must have a side of
 	// 512px.
 	//
-	// Path is relative to the program location.
+	// Path is relative to the root directory.
 	Large string
 
 	// The path or url to a square image/png file that is used for IOS/IPadOS
 	// home screen icon. It must have a side of 192px.
 	//
-	// Path is relative to the program location.
+	// Path is relative to the root directory.
 	//
 	// DEFAULT: Icon.Default
 	AppleTouch string
@@ -458,29 +510,7 @@ func normalizeFilePath(path string) string {
 	return path
 }
 
-func staticResources(basedir string) []string {
-	var filenames []string
-	webdir := filepath.Join(basedir, "web")
-
-	filepath.Walk(webdir, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if info.IsDir() {
-			return nil
-		}
-
-		path = strings.TrimPrefix(path, basedir)
-		if !strings.HasPrefix(path, "/") {
-			path = "/" + path
-		}
-		if runtime.GOOS == "windows" {
-			path = strings.ReplaceAll(path, `\`, "/")
-		}
-		filenames = append(filenames, path)
-		return nil
-	})
-
-	return filenames
+func isRemoteLocation(path string) bool {
+	u, _ := url.Parse(path)
+	return u.Scheme != ""
 }

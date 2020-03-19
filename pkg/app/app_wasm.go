@@ -35,6 +35,7 @@ func run() {
 		panic(err)
 	}()
 
+	initRemoteRootDir()
 	initContent()
 	initContextMenu()
 
@@ -71,6 +72,15 @@ func displayLoadError(err interface{}) {
 		return
 	}
 	loadingLabel.Set("innerText", fmt.Sprint(err))
+}
+
+func initRemoteRootDir() {
+	body := Window().Get("document").Get("body")
+	jsRemoteRootDir := body.Call("getAttribute", "data-goapp-remoteRootDir").String()
+
+	if jsRemoteRootDir != "false" {
+		remoteRootDir = jsRemoteRootDir
+	}
 }
 
 func initContent() {

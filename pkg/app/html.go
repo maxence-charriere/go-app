@@ -235,7 +235,7 @@ func (e *htmlA) Hidden(v bool) HTMLA {
 }
 
 func (e *htmlA) Href(v string) HTMLA {
-	e.elem.setAttribute("href", v)
+	e.elem.setAttribute("href", ResolveStaticResourcePath(v))
 	return e
 }
 
@@ -1498,7 +1498,7 @@ func (e *htmlArea) Hidden(v bool) HTMLArea {
 }
 
 func (e *htmlArea) Href(v string) HTMLArea {
-	e.elem.setAttribute("href", v)
+	e.elem.setAttribute("href", ResolveStaticResourcePath(v))
 	return e
 }
 
@@ -2856,7 +2856,7 @@ func (e *htmlAudio) Spellcheck(v bool) HTMLAudio {
 }
 
 func (e *htmlAudio) Src(v string) HTMLAudio {
-	e.elem.setAttribute("src", v)
+	e.elem.setAttribute("src", ResolveStaticResourcePath(v))
 	return e
 }
 
@@ -3748,7 +3748,7 @@ func (e *htmlBase) Hidden(v bool) HTMLBase {
 }
 
 func (e *htmlBase) Href(v string) HTMLBase {
-	e.elem.setAttribute("href", v)
+	e.elem.setAttribute("href", ResolveStaticResourcePath(v))
 	return e
 }
 
@@ -4922,7 +4922,7 @@ func (e *htmlBlockquote) AccessKey(v string) HTMLBlockquote {
 }
 
 func (e *htmlBlockquote) Cite(v string) HTMLBlockquote {
-	e.elem.setAttribute("cite", v)
+	e.elem.setAttribute("cite", ResolveStaticResourcePath(v))
 	return e
 }
 
@@ -10070,7 +10070,7 @@ func (e *htmlDel) AccessKey(v string) HTMLDel {
 }
 
 func (e *htmlDel) Cite(v string) HTMLDel {
-	e.elem.setAttribute("cite", v)
+	e.elem.setAttribute("cite", ResolveStaticResourcePath(v))
 	return e
 }
 
@@ -13408,7 +13408,7 @@ func (e *htmlEmbed) Spellcheck(v bool) HTMLEmbed {
 }
 
 func (e *htmlEmbed) Src(v string) HTMLEmbed {
-	e.elem.setAttribute("src", v)
+	e.elem.setAttribute("src", ResolveStaticResourcePath(v))
 	return e
 }
 
@@ -19893,7 +19893,7 @@ func (e *htmlIFrame) Spellcheck(v bool) HTMLIFrame {
 }
 
 func (e *htmlIFrame) Src(v string) HTMLIFrame {
-	e.elem.setAttribute("src", v)
+	e.elem.setAttribute("src", ResolveStaticResourcePath(v))
 	return e
 }
 
@@ -20410,12 +20410,12 @@ func (e *htmlImg) Spellcheck(v bool) HTMLImg {
 }
 
 func (e *htmlImg) Src(v string) HTMLImg {
-	e.elem.setAttribute("src", v)
+	e.elem.setAttribute("src", ResolveStaticResourcePath(v))
 	return e
 }
 
 func (e *htmlImg) SrcSet(v string) HTMLImg {
-	e.elem.setAttribute("srcset", v)
+	e.elem.setAttribute("srcset", ResolveStaticResourcePath(v))
 	return e
 }
 
@@ -21154,7 +21154,7 @@ func (e *htmlInput) Spellcheck(v bool) HTMLInput {
 }
 
 func (e *htmlInput) Src(v string) HTMLInput {
-	e.elem.setAttribute("src", v)
+	e.elem.setAttribute("src", ResolveStaticResourcePath(v))
 	return e
 }
 
@@ -23575,7 +23575,7 @@ func (e *htmlLink) Hidden(v bool) HTMLLink {
 }
 
 func (e *htmlLink) Href(v string) HTMLLink {
-	e.elem.setAttribute("href", v)
+	e.elem.setAttribute("href", ResolveStaticResourcePath(v))
 	return e
 }
 
@@ -26427,7 +26427,7 @@ func (e *htmlObject) ContentEditable(v bool) HTMLObject {
 }
 
 func (e *htmlObject) Data(v string) HTMLObject {
-	e.elem.setAttribute("data", v)
+	e.elem.setAttribute("data", ResolveStaticResourcePath(v))
 	return e
 }
 
@@ -30660,7 +30660,7 @@ func (e *htmlQ) AccessKey(v string) HTMLQ {
 }
 
 func (e *htmlQ) Cite(v string) HTMLQ {
-	e.elem.setAttribute("cite", v)
+	e.elem.setAttribute("cite", ResolveStaticResourcePath(v))
 	return e
 }
 
@@ -33031,7 +33031,7 @@ func (e *htmlScript) Spellcheck(v bool) HTMLScript {
 }
 
 func (e *htmlScript) Src(v string) HTMLScript {
-	e.elem.setAttribute("src", v)
+	e.elem.setAttribute("src", ResolveStaticResourcePath(v))
 	return e
 }
 
@@ -34542,12 +34542,12 @@ func (e *htmlSource) Spellcheck(v bool) HTMLSource {
 }
 
 func (e *htmlSource) Src(v string) HTMLSource {
-	e.elem.setAttribute("src", v)
+	e.elem.setAttribute("src", ResolveStaticResourcePath(v))
 	return e
 }
 
 func (e *htmlSource) SrcSet(v string) HTMLSource {
-	e.elem.setAttribute("srcset", v)
+	e.elem.setAttribute("srcset", ResolveStaticResourcePath(v))
 	return e
 }
 
@@ -42300,7 +42300,7 @@ func (e *htmlVideo) Spellcheck(v bool) HTMLVideo {
 }
 
 func (e *htmlVideo) Src(v string) HTMLVideo {
-	e.elem.setAttribute("src", v)
+	e.elem.setAttribute("src", ResolveStaticResourcePath(v))
 	return e
 }
 
