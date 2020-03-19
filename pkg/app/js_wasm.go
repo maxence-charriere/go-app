@@ -183,3 +183,11 @@ func jsval(v Value) js.Value {
 		return js.Undefined()
 	}
 }
+
+func copyBytesToGo(dst []byte, src Value) int {
+	return js.CopyBytesToGo(dst, jsval(src))
+}
+
+func copyBytesToJS(dst Value, src []byte) int {
+	return js.CopyBytesToJS(jsval(dst), src)
+}

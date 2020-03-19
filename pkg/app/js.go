@@ -193,3 +193,21 @@ type Event struct {
 func (e Event) PreventDefault() {
 	e.Call("preventDefault")
 }
+
+// CopyBytesToGo copies bytes from the Uint8Array src to dst. It returns the
+// number of bytes copied, which will be the minimum of the lengths of src and
+// dst.
+//
+// CopyBytesToGo panics if src is not an Uint8Array.
+func CopyBytesToGo(dst []byte, src Value) int {
+	return copyBytesToGo(dst, src)
+}
+
+// CopyBytesToJS copies bytes from src to the Uint8Array dst. It returns the
+// number of bytes copied, which will be the minimum of the lengths of src and
+// dst.
+//
+// CopyBytesToJS panics if dst is not an Uint8Array.
+func CopyBytesToJS(dst Value, src []byte) int {
+	return copyBytesToJS(dst, src)
+}
