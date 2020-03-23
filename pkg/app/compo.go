@@ -110,7 +110,11 @@ func (c *Compo) replaceChild(old, new UI) {
 // Update update the component appearance. It should be called when a field
 // used to render the component has been modified.
 func (c *Compo) Update() {
-	Dispatch(func() {
+	dispatcher(func() {
+		if c.compo == nil {
+			return
+		}
+
 		current := c.root
 		incoming := c.compo.Render().(UI)
 
