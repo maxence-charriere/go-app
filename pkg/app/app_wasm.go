@@ -114,11 +114,12 @@ func onNavigate(this Value, args []Value) interface{} {
 		elem = event.Get("srcElement")
 	}
 
+find:
 	for {
 		switch elem.Get("tagName").String() {
 		case "A":
 			url = elem.Get("href").String()
-			break
+			break find
 
 		case "BODY":
 			return nil
