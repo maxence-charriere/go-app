@@ -107,8 +107,12 @@ func initContextMenu() {
 
 func onNavigate(this Value, args []Value) interface{} {
 	url := ""
-	elem := this
 	event := Event{Value: args[0]}
+
+	elem := event.Get("target")
+	if !elem.Truthy() {
+		elem = event.Get("srcElement")
+	}
 
 	for {
 		switch elem.Get("tagName").String() {
