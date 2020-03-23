@@ -114,12 +114,12 @@ func onNavigate(this Value, args []Value) interface{} {
 		elem = event.Get("srcElement")
 	}
 
-find:
+findAnchor:
 	for {
 		switch elem.Get("tagName").String() {
 		case "A":
 			url = elem.Get("href").String()
-			break find
+			break findAnchor
 
 		case "BODY":
 			return nil
