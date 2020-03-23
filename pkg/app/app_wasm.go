@@ -106,23 +106,29 @@ func initContextMenu() {
 }
 
 func onNavigate(this Value, args []Value) interface{} {
+	url := ""
+	elem := this
 	event := Event{Value: args[0]}
-	elem := event.Get("target")
-	if !elem.Truthy() {
-		elem = event.Get("srcElement")
-	}
 
-	var u string
-	switch elem.Get("tagName").String() {
-	case "A":
-		u = elem.Get("href").String()
+	for {
+		switch elem.Get("tagName").String() {
+		case "A":
+			url = elem.Get("href").String()
+			break
 
-	default:
-		return nil
+		case "BODY":
+			return nil
+
+		default:
+			elem = elem.Get("parentElement")
+			if !elem.Truthy() {
+				return nil
+			}
+		}
 	}
 
 	event.PreventDefault()
-	Navigate(u)
+	Navigate(url)
 	return nil
 
 }
