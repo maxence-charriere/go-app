@@ -106,30 +106,43 @@ func initContextMenu() {
 }
 
 func onNavigate(this Value, args []Value) interface{} {
+	url := ""
 	event := Event{Value: args[0]}
+
 	elem := event.Get("target")
 	if !elem.Truthy() {
 		elem = event.Get("srcElement")
 	}
 
-	var u string
-	switch elem.Get("tagName").String() {
-	case "A":
-		u = elem.Get("href").String()
+findAnchor:
+	for {
+		switch elem.Get("tagName").String() {
+		case "A":
+			url = elem.Get("href").String()
+			break findAnchor
 
-	default:
-		return nil
+		case "BODY":
+			return nil
+
+		default:
+			elem = elem.Get("parentElement")
+			if !elem.Truthy() {
+				return nil
+			}
+		}
 	}
 
 	event.PreventDefault()
-	Navigate(u)
+	Navigate(url)
 	return nil
 
 }
 
 func onPopState(this Value, args []Value) interface{} {
 	if u := Window().URL(); u.Fragment == "" {
-		navigate(u, false)
+		dispatcher(func() {
+			navigate(u, false)
+		})
 	}
 	return nil
 }
