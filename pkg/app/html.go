@@ -39816,6 +39816,403 @@ func (e *htmlTh) nodeType() reflect.Type {
 	return reflect.TypeOf(e)
 }
 
+// HTMLTHead is the interface that describes a <thead> HTML element.
+type HTMLTHead interface {
+	standardNode
+	writableNode
+
+	// Body set the content of the element.
+	Body(nodes ...Node) HTMLTHead
+
+	// AccessKey specifies a shortcut key to activate/focus an element.
+	AccessKey(v string) HTMLTHead
+
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	Class(v string) HTMLTHead
+
+	// ContentEditable specifies whether the content of an element is editable or not.
+	ContentEditable(v bool) HTMLTHead
+
+	// DataSet stores custom data private to the page or application.
+	DataSet(k string, v interface{}) HTMLTHead
+
+	// Dir specifies the text direction for the content in an element.
+	Dir(v string) HTMLTHead
+
+	// Draggable specifies whether an element is draggable or not.
+	Draggable(v bool) HTMLTHead
+
+	// Hidden specifies that an element is not yet, or is no longer relevant.
+	Hidden(v bool) HTMLTHead
+
+	// ID specifies a unique id for an element.
+	ID(v string) HTMLTHead
+
+	// Lang specifies the language of the element's content.
+	Lang(v string) HTMLTHead
+
+	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
+	Spellcheck(v bool) HTMLTHead
+
+	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+	Style(k, v string) HTMLTHead
+
+	// TabIndex specifies the tabbing order of an element.
+	TabIndex(v int) HTMLTHead
+
+	// Title specifies extra information about an element.
+	Title(v string) HTMLTHead
+
+	// OnBlur calls the given handler when the element loses focus.
+	OnBlur(h EventHandler) HTMLTHead
+
+	// OnChange calls the given handler when the value of the element is changed.
+	OnChange(h EventHandler) HTMLTHead
+
+	// OnClick calls the given handler when there is a mouse click on the element.
+	OnClick(h EventHandler) HTMLTHead
+
+	// OnContextMenu calls the given handler when a context menu is triggered.
+	OnContextMenu(h EventHandler) HTMLTHead
+
+	// OnCopy calls the given handler when the user copies the content of an element.
+	OnCopy(h EventHandler) HTMLTHead
+
+	// OnCut calls the given handler when the user cuts the content of an element.
+	OnCut(h EventHandler) HTMLTHead
+
+	// OnDblClick calls the given handler when there is a mouse double-click on the element.
+	OnDblClick(h EventHandler) HTMLTHead
+
+	// OnDrag calls the given handler when an element is dragged.
+	OnDrag(h EventHandler) HTMLTHead
+
+	// OnDragEnd calls the given handler at the end of a drag operation.
+	OnDragEnd(h EventHandler) HTMLTHead
+
+	// OnDragEnter calls the given handler when an element has been dragged to a valid drop target.
+	OnDragEnter(h EventHandler) HTMLTHead
+
+	// OnDragLeave calls the given handler when an element leaves a valid drop target.
+	OnDragLeave(h EventHandler) HTMLTHead
+
+	// OnDragOver calls the given handler when an element is being dragged over a valid drop target.
+	OnDragOver(h EventHandler) HTMLTHead
+
+	// OnDragStart calls the given handler at the start of a drag operation.
+	OnDragStart(h EventHandler) HTMLTHead
+
+	// OnDrop calls the given handler when dragged element is being dropped.
+	OnDrop(h EventHandler) HTMLTHead
+
+	// OnFocus calls the given handler when the element gets focus.
+	OnFocus(h EventHandler) HTMLTHead
+
+	// OnInput calls the given handler when an element gets user input.
+	OnInput(h EventHandler) HTMLTHead
+
+	// OnInvalid calls the given handler when an element is invalid.
+	OnInvalid(h EventHandler) HTMLTHead
+
+	// OnKeyDown calls the given handler when a user is pressing a key.
+	OnKeyDown(h EventHandler) HTMLTHead
+
+	// OnKeyPress calls the given handler when a user presses a key.
+	OnKeyPress(h EventHandler) HTMLTHead
+
+	// OnKeyup calls the given handler when a user releases a key.
+	OnKeyup(h EventHandler) HTMLTHead
+
+	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
+	OnMouseDown(h EventHandler) HTMLTHead
+
+	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
+	OnMouseMove(h EventHandler) HTMLTHead
+
+	// OnMouseOut calls the given handler when the mouse pointer moves out of an element.
+	OnMouseOut(h EventHandler) HTMLTHead
+
+	// OnMouseOver calls the given handler when the mouse pointer moves over an element.
+	OnMouseOver(h EventHandler) HTMLTHead
+
+	// OnMouseUp calls the given handler when a mouse button is released over an element.
+	OnMouseUp(h EventHandler) HTMLTHead
+
+	// OnPaste calls the given handler when the user pastes some content in an element.
+	OnPaste(h EventHandler) HTMLTHead
+
+	// OnReset calls the given handler when the Reset button in a form is clicked.
+	OnReset(h EventHandler) HTMLTHead
+
+	// OnScroll calls the given handler when an element's scrollbar is being scrolled.
+	OnScroll(h EventHandler) HTMLTHead
+
+	// OnSearch calls the given handler when the user writes something in a search field.
+	OnSearch(h EventHandler) HTMLTHead
+
+	// OnSelect calls the given handler after some text has been selected in an element.
+	OnSelect(h EventHandler) HTMLTHead
+
+	// OnSubmit calls the given handler when a form is submitted.
+	OnSubmit(h EventHandler) HTMLTHead
+
+	// OnWheel calls the given handler when the mouse wheel rolls up or down over an element.
+	OnWheel(h EventHandler) HTMLTHead
+}
+
+// THead returns an HTML element that groups the header content in a table
+func THead() HTMLTHead {
+	return &htmlTHead{
+		elem: elem{
+			tag:         "thead",
+			selfClosing: false,
+		},
+	}
+}
+
+type htmlTHead struct {
+	elem
+}
+
+func (e *htmlTHead) Body(nodes ...Node) HTMLTHead {
+	e.setBody(e, nodes)
+	return e
+}
+
+func (e *htmlTHead) AccessKey(v string) HTMLTHead {
+	e.elem.setAttribute("accesskey", v)
+	return e
+}
+
+func (e *htmlTHead) Class(v string) HTMLTHead {
+	e.elem.setAttribute("class", v)
+	return e
+}
+
+func (e *htmlTHead) ContentEditable(v bool) HTMLTHead {
+	e.elem.setAttribute("contenteditable", v)
+	return e
+}
+
+func (e *htmlTHead) DataSet(k string, v interface{}) HTMLTHead {
+	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTHead) Dir(v string) HTMLTHead {
+	e.elem.setAttribute("dir", v)
+	return e
+}
+
+func (e *htmlTHead) Draggable(v bool) HTMLTHead {
+	e.elem.setAttribute("draggable", v)
+	return e
+}
+
+func (e *htmlTHead) Hidden(v bool) HTMLTHead {
+	e.elem.setAttribute("hidden", v)
+	return e
+}
+
+func (e *htmlTHead) ID(v string) HTMLTHead {
+	e.elem.setAttribute("id", v)
+	return e
+}
+
+func (e *htmlTHead) Lang(v string) HTMLTHead {
+	e.elem.setAttribute("lang", v)
+	return e
+}
+
+func (e *htmlTHead) Spellcheck(v bool) HTMLTHead {
+	s := "false"
+	if v {
+		s = "true"
+	}
+
+	e.elem.setAttribute("spellcheck", s)
+	return e
+}
+
+func (e *htmlTHead) Style(k, v string) HTMLTHead {
+	e.elem.setAttribute("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTHead) TabIndex(v int) HTMLTHead {
+	e.elem.setAttribute("tabindex", v)
+	return e
+}
+
+func (e *htmlTHead) Title(v string) HTMLTHead {
+	e.elem.setAttribute("title", v)
+	return e
+}
+
+func (e *htmlTHead) OnBlur(h EventHandler) HTMLTHead {
+	e.setEventHandler("blur", h)
+	return e
+}
+
+func (e *htmlTHead) OnChange(h EventHandler) HTMLTHead {
+	e.setEventHandler("change", h)
+	return e
+}
+
+func (e *htmlTHead) OnClick(h EventHandler) HTMLTHead {
+	e.setEventHandler("click", h)
+	return e
+}
+
+func (e *htmlTHead) OnContextMenu(h EventHandler) HTMLTHead {
+	e.setEventHandler("contextmenu", h)
+	return e
+}
+
+func (e *htmlTHead) OnCopy(h EventHandler) HTMLTHead {
+	e.setEventHandler("copy", h)
+	return e
+}
+
+func (e *htmlTHead) OnCut(h EventHandler) HTMLTHead {
+	e.setEventHandler("cut", h)
+	return e
+}
+
+func (e *htmlTHead) OnDblClick(h EventHandler) HTMLTHead {
+	e.setEventHandler("dblclick", h)
+	return e
+}
+
+func (e *htmlTHead) OnDrag(h EventHandler) HTMLTHead {
+	e.setEventHandler("drag", h)
+	return e
+}
+
+func (e *htmlTHead) OnDragEnd(h EventHandler) HTMLTHead {
+	e.setEventHandler("dragend", h)
+	return e
+}
+
+func (e *htmlTHead) OnDragEnter(h EventHandler) HTMLTHead {
+	e.setEventHandler("dragenter", h)
+	return e
+}
+
+func (e *htmlTHead) OnDragLeave(h EventHandler) HTMLTHead {
+	e.setEventHandler("dragleave", h)
+	return e
+}
+
+func (e *htmlTHead) OnDragOver(h EventHandler) HTMLTHead {
+	e.setEventHandler("dragover", h)
+	return e
+}
+
+func (e *htmlTHead) OnDragStart(h EventHandler) HTMLTHead {
+	e.setEventHandler("dragstart", h)
+	return e
+}
+
+func (e *htmlTHead) OnDrop(h EventHandler) HTMLTHead {
+	e.setEventHandler("drop", h)
+	return e
+}
+
+func (e *htmlTHead) OnFocus(h EventHandler) HTMLTHead {
+	e.setEventHandler("focus", h)
+	return e
+}
+
+func (e *htmlTHead) OnInput(h EventHandler) HTMLTHead {
+	e.setEventHandler("input", h)
+	return e
+}
+
+func (e *htmlTHead) OnInvalid(h EventHandler) HTMLTHead {
+	e.setEventHandler("invalid", h)
+	return e
+}
+
+func (e *htmlTHead) OnKeyDown(h EventHandler) HTMLTHead {
+	e.setEventHandler("keydown", h)
+	return e
+}
+
+func (e *htmlTHead) OnKeyPress(h EventHandler) HTMLTHead {
+	e.setEventHandler("keypress", h)
+	return e
+}
+
+func (e *htmlTHead) OnKeyup(h EventHandler) HTMLTHead {
+	e.setEventHandler("keyup", h)
+	return e
+}
+
+func (e *htmlTHead) OnMouseDown(h EventHandler) HTMLTHead {
+	e.setEventHandler("mousedown", h)
+	return e
+}
+
+func (e *htmlTHead) OnMouseMove(h EventHandler) HTMLTHead {
+	e.setEventHandler("mousemove", h)
+	return e
+}
+
+func (e *htmlTHead) OnMouseOut(h EventHandler) HTMLTHead {
+	e.setEventHandler("mouseout", h)
+	return e
+}
+
+func (e *htmlTHead) OnMouseOver(h EventHandler) HTMLTHead {
+	e.setEventHandler("mouseover", h)
+	return e
+}
+
+func (e *htmlTHead) OnMouseUp(h EventHandler) HTMLTHead {
+	e.setEventHandler("mouseup", h)
+	return e
+}
+
+func (e *htmlTHead) OnPaste(h EventHandler) HTMLTHead {
+	e.setEventHandler("paste", h)
+	return e
+}
+
+func (e *htmlTHead) OnReset(h EventHandler) HTMLTHead {
+	e.setEventHandler("reset", h)
+	return e
+}
+
+func (e *htmlTHead) OnScroll(h EventHandler) HTMLTHead {
+	e.setEventHandler("scroll", h)
+	return e
+}
+
+func (e *htmlTHead) OnSearch(h EventHandler) HTMLTHead {
+	e.setEventHandler("search", h)
+	return e
+}
+
+func (e *htmlTHead) OnSelect(h EventHandler) HTMLTHead {
+	e.setEventHandler("select", h)
+	return e
+}
+
+func (e *htmlTHead) OnSubmit(h EventHandler) HTMLTHead {
+	e.setEventHandler("submit", h)
+	return e
+}
+
+func (e *htmlTHead) OnWheel(h EventHandler) HTMLTHead {
+	e.setEventHandler("wheel", h)
+	return e
+}
+
+func (e *htmlTHead) nodeType() reflect.Type {
+	return reflect.TypeOf(e)
+}
+
 // HTMLTime is the interface that describes a <time> HTML element.
 type HTMLTime interface {
 	standardNode
