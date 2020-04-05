@@ -248,12 +248,6 @@ func (h *Handler) initPage() {
 					Rel("stylesheet").
 					Href(h.Styles[i])
 			}),
-			Script().Src("/wasm_exec.js"),
-			Script().Src("/app.js"),
-			Range(h.Scripts).Slice(func(i int) UI {
-				return Script().
-					Src(h.Scripts[i])
-			}),
 			Range(h.RawHeaders).Slice(func(i int) UI {
 				return Raw(h.RawHeaders[i])
 			}),
@@ -274,6 +268,12 @@ func (h *Handler) initPage() {
 							Body(Text(h.LoadingLabel)),
 					),
 				Div().ID("app-context-menu"),
+				Script().Src("/wasm_exec.js"),
+				Script().Src("/app.js"),
+				Range(h.Scripts).Slice(func(i int) UI {
+					return Script().
+						Src(h.Scripts[i])
+				}),
 			),
 	).
 		html(&h.page)
