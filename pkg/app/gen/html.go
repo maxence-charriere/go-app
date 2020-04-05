@@ -902,6 +902,12 @@ var tags = []tag{
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
+		Name:          "THead",
+		Doc:           "groups the header content in a table",
+		Attrs:         withGlobalAttrs(),
+		EventHandlers: withGlobalEventHandlers(),
+	},
+	{
 		Name: "Time",
 		Doc:  "defines a date/time.",
 		Attrs: withGlobalAttrs(attrsByNames(
