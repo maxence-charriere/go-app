@@ -196,7 +196,7 @@ func newContextMenu(menuItems ...MenuItemNode) {
 }
 
 func getenv(k string) string {
-	env := Window().Get("goappEnv").Get(k)
+	env := Window().Call("goappGetenv", k)
 	if !env.Truthy() {
 		return ""
 	}
