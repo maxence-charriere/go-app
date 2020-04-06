@@ -36,3 +36,8 @@ func panicNoWasm() {
 		T("current", runtime.GOARCH).
 		Panic()
 }
+
+func getenv(k string) string {
+	panicNoWasm()
+	return ""
+}

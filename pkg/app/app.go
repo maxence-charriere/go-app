@@ -127,3 +127,9 @@ func ResolveStaticResourcePath(path string) string {
 
 	return remoteRootDir + path
 }
+
+// Getenv retrieves the value of the environment variable named by the key. It
+// returns the value, which will be empty if the variable is not present.
+func Getenv(k string) string {
+	return getenv(k)
+}
