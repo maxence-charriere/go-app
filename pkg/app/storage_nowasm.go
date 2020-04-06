@@ -17,6 +17,9 @@ func (s memoryStorage) Set(k string, v interface{}) error {
 }
 
 func (s memoryStorage) Get(k string, v interface{}) error {
+	if _, ok := s[k]; !ok {
+		return nil
+	}
 	return json.Unmarshal(s[k], v)
 }
 
