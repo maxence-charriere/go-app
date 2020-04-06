@@ -28,9 +28,12 @@ var (
 
 	remoteRootDir string
 	routes        router
-	uiChan        = make(chan func(), 256)
-	dispatcher    = Dispatch
+	dispatcher    Dispatcher = Dispatch
+	uiChan                   = make(chan func(), 256)
 )
+
+// Dispatcher is a function that executes the given function on the goroutine dedicated to UI.
+type Dispatcher func(func())
 
 // EventHandler represents a function that can handle HTML events.
 type EventHandler func(src Value, e Event)
