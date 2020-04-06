@@ -15,6 +15,10 @@ func stob(s string) []byte {
 	return *(*[]byte)(unsafe.Pointer(&s))
 }
 
+func btos(b []byte) string {
+	return *(*string)(unsafe.Pointer(&b))
+}
+
 func ln() []byte {
 	return stob("\n")
 }

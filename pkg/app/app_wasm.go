@@ -75,12 +75,7 @@ func displayLoadError(err interface{}) {
 }
 
 func initRemoteRootDir() {
-	body := Window().Get("document").Get("body")
-	jsRemoteRootDir := body.Call("getAttribute", "data-goapp-remoteRootDir").String()
-
-	if jsRemoteRootDir != "false" {
-		remoteRootDir = jsRemoteRootDir
-	}
+	remoteRootDir = Getenv("GOAPP_REMOTE_ROOT_DIR")
 }
 
 func initContent() {
@@ -198,4 +193,12 @@ func reload() {
 
 func newContextMenu(menuItems ...MenuItemNode) {
 	contextMenu.show(menuItems...)
+}
+
+func getenv(k string) string {
+	env := Window().Call("goappGetenv", k)
+	if !env.Truthy() {
+		return ""
+	}
+	return env.String()
 }

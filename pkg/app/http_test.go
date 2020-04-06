@@ -8,7 +8,6 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -47,7 +46,6 @@ func TestHandlerServePage(t *testing.T) {
 	require.Contains(t, body, `href="/manifest.json"`)
 	require.Contains(t, body, `href="/app.css"`)
 	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
-	require.Contains(t, body, `<body data-goapp-remoteRootDir="false"`)
 
 	t.Log(body)
 }
@@ -86,7 +84,6 @@ func TestHandlerServePageWithRemoteRootDir(t *testing.T) {
 	require.Contains(t, body, `href="/manifest.json"`)
 	require.Contains(t, body, `href="/app.css"`)
 	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
-	require.Contains(t, body, `<body data-goapp-remoteRootDir="https://storage.googleapis.com/go-app"`)
 
 	t.Log(body)
 }
@@ -109,10 +106,13 @@ func TestHandlerServeAppJS(t *testing.T) {
 
 	h := Handler{}
 	h.ServeHTTP(w, r)
+	body := w.Body.String()
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Equal(t, strings.ReplaceAll(appJS, "{{.Wasm}}", "/app.wasm"), w.Body.String())
+	require.Contains(t, body, `fetch("/app.wasm"`)
+	require.Contains(t, body, "GOAPP_VERSION")
+	require.NotContains(t, body, "GOAPP_REMOTE_ROOT_DIR")
 }
 
 func TestHandlerServeAppJSWithRemoteRootDir(t *testing.T) {
@@ -123,10 +123,34 @@ func TestHandlerServeAppJSWithRemoteRootDir(t *testing.T) {
 		RootDir: "https://storage.googleapis.com/go-app/",
 	}
 	h.ServeHTTP(w, r)
+	body := w.Body.String()
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Equal(t, strings.ReplaceAll(appJS, "{{.Wasm}}", "https://storage.googleapis.com/go-app/app.wasm"), w.Body.String())
+	require.Contains(t, body, `fetch("https://storage.googleapis.com/go-app/app.wasm"`)
+	require.Contains(t, body, "GOAPP_VERSION")
+	require.Contains(t, body, "GOAPP_REMOTE_ROOT_DIR")
+}
+
+func TestHandlerServeAppJSWithEnv(t *testing.T) {
+	r := httptest.NewRequest(http.MethodGet, "/app.js", nil)
+	w := httptest.NewRecorder()
+
+	h := Handler{
+		Env: Environment{
+			"FOO": "foo",
+			"BAR": "bar",
+		},
+	}
+	h.ServeHTTP(w, r)
+	body := w.Body.String()
+
+	require.Equal(t, http.StatusOK, w.Code)
+	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
+	require.Contains(t, body, "GOAPP_VERSION")
+	require.Contains(t, body, `"FOO":"foo"`)
+	require.Contains(t, body, `"BAR":"bar"`)
+	require.NotContains(t, body, "GOAPP_REMOTE_ROOT_DIR")
 }
 
 func TestHandlerServeAppWorkerJS(t *testing.T) {
