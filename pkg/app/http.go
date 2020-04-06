@@ -50,7 +50,9 @@ type Handler struct {
 
 	// The environment variables that are passed to the progressive web app.
 	//
-	//
+	// Reserved keys:
+	// - GOAPP_VERSION
+	// - GOAPP_REMOTE_ROOT_DIR
 	Env Environment
 
 	// The icon that is used for the PWA, favicon, loading and default not
