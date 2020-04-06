@@ -16,7 +16,7 @@ if ("serviceWorker" in navigator) {
 // Init progressive app
 // -----------------------------------------------------------------------------
 let deferredPrompt;
-const goappEnv = {{.Env }};
+var goappEnv = {{.Env }};
 
 window.addEventListener("beforeinstallprompt", e => {
   e.preventDefault();
