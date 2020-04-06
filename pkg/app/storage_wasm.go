@@ -32,11 +32,11 @@ func newJSStorage(name string) *jsStorage {
 	}
 }
 
-func (s *jsStorage) Set(k string, i interface{}) error {
+func (s *jsStorage) Set(k string, v interface{}) error {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
-	b, err := json.Marshal(i)
+	b, err := json.Marshal(v)
 	if err != nil {
 		return err
 	}

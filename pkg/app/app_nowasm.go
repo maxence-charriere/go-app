@@ -13,6 +13,11 @@ var (
 	window *browserWindow
 )
 
+func init() {
+	LocalStorage = make(memoryStorage)
+	SessionStorage = make(memoryStorage)
+}
+
 func run() {
 	panicNoWasm()
 }
