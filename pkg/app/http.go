@@ -5,6 +5,7 @@ package app
 import (
 	"bytes"
 	"crypto/sha1"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -46,6 +47,11 @@ type Handler struct {
 
 	// The page description.
 	Description string
+
+	// The environment variables that are passed to the progressive web app.
+	//
+	//
+	Env Environment
 
 	// The icon that is used for the PWA, favicon, loading and default not
 	// found component.
@@ -200,11 +206,6 @@ func (h *Handler) initPWA() {
 }
 
 func (h *Handler) initPage() {
-	remoteRootDir := "false"
-	if h.hasRemoteRootDir {
-		remoteRootDir = h.RootDir
-	}
-
 	h.page.WriteString("<!DOCTYPE html>\n")
 	Html().Body(
 		Head().Body(
@@ -252,29 +253,27 @@ func (h *Handler) initPage() {
 				return Raw(h.RawHeaders[i])
 			}),
 		),
-		Body().
-			DataSet("goapp-remoteRootDir", remoteRootDir).
-			Body(
-				Div().
-					Class("app-wasm-layout").
-					Body(
-						Img().
-							ID("app-wasm-loader-icon").
-							Class("app-wasm-icon app-spin").
-							Src(h.Icon.Default),
-						P().
-							ID("app-wasm-loader-label").
-							Class("app-wasm-label").
-							Body(Text(h.LoadingLabel)),
-					),
-				Div().ID("app-context-menu"),
-				Script().Src("/wasm_exec.js"),
-				Script().Src("/app.js"),
-				Range(h.Scripts).Slice(func(i int) UI {
-					return Script().
-						Src(h.Scripts[i])
-				}),
-			),
+		Body().Body(
+			Div().
+				Class("app-wasm-layout").
+				Body(
+					Img().
+						ID("app-wasm-loader-icon").
+						Class("app-wasm-icon app-spin").
+						Src(h.Icon.Default),
+					P().
+						ID("app-wasm-loader-label").
+						Class("app-wasm-label").
+						Body(Text(h.LoadingLabel)),
+				),
+			Div().ID("app-context-menu"),
+			Script().Src("/wasm_exec.js"),
+			Script().Src("/app.js"),
+			Range(h.Scripts).Slice(func(i int) UI {
+				return Script().
+					Src(h.Scripts[i])
+			}),
+		),
 	).
 		html(&h.page)
 }
@@ -289,11 +288,30 @@ func (h *Handler) initAppJS() {
 		wasmURL = h.RootDir + wasmURL
 	}
 
+	if h.Env == nil {
+		h.Env = make(map[string]string, 2)
+	}
+	h.Env["GOAPP_VERSION"] = h.Version
+
+	if h.hasRemoteRootDir {
+		h.Env["GOAPP_REMOTE_ROOT_DIR"] = h.RootDir
+	}
+
+	env, err := json.Marshal(h.Env)
+	if err != nil {
+		log.Error("encoding pwa env failed").
+			T("error", err).
+			T("env", h.Env).
+			Panic()
+	}
+
 	if err := template.
 		Must(template.New("app.js").Parse(appJS)).
 		Execute(&h.appJS, struct {
+			Env  string
 			Wasm string
 		}{
+			Env:  btos(env),
 			Wasm: wasmURL,
 		}); err != nil {
 		log.Error("initializing app.js failed").
@@ -502,6 +520,10 @@ type Icon struct {
 	// DEFAULT: Icon.Default
 	AppleTouch string
 }
+
+// Environment describes the environment variables to pass to the progressive
+// web app.
+type Environment map[string]string
 
 func normalizeFilePath(path string) string {
 	if runtime.GOOS == "windows" {
