@@ -148,6 +148,7 @@ func updateStandardNode(a, b standardNode) error {
 		if err := mount(c); err != nil {
 			return err
 		}
+		c.setParent(a)
 		a.appendChild(c)
 		a.appendChildValue(c)
 		bchildren = bchildren[1:]
