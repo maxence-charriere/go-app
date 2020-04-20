@@ -184,6 +184,12 @@ func jsval(v Value) js.Value {
 	}
 }
 
+// JSValue returns the underlying syscall/js value of the given Javascript
+// value.
+func JSValue(v Value) js.Value {
+	return jsval(v)
+}
+
 func copyBytesToGo(dst []byte, src Value) int {
 	return js.CopyBytesToGo(dst, jsval(src))
 }
