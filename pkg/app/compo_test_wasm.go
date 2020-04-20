@@ -1,9 +1,20 @@
 package app
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/require"
+)
 
 type boo struct {
 	Compo
+	Dismount func()
+}
+
+func (b *boo) OnDismount() {
+	if b.Dismount != nil {
+		b.Dismount()
+	}
 }
 
 func (b *boo) Render() UI {
@@ -14,7 +25,7 @@ type booWithDefaultRender struct {
 	Compo
 }
 
-func TestCompoUmountedUpdate(t *testing.T) {
+func TestCompoUnmountedUpdate(t *testing.T) {
 	tests := []struct {
 		scenario string
 		compo    Composer
@@ -41,4 +52,18 @@ func TestCompoUmountedUpdate(t *testing.T) {
 			test.compo.Update()
 		})
 	}
+}
+
+func TestCompoDismount(t *testing.T) {
+	called := false
+
+	c := &boo{
+		Dismount: func() {
+			called = true
+		},
+	}
+
+	mount(c)
+	c.dismount()
+	require.True(t, called)
 }
