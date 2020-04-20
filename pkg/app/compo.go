@@ -96,7 +96,7 @@ func (c *Compo) setCompo(n Composer) {
 func (c *Compo) dismount() {
 	c.root.dismount()
 
-	if dismounter, ok := c.root.(Dismounter); ok {
+	if dismounter, ok := c.compo.(Dismounter); ok {
 		dismounter.OnDismount()
 	}
 }
