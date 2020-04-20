@@ -184,7 +184,9 @@ func jsval(v Value) js.Value {
 	}
 }
 
-func JsVal(v Value) js.Value {
+// JSValue returns the underlying syscall/js value of the given Javascript
+// value.
+func JSValue(v Value) js.Value {
 	return jsval(v)
 }
 
