@@ -104,6 +104,7 @@
   width: 100%;
   text-align: left;
   background-color: transparent;
+  color: currentColor;
 }
 
 .app-menuitem:hover {
