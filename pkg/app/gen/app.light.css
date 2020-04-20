@@ -103,6 +103,7 @@
   padding: 3px 24px;
   width: 100%;
   text-align: left;
+  background-color: transparent;
 }
 
 .app-menuitem:hover {
