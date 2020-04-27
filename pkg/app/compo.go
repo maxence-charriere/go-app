@@ -65,6 +65,15 @@ type Navigator interface {
 	OnNav(u *url.URL)
 }
 
+// Updatable is the interface that describes a component that can perform
+// additional actions when it is updated.
+type Updatable interface {
+	Composer
+
+	// The function that is called when the component is updated.
+	OnUpdate()
+}
+
 // Compo represents the base struct to use in order to build a component.
 type Compo struct {
 	compo      Composer
@@ -147,6 +156,7 @@ func (c *Compo) update(n Composer) {
 	aval := reflect.Indirect(reflect.ValueOf(c.compo))
 	bval := reflect.Indirect(reflect.ValueOf(n))
 	compotype := reflect.ValueOf(c).Elem().Type()
+	updated := false
 
 	for i := 0; i < aval.NumField(); i++ {
 		a := aval.Field(i)
@@ -162,7 +172,14 @@ func (c *Compo) update(n Composer) {
 
 		if !reflect.DeepEqual(a.Interface(), b.Interface()) {
 			a.Set(b)
+			updated = true
 		}
+	}
+
+	if updatable, ok := c.compo.(Updatable); updated && ok {
+		dispatcher(func() {
+			updatable.OnUpdate()
+		})
 	}
 }
 
