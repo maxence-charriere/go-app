@@ -8,12 +8,22 @@ import (
 
 type boo struct {
 	Compo
-	Dismount func()
+
+	Value int
+
+	onDismount func()
+	onUpdate   func()
 }
 
 func (b *boo) OnDismount() {
-	if b.Dismount != nil {
-		b.Dismount()
+	if b.onDismount != nil {
+		b.onDismount()
+	}
+}
+
+func (b *boo) OnUpdate() {
+	if b.onUpdate != nil {
+		b.onUpdate()
 	}
 }
 
@@ -58,12 +68,34 @@ func TestCompoDismount(t *testing.T) {
 	called := false
 
 	c := &boo{
-		Dismount: func() {
+		onDismount: func() {
 			called = true
 		},
 	}
 
 	mount(c)
 	c.dismount()
+	require.True(t, called)
+}
+
+func TestCompoUpdatable(t *testing.T) {
+	called := false
+	onUpdate := func() {
+		called = true
+	}
+
+	a := &boo{Value: 42, onUpdate: onUpdate}
+	err := mount(a)
+	require.NoError(t, err)
+
+	b := &boo{Value: 42, onUpdate: onUpdate}
+	err = update(a, b)
+	require.NoError(t, err)
+	require.False(t, called)
+
+	c := &boo{Value: 21, onUpdate: onUpdate}
+	err = update(a, c)
+	require.NoError(t, err)
+	require.Equal(t, 21, a.Value)
 	require.True(t, called)
 }
