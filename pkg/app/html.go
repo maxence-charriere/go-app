@@ -5277,7 +5277,7 @@ type HTMLBody interface {
 	// OnKeyup calls the given handler when a user releases a key.
 	OnKeyup(h EventHandler) HTMLBody
 
-	// OnLoad calls the given handler after the page is finished loading.
+	// OnLoad calls the given handler after the element is finished loading.
 	OnLoad(h EventHandler) HTMLBody
 
 	// OnMessage calls then given handler when a message is triggered.
@@ -19766,6 +19766,9 @@ type HTMLIFrame interface {
 	// OnKeyup calls the given handler when a user releases a key.
 	OnKeyup(h EventHandler) HTMLIFrame
 
+	// OnLoad calls the given handler after the element is finished loading.
+	OnLoad(h EventHandler) HTMLIFrame
+
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler) HTMLIFrame
 
@@ -20022,6 +20025,11 @@ func (e *htmlIFrame) OnKeyup(h EventHandler) HTMLIFrame {
 	return e
 }
 
+func (e *htmlIFrame) OnLoad(h EventHandler) HTMLIFrame {
+	e.setEventHandler("load", h)
+	return e
+}
+
 func (e *htmlIFrame) OnMouseDown(h EventHandler) HTMLIFrame {
 	e.setEventHandler("mousedown", h)
 	return e
@@ -20237,6 +20245,9 @@ type HTMLImg interface {
 
 	// OnKeyup calls the given handler when a user releases a key.
 	OnKeyup(h EventHandler) HTMLImg
+
+	// OnLoad calls the given handler after the element is finished loading.
+	OnLoad(h EventHandler) HTMLImg
 
 	// OnLoadStart calls the given handler just as the file begins to load before anything is actually loaded.
 	OnLoadStart(h EventHandler) HTMLImg
@@ -20584,6 +20595,11 @@ func (e *htmlImg) OnKeyup(h EventHandler) HTMLImg {
 	return e
 }
 
+func (e *htmlImg) OnLoad(h EventHandler) HTMLImg {
+	e.setEventHandler("load", h)
+	return e
+}
+
 func (e *htmlImg) OnLoadStart(h EventHandler) HTMLImg {
 	e.setEventHandler("loadstart", h)
 	return e
@@ -20916,6 +20932,9 @@ type HTMLInput interface {
 
 	// OnKeyup calls the given handler when a user releases a key.
 	OnKeyup(h EventHandler) HTMLInput
+
+	// OnLoad calls the given handler after the element is finished loading.
+	OnLoad(h EventHandler) HTMLInput
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler) HTMLInput
@@ -21290,6 +21309,11 @@ func (e *htmlInput) OnKeyPress(h EventHandler) HTMLInput {
 
 func (e *htmlInput) OnKeyup(h EventHandler) HTMLInput {
 	e.setEventHandler("keyup", h)
+	return e
+}
+
+func (e *htmlInput) OnLoad(h EventHandler) HTMLInput {
+	e.setEventHandler("load", h)
 	return e
 }
 
@@ -23488,6 +23512,9 @@ type HTMLLink interface {
 	// OnKeyup calls the given handler when a user releases a key.
 	OnKeyup(h EventHandler) HTMLLink
 
+	// OnLoad calls the given handler after the element is finished loading.
+	OnLoad(h EventHandler) HTMLLink
+
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler) HTMLLink
 
@@ -23736,6 +23763,11 @@ func (e *htmlLink) OnKeyPress(h EventHandler) HTMLLink {
 
 func (e *htmlLink) OnKeyup(h EventHandler) HTMLLink {
 	e.setEventHandler("keyup", h)
+	return e
+}
+
+func (e *htmlLink) OnLoad(h EventHandler) HTMLLink {
+	e.setEventHandler("load", h)
 	return e
 }
 
@@ -32939,6 +32971,9 @@ type HTMLScript interface {
 
 	// Type specifies the type of element.
 	Type(v string) HTMLScript
+
+	// OnLoad calls the given handler after the element is finished loading.
+	OnLoad(h EventHandler) HTMLScript
 }
 
 // Script returns an HTML element that defines a client-side script.
@@ -33052,6 +33087,11 @@ func (e *htmlScript) Title(v string) HTMLScript {
 
 func (e *htmlScript) Type(v string) HTMLScript {
 	e.elem.setAttribute("type", v)
+	return e
+}
+
+func (e *htmlScript) OnLoad(h EventHandler) HTMLScript {
+	e.setEventHandler("load", h)
 	return e
 }
 
@@ -35642,6 +35682,9 @@ type HTMLStyle interface {
 	// OnKeyup calls the given handler when a user releases a key.
 	OnKeyup(h EventHandler) HTMLStyle
 
+	// OnLoad calls the given handler after the element is finished loading.
+	OnLoad(h EventHandler) HTMLStyle
+
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler) HTMLStyle
 
@@ -35875,6 +35918,11 @@ func (e *htmlStyle) OnKeyPress(h EventHandler) HTMLStyle {
 
 func (e *htmlStyle) OnKeyup(h EventHandler) HTMLStyle {
 	e.setEventHandler("keyup", h)
+	return e
+}
+
+func (e *htmlStyle) OnLoad(h EventHandler) HTMLStyle {
+	e.setEventHandler("load", h)
 	return e
 }
 

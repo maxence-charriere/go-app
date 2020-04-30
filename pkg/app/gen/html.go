@@ -438,7 +438,10 @@ var tags = []tag{
 			"srcdoc",
 			"width",
 		)...),
-		EventHandlers: withGlobalEventHandlers(),
+		EventHandlers: withGlobalEventHandlers(eventHandlersByName(
+			"onload",
+		)...,
+		),
 	},
 	{
 		Name:        "Img",
@@ -454,7 +457,11 @@ var tags = []tag{
 			"usemap",
 			"width",
 		)...),
-		EventHandlers: withMediaEventHandlers(withGlobalEventHandlers()...),
+		EventHandlers: withMediaEventHandlers(withGlobalEventHandlers(
+			eventHandlersByName(
+				"onload",
+			)...,
+		)...),
 	},
 	{
 		Name:        "Input",
@@ -492,7 +499,10 @@ var tags = []tag{
 			"value",
 			"width",
 		)...),
-		EventHandlers: withGlobalEventHandlers(),
+		EventHandlers: withGlobalEventHandlers(eventHandlersByName(
+			"onload",
+		)...,
+		),
 	},
 	{
 		Name:          "Ins",
@@ -545,7 +555,9 @@ var tags = []tag{
 			"sizes",
 			"type",
 		)...),
-		EventHandlers: withGlobalEventHandlers(),
+		EventHandlers: withGlobalEventHandlers(eventHandlersByName(
+			"onload",
+		)...),
 	},
 
 	// M:
@@ -756,6 +768,7 @@ var tags = []tag{
 			"src",
 			"type",
 		)...),
+		EventHandlers: eventHandlersByName("onload"),
 	},
 	{
 		Name:          "Section",
@@ -815,7 +828,9 @@ var tags = []tag{
 			"media",
 			"type",
 		)...),
-		EventHandlers: withGlobalEventHandlers(),
+		EventHandlers: withGlobalEventHandlers(eventHandlersByName(
+			"onload",
+		)...),
 	},
 	{
 		Name:          "Sub",
@@ -1582,7 +1597,7 @@ var eventHandlers = map[string]eventHandler{
 	},
 	"onload": {
 		Name: "OnLoad",
-		Doc:  "calls the given handler after the page is finished loading.",
+		Doc:  "calls the given handler after the element is finished loading.",
 	},
 	"onmessage": {
 		Name: "OnMessage",
