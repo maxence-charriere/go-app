@@ -16,8 +16,8 @@ type textNode interface {
 }
 
 // Text returns a text node.
-func Text(v string) UI {
-	return &text{textValue: v}
+func Text(v interface{}) UI {
+	return &text{textValue: toString(v)}
 }
 
 type text struct {

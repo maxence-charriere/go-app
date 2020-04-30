@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"io"
 	"unsafe"
 )
@@ -21,4 +22,17 @@ func btos(b []byte) string {
 
 func ln() []byte {
 	return stob("\n")
+}
+
+func toString(v interface{}) string {
+	switch v := v.(type) {
+	case string:
+		return v
+
+	case []byte:
+		return btos(v)
+
+	default:
+		return fmt.Sprint(v)
+	}
 }
