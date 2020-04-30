@@ -2828,6 +2828,7 @@ func TestIFrame(t *testing.T) {
 	elem.OnKeyDown(h)
 	elem.OnKeyPress(h)
 	elem.OnKeyup(h)
+	elem.OnLoad(h)
 	elem.OnMouseDown(h)
 	elem.OnMouseMove(h)
 	elem.OnMouseOut(h)
@@ -2901,6 +2902,7 @@ func TestImg(t *testing.T) {
 	elem.OnKeyDown(h)
 	elem.OnKeyPress(h)
 	elem.OnKeyup(h)
+	elem.OnLoad(h)
 	elem.OnLoadStart(h)
 	elem.OnLoadedData(h)
 	elem.OnMouseDown(h)
@@ -3009,6 +3011,7 @@ func TestInput(t *testing.T) {
 	elem.OnKeyDown(h)
 	elem.OnKeyPress(h)
 	elem.OnKeyup(h)
+	elem.OnLoad(h)
 	elem.OnMouseDown(h)
 	elem.OnMouseMove(h)
 	elem.OnMouseOut(h)
@@ -3353,6 +3356,7 @@ func TestLink(t *testing.T) {
 	elem.OnKeyDown(h)
 	elem.OnKeyPress(h)
 	elem.OnKeyup(h)
+	elem.OnLoad(h)
 	elem.OnMouseDown(h)
 	elem.OnMouseMove(h)
 	elem.OnMouseOut(h)
@@ -4674,6 +4678,9 @@ func TestScript(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Type("foo")
+
+	h := func(src Value, e Event) {}
+	elem.OnLoad(h)
 	elem.Body(Text("hello"))
 }
 
@@ -5071,6 +5078,7 @@ func TestStyle(t *testing.T) {
 	elem.OnKeyDown(h)
 	elem.OnKeyPress(h)
 	elem.OnKeyup(h)
+	elem.OnLoad(h)
 	elem.OnMouseDown(h)
 	elem.OnMouseMove(h)
 	elem.OnMouseOut(h)
