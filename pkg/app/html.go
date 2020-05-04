@@ -15,6 +15,9 @@ type HTMLA interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLA
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLA
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLA
 
@@ -192,6 +195,10 @@ type htmlA struct {
 func (e *htmlA) Body(nodes ...Node) HTMLA {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlA) Text(v interface{}) HTMLA {
+	return e.Body(Text(v))
 }
 
 func (e *htmlA) AccessKey(v string) HTMLA {
@@ -476,6 +483,9 @@ type HTMLAbbr interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLAbbr
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLAbbr
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLAbbr
 
@@ -629,6 +639,10 @@ type htmlAbbr struct {
 func (e *htmlAbbr) Body(nodes ...Node) HTMLAbbr {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlAbbr) Text(v interface{}) HTMLAbbr {
+	return e.Body(Text(v))
 }
 
 func (e *htmlAbbr) AccessKey(v string) HTMLAbbr {
@@ -873,6 +887,9 @@ type HTMLAddress interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLAddress
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLAddress
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLAddress
 
@@ -1026,6 +1043,10 @@ type htmlAddress struct {
 func (e *htmlAddress) Body(nodes ...Node) HTMLAddress {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlAddress) Text(v interface{}) HTMLAddress {
+	return e.Body(Text(v))
 }
 
 func (e *htmlAddress) AccessKey(v string) HTMLAddress {
@@ -1739,6 +1760,9 @@ type HTMLArticle interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLArticle
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLArticle
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLArticle
 
@@ -1892,6 +1916,10 @@ type htmlArticle struct {
 func (e *htmlArticle) Body(nodes ...Node) HTMLArticle {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlArticle) Text(v interface{}) HTMLArticle {
+	return e.Body(Text(v))
 }
 
 func (e *htmlArticle) AccessKey(v string) HTMLArticle {
@@ -2136,6 +2164,9 @@ type HTMLAside interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLAside
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLAside
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLAside
 
@@ -2289,6 +2320,10 @@ type htmlAside struct {
 func (e *htmlAside) Body(nodes ...Node) HTMLAside {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlAside) Text(v interface{}) HTMLAside {
+	return e.Body(Text(v))
 }
 
 func (e *htmlAside) AccessKey(v string) HTMLAside {
@@ -2533,6 +2568,9 @@ type HTMLAudio interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLAudio
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLAudio
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLAudio
 
@@ -2773,6 +2811,10 @@ type htmlAudio struct {
 func (e *htmlAudio) Body(nodes ...Node) HTMLAudio {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlAudio) Text(v interface{}) HTMLAudio {
+	return e.Body(Text(v))
 }
 
 func (e *htmlAudio) AccessKey(v string) HTMLAudio {
@@ -3162,6 +3204,9 @@ type HTMLB interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLB
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLB
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLB
 
@@ -3315,6 +3360,10 @@ type htmlB struct {
 func (e *htmlB) Body(nodes ...Node) HTMLB {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlB) Text(v interface{}) HTMLB {
+	return e.Body(Text(v))
 }
 
 func (e *htmlB) AccessKey(v string) HTMLB {
@@ -3964,6 +4013,9 @@ type HTMLBdi interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLBdi
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLBdi
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLBdi
 
@@ -4117,6 +4169,10 @@ type htmlBdi struct {
 func (e *htmlBdi) Body(nodes ...Node) HTMLBdi {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlBdi) Text(v interface{}) HTMLBdi {
+	return e.Body(Text(v))
 }
 
 func (e *htmlBdi) AccessKey(v string) HTMLBdi {
@@ -4361,6 +4417,9 @@ type HTMLBdo interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLBdo
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLBdo
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLBdo
 
@@ -4514,6 +4573,10 @@ type htmlBdo struct {
 func (e *htmlBdo) Body(nodes ...Node) HTMLBdo {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlBdo) Text(v interface{}) HTMLBdo {
+	return e.Body(Text(v))
 }
 
 func (e *htmlBdo) AccessKey(v string) HTMLBdo {
@@ -4758,6 +4821,9 @@ type HTMLBlockquote interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLBlockquote
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLBlockquote
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLBlockquote
 
@@ -4914,6 +4980,10 @@ type htmlBlockquote struct {
 func (e *htmlBlockquote) Body(nodes ...Node) HTMLBlockquote {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlBlockquote) Text(v interface{}) HTMLBlockquote {
+	return e.Body(Text(v))
 }
 
 func (e *htmlBlockquote) AccessKey(v string) HTMLBlockquote {
@@ -5163,6 +5233,9 @@ type HTMLBody interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLBody
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLBody
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLBody
 
@@ -5361,6 +5434,10 @@ type htmlBody struct {
 func (e *htmlBody) Body(nodes ...Node) HTMLBody {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlBody) Text(v interface{}) HTMLBody {
+	return e.Body(Text(v))
 }
 
 func (e *htmlBody) AccessKey(v string) HTMLBody {
@@ -6069,6 +6146,9 @@ type HTMLButton interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLButton
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLButton
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLButton
 
@@ -6255,6 +6335,10 @@ type htmlButton struct {
 func (e *htmlButton) Body(nodes ...Node) HTMLButton {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlButton) Text(v interface{}) HTMLButton {
+	return e.Body(Text(v))
 }
 
 func (e *htmlButton) AccessKey(v string) HTMLButton {
@@ -6554,6 +6638,9 @@ type HTMLCanvas interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLCanvas
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLCanvas
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLCanvas
 
@@ -6713,6 +6800,10 @@ type htmlCanvas struct {
 func (e *htmlCanvas) Body(nodes ...Node) HTMLCanvas {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlCanvas) Text(v interface{}) HTMLCanvas {
+	return e.Body(Text(v))
 }
 
 func (e *htmlCanvas) AccessKey(v string) HTMLCanvas {
@@ -6967,6 +7058,9 @@ type HTMLCaption interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLCaption
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLCaption
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLCaption
 
@@ -7120,6 +7214,10 @@ type htmlCaption struct {
 func (e *htmlCaption) Body(nodes ...Node) HTMLCaption {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlCaption) Text(v interface{}) HTMLCaption {
+	return e.Body(Text(v))
 }
 
 func (e *htmlCaption) AccessKey(v string) HTMLCaption {
@@ -7364,6 +7462,9 @@ type HTMLCite interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLCite
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLCite
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLCite
 
@@ -7517,6 +7618,10 @@ type htmlCite struct {
 func (e *htmlCite) Body(nodes ...Node) HTMLCite {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlCite) Text(v interface{}) HTMLCite {
+	return e.Body(Text(v))
 }
 
 func (e *htmlCite) AccessKey(v string) HTMLCite {
@@ -7761,6 +7866,9 @@ type HTMLCode interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLCode
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLCode
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLCode
 
@@ -7914,6 +8022,10 @@ type htmlCode struct {
 func (e *htmlCode) Body(nodes ...Node) HTMLCode {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlCode) Text(v interface{}) HTMLCode {
+	return e.Body(Text(v))
 }
 
 func (e *htmlCode) AccessKey(v string) HTMLCode {
@@ -8555,6 +8667,9 @@ type HTMLColGroup interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLColGroup
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLColGroup
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLColGroup
 
@@ -8711,6 +8826,10 @@ type htmlColGroup struct {
 func (e *htmlColGroup) Body(nodes ...Node) HTMLColGroup {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlColGroup) Text(v interface{}) HTMLColGroup {
+	return e.Body(Text(v))
 }
 
 func (e *htmlColGroup) AccessKey(v string) HTMLColGroup {
@@ -8960,6 +9079,9 @@ type HTMLData interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLData
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLData
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLData
 
@@ -9020,6 +9142,10 @@ type htmlData struct {
 func (e *htmlData) Body(nodes ...Node) HTMLData {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlData) Text(v interface{}) HTMLData {
+	return e.Body(Text(v))
 }
 
 func (e *htmlData) AccessKey(v string) HTMLData {
@@ -9108,6 +9234,9 @@ type HTMLDataList interface {
 
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLDataList
+
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLDataList
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDataList
@@ -9262,6 +9391,10 @@ type htmlDataList struct {
 func (e *htmlDataList) Body(nodes ...Node) HTMLDataList {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlDataList) Text(v interface{}) HTMLDataList {
+	return e.Body(Text(v))
 }
 
 func (e *htmlDataList) AccessKey(v string) HTMLDataList {
@@ -9506,6 +9639,9 @@ type HTMLDd interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLDd
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLDd
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDd
 
@@ -9659,6 +9795,10 @@ type htmlDd struct {
 func (e *htmlDd) Body(nodes ...Node) HTMLDd {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlDd) Text(v interface{}) HTMLDd {
+	return e.Body(Text(v))
 }
 
 func (e *htmlDd) AccessKey(v string) HTMLDd {
@@ -9903,6 +10043,9 @@ type HTMLDel interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLDel
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLDel
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDel
 
@@ -10062,6 +10205,10 @@ type htmlDel struct {
 func (e *htmlDel) Body(nodes ...Node) HTMLDel {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlDel) Text(v interface{}) HTMLDel {
+	return e.Body(Text(v))
 }
 
 func (e *htmlDel) AccessKey(v string) HTMLDel {
@@ -10316,6 +10463,9 @@ type HTMLDetails interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLDetails
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLDetails
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDetails
 
@@ -10475,6 +10625,10 @@ type htmlDetails struct {
 func (e *htmlDetails) Body(nodes ...Node) HTMLDetails {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlDetails) Text(v interface{}) HTMLDetails {
+	return e.Body(Text(v))
 }
 
 func (e *htmlDetails) AccessKey(v string) HTMLDetails {
@@ -10729,6 +10883,9 @@ type HTMLDfn interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLDfn
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLDfn
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDfn
 
@@ -10882,6 +11039,10 @@ type htmlDfn struct {
 func (e *htmlDfn) Body(nodes ...Node) HTMLDfn {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlDfn) Text(v interface{}) HTMLDfn {
+	return e.Body(Text(v))
 }
 
 func (e *htmlDfn) AccessKey(v string) HTMLDfn {
@@ -11126,6 +11287,9 @@ type HTMLDialog interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLDialog
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLDialog
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDialog
 
@@ -11282,6 +11446,10 @@ type htmlDialog struct {
 func (e *htmlDialog) Body(nodes ...Node) HTMLDialog {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlDialog) Text(v interface{}) HTMLDialog {
+	return e.Body(Text(v))
 }
 
 func (e *htmlDialog) AccessKey(v string) HTMLDialog {
@@ -11531,6 +11699,9 @@ type HTMLDiv interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLDiv
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLDiv
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDiv
 
@@ -11684,6 +11855,10 @@ type htmlDiv struct {
 func (e *htmlDiv) Body(nodes ...Node) HTMLDiv {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlDiv) Text(v interface{}) HTMLDiv {
+	return e.Body(Text(v))
 }
 
 func (e *htmlDiv) AccessKey(v string) HTMLDiv {
@@ -11928,6 +12103,9 @@ type HTMLDl interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLDl
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLDl
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDl
 
@@ -12081,6 +12259,10 @@ type htmlDl struct {
 func (e *htmlDl) Body(nodes ...Node) HTMLDl {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlDl) Text(v interface{}) HTMLDl {
+	return e.Body(Text(v))
 }
 
 func (e *htmlDl) AccessKey(v string) HTMLDl {
@@ -12325,6 +12507,9 @@ type HTMLDt interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLDt
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLDt
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDt
 
@@ -12478,6 +12663,10 @@ type htmlDt struct {
 func (e *htmlDt) Body(nodes ...Node) HTMLDt {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlDt) Text(v interface{}) HTMLDt {
+	return e.Body(Text(v))
 }
 
 func (e *htmlDt) AccessKey(v string) HTMLDt {
@@ -12722,6 +12911,9 @@ type HTMLEm interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLEm
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLEm
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLEm
 
@@ -12875,6 +13067,10 @@ type htmlEm struct {
 func (e *htmlEm) Body(nodes ...Node) HTMLEm {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlEm) Text(v interface{}) HTMLEm {
+	return e.Body(Text(v))
 }
 
 func (e *htmlEm) AccessKey(v string) HTMLEm {
@@ -13724,6 +13920,9 @@ type HTMLFieldSet interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLFieldSet
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLFieldSet
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLFieldSet
 
@@ -13886,6 +14085,10 @@ type htmlFieldSet struct {
 func (e *htmlFieldSet) Body(nodes ...Node) HTMLFieldSet {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlFieldSet) Text(v interface{}) HTMLFieldSet {
+	return e.Body(Text(v))
 }
 
 func (e *htmlFieldSet) AccessKey(v string) HTMLFieldSet {
@@ -14145,6 +14348,9 @@ type HTMLFigCaption interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLFigCaption
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLFigCaption
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLFigCaption
 
@@ -14298,6 +14504,10 @@ type htmlFigCaption struct {
 func (e *htmlFigCaption) Body(nodes ...Node) HTMLFigCaption {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlFigCaption) Text(v interface{}) HTMLFigCaption {
+	return e.Body(Text(v))
 }
 
 func (e *htmlFigCaption) AccessKey(v string) HTMLFigCaption {
@@ -14542,6 +14752,9 @@ type HTMLFigure interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLFigure
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLFigure
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLFigure
 
@@ -14695,6 +14908,10 @@ type htmlFigure struct {
 func (e *htmlFigure) Body(nodes ...Node) HTMLFigure {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlFigure) Text(v interface{}) HTMLFigure {
+	return e.Body(Text(v))
 }
 
 func (e *htmlFigure) AccessKey(v string) HTMLFigure {
@@ -14939,6 +15156,9 @@ type HTMLFooter interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLFooter
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLFooter
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLFooter
 
@@ -15092,6 +15312,10 @@ type htmlFooter struct {
 func (e *htmlFooter) Body(nodes ...Node) HTMLFooter {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlFooter) Text(v interface{}) HTMLFooter {
+	return e.Body(Text(v))
 }
 
 func (e *htmlFooter) AccessKey(v string) HTMLFooter {
@@ -15336,6 +15560,9 @@ type HTMLForm interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLForm
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLForm
+
 	// AcceptCharset specifies the character encodings that are to be used for the form submission.
 	AcceptCharset(v string) HTMLForm
 
@@ -15513,6 +15740,10 @@ type htmlForm struct {
 func (e *htmlForm) Body(nodes ...Node) HTMLForm {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlForm) Text(v interface{}) HTMLForm {
+	return e.Body(Text(v))
 }
 
 func (e *htmlForm) AcceptCharset(v string) HTMLForm {
@@ -15802,6 +16033,9 @@ type HTMLH1 interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLH1
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLH1
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLH1
 
@@ -15955,6 +16189,10 @@ type htmlH1 struct {
 func (e *htmlH1) Body(nodes ...Node) HTMLH1 {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlH1) Text(v interface{}) HTMLH1 {
+	return e.Body(Text(v))
 }
 
 func (e *htmlH1) AccessKey(v string) HTMLH1 {
@@ -16199,6 +16437,9 @@ type HTMLH2 interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLH2
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLH2
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLH2
 
@@ -16352,6 +16593,10 @@ type htmlH2 struct {
 func (e *htmlH2) Body(nodes ...Node) HTMLH2 {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlH2) Text(v interface{}) HTMLH2 {
+	return e.Body(Text(v))
 }
 
 func (e *htmlH2) AccessKey(v string) HTMLH2 {
@@ -16596,6 +16841,9 @@ type HTMLH3 interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLH3
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLH3
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLH3
 
@@ -16749,6 +16997,10 @@ type htmlH3 struct {
 func (e *htmlH3) Body(nodes ...Node) HTMLH3 {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlH3) Text(v interface{}) HTMLH3 {
+	return e.Body(Text(v))
 }
 
 func (e *htmlH3) AccessKey(v string) HTMLH3 {
@@ -16993,6 +17245,9 @@ type HTMLH4 interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLH4
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLH4
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLH4
 
@@ -17146,6 +17401,10 @@ type htmlH4 struct {
 func (e *htmlH4) Body(nodes ...Node) HTMLH4 {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlH4) Text(v interface{}) HTMLH4 {
+	return e.Body(Text(v))
 }
 
 func (e *htmlH4) AccessKey(v string) HTMLH4 {
@@ -17390,6 +17649,9 @@ type HTMLH5 interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLH5
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLH5
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLH5
 
@@ -17543,6 +17805,10 @@ type htmlH5 struct {
 func (e *htmlH5) Body(nodes ...Node) HTMLH5 {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlH5) Text(v interface{}) HTMLH5 {
+	return e.Body(Text(v))
 }
 
 func (e *htmlH5) AccessKey(v string) HTMLH5 {
@@ -17787,6 +18053,9 @@ type HTMLH6 interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLH6
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLH6
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLH6
 
@@ -17940,6 +18209,10 @@ type htmlH6 struct {
 func (e *htmlH6) Body(nodes ...Node) HTMLH6 {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlH6) Text(v interface{}) HTMLH6 {
+	return e.Body(Text(v))
 }
 
 func (e *htmlH6) AccessKey(v string) HTMLH6 {
@@ -18184,6 +18457,9 @@ type HTMLHead interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLHead
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLHead
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLHead
 
@@ -18241,6 +18517,10 @@ type htmlHead struct {
 func (e *htmlHead) Body(nodes ...Node) HTMLHead {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlHead) Text(v interface{}) HTMLHead {
+	return e.Body(Text(v))
 }
 
 func (e *htmlHead) AccessKey(v string) HTMLHead {
@@ -18324,6 +18604,9 @@ type HTMLHeader interface {
 
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLHeader
+
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLHeader
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLHeader
@@ -18478,6 +18761,10 @@ type htmlHeader struct {
 func (e *htmlHeader) Body(nodes ...Node) HTMLHeader {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlHeader) Text(v interface{}) HTMLHeader {
+	return e.Body(Text(v))
 }
 
 func (e *htmlHeader) AccessKey(v string) HTMLHeader {
@@ -19111,6 +19398,9 @@ type HTMLHtml interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLHtml
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLHtml
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLHtml
 
@@ -19168,6 +19458,10 @@ type htmlHtml struct {
 func (e *htmlHtml) Body(nodes ...Node) HTMLHtml {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlHtml) Text(v interface{}) HTMLHtml {
+	return e.Body(Text(v))
 }
 
 func (e *htmlHtml) AccessKey(v string) HTMLHtml {
@@ -19251,6 +19545,9 @@ type HTMLI interface {
 
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLI
+
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLI
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLI
@@ -19405,6 +19702,10 @@ type htmlI struct {
 func (e *htmlI) Body(nodes ...Node) HTMLI {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlI) Text(v interface{}) HTMLI {
+	return e.Body(Text(v))
 }
 
 func (e *htmlI) AccessKey(v string) HTMLI {
@@ -19649,6 +19950,9 @@ type HTMLIFrame interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLIFrame
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLIFrame
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLIFrame
 
@@ -19823,6 +20127,10 @@ type htmlIFrame struct {
 func (e *htmlIFrame) Body(nodes ...Node) HTMLIFrame {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlIFrame) Text(v interface{}) HTMLIFrame {
+	return e.Body(Text(v))
 }
 
 func (e *htmlIFrame) AccessKey(v string) HTMLIFrame {
@@ -21389,6 +21697,9 @@ type HTMLIns interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLIns
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLIns
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLIns
 
@@ -21542,6 +21853,10 @@ type htmlIns struct {
 func (e *htmlIns) Body(nodes ...Node) HTMLIns {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlIns) Text(v interface{}) HTMLIns {
+	return e.Body(Text(v))
 }
 
 func (e *htmlIns) AccessKey(v string) HTMLIns {
@@ -21786,6 +22101,9 @@ type HTMLKbd interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLKbd
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLKbd
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLKbd
 
@@ -21939,6 +22257,10 @@ type htmlKbd struct {
 func (e *htmlKbd) Body(nodes ...Node) HTMLKbd {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlKbd) Text(v interface{}) HTMLKbd {
+	return e.Body(Text(v))
 }
 
 func (e *htmlKbd) AccessKey(v string) HTMLKbd {
@@ -22183,6 +22505,9 @@ type HTMLLabel interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLLabel
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLLabel
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLLabel
 
@@ -22342,6 +22667,10 @@ type htmlLabel struct {
 func (e *htmlLabel) Body(nodes ...Node) HTMLLabel {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlLabel) Text(v interface{}) HTMLLabel {
+	return e.Body(Text(v))
 }
 
 func (e *htmlLabel) AccessKey(v string) HTMLLabel {
@@ -22596,6 +22925,9 @@ type HTMLLegends interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLLegends
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLLegends
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLLegends
 
@@ -22749,6 +23081,10 @@ type htmlLegends struct {
 func (e *htmlLegends) Body(nodes ...Node) HTMLLegends {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlLegends) Text(v interface{}) HTMLLegends {
+	return e.Body(Text(v))
 }
 
 func (e *htmlLegends) AccessKey(v string) HTMLLegends {
@@ -22993,6 +23329,9 @@ type HTMLLi interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLLi
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLLi
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLLi
 
@@ -23149,6 +23488,10 @@ type htmlLi struct {
 func (e *htmlLi) Body(nodes ...Node) HTMLLi {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlLi) Text(v interface{}) HTMLLi {
+	return e.Body(Text(v))
 }
 
 func (e *htmlLi) AccessKey(v string) HTMLLi {
@@ -23843,6 +24186,9 @@ type HTMLMain interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLMain
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLMain
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLMain
 
@@ -23996,6 +24342,10 @@ type htmlMain struct {
 func (e *htmlMain) Body(nodes ...Node) HTMLMain {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlMain) Text(v interface{}) HTMLMain {
+	return e.Body(Text(v))
 }
 
 func (e *htmlMain) AccessKey(v string) HTMLMain {
@@ -24240,6 +24590,9 @@ type HTMLMap interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLMap
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLMap
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLMap
 
@@ -24396,6 +24749,10 @@ type htmlMap struct {
 func (e *htmlMap) Body(nodes ...Node) HTMLMap {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlMap) Text(v interface{}) HTMLMap {
+	return e.Body(Text(v))
 }
 
 func (e *htmlMap) AccessKey(v string) HTMLMap {
@@ -24645,6 +25002,9 @@ type HTMLMark interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLMark
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLMark
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLMark
 
@@ -24798,6 +25158,10 @@ type htmlMark struct {
 func (e *htmlMark) Body(nodes ...Node) HTMLMark {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlMark) Text(v interface{}) HTMLMark {
+	return e.Body(Text(v))
 }
 
 func (e *htmlMark) AccessKey(v string) HTMLMark {
@@ -25207,6 +25571,9 @@ type HTMLMeter interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLMeter
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLMeter
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLMeter
 
@@ -25381,6 +25748,10 @@ type htmlMeter struct {
 func (e *htmlMeter) Body(nodes ...Node) HTMLMeter {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlMeter) Text(v interface{}) HTMLMeter {
+	return e.Body(Text(v))
 }
 
 func (e *htmlMeter) AccessKey(v string) HTMLMeter {
@@ -25660,6 +26031,9 @@ type HTMLNav interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLNav
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLNav
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLNav
 
@@ -25813,6 +26187,10 @@ type htmlNav struct {
 func (e *htmlNav) Body(nodes ...Node) HTMLNav {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlNav) Text(v interface{}) HTMLNav {
+	return e.Body(Text(v))
 }
 
 func (e *htmlNav) AccessKey(v string) HTMLNav {
@@ -26057,6 +26435,9 @@ type HTMLNoScript interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLNoScript
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLNoScript
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLNoScript
 
@@ -26114,6 +26495,10 @@ type htmlNoScript struct {
 func (e *htmlNoScript) Body(nodes ...Node) HTMLNoScript {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlNoScript) Text(v interface{}) HTMLNoScript {
+	return e.Body(Text(v))
 }
 
 func (e *htmlNoScript) AccessKey(v string) HTMLNoScript {
@@ -26197,6 +26582,9 @@ type HTMLObject interface {
 
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLObject
+
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLObject
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLObject
@@ -26441,6 +26829,10 @@ type htmlObject struct {
 func (e *htmlObject) Body(nodes ...Node) HTMLObject {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlObject) Text(v interface{}) HTMLObject {
+	return e.Body(Text(v))
 }
 
 func (e *htmlObject) AccessKey(v string) HTMLObject {
@@ -26835,6 +27227,9 @@ type HTMLOl interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLOl
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLOl
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLOl
 
@@ -26997,6 +27392,10 @@ type htmlOl struct {
 func (e *htmlOl) Body(nodes ...Node) HTMLOl {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlOl) Text(v interface{}) HTMLOl {
+	return e.Body(Text(v))
 }
 
 func (e *htmlOl) AccessKey(v string) HTMLOl {
@@ -27256,6 +27655,9 @@ type HTMLOptGroup interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLOptGroup
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLOptGroup
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLOptGroup
 
@@ -27415,6 +27817,10 @@ type htmlOptGroup struct {
 func (e *htmlOptGroup) Body(nodes ...Node) HTMLOptGroup {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlOptGroup) Text(v interface{}) HTMLOptGroup {
+	return e.Body(Text(v))
 }
 
 func (e *htmlOptGroup) AccessKey(v string) HTMLOptGroup {
@@ -27669,6 +28075,9 @@ type HTMLOption interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLOption
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLOption
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLOption
 
@@ -27834,6 +28243,10 @@ type htmlOption struct {
 func (e *htmlOption) Body(nodes ...Node) HTMLOption {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlOption) Text(v interface{}) HTMLOption {
+	return e.Body(Text(v))
 }
 
 func (e *htmlOption) AccessKey(v string) HTMLOption {
@@ -28098,6 +28511,9 @@ type HTMLOutput interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLOutput
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLOutput
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLOutput
 
@@ -28260,6 +28676,10 @@ type htmlOutput struct {
 func (e *htmlOutput) Body(nodes ...Node) HTMLOutput {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlOutput) Text(v interface{}) HTMLOutput {
+	return e.Body(Text(v))
 }
 
 func (e *htmlOutput) AccessKey(v string) HTMLOutput {
@@ -28519,6 +28939,9 @@ type HTMLP interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLP
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLP
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLP
 
@@ -28672,6 +29095,10 @@ type htmlP struct {
 func (e *htmlP) Body(nodes ...Node) HTMLP {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlP) Text(v interface{}) HTMLP {
+	return e.Body(Text(v))
 }
 
 func (e *htmlP) AccessKey(v string) HTMLP {
@@ -29321,6 +29748,9 @@ type HTMLPicture interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLPicture
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLPicture
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLPicture
 
@@ -29474,6 +29904,10 @@ type htmlPicture struct {
 func (e *htmlPicture) Body(nodes ...Node) HTMLPicture {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlPicture) Text(v interface{}) HTMLPicture {
+	return e.Body(Text(v))
 }
 
 func (e *htmlPicture) AccessKey(v string) HTMLPicture {
@@ -29718,6 +30152,9 @@ type HTMLPre interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLPre
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLPre
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLPre
 
@@ -29871,6 +30308,10 @@ type htmlPre struct {
 func (e *htmlPre) Body(nodes ...Node) HTMLPre {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlPre) Text(v interface{}) HTMLPre {
+	return e.Body(Text(v))
 }
 
 func (e *htmlPre) AccessKey(v string) HTMLPre {
@@ -30115,6 +30556,9 @@ type HTMLProgress interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLProgress
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLProgress
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLProgress
 
@@ -30274,6 +30718,10 @@ type htmlProgress struct {
 func (e *htmlProgress) Body(nodes ...Node) HTMLProgress {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlProgress) Text(v interface{}) HTMLProgress {
+	return e.Body(Text(v))
 }
 
 func (e *htmlProgress) AccessKey(v string) HTMLProgress {
@@ -30528,6 +30976,9 @@ type HTMLQ interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLQ
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLQ
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLQ
 
@@ -30684,6 +31135,10 @@ type htmlQ struct {
 func (e *htmlQ) Body(nodes ...Node) HTMLQ {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlQ) Text(v interface{}) HTMLQ {
+	return e.Body(Text(v))
 }
 
 func (e *htmlQ) AccessKey(v string) HTMLQ {
@@ -30933,6 +31388,9 @@ type HTMLRp interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLRp
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLRp
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLRp
 
@@ -31086,6 +31544,10 @@ type htmlRp struct {
 func (e *htmlRp) Body(nodes ...Node) HTMLRp {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlRp) Text(v interface{}) HTMLRp {
+	return e.Body(Text(v))
 }
 
 func (e *htmlRp) AccessKey(v string) HTMLRp {
@@ -31330,6 +31792,9 @@ type HTMLRt interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLRt
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLRt
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLRt
 
@@ -31483,6 +31948,10 @@ type htmlRt struct {
 func (e *htmlRt) Body(nodes ...Node) HTMLRt {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlRt) Text(v interface{}) HTMLRt {
+	return e.Body(Text(v))
 }
 
 func (e *htmlRt) AccessKey(v string) HTMLRt {
@@ -31727,6 +32196,9 @@ type HTMLRuby interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLRuby
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLRuby
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLRuby
 
@@ -31880,6 +32352,10 @@ type htmlRuby struct {
 func (e *htmlRuby) Body(nodes ...Node) HTMLRuby {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlRuby) Text(v interface{}) HTMLRuby {
+	return e.Body(Text(v))
 }
 
 func (e *htmlRuby) AccessKey(v string) HTMLRuby {
@@ -32124,6 +32600,9 @@ type HTMLS interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLS
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLS
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLS
 
@@ -32277,6 +32756,10 @@ type htmlS struct {
 func (e *htmlS) Body(nodes ...Node) HTMLS {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlS) Text(v interface{}) HTMLS {
+	return e.Body(Text(v))
 }
 
 func (e *htmlS) AccessKey(v string) HTMLS {
@@ -32521,6 +33004,9 @@ type HTMLSamp interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLSamp
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLSamp
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSamp
 
@@ -32674,6 +33160,10 @@ type htmlSamp struct {
 func (e *htmlSamp) Body(nodes ...Node) HTMLSamp {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlSamp) Text(v interface{}) HTMLSamp {
+	return e.Body(Text(v))
 }
 
 func (e *htmlSamp) AccessKey(v string) HTMLSamp {
@@ -32918,6 +33408,9 @@ type HTMLScript interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLScript
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLScript
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLScript
 
@@ -32993,6 +33486,10 @@ type htmlScript struct {
 func (e *htmlScript) Body(nodes ...Node) HTMLScript {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlScript) Text(v interface{}) HTMLScript {
+	return e.Body(Text(v))
 }
 
 func (e *htmlScript) AccessKey(v string) HTMLScript {
@@ -33106,6 +33603,9 @@ type HTMLSection interface {
 
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLSection
+
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLSection
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSection
@@ -33260,6 +33760,10 @@ type htmlSection struct {
 func (e *htmlSection) Body(nodes ...Node) HTMLSection {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlSection) Text(v interface{}) HTMLSection {
+	return e.Body(Text(v))
 }
 
 func (e *htmlSection) AccessKey(v string) HTMLSection {
@@ -33504,6 +34008,9 @@ type HTMLSelect interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLSelect
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLSelect
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSelect
 
@@ -33678,6 +34185,10 @@ type htmlSelect struct {
 func (e *htmlSelect) Body(nodes ...Node) HTMLSelect {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlSelect) Text(v interface{}) HTMLSelect {
+	return e.Body(Text(v))
 }
 
 func (e *htmlSelect) AccessKey(v string) HTMLSelect {
@@ -33957,6 +34468,9 @@ type HTMLSmall interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLSmall
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLSmall
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSmall
 
@@ -34110,6 +34624,10 @@ type htmlSmall struct {
 func (e *htmlSmall) Body(nodes ...Node) HTMLSmall {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlSmall) Text(v interface{}) HTMLSmall {
+	return e.Body(Text(v))
 }
 
 func (e *htmlSmall) AccessKey(v string) HTMLSmall {
@@ -34783,6 +35301,9 @@ type HTMLSpan interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLSpan
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLSpan
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSpan
 
@@ -34936,6 +35457,10 @@ type htmlSpan struct {
 func (e *htmlSpan) Body(nodes ...Node) HTMLSpan {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlSpan) Text(v interface{}) HTMLSpan {
+	return e.Body(Text(v))
 }
 
 func (e *htmlSpan) AccessKey(v string) HTMLSpan {
@@ -35180,6 +35705,9 @@ type HTMLStrong interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLStrong
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLStrong
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLStrong
 
@@ -35333,6 +35861,10 @@ type htmlStrong struct {
 func (e *htmlStrong) Body(nodes ...Node) HTMLStrong {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlStrong) Text(v interface{}) HTMLStrong {
+	return e.Body(Text(v))
 }
 
 func (e *htmlStrong) AccessKey(v string) HTMLStrong {
@@ -35577,6 +36109,9 @@ type HTMLStyle interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLStyle
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLStyle
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLStyle
 
@@ -35739,6 +36274,10 @@ type htmlStyle struct {
 func (e *htmlStyle) Body(nodes ...Node) HTMLStyle {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlStyle) Text(v interface{}) HTMLStyle {
+	return e.Body(Text(v))
 }
 
 func (e *htmlStyle) AccessKey(v string) HTMLStyle {
@@ -35998,6 +36537,9 @@ type HTMLSub interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLSub
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLSub
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSub
 
@@ -36151,6 +36693,10 @@ type htmlSub struct {
 func (e *htmlSub) Body(nodes ...Node) HTMLSub {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlSub) Text(v interface{}) HTMLSub {
+	return e.Body(Text(v))
 }
 
 func (e *htmlSub) AccessKey(v string) HTMLSub {
@@ -36395,6 +36941,9 @@ type HTMLSummary interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLSummary
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLSummary
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSummary
 
@@ -36548,6 +37097,10 @@ type htmlSummary struct {
 func (e *htmlSummary) Body(nodes ...Node) HTMLSummary {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlSummary) Text(v interface{}) HTMLSummary {
+	return e.Body(Text(v))
 }
 
 func (e *htmlSummary) AccessKey(v string) HTMLSummary {
@@ -36792,6 +37345,9 @@ type HTMLSup interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLSup
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLSup
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSup
 
@@ -36945,6 +37501,10 @@ type htmlSup struct {
 func (e *htmlSup) Body(nodes ...Node) HTMLSup {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlSup) Text(v interface{}) HTMLSup {
+	return e.Body(Text(v))
 }
 
 func (e *htmlSup) AccessKey(v string) HTMLSup {
@@ -37189,6 +37749,9 @@ type HTMLTable interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLTable
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLTable
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTable
 
@@ -37342,6 +37905,10 @@ type htmlTable struct {
 func (e *htmlTable) Body(nodes ...Node) HTMLTable {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlTable) Text(v interface{}) HTMLTable {
+	return e.Body(Text(v))
 }
 
 func (e *htmlTable) AccessKey(v string) HTMLTable {
@@ -37586,6 +38153,9 @@ type HTMLTBody interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLTBody
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLTBody
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTBody
 
@@ -37739,6 +38309,10 @@ type htmlTBody struct {
 func (e *htmlTBody) Body(nodes ...Node) HTMLTBody {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlTBody) Text(v interface{}) HTMLTBody {
+	return e.Body(Text(v))
 }
 
 func (e *htmlTBody) AccessKey(v string) HTMLTBody {
@@ -37983,6 +38557,9 @@ type HTMLTd interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLTd
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLTd
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTd
 
@@ -38145,6 +38722,10 @@ type htmlTd struct {
 func (e *htmlTd) Body(nodes ...Node) HTMLTd {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlTd) Text(v interface{}) HTMLTd {
+	return e.Body(Text(v))
 }
 
 func (e *htmlTd) AccessKey(v string) HTMLTd {
@@ -38404,6 +38985,9 @@ type HTMLTemplate interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLTemplate
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLTemplate
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTemplate
 
@@ -38461,6 +39045,10 @@ type htmlTemplate struct {
 func (e *htmlTemplate) Body(nodes ...Node) HTMLTemplate {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlTemplate) Text(v interface{}) HTMLTemplate {
+	return e.Body(Text(v))
 }
 
 func (e *htmlTemplate) AccessKey(v string) HTMLTemplate {
@@ -38544,6 +39132,9 @@ type HTMLTextarea interface {
 
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLTextarea
+
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLTextarea
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTextarea
@@ -38734,6 +39325,10 @@ type htmlTextarea struct {
 func (e *htmlTextarea) Body(nodes ...Node) HTMLTextarea {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlTextarea) Text(v interface{}) HTMLTextarea {
+	return e.Body(Text(v))
 }
 
 func (e *htmlTextarea) AccessKey(v string) HTMLTextarea {
@@ -39038,6 +39633,9 @@ type HTMLTfoot interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLTfoot
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLTfoot
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTfoot
 
@@ -39191,6 +39789,10 @@ type htmlTfoot struct {
 func (e *htmlTfoot) Body(nodes ...Node) HTMLTfoot {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlTfoot) Text(v interface{}) HTMLTfoot {
+	return e.Body(Text(v))
 }
 
 func (e *htmlTfoot) AccessKey(v string) HTMLTfoot {
@@ -39435,6 +40037,9 @@ type HTMLTh interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLTh
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLTh
+
 	// Accept specifies an abbreviated version of the content in a header cell.
 	Accept(v string) HTMLTh
 
@@ -39603,6 +40208,10 @@ type htmlTh struct {
 func (e *htmlTh) Body(nodes ...Node) HTMLTh {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlTh) Text(v interface{}) HTMLTh {
+	return e.Body(Text(v))
 }
 
 func (e *htmlTh) Accept(v string) HTMLTh {
@@ -39872,6 +40481,9 @@ type HTMLTHead interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLTHead
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLTHead
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTHead
 
@@ -40025,6 +40637,10 @@ type htmlTHead struct {
 func (e *htmlTHead) Body(nodes ...Node) HTMLTHead {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlTHead) Text(v interface{}) HTMLTHead {
+	return e.Body(Text(v))
 }
 
 func (e *htmlTHead) AccessKey(v string) HTMLTHead {
@@ -40269,6 +40885,9 @@ type HTMLTime interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLTime
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLTime
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTime
 
@@ -40425,6 +41044,10 @@ type htmlTime struct {
 func (e *htmlTime) Body(nodes ...Node) HTMLTime {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlTime) Text(v interface{}) HTMLTime {
+	return e.Body(Text(v))
 }
 
 func (e *htmlTime) AccessKey(v string) HTMLTime {
@@ -40674,6 +41297,9 @@ type HTMLTitle interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLTitle
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLTitle
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTitle
 
@@ -40731,6 +41357,10 @@ type htmlTitle struct {
 func (e *htmlTitle) Body(nodes ...Node) HTMLTitle {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlTitle) Text(v interface{}) HTMLTitle {
+	return e.Body(Text(v))
 }
 
 func (e *htmlTitle) AccessKey(v string) HTMLTitle {
@@ -40814,6 +41444,9 @@ type HTMLTr interface {
 
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLTr
+
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLTr
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTr
@@ -40968,6 +41601,10 @@ type htmlTr struct {
 func (e *htmlTr) Body(nodes ...Node) HTMLTr {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlTr) Text(v interface{}) HTMLTr {
+	return e.Body(Text(v))
 }
 
 func (e *htmlTr) AccessKey(v string) HTMLTr {
@@ -41212,6 +41849,9 @@ type HTMLU interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLU
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLU
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLU
 
@@ -41365,6 +42005,10 @@ type htmlU struct {
 func (e *htmlU) Body(nodes ...Node) HTMLU {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlU) Text(v interface{}) HTMLU {
+	return e.Body(Text(v))
 }
 
 func (e *htmlU) AccessKey(v string) HTMLU {
@@ -41609,6 +42253,9 @@ type HTMLUl interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLUl
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLUl
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLUl
 
@@ -41762,6 +42409,10 @@ type htmlUl struct {
 func (e *htmlUl) Body(nodes ...Node) HTMLUl {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlUl) Text(v interface{}) HTMLUl {
+	return e.Body(Text(v))
 }
 
 func (e *htmlUl) AccessKey(v string) HTMLUl {
@@ -42006,6 +42657,9 @@ type HTMLVar interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLVar
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLVar
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLVar
 
@@ -42159,6 +42813,10 @@ type htmlVar struct {
 func (e *htmlVar) Body(nodes ...Node) HTMLVar {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlVar) Text(v interface{}) HTMLVar {
+	return e.Body(Text(v))
 }
 
 func (e *htmlVar) AccessKey(v string) HTMLVar {
@@ -42402,6 +43060,9 @@ type HTMLVideo interface {
 
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLVideo
+
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLVideo
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLVideo
@@ -42652,6 +43313,10 @@ type htmlVideo struct {
 func (e *htmlVideo) Body(nodes ...Node) HTMLVideo {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlVideo) Text(v interface{}) HTMLVideo {
+	return e.Body(Text(v))
 }
 
 func (e *htmlVideo) AccessKey(v string) HTMLVideo {
@@ -43056,6 +43721,9 @@ type HTMLWbr interface {
 	// Body set the content of the element.
 	Body(nodes ...Node) HTMLWbr
 
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLWbr
+
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLWbr
 
@@ -43209,6 +43877,10 @@ type htmlWbr struct {
 func (e *htmlWbr) Body(nodes ...Node) HTMLWbr {
 	e.setBody(e, nodes)
 	return e
+}
+
+func (e *htmlWbr) Text(v interface{}) HTMLWbr {
+	return e.Body(Text(v))
 }
 
 func (e *htmlWbr) AccessKey(v string) HTMLWbr {

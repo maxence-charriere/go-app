@@ -68,7 +68,7 @@ func TestA(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestAbbr(t *testing.T) {
@@ -124,7 +124,7 @@ func TestAbbr(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestAddress(t *testing.T) {
@@ -180,7 +180,7 @@ func TestAddress(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestArea(t *testing.T) {
@@ -302,7 +302,7 @@ func TestArticle(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestAside(t *testing.T) {
@@ -358,7 +358,7 @@ func TestAside(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestAudio(t *testing.T) {
@@ -447,7 +447,7 @@ func TestAudio(t *testing.T) {
 	elem.OnWaiting(h)
 	elem.OnWheel(h)
 	elem.OnloadedMetaData(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestB(t *testing.T) {
@@ -503,7 +503,7 @@ func TestB(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestBase(t *testing.T) {
@@ -616,7 +616,7 @@ func TestBdi(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestBdo(t *testing.T) {
@@ -672,7 +672,7 @@ func TestBdo(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestBlockquote(t *testing.T) {
@@ -729,7 +729,7 @@ func TestBlockquote(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestBody(t *testing.T) {
@@ -800,7 +800,7 @@ func TestBody(t *testing.T) {
 	elem.OnSubmit(h)
 	elem.OnUnload(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestBr(t *testing.T) {
@@ -925,7 +925,7 @@ func TestButton(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestCanvas(t *testing.T) {
@@ -983,7 +983,7 @@ func TestCanvas(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestCaption(t *testing.T) {
@@ -1039,7 +1039,7 @@ func TestCaption(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestCite(t *testing.T) {
@@ -1095,7 +1095,7 @@ func TestCite(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestCode(t *testing.T) {
@@ -1151,7 +1151,7 @@ func TestCode(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestCol(t *testing.T) {
@@ -1264,7 +1264,7 @@ func TestColGroup(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestData(t *testing.T) {
@@ -1287,7 +1287,7 @@ func TestData(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Value(42)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestDataList(t *testing.T) {
@@ -1343,7 +1343,7 @@ func TestDataList(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestDd(t *testing.T) {
@@ -1399,7 +1399,7 @@ func TestDd(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestDel(t *testing.T) {
@@ -1457,7 +1457,7 @@ func TestDel(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestDetails(t *testing.T) {
@@ -1516,7 +1516,7 @@ func TestDetails(t *testing.T) {
 	elem.OnSubmit(h)
 	elem.OnToggle(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestDfn(t *testing.T) {
@@ -1572,7 +1572,7 @@ func TestDfn(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestDialog(t *testing.T) {
@@ -1630,7 +1630,7 @@ func TestDialog(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestDiv(t *testing.T) {
@@ -1686,7 +1686,7 @@ func TestDiv(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestDl(t *testing.T) {
@@ -1742,7 +1742,7 @@ func TestDl(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestDt(t *testing.T) {
@@ -1798,7 +1798,7 @@ func TestDt(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestEm(t *testing.T) {
@@ -1854,7 +1854,7 @@ func TestEm(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestEmbed(t *testing.T) {
@@ -1996,7 +1996,7 @@ func TestFieldSet(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestFigCaption(t *testing.T) {
@@ -2052,7 +2052,7 @@ func TestFigCaption(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestFigure(t *testing.T) {
@@ -2108,7 +2108,7 @@ func TestFigure(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestFooter(t *testing.T) {
@@ -2164,7 +2164,7 @@ func TestFooter(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestForm(t *testing.T) {
@@ -2230,7 +2230,7 @@ func TestForm(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestH1(t *testing.T) {
@@ -2286,7 +2286,7 @@ func TestH1(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestH2(t *testing.T) {
@@ -2342,7 +2342,7 @@ func TestH2(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestH3(t *testing.T) {
@@ -2398,7 +2398,7 @@ func TestH3(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestH4(t *testing.T) {
@@ -2454,7 +2454,7 @@ func TestH4(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestH5(t *testing.T) {
@@ -2510,7 +2510,7 @@ func TestH5(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestH6(t *testing.T) {
@@ -2566,7 +2566,7 @@ func TestH6(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestHead(t *testing.T) {
@@ -2588,7 +2588,7 @@ func TestHead(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.TabIndex(42)
 	elem.Title("foo")
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestHeader(t *testing.T) {
@@ -2644,7 +2644,7 @@ func TestHeader(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestHr(t *testing.T) {
@@ -2721,7 +2721,7 @@ func TestHtml(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.TabIndex(42)
 	elem.Title("foo")
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestI(t *testing.T) {
@@ -2777,7 +2777,7 @@ func TestI(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestIFrame(t *testing.T) {
@@ -2841,7 +2841,7 @@ func TestIFrame(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestImg(t *testing.T) {
@@ -3079,7 +3079,7 @@ func TestIns(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestKbd(t *testing.T) {
@@ -3135,7 +3135,7 @@ func TestKbd(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestLabel(t *testing.T) {
@@ -3193,7 +3193,7 @@ func TestLabel(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestLegends(t *testing.T) {
@@ -3249,7 +3249,7 @@ func TestLegends(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestLi(t *testing.T) {
@@ -3306,7 +3306,7 @@ func TestLi(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestLink(t *testing.T) {
@@ -3424,7 +3424,7 @@ func TestMain(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestMap(t *testing.T) {
@@ -3481,7 +3481,7 @@ func TestMap(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestMark(t *testing.T) {
@@ -3537,7 +3537,7 @@ func TestMark(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestMeta(t *testing.T) {
@@ -3625,7 +3625,7 @@ func TestMeter(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestNav(t *testing.T) {
@@ -3681,7 +3681,7 @@ func TestNav(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestNoScript(t *testing.T) {
@@ -3703,7 +3703,7 @@ func TestNoScript(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.TabIndex(42)
 	elem.Title("foo")
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestObject(t *testing.T) {
@@ -3789,7 +3789,7 @@ func TestObject(t *testing.T) {
 	elem.OnWaiting(h)
 	elem.OnWheel(h)
 	elem.OnloadedMetaData(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestOl(t *testing.T) {
@@ -3849,7 +3849,7 @@ func TestOl(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestOptGroup(t *testing.T) {
@@ -3908,7 +3908,7 @@ func TestOptGroup(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestOption(t *testing.T) {
@@ -3970,7 +3970,7 @@ func TestOption(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestOutput(t *testing.T) {
@@ -4029,7 +4029,7 @@ func TestOutput(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestP(t *testing.T) {
@@ -4085,7 +4085,7 @@ func TestP(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestParam(t *testing.T) {
@@ -4198,7 +4198,7 @@ func TestPicture(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestPre(t *testing.T) {
@@ -4254,7 +4254,7 @@ func TestPre(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestProgress(t *testing.T) {
@@ -4312,7 +4312,7 @@ func TestProgress(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestQ(t *testing.T) {
@@ -4369,7 +4369,7 @@ func TestQ(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestRp(t *testing.T) {
@@ -4425,7 +4425,7 @@ func TestRp(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestRt(t *testing.T) {
@@ -4481,7 +4481,7 @@ func TestRt(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestRuby(t *testing.T) {
@@ -4537,7 +4537,7 @@ func TestRuby(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestS(t *testing.T) {
@@ -4593,7 +4593,7 @@ func TestS(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestSamp(t *testing.T) {
@@ -4649,7 +4649,7 @@ func TestSamp(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestScript(t *testing.T) {
@@ -4681,7 +4681,7 @@ func TestScript(t *testing.T) {
 
 	h := func(src Value, e Event) {}
 	elem.OnLoad(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestSection(t *testing.T) {
@@ -4737,7 +4737,7 @@ func TestSection(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestSelect(t *testing.T) {
@@ -4804,7 +4804,7 @@ func TestSelect(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestSmall(t *testing.T) {
@@ -4860,7 +4860,7 @@ func TestSmall(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestSource(t *testing.T) {
@@ -4976,7 +4976,7 @@ func TestSpan(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestStrong(t *testing.T) {
@@ -5032,7 +5032,7 @@ func TestStrong(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestStyle(t *testing.T) {
@@ -5091,7 +5091,7 @@ func TestStyle(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestSub(t *testing.T) {
@@ -5147,7 +5147,7 @@ func TestSub(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestSummary(t *testing.T) {
@@ -5203,7 +5203,7 @@ func TestSummary(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestSup(t *testing.T) {
@@ -5259,7 +5259,7 @@ func TestSup(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestTable(t *testing.T) {
@@ -5315,7 +5315,7 @@ func TestTable(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestTBody(t *testing.T) {
@@ -5371,7 +5371,7 @@ func TestTBody(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestTd(t *testing.T) {
@@ -5430,7 +5430,7 @@ func TestTd(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestTemplate(t *testing.T) {
@@ -5452,7 +5452,7 @@ func TestTemplate(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.TabIndex(42)
 	elem.Title("foo")
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestTextarea(t *testing.T) {
@@ -5524,7 +5524,7 @@ func TestTextarea(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestTfoot(t *testing.T) {
@@ -5580,7 +5580,7 @@ func TestTfoot(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestTh(t *testing.T) {
@@ -5641,7 +5641,7 @@ func TestTh(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestTHead(t *testing.T) {
@@ -5697,7 +5697,7 @@ func TestTHead(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestTime(t *testing.T) {
@@ -5754,7 +5754,7 @@ func TestTime(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestTitle(t *testing.T) {
@@ -5776,7 +5776,7 @@ func TestTitle(t *testing.T) {
 	elem.Style("color", "deepskyblue")
 	elem.TabIndex(42)
 	elem.Title("foo")
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestTr(t *testing.T) {
@@ -5832,7 +5832,7 @@ func TestTr(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestU(t *testing.T) {
@@ -5888,7 +5888,7 @@ func TestU(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestUl(t *testing.T) {
@@ -5944,7 +5944,7 @@ func TestUl(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestVar(t *testing.T) {
@@ -6000,7 +6000,7 @@ func TestVar(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestVideo(t *testing.T) {
@@ -6092,7 +6092,7 @@ func TestVideo(t *testing.T) {
 	elem.OnWaiting(h)
 	elem.OnWheel(h)
 	elem.OnloadedMetaData(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }
 
 func TestWbr(t *testing.T) {
@@ -6148,5 +6148,5 @@ func TestWbr(t *testing.T) {
 	elem.OnSelect(h)
 	elem.OnSubmit(h)
 	elem.OnWheel(h)
-	elem.Body(Text("hello"))
+	elem.Text("hello")
 }

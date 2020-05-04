@@ -2045,6 +2045,11 @@ func writeInterface(w io.Writer, t tag) {
 			// Body set the content of the element.
 			Body(nodes ...Node) HTML%s 
 		`, t.Name)
+
+		fmt.Fprintf(w, `
+			// Text sets the content of the element with a text node containing the stringified given value.
+			Text(v interface{}) HTML%s
+		`, t.Name)
 	}
 
 	for _, a := range t.Attrs {
@@ -2077,6 +2082,15 @@ func writeStruct(w io.Writer, t tag) {
 			func (e *html%s) Body(nodes ...Node) HTML%s {
 				e.setBody(e, nodes)
 				return e
+			}
+			`,
+			t.Name,
+			t.Name,
+		)
+
+		fmt.Fprintf(w, `
+			func (e *html%s) Text(v interface{}) HTML%s {
+				return e.Body(Text(v))
 			}
 			`,
 			t.Name,
@@ -2252,7 +2266,7 @@ import (
 		}
 
 		if !t.SelfClosing {
-			fmt.Fprintln(f, `elem.Body(Text("hello"))`)
+			fmt.Fprintln(f, `elem.Text("hello")`)
 		}
 
 		fmt.Fprintln(f, "}")
