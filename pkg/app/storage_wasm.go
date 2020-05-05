@@ -1,35 +1,17 @@
 package app
 
 import (
-	"crypto/aes"
-	"crypto/cipher"
-	"crypto/rand"
-	"encoding/base64"
 	"encoding/json"
-	"errors"
-	"io"
 	"sync"
 )
 
 type jsStorage struct {
 	name  string
-	key   []byte
 	mutex sync.RWMutex
 }
 
 func newJSStorage(name string) *jsStorage {
-	u := Window().URL()
-
-	key := []byte(u.Scheme + "(*_*)" + u.Host)
-	for len(key) < 32 {
-		key = append(key, 'o')
-	}
-	key = key[:32]
-
-	return &jsStorage{
-		name: name,
-		key:  key,
-	}
+	return &jsStorage{name: name}
 }
 
 func (s *jsStorage) Set(k string, v interface{}) error {
@@ -41,13 +23,7 @@ func (s *jsStorage) Set(k string, v interface{}) error {
 		return err
 	}
 
-	b, err = encrypt(b, s.key)
-	if err != nil {
-		return err
-	}
-
-	item := base64.StdEncoding.EncodeToString(b)
-	Window().Get(s.name).Call("setItem", k, item)
+	Window().Get(s.name).Call("setItem", k, btos(b))
 	return nil
 }
 
@@ -60,16 +36,7 @@ func (s *jsStorage) Get(k string, v interface{}) error {
 		return nil
 	}
 
-	b, err := base64.StdEncoding.DecodeString(item.String())
-	if err != nil {
-		return err
-	}
-
-	if b, err = decrypt(b, s.key); err != nil {
-		return err
-	}
-
-	return json.Unmarshal(b, v)
+	return json.Unmarshal(stob(item.String()), v)
 }
 
 func (s *jsStorage) Del(k string) {
@@ -84,43 +51,4 @@ func (s *jsStorage) Clear() {
 	defer s.mutex.Unlock()
 
 	Window().Get(s.name).Call("clear")
-}
-
-func encrypt(v []byte, key []byte) ([]byte, error) {
-	c, err := aes.NewCipher(key)
-	if err != nil {
-		return nil, err
-	}
-
-	gcm, err := cipher.NewGCM(c)
-	if err != nil {
-		return nil, err
-	}
-
-	nonce := make([]byte, gcm.NonceSize())
-	if _, err = io.ReadFull(rand.Reader, nonce); err != nil {
-		return nil, err
-	}
-
-	return gcm.Seal(nonce, nonce, v, nil), nil
-}
-
-func decrypt(v []byte, key []byte) ([]byte, error) {
-	c, err := aes.NewCipher(key)
-	if err != nil {
-		return nil, err
-	}
-
-	gcm, err := cipher.NewGCM(c)
-	if err != nil {
-		return nil, err
-	}
-
-	nonceSize := gcm.NonceSize()
-	if len(v) < nonceSize {
-		return nil, errors.New("ciphertext too short")
-	}
-
-	nonce, ciphertext := v[:nonceSize], v[nonceSize:]
-	return gcm.Open(nil, nonce, ciphertext, nil)
 }
