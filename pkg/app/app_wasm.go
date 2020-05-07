@@ -163,7 +163,9 @@ func navigate(u *url.URL, updateHistory bool) error {
 	}
 
 	defer func() {
-		nav(root, u)
+		dispatcher(func() {
+			nav(root, u)
+		})
 
 		if updateHistory {
 			Window().Get("history").Call("pushState", nil, "", u.String())
