@@ -111,7 +111,7 @@ func nav(n UI, u *url.URL) {
 		t.nav(u)
 
 	case Composer:
-		t.mount(t)
+		t.nav(u)
 	}
 }
 
