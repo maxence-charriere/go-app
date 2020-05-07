@@ -60,8 +60,6 @@ func indirect(nodes ...Node) []UI {
 }
 
 func mount(n Node) error {
-	fmt.Printf("mounting %T\n", n)
-
 	switch t := n.(type) {
 	case textNode:
 		return t.mount()
@@ -70,6 +68,7 @@ func mount(n Node) error {
 		return t.mount()
 
 	case Composer:
+		fmt.Printf("mounting %T\n", n)
 		return t.mount(t)
 
 	case rawNode:
