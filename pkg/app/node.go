@@ -36,9 +36,9 @@ func indirect(nodes ...Node) []UI {
 	inodes := make([]UI, 0, len(nodes))
 
 	for _, n := range nodes {
-		if v := reflect.ValueOf(n); v.Kind() == reflect.Ptr && v.IsNil() {
-			continue
-		}
+		// if v := reflect.ValueOf(n); v.Kind() == reflect.Ptr && v.IsNil() {
+		// 	continue
+		// }
 
 		switch t := n.(type) {
 		case Condition:
