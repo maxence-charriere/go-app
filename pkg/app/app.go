@@ -29,7 +29,7 @@ var (
 	remoteRootDir string
 	routes        router
 	dispatcher    Dispatcher = Dispatch
-	uiChan                   = make(chan func(), 256)
+	uiChan                   = make(chan func(), 4096)
 )
 
 // Dispatcher is a function that executes the given function on the goroutine dedicated to UI.
