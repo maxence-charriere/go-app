@@ -47,6 +47,10 @@ func TestIndirect(t *testing.T) {
 				Div().nodeType(),
 			},
 		},
+		{
+			scenario: "indirect ignores nil node",
+			node:     (*testCompo)(nil),
+		},
 	}
 
 	for _, test := range tests {
