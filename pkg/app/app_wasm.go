@@ -47,14 +47,14 @@ func run() {
 	defer onpopstate.Release()
 	Window().Set("onpopstate", onpopstate)
 
-	url := Window().URL()
+	// url := Window().URL()
 
-	if err := navigate(url, false); err != nil {
-		log.Error("loading page failed").
-			T("error", err).
-			T("url", url).
-			Panic()
-	}
+	// if err := navigate(url, false); err != nil {
+	// 	log.Error("loading page failed").
+	// 		T("error", err).
+	// 		T("url", url).
+	// 		Panic()
+	// }
 
 	for {
 		select {
