@@ -80,10 +80,6 @@ func mount(n Node) error {
 }
 
 func update(a, b UI) error {
-	if a == b {
-		return nil
-	}
-
 	if a.nodeType() != b.nodeType() {
 		return replace(a, b)
 	}

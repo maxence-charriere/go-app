@@ -126,7 +126,9 @@ func (c *Compo) Update() {
 		}
 
 		current := c.root
-		incoming := c.compo.Render().(UI)
+		incoming := c.compo.Render()
+
+		fmt.Printf("updating component root %T by %T\n", current, incoming)
 
 		if err := update(current, incoming); err != nil {
 			log.Error("updating component failed").
