@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"io"
+	"net/url"
 	"reflect"
 )
 
@@ -101,6 +102,16 @@ func update(a, b UI) error {
 	}
 
 	return nil
+}
+
+func nav(n UI, u *url.URL) {
+	switch t := n.(type) {
+	case standardNode:
+		t.nav(u)
+
+	case Composer:
+		t.mount(t)
+	}
 }
 
 func replace(a, b UI) error {

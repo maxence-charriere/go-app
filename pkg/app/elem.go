@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"io"
+	"net/url"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/log"
 )
@@ -27,6 +28,7 @@ type standardNode interface {
 	removeChildValue(child UI)
 	replaceChildValue(old, new UI)
 	update(n standardNode)
+	nav(u *url.URL)
 }
 
 type elem struct {
@@ -268,6 +270,12 @@ func (e *elem) update(n standardNode) {
 			e.setEventHandler(k, v.function)
 			e.setEventHandlerValue(k, v)
 		}
+	}
+}
+
+func (e *elem) nav(u *url.URL) {
+	for _, c := range e.body {
+		nav(c, u)
 	}
 }
 
