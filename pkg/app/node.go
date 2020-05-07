@@ -68,7 +68,6 @@ func mount(n Node) error {
 		return t.mount()
 
 	case Composer:
-		fmt.Printf("mounting %T\n", n)
 		return t.mount(t)
 
 	case rawNode:
@@ -116,8 +115,6 @@ func nav(n UI, u *url.URL) {
 }
 
 func replace(a, b UI) error {
-	fmt.Printf("replacing node %T by %T\n", a, b)
-
 	if err := mount(b); err != nil {
 		return err
 	}
