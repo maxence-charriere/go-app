@@ -128,8 +128,6 @@ func (c *Compo) Update() {
 		current := c.root
 		incoming := c.compo.Render()
 
-		fmt.Printf("updating component root %T by %T\n", current, incoming)
-
 		if err := update(current, incoming); err != nil {
 			log.Error("updating component failed").
 				T("component-type", reflect.TypeOf(c.compo)).
@@ -158,10 +156,6 @@ func (c *Compo) mount(compo Composer) error {
 func (c *Compo) update(n Composer) {
 	aval := reflect.Indirect(reflect.ValueOf(c.compo))
 	bval := reflect.Indirect(reflect.ValueOf(n))
-
-	if aval == bval {
-		return
-	}
 
 	compotype := reflect.ValueOf(c).Elem().Type()
 	updated := false
