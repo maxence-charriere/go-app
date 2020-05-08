@@ -35,7 +35,9 @@ type Composer interface {
 
 	setCompo(n Composer)
 	mount(c Composer) error
+	mounted() bool
 	update(n Composer)
+	nav(u *url.URL)
 }
 
 // Mounter is the interface that describes a component that can perform
@@ -120,12 +122,12 @@ func (c *Compo) replaceChild(old, new UI) {
 // used to render the component has been modified.
 func (c *Compo) Update() {
 	dispatcher(func() {
-		if c.compo == nil {
+		if !c.mounted() {
 			return
 		}
 
 		current := c.root
-		incoming := c.compo.Render().(UI)
+		incoming := c.compo.Render()
 
 		if err := update(current, incoming); err != nil {
 			log.Error("updating component failed").
@@ -152,7 +154,15 @@ func (c *Compo) mount(compo Composer) error {
 	return nil
 }
 
+func (c *Compo) mounted() bool {
+	return c.compo != nil && c.root != nil && c.root.JSValue() != nil
+}
+
 func (c *Compo) update(n Composer) {
+	if c.compo == n {
+		return
+	}
+
 	aval := reflect.Indirect(reflect.ValueOf(c.compo))
 	bval := reflect.Indirect(reflect.ValueOf(n))
 	compotype := reflect.ValueOf(c).Elem().Type()
@@ -177,9 +187,15 @@ func (c *Compo) update(n Composer) {
 	}
 
 	if updatable, ok := c.compo.(Updatable); updated && ok {
-		dispatcher(func() {
-			updatable.OnUpdate()
-		})
+		updatable.OnUpdate()
+	}
+}
+
+func (c *Compo) nav(u *url.URL) {
+	nav(c.root, u)
+
+	if n, ok := c.compo.(Navigator); ok {
+		n.OnNav(u)
 	}
 }
 

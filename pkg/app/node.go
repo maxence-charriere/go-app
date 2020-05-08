@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"io"
+	"net/url"
 	"reflect"
 )
 
@@ -66,11 +67,11 @@ func mount(n Node) error {
 	case standardNode:
 		return t.mount()
 
-	case rawNode:
-		return t.mount()
-
 	case Composer:
 		return t.mount(t)
+
+	case rawNode:
+		return t.mount()
 
 	default:
 		return fmt.Errorf("%T is not mountable", n)
@@ -101,6 +102,16 @@ func update(a, b UI) error {
 	}
 
 	return nil
+}
+
+func nav(n UI, u *url.URL) {
+	switch t := n.(type) {
+	case standardNode:
+		t.nav(u)
+
+	case Composer:
+		t.nav(u)
+	}
 }
 
 func replace(a, b UI) error {

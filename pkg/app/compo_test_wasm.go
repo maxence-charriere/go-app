@@ -1,6 +1,7 @@
 package app
 
 import (
+	"net/url"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -98,4 +99,50 @@ func TestCompoUpdatable(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, 21, a.Value)
 	require.True(t, called)
+}
+
+type navTest struct {
+	Compo
+
+	subcompo UI
+	onNav    func(*url.URL)
+}
+
+func (n *navTest) OnNav(u *url.URL) {
+	if n.onNav != nil {
+		n.onNav(u)
+	}
+}
+
+func (n *navTest) Render() UI {
+	return Div().Body(
+		n.subcompo,
+	)
+}
+
+func TestNavigator(t *testing.T) {
+	bcalled := false
+	b := &navTest{
+		onNav: func(u *url.URL) {
+			bcalled = true
+		},
+	}
+
+	acalled := false
+	a := &navTest{
+		subcompo: b,
+		onNav: func(u *url.URL) {
+			acalled = true
+		},
+	}
+
+	err := mount(a)
+	require.NoError(t, err)
+
+	require.False(t, acalled)
+	require.False(t, bcalled)
+
+	nav(a, nil)
+	require.True(t, true)
+	require.True(t, true)
 }
