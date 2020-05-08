@@ -121,6 +121,8 @@ func (c *Compo) replaceChild(old, new UI) {
 // used to render the component has been modified.
 func (c *Compo) Update() {
 	dispatcher(func() {
+		fmt.Printf("updating %T - mounted: %v\n", c, c.JSValue() != nil)
+
 		if c.compo == nil {
 			return
 		}
@@ -154,13 +156,12 @@ func (c *Compo) mount(compo Composer) error {
 }
 
 func (c *Compo) update(n Composer) {
-	aval := reflect.Indirect(reflect.ValueOf(c.compo))
-	bval := reflect.Indirect(reflect.ValueOf(n))
-
-	if aval == bval {
+	if c.compo == n {
 		return
 	}
 
+	aval := reflect.Indirect(reflect.ValueOf(c.compo))
+	bval := reflect.Indirect(reflect.ValueOf(n))
 	compotype := reflect.ValueOf(c).Elem().Type()
 	updated := false
 
