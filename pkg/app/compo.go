@@ -192,11 +192,11 @@ func (c *Compo) update(n Composer) {
 }
 
 func (c *Compo) nav(u *url.URL) {
+	nav(c.root, u)
+
 	if n, ok := c.compo.(Navigator); ok {
 		n.OnNav(u)
 	}
-
-	nav(c.root, u)
 }
 
 // Render describes the component content. This is a default implementation to
