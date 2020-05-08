@@ -122,7 +122,6 @@ func (c *Compo) replaceChild(old, new UI) {
 // used to render the component has been modified.
 func (c *Compo) Update() {
 	dispatcher(func() {
-		fmt.Printf("updating %T - mounted: %v\n", c, c.JSValue() != nil)
 		if !c.mounted() {
 			return
 		}
@@ -188,9 +187,7 @@ func (c *Compo) update(n Composer) {
 	}
 
 	if updatable, ok := c.compo.(Updatable); updated && ok {
-		dispatcher(func() {
-			updatable.OnUpdate()
-		})
+		updatable.OnUpdate()
 	}
 }
 
