@@ -35,6 +35,7 @@ type Composer interface {
 
 	setCompo(n Composer)
 	mount(c Composer) error
+	mounted() bool
 	update(n Composer)
 	nav(u *url.URL)
 }
@@ -122,8 +123,7 @@ func (c *Compo) replaceChild(old, new UI) {
 func (c *Compo) Update() {
 	dispatcher(func() {
 		fmt.Printf("updating %T - mounted: %v\n", c, c.JSValue() != nil)
-
-		if c.compo == nil {
+		if !c.mounted() {
 			return
 		}
 
@@ -153,6 +153,10 @@ func (c *Compo) mount(compo Composer) error {
 	}
 
 	return nil
+}
+
+func (c *Compo) mounted() bool {
+	return c.compo != nil && c.root != nil && c.root.JSValue() != nil
 }
 
 func (c *Compo) update(n Composer) {
