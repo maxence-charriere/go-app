@@ -134,8 +134,8 @@ func Getenv(k string) string {
 	return getenv(k)
 }
 
-// KeepBodyClean prevents third-party Javascript libraries like advertisement
-// ones to add nodes to the body element.
+// KeepBodyClean prevents third-party Javascript libraries to add nodes to the
+// body element.
 func KeepBodyClean() (close func()) {
 	return keepBodyClean()
 }
