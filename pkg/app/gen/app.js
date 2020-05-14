@@ -80,5 +80,5 @@ function goappKeepBodyClean() {
     childList: true,
   });
 
-  return mutationObserver.disconnect
+  return () => mutationObserver.disconnect();
 }
