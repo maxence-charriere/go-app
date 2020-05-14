@@ -200,3 +200,11 @@ func getenv(k string) string {
 	}
 	return env.String()
 }
+
+func keepBodyClean() func() {
+	close := Window().Call("goappKeepBodyClean")
+
+	return func() {
+		close.Invoke()
+	}
+}

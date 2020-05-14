@@ -46,3 +46,8 @@ func getenv(k string) string {
 	panicNoWasm()
 	return ""
 }
+
+func keepBodyClean() func() {
+	panicNoWasm()
+	return nil
+}
