@@ -181,7 +181,7 @@ func navigate(u *url.URL, updateHistory bool) error {
 			Window().Get("history").Call("pushState", nil, "", u.String())
 		}
 
-		cleanBody()
+		Dispatch(cleanBody)
 	}()
 
 	if content == root {
