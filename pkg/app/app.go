@@ -133,3 +133,14 @@ func ResolveStaticResourcePath(path string) string {
 func Getenv(k string) string {
 	return getenv(k)
 }
+
+// CleanBody cleans the body element in order to have only the elements required
+// by go-app as children.
+//
+// Some third-party Javascript libraries like advertise ones often append
+// content to the body.
+//
+// This call is to remove unwanted added content.
+func CleanBody() {
+	dispatcher(cleanBody)
+}
