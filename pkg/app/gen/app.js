@@ -57,7 +57,6 @@ WebAssembly.instantiateStreaming(fetch("{{.Wasm}}"), go.importObject)
     console.error("loading wasm failed: " + err);
   });
 
-
 // -----------------------------------------------------------------------------
 // Keep body clean
 // -----------------------------------------------------------------------------
