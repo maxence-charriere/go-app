@@ -101,6 +101,8 @@ func initContextMenu() {
 }
 
 func cleanBody() {
+	body := body.(*htmlBody).JSValue()
+
 	for {
 		lastChild := body.Get("lastChild")
 
