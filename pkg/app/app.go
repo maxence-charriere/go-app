@@ -134,13 +134,8 @@ func Getenv(k string) string {
 	return getenv(k)
 }
 
-// CleanBody cleans the body element in order to have only the elements required
-// by go-app as children.
-//
-// Some third-party Javascript libraries like advertise ones often append
-// content to the body.
-//
-// This call is to remove unwanted added content.
-func CleanBody() {
-	dispatcher(cleanBody)
+// KeepBodyClean prevents third-party Javascript libraries like advertisement
+// ones to add nodes to the body element.
+func KeepBodyClean() (close func()) {
+	return keepBodyClean()
 }

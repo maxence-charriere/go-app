@@ -100,20 +100,6 @@ func initContextMenu() {
 	}
 }
 
-func cleanBody() {
-	body := body.(*htmlBody).JSValue()
-
-	for {
-		lastChild := body.Get("lastChild")
-
-		if lastChild.Get("id").String() == "app-end" {
-			return
-		}
-
-		body.Call("removeChild", lastChild)
-	}
-}
-
 func onNavigate(this Value, args []Value) interface{} {
 	url := ""
 	event := Event{Value: args[0]}
@@ -213,4 +199,12 @@ func getenv(k string) string {
 		return ""
 	}
 	return env.String()
+}
+
+func keepBodyClean() func() {
+	close := Window().Call("goappKeepBodyClean")
+
+	return func() {
+		close.Invoke()
+	}
 }
