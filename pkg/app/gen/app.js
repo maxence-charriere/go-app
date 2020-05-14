@@ -56,3 +56,24 @@ WebAssembly.instantiateStreaming(fetch("{{.Wasm}}"), go.importObject)
 
     console.error("loading wasm failed: " + err);
   });
+
+
+// -----------------------------------------------------------------------------
+// Keep body clean
+// -----------------------------------------------------------------------------
+const mutationObserver = new MutationObserver(function (mutationList) {
+  mutationList.forEach((mutation) => {
+    switch (mutation.type) {
+      case 'childList':
+        mutation.addedNodes.forEach(function (node) {
+          document.body.removeChild(node);
+        });
+        break;
+    }
+  });
+});
+
+
+mutationObserver.observe(document.body, {
+  childList: true,
+});
