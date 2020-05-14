@@ -164,8 +164,6 @@ func navigate(u *url.URL, updateHistory bool) error {
 		return nil
 	}
 
-	cleanBody()
-
 	path := u.Path
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
@@ -182,6 +180,8 @@ func navigate(u *url.URL, updateHistory bool) error {
 		if updateHistory {
 			Window().Get("history").Call("pushState", nil, "", u.String())
 		}
+
+		cleanBody()
 	}()
 
 	if content == root {
