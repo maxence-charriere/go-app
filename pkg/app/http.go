@@ -279,6 +279,7 @@ func (h *Handler) initPage() {
 				return Script().
 					Src(h.Scripts[i])
 			}),
+			Div().ID("app-end"),
 		),
 	).
 		html(&h.page)

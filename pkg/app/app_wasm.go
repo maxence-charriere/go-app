@@ -100,6 +100,18 @@ func initContextMenu() {
 	}
 }
 
+func cleanBody() {
+	for {
+		lastChild := body.Get("lastChild")
+
+		if lastChild.Get("id").String() == "app-end" {
+			return
+		}
+
+		body.Call("removeChild", lastChild)
+	}
+}
+
 func onNavigate(this Value, args []Value) interface{} {
 	url := ""
 	event := Event{Value: args[0]}
@@ -149,6 +161,8 @@ func navigate(u *url.URL, updateHistory bool) error {
 		Window().Get("location").Set("href", u.String())
 		return nil
 	}
+
+	cleanBody()
 
 	path := u.Path
 	if !strings.HasPrefix(path, "/") {
