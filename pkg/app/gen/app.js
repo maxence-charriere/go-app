@@ -61,18 +61,20 @@ WebAssembly.instantiateStreaming(fetch("{{.Wasm}}"), go.importObject)
 // -----------------------------------------------------------------------------
 // Keep body clean
 // -----------------------------------------------------------------------------
+const body = document.body;
+const bodyChildrenCount = body.children.length;
+
 const mutationObserver = new MutationObserver(function (mutationList) {
   mutationList.forEach((mutation) => {
     switch (mutation.type) {
       case 'childList':
-        mutation.addedNodes.forEach(function (node) {
-          document.body.removeChild(node);
-        });
+        while (body.children.length > bodyChildrenCount) {
+          body.removeChild(body.lastChild);
+        }
         break;
     }
   });
 });
-
 
 mutationObserver.observe(document.body, {
   childList: true,
