@@ -166,6 +166,10 @@ func navigate(u *url.URL, updateHistory bool) error {
 		if updateHistory {
 			Window().Get("history").Call("pushState", nil, "", u.String())
 		}
+
+		if u.Fragment != "" {
+			Window().Get("location").Set("hash", "#"+u.Fragment)
+		}
 	}()
 
 	if content == root {
