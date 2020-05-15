@@ -5,6 +5,7 @@ import (
 	"net/url"
 	"strings"
 	"syscall/js"
+	"time"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/log"
 )
@@ -109,14 +110,13 @@ func onNavigate(this Value, args []Value) interface{} {
 		elem = event.Get("srcElement")
 	}
 
-	fmt.Println("onNavigate:", elem.Get("href").String())
-
-findAnchor:
 	for {
 		switch elem.Get("tagName").String() {
 		case "A":
+			event.PreventDefault()
 			url = elem.Get("href").String()
-			break findAnchor
+			Navigate(url)
+			return nil
 
 		case "BODY":
 			return nil
@@ -129,8 +129,6 @@ findAnchor:
 		}
 	}
 
-	event.PreventDefault()
-	Navigate(url)
 	return nil
 
 }
@@ -170,9 +168,13 @@ func navigate(u *url.URL, updateHistory bool) error {
 		fmt.Println("fragment:", u.Fragment)
 
 		if u.Fragment != "" {
-			dispatcher(func() {
-				Window().Get("location").Set("hash", "#"+u.Fragment)
-			})
+			go func() {
+				time.Sleep(time.Second)
+				dispatcher(func() {
+					Window().Get("location").Set("hash", "#"+u.Fragment)
+				})
+			}()
+
 		}
 	}()
 
