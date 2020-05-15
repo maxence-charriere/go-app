@@ -134,19 +134,13 @@ func onNavigate(this Value, args []Value) interface{} {
 }
 
 func onPopState(this Value, args []Value) interface{} {
-	u := Window().URL()
-	if u.String() == currentURL.String() {
-		return nil
-	}
-
 	dispatcher(func() {
-		navigate(u, false)
+		navigate(Window().URL(), false)
 	})
 	return nil
 }
 
 func navigate(u *url.URL, updateHistory bool) error {
-	fmt.Println("----- navigate to", u)
 	contextMenu.hide(nil, Event{Value: Null()})
 
 	if isExternalNavigation(u) {
@@ -176,6 +170,12 @@ func navigate(u *url.URL, updateHistory bool) error {
 
 	if updateHistory {
 		Window().Get("history").Call("pushState", nil, "", u.String())
+	}
+
+	if isFragmentNavigation(u) {
+		dispatcher(func() {
+			Window().ScrollToID(u.Fragment)
+		})
 	}
 
 	return nil
