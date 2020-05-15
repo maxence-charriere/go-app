@@ -180,9 +180,7 @@ func navigate(u *url.URL, updateHistory bool) error {
 }
 
 func isPWANavigation(u *url.URL) bool {
-	externalNav := u.Host != "" && u.Host != Window().URL().Host
-	fragmentNav := u.Fragment != ""
-	return !externalNav && !fragmentNav
+	return u.Host != "" && u.Host == Window().URL().Host
 }
 
 func reload() {
