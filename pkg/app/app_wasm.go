@@ -5,7 +5,6 @@ import (
 	"net/url"
 	"strings"
 	"syscall/js"
-	"time"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/log"
 )
@@ -141,6 +140,8 @@ func onPopState(this Value, args []Value) interface{} {
 }
 
 func navigate(u *url.URL, updateHistory bool) error {
+	fmt.Println("nav to", u)
+
 	contextMenu.hide(nil, Event{Value: Null()})
 
 	if !isPWANavigation(u) {
@@ -167,15 +168,9 @@ func navigate(u *url.URL, updateHistory bool) error {
 
 		fmt.Println("fragment:", u.Fragment)
 
-		if u.Fragment != "" {
-			go func() {
-				time.Sleep(time.Second)
-				dispatcher(func() {
-					Window().Get("location").Set("hash", "#"+u.Fragment)
-				})
-			}()
-
-		}
+		// if u.Fragment != "" {
+		// 	navigate(u, false)
+		// }
 	}()
 
 	if content == root {
