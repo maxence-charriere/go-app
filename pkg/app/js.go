@@ -181,6 +181,9 @@ type BrowserWindow interface {
 	CursorPosition() (x, y int)
 
 	setCursorPosition(x, y int)
+
+	// Scrolls to the element with the given id.
+	ScrollToID(id string)
 }
 
 // Event is the interface that describes a javascript event.

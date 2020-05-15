@@ -109,12 +109,13 @@ func onNavigate(this Value, args []Value) interface{} {
 		elem = event.Get("srcElement")
 	}
 
-findAnchor:
 	for {
 		switch elem.Get("tagName").String() {
 		case "A":
+			event.PreventDefault()
 			url = elem.Get("href").String()
-			break findAnchor
+			Navigate(url)
+			return nil
 
 		case "BODY":
 			return nil
@@ -127,25 +128,21 @@ findAnchor:
 		}
 	}
 
-	event.PreventDefault()
-	Navigate(url)
 	return nil
 
 }
 
 func onPopState(this Value, args []Value) interface{} {
-	if u := Window().URL(); u.Fragment == "" {
-		dispatcher(func() {
-			navigate(u, false)
-		})
-	}
+	dispatcher(func() {
+		navigate(Window().URL(), false)
+	})
 	return nil
 }
 
 func navigate(u *url.URL, updateHistory bool) error {
 	contextMenu.hide(nil, Event{Value: Null()})
 
-	if !isPWANavigation(u) {
+	if isExternalNavigation(u) {
 		Window().Get("location").Set("href", u.String())
 		return nil
 	}
@@ -160,29 +157,34 @@ func navigate(u *url.URL, updateHistory bool) error {
 		root = NotFound
 	}
 
-	defer func() {
-		nav(root, u)
-
-		if updateHistory {
-			Window().Get("history").Call("pushState", nil, "", u.String())
+	if content != root {
+		if err := replace(content, root); err != nil {
+			return err
 		}
-	}()
+		content = root
+	}
 
-	if content == root {
-		return nil
+	triggerOnNav(root, u)
+
+	if updateHistory {
+		Window().Get("history").Call("pushState", nil, "", u.String())
 	}
-	if err := replace(content, root); err != nil {
-		return err
+
+	if isFragmentNavigation(u) {
+		dispatcher(func() {
+			Window().ScrollToID(u.Fragment)
+		})
 	}
-	content = root
 
 	return nil
 }
 
-func isPWANavigation(u *url.URL) bool {
-	externalNav := u.Host != "" && u.Host != Window().URL().Host
-	fragmentNav := u.Fragment != ""
-	return !externalNav && !fragmentNav
+func isExternalNavigation(u *url.URL) bool {
+	return u.Host != Window().URL().Host
+}
+
+func isFragmentNavigation(u *url.URL) bool {
+	return u.Fragment != ""
 }
 
 func reload() {

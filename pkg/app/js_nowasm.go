@@ -142,6 +142,10 @@ func (w browserWindow) setCursorPosition(x, y int) {
 	panicNoWasm()
 }
 
+func (w *browserWindow) ScrollToID(id string) {
+	panicNoWasm()
+}
+
 func copyBytesToGo(dst []byte, src Value) int {
 	panicNoWasm()
 	return 0
