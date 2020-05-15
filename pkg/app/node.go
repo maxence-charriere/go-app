@@ -104,13 +104,13 @@ func update(a, b UI) error {
 	return nil
 }
 
-func nav(n UI, u *url.URL) {
+func triggerOnNav(n UI, u *url.URL) {
 	switch t := n.(type) {
 	case standardNode:
-		t.nav(u)
+		t.triggerOnNav(u)
 
 	case Composer:
-		t.nav(u)
+		t.triggerOnNav(u)
 	}
 }
 

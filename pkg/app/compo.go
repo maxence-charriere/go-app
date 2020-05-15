@@ -37,7 +37,7 @@ type Composer interface {
 	mount(c Composer) error
 	mounted() bool
 	update(n Composer)
-	nav(u *url.URL)
+	triggerOnNav(u *url.URL)
 }
 
 // Mounter is the interface that describes a component that can perform
@@ -191,8 +191,8 @@ func (c *Compo) update(n Composer) {
 	}
 }
 
-func (c *Compo) nav(u *url.URL) {
-	nav(c.root, u)
+func (c *Compo) triggerOnNav(u *url.URL) {
+	triggerOnNav(c.root, u)
 
 	if n, ok := c.compo.(Navigator); ok {
 		n.OnNav(u)

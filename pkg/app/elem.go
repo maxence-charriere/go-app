@@ -28,7 +28,7 @@ type standardNode interface {
 	removeChildValue(child UI)
 	replaceChildValue(old, new UI)
 	update(n standardNode)
-	nav(u *url.URL)
+	triggerOnNav(u *url.URL)
 }
 
 type elem struct {
@@ -273,9 +273,9 @@ func (e *elem) update(n standardNode) {
 	}
 }
 
-func (e *elem) nav(u *url.URL) {
+func (e *elem) triggerOnNav(u *url.URL) {
 	for _, c := range e.body {
-		nav(c, u)
+		triggerOnNav(c, u)
 	}
 }
 

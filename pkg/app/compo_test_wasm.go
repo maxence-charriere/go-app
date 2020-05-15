@@ -142,7 +142,7 @@ func TestNavigator(t *testing.T) {
 	require.False(t, acalled)
 	require.False(t, bcalled)
 
-	nav(a, nil)
+	triggerOnNav(a, nil)
 	require.True(t, true)
 	require.True(t, true)
 }

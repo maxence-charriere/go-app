@@ -14,6 +14,7 @@ var (
 	body           = Body()
 	content     UI = Div()
 	contextMenu    = &contextMenuLayout{}
+	currentURL  *url.URL
 )
 
 func init() {
@@ -133,10 +134,10 @@ func onNavigate(this Value, args []Value) interface{} {
 }
 
 func onPopState(this Value, args []Value) interface{} {
-	fmt.Println("onPopState")
+	u := Window().URL()
 
 	dispatcher(func() {
-		navigate(Window().URL(), false)
+		navigate(u, false)
 	})
 	return nil
 }
@@ -145,7 +146,7 @@ func navigate(u *url.URL, updateHistory bool) error {
 	fmt.Println("----- navigate to", u)
 	contextMenu.hide(nil, Event{Value: Null()})
 
-	if !isPWANavigation(u) {
+	if isExternalNavigation(u) {
 		Window().Get("location").Set("href", u.String())
 		return nil
 	}
@@ -160,27 +161,37 @@ func navigate(u *url.URL, updateHistory bool) error {
 		root = NotFound
 	}
 
-	defer func() {
-		nav(root, u)
-
-		if updateHistory {
-			Window().Get("history").Call("pushState", nil, "", u.String())
+	if content != root {
+		if err := replace(content, root); err != nil {
+			return err
 		}
-	}()
-
-	if content == root {
-		return nil
+		content = root
 	}
-	if err := replace(content, root); err != nil {
-		return err
-	}
-	content = root
 
+	triggerOnNav(root, u)
+
+	if updateHistory {
+		Window().Get("history").Call("pushState", nil, "", u.String())
+	}
+
+	if isFragmentNavigation(u) && u.String() != currentURL.String() {
+		cleanURL := *u
+		cleanURL.Fragment = ""
+
+		Window().Get("history").Call("replaceState", nil, "", cleanURL.String())
+		Window().Get("location").Set("hash", "#"+u.Fragment)
+	}
+
+	currentURL = u
 	return nil
 }
 
-func isPWANavigation(u *url.URL) bool {
-	return u.Host == Window().URL().Host
+func isExternalNavigation(u *url.URL) bool {
+	return u.Host != Window().URL().Host
+}
+
+func isFragmentNavigation(u *url.URL) bool {
+	return u.Fragment != ""
 }
 
 func reload() {
