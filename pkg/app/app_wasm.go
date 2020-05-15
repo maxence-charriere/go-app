@@ -104,8 +104,6 @@ func onNavigate(this Value, args []Value) interface{} {
 	url := ""
 	event := Event{Value: args[0]}
 
-	fmt.Println("onNavigate", url)
-
 	elem := event.Get("target")
 	if !elem.Truthy() {
 		elem = event.Get("srcElement")
@@ -136,11 +134,9 @@ findAnchor:
 }
 
 func onPopState(this Value, args []Value) interface{} {
-	if u := Window().URL(); u.Fragment == "" {
-		dispatcher(func() {
-			navigate(u, false)
-		})
-	}
+	dispatcher(func() {
+		navigate(u, false)
+	})
 	return nil
 }
 
