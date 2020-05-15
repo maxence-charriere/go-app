@@ -14,7 +14,6 @@ var (
 	body           = Body()
 	content     UI = Div()
 	contextMenu    = &contextMenuLayout{}
-	currentURL  url.URL
 )
 
 func init() {
@@ -165,7 +164,6 @@ func navigate(u *url.URL, updateHistory bool) error {
 		content = root
 	}
 
-	currentURL = *u
 	triggerOnNav(root, u)
 
 	if updateHistory {
