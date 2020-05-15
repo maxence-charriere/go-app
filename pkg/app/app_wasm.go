@@ -14,7 +14,7 @@ var (
 	body           = Body()
 	content     UI = Div()
 	contextMenu    = &contextMenuLayout{}
-	currentURL  *url.URL
+	currentURL  url.URL
 )
 
 func init() {
@@ -135,6 +135,9 @@ func onNavigate(this Value, args []Value) interface{} {
 
 func onPopState(this Value, args []Value) interface{} {
 	u := Window().URL()
+	if u.String() == currentURL.String() {
+		return
+	}
 
 	dispatcher(func() {
 		navigate(u, false)
@@ -168,6 +171,7 @@ func navigate(u *url.URL, updateHistory bool) error {
 		content = root
 	}
 
+	currentURL = *u
 	triggerOnNav(root, u)
 
 	if updateHistory {
@@ -184,7 +188,6 @@ func navigate(u *url.URL, updateHistory bool) error {
 		Window().Get("location").Set("hash", "#"+u.Fragment)
 	}
 
-	currentURL = u
 	return nil
 }
 
