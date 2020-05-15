@@ -104,6 +104,8 @@ func onNavigate(this Value, args []Value) interface{} {
 	url := ""
 	event := Event{Value: args[0]}
 
+	fmt.Println("onNavigate", url)
+
 	elem := event.Get("target")
 	if !elem.Truthy() {
 		elem = event.Get("srcElement")
