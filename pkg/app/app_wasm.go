@@ -133,6 +133,8 @@ func onNavigate(this Value, args []Value) interface{} {
 }
 
 func onPopState(this Value, args []Value) interface{} {
+	fmt.Println("onPopState")
+
 	dispatcher(func() {
 		navigate(Window().URL(), false)
 	})
