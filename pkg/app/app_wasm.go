@@ -175,6 +175,8 @@ func navigate(u *url.URL, updateHistory bool) error {
 	}
 
 	if isFragmentNavigation(u) && u.String() != currentURL.String() {
+		fmt.Println("-- handling fragment:", u.Fragment)
+
 		cleanURL := *u
 		cleanURL.Fragment = ""
 
