@@ -135,7 +135,7 @@ findAnchor:
 
 func onPopState(this Value, args []Value) interface{} {
 	dispatcher(func() {
-		navigate(u, false)
+		navigate(Window().URL(), false)
 	})
 	return nil
 }
