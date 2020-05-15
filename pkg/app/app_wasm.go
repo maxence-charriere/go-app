@@ -140,8 +140,6 @@ func onPopState(this Value, args []Value) interface{} {
 }
 
 func navigate(u *url.URL, updateHistory bool) error {
-	fmt.Println("nav to", u)
-
 	contextMenu.hide(nil, Event{Value: Null()})
 
 	if !isPWANavigation(u) {
@@ -165,12 +163,6 @@ func navigate(u *url.URL, updateHistory bool) error {
 		if updateHistory {
 			Window().Get("history").Call("pushState", nil, "", u.String())
 		}
-
-		fmt.Println("fragment:", u.Fragment)
-
-		// if u.Fragment != "" {
-		// 	navigate(u, false)
-		// }
 	}()
 
 	if content == root {
@@ -185,7 +177,7 @@ func navigate(u *url.URL, updateHistory bool) error {
 }
 
 func isPWANavigation(u *url.URL) bool {
-	return u.Host != "" && u.Host == Window().URL().Host
+	return u.Host == Window().URL().Host
 }
 
 func reload() {
