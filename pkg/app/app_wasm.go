@@ -136,7 +136,7 @@ func onNavigate(this Value, args []Value) interface{} {
 func onPopState(this Value, args []Value) interface{} {
 	u := Window().URL()
 	if u.String() == currentURL.String() {
-		return
+		return nil
 	}
 
 	dispatcher(func() {
