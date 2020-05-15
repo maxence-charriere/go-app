@@ -5,7 +5,6 @@ import (
 	"net/url"
 	"strings"
 	"syscall/js"
-	"time"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/log"
 )
@@ -185,9 +184,10 @@ func navigate(u *url.URL, updateHistory bool) error {
 		cleanURL := *u
 		cleanURL.Fragment = ""
 
-		Window().Get("history").Call("replaceState", nil, "", cleanURL.String())
-		time.Sleep(time.Second)
-		Window().Get("location").Set("hash", "#"+u.Fragment)
+		dispatcher(func() {
+			Window().Get("history").Call("replaceState", nil, "", cleanURL.String())
+			Window().Get("location").Set("hash", "#"+u.Fragment)
+		})
 	}
 
 	return nil
