@@ -140,6 +140,7 @@ func onPopState(this Value, args []Value) interface{} {
 }
 
 func navigate(u *url.URL, updateHistory bool) error {
+	fmt.Println("----- navigate to", u)
 	contextMenu.hide(nil, Event{Value: Null()})
 
 	if !isPWANavigation(u) {
