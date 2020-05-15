@@ -167,6 +167,8 @@ func navigate(u *url.URL, updateHistory bool) error {
 			Window().Get("history").Call("pushState", nil, "", u.String())
 		}
 
+		fmt.Println("fragment:", u.Fragment)
+
 		if u.Fragment != "" {
 			dispatcher(func() {
 				Window().Get("location").Set("hash", "#"+u.Fragment)
