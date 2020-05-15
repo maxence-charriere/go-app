@@ -109,6 +109,8 @@ func onNavigate(this Value, args []Value) interface{} {
 		elem = event.Get("srcElement")
 	}
 
+	fmt.Println("onNavigate:", elem.Get("href").String())
+
 findAnchor:
 	for {
 		switch elem.Get("tagName").String() {
