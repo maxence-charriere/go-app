@@ -141,8 +141,9 @@ func TestUpdateStandardNode(t *testing.T) {
 	b := Div().
 		Class("foo").
 		OnClick(func(src Value, e Event) {})
-	err = update(a, b)
+	u, err := update(a, b)
 	require.NoError(t, err)
+	require.True(t, u)
 	require.Equal(t, b.attributes(), a.attributes())
 	require.Len(t, a.eventHandlers(), 1)
 }
@@ -157,8 +158,9 @@ func TestUpdateStandardNodeAddChild(t *testing.T) {
 		Text("hello"),
 		Br(),
 	)
-	err = update(a, b)
+	u, err := update(a, b)
 	require.NoError(t, err)
+	require.True(t, u)
 	require.Len(t, a.children(), 2)
 	require.Equal(t, reflect.TypeOf(Text("")), a.children()[0].nodeType())
 	require.NotNil(t, a.children()[0].JSValue())
@@ -176,8 +178,9 @@ func TestUpdateStandardNodeRemoveChild(t *testing.T) {
 	require.Len(t, a.children(), 2)
 
 	b := Div()
-	err = update(a, b)
+	u, err := update(a, b)
 	require.NoError(t, err)
+	require.True(t, u)
 	require.Empty(t, a.children())
 }
 
@@ -192,8 +195,9 @@ func TestUpdateStandardNodeChild(t *testing.T) {
 	b := Div().Body(
 		Text("bar"),
 	)
-	err = update(a, b)
+	u, err := update(a, b)
 	require.NoError(t, err)
+	require.True(t, u)
 	require.Equal(t, "bar", text.(textNode).text())
 }
 
@@ -212,8 +216,9 @@ func TestUpdateChildComponent(t *testing.T) {
 		},
 	)
 
-	err = update(a, b)
+	u, err := update(a, b)
 	require.NoError(t, err)
+	require.True(t, u)
 	require.Equal(t, "foo", c.Text)
 	require.Equal(t, 42, c.Bar.Int)
 }
@@ -238,9 +243,9 @@ func TestUpdateRawNode(t *testing.T) {
 	</svg>
 		`
 	b := Raw(braw)
-	err = update(a, b)
+	u, err := update(a, b)
 	require.NoError(t, err)
-
+	require.True(t, u)
 	require.Len(t, parent.children(), 1)
 	require.Equal(t, b, parent.children()[0])
 	require.NotNil(t, b.JSValue())
@@ -262,9 +267,9 @@ func TestUpdateRawNodeWithDifferentType(t *testing.T) {
 
 	braw := `<div>hello</div>`
 	b := Raw(braw)
-	err = update(a, b)
+	u, err := update(a, b)
 	require.NoError(t, err)
-
+	require.True(t, u)
 	require.Len(t, parent.children(), 1)
 	require.Equal(t, b, parent.children()[0])
 	require.NotNil(t, b.JSValue())

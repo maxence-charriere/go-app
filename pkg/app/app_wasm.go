@@ -93,7 +93,7 @@ func initContextMenu() {
 	rawContextMenu.setParent(body)
 	body.appendChild(rawContextMenu)
 
-	if err := update(rawContextMenu, contextMenu); err != nil {
+	if _, err := update(rawContextMenu, contextMenu); err != nil {
 		log.Error("initializing context menu failed").
 			T("error", err).
 			Panic()

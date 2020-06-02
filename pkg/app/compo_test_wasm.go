@@ -90,15 +90,17 @@ func TestCompoUpdatable(t *testing.T) {
 	require.NoError(t, err)
 
 	b := &boo{Value: 42, onUpdate: onUpdate}
-	err = update(a, b)
+	u, err := update(a, b)
 	require.NoError(t, err)
+	require.False(t, u)
 	require.False(t, called)
 
 	c := &boo{Value: 21, onUpdate: onUpdate}
-	err = update(a, c)
+	u, err = update(a, c)
 	require.NoError(t, err)
-	require.Equal(t, 21, a.Value)
+	require.True(t, u)
 	require.True(t, called)
+	require.Equal(t, 21, a.Value)
 }
 
 type navTest struct {
