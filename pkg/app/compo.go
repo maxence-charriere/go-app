@@ -36,7 +36,7 @@ type Composer interface {
 	setCompo(n Composer)
 	mount(c Composer) error
 	mounted() bool
-	update(n Composer)
+	update(n Composer) (updated bool)
 	triggerOnNav(u *url.URL)
 }
 
@@ -158,15 +158,14 @@ func (c *Compo) mounted() bool {
 	return c.compo != nil && c.root != nil && c.root.JSValue() != nil
 }
 
-func (c *Compo) update(n Composer) {
+func (c *Compo) update(n Composer) (updated bool) {
 	if c.compo == n {
-		return
+		return false
 	}
 
 	aval := reflect.Indirect(reflect.ValueOf(c.compo))
 	bval := reflect.Indirect(reflect.ValueOf(n))
 	compotype := reflect.ValueOf(c).Elem().Type()
-	updated := false
 
 	for i := 0; i < aval.NumField(); i++ {
 		a := aval.Field(i)
@@ -186,9 +185,7 @@ func (c *Compo) update(n Composer) {
 		}
 	}
 
-	if updatable, ok := c.compo.(Updatable); updated && ok {
-		updatable.OnUpdate()
-	}
+	return updated
 }
 
 func (c *Compo) triggerOnNav(u *url.URL) {
