@@ -36,7 +36,7 @@ type Composer interface {
 	setCompo(n Composer)
 	mount(c Composer) error
 	mounted() bool
-	update(n Composer) (updated bool)
+	update(n Composer)
 	triggerOnNav(u *url.URL)
 }
 
@@ -129,16 +129,11 @@ func (c *Compo) Update() {
 		current := c.root
 		incoming := c.compo.Render()
 
-		updated, err := update(current, incoming)
-		if err != nil {
+		if err := update(current, incoming); err != nil {
 			log.Error("updating component failed").
 				T("component-type", reflect.TypeOf(c.compo)).
 				T("error", err).
 				Panic()
-		}
-
-		if updatable, ok := c.compo.(Updatable); ok && updated {
-			updatable.OnUpdate()
 		}
 	})
 }
@@ -163,14 +158,15 @@ func (c *Compo) mounted() bool {
 	return c.compo != nil && c.root != nil && c.root.JSValue() != nil
 }
 
-func (c *Compo) update(n Composer) (updated bool) {
+func (c *Compo) update(n Composer) {
 	if c.compo == n {
-		return false
+		return
 	}
 
 	aval := reflect.Indirect(reflect.ValueOf(c.compo))
 	bval := reflect.Indirect(reflect.ValueOf(n))
 	compotype := reflect.ValueOf(c).Elem().Type()
+	updated := false
 
 	for i := 0; i < aval.NumField(); i++ {
 		a := aval.Field(i)
@@ -190,7 +186,9 @@ func (c *Compo) update(n Composer) (updated bool) {
 		}
 	}
 
-	return updated
+	if updatable, ok := c.compo.(Updatable); updated && ok {
+		updatable.OnUpdate()
+	}
 }
 
 func (c *Compo) triggerOnNav(u *url.URL) {

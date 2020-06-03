@@ -12,7 +12,7 @@ type textNode interface {
 
 	text() string
 	mount() error
-	update(t textNode) (updated bool)
+	update(t textNode)
 }
 
 // Text returns a text node.
@@ -62,14 +62,11 @@ func (t *text) mount() error {
 	return nil
 }
 
-func (t *text) update(n textNode) (updated bool) {
+func (t *text) update(n textNode) {
 	if text := n.text(); text != t.textValue {
 		t.textValue = text
 		t.jsValue.Set("nodeValue", text)
-		return true
 	}
-
-	return false
 }
 
 func (t *text) html(w io.Writer) {
