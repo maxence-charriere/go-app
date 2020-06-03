@@ -79,28 +79,6 @@ func TestCompoDismount(t *testing.T) {
 	require.True(t, called)
 }
 
-func TestCompoUpdatable(t *testing.T) {
-	called := false
-	onUpdate := func() {
-		called = true
-	}
-
-	a := &boo{Value: 42, onUpdate: onUpdate}
-	err := mount(a)
-	require.NoError(t, err)
-
-	b := &boo{Value: 42, onUpdate: onUpdate}
-	err = update(a, b)
-	require.NoError(t, err)
-	require.False(t, called)
-
-	c := &boo{Value: 21, onUpdate: onUpdate}
-	err = update(a, c)
-	require.NoError(t, err)
-	require.Equal(t, 21, a.Value)
-	require.True(t, called)
-}
-
 type navTest struct {
 	Compo
 
