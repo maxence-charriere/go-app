@@ -27,7 +27,7 @@ type standardNode interface {
 	removeChild(child UI)
 	removeChildValue(child UI)
 	replaceChildValue(old, new UI)
-	update(n standardNode)
+	update(n standardNode) (updated bool)
 	triggerOnNav(u *url.URL)
 }
 
@@ -242,11 +242,12 @@ func (e *elem) replaceChildValue(old, new UI) {
 	e.value.Call("replaceChild", new, old)
 }
 
-func (e *elem) update(n standardNode) {
+func (e *elem) update(n standardNode) (updated bool) {
 	for k := range e.attrs {
 		if _, ok := n.attributes()[k]; !ok {
 			e.removeAttributeValue(k)
 			delete(e.attrs, k)
+			updated = true
 		}
 	}
 
@@ -254,6 +255,7 @@ func (e *elem) update(n standardNode) {
 		if v != e.attrs[k] {
 			e.setAttribute(k, v)
 			e.setAttributeValue(k, v)
+			updated = true
 		}
 	}
 
@@ -261,6 +263,7 @@ func (e *elem) update(n standardNode) {
 		if _, ok := n.eventHandlers()[k]; !ok {
 			e.removeEventHandlerValue(k, v)
 			delete(e.events, k)
+			updated = true
 		}
 	}
 
@@ -269,8 +272,11 @@ func (e *elem) update(n standardNode) {
 			e.removeEventHandlerValue(k, current)
 			e.setEventHandler(k, v.function)
 			e.setEventHandlerValue(k, v)
+			updated = true
 		}
 	}
+
+	return updated
 }
 
 func (e *elem) triggerOnNav(u *url.URL) {

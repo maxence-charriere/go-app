@@ -78,14 +78,14 @@ func mount(n Node) error {
 	}
 }
 
-func update(a, b UI) error {
+func update(a, b UI) (updated bool, err error) {
 	if a.nodeType() != b.nodeType() {
-		return replace(a, b)
+		return true, replace(a, b)
 	}
 
 	switch t := a.(type) {
 	case textNode:
-		t.update(b.(textNode))
+		return t.update(b.(textNode)), nil
 
 	case standardNode:
 		return updateStandardNode(t, b.(standardNode))
@@ -94,14 +94,13 @@ func update(a, b UI) error {
 		return updateRawNode(t, b.(rawNode))
 
 	case Composer:
-		t.update(b.(Composer))
+		updated := t.update(b.(Composer))
 		t.Update()
+		return updated, nil
 
 	default:
-		return fmt.Errorf("%T: node can't be updated", t)
+		return false, fmt.Errorf("%T: node can't be updated", t)
 	}
-
-	return nil
 }
 
 func triggerOnNav(n UI, u *url.URL) {
@@ -136,45 +135,57 @@ func replace(a, b UI) error {
 	return nil
 }
 
-func updateStandardNode(a, b standardNode) error {
-	a.update(b)
-
+func updateStandardNode(a, b standardNode) (updated bool, err error) {
+	updated = a.update(b)
 	achildren := a.children()
 	bchildren := b.children()
 
 	for len(achildren) != 0 && len(bchildren) != 0 {
-		if err := update(achildren[0], bchildren[0]); err != nil {
-			return err
+		u, err := update(achildren[0], bchildren[0])
+		if err != nil {
+			return false, err
 		}
+
+		if !updated {
+			updated = u
+		}
+
 		achildren = achildren[1:]
 		bchildren = bchildren[1:]
 	}
 
 	for len(achildren) != 0 {
 		c := achildren[0]
+
 		a.removeChildValue(c)
 		a.removeChild(c)
 		c.dismount()
+
+		updated = true
 		achildren = achildren[:len(achildren)-1]
 	}
 
 	for len(bchildren) != 0 {
 		c := bchildren[0]
+
 		if err := mount(c); err != nil {
-			return err
+			return false, err
 		}
+
 		c.setParent(a)
 		a.appendChild(c)
 		a.appendChildValue(c)
+
+		updated = true
 		bchildren = bchildren[1:]
 	}
 
-	return nil
+	return updated, nil
 }
 
-func updateRawNode(a, b rawNode) error {
+func updateRawNode(a, b rawNode) (updated bool, err error) {
 	if a.raw() != b.raw() {
-		return replace(a, b)
+		return true, replace(a, b)
 	}
-	return nil
+	return false, nil
 }
