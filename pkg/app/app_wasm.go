@@ -164,11 +164,11 @@ func navigate(u *url.URL, updateHistory bool) error {
 		content = root
 	}
 
-	triggerOnNav(root, u)
-
 	if updateHistory {
 		Window().Get("history").Call("pushState", nil, "", u.String())
 	}
+
+	triggerOnNav(root, u)
 
 	if isFragmentNavigation(u) {
 		dispatcher(func() {
