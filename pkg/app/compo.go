@@ -138,7 +138,7 @@ func (c *Compo) Update() {
 		}
 
 		if updatable, ok := c.compo.(Updatable); ok && updated {
-			updatable.OnUpdate()
+			dispatcher(updatable.OnUpdate)
 		}
 	})
 }
