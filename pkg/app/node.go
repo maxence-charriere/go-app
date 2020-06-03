@@ -94,9 +94,9 @@ func update(a, b UI) (updated bool, err error) {
 		return updateRawNode(t, b.(rawNode))
 
 	case Composer:
-		updated := t.update(b.(Composer))
+		t.update(b.(Composer))
 		t.Update()
-		return updated, nil
+		return false, nil
 
 	default:
 		return false, fmt.Errorf("%T: node can't be updated", t)
