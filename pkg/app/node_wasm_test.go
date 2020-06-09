@@ -111,6 +111,21 @@ func TestMount(t *testing.T) {
 				require.Error(t, err)
 				return
 			}
+
+			var children []UI
+
+			switch n := test.node.(type) {
+			case standardNode:
+				children = n.children()
+
+			case Composer:
+				children = n.children()
+			}
+
+			for _, c := range children {
+				require.NotNil(t, c.parent())
+			}
+
 			require.NoError(t, err)
 		})
 	}
