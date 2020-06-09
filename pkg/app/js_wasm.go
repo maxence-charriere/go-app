@@ -158,9 +158,12 @@ func (w *browserWindow) setCursorPosition(x, y int) {
 	w.cursorY = y
 }
 
+func (w *browserWindow) GetElementByID(id string) Value {
+	return w.Get("document").Call("getElementById", id)
+}
+
 func (w *browserWindow) ScrollToID(id string) {
-	elem := w.Get("document").Call("getElementById", id)
-	if elem.Truthy() {
+	if elem := w.GetElementByID(id); elem.Truthy() {
 		elem.Call("scrollIntoView")
 	}
 }

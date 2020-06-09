@@ -142,6 +142,11 @@ func (w browserWindow) setCursorPosition(x, y int) {
 	panicNoWasm()
 }
 
+func (w *browserWindow) GetElementByID(id string) Value {
+	panicNoWasm()
+	return nil
+}
+
 func (w *browserWindow) ScrollToID(id string) {
 	panicNoWasm()
 }
