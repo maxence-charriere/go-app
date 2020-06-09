@@ -32,7 +32,11 @@ type writableNode interface {
 	htmlWithIndent(w io.Writer, indent int)
 }
 
-func indirect(nodes ...Node) []UI {
+// Indirect returns the given nodes where conditions and ranges are interpreted.
+//
+// It is used internally in HTML element bodies and should be used when building
+// a library with components that set their content with variadic arguments.
+func Indirect(nodes ...Node) []UI {
 	inodes := make([]UI, 0, len(nodes))
 
 	for _, n := range nodes {

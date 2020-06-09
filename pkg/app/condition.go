@@ -29,7 +29,7 @@ func If(expr bool, nodes ...Node) Condition {
 	}
 
 	return condition{
-		body:      indirect(nodes...),
+		body:      Indirect(nodes...),
 		satisfied: !expr,
 	}
 }
@@ -57,7 +57,7 @@ func (c condition) ElseIf(expr bool, nodes ...Node) Condition {
 	}
 
 	if expr {
-		c.body = indirect(nodes...)
+		c.body = Indirect(nodes...)
 		c.satisfied = false
 	}
 

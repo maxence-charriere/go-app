@@ -12,7 +12,7 @@ func TestIfConditionIf(t *testing.T) {
 
 	ifTrue := If(true, nodes...)
 	require.False(t, ifTrue.isSatisfied())
-	require.Equal(t, indirect(nodes...), ifTrue.nodes())
+	require.Equal(t, Indirect(nodes...), ifTrue.nodes())
 	require.Equal(t, reflect.TypeOf(ifTrue), ifTrue.nodeType())
 
 	ifFalse := If(false, nodes...)
@@ -27,12 +27,12 @@ func TestIfConditionElseIf(t *testing.T) {
 	noElseIf := If(true, ifElems...).
 		ElseIf(true, elseIfElems...)
 	require.False(t, noElseIf.isSatisfied())
-	require.Equal(t, indirect(ifElems...), noElseIf.nodes())
+	require.Equal(t, Indirect(ifElems...), noElseIf.nodes())
 
 	elseIfTrue := If(false, ifElems...).
 		ElseIf(true, elseIfElems...)
 	require.False(t, elseIfTrue.isSatisfied())
-	require.Equal(t, indirect(elseIfElems...), elseIfTrue.nodes())
+	require.Equal(t, Indirect(elseIfElems...), elseIfTrue.nodes())
 
 	elseIfFalse := If(false, ifElems...).
 		ElseIf(false, elseIfElems...)
@@ -47,10 +47,10 @@ func TestIfConditionElse(t *testing.T) {
 	noElse := If(true, ifElems...).
 		Else(elseElems...)
 	require.False(t, noElse.isSatisfied())
-	require.Equal(t, indirect(ifElems...), noElse.nodes())
+	require.Equal(t, Indirect(ifElems...), noElse.nodes())
 
 	elseTrue := If(false, ifElems...).
 		Else(elseElems...)
 	require.False(t, elseTrue.isSatisfied())
-	require.Equal(t, indirect(elseElems...), elseTrue.nodes())
+	require.Equal(t, Indirect(elseElems...), elseTrue.nodes())
 }
