@@ -182,8 +182,16 @@ type BrowserWindow interface {
 
 	setCursorPosition(x, y int)
 
-	// Scrolls to the element with the given id.
+	// Returns the HTML element with the id property that matches the given id.
+	GetElementByID(id string) Value
+
+	// Scrolls to the HTML element with the given id.
 	ScrollToID(id string)
+
+	// AddEventListener subscribes a given handler to the specified event. It
+	// returns a function that must be called to unsubscribe the handler and
+	// release allocated resources.
+	AddEventListener(event string, h EventHandler) func()
 }
 
 // Event is the interface that describes a javascript event.

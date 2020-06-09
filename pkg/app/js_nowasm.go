@@ -142,8 +142,18 @@ func (w browserWindow) setCursorPosition(x, y int) {
 	panicNoWasm()
 }
 
+func (w *browserWindow) GetElementByID(id string) Value {
+	panicNoWasm()
+	return nil
+}
+
 func (w *browserWindow) ScrollToID(id string) {
 	panicNoWasm()
+}
+
+func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
+	panicNoWasm()
+	return nil
 }
 
 func copyBytesToGo(dst []byte, src Value) int {
@@ -154,4 +164,9 @@ func copyBytesToGo(dst []byte, src Value) int {
 func copyBytesToJS(dst Value, src []byte) int {
 	panicNoWasm()
 	return 0
+}
+
+func makeEventHandler(h EventHandler) Func {
+	panicNoWasm()
+	return nil
 }

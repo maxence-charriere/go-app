@@ -155,15 +155,7 @@ func (e *elem) setEventHandler(k string, h EventHandler) {
 }
 
 func (e *elem) setEventHandlerValue(k string, h eventHandler) {
-	callback := FuncOf(func(this Value, args []Value) interface{} {
-		dispatcher(func() {
-			event := Event{Value: args[0]}
-			trackMousePosition(event)
-			h.function(this, event)
-		})
-		return nil
-	})
-
+	callback := makeEventHandler(h.function)
 	h.jsFunction = callback
 	e.events[k] = h
 	e.value.Call("addEventListener", k, callback)
@@ -318,20 +310,6 @@ func (e *elem) htmlWithIndent(w io.Writer, indent int) {
 	w.Write(stob("</"))
 	w.Write(stob(e.tag))
 	w.Write(stob(">"))
-}
-
-func trackMousePosition(e Event) {
-	x := e.Get("clientX")
-	if !x.Truthy() {
-		return
-	}
-
-	y := e.Get("clientY")
-	if !y.Truthy() {
-		return
-	}
-
-	window.setCursorPosition(x.Int(), y.Int())
 }
 
 type eventHandler struct {
