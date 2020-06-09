@@ -56,7 +56,7 @@ func (c rangeCondition) Slice(f func(int) UI) RangeLoop {
 
 	c.body = nil
 	for i := 0; i < v.Len(); i++ {
-		c.body = append(c.body, indirect(f(i))...)
+		c.body = append(c.body, Indirect(f(i))...)
 	}
 	return c
 }
@@ -83,7 +83,7 @@ func (c rangeCondition) Map(f func(string) UI) RangeLoop {
 	sort.Strings(keys)
 
 	for _, k := range keys {
-		c.body = append(c.body, indirect(f(k))...)
+		c.body = append(c.body, Indirect(f(k))...)
 	}
 	return c
 }

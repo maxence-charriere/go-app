@@ -89,7 +89,7 @@ func (e *elem) setBody(parent UI, body []Node) {
 			Panic()
 	}
 
-	ibody := indirect(body...)
+	ibody := Indirect(body...)
 
 	for _, n := range ibody {
 		n.setParent(parent)

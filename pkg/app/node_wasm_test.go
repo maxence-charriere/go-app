@@ -55,7 +55,7 @@ func TestIndirect(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
-			nodes := indirect(test.node)
+			nodes := Indirect(test.node)
 			for i, n := range nodes {
 				require.Equal(t, test.expected[i], n.nodeType())
 			}
