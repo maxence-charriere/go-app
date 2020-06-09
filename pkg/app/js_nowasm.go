@@ -151,6 +151,11 @@ func (w *browserWindow) ScrollToID(id string) {
 	panicNoWasm()
 }
 
+func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
+	panicNoWasm()
+	return nil
+}
+
 func copyBytesToGo(dst []byte, src Value) int {
 	panicNoWasm()
 	return 0
@@ -159,4 +164,9 @@ func copyBytesToGo(dst []byte, src Value) int {
 func copyBytesToJS(dst Value, src []byte) int {
 	panicNoWasm()
 	return 0
+}
+
+func makeEventHandler(h EventHandler) Func {
+	panicNoWasm()
+	return nil
 }
