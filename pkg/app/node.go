@@ -123,6 +123,10 @@ func replace(a, b UI) error {
 		return err
 	}
 
+	fmt.Println("--------------- Replace ---------------")
+	fmt.Printf("a: %T parent: %T\n", a, a.parent())
+	fmt.Printf("b: %T\n", b)
+
 	parent := a.parent()
 	b.setParent(parent)
 	parent.(nodeWithChildren).replaceChild(a, b)
