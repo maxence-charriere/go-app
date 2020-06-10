@@ -85,6 +85,7 @@ func mount(n Node) error {
 func update(a, b UI) error {
 	if a.nodeType() != b.nodeType() {
 		fmt.Printf("update: replace %T by %T\n", a, b)
+		fmt.Printf("update: types %s by %s\n", a.nodeType(), b.nodeType())
 		return replace(a, b)
 	}
 
