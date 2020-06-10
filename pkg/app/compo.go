@@ -121,6 +121,10 @@ func (c *Compo) Update() {
 		current := c.root
 		incoming := c.compo.Render()
 
+		if incCompo, ok := incoming.(Composer); ok {
+			incCompo.setCompo(incCompo)
+		}
+
 		if err := update(current, incoming); err != nil {
 			log.Error("updating component failed").
 				T("component-type", reflect.TypeOf(c.compo)).
@@ -137,7 +141,7 @@ func (c *Compo) mount(compo Composer) error {
 	if err := mount(root); err != nil {
 		return fmt.Errorf("%T: invalid root: %w", compo, err)
 	}
-	root.setParent(c)
+	root.setParent(compo)
 	c.root = root
 
 	if mounter, ok := compo.(Mounter); ok {
