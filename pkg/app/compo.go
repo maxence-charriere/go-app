@@ -121,6 +121,10 @@ func (c *Compo) Update() {
 		current := c.root
 		incoming := c.compo.Render()
 
+		if incCompo, ok := incoming.(Composer); ok {
+			incCompo.setCompo(incCompo)
+		}
+
 		if err := update(current, incoming); err != nil {
 			log.Error("updating component failed").
 				T("component-type", reflect.TypeOf(c.compo)).
