@@ -177,6 +177,7 @@ func (c *Compo) update(n Composer) {
 		}
 
 		if !reflect.DeepEqual(a.Interface(), b.Interface()) {
+			fmt.Printf("%T.%s: updating\n", c.compo, aval.Type().Field(i).Name)
 			a.Set(b)
 		}
 	}
