@@ -36,6 +36,7 @@ type Composer interface {
 	setCompo(n Composer)
 	mount(c Composer) error
 	mounted() bool
+	children() []UI
 	update(n Composer)
 	triggerOnNav(u *url.URL)
 }
@@ -136,6 +137,7 @@ func (c *Compo) mount(compo Composer) error {
 	if err := mount(root); err != nil {
 		return fmt.Errorf("%T: invalid root: %w", compo, err)
 	}
+	root.setParent(c)
 	c.root = root
 
 	if mounter, ok := compo.(Mounter); ok {
@@ -147,6 +149,10 @@ func (c *Compo) mount(compo Composer) error {
 
 func (c *Compo) mounted() bool {
 	return c.compo != nil && c.root != nil && c.root.JSValue() != nil
+}
+
+func (c *Compo) children() []UI {
+	return []UI{c.root}
 }
 
 func (c *Compo) update(n Composer) {
