@@ -63,6 +63,11 @@ func TestElemSetEventHandler(t *testing.T) {
 	h := func(Context, Event) {}
 	e.setEventHandler("click", h)
 
+	expectedHandler := elemEventHandler{
+		event: "click",
+		value: h,
+	}
+
 	registeredHandler := e.eventHandlers["click"]
-	require.Equal(t, h, registeredHandler)
+	require.True(t, expectedHandler.equal(registeredHandler))
 }

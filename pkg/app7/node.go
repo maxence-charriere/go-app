@@ -1,15 +1,12 @@
 package app
 
-// Node is the interface that describes an element that is used to represent a
-// user interface.
-type Node interface {
-	Kind() Kind
-}
+import "reflect"
 
 // UI is the interface that describes a user interface element such as
 // components and HTML elements.
 type UI interface {
-	Node
+	// Kind represents the specific kind of a UI element.
+	Kind() Kind
 
 	// JSValue returns the javascript value linked to the element.
 	JSValue() Value
@@ -66,3 +63,31 @@ const (
 	// elements within a given list.
 	Selector
 )
+
+// FilterUIElems returns a filtered version of the given UI elements where
+// selector elements such as If and Range are interpreted and removed. It also
+// remove nil elements.
+//
+// It should be used only when implementing components that can accept content
+// with variadic arguments like HTML elements Body method.
+func FilterUIElems(uis ...UI) []UI {
+	elems := make([]UI, 0, len(uis))
+
+	for _, n := range uis {
+		// Ignore nil elements:
+		if v := reflect.ValueOf(n); n == nil ||
+			v.Kind() == reflect.Ptr && v.IsNil() {
+			continue
+		}
+
+		switch n.Kind() {
+		case SimpleText, HTML, Component:
+			elems = append(elems, n.(UI))
+
+		case Selector:
+			elems = append(elems, n.children()...)
+		}
+	}
+
+	return elems
+}

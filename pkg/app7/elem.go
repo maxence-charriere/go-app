@@ -3,16 +3,20 @@ package app
 import (
 	"context"
 	"fmt"
+
+	"github.com/maxence-charriere/go-app/v6/pkg/errors"
 )
 
 type elem struct {
 	attrs         map[string]string
+	body          []UI
 	ctx           context.Context
 	ctxCancel     func()
 	eventHandlers map[string]elemEventHandler
 	jsvalue       Value
 	parentElem    UI
 	selfClosing   bool
+	tag           string
 }
 
 func (e *elem) King() Kind {
@@ -91,13 +95,28 @@ func (e *elem) setEventHandler(k string, h EventHandler) {
 	}
 }
 
+func (e *elem) setBody(self UI, body ...UI) {
+	if e.selfClosing {
+		panic(errors.New("setting html element body failed").
+			Tag("reason", "self closing element can't have children").
+			Tag("tag", e.tag),
+		)
+	}
+
+	body = FilterUIElems(body...)
+	for _, n := range body {
+		n.setParent(self)
+	}
+	e.body = body
+}
+
 type elemEventHandler struct {
 	event   string
 	jsvalue Func
 	value   EventHandler
 }
 
-func (h elemEventHandler) equals(o elemEventHandler) bool {
+func (h elemEventHandler) equal(o elemEventHandler) bool {
 	return h.event == o.event &&
 		fmt.Sprintf("%p", h.value) == fmt.Sprintf("%p", o.value)
 }

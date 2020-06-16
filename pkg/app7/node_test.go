@@ -97,3 +97,16 @@ func testSkipNoWasm(t *testing.T) {
 		)
 	}
 }
+
+func TestFilterUIElems(t *testing.T) {
+	var nilText *text
+
+	simpleText := Text("hello")
+
+	expectedResult := []UI{
+		simpleText,
+	}
+
+	res := FilterUIElems(nil, nilText, simpleText)
+	require.Equal(t, expectedResult, res)
+}
