@@ -6,12 +6,13 @@ import (
 )
 
 type elem struct {
-	attrs       map[string]string
-	ctx         context.Context
-	ctxCancel   func()
-	jsvalue     Value
-	parentElem  UI
-	selfClosing bool
+	attrs         map[string]string
+	ctx           context.Context
+	ctxCancel     func()
+	eventHandlers map[string]elemEventHandler
+	jsvalue       Value
+	parentElem    UI
+	selfClosing   bool
 }
 
 func (e *elem) King() Kind {
@@ -76,6 +77,17 @@ func (e *elem) setAttr(k string, v interface{}) {
 
 	default:
 		e.attrs[k] = toString(v)
+	}
+}
+
+func (e *elem) setEventHandler(k string, h EventHandler) {
+	if e.eventHandlers == nil {
+		e.eventHandlers = make(map[string]elemEventHandler)
+	}
+
+	e.eventHandlers[k] = elemEventHandler{
+		event: k,
+		value: h,
 	}
 }
 

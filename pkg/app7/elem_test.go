@@ -57,3 +57,12 @@ func TestElemSetAttr(t *testing.T) {
 		})
 	}
 }
+
+func TestElemSetEventHandler(t *testing.T) {
+	e := &elem{}
+	h := func(Context, Event) {}
+	e.setEventHandler("click", h)
+
+	registeredHandler := e.eventHandlers["click"]
+	require.Equal(t, h, registeredHandler)
+}
