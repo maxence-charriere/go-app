@@ -19,7 +19,7 @@ type elem struct {
 	tag           string
 }
 
-func (e *elem) King() Kind {
+func (e *elem) Kind() Kind {
 	return HTML
 }
 
@@ -37,6 +37,10 @@ func (e *elem) parent() UI {
 
 func (e *elem) setParent(p UI) {
 	e.parentElem = p
+}
+
+func (e *elem) children() []UI {
+	return e.body
 }
 
 func (e *elem) appendChild(c UI) {
