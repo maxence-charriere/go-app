@@ -16,7 +16,7 @@ func TestElemSetAttr(t *testing.T) {
 	}{
 		{
 			scenario:       "string",
-			key:            "class",
+			key:            "title",
 			value:          "test",
 			explectedValue: "test",
 		},
@@ -44,13 +44,31 @@ func TestElemSetAttr(t *testing.T) {
 			value:          "margin:42",
 			explectedValue: "margin:42;",
 		},
+		{
+			scenario:       "set successive styles",
+			key:            "style",
+			value:          "padding:42",
+			explectedValue: "margin:42;padding:42;",
+		},
+		{
+			scenario:       "class",
+			key:            "class",
+			value:          "hello",
+			explectedValue: "hello",
+		},
+		{
+			scenario:       "set successive classes",
+			key:            "class",
+			value:          "world",
+			explectedValue: "hello world",
+		},
 	}
+
+	e := &elem{}
 
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			e := &elem{}
 			e.setAttr(u.key, u.value)
-
 			v, exists := e.attrs[u.key]
 			require.Equal(t, u.explectedValue, v)
 			require.Equal(t, u.valueNotSet, !exists)

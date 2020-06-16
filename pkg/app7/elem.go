@@ -73,6 +73,15 @@ func (e *elem) setAttr(k string, v interface{}) {
 		s := e.attrs[k] + toString(v) + ";"
 		e.attrs[k] = s
 		return
+
+	case "class":
+		s := e.attrs[k]
+		if s != "" {
+			s += " "
+		}
+		s += toString(v)
+		e.attrs[k] = s
+		return
 	}
 
 	switch v := v.(type) {
