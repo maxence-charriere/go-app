@@ -1,6 +1,9 @@
 package app
 
-import "reflect"
+import (
+	"context"
+	"reflect"
+)
 
 // UI is the interface that describes a user interface element such as
 // components and HTML elements.
@@ -14,14 +17,16 @@ type UI interface {
 	// Reports whether the element is mounted.
 	Mounted() bool
 
+	setSelf(UI)
+	context() context.Context
 	parent() UI
 	setParent(UI)
 	children() []UI
 	appendChild(UI)
 	removeChild(UI)
 	mount() error
-	update(UI) error
 	dismount()
+	update(UI) error
 }
 
 // Kind represents the specific kind of a user interface element.
@@ -82,7 +87,8 @@ func FilterUIElems(uis ...UI) []UI {
 
 		switch n.Kind() {
 		case SimpleText, HTML, Component:
-			elems = append(elems, n.(UI))
+			n.setSelf(n)
+			elems = append(elems, n)
 
 		case Selector:
 			elems = append(elems, n.children()...)

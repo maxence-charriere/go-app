@@ -1996,12 +1996,15 @@ import (
 		fmt.Fprintf(f, `
 		// %s returns an HTML element that %s
 		func %s() HTML%s {
-			return &html%s{
+			e := &html%s{
 				elem: elem{
 					tag: "%s",
 					selfClosing: %v,
 				},
 			}
+
+			e.setSelf(e)
+			return e
 		}
 		`,
 			t.Name,

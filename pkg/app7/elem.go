@@ -15,6 +15,7 @@ type elem struct {
 	eventHandlers map[string]elemEventHandler
 	jsvalue       Value
 	parentElem    UI
+	self          UI
 	selfClosing   bool
 	tag           string
 }
@@ -28,7 +29,15 @@ func (e *elem) JSValue() Value {
 }
 
 func (e *elem) Mounted() bool {
-	return e.ctx != nil && e.jsvalue != nil
+	return e.self != nil && e.ctx != nil && e.jsvalue != nil
+}
+
+func (e *elem) setSelf(n UI) {
+	e.self = n
+}
+
+func (e *elem) context() context.Context {
+	return e.ctx
 }
 
 func (e *elem) parent() UI {
@@ -44,22 +53,77 @@ func (e *elem) children() []UI {
 }
 
 func (e *elem) appendChild(c UI) {
-	panic("not implemented")
+	e.body = append(e.body, c)
+	e.JSValue().Call("appendChild", c)
 }
 
 func (e *elem) removeChild(c UI) {
-	panic("not implemented")
+	body := e.body
+	for i, n := range body {
+		if n == c {
+			copy(body[i:], body[i+1:])
+			body[len(body)-1] = nil
+			body = body[:len(body)-1]
+			e.body = body
+
+			e.JSValue().Call("removeChild", c)
+			return
+		}
+	}
 }
 
 func (e *elem) mount() error {
-	panic("not implemented")
-}
+	if e.Mounted() {
+		return errors.New("mounting ui element failed").
+			Tag("reason", "already mounted").
+			Tag("kind", e.Kind()).
+			Tag("tag", e.tag)
+	}
 
-func (e *elem) update(n UI) error {
-	panic("not implemented")
+	e.ctx, e.ctxCancel = context.WithCancel(context.Background())
+
+	v := Window().Get("document").Call("createElement", e.tag)
+	if !v.Truthy() {
+		return errors.New("mounting ui element failed").
+			Tag("reason", "creating javascript node return nil").
+			Tag("kind", e.Kind()).
+			Tag("tag", e.tag)
+	}
+	e.jsvalue = v
+
+	for k, v := range e.attrs {
+		e.setJsAttr(k, v)
+	}
+
+	for k, v := range e.eventHandlers {
+		e.setJsEventHandler(k, v)
+	}
+
+	for _, c := range e.children() {
+		if err := c.mount(); err != nil {
+			return err
+		}
+
+		e.appendChild(c)
+	}
+
+	return nil
 }
 
 func (e *elem) dismount() {
+	for _, c := range e.children() {
+		c.dismount()
+	}
+
+	for k, v := range e.eventHandlers {
+		e.delJsEventHandler(k, v)
+	}
+
+	e.ctxCancel()
+	e.jsvalue = nil
+}
+
+func (e *elem) update(n UI) error {
 	panic("not implemented")
 }
 
@@ -97,6 +161,10 @@ func (e *elem) setAttr(k string, v interface{}) {
 	}
 }
 
+func (e *elem) setJsAttr(k, v string) {
+	e.JSValue().Call("setAttribute", k, v)
+}
+
 func (e *elem) setEventHandler(k string, h EventHandler) {
 	if e.eventHandlers == nil {
 		e.eventHandlers = make(map[string]elemEventHandler)
@@ -106,6 +174,19 @@ func (e *elem) setEventHandler(k string, h EventHandler) {
 		event: k,
 		value: h,
 	}
+}
+
+func (e *elem) setJsEventHandler(k string, h elemEventHandler) {
+	jshandler := makeJsEventHandler(e.self, h.value)
+	h.jsvalue = jshandler
+	e.eventHandlers[k] = h
+	e.JSValue().Call("addEventListener", k, jshandler)
+}
+
+func (e *elem) delJsEventHandler(k string, h elemEventHandler) {
+	e.JSValue().Call("addEventListener", k, h.jsvalue)
+	h.jsvalue.Release()
+	delete(e.eventHandlers, k)
 }
 
 func (e *elem) setBody(self UI, body ...UI) {
@@ -132,4 +213,28 @@ type elemEventHandler struct {
 func (h elemEventHandler) equal(o elemEventHandler) bool {
 	return h.event == o.event &&
 		fmt.Sprintf("%p", h.value) == fmt.Sprintf("%p", o.value)
+}
+
+func makeJsEventHandler(src UI, h EventHandler) Func {
+	return FuncOf(func(this Value, args []Value) interface{} {
+		dispatch(func() {
+			if !src.Mounted() {
+				return
+			}
+
+			ctx := Context{
+				Context: src.context(),
+				Src:     src,
+				JSSrc:   src.JSValue(),
+			}
+
+			event := Event{
+				Value: args[0],
+			}
+
+			h(ctx, event)
+		})
+
+		return nil
+	})
 }

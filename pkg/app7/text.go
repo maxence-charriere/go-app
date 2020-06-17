@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"reflect"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/errors"
@@ -29,6 +30,13 @@ func (t *text) Mounted() bool {
 	return t.jsvalue != nil
 }
 
+func (t *text) setSelf(n UI) {
+}
+
+func (t *text) context() context.Context {
+	return context.TODO()
+}
+
 func (t *text) parent() UI {
 	return t.parentElem
 }
@@ -50,8 +58,9 @@ func (t *text) removeChild(UI) {
 
 func (t *text) mount() error {
 	if t.Mounted() {
-		return errors.New("mounting text failed").
-			Tag("reason", "text is already mounted").
+		return errors.New("mounting ui element failed").
+			Tag("reason", "already mounted").
+			Tag("kind", t.Kind()).
 			Tag("value", t.value)
 	}
 
@@ -62,6 +71,10 @@ func (t *text) mount() error {
 	return nil
 }
 
+func (t *text) dismount() {
+	t.jsvalue = nil
+}
+
 func (t *text) update(n UI) error {
 	if !t.Mounted() {
 		return nil
@@ -69,8 +82,9 @@ func (t *text) update(n UI) error {
 
 	o, isText := n.(*text)
 	if !isText {
-		return errors.New("updating text failed").
-			Tag("reason", "updated node is not a text").
+		return errors.New("updating ui element failed").
+			Tag("reason", "different node kind").
+			Tag("current-kind", t.Kind()).
 			Tag("current-value", t.value).
 			Tag("updated-kind", n.Kind()).
 			Tag("updated-type", reflect.TypeOf(n))
@@ -82,8 +96,4 @@ func (t *text) update(n UI) error {
 	}
 
 	return nil
-}
-
-func (t *text) dismount() {
-	t.jsvalue = nil
 }

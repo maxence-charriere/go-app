@@ -178,12 +178,15 @@ type HTMLA interface {
 
 // A returns an HTML element that defines a hyperlink.
 func A() HTMLA {
-	return &htmlA{
+	e := &htmlA{
 		elem: elem{
 			tag:         "a",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlA struct {
@@ -617,12 +620,15 @@ type HTMLAbbr interface {
 
 // Abbr returns an HTML element that defines an abbreviation or an acronym.
 func Abbr() HTMLAbbr {
-	return &htmlAbbr{
+	e := &htmlAbbr{
 		elem: elem{
 			tag:         "abbr",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlAbbr struct {
@@ -1016,12 +1022,15 @@ type HTMLAddress interface {
 
 // Address returns an HTML element that defines contact information for the author/owner of a document.
 func Address() HTMLAddress {
-	return &htmlAddress{
+	e := &htmlAddress{
 		elem: elem{
 			tag:         "address",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlAddress struct {
@@ -1439,12 +1448,15 @@ type HTMLArea interface {
 
 // Area returns an HTML element that defines an area inside an image-map.
 func Area() HTMLArea {
-	return &htmlArea{
+	e := &htmlArea{
 		elem: elem{
 			tag:         "area",
 			selfClosing: true,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlArea struct {
@@ -1879,12 +1891,15 @@ type HTMLArticle interface {
 
 // Article returns an HTML element that defines an article.
 func Article() HTMLArticle {
-	return &htmlArticle{
+	e := &htmlArticle{
 		elem: elem{
 			tag:         "article",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlArticle struct {
@@ -2278,12 +2293,15 @@ type HTMLAside interface {
 
 // Aside returns an HTML element that defines content aside from the page content.
 func Aside() HTMLAside {
-	return &htmlAside{
+	e := &htmlAside{
 		elem: elem{
 			tag:         "aside",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlAside struct {
@@ -2764,12 +2782,15 @@ type HTMLAudio interface {
 
 // Audio returns an HTML element that defines sound content.
 func Audio() HTMLAudio {
-	return &htmlAudio{
+	e := &htmlAudio{
 		elem: elem{
 			tag:         "audio",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlAudio struct {
@@ -3308,12 +3329,15 @@ type HTMLB interface {
 
 // B returns an HTML element that defines bold text.
 func B() HTMLB {
-	return &htmlB{
+	e := &htmlB{
 		elem: elem{
 			tag:         "b",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlB struct {
@@ -3707,12 +3731,15 @@ type HTMLBase interface {
 
 // Base returns an HTML element that specifies the base URL/target for all relative URLs in a document.
 func Base() HTMLBase {
-	return &htmlBase{
+	e := &htmlBase{
 		elem: elem{
 			tag:         "base",
 			selfClosing: true,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlBase struct {
@@ -4107,12 +4134,15 @@ type HTMLBdi interface {
 
 // Bdi returns an HTML element that isolates a part of text that might be formatted in a different direction from other text outside it.
 func Bdi() HTMLBdi {
-	return &htmlBdi{
+	e := &htmlBdi{
 		elem: elem{
 			tag:         "bdi",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlBdi struct {
@@ -4506,12 +4536,15 @@ type HTMLBdo interface {
 
 // Bdo returns an HTML element that overrides the current text direction.
 func Bdo() HTMLBdo {
-	return &htmlBdo{
+	e := &htmlBdo{
 		elem: elem{
 			tag:         "bdo",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlBdo struct {
@@ -4908,12 +4941,15 @@ type HTMLBlockquote interface {
 
 // Blockquote returns an HTML element that defines a section that is quoted from another source.
 func Blockquote() HTMLBlockquote {
-	return &htmlBlockquote{
+	e := &htmlBlockquote{
 		elem: elem{
 			tag:         "blockquote",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlBlockquote struct {
@@ -5357,12 +5393,15 @@ type HTMLBody interface {
 
 // Body returns an HTML element that defines the document's body.
 func Body() HTMLBody {
-	return &htmlBody{
+	e := &htmlBody{
 		elem: elem{
 			tag:         "body",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlBody struct {
@@ -5825,12 +5864,15 @@ type HTMLBr interface {
 
 // Br returns an HTML element that defines a single line break.
 func Br() HTMLBr {
-	return &htmlBr{
+	e := &htmlBr{
 		elem: elem{
 			tag:         "br",
 			selfClosing: true,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlBr struct {
@@ -6248,12 +6290,15 @@ type HTMLButton interface {
 
 // Button returns an HTML element that defines a clickable button.
 func Button() HTMLButton {
-	return &htmlButton{
+	e := &htmlButton{
 		elem: elem{
 			tag:         "button",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlButton struct {
@@ -6708,12 +6753,15 @@ type HTMLCanvas interface {
 
 // Canvas returns an HTML element that is used to draw graphics on the fly.
 func Canvas() HTMLCanvas {
-	return &htmlCanvas{
+	e := &htmlCanvas{
 		elem: elem{
 			tag:         "canvas",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlCanvas struct {
@@ -7117,12 +7165,15 @@ type HTMLCaption interface {
 
 // Caption returns an HTML element that defines a table caption.
 func Caption() HTMLCaption {
-	return &htmlCaption{
+	e := &htmlCaption{
 		elem: elem{
 			tag:         "caption",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlCaption struct {
@@ -7516,12 +7567,15 @@ type HTMLCite interface {
 
 // Cite returns an HTML element that defines the title of a work.
 func Cite() HTMLCite {
-	return &htmlCite{
+	e := &htmlCite{
 		elem: elem{
 			tag:         "cite",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlCite struct {
@@ -7915,12 +7969,15 @@ type HTMLCode interface {
 
 // Code returns an HTML element that defines a piece of computer code.
 func Code() HTMLCode {
-	return &htmlCode{
+	e := &htmlCode{
 		elem: elem{
 			tag:         "code",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlCode struct {
@@ -8311,12 +8368,15 @@ type HTMLCol interface {
 
 // Col returns an HTML element that specifies column properties for each column within a colgroup element.
 func Col() HTMLCol {
-	return &htmlCol{
+	e := &htmlCol{
 		elem: elem{
 			tag:         "col",
 			selfClosing: true,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlCol struct {
@@ -8709,12 +8769,15 @@ type HTMLColGroup interface {
 
 // ColGroup returns an HTML element that specifies a group of one or more columns in a table for formatting.
 func ColGroup() HTMLColGroup {
-	return &htmlColGroup{
+	e := &htmlColGroup{
 		elem: elem{
 			tag:         "colgroup",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlColGroup struct {
@@ -9020,12 +9083,15 @@ type HTMLData interface {
 
 // Data returns an HTML element that links the given content with a machine-readable translation.
 func Data() HTMLData {
-	return &htmlData{
+	e := &htmlData{
 		elem: elem{
 			tag:         "data",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlData struct {
@@ -9264,12 +9330,15 @@ type HTMLDataList interface {
 
 // DataList returns an HTML element that specifies a list of pre-defined options for input controls.
 func DataList() HTMLDataList {
-	return &htmlDataList{
+	e := &htmlDataList{
 		elem: elem{
 			tag:         "datalist",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlDataList struct {
@@ -9663,12 +9732,15 @@ type HTMLDd interface {
 
 // Dd returns an HTML element that defines a description/value of a term in a description list.
 func Dd() HTMLDd {
-	return &htmlDd{
+	e := &htmlDd{
 		elem: elem{
 			tag:         "dd",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlDd struct {
@@ -10068,12 +10140,15 @@ type HTMLDel interface {
 
 // Del returns an HTML element that defines text that has been deleted from a document.
 func Del() HTMLDel {
-	return &htmlDel{
+	e := &htmlDel{
 		elem: elem{
 			tag:         "del",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlDel struct {
@@ -10483,12 +10558,15 @@ type HTMLDetails interface {
 
 // Details returns an HTML element that defines additional details that the user can view or hide.
 func Details() HTMLDetails {
-	return &htmlDetails{
+	e := &htmlDetails{
 		elem: elem{
 			tag:         "details",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlDetails struct {
@@ -10892,12 +10970,15 @@ type HTMLDfn interface {
 
 // Dfn returns an HTML element that represents the defining instance of a term.
 func Dfn() HTMLDfn {
-	return &htmlDfn{
+	e := &htmlDfn{
 		elem: elem{
 			tag:         "dfn",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlDfn struct {
@@ -11294,12 +11375,15 @@ type HTMLDialog interface {
 
 // Dialog returns an HTML element that defines a dialog box or window.
 func Dialog() HTMLDialog {
-	return &htmlDialog{
+	e := &htmlDialog{
 		elem: elem{
 			tag:         "dialog",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlDialog struct {
@@ -11698,12 +11782,15 @@ type HTMLDiv interface {
 
 // Div returns an HTML element that defines a section in a document.
 func Div() HTMLDiv {
-	return &htmlDiv{
+	e := &htmlDiv{
 		elem: elem{
 			tag:         "div",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlDiv struct {
@@ -12097,12 +12184,15 @@ type HTMLDl interface {
 
 // Dl returns an HTML element that defines a description list.
 func Dl() HTMLDl {
-	return &htmlDl{
+	e := &htmlDl{
 		elem: elem{
 			tag:         "dl",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlDl struct {
@@ -12496,12 +12586,15 @@ type HTMLDt interface {
 
 // Dt returns an HTML element that defines a term/name in a description list.
 func Dt() HTMLDt {
-	return &htmlDt{
+	e := &htmlDt{
 		elem: elem{
 			tag:         "dt",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlDt struct {
@@ -12895,12 +12988,15 @@ type HTMLEm interface {
 
 // Em returns an HTML element that defines emphasized text.
 func Em() HTMLEm {
-	return &htmlEm{
+	e := &htmlEm{
 		elem: elem{
 			tag:         "em",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlEm struct {
@@ -13369,12 +13465,15 @@ type HTMLEmbed interface {
 
 // Embed returns an HTML element that defines a container for an external (non-HTML) application.
 func Embed() HTMLEmbed {
-	return &htmlEmbed{
+	e := &htmlEmbed{
 		elem: elem{
 			tag:         "embed",
 			selfClosing: true,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlEmbed struct {
@@ -13903,12 +14002,15 @@ type HTMLFieldSet interface {
 
 // FieldSet returns an HTML element that groups related elements in a form.
 func FieldSet() HTMLFieldSet {
-	return &htmlFieldSet{
+	e := &htmlFieldSet{
 		elem: elem{
 			tag:         "fieldset",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlFieldSet struct {
@@ -14317,12 +14419,15 @@ type HTMLFigCaption interface {
 
 // FigCaption returns an HTML element that defines a caption for a figure element.
 func FigCaption() HTMLFigCaption {
-	return &htmlFigCaption{
+	e := &htmlFigCaption{
 		elem: elem{
 			tag:         "figcaption",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlFigCaption struct {
@@ -14716,12 +14821,15 @@ type HTMLFigure interface {
 
 // Figure returns an HTML element that specifies self-contained content.
 func Figure() HTMLFigure {
-	return &htmlFigure{
+	e := &htmlFigure{
 		elem: elem{
 			tag:         "figure",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlFigure struct {
@@ -15115,12 +15223,15 @@ type HTMLFooter interface {
 
 // Footer returns an HTML element that defines a footer for a document or section.
 func Footer() HTMLFooter {
-	return &htmlFooter{
+	e := &htmlFooter{
 		elem: elem{
 			tag:         "footer",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlFooter struct {
@@ -15538,12 +15649,15 @@ type HTMLForm interface {
 
 // Form returns an HTML element that defines an HTML form for user input.
 func Form() HTMLForm {
-	return &htmlForm{
+	e := &htmlForm{
 		elem: elem{
 			tag:         "form",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlForm struct {
@@ -15982,12 +16096,15 @@ type HTMLH1 interface {
 
 // H1 returns an HTML element that defines HTML heading.
 func H1() HTMLH1 {
-	return &htmlH1{
+	e := &htmlH1{
 		elem: elem{
 			tag:         "h1",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlH1 struct {
@@ -16381,12 +16498,15 @@ type HTMLH2 interface {
 
 // H2 returns an HTML element that defines HTML heading.
 func H2() HTMLH2 {
-	return &htmlH2{
+	e := &htmlH2{
 		elem: elem{
 			tag:         "h2",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlH2 struct {
@@ -16780,12 +16900,15 @@ type HTMLH3 interface {
 
 // H3 returns an HTML element that defines HTML heading.
 func H3() HTMLH3 {
-	return &htmlH3{
+	e := &htmlH3{
 		elem: elem{
 			tag:         "h3",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlH3 struct {
@@ -17179,12 +17302,15 @@ type HTMLH4 interface {
 
 // H4 returns an HTML element that defines HTML heading.
 func H4() HTMLH4 {
-	return &htmlH4{
+	e := &htmlH4{
 		elem: elem{
 			tag:         "h4",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlH4 struct {
@@ -17578,12 +17704,15 @@ type HTMLH5 interface {
 
 // H5 returns an HTML element that defines HTML heading.
 func H5() HTMLH5 {
-	return &htmlH5{
+	e := &htmlH5{
 		elem: elem{
 			tag:         "h5",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlH5 struct {
@@ -17977,12 +18106,15 @@ type HTMLH6 interface {
 
 // H6 returns an HTML element that defines HTML heading.
 func H6() HTMLH6 {
-	return &htmlH6{
+	e := &htmlH6{
 		elem: elem{
 			tag:         "h6",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlH6 struct {
@@ -18280,12 +18412,15 @@ type HTMLHead interface {
 
 // Head returns an HTML element that defines information about the document.
 func Head() HTMLHead {
-	return &htmlHead{
+	e := &htmlHead{
 		elem: elem{
 			tag:         "head",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlHead struct {
@@ -18519,12 +18654,15 @@ type HTMLHeader interface {
 
 // Header returns an HTML element that defines a header for a document or section.
 func Header() HTMLHeader {
-	return &htmlHeader{
+	e := &htmlHeader{
 		elem: elem{
 			tag:         "header",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlHeader struct {
@@ -18912,12 +19050,15 @@ type HTMLHr interface {
 
 // Hr returns an HTML element that defines a thematic change in the content.
 func Hr() HTMLHr {
-	return &htmlHr{
+	e := &htmlHr{
 		elem: elem{
 			tag:         "hr",
 			selfClosing: true,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlHr struct {
@@ -19206,12 +19347,15 @@ type HTMLHtml interface {
 
 // Html returns an HTML element that defines the root of an HTML document.
 func Html() HTMLHtml {
-	return &htmlHtml{
+	e := &htmlHtml{
 		elem: elem{
 			tag:         "html",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlHtml struct {
@@ -19445,12 +19589,15 @@ type HTMLI interface {
 
 // I returns an HTML element that defines a part of text in an alternate voice or mood.
 func I() HTMLI {
-	return &htmlI{
+	e := &htmlI{
 		elem: elem{
 			tag:         "i",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlI struct {
@@ -19865,12 +20012,15 @@ type HTMLIFrame interface {
 
 // IFrame returns an HTML element that defines an inline frame.
 func IFrame() HTMLIFrame {
-	return &htmlIFrame{
+	e := &htmlIFrame{
 		elem: elem{
 			tag:         "iframe",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlIFrame struct {
@@ -20389,12 +20539,15 @@ type HTMLImg interface {
 
 // Img returns an HTML element that defines an image.
 func Img() HTMLImg {
-	return &htmlImg{
+	e := &htmlImg{
 		elem: elem{
 			tag:         "img",
 			selfClosing: true,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlImg struct {
@@ -21026,12 +21179,15 @@ type HTMLInput interface {
 
 // Input returns an HTML element that defines an input control.
 func Input() HTMLInput {
-	return &htmlInput{
+	e := &htmlInput{
 		elem: elem{
 			tag:         "input",
 			selfClosing: true,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlInput struct {
@@ -21576,12 +21732,15 @@ type HTMLIns interface {
 
 // Ins returns an HTML element that defines a text that has been inserted into a document.
 func Ins() HTMLIns {
-	return &htmlIns{
+	e := &htmlIns{
 		elem: elem{
 			tag:         "ins",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlIns struct {
@@ -21975,12 +22134,15 @@ type HTMLKbd interface {
 
 // Kbd returns an HTML element that defines keyboard input.
 func Kbd() HTMLKbd {
-	return &htmlKbd{
+	e := &htmlKbd{
 		elem: elem{
 			tag:         "kbd",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlKbd struct {
@@ -22380,12 +22542,15 @@ type HTMLLabel interface {
 
 // Label returns an HTML element that defines a label for an input element.
 func Label() HTMLLabel {
-	return &htmlLabel{
+	e := &htmlLabel{
 		elem: elem{
 			tag:         "label",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlLabel struct {
@@ -22789,12 +22954,15 @@ type HTMLLegends interface {
 
 // Legends returns an HTML element that defines a caption for a fieldset element.
 func Legends() HTMLLegends {
-	return &htmlLegends{
+	e := &htmlLegends{
 		elem: elem{
 			tag:         "legends",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlLegends struct {
@@ -23191,12 +23359,15 @@ type HTMLLi interface {
 
 // Li returns an HTML element that defines a list item.
 func Li() HTMLLi {
-	return &htmlLi{
+	e := &htmlLi{
 		elem: elem{
 			tag:         "li",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlLi struct {
@@ -23610,12 +23781,15 @@ type HTMLLink interface {
 
 // Link returns an HTML element that defines the relationship between a document and an external resource (most used to link to style sheets).
 func Link() HTMLLink {
-	return &htmlLink{
+	e := &htmlLink{
 		elem: elem{
 			tag:         "link",
 			selfClosing: true,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlLink struct {
@@ -24035,12 +24209,15 @@ type HTMLMain interface {
 
 // Main returns an HTML element that specifies the main content of a document.
 func Main() HTMLMain {
-	return &htmlMain{
+	e := &htmlMain{
 		elem: elem{
 			tag:         "main",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlMain struct {
@@ -24437,12 +24614,15 @@ type HTMLMap interface {
 
 // Map returns an HTML element that defines a client-side image-map.
 func Map() HTMLMap {
-	return &htmlMap{
+	e := &htmlMap{
 		elem: elem{
 			tag:         "map",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlMap struct {
@@ -24841,12 +25021,15 @@ type HTMLMark interface {
 
 // Mark returns an HTML element that defines marked/highlighted text.
 func Mark() HTMLMark {
-	return &htmlMark{
+	e := &htmlMark{
 		elem: elem{
 			tag:         "mark",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlMark struct {
@@ -25150,12 +25333,15 @@ type HTMLMeta interface {
 
 // Meta returns an HTML element that .
 func Meta() HTMLMeta {
-	return &htmlMeta{
+	e := &htmlMeta{
 		elem: elem{
 			tag:         "meta",
 			selfClosing: true,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlMeta struct {
@@ -25421,12 +25607,15 @@ type HTMLMeter interface {
 
 // Meter returns an HTML element that defines a scalar measurement within a known range (a gauge).
 func Meter() HTMLMeter {
-	return &htmlMeter{
+	e := &htmlMeter{
 		elem: elem{
 			tag:         "meter",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlMeter struct {
@@ -25855,12 +26044,15 @@ type HTMLNav interface {
 
 // Nav returns an HTML element that defines navigation links.
 func Nav() HTMLNav {
-	return &htmlNav{
+	e := &htmlNav{
 		elem: elem{
 			tag:         "nav",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlNav struct {
@@ -26158,12 +26350,15 @@ type HTMLNoScript interface {
 
 // NoScript returns an HTML element that defines an alternate content for users that do not support client-side scripts.
 func NoScript() HTMLNoScript {
-	return &htmlNoScript{
+	e := &htmlNoScript{
 		elem: elem{
 			tag:         "noscript",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlNoScript struct {
@@ -26487,12 +26682,15 @@ type HTMLObject interface {
 
 // Object returns an HTML element that defines an embedded object.
 func Object() HTMLObject {
-	return &htmlObject{
+	e := &htmlObject{
 		elem: elem{
 			tag:         "object",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlObject struct {
@@ -27045,12 +27243,15 @@ type HTMLOl interface {
 
 // Ol returns an HTML element that defines an ordered list.
 func Ol() HTMLOl {
-	return &htmlOl{
+	e := &htmlOl{
 		elem: elem{
 			tag:         "ol",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlOl struct {
@@ -27465,12 +27666,15 @@ type HTMLOptGroup interface {
 
 // OptGroup returns an HTML element that defines a group of related options in a drop-down list.
 func OptGroup() HTMLOptGroup {
-	return &htmlOptGroup{
+	e := &htmlOptGroup{
 		elem: elem{
 			tag:         "optgroup",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlOptGroup struct {
@@ -27886,12 +28090,15 @@ type HTMLOption interface {
 
 // Option returns an HTML element that defines an option in a drop-down list.
 func Option() HTMLOption {
-	return &htmlOption{
+	e := &htmlOption{
 		elem: elem{
 			tag:         "option",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlOption struct {
@@ -28314,12 +28521,15 @@ type HTMLOutput interface {
 
 // Output returns an HTML element that .
 func Output() HTMLOutput {
-	return &htmlOutput{
+	e := &htmlOutput{
 		elem: elem{
 			tag:         "output",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlOutput struct {
@@ -28728,12 +28938,15 @@ type HTMLP interface {
 
 // P returns an HTML element that defines a paragraph.
 func P() HTMLP {
-	return &htmlP{
+	e := &htmlP{
 		elem: elem{
 			tag:         "p",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlP struct {
@@ -29127,12 +29340,15 @@ type HTMLParam interface {
 
 // Param returns an HTML element that defines a parameter for an object.
 func Param() HTMLParam {
-	return &htmlParam{
+	e := &htmlParam{
 		elem: elem{
 			tag:         "param",
 			selfClosing: true,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlParam struct {
@@ -29527,12 +29743,15 @@ type HTMLPicture interface {
 
 // Picture returns an HTML element that defines a container for multiple image resources.
 func Picture() HTMLPicture {
-	return &htmlPicture{
+	e := &htmlPicture{
 		elem: elem{
 			tag:         "picture",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlPicture struct {
@@ -29926,12 +30145,15 @@ type HTMLPre interface {
 
 // Pre returns an HTML element that defines preformatted text.
 func Pre() HTMLPre {
-	return &htmlPre{
+	e := &htmlPre{
 		elem: elem{
 			tag:         "pre",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlPre struct {
@@ -30331,12 +30553,15 @@ type HTMLProgress interface {
 
 // Progress returns an HTML element that represents the progress of a task.
 func Progress() HTMLProgress {
-	return &htmlProgress{
+	e := &htmlProgress{
 		elem: elem{
 			tag:         "progress",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlProgress struct {
@@ -30743,12 +30968,15 @@ type HTMLQ interface {
 
 // Q returns an HTML element that defines a short quotation.
 func Q() HTMLQ {
-	return &htmlQ{
+	e := &htmlQ{
 		elem: elem{
 			tag:         "q",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlQ struct {
@@ -31147,12 +31375,15 @@ type HTMLRp interface {
 
 // Rp returns an HTML element that defines what to show in browsers that do not support ruby annotations.
 func Rp() HTMLRp {
-	return &htmlRp{
+	e := &htmlRp{
 		elem: elem{
 			tag:         "rp",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlRp struct {
@@ -31546,12 +31777,15 @@ type HTMLRt interface {
 
 // Rt returns an HTML element that defines an explanation/pronunciation of characters (for East Asian typography).
 func Rt() HTMLRt {
-	return &htmlRt{
+	e := &htmlRt{
 		elem: elem{
 			tag:         "rt",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlRt struct {
@@ -31945,12 +32179,15 @@ type HTMLRuby interface {
 
 // Ruby returns an HTML element that defines a ruby annotation (for East Asian typography).
 func Ruby() HTMLRuby {
-	return &htmlRuby{
+	e := &htmlRuby{
 		elem: elem{
 			tag:         "ruby",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlRuby struct {
@@ -32344,12 +32581,15 @@ type HTMLS interface {
 
 // S returns an HTML element that Defines text that is no longer correct.
 func S() HTMLS {
-	return &htmlS{
+	e := &htmlS{
 		elem: elem{
 			tag:         "s",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlS struct {
@@ -32743,12 +32983,15 @@ type HTMLSamp interface {
 
 // Samp returns an HTML element that defines sample output from a computer program.
 func Samp() HTMLSamp {
-	return &htmlSamp{
+	e := &htmlSamp{
 		elem: elem{
 			tag:         "samp",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlSamp struct {
@@ -33064,12 +33307,15 @@ type HTMLScript interface {
 
 // Script returns an HTML element that defines a client-side script.
 func Script() HTMLScript {
-	return &htmlScript{
+	e := &htmlScript{
 		elem: elem{
 			tag:         "script",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlScript struct {
@@ -33333,12 +33579,15 @@ type HTMLSection interface {
 
 // Section returns an HTML element that defines a section in a document.
 func Section() HTMLSection {
-	return &htmlSection{
+	e := &htmlSection{
 		elem: elem{
 			tag:         "section",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlSection struct {
@@ -33753,12 +34002,15 @@ type HTMLSelect interface {
 
 // Select returns an HTML element that defines a drop-down list.
 func Select() HTMLSelect {
-	return &htmlSelect{
+	e := &htmlSelect{
 		elem: elem{
 			tag:         "select",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlSelect struct {
@@ -34187,12 +34439,15 @@ type HTMLSmall interface {
 
 // Small returns an HTML element that defines smaller text.
 func Small() HTMLSmall {
-	return &htmlSmall{
+	e := &htmlSmall{
 		elem: elem{
 			tag:         "small",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlSmall struct {
@@ -34595,12 +34850,15 @@ type HTMLSource interface {
 
 // Source returns an HTML element that .
 func Source() HTMLSource {
-	return &htmlSource{
+	e := &htmlSource{
 		elem: elem{
 			tag:         "source",
 			selfClosing: true,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlSource struct {
@@ -35010,12 +35268,15 @@ type HTMLSpan interface {
 
 // Span returns an HTML element that defines a section in a document.
 func Span() HTMLSpan {
-	return &htmlSpan{
+	e := &htmlSpan{
 		elem: elem{
 			tag:         "span",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlSpan struct {
@@ -35409,12 +35670,15 @@ type HTMLStrong interface {
 
 // Strong returns an HTML element that defines important text.
 func Strong() HTMLStrong {
-	return &htmlStrong{
+	e := &htmlStrong{
 		elem: elem{
 			tag:         "strong",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlStrong struct {
@@ -35817,12 +36081,15 @@ type HTMLStyle interface {
 
 // Style returns an HTML element that defines style information for a document.
 func Style() HTMLStyle {
-	return &htmlStyle{
+	e := &htmlStyle{
 		elem: elem{
 			tag:         "style",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlStyle struct {
@@ -36231,12 +36498,15 @@ type HTMLSub interface {
 
 // Sub returns an HTML element that defines subscripted text.
 func Sub() HTMLSub {
-	return &htmlSub{
+	e := &htmlSub{
 		elem: elem{
 			tag:         "sub",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlSub struct {
@@ -36630,12 +36900,15 @@ type HTMLSummary interface {
 
 // Summary returns an HTML element that defines a visible heading for a details element.
 func Summary() HTMLSummary {
-	return &htmlSummary{
+	e := &htmlSummary{
 		elem: elem{
 			tag:         "summary",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlSummary struct {
@@ -37029,12 +37302,15 @@ type HTMLSup interface {
 
 // Sup returns an HTML element that defines superscripted text.
 func Sup() HTMLSup {
-	return &htmlSup{
+	e := &htmlSup{
 		elem: elem{
 			tag:         "sup",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlSup struct {
@@ -37428,12 +37704,15 @@ type HTMLTable interface {
 
 // Table returns an HTML element that defines a table.
 func Table() HTMLTable {
-	return &htmlTable{
+	e := &htmlTable{
 		elem: elem{
 			tag:         "table",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlTable struct {
@@ -37827,12 +38106,15 @@ type HTMLTBody interface {
 
 // TBody returns an HTML element that groups the body content in a table.
 func TBody() HTMLTBody {
-	return &htmlTBody{
+	e := &htmlTBody{
 		elem: elem{
 			tag:         "tbody",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlTBody struct {
@@ -38235,12 +38517,15 @@ type HTMLTd interface {
 
 // Td returns an HTML element that defines a cell in a table.
 func Td() HTMLTd {
-	return &htmlTd{
+	e := &htmlTd{
 		elem: elem{
 			tag:         "td",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlTd struct {
@@ -38553,12 +38838,15 @@ type HTMLTemplate interface {
 
 // Template returns an HTML element that defines a template.
 func Template() HTMLTemplate {
-	return &htmlTemplate{
+	e := &htmlTemplate{
 		elem: elem{
 			tag:         "template",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlTemplate struct {
@@ -38828,12 +39116,15 @@ type HTMLTextarea interface {
 
 // Textarea returns an HTML element that defines a multiline input control (text area).
 func Textarea() HTMLTextarea {
-	return &htmlTextarea{
+	e := &htmlTextarea{
 		elem: elem{
 			tag:         "textarea",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlTextarea struct {
@@ -39287,12 +39578,15 @@ type HTMLTfoot interface {
 
 // Tfoot returns an HTML element that groups the footer content in a table.
 func Tfoot() HTMLTfoot {
-	return &htmlTfoot{
+	e := &htmlTfoot{
 		elem: elem{
 			tag:         "tfoot",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlTfoot struct {
@@ -39701,12 +39995,15 @@ type HTMLTh interface {
 
 // Th returns an HTML element that defines a header cell in a table.
 func Th() HTMLTh {
-	return &htmlTh{
+	e := &htmlTh{
 		elem: elem{
 			tag:         "th",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlTh struct {
@@ -40125,12 +40422,15 @@ type HTMLTHead interface {
 
 // THead returns an HTML element that groups the header content in a table
 func THead() HTMLTHead {
-	return &htmlTHead{
+	e := &htmlTHead{
 		elem: elem{
 			tag:         "thead",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlTHead struct {
@@ -40527,12 +40827,15 @@ type HTMLTime interface {
 
 // Time returns an HTML element that defines a date/time.
 func Time() HTMLTime {
-	return &htmlTime{
+	e := &htmlTime{
 		elem: elem{
 			tag:         "time",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlTime struct {
@@ -40835,12 +41138,15 @@ type HTMLTitle interface {
 
 // Title returns an HTML element that defines a title for the document.
 func Title() HTMLTitle {
-	return &htmlTitle{
+	e := &htmlTitle{
 		elem: elem{
 			tag:         "title",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlTitle struct {
@@ -41074,12 +41380,15 @@ type HTMLTr interface {
 
 // Tr returns an HTML element that defines a row in a table.
 func Tr() HTMLTr {
-	return &htmlTr{
+	e := &htmlTr{
 		elem: elem{
 			tag:         "tr",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlTr struct {
@@ -41473,12 +41782,15 @@ type HTMLU interface {
 
 // U returns an HTML element that defines text that should be stylistically different from normal text.
 func U() HTMLU {
-	return &htmlU{
+	e := &htmlU{
 		elem: elem{
 			tag:         "u",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlU struct {
@@ -41872,12 +42184,15 @@ type HTMLUl interface {
 
 // Ul returns an HTML element that defines an unordered list.
 func Ul() HTMLUl {
-	return &htmlUl{
+	e := &htmlUl{
 		elem: elem{
 			tag:         "ul",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlUl struct {
@@ -42271,12 +42586,15 @@ type HTMLVar interface {
 
 // Var returns an HTML element that defines a variable.
 func Var() HTMLVar {
-	return &htmlVar{
+	e := &htmlVar{
 		elem: elem{
 			tag:         "var",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlVar struct {
@@ -42766,12 +43084,15 @@ type HTMLVideo interface {
 
 // Video returns an HTML element that defines a video or movie.
 func Video() HTMLVideo {
-	return &htmlVideo{
+	e := &htmlVideo{
 		elem: elem{
 			tag:         "video",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlVideo struct {
@@ -43325,12 +43646,15 @@ type HTMLWbr interface {
 
 // Wbr returns an HTML element that defines a possible line-break.
 func Wbr() HTMLWbr {
-	return &htmlWbr{
+	e := &htmlWbr{
 		elem: elem{
 			tag:         "wbr",
 			selfClosing: false,
 		},
 	}
+
+	e.setSelf(e)
+	return e
 }
 
 type htmlWbr struct {

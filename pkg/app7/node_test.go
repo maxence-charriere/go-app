@@ -51,6 +51,12 @@ func TestMountAndDismount(t *testing.T) {
 			scenario: "text",
 			node:     Text("hello"),
 		},
+		{
+			scenario: "html element",
+			node: Div().
+				Class("hello").
+				OnClick(func(Context, Event) {}),
+		},
 	}
 
 	for _, u := range utests {
@@ -58,6 +64,7 @@ func TestMountAndDismount(t *testing.T) {
 			testSkipNoWasm(t)
 
 			n := u.node
+			n.setSelf(n)
 
 			err := n.mount()
 			require.NoError(t, err)
@@ -82,6 +89,11 @@ func testMounted(t *testing.T, n UI) {
 func testDismounted(t *testing.T, n UI) {
 	require.Nil(t, n.JSValue())
 	require.False(t, n.Mounted())
+
+	switch n.Kind() {
+	case HTML, Component:
+		require.Error(t, n.context().Err())
+	}
 
 	for _, c := range n.children() {
 		testDismounted(t, c)
