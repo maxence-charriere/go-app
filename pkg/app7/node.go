@@ -2,7 +2,10 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"reflect"
+
+	"github.com/maxence-charriere/go-app/v6/pkg/errors"
 )
 
 // UI is the interface that describes a user interface element such as
@@ -17,13 +20,16 @@ type UI interface {
 	// Reports whether the element is mounted.
 	Mounted() bool
 
+	name() string
 	setSelf(UI)
 	context() context.Context
+	attributes() map[string]string
+	eventHandlers() map[string]eventHandler
 	parent() UI
 	setParent(UI)
 	children() []UI
-	appendChild(UI)
-	removeChild(UI)
+	// appendChild(UI)
+	// removeChild(UI)
 	mount() error
 	dismount()
 	update(UI) error
@@ -96,4 +102,44 @@ func FilterUIElems(uis ...UI) []UI {
 	}
 
 	return elems
+}
+
+type eventHandler struct {
+	event   string
+	jsvalue Func
+	value   EventHandler
+}
+
+func (h eventHandler) equal(o eventHandler) bool {
+	return h.event == o.event &&
+		fmt.Sprintf("%p", h.value) == fmt.Sprintf("%p", o.value)
+}
+
+func makeJsEventHandler(src UI, h EventHandler) Func {
+	return FuncOf(func(this Value, args []Value) interface{} {
+		dispatch(func() {
+			if !src.Mounted() {
+				return
+			}
+
+			ctx := Context{
+				Context: src.context(),
+				Src:     src,
+				JSSrc:   src.JSValue(),
+			}
+
+			event := Event{
+				Value: args[0],
+			}
+
+			h(ctx, event)
+		})
+
+		return nil
+	})
+}
+
+func isErrReplace(err error) bool {
+	_, replace := errors.Tag(err, "replace")
+	return replace
 }

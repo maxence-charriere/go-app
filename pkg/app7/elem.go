@@ -2,22 +2,21 @@ package app
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/errors"
 )
 
 type elem struct {
-	attrs         map[string]string
-	body          []UI
-	ctx           context.Context
-	ctxCancel     func()
-	eventHandlers map[string]elemEventHandler
-	jsvalue       Value
-	parentElem    UI
-	self          UI
-	selfClosing   bool
-	tag           string
+	attrs       map[string]string
+	body        []UI
+	ctx         context.Context
+	ctxCancel   func()
+	events      map[string]eventHandler
+	jsvalue     Value
+	parentElem  UI
+	self        UI
+	selfClosing bool
+	tag         string
 }
 
 func (e *elem) Kind() Kind {
@@ -32,12 +31,24 @@ func (e *elem) Mounted() bool {
 	return e.self != nil && e.ctx != nil && e.jsvalue != nil
 }
 
+func (e *elem) name() string {
+	return e.tag
+}
+
 func (e *elem) setSelf(n UI) {
 	e.self = n
 }
 
 func (e *elem) context() context.Context {
 	return e.ctx
+}
+
+func (e *elem) attributes() map[string]string {
+	return e.attrs
+}
+
+func (e *elem) eventHandlers() map[string]eventHandler {
+	return e.events
 }
 
 func (e *elem) parent() UI {
@@ -52,32 +63,12 @@ func (e *elem) children() []UI {
 	return e.body
 }
 
-func (e *elem) appendChild(c UI) {
-	e.body = append(e.body, c)
-	e.JSValue().Call("appendChild", c)
-}
-
-func (e *elem) removeChild(c UI) {
-	body := e.body
-	for i, n := range body {
-		if n == c {
-			copy(body[i:], body[i+1:])
-			body[len(body)-1] = nil
-			body = body[:len(body)-1]
-			e.body = body
-
-			e.JSValue().Call("removeChild", c)
-			return
-		}
-	}
-}
-
 func (e *elem) mount() error {
 	if e.Mounted() {
 		return errors.New("mounting ui element failed").
 			Tag("reason", "already mounted").
-			Tag("kind", e.Kind()).
-			Tag("tag", e.tag)
+			Tag("name", e.name()).
+			Tag("kind", e.Kind())
 	}
 
 	e.ctx, e.ctxCancel = context.WithCancel(context.Background())
@@ -85,9 +76,9 @@ func (e *elem) mount() error {
 	v := Window().Get("document").Call("createElement", e.tag)
 	if !v.Truthy() {
 		return errors.New("mounting ui element failed").
-			Tag("reason", "creating javascript node return nil").
-			Tag("kind", e.Kind()).
-			Tag("tag", e.tag)
+			Tag("reason", "create javascript node returned nil").
+			Tag("name", e.name()).
+			Tag("kind", e.Kind())
 	}
 	e.jsvalue = v
 
@@ -95,16 +86,17 @@ func (e *elem) mount() error {
 		e.setJsAttr(k, v)
 	}
 
-	for k, v := range e.eventHandlers {
+	for k, v := range e.events {
 		e.setJsEventHandler(k, v)
 	}
 
 	for _, c := range e.children() {
-		if err := c.mount(); err != nil {
-			return err
+		if err := e.appendChild(c); err != nil {
+			return errors.New("mounting ui element failed").
+				Tag("name", e.name()).
+				Tag("kind", e.Kind()).
+				Wrap(err)
 		}
-
-		e.appendChild(c)
 	}
 
 	return nil
@@ -115,7 +107,7 @@ func (e *elem) dismount() {
 		c.dismount()
 	}
 
-	for k, v := range e.eventHandlers {
+	for k, v := range e.events {
 		e.delJsEventHandler(k, v)
 	}
 
@@ -124,7 +116,156 @@ func (e *elem) dismount() {
 }
 
 func (e *elem) update(n UI) error {
-	panic("not implemented")
+	if !e.Mounted() {
+		return nil
+	}
+
+	if n.Kind() != e.Kind() || n.name() != e.name() {
+		return errors.New("updating ui element failed").
+			Tag("replace", true).
+			Tag("reason", "different element types").
+			Tag("current-kind", e.Kind()).
+			Tag("current-name", e.name()).
+			Tag("updated-kind", n.Kind()).
+			Tag("updated-name", n.name())
+	}
+
+	e.updateAttrs(n.attributes())
+	e.updateEventHandler(n.eventHandlers())
+
+	achildren := e.children()
+	bchildren := n.children()
+	i := 0
+
+	// Update children:
+	for len(achildren) != 0 && len(bchildren) != 0 {
+		a := achildren[0]
+		b := bchildren[0]
+
+		err := a.update(b)
+		if isErrReplace(err) {
+			err = e.replaceChildAt(i, b)
+		}
+
+		if err != nil {
+			return errors.New("updating ui element failed").
+				Tag("kind", e.Kind()).
+				Tag("name", e.name()).
+				Wrap(err)
+		}
+
+		achildren = achildren[1:]
+		bchildren = bchildren[1:]
+		i++
+	}
+
+	// Remove children:
+	for len(achildren) != 0 {
+		if err := e.removeChildAt(i); err != nil {
+			return errors.New("updating ui element failed").
+				Tag("kind", e.Kind()).
+				Tag("name", e.name()).
+				Wrap(err)
+		}
+
+		achildren = achildren[1:]
+	}
+
+	// Add children:
+	for len(bchildren) != 0 {
+		c := bchildren[0]
+
+		if err := e.appendChild(c); err != nil {
+			return errors.New("updating ui element failed").
+				Tag("kind", e.Kind()).
+				Tag("name", e.name()).
+				Wrap(err)
+		}
+
+		bchildren = bchildren[1:]
+	}
+
+	return nil
+}
+
+func (e *elem) appendChild(c UI) error {
+	if err := c.mount(); err != nil {
+		return errors.New("appending child failed").
+			Tag("name", e.name()).
+			Tag("kind", e.Kind()).
+			Tag("child-name", c.name()).
+			Tag("child-kind", c.Kind()).
+			Wrap(err)
+	}
+
+	e.body = append(e.body, c)
+	e.JSValue().Call("appendChild", c)
+	return nil
+}
+
+func (e *elem) replaceChildAt(idx int, new UI) error {
+	old := e.body[idx]
+
+	if err := new.mount(); err != nil {
+		return errors.New("replacing child failed").
+			Tag("name", e.name()).
+			Tag("kind", e.Kind()).
+			Tag("index", idx).
+			Tag("old-name", old.name()).
+			Tag("old-kind", old.Kind()).
+			Tag("new-name", new.name()).
+			Tag("new-kind", new.Kind()).
+			Wrap(err)
+	}
+
+	e.body[idx] = new
+	new.setParent(e)
+	e.JSValue().Call("replaceChild", new, old)
+
+	old.dismount()
+	return nil
+}
+
+func (e *elem) removeChildAt(idx int) error {
+	body := e.body
+	if idx < 0 || idx >= len(body) {
+		return errors.New("removing child failed").
+			Tag("reason", "index out of range").
+			Tag("index", idx).
+			Tag("name", e.name()).
+			Tag("kind", e.Kind())
+	}
+
+	c := body[idx]
+
+	copy(body[idx:], body[idx+1:])
+	body[len(body)-1] = nil
+	body = body[:len(body)-1]
+	body = body[:len(body)-1]
+	e.body = body
+
+	e.JSValue().Call("removeChild", c)
+	c.dismount()
+	return nil
+}
+
+func (e *elem) updateAttrs(attrs map[string]string) {
+	for k := range e.attrs {
+		if _, exist := attrs[k]; !exist {
+			e.delAttr(k)
+		}
+	}
+
+	if e.attrs == nil && len(attrs) != 0 {
+		e.attrs = make(map[string]string, len(attrs))
+	}
+
+	for k, v := range attrs {
+		if curval := e.attrs[k]; curval != v {
+			e.attrs[k] = v
+			e.setJsAttr(k, v)
+		}
+	}
 }
 
 func (e *elem) setAttr(k string, v interface{}) {
@@ -165,35 +306,63 @@ func (e *elem) setJsAttr(k, v string) {
 	e.JSValue().Call("setAttribute", k, v)
 }
 
-func (e *elem) setEventHandler(k string, h EventHandler) {
-	if e.eventHandlers == nil {
-		e.eventHandlers = make(map[string]elemEventHandler)
+func (e *elem) delAttr(k string) {
+	e.JSValue().Call("removeAttribute", k)
+	delete(e.attrs, k)
+}
+
+func (e *elem) updateEventHandler(handlers map[string]eventHandler) {
+	for k, current := range e.events {
+		if _, exists := handlers[k]; !exists {
+			e.delJsEventHandler(k, current)
+		}
 	}
 
-	e.eventHandlers[k] = elemEventHandler{
+	if e.events == nil && len(handlers) != 0 {
+		e.events = make(map[string]eventHandler, len(handlers))
+	}
+
+	for k, new := range handlers {
+		if current, exists := e.events[k]; !current.equal(new) {
+			if exists {
+				e.delJsEventHandler(k, current)
+			}
+
+			e.events[k] = new
+			e.setJsEventHandler(k, new)
+		}
+	}
+}
+
+func (e *elem) setEventHandler(k string, h EventHandler) {
+	if e.events == nil {
+		e.events = make(map[string]eventHandler)
+	}
+
+	e.events[k] = eventHandler{
 		event: k,
 		value: h,
 	}
 }
 
-func (e *elem) setJsEventHandler(k string, h elemEventHandler) {
+func (e *elem) setJsEventHandler(k string, h eventHandler) {
 	jshandler := makeJsEventHandler(e.self, h.value)
 	h.jsvalue = jshandler
-	e.eventHandlers[k] = h
+	e.events[k] = h
 	e.JSValue().Call("addEventListener", k, jshandler)
 }
 
-func (e *elem) delJsEventHandler(k string, h elemEventHandler) {
+func (e *elem) delJsEventHandler(k string, h eventHandler) {
 	e.JSValue().Call("addEventListener", k, h.jsvalue)
 	h.jsvalue.Release()
-	delete(e.eventHandlers, k)
+	delete(e.events, k)
 }
 
 func (e *elem) setBody(self UI, body ...UI) {
 	if e.selfClosing {
 		panic(errors.New("setting html element body failed").
 			Tag("reason", "self closing element can't have children").
-			Tag("tag", e.tag),
+			Tag("name", e.name()),
 		)
 	}
 
@@ -202,39 +371,4 @@ func (e *elem) setBody(self UI, body ...UI) {
 		n.setParent(self)
 	}
 	e.body = body
-}
-
-type elemEventHandler struct {
-	event   string
-	jsvalue Func
-	value   EventHandler
-}
-
-func (h elemEventHandler) equal(o elemEventHandler) bool {
-	return h.event == o.event &&
-		fmt.Sprintf("%p", h.value) == fmt.Sprintf("%p", o.value)
-}
-
-func makeJsEventHandler(src UI, h EventHandler) Func {
-	return FuncOf(func(this Value, args []Value) interface{} {
-		dispatch(func() {
-			if !src.Mounted() {
-				return
-			}
-
-			ctx := Context{
-				Context: src.context(),
-				Src:     src,
-				JSSrc:   src.JSValue(),
-			}
-
-			event := Event{
-				Value: args[0],
-			}
-
-			h(ctx, event)
-		})
-
-		return nil
-	})
 }

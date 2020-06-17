@@ -38,7 +38,7 @@ type Log struct {
 // Tag sets the named tag with the given value.
 func (l Log) Tag(k string, v interface{}) Log {
 	if l.tags == nil {
-		l.tags = make([]tag, 0, 5)
+		l.tags = make([]tag, 0, 8)
 	}
 
 	if length := len(k); length > l.maxKeyLen {

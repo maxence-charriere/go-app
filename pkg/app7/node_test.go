@@ -1,9 +1,11 @@
 package app
 
 import (
+	"fmt"
 	"runtime"
 	"testing"
 
+	"github.com/maxence-charriere/go-app/v6/pkg/errors"
 	"github.com/maxence-charriere/go-app/v6/pkg/logs"
 	"github.com/stretchr/testify/require"
 )
@@ -121,4 +123,40 @@ func TestFilterUIElems(t *testing.T) {
 
 	res := FilterUIElems(nil, nilText, simpleText)
 	require.Equal(t, expectedResult, res)
+}
+
+func TestIsErrReplace(t *testing.T) {
+	utests := []struct {
+		scenario     string
+		err          error
+		isErrReplace bool
+	}{
+		{
+			scenario:     "error is a replace error",
+			err:          errors.New("test").Tag("replace", true),
+			isErrReplace: true,
+		},
+		{
+			scenario:     "error is not a replace error",
+			err:          errors.New("test").Tag("test", true),
+			isErrReplace: false,
+		},
+		{
+			scenario:     "standard error is not a replace error",
+			err:          fmt.Errorf("test"),
+			isErrReplace: false,
+		},
+		{
+			scenario:     "nil error is not a replace error",
+			err:          nil,
+			isErrReplace: false,
+		},
+	}
+
+	for _, u := range utests {
+		t.Run(u.scenario, func(t *testing.T) {
+			res := isErrReplace(u.err)
+			require.Equal(t, u.isErrReplace, res)
+		})
+	}
 }

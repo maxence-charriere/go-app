@@ -74,7 +74,7 @@ type Error struct {
 // Tag sets the named tag with the given value.
 func (e Error) Tag(k string, v interface{}) Error {
 	if e.tags == nil {
-		e.tags = make([]tag, 0, 5)
+		e.tags = make([]tag, 0, 8)
 	}
 
 	if l := len(k); l > e.maxKeyLen {

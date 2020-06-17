@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"reflect"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/errors"
 )
@@ -30,11 +29,23 @@ func (t *text) Mounted() bool {
 	return t.jsvalue != nil
 }
 
+func (t *text) name() string {
+	return "text"
+}
+
 func (t *text) setSelf(n UI) {
 }
 
 func (t *text) context() context.Context {
 	return context.TODO()
+}
+
+func (t *text) attributes() map[string]string {
+	return nil
+}
+
+func (t *text) eventHandlers() map[string]eventHandler {
+	return nil
 }
 
 func (t *text) parent() UI {
@@ -49,18 +60,19 @@ func (t *text) children() []UI {
 	return nil
 }
 
-func (t *text) appendChild(UI) {
-	panic("text can't have children")
-}
+// func (t *text) appendChild(UI) {
+// 	panic("text can't have children")
+// }
 
-func (t *text) removeChild(UI) {
-}
+// func (t *text) removeChild(UI) {
+// }
 
 func (t *text) mount() error {
 	if t.Mounted() {
 		return errors.New("mounting ui element failed").
 			Tag("reason", "already mounted").
 			Tag("kind", t.Kind()).
+			Tag("name", t.name()).
 			Tag("value", t.value)
 	}
 
@@ -83,11 +95,12 @@ func (t *text) update(n UI) error {
 	o, isText := n.(*text)
 	if !isText {
 		return errors.New("updating ui element failed").
-			Tag("reason", "different node kind").
+			Tag("replace", true).
+			Tag("reason", "different element types").
 			Tag("current-kind", t.Kind()).
-			Tag("current-value", t.value).
+			Tag("current-name", t.name()).
 			Tag("updated-kind", n.Kind()).
-			Tag("updated-type", reflect.TypeOf(n))
+			Tag("updated-name", n.name())
 	}
 
 	if t.value != o.value {
