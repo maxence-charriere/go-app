@@ -160,3 +160,136 @@ func TestIsErrReplace(t *testing.T) {
 		})
 	}
 }
+
+func TestUpdate(t *testing.T) {
+	utests := []struct {
+		scenario   string
+		a          UI
+		b          UI
+		matches    []TestUIDescriptor
+		replaceErr bool
+	}{
+		{
+			scenario:   "text element returns replace error when updated with an html element",
+			a:          Text("hello"),
+			b:          Div(),
+			replaceErr: true,
+		},
+		{
+			scenario:   "html element returns replace error when updated with a text element",
+			a:          Div(),
+			b:          Text("hello"),
+			replaceErr: true,
+		},
+		{
+			scenario: "text element is updated",
+			a:        Text("hello"),
+			b:        Text("world"),
+			matches: []TestUIDescriptor{
+				{
+					Expected: Text("world"),
+				},
+			},
+		},
+		{
+			scenario: "html element attributes are updated",
+			a: Div().
+				ID("max").
+				Class("foo").
+				AccessKey("test"),
+			b: Div().
+				ID("max").
+				Class("bar").
+				Lang("fr"),
+			matches: []TestUIDescriptor{
+				{
+					Expected: Div().
+						ID("max").
+						Class("bar").
+						Lang("fr"),
+				},
+			},
+		},
+		{
+			scenario: "html element event handlers are updated",
+			a: Div().
+				OnClick(func(Context, Event) {}).
+				OnBlur(func(Context, Event) {}),
+			b: Div().
+				OnClick(func(Context, Event) {}).
+				OnChange(func(Context, Event) {}),
+			matches: []TestUIDescriptor{
+				{
+					Expected: Div().
+						OnClick(nil).
+						OnChange(nil),
+				},
+			},
+		},
+		{
+			scenario: "html element is replaced by a text",
+			a: Div().Body(
+				H2().Text("hello"),
+			),
+			b: Div().Body(
+				Text("hello"),
+			),
+			matches: []TestUIDescriptor{
+				{
+					Path:     TestPath(),
+					Expected: Div(),
+				},
+				{
+					Path:     TestPath(0),
+					Expected: Text("hello"),
+				},
+			},
+		},
+		{
+			scenario: "text is replaced by a html elem",
+			a: Div().Body(
+				Text("hello"),
+			),
+			b: Div().Body(
+				H2().Text("hello"),
+			),
+			matches: []TestUIDescriptor{
+				{
+					Path:     TestPath(),
+					Expected: Div(),
+				},
+				{
+					Path:     TestPath(0),
+					Expected: H2(),
+				},
+				{
+					Path:     TestPath(0, 0),
+					Expected: Text("hello"),
+				},
+			},
+		},
+	}
+
+	for _, u := range utests {
+		t.Run(u.scenario, func(t *testing.T) {
+			testSkipNoWasm(t)
+
+			err := u.a.mount()
+			require.NoError(t, err)
+			defer u.a.dismount()
+
+			err = u.a.update(u.b)
+			if u.replaceErr {
+				require.Error(t, err)
+				require.True(t, isErrReplace(err))
+				return
+			}
+
+			require.NoError(t, err)
+
+			for _, d := range u.matches {
+				require.NoError(t, TestMatch(u.a, d))
+			}
+		})
+	}
+}

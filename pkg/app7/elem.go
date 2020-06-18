@@ -14,9 +14,9 @@ type elem struct {
 	events      map[string]eventHandler
 	jsvalue     Value
 	parentElem  UI
-	self        UI
 	selfClosing bool
 	tag         string
+	this        UI
 }
 
 func (e *elem) Kind() Kind {
@@ -28,15 +28,19 @@ func (e *elem) JSValue() Value {
 }
 
 func (e *elem) Mounted() bool {
-	return e.self != nil && e.ctx != nil && e.jsvalue != nil
+	return e.self() != nil && e.ctx != nil && e.jsvalue != nil
 }
 
 func (e *elem) name() string {
 	return e.tag
 }
 
+func (e *elem) self() UI {
+	return e.this
+}
+
 func (e *elem) setSelf(n UI) {
-	e.self = n
+	e.this = n
 }
 
 func (e *elem) context() context.Context {
@@ -91,7 +95,7 @@ func (e *elem) mount() error {
 	}
 
 	for _, c := range e.children() {
-		if err := e.appendChild(c); err != nil {
+		if err := e.appendChild(c, true); err != nil {
 			return errors.New("mounting ui element failed").
 				Tag("name", e.name()).
 				Tag("kind", e.Kind()).
@@ -175,7 +179,7 @@ func (e *elem) update(n UI) error {
 	for len(bchildren) != 0 {
 		c := bchildren[0]
 
-		if err := e.appendChild(c); err != nil {
+		if err := e.appendChild(c, false); err != nil {
 			return errors.New("updating ui element failed").
 				Tag("kind", e.Kind()).
 				Tag("name", e.name()).
@@ -188,7 +192,7 @@ func (e *elem) update(n UI) error {
 	return nil
 }
 
-func (e *elem) appendChild(c UI) error {
+func (e *elem) appendChild(c UI, onlyJsValue bool) error {
 	if err := c.mount(); err != nil {
 		return errors.New("appending child failed").
 			Tag("name", e.name()).
@@ -198,7 +202,10 @@ func (e *elem) appendChild(c UI) error {
 			Wrap(err)
 	}
 
-	e.body = append(e.body, c)
+	if !onlyJsValue {
+		e.body = append(e.body, c)
+	}
+
 	e.JSValue().Call("appendChild", c)
 	return nil
 }
@@ -219,7 +226,7 @@ func (e *elem) replaceChildAt(idx int, new UI) error {
 	}
 
 	e.body[idx] = new
-	new.setParent(e)
+	new.setParent(e.self())
 	e.JSValue().Call("replaceChild", new, old)
 
 	old.dismount()
@@ -237,7 +244,6 @@ func (e *elem) removeChildAt(idx int) error {
 	}
 
 	c := body[idx]
-
 	copy(body[idx:], body[idx+1:])
 	body[len(body)-1] = nil
 	body = body[:len(body)-1]
@@ -346,7 +352,7 @@ func (e *elem) setEventHandler(k string, h EventHandler) {
 }
 
 func (e *elem) setJsEventHandler(k string, h eventHandler) {
-	jshandler := makeJsEventHandler(e.self, h.value)
+	jshandler := makeJsEventHandler(e.self(), h.value)
 	h.jsvalue = jshandler
 	e.events[k] = h
 	e.JSValue().Call("addEventListener", k, jshandler)
@@ -370,5 +376,6 @@ func (e *elem) setBody(self UI, body ...UI) {
 	for _, n := range body {
 		n.setParent(self)
 	}
+
 	e.body = body
 }

@@ -33,6 +33,10 @@ func (t *text) name() string {
 	return "text"
 }
 
+func (t *text) self() UI {
+	return t
+}
+
 func (t *text) setSelf(n UI) {
 }
 
@@ -59,13 +63,6 @@ func (t *text) setParent(p UI) {
 func (t *text) children() []UI {
 	return nil
 }
-
-// func (t *text) appendChild(UI) {
-// 	panic("text can't have children")
-// }
-
-// func (t *text) removeChild(UI) {
-// }
 
 func (t *text) mount() error {
 	if t.Mounted() {

@@ -21,6 +21,7 @@ type UI interface {
 	Mounted() bool
 
 	name() string
+	self() UI
 	setSelf(UI)
 	context() context.Context
 	attributes() map[string]string
@@ -28,8 +29,6 @@ type UI interface {
 	parent() UI
 	setParent(UI)
 	children() []UI
-	// appendChild(UI)
-	// removeChild(UI)
 	mount() error
 	dismount()
 	update(UI) error
