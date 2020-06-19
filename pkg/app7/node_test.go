@@ -59,6 +59,10 @@ func TestMountAndDismount(t *testing.T) {
 				Class("hello").
 				OnClick(func(Context, Event) {}),
 		},
+		{
+			scenario: "component",
+			node:     &hello{},
+		},
 	}
 
 	for _, u := range utests {
