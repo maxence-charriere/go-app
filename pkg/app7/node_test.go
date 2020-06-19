@@ -66,13 +66,11 @@ func TestMountAndDismount(t *testing.T) {
 			testSkipNoWasm(t)
 
 			n := u.node
-			n.setSelf(n)
-
-			err := n.mount()
+			err := mount(n)
 			require.NoError(t, err)
 			testMounted(t, n)
 
-			u.node.dismount()
+			dismount(u.node)
 			testDismounted(t, n)
 		})
 	}
@@ -81,6 +79,12 @@ func TestMountAndDismount(t *testing.T) {
 func testMounted(t *testing.T, n UI) {
 	require.NotNil(t, n.JSValue())
 	require.True(t, n.Mounted())
+
+	switch n.Kind() {
+	case HTML, Component:
+		require.NoError(t, n.context().Err())
+		require.NotNil(t, n.self())
+	}
 
 	for _, c := range n.children() {
 		require.Equal(t, n, c.parent())
@@ -95,6 +99,7 @@ func testDismounted(t *testing.T, n UI) {
 	switch n.Kind() {
 	case HTML, Component:
 		require.Error(t, n.context().Err())
+		require.Nil(t, n.self())
 	}
 
 	for _, c := range n.children() {
@@ -274,9 +279,9 @@ func TestUpdate(t *testing.T) {
 		t.Run(u.scenario, func(t *testing.T) {
 			testSkipNoWasm(t)
 
-			err := u.a.mount()
+			err := mount(u.a)
 			require.NoError(t, err)
-			defer u.a.dismount()
+			defer dismount(u.a)
 
 			err = u.a.update(u.b)
 			if u.replaceErr {

@@ -28,7 +28,9 @@ func (e *elem) JSValue() Value {
 }
 
 func (e *elem) Mounted() bool {
-	return e.self() != nil && e.ctx != nil && e.jsvalue != nil
+	return e.ctx != nil && e.ctx.Err() == nil &&
+		e.self() != nil &&
+		e.jsvalue != nil
 }
 
 func (e *elem) name() string {
@@ -108,7 +110,7 @@ func (e *elem) mount() error {
 
 func (e *elem) dismount() {
 	for _, c := range e.children() {
-		c.dismount()
+		dismount(c)
 	}
 
 	for k, v := range e.events {
@@ -193,7 +195,7 @@ func (e *elem) update(n UI) error {
 }
 
 func (e *elem) appendChild(c UI, onlyJsValue bool) error {
-	if err := c.mount(); err != nil {
+	if err := mount(c); err != nil {
 		return errors.New("appending child failed").
 			Tag("name", e.name()).
 			Tag("kind", e.Kind()).
@@ -213,7 +215,7 @@ func (e *elem) appendChild(c UI, onlyJsValue bool) error {
 func (e *elem) replaceChildAt(idx int, new UI) error {
 	old := e.body[idx]
 
-	if err := new.mount(); err != nil {
+	if err := mount(new); err != nil {
 		return errors.New("replacing child failed").
 			Tag("name", e.name()).
 			Tag("kind", e.Kind()).
@@ -229,7 +231,7 @@ func (e *elem) replaceChildAt(idx int, new UI) error {
 	new.setParent(e.self())
 	e.JSValue().Call("replaceChild", new, old)
 
-	old.dismount()
+	dismount(old)
 	return nil
 }
 
@@ -251,7 +253,7 @@ func (e *elem) removeChildAt(idx int) error {
 	e.body = body
 
 	e.JSValue().Call("removeChild", c)
-	c.dismount()
+	dismount(c)
 	return nil
 }
 

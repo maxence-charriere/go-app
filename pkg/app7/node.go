@@ -142,3 +142,13 @@ func isErrReplace(err error) bool {
 	_, replace := errors.Tag(err, "replace")
 	return replace
 }
+
+func mount(n UI) error {
+	n.setSelf(n)
+	return n.mount()
+}
+
+func dismount(n UI) {
+	n.dismount()
+	n.setSelf(nil)
+}

@@ -127,9 +127,9 @@ func TestElemUpdateAttrs(t *testing.T) {
 			testSkipNoWasm(t)
 
 			n := Div().(*htmlDiv)
-			err := n.mount()
+			err := mount(n)
 			require.NoError(t, err)
-			defer n.dismount()
+			defer dismount(n)
 
 			n.attrs = u.current
 			n.updateAttrs(u.incoming)
@@ -208,9 +208,9 @@ func TestElemUpdateEventHandlers(t *testing.T) {
 
 			n := Div().(*htmlDiv)
 			n.events = current
-			err := n.mount()
+			err := mount(n)
 			require.NoError(t, err)
-			defer n.dismount()
+			defer dismount(n)
 
 			n.updateEventHandler(incoming)
 
