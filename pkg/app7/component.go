@@ -39,7 +39,8 @@ type Composer interface {
 type Mounter interface {
 	Composer
 
-	// The function that is called when the component is mounted.
+	// The function that is called when the component is mounted. It is always
+	// called on the UI goroutine.
 	OnMount(Context)
 }
 
@@ -48,7 +49,8 @@ type Mounter interface {
 type Dismounter interface {
 	Composer
 
-	// The function that is called when the component is dismounted.
+	// The function that is called when the component is dismounted. It is
+	// always called on the UI goroutine.
 	OnDismount()
 }
 
@@ -57,7 +59,8 @@ type Dismounter interface {
 type Navigator interface {
 	Composer
 
-	// The function that is called when the component is navigated on.
+	// The function that is called when the component is navigated on. It is
+	// always called on the UI goroutine.
 	OnNav(Context, *url.URL)
 }
 
@@ -85,6 +88,41 @@ func (c *Compo) Mounted() bool {
 	return c.ctx != nil && c.ctx.Err() == nil &&
 		c.root != nil && c.root.Mounted() &&
 		c.self() != nil
+}
+
+// Render describes the component content. This is a default implementation to
+// satisfy the app.Composer interface. It should be redefined when app.Compo is
+// embedded.
+func (c *Compo) Render() UI {
+	return Div().
+		DataSet("compo-type", c.name()).
+		Style("border", "1px solid currentColor").
+		Style("padding", "12px 0").
+		Body(
+			H1().Text("Component "+strings.TrimPrefix(c.name(), "*")),
+			P().Body(
+				Text("Change appearance by implementing: "),
+				Code().
+					Style("color", "deepskyblue").
+					Style("margin", "0 6px").
+					Text("func (c "+c.name()+") Render() app.UI"),
+			),
+		)
+}
+
+// Update triggers a component appearance update. It should be called when a
+// field used to render the component has been modified. Updates are always
+// performed on the UI goroutine.
+func (c *Compo) Update() {
+	dispatch(func() {
+		if !c.Mounted() {
+			return
+		}
+
+		if err := c.updateRoot(); err != nil {
+			panic(err)
+		}
+	})
 }
 
 func (c *Compo) name() string {
@@ -170,32 +208,99 @@ func (c *Compo) dismount() {
 	}
 }
 
-func (c *Compo) update(UI) error {
-	panic("not implemented")
+func (c *Compo) update(n UI) error {
+	if c.self() == n || !c.Mounted() {
+		return nil
+	}
+
+	if n.Kind() != c.Kind() || n.name() != c.name() {
+		return errors.New("updating ui element failed").
+			Tag("replace", true).
+			Tag("reason", "different element types").
+			Tag("current-kind", c.Kind()).
+			Tag("current-name", c.name()).
+			Tag("updated-kind", n.Kind()).
+			Tag("updated-name", n.name())
+	}
+
+	aval := reflect.Indirect(reflect.ValueOf(c.self()))
+	bval := reflect.Indirect(reflect.ValueOf(n))
+	compotype := reflect.ValueOf(c).Elem().Type()
+
+	for i := 0; i < aval.NumField(); i++ {
+		a := aval.Field(i)
+		b := bval.Field(i)
+
+		if a.Type() == compotype {
+			continue
+		}
+
+		if !a.CanSet() {
+			continue
+		}
+
+		if !reflect.DeepEqual(a.Interface(), b.Interface()) {
+			a.Set(b)
+		}
+	}
+
+	return c.updateRoot()
 }
 
-// Update triggers a component appearance update. It should be called when a
-// field used to render the component has been modified.
-func (c *Compo) Update() {
-	panic("not implemented")
+func (c *Compo) updateRoot() error {
+	a := c.root
+	b := c.this.Render()
+
+	err := update(a, b)
+	if isErrReplace(err) {
+		err = c.replaceRoot(b)
+	}
+
+	if err != nil {
+		return errors.New("updating component failed").
+			Tag("kind", c.Kind()).
+			Tag("name", c.name()).
+			Wrap(err)
+	}
+
+	return nil
 }
 
-// Render describes the component content. This is a default implementation to
-// satisfy the app.Composer interface. It should be redefined when app.Compo is
-// embedded.
-func (c *Compo) Render() UI {
-	return Div().
-		DataSet("compo-type", c.name()).
-		Style("border", "1px solid currentColor").
-		Style("padding", "12px 0").
-		Body(
-			H1().Text("Component "+strings.TrimPrefix(c.name(), "*")),
-			P().Body(
-				Text("Change appearance by implementing: "),
-				Code().
-					Style("color", "deepskyblue").
-					Style("margin", "0 6px").
-					Text("func (c "+c.name()+") Render() app.UI"),
-			),
-		)
+func (c *Compo) replaceRoot(n UI) error {
+	old := c.root
+	oldjs := old.JSValue()
+	new := n
+	newjs := n.JSValue()
+
+	if err := mount(new); err != nil {
+		return errors.New("replacing component root failed").
+			Tag("kind", c.Kind()).
+			Tag("name", c.name()).
+			Tag("root-kind", old.Kind()).
+			Tag("root-name", old.name()).
+			Tag("new-root-kind", new.Kind()).
+			Tag("new-root-name", new.name()).
+			Wrap(err)
+	}
+
+	var parent UI
+	for {
+		parent = c.parent()
+		if parent == nil || parent.Kind() == HTML {
+			break
+		}
+	}
+
+	if parent == nil {
+		return errors.New("replacing component root failed").
+			Tag("kind", c.Kind()).
+			Tag("name", c.name()).
+			Tag("reason", "coponent does not have html element parents")
+	}
+
+	parent.JSValue().Call("replaceChild", newjs, oldjs)
+	c.root = new
+
+	dismount(old)
+	return nil
 }

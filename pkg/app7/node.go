@@ -152,3 +152,9 @@ func dismount(n UI) {
 	n.dismount()
 	n.setSelf(nil)
 }
+
+func update(a, b UI) error {
+	a.setSelf(a)
+	b.setSelf(b)
+	return a.update(b)
+}

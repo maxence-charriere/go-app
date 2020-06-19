@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"reflect"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/errors"
 )
@@ -62,6 +63,9 @@ func TestPath(p ...int) []int {
 //  })
 //  // OK => err == nil
 func TestMatch(tree UI, d TestUIDescriptor) error {
+	tree.setSelf(tree)
+	d.Expected.setSelf(d.Expected)
+
 	if len(d.Path) != 0 {
 		idx := d.Path[0]
 
@@ -127,9 +131,8 @@ func matchText(n UI, d TestUIDescriptor) error {
 	b := d.Expected.(*text)
 
 	if a.value != b.value {
-		return errors.New("the UI element is not matching the descriptor").
+		return errors.New("the text element is not matching the descriptor").
 			Tag("name", a.name()).
-			Tag("kind", a.Kind()).
 			Tag("reason", "unexpected text value").
 			Tag("expected-value", b.value).
 			Tag("current-value", a.value)
@@ -142,9 +145,8 @@ func matchHTMLElemAttrs(n UI, d TestUIDescriptor) error {
 	bAttrs := d.Expected.attributes()
 
 	if len(aAttrs) != len(bAttrs) {
-		return errors.New("the UI element is not matching the descriptor").
+		return errors.New("the html element is not matching the descriptor").
 			Tag("name", n.name()).
-			Tag("kind", n.Kind()).
 			Tag("reason", "unexpected attributes length").
 			Tag("expected-attributes-length", len(bAttrs)).
 			Tag("current-attributes-length", len(aAttrs))
@@ -153,17 +155,15 @@ func matchHTMLElemAttrs(n UI, d TestUIDescriptor) error {
 	for k, b := range bAttrs {
 		a, exists := aAttrs[k]
 		if !exists {
-			return errors.New("the UI element is not matching the descriptor").
+			return errors.New("the html element is not matching the descriptor").
 				Tag("name", n.name()).
-				Tag("kind", n.Kind()).
 				Tag("reason", "an attribute is missing").
 				Tag("attribute", k)
 		}
 
 		if a != b {
-			return errors.New("the UI element is not matching the descriptor").
+			return errors.New("the html element is not matching the descriptor").
 				Tag("name", n.name()).
-				Tag("kind", n.Kind()).
 				Tag("reason", "unexpected attribute value").
 				Tag("attribute", k).
 				Tag("expected-value", b).
@@ -174,9 +174,8 @@ func matchHTMLElemAttrs(n UI, d TestUIDescriptor) error {
 	for k := range bAttrs {
 		_, exists := bAttrs[k]
 		if !exists {
-			return errors.New("the UI element is not matching the descriptor").
+			return errors.New("the html element is not matching the descriptor").
 				Tag("name", n.name()).
-				Tag("kind", n.Kind()).
 				Tag("reason", "an unexpected attribute is present").
 				Tag("attribute", k)
 		}
@@ -190,9 +189,8 @@ func matchHTMLElemEventHandlers(n UI, d TestUIDescriptor) error {
 	bevents := d.Expected.eventHandlers()
 
 	if len(aevents) != len(bevents) {
-		return errors.New("the UI element is not matching the descriptor").
+		return errors.New("the html element is not matching the descriptor").
 			Tag("name", n.name()).
-			Tag("kind", n.Kind()).
 			Tag("reason", "unexpected event handlers length").
 			Tag("expected-event-handlers-length", len(bevents)).
 			Tag("current-event-handlers-length", len(aevents))
@@ -201,9 +199,8 @@ func matchHTMLElemEventHandlers(n UI, d TestUIDescriptor) error {
 	for k := range bevents {
 		_, exists := aevents[k]
 		if !exists {
-			return errors.New("the UI element is not matching the descriptor").
+			return errors.New("the html element is not matching the descriptor").
 				Tag("name", n.name()).
-				Tag("kind", n.Kind()).
 				Tag("reason", "an event handler is missing").
 				Tag("event-handler", k)
 		}
@@ -212,9 +209,8 @@ func matchHTMLElemEventHandlers(n UI, d TestUIDescriptor) error {
 	for k := range bevents {
 		_, exists := aevents[k]
 		if !exists {
-			return errors.New("the UI element is not matching the descriptor").
+			return errors.New("the html element is not matching the descriptor").
 				Tag("name", n.name()).
-				Tag("kind", n.Kind()).
 				Tag("reason", "an unexpected event handler is present").
 				Tag("event-handler", k)
 		}
@@ -225,5 +221,32 @@ func matchHTMLElemEventHandlers(n UI, d TestUIDescriptor) error {
 }
 
 func matchComponent(n UI, d TestUIDescriptor) error {
-	panic("not implemented")
+	aval := reflect.ValueOf(n).Elem()
+	bval := reflect.ValueOf(d.Expected).Elem()
+
+	compotype := reflect.TypeOf(Compo{})
+
+	for i := 0; i < bval.NumField(); i++ {
+		a := aval.Field(i)
+		b := bval.Field(i)
+
+		if a.Type() == compotype {
+			continue
+		}
+
+		if !a.CanSet() {
+			continue
+		}
+
+		if !reflect.DeepEqual(a.Interface(), b.Interface()) {
+			return errors.New("the component is not matching with the descriptor").
+				Tag("name", n.name()).
+				Tag("reason", "unexpected field value").
+				Tag("field", bval.Type().Field(i).Name).
+				Tag("expected-value", b.Interface()).
+				Tag("current-value", a.Interface())
+		}
+	}
+
+	return nil
 }

@@ -16,7 +16,8 @@ var (
 	remoteRootDir string
 )
 
-// EventHandler represents a function that can handle HTML events.
+// EventHandler represents a function that can handle HTML events. They are
+// always called on the UI goroutine.
 type EventHandler func(ctx Context, e Event)
 
 // StaticResource makes a static resource path point to the right

@@ -148,7 +148,7 @@ func (e *elem) update(n UI) error {
 		a := achildren[0]
 		b := bchildren[0]
 
-		err := a.update(b)
+		err := update(a, b)
 		if isErrReplace(err) {
 			err = e.replaceChildAt(i, b)
 		}
