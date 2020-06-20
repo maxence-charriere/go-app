@@ -137,8 +137,10 @@ func BenchmarkNew(b *testing.B) {
 }
 
 func BenchmarkError(b *testing.B) {
+	var s string
+
 	for n := 0; n < b.N; n++ {
-		New("an error with tags").
+		s = New("an error with tags").
 			Tag("string", "hello world").
 			Tag("int8", int8(8)).
 			Tag("int16", int16(16)).
@@ -146,4 +148,6 @@ func BenchmarkError(b *testing.B) {
 			Tag("int64", int64(64)).
 			Error()
 	}
+
+	b.Log(s)
 }

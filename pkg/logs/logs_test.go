@@ -54,8 +54,10 @@ func BenchmarkNew(b *testing.B) {
 }
 
 func BenchmarkString(b *testing.B) {
+	var s string
+
 	for n := 0; n < b.N; n++ {
-		New("a log with tags").
+		s = New("a log with tags").
 			Tag("string", "hello world").
 			Tag("int8", int8(8)).
 			Tag("int16", int16(16)).
@@ -63,4 +65,6 @@ func BenchmarkString(b *testing.B) {
 			Tag("int64", int64(64)).
 			String()
 	}
+
+	b.Log(s)
 }
