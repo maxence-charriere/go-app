@@ -63,6 +63,14 @@ func TestMountAndDismount(t *testing.T) {
 			scenario: "component",
 			node:     &hello{},
 		},
+		{
+			scenario: "raw html element",
+			node:     Raw(`<h1>Hello</h1>`),
+		},
+		{
+			scenario: "raw svg element",
+			node:     Raw(`<svg></svg>`),
+		},
 	}
 
 	for _, u := range utests {

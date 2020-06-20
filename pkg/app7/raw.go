@@ -7,7 +7,8 @@ import (
 	"github.com/maxence-charriere/go-app/v6/pkg/errors"
 )
 
-// Raw returns a ui element from the given raw value.
+// Raw returns a ui element from the given raw value. HTML raw value must have a
+// single root.
 //
 // It is not recommended to use this kind of node since there is no check on the
 // raw string content.
@@ -21,16 +22,16 @@ func Raw(v string) UI {
 	}
 
 	return &raw{
-		outerHTML: v,
-		tag:       tag,
+		value: v,
+		tag:   tag,
 	}
 }
 
 type raw struct {
 	jsvalue    Value
-	outerHTML  string
 	parentElem UI
 	tag        string
+	value      string
 }
 
 func (r *raw) Kind() Kind {
@@ -81,10 +82,32 @@ func (r *raw) children() []UI {
 }
 
 func (r *raw) mount() error {
-	panic("not implemented")
+	if r.Mounted() {
+		return errors.New("mounting raw html element failed").
+			Tag("reason", "already mounted").
+			Tag("name", r.name()).
+			Tag("kind", r.Kind())
+	}
+
+	wrapper := Window().Get("document").Call("createElement", "div")
+	wrapper.Set("innerHTML", r.value)
+
+	value := wrapper.Get("firstChild")
+	if !value.Truthy() {
+		return errors.New("mounting raw html element failed").
+			Tag("reason", "converting raw html to html elements returned nil").
+			Tag("name", r.name()).
+			Tag("kind", r.Kind()).
+			Tag("raw-html", r.value)
+	}
+
+	wrapper.Call("removeChild", value)
+	r.jsvalue = value
+	return nil
 }
 
 func (r *raw) dismount() {
+	r.jsvalue = nil
 }
 
 func (r *raw) update(n UI) error {
