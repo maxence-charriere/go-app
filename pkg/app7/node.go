@@ -81,6 +81,10 @@ const (
 // It should be used only when implementing components that can accept content
 // with variadic arguments like HTML elements Body method.
 func FilterUIElems(uis ...UI) []UI {
+	if len(uis) == 0 {
+		return nil
+	}
+
 	elems := make([]UI, 0, len(uis))
 
 	for _, n := range uis {
@@ -92,7 +96,6 @@ func FilterUIElems(uis ...UI) []UI {
 
 		switch n.Kind() {
 		case SimpleText, HTML, Component:
-			n.setSelf(n)
 			elems = append(elems, n)
 
 		case Selector:

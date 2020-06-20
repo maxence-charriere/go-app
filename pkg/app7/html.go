@@ -185,7 +185,6 @@ func A() HTMLA {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -194,7 +193,7 @@ type htmlA struct {
 }
 
 func (e *htmlA) Body(elems ...UI) HTMLA {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -627,7 +626,6 @@ func Abbr() HTMLAbbr {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -636,7 +634,7 @@ type htmlAbbr struct {
 }
 
 func (e *htmlAbbr) Body(elems ...UI) HTMLAbbr {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -1029,7 +1027,6 @@ func Address() HTMLAddress {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -1038,7 +1035,7 @@ type htmlAddress struct {
 }
 
 func (e *htmlAddress) Body(elems ...UI) HTMLAddress {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -1455,7 +1452,6 @@ func Area() HTMLArea {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -1898,7 +1894,6 @@ func Article() HTMLArticle {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -1907,7 +1902,7 @@ type htmlArticle struct {
 }
 
 func (e *htmlArticle) Body(elems ...UI) HTMLArticle {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -2300,7 +2295,6 @@ func Aside() HTMLAside {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -2309,7 +2303,7 @@ type htmlAside struct {
 }
 
 func (e *htmlAside) Body(elems ...UI) HTMLAside {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -2789,7 +2783,6 @@ func Audio() HTMLAudio {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -2798,7 +2791,7 @@ type htmlAudio struct {
 }
 
 func (e *htmlAudio) Body(elems ...UI) HTMLAudio {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -3336,7 +3329,6 @@ func B() HTMLB {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -3345,7 +3337,7 @@ type htmlB struct {
 }
 
 func (e *htmlB) Body(elems ...UI) HTMLB {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -3738,7 +3730,6 @@ func Base() HTMLBase {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -4141,7 +4132,6 @@ func Bdi() HTMLBdi {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -4150,7 +4140,7 @@ type htmlBdi struct {
 }
 
 func (e *htmlBdi) Body(elems ...UI) HTMLBdi {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -4543,7 +4533,6 @@ func Bdo() HTMLBdo {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -4552,7 +4541,7 @@ type htmlBdo struct {
 }
 
 func (e *htmlBdo) Body(elems ...UI) HTMLBdo {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -4948,7 +4937,6 @@ func Blockquote() HTMLBlockquote {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -4957,7 +4945,7 @@ type htmlBlockquote struct {
 }
 
 func (e *htmlBlockquote) Body(elems ...UI) HTMLBlockquote {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -5400,7 +5388,6 @@ func Body() HTMLBody {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -5409,7 +5396,7 @@ type htmlBody struct {
 }
 
 func (e *htmlBody) Body(elems ...UI) HTMLBody {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -5871,7 +5858,6 @@ func Br() HTMLBr {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -6297,7 +6283,6 @@ func Button() HTMLButton {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -6306,7 +6291,7 @@ type htmlButton struct {
 }
 
 func (e *htmlButton) Body(elems ...UI) HTMLButton {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -6760,7 +6745,6 @@ func Canvas() HTMLCanvas {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -6769,7 +6753,7 @@ type htmlCanvas struct {
 }
 
 func (e *htmlCanvas) Body(elems ...UI) HTMLCanvas {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -7172,7 +7156,6 @@ func Caption() HTMLCaption {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -7181,7 +7164,7 @@ type htmlCaption struct {
 }
 
 func (e *htmlCaption) Body(elems ...UI) HTMLCaption {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -7574,7 +7557,6 @@ func Cite() HTMLCite {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -7583,7 +7565,7 @@ type htmlCite struct {
 }
 
 func (e *htmlCite) Body(elems ...UI) HTMLCite {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -7976,7 +7958,6 @@ func Code() HTMLCode {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -7985,7 +7966,7 @@ type htmlCode struct {
 }
 
 func (e *htmlCode) Body(elems ...UI) HTMLCode {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -8375,7 +8356,6 @@ func Col() HTMLCol {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -8776,7 +8756,6 @@ func ColGroup() HTMLColGroup {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -8785,7 +8764,7 @@ type htmlColGroup struct {
 }
 
 func (e *htmlColGroup) Body(elems ...UI) HTMLColGroup {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -9090,7 +9069,6 @@ func Data() HTMLData {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -9099,7 +9077,7 @@ type htmlData struct {
 }
 
 func (e *htmlData) Body(elems ...UI) HTMLData {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -9337,7 +9315,6 @@ func DataList() HTMLDataList {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -9346,7 +9323,7 @@ type htmlDataList struct {
 }
 
 func (e *htmlDataList) Body(elems ...UI) HTMLDataList {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -9739,7 +9716,6 @@ func Dd() HTMLDd {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -9748,7 +9724,7 @@ type htmlDd struct {
 }
 
 func (e *htmlDd) Body(elems ...UI) HTMLDd {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -10147,7 +10123,6 @@ func Del() HTMLDel {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -10156,7 +10131,7 @@ type htmlDel struct {
 }
 
 func (e *htmlDel) Body(elems ...UI) HTMLDel {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -10565,7 +10540,6 @@ func Details() HTMLDetails {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -10574,7 +10548,7 @@ type htmlDetails struct {
 }
 
 func (e *htmlDetails) Body(elems ...UI) HTMLDetails {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -10977,7 +10951,6 @@ func Dfn() HTMLDfn {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -10986,7 +10959,7 @@ type htmlDfn struct {
 }
 
 func (e *htmlDfn) Body(elems ...UI) HTMLDfn {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -11382,7 +11355,6 @@ func Dialog() HTMLDialog {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -11391,7 +11363,7 @@ type htmlDialog struct {
 }
 
 func (e *htmlDialog) Body(elems ...UI) HTMLDialog {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -11789,7 +11761,6 @@ func Div() HTMLDiv {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -11798,7 +11769,7 @@ type htmlDiv struct {
 }
 
 func (e *htmlDiv) Body(elems ...UI) HTMLDiv {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -12191,7 +12162,6 @@ func Dl() HTMLDl {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -12200,7 +12170,7 @@ type htmlDl struct {
 }
 
 func (e *htmlDl) Body(elems ...UI) HTMLDl {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -12593,7 +12563,6 @@ func Dt() HTMLDt {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -12602,7 +12571,7 @@ type htmlDt struct {
 }
 
 func (e *htmlDt) Body(elems ...UI) HTMLDt {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -12995,7 +12964,6 @@ func Em() HTMLEm {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -13004,7 +12972,7 @@ type htmlEm struct {
 }
 
 func (e *htmlEm) Body(elems ...UI) HTMLEm {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -13472,7 +13440,6 @@ func Embed() HTMLEmbed {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -14009,7 +13976,6 @@ func FieldSet() HTMLFieldSet {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -14018,7 +13984,7 @@ type htmlFieldSet struct {
 }
 
 func (e *htmlFieldSet) Body(elems ...UI) HTMLFieldSet {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -14426,7 +14392,6 @@ func FigCaption() HTMLFigCaption {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -14435,7 +14400,7 @@ type htmlFigCaption struct {
 }
 
 func (e *htmlFigCaption) Body(elems ...UI) HTMLFigCaption {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -14828,7 +14793,6 @@ func Figure() HTMLFigure {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -14837,7 +14801,7 @@ type htmlFigure struct {
 }
 
 func (e *htmlFigure) Body(elems ...UI) HTMLFigure {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -15230,7 +15194,6 @@ func Footer() HTMLFooter {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -15239,7 +15202,7 @@ type htmlFooter struct {
 }
 
 func (e *htmlFooter) Body(elems ...UI) HTMLFooter {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -15656,7 +15619,6 @@ func Form() HTMLForm {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -15665,7 +15627,7 @@ type htmlForm struct {
 }
 
 func (e *htmlForm) Body(elems ...UI) HTMLForm {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -16103,7 +16065,6 @@ func H1() HTMLH1 {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -16112,7 +16073,7 @@ type htmlH1 struct {
 }
 
 func (e *htmlH1) Body(elems ...UI) HTMLH1 {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -16505,7 +16466,6 @@ func H2() HTMLH2 {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -16514,7 +16474,7 @@ type htmlH2 struct {
 }
 
 func (e *htmlH2) Body(elems ...UI) HTMLH2 {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -16907,7 +16867,6 @@ func H3() HTMLH3 {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -16916,7 +16875,7 @@ type htmlH3 struct {
 }
 
 func (e *htmlH3) Body(elems ...UI) HTMLH3 {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -17309,7 +17268,6 @@ func H4() HTMLH4 {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -17318,7 +17276,7 @@ type htmlH4 struct {
 }
 
 func (e *htmlH4) Body(elems ...UI) HTMLH4 {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -17711,7 +17669,6 @@ func H5() HTMLH5 {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -17720,7 +17677,7 @@ type htmlH5 struct {
 }
 
 func (e *htmlH5) Body(elems ...UI) HTMLH5 {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -18113,7 +18070,6 @@ func H6() HTMLH6 {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -18122,7 +18078,7 @@ type htmlH6 struct {
 }
 
 func (e *htmlH6) Body(elems ...UI) HTMLH6 {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -18419,7 +18375,6 @@ func Head() HTMLHead {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -18428,7 +18383,7 @@ type htmlHead struct {
 }
 
 func (e *htmlHead) Body(elems ...UI) HTMLHead {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -18661,7 +18616,6 @@ func Header() HTMLHeader {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -18670,7 +18624,7 @@ type htmlHeader struct {
 }
 
 func (e *htmlHeader) Body(elems ...UI) HTMLHeader {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -19057,7 +19011,6 @@ func Hr() HTMLHr {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -19354,7 +19307,6 @@ func Html() HTMLHtml {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -19363,7 +19315,7 @@ type htmlHtml struct {
 }
 
 func (e *htmlHtml) Body(elems ...UI) HTMLHtml {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -19596,7 +19548,6 @@ func I() HTMLI {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -19605,7 +19556,7 @@ type htmlI struct {
 }
 
 func (e *htmlI) Body(elems ...UI) HTMLI {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -20019,7 +19970,6 @@ func IFrame() HTMLIFrame {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -20028,7 +19978,7 @@ type htmlIFrame struct {
 }
 
 func (e *htmlIFrame) Body(elems ...UI) HTMLIFrame {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -20546,7 +20496,6 @@ func Img() HTMLImg {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -21186,7 +21135,6 @@ func Input() HTMLInput {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -21739,7 +21687,6 @@ func Ins() HTMLIns {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -21748,7 +21695,7 @@ type htmlIns struct {
 }
 
 func (e *htmlIns) Body(elems ...UI) HTMLIns {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -22141,7 +22088,6 @@ func Kbd() HTMLKbd {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -22150,7 +22096,7 @@ type htmlKbd struct {
 }
 
 func (e *htmlKbd) Body(elems ...UI) HTMLKbd {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -22549,7 +22495,6 @@ func Label() HTMLLabel {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -22558,7 +22503,7 @@ type htmlLabel struct {
 }
 
 func (e *htmlLabel) Body(elems ...UI) HTMLLabel {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -22961,7 +22906,6 @@ func Legends() HTMLLegends {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -22970,7 +22914,7 @@ type htmlLegends struct {
 }
 
 func (e *htmlLegends) Body(elems ...UI) HTMLLegends {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -23366,7 +23310,6 @@ func Li() HTMLLi {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -23375,7 +23318,7 @@ type htmlLi struct {
 }
 
 func (e *htmlLi) Body(elems ...UI) HTMLLi {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -23788,7 +23731,6 @@ func Link() HTMLLink {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -24216,7 +24158,6 @@ func Main() HTMLMain {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -24225,7 +24166,7 @@ type htmlMain struct {
 }
 
 func (e *htmlMain) Body(elems ...UI) HTMLMain {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -24621,7 +24562,6 @@ func Map() HTMLMap {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -24630,7 +24570,7 @@ type htmlMap struct {
 }
 
 func (e *htmlMap) Body(elems ...UI) HTMLMap {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -25028,7 +24968,6 @@ func Mark() HTMLMark {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -25037,7 +24976,7 @@ type htmlMark struct {
 }
 
 func (e *htmlMark) Body(elems ...UI) HTMLMark {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -25340,7 +25279,6 @@ func Meta() HTMLMeta {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -25614,7 +25552,6 @@ func Meter() HTMLMeter {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -25623,7 +25560,7 @@ type htmlMeter struct {
 }
 
 func (e *htmlMeter) Body(elems ...UI) HTMLMeter {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -26051,7 +25988,6 @@ func Nav() HTMLNav {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -26060,7 +25996,7 @@ type htmlNav struct {
 }
 
 func (e *htmlNav) Body(elems ...UI) HTMLNav {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -26357,7 +26293,6 @@ func NoScript() HTMLNoScript {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -26366,7 +26301,7 @@ type htmlNoScript struct {
 }
 
 func (e *htmlNoScript) Body(elems ...UI) HTMLNoScript {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -26689,7 +26624,6 @@ func Object() HTMLObject {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -26698,7 +26632,7 @@ type htmlObject struct {
 }
 
 func (e *htmlObject) Body(elems ...UI) HTMLObject {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -27250,7 +27184,6 @@ func Ol() HTMLOl {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -27259,7 +27192,7 @@ type htmlOl struct {
 }
 
 func (e *htmlOl) Body(elems ...UI) HTMLOl {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -27673,7 +27606,6 @@ func OptGroup() HTMLOptGroup {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -27682,7 +27614,7 @@ type htmlOptGroup struct {
 }
 
 func (e *htmlOptGroup) Body(elems ...UI) HTMLOptGroup {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -28097,7 +28029,6 @@ func Option() HTMLOption {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -28106,7 +28037,7 @@ type htmlOption struct {
 }
 
 func (e *htmlOption) Body(elems ...UI) HTMLOption {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -28528,7 +28459,6 @@ func Output() HTMLOutput {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -28537,7 +28467,7 @@ type htmlOutput struct {
 }
 
 func (e *htmlOutput) Body(elems ...UI) HTMLOutput {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -28945,7 +28875,6 @@ func P() HTMLP {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -28954,7 +28883,7 @@ type htmlP struct {
 }
 
 func (e *htmlP) Body(elems ...UI) HTMLP {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -29347,7 +29276,6 @@ func Param() HTMLParam {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -29750,7 +29678,6 @@ func Picture() HTMLPicture {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -29759,7 +29686,7 @@ type htmlPicture struct {
 }
 
 func (e *htmlPicture) Body(elems ...UI) HTMLPicture {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -30152,7 +30079,6 @@ func Pre() HTMLPre {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -30161,7 +30087,7 @@ type htmlPre struct {
 }
 
 func (e *htmlPre) Body(elems ...UI) HTMLPre {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -30560,7 +30486,6 @@ func Progress() HTMLProgress {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -30569,7 +30494,7 @@ type htmlProgress struct {
 }
 
 func (e *htmlProgress) Body(elems ...UI) HTMLProgress {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -30975,7 +30900,6 @@ func Q() HTMLQ {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -30984,7 +30908,7 @@ type htmlQ struct {
 }
 
 func (e *htmlQ) Body(elems ...UI) HTMLQ {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -31382,7 +31306,6 @@ func Rp() HTMLRp {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -31391,7 +31314,7 @@ type htmlRp struct {
 }
 
 func (e *htmlRp) Body(elems ...UI) HTMLRp {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -31784,7 +31707,6 @@ func Rt() HTMLRt {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -31793,7 +31715,7 @@ type htmlRt struct {
 }
 
 func (e *htmlRt) Body(elems ...UI) HTMLRt {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -32186,7 +32108,6 @@ func Ruby() HTMLRuby {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -32195,7 +32116,7 @@ type htmlRuby struct {
 }
 
 func (e *htmlRuby) Body(elems ...UI) HTMLRuby {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -32588,7 +32509,6 @@ func S() HTMLS {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -32597,7 +32517,7 @@ type htmlS struct {
 }
 
 func (e *htmlS) Body(elems ...UI) HTMLS {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -32990,7 +32910,6 @@ func Samp() HTMLSamp {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -32999,7 +32918,7 @@ type htmlSamp struct {
 }
 
 func (e *htmlSamp) Body(elems ...UI) HTMLSamp {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -33314,7 +33233,6 @@ func Script() HTMLScript {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -33323,7 +33241,7 @@ type htmlScript struct {
 }
 
 func (e *htmlScript) Body(elems ...UI) HTMLScript {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -33586,7 +33504,6 @@ func Section() HTMLSection {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -33595,7 +33512,7 @@ type htmlSection struct {
 }
 
 func (e *htmlSection) Body(elems ...UI) HTMLSection {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -34009,7 +33926,6 @@ func Select() HTMLSelect {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -34018,7 +33934,7 @@ type htmlSelect struct {
 }
 
 func (e *htmlSelect) Body(elems ...UI) HTMLSelect {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -34446,7 +34362,6 @@ func Small() HTMLSmall {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -34455,7 +34370,7 @@ type htmlSmall struct {
 }
 
 func (e *htmlSmall) Body(elems ...UI) HTMLSmall {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -34857,7 +34772,6 @@ func Source() HTMLSource {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -35275,7 +35189,6 @@ func Span() HTMLSpan {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -35284,7 +35197,7 @@ type htmlSpan struct {
 }
 
 func (e *htmlSpan) Body(elems ...UI) HTMLSpan {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -35677,7 +35590,6 @@ func Strong() HTMLStrong {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -35686,7 +35598,7 @@ type htmlStrong struct {
 }
 
 func (e *htmlStrong) Body(elems ...UI) HTMLStrong {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -36088,7 +36000,6 @@ func Style() HTMLStyle {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -36097,7 +36008,7 @@ type htmlStyle struct {
 }
 
 func (e *htmlStyle) Body(elems ...UI) HTMLStyle {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -36505,7 +36416,6 @@ func Sub() HTMLSub {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -36514,7 +36424,7 @@ type htmlSub struct {
 }
 
 func (e *htmlSub) Body(elems ...UI) HTMLSub {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -36907,7 +36817,6 @@ func Summary() HTMLSummary {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -36916,7 +36825,7 @@ type htmlSummary struct {
 }
 
 func (e *htmlSummary) Body(elems ...UI) HTMLSummary {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -37309,7 +37218,6 @@ func Sup() HTMLSup {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -37318,7 +37226,7 @@ type htmlSup struct {
 }
 
 func (e *htmlSup) Body(elems ...UI) HTMLSup {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -37711,7 +37619,6 @@ func Table() HTMLTable {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -37720,7 +37627,7 @@ type htmlTable struct {
 }
 
 func (e *htmlTable) Body(elems ...UI) HTMLTable {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -38113,7 +38020,6 @@ func TBody() HTMLTBody {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -38122,7 +38028,7 @@ type htmlTBody struct {
 }
 
 func (e *htmlTBody) Body(elems ...UI) HTMLTBody {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -38524,7 +38430,6 @@ func Td() HTMLTd {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -38533,7 +38438,7 @@ type htmlTd struct {
 }
 
 func (e *htmlTd) Body(elems ...UI) HTMLTd {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -38845,7 +38750,6 @@ func Template() HTMLTemplate {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -38854,7 +38758,7 @@ type htmlTemplate struct {
 }
 
 func (e *htmlTemplate) Body(elems ...UI) HTMLTemplate {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -39123,7 +39027,6 @@ func Textarea() HTMLTextarea {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -39132,7 +39035,7 @@ type htmlTextarea struct {
 }
 
 func (e *htmlTextarea) Body(elems ...UI) HTMLTextarea {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -39585,7 +39488,6 @@ func Tfoot() HTMLTfoot {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -39594,7 +39496,7 @@ type htmlTfoot struct {
 }
 
 func (e *htmlTfoot) Body(elems ...UI) HTMLTfoot {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -40002,7 +39904,6 @@ func Th() HTMLTh {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -40011,7 +39912,7 @@ type htmlTh struct {
 }
 
 func (e *htmlTh) Body(elems ...UI) HTMLTh {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -40429,7 +40330,6 @@ func THead() HTMLTHead {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -40438,7 +40338,7 @@ type htmlTHead struct {
 }
 
 func (e *htmlTHead) Body(elems ...UI) HTMLTHead {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -40834,7 +40734,6 @@ func Time() HTMLTime {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -40843,7 +40742,7 @@ type htmlTime struct {
 }
 
 func (e *htmlTime) Body(elems ...UI) HTMLTime {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -41145,7 +41044,6 @@ func Title() HTMLTitle {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -41154,7 +41052,7 @@ type htmlTitle struct {
 }
 
 func (e *htmlTitle) Body(elems ...UI) HTMLTitle {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -41387,7 +41285,6 @@ func Tr() HTMLTr {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -41396,7 +41293,7 @@ type htmlTr struct {
 }
 
 func (e *htmlTr) Body(elems ...UI) HTMLTr {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -41789,7 +41686,6 @@ func U() HTMLU {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -41798,7 +41694,7 @@ type htmlU struct {
 }
 
 func (e *htmlU) Body(elems ...UI) HTMLU {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -42191,7 +42087,6 @@ func Ul() HTMLUl {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -42200,7 +42095,7 @@ type htmlUl struct {
 }
 
 func (e *htmlUl) Body(elems ...UI) HTMLUl {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -42593,7 +42488,6 @@ func Var() HTMLVar {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -42602,7 +42496,7 @@ type htmlVar struct {
 }
 
 func (e *htmlVar) Body(elems ...UI) HTMLVar {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -43091,7 +42985,6 @@ func Video() HTMLVideo {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -43100,7 +42993,7 @@ type htmlVideo struct {
 }
 
 func (e *htmlVideo) Body(elems ...UI) HTMLVideo {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 
@@ -43653,7 +43546,6 @@ func Wbr() HTMLWbr {
 		},
 	}
 
-	e.setSelf(e)
 	return e
 }
 
@@ -43662,7 +43554,7 @@ type htmlWbr struct {
 }
 
 func (e *htmlWbr) Body(elems ...UI) HTMLWbr {
-	e.setBody(e, elems...)
+	e.setBody(elems...)
 	return e
 }
 

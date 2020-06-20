@@ -208,6 +208,7 @@ func (e *elem) appendChild(c UI, onlyJsValue bool) error {
 		e.body = append(e.body, c)
 	}
 
+	c.setParent(e.self())
 	e.JSValue().Call("appendChild", c)
 	return nil
 }
@@ -366,7 +367,7 @@ func (e *elem) delJsEventHandler(k string, h eventHandler) {
 	delete(e.events, k)
 }
 
-func (e *elem) setBody(self UI, body ...UI) {
+func (e *elem) setBody(body ...UI) {
 	if e.selfClosing {
 		panic(errors.New("setting html element body failed").
 			Tag("reason", "self closing element can't have children").
@@ -374,10 +375,5 @@ func (e *elem) setBody(self UI, body ...UI) {
 		)
 	}
 
-	body = FilterUIElems(body...)
-	for _, n := range body {
-		n.setParent(self)
-	}
-
-	e.body = body
+	e.body = FilterUIElems(body...)
 }

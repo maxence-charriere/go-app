@@ -64,12 +64,20 @@ func TestPath(p ...int) []int {
 //  // OK => err == nil
 func TestMatch(tree UI, d TestUIDescriptor) error {
 	tree.setSelf(tree)
-	d.Expected.setSelf(d.Expected)
+
+	if d.Expected != nil {
+		d.Expected.setSelf(d.Expected)
+	}
 
 	if len(d.Path) != 0 {
 		idx := d.Path[0]
 
 		if idx < 0 || idx >= len(tree.children()) {
+			// Check that the element does not exists.
+			if d.Expected == nil {
+				return nil
+			}
+
 			return errors.New("ui element to match is out of range").
 				Tag("name", d.Expected.name()).
 				Tag("kind", d.Expected.Kind()).

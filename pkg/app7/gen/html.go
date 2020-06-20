@@ -2003,7 +2003,6 @@ import (
 				},
 			}
 
-			e.setSelf(e)
 			return e
 		}
 		`,
@@ -2075,7 +2074,7 @@ func writeStruct(w io.Writer, t tag) {
 	if !t.SelfClosing {
 		fmt.Fprintf(w, `
 			func (e *html%s) Body(elems ...UI) HTML%s {
-				e.setBody(e, elems...)
+				e.setBody(elems...)
 				return e
 			}
 			`,
