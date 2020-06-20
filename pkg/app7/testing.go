@@ -12,14 +12,22 @@ import (
 type TestUIDescriptor struct {
 	// The location of the node. It is used by the TestMatch to find the
 	// element to test.
-	Path []int
-
-	// The element to compare with the element targetted by Path.
 	//
 	// If empty, the expected UI element is compared with the root of the tree.
 	//
 	// Otherwise, each integer represents the index of the element to traverse,
 	// from the root's children to the element to compare
+	Path []int
+
+	// The element to compare with the element targetted by Path. Compare
+	// behavior varies depending on the element kind.
+	//
+	// Simple text elements only have their text value compared.
+	//
+	// HTML elements have their attribute compared and check if their event
+	// handlers are set.
+	//
+	// Components have their exported field values compared.
 	Expected UI
 }
 
