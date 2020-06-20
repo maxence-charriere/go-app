@@ -246,9 +246,9 @@ func (e *elem) removeChildAt(idx int) error {
 	}
 
 	c := body[idx]
+
 	copy(body[idx:], body[idx+1:])
 	body[len(body)-1] = nil
-	body = body[:len(body)-1]
 	body = body[:len(body)-1]
 	e.body = body
 
