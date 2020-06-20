@@ -51,6 +51,9 @@ func (k Kind) String() string {
 	case Selector:
 		return "selector"
 
+	case RawHTML:
+		return "raw"
+
 	default:
 		return "undefined"
 	}
@@ -72,6 +75,9 @@ const (
 	// Selector represents an element that is used to select a subset of
 	// elements within a given list.
 	Selector
+
+	// RawHTML represents an HTML element obtained from a raw HTML code snippet.
+	RawHTML
 )
 
 // FilterUIElems returns a filtered version of the given UI elements where

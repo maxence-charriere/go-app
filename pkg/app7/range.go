@@ -33,8 +33,8 @@ func Range(src interface{}) RangeLoop {
 }
 
 type rangeLoop struct {
-	source interface{}
 	body   []UI
+	source interface{}
 }
 
 func (r rangeLoop) Slice(f func(int) UI) RangeLoop {
