@@ -178,7 +178,7 @@ func (c *Compo) mount() error {
 
 	c.ctx, c.ctxCancel = context.WithCancel(context.Background())
 
-	root := c.this.Render()
+	root := c.render()
 	if err := mount(root); err != nil {
 		return errors.New("mounting component failed").
 			Tag("name", c.name()).
@@ -249,7 +249,7 @@ func (c *Compo) update(n UI) error {
 
 func (c *Compo) updateRoot() error {
 	a := c.root
-	b := c.this.Render()
+	b := c.render()
 
 	err := update(a, b)
 	if isErrReplace(err) {
@@ -268,9 +268,7 @@ func (c *Compo) updateRoot() error {
 
 func (c *Compo) replaceRoot(n UI) error {
 	old := c.root
-	oldjs := old.JSValue()
 	new := n
-	newjs := n.JSValue()
 
 	if err := mount(new); err != nil {
 		return errors.New("replacing component root failed").
@@ -298,9 +296,18 @@ func (c *Compo) replaceRoot(n UI) error {
 			Tag("reason", "coponent does not have html element parents")
 	}
 
-	parent.JSValue().Call("replaceChild", newjs, oldjs)
 	c.root = new
+	new.setParent(c.self())
+
+	oldjs := old.JSValue()
+	newjs := n.JSValue()
+	parent.JSValue().Call("replaceChild", newjs, oldjs)
 
 	dismount(old)
 	return nil
+}
+
+func (c *Compo) render() UI {
+	elems := FilterUIElems(c.this.Render())
+	return elems[0]
 }

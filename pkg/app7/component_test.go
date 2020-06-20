@@ -32,7 +32,11 @@ type foo struct {
 }
 
 func (f *foo) Render() UI {
-	return &bar{Value: f.Bar}
+	return If(f.Bar != "",
+		&bar{Value: f.Bar},
+	).Else(
+		Text("bar"),
+	)
 }
 
 type bar struct {

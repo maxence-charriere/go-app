@@ -357,6 +357,21 @@ func TestUpdate(t *testing.T) {
 
 		// Components:
 		{
+			scenario: "component is updated",
+			a:        &bar{Value: "rab"},
+			b:        &bar{Value: "bar"},
+			matches: []TestUIDescriptor{
+				{
+					Path:     TestPath(),
+					Expected: &bar{Value: "bar"},
+				},
+				{
+					Path:     TestPath(0),
+					Expected: Text("bar"),
+				},
+			},
+		},
+		{
 			scenario:   "component returns replace error when updated with a non component-element",
 			a:          &hello{},
 			b:          Text("hello"),
@@ -457,7 +472,34 @@ func TestUpdate(t *testing.T) {
 
 		// Nested components:
 		{
-			scenario: "nested component is updated",
+			scenario: "component root is updated",
+			a: Div().Body(
+				&foo{Bar: "hello"},
+			),
+			b: Div().Body(
+				&foo{Bar: "goodbye"},
+			),
+			matches: []TestUIDescriptor{
+				{
+					Path:     TestPath(),
+					Expected: Div(),
+				},
+				{
+					Path:     TestPath(0),
+					Expected: &foo{Bar: "goodbye"},
+				},
+				{
+					Path:     TestPath(0, 0),
+					Expected: &bar{Value: "goodbye"},
+				},
+				{
+					Path:     TestPath(0, 0, 0),
+					Expected: Text("goodbye"),
+				},
+			},
+		},
+		{
+			scenario: "component root is replaced by a component",
 			a: Div().Body(
 				&foo{},
 			),
@@ -480,6 +522,29 @@ func TestUpdate(t *testing.T) {
 				{
 					Path:     TestPath(0, 0, 0),
 					Expected: Text("test"),
+				},
+			},
+		},
+		{
+			scenario: "component root is replaced by a non-component",
+			a: Div().Body(
+				&foo{Bar: "test"},
+			),
+			b: Div().Body(
+				&foo{},
+			),
+			matches: []TestUIDescriptor{
+				{
+					Path:     TestPath(),
+					Expected: Div(),
+				},
+				{
+					Path:     TestPath(0),
+					Expected: &foo{},
+				},
+				{
+					Path:     TestPath(0, 0),
+					Expected: Text("bar"),
 				},
 			},
 		},
