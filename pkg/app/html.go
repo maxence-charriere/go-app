@@ -4,16 +4,14 @@ package app
 
 import (
 	"fmt"
-	"reflect"
 )
 
 // HTMLA is the interface that describes a <a> HTML element.
 type HTMLA interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLA
+	Body(elems ...UI) HTMLA
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLA
@@ -180,20 +178,22 @@ type HTMLA interface {
 
 // A returns an HTML element that defines a hyperlink.
 func A() HTMLA {
-	return &htmlA{
+	e := &htmlA{
 		elem: elem{
 			tag:         "a",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlA struct {
 	elem
 }
 
-func (e *htmlA) Body(nodes ...Node) HTMLA {
-	e.setBody(e, nodes)
+func (e *htmlA) Body(elems ...UI) HTMLA {
+	e.setBody(elems...)
 	return e
 }
 
@@ -202,77 +202,77 @@ func (e *htmlA) Text(v interface{}) HTMLA {
 }
 
 func (e *htmlA) AccessKey(v string) HTMLA {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlA) Class(v string) HTMLA {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlA) ContentEditable(v bool) HTMLA {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlA) DataSet(k string, v interface{}) HTMLA {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlA) Dir(v string) HTMLA {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlA) Download(v bool) HTMLA {
-	e.elem.setAttribute("download", v)
+	e.setAttr("download", v)
 	return e
 }
 
 func (e *htmlA) Draggable(v bool) HTMLA {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlA) Hidden(v bool) HTMLA {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlA) Href(v string) HTMLA {
-	e.elem.setAttribute("href", ResolveStaticResourcePath(v))
+	e.setAttr("href", StaticResource(v))
 	return e
 }
 
 func (e *htmlA) HrefLang(v string) HTMLA {
-	e.elem.setAttribute("hreflang", v)
+	e.setAttr("hreflang", v)
 	return e
 }
 
 func (e *htmlA) ID(v string) HTMLA {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlA) Lang(v string) HTMLA {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlA) Media(v string) HTMLA {
-	e.elem.setAttribute("media", v)
+	e.setAttr("media", v)
 	return e
 }
 
 func (e *htmlA) Ping(v string) HTMLA {
-	e.elem.setAttribute("ping", v)
+	e.setAttr("ping", v)
 	return e
 }
 
 func (e *htmlA) Rel(v string) HTMLA {
-	e.elem.setAttribute("rel", v)
+	e.setAttr("rel", v)
 	return e
 }
 
@@ -282,32 +282,32 @@ func (e *htmlA) Spellcheck(v bool) HTMLA {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlA) Style(k, v string) HTMLA {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlA) TabIndex(v int) HTMLA {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlA) Target(v string) HTMLA {
-	e.elem.setAttribute("target", v)
+	e.setAttr("target", v)
 	return e
 }
 
 func (e *htmlA) Title(v string) HTMLA {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlA) Type(v string) HTMLA {
-	e.elem.setAttribute("type", v)
+	e.setAttr("type", v)
 	return e
 }
 
@@ -471,17 +471,12 @@ func (e *htmlA) OnWheel(h EventHandler) HTMLA {
 	return e
 }
 
-func (e *htmlA) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLAbbr is the interface that describes a <abbr> HTML element.
 type HTMLAbbr interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLAbbr
+	Body(elems ...UI) HTMLAbbr
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLAbbr
@@ -624,20 +619,22 @@ type HTMLAbbr interface {
 
 // Abbr returns an HTML element that defines an abbreviation or an acronym.
 func Abbr() HTMLAbbr {
-	return &htmlAbbr{
+	e := &htmlAbbr{
 		elem: elem{
 			tag:         "abbr",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlAbbr struct {
 	elem
 }
 
-func (e *htmlAbbr) Body(nodes ...Node) HTMLAbbr {
-	e.setBody(e, nodes)
+func (e *htmlAbbr) Body(elems ...UI) HTMLAbbr {
+	e.setBody(elems...)
 	return e
 }
 
@@ -646,47 +643,47 @@ func (e *htmlAbbr) Text(v interface{}) HTMLAbbr {
 }
 
 func (e *htmlAbbr) AccessKey(v string) HTMLAbbr {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlAbbr) Class(v string) HTMLAbbr {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlAbbr) ContentEditable(v bool) HTMLAbbr {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlAbbr) DataSet(k string, v interface{}) HTMLAbbr {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlAbbr) Dir(v string) HTMLAbbr {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlAbbr) Draggable(v bool) HTMLAbbr {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlAbbr) Hidden(v bool) HTMLAbbr {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlAbbr) ID(v string) HTMLAbbr {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlAbbr) Lang(v string) HTMLAbbr {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -696,22 +693,22 @@ func (e *htmlAbbr) Spellcheck(v bool) HTMLAbbr {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlAbbr) Style(k, v string) HTMLAbbr {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlAbbr) TabIndex(v int) HTMLAbbr {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlAbbr) Title(v string) HTMLAbbr {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -875,17 +872,12 @@ func (e *htmlAbbr) OnWheel(h EventHandler) HTMLAbbr {
 	return e
 }
 
-func (e *htmlAbbr) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLAddress is the interface that describes a <address> HTML element.
 type HTMLAddress interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLAddress
+	Body(elems ...UI) HTMLAddress
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLAddress
@@ -1028,20 +1020,22 @@ type HTMLAddress interface {
 
 // Address returns an HTML element that defines contact information for the author/owner of a document.
 func Address() HTMLAddress {
-	return &htmlAddress{
+	e := &htmlAddress{
 		elem: elem{
 			tag:         "address",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlAddress struct {
 	elem
 }
 
-func (e *htmlAddress) Body(nodes ...Node) HTMLAddress {
-	e.setBody(e, nodes)
+func (e *htmlAddress) Body(elems ...UI) HTMLAddress {
+	e.setBody(elems...)
 	return e
 }
 
@@ -1050,47 +1044,47 @@ func (e *htmlAddress) Text(v interface{}) HTMLAddress {
 }
 
 func (e *htmlAddress) AccessKey(v string) HTMLAddress {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlAddress) Class(v string) HTMLAddress {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlAddress) ContentEditable(v bool) HTMLAddress {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlAddress) DataSet(k string, v interface{}) HTMLAddress {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlAddress) Dir(v string) HTMLAddress {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlAddress) Draggable(v bool) HTMLAddress {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlAddress) Hidden(v bool) HTMLAddress {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlAddress) ID(v string) HTMLAddress {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlAddress) Lang(v string) HTMLAddress {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -1100,22 +1094,22 @@ func (e *htmlAddress) Spellcheck(v bool) HTMLAddress {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlAddress) Style(k, v string) HTMLAddress {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlAddress) TabIndex(v int) HTMLAddress {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlAddress) Title(v string) HTMLAddress {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -1279,14 +1273,9 @@ func (e *htmlAddress) OnWheel(h EventHandler) HTMLAddress {
 	return e
 }
 
-func (e *htmlAddress) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLArea is the interface that describes a <area> HTML element.
 type HTMLArea interface {
-	standardNode
-	writableNode
+	UI
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLArea
@@ -1456,12 +1445,14 @@ type HTMLArea interface {
 
 // Area returns an HTML element that defines an area inside an image-map.
 func Area() HTMLArea {
-	return &htmlArea{
+	e := &htmlArea{
 		elem: elem{
 			tag:         "area",
 			selfClosing: true,
 		},
 	}
+
+	return e
 }
 
 type htmlArea struct {
@@ -1469,87 +1460,87 @@ type htmlArea struct {
 }
 
 func (e *htmlArea) AccessKey(v string) HTMLArea {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlArea) Alt(v string) HTMLArea {
-	e.elem.setAttribute("alt", v)
+	e.setAttr("alt", v)
 	return e
 }
 
 func (e *htmlArea) Class(v string) HTMLArea {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlArea) ContentEditable(v bool) HTMLArea {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlArea) Coords(v string) HTMLArea {
-	e.elem.setAttribute("coords", v)
+	e.setAttr("coords", v)
 	return e
 }
 
 func (e *htmlArea) DataSet(k string, v interface{}) HTMLArea {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlArea) Dir(v string) HTMLArea {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlArea) Download(v bool) HTMLArea {
-	e.elem.setAttribute("download", v)
+	e.setAttr("download", v)
 	return e
 }
 
 func (e *htmlArea) Draggable(v bool) HTMLArea {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlArea) Hidden(v bool) HTMLArea {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlArea) Href(v string) HTMLArea {
-	e.elem.setAttribute("href", ResolveStaticResourcePath(v))
+	e.setAttr("href", StaticResource(v))
 	return e
 }
 
 func (e *htmlArea) HrefLang(v string) HTMLArea {
-	e.elem.setAttribute("hreflang", v)
+	e.setAttr("hreflang", v)
 	return e
 }
 
 func (e *htmlArea) ID(v string) HTMLArea {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlArea) Lang(v string) HTMLArea {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlArea) Media(v string) HTMLArea {
-	e.elem.setAttribute("media", v)
+	e.setAttr("media", v)
 	return e
 }
 
 func (e *htmlArea) Rel(v string) HTMLArea {
-	e.elem.setAttribute("rel", v)
+	e.setAttr("rel", v)
 	return e
 }
 
 func (e *htmlArea) Shape(v string) HTMLArea {
-	e.elem.setAttribute("shape", v)
+	e.setAttr("shape", v)
 	return e
 }
 
@@ -1559,32 +1550,32 @@ func (e *htmlArea) Spellcheck(v bool) HTMLArea {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlArea) Style(k, v string) HTMLArea {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlArea) TabIndex(v int) HTMLArea {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlArea) Target(v string) HTMLArea {
-	e.elem.setAttribute("target", v)
+	e.setAttr("target", v)
 	return e
 }
 
 func (e *htmlArea) Title(v string) HTMLArea {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlArea) Type(v string) HTMLArea {
-	e.elem.setAttribute("type", v)
+	e.setAttr("type", v)
 	return e
 }
 
@@ -1748,17 +1739,12 @@ func (e *htmlArea) OnWheel(h EventHandler) HTMLArea {
 	return e
 }
 
-func (e *htmlArea) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLArticle is the interface that describes a <article> HTML element.
 type HTMLArticle interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLArticle
+	Body(elems ...UI) HTMLArticle
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLArticle
@@ -1901,20 +1887,22 @@ type HTMLArticle interface {
 
 // Article returns an HTML element that defines an article.
 func Article() HTMLArticle {
-	return &htmlArticle{
+	e := &htmlArticle{
 		elem: elem{
 			tag:         "article",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlArticle struct {
 	elem
 }
 
-func (e *htmlArticle) Body(nodes ...Node) HTMLArticle {
-	e.setBody(e, nodes)
+func (e *htmlArticle) Body(elems ...UI) HTMLArticle {
+	e.setBody(elems...)
 	return e
 }
 
@@ -1923,47 +1911,47 @@ func (e *htmlArticle) Text(v interface{}) HTMLArticle {
 }
 
 func (e *htmlArticle) AccessKey(v string) HTMLArticle {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlArticle) Class(v string) HTMLArticle {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlArticle) ContentEditable(v bool) HTMLArticle {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlArticle) DataSet(k string, v interface{}) HTMLArticle {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlArticle) Dir(v string) HTMLArticle {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlArticle) Draggable(v bool) HTMLArticle {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlArticle) Hidden(v bool) HTMLArticle {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlArticle) ID(v string) HTMLArticle {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlArticle) Lang(v string) HTMLArticle {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -1973,22 +1961,22 @@ func (e *htmlArticle) Spellcheck(v bool) HTMLArticle {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlArticle) Style(k, v string) HTMLArticle {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlArticle) TabIndex(v int) HTMLArticle {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlArticle) Title(v string) HTMLArticle {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -2152,17 +2140,12 @@ func (e *htmlArticle) OnWheel(h EventHandler) HTMLArticle {
 	return e
 }
 
-func (e *htmlArticle) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLAside is the interface that describes a <aside> HTML element.
 type HTMLAside interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLAside
+	Body(elems ...UI) HTMLAside
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLAside
@@ -2305,20 +2288,22 @@ type HTMLAside interface {
 
 // Aside returns an HTML element that defines content aside from the page content.
 func Aside() HTMLAside {
-	return &htmlAside{
+	e := &htmlAside{
 		elem: elem{
 			tag:         "aside",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlAside struct {
 	elem
 }
 
-func (e *htmlAside) Body(nodes ...Node) HTMLAside {
-	e.setBody(e, nodes)
+func (e *htmlAside) Body(elems ...UI) HTMLAside {
+	e.setBody(elems...)
 	return e
 }
 
@@ -2327,47 +2312,47 @@ func (e *htmlAside) Text(v interface{}) HTMLAside {
 }
 
 func (e *htmlAside) AccessKey(v string) HTMLAside {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlAside) Class(v string) HTMLAside {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlAside) ContentEditable(v bool) HTMLAside {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlAside) DataSet(k string, v interface{}) HTMLAside {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlAside) Dir(v string) HTMLAside {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlAside) Draggable(v bool) HTMLAside {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlAside) Hidden(v bool) HTMLAside {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlAside) ID(v string) HTMLAside {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlAside) Lang(v string) HTMLAside {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -2377,22 +2362,22 @@ func (e *htmlAside) Spellcheck(v bool) HTMLAside {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlAside) Style(k, v string) HTMLAside {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlAside) TabIndex(v int) HTMLAside {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlAside) Title(v string) HTMLAside {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -2556,17 +2541,12 @@ func (e *htmlAside) OnWheel(h EventHandler) HTMLAside {
 	return e
 }
 
-func (e *htmlAside) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLAudio is the interface that describes a <audio> HTML element.
 type HTMLAudio interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLAudio
+	Body(elems ...UI) HTMLAudio
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLAudio
@@ -2796,20 +2776,22 @@ type HTMLAudio interface {
 
 // Audio returns an HTML element that defines sound content.
 func Audio() HTMLAudio {
-	return &htmlAudio{
+	e := &htmlAudio{
 		elem: elem{
 			tag:         "audio",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlAudio struct {
 	elem
 }
 
-func (e *htmlAudio) Body(nodes ...Node) HTMLAudio {
-	e.setBody(e, nodes)
+func (e *htmlAudio) Body(elems ...UI) HTMLAudio {
+	e.setBody(elems...)
 	return e
 }
 
@@ -2818,72 +2800,72 @@ func (e *htmlAudio) Text(v interface{}) HTMLAudio {
 }
 
 func (e *htmlAudio) AccessKey(v string) HTMLAudio {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlAudio) AutoPlay(v bool) HTMLAudio {
-	e.elem.setAttribute("autoplay", v)
+	e.setAttr("autoplay", v)
 	return e
 }
 
 func (e *htmlAudio) Class(v string) HTMLAudio {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlAudio) ContentEditable(v bool) HTMLAudio {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlAudio) Controls(v bool) HTMLAudio {
-	e.elem.setAttribute("controls", v)
+	e.setAttr("controls", v)
 	return e
 }
 
 func (e *htmlAudio) DataSet(k string, v interface{}) HTMLAudio {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlAudio) Dir(v string) HTMLAudio {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlAudio) Draggable(v bool) HTMLAudio {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlAudio) Hidden(v bool) HTMLAudio {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlAudio) ID(v string) HTMLAudio {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlAudio) Lang(v string) HTMLAudio {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlAudio) Loop(v bool) HTMLAudio {
-	e.elem.setAttribute("loop", v)
+	e.setAttr("loop", v)
 	return e
 }
 
 func (e *htmlAudio) Muted(v bool) HTMLAudio {
-	e.elem.setAttribute("muted", v)
+	e.setAttr("muted", v)
 	return e
 }
 
 func (e *htmlAudio) Preload(v string) HTMLAudio {
-	e.elem.setAttribute("preload", v)
+	e.setAttr("preload", v)
 	return e
 }
 
@@ -2893,27 +2875,27 @@ func (e *htmlAudio) Spellcheck(v bool) HTMLAudio {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlAudio) Src(v string) HTMLAudio {
-	e.elem.setAttribute("src", ResolveStaticResourcePath(v))
+	e.setAttr("src", StaticResource(v))
 	return e
 }
 
 func (e *htmlAudio) Style(k, v string) HTMLAudio {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlAudio) TabIndex(v int) HTMLAudio {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlAudio) Title(v string) HTMLAudio {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -3192,17 +3174,12 @@ func (e *htmlAudio) OnloadedMetaData(h EventHandler) HTMLAudio {
 	return e
 }
 
-func (e *htmlAudio) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLB is the interface that describes a <b> HTML element.
 type HTMLB interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLB
+	Body(elems ...UI) HTMLB
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLB
@@ -3345,20 +3322,22 @@ type HTMLB interface {
 
 // B returns an HTML element that defines bold text.
 func B() HTMLB {
-	return &htmlB{
+	e := &htmlB{
 		elem: elem{
 			tag:         "b",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlB struct {
 	elem
 }
 
-func (e *htmlB) Body(nodes ...Node) HTMLB {
-	e.setBody(e, nodes)
+func (e *htmlB) Body(elems ...UI) HTMLB {
+	e.setBody(elems...)
 	return e
 }
 
@@ -3367,47 +3346,47 @@ func (e *htmlB) Text(v interface{}) HTMLB {
 }
 
 func (e *htmlB) AccessKey(v string) HTMLB {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlB) Class(v string) HTMLB {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlB) ContentEditable(v bool) HTMLB {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlB) DataSet(k string, v interface{}) HTMLB {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlB) Dir(v string) HTMLB {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlB) Draggable(v bool) HTMLB {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlB) Hidden(v bool) HTMLB {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlB) ID(v string) HTMLB {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlB) Lang(v string) HTMLB {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -3417,22 +3396,22 @@ func (e *htmlB) Spellcheck(v bool) HTMLB {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlB) Style(k, v string) HTMLB {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlB) TabIndex(v int) HTMLB {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlB) Title(v string) HTMLB {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -3596,14 +3575,9 @@ func (e *htmlB) OnWheel(h EventHandler) HTMLB {
 	return e
 }
 
-func (e *htmlB) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLBase is the interface that describes a <base> HTML element.
 type HTMLBase interface {
-	standardNode
-	writableNode
+	UI
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLBase
@@ -3749,12 +3723,14 @@ type HTMLBase interface {
 
 // Base returns an HTML element that specifies the base URL/target for all relative URLs in a document.
 func Base() HTMLBase {
-	return &htmlBase{
+	e := &htmlBase{
 		elem: elem{
 			tag:         "base",
 			selfClosing: true,
 		},
 	}
+
+	return e
 }
 
 type htmlBase struct {
@@ -3762,52 +3738,52 @@ type htmlBase struct {
 }
 
 func (e *htmlBase) AccessKey(v string) HTMLBase {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlBase) Class(v string) HTMLBase {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlBase) ContentEditable(v bool) HTMLBase {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlBase) DataSet(k string, v interface{}) HTMLBase {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlBase) Dir(v string) HTMLBase {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlBase) Draggable(v bool) HTMLBase {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlBase) Hidden(v bool) HTMLBase {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlBase) Href(v string) HTMLBase {
-	e.elem.setAttribute("href", ResolveStaticResourcePath(v))
+	e.setAttr("href", StaticResource(v))
 	return e
 }
 
 func (e *htmlBase) ID(v string) HTMLBase {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlBase) Lang(v string) HTMLBase {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -3817,27 +3793,27 @@ func (e *htmlBase) Spellcheck(v bool) HTMLBase {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlBase) Style(k, v string) HTMLBase {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlBase) TabIndex(v int) HTMLBase {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlBase) Target(v string) HTMLBase {
-	e.elem.setAttribute("target", v)
+	e.setAttr("target", v)
 	return e
 }
 
 func (e *htmlBase) Title(v string) HTMLBase {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -4001,17 +3977,12 @@ func (e *htmlBase) OnWheel(h EventHandler) HTMLBase {
 	return e
 }
 
-func (e *htmlBase) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLBdi is the interface that describes a <bdi> HTML element.
 type HTMLBdi interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLBdi
+	Body(elems ...UI) HTMLBdi
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLBdi
@@ -4154,20 +4125,22 @@ type HTMLBdi interface {
 
 // Bdi returns an HTML element that isolates a part of text that might be formatted in a different direction from other text outside it.
 func Bdi() HTMLBdi {
-	return &htmlBdi{
+	e := &htmlBdi{
 		elem: elem{
 			tag:         "bdi",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlBdi struct {
 	elem
 }
 
-func (e *htmlBdi) Body(nodes ...Node) HTMLBdi {
-	e.setBody(e, nodes)
+func (e *htmlBdi) Body(elems ...UI) HTMLBdi {
+	e.setBody(elems...)
 	return e
 }
 
@@ -4176,47 +4149,47 @@ func (e *htmlBdi) Text(v interface{}) HTMLBdi {
 }
 
 func (e *htmlBdi) AccessKey(v string) HTMLBdi {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlBdi) Class(v string) HTMLBdi {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlBdi) ContentEditable(v bool) HTMLBdi {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlBdi) DataSet(k string, v interface{}) HTMLBdi {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlBdi) Dir(v string) HTMLBdi {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlBdi) Draggable(v bool) HTMLBdi {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlBdi) Hidden(v bool) HTMLBdi {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlBdi) ID(v string) HTMLBdi {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlBdi) Lang(v string) HTMLBdi {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -4226,22 +4199,22 @@ func (e *htmlBdi) Spellcheck(v bool) HTMLBdi {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlBdi) Style(k, v string) HTMLBdi {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlBdi) TabIndex(v int) HTMLBdi {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlBdi) Title(v string) HTMLBdi {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -4405,17 +4378,12 @@ func (e *htmlBdi) OnWheel(h EventHandler) HTMLBdi {
 	return e
 }
 
-func (e *htmlBdi) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLBdo is the interface that describes a <bdo> HTML element.
 type HTMLBdo interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLBdo
+	Body(elems ...UI) HTMLBdo
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLBdo
@@ -4558,20 +4526,22 @@ type HTMLBdo interface {
 
 // Bdo returns an HTML element that overrides the current text direction.
 func Bdo() HTMLBdo {
-	return &htmlBdo{
+	e := &htmlBdo{
 		elem: elem{
 			tag:         "bdo",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlBdo struct {
 	elem
 }
 
-func (e *htmlBdo) Body(nodes ...Node) HTMLBdo {
-	e.setBody(e, nodes)
+func (e *htmlBdo) Body(elems ...UI) HTMLBdo {
+	e.setBody(elems...)
 	return e
 }
 
@@ -4580,47 +4550,47 @@ func (e *htmlBdo) Text(v interface{}) HTMLBdo {
 }
 
 func (e *htmlBdo) AccessKey(v string) HTMLBdo {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlBdo) Class(v string) HTMLBdo {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlBdo) ContentEditable(v bool) HTMLBdo {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlBdo) DataSet(k string, v interface{}) HTMLBdo {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlBdo) Dir(v string) HTMLBdo {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlBdo) Draggable(v bool) HTMLBdo {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlBdo) Hidden(v bool) HTMLBdo {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlBdo) ID(v string) HTMLBdo {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlBdo) Lang(v string) HTMLBdo {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -4630,22 +4600,22 @@ func (e *htmlBdo) Spellcheck(v bool) HTMLBdo {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlBdo) Style(k, v string) HTMLBdo {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlBdo) TabIndex(v int) HTMLBdo {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlBdo) Title(v string) HTMLBdo {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -4809,17 +4779,12 @@ func (e *htmlBdo) OnWheel(h EventHandler) HTMLBdo {
 	return e
 }
 
-func (e *htmlBdo) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLBlockquote is the interface that describes a <blockquote> HTML element.
 type HTMLBlockquote interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLBlockquote
+	Body(elems ...UI) HTMLBlockquote
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLBlockquote
@@ -4965,20 +4930,22 @@ type HTMLBlockquote interface {
 
 // Blockquote returns an HTML element that defines a section that is quoted from another source.
 func Blockquote() HTMLBlockquote {
-	return &htmlBlockquote{
+	e := &htmlBlockquote{
 		elem: elem{
 			tag:         "blockquote",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlBlockquote struct {
 	elem
 }
 
-func (e *htmlBlockquote) Body(nodes ...Node) HTMLBlockquote {
-	e.setBody(e, nodes)
+func (e *htmlBlockquote) Body(elems ...UI) HTMLBlockquote {
+	e.setBody(elems...)
 	return e
 }
 
@@ -4987,52 +4954,52 @@ func (e *htmlBlockquote) Text(v interface{}) HTMLBlockquote {
 }
 
 func (e *htmlBlockquote) AccessKey(v string) HTMLBlockquote {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlBlockquote) Cite(v string) HTMLBlockquote {
-	e.elem.setAttribute("cite", ResolveStaticResourcePath(v))
+	e.setAttr("cite", StaticResource(v))
 	return e
 }
 
 func (e *htmlBlockquote) Class(v string) HTMLBlockquote {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlBlockquote) ContentEditable(v bool) HTMLBlockquote {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlBlockquote) DataSet(k string, v interface{}) HTMLBlockquote {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlBlockquote) Dir(v string) HTMLBlockquote {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlBlockquote) Draggable(v bool) HTMLBlockquote {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlBlockquote) Hidden(v bool) HTMLBlockquote {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlBlockquote) ID(v string) HTMLBlockquote {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlBlockquote) Lang(v string) HTMLBlockquote {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -5042,22 +5009,22 @@ func (e *htmlBlockquote) Spellcheck(v bool) HTMLBlockquote {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlBlockquote) Style(k, v string) HTMLBlockquote {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlBlockquote) TabIndex(v int) HTMLBlockquote {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlBlockquote) Title(v string) HTMLBlockquote {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -5221,17 +5188,12 @@ func (e *htmlBlockquote) OnWheel(h EventHandler) HTMLBlockquote {
 	return e
 }
 
-func (e *htmlBlockquote) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLBody is the interface that describes a <body> HTML element.
 type HTMLBody interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLBody
+	Body(elems ...UI) HTMLBody
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLBody
@@ -5419,20 +5381,22 @@ type HTMLBody interface {
 
 // Body returns an HTML element that defines the document's body.
 func Body() HTMLBody {
-	return &htmlBody{
+	e := &htmlBody{
 		elem: elem{
 			tag:         "body",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlBody struct {
 	elem
 }
 
-func (e *htmlBody) Body(nodes ...Node) HTMLBody {
-	e.setBody(e, nodes)
+func (e *htmlBody) Body(elems ...UI) HTMLBody {
+	e.setBody(elems...)
 	return e
 }
 
@@ -5441,47 +5405,47 @@ func (e *htmlBody) Text(v interface{}) HTMLBody {
 }
 
 func (e *htmlBody) AccessKey(v string) HTMLBody {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlBody) Class(v string) HTMLBody {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlBody) ContentEditable(v bool) HTMLBody {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlBody) DataSet(k string, v interface{}) HTMLBody {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlBody) Dir(v string) HTMLBody {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlBody) Draggable(v bool) HTMLBody {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlBody) Hidden(v bool) HTMLBody {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlBody) ID(v string) HTMLBody {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlBody) Lang(v string) HTMLBody {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -5491,22 +5455,22 @@ func (e *htmlBody) Spellcheck(v bool) HTMLBody {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlBody) Style(k, v string) HTMLBody {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlBody) TabIndex(v int) HTMLBody {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlBody) Title(v string) HTMLBody {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -5745,14 +5709,9 @@ func (e *htmlBody) OnWheel(h EventHandler) HTMLBody {
 	return e
 }
 
-func (e *htmlBody) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLBr is the interface that describes a <br> HTML element.
 type HTMLBr interface {
-	standardNode
-	writableNode
+	UI
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLBr
@@ -5892,12 +5851,14 @@ type HTMLBr interface {
 
 // Br returns an HTML element that defines a single line break.
 func Br() HTMLBr {
-	return &htmlBr{
+	e := &htmlBr{
 		elem: elem{
 			tag:         "br",
 			selfClosing: true,
 		},
 	}
+
+	return e
 }
 
 type htmlBr struct {
@@ -5905,47 +5866,47 @@ type htmlBr struct {
 }
 
 func (e *htmlBr) AccessKey(v string) HTMLBr {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlBr) Class(v string) HTMLBr {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlBr) ContentEditable(v bool) HTMLBr {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlBr) DataSet(k string, v interface{}) HTMLBr {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlBr) Dir(v string) HTMLBr {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlBr) Draggable(v bool) HTMLBr {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlBr) Hidden(v bool) HTMLBr {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlBr) ID(v string) HTMLBr {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlBr) Lang(v string) HTMLBr {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -5955,22 +5916,22 @@ func (e *htmlBr) Spellcheck(v bool) HTMLBr {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlBr) Style(k, v string) HTMLBr {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlBr) TabIndex(v int) HTMLBr {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlBr) Title(v string) HTMLBr {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -6134,17 +6095,12 @@ func (e *htmlBr) OnWheel(h EventHandler) HTMLBr {
 	return e
 }
 
-func (e *htmlBr) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLButton is the interface that describes a <button> HTML element.
 type HTMLButton interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLButton
+	Body(elems ...UI) HTMLButton
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLButton
@@ -6320,20 +6276,22 @@ type HTMLButton interface {
 
 // Button returns an HTML element that defines a clickable button.
 func Button() HTMLButton {
-	return &htmlButton{
+	e := &htmlButton{
 		elem: elem{
 			tag:         "button",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlButton struct {
 	elem
 }
 
-func (e *htmlButton) Body(nodes ...Node) HTMLButton {
-	e.setBody(e, nodes)
+func (e *htmlButton) Body(elems ...UI) HTMLButton {
+	e.setBody(elems...)
 	return e
 }
 
@@ -6342,92 +6300,92 @@ func (e *htmlButton) Text(v interface{}) HTMLButton {
 }
 
 func (e *htmlButton) AccessKey(v string) HTMLButton {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlButton) AutoFocus(v bool) HTMLButton {
-	e.elem.setAttribute("autofocus", v)
+	e.setAttr("autofocus", v)
 	return e
 }
 
 func (e *htmlButton) Class(v string) HTMLButton {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlButton) ContentEditable(v bool) HTMLButton {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlButton) DataSet(k string, v interface{}) HTMLButton {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlButton) Dir(v string) HTMLButton {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlButton) Disabled(v bool) HTMLButton {
-	e.elem.setAttribute("disabled", v)
+	e.setAttr("disabled", v)
 	return e
 }
 
 func (e *htmlButton) Draggable(v bool) HTMLButton {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlButton) Form(v string) HTMLButton {
-	e.elem.setAttribute("form", v)
+	e.setAttr("form", v)
 	return e
 }
 
 func (e *htmlButton) FormAction(v string) HTMLButton {
-	e.elem.setAttribute("formaction", v)
+	e.setAttr("formaction", v)
 	return e
 }
 
 func (e *htmlButton) FormEncType(v string) HTMLButton {
-	e.elem.setAttribute("formenctype", v)
+	e.setAttr("formenctype", v)
 	return e
 }
 
 func (e *htmlButton) FormMethod(v string) HTMLButton {
-	e.elem.setAttribute("formmethod", v)
+	e.setAttr("formmethod", v)
 	return e
 }
 
 func (e *htmlButton) FormNoValidate(v bool) HTMLButton {
-	e.elem.setAttribute("formnovalidate", v)
+	e.setAttr("formnovalidate", v)
 	return e
 }
 
 func (e *htmlButton) FormTarget(v string) HTMLButton {
-	e.elem.setAttribute("formtarget", v)
+	e.setAttr("formtarget", v)
 	return e
 }
 
 func (e *htmlButton) Hidden(v bool) HTMLButton {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlButton) ID(v string) HTMLButton {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlButton) Lang(v string) HTMLButton {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlButton) Name(v string) HTMLButton {
-	e.elem.setAttribute("name", v)
+	e.setAttr("name", v)
 	return e
 }
 
@@ -6437,32 +6395,32 @@ func (e *htmlButton) Spellcheck(v bool) HTMLButton {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlButton) Style(k, v string) HTMLButton {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlButton) TabIndex(v int) HTMLButton {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlButton) Title(v string) HTMLButton {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlButton) Type(v string) HTMLButton {
-	e.elem.setAttribute("type", v)
+	e.setAttr("type", v)
 	return e
 }
 
 func (e *htmlButton) Value(v interface{}) HTMLButton {
-	e.elem.setAttribute("value", v)
+	e.setAttr("value", v)
 	return e
 }
 
@@ -6626,17 +6584,12 @@ func (e *htmlButton) OnWheel(h EventHandler) HTMLButton {
 	return e
 }
 
-func (e *htmlButton) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLCanvas is the interface that describes a <canvas> HTML element.
 type HTMLCanvas interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLCanvas
+	Body(elems ...UI) HTMLCanvas
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLCanvas
@@ -6785,20 +6738,22 @@ type HTMLCanvas interface {
 
 // Canvas returns an HTML element that is used to draw graphics on the fly.
 func Canvas() HTMLCanvas {
-	return &htmlCanvas{
+	e := &htmlCanvas{
 		elem: elem{
 			tag:         "canvas",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlCanvas struct {
 	elem
 }
 
-func (e *htmlCanvas) Body(nodes ...Node) HTMLCanvas {
-	e.setBody(e, nodes)
+func (e *htmlCanvas) Body(elems ...UI) HTMLCanvas {
+	e.setBody(elems...)
 	return e
 }
 
@@ -6807,52 +6762,52 @@ func (e *htmlCanvas) Text(v interface{}) HTMLCanvas {
 }
 
 func (e *htmlCanvas) AccessKey(v string) HTMLCanvas {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlCanvas) Class(v string) HTMLCanvas {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlCanvas) ContentEditable(v bool) HTMLCanvas {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlCanvas) DataSet(k string, v interface{}) HTMLCanvas {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlCanvas) Dir(v string) HTMLCanvas {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlCanvas) Draggable(v bool) HTMLCanvas {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlCanvas) Height(v int) HTMLCanvas {
-	e.elem.setAttribute("height", v)
+	e.setAttr("height", v)
 	return e
 }
 
 func (e *htmlCanvas) Hidden(v bool) HTMLCanvas {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlCanvas) ID(v string) HTMLCanvas {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlCanvas) Lang(v string) HTMLCanvas {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -6862,27 +6817,27 @@ func (e *htmlCanvas) Spellcheck(v bool) HTMLCanvas {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlCanvas) Style(k, v string) HTMLCanvas {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlCanvas) TabIndex(v int) HTMLCanvas {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlCanvas) Title(v string) HTMLCanvas {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlCanvas) Width(v int) HTMLCanvas {
-	e.elem.setAttribute("width", v)
+	e.setAttr("width", v)
 	return e
 }
 
@@ -7046,17 +7001,12 @@ func (e *htmlCanvas) OnWheel(h EventHandler) HTMLCanvas {
 	return e
 }
 
-func (e *htmlCanvas) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLCaption is the interface that describes a <caption> HTML element.
 type HTMLCaption interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLCaption
+	Body(elems ...UI) HTMLCaption
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLCaption
@@ -7199,20 +7149,22 @@ type HTMLCaption interface {
 
 // Caption returns an HTML element that defines a table caption.
 func Caption() HTMLCaption {
-	return &htmlCaption{
+	e := &htmlCaption{
 		elem: elem{
 			tag:         "caption",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlCaption struct {
 	elem
 }
 
-func (e *htmlCaption) Body(nodes ...Node) HTMLCaption {
-	e.setBody(e, nodes)
+func (e *htmlCaption) Body(elems ...UI) HTMLCaption {
+	e.setBody(elems...)
 	return e
 }
 
@@ -7221,47 +7173,47 @@ func (e *htmlCaption) Text(v interface{}) HTMLCaption {
 }
 
 func (e *htmlCaption) AccessKey(v string) HTMLCaption {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlCaption) Class(v string) HTMLCaption {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlCaption) ContentEditable(v bool) HTMLCaption {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlCaption) DataSet(k string, v interface{}) HTMLCaption {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlCaption) Dir(v string) HTMLCaption {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlCaption) Draggable(v bool) HTMLCaption {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlCaption) Hidden(v bool) HTMLCaption {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlCaption) ID(v string) HTMLCaption {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlCaption) Lang(v string) HTMLCaption {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -7271,22 +7223,22 @@ func (e *htmlCaption) Spellcheck(v bool) HTMLCaption {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlCaption) Style(k, v string) HTMLCaption {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlCaption) TabIndex(v int) HTMLCaption {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlCaption) Title(v string) HTMLCaption {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -7450,17 +7402,12 @@ func (e *htmlCaption) OnWheel(h EventHandler) HTMLCaption {
 	return e
 }
 
-func (e *htmlCaption) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLCite is the interface that describes a <cite> HTML element.
 type HTMLCite interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLCite
+	Body(elems ...UI) HTMLCite
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLCite
@@ -7603,20 +7550,22 @@ type HTMLCite interface {
 
 // Cite returns an HTML element that defines the title of a work.
 func Cite() HTMLCite {
-	return &htmlCite{
+	e := &htmlCite{
 		elem: elem{
 			tag:         "cite",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlCite struct {
 	elem
 }
 
-func (e *htmlCite) Body(nodes ...Node) HTMLCite {
-	e.setBody(e, nodes)
+func (e *htmlCite) Body(elems ...UI) HTMLCite {
+	e.setBody(elems...)
 	return e
 }
 
@@ -7625,47 +7574,47 @@ func (e *htmlCite) Text(v interface{}) HTMLCite {
 }
 
 func (e *htmlCite) AccessKey(v string) HTMLCite {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlCite) Class(v string) HTMLCite {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlCite) ContentEditable(v bool) HTMLCite {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlCite) DataSet(k string, v interface{}) HTMLCite {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlCite) Dir(v string) HTMLCite {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlCite) Draggable(v bool) HTMLCite {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlCite) Hidden(v bool) HTMLCite {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlCite) ID(v string) HTMLCite {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlCite) Lang(v string) HTMLCite {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -7675,22 +7624,22 @@ func (e *htmlCite) Spellcheck(v bool) HTMLCite {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlCite) Style(k, v string) HTMLCite {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlCite) TabIndex(v int) HTMLCite {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlCite) Title(v string) HTMLCite {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -7854,17 +7803,12 @@ func (e *htmlCite) OnWheel(h EventHandler) HTMLCite {
 	return e
 }
 
-func (e *htmlCite) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLCode is the interface that describes a <code> HTML element.
 type HTMLCode interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLCode
+	Body(elems ...UI) HTMLCode
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLCode
@@ -8007,20 +7951,22 @@ type HTMLCode interface {
 
 // Code returns an HTML element that defines a piece of computer code.
 func Code() HTMLCode {
-	return &htmlCode{
+	e := &htmlCode{
 		elem: elem{
 			tag:         "code",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlCode struct {
 	elem
 }
 
-func (e *htmlCode) Body(nodes ...Node) HTMLCode {
-	e.setBody(e, nodes)
+func (e *htmlCode) Body(elems ...UI) HTMLCode {
+	e.setBody(elems...)
 	return e
 }
 
@@ -8029,47 +7975,47 @@ func (e *htmlCode) Text(v interface{}) HTMLCode {
 }
 
 func (e *htmlCode) AccessKey(v string) HTMLCode {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlCode) Class(v string) HTMLCode {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlCode) ContentEditable(v bool) HTMLCode {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlCode) DataSet(k string, v interface{}) HTMLCode {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlCode) Dir(v string) HTMLCode {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlCode) Draggable(v bool) HTMLCode {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlCode) Hidden(v bool) HTMLCode {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlCode) ID(v string) HTMLCode {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlCode) Lang(v string) HTMLCode {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -8079,22 +8025,22 @@ func (e *htmlCode) Spellcheck(v bool) HTMLCode {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlCode) Style(k, v string) HTMLCode {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlCode) TabIndex(v int) HTMLCode {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlCode) Title(v string) HTMLCode {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -8258,14 +8204,9 @@ func (e *htmlCode) OnWheel(h EventHandler) HTMLCode {
 	return e
 }
 
-func (e *htmlCode) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLCol is the interface that describes a <col> HTML element.
 type HTMLCol interface {
-	standardNode
-	writableNode
+	UI
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLCol
@@ -8408,12 +8349,14 @@ type HTMLCol interface {
 
 // Col returns an HTML element that specifies column properties for each column within a colgroup element.
 func Col() HTMLCol {
-	return &htmlCol{
+	e := &htmlCol{
 		elem: elem{
 			tag:         "col",
 			selfClosing: true,
 		},
 	}
+
+	return e
 }
 
 type htmlCol struct {
@@ -8421,52 +8364,52 @@ type htmlCol struct {
 }
 
 func (e *htmlCol) AccessKey(v string) HTMLCol {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlCol) Class(v string) HTMLCol {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlCol) ContentEditable(v bool) HTMLCol {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlCol) DataSet(k string, v interface{}) HTMLCol {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlCol) Dir(v string) HTMLCol {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlCol) Draggable(v bool) HTMLCol {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlCol) Hidden(v bool) HTMLCol {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlCol) ID(v string) HTMLCol {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlCol) Lang(v string) HTMLCol {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlCol) Span(v int) HTMLCol {
-	e.elem.setAttribute("span", v)
+	e.setAttr("span", v)
 	return e
 }
 
@@ -8476,22 +8419,22 @@ func (e *htmlCol) Spellcheck(v bool) HTMLCol {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlCol) Style(k, v string) HTMLCol {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlCol) TabIndex(v int) HTMLCol {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlCol) Title(v string) HTMLCol {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -8655,17 +8598,12 @@ func (e *htmlCol) OnWheel(h EventHandler) HTMLCol {
 	return e
 }
 
-func (e *htmlCol) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLColGroup is the interface that describes a <colgroup> HTML element.
 type HTMLColGroup interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLColGroup
+	Body(elems ...UI) HTMLColGroup
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLColGroup
@@ -8811,20 +8749,22 @@ type HTMLColGroup interface {
 
 // ColGroup returns an HTML element that specifies a group of one or more columns in a table for formatting.
 func ColGroup() HTMLColGroup {
-	return &htmlColGroup{
+	e := &htmlColGroup{
 		elem: elem{
 			tag:         "colgroup",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlColGroup struct {
 	elem
 }
 
-func (e *htmlColGroup) Body(nodes ...Node) HTMLColGroup {
-	e.setBody(e, nodes)
+func (e *htmlColGroup) Body(elems ...UI) HTMLColGroup {
+	e.setBody(elems...)
 	return e
 }
 
@@ -8833,52 +8773,52 @@ func (e *htmlColGroup) Text(v interface{}) HTMLColGroup {
 }
 
 func (e *htmlColGroup) AccessKey(v string) HTMLColGroup {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlColGroup) Class(v string) HTMLColGroup {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlColGroup) ContentEditable(v bool) HTMLColGroup {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlColGroup) DataSet(k string, v interface{}) HTMLColGroup {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlColGroup) Dir(v string) HTMLColGroup {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlColGroup) Draggable(v bool) HTMLColGroup {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlColGroup) Hidden(v bool) HTMLColGroup {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlColGroup) ID(v string) HTMLColGroup {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlColGroup) Lang(v string) HTMLColGroup {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlColGroup) Span(v int) HTMLColGroup {
-	e.elem.setAttribute("span", v)
+	e.setAttr("span", v)
 	return e
 }
 
@@ -8888,22 +8828,22 @@ func (e *htmlColGroup) Spellcheck(v bool) HTMLColGroup {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlColGroup) Style(k, v string) HTMLColGroup {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlColGroup) TabIndex(v int) HTMLColGroup {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlColGroup) Title(v string) HTMLColGroup {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -9067,17 +9007,12 @@ func (e *htmlColGroup) OnWheel(h EventHandler) HTMLColGroup {
 	return e
 }
 
-func (e *htmlColGroup) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLData is the interface that describes a <data> HTML element.
 type HTMLData interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLData
+	Body(elems ...UI) HTMLData
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLData
@@ -9127,20 +9062,22 @@ type HTMLData interface {
 
 // Data returns an HTML element that links the given content with a machine-readable translation.
 func Data() HTMLData {
-	return &htmlData{
+	e := &htmlData{
 		elem: elem{
 			tag:         "data",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlData struct {
 	elem
 }
 
-func (e *htmlData) Body(nodes ...Node) HTMLData {
-	e.setBody(e, nodes)
+func (e *htmlData) Body(elems ...UI) HTMLData {
+	e.setBody(elems...)
 	return e
 }
 
@@ -9149,47 +9086,47 @@ func (e *htmlData) Text(v interface{}) HTMLData {
 }
 
 func (e *htmlData) AccessKey(v string) HTMLData {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlData) Class(v string) HTMLData {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlData) ContentEditable(v bool) HTMLData {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlData) DataSet(k string, v interface{}) HTMLData {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlData) Dir(v string) HTMLData {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlData) Draggable(v bool) HTMLData {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlData) Hidden(v bool) HTMLData {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlData) ID(v string) HTMLData {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlData) Lang(v string) HTMLData {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -9199,41 +9136,36 @@ func (e *htmlData) Spellcheck(v bool) HTMLData {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlData) Style(k, v string) HTMLData {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlData) TabIndex(v int) HTMLData {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlData) Title(v string) HTMLData {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlData) Value(v interface{}) HTMLData {
-	e.elem.setAttribute("value", v)
+	e.setAttr("value", v)
 	return e
-}
-
-func (e *htmlData) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
 }
 
 // HTMLDataList is the interface that describes a <datalist> HTML element.
 type HTMLDataList interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLDataList
+	Body(elems ...UI) HTMLDataList
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLDataList
@@ -9376,20 +9308,22 @@ type HTMLDataList interface {
 
 // DataList returns an HTML element that specifies a list of pre-defined options for input controls.
 func DataList() HTMLDataList {
-	return &htmlDataList{
+	e := &htmlDataList{
 		elem: elem{
 			tag:         "datalist",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlDataList struct {
 	elem
 }
 
-func (e *htmlDataList) Body(nodes ...Node) HTMLDataList {
-	e.setBody(e, nodes)
+func (e *htmlDataList) Body(elems ...UI) HTMLDataList {
+	e.setBody(elems...)
 	return e
 }
 
@@ -9398,47 +9332,47 @@ func (e *htmlDataList) Text(v interface{}) HTMLDataList {
 }
 
 func (e *htmlDataList) AccessKey(v string) HTMLDataList {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlDataList) Class(v string) HTMLDataList {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlDataList) ContentEditable(v bool) HTMLDataList {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlDataList) DataSet(k string, v interface{}) HTMLDataList {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlDataList) Dir(v string) HTMLDataList {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlDataList) Draggable(v bool) HTMLDataList {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlDataList) Hidden(v bool) HTMLDataList {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlDataList) ID(v string) HTMLDataList {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlDataList) Lang(v string) HTMLDataList {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -9448,22 +9382,22 @@ func (e *htmlDataList) Spellcheck(v bool) HTMLDataList {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlDataList) Style(k, v string) HTMLDataList {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlDataList) TabIndex(v int) HTMLDataList {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlDataList) Title(v string) HTMLDataList {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -9627,17 +9561,12 @@ func (e *htmlDataList) OnWheel(h EventHandler) HTMLDataList {
 	return e
 }
 
-func (e *htmlDataList) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLDd is the interface that describes a <dd> HTML element.
 type HTMLDd interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLDd
+	Body(elems ...UI) HTMLDd
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLDd
@@ -9780,20 +9709,22 @@ type HTMLDd interface {
 
 // Dd returns an HTML element that defines a description/value of a term in a description list.
 func Dd() HTMLDd {
-	return &htmlDd{
+	e := &htmlDd{
 		elem: elem{
 			tag:         "dd",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlDd struct {
 	elem
 }
 
-func (e *htmlDd) Body(nodes ...Node) HTMLDd {
-	e.setBody(e, nodes)
+func (e *htmlDd) Body(elems ...UI) HTMLDd {
+	e.setBody(elems...)
 	return e
 }
 
@@ -9802,47 +9733,47 @@ func (e *htmlDd) Text(v interface{}) HTMLDd {
 }
 
 func (e *htmlDd) AccessKey(v string) HTMLDd {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlDd) Class(v string) HTMLDd {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlDd) ContentEditable(v bool) HTMLDd {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlDd) DataSet(k string, v interface{}) HTMLDd {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlDd) Dir(v string) HTMLDd {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlDd) Draggable(v bool) HTMLDd {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlDd) Hidden(v bool) HTMLDd {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlDd) ID(v string) HTMLDd {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlDd) Lang(v string) HTMLDd {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -9852,22 +9783,22 @@ func (e *htmlDd) Spellcheck(v bool) HTMLDd {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlDd) Style(k, v string) HTMLDd {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlDd) TabIndex(v int) HTMLDd {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlDd) Title(v string) HTMLDd {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -10031,17 +9962,12 @@ func (e *htmlDd) OnWheel(h EventHandler) HTMLDd {
 	return e
 }
 
-func (e *htmlDd) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLDel is the interface that describes a <del> HTML element.
 type HTMLDel interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLDel
+	Body(elems ...UI) HTMLDel
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLDel
@@ -10190,20 +10116,22 @@ type HTMLDel interface {
 
 // Del returns an HTML element that defines text that has been deleted from a document.
 func Del() HTMLDel {
-	return &htmlDel{
+	e := &htmlDel{
 		elem: elem{
 			tag:         "del",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlDel struct {
 	elem
 }
 
-func (e *htmlDel) Body(nodes ...Node) HTMLDel {
-	e.setBody(e, nodes)
+func (e *htmlDel) Body(elems ...UI) HTMLDel {
+	e.setBody(elems...)
 	return e
 }
 
@@ -10212,57 +10140,57 @@ func (e *htmlDel) Text(v interface{}) HTMLDel {
 }
 
 func (e *htmlDel) AccessKey(v string) HTMLDel {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlDel) Cite(v string) HTMLDel {
-	e.elem.setAttribute("cite", ResolveStaticResourcePath(v))
+	e.setAttr("cite", StaticResource(v))
 	return e
 }
 
 func (e *htmlDel) Class(v string) HTMLDel {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlDel) ContentEditable(v bool) HTMLDel {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlDel) DataSet(k string, v interface{}) HTMLDel {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlDel) DateTime(v string) HTMLDel {
-	e.elem.setAttribute("datetime", v)
+	e.setAttr("datetime", v)
 	return e
 }
 
 func (e *htmlDel) Dir(v string) HTMLDel {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlDel) Draggable(v bool) HTMLDel {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlDel) Hidden(v bool) HTMLDel {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlDel) ID(v string) HTMLDel {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlDel) Lang(v string) HTMLDel {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -10272,22 +10200,22 @@ func (e *htmlDel) Spellcheck(v bool) HTMLDel {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlDel) Style(k, v string) HTMLDel {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlDel) TabIndex(v int) HTMLDel {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlDel) Title(v string) HTMLDel {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -10451,17 +10379,12 @@ func (e *htmlDel) OnWheel(h EventHandler) HTMLDel {
 	return e
 }
 
-func (e *htmlDel) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLDetails is the interface that describes a <details> HTML element.
 type HTMLDetails interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLDetails
+	Body(elems ...UI) HTMLDetails
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLDetails
@@ -10610,20 +10533,22 @@ type HTMLDetails interface {
 
 // Details returns an HTML element that defines additional details that the user can view or hide.
 func Details() HTMLDetails {
-	return &htmlDetails{
+	e := &htmlDetails{
 		elem: elem{
 			tag:         "details",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlDetails struct {
 	elem
 }
 
-func (e *htmlDetails) Body(nodes ...Node) HTMLDetails {
-	e.setBody(e, nodes)
+func (e *htmlDetails) Body(elems ...UI) HTMLDetails {
+	e.setBody(elems...)
 	return e
 }
 
@@ -10632,52 +10557,52 @@ func (e *htmlDetails) Text(v interface{}) HTMLDetails {
 }
 
 func (e *htmlDetails) AccessKey(v string) HTMLDetails {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlDetails) Class(v string) HTMLDetails {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlDetails) ContentEditable(v bool) HTMLDetails {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlDetails) DataSet(k string, v interface{}) HTMLDetails {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlDetails) Dir(v string) HTMLDetails {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlDetails) Draggable(v bool) HTMLDetails {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlDetails) Hidden(v bool) HTMLDetails {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlDetails) ID(v string) HTMLDetails {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlDetails) Lang(v string) HTMLDetails {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlDetails) Open(v bool) HTMLDetails {
-	e.elem.setAttribute("open", v)
+	e.setAttr("open", v)
 	return e
 }
 
@@ -10687,22 +10612,22 @@ func (e *htmlDetails) Spellcheck(v bool) HTMLDetails {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlDetails) Style(k, v string) HTMLDetails {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlDetails) TabIndex(v int) HTMLDetails {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlDetails) Title(v string) HTMLDetails {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -10871,17 +10796,12 @@ func (e *htmlDetails) OnWheel(h EventHandler) HTMLDetails {
 	return e
 }
 
-func (e *htmlDetails) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLDfn is the interface that describes a <dfn> HTML element.
 type HTMLDfn interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLDfn
+	Body(elems ...UI) HTMLDfn
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLDfn
@@ -11024,20 +10944,22 @@ type HTMLDfn interface {
 
 // Dfn returns an HTML element that represents the defining instance of a term.
 func Dfn() HTMLDfn {
-	return &htmlDfn{
+	e := &htmlDfn{
 		elem: elem{
 			tag:         "dfn",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlDfn struct {
 	elem
 }
 
-func (e *htmlDfn) Body(nodes ...Node) HTMLDfn {
-	e.setBody(e, nodes)
+func (e *htmlDfn) Body(elems ...UI) HTMLDfn {
+	e.setBody(elems...)
 	return e
 }
 
@@ -11046,47 +10968,47 @@ func (e *htmlDfn) Text(v interface{}) HTMLDfn {
 }
 
 func (e *htmlDfn) AccessKey(v string) HTMLDfn {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlDfn) Class(v string) HTMLDfn {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlDfn) ContentEditable(v bool) HTMLDfn {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlDfn) DataSet(k string, v interface{}) HTMLDfn {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlDfn) Dir(v string) HTMLDfn {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlDfn) Draggable(v bool) HTMLDfn {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlDfn) Hidden(v bool) HTMLDfn {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlDfn) ID(v string) HTMLDfn {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlDfn) Lang(v string) HTMLDfn {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -11096,22 +11018,22 @@ func (e *htmlDfn) Spellcheck(v bool) HTMLDfn {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlDfn) Style(k, v string) HTMLDfn {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlDfn) TabIndex(v int) HTMLDfn {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlDfn) Title(v string) HTMLDfn {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -11275,17 +11197,12 @@ func (e *htmlDfn) OnWheel(h EventHandler) HTMLDfn {
 	return e
 }
 
-func (e *htmlDfn) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLDialog is the interface that describes a <dialog> HTML element.
 type HTMLDialog interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLDialog
+	Body(elems ...UI) HTMLDialog
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLDialog
@@ -11431,20 +11348,22 @@ type HTMLDialog interface {
 
 // Dialog returns an HTML element that defines a dialog box or window.
 func Dialog() HTMLDialog {
-	return &htmlDialog{
+	e := &htmlDialog{
 		elem: elem{
 			tag:         "dialog",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlDialog struct {
 	elem
 }
 
-func (e *htmlDialog) Body(nodes ...Node) HTMLDialog {
-	e.setBody(e, nodes)
+func (e *htmlDialog) Body(elems ...UI) HTMLDialog {
+	e.setBody(elems...)
 	return e
 }
 
@@ -11453,52 +11372,52 @@ func (e *htmlDialog) Text(v interface{}) HTMLDialog {
 }
 
 func (e *htmlDialog) AccessKey(v string) HTMLDialog {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlDialog) Class(v string) HTMLDialog {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlDialog) ContentEditable(v bool) HTMLDialog {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlDialog) DataSet(k string, v interface{}) HTMLDialog {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlDialog) Dir(v string) HTMLDialog {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlDialog) Draggable(v bool) HTMLDialog {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlDialog) Hidden(v bool) HTMLDialog {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlDialog) ID(v string) HTMLDialog {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlDialog) Lang(v string) HTMLDialog {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlDialog) Open(v bool) HTMLDialog {
-	e.elem.setAttribute("open", v)
+	e.setAttr("open", v)
 	return e
 }
 
@@ -11508,22 +11427,22 @@ func (e *htmlDialog) Spellcheck(v bool) HTMLDialog {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlDialog) Style(k, v string) HTMLDialog {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlDialog) TabIndex(v int) HTMLDialog {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlDialog) Title(v string) HTMLDialog {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -11687,17 +11606,12 @@ func (e *htmlDialog) OnWheel(h EventHandler) HTMLDialog {
 	return e
 }
 
-func (e *htmlDialog) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLDiv is the interface that describes a <div> HTML element.
 type HTMLDiv interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLDiv
+	Body(elems ...UI) HTMLDiv
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLDiv
@@ -11840,20 +11754,22 @@ type HTMLDiv interface {
 
 // Div returns an HTML element that defines a section in a document.
 func Div() HTMLDiv {
-	return &htmlDiv{
+	e := &htmlDiv{
 		elem: elem{
 			tag:         "div",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlDiv struct {
 	elem
 }
 
-func (e *htmlDiv) Body(nodes ...Node) HTMLDiv {
-	e.setBody(e, nodes)
+func (e *htmlDiv) Body(elems ...UI) HTMLDiv {
+	e.setBody(elems...)
 	return e
 }
 
@@ -11862,47 +11778,47 @@ func (e *htmlDiv) Text(v interface{}) HTMLDiv {
 }
 
 func (e *htmlDiv) AccessKey(v string) HTMLDiv {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlDiv) Class(v string) HTMLDiv {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlDiv) ContentEditable(v bool) HTMLDiv {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlDiv) DataSet(k string, v interface{}) HTMLDiv {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlDiv) Dir(v string) HTMLDiv {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlDiv) Draggable(v bool) HTMLDiv {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlDiv) Hidden(v bool) HTMLDiv {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlDiv) ID(v string) HTMLDiv {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlDiv) Lang(v string) HTMLDiv {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -11912,22 +11828,22 @@ func (e *htmlDiv) Spellcheck(v bool) HTMLDiv {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlDiv) Style(k, v string) HTMLDiv {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlDiv) TabIndex(v int) HTMLDiv {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlDiv) Title(v string) HTMLDiv {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -12091,17 +12007,12 @@ func (e *htmlDiv) OnWheel(h EventHandler) HTMLDiv {
 	return e
 }
 
-func (e *htmlDiv) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLDl is the interface that describes a <dl> HTML element.
 type HTMLDl interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLDl
+	Body(elems ...UI) HTMLDl
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLDl
@@ -12244,20 +12155,22 @@ type HTMLDl interface {
 
 // Dl returns an HTML element that defines a description list.
 func Dl() HTMLDl {
-	return &htmlDl{
+	e := &htmlDl{
 		elem: elem{
 			tag:         "dl",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlDl struct {
 	elem
 }
 
-func (e *htmlDl) Body(nodes ...Node) HTMLDl {
-	e.setBody(e, nodes)
+func (e *htmlDl) Body(elems ...UI) HTMLDl {
+	e.setBody(elems...)
 	return e
 }
 
@@ -12266,47 +12179,47 @@ func (e *htmlDl) Text(v interface{}) HTMLDl {
 }
 
 func (e *htmlDl) AccessKey(v string) HTMLDl {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlDl) Class(v string) HTMLDl {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlDl) ContentEditable(v bool) HTMLDl {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlDl) DataSet(k string, v interface{}) HTMLDl {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlDl) Dir(v string) HTMLDl {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlDl) Draggable(v bool) HTMLDl {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlDl) Hidden(v bool) HTMLDl {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlDl) ID(v string) HTMLDl {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlDl) Lang(v string) HTMLDl {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -12316,22 +12229,22 @@ func (e *htmlDl) Spellcheck(v bool) HTMLDl {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlDl) Style(k, v string) HTMLDl {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlDl) TabIndex(v int) HTMLDl {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlDl) Title(v string) HTMLDl {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -12495,17 +12408,12 @@ func (e *htmlDl) OnWheel(h EventHandler) HTMLDl {
 	return e
 }
 
-func (e *htmlDl) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLDt is the interface that describes a <dt> HTML element.
 type HTMLDt interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLDt
+	Body(elems ...UI) HTMLDt
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLDt
@@ -12648,20 +12556,22 @@ type HTMLDt interface {
 
 // Dt returns an HTML element that defines a term/name in a description list.
 func Dt() HTMLDt {
-	return &htmlDt{
+	e := &htmlDt{
 		elem: elem{
 			tag:         "dt",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlDt struct {
 	elem
 }
 
-func (e *htmlDt) Body(nodes ...Node) HTMLDt {
-	e.setBody(e, nodes)
+func (e *htmlDt) Body(elems ...UI) HTMLDt {
+	e.setBody(elems...)
 	return e
 }
 
@@ -12670,47 +12580,47 @@ func (e *htmlDt) Text(v interface{}) HTMLDt {
 }
 
 func (e *htmlDt) AccessKey(v string) HTMLDt {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlDt) Class(v string) HTMLDt {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlDt) ContentEditable(v bool) HTMLDt {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlDt) DataSet(k string, v interface{}) HTMLDt {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlDt) Dir(v string) HTMLDt {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlDt) Draggable(v bool) HTMLDt {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlDt) Hidden(v bool) HTMLDt {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlDt) ID(v string) HTMLDt {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlDt) Lang(v string) HTMLDt {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -12720,22 +12630,22 @@ func (e *htmlDt) Spellcheck(v bool) HTMLDt {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlDt) Style(k, v string) HTMLDt {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlDt) TabIndex(v int) HTMLDt {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlDt) Title(v string) HTMLDt {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -12899,17 +12809,12 @@ func (e *htmlDt) OnWheel(h EventHandler) HTMLDt {
 	return e
 }
 
-func (e *htmlDt) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLEm is the interface that describes a <em> HTML element.
 type HTMLEm interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLEm
+	Body(elems ...UI) HTMLEm
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLEm
@@ -13052,20 +12957,22 @@ type HTMLEm interface {
 
 // Em returns an HTML element that defines emphasized text.
 func Em() HTMLEm {
-	return &htmlEm{
+	e := &htmlEm{
 		elem: elem{
 			tag:         "em",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlEm struct {
 	elem
 }
 
-func (e *htmlEm) Body(nodes ...Node) HTMLEm {
-	e.setBody(e, nodes)
+func (e *htmlEm) Body(elems ...UI) HTMLEm {
+	e.setBody(elems...)
 	return e
 }
 
@@ -13074,47 +12981,47 @@ func (e *htmlEm) Text(v interface{}) HTMLEm {
 }
 
 func (e *htmlEm) AccessKey(v string) HTMLEm {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlEm) Class(v string) HTMLEm {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlEm) ContentEditable(v bool) HTMLEm {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlEm) DataSet(k string, v interface{}) HTMLEm {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlEm) Dir(v string) HTMLEm {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlEm) Draggable(v bool) HTMLEm {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlEm) Hidden(v bool) HTMLEm {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlEm) ID(v string) HTMLEm {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlEm) Lang(v string) HTMLEm {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -13124,22 +13031,22 @@ func (e *htmlEm) Spellcheck(v bool) HTMLEm {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlEm) Style(k, v string) HTMLEm {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlEm) TabIndex(v int) HTMLEm {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlEm) Title(v string) HTMLEm {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -13303,14 +13210,9 @@ func (e *htmlEm) OnWheel(h EventHandler) HTMLEm {
 	return e
 }
 
-func (e *htmlEm) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLEmbed is the interface that describes a <embed> HTML element.
 type HTMLEmbed interface {
-	standardNode
-	writableNode
+	UI
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLEmbed
@@ -13531,12 +13433,14 @@ type HTMLEmbed interface {
 
 // Embed returns an HTML element that defines a container for an external (non-HTML) application.
 func Embed() HTMLEmbed {
-	return &htmlEmbed{
+	e := &htmlEmbed{
 		elem: elem{
 			tag:         "embed",
 			selfClosing: true,
 		},
 	}
+
+	return e
 }
 
 type htmlEmbed struct {
@@ -13544,52 +13448,52 @@ type htmlEmbed struct {
 }
 
 func (e *htmlEmbed) AccessKey(v string) HTMLEmbed {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlEmbed) Class(v string) HTMLEmbed {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlEmbed) ContentEditable(v bool) HTMLEmbed {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlEmbed) DataSet(k string, v interface{}) HTMLEmbed {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlEmbed) Dir(v string) HTMLEmbed {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlEmbed) Draggable(v bool) HTMLEmbed {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlEmbed) Height(v int) HTMLEmbed {
-	e.elem.setAttribute("height", v)
+	e.setAttr("height", v)
 	return e
 }
 
 func (e *htmlEmbed) Hidden(v bool) HTMLEmbed {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlEmbed) ID(v string) HTMLEmbed {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlEmbed) Lang(v string) HTMLEmbed {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -13599,37 +13503,37 @@ func (e *htmlEmbed) Spellcheck(v bool) HTMLEmbed {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlEmbed) Src(v string) HTMLEmbed {
-	e.elem.setAttribute("src", ResolveStaticResourcePath(v))
+	e.setAttr("src", StaticResource(v))
 	return e
 }
 
 func (e *htmlEmbed) Style(k, v string) HTMLEmbed {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlEmbed) TabIndex(v int) HTMLEmbed {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlEmbed) Title(v string) HTMLEmbed {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlEmbed) Type(v string) HTMLEmbed {
-	e.elem.setAttribute("type", v)
+	e.setAttr("type", v)
 	return e
 }
 
 func (e *htmlEmbed) Width(v int) HTMLEmbed {
-	e.elem.setAttribute("width", v)
+	e.setAttr("width", v)
 	return e
 }
 
@@ -13908,17 +13812,12 @@ func (e *htmlEmbed) OnloadedMetaData(h EventHandler) HTMLEmbed {
 	return e
 }
 
-func (e *htmlEmbed) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLFieldSet is the interface that describes a <fieldset> HTML element.
 type HTMLFieldSet interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLFieldSet
+	Body(elems ...UI) HTMLFieldSet
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLFieldSet
@@ -14070,20 +13969,22 @@ type HTMLFieldSet interface {
 
 // FieldSet returns an HTML element that groups related elements in a form.
 func FieldSet() HTMLFieldSet {
-	return &htmlFieldSet{
+	e := &htmlFieldSet{
 		elem: elem{
 			tag:         "fieldset",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlFieldSet struct {
 	elem
 }
 
-func (e *htmlFieldSet) Body(nodes ...Node) HTMLFieldSet {
-	e.setBody(e, nodes)
+func (e *htmlFieldSet) Body(elems ...UI) HTMLFieldSet {
+	e.setBody(elems...)
 	return e
 }
 
@@ -14092,62 +13993,62 @@ func (e *htmlFieldSet) Text(v interface{}) HTMLFieldSet {
 }
 
 func (e *htmlFieldSet) AccessKey(v string) HTMLFieldSet {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlFieldSet) Class(v string) HTMLFieldSet {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlFieldSet) ContentEditable(v bool) HTMLFieldSet {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlFieldSet) DataSet(k string, v interface{}) HTMLFieldSet {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlFieldSet) Dir(v string) HTMLFieldSet {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlFieldSet) Disabled(v bool) HTMLFieldSet {
-	e.elem.setAttribute("disabled", v)
+	e.setAttr("disabled", v)
 	return e
 }
 
 func (e *htmlFieldSet) Draggable(v bool) HTMLFieldSet {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlFieldSet) Form(v string) HTMLFieldSet {
-	e.elem.setAttribute("form", v)
+	e.setAttr("form", v)
 	return e
 }
 
 func (e *htmlFieldSet) Hidden(v bool) HTMLFieldSet {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlFieldSet) ID(v string) HTMLFieldSet {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlFieldSet) Lang(v string) HTMLFieldSet {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlFieldSet) Name(v string) HTMLFieldSet {
-	e.elem.setAttribute("name", v)
+	e.setAttr("name", v)
 	return e
 }
 
@@ -14157,22 +14058,22 @@ func (e *htmlFieldSet) Spellcheck(v bool) HTMLFieldSet {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlFieldSet) Style(k, v string) HTMLFieldSet {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlFieldSet) TabIndex(v int) HTMLFieldSet {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlFieldSet) Title(v string) HTMLFieldSet {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -14336,17 +14237,12 @@ func (e *htmlFieldSet) OnWheel(h EventHandler) HTMLFieldSet {
 	return e
 }
 
-func (e *htmlFieldSet) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLFigCaption is the interface that describes a <figcaption> HTML element.
 type HTMLFigCaption interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLFigCaption
+	Body(elems ...UI) HTMLFigCaption
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLFigCaption
@@ -14489,20 +14385,22 @@ type HTMLFigCaption interface {
 
 // FigCaption returns an HTML element that defines a caption for a figure element.
 func FigCaption() HTMLFigCaption {
-	return &htmlFigCaption{
+	e := &htmlFigCaption{
 		elem: elem{
 			tag:         "figcaption",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlFigCaption struct {
 	elem
 }
 
-func (e *htmlFigCaption) Body(nodes ...Node) HTMLFigCaption {
-	e.setBody(e, nodes)
+func (e *htmlFigCaption) Body(elems ...UI) HTMLFigCaption {
+	e.setBody(elems...)
 	return e
 }
 
@@ -14511,47 +14409,47 @@ func (e *htmlFigCaption) Text(v interface{}) HTMLFigCaption {
 }
 
 func (e *htmlFigCaption) AccessKey(v string) HTMLFigCaption {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlFigCaption) Class(v string) HTMLFigCaption {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlFigCaption) ContentEditable(v bool) HTMLFigCaption {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlFigCaption) DataSet(k string, v interface{}) HTMLFigCaption {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlFigCaption) Dir(v string) HTMLFigCaption {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlFigCaption) Draggable(v bool) HTMLFigCaption {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlFigCaption) Hidden(v bool) HTMLFigCaption {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlFigCaption) ID(v string) HTMLFigCaption {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlFigCaption) Lang(v string) HTMLFigCaption {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -14561,22 +14459,22 @@ func (e *htmlFigCaption) Spellcheck(v bool) HTMLFigCaption {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlFigCaption) Style(k, v string) HTMLFigCaption {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlFigCaption) TabIndex(v int) HTMLFigCaption {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlFigCaption) Title(v string) HTMLFigCaption {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -14740,17 +14638,12 @@ func (e *htmlFigCaption) OnWheel(h EventHandler) HTMLFigCaption {
 	return e
 }
 
-func (e *htmlFigCaption) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLFigure is the interface that describes a <figure> HTML element.
 type HTMLFigure interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLFigure
+	Body(elems ...UI) HTMLFigure
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLFigure
@@ -14893,20 +14786,22 @@ type HTMLFigure interface {
 
 // Figure returns an HTML element that specifies self-contained content.
 func Figure() HTMLFigure {
-	return &htmlFigure{
+	e := &htmlFigure{
 		elem: elem{
 			tag:         "figure",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlFigure struct {
 	elem
 }
 
-func (e *htmlFigure) Body(nodes ...Node) HTMLFigure {
-	e.setBody(e, nodes)
+func (e *htmlFigure) Body(elems ...UI) HTMLFigure {
+	e.setBody(elems...)
 	return e
 }
 
@@ -14915,47 +14810,47 @@ func (e *htmlFigure) Text(v interface{}) HTMLFigure {
 }
 
 func (e *htmlFigure) AccessKey(v string) HTMLFigure {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlFigure) Class(v string) HTMLFigure {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlFigure) ContentEditable(v bool) HTMLFigure {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlFigure) DataSet(k string, v interface{}) HTMLFigure {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlFigure) Dir(v string) HTMLFigure {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlFigure) Draggable(v bool) HTMLFigure {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlFigure) Hidden(v bool) HTMLFigure {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlFigure) ID(v string) HTMLFigure {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlFigure) Lang(v string) HTMLFigure {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -14965,22 +14860,22 @@ func (e *htmlFigure) Spellcheck(v bool) HTMLFigure {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlFigure) Style(k, v string) HTMLFigure {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlFigure) TabIndex(v int) HTMLFigure {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlFigure) Title(v string) HTMLFigure {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -15144,17 +15039,12 @@ func (e *htmlFigure) OnWheel(h EventHandler) HTMLFigure {
 	return e
 }
 
-func (e *htmlFigure) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLFooter is the interface that describes a <footer> HTML element.
 type HTMLFooter interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLFooter
+	Body(elems ...UI) HTMLFooter
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLFooter
@@ -15297,20 +15187,22 @@ type HTMLFooter interface {
 
 // Footer returns an HTML element that defines a footer for a document or section.
 func Footer() HTMLFooter {
-	return &htmlFooter{
+	e := &htmlFooter{
 		elem: elem{
 			tag:         "footer",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlFooter struct {
 	elem
 }
 
-func (e *htmlFooter) Body(nodes ...Node) HTMLFooter {
-	e.setBody(e, nodes)
+func (e *htmlFooter) Body(elems ...UI) HTMLFooter {
+	e.setBody(elems...)
 	return e
 }
 
@@ -15319,47 +15211,47 @@ func (e *htmlFooter) Text(v interface{}) HTMLFooter {
 }
 
 func (e *htmlFooter) AccessKey(v string) HTMLFooter {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlFooter) Class(v string) HTMLFooter {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlFooter) ContentEditable(v bool) HTMLFooter {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlFooter) DataSet(k string, v interface{}) HTMLFooter {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlFooter) Dir(v string) HTMLFooter {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlFooter) Draggable(v bool) HTMLFooter {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlFooter) Hidden(v bool) HTMLFooter {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlFooter) ID(v string) HTMLFooter {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlFooter) Lang(v string) HTMLFooter {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -15369,22 +15261,22 @@ func (e *htmlFooter) Spellcheck(v bool) HTMLFooter {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlFooter) Style(k, v string) HTMLFooter {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlFooter) TabIndex(v int) HTMLFooter {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlFooter) Title(v string) HTMLFooter {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -15548,17 +15440,12 @@ func (e *htmlFooter) OnWheel(h EventHandler) HTMLFooter {
 	return e
 }
 
-func (e *htmlFooter) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLForm is the interface that describes a <form> HTML element.
 type HTMLForm interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLForm
+	Body(elems ...UI) HTMLForm
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLForm
@@ -15725,20 +15612,22 @@ type HTMLForm interface {
 
 // Form returns an HTML element that defines an HTML form for user input.
 func Form() HTMLForm {
-	return &htmlForm{
+	e := &htmlForm{
 		elem: elem{
 			tag:         "form",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlForm struct {
 	elem
 }
 
-func (e *htmlForm) Body(nodes ...Node) HTMLForm {
-	e.setBody(e, nodes)
+func (e *htmlForm) Body(elems ...UI) HTMLForm {
+	e.setBody(elems...)
 	return e
 }
 
@@ -15747,17 +15636,17 @@ func (e *htmlForm) Text(v interface{}) HTMLForm {
 }
 
 func (e *htmlForm) AcceptCharset(v string) HTMLForm {
-	e.elem.setAttribute("acceptcharset", v)
+	e.setAttr("acceptcharset", v)
 	return e
 }
 
 func (e *htmlForm) AccessKey(v string) HTMLForm {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlForm) Action(v string) HTMLForm {
-	e.elem.setAttribute("action", v)
+	e.setAttr("action", v)
 	return e
 }
 
@@ -15767,67 +15656,67 @@ func (e *htmlForm) AutoComplete(v bool) HTMLForm {
 		s = "on"
 	}
 
-	e.elem.setAttribute("autocomplete", s)
+	e.setAttr("autocomplete", s)
 	return e
 }
 
 func (e *htmlForm) Class(v string) HTMLForm {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlForm) ContentEditable(v bool) HTMLForm {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlForm) DataSet(k string, v interface{}) HTMLForm {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlForm) Dir(v string) HTMLForm {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlForm) Draggable(v bool) HTMLForm {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlForm) EncType(v string) HTMLForm {
-	e.elem.setAttribute("enctype", v)
+	e.setAttr("enctype", v)
 	return e
 }
 
 func (e *htmlForm) Hidden(v bool) HTMLForm {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlForm) ID(v string) HTMLForm {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlForm) Lang(v string) HTMLForm {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlForm) Method(v string) HTMLForm {
-	e.elem.setAttribute("method", v)
+	e.setAttr("method", v)
 	return e
 }
 
 func (e *htmlForm) Name(v string) HTMLForm {
-	e.elem.setAttribute("name", v)
+	e.setAttr("name", v)
 	return e
 }
 
 func (e *htmlForm) NoValidate(v bool) HTMLForm {
-	e.elem.setAttribute("novalidate", v)
+	e.setAttr("novalidate", v)
 	return e
 }
 
@@ -15837,27 +15726,27 @@ func (e *htmlForm) Spellcheck(v bool) HTMLForm {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlForm) Style(k, v string) HTMLForm {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlForm) TabIndex(v int) HTMLForm {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlForm) Target(v string) HTMLForm {
-	e.elem.setAttribute("target", v)
+	e.setAttr("target", v)
 	return e
 }
 
 func (e *htmlForm) Title(v string) HTMLForm {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -16021,17 +15910,12 @@ func (e *htmlForm) OnWheel(h EventHandler) HTMLForm {
 	return e
 }
 
-func (e *htmlForm) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLH1 is the interface that describes a <h1> HTML element.
 type HTMLH1 interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLH1
+	Body(elems ...UI) HTMLH1
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLH1
@@ -16174,20 +16058,22 @@ type HTMLH1 interface {
 
 // H1 returns an HTML element that defines HTML heading.
 func H1() HTMLH1 {
-	return &htmlH1{
+	e := &htmlH1{
 		elem: elem{
 			tag:         "h1",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlH1 struct {
 	elem
 }
 
-func (e *htmlH1) Body(nodes ...Node) HTMLH1 {
-	e.setBody(e, nodes)
+func (e *htmlH1) Body(elems ...UI) HTMLH1 {
+	e.setBody(elems...)
 	return e
 }
 
@@ -16196,47 +16082,47 @@ func (e *htmlH1) Text(v interface{}) HTMLH1 {
 }
 
 func (e *htmlH1) AccessKey(v string) HTMLH1 {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlH1) Class(v string) HTMLH1 {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlH1) ContentEditable(v bool) HTMLH1 {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlH1) DataSet(k string, v interface{}) HTMLH1 {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlH1) Dir(v string) HTMLH1 {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlH1) Draggable(v bool) HTMLH1 {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlH1) Hidden(v bool) HTMLH1 {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlH1) ID(v string) HTMLH1 {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlH1) Lang(v string) HTMLH1 {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -16246,22 +16132,22 @@ func (e *htmlH1) Spellcheck(v bool) HTMLH1 {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlH1) Style(k, v string) HTMLH1 {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlH1) TabIndex(v int) HTMLH1 {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlH1) Title(v string) HTMLH1 {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -16425,17 +16311,12 @@ func (e *htmlH1) OnWheel(h EventHandler) HTMLH1 {
 	return e
 }
 
-func (e *htmlH1) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLH2 is the interface that describes a <h2> HTML element.
 type HTMLH2 interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLH2
+	Body(elems ...UI) HTMLH2
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLH2
@@ -16578,20 +16459,22 @@ type HTMLH2 interface {
 
 // H2 returns an HTML element that defines HTML heading.
 func H2() HTMLH2 {
-	return &htmlH2{
+	e := &htmlH2{
 		elem: elem{
 			tag:         "h2",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlH2 struct {
 	elem
 }
 
-func (e *htmlH2) Body(nodes ...Node) HTMLH2 {
-	e.setBody(e, nodes)
+func (e *htmlH2) Body(elems ...UI) HTMLH2 {
+	e.setBody(elems...)
 	return e
 }
 
@@ -16600,47 +16483,47 @@ func (e *htmlH2) Text(v interface{}) HTMLH2 {
 }
 
 func (e *htmlH2) AccessKey(v string) HTMLH2 {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlH2) Class(v string) HTMLH2 {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlH2) ContentEditable(v bool) HTMLH2 {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlH2) DataSet(k string, v interface{}) HTMLH2 {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlH2) Dir(v string) HTMLH2 {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlH2) Draggable(v bool) HTMLH2 {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlH2) Hidden(v bool) HTMLH2 {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlH2) ID(v string) HTMLH2 {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlH2) Lang(v string) HTMLH2 {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -16650,22 +16533,22 @@ func (e *htmlH2) Spellcheck(v bool) HTMLH2 {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlH2) Style(k, v string) HTMLH2 {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlH2) TabIndex(v int) HTMLH2 {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlH2) Title(v string) HTMLH2 {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -16829,17 +16712,12 @@ func (e *htmlH2) OnWheel(h EventHandler) HTMLH2 {
 	return e
 }
 
-func (e *htmlH2) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLH3 is the interface that describes a <h3> HTML element.
 type HTMLH3 interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLH3
+	Body(elems ...UI) HTMLH3
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLH3
@@ -16982,20 +16860,22 @@ type HTMLH3 interface {
 
 // H3 returns an HTML element that defines HTML heading.
 func H3() HTMLH3 {
-	return &htmlH3{
+	e := &htmlH3{
 		elem: elem{
 			tag:         "h3",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlH3 struct {
 	elem
 }
 
-func (e *htmlH3) Body(nodes ...Node) HTMLH3 {
-	e.setBody(e, nodes)
+func (e *htmlH3) Body(elems ...UI) HTMLH3 {
+	e.setBody(elems...)
 	return e
 }
 
@@ -17004,47 +16884,47 @@ func (e *htmlH3) Text(v interface{}) HTMLH3 {
 }
 
 func (e *htmlH3) AccessKey(v string) HTMLH3 {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlH3) Class(v string) HTMLH3 {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlH3) ContentEditable(v bool) HTMLH3 {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlH3) DataSet(k string, v interface{}) HTMLH3 {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlH3) Dir(v string) HTMLH3 {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlH3) Draggable(v bool) HTMLH3 {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlH3) Hidden(v bool) HTMLH3 {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlH3) ID(v string) HTMLH3 {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlH3) Lang(v string) HTMLH3 {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -17054,22 +16934,22 @@ func (e *htmlH3) Spellcheck(v bool) HTMLH3 {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlH3) Style(k, v string) HTMLH3 {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlH3) TabIndex(v int) HTMLH3 {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlH3) Title(v string) HTMLH3 {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -17233,17 +17113,12 @@ func (e *htmlH3) OnWheel(h EventHandler) HTMLH3 {
 	return e
 }
 
-func (e *htmlH3) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLH4 is the interface that describes a <h4> HTML element.
 type HTMLH4 interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLH4
+	Body(elems ...UI) HTMLH4
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLH4
@@ -17386,20 +17261,22 @@ type HTMLH4 interface {
 
 // H4 returns an HTML element that defines HTML heading.
 func H4() HTMLH4 {
-	return &htmlH4{
+	e := &htmlH4{
 		elem: elem{
 			tag:         "h4",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlH4 struct {
 	elem
 }
 
-func (e *htmlH4) Body(nodes ...Node) HTMLH4 {
-	e.setBody(e, nodes)
+func (e *htmlH4) Body(elems ...UI) HTMLH4 {
+	e.setBody(elems...)
 	return e
 }
 
@@ -17408,47 +17285,47 @@ func (e *htmlH4) Text(v interface{}) HTMLH4 {
 }
 
 func (e *htmlH4) AccessKey(v string) HTMLH4 {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlH4) Class(v string) HTMLH4 {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlH4) ContentEditable(v bool) HTMLH4 {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlH4) DataSet(k string, v interface{}) HTMLH4 {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlH4) Dir(v string) HTMLH4 {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlH4) Draggable(v bool) HTMLH4 {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlH4) Hidden(v bool) HTMLH4 {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlH4) ID(v string) HTMLH4 {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlH4) Lang(v string) HTMLH4 {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -17458,22 +17335,22 @@ func (e *htmlH4) Spellcheck(v bool) HTMLH4 {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlH4) Style(k, v string) HTMLH4 {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlH4) TabIndex(v int) HTMLH4 {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlH4) Title(v string) HTMLH4 {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -17637,17 +17514,12 @@ func (e *htmlH4) OnWheel(h EventHandler) HTMLH4 {
 	return e
 }
 
-func (e *htmlH4) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLH5 is the interface that describes a <h5> HTML element.
 type HTMLH5 interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLH5
+	Body(elems ...UI) HTMLH5
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLH5
@@ -17790,20 +17662,22 @@ type HTMLH5 interface {
 
 // H5 returns an HTML element that defines HTML heading.
 func H5() HTMLH5 {
-	return &htmlH5{
+	e := &htmlH5{
 		elem: elem{
 			tag:         "h5",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlH5 struct {
 	elem
 }
 
-func (e *htmlH5) Body(nodes ...Node) HTMLH5 {
-	e.setBody(e, nodes)
+func (e *htmlH5) Body(elems ...UI) HTMLH5 {
+	e.setBody(elems...)
 	return e
 }
 
@@ -17812,47 +17686,47 @@ func (e *htmlH5) Text(v interface{}) HTMLH5 {
 }
 
 func (e *htmlH5) AccessKey(v string) HTMLH5 {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlH5) Class(v string) HTMLH5 {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlH5) ContentEditable(v bool) HTMLH5 {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlH5) DataSet(k string, v interface{}) HTMLH5 {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlH5) Dir(v string) HTMLH5 {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlH5) Draggable(v bool) HTMLH5 {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlH5) Hidden(v bool) HTMLH5 {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlH5) ID(v string) HTMLH5 {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlH5) Lang(v string) HTMLH5 {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -17862,22 +17736,22 @@ func (e *htmlH5) Spellcheck(v bool) HTMLH5 {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlH5) Style(k, v string) HTMLH5 {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlH5) TabIndex(v int) HTMLH5 {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlH5) Title(v string) HTMLH5 {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -18041,17 +17915,12 @@ func (e *htmlH5) OnWheel(h EventHandler) HTMLH5 {
 	return e
 }
 
-func (e *htmlH5) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLH6 is the interface that describes a <h6> HTML element.
 type HTMLH6 interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLH6
+	Body(elems ...UI) HTMLH6
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLH6
@@ -18194,20 +18063,22 @@ type HTMLH6 interface {
 
 // H6 returns an HTML element that defines HTML heading.
 func H6() HTMLH6 {
-	return &htmlH6{
+	e := &htmlH6{
 		elem: elem{
 			tag:         "h6",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlH6 struct {
 	elem
 }
 
-func (e *htmlH6) Body(nodes ...Node) HTMLH6 {
-	e.setBody(e, nodes)
+func (e *htmlH6) Body(elems ...UI) HTMLH6 {
+	e.setBody(elems...)
 	return e
 }
 
@@ -18216,47 +18087,47 @@ func (e *htmlH6) Text(v interface{}) HTMLH6 {
 }
 
 func (e *htmlH6) AccessKey(v string) HTMLH6 {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlH6) Class(v string) HTMLH6 {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlH6) ContentEditable(v bool) HTMLH6 {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlH6) DataSet(k string, v interface{}) HTMLH6 {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlH6) Dir(v string) HTMLH6 {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlH6) Draggable(v bool) HTMLH6 {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlH6) Hidden(v bool) HTMLH6 {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlH6) ID(v string) HTMLH6 {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlH6) Lang(v string) HTMLH6 {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -18266,22 +18137,22 @@ func (e *htmlH6) Spellcheck(v bool) HTMLH6 {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlH6) Style(k, v string) HTMLH6 {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlH6) TabIndex(v int) HTMLH6 {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlH6) Title(v string) HTMLH6 {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -18445,17 +18316,12 @@ func (e *htmlH6) OnWheel(h EventHandler) HTMLH6 {
 	return e
 }
 
-func (e *htmlH6) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLHead is the interface that describes a <head> HTML element.
 type HTMLHead interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLHead
+	Body(elems ...UI) HTMLHead
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLHead
@@ -18502,20 +18368,22 @@ type HTMLHead interface {
 
 // Head returns an HTML element that defines information about the document.
 func Head() HTMLHead {
-	return &htmlHead{
+	e := &htmlHead{
 		elem: elem{
 			tag:         "head",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlHead struct {
 	elem
 }
 
-func (e *htmlHead) Body(nodes ...Node) HTMLHead {
-	e.setBody(e, nodes)
+func (e *htmlHead) Body(elems ...UI) HTMLHead {
+	e.setBody(elems...)
 	return e
 }
 
@@ -18524,47 +18392,47 @@ func (e *htmlHead) Text(v interface{}) HTMLHead {
 }
 
 func (e *htmlHead) AccessKey(v string) HTMLHead {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlHead) Class(v string) HTMLHead {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlHead) ContentEditable(v bool) HTMLHead {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlHead) DataSet(k string, v interface{}) HTMLHead {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlHead) Dir(v string) HTMLHead {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlHead) Draggable(v bool) HTMLHead {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlHead) Hidden(v bool) HTMLHead {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlHead) ID(v string) HTMLHead {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlHead) Lang(v string) HTMLHead {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -18574,36 +18442,31 @@ func (e *htmlHead) Spellcheck(v bool) HTMLHead {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlHead) Style(k, v string) HTMLHead {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlHead) TabIndex(v int) HTMLHead {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlHead) Title(v string) HTMLHead {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
-}
-
-func (e *htmlHead) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
 }
 
 // HTMLHeader is the interface that describes a <header> HTML element.
 type HTMLHeader interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLHeader
+	Body(elems ...UI) HTMLHeader
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLHeader
@@ -18746,20 +18609,22 @@ type HTMLHeader interface {
 
 // Header returns an HTML element that defines a header for a document or section.
 func Header() HTMLHeader {
-	return &htmlHeader{
+	e := &htmlHeader{
 		elem: elem{
 			tag:         "header",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlHeader struct {
 	elem
 }
 
-func (e *htmlHeader) Body(nodes ...Node) HTMLHeader {
-	e.setBody(e, nodes)
+func (e *htmlHeader) Body(elems ...UI) HTMLHeader {
+	e.setBody(elems...)
 	return e
 }
 
@@ -18768,47 +18633,47 @@ func (e *htmlHeader) Text(v interface{}) HTMLHeader {
 }
 
 func (e *htmlHeader) AccessKey(v string) HTMLHeader {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlHeader) Class(v string) HTMLHeader {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlHeader) ContentEditable(v bool) HTMLHeader {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlHeader) DataSet(k string, v interface{}) HTMLHeader {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlHeader) Dir(v string) HTMLHeader {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlHeader) Draggable(v bool) HTMLHeader {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlHeader) Hidden(v bool) HTMLHeader {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlHeader) ID(v string) HTMLHeader {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlHeader) Lang(v string) HTMLHeader {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -18818,22 +18683,22 @@ func (e *htmlHeader) Spellcheck(v bool) HTMLHeader {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlHeader) Style(k, v string) HTMLHeader {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlHeader) TabIndex(v int) HTMLHeader {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlHeader) Title(v string) HTMLHeader {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -18997,14 +18862,9 @@ func (e *htmlHeader) OnWheel(h EventHandler) HTMLHeader {
 	return e
 }
 
-func (e *htmlHeader) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLHr is the interface that describes a <hr> HTML element.
 type HTMLHr interface {
-	standardNode
-	writableNode
+	UI
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLHr
@@ -19144,12 +19004,14 @@ type HTMLHr interface {
 
 // Hr returns an HTML element that defines a thematic change in the content.
 func Hr() HTMLHr {
-	return &htmlHr{
+	e := &htmlHr{
 		elem: elem{
 			tag:         "hr",
 			selfClosing: true,
 		},
 	}
+
+	return e
 }
 
 type htmlHr struct {
@@ -19157,47 +19019,47 @@ type htmlHr struct {
 }
 
 func (e *htmlHr) AccessKey(v string) HTMLHr {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlHr) Class(v string) HTMLHr {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlHr) ContentEditable(v bool) HTMLHr {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlHr) DataSet(k string, v interface{}) HTMLHr {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlHr) Dir(v string) HTMLHr {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlHr) Draggable(v bool) HTMLHr {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlHr) Hidden(v bool) HTMLHr {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlHr) ID(v string) HTMLHr {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlHr) Lang(v string) HTMLHr {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -19207,22 +19069,22 @@ func (e *htmlHr) Spellcheck(v bool) HTMLHr {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlHr) Style(k, v string) HTMLHr {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlHr) TabIndex(v int) HTMLHr {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlHr) Title(v string) HTMLHr {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -19386,17 +19248,12 @@ func (e *htmlHr) OnWheel(h EventHandler) HTMLHr {
 	return e
 }
 
-func (e *htmlHr) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLHtml is the interface that describes a <html> HTML element.
 type HTMLHtml interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLHtml
+	Body(elems ...UI) HTMLHtml
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLHtml
@@ -19443,20 +19300,22 @@ type HTMLHtml interface {
 
 // Html returns an HTML element that defines the root of an HTML document.
 func Html() HTMLHtml {
-	return &htmlHtml{
+	e := &htmlHtml{
 		elem: elem{
 			tag:         "html",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlHtml struct {
 	elem
 }
 
-func (e *htmlHtml) Body(nodes ...Node) HTMLHtml {
-	e.setBody(e, nodes)
+func (e *htmlHtml) Body(elems ...UI) HTMLHtml {
+	e.setBody(elems...)
 	return e
 }
 
@@ -19465,47 +19324,47 @@ func (e *htmlHtml) Text(v interface{}) HTMLHtml {
 }
 
 func (e *htmlHtml) AccessKey(v string) HTMLHtml {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlHtml) Class(v string) HTMLHtml {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlHtml) ContentEditable(v bool) HTMLHtml {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlHtml) DataSet(k string, v interface{}) HTMLHtml {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlHtml) Dir(v string) HTMLHtml {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlHtml) Draggable(v bool) HTMLHtml {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlHtml) Hidden(v bool) HTMLHtml {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlHtml) ID(v string) HTMLHtml {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlHtml) Lang(v string) HTMLHtml {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -19515,36 +19374,31 @@ func (e *htmlHtml) Spellcheck(v bool) HTMLHtml {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlHtml) Style(k, v string) HTMLHtml {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlHtml) TabIndex(v int) HTMLHtml {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlHtml) Title(v string) HTMLHtml {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
-}
-
-func (e *htmlHtml) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
 }
 
 // HTMLI is the interface that describes a <i> HTML element.
 type HTMLI interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLI
+	Body(elems ...UI) HTMLI
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLI
@@ -19687,20 +19541,22 @@ type HTMLI interface {
 
 // I returns an HTML element that defines a part of text in an alternate voice or mood.
 func I() HTMLI {
-	return &htmlI{
+	e := &htmlI{
 		elem: elem{
 			tag:         "i",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlI struct {
 	elem
 }
 
-func (e *htmlI) Body(nodes ...Node) HTMLI {
-	e.setBody(e, nodes)
+func (e *htmlI) Body(elems ...UI) HTMLI {
+	e.setBody(elems...)
 	return e
 }
 
@@ -19709,47 +19565,47 @@ func (e *htmlI) Text(v interface{}) HTMLI {
 }
 
 func (e *htmlI) AccessKey(v string) HTMLI {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlI) Class(v string) HTMLI {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlI) ContentEditable(v bool) HTMLI {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlI) DataSet(k string, v interface{}) HTMLI {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlI) Dir(v string) HTMLI {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlI) Draggable(v bool) HTMLI {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlI) Hidden(v bool) HTMLI {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlI) ID(v string) HTMLI {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlI) Lang(v string) HTMLI {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -19759,22 +19615,22 @@ func (e *htmlI) Spellcheck(v bool) HTMLI {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlI) Style(k, v string) HTMLI {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlI) TabIndex(v int) HTMLI {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlI) Title(v string) HTMLI {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -19938,17 +19794,12 @@ func (e *htmlI) OnWheel(h EventHandler) HTMLI {
 	return e
 }
 
-func (e *htmlI) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLIFrame is the interface that describes a <iframe> HTML element.
 type HTMLIFrame interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLIFrame
+	Body(elems ...UI) HTMLIFrame
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLIFrame
@@ -20112,20 +19963,22 @@ type HTMLIFrame interface {
 
 // IFrame returns an HTML element that defines an inline frame.
 func IFrame() HTMLIFrame {
-	return &htmlIFrame{
+	e := &htmlIFrame{
 		elem: elem{
 			tag:         "iframe",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlIFrame struct {
 	elem
 }
 
-func (e *htmlIFrame) Body(nodes ...Node) HTMLIFrame {
-	e.setBody(e, nodes)
+func (e *htmlIFrame) Body(elems ...UI) HTMLIFrame {
+	e.setBody(elems...)
 	return e
 }
 
@@ -20134,62 +19987,62 @@ func (e *htmlIFrame) Text(v interface{}) HTMLIFrame {
 }
 
 func (e *htmlIFrame) AccessKey(v string) HTMLIFrame {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlIFrame) Class(v string) HTMLIFrame {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlIFrame) ContentEditable(v bool) HTMLIFrame {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlIFrame) DataSet(k string, v interface{}) HTMLIFrame {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlIFrame) Dir(v string) HTMLIFrame {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlIFrame) Draggable(v bool) HTMLIFrame {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlIFrame) Height(v int) HTMLIFrame {
-	e.elem.setAttribute("height", v)
+	e.setAttr("height", v)
 	return e
 }
 
 func (e *htmlIFrame) Hidden(v bool) HTMLIFrame {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlIFrame) ID(v string) HTMLIFrame {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlIFrame) Lang(v string) HTMLIFrame {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlIFrame) Name(v string) HTMLIFrame {
-	e.elem.setAttribute("name", v)
+	e.setAttr("name", v)
 	return e
 }
 
 func (e *htmlIFrame) Sandbox(v bool) HTMLIFrame {
-	e.elem.setAttribute("sandbox", v)
+	e.setAttr("sandbox", v)
 	return e
 }
 
@@ -20199,37 +20052,37 @@ func (e *htmlIFrame) Spellcheck(v bool) HTMLIFrame {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlIFrame) Src(v string) HTMLIFrame {
-	e.elem.setAttribute("src", ResolveStaticResourcePath(v))
+	e.setAttr("src", StaticResource(v))
 	return e
 }
 
 func (e *htmlIFrame) SrcDoc(v string) HTMLIFrame {
-	e.elem.setAttribute("srcdoc", v)
+	e.setAttr("srcdoc", v)
 	return e
 }
 
 func (e *htmlIFrame) Style(k, v string) HTMLIFrame {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlIFrame) TabIndex(v int) HTMLIFrame {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlIFrame) Title(v string) HTMLIFrame {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlIFrame) Width(v int) HTMLIFrame {
-	e.elem.setAttribute("width", v)
+	e.setAttr("width", v)
 	return e
 }
 
@@ -20398,14 +20251,9 @@ func (e *htmlIFrame) OnWheel(h EventHandler) HTMLIFrame {
 	return e
 }
 
-func (e *htmlIFrame) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLImg is the interface that describes a <img> HTML element.
 type HTMLImg interface {
-	standardNode
-	writableNode
+	UI
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLImg
@@ -20641,12 +20489,14 @@ type HTMLImg interface {
 
 // Img returns an HTML element that defines an image.
 func Img() HTMLImg {
-	return &htmlImg{
+	e := &htmlImg{
 		elem: elem{
 			tag:         "img",
 			selfClosing: true,
 		},
 	}
+
+	return e
 }
 
 type htmlImg struct {
@@ -20654,67 +20504,67 @@ type htmlImg struct {
 }
 
 func (e *htmlImg) AccessKey(v string) HTMLImg {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlImg) Alt(v string) HTMLImg {
-	e.elem.setAttribute("alt", v)
+	e.setAttr("alt", v)
 	return e
 }
 
 func (e *htmlImg) Class(v string) HTMLImg {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlImg) ContentEditable(v bool) HTMLImg {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlImg) DataSet(k string, v interface{}) HTMLImg {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlImg) Dir(v string) HTMLImg {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlImg) Draggable(v bool) HTMLImg {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlImg) Height(v int) HTMLImg {
-	e.elem.setAttribute("height", v)
+	e.setAttr("height", v)
 	return e
 }
 
 func (e *htmlImg) Hidden(v bool) HTMLImg {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlImg) ID(v string) HTMLImg {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlImg) IsMap(v bool) HTMLImg {
-	e.elem.setAttribute("ismap", v)
+	e.setAttr("ismap", v)
 	return e
 }
 
 func (e *htmlImg) Lang(v string) HTMLImg {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlImg) Sizes(v string) HTMLImg {
-	e.elem.setAttribute("sizes", v)
+	e.setAttr("sizes", v)
 	return e
 }
 
@@ -20724,42 +20574,42 @@ func (e *htmlImg) Spellcheck(v bool) HTMLImg {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlImg) Src(v string) HTMLImg {
-	e.elem.setAttribute("src", ResolveStaticResourcePath(v))
+	e.setAttr("src", StaticResource(v))
 	return e
 }
 
 func (e *htmlImg) SrcSet(v string) HTMLImg {
-	e.elem.setAttribute("srcset", ResolveStaticResourcePath(v))
+	e.setAttr("srcset", StaticResource(v))
 	return e
 }
 
 func (e *htmlImg) Style(k, v string) HTMLImg {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlImg) TabIndex(v int) HTMLImg {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlImg) Title(v string) HTMLImg {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlImg) UseMap(v string) HTMLImg {
-	e.elem.setAttribute("usemap", v)
+	e.setAttr("usemap", v)
 	return e
 }
 
 func (e *htmlImg) Width(v int) HTMLImg {
-	e.elem.setAttribute("width", v)
+	e.setAttr("width", v)
 	return e
 }
 
@@ -21043,14 +20893,9 @@ func (e *htmlImg) OnloadedMetaData(h EventHandler) HTMLImg {
 	return e
 }
 
-func (e *htmlImg) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLInput is the interface that describes a <input> HTML element.
 type HTMLInput interface {
-	standardNode
-	writableNode
+	UI
 
 	// Accept specifies the types of files that the server accepts (only for file type).
 	Accept(v string) HTMLInput
@@ -21283,12 +21128,14 @@ type HTMLInput interface {
 
 // Input returns an HTML element that defines an input control.
 func Input() HTMLInput {
-	return &htmlInput{
+	e := &htmlInput{
 		elem: elem{
 			tag:         "input",
 			selfClosing: true,
 		},
 	}
+
+	return e
 }
 
 type htmlInput struct {
@@ -21296,17 +21143,17 @@ type htmlInput struct {
 }
 
 func (e *htmlInput) Accept(v string) HTMLInput {
-	e.elem.setAttribute("accept", v)
+	e.setAttr("accept", v)
 	return e
 }
 
 func (e *htmlInput) AccessKey(v string) HTMLInput {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlInput) Alt(v string) HTMLInput {
-	e.elem.setAttribute("alt", v)
+	e.setAttr("alt", v)
 	return e
 }
 
@@ -21316,157 +21163,157 @@ func (e *htmlInput) AutoComplete(v bool) HTMLInput {
 		s = "on"
 	}
 
-	e.elem.setAttribute("autocomplete", s)
+	e.setAttr("autocomplete", s)
 	return e
 }
 
 func (e *htmlInput) AutoFocus(v bool) HTMLInput {
-	e.elem.setAttribute("autofocus", v)
+	e.setAttr("autofocus", v)
 	return e
 }
 
 func (e *htmlInput) Checked(v bool) HTMLInput {
-	e.elem.setAttribute("checked", v)
+	e.setAttr("checked", v)
 	return e
 }
 
 func (e *htmlInput) Class(v string) HTMLInput {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlInput) ContentEditable(v bool) HTMLInput {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlInput) DataSet(k string, v interface{}) HTMLInput {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlInput) Dir(v string) HTMLInput {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlInput) DirName(v string) HTMLInput {
-	e.elem.setAttribute("dirname", v)
+	e.setAttr("dirname", v)
 	return e
 }
 
 func (e *htmlInput) Disabled(v bool) HTMLInput {
-	e.elem.setAttribute("disabled", v)
+	e.setAttr("disabled", v)
 	return e
 }
 
 func (e *htmlInput) Draggable(v bool) HTMLInput {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlInput) Form(v string) HTMLInput {
-	e.elem.setAttribute("form", v)
+	e.setAttr("form", v)
 	return e
 }
 
 func (e *htmlInput) FormAction(v string) HTMLInput {
-	e.elem.setAttribute("formaction", v)
+	e.setAttr("formaction", v)
 	return e
 }
 
 func (e *htmlInput) FormEncType(v string) HTMLInput {
-	e.elem.setAttribute("formenctype", v)
+	e.setAttr("formenctype", v)
 	return e
 }
 
 func (e *htmlInput) FormMethod(v string) HTMLInput {
-	e.elem.setAttribute("formmethod", v)
+	e.setAttr("formmethod", v)
 	return e
 }
 
 func (e *htmlInput) FormNoValidate(v bool) HTMLInput {
-	e.elem.setAttribute("formnovalidate", v)
+	e.setAttr("formnovalidate", v)
 	return e
 }
 
 func (e *htmlInput) FormTarget(v string) HTMLInput {
-	e.elem.setAttribute("formtarget", v)
+	e.setAttr("formtarget", v)
 	return e
 }
 
 func (e *htmlInput) Height(v int) HTMLInput {
-	e.elem.setAttribute("height", v)
+	e.setAttr("height", v)
 	return e
 }
 
 func (e *htmlInput) Hidden(v bool) HTMLInput {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlInput) ID(v string) HTMLInput {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlInput) Lang(v string) HTMLInput {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlInput) List(v string) HTMLInput {
-	e.elem.setAttribute("list", v)
+	e.setAttr("list", v)
 	return e
 }
 
 func (e *htmlInput) Max(v string) HTMLInput {
-	e.elem.setAttribute("max", v)
+	e.setAttr("max", v)
 	return e
 }
 
 func (e *htmlInput) MaxLength(v int) HTMLInput {
-	e.elem.setAttribute("maxlength", v)
+	e.setAttr("maxlength", v)
 	return e
 }
 
 func (e *htmlInput) Min(v string) HTMLInput {
-	e.elem.setAttribute("min", v)
+	e.setAttr("min", v)
 	return e
 }
 
 func (e *htmlInput) Multiple(v bool) HTMLInput {
-	e.elem.setAttribute("multiple", v)
+	e.setAttr("multiple", v)
 	return e
 }
 
 func (e *htmlInput) Name(v string) HTMLInput {
-	e.elem.setAttribute("name", v)
+	e.setAttr("name", v)
 	return e
 }
 
 func (e *htmlInput) Pattern(v string) HTMLInput {
-	e.elem.setAttribute("pattern", v)
+	e.setAttr("pattern", v)
 	return e
 }
 
 func (e *htmlInput) Placeholder(v string) HTMLInput {
-	e.elem.setAttribute("placeholder", v)
+	e.setAttr("placeholder", v)
 	return e
 }
 
 func (e *htmlInput) ReadOnly(v bool) HTMLInput {
-	e.elem.setAttribute("readonly", v)
+	e.setAttr("readonly", v)
 	return e
 }
 
 func (e *htmlInput) Required(v bool) HTMLInput {
-	e.elem.setAttribute("required", v)
+	e.setAttr("required", v)
 	return e
 }
 
 func (e *htmlInput) Size(v int) HTMLInput {
-	e.elem.setAttribute("size", v)
+	e.setAttr("size", v)
 	return e
 }
 
@@ -21476,47 +21323,47 @@ func (e *htmlInput) Spellcheck(v bool) HTMLInput {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlInput) Src(v string) HTMLInput {
-	e.elem.setAttribute("src", ResolveStaticResourcePath(v))
+	e.setAttr("src", StaticResource(v))
 	return e
 }
 
 func (e *htmlInput) Step(v int) HTMLInput {
-	e.elem.setAttribute("step", v)
+	e.setAttr("step", v)
 	return e
 }
 
 func (e *htmlInput) Style(k, v string) HTMLInput {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlInput) TabIndex(v int) HTMLInput {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlInput) Title(v string) HTMLInput {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlInput) Type(v string) HTMLInput {
-	e.elem.setAttribute("type", v)
+	e.setAttr("type", v)
 	return e
 }
 
 func (e *htmlInput) Value(v interface{}) HTMLInput {
-	e.elem.setAttribute("value", v)
+	e.setAttr("value", v)
 	return e
 }
 
 func (e *htmlInput) Width(v int) HTMLInput {
-	e.elem.setAttribute("width", v)
+	e.setAttr("width", v)
 	return e
 }
 
@@ -21685,17 +21532,12 @@ func (e *htmlInput) OnWheel(h EventHandler) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLIns is the interface that describes a <ins> HTML element.
 type HTMLIns interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLIns
+	Body(elems ...UI) HTMLIns
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLIns
@@ -21838,20 +21680,22 @@ type HTMLIns interface {
 
 // Ins returns an HTML element that defines a text that has been inserted into a document.
 func Ins() HTMLIns {
-	return &htmlIns{
+	e := &htmlIns{
 		elem: elem{
 			tag:         "ins",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlIns struct {
 	elem
 }
 
-func (e *htmlIns) Body(nodes ...Node) HTMLIns {
-	e.setBody(e, nodes)
+func (e *htmlIns) Body(elems ...UI) HTMLIns {
+	e.setBody(elems...)
 	return e
 }
 
@@ -21860,47 +21704,47 @@ func (e *htmlIns) Text(v interface{}) HTMLIns {
 }
 
 func (e *htmlIns) AccessKey(v string) HTMLIns {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlIns) Class(v string) HTMLIns {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlIns) ContentEditable(v bool) HTMLIns {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlIns) DataSet(k string, v interface{}) HTMLIns {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlIns) Dir(v string) HTMLIns {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlIns) Draggable(v bool) HTMLIns {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlIns) Hidden(v bool) HTMLIns {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlIns) ID(v string) HTMLIns {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlIns) Lang(v string) HTMLIns {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -21910,22 +21754,22 @@ func (e *htmlIns) Spellcheck(v bool) HTMLIns {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlIns) Style(k, v string) HTMLIns {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlIns) TabIndex(v int) HTMLIns {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlIns) Title(v string) HTMLIns {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -22089,17 +21933,12 @@ func (e *htmlIns) OnWheel(h EventHandler) HTMLIns {
 	return e
 }
 
-func (e *htmlIns) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLKbd is the interface that describes a <kbd> HTML element.
 type HTMLKbd interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLKbd
+	Body(elems ...UI) HTMLKbd
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLKbd
@@ -22242,20 +22081,22 @@ type HTMLKbd interface {
 
 // Kbd returns an HTML element that defines keyboard input.
 func Kbd() HTMLKbd {
-	return &htmlKbd{
+	e := &htmlKbd{
 		elem: elem{
 			tag:         "kbd",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlKbd struct {
 	elem
 }
 
-func (e *htmlKbd) Body(nodes ...Node) HTMLKbd {
-	e.setBody(e, nodes)
+func (e *htmlKbd) Body(elems ...UI) HTMLKbd {
+	e.setBody(elems...)
 	return e
 }
 
@@ -22264,47 +22105,47 @@ func (e *htmlKbd) Text(v interface{}) HTMLKbd {
 }
 
 func (e *htmlKbd) AccessKey(v string) HTMLKbd {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlKbd) Class(v string) HTMLKbd {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlKbd) ContentEditable(v bool) HTMLKbd {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlKbd) DataSet(k string, v interface{}) HTMLKbd {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlKbd) Dir(v string) HTMLKbd {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlKbd) Draggable(v bool) HTMLKbd {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlKbd) Hidden(v bool) HTMLKbd {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlKbd) ID(v string) HTMLKbd {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlKbd) Lang(v string) HTMLKbd {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -22314,22 +22155,22 @@ func (e *htmlKbd) Spellcheck(v bool) HTMLKbd {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlKbd) Style(k, v string) HTMLKbd {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlKbd) TabIndex(v int) HTMLKbd {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlKbd) Title(v string) HTMLKbd {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -22493,17 +22334,12 @@ func (e *htmlKbd) OnWheel(h EventHandler) HTMLKbd {
 	return e
 }
 
-func (e *htmlKbd) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLLabel is the interface that describes a <label> HTML element.
 type HTMLLabel interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLLabel
+	Body(elems ...UI) HTMLLabel
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLLabel
@@ -22652,20 +22488,22 @@ type HTMLLabel interface {
 
 // Label returns an HTML element that defines a label for an input element.
 func Label() HTMLLabel {
-	return &htmlLabel{
+	e := &htmlLabel{
 		elem: elem{
 			tag:         "label",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlLabel struct {
 	elem
 }
 
-func (e *htmlLabel) Body(nodes ...Node) HTMLLabel {
-	e.setBody(e, nodes)
+func (e *htmlLabel) Body(elems ...UI) HTMLLabel {
+	e.setBody(elems...)
 	return e
 }
 
@@ -22674,57 +22512,57 @@ func (e *htmlLabel) Text(v interface{}) HTMLLabel {
 }
 
 func (e *htmlLabel) AccessKey(v string) HTMLLabel {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlLabel) Class(v string) HTMLLabel {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlLabel) ContentEditable(v bool) HTMLLabel {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlLabel) DataSet(k string, v interface{}) HTMLLabel {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlLabel) Dir(v string) HTMLLabel {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlLabel) Draggable(v bool) HTMLLabel {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlLabel) For(v string) HTMLLabel {
-	e.elem.setAttribute("for", v)
+	e.setAttr("for", v)
 	return e
 }
 
 func (e *htmlLabel) Form(v string) HTMLLabel {
-	e.elem.setAttribute("form", v)
+	e.setAttr("form", v)
 	return e
 }
 
 func (e *htmlLabel) Hidden(v bool) HTMLLabel {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlLabel) ID(v string) HTMLLabel {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlLabel) Lang(v string) HTMLLabel {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -22734,22 +22572,22 @@ func (e *htmlLabel) Spellcheck(v bool) HTMLLabel {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlLabel) Style(k, v string) HTMLLabel {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlLabel) TabIndex(v int) HTMLLabel {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlLabel) Title(v string) HTMLLabel {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -22913,17 +22751,12 @@ func (e *htmlLabel) OnWheel(h EventHandler) HTMLLabel {
 	return e
 }
 
-func (e *htmlLabel) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLLegends is the interface that describes a <legends> HTML element.
 type HTMLLegends interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLLegends
+	Body(elems ...UI) HTMLLegends
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLLegends
@@ -23066,20 +22899,22 @@ type HTMLLegends interface {
 
 // Legends returns an HTML element that defines a caption for a fieldset element.
 func Legends() HTMLLegends {
-	return &htmlLegends{
+	e := &htmlLegends{
 		elem: elem{
 			tag:         "legends",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlLegends struct {
 	elem
 }
 
-func (e *htmlLegends) Body(nodes ...Node) HTMLLegends {
-	e.setBody(e, nodes)
+func (e *htmlLegends) Body(elems ...UI) HTMLLegends {
+	e.setBody(elems...)
 	return e
 }
 
@@ -23088,47 +22923,47 @@ func (e *htmlLegends) Text(v interface{}) HTMLLegends {
 }
 
 func (e *htmlLegends) AccessKey(v string) HTMLLegends {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlLegends) Class(v string) HTMLLegends {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlLegends) ContentEditable(v bool) HTMLLegends {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlLegends) DataSet(k string, v interface{}) HTMLLegends {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlLegends) Dir(v string) HTMLLegends {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlLegends) Draggable(v bool) HTMLLegends {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlLegends) Hidden(v bool) HTMLLegends {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlLegends) ID(v string) HTMLLegends {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlLegends) Lang(v string) HTMLLegends {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -23138,22 +22973,22 @@ func (e *htmlLegends) Spellcheck(v bool) HTMLLegends {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlLegends) Style(k, v string) HTMLLegends {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlLegends) TabIndex(v int) HTMLLegends {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlLegends) Title(v string) HTMLLegends {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -23317,17 +23152,12 @@ func (e *htmlLegends) OnWheel(h EventHandler) HTMLLegends {
 	return e
 }
 
-func (e *htmlLegends) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLLi is the interface that describes a <li> HTML element.
 type HTMLLi interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLLi
+	Body(elems ...UI) HTMLLi
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLLi
@@ -23473,20 +23303,22 @@ type HTMLLi interface {
 
 // Li returns an HTML element that defines a list item.
 func Li() HTMLLi {
-	return &htmlLi{
+	e := &htmlLi{
 		elem: elem{
 			tag:         "li",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlLi struct {
 	elem
 }
 
-func (e *htmlLi) Body(nodes ...Node) HTMLLi {
-	e.setBody(e, nodes)
+func (e *htmlLi) Body(elems ...UI) HTMLLi {
+	e.setBody(elems...)
 	return e
 }
 
@@ -23495,47 +23327,47 @@ func (e *htmlLi) Text(v interface{}) HTMLLi {
 }
 
 func (e *htmlLi) AccessKey(v string) HTMLLi {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlLi) Class(v string) HTMLLi {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlLi) ContentEditable(v bool) HTMLLi {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlLi) DataSet(k string, v interface{}) HTMLLi {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlLi) Dir(v string) HTMLLi {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlLi) Draggable(v bool) HTMLLi {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlLi) Hidden(v bool) HTMLLi {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlLi) ID(v string) HTMLLi {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlLi) Lang(v string) HTMLLi {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -23545,27 +23377,27 @@ func (e *htmlLi) Spellcheck(v bool) HTMLLi {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlLi) Style(k, v string) HTMLLi {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlLi) TabIndex(v int) HTMLLi {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlLi) Title(v string) HTMLLi {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlLi) Value(v interface{}) HTMLLi {
-	e.elem.setAttribute("value", v)
+	e.setAttr("value", v)
 	return e
 }
 
@@ -23729,14 +23561,9 @@ func (e *htmlLi) OnWheel(h EventHandler) HTMLLi {
 	return e
 }
 
-func (e *htmlLi) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLLink is the interface that describes a <link> HTML element.
 type HTMLLink interface {
-	standardNode
-	writableNode
+	UI
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLLink
@@ -23897,12 +23724,14 @@ type HTMLLink interface {
 
 // Link returns an HTML element that defines the relationship between a document and an external resource (most used to link to style sheets).
 func Link() HTMLLink {
-	return &htmlLink{
+	e := &htmlLink{
 		elem: elem{
 			tag:         "link",
 			selfClosing: true,
 		},
 	}
+
+	return e
 }
 
 type htmlLink struct {
@@ -23910,72 +23739,72 @@ type htmlLink struct {
 }
 
 func (e *htmlLink) AccessKey(v string) HTMLLink {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlLink) Class(v string) HTMLLink {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlLink) ContentEditable(v bool) HTMLLink {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlLink) DataSet(k string, v interface{}) HTMLLink {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlLink) Dir(v string) HTMLLink {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlLink) Draggable(v bool) HTMLLink {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlLink) Hidden(v bool) HTMLLink {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlLink) Href(v string) HTMLLink {
-	e.elem.setAttribute("href", ResolveStaticResourcePath(v))
+	e.setAttr("href", StaticResource(v))
 	return e
 }
 
 func (e *htmlLink) HrefLang(v string) HTMLLink {
-	e.elem.setAttribute("hreflang", v)
+	e.setAttr("hreflang", v)
 	return e
 }
 
 func (e *htmlLink) ID(v string) HTMLLink {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlLink) Lang(v string) HTMLLink {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlLink) Media(v string) HTMLLink {
-	e.elem.setAttribute("media", v)
+	e.setAttr("media", v)
 	return e
 }
 
 func (e *htmlLink) Rel(v string) HTMLLink {
-	e.elem.setAttribute("rel", v)
+	e.setAttr("rel", v)
 	return e
 }
 
 func (e *htmlLink) Sizes(v string) HTMLLink {
-	e.elem.setAttribute("sizes", v)
+	e.setAttr("sizes", v)
 	return e
 }
 
@@ -23985,27 +23814,27 @@ func (e *htmlLink) Spellcheck(v bool) HTMLLink {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlLink) Style(k, v string) HTMLLink {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlLink) TabIndex(v int) HTMLLink {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlLink) Title(v string) HTMLLink {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlLink) Type(v string) HTMLLink {
-	e.elem.setAttribute("type", v)
+	e.setAttr("type", v)
 	return e
 }
 
@@ -24174,17 +24003,12 @@ func (e *htmlLink) OnWheel(h EventHandler) HTMLLink {
 	return e
 }
 
-func (e *htmlLink) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLMain is the interface that describes a <main> HTML element.
 type HTMLMain interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLMain
+	Body(elems ...UI) HTMLMain
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLMain
@@ -24327,20 +24151,22 @@ type HTMLMain interface {
 
 // Main returns an HTML element that specifies the main content of a document.
 func Main() HTMLMain {
-	return &htmlMain{
+	e := &htmlMain{
 		elem: elem{
 			tag:         "main",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlMain struct {
 	elem
 }
 
-func (e *htmlMain) Body(nodes ...Node) HTMLMain {
-	e.setBody(e, nodes)
+func (e *htmlMain) Body(elems ...UI) HTMLMain {
+	e.setBody(elems...)
 	return e
 }
 
@@ -24349,47 +24175,47 @@ func (e *htmlMain) Text(v interface{}) HTMLMain {
 }
 
 func (e *htmlMain) AccessKey(v string) HTMLMain {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlMain) Class(v string) HTMLMain {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlMain) ContentEditable(v bool) HTMLMain {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlMain) DataSet(k string, v interface{}) HTMLMain {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlMain) Dir(v string) HTMLMain {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlMain) Draggable(v bool) HTMLMain {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlMain) Hidden(v bool) HTMLMain {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlMain) ID(v string) HTMLMain {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlMain) Lang(v string) HTMLMain {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -24399,22 +24225,22 @@ func (e *htmlMain) Spellcheck(v bool) HTMLMain {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlMain) Style(k, v string) HTMLMain {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlMain) TabIndex(v int) HTMLMain {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlMain) Title(v string) HTMLMain {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -24578,17 +24404,12 @@ func (e *htmlMain) OnWheel(h EventHandler) HTMLMain {
 	return e
 }
 
-func (e *htmlMain) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLMap is the interface that describes a <map> HTML element.
 type HTMLMap interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLMap
+	Body(elems ...UI) HTMLMap
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLMap
@@ -24734,20 +24555,22 @@ type HTMLMap interface {
 
 // Map returns an HTML element that defines a client-side image-map.
 func Map() HTMLMap {
-	return &htmlMap{
+	e := &htmlMap{
 		elem: elem{
 			tag:         "map",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlMap struct {
 	elem
 }
 
-func (e *htmlMap) Body(nodes ...Node) HTMLMap {
-	e.setBody(e, nodes)
+func (e *htmlMap) Body(elems ...UI) HTMLMap {
+	e.setBody(elems...)
 	return e
 }
 
@@ -24756,52 +24579,52 @@ func (e *htmlMap) Text(v interface{}) HTMLMap {
 }
 
 func (e *htmlMap) AccessKey(v string) HTMLMap {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlMap) Class(v string) HTMLMap {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlMap) ContentEditable(v bool) HTMLMap {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlMap) DataSet(k string, v interface{}) HTMLMap {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlMap) Dir(v string) HTMLMap {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlMap) Draggable(v bool) HTMLMap {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlMap) Hidden(v bool) HTMLMap {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlMap) ID(v string) HTMLMap {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlMap) Lang(v string) HTMLMap {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlMap) Name(v string) HTMLMap {
-	e.elem.setAttribute("name", v)
+	e.setAttr("name", v)
 	return e
 }
 
@@ -24811,22 +24634,22 @@ func (e *htmlMap) Spellcheck(v bool) HTMLMap {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlMap) Style(k, v string) HTMLMap {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlMap) TabIndex(v int) HTMLMap {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlMap) Title(v string) HTMLMap {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -24990,17 +24813,12 @@ func (e *htmlMap) OnWheel(h EventHandler) HTMLMap {
 	return e
 }
 
-func (e *htmlMap) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLMark is the interface that describes a <mark> HTML element.
 type HTMLMark interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLMark
+	Body(elems ...UI) HTMLMark
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLMark
@@ -25143,20 +24961,22 @@ type HTMLMark interface {
 
 // Mark returns an HTML element that defines marked/highlighted text.
 func Mark() HTMLMark {
-	return &htmlMark{
+	e := &htmlMark{
 		elem: elem{
 			tag:         "mark",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlMark struct {
 	elem
 }
 
-func (e *htmlMark) Body(nodes ...Node) HTMLMark {
-	e.setBody(e, nodes)
+func (e *htmlMark) Body(elems ...UI) HTMLMark {
+	e.setBody(elems...)
 	return e
 }
 
@@ -25165,47 +24985,47 @@ func (e *htmlMark) Text(v interface{}) HTMLMark {
 }
 
 func (e *htmlMark) AccessKey(v string) HTMLMark {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlMark) Class(v string) HTMLMark {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlMark) ContentEditable(v bool) HTMLMark {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlMark) DataSet(k string, v interface{}) HTMLMark {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlMark) Dir(v string) HTMLMark {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlMark) Draggable(v bool) HTMLMark {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlMark) Hidden(v bool) HTMLMark {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlMark) ID(v string) HTMLMark {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlMark) Lang(v string) HTMLMark {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -25215,22 +25035,22 @@ func (e *htmlMark) Spellcheck(v bool) HTMLMark {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlMark) Style(k, v string) HTMLMark {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlMark) TabIndex(v int) HTMLMark {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlMark) Title(v string) HTMLMark {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -25394,14 +25214,9 @@ func (e *htmlMark) OnWheel(h EventHandler) HTMLMark {
 	return e
 }
 
-func (e *htmlMark) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLMeta is the interface that describes a <meta> HTML element.
 type HTMLMeta interface {
-	standardNode
-	writableNode
+	UI
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLMeta
@@ -25457,12 +25272,14 @@ type HTMLMeta interface {
 
 // Meta returns an HTML element that .
 func Meta() HTMLMeta {
-	return &htmlMeta{
+	e := &htmlMeta{
 		elem: elem{
 			tag:         "meta",
 			selfClosing: true,
 		},
 	}
+
+	return e
 }
 
 type htmlMeta struct {
@@ -25470,67 +25287,67 @@ type htmlMeta struct {
 }
 
 func (e *htmlMeta) AccessKey(v string) HTMLMeta {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlMeta) Charset(v string) HTMLMeta {
-	e.elem.setAttribute("charset", v)
+	e.setAttr("charset", v)
 	return e
 }
 
 func (e *htmlMeta) Class(v string) HTMLMeta {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlMeta) Content(v string) HTMLMeta {
-	e.elem.setAttribute("content", v)
+	e.setAttr("content", v)
 	return e
 }
 
 func (e *htmlMeta) ContentEditable(v bool) HTMLMeta {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlMeta) DataSet(k string, v interface{}) HTMLMeta {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlMeta) Dir(v string) HTMLMeta {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlMeta) Draggable(v bool) HTMLMeta {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlMeta) HTTPEquiv(v string) HTMLMeta {
-	e.elem.setAttribute("httpequiv", v)
+	e.setAttr("httpequiv", v)
 	return e
 }
 
 func (e *htmlMeta) Hidden(v bool) HTMLMeta {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlMeta) ID(v string) HTMLMeta {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlMeta) Lang(v string) HTMLMeta {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlMeta) Name(v string) HTMLMeta {
-	e.elem.setAttribute("name", v)
+	e.setAttr("name", v)
 	return e
 }
 
@@ -25540,36 +25357,31 @@ func (e *htmlMeta) Spellcheck(v bool) HTMLMeta {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlMeta) Style(k, v string) HTMLMeta {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlMeta) TabIndex(v int) HTMLMeta {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlMeta) Title(v string) HTMLMeta {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
-}
-
-func (e *htmlMeta) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
 }
 
 // HTMLMeter is the interface that describes a <meter> HTML element.
 type HTMLMeter interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLMeter
+	Body(elems ...UI) HTMLMeter
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLMeter
@@ -25733,20 +25545,22 @@ type HTMLMeter interface {
 
 // Meter returns an HTML element that defines a scalar measurement within a known range (a gauge).
 func Meter() HTMLMeter {
-	return &htmlMeter{
+	e := &htmlMeter{
 		elem: elem{
 			tag:         "meter",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlMeter struct {
 	elem
 }
 
-func (e *htmlMeter) Body(nodes ...Node) HTMLMeter {
-	e.setBody(e, nodes)
+func (e *htmlMeter) Body(elems ...UI) HTMLMeter {
+	e.setBody(elems...)
 	return e
 }
 
@@ -25755,77 +25569,77 @@ func (e *htmlMeter) Text(v interface{}) HTMLMeter {
 }
 
 func (e *htmlMeter) AccessKey(v string) HTMLMeter {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlMeter) Class(v string) HTMLMeter {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlMeter) ContentEditable(v bool) HTMLMeter {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlMeter) DataSet(k string, v interface{}) HTMLMeter {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlMeter) Dir(v string) HTMLMeter {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlMeter) Draggable(v bool) HTMLMeter {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlMeter) Form(v string) HTMLMeter {
-	e.elem.setAttribute("form", v)
+	e.setAttr("form", v)
 	return e
 }
 
 func (e *htmlMeter) Hidden(v bool) HTMLMeter {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlMeter) High(v float64) HTMLMeter {
-	e.elem.setAttribute("high", v)
+	e.setAttr("high", v)
 	return e
 }
 
 func (e *htmlMeter) ID(v string) HTMLMeter {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlMeter) Lang(v string) HTMLMeter {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlMeter) Low(v float64) HTMLMeter {
-	e.elem.setAttribute("low", v)
+	e.setAttr("low", v)
 	return e
 }
 
 func (e *htmlMeter) Max(v string) HTMLMeter {
-	e.elem.setAttribute("max", v)
+	e.setAttr("max", v)
 	return e
 }
 
 func (e *htmlMeter) Min(v string) HTMLMeter {
-	e.elem.setAttribute("min", v)
+	e.setAttr("min", v)
 	return e
 }
 
 func (e *htmlMeter) Optimum(v float64) HTMLMeter {
-	e.elem.setAttribute("optimum", v)
+	e.setAttr("optimum", v)
 	return e
 }
 
@@ -25835,27 +25649,27 @@ func (e *htmlMeter) Spellcheck(v bool) HTMLMeter {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlMeter) Style(k, v string) HTMLMeter {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlMeter) TabIndex(v int) HTMLMeter {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlMeter) Title(v string) HTMLMeter {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlMeter) Value(v interface{}) HTMLMeter {
-	e.elem.setAttribute("value", v)
+	e.setAttr("value", v)
 	return e
 }
 
@@ -26019,17 +25833,12 @@ func (e *htmlMeter) OnWheel(h EventHandler) HTMLMeter {
 	return e
 }
 
-func (e *htmlMeter) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLNav is the interface that describes a <nav> HTML element.
 type HTMLNav interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLNav
+	Body(elems ...UI) HTMLNav
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLNav
@@ -26172,20 +25981,22 @@ type HTMLNav interface {
 
 // Nav returns an HTML element that defines navigation links.
 func Nav() HTMLNav {
-	return &htmlNav{
+	e := &htmlNav{
 		elem: elem{
 			tag:         "nav",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlNav struct {
 	elem
 }
 
-func (e *htmlNav) Body(nodes ...Node) HTMLNav {
-	e.setBody(e, nodes)
+func (e *htmlNav) Body(elems ...UI) HTMLNav {
+	e.setBody(elems...)
 	return e
 }
 
@@ -26194,47 +26005,47 @@ func (e *htmlNav) Text(v interface{}) HTMLNav {
 }
 
 func (e *htmlNav) AccessKey(v string) HTMLNav {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlNav) Class(v string) HTMLNav {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlNav) ContentEditable(v bool) HTMLNav {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlNav) DataSet(k string, v interface{}) HTMLNav {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlNav) Dir(v string) HTMLNav {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlNav) Draggable(v bool) HTMLNav {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlNav) Hidden(v bool) HTMLNav {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlNav) ID(v string) HTMLNav {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlNav) Lang(v string) HTMLNav {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -26244,22 +26055,22 @@ func (e *htmlNav) Spellcheck(v bool) HTMLNav {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlNav) Style(k, v string) HTMLNav {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlNav) TabIndex(v int) HTMLNav {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlNav) Title(v string) HTMLNav {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -26423,17 +26234,12 @@ func (e *htmlNav) OnWheel(h EventHandler) HTMLNav {
 	return e
 }
 
-func (e *htmlNav) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLNoScript is the interface that describes a <noscript> HTML element.
 type HTMLNoScript interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLNoScript
+	Body(elems ...UI) HTMLNoScript
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLNoScript
@@ -26480,20 +26286,22 @@ type HTMLNoScript interface {
 
 // NoScript returns an HTML element that defines an alternate content for users that do not support client-side scripts.
 func NoScript() HTMLNoScript {
-	return &htmlNoScript{
+	e := &htmlNoScript{
 		elem: elem{
 			tag:         "noscript",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlNoScript struct {
 	elem
 }
 
-func (e *htmlNoScript) Body(nodes ...Node) HTMLNoScript {
-	e.setBody(e, nodes)
+func (e *htmlNoScript) Body(elems ...UI) HTMLNoScript {
+	e.setBody(elems...)
 	return e
 }
 
@@ -26502,47 +26310,47 @@ func (e *htmlNoScript) Text(v interface{}) HTMLNoScript {
 }
 
 func (e *htmlNoScript) AccessKey(v string) HTMLNoScript {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlNoScript) Class(v string) HTMLNoScript {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlNoScript) ContentEditable(v bool) HTMLNoScript {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlNoScript) DataSet(k string, v interface{}) HTMLNoScript {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlNoScript) Dir(v string) HTMLNoScript {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlNoScript) Draggable(v bool) HTMLNoScript {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlNoScript) Hidden(v bool) HTMLNoScript {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlNoScript) ID(v string) HTMLNoScript {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlNoScript) Lang(v string) HTMLNoScript {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -26552,36 +26360,31 @@ func (e *htmlNoScript) Spellcheck(v bool) HTMLNoScript {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlNoScript) Style(k, v string) HTMLNoScript {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlNoScript) TabIndex(v int) HTMLNoScript {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlNoScript) Title(v string) HTMLNoScript {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
-}
-
-func (e *htmlNoScript) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
 }
 
 // HTMLObject is the interface that describes a <object> HTML element.
 type HTMLObject interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLObject
+	Body(elems ...UI) HTMLObject
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLObject
@@ -26814,20 +26617,22 @@ type HTMLObject interface {
 
 // Object returns an HTML element that defines an embedded object.
 func Object() HTMLObject {
-	return &htmlObject{
+	e := &htmlObject{
 		elem: elem{
 			tag:         "object",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlObject struct {
 	elem
 }
 
-func (e *htmlObject) Body(nodes ...Node) HTMLObject {
-	e.setBody(e, nodes)
+func (e *htmlObject) Body(elems ...UI) HTMLObject {
+	e.setBody(elems...)
 	return e
 }
 
@@ -26836,67 +26641,67 @@ func (e *htmlObject) Text(v interface{}) HTMLObject {
 }
 
 func (e *htmlObject) AccessKey(v string) HTMLObject {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlObject) Class(v string) HTMLObject {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlObject) ContentEditable(v bool) HTMLObject {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlObject) Data(v string) HTMLObject {
-	e.elem.setAttribute("data", ResolveStaticResourcePath(v))
+	e.setAttr("data", StaticResource(v))
 	return e
 }
 
 func (e *htmlObject) DataSet(k string, v interface{}) HTMLObject {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlObject) Dir(v string) HTMLObject {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlObject) Draggable(v bool) HTMLObject {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlObject) Form(v string) HTMLObject {
-	e.elem.setAttribute("form", v)
+	e.setAttr("form", v)
 	return e
 }
 
 func (e *htmlObject) Height(v int) HTMLObject {
-	e.elem.setAttribute("height", v)
+	e.setAttr("height", v)
 	return e
 }
 
 func (e *htmlObject) Hidden(v bool) HTMLObject {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlObject) ID(v string) HTMLObject {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlObject) Lang(v string) HTMLObject {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlObject) Name(v string) HTMLObject {
-	e.elem.setAttribute("name", v)
+	e.setAttr("name", v)
 	return e
 }
 
@@ -26906,37 +26711,37 @@ func (e *htmlObject) Spellcheck(v bool) HTMLObject {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlObject) Style(k, v string) HTMLObject {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlObject) TabIndex(v int) HTMLObject {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlObject) Title(v string) HTMLObject {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlObject) Type(v string) HTMLObject {
-	e.elem.setAttribute("type", v)
+	e.setAttr("type", v)
 	return e
 }
 
 func (e *htmlObject) UseMap(v string) HTMLObject {
-	e.elem.setAttribute("usemap", v)
+	e.setAttr("usemap", v)
 	return e
 }
 
 func (e *htmlObject) Width(v int) HTMLObject {
-	e.elem.setAttribute("width", v)
+	e.setAttr("width", v)
 	return e
 }
 
@@ -27215,17 +27020,12 @@ func (e *htmlObject) OnloadedMetaData(h EventHandler) HTMLObject {
 	return e
 }
 
-func (e *htmlObject) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLOl is the interface that describes a <ol> HTML element.
 type HTMLOl interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLOl
+	Body(elems ...UI) HTMLOl
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLOl
@@ -27377,20 +27177,22 @@ type HTMLOl interface {
 
 // Ol returns an HTML element that defines an ordered list.
 func Ol() HTMLOl {
-	return &htmlOl{
+	e := &htmlOl{
 		elem: elem{
 			tag:         "ol",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlOl struct {
 	elem
 }
 
-func (e *htmlOl) Body(nodes ...Node) HTMLOl {
-	e.setBody(e, nodes)
+func (e *htmlOl) Body(elems ...UI) HTMLOl {
+	e.setBody(elems...)
 	return e
 }
 
@@ -27399,52 +27201,52 @@ func (e *htmlOl) Text(v interface{}) HTMLOl {
 }
 
 func (e *htmlOl) AccessKey(v string) HTMLOl {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlOl) Class(v string) HTMLOl {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlOl) ContentEditable(v bool) HTMLOl {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlOl) DataSet(k string, v interface{}) HTMLOl {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlOl) Dir(v string) HTMLOl {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlOl) Draggable(v bool) HTMLOl {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlOl) Hidden(v bool) HTMLOl {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlOl) ID(v string) HTMLOl {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlOl) Lang(v string) HTMLOl {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlOl) Reversed(v bool) HTMLOl {
-	e.elem.setAttribute("reversed", v)
+	e.setAttr("reversed", v)
 	return e
 }
 
@@ -27454,32 +27256,32 @@ func (e *htmlOl) Spellcheck(v bool) HTMLOl {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlOl) Start(v int) HTMLOl {
-	e.elem.setAttribute("start", v)
+	e.setAttr("start", v)
 	return e
 }
 
 func (e *htmlOl) Style(k, v string) HTMLOl {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlOl) TabIndex(v int) HTMLOl {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlOl) Title(v string) HTMLOl {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlOl) Type(v string) HTMLOl {
-	e.elem.setAttribute("type", v)
+	e.setAttr("type", v)
 	return e
 }
 
@@ -27643,17 +27445,12 @@ func (e *htmlOl) OnWheel(h EventHandler) HTMLOl {
 	return e
 }
 
-func (e *htmlOl) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLOptGroup is the interface that describes a <optgroup> HTML element.
 type HTMLOptGroup interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLOptGroup
+	Body(elems ...UI) HTMLOptGroup
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLOptGroup
@@ -27802,20 +27599,22 @@ type HTMLOptGroup interface {
 
 // OptGroup returns an HTML element that defines a group of related options in a drop-down list.
 func OptGroup() HTMLOptGroup {
-	return &htmlOptGroup{
+	e := &htmlOptGroup{
 		elem: elem{
 			tag:         "optgroup",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlOptGroup struct {
 	elem
 }
 
-func (e *htmlOptGroup) Body(nodes ...Node) HTMLOptGroup {
-	e.setBody(e, nodes)
+func (e *htmlOptGroup) Body(elems ...UI) HTMLOptGroup {
+	e.setBody(elems...)
 	return e
 }
 
@@ -27824,57 +27623,57 @@ func (e *htmlOptGroup) Text(v interface{}) HTMLOptGroup {
 }
 
 func (e *htmlOptGroup) AccessKey(v string) HTMLOptGroup {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlOptGroup) Class(v string) HTMLOptGroup {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlOptGroup) ContentEditable(v bool) HTMLOptGroup {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlOptGroup) DataSet(k string, v interface{}) HTMLOptGroup {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlOptGroup) Dir(v string) HTMLOptGroup {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlOptGroup) Disabled(v bool) HTMLOptGroup {
-	e.elem.setAttribute("disabled", v)
+	e.setAttr("disabled", v)
 	return e
 }
 
 func (e *htmlOptGroup) Draggable(v bool) HTMLOptGroup {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlOptGroup) Hidden(v bool) HTMLOptGroup {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlOptGroup) ID(v string) HTMLOptGroup {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlOptGroup) Label(v string) HTMLOptGroup {
-	e.elem.setAttribute("label", v)
+	e.setAttr("label", v)
 	return e
 }
 
 func (e *htmlOptGroup) Lang(v string) HTMLOptGroup {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -27884,22 +27683,22 @@ func (e *htmlOptGroup) Spellcheck(v bool) HTMLOptGroup {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlOptGroup) Style(k, v string) HTMLOptGroup {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlOptGroup) TabIndex(v int) HTMLOptGroup {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlOptGroup) Title(v string) HTMLOptGroup {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -28063,17 +27862,12 @@ func (e *htmlOptGroup) OnWheel(h EventHandler) HTMLOptGroup {
 	return e
 }
 
-func (e *htmlOptGroup) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLOption is the interface that describes a <option> HTML element.
 type HTMLOption interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLOption
+	Body(elems ...UI) HTMLOption
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLOption
@@ -28228,20 +28022,22 @@ type HTMLOption interface {
 
 // Option returns an HTML element that defines an option in a drop-down list.
 func Option() HTMLOption {
-	return &htmlOption{
+	e := &htmlOption{
 		elem: elem{
 			tag:         "option",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlOption struct {
 	elem
 }
 
-func (e *htmlOption) Body(nodes ...Node) HTMLOption {
-	e.setBody(e, nodes)
+func (e *htmlOption) Body(elems ...UI) HTMLOption {
+	e.setBody(elems...)
 	return e
 }
 
@@ -28250,62 +28046,62 @@ func (e *htmlOption) Text(v interface{}) HTMLOption {
 }
 
 func (e *htmlOption) AccessKey(v string) HTMLOption {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlOption) Class(v string) HTMLOption {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlOption) ContentEditable(v bool) HTMLOption {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlOption) DataSet(k string, v interface{}) HTMLOption {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlOption) Dir(v string) HTMLOption {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlOption) Disabled(v bool) HTMLOption {
-	e.elem.setAttribute("disabled", v)
+	e.setAttr("disabled", v)
 	return e
 }
 
 func (e *htmlOption) Draggable(v bool) HTMLOption {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlOption) Hidden(v bool) HTMLOption {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlOption) ID(v string) HTMLOption {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlOption) Label(v string) HTMLOption {
-	e.elem.setAttribute("label", v)
+	e.setAttr("label", v)
 	return e
 }
 
 func (e *htmlOption) Lang(v string) HTMLOption {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlOption) Selected(v bool) HTMLOption {
-	e.elem.setAttribute("selected", v)
+	e.setAttr("selected", v)
 	return e
 }
 
@@ -28315,27 +28111,27 @@ func (e *htmlOption) Spellcheck(v bool) HTMLOption {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlOption) Style(k, v string) HTMLOption {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlOption) TabIndex(v int) HTMLOption {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlOption) Title(v string) HTMLOption {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlOption) Value(v interface{}) HTMLOption {
-	e.elem.setAttribute("value", v)
+	e.setAttr("value", v)
 	return e
 }
 
@@ -28499,17 +28295,12 @@ func (e *htmlOption) OnWheel(h EventHandler) HTMLOption {
 	return e
 }
 
-func (e *htmlOption) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLOutput is the interface that describes a <output> HTML element.
 type HTMLOutput interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLOutput
+	Body(elems ...UI) HTMLOutput
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLOutput
@@ -28661,20 +28452,22 @@ type HTMLOutput interface {
 
 // Output returns an HTML element that .
 func Output() HTMLOutput {
-	return &htmlOutput{
+	e := &htmlOutput{
 		elem: elem{
 			tag:         "output",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlOutput struct {
 	elem
 }
 
-func (e *htmlOutput) Body(nodes ...Node) HTMLOutput {
-	e.setBody(e, nodes)
+func (e *htmlOutput) Body(elems ...UI) HTMLOutput {
+	e.setBody(elems...)
 	return e
 }
 
@@ -28683,62 +28476,62 @@ func (e *htmlOutput) Text(v interface{}) HTMLOutput {
 }
 
 func (e *htmlOutput) AccessKey(v string) HTMLOutput {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlOutput) Class(v string) HTMLOutput {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlOutput) ContentEditable(v bool) HTMLOutput {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlOutput) DataSet(k string, v interface{}) HTMLOutput {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlOutput) Dir(v string) HTMLOutput {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlOutput) Draggable(v bool) HTMLOutput {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlOutput) For(v string) HTMLOutput {
-	e.elem.setAttribute("for", v)
+	e.setAttr("for", v)
 	return e
 }
 
 func (e *htmlOutput) Form(v string) HTMLOutput {
-	e.elem.setAttribute("form", v)
+	e.setAttr("form", v)
 	return e
 }
 
 func (e *htmlOutput) Hidden(v bool) HTMLOutput {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlOutput) ID(v string) HTMLOutput {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlOutput) Lang(v string) HTMLOutput {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlOutput) Name(v string) HTMLOutput {
-	e.elem.setAttribute("name", v)
+	e.setAttr("name", v)
 	return e
 }
 
@@ -28748,22 +28541,22 @@ func (e *htmlOutput) Spellcheck(v bool) HTMLOutput {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlOutput) Style(k, v string) HTMLOutput {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlOutput) TabIndex(v int) HTMLOutput {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlOutput) Title(v string) HTMLOutput {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -28927,17 +28720,12 @@ func (e *htmlOutput) OnWheel(h EventHandler) HTMLOutput {
 	return e
 }
 
-func (e *htmlOutput) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLP is the interface that describes a <p> HTML element.
 type HTMLP interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLP
+	Body(elems ...UI) HTMLP
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLP
@@ -29080,20 +28868,22 @@ type HTMLP interface {
 
 // P returns an HTML element that defines a paragraph.
 func P() HTMLP {
-	return &htmlP{
+	e := &htmlP{
 		elem: elem{
 			tag:         "p",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlP struct {
 	elem
 }
 
-func (e *htmlP) Body(nodes ...Node) HTMLP {
-	e.setBody(e, nodes)
+func (e *htmlP) Body(elems ...UI) HTMLP {
+	e.setBody(elems...)
 	return e
 }
 
@@ -29102,47 +28892,47 @@ func (e *htmlP) Text(v interface{}) HTMLP {
 }
 
 func (e *htmlP) AccessKey(v string) HTMLP {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlP) Class(v string) HTMLP {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlP) ContentEditable(v bool) HTMLP {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlP) DataSet(k string, v interface{}) HTMLP {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlP) Dir(v string) HTMLP {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlP) Draggable(v bool) HTMLP {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlP) Hidden(v bool) HTMLP {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlP) ID(v string) HTMLP {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlP) Lang(v string) HTMLP {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -29152,22 +28942,22 @@ func (e *htmlP) Spellcheck(v bool) HTMLP {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlP) Style(k, v string) HTMLP {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlP) TabIndex(v int) HTMLP {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlP) Title(v string) HTMLP {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -29331,14 +29121,9 @@ func (e *htmlP) OnWheel(h EventHandler) HTMLP {
 	return e
 }
 
-func (e *htmlP) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLParam is the interface that describes a <param> HTML element.
 type HTMLParam interface {
-	standardNode
-	writableNode
+	UI
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLParam
@@ -29484,12 +29269,14 @@ type HTMLParam interface {
 
 // Param returns an HTML element that defines a parameter for an object.
 func Param() HTMLParam {
-	return &htmlParam{
+	e := &htmlParam{
 		elem: elem{
 			tag:         "param",
 			selfClosing: true,
 		},
 	}
+
+	return e
 }
 
 type htmlParam struct {
@@ -29497,52 +29284,52 @@ type htmlParam struct {
 }
 
 func (e *htmlParam) AccessKey(v string) HTMLParam {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlParam) Class(v string) HTMLParam {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlParam) ContentEditable(v bool) HTMLParam {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlParam) DataSet(k string, v interface{}) HTMLParam {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlParam) Dir(v string) HTMLParam {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlParam) Draggable(v bool) HTMLParam {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlParam) Hidden(v bool) HTMLParam {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlParam) ID(v string) HTMLParam {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlParam) Lang(v string) HTMLParam {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlParam) Name(v string) HTMLParam {
-	e.elem.setAttribute("name", v)
+	e.setAttr("name", v)
 	return e
 }
 
@@ -29552,27 +29339,27 @@ func (e *htmlParam) Spellcheck(v bool) HTMLParam {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlParam) Style(k, v string) HTMLParam {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlParam) TabIndex(v int) HTMLParam {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlParam) Title(v string) HTMLParam {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlParam) Value(v interface{}) HTMLParam {
-	e.elem.setAttribute("value", v)
+	e.setAttr("value", v)
 	return e
 }
 
@@ -29736,17 +29523,12 @@ func (e *htmlParam) OnWheel(h EventHandler) HTMLParam {
 	return e
 }
 
-func (e *htmlParam) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLPicture is the interface that describes a <picture> HTML element.
 type HTMLPicture interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLPicture
+	Body(elems ...UI) HTMLPicture
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLPicture
@@ -29889,20 +29671,22 @@ type HTMLPicture interface {
 
 // Picture returns an HTML element that defines a container for multiple image resources.
 func Picture() HTMLPicture {
-	return &htmlPicture{
+	e := &htmlPicture{
 		elem: elem{
 			tag:         "picture",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlPicture struct {
 	elem
 }
 
-func (e *htmlPicture) Body(nodes ...Node) HTMLPicture {
-	e.setBody(e, nodes)
+func (e *htmlPicture) Body(elems ...UI) HTMLPicture {
+	e.setBody(elems...)
 	return e
 }
 
@@ -29911,47 +29695,47 @@ func (e *htmlPicture) Text(v interface{}) HTMLPicture {
 }
 
 func (e *htmlPicture) AccessKey(v string) HTMLPicture {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlPicture) Class(v string) HTMLPicture {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlPicture) ContentEditable(v bool) HTMLPicture {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlPicture) DataSet(k string, v interface{}) HTMLPicture {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlPicture) Dir(v string) HTMLPicture {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlPicture) Draggable(v bool) HTMLPicture {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlPicture) Hidden(v bool) HTMLPicture {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlPicture) ID(v string) HTMLPicture {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlPicture) Lang(v string) HTMLPicture {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -29961,22 +29745,22 @@ func (e *htmlPicture) Spellcheck(v bool) HTMLPicture {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlPicture) Style(k, v string) HTMLPicture {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlPicture) TabIndex(v int) HTMLPicture {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlPicture) Title(v string) HTMLPicture {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -30140,17 +29924,12 @@ func (e *htmlPicture) OnWheel(h EventHandler) HTMLPicture {
 	return e
 }
 
-func (e *htmlPicture) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLPre is the interface that describes a <pre> HTML element.
 type HTMLPre interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLPre
+	Body(elems ...UI) HTMLPre
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLPre
@@ -30293,20 +30072,22 @@ type HTMLPre interface {
 
 // Pre returns an HTML element that defines preformatted text.
 func Pre() HTMLPre {
-	return &htmlPre{
+	e := &htmlPre{
 		elem: elem{
 			tag:         "pre",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlPre struct {
 	elem
 }
 
-func (e *htmlPre) Body(nodes ...Node) HTMLPre {
-	e.setBody(e, nodes)
+func (e *htmlPre) Body(elems ...UI) HTMLPre {
+	e.setBody(elems...)
 	return e
 }
 
@@ -30315,47 +30096,47 @@ func (e *htmlPre) Text(v interface{}) HTMLPre {
 }
 
 func (e *htmlPre) AccessKey(v string) HTMLPre {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlPre) Class(v string) HTMLPre {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlPre) ContentEditable(v bool) HTMLPre {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlPre) DataSet(k string, v interface{}) HTMLPre {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlPre) Dir(v string) HTMLPre {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlPre) Draggable(v bool) HTMLPre {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlPre) Hidden(v bool) HTMLPre {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlPre) ID(v string) HTMLPre {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlPre) Lang(v string) HTMLPre {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -30365,22 +30146,22 @@ func (e *htmlPre) Spellcheck(v bool) HTMLPre {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlPre) Style(k, v string) HTMLPre {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlPre) TabIndex(v int) HTMLPre {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlPre) Title(v string) HTMLPre {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -30544,17 +30325,12 @@ func (e *htmlPre) OnWheel(h EventHandler) HTMLPre {
 	return e
 }
 
-func (e *htmlPre) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLProgress is the interface that describes a <progress> HTML element.
 type HTMLProgress interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLProgress
+	Body(elems ...UI) HTMLProgress
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLProgress
@@ -30703,20 +30479,22 @@ type HTMLProgress interface {
 
 // Progress returns an HTML element that represents the progress of a task.
 func Progress() HTMLProgress {
-	return &htmlProgress{
+	e := &htmlProgress{
 		elem: elem{
 			tag:         "progress",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlProgress struct {
 	elem
 }
 
-func (e *htmlProgress) Body(nodes ...Node) HTMLProgress {
-	e.setBody(e, nodes)
+func (e *htmlProgress) Body(elems ...UI) HTMLProgress {
+	e.setBody(elems...)
 	return e
 }
 
@@ -30725,52 +30503,52 @@ func (e *htmlProgress) Text(v interface{}) HTMLProgress {
 }
 
 func (e *htmlProgress) AccessKey(v string) HTMLProgress {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlProgress) Class(v string) HTMLProgress {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlProgress) ContentEditable(v bool) HTMLProgress {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlProgress) DataSet(k string, v interface{}) HTMLProgress {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlProgress) Dir(v string) HTMLProgress {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlProgress) Draggable(v bool) HTMLProgress {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlProgress) Hidden(v bool) HTMLProgress {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlProgress) ID(v string) HTMLProgress {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlProgress) Lang(v string) HTMLProgress {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlProgress) Max(v string) HTMLProgress {
-	e.elem.setAttribute("max", v)
+	e.setAttr("max", v)
 	return e
 }
 
@@ -30780,27 +30558,27 @@ func (e *htmlProgress) Spellcheck(v bool) HTMLProgress {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlProgress) Style(k, v string) HTMLProgress {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlProgress) TabIndex(v int) HTMLProgress {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlProgress) Title(v string) HTMLProgress {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlProgress) Value(v interface{}) HTMLProgress {
-	e.elem.setAttribute("value", v)
+	e.setAttr("value", v)
 	return e
 }
 
@@ -30964,17 +30742,12 @@ func (e *htmlProgress) OnWheel(h EventHandler) HTMLProgress {
 	return e
 }
 
-func (e *htmlProgress) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLQ is the interface that describes a <q> HTML element.
 type HTMLQ interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLQ
+	Body(elems ...UI) HTMLQ
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLQ
@@ -31120,20 +30893,22 @@ type HTMLQ interface {
 
 // Q returns an HTML element that defines a short quotation.
 func Q() HTMLQ {
-	return &htmlQ{
+	e := &htmlQ{
 		elem: elem{
 			tag:         "q",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlQ struct {
 	elem
 }
 
-func (e *htmlQ) Body(nodes ...Node) HTMLQ {
-	e.setBody(e, nodes)
+func (e *htmlQ) Body(elems ...UI) HTMLQ {
+	e.setBody(elems...)
 	return e
 }
 
@@ -31142,52 +30917,52 @@ func (e *htmlQ) Text(v interface{}) HTMLQ {
 }
 
 func (e *htmlQ) AccessKey(v string) HTMLQ {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlQ) Cite(v string) HTMLQ {
-	e.elem.setAttribute("cite", ResolveStaticResourcePath(v))
+	e.setAttr("cite", StaticResource(v))
 	return e
 }
 
 func (e *htmlQ) Class(v string) HTMLQ {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlQ) ContentEditable(v bool) HTMLQ {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlQ) DataSet(k string, v interface{}) HTMLQ {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlQ) Dir(v string) HTMLQ {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlQ) Draggable(v bool) HTMLQ {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlQ) Hidden(v bool) HTMLQ {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlQ) ID(v string) HTMLQ {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlQ) Lang(v string) HTMLQ {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -31197,22 +30972,22 @@ func (e *htmlQ) Spellcheck(v bool) HTMLQ {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlQ) Style(k, v string) HTMLQ {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlQ) TabIndex(v int) HTMLQ {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlQ) Title(v string) HTMLQ {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -31376,17 +31151,12 @@ func (e *htmlQ) OnWheel(h EventHandler) HTMLQ {
 	return e
 }
 
-func (e *htmlQ) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLRp is the interface that describes a <rp> HTML element.
 type HTMLRp interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLRp
+	Body(elems ...UI) HTMLRp
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLRp
@@ -31529,20 +31299,22 @@ type HTMLRp interface {
 
 // Rp returns an HTML element that defines what to show in browsers that do not support ruby annotations.
 func Rp() HTMLRp {
-	return &htmlRp{
+	e := &htmlRp{
 		elem: elem{
 			tag:         "rp",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlRp struct {
 	elem
 }
 
-func (e *htmlRp) Body(nodes ...Node) HTMLRp {
-	e.setBody(e, nodes)
+func (e *htmlRp) Body(elems ...UI) HTMLRp {
+	e.setBody(elems...)
 	return e
 }
 
@@ -31551,47 +31323,47 @@ func (e *htmlRp) Text(v interface{}) HTMLRp {
 }
 
 func (e *htmlRp) AccessKey(v string) HTMLRp {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlRp) Class(v string) HTMLRp {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlRp) ContentEditable(v bool) HTMLRp {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlRp) DataSet(k string, v interface{}) HTMLRp {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlRp) Dir(v string) HTMLRp {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlRp) Draggable(v bool) HTMLRp {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlRp) Hidden(v bool) HTMLRp {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlRp) ID(v string) HTMLRp {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlRp) Lang(v string) HTMLRp {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -31601,22 +31373,22 @@ func (e *htmlRp) Spellcheck(v bool) HTMLRp {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlRp) Style(k, v string) HTMLRp {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlRp) TabIndex(v int) HTMLRp {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlRp) Title(v string) HTMLRp {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -31780,17 +31552,12 @@ func (e *htmlRp) OnWheel(h EventHandler) HTMLRp {
 	return e
 }
 
-func (e *htmlRp) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLRt is the interface that describes a <rt> HTML element.
 type HTMLRt interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLRt
+	Body(elems ...UI) HTMLRt
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLRt
@@ -31933,20 +31700,22 @@ type HTMLRt interface {
 
 // Rt returns an HTML element that defines an explanation/pronunciation of characters (for East Asian typography).
 func Rt() HTMLRt {
-	return &htmlRt{
+	e := &htmlRt{
 		elem: elem{
 			tag:         "rt",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlRt struct {
 	elem
 }
 
-func (e *htmlRt) Body(nodes ...Node) HTMLRt {
-	e.setBody(e, nodes)
+func (e *htmlRt) Body(elems ...UI) HTMLRt {
+	e.setBody(elems...)
 	return e
 }
 
@@ -31955,47 +31724,47 @@ func (e *htmlRt) Text(v interface{}) HTMLRt {
 }
 
 func (e *htmlRt) AccessKey(v string) HTMLRt {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlRt) Class(v string) HTMLRt {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlRt) ContentEditable(v bool) HTMLRt {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlRt) DataSet(k string, v interface{}) HTMLRt {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlRt) Dir(v string) HTMLRt {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlRt) Draggable(v bool) HTMLRt {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlRt) Hidden(v bool) HTMLRt {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlRt) ID(v string) HTMLRt {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlRt) Lang(v string) HTMLRt {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -32005,22 +31774,22 @@ func (e *htmlRt) Spellcheck(v bool) HTMLRt {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlRt) Style(k, v string) HTMLRt {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlRt) TabIndex(v int) HTMLRt {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlRt) Title(v string) HTMLRt {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -32184,17 +31953,12 @@ func (e *htmlRt) OnWheel(h EventHandler) HTMLRt {
 	return e
 }
 
-func (e *htmlRt) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLRuby is the interface that describes a <ruby> HTML element.
 type HTMLRuby interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLRuby
+	Body(elems ...UI) HTMLRuby
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLRuby
@@ -32337,20 +32101,22 @@ type HTMLRuby interface {
 
 // Ruby returns an HTML element that defines a ruby annotation (for East Asian typography).
 func Ruby() HTMLRuby {
-	return &htmlRuby{
+	e := &htmlRuby{
 		elem: elem{
 			tag:         "ruby",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlRuby struct {
 	elem
 }
 
-func (e *htmlRuby) Body(nodes ...Node) HTMLRuby {
-	e.setBody(e, nodes)
+func (e *htmlRuby) Body(elems ...UI) HTMLRuby {
+	e.setBody(elems...)
 	return e
 }
 
@@ -32359,47 +32125,47 @@ func (e *htmlRuby) Text(v interface{}) HTMLRuby {
 }
 
 func (e *htmlRuby) AccessKey(v string) HTMLRuby {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlRuby) Class(v string) HTMLRuby {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlRuby) ContentEditable(v bool) HTMLRuby {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlRuby) DataSet(k string, v interface{}) HTMLRuby {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlRuby) Dir(v string) HTMLRuby {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlRuby) Draggable(v bool) HTMLRuby {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlRuby) Hidden(v bool) HTMLRuby {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlRuby) ID(v string) HTMLRuby {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlRuby) Lang(v string) HTMLRuby {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -32409,22 +32175,22 @@ func (e *htmlRuby) Spellcheck(v bool) HTMLRuby {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlRuby) Style(k, v string) HTMLRuby {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlRuby) TabIndex(v int) HTMLRuby {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlRuby) Title(v string) HTMLRuby {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -32588,17 +32354,12 @@ func (e *htmlRuby) OnWheel(h EventHandler) HTMLRuby {
 	return e
 }
 
-func (e *htmlRuby) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLS is the interface that describes a <s> HTML element.
 type HTMLS interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLS
+	Body(elems ...UI) HTMLS
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLS
@@ -32741,20 +32502,22 @@ type HTMLS interface {
 
 // S returns an HTML element that Defines text that is no longer correct.
 func S() HTMLS {
-	return &htmlS{
+	e := &htmlS{
 		elem: elem{
 			tag:         "s",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlS struct {
 	elem
 }
 
-func (e *htmlS) Body(nodes ...Node) HTMLS {
-	e.setBody(e, nodes)
+func (e *htmlS) Body(elems ...UI) HTMLS {
+	e.setBody(elems...)
 	return e
 }
 
@@ -32763,47 +32526,47 @@ func (e *htmlS) Text(v interface{}) HTMLS {
 }
 
 func (e *htmlS) AccessKey(v string) HTMLS {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlS) Class(v string) HTMLS {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlS) ContentEditable(v bool) HTMLS {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlS) DataSet(k string, v interface{}) HTMLS {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlS) Dir(v string) HTMLS {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlS) Draggable(v bool) HTMLS {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlS) Hidden(v bool) HTMLS {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlS) ID(v string) HTMLS {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlS) Lang(v string) HTMLS {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -32813,22 +32576,22 @@ func (e *htmlS) Spellcheck(v bool) HTMLS {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlS) Style(k, v string) HTMLS {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlS) TabIndex(v int) HTMLS {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlS) Title(v string) HTMLS {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -32992,17 +32755,12 @@ func (e *htmlS) OnWheel(h EventHandler) HTMLS {
 	return e
 }
 
-func (e *htmlS) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLSamp is the interface that describes a <samp> HTML element.
 type HTMLSamp interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLSamp
+	Body(elems ...UI) HTMLSamp
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLSamp
@@ -33145,20 +32903,22 @@ type HTMLSamp interface {
 
 // Samp returns an HTML element that defines sample output from a computer program.
 func Samp() HTMLSamp {
-	return &htmlSamp{
+	e := &htmlSamp{
 		elem: elem{
 			tag:         "samp",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlSamp struct {
 	elem
 }
 
-func (e *htmlSamp) Body(nodes ...Node) HTMLSamp {
-	e.setBody(e, nodes)
+func (e *htmlSamp) Body(elems ...UI) HTMLSamp {
+	e.setBody(elems...)
 	return e
 }
 
@@ -33167,47 +32927,47 @@ func (e *htmlSamp) Text(v interface{}) HTMLSamp {
 }
 
 func (e *htmlSamp) AccessKey(v string) HTMLSamp {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlSamp) Class(v string) HTMLSamp {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlSamp) ContentEditable(v bool) HTMLSamp {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlSamp) DataSet(k string, v interface{}) HTMLSamp {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlSamp) Dir(v string) HTMLSamp {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlSamp) Draggable(v bool) HTMLSamp {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlSamp) Hidden(v bool) HTMLSamp {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlSamp) ID(v string) HTMLSamp {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlSamp) Lang(v string) HTMLSamp {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -33217,22 +32977,22 @@ func (e *htmlSamp) Spellcheck(v bool) HTMLSamp {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlSamp) Style(k, v string) HTMLSamp {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlSamp) TabIndex(v int) HTMLSamp {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlSamp) Title(v string) HTMLSamp {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -33396,17 +33156,12 @@ func (e *htmlSamp) OnWheel(h EventHandler) HTMLSamp {
 	return e
 }
 
-func (e *htmlSamp) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLScript is the interface that describes a <script> HTML element.
 type HTMLScript interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLScript
+	Body(elems ...UI) HTMLScript
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLScript
@@ -33471,20 +33226,22 @@ type HTMLScript interface {
 
 // Script returns an HTML element that defines a client-side script.
 func Script() HTMLScript {
-	return &htmlScript{
+	e := &htmlScript{
 		elem: elem{
 			tag:         "script",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlScript struct {
 	elem
 }
 
-func (e *htmlScript) Body(nodes ...Node) HTMLScript {
-	e.setBody(e, nodes)
+func (e *htmlScript) Body(elems ...UI) HTMLScript {
+	e.setBody(elems...)
 	return e
 }
 
@@ -33493,62 +33250,62 @@ func (e *htmlScript) Text(v interface{}) HTMLScript {
 }
 
 func (e *htmlScript) AccessKey(v string) HTMLScript {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlScript) Async(v bool) HTMLScript {
-	e.elem.setAttribute("async", v)
+	e.setAttr("async", v)
 	return e
 }
 
 func (e *htmlScript) Charset(v string) HTMLScript {
-	e.elem.setAttribute("charset", v)
+	e.setAttr("charset", v)
 	return e
 }
 
 func (e *htmlScript) Class(v string) HTMLScript {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlScript) ContentEditable(v bool) HTMLScript {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlScript) DataSet(k string, v interface{}) HTMLScript {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlScript) Defer(v bool) HTMLScript {
-	e.elem.setAttribute("defer", v)
+	e.setAttr("defer", v)
 	return e
 }
 
 func (e *htmlScript) Dir(v string) HTMLScript {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlScript) Draggable(v bool) HTMLScript {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlScript) Hidden(v bool) HTMLScript {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlScript) ID(v string) HTMLScript {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlScript) Lang(v string) HTMLScript {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -33558,32 +33315,32 @@ func (e *htmlScript) Spellcheck(v bool) HTMLScript {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlScript) Src(v string) HTMLScript {
-	e.elem.setAttribute("src", ResolveStaticResourcePath(v))
+	e.setAttr("src", StaticResource(v))
 	return e
 }
 
 func (e *htmlScript) Style(k, v string) HTMLScript {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlScript) TabIndex(v int) HTMLScript {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlScript) Title(v string) HTMLScript {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlScript) Type(v string) HTMLScript {
-	e.elem.setAttribute("type", v)
+	e.setAttr("type", v)
 	return e
 }
 
@@ -33592,17 +33349,12 @@ func (e *htmlScript) OnLoad(h EventHandler) HTMLScript {
 	return e
 }
 
-func (e *htmlScript) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLSection is the interface that describes a <section> HTML element.
 type HTMLSection interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLSection
+	Body(elems ...UI) HTMLSection
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLSection
@@ -33745,20 +33497,22 @@ type HTMLSection interface {
 
 // Section returns an HTML element that defines a section in a document.
 func Section() HTMLSection {
-	return &htmlSection{
+	e := &htmlSection{
 		elem: elem{
 			tag:         "section",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlSection struct {
 	elem
 }
 
-func (e *htmlSection) Body(nodes ...Node) HTMLSection {
-	e.setBody(e, nodes)
+func (e *htmlSection) Body(elems ...UI) HTMLSection {
+	e.setBody(elems...)
 	return e
 }
 
@@ -33767,47 +33521,47 @@ func (e *htmlSection) Text(v interface{}) HTMLSection {
 }
 
 func (e *htmlSection) AccessKey(v string) HTMLSection {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlSection) Class(v string) HTMLSection {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlSection) ContentEditable(v bool) HTMLSection {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlSection) DataSet(k string, v interface{}) HTMLSection {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlSection) Dir(v string) HTMLSection {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlSection) Draggable(v bool) HTMLSection {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlSection) Hidden(v bool) HTMLSection {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlSection) ID(v string) HTMLSection {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlSection) Lang(v string) HTMLSection {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -33817,22 +33571,22 @@ func (e *htmlSection) Spellcheck(v bool) HTMLSection {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlSection) Style(k, v string) HTMLSection {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlSection) TabIndex(v int) HTMLSection {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlSection) Title(v string) HTMLSection {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -33996,17 +33750,12 @@ func (e *htmlSection) OnWheel(h EventHandler) HTMLSection {
 	return e
 }
 
-func (e *htmlSection) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLSelect is the interface that describes a <select> HTML element.
 type HTMLSelect interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLSelect
+	Body(elems ...UI) HTMLSelect
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLSelect
@@ -34170,20 +33919,22 @@ type HTMLSelect interface {
 
 // Select returns an HTML element that defines a drop-down list.
 func Select() HTMLSelect {
-	return &htmlSelect{
+	e := &htmlSelect{
 		elem: elem{
 			tag:         "select",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlSelect struct {
 	elem
 }
 
-func (e *htmlSelect) Body(nodes ...Node) HTMLSelect {
-	e.setBody(e, nodes)
+func (e *htmlSelect) Body(elems ...UI) HTMLSelect {
+	e.setBody(elems...)
 	return e
 }
 
@@ -34192,82 +33943,82 @@ func (e *htmlSelect) Text(v interface{}) HTMLSelect {
 }
 
 func (e *htmlSelect) AccessKey(v string) HTMLSelect {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlSelect) AutoFocus(v bool) HTMLSelect {
-	e.elem.setAttribute("autofocus", v)
+	e.setAttr("autofocus", v)
 	return e
 }
 
 func (e *htmlSelect) Class(v string) HTMLSelect {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlSelect) ContentEditable(v bool) HTMLSelect {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlSelect) DataSet(k string, v interface{}) HTMLSelect {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlSelect) Dir(v string) HTMLSelect {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlSelect) Disabled(v bool) HTMLSelect {
-	e.elem.setAttribute("disabled", v)
+	e.setAttr("disabled", v)
 	return e
 }
 
 func (e *htmlSelect) Draggable(v bool) HTMLSelect {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlSelect) Form(v string) HTMLSelect {
-	e.elem.setAttribute("form", v)
+	e.setAttr("form", v)
 	return e
 }
 
 func (e *htmlSelect) Hidden(v bool) HTMLSelect {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlSelect) ID(v string) HTMLSelect {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlSelect) Lang(v string) HTMLSelect {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlSelect) Multiple(v bool) HTMLSelect {
-	e.elem.setAttribute("multiple", v)
+	e.setAttr("multiple", v)
 	return e
 }
 
 func (e *htmlSelect) Name(v string) HTMLSelect {
-	e.elem.setAttribute("name", v)
+	e.setAttr("name", v)
 	return e
 }
 
 func (e *htmlSelect) Required(v bool) HTMLSelect {
-	e.elem.setAttribute("required", v)
+	e.setAttr("required", v)
 	return e
 }
 
 func (e *htmlSelect) Size(v int) HTMLSelect {
-	e.elem.setAttribute("size", v)
+	e.setAttr("size", v)
 	return e
 }
 
@@ -34277,22 +34028,22 @@ func (e *htmlSelect) Spellcheck(v bool) HTMLSelect {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlSelect) Style(k, v string) HTMLSelect {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlSelect) TabIndex(v int) HTMLSelect {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlSelect) Title(v string) HTMLSelect {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -34456,17 +34207,12 @@ func (e *htmlSelect) OnWheel(h EventHandler) HTMLSelect {
 	return e
 }
 
-func (e *htmlSelect) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLSmall is the interface that describes a <small> HTML element.
 type HTMLSmall interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLSmall
+	Body(elems ...UI) HTMLSmall
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLSmall
@@ -34609,20 +34355,22 @@ type HTMLSmall interface {
 
 // Small returns an HTML element that defines smaller text.
 func Small() HTMLSmall {
-	return &htmlSmall{
+	e := &htmlSmall{
 		elem: elem{
 			tag:         "small",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlSmall struct {
 	elem
 }
 
-func (e *htmlSmall) Body(nodes ...Node) HTMLSmall {
-	e.setBody(e, nodes)
+func (e *htmlSmall) Body(elems ...UI) HTMLSmall {
+	e.setBody(elems...)
 	return e
 }
 
@@ -34631,47 +34379,47 @@ func (e *htmlSmall) Text(v interface{}) HTMLSmall {
 }
 
 func (e *htmlSmall) AccessKey(v string) HTMLSmall {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlSmall) Class(v string) HTMLSmall {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlSmall) ContentEditable(v bool) HTMLSmall {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlSmall) DataSet(k string, v interface{}) HTMLSmall {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlSmall) Dir(v string) HTMLSmall {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlSmall) Draggable(v bool) HTMLSmall {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlSmall) Hidden(v bool) HTMLSmall {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlSmall) ID(v string) HTMLSmall {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlSmall) Lang(v string) HTMLSmall {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -34681,22 +34429,22 @@ func (e *htmlSmall) Spellcheck(v bool) HTMLSmall {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlSmall) Style(k, v string) HTMLSmall {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlSmall) TabIndex(v int) HTMLSmall {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlSmall) Title(v string) HTMLSmall {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -34860,14 +34608,9 @@ func (e *htmlSmall) OnWheel(h EventHandler) HTMLSmall {
 	return e
 }
 
-func (e *htmlSmall) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLSource is the interface that describes a <source> HTML element.
 type HTMLSource interface {
-	standardNode
-	writableNode
+	UI
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSource
@@ -35022,12 +34765,14 @@ type HTMLSource interface {
 
 // Source returns an HTML element that .
 func Source() HTMLSource {
-	return &htmlSource{
+	e := &htmlSource{
 		elem: elem{
 			tag:         "source",
 			selfClosing: true,
 		},
 	}
+
+	return e
 }
 
 type htmlSource struct {
@@ -35035,57 +34780,57 @@ type htmlSource struct {
 }
 
 func (e *htmlSource) AccessKey(v string) HTMLSource {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlSource) Class(v string) HTMLSource {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlSource) ContentEditable(v bool) HTMLSource {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlSource) DataSet(k string, v interface{}) HTMLSource {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlSource) Dir(v string) HTMLSource {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlSource) Draggable(v bool) HTMLSource {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlSource) Hidden(v bool) HTMLSource {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlSource) ID(v string) HTMLSource {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlSource) Lang(v string) HTMLSource {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlSource) Media(v string) HTMLSource {
-	e.elem.setAttribute("media", v)
+	e.setAttr("media", v)
 	return e
 }
 
 func (e *htmlSource) Sizes(v string) HTMLSource {
-	e.elem.setAttribute("sizes", v)
+	e.setAttr("sizes", v)
 	return e
 }
 
@@ -35095,37 +34840,37 @@ func (e *htmlSource) Spellcheck(v bool) HTMLSource {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlSource) Src(v string) HTMLSource {
-	e.elem.setAttribute("src", ResolveStaticResourcePath(v))
+	e.setAttr("src", StaticResource(v))
 	return e
 }
 
 func (e *htmlSource) SrcSet(v string) HTMLSource {
-	e.elem.setAttribute("srcset", ResolveStaticResourcePath(v))
+	e.setAttr("srcset", StaticResource(v))
 	return e
 }
 
 func (e *htmlSource) Style(k, v string) HTMLSource {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlSource) TabIndex(v int) HTMLSource {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlSource) Title(v string) HTMLSource {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlSource) Type(v string) HTMLSource {
-	e.elem.setAttribute("type", v)
+	e.setAttr("type", v)
 	return e
 }
 
@@ -35289,17 +35034,12 @@ func (e *htmlSource) OnWheel(h EventHandler) HTMLSource {
 	return e
 }
 
-func (e *htmlSource) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLSpan is the interface that describes a <span> HTML element.
 type HTMLSpan interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLSpan
+	Body(elems ...UI) HTMLSpan
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLSpan
@@ -35442,20 +35182,22 @@ type HTMLSpan interface {
 
 // Span returns an HTML element that defines a section in a document.
 func Span() HTMLSpan {
-	return &htmlSpan{
+	e := &htmlSpan{
 		elem: elem{
 			tag:         "span",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlSpan struct {
 	elem
 }
 
-func (e *htmlSpan) Body(nodes ...Node) HTMLSpan {
-	e.setBody(e, nodes)
+func (e *htmlSpan) Body(elems ...UI) HTMLSpan {
+	e.setBody(elems...)
 	return e
 }
 
@@ -35464,47 +35206,47 @@ func (e *htmlSpan) Text(v interface{}) HTMLSpan {
 }
 
 func (e *htmlSpan) AccessKey(v string) HTMLSpan {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlSpan) Class(v string) HTMLSpan {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlSpan) ContentEditable(v bool) HTMLSpan {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlSpan) DataSet(k string, v interface{}) HTMLSpan {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlSpan) Dir(v string) HTMLSpan {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlSpan) Draggable(v bool) HTMLSpan {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlSpan) Hidden(v bool) HTMLSpan {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlSpan) ID(v string) HTMLSpan {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlSpan) Lang(v string) HTMLSpan {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -35514,22 +35256,22 @@ func (e *htmlSpan) Spellcheck(v bool) HTMLSpan {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlSpan) Style(k, v string) HTMLSpan {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlSpan) TabIndex(v int) HTMLSpan {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlSpan) Title(v string) HTMLSpan {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -35693,17 +35435,12 @@ func (e *htmlSpan) OnWheel(h EventHandler) HTMLSpan {
 	return e
 }
 
-func (e *htmlSpan) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLStrong is the interface that describes a <strong> HTML element.
 type HTMLStrong interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLStrong
+	Body(elems ...UI) HTMLStrong
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLStrong
@@ -35846,20 +35583,22 @@ type HTMLStrong interface {
 
 // Strong returns an HTML element that defines important text.
 func Strong() HTMLStrong {
-	return &htmlStrong{
+	e := &htmlStrong{
 		elem: elem{
 			tag:         "strong",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlStrong struct {
 	elem
 }
 
-func (e *htmlStrong) Body(nodes ...Node) HTMLStrong {
-	e.setBody(e, nodes)
+func (e *htmlStrong) Body(elems ...UI) HTMLStrong {
+	e.setBody(elems...)
 	return e
 }
 
@@ -35868,47 +35607,47 @@ func (e *htmlStrong) Text(v interface{}) HTMLStrong {
 }
 
 func (e *htmlStrong) AccessKey(v string) HTMLStrong {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlStrong) Class(v string) HTMLStrong {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlStrong) ContentEditable(v bool) HTMLStrong {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlStrong) DataSet(k string, v interface{}) HTMLStrong {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlStrong) Dir(v string) HTMLStrong {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlStrong) Draggable(v bool) HTMLStrong {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlStrong) Hidden(v bool) HTMLStrong {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlStrong) ID(v string) HTMLStrong {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlStrong) Lang(v string) HTMLStrong {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -35918,22 +35657,22 @@ func (e *htmlStrong) Spellcheck(v bool) HTMLStrong {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlStrong) Style(k, v string) HTMLStrong {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlStrong) TabIndex(v int) HTMLStrong {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlStrong) Title(v string) HTMLStrong {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -36097,17 +35836,12 @@ func (e *htmlStrong) OnWheel(h EventHandler) HTMLStrong {
 	return e
 }
 
-func (e *htmlStrong) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLStyle is the interface that describes a <style> HTML element.
 type HTMLStyle interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLStyle
+	Body(elems ...UI) HTMLStyle
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLStyle
@@ -36259,20 +35993,22 @@ type HTMLStyle interface {
 
 // Style returns an HTML element that defines style information for a document.
 func Style() HTMLStyle {
-	return &htmlStyle{
+	e := &htmlStyle{
 		elem: elem{
 			tag:         "style",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlStyle struct {
 	elem
 }
 
-func (e *htmlStyle) Body(nodes ...Node) HTMLStyle {
-	e.setBody(e, nodes)
+func (e *htmlStyle) Body(elems ...UI) HTMLStyle {
+	e.setBody(elems...)
 	return e
 }
 
@@ -36281,52 +36017,52 @@ func (e *htmlStyle) Text(v interface{}) HTMLStyle {
 }
 
 func (e *htmlStyle) AccessKey(v string) HTMLStyle {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlStyle) Class(v string) HTMLStyle {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlStyle) ContentEditable(v bool) HTMLStyle {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlStyle) DataSet(k string, v interface{}) HTMLStyle {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlStyle) Dir(v string) HTMLStyle {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlStyle) Draggable(v bool) HTMLStyle {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlStyle) Hidden(v bool) HTMLStyle {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlStyle) ID(v string) HTMLStyle {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlStyle) Lang(v string) HTMLStyle {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlStyle) Media(v string) HTMLStyle {
-	e.elem.setAttribute("media", v)
+	e.setAttr("media", v)
 	return e
 }
 
@@ -36336,27 +36072,27 @@ func (e *htmlStyle) Spellcheck(v bool) HTMLStyle {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlStyle) Style(k, v string) HTMLStyle {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlStyle) TabIndex(v int) HTMLStyle {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlStyle) Title(v string) HTMLStyle {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlStyle) Type(v string) HTMLStyle {
-	e.elem.setAttribute("type", v)
+	e.setAttr("type", v)
 	return e
 }
 
@@ -36525,17 +36261,12 @@ func (e *htmlStyle) OnWheel(h EventHandler) HTMLStyle {
 	return e
 }
 
-func (e *htmlStyle) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLSub is the interface that describes a <sub> HTML element.
 type HTMLSub interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLSub
+	Body(elems ...UI) HTMLSub
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLSub
@@ -36678,20 +36409,22 @@ type HTMLSub interface {
 
 // Sub returns an HTML element that defines subscripted text.
 func Sub() HTMLSub {
-	return &htmlSub{
+	e := &htmlSub{
 		elem: elem{
 			tag:         "sub",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlSub struct {
 	elem
 }
 
-func (e *htmlSub) Body(nodes ...Node) HTMLSub {
-	e.setBody(e, nodes)
+func (e *htmlSub) Body(elems ...UI) HTMLSub {
+	e.setBody(elems...)
 	return e
 }
 
@@ -36700,47 +36433,47 @@ func (e *htmlSub) Text(v interface{}) HTMLSub {
 }
 
 func (e *htmlSub) AccessKey(v string) HTMLSub {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlSub) Class(v string) HTMLSub {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlSub) ContentEditable(v bool) HTMLSub {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlSub) DataSet(k string, v interface{}) HTMLSub {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlSub) Dir(v string) HTMLSub {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlSub) Draggable(v bool) HTMLSub {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlSub) Hidden(v bool) HTMLSub {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlSub) ID(v string) HTMLSub {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlSub) Lang(v string) HTMLSub {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -36750,22 +36483,22 @@ func (e *htmlSub) Spellcheck(v bool) HTMLSub {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlSub) Style(k, v string) HTMLSub {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlSub) TabIndex(v int) HTMLSub {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlSub) Title(v string) HTMLSub {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -36929,17 +36662,12 @@ func (e *htmlSub) OnWheel(h EventHandler) HTMLSub {
 	return e
 }
 
-func (e *htmlSub) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLSummary is the interface that describes a <summary> HTML element.
 type HTMLSummary interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLSummary
+	Body(elems ...UI) HTMLSummary
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLSummary
@@ -37082,20 +36810,22 @@ type HTMLSummary interface {
 
 // Summary returns an HTML element that defines a visible heading for a details element.
 func Summary() HTMLSummary {
-	return &htmlSummary{
+	e := &htmlSummary{
 		elem: elem{
 			tag:         "summary",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlSummary struct {
 	elem
 }
 
-func (e *htmlSummary) Body(nodes ...Node) HTMLSummary {
-	e.setBody(e, nodes)
+func (e *htmlSummary) Body(elems ...UI) HTMLSummary {
+	e.setBody(elems...)
 	return e
 }
 
@@ -37104,47 +36834,47 @@ func (e *htmlSummary) Text(v interface{}) HTMLSummary {
 }
 
 func (e *htmlSummary) AccessKey(v string) HTMLSummary {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlSummary) Class(v string) HTMLSummary {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlSummary) ContentEditable(v bool) HTMLSummary {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlSummary) DataSet(k string, v interface{}) HTMLSummary {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlSummary) Dir(v string) HTMLSummary {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlSummary) Draggable(v bool) HTMLSummary {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlSummary) Hidden(v bool) HTMLSummary {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlSummary) ID(v string) HTMLSummary {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlSummary) Lang(v string) HTMLSummary {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -37154,22 +36884,22 @@ func (e *htmlSummary) Spellcheck(v bool) HTMLSummary {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlSummary) Style(k, v string) HTMLSummary {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlSummary) TabIndex(v int) HTMLSummary {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlSummary) Title(v string) HTMLSummary {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -37333,17 +37063,12 @@ func (e *htmlSummary) OnWheel(h EventHandler) HTMLSummary {
 	return e
 }
 
-func (e *htmlSummary) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLSup is the interface that describes a <sup> HTML element.
 type HTMLSup interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLSup
+	Body(elems ...UI) HTMLSup
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLSup
@@ -37486,20 +37211,22 @@ type HTMLSup interface {
 
 // Sup returns an HTML element that defines superscripted text.
 func Sup() HTMLSup {
-	return &htmlSup{
+	e := &htmlSup{
 		elem: elem{
 			tag:         "sup",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlSup struct {
 	elem
 }
 
-func (e *htmlSup) Body(nodes ...Node) HTMLSup {
-	e.setBody(e, nodes)
+func (e *htmlSup) Body(elems ...UI) HTMLSup {
+	e.setBody(elems...)
 	return e
 }
 
@@ -37508,47 +37235,47 @@ func (e *htmlSup) Text(v interface{}) HTMLSup {
 }
 
 func (e *htmlSup) AccessKey(v string) HTMLSup {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlSup) Class(v string) HTMLSup {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlSup) ContentEditable(v bool) HTMLSup {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlSup) DataSet(k string, v interface{}) HTMLSup {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlSup) Dir(v string) HTMLSup {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlSup) Draggable(v bool) HTMLSup {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlSup) Hidden(v bool) HTMLSup {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlSup) ID(v string) HTMLSup {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlSup) Lang(v string) HTMLSup {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -37558,22 +37285,22 @@ func (e *htmlSup) Spellcheck(v bool) HTMLSup {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlSup) Style(k, v string) HTMLSup {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlSup) TabIndex(v int) HTMLSup {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlSup) Title(v string) HTMLSup {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -37737,17 +37464,12 @@ func (e *htmlSup) OnWheel(h EventHandler) HTMLSup {
 	return e
 }
 
-func (e *htmlSup) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLTable is the interface that describes a <table> HTML element.
 type HTMLTable interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLTable
+	Body(elems ...UI) HTMLTable
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLTable
@@ -37890,20 +37612,22 @@ type HTMLTable interface {
 
 // Table returns an HTML element that defines a table.
 func Table() HTMLTable {
-	return &htmlTable{
+	e := &htmlTable{
 		elem: elem{
 			tag:         "table",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlTable struct {
 	elem
 }
 
-func (e *htmlTable) Body(nodes ...Node) HTMLTable {
-	e.setBody(e, nodes)
+func (e *htmlTable) Body(elems ...UI) HTMLTable {
+	e.setBody(elems...)
 	return e
 }
 
@@ -37912,47 +37636,47 @@ func (e *htmlTable) Text(v interface{}) HTMLTable {
 }
 
 func (e *htmlTable) AccessKey(v string) HTMLTable {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlTable) Class(v string) HTMLTable {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlTable) ContentEditable(v bool) HTMLTable {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlTable) DataSet(k string, v interface{}) HTMLTable {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlTable) Dir(v string) HTMLTable {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlTable) Draggable(v bool) HTMLTable {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlTable) Hidden(v bool) HTMLTable {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlTable) ID(v string) HTMLTable {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlTable) Lang(v string) HTMLTable {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -37962,22 +37686,22 @@ func (e *htmlTable) Spellcheck(v bool) HTMLTable {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlTable) Style(k, v string) HTMLTable {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlTable) TabIndex(v int) HTMLTable {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlTable) Title(v string) HTMLTable {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -38141,17 +37865,12 @@ func (e *htmlTable) OnWheel(h EventHandler) HTMLTable {
 	return e
 }
 
-func (e *htmlTable) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLTBody is the interface that describes a <tbody> HTML element.
 type HTMLTBody interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLTBody
+	Body(elems ...UI) HTMLTBody
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLTBody
@@ -38294,20 +38013,22 @@ type HTMLTBody interface {
 
 // TBody returns an HTML element that groups the body content in a table.
 func TBody() HTMLTBody {
-	return &htmlTBody{
+	e := &htmlTBody{
 		elem: elem{
 			tag:         "tbody",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlTBody struct {
 	elem
 }
 
-func (e *htmlTBody) Body(nodes ...Node) HTMLTBody {
-	e.setBody(e, nodes)
+func (e *htmlTBody) Body(elems ...UI) HTMLTBody {
+	e.setBody(elems...)
 	return e
 }
 
@@ -38316,47 +38037,47 @@ func (e *htmlTBody) Text(v interface{}) HTMLTBody {
 }
 
 func (e *htmlTBody) AccessKey(v string) HTMLTBody {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlTBody) Class(v string) HTMLTBody {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlTBody) ContentEditable(v bool) HTMLTBody {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlTBody) DataSet(k string, v interface{}) HTMLTBody {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlTBody) Dir(v string) HTMLTBody {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlTBody) Draggable(v bool) HTMLTBody {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlTBody) Hidden(v bool) HTMLTBody {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlTBody) ID(v string) HTMLTBody {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlTBody) Lang(v string) HTMLTBody {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -38366,22 +38087,22 @@ func (e *htmlTBody) Spellcheck(v bool) HTMLTBody {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlTBody) Style(k, v string) HTMLTBody {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlTBody) TabIndex(v int) HTMLTBody {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlTBody) Title(v string) HTMLTBody {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -38545,17 +38266,12 @@ func (e *htmlTBody) OnWheel(h EventHandler) HTMLTBody {
 	return e
 }
 
-func (e *htmlTBody) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLTd is the interface that describes a <td> HTML element.
 type HTMLTd interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLTd
+	Body(elems ...UI) HTMLTd
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLTd
@@ -38707,20 +38423,22 @@ type HTMLTd interface {
 
 // Td returns an HTML element that defines a cell in a table.
 func Td() HTMLTd {
-	return &htmlTd{
+	e := &htmlTd{
 		elem: elem{
 			tag:         "td",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlTd struct {
 	elem
 }
 
-func (e *htmlTd) Body(nodes ...Node) HTMLTd {
-	e.setBody(e, nodes)
+func (e *htmlTd) Body(elems ...UI) HTMLTd {
+	e.setBody(elems...)
 	return e
 }
 
@@ -38729,62 +38447,62 @@ func (e *htmlTd) Text(v interface{}) HTMLTd {
 }
 
 func (e *htmlTd) AccessKey(v string) HTMLTd {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlTd) Class(v string) HTMLTd {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlTd) ColSpan(v int) HTMLTd {
-	e.elem.setAttribute("colspan", v)
+	e.setAttr("colspan", v)
 	return e
 }
 
 func (e *htmlTd) ContentEditable(v bool) HTMLTd {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlTd) DataSet(k string, v interface{}) HTMLTd {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlTd) Dir(v string) HTMLTd {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlTd) Draggable(v bool) HTMLTd {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlTd) Headers(v string) HTMLTd {
-	e.elem.setAttribute("headers", v)
+	e.setAttr("headers", v)
 	return e
 }
 
 func (e *htmlTd) Hidden(v bool) HTMLTd {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlTd) ID(v string) HTMLTd {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlTd) Lang(v string) HTMLTd {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlTd) Rowspan(v int) HTMLTd {
-	e.elem.setAttribute("rowspan", v)
+	e.setAttr("rowspan", v)
 	return e
 }
 
@@ -38794,22 +38512,22 @@ func (e *htmlTd) Spellcheck(v bool) HTMLTd {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlTd) Style(k, v string) HTMLTd {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlTd) TabIndex(v int) HTMLTd {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlTd) Title(v string) HTMLTd {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -38973,17 +38691,12 @@ func (e *htmlTd) OnWheel(h EventHandler) HTMLTd {
 	return e
 }
 
-func (e *htmlTd) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLTemplate is the interface that describes a <template> HTML element.
 type HTMLTemplate interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLTemplate
+	Body(elems ...UI) HTMLTemplate
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLTemplate
@@ -39030,20 +38743,22 @@ type HTMLTemplate interface {
 
 // Template returns an HTML element that defines a template.
 func Template() HTMLTemplate {
-	return &htmlTemplate{
+	e := &htmlTemplate{
 		elem: elem{
 			tag:         "template",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlTemplate struct {
 	elem
 }
 
-func (e *htmlTemplate) Body(nodes ...Node) HTMLTemplate {
-	e.setBody(e, nodes)
+func (e *htmlTemplate) Body(elems ...UI) HTMLTemplate {
+	e.setBody(elems...)
 	return e
 }
 
@@ -39052,47 +38767,47 @@ func (e *htmlTemplate) Text(v interface{}) HTMLTemplate {
 }
 
 func (e *htmlTemplate) AccessKey(v string) HTMLTemplate {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlTemplate) Class(v string) HTMLTemplate {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlTemplate) ContentEditable(v bool) HTMLTemplate {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlTemplate) DataSet(k string, v interface{}) HTMLTemplate {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlTemplate) Dir(v string) HTMLTemplate {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlTemplate) Draggable(v bool) HTMLTemplate {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlTemplate) Hidden(v bool) HTMLTemplate {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlTemplate) ID(v string) HTMLTemplate {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlTemplate) Lang(v string) HTMLTemplate {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -39102,36 +38817,31 @@ func (e *htmlTemplate) Spellcheck(v bool) HTMLTemplate {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlTemplate) Style(k, v string) HTMLTemplate {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlTemplate) TabIndex(v int) HTMLTemplate {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlTemplate) Title(v string) HTMLTemplate {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
-}
-
-func (e *htmlTemplate) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
 }
 
 // HTMLTextarea is the interface that describes a <textarea> HTML element.
 type HTMLTextarea interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLTextarea
+	Body(elems ...UI) HTMLTextarea
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLTextarea
@@ -39310,20 +39020,22 @@ type HTMLTextarea interface {
 
 // Textarea returns an HTML element that defines a multiline input control (text area).
 func Textarea() HTMLTextarea {
-	return &htmlTextarea{
+	e := &htmlTextarea{
 		elem: elem{
 			tag:         "textarea",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlTextarea struct {
 	elem
 }
 
-func (e *htmlTextarea) Body(nodes ...Node) HTMLTextarea {
-	e.setBody(e, nodes)
+func (e *htmlTextarea) Body(elems ...UI) HTMLTextarea {
+	e.setBody(elems...)
 	return e
 }
 
@@ -39332,102 +39044,102 @@ func (e *htmlTextarea) Text(v interface{}) HTMLTextarea {
 }
 
 func (e *htmlTextarea) AccessKey(v string) HTMLTextarea {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlTextarea) AutoFocus(v bool) HTMLTextarea {
-	e.elem.setAttribute("autofocus", v)
+	e.setAttr("autofocus", v)
 	return e
 }
 
 func (e *htmlTextarea) Class(v string) HTMLTextarea {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlTextarea) Cols(v int) HTMLTextarea {
-	e.elem.setAttribute("cols", v)
+	e.setAttr("cols", v)
 	return e
 }
 
 func (e *htmlTextarea) ContentEditable(v bool) HTMLTextarea {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlTextarea) DataSet(k string, v interface{}) HTMLTextarea {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlTextarea) Dir(v string) HTMLTextarea {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlTextarea) DirName(v string) HTMLTextarea {
-	e.elem.setAttribute("dirname", v)
+	e.setAttr("dirname", v)
 	return e
 }
 
 func (e *htmlTextarea) Disabled(v bool) HTMLTextarea {
-	e.elem.setAttribute("disabled", v)
+	e.setAttr("disabled", v)
 	return e
 }
 
 func (e *htmlTextarea) Draggable(v bool) HTMLTextarea {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlTextarea) Form(v string) HTMLTextarea {
-	e.elem.setAttribute("form", v)
+	e.setAttr("form", v)
 	return e
 }
 
 func (e *htmlTextarea) Hidden(v bool) HTMLTextarea {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlTextarea) ID(v string) HTMLTextarea {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlTextarea) Lang(v string) HTMLTextarea {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlTextarea) MaxLength(v int) HTMLTextarea {
-	e.elem.setAttribute("maxlength", v)
+	e.setAttr("maxlength", v)
 	return e
 }
 
 func (e *htmlTextarea) Name(v string) HTMLTextarea {
-	e.elem.setAttribute("name", v)
+	e.setAttr("name", v)
 	return e
 }
 
 func (e *htmlTextarea) Placeholder(v string) HTMLTextarea {
-	e.elem.setAttribute("placeholder", v)
+	e.setAttr("placeholder", v)
 	return e
 }
 
 func (e *htmlTextarea) ReadOnly(v bool) HTMLTextarea {
-	e.elem.setAttribute("readonly", v)
+	e.setAttr("readonly", v)
 	return e
 }
 
 func (e *htmlTextarea) Required(v bool) HTMLTextarea {
-	e.elem.setAttribute("required", v)
+	e.setAttr("required", v)
 	return e
 }
 
 func (e *htmlTextarea) Rows(v int) HTMLTextarea {
-	e.elem.setAttribute("rows", v)
+	e.setAttr("rows", v)
 	return e
 }
 
@@ -39437,27 +39149,27 @@ func (e *htmlTextarea) Spellcheck(v bool) HTMLTextarea {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlTextarea) Style(k, v string) HTMLTextarea {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlTextarea) TabIndex(v int) HTMLTextarea {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlTextarea) Title(v string) HTMLTextarea {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlTextarea) Wrap(v string) HTMLTextarea {
-	e.elem.setAttribute("wrap", v)
+	e.setAttr("wrap", v)
 	return e
 }
 
@@ -39621,17 +39333,12 @@ func (e *htmlTextarea) OnWheel(h EventHandler) HTMLTextarea {
 	return e
 }
 
-func (e *htmlTextarea) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLTfoot is the interface that describes a <tfoot> HTML element.
 type HTMLTfoot interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLTfoot
+	Body(elems ...UI) HTMLTfoot
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLTfoot
@@ -39774,20 +39481,22 @@ type HTMLTfoot interface {
 
 // Tfoot returns an HTML element that groups the footer content in a table.
 func Tfoot() HTMLTfoot {
-	return &htmlTfoot{
+	e := &htmlTfoot{
 		elem: elem{
 			tag:         "tfoot",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlTfoot struct {
 	elem
 }
 
-func (e *htmlTfoot) Body(nodes ...Node) HTMLTfoot {
-	e.setBody(e, nodes)
+func (e *htmlTfoot) Body(elems ...UI) HTMLTfoot {
+	e.setBody(elems...)
 	return e
 }
 
@@ -39796,47 +39505,47 @@ func (e *htmlTfoot) Text(v interface{}) HTMLTfoot {
 }
 
 func (e *htmlTfoot) AccessKey(v string) HTMLTfoot {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlTfoot) Class(v string) HTMLTfoot {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlTfoot) ContentEditable(v bool) HTMLTfoot {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlTfoot) DataSet(k string, v interface{}) HTMLTfoot {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlTfoot) Dir(v string) HTMLTfoot {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlTfoot) Draggable(v bool) HTMLTfoot {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlTfoot) Hidden(v bool) HTMLTfoot {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlTfoot) ID(v string) HTMLTfoot {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlTfoot) Lang(v string) HTMLTfoot {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -39846,22 +39555,22 @@ func (e *htmlTfoot) Spellcheck(v bool) HTMLTfoot {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlTfoot) Style(k, v string) HTMLTfoot {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlTfoot) TabIndex(v int) HTMLTfoot {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlTfoot) Title(v string) HTMLTfoot {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -40025,17 +39734,12 @@ func (e *htmlTfoot) OnWheel(h EventHandler) HTMLTfoot {
 	return e
 }
 
-func (e *htmlTfoot) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLTh is the interface that describes a <th> HTML element.
 type HTMLTh interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLTh
+	Body(elems ...UI) HTMLTh
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLTh
@@ -40193,20 +39897,22 @@ type HTMLTh interface {
 
 // Th returns an HTML element that defines a header cell in a table.
 func Th() HTMLTh {
-	return &htmlTh{
+	e := &htmlTh{
 		elem: elem{
 			tag:         "th",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlTh struct {
 	elem
 }
 
-func (e *htmlTh) Body(nodes ...Node) HTMLTh {
-	e.setBody(e, nodes)
+func (e *htmlTh) Body(elems ...UI) HTMLTh {
+	e.setBody(elems...)
 	return e
 }
 
@@ -40215,72 +39921,72 @@ func (e *htmlTh) Text(v interface{}) HTMLTh {
 }
 
 func (e *htmlTh) Accept(v string) HTMLTh {
-	e.elem.setAttribute("accept", v)
+	e.setAttr("accept", v)
 	return e
 }
 
 func (e *htmlTh) AccessKey(v string) HTMLTh {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlTh) Class(v string) HTMLTh {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlTh) ColSpan(v int) HTMLTh {
-	e.elem.setAttribute("colspan", v)
+	e.setAttr("colspan", v)
 	return e
 }
 
 func (e *htmlTh) ContentEditable(v bool) HTMLTh {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlTh) DataSet(k string, v interface{}) HTMLTh {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlTh) Dir(v string) HTMLTh {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlTh) Draggable(v bool) HTMLTh {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlTh) Headers(v string) HTMLTh {
-	e.elem.setAttribute("headers", v)
+	e.setAttr("headers", v)
 	return e
 }
 
 func (e *htmlTh) Hidden(v bool) HTMLTh {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlTh) ID(v string) HTMLTh {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlTh) Lang(v string) HTMLTh {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlTh) Rowspan(v int) HTMLTh {
-	e.elem.setAttribute("rowspan", v)
+	e.setAttr("rowspan", v)
 	return e
 }
 
 func (e *htmlTh) Scope(v string) HTMLTh {
-	e.elem.setAttribute("scope", v)
+	e.setAttr("scope", v)
 	return e
 }
 
@@ -40290,22 +39996,22 @@ func (e *htmlTh) Spellcheck(v bool) HTMLTh {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlTh) Style(k, v string) HTMLTh {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlTh) TabIndex(v int) HTMLTh {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlTh) Title(v string) HTMLTh {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -40469,17 +40175,12 @@ func (e *htmlTh) OnWheel(h EventHandler) HTMLTh {
 	return e
 }
 
-func (e *htmlTh) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLTHead is the interface that describes a <thead> HTML element.
 type HTMLTHead interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLTHead
+	Body(elems ...UI) HTMLTHead
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLTHead
@@ -40622,20 +40323,22 @@ type HTMLTHead interface {
 
 // THead returns an HTML element that groups the header content in a table
 func THead() HTMLTHead {
-	return &htmlTHead{
+	e := &htmlTHead{
 		elem: elem{
 			tag:         "thead",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlTHead struct {
 	elem
 }
 
-func (e *htmlTHead) Body(nodes ...Node) HTMLTHead {
-	e.setBody(e, nodes)
+func (e *htmlTHead) Body(elems ...UI) HTMLTHead {
+	e.setBody(elems...)
 	return e
 }
 
@@ -40644,47 +40347,47 @@ func (e *htmlTHead) Text(v interface{}) HTMLTHead {
 }
 
 func (e *htmlTHead) AccessKey(v string) HTMLTHead {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlTHead) Class(v string) HTMLTHead {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlTHead) ContentEditable(v bool) HTMLTHead {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlTHead) DataSet(k string, v interface{}) HTMLTHead {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlTHead) Dir(v string) HTMLTHead {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlTHead) Draggable(v bool) HTMLTHead {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlTHead) Hidden(v bool) HTMLTHead {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlTHead) ID(v string) HTMLTHead {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlTHead) Lang(v string) HTMLTHead {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -40694,22 +40397,22 @@ func (e *htmlTHead) Spellcheck(v bool) HTMLTHead {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlTHead) Style(k, v string) HTMLTHead {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlTHead) TabIndex(v int) HTMLTHead {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlTHead) Title(v string) HTMLTHead {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -40873,17 +40576,12 @@ func (e *htmlTHead) OnWheel(h EventHandler) HTMLTHead {
 	return e
 }
 
-func (e *htmlTHead) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLTime is the interface that describes a <time> HTML element.
 type HTMLTime interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLTime
+	Body(elems ...UI) HTMLTime
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLTime
@@ -41029,20 +40727,22 @@ type HTMLTime interface {
 
 // Time returns an HTML element that defines a date/time.
 func Time() HTMLTime {
-	return &htmlTime{
+	e := &htmlTime{
 		elem: elem{
 			tag:         "time",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlTime struct {
 	elem
 }
 
-func (e *htmlTime) Body(nodes ...Node) HTMLTime {
-	e.setBody(e, nodes)
+func (e *htmlTime) Body(elems ...UI) HTMLTime {
+	e.setBody(elems...)
 	return e
 }
 
@@ -41051,52 +40751,52 @@ func (e *htmlTime) Text(v interface{}) HTMLTime {
 }
 
 func (e *htmlTime) AccessKey(v string) HTMLTime {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlTime) Class(v string) HTMLTime {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlTime) ContentEditable(v bool) HTMLTime {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlTime) DataSet(k string, v interface{}) HTMLTime {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlTime) DateTime(v string) HTMLTime {
-	e.elem.setAttribute("datetime", v)
+	e.setAttr("datetime", v)
 	return e
 }
 
 func (e *htmlTime) Dir(v string) HTMLTime {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlTime) Draggable(v bool) HTMLTime {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlTime) Hidden(v bool) HTMLTime {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlTime) ID(v string) HTMLTime {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlTime) Lang(v string) HTMLTime {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -41106,22 +40806,22 @@ func (e *htmlTime) Spellcheck(v bool) HTMLTime {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlTime) Style(k, v string) HTMLTime {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlTime) TabIndex(v int) HTMLTime {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlTime) Title(v string) HTMLTime {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -41285,17 +40985,12 @@ func (e *htmlTime) OnWheel(h EventHandler) HTMLTime {
 	return e
 }
 
-func (e *htmlTime) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLTitle is the interface that describes a <title> HTML element.
 type HTMLTitle interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLTitle
+	Body(elems ...UI) HTMLTitle
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLTitle
@@ -41342,20 +41037,22 @@ type HTMLTitle interface {
 
 // Title returns an HTML element that defines a title for the document.
 func Title() HTMLTitle {
-	return &htmlTitle{
+	e := &htmlTitle{
 		elem: elem{
 			tag:         "title",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlTitle struct {
 	elem
 }
 
-func (e *htmlTitle) Body(nodes ...Node) HTMLTitle {
-	e.setBody(e, nodes)
+func (e *htmlTitle) Body(elems ...UI) HTMLTitle {
+	e.setBody(elems...)
 	return e
 }
 
@@ -41364,47 +41061,47 @@ func (e *htmlTitle) Text(v interface{}) HTMLTitle {
 }
 
 func (e *htmlTitle) AccessKey(v string) HTMLTitle {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlTitle) Class(v string) HTMLTitle {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlTitle) ContentEditable(v bool) HTMLTitle {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlTitle) DataSet(k string, v interface{}) HTMLTitle {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlTitle) Dir(v string) HTMLTitle {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlTitle) Draggable(v bool) HTMLTitle {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlTitle) Hidden(v bool) HTMLTitle {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlTitle) ID(v string) HTMLTitle {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlTitle) Lang(v string) HTMLTitle {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -41414,36 +41111,31 @@ func (e *htmlTitle) Spellcheck(v bool) HTMLTitle {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlTitle) Style(k, v string) HTMLTitle {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlTitle) TabIndex(v int) HTMLTitle {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlTitle) Title(v string) HTMLTitle {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
-}
-
-func (e *htmlTitle) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
 }
 
 // HTMLTr is the interface that describes a <tr> HTML element.
 type HTMLTr interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLTr
+	Body(elems ...UI) HTMLTr
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLTr
@@ -41586,20 +41278,22 @@ type HTMLTr interface {
 
 // Tr returns an HTML element that defines a row in a table.
 func Tr() HTMLTr {
-	return &htmlTr{
+	e := &htmlTr{
 		elem: elem{
 			tag:         "tr",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlTr struct {
 	elem
 }
 
-func (e *htmlTr) Body(nodes ...Node) HTMLTr {
-	e.setBody(e, nodes)
+func (e *htmlTr) Body(elems ...UI) HTMLTr {
+	e.setBody(elems...)
 	return e
 }
 
@@ -41608,47 +41302,47 @@ func (e *htmlTr) Text(v interface{}) HTMLTr {
 }
 
 func (e *htmlTr) AccessKey(v string) HTMLTr {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlTr) Class(v string) HTMLTr {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlTr) ContentEditable(v bool) HTMLTr {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlTr) DataSet(k string, v interface{}) HTMLTr {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlTr) Dir(v string) HTMLTr {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlTr) Draggable(v bool) HTMLTr {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlTr) Hidden(v bool) HTMLTr {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlTr) ID(v string) HTMLTr {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlTr) Lang(v string) HTMLTr {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -41658,22 +41352,22 @@ func (e *htmlTr) Spellcheck(v bool) HTMLTr {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlTr) Style(k, v string) HTMLTr {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlTr) TabIndex(v int) HTMLTr {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlTr) Title(v string) HTMLTr {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -41837,17 +41531,12 @@ func (e *htmlTr) OnWheel(h EventHandler) HTMLTr {
 	return e
 }
 
-func (e *htmlTr) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLU is the interface that describes a <u> HTML element.
 type HTMLU interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLU
+	Body(elems ...UI) HTMLU
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLU
@@ -41990,20 +41679,22 @@ type HTMLU interface {
 
 // U returns an HTML element that defines text that should be stylistically different from normal text.
 func U() HTMLU {
-	return &htmlU{
+	e := &htmlU{
 		elem: elem{
 			tag:         "u",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlU struct {
 	elem
 }
 
-func (e *htmlU) Body(nodes ...Node) HTMLU {
-	e.setBody(e, nodes)
+func (e *htmlU) Body(elems ...UI) HTMLU {
+	e.setBody(elems...)
 	return e
 }
 
@@ -42012,47 +41703,47 @@ func (e *htmlU) Text(v interface{}) HTMLU {
 }
 
 func (e *htmlU) AccessKey(v string) HTMLU {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlU) Class(v string) HTMLU {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlU) ContentEditable(v bool) HTMLU {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlU) DataSet(k string, v interface{}) HTMLU {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlU) Dir(v string) HTMLU {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlU) Draggable(v bool) HTMLU {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlU) Hidden(v bool) HTMLU {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlU) ID(v string) HTMLU {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlU) Lang(v string) HTMLU {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -42062,22 +41753,22 @@ func (e *htmlU) Spellcheck(v bool) HTMLU {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlU) Style(k, v string) HTMLU {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlU) TabIndex(v int) HTMLU {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlU) Title(v string) HTMLU {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -42241,17 +41932,12 @@ func (e *htmlU) OnWheel(h EventHandler) HTMLU {
 	return e
 }
 
-func (e *htmlU) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLUl is the interface that describes a <ul> HTML element.
 type HTMLUl interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLUl
+	Body(elems ...UI) HTMLUl
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLUl
@@ -42394,20 +42080,22 @@ type HTMLUl interface {
 
 // Ul returns an HTML element that defines an unordered list.
 func Ul() HTMLUl {
-	return &htmlUl{
+	e := &htmlUl{
 		elem: elem{
 			tag:         "ul",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlUl struct {
 	elem
 }
 
-func (e *htmlUl) Body(nodes ...Node) HTMLUl {
-	e.setBody(e, nodes)
+func (e *htmlUl) Body(elems ...UI) HTMLUl {
+	e.setBody(elems...)
 	return e
 }
 
@@ -42416,47 +42104,47 @@ func (e *htmlUl) Text(v interface{}) HTMLUl {
 }
 
 func (e *htmlUl) AccessKey(v string) HTMLUl {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlUl) Class(v string) HTMLUl {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlUl) ContentEditable(v bool) HTMLUl {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlUl) DataSet(k string, v interface{}) HTMLUl {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlUl) Dir(v string) HTMLUl {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlUl) Draggable(v bool) HTMLUl {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlUl) Hidden(v bool) HTMLUl {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlUl) ID(v string) HTMLUl {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlUl) Lang(v string) HTMLUl {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -42466,22 +42154,22 @@ func (e *htmlUl) Spellcheck(v bool) HTMLUl {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlUl) Style(k, v string) HTMLUl {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlUl) TabIndex(v int) HTMLUl {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlUl) Title(v string) HTMLUl {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -42645,17 +42333,12 @@ func (e *htmlUl) OnWheel(h EventHandler) HTMLUl {
 	return e
 }
 
-func (e *htmlUl) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLVar is the interface that describes a <var> HTML element.
 type HTMLVar interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLVar
+	Body(elems ...UI) HTMLVar
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLVar
@@ -42798,20 +42481,22 @@ type HTMLVar interface {
 
 // Var returns an HTML element that defines a variable.
 func Var() HTMLVar {
-	return &htmlVar{
+	e := &htmlVar{
 		elem: elem{
 			tag:         "var",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlVar struct {
 	elem
 }
 
-func (e *htmlVar) Body(nodes ...Node) HTMLVar {
-	e.setBody(e, nodes)
+func (e *htmlVar) Body(elems ...UI) HTMLVar {
+	e.setBody(elems...)
 	return e
 }
 
@@ -42820,47 +42505,47 @@ func (e *htmlVar) Text(v interface{}) HTMLVar {
 }
 
 func (e *htmlVar) AccessKey(v string) HTMLVar {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlVar) Class(v string) HTMLVar {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlVar) ContentEditable(v bool) HTMLVar {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlVar) DataSet(k string, v interface{}) HTMLVar {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlVar) Dir(v string) HTMLVar {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlVar) Draggable(v bool) HTMLVar {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlVar) Hidden(v bool) HTMLVar {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlVar) ID(v string) HTMLVar {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlVar) Lang(v string) HTMLVar {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -42870,22 +42555,22 @@ func (e *htmlVar) Spellcheck(v bool) HTMLVar {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlVar) Style(k, v string) HTMLVar {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlVar) TabIndex(v int) HTMLVar {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlVar) Title(v string) HTMLVar {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -43049,17 +42734,12 @@ func (e *htmlVar) OnWheel(h EventHandler) HTMLVar {
 	return e
 }
 
-func (e *htmlVar) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLVideo is the interface that describes a <video> HTML element.
 type HTMLVideo interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLVideo
+	Body(elems ...UI) HTMLVideo
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLVideo
@@ -43298,20 +42978,22 @@ type HTMLVideo interface {
 
 // Video returns an HTML element that defines a video or movie.
 func Video() HTMLVideo {
-	return &htmlVideo{
+	e := &htmlVideo{
 		elem: elem{
 			tag:         "video",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlVideo struct {
 	elem
 }
 
-func (e *htmlVideo) Body(nodes ...Node) HTMLVideo {
-	e.setBody(e, nodes)
+func (e *htmlVideo) Body(elems ...UI) HTMLVideo {
+	e.setBody(elems...)
 	return e
 }
 
@@ -43320,82 +43002,82 @@ func (e *htmlVideo) Text(v interface{}) HTMLVideo {
 }
 
 func (e *htmlVideo) AccessKey(v string) HTMLVideo {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlVideo) AutoPlay(v bool) HTMLVideo {
-	e.elem.setAttribute("autoplay", v)
+	e.setAttr("autoplay", v)
 	return e
 }
 
 func (e *htmlVideo) Class(v string) HTMLVideo {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlVideo) ContentEditable(v bool) HTMLVideo {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlVideo) Controls(v bool) HTMLVideo {
-	e.elem.setAttribute("controls", v)
+	e.setAttr("controls", v)
 	return e
 }
 
 func (e *htmlVideo) DataSet(k string, v interface{}) HTMLVideo {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlVideo) Dir(v string) HTMLVideo {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlVideo) Draggable(v bool) HTMLVideo {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlVideo) Height(v int) HTMLVideo {
-	e.elem.setAttribute("height", v)
+	e.setAttr("height", v)
 	return e
 }
 
 func (e *htmlVideo) Hidden(v bool) HTMLVideo {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlVideo) ID(v string) HTMLVideo {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlVideo) Lang(v string) HTMLVideo {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
 func (e *htmlVideo) Loop(v bool) HTMLVideo {
-	e.elem.setAttribute("loop", v)
+	e.setAttr("loop", v)
 	return e
 }
 
 func (e *htmlVideo) Muted(v bool) HTMLVideo {
-	e.elem.setAttribute("muted", v)
+	e.setAttr("muted", v)
 	return e
 }
 
 func (e *htmlVideo) Poster(v string) HTMLVideo {
-	e.elem.setAttribute("poster", v)
+	e.setAttr("poster", v)
 	return e
 }
 
 func (e *htmlVideo) Preload(v string) HTMLVideo {
-	e.elem.setAttribute("preload", v)
+	e.setAttr("preload", v)
 	return e
 }
 
@@ -43405,32 +43087,32 @@ func (e *htmlVideo) Spellcheck(v bool) HTMLVideo {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlVideo) Src(v string) HTMLVideo {
-	e.elem.setAttribute("src", ResolveStaticResourcePath(v))
+	e.setAttr("src", StaticResource(v))
 	return e
 }
 
 func (e *htmlVideo) Style(k, v string) HTMLVideo {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlVideo) TabIndex(v int) HTMLVideo {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlVideo) Title(v string) HTMLVideo {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
 func (e *htmlVideo) Width(v int) HTMLVideo {
-	e.elem.setAttribute("width", v)
+	e.setAttr("width", v)
 	return e
 }
 
@@ -43709,17 +43391,12 @@ func (e *htmlVideo) OnloadedMetaData(h EventHandler) HTMLVideo {
 	return e
 }
 
-func (e *htmlVideo) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
-}
-
 // HTMLWbr is the interface that describes a <wbr> HTML element.
 type HTMLWbr interface {
-	standardNode
-	writableNode
+	UI
 
 	// Body set the content of the element.
-	Body(nodes ...Node) HTMLWbr
+	Body(elems ...UI) HTMLWbr
 
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLWbr
@@ -43862,20 +43539,22 @@ type HTMLWbr interface {
 
 // Wbr returns an HTML element that defines a possible line-break.
 func Wbr() HTMLWbr {
-	return &htmlWbr{
+	e := &htmlWbr{
 		elem: elem{
 			tag:         "wbr",
 			selfClosing: false,
 		},
 	}
+
+	return e
 }
 
 type htmlWbr struct {
 	elem
 }
 
-func (e *htmlWbr) Body(nodes ...Node) HTMLWbr {
-	e.setBody(e, nodes)
+func (e *htmlWbr) Body(elems ...UI) HTMLWbr {
+	e.setBody(elems...)
 	return e
 }
 
@@ -43884,47 +43563,47 @@ func (e *htmlWbr) Text(v interface{}) HTMLWbr {
 }
 
 func (e *htmlWbr) AccessKey(v string) HTMLWbr {
-	e.elem.setAttribute("accesskey", v)
+	e.setAttr("accesskey", v)
 	return e
 }
 
 func (e *htmlWbr) Class(v string) HTMLWbr {
-	e.elem.setAttribute("class", v)
+	e.setAttr("class", v)
 	return e
 }
 
 func (e *htmlWbr) ContentEditable(v bool) HTMLWbr {
-	e.elem.setAttribute("contenteditable", v)
+	e.setAttr("contenteditable", v)
 	return e
 }
 
 func (e *htmlWbr) DataSet(k string, v interface{}) HTMLWbr {
-	e.elem.setAttribute("data-"+k, fmt.Sprintf("%v", v))
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
 func (e *htmlWbr) Dir(v string) HTMLWbr {
-	e.elem.setAttribute("dir", v)
+	e.setAttr("dir", v)
 	return e
 }
 
 func (e *htmlWbr) Draggable(v bool) HTMLWbr {
-	e.elem.setAttribute("draggable", v)
+	e.setAttr("draggable", v)
 	return e
 }
 
 func (e *htmlWbr) Hidden(v bool) HTMLWbr {
-	e.elem.setAttribute("hidden", v)
+	e.setAttr("hidden", v)
 	return e
 }
 
 func (e *htmlWbr) ID(v string) HTMLWbr {
-	e.elem.setAttribute("id", v)
+	e.setAttr("id", v)
 	return e
 }
 
 func (e *htmlWbr) Lang(v string) HTMLWbr {
-	e.elem.setAttribute("lang", v)
+	e.setAttr("lang", v)
 	return e
 }
 
@@ -43934,22 +43613,22 @@ func (e *htmlWbr) Spellcheck(v bool) HTMLWbr {
 		s = "true"
 	}
 
-	e.elem.setAttribute("spellcheck", s)
+	e.setAttr("spellcheck", s)
 	return e
 }
 
 func (e *htmlWbr) Style(k, v string) HTMLWbr {
-	e.elem.setAttribute("style", k+":"+v)
+	e.setAttr("style", k+":"+v)
 	return e
 }
 
 func (e *htmlWbr) TabIndex(v int) HTMLWbr {
-	e.elem.setAttribute("tabindex", v)
+	e.setAttr("tabindex", v)
 	return e
 }
 
 func (e *htmlWbr) Title(v string) HTMLWbr {
-	e.elem.setAttribute("title", v)
+	e.setAttr("title", v)
 	return e
 }
 
@@ -44111,8 +43790,4 @@ func (e *htmlWbr) OnSubmit(h EventHandler) HTMLWbr {
 func (e *htmlWbr) OnWheel(h EventHandler) HTMLWbr {
 	e.setEventHandler("wheel", h)
 	return e
-}
-
-func (e *htmlWbr) nodeType() reflect.Type {
-	return reflect.TypeOf(e)
 }

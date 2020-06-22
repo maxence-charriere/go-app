@@ -1,184 +1,188 @@
 package app
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"net/url"
 	"reflect"
+
+	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
 
-// Node is the interface that describes an UI node.
-type Node interface {
-	nodeType() reflect.Type
-}
-
-// UI is the interface that describes a node that is a user interface element.
-// eg. HTML elements and components.
+// UI is the interface that describes a user interface element such as
+// components and HTML elements.
 type UI interface {
-	Node
-	Wrapper
+	// Kind represents the specific kind of a UI element.
+	Kind() Kind
 
+	// JSValue returns the javascript value linked to the element.
+	JSValue() Value
+
+	// Reports whether the element is mounted.
+	Mounted() bool
+
+	name() string
+	self() UI
+	setSelf(UI)
+	context() context.Context
+	attributes() map[string]string
+	eventHandlers() map[string]eventHandler
 	parent() UI
-	setParent(p UI)
+	setParent(UI)
+	children() []UI
+	mount() error
 	dismount()
+	update(UI) error
+	onNav(*url.URL)
 }
 
-type nodeWithChildren interface {
-	replaceChild(old, new UI)
+// Kind represents the specific kind of a user interface element.
+type Kind uint
+
+func (k Kind) String() string {
+	switch k {
+	case SimpleText:
+		return "text"
+
+	case HTML:
+		return "html"
+
+	case Component:
+		return "component"
+
+	case Selector:
+		return "selector"
+
+	case RawHTML:
+		return "raw"
+
+	default:
+		return "undefined"
+	}
+}
+
+const (
+	// UndefinedElem represents an undefined UI element.
+	UndefinedElem Kind = iota
+
+	// SimpleText represents a simple text element.
+	SimpleText
+
+	// HTML represents an HTML element.
+	HTML
+
+	// Component represents a customized, independent and reusable UI element.
+	Component
+
+	// Selector represents an element that is used to select a subset of
+	// elements within a given list.
+	Selector
+
+	// RawHTML represents an HTML element obtained from a raw HTML code snippet.
+	RawHTML
+)
+
+// FilterUIElems returns a filtered version of the given UI elements where
+// selector elements such as If and Range are interpreted and removed. It also
+// remove nil elements.
+//
+// It should be used only when implementing components that can accept content
+// with variadic arguments like HTML elements Body method.
+func FilterUIElems(uis ...UI) []UI {
+	if len(uis) == 0 {
+		return nil
+	}
+
+	elems := make([]UI, 0, len(uis))
+
+	for _, n := range uis {
+		// Ignore nil elements:
+		if v := reflect.ValueOf(n); n == nil ||
+			v.Kind() == reflect.Ptr && v.IsNil() {
+			continue
+		}
+
+		switch n.Kind() {
+		case SimpleText, HTML, Component, RawHTML:
+			elems = append(elems, n)
+
+		case Selector:
+			elems = append(elems, n.children()...)
+
+		default:
+			panic(errors.New("filtering ui elements failed").
+				Tag("reason", "unexpected element type found").
+				Tag("kind", n.Kind()).
+				Tag("name", n.name()),
+			)
+		}
+	}
+
+	return elems
+}
+
+// EventHandler represents a function that can handle HTML events. They are
+// always called on the UI goroutine.
+type EventHandler func(ctx Context, e Event)
+
+type eventHandler struct {
+	event   string
+	jsvalue Func
+	value   EventHandler
+}
+
+func (h eventHandler) equal(o eventHandler) bool {
+	return h.event == o.event &&
+		fmt.Sprintf("%p", h.value) == fmt.Sprintf("%p", o.value)
+}
+
+func makeJsEventHandler(src UI, h EventHandler) Func {
+	return FuncOf(func(this Value, args []Value) interface{} {
+		dispatch(func() {
+			if !src.Mounted() {
+				return
+			}
+
+			ctx := Context{
+				Context: src.context(),
+				Src:     src,
+				JSSrc:   src.JSValue(),
+			}
+
+			event := Event{
+				Value: args[0],
+			}
+
+			h(ctx, event)
+		})
+
+		return nil
+	})
+}
+
+func isErrReplace(err error) bool {
+	_, replace := errors.Tag(err, "replace")
+	return replace
+}
+
+func mount(n UI) error {
+	n.setSelf(n)
+	return n.mount()
+}
+
+func dismount(n UI) {
+	n.dismount()
+	n.setSelf(nil)
+}
+
+func update(a, b UI) error {
+	a.setSelf(a)
+	b.setSelf(b)
+	return a.update(b)
 }
 
 type writableNode interface {
 	html(w io.Writer)
 	htmlWithIndent(w io.Writer, indent int)
-}
-
-// Indirect returns the given nodes where conditions and ranges are interpreted.
-//
-// It is used internally in HTML element bodies and should be used when building
-// a library with components that set their content with variadic arguments.
-func Indirect(nodes ...Node) []UI {
-	inodes := make([]UI, 0, len(nodes))
-
-	for _, n := range nodes {
-		if v := reflect.ValueOf(n); v.Kind() == reflect.Ptr && v.IsNil() {
-			continue
-		}
-
-		switch t := n.(type) {
-		case Condition:
-			inodes = append(inodes, t.nodes()...)
-
-		case RangeLoop:
-			inodes = append(inodes, t.nodes()...)
-
-		case Composer:
-			t.setCompo(t)
-			inodes = append(inodes, t)
-
-		case UI:
-			inodes = append(inodes, t)
-		}
-	}
-
-	return inodes
-}
-
-func mount(n Node) error {
-	switch t := n.(type) {
-	case textNode:
-		return t.mount()
-
-	case standardNode:
-		return t.mount()
-
-	case Composer:
-		return t.mount(t)
-
-	case rawNode:
-		return t.mount()
-
-	default:
-		return fmt.Errorf("%T is not mountable", n)
-	}
-}
-
-func update(a, b UI) error {
-	if a.nodeType() != b.nodeType() {
-		return replace(a, b)
-	}
-
-	switch t := a.(type) {
-	case textNode:
-		t.update(b.(textNode))
-
-	case standardNode:
-		return updateStandardNode(t, b.(standardNode))
-
-	case rawNode:
-		return updateRawNode(t, b.(rawNode))
-
-	case Composer:
-		t.update(b.(Composer))
-		t.Update()
-
-	default:
-		return fmt.Errorf("%T: node can't be updated", t)
-	}
-
-	return nil
-}
-
-func triggerOnNav(n UI, u *url.URL) {
-	switch t := n.(type) {
-	case standardNode:
-		t.triggerOnNav(u)
-
-	case Composer:
-		t.triggerOnNav(u)
-	}
-}
-
-func replace(a, b UI) error {
-	if err := mount(b); err != nil {
-		return err
-	}
-
-	parent := a.parent()
-	b.setParent(parent)
-	parent.(nodeWithChildren).replaceChild(a, b)
-
-	for {
-		parentValue, ok := parent.(standardNode)
-		if ok {
-			parentValue.replaceChildValue(a, b)
-			break
-		}
-		parent = parent.parent()
-	}
-
-	a.dismount()
-	return nil
-}
-
-func updateStandardNode(a, b standardNode) error {
-	a.update(b)
-
-	achildren := a.children()
-	bchildren := b.children()
-
-	for len(achildren) != 0 && len(bchildren) != 0 {
-		if err := update(achildren[0], bchildren[0]); err != nil {
-			return err
-		}
-		achildren = achildren[1:]
-		bchildren = bchildren[1:]
-	}
-
-	for len(achildren) != 0 {
-		c := achildren[0]
-		a.removeChildValue(c)
-		a.removeChild(c)
-		c.dismount()
-		achildren = achildren[:len(achildren)-1]
-	}
-
-	for len(bchildren) != 0 {
-		c := bchildren[0]
-		if err := mount(c); err != nil {
-			return err
-		}
-		c.setParent(a)
-		a.appendChild(c)
-		a.appendChildValue(c)
-		bchildren = bchildren[1:]
-	}
-
-	return nil
-}
-
-func updateRawNode(a, b rawNode) error {
-	if a.raw() != b.raw() {
-		return replace(a, b)
-	}
-	return nil
 }

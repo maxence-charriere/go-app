@@ -1,56 +1,175 @@
 package app
 
-import (
-	"reflect"
-	"testing"
+import "testing"
 
-	"github.com/stretchr/testify/require"
-)
+func TestCondition(t *testing.T) {
+	testUpdate(t, []updateTest{
+		{
+			scenario: "if is interpreted",
+			a: Div().Body(
+				If(false,
+					H1(),
+				),
+			),
+			b: Div().Body(
+				If(true,
+					H1(),
+				),
+			),
+			matches: []TestUIDescriptor{
+				{
+					Path:     TestPath(),
+					Expected: Div(),
+				},
 
-func TestIfConditionIf(t *testing.T) {
-	nodes := []Node{Div()}
+				{
+					Path:     TestPath(0),
+					Expected: H1(),
+				},
+			},
+		},
+		{
+			scenario: "if is not interpreted",
+			a: Div().Body(
+				If(true,
+					H1(),
+				),
+			),
+			b: Div().Body(
+				If(false,
+					H1(),
+				),
+			),
+			matches: []TestUIDescriptor{
+				{
+					Path:     TestPath(),
+					Expected: Div(),
+				},
+				{
+					Path:     TestPath(0),
+					Expected: nil,
+				},
+			},
+		},
+		{
+			scenario: "else if is interpreted",
+			a: Div().Body(
+				If(true,
+					H1(),
+				).ElseIf(false,
+					H2(),
+				),
+			),
+			b: Div().Body(
+				If(false,
+					H1(),
+				).ElseIf(true,
+					H2(),
+				),
+			),
+			matches: []TestUIDescriptor{
+				{
+					Path:     TestPath(),
+					Expected: Div(),
+				},
 
-	ifTrue := If(true, nodes...)
-	require.False(t, ifTrue.isSatisfied())
-	require.Equal(t, Indirect(nodes...), ifTrue.nodes())
-	require.Equal(t, reflect.TypeOf(ifTrue), ifTrue.nodeType())
+				{
+					Path:     TestPath(0),
+					Expected: H2(),
+				},
+			},
+		},
+		{
+			scenario: "else if is not interpreted",
+			a: Div().Body(
+				If(false,
+					H1(),
+				).ElseIf(true,
+					H2(),
+				),
+			),
+			b: Div().Body(
+				If(false,
+					H1(),
+				).ElseIf(false,
+					H2(),
+				),
+			),
+			matches: []TestUIDescriptor{
+				{
+					Path:     TestPath(),
+					Expected: Div(),
+				},
 
-	ifFalse := If(false, nodes...)
-	require.True(t, ifFalse.isSatisfied())
-	require.Empty(t, ifFalse.nodes())
-}
+				{
+					Path:     TestPath(0),
+					Expected: nil,
+				},
+			},
+		},
+		{
+			scenario: "else is interpreted",
+			a: Div().Body(
+				If(false,
+					H1(),
+				).ElseIf(true,
+					H2(),
+				).Else(
+					H3(),
+				),
+			),
+			b: Div().Body(
+				If(false,
+					H1(),
+				).ElseIf(false,
+					H2(),
+				).Else(
+					H3(),
+				),
+			),
+			matches: []TestUIDescriptor{
+				{
+					Path:     TestPath(),
+					Expected: Div(),
+				},
 
-func TestIfConditionElseIf(t *testing.T) {
-	ifElems := []Node{Div()}
-	elseIfElems := []Node{P()}
+				{
+					Path:     TestPath(0),
+					Expected: H3(),
+				},
+			},
+		},
+		{
+			scenario: "else is not interpreted",
+			a: Div().Body(
+				If(false,
+					H1(),
+				).ElseIf(true,
+					H2(),
+				).Else(
+					H3(),
+				),
+			),
+			b: Div().Body(
+				If(true,
+					H1(),
+				).ElseIf(false,
+					H2(),
+				).Else(
+					H3(),
+				),
+			),
+			matches: []TestUIDescriptor{
+				{
+					Path:     TestPath(),
+					Expected: Div(),
+				},
 
-	noElseIf := If(true, ifElems...).
-		ElseIf(true, elseIfElems...)
-	require.False(t, noElseIf.isSatisfied())
-	require.Equal(t, Indirect(ifElems...), noElseIf.nodes())
-
-	elseIfTrue := If(false, ifElems...).
-		ElseIf(true, elseIfElems...)
-	require.False(t, elseIfTrue.isSatisfied())
-	require.Equal(t, Indirect(elseIfElems...), elseIfTrue.nodes())
-
-	elseIfFalse := If(false, ifElems...).
-		ElseIf(false, elseIfElems...)
-	require.True(t, elseIfFalse.isSatisfied())
-	require.Empty(t, elseIfFalse.nodes())
-}
-
-func TestIfConditionElse(t *testing.T) {
-	ifElems := []Node{Div()}
-	elseElems := []Node{Text("hello")}
-
-	noElse := If(true, ifElems...).
-		Else(elseElems...)
-	require.False(t, noElse.isSatisfied())
-	require.Equal(t, Indirect(ifElems...), noElse.nodes())
-
-	elseTrue := If(false, ifElems...).
-		Else(elseElems...)
-	require.False(t, elseTrue.isSatisfied())
-	require.Equal(t, Indirect(elseElems...), elseTrue.nodes())
+				{
+					Path:     TestPath(0),
+					Expected: H1(),
+				},
+			},
+		},
+	})
 }

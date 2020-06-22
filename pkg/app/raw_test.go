@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestRawOpenTag(t *testing.T) {
+func TestRawRootTagName(t *testing.T) {
 	tests := []struct {
 		scenario string
 		raw      string
@@ -47,39 +47,70 @@ func TestRawOpenTag(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
-			tag := rawOpenTag(test.raw)
+			tag := rawRootTagName(test.raw)
 			require.Equal(t, test.expected, tag)
 		})
 	}
 }
 
-func TestRaw(t *testing.T) {
-	tests := []struct {
-		scenario string
-		raw      string
-		panic    bool
-	}{
+func TestRawMountDismount(t *testing.T) {
+	testMountDismount(t, []mountTest{
 		{
-			scenario: "missing opening tag",
-			raw:      "</div>",
-			panic:    true,
+			scenario: "raw html element",
+			node:     Raw(`<h1>Hello</h1>`),
 		},
 		{
-			scenario: "well formed value",
-			raw:      "<div></div>",
+			scenario: "raw svg element",
+			node:     Raw(`<svg></svg>`),
 		},
-	}
+	})
+}
 
-	for _, test := range tests {
-		t.Run(test.scenario, func(t *testing.T) {
-			if test.panic {
-				require.Panics(t, func() {
-					Raw(test.raw)
-				})
-				return
-			}
-
-			require.NotNil(t, Raw(test.raw))
-		})
-	}
+func TestRawUpdate(t *testing.T) {
+	testUpdate(t, []updateTest{
+		{
+			scenario:   "raw html element returns replace error when updated with a non text-element",
+			a:          Raw("<svg></svg>"),
+			b:          Div(),
+			replaceErr: true,
+		},
+		{
+			scenario: "raw html element is replace by another raw html element",
+			a: Div().Body(
+				Raw("<div></div>"),
+			),
+			b: Div().Body(
+				Raw("<svg></svg>"),
+			),
+			matches: []TestUIDescriptor{
+				{
+					Path:     TestPath(),
+					Expected: Div(),
+				},
+				{
+					Path:     TestPath(0),
+					Expected: Raw("<svg></svg>"),
+				},
+			},
+		},
+		{
+			scenario: "raw html element is replace by non-raw html element",
+			a: Div().Body(
+				Raw("<div></div>"),
+			),
+			b: Div().Body(
+				Text("hello"),
+			),
+			matches: []TestUIDescriptor{
+				{
+					Path:     TestPath(),
+					Expected: Div(),
+				},
+				{
+					Path:     TestPath(0),
+					Expected: Text("hello"),
+				},
+			},
+		},
+	})
 }

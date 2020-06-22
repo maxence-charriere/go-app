@@ -8,7 +8,7 @@
 	<a href="https://circleci.com/gh/maxence-charriere/go-app"><img src="https://circleci.com/gh/maxence-charriere/go-app.svg?style=svg" alt="Circle CI Go build"></a>
     <a href="https://goreportcard.com/report/github.com/maxence-charriere/go-app"><img src="https://goreportcard.com/badge/github.com/maxence-charriere/go-app" alt="Go Report Card"></a>
 	<a href="https://GitHub.com/maxence-charriere/go-app/releases/"><img src="https://img.shields.io/github/release/maxence-charriere/go-app.svg" alt="GitHub release"></a>
-	<a href="https://pkg.go.dev/github.com/maxence-charriere/go-app/v6/pkg/app"><img src="https://img.shields.io/badge/dev-reference-007d9c?logo=go&logoColor=white&style=flat" alt="pkg.go.dev docs"></a>
+	<a href="https://pkg.go.dev/github.com/maxence-charriere/go-app/v7/pkg/app"><img src="https://img.shields.io/badge/dev-reference-007d9c?logo=go&logoColor=white&style=flat" alt="pkg.go.dev docs"></a>
 	<a href="https://github.com/maxence-charriere/go-app/wiki"><img src="https://img.shields.io/badge/github-wiki-6E7AF8?logo=github&style=flat" alt="pkg.go.dev docs"></a>
     <a href="https://twitter.com/jonhymaxoo"><img alt="Twitter URL" src="https://img.shields.io/badge/twitter-@jonhymaxoo-35A9F8?logo=twitter&style=flat"></a>
     <a href="https://opencollective.com/go-app" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/go-app/all/badge.svg?label=open+collective&color=4FB9F6" /></a>
@@ -32,7 +32,7 @@ The package also provides an [http.handler](#http-handler) ready to serve all th
 go mod init
 
 # Get package:
-go get -u -v github.com/maxence-charriere/go-app/v6
+go get -u -v github.com/maxence-charriere/go-app/v7
 ```
 
 ## How it works
@@ -53,7 +53,7 @@ go get -u -v github.com/maxence-charriere/go-app/v6
 ```go
 package main
 
-import "github.com/maxence-charriere/go-app/v6/pkg/app"
+import "github.com/maxence-charriere/go-app/v7/pkg/app"
 
 type hello struct {
     app.Compo
@@ -80,8 +80,8 @@ func (h *hello) Render() app.UI {
     )
 }
 
-func (h *hello) OnInputChange(src app.Value, e app.Event) {
-    h.name = src.Get("value").String()
+func (h *hello) OnInputChange(ctx app.Context, e app.Event) {
+    h.name = ctx.JSSrc.Get("value").String()
     h.Update()
 }
 
@@ -115,7 +115,7 @@ package main
 import (
     "net/http"
 
-    "github.com/maxence-charriere/go-app/v6/pkg/app"
+    "github.com/maxence-charriere/go-app/v7/pkg/app"
 )
 
 func main() {

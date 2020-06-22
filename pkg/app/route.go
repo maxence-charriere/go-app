@@ -2,9 +2,19 @@ package app
 
 import "regexp"
 
-type regexpRoute struct {
-	regexp *regexp.Regexp
-	node   UI
+var (
+	routes router
+)
+
+// Route binds the requested path to the given UI node.
+func Route(path string, node UI) {
+	routes.route(path, node)
+}
+
+// RouteWithRegexp binds the regular expression pattern to the given UI node.
+// Patterns use the Go standard regexp format.
+func RouteWithRegexp(pattern string, node UI) {
+	routes.routeWithRegexp(pattern, node)
 }
 
 type router struct {
@@ -38,4 +48,9 @@ func (r *router) ui(path string) (UI, bool) {
 	}
 
 	return nil, false
+}
+
+type regexpRoute struct {
+	regexp *regexp.Regexp
+	node   UI
 }

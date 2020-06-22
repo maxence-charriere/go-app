@@ -1,31 +1,78 @@
 package app
 
 import (
+	"context"
 	"fmt"
 	"net/url"
 	"strings"
 	"syscall/js"
 
-	"github.com/maxence-charriere/go-app/v6/pkg/log"
+	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
 
 var (
-	window         = &browserWindow{value: value{Value: js.Global()}}
-	body           = Body()
-	content     UI = Div()
-	contextMenu    = &contextMenuLayout{}
+	body        *htmlBody
+	content     UI
+	contextMenu = &contextMenuLayout{}
+	window      = &browserWindow{value: value{Value: js.Global()}}
 )
 
-func init() {
-	log.DefaultColor = ""
-	log.InfoColor = ""
-	log.ErrorColor = ""
-	log.WarnColor = ""
-	log.DebugColor = ""
-	log.CurrentLevel = log.DebugLevel
+func initRemoteRootDir() {
+	remoteRootDir = Getenv("GOAPP_REMOTE_ROOT_DIR")
+}
 
-	LocalStorage = newJSStorage("localStorage")
-	SessionStorage = newJSStorage("sessionStorage")
+func initBody() {
+	ctx, cancel := context.WithCancel(context.Background())
+
+	body = &htmlBody{
+		elem: elem{
+			ctx:       ctx,
+			ctxCancel: cancel,
+			jsvalue:   Window().Get("document").Get("body"),
+			tag:       "body",
+		},
+	}
+
+	body.setSelf(body)
+}
+
+func initContent() {
+	ctx, cancel := context.WithCancel(context.Background())
+
+	content := &htmlDiv{
+		elem: elem{
+			ctx:       ctx,
+			ctxCancel: cancel,
+			jsvalue:   body.JSValue().Get("firstElementChild"),
+			tag:       "div",
+		},
+	}
+
+	content.setSelf(content)
+	content.setParent(body)
+	body.body = append(body.body, content)
+}
+
+func initContextMenu() {
+	ctx, cancel := context.WithCancel(context.Background())
+
+	tmp := &htmlDiv{
+		elem: elem{
+			attrs:     map[string]string{"id": "app-context-menu"},
+			ctx:       ctx,
+			ctxCancel: cancel,
+			jsvalue: Window().
+				Get("document").
+				Call("getElementById", "app-context-menu"),
+			tag: "div",
+		},
+	}
+
+	tmp.setSelf(tmp)
+	tmp.setParent(body)
+	body.body = append(body.body, tmp)
+
+	body.replaceChildAt(1, contextMenu)
 }
 
 func run() {
@@ -36,6 +83,7 @@ func run() {
 	}()
 
 	initRemoteRootDir()
+	initBody()
 	initContent()
 	initContextMenu()
 
@@ -50,10 +98,10 @@ func run() {
 	url := Window().URL()
 
 	if err := navigate(url, false); err != nil {
-		log.Error("loading page failed").
-			T("error", err).
-			T("url", url).
-			Panic()
+		panic(errors.New("navigating to page failed").
+			Tag("url", url).
+			Wrap(err),
+		)
 	}
 
 	for {
@@ -72,32 +120,6 @@ func displayLoadError(err interface{}) {
 		return
 	}
 	loadingLabel.Set("innerText", fmt.Sprint(err))
-}
-
-func initRemoteRootDir() {
-	remoteRootDir = Getenv("GOAPP_REMOTE_ROOT_DIR")
-}
-
-func initContent() {
-	body.(*htmlBody).value = Window().Get("document").Get("body")
-	content.(*htmlDiv).value = body.JSValue().Get("firstElementChild")
-	content.setParent(body)
-	body.appendChild(content)
-}
-
-func initContextMenu() {
-	rawContextMenu := Div().ID("app-context-menu")
-	rawContextMenu.(*htmlDiv).value = Window().
-		Get("document").
-		Call("getElementById", "app-context-menu")
-	rawContextMenu.setParent(body)
-	body.appendChild(rawContextMenu)
-
-	if err := update(rawContextMenu, contextMenu); err != nil {
-		log.Error("initializing context menu failed").
-			T("error", err).
-			Panic()
-	}
 }
 
 func onNavigate(this Value, args []Value) interface{} {
@@ -129,18 +151,17 @@ func onNavigate(this Value, args []Value) interface{} {
 	}
 
 	return nil
-
 }
 
 func onPopState(this Value, args []Value) interface{} {
-	dispatcher(func() {
+	dispatch(func() {
 		navigate(Window().URL(), false)
 	})
 	return nil
 }
 
 func navigate(u *url.URL, updateHistory bool) error {
-	contextMenu.hide(nil, Event{Value: Null()})
+	contextMenu.hide()
 
 	if isExternalNavigation(u) {
 		Window().Get("location").Set("href", u.String())
@@ -158,24 +179,23 @@ func navigate(u *url.URL, updateHistory bool) error {
 	}
 
 	if content != root {
-		if err := replace(content, root); err != nil {
-			return err
+		if err := body.replaceChildAt(0, root); err != nil {
+			return errors.New("replacing content failed").Wrap(err)
 		}
 		content = root
 	}
-
-	triggerOnNav(root, u)
 
 	if updateHistory {
 		Window().Get("history").Call("pushState", nil, "", u.String())
 	}
 
 	if isFragmentNavigation(u) {
-		dispatcher(func() {
+		dispatch(func() {
 			Window().ScrollToID(u.Fragment)
 		})
 	}
 
+	root.onNav(u)
 	return nil
 }
 

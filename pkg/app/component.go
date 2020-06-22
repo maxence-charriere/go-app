@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/maxence-charriere/go-app/v6/pkg/errors"
+	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
 
 // Composer is the interface that describes a customized, independent and

@@ -2,52 +2,32 @@
 
 package app
 
-import (
-	"net/url"
-	"runtime"
-
-	"github.com/maxence-charriere/go-app/v6/pkg/log"
-)
+import "net/url"
 
 var (
 	window *browserWindow
 )
 
-func init() {
-	LocalStorage = make(memoryStorage)
-	SessionStorage = make(memoryStorage)
-}
-
-func run() {
-	panicNoWasm()
-}
-
-func navigate(u *url.URL, updateHistory bool) error {
-	panicNoWasm()
-	return nil
-}
-
-func reload() {
-	panicNoWasm()
-}
-
-func newContextMenu(menuItems ...MenuItemNode) {
-	panicNoWasm()
-}
-
-func panicNoWasm() {
-	log.Errorf("invalid go architecture").
-		T("required", "wasm").
-		T("current", runtime.GOARCH).
-		Panic()
-}
-
 func getenv(k string) string {
-	panicNoWasm()
-	return ""
+	panic(errNoWasm)
 }
 
 func keepBodyClean() func() {
-	panicNoWasm()
-	return nil
+	panic(errNoWasm)
+}
+
+func navigate(u *url.URL, updateHistory bool) error {
+	panic(errNoWasm)
+}
+
+func newContextMenu(menuItems ...MenuItemNode) {
+	panic(errNoWasm)
+}
+
+func reload() {
+	panic(errNoWasm)
+}
+
+func run() {
+	panic(errNoWasm)
 }

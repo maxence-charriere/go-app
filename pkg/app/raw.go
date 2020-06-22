@@ -1,96 +1,144 @@
 package app
 
 import (
-	"fmt"
+	"context"
 	"io"
-	"reflect"
+	"net/url"
 	"strings"
 
-	"github.com/maxence-charriere/go-app/v6/pkg/log"
+	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
 
-type rawNode interface {
-	UI
-
-	raw() string
-	mount() error
-}
-
-// Raw returns a node from the given raw value.
+// Raw returns a ui element from the given raw value. HTML raw value must have a
+// single root.
 //
-// Note that it is not recommended to use this kind of node since there is no
-// check on the raw string content.
+// It is not recommended to use this kind of node since there is no check on the
+// raw string content.
 func Raw(v string) UI {
 	v = strings.TrimSpace(v)
 
-	tag := rawOpenTag(v)
+	tag := rawRootTagName(v)
 	if tag == "" {
-		log.Error("creating raw node failed").
-			T("error", "no opening tag").
-			Panic()
-		return nil
+		panic(errors.New("creating raw element failed").
+			Tag("reason", "opening tag not found"))
 	}
 
 	return &raw{
-		tagName:   tag,
-		outerHTML: v,
+		value: v,
+		tag:   tag,
 	}
 }
 
 type raw struct {
-	parentNode UI
-	jsValue    Value
-	tagName    string
-	outerHTML  string
+	jsvalue    Value
+	parentElem UI
+	tag        string
+	value      string
 }
 
-func (r *raw) nodeType() reflect.Type {
-	return reflect.TypeOf(r)
+func (r *raw) Kind() Kind {
+	return RawHTML
 }
 
 func (r *raw) JSValue() Value {
-	return r.jsValue
+	return r.jsvalue
+}
+
+func (r *raw) Mounted() bool {
+	return r.jsvalue != nil
+}
+
+func (r *raw) name() string {
+	return "raw." + r.tag
+}
+
+func (r *raw) self() UI {
+	return r
+}
+
+func (r *raw) setSelf(UI) {
+}
+
+func (r *raw) context() context.Context {
+	return nil
+}
+
+func (r *raw) attributes() map[string]string {
+	return nil
+}
+
+func (r *raw) eventHandlers() map[string]eventHandler {
+	return nil
 }
 
 func (r *raw) parent() UI {
-	return r.parentNode
+	return r.parentElem
 }
 
 func (r *raw) setParent(p UI) {
-	r.parentNode = p
+	r.parentElem = p
 }
 
-func (r *raw) dismount() {
-	r.jsValue = nil
-}
-
-func (r *raw) raw() string {
-	return r.outerHTML
+func (r *raw) children() []UI {
+	return nil
 }
 
 func (r *raw) mount() error {
-	if r.jsValue != nil {
-		return fmt.Errorf("node already mounted: %+v", r)
+	if r.Mounted() {
+		return errors.New("mounting raw html element failed").
+			Tag("reason", "already mounted").
+			Tag("name", r.name()).
+			Tag("kind", r.Kind())
 	}
 
-	var v Value
+	wrapper := Window().Get("document").Call("createElement", "div")
+	wrapper.Set("innerHTML", r.value)
 
-	switch r.tagName {
-	case "svg":
-		v = Window().
-			Get("document").
-			Call("createElementNS", "http://www.w3.org/2000/svg", r.tagName)
-
-	default:
-		v = Window().Get("document").Call("createElement", r.tagName)
+	value := wrapper.Get("firstChild")
+	if !value.Truthy() {
+		return errors.New("mounting raw html element failed").
+			Tag("reason", "converting raw html to html elements returned nil").
+			Tag("name", r.name()).
+			Tag("kind", r.Kind()).
+			Tag("raw-html", r.value)
 	}
 
-	tmpParent := Window().Get("document").Call("createElement", "div")
-	tmpParent.Call("appendChild", v)
-	v.Set("outerHTML", r.outerHTML)
-
-	r.jsValue = tmpParent.Get("firstChild")
+	wrapper.Call("removeChild", value)
+	r.jsvalue = value
 	return nil
+}
+
+func (r *raw) dismount() {
+	r.jsvalue = nil
+}
+
+func (r *raw) update(n UI) error {
+	if !r.Mounted() {
+		return nil
+	}
+
+	if n.Kind() != r.Kind() || r.name() != r.name() {
+		return errors.New("updating raw html element failed").
+			Tag("replace", true).
+			Tag("reason", "different element types").
+			Tag("current-kind", r.Kind()).
+			Tag("current-name", r.name()).
+			Tag("updated-kind", n.Kind()).
+			Tag("updated-name", n.name())
+	}
+
+	if v := n.(*raw).value; r.value != v {
+		return errors.New("updating raw html element failed").
+			Tag("replace", true).
+			Tag("reason", "different raw values").
+			Tag("current-value", r.value).
+			Tag("new-value", v)
+	}
+
+	return nil
+}
+
+func (r *raw) onNav(*url.URL) {
 }
 
 func (r *raw) html(w io.Writer) {
@@ -99,11 +147,11 @@ func (r *raw) html(w io.Writer) {
 
 func (r *raw) htmlWithIndent(w io.Writer, indent int) {
 	writeIndent(w, indent)
-	w.Write(stob(r.outerHTML))
+	w.Write(stob(r.value))
 	w.Write(ln())
 }
 
-func rawOpenTag(raw string) string {
+func rawRootTagName(raw string) string {
 	raw = strings.TrimSpace(raw)
 
 	if strings.HasPrefix(raw, "</") || !strings.HasPrefix(raw, "<") {
@@ -120,6 +168,7 @@ func rawOpenTag(raw string) string {
 			break
 		}
 	}
+
 	if end <= 0 {
 		return ""
 	}
