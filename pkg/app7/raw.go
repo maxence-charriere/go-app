@@ -111,7 +111,29 @@ func (r *raw) dismount() {
 }
 
 func (r *raw) update(n UI) error {
-	panic("not implemented")
+	if !r.Mounted() {
+		return nil
+	}
+
+	if n.Kind() != r.Kind() || r.name() != r.name() {
+		return errors.New("updating raw html element failed").
+			Tag("replace", true).
+			Tag("reason", "different element types").
+			Tag("current-kind", r.Kind()).
+			Tag("current-name", r.name()).
+			Tag("updated-kind", n.Kind()).
+			Tag("updated-name", n.name())
+	}
+
+	if v := n.(*raw).value; r.value != v {
+		return errors.New("updating raw html element failed").
+			Tag("replace", true).
+			Tag("reason", "different raw values").
+			Tag("current-value", r.value).
+			Tag("new-value", v)
+	}
+
+	return nil
 }
 
 func rawRootTagName(raw string) string {

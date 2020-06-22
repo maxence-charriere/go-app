@@ -52,3 +52,65 @@ func TestRawRootTagName(t *testing.T) {
 		})
 	}
 }
+
+func TestRawMountDismount(t *testing.T) {
+	testMountDismount(t, []mountTest{
+		{
+			scenario: "raw html element",
+			node:     Raw(`<h1>Hello</h1>`),
+		},
+		{
+			scenario: "raw svg element",
+			node:     Raw(`<svg></svg>`),
+		},
+	})
+}
+
+func TestRawUpdate(t *testing.T) {
+	testUpdate(t, []updateTest{
+		{
+			scenario:   "raw html element returns replace error when updated with a non text-element",
+			a:          Raw("<svg></svg>"),
+			b:          Div(),
+			replaceErr: true,
+		},
+		{
+			scenario: "raw html element is replace by another raw html element",
+			a: Div().Body(
+				Raw("<div></div>"),
+			),
+			b: Div().Body(
+				Raw("<svg></svg>"),
+			),
+			matches: []TestUIDescriptor{
+				{
+					Path:     TestPath(),
+					Expected: Div(),
+				},
+				{
+					Path:     TestPath(0),
+					Expected: Raw("<svg></svg>"),
+				},
+			},
+		},
+		{
+			scenario: "raw html element is replace by non-raw html element",
+			a: Div().Body(
+				Raw("<div></div>"),
+			),
+			b: Div().Body(
+				Text("hello"),
+			),
+			matches: []TestUIDescriptor{
+				{
+					Path:     TestPath(),
+					Expected: Div(),
+				},
+				{
+					Path:     TestPath(0),
+					Expected: Text("hello"),
+				},
+			},
+		},
+	})
+}

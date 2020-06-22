@@ -101,11 +101,18 @@ func FilterUIElems(uis ...UI) []UI {
 		}
 
 		switch n.Kind() {
-		case SimpleText, HTML, Component:
+		case SimpleText, HTML, Component, RawHTML:
 			elems = append(elems, n)
 
 		case Selector:
 			elems = append(elems, n.children()...)
+
+		default:
+			panic(errors.New("filtering ui elements failed").
+				Tag("reason", "unexpected element type found").
+				Tag("kind", n.Kind()).
+				Tag("name", n.name()),
+			)
 		}
 	}
 

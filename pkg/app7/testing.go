@@ -135,6 +135,9 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 	case Component:
 		return matchComponent(tree, d)
 
+	case RawHTML:
+		return matchRaw(tree, d)
+
 	default:
 		return errors.New("the UI element is not matching the descriptor").
 			Tag("reason", "unavailable matching for the kind").
@@ -262,6 +265,21 @@ func matchComponent(n UI, d TestUIDescriptor) error {
 				Tag("expected-value", b.Interface()).
 				Tag("current-value", a.Interface())
 		}
+	}
+
+	return nil
+}
+
+func matchRaw(n UI, d TestUIDescriptor) error {
+	a := n.(*raw)
+	b := d.Expected.(*raw)
+
+	if a.value != b.value {
+		return errors.New("the raw html element is not matching with the descriptor").
+			Tag("name", n.name()).
+			Tag("reason", "unexpected value").
+			Tag("expected-value", b.value).
+			Tag("current-value", a.value)
 	}
 
 	return nil
