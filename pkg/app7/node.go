@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"net/url"
 	"reflect"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/errors"
@@ -33,6 +34,7 @@ type UI interface {
 	mount() error
 	dismount()
 	update(UI) error
+	onNav(*url.URL)
 }
 
 // Kind represents the specific kind of a user interface element.
@@ -119,6 +121,10 @@ func FilterUIElems(uis ...UI) []UI {
 
 	return elems
 }
+
+// EventHandler represents a function that can handle HTML events. They are
+// always called on the UI goroutine.
+type EventHandler func(ctx Context, e Event)
 
 type eventHandler struct {
 	event   string

@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"io"
+	"net/url"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/errors"
 )
@@ -377,6 +378,12 @@ func (e *elem) setBody(body ...UI) {
 	}
 
 	e.body = FilterUIElems(body...)
+}
+
+func (e *elem) onNav(u *url.URL) {
+	for _, c := range e.children() {
+		c.onNav(u)
+	}
 }
 
 func (e *elem) html(w io.Writer) {

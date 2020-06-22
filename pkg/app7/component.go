@@ -307,6 +307,20 @@ func (c *Compo) replaceRoot(n UI) error {
 	return nil
 }
 
+func (c *Compo) onNav(u *url.URL) {
+	c.root.onNav(u)
+
+	if nav, ok := c.self().(Navigator); ok {
+		ctx := Context{
+			Context: c.context(),
+			Src:     c.self(),
+			JSSrc:   c.JSValue(),
+		}
+
+		nav.OnNav(ctx, u)
+	}
+}
+
 func (c *Compo) render() UI {
 	elems := FilterUIElems(c.this.Render())
 	return elems[0]

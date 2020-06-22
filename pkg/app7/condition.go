@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"net/url"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/errors"
 )
@@ -114,4 +115,7 @@ func (c condition) update(UI) error {
 	return errors.New("conditon cannot be updated").
 		Tag("name", c.name()).
 		Tag("kind", c.Kind())
+}
+
+func (c condition) onNav(*url.URL) {
 }

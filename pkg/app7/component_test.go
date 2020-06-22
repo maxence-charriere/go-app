@@ -3,6 +3,8 @@ package app
 import (
 	"net/url"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestCompoMountDismount(t *testing.T) {
@@ -228,16 +230,63 @@ func TestCompoUpdate(t *testing.T) {
 	})
 }
 
+func TestNavigator(t *testing.T) {
+	testSkipNonWasm(t)
+
+	h := &hello{}
+
+	err := mount(h)
+	require.NoError(t, err)
+	defer dismount(h)
+
+	u, _ := url.Parse("https://murlok.io")
+	h.onNav(u)
+	require.Equal(t, "https://murlok.io", h.onNavURL)
+}
+
+func TestNestedtNavigator(t *testing.T) {
+	testSkipNonWasm(t)
+
+	h := &hello{}
+	div := Div().Body(h)
+
+	err := mount(div)
+	require.NoError(t, err)
+	defer dismount(div)
+
+	u, _ := url.Parse("https://murlok.io")
+	div.onNav(u)
+	require.Equal(t, "https://murlok.io", h.onNavURL)
+}
+
+func TestNestedInComponentNavigator(t *testing.T) {
+	testSkipNonWasm(t)
+
+	foo := &foo{Bar: "Bar"}
+
+	err := mount(foo)
+	require.NoError(t, err)
+	defer dismount(foo)
+
+	u, _ := url.Parse("https://murlok.io")
+	foo.onNav(u)
+
+	b := foo.children()[0].(*bar)
+	require.Equal(t, "https://murlok.io", b.onNavURL)
+}
+
 type hello struct {
 	Compo
 
 	Greeting string
+	onNavURL string
 }
 
 func (h *hello) OnMount(Context) {
 }
 
-func (h *hello) OnNav(Context, *url.URL) {
+func (h *hello) OnNav(ctx Context, u *url.URL) {
+	h.onNavURL = u.String()
 }
 
 func (h *hello) OnDismount(Context) {
@@ -267,7 +316,12 @@ func (f *foo) Render() UI {
 
 type bar struct {
 	Compo
-	Value string
+	Value    string
+	onNavURL string
+}
+
+func (b *bar) OnNav(ctx Context, u *url.URL) {
+	b.onNavURL = u.String()
 }
 
 func (b *bar) Render() UI {
