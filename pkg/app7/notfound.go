@@ -1,5 +1,11 @@
 package app
 
+var (
+	// NotFound is the ui element that is displayed when a request is not
+	// routed.
+	NotFound UI = &notFound{}
+)
+
 type notFound struct {
 	Compo
 	Icon string
