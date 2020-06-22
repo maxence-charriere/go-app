@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"io"
 	"strings"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/errors"
@@ -134,6 +135,15 @@ func (r *raw) update(n UI) error {
 	}
 
 	return nil
+}
+func (r *raw) html(w io.Writer) {
+	r.htmlWithIndent(w, 0)
+}
+
+func (r *raw) htmlWithIndent(w io.Writer, indent int) {
+	writeIndent(w, indent)
+	w.Write(stob(r.value))
+	w.Write(ln())
 }
 
 func rawRootTagName(raw string) string {

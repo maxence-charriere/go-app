@@ -2,6 +2,8 @@ package app
 
 import (
 	"context"
+	"html"
+	"io"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/errors"
 )
@@ -106,4 +108,13 @@ func (t *text) update(n UI) error {
 	}
 
 	return nil
+}
+
+func (t *text) html(w io.Writer) {
+	t.htmlWithIndent(w, 0)
+}
+
+func (t *text) htmlWithIndent(w io.Writer, indent int) {
+	writeIndent(w, indent)
+	w.Write(stob(html.EscapeString(t.value)))
 }

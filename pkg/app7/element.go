@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"io"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/errors"
 )
@@ -376,4 +377,45 @@ func (e *elem) setBody(body ...UI) {
 	}
 
 	e.body = FilterUIElems(body...)
+}
+
+func (e *elem) html(w io.Writer) {
+	e.htmlWithIndent(w, 0)
+}
+
+func (e *elem) htmlWithIndent(w io.Writer, indent int) {
+	writeIndent(w, indent)
+	w.Write(stob("<"))
+	w.Write(stob(e.tag))
+
+	for k, v := range e.attrs {
+		w.Write(stob(" "))
+		w.Write(stob(k))
+
+		if v != "" {
+			w.Write(stob(`="`))
+			w.Write(stob(v))
+			w.Write(stob(`"`))
+		}
+	}
+
+	w.Write(stob(">"))
+
+	if e.selfClosing {
+		return
+	}
+
+	for _, c := range e.body {
+		w.Write(ln())
+		c.(writableNode).htmlWithIndent(w, indent+1)
+	}
+
+	if len(e.body) != 0 {
+		w.Write(ln())
+		writeIndent(w, indent)
+	}
+
+	w.Write(stob("</"))
+	w.Write(stob(e.tag))
+	w.Write(stob(">"))
 }

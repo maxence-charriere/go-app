@@ -188,7 +188,7 @@ func jsval(v Value) js.Value {
 		return jsval(v.Value)
 
 	default:
-		Logger("%s", errors.New("syscall/js value conversion failed").
+		Log("%s", errors.New("syscall/js value conversion failed").
 			Tag("type", reflect.TypeOf(v)),
 		)
 		return js.Undefined()

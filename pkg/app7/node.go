@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+	"io"
 	"reflect"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/errors"
@@ -173,4 +174,9 @@ func update(a, b UI) error {
 	a.setSelf(a)
 	b.setSelf(b)
 	return a.update(b)
+}
+
+type writableNode interface {
+	html(w io.Writer)
+	htmlWithIndent(w io.Writer, indent int)
 }
