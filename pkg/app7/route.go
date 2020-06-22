@@ -6,6 +6,17 @@ var (
 	routes router
 )
 
+// Route binds the requested path to the given UI node.
+func Route(path string, node UI) {
+	routes.route(path, node)
+}
+
+// RouteWithRegexp binds the regular expression pattern to the given UI node.
+// Patterns use the Go standard regexp format.
+func RouteWithRegexp(pattern string, node UI) {
+	routes.routeWithRegexp(pattern, node)
+}
+
 type router struct {
 	routes           map[string]UI
 	routesWithRegexp []regexpRoute
