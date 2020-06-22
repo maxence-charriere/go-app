@@ -1,5 +1,11 @@
 package app
 
+var (
+	// NotFound is the ui element that is displayed when a request is not
+	// routed.
+	NotFound UI = &notFound{}
+)
+
 type notFound struct {
 	Compo
 	Icon string
@@ -37,8 +43,6 @@ func (n *notFound) Render() UI {
 				),
 			P().
 				Class("app-wasm-label").
-				Body(
-					Text("Not Found"),
-				),
+				Text("Not Found"),
 		)
 }

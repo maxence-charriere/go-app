@@ -2,9 +2,10 @@ package app
 
 import (
 	"net/url"
+	"reflect"
 	"syscall/js"
 
-	"github.com/maxence-charriere/go-app/v6/pkg/log"
+	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
 
 type value struct {
@@ -168,16 +169,6 @@ func (w *browserWindow) ScrollToID(id string) {
 	}
 }
 
-func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
-	callback := makeEventHandler(h)
-	w.Call("addEventListener", event, callback)
-
-	return func() {
-		w.Call("removeEventListener", event, callback)
-		callback.Release()
-	}
-}
-
 func val(v js.Value) Value {
 	return value{Value: v}
 }
@@ -197,9 +188,9 @@ func jsval(v Value) js.Value {
 		return jsval(v.Value)
 
 	default:
-		log.Error("converting to js value failed").
-			T("value-type", v).
-			Panic()
+		Log("%s", errors.New("syscall/js value conversion failed").
+			Tag("type", reflect.TypeOf(v)),
+		)
 		return js.Undefined()
 	}
 }
@@ -216,29 +207,4 @@ func copyBytesToGo(dst []byte, src Value) int {
 
 func copyBytesToJS(dst Value, src []byte) int {
 	return js.CopyBytesToJS(jsval(dst), src)
-}
-
-func makeEventHandler(h EventHandler) Func {
-	return FuncOf(func(this Value, args []Value) interface{} {
-		dispatcher(func() {
-			event := Event{Value: args[0]}
-			trackMousePosition(event)
-			h(this, event)
-		})
-		return nil
-	})
-}
-
-func trackMousePosition(e Event) {
-	x := e.Get("clientX")
-	if !x.Truthy() {
-		return
-	}
-
-	y := e.Get("clientY")
-	if !y.Truthy() {
-		return
-	}
-
-	window.setCursorPosition(x.Int(), y.Int())
 }

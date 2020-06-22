@@ -18,7 +18,7 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/maxence-charriere/go-app/v6/pkg/log"
+	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
 
 const (
@@ -213,7 +213,8 @@ func (h *Handler) initPWA() {
 
 func (h *Handler) initPage() {
 	h.page.WriteString("<!DOCTYPE html>\n")
-	Html().Body(
+
+	html := Html().Body(
 		Head().Body(
 			Meta().Charset("UTF-8"),
 			Meta().
@@ -281,8 +282,9 @@ func (h *Handler) initPage() {
 			}),
 			Div().ID("app-end"),
 		),
-	).
-		html(&h.page)
+	)
+
+	html.(writableNode).html(&h.page)
 }
 
 func (h *Handler) initWasmJS() {
@@ -306,10 +308,10 @@ func (h *Handler) initAppJS() {
 
 	env, err := json.Marshal(h.Env)
 	if err != nil {
-		log.Error("encoding pwa env failed").
-			T("error", err).
-			T("env", h.Env).
-			Panic()
+		panic(errors.New("encoding pwa env failed").
+			Tag("env", h.Env).
+			Wrap(err),
+		)
 	}
 
 	if err := template.
@@ -321,9 +323,7 @@ func (h *Handler) initAppJS() {
 			Env:  btos(env),
 			Wasm: wasmURL,
 		}); err != nil {
-		log.Error("initializing app.js failed").
-			T("error", err).
-			Panic()
+		panic(errors.New("initializing app.js failed").Wrap(err))
 	}
 }
 
@@ -363,9 +363,7 @@ func (h *Handler) initWorkerJS() {
 			Version:          h.Version,
 			ResourcesToCache: cacheableResources,
 		}); err != nil {
-		log.Error("initializing app-worker.js failed").
-			T("error", err).
-			Panic()
+		panic(errors.New("initializing app-worker.js failed").Wrap(err))
 	}
 }
 
@@ -387,9 +385,7 @@ func (h *Handler) initManifestJSON() {
 			BackgroundColor: h.BackgroundColor,
 			ThemeColor:      h.ThemeColor,
 		}); err != nil {
-		log.Error("initializing manifest.json failed").
-			T("error", err).
-			Panic()
+		panic(errors.New("initializing manifest.json failed").Wrap(err))
 	}
 }
 

@@ -1,4 +1,4 @@
-module github.com/maxence-charriere/go-app/v6
+module github.com/maxence-charriere/go-app/v7
 
 go 1.14
 

@@ -5,8 +5,8 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/maxence-charriere/go-app/v6/pkg/errors"
-	"github.com/maxence-charriere/go-app/v6/pkg/logs"
+	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	"github.com/maxence-charriere/go-app/v7/pkg/logs"
 	"github.com/stretchr/testify/require"
 )
 

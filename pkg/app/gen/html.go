@@ -1987,7 +1987,6 @@ func generateHTMLGo() {
 	fmt.Fprintln(f, `
 import (
 	"fmt"
-	"reflect"
 )
 		`)
 
@@ -1997,12 +1996,14 @@ import (
 		fmt.Fprintf(f, `
 		// %s returns an HTML element that %s
 		func %s() HTML%s {
-			return &html%s{
+			e := &html%s{
 				elem: elem{
 					tag: "%s",
 					selfClosing: %v,
 				},
 			}
+
+			return e
 		}
 		`,
 			t.Name,
@@ -2019,12 +2020,6 @@ import (
 		writeStruct(f, t)
 		fmt.Fprintln(f)
 		fmt.Fprintln(f)
-
-		fmt.Fprintf(f, `
-			func (e *html%s) nodeType() reflect.Type {
-				return reflect.TypeOf(e)
-			}`, t.Name)
-		fmt.Fprintln(f)
 	}
 }
 
@@ -2032,8 +2027,7 @@ func writeInterface(w io.Writer, t tag) {
 	fmt.Fprintf(w, `
 		// HTML%s is the interface that describes a <%s> HTML element.
 		type HTML%s interface {
-			standardNode
-			writableNode
+			UI
 		`,
 		t.Name,
 		strings.ToLower(t.Name),
@@ -2043,7 +2037,7 @@ func writeInterface(w io.Writer, t tag) {
 	if !t.SelfClosing {
 		fmt.Fprintf(w, `
 			// Body set the content of the element.
-			Body(nodes ...Node) HTML%s 
+			Body(elems ...UI) HTML%s 
 		`, t.Name)
 
 		fmt.Fprintf(w, `
@@ -2079,8 +2073,8 @@ func writeStruct(w io.Writer, t tag) {
 
 	if !t.SelfClosing {
 		fmt.Fprintf(w, `
-			func (e *html%s) Body(nodes ...Node) HTML%s {
-				e.setBody(e, nodes)
+			func (e *html%s) Body(elems ...UI) HTML%s {
+				e.setBody(elems...)
 				return e
 			}
 			`,
@@ -2123,7 +2117,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		fmt.Fprintf(w, `%s(k string, v interface{}) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				e.elem.setAttribute("data-"+k, fmt.Sprintf("%s", v))
+				e.setAttr("data-"+k, fmt.Sprintf("%s", v))
 				return e
 			}`, "%v")
 		}
@@ -2132,7 +2126,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		fmt.Fprintf(w, `%s(k, v string) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				e.elem.setAttribute("style", k+":"+v)
+				e.setAttr("style", k+":"+v)
 				return e
 			}`)
 		}
@@ -2146,7 +2140,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 					s = "on"
 				}
 	
-				e.elem.setAttribute("%s", s)
+				e.setAttr("%s", s)
 				return e
 			}`, strings.ToLower(a.Name))
 		}
@@ -2160,7 +2154,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 					s = "true"
 				}
 	
-				e.elem.setAttribute("%s", s)
+				e.setAttr("%s", s)
 				return e
 			}`, strings.ToLower(a.Name))
 		}
@@ -2169,7 +2163,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		fmt.Fprintf(w, `%s(v string) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				e.elem.setAttribute("%s", ResolveStaticResourcePath(v))
+				e.setAttr("%s", StaticResource(v))
 				return e
 			}`, strings.ToLower(a.Name))
 		}
@@ -2178,7 +2172,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		fmt.Fprintf(w, `%s(v %s) HTML%s`, a.Name, a.Type, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				e.elem.setAttribute("%s", v)
+				e.setAttr("%s", v)
 				return e
 			}`, strings.ToLower(a.Name))
 		}
@@ -2256,7 +2250,7 @@ import (
 
 		if len(t.EventHandlers) != 0 {
 			fmt.Fprint(f, `
-			h := func(src Value, e Event) {}
+			h := func(ctx Context, e Event) {}
 		`)
 		}
 

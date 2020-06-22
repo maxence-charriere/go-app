@@ -3,7 +3,15 @@ package app
 import (
 	"encoding/json"
 	"sync"
+	"syscall/js"
+
+	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
+
+func init() {
+	LocalStorage = newJSStorage("localStorage")
+	SessionStorage = newJSStorage("sessionStorage")
+}
 
 type jsStorage struct {
 	name  string
@@ -14,7 +22,17 @@ func newJSStorage(name string) *jsStorage {
 	return &jsStorage{name: name}
 }
 
-func (s *jsStorage) Set(k string, v interface{}) error {
+func (s *jsStorage) Set(k string, v interface{}) (err error) {
+	defer func() {
+		r := recover()
+		if r != nil {
+			err = errors.New("setting storage value failed").
+				Tag("storage-type", s.name).
+				Tag("key", k).
+				Wrap(r.(js.Error))
+		}
+	}()
+
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 

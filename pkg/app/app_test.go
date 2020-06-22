@@ -1,14 +1,13 @@
 package app
 
 import (
-	"bytes"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
 
 func TestResolveStaticResourcePath(t *testing.T) {
-	tests := []struct {
+	utests := []struct {
 		scenario      string
 		remoteRootDir string
 		path          string
@@ -71,70 +70,15 @@ func TestResolveStaticResourcePath(t *testing.T) {
 		},
 	}
 
-	for _, test := range tests {
-		t.Run(test.scenario, func(t *testing.T) {
-			remoteRootDir = test.remoteRootDir
+	for _, u := range utests {
+		t.Run(u.scenario, func(t *testing.T) {
+			remoteRootDir = u.remoteRootDir
 			defer func() {
 				remoteRootDir = ""
 			}()
 
-			res := ResolveStaticResourcePath(test.path)
-			require.Equal(t, test.expected, res)
+			res := StaticResource(u.path)
+			require.Equal(t, u.expected, res)
 		})
-	}
-}
-
-func BenchmarkHTML(b *testing.B) {
-	var buffer bytes.Buffer
-
-	root := Div().
-		Class("Menu").
-		Body(
-			Text("☰"),
-			Main().
-				Class("Content").
-				Body(
-					H1().
-						Body(
-							Text("Hello,"),
-							Text("world"),
-						),
-					Input().
-						Placeholder("What is your name?").
-						AutoFocus(true),
-				),
-		)
-
-	for i := 0; i < b.N; i++ {
-		buffer.Reset()
-		root.html(&buffer)
-	}
-}
-
-func BenchmarkHTMLWithRoot(b *testing.B) {
-	var buffer bytes.Buffer
-
-	for i := 0; i < b.N; i++ {
-		buffer.Reset()
-
-		root := Div().
-			Class("Menu").
-			Body(
-				Text("☰"),
-				Main().
-					Class("Content").
-					Body(
-						H1().
-							Body(
-								Text("Hello,"),
-								Text("world"),
-							),
-						Input().
-							Placeholder("What is your name?").
-							AutoFocus(true),
-					),
-			)
-
-		root.html(&buffer)
 	}
 }

@@ -4,6 +4,11 @@ package app
 
 import "encoding/json"
 
+func init() {
+	LocalStorage = make(memoryStorage)
+	SessionStorage = make(memoryStorage)
+}
+
 type memoryStorage map[string][]byte
 
 func (s memoryStorage) Set(k string, v interface{}) error {

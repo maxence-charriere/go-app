@@ -1,5 +1,16 @@
 package app
 
+var (
+	// LocalStorage is a storage that uses the browser local storage associated
+	// to the document origin. Data stored has no expiration time.
+	LocalStorage BrowserStorage
+
+	// SessionStorage is a storage that uses the browser session storage
+	// associated to the document origin. Data stored expire when the page
+	// session ends.
+	SessionStorage BrowserStorage
+)
+
 // BrowserStorage is the interface that describes a web browser storage.
 type BrowserStorage interface {
 	// Set sets the value to the given key. The value must be json convertible.

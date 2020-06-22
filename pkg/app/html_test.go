@@ -35,7 +35,7 @@ func TestA(t *testing.T) {
 	elem.Title("foo")
 	elem.Type("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -91,7 +91,7 @@ func TestAbbr(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -147,7 +147,7 @@ func TestAddress(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -214,7 +214,7 @@ func TestArea(t *testing.T) {
 	elem.Title("foo")
 	elem.Type("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -269,7 +269,7 @@ func TestArticle(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -325,7 +325,7 @@ func TestAside(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -391,7 +391,7 @@ func TestAudio(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnAbort(h)
 	elem.OnBlur(h)
 	elem.OnCanPlay(h)
@@ -470,7 +470,7 @@ func TestB(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -528,7 +528,7 @@ func TestBase(t *testing.T) {
 	elem.Target("foo")
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -583,7 +583,7 @@ func TestBdi(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -639,7 +639,7 @@ func TestBdo(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -696,7 +696,7 @@ func TestBlockquote(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -752,7 +752,7 @@ func TestBody(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnAfterPrint(h)
 	elem.OnBeforePrint(h)
 	elem.OnBeforeUnload(h)
@@ -823,7 +823,7 @@ func TestBr(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -892,7 +892,7 @@ func TestButton(t *testing.T) {
 	elem.Type("foo")
 	elem.Value(42)
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -950,7 +950,7 @@ func TestCanvas(t *testing.T) {
 	elem.Title("foo")
 	elem.Width(42)
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -1006,7 +1006,7 @@ func TestCaption(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -1062,7 +1062,7 @@ func TestCite(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -1118,7 +1118,7 @@ func TestCode(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -1175,7 +1175,7 @@ func TestCol(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -1231,7 +1231,7 @@ func TestColGroup(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -1310,7 +1310,7 @@ func TestDataList(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -1366,7 +1366,7 @@ func TestDd(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -1424,7 +1424,7 @@ func TestDel(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -1482,7 +1482,7 @@ func TestDetails(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -1539,7 +1539,7 @@ func TestDfn(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -1597,7 +1597,7 @@ func TestDialog(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -1653,7 +1653,7 @@ func TestDiv(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -1709,7 +1709,7 @@ func TestDl(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -1765,7 +1765,7 @@ func TestDt(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -1821,7 +1821,7 @@ func TestEm(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -1881,7 +1881,7 @@ func TestEmbed(t *testing.T) {
 	elem.Type("foo")
 	elem.Width(42)
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnAbort(h)
 	elem.OnBlur(h)
 	elem.OnCanPlay(h)
@@ -1963,7 +1963,7 @@ func TestFieldSet(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -2019,7 +2019,7 @@ func TestFigCaption(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -2075,7 +2075,7 @@ func TestFigure(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -2131,7 +2131,7 @@ func TestFooter(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -2197,7 +2197,7 @@ func TestForm(t *testing.T) {
 	elem.Target("foo")
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -2253,7 +2253,7 @@ func TestH1(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -2309,7 +2309,7 @@ func TestH2(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -2365,7 +2365,7 @@ func TestH3(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -2421,7 +2421,7 @@ func TestH4(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -2477,7 +2477,7 @@ func TestH5(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -2533,7 +2533,7 @@ func TestH6(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -2611,7 +2611,7 @@ func TestHeader(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -2667,7 +2667,7 @@ func TestHr(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -2744,7 +2744,7 @@ func TestI(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -2807,7 +2807,7 @@ func TestIFrame(t *testing.T) {
 	elem.Title("foo")
 	elem.Width(42)
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -2873,7 +2873,7 @@ func TestImg(t *testing.T) {
 	elem.UseMap("foo")
 	elem.Width(42)
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnAbort(h)
 	elem.OnBlur(h)
 	elem.OnCanPlay(h)
@@ -2990,7 +2990,7 @@ func TestInput(t *testing.T) {
 	elem.Value(42)
 	elem.Width(42)
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -3046,7 +3046,7 @@ func TestIns(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -3102,7 +3102,7 @@ func TestKbd(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -3160,7 +3160,7 @@ func TestLabel(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -3216,7 +3216,7 @@ func TestLegends(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -3273,7 +3273,7 @@ func TestLi(t *testing.T) {
 	elem.Title("foo")
 	elem.Value(42)
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -3335,7 +3335,7 @@ func TestLink(t *testing.T) {
 	elem.Title("foo")
 	elem.Type("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -3391,7 +3391,7 @@ func TestMain(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -3448,7 +3448,7 @@ func TestMap(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -3504,7 +3504,7 @@ func TestMark(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -3592,7 +3592,7 @@ func TestMeter(t *testing.T) {
 	elem.Title("foo")
 	elem.Value(42)
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -3648,7 +3648,7 @@ func TestNav(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -3733,7 +3733,7 @@ func TestObject(t *testing.T) {
 	elem.UseMap("foo")
 	elem.Width(42)
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnAbort(h)
 	elem.OnBlur(h)
 	elem.OnCanPlay(h)
@@ -3816,7 +3816,7 @@ func TestOl(t *testing.T) {
 	elem.Title("foo")
 	elem.Type("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -3875,7 +3875,7 @@ func TestOptGroup(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -3937,7 +3937,7 @@ func TestOption(t *testing.T) {
 	elem.Title("foo")
 	elem.Value(42)
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -3996,7 +3996,7 @@ func TestOutput(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -4052,7 +4052,7 @@ func TestP(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -4110,7 +4110,7 @@ func TestParam(t *testing.T) {
 	elem.Title("foo")
 	elem.Value(42)
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -4165,7 +4165,7 @@ func TestPicture(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -4221,7 +4221,7 @@ func TestPre(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -4279,7 +4279,7 @@ func TestProgress(t *testing.T) {
 	elem.Title("foo")
 	elem.Value(42)
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -4336,7 +4336,7 @@ func TestQ(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -4392,7 +4392,7 @@ func TestRp(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -4448,7 +4448,7 @@ func TestRt(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -4504,7 +4504,7 @@ func TestRuby(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -4560,7 +4560,7 @@ func TestS(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -4616,7 +4616,7 @@ func TestSamp(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -4679,7 +4679,7 @@ func TestScript(t *testing.T) {
 	elem.Title("foo")
 	elem.Type("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnLoad(h)
 	elem.Text("hello")
 }
@@ -4704,7 +4704,7 @@ func TestSection(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -4771,7 +4771,7 @@ func TestSelect(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -4827,7 +4827,7 @@ func TestSmall(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -4888,7 +4888,7 @@ func TestSource(t *testing.T) {
 	elem.Title("foo")
 	elem.Type("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -4943,7 +4943,7 @@ func TestSpan(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -4999,7 +4999,7 @@ func TestStrong(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -5057,7 +5057,7 @@ func TestStyle(t *testing.T) {
 	elem.Title("foo")
 	elem.Type("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -5114,7 +5114,7 @@ func TestSub(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -5170,7 +5170,7 @@ func TestSummary(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -5226,7 +5226,7 @@ func TestSup(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -5282,7 +5282,7 @@ func TestTable(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -5338,7 +5338,7 @@ func TestTBody(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -5397,7 +5397,7 @@ func TestTd(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -5491,7 +5491,7 @@ func TestTextarea(t *testing.T) {
 	elem.Title("foo")
 	elem.Wrap("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -5547,7 +5547,7 @@ func TestTfoot(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -5608,7 +5608,7 @@ func TestTh(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -5664,7 +5664,7 @@ func TestTHead(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -5721,7 +5721,7 @@ func TestTime(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -5799,7 +5799,7 @@ func TestTr(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -5855,7 +5855,7 @@ func TestU(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -5911,7 +5911,7 @@ func TestUl(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -5967,7 +5967,7 @@ func TestVar(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
@@ -6036,7 +6036,7 @@ func TestVideo(t *testing.T) {
 	elem.Title("foo")
 	elem.Width(42)
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnAbort(h)
 	elem.OnBlur(h)
 	elem.OnCanPlay(h)
@@ -6115,7 +6115,7 @@ func TestWbr(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 
-	h := func(src Value, e Event) {}
+	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
 	elem.OnChange(h)
 	elem.OnClick(h)
