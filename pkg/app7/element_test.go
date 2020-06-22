@@ -124,7 +124,7 @@ func TestElemUpdateAttrs(t *testing.T) {
 
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			testSkipNoWasm(t)
+			testSkipNonWasm(t)
 
 			n := Div().(*htmlDiv)
 			err := mount(n)
@@ -183,7 +183,7 @@ func TestElemUpdateEventHandlers(t *testing.T) {
 
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			testSkipNoWasm(t)
+			testSkipNonWasm(t)
 
 			var current map[string]eventHandler
 			var incoming map[string]eventHandler

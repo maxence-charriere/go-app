@@ -101,7 +101,7 @@ type mountTest struct {
 func testMountDismount(t *testing.T, utests []mountTest) {
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			testSkipNoWasm(t)
+			testSkipNonWasm(t)
 
 			n := u.node
 			err := mount(n)
@@ -156,7 +156,7 @@ type updateTest struct {
 func testUpdate(t *testing.T, utests []updateTest) {
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			testSkipNoWasm(t)
+			testSkipNonWasm(t)
 
 			err := mount(u.a)
 			require.NoError(t, err)
@@ -178,7 +178,7 @@ func testUpdate(t *testing.T, utests []updateTest) {
 	}
 }
 
-func testSkipNoWasm(t *testing.T) {
+func testSkipNonWasm(t *testing.T) {
 	if goarch := runtime.GOARCH; goarch != "wasm" {
 		t.Skip(logs.New("skipping test").
 			Tag("reason", "unsupported architecture").
