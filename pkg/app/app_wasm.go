@@ -180,7 +180,7 @@ func navigate(u *url.URL, updateHistory bool) error {
 }
 
 func isExternalNavigation(u *url.URL) bool {
-	return u.Host != Window().URL().Host
+	return u.Host != Window().URL().Host && u.Host != ""
 }
 
 func isFragmentNavigation(u *url.URL) bool {
