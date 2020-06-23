@@ -17,8 +17,8 @@ var (
 	window      = &browserWindow{value: value{Value: js.Global()}}
 )
 
-func initRemoteRootDir() {
-	remoteRootDir = Getenv("GOAPP_REMOTE_ROOT_DIR")
+func initStaticResourcesURL() {
+	staticResourcesURL = Getenv("GOAPP_STATIC_RESOURCES_URL")
 }
 
 func initBody() {
@@ -82,7 +82,7 @@ func run() {
 		panic(err)
 	}()
 
-	initRemoteRootDir()
+	initStaticResourcesURL()
 	initBody()
 	initContent()
 	initContextMenu()
