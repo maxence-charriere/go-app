@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/maxence-charriere/go-app/v6/pkg/log"
 )
@@ -62,9 +63,13 @@ func Run() {
 func Navigate(rawurl string) {
 	dispatcher(func() {
 		fmt.Println("navigate to", rawurl)
+		time.Sleep(time.Second * 2)
 
 		u, err := url.Parse(rawurl)
 		if err != nil {
+			fmt.Println("gonna panic")
+			time.Sleep(time.Second * 2)
+
 			log.Error("navigating to page failed").
 				T("url", rawurl).
 				T("error", err).
