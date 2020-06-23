@@ -154,11 +154,26 @@ func makeJsEventHandler(src UI, h EventHandler) Func {
 				Value: args[0],
 			}
 
+			trackMousePosition(event)
 			h(ctx, event)
 		})
 
 		return nil
 	})
+}
+
+func trackMousePosition(e Event) {
+	x := e.Get("clientX")
+	if !x.Truthy() {
+		return
+	}
+
+	y := e.Get("clientY")
+	if !y.Truthy() {
+		return
+	}
+
+	Window().setCursorPosition(x.Int(), y.Int())
 }
 
 func isErrReplace(err error) bool {
