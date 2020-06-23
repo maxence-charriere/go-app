@@ -187,6 +187,11 @@ type BrowserWindow interface {
 
 	// Scrolls to the HTML element with the given id.
 	ScrollToID(id string)
+
+	// AddEventListener subscribes a given handler to the specified event. It
+	// returns a function that must be called to unsubscribe the handler and
+	// release allocated resources.
+	AddEventListener(event string, h EventHandler) func()
 }
 
 // Event is the interface that describes a javascript event.

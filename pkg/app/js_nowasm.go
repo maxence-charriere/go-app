@@ -148,7 +148,3 @@ func copyBytesToGo(dst []byte, src Value) int {
 func copyBytesToJS(dst Value, src []byte) int {
 	panic(errNoWasm)
 }
-
-func makeEventHandler(h EventHandler) Func {
-	panic(errNoWasm)
-}

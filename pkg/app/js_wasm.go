@@ -169,6 +169,16 @@ func (w *browserWindow) ScrollToID(id string) {
 	}
 }
 
+func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
+	callback := makeJsEventHandler(body, h)
+	w.Call("addEventListener", event, callback)
+
+	return func() {
+		w.Call("removeEventListener", event, callback)
+		callback.Release()
+	}
+}
+
 func val(v js.Value) Value {
 	return value{Value: v}
 }
