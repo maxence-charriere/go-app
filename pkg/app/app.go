@@ -5,6 +5,7 @@
 package app
 
 import (
+	"fmt"
 	"net/url"
 	"strings"
 
@@ -60,6 +61,8 @@ func Run() {
 // Navigate navigates to the given URL.
 func Navigate(rawurl string) {
 	dispatcher(func() {
+		fmt.Println("navigate to", rawurl)
+
 		u, err := url.Parse(rawurl)
 		if err != nil {
 			log.Error("navigating to page failed").
