@@ -40,9 +40,9 @@ func log(format string, v ...interface{}) {
 	}
 
 	if errorLevel {
-		fmt.Printf(errorColor+"ERROR ‣ "+defaultColor+format, v...)
+		fmt.Printf(errorColor+"ERROR ‣ "+defaultColor+format+"\n", v...)
 		return
 	}
 
-	fmt.Printf(infoColor+"INFO ‣ "+defaultColor+format, v...)
+	fmt.Printf(infoColor+"INFO ‣ "+defaultColor+format+"\n", v...)
 }
