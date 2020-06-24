@@ -2,11 +2,9 @@ package app
 
 import (
 	"fmt"
-	"runtime"
 	"testing"
 
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
-	"github.com/maxence-charriere/go-app/v7/pkg/logs"
 	"github.com/stretchr/testify/require"
 )
 
@@ -175,15 +173,5 @@ func testUpdate(t *testing.T, utests []updateTest) {
 				require.NoError(t, TestMatch(u.a, d))
 			}
 		})
-	}
-}
-
-func testSkipNonWasm(t *testing.T) {
-	if goarch := runtime.GOARCH; goarch != "wasm" {
-		t.Skip(logs.New("skipping test").
-			Tag("reason", "unsupported architecture").
-			Tag("required-architecture", "wasm").
-			Tag("current-architecture", goarch),
-		)
 	}
 }

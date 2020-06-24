@@ -50,13 +50,13 @@ func TestHandlerServePage(t *testing.T) {
 	t.Log(body)
 }
 
-func TestHandlerServePageWithRemoteRootDir(t *testing.T) {
+func TestHandlerServePageWithRemoteStaticResources(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/", nil)
 	w := httptest.NewRecorder()
 
 	h := Handler{
-		Title:   "Handler testing",
-		RootDir: "https://storage.googleapis.com/go-app/",
+		Title:           "Handler testing",
+		StaticResources: RemoteBucket("https://storage.googleapis.com/go-app/"),
 		Scripts: []string{
 			"/web/hello.js",
 			"http://boo.com/bar.js",
@@ -100,7 +100,7 @@ func TestHandlerServeWasmExecJS(t *testing.T) {
 	require.Equal(t, wasmExecJS, w.Body.String())
 }
 
-func TestHandlerServeAppJS(t *testing.T) {
+func TestHandlerServeAppJSWithLocalDir(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/app.js", nil)
 	w := httptest.NewRecorder()
 
@@ -110,26 +110,26 @@ func TestHandlerServeAppJS(t *testing.T) {
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `fetch("/app.wasm"`)
+	require.Contains(t, body, `fetch("/web/app.wasm"`)
 	require.Contains(t, body, "GOAPP_VERSION")
-	require.NotContains(t, body, "GOAPP_REMOTE_ROOT_DIR")
+	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":""`)
 }
 
-func TestHandlerServeAppJSWithRemoteRootDir(t *testing.T) {
+func TestHandlerServeAppJSWithRemoteBucket(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/app.js", nil)
 	w := httptest.NewRecorder()
 
 	h := Handler{
-		RootDir: "https://storage.googleapis.com/go-app/",
+		StaticResources: RemoteBucket("https://storage.googleapis.com/go-app/"),
 	}
 	h.ServeHTTP(w, r)
 	body := w.Body.String()
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `fetch("https://storage.googleapis.com/go-app/app.wasm"`)
+	require.Contains(t, body, `fetch("https://storage.googleapis.com/go-app/web/app.wasm"`)
 	require.Contains(t, body, "GOAPP_VERSION")
-	require.Contains(t, body, "GOAPP_REMOTE_ROOT_DIR")
+	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":"https://storage.googleapis.com/go-app"`)
 }
 
 func TestHandlerServeAppJSWithEnv(t *testing.T) {
@@ -150,10 +150,10 @@ func TestHandlerServeAppJSWithEnv(t *testing.T) {
 	require.Contains(t, body, "GOAPP_VERSION")
 	require.Contains(t, body, `"FOO":"foo"`)
 	require.Contains(t, body, `"BAR":"bar"`)
-	require.NotContains(t, body, "GOAPP_REMOTE_ROOT_DIR")
+	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":""`)
 }
 
-func TestHandlerServeAppWorkerJS(t *testing.T) {
+func TestHandlerServeAppWorkerJSWithLocalDir(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/app-worker.js", nil)
 	w := httptest.NewRecorder()
 
@@ -179,18 +179,18 @@ func TestHandlerServeAppWorkerJS(t *testing.T) {
 	require.Contains(t, body, `"http://test.io/hello.png",`)
 	require.Contains(t, body, `"/wasm_exec.js",`)
 	require.Contains(t, body, `"/app.js",`)
-	require.Contains(t, body, `"/app.wasm",`)
+	require.Contains(t, body, `"/web/app.wasm",`)
 	require.Contains(t, body, `"/",`)
 }
 
-func TestHandlerServeAppWorkerJSWithRemoteRootDir(t *testing.T) {
+func TestHandlerServeAppWorkerJSWithRemoteBucket(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/app-worker.js", nil)
 	w := httptest.NewRecorder()
 
 	h := Handler{
-		RootDir: "https://storage.googleapis.com/go-app/",
-		Scripts: []string{"web/hello.js"},
-		Styles:  []string{"/web/hello.css"},
+		StaticResources: RemoteBucket("https://storage.googleapis.com/go-app/"),
+		Scripts:         []string{"web/hello.js"},
+		Styles:          []string{"/web/hello.css"},
 		CacheableResources: []string{
 			"web/hello.png",
 			"http://test.io/hello.png",
@@ -210,7 +210,7 @@ func TestHandlerServeAppWorkerJSWithRemoteRootDir(t *testing.T) {
 	require.Contains(t, body, `"http://test.io/hello.png",`)
 	require.Contains(t, body, `"/wasm_exec.js",`)
 	require.Contains(t, body, `"/app.js",`)
-	require.Contains(t, body, `"https://storage.googleapis.com/go-app/app.wasm",`)
+	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/app.wasm",`)
 	require.Contains(t, body, `"/",`)
 }
 
@@ -251,19 +251,42 @@ func TestHandlerServeAppCSS(t *testing.T) {
 }
 
 func TestHandlerServeAppWasm(t *testing.T) {
-	err := ioutil.WriteFile("app.wasm", []byte("wasm!"), 0666)
-	require.NoError(t, err)
-	defer os.Remove("app.wasm")
-
-	r := httptest.NewRequest(http.MethodGet, "/app.wasm", nil)
-	w := httptest.NewRecorder()
+	close := testCreateDir(t, "web")
+	defer close()
+	testCreateFile(t, "web/app.wasm", "wasm!")
 
 	h := Handler{}
-	h.ServeHTTP(w, r)
+	h.init()
 
-	require.Equal(t, "application/wasm", w.Header().Get("Content-Type"))
-	require.Equal(t, http.StatusOK, w.Code)
-	require.Equal(t, "wasm!", w.Body.String())
+	utests := []struct {
+		scenario string
+		path     string
+	}{
+		{
+			scenario: "from resource provider path",
+			path:     h.StaticResources.AppWASM(),
+		},
+		{
+			scenario: "from legacy v6 path",
+			path:     "/app.wasm",
+		},
+		{
+			scenario: "from legacy v6 path",
+			path:     "/goapp.wasm",
+		},
+	}
+
+	for _, u := range utests {
+		t.Run(u.scenario, func(t *testing.T) {
+			r := httptest.NewRequest(http.MethodGet, u.path, nil)
+			w := httptest.NewRecorder()
+
+			h.ServeHTTP(w, r)
+			require.Equal(t, "application/wasm", w.Header().Get("Content-Type"))
+			require.Equal(t, http.StatusOK, w.Code)
+			require.Equal(t, "wasm!", w.Body.String())
+		})
+	}
 }
 
 func TestHandlerServeFile(t *testing.T) {
@@ -350,4 +373,18 @@ func TestIsRemoteLocation(t *testing.T) {
 			require.Equal(t, test.expected, res)
 		})
 	}
+}
+
+func testCreateDir(t *testing.T, path string) func() {
+	err := os.MkdirAll(path, 0755)
+	require.NoError(t, err)
+
+	return func() {
+		os.RemoveAll(path)
+	}
+}
+
+func testCreateFile(t *testing.T, path, content string) {
+	err := ioutil.WriteFile(path, stob(content), 0666)
+	require.NoError(t, err)
 }

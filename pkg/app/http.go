@@ -9,8 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"os"
-	"path/filepath"
 	"runtime"
 	"strconv"
 	"strings"
@@ -52,7 +50,7 @@ type Handler struct {
 	//
 	// Reserved keys:
 	// - GOAPP_VERSION
-	// - GOAPP_REMOTE_ROOT_DIR
+	// - GOAPP_GOAPP_STATIC_RESOURCES_URL
 	Env Environment
 
 	// The icon that is used for the PWA, favicon, loading and default not
@@ -71,24 +69,39 @@ type Handler struct {
 	// Additional headers to be added in head element.
 	RawHeaders []string
 
-	// The URL or path of the root directory. The root directory is the location
-	// where app resources are located.
-	//
-	// DEFAULT: ".".
-	RootDir string
-
 	// The paths or urls of the JavaScript files to use with the page.
 	//
-	// Paths are relative to the root directory.
+	// eg:
+	//  app.Handler{
+	//      Scripts: []string{
+	//          "/web/test.js",            // Static resource
+	//          "https://foo.com/test.js", // External resource
+	//      },
+	//  },
 	Scripts []string
 
 	// The name of the web application displayed to the user when there is not
 	// enough space to display Name.
 	ShortName string
 
+	// The resource provider that provides static resources. Static resources
+	// are always accessed from a path that starts with "/web/".
+	//
+	// eg:
+	//  "/web/main.css"
+	//
+	// Default: LocalDir("web")
+	StaticResources ResourceProvider
+
 	// The paths or urls of the CSS files to use with the page.
 	//
-	// Paths are relative to the root directory.
+	// eg:
+	//  app.Handler{
+	//      Styles: []string{
+	//          "/web/test.css",            // Static resource
+	//          "https://foo.com/test.css", // External resource
+	//      },
+	//  },
 	Styles []string
 
 	// The theme color for the application. This affects how the OS displays the
@@ -115,6 +128,7 @@ type Handler struct {
 	once             sync.Once
 	etag             string
 	appWasmPath      string
+	robotPath        string
 	hasRemoteRootDir bool
 	page             bytes.Buffer
 	manifestJSON     bytes.Buffer
@@ -126,7 +140,7 @@ type Handler struct {
 
 func (h *Handler) init() {
 	h.initVersion()
-	h.initRootDir()
+	h.initStaticResources()
 	h.initStyles()
 	h.initScripts()
 	h.initIcon()
@@ -148,17 +162,10 @@ func (h *Handler) initVersion() {
 	h.etag = `"` + h.Version + `"`
 }
 
-func (h *Handler) initRootDir() {
-	rootDir := h.RootDir
-	if rootDir == "" {
-		rootDir = "."
+func (h *Handler) initStaticResources() {
+	if h.StaticResources == nil {
+		h.StaticResources = LocalDir("web")
 	}
-	rootDir = strings.TrimSuffix(rootDir, "/")
-	rootDir = strings.TrimSuffix(rootDir, `\`)
-	h.RootDir = rootDir
-
-	h.hasRemoteRootDir = isRemoteLocation(rootDir)
-	h.appWasmPath = filepath.Join(rootDir, "app.wasm")
 }
 
 func (h *Handler) initStyles() {
@@ -189,7 +196,7 @@ func (h *Handler) initIcon() {
 }
 
 func (h *Handler) initPWA() {
-	if h.Name == "" && h.ShortName == "" {
+	if h.Name == "" && h.ShortName == "" && h.Title == "" {
 		h.Name = "App PWA"
 	}
 	if h.ShortName == "" {
@@ -232,10 +239,7 @@ func (h *Handler) initPage() {
 			Meta().
 				Name("viewport").
 				Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
-			Title().
-				Body(
-					Text(h.Title),
-				),
+			Title().Text(h.Title),
 			Link().
 				Rel("icon").
 				Type("image/png").
@@ -292,19 +296,11 @@ func (h *Handler) initWasmJS() {
 }
 
 func (h *Handler) initAppJS() {
-	wasmURL := "/app.wasm"
-	if h.hasRemoteRootDir {
-		wasmURL = h.RootDir + wasmURL
-	}
-
 	if h.Env == nil {
 		h.Env = make(map[string]string, 2)
 	}
 	h.Env["GOAPP_VERSION"] = h.Version
-
-	if h.hasRemoteRootDir {
-		h.Env["GOAPP_REMOTE_ROOT_DIR"] = h.RootDir
-	}
+	h.Env["GOAPP_STATIC_RESOURCES_URL"] = h.StaticResources.URL()
 
 	env, err := json.Marshal(h.Env)
 	if err != nil {
@@ -321,7 +317,7 @@ func (h *Handler) initAppJS() {
 			Wasm string
 		}{
 			Env:  btos(env),
-			Wasm: wasmURL,
+			Wasm: h.StaticResources.AppWASM(),
 		}); err != nil {
 		panic(errors.New("initializing app.js failed").Wrap(err))
 	}
@@ -337,12 +333,7 @@ func (h *Handler) initWorkerJS() {
 	cacheableResources[h.Icon.Large] = struct{}{}
 	cacheableResources[h.Icon.AppleTouch] = struct{}{}
 	cacheableResources["/"] = struct{}{}
-
-	wasmPath := "/app.wasm"
-	if h.hasRemoteRootDir {
-		wasmPath = h.RootDir + wasmPath
-	}
-	cacheableResources[wasmPath] = struct{}{}
+	cacheableResources[h.StaticResources.AppWASM()] = struct{}{}
 
 	cacheResources := func(res []string) {
 		for _, r := range res {
@@ -411,6 +402,12 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	path := r.URL.Path
 
+	staticResourcesHandler, servesStaticResources := h.StaticResources.(http.Handler)
+	if servesStaticResources && strings.HasPrefix(path, "/web/") {
+		staticResourcesHandler.ServeHTTP(w, r)
+		return
+	}
+
 	switch path {
 	case "/wasm_exec.js":
 		h.serveWasmExecJS(w, r)
@@ -433,17 +430,19 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case "/app.wasm", "/goapp.wasm":
-		http.ServeFile(w, r, h.appWasmPath)
-		return
-	}
-
-	if strings.HasPrefix(path, "/web/") {
-		filename := normalizeFilePath(path)
-		filename = filepath.Join(h.RootDir, filename)
-		if fi, err := os.Stat(filename); err == nil && !fi.IsDir() {
-			http.ServeFile(w, r, filename)
+		if servesStaticResources {
+			r2 := *r
+			r2.URL.Path = h.StaticResources.AppWASM()
+			staticResourcesHandler.ServeHTTP(w, &r2)
 			return
 		}
+
+		w.WriteHeader(http.StatusNotFound)
+		return
+
+	case "/robot.txt":
+		h.serveRobotTxt(w, r)
+		return
 	}
 
 	h.servePage(w, r)
@@ -491,6 +490,10 @@ func (h *Handler) serveAppCSS(w http.ResponseWriter, r *http.Request) {
 	w.Write(h.appCSS)
 }
 
+func (h *Handler) serveRobotTxt(w http.ResponseWriter, r *http.Request) {
+	panic("not implemented")
+}
+
 func (h *Handler) staticResource(path string) string {
 	if isRemoteLocation(path) {
 		return path
@@ -499,10 +502,7 @@ func (h *Handler) staticResource(path string) string {
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
 	}
-	if h.hasRemoteRootDir {
-		path = h.RootDir + path
-	}
-	return path
+	return h.StaticResources.URL() + path
 }
 
 // Icon describes a square image that is used in various places such as

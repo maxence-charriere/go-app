@@ -2,14 +2,17 @@
 
 package app
 
-import "net/url"
+import (
+	"net/url"
+	"os"
+)
 
 var (
 	window *browserWindow
 )
 
 func getenv(k string) string {
-	panic(errNoWasm)
+	return os.Getenv(k)
 }
 
 func keepBodyClean() func() {
