@@ -303,10 +303,7 @@ func (h *Handler) initAppJS() {
 		h.Env = make(map[string]string, 2)
 	}
 	h.Env["GOAPP_VERSION"] = h.Version
-
-	if h.hasRemoteRootDir {
-		h.Env["GOAPP_STATIC_RESOURCES_URL"] = h.StaticResources.URL()
-	}
+	h.Env["GOAPP_STATIC_RESOURCES_URL"] = h.StaticResources.URL()
 
 	env, err := json.Marshal(h.Env)
 	if err != nil {
@@ -508,7 +505,7 @@ func (h *Handler) staticResource(path string) string {
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
 	}
-	return h.StaticResources.URL()
+	return h.StaticResources.URL() + path
 }
 
 // Icon describes a square image that is used in various places such as

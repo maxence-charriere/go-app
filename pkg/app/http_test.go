@@ -100,7 +100,7 @@ func TestHandlerServeWasmExecJS(t *testing.T) {
 	require.Equal(t, wasmExecJS, w.Body.String())
 }
 
-func TestHandlerServeAppJS(t *testing.T) {
+func TestHandlerServeAppJSWithLocalDir(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/app.js", nil)
 	w := httptest.NewRecorder()
 
@@ -110,12 +110,12 @@ func TestHandlerServeAppJS(t *testing.T) {
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `fetch("/app.wasm"`)
+	require.Contains(t, body, `fetch("/web/app.wasm"`)
 	require.Contains(t, body, "GOAPP_VERSION")
-	require.NotContains(t, body, "GOAPP_STATIC_RESOURCES_URL")
+	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":""`)
 }
 
-func TestHandlerServeAppJSWithRemoteStaticResources(t *testing.T) {
+func TestHandlerServeAppJSWithRemoteBucket(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/app.js", nil)
 	w := httptest.NewRecorder()
 
@@ -127,9 +127,9 @@ func TestHandlerServeAppJSWithRemoteStaticResources(t *testing.T) {
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `fetch("https://storage.googleapis.com/go-app/app.wasm"`)
+	require.Contains(t, body, `fetch("https://storage.googleapis.com/go-app/web/app.wasm"`)
 	require.Contains(t, body, "GOAPP_VERSION")
-	require.Contains(t, body, "GOAPP_STATIC_RESOURCES_URL")
+	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":"https://storage.googleapis.com/go-app"`)
 }
 
 func TestHandlerServeAppJSWithEnv(t *testing.T) {
@@ -150,10 +150,10 @@ func TestHandlerServeAppJSWithEnv(t *testing.T) {
 	require.Contains(t, body, "GOAPP_VERSION")
 	require.Contains(t, body, `"FOO":"foo"`)
 	require.Contains(t, body, `"BAR":"bar"`)
-	require.NotContains(t, body, "GOAPP_STATIC_RESOURCES_URL")
+	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":""`)
 }
 
-func TestHandlerServeAppWorkerJS(t *testing.T) {
+func TestHandlerServeAppWorkerJSWithLocalDir(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/app-worker.js", nil)
 	w := httptest.NewRecorder()
 
@@ -179,11 +179,11 @@ func TestHandlerServeAppWorkerJS(t *testing.T) {
 	require.Contains(t, body, `"http://test.io/hello.png",`)
 	require.Contains(t, body, `"/wasm_exec.js",`)
 	require.Contains(t, body, `"/app.js",`)
-	require.Contains(t, body, `"/app.wasm",`)
+	require.Contains(t, body, `"/web/app.wasm",`)
 	require.Contains(t, body, `"/",`)
 }
 
-func TestHandlerServeAppWorkerJSWithRemoteStaticResources(t *testing.T) {
+func TestHandlerServeAppWorkerJSWithRemoteBucket(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/app-worker.js", nil)
 	w := httptest.NewRecorder()
 
@@ -210,7 +210,7 @@ func TestHandlerServeAppWorkerJSWithRemoteStaticResources(t *testing.T) {
 	require.Contains(t, body, `"http://test.io/hello.png",`)
 	require.Contains(t, body, `"/wasm_exec.js",`)
 	require.Contains(t, body, `"/app.js",`)
-	require.Contains(t, body, `"https://storage.googleapis.com/go-app/app.wasm",`)
+	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/app.wasm",`)
 	require.Contains(t, body, `"/",`)
 }
 
