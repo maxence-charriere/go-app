@@ -17,8 +17,42 @@ var (
 	window      = &browserWindow{value: value{Value: js.Global()}}
 )
 
-func initStaticResourcesURL() {
+func run() {
+	defer func() {
+		err := recover()
+		displayLoadError(err)
+		panic(err)
+	}()
+
 	staticResourcesURL = Getenv("GOAPP_STATIC_RESOURCES_URL")
+
+	initBody()
+	initContent()
+	initContextMenu()
+
+	onnav := FuncOf(onNavigate)
+	defer onnav.Release()
+	Window().Set("onclick", onnav)
+
+	onpopstate := FuncOf(onPopState)
+	defer onpopstate.Release()
+	Window().Set("onpopstate", onpopstate)
+
+	url := Window().URL()
+
+	if err := navigate(url, false); err != nil {
+		panic(errors.New("navigating to page failed").
+			Tag("url", url).
+			Wrap(err),
+		)
+	}
+
+	for {
+		select {
+		case f := <-uiChan:
+			f()
+		}
+	}
 }
 
 func initBody() {
@@ -73,43 +107,6 @@ func initContextMenu() {
 	body.body = append(body.body, tmp)
 
 	body.replaceChildAt(1, contextMenu)
-}
-
-func run() {
-	defer func() {
-		err := recover()
-		displayLoadError(err)
-		panic(err)
-	}()
-
-	initStaticResourcesURL()
-	initBody()
-	initContent()
-	initContextMenu()
-
-	onnav := FuncOf(onNavigate)
-	defer onnav.Release()
-	Window().Set("onclick", onnav)
-
-	onpopstate := FuncOf(onPopState)
-	defer onpopstate.Release()
-	Window().Set("onpopstate", onpopstate)
-
-	url := Window().URL()
-
-	if err := navigate(url, false); err != nil {
-		panic(errors.New("navigating to page failed").
-			Tag("url", url).
-			Wrap(err),
-		)
-	}
-
-	for {
-		select {
-		case f := <-uiChan:
-			f()
-		}
-	}
 }
 
 func displayLoadError(err interface{}) {
@@ -217,6 +214,7 @@ func newContextMenu(menuItems ...MenuItemNode) {
 
 func getenv(k string) string {
 	env := Window().Call("goappGetenv", k)
+
 	if !env.Truthy() {
 		return ""
 	}
