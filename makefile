@@ -28,7 +28,7 @@ endif
 
 build:
 	@echo "\033[94m• Building go-app client\033[00m"
-	@GOARCH=wasm GOOS=js go build -o app.wasm ./bin/client
+	@GOARCH=wasm GOOS=js go build -o web/app.wasm ./bin/client
 	@echo "\033[94m\n• Building go-app server\033[00m"
 	@go build ./bin/server
 
@@ -39,4 +39,4 @@ run: build
 clean:
 	@go clean -v ./...
 	-@rm server
-	-@rm app.wasm
+	-@rm web/app.wasm
