@@ -89,6 +89,8 @@ func TestStaticResource(t *testing.T) {
 }
 
 func TestLocalDir(t *testing.T) {
+	testSkipWasm(t)
+
 	utests := []struct {
 		scenario string
 		provider ResourceProvider
