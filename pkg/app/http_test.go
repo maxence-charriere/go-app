@@ -251,19 +251,42 @@ func TestHandlerServeAppCSS(t *testing.T) {
 }
 
 func TestHandlerServeAppWasm(t *testing.T) {
-	err := ioutil.WriteFile("app.wasm", []byte("wasm!"), 0666)
-	require.NoError(t, err)
-	defer os.Remove("app.wasm")
-
-	r := httptest.NewRequest(http.MethodGet, "/app.wasm", nil)
-	w := httptest.NewRecorder()
+	close := testCreateDir(t, "web")
+	defer close()
+	testCreateFile(t, "web/app.wasm", "wasm!")
 
 	h := Handler{}
-	h.ServeHTTP(w, r)
+	h.init()
 
-	require.Equal(t, "application/wasm", w.Header().Get("Content-Type"))
-	require.Equal(t, http.StatusOK, w.Code)
-	require.Equal(t, "wasm!", w.Body.String())
+	utests := []struct {
+		scenario string
+		path     string
+	}{
+		{
+			scenario: "from resource provider path",
+			path:     h.StaticResources.AppWASM(),
+		},
+		{
+			scenario: "from legacy v6 path",
+			path:     "/app.wasm",
+		},
+		{
+			scenario: "from legacy v6 path",
+			path:     "/goapp.wasm",
+		},
+	}
+
+	for _, u := range utests {
+		t.Run(u.scenario, func(t *testing.T) {
+			r := httptest.NewRequest(http.MethodGet, u.path, nil)
+			w := httptest.NewRecorder()
+
+			h.ServeHTTP(w, r)
+			require.Equal(t, "application/wasm", w.Header().Get("Content-Type"))
+			require.Equal(t, http.StatusOK, w.Code)
+			require.Equal(t, "wasm!", w.Body.String())
+		})
+	}
 }
 
 func TestHandlerServeFile(t *testing.T) {
@@ -350,4 +373,18 @@ func TestIsRemoteLocation(t *testing.T) {
 			require.Equal(t, test.expected, res)
 		})
 	}
+}
+
+func testCreateDir(t *testing.T, path string) func() {
+	err := os.MkdirAll(path, 0755)
+	require.NoError(t, err)
+
+	return func() {
+		os.RemoveAll(path)
+	}
+}
+
+func testCreateFile(t *testing.T, path, content string) {
+	err := ioutil.WriteFile(path, stob(content), 0666)
+	require.NoError(t, err)
 }
