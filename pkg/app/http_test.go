@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"path/filepath"
 	"testing"
 
@@ -304,16 +303,16 @@ func TestHandlerServeFile(t *testing.T) {
 	require.Equal(t, "hello!", w.Body.String())
 }
 
-func TestHandlerServeRobotTxt(t *testing.T) {
+func TestHandlerServeRobotsTxt(t *testing.T) {
 	close := testCreateDir(t, "web")
 	defer close()
-	testCreateFile(t, filepath.Join("web", "robot.txt"), "robot")
+	testCreateFile(t, filepath.Join("web", "robots.txt"), "robot")
 
 	s := httptest.NewServer(&Handler{})
 	defer s.Close()
 
 	test := func(t *testing.T) {
-		res, err := http.Get(s.URL + "/robot.txt")
+		res, err := http.Get(s.URL + "/robots.txt")
 		require.NoError(t, err)
 		defer res.Body.Close()
 		require.Equal(t, http.StatusOK, res.StatusCode)
@@ -323,15 +322,15 @@ func TestHandlerServeRobotTxt(t *testing.T) {
 		require.Equal(t, "robot", btos(content))
 	}
 
-	t.Run("robot.txt", test)
-	t.Run("cached robot.txt", test)
+	t.Run("robots.txt", test)
+	t.Run("cached robots.txt", test)
 }
 
-func TestHandlerServeRobotTxtNotFound(t *testing.T) {
+func TestHandlerServeRobotsTxtNotFound(t *testing.T) {
 	s := httptest.NewServer(&Handler{})
 	defer s.Close()
 
-	res, err := http.Get(s.URL + "/robot.txt")
+	res, err := http.Get(s.URL + "/robots.txt")
 	require.NoError(t, err)
 	defer res.Body.Close()
 	require.Equal(t, http.StatusNotFound, res.StatusCode)
@@ -403,18 +402,4 @@ func TestIsRemoteLocation(t *testing.T) {
 			require.Equal(t, test.expected, res)
 		})
 	}
-}
-
-func testCreateDir(t *testing.T, path string) func() {
-	err := os.MkdirAll(path, 0755)
-	require.NoError(t, err)
-
-	return func() {
-		os.RemoveAll(path)
-	}
-}
-
-func testCreateFile(t *testing.T, path, content string) {
-	err := ioutil.WriteFile(path, stob(content), 0666)
-	require.NoError(t, err)
 }

@@ -137,7 +137,7 @@ type Handler struct {
 	appWorkerJS      bytes.Buffer
 	wasmExecJS       []byte
 	appCSS           []byte
-	robotTxt         []byte
+	robotsTxt        []byte
 }
 
 func (h *Handler) init() {
@@ -442,8 +442,8 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 
-	case "/robot.txt":
-		h.serveRobotTxt(w, r)
+	case "/robots.txt":
+		h.serveRobotsTxt(w, r)
 		return
 	}
 
@@ -492,9 +492,9 @@ func (h *Handler) serveAppCSS(w http.ResponseWriter, r *http.Request) {
 	w.Write(h.appCSS)
 }
 
-func (h *Handler) serveRobotTxt(w http.ResponseWriter, r *http.Request) {
-	if h.robotTxt == nil {
-		u := h.StaticResources.RobotTxt()
+func (h *Handler) serveRobotsTxt(w http.ResponseWriter, r *http.Request) {
+	if h.robotsTxt == nil {
+		u := h.StaticResources.RobotsTxt()
 		if _, ok := h.StaticResources.(http.Handler); ok {
 			u = "http://" + r.Host + u
 		}
@@ -502,7 +502,7 @@ func (h *Handler) serveRobotTxt(w http.ResponseWriter, r *http.Request) {
 		res, err := http.Get(u)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			Log("%s", errors.New("getting robot.txt failed").
+			Log("%s", errors.New("getting robots.txt failed").
 				Tag("url", u).
 				Wrap(err),
 			)
@@ -518,16 +518,16 @@ func (h *Handler) serveRobotTxt(w http.ResponseWriter, r *http.Request) {
 		body, err := ioutil.ReadAll(res.Body)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			Log("%s", errors.New("reading robot.txt failed").Wrap(err))
+			Log("%s", errors.New("reading robots.txt failed").Wrap(err))
 			return
 		}
-		h.robotTxt = body
+		h.robotsTxt = body
 	}
 
-	w.Header().Set("Content-Length", strconv.Itoa(len(h.robotTxt)))
+	w.Header().Set("Content-Length", strconv.Itoa(len(h.robotsTxt)))
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusOK)
-	w.Write(h.robotTxt)
+	w.Write(h.robotsTxt)
 }
 
 func (h *Handler) staticResource(path string) string {
