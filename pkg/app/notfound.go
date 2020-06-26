@@ -1,5 +1,7 @@
 package app
 
+import "fmt"
+
 var (
 	// NotFound is the ui element that is displayed when a request is not
 	// routed.
@@ -11,7 +13,7 @@ type notFound struct {
 	Icon string
 }
 
-func (n *notFound) OnMount() {
+func (n *notFound) OnMount(Context) {
 	links := Window().Get("document").Call("getElementsByTagName", "link")
 
 	for i := 0; i < links.Length(); i++ {
@@ -21,6 +23,8 @@ func (n *notFound) OnMount() {
 		if rel.String() == "icon" {
 			favicon := link.Call("getAttribute", "href")
 			n.Icon = favicon.String()
+
+			fmt.Println(favicon)
 			n.Update()
 			return
 		}
@@ -29,20 +33,20 @@ func (n *notFound) OnMount() {
 
 func (n *notFound) Render() UI {
 	return Div().
-		Class("app-wasm-layout").
+		Class("goapp-app-info").
 		Body(
 			Div().
-				Class("app-notfound-title").
+				Class("goapp-notfound-title").
 				Body(
 					Text("4"),
 					Img().
-						Class("app-wasm-icon").
+						Class("goapp-logo").
 						Alt("0").
 						Src(n.Icon),
 					Text("4"),
 				),
 			P().
-				Class("app-wasm-label").
+				Class("goapp-label").
 				Text("Not Found"),
 		)
 }
