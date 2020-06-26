@@ -18,9 +18,6 @@ import (
 // Note that app.wasm must still be built separately and put into the web
 // directory.
 func GenerateStaticWebsite(dir string, h *Handler) error {
-	// Ensures that the default resource provider is loaded.
-	h.StaticResources = nil
-
 	if err := os.MkdirAll(filepath.Join(dir, "web"), 0755); err != nil {
 		return errors.New("creating directory for static website failed").
 			Tag("directory", dir).
