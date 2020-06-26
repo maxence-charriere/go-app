@@ -239,6 +239,9 @@ func (h *Handler) initPage() {
 				Name("keywords").
 				Content(strings.Join(h.Keywords, ", ")),
 			Meta().
+				Name("theme-color").
+				Content(h.ThemeColor),
+			Meta().
 				Name("viewport").
 				Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
 			Title().Text(h.Title),
