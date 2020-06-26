@@ -271,15 +271,16 @@ func (h *Handler) initPage() {
 		),
 		Body().Body(
 			Div().
-				Class("app-wasm-layout").
+				ID("app-wasm-layout").
+				Class("goapp-app-info").
 				Body(
 					Img().
 						ID("app-wasm-loader-icon").
-						Class("app-wasm-icon app-spin").
+						Class("goapp-logo goapp-spin").
 						Src(h.Icon.Default),
 					P().
 						ID("app-wasm-loader-label").
-						Class("app-wasm-label").
+						Class("goapp-label").
 						Body(Text(h.LoadingLabel)),
 				),
 			Div().ID("app-context-menu"),

@@ -1,209 +1,4 @@
-/* Basics */
-html {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-body {
-  height: inherit;
-  width: inherit;
-  margin: inherit;
-  padding: inherit;
-  overflow: inherit;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  font-size: 10pt;
-  font-weight: 400;
-  color: white;
-  background-color: #2d2c2c;
-}
-
-@media (prefers-color-scheme: light) {
-  body {
-    color: black;
-    background-color: #f6f6f6;
-  }
-}
-
-h1 {
-  width: calc(100% - 24px - 24px);
-  margin: 0;
-  padding: 0 24px 12px;
-  outline: 0;
-  font-size: 2.7em;
-  font-weight: 200;
-  letter-spacing: 1px;
-}
-
-h2,
-h3,
-h4,
-h5,
-h6 {
-  width: calc(100% - 24px - 24px);
-  margin: 0;
-  padding: 0 24px 12px;
-  outline: 0;
-  font-weight: 200;
-}
-
-p {
-  width: calc(100% - 24px - 24px);
-  margin: 0;
-  padding: 0 24px 12px;
-  outline: 0;
-}
-
-a {
-  color: currentColor;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-a:hover {
-  color: deepskyblue;
-}
-
-input {
-  width: calc(100% - 24px - 24px);
-  margin: 0 24px 12px;
-  padding: 0 0 3px;
-  border: 0;
-  border-radius: 0;
-  border-bottom: 1px solid currentColor;
-  outline: none;
-  box-shadow: none;
-  display: block;
-  background-color: transparent;
-  color: currentColor;
-  font-size: inherit;
-  font-family: inherit;
-}
-
-input:hover,
-input:focus {
-  border-bottom-color: deepskyblue;
-  caret-color: deepskyblue;
-}
-
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-ul {
-  margin: 0;
-  padding: 3px 24px 6px 42px;
-  outline: 0;
-}
-
-ul li {
-  margin: 0;
-  padding: 3px 0;
-}
-
-ul li:first-child {
-  padding: 0 0 3px;
-}
-
-ul li:last-child {
-  padding: 3px 0 0;
-}
-
-table {
-  width: calc(100% - 24px - 24px);
-  margin: 0 24px;
-  border-collapse: collapse;
-  table-layout: fixed;
-  font-size: inherit;
-}
-
-table th {
-  padding: 0 12px 12px 0;
-  border-bottom: 1px solid currentColor;
-  font-size: 12pt;
-  font-weight: 200;
-  text-align: start;
-}
-
-table td {
-  padding: 12px 12px 12px 0;
-  border-bottom: 1px solid currentColor;
-}
-
-table tr:first-child td {
-  padding: 0 12px 12px 0;
-}
-
-table tr:last-child td {
-  border-bottom: 0;
-  padding: 12px 12px 12px 0;
-}
-
-button,
-.app-button {
-  min-width: 100px;
-  margin: 0 6px 12px 0;
-  padding: 8px;
-  border: 1px solid currentColor;
-  border-radius: 8px;
-  outline: none;
-  display: inline-block;
-  background: none;
-  color: inherit;
-  font: inherit;
-  font-size: inherit;
-  text-align: center;
-  cursor: pointer;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-}
-
-::-webkit-scrollbar {
-  background-color: rgba(255, 255, 255, 0.04);
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
 /* Loader and Not Found */
-.app-wasm-layout {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-.app-wasm-icon {
-  max-width: 100px;
-  max-height: 100px;
-  user-select: none;
-  margin: 0 6px;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-}
-
-.app-wasm-label {
-  margin-top: 6px;
-  font-size: 16pt;
-  font-weight: 100;
-  letter-spacing: 1px;
-  max-width: 480px;
-  text-align: center;
-  text-transform: lowercase;
-}
 
 .app-notfound-title {
   display: flex;
@@ -211,20 +6,6 @@ button,
   align-items: center;
   font-size: 65pt;
   font-weight: 100;
-}
-
-.app-spin {
-  animation: app-spin-frames 2.5s infinite linear;
-}
-
-@keyframes app-spin-frames {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 /* Menu */
@@ -316,4 +97,66 @@ button,
   width: 18px;
   height: 18px;
   margin-right: 12px;
+}
+
+/* Loader */
+.goapp-app-info {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: white;
+  background-color: #2d2c2c;
+}
+
+@media (prefers-color-scheme: light) {
+  .goapp-app-info {
+    color: black;
+    background-color: #f6f6f6;
+  }
+}
+
+.goapp-logo {
+  max-width: 100px;
+  max-height: 100px;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.goapp-label {
+  margin-top: 12px;
+  font-size: 21px;
+  font-weight: 100;
+  letter-spacing: 1px;
+  max-width: 480px;
+  text-align: center;
+  text-transform: lowercase;
+}
+
+.goapp-spin {
+  animation: goapp-spin-frames 1.21s infinite linear;
+}
+
+@keyframes goapp-spin-frames {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
