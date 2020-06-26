@@ -56,9 +56,9 @@ type ResourceProvider interface {
 	//  URL/web/WASM_FILE.
 	AppWASM() string
 
-	// The URL of the robot.txt file. This must match the pattern:
-	//  URL/web/robot.txt.
-	RobotTxt() string
+	// The URL of the robots.txt file. This must match the pattern:
+	//  URL/web/robots.txt.
+	RobotsTxt() string
 }
 
 // LocalDir returns a resource provider that serves static resources from a
@@ -83,8 +83,8 @@ func (d localDir) AppWASM() string {
 	return "/web/app.wasm"
 }
 
-func (d localDir) RobotTxt() string {
-	return "/web/robot.txt"
+func (d localDir) RobotsTxt() string {
+	return "/web/robots.txt"
 }
 
 // RemoteBucket returns a resource provider that provides resources from a
@@ -110,6 +110,6 @@ func (b remoteBucket) AppWASM() string {
 	return b.URL() + "/web/app.wasm"
 }
 
-func (b remoteBucket) RobotTxt() string {
-	return b.URL() + "/web/robot.txt"
+func (b remoteBucket) RobotsTxt() string {
+	return b.URL() + "/web/robots.txt"
 }
