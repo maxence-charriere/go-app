@@ -4,7 +4,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"strings"
 	"testing"
 
@@ -96,10 +95,6 @@ func TestLocalDir(t *testing.T) {
 		provider ResourceProvider
 	}{
 		{
-			scenario: "from working directory",
-			provider: LocalDir("."),
-		},
-		{
 			scenario: "from web directory",
 			provider: LocalDir("web"),
 		},
@@ -113,9 +108,8 @@ func TestLocalDir(t *testing.T) {
 			require.Equal(t, "/web/app.wasm", h.AppWASM())
 			require.Equal(t, "/web/robot.txt", h.RobotTxt())
 
-			err := os.MkdirAll(h.path, 0755)
-			require.NoError(t, err)
-			defer os.RemoveAll(h.path)
+			close := testCreateDir(t, "web")
+			defer close()
 
 			resources := []string{
 				"/web/test",

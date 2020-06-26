@@ -7,6 +7,7 @@ import (
 	"crypto/sha1"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"runtime"
@@ -136,6 +137,7 @@ type Handler struct {
 	appWorkerJS      bytes.Buffer
 	wasmExecJS       []byte
 	appCSS           []byte
+	robotTxt         []byte
 }
 
 func (h *Handler) init() {
@@ -491,7 +493,41 @@ func (h *Handler) serveAppCSS(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) serveRobotTxt(w http.ResponseWriter, r *http.Request) {
-	panic("not implemented")
+	if h.robotTxt == nil {
+		u := h.StaticResources.RobotTxt()
+		if _, ok := h.StaticResources.(http.Handler); ok {
+			u = "http://" + r.Host + u
+		}
+
+		res, err := http.Get(u)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			Log("%s", errors.New("getting robot.txt failed").
+				Tag("url", u).
+				Wrap(err),
+			)
+			return
+		}
+		defer res.Body.Close()
+
+		if res.StatusCode != http.StatusOK {
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+
+		body, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			Log("%s", errors.New("reading robot.txt failed").Wrap(err))
+			return
+		}
+		h.robotTxt = body
+	}
+
+	w.Header().Set("Content-Length", strconv.Itoa(len(h.robotTxt)))
+	w.Header().Set("Content-Type", "text/plain")
+	w.WriteHeader(http.StatusOK)
+	w.Write(h.robotTxt)
 }
 
 func (h *Handler) staticResource(path string) string {

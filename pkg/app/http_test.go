@@ -253,7 +253,7 @@ func TestHandlerServeAppCSS(t *testing.T) {
 func TestHandlerServeAppWasm(t *testing.T) {
 	close := testCreateDir(t, "web")
 	defer close()
-	testCreateFile(t, "web/app.wasm", "wasm!")
+	testCreateFile(t, filepath.Join("web", "app.wasm"), "wasm!")
 
 	h := Handler{}
 	h.init()
@@ -290,12 +290,9 @@ func TestHandlerServeAppWasm(t *testing.T) {
 }
 
 func TestHandlerServeFile(t *testing.T) {
-	err := os.MkdirAll(filepath.Join("web"), 0755)
-	require.NoError(t, err)
-	defer os.RemoveAll("web")
-
-	err = ioutil.WriteFile(filepath.Join("web", "hello.txt"), []byte("hello!"), 0666)
-	require.NoError(t, err)
+	close := testCreateDir(t, "web")
+	defer close()
+	testCreateFile(t, filepath.Join("web", "hello.txt"), "hello!")
 
 	r := httptest.NewRequest(http.MethodGet, "/web/hello.txt", nil)
 	w := httptest.NewRecorder()
@@ -305,6 +302,39 @@ func TestHandlerServeFile(t *testing.T) {
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "hello!", w.Body.String())
+}
+
+func TestHandlerServeRobotTxt(t *testing.T) {
+	close := testCreateDir(t, "web")
+	defer close()
+	testCreateFile(t, filepath.Join("web", "robot.txt"), "robot")
+
+	s := httptest.NewServer(&Handler{})
+	defer s.Close()
+
+	test := func(t *testing.T) {
+		res, err := http.Get(s.URL + "/robot.txt")
+		require.NoError(t, err)
+		defer res.Body.Close()
+		require.Equal(t, http.StatusOK, res.StatusCode)
+
+		content, err := ioutil.ReadAll(res.Body)
+		require.NoError(t, err)
+		require.Equal(t, "robot", btos(content))
+	}
+
+	t.Run("robot.txt", test)
+	t.Run("cached robot.txt", test)
+}
+
+func TestHandlerServeRobotTxtNotFound(t *testing.T) {
+	s := httptest.NewServer(&Handler{})
+	defer s.Close()
+
+	res, err := http.Get(s.URL + "/robot.txt")
+	require.NoError(t, err)
+	defer res.Body.Close()
+	require.Equal(t, http.StatusNotFound, res.StatusCode)
 }
 
 func BenchmarkHandlerColdRun(b *testing.B) {
