@@ -114,10 +114,6 @@ type Handler struct {
 	// The page title.
 	Title string
 
-	// UseMinimalDefaultStyles makes app.css to adopt a minimal implementation
-	// that does not style the default HTML elements.
-	UseMinimalDefaultStyles bool
-
 	// The version number. This is used in order to update the PWA application
 	// in the browser. It must be set when deployed on a live system in order to
 	// prevent recurring updates.
@@ -239,6 +235,9 @@ func (h *Handler) initPage() {
 				Name("keywords").
 				Content(strings.Join(h.Keywords, ", ")),
 			Meta().
+				Name("theme-color").
+				Content(h.ThemeColor),
+			Meta().
 				Name("viewport").
 				Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
 			Title().Text(h.Title),
@@ -268,15 +267,16 @@ func (h *Handler) initPage() {
 		),
 		Body().Body(
 			Div().
-				Class("app-wasm-layout").
+				ID("app-wasm-layout").
+				Class("goapp-app-info").
 				Body(
 					Img().
 						ID("app-wasm-loader-icon").
-						Class("app-wasm-icon app-spin").
+						Class("goapp-logo goapp-spin").
 						Src(h.Icon.Default),
 					P().
 						ID("app-wasm-loader-label").
-						Class("app-wasm-label").
+						Class("goapp-label").
 						Body(Text(h.LoadingLabel)),
 				),
 			Div().ID("app-context-menu"),
@@ -383,11 +383,7 @@ func (h *Handler) initManifestJSON() {
 }
 
 func (h *Handler) initAppCSS() {
-	css := appCSS
-	if h.UseMinimalDefaultStyles {
-		css = appLightCSS
-	}
-	h.appCSS = []byte(css)
+	h.appCSS = stob(appCSS)
 }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {

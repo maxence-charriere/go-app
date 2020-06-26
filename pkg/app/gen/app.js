@@ -43,13 +43,13 @@ const go = new Go();
 WebAssembly.instantiateStreaming(fetch("{{.Wasm}}"), go.importObject)
   .then(result => {
     const loaderIcon = document.getElementById("app-wasm-loader-icon");
-    loaderIcon.className = "app-wasm-icon";
+    loaderIcon.className = "goapp-logo";
 
     go.run(result.instance);
   })
   .catch(err => {
     const loaderIcon = document.getElementById("app-wasm-loader-icon");
-    loaderIcon.className = "app-wasm-icon";
+    loaderIcon.className = "goapp-logo";
 
     const loaderLabel = document.getElementById("app-wasm-loader-label");
     loaderLabel.innerText = err;
