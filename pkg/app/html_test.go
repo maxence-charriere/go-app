@@ -9,6 +9,7 @@ import (
 func TestA(t *testing.T) {
 	elem := A()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -74,6 +75,7 @@ func TestA(t *testing.T) {
 func TestAbbr(t *testing.T) {
 	elem := Abbr()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -130,6 +132,7 @@ func TestAbbr(t *testing.T) {
 func TestAddress(t *testing.T) {
 	elem := Address()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -187,6 +190,7 @@ func TestArea(t *testing.T) {
 	elem := Area()
 	elem.AccessKey("foo")
 	elem.Alt("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -252,6 +256,7 @@ func TestArea(t *testing.T) {
 func TestArticle(t *testing.T) {
 	elem := Article()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -308,6 +313,7 @@ func TestArticle(t *testing.T) {
 func TestAside(t *testing.T) {
 	elem := Aside()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -364,6 +370,7 @@ func TestAside(t *testing.T) {
 func TestAudio(t *testing.T) {
 	elem := Audio()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.AutoPlay(true)
 	elem.AutoPlay(false)
 	elem.Class("foo")
@@ -453,6 +460,7 @@ func TestAudio(t *testing.T) {
 func TestB(t *testing.T) {
 	elem := B()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -509,6 +517,7 @@ func TestB(t *testing.T) {
 func TestBase(t *testing.T) {
 	elem := Base()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -566,6 +575,7 @@ func TestBase(t *testing.T) {
 func TestBdi(t *testing.T) {
 	elem := Bdi()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -622,6 +632,7 @@ func TestBdi(t *testing.T) {
 func TestBdo(t *testing.T) {
 	elem := Bdo()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -678,6 +689,7 @@ func TestBdo(t *testing.T) {
 func TestBlockquote(t *testing.T) {
 	elem := Blockquote()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Cite("http://foo.com")
 	elem.Class("foo")
 	elem.ContentEditable(true)
@@ -735,6 +747,7 @@ func TestBlockquote(t *testing.T) {
 func TestBody(t *testing.T) {
 	elem := Body()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -806,6 +819,7 @@ func TestBody(t *testing.T) {
 func TestBr(t *testing.T) {
 	elem := Br()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -861,6 +875,7 @@ func TestBr(t *testing.T) {
 func TestButton(t *testing.T) {
 	elem := Button()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.AutoFocus(true)
 	elem.AutoFocus(false)
 	elem.Class("foo")
@@ -931,6 +946,7 @@ func TestButton(t *testing.T) {
 func TestCanvas(t *testing.T) {
 	elem := Canvas()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -989,6 +1005,7 @@ func TestCanvas(t *testing.T) {
 func TestCaption(t *testing.T) {
 	elem := Caption()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -1045,6 +1062,7 @@ func TestCaption(t *testing.T) {
 func TestCite(t *testing.T) {
 	elem := Cite()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -1101,6 +1119,7 @@ func TestCite(t *testing.T) {
 func TestCode(t *testing.T) {
 	elem := Code()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -1157,6 +1176,7 @@ func TestCode(t *testing.T) {
 func TestCol(t *testing.T) {
 	elem := Col()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -1213,6 +1233,7 @@ func TestCol(t *testing.T) {
 func TestColGroup(t *testing.T) {
 	elem := ColGroup()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -1270,6 +1291,7 @@ func TestColGroup(t *testing.T) {
 func TestData(t *testing.T) {
 	elem := Data()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -1293,6 +1315,7 @@ func TestData(t *testing.T) {
 func TestDataList(t *testing.T) {
 	elem := DataList()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -1349,6 +1372,7 @@ func TestDataList(t *testing.T) {
 func TestDd(t *testing.T) {
 	elem := Dd()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -1405,6 +1429,7 @@ func TestDd(t *testing.T) {
 func TestDel(t *testing.T) {
 	elem := Del()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Cite("http://foo.com")
 	elem.Class("foo")
 	elem.ContentEditable(true)
@@ -1463,6 +1488,7 @@ func TestDel(t *testing.T) {
 func TestDetails(t *testing.T) {
 	elem := Details()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -1522,6 +1548,7 @@ func TestDetails(t *testing.T) {
 func TestDfn(t *testing.T) {
 	elem := Dfn()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -1578,6 +1605,7 @@ func TestDfn(t *testing.T) {
 func TestDialog(t *testing.T) {
 	elem := Dialog()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -1636,6 +1664,7 @@ func TestDialog(t *testing.T) {
 func TestDiv(t *testing.T) {
 	elem := Div()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -1692,6 +1721,7 @@ func TestDiv(t *testing.T) {
 func TestDl(t *testing.T) {
 	elem := Dl()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -1748,6 +1778,7 @@ func TestDl(t *testing.T) {
 func TestDt(t *testing.T) {
 	elem := Dt()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -1804,6 +1835,7 @@ func TestDt(t *testing.T) {
 func TestEm(t *testing.T) {
 	elem := Em()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -1860,6 +1892,7 @@ func TestEm(t *testing.T) {
 func TestEmbed(t *testing.T) {
 	elem := Embed()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -1942,6 +1975,7 @@ func TestEmbed(t *testing.T) {
 func TestFieldSet(t *testing.T) {
 	elem := FieldSet()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -2002,6 +2036,7 @@ func TestFieldSet(t *testing.T) {
 func TestFigCaption(t *testing.T) {
 	elem := FigCaption()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -2058,6 +2093,7 @@ func TestFigCaption(t *testing.T) {
 func TestFigure(t *testing.T) {
 	elem := Figure()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -2114,6 +2150,7 @@ func TestFigure(t *testing.T) {
 func TestFooter(t *testing.T) {
 	elem := Footer()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -2172,6 +2209,7 @@ func TestForm(t *testing.T) {
 	elem.AcceptCharset("foo")
 	elem.AccessKey("foo")
 	elem.Action("foo")
+	elem.Aria("foo", "bar")
 	elem.AutoComplete(true)
 	elem.AutoComplete(false)
 	elem.Class("foo")
@@ -2236,6 +2274,7 @@ func TestForm(t *testing.T) {
 func TestH1(t *testing.T) {
 	elem := H1()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -2292,6 +2331,7 @@ func TestH1(t *testing.T) {
 func TestH2(t *testing.T) {
 	elem := H2()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -2348,6 +2388,7 @@ func TestH2(t *testing.T) {
 func TestH3(t *testing.T) {
 	elem := H3()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -2404,6 +2445,7 @@ func TestH3(t *testing.T) {
 func TestH4(t *testing.T) {
 	elem := H4()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -2460,6 +2502,7 @@ func TestH4(t *testing.T) {
 func TestH5(t *testing.T) {
 	elem := H5()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -2516,6 +2559,7 @@ func TestH5(t *testing.T) {
 func TestH6(t *testing.T) {
 	elem := H6()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -2572,6 +2616,7 @@ func TestH6(t *testing.T) {
 func TestHead(t *testing.T) {
 	elem := Head()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -2594,6 +2639,7 @@ func TestHead(t *testing.T) {
 func TestHeader(t *testing.T) {
 	elem := Header()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -2650,6 +2696,7 @@ func TestHeader(t *testing.T) {
 func TestHr(t *testing.T) {
 	elem := Hr()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -2705,6 +2752,7 @@ func TestHr(t *testing.T) {
 func TestHtml(t *testing.T) {
 	elem := Html()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -2727,6 +2775,7 @@ func TestHtml(t *testing.T) {
 func TestI(t *testing.T) {
 	elem := I()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -2783,6 +2832,7 @@ func TestI(t *testing.T) {
 func TestIFrame(t *testing.T) {
 	elem := IFrame()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -2848,6 +2898,7 @@ func TestImg(t *testing.T) {
 	elem := Img()
 	elem.AccessKey("foo")
 	elem.Alt("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -2937,6 +2988,7 @@ func TestInput(t *testing.T) {
 	elem.Accept("foo")
 	elem.AccessKey("foo")
 	elem.Alt("foo")
+	elem.Aria("foo", "bar")
 	elem.AutoComplete(true)
 	elem.AutoComplete(false)
 	elem.AutoFocus(true)
@@ -3029,6 +3081,7 @@ func TestInput(t *testing.T) {
 func TestIns(t *testing.T) {
 	elem := Ins()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -3085,6 +3138,7 @@ func TestIns(t *testing.T) {
 func TestKbd(t *testing.T) {
 	elem := Kbd()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -3141,6 +3195,7 @@ func TestKbd(t *testing.T) {
 func TestLabel(t *testing.T) {
 	elem := Label()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -3199,6 +3254,7 @@ func TestLabel(t *testing.T) {
 func TestLegends(t *testing.T) {
 	elem := Legends()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -3255,6 +3311,7 @@ func TestLegends(t *testing.T) {
 func TestLi(t *testing.T) {
 	elem := Li()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -3312,6 +3369,7 @@ func TestLi(t *testing.T) {
 func TestLink(t *testing.T) {
 	elem := Link()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -3374,6 +3432,7 @@ func TestLink(t *testing.T) {
 func TestMain(t *testing.T) {
 	elem := Main()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -3430,6 +3489,7 @@ func TestMain(t *testing.T) {
 func TestMap(t *testing.T) {
 	elem := Map()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -3487,6 +3547,7 @@ func TestMap(t *testing.T) {
 func TestMark(t *testing.T) {
 	elem := Mark()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -3543,6 +3604,7 @@ func TestMark(t *testing.T) {
 func TestMeta(t *testing.T) {
 	elem := Meta()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Charset("foo")
 	elem.Class("foo")
 	elem.Content("foo")
@@ -3568,6 +3630,7 @@ func TestMeta(t *testing.T) {
 func TestMeter(t *testing.T) {
 	elem := Meter()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -3631,6 +3694,7 @@ func TestMeter(t *testing.T) {
 func TestNav(t *testing.T) {
 	elem := Nav()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -3687,6 +3751,7 @@ func TestNav(t *testing.T) {
 func TestNoScript(t *testing.T) {
 	elem := NoScript()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -3709,6 +3774,7 @@ func TestNoScript(t *testing.T) {
 func TestObject(t *testing.T) {
 	elem := Object()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -3795,6 +3861,7 @@ func TestObject(t *testing.T) {
 func TestOl(t *testing.T) {
 	elem := Ol()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -3855,6 +3922,7 @@ func TestOl(t *testing.T) {
 func TestOptGroup(t *testing.T) {
 	elem := OptGroup()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -3914,6 +3982,7 @@ func TestOptGroup(t *testing.T) {
 func TestOption(t *testing.T) {
 	elem := Option()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -3976,6 +4045,7 @@ func TestOption(t *testing.T) {
 func TestOutput(t *testing.T) {
 	elem := Output()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -4035,6 +4105,7 @@ func TestOutput(t *testing.T) {
 func TestP(t *testing.T) {
 	elem := P()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -4091,6 +4162,7 @@ func TestP(t *testing.T) {
 func TestParam(t *testing.T) {
 	elem := Param()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -4148,6 +4220,7 @@ func TestParam(t *testing.T) {
 func TestPicture(t *testing.T) {
 	elem := Picture()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -4204,6 +4277,7 @@ func TestPicture(t *testing.T) {
 func TestPre(t *testing.T) {
 	elem := Pre()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -4260,6 +4334,7 @@ func TestPre(t *testing.T) {
 func TestProgress(t *testing.T) {
 	elem := Progress()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -4318,6 +4393,7 @@ func TestProgress(t *testing.T) {
 func TestQ(t *testing.T) {
 	elem := Q()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Cite("http://foo.com")
 	elem.Class("foo")
 	elem.ContentEditable(true)
@@ -4375,6 +4451,7 @@ func TestQ(t *testing.T) {
 func TestRp(t *testing.T) {
 	elem := Rp()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -4431,6 +4508,7 @@ func TestRp(t *testing.T) {
 func TestRt(t *testing.T) {
 	elem := Rt()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -4487,6 +4565,7 @@ func TestRt(t *testing.T) {
 func TestRuby(t *testing.T) {
 	elem := Ruby()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -4543,6 +4622,7 @@ func TestRuby(t *testing.T) {
 func TestS(t *testing.T) {
 	elem := S()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -4599,6 +4679,7 @@ func TestS(t *testing.T) {
 func TestSamp(t *testing.T) {
 	elem := Samp()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -4655,6 +4736,7 @@ func TestSamp(t *testing.T) {
 func TestScript(t *testing.T) {
 	elem := Script()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Async(true)
 	elem.Async(false)
 	elem.Charset("foo")
@@ -4687,6 +4769,7 @@ func TestScript(t *testing.T) {
 func TestSection(t *testing.T) {
 	elem := Section()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -4743,6 +4826,7 @@ func TestSection(t *testing.T) {
 func TestSelect(t *testing.T) {
 	elem := Select()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.AutoFocus(true)
 	elem.AutoFocus(false)
 	elem.Class("foo")
@@ -4810,6 +4894,7 @@ func TestSelect(t *testing.T) {
 func TestSmall(t *testing.T) {
 	elem := Small()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -4866,6 +4951,7 @@ func TestSmall(t *testing.T) {
 func TestSource(t *testing.T) {
 	elem := Source()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -4926,6 +5012,7 @@ func TestSource(t *testing.T) {
 func TestSpan(t *testing.T) {
 	elem := Span()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -4982,6 +5069,7 @@ func TestSpan(t *testing.T) {
 func TestStrong(t *testing.T) {
 	elem := Strong()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -5038,6 +5126,7 @@ func TestStrong(t *testing.T) {
 func TestStyle(t *testing.T) {
 	elem := Style()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -5097,6 +5186,7 @@ func TestStyle(t *testing.T) {
 func TestSub(t *testing.T) {
 	elem := Sub()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -5153,6 +5243,7 @@ func TestSub(t *testing.T) {
 func TestSummary(t *testing.T) {
 	elem := Summary()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -5209,6 +5300,7 @@ func TestSummary(t *testing.T) {
 func TestSup(t *testing.T) {
 	elem := Sup()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -5265,6 +5357,7 @@ func TestSup(t *testing.T) {
 func TestTable(t *testing.T) {
 	elem := Table()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -5321,6 +5414,7 @@ func TestTable(t *testing.T) {
 func TestTBody(t *testing.T) {
 	elem := TBody()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -5377,6 +5471,7 @@ func TestTBody(t *testing.T) {
 func TestTd(t *testing.T) {
 	elem := Td()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ColSpan(42)
 	elem.ContentEditable(true)
@@ -5436,6 +5531,7 @@ func TestTd(t *testing.T) {
 func TestTemplate(t *testing.T) {
 	elem := Template()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -5458,6 +5554,7 @@ func TestTemplate(t *testing.T) {
 func TestTextarea(t *testing.T) {
 	elem := Textarea()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.AutoFocus(true)
 	elem.AutoFocus(false)
 	elem.Class("foo")
@@ -5530,6 +5627,7 @@ func TestTextarea(t *testing.T) {
 func TestTfoot(t *testing.T) {
 	elem := Tfoot()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -5587,6 +5685,7 @@ func TestTh(t *testing.T) {
 	elem := Th()
 	elem.Accept("foo")
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ColSpan(42)
 	elem.ContentEditable(true)
@@ -5647,6 +5746,7 @@ func TestTh(t *testing.T) {
 func TestTHead(t *testing.T) {
 	elem := THead()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -5703,6 +5803,7 @@ func TestTHead(t *testing.T) {
 func TestTime(t *testing.T) {
 	elem := Time()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -5760,6 +5861,7 @@ func TestTime(t *testing.T) {
 func TestTitle(t *testing.T) {
 	elem := Title()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -5782,6 +5884,7 @@ func TestTitle(t *testing.T) {
 func TestTr(t *testing.T) {
 	elem := Tr()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -5838,6 +5941,7 @@ func TestTr(t *testing.T) {
 func TestU(t *testing.T) {
 	elem := U()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -5894,6 +5998,7 @@ func TestU(t *testing.T) {
 func TestUl(t *testing.T) {
 	elem := Ul()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -5950,6 +6055,7 @@ func TestUl(t *testing.T) {
 func TestVar(t *testing.T) {
 	elem := Var()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)
@@ -6006,6 +6112,7 @@ func TestVar(t *testing.T) {
 func TestVideo(t *testing.T) {
 	elem := Video()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.AutoPlay(true)
 	elem.AutoPlay(false)
 	elem.Class("foo")
@@ -6098,6 +6205,7 @@ func TestVideo(t *testing.T) {
 func TestWbr(t *testing.T) {
 	elem := Wbr()
 	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
 	elem.ContentEditable(false)

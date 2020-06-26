@@ -1007,6 +1007,11 @@ var attrs = map[string]attr{
 		Type: "string",
 		Doc:  "specifies the types of files that the server accepts (only for file type).",
 	},
+	"aria-*": {
+		Name: "Aria",
+		Type: "aria|value",
+		Doc:  "stores accessible rich internet applications (ARIA) data.",
+	},
 	"accept-charset": {
 		Name:         "AcceptCharset",
 		NameOverride: "accept-charset",
@@ -1547,6 +1552,7 @@ func attrsByNames(names ...string) []attr {
 func withGlobalAttrs(attrs ...attr) []attr {
 	attrs = append(attrs, attrsByNames(
 		"accesskey",
+		"aria-*",
 		"class",
 		"contenteditable",
 		"data-*",
@@ -2122,6 +2128,15 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 			}`, "%v")
 		}
 
+	case "aria|value":
+		fmt.Fprintf(w, `%s(k string, v interface{}) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintf(w, `{
+				e.setAttr("aria-"+k, fmt.Sprintf("%s", v))
+				return e
+			}`, "%v")
+		}
+
 	case "style":
 		fmt.Fprintf(w, `%s(k, v string) HTML%s`, a.Name, t.Name)
 		if !isInterface {
@@ -2223,7 +2238,7 @@ import (
 			fmt.Fprintf(f, `elem.%s(`, a.Name)
 
 			switch a.Type {
-			case "data|value":
+			case "data|value", "aria|value":
 				fmt.Fprintln(f, `"foo", "bar")`)
 
 			case "style":
