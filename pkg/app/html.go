@@ -19,6 +19,9 @@ type HTMLA interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLA
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLA
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLA
 
@@ -203,6 +206,11 @@ func (e *htmlA) Text(v interface{}) HTMLA {
 
 func (e *htmlA) AccessKey(v string) HTMLA {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlA) Aria(k string, v interface{}) HTMLA {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -484,6 +492,9 @@ type HTMLAbbr interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLAbbr
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLAbbr
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLAbbr
 
@@ -644,6 +655,11 @@ func (e *htmlAbbr) Text(v interface{}) HTMLAbbr {
 
 func (e *htmlAbbr) AccessKey(v string) HTMLAbbr {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlAbbr) Aria(k string, v interface{}) HTMLAbbr {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -885,6 +901,9 @@ type HTMLAddress interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLAddress
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLAddress
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLAddress
 
@@ -1045,6 +1064,11 @@ func (e *htmlAddress) Text(v interface{}) HTMLAddress {
 
 func (e *htmlAddress) AccessKey(v string) HTMLAddress {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlAddress) Aria(k string, v interface{}) HTMLAddress {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -1283,6 +1307,9 @@ type HTMLArea interface {
 	// Alt specifies an alternate text when the original element fails to display.
 	Alt(v string) HTMLArea
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLArea
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLArea
 
@@ -1466,6 +1493,11 @@ func (e *htmlArea) AccessKey(v string) HTMLArea {
 
 func (e *htmlArea) Alt(v string) HTMLArea {
 	e.setAttr("alt", v)
+	return e
+}
+
+func (e *htmlArea) Aria(k string, v interface{}) HTMLArea {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -1752,6 +1784,9 @@ type HTMLArticle interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLArticle
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLArticle
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLArticle
 
@@ -1912,6 +1947,11 @@ func (e *htmlArticle) Text(v interface{}) HTMLArticle {
 
 func (e *htmlArticle) AccessKey(v string) HTMLArticle {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlArticle) Aria(k string, v interface{}) HTMLArticle {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -2153,6 +2193,9 @@ type HTMLAside interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLAside
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLAside
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLAside
 
@@ -2313,6 +2356,11 @@ func (e *htmlAside) Text(v interface{}) HTMLAside {
 
 func (e *htmlAside) AccessKey(v string) HTMLAside {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlAside) Aria(k string, v interface{}) HTMLAside {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -2553,6 +2601,9 @@ type HTMLAudio interface {
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLAudio
+
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLAudio
 
 	// AutoPlay specifies that the audio/video will start playing as soon as it is ready.
 	AutoPlay(v bool) HTMLAudio
@@ -2801,6 +2852,11 @@ func (e *htmlAudio) Text(v interface{}) HTMLAudio {
 
 func (e *htmlAudio) AccessKey(v string) HTMLAudio {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlAudio) Aria(k string, v interface{}) HTMLAudio {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -3187,6 +3243,9 @@ type HTMLB interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLB
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLB
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLB
 
@@ -3347,6 +3406,11 @@ func (e *htmlB) Text(v interface{}) HTMLB {
 
 func (e *htmlB) AccessKey(v string) HTMLB {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlB) Aria(k string, v interface{}) HTMLB {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -3582,6 +3646,9 @@ type HTMLBase interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLBase
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLBase
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLBase
 
@@ -3739,6 +3806,11 @@ type htmlBase struct {
 
 func (e *htmlBase) AccessKey(v string) HTMLBase {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlBase) Aria(k string, v interface{}) HTMLBase {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -3990,6 +4062,9 @@ type HTMLBdi interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLBdi
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLBdi
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLBdi
 
@@ -4150,6 +4225,11 @@ func (e *htmlBdi) Text(v interface{}) HTMLBdi {
 
 func (e *htmlBdi) AccessKey(v string) HTMLBdi {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlBdi) Aria(k string, v interface{}) HTMLBdi {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -4391,6 +4471,9 @@ type HTMLBdo interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLBdo
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLBdo
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLBdo
 
@@ -4551,6 +4634,11 @@ func (e *htmlBdo) Text(v interface{}) HTMLBdo {
 
 func (e *htmlBdo) AccessKey(v string) HTMLBdo {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlBdo) Aria(k string, v interface{}) HTMLBdo {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -4792,6 +4880,9 @@ type HTMLBlockquote interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLBlockquote
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLBlockquote
+
 	// Cite specifies a URL which explains the quote/deleted/inserted text.
 	Cite(v string) HTMLBlockquote
 
@@ -4955,6 +5046,11 @@ func (e *htmlBlockquote) Text(v interface{}) HTMLBlockquote {
 
 func (e *htmlBlockquote) AccessKey(v string) HTMLBlockquote {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlBlockquote) Aria(k string, v interface{}) HTMLBlockquote {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -5201,6 +5297,9 @@ type HTMLBody interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLBody
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLBody
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLBody
 
@@ -5406,6 +5505,11 @@ func (e *htmlBody) Text(v interface{}) HTMLBody {
 
 func (e *htmlBody) AccessKey(v string) HTMLBody {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlBody) Aria(k string, v interface{}) HTMLBody {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -5716,6 +5820,9 @@ type HTMLBr interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLBr
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLBr
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLBr
 
@@ -5867,6 +5974,11 @@ type htmlBr struct {
 
 func (e *htmlBr) AccessKey(v string) HTMLBr {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlBr) Aria(k string, v interface{}) HTMLBr {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -6108,6 +6220,9 @@ type HTMLButton interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLButton
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLButton
+
 	// AutoFocus specifies that the element should automatically get focus when the page loads.
 	AutoFocus(v bool) HTMLButton
 
@@ -6301,6 +6416,11 @@ func (e *htmlButton) Text(v interface{}) HTMLButton {
 
 func (e *htmlButton) AccessKey(v string) HTMLButton {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlButton) Aria(k string, v interface{}) HTMLButton {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -6597,6 +6717,9 @@ type HTMLCanvas interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLCanvas
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLCanvas
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLCanvas
 
@@ -6763,6 +6886,11 @@ func (e *htmlCanvas) Text(v interface{}) HTMLCanvas {
 
 func (e *htmlCanvas) AccessKey(v string) HTMLCanvas {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlCanvas) Aria(k string, v interface{}) HTMLCanvas {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -7014,6 +7142,9 @@ type HTMLCaption interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLCaption
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLCaption
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLCaption
 
@@ -7174,6 +7305,11 @@ func (e *htmlCaption) Text(v interface{}) HTMLCaption {
 
 func (e *htmlCaption) AccessKey(v string) HTMLCaption {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlCaption) Aria(k string, v interface{}) HTMLCaption {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -7415,6 +7551,9 @@ type HTMLCite interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLCite
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLCite
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLCite
 
@@ -7575,6 +7714,11 @@ func (e *htmlCite) Text(v interface{}) HTMLCite {
 
 func (e *htmlCite) AccessKey(v string) HTMLCite {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlCite) Aria(k string, v interface{}) HTMLCite {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -7816,6 +7960,9 @@ type HTMLCode interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLCode
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLCode
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLCode
 
@@ -7976,6 +8123,11 @@ func (e *htmlCode) Text(v interface{}) HTMLCode {
 
 func (e *htmlCode) AccessKey(v string) HTMLCode {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlCode) Aria(k string, v interface{}) HTMLCode {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -8211,6 +8363,9 @@ type HTMLCol interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLCol
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLCol
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLCol
 
@@ -8365,6 +8520,11 @@ type htmlCol struct {
 
 func (e *htmlCol) AccessKey(v string) HTMLCol {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlCol) Aria(k string, v interface{}) HTMLCol {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -8611,6 +8771,9 @@ type HTMLColGroup interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLColGroup
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLColGroup
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLColGroup
 
@@ -8774,6 +8937,11 @@ func (e *htmlColGroup) Text(v interface{}) HTMLColGroup {
 
 func (e *htmlColGroup) AccessKey(v string) HTMLColGroup {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlColGroup) Aria(k string, v interface{}) HTMLColGroup {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -9020,6 +9188,9 @@ type HTMLData interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLData
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLData
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLData
 
@@ -9087,6 +9258,11 @@ func (e *htmlData) Text(v interface{}) HTMLData {
 
 func (e *htmlData) AccessKey(v string) HTMLData {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlData) Aria(k string, v interface{}) HTMLData {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -9172,6 +9348,9 @@ type HTMLDataList interface {
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDataList
+
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLDataList
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLDataList
@@ -9333,6 +9512,11 @@ func (e *htmlDataList) Text(v interface{}) HTMLDataList {
 
 func (e *htmlDataList) AccessKey(v string) HTMLDataList {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlDataList) Aria(k string, v interface{}) HTMLDataList {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -9574,6 +9758,9 @@ type HTMLDd interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDd
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLDd
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLDd
 
@@ -9734,6 +9921,11 @@ func (e *htmlDd) Text(v interface{}) HTMLDd {
 
 func (e *htmlDd) AccessKey(v string) HTMLDd {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlDd) Aria(k string, v interface{}) HTMLDd {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -9975,6 +10167,9 @@ type HTMLDel interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDel
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLDel
+
 	// Cite specifies a URL which explains the quote/deleted/inserted text.
 	Cite(v string) HTMLDel
 
@@ -10141,6 +10336,11 @@ func (e *htmlDel) Text(v interface{}) HTMLDel {
 
 func (e *htmlDel) AccessKey(v string) HTMLDel {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlDel) Aria(k string, v interface{}) HTMLDel {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -10392,6 +10592,9 @@ type HTMLDetails interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDetails
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLDetails
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLDetails
 
@@ -10558,6 +10761,11 @@ func (e *htmlDetails) Text(v interface{}) HTMLDetails {
 
 func (e *htmlDetails) AccessKey(v string) HTMLDetails {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlDetails) Aria(k string, v interface{}) HTMLDetails {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -10809,6 +11017,9 @@ type HTMLDfn interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDfn
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLDfn
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLDfn
 
@@ -10969,6 +11180,11 @@ func (e *htmlDfn) Text(v interface{}) HTMLDfn {
 
 func (e *htmlDfn) AccessKey(v string) HTMLDfn {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlDfn) Aria(k string, v interface{}) HTMLDfn {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -11210,6 +11426,9 @@ type HTMLDialog interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDialog
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLDialog
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLDialog
 
@@ -11373,6 +11592,11 @@ func (e *htmlDialog) Text(v interface{}) HTMLDialog {
 
 func (e *htmlDialog) AccessKey(v string) HTMLDialog {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlDialog) Aria(k string, v interface{}) HTMLDialog {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -11619,6 +11843,9 @@ type HTMLDiv interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDiv
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLDiv
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLDiv
 
@@ -11779,6 +12006,11 @@ func (e *htmlDiv) Text(v interface{}) HTMLDiv {
 
 func (e *htmlDiv) AccessKey(v string) HTMLDiv {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlDiv) Aria(k string, v interface{}) HTMLDiv {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -12020,6 +12252,9 @@ type HTMLDl interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDl
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLDl
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLDl
 
@@ -12180,6 +12415,11 @@ func (e *htmlDl) Text(v interface{}) HTMLDl {
 
 func (e *htmlDl) AccessKey(v string) HTMLDl {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlDl) Aria(k string, v interface{}) HTMLDl {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -12421,6 +12661,9 @@ type HTMLDt interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLDt
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLDt
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLDt
 
@@ -12581,6 +12824,11 @@ func (e *htmlDt) Text(v interface{}) HTMLDt {
 
 func (e *htmlDt) AccessKey(v string) HTMLDt {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlDt) Aria(k string, v interface{}) HTMLDt {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -12822,6 +13070,9 @@ type HTMLEm interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLEm
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLEm
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLEm
 
@@ -12982,6 +13233,11 @@ func (e *htmlEm) Text(v interface{}) HTMLEm {
 
 func (e *htmlEm) AccessKey(v string) HTMLEm {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlEm) Aria(k string, v interface{}) HTMLEm {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -13217,6 +13473,9 @@ type HTMLEmbed interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLEmbed
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLEmbed
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLEmbed
 
@@ -13449,6 +13708,11 @@ type htmlEmbed struct {
 
 func (e *htmlEmbed) AccessKey(v string) HTMLEmbed {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlEmbed) Aria(k string, v interface{}) HTMLEmbed {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -13825,6 +14089,9 @@ type HTMLFieldSet interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLFieldSet
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLFieldSet
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLFieldSet
 
@@ -13994,6 +14261,11 @@ func (e *htmlFieldSet) Text(v interface{}) HTMLFieldSet {
 
 func (e *htmlFieldSet) AccessKey(v string) HTMLFieldSet {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlFieldSet) Aria(k string, v interface{}) HTMLFieldSet {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -14250,6 +14522,9 @@ type HTMLFigCaption interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLFigCaption
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLFigCaption
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLFigCaption
 
@@ -14410,6 +14685,11 @@ func (e *htmlFigCaption) Text(v interface{}) HTMLFigCaption {
 
 func (e *htmlFigCaption) AccessKey(v string) HTMLFigCaption {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlFigCaption) Aria(k string, v interface{}) HTMLFigCaption {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -14651,6 +14931,9 @@ type HTMLFigure interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLFigure
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLFigure
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLFigure
 
@@ -14811,6 +15094,11 @@ func (e *htmlFigure) Text(v interface{}) HTMLFigure {
 
 func (e *htmlFigure) AccessKey(v string) HTMLFigure {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlFigure) Aria(k string, v interface{}) HTMLFigure {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -15052,6 +15340,9 @@ type HTMLFooter interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLFooter
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLFooter
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLFooter
 
@@ -15212,6 +15503,11 @@ func (e *htmlFooter) Text(v interface{}) HTMLFooter {
 
 func (e *htmlFooter) AccessKey(v string) HTMLFooter {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlFooter) Aria(k string, v interface{}) HTMLFooter {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -15459,6 +15755,9 @@ type HTMLForm interface {
 	// Action specifies where to send the form-data when a form is submitted.
 	Action(v string) HTMLForm
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLForm
+
 	// AutoComplete specifies whether the element should have autocomplete enabled.
 	AutoComplete(v bool) HTMLForm
 
@@ -15647,6 +15946,11 @@ func (e *htmlForm) AccessKey(v string) HTMLForm {
 
 func (e *htmlForm) Action(v string) HTMLForm {
 	e.setAttr("action", v)
+	return e
+}
+
+func (e *htmlForm) Aria(k string, v interface{}) HTMLForm {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -15923,6 +16227,9 @@ type HTMLH1 interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLH1
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLH1
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLH1
 
@@ -16083,6 +16390,11 @@ func (e *htmlH1) Text(v interface{}) HTMLH1 {
 
 func (e *htmlH1) AccessKey(v string) HTMLH1 {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlH1) Aria(k string, v interface{}) HTMLH1 {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -16324,6 +16636,9 @@ type HTMLH2 interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLH2
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLH2
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLH2
 
@@ -16484,6 +16799,11 @@ func (e *htmlH2) Text(v interface{}) HTMLH2 {
 
 func (e *htmlH2) AccessKey(v string) HTMLH2 {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlH2) Aria(k string, v interface{}) HTMLH2 {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -16725,6 +17045,9 @@ type HTMLH3 interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLH3
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLH3
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLH3
 
@@ -16885,6 +17208,11 @@ func (e *htmlH3) Text(v interface{}) HTMLH3 {
 
 func (e *htmlH3) AccessKey(v string) HTMLH3 {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlH3) Aria(k string, v interface{}) HTMLH3 {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -17126,6 +17454,9 @@ type HTMLH4 interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLH4
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLH4
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLH4
 
@@ -17286,6 +17617,11 @@ func (e *htmlH4) Text(v interface{}) HTMLH4 {
 
 func (e *htmlH4) AccessKey(v string) HTMLH4 {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlH4) Aria(k string, v interface{}) HTMLH4 {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -17527,6 +17863,9 @@ type HTMLH5 interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLH5
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLH5
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLH5
 
@@ -17687,6 +18026,11 @@ func (e *htmlH5) Text(v interface{}) HTMLH5 {
 
 func (e *htmlH5) AccessKey(v string) HTMLH5 {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlH5) Aria(k string, v interface{}) HTMLH5 {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -17928,6 +18272,9 @@ type HTMLH6 interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLH6
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLH6
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLH6
 
@@ -18088,6 +18435,11 @@ func (e *htmlH6) Text(v interface{}) HTMLH6 {
 
 func (e *htmlH6) AccessKey(v string) HTMLH6 {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlH6) Aria(k string, v interface{}) HTMLH6 {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -18329,6 +18681,9 @@ type HTMLHead interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLHead
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLHead
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLHead
 
@@ -18393,6 +18748,11 @@ func (e *htmlHead) Text(v interface{}) HTMLHead {
 
 func (e *htmlHead) AccessKey(v string) HTMLHead {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlHead) Aria(k string, v interface{}) HTMLHead {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -18473,6 +18833,9 @@ type HTMLHeader interface {
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLHeader
+
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLHeader
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLHeader
@@ -18634,6 +18997,11 @@ func (e *htmlHeader) Text(v interface{}) HTMLHeader {
 
 func (e *htmlHeader) AccessKey(v string) HTMLHeader {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlHeader) Aria(k string, v interface{}) HTMLHeader {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -18869,6 +19237,9 @@ type HTMLHr interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLHr
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLHr
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLHr
 
@@ -19020,6 +19391,11 @@ type htmlHr struct {
 
 func (e *htmlHr) AccessKey(v string) HTMLHr {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlHr) Aria(k string, v interface{}) HTMLHr {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -19261,6 +19637,9 @@ type HTMLHtml interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLHtml
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLHtml
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLHtml
 
@@ -19325,6 +19704,11 @@ func (e *htmlHtml) Text(v interface{}) HTMLHtml {
 
 func (e *htmlHtml) AccessKey(v string) HTMLHtml {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlHtml) Aria(k string, v interface{}) HTMLHtml {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -19405,6 +19789,9 @@ type HTMLI interface {
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLI
+
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLI
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLI
@@ -19566,6 +19953,11 @@ func (e *htmlI) Text(v interface{}) HTMLI {
 
 func (e *htmlI) AccessKey(v string) HTMLI {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlI) Aria(k string, v interface{}) HTMLI {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -19807,6 +20199,9 @@ type HTMLIFrame interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLIFrame
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLIFrame
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLIFrame
 
@@ -19988,6 +20383,11 @@ func (e *htmlIFrame) Text(v interface{}) HTMLIFrame {
 
 func (e *htmlIFrame) AccessKey(v string) HTMLIFrame {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlIFrame) Aria(k string, v interface{}) HTMLIFrame {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -20261,6 +20661,9 @@ type HTMLImg interface {
 	// Alt specifies an alternate text when the original element fails to display.
 	Alt(v string) HTMLImg
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLImg
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLImg
 
@@ -20510,6 +20913,11 @@ func (e *htmlImg) AccessKey(v string) HTMLImg {
 
 func (e *htmlImg) Alt(v string) HTMLImg {
 	e.setAttr("alt", v)
+	return e
+}
+
+func (e *htmlImg) Aria(k string, v interface{}) HTMLImg {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -20906,6 +21314,9 @@ type HTMLInput interface {
 	// Alt specifies an alternate text when the original element fails to display.
 	Alt(v string) HTMLInput
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLInput
+
 	// AutoComplete specifies whether the element should have autocomplete enabled.
 	AutoComplete(v bool) HTMLInput
 
@@ -21154,6 +21565,11 @@ func (e *htmlInput) AccessKey(v string) HTMLInput {
 
 func (e *htmlInput) Alt(v string) HTMLInput {
 	e.setAttr("alt", v)
+	return e
+}
+
+func (e *htmlInput) Aria(k string, v interface{}) HTMLInput {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -21545,6 +21961,9 @@ type HTMLIns interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLIns
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLIns
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLIns
 
@@ -21705,6 +22124,11 @@ func (e *htmlIns) Text(v interface{}) HTMLIns {
 
 func (e *htmlIns) AccessKey(v string) HTMLIns {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlIns) Aria(k string, v interface{}) HTMLIns {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -21946,6 +22370,9 @@ type HTMLKbd interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLKbd
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLKbd
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLKbd
 
@@ -22106,6 +22533,11 @@ func (e *htmlKbd) Text(v interface{}) HTMLKbd {
 
 func (e *htmlKbd) AccessKey(v string) HTMLKbd {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlKbd) Aria(k string, v interface{}) HTMLKbd {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -22347,6 +22779,9 @@ type HTMLLabel interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLLabel
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLLabel
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLLabel
 
@@ -22513,6 +22948,11 @@ func (e *htmlLabel) Text(v interface{}) HTMLLabel {
 
 func (e *htmlLabel) AccessKey(v string) HTMLLabel {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlLabel) Aria(k string, v interface{}) HTMLLabel {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -22764,6 +23204,9 @@ type HTMLLegends interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLLegends
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLLegends
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLLegends
 
@@ -22924,6 +23367,11 @@ func (e *htmlLegends) Text(v interface{}) HTMLLegends {
 
 func (e *htmlLegends) AccessKey(v string) HTMLLegends {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlLegends) Aria(k string, v interface{}) HTMLLegends {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -23165,6 +23613,9 @@ type HTMLLi interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLLi
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLLi
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLLi
 
@@ -23328,6 +23779,11 @@ func (e *htmlLi) Text(v interface{}) HTMLLi {
 
 func (e *htmlLi) AccessKey(v string) HTMLLi {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlLi) Aria(k string, v interface{}) HTMLLi {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -23568,6 +24024,9 @@ type HTMLLink interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLLink
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLLink
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLLink
 
@@ -23740,6 +24199,11 @@ type htmlLink struct {
 
 func (e *htmlLink) AccessKey(v string) HTMLLink {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlLink) Aria(k string, v interface{}) HTMLLink {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -24016,6 +24480,9 @@ type HTMLMain interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLMain
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLMain
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLMain
 
@@ -24176,6 +24643,11 @@ func (e *htmlMain) Text(v interface{}) HTMLMain {
 
 func (e *htmlMain) AccessKey(v string) HTMLMain {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlMain) Aria(k string, v interface{}) HTMLMain {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -24417,6 +24889,9 @@ type HTMLMap interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLMap
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLMap
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLMap
 
@@ -24580,6 +25055,11 @@ func (e *htmlMap) Text(v interface{}) HTMLMap {
 
 func (e *htmlMap) AccessKey(v string) HTMLMap {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlMap) Aria(k string, v interface{}) HTMLMap {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -24826,6 +25306,9 @@ type HTMLMark interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLMark
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLMark
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLMark
 
@@ -24986,6 +25469,11 @@ func (e *htmlMark) Text(v interface{}) HTMLMark {
 
 func (e *htmlMark) AccessKey(v string) HTMLMark {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlMark) Aria(k string, v interface{}) HTMLMark {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -25221,6 +25709,9 @@ type HTMLMeta interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLMeta
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLMeta
+
 	// Charset specifies the character encoding.
 	Charset(v string) HTMLMeta
 
@@ -25288,6 +25779,11 @@ type htmlMeta struct {
 
 func (e *htmlMeta) AccessKey(v string) HTMLMeta {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlMeta) Aria(k string, v interface{}) HTMLMeta {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -25388,6 +25884,9 @@ type HTMLMeter interface {
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLMeter
+
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLMeter
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLMeter
@@ -25570,6 +26069,11 @@ func (e *htmlMeter) Text(v interface{}) HTMLMeter {
 
 func (e *htmlMeter) AccessKey(v string) HTMLMeter {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlMeter) Aria(k string, v interface{}) HTMLMeter {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -25846,6 +26350,9 @@ type HTMLNav interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLNav
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLNav
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLNav
 
@@ -26006,6 +26513,11 @@ func (e *htmlNav) Text(v interface{}) HTMLNav {
 
 func (e *htmlNav) AccessKey(v string) HTMLNav {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlNav) Aria(k string, v interface{}) HTMLNav {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -26247,6 +26759,9 @@ type HTMLNoScript interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLNoScript
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLNoScript
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLNoScript
 
@@ -26311,6 +26826,11 @@ func (e *htmlNoScript) Text(v interface{}) HTMLNoScript {
 
 func (e *htmlNoScript) AccessKey(v string) HTMLNoScript {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlNoScript) Aria(k string, v interface{}) HTMLNoScript {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -26391,6 +26911,9 @@ type HTMLObject interface {
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLObject
+
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLObject
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLObject
@@ -26642,6 +27165,11 @@ func (e *htmlObject) Text(v interface{}) HTMLObject {
 
 func (e *htmlObject) AccessKey(v string) HTMLObject {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlObject) Aria(k string, v interface{}) HTMLObject {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -27033,6 +27561,9 @@ type HTMLOl interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLOl
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLOl
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLOl
 
@@ -27202,6 +27733,11 @@ func (e *htmlOl) Text(v interface{}) HTMLOl {
 
 func (e *htmlOl) AccessKey(v string) HTMLOl {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlOl) Aria(k string, v interface{}) HTMLOl {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -27458,6 +27994,9 @@ type HTMLOptGroup interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLOptGroup
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLOptGroup
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLOptGroup
 
@@ -27624,6 +28163,11 @@ func (e *htmlOptGroup) Text(v interface{}) HTMLOptGroup {
 
 func (e *htmlOptGroup) AccessKey(v string) HTMLOptGroup {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlOptGroup) Aria(k string, v interface{}) HTMLOptGroup {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -27875,6 +28419,9 @@ type HTMLOption interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLOption
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLOption
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLOption
 
@@ -28047,6 +28594,11 @@ func (e *htmlOption) Text(v interface{}) HTMLOption {
 
 func (e *htmlOption) AccessKey(v string) HTMLOption {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlOption) Aria(k string, v interface{}) HTMLOption {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -28308,6 +28860,9 @@ type HTMLOutput interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLOutput
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLOutput
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLOutput
 
@@ -28477,6 +29032,11 @@ func (e *htmlOutput) Text(v interface{}) HTMLOutput {
 
 func (e *htmlOutput) AccessKey(v string) HTMLOutput {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlOutput) Aria(k string, v interface{}) HTMLOutput {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -28733,6 +29293,9 @@ type HTMLP interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLP
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLP
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLP
 
@@ -28893,6 +29456,11 @@ func (e *htmlP) Text(v interface{}) HTMLP {
 
 func (e *htmlP) AccessKey(v string) HTMLP {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlP) Aria(k string, v interface{}) HTMLP {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -29128,6 +29696,9 @@ type HTMLParam interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLParam
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLParam
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLParam
 
@@ -29285,6 +29856,11 @@ type htmlParam struct {
 
 func (e *htmlParam) AccessKey(v string) HTMLParam {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlParam) Aria(k string, v interface{}) HTMLParam {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -29536,6 +30112,9 @@ type HTMLPicture interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLPicture
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLPicture
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLPicture
 
@@ -29696,6 +30275,11 @@ func (e *htmlPicture) Text(v interface{}) HTMLPicture {
 
 func (e *htmlPicture) AccessKey(v string) HTMLPicture {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlPicture) Aria(k string, v interface{}) HTMLPicture {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -29937,6 +30521,9 @@ type HTMLPre interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLPre
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLPre
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLPre
 
@@ -30097,6 +30684,11 @@ func (e *htmlPre) Text(v interface{}) HTMLPre {
 
 func (e *htmlPre) AccessKey(v string) HTMLPre {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlPre) Aria(k string, v interface{}) HTMLPre {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -30338,6 +30930,9 @@ type HTMLProgress interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLProgress
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLProgress
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLProgress
 
@@ -30504,6 +31099,11 @@ func (e *htmlProgress) Text(v interface{}) HTMLProgress {
 
 func (e *htmlProgress) AccessKey(v string) HTMLProgress {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlProgress) Aria(k string, v interface{}) HTMLProgress {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -30755,6 +31355,9 @@ type HTMLQ interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLQ
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLQ
+
 	// Cite specifies a URL which explains the quote/deleted/inserted text.
 	Cite(v string) HTMLQ
 
@@ -30918,6 +31521,11 @@ func (e *htmlQ) Text(v interface{}) HTMLQ {
 
 func (e *htmlQ) AccessKey(v string) HTMLQ {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlQ) Aria(k string, v interface{}) HTMLQ {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -31164,6 +31772,9 @@ type HTMLRp interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLRp
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLRp
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLRp
 
@@ -31324,6 +31935,11 @@ func (e *htmlRp) Text(v interface{}) HTMLRp {
 
 func (e *htmlRp) AccessKey(v string) HTMLRp {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlRp) Aria(k string, v interface{}) HTMLRp {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -31565,6 +32181,9 @@ type HTMLRt interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLRt
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLRt
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLRt
 
@@ -31725,6 +32344,11 @@ func (e *htmlRt) Text(v interface{}) HTMLRt {
 
 func (e *htmlRt) AccessKey(v string) HTMLRt {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlRt) Aria(k string, v interface{}) HTMLRt {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -31966,6 +32590,9 @@ type HTMLRuby interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLRuby
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLRuby
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLRuby
 
@@ -32126,6 +32753,11 @@ func (e *htmlRuby) Text(v interface{}) HTMLRuby {
 
 func (e *htmlRuby) AccessKey(v string) HTMLRuby {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlRuby) Aria(k string, v interface{}) HTMLRuby {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -32367,6 +32999,9 @@ type HTMLS interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLS
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLS
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLS
 
@@ -32527,6 +33162,11 @@ func (e *htmlS) Text(v interface{}) HTMLS {
 
 func (e *htmlS) AccessKey(v string) HTMLS {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlS) Aria(k string, v interface{}) HTMLS {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -32768,6 +33408,9 @@ type HTMLSamp interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSamp
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLSamp
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLSamp
 
@@ -32928,6 +33571,11 @@ func (e *htmlSamp) Text(v interface{}) HTMLSamp {
 
 func (e *htmlSamp) AccessKey(v string) HTMLSamp {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlSamp) Aria(k string, v interface{}) HTMLSamp {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -33169,6 +33817,9 @@ type HTMLScript interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLScript
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLScript
+
 	// Async specifies that the script is executed asynchronously (only for external scripts).
 	Async(v bool) HTMLScript
 
@@ -33251,6 +33902,11 @@ func (e *htmlScript) Text(v interface{}) HTMLScript {
 
 func (e *htmlScript) AccessKey(v string) HTMLScript {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlScript) Aria(k string, v interface{}) HTMLScript {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -33361,6 +34017,9 @@ type HTMLSection interface {
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSection
+
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLSection
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLSection
@@ -33522,6 +34181,11 @@ func (e *htmlSection) Text(v interface{}) HTMLSection {
 
 func (e *htmlSection) AccessKey(v string) HTMLSection {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlSection) Aria(k string, v interface{}) HTMLSection {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -33763,6 +34427,9 @@ type HTMLSelect interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSelect
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLSelect
+
 	// AutoFocus specifies that the element should automatically get focus when the page loads.
 	AutoFocus(v bool) HTMLSelect
 
@@ -33944,6 +34611,11 @@ func (e *htmlSelect) Text(v interface{}) HTMLSelect {
 
 func (e *htmlSelect) AccessKey(v string) HTMLSelect {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlSelect) Aria(k string, v interface{}) HTMLSelect {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -34220,6 +34892,9 @@ type HTMLSmall interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSmall
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLSmall
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLSmall
 
@@ -34380,6 +35055,11 @@ func (e *htmlSmall) Text(v interface{}) HTMLSmall {
 
 func (e *htmlSmall) AccessKey(v string) HTMLSmall {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlSmall) Aria(k string, v interface{}) HTMLSmall {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -34615,6 +35295,9 @@ type HTMLSource interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSource
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLSource
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLSource
 
@@ -34781,6 +35464,11 @@ type htmlSource struct {
 
 func (e *htmlSource) AccessKey(v string) HTMLSource {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlSource) Aria(k string, v interface{}) HTMLSource {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -35047,6 +35735,9 @@ type HTMLSpan interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSpan
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLSpan
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLSpan
 
@@ -35207,6 +35898,11 @@ func (e *htmlSpan) Text(v interface{}) HTMLSpan {
 
 func (e *htmlSpan) AccessKey(v string) HTMLSpan {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlSpan) Aria(k string, v interface{}) HTMLSpan {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -35448,6 +36144,9 @@ type HTMLStrong interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLStrong
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLStrong
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLStrong
 
@@ -35608,6 +36307,11 @@ func (e *htmlStrong) Text(v interface{}) HTMLStrong {
 
 func (e *htmlStrong) AccessKey(v string) HTMLStrong {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlStrong) Aria(k string, v interface{}) HTMLStrong {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -35849,6 +36553,9 @@ type HTMLStyle interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLStyle
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLStyle
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLStyle
 
@@ -36018,6 +36725,11 @@ func (e *htmlStyle) Text(v interface{}) HTMLStyle {
 
 func (e *htmlStyle) AccessKey(v string) HTMLStyle {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlStyle) Aria(k string, v interface{}) HTMLStyle {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -36274,6 +36986,9 @@ type HTMLSub interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSub
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLSub
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLSub
 
@@ -36434,6 +37149,11 @@ func (e *htmlSub) Text(v interface{}) HTMLSub {
 
 func (e *htmlSub) AccessKey(v string) HTMLSub {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlSub) Aria(k string, v interface{}) HTMLSub {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -36675,6 +37395,9 @@ type HTMLSummary interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSummary
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLSummary
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLSummary
 
@@ -36835,6 +37558,11 @@ func (e *htmlSummary) Text(v interface{}) HTMLSummary {
 
 func (e *htmlSummary) AccessKey(v string) HTMLSummary {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlSummary) Aria(k string, v interface{}) HTMLSummary {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -37076,6 +37804,9 @@ type HTMLSup interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLSup
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLSup
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLSup
 
@@ -37236,6 +37967,11 @@ func (e *htmlSup) Text(v interface{}) HTMLSup {
 
 func (e *htmlSup) AccessKey(v string) HTMLSup {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlSup) Aria(k string, v interface{}) HTMLSup {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -37477,6 +38213,9 @@ type HTMLTable interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTable
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLTable
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLTable
 
@@ -37637,6 +38376,11 @@ func (e *htmlTable) Text(v interface{}) HTMLTable {
 
 func (e *htmlTable) AccessKey(v string) HTMLTable {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlTable) Aria(k string, v interface{}) HTMLTable {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -37878,6 +38622,9 @@ type HTMLTBody interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTBody
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLTBody
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLTBody
 
@@ -38038,6 +38785,11 @@ func (e *htmlTBody) Text(v interface{}) HTMLTBody {
 
 func (e *htmlTBody) AccessKey(v string) HTMLTBody {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlTBody) Aria(k string, v interface{}) HTMLTBody {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -38279,6 +39031,9 @@ type HTMLTd interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTd
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLTd
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLTd
 
@@ -38448,6 +39203,11 @@ func (e *htmlTd) Text(v interface{}) HTMLTd {
 
 func (e *htmlTd) AccessKey(v string) HTMLTd {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlTd) Aria(k string, v interface{}) HTMLTd {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -38704,6 +39464,9 @@ type HTMLTemplate interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTemplate
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLTemplate
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLTemplate
 
@@ -38768,6 +39531,11 @@ func (e *htmlTemplate) Text(v interface{}) HTMLTemplate {
 
 func (e *htmlTemplate) AccessKey(v string) HTMLTemplate {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlTemplate) Aria(k string, v interface{}) HTMLTemplate {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -38848,6 +39616,9 @@ type HTMLTextarea interface {
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTextarea
+
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLTextarea
 
 	// AutoFocus specifies that the element should automatically get focus when the page loads.
 	AutoFocus(v bool) HTMLTextarea
@@ -39045,6 +39816,11 @@ func (e *htmlTextarea) Text(v interface{}) HTMLTextarea {
 
 func (e *htmlTextarea) AccessKey(v string) HTMLTextarea {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlTextarea) Aria(k string, v interface{}) HTMLTextarea {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -39346,6 +40122,9 @@ type HTMLTfoot interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTfoot
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLTfoot
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLTfoot
 
@@ -39506,6 +40285,11 @@ func (e *htmlTfoot) Text(v interface{}) HTMLTfoot {
 
 func (e *htmlTfoot) AccessKey(v string) HTMLTfoot {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlTfoot) Aria(k string, v interface{}) HTMLTfoot {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -39750,6 +40534,9 @@ type HTMLTh interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTh
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLTh
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLTh
 
@@ -39927,6 +40714,11 @@ func (e *htmlTh) Accept(v string) HTMLTh {
 
 func (e *htmlTh) AccessKey(v string) HTMLTh {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlTh) Aria(k string, v interface{}) HTMLTh {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -40188,6 +40980,9 @@ type HTMLTHead interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTHead
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLTHead
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLTHead
 
@@ -40348,6 +41143,11 @@ func (e *htmlTHead) Text(v interface{}) HTMLTHead {
 
 func (e *htmlTHead) AccessKey(v string) HTMLTHead {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlTHead) Aria(k string, v interface{}) HTMLTHead {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -40589,6 +41389,9 @@ type HTMLTime interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTime
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLTime
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLTime
 
@@ -40752,6 +41555,11 @@ func (e *htmlTime) Text(v interface{}) HTMLTime {
 
 func (e *htmlTime) AccessKey(v string) HTMLTime {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlTime) Aria(k string, v interface{}) HTMLTime {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -40998,6 +41806,9 @@ type HTMLTitle interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTitle
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLTitle
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLTitle
 
@@ -41062,6 +41873,11 @@ func (e *htmlTitle) Text(v interface{}) HTMLTitle {
 
 func (e *htmlTitle) AccessKey(v string) HTMLTitle {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlTitle) Aria(k string, v interface{}) HTMLTitle {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -41142,6 +41958,9 @@ type HTMLTr interface {
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTr
+
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLTr
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLTr
@@ -41303,6 +42122,11 @@ func (e *htmlTr) Text(v interface{}) HTMLTr {
 
 func (e *htmlTr) AccessKey(v string) HTMLTr {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlTr) Aria(k string, v interface{}) HTMLTr {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -41544,6 +42368,9 @@ type HTMLU interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLU
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLU
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLU
 
@@ -41704,6 +42531,11 @@ func (e *htmlU) Text(v interface{}) HTMLU {
 
 func (e *htmlU) AccessKey(v string) HTMLU {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlU) Aria(k string, v interface{}) HTMLU {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -41945,6 +42777,9 @@ type HTMLUl interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLUl
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLUl
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLUl
 
@@ -42105,6 +42940,11 @@ func (e *htmlUl) Text(v interface{}) HTMLUl {
 
 func (e *htmlUl) AccessKey(v string) HTMLUl {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlUl) Aria(k string, v interface{}) HTMLUl {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -42346,6 +43186,9 @@ type HTMLVar interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLVar
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLVar
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLVar
 
@@ -42506,6 +43349,11 @@ func (e *htmlVar) Text(v interface{}) HTMLVar {
 
 func (e *htmlVar) AccessKey(v string) HTMLVar {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlVar) Aria(k string, v interface{}) HTMLVar {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -42746,6 +43594,9 @@ type HTMLVideo interface {
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLVideo
+
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLVideo
 
 	// AutoPlay specifies that the audio/video will start playing as soon as it is ready.
 	AutoPlay(v bool) HTMLVideo
@@ -43003,6 +43854,11 @@ func (e *htmlVideo) Text(v interface{}) HTMLVideo {
 
 func (e *htmlVideo) AccessKey(v string) HTMLVideo {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlVideo) Aria(k string, v interface{}) HTMLVideo {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
@@ -43404,6 +44260,9 @@ type HTMLWbr interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLWbr
 
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLWbr
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
 	Class(v string) HTMLWbr
 
@@ -43564,6 +44423,11 @@ func (e *htmlWbr) Text(v interface{}) HTMLWbr {
 
 func (e *htmlWbr) AccessKey(v string) HTMLWbr {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlWbr) Aria(k string, v interface{}) HTMLWbr {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
