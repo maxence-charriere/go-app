@@ -38,7 +38,6 @@ func main() {
 		{Var: "appWorkerJS", Filename: "gen/app-worker.js"},
 		{Var: "manifestJSON", Filename: "gen/manifest.json"},
 		{Var: "appCSS", Filename: "gen/app.css"},
-		{Var: "appLightCSS", Filename: "gen/app.light.css"},
 	}
 
 	fmt.Fprintln(f, "const(")
