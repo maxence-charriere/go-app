@@ -112,24 +112,24 @@ func (m *menuItem) Title(t string) MenuItemNode {
 
 func (m *menuItem) Render() UI {
 	if m.Props.separator {
-		return Div().Class("app-menuitem-separator")
+		return Div().Class("goapp-menuitem-separator")
 	}
 
 	item := Button().
-		Class("app-menuitem").
+		Class("goapp-menuitem").
 		Disabled(m.Props.disabled).
 		Body(
 			If(m.Props.icon != "",
 				Img().
-					Class("app-menuitem-icon").
+					Class("goapp-menuitem-icon").
 					Src(m.Props.icon)),
 			Div().
-				Class("app-menuitem-label").
+				Class("goapp-menuitem-label").
 				Body(
 					Text(m.Props.label),
 				),
 			Div().
-				Class("app-menuitem-keys").
+				Class("goapp-menuitem-keys").
 				Body(
 					Text(m.Props.keys),
 				),
@@ -155,9 +155,9 @@ type contextMenuLayout struct {
 }
 
 func (l *contextMenuLayout) Render() UI {
-	class := "app-contextmenu-hidden"
+	class := "goapp-contextmenu-hidden"
 	if l.visible {
-		class = "app-contextmenu-visible"
+		class = "goapp-contextmenu-visible"
 	}
 
 	return Div().
@@ -167,7 +167,7 @@ func (l *contextMenuLayout) Render() UI {
 		Body(
 			Div().
 				ID("app-contextmenu").
-				Class("app-contextmenu").
+				Class("goapp-contextmenu").
 				Body(
 					Range(l.items).
 						Slice(func(i int) UI {
