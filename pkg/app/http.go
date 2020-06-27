@@ -323,11 +323,13 @@ func (h *Handler) initAppJS() {
 	if err := template.
 		Must(template.New("app.js").Parse(appJS)).
 		Execute(&h.appJS, struct {
-			Env  string
-			Wasm string
+			Env      string
+			Wasm     string
+			WorkerJS string
 		}{
-			Env:  btos(env),
-			Wasm: h.Resources.AppWASM(),
+			Env:      btos(env),
+			Wasm:     h.Resources.AppWASM(),
+			WorkerJS: h.appResource("/app-worker.js"),
 		}); err != nil {
 		panic(errors.New("initializing app.js failed").Wrap(err))
 	}

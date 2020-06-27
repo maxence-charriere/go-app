@@ -3,7 +3,7 @@
 // -----------------------------------------------------------------------------
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
-    .register("/app-worker.js")
+    .register("{{.WorkerJS}}")
     .then(reg => {
       console.log("registering app service worker");
     })

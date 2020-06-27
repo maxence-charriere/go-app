@@ -147,6 +147,7 @@ func TestHandlerServeAppJSWithLocalDir(t *testing.T) {
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
+	require.Contains(t, body, `register("/app-worker.js"`)
 	require.Contains(t, body, `fetch("/web/app.wasm"`)
 	require.Contains(t, body, "GOAPP_VERSION")
 	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":""`)
@@ -165,6 +166,7 @@ func TestHandlerServeAppJSWithRemoteBucket(t *testing.T) {
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
+	require.Contains(t, body, `register("/app-worker.js"`)
 	require.Contains(t, body, `fetch("https://storage.googleapis.com/go-app/web/app.wasm"`)
 	require.Contains(t, body, "GOAPP_VERSION")
 	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":"https://storage.googleapis.com/go-app"`)
@@ -183,6 +185,7 @@ func TestHandlerServeAppJSWithGitHubPages(t *testing.T) {
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
+	require.Contains(t, body, `register("/go-app/app-worker.js"`)
 	require.Contains(t, body, `fetch("/go-app/web/app.wasm"`)
 	require.Contains(t, body, "GOAPP_VERSION")
 	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":"/go-app"`)
