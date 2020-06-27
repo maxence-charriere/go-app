@@ -14,6 +14,7 @@ var (
 	body        *htmlBody
 	content     UI
 	contextMenu = &contextMenuLayout{}
+	rootPrefix  string
 	window      = &browserWindow{value: value{Value: js.Global()}}
 )
 
@@ -25,6 +26,7 @@ func run() {
 	}()
 
 	staticResourcesURL = Getenv("GOAPP_STATIC_RESOURCES_URL")
+	rootPrefix = Getenv("GOAPP_ROOT_PREFIX")
 
 	initBody()
 	initContent()
@@ -170,7 +172,7 @@ func navigate(u *url.URL, updateHistory bool) error {
 		path = "/" + path
 	}
 
-	root, ok := routes.ui(path)
+	root, ok := routes.ui(strings.TrimPrefix(u.Path, rootPrefix))
 	if !ok {
 		root = NotFound
 	}
