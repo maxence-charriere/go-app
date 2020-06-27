@@ -130,5 +130,33 @@ func (b remoteBucket) RobotsTxt() string {
 	return b.StaticResources() + "/web/robots.txt"
 }
 
-type appResourcePrefixer interface {
+// GitHubPages returns a resource provider that provides resources from GitHub
+// pages. This provider must only be used to generate static websites with the
+// GenerateStaticWebsite function.
+func GitHubPages(repoName string) ResourceProvider {
+	if !strings.HasPrefix(repoName, "/") {
+		repoName = "/" + repoName
+	}
+
+	return gitHubPages{repo: repoName}
+}
+
+type gitHubPages struct {
+	repo string
+}
+
+func (g gitHubPages) AppResources() string {
+	return g.repo
+}
+
+func (g gitHubPages) StaticResources() string {
+	return g.repo
+}
+
+func (g gitHubPages) AppWASM() string {
+	return g.StaticResources() + "/web/app.wasm"
+}
+
+func (g gitHubPages) RobotsTxt() string {
+	return g.StaticResources() + "/web/robots.txt"
 }

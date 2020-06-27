@@ -17,8 +17,9 @@ func TestGenerateStaticWebsite(t *testing.T) {
 	defer os.RemoveAll(dir)
 
 	err := GenerateStaticWebsite(dir, &Handler{
-		Name:  "Static Go-app",
-		Title: "Static test",
+		Name:      "Static Go-app",
+		Title:     "Static test",
+		Resources: GitHubPages("go-app"),
 	})
 	require.NoError(t, err)
 

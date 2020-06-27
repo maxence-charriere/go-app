@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestHandlerServePage(t *testing.T) {
+func TestHandlerServePageWithLocalDir(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/", nil)
 	w := httptest.NewRecorder()
 
@@ -49,7 +49,7 @@ func TestHandlerServePage(t *testing.T) {
 	t.Log(body)
 }
 
-func TestHandlerServePageWithRemoteStaticResources(t *testing.T) {
+func TestHandlerServePageWithRemoteBucket(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/", nil)
 	w := httptest.NewRecorder()
 
@@ -87,6 +87,44 @@ func TestHandlerServePageWithRemoteStaticResources(t *testing.T) {
 	t.Log(body)
 }
 
+func TestHandlerServePageWithGitHubPages(t *testing.T) {
+	r := httptest.NewRequest(http.MethodGet, "/", nil)
+	w := httptest.NewRecorder()
+
+	h := Handler{
+		Title:     "Handler testing",
+		Resources: GitHubPages("go-app"),
+		Scripts: []string{
+			"/web/hello.js",
+			"http://boo.com/bar.js",
+		},
+		Styles: []string{
+			"web/foo.css",
+			"/web/bar.css",
+			"http://boo.com/bar.css",
+		},
+		RawHeaders: []string{
+			`<meta http-equiv="refresh" content="30">`,
+		},
+	}
+	h.Icon.AppleTouch = "ios.png"
+
+	h.ServeHTTP(w, r)
+
+	body := w.Body.String()
+	require.Equal(t, http.StatusOK, w.Code)
+	require.Contains(t, body, `href="/go-app/web/foo.css"`)
+	require.Contains(t, body, `href="/go-app/web/bar.css"`)
+	require.Contains(t, body, `href="http://boo.com/bar.css"`)
+	require.Contains(t, body, `<script src="/go-app/web/hello.js">`)
+	require.Contains(t, body, `<script src="http://boo.com/bar.js">`)
+	require.Contains(t, body, `href="/go-app/manifest.json"`)
+	require.Contains(t, body, `href="/go-app/app.css"`)
+	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
+
+	t.Log(body)
+}
+
 func TestHandlerServeWasmExecJS(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/wasm_exec.js", nil)
 	w := httptest.NewRecorder()
@@ -112,6 +150,7 @@ func TestHandlerServeAppJSWithLocalDir(t *testing.T) {
 	require.Contains(t, body, `fetch("/web/app.wasm"`)
 	require.Contains(t, body, "GOAPP_VERSION")
 	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":""`)
+	require.Contains(t, body, `"GOAPP_ROOT_PREFIX":""`)
 }
 
 func TestHandlerServeAppJSWithRemoteBucket(t *testing.T) {
@@ -129,6 +168,25 @@ func TestHandlerServeAppJSWithRemoteBucket(t *testing.T) {
 	require.Contains(t, body, `fetch("https://storage.googleapis.com/go-app/web/app.wasm"`)
 	require.Contains(t, body, "GOAPP_VERSION")
 	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":"https://storage.googleapis.com/go-app"`)
+	require.Contains(t, body, `"GOAPP_ROOT_PREFIX":""`)
+}
+
+func TestHandlerServeAppJSWithGitHubPages(t *testing.T) {
+	r := httptest.NewRequest(http.MethodGet, "/app.js", nil)
+	w := httptest.NewRecorder()
+
+	h := Handler{
+		Resources: GitHubPages("go-app"),
+	}
+	h.ServeHTTP(w, r)
+	body := w.Body.String()
+
+	require.Equal(t, http.StatusOK, w.Code)
+	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
+	require.Contains(t, body, `fetch("/go-app/web/app.wasm"`)
+	require.Contains(t, body, "GOAPP_VERSION")
+	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":"/go-app"`)
+	require.Contains(t, body, `"GOAPP_ROOT_PREFIX":"/go-app"`)
 }
 
 func TestHandlerServeAppJSWithEnv(t *testing.T) {
@@ -150,6 +208,7 @@ func TestHandlerServeAppJSWithEnv(t *testing.T) {
 	require.Contains(t, body, `"FOO":"foo"`)
 	require.Contains(t, body, `"BAR":"bar"`)
 	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":""`)
+	require.Contains(t, body, `"GOAPP_ROOT_PREFIX":""`)
 }
 
 func TestHandlerServeAppWorkerJSWithLocalDir(t *testing.T) {
@@ -211,6 +270,37 @@ func TestHandlerServeAppWorkerJSWithRemoteBucket(t *testing.T) {
 	require.Contains(t, body, `"/app.js",`)
 	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/app.wasm",`)
 	require.Contains(t, body, `"/",`)
+}
+
+func TestHandlerServeAppWorkerJSWithGitHubPages(t *testing.T) {
+	r := httptest.NewRequest(http.MethodGet, "/app-worker.js", nil)
+	w := httptest.NewRecorder()
+
+	h := Handler{
+		Resources: GitHubPages("go-app"),
+		Scripts:   []string{"web/hello.js"},
+		Styles:    []string{"/web/hello.css"},
+		CacheableResources: []string{
+			"web/hello.png",
+			"http://test.io/hello.png",
+		},
+	}
+	h.ServeHTTP(w, r)
+
+	body := w.Body.String()
+	require.Equal(t, http.StatusOK, w.Code)
+	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
+	require.Contains(t, body, `self.addEventListener("install", event => {`)
+	require.Contains(t, body, `self.addEventListener("activate", event => {`)
+	require.Contains(t, body, `self.addEventListener("fetch", event => {`)
+	require.Contains(t, body, `"/go-app/web/hello.css",`)
+	require.Contains(t, body, `"/go-app/web/hello.js",`)
+	require.Contains(t, body, `"/go-app/web/hello.png",`)
+	require.Contains(t, body, `"http://test.io/hello.png",`)
+	require.Contains(t, body, `"/go-app/wasm_exec.js",`)
+	require.Contains(t, body, `"/go-app/app.js",`)
+	require.Contains(t, body, `"/go-app/web/app.wasm",`)
+	require.Contains(t, body, `"/go-app",`)
 }
 
 func TestHandlerServeManifestJSON(t *testing.T) {

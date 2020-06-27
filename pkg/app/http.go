@@ -141,6 +141,7 @@ func (h *Handler) init() {
 	h.initStaticResources()
 	h.initStyles()
 	h.initScripts()
+	h.initCacheableResources()
 	h.initIcon()
 	h.initPWA()
 	h.initPage()
@@ -175,6 +176,12 @@ func (h *Handler) initStyles() {
 func (h *Handler) initScripts() {
 	for i, path := range h.Scripts {
 		h.Scripts[i] = h.staticResource(path)
+	}
+}
+
+func (h *Handler) initCacheableResources() {
+	for i, path := range h.CacheableResources {
+		h.CacheableResources[i] = h.staticResource(path)
 	}
 }
 
@@ -341,7 +348,6 @@ func (h *Handler) initWorkerJS() {
 
 	cacheResources := func(res []string) {
 		for _, r := range res {
-			r = h.staticResource(r)
 			cacheableResources[r] = struct{}{}
 		}
 	}
@@ -536,6 +542,10 @@ func (h *Handler) appResource(path string) string {
 	path = h.Resources.AppResources() + path
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
+	}
+
+	if path != "/" && strings.HasSuffix(path, "/") {
+		path = strings.TrimSuffix(path, "/")
 	}
 
 	return path
