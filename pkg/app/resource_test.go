@@ -104,7 +104,7 @@ func TestLocalDir(t *testing.T) {
 		t.Run(u.scenario, func(t *testing.T) {
 			h := u.provider.(localDir)
 
-			require.Empty(t, h.URL())
+			require.Empty(t, h.StaticResources())
 			require.Equal(t, "/web/app.wasm", h.AppWASM())
 			require.Equal(t, "/web/robots.txt", h.RobotsTxt())
 
@@ -150,7 +150,7 @@ func TestRemoteBucket(t *testing.T) {
 
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			require.Equal(t, "https://storage.googleapis.com/test", u.provider.URL())
+			require.Equal(t, "https://storage.googleapis.com/test", u.provider.StaticResources())
 			require.Equal(t, "https://storage.googleapis.com/test/web/app.wasm", u.provider.AppWASM())
 			require.Equal(t, "https://storage.googleapis.com/test/web/robots.txt", u.provider.RobotsTxt())
 		})
