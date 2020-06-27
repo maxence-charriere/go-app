@@ -54,8 +54,8 @@ func TestHandlerServePageWithRemoteStaticResources(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	h := Handler{
-		Title:           "Handler testing",
-		StaticResources: RemoteBucket("https://storage.googleapis.com/go-app/"),
+		Title:     "Handler testing",
+		Resources: RemoteBucket("https://storage.googleapis.com/go-app/"),
 		Scripts: []string{
 			"/web/hello.js",
 			"http://boo.com/bar.js",
@@ -119,7 +119,7 @@ func TestHandlerServeAppJSWithRemoteBucket(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	h := Handler{
-		StaticResources: RemoteBucket("https://storage.googleapis.com/go-app/"),
+		Resources: RemoteBucket("https://storage.googleapis.com/go-app/"),
 	}
 	h.ServeHTTP(w, r)
 	body := w.Body.String()
@@ -187,9 +187,9 @@ func TestHandlerServeAppWorkerJSWithRemoteBucket(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	h := Handler{
-		StaticResources: RemoteBucket("https://storage.googleapis.com/go-app/"),
-		Scripts:         []string{"web/hello.js"},
-		Styles:          []string{"/web/hello.css"},
+		Resources: RemoteBucket("https://storage.googleapis.com/go-app/"),
+		Scripts:   []string{"web/hello.js"},
+		Styles:    []string{"/web/hello.css"},
 		CacheableResources: []string{
 			"web/hello.png",
 			"http://test.io/hello.png",
@@ -263,7 +263,7 @@ func TestHandlerServeAppWasm(t *testing.T) {
 	}{
 		{
 			scenario: "from resource provider path",
-			path:     h.StaticResources.AppWASM(),
+			path:     h.Resources.AppWASM(),
 		},
 		{
 			scenario: "from legacy v6 path",

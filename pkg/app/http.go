@@ -92,7 +92,7 @@ type Handler struct {
 	//  "/web/main.css"
 	//
 	// Default: LocalDir("web")
-	StaticResources ResourceProvider
+	Resources ResourceProvider
 
 	// The paths or urls of the CSS files to use with the page.
 	//
@@ -161,8 +161,8 @@ func (h *Handler) initVersion() {
 }
 
 func (h *Handler) initStaticResources() {
-	if h.StaticResources == nil {
-		h.StaticResources = LocalDir("web")
+	if h.Resources == nil {
+		h.Resources = LocalDir("web")
 	}
 }
 
@@ -250,11 +250,11 @@ func (h *Handler) initPage() {
 				Href(h.Icon.AppleTouch),
 			Link().
 				Rel("manifest").
-				Href("/manifest.json"),
+				Href(h.appResource("/manifest.json")),
 			Link().
 				Type("text/css").
 				Rel("stylesheet").
-				Href("/app.css"),
+				Href(h.appResource("/app.css")),
 			Range(h.Styles).Slice(func(i int) UI {
 				return Link().
 					Type("text/css").
@@ -280,8 +280,8 @@ func (h *Handler) initPage() {
 						Body(Text(h.LoadingLabel)),
 				),
 			Div().ID("app-context-menu"),
-			Script().Src("/wasm_exec.js"),
-			Script().Src("/app.js"),
+			Script().Src(h.appResource("/wasm_exec.js")),
+			Script().Src(h.appResource("/app.js")),
 			Range(h.Scripts).Slice(func(i int) UI {
 				return Script().
 					Src(h.Scripts[i])
@@ -302,7 +302,8 @@ func (h *Handler) initAppJS() {
 		h.Env = make(map[string]string, 2)
 	}
 	h.Env["GOAPP_VERSION"] = h.Version
-	h.Env["GOAPP_STATIC_RESOURCES_URL"] = h.StaticResources.URL()
+	h.Env["GOAPP_STATIC_RESOURCES_URL"] = h.Resources.StaticResources()
+	h.Env["GOAPP_ROOT_PREFIX"] = h.Resources.AppResources()
 
 	env, err := json.Marshal(h.Env)
 	if err != nil {
@@ -319,23 +320,24 @@ func (h *Handler) initAppJS() {
 			Wasm string
 		}{
 			Env:  btos(env),
-			Wasm: h.StaticResources.AppWASM(),
+			Wasm: h.Resources.AppWASM(),
 		}); err != nil {
 		panic(errors.New("initializing app.js failed").Wrap(err))
 	}
 }
 
 func (h *Handler) initWorkerJS() {
-	cacheableResources := make(map[string]struct{})
-	cacheableResources["/wasm_exec.js"] = struct{}{}
-	cacheableResources["/app.js"] = struct{}{}
-	cacheableResources["/app.css"] = struct{}{}
-	cacheableResources["/manifest.json"] = struct{}{}
-	cacheableResources[h.Icon.Default] = struct{}{}
-	cacheableResources[h.Icon.Large] = struct{}{}
-	cacheableResources[h.Icon.AppleTouch] = struct{}{}
-	cacheableResources["/"] = struct{}{}
-	cacheableResources[h.StaticResources.AppWASM()] = struct{}{}
+	cacheableResources := map[string]struct{}{
+		h.appResource("/app.css"):       {},
+		h.appResource("/app.js"):        {},
+		h.appResource("/manifest.json"): {},
+		h.appResource("/wasm_exec.js"):  {},
+		h.appResource("/"):              {},
+		h.Resources.AppWASM():           {},
+		h.Icon.Default:                  {},
+		h.Icon.Large:                    {},
+		h.Icon.AppleTouch:               {},
+	}
 
 	cacheResources := func(res []string) {
 		for _, r := range res {
@@ -400,7 +402,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	path := r.URL.Path
 
-	staticResourcesHandler, servesStaticResources := h.StaticResources.(http.Handler)
+	staticResourcesHandler, servesStaticResources := h.Resources.(http.Handler)
 	if servesStaticResources && strings.HasPrefix(path, "/web/") {
 		staticResourcesHandler.ServeHTTP(w, r)
 		return
@@ -430,7 +432,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "/app.wasm", "/goapp.wasm":
 		if servesStaticResources {
 			r2 := *r
-			r2.URL.Path = h.StaticResources.AppWASM()
+			r2.URL.Path = h.Resources.AppWASM()
 			staticResourcesHandler.ServeHTTP(w, &r2)
 			return
 		}
@@ -490,8 +492,8 @@ func (h *Handler) serveAppCSS(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) serveRobotsTxt(w http.ResponseWriter, r *http.Request) {
 	if h.robotsTxt == nil {
-		u := h.StaticResources.RobotsTxt()
-		if _, ok := h.StaticResources.(http.Handler); ok {
+		u := h.Resources.RobotsTxt()
+		if _, ok := h.Resources.(http.Handler); ok {
 			u = "http://" + r.Host + u
 		}
 
@@ -526,6 +528,19 @@ func (h *Handler) serveRobotsTxt(w http.ResponseWriter, r *http.Request) {
 	w.Write(h.robotsTxt)
 }
 
+func (h *Handler) appResource(path string) string {
+	if !strings.HasPrefix(path, "/") {
+		path = "/" + path
+	}
+
+	path = h.Resources.AppResources() + path
+	if !strings.HasPrefix(path, "/") {
+		path = "/" + path
+	}
+
+	return path
+}
+
 func (h *Handler) staticResource(path string) string {
 	if isRemoteLocation(path) {
 		return path
@@ -534,7 +549,8 @@ func (h *Handler) staticResource(path string) string {
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
 	}
-	return h.StaticResources.URL() + path
+
+	return h.Resources.StaticResources() + path
 }
 
 // Icon describes a square image that is used in various places such as
