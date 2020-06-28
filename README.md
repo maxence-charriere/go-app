@@ -99,15 +99,15 @@ The app is built with the Go build tool by specifying WebAssembly as architectur
 GOARCH=wasm GOOS=js go build -o app.wasm
 ```
 
-Note that we named the build output `app.wasm`. The reason is that the HTTP handler requires the web assembly app to be named this way in order to be served.
+Note that the build output is named `app.wasm` because the HTTP handler expects the wasm app to be named that way in order to serve its content.
 
 ## HTTP handler
 
-Once your app is built, the next step is to serve it.
+Once the wasm app is built, the next step is to serve it.
 
-This package provides an [http.Handler implementation](https://pkg.go.dev/github.com/maxence-charriere/go-app/pkg/app#Handler) ready to serve your PWA and all the required resources to make it work in a web browser.
+This package provides an [http.Handler implementation](https://pkg.go.dev/github.com/maxence-charriere/go-app/pkg/app#Handler) ready to serve a PWA and all the required resources to make it work in a web browser.
 
-The handler can be used to create either a web server or a cloud function (AWS Lambda, GCloud function or Azure function).
+The handler can be used to create either a web server or a cloud function (AWS Lambda, Google Cloud function or Azure function).
 
 ```go
 package main
@@ -136,13 +136,16 @@ The server is built as a standard Go program:
 go build
 ```
 
-Note that **you need to add `app.wasm` to the server location**. The reason is that [app.Handler](https://pkg.go.dev/github.com/maxence-charriere/go-app/pkg/app#Handler) is looking for a file named `app.wasm` in the server directory in order to serve the web assembly binary.
+Once the server and the wasm app built, `app.wasm` must be moved in the `web` directory, located by the side of the server binary. The web directory is where to put static resources, such as the wasm app, styles, scripts, or images.
+
+The directory should look like as the following:
 
 ```sh
-hello-local        # Server directory
-├── app.wasm       # Wasm binary
-├── hello-local    # Server binary
-└── main.go        # Server code
+.                   # Directory root
+├── hello           # Server binary
+├── main.go         # Server source code
+└── web             # Directory for static resources
+    └── app.wasm    # Wasm binary
 ```
 
 ## Works on mainstream browsers
@@ -169,17 +172,14 @@ The hello example introduced above:
 | [hello-gcloud-appengine](https://github.com/maxence-charriere/go-app-demo/tree/v6/hello-gcloud-appengine)       | Hello app that run on Google Cloud App Engine.<br> [See live](https://go-app-demo-42.appspot.com)     |
 | [hello-gcloud-func](https://github.com/maxence-charriere/go-app-demo/tree/v6/hello-gcloud-func)                 | Hello app that run on Google a Cloud Function.<br> [See live](https://go-app-demo-42.firebaseapp.com) |
 
-### Live apps
+## Live apps
 
 <p align="center">
+    <a href="https://murlok.io">
+        <img alt="Murlok.io"  width="400" src="https://storage.googleapis.com/murlok-github/murlok-thumb.png">
+    </a>
     <a href="https://luck.murlok.io">
         <img alt="luck app"  width="400" src="https://storage.googleapis.com/murlok-github/luck-thumb.png">
-    </a>
-    <a href="https://hello.murlok.io">
-        <img alt="hello app"  width="400" src="https://storage.googleapis.com/murlok-github/hello-thumb.png">
-    </a>
-    <a href="https://hello.murlok.io/city">
-        <img alt="city app"  width="400" src="https://storage.googleapis.com/murlok-github/city-thumb.png">
     </a>
 </p>
 
