@@ -19,7 +19,7 @@ type TestUIDescriptor struct {
 	// from the root's children to the element to compare
 	Path []int
 
-	// The element to compare with the element targetted by Path. Compare
+	// The element to compare with the element targeted by Path. Compare
 	// behavior varies depending on the element kind.
 	//
 	// Simple text elements only have their text value compared.
@@ -120,7 +120,7 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 
 	if d.Expected.name() != tree.name() || d.Expected.Kind() != tree.Kind() {
 		return errors.New("the UI element is not matching the descriptor").
-			Tag("expeced-name", d.Expected.name()).
+			Tag("expected-name", d.Expected.name()).
 			Tag("expected-kind", d.Expected.Kind()).
 			Tag("current-name", tree.name()).
 			Tag("current-kind", tree.Kind())

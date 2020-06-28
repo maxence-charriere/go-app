@@ -103,7 +103,7 @@ func (c condition) children() []UI {
 }
 
 func (c condition) mount() error {
-	return errors.New("conditon is not mountable").
+	return errors.New("condition is not mountable").
 		Tag("name", c.name()).
 		Tag("kind", c.Kind())
 }
@@ -112,7 +112,7 @@ func (c condition) dismount() {
 }
 
 func (c condition) update(UI) error {
-	return errors.New("conditon cannot be updated").
+	return errors.New("condition cannot be updated").
 		Tag("name", c.name()).
 		Tag("kind", c.Kind())
 }
