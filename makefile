@@ -15,7 +15,7 @@ test:
 release: test
 ifdef VERSION
 	@echo "\033[94m\n• Releasing ${VERSION}\033[00m"
-	@git checkout v6
+	@git checkout v7
 	@git tag ${VERSION}
 	@git push origin ${VERSION}
 

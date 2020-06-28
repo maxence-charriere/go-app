@@ -71,7 +71,11 @@ func TestPath(p ...int) []int {
 //  })
 //  // OK => err == nil
 func TestMatch(tree UI, d TestUIDescriptor) error {
-	tree.setSelf(tree)
+	if !tree.Mounted() {
+		if err := mount(tree); err != nil {
+			return err
+		}
+	}
 
 	if d.Expected != nil {
 		d.Expected.setSelf(d.Expected)
