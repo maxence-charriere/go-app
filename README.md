@@ -159,8 +159,6 @@ The directory should look like as the following:
 
 ## Demo
 
-### Hello app
-
 The hello example introduced above:
 
 | Sources                                                                                                         | Description                                                                                           |
@@ -182,6 +180,10 @@ The hello example introduced above:
         <img alt="luck app"  width="400" src="https://storage.googleapis.com/murlok-github/luck-thumb.png">
     </a>
 </p>
+
+## How to migrate app from v6 to v7
+
+See [migration guide](https://github.com/maxence-charriere/go-app/blob/v7/docs/v7-migration.md).
 
 ## Contributors
 
