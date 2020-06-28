@@ -11,7 +11,6 @@ import (
 	"bytes"
 	"fmt"
 	"sort"
-	"strconv"
 	"strings"
 	"unsafe"
 )
@@ -48,37 +47,6 @@ func (l Log) Tag(k string, v interface{}) Log {
 	switch v := v.(type) {
 	case string:
 		l.tags = append(l.tags, tag{key: k, value: v})
-	case fmt.Stringer:
-		l.tags = append(l.tags, tag{key: k, value: v.String()})
-	case fmt.GoStringer:
-		l.tags = append(l.tags, tag{key: k, value: v.GoString()})
-
-	case int:
-		l.tags = append(l.tags, tag{key: k, value: strconv.Itoa(v)})
-	case int8:
-		l.tags = append(l.tags, tag{key: k, value: strconv.FormatInt(int64(v), 10)})
-	case int16:
-		l.tags = append(l.tags, tag{key: k, value: strconv.FormatInt(int64(v), 10)})
-	case int32:
-		l.tags = append(l.tags, tag{key: k, value: strconv.FormatInt(int64(v), 10)})
-	case int64:
-		l.tags = append(l.tags, tag{key: k, value: strconv.FormatInt(int64(v), 10)})
-
-	case uint:
-		l.tags = append(l.tags, tag{key: k, value: strconv.FormatUint(uint64(v), 10)})
-	case uint8:
-		l.tags = append(l.tags, tag{key: k, value: strconv.FormatUint(uint64(v), 10)})
-	case uint16:
-		l.tags = append(l.tags, tag{key: k, value: strconv.FormatUint(uint64(v), 10)})
-	case uint32:
-		l.tags = append(l.tags, tag{key: k, value: strconv.FormatUint(uint64(v), 10)})
-	case uint64:
-		l.tags = append(l.tags, tag{key: k, value: strconv.FormatUint(uint64(v), 10)})
-
-	case float32:
-		l.tags = append(l.tags, tag{key: k, value: strconv.FormatFloat(float64(v), 'f', 4, 32)})
-	case float64:
-		l.tags = append(l.tags, tag{key: k, value: strconv.FormatFloat(v, 'f', 4, 64)})
 
 	default:
 		l.tags = append(l.tags, tag{key: k, value: fmt.Sprintf("%+v", v)})
