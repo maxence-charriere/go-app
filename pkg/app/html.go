@@ -20233,7 +20233,7 @@ type HTMLIFrame interface {
 	Name(v string) HTMLIFrame
 
 	// Sandbox enables an extra set of restrictions for the content in an iframe.
-	Sandbox(v bool) HTMLIFrame
+	Sandbox(v interface{}) HTMLIFrame
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLIFrame
@@ -20441,7 +20441,7 @@ func (e *htmlIFrame) Name(v string) HTMLIFrame {
 	return e
 }
 
-func (e *htmlIFrame) Sandbox(v bool) HTMLIFrame {
+func (e *htmlIFrame) Sandbox(v interface{}) HTMLIFrame {
 	e.setAttr("sandbox", v)
 	return e
 }

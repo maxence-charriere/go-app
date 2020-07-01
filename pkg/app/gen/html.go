@@ -1409,7 +1409,7 @@ var attrs = map[string]attr{
 	// S:
 	"sandbox": {
 		Name: "Sandbox",
-		Type: "bool",
+		Type: "interface{}",
 		Doc:  "enables an extra set of restrictions for the content in an iframe.",
 	},
 	"scope": {
