@@ -364,7 +364,7 @@ func (e *elem) setJsEventHandler(k string, h eventHandler) {
 }
 
 func (e *elem) delJsEventHandler(k string, h eventHandler) {
-	e.JSValue().Call("addEventListener", k, h.jsvalue)
+	e.JSValue().Call("removeEventListener", k, h.jsvalue)
 	h.jsvalue.Release()
 	delete(e.events, k)
 }
