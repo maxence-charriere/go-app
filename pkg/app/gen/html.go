@@ -431,8 +431,11 @@ var tags = []tag{
 		Name: "IFrame",
 		Doc:  "defines an inline frame.",
 		Attrs: withGlobalAttrs(attrsByNames(
+			"allowfullscreen",
+			"allowpaymentrequest",
 			"height",
 			"name",
+			"referrerpolicy",
 			"sandbox",
 			"src",
 			"srcdoc",
@@ -1007,6 +1010,16 @@ var attrs = map[string]attr{
 		Type: "string",
 		Doc:  "specifies the types of files that the server accepts (only for file type).",
 	},
+	"allowfullscreen": {
+		Name: "AllowFullscreen",
+		Type: "bool|force",
+		Doc:  "reports whether an iframe can activate fullscreen mode.",
+	},
+	"allowpaymentrequest": {
+		Name: "AllowPaymentRequest",
+		Type: "bool|force",
+		Doc:  "reports whether an iframe should be allowed to invoke the Payment Request API",
+	},
 	"aria-*": {
 		Name: "Aria",
 		Type: "aria|value",
@@ -1379,6 +1392,11 @@ var attrs = map[string]attr{
 		Name: "ReadOnly",
 		Type: "bool",
 		Doc:  "specifies that the element is read-only.",
+	},
+	"referrerpolicy": {
+		Name: "ReferrerPolicy",
+		Type: "string",
+		Doc:  "specifies how much/which referrer information that will be sent when processing the iframe attributes",
 	},
 	"rel": {
 		Name: "Rel",

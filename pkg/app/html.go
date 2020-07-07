@@ -20199,6 +20199,12 @@ type HTMLIFrame interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLIFrame
 
+	// AllowFullscreen reports whether an iframe can activate fullscreen mode.
+	AllowFullscreen(v bool) HTMLIFrame
+
+	// AllowPaymentRequest reports whether an iframe should be allowed to invoke the Payment Request API
+	AllowPaymentRequest(v bool) HTMLIFrame
+
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLIFrame
 
@@ -20231,6 +20237,9 @@ type HTMLIFrame interface {
 
 	// Name specifies the name of the element.
 	Name(v string) HTMLIFrame
+
+	// ReferrerPolicy specifies how much/which referrer information that will be sent when processing the iframe attributes
+	ReferrerPolicy(v string) HTMLIFrame
 
 	// Sandbox enables an extra set of restrictions for the content in an iframe.
 	Sandbox(v interface{}) HTMLIFrame
@@ -20386,6 +20395,26 @@ func (e *htmlIFrame) AccessKey(v string) HTMLIFrame {
 	return e
 }
 
+func (e *htmlIFrame) AllowFullscreen(v bool) HTMLIFrame {
+	s := "false"
+	if v {
+		s = "true"
+	}
+
+	e.setAttr("allowfullscreen", s)
+	return e
+}
+
+func (e *htmlIFrame) AllowPaymentRequest(v bool) HTMLIFrame {
+	s := "false"
+	if v {
+		s = "true"
+	}
+
+	e.setAttr("allowpaymentrequest", s)
+	return e
+}
+
 func (e *htmlIFrame) Aria(k string, v interface{}) HTMLIFrame {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
@@ -20438,6 +20467,11 @@ func (e *htmlIFrame) Lang(v string) HTMLIFrame {
 
 func (e *htmlIFrame) Name(v string) HTMLIFrame {
 	e.setAttr("name", v)
+	return e
+}
+
+func (e *htmlIFrame) ReferrerPolicy(v string) HTMLIFrame {
+	e.setAttr("referrerpolicy", v)
 	return e
 }
 
