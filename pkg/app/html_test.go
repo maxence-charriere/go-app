@@ -2832,6 +2832,10 @@ func TestI(t *testing.T) {
 func TestIFrame(t *testing.T) {
 	elem := IFrame()
 	elem.AccessKey("foo")
+	elem.AllowFullscreen(true)
+	elem.AllowFullscreen(false)
+	elem.AllowPaymentRequest(true)
+	elem.AllowPaymentRequest(false)
 	elem.Aria("foo", "bar")
 	elem.Class("foo")
 	elem.ContentEditable(true)
@@ -2846,6 +2850,7 @@ func TestIFrame(t *testing.T) {
 	elem.ID("foo")
 	elem.Lang("foo")
 	elem.Name("foo")
+	elem.ReferrerPolicy("foo")
 	elem.Sandbox(42)
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
