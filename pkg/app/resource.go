@@ -1,38 +1,11 @@
+// +build !wasm
+
 package app
 
 import (
 	"net/http"
 	"strings"
 )
-
-var (
-	staticResourcesURL string
-)
-
-// StaticResource makes a static resource path point to the right
-// location whether the root directory is remote or not.
-//
-// Static resources are resources located in the web directory.
-//
-// This call is used internally to resolve paths within Cite, Data, Href, Src,
-// and SrcSet. Paths already resolved are skipped.
-func StaticResource(path string) string {
-	if !strings.HasPrefix(path, "/web/") &&
-		!strings.HasPrefix(path, "web/") {
-		return path
-	}
-
-	if !strings.HasPrefix(path, "/") {
-		path = "/" + path
-	}
-
-	return staticResourcesURL + path
-}
-
-// Window returns the JavaScript "window" object.
-func Window() BrowserWindow {
-	return window
-}
 
 // ResourceProvider is the interface that describes a provider for resources.
 //

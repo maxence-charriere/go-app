@@ -6,8 +6,13 @@ package app
 
 import (
 	"net/url"
+	"strings"
 
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+)
+
+var (
+	staticResourcesURL string
 )
 
 // Getenv retrieves the value of the environment variable named by the key. It
@@ -66,4 +71,29 @@ func Reload() {
 // It panics if Go architecture is not wasm.
 func Run() {
 	run()
+}
+
+// StaticResource makes a static resource path point to the right
+// location whether the root directory is remote or not.
+//
+// Static resources are resources located in the web directory.
+//
+// This call is used internally to resolve paths within Cite, Data, Href, Src,
+// and SrcSet. Paths already resolved are skipped.
+func StaticResource(path string) string {
+	if !strings.HasPrefix(path, "/web/") &&
+		!strings.HasPrefix(path, "web/") {
+		return path
+	}
+
+	if !strings.HasPrefix(path, "/") {
+		path = "/" + path
+	}
+
+	return staticResourcesURL + path
+}
+
+// Window returns the JavaScript "window" object.
+func Window() BrowserWindow {
+	return window
 }
