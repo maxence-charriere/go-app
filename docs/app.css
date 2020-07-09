@@ -1,0 +1,166 @@
+/* Loader */
+.goapp-app-info {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: white;
+  background-color: #2d2c2c;
+}
+
+@media (prefers-color-scheme: light) {
+  .goapp-app-info {
+    color: black;
+    background-color: #f6f6f6;
+  }
+}
+
+.goapp-logo {
+  max-width: 100px;
+  max-height: 100px;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.goapp-label {
+  margin-top: 12px;
+  font-size: 21px;
+  font-weight: 100;
+  letter-spacing: 1px;
+  max-width: 480px;
+  text-align: center;
+  text-transform: lowercase;
+}
+
+.goapp-spin {
+  animation: goapp-spin-frames 1.21s infinite linear;
+}
+
+@keyframes goapp-spin-frames {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Not found */
+
+.goapp-notfound-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 65pt;
+  font-weight: 100;
+}
+
+/* Menu */
+#app-contextmenu-background {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  left: 0;
+  top: 0;
+  z-index: 42000;
+}
+
+.goapp-contextmenu {
+  position: fixed;
+  min-width: 150px;
+  max-width: 480px;
+  padding: 6px 0;
+  border-radius: 6px;
+  border: solid 1px rgba(255, 255, 255, 0.1);
+  background-color: rgba(40, 38, 37, 0.97);
+  color: white;
+  -webkit-box-shadow: -1px 12px 38px 0px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: -1px 12px 38px 0px rgba(0, 0, 0, 0.6);
+  box-shadow: -1px 12px 38px 0px rgba(0, 0, 0, 0.6);
+}
+
+@media (prefers-color-scheme: light) {
+  .goapp-contextmenu {
+    color: black;
+    background-color: rgba(221, 221, 221, 0.97);
+    border: solid 1px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.goapp-contextmenu-hidden {
+  display: none;
+}
+
+.goapp-contextmenu-visible {
+  display: block;
+}
+
+.goapp-menuitem {
+  display: flex;
+  align-items: center;
+  padding: 3px 24px;
+  margin: 0;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  outline: inherit;
+  background-color: transparent;
+  text-align: left;
+  color: currentColor;
+}
+
+.goapp-menuitem:hover {
+  background-color: deepskyblue;
+}
+
+.goapp-menuitem:disabled {
+  opacity: 0.15;
+  background-color: transparent;
+}
+
+.goapp-menuitem-separator {
+  width: 100%;
+  height: 0;
+  margin: 6px 0;
+  border-top: solid 1px rgba(255, 255, 255, 0.1);
+}
+
+@media (prefers-color-scheme: light) {
+  .goapp-menuitem-separator {
+    border-top: solid 1px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.goapp-menuitem-label {
+  user-select: none;
+  flex-grow: 1;
+}
+
+.goapp-menuitem-keys {
+  flex-grow: 0;
+  margin-left: 12px;
+  text-transform: capitalize;
+}
+
+.goapp-menuitem-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 12px;
+}
