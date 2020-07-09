@@ -27,16 +27,19 @@ endif
 	
 
 build:
-	@echo "\033[94m• Building go-app client\033[00m"
-	@GOARCH=wasm GOOS=js go build -o web/app.wasm ./bin/client
-	@echo "\033[94m\n• Building go-app server\033[00m"
-	@go build ./bin/server
+	@echo "\033[94m• Building go-app documentation PWA\033[00m"
+	@GOARCH=wasm GOOS=js go build -o docs/web/app.wasm ./docs/src
+	@echo "\033[94m• Building go-app documentation\033[00m"
+	@go build -o docs/documentation ./docs/src
 
 run: build
-	@echo "\033[94m\n• Running go-app server\033[00m"
-	@./server
+	@echo "\033[94m• Running go-app documentation server\033[00m"
+	@cd docs && ./documentation local
+
+github: build
+	@echo "\033[94m• Generating GitHub Pages\033[00m"
+	@cd docs && ./documentation github
 
 clean:
 	@go clean -v ./...
-	-@rm server
-	-@rm web/app.wasm
+	-@rm docs/documentation
