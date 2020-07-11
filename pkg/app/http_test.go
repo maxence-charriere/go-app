@@ -359,7 +359,7 @@ func TestHandlerServeManifestJSONWithRemoteBucket(t *testing.T) {
 	require.Contains(t, body, `"start_url": "/"`)
 }
 
-func TestHandlerServeManifestJSONWithGithubPages(t *testing.T) {
+func TestHandlerServeManifestJSONWithGitHubPages(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/manifest.json", nil)
 	w := httptest.NewRecorder()
 
