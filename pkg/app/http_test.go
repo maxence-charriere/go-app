@@ -306,7 +306,7 @@ func TestHandlerServeAppWorkerJSWithGitHubPages(t *testing.T) {
 	require.Contains(t, body, `"/go-app",`)
 }
 
-func TestHandlerServeManifestJSON(t *testing.T) {
+func TestHandlerServeManifestJSONWithLocalDir(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/manifest.json", nil)
 	w := httptest.NewRecorder()
 
@@ -328,6 +328,62 @@ func TestHandlerServeManifestJSON(t *testing.T) {
 	require.Contains(t, body, `"src": "https://storage.googleapis.com/murlok-github/icon-512.png"`)
 	require.Contains(t, body, `"background_color": "#0000f0"`)
 	require.Contains(t, body, `"theme_color": "#0000ff"`)
+	require.Contains(t, body, `"scope": "/"`)
+	require.Contains(t, body, `"start_url": "/"`)
+}
+
+func TestHandlerServeManifestJSONWithRemoteBucket(t *testing.T) {
+	r := httptest.NewRequest(http.MethodGet, "/manifest.json", nil)
+	w := httptest.NewRecorder()
+
+	h := Handler{
+		Resources:       RemoteBucket("https://storage.googleapis.com/go-app/"),
+		Name:            "foobar",
+		ShortName:       "foo",
+		BackgroundColor: "#0000f0",
+		ThemeColor:      "#0000ff",
+	}
+
+	h.ServeHTTP(w, r)
+
+	body := w.Body.String()
+	require.Equal(t, http.StatusOK, w.Code)
+	require.Equal(t, "application/manifest+json", w.Header().Get("Content-Type"))
+	require.Contains(t, body, `"short_name": "foo"`)
+	require.Contains(t, body, `"name": "foobar"`)
+	require.Contains(t, body, `"src": "https://storage.googleapis.com/murlok-github/icon-192.png"`)
+	require.Contains(t, body, `"src": "https://storage.googleapis.com/murlok-github/icon-512.png"`)
+	require.Contains(t, body, `"background_color": "#0000f0"`)
+	require.Contains(t, body, `"theme_color": "#0000ff"`)
+	require.Contains(t, body, `"scope": "/"`)
+	require.Contains(t, body, `"start_url": "/"`)
+}
+
+func TestHandlerServeManifestJSONWithGithubPages(t *testing.T) {
+	r := httptest.NewRequest(http.MethodGet, "/manifest.json", nil)
+	w := httptest.NewRecorder()
+
+	h := Handler{
+		Resources:       GitHubPages("go-app"),
+		Name:            "foobar",
+		ShortName:       "foo",
+		BackgroundColor: "#0000f0",
+		ThemeColor:      "#0000ff",
+	}
+
+	h.ServeHTTP(w, r)
+
+	body := w.Body.String()
+	require.Equal(t, http.StatusOK, w.Code)
+	require.Equal(t, "application/manifest+json", w.Header().Get("Content-Type"))
+	require.Contains(t, body, `"short_name": "foo"`)
+	require.Contains(t, body, `"name": "foobar"`)
+	require.Contains(t, body, `"src": "https://storage.googleapis.com/murlok-github/icon-192.png"`)
+	require.Contains(t, body, `"src": "https://storage.googleapis.com/murlok-github/icon-512.png"`)
+	require.Contains(t, body, `"background_color": "#0000f0"`)
+	require.Contains(t, body, `"theme_color": "#0000ff"`)
+	require.Contains(t, body, `"scope": "/go-app/"`)
+	require.Contains(t, body, `"start_url": "/go-app/"`)
 }
 
 func TestHandlerServeAppCSS(t *testing.T) {
