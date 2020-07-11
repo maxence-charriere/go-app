@@ -376,6 +376,18 @@ func (h *Handler) initWorkerJS() {
 }
 
 func (h *Handler) initManifestJSON() {
+	normalize := func(s string) string {
+		if !strings.HasPrefix(s, "/") {
+			s = "/" + s
+		}
+
+		if !strings.HasSuffix(s, "/") {
+			s += "/"
+		}
+
+		return s
+	}
+
 	if err := template.
 		Must(template.New("manifest.json").Parse(manifestJSON)).
 		Execute(&h.manifestJSON, struct {
@@ -385,6 +397,8 @@ func (h *Handler) initManifestJSON() {
 			LargeIcon       string
 			BackgroundColor string
 			ThemeColor      string
+			Scope           string
+			StartURL        string
 		}{
 			ShortName:       h.ShortName,
 			Name:            h.Name,
@@ -392,6 +406,8 @@ func (h *Handler) initManifestJSON() {
 			LargeIcon:       h.Icon.Large,
 			BackgroundColor: h.BackgroundColor,
 			ThemeColor:      h.ThemeColor,
+			Scope:           normalize(h.Resources.AppResources()),
+			StartURL:        normalize(h.Resources.AppResources()),
 		}); err != nil {
 		panic(errors.New("initializing manifest.json failed").Wrap(err))
 	}
