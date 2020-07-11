@@ -13,7 +13,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/",
+  "start_url": "/go-app",
   "background_color": "#2d2c2c",
   "display": "standalone",
   "theme_color": "#2d2c2c"
