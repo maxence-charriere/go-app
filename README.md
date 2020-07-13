@@ -179,6 +179,9 @@ The hello example introduced above:
     <a href="https://luck.murlok.io">
         <img alt="luck app"  width="400" src="https://storage.googleapis.com/murlok-github/luck-thumb.png">
     </a>
+    <a href="https://lu4p.github.io/astextract">
+        <img alt="luck app"  width="400" src="https://storage.googleapis.com/murlok-github/astextract-thumb.png">
+    </a>
 </p>
 
 ## How to migrate app from v6 to v7

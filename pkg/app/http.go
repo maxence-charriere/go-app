@@ -106,7 +106,7 @@ type Handler struct {
 	Styles []string
 
 	// The theme color for the application. This affects how the OS displays the
-	// app (e.g., PWA title var or Android's task switcher).
+	// app (e.g., PWA title bar or Android's task switcher).
 	//
 	// DEFAULT: #2d2c2c.
 	ThemeColor string
