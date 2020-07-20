@@ -43,3 +43,7 @@ func btos(b []byte) string {
 func stob(s string) []byte {
 	return *(*[]byte)(unsafe.Pointer(&s))
 }
+
+func pxToString(px int) string {
+	return strconv.Itoa(px) + "px"
+}
