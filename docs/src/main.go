@@ -41,9 +41,12 @@ func main() {
 		Help(`Generates the required resources to run the documentation app on GitHub Pages.`).
 		Options(&githubOpts)
 
+	backgroundColor := "#59728d"
+
 	h := app.Handler{
-		Author:      "Maxence Charriere",
-		Description: "Documentation for the go-app package.",
+		Author:          "Maxence Charriere",
+		BackgroundColor: backgroundColor,
+		Description:     "Documentation for the go-app package.",
 		Keywords: []string{
 			"go-app",
 			"go",
@@ -64,6 +67,8 @@ func main() {
 		},
 		LoadingLabel: "Loading go-app documentation...",
 		Name:         "Go-app Docs",
+		Styles:       []string{"/web/docs.css"},
+		ThemeColor:   backgroundColor,
 		Title:        "go-app documentation",
 	}
 

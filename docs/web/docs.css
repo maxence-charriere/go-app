@@ -1,0 +1,9 @@
+.html {
+  background-color: #59728d;
+}
+
+.goapp-app-info,
+.app-background {
+  background: linear-gradient(#59728d, #383a50);
+  color: white;
+}

@@ -16,6 +16,9 @@ const (
 type UIShell interface {
 	UI
 
+	// Class adds a CSS class to the layout.
+	Class(c string) UIShell
+
 	// Content sets the main content.
 	Content(elems ...UI) UIShell
 
@@ -66,6 +69,7 @@ type shell struct {
 	IoverlayMenu      []UI
 	IitemsBaseWidth   int
 	IAlignment        string
+	Iclass            string
 	IShowShrunkenMenu bool
 
 	id                  string
@@ -73,6 +77,15 @@ type shell struct {
 	refreshCooldown     *time.Timer
 	shrunkenMenu        bool
 	shrunkenSubmenu     bool
+}
+
+func (s *shell) Class(c string) UIShell {
+	if s.Iclass != "" {
+		s.Iclass += " "
+	}
+
+	s.Iclass += c
+	return s
 }
 
 func (s *shell) Content(elems ...UI) UIShell {
@@ -143,6 +156,7 @@ func (s *shell) Render() UI {
 
 	return Div().
 		Class("goapp-shell").
+		Class(s.Iclass).
 		Body(
 			Div().
 				ID(s.elemID("layout")).

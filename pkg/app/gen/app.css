@@ -203,10 +203,11 @@
   border: none;
   outline: none;
   background-color: transparent;
+  color: currentColor;
 }
 
 .goapp-shell-menu-button-default {
-  padding: 18px 24px;
+  padding: 6px 12px;
   color: currentColor;
   font-size: 16px;
 }

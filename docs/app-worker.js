@@ -1,7 +1,7 @@
-const cacheName = "app-" + "c8ea588279b06a0f4857c93c9fa64284820337cd";
+const cacheName = "app-" + "bb32bf73ca55e0eeb8f73666fe55dcf2ca8a3519";
 
 self.addEventListener("install", event => {
-  console.log("installing app worker c8ea588279b06a0f4857c93c9fa64284820337cd");
+  console.log("installing app worker bb32bf73ca55e0eeb8f73666fe55dcf2ca8a3519");
   self.skipWaiting();
 
   event.waitUntil(
@@ -13,6 +13,7 @@ self.addEventListener("install", event => {
         "/go-app/manifest.json",
         "/go-app/wasm_exec.js",
         "/go-app/web/app.wasm",
+        "/go-app/web/docs.css",
         "https://storage.googleapis.com/murlok-github/icon-192.png",
         "https://storage.googleapis.com/murlok-github/icon-512.png",
         
@@ -33,7 +34,7 @@ self.addEventListener("activate", event => {
       );
     })
   );
-  console.log("app worker c8ea588279b06a0f4857c93c9fa64284820337cd is activated");
+  console.log("app worker bb32bf73ca55e0eeb8f73666fe55dcf2ca8a3519 is activated");
 });
 
 self.addEventListener("fetch", event => {

@@ -15,11 +15,11 @@ type home struct {
 
 func (h *home) Render() app.UI {
 	return app.Shell().
-		Menu(bloc("blue", "")).
-		Submenu(bloc("white", "")).
+		Class("app-background").
+		Menu(bloc("transparent", "")).
+		Submenu(bloc("transparent", "")).
 		OverlayMenu(bloc("deepskyblue", "")).
-		Content(bloc("red", ""))
-
+		Content(bloc("transparent", ""))
 }
 
 func bloc(color, text string) app.UI {
