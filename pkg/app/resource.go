@@ -40,6 +40,10 @@ type ResourceProvider interface {
 	// The URL of the robots.txt file. This must match the pattern:
 	//  StaticResources/web/robots.txt.
 	RobotsTxt() string
+
+	// The URL of the ads.txt file. This must match the pattern:
+	//  StaticResources/web/ads.txt.
+	AdsTxt() string
 }
 
 // LocalDir returns a resource provider that serves static resources from a
@@ -70,6 +74,10 @@ func (d localDir) AppWASM() string {
 
 func (d localDir) RobotsTxt() string {
 	return "/web/robots.txt"
+}
+
+func (d localDir) AdsTxt() string {
+	return "/web/ads.txt"
 }
 
 // RemoteBucket returns a resource provider that provides resources from a
@@ -103,6 +111,10 @@ func (b remoteBucket) RobotsTxt() string {
 	return b.StaticResources() + "/web/robots.txt"
 }
 
+func (b remoteBucket) AdsTxt() string {
+	return b.StaticResources() + "/web/ads.txt"
+}
+
 // GitHubPages returns a resource provider that provides resources from GitHub
 // pages. This provider must only be used to generate static websites with the
 // GenerateStaticWebsite function.
@@ -132,4 +144,8 @@ func (g gitHubPages) AppWASM() string {
 
 func (g gitHubPages) RobotsTxt() string {
 	return g.StaticResources() + "/web/robots.txt"
+}
+
+func (g gitHubPages) AdsTxt() string {
+	return g.StaticResources() + "/web/ads.txt"
 }
