@@ -134,6 +134,7 @@ type Handler struct {
 	wasmExecJS       []byte
 	appCSS           []byte
 	robotsTxt        []byte
+	adsTxt           []byte
 }
 
 func (h *Handler) init() {
@@ -472,6 +473,10 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "/robots.txt":
 		h.serveRobotsTxt(w, r)
 		return
+
+	case "/ads.txt":
+		h.serveAdsTxt(w, r)
+		return
 	}
 
 	h.servePage(w, r)
@@ -555,6 +560,44 @@ func (h *Handler) serveRobotsTxt(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusOK)
 	w.Write(h.robotsTxt)
+}
+
+func (h *Handler) serveAdsTxt(w http.ResponseWriter, r *http.Request) {
+	if h.adsTxt == nil {
+		u := h.Resources.AdsTxt()
+		if _, ok := h.Resources.(http.Handler); ok {
+			u = "http://" + r.Host + u
+		}
+
+		res, err := http.Get(u)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			Log("%s", errors.New("getting ads.txt failed").
+				Tag("url", u).
+				Wrap(err),
+			)
+			return
+		}
+		defer res.Body.Close()
+
+		if res.StatusCode != http.StatusOK {
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+
+		body, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			Log("%s", errors.New("reading ads.txt failed").Wrap(err))
+			return
+		}
+		h.adsTxt = body
+	}
+
+	w.Header().Set("Content-Length", strconv.Itoa(len(h.adsTxt)))
+	w.Header().Set("Content-Type", "text/plain")
+	w.WriteHeader(http.StatusOK)
+	w.Write(h.adsTxt)
 }
 
 func (h *Handler) appResource(path string) string {
