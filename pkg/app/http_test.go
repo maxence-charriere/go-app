@@ -485,6 +485,39 @@ func TestHandlerServeRobotsTxtNotFound(t *testing.T) {
 	require.Equal(t, http.StatusNotFound, res.StatusCode)
 }
 
+func TestHandlerServeAdsTxt(t *testing.T) {
+	close := testCreateDir(t, "web")
+	defer close()
+	testCreateFile(t, filepath.Join("web", "ads.txt"), "ads")
+
+	s := httptest.NewServer(&Handler{})
+	defer s.Close()
+
+	test := func(t *testing.T) {
+		res, err := http.Get(s.URL + "/ads.txt")
+		require.NoError(t, err)
+		defer res.Body.Close()
+		require.Equal(t, http.StatusOK, res.StatusCode)
+
+		content, err := ioutil.ReadAll(res.Body)
+		require.NoError(t, err)
+		require.Equal(t, "ads", btos(content))
+	}
+
+	t.Run("ads.txt", test)
+	t.Run("cached ads.txt", test)
+}
+
+func TestHandlerServeAdsTxtNotFound(t *testing.T) {
+	s := httptest.NewServer(&Handler{})
+	defer s.Close()
+
+	res, err := http.Get(s.URL + "/ads.txt")
+	require.NoError(t, err)
+	defer res.Body.Close()
+	require.Equal(t, http.StatusNotFound, res.StatusCode)
+}
+
 func BenchmarkHandlerColdRun(b *testing.B) {
 	r := httptest.NewRequest(http.MethodGet, "/hello", nil)
 	w := httptest.NewRecorder()
