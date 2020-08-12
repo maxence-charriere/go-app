@@ -1,5 +1,8 @@
 // +build !wasm
 
+//go:generate go run gen/godoc.go
+//go:generate go fmt
+
 package main
 
 import (

@@ -63,6 +63,7 @@ func (h *hello) OnContextMenu(ctx app.Context, e app.Event) {
 
 func main() {
 	app.Route("/", Home())
+	app.Route("/reference", Reference())
 	app.Route("/hello", &hello{})
 	app.Run()
 }
