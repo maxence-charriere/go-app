@@ -1492,7 +1492,7 @@ var attrs = map[string]attr{
 	},
 	"step": {
 		Name: "Step",
-		Type: "int",
+		Type: "float64",
 		Doc:  "specifies the legal number intervals for an input field.",
 	},
 	"style": {
