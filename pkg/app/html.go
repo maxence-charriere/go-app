@@ -21451,7 +21451,7 @@ type HTMLInput interface {
 	Src(v string) HTMLInput
 
 	// Step specifies the legal number intervals for an input field.
-	Step(v int) HTMLInput
+	Step(v float64) HTMLInput
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLInput
@@ -21782,7 +21782,7 @@ func (e *htmlInput) Src(v string) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) Step(v int) HTMLInput {
+func (e *htmlInput) Step(v float64) HTMLInput {
 	e.setAttr("step", v)
 	return e
 }
