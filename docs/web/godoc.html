@@ -1169,6 +1169,14 @@
 				
 			
 				
+				<dd><a href="#UIStack">type UIStack</a></dd>
+				
+					
+					<dd>    <a href="#Stack">func Stack() UIStack</a></dd>
+				
+				
+			
+				
 				<dd><a href="#Value">type Value</a></dd>
 				
 					
@@ -1239,6 +1247,8 @@
 				<a href="/src/github.com/maxence-charriere/go-app/v7/pkg/app/scripts.go">scripts.go</a>
 			
 				<a href="/src/github.com/maxence-charriere/go-app/v7/pkg/app/shell.go">shell.go</a>
+			
+				<a href="/src/github.com/maxence-charriere/go-app/v7/pkg/app/stack.go">stack.go</a>
 			
 				<a href="/src/github.com/maxence-charriere/go-app/v7/pkg/app/static.go">static.go</a>
 			
@@ -23116,6 +23126,66 @@ menu, a submenu, and a main content.
 				<p>
 Shell creates a responsive layout that handles the disposition of a side
 menu, a submenu, and a main content.
+</p>
+
+				
+				
+			
+
+			
+		
+			
+			
+			<h2 id="UIStack">type <a href="/src/github.com/maxence-charriere/go-app/v7/pkg/app/stack.go?s=114:556#L1">UIStack</a>
+				<a class="permalink" href="#UIStack">¶</a>
+				
+				
+			</h2>
+			<p>
+UIStack is the interface that describes a container that displays its items
+as stacked panels.
+</p>
+
+			<pre>type UIStack interface {
+    <a href="#UI">UI</a>
+
+    <span class="comment">// Center aligns the items from the center.</span>
+    Center() <a href="#UIStack">UIStack</a>
+
+    <span class="comment">// Class adds a CSS class to the layout.</span>
+    Class(c <a href="/pkg/builtin/#string">string</a>) <a href="#UIStack">UIStack</a>
+
+    <span class="comment">// Content sets the content with the given UI elements.</span>
+    Content(elems ...<a href="#UI">UI</a>) <a href="#UIStack">UIStack</a>
+
+    <span class="comment">// End aligns the items from the end.</span>
+    End() <a href="#UIStack">UIStack</a>
+
+    <span class="comment">// Stretch tries to make the items occupy all the space.</span>
+    Stretch() <a href="#UIStack">UIStack</a>
+
+    <span class="comment">// Vertical stacks items vertically.</span>
+    Vertical() <a href="#UIStack">UIStack</a>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="Stack">func <a href="/src/github.com/maxence-charriere/go-app/v7/pkg/app/stack.go?s=630:650#L18">Stack</a>
+					<a class="permalink" href="#Stack">¶</a>
+					
+					
+				</h3>
+				<pre>func Stack() <a href="#UIStack">UIStack</a></pre>
+				<p>
+Stack creates a container that displays its items as stacked panels.
 </p>
 
 				
