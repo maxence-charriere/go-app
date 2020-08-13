@@ -16,7 +16,7 @@ type home struct {
 func (h *home) Render() app.UI {
 	return app.Shell().
 		Class("app-background").
-		Menu(bloc("transparent", "")).
+		Menu(Menu()).
 		Submenu(bloc("transparent", "")).
 		OverlayMenu(bloc("deepskyblue", "")).
 		Content(bloc("transparent", ""))

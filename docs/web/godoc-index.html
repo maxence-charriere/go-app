@@ -1,0 +1,1122 @@
+<div id="manual-nav">
+			<dl>
+			
+			
+				<dd><a href="#pkg-variables">Variables</a></dd>
+			
+			
+				
+				<dd><a href="#CopyBytesToGo">func CopyBytesToGo(dst []byte, src Value) int</a></dd>
+			
+				
+				<dd><a href="#CopyBytesToJS">func CopyBytesToJS(dst Value, src []byte) int</a></dd>
+			
+				
+				<dd><a href="#Dispatch">func Dispatch(f func())</a></dd>
+			
+				
+				<dd><a href="#GenerateStaticWebsite">func GenerateStaticWebsite(dir string, h *Handler) error</a></dd>
+			
+				
+				<dd><a href="#Getenv">func Getenv(k string) string</a></dd>
+			
+				
+				<dd><a href="#KeepBodyClean">func KeepBodyClean() (close func())</a></dd>
+			
+				
+				<dd><a href="#Log">func Log(format string, v ...interface{})</a></dd>
+			
+				
+				<dd><a href="#Navigate">func Navigate(rawurl string)</a></dd>
+			
+				
+				<dd><a href="#NewContextMenu">func NewContextMenu(menuItems ...MenuItemNode)</a></dd>
+			
+				
+				<dd><a href="#Reload">func Reload()</a></dd>
+			
+				
+				<dd><a href="#Route">func Route(path string, node UI)</a></dd>
+			
+				
+				<dd><a href="#RouteWithRegexp">func RouteWithRegexp(pattern string, node UI)</a></dd>
+			
+				
+				<dd><a href="#Run">func Run()</a></dd>
+			
+				
+				<dd><a href="#StaticResource">func StaticResource(path string) string</a></dd>
+			
+				
+				<dd><a href="#TestMatch">func TestMatch(tree UI, d TestUIDescriptor) error</a></dd>
+			
+				
+				<dd><a href="#TestPath">func TestPath(p ...int) []int</a></dd>
+			
+			
+				
+				<dd><a href="#BrowserStorage">type BrowserStorage</a></dd>
+				
+				
+			
+				
+				<dd><a href="#BrowserWindow">type BrowserWindow</a></dd>
+				
+					
+					<dd>    <a href="#Window">func Window() BrowserWindow</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Compo">type Compo</a></dd>
+				
+				
+					
+					<dd>    <a href="#Compo.JSValue">func (c *Compo) JSValue() Value</a></dd>
+				
+					
+					<dd>    <a href="#Compo.Kind">func (c *Compo) Kind() Kind</a></dd>
+				
+					
+					<dd>    <a href="#Compo.Mounted">func (c *Compo) Mounted() bool</a></dd>
+				
+					
+					<dd>    <a href="#Compo.Render">func (c *Compo) Render() UI</a></dd>
+				
+					
+					<dd>    <a href="#Compo.Update">func (c *Compo) Update()</a></dd>
+				
+			
+				
+				<dd><a href="#Composer">type Composer</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Condition">type Condition</a></dd>
+				
+					
+					<dd>    <a href="#If">func If(expr bool, elems ...UI) Condition</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Context">type Context</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Dismounter">type Dismounter</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Dispatcher">type Dispatcher</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Environment">type Environment</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Event">type Event</a></dd>
+				
+				
+					
+					<dd>    <a href="#Event.PreventDefault">func (e Event) PreventDefault()</a></dd>
+				
+			
+				
+				<dd><a href="#EventHandler">type EventHandler</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Func">type Func</a></dd>
+				
+					
+					<dd>    <a href="#FuncOf">func FuncOf(fn func(this Value, args []Value) interface{}) Func</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLA">type HTMLA</a></dd>
+				
+					
+					<dd>    <a href="#A">func A() HTMLA</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLAbbr">type HTMLAbbr</a></dd>
+				
+					
+					<dd>    <a href="#Abbr">func Abbr() HTMLAbbr</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLAddress">type HTMLAddress</a></dd>
+				
+					
+					<dd>    <a href="#Address">func Address() HTMLAddress</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLArea">type HTMLArea</a></dd>
+				
+					
+					<dd>    <a href="#Area">func Area() HTMLArea</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLArticle">type HTMLArticle</a></dd>
+				
+					
+					<dd>    <a href="#Article">func Article() HTMLArticle</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLAside">type HTMLAside</a></dd>
+				
+					
+					<dd>    <a href="#Aside">func Aside() HTMLAside</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLAudio">type HTMLAudio</a></dd>
+				
+					
+					<dd>    <a href="#Audio">func Audio() HTMLAudio</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLB">type HTMLB</a></dd>
+				
+					
+					<dd>    <a href="#B">func B() HTMLB</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLBase">type HTMLBase</a></dd>
+				
+					
+					<dd>    <a href="#Base">func Base() HTMLBase</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLBdi">type HTMLBdi</a></dd>
+				
+					
+					<dd>    <a href="#Bdi">func Bdi() HTMLBdi</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLBdo">type HTMLBdo</a></dd>
+				
+					
+					<dd>    <a href="#Bdo">func Bdo() HTMLBdo</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLBlockquote">type HTMLBlockquote</a></dd>
+				
+					
+					<dd>    <a href="#Blockquote">func Blockquote() HTMLBlockquote</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLBody">type HTMLBody</a></dd>
+				
+					
+					<dd>    <a href="#Body">func Body() HTMLBody</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLBr">type HTMLBr</a></dd>
+				
+					
+					<dd>    <a href="#Br">func Br() HTMLBr</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLButton">type HTMLButton</a></dd>
+				
+					
+					<dd>    <a href="#Button">func Button() HTMLButton</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLCanvas">type HTMLCanvas</a></dd>
+				
+					
+					<dd>    <a href="#Canvas">func Canvas() HTMLCanvas</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLCaption">type HTMLCaption</a></dd>
+				
+					
+					<dd>    <a href="#Caption">func Caption() HTMLCaption</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLCite">type HTMLCite</a></dd>
+				
+					
+					<dd>    <a href="#Cite">func Cite() HTMLCite</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLCode">type HTMLCode</a></dd>
+				
+					
+					<dd>    <a href="#Code">func Code() HTMLCode</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLCol">type HTMLCol</a></dd>
+				
+					
+					<dd>    <a href="#Col">func Col() HTMLCol</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLColGroup">type HTMLColGroup</a></dd>
+				
+					
+					<dd>    <a href="#ColGroup">func ColGroup() HTMLColGroup</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLData">type HTMLData</a></dd>
+				
+					
+					<dd>    <a href="#Data">func Data() HTMLData</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLDataList">type HTMLDataList</a></dd>
+				
+					
+					<dd>    <a href="#DataList">func DataList() HTMLDataList</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLDd">type HTMLDd</a></dd>
+				
+					
+					<dd>    <a href="#Dd">func Dd() HTMLDd</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLDel">type HTMLDel</a></dd>
+				
+					
+					<dd>    <a href="#Del">func Del() HTMLDel</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLDetails">type HTMLDetails</a></dd>
+				
+					
+					<dd>    <a href="#Details">func Details() HTMLDetails</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLDfn">type HTMLDfn</a></dd>
+				
+					
+					<dd>    <a href="#Dfn">func Dfn() HTMLDfn</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLDialog">type HTMLDialog</a></dd>
+				
+					
+					<dd>    <a href="#Dialog">func Dialog() HTMLDialog</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLDiv">type HTMLDiv</a></dd>
+				
+					
+					<dd>    <a href="#Div">func Div() HTMLDiv</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLDl">type HTMLDl</a></dd>
+				
+					
+					<dd>    <a href="#Dl">func Dl() HTMLDl</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLDt">type HTMLDt</a></dd>
+				
+					
+					<dd>    <a href="#Dt">func Dt() HTMLDt</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLEm">type HTMLEm</a></dd>
+				
+					
+					<dd>    <a href="#Em">func Em() HTMLEm</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLEmbed">type HTMLEmbed</a></dd>
+				
+					
+					<dd>    <a href="#Embed">func Embed() HTMLEmbed</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLFieldSet">type HTMLFieldSet</a></dd>
+				
+					
+					<dd>    <a href="#FieldSet">func FieldSet() HTMLFieldSet</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLFigCaption">type HTMLFigCaption</a></dd>
+				
+					
+					<dd>    <a href="#FigCaption">func FigCaption() HTMLFigCaption</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLFigure">type HTMLFigure</a></dd>
+				
+					
+					<dd>    <a href="#Figure">func Figure() HTMLFigure</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLFooter">type HTMLFooter</a></dd>
+				
+					
+					<dd>    <a href="#Footer">func Footer() HTMLFooter</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLForm">type HTMLForm</a></dd>
+				
+					
+					<dd>    <a href="#Form">func Form() HTMLForm</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLH1">type HTMLH1</a></dd>
+				
+					
+					<dd>    <a href="#H1">func H1() HTMLH1</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLH2">type HTMLH2</a></dd>
+				
+					
+					<dd>    <a href="#H2">func H2() HTMLH2</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLH3">type HTMLH3</a></dd>
+				
+					
+					<dd>    <a href="#H3">func H3() HTMLH3</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLH4">type HTMLH4</a></dd>
+				
+					
+					<dd>    <a href="#H4">func H4() HTMLH4</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLH5">type HTMLH5</a></dd>
+				
+					
+					<dd>    <a href="#H5">func H5() HTMLH5</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLH6">type HTMLH6</a></dd>
+				
+					
+					<dd>    <a href="#H6">func H6() HTMLH6</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLHead">type HTMLHead</a></dd>
+				
+					
+					<dd>    <a href="#Head">func Head() HTMLHead</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLHeader">type HTMLHeader</a></dd>
+				
+					
+					<dd>    <a href="#Header">func Header() HTMLHeader</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLHr">type HTMLHr</a></dd>
+				
+					
+					<dd>    <a href="#Hr">func Hr() HTMLHr</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLHtml">type HTMLHtml</a></dd>
+				
+					
+					<dd>    <a href="#Html">func Html() HTMLHtml</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLI">type HTMLI</a></dd>
+				
+					
+					<dd>    <a href="#I">func I() HTMLI</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLIFrame">type HTMLIFrame</a></dd>
+				
+					
+					<dd>    <a href="#IFrame">func IFrame() HTMLIFrame</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLImg">type HTMLImg</a></dd>
+				
+					
+					<dd>    <a href="#Img">func Img() HTMLImg</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLInput">type HTMLInput</a></dd>
+				
+					
+					<dd>    <a href="#Input">func Input() HTMLInput</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLIns">type HTMLIns</a></dd>
+				
+					
+					<dd>    <a href="#Ins">func Ins() HTMLIns</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLKbd">type HTMLKbd</a></dd>
+				
+					
+					<dd>    <a href="#Kbd">func Kbd() HTMLKbd</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLLabel">type HTMLLabel</a></dd>
+				
+					
+					<dd>    <a href="#Label">func Label() HTMLLabel</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLLegends">type HTMLLegends</a></dd>
+				
+					
+					<dd>    <a href="#Legends">func Legends() HTMLLegends</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLLi">type HTMLLi</a></dd>
+				
+					
+					<dd>    <a href="#Li">func Li() HTMLLi</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLLink">type HTMLLink</a></dd>
+				
+					
+					<dd>    <a href="#Link">func Link() HTMLLink</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLMain">type HTMLMain</a></dd>
+				
+					
+					<dd>    <a href="#Main">func Main() HTMLMain</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLMap">type HTMLMap</a></dd>
+				
+					
+					<dd>    <a href="#Map">func Map() HTMLMap</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLMark">type HTMLMark</a></dd>
+				
+					
+					<dd>    <a href="#Mark">func Mark() HTMLMark</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLMeta">type HTMLMeta</a></dd>
+				
+					
+					<dd>    <a href="#Meta">func Meta() HTMLMeta</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLMeter">type HTMLMeter</a></dd>
+				
+					
+					<dd>    <a href="#Meter">func Meter() HTMLMeter</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLNav">type HTMLNav</a></dd>
+				
+					
+					<dd>    <a href="#Nav">func Nav() HTMLNav</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLNoScript">type HTMLNoScript</a></dd>
+				
+					
+					<dd>    <a href="#NoScript">func NoScript() HTMLNoScript</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLObject">type HTMLObject</a></dd>
+				
+					
+					<dd>    <a href="#Object">func Object() HTMLObject</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLOl">type HTMLOl</a></dd>
+				
+					
+					<dd>    <a href="#Ol">func Ol() HTMLOl</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLOptGroup">type HTMLOptGroup</a></dd>
+				
+					
+					<dd>    <a href="#OptGroup">func OptGroup() HTMLOptGroup</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLOption">type HTMLOption</a></dd>
+				
+					
+					<dd>    <a href="#Option">func Option() HTMLOption</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLOutput">type HTMLOutput</a></dd>
+				
+					
+					<dd>    <a href="#Output">func Output() HTMLOutput</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLP">type HTMLP</a></dd>
+				
+					
+					<dd>    <a href="#P">func P() HTMLP</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLParam">type HTMLParam</a></dd>
+				
+					
+					<dd>    <a href="#Param">func Param() HTMLParam</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLPicture">type HTMLPicture</a></dd>
+				
+					
+					<dd>    <a href="#Picture">func Picture() HTMLPicture</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLPre">type HTMLPre</a></dd>
+				
+					
+					<dd>    <a href="#Pre">func Pre() HTMLPre</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLProgress">type HTMLProgress</a></dd>
+				
+					
+					<dd>    <a href="#Progress">func Progress() HTMLProgress</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLQ">type HTMLQ</a></dd>
+				
+					
+					<dd>    <a href="#Q">func Q() HTMLQ</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLRp">type HTMLRp</a></dd>
+				
+					
+					<dd>    <a href="#Rp">func Rp() HTMLRp</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLRt">type HTMLRt</a></dd>
+				
+					
+					<dd>    <a href="#Rt">func Rt() HTMLRt</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLRuby">type HTMLRuby</a></dd>
+				
+					
+					<dd>    <a href="#Ruby">func Ruby() HTMLRuby</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLS">type HTMLS</a></dd>
+				
+					
+					<dd>    <a href="#S">func S() HTMLS</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLSamp">type HTMLSamp</a></dd>
+				
+					
+					<dd>    <a href="#Samp">func Samp() HTMLSamp</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLScript">type HTMLScript</a></dd>
+				
+					
+					<dd>    <a href="#Script">func Script() HTMLScript</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLSection">type HTMLSection</a></dd>
+				
+					
+					<dd>    <a href="#Section">func Section() HTMLSection</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLSelect">type HTMLSelect</a></dd>
+				
+					
+					<dd>    <a href="#Select">func Select() HTMLSelect</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLSmall">type HTMLSmall</a></dd>
+				
+					
+					<dd>    <a href="#Small">func Small() HTMLSmall</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLSource">type HTMLSource</a></dd>
+				
+					
+					<dd>    <a href="#Source">func Source() HTMLSource</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLSpan">type HTMLSpan</a></dd>
+				
+					
+					<dd>    <a href="#Span">func Span() HTMLSpan</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLStrong">type HTMLStrong</a></dd>
+				
+					
+					<dd>    <a href="#Strong">func Strong() HTMLStrong</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLStyle">type HTMLStyle</a></dd>
+				
+					
+					<dd>    <a href="#Style">func Style() HTMLStyle</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLSub">type HTMLSub</a></dd>
+				
+					
+					<dd>    <a href="#Sub">func Sub() HTMLSub</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLSummary">type HTMLSummary</a></dd>
+				
+					
+					<dd>    <a href="#Summary">func Summary() HTMLSummary</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLSup">type HTMLSup</a></dd>
+				
+					
+					<dd>    <a href="#Sup">func Sup() HTMLSup</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLTBody">type HTMLTBody</a></dd>
+				
+					
+					<dd>    <a href="#TBody">func TBody() HTMLTBody</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLTHead">type HTMLTHead</a></dd>
+				
+					
+					<dd>    <a href="#THead">func THead() HTMLTHead</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLTable">type HTMLTable</a></dd>
+				
+					
+					<dd>    <a href="#Table">func Table() HTMLTable</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLTd">type HTMLTd</a></dd>
+				
+					
+					<dd>    <a href="#Td">func Td() HTMLTd</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLTemplate">type HTMLTemplate</a></dd>
+				
+					
+					<dd>    <a href="#Template">func Template() HTMLTemplate</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLTextarea">type HTMLTextarea</a></dd>
+				
+					
+					<dd>    <a href="#Textarea">func Textarea() HTMLTextarea</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLTfoot">type HTMLTfoot</a></dd>
+				
+					
+					<dd>    <a href="#Tfoot">func Tfoot() HTMLTfoot</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLTh">type HTMLTh</a></dd>
+				
+					
+					<dd>    <a href="#Th">func Th() HTMLTh</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLTime">type HTMLTime</a></dd>
+				
+					
+					<dd>    <a href="#Time">func Time() HTMLTime</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLTitle">type HTMLTitle</a></dd>
+				
+					
+					<dd>    <a href="#Title">func Title() HTMLTitle</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLTr">type HTMLTr</a></dd>
+				
+					
+					<dd>    <a href="#Tr">func Tr() HTMLTr</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLU">type HTMLU</a></dd>
+				
+					
+					<dd>    <a href="#U">func U() HTMLU</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLUl">type HTMLUl</a></dd>
+				
+					
+					<dd>    <a href="#Ul">func Ul() HTMLUl</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLVar">type HTMLVar</a></dd>
+				
+					
+					<dd>    <a href="#Var">func Var() HTMLVar</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLVideo">type HTMLVideo</a></dd>
+				
+					
+					<dd>    <a href="#Video">func Video() HTMLVideo</a></dd>
+				
+				
+			
+				
+				<dd><a href="#HTMLWbr">type HTMLWbr</a></dd>
+				
+					
+					<dd>    <a href="#Wbr">func Wbr() HTMLWbr</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Handler">type Handler</a></dd>
+				
+				
+					
+					<dd>    <a href="#Handler.ServeHTTP">func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request)</a></dd>
+				
+			
+				
+				<dd><a href="#Icon">type Icon</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Kind">type Kind</a></dd>
+				
+				
+					
+					<dd>    <a href="#Kind.String">func (k Kind) String() string</a></dd>
+				
+			
+				
+				<dd><a href="#MenuItemNode">type MenuItemNode</a></dd>
+				
+					
+					<dd>    <a href="#MenuItem">func MenuItem() MenuItemNode</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Mounter">type Mounter</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Navigator">type Navigator</a></dd>
+				
+				
+			
+				
+				<dd><a href="#RangeLoop">type RangeLoop</a></dd>
+				
+					
+					<dd>    <a href="#Range">func Range(src interface{}) RangeLoop</a></dd>
+				
+				
+			
+				
+				<dd><a href="#ResourceProvider">type ResourceProvider</a></dd>
+				
+					
+					<dd>    <a href="#GitHubPages">func GitHubPages(repoName string) ResourceProvider</a></dd>
+				
+					
+					<dd>    <a href="#LocalDir">func LocalDir(path string) ResourceProvider</a></dd>
+				
+					
+					<dd>    <a href="#RemoteBucket">func RemoteBucket(url string) ResourceProvider</a></dd>
+				
+				
+			
+				
+				<dd><a href="#TestUIDescriptor">type TestUIDescriptor</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Type">type Type</a></dd>
+				
+				
+			
+				
+				<dd><a href="#UI">type UI</a></dd>
+				
+					
+					<dd>    <a href="#FilterUIElems">func FilterUIElems(uis ...UI) []UI</a></dd>
+				
+					
+					<dd>    <a href="#Raw">func Raw(v string) UI</a></dd>
+				
+					
+					<dd>    <a href="#Text">func Text(v interface{}) UI</a></dd>
+				
+				
+			
+				
+				<dd><a href="#UIShell">type UIShell</a></dd>
+				
+					
+					<dd>    <a href="#Shell">func Shell() UIShell</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Value">type Value</a></dd>
+				
+					
+					<dd>    <a href="#Null">func Null() Value</a></dd>
+				
+					
+					<dd>    <a href="#Undefined">func Undefined() Value</a></dd>
+				
+					
+					<dd>    <a href="#ValueOf">func ValueOf(x interface{}) Value</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Wrapper">type Wrapper</a></dd>
+				
+				
+			
+			
+			</dl>
+			</div>

@@ -191,7 +191,8 @@
 
 .goapp-shell-item {
   max-height: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .goapp-shell-menu-button {
