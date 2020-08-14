@@ -16,9 +16,35 @@ h1,
 h2,
 h3,
 h4,
-h5 {
+h5,
+h6 {
   margin: 0;
-  padding: 0;
+  padding: 12px 30px 0;
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  color: white;
+  font-weight: 400;
+}
+
+h1 {
+  padding: 0 30px 0;
+  font-size: 16px;
+  letter-spacing: 4px;
+}
+
+h2 {
+  font-size: 15px;
+  letter-spacing: 4px;
+}
+
+h3 {
+  font-size: 14px;
+  letter-spacing: 3px;
+}
+
+p {
+  margin: 0;
+  padding: 12px 30px 0;
 }
 
 a {
@@ -30,10 +56,38 @@ a:hover {
   color: white;
 }
 
+section {
+  margin: 42px 0 0;
+}
+
+pre {
+  margin: 12px 30px 0;
+  padding: 12px 24px;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
 .goapp-app-info,
 .app-background {
   background: linear-gradient(#2e343a, #1c1d1f);
-  color: #bfbfbf;
+  color: #b4b4b4;
+}
+
+.layout {
+  height: 100%;
+}
+
+.title-layout {
+  width: auto;
+  height: 45px;
+  overflow: hidden;
+}
+
+.content-layout {
+  width: auto;
+  max-height: calc(100% - 45px);
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .focus {
@@ -43,6 +97,7 @@ a:hover {
 /* -----------------------------------------------------------------------------
 // Menu
 ------------------------------------------------------------------------------*/
+
 .menu .title {
   padding: 18px 30px 0;
   font-family: "Montserrat", sans-serif;
@@ -50,10 +105,6 @@ a:hover {
   letter-spacing: 6px;
   text-transform: uppercase;
   color: white;
-}
-
-.menu section {
-  margin: 42px 0 0;
 }
 
 .menu .item {
@@ -75,8 +126,19 @@ a:hover {
 // Godoc
 ------------------------------------------------------------------------------*/
 .godoc-menu {
-  background-color: darkgoldenrod;
+  /* background-color: blueviolet; */
 }
 
 .godoc-menu dl {
+  margin: 0;
+  padding: 12px 0 0;
+}
+
+.godoc-menu dd {
+  padding: 3px 30px 0;
+  margin: 0;
+  width: calc(100% - 30px - 30px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

@@ -64,13 +64,21 @@ func (m *godocMenu) loadMenu() {
 }
 
 func (m *godocMenu) Render() app.UI {
-	return app.Div().
+	return app.Aside().
+		Class("layout").
 		Class("godoc-menu").
 		Body(
-			app.H2().Text("Reference"),
-			app.If(m.rawHTML != "",
-				app.Raw(m.rawHTML),
-			),
+			app.Div().Class("title-layout"),
+			app.Div().
+				Class("content-layout").
+				Body(
+					app.Section().Body(
+						app.H1().Text("Table of contents"),
+						app.If(m.rawHTML != "",
+							app.Raw(m.rawHTML),
+						),
+					),
+				),
 		)
 }
 
@@ -113,10 +121,18 @@ func (d *godoc) loadMenu() {
 }
 
 func (d *godoc) Render() app.UI {
-	return app.Div().
+	return app.Main().
+		Class("layout").
 		Class("godoc").
 		Body(
-			app.H1().Text("Reference"),
-			app.Raw(d.rawHTML),
+			app.Div().Class("title-layout"),
+			app.Div().
+				Class("content-layout").
+				Body(
+					app.Section().Body(
+						app.H1().Text("Reference"),
+						app.Raw(d.rawHTML),
+					),
+				),
 		)
 }
