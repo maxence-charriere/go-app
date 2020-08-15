@@ -29,7 +29,7 @@ h6 {
 h1 {
   padding: 0 30px 0;
   font-size: 16px;
-  letter-spacing: 4px;
+  letter-spacing: 5px;
 }
 
 h2 {
@@ -58,13 +58,6 @@ a:hover {
 
 section {
   margin: 42px 0 0;
-}
-
-pre {
-  margin: 12px 30px 0;
-  padding: 12px 24px;
-  border-radius: 12px;
-  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .goapp-app-info,
@@ -135,10 +128,54 @@ pre {
 }
 
 .godoc-menu dd {
-  padding: 3px 30px 0;
+  padding: 0 30px 0;
   margin: 0;
   width: calc(100% - 30px - 30px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.godoc h2 {
+  margin-top: 60px;
+  text-transform: none;
+}
+
+.godoc h3 {
+  margin-top: 24px;
+  text-transform: none;
+}
+
+.godoc h2 a,
+.godoc h3 a,
+.godoc pre a {
+  color: deepskyblue;
+}
+
+.godoc pre .comment {
+  color: #00bd77;
+}
+
+.godoc code,
+.godoc pre {
+  display: block;
+  margin: 12px 30px 0;
+  padding: 18px 24px;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  overflow: auto;
+}
+
+.godoc code {
+  margin: 0;
+}
+
+.godoc dd {
+  margin: 0;
+  padding: 0 30px;
+}
+
+.godoc .pkg-dir {
+  padding: 12px 30px 0;
 }
