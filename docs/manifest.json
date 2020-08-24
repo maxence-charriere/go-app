@@ -15,7 +15,7 @@
   ],
   "scope": "/go-app/",
   "start_url": "/go-app/",
-  "background_color": "#59728d",
+  "background_color": "#2e343a",
   "display": "standalone",
-  "theme_color": "#59728d"
+  "theme_color": "#2e343a"
 }

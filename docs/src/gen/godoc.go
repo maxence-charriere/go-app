@@ -2,8 +2,10 @@ package main
 
 import (
 	"bytes"
+	"net/url"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/maxence-charriere/go-app/v7/pkg/app"
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
@@ -47,6 +49,7 @@ func main() {
 				Wrap(err))
 			return
 		}
+		normalizeNode(n)
 
 		f, err := os.Create(d.file)
 		if err != nil {
@@ -82,4 +85,39 @@ func findHTMLNode(n *html.Node, id string) (*html.Node, error) {
 	}
 
 	return nil, errors.New("not found")
+}
+
+func normalizeNode(n *html.Node) {
+	if n.Type == html.ElementNode {
+		for i, a := range n.Attr {
+			if a.Key != "href" {
+				continue
+			}
+
+			u, err := url.Parse(a.Val)
+			if err != nil {
+				continue
+			}
+
+			if strings.HasPrefix(u.Path, "/src/github.com/maxence-charriere/go-app/v7") {
+				u.RawQuery = ""
+				u.Path = strings.TrimPrefix(u.Path, "/src/github.com/maxence-charriere/go-app/v7")
+				u.Path = "/maxence-charriere/go-app/blob/master" + u.Path
+				u.Scheme = "https"
+				u.Host = "github.com"
+			}
+
+			if strings.HasPrefix(u.Path, "/pkg/builtin") {
+				u.Scheme = "https"
+				u.Host = "golang.org"
+			}
+
+			a.Val = u.String()
+			n.Attr[i] = a
+		}
+	}
+
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		normalizeNode(c)
+	}
 }

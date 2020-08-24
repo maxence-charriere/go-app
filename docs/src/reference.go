@@ -22,7 +22,7 @@ func (r *reference) Render() app.UI {
 		Menu(Menu()).
 		Submenu(GodocMenu()).
 		OverlayMenu(Menu()).
-		Content(Godoc())
+		Content(&godoc{})
 }
 
 func GodocMenu() app.UI {
@@ -82,14 +82,11 @@ func (m *godocMenu) Render() app.UI {
 		)
 }
 
-func Godoc() app.UI {
-	return &godoc{}
-}
-
 type godoc struct {
 	app.Compo
 
-	rawHTML string
+	rawHTML     string
+	closeToggle func()
 }
 
 func (d *godoc) OnMount(ctx app.Context) {
@@ -118,6 +115,53 @@ func (d *godoc) loadMenu() {
 
 	d.rawHTML = string(b)
 	d.Update()
+	app.Dispatch(d.setupToggle)
+}
+
+func (d *godoc) setupToggle() {
+	onToggle := app.FuncOf(d.onToggle)
+
+	pkgOverview := app.Window().GetElementByID("pkg-overview")
+	if !pkgOverview.Truthy() {
+		panic(errors.New("pkg-overview elem not found"))
+	}
+	pkgOverview.Call("addEventListener", "click", onToggle)
+
+	pkgIndex := app.Window().GetElementByID("pkg-index")
+	if !pkgIndex.Truthy() {
+		panic(errors.New("pkg-index elem not found"))
+	}
+	pkgIndex.Call("addEventListener", "click", onToggle)
+
+	d.closeToggle = func() {
+		pkgOverview.Call("removeEventListener", "click", onToggle)
+		pkgIndex.Call("removeEventListener", "click", onToggle)
+		onToggle.Release()
+	}
+
+	if w, _ := app.Window().Size(); w >= 720 {
+		pkgIndex.Set("className", "toggle")
+	}
+}
+
+func (d *godoc) onToggle(src app.Value, args []app.Value) interface{} {
+	app.Dispatch(func() {
+		switch src.Get("className").String() {
+		case "toggleVisible":
+			src.Set("className", "toggle")
+
+		case "toggle":
+			src.Set("className", "toggleVisible")
+		}
+	})
+
+	return nil
+}
+
+func (d *godoc) OnDismount() {
+	if d.closeToggle != nil {
+		d.closeToggle()
+	}
 }
 
 func (d *godoc) Render() app.UI {

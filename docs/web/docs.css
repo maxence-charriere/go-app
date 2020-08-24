@@ -60,6 +60,18 @@ section {
   margin: 42px 0 0;
 }
 
+::-webkit-scrollbar {
+  background-color: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  width: 10px;
+}
+
 .goapp-app-info,
 .app-background {
   background: linear-gradient(#2e343a, #1c1d1f);
@@ -78,7 +90,8 @@ section {
 
 .content-layout {
   width: auto;
-  max-height: calc(100% - 45px);
+  padding: 0 0 24px;
+  max-height: calc(100% - 45px - 24px);
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -176,6 +189,31 @@ section {
   padding: 0 30px;
 }
 
+.godoc #pkg-overview,
+.godoc #pkg-index {
+  cursor: pointer;
+}
+
 .godoc .pkg-dir {
   padding: 12px 30px 0;
+}
+
+.godoc .toggleVisible .collapsed {
+  display: none;
+}
+
+.godoc .toggleVisible .expanded {
+  display: block;
+}
+
+.godoc .toggle .collapsed {
+  display: block;
+}
+
+.godoc .toggle .expanded {
+  display: none;
+}
+
+.godoc #footer {
+  display: none;
 }
