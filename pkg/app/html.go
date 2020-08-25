@@ -21415,13 +21415,13 @@ type HTMLInput interface {
 	List(v string) HTMLInput
 
 	// Max Specifies the maximum value.
-	Max(v string) HTMLInput
+	Max(v interface{}) HTMLInput
 
 	// MaxLength specifies the maximum number of characters allowed in an element.
 	MaxLength(v int) HTMLInput
 
 	// Min specifies a minimum value.
-	Min(v string) HTMLInput
+	Min(v interface{}) HTMLInput
 
 	// Multiple specifies that a user can enter more than one value.
 	Multiple(v bool) HTMLInput
@@ -21717,7 +21717,7 @@ func (e *htmlInput) List(v string) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) Max(v string) HTMLInput {
+func (e *htmlInput) Max(v interface{}) HTMLInput {
 	e.setAttr("max", v)
 	return e
 }
@@ -21727,7 +21727,7 @@ func (e *htmlInput) MaxLength(v int) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) Min(v string) HTMLInput {
+func (e *htmlInput) Min(v interface{}) HTMLInput {
 	e.setAttr("min", v)
 	return e
 }
@@ -25956,10 +25956,10 @@ type HTMLMeter interface {
 	Low(v float64) HTMLMeter
 
 	// Max Specifies the maximum value.
-	Max(v string) HTMLMeter
+	Max(v interface{}) HTMLMeter
 
 	// Min specifies a minimum value.
-	Min(v string) HTMLMeter
+	Min(v interface{}) HTMLMeter
 
 	// Optimum specifies what value is the optimal value for the gauge.
 	Optimum(v float64) HTMLMeter
@@ -26166,12 +26166,12 @@ func (e *htmlMeter) Low(v float64) HTMLMeter {
 	return e
 }
 
-func (e *htmlMeter) Max(v string) HTMLMeter {
+func (e *htmlMeter) Max(v interface{}) HTMLMeter {
 	e.setAttr("max", v)
 	return e
 }
 
-func (e *htmlMeter) Min(v string) HTMLMeter {
+func (e *htmlMeter) Min(v interface{}) HTMLMeter {
 	e.setAttr("min", v)
 	return e
 }
@@ -30992,7 +30992,7 @@ type HTMLProgress interface {
 	Lang(v string) HTMLProgress
 
 	// Max Specifies the maximum value.
-	Max(v string) HTMLProgress
+	Max(v interface{}) HTMLProgress
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLProgress
@@ -31181,7 +31181,7 @@ func (e *htmlProgress) Lang(v string) HTMLProgress {
 	return e
 }
 
-func (e *htmlProgress) Max(v string) HTMLProgress {
+func (e *htmlProgress) Max(v interface{}) HTMLProgress {
 	e.setAttr("max", v)
 	return e
 }
