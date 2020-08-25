@@ -262,7 +262,7 @@ func (e *elem) removeChildAt(idx int) error {
 
 func (e *elem) updateAttrs(attrs map[string]string) {
 	for k := range e.attrs {
-		if _, exist := attrs[k]; !exist {
+		if _, exists := attrs[k]; !exists {
 			e.delAttr(k)
 		}
 	}
@@ -272,7 +272,7 @@ func (e *elem) updateAttrs(attrs map[string]string) {
 	}
 
 	for k, v := range attrs {
-		if curval := e.attrs[k]; curval != v {
+		if curval, exists := e.attrs[k]; !exists || curval != v {
 			e.attrs[k] = v
 			e.setJsAttr(k, v)
 		}

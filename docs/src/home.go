@@ -4,13 +4,12 @@ import (
 	"github.com/maxence-charriere/go-app/v7/pkg/app"
 )
 
-// Home creates a component that describes the home page.
-func Home() app.UI {
-	return &home{}
-}
-
 type home struct {
 	app.Compo
+}
+
+func newHome() app.UI {
+	return &home{}
 }
 
 func (h *home) Render() app.UI {

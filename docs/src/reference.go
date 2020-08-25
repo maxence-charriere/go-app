@@ -8,12 +8,12 @@ import (
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
 
-func Reference() app.UI {
-	return &reference{}
-}
-
 type reference struct {
 	app.Compo
+}
+
+func newReference() app.UI {
+	return &reference{}
 }
 
 func (r *reference) Render() app.UI {
