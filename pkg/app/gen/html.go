@@ -1302,7 +1302,7 @@ var attrs = map[string]attr{
 	// M:
 	"max": {
 		Name: "Max",
-		Type: "string",
+		Type: "interface{}",
 		Doc:  "Specifies the maximum value.",
 	},
 	"maxlength": {
@@ -1322,7 +1322,7 @@ var attrs = map[string]attr{
 	},
 	"min": {
 		Name: "Min",
-		Type: "string",
+		Type: "interface{}",
 		Doc:  "specifies a minimum value.",
 	},
 	"multiple": {
