@@ -53,7 +53,7 @@ func (c *complexScenario) Render() app.UI {
 			app.P().Body(
 				app.Progress().
 					Value(c.OK+c.KO).
-					Max(fmt.Sprint(c.Total)),
+					Max(c.Total),
 			),
 
 			app.H2().Text("Logs"),

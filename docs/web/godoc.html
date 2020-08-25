@@ -11887,13 +11887,13 @@ HTMLInput is the interface that describes a &lt;input&gt; HTML element.
     List(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLInput">HTMLInput</a>
 
     <span class="comment">// Max Specifies the maximum value.</span>
-    Max(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLInput">HTMLInput</a>
+    Max(v interface{}) <a href="#HTMLInput">HTMLInput</a>
 
     <span class="comment">// MaxLength specifies the maximum number of characters allowed in an element.</span>
     MaxLength(v <a href="https://golang.org/pkg/builtin/#int">int</a>) <a href="#HTMLInput">HTMLInput</a>
 
     <span class="comment">// Min specifies a minimum value.</span>
-    Min(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLInput">HTMLInput</a>
+    Min(v interface{}) <a href="#HTMLInput">HTMLInput</a>
 
     <span class="comment">// Multiple specifies that a user can enter more than one value.</span>
     Multiple(v <a href="https://golang.org/pkg/builtin/#bool">bool</a>) <a href="#HTMLInput">HTMLInput</a>
@@ -13916,10 +13916,10 @@ HTMLMeter is the interface that describes a &lt;meter&gt; HTML element.
     Low(v <a href="https://golang.org/pkg/builtin/#float64">float64</a>) <a href="#HTMLMeter">HTMLMeter</a>
 
     <span class="comment">// Max Specifies the maximum value.</span>
-    Max(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLMeter">HTMLMeter</a>
+    Max(v interface{}) <a href="#HTMLMeter">HTMLMeter</a>
 
     <span class="comment">// Min specifies a minimum value.</span>
-    Min(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLMeter">HTMLMeter</a>
+    Min(v interface{}) <a href="#HTMLMeter">HTMLMeter</a>
 
     <span class="comment">// Optimum specifies what value is the optimal value for the gauge.</span>
     Optimum(v <a href="https://golang.org/pkg/builtin/#float64">float64</a>) <a href="#HTMLMeter">HTMLMeter</a>
@@ -16178,7 +16178,7 @@ HTMLProgress is the interface that describes a &lt;progress&gt; HTML element.
     Lang(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLProgress">HTMLProgress</a>
 
     <span class="comment">// Max Specifies the maximum value.</span>
-    Max(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLProgress">HTMLProgress</a>
+    Max(v interface{}) <a href="#HTMLProgress">HTMLProgress</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="https://golang.org/pkg/builtin/#bool">bool</a>) <a href="#HTMLProgress">HTMLProgress</a>
