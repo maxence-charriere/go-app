@@ -6,14 +6,12 @@ type loader struct {
 	app.Compo
 
 	IDescription string
-	IState       string
+	ILoading     bool
 	IErr         error
 }
 
 func newLoader() *loader {
-	return &loader{
-		IState: "none",
-	}
+	return &loader{}
 }
 
 func (l *loader) Description(v string) *loader {
@@ -27,24 +25,30 @@ func (l *loader) Err(err error) *loader {
 }
 
 func (l *loader) Loading(v bool) *loader {
-	if v {
-		l.IState = "bloc"
-	}
-
+	l.ILoading = v
 	return l
 }
 
 func (l *loader) Render() app.UI {
+	display := "none"
+	if l.ILoading || l.IErr != nil {
+		display = "bloc"
+	}
+
 	return app.Div().
-		Style("display", l.IState).
+		Style("display", display).
 		Body(
 			app.Stack().
 				Class("loader").
 				Center().
 				Content(
-					app.Div().Class("margin").Body(
-						app.Div().Class("icon"),
-					),
+					app.Div().
+						Class("margin").
+						Body(
+							app.If(l.IErr == nil,
+								app.Div().Class("icon"),
+							),
+						),
 					app.Div().
 						Class("content").
 						Body(
