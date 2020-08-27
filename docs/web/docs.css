@@ -37,7 +37,8 @@ h2 {
   letter-spacing: 4px;
 }
 
-h3 {
+h3,
+.loader .label {
   font-size: 14px;
   letter-spacing: 3px;
 }
@@ -84,13 +85,13 @@ section {
   height: 100%;
 }
 
-.title-layout {
+.layout .header {
   width: auto;
   height: 45px;
   overflow: hidden;
 }
 
-.content-layout {
+.layout .content {
   width: auto;
   padding: 0 0 24px;
   max-height: calc(100% - 45px - 24px);
@@ -100,6 +101,10 @@ section {
 
 .focus {
   color: white;
+}
+
+.error {
+  color: #ef596f;
 }
 
 /* -----------------------------------------------------------------------------
@@ -218,4 +223,44 @@ section {
 
 .godoc #footer {
   display: none;
+}
+
+/* -----------------------------------------------------------------------------
+// Loader
+------------------------------------------------------------------------------*/
+.loader {
+  padding: 0 30px;
+}
+
+.loader .label {
+  color: white;
+  text-transform: uppercase;
+}
+
+.loader .icon {
+  border: 2px solid #b4b4b4;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loader .content {
+  max-width: 210px;
+  padding: 0 12px;
+}
+
+.loader .margin {
+  width: 44px;
+  height: 44px;
 }

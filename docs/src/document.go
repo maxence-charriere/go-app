@@ -1,121 +1,86 @@
 package main
 
 import (
-	"fmt"
-	"math/rand"
-	"time"
+	"io/ioutil"
+	"net/http"
 
 	"github.com/maxence-charriere/go-app/v7/pkg/app"
+	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
 
 type document struct {
 	app.Compo
 
-	path  string
-	title string
+	path        string
+	description string
+	document    string
+	loading     bool
+	err         error
 }
 
 func newDocument(path string) *document {
 	return &document{path: path}
 }
 
-func (d *document) Title(t string) *document {
-	d.title = t
+func (d *document) Description(t string) *document {
+	d.description = t
 	return d
 }
 
-func (d *document) Render() app.UI {
-	return app.Main().Body()
+func (d *document) OnMount(ctx app.Context) {
+	d.loading = true
+	d.err = nil
+	d.Update()
+
+	go d.load(ctx)
 }
 
-type complexScenario struct {
-	app.Compo
+func (d *document) load(ctx app.Context) {
+	var doc string
+	var err error
 
-	Total int
-	OK    int
-	KO    int
-	Logs  []string
-}
+	defer app.Dispatch(func() {
+		if err != nil {
+			d.err = err
+		}
 
-func (c *complexScenario) Render() app.UI {
-	return app.Div().
-		Body(
-			app.H1().Text("Complex scenario"),
-			app.P().Text("Example for a complex scenario"),
-			app.P().Body(
-				app.Button().
-					Disabled(c.OK+c.KO != c.Total). // This could also be done with css class.
-					OnClick(c.onButtonClick).
-					Text("Start"),
-			),
+		d.document = doc
+		d.loading = false
+		d.Update()
+	})
 
-			app.H2().Text("Progress"),
-			app.P().Body(
-				app.Progress().
-					Value(c.OK+c.KO).
-					Max(c.Total),
-			),
+	res, err := http.Get(d.path)
+	if err != nil {
+		err = errors.New("getting document failed").Wrap(err)
+		return
+	}
+	defer res.Body.Close()
 
-			app.H2().Text("Logs"),
-			app.P().Body(
-				app.Range(c.Logs).Slice(func(i int) app.UI {
-					return app.Div().Text(c.Logs[i])
-				}),
-			),
-		)
-}
-
-func (c *complexScenario) onButtonClick(ctx app.Context, e app.Event) {
-	c.Total = 5
-	c.OK = 0
-	c.KO = 0
-	c.Logs = nil
-	c.Update()
-
-	go c.fakeJob(1, true)
-	go c.fakeJob(2, true)
-	go c.fakeJob(3, true)
-	go c.fakeJob(4, true)
-	go c.fakeJob(5, false)
-}
-
-func (c *complexScenario) fakeJob(id int, result bool) {
-	c.log("launching job %v", id)
-
-	d := time.Duration(rand.Intn(5)+1) * time.Second
-	time.Sleep(d)
-
-	if !result {
-		c.incKO()
-		c.log("job %v failed", id)
+	b, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		err = errors.New("reading document failed").Wrap(err)
 		return
 	}
 
-	c.incOK()
-	c.log("job %v succeeded", id)
+	doc = string(b)
 }
 
-// Functions below are the one that update the UI. Since they are called from
-// new goroutines, Dispatch() function is used to ensure the component fieldd
-// are updated on the UI goroutine.
-
-func (c *complexScenario) incOK() {
-	app.Dispatch(func() {
-		c.OK++
-		c.Update()
-	})
-}
-
-func (c *complexScenario) incKO() {
-	app.Dispatch(func() {
-		c.KO++
-		c.Update()
-	})
-}
-
-func (c *complexScenario) log(format string, v ...interface{}) {
-	app.Dispatch(func() {
-		c.Logs = append(c.Logs, fmt.Sprintf(format, v...))
-		c.Update()
-	})
+func (d *document) Render() app.UI {
+	return app.Main().
+		Class("layout").
+		Class("document").
+		Body(
+			app.Div().Class("header"),
+			app.Div().
+				Class("content").
+				Body(
+					app.Section().Body(
+						newLoader().
+							Description(d.description).
+							Err(d.err).
+							Loading(d.loading),
+						app.Text(d.document),
+					),
+				),
+		)
 }

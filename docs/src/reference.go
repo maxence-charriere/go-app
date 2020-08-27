@@ -68,9 +68,9 @@ func (m *godocMenu) Render() app.UI {
 		Class("layout").
 		Class("godoc-menu").
 		Body(
-			app.Div().Class("title-layout"),
+			app.Div().Class("header"),
 			app.Div().
-				Class("content-layout").
+				Class("content").
 				Body(
 					app.Section().Body(
 						app.H1().Text("Table of contents"),
@@ -169,9 +169,9 @@ func (d *godoc) Render() app.UI {
 		Class("layout").
 		Class("godoc").
 		Body(
-			app.Div().Class("title-layout"),
+			app.Div().Class("header"),
 			app.Div().
-				Class("content-layout").
+				Class("content").
 				Body(
 					app.Section().Body(
 						app.H1().Text("Reference"),
