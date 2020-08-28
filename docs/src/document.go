@@ -1,11 +1,16 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
+	"github.com/Depado/bfchroma"
+	"github.com/alecthomas/chroma/formatters/html"
 	"github.com/maxence-charriere/go-app/v7/pkg/app"
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	bf "github.com/russross/blackfriday/v2"
 )
 
 type document struct {
@@ -62,7 +67,14 @@ func (d *document) load(ctx app.Context) {
 		return
 	}
 
-	doc = string(b)
+	r := bfchroma.NewRenderer(
+		bfchroma.WithoutAutodetect(),
+		bfchroma.ChromaOptions(html.WithClasses(true)),
+	)
+
+	md := string(bf.Run(b, bf.WithRenderer(r)))
+	md = strings.ReplaceAll(md, "\t", "    ")
+	doc = fmt.Sprintf("<div>%s</div>", md)
 }
 
 func (d *document) Render() app.UI {
@@ -79,7 +91,7 @@ func (d *document) Render() app.UI {
 							Description(d.description).
 							Err(d.err).
 							Loading(d.loading),
-						app.Text(d.document),
+						app.Raw(d.document),
 					),
 				),
 		)

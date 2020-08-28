@@ -174,7 +174,6 @@ func (d *godoc) Render() app.UI {
 				Class("content").
 				Body(
 					app.Section().Body(
-						app.H1().Text("Reference"),
 						app.Raw(d.rawHTML),
 					),
 				),

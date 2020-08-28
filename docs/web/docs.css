@@ -28,19 +28,19 @@ h6 {
 
 h1 {
   padding: 0 30px 0;
-  font-size: 16px;
+  font-size: 18px;
   letter-spacing: 5px;
 }
 
 h2 {
   font-size: 15px;
-  letter-spacing: 4px;
+  letter-spacing: 3px;
 }
 
 h3,
 .loader .label {
   font-size: 14px;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
 }
 
 p {
@@ -173,11 +173,12 @@ section {
 }
 
 .godoc pre .comment {
-  color: #00bd77;
+  color: mediumspringgreen;
 }
 
 .godoc code,
-.godoc pre {
+.godoc pre,
+.document .chroma {
   display: block;
   margin: 12px 30px 0;
   padding: 18px 24px;
@@ -223,6 +224,39 @@ section {
 
 .godoc #footer {
   display: none;
+}
+
+/* -----------------------------------------------------------------------------
+// Document
+------------------------------------------------------------------------------*/
+.document .k,
+.document .kd {
+  color: violet;
+}
+
+.document .kt,
+.document .nf {
+  color: deepskyblue;
+}
+
+.document .kt {
+  color: dodgerblue;
+}
+
+.document .kc {
+  color: orange;
+}
+
+.document .nx {
+  /* color: dodgerblue; */
+}
+
+.document .c1 {
+  color: dimgray;
+}
+
+.document .s {
+  color: mediumspringgreen;
 }
 
 /* -----------------------------------------------------------------------------
