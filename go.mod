@@ -11,5 +11,6 @@ require (
 	github.com/russross/blackfriday/v2 v2.0.1
 	github.com/stretchr/testify v1.6.1
 	golang.org/x/net v0.0.0-20200822124328-c89045814202
+	golang.org/x/sys v0.0.0-20200828161417-c663848e9a16 // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 )

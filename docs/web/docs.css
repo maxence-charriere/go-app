@@ -19,7 +19,7 @@ h4,
 h5,
 h6 {
   margin: 0;
-  padding: 12px 30px 0;
+  padding: 18px 30px 0;
   font-family: "Montserrat", sans-serif;
   text-transform: uppercase;
   color: white;
@@ -45,7 +45,7 @@ h3,
 
 p {
   margin: 0;
-  padding: 12px 30px 0;
+  padding: 18px 30px 0;
 }
 
 a {
@@ -180,7 +180,7 @@ section {
 .godoc pre,
 .document .chroma {
   display: block;
-  margin: 12px 30px 0;
+  margin: 18px 30px 0;
   padding: 18px 24px;
   border-radius: 12px;
   background-color: rgba(0, 0, 0, 0.2);
@@ -203,7 +203,7 @@ section {
 }
 
 .godoc .pkg-dir {
-  padding: 12px 30px 0;
+  padding: 18px 24px 0;
 }
 
 .godoc .toggleVisible .collapsed {
@@ -234,8 +234,8 @@ section {
   color: violet;
 }
 
-.document .kt,
-.document .nf {
+.document .nf,
+.document a {
   color: deepskyblue;
 }
 
@@ -247,16 +247,39 @@ section {
   color: orange;
 }
 
-.document .nx {
-  /* color: dodgerblue; */
-}
-
 .document .c1 {
-  color: dimgray;
+  color: grey;
 }
 
 .document .s {
   color: mediumspringgreen;
+}
+
+.document .nv {
+  color: #ef596f;
+}
+
+.document strong {
+  color: white;
+}
+
+.document code {
+  padding: 2px 9px;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+}
+
+.document h2 {
+  margin-top: 60px;
+}
+
+.document ul {
+  padding: 0 30px;
+}
+
+.document li {
+  margin: 6px 30px;
 }
 
 /* -----------------------------------------------------------------------------
