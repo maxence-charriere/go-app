@@ -1014,7 +1014,7 @@ var attrs = map[string]attr{
 	"allow": {
 		Name: "Allow",
 		Type: "string",
-		Doc:  "specifies a feature policy.",
+		Doc:  "specifies a feature policy. Can be called multiple times to set multiple policies.",
 	},
 	"allowfullscreen": {
 		Name: "AllowFullscreen",

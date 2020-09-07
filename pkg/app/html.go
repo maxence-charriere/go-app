@@ -20199,7 +20199,7 @@ type HTMLIFrame interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLIFrame
 
-	// Allow specifies a feature policy.
+	// Allow specifies a feature policy. Can be called multiple times to set multiple policies.
 	Allow(v string) HTMLIFrame
 
 	// AllowFullscreen reports whether an iframe can activate fullscreen mode.
