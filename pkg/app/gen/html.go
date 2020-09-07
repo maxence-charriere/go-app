@@ -431,6 +431,7 @@ var tags = []tag{
 		Name: "IFrame",
 		Doc:  "defines an inline frame.",
 		Attrs: withGlobalAttrs(attrsByNames(
+			"allow",
 			"allowfullscreen",
 			"allowpaymentrequest",
 			"height",
@@ -1009,6 +1010,11 @@ var attrs = map[string]attr{
 		Name: "Accept",
 		Type: "string",
 		Doc:  "specifies the types of files that the server accepts (only for file type).",
+	},
+	"allow": {
+		Name: "Allow",
+		Type: "string",
+		Doc:  "specifies a feature policy.",
 	},
 	"allowfullscreen": {
 		Name: "AllowFullscreen",

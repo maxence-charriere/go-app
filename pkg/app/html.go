@@ -20199,6 +20199,9 @@ type HTMLIFrame interface {
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLIFrame
 
+	// Allow specifies a feature policy.
+	Allow(v string) HTMLIFrame
+
 	// AllowFullscreen reports whether an iframe can activate fullscreen mode.
 	AllowFullscreen(v bool) HTMLIFrame
 
@@ -20392,6 +20395,11 @@ func (e *htmlIFrame) Text(v interface{}) HTMLIFrame {
 
 func (e *htmlIFrame) AccessKey(v string) HTMLIFrame {
 	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlIFrame) Allow(v string) HTMLIFrame {
+	e.setAttr("allow", v)
 	return e
 }
 
