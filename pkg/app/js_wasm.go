@@ -13,13 +13,7 @@ type value struct {
 }
 
 func (v value) Call(m string, args ...interface{}) Value {
-	for i, a := range args {
-		switch a := a.(type) {
-		case Wrapper:
-			args[i] = jsval(a.JSValue())
-		}
-	}
-
+	args = cleanArgs(args...)
 	return val(v.Value.Call(m, args...))
 }
 
@@ -51,6 +45,7 @@ func (v value) JSValue() Value {
 }
 
 func (v value) New(args ...interface{}) Value {
+	args = cleanArgs(args...)
 	return val(v.Value.New(args...))
 }
 
@@ -217,4 +212,15 @@ func copyBytesToGo(dst []byte, src Value) int {
 
 func copyBytesToJS(dst Value, src []byte) int {
 	return js.CopyBytesToJS(jsval(dst), src)
+}
+
+func cleanArgs(args ...interface{}) []interface{} {
+	for i, a := range args {
+		switch a := a.(type) {
+		case Wrapper:
+			args[i] = jsval(a.JSValue())
+		}
+	}
+
+	return args
 }
