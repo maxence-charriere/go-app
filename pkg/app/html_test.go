@@ -2832,6 +2832,7 @@ func TestI(t *testing.T) {
 func TestIFrame(t *testing.T) {
 	elem := IFrame()
 	elem.AccessKey("foo")
+	elem.Allow("foo")
 	elem.AllowFullscreen(true)
 	elem.AllowFullscreen(false)
 	elem.AllowPaymentRequest(true)
