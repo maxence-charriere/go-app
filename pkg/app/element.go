@@ -285,7 +285,7 @@ func (e *elem) setAttr(k string, v interface{}) {
 	}
 
 	switch k {
-	case "style":
+	case "style", "allow":
 		s := e.attrs[k] + toString(v) + ";"
 		e.attrs[k] = s
 		return
