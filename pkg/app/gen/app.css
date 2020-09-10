@@ -237,5 +237,6 @@
 .goapp-stack {
   position: relative;
   display: flex;
+  width: -moz-fit-content;
   width: fit-content;
 }
