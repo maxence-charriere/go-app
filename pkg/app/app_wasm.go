@@ -122,9 +122,7 @@ func displayLoadError(err interface{}) {
 }
 
 func onNavigate(this Value, args []Value) interface{} {
-	url := ""
 	event := Event{Value: args[0]}
-
 	elem := event.Get("target")
 	if !elem.Truthy() {
 		elem = event.Get("srcElement")
@@ -133,9 +131,13 @@ func onNavigate(this Value, args []Value) interface{} {
 	for {
 		switch elem.Get("tagName").String() {
 		case "A":
+			u := elem.Get("href").String()
+			if u, _ := url.Parse(u); isExternalNavigation(u) {
+				return nil
+			}
+
 			event.PreventDefault()
-			url = elem.Get("href").String()
-			Navigate(url)
+			Navigate(u)
 			return nil
 
 		case "BODY":

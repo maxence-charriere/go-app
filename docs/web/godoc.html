@@ -93,7 +93,7 @@ resources to run Go-based progressive web apps.
 				<dd><a href="#Dispatch">func Dispatch(f func())</a></dd>
 			
 				
-				<dd><a href="#GenerateStaticWebsite">func GenerateStaticWebsite(dir string, h *Handler) error</a></dd>
+				<dd><a href="#GenerateStaticWebsite">func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error</a></dd>
 			
 				
 				<dd><a href="#Getenv">func Getenv(k string) string</a></dd>
@@ -1355,7 +1355,7 @@ Dispatch executes the given function on the UI goroutine.
 				
 				
 			</h2>
-			<pre>func GenerateStaticWebsite(dir <a href="https://golang.org/pkg/builtin/#string">string</a>, h *<a href="#Handler">Handler</a>) <a href="https://golang.org/pkg/builtin/#error">error</a></pre>
+			<pre>func GenerateStaticWebsite(dir <a href="https://golang.org/pkg/builtin/#string">string</a>, h *<a href="#Handler">Handler</a>, pages ...<a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="https://golang.org/pkg/builtin/#error">error</a></pre>
 			<p>
 GenerateStaticWebsite generates the files to run a PWA built with go-app as a
 static website in the specified directory. Static websites can be used with
