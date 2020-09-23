@@ -4,13 +4,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strings"
 
-	"github.com/Depado/bfchroma"
-	"github.com/alecthomas/chroma/formatters/html"
+	"github.com/gomarkdown/markdown"
+	"github.com/gomarkdown/markdown/parser"
 	"github.com/maxence-charriere/go-app/v7/pkg/app"
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
-	bf "github.com/russross/blackfriday/v2"
 )
 
 type document struct {
@@ -52,6 +50,7 @@ func (d *document) load(ctx app.Context) {
 		d.document = doc
 		d.loading = false
 		d.Update()
+		app.Dispatch(d.highlightCode)
 	})
 
 	res, err := http.Get(d.path)
@@ -67,32 +66,28 @@ func (d *document) load(ctx app.Context) {
 		return
 	}
 
-	r := bfchroma.NewRenderer(
-		bfchroma.WithoutAutodetect(),
-		bfchroma.ChromaOptions(html.WithClasses(true)),
-	)
+	doc = fmt.Sprintf("<div>%s</div>", parseMarkdown(b))
+}
 
-	md := string(bf.Run(b, bf.WithRenderer(r)))
-	md = strings.ReplaceAll(md, "\t", "    ")
-	doc = fmt.Sprintf("<div>%s</div>", md)
+func (d *document) highlightCode() {
+	app.Window().Get("Prism").Call("highlightAll")
 }
 
 func (d *document) Render() app.UI {
 	return app.Main().
-		Class("layout").
+		Class("pane").
 		Class("document").
 		Body(
-			app.Div().Class("header"),
-			app.Div().
-				Class("content").
-				Body(
-					app.Section().Body(
-						newLoader().
-							Description(d.description).
-							Err(d.err).
-							Loading(d.loading),
-						app.Raw(d.document),
-					),
-				),
+			newLoader().
+				Description(d.description).
+				Err(d.err).
+				Loading(d.loading),
+			app.Raw(d.document),
 		)
+}
+
+func parseMarkdown(md []byte) []byte {
+	extensions := parser.CommonExtensions | parser.AutoHeadingIDs
+	parser := parser.NewWithExtensions(extensions)
+	return markdown.ToHTML(md, parser, nil)
 }

@@ -161,33 +161,49 @@ section {
 /* -----------------------------------------------------------------------------
 // Document
 ------------------------------------------------------------------------------*/
-.document .k,
-.document .kd {
+pre[class*="language-"] {
+  display: block;
+  margin: 18px 30px 0;
+  padding: 18px 24px;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  overflow: auto;
+}
+
+pre[class*="language-"] code {
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  font-family: monospace;
+}
+
+.document .token.keyword {
   color: violet;
 }
 
-.document .nf,
+.document .token.function,
 .document a {
   color: deepskyblue;
 }
 
-.document .kt {
+.document .token.builtin {
   color: dodgerblue;
 }
 
-.document .kc {
+.document .token.boolean {
   color: orange;
 }
 
-.document .c1 {
+.document .token.comment {
   color: grey;
 }
 
-.document .s {
+.document .token.string {
   color: mediumspringgreen;
 }
 
-.document .nv {
+.document .token.symbol {
   color: #ef596f;
 }
 
