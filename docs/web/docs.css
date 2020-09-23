@@ -82,7 +82,6 @@ section {
 }
 
 .pane {
-  width: auto;
   height: calc(100% - 45px - 24px - 42px);
   margin: 45px 0 0 24px;
   padding: 42px 0 0;

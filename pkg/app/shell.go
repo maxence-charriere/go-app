@@ -154,6 +154,11 @@ func (s *shell) Render() UI {
 		return "none"
 	}
 
+	layoutShrink := "0"
+	if !showMenu && !showSubmenu {
+		layoutShrink = "1"
+	}
+
 	return Div().
 		Class("goapp-shell").
 		Class(s.Iclass).
@@ -183,7 +188,7 @@ func (s *shell) Render() UI {
 						Class("goapp-shell-item").
 						Style("flex-basis", pxToString(s.contentItemBaseWidth())).
 						Style("flex-grow", "1").
-						Style("flex-shrink", "0").
+						Style("flex-shrink", layoutShrink).
 						Body(s.Icontent...),
 				),
 			If(s.hasMenu() && s.hasOverlayMenu(),
