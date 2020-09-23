@@ -2,29 +2,6 @@ package main
 
 import "github.com/maxence-charriere/go-app/v7/pkg/app"
 
-type startMenu struct {
-	app.Compo
-}
-
-func newStartMenu() *startMenu {
-	return &startMenu{}
-}
-
-func (m *startMenu) Render() app.UI {
-	return app.Aside().
-		Class("layout").
-		Body(
-			app.Div().Class("header"),
-			app.Div().
-				Class("content").
-				Body(
-					app.Section().Body(
-						app.H1().Text("Table of contents"),
-					),
-				),
-		)
-}
-
 type start struct {
 	app.Compo
 }
@@ -38,7 +15,33 @@ func (s *start) Render() app.UI {
 		Class("app-background").
 		Menu(Menu()).
 		Submenu(
-			newStartMenu(),
+			newTableOfContents().
+				Links(
+					contentLink{
+						Name: "Prerequisite",
+						URL:  "#Prerequisite",
+					},
+					contentLink{
+						Name: "Install",
+						URL:  "#Install",
+					},
+					contentLink{
+						Name: "User interface",
+						URL:  "#UserInterface",
+					},
+					contentLink{
+						Name: "Server",
+						URL:  "#Server",
+					},
+					contentLink{
+						Name: "Build and run",
+						URL:  "#BuildAndRun",
+					},
+					contentLink{
+						Name: "Tips",
+						URL:  "#Tips",
+					},
+				),
 		).
 		OverlayMenu(Menu()).
 		Content(

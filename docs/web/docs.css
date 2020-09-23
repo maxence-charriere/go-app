@@ -81,6 +81,15 @@ section {
   color: #b4b4b4;
 }
 
+.pane {
+  width: auto;
+  height: calc(100% - 45px - 24px - 42px);
+  margin: 45px 0 0 24px;
+  padding: 42px 0 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .layout {
   height: 100%;
 }
@@ -133,6 +142,76 @@ section {
   width: 24px;
   height: 24px;
   margin-right: 18px;
+}
+
+/* -----------------------------------------------------------------------------
+// Table of contents
+------------------------------------------------------------------------------*/
+.index section {
+  margin: 0;
+  padding: 18px 0 0;
+}
+
+.index a {
+  display: block;
+  width: auto;
+  padding: 0 30px;
+}
+
+/* -----------------------------------------------------------------------------
+// Document
+------------------------------------------------------------------------------*/
+.document .k,
+.document .kd {
+  color: violet;
+}
+
+.document .nf,
+.document a {
+  color: deepskyblue;
+}
+
+.document .kt {
+  color: dodgerblue;
+}
+
+.document .kc {
+  color: orange;
+}
+
+.document .c1 {
+  color: grey;
+}
+
+.document .s {
+  color: mediumspringgreen;
+}
+
+.document .nv {
+  color: #ef596f;
+}
+
+.document strong {
+  color: white;
+}
+
+.document code {
+  padding: 2px 9px;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+}
+
+.document h2 {
+  margin-top: 60px;
+}
+
+.document ul {
+  padding: 0 30px;
+}
+
+.document li {
+  margin: 6px 30px;
 }
 
 /* -----------------------------------------------------------------------------
@@ -224,62 +303,6 @@ section {
 
 .godoc #footer {
   display: none;
-}
-
-/* -----------------------------------------------------------------------------
-// Document
-------------------------------------------------------------------------------*/
-.document .k,
-.document .kd {
-  color: violet;
-}
-
-.document .nf,
-.document a {
-  color: deepskyblue;
-}
-
-.document .kt {
-  color: dodgerblue;
-}
-
-.document .kc {
-  color: orange;
-}
-
-.document .c1 {
-  color: grey;
-}
-
-.document .s {
-  color: mediumspringgreen;
-}
-
-.document .nv {
-  color: #ef596f;
-}
-
-.document strong {
-  color: white;
-}
-
-.document code {
-  padding: 2px 9px;
-  border-radius: 12px;
-  background-color: rgba(0, 0, 0, 0.2);
-  font-size: 14px;
-}
-
-.document h2 {
-  margin-top: 60px;
-}
-
-.document ul {
-  padding: 0 30px;
-}
-
-.document li {
-  margin: 6px 30px;
 }
 
 /* -----------------------------------------------------------------------------
