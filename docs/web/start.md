@@ -10,7 +10,7 @@ Using this package requires a fully functional Go environment installed with a *
 
 Go installation can be checked with the following command in a terminal:
 
-```sh
+```bash
 go version
 ```
 
@@ -18,7 +18,7 @@ go version
 
 Create a Go package for your PWA and change directory to the newly created location:
 
-```sh
+```bash
 # Replace YOUR_PACKAGE by a you own package name.
 # Eg. $GOPATH/src/src/hello
 mkdir -p $GOPATH/src/YOUR_PACKAGE
@@ -27,7 +27,7 @@ cd $GOPATH/src/YOUR_PACKAGE
 
 Then Initialize the **go module** and download the **go-app** package.
 
-```sh
+```bash
 go mod init
 go get -u github.com/maxence-charriere/go-app/v7/pkg/app
 ```
@@ -116,7 +116,7 @@ func main() {
 
 At this point the package should have the following content:
 
-```sh
+```bash
 .
 ├── app.go
 ├── go.mod
@@ -128,12 +128,12 @@ At this point the package should have the following content:
 
 The last thing to do is to build the app. The build is done in 2 steps:
 
-```sh
+```bash
 # Build the wasm program that contains the user interface.
 GOARCH=wasm GOOS=js go build -o web/app.wasm
 ```
 
-```sh
+```bash
 # Build the server that serves the wasm program and its resources:
 go build
 ```
@@ -142,7 +142,7 @@ Note that when building the UI, the build output is explicitly set to `web/app.w
 
 Once the UI and the server built, the package should have the following content:
 
-```sh
+```bash
 .
 ├── app.go
 ├── go.mod
@@ -157,7 +157,7 @@ Once the UI and the server built, the package should have the following content:
 
 Launch the server:
 
-```sh
+```bash
 # ./SERVER_NAME
 ./hello
 ```
@@ -179,7 +179,7 @@ run: build
 
 Then run:
 
-```sh
+```bash
 make run
 ```
 

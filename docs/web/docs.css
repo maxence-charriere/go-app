@@ -185,11 +185,13 @@ pre[class*="language-"] code {
   color: deepskyblue;
 }
 
-.document .token.builtin {
+.document .token.builtin,
+.document .token.symbol {
   color: dodgerblue;
 }
 
-.document .token.boolean {
+.document .token.boolean,
+.document .token.number {
   color: orange;
 }
 
@@ -201,7 +203,7 @@ pre[class*="language-"] code {
   color: mediumspringgreen;
 }
 
-.document .token.symbol {
+.document .token.variable {
   color: #ef596f;
 }
 
