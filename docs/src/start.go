@@ -19,27 +19,27 @@ func (s *start) Render() app.UI {
 				Links(
 					contentLink{
 						Name: "Prerequisite",
-						URL:  "#Prerequisite",
+						URL:  "#prerequisite",
 					},
 					contentLink{
 						Name: "Install",
-						URL:  "#Install",
+						URL:  "#install",
 					},
 					contentLink{
 						Name: "User interface",
-						URL:  "#UserInterface",
+						URL:  "#user-interface",
 					},
 					contentLink{
 						Name: "Server",
-						URL:  "#Server",
+						URL:  "#server",
 					},
 					contentLink{
 						Name: "Build and run",
-						URL:  "#BuildAndRun",
+						URL:  "#build-and-run",
 					},
 					contentLink{
 						Name: "Tips",
-						URL:  "#Tips",
+						URL:  "#tips",
 					},
 				),
 		).
