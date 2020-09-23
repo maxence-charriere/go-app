@@ -82,8 +82,8 @@ section {
 }
 
 .pane {
-  height: calc(100% - 45px - 24px - 42px);
-  margin: 45px 0 0 24px;
+  height: calc(100% - 45px - 12px - 42px);
+  margin: 45px 0 12px;
   padding: 42px 0 0;
   overflow-x: hidden;
   overflow-y: auto;
@@ -118,6 +118,11 @@ section {
 /* -----------------------------------------------------------------------------
 // Menu
 ------------------------------------------------------------------------------*/
+.menu {
+  height: 100%;
+  overflow: hidden;
+}
+
 .menu .title {
   padding: 18px 30px 0;
   font-family: "Montserrat", sans-serif;
@@ -125,6 +130,12 @@ section {
   letter-spacing: 6px;
   text-transform: uppercase;
   color: white;
+}
+
+.menu .content {
+  height: calc(100% - 45px - 12px);
+  margin: 0 0 12px;
+  overflow-y: auto;
 }
 
 .menu .item {

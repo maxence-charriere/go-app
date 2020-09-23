@@ -24,17 +24,15 @@ func (m *menu) OnNav(ctx app.Context, u *url.URL) {
 
 func (m *menu) Render() app.UI {
 	return app.Nav().
-		Class("layout").
 		Class("menu").
 		Body(
-			app.Div().
-				Class("title-layout").Body(
+			app.Div().Body(
 				app.Div().
 					Class("title").
 					Text("go-app"),
 			),
 			app.Div().
-				Class("content-layout").
+				Class("content").
 				Body(
 					app.Section().Body(
 						newMenuItem().
