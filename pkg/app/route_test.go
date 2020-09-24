@@ -97,3 +97,39 @@ func TestRoutes(t *testing.T) {
 		})
 	}
 }
+
+type routeSubString struct {
+	Compo
+	URL string `app:"0"`
+	ID  string `app:"1"`
+}
+
+func TestRoutesSubstring(t *testing.T) {
+	routes := router{}
+	routes.routeWithRegexp(`^/url/(\w*)`, &routeSubString{})
+	tests := []struct {
+		scenario   string
+		path       string
+		expectedID string
+		notFound   bool
+	}{
+		{
+			scenario:   "matching pattern parser substring to apptag",
+			path:       "/url/11223344",
+			expectedID: "11223344",
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.scenario, func(t *testing.T) {
+			node, routed := routes.ui(test.path)
+
+			if test.notFound {
+				require.False(t, routed, "node is routed")
+				return
+			}
+
+			id := node.(*routeSubString).ID
+			require.Equal(t, test.expectedID, id)
+		})
+	}
+}

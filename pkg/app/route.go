@@ -1,6 +1,10 @@
 package app
 
-import "regexp"
+import (
+	"reflect"
+	"regexp"
+	"strconv"
+)
 
 var (
 	routes router
@@ -42,7 +46,33 @@ func (r *router) ui(path string) (UI, bool) {
 	}
 
 	for _, r := range r.routesWithRegexp {
-		if r.regexp.MatchString(path) {
+		subList := r.regexp.FindStringSubmatch(path)
+		if len(subList) > 0 {
+			v := reflect.ValueOf(r.node)
+			if v.Kind() == reflect.Ptr {
+				v := v.Elem()
+				if v.Kind() == reflect.Struct {
+					for i := 0; i < v.NumField(); i++ {
+						t := v.Type().Field(i)
+						tag := t.Tag.Get("app")
+						if tag == "" {
+							continue
+						}
+						idx, err := strconv.Atoi(tag)
+						if err != nil {
+							continue
+						}
+						if idx < len(subList) {
+							vv := v.Field(i)
+							if vv.Kind() == reflect.String {
+								vv.SetString(subList[idx])
+							}
+						}
+
+					}
+				}
+			}
+
 			return r.node, true
 		}
 	}
