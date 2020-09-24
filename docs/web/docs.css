@@ -241,6 +241,10 @@ pre[class*="language-"] code {
   margin: 6px 30px;
 }
 
+.hidden {
+  display: none;
+}
+
 /* -----------------------------------------------------------------------------
 // Godoc
 ------------------------------------------------------------------------------*/
@@ -336,7 +340,12 @@ pre[class*="language-"] code {
 // Loader
 ------------------------------------------------------------------------------*/
 .loader {
-  padding: 0 30px;
+  width: 100%;
+  height: 100%;
+}
+
+.loader .content {
+  margin: 0 auto 45px;
 }
 
 .loader .label {
@@ -362,12 +371,12 @@ pre[class*="language-"] code {
   }
 }
 
-.loader .content {
+.loader .info {
   max-width: 210px;
   padding: 0 12px;
 }
 
-.loader .margin {
+.loader .icon-brackground {
   width: 44px;
   height: 44px;
 }

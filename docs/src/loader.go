@@ -30,40 +30,45 @@ func (l *loader) Loading(v bool) *loader {
 }
 
 func (l *loader) Render() app.UI {
-	display := "none"
+	visibility := "hidden"
 	if l.ILoading || l.IErr != nil {
-		display = "bloc"
+		visibility = ""
 	}
 
-	return app.Div().
-		Style("display", display).
-		Body(
-			app.Stack().
-				Class("loader").
-				Center().
-				Content(
-					app.Div().
-						Class("margin").
-						Body(
-							app.If(l.IErr == nil,
-								app.Div().Class("icon"),
-							),
-						),
-					app.Div().
-						Class("content").
-						Body(
+	return app.Stack().
+		Class("loader").
+		Class(visibility).
+		Center().
+		Content(
+			app.Div().
+				Class("content").
+				Body(
+					app.Stack().
+						Center().
+						Content(
 							app.Div().
-								Class("label").
-								Text("Loading"),
-							app.If(l.IErr != nil,
-								app.Div().
-									Class("error").
-									Text(l.IErr),
-							).ElseIf(l.IDescription != "",
-								app.Div().Text(l.IDescription),
-							),
+								Class("icon-brackground").
+								Body(
+									app.If(l.IErr == nil,
+										app.Div().Class("icon"),
+									),
+								),
+							app.Div().
+								Class("info").
+								Body(
+									app.Div().
+										Class("label").
+										Text("Loading"),
+									app.If(l.IErr != nil,
+										app.Div().
+											Class("error").
+											Text(l.IErr),
+									).ElseIf(l.IDescription != "",
+										app.Div().Text(l.IDescription),
+									),
+								),
+							app.Div().Class("margin"),
 						),
-					app.Div().Class("margin"),
 				),
 		)
 }
