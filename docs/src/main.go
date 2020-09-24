@@ -71,13 +71,13 @@ func main() {
 		LoadingLabel: "Loading go-app documentation...",
 		Name:         "Go-app Docs",
 		Scripts: []string{
-			"/web/prism.js",
+			"/web/js/prism.js",
 		},
 		Styles: []string{
 			"https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap",
 			"https://fonts.googleapis.com/css2?family=Roboto&display=swap",
-			"/web/prism.css",
-			"/web/docs.css",
+			"/web/css/prism.css",
+			"/web/css/docs.css",
 		},
 		ThemeColor: backgroundColor,
 		Title:      "go-app documentation",

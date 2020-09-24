@@ -72,24 +72,24 @@ func (m *menu) Render() app.UI {
 							Text("Architecture").
 							Selected(m.currentPath == "/architecture").
 							Href("/architecture"),
-						newMenuItem().
-							Icon(`
-							<svg style="width:24px;height:24px" viewBox="0 0 24 24">
-    							<path fill="currentColor" d="M8,3A2,2 0 0,0 6,5V9A2,2 0 0,1 4,11H3V13H4A2,2 0 0,1 6,15V19A2,2 0 0,0 8,21H10V19H8V14A2,2 0 0,0 6,12A2,2 0 0,0 8,10V5H10V3M16,3A2,2 0 0,1 18,5V9A2,2 0 0,0 20,11H21V13H20A2,2 0 0,0 18,15V19A2,2 0 0,1 16,21H14V19H16V14A2,2 0 0,1 18,12A2,2 0 0,1 16,10V5H14V3H16Z" />
-							</svg>
-							`).
-							Text("Progressive web app").
-							Selected(m.currentPath == "/pwa").
-							Href("/pwa"),
-						newMenuItem().
-							Icon(`
-							<svg style="width:24px;height:24px" viewBox="0 0 24 24">
-    							<path fill="currentColor" d="M19.35,10.03C18.67,6.59 15.64,4 12,4C9.11,4 6.6,5.64 5.35,8.03C2.34,8.36 0,10.9 0,14A6,6 0 0,0 6,20H19A5,5 0 0,0 24,15C24,12.36 21.95,10.22 19.35,10.03Z" />
-							</svg>
-							`).
-							Text("Server").
-							Selected(m.currentPath == "/server").
-							Href("/server"),
+						// newMenuItem().
+						// 	Icon(`
+						// 	<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+						// 		<path fill="currentColor" d="M8,3A2,2 0 0,0 6,5V9A2,2 0 0,1 4,11H3V13H4A2,2 0 0,1 6,15V19A2,2 0 0,0 8,21H10V19H8V14A2,2 0 0,0 6,12A2,2 0 0,0 8,10V5H10V3M16,3A2,2 0 0,1 18,5V9A2,2 0 0,0 20,11H21V13H20A2,2 0 0,0 18,15V19A2,2 0 0,1 16,21H14V19H16V14A2,2 0 0,1 18,12A2,2 0 0,1 16,10V5H14V3H16Z" />
+						// 	</svg>
+						// 	`).
+						// 	Text("Progressive web app").
+						// 	Selected(m.currentPath == "/pwa").
+						// 	Href("/pwa"),
+						// newMenuItem().
+						// 	Icon(`
+						// 	<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+						// 		<path fill="currentColor" d="M19.35,10.03C18.67,6.59 15.64,4 12,4C9.11,4 6.6,5.64 5.35,8.03C2.34,8.36 0,10.9 0,14A6,6 0 0,0 6,20H19A5,5 0 0,0 24,15C24,12.36 21.95,10.22 19.35,10.03Z" />
+						// 	</svg>
+						// 	`).
+						// 	Text("Server").
+						// 	Selected(m.currentPath == "/server").
+						// 	Href("/server"),
 						newMenuItem().
 							Icon(`
 							<svg height="24px" viewBox="0 0 207 78" width="24px" xmlns="http://www.w3.org/2000/svg">
@@ -104,7 +104,7 @@ func (m *menu) Render() app.UI {
 								</g>
 							</svg>
 							`).
-							Text("Reference").
+							Text("API reference").
 							Selected(m.currentPath == "/reference").
 							Href("/reference"),
 					),

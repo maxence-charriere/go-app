@@ -50,7 +50,8 @@ func (d *document) load(ctx app.Context) {
 		d.document = doc
 		d.loading = false
 		d.Update()
-		app.Dispatch(d.highlightCode)
+		d.highlightCode()
+		d.scrollToFragment()
 	})
 
 	res, err := http.Get(d.path)
@@ -70,7 +71,15 @@ func (d *document) load(ctx app.Context) {
 }
 
 func (d *document) highlightCode() {
-	app.Window().Get("Prism").Call("highlightAll")
+	app.Dispatch(func() {
+		app.Window().Get("Prism").Call("highlightAll")
+	})
+}
+
+func (d *document) scrollToFragment() {
+	app.Dispatch(func() {
+		app.Window().ScrollToID(app.Window().URL().Fragment)
+	})
 }
 
 func (d *document) Render() app.UI {

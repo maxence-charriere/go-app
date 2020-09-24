@@ -40,7 +40,7 @@ func (m *godocMenu) OnMount(ctx app.Context) {
 }
 
 func (m *godocMenu) loadMenu() {
-	path := "/web/godoc-index.html"
+	path := "/web/documents/godoc-index.html"
 
 	res, err := http.Get(path)
 	if err != nil {
@@ -94,7 +94,7 @@ func (d *godoc) OnMount(ctx app.Context) {
 }
 
 func (d *godoc) loadMenu() {
-	path := "/web/godoc.html"
+	path := "/web/documents/godoc.html"
 
 	res, err := http.Get(path)
 	if err != nil {

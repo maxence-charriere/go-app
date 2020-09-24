@@ -1,0 +1,389 @@
+/* -----------------------------------------------------------------------------
+// Global
+------------------------------------------------------------------------------*/
+html {
+  background-color: #2e343a;
+}
+
+body {
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  /* font-family:  Roboto, sans-serif; */
+  font-size: 14px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 18px 30px 0;
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  color: white;
+  font-weight: 400;
+}
+
+h1 {
+  padding: 0 30px 0;
+  font-size: 18px;
+  letter-spacing: 5px;
+}
+
+h2 {
+  font-size: 15px;
+  letter-spacing: 3px;
+}
+
+h3,
+.loader .label {
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+p {
+  margin: 0;
+  padding: 18px 30px 0;
+}
+
+a {
+  color: currentColor;
+  text-decoration: none;
+}
+
+a:hover {
+  color: white;
+}
+
+section {
+  margin: 42px 0 0;
+}
+
+::-webkit-scrollbar {
+  background-color: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  width: 10px;
+  height: 10px;
+}
+
+.goapp-app-info,
+.app-background {
+  background: linear-gradient(#2e343a, #1c1d1f);
+  color: #b4b4b4;
+}
+
+.pane {
+  height: calc(100% - 45px - 12px - 42px);
+  margin: 45px 0 12px;
+  padding: 42px 0 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.layout {
+  height: 100%;
+}
+
+.layout .header {
+  width: auto;
+  height: 45px;
+  overflow: hidden;
+}
+
+.layout .content {
+  width: auto;
+  padding: 0 0 24px;
+  max-height: calc(100% - 45px - 24px);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.focus {
+  color: white;
+}
+
+.error {
+  color: #ef596f;
+}
+
+.hidden {
+  display: none;
+}
+
+/* -----------------------------------------------------------------------------
+// Menu
+------------------------------------------------------------------------------*/
+.menu {
+  height: 100%;
+  overflow: hidden;
+}
+
+.menu .title {
+  padding: 18px 30px 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: 22px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: white;
+}
+
+.menu .content {
+  height: calc(100% - 45px - 12px);
+  margin: 0 0 12px;
+  overflow-y: auto;
+}
+
+.menu .item {
+  display: block;
+  padding: 12px 30px 0;
+}
+
+.menu .item:first-child {
+  padding: 0 30px;
+}
+
+.menu .item .icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 18px;
+}
+
+/* -----------------------------------------------------------------------------
+// Table of contents
+------------------------------------------------------------------------------*/
+.index section {
+  margin: 0;
+  padding: 18px 0 0;
+}
+
+.index a {
+  display: block;
+  width: auto;
+  padding: 0 30px;
+}
+
+/* -----------------------------------------------------------------------------
+// Document
+------------------------------------------------------------------------------*/
+pre[class*="language-"] {
+  display: block;
+  margin: 18px 30px 0;
+  padding: 18px 24px;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  overflow: auto;
+}
+
+pre[class*="language-"] code {
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  font-family: monospace;
+}
+
+.document .token.keyword {
+  color: violet;
+}
+
+.document .token.function,
+.document a {
+  color: deepskyblue;
+}
+
+.document .token.builtin,
+.document .token.symbol {
+  color: dodgerblue;
+}
+
+.document .token.boolean,
+.document .token.number {
+  color: orange;
+}
+
+.document .token.comment {
+  color: grey;
+}
+
+.document .token.string {
+  color: mediumspringgreen;
+}
+
+.document .token.variable {
+  color: #ef596f;
+}
+
+.document strong {
+  color: white;
+}
+
+.document code {
+  padding: 2px 9px;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+}
+
+.document h2 {
+  margin-top: 60px;
+}
+
+.document ul {
+  padding: 0 30px;
+}
+
+.document li {
+  margin: 6px 30px;
+}
+
+.document img {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+}
+
+/* -----------------------------------------------------------------------------
+// Godoc
+------------------------------------------------------------------------------*/
+.godoc-menu {
+  /* background-color: blueviolet; */
+}
+
+.godoc-menu dl {
+  margin: 0;
+  padding: 12px 0 0;
+}
+
+.godoc-menu dd {
+  padding: 0 30px 0;
+  margin: 0;
+  width: calc(100% - 30px - 30px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.godoc h2 {
+  margin-top: 60px;
+  text-transform: none;
+}
+
+.godoc h3 {
+  margin-top: 24px;
+  text-transform: none;
+}
+
+.godoc h2 a,
+.godoc h3 a,
+.godoc pre a {
+  color: deepskyblue;
+}
+
+.godoc pre .comment {
+  color: mediumspringgreen;
+}
+
+.godoc code,
+.godoc pre,
+.document .chroma {
+  display: block;
+  margin: 18px 30px 0;
+  padding: 18px 24px;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  overflow: auto;
+}
+
+.godoc code {
+  margin: 0;
+}
+
+.godoc dd {
+  margin: 0;
+  padding: 0 30px;
+}
+
+.godoc #pkg-overview,
+.godoc #pkg-index {
+  cursor: pointer;
+}
+
+.godoc .pkg-dir {
+  padding: 18px 24px 0;
+}
+
+.godoc .toggleVisible .collapsed {
+  display: none;
+}
+
+.godoc .toggleVisible .expanded {
+  display: block;
+}
+
+.godoc .toggle .collapsed {
+  display: block;
+}
+
+.godoc .toggle .expanded {
+  display: none;
+}
+
+.godoc #footer {
+  display: none;
+}
+
+/* -----------------------------------------------------------------------------
+// Loader
+------------------------------------------------------------------------------*/
+.loader {
+  width: 100%;
+  height: 100%;
+}
+
+.loader .content {
+  margin: 0 auto 45px;
+}
+
+.loader .label {
+  color: white;
+  text-transform: uppercase;
+}
+
+.loader .icon {
+  border: 2px solid #b4b4b4;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loader .info {
+  max-width: 210px;
+  padding: 0 12px;
+}
+
+.loader .icon-brackground {
+  width: 44px;
+  height: 44px;
+}
