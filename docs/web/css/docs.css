@@ -262,7 +262,7 @@ pre[class*="language-"] code {
 }
 
 .godoc-menu .loader {
-  height: calc(100% - 62px);
+  height: calc(100% - 40px);
 }
 
 .godoc-menu section {

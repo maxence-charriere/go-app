@@ -27,7 +27,7 @@ func (t *tableOfContents) Render() app.UI {
 		Class("pane").
 		Class("index").
 		Body(
-			app.H1().Text("Table of contents"),
+			app.H1().Text("Index"),
 			app.Section().Body(
 				app.Range(t.Ilinks).Slice(func(i int) app.UI {
 					link := t.Ilinks[i]

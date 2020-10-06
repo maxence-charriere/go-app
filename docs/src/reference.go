@@ -83,7 +83,7 @@ func (m *godocMenu) Render() app.UI {
 		Class("pane").
 		Class("godoc-menu").
 		Body(
-			app.H1().Text("Table of contents"),
+			app.H1().Text("Index"),
 			newLoader().
 				Description("reference menu").
 				Err(m.err).
@@ -97,37 +97,57 @@ func (m *godocMenu) Render() app.UI {
 type godoc struct {
 	app.Compo
 
+	loading     bool
+	err         error
 	rawHTML     string
 	closeToggle func()
 }
 
 func (d *godoc) OnMount(ctx app.Context) {
-	go d.loadMenu()
+	d.loading = true
+	d.err = nil
+	d.Update()
+
+	go d.load()
 }
 
-func (d *godoc) loadMenu() {
+func (d *godoc) load() {
+	var html string
+	var err error
+
+	defer app.Dispatch(func() {
+		if err != nil {
+			d.err = err
+		}
+
+		d.rawHTML = html
+		d.loading = false
+		d.Update()
+
+		app.Dispatch(d.setupToggle)
+		app.Dispatch(d.scrollToSection)
+	})
+
 	path := "/web/documents/godoc.html"
 
 	res, err := http.Get(path)
 	if err != nil {
-		app.Log("%s", errors.New("retrieving content failed").
+		err = errors.New("retrieving reference failed").
 			Tag("path", path).
-			Wrap(err))
+			Wrap(err)
 		return
 	}
 	defer res.Body.Close()
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		app.Log("%s", errors.New("reading content failed").
+		err = errors.New("reading reference failed").
 			Tag("path", path).
-			Wrap(err))
+			Wrap(err)
 		return
 	}
 
-	d.rawHTML = string(b)
-	d.Update()
-	app.Dispatch(d.setupToggle)
+	html = string(b)
 }
 
 func (d *godoc) setupToggle() {
@@ -170,6 +190,10 @@ func (d *godoc) onToggle(src app.Value, args []app.Value) interface{} {
 	return nil
 }
 
+func (d *godoc) scrollToSection() {
+	app.Window().ScrollToID(app.Window().URL().Fragment)
+}
+
 func (d *godoc) OnDismount() {
 	if d.closeToggle != nil {
 		d.closeToggle()
@@ -178,16 +202,13 @@ func (d *godoc) OnDismount() {
 
 func (d *godoc) Render() app.UI {
 	return app.Main().
-		Class("layout").
+		Class("pane").
 		Class("godoc").
 		Body(
-			app.Div().Class("header"),
-			app.Div().
-				Class("content").
-				Body(
-					app.Section().Body(
-						app.Raw(d.rawHTML),
-					),
-				),
+			newLoader().
+				Description("reference").
+				Err(d.err).
+				Loading(d.loading),
+			app.Raw(d.rawHTML),
 		)
 }
