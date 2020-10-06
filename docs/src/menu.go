@@ -51,7 +51,8 @@ func (m *menu) Render() app.UI {
 							</svg>
 							`).
 							Text("Contribute").
-							Href("https://opencollective.com/go-app"),
+							Href("https://opencollective.com/go-app").
+							External(),
 					),
 					app.Section().Body(
 						newMenuItem().
@@ -172,7 +173,8 @@ func (m *menu) Render() app.UI {
 							</svg>
 							`).
 							Text("GitHub").
-							Href("https://github.com/maxence-charriere/go-app"),
+							Href("https://github.com/maxence-charriere/go-app").
+							External(),
 						newMenuItem().
 							Icon(`
 							<svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -180,7 +182,8 @@ func (m *menu) Render() app.UI {
 							</svg>
 							`).
 							Text("Twitter").
-							Href("https://twitter.com/jonhymaxoo"),
+							Href("https://twitter.com/jonhymaxoo").
+							External(),
 					),
 				),
 		)
@@ -193,6 +196,8 @@ type menuItem struct {
 	Ihref     string
 	Iselected string
 	Itext     string
+	Itarget   string
+	Irel      string
 }
 
 func newMenuItem() *menuItem {
@@ -221,11 +226,19 @@ func (i *menuItem) Text(v string) *menuItem {
 	return i
 }
 
+func (i *menuItem) External() *menuItem {
+	i.Itarget = "_blank"
+	i.Irel = "noopener"
+	return i
+}
+
 func (i *menuItem) Render() app.UI {
 	return app.A().
 		Class("item").
 		Class(i.Iselected).
 		Href(i.Ihref).
+		Target(i.Itarget).
+		Rel(i.Irel).
 		Body(
 			app.Stack().
 				Center().
