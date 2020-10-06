@@ -6,6 +6,7 @@ type loader struct {
 	app.Compo
 
 	IDescription string
+	IClass       string
 	ILoading     bool
 	IErr         error
 }
@@ -16,6 +17,15 @@ func newLoader() *loader {
 
 func (l *loader) Description(v string) *loader {
 	l.IDescription = v
+	return l
+}
+
+func (l *loader) Class(v string) *loader {
+	if l.IClass != "" {
+		l.IClass += " "
+	}
+	l.IClass += v
+
 	return l
 }
 

@@ -255,18 +255,24 @@ pre[class*="language-"] code {
 /* -----------------------------------------------------------------------------
 // Godoc
 ------------------------------------------------------------------------------*/
-.godoc-menu {
-  /* background-color: blueviolet; */
+.godoc-menu dl,
+.godoc-menu a {
+  margin: 0;
+  padding: 0;
 }
 
-.godoc-menu dl {
+.godoc-menu .loader {
+  height: calc(100% - 62px);
+}
+
+.godoc-menu section {
   margin: 0;
-  padding: 12px 0 0;
+  padding: 18px 0 0;
 }
 
 .godoc-menu dd {
-  padding: 0 30px 0;
   margin: 0;
+  padding: 0 30px 0;
   width: calc(100% - 30px - 30px);
   white-space: nowrap;
   overflow: hidden;

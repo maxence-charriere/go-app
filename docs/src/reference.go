@@ -20,65 +20,77 @@ func (r *reference) Render() app.UI {
 	return app.Shell().
 		Class("app-background").
 		Menu(Menu()).
-		Submenu(GodocMenu()).
+		Submenu(newGodocMenu()).
 		OverlayMenu(Menu()).
 		Content(&godoc{})
-}
-
-func GodocMenu() app.UI {
-	return &godocMenu{}
 }
 
 type godocMenu struct {
 	app.Compo
 
 	rawHTML string
+	loading bool
+	err     error
+}
+
+func newGodocMenu() app.UI {
+	return &godocMenu{}
 }
 
 func (m *godocMenu) OnMount(ctx app.Context) {
-	m.loadMenu()
+	m.loading = true
+	m.err = nil
+	m.Update()
+
+	go m.loadMenu()
 }
 
 func (m *godocMenu) loadMenu() {
-	path := "/web/documents/godoc-index.html"
+	var html string
+	var err error
 
+	defer app.Dispatch(func() {
+		if err != nil {
+			m.err = err
+		}
+
+		m.rawHTML = html
+		m.loading = false
+		m.Update()
+	})
+
+	path := "/web/documents/godoc-index.html"
 	res, err := http.Get(path)
 	if err != nil {
-		app.Log("%s", errors.New("retrieving menu content failed").
-			Tag("path", path).
-			Wrap(err))
+		err = errors.New("getting reference menu failed").Wrap(err)
 		return
 	}
 	defer res.Body.Close()
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		app.Log("%s", errors.New("reading menu content failed").
+		app.Log("%s", errors.New("reading reference menu failed").
 			Tag("path", path).
 			Wrap(err))
 		return
 	}
 
-	m.rawHTML = string(b)
-	m.Update()
+	html = string(b)
 }
 
 func (m *godocMenu) Render() app.UI {
 	return app.Aside().
-		Class("layout").
+		Class("pane").
 		Class("godoc-menu").
 		Body(
-			app.Div().Class("header"),
-			app.Div().
-				Class("content").
-				Body(
-					app.Section().Body(
-						app.H1().Text("Table of contents"),
-						app.If(m.rawHTML != "",
-							app.Raw(m.rawHTML),
-						),
-					),
-				),
+			app.H1().Text("Table of contents"),
+			newLoader().
+				Description("reference menu").
+				Err(m.err).
+				Loading(m.loading),
+			app.Section().Body(
+				app.Raw(m.rawHTML),
+			),
 		)
 }
 
@@ -90,7 +102,7 @@ type godoc struct {
 }
 
 func (d *godoc) OnMount(ctx app.Context) {
-	d.loadMenu()
+	go d.loadMenu()
 }
 
 func (d *godoc) loadMenu() {
