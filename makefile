@@ -1,6 +1,6 @@
 bootstrap:
 	@echo "\033[94m• Setting up go test for wasm to run in the browser\033[00m"
-	go get -u github.com/agnivade/wasmbrowsertest
+	GO111MODULE=off go get -u github.com/agnivade/wasmbrowsertest
 	mv ${GOPATH}/bin/wasmbrowsertest ${GOPATH}/bin/go_js_wasm_exec
 
 .PHONY: test
