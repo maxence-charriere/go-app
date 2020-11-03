@@ -10,38 +10,14 @@ func newStart() app.UI {
 	return newPage().
 		Path("/web/documents/start.md").
 		TableOfContents(
-			contentLink{
-				Name: "Getting started",
-				URL:  "#getting-started",
-			},
-			contentLink{
-				Name: "Prerequisite",
-				URL:  "#prerequisite",
-			},
-			contentLink{
-				Name: "Install",
-				URL:  "#install",
-			},
-			contentLink{
-				Name: "User interface",
-				URL:  "#user-interface",
-			},
-			contentLink{
-				Name: "Server",
-				URL:  "#server",
-			},
-			contentLink{
-				Name: "Build and run",
-				URL:  "#build-and-run",
-			},
-			contentLink{
-				Name: "Tips",
-				URL:  "#tips",
-			},
-			contentLink{
-				Name: "Next",
-				URL:  "#next",
-			},
+			"Getting started",
+			"Prerequisite",
+			"Install",
+			"User interface",
+			"Server",
+			"Build and run",
+			"Tips",
+			"Next",
 		)
 }
 
@@ -49,30 +25,47 @@ func newArchitecture() app.UI {
 	return newPage().
 		Path("/web/documents/architecture.md").
 		TableOfContents(
-			contentLink{
-				Name: "Architecture",
-				URL:  "#architecture",
-			},
-			contentLink{
-				Name: "Web browser",
-				URL:  "#web-browser",
-			},
-			contentLink{
-				Name: "Server",
-				URL:  "#server",
-			},
-			contentLink{
-				Name: "App",
-				URL:  "#app",
-			},
-			contentLink{
-				Name: "Static resources",
-				URL:  "#static-resources",
-			},
-			contentLink{
-				Name: "Next",
-				URL:  "#next",
-			},
+			"Architecture",
+			"Web browser",
+			"Server",
+			"App",
+			"Static resources",
+			"Next",
+		)
+}
+
+func newCompo() app.UI {
+	return newPage().
+		Path("/web/documents/components.md").
+		TableOfContents(
+			"Create",
+			"Customize",
+			"Update",
+			"Lifecycle",
+		)
+}
+
+func newSyntax() app.UI {
+	return newPage().
+		Path("/web/documents/syntax.md").
+		TableOfContents(
+			"HTML elements",
+			"    Create",
+			"    Standard elements",
+			"    Self closing elements",
+			"    Style",
+			"    Attributes",
+			"    Event handlers",
+			"Text",
+			"Raw elements",
+			"Nested components",
+			"Condition",
+			"    If",
+			"    ElseIf",
+			"    Else",
+			"Range",
+			"    Slice",
+			"    Map",
 		)
 }
 
@@ -80,7 +73,7 @@ type page struct {
 	app.Compo
 
 	path  string
-	links []contentLink
+	links []string
 }
 
 func newPage() *page {
@@ -92,7 +85,7 @@ func (p *page) Path(v string) *page {
 	return p
 }
 
-func (p *page) TableOfContents(v ...contentLink) *page {
+func (p *page) TableOfContents(v ...string) *page {
 	p.links = v
 	return p
 }

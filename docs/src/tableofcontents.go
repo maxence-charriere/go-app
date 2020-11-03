@@ -1,23 +1,22 @@
 package main
 
-import "github.com/maxence-charriere/go-app/v7/pkg/app"
+import (
+	"strings"
 
-type contentLink struct {
-	Name string
-	URL  string
-}
+	"github.com/maxence-charriere/go-app/v7/pkg/app"
+)
 
 type tableOfContents struct {
 	app.Compo
 
-	Ilinks []contentLink
+	Ilinks []string
 }
 
 func newTableOfContents() *tableOfContents {
 	return &tableOfContents{}
 }
 
-func (t *tableOfContents) Links(v ...contentLink) *tableOfContents {
+func (t *tableOfContents) Links(v ...string) *tableOfContents {
 	t.Ilinks = v
 	return t
 }
@@ -33,9 +32,15 @@ func (t *tableOfContents) Render() app.UI {
 					link := t.Ilinks[i]
 
 					return app.A().
-						Href(link.URL).
-						Text(link.Name)
+						Href(githubIndex(link)).
+						Text(link)
 				}),
 			),
 		)
+}
+
+func githubIndex(s string) string {
+	s = strings.ToLower(s)
+	s = strings.TrimSpace(s)
+	return "#" + strings.ReplaceAll(s, " ", "-")
 }

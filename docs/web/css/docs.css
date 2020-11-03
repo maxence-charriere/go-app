@@ -55,7 +55,7 @@ a {
 }
 
 a:hover {
-  color: white;
+  color: deepskyblue;
 }
 
 section {
@@ -129,12 +129,17 @@ section {
 }
 
 .menu .title {
+  display: block;
   padding: 18px 30px 0;
   font-family: "Montserrat", sans-serif;
   font-size: 22px;
   letter-spacing: 6px;
   text-transform: uppercase;
   color: white;
+}
+
+.menu .title:hover {
+  color: deepskyblue;
 }
 
 .menu .content {
@@ -169,7 +174,8 @@ section {
 .index a {
   display: block;
   width: auto;
-  padding: 0 30px;
+  padding: 0 30px 3px;
+  white-space: pre;
 }
 
 /* -----------------------------------------------------------------------------
@@ -272,7 +278,7 @@ pre[class*="language-"] code {
 
 .godoc-menu dd {
   margin: 0;
-  padding: 0 30px 0;
+  padding: 0 30px 3px;
   width: calc(100% - 30px - 30px);
   white-space: nowrap;
   overflow: hidden;
