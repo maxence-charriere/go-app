@@ -31,76 +31,71 @@ In the code above, the component is described as a simple [H1](/reference#H1) HT
 
 ## Update
 
-The `Render()` method defines the component appearance.
+The appearance of the component is defined in the `Render()` method which is called by default when the component is mounted.
 
-In the hello world example above, the rendering uses the `name` component field to define the title and the input default value.
+There are some scenarios where the appearance of a component can dynamically change, like when there is user input. In that case, we need to trigger a component rendering in order to see the modifications on the screen.
 
-It also set up an event handler that is called when the input change:
+This can be done by calling the component [Update()](/reference#Composer) method.
 
 ```go
+type hello struct {
+	app.Compo
+
+	Name string // Name field
+}
+
+func (h *hello) Render() app.UI {
+	return app.Div().Body(
+		app.H1().Body(
+			app.Text("Hello "),
+			app.Text(h.Name), // Name field is used to display who is greeted
+		),
+		app.Input().
+			Value(h.Name). // Name field is used to display the current input value
+			OnChange(h.OnInputChange),
+	)
+}
+
 func (h *hello) OnInputChange(ctx app.Context, e app.Event) {
-    h.name = ctx.JSSrc().Get("value").String()
-    h.Update()
+	h.Name = ctx.JSSrc.Get("value").String() // Name field is modified
+	h.Update()                               // Render() is triggered
 }
 ```
 
-At each change, the input value is assigned to the component `name` field.
+In the example above, `Update()` is called when the `input onchange` event is triggered, once the component `Name` field is modified with the input value.
 
-Changing the value of a variable used in the `Render()` method does not update the UI.
+### Update mechanism
 
-The way to tell the browser that the component appearance has to be updated is by calling the [Compo.Update()](https://pkg.go.dev/github.com/maxence-charriere/go-app/v6/pkg/app#Compo.Update) method:
+When the component update is triggered, the `Render()` method is called and a new tree of UI element is generated. This new tree is then compared with the current component tree and only nonmatching nodes are modified or replaced.
 
-```go
-h.Update()
-```
+Here are how the modifications are performed:
 
-Under the hood, the update method creates a new state that is compared to the current one. Then it performs a diff and updates only the HTML nodes where differences are found.
-
-## Composing Components
-
-Components can refer to other components in their `Render()` method.
-
-Here is an example that shows `"Foo, Bar!"` by using a component that embeds another one:
-
-```go
-// foo component
-type foo struct {
-    app.Compo
-}
-
-func (f *foo) Render() app.UI {
-    return app.P().Body(
-        app.Text("Foo, "),
-        &bar{},            // <-- bar component
-    )
-}
-
-// bar component
-type bar struct {
-    app.Compo
-}
-
-func (b *bar) Render() app.UI {
-    return app.Text("Bar!")
-}
-
-```
+| Diff                                                       | Modification                              |
+| ---------------------------------------------------------- | ----------------------------------------- |
+| Different types of nodes (Text, HTML element or Component) | Current node is replaced                  |
+| Different texts                                            | Current node text value is updated        |
+| Different HTML elements                                    | Current node is replaced                  |
+| Different HTML element attributes                          | Current node attributes are updated       |
+| Different HTML element event handlers                      | Current node event handlers are updated   |
+| Different component types                                  | Current node is replaced                  |
+| Different component exported fields                        | Current component fields are updated      |
+| Different component non exported fields                    | No modifications                          |
+| Extra node in new the tree                                 | Node added to the current tree            |
+| Missing node in the new tree                               | Extra node is the current tree is removed |
 
 ## Lifecycle
 
-Components often use other resources to represent a UI. Those resources might require to be initialized or released.
+During its life, a component goes through several steps where actions could be performed to initialize or release data and resources.
 
-The **go-app** package provides interfaces that allow calling functions at different times during the component lifecycle.
+![lifecycle](/web/images/lifecycle.png)
 
-![lifecycle](https://storage.googleapis.com/murlok-github/lifecycle.png)
-
-Implementing them in a component is a good place for initializing or free resources.
+It is possible to trigger instructions when those different steps happen by implementing the corresponding interfaces in the component.
 
 ### OnMount
 
 A component is mounted when it is inserted into the webpage DOM.
 
-When the [Mounter](https://pkg.go.dev/github.com/maxence-charriere/go-app/v6/pkg/app#Mounter) interface is implemented, the `OnMount()` method is called right after the component is mounted.
+When the [Mounter](/reference#Mounter) interface is implemented, the `OnMount()` method is called right after the component is mounted.
 
 ```go
 type foo struct {
@@ -114,9 +109,9 @@ func (f *foo) OnMount(ctx app.Context) {
 
 ### OnNav
 
-A component is navigated when a page where it is the body root is loaded, reloaded or navigated from an anchor link or an HREF change.
+A component is navigated when a page is loaded, reloaded, or navigated from an anchor link or an HREF change.
 
-When the [Navigator](https://pkg.go.dev/github.com/maxence-charriere/go-app/v6/pkg/app#Navigator) interface is implemented, the `OnNav()` method is called each time the component is navigated.
+When the [Navigator](/reference#Navigator) interface is implemented, the `OnNav()` method is called each time the component is navigated.
 
 ```go
 type foo struct {
@@ -132,7 +127,7 @@ func (f *foo) OnNav(ctx app.Context, u *url.URL) {
 
 A component is dismounted when it is removed from the webpage DOM.
 
-When the [Dismounter](https://pkg.go.dev/github.com/maxence-charriere/go-app/v6/pkg/app#Dismounter) interface is implemented, the `OnDismount()` method is called right after the component is dismounted.
+When the [Dismounter](/reference#Dismounter) interface is implemented, the `OnDismount()` method is called right after the component is dismounted.
 
 ```go
 type foo struct {
@@ -143,3 +138,9 @@ func (f *foo) OnDismount() {
     fmt.Println("component dismounted")
 }
 ```
+
+## Next
+
+- [Customize components with the declarative syntax](/syntax)
+- [Associate components with URL paths](/routing)
+- [API reference](/reference)

@@ -258,6 +258,27 @@ pre[class*="language-"] code {
   border-radius: 12px;
 }
 
+.document table {
+  width: calc(100% - 30px - 30px);
+  margin: 18px 30px 0;
+  border-collapse: collapse;
+}
+
+.document th {
+  font-family: "Montserrat", sans-serif;
+  text-align: left;
+  text-transform: uppercase;
+  color: white;
+  font-weight: 400;
+  padding: 0 24px 12px 0;
+}
+
+.document td {
+  margin: 0;
+  padding: 12px 24px 12px 0;
+  border-top: 1px solid currentColor;
+}
+
 /* -----------------------------------------------------------------------------
 // Godoc
 ------------------------------------------------------------------------------*/

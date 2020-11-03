@@ -41,7 +41,12 @@ func newCompo() app.UI {
 			"Create",
 			"Customize",
 			"Update",
+			"    Update mechanism",
 			"Lifecycle",
+			"    OnMount",
+			"    OnNav",
+			"    OnDismount",
+			"Next",
 		)
 }
 
@@ -66,6 +71,7 @@ func newSyntax() app.UI {
 			"Range",
 			"    Slice",
 			"    Map",
+			"Next",
 		)
 }
 
