@@ -10,7 +10,6 @@ func newStart() app.UI {
 	return newPage().
 		Path("/web/documents/start.md").
 		TableOfContents(
-			"Getting started",
 			"Prerequisite",
 			"Install",
 			"User interface",
@@ -25,7 +24,6 @@ func newArchitecture() app.UI {
 	return newPage().
 		Path("/web/documents/architecture.md").
 		TableOfContents(
-			"Architecture",
 			"Web browser",
 			"Server",
 			"App",

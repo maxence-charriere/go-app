@@ -1,6 +1,7 @@
 package main
 
 import (
+	"net/url"
 	"strings"
 
 	"github.com/maxence-charriere/go-app/v7/pkg/app"
@@ -9,7 +10,8 @@ import (
 type tableOfContents struct {
 	app.Compo
 
-	Ilinks []string
+	Ilinks   []string
+	selected string
 }
 
 func newTableOfContents() *tableOfContents {
@@ -21,6 +23,11 @@ func (t *tableOfContents) Links(v ...string) *tableOfContents {
 	return t
 }
 
+func (t *tableOfContents) OnNav(ctx app.Context, u *url.URL) {
+	t.selected = "#" + u.Fragment
+	t.Update()
+}
+
 func (t *tableOfContents) Render() app.UI {
 	return app.Aside().
 		Class("pane").
@@ -30,8 +37,15 @@ func (t *tableOfContents) Render() app.UI {
 			app.Section().Body(
 				app.Range(t.Ilinks).Slice(func(i int) app.UI {
 					link := t.Ilinks[i]
+					href := githubIndex(link)
+
+					focus := ""
+					if href == t.selected {
+						focus = "focus"
+					}
 
 					return app.A().
+						Class(focus).
 						Href(githubIndex(link)).
 						Text(link)
 				}),
