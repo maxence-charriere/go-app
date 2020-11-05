@@ -10,6 +10,7 @@ func newStart() app.UI {
 	return newPage().
 		Path("/web/documents/start.md").
 		TableOfContents(
+			"Getting started",
 			"Prerequisite",
 			"Install",
 			"User interface",
@@ -24,6 +25,7 @@ func newArchitecture() app.UI {
 	return newPage().
 		Path("/web/documents/architecture.md").
 		TableOfContents(
+			"Architecture",
 			"Web browser",
 			"Server",
 			"App",
@@ -36,6 +38,7 @@ func newCompo() app.UI {
 	return newPage().
 		Path("/web/documents/components.md").
 		TableOfContents(
+			"Components",
 			"Create",
 			"Customize",
 			"Update",
@@ -48,10 +51,24 @@ func newCompo() app.UI {
 		)
 }
 
+func newConcurrency() app.UI {
+	return newPage().
+		Path("/web/documents/concurrency.md").
+		TableOfContents(
+			"Concurrency",
+			"UI goroutine",
+			"Standard goroutines",
+			"    When to use?",
+			"Dispatch()",
+			"Next",
+		)
+}
+
 func newSyntax() app.UI {
 	return newPage().
 		Path("/web/documents/syntax.md").
 		TableOfContents(
+			"Declarative syntax",
 			"HTML elements",
 			"    Create",
 			"    Standard elements",

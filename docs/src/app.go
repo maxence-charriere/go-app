@@ -67,6 +67,7 @@ func main() {
 	app.Route("/architecture", newArchitecture())
 	app.Route("/reference", newReference())
 	app.Route("/components", newCompo())
+	app.Route("/concurrency", newConcurrency())
 	app.Route("/syntax", newSyntax())
 	app.Route("/hello", &hello{})
 	app.Run()

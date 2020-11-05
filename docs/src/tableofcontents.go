@@ -56,5 +56,8 @@ func (t *tableOfContents) Render() app.UI {
 func githubIndex(s string) string {
 	s = strings.ToLower(s)
 	s = strings.TrimSpace(s)
+	s = strings.ReplaceAll(s, "?", "")
+	s = strings.ReplaceAll(s, "(", "")
+	s = strings.ReplaceAll(s, ")", "")
 	return "#" + strings.ReplaceAll(s, " ", "-")
 }
