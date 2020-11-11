@@ -69,6 +69,7 @@ func main() {
 	app.Route("/components", newCompo())
 	app.Route("/concurrency", newConcurrency())
 	app.Route("/syntax", newSyntax())
+	app.Route("/js", newJS())
 	app.Route("/hello", &hello{})
 	app.Run()
 }

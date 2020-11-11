@@ -90,6 +90,23 @@ func newSyntax() app.UI {
 		)
 }
 
+func newJS() app.UI {
+	return newPage().
+		Path("/web/documents/js.md").
+		TableOfContents(
+			"Javascript and DOM",
+			"Include JS files",
+			"    Handler",
+			"    Inline",
+			"Window",
+			"    Get element by ID",
+			"    Create JS object",
+			"Cancel an event",
+			"Get input value",
+			"Next",
+		)
+}
+
 type page struct {
 	app.Compo
 
