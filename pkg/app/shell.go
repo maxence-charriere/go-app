@@ -13,6 +13,8 @@ const (
 
 // UIShell is a component that responsively handles the disposition of a side
 // menu, a submenu, and a main content.
+//
+// EXPERIMENTAL.
 type UIShell interface {
 	UI
 
@@ -47,6 +49,8 @@ type UIShell interface {
 
 // Shell creates a responsive layout that handles the disposition of a side
 // menu, a submenu, and a main content.
+//
+// EXPERIMENTAL.
 func Shell() UIShell {
 	return &shell{
 		IitemsBaseWidth: shellItemBaseWitdth,

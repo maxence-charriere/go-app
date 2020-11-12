@@ -70,6 +70,6 @@ func main() {
 	app.Route("/concurrency", newConcurrency())
 	app.Route("/syntax", newSyntax())
 	app.Route("/js", newJS())
-	app.Route("/hello", &hello{})
+	app.Route("/routing", newRouting())
 	app.Run()
 }

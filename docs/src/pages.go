@@ -107,6 +107,19 @@ func newJS() app.UI {
 		)
 }
 
+func newRouting() app.UI {
+	return newPage().
+		Path("/web/documents/routing.md").
+		TableOfContents(
+			"Routing",
+			"Define a route",
+			"    Simple route",
+			"    Route with regular expression",
+			"Detect navigation",
+			"Next",
+		)
+}
+
 type page struct {
 	app.Compo
 

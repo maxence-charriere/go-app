@@ -117,7 +117,7 @@ func (m *menu) Render() app.UI {
 							`).
 							Text("Routing").
 							Selected(m.currentPath == "/routing").
-							Href("/js"),
+							Href("/routing"),
 						newMenuItem().
 							Icon(`
 							<svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -127,15 +127,15 @@ func (m *menu) Render() app.UI {
 							Text("Static resources").
 							Selected(m.currentPath == "/static-resources").
 							Href("/static-resources"),
-						newMenuItem().
-							Icon(`
-							<svg style="width:24px;height:24px" viewBox="0 0 24 24">
-								<path fill="currentColor" d="M3,3H11V7.34L16.66,1.69L22.31,7.34L16.66,13H21V21H13V13H16.66L11,7.34V11H3V3M3,13H11V21H3V13Z" />
-							</svg>
-							`).
-							Text("Widgets").
-							Selected(m.currentPath == "/widgets").
-							Href("/widgets"),
+						// newMenuItem().
+						// 	Icon(`
+						// 	<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+						// 		<path fill="currentColor" d="M3,3H11V7.34L16.66,1.69L22.31,7.34L16.66,13H21V21H13V13H16.66L11,7.34V11H3V3M3,13H11V21H3V13Z" />
+						// 	</svg>
+						// 	`).
+						// 	Text("Widgets").
+						// 	Selected(m.currentPath == "/widgets").
+						// 	Href("/widgets"),
 					),
 					app.Section().Body(
 						newMenuItem().
