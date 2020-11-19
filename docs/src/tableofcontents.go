@@ -37,20 +37,44 @@ func (t *tableOfContents) Render() app.UI {
 			app.Section().Body(
 				app.Range(t.Ilinks).Slice(func(i int) app.UI {
 					link := t.Ilinks[i]
-					href := githubIndex(link)
 
-					focus := ""
-					if href == t.selected {
-						focus = "focus"
+					return &tableOfContentLink{
+						Title: link,
+						Focus: t.selected == githubIndex(link),
 					}
-
-					return app.A().
-						Class(focus).
-						Href(githubIndex(link)).
-						Text(link)
 				}),
 			),
+
+			app.Section().Body(
+				&tableOfContentLink{
+					Title: "Report issue",
+					Focus: t.selected == "#report-issue",
+				},
+				&tableOfContentLink{
+					Title: "Support go-app",
+					Focus: t.selected == "#support-go-app",
+				},
+			),
 		)
+}
+
+type tableOfContentLink struct {
+	app.Compo
+
+	Title string
+	Focus bool
+}
+
+func (l *tableOfContentLink) Render() app.UI {
+	focus := ""
+	if l.Focus {
+		focus = "focus"
+	}
+
+	return app.A().
+		Class(focus).
+		Href(githubIndex(l.Title)).
+		Text(l.Title)
 }
 
 func githubIndex(s string) string {
