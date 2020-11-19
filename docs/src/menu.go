@@ -18,7 +18,12 @@ type menu struct {
 }
 
 func (m *menu) OnNav(ctx app.Context, u *url.URL) {
-	m.currentPath = u.Path
+	path := u.Path
+	if path == "/" {
+		path = "/start"
+	}
+	m.currentPath = path
+
 	m.Update()
 }
 
@@ -29,7 +34,7 @@ func (m *menu) Render() app.UI {
 			app.Div().Body(
 				app.A().
 					Class("title").
-					Href("/").
+					Href("/start").
 					Text("go-app"),
 			),
 			app.Div().

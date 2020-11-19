@@ -62,7 +62,7 @@ func (h *hello) OnContextMenu(ctx app.Context, e app.Event) {
 }
 
 func main() {
-	app.Route("/", newHome())
+	app.Route("/", newStart())
 	app.Route("/start", newStart())
 	app.Route("/architecture", newArchitecture())
 	app.Route("/reference", newReference())
@@ -71,5 +71,6 @@ func main() {
 	app.Route("/syntax", newSyntax())
 	app.Route("/js", newJS())
 	app.Route("/routing", newRouting())
+	app.Route("/static-resources", newStaticResources())
 	app.Run()
 }

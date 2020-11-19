@@ -120,6 +120,22 @@ func newRouting() app.UI {
 		)
 }
 
+func newStaticResources() app.UI {
+	return newPage().
+		Path("/web/documents/static-resources.md").
+		TableOfContents(
+			"Static resources",
+			"Access static resources",
+			"    In Handler",
+			"    In components",
+			"    In CSS files",
+			"Setup local web directory",
+			"Setup remote web directory",
+			"Fully static app",
+			"Next",
+		)
+}
+
 type page struct {
 	app.Compo
 
