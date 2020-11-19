@@ -72,5 +72,6 @@ func main() {
 	app.Route("/js", newJS())
 	app.Route("/routing", newRouting())
 	app.Route("/static-resources", newStaticResources())
+	app.Route("/built-with", newBuiltWith())
 	app.Run()
 }

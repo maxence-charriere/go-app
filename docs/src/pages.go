@@ -136,6 +136,18 @@ func newStaticResources() app.UI {
 		)
 }
 
+func newBuiltWith() app.UI {
+	return newPage().
+		Path("/web/documents/built-with.md").
+		TableOfContents(
+			"Built with go-app",
+			"Lofimusic.app",
+			"Murlok.io",
+			"Astextract",
+			"Next",
+		)
+}
+
 type page struct {
 	app.Compo
 
