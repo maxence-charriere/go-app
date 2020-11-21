@@ -6,11 +6,6 @@ import (
 	"github.com/maxence-charriere/go-app/v7/pkg/app"
 )
 
-// Menu creates the app main menu.
-func Menu() app.UI {
-	return &menu{}
-}
-
 type menu struct {
 	app.Compo
 
@@ -256,5 +251,17 @@ func (i *menuItem) Render() app.UI {
 						Class("label").
 						Text(i.Itext),
 				),
+		)
+}
+
+type overlayMenu struct {
+	app.Compo
+}
+
+func (m *overlayMenu) Render() app.UI {
+	return app.Div().
+		Class("overlay-menu").
+		Body(
+			&menu{},
 		)
 }

@@ -172,12 +172,12 @@ func (p *page) TableOfContents(v ...string) *page {
 func (p *page) Render() app.UI {
 	return app.Shell().
 		Class("app-background").
-		Menu(Menu()).
+		Menu(&menu{}).
 		Submenu(
 			newTableOfContents().
 				Links(p.links...),
 		).
-		OverlayMenu(Menu()).
+		OverlayMenu(&overlayMenu{}).
 		Content(
 			newDocument(p.path).
 				Description(filepath.Base(p.path)),

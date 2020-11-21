@@ -19,9 +19,9 @@ func newReference() app.UI {
 func (r *reference) Render() app.UI {
 	return app.Shell().
 		Class("app-background").
-		Menu(Menu()).
+		Menu(&menu{}).
 		Submenu(newGodocMenu()).
-		OverlayMenu(Menu()).
+		OverlayMenu(&overlayMenu{}).
 		Content(&godoc{})
 }
 
