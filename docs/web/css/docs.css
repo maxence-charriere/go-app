@@ -425,3 +425,26 @@ pre[class*="language-"] code {
   width: 44px;
   height: 44px;
 }
+
+/* -----------------------------------------------------------------------------
+// Support
+------------------------------------------------------------------------------*/
+.document .support-partner {
+  display: block;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  margin: 18px 18px 0 0;
+  padding: 24px;
+  color: currentColor;
+}
+
+.document .support-partner :hover {
+  color: deepskyblue;
+}
+
+.document .support-partner-name {
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  font-weight: 400;
+  padding-top: 6px;
+}

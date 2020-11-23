@@ -6,6 +6,13 @@ import (
 	"github.com/maxence-charriere/go-app/v7/pkg/app"
 )
 
+const (
+	buyMeACoffeeURL   = "https://www.buymeacoffee.com/maxence"
+	openCollectiveURL = "https://opencollective.com/go-app"
+	githubURL         = "https://github.com/maxence-charriere/go-app"
+	twitterURL        = "https://twitter.com/jonhymaxoo"
+)
+
 func newStart() app.UI {
 	return newPage().
 		Path("/web/documents/start.md").

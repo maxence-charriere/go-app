@@ -154,7 +154,7 @@ func (m *menu) Render() app.UI {
 							</svg>
 							`).
 							Text("Buy me a coffee").
-							Href("https://www.buymeacoffee.com/maxence").
+							Href(buyMeACoffeeURL).
 							External(),
 						newMenuItem().
 							Icon(`
@@ -163,7 +163,7 @@ func (m *menu) Render() app.UI {
 							</svg>
 							`).
 							Text("Contribute").
-							Href("https://opencollective.com/go-app").
+							Href(openCollectiveURL).
 							External(),
 						newMenuItem().
 							Icon(`
@@ -172,7 +172,7 @@ func (m *menu) Render() app.UI {
 							</svg>
 							`).
 							Text("GitHub").
-							Href("https://github.com/maxence-charriere/go-app").
+							Href(githubURL).
 							External(),
 						newMenuItem().
 							Icon(`
@@ -181,7 +181,7 @@ func (m *menu) Render() app.UI {
 							</svg>
 							`).
 							Text("Twitter").
-							Href("https://twitter.com/jonhymaxoo").
+							Href(twitterURL).
 							External(),
 					),
 				),
