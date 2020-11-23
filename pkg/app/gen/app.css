@@ -238,3 +238,23 @@
   position: relative;
   display: flex;
 }
+
+/*------------------------------------------------------------------------------
+  Flow
+------------------------------------------------------------------------------*/
+.goapp-flow {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.goapp-flow-item {
+  flex-grow: 0;
+  flex-shrink: 1;
+}

@@ -3,7 +3,7 @@ package app
 // UIStack is the interface that describes a container that displays its items
 // as stacked panels.
 //
-// EXPERIMENTAL.
+// EXPERIMENTAL WIDGET.
 type UIStack interface {
 	UI
 
@@ -28,7 +28,7 @@ type UIStack interface {
 
 // Stack creates a container that displays its items as stacked panels.
 //
-// EXPERIMENTAL.
+// EXPERIMENTAL WIDGET.
 func Stack() UIStack {
 	return &stack{
 		Ialignment: "flex-start",

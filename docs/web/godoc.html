@@ -1169,6 +1169,14 @@ resources to run Go-based progressive web apps.
 				
 			
 				
+				<dd><a href="#UIFlow">type UIFlow</a></dd>
+				
+					
+					<dd>    <a href="#Flow">func Flow() UIFlow</a></dd>
+				
+				
+			
+				
 				<dd><a href="#UIShell">type UIShell</a></dd>
 				
 					
@@ -1229,6 +1237,8 @@ resources to run Go-based progressive web apps.
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/contextmenu.go">contextmenu.go</a>
 			
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/element.go">element.go</a>
+			
+				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/flow.go">flow.go</a>
 			
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go">html.go</a>
 			
@@ -23076,7 +23086,69 @@ Text creates a simple text element.
 		
 			
 			
-			<h2 id="UIShell">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/shell.go#L8">UIShell</a>
+			<h2 id="UIFlow">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/flow.go#L10">UIFlow</a>
+				<a class="permalink" href="#UIFlow">¶</a>
+				
+				
+			</h2>
+			<p>
+UIFlow is the interface that describes a container that displays its items as
+a flow.
+</p>
+<p>
+EXPERIMENTAL WIDGET.
+</p>
+
+			<pre>type UIFlow interface {
+    <a href="#UI">UI</a>
+
+    <span class="comment">// The HTML Class.</span>
+    Class(c <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#UIFlow">UIFlow</a>
+
+    <span class="comment">// Content sets the content with the given UI elements.</span>
+    Content(elems ...<a href="#UI">UI</a>) <a href="#UIFlow">UIFlow</a>
+
+    <span class="comment">// ItemsBaseWidth sets the items base width in px. Items size is adjusted to</span>
+    <span class="comment">// fit the space in the container. Default is 300px.</span>
+    ItemsBaseWidth(px <a href="https://golang.org/pkg/builtin/#int">int</a>) <a href="#UIFlow">UIFlow</a>
+
+    <span class="comment">// StrechtOnSingleRow makes the items to occupy all the available space when</span>
+    <span class="comment">// the flow spreads on a single row.</span>
+    StrechtOnSingleRow() <a href="#UIFlow">UIFlow</a>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="Flow">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/flow.go#L31">Flow</a>
+					<a class="permalink" href="#Flow">¶</a>
+					
+					
+				</h3>
+				<pre>func Flow() <a href="#UIFlow">UIFlow</a></pre>
+				<p>
+Flow creates a container that displays its items as a flow.
+</p>
+<p>
+EXPERIMENTAL WIDGET.
+</p>
+
+				
+				
+			
+
+			
+		
+			
+			
+			<h2 id="UIShell">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/shell.go#L9">UIShell</a>
 				<a class="permalink" href="#UIShell">¶</a>
 				
 				
@@ -23086,7 +23158,7 @@ UIShell is a component that responsively handles the disposition of a side
 menu, a submenu, and a main content.
 </p>
 <p>
-EXPERIMENTAL.
+EXPERIMENTAL WIDGET.
 </p>
 
 			<pre>type UIShell interface {
@@ -23131,7 +23203,7 @@ EXPERIMENTAL.
 
 			
 				
-				<h3 id="Shell">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/shell.go#L44">Shell</a>
+				<h3 id="Shell">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/shell.go#L45">Shell</a>
 					<a class="permalink" href="#Shell">¶</a>
 					
 					
@@ -23142,7 +23214,7 @@ Shell creates a responsive layout that handles the disposition of a side
 menu, a submenu, and a main content.
 </p>
 <p>
-EXPERIMENTAL.
+EXPERIMENTAL WIDGET.
 </p>
 
 				
@@ -23163,7 +23235,7 @@ UIStack is the interface that describes a container that displays its items
 as stacked panels.
 </p>
 <p>
-EXPERIMENTAL.
+EXPERIMENTAL WIDGET.
 </p>
 
 			<pre>type UIStack interface {
@@ -23208,7 +23280,7 @@ EXPERIMENTAL.
 Stack creates a container that displays its items as stacked panels.
 </p>
 <p>
-EXPERIMENTAL.
+EXPERIMENTAL WIDGET.
 </p>
 
 				

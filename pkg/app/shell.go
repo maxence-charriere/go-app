@@ -9,12 +9,13 @@ import (
 
 const (
 	shellItemBaseWitdth = 300
+	shellRefreshCooldow = time.Millisecond * 100
 )
 
 // UIShell is a component that responsively handles the disposition of a side
 // menu, a submenu, and a main content.
 //
-// EXPERIMENTAL.
+// EXPERIMENTAL WIDGET.
 type UIShell interface {
 	UI
 
@@ -50,11 +51,11 @@ type UIShell interface {
 // Shell creates a responsive layout that handles the disposition of a side
 // menu, a submenu, and a main content.
 //
-// EXPERIMENTAL.
+// EXPERIMENTAL WIDGET.
 func Shell() UIShell {
 	return &shell{
 		IitemsBaseWidth: shellItemBaseWitdth,
-		IAlignment:      "stretch",
+		Ialignment:      "stretch",
 		ImenuButton: []UI{
 			Div().
 				Class("goapp-shell-menu-button-default").
@@ -72,9 +73,9 @@ type shell struct {
 	ImenuButton       []UI
 	IoverlayMenu      []UI
 	IitemsBaseWidth   int
-	IAlignment        string
+	Ialignment        string
 	Iclass            string
-	IShowShrunkenMenu bool
+	IshowShrunkenMenu bool
 
 	id                  string
 	closeResizeListener func()
@@ -127,7 +128,7 @@ func (s *shell) ItemsBaseWidth(px int) UIShell {
 }
 
 func (s *shell) AlignItemsToCenter() UIShell {
-	s.IAlignment = "center"
+	s.Ialignment = "center"
 	return s
 }
 
@@ -170,7 +171,7 @@ func (s *shell) Render() UI {
 			Div().
 				ID(s.elemID("layout")).
 				Class("goapp-shell-layout").
-				Style("align-items", s.IAlignment).
+				Style("align-items", s.Ialignment).
 				Body(
 					Div().
 						ID(s.elemID("menu")).
@@ -199,12 +200,12 @@ func (s *shell) Render() UI {
 				Button().
 					ID(s.elemID("menu-button")).
 					Class("goapp-shell-menu-button").
-					Style("display", visible(!showMenu && !s.IShowShrunkenMenu)).
+					Style("display", visible(!showMenu && !s.IshowShrunkenMenu)).
 					OnClick(s.onMenuButtonClick).
 					Body(s.ImenuButton...),
 				Div().
 					Class("goapp-shell-overlay-menu").
-					Style("display", visible(!showMenu && s.IShowShrunkenMenu)).
+					Style("display", visible(!showMenu && s.IshowShrunkenMenu)).
 					OnClick(s.onMenuOverlayClick).
 					Body(s.IoverlayMenu...),
 			),
@@ -249,11 +250,11 @@ func (s *shell) onResize(ctx Context, e Event) {
 
 func (s *shell) refreshLayout() {
 	if s.refreshCooldown != nil {
-		s.refreshCooldown.Reset(time.Millisecond * 100)
+		s.refreshCooldown.Reset(shellRefreshCooldow)
 		return
 	}
 
-	s.refreshCooldown = time.AfterFunc(time.Millisecond*100, func() {
+	s.refreshCooldown = time.AfterFunc(shellRefreshCooldow, func() {
 		Dispatch(func() {
 			s.refreshMenu()
 			s.refreshSubmenu()
@@ -301,11 +302,11 @@ func (s *shell) refreshSubmenu() {
 }
 
 func (s *shell) onMenuButtonClick(ctx Context, e Event) {
-	s.IShowShrunkenMenu = true
+	s.IshowShrunkenMenu = true
 	s.Update()
 }
 
 func (s *shell) onMenuOverlayClick(ctx Context, e Event) {
-	s.IShowShrunkenMenu = false
+	s.IshowShrunkenMenu = false
 	s.Update()
 }
