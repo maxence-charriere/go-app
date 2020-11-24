@@ -59,7 +59,7 @@ func (m *godocMenu) loadMenu() {
 		m.Update()
 	})
 
-	path := "/web/documents/godoc-index.html"
+	path := "/web/godoc-index.html"
 	res, err := http.Get(path)
 	if err != nil {
 		err = errors.New("getting reference menu failed").Wrap(err)
@@ -128,7 +128,7 @@ func (d *godoc) load() {
 		app.Dispatch(d.scrollToSection)
 	})
 
-	path := "/web/documents/godoc.html"
+	path := "/web/godoc.html"
 
 	res, err := http.Get(path)
 	if err != nil {
