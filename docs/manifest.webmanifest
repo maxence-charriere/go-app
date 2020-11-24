@@ -1,0 +1,21 @@
+{
+  "short_name": "Go-app Docs",
+  "name": "Go-app Docs",
+  "icons": [
+    {
+      "src": "https://storage.googleapis.com/murlok-github/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://storage.googleapis.com/murlok-github/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "scope": "/",
+  "start_url": "/",
+  "background_color": "#2e343a",
+  "theme_color": "#2e343a",
+  "display": "standalone"
+}
