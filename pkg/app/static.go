@@ -45,8 +45,8 @@ func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
 			path:     "/app-worker.js",
 		},
 		{
-			filename: "manifest.json",
-			path:     "/manifest.json",
+			filename: "manifest.webmanifest",
+			path:     "/manifest.webmanifest",
 		},
 		{
 			filename: "app.css",
