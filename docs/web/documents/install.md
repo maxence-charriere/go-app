@@ -21,6 +21,8 @@ Apps built with this package are [progressive web apps (PWA)](https://web.dev/pr
 
 ## Android
 
+![Android install](/web/images/android-install.png)
+
 - Open the app in [Chrome](https://www.google.com/chrome)
 - Tap on the `dot menu` button
 - Tap `Add to home screen` button
