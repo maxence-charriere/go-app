@@ -124,15 +124,21 @@ func displayLoadError(err interface{}) {
 func onNavigate(this Value, args []Value) interface{} {
 	event := Event{Value: args[0]}
 	elem := event.Get("target")
-	if !elem.Truthy() {
-		elem = event.Get("srcElement")
-	}
 
 	for {
 		switch elem.Get("tagName").String() {
 		case "A":
 			u := elem.Get("href").String()
 			if u, _ := url.Parse(u); isExternalNavigation(u) {
+				elem.Set("target", "_blank")
+				return nil
+			}
+
+			if meta := event.Get("metaKey"); meta.Truthy() && meta.Bool() {
+				return nil
+			}
+
+			if ctrl := event.Get("ctrlKey"); ctrl.Truthy() && ctrl.Bool() {
 				return nil
 			}
 

@@ -89,7 +89,6 @@ func findHTMLNode(n *html.Node, id string) (*html.Node, error) {
 
 func normalizeNode(n *html.Node) {
 	if n.Type == html.ElementNode {
-		externalLink := false
 		id := ""
 
 		for i, a := range n.Attr {
@@ -109,12 +108,10 @@ func normalizeNode(n *html.Node) {
 				u.Path = "/maxence-charriere/go-app/blob/master" + u.Path
 				u.Scheme = "https"
 				u.Host = "github.com"
-				externalLink = true
 
-			case strings.HasPrefix(u.Path, "/pkg/builtin"):
+			case strings.HasPrefix(u.Path, "/pkg/"):
 				u.Scheme = "https"
 				u.Host = "golang.org"
-				externalLink = true
 
 			case u.Scheme == "" && u.Fragment != "":
 				id = linkID(u.Fragment)
@@ -123,13 +120,6 @@ func normalizeNode(n *html.Node) {
 			a.Val = u.String()
 			n.Attr[i] = a
 			break
-		}
-
-		if externalLink {
-			n.Attr = append(n.Attr, html.Attribute{
-				Key: "target",
-				Val: "_blank",
-			})
 		}
 
 		if id != "" {
