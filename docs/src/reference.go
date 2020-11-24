@@ -3,6 +3,7 @@ package main
 import (
 	"io/ioutil"
 	"net/http"
+	"net/url"
 
 	"github.com/maxence-charriere/go-app/v7/pkg/app"
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
@@ -28,9 +29,10 @@ func (r *reference) Render() app.UI {
 type godocMenu struct {
 	app.Compo
 
-	rawHTML string
-	loading bool
-	err     error
+	fragment string
+	rawHTML  string
+	loading  bool
+	err      error
 }
 
 func newGodocMenu() app.UI {
@@ -45,6 +47,11 @@ func (m *godocMenu) OnMount(ctx app.Context) {
 	go m.loadMenu()
 }
 
+func (m *godocMenu) OnNav(ctx app.Context, u *url.URL) {
+	m.unfocusLink()
+	m.focusLink()
+}
+
 func (m *godocMenu) loadMenu() {
 	var html string
 	var err error
@@ -57,6 +64,9 @@ func (m *godocMenu) loadMenu() {
 		m.rawHTML = html
 		m.loading = false
 		m.Update()
+
+		app.Dispatch(m.focusLink)
+		app.Dispatch(m.scrollToLink)
 	})
 
 	path := "/web/godoc-index.html"
@@ -92,6 +102,48 @@ func (m *godocMenu) Render() app.UI {
 				app.Raw(m.rawHTML),
 			),
 		)
+}
+
+func (m *godocMenu) focusLink() {
+	fragment := app.Window().URL().Fragment
+	if fragment == "" {
+		return
+	}
+
+	link := app.Window().GetElementByID(m.linkID(fragment))
+	if !link.Truthy() {
+		return
+	}
+
+	link.Set("className", "focus")
+	m.fragment = fragment
+}
+
+func (m *godocMenu) unfocusLink() {
+	if m.fragment == "" {
+		return
+	}
+
+	link := app.Window().GetElementByID(m.linkID(m.fragment))
+	if !link.Truthy() {
+		return
+	}
+
+	link.Set("className", "")
+	m.fragment = ""
+}
+
+func (m *godocMenu) scrollToLink() {
+	fragment := app.Window().URL().Fragment
+	if fragment == "" {
+		return
+	}
+
+	app.Window().ScrollToID(m.linkID(fragment))
+}
+
+func (m *godocMenu) linkID(fragment string) string {
+	return "src-" + fragment
 }
 
 type godoc struct {

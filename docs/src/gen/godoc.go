@@ -90,6 +90,7 @@ func findHTMLNode(n *html.Node, id string) (*html.Node, error) {
 func normalizeNode(n *html.Node) {
 	if n.Type == html.ElementNode {
 		externalLink := false
+		id := ""
 
 		for i, a := range n.Attr {
 			if a.Key != "href" {
@@ -101,17 +102,22 @@ func normalizeNode(n *html.Node) {
 				continue
 			}
 
-			if strings.HasPrefix(u.Path, "/src/github.com/maxence-charriere/go-app/v7") {
+			switch {
+			case strings.HasPrefix(u.Path, "/src/github.com/maxence-charriere/go-app/v7"):
 				u.RawQuery = ""
 				u.Path = strings.TrimPrefix(u.Path, "/src/github.com/maxence-charriere/go-app/v7")
 				u.Path = "/maxence-charriere/go-app/blob/master" + u.Path
 				u.Scheme = "https"
 				u.Host = "github.com"
 				externalLink = true
-			} else if strings.HasPrefix(u.Path, "/pkg/builtin") {
+
+			case strings.HasPrefix(u.Path, "/pkg/builtin"):
 				u.Scheme = "https"
 				u.Host = "golang.org"
 				externalLink = true
+
+			case u.Scheme == "" && u.Fragment != "":
+				id = linkID(u.Fragment)
 			}
 
 			a.Val = u.String()
@@ -125,9 +131,20 @@ func normalizeNode(n *html.Node) {
 				Val: "_blank",
 			})
 		}
+
+		if id != "" {
+			n.Attr = append(n.Attr, html.Attribute{
+				Key: "id",
+				Val: id,
+			})
+		}
 	}
 
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 		normalizeNode(c)
 	}
+}
+
+func linkID(fragment string) string {
+	return "src-" + fragment
 }
