@@ -5,7 +5,7 @@
         <meta httpequiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="author" content="Maxence Charriere">
         <meta name="description" content="Documentation for the go-app package.">
-        <meta name="keywords" content="go-app, go, golang, app, pwa, progressive web app, webassembly, web assembly, gui, ui, user interface, graphical user interface, frontend, opensource, open source, github">
+        <meta content="go-app, go, golang, app, pwa, progressive web app, webassembly, web assembly, gui, ui, user interface, graphical user interface, frontend, opensource, open source, github" name="keywords">
         <meta name="theme-color" content="#2e343a">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
         <title>
@@ -16,16 +16,26 @@
         <link rel="manifest" href="/manifest.webmanifest">
         <link type="text/css" rel="stylesheet" href="/app.css">
         <script defer src="/wasm_exec.js"></script>
-        <script src="/app.js" defer></script>
-        <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" type="text/css">
+        <script defer src="/app.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" type="text/css" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
         <link type="text/css" rel="stylesheet" href="/web/css/prism.css">
-        <link rel="stylesheet" href="/web/css/docs.css" type="text/css">
+        <link type="text/css" rel="stylesheet" href="/web/css/docs.css">
         <script defer src="/web/js/prism.js"></script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+			<script async src="https://www.googletagmanager.com/gtag/js?id=G-SW4FQEM9VM"></script>
+			<script>
+			  window.dataLayer = window.dataLayer || [];
+			  function gtag(){dataLayer.push(arguments);}
+			  gtag('js', new Date());
+			
+			  gtag('config', 'G-SW4FQEM9VM');
+			</script>
+
     </head>
     <body>
         <div id="app-wasm-layout" class="goapp-app-info">
-            <img src="https://storage.googleapis.com/murlok-github/icon-192.png" id="app-wasm-loader-icon" class="goapp-logo goapp-spin">
+            <img id="app-wasm-loader-icon" class="goapp-logo goapp-spin" src="https://storage.googleapis.com/murlok-github/icon-192.png">
             <p id="app-wasm-loader-label" class="goapp-label">
                 Loading go-app documentation...
             </p>

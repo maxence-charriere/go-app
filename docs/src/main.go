@@ -79,6 +79,18 @@ func main() {
 			"/web/css/prism.css",
 			"/web/css/docs.css",
 		},
+		RawHeaders: []string{
+			`
+			<!-- Global site tag (gtag.js) - Google Analytics -->
+			<script async src="https://www.googletagmanager.com/gtag/js?id=G-SW4FQEM9VM"></script>
+			<script>
+			  window.dataLayer = window.dataLayer || [];
+			  function gtag(){dataLayer.push(arguments);}
+			  gtag('js', new Date());
+			
+			  gtag('config', 'G-SW4FQEM9VM');
+			</script>`,
+		},
 		ThemeColor: backgroundColor,
 		Title:      "go-app documentation",
 	}
