@@ -10,6 +10,7 @@ const (
 	buyMeACoffeeURL   = "https://www.buymeacoffee.com/maxence"
 	openCollectiveURL = "https://opencollective.com/go-app"
 	githubURL         = "https://github.com/maxence-charriere/go-app"
+	githubSponsorURL  = "https://github.com/sponsors/maxence-charriere"
 	twitterURL        = "https://twitter.com/jonhymaxoo"
 )
 

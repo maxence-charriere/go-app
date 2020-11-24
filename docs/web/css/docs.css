@@ -450,6 +450,8 @@ pre[class*="language-"] code {
 .document .support-partner-name {
   font-family: "Montserrat", sans-serif;
   text-transform: uppercase;
+  text-align: center;
+  text-overflow: ellipsis;
   font-weight: 400;
   padding-top: 6px;
 }
