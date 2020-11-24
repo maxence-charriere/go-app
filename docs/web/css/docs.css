@@ -5,6 +5,11 @@ html {
   background-color: #2e343a;
 }
 
+html,
+body {
+  border: 0;
+}
+
 body {
   overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
@@ -254,7 +259,7 @@ pre[class*="language-"] code {
 }
 
 .document li {
-  margin: 6px 30px;
+  margin: 6px 0 0 18px;
 }
 
 .document img {

@@ -18,5 +18,6 @@ func main() {
 	app.Route("/routing", newRouting())
 	app.Route("/static-resources", newStaticResources())
 	app.Route("/built-with", newBuiltWith())
+	app.Route("/install", newInstall())
 	app.Run()
 }

@@ -258,7 +258,7 @@ func (h *Handler) initPage() {
 				Href(h.Icon.AppleTouch),
 			Link().
 				Rel("manifest").
-				Href(h.appResource("/manifest.json")),
+				Href(h.appResource("/manifest.webmanifest")),
 			Link().
 				Type("text/css").
 				Rel("stylesheet").
@@ -451,7 +451,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		h.serveAppWorkerJS(w, r)
 		return
 
-	case "/manifest.json":
+	case "/manifest.json", "/manifest.webmanifest":
 		h.serveManifestJSON(w, r)
 		return
 

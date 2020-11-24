@@ -155,6 +155,18 @@ func newBuiltWith() app.UI {
 		)
 }
 
+func newInstall() app.UI {
+	return newPage().
+		Path("/web/documents/install.md").
+		TableOfContents(
+			"Install",
+			"Desktop",
+			"IOS",
+			"Android",
+			"Next",
+		)
+}
+
 type page struct {
 	app.Compo
 

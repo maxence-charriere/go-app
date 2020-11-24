@@ -23,5 +23,6 @@ Tool to converts Go code into its go/ast representation.
 ## Next
 
 - [Getting started](/start)
+- [Understand go-app architecture](/architecture)
 - [How to create a component](/components)
 - [API reference](/reference)

@@ -23,7 +23,7 @@ func support() app.UI {
 				Href(openCollectiveURL).
 				Target("_blank").
 				Text("open collective "),
-			app.Text("is always a boost and always bring great motivation to keep the good work."),
+			app.Text("is always a boost and bring great motivation to keep the good work."),
 			app.Flow().
 				StrechtOnSingleRow().
 				ItemsBaseWidth(192).
