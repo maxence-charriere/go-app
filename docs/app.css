@@ -215,9 +215,9 @@
 }
 
 .goapp-shell-menu-button-default {
-  padding: 6px 12px;
+  font-size: 24px;
+  padding: 12px 18px;
   color: currentColor;
-  font-size: 16px;
 }
 
 .goapp-shell-menu-button-default:hover {
