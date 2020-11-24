@@ -33,7 +33,7 @@ func TestGenerateStaticWebsite(t *testing.T) {
 		filepath.Join(dir, "wasm_exec.js"),
 		filepath.Join(dir, "app.js"),
 		filepath.Join(dir, "app-worker.js"),
-		filepath.Join(dir, "manifest.json"),
+		filepath.Join(dir, "manifest.webmanifest"),
 		filepath.Join(dir, "app.css"),
 		filepath.Join(dir, "hello.html"),
 	}
