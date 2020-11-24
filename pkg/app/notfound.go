@@ -1,7 +1,5 @@
 package app
 
-import "fmt"
-
 var (
 	// NotFound is the ui element that is displayed when a request is not
 	// routed.
@@ -23,8 +21,6 @@ func (n *notFound) OnMount(Context) {
 		if rel.String() == "icon" {
 			favicon := link.Call("getAttribute", "href")
 			n.Icon = favicon.String()
-
-			fmt.Println(favicon)
 			n.Update()
 			return
 		}

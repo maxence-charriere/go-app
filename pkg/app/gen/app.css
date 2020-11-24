@@ -164,3 +164,97 @@
   height: 18px;
   margin-right: 12px;
 }
+
+/*------------------------------------------------------------------------------
+  Shell
+------------------------------------------------------------------------------*/
+.goapp-shell,
+.goapp-shell-layout,
+.goapp-shell-overlay-menu {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.goapp-shell {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.goapp-shell-layout {
+  position: relative;
+  display: flex;
+}
+
+.goapp-shell-item {
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.goapp-shell-menu-button,
+.goapp-shell-item > *,
+.goapp-shell-overlay-menu > * {
+  pointer-events: auto;
+}
+
+.goapp-shell-menu-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: currentColor;
+}
+
+.goapp-shell-menu-button-default {
+  padding: 6px 12px;
+  color: currentColor;
+  font-size: 16px;
+}
+
+.goapp-shell-menu-button-default:hover {
+  color: dodgerblue;
+  cursor: pointer;
+}
+
+.goapp-shell-overlay-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/*------------------------------------------------------------------------------
+  Stack
+------------------------------------------------------------------------------*/
+.goapp-stack {
+  position: relative;
+  display: flex;
+}
+
+/*------------------------------------------------------------------------------
+  Flow
+------------------------------------------------------------------------------*/
+.goapp-flow {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.goapp-flow-item {
+  flex-grow: 0;
+  flex-shrink: 1;
+}

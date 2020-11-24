@@ -1,6 +1,6 @@
 bootstrap:
 	@echo "\033[94m• Setting up go test for wasm to run in the browser\033[00m"
-	go get -u github.com/agnivade/wasmbrowsertest
+	GO111MODULE=off go get -u github.com/agnivade/wasmbrowsertest
 	mv ${GOPATH}/bin/wasmbrowsertest ${GOPATH}/bin/go_js_wasm_exec
 
 .PHONY: test
@@ -27,7 +27,8 @@ endif
 
 build:
 	@echo "\033[94m• Building go-app documentation PWA\033[00m"
-	@GOARCH=wasm GOOS=js go build -o docs/web/app.wasm ./docs/src
+	@go generate ./docs/src
+	@GOARCH=wasm GOOS=js go build -v -o docs/web/app.wasm ./docs/src
 	@echo "\033[94m• Building go-app documentation\033[00m"
 	@go build -o docs/documentation ./docs/src
 

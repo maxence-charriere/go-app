@@ -1,5 +1,8 @@
 // +build !wasm
 
+//go:generate go run gen/godoc.go
+//go:generate go fmt
+
 package main
 
 import (
@@ -41,9 +44,12 @@ func main() {
 		Help(`Generates the required resources to run the documentation app on GitHub Pages.`).
 		Options(&githubOpts)
 
+	backgroundColor := "#2e343a"
+
 	h := app.Handler{
-		Author:      "Maxence Charriere",
-		Description: "Documentation for the go-app package.",
+		Author:          "Maxence Charriere",
+		BackgroundColor: backgroundColor,
+		Description:     "Documentation for the go-app package.",
 		Keywords: []string{
 			"go-app",
 			"go",
@@ -64,7 +70,17 @@ func main() {
 		},
 		LoadingLabel: "Loading go-app documentation...",
 		Name:         "Go-app Docs",
-		Title:        "go-app documentation",
+		Scripts: []string{
+			"/web/js/prism.js",
+		},
+		Styles: []string{
+			"https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap",
+			"https://fonts.googleapis.com/css2?family=Roboto&display=swap",
+			"/web/css/prism.css",
+			"/web/css/docs.css",
+		},
+		ThemeColor: backgroundColor,
+		Title:      "go-app documentation",
 	}
 
 	switch cli.Load() {
@@ -98,9 +114,13 @@ func runLocal(ctx context.Context, h *app.Handler, opts localOptions) {
 }
 
 func generateGitHubPages(ctx context.Context, h *app.Handler, opts githubOptions) {
-	h.Resources = app.GitHubPages("go-app")
+	pages := pages()
+	p := make([]string, 0, len(pages))
+	for path := range pages {
+		p = append(p, path)
+	}
 
-	if err := app.GenerateStaticWebsite(opts.Output, h); err != nil {
+	if err := app.GenerateStaticWebsite(opts.Output, h, p...); err != nil {
 		panic(err)
 	}
 }

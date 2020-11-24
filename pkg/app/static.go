@@ -17,7 +17,7 @@ import (
 //
 // Note that app.wasm must still be built separately and put into the web
 // directory.
-func GenerateStaticWebsite(dir string, h *Handler) error {
+func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
 	if err := os.MkdirAll(filepath.Join(dir, "web"), 0755); err != nil {
 		return errors.New("creating directory for static website failed").
 			Tag("directory", dir).
@@ -52,6 +52,20 @@ func GenerateStaticWebsite(dir string, h *Handler) error {
 			filename: "app.css",
 			path:     "/app.css",
 		},
+	}
+
+	for _, p := range pages {
+		if p == "" {
+			continue
+		}
+
+		resources = append(resources, struct {
+			filename string
+			path     string
+		}{
+			filename: p + ".html",
+			path:     "/",
+		})
 	}
 
 	for _, r := range resources {

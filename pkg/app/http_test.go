@@ -42,7 +42,7 @@ func TestHandlerServePageWithLocalDir(t *testing.T) {
 	require.Contains(t, body, `href="http://boo.com/bar.css"`)
 	require.Contains(t, body, `src="/web/hello.js"`)
 	require.Contains(t, body, `src="http://boo.com/bar.js"`)
-	require.Contains(t, body, `href="/manifest.json"`)
+	require.Contains(t, body, `href="/manifest.webmanifest"`)
 	require.Contains(t, body, `href="/app.css"`)
 	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
 
@@ -80,7 +80,7 @@ func TestHandlerServePageWithRemoteBucket(t *testing.T) {
 	require.Contains(t, body, `href="http://boo.com/bar.css"`)
 	require.Contains(t, body, `src="https://storage.googleapis.com/go-app/web/hello.js"`)
 	require.Contains(t, body, `src="http://boo.com/bar.js"`)
-	require.Contains(t, body, `href="/manifest.json"`)
+	require.Contains(t, body, `href="/manifest.webmanifest"`)
 	require.Contains(t, body, `href="/app.css"`)
 	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
 
@@ -118,7 +118,7 @@ func TestHandlerServePageWithGitHubPages(t *testing.T) {
 	require.Contains(t, body, `href="http://boo.com/bar.css"`)
 	require.Contains(t, body, `src="/go-app/web/hello.js"`)
 	require.Contains(t, body, `src="http://boo.com/bar.js"`)
-	require.Contains(t, body, `href="/go-app/manifest.json"`)
+	require.Contains(t, body, `href="/go-app/manifest.webmanifest"`)
 	require.Contains(t, body, `href="/go-app/app.css"`)
 	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
 
@@ -307,7 +307,7 @@ func TestHandlerServeAppWorkerJSWithGitHubPages(t *testing.T) {
 }
 
 func TestHandlerServeManifestJSONWithLocalDir(t *testing.T) {
-	r := httptest.NewRequest(http.MethodGet, "/manifest.json", nil)
+	r := httptest.NewRequest(http.MethodGet, "/manifest.webmanifest", nil)
 	w := httptest.NewRecorder()
 
 	h := Handler{
@@ -333,7 +333,7 @@ func TestHandlerServeManifestJSONWithLocalDir(t *testing.T) {
 }
 
 func TestHandlerServeManifestJSONWithRemoteBucket(t *testing.T) {
-	r := httptest.NewRequest(http.MethodGet, "/manifest.json", nil)
+	r := httptest.NewRequest(http.MethodGet, "/manifest.webmanifest", nil)
 	w := httptest.NewRecorder()
 
 	h := Handler{
@@ -360,7 +360,7 @@ func TestHandlerServeManifestJSONWithRemoteBucket(t *testing.T) {
 }
 
 func TestHandlerServeManifestJSONWithGitHubPages(t *testing.T) {
-	r := httptest.NewRequest(http.MethodGet, "/manifest.json", nil)
+	r := httptest.NewRequest(http.MethodGet, "/manifest.webmanifest", nil)
 	w := httptest.NewRecorder()
 
 	h := Handler{
