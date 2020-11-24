@@ -114,8 +114,6 @@ func runLocal(ctx context.Context, h *app.Handler, opts localOptions) {
 }
 
 func generateGitHubPages(ctx context.Context, h *app.Handler, opts githubOptions) {
-	h.Resources = app.GitHubPages("go-app")
-
 	if err := app.GenerateStaticWebsite(opts.Output, h); err != nil {
 		panic(err)
 	}

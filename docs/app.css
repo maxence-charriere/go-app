@@ -176,6 +176,7 @@
   max-width: 100%;
   max-height: 100%;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .goapp-shell {
@@ -193,6 +194,12 @@
   max-height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.goapp-shell-menu-button,
+.goapp-shell-item > *,
+.goapp-shell-overlay-menu > * {
+  pointer-events: auto;
 }
 
 .goapp-shell-menu-button {
@@ -222,4 +229,32 @@
   position: absolute;
   top: 0;
   left: 0;
+}
+
+/*------------------------------------------------------------------------------
+  Stack
+------------------------------------------------------------------------------*/
+.goapp-stack {
+  position: relative;
+  display: flex;
+}
+
+/*------------------------------------------------------------------------------
+  Flow
+------------------------------------------------------------------------------*/
+.goapp-flow {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.goapp-flow-item {
+  flex-grow: 0;
+  flex-shrink: 1;
 }
