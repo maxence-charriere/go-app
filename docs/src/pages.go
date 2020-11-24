@@ -14,6 +14,23 @@ const (
 	twitterURL        = "https://twitter.com/jonhymaxoo"
 )
 
+func pages() map[string]func() app.UI {
+	return map[string]func() app.UI{
+		"":                 newStart,
+		"start":            newStart,
+		"architecture":     newArchitecture,
+		"reference":        newReference,
+		"components":       newCompo,
+		"concurrency":      newConcurrency,
+		"syntax":           newSyntax,
+		"js":               newJS,
+		"routing":          newRouting,
+		"static-resources": newStaticResources,
+		"built-with":       newBuiltWith,
+		"install":          newInstall,
+	}
+}
+
 func newStart() app.UI {
 	return newPage().
 		Path("/web/documents/start.md").

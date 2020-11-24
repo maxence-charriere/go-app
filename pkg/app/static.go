@@ -55,6 +55,10 @@ func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
 	}
 
 	for _, p := range pages {
+		if p == "" {
+			continue
+		}
+
 		resources = append(resources, struct {
 			filename string
 			path     string
