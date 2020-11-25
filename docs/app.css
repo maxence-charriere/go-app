@@ -183,6 +183,9 @@
   position: fixed;
   top: 0;
   left: 0;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 .goapp-shell-layout {

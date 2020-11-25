@@ -343,15 +343,15 @@ func (h *Handler) initAppJS() {
 
 func (h *Handler) initWorkerJS() {
 	cacheableResources := map[string]struct{}{
-		h.appResource("/app.css"):       {},
-		h.appResource("/app.js"):        {},
-		h.appResource("/manifest.json"): {},
-		h.appResource("/wasm_exec.js"):  {},
-		h.appResource("/"):              {},
-		h.Resources.AppWASM():           {},
-		h.Icon.Default:                  {},
-		h.Icon.Large:                    {},
-		h.Icon.AppleTouch:               {},
+		h.appResource("/app.css"):              {},
+		h.appResource("/app.js"):               {},
+		h.appResource("/manifest.webmanifest"): {},
+		h.appResource("/wasm_exec.js"):         {},
+		h.appResource("/"):                     {},
+		h.Resources.AppWASM():                  {},
+		h.Icon.Default:                         {},
+		h.Icon.Large:                           {},
+		h.Icon.AppleTouch:                      {},
 	}
 
 	cacheResources := func(res []string) {
@@ -390,7 +390,7 @@ func (h *Handler) initManifestJSON() {
 	}
 
 	if err := template.
-		Must(template.New("manifest.json").Parse(manifestJSON)).
+		Must(template.New("manifest.webmanifest").Parse(manifestJSON)).
 		Execute(&h.manifestJSON, struct {
 			ShortName       string
 			Name            string
@@ -410,7 +410,7 @@ func (h *Handler) initManifestJSON() {
 			Scope:           normalize(h.Resources.AppResources()),
 			StartURL:        normalize(h.Resources.AppResources()),
 		}); err != nil {
-		panic(errors.New("initializing manifest.json failed").Wrap(err))
+		panic(errors.New("initializing manifest.webmanifest failed").Wrap(err))
 	}
 }
 

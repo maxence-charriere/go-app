@@ -36,7 +36,7 @@ func main() {
 		)},
 		{Var: "appJS", Filename: "gen/app.js"},
 		{Var: "appWorkerJS", Filename: "gen/app-worker.js"},
-		{Var: "manifestJSON", Filename: "gen/manifest.json"},
+		{Var: "manifestJSON", Filename: "gen/manifest.webmanifest"},
 		{Var: "appCSS", Filename: "gen/app.css"},
 	}
 
