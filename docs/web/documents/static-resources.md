@@ -123,14 +123,14 @@ func main() {
 When built and launched, the example above generates a full static website in the `/test-app` directory. The generated website will have the following structure:
 
 ```bash
-.                 # /test-app
-├── app-worker.js # service-worker file (Generated).
-├── app.js        # Js support file (Generated).
-├── index.html    # Index page (Generated).
-├── manifest.json # PWA manifest (Generated).
-├── wasm_exec.js  # Wasm support file (Generated).
-└── web           # Web directory.
-    └── app.wasm  # Wasm app (Manually built).
+.                        # /test-app
+├── app-worker.js        # service-worker file (Generated).
+├── app.js               # Js support file (Generated).
+├── index.html           # Index page (Generated).
+├── manifest.webmanifest # PWA manifest (Generated).
+├── wasm_exec.js         # Wasm support file (Generated).
+└── web                  # Web directory.
+    └── app.wasm         # Wasm app (Manually built).
 ```
 
 Note that `app.wasm` is still built separately with:

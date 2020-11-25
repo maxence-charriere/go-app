@@ -1,7 +1,7 @@
-const cacheName = "app-" + "947c1ea1a22f0cc56b5fdfc4714d032ee202f6a5";
+const cacheName = "app-" + "3250a574f593b6aa96bb39a3377a62624651af67";
 
 self.addEventListener("install", event => {
-  console.log("installing app worker 947c1ea1a22f0cc56b5fdfc4714d032ee202f6a5");
+  console.log("installing app worker 3250a574f593b6aa96bb39a3377a62624651af67");
   self.skipWaiting();
 
   event.waitUntil(
@@ -10,7 +10,7 @@ self.addEventListener("install", event => {
         "/",
         "/app.css",
         "/app.js",
-        "/manifest.json",
+        "/manifest.webmanifest",
         "/wasm_exec.js",
         "/web/app.wasm",
         "/web/css/docs.css",
@@ -38,7 +38,7 @@ self.addEventListener("activate", event => {
       );
     })
   );
-  console.log("app worker 947c1ea1a22f0cc56b5fdfc4714d032ee202f6a5 is activated");
+  console.log("app worker 3250a574f593b6aa96bb39a3377a62624651af67 is activated");
 });
 
 self.addEventListener("fetch", event => {
