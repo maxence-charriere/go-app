@@ -1,5 +1,5 @@
 <h1 align="center">
-    <a href="https://github.com/maxence-charriere/go-app">
+    <a href="https://go-app.dev">
         <img alt="go-app"  width="150" height="150" src="https://storage.googleapis.com/murlok-github/icon-192.png">
     </a>
 </h1>
@@ -9,7 +9,6 @@
     <a href="https://goreportcard.com/report/github.com/maxence-charriere/go-app"><img src="https://goreportcard.com/badge/github.com/maxence-charriere/go-app" alt="Go Report Card"></a>
 	<a href="https://GitHub.com/maxence-charriere/go-app/releases/"><img src="https://img.shields.io/github/release/maxence-charriere/go-app.svg" alt="GitHub release"></a>
 	<a href="https://pkg.go.dev/github.com/maxence-charriere/go-app/v7/pkg/app"><img src="https://img.shields.io/badge/dev-reference-007d9c?logo=go&logoColor=white&style=flat" alt="pkg.go.dev docs"></a>
-	<a href="https://github.com/maxence-charriere/go-app/wiki"><img src="https://img.shields.io/badge/github-wiki-6E7AF8?logo=github&style=flat" alt="pkg.go.dev docs"></a>
     <a href="https://twitter.com/jonhymaxoo"><img alt="Twitter URL" src="https://img.shields.io/badge/twitter-@jonhymaxoo-35A9F8?logo=twitter&style=flat"></a>
     <a href="https://opencollective.com/go-app" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/go-app/all/badge.svg?label=open+collective&color=4FB9F6" /></a>
 </p>
@@ -20,7 +19,27 @@ It uses a [declarative syntax](#declarative-syntax) that allows creating and dea
 
 The package also provides an [http.handler](#http-handler) ready to serve all the required resources to run Go-based progressive web apps.
 
-## Install
+## Documentation
+
+[![go-app documentation](docs/web/images/go-app.png)](https://go-app.dev)
+
+- [Getting started](https://go-app.dev/start)
+- [Architecture](https://go-app.dev/architecture)
+- [Reference](https://go-app.dev/reference) | [Go.dev](https://pkg.go.dev/github.com/maxence-charriere/go-app/v7/pkg/app)
+
+- [Components](https://go-app.dev/components)
+- [Declarative syntax](https://go-app.dev/syntax)
+- [Routing](https://go-app.dev/routing)
+- [Concurrency](https://go-app.dev/concurrency)
+- [Javascript and DOM](https://go-app.dev/js)
+- [Static resources](https://go-app.dev/static-resources)
+
+- [Built with go-app](https://go-app.dev/built-with)
+- [Intall](https://go-app.dev/install)
+
+## Sneak peek
+
+### Install
 
 **go-app** requirements:
 
@@ -28,25 +47,11 @@ The package also provides an [http.handler](#http-handler) ready to serve all th
 - [Go module](https://github.com/golang/go/wiki/Modules)
 
 ```sh
-# Init go module (if not initialized):
 go mod init
-
-# Get package:
-go get -u -v github.com/maxence-charriere/go-app/v7
+go get -u github.com/maxence-charriere/go-app/v7/pkg/app
 ```
 
-## How it works
-
-<p align="center">
-     <img alt="app diagram"  width="680" src="https://storage.googleapis.com/murlok-github/app.png">
-</p>
-
-- **Users:** The users of your app. They request pages and resources from their web browser.
-- **[app.Handler](https://pkg.go.dev/github.com/maxence-charriere/go-app/pkg/app#Handler)**: An [http.Handler](https://golang.org/pkg/net/http/#Handler) used by your server or cloud function. It serves your app, its static resources, and all the required files to make it work on user browsers.
-- **Application**: Your app built with this package. It is built as a WebAssembly (.wasm) binary and is served by the [app.Handler](https://pkg.go.dev/github.com/maxence-charriere/go-app/pkg/app#Handler).
-- **Other static resources**: Styles, images, and scripts used by your app. They are also served by the [app.Handler](https://pkg.go.dev/github.com/maxence-charriere/go-app/pkg/app#Handler).
-
-## Declarative syntax
+### Declarative syntax
 
 **go-app** uses a declarative syntax so you can write component-based UI elements just by using the Go programming language.
 
@@ -101,7 +106,7 @@ GOARCH=wasm GOOS=js go build -o app.wasm
 
 Note that the build output is named `app.wasm` because the HTTP handler expects the wasm app to be named that way in order to serve its content.
 
-## HTTP handler
+### HTTP handler
 
 Once the wasm app is built, the next step is to serve it.
 
@@ -148,45 +153,12 @@ The directory should look like as the following:
     └── app.wasm    # Wasm binary
 ```
 
-## Works on mainstream browsers
+Then launch the `hello` server and open the web browser to see the result.
 
-|         | Chrome | Edge | Firefox | Opera | Safari |
-| :------ | :----: | :--: | :-----: | :---: | :----: |
-| Desktop |   ✔    | ✔\*  |    ✔    |   ✔   |   ✔    |
-| Mobile  |   ✔    |  ✔   |    ✔    |   ✔   |   ✔    |
+Demo code and live demo are available on the following links:
 
-\*_only Chromium based [Edge](https://www.microsoft.com/edge)_
-
-## Demo
-
-The hello example introduced above:
-
-| Sources                                                                                                         | Description                                                                                           |
-| --------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| [hello](https://github.com/maxence-charriere/go-app-demo/tree/v6/hello)                                         | Hello app.                                                                                            |
-| [hello-local](https://github.com/maxence-charriere/go-app-demo/tree/v6/hello-local)                             | Hello app that runs on a local server.                                                                |
-| [hello-local-external-root](https://github.com/maxence-charriere/go-app-demo/tree/v6/hello-local-external-root) | Hello app that runs on a local server but with a custom root directory.                               |
-| [hello-docker](https://github.com/maxence-charriere/go-app-demo/tree/v6/hello-docker)                           | Hello app that run in a Docker container.                                                             |
-| [hello-gcloud-appengine](https://github.com/maxence-charriere/go-app-demo/tree/v6/hello-gcloud-appengine)       | Hello app that run on Google Cloud App Engine.<br> [See live](https://go-app-demo-42.appspot.com)     |
-| [hello-gcloud-func](https://github.com/maxence-charriere/go-app-demo/tree/v6/hello-gcloud-func)                 | Hello app that run on Google a Cloud Function.<br> [See live](https://go-app-demo-42.firebaseapp.com) |
-
-## Live apps
-
-<p align="center">
-    <a href="https://murlok.io">
-        <img alt="Murlok.io"  width="400" src="https://storage.googleapis.com/murlok-github/murlok-thumb.png">
-    </a>
-    <a href="https://luck.murlok.io">
-        <img alt="luck app"  width="400" src="https://storage.googleapis.com/murlok-github/luck-thumb.png">
-    </a>
-    <a href="https://lu4p.github.io/astextract">
-        <img alt="luck app"  width="400" src="https://storage.googleapis.com/murlok-github/astextract-thumb.png">
-    </a>
-</p>
-
-## How to migrate app from v6 to v7
-
-See [migration guide](https://github.com/maxence-charriere/go-app/blob/v7/docs/v7-migration.md).
+- [Demo repository](https://github.com/maxence-charriere/go-app-demo/tree/v6)
+- [Live Hello world](https://go-app-demo-42.appspot.com)
 
 ## Contributors
 
