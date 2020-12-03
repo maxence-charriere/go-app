@@ -16,14 +16,10 @@ import (
 // raw string content.
 func Raw(v string) UI {
 	v = strings.TrimSpace(v)
-	if v == "" {
-		v = "<div></div>"
-	}
 
 	tag := rawRootTagName(v)
 	if tag == "" {
-		panic(errors.New("creating raw element failed").
-			Tag("reason", "opening tag not found"))
+		v = "<div></div>"
 	}
 
 	return &raw{
