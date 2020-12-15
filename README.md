@@ -35,7 +35,7 @@ The package also provides an [http.handler](#http-handler) ready to serve all th
 - [Static resources](https://go-app.dev/static-resources)
 
 - [Built with go-app](https://go-app.dev/built-with)
-- [Intall](https://go-app.dev/install)
+- [Install](https://go-app.dev/install)
 
 ## Sneak peek
 
