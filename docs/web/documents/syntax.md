@@ -44,7 +44,7 @@ type HTMLDiv interface {
 
 ### Create
 
-Creating an HTML element is done by calling a function named after its name. The example bellow create a [\<div>](/reference#Div):
+Creating an HTML element is done by calling a function named after its name. The example below will create a [\<div>](/reference#Div):
 
 ```go
 func (c *myCompo) Render() app.UI {
