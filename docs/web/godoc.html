@@ -1646,6 +1646,12 @@ BrowserStorage is the interface that describes a web browser storage.
     <span class="comment">// Del deletes the item associated with the given key.</span>
     Del(k <a href="https://golang.org/pkg/builtin/#string">string</a>)
 
+    <span class="comment">// Len returns the number of items stored.</span>
+    Len() <a href="https://golang.org/pkg/builtin/#int">int</a>
+
+    <span class="comment">// Key returns the key of the item associated to the given index.</span>
+    Key(i <a href="https://golang.org/pkg/builtin/#int">int</a>) (<a href="https://golang.org/pkg/builtin/#string">string</a>, <a href="https://golang.org/pkg/builtin/#error">error</a>)
+
     <span class="comment">// Clear deletes all items.</span>
     Clear()
 }</pre>
