@@ -70,3 +70,24 @@ func (s *jsStorage) Clear() {
 
 	Window().Get(s.name).Call("clear")
 }
+
+func (s *jsStorage) Len() int {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	return s.len()
+}
+
+func (s *jsStorage) len() int {
+	return Window().Get(s.name).Get("length").Int()
+}
+
+func (s *jsStorage) Key(i int) (string, error) {
+	if l := s.len(); i < 0 || i >= l {
+		return "", errors.New("index out of range").
+			Tag("index", i).
+			Tag("len", l)
+	}
+
+	return Window().Get(s.name).Call("key", i).String(), nil
+}
