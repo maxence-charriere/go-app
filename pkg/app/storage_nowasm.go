@@ -2,7 +2,12 @@
 
 package app
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"fmt"
+
+	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+)
 
 func init() {
 	LocalStorage = make(memoryStorage)
@@ -36,4 +41,24 @@ func (s memoryStorage) Clear() {
 	for k := range s {
 		delete(s, k)
 	}
+}
+
+func (s memoryStorage) Len() int {
+	return len(s)
+}
+
+func (s memoryStorage) Key(i int) (string, error) {
+	j := 0
+	for k := range s {
+		fmt.Println(k)
+
+		if i == j {
+			return k, nil
+		}
+		j++
+	}
+
+	return "", errors.New("index out of range").
+		Tag("index", i).
+		Tag("len", s.Len())
 }
