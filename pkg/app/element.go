@@ -386,6 +386,12 @@ func (e *elem) onNav(u *url.URL) {
 	}
 }
 
+func (e *elem) onAppUpdate() {
+	for _, c := range e.children() {
+		c.onAppUpdate()
+	}
+}
+
 func (e *elem) html(w io.Writer) {
 	e.htmlWithIndent(w, 0)
 }

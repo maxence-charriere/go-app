@@ -275,11 +275,54 @@ func TestNestedInComponentNavigator(t *testing.T) {
 	require.Equal(t, "https://murlok.io", b.onNavURL)
 }
 
+func TestUpdater(t *testing.T) {
+	testSkipNonWasm(t)
+
+	h := &hello{}
+
+	err := mount(h)
+	require.NoError(t, err)
+	defer dismount(h)
+
+	h.onAppUpdate()
+	require.True(t, h.appUpdated)
+}
+
+func TestNestedUpdater(t *testing.T) {
+	testSkipNonWasm(t)
+
+	h := &hello{}
+	div := Div().Body(h)
+
+	err := mount(div)
+	require.NoError(t, err)
+	defer dismount(div)
+
+	div.onAppUpdate()
+	require.True(t, h.appUpdated)
+}
+
+func TestNestedInComponentUpdater(t *testing.T) {
+	testSkipNonWasm(t)
+
+	foo := &foo{Bar: "Bar"}
+
+	err := mount(foo)
+	require.NoError(t, err)
+	defer dismount(foo)
+
+	foo.onAppUpdate()
+
+	b := foo.children()[0].(*bar)
+	require.True(t, b.appUpdated)
+}
+
 type hello struct {
 	Compo
 
-	Greeting string
-	onNavURL string
+	Greeting   string
+	onNavURL   string
+	appUpdated bool
 }
 
 func (h *hello) OnMount(Context) {
@@ -287,6 +330,10 @@ func (h *hello) OnMount(Context) {
 
 func (h *hello) OnNav(ctx Context, u *url.URL) {
 	h.onNavURL = u.String()
+}
+
+func (h *hello) OnAppUpdate(ctx Context) {
+	h.appUpdated = true
 }
 
 func (h *hello) OnDismount(Context) {
@@ -316,12 +363,17 @@ func (f *foo) Render() UI {
 
 type bar struct {
 	Compo
-	Value    string
-	onNavURL string
+	Value      string
+	onNavURL   string
+	appUpdated bool
 }
 
 func (b *bar) OnNav(ctx Context, u *url.URL) {
 	b.onNavURL = u.String()
+}
+
+func (b *bar) OnAppUpdate(ctx Context) {
+	b.appUpdated = true
 }
 
 func (b *bar) Render() UI {

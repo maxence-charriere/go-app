@@ -149,3 +149,6 @@ func (r rangeLoop) update(UI) error {
 
 func (r rangeLoop) onNav(*url.URL) {
 }
+
+func (r rangeLoop) onAppUpdate() {
+}

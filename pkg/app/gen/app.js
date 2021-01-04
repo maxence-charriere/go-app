@@ -1,11 +1,25 @@
 // -----------------------------------------------------------------------------
 // Init service worker
 // -----------------------------------------------------------------------------
+var goappOnUpdate = function () { };
+
+
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("{{.WorkerJS}}")
     .then(reg => {
       console.log("registering app service worker");
+
+      reg.onupdatefound = function () {
+        const installingWorker = reg.installing;
+        installingWorker.onstatechange = function () {
+          if (installingWorker.state == "installed") {
+            if (navigator.serviceWorker.controller) {
+              goappOnUpdate();
+            }
+          }
+        };
+      }
     })
     .catch(err => {
       console.error("offline service worker registration failed", err);

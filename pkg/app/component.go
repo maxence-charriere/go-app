@@ -64,6 +64,13 @@ type Navigator interface {
 	OnNav(Context, *url.URL)
 }
 
+// Updater is the interface that describes a component that can be notified when
+// the app is updated.
+type Updater interface {
+	// The function that is called when the application is updated.
+	OnAppUpdate(Context)
+}
+
 // Compo represents the base struct to use in order to build a component.
 type Compo struct {
 	ctx        context.Context
@@ -316,8 +323,19 @@ func (c *Compo) onNav(u *url.URL) {
 			Src:     c.self(),
 			JSSrc:   c.JSValue(),
 		}
-
 		nav.OnNav(ctx, u)
+	}
+}
+
+func (c *Compo) onAppUpdate() {
+	c.root.onAppUpdate()
+
+	if updater, ok := c.self().(Updater); ok {
+		updater.OnAppUpdate(Context{
+			Context: c.context(),
+			Src:     c.self(),
+			JSSrc:   c.JSValue(),
+		})
 	}
 }
 
