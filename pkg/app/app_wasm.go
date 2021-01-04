@@ -32,6 +32,10 @@ func run() {
 	initContent()
 	initContextMenu()
 
+	onappupdate := FuncOf(onAppUpdate)
+	defer onappupdate.Release()
+	Window().Set("goappOnUpdate", onappupdate)
+
 	onnav := FuncOf(onNavigate)
 	defer onnav.Release()
 	Window().Set("onclick", onnav)
@@ -119,6 +123,15 @@ func displayLoadError(err interface{}) {
 		return
 	}
 	loadingLabel.Set("innerText", fmt.Sprint(err))
+}
+
+func onAppUpdate(this Value, args []Value) interface{} {
+	dispatch(func() {
+		fmt.Println("app has been updated, reload to see changes")
+		content.onAppUpdate()
+	})
+
+	return nil
 }
 
 func onNavigate(this Value, args []Value) interface{} {

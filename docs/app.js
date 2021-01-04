@@ -1,11 +1,25 @@
 // -----------------------------------------------------------------------------
 // Init service worker
 // -----------------------------------------------------------------------------
+var goappOnUpdate = function () { };
+
+
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("/app-worker.js")
     .then(reg => {
       console.log("registering app service worker");
+
+      reg.onupdatefound = function () {
+        const installingWorker = reg.installing;
+        installingWorker.onstatechange = function () {
+          if (installingWorker.state == "installed") {
+            if (navigator.serviceWorker.controller) {
+              goappOnUpdate();
+            }
+          }
+        };
+      }
     })
     .catch(err => {
       console.error("offline service worker registration failed", err);
@@ -15,7 +29,7 @@ if ("serviceWorker" in navigator) {
 // -----------------------------------------------------------------------------
 // Init progressive app
 // -----------------------------------------------------------------------------
-const goappEnv = {"GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"4f99d197693d33426f4b1a0c7d453d396669955f"};
+const goappEnv = {"GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"49698cd8ee2ac62db9b7c99033fb5151a0b61c21"};
 
 function goappGetenv(k) {
   return goappEnv[k];

@@ -28,6 +28,7 @@ func pages() map[string]func() app.UI {
 		"static-resources": newStaticResources,
 		"built-with":       newBuiltWith,
 		"install":          newInstall,
+		"lifecycle":        newLifecycle,
 	}
 }
 
@@ -185,6 +186,18 @@ func newInstall() app.UI {
 		)
 }
 
+func newLifecycle() app.UI {
+	return newPage().
+		Path("/web/documents/lifecycle.md").
+		TableOfContents(
+			"Lifecycle",
+			"    First loading",
+			"    Recurrent loadings",
+			"    Loading after app update",
+			"Listen for updates",
+		)
+}
+
 type page struct {
 	app.Compo
 
@@ -204,6 +217,9 @@ func (p *page) Path(v string) *page {
 func (p *page) TableOfContents(v ...string) *page {
 	p.links = v
 	return p
+}
+
+func (p *page) OnAppUpdate(ctx app.Context) {
 }
 
 func (p *page) Render() app.UI {

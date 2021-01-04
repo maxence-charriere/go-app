@@ -119,3 +119,6 @@ func (c condition) update(UI) error {
 
 func (c condition) onNav(*url.URL) {
 }
+
+func (c condition) onAppUpdate() {
+}

@@ -1193,6 +1193,11 @@ resources to run Go-based progressive web apps.
 				
 			
 				
+				<dd><a href="#Updater" id="src-Updater" id="src-Updater">type Updater</a></dd>
+				
+				
+			
+				
 				<dd><a href="#Value" id="src-Value" id="src-Value">type Value</a></dd>
 				
 					
@@ -1744,7 +1749,7 @@ Window returns the JavaScript &#34;window&#34; object.
 		
 			
 			
-			<h2 id="Compo">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L58">Compo</a>
+			<h2 id="Compo">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L65">Compo</a>
 				<a class="permalink" href="#Compo" id="src-Compo">¶</a>
 				
 				
@@ -1770,7 +1775,7 @@ Compo represents the base struct to use in order to build a component.
 
 			
 				
-				<h3 id="Compo.JSValue">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L72">JSValue</a>
+				<h3 id="Compo.JSValue">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L79">JSValue</a>
 					<a class="permalink" href="#Compo.JSValue" id="src-Compo.JSValue">¶</a>
 					
 					
@@ -1785,7 +1790,7 @@ JSValue returns the javascript value of the component root.
 				
 			
 				
-				<h3 id="Compo.Kind">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L67">Kind</a>
+				<h3 id="Compo.Kind">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L74">Kind</a>
 					<a class="permalink" href="#Compo.Kind" id="src-Compo.Kind">¶</a>
 					
 					
@@ -1800,7 +1805,7 @@ Kind returns the ui element kind.
 				
 			
 				
-				<h3 id="Compo.Mounted">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L77">Mounted</a>
+				<h3 id="Compo.Mounted">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L84">Mounted</a>
 					<a class="permalink" href="#Compo.Mounted" id="src-Compo.Mounted">¶</a>
 					
 					
@@ -1815,7 +1820,7 @@ Mounted reports whether the component is mounted.
 				
 			
 				
-				<h3 id="Compo.Render">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L86">Render</a>
+				<h3 id="Compo.Render">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L93">Render</a>
 					<a class="permalink" href="#Compo.Render" id="src-Compo.Render">¶</a>
 					
 					
@@ -1832,7 +1837,7 @@ embedded.
 				
 			
 				
-				<h3 id="Compo.Update">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L106">Update</a>
+				<h3 id="Compo.Update">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L113">Update</a>
 					<a class="permalink" href="#Compo.Update" id="src-Compo.Update">¶</a>
 					
 					
@@ -2122,7 +2127,7 @@ belongs to the event will not occur.
 		
 			
 			
-			<h2 id="EventHandler">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L117">EventHandler</a>
+			<h2 id="EventHandler">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L118">EventHandler</a>
 				<a class="permalink" href="#EventHandler" id="src-EventHandler">¶</a>
 				
 				
@@ -22556,7 +22561,7 @@ application icon, favicon or loading icon.
 		
 			
 			
-			<h2 id="Kind">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L31">Kind</a>
+			<h2 id="Kind">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L32">Kind</a>
 				<a class="permalink" href="#Kind" id="src-Kind">¶</a>
 				
 				
@@ -22601,7 +22606,7 @@ Kind represents the specific kind of a user interface element.
 
 			
 				
-				<h3 id="Kind.String">func (Kind) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L33">String</a>
+				<h3 id="Kind.String">func (Kind) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L34">String</a>
 					<a class="permalink" href="#Kind.String" id="src-Kind.String">¶</a>
 					
 					
@@ -23035,7 +23040,7 @@ components and HTML elements.
 
 			
 				
-				<h3 id="FilterUIElems">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L82">FilterUIElems</a>
+				<h3 id="FilterUIElems">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L83">FilterUIElems</a>
 					<a class="permalink" href="#FilterUIElems" id="src-FilterUIElems">¶</a>
 					
 					
@@ -23291,6 +23296,35 @@ EXPERIMENTAL WIDGET.
 
 				
 				
+			
+
+			
+		
+			
+			
+			<h2 id="Updater">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L59">Updater</a>
+				<a class="permalink" href="#Updater" id="src-Updater">¶</a>
+				
+				
+			</h2>
+			<p>
+Updater is the interface that describes a component that can be notified when
+the app is updated.
+</p>
+
+			<pre>type Updater interface {
+    <span class="comment">// The function that is called when the application is updated.</span>
+    OnAppUpdate(<a href="#Context" id="src-Context">Context</a>)
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
 			
 
 			

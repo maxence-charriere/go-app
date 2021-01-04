@@ -114,6 +114,9 @@ func (t *text) update(n UI) error {
 func (t *text) onNav(*url.URL) {
 }
 
+func (t *text) onAppUpdate() {
+}
+
 func (t *text) html(w io.Writer) {
 	t.htmlWithIndent(w, 0)
 }

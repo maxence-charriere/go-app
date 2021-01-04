@@ -140,6 +140,9 @@ func (r *raw) update(n UI) error {
 func (r *raw) onNav(*url.URL) {
 }
 
+func (r *raw) onAppUpdate() {
+}
+
 func (r *raw) html(w io.Writer) {
 	r.htmlWithIndent(w, 0)
 }
