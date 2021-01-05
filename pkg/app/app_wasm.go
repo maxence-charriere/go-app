@@ -142,6 +142,10 @@ func onNavigate(this Value, args []Value) interface{} {
 	for {
 		switch elem.Get("tagName").String() {
 		case "A":
+			if target := elem.Get("target"); target.Truthy() && target.String() == "_blank" {
+				return nil
+			}
+
 			u := elem.Get("href").String()
 			if u, _ := url.Parse(u); isExternalNavigation(u) {
 				elem.Set("target", "_blank")
