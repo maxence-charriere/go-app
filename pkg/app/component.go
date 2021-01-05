@@ -197,9 +197,10 @@ func (c *Compo) mount() error {
 
 	if mounter, ok := c.this.(Mounter); ok {
 		mounter.OnMount(Context{
-			Context: c.ctx,
-			Src:     c.this,
-			JSSrc:   c.this.JSValue(),
+			Context:            c.ctx,
+			Src:                c.this,
+			JSSrc:              c.this.JSValue(),
+			AppUpdateAvailable: appUpdateAvailable,
 		})
 	}
 
