@@ -17,4 +17,8 @@ type Context struct {
 	// shorthand for:
 	//  ctx.Src.JSValue()
 	JSSrc Value
+
+	// Reports whether the app has been updated in background. Use app.Reload()
+	// to load the updated version.
+	AppUpdateAvailable bool
 }

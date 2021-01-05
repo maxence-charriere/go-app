@@ -128,6 +128,7 @@ func displayLoadError(err interface{}) {
 func onAppUpdate(this Value, args []Value) interface{} {
 	dispatch(func() {
 		fmt.Println("app has been updated, reload to see changes")
+		appUpdateAvailable = true
 		content.onAppUpdate()
 	})
 

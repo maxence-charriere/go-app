@@ -319,9 +319,10 @@ func (c *Compo) onNav(u *url.URL) {
 
 	if nav, ok := c.self().(Navigator); ok {
 		ctx := Context{
-			Context: c.context(),
-			Src:     c.self(),
-			JSSrc:   c.JSValue(),
+			Context:            c.context(),
+			Src:                c.self(),
+			JSSrc:              c.JSValue(),
+			AppUpdateAvailable: appUpdateAvailable,
 		}
 		nav.OnNav(ctx, u)
 	}
@@ -332,9 +333,10 @@ func (c *Compo) onAppUpdate() {
 
 	if updater, ok := c.self().(Updater); ok {
 		updater.OnAppUpdate(Context{
-			Context: c.context(),
-			Src:     c.self(),
-			JSSrc:   c.JSValue(),
+			Context:            c.context(),
+			Src:                c.self(),
+			JSSrc:              c.JSValue(),
+			AppUpdateAvailable: appUpdateAvailable,
 		})
 	}
 }
