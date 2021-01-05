@@ -1,7 +1,7 @@
-const cacheName = "app-" + "603edaedec9a810d52ecebb9a3d2e543eb360b34";
+const cacheName = "app-" + "a1fcffe72b0d3fabc0b48b5dfa1420aea576969d";
 
 self.addEventListener("install", event => {
-  console.log("installing app worker 603edaedec9a810d52ecebb9a3d2e543eb360b34");
+  console.log("installing app worker a1fcffe72b0d3fabc0b48b5dfa1420aea576969d");
   self.skipWaiting();
 
   event.waitUntil(
@@ -20,7 +20,7 @@ self.addEventListener("install", event => {
         "https://fonts.googleapis.com/css2?family=Roboto&display=swap",
         "https://storage.googleapis.com/murlok-github/icon-192.png",
         "https://storage.googleapis.com/murlok-github/icon-512.png",
-
+        
       ]);
     })
   );
@@ -38,7 +38,7 @@ self.addEventListener("activate", event => {
       );
     })
   );
-  console.log("app worker 603edaedec9a810d52ecebb9a3d2e543eb360b34 is activated");
+  console.log("app worker a1fcffe72b0d3fabc0b48b5dfa1420aea576969d is activated");
 });
 
 self.addEventListener("fetch", event => {
