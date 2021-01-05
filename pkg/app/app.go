@@ -19,6 +19,7 @@ import (
 
 var (
 	staticResourcesURL string
+	appUpdateAvailable bool
 )
 
 // Getenv retrieves the value of the environment variable named by the key. It

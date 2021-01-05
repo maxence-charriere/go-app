@@ -146,9 +146,10 @@ func makeJsEventHandler(src UI, h EventHandler) Func {
 			}
 
 			ctx := Context{
-				Context: src.context(),
-				Src:     src,
-				JSSrc:   src.JSValue(),
+				Context:            src.context(),
+				Src:                src,
+				JSSrc:              src.JSValue(),
+				AppUpdateAvailable: appUpdateAvailable,
 			}
 
 			event := Event{

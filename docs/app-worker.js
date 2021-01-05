@@ -20,7 +20,7 @@ self.addEventListener("install", event => {
         "https://fonts.googleapis.com/css2?family=Roboto&display=swap",
         "https://storage.googleapis.com/murlok-github/icon-192.png",
         "https://storage.googleapis.com/murlok-github/icon-512.png",
-        
+
       ]);
     })
   );
