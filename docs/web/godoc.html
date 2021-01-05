@@ -1387,7 +1387,7 @@ directory.
 		
 			
 			
-			<h2 id="Getenv">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L16">Getenv</a>
+			<h2 id="Getenv">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L17">Getenv</a>
 				<a class="permalink" href="#Getenv" id="src-Getenv">¶</a>
 				
 				
@@ -1404,7 +1404,7 @@ returns the value, which will be empty if the variable is not present.
 		
 			
 			
-			<h2 id="KeepBodyClean">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L22">KeepBodyClean</a>
+			<h2 id="KeepBodyClean">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L23">KeepBodyClean</a>
 				<a class="permalink" href="#KeepBodyClean" id="src-KeepBodyClean">¶</a>
 				
 				
@@ -1437,7 +1437,7 @@ Log logs according to a format specifier using the default logger.
 		
 			
 			
-			<h2 id="Navigate">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L27">Navigate</a>
+			<h2 id="Navigate">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L28">Navigate</a>
 				<a class="permalink" href="#Navigate" id="src-Navigate">¶</a>
 				
 				
@@ -1453,7 +1453,7 @@ Navigate navigates to the given URL.
 		
 			
 			
-			<h2 id="NewContextMenu">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L51">NewContextMenu</a>
+			<h2 id="NewContextMenu">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L52">NewContextMenu</a>
 				<a class="permalink" href="#NewContextMenu" id="src-NewContextMenu">¶</a>
 				
 				
@@ -1469,7 +1469,7 @@ NewContextMenu displays a context menu filled with the given menu items.
 		
 			
 			
-			<h2 id="Reload">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L58">Reload</a>
+			<h2 id="Reload">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L59">Reload</a>
 				<a class="permalink" href="#Reload" id="src-Reload">¶</a>
 				
 				
@@ -1518,7 +1518,7 @@ Patterns use the Go standard regexp format.
 		
 			
 			
-			<h2 id="Run">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L68">Run</a>
+			<h2 id="Run">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L69">Run</a>
 				<a class="permalink" href="#Run" id="src-Run">¶</a>
 				
 				
@@ -1538,7 +1538,7 @@ It panics if Go architecture is not wasm.
 		
 			
 			
-			<h2 id="StaticResource">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L79">StaticResource</a>
+			<h2 id="StaticResource">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L80">StaticResource</a>
 				<a class="permalink" href="#StaticResource" id="src-StaticResource">¶</a>
 				
 				
@@ -1731,7 +1731,7 @@ BrowserWindow is the interface that describes the browser window.
 
 			
 				
-				<h3 id="Window">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L93">Window</a>
+				<h3 id="Window">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L94">Window</a>
 					<a class="permalink" href="#Window" id="src-Window">¶</a>
 					
 					
@@ -1982,6 +1982,10 @@ It implements the context.Context interface.
     <span class="comment">// shorthand for:</span>
     <span class="comment">//  ctx.Src.JSValue()</span>
 <span id="Context.JSSrc"></span>    JSSrc <a href="#Value" id="src-Value">Value</a>
+
+    <span class="comment">// Reports whether the app has been updated in background. Use app.Reload()</span>
+    <span class="comment">// to load the updated version.</span>
+<span id="Context.AppUpdateAvailable"></span>    AppUpdateAvailable <a href="https://golang.org/pkg/builtin/#bool">bool</a>
 }
 </pre>
 
