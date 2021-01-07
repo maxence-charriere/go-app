@@ -1,6 +1,7 @@
 package app
 
 import (
+	"net/url"
 	"strconv"
 	"time"
 
@@ -88,6 +89,10 @@ func (f *flow) OnMount(ctx Context) {
 	f.closeResizeListener = Window().AddEventListener("resize", f.onResize)
 
 	f.Update()
+	f.refreshLayout()
+}
+
+func (f *flow) OnNav(ctx Context, u *url.URL) {
 	f.refreshLayout()
 }
 
