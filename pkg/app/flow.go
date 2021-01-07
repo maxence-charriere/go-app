@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"net/url"
 	"strconv"
 	"time"
@@ -108,7 +107,6 @@ func (f *flow) OnDismount() {
 
 func (f *flow) Render() UI {
 	if contentLen := len(f.Icontent); contentLen != f.contentLen {
-		fmt.Println("refresehing flow from render")
 		f.contentLen = contentLen
 		f.refreshLayout()
 	}
