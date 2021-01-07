@@ -58,6 +58,7 @@ type flow struct {
 	itemWidth           int
 	closeResizeListener func()
 	refreshCooldown     *time.Timer
+	contentLen          int
 }
 
 func (f *flow) Class(c string) UIFlow {
@@ -105,6 +106,11 @@ func (f *flow) OnDismount() {
 }
 
 func (f *flow) Render() UI {
+	if contentLen := len(f.Icontent); contentLen != f.contentLen {
+		f.contentLen = contentLen
+		f.refreshLayout()
+	}
+
 	return Div().
 		ID(f.id).
 		Class("goapp-flow").
