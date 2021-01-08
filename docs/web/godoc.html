@@ -1131,6 +1131,11 @@ resources to run Go-based progressive web apps.
 				
 			
 				
+				<dd><a href="#Resizer" id="src-Resizer" id="src-Resizer">type Resizer</a></dd>
+				
+				
+			
+				
 				<dd><a href="#ResourceProvider" id="src-ResourceProvider" id="src-ResourceProvider">type ResourceProvider</a></dd>
 				
 					
@@ -1749,7 +1754,7 @@ Window returns the JavaScript &#34;window&#34; object.
 		
 			
 			
-			<h2 id="Compo">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L65">Compo</a>
+			<h2 id="Compo">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L74">Compo</a>
 				<a class="permalink" href="#Compo" id="src-Compo">¶</a>
 				
 				
@@ -1775,7 +1780,7 @@ Compo represents the base struct to use in order to build a component.
 
 			
 				
-				<h3 id="Compo.JSValue">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L79">JSValue</a>
+				<h3 id="Compo.JSValue">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L88">JSValue</a>
 					<a class="permalink" href="#Compo.JSValue" id="src-Compo.JSValue">¶</a>
 					
 					
@@ -1790,7 +1795,7 @@ JSValue returns the javascript value of the component root.
 				
 			
 				
-				<h3 id="Compo.Kind">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L74">Kind</a>
+				<h3 id="Compo.Kind">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L83">Kind</a>
 					<a class="permalink" href="#Compo.Kind" id="src-Compo.Kind">¶</a>
 					
 					
@@ -1805,7 +1810,7 @@ Kind returns the ui element kind.
 				
 			
 				
-				<h3 id="Compo.Mounted">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L84">Mounted</a>
+				<h3 id="Compo.Mounted">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L93">Mounted</a>
 					<a class="permalink" href="#Compo.Mounted" id="src-Compo.Mounted">¶</a>
 					
 					
@@ -1820,7 +1825,7 @@ Mounted reports whether the component is mounted.
 				
 			
 				
-				<h3 id="Compo.Render">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L93">Render</a>
+				<h3 id="Compo.Render">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L102">Render</a>
 					<a class="permalink" href="#Compo.Render" id="src-Compo.Render">¶</a>
 					
 					
@@ -1837,7 +1842,7 @@ embedded.
 				
 			
 				
-				<h3 id="Compo.Update">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L113">Update</a>
+				<h3 id="Compo.Update">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L122">Update</a>
 					<a class="permalink" href="#Compo.Update" id="src-Compo.Update">¶</a>
 					
 					
@@ -2016,8 +2021,8 @@ additional actions when dismounted.
 			<pre>type Dismounter interface {
     <a href="#Composer" id="src-Composer">Composer</a>
 
-    <span class="comment">// The function that is called when the component is dismounted. It is</span>
-    <span class="comment">// always called on the UI goroutine.</span>
+    <span class="comment">// The function called when the component is dismounted. It is always called</span>
+    <span class="comment">// on the UI goroutine.</span>
     OnDismount()
 }</pre>
 
@@ -2131,7 +2136,7 @@ belongs to the event will not occur.
 		
 			
 			
-			<h2 id="EventHandler">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L118">EventHandler</a>
+			<h2 id="EventHandler">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L119">EventHandler</a>
 				<a class="permalink" href="#EventHandler" id="src-EventHandler">¶</a>
 				
 				
@@ -22565,7 +22570,7 @@ application icon, favicon or loading icon.
 		
 			
 			
-			<h2 id="Kind">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L32">Kind</a>
+			<h2 id="Kind">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L33">Kind</a>
 				<a class="permalink" href="#Kind" id="src-Kind">¶</a>
 				
 				
@@ -22610,7 +22615,7 @@ Kind represents the specific kind of a user interface element.
 
 			
 				
-				<h3 id="Kind.String">func (Kind) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L34">String</a>
+				<h3 id="Kind.String">func (Kind) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L35">String</a>
 					<a class="permalink" href="#Kind.String" id="src-Kind.String">¶</a>
 					
 					
@@ -22700,8 +22705,8 @@ additional actions when mounted.
 			<pre>type Mounter interface {
     <a href="#Composer" id="src-Composer">Composer</a>
 
-    <span class="comment">// The function that is called when the component is mounted. It is always</span>
-    <span class="comment">// called on the UI goroutine.</span>
+    <span class="comment">// The function called when the component is mounted. It is always called on</span>
+    <span class="comment">// the UI goroutine.</span>
     OnMount(<a href="#Context" id="src-Context">Context</a>)
 }</pre>
 
@@ -22732,8 +22737,8 @@ additional actions when navigated on.
 			<pre>type Navigator interface {
     <a href="#Composer" id="src-Composer">Composer</a>
 
-    <span class="comment">// The function that is called when the component is navigated on. It is</span>
-    <span class="comment">// always called on the UI goroutine.</span>
+    <span class="comment">// The function that called when the component is navigated on. It is always</span>
+    <span class="comment">// called on the UI goroutine.</span>
     OnNav(<a href="#Context" id="src-Context">Context</a>, *<a href="https://golang.org/pkg/net/url/">url</a>.<a href="https://golang.org/pkg/net/url/#URL">URL</a>)
 }</pre>
 
@@ -22800,6 +22805,36 @@ be a slice, an array or a map with strings as keys.
 
 				
 				
+			
+
+			
+		
+			
+			
+			<h2 id="Resizer">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L67">Resizer</a>
+				<a class="permalink" href="#Resizer" id="src-Resizer">¶</a>
+				
+				
+			</h2>
+			<p>
+Resizer is the interface that describes a component that is notified when the
+application size changes.
+</p>
+
+			<pre>type Resizer interface {
+    <span class="comment">// The function called when the application is resized. It is always called</span>
+    <span class="comment">// on the UI goroutine.</span>
+    OnAppResize(<a href="#Context" id="src-Context">Context</a>)
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
 			
 
 			
@@ -23044,7 +23079,7 @@ components and HTML elements.
 
 			
 				
-				<h3 id="FilterUIElems">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L83">FilterUIElems</a>
+				<h3 id="FilterUIElems">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L84">FilterUIElems</a>
 					<a class="permalink" href="#FilterUIElems" id="src-FilterUIElems">¶</a>
 					
 					
@@ -23101,7 +23136,7 @@ Text creates a simple text element.
 		
 			
 			
-			<h2 id="UIFlow">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/flow.go#L10">UIFlow</a>
+			<h2 id="UIFlow">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/flow.go#L11">UIFlow</a>
 				<a class="permalink" href="#UIFlow" id="src-UIFlow">¶</a>
 				
 				
@@ -23142,7 +23177,7 @@ EXPERIMENTAL WIDGET.
 
 			
 				
-				<h3 id="Flow">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/flow.go#L31">Flow</a>
+				<h3 id="Flow">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/flow.go#L32">Flow</a>
 					<a class="permalink" href="#Flow" id="src-Flow">¶</a>
 					
 					
@@ -23163,7 +23198,7 @@ EXPERIMENTAL WIDGET.
 		
 			
 			
-			<h2 id="UIShell">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/shell.go#L9">UIShell</a>
+			<h2 id="UIShell">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/shell.go#L10">UIShell</a>
 				<a class="permalink" href="#UIShell" id="src-UIShell">¶</a>
 				
 				
@@ -23218,7 +23253,7 @@ EXPERIMENTAL WIDGET.
 
 			
 				
-				<h3 id="Shell">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/shell.go#L45">Shell</a>
+				<h3 id="Shell">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/shell.go#L46">Shell</a>
 					<a class="permalink" href="#Shell" id="src-Shell">¶</a>
 					
 					
@@ -23312,12 +23347,13 @@ EXPERIMENTAL WIDGET.
 				
 			</h2>
 			<p>
-Updater is the interface that describes a component that can be notified when
-the app is updated.
+Updater is the interface that describes a component that is notified when the
+application is updated.
 </p>
 
 			<pre>type Updater interface {
-    <span class="comment">// The function that is called when the application is updated.</span>
+    <span class="comment">// The function called when the application is updated. It is always called</span>
+    <span class="comment">// on the UI goroutine.</span>
     OnAppUpdate(<a href="#Context" id="src-Context">Context</a>)
 }</pre>
 
