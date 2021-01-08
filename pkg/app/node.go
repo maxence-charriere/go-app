@@ -36,6 +36,7 @@ type UI interface {
 	update(UI) error
 	onNav(*url.URL)
 	onAppUpdate()
+	onAppResize()
 }
 
 // Kind represents the specific kind of a user interface element.
