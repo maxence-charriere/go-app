@@ -242,10 +242,6 @@ func (s *shell) mounted() bool {
 	return s.id != ""
 }
 
-func (s *shell) onResize(ctx Context, e Event) {
-	s.refreshLayout()
-}
-
 func (s *shell) refreshLayout() {
 	Dispatch(func() {
 		s.refreshMenu()
