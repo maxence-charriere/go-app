@@ -44,7 +44,8 @@ func run() {
 	defer onappupdate.Release()
 	Window().Set("goappOnUpdate", onappupdate)
 
-	defer Window().AddEventListener(resize, onAppResize)
+	closeAppResize := Window().AddEventListener("resize", onAppResize)
+	defer closeAppResize()
 
 	url := Window().URL()
 
@@ -260,5 +261,5 @@ func onAppUpdate(this Value, args []Value) interface{} {
 }
 
 func onAppResize(ctx Context, e Event) {
-	content.onAppResize()
+	ctx.Src.onAppResize()
 }
