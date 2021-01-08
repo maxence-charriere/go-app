@@ -45,7 +45,7 @@ func run() {
 	Window().Set("goappOnUpdate", onappupdate)
 
 	closeAppResize := Window().AddEventListener("resize", onAppResize)
-	closeAppOrientationChange := Window().AddEventListener("resize", orientationchange)
+	closeAppOrientationChange := Window().AddEventListener("orientationchange", onAppResize)
 	defer closeAppResize()
 	defer closeAppOrientationChange()
 
