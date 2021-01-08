@@ -32,10 +32,6 @@ func run() {
 	initContent()
 	initContextMenu()
 
-	onappupdate := FuncOf(onAppUpdate)
-	defer onappupdate.Release()
-	Window().Set("goappOnUpdate", onappupdate)
-
 	onnav := FuncOf(onNavigate)
 	defer onnav.Release()
 	Window().Set("onclick", onnav)
@@ -43,6 +39,12 @@ func run() {
 	onpopstate := FuncOf(onPopState)
 	defer onpopstate.Release()
 	Window().Set("onpopstate", onpopstate)
+
+	onappupdate := FuncOf(onAppUpdate)
+	defer onappupdate.Release()
+	Window().Set("goappOnUpdate", onappupdate)
+
+	defer Window().AddEventListener(resize, onAppResize)
 
 	url := Window().URL()
 
@@ -123,16 +125,6 @@ func displayLoadError(err interface{}) {
 		return
 	}
 	loadingLabel.Set("innerText", fmt.Sprint(err))
-}
-
-func onAppUpdate(this Value, args []Value) interface{} {
-	dispatch(func() {
-		fmt.Println("app has been updated, reload to see changes")
-		appUpdateAvailable = true
-		content.onAppUpdate()
-	})
-
-	return nil
 }
 
 func onNavigate(this Value, args []Value) interface{} {
@@ -255,4 +247,18 @@ func keepBodyClean() func() {
 	return func() {
 		close.Invoke()
 	}
+}
+
+func onAppUpdate(this Value, args []Value) interface{} {
+	dispatch(func() {
+		fmt.Println("app has been updated, reload to see changes")
+		appUpdateAvailable = true
+		content.onAppUpdate()
+	})
+
+	return nil
+}
+
+func onAppResize(ctx Context, e Event) {
+	content.onAppResize()
 }
