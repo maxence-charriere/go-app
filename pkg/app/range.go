@@ -152,3 +152,6 @@ func (r rangeLoop) onNav(*url.URL) {
 
 func (r rangeLoop) onAppUpdate() {
 }
+
+func (r rangeLoop) onAppResize() {
+}

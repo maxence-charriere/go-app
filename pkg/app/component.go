@@ -39,8 +39,8 @@ type Composer interface {
 type Mounter interface {
 	Composer
 
-	// The function that is called when the component is mounted. It is always
-	// called on the UI goroutine.
+	// The function called when the component is mounted. It is always called on
+	// the UI goroutine.
 	OnMount(Context)
 }
 
@@ -49,8 +49,8 @@ type Mounter interface {
 type Dismounter interface {
 	Composer
 
-	// The function that is called when the component is dismounted. It is
-	// always called on the UI goroutine.
+	// The function called when the component is dismounted. It is always called
+	// on the UI goroutine.
 	OnDismount()
 }
 
@@ -59,16 +59,25 @@ type Dismounter interface {
 type Navigator interface {
 	Composer
 
-	// The function that is called when the component is navigated on. It is
-	// always called on the UI goroutine.
+	// The function that called when the component is navigated on. It is always
+	// called on the UI goroutine.
 	OnNav(Context, *url.URL)
 }
 
-// Updater is the interface that describes a component that can be notified when
-// the app is updated.
+// Updater is the interface that describes a component that is notified when the
+// application is updated.
 type Updater interface {
-	// The function that is called when the application is updated.
+	// The function called when the application is updated. It is always called
+	// on the UI goroutine.
 	OnAppUpdate(Context)
+}
+
+// Resizer is the interface that describes a component that is notified when the
+// application size changes.
+type Resizer interface {
+	// The function called when the application is resized. It is always called
+	// on the UI goroutine.
+	OnAppResize(Context)
 }
 
 // Compo represents the base struct to use in order to build a component.
@@ -334,6 +343,19 @@ func (c *Compo) onAppUpdate() {
 
 	if updater, ok := c.self().(Updater); ok {
 		updater.OnAppUpdate(Context{
+			Context:            c.context(),
+			Src:                c.self(),
+			JSSrc:              c.JSValue(),
+			AppUpdateAvailable: appUpdateAvailable,
+		})
+	}
+}
+
+func (c *Compo) onAppResize() {
+	c.root.onAppResize()
+
+	if resizer, ok := c.self().(Resizer); ok {
+		resizer.OnAppResize(Context{
 			Context:            c.context(),
 			Src:                c.self(),
 			JSSrc:              c.JSValue(),

@@ -392,6 +392,12 @@ func (e *elem) onAppUpdate() {
 	}
 }
 
+func (e *elem) onAppResize() {
+	for _, c := range e.children() {
+		c.onAppResize()
+	}
+}
+
 func (e *elem) html(w io.Writer) {
 	e.htmlWithIndent(w, 0)
 }

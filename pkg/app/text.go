@@ -117,6 +117,9 @@ func (t *text) onNav(*url.URL) {
 func (t *text) onAppUpdate() {
 }
 
+func (t *text) onAppResize() {
+}
+
 func (t *text) html(w io.Writer) {
 	t.htmlWithIndent(w, 0)
 }

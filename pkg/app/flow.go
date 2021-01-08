@@ -53,12 +53,10 @@ type flow struct {
 	Icontent           []UI
 	IstrechOnSingleRow bool
 
-	id                  string
-	width               int
-	itemWidth           int
-	closeResizeListener func()
-	refreshCooldown     *time.Timer
-	contentLen          int
+	id         string
+	width      int
+	itemWidth  int
+	contentLen int
 }
 
 func (f *flow) Class(c string) UIFlow {
@@ -87,7 +85,6 @@ func (f *flow) StrechtOnSingleRow() UIFlow {
 
 func (f *flow) OnMount(ctx Context) {
 	f.id = "app-flow-" + uuid.New().String()
-	f.closeResizeListener = Window().AddEventListener("resize", f.onResize)
 
 	f.Update()
 	f.refreshLayout()
@@ -97,16 +94,12 @@ func (f *flow) OnNav(ctx Context, u *url.URL) {
 	f.refreshLayout()
 }
 
-func (f *flow) OnDismount() {
-	if f.refreshCooldown != nil {
-		f.refreshCooldown.Stop()
-	}
-
-	f.closeResizeListener()
+func (f *flow) OnAppResize(ctx Context) {
+	f.refreshLayout()
 }
 
 func (f *flow) Render() UI {
-	if contentLen := len(f.Icontent); contentLen != f.contentLen {
+	if contentLen := len(f.Icontent); f.Mounted() && contentLen != f.contentLen {
 		f.contentLen = contentLen
 		f.refreshLayout()
 	}
@@ -132,19 +125,8 @@ func (f *flow) mounted() bool {
 	return f.id != ""
 }
 
-func (f *flow) onResize(ctx Context, e Event) {
-	f.refreshLayout()
-}
-
 func (f *flow) refreshLayout() {
-	if f.refreshCooldown != nil {
-		f.refreshCooldown.Reset(flowRefreshCooldown)
-		return
-	}
-
-	f.refreshCooldown = time.AfterFunc(flowRefreshCooldown, func() {
-		Dispatch(f.adjustItemSizes)
-	})
+	Dispatch(f.adjustItemSizes)
 }
 
 func (f *flow) adjustItemSizes() {
@@ -177,7 +159,5 @@ func (f *flow) adjustItemSizes() {
 		return
 	}
 
-	remainingSpace := width - f.IitemsBaseWitdh*itemsPerRow
-	spaceToAddPerItem := remainingSpace / itemsPerRow
-	f.itemWidth = f.IitemsBaseWitdh + spaceToAddPerItem
+	f.itemWidth = width / itemsPerRow
 }

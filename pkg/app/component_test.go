@@ -317,12 +317,55 @@ func TestNestedInComponentUpdater(t *testing.T) {
 	require.True(t, b.appUpdated)
 }
 
+func TestResizer(t *testing.T) {
+	testSkipNonWasm(t)
+
+	h := &hello{}
+
+	err := mount(h)
+	require.NoError(t, err)
+	defer dismount(h)
+
+	h.onAppResize()
+	require.True(t, h.appResized)
+}
+
+func TestNestedResizer(t *testing.T) {
+	testSkipNonWasm(t)
+
+	h := &hello{}
+	div := Div().Body(h)
+
+	err := mount(div)
+	require.NoError(t, err)
+	defer dismount(div)
+
+	div.onAppResize()
+	require.True(t, h.appResized)
+}
+
+func TestNestedInComponentResizer(t *testing.T) {
+	testSkipNonWasm(t)
+
+	foo := &foo{Bar: "Bar"}
+
+	err := mount(foo)
+	require.NoError(t, err)
+	defer dismount(foo)
+
+	foo.onAppResize()
+
+	b := foo.children()[0].(*bar)
+	require.True(t, b.appRezized)
+}
+
 type hello struct {
 	Compo
 
 	Greeting   string
 	onNavURL   string
 	appUpdated bool
+	appResized bool
 }
 
 func (h *hello) OnMount(Context) {
@@ -334,6 +377,10 @@ func (h *hello) OnNav(ctx Context, u *url.URL) {
 
 func (h *hello) OnAppUpdate(ctx Context) {
 	h.appUpdated = true
+}
+
+func (h *hello) OnAppResize(ctx Context) {
+	h.appResized = true
 }
 
 func (h *hello) OnDismount(Context) {
@@ -366,6 +413,7 @@ type bar struct {
 	Value      string
 	onNavURL   string
 	appUpdated bool
+	appRezized bool
 }
 
 func (b *bar) OnNav(ctx Context, u *url.URL) {
@@ -374,6 +422,10 @@ func (b *bar) OnNav(ctx Context, u *url.URL) {
 
 func (b *bar) OnAppUpdate(ctx Context) {
 	b.appUpdated = true
+}
+
+func (b *bar) OnAppResize(ctx Context) {
+	b.appRezized = true
 }
 
 func (b *bar) Render() UI {
