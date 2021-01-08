@@ -1,6 +1,7 @@
 package app
 
 import (
+	"net/url"
 	"strconv"
 	"time"
 
@@ -57,6 +58,7 @@ type flow struct {
 	itemWidth           int
 	closeResizeListener func()
 	refreshCooldown     *time.Timer
+	contentLen          int
 }
 
 func (f *flow) Class(c string) UIFlow {
@@ -91,6 +93,10 @@ func (f *flow) OnMount(ctx Context) {
 	f.refreshLayout()
 }
 
+func (f *flow) OnNav(ctx Context, u *url.URL) {
+	f.refreshLayout()
+}
+
 func (f *flow) OnDismount() {
 	if f.refreshCooldown != nil {
 		f.refreshCooldown.Stop()
@@ -100,6 +106,11 @@ func (f *flow) OnDismount() {
 }
 
 func (f *flow) Render() UI {
+	if contentLen := len(f.Icontent); contentLen != f.contentLen {
+		f.contentLen = contentLen
+		f.refreshLayout()
+	}
+
 	return Div().
 		ID(f.id).
 		Class("goapp-flow").
