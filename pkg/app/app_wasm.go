@@ -45,7 +45,9 @@ func run() {
 	Window().Set("goappOnUpdate", onappupdate)
 
 	closeAppResize := Window().AddEventListener("resize", onAppResize)
+	closeAppOrientationChange := Window().AddEventListener("resize", orientationchange)
 	defer closeAppResize()
+	defer closeAppOrientationChange()
 
 	url := Window().URL()
 
