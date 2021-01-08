@@ -1,6 +1,7 @@
 package app
 
 import (
+	"net/url"
 	"time"
 
 	"github.com/google/uuid"
@@ -77,11 +78,9 @@ type shell struct {
 	Iclass            string
 	IshowShrunkenMenu bool
 
-	id                  string
-	closeResizeListener func()
-	refreshCooldown     *time.Timer
-	shrunkenMenu        bool
-	shrunkenSubmenu     bool
+	id              string
+	shrunkenMenu    bool
+	shrunkenSubmenu bool
 }
 
 func (s *shell) Class(c string) UIShell {
@@ -134,18 +133,17 @@ func (s *shell) AlignItemsToCenter() UIShell {
 
 func (s *shell) OnMount(ctx Context) {
 	s.id = uuid.New().String()
-	s.closeResizeListener = Window().AddEventListener("resize", s.onResize)
 
 	s.Update()
 	s.refreshLayout()
 }
 
-func (s *shell) OnDismount() {
-	if s.refreshCooldown != nil {
-		s.refreshCooldown.Stop()
-	}
+func (s *shell) OnNav(ctx Context, u *url.URL) {
+	s.refreshLayout()
+}
 
-	s.closeResizeListener()
+func (s *shell) OnAppResize(ctx Context) {
+	s.refreshLayout()
 }
 
 func (s *shell) Render() UI {
@@ -249,17 +247,10 @@ func (s *shell) onResize(ctx Context, e Event) {
 }
 
 func (s *shell) refreshLayout() {
-	if s.refreshCooldown != nil {
-		s.refreshCooldown.Reset(shellRefreshCooldow)
-		return
-	}
-
-	s.refreshCooldown = time.AfterFunc(shellRefreshCooldow, func() {
-		Dispatch(func() {
-			s.refreshMenu()
-			s.refreshSubmenu()
-			s.Update()
-		})
+	Dispatch(func() {
+		s.refreshMenu()
+		s.refreshSubmenu()
+		s.Update()
 	})
 }
 
