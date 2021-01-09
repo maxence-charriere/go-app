@@ -6,8 +6,13 @@ import (
 	"net/url"
 	"strings"
 	"syscall/js"
+	"time"
 
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+)
+
+const (
+	orientationChangeDelay = time.Millisecond * 500
 )
 
 var (
@@ -46,6 +51,9 @@ func run() {
 
 	closeAppResize := Window().AddEventListener("resize", onAppResize)
 	defer closeAppResize()
+
+	closeAppOrientationChange := Window().AddEventListener("orientationchange", onAppOrientationChange)
+	defer closeAppOrientationChange()
 
 	url := Window().URL()
 
@@ -262,4 +270,11 @@ func onAppUpdate(this Value, args []Value) interface{} {
 
 func onAppResize(ctx Context, e Event) {
 	ctx.Src.onAppResize()
+}
+
+func onAppOrientationChange(ctx Context, e Event) {
+	go func() {
+		time.Sleep(orientationChangeDelay)
+		dispatch(ctx.Src.onAppResize)
+	}()
 }

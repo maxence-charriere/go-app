@@ -2,7 +2,6 @@ package app
 
 import (
 	"net/url"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
@@ -10,7 +9,6 @@ import (
 
 const (
 	shellItemBaseWitdth = 300
-	shellRefreshCooldow = time.Millisecond * 100
 )
 
 // UIShell is a component that responsively handles the disposition of a side

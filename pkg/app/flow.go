@@ -3,15 +3,13 @@ package app
 import (
 	"net/url"
 	"strconv"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
 
 const (
-	flowItemBaseWidth   = 300
-	flowRefreshCooldown = time.Millisecond * 100
+	flowItemBaseWidth = 300
 )
 
 // UIFlow is the interface that describes a container that displays its items as
@@ -148,16 +146,16 @@ func (f *flow) adjustItemSizes() {
 	f.width = width
 	defer f.Update()
 
-	itemsPerRow := width / f.IitemsBaseWitdh
-	if itemsPerRow == 0 {
+	itemWidth := f.IitemsBaseWitdh
+	itemsPerRow := width / itemWidth
+	if itemsPerRow <= 1 {
 		f.itemWidth = width
 		return
 	}
 
+	itemWidth = width / itemsPerRow
 	if l := len(f.Icontent); l < itemsPerRow && f.IstrechOnSingleRow {
-		f.itemWidth = width / l
-		return
+		itemWidth = width / l
 	}
-
-	f.itemWidth = width / itemsPerRow
+	f.itemWidth = itemWidth
 }
