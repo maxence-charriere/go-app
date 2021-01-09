@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	orientationChangeDelay = time.Millisecond * 300
+	orientationChangeDelay = time.Millisecond * 500
 )
 
 var (
