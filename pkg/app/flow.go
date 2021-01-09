@@ -3,15 +3,13 @@ package app
 import (
 	"net/url"
 	"strconv"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
 
 const (
-	flowItemBaseWidth   = 300
-	flowRefreshCooldown = time.Millisecond * 100
+	flowItemBaseWidth = 300
 )
 
 // UIFlow is the interface that describes a container that displays its items as
