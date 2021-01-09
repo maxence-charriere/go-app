@@ -148,16 +148,20 @@ func (f *flow) adjustItemSizes() {
 	f.width = width
 	defer f.Update()
 
-	itemsPerRow := width / f.IitemsBaseWitdh
-	if itemsPerRow == 0 {
+	itemWidth := f.IitemsBaseWitdh
+	itemsPerRow := width / itemWidth
+	if itemsPerRow <= 1 {
 		f.itemWidth = width
 		return
 	}
 
+	itemWidth = width / itemsPerRow
 	if l := len(f.Icontent); l < itemsPerRow && f.IstrechOnSingleRow {
-		f.itemWidth = width / l
-		return
+		itemWidth = width / l
 	}
+	f.itemWidth = itemWidth
 
-	f.itemWidth = width / itemsPerRow
+	// remainingSpace := width - itemWidth*itemsPerRow
+	// spaceToAddPerItem := remainingSpace / itemsPerRow
+	// f.itemWidth = f.IitemsBaseWitdh + spaceToAddPerItem
 }
