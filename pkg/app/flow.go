@@ -158,8 +158,4 @@ func (f *flow) adjustItemSizes() {
 		itemWidth = width / l
 	}
 	f.itemWidth = itemWidth
-
-	// remainingSpace := width - itemWidth*itemsPerRow
-	// spaceToAddPerItem := remainingSpace / itemsPerRow
-	// f.itemWidth = f.IitemsBaseWitdh + spaceToAddPerItem
 }
