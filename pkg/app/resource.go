@@ -39,10 +39,12 @@ type ResourceProvider interface {
 
 	// The URL of the robots.txt file. This must match the pattern:
 	//  StaticResources/web/robots.txt.
+	// DEPRECATED.
 	RobotsTxt() string
 
 	// The URL of the ads.txt file. This must match the pattern:
 	//  StaticResources/web/ads.txt.
+	// DEPRECATED.
 	AdsTxt() string
 }
 
@@ -148,4 +150,15 @@ func (g gitHubPages) RobotsTxt() string {
 
 func (g gitHubPages) AdsTxt() string {
 	return g.StaticResources() + "/web/ads.txt"
+}
+
+// ProxyResource is a proxy descriptor that maps a given resource to an URL
+// path.
+type ProxyResource struct {
+	// The URL path from where a static resource is accessible.
+	Path string
+
+	// The path of the static resource that is proxied. It must start with
+	// "/web/".
+	ResourcePath string
 }

@@ -4,7 +4,6 @@ package app
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
@@ -50,8 +49,6 @@ func (s memoryStorage) Len() int {
 func (s memoryStorage) Key(i int) (string, error) {
 	j := 0
 	for k := range s {
-		fmt.Println(k)
-
 		if i == j {
 			return k, nil
 		}

@@ -67,6 +67,10 @@ type Handler struct {
 	// The name of the web application as it is usually displayed to the user.
 	Name string
 
+	// The static resources that are accessible le from custom paths. Files that
+	// are proxied by default are robots.txt and ads.txt.
+	ProxyResources []ProxyResource
+
 	// Additional headers to be added in head element.
 	RawHeaders []string
 
@@ -133,8 +137,10 @@ type Handler struct {
 	appWorkerJS      bytes.Buffer
 	wasmExecJS       []byte
 	appCSS           []byte
-	robotsTxt        []byte
-	adsTxt           []byte
+
+	proxyResourceMutex  sync.RWMutex
+	proxyResources      map[string]ProxyResource
+	proxyResourcesCache map[string]proxyResourceCache
 }
 
 func (h *Handler) init() {
@@ -152,6 +158,7 @@ func (h *Handler) init() {
 	h.initManifestJSON()
 	h.initScripts()
 	h.initAppCSS()
+	h.initProxyResources()
 }
 
 func (h *Handler) initVersion() {
@@ -418,6 +425,47 @@ func (h *Handler) initAppCSS() {
 	h.appCSS = stob(appCSS)
 }
 
+func (h *Handler) initProxyResources() {
+	resources := make(map[string]ProxyResource)
+
+	for _, r := range h.ProxyResources {
+		switch r.Path {
+		case "/wasm_exec.js",
+			"/goapp.js",
+			"/app.js",
+			"/app-worker.js",
+			"/manifest.json",
+			"/manifest.webmanifest",
+			"/app.css",
+			"/app.wasm",
+			"/goapp.wasm",
+			"/":
+			continue
+
+		default:
+			if strings.HasPrefix(r.Path, "/") && strings.HasPrefix(r.ResourcePath, "/web/") {
+				resources[r.Path] = r
+			}
+		}
+	}
+
+	if _, ok := resources["/robots.txt"]; !ok {
+		resources["/robots.txt"] = ProxyResource{
+			Path:         "/robots.txt",
+			ResourcePath: "/web/robots.txt",
+		}
+	}
+	if _, ok := resources["/ads.txt"]; !ok {
+		resources["/ads.txt"] = ProxyResource{
+			Path:         "/ads.txt",
+			ResourcePath: "/web/ads.txt",
+		}
+	}
+
+	h.proxyResources = resources
+	h.proxyResourcesCache = make(map[string]proxyResourceCache, len(resources))
+}
+
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.once.Do(h.init)
 
@@ -470,12 +518,10 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 
-	case "/robots.txt":
-		h.serveRobotsTxt(w, r)
-		return
+	}
 
-	case "/ads.txt":
-		h.serveAdsTxt(w, r)
+	if proxyResource, ok := h.proxyResources[path]; ok {
+		h.serveProxyResource(proxyResource, w, r)
 		return
 	}
 
@@ -524,18 +570,26 @@ func (h *Handler) serveAppCSS(w http.ResponseWriter, r *http.Request) {
 	w.Write(h.appCSS)
 }
 
-func (h *Handler) serveRobotsTxt(w http.ResponseWriter, r *http.Request) {
-	if h.robotsTxt == nil {
-		u := h.Resources.RobotsTxt()
+func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWriter, r *http.Request) {
+	h.proxyResourceMutex.RLock()
+	pres, ok := h.proxyResourcesCache[resource.Path]
+	h.proxyResourceMutex.RUnlock()
+
+	if !ok {
+		var u string
 		if _, ok := h.Resources.(http.Handler); ok {
-			u = "http://" + r.Host + u
+			u = "http://" + r.Host + resource.ResourcePath
+		} else {
+			u = h.Resources.StaticResources() + resource.Path
 		}
 
 		res, err := http.Get(u)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			Log("%s", errors.New("getting robots.txt failed").
+			Log("%s", errors.New("getting proxy static resource failed").
 				Tag("url", u).
+				Tag("proxy-path", resource.Path).
+				Tag("static-resource-path", resource.ResourcePath).
 				Wrap(err),
 			)
 			return
@@ -550,54 +604,28 @@ func (h *Handler) serveRobotsTxt(w http.ResponseWriter, r *http.Request) {
 		body, err := ioutil.ReadAll(res.Body)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			Log("%s", errors.New("reading robots.txt failed").Wrap(err))
-			return
-		}
-		h.robotsTxt = body
-	}
-
-	w.Header().Set("Content-Length", strconv.Itoa(len(h.robotsTxt)))
-	w.Header().Set("Content-Type", "text/plain")
-	w.WriteHeader(http.StatusOK)
-	w.Write(h.robotsTxt)
-}
-
-func (h *Handler) serveAdsTxt(w http.ResponseWriter, r *http.Request) {
-	if h.adsTxt == nil {
-		u := h.Resources.AdsTxt()
-		if _, ok := h.Resources.(http.Handler); ok {
-			u = "http://" + r.Host + u
-		}
-
-		res, err := http.Get(u)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			Log("%s", errors.New("getting ads.txt failed").
+			Log("%s", errors.New("reading proxy static resource failed").
 				Tag("url", u).
+				Tag("proxy-path", resource.Path).
+				Tag("static-resource-path", resource.ResourcePath).
 				Wrap(err),
 			)
 			return
 		}
-		defer res.Body.Close()
 
-		if res.StatusCode != http.StatusOK {
-			w.WriteHeader(http.StatusNotFound)
-			return
-		}
+		pres.Body = body
+		pres.ContentType = res.Header.Get("Content-Type")
 
-		body, err := ioutil.ReadAll(res.Body)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			Log("%s", errors.New("reading ads.txt failed").Wrap(err))
-			return
-		}
-		h.adsTxt = body
+		h.proxyResourceMutex.Lock()
+		h.proxyResourcesCache[resource.Path] = pres
+		h.proxyResourceMutex.Unlock()
+
 	}
 
-	w.Header().Set("Content-Length", strconv.Itoa(len(h.adsTxt)))
-	w.Header().Set("Content-Type", "text/plain")
+	w.Header().Set("Content-Length", strconv.Itoa(len(pres.Body)))
+	w.Header().Set("Content-Type", pres.ContentType)
 	w.WriteHeader(http.StatusOK)
-	w.Write(h.adsTxt)
+	w.Write(pres.Body)
 }
 
 func (h *Handler) appResource(path string) string {
@@ -666,4 +694,9 @@ func normalizeFilePath(path string) string {
 func isRemoteLocation(path string) bool {
 	u, _ := url.Parse(path)
 	return u.Scheme != ""
+}
+
+type proxyResourceCache struct {
+	Body        []byte
+	ContentType string
 }

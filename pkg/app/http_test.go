@@ -452,70 +452,104 @@ func TestHandlerServeFile(t *testing.T) {
 	require.Equal(t, "hello!", w.Body.String())
 }
 
-func TestHandlerServeRobotsTxt(t *testing.T) {
+func TestHandlerProxyResources(t *testing.T) {
 	close := testCreateDir(t, "web")
 	defer close()
-	testCreateFile(t, filepath.Join("web", "robots.txt"), "robot")
 
-	s := httptest.NewServer(&Handler{})
+	s := httptest.NewServer(&Handler{
+		ProxyResources: []ProxyResource{
+			{
+				Path:         "/hello.txt",
+				ResourcePath: "/web/hello.txt",
+			},
+			{
+				Path:         "/plop.txt",
+				ResourcePath: "/web/plop.txt",
+			},
+			{
+				Path:         "/app.js",
+				ResourcePath: "/web/app.js",
+			},
+		},
+	})
 	defer s.Close()
 
-	test := func(t *testing.T) {
-		res, err := http.Get(s.URL + "/robots.txt")
-		require.NoError(t, err)
-		defer res.Body.Close()
-		require.Equal(t, http.StatusOK, res.StatusCode)
-
-		content, err := ioutil.ReadAll(res.Body)
-		require.NoError(t, err)
-		require.Equal(t, "robot", btos(content))
+	utests := []struct {
+		scenario string
+		file     string
+		body     string
+		code     int
+		notProxy bool
+	}{
+		{
+			scenario: "robots.txt is fetched",
+			file:     "robots.txt",
+			code:     http.StatusOK,
+			body:     "robots!",
+		},
+		{
+			scenario: "ads.txt is fetched",
+			file:     "ads.txt",
+			code:     http.StatusOK,
+			body:     "ads!",
+		},
+		{
+			scenario: "proxy resource is fetched",
+			file:     "hello.txt",
+			code:     http.StatusOK,
+			body:     "hello!",
+		},
+		{
+			scenario: "proxy resource is not found",
+			file:     "plop.txt",
+			code:     http.StatusNotFound,
+		},
+		{
+			scenario: "no proxy resource is not fetched",
+			file:     "bye.txt",
+			code:     http.StatusOK,
+			body:     "bye!",
+			notProxy: true,
+		},
+		{
+			scenario: "app.js is not a proxy resource",
+			file:     "app.js",
+			code:     http.StatusOK,
+			body:     "wasm!",
+			notProxy: true,
+		},
 	}
 
-	t.Run("robots.txt", test)
-	t.Run("cached robots.txt", test)
-}
+	for _, u := range utests {
+		t.Run(u.scenario, func(t *testing.T) {
+			for i := 0; i < 2; i++ {
+				if u.body != "" {
+					testCreateFile(t, filepath.Join("web", u.file), u.body)
+				}
 
-func TestHandlerServeRobotsTxtNotFound(t *testing.T) {
-	s := httptest.NewServer(&Handler{})
-	defer s.Close()
+				url := s.URL + "/" + u.file
 
-	res, err := http.Get(s.URL + "/robots.txt")
-	require.NoError(t, err)
-	defer res.Body.Close()
-	require.Equal(t, http.StatusNotFound, res.StatusCode)
-}
+				res, err := http.Get(url)
+				require.NoError(t, err)
+				defer res.Body.Close()
 
-func TestHandlerServeAdsTxt(t *testing.T) {
-	close := testCreateDir(t, "web")
-	defer close()
-	testCreateFile(t, filepath.Join("web", "ads.txt"), "ads")
+				require.Equal(t, u.code, res.StatusCode)
+				if u.code != http.StatusOK {
+					return
+				}
 
-	s := httptest.NewServer(&Handler{})
-	defer s.Close()
+				body, err := ioutil.ReadAll(res.Body)
+				require.NoError(t, err)
 
-	test := func(t *testing.T) {
-		res, err := http.Get(s.URL + "/ads.txt")
-		require.NoError(t, err)
-		defer res.Body.Close()
-		require.Equal(t, http.StatusOK, res.StatusCode)
+				if u.notProxy {
+					require.NotEqual(t, u.body, btos(body))
+					return
+				}
 
-		content, err := ioutil.ReadAll(res.Body)
-		require.NoError(t, err)
-		require.Equal(t, "ads", btos(content))
+				require.Equal(t, u.body, btos(body))
+			}
+		})
 	}
-
-	t.Run("ads.txt", test)
-	t.Run("cached ads.txt", test)
-}
-
-func TestHandlerServeAdsTxtNotFound(t *testing.T) {
-	s := httptest.NewServer(&Handler{})
-	defer s.Close()
-
-	res, err := http.Get(s.URL + "/ads.txt")
-	require.NoError(t, err)
-	defer res.Body.Close()
-	require.Equal(t, http.StatusNotFound, res.StatusCode)
 }
 
 func BenchmarkHandlerColdRun(b *testing.B) {
