@@ -488,6 +488,12 @@ func TestHandlerProxyResources(t *testing.T) {
 			body:     "robots!",
 		},
 		{
+			scenario: "sitemap.xml is fetched",
+			file:     "sitemap.xml",
+			code:     http.StatusOK,
+			body:     "sitemap!",
+		},
+		{
 			scenario: "ads.txt is fetched",
 			file:     "ads.txt",
 			code:     http.StatusOK,

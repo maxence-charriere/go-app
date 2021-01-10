@@ -68,7 +68,7 @@ type Handler struct {
 	Name string
 
 	// The static resources that are accessible le from custom paths. Files that
-	// are proxied by default are robots.txt and ads.txt.
+	// are proxied by default are robots.txt, sitemap.xml and ads.txt.
 	ProxyResources []ProxyResource
 
 	// Additional headers to be added in head element.
@@ -453,6 +453,12 @@ func (h *Handler) initProxyResources() {
 		resources["/robots.txt"] = ProxyResource{
 			Path:         "/robots.txt",
 			ResourcePath: "/web/robots.txt",
+		}
+	}
+	if _, ok := resources["/sitemap.xml"]; !ok {
+		resources["/sitemap.xml"] = ProxyResource{
+			Path:         "/sitemap.xml",
+			ResourcePath: "/web/sitemap.xml",
 		}
 	}
 	if _, ok := resources["/ads.txt"]; !ok {
