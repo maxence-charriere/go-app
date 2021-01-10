@@ -586,7 +586,7 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 		if _, ok := h.Resources.(http.Handler); ok {
 			u = "http://" + r.Host + resource.ResourcePath
 		} else {
-			u = h.Resources.StaticResources() + resource.Path
+			u = h.Resources.StaticResources() + resource.ResourcePath
 		}
 
 		res, err := http.Get(u)
