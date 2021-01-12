@@ -67,8 +67,8 @@ type Handler struct {
 	// The name of the web application as it is usually displayed to the user.
 	Name string
 
-	// The static resources that are accessible le from custom paths. Files that
-	// are proxied by default are robots.txt, sitemap.xml and ads.txt.
+	// The static resources that are accessible from custom paths. Files that
+	// are proxied by default are /robots.txt, /sitemap.xml and /ads.txt.
 	ProxyResources []ProxyResource
 
 	// Additional headers to be added in head element.
