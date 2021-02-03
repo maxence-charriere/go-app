@@ -272,6 +272,9 @@ func (h *Handler) initPage() {
 				Href(h.appResource("/app.css")),
 			Script().
 				Defer(true).
+				Src("https://unpkg.com/pako@2.0.3/dist/pako.min.js"),
+			Script().
+				Defer(true).
 				Src(h.appResource("/wasm_exec.js")),
 			Script().
 				Defer(true).
