@@ -187,10 +187,6 @@ func (h *Handler) initScripts() {
 	for i, path := range h.Scripts {
 		h.Scripts[i] = h.staticResource(path)
 	}
-
-	if h.UseGZip {
-		h.Scripts = append(h.Scripts, "https://unpkg.com/pako@2.0.3/dist/pako.min.js")
-	}
 }
 
 func (h *Handler) initCacheableResources() {
@@ -276,6 +272,9 @@ func (h *Handler) initPage() {
 				Type("text/css").
 				Rel("stylesheet").
 				Href(h.appResource("/app.css")),
+			If(h.UseGZip, Script().
+				Defer(true).
+				Src("https://unpkg.com/pako@2.0.3/dist/pako.min.js")),
 			Script().
 				Defer(true).
 				Src(h.appResource("/wasm_exec.js")),
