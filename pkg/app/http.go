@@ -349,11 +349,11 @@ func (h *Handler) initAppJS() {
 			Env      string
 			Wasm     string
 			WorkerJS string
-			UseGzip  bool
+			UseGZip  bool
 		}{
 			Env:      btos(env),
 			Wasm:     wasm,
-			UseGzip:  h.UseGZip,
+			UseGZip:  h.UseGZip,
 			WorkerJS: h.appResource("/app-worker.js"),
 		}); err != nil {
 		panic(errors.New("initializing app.js failed").Wrap(err))
