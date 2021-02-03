@@ -45,12 +45,14 @@ window.addEventListener("beforeinstallprompt", e => {
 // -----------------------------------------------------------------------------
 // Init Web Assembly
 // -----------------------------------------------------------------------------
-if (!WebAssembly.instantiateStreaming) {
-  WebAssembly.instantiateStreaming = async (resp, importObject) => {
-    const source = await (await resp).arrayBuffer();
-    return await WebAssembly.instantiate(source, importObject);
-  };
-}
+WebAssembly.instantiateStreaming = async (resp, importObject) => {
+  let source = await (await resp).arrayBuffer();
+  if (true) {
+    const pako = window.pako;
+    source = pako.ungzip(source);
+  }
+  return await WebAssembly.instantiate(source, importObject);
+};
 
 const go = new Go();
 

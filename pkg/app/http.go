@@ -126,6 +126,8 @@ type Handler struct {
 	// development system.
 	Version string
 
+	UseGZip bool
+
 	once             sync.Once
 	etag             string
 	appWasmPath      string
@@ -336,15 +338,22 @@ func (h *Handler) initAppJS() {
 		)
 	}
 
+	wasm := h.Resources.AppWASM()
+	if h.UseGZip {
+		wasm += ".gz"
+	}
+
 	if err := template.
 		Must(template.New("app.js").Parse(appJS)).
 		Execute(&h.appJS, struct {
 			Env      string
 			Wasm     string
 			WorkerJS string
+			UseGzip  bool
 		}{
 			Env:      btos(env),
-			Wasm:     h.Resources.AppWASM(),
+			Wasm:     wasm,
+			UseGzip:  h.UseGZip,
 			WorkerJS: h.appResource("/app-worker.js"),
 		}); err != nil {
 		panic(errors.New("initializing app.js failed").Wrap(err))
