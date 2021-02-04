@@ -310,7 +310,7 @@ func (h *Handler) initPage() {
 		),
 	)
 
-	html.(writableNode).html(&h.page)
+	html.html(&h.page)
 }
 
 func (h *Handler) initWasmJS() {

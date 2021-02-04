@@ -175,3 +175,38 @@ func testUpdate(t *testing.T, utests []updateTest) {
 		})
 	}
 }
+
+func TestHTMLString(t *testing.T) {
+	utests := []struct {
+		scenario string
+		root     UI
+	}{
+		{
+			scenario: "hmtl element",
+			root:     Div().ID("test"),
+		},
+		{
+			scenario: "text",
+			root:     Text("hello"),
+		},
+		{
+			scenario: "component",
+			root:     &hello{},
+		},
+		{
+			scenario: "nested component",
+			root:     Div().Body(&hello{}),
+		},
+		{
+			scenario: "nested nested component",
+			root:     Div().Body(&foo{Bar: "bar"}),
+		},
+	}
+
+	for _, u := range utests {
+		t.Run(u.scenario, func(t *testing.T) {
+			html := HTMLString(u.root)
+			t.Log(html)
+		})
+	}
+}

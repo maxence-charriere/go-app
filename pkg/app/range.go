@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"io"
 	"net/url"
 	"reflect"
 	"sort"
@@ -154,4 +155,12 @@ func (r rangeLoop) onAppUpdate() {
 }
 
 func (r rangeLoop) onAppResize() {
+}
+
+func (r rangeLoop) html(w io.Writer) {
+	panic("should not be called")
+}
+
+func (r rangeLoop) htmlWithIndent(w io.Writer, indent int) {
+	panic("should not be called")
 }

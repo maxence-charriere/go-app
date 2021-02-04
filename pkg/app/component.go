@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"io"
 	"net/url"
 	"reflect"
 	"strings"
@@ -367,4 +368,16 @@ func (c *Compo) onAppResize() {
 func (c *Compo) render() UI {
 	elems := FilterUIElems(c.this.Render())
 	return elems[0]
+}
+
+func (c *Compo) html(w io.Writer) {
+	c.htmlWithIndent(w, 0)
+}
+
+func (c *Compo) htmlWithIndent(w io.Writer, indent int) {
+	root := c.render()
+	if !root.Mounted() {
+		root.setSelf(root)
+	}
+	root.htmlWithIndent(w, indent)
 }

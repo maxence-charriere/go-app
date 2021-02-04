@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/url"
 	"reflect"
+	"strings"
 
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
@@ -37,6 +38,8 @@ type UI interface {
 	onNav(*url.URL)
 	onAppUpdate()
 	onAppResize()
+	html(w io.Writer)
+	htmlWithIndent(w io.Writer, indent int)
 }
 
 // Kind represents the specific kind of a user interface element.
@@ -200,7 +203,18 @@ func update(a, b UI) error {
 	return a.update(b)
 }
 
-type writableNode interface {
-	html(w io.Writer)
-	htmlWithIndent(w io.Writer, indent int)
+// HTMLString return an HTML string representation of the given UI element.
+func HTMLString(ui UI) string {
+	var w strings.Builder
+	PrintHTML(&w, ui)
+	return w.String()
+}
+
+// PrintHTML writes an HTML representation of the UI element into the given
+// writer.
+func PrintHTML(w io.Writer, ui UI) {
+	if !ui.Mounted() {
+		ui.setSelf(ui)
+	}
+	ui.html(w)
 }

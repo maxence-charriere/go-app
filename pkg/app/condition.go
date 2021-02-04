@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"io"
 	"net/url"
 
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
@@ -124,4 +125,12 @@ func (c condition) onAppUpdate() {
 }
 
 func (c condition) onAppResize() {
+}
+
+func (c condition) html(w io.Writer) {
+	panic("shoulnd not be called")
+}
+
+func (c condition) htmlWithIndent(w io.Writer, indent int) {
+	panic("shoulnd not be called")
 }

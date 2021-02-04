@@ -426,7 +426,10 @@ func (e *elem) htmlWithIndent(w io.Writer, indent int) {
 
 	for _, c := range e.body {
 		w.Write(ln())
-		c.(writableNode).htmlWithIndent(w, indent+1)
+		if !c.Mounted() {
+			c.setSelf(c)
+		}
+		c.htmlWithIndent(w, indent+1)
 	}
 
 	if len(e.body) != 0 {
