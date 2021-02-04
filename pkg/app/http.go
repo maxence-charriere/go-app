@@ -136,11 +136,13 @@ type Handler struct {
 	appJS            bytes.Buffer
 	appWorkerJS      bytes.Buffer
 	wasmExecJS       []byte
-	appCSS           []byte
 
 	proxyResourceMutex  sync.RWMutex
 	proxyResources      map[string]ProxyResource
 	proxyResourcesCache map[string]proxyResourceCache
+
+	resourcesMu sync.RWMutex
+	resources   map[string]httpResource
 }
 
 func (h *Handler) init() {
@@ -155,9 +157,8 @@ func (h *Handler) init() {
 	h.initWasmJS()
 	h.initAppJS()
 	h.initWorkerJS()
-	h.initManifestJSON()
 	h.initScripts()
-	h.initAppCSS()
+	h.initResources()
 	h.initProxyResources()
 }
 
@@ -383,22 +384,35 @@ func (h *Handler) initWorkerJS() {
 	}
 }
 
-func (h *Handler) initManifestJSON() {
+func (h *Handler) initResources() {
+	h.resources = make(map[string]httpResource)
+
+	h.setResource("/manifest.webmanifest", httpResource{
+		ContentType: "application/manifest+json",
+		Body:        h.makeManifestJSON(),
+	})
+
+	h.setResource("/app.css", httpResource{
+		ContentType: "text/css",
+		Body:        stob(appCSS),
+	})
+}
+
+func (h *Handler) makeManifestJSON() []byte {
 	normalize := func(s string) string {
 		if !strings.HasPrefix(s, "/") {
 			s = "/" + s
 		}
-
 		if !strings.HasSuffix(s, "/") {
 			s += "/"
 		}
-
 		return s
 	}
 
+	var b bytes.Buffer
 	if err := template.
 		Must(template.New("manifest.webmanifest").Parse(manifestJSON)).
-		Execute(&h.manifestJSON, struct {
+		Execute(&b, struct {
 			ShortName       string
 			Name            string
 			DefaultIcon     string
@@ -419,10 +433,21 @@ func (h *Handler) initManifestJSON() {
 		}); err != nil {
 		panic(errors.New("initializing manifest.webmanifest failed").Wrap(err))
 	}
+	return b.Bytes()
 }
 
-func (h *Handler) initAppCSS() {
-	h.appCSS = stob(appCSS)
+func (h *Handler) setResource(path string, r httpResource) {
+	r.Path = path
+	h.resourcesMu.Lock()
+	h.resources[path] = r
+	h.resourcesMu.Unlock()
+}
+
+func (h *Handler) getResource(path string) (httpResource, bool) {
+	h.resourcesMu.RLock()
+	r, ok := h.resources[path]
+	h.resourcesMu.RUnlock()
+	return r, ok
 }
 
 func (h *Handler) initProxyResources() {
@@ -485,6 +510,18 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	path := r.URL.Path
+	switch path {
+	case "/manifest.json":
+		path = "/manifest.webmanifest"
+	}
+
+	if res, ok := h.getResource(path); ok && !res.IsExpired() {
+		w.Header().Set("Content-Length", strconv.Itoa(res.Len()))
+		w.Header().Set("Content-Type", res.ContentType)
+		w.WriteHeader(http.StatusOK)
+		w.Write(res.Body)
+		return
+	}
 
 	staticResourcesHandler, servesStaticResources := h.Resources.(http.Handler)
 	if servesStaticResources && strings.HasPrefix(path, "/web/") {
@@ -503,14 +540,6 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	case "/app-worker.js":
 		h.serveAppWorkerJS(w, r)
-		return
-
-	case "/manifest.json", "/manifest.webmanifest":
-		h.serveManifestJSON(w, r)
-		return
-
-	case "/app.css":
-		h.serveAppCSS(w, r)
 		return
 
 	case "/app.wasm", "/goapp.wasm":
@@ -560,20 +589,6 @@ func (h *Handler) serveAppWorkerJS(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/javascript")
 	w.WriteHeader(http.StatusOK)
 	w.Write(h.appWorkerJS.Bytes())
-}
-
-func (h *Handler) serveManifestJSON(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Length", strconv.Itoa(h.manifestJSON.Len()))
-	w.Header().Set("Content-Type", "application/manifest+json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(h.manifestJSON.Bytes())
-}
-
-func (h *Handler) serveAppCSS(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Length", strconv.Itoa(len(h.appCSS)))
-	w.Header().Set("Content-Type", "text/css")
-	w.WriteHeader(http.StatusOK)
-	w.Write(h.appCSS)
 }
 
 func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWriter, r *http.Request) {
@@ -705,4 +720,42 @@ func isRemoteLocation(path string) bool {
 type proxyResourceCache struct {
 	Body        []byte
 	ContentType string
+}
+
+type httpResource struct {
+	Path        string
+	ContentType string
+	Body        []byte
+	ExpireAt    time.Time
+}
+
+func (r httpResource) Len() int {
+	return len(r.Body)
+}
+
+func (r httpResource) IsExpired() bool {
+	return r.ExpireAt != time.Time{} && r.ExpireAt.Before(time.Now())
+}
+
+// PageInfo contains the page info that is modifiable when a page is pre
+// rendered.
+type PageInfo struct {
+	// The page authors.
+	Author string
+
+	// The page description.
+	Description string
+
+	// The page keywords.
+	Keywords []string
+
+	// The page title.
+	Title string
+
+	url *url.URL
+}
+
+// URL return the page URL.
+func (i *PageInfo) URL() *url.URL {
+	return i.url
 }
