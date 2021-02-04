@@ -132,16 +132,10 @@ type Handler struct {
 	robotPath        string
 	hasRemoteRootDir bool
 	page             bytes.Buffer
-	manifestJSON     bytes.Buffer
-	appJS            bytes.Buffer
-	wasmExecJS       []byte
 
-	proxyResourceMutex  sync.RWMutex
-	proxyResources      map[string]ProxyResource
-	proxyResourcesCache map[string]proxyResourceCache
-
-	resourcesMu sync.RWMutex
-	resources   map[string]httpResource
+	resourcesMu    sync.RWMutex
+	resources      map[string]httpResource
+	proxyResources map[string]ProxyResource
 }
 
 func (h *Handler) init() {
@@ -156,7 +150,6 @@ func (h *Handler) init() {
 	h.initPage()
 
 	h.initResources()
-
 	h.initProxyResources()
 }
 
@@ -507,7 +500,6 @@ func (h *Handler) initProxyResources() {
 	}
 
 	h.proxyResources = resources
-	h.proxyResourcesCache = make(map[string]proxyResourceCache, len(resources))
 }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -551,10 +543,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if res, ok := h.getResource(path); ok && !res.IsExpired() {
-		w.Header().Set("Content-Length", strconv.Itoa(res.Len()))
-		w.Header().Set("Content-Type", res.ContentType)
-		w.WriteHeader(http.StatusOK)
-		w.Write(res.Body)
+		h.serveResource(w, res)
 		return
 	}
 
@@ -573,62 +562,58 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	w.Write(h.page.Bytes())
 }
 
+func (h *Handler) serveResource(w http.ResponseWriter, r httpResource) {
+	w.Header().Set("Content-Length", strconv.Itoa(r.Len()))
+	w.Header().Set("Content-Type", r.ContentType)
+	w.WriteHeader(http.StatusOK)
+	w.Write(r.Body)
+}
+
 func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWriter, r *http.Request) {
-	h.proxyResourceMutex.RLock()
-	pres, ok := h.proxyResourcesCache[resource.Path]
-	h.proxyResourceMutex.RUnlock()
-
-	if !ok {
-		var u string
-		if _, ok := h.Resources.(http.Handler); ok {
-			u = "http://" + r.Host + resource.ResourcePath
-		} else {
-			u = h.Resources.StaticResources() + resource.ResourcePath
-		}
-
-		res, err := http.Get(u)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			Log("%s", errors.New("getting proxy static resource failed").
-				Tag("url", u).
-				Tag("proxy-path", resource.Path).
-				Tag("static-resource-path", resource.ResourcePath).
-				Wrap(err),
-			)
-			return
-		}
-		defer res.Body.Close()
-
-		if res.StatusCode != http.StatusOK {
-			w.WriteHeader(http.StatusNotFound)
-			return
-		}
-
-		body, err := ioutil.ReadAll(res.Body)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			Log("%s", errors.New("reading proxy static resource failed").
-				Tag("url", u).
-				Tag("proxy-path", resource.Path).
-				Tag("static-resource-path", resource.ResourcePath).
-				Wrap(err),
-			)
-			return
-		}
-
-		pres.Body = body
-		pres.ContentType = res.Header.Get("Content-Type")
-
-		h.proxyResourceMutex.Lock()
-		h.proxyResourcesCache[resource.Path] = pres
-		h.proxyResourceMutex.Unlock()
-
+	var u string
+	if _, ok := h.Resources.(http.Handler); ok {
+		u = "http://" + r.Host + resource.ResourcePath
+	} else {
+		u = h.Resources.StaticResources() + resource.ResourcePath
 	}
 
-	w.Header().Set("Content-Length", strconv.Itoa(len(pres.Body)))
-	w.Header().Set("Content-Type", pres.ContentType)
-	w.WriteHeader(http.StatusOK)
-	w.Write(pres.Body)
+	res, err := http.Get(u)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		Log("%s", errors.New("getting proxy static resource failed").
+			Tag("url", u).
+			Tag("proxy-path", resource.Path).
+			Tag("static-resource-path", resource.ResourcePath).
+			Wrap(err),
+		)
+		return
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		Log("%s", errors.New("reading proxy static resource failed").
+			Tag("url", u).
+			Tag("proxy-path", resource.Path).
+			Tag("static-resource-path", resource.ResourcePath).
+			Wrap(err),
+		)
+		return
+	}
+
+	httpRes := httpResource{
+		Path:        resource.Path,
+		ContentType: res.Header.Get("Content-Type"),
+		Body:        body,
+	}
+	h.setResource(resource.Path, httpRes)
+	h.serveResource(w, httpRes)
 }
 
 func (h *Handler) appResource(path string) string {
