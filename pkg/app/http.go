@@ -155,7 +155,6 @@ func (h *Handler) init() {
 	h.initPWA()
 	h.initPage()
 	h.initWasmJS()
-	h.initAppJS()
 
 	h.initResources()
 
@@ -318,39 +317,13 @@ func (h *Handler) initWasmJS() {
 	h.wasmExecJS = []byte(wasmExecJS)
 }
 
-func (h *Handler) initAppJS() {
-	if h.Env == nil {
-		h.Env = make(map[string]string, 2)
-	}
-	h.Env["GOAPP_VERSION"] = h.Version
-	h.Env["GOAPP_STATIC_RESOURCES_URL"] = h.Resources.StaticResources()
-	h.Env["GOAPP_ROOT_PREFIX"] = h.Resources.AppResources()
-
-	env, err := json.Marshal(h.Env)
-	if err != nil {
-		panic(errors.New("encoding pwa env failed").
-			Tag("env", h.Env).
-			Wrap(err),
-		)
-	}
-
-	if err := template.
-		Must(template.New("app.js").Parse(appJS)).
-		Execute(&h.appJS, struct {
-			Env      string
-			Wasm     string
-			WorkerJS string
-		}{
-			Env:      btos(env),
-			Wasm:     h.Resources.AppWASM(),
-			WorkerJS: h.appResource("/app-worker.js"),
-		}); err != nil {
-		panic(errors.New("initializing app.js failed").Wrap(err))
-	}
-}
-
 func (h *Handler) initResources() {
 	h.resources = make(map[string]httpResource)
+
+	h.setResource("/app.js", httpResource{
+		ContentType: "application/javascript",
+		Body:        h.makeAppJS(),
+	})
 
 	h.setResource("/app-worker.js", httpResource{
 		ContentType: "application/javascript",
@@ -366,6 +339,39 @@ func (h *Handler) initResources() {
 		ContentType: "text/css",
 		Body:        stob(appCSS),
 	})
+}
+
+func (h *Handler) makeAppJS() []byte {
+	if h.Env == nil {
+		h.Env = make(map[string]string, 2)
+	}
+	h.Env["GOAPP_VERSION"] = h.Version
+	h.Env["GOAPP_STATIC_RESOURCES_URL"] = h.Resources.StaticResources()
+	h.Env["GOAPP_ROOT_PREFIX"] = h.Resources.AppResources()
+
+	env, err := json.Marshal(h.Env)
+	if err != nil {
+		panic(errors.New("encoding pwa env failed").
+			Tag("env", h.Env).
+			Wrap(err),
+		)
+	}
+
+	var b bytes.Buffer
+	if err := template.
+		Must(template.New("app.js").Parse(appJS)).
+		Execute(&b, struct {
+			Env      string
+			Wasm     string
+			WorkerJS string
+		}{
+			Env:      btos(env),
+			Wasm:     h.Resources.AppWASM(),
+			WorkerJS: h.appResource("/app-worker.js"),
+		}); err != nil {
+		panic(errors.New("initializing app.js failed").Wrap(err))
+	}
+	return b.Bytes()
 }
 
 func (h *Handler) makeAppWorkerJS() []byte {
@@ -518,8 +524,12 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	path := r.URL.Path
 	switch path {
+	case "/goapp.js":
+		path = "/app.js"
+
 	case "/manifest.json":
 		path = "/manifest.webmanifest"
+
 	}
 
 	if res, ok := h.getResource(path); ok && !res.IsExpired() {
@@ -539,10 +549,6 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch path {
 	case "/wasm_exec.js":
 		h.serveWasmExecJS(w, r)
-		return
-
-	case "/app.js", "/goapp.js":
-		h.serveAppJS(w, r)
 		return
 
 	case "/app.wasm", "/goapp.wasm":
@@ -578,13 +584,6 @@ func (h *Handler) serveWasmExecJS(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/javascript")
 	w.WriteHeader(http.StatusOK)
 	w.Write(h.wasmExecJS)
-}
-
-func (h *Handler) serveAppJS(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Length", strconv.Itoa(h.appJS.Len()))
-	w.Header().Set("Content-Type", "application/javascript")
-	w.WriteHeader(http.StatusOK)
-	w.Write(h.appJS.Bytes())
 }
 
 func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWriter, r *http.Request) {
