@@ -134,7 +134,6 @@ type Handler struct {
 	page             bytes.Buffer
 	manifestJSON     bytes.Buffer
 	appJS            bytes.Buffer
-	appWorkerJS      bytes.Buffer
 	wasmExecJS       []byte
 
 	proxyResourceMutex  sync.RWMutex
@@ -150,15 +149,16 @@ func (h *Handler) init() {
 	h.initStaticResources()
 	h.initStyles()
 	h.initScripts()
+
 	h.initCacheableResources()
 	h.initIcon()
 	h.initPWA()
 	h.initPage()
 	h.initWasmJS()
 	h.initAppJS()
-	h.initWorkerJS()
-	h.initScripts()
+
 	h.initResources()
+
 	h.initProxyResources()
 }
 
@@ -349,7 +349,26 @@ func (h *Handler) initAppJS() {
 	}
 }
 
-func (h *Handler) initWorkerJS() {
+func (h *Handler) initResources() {
+	h.resources = make(map[string]httpResource)
+
+	h.setResource("/app-worker.js", httpResource{
+		ContentType: "application/javascript",
+		Body:        h.makeAppWorkerJS(),
+	})
+
+	h.setResource("/manifest.webmanifest", httpResource{
+		ContentType: "application/manifest+json",
+		Body:        h.makeManifestJSON(),
+	})
+
+	h.setResource("/app.css", httpResource{
+		ContentType: "text/css",
+		Body:        stob(appCSS),
+	})
+}
+
+func (h *Handler) makeAppWorkerJS() []byte {
 	cacheableResources := map[string]struct{}{
 		h.appResource("/app.css"):              {},
 		h.appResource("/app.js"):               {},
@@ -371,9 +390,10 @@ func (h *Handler) initWorkerJS() {
 	cacheResources(h.Scripts)
 	cacheResources(h.CacheableResources)
 
+	var b bytes.Buffer
 	if err := template.
 		Must(template.New("app-worker.js").Parse(appWorkerJS)).
-		Execute(&h.appWorkerJS, struct {
+		Execute(&b, struct {
 			Version          string
 			ResourcesToCache map[string]struct{}
 		}{
@@ -382,20 +402,7 @@ func (h *Handler) initWorkerJS() {
 		}); err != nil {
 		panic(errors.New("initializing app-worker.js failed").Wrap(err))
 	}
-}
-
-func (h *Handler) initResources() {
-	h.resources = make(map[string]httpResource)
-
-	h.setResource("/manifest.webmanifest", httpResource{
-		ContentType: "application/manifest+json",
-		Body:        h.makeManifestJSON(),
-	})
-
-	h.setResource("/app.css", httpResource{
-		ContentType: "text/css",
-		Body:        stob(appCSS),
-	})
+	return b.Bytes()
 }
 
 func (h *Handler) makeManifestJSON() []byte {
@@ -538,10 +545,6 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		h.serveAppJS(w, r)
 		return
 
-	case "/app-worker.js":
-		h.serveAppWorkerJS(w, r)
-		return
-
 	case "/app.wasm", "/goapp.wasm":
 		if servesStaticResources {
 			r2 := *r
@@ -582,13 +585,6 @@ func (h *Handler) serveAppJS(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/javascript")
 	w.WriteHeader(http.StatusOK)
 	w.Write(h.appJS.Bytes())
-}
-
-func (h *Handler) serveAppWorkerJS(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Length", strconv.Itoa(h.appWorkerJS.Len()))
-	w.Header().Set("Content-Type", "application/javascript")
-	w.WriteHeader(http.StatusOK)
-	w.Write(h.appWorkerJS.Bytes())
 }
 
 func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWriter, r *http.Request) {
