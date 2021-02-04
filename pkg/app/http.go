@@ -154,7 +154,6 @@ func (h *Handler) init() {
 	h.initIcon()
 	h.initPWA()
 	h.initPage()
-	h.initWasmJS()
 
 	h.initResources()
 
@@ -313,12 +312,13 @@ func (h *Handler) initPage() {
 	html.html(&h.page)
 }
 
-func (h *Handler) initWasmJS() {
-	h.wasmExecJS = []byte(wasmExecJS)
-}
-
 func (h *Handler) initResources() {
 	h.resources = make(map[string]httpResource)
+
+	h.setResource("/wasm_exec.js", httpResource{
+		ContentType: "application/javascript",
+		Body:        stob(wasmExecJS),
+	})
 
 	h.setResource("/app.js", httpResource{
 		ContentType: "application/javascript",
@@ -523,12 +523,30 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	path := r.URL.Path
+
+	fileHandler, isServingStaticResources := h.Resources.(http.Handler)
+	if isServingStaticResources && strings.HasPrefix(path, "/web/") {
+		fileHandler.ServeHTTP(w, r)
+		return
+	}
+
 	switch path {
 	case "/goapp.js":
 		path = "/app.js"
 
 	case "/manifest.json":
 		path = "/manifest.webmanifest"
+
+	case "/app.wasm", "/goapp.wasm":
+		if isServingStaticResources {
+			r2 := *r
+			r2.URL.Path = h.Resources.AppWASM()
+			fileHandler.ServeHTTP(w, &r2)
+			return
+		}
+
+		w.WriteHeader(http.StatusNotFound)
+		return
 
 	}
 
@@ -538,30 +556,6 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write(res.Body)
 		return
-	}
-
-	staticResourcesHandler, servesStaticResources := h.Resources.(http.Handler)
-	if servesStaticResources && strings.HasPrefix(path, "/web/") {
-		staticResourcesHandler.ServeHTTP(w, r)
-		return
-	}
-
-	switch path {
-	case "/wasm_exec.js":
-		h.serveWasmExecJS(w, r)
-		return
-
-	case "/app.wasm", "/goapp.wasm":
-		if servesStaticResources {
-			r2 := *r
-			r2.URL.Path = h.Resources.AppWASM()
-			staticResourcesHandler.ServeHTTP(w, &r2)
-			return
-		}
-
-		w.WriteHeader(http.StatusNotFound)
-		return
-
 	}
 
 	if proxyResource, ok := h.proxyResources[path]; ok {
@@ -577,13 +571,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	w.WriteHeader(http.StatusOK)
 	w.Write(h.page.Bytes())
-}
-
-func (h *Handler) serveWasmExecJS(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Length", strconv.Itoa(len(h.wasmExecJS)))
-	w.Header().Set("Content-Type", "application/javascript")
-	w.WriteHeader(http.StatusOK)
-	w.Write(h.wasmExecJS)
 }
 
 func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWriter, r *http.Request) {
