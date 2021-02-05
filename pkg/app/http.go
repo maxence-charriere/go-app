@@ -169,19 +169,19 @@ func (h *Handler) initStaticResources() {
 
 func (h *Handler) initStyles() {
 	for i, path := range h.Styles {
-		h.Styles[i] = h.staticResource(path)
+		h.Styles[i] = h.resolveStaticResourcePath(path)
 	}
 }
 
 func (h *Handler) initScripts() {
 	for i, path := range h.Scripts {
-		h.Scripts[i] = h.staticResource(path)
+		h.Scripts[i] = h.resolveStaticResourcePath(path)
 	}
 }
 
 func (h *Handler) initCacheableResources() {
 	for i, path := range h.CacheableResources {
-		h.CacheableResources[i] = h.staticResource(path)
+		h.CacheableResources[i] = h.resolveStaticResourcePath(path)
 	}
 }
 
@@ -195,9 +195,9 @@ func (h *Handler) initIcon() {
 		h.Icon.AppleTouch = h.Icon.Default
 	}
 
-	h.Icon.Default = h.staticResource(h.Icon.Default)
-	h.Icon.Large = h.staticResource(h.Icon.Large)
-	h.Icon.AppleTouch = h.staticResource(h.Icon.AppleTouch)
+	h.Icon.Default = h.resolveStaticResourcePath(h.Icon.Default)
+	h.Icon.Large = h.resolveStaticResourcePath(h.Icon.Large)
+	h.Icon.AppleTouch = h.resolveStaticResourcePath(h.Icon.AppleTouch)
 }
 
 func (h *Handler) initPWA() {
@@ -257,17 +257,17 @@ func (h *Handler) initPage() {
 				Href(h.Icon.AppleTouch),
 			Link().
 				Rel("manifest").
-				Href(h.appResource("/manifest.webmanifest")),
+				Href(h.resolveAppResourcePath("/manifest.webmanifest")),
 			Link().
 				Type("text/css").
 				Rel("stylesheet").
-				Href(h.appResource("/app.css")),
+				Href(h.resolveAppResourcePath("/app.css")),
 			Script().
 				Defer(true).
-				Src(h.appResource("/wasm_exec.js")),
+				Src(h.resolveAppResourcePath("/wasm_exec.js")),
 			Script().
 				Defer(true).
-				Src(h.appResource("/app.js")),
+				Src(h.resolveAppResourcePath("/app.js")),
 			Range(h.Styles).Slice(func(i int) UI {
 				return Link().
 					Type("text/css").
@@ -360,7 +360,7 @@ func (h *Handler) makeAppJS() []byte {
 		}{
 			Env:      btos(env),
 			Wasm:     h.Resources.AppWASM(),
-			WorkerJS: h.appResource("/app-worker.js"),
+			WorkerJS: h.resolveAppResourcePath("/app-worker.js"),
 		}); err != nil {
 		panic(errors.New("initializing app.js failed").Wrap(err))
 	}
@@ -369,15 +369,15 @@ func (h *Handler) makeAppJS() []byte {
 
 func (h *Handler) makeAppWorkerJS() []byte {
 	cacheableResources := map[string]struct{}{
-		h.appResource("/app.css"):              {},
-		h.appResource("/app.js"):               {},
-		h.appResource("/manifest.webmanifest"): {},
-		h.appResource("/wasm_exec.js"):         {},
-		h.appResource("/"):                     {},
-		h.Resources.AppWASM():                  {},
-		h.Icon.Default:                         {},
-		h.Icon.Large:                           {},
-		h.Icon.AppleTouch:                      {},
+		h.resolveAppResourcePath("/app.css"):              {},
+		h.resolveAppResourcePath("/app.js"):               {},
+		h.resolveAppResourcePath("/manifest.webmanifest"): {},
+		h.resolveAppResourcePath("/wasm_exec.js"):         {},
+		h.resolveAppResourcePath("/"):                     {},
+		h.Resources.AppWASM():                             {},
+		h.Icon.Default:                                    {},
+		h.Icon.Large:                                      {},
+		h.Icon.AppleTouch:                                 {},
 	}
 
 	cacheResources := func(res []string) {
@@ -555,13 +555,6 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.servePage(w, r)
 }
 
-func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Length", strconv.Itoa(h.page.Len()))
-	w.Header().Set("Content-Type", "text/html")
-	w.WriteHeader(http.StatusOK)
-	w.Write(h.page.Bytes())
-}
-
 func (h *Handler) serveResource(w http.ResponseWriter, r httpResource) {
 	w.Header().Set("Content-Length", strconv.Itoa(r.Len()))
 	w.Header().Set("Content-Type", r.ContentType)
@@ -616,33 +609,44 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 	h.serveResource(w, httpRes)
 }
 
-func (h *Handler) appResource(path string) string {
-	if !strings.HasPrefix(path, "/") {
-		path = "/" + path
-	}
-
-	path = h.Resources.AppResources() + path
-	if !strings.HasPrefix(path, "/") {
-		path = "/" + path
-	}
-
-	if path != "/" && strings.HasSuffix(path, "/") {
-		path = strings.TrimSuffix(path, "/")
-	}
-
-	return path
+func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Length", strconv.Itoa(h.page.Len()))
+	w.Header().Set("Content-Type", "text/html")
+	w.WriteHeader(http.StatusOK)
+	w.Write(h.page.Bytes())
 }
 
-func (h *Handler) staticResource(path string) string {
+func (h *Handler) resolveAppResourcePath(path string) string {
+	var b strings.Builder
+
+	b.WriteByte('/')
+	appResources := strings.TrimPrefix(h.Resources.AppResources(), "/")
+	appResources = strings.TrimSuffix(appResources, "/")
+	b.WriteString(appResources)
+
+	path = strings.TrimPrefix(path, "/")
+	path = strings.TrimSuffix(path, "/")
+	if b.Len() != 1 && path != "" {
+		b.WriteByte('/')
+	}
+	b.WriteString(path)
+
+	return b.String()
+}
+
+func (h *Handler) resolveStaticResourcePath(path string) string {
 	if isRemoteLocation(path) {
 		return path
 	}
 
-	if !strings.HasPrefix(path, "/") {
-		path = "/" + path
-	}
-
-	return h.Resources.StaticResources() + path
+	var b strings.Builder
+	staticResources := strings.TrimSuffix(h.Resources.StaticResources(), "/")
+	b.WriteString(staticResources)
+	path = strings.TrimPrefix(path, "/")
+	path = strings.TrimSuffix(path, "/")
+	b.WriteByte('/')
+	b.WriteString(path)
+	return b.String()
 }
 
 // Icon describes a square image that is used in various places such as
