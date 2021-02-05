@@ -89,7 +89,6 @@ func initBody() {
 
 func initContent() {
 	ctx, cancel := context.WithCancel(context.Background())
-
 	content := &htmlDiv{
 		elem: elem{
 			ctx:       ctx,
@@ -98,7 +97,6 @@ func initContent() {
 			tag:       "div",
 		},
 	}
-
 	content.setSelf(content)
 	content.setParent(body)
 	body.body = append(body.body, content)

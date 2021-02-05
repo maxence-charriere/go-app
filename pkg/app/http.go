@@ -366,6 +366,8 @@ func (h *Handler) makeManifestJSON() []byte {
 }
 
 func (h *Handler) setResource(path string, r httpResource) {
+	fmt.Println("setting resource:", path)
+
 	r.Path = path
 	h.resourcesMu.Lock()
 	h.resources[path] = r
@@ -475,6 +477,13 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// This is to avoid generating pages for not found pages when there is no
+	// server side routes set.
+	if res, ok := h.getResource("/"); ok && routes.len() == 0 && !res.IsExpired() {
+		h.serveResource(w, res)
+		return
+	}
+
 	h.servePage(w, r)
 }
 
@@ -542,6 +551,12 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		url:          &(*r.URL),
 	}
 
+	preRender, ok := routes.ui(r.URL.Path)
+	if !ok && routes.len() != 0 {
+		http.NotFound(w, r)
+		return
+	}
+
 	var b bytes.Buffer
 	b.WriteString("<!DOCTYPE html>\n")
 	PrintHTML(&b, Html().Body(
@@ -603,30 +618,43 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		),
 		Body().Body(
 			Div().
-				ID("app-wasm-layout").
-				Class("goapp-app-info").
 				Body(
-					Img().
-						ID("app-wasm-loader-icon").
-						Class("goapp-logo goapp-spin").
-						Src(h.Icon.Default),
-					P().
-						ID("app-wasm-loader-label").
-						Class("goapp-label").
-						Body(Text(info.LoadingLabel)),
+					Div().
+						ID("app-pre-render").
+						Body(preRender),
+					Div().
+						ID("app-wasm-layout").
+						Class("goapp-app-info").
+						Body(
+							Img().
+								ID("app-wasm-loader-icon").
+								Class("goapp-logo goapp-spin").
+								Src(h.Icon.Default),
+							P().
+								ID("app-wasm-loader-label").
+								Class("goapp-label").
+								Body(Text(info.LoadingLabel)),
+						),
 				),
 			Div().ID("app-context-menu"),
 			Div().ID("app-end"),
 		),
 	))
 
+	// This is to avoid generating pages for not found pages when there is no
+	// server side routes set.
+	path := r.URL.Path
+	if routes.len() == 0 {
+		path = "/"
+	}
+
 	res := httpResource{
-		Path:        r.URL.Path,
+		Path:        path,
 		Body:        b.Bytes(),
 		ContentType: "text/html",
 		ExpireAt:    time.Now().Add(h.PreRenderTTL),
 	}
-	h.setResource(r.URL.Path, res)
+	h.setResource(path, res)
 	h.serveResource(w, res)
 }
 

@@ -50,6 +50,10 @@ func (r *router) ui(path string) (UI, bool) {
 	return nil, false
 }
 
+func (r *router) len() int {
+	return len(r.routes) + len(r.routesWithRegexp)
+}
+
 type regexpRoute struct {
 	regexp *regexp.Regexp
 	node   UI
