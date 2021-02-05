@@ -684,11 +684,6 @@ func isRemoteLocation(path string) bool {
 	return u.Scheme != ""
 }
 
-type proxyResourceCache struct {
-	Body        []byte
-	ContentType string
-}
-
 type httpResource struct {
 	Path        string
 	ContentType string
