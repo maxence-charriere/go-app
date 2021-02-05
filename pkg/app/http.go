@@ -67,6 +67,11 @@ type Handler struct {
 	// The name of the web application as it is usually displayed to the user.
 	Name string
 
+	// The duration that pre rendered pages are cached before being updated.
+	//
+	// Default: 24h
+	PreRenderTTL time.Duration
+
 	// The static resources that are accessible from custom paths. Files that
 	// are proxied by default are /robots.txt, /sitemap.xml and /ads.txt.
 	ProxyResources []ProxyResource
@@ -126,13 +131,8 @@ type Handler struct {
 	// development system.
 	Version string
 
-	once             sync.Once
-	etag             string
-	appWasmPath      string
-	robotPath        string
-	hasRemoteRootDir bool
-	page             bytes.Buffer
-
+	once           sync.Once
+	etag           string
 	resourcesMu    sync.RWMutex
 	resources      map[string]httpResource
 	proxyResources map[string]ProxyResource
@@ -143,11 +143,10 @@ func (h *Handler) init() {
 	h.initStaticResources()
 	h.initStyles()
 	h.initScripts()
-
 	h.initCacheableResources()
 	h.initIcon()
 	h.initPWA()
-	h.initPage()
+	h.initPreRenderTTL()
 
 	h.initResources()
 	h.initProxyResources()
@@ -223,86 +222,10 @@ func (h *Handler) initPWA() {
 	}
 }
 
-func (h *Handler) initPage() {
-	h.page.WriteString("<!DOCTYPE html>\n")
-
-	html := Html().Body(
-		Head().Body(
-			Meta().Charset("UTF-8"),
-			Meta().
-				HTTPEquiv("Content-Type").
-				Content("text/html; charset=utf-8"),
-			Meta().
-				Name("author").
-				Content(h.Author),
-			Meta().
-				Name("description").
-				Content(h.Description),
-			Meta().
-				Name("keywords").
-				Content(strings.Join(h.Keywords, ", ")),
-			Meta().
-				Name("theme-color").
-				Content(h.ThemeColor),
-			Meta().
-				Name("viewport").
-				Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
-			Title().Text(h.Title),
-			Link().
-				Rel("icon").
-				Type("image/png").
-				Href(h.Icon.Default),
-			Link().
-				Rel("apple-touch-icon").
-				Href(h.Icon.AppleTouch),
-			Link().
-				Rel("manifest").
-				Href(h.resolveAppResourcePath("/manifest.webmanifest")),
-			Link().
-				Type("text/css").
-				Rel("stylesheet").
-				Href(h.resolveAppResourcePath("/app.css")),
-			Script().
-				Defer(true).
-				Src(h.resolveAppResourcePath("/wasm_exec.js")),
-			Script().
-				Defer(true).
-				Src(h.resolveAppResourcePath("/app.js")),
-			Range(h.Styles).Slice(func(i int) UI {
-				return Link().
-					Type("text/css").
-					Rel("stylesheet").
-					Href(h.Styles[i])
-			}),
-			Range(h.Scripts).Slice(func(i int) UI {
-				return Script().
-					Defer(true).
-					Src(h.Scripts[i])
-			}),
-			Range(h.RawHeaders).Slice(func(i int) UI {
-				return Raw(h.RawHeaders[i])
-			}),
-		),
-		Body().Body(
-			Div().
-				ID("app-wasm-layout").
-				Class("goapp-app-info").
-				Body(
-					Img().
-						ID("app-wasm-loader-icon").
-						Class("goapp-logo goapp-spin").
-						Src(h.Icon.Default),
-					P().
-						ID("app-wasm-loader-label").
-						Class("goapp-label").
-						Body(Text(h.LoadingLabel)),
-				),
-			Div().ID("app-context-menu"),
-			Div().ID("app-end"),
-		),
-	)
-
-	html.html(&h.page)
+func (h *Handler) initPreRenderTTL() {
+	if h.PreRenderTTL <= 0 {
+		h.PreRenderTTL = time.Hour * 24
+	}
 }
 
 func (h *Handler) initResources() {
@@ -610,10 +533,101 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 }
 
 func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Length", strconv.Itoa(h.page.Len()))
-	w.Header().Set("Content-Type", "text/html")
-	w.WriteHeader(http.StatusOK)
-	w.Write(h.page.Bytes())
+	info := PageInfo{
+		Author:       h.Author,
+		Description:  h.Description,
+		Keywords:     h.Keywords,
+		LoadingLabel: h.LoadingLabel,
+		Title:        h.Title,
+		url:          &(*r.URL),
+	}
+
+	var b bytes.Buffer
+	b.WriteString("<!DOCTYPE html>\n")
+	PrintHTML(&b, Html().Body(
+		Head().Body(
+			Meta().Charset("UTF-8"),
+			Meta().
+				HTTPEquiv("Content-Type").
+				Content("text/html; charset=utf-8"),
+			Meta().
+				Name("author").
+				Content(info.Author),
+			Meta().
+				Name("description").
+				Content(info.Description),
+			Meta().
+				Name("keywords").
+				Content(strings.Join(info.Keywords, ", ")),
+			Meta().
+				Name("theme-color").
+				Content(h.ThemeColor),
+			Meta().
+				Name("viewport").
+				Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
+			Title().Text(info.Title),
+			Link().
+				Rel("icon").
+				Type("image/png").
+				Href(h.Icon.Default),
+			Link().
+				Rel("apple-touch-icon").
+				Href(h.Icon.AppleTouch),
+			Link().
+				Rel("manifest").
+				Href(h.resolveAppResourcePath("/manifest.webmanifest")),
+			Link().
+				Type("text/css").
+				Rel("stylesheet").
+				Href(h.resolveAppResourcePath("/app.css")),
+			Script().
+				Defer(true).
+				Src(h.resolveAppResourcePath("/wasm_exec.js")),
+			Script().
+				Defer(true).
+				Src(h.resolveAppResourcePath("/app.js")),
+			Range(h.Styles).Slice(func(i int) UI {
+				return Link().
+					Type("text/css").
+					Rel("stylesheet").
+					Href(h.Styles[i])
+			}),
+			Range(h.Scripts).Slice(func(i int) UI {
+				return Script().
+					Defer(true).
+					Src(h.Scripts[i])
+			}),
+			Range(h.RawHeaders).Slice(func(i int) UI {
+				return Raw(h.RawHeaders[i])
+			}),
+		),
+		Body().Body(
+			Div().
+				ID("app-wasm-layout").
+				Class("goapp-app-info").
+				Body(
+					Img().
+						ID("app-wasm-loader-icon").
+						Class("goapp-logo goapp-spin").
+						Src(h.Icon.Default),
+					P().
+						ID("app-wasm-loader-label").
+						Class("goapp-label").
+						Body(Text(info.LoadingLabel)),
+				),
+			Div().ID("app-context-menu"),
+			Div().ID("app-end"),
+		),
+	))
+
+	res := httpResource{
+		Path:        r.URL.Path,
+		Body:        b.Bytes(),
+		ContentType: "text/html",
+		ExpireAt:    time.Now().Add(h.PreRenderTTL),
+	}
+	h.setResource(r.URL.Path, res)
+	h.serveResource(w, res)
 }
 
 func (h *Handler) resolveAppResourcePath(path string) string {
@@ -714,6 +728,9 @@ type PageInfo struct {
 
 	// The page keywords.
 	Keywords []string
+
+	// The text displayed while loading a page.
+	LoadingLabel string
 
 	// The page title.
 	Title string
