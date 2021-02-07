@@ -398,6 +398,15 @@ func (e *elem) onAppResize() {
 	}
 }
 
+func (e *elem) preRender(pi *PageInfo) {
+	for _, c := range e.children() {
+		if c.self() == nil {
+			c.setSelf(c)
+		}
+		c.preRender(pi)
+	}
+}
+
 func (e *elem) html(w io.Writer) {
 	e.htmlWithIndent(w, 0)
 }
@@ -426,7 +435,7 @@ func (e *elem) htmlWithIndent(w io.Writer, indent int) {
 
 	for _, c := range e.body {
 		w.Write(ln())
-		if !c.Mounted() {
+		if c.self() == nil {
 			c.setSelf(c)
 		}
 		c.htmlWithIndent(w, indent+1)

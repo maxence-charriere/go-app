@@ -133,6 +133,7 @@ type Handler struct {
 
 	once           sync.Once
 	etag           string
+	preRenderMu    sync.Mutex
 	resourcesMu    sync.RWMutex
 	resources      map[string]httpResource
 	proxyResources map[string]ProxyResource
@@ -542,19 +543,28 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 }
 
 func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
+	url := *r.URL
+	url.Host = r.Host
+
 	info := PageInfo{
 		Author:       h.Author,
 		Description:  h.Description,
 		Keywords:     h.Keywords,
 		LoadingLabel: h.LoadingLabel,
 		Title:        h.Title,
-		url:          &(*r.URL),
+		url:          &url,
 	}
 
-	preRender, ok := routes.ui(r.URL.Path)
+	preRenderBody, ok := routes.ui(r.URL.Path)
 	if !ok && routes.len() != 0 {
 		http.NotFound(w, r)
 		return
+	}
+
+	if preRenderBody != nil {
+		h.preRenderMu.Lock()
+		defer h.preRenderMu.Unlock()
+		preRender(preRenderBody, &info)
 	}
 
 	var b bytes.Buffer
@@ -621,7 +631,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				Body(
 					Div().
 						ID("app-pre-render").
-						Body(preRender),
+						Body(preRenderBody),
 					Div().
 						ID("app-wasm-layout").
 						Class("goapp-app-info").
@@ -743,30 +753,4 @@ func (r httpResource) Len() int {
 
 func (r httpResource) IsExpired() bool {
 	return r.ExpireAt != time.Time{} && r.ExpireAt.Before(time.Now())
-}
-
-// PageInfo contains the page info that is modifiable when a page is pre
-// rendered.
-type PageInfo struct {
-	// The page authors.
-	Author string
-
-	// The page description.
-	Description string
-
-	// The page keywords.
-	Keywords []string
-
-	// The text displayed while loading a page.
-	LoadingLabel string
-
-	// The page title.
-	Title string
-
-	url *url.URL
-}
-
-// URL return the page URL.
-func (i *PageInfo) URL() *url.URL {
-	return i.url
 }

@@ -133,6 +133,9 @@ func (r rangeLoop) children() []UI {
 	return r.body
 }
 
+func (r rangeLoop) preRender(*PageInfo) {
+}
+
 func (r rangeLoop) mount() error {
 	return errors.New("range loop is not mountable").
 		Tag("name", r.name()).

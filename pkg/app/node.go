@@ -32,6 +32,7 @@ type UI interface {
 	parent() UI
 	setParent(UI)
 	children() []UI
+	preRender(*PageInfo)
 	mount() error
 	dismount()
 	update(UI) error
@@ -185,6 +186,11 @@ func trackMousePosition(e Event) {
 func isErrReplace(err error) bool {
 	_, replace := errors.Tag(err, "replace")
 	return replace
+}
+
+func preRender(n UI, pi *PageInfo) {
+	n.setSelf(n)
+	n.preRender(pi)
 }
 
 func mount(n UI) error {

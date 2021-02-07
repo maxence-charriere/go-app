@@ -35,6 +35,26 @@ type Composer interface {
 	Update()
 }
 
+// PreRenderer  is the interface that describes a component that performs
+// instruction when it is server-side pre-rendered.
+//
+// A pre-rendered component helps in achieving SEO friendly content.
+type PreRenderer interface {
+	// The function called when the component is server-side pre-rendered.
+	//
+	// Pre rendering is not enabled by default. To enable it, there must be a
+	// call to Route() or RouteWithRegexp() in the server-side code (non-wasm).
+	//
+	// Pre-rendering is done synchronously on the server-side. Don't use
+	// Dispatch(), Window(), the component Update() method, or any other
+	// component lifecycle related methods.
+	//
+	// Pre-rendered pages are cached in order to avoid generating them at every
+	// request. The time they are cached can be set with the
+	// Handler.PreRenderTTL field.
+	OnPreRender(*PageInfo)
+}
+
 // Mounter is the interface that describes a component that can perform
 // additional actions when mounted.
 type Mounter interface {
@@ -185,6 +205,19 @@ func (c *Compo) children() []UI {
 	return []UI{c.root}
 }
 
+func (c *Compo) preRender(pi *PageInfo) {
+	if c.root == nil {
+		c.root = c.render()
+		c.root.setSelf(c.root)
+	}
+
+	if preRenderer, ok := c.self().(PreRenderer); ok {
+		preRenderer.OnPreRender(pi)
+	}
+
+	c.root.preRender(pi)
+}
+
 func (c *Compo) mount() error {
 	if c.Mounted() {
 		return errors.New("mounting component failed").
@@ -325,6 +358,11 @@ func (c *Compo) replaceRoot(n UI) error {
 	return nil
 }
 
+func (c *Compo) render() UI {
+	elems := FilterUIElems(c.this.Render())
+	return elems[0]
+}
+
 func (c *Compo) onNav(u *url.URL) {
 	c.root.onNav(u)
 
@@ -365,19 +403,15 @@ func (c *Compo) onAppResize() {
 	}
 }
 
-func (c *Compo) render() UI {
-	elems := FilterUIElems(c.this.Render())
-	return elems[0]
-}
-
 func (c *Compo) html(w io.Writer) {
 	c.htmlWithIndent(w, 0)
 }
 
 func (c *Compo) htmlWithIndent(w io.Writer, indent int) {
-	root := c.render()
-	if !root.Mounted() {
-		root.setSelf(root)
+	if c.root == nil {
+		c.root = c.render()
+		c.root.setSelf(c.root)
 	}
-	root.htmlWithIndent(w, indent)
+
+	c.root.htmlWithIndent(w, indent)
 }

@@ -67,6 +67,9 @@ func (t *text) children() []UI {
 	return nil
 }
 
+func (t *text) preRender(*PageInfo) {
+}
+
 func (t *text) mount() error {
 	if t.Mounted() {
 		return errors.New("mounting ui element failed").

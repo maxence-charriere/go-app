@@ -82,6 +82,9 @@ func (r *raw) children() []UI {
 	return nil
 }
 
+func (r *raw) preRender(*PageInfo) {
+}
+
 func (r *raw) mount() error {
 	if r.Mounted() {
 		return errors.New("mounting raw html element failed").

@@ -103,6 +103,9 @@ func (c condition) children() []UI {
 	return c.body
 }
 
+func (c condition) preRender(*PageInfo) {
+}
+
 func (c condition) mount() error {
 	return errors.New("condition is not mountable").
 		Tag("name", c.name()).

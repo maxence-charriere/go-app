@@ -359,13 +359,41 @@ func TestNestedInComponentResizer(t *testing.T) {
 	require.True(t, b.appRezized)
 }
 
+func TestPreRenderer(t *testing.T) {
+	h := &hello{}
+
+	pi := PageInfo{Title: "hello"}
+	preRender(h, &pi)
+	require.True(t, h.preRenderer)
+	require.Equal(t, "world", pi.Title)
+}
+
+func TestNestedPreRenderer(t *testing.T) {
+	h := &hello{}
+	div := Div().Body(h)
+
+	pi := PageInfo{Title: "hello"}
+	preRender(div, &pi)
+	require.True(t, h.preRenderer)
+	require.Equal(t, "world", pi.Title)
+}
+
+func TestNestedInComponentPreRenderer(t *testing.T) {
+	foo := &foo{Bar: "Bar"}
+
+	pi := PageInfo{}
+	preRender(foo, &pi)
+	require.Equal(t, "bar", pi.Title)
+}
+
 type hello struct {
 	Compo
 
-	Greeting   string
-	onNavURL   string
-	appUpdated bool
-	appResized bool
+	Greeting    string
+	onNavURL    string
+	appUpdated  bool
+	appResized  bool
+	preRenderer bool
 }
 
 func (h *hello) OnMount(Context) {
@@ -381,6 +409,11 @@ func (h *hello) OnAppUpdate(ctx Context) {
 
 func (h *hello) OnAppResize(ctx Context) {
 	h.appResized = true
+}
+
+func (h *hello) OnPreRender(pi *PageInfo) {
+	h.preRenderer = true
+	pi.Title = "world"
 }
 
 func (h *hello) OnDismount(Context) {
@@ -414,6 +447,10 @@ type bar struct {
 	onNavURL   string
 	appUpdated bool
 	appRezized bool
+}
+
+func (b *bar) OnPreRender(pi *PageInfo) {
+	pi.Title = "bar"
 }
 
 func (b *bar) OnNav(ctx Context, u *url.URL) {
