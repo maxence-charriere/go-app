@@ -1,6 +1,13 @@
 package app
 
-import "net/url"
+import (
+	"net/url"
+	"runtime"
+)
+
+const (
+	isClientSide = runtime.GOARCH == "wasm" && runtime.GOOS == "js"
+)
 
 // Type represents the JavaScript type of a Value.
 type Type int
@@ -192,6 +199,8 @@ type BrowserWindow interface {
 	// returns a function that must be called to unsubscribe the handler and
 	// release allocated resources.
 	AddEventListener(event string, h EventHandler) func()
+
+	createElement(tag string) (Value, error)
 }
 
 // Event is the interface that describes a javascript event.

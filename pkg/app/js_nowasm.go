@@ -141,6 +141,10 @@ func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
 	panic(errNoWasm)
 }
 
+func (w *browserWindow) createElement(tag string) (Value, error) {
+	return value{}, nil
+}
+
 func copyBytesToGo(dst []byte, src Value) int {
 	panic(errNoWasm)
 }

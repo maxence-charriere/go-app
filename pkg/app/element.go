@@ -81,12 +81,12 @@ func (e *elem) mount() error {
 
 	e.ctx, e.ctxCancel = context.WithCancel(context.Background())
 
-	v := Window().Get("document").Call("createElement", e.tag)
-	if !v.Truthy() {
+	v, err := Window().createElement(e.tag)
+	if err != nil {
 		return errors.New("mounting ui element failed").
-			Tag("reason", "create javascript node returned nil").
 			Tag("name", e.name()).
-			Tag("kind", e.Kind())
+			Tag("kind", e.Kind()).
+			Wrap(err)
 	}
 	e.jsvalue = v
 

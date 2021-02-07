@@ -93,9 +93,16 @@ func (r *raw) mount() error {
 			Tag("kind", r.Kind())
 	}
 
-	wrapper := Window().Get("document").Call("createElement", "div")
-	wrapper.Set("innerHTML", r.value)
+	wrapper, err := Window().createElement("div")
+	if err != nil {
+		return errors.New("creating raw node wrapper failed").Wrap(err)
+	}
+	if !isClientSide {
+		r.jsvalue = wrapper
+		return nil
+	}
 
+	wrapper.Set("innerHTML", r.value)
 	value := wrapper.Get("firstChild")
 	if !value.Truthy() {
 		return errors.New("mounting raw html element failed").
@@ -104,7 +111,6 @@ func (r *raw) mount() error {
 			Tag("kind", r.Kind()).
 			Tag("raw-html", r.value)
 	}
-
 	wrapper.Call("removeChild", value)
 	r.jsvalue = value
 	return nil
@@ -119,7 +125,7 @@ func (r *raw) update(n UI) error {
 		return nil
 	}
 
-	if n.Kind() != r.Kind() || r.name() != r.name() {
+	if n.Kind() != r.Kind() || n.name() != r.name() {
 		return errors.New("updating raw html element failed").
 			Tag("replace", true).
 			Tag("reason", "different element types").

@@ -174,6 +174,16 @@ func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
 	}
 }
 
+func (w *browserWindow) createElement(tag string) (Value, error) {
+	v := w.Get("document").Call("createElement", tag)
+	if !v.Truthy() {
+		return nil, errors.New("creating element failed").
+			Tag("reason", "create javascript element returned nil").
+			Tag("tag", tag)
+	}
+	return v, nil
+}
+
 func val(v js.Value) Value {
 	return value{Value: v}
 }
