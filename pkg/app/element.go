@@ -11,6 +11,7 @@ import (
 type elem struct {
 	attrs       map[string]string
 	body        []UI
+	disp        Dispatcher
 	ctx         context.Context
 	ctxCancel   func()
 	events      map[string]eventHandler
@@ -30,7 +31,9 @@ func (e *elem) JSValue() Value {
 }
 
 func (e *elem) Mounted() bool {
-	return e.ctx != nil && e.ctx.Err() == nil &&
+	return e.dispatcher != nil &&
+		e.ctx != nil &&
+		e.ctx.Err() == nil &&
 		e.self() != nil &&
 		e.jsvalue != nil
 }
@@ -45,6 +48,10 @@ func (e *elem) self() UI {
 
 func (e *elem) setSelf(n UI) {
 	e.this = n
+}
+
+func (e *elem) dispatcher() Dispatcher {
+	return e.disp
 }
 
 func (e *elem) context() context.Context {
@@ -71,7 +78,7 @@ func (e *elem) children() []UI {
 	return e.body
 }
 
-func (e *elem) mount() error {
+func (e *elem) mount(d Dispatcher) error {
 	if e.Mounted() {
 		return errors.New("mounting ui element failed").
 			Tag("reason", "already mounted").
@@ -79,6 +86,7 @@ func (e *elem) mount() error {
 			Tag("kind", e.Kind())
 	}
 
+	e.disp = d
 	e.ctx, e.ctxCancel = context.WithCancel(context.Background())
 
 	v, err := Window().createElement(e.tag)
@@ -197,7 +205,7 @@ func (e *elem) update(n UI) error {
 }
 
 func (e *elem) appendChild(c UI, onlyJsValue bool) error {
-	if err := mount(c); err != nil {
+	if err := mount(e.dispatcher(), c); err != nil {
 		return errors.New("appending child failed").
 			Tag("name", e.name()).
 			Tag("kind", e.Kind()).
@@ -218,7 +226,7 @@ func (e *elem) appendChild(c UI, onlyJsValue bool) error {
 func (e *elem) replaceChildAt(idx int, new UI) error {
 	old := e.body[idx]
 
-	if err := mount(new); err != nil {
+	if err := mount(e.dispatcher(), new); err != nil {
 		return errors.New("replacing child failed").
 			Tag("name", e.name()).
 			Tag("kind", e.Kind()).

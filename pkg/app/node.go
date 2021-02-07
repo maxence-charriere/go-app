@@ -26,6 +26,7 @@ type UI interface {
 	name() string
 	self() UI
 	setSelf(UI)
+	dispatcher() Dispatcher
 	context() context.Context
 	attributes() map[string]string
 	eventHandlers() map[string]eventHandler
@@ -33,7 +34,7 @@ type UI interface {
 	setParent(UI)
 	children() []UI
 	preRender(*PageInfo)
-	mount() error
+	mount(Dispatcher) error
 	dismount()
 	update(UI) error
 	onNav(*url.URL)
@@ -145,7 +146,7 @@ func (h eventHandler) equal(o eventHandler) bool {
 
 func makeJsEventHandler(src UI, h EventHandler) Func {
 	return FuncOf(func(this Value, args []Value) interface{} {
-		dispatch(func() {
+		src.dispatcher().Dispatch(func() {
 			if !src.Mounted() {
 				return
 			}
@@ -192,9 +193,9 @@ func preRender(n UI, pi *PageInfo) {
 	n.preRender(pi)
 }
 
-func mount(n UI) error {
+func mount(d Dispatcher, n UI) error {
 	n.setSelf(n)
-	return n.mount()
+	return n.mount(d)
 }
 
 func dismount(n UI) {

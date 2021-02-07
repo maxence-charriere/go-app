@@ -110,6 +110,10 @@ func (r rangeLoop) self() UI {
 func (r rangeLoop) setSelf(UI) {
 }
 
+func (r rangeLoop) dispatcher() Dispatcher {
+	return nil
+}
+
 func (r rangeLoop) context() context.Context {
 	return nil
 }
@@ -136,7 +140,7 @@ func (r rangeLoop) children() []UI {
 func (r rangeLoop) preRender(*PageInfo) {
 }
 
-func (r rangeLoop) mount() error {
+func (r rangeLoop) mount(Dispatcher) error {
 	return errors.New("range loop is not mountable").
 		Tag("name", r.name()).
 		Tag("kind", r.Kind())

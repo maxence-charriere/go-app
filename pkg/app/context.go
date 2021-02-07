@@ -21,4 +21,6 @@ type Context struct {
 	// Reports whether the app has been updated in background. Use app.Reload()
 	// to load the updated version.
 	AppUpdateAvailable bool
+
+	dispatcher Dispatcher
 }

@@ -30,6 +30,16 @@ func (d *document) Description(t string) *document {
 	return d
 }
 
+func (d *document) OnPreRender(pi *app.PageInfo) {
+	u := *pi.URL()
+	u.Scheme = "http"
+	u.Path = d.path
+
+	d.document, d.err = d.get(u.String())
+	fmt.Println("on prerender:", d.err)
+	d.Update()
+}
+
 func (d *document) OnMount(ctx app.Context) {
 	d.loading = true
 	d.err = nil
@@ -54,20 +64,22 @@ func (d *document) load(ctx app.Context) {
 		d.scrollToFragment()
 	})
 
-	res, err := http.Get(d.path)
+	doc, err = d.get(d.path)
+}
+
+func (d *document) get(path string) (string, error) {
+	res, err := http.Get(path)
 	if err != nil {
-		err = errors.New("getting document failed").Wrap(err)
-		return
+		return "", errors.New("getting document failed").Wrap(err)
 	}
 	defer res.Body.Close()
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		err = errors.New("reading document failed").Wrap(err)
-		return
+		return "", errors.New("reading document failed").Wrap(err)
 	}
 
-	doc = fmt.Sprintf("<div>%s</div>", parseMarkdown(b))
+	return fmt.Sprintf("<div>%s</div>", parseMarkdown(b)), nil
 }
 
 func (d *document) highlightCode() {

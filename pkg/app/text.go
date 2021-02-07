@@ -43,6 +43,10 @@ func (t *text) self() UI {
 func (t *text) setSelf(n UI) {
 }
 
+func (t *text) dispatcher() Dispatcher {
+	return nil
+}
+
 func (t *text) context() context.Context {
 	return context.TODO()
 }
@@ -70,7 +74,7 @@ func (t *text) children() []UI {
 func (t *text) preRender(*PageInfo) {
 }
 
-func (t *text) mount() error {
+func (t *text) mount(Dispatcher) error {
 	if t.Mounted() {
 		return errors.New("mounting ui element failed").
 			Tag("reason", "already mounted").

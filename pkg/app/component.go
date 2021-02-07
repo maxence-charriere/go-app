@@ -33,6 +33,10 @@ type Composer interface {
 	// Update update the component appearance. It should be called when a field
 	// used to render the component has been modified.
 	Update()
+
+	// Dispatch executes the given function on the goroutine dedicated to updating
+	// the UI.
+	Dispatch(fn func())
 }
 
 // PreRenderer  is the interface that describes a component that performs
@@ -103,6 +107,7 @@ type Resizer interface {
 
 // Compo represents the base struct to use in order to build a component.
 type Compo struct {
+	disp       Dispatcher
 	ctx        context.Context
 	ctxCancel  func()
 	parentElem UI
@@ -122,7 +127,9 @@ func (c *Compo) JSValue() Value {
 
 // Mounted reports whether the component is mounted.
 func (c *Compo) Mounted() bool {
-	return c.ctx != nil && c.ctx.Err() == nil &&
+	return c.dispatcher != nil &&
+		c.ctx != nil &&
+		c.ctx.Err() == nil &&
 		c.root != nil && c.root.Mounted() &&
 		c.self() != nil
 }
@@ -151,7 +158,7 @@ func (c *Compo) Render() UI {
 // field used to render the component has been modified. Updates are always
 // performed on the UI goroutine.
 func (c *Compo) Update() {
-	dispatch(func() {
+	c.Dispatch(func() {
 		if !c.Mounted() {
 			return
 		}
@@ -160,6 +167,12 @@ func (c *Compo) Update() {
 			panic(err)
 		}
 	})
+}
+
+// Dispatch executes the given function on the goroutine dedicated to updating
+// the UI.
+func (c *Compo) Dispatch(fn func()) {
+	c.dispatcher().Dispatch(fn)
 }
 
 func (c *Compo) name() string {
@@ -179,6 +192,10 @@ func (c *Compo) setSelf(n UI) {
 	}
 
 	c.this = nil
+}
+
+func (c *Compo) dispatcher() Dispatcher {
+	return c.disp
 }
 
 func (c *Compo) context() context.Context {
@@ -218,7 +235,7 @@ func (c *Compo) preRender(pi *PageInfo) {
 	c.root.preRender(pi)
 }
 
-func (c *Compo) mount() error {
+func (c *Compo) mount(d Dispatcher) error {
 	if c.Mounted() {
 		return errors.New("mounting component failed").
 			Tag("reason", "already mounted").
@@ -226,10 +243,11 @@ func (c *Compo) mount() error {
 			Tag("kind", c.Kind())
 	}
 
+	c.disp = d
 	c.ctx, c.ctxCancel = context.WithCancel(context.Background())
 
 	root := c.render()
-	if err := mount(root); err != nil {
+	if err := mount(d, root); err != nil {
 		return errors.New("mounting component failed").
 			Tag("name", c.name()).
 			Tag("kind", c.Kind()).
@@ -321,7 +339,7 @@ func (c *Compo) replaceRoot(n UI) error {
 	old := c.root
 	new := n
 
-	if err := mount(new); err != nil {
+	if err := mount(c.dispatcher(), new); err != nil {
 		return errors.New("replacing component root failed").
 			Tag("kind", c.Kind()).
 			Tag("name", c.name()).

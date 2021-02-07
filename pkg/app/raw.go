@@ -58,6 +58,10 @@ func (r *raw) self() UI {
 func (r *raw) setSelf(UI) {
 }
 
+func (r *raw) dispatcher() Dispatcher {
+	return nil
+}
+
 func (r *raw) context() context.Context {
 	return nil
 }
@@ -85,7 +89,7 @@ func (r *raw) children() []UI {
 func (r *raw) preRender(*PageInfo) {
 }
 
-func (r *raw) mount() error {
+func (r *raw) mount(Dispatcher) error {
 	if r.Mounted() {
 		return errors.New("mounting raw html element failed").
 			Tag("reason", "already mounted").

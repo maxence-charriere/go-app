@@ -11,10 +11,7 @@
 package app
 
 import (
-	"net/url"
 	"strings"
-
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
 
 var (
@@ -34,43 +31,43 @@ func KeepBodyClean() (close func()) {
 	return keepBodyClean()
 }
 
-// Navigate navigates to the given URL.
-func Navigate(rawurl string) {
-	dispatch(func() {
-		u, err := url.Parse(rawurl)
-		if err != nil {
-			panic(errors.New("navigating to page failed").
-				Tag("url", rawurl).
-				Wrap(err),
-			)
-		}
+// // Navigate navigates to the given URL.
+// func Navigate(rawurl string) {
+// 	dispatch(func() {
+// 		u, err := url.Parse(rawurl)
+// 		if err != nil {
+// 			panic(errors.New("navigating to page failed").
+// 				Tag("url", rawurl).
+// 				Wrap(err),
+// 			)
+// 		}
 
-		if u.String() == Window().URL().String() {
-			return
-		}
+// 		if u.String() == Window().URL().String() {
+// 			return
+// 		}
 
-		if err = navigate(u, true); err != nil {
-			panic(errors.New("navigating to page failed").
-				Tag("url", rawurl).
-				Wrap(err),
-			)
-		}
-	})
-}
+// 		if err = navigate(u, true); err != nil {
+// 			panic(errors.New("navigating to page failed").
+// 				Tag("url", rawurl).
+// 				Wrap(err),
+// 			)
+// 		}
+// 	})
+// }
 
-// NewContextMenu displays a context menu filled with the given menu items.
-func NewContextMenu(menuItems ...MenuItemNode) {
-	dispatch(func() {
-		newContextMenu(menuItems...)
-	})
-}
+// // NewContextMenu displays a context menu filled with the given menu items.
+// func NewContextMenu(menuItems ...MenuItemNode) {
+// 	dispatch(func() {
+// 		newContextMenu(menuItems...)
+// 	})
+// }
 
-// Reload reloads the current page.
-func Reload() {
-	dispatch(func() {
-		reload()
-	})
-}
+// // Reload reloads the current page.
+// func Reload() {
+// 	dispatch(func() {
+// 		reload()
+// 	})
+// }
 
 // Run starts the wasm app and displays the UI node associated with the
 // requested URL path.

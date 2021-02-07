@@ -564,7 +564,15 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	if preRenderBody != nil {
 		h.preRenderMu.Lock()
 		defer h.preRenderMu.Unlock()
-		preRender(preRenderBody, &info)
+
+		// if err := mount(preRenderBody); err != nil {
+		// 	Log("%s", errors.New("pre-rendering failed").
+		// 		Tag("url", r.URL).
+		// 		Tag("method", r.Method).
+		// 		Wrap(err))
+		// } else {
+		// 	preRender(preRenderBody, &info)
+		// }
 	}
 
 	var b bytes.Buffer

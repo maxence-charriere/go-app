@@ -80,6 +80,10 @@ func (c condition) self() UI {
 func (c condition) setSelf(UI) {
 }
 
+func (c condition) dispatcher() Dispatcher {
+	return nil
+}
+
 func (c condition) context() context.Context {
 	return nil
 }
@@ -106,7 +110,7 @@ func (c condition) children() []UI {
 func (c condition) preRender(*PageInfo) {
 }
 
-func (c condition) mount() error {
+func (c condition) mount(Dispatcher) error {
 	return errors.New("condition is not mountable").
 		Tag("name", c.name()).
 		Tag("kind", c.Kind())

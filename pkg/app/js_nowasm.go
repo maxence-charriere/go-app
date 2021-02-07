@@ -126,8 +126,15 @@ func valueOf(x interface{}) Value {
 	panic(errNoWasm)
 }
 
+type function struct {
+	value
+}
+
+func (f function) Release() {
+}
+
 func funcOf(fn func(this Value, args []Value) interface{}) Func {
-	panic(errNoWasm)
+	return function{value: value{}}
 }
 
 type browserWindow struct {
