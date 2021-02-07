@@ -79,10 +79,7 @@ func (t *text) mount() error {
 			Tag("value", t.value)
 	}
 
-	t.jsvalue = Window().
-		Get("document").
-		Call("createTextNode", t.value)
-
+	t.jsvalue = Window().createTextNode(t.value)
 	return nil
 }
 

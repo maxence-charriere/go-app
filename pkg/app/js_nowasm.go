@@ -93,6 +93,27 @@ func (v value) Type() Type {
 	panic(errNoWasm)
 }
 
+func (v value) setAttr(k, val string) {
+}
+
+func (v value) delAttr(k string) {
+}
+
+func (v value) appendChild(c Wrapper) {
+}
+
+func (v value) replaceChild(new, old Wrapper) {
+}
+
+func (v value) removeChild(c Wrapper) {
+}
+
+func (v value) addEventListener(event string, fn Func) {
+}
+
+func (v value) removeEventListener(event string, fn Func) {
+}
+
 func null() Value {
 	panic(errNoWasm)
 }
@@ -143,6 +164,10 @@ func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
 
 func (w *browserWindow) createElement(tag string) (Value, error) {
 	return value{}, nil
+}
+
+func (w *browserWindow) createTextNode(v string) Value {
+	return value{}
 }
 
 func copyBytesToGo(dst []byte, src Value) int {

@@ -44,6 +44,34 @@ func (v value) JSValue() Value {
 	return v
 }
 
+func (v value) setAttr(k, val string) {
+	v.Call("setAttribute", k, val)
+}
+
+func (v value) delAttr(k string) {
+	v.Call("removeAttribute", k)
+}
+
+func (v value) appendChild(c Wrapper) {
+	v.Call("appendChild", c)
+}
+
+func (v value) replaceChild(new, old Wrapper) {
+	v.Call("replaceChild", new, old)
+}
+
+func (v value) removeChild(c Wrapper) {
+	v.Call("removeChild", c)
+}
+
+func (v value) addEventListener(event string, fn Func) {
+	v.Call("addEventListener", event, fn)
+}
+
+func (v value) removeEventListener(event string, fn Func) {
+	v.Call("removeEventListener", event, fn)
+}
+
 func (v value) New(args ...interface{}) Value {
 	args = cleanArgs(args...)
 	return val(v.Value.New(args...))
@@ -166,10 +194,10 @@ func (w *browserWindow) ScrollToID(id string) {
 
 func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
 	callback := makeJsEventHandler(body, h)
-	w.Call("addEventListener", event, callback)
+	w.addEventListener(event, callback)
 
 	return func() {
-		w.Call("removeEventListener", event, callback)
+		w.removeEventListener(event, callback)
 		callback.Release()
 	}
 }
@@ -182,6 +210,10 @@ func (w *browserWindow) createElement(tag string) (Value, error) {
 			Tag("tag", tag)
 	}
 	return v, nil
+}
+
+func (w *browserWindow) createTextNode(v string) Value {
+	return w.Get("document").Call("createTextNode", v)
 }
 
 func val(v js.Value) Value {

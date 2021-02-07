@@ -211,7 +211,7 @@ func (e *elem) appendChild(c UI, onlyJsValue bool) error {
 	}
 
 	c.setParent(e.self())
-	e.JSValue().Call("appendChild", c)
+	e.JSValue().appendChild(c)
 	return nil
 }
 
@@ -232,7 +232,7 @@ func (e *elem) replaceChildAt(idx int, new UI) error {
 
 	e.body[idx] = new
 	new.setParent(e.self())
-	e.JSValue().Call("replaceChild", new, old)
+	e.JSValue().replaceChild(new, old)
 
 	dismount(old)
 	return nil
@@ -255,7 +255,7 @@ func (e *elem) removeChildAt(idx int) error {
 	body = body[:len(body)-1]
 	e.body = body
 
-	e.JSValue().Call("removeChild", c)
+	e.JSValue().removeChild(c)
 	dismount(c)
 	return nil
 }
@@ -314,11 +314,11 @@ func (e *elem) setAttr(k string, v interface{}) {
 }
 
 func (e *elem) setJsAttr(k, v string) {
-	e.JSValue().Call("setAttribute", k, v)
+	e.JSValue().setAttr(k, v)
 }
 
 func (e *elem) delAttr(k string) {
-	e.JSValue().Call("removeAttribute", k)
+	e.JSValue().delAttr(k)
 	delete(e.attrs, k)
 }
 
@@ -360,11 +360,11 @@ func (e *elem) setJsEventHandler(k string, h eventHandler) {
 	jshandler := makeJsEventHandler(e.self(), h.value)
 	h.jsvalue = jshandler
 	e.events[k] = h
-	e.JSValue().Call("addEventListener", k, jshandler)
+	e.JSValue().addEventListener(k, jshandler)
 }
 
 func (e *elem) delJsEventHandler(k string, h eventHandler) {
-	e.JSValue().Call("removeEventListener", k, h.jsvalue)
+	e.jsvalue.removeEventListener(k, h.jsvalue)
 	h.jsvalue.Release()
 	delete(e.events, k)
 }

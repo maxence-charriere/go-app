@@ -111,7 +111,7 @@ func (r *raw) mount() error {
 			Tag("kind", r.Kind()).
 			Tag("raw-html", r.value)
 	}
-	wrapper.Call("removeChild", value)
+	wrapper.removeChild(value)
 	r.jsvalue = value
 	return nil
 }

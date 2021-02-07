@@ -189,7 +189,6 @@ func isErrReplace(err error) bool {
 }
 
 func preRender(n UI, pi *PageInfo) {
-	n.setSelf(n)
 	n.preRender(pi)
 }
 

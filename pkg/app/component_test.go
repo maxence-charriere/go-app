@@ -362,6 +362,10 @@ func TestNestedInComponentResizer(t *testing.T) {
 func TestPreRenderer(t *testing.T) {
 	h := &hello{}
 
+	err := mount(h)
+	require.NoError(t, err)
+	defer dismount(h)
+
 	pi := PageInfo{Title: "hello"}
 	preRender(h, &pi)
 	require.True(t, h.preRenderer)
@@ -372,6 +376,10 @@ func TestNestedPreRenderer(t *testing.T) {
 	h := &hello{}
 	div := Div().Body(h)
 
+	err := mount(div)
+	require.NoError(t, err)
+	defer dismount(div)
+
 	pi := PageInfo{Title: "hello"}
 	preRender(div, &pi)
 	require.True(t, h.preRenderer)
@@ -380,6 +388,10 @@ func TestNestedPreRenderer(t *testing.T) {
 
 func TestNestedInComponentPreRenderer(t *testing.T) {
 	foo := &foo{Bar: "Bar"}
+
+	err := mount(foo)
+	require.NoError(t, err)
+	defer dismount(foo)
 
 	pi := PageInfo{}
 	preRender(foo, &pi)

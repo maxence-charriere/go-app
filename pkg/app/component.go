@@ -238,7 +238,7 @@ func (c *Compo) mount() error {
 	root.setParent(c.this)
 	c.root = root
 
-	if mounter, ok := c.this.(Mounter); ok {
+	if mounter, ok := c.this.(Mounter); ok && isClientSide {
 		mounter.OnMount(Context{
 			Context:            c.ctx,
 			Src:                c.this,
@@ -352,7 +352,7 @@ func (c *Compo) replaceRoot(n UI) error {
 
 	oldjs := old.JSValue()
 	newjs := n.JSValue()
-	parent.JSValue().Call("replaceChild", newjs, oldjs)
+	parent.JSValue().replaceChild(newjs, oldjs)
 
 	dismount(old)
 	return nil

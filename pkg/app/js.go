@@ -114,6 +114,14 @@ type Value interface {
 	// JavaScript's typeof operator, except that it returns TypeNull instead of
 	// TypeObject for null.
 	Type() Type
+
+	setAttr(k, v string)
+	delAttr(k string)
+	appendChild(c Wrapper)
+	replaceChild(new, old Wrapper)
+	removeChild(c Wrapper)
+	addEventListener(event string, fn Func)
+	removeEventListener(event string, fn Func)
 }
 
 // Null returns the JavaScript value "null".
@@ -201,6 +209,7 @@ type BrowserWindow interface {
 	AddEventListener(event string, h EventHandler) func()
 
 	createElement(tag string) (Value, error)
+	createTextNode(v string) Value
 }
 
 // Event is the interface that describes a javascript event.
