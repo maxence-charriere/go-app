@@ -102,6 +102,7 @@ func testMountDismount(t *testing.T, utests []mountTest) {
 			n := u.node
 
 			d := NewClientTestingDispatcher(n)
+
 			d.Consume()
 			testMounted(t, n)
 

@@ -1,7 +1,6 @@
 package app
 
 import (
-	"net/url"
 	"strconv"
 
 	"github.com/google/uuid"
@@ -88,7 +87,7 @@ func (f *flow) OnMount(ctx Context) {
 	f.refreshLayout()
 }
 
-func (f *flow) OnNav(ctx Context, u *url.URL) {
+func (f *flow) OnNav(ctx Context) {
 	f.refreshLayout()
 }
 

@@ -114,6 +114,7 @@ type Value interface {
 	// TypeObject for null.
 	Type() Type
 
+	getAttr(k string) string
 	setAttr(k, v string)
 	delAttr(k string)
 	firstChild() Value

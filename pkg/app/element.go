@@ -406,12 +406,9 @@ func (e *elem) onAppResize() {
 	}
 }
 
-func (e *elem) preRender(pi *PageInfo) {
+func (e *elem) preRender(p Page) {
 	for _, c := range e.children() {
-		if c.self() == nil {
-			c.setSelf(c)
-		}
-		c.preRender(pi)
+		c.preRender(p)
 	}
 }
 

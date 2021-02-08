@@ -1,6 +1,8 @@
 package app
 
-import "context"
+import (
+	"context"
+)
 
 // Context represents a context that is tied to a UI element. It is canceled
 // when the element is dismounted.
@@ -22,5 +24,6 @@ type Context struct {
 	// to load the updated version.
 	AppUpdateAvailable bool
 
-	dispatcher Dispatcher
+	// The info about the current page.
+	Page Page
 }

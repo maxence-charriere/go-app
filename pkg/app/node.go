@@ -33,13 +33,13 @@ type UI interface {
 	parent() UI
 	setParent(UI)
 	children() []UI
-	preRender(*PageInfo)
 	mount(Dispatcher) error
 	dismount()
 	update(UI) error
 	onNav(*url.URL)
 	onAppUpdate()
 	onAppResize()
+	preRender(Page)
 	html(w io.Writer)
 	htmlWithIndent(w io.Writer, indent int)
 }
@@ -187,10 +187,6 @@ func trackMousePosition(e Event) {
 func isErrReplace(err error) bool {
 	_, replace := errors.Tag(err, "replace")
 	return replace
-}
-
-func preRender(n UI, pi *PageInfo) {
-	n.preRender(pi)
 }
 
 func mount(d Dispatcher, n UI) error {

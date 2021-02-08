@@ -93,6 +93,10 @@ func (v value) Type() Type {
 	panic(errNoWasm)
 }
 
+func (v value) getAttr(k string) string {
+	return ""
+}
+
 func (v value) setAttr(k, val string) {
 }
 

@@ -544,14 +544,12 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	url := *r.URL
 	url.Host = r.Host
 
-	info := PageInfo{
-		Author:       h.Author,
-		Description:  h.Description,
-		Keywords:     h.Keywords,
-		LoadingLabel: h.LoadingLabel,
-		Title:        h.Title,
-		url:          &url,
-	}
+	var page requestPage
+	page.SetTitle(h.Title)
+	page.SetDescription(h.Description)
+	page.SetAuthor(h.Author)
+	page.SetKeywords(h.Keywords...)
+	page.SetLoadingLabel(h.LoadingLabel)
 
 	preRenderBody, ok := routes.ui(r.URL.Path)
 	if !ok && routes.len() != 0 {
@@ -583,20 +581,20 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				Content("text/html; charset=utf-8"),
 			Meta().
 				Name("author").
-				Content(info.Author),
+				Content(page.Author()),
 			Meta().
 				Name("description").
-				Content(info.Description),
+				Content(page.Description()),
 			Meta().
 				Name("keywords").
-				Content(strings.Join(info.Keywords, ", ")),
+				Content(page.Keywords()),
 			Meta().
 				Name("theme-color").
 				Content(h.ThemeColor),
 			Meta().
 				Name("viewport").
 				Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
-			Title().Text(info.Title),
+			Title().Text(page.Title()),
 			Link().
 				Rel("icon").
 				Type("image/png").
@@ -649,7 +647,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 							P().
 								ID("app-wasm-loader-label").
 								Class("goapp-label").
-								Body(Text(info.LoadingLabel)),
+								Text(page.loadingLabel),
 						),
 				),
 			Div().ID("app-context-menu"),

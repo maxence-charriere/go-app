@@ -39,24 +39,16 @@ type Composer interface {
 	Dispatch(fn func())
 }
 
-// PreRenderer  is the interface that describes a component that performs
+// PreRenderer is the interface that describes a component that performs
 // instruction when it is server-side pre-rendered.
 //
 // A pre-rendered component helps in achieving SEO friendly content.
 type PreRenderer interface {
 	// The function called when the component is server-side pre-rendered.
 	//
-	// Pre rendering is not enabled by default. To enable it, there must be a
+	// Pre-rendering is not enabled by default. To enable it, there must be a
 	// call to Route() or RouteWithRegexp() in the server-side code (non-wasm).
-	//
-	// Pre-rendering is done synchronously on the server-side. Don't use
-	// Dispatch(), Window(), the component Update() method, or any other
-	// component lifecycle related methods.
-	//
-	// Pre-rendered pages are cached in order to avoid generating them at every
-	// request. The time they are cached can be set with the
-	// Handler.PreRenderTTL field.
-	OnPreRender(*PageInfo)
+	OnPreRender(Context)
 }
 
 // Mounter is the interface that describes a component that can perform
@@ -86,7 +78,7 @@ type Navigator interface {
 
 	// The function that called when the component is navigated on. It is always
 	// called on the UI goroutine.
-	OnNav(Context, *url.URL)
+	OnNav(Context)
 }
 
 // Updater is the interface that describes a component that is notified when the
@@ -222,17 +214,14 @@ func (c *Compo) children() []UI {
 	return []UI{c.root}
 }
 
-func (c *Compo) preRender(pi *PageInfo) {
-	if c.root == nil {
-		c.root = c.render()
-		c.root.setSelf(c.root)
+func (c *Compo) makeContext(p Page) Context {
+	return Context{
+		Context:            c.ctx,
+		Src:                c.this,
+		JSSrc:              c.this.JSValue(),
+		AppUpdateAvailable: appUpdateAvailable,
+		Page:               p,
 	}
-
-	if preRenderer, ok := c.self().(PreRenderer); ok {
-		preRenderer.OnPreRender(pi)
-	}
-
-	c.root.preRender(pi)
 }
 
 func (c *Compo) mount(d Dispatcher) error {
@@ -256,13 +245,8 @@ func (c *Compo) mount(d Dispatcher) error {
 	root.setParent(c.this)
 	c.root = root
 
-	if mounter, ok := c.this.(Mounter); ok && !c.dispatcher().isPreRendering() {
-		mounter.OnMount(Context{
-			Context:            c.ctx,
-			Src:                c.this,
-			JSSrc:              c.this.JSValue(),
-			AppUpdateAvailable: appUpdateAvailable,
-		})
+	if mounter, ok := c.this.(Mounter); ok && !c.dispatcher().isServerSideMode() {
+		mounter.OnMount(c.makeContext(browserPage{}))
 	}
 
 	return nil
@@ -385,13 +369,8 @@ func (c *Compo) onNav(u *url.URL) {
 	c.root.onNav(u)
 
 	if nav, ok := c.self().(Navigator); ok {
-		ctx := Context{
-			Context:            c.context(),
-			Src:                c.self(),
-			JSSrc:              c.JSValue(),
-			AppUpdateAvailable: appUpdateAvailable,
-		}
-		nav.OnNav(ctx, u)
+		ctx := c.makeContext(browserPage{url: u})
+		nav.OnNav(ctx)
 	}
 }
 
@@ -399,12 +378,7 @@ func (c *Compo) onAppUpdate() {
 	c.root.onAppUpdate()
 
 	if updater, ok := c.self().(Updater); ok {
-		updater.OnAppUpdate(Context{
-			Context:            c.context(),
-			Src:                c.self(),
-			JSSrc:              c.JSValue(),
-			AppUpdateAvailable: appUpdateAvailable,
-		})
+		updater.OnAppUpdate(c.makeContext(browserPage{}))
 	}
 }
 
@@ -412,12 +386,15 @@ func (c *Compo) onAppResize() {
 	c.root.onAppResize()
 
 	if resizer, ok := c.self().(Resizer); ok {
-		resizer.OnAppResize(Context{
-			Context:            c.context(),
-			Src:                c.self(),
-			JSSrc:              c.JSValue(),
-			AppUpdateAvailable: appUpdateAvailable,
-		})
+		resizer.OnAppResize(c.makeContext(browserPage{}))
+	}
+}
+
+func (c *Compo) preRender(p Page) {
+	c.root.preRender(p)
+
+	if preRenderer, ok := c.self().(PreRenderer); ok {
+		preRenderer.OnPreRender(c.makeContext(p))
 	}
 }
 

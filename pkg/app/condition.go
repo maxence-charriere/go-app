@@ -107,9 +107,6 @@ func (c condition) children() []UI {
 	return c.body
 }
 
-func (c condition) preRender(*PageInfo) {
-}
-
 func (c condition) mount(Dispatcher) error {
 	return errors.New("condition is not mountable").
 		Tag("name", c.name()).
@@ -132,6 +129,9 @@ func (c condition) onAppUpdate() {
 }
 
 func (c condition) onAppResize() {
+}
+
+func (c condition) preRender(Page) {
 }
 
 func (c condition) html(w io.Writer) {

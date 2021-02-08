@@ -53,6 +53,10 @@ func (v value) Type() Type {
 	return Type(v.Value.Type())
 }
 
+func (v value) getAttr(k string) string {
+	return v.Call("getAttribute", k).String()
+}
+
 func (v value) setAttr(k, val string) {
 	v.Call("setAttribute", k, val)
 }

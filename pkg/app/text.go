@@ -71,9 +71,6 @@ func (t *text) children() []UI {
 	return nil
 }
 
-func (t *text) preRender(*PageInfo) {
-}
-
 func (t *text) mount(Dispatcher) error {
 	if t.Mounted() {
 		return errors.New("mounting ui element failed").
@@ -122,6 +119,9 @@ func (t *text) onAppUpdate() {
 }
 
 func (t *text) onAppResize() {
+}
+
+func (t *text) preRender(Page) {
 }
 
 func (t *text) html(w io.Writer) {

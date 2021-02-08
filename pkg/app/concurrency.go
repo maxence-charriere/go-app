@@ -12,15 +12,15 @@ const (
 	dispatcherSize = 4096
 )
 
-// Dispatcher represents a dispatcher that queues functions to be executed on a
-// goroutine dedicated to performing UI instructions.
+// Dispatcher is the inerface that describes an environment that synchronizes UI
+// instructions and components lifecycle.
 type Dispatcher interface {
 	// Dispatch enqueues the given function to be executed on a goroutine
 	// dedicated to managing UI modifications.
 	Dispatch(func())
 
 	start(context.Context)
-	isPreRendering() bool
+	isServerSideMode() bool
 }
 
 // TestingDispatcher represents a dispatcher to use for testing purposes.
@@ -28,13 +28,13 @@ type TestingDispatcher interface {
 	Dispatcher
 
 	// Pre-renders the given component.
-	PreRender(v UI)
+	PreRender(Page)
 
 	// Mounts the given component as root component.
-	Mount(v UI)
+	Mount(UI)
 
 	// Triggers OnNav from the root component.
-	Nav(u *url.URL)
+	Nav(*url.URL)
 
 	// Triggers OnAppUpdate from the root component.
 	AppUpdate()
@@ -64,8 +64,8 @@ func NewServerTestingDispatcher(v UI) TestingDispatcher {
 
 func newTestingDispatcher(v UI, serverSide bool) TestingDispatcher {
 	disp := &uiDispatcher{
-		ui:           make(chan func(), dispatcherSize),
-		preRendering: serverSide,
+		ui:             make(chan func(), dispatcherSize),
+		serverSideMode: serverSide,
 		body: Body().Body(
 			Div(),
 		).(*htmlBody),
@@ -73,7 +73,7 @@ func newTestingDispatcher(v UI, serverSide bool) TestingDispatcher {
 
 	if err := mount(disp, disp.body); err != nil {
 		panic(errors.New("mounting body failed").
-			Tag("pre-rendering-enabled", disp.isPreRendering()).
+			Tag("server-side-mode", disp.isServerSideMode()).
 			Tag("body-type", reflect.TypeOf(disp.body)).
 			Tag("ui-len", len(disp.ui)).
 			Tag("ui-cap", cap(disp.ui)).
@@ -85,9 +85,9 @@ func newTestingDispatcher(v UI, serverSide bool) TestingDispatcher {
 }
 
 type uiDispatcher struct {
-	ui           chan func()
-	body         *htmlBody
-	preRendering bool
+	ui             chan func()
+	body           *htmlBody
+	serverSideMode bool
 }
 
 func newUIDispatcher(body *htmlBody) *uiDispatcher {
@@ -101,10 +101,9 @@ func (d *uiDispatcher) Dispatch(fn func()) {
 	d.ui <- fn
 }
 
-func (d *uiDispatcher) PreRender(v UI) {
-	d.Mount(v)
+func (d *uiDispatcher) PreRender(p Page) {
 	d.Dispatch(func() {
-		// preRender(, ??)
+		d.body.preRender(p)
 	})
 }
 
@@ -112,7 +111,7 @@ func (d *uiDispatcher) Mount(v UI) {
 	d.Dispatch(func() {
 		if err := d.body.replaceChildAt(0, v); err != nil {
 			panic(errors.New("mounting ui element failed").
-				Tag("pre-rendering-enabled", d.isPreRendering()).
+				Tag("server-side-mode", d.isServerSideMode()).
 				Tag("body-type", reflect.TypeOf(d.body)).
 				Tag("ui-len", len(d.ui)).
 				Tag("ui-cap", cap(d.ui)).
@@ -172,6 +171,6 @@ func (d *uiDispatcher) start(ctx context.Context) {
 	}
 }
 
-func (d *uiDispatcher) isPreRendering() bool {
-	return d.preRendering
+func (d *uiDispatcher) isServerSideMode() bool {
+	return d.serverSideMode
 }

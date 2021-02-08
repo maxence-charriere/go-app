@@ -347,44 +347,47 @@ func TestNestedInComponentResizer(t *testing.T) {
 	require.True(t, b.appRezized)
 }
 
-// func TestPreRenderer(t *testing.T) {
-// 	h := &hello{}
+func TestPreRenderer(t *testing.T) {
+	p := requestPage{}
+	p.SetTitle("hello")
 
-// 	err := mount(h)
-// 	require.NoError(t, err)
-// 	defer dismount(h)
+	h := &hello{}
+	d := NewServerTestingDispatcher(h)
+	defer d.Close()
 
-// 	pi := PageInfo{Title: "hello"}
-// 	preRender(h, &pi)
-// 	require.True(t, h.preRenderer)
-// 	require.Equal(t, "world", pi.Title)
-// }
+	d.PreRender(&p)
+	d.Consume()
+	require.True(t, h.preRenderer)
+	require.Equal(t, "world", p.Title())
+}
 
-// func TestNestedPreRenderer(t *testing.T) {
-// 	h := &hello{}
-// 	div := Div().Body(h)
+func TestNestedPreRenderer(t *testing.T) {
+	p := requestPage{}
+	p.SetTitle("hello")
 
-// 	err := mount(div)
-// 	require.NoError(t, err)
-// 	defer dismount(div)
+	h := &hello{}
+	div := Div().Body(h)
+	d := NewServerTestingDispatcher(div)
+	defer d.Close()
 
-// 	pi := PageInfo{Title: "hello"}
-// 	preRender(div, &pi)
-// 	require.True(t, h.preRenderer)
-// 	require.Equal(t, "world", pi.Title)
-// }
+	d.PreRender(&p)
+	d.Consume()
+	require.True(t, h.preRenderer)
+	require.Equal(t, "world", p.Title())
+}
 
-// func TestNestedInComponentPreRenderer(t *testing.T) {
-// 	foo := &foo{Bar: "Bar"}
+func TestNestedInComponentPreRenderer(t *testing.T) {
+	p := requestPage{}
+	p.SetTitle("hello")
 
-// 	err := mount(foo)
-// 	require.NoError(t, err)
-// 	defer dismount(foo)
+	foo := &foo{Bar: "Bar"}
+	d := NewServerTestingDispatcher(foo)
+	defer d.Close()
 
-// 	pi := PageInfo{}
-// 	preRender(foo, &pi)
-// 	require.Equal(t, "bar", pi.Title)
-// }
+	d.PreRender(&p)
+	d.Consume()
+	require.Equal(t, "bar", p.Title())
+}
 
 type hello struct {
 	Compo
@@ -399,8 +402,8 @@ type hello struct {
 func (h *hello) OnMount(Context) {
 }
 
-func (h *hello) OnNav(ctx Context, u *url.URL) {
-	h.onNavURL = u.String()
+func (h *hello) OnNav(ctx Context) {
+	h.onNavURL = ctx.Page.URL().String()
 }
 
 func (h *hello) OnAppUpdate(ctx Context) {
@@ -411,9 +414,9 @@ func (h *hello) OnAppResize(ctx Context) {
 	h.appResized = true
 }
 
-func (h *hello) OnPreRender(pi *PageInfo) {
+func (h *hello) OnPreRender(ctx Context) {
 	h.preRenderer = true
-	pi.Title = "world"
+	ctx.Page.SetTitle("world")
 }
 
 func (h *hello) OnDismount(Context) {
@@ -449,12 +452,12 @@ type bar struct {
 	appRezized bool
 }
 
-func (b *bar) OnPreRender(pi *PageInfo) {
-	pi.Title = "bar"
+func (b *bar) OnPreRender(ctx Context) {
+	ctx.Page.SetTitle("bar")
 }
 
-func (b *bar) OnNav(ctx Context, u *url.URL) {
-	b.onNavURL = u.String()
+func (b *bar) OnNav(ctx Context) {
+	b.onNavURL = ctx.Page.URL().String()
 }
 
 func (b *bar) OnAppUpdate(ctx Context) {

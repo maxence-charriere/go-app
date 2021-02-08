@@ -1,8 +1,6 @@
 package app
 
 import (
-	"net/url"
-
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
@@ -136,7 +134,7 @@ func (s *shell) OnMount(ctx Context) {
 	s.refreshLayout()
 }
 
-func (s *shell) OnNav(ctx Context, u *url.URL) {
+func (s *shell) OnNav(ctx Context) {
 	s.refreshLayout()
 }
 
