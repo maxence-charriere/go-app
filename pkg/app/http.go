@@ -4,6 +4,7 @@ package app
 
 import (
 	"bytes"
+	"context"
 	"crypto/sha1"
 	"encoding/json"
 	"fmt"
@@ -21,7 +22,9 @@ import (
 )
 
 const (
-	defaultThemeColor = "#2d2c2c"
+	defaultThemeColor         = "#2d2c2c"
+	defaultPreRenderCacheSize = 8000000
+	defaultPreRenderCacheTTL  = time.Hour * 24
 )
 
 // Handler is an HTTP handler that serves an HTML page that loads a Go wasm app
@@ -67,10 +70,11 @@ type Handler struct {
 	// The name of the web application as it is usually displayed to the user.
 	Name string
 
-	// The duration that pre rendered pages are cached before being updated.
+	// The cache that stores pre-rendered pages.
 	//
-	// Default: 24h
-	PreRenderTTL time.Duration
+	// Default is a LRU cache that keeps pages up to 24h and have a maximum size
+	// of 8MB.
+	PreRenderCache PreRenderCache
 
 	// The static resources that are accessible from custom paths. Files that
 	// are proxied by default are /robots.txt, /sitemap.xml and /ads.txt.
@@ -133,9 +137,7 @@ type Handler struct {
 
 	once           sync.Once
 	etag           string
-	preRenderMu    sync.Mutex
-	resourcesMu    sync.RWMutex
-	resources      map[string]httpResource
+	pwaResources   PreRenderCache
 	proxyResources map[string]ProxyResource
 }
 
@@ -147,9 +149,7 @@ func (h *Handler) init() {
 	h.initCacheableResources()
 	h.initIcon()
 	h.initPWA()
-	h.initPreRenderTTL()
-
-	h.initResources()
+	h.initPreRenderedResources()
 	h.initProxyResources()
 }
 
@@ -223,39 +223,46 @@ func (h *Handler) initPWA() {
 	}
 }
 
-func (h *Handler) initPreRenderTTL() {
-	if h.PreRenderTTL <= 0 {
-		h.PreRenderTTL = time.Hour * 24
-	}
-}
+func (h *Handler) initPreRenderedResources() {
+	h.pwaResources = newPreRenderCache(5)
+	ctx := context.TODO()
 
-func (h *Handler) initResources() {
-	h.resources = make(map[string]httpResource)
-
-	h.setResource("/wasm_exec.js", httpResource{
+	h.pwaResources.Set(ctx, PreRenderedItem{
+		Path:        "/wasm_exec.js",
 		ContentType: "application/javascript",
 		Body:        stob(wasmExecJS),
 	})
 
-	h.setResource("/app.js", httpResource{
+	h.pwaResources.Set(ctx, PreRenderedItem{
+		Path:        "/app.js",
 		ContentType: "application/javascript",
 		Body:        h.makeAppJS(),
 	})
 
-	h.setResource("/app-worker.js", httpResource{
+	h.pwaResources.Set(ctx, PreRenderedItem{
+		Path:        "/app-worker.js",
 		ContentType: "application/javascript",
 		Body:        h.makeAppWorkerJS(),
 	})
 
-	h.setResource("/manifest.webmanifest", httpResource{
+	h.pwaResources.Set(ctx, PreRenderedItem{
+		Path:        "/manifest.webmanifest",
 		ContentType: "application/manifest+json",
 		Body:        h.makeManifestJSON(),
 	})
 
-	h.setResource("/app.css", httpResource{
+	h.pwaResources.Set(ctx, PreRenderedItem{
+		Path:        "/app.css",
 		ContentType: "text/css",
 		Body:        stob(appCSS),
 	})
+
+	if h.PreRenderCache == nil {
+		h.PreRenderCache = NewPreRenderLRUCache(
+			defaultPreRenderCacheSize,
+			defaultPreRenderCacheTTL,
+		)
+	}
 }
 
 func (h *Handler) makeAppJS() []byte {
@@ -366,20 +373,6 @@ func (h *Handler) makeManifestJSON() []byte {
 	return b.Bytes()
 }
 
-func (h *Handler) setResource(path string, r httpResource) {
-	r.Path = path
-	h.resourcesMu.Lock()
-	h.resources[path] = r
-	h.resourcesMu.Unlock()
-}
-
-func (h *Handler) getResource(path string) (httpResource, bool) {
-	h.resourcesMu.RLock()
-	r, ok := h.resources[path]
-	h.resourcesMu.RUnlock()
-	return r, ok
-}
-
 func (h *Handler) initProxyResources() {
 	resources := make(map[string]ProxyResource)
 
@@ -466,8 +459,13 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	if res, ok := h.getResource(path); ok && !res.IsExpired() {
-		h.serveResource(w, res)
+	if res, ok := h.pwaResources.Get(r.Context(), path); ok {
+		h.servePreRenderedItem(w, res)
+		return
+	}
+
+	if res, ok := h.PreRenderCache.Get(r.Context(), path); ok {
+		h.servePreRenderedItem(w, res)
 		return
 	}
 
@@ -476,19 +474,16 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// This is to avoid generating pages for not found pages when there is no
-	// server side routes set.
-	if res, ok := h.getResource("/"); ok && routes.len() == 0 && !res.IsExpired() {
-		h.serveResource(w, res)
-		return
-	}
-
 	h.servePage(w, r)
 }
 
-func (h *Handler) serveResource(w http.ResponseWriter, r httpResource) {
+func (h *Handler) servePreRenderedItem(w http.ResponseWriter, r PreRenderedItem) {
 	w.Header().Set("Content-Length", strconv.Itoa(r.Len()))
 	w.Header().Set("Content-Type", r.ContentType)
+	if r.ContentEncoding != "" {
+		w.Header().Set("Content-Encoding", r.ContentEncoding)
+	}
+
 	w.WriteHeader(http.StatusOK)
 	w.Write(r.Body)
 }
@@ -531,13 +526,14 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 		return
 	}
 
-	httpRes := httpResource{
-		Path:        resource.Path,
-		ContentType: res.Header.Get("Content-Type"),
-		Body:        body,
+	item := PreRenderedItem{
+		Path:            resource.Path,
+		ContentType:     res.Header.Get("Content-Type"),
+		ContentEncoding: res.Header.Get("Content-Encoding"),
+		Body:            body,
 	}
-	h.setResource(resource.Path, httpRes)
-	h.serveResource(w, httpRes)
+	h.PreRenderCache.Set(r.Context(), item)
+	h.servePreRenderedItem(w, item)
 }
 
 func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
@@ -550,6 +546,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	page.SetAuthor(h.Author)
 	page.SetKeywords(h.Keywords...)
 	page.SetLoadingLabel(h.LoadingLabel)
+	page.url = r.URL
 
 	preRenderBody, ok := routes.ui(r.URL.Path)
 	if !ok && routes.len() != 0 {
@@ -558,8 +555,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if preRenderBody != nil {
-		h.preRenderMu.Lock()
-		defer h.preRenderMu.Unlock()
 
 		// if err := mount(preRenderBody); err != nil {
 		// 	Log("%s", errors.New("pre-rendering failed").
@@ -655,21 +650,13 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		),
 	))
 
-	// This is to avoid generating pages for not found pages when there is no
-	// server side routes set.
-	path := r.URL.Path
-	if routes.len() == 0 {
-		path = "/"
-	}
-
-	res := httpResource{
-		Path:        path,
+	item := PreRenderedItem{
+		Path:        page.URL().Path,
 		Body:        b.Bytes(),
 		ContentType: "text/html",
-		ExpireAt:    time.Now().Add(h.PreRenderTTL),
 	}
-	h.setResource(path, res)
-	h.serveResource(w, res)
+	h.PreRenderCache.Set(r.Context(), item)
+	h.servePreRenderedItem(w, item)
 }
 
 func (h *Handler) resolveAppResourcePath(path string) string {

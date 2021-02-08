@@ -90,7 +90,7 @@ func TestPreRenderCache(t *testing.T) {
 func testPreRenderCache(t *testing.T, c PreRenderCache) {
 	ctx := context.TODO()
 
-	i := PreRenderCacheItem{
+	i := PreRenderedItem{
 		Path:            "/test",
 		ContentType:     "text/html",
 		ContentEncoding: "gzip",
@@ -114,7 +114,7 @@ func TestPreRenderLRUCacheExpire(t *testing.T) {
 
 	c := NewPreRenderLRUCache(100, -time.Second, onEvict).(*preRenderLRUCache)
 
-	items := []PreRenderCacheItem{
+	items := []PreRenderedItem{
 		{
 			Path: "/test1",
 			Body: []byte("test"),
@@ -149,7 +149,7 @@ func TestPreRenderLRUCacheExpire(t *testing.T) {
 	require.Len(t, c.priorities, 4)
 	require.Equal(t, 16, c.size)
 
-	c.Set(ctx, PreRenderCacheItem{
+	c.Set(ctx, PreRenderedItem{
 		Path: "/test5",
 		Body: []byte("test"),
 	})
@@ -171,7 +171,7 @@ func TestPreRenderLRUCacheEvict(t *testing.T) {
 
 	c := NewPreRenderLRUCache(8, time.Second, onEvict).(*preRenderLRUCache)
 
-	items := []PreRenderCacheItem{
+	items := []PreRenderedItem{
 		{
 			Path: "/test1",
 			Body: []byte("test"),
@@ -191,7 +191,7 @@ func TestPreRenderLRUCacheEvict(t *testing.T) {
 	require.Equal(t, 0, evictCount)
 	require.Equal(t, 0, evictSize)
 
-	c.Set(ctx, PreRenderCacheItem{
+	c.Set(ctx, PreRenderedItem{
 		Path: "/test3",
 		Body: []byte("test"),
 	})
@@ -201,7 +201,7 @@ func TestPreRenderLRUCacheEvict(t *testing.T) {
 	require.Equal(t, 1, evictCount)
 	require.Equal(t, 4, evictSize)
 
-	c.Set(ctx, PreRenderCacheItem{
+	c.Set(ctx, PreRenderedItem{
 		Path: "/test4",
 		Body: []byte("testbig"),
 	})

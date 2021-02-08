@@ -10,14 +10,14 @@ import (
 // pre-rendered resources.
 type PreRenderCache interface {
 	// Get returns the item at the given path.
-	Get(ctx context.Context, path string) (PreRenderCacheItem, bool)
+	Get(ctx context.Context, path string) (PreRenderedItem, bool)
 
 	// Set stored the item at the given path.
-	Set(ctx context.Context, i PreRenderCacheItem)
+	Set(ctx context.Context, i PreRenderedItem)
 }
 
-// PreRenderCacheItem represent an item that is stored in a PreRenderCache.
-type PreRenderCacheItem struct {
+// PreRenderedItem represent an item that is stored in a PreRenderCache.
+type PreRenderedItem struct {
 	// The request path.
 	Path string
 
@@ -32,7 +32,7 @@ type PreRenderCacheItem struct {
 }
 
 // Len return the body length.
-func (r PreRenderCacheItem) Len() int {
+func (r PreRenderedItem) Len() int {
 	return len(r.Body)
 }
 
@@ -60,7 +60,7 @@ type preRenderLRUCache struct {
 	maxSize    int
 }
 
-func (c *preRenderLRUCache) Set(ctx context.Context, i PreRenderCacheItem) {
+func (c *preRenderLRUCache) Set(ctx context.Context, i PreRenderedItem) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -79,18 +79,18 @@ func (c *preRenderLRUCache) Set(ctx context.Context, i PreRenderCacheItem) {
 	}
 }
 
-func (c *preRenderLRUCache) Get(ctx context.Context, path string) (PreRenderCacheItem, bool) {
+func (c *preRenderLRUCache) Get(ctx context.Context, path string) (PreRenderedItem, bool) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
 	i, ok := c.items[path]
 	if !ok {
-		return PreRenderCacheItem{}, false
+		return PreRenderedItem{}, false
 	}
 
 	if time.Now().After(i.ExpiresAt) {
 		i.Count = 0
-		return PreRenderCacheItem{}, false
+		return PreRenderedItem{}, false
 	}
 
 	i.Count++
@@ -144,7 +144,7 @@ func (c *preRenderLRUCache) last() *preRenderLRUCacheItem {
 type preRenderLRUCacheItem struct {
 	Count     uint
 	ExpiresAt time.Time
-	Item      PreRenderCacheItem
+	Item      PreRenderedItem
 }
 
 func sortPreRenderLRUCacheItem(s []*preRenderLRUCacheItem) {
@@ -176,22 +176,22 @@ func sortPreRenderLRUCacheItemPartition(s []*preRenderLRUCacheItem) int {
 
 type preRenderCache struct {
 	mu    sync.RWMutex
-	items map[string]PreRenderCacheItem
+	items map[string]PreRenderedItem
 }
 
 func newPreRenderCache(size int) *preRenderCache {
 	return &preRenderCache{
-		items: make(map[string]PreRenderCacheItem, size),
+		items: make(map[string]PreRenderedItem, size),
 	}
 }
 
-func (c *preRenderCache) Set(ctx context.Context, i PreRenderCacheItem) {
+func (c *preRenderCache) Set(ctx context.Context, i PreRenderedItem) {
 	c.mu.Lock()
 	c.items[i.Path] = i
 	c.mu.Unlock()
 }
 
-func (c *preRenderCache) Get(ctx context.Context, path string) (PreRenderCacheItem, bool) {
+func (c *preRenderCache) Get(ctx context.Context, path string) (PreRenderedItem, bool) {
 	c.mu.Lock()
 	i, ok := c.items[path]
 	c.mu.Unlock()
