@@ -124,21 +124,18 @@ func TestElemUpdateAttrs(t *testing.T) {
 
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			testSkipNonWasm(t)
-
 			n := Div().(*htmlDiv)
-			err := mount(n)
-			require.NoError(t, err)
-			defer dismount(n)
+			d := NewClientTestingDispatcher(n)
+			defer d.Close()
+
+			d.Consume()
 
 			n.attrs = u.current
 			n.updateAttrs(u.incoming)
-
 			if len(u.incoming) == 0 {
 				require.Empty(t, n.attributes())
 				return
 			}
-
 			require.Equal(t, u.incoming, n.attributes())
 		})
 	}
@@ -183,8 +180,6 @@ func TestElemUpdateEventHandlers(t *testing.T) {
 
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			testSkipNonWasm(t)
-
 			var current map[string]eventHandler
 			var incoming map[string]eventHandler
 
@@ -208,9 +203,11 @@ func TestElemUpdateEventHandlers(t *testing.T) {
 
 			n := Div().(*htmlDiv)
 			n.events = current
-			err := mount(n)
-			require.NoError(t, err)
-			defer dismount(n)
+
+			d := NewClientTestingDispatcher(n)
+			defer d.Close()
+
+			d.Consume()
 
 			n.updateEventHandler(incoming)
 

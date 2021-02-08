@@ -44,12 +44,25 @@ func (v value) JSValue() Value {
 	return v
 }
 
+func (v value) New(args ...interface{}) Value {
+	args = cleanArgs(args...)
+	return val(v.Value.New(args...))
+}
+
+func (v value) Type() Type {
+	return Type(v.Value.Type())
+}
+
 func (v value) setAttr(k, val string) {
 	v.Call("setAttribute", k, val)
 }
 
 func (v value) delAttr(k string) {
 	v.Call("removeAttribute", k)
+}
+
+func (v value) firstChild() Value {
+	return v.Get("firstChild")
 }
 
 func (v value) appendChild(c Wrapper) {
@@ -72,13 +85,12 @@ func (v value) removeEventListener(event string, fn Func) {
 	v.Call("removeEventListener", event, fn)
 }
 
-func (v value) New(args ...interface{}) Value {
-	args = cleanArgs(args...)
-	return val(v.Value.New(args...))
+func (v value) setNodeValue(val string) {
+	v.Set("nodeValue", val)
 }
 
-func (v value) Type() Type {
-	return Type(v.Value.Type())
+func (v value) setInnerHTML(val string) {
+	v.Set("innerHTML", val)
 }
 
 func null() Value {

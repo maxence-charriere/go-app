@@ -3,7 +3,7 @@ package app
 import (
 	"context"
 	"net/url"
-	"sync"
+	"reflect"
 
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
@@ -20,6 +20,7 @@ type Dispatcher interface {
 	Dispatch(func())
 
 	start(context.Context)
+	isPreRendering() bool
 }
 
 // TestingDispatcher represents a dispatcher to use for testing purposes.
@@ -41,32 +42,52 @@ type TestingDispatcher interface {
 	// Triggers OnAppResize from the root component.
 	AppResize()
 
-	// Close execute the remaining UI instructions and releases the allocated
-	// resources.
+	// Consume executes all the remaining UI instructions.
 	Consume()
+
+	// Close consumes all the remaining UI instruction and releases allocated
+	// resources.
+	Close()
 }
 
-// NewTestingDispatcher creates a testing dispatcher.
-func NewTestingDispatcher(v UI) TestingDispatcher {
+// NewClientTestingDispatcher creates a testing dispatcher that simulates a
+// client environment. The given UI element is mounted upon creation.
+func NewClientTestingDispatcher(v UI) TestingDispatcher {
+	return newTestingDispatcher(v, false)
+}
+
+// NewServerTestingDispatcher creates a testing dispatcher that simulates a
+// client environment. The given UI element is mounted upon creation.
+func NewServerTestingDispatcher(v UI) TestingDispatcher {
+	return newTestingDispatcher(v, false)
+}
+
+func newTestingDispatcher(v UI, serverSide bool) TestingDispatcher {
 	disp := &uiDispatcher{
-		ui: make(chan func(), dispatcherSize),
+		ui:           make(chan func(), dispatcherSize),
+		preRendering: serverSide,
 		body: Body().Body(
 			Div(),
 		).(*htmlBody),
 	}
 
-	if err := mount(disp, v); err != nil {
-		panic(errors.New("mounting body failed").Wrap(err))
+	if err := mount(disp, disp.body); err != nil {
+		panic(errors.New("mounting body failed").
+			Tag("pre-rendering-enabled", disp.isPreRendering()).
+			Tag("body-type", reflect.TypeOf(disp.body)).
+			Tag("ui-len", len(disp.ui)).
+			Tag("ui-cap", cap(disp.ui)).
+			Wrap(err))
 	}
 
+	disp.Mount(v)
 	return disp
 }
 
 type uiDispatcher struct {
-	startOnce   sync.Once
-	concumeOnce sync.Once
-	ui          chan func()
-	body        *htmlBody
+	ui           chan func()
+	body         *htmlBody
+	preRendering bool
 }
 
 func newUIDispatcher(body *htmlBody) *uiDispatcher {
@@ -90,7 +111,12 @@ func (d *uiDispatcher) PreRender(v UI) {
 func (d *uiDispatcher) Mount(v UI) {
 	d.Dispatch(func() {
 		if err := d.body.replaceChildAt(0, v); err != nil {
-			panic(errors.New("mounting ui element failed").Wrap(err))
+			panic(errors.New("mounting ui element failed").
+				Tag("pre-rendering-enabled", d.isPreRendering()).
+				Tag("body-type", reflect.TypeOf(d.body)).
+				Tag("ui-len", len(d.ui)).
+				Tag("ui-cap", cap(d.ui)).
+				Wrap(err))
 		}
 	})
 }
@@ -114,27 +140,38 @@ func (d *uiDispatcher) AppResize() {
 }
 
 func (d *uiDispatcher) Consume() {
-	d.concumeOnce.Do(func() {
-		ctx, cancel := context.WithCancel(context.Background())
-		defer cancel()
+	for {
+		select {
+		case fn := <-d.ui:
+			fn()
 
-		d.Dispatch(cancel)
-		d.start(ctx)
-	})
+		default:
+			return
+		}
+	}
+}
+
+func (d *uiDispatcher) Close() {
+	if len(d.ui) != 0 {
+		d.Consume()
+	}
+
+	dismount(d.body)
+	close(d.ui)
 }
 
 func (d *uiDispatcher) start(ctx context.Context) {
-	d.startOnce.Do(func() {
-		for {
-			select {
-			case fn := <-d.ui:
-				fn()
+	for {
+		select {
+		case fn := <-d.ui:
+			fn()
 
-			case <-ctx.Done():
-				break
-			}
+		case <-ctx.Done():
+			return
 		}
+	}
+}
 
-		close(d.ui)
-	})
+func (d *uiDispatcher) isPreRendering() bool {
+	return d.preRendering
 }

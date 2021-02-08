@@ -7,8 +7,6 @@ import (
 )
 
 func TestShellHasMenu(t *testing.T) {
-	testSkipNonWasm(t)
-
 	s := Shell().(*shell)
 	require.False(t, s.hasMenu())
 
@@ -20,8 +18,6 @@ func TestShellHasMenu(t *testing.T) {
 }
 
 func TestShellHasSubmenu(t *testing.T) {
-	testSkipNonWasm(t)
-
 	s := Shell().(*shell)
 	require.False(t, s.hasSubmenu())
 
@@ -33,8 +29,6 @@ func TestShellHasSubmenu(t *testing.T) {
 }
 
 func TestShellHasOverlayMenu(t *testing.T) {
-	testSkipNonWasm(t)
-
 	s := Shell().(*shell)
 	require.False(t, s.hasOverlayMenu())
 
@@ -46,12 +40,12 @@ func TestShellHasOverlayMenu(t *testing.T) {
 }
 
 func TestShellMounted(t *testing.T) {
-	testSkipNonWasm(t)
-
 	s := Shell().(*shell)
 	require.False(t, s.mounted())
 
-	err := mount(s)
-	require.NoError(t, err)
+	d := NewClientTestingDispatcher(s)
+	defer d.Close()
+
+	d.Consume()
 	require.True(t, s.mounted())
 }

@@ -231,172 +231,160 @@ func TestCompoUpdate(t *testing.T) {
 }
 
 func TestNavigator(t *testing.T) {
-	testSkipNonWasm(t)
-
+	u, _ := url.Parse("https://murlok.io")
 	h := &hello{}
 
-	err := mount(h)
-	require.NoError(t, err)
-	defer dismount(h)
+	d := NewClientTestingDispatcher(h)
+	defer d.Close()
 
-	u, _ := url.Parse("https://murlok.io")
-	h.onNav(u)
+	d.Nav(u)
+	d.Consume()
 	require.Equal(t, "https://murlok.io", h.onNavURL)
 }
 
 func TestNestedtNavigator(t *testing.T) {
-	testSkipNonWasm(t)
+	u, _ := url.Parse("https://murlok.io")
 
 	h := &hello{}
 	div := Div().Body(h)
+	d := NewClientTestingDispatcher(div)
+	defer d.Close()
 
-	err := mount(div)
-	require.NoError(t, err)
-	defer dismount(div)
-
-	u, _ := url.Parse("https://murlok.io")
-	div.onNav(u)
+	d.Nav(u)
+	d.Consume()
 	require.Equal(t, "https://murlok.io", h.onNavURL)
 }
 
 func TestNestedInComponentNavigator(t *testing.T) {
-	testSkipNonWasm(t)
+	u, _ := url.Parse("https://murlok.io")
 
 	foo := &foo{Bar: "Bar"}
+	d := NewClientTestingDispatcher(foo)
+	defer d.Close()
 
-	err := mount(foo)
-	require.NoError(t, err)
-	defer dismount(foo)
-
-	u, _ := url.Parse("https://murlok.io")
-	foo.onNav(u)
-
+	d.Nav(u)
+	d.Consume()
 	b := foo.children()[0].(*bar)
 	require.Equal(t, "https://murlok.io", b.onNavURL)
 }
 
 func TestUpdater(t *testing.T) {
-	testSkipNonWasm(t)
+	appUpdateAvailable = true
+	defer func() {
+		appUpdateAvailable = false
+	}()
 
 	h := &hello{}
+	d := NewClientTestingDispatcher(h)
+	defer d.Close()
 
-	err := mount(h)
-	require.NoError(t, err)
-	defer dismount(h)
-
-	h.onAppUpdate()
+	d.AppUpdate()
+	d.Consume()
 	require.True(t, h.appUpdated)
 }
 
 func TestNestedUpdater(t *testing.T) {
-	testSkipNonWasm(t)
+	appUpdateAvailable = true
+	defer func() {
+		appUpdateAvailable = false
+	}()
 
 	h := &hello{}
 	div := Div().Body(h)
+	d := NewClientTestingDispatcher(div)
+	defer d.Close()
 
-	err := mount(div)
-	require.NoError(t, err)
-	defer dismount(div)
-
-	div.onAppUpdate()
+	d.AppUpdate()
+	d.Consume()
 	require.True(t, h.appUpdated)
 }
 
 func TestNestedInComponentUpdater(t *testing.T) {
-	testSkipNonWasm(t)
+	appUpdateAvailable = true
+	defer func() {
+		appUpdateAvailable = false
+	}()
 
 	foo := &foo{Bar: "Bar"}
+	d := NewClientTestingDispatcher(foo)
+	defer d.Close()
 
-	err := mount(foo)
-	require.NoError(t, err)
-	defer dismount(foo)
-
-	foo.onAppUpdate()
-
+	d.AppUpdate()
+	d.Consume()
 	b := foo.children()[0].(*bar)
 	require.True(t, b.appUpdated)
 }
 
 func TestResizer(t *testing.T) {
-	testSkipNonWasm(t)
-
 	h := &hello{}
+	d := NewClientTestingDispatcher(h)
+	defer d.Close()
 
-	err := mount(h)
-	require.NoError(t, err)
-	defer dismount(h)
-
-	h.onAppResize()
+	d.AppResize()
+	d.Consume()
 	require.True(t, h.appResized)
 }
 
 func TestNestedResizer(t *testing.T) {
-	testSkipNonWasm(t)
-
 	h := &hello{}
 	div := Div().Body(h)
+	d := NewClientTestingDispatcher(div)
+	defer d.Close()
 
-	err := mount(div)
-	require.NoError(t, err)
-	defer dismount(div)
-
-	div.onAppResize()
+	d.AppResize()
+	d.Consume()
 	require.True(t, h.appResized)
 }
 
 func TestNestedInComponentResizer(t *testing.T) {
-	testSkipNonWasm(t)
-
 	foo := &foo{Bar: "Bar"}
+	d := NewClientTestingDispatcher(foo)
+	defer d.Close()
 
-	err := mount(foo)
-	require.NoError(t, err)
-	defer dismount(foo)
-
-	foo.onAppResize()
-
+	d.AppResize()
+	d.Consume()
 	b := foo.children()[0].(*bar)
 	require.True(t, b.appRezized)
 }
 
-func TestPreRenderer(t *testing.T) {
-	h := &hello{}
+// func TestPreRenderer(t *testing.T) {
+// 	h := &hello{}
 
-	err := mount(h)
-	require.NoError(t, err)
-	defer dismount(h)
+// 	err := mount(h)
+// 	require.NoError(t, err)
+// 	defer dismount(h)
 
-	pi := PageInfo{Title: "hello"}
-	preRender(h, &pi)
-	require.True(t, h.preRenderer)
-	require.Equal(t, "world", pi.Title)
-}
+// 	pi := PageInfo{Title: "hello"}
+// 	preRender(h, &pi)
+// 	require.True(t, h.preRenderer)
+// 	require.Equal(t, "world", pi.Title)
+// }
 
-func TestNestedPreRenderer(t *testing.T) {
-	h := &hello{}
-	div := Div().Body(h)
+// func TestNestedPreRenderer(t *testing.T) {
+// 	h := &hello{}
+// 	div := Div().Body(h)
 
-	err := mount(div)
-	require.NoError(t, err)
-	defer dismount(div)
+// 	err := mount(div)
+// 	require.NoError(t, err)
+// 	defer dismount(div)
 
-	pi := PageInfo{Title: "hello"}
-	preRender(div, &pi)
-	require.True(t, h.preRenderer)
-	require.Equal(t, "world", pi.Title)
-}
+// 	pi := PageInfo{Title: "hello"}
+// 	preRender(div, &pi)
+// 	require.True(t, h.preRenderer)
+// 	require.Equal(t, "world", pi.Title)
+// }
 
-func TestNestedInComponentPreRenderer(t *testing.T) {
-	foo := &foo{Bar: "Bar"}
+// func TestNestedInComponentPreRenderer(t *testing.T) {
+// 	foo := &foo{Bar: "Bar"}
 
-	err := mount(foo)
-	require.NoError(t, err)
-	defer dismount(foo)
+// 	err := mount(foo)
+// 	require.NoError(t, err)
+// 	defer dismount(foo)
 
-	pi := PageInfo{}
-	preRender(foo, &pi)
-	require.Equal(t, "bar", pi.Title)
-}
+// 	pi := PageInfo{}
+// 	preRender(foo, &pi)
+// 	require.Equal(t, "bar", pi.Title)
+// }
 
 type hello struct {
 	Compo

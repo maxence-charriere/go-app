@@ -89,7 +89,7 @@ func (r *raw) children() []UI {
 func (r *raw) preRender(*PageInfo) {
 }
 
-func (r *raw) mount(Dispatcher) error {
+func (r *raw) mount(d Dispatcher) error {
 	if r.Mounted() {
 		return errors.New("mounting raw html element failed").
 			Tag("reason", "already mounted").
@@ -101,13 +101,9 @@ func (r *raw) mount(Dispatcher) error {
 	if err != nil {
 		return errors.New("creating raw node wrapper failed").Wrap(err)
 	}
-	if !isClientSide {
-		r.jsvalue = wrapper
-		return nil
-	}
 
-	wrapper.Set("innerHTML", r.value)
-	value := wrapper.Get("firstChild")
+	wrapper.setInnerHTML(r.value)
+	value := wrapper.firstChild()
 	if !value.Truthy() {
 		return errors.New("mounting raw html element failed").
 			Tag("reason", "converting raw html to html elements returned nil").

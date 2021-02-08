@@ -109,7 +109,7 @@ func (t *text) update(n UI) error {
 
 	if t.value != o.value {
 		t.value = o.value
-		t.jsvalue.Set("nodeValue", o.value)
+		t.JSValue().setNodeValue(o.value)
 	}
 
 	return nil

@@ -127,7 +127,7 @@ func (c *Compo) JSValue() Value {
 
 // Mounted reports whether the component is mounted.
 func (c *Compo) Mounted() bool {
-	return c.dispatcher != nil &&
+	return c.dispatcher() != nil &&
 		c.ctx != nil &&
 		c.ctx.Err() == nil &&
 		c.root != nil && c.root.Mounted() &&
@@ -256,7 +256,7 @@ func (c *Compo) mount(d Dispatcher) error {
 	root.setParent(c.this)
 	c.root = root
 
-	if mounter, ok := c.this.(Mounter); ok && isClientSide {
+	if mounter, ok := c.this.(Mounter); ok && !c.dispatcher().isPreRendering() {
 		mounter.OnMount(Context{
 			Context:            c.ctx,
 			Src:                c.this,

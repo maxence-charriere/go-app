@@ -31,7 +31,7 @@ func (e *elem) JSValue() Value {
 }
 
 func (e *elem) Mounted() bool {
-	return e.dispatcher != nil &&
+	return e.dispatcher() != nil &&
 		e.ctx != nil &&
 		e.ctx.Err() == nil &&
 		e.self() != nil &&

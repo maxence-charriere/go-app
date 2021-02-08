@@ -99,14 +99,13 @@ type mountTest struct {
 func testMountDismount(t *testing.T, utests []mountTest) {
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			testSkipNonWasm(t)
-
 			n := u.node
-			err := mount(n)
-			require.NoError(t, err)
+
+			d := NewClientTestingDispatcher(n)
+			d.Consume()
 			testMounted(t, n)
 
-			dismount(u.node)
+			d.Close()
 			testDismounted(t, n)
 		})
 	}
@@ -154,13 +153,11 @@ type updateTest struct {
 func testUpdate(t *testing.T, utests []updateTest) {
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			testSkipNonWasm(t)
+			d := NewClientTestingDispatcher(u.a)
+			defer d.Close()
+			d.Consume()
 
-			err := mount(u.a)
-			require.NoError(t, err)
-			defer dismount(u.a)
-
-			err = update(u.a, u.b)
+			err := update(u.a, u.b)
 			if u.replaceErr {
 				require.Error(t, err)
 				require.True(t, isErrReplace(err))
@@ -168,7 +165,6 @@ func testUpdate(t *testing.T, utests []updateTest) {
 			}
 
 			require.NoError(t, err)
-
 			for _, d := range u.matches {
 				require.NoError(t, TestMatch(u.a, d))
 			}

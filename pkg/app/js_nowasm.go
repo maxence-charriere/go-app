@@ -86,7 +86,7 @@ func (v value) String() string {
 }
 
 func (v value) Truthy() bool {
-	panic(errNoWasm)
+	return true
 }
 
 func (v value) Type() Type {
@@ -97,6 +97,10 @@ func (v value) setAttr(k, val string) {
 }
 
 func (v value) delAttr(k string) {
+}
+
+func (v value) firstChild() Value {
+	return value{}
 }
 
 func (v value) appendChild(c Wrapper) {
@@ -112,6 +116,12 @@ func (v value) addEventListener(event string, fn Func) {
 }
 
 func (v value) removeEventListener(event string, fn Func) {
+}
+
+func (v value) setNodeValue(val string) {
+}
+
+func (v value) setInnerHTML(val string) {
 }
 
 func null() Value {

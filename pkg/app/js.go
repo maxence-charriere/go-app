@@ -2,11 +2,10 @@ package app
 
 import (
 	"net/url"
-	"runtime"
 )
 
 const (
-	isClientSide = runtime.GOARCH == "wasm" && runtime.GOOS == "js"
+// isClientSide = runtime.GOARCH == "wasm" && runtime.GOOS == "js"
 )
 
 // Type represents the JavaScript type of a Value.
@@ -117,11 +116,14 @@ type Value interface {
 
 	setAttr(k, v string)
 	delAttr(k string)
+	firstChild() Value
 	appendChild(c Wrapper)
 	replaceChild(new, old Wrapper)
 	removeChild(c Wrapper)
 	addEventListener(event string, fn Func)
 	removeEventListener(event string, fn Func)
+	setNodeValue(v string)
+	setInnerHTML(v string)
 }
 
 // Null returns the JavaScript value "null".

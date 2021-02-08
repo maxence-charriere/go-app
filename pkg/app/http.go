@@ -367,8 +367,6 @@ func (h *Handler) makeManifestJSON() []byte {
 }
 
 func (h *Handler) setResource(path string, r httpResource) {
-	fmt.Println("setting resource:", path)
-
 	r.Path = path
 	h.resourcesMu.Lock()
 	h.resources[path] = r
