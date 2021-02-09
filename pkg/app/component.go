@@ -362,6 +362,12 @@ func (c *Compo) onNav(u *url.URL) {
 
 	if nav, ok := c.self().(deprecatedNavigator); ok {
 		ctx := makeContext(c.self(), browserPage{url: u})
+		Log("%s", errors.New("a deprecated component interface is in use").
+			Tag("component", reflect.TypeOf(c.self())).
+			Tag("interface", "app.Navigator").
+			Tag("deprecated-signature", "OnNav(app.Context, *url.URL)").
+			Tag("valid-signature", "OnNav(app.Context)").
+			Tag("how-to-fix", "refactor component to use the valid signature"))
 		nav.OnNav(ctx, u)
 	}
 }
