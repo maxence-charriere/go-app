@@ -81,6 +81,10 @@ type Navigator interface {
 	OnNav(Context)
 }
 
+type deprecatedNavigator interface {
+	OnNav(Context, *url.URL)
+}
+
 // Updater is the interface that describes a component that is notified when the
 // application is updated.
 type Updater interface {
@@ -214,16 +218,6 @@ func (c *Compo) children() []UI {
 	return []UI{c.root}
 }
 
-func (c *Compo) makeContext(p Page) Context {
-	return Context{
-		Context:            c.ctx,
-		Src:                c.this,
-		JSSrc:              c.this.JSValue(),
-		AppUpdateAvailable: appUpdateAvailable,
-		Page:               p,
-	}
-}
-
 func (c *Compo) mount(d Dispatcher) error {
 	if c.Mounted() {
 		return errors.New("mounting component failed").
@@ -245,8 +239,8 @@ func (c *Compo) mount(d Dispatcher) error {
 	root.setParent(c.this)
 	c.root = root
 
-	if mounter, ok := c.this.(Mounter); ok && !c.dispatcher().isServerSideMode() {
-		mounter.OnMount(c.makeContext(browserPage{}))
+	if mounter, ok := c.self().(Mounter); ok && !c.dispatcher().isServerSideMode() {
+		mounter.OnMount(makeContext(c.self(), browserPage{}))
 	}
 
 	return nil
@@ -370,8 +364,14 @@ func (c *Compo) onNav(u *url.URL) {
 	c.root.onNav(u)
 
 	if nav, ok := c.self().(Navigator); ok {
-		ctx := c.makeContext(browserPage{url: u})
+		ctx := makeContext(c.self(), browserPage{url: u})
 		nav.OnNav(ctx)
+		return
+	}
+
+	if nav, ok := c.self().(deprecatedNavigator); ok {
+		ctx := makeContext(c.self(), browserPage{url: u})
+		nav.OnNav(ctx, u)
 	}
 }
 
@@ -379,7 +379,7 @@ func (c *Compo) onAppUpdate() {
 	c.root.onAppUpdate()
 
 	if updater, ok := c.self().(Updater); ok {
-		updater.OnAppUpdate(c.makeContext(browserPage{}))
+		updater.OnAppUpdate(makeContext(c.self(), browserPage{}))
 	}
 }
 
@@ -387,7 +387,7 @@ func (c *Compo) onAppResize() {
 	c.root.onAppResize()
 
 	if resizer, ok := c.self().(Resizer); ok {
-		resizer.OnAppResize(c.makeContext(browserPage{}))
+		resizer.OnAppResize(makeContext(c.self(), browserPage{}))
 	}
 }
 
@@ -395,7 +395,7 @@ func (c *Compo) preRender(p Page) {
 	c.root.preRender(p)
 
 	if preRenderer, ok := c.self().(PreRenderer); ok {
-		preRenderer.OnPreRender(c.makeContext(p))
+		preRenderer.OnPreRender(makeContext(c.self(), p))
 	}
 }
 

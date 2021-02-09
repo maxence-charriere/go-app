@@ -178,13 +178,7 @@ func (l *contextMenuLayout) Render() UI {
 }
 
 func (l *contextMenuLayout) hide() {
-	ctx := Context{
-		Context: l.root.context(),
-		Src:     l.root,
-		JSSrc:   l.root.JSValue(),
-	}
-
-	l.onHide(ctx, Event{Value: Null()})
+	l.onHide(makeContext(l, browserPage{}), Event{Value: Null()})
 }
 
 func (l *contextMenuLayout) onHide(ctx Context, e Event) {

@@ -151,19 +151,12 @@ func makeJsEventHandler(src UI, h EventHandler) Func {
 				return
 			}
 
-			ctx := Context{
-				Context:            src.context(),
-				Src:                src,
-				JSSrc:              src.JSValue(),
-				AppUpdateAvailable: appUpdateAvailable,
-			}
-
 			event := Event{
 				Value: args[0],
 			}
 
 			trackMousePosition(event)
-			h(ctx, event)
+			h(makeContext(src, browserPage{}), event)
 		})
 
 		return nil
