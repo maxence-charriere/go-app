@@ -155,6 +155,10 @@ func (c *Compo) Render() UI {
 // field used to render the component has been modified. Updates are always
 // performed on the UI goroutine.
 func (c *Compo) Update() {
+	if !c.Mounted() {
+		return
+	}
+
 	c.Dispatcher().Dispatch(func() {
 		if !c.Mounted() {
 			return
