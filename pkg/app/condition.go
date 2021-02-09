@@ -69,6 +69,10 @@ func (c condition) Mounted() bool {
 	return false
 }
 
+func (c condition) Dispatcher() Dispatcher {
+	return nil
+}
+
 func (c condition) name() string {
 	return "if.else"
 }
@@ -78,10 +82,6 @@ func (c condition) self() UI {
 }
 
 func (c condition) setSelf(UI) {
-}
-
-func (c condition) dispatcher() Dispatcher {
-	return nil
 }
 
 func (c condition) context() context.Context {

@@ -15,6 +15,7 @@ func Text(v interface{}) UI {
 }
 
 type text struct {
+	disp       Dispatcher
 	jsvalue    Value
 	parentElem UI
 	value      string
@@ -29,7 +30,11 @@ func (t *text) JSValue() Value {
 }
 
 func (t *text) Mounted() bool {
-	return t.jsvalue != nil
+	return t.jsvalue != nil && t.Dispatcher() != nil
+}
+
+func (t *text) Dispatcher() Dispatcher {
+	return t.disp
 }
 
 func (t *text) name() string {
@@ -41,10 +46,6 @@ func (t *text) self() UI {
 }
 
 func (t *text) setSelf(n UI) {
-}
-
-func (t *text) dispatcher() Dispatcher {
-	return nil
 }
 
 func (t *text) context() context.Context {
@@ -71,7 +72,7 @@ func (t *text) children() []UI {
 	return nil
 }
 
-func (t *text) mount(Dispatcher) error {
+func (t *text) mount(d Dispatcher) error {
 	if t.Mounted() {
 		return errors.New("mounting ui element failed").
 			Tag("reason", "already mounted").
@@ -80,12 +81,14 @@ func (t *text) mount(Dispatcher) error {
 			Tag("value", t.value)
 	}
 
+	t.disp = d
 	t.jsvalue = Window().createTextNode(t.value)
 	return nil
 }
 
 func (t *text) dismount() {
 	t.jsvalue = nil
+	t.disp = nil
 }
 
 func (t *text) update(n UI) error {

@@ -239,7 +239,7 @@ func (s *shell) mounted() bool {
 }
 
 func (s *shell) refreshLayout() {
-	s.Dispatch(func() {
+	s.Dispatcher().Dispatch(func() {
 		s.refreshMenu()
 		s.refreshSubmenu()
 		s.Update()

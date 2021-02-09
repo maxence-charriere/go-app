@@ -99,6 +99,10 @@ func (r rangeLoop) Mounted() bool {
 	return false
 }
 
+func (r rangeLoop) Dispatcher() Dispatcher {
+	return nil
+}
+
 func (r rangeLoop) name() string {
 	return "range"
 }
@@ -108,10 +112,6 @@ func (r rangeLoop) self() UI {
 }
 
 func (r rangeLoop) setSelf(UI) {
-}
-
-func (r rangeLoop) dispatcher() Dispatcher {
-	return nil
 }
 
 func (r rangeLoop) context() context.Context {

@@ -123,7 +123,7 @@ func (f *flow) mounted() bool {
 }
 
 func (f *flow) refreshLayout() {
-	f.Dispatch(f.adjustItemSizes)
+	f.Dispatcher().Dispatch(f.adjustItemSizes)
 }
 
 func (f *flow) adjustItemSizes() {

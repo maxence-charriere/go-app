@@ -12,8 +12,8 @@ const (
 	dispatcherSize = 4096
 )
 
-// Dispatcher is the inerface that describes an environment that synchronizes UI
-// instructions and components lifecycle.
+// Dispatcher is the interface that describes an environment that synchronizes
+// UI instructions and UI elements lifecycle.
 type Dispatcher interface {
 	// Dispatch enqueues the given function to be executed on a goroutine
 	// dedicated to managing UI modifications.

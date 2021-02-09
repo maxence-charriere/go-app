@@ -26,14 +26,12 @@ type Context struct {
 
 	// The info about the current page.
 	Page Page
-
-	dispatcher Dispatcher
 }
 
 // Dispatch executes the given function on the goroutine dedicated to updating
 // the UI.
 func (ctx Context) Dispatch(fn func()) {
-	ctx.dispatcher.Dispatch(fn)
+	ctx.Src.Dispatcher().Dispatch(fn)
 }
 
 func makeContext(src UI, p Page) Context {
@@ -43,6 +41,5 @@ func makeContext(src UI, p Page) Context {
 		JSSrc:              src.JSValue(),
 		AppUpdateAvailable: appUpdateAvailable,
 		Page:               p,
-		dispatcher:         src.dispatcher(),
 	}
 }

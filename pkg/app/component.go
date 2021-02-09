@@ -33,10 +33,6 @@ type Composer interface {
 	// Update update the component appearance. It should be called when a field
 	// used to render the component has been modified.
 	Update()
-
-	// Dispatch executes the given function on the goroutine dedicated to updating
-	// the UI.
-	Dispatch(fn func())
 }
 
 // PreRenderer is the interface that describes a component that performs
@@ -123,11 +119,16 @@ func (c *Compo) JSValue() Value {
 
 // Mounted reports whether the component is mounted.
 func (c *Compo) Mounted() bool {
-	return c.dispatcher() != nil &&
+	return c.Dispatcher() != nil &&
 		c.ctx != nil &&
 		c.ctx.Err() == nil &&
 		c.root != nil && c.root.Mounted() &&
 		c.self() != nil
+}
+
+// Dispatcher returns the dispatcher that manages the component.
+func (c *Compo) Dispatcher() Dispatcher {
+	return c.disp
 }
 
 // Render describes the component content. This is a default implementation to
@@ -154,7 +155,7 @@ func (c *Compo) Render() UI {
 // field used to render the component has been modified. Updates are always
 // performed on the UI goroutine.
 func (c *Compo) Update() {
-	c.Dispatch(func() {
+	c.Dispatcher().Dispatch(func() {
 		if !c.Mounted() {
 			return
 		}
@@ -163,12 +164,6 @@ func (c *Compo) Update() {
 			panic(err)
 		}
 	})
-}
-
-// Dispatch executes the given function on the goroutine dedicated to updating
-// the UI.
-func (c *Compo) Dispatch(fn func()) {
-	c.dispatcher().Dispatch(fn)
 }
 
 func (c *Compo) name() string {
@@ -188,10 +183,6 @@ func (c *Compo) setSelf(n UI) {
 	}
 
 	c.this = nil
-}
-
-func (c *Compo) dispatcher() Dispatcher {
-	return c.disp
 }
 
 func (c *Compo) context() context.Context {
@@ -239,7 +230,7 @@ func (c *Compo) mount(d Dispatcher) error {
 	root.setParent(c.this)
 	c.root = root
 
-	if mounter, ok := c.self().(Mounter); ok && !c.dispatcher().isServerSideMode() {
+	if mounter, ok := c.self().(Mounter); ok && !c.Dispatcher().isServerSideMode() {
 		mounter.OnMount(makeContext(c.self(), browserPage{}))
 	}
 
@@ -318,7 +309,7 @@ func (c *Compo) replaceRoot(n UI) error {
 	old := c.root
 	new := n
 
-	if err := mount(c.dispatcher(), new); err != nil {
+	if err := mount(c.Dispatcher(), new); err != nil {
 		return errors.New("replacing component root failed").
 			Tag("kind", c.Kind()).
 			Tag("name", c.name()).

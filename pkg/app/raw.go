@@ -29,6 +29,7 @@ func Raw(v string) UI {
 }
 
 type raw struct {
+	disp       Dispatcher
 	jsvalue    Value
 	parentElem UI
 	tag        string
@@ -44,7 +45,11 @@ func (r *raw) JSValue() Value {
 }
 
 func (r *raw) Mounted() bool {
-	return r.jsvalue != nil
+	return r.jsvalue != nil && r.Dispatcher() != nil
+}
+
+func (r *raw) Dispatcher() Dispatcher {
+	return r.disp
 }
 
 func (r *raw) name() string {
@@ -56,10 +61,6 @@ func (r *raw) self() UI {
 }
 
 func (r *raw) setSelf(UI) {
-}
-
-func (r *raw) dispatcher() Dispatcher {
-	return nil
 }
 
 func (r *raw) context() context.Context {
@@ -94,6 +95,8 @@ func (r *raw) mount(d Dispatcher) error {
 			Tag("kind", r.Kind())
 	}
 
+	r.disp = d
+
 	wrapper, err := Window().createElement("div")
 	if err != nil {
 		return errors.New("creating raw node wrapper failed").Wrap(err)
@@ -115,6 +118,7 @@ func (r *raw) mount(d Dispatcher) error {
 
 func (r *raw) dismount() {
 	r.jsvalue = nil
+	r.disp = nil
 }
 
 func (r *raw) update(n UI) error {
