@@ -31,7 +31,9 @@ type Context struct {
 // Dispatch executes the given function on the goroutine dedicated to updating
 // the UI.
 func (ctx Context) Dispatch(fn func()) {
-	ctx.Src.Dispatcher().Dispatch(fn)
+	if ctx.Src.Mounted() {
+		ctx.Src.Dispatcher().Dispatch(fn)
+	}
 }
 
 func makeContext(src UI, p Page) Context {

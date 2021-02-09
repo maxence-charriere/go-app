@@ -44,7 +44,7 @@ func (m *godocMenu) OnMount(ctx app.Context) {
 	m.err = nil
 	m.Update()
 
-	go m.loadMenu()
+	go m.loadMenu(ctx)
 }
 
 func (m *godocMenu) OnNav(ctx app.Context, u *url.URL) {
@@ -52,11 +52,11 @@ func (m *godocMenu) OnNav(ctx app.Context, u *url.URL) {
 	m.focusLink()
 }
 
-func (m *godocMenu) loadMenu() {
+func (m *godocMenu) loadMenu(ctx app.Context) {
 	var html string
 	var err error
 
-	defer app.Dispatch(func() {
+	defer ctx.Dispatch(func() {
 		if err != nil {
 			m.err = err
 		}
@@ -65,8 +65,8 @@ func (m *godocMenu) loadMenu() {
 		m.loading = false
 		m.Update()
 
-		app.Dispatch(m.focusLink)
-		app.Dispatch(m.scrollToLink)
+		ctx.Dispatch(m.focusLink)
+		ctx.Dispatch(m.scrollToLink)
 	})
 
 	path := "/web/godoc-index.html"
@@ -160,14 +160,14 @@ func (d *godoc) OnMount(ctx app.Context) {
 	d.err = nil
 	d.Update()
 
-	go d.load()
+	go d.load(ctx)
 }
 
-func (d *godoc) load() {
+func (d *godoc) load(ctx app.Context) {
 	var html string
 	var err error
 
-	defer app.Dispatch(func() {
+	defer ctx.Dispatch(func() {
 		if err != nil {
 			d.err = err
 		}
@@ -176,8 +176,8 @@ func (d *godoc) load() {
 		d.loading = false
 		d.Update()
 
-		app.Dispatch(d.setupToggle)
-		app.Dispatch(d.scrollToSection)
+		ctx.Dispatch(d.setupToggle)
+		ctx.Dispatch(d.scrollToSection)
 	})
 
 	path := "/web/godoc.html"
@@ -229,7 +229,7 @@ func (d *godoc) setupToggle() {
 }
 
 func (d *godoc) onToggle(src app.Value, args []app.Value) interface{} {
-	app.Dispatch(func() {
+	d.Dispatcher().Dispatch(func() {
 		switch src.Get("className").String() {
 		case "toggleVisible":
 			src.Set("className", "toggle")
