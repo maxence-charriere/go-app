@@ -68,7 +68,7 @@ func newTestingDispatcher(v UI, serverSide bool) TestingDispatcher {
 		serverSideMode: serverSide,
 		body: Body().Body(
 			Div(),
-		).(*htmlBody),
+		).(elemWithChildren),
 	}
 
 	if err := mount(disp, disp.body); err != nil {
@@ -86,14 +86,14 @@ func newTestingDispatcher(v UI, serverSide bool) TestingDispatcher {
 
 type uiDispatcher struct {
 	ui             chan func()
-	body           *htmlBody
+	body           elemWithChildren
 	serverSideMode bool
 }
 
-func newUIDispatcher(body *htmlBody) *uiDispatcher {
+func newUIDispatcher(body UI) *uiDispatcher {
 	return &uiDispatcher{
 		ui:   make(chan func(), dispatcherSize),
-		body: body,
+		body: body.(elemWithChildren),
 	}
 }
 

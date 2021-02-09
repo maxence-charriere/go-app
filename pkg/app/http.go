@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"reflect"
 	"runtime"
 	"strconv"
 	"strings"
@@ -537,6 +538,12 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 }
 
 func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
+	content, ok := routes.ui(r.URL.Path)
+	if !ok {
+		http.NotFound(w, r)
+		return
+	}
+
 	url := *r.URL
 	url.Host = r.Host
 
@@ -546,25 +553,27 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	page.SetAuthor(h.Author)
 	page.SetKeywords(h.Keywords...)
 	page.SetLoadingLabel(h.LoadingLabel)
-	page.url = r.URL
+	page.url = &url
 
-	preRenderBody, ok := routes.ui(r.URL.Path)
-	if !ok && routes.len() != 0 {
-		http.NotFound(w, r)
-		return
+	preRenderContainer := Div().
+		ID("app-pre-render").
+		Body(Div())
+	disp := newUIDispatcher(preRenderContainer)
+	disp.serverSideMode = true
+	if err := mount(disp, preRenderContainer); err != nil {
+		panic(errors.New("mounting pre-rendering container failed").
+			Tag("server-side-mode", disp.isServerSideMode()).
+			Tag("body-type", reflect.TypeOf(disp.body)).
+			Tag("ui-len", len(disp.ui)).
+			Tag("ui-cap", cap(disp.ui)).
+			Wrap(err))
 	}
+	disp.body = preRenderContainer.(elemWithChildren)
+	defer disp.Close()
 
-	if preRenderBody != nil {
-
-		// if err := mount(preRenderBody); err != nil {
-		// 	Log("%s", errors.New("pre-rendering failed").
-		// 		Tag("url", r.URL).
-		// 		Tag("method", r.Method).
-		// 		Wrap(err))
-		// } else {
-		// 	preRender(preRenderBody, &info)
-		// }
-	}
+	disp.Mount(content)
+	disp.PreRender(&page)
+	disp.Consume()
 
 	var b bytes.Buffer
 	b.WriteString("<!DOCTYPE html>\n")
@@ -628,9 +637,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		Body().Body(
 			Div().
 				Body(
-					Div().
-						ID("app-pre-render").
-						Body(preRenderBody),
+					preRenderContainer,
 					Div().
 						ID("app-wasm-layout").
 						Class("goapp-app-info").

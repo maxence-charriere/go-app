@@ -8,6 +8,12 @@ import (
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
 
+type elemWithChildren interface {
+	UI
+
+	replaceChildAt(idx int, new UI) error
+}
+
 type elem struct {
 	attrs       map[string]string
 	body        []UI
@@ -129,6 +135,7 @@ func (e *elem) dismount() {
 
 	e.ctxCancel()
 	e.jsvalue = nil
+	e.disp = nil
 }
 
 func (e *elem) update(n UI) error {

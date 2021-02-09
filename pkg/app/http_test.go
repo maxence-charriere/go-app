@@ -12,6 +12,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func init() {
+	Route("/", Div().ID("pre-render-ok"))
+}
+
 func TestHandlerServePageWithLocalDir(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/", nil)
 	w := httptest.NewRecorder()
@@ -45,6 +49,7 @@ func TestHandlerServePageWithLocalDir(t *testing.T) {
 	require.Contains(t, body, `href="/manifest.webmanifest"`)
 	require.Contains(t, body, `href="/app.css"`)
 	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
+	require.Contains(t, body, `<div id="pre-render-ok">`)
 
 	t.Log(body)
 }
@@ -83,6 +88,7 @@ func TestHandlerServePageWithRemoteBucket(t *testing.T) {
 	require.Contains(t, body, `href="/manifest.webmanifest"`)
 	require.Contains(t, body, `href="/app.css"`)
 	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
+	require.Contains(t, body, `<div id="pre-render-ok">`)
 
 	t.Log(body)
 }
@@ -121,6 +127,7 @@ func TestHandlerServePageWithGitHubPages(t *testing.T) {
 	require.Contains(t, body, `href="/go-app/manifest.webmanifest"`)
 	require.Contains(t, body, `href="/go-app/app.css"`)
 	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
+	require.Contains(t, body, `<div id="pre-render-ok">`)
 
 	t.Log(body)
 }
@@ -513,7 +520,7 @@ func TestHandlerProxyResources(t *testing.T) {
 		{
 			scenario: "no proxy resource is not fetched",
 			file:     "bye.txt",
-			code:     http.StatusOK,
+			code:     http.StatusNotFound,
 			body:     "bye!",
 			notProxy: true,
 		},
