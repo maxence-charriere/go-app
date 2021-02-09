@@ -8,6 +8,10 @@ import (
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
 
+var (
+	window = &browserWindow{value: value{Value: js.Global()}}
+)
+
 type value struct {
 	js.Value
 }

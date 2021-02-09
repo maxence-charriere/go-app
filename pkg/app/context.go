@@ -2,6 +2,9 @@ package app
 
 import (
 	"context"
+	"net/url"
+
+	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
 
 // Context represents a context that is tied to a UI element. It is canceled
@@ -26,14 +29,54 @@ type Context struct {
 
 	// The info about the current page.
 	Page Page
+
+	dispatcher Dispatcher
 }
 
 // Dispatch executes the given function on the goroutine dedicated to updating
 // the UI.
 func (ctx Context) Dispatch(fn func()) {
-	if ctx.Src.Mounted() {
-		ctx.Src.Dispatcher().Dispatch(fn)
+	ctx.dispatcher.Dispatch(fn)
+}
+
+// Reload reloads the WebAssembly app at the current page.
+func (ctx Context) Reload() {
+	if !IsAppWASM {
+		return
 	}
+
+	ctx.Dispatch(func() {
+		Window().Get("location").Call("reload")
+	})
+}
+
+// Navigate navigates to the given URL. This is a helper method that converts
+// rawURL to an *url.URL and then calls ctx.NavigateTo under the hood.
+func (ctx Context) Navigate(rawURL string) {
+	u, err := url.Parse(rawURL)
+	if err != nil {
+		Log("%s", errors.New("navigating to URL failed").
+			Tag("url", rawURL).
+			Wrap(err))
+		return
+	}
+
+	ctx.NavigateTo(u)
+}
+
+// NavigateTo navigates to the given URL.
+func (ctx Context) NavigateTo(u *url.URL) {
+	if !IsAppWASM {
+		return
+	}
+
+	ctx.Dispatch(func() {
+		if u.String() == ctx.Page.URL().String() {
+			return
+		}
+
+		panic("not implemented")
+	})
 }
 
 func makeContext(src UI, p Page) Context {
@@ -43,5 +86,6 @@ func makeContext(src UI, p Page) Context {
 		JSSrc:              src.JSValue(),
 		AppUpdateAvailable: appUpdateAvailable,
 		Page:               p,
+		dispatcher:         src.Dispatcher(),
 	}
 }

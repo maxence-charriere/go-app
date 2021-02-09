@@ -10,9 +10,10 @@ import (
 )
 
 var (
+	window    = &browserWindow{}
 	errNoWasm = errors.New("unsupported instruction").
-		Tag("required-architecture", "wasm").
-		Tag("current-architecture", runtime.GOARCH)
+			Tag("required-architecture", "wasm").
+			Tag("current-architecture", runtime.GOARCH)
 )
 
 type value struct{}

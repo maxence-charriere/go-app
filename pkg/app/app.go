@@ -11,7 +11,15 @@
 package app
 
 import (
+	"os"
+	"runtime"
 	"strings"
+)
+
+const (
+	// IsAppWASM reports whether the code is running in the WebAssembly binary
+	// (app.wasm).
+	IsAppWASM = runtime.GOARCH == "wasm" && runtime.GOOS == "js"
 )
 
 var (
@@ -22,59 +30,38 @@ var (
 // Getenv retrieves the value of the environment variable named by the key. It
 // returns the value, which will be empty if the variable is not present.
 func Getenv(k string) string {
-	return getenv(k)
+	if !IsAppWASM {
+		os.Getenv(k)
+	}
+
+	env := Window().Call("goappGetenv", k)
+	if !env.Truthy() {
+		return ""
+	}
+	return env.String()
 }
 
 // KeepBodyClean prevents third-party Javascript libraries to add nodes to the
 // body element.
 func KeepBodyClean() (close func()) {
-	return keepBodyClean()
+	if !IsAppWASM {
+		return func() {}
+	}
+
+	release := Window().Call("goappKeepBodyClean")
+	return func() {
+		release.Invoke()
+	}
 }
-
-// // Navigate navigates to the given URL.
-// func Navigate(rawurl string) {
-// 	dispatch(func() {
-// 		u, err := url.Parse(rawurl)
-// 		if err != nil {
-// 			panic(errors.New("navigating to page failed").
-// 				Tag("url", rawurl).
-// 				Wrap(err),
-// 			)
-// 		}
-
-// 		if u.String() == Window().URL().String() {
-// 			return
-// 		}
-
-// 		if err = navigate(u, true); err != nil {
-// 			panic(errors.New("navigating to page failed").
-// 				Tag("url", rawurl).
-// 				Wrap(err),
-// 			)
-// 		}
-// 	})
-// }
-
-// // NewContextMenu displays a context menu filled with the given menu items.
-// func NewContextMenu(menuItems ...MenuItemNode) {
-// 	dispatch(func() {
-// 		newContextMenu(menuItems...)
-// 	})
-// }
-
-// // Reload reloads the current page.
-// func Reload() {
-// 	dispatch(func() {
-// 		reload()
-// 	})
-// }
 
 // Run starts the wasm app and displays the UI node associated with the
 // requested URL path.
-//
-// It panics if Go architecture is not wasm.
 func Run() {
-	run()
+	if !IsAppWASM {
+		return
+	}
+
+	panic("not implemented")
 }
 
 // StaticResource makes a static resource path point to the right

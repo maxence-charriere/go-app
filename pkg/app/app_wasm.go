@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/url"
 	"strings"
-	"syscall/js"
 	"time"
 
 	"github.com/maxence-charriere/go-app/v7/pkg/errors"
@@ -20,7 +19,6 @@ var (
 	content     UI
 	contextMenu = &contextMenuLayout{}
 	rootPrefix  string
-	window      = &browserWindow{value: value{Value: js.Global()}}
 )
 
 func run() {
@@ -237,23 +235,6 @@ func reload() {
 
 func newContextMenu(menuItems ...MenuItemNode) {
 	contextMenu.show(menuItems...)
-}
-
-func getenv(k string) string {
-	env := Window().Call("goappGetenv", k)
-
-	if !env.Truthy() {
-		return ""
-	}
-	return env.String()
-}
-
-func keepBodyClean() func() {
-	close := Window().Call("goappKeepBodyClean")
-
-	return func() {
-		close.Invoke()
-	}
 }
 
 func onAppUpdate(this Value, args []Value) interface{} {
