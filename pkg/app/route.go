@@ -1,53 +1,75 @@
 package app
 
-import "regexp"
+import (
+	"reflect"
+	"regexp"
+	"sync"
+)
 
 var (
-	routes router
+	routes = makeRouter()
 )
 
 // Route binds the requested path to the given UI node.
-func Route(path string, node UI) {
-	routes.route(path, node)
+func Route(path string, c Composer) {
+	routes.route(path, c)
 }
 
 // RouteWithRegexp binds the regular expression pattern to the given UI node.
 // Patterns use the Go standard regexp format.
-func RouteWithRegexp(pattern string, node UI) {
-	routes.routeWithRegexp(pattern, node)
+func RouteWithRegexp(pattern string, c Composer) {
+	routes.routeWithRegexp(pattern, c)
 }
 
 type router struct {
-	routes           map[string]UI
+	mu               sync.RWMutex
+	routes           map[string]reflect.Type
 	routesWithRegexp []regexpRoute
 }
 
-func (r *router) route(path string, node UI) {
-	if r.routes == nil {
-		r.routes = make(map[string]UI)
+func makeRouter() router {
+	return router{
+		routes: make(map[string]reflect.Type),
 	}
-	r.routes[path] = node
 }
 
-func (r *router) routeWithRegexp(pattern string, node UI) {
+func (r *router) route(path string, c Composer) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	r.routes[path] = reflect.TypeOf(c)
+}
+
+func (r *router) routeWithRegexp(pattern string, c Composer) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
 	r.routesWithRegexp = append(r.routesWithRegexp, regexpRoute{
-		regexp: regexp.MustCompile(pattern),
-		node:   node,
+		regexp:    regexp.MustCompile(pattern),
+		compoType: reflect.TypeOf(c),
 	})
 }
 
-func (r *router) ui(path string) (UI, bool) {
-	if node, routed := r.routes[path]; routed {
-		return node, true
-	}
+func (r *router) createComponent(path string) (Composer, bool) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
 
-	for _, r := range r.routesWithRegexp {
-		if r.regexp.MatchString(path) {
-			return r.node, true
+	compoType, isRouted := r.routes[path]
+	if !isRouted {
+		for _, rwr := range r.routesWithRegexp {
+			if rwr.regexp.MatchString(path) {
+				compoType = rwr.compoType
+				isRouted = true
+				break
+			}
 		}
 	}
+	if !isRouted {
+		return nil, false
+	}
 
-	return nil, false
+	compo := reflect.New(compoType.Elem()).Interface().(Composer)
+	return compo, true
 }
 
 func (r *router) len() int {
@@ -55,6 +77,6 @@ func (r *router) len() int {
 }
 
 type regexpRoute struct {
-	regexp *regexp.Regexp
-	node   UI
+	regexp    *regexp.Regexp
+	compoType reflect.Type
 }

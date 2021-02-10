@@ -13,7 +13,15 @@ import (
 )
 
 func init() {
-	Route("/", Div().ID("pre-render-ok"))
+	Route("/", &preRenderTestCompo{})
+}
+
+type preRenderTestCompo struct {
+	Compo
+}
+
+func (c *preRenderTestCompo) Render() UI {
+	return Div().ID("pre-render-ok")
 }
 
 func TestHandlerServePageWithLocalDir(t *testing.T) {

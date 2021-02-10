@@ -538,7 +538,7 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 }
 
 func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
-	content, ok := routes.ui(r.URL.Path)
+	content, ok := routes.createComponent(r.URL.Path)
 	if !ok {
 		http.NotFound(w, r)
 		return
