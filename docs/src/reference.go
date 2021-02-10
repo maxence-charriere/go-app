@@ -13,7 +13,7 @@ type reference struct {
 	app.Compo
 }
 
-func newReference() app.UI {
+func newReference() app.Composer {
 	return &reference{}
 }
 

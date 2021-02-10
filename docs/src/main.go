@@ -27,6 +27,12 @@ type githubOptions struct {
 }
 
 func main() {
+	for path := range pages() {
+		app.Route("/"+path, newPage())
+	}
+	app.Route("/reference", newReference())
+	app.RunWhenOnBrowser()
+
 	ctx, cancel := cli.ContextWithSignals(context.Background(),
 		os.Interrupt,
 		syscall.SIGTERM,

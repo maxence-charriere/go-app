@@ -54,16 +54,6 @@ func KeepBodyClean() (close func()) {
 	}
 }
 
-// Run starts the wasm app and displays the UI node associated with the
-// requested URL path.
-func Run() {
-	if !IsAppWASM {
-		return
-	}
-
-	panic("not implemented")
-}
-
 // StaticResource makes a static resource path point to the right
 // location whether the root directory is remote or not.
 //
@@ -87,4 +77,32 @@ func StaticResource(path string) string {
 // Window returns the JavaScript "window" object.
 func Window() BrowserWindow {
 	return window
+}
+
+// RunWhenOnBrowser starts the app, displaying the component associated with the
+// current URL path.
+//
+// This call is skipped when the program is not run on a web browser. This
+// allows writing client and server-side code without separation or
+// pre-compilation flags.
+//
+// Eg:
+//  func main() {
+// 		// Define app routes.
+// 		app.Route("/", myComponent{})
+// 		app.Route("/other-page", myOtherComponent{})
+//
+// 		// Run the application when on a web browser (only executed on client side).
+// 		app.RunWhenOnBrowser()
+//
+// 		// Launch the server that serves the app (only executed on server side):
+// 		http.Handle("/", &app.Handler{Name: "My app"})
+// 		http.ListenAndServe(":8080", nil)
+//  }
+func RunWhenOnBrowser() {
+	if !IsAppWASM {
+		return
+	}
+
+	panic("not implemented")
 }
