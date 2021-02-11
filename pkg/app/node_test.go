@@ -131,7 +131,7 @@ func testMounted(t *testing.T, n UI) {
 
 func testDismounted(t *testing.T, n UI) {
 	require.Nil(t, n.JSValue())
-	require.Nil(t, n.Dispatcher())
+	require.NotNil(t, n.Dispatcher())
 	require.False(t, n.Mounted())
 
 	switch n.Kind() {
