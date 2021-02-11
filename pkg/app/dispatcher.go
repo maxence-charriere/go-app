@@ -186,6 +186,7 @@ func (d *uiDispatcher) Consume() {
 func (d *uiDispatcher) Close() {
 	d.Consume()
 	dismount(d.body)
+	d.body = nil
 	close(d.ui)
 }
 

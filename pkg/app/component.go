@@ -260,7 +260,6 @@ func (c *Compo) mount(d Dispatcher) error {
 func (c *Compo) dismount() {
 	dismount(c.root)
 	c.ctxCancel()
-	c.disp = nil
 
 	if dismounter, ok := c.this.(Dismounter); ok {
 		dismounter.OnDismount()

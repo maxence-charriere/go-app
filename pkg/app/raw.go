@@ -123,7 +123,6 @@ func (r *raw) mount(d Dispatcher) error {
 
 func (r *raw) dismount() {
 	r.jsvalue = nil
-	r.disp = nil
 }
 
 func (r *raw) update(n UI) error {

@@ -88,7 +88,6 @@ func (t *text) mount(d Dispatcher) error {
 
 func (t *text) dismount() {
 	t.jsvalue = nil
-	t.disp = nil
 }
 
 func (t *text) update(n UI) error {
