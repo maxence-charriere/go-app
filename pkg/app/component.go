@@ -33,6 +33,10 @@ type Composer interface {
 	// Update update the component appearance. It should be called when a field
 	// used to render the component has been modified.
 	Update()
+
+	// Dispatch executes the given function on the goroutine dedicated to
+	// updating the UI.
+	Dispatch(func())
 }
 
 // PreRenderer is the interface that describes a component that performs
@@ -150,6 +154,12 @@ func (c *Compo) Render() UI {
 					Text("func (c "+c.name()+") Render() app.UI"),
 			),
 		)
+}
+
+// Dispatch executes the given function on the goroutine dedicated to updating
+// the UI.
+func (c *Compo) Dispatch(fn func()) {
+	c.Dispatcher().Dispatch(fn)
 }
 
 // Update triggers a component appearance update. It should be called when a

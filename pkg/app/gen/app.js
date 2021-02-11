@@ -3,7 +3,6 @@
 // -----------------------------------------------------------------------------
 var goappOnUpdate = function () { };
 
-
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("{{.WorkerJS}}")
@@ -43,35 +42,6 @@ window.addEventListener("beforeinstallprompt", e => {
 });
 
 // -----------------------------------------------------------------------------
-// Init Web Assembly
-// -----------------------------------------------------------------------------
-if (!WebAssembly.instantiateStreaming) {
-  WebAssembly.instantiateStreaming = async (resp, importObject) => {
-    const source = await (await resp).arrayBuffer();
-    return await WebAssembly.instantiate(source, importObject);
-  };
-}
-
-const go = new Go();
-
-WebAssembly.instantiateStreaming(fetch("{{.Wasm}}"), go.importObject)
-  .then(result => {
-    const loaderIcon = document.getElementById("app-wasm-loader-icon");
-    loaderIcon.className = "goapp-logo";
-
-    go.run(result.instance);
-  })
-  .catch(err => {
-    const loaderIcon = document.getElementById("app-wasm-loader-icon");
-    loaderIcon.className = "goapp-logo";
-
-    const loaderLabel = document.getElementById("app-wasm-loader-label");
-    loaderLabel.innerText = err;
-
-    console.error("loading wasm failed: " + err);
-  });
-
-// -----------------------------------------------------------------------------
 // Keep body clean
 // -----------------------------------------------------------------------------
 function goappKeepBodyClean() {
@@ -96,3 +66,35 @@ function goappKeepBodyClean() {
 
   return () => mutationObserver.disconnect();
 }
+
+// -----------------------------------------------------------------------------
+// Init Web Assembly
+// -----------------------------------------------------------------------------
+if (!/bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent)) {
+  if (!WebAssembly.instantiateStreaming) {
+    WebAssembly.instantiateStreaming = async (resp, importObject) => {
+      const source = await (await resp).arrayBuffer();
+      return await WebAssembly.instantiate(source, importObject);
+    };
+  }
+
+  const go = new Go();
+
+  WebAssembly.instantiateStreaming(fetch("{{.Wasm}}"), go.importObject)
+    .then(result => {
+      const loaderIcon = document.getElementById("app-wasm-loader-icon");
+      loaderIcon.className = "goapp-logo";
+
+      go.run(result.instance);
+    })
+    .catch(err => {
+      const loaderIcon = document.getElementById("app-wasm-loader-icon");
+      loaderIcon.className = "goapp-logo";
+
+      const loaderLabel = document.getElementById("app-wasm-loader-label");
+      loaderLabel.innerText = err;
+
+      console.error("loading wasm failed: " + err);
+    });
+}
+
