@@ -69,8 +69,6 @@ func (d *document) load() {
 }
 
 func (d *document) get(path string) (string, error) {
-	fmt.Println("getting document at", path)
-
 	res, err := http.Get(path)
 	if err != nil {
 		return "", errors.New("getting document failed").Wrap(err)
@@ -98,7 +96,6 @@ func (d *document) scrollToFragment() {
 }
 
 func (d *document) Render() app.UI {
-	fmt.Println("rendering document", d.Ipath, "|", d.path)
 	if d.Ipath != d.path {
 		d.Dispatcher().Dispatch(func() {
 			d.load()

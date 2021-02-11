@@ -258,7 +258,6 @@ func navigate(d Dispatcher, rawURL string) {
 
 func navigateTo(d Dispatcher, u *url.URL) {
 	if u.String() == Window().URL().String() {
-		fmt.Println("same url")
 		return
 	}
 	performNavigate(d, u, true)

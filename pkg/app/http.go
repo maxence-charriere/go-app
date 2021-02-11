@@ -572,13 +572,9 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	disp.body = preRenderContainer.(elemWithChildren)
 	defer disp.Close()
 
-	fmt.Println("----------", r.URL)
 	disp.Mount(content)
 	disp.PreRender(&page)
 	disp.Consume()
-
-	fmt.Println("disp len", len(disp.ui))
-	fmt.Println("close")
 
 	var b bytes.Buffer
 	b.WriteString("<!DOCTYPE html>\n")

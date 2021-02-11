@@ -201,7 +201,6 @@ func (p *page) init(ctx app.Context) {
 		u := *ctx.Page.URL()
 		u.Path = info.MarkdownPath
 		p.markdownPath = u.String()
-		fmt.Println(u.String())
 	}
 
 	p.tableOfContents = info.TableOfContents
@@ -216,8 +215,6 @@ func (p *page) init(ctx app.Context) {
 }
 
 func (p *page) Render() app.UI {
-	fmt.Println("rendering page: markdown path:", p.markdownPath)
-
 	return app.Shell().
 		Class("app-background").
 		Menu(&menu{}).

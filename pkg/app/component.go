@@ -42,8 +42,9 @@ type Composer interface {
 type PreRenderer interface {
 	// The function called when the component is server-side pre-rendered.
 	//
-	// Pre-rendering is not enabled by default. To enable it, there must be a
-	// call to Route() or RouteWithRegexp() in the server-side code (non-wasm).
+	// If pre-rendering requires blocking operations such as performing an HTTP
+	// request, ensure that they are done synchronously. A good practice is to
+	// avoid using goroutines during pre-rendering.
 	OnPreRender(Context)
 }
 
