@@ -59,7 +59,7 @@ func (ctx Context) Navigate(rawURL string) {
 // NavigateTo navigates to the given URL.
 func (ctx Context) NavigateTo(u *url.URL) {
 	ctx.Dispatch(func() {
-		navigateTo(ctx.dispatcher, u)
+		navigateTo(ctx.dispatcher, u, true)
 	})
 }
 

@@ -32,6 +32,12 @@ func (d *document) Description(t string) *document {
 	return d
 }
 
+func (d *document) OnNav(ctx app.Context) {
+	ctx.Dispatch(func() {
+		d.scrollToFragment(ctx)
+	})
+}
+
 func (d *document) load(ctx app.Context) {
 	if d.Ipath == "" {
 		return
@@ -91,6 +97,11 @@ func (d *document) highlightCode(ctx app.Context) {
 
 func (d *document) scrollToFragment(ctx app.Context) {
 	ctx.Dispatch(func() {
+		if ctx.Page.URL().Fragment == "" {
+			fmt.Println("gonna scroll trop")
+			app.Window().ScrollToID("top-doc")
+			return
+		}
 		app.Window().ScrollToID(app.Window().URL().Fragment)
 	})
 }
@@ -102,15 +113,19 @@ func (d *document) Render() app.UI {
 
 	return app.Main().
 		Class("pane").
-		Class("document").
 		Body(
-			newLoader().
-				Description(d.description).
-				Err(d.err).
-				Loading(d.loading),
-			app.Raw(d.document),
-			issue(d.Ipath),
-			support(),
+			app.Div().
+				ID("top-doc").
+				Class("document").
+				Body(
+					newLoader().
+						Description(d.description).
+						Err(d.err).
+						Loading(d.loading),
+					app.Raw(d.document),
+					issue(d.Ipath),
+					support(),
+				),
 		)
 }
 

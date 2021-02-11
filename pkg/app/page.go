@@ -156,9 +156,7 @@ func (p browserPage) URL() *url.URL {
 }
 
 func (p browserPage) ReplaceURL(v *url.URL) {
-	Window().
-		Get("history").
-		Call("replaceState", nil, "", v.String())
+	Window().replaceHistory(v)
 }
 
 func (p browserPage) Size() (width int, height int) {

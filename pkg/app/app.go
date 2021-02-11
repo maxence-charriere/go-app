@@ -38,6 +38,7 @@ var (
 	staticResourcesURL string
 	rootPrefix         string
 	appUpdateAvailable bool
+	lastURLVisited     *url.URL
 )
 
 // Getenv retrieves the value of the environment variable named by the key. It
@@ -239,7 +240,7 @@ func onAchorClick(d *uiDispatcher) func(Value, []Value) interface{} {
 func onPopState(d Dispatcher) func(this Value, args []Value) interface{} {
 	return func(this Value, args []Value) interface{} {
 		d.Dispatch(func() {
-			performNavigate(d, Window().URL(), false)
+			navigateTo(d, Window().URL(), false)
 		})
 		return nil
 	}
@@ -253,23 +254,46 @@ func navigate(d Dispatcher, rawURL string) {
 			Wrap(err))
 		return
 	}
-	navigateTo(d, u)
+	navigateTo(d, u, true)
 }
 
-func navigateTo(d Dispatcher, u *url.URL) {
-	if u.String() == Window().URL().String() {
-		return
-	}
-	performNavigate(d, u, true)
-}
-
-func performNavigate(d Dispatcher, u *url.URL, updateHistory bool) {
+func navigateTo(d Dispatcher, u *url.URL, updateHistory bool) {
 	if IsServer {
 		return
 	}
 
 	if isExternalNavigation(u) {
 		Window().Get("location").Set("href", u.String())
+		return
+	}
+
+	luv := lastURLVisited
+
+	if u.String() == luv.String() {
+		return
+	}
+
+	if u.Path == luv.Path && u.Fragment != luv.Fragment {
+		if updateHistory {
+			Window().addHistory(u)
+		} else {
+			lastURLVisited = u
+		}
+
+		d.(*uiDispatcher).Nav(u)
+		d.Dispatch(func() {
+			if isFragmentNavigation(u) {
+				Window().ScrollToID(u.Fragment)
+			}
+		})
+		return
+	}
+
+	performNavigate(d, u, true)
+}
+
+func performNavigate(d Dispatcher, u *url.URL, updateHistory bool) {
+	if IsServer {
 		return
 	}
 
@@ -282,7 +306,9 @@ func performNavigate(d Dispatcher, u *url.URL, updateHistory bool) {
 	disp.Mount(compo)
 
 	if updateHistory {
-		Window().Get("history").Call("pushState", nil, "", u.String())
+		Window().addHistory(u)
+	} else {
+		lastURLVisited = u
 	}
 
 	disp.Nav(u)

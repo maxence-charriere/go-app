@@ -198,6 +198,12 @@ func (w *browserWindow) createTextNode(v string) Value {
 	return value{}
 }
 
+func (w *browserWindow) addHistory(u *url.URL) {
+}
+
+func (w *browserWindow) replaceHistory(u *url.URL) {
+}
+
 func copyBytesToGo(dst []byte, src Value) int {
 	return 0
 }

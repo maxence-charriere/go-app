@@ -216,6 +216,8 @@ type BrowserWindow interface {
 	setBody(body UI)
 	createElement(tag string) (Value, error)
 	createTextNode(v string) Value
+	addHistory(u *url.URL)
+	replaceHistory(u *url.URL)
 }
 
 // Event is the interface that describes a javascript event.

@@ -249,6 +249,16 @@ func (w *browserWindow) createTextNode(v string) Value {
 	return w.Get("document").Call("createTextNode", v)
 }
 
+func (w *browserWindow) addHistory(u *url.URL) {
+	w.Get("history").Call("pushState", nil, "", u.String())
+	lastURLVisited = u
+}
+
+func (w *browserWindow) replaceHistory(u *url.URL) {
+	w.Get("history").Call("replaceState", nil, "", u.String())
+	lastURLVisited = u
+}
+
 func val(v js.Value) Value {
 	return value{Value: v}
 }
