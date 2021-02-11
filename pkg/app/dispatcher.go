@@ -88,6 +88,7 @@ type uiDispatcher struct {
 	ui             chan func()
 	body           elemWithChildren
 	page           Page
+	mountedOnce    bool
 	serverSideMode bool
 }
 
@@ -111,7 +112,33 @@ func (d *uiDispatcher) PreRender() {
 
 func (d *uiDispatcher) Mount(v UI) {
 	d.Dispatch(func() {
-		if err := d.body.replaceChildAt(0, v); err != nil {
+		if !d.mountedOnce {
+			if err := d.body.(elemWithChildren).replaceChildAt(0, v); err != nil {
+				panic(errors.New("mounting ui element failed").
+					Tag("server-side-mode", d.isServerSideMode()).
+					Tag("body-type", reflect.TypeOf(d.body)).
+					Tag("ui-len", len(d.ui)).
+					Tag("ui-cap", cap(d.ui)).
+					Wrap(err))
+			}
+			d.mountedOnce = true
+			return
+		}
+
+		err := update(d.body.children()[0], v)
+		if err == nil {
+			return
+		}
+		if !isErrReplace(err) {
+			panic(errors.New("mounting ui element failed").
+				Tag("server-side-mode", d.isServerSideMode()).
+				Tag("body-type", reflect.TypeOf(d.body)).
+				Tag("ui-len", len(d.ui)).
+				Tag("ui-cap", cap(d.ui)).
+				Wrap(err))
+		}
+
+		if err := d.body.(elemWithChildren).replaceChildAt(0, v); err != nil {
 			panic(errors.New("mounting ui element failed").
 				Tag("server-side-mode", d.isServerSideMode()).
 				Tag("body-type", reflect.TypeOf(d.body)).
