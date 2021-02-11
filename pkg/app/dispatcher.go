@@ -63,13 +63,10 @@ func NewServerTestingDispatcher(v UI) TestingDispatcher {
 }
 
 func newTestingDispatcher(v UI, serverSide bool) TestingDispatcher {
-	disp := &uiDispatcher{
-		ui:             make(chan func(), dispatcherSize),
-		serverSideMode: serverSide,
-		body: Body().Body(
-			Div(),
-		).(elemWithChildren),
-	}
+	disp := newUIDispatcher(serverSide)
+	disp.body = Body().Body(
+		Div(),
+	).(elemWithChildren)
 
 	if err := mount(disp, disp.body); err != nil {
 		panic(errors.New("mounting body failed").
@@ -90,10 +87,10 @@ type uiDispatcher struct {
 	serverSideMode bool
 }
 
-func newUIDispatcher(body UI) *uiDispatcher {
+func newUIDispatcher(serverSide bool) *uiDispatcher {
 	return &uiDispatcher{
-		ui:   make(chan func(), dispatcherSize),
-		body: body.(elemWithChildren),
+		ui:             make(chan func(), dispatcherSize),
+		serverSideMode: serverSide,
 	}
 }
 

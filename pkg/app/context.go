@@ -3,8 +3,6 @@ package app
 import (
 	"context"
 	"net/url"
-
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
 
 // Context represents a context that is tied to a UI element. It is canceled
@@ -53,29 +51,15 @@ func (ctx Context) Reload() {
 // Navigate navigates to the given URL. This is a helper method that converts
 // rawURL to an *url.URL and then calls ctx.NavigateTo under the hood.
 func (ctx Context) Navigate(rawURL string) {
-	u, err := url.Parse(rawURL)
-	if err != nil {
-		Log("%s", errors.New("navigating to URL failed").
-			Tag("url", rawURL).
-			Wrap(err))
-		return
-	}
-
-	ctx.NavigateTo(u)
+	ctx.Dispatch(func() {
+		navigate(ctx.dispatcher, rawURL)
+	})
 }
 
 // NavigateTo navigates to the given URL.
 func (ctx Context) NavigateTo(u *url.URL) {
-	if !IsAppWASM {
-		return
-	}
-
 	ctx.Dispatch(func() {
-		if u.String() == ctx.Page.URL().String() {
-			return
-		}
-
-		panic("not implemented")
+		navigateTo(ctx.dispatcher, u, true)
 	})
 }
 

@@ -558,8 +558,10 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	preRenderContainer := Div().
 		ID("app-pre-render").
 		Body(Div())
-	disp := newUIDispatcher(preRenderContainer)
-	disp.serverSideMode = true
+
+	disp := newUIDispatcher(true)
+	disp.body = preRenderContainer.(elemWithChildren)
+
 	if err := mount(disp, preRenderContainer); err != nil {
 		panic(errors.New("mounting pre-rendering container failed").
 			Tag("server-side-mode", disp.isServerSideMode()).

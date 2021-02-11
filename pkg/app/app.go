@@ -11,19 +11,28 @@
 package app
 
 import (
+	"context"
+	"fmt"
+	"net/url"
 	"os"
 	"runtime"
 	"strings"
+	"time"
+
+	"github.com/maxence-charriere/go-app/v7/pkg/errors"
 )
 
 const (
 	// IsAppWASM reports whether the code is running in the WebAssembly binary
 	// (app.wasm).
 	IsAppWASM = runtime.GOARCH == "wasm" && runtime.GOOS == "js"
+
+	orientationChangeDelay = time.Millisecond * 500
 )
 
 var (
 	staticResourcesURL string
+	rootPrefix         string
 	appUpdateAvailable bool
 )
 
@@ -104,5 +113,210 @@ func RunWhenOnBrowser() {
 		return
 	}
 
-	panic("not implemented")
+	defer func() {
+		err := recover()
+		displayLoadError(err)
+		panic(err)
+	}()
+
+	staticResourcesURL = Getenv("GOAPP_STATIC_RESOURCES_URL")
+	rootPrefix = Getenv("GOAPP_ROOT_PREFIX")
+
+	disp := newUIDispatcher(false)
+	defer disp.Close()
+	disp.body = newClientBody(disp)
+	window.setBody(disp.body)
+
+	onAchorClick := FuncOf(onAchorClick(disp))
+	defer onAchorClick.Release()
+	Window().Set("onclick", onAchorClick)
+
+	onPopState := FuncOf(onPopState(disp))
+	defer onPopState.Release()
+	Window().Set("onpopstate", onPopState)
+
+	onAppUpdate := FuncOf(onAppUpdate(disp))
+	defer onAppUpdate.Release()
+	Window().Set("goappOnUpdate", onAppUpdate)
+
+	closeAppResize := Window().AddEventListener("resize", onAppResize)
+	defer closeAppResize()
+
+	closeAppOrientationChange := Window().AddEventListener("orientationchange", onAppOrientationChange)
+	defer closeAppOrientationChange()
+
+	navigateTo(disp, Window().URL(), false)
+	disp.start(context.Background())
+}
+
+func displayLoadError(err interface{}) {
+	loadingLabel := Window().
+		Get("document").
+		Call("getElementById", "app-wasm-loader-label")
+	if !loadingLabel.Truthy() {
+		return
+	}
+	loadingLabel.setInnerText(fmt.Sprint(err))
+}
+
+func newClientBody(d Dispatcher) *htmlBody {
+	ctx, cancel := context.WithCancel(context.Background())
+	body := &htmlBody{
+		elem: elem{
+			ctx:       ctx,
+			ctxCancel: cancel,
+			jsvalue:   Window().Get("document").Get("body"),
+			tag:       "body",
+			disp:      d,
+		},
+	}
+	body.setSelf(body)
+
+	ctx, cancel = context.WithCancel(context.Background())
+	content := &htmlDiv{
+		elem: elem{
+			ctx:       ctx,
+			ctxCancel: cancel,
+			jsvalue:   body.JSValue().firstElementChild(),
+			tag:       "div",
+			disp:      d,
+		},
+	}
+	content.setSelf(content)
+	content.setParent(body)
+
+	body.body = append(body.body, content)
+	return body
+}
+
+func onAchorClick(d *uiDispatcher) func(Value, []Value) interface{} {
+	return func(this Value, args []Value) interface{} {
+		event := Event{Value: args[0]}
+		elem := event.Get("target")
+
+		for {
+			switch elem.Get("tagName").String() {
+			case "A":
+				if target := elem.Get("target"); target.Truthy() && target.String() == "_blank" {
+					return nil
+				}
+
+				u := elem.Get("href").String()
+				if u, _ := url.Parse(u); isExternalNavigation(u) {
+					elem.Set("target", "_blank")
+					return nil
+				}
+
+				if meta := event.Get("metaKey"); meta.Truthy() && meta.Bool() {
+					return nil
+				}
+
+				if ctrl := event.Get("ctrlKey"); ctrl.Truthy() && ctrl.Bool() {
+					return nil
+				}
+
+				event.PreventDefault()
+				navigate(d, u)
+				return nil
+
+			case "BODY":
+				return nil
+
+			default:
+				elem = elem.Get("parentElement")
+				if !elem.Truthy() {
+					return nil
+				}
+			}
+		}
+	}
+}
+
+func onPopState(d Dispatcher) func(this Value, args []Value) interface{} {
+	return func(this Value, args []Value) interface{} {
+		d.Dispatch(func() {
+			navigateTo(d, Window().URL(), false)
+		})
+		return nil
+	}
+}
+
+func navigate(d Dispatcher, rawURL string) {
+	u, err := url.Parse(rawURL)
+	if err != nil {
+		Log("%s", errors.New("navigating to URL failed").
+			Tag("url", rawURL).
+			Wrap(err))
+		return
+	}
+	navigateTo(d, u, true)
+}
+
+func navigateTo(d Dispatcher, u *url.URL, updateHistory bool) {
+	if !IsAppWASM {
+		return
+	}
+
+	if isExternalNavigation(u) {
+		Window().Get("location").Set("href", u.String())
+		return
+	}
+
+	if u.String() == Window().URL().String() {
+		return
+	}
+
+	compo, ok := routes.createComponent(strings.TrimPrefix(u.Path, rootPrefix))
+	if !ok {
+		compo = &notFound{}
+	}
+	disp := d.(*uiDispatcher)
+	disp.Mount(compo)
+
+	if updateHistory {
+		Window().Get("history").Call("pushState", nil, "", u.String())
+	}
+
+	disp.Nav(u)
+	if isFragmentNavigation(u) {
+		disp.Dispatch(func() {
+			Window().ScrollToID(u.Fragment)
+		})
+	}
+}
+
+func isExternalNavigation(u *url.URL) bool {
+	return u.Host != "" && u.Host != Window().URL().Host
+}
+
+func isFragmentNavigation(u *url.URL) bool {
+	return u.Fragment != ""
+}
+
+func onAppUpdate(d *uiDispatcher) func(this Value, args []Value) interface{} {
+	return func(this Value, args []Value) interface{} {
+		d.Dispatch(func() {
+			appUpdateAvailable = true
+		})
+		d.AppUpdate()
+		d.Dispatch(func() {
+			fmt.Println("app has been updated, reload to see changes")
+		})
+		return nil
+	}
+}
+
+func onAppResize(ctx Context, e Event) {
+	if d, ok := ctx.dispatcher.(*uiDispatcher); ok {
+		d.AppResize()
+	}
+}
+
+func onAppOrientationChange(ctx Context, e Event) {
+	if d, ok := ctx.dispatcher.(*uiDispatcher); ok {
+		go func() {
+			time.Sleep(orientationChangeDelay)
+			d.AppResize()
+		}()
+	}
 }

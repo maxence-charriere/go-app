@@ -85,6 +85,10 @@ func (v value) removeChild(c Wrapper) {
 	v.Call("removeChild", c)
 }
 
+func (v value) firstElementChild() Value {
+	return v.Get("firstElementChild")
+}
+
 func (v value) addEventListener(event string, fn Func) {
 	v.Call("addEventListener", event, fn)
 }
@@ -99,6 +103,10 @@ func (v value) setNodeValue(val string) {
 
 func (v value) setInnerHTML(val string) {
 	v.Set("innerHTML", val)
+}
+
+func (v value) setInnerText(val string) {
+	v.Set("innerText", val)
 }
 
 func null() Value {
@@ -155,6 +163,7 @@ func funcOf(fn func(this Value, args []Value) interface{}) Func {
 type browserWindow struct {
 	value
 
+	body    UI
 	cursorX int
 	cursorY int
 }
@@ -213,13 +222,17 @@ func (w *browserWindow) ScrollToID(id string) {
 }
 
 func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
-	callback := makeJsEventHandler(body, h)
+	callback := makeJsEventHandler(w.body, h)
 	w.addEventListener(event, callback)
 
 	return func() {
 		w.removeEventListener(event, callback)
 		callback.Release()
 	}
+}
+
+func (w *browserWindow) setBody(body UI) {
+	w.body = body
 }
 
 func (w *browserWindow) createElement(tag string) (Value, error) {

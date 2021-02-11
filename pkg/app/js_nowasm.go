@@ -117,6 +117,10 @@ func (v value) replaceChild(new, old Wrapper) {
 func (v value) removeChild(c Wrapper) {
 }
 
+func (v value) firstElementChild() Value {
+	return value{}
+}
+
 func (v value) addEventListener(event string, fn Func) {
 }
 
@@ -127,6 +131,9 @@ func (v value) setNodeValue(val string) {
 }
 
 func (v value) setInnerHTML(val string) {
+}
+
+func (v value) setInnerText(val string) {
 }
 
 func null() Value {
@@ -182,6 +189,9 @@ func (w *browserWindow) ScrollToID(id string) {
 
 func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
 	panic(errNoWasm)
+}
+
+func (w *browserWindow) setBody(body UI) {
 }
 
 func (w *browserWindow) createElement(tag string) (Value, error) {

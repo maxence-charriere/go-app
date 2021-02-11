@@ -121,10 +121,12 @@ type Value interface {
 	appendChild(c Wrapper)
 	replaceChild(new, old Wrapper)
 	removeChild(c Wrapper)
+	firstElementChild() Value
 	addEventListener(event string, fn Func)
 	removeEventListener(event string, fn Func)
 	setNodeValue(v string)
 	setInnerHTML(v string)
+	setInnerText(v string)
 }
 
 // Null returns the JavaScript value "null".
@@ -211,6 +213,7 @@ type BrowserWindow interface {
 	// release allocated resources.
 	AddEventListener(event string, h EventHandler) func()
 
+	setBody(body UI)
 	createElement(tag string) (Value, error)
 	createTextNode(v string) Value
 }
