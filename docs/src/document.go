@@ -32,7 +32,7 @@ func (d *document) Description(t string) *document {
 	return d
 }
 
-func (d *document) load() {
+func (d *document) load(ctx app.Context) {
 	if d.Ipath == "" {
 		return
 	}
@@ -46,7 +46,7 @@ func (d *document) load() {
 		var doc string
 		var err error
 
-		defer d.Dispatcher().Dispatch(func() {
+		defer ctx.Dispatch(func() {
 			if err != nil {
 				d.err = err
 			}
@@ -54,8 +54,8 @@ func (d *document) load() {
 			d.document = doc
 			d.loading = false
 			d.Update()
-			d.highlightCode()
-			d.scrollToFragment()
+			d.highlightCode(ctx)
+			d.scrollToFragment(ctx)
 		})
 
 		doc, err = d.get(d.Ipath)
@@ -83,23 +83,21 @@ func (d *document) get(path string) (string, error) {
 	return fmt.Sprintf("<div>%s</div>", parseMarkdown(b)), nil
 }
 
-func (d *document) highlightCode() {
-	d.Dispatcher().Dispatch(func() {
+func (d *document) highlightCode(ctx app.Context) {
+	ctx.Dispatch(func() {
 		app.Window().Get("Prism").Call("highlightAll")
 	})
 }
 
-func (d *document) scrollToFragment() {
-	d.Dispatcher().Dispatch(func() {
+func (d *document) scrollToFragment(ctx app.Context) {
+	ctx.Dispatch(func() {
 		app.Window().ScrollToID(app.Window().URL().Fragment)
 	})
 }
 
 func (d *document) Render() app.UI {
 	if d.Ipath != d.path {
-		d.Dispatcher().Dispatch(func() {
-			d.load()
-		})
+		d.Defer(d.load)
 	}
 
 	return app.Main().

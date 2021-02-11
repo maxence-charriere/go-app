@@ -30,11 +30,7 @@ func (t *text) JSValue() Value {
 }
 
 func (t *text) Mounted() bool {
-	return t.jsvalue != nil && t.Dispatcher() != nil
-}
-
-func (t *text) Dispatcher() Dispatcher {
-	return t.disp
+	return t.jsvalue != nil && t.dispatcher() != nil
 }
 
 func (t *text) name() string {
@@ -50,6 +46,10 @@ func (t *text) setSelf(n UI) {
 
 func (t *text) context() context.Context {
 	return context.TODO()
+}
+
+func (t *text) dispatcher() Dispatcher {
+	return t.disp
 }
 
 func (t *text) attributes() map[string]string {

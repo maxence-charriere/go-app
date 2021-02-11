@@ -69,7 +69,7 @@ func makeContext(src UI) Context {
 		Src:                src,
 		JSSrc:              src.JSValue(),
 		AppUpdateAvailable: appUpdateAvailable,
-		Page:               src.Dispatcher().currentPage(),
-		dispatcher:         src.Dispatcher(),
+		Page:               src.dispatcher().currentPage(),
+		dispatcher:         src.dispatcher(),
 	}
 }

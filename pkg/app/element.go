@@ -37,15 +37,11 @@ func (e *elem) JSValue() Value {
 }
 
 func (e *elem) Mounted() bool {
-	return e.Dispatcher() != nil &&
+	return e.dispatcher() != nil &&
 		e.ctx != nil &&
 		e.ctx.Err() == nil &&
 		e.self() != nil &&
 		e.jsvalue != nil
-}
-
-func (e *elem) Dispatcher() Dispatcher {
-	return e.disp
 }
 
 func (e *elem) name() string {
@@ -62,6 +58,10 @@ func (e *elem) setSelf(n UI) {
 
 func (e *elem) context() context.Context {
 	return e.ctx
+}
+
+func (e *elem) dispatcher() Dispatcher {
+	return e.disp
 }
 
 func (e *elem) attributes() map[string]string {
@@ -211,7 +211,7 @@ func (e *elem) update(n UI) error {
 }
 
 func (e *elem) appendChild(c UI, onlyJsValue bool) error {
-	if err := mount(e.Dispatcher(), c); err != nil {
+	if err := mount(e.dispatcher(), c); err != nil {
 		return errors.New("appending child failed").
 			Tag("name", e.name()).
 			Tag("kind", e.Kind()).
@@ -232,7 +232,7 @@ func (e *elem) appendChild(c UI, onlyJsValue bool) error {
 func (e *elem) replaceChildAt(idx int, new UI) error {
 	old := e.body[idx]
 
-	if err := mount(e.Dispatcher(), new); err != nil {
+	if err := mount(e.dispatcher(), new); err != nil {
 		return errors.New("replacing child failed").
 			Tag("name", e.name()).
 			Tag("kind", e.Kind()).

@@ -118,7 +118,7 @@ type foo struct {
     app.Compo
 }
 
-func (f *foo) OnNav(ctx app.Context, u *url.URL) {
+func (f *foo) OnNav(ctx app.Context) {
     fmt.Println("component navigated:", u)
 }
 ```

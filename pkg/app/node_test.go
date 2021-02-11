@@ -114,7 +114,7 @@ func testMountDismount(t *testing.T, utests []mountTest) {
 
 func testMounted(t *testing.T, n UI) {
 	require.NotNil(t, n.JSValue())
-	require.NotNil(t, n.Dispatcher())
+	require.NotNil(t, n.dispatcher())
 	require.True(t, n.Mounted())
 
 	switch n.Kind() {
@@ -131,7 +131,7 @@ func testMounted(t *testing.T, n UI) {
 
 func testDismounted(t *testing.T, n UI) {
 	require.Nil(t, n.JSValue())
-	require.NotNil(t, n.Dispatcher())
+	require.NotNil(t, n.dispatcher())
 	require.False(t, n.Mounted())
 
 	switch n.Kind() {

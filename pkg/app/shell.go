@@ -131,15 +131,15 @@ func (s *shell) OnMount(ctx Context) {
 	s.id = uuid.New().String()
 
 	s.Update()
-	s.refreshLayout()
+	s.refreshLayout(ctx)
 }
 
 func (s *shell) OnNav(ctx Context) {
-	s.refreshLayout()
+	s.refreshLayout(ctx)
 }
 
 func (s *shell) OnAppResize(ctx Context) {
-	s.refreshLayout()
+	s.refreshLayout(ctx)
 }
 
 func (s *shell) Render() UI {
@@ -238,8 +238,8 @@ func (s *shell) mounted() bool {
 	return s.id != ""
 }
 
-func (s *shell) refreshLayout() {
-	s.Dispatcher().Dispatch(func() {
+func (s *shell) refreshLayout(ctx Context) {
+	ctx.Dispatch(func() {
 		s.refreshMenu()
 		s.refreshSubmenu()
 		s.Update()

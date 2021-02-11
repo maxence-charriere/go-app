@@ -1,7 +1,6 @@
 package main
 
 import (
-	"net/url"
 	"strings"
 
 	"github.com/maxence-charriere/go-app/v8/pkg/app"
@@ -23,8 +22,8 @@ func (t *tableOfContents) Links(v ...string) *tableOfContents {
 	return t
 }
 
-func (t *tableOfContents) OnNav(ctx app.Context, u *url.URL) {
-	t.selected = "#" + u.Fragment
+func (t *tableOfContents) OnNav(ctx app.Context) {
+	t.selected = "#" + ctx.Page.URL().Fragment
 	t.Update()
 }
 

@@ -84,21 +84,21 @@ func (f *flow) OnMount(ctx Context) {
 	f.id = "app-flow-" + uuid.New().String()
 
 	f.Update()
-	f.refreshLayout()
+	f.refreshLayout(ctx)
 }
 
 func (f *flow) OnNav(ctx Context) {
-	f.refreshLayout()
+	f.refreshLayout(ctx)
 }
 
 func (f *flow) OnAppResize(ctx Context) {
-	f.refreshLayout()
+	f.refreshLayout(ctx)
 }
 
 func (f *flow) Render() UI {
-	if contentLen := len(f.Icontent); f.Mounted() && contentLen != f.contentLen {
+	if contentLen := len(f.Icontent); contentLen != f.contentLen {
 		f.contentLen = contentLen
-		f.refreshLayout()
+		f.Defer(f.refreshLayout)
 	}
 
 	return Div().
@@ -122,8 +122,8 @@ func (f *flow) mounted() bool {
 	return f.id != ""
 }
 
-func (f *flow) refreshLayout() {
-	f.Dispatcher().Dispatch(f.adjustItemSizes)
+func (f *flow) refreshLayout(ctx Context) {
+	ctx.Dispatch(f.adjustItemSizes)
 }
 
 func (f *flow) adjustItemSizes() {

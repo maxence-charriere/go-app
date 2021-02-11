@@ -23,13 +23,11 @@ type UI interface {
 	// Reports whether the element is mounted.
 	Mounted() bool
 
-	// Dispatcher returns the dispatcher that manages the UI element.
-	Dispatcher() Dispatcher
-
 	name() string
 	self() UI
 	setSelf(UI)
 	context() context.Context
+	dispatcher() Dispatcher
 	attributes() map[string]string
 	eventHandlers() map[string]eventHandler
 	parent() UI
@@ -148,7 +146,7 @@ func (h eventHandler) equal(o eventHandler) bool {
 
 func makeJsEventHandler(src UI, h EventHandler) Func {
 	return FuncOf(func(this Value, args []Value) interface{} {
-		src.Dispatcher().Dispatch(func() {
+		src.dispatcher().Dispatch(func() {
 			if !src.Mounted() {
 				return
 			}

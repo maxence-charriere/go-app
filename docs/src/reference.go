@@ -3,7 +3,6 @@ package main
 import (
 	"io/ioutil"
 	"net/http"
-	"net/url"
 
 	"github.com/maxence-charriere/go-app/v8/pkg/app"
 	"github.com/maxence-charriere/go-app/v8/pkg/errors"
@@ -47,7 +46,7 @@ func (m *godocMenu) OnMount(ctx app.Context) {
 	go m.loadMenu(ctx)
 }
 
-func (m *godocMenu) OnNav(ctx app.Context, u *url.URL) {
+func (m *godocMenu) OnNav(ctx app.Context) {
 	m.unfocusLink()
 	m.focusLink()
 }
@@ -229,7 +228,7 @@ func (d *godoc) setupToggle() {
 }
 
 func (d *godoc) onToggle(src app.Value, args []app.Value) interface{} {
-	d.Dispatcher().Dispatch(func() {
+	d.Defer(func(ctx app.Context) {
 		switch src.Get("className").String() {
 		case "toggleVisible":
 			src.Set("className", "toggle")

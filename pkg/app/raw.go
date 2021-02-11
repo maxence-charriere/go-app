@@ -45,11 +45,7 @@ func (r *raw) JSValue() Value {
 }
 
 func (r *raw) Mounted() bool {
-	return r.jsvalue != nil && r.Dispatcher() != nil
-}
-
-func (r *raw) Dispatcher() Dispatcher {
-	return r.disp
+	return r.jsvalue != nil && r.dispatcher() != nil
 }
 
 func (r *raw) name() string {
@@ -65,6 +61,10 @@ func (r *raw) setSelf(UI) {
 
 func (r *raw) context() context.Context {
 	return nil
+}
+
+func (r *raw) dispatcher() Dispatcher {
+	return r.disp
 }
 
 func (r *raw) attributes() map[string]string {

@@ -35,8 +35,9 @@ type Composer interface {
 	Update()
 
 	// Dispatch executes the given function on the goroutine dedicated to
-	// updating the UI.
-	Dispatch(func())
+	// updating the UI and ensures that the component is mounted when the
+	// function is called.
+	Defer(func(Context))
 }
 
 // PreRenderer is the interface that describes a component that performs
@@ -124,21 +125,11 @@ func (c *Compo) JSValue() Value {
 
 // Mounted reports whether the component is mounted.
 func (c *Compo) Mounted() bool {
-	return c.Dispatcher() != nil &&
+	return c.dispatcher() != nil &&
 		c.ctx != nil &&
 		c.ctx.Err() == nil &&
 		c.root != nil && c.root.Mounted() &&
 		c.self() != nil
-}
-
-// Dispatcher returns the dispatcher that manages the component.
-func (c *Compo) Dispatcher() Dispatcher {
-	return c.disp
-}
-
-// Context returns the component's context.
-func (c *Compo) Context() Context {
-	return makeContext(c.self())
 }
 
 // Render describes the component content. This is a default implementation to
@@ -161,10 +152,15 @@ func (c *Compo) Render() UI {
 		)
 }
 
-// Dispatch executes the given function on the goroutine dedicated to updating
-// the UI.
-func (c *Compo) Dispatch(fn func()) {
-	c.Dispatcher().Dispatch(fn)
+// Defer executes the given function on the goroutine dedicated to
+// updating the UI and ensures that the component is mounted when the
+// function is called.
+func (c *Compo) Defer(fn func(Context)) {
+	c.dispatcher().Dispatch(func() {
+		if c.Mounted() {
+			fn(makeContext(c.self()))
+		}
+	})
 }
 
 // Update triggers a component appearance update. It should be called when a
@@ -175,7 +171,7 @@ func (c *Compo) Update() {
 		return
 	}
 
-	c.Dispatcher().Dispatch(func() {
+	c.dispatcher().Dispatch(func() {
 		if !c.Mounted() {
 			return
 		}
@@ -207,6 +203,10 @@ func (c *Compo) setSelf(n UI) {
 
 func (c *Compo) context() context.Context {
 	return c.ctx
+}
+
+func (c *Compo) dispatcher() Dispatcher {
+	return c.disp
 }
 
 func (c *Compo) attributes() map[string]string {
@@ -250,7 +250,7 @@ func (c *Compo) mount(d Dispatcher) error {
 	root.setParent(c.this)
 	c.root = root
 
-	if mounter, ok := c.self().(Mounter); ok && !c.Dispatcher().isServerSideMode() {
+	if mounter, ok := c.self().(Mounter); ok && !c.dispatcher().isServerSideMode() {
 		mounter.OnMount(makeContext(c.self()))
 	}
 
@@ -328,7 +328,7 @@ func (c *Compo) replaceRoot(n UI) error {
 	old := c.root
 	new := n
 
-	if err := mount(c.Dispatcher(), new); err != nil {
+	if err := mount(c.dispatcher(), new); err != nil {
 		return errors.New("replacing component root failed").
 			Tag("kind", c.Kind()).
 			Tag("name", c.name()).

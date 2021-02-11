@@ -1,8 +1,6 @@
 package main
 
 import (
-	"net/url"
-
 	"github.com/maxence-charriere/go-app/v8/pkg/app"
 )
 
@@ -12,8 +10,8 @@ type menu struct {
 	currentPath string
 }
 
-func (m *menu) OnNav(ctx app.Context, u *url.URL) {
-	path := u.Path
+func (m *menu) OnNav(ctx app.Context) {
+	path := ctx.Page.URL().Path
 	if path == "/" {
 		path = "/start"
 	}
