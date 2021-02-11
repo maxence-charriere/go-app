@@ -29,7 +29,7 @@ type TestingDispatcher interface {
 	Dispatcher
 
 	// Pre-renders the given component.
-	PreRender(Page)
+	PreRender()
 
 	// Mounts the given component as root component.
 	Mount(UI)
@@ -54,18 +54,19 @@ type TestingDispatcher interface {
 // NewClientTestingDispatcher creates a testing dispatcher that simulates a
 // client environment. The given UI element is mounted upon creation.
 func NewClientTestingDispatcher(v UI) TestingDispatcher {
-	return newTestingDispatcher(v, false, browserPage{})
+	return newTestingDispatcher(v, false)
 }
 
 // NewServerTestingDispatcher creates a testing dispatcher that simulates a
 // client environment. The given UI element is mounted upon creation.
 func NewServerTestingDispatcher(v UI) TestingDispatcher {
-	u, _ := url.Parse("https://localhost")
-	return newTestingDispatcher(v, false, &requestPage{url: u})
+	return newTestingDispatcher(v, false)
 }
 
-func newTestingDispatcher(v UI, serverSide bool, p Page) TestingDispatcher {
-	disp := newUIDispatcher(serverSide, p)
+func newTestingDispatcher(v UI, serverSide bool) TestingDispatcher {
+	u, _ := url.Parse("https://localhost")
+
+	disp := newUIDispatcher(serverSide, &requestPage{url: u})
 	disp.body = Body().Body(
 		Div(),
 	).(elemWithChildren)
@@ -102,9 +103,9 @@ func (d *uiDispatcher) Dispatch(fn func()) {
 	d.ui <- fn
 }
 
-func (d *uiDispatcher) PreRender(p Page) {
+func (d *uiDispatcher) PreRender() {
 	d.Dispatch(func() {
-		d.body.preRender(p)
+		d.body.preRender(d.currentPage())
 	})
 }
 

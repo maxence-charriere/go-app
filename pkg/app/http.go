@@ -573,7 +573,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	defer disp.Close()
 
 	disp.Mount(content)
-	disp.PreRender(&page)
+	disp.PreRender()
 	disp.Consume()
 
 	var b bytes.Buffer

@@ -273,6 +273,8 @@ func performNavigate(d Dispatcher, u *url.URL, updateHistory bool) {
 		return
 	}
 
+	fmt.Println("gonna create component for:", u.Path)
+
 	compo, ok := routes.createComponent(strings.TrimPrefix(u.Path, rootPrefix))
 	if !ok {
 		compo = &notFound{}

@@ -141,7 +141,7 @@ func (c *Compo) Dispatcher() Dispatcher {
 
 // Context returns the component's context.
 func (c *Compo) Context() Context {
-	return makeContext(c.self(), c.Dispatcher().currentPage())
+	return makeContext(c.self())
 }
 
 // Render describes the component content. This is a default implementation to
@@ -254,7 +254,7 @@ func (c *Compo) mount(d Dispatcher) error {
 	c.root = root
 
 	if mounter, ok := c.self().(Mounter); ok && !c.Dispatcher().isServerSideMode() {
-		mounter.OnMount(makeContext(c.self(), browserPage{}))
+		mounter.OnMount(makeContext(c.self()))
 	}
 
 	return nil
@@ -378,13 +378,13 @@ func (c *Compo) onNav(u *url.URL) {
 	c.root.onNav(u)
 
 	if nav, ok := c.self().(Navigator); ok {
-		ctx := makeContext(c.self(), browserPage{url: u})
+		ctx := makeContext(c.self())
 		nav.OnNav(ctx)
 		return
 	}
 
 	if nav, ok := c.self().(deprecatedNavigator); ok {
-		ctx := makeContext(c.self(), browserPage{url: u})
+		ctx := makeContext(c.self())
 		Log("%s", errors.New("a deprecated component interface is in use").
 			Tag("component", reflect.TypeOf(c.self())).
 			Tag("interface", "app.Navigator").
@@ -399,7 +399,7 @@ func (c *Compo) onAppUpdate() {
 	c.root.onAppUpdate()
 
 	if updater, ok := c.self().(Updater); ok {
-		updater.OnAppUpdate(makeContext(c.self(), browserPage{}))
+		updater.OnAppUpdate(makeContext(c.self()))
 	}
 }
 
@@ -407,7 +407,7 @@ func (c *Compo) onAppResize() {
 	c.root.onAppResize()
 
 	if resizer, ok := c.self().(Resizer); ok {
-		resizer.OnAppResize(makeContext(c.self(), browserPage{}))
+		resizer.OnAppResize(makeContext(c.self()))
 	}
 }
 
@@ -415,7 +415,7 @@ func (c *Compo) preRender(p Page) {
 	c.root.preRender(p)
 
 	if preRenderer, ok := c.self().(PreRenderer); ok {
-		preRenderer.OnPreRender(makeContext(c.self(), p))
+		preRenderer.OnPreRender(makeContext(c.self()))
 	}
 }
 

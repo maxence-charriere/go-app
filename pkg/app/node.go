@@ -158,7 +158,7 @@ func makeJsEventHandler(src UI, h EventHandler) Func {
 			}
 
 			trackMousePosition(event)
-			h(makeContext(src, browserPage{}), event)
+			h(makeContext(src), event)
 		})
 
 		return nil

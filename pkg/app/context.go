@@ -63,13 +63,13 @@ func (ctx Context) NavigateTo(u *url.URL) {
 	})
 }
 
-func makeContext(src UI, p Page) Context {
+func makeContext(src UI) Context {
 	return Context{
 		Context:            src.context(),
 		Src:                src,
 		JSSrc:              src.JSValue(),
 		AppUpdateAvailable: appUpdateAvailable,
-		Page:               p,
+		Page:               src.Dispatcher().currentPage(),
 		dispatcher:         src.Dispatcher(),
 	}
 }

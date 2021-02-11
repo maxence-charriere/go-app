@@ -348,45 +348,36 @@ func TestNestedInComponentResizer(t *testing.T) {
 }
 
 func TestPreRenderer(t *testing.T) {
-	p := requestPage{}
-	p.SetTitle("hello")
-
 	h := &hello{}
 	d := NewServerTestingDispatcher(h)
 	defer d.Close()
 
-	d.PreRender(&p)
+	d.PreRender()
 	d.Consume()
 	require.True(t, h.preRenderer)
-	require.Equal(t, "world", p.Title())
+	require.Equal(t, "world", d.currentPage().Title())
 }
 
 func TestNestedPreRenderer(t *testing.T) {
-	p := requestPage{}
-	p.SetTitle("hello")
-
 	h := &hello{}
 	div := Div().Body(h)
 	d := NewServerTestingDispatcher(div)
 	defer d.Close()
 
-	d.PreRender(&p)
+	d.PreRender()
 	d.Consume()
 	require.True(t, h.preRenderer)
-	require.Equal(t, "world", p.Title())
+	require.Equal(t, "world", d.currentPage().Title())
 }
 
 func TestNestedInComponentPreRenderer(t *testing.T) {
-	p := requestPage{}
-	p.SetTitle("hello")
-
 	foo := &foo{Bar: "Bar"}
 	d := NewServerTestingDispatcher(foo)
 	defer d.Close()
 
-	d.PreRender(&p)
+	d.PreRender()
 	d.Consume()
-	require.Equal(t, "bar", p.Title())
+	require.Equal(t, "bar", d.currentPage().Title())
 }
 
 type hello struct {
