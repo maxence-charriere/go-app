@@ -29,7 +29,7 @@ Then Initialize the **go module** and download the **go-app** package.
 
 ```bash
 go mod init
-go get -u github.com/maxence-charriere/go-app/v7/pkg/app
+go get -u github.com/maxence-charriere/go-app/v8/pkg/app
 ```
 
 ## User interface
@@ -45,7 +45,7 @@ Create the `app.go` file that will contain the [user interface](/architecture#ui
 
 package main
 
-import "github.com/maxence-charriere/go-app/v7/pkg/app"
+import "github.com/maxence-charriere/go-app/v8/pkg/app"
 
 // hello is a component that displays a simple "Hello World!". A component is a
 // customizable, independent, and reusable UI element. It is created by
@@ -85,7 +85,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/app"
+	"github.com/maxence-charriere/go-app/v8/pkg/app"
 )
 
 // The main function is the entry of the server. It is where the HTTP handler

@@ -1,6 +1,8 @@
 <div id="manual-nav">
 			<dl>
 			
+				<dd><a href="#pkg-constants" id="src-pkg-constants">Constants</a></dd>
+			
 			
 				<dd><a href="#pkg-variables" id="src-pkg-variables">Variables</a></dd>
 			
@@ -12,13 +14,13 @@
 				<dd><a href="#CopyBytesToJS" id="src-CopyBytesToJS">func CopyBytesToJS(dst Value, src []byte) int</a></dd>
 			
 				
-				<dd><a href="#Dispatch" id="src-Dispatch">func Dispatch(f func())</a></dd>
-			
-				
 				<dd><a href="#GenerateStaticWebsite" id="src-GenerateStaticWebsite">func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error</a></dd>
 			
 				
 				<dd><a href="#Getenv" id="src-Getenv">func Getenv(k string) string</a></dd>
+			
+				
+				<dd><a href="#HTMLString" id="src-HTMLString">func HTMLString(ui UI) string</a></dd>
 			
 				
 				<dd><a href="#KeepBodyClean" id="src-KeepBodyClean">func KeepBodyClean() (close func())</a></dd>
@@ -27,22 +29,16 @@
 				<dd><a href="#Log" id="src-Log">func Log(format string, v ...interface{})</a></dd>
 			
 				
-				<dd><a href="#Navigate" id="src-Navigate">func Navigate(rawurl string)</a></dd>
+				<dd><a href="#PrintHTML" id="src-PrintHTML">func PrintHTML(w io.Writer, ui UI)</a></dd>
 			
 				
-				<dd><a href="#NewContextMenu" id="src-NewContextMenu">func NewContextMenu(menuItems ...MenuItemNode)</a></dd>
+				<dd><a href="#Route" id="src-Route">func Route(path string, c Composer)</a></dd>
 			
 				
-				<dd><a href="#Reload" id="src-Reload">func Reload()</a></dd>
+				<dd><a href="#RouteWithRegexp" id="src-RouteWithRegexp">func RouteWithRegexp(pattern string, c Composer)</a></dd>
 			
 				
-				<dd><a href="#Route" id="src-Route">func Route(path string, node UI)</a></dd>
-			
-				
-				<dd><a href="#RouteWithRegexp" id="src-RouteWithRegexp">func RouteWithRegexp(pattern string, node UI)</a></dd>
-			
-				
-				<dd><a href="#Run" id="src-Run">func Run()</a></dd>
+				<dd><a href="#RunWhenOnBrowser" id="src-RunWhenOnBrowser">func RunWhenOnBrowser()</a></dd>
 			
 				
 				<dd><a href="#StaticResource" id="src-StaticResource">func StaticResource(path string) string</a></dd>
@@ -70,6 +66,9 @@
 				
 				<dd><a href="#Compo" id="src-Compo">type Compo</a></dd>
 				
+				
+					
+					<dd>    <a href="#Compo.Dispatcher" id="src-Compo.Dispatcher">func (c *Compo) Dispatcher() Dispatcher</a></dd>
 				
 					
 					<dd>    <a href="#Compo.JSValue" id="src-Compo.JSValue">func (c *Compo) JSValue() Value</a></dd>
@@ -103,6 +102,18 @@
 				
 				<dd><a href="#Context" id="src-Context">type Context</a></dd>
 				
+				
+					
+					<dd>    <a href="#Context.Dispatch" id="src-Context.Dispatch">func (ctx Context) Dispatch(fn func())</a></dd>
+				
+					
+					<dd>    <a href="#Context.Navigate" id="src-Context.Navigate">func (ctx Context) Navigate(rawURL string)</a></dd>
+				
+					
+					<dd>    <a href="#Context.NavigateTo" id="src-Context.NavigateTo">func (ctx Context) NavigateTo(u *url.URL)</a></dd>
+				
+					
+					<dd>    <a href="#Context.Reload" id="src-Context.Reload">func (ctx Context) Reload()</a></dd>
 				
 			
 				
@@ -1045,6 +1056,37 @@
 				
 			
 				
+				<dd><a href="#Page" id="src-Page">type Page</a></dd>
+				
+				
+			
+				
+				<dd><a href="#PreRenderCache" id="src-PreRenderCache">type PreRenderCache</a></dd>
+				
+					
+					<dd>    <a href="#NewPreRenderLRUCache" id="src-NewPreRenderLRUCache">func NewPreRenderLRUCache(size int, itemTTL time.Duration, onEvict ...func(count, size int)) PreRenderCache</a></dd>
+				
+				
+			
+				
+				<dd><a href="#PreRenderedItem" id="src-PreRenderedItem">type PreRenderedItem</a></dd>
+				
+				
+					
+					<dd>    <a href="#PreRenderedItem.Len" id="src-PreRenderedItem.Len">func (r PreRenderedItem) Len() int</a></dd>
+				
+			
+				
+				<dd><a href="#PreRenderer" id="src-PreRenderer">type PreRenderer</a></dd>
+				
+				
+			
+				
+				<dd><a href="#ProxyResource" id="src-ProxyResource">type ProxyResource</a></dd>
+				
+				
+			
+				
 				<dd><a href="#RangeLoop" id="src-RangeLoop">type RangeLoop</a></dd>
 				
 					
@@ -1073,6 +1115,17 @@
 			
 				
 				<dd><a href="#TestUIDescriptor" id="src-TestUIDescriptor">type TestUIDescriptor</a></dd>
+				
+				
+			
+				
+				<dd><a href="#TestingDispatcher" id="src-TestingDispatcher">type TestingDispatcher</a></dd>
+				
+					
+					<dd>    <a href="#NewClientTestingDispatcher" id="src-NewClientTestingDispatcher">func NewClientTestingDispatcher(v UI) TestingDispatcher</a></dd>
+				
+					
+					<dd>    <a href="#NewServerTestingDispatcher" id="src-NewServerTestingDispatcher">func NewServerTestingDispatcher(v UI) TestingDispatcher</a></dd>
 				
 				
 			

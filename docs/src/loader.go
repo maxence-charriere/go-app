@@ -1,6 +1,6 @@
 package main
 
-import "github.com/maxence-charriere/go-app/v7/pkg/app"
+import "github.com/maxence-charriere/go-app/v8/pkg/app"
 
 type loader struct {
 	app.Compo

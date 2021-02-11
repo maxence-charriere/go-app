@@ -1,5 +1,3 @@
-// +build !wasm
-
 //go:generate go run gen/godoc.go
 //go:generate go fmt
 
@@ -12,10 +10,10 @@ import (
 	"os"
 	"syscall"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/app"
-	"github.com/maxence-charriere/go-app/v7/pkg/cli"
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
-	"github.com/maxence-charriere/go-app/v7/pkg/logs"
+	"github.com/maxence-charriere/go-app/v8/pkg/app"
+	"github.com/maxence-charriere/go-app/v8/pkg/cli"
+	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v8/pkg/logs"
 )
 
 type localOptions struct {
@@ -28,7 +26,7 @@ type githubOptions struct {
 
 func main() {
 	for path := range pages() {
-		app.Route("/"+path, newPage())
+		app.Route(path, newPage())
 	}
 	app.Route("/reference", newReference())
 	app.RunWhenOnBrowser()

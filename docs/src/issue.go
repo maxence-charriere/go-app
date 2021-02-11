@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"path"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/app"
+	"github.com/maxence-charriere/go-app/v8/pkg/app"
 )
 
 func issue(src string) app.UI {

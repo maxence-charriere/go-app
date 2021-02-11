@@ -31,7 +31,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/app"
+	"github.com/maxence-charriere/go-app/v8/pkg/app"
 )
 
 func main() {
@@ -80,7 +80,7 @@ It contains at least one [component](/components): a customized, independent, an
 
 package main
 
-import "github.com/maxence-charriere/go-app/v7/pkg/app"
+import "github.com/maxence-charriere/go-app/v8/pkg/app"
 
 // hello is a component that displays a simple "Hello World!". A component is
 // created by embedding app.Compo into a struct.

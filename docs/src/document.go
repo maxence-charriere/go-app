@@ -7,12 +7,14 @@ import (
 
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/parser"
-	"github.com/maxence-charriere/go-app/v7/pkg/app"
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	"github.com/maxence-charriere/go-app/v8/pkg/app"
+	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
 
 type document struct {
 	app.Compo
+
+	Ipath string
 
 	path        string
 	description string
@@ -22,7 +24,7 @@ type document struct {
 }
 
 func newDocument(path string) *document {
-	return &document{path: path}
+	return &document{Ipath: path}
 }
 
 func (d *document) Description(t string) *document {
@@ -30,44 +32,45 @@ func (d *document) Description(t string) *document {
 	return d
 }
 
-func (d *document) OnPreRender(ctx app.Context) {
-	u := *ctx.Page.URL()
-	u.Scheme = "http"
-	u.Path = d.path
+func (d *document) load() {
+	if d.Ipath == "" {
+		return
+	}
+	d.path = d.Ipath
 
-	d.document, d.err = d.get(u.String())
-	fmt.Println("on prerender:", d.err)
-	d.Update()
-}
-
-func (d *document) OnMount(ctx app.Context) {
 	d.loading = true
 	d.err = nil
 	d.Update()
 
-	go d.load(ctx)
-}
+	get := func() {
+		var doc string
+		var err error
 
-func (d *document) load(ctx app.Context) {
-	var doc string
-	var err error
+		defer d.Dispatcher().Dispatch(func() {
+			if err != nil {
+				d.err = err
+			}
 
-	defer ctx.Dispatch(func() {
-		if err != nil {
-			d.err = err
-		}
+			d.document = doc
+			d.loading = false
+			d.Update()
+			d.highlightCode()
+			d.scrollToFragment()
+		})
 
-		d.document = doc
-		d.loading = false
-		d.Update()
-		d.highlightCode(ctx)
-		d.scrollToFragment(ctx)
-	})
+		doc, err = d.get(d.Ipath)
+	}
 
-	doc, err = d.get(d.path)
+	if app.IsServer {
+		get()
+		return
+	}
+	go get()
 }
 
 func (d *document) get(path string) (string, error) {
+	fmt.Println("getting document at", path)
+
 	res, err := http.Get(path)
 	if err != nil {
 		return "", errors.New("getting document failed").Wrap(err)
@@ -82,19 +85,26 @@ func (d *document) get(path string) (string, error) {
 	return fmt.Sprintf("<div>%s</div>", parseMarkdown(b)), nil
 }
 
-func (d *document) highlightCode(ctx app.Context) {
-	ctx.Dispatch(func() {
+func (d *document) highlightCode() {
+	d.Dispatcher().Dispatch(func() {
 		app.Window().Get("Prism").Call("highlightAll")
 	})
 }
 
-func (d *document) scrollToFragment(ctx app.Context) {
-	ctx.Dispatch(func() {
+func (d *document) scrollToFragment() {
+	d.Dispatcher().Dispatch(func() {
 		app.Window().ScrollToID(app.Window().URL().Fragment)
 	})
 }
 
 func (d *document) Render() app.UI {
+	fmt.Println("rendering document", d.Ipath, "|", d.path)
+	if d.Ipath != d.path {
+		d.Dispatcher().Dispatch(func() {
+			d.load()
+		})
+	}
+
 	return app.Main().
 		Class("pane").
 		Class("document").
@@ -104,7 +114,7 @@ func (d *document) Render() app.UI {
 				Err(d.err).
 				Loading(d.loading),
 			app.Raw(d.document),
-			issue(d.path),
+			issue(d.Ipath),
 			support(),
 		)
 }

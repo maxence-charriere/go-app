@@ -3,7 +3,7 @@ package main
 import (
 	"net/url"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/app"
+	"github.com/maxence-charriere/go-app/v8/pkg/app"
 )
 
 type menu struct {

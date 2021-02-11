@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/app"
+	"github.com/maxence-charriere/go-app/v8/pkg/app"
 )
 
 const (
@@ -192,13 +192,18 @@ func (p *page) OnNav(ctx app.Context) {
 	p.init(ctx)
 }
 
-func (p *page) OnAppUpdate(ctx app.Context) {
-}
-
 func (p *page) init(ctx app.Context) {
 	path := ctx.Page.URL().Path
 	info := pages()[path]
+
 	p.markdownPath = info.MarkdownPath
+	if app.IsServer {
+		u := *ctx.Page.URL()
+		u.Path = info.MarkdownPath
+		p.markdownPath = u.String()
+		fmt.Println(u.String())
+	}
+
 	p.tableOfContents = info.TableOfContents
 
 	title := strings.TrimPrefix(path, "/")
@@ -211,6 +216,8 @@ func (p *page) init(ctx app.Context) {
 }
 
 func (p *page) Render() app.UI {
+	fmt.Println("rendering page: markdown path:", p.markdownPath)
+
 	return app.Shell().
 		Class("app-background").
 		Menu(&menu{}).
