@@ -558,7 +558,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		ID("app-pre-render").
 		Body(Div())
 
-	disp := newUIDispatcher(IsServer)
+	disp := newUIDispatcher(IsServer, &page)
 	disp.body = preRenderContainer.(elemWithChildren)
 
 	if err := mount(disp, preRenderContainer); err != nil {

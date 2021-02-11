@@ -126,7 +126,7 @@ func RunWhenOnBrowser() {
 	staticResourcesURL = Getenv("GOAPP_STATIC_RESOURCES_URL")
 	rootPrefix = Getenv("GOAPP_ROOT_PREFIX")
 
-	disp := newUIDispatcher(IsServer)
+	disp := newUIDispatcher(IsServer, browserPage{})
 	defer disp.Close()
 	disp.body = newClientBody(disp)
 	window.setBody(disp.body)

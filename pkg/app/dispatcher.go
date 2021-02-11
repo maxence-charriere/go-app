@@ -20,6 +20,7 @@ type Dispatcher interface {
 	Dispatch(func())
 
 	start(context.Context)
+	currentPage() Page
 	isServerSideMode() bool
 }
 
@@ -53,17 +54,18 @@ type TestingDispatcher interface {
 // NewClientTestingDispatcher creates a testing dispatcher that simulates a
 // client environment. The given UI element is mounted upon creation.
 func NewClientTestingDispatcher(v UI) TestingDispatcher {
-	return newTestingDispatcher(v, false)
+	return newTestingDispatcher(v, false, browserPage{})
 }
 
 // NewServerTestingDispatcher creates a testing dispatcher that simulates a
 // client environment. The given UI element is mounted upon creation.
 func NewServerTestingDispatcher(v UI) TestingDispatcher {
-	return newTestingDispatcher(v, false)
+	u, _ := url.Parse("https://localhost")
+	return newTestingDispatcher(v, false, &requestPage{url: u})
 }
 
-func newTestingDispatcher(v UI, serverSide bool) TestingDispatcher {
-	disp := newUIDispatcher(serverSide)
+func newTestingDispatcher(v UI, serverSide bool, p Page) TestingDispatcher {
+	disp := newUIDispatcher(serverSide, p)
 	disp.body = Body().Body(
 		Div(),
 	).(elemWithChildren)
@@ -84,12 +86,14 @@ func newTestingDispatcher(v UI, serverSide bool) TestingDispatcher {
 type uiDispatcher struct {
 	ui             chan func()
 	body           elemWithChildren
+	page           Page
 	serverSideMode bool
 }
 
-func newUIDispatcher(serverSide bool) *uiDispatcher {
+func newUIDispatcher(serverSide bool, p Page) *uiDispatcher {
 	return &uiDispatcher{
 		ui:             make(chan func(), dispatcherSize),
+		page:           p,
 		serverSideMode: serverSide,
 	}
 }
@@ -118,6 +122,10 @@ func (d *uiDispatcher) Mount(v UI) {
 }
 
 func (d *uiDispatcher) Nav(u *url.URL) {
+	if p, ok := d.currentPage().(*requestPage); ok {
+		p.url = u
+	}
+
 	d.Dispatch(func() {
 		d.body.onNav(u)
 	})
@@ -148,10 +156,7 @@ func (d *uiDispatcher) Consume() {
 }
 
 func (d *uiDispatcher) Close() {
-	// if len(d.ui) != 0 {
 	d.Consume()
-	// }
-
 	dismount(d.body)
 	close(d.ui)
 }
@@ -166,6 +171,10 @@ func (d *uiDispatcher) start(ctx context.Context) {
 			return
 		}
 	}
+}
+
+func (d *uiDispatcher) currentPage() Page {
+	return d.page
 }
 
 func (d *uiDispatcher) isServerSideMode() bool {

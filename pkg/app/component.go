@@ -37,6 +37,9 @@ type Composer interface {
 	// Dispatch executes the given function on the goroutine dedicated to
 	// updating the UI.
 	Dispatch(func())
+
+	// Context returns the component's context.
+	Context() Context
 }
 
 // PreRenderer is the interface that describes a component that performs
@@ -134,6 +137,11 @@ func (c *Compo) Mounted() bool {
 // Dispatcher returns the dispatcher that manages the component.
 func (c *Compo) Dispatcher() Dispatcher {
 	return c.disp
+}
+
+// Context returns the component's context.
+func (c *Compo) Context() Context {
+	return makeContext(c.self(), c.Dispatcher().currentPage())
 }
 
 // Render describes the component content. This is a default implementation to
