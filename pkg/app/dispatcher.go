@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"reflect"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
 
 const (
@@ -148,9 +148,9 @@ func (d *uiDispatcher) Consume() {
 }
 
 func (d *uiDispatcher) Close() {
-	if len(d.ui) != 0 {
-		d.Consume()
-	}
+	// if len(d.ui) != 0 {
+	d.Consume()
+	// }
 
 	dismount(d.body)
 	close(d.ui)

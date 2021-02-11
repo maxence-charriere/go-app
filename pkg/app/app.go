@@ -19,13 +19,17 @@ import (
 	"strings"
 	"time"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
 
 const (
-	// IsAppWASM reports whether the code is running in the WebAssembly binary
-	// (app.wasm).
-	IsAppWASM = runtime.GOARCH == "wasm" && runtime.GOOS == "js"
+	// IsClient reports whether the code is running as a client in the
+	// WebAssembly binary (app.wasm).
+	IsClient = runtime.GOARCH == "wasm" && runtime.GOOS == "js"
+
+	// IsServer reports whether the code is running on a server for
+	// pre-rendering purposes.
+	IsServer = runtime.GOARCH != "wasm" || runtime.GOOS != "js"
 
 	orientationChangeDelay = time.Millisecond * 500
 )
@@ -39,8 +43,8 @@ var (
 // Getenv retrieves the value of the environment variable named by the key. It
 // returns the value, which will be empty if the variable is not present.
 func Getenv(k string) string {
-	if !IsAppWASM {
-		os.Getenv(k)
+	if IsServer {
+		return os.Getenv(k)
 	}
 
 	env := Window().Call("goappGetenv", k)
@@ -53,7 +57,7 @@ func Getenv(k string) string {
 // KeepBodyClean prevents third-party Javascript libraries to add nodes to the
 // body element.
 func KeepBodyClean() (close func()) {
-	if !IsAppWASM {
+	if IsServer {
 		return func() {}
 	}
 
@@ -109,7 +113,7 @@ func Window() BrowserWindow {
 // 		http.ListenAndServe(":8080", nil)
 //  }
 func RunWhenOnBrowser() {
-	if !IsAppWASM {
+	if IsServer {
 		return
 	}
 
@@ -122,7 +126,7 @@ func RunWhenOnBrowser() {
 	staticResourcesURL = Getenv("GOAPP_STATIC_RESOURCES_URL")
 	rootPrefix = Getenv("GOAPP_ROOT_PREFIX")
 
-	disp := newUIDispatcher(false)
+	disp := newUIDispatcher(IsServer)
 	defer disp.Close()
 	disp.body = newClientBody(disp)
 	window.setBody(disp.body)
@@ -145,7 +149,7 @@ func RunWhenOnBrowser() {
 	closeAppOrientationChange := Window().AddEventListener("orientationchange", onAppOrientationChange)
 	defer closeAppOrientationChange()
 
-	navigateTo(disp, Window().URL(), false)
+	performNavigate(disp, Window().URL(), false)
 	disp.start(context.Background())
 }
 
@@ -235,7 +239,7 @@ func onAchorClick(d *uiDispatcher) func(Value, []Value) interface{} {
 func onPopState(d Dispatcher) func(this Value, args []Value) interface{} {
 	return func(this Value, args []Value) interface{} {
 		d.Dispatch(func() {
-			navigateTo(d, Window().URL(), false)
+			performNavigate(d, Window().URL(), false)
 		})
 		return nil
 	}
@@ -249,11 +253,19 @@ func navigate(d Dispatcher, rawURL string) {
 			Wrap(err))
 		return
 	}
-	navigateTo(d, u, true)
+	navigateTo(d, u)
 }
 
-func navigateTo(d Dispatcher, u *url.URL, updateHistory bool) {
-	if !IsAppWASM {
+func navigateTo(d Dispatcher, u *url.URL) {
+	if u.String() == Window().URL().String() {
+		fmt.Println("same url")
+		return
+	}
+	performNavigate(d, u, true)
+}
+
+func performNavigate(d Dispatcher, u *url.URL, updateHistory bool) {
+	if IsServer {
 		return
 	}
 
@@ -262,14 +274,11 @@ func navigateTo(d Dispatcher, u *url.URL, updateHistory bool) {
 		return
 	}
 
-	if u.String() == Window().URL().String() {
-		return
-	}
-
 	compo, ok := routes.createComponent(strings.TrimPrefix(u.Path, rootPrefix))
 	if !ok {
 		compo = &notFound{}
 	}
+
 	disp := d.(*uiDispatcher)
 	disp.Mount(compo)
 

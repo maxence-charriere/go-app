@@ -39,7 +39,7 @@ func (ctx Context) Dispatch(fn func()) {
 
 // Reload reloads the WebAssembly app at the current page.
 func (ctx Context) Reload() {
-	if !IsAppWASM {
+	if IsServer {
 		return
 	}
 
@@ -59,7 +59,7 @@ func (ctx Context) Navigate(rawURL string) {
 // NavigateTo navigates to the given URL.
 func (ctx Context) NavigateTo(u *url.URL) {
 	ctx.Dispatch(func() {
-		navigateTo(ctx.dispatcher, u, true)
+		navigateTo(ctx.dispatcher, u)
 	})
 }
 

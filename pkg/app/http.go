@@ -1,5 +1,3 @@
-// +build !wasm
-
 package app
 
 import (
@@ -19,7 +17,7 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
 
 const (
@@ -546,6 +544,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 	url := *r.URL
 	url.Host = r.Host
+	url.Scheme = "http"
 
 	var page requestPage
 	page.SetTitle(h.Title)
@@ -559,7 +558,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		ID("app-pre-render").
 		Body(Div())
 
-	disp := newUIDispatcher(true)
+	disp := newUIDispatcher(IsServer)
 	disp.body = preRenderContainer.(elemWithChildren)
 
 	if err := mount(disp, preRenderContainer); err != nil {
@@ -573,9 +572,13 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	disp.body = preRenderContainer.(elemWithChildren)
 	defer disp.Close()
 
+	fmt.Println("----------", r.URL)
 	disp.Mount(content)
 	disp.PreRender(&page)
 	disp.Consume()
+
+	fmt.Println("disp len", len(disp.ui))
+	fmt.Println("close")
 
 	var b bytes.Buffer
 	b.WriteString("<!DOCTYPE html>\n")
@@ -654,7 +657,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 								Text(page.loadingLabel),
 						),
 				),
-			Div().ID("app-context-menu"),
 			Div().ID("app-end"),
 		),
 	))

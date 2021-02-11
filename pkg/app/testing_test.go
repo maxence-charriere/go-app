@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/logs"
+	"github.com/maxence-charriere/go-app/v8/pkg/logs"
 	"github.com/stretchr/testify/require"
 )
 

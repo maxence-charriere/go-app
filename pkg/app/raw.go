@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
 
 // Raw returns a ui element from the given raw value. HTML raw value must have a
@@ -100,6 +100,11 @@ func (r *raw) mount(d Dispatcher) error {
 	wrapper, err := Window().createElement("div")
 	if err != nil {
 		return errors.New("creating raw node wrapper failed").Wrap(err)
+	}
+
+	if IsServer {
+		r.jsvalue = wrapper
+		return nil
 	}
 
 	wrapper.setInnerHTML(r.value)
