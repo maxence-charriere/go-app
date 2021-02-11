@@ -37,9 +37,6 @@ type Composer interface {
 	// Dispatch executes the given function on the goroutine dedicated to
 	// updating the UI.
 	Dispatch(func())
-
-	// Context returns the component's context.
-	Context() Context
 }
 
 // PreRenderer is the interface that describes a component that performs
