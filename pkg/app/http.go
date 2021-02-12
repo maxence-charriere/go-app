@@ -677,7 +677,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				Body(
 					preRenderContainer,
 					Div().
-						ID("app-wasm-layout").
+						ID("app-wasm-loader").
 						Class("goapp-app-info").
 						Body(
 							Img().
