@@ -74,7 +74,7 @@ func KeepBodyClean() (close func()) {
 // Static resources are resources located in the web directory.
 //
 // This call is used internally to resolve paths within Cite, Data, Href, Src,
-// and SrcSet. Paths already resolved are skipped.
+// and SrcSet and Page.SetImage. Paths already resolved are skipped.
 func StaticResource(path string) string {
 	if !strings.HasPrefix(path, "/web/") &&
 		!strings.HasPrefix(path, "web/") {
@@ -289,7 +289,7 @@ func navigateTo(d Dispatcher, u *url.URL, updateHistory bool) {
 		return
 	}
 
-	performNavigate(d, u, true)
+	performNavigate(d, u, updateHistory)
 }
 
 func performNavigate(d Dispatcher, u *url.URL, updateHistory bool) {

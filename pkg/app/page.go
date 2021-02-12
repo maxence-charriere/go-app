@@ -168,7 +168,7 @@ func (p browserPage) Image() string {
 }
 
 func (p browserPage) SetImage(v string) {
-	p.metaByProperty("og:image").setAttr("content", v)
+	p.metaByProperty("og:image").setAttr("content", StaticResource(v))
 }
 
 func (p browserPage) URL() *url.URL {
