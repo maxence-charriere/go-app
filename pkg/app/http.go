@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 	"reflect"
 	"runtime"
 	"strconv"
@@ -266,11 +267,20 @@ func (h *Handler) initPreRenderedResources() {
 
 func (h *Handler) makeAppJS() []byte {
 	if h.Env == nil {
-		h.Env = make(map[string]string, 2)
+		h.Env = make(map[string]string, 3)
 	}
 	h.Env["GOAPP_VERSION"] = h.Version
 	h.Env["GOAPP_STATIC_RESOURCES_URL"] = h.Resources.StaticResources()
 	h.Env["GOAPP_ROOT_PREFIX"] = h.Resources.AppResources()
+
+	for k, v := range h.Env {
+		if err := os.Setenv(k, v); err != nil {
+			Log("%s", errors.New("setting app env variable failed").
+				Tag("name", k).
+				Tag("value", v).
+				Wrap(err))
+		}
+	}
 
 	env, err := json.Marshal(h.Env)
 	if err != nil {
