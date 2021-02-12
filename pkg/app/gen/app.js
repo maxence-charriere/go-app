@@ -96,5 +96,7 @@ if (!/bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent)) {
 
       console.error("loading wasm failed: " + err);
     });
+} else {
+  document.getElementById('app-wasm-loader').style.display = "none";
 }
 
