@@ -416,7 +416,11 @@ func (c *Compo) preRender(p Page) {
 }
 
 func (c *Compo) html(w io.Writer) {
-	c.htmlWithIndent(w, 0)
+	if c.root == nil {
+		c.root = c.render()
+		c.root.setSelf(c.root)
+	}
+	c.root.html(w)
 }
 
 func (c *Compo) htmlWithIndent(w io.Writer, indent int) {

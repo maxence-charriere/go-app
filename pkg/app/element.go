@@ -419,11 +419,45 @@ func (e *elem) preRender(p Page) {
 }
 
 func (e *elem) html(w io.Writer) {
-	e.htmlWithIndent(w, 0)
+	w.Write(stob("<"))
+	w.Write(stob(e.tag))
+
+	for k, v := range e.attrs {
+		w.Write(stob(" "))
+		w.Write(stob(k))
+
+		if v != "" {
+			w.Write(stob(`="`))
+			w.Write(stob(v))
+			w.Write(stob(`"`))
+		}
+	}
+
+	w.Write(stob(">"))
+
+	if e.selfClosing {
+		return
+	}
+
+	for _, c := range e.body {
+		w.Write(ln())
+		if c.self() == nil {
+			c.setSelf(c)
+		}
+		c.html(w)
+	}
+
+	if len(e.body) != 0 {
+		w.Write(ln())
+	}
+
+	w.Write(stob("</"))
+	w.Write(stob(e.tag))
+	w.Write(stob(">"))
 }
 
 func (e *elem) htmlWithIndent(w io.Writer, indent int) {
-	// writeIndent(w, indent)
+	writeIndent(w, indent)
 	w.Write(stob("<"))
 	w.Write(stob(e.tag))
 
@@ -454,7 +488,7 @@ func (e *elem) htmlWithIndent(w io.Writer, indent int) {
 
 	if len(e.body) != 0 {
 		w.Write(ln())
-		// writeIndent(w, indent)
+		writeIndent(w, indent)
 	}
 
 	w.Write(stob("</"))

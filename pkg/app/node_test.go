@@ -204,8 +204,8 @@ func TestHTMLString(t *testing.T) {
 
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			html := HTMLString(u.root)
-			t.Log(html)
+			t.Log(HTMLString(u.root))
+			t.Log(HTMLStringWithIndent(u.root))
 		})
 	}
 }

@@ -205,6 +205,14 @@ func HTMLString(ui UI) string {
 	return w.String()
 }
 
+// HTMLStringWithIndent return an indented HTML string representation of the
+// given UI element.
+func HTMLStringWithIndent(ui UI) string {
+	var w strings.Builder
+	PrintHTMLWithIndent(&w, ui)
+	return w.String()
+}
+
 // PrintHTML writes an HTML representation of the UI element into the given
 // writer.
 func PrintHTML(w io.Writer, ui UI) {
@@ -212,4 +220,13 @@ func PrintHTML(w io.Writer, ui UI) {
 		ui.setSelf(ui)
 	}
 	ui.html(w)
+}
+
+// PrintHTMLWithIndent writes an idented HTML representation of the UI element
+// into the given writer.
+func PrintHTMLWithIndent(w io.Writer, ui UI) {
+	if !ui.Mounted() {
+		ui.setSelf(ui)
+	}
+	ui.htmlWithIndent(w, 0)
 }

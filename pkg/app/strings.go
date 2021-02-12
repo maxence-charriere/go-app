@@ -27,7 +27,7 @@ func toString(v interface{}) string {
 }
 
 func writeIndent(w io.Writer, indent int) {
-	for i := 0; i < indent*4; i++ {
+	for i := 0; i < indent*2; i++ {
 		w.Write(stob(" "))
 	}
 }
