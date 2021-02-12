@@ -168,7 +168,7 @@ func (r *raw) html(w io.Writer) {
 }
 
 func (r *raw) htmlWithIndent(w io.Writer, indent int) {
-	writeIndent(w, indent)
+	// writeIndent(w, indent)
 	w.Write(stob(r.value))
 	w.Write(ln())
 }

@@ -131,6 +131,6 @@ func (t *text) html(w io.Writer) {
 }
 
 func (t *text) htmlWithIndent(w io.Writer, indent int) {
-	writeIndent(w, indent)
+	// writeIndent(w, indent)
 	w.Write(stob(html.EscapeString(t.value)))
 }

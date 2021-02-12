@@ -423,7 +423,7 @@ func (e *elem) html(w io.Writer) {
 }
 
 func (e *elem) htmlWithIndent(w io.Writer, indent int) {
-	writeIndent(w, indent)
+	// writeIndent(w, indent)
 	w.Write(stob("<"))
 	w.Write(stob(e.tag))
 
@@ -454,7 +454,7 @@ func (e *elem) htmlWithIndent(w io.Writer, indent int) {
 
 	if len(e.body) != 0 {
 		w.Write(ln())
-		writeIndent(w, indent)
+		// writeIndent(w, indent)
 	}
 
 	w.Write(stob("</"))
