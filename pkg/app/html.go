@@ -25790,6 +25790,9 @@ type HTMLMeta interface {
 	// Name specifies the name of the element.
 	Name(v string) HTMLMeta
 
+	// Property specifies the property name.
+	Property(v string) HTMLMeta
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLMeta
 
@@ -25886,6 +25889,11 @@ func (e *htmlMeta) Lang(v string) HTMLMeta {
 
 func (e *htmlMeta) Name(v string) HTMLMeta {
 	e.setAttr("name", v)
+	return e
+}
+
+func (e *htmlMeta) Property(v string) HTMLMeta {
+	e.setAttr("property", v)
 	return e
 }
 

@@ -34,6 +34,12 @@ type Page interface {
 	// Set the page loading label.
 	SetLoadingLabel(string)
 
+	// Returns the image used by social networks when linking the page.
+	Image() string
+
+	// Set the image used by social networks when linking the page.
+	SetImage(string)
+
 	// Returns the page URL.
 	URL() *url.URL
 
@@ -52,6 +58,7 @@ type requestPage struct {
 	author       string
 	keywords     string
 	loadingLabel string
+	image        string
 	url          *url.URL
 	width        int
 	height       int
@@ -93,6 +100,14 @@ func (p *requestPage) SetLoadingLabel(v string) {
 	p.loadingLabel = v
 }
 
+func (p *requestPage) Image() string {
+	return p.image
+}
+
+func (p *requestPage) SetImage(v string) {
+	p.image = v
+}
+
 func (p *requestPage) URL() *url.URL {
 	return p.url
 }
@@ -116,36 +131,44 @@ func (p browserPage) Title() string {
 }
 
 func (p browserPage) SetTitle(v string) {
-	Window().
-		Get("document").
-		Set("title", v)
+	Window().Get("document").Set("title", v)
+	p.metaByProperty("og:title").setAttr("content", v)
 }
 
 func (p browserPage) Description() string {
-	return p.meta("description").getAttr("content")
+	return p.metaByName("description").getAttr("content")
 }
 
 func (p browserPage) SetDescription(v string) {
-	p.meta("description").setAttr("content", v)
+	p.metaByName("description").setAttr("content", v)
+	p.metaByProperty("og:description").setAttr("content", v)
 }
 
 func (p browserPage) Author() string {
-	return p.meta("author").getAttr("content")
+	return p.metaByName("author").getAttr("content")
 }
 
 func (p browserPage) SetAuthor(v string) {
-	p.meta("author").setAttr("content", v)
+	p.metaByName("author").setAttr("content", v)
 }
 
 func (p browserPage) Keywords() string {
-	return p.meta("keywords").getAttr("content")
+	return p.metaByName("keywords").getAttr("content")
 }
 
 func (p browserPage) SetKeywords(v ...string) {
-	p.meta("keywords").setAttr("content", strings.Join(v, ", "))
+	p.metaByName("keywords").setAttr("content", strings.Join(v, ", "))
 }
 
 func (p browserPage) SetLoadingLabel(v string) {
+}
+
+func (p browserPage) Image() string {
+	return p.metaByProperty("og:image").getAttr("content")
+}
+
+func (p browserPage) SetImage(v string) {
+	p.metaByProperty("og:image").setAttr("content", v)
 }
 
 func (p browserPage) URL() *url.URL {
@@ -157,14 +180,21 @@ func (p browserPage) URL() *url.URL {
 
 func (p browserPage) ReplaceURL(v *url.URL) {
 	Window().replaceHistory(v)
+	p.metaByProperty("og:url").setAttr("content", v.String())
 }
 
 func (p browserPage) Size() (width int, height int) {
 	return Window().Size()
 }
 
-func (p browserPage) meta(name string) Value {
+func (p browserPage) metaByName(v string) Value {
 	return Window().
 		Get("document").
-		Call("querySelector", "meta[name='"+name+"']")
+		Call("querySelector", "meta[name='"+v+"']")
+}
+
+func (p browserPage) metaByProperty(v string) Value {
+	return Window().
+		Get("document").
+		Call("querySelector", "meta[property='"+v+"']")
 }

@@ -42,6 +42,7 @@ func TestHandlerServePageWithLocalDir(t *testing.T) {
 		RawHeaders: []string{
 			`<meta http-equiv="refresh" content="30">`,
 		},
+		Image: "/web/test.png",
 	}
 	h.Icon.AppleTouch = "ios.png"
 
@@ -58,6 +59,7 @@ func TestHandlerServePageWithLocalDir(t *testing.T) {
 	require.Contains(t, body, `href="/app.css"`)
 	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
 	require.Contains(t, body, `<div id="pre-render-ok">`)
+	require.Contains(t, body, `content="/web/test.png"`)
 
 	t.Log(body)
 }
@@ -81,6 +83,7 @@ func TestHandlerServePageWithRemoteBucket(t *testing.T) {
 		RawHeaders: []string{
 			`<meta http-equiv="refresh" content="30">`,
 		},
+		Image: "/web/test.png",
 	}
 	h.Icon.AppleTouch = "ios.png"
 
@@ -97,6 +100,7 @@ func TestHandlerServePageWithRemoteBucket(t *testing.T) {
 	require.Contains(t, body, `href="/app.css"`)
 	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
 	require.Contains(t, body, `<div id="pre-render-ok">`)
+	require.Contains(t, body, `content="https://storage.googleapis.com/go-app/web/test.png"`)
 
 	t.Log(body)
 }

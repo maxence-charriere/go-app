@@ -61,6 +61,10 @@ type Handler struct {
 	// found component.
 	Icon Icon
 
+	// The path of the default image that is used by social networks when
+	// linking the app.
+	Image string
+
 	// The page keywords.
 	Keywords []string
 
@@ -144,6 +148,7 @@ type Handler struct {
 func (h *Handler) init() {
 	h.initVersion()
 	h.initStaticResources()
+	h.initImage()
 	h.initStyles()
 	h.initScripts()
 	h.initCacheableResources()
@@ -164,6 +169,12 @@ func (h *Handler) initVersion() {
 func (h *Handler) initStaticResources() {
 	if h.Resources == nil {
 		h.Resources = LocalDir("web")
+	}
+}
+
+func (h *Handler) initImage() {
+	if h.Image != "" {
+		h.Image = h.resolveStaticResourcePath(h.Image)
 	}
 }
 
@@ -562,6 +573,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	page.SetAuthor(h.Author)
 	page.SetKeywords(h.Keywords...)
 	page.SetLoadingLabel(h.LoadingLabel)
+	page.SetImage(h.Image)
 	page.url = &url
 
 	preRenderContainer := Div().
@@ -609,6 +621,21 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 			Meta().
 				Name("viewport").
 				Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
+			Meta().
+				Property("og:url").
+				Content(page.URL().String()),
+			Meta().
+				Property("og:title").
+				Content(page.Title()),
+			Meta().
+				Property("og:description").
+				Content(page.Description()),
+			Meta().
+				Property("og:type").
+				Content("website"),
+			Meta().
+				Property("og:image").
+				Content(page.Image()),
 			Title().Text(page.Title()),
 			Link().
 				Rel("icon").

@@ -3625,6 +3625,7 @@ func TestMeta(t *testing.T) {
 	elem.ID("foo")
 	elem.Lang("foo")
 	elem.Name("foo")
+	elem.Property("foo")
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")

@@ -34,6 +34,9 @@ func testPage(t *testing.T, p Page) {
 
 	p.SetLoadingLabel("loading test")
 
+	p.SetImage("image")
+	require.Equal(t, "image", p.Image())
+
 	u, _ := url.Parse("https://murlok.io")
 	p.ReplaceURL(u)
 	require.Equal(t, u.String(), p.URL().String())

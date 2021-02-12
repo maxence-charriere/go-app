@@ -594,6 +594,7 @@ var tags = []tag{
 			"content",
 			"http-equiv",
 			"name",
+			"property",
 		)...),
 	},
 	{
@@ -1391,6 +1392,11 @@ var attrs = map[string]attr{
 		Name: "Preload",
 		Type: "string",
 		Doc:  "specifies if and how the author thinks the audio/video should be loaded when the page loads.",
+	},
+	"property": {
+		Name: "Property",
+		Type: "string",
+		Doc:  "specifies the property name.",
 	},
 
 	// R:
