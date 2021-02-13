@@ -105,6 +105,8 @@ func (e *elem) mount(d Dispatcher) error {
 	e.jsvalue = v
 
 	for k, v := range e.attrs {
+		v = e.resolveURLAttr(k, v)
+		e.attrs[k] = v
 		e.setJsAttr(k, v)
 	}
 
@@ -286,6 +288,7 @@ func (e *elem) updateAttrs(attrs map[string]string) {
 	}
 
 	for k, v := range attrs {
+		v = e.resolveURLAttr(k, v)
 		if curval, exists := e.attrs[k]; !exists || curval != v {
 			e.attrs[k] = v
 			e.setJsAttr(k, v)
@@ -325,6 +328,13 @@ func (e *elem) setAttr(k string, v interface{}) {
 	default:
 		e.attrs[k] = toString(v)
 	}
+}
+
+func (e *elem) resolveURLAttr(k, v string) string {
+	if !isURLAttrValue(k) {
+		return v
+	}
+	return e.disp.resolveStaticResource(v)
 }
 
 func (e *elem) setJsAttr(k, v string) {

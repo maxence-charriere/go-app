@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"net/url"
 	"os"
 	"reflect"
 	"runtime"
@@ -722,7 +721,7 @@ func (h *Handler) resolveAppResourcePath(path string) string {
 }
 
 func (h *Handler) resolveStaticResourcePath(path string) string {
-	if isRemoteLocation(path) {
+	if isRemoteLocation(path) || !isStaticResourcePath(path) {
 		return path
 	}
 
@@ -771,8 +770,13 @@ func normalizeFilePath(path string) string {
 }
 
 func isRemoteLocation(path string) bool {
-	u, _ := url.Parse(path)
-	return u.Scheme != ""
+	return strings.HasPrefix(path, "https://") ||
+		strings.HasPrefix(path, "http://")
+}
+
+func isStaticResourcePath(path string) bool {
+	return strings.HasPrefix(path, "/web/") ||
+		strings.HasPrefix(path, "web/")
 }
 
 type httpResource struct {

@@ -145,16 +145,15 @@ func displayLoadError(err interface{}) {
 }
 
 func newClientStaticResourceResolver(staticResourceURL string) func(string) string {
-	return func(url string) string {
-		if !strings.HasPrefix(url, "/web/") &&
-			!strings.HasPrefix(url, "web/") {
-			return url
+	return func(path string) string {
+		if isRemoteLocation(path) || !isStaticResourcePath(path) {
+			return path
 		}
 
 		var b strings.Builder
 		b.WriteString(staticResourceURL)
 		b.WriteByte('/')
-		b.WriteString(strings.TrimPrefix(url, "/"))
+		b.WriteString(strings.TrimPrefix(path, "/"))
 		return b.String()
 	}
 }
