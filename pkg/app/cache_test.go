@@ -112,7 +112,7 @@ func TestPreRenderLRUCacheExpire(t *testing.T) {
 	evictCalled := false
 	onEvict := func(int, int) { evictCalled = true }
 
-	c := NewPreRenderLRUCache(100, -time.Second, onEvict).(*preRenderLRUCache)
+	c := NewPreRenderLRUCache(16, -time.Second, onEvict).(*preRenderLRUCache)
 
 	items := []PreRenderedItem{
 		{
