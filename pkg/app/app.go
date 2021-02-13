@@ -35,7 +35,6 @@ const (
 )
 
 var (
-	staticResourcesURL string
 	rootPrefix         string
 	appUpdateAvailable bool
 	lastURLVisited     *url.URL
