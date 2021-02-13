@@ -53,7 +53,8 @@ func main() {
 	h := app.Handler{
 		Author:          "Maxence Charriere",
 		BackgroundColor: backgroundColor,
-		Description:     "Documentation for the go-app package.",
+		Description:     "A package to build progressive web apps with Go programming language and WebAssembly.",
+		Image:           "/web/images/go-app.png",
 		Keywords: []string{
 			"go-app",
 			"go",
@@ -94,10 +95,6 @@ func main() {
 			
 			  gtag('config', 'G-SW4FQEM9VM');
 			</script>`,
-			`<meta property="og:url" content="https://go-app.dev">`,
-			`<meta property="og:title" content="go-app">`,
-			`<meta property="og:description" content="A package to build progressive web apps with Go programming language and WebAssembly.">`,
-			`<meta property="og:image" content="https://go-app.dev/web/images/go-app.png">`,
 		},
 		ThemeColor: backgroundColor,
 		Title:      "go-app documentation",
