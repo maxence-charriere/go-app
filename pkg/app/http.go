@@ -240,7 +240,7 @@ func (h *Handler) initPreRenderedResources() {
 	h.pwaResources.Set(ctx, PreRenderedItem{
 		Path:        "/wasm_exec.js",
 		ContentType: "application/javascript",
-		Body:        stob(wasmExecJS),
+		Body:        []byte(wasmExecJS),
 	})
 
 	h.pwaResources.Set(ctx, PreRenderedItem{
@@ -264,7 +264,7 @@ func (h *Handler) initPreRenderedResources() {
 	h.pwaResources.Set(ctx, PreRenderedItem{
 		Path:        "/app.css",
 		ContentType: "text/css",
-		Body:        stob(appCSS),
+		Body:        []byte(appCSS),
 	})
 
 	if h.PreRenderCache == nil {
