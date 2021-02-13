@@ -250,7 +250,7 @@ func (e *htmlA) Hidden(v bool) HTMLA {
 }
 
 func (e *htmlA) Href(v string) HTMLA {
-	e.setAttr("href", StaticResource(v))
+	e.setAttr("href", v)
 	return e
 }
 
@@ -1542,7 +1542,7 @@ func (e *htmlArea) Hidden(v bool) HTMLArea {
 }
 
 func (e *htmlArea) Href(v string) HTMLArea {
-	e.setAttr("href", StaticResource(v))
+	e.setAttr("href", v)
 	return e
 }
 
@@ -2936,7 +2936,7 @@ func (e *htmlAudio) Spellcheck(v bool) HTMLAudio {
 }
 
 func (e *htmlAudio) Src(v string) HTMLAudio {
-	e.setAttr("src", StaticResource(v))
+	e.setAttr("src", v)
 	return e
 }
 
@@ -3845,7 +3845,7 @@ func (e *htmlBase) Hidden(v bool) HTMLBase {
 }
 
 func (e *htmlBase) Href(v string) HTMLBase {
-	e.setAttr("href", StaticResource(v))
+	e.setAttr("href", v)
 	return e
 }
 
@@ -5055,7 +5055,7 @@ func (e *htmlBlockquote) Aria(k string, v interface{}) HTMLBlockquote {
 }
 
 func (e *htmlBlockquote) Cite(v string) HTMLBlockquote {
-	e.setAttr("cite", StaticResource(v))
+	e.setAttr("cite", v)
 	return e
 }
 
@@ -10345,7 +10345,7 @@ func (e *htmlDel) Aria(k string, v interface{}) HTMLDel {
 }
 
 func (e *htmlDel) Cite(v string) HTMLDel {
-	e.setAttr("cite", StaticResource(v))
+	e.setAttr("cite", v)
 	return e
 }
 
@@ -13772,7 +13772,7 @@ func (e *htmlEmbed) Spellcheck(v bool) HTMLEmbed {
 }
 
 func (e *htmlEmbed) Src(v string) HTMLEmbed {
-	e.setAttr("src", StaticResource(v))
+	e.setAttr("src", v)
 	return e
 }
 
@@ -20499,7 +20499,7 @@ func (e *htmlIFrame) Spellcheck(v bool) HTMLIFrame {
 }
 
 func (e *htmlIFrame) Src(v string) HTMLIFrame {
-	e.setAttr("src", StaticResource(v))
+	e.setAttr("src", v)
 	return e
 }
 
@@ -21029,12 +21029,12 @@ func (e *htmlImg) Spellcheck(v bool) HTMLImg {
 }
 
 func (e *htmlImg) Src(v string) HTMLImg {
-	e.setAttr("src", StaticResource(v))
+	e.setAttr("src", v)
 	return e
 }
 
 func (e *htmlImg) SrcSet(v string) HTMLImg {
-	e.setAttr("srcset", StaticResource(v))
+	e.setAttr("srcset", v)
 	return e
 }
 
@@ -21786,7 +21786,7 @@ func (e *htmlInput) Spellcheck(v bool) HTMLInput {
 }
 
 func (e *htmlInput) Src(v string) HTMLInput {
-	e.setAttr("src", StaticResource(v))
+	e.setAttr("src", v)
 	return e
 }
 
@@ -24280,7 +24280,7 @@ func (e *htmlLink) Hidden(v bool) HTMLLink {
 }
 
 func (e *htmlLink) Href(v string) HTMLLink {
-	e.setAttr("href", StaticResource(v))
+	e.setAttr("href", v)
 	return e
 }
 
@@ -27234,7 +27234,7 @@ func (e *htmlObject) ContentEditable(v bool) HTMLObject {
 }
 
 func (e *htmlObject) Data(v string) HTMLObject {
-	e.setAttr("data", StaticResource(v))
+	e.setAttr("data", v)
 	return e
 }
 
@@ -31580,7 +31580,7 @@ func (e *htmlQ) Aria(k string, v interface{}) HTMLQ {
 }
 
 func (e *htmlQ) Cite(v string) HTMLQ {
-	e.setAttr("cite", StaticResource(v))
+	e.setAttr("cite", v)
 	return e
 }
 
@@ -34026,7 +34026,7 @@ func (e *htmlScript) Spellcheck(v bool) HTMLScript {
 }
 
 func (e *htmlScript) Src(v string) HTMLScript {
-	e.setAttr("src", StaticResource(v))
+	e.setAttr("src", v)
 	return e
 }
 
@@ -35583,12 +35583,12 @@ func (e *htmlSource) Spellcheck(v bool) HTMLSource {
 }
 
 func (e *htmlSource) Src(v string) HTMLSource {
-	e.setAttr("src", StaticResource(v))
+	e.setAttr("src", v)
 	return e
 }
 
 func (e *htmlSource) SrcSet(v string) HTMLSource {
-	e.setAttr("srcset", StaticResource(v))
+	e.setAttr("srcset", v)
 	return e
 }
 
@@ -43998,7 +43998,7 @@ func (e *htmlVideo) Spellcheck(v bool) HTMLVideo {
 }
 
 func (e *htmlVideo) Src(v string) HTMLVideo {
-	e.setAttr("src", StaticResource(v))
+	e.setAttr("src", v)
 	return e
 }
 

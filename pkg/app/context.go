@@ -63,6 +63,13 @@ func (ctx Context) NavigateTo(u *url.URL) {
 	})
 }
 
+// ResolveStaticResource resolves the given path to make it point to the right
+// location whether static resources are located on a local directory or a
+// remote bucket.
+func (ctx Context) ResolveStaticResource(path string) string {
+	return ctx.dispatcher.resolveStaticResource(path)
+}
+
 func makeContext(src UI) Context {
 	return Context{
 		Context:            src.context(),

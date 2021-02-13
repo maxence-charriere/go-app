@@ -580,7 +580,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		ID("app-pre-render").
 		Body(Div())
 
-	disp := newUIDispatcher(IsServer, &page)
+	disp := newUIDispatcher(IsServer, &page, h.resolveStaticResourcePath)
 	disp.body = preRenderContainer.(elemWithChildren)
 
 	if err := mount(disp, preRenderContainer); err != nil {

@@ -328,6 +328,9 @@ func (e *elem) setAttr(k string, v interface{}) {
 }
 
 func (e *elem) setJsAttr(k, v string) {
+	if isURLAttrValue(k) {
+		v = e.dispatcher().resolveStaticResource(v)
+	}
 	e.JSValue().setAttr(k, v)
 }
 
@@ -494,4 +497,18 @@ func (e *elem) htmlWithIndent(w io.Writer, indent int) {
 	w.Write(stob("</"))
 	w.Write(stob(e.tag))
 	w.Write(stob(">"))
+}
+
+func isURLAttrValue(k string) bool {
+	switch k {
+	case "cite",
+		"data",
+		"href",
+		"src",
+		"srcset":
+		return true
+
+	default:
+		return false
+	}
 }

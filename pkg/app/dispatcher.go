@@ -22,6 +22,7 @@ type Dispatcher interface {
 	start(context.Context)
 	currentPage() Page
 	isServerSideMode() bool
+	resolveStaticResource(string) string
 }
 
 // TestingDispatcher represents a dispatcher to use for testing purposes.
@@ -66,7 +67,9 @@ func NewServerTestingDispatcher(v UI) TestingDispatcher {
 func newTestingDispatcher(v UI, serverSide bool) TestingDispatcher {
 	u, _ := url.Parse("https://localhost")
 
-	disp := newUIDispatcher(serverSide, &requestPage{url: u})
+	disp := newUIDispatcher(serverSide, &requestPage{url: u}, func(url string) string {
+		return url
+	})
 	disp.body = Body().Body(
 		Div(),
 	).(elemWithChildren)
@@ -85,18 +88,20 @@ func newTestingDispatcher(v UI, serverSide bool) TestingDispatcher {
 }
 
 type uiDispatcher struct {
-	ui             chan func()
-	body           elemWithChildren
-	page           Page
-	mountedOnce    bool
-	serverSideMode bool
+	ui                        chan func()
+	body                      elemWithChildren
+	page                      Page
+	mountedOnce               bool
+	serverSideMode            bool
+	resolveStaticResourceFunc func(string) string
 }
 
-func newUIDispatcher(serverSide bool, p Page) *uiDispatcher {
+func newUIDispatcher(serverSide bool, p Page, resolveStaticResource func(string) string) *uiDispatcher {
 	return &uiDispatcher{
-		ui:             make(chan func(), dispatcherSize),
-		page:           p,
-		serverSideMode: serverSide,
+		ui:                        make(chan func(), dispatcherSize),
+		page:                      p,
+		serverSideMode:            serverSide,
+		resolveStaticResourceFunc: resolveStaticResource,
 	}
 }
 
@@ -208,4 +213,8 @@ func (d *uiDispatcher) currentPage() Page {
 
 func (d *uiDispatcher) isServerSideMode() bool {
 	return d.serverSideMode
+}
+
+func (d *uiDispatcher) resolveStaticResource(url string) string {
+	return d.resolveStaticResourceFunc(url)
 }

@@ -121,7 +121,8 @@ func (p *requestPage) Size() (width int, height int) {
 }
 
 type browserPage struct {
-	url *url.URL
+	url        *url.URL
+	dispatcher Dispatcher
 }
 
 func (p browserPage) Title() string {
@@ -168,7 +169,7 @@ func (p browserPage) Image() string {
 }
 
 func (p browserPage) SetImage(v string) {
-	p.metaByProperty("og:image").setAttr("content", StaticResource(v))
+	p.metaByProperty("og:image").setAttr("content", p.dispatcher.resolveStaticResource(v))
 }
 
 func (p browserPage) URL() *url.URL {

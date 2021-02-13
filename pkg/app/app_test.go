@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestStaticResource(t *testing.T) {
+func TestNewClientStaticResourceResolver(t *testing.T) {
 	utests := []struct {
 		scenario           string
 		staticResourcesURL string
@@ -72,12 +72,7 @@ func TestStaticResource(t *testing.T) {
 
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			staticResourcesURL = u.staticResourcesURL
-			defer func() {
-				staticResourcesURL = ""
-			}()
-
-			res := StaticResource(u.path)
+			res := newClientStaticResourceResolver(u.staticResourcesURL)(u.path)
 			require.Equal(t, u.expected, res)
 		})
 	}

@@ -2208,7 +2208,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		fmt.Fprintf(w, `%s(v string) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				e.setAttr("%s", StaticResource(v))
+				e.setAttr("%s", v)
 				return e
 			}`, strings.ToLower(a.Name))
 		}

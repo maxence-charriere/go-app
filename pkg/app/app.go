@@ -68,26 +68,6 @@ func KeepBodyClean() (close func()) {
 	}
 }
 
-// StaticResource makes a static resource path point to the right
-// location whether the root directory is remote or not.
-//
-// Static resources are resources located in the web directory.
-//
-// This call is used internally to resolve paths within Cite, Data, Href, Src,
-// and SrcSet and Page.SetImage. Paths already resolved are skipped.
-func StaticResource(path string) string {
-	if !strings.HasPrefix(path, "/web/") &&
-		!strings.HasPrefix(path, "web/") {
-		return path
-	}
-
-	if !strings.HasPrefix(path, "/") {
-		path = "/" + path
-	}
-
-	return staticResourcesURL + path
-}
-
 // Window returns the JavaScript "window" object.
 func Window() BrowserWindow {
 	return window
@@ -124,10 +104,10 @@ func RunWhenOnBrowser() {
 		panic(err)
 	}()
 
-	staticResourcesURL = Getenv("GOAPP_STATIC_RESOURCES_URL")
+	staticResourcesResolver := newClientStaticResourceResolver(Getenv("GOAPP_STATIC_RESOURCES_URL"))
 	rootPrefix = Getenv("GOAPP_ROOT_PREFIX")
 
-	disp := newUIDispatcher(IsServer, browserPage{})
+	disp := newUIDispatcher(IsServer, browserPage{}, staticResourcesResolver)
 	defer disp.Close()
 	disp.body = newClientBody(disp)
 	window.setBody(disp.body)
@@ -162,6 +142,21 @@ func displayLoadError(err interface{}) {
 		return
 	}
 	loadingLabel.setInnerText(fmt.Sprint(err))
+}
+
+func newClientStaticResourceResolver(staticResourceURL string) func(string) string {
+	return func(url string) string {
+		if !strings.HasPrefix(url, "/web/") &&
+			!strings.HasPrefix(url, "web/") {
+			return url
+		}
+
+		var b strings.Builder
+		b.WriteString(staticResourceURL)
+		b.WriteByte('/')
+		b.WriteString(strings.TrimPrefix(url, "/"))
+		return b.String()
+	}
 }
 
 func newClientBody(d Dispatcher) *htmlBody {

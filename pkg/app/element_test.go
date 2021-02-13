@@ -362,3 +362,41 @@ func TestElemUpdate(t *testing.T) {
 		},
 	})
 }
+
+func TestIsURLAttrValue(t *testing.T) {
+	utests := []struct {
+		name     string
+		expected bool
+	}{
+		{
+			name:     "cite",
+			expected: true,
+		},
+		{
+			name:     "data",
+			expected: true,
+		},
+		{
+			name:     "href",
+			expected: true,
+		},
+		{
+			name:     "src",
+			expected: true,
+		},
+		{
+			name:     "srcset",
+			expected: true,
+		},
+		{
+			name:     "data-test",
+			expected: false,
+		},
+	}
+
+	for _, u := range utests {
+		t.Run(u.name, func(t *testing.T) {
+			require.Equal(t, u.expected, isURLAttrValue(u.name))
+		})
+	}
+}
