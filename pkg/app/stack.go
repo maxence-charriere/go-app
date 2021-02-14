@@ -91,8 +91,8 @@ func (s *stack) Vertical() UIStack {
 func (s *stack) Render() UI {
 	return Div().
 		ID(s.Iid).
-		Class("goapp-stack").
 		Class(s.Iclass).
+		Style("display", "flex").
 		Style("flex-direction", s.Idirection).
 		Style("align-items", s.Ialignment).
 		Body(s.Icontent...)
