@@ -54,12 +54,14 @@ func (s *stack) Center() UIStack {
 	return s
 }
 
-func (s *stack) Class(c string) UIStack {
+func (s *stack) Class(v string) UIStack {
+	if v == "" {
+		return s
+	}
 	if s.Iclass != "" {
 		s.Iclass += " "
 	}
-
-	s.Iclass += c
+	s.Iclass += v
 	return s
 }
 

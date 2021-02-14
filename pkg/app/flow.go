@@ -1,14 +1,17 @@
 package app
 
 import (
+	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
 
 const (
-	flowItemBaseWidth = 300
+	flowItemBaseWidth   = 300
+	flowResizeSizeDelay = time.Millisecond * 100
 )
 
 // UIFlow is the interface that describes a container that displays its items as
@@ -18,11 +21,14 @@ const (
 type UIFlow interface {
 	UI
 
-	// The HTML Class.
-	Class(c string) UIFlow
+	// Class adds a CSS class to the flow root HTML element class property.
+	Class(v string) UIFlow
 
 	// Content sets the content with the given UI elements.
 	Content(elems ...UI) UIFlow
+
+	// ID sets the flow root HTML element id property.
+	ID(v string) UIFlow
 
 	// ItemsBaseWidth sets the items base width in px. Items size is adjusted to
 	// fit the space in the container. Default is 300px.
@@ -39,6 +45,7 @@ type UIFlow interface {
 func Flow() UIFlow {
 	return &flow{
 		IitemsBaseWitdh: flowItemBaseWidth,
+		id:              "goapp-flow-" + uuid.New().String(),
 	}
 }
 
@@ -47,26 +54,35 @@ type flow struct {
 
 	IitemsBaseWitdh    int
 	Iclass             string
+	Iid                string
 	Icontent           []UI
 	IstrechOnSingleRow bool
 
-	id         string
-	width      int
-	itemWidth  int
-	contentLen int
+	id              string
+	contentLen      int
+	width           int
+	itemWidth       int
+	adjustSizeTimer *time.Timer
 }
 
-func (f *flow) Class(c string) UIFlow {
+func (f *flow) Class(v string) UIFlow {
+	if v == "" {
+		return f
+	}
 	if f.Iclass != "" {
 		f.Iclass += " "
 	}
-
-	f.Iclass += c
+	f.Iclass += v
 	return f
 }
 
 func (f *flow) Content(elems ...UI) UIFlow {
 	f.Icontent = FilterUIElems(elems...)
+	return f
+}
+
+func (f *flow) ID(v string) UIFlow {
+	f.Iid = v
 	return f
 }
 
@@ -81,23 +97,27 @@ func (f *flow) StrechtOnSingleRow() UIFlow {
 }
 
 func (f *flow) OnMount(ctx Context) {
-	f.id = "app-flow-" + uuid.New().String()
-
-	f.Update()
-	f.refreshLayout(ctx)
+	if f.requiresLayoutUpdate() {
+		f.refreshLayout(ctx)
+	}
 }
 
 func (f *flow) OnNav(ctx Context) {
-	f.refreshLayout(ctx)
+	if f.requiresLayoutUpdate() {
+		f.refreshLayout(ctx)
+	}
 }
 
 func (f *flow) OnAppResize(ctx Context) {
 	f.refreshLayout(ctx)
 }
 
+func (f *flow) OnDismount() {
+	f.cancelAdjustItemSizes()
+}
+
 func (f *flow) Render() UI {
-	if contentLen := len(f.Icontent); contentLen != f.contentLen {
-		f.contentLen = contentLen
+	if f.requiresLayoutUpdate() {
 		f.Defer(f.refreshLayout)
 	}
 
@@ -107,27 +127,43 @@ func (f *flow) Render() UI {
 		Class(f.Iclass).
 		Body(
 			Range(f.Icontent).Slice(func(i int) UI {
-				item := f.Icontent[i]
-				baseWidth := strconv.Itoa(f.itemWidth) + "px"
-
 				return Div().
 					Class("goapp-flow-item").
-					Style("flex-basis", baseWidth).
-					Body(item)
+					Style("flex-basis", strconv.Itoa(f.itemWidth)+"px").
+					Style("flex-grow", "0").
+					Style("flex-shrink", "1").
+					Body(f.Icontent[i])
 			}),
 		)
 }
 
-func (f *flow) mounted() bool {
-	return f.id != ""
+func (f *flow) requiresLayoutUpdate() bool {
+	return (f.Iid != "" && f.Iid != f.id) ||
+		len(f.Icontent) != f.contentLen
 }
 
 func (f *flow) refreshLayout(ctx Context) {
-	ctx.Dispatch(f.adjustItemSizes)
+	if f.Iid != "" && f.Iid != f.id {
+		f.id = f.Iid
+		f.Update()
+		return
+	}
+
+	f.contentLen = len(f.Icontent)
+
+	if IsServer {
+		return
+	}
+
+	f.cancelAdjustItemSizes()
+	f.adjustSizeTimer = time.AfterFunc(flowResizeSizeDelay, func() {
+		f.Defer(f.adjustItemSizes)
+	})
 }
 
-func (f *flow) adjustItemSizes() {
-	if !f.mounted() || f.IitemsBaseWitdh == 0 || len(f.Icontent) == 0 {
+func (f *flow) adjustItemSizes(ctx Context) {
+	if f.IitemsBaseWitdh == 0 || len(f.Icontent) == 0 {
+		fmt.Println("adjustItemSizes ~> skip")
 		return
 	}
 
@@ -147,6 +183,7 @@ func (f *flow) adjustItemSizes() {
 
 	itemWidth := f.IitemsBaseWitdh
 	itemsPerRow := width / itemWidth
+
 	if itemsPerRow <= 1 {
 		f.itemWidth = width
 		return
@@ -157,4 +194,10 @@ func (f *flow) adjustItemSizes() {
 		itemWidth = width / l
 	}
 	f.itemWidth = itemWidth
+}
+
+func (f *flow) cancelAdjustItemSizes() {
+	if f.adjustSizeTimer != nil {
+		f.adjustSizeTimer.Stop()
+	}
 }
