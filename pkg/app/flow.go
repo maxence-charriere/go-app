@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"strconv"
 	"time"
 
@@ -157,14 +156,19 @@ func (f *flow) refreshLayout(ctx Context) {
 	}
 
 	f.cancelAdjustItemSizes()
+	if f.adjustSizeTimer != nil {
+		f.adjustSizeTimer.Reset(flowResizeSizeDelay)
+		return
+	}
+
 	f.adjustSizeTimer = time.AfterFunc(flowResizeSizeDelay, func() {
 		f.Defer(f.adjustItemSizes)
 	})
 }
 
 func (f *flow) adjustItemSizes(ctx Context) {
+
 	if f.IitemsBaseWitdh == 0 || len(f.Icontent) == 0 {
-		fmt.Println("adjustItemSizes ~> skip")
 		return
 	}
 
