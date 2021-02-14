@@ -127,9 +127,12 @@ func (f *flow) Render() UI {
 		Class(f.Iclass).
 		Body(
 			Range(f.Icontent).Slice(func(i int) UI {
+				itemWidth := strconv.Itoa(f.itemWidth) + "px"
+
 				return Div().
 					Class("goapp-flow-item").
-					Style("flex-basis", strconv.Itoa(f.itemWidth)+"px").
+					Style("max-width", itemWidth).
+					Style("width", itemWidth).
 					Style("flex-grow", "0").
 					Style("flex-shrink", "1").
 					Body(f.Icontent[i])
@@ -190,10 +193,12 @@ func (f *flow) adjustItemSizes(ctx Context) {
 	}
 
 	itemWidth = width / itemsPerRow
-	if l := len(f.Icontent); l < itemsPerRow && f.IstrechOnSingleRow {
+	if l := len(f.Icontent); l <= itemsPerRow && f.IstrechOnSingleRow {
 		itemWidth = width / l
 	}
 	f.itemWidth = itemWidth
+
+	fmt.Println("item width:", itemWidth)
 }
 
 func (f *flow) cancelAdjustItemSizes() {
