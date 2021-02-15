@@ -1,12 +1,16 @@
 package app
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
 
 const (
-	shellItemBaseWitdth = 300
+	shellMenuDefaultWidth    = 300
+	shellContentDefaultWidth = 480
+	shellAdjustLayoutDelay   = time.Millisecond * 50
 )
 
 // UIShell is a component that responsively handles the disposition of a side
@@ -16,33 +20,36 @@ const (
 type UIShell interface {
 	UI
 
-	// Class adds a CSS class to the layout.
+	// AlignItemsToCenter vertically aligns menus and content to center.
+	AlignItemsToCenter() UIShell
+
+	// Class adds a CSS class to the shell root HTML element class property.
 	Class(c string) UIShell
 
 	// Content sets the main content.
 	Content(elems ...UI) UIShell
 
+	// ID sets the shell root HTML element id property.
+	ID(v string) UIShell
+
 	// Menu sets the side menu.
 	Menu(elems ...UI) UIShell
-
-	// Submenu sets the second side menu.
-	Submenu(elems ...UI) UIShell
 
 	// MenuButton sets the content of the button that displays an overlayed menu
 	// when clicked. The button is displayed only when a menu is set and shrunk.
 	// Default is ☰.
 	MenuButton(elems ...UI) UIShell
 
+	// MenusWidth set the base width for the menu and submenuin px. Default is
+	// 300px.
+	MenusWidth(px int) UIShell
+
 	// OverlayMenu sets the content of the overlay menu. The overlay menu is
 	// shown when the menu is shrunk and the menu button is clicked.
 	OverlayMenu(elems ...UI) UIShell
 
-	// ItemsBaseWidth set the base width for the menu, submenu and content in
-	// px. Default is 300px.
-	ItemsBaseWidth(px int) UIShell
-
-	// AlignItemsToCenter vertically aligns menus and content to center.
-	AlignItemsToCenter() UIShell
+	// Submenu sets the second side menu.
+	Submenu(elems ...UI) UIShell
 }
 
 // Shell creates a responsive layout that handles the disposition of a side
@@ -51,39 +58,52 @@ type UIShell interface {
 // EXPERIMENTAL WIDGET.
 func Shell() UIShell {
 	return &shell{
-		IitemsBaseWidth: shellItemBaseWitdth,
-		Ialignment:      "stretch",
+		ImenusWidth: shellMenuDefaultWidth,
+		Ialignment:  "stretch",
 		ImenuButton: []UI{
 			Div().
 				Class("goapp-shell-menu-button-default").
 				Text("☰"),
 		},
+		id:               "goapp-shell-" + uuid.New().String(),
+		isMenuVisible:    true,
+		isSubmenuVisible: true,
 	}
 }
 
 type shell struct {
 	Compo
 
-	Icontent          []UI
-	Imenu             []UI
-	Isubmenu          []UI
-	ImenuButton       []UI
-	IoverlayMenu      []UI
-	IitemsBaseWidth   int
-	Ialignment        string
-	Iclass            string
-	IshowShrunkenMenu bool
+	Icontent     []UI
+	Imenu        []UI
+	Isubmenu     []UI
+	ImenuButton  []UI
+	IoverlayMenu []UI
+	ImenusWidth  int
+	Ialignment   string
+	Iclass       string
+	Iid          string
 
-	id              string
-	shrunkenMenu    bool
-	shrunkenSubmenu bool
+	id                         string
+	isMenuVisible              bool
+	isSubmenuVisible           bool
+	isOverlayMenuButtonVisible bool
+	isOverlayMenuVisible       bool
+	adjustLayoutTimer          *time.Timer
+}
+
+func (s *shell) AlignItemsToCenter() UIShell {
+	s.Ialignment = "center"
+	return s
 }
 
 func (s *shell) Class(c string) UIShell {
+	if c == "" {
+		return s
+	}
 	if s.Iclass != "" {
 		s.Iclass += " "
 	}
-
 	s.Iclass += c
 	return s
 }
@@ -93,13 +113,13 @@ func (s *shell) Content(elems ...UI) UIShell {
 	return s
 }
 
-func (s *shell) Menu(elems ...UI) UIShell {
-	s.Imenu = FilterUIElems(elems...)
+func (s *shell) ID(v string) UIShell {
+	s.Iid = v
 	return s
 }
 
-func (s *shell) Submenu(elems ...UI) UIShell {
-	s.Isubmenu = FilterUIElems(elems...)
+func (s *shell) Menu(elems ...UI) UIShell {
+	s.Imenu = FilterUIElems(elems...)
 	return s
 }
 
@@ -108,29 +128,24 @@ func (s *shell) MenuButton(elems ...UI) UIShell {
 	return s
 }
 
+func (s *shell) MenusWidth(px int) UIShell {
+	if px > 0 {
+		s.ImenusWidth = px
+	}
+	return s
+}
+
 func (s *shell) OverlayMenu(elems ...UI) UIShell {
 	s.IoverlayMenu = elems
 	return s
 }
 
-func (s *shell) ItemsBaseWidth(px int) UIShell {
-	if px <= 0 {
-		px = shellItemBaseWitdth
-	}
-
-	s.IitemsBaseWidth = px
-	return s
-}
-
-func (s *shell) AlignItemsToCenter() UIShell {
-	s.Ialignment = "center"
+func (s *shell) Submenu(elems ...UI) UIShell {
+	s.Isubmenu = FilterUIElems(elems...)
 	return s
 }
 
 func (s *shell) OnMount(ctx Context) {
-	s.id = uuid.New().String()
-
-	s.Update()
 	s.refreshLayout(ctx)
 }
 
@@ -142,9 +157,14 @@ func (s *shell) OnAppResize(ctx Context) {
 	s.refreshLayout(ctx)
 }
 
+func (s *shell) Dismount() {
+	s.cancelAdjustLayout()
+}
+
 func (s *shell) Render() UI {
-	showMenu := s.hasMenu() && !s.shrunkenMenu
-	showSubmenu := s.hasSubmenu() && !s.shrunkenSubmenu
+	if s.requiresLayoutUpdate() {
+		s.Defer(s.refreshLayout)
+	}
 
 	visible := func(b bool) string {
 		if b {
@@ -153,65 +173,48 @@ func (s *shell) Render() UI {
 		return "none"
 	}
 
-	layoutShrink := "0"
-	if !showMenu && !showSubmenu {
-		layoutShrink = "1"
-	}
+	menuWidth := pxToString(s.ImenusWidth)
 
 	return Div().
+		ID(s.id).
 		Class("goapp-shell").
 		Class(s.Iclass).
 		Body(
 			Div().
-				ID(s.elemID("layout")).
 				Class("goapp-shell-layout").
 				Style("align-items", s.Ialignment).
 				Body(
 					Div().
-						ID(s.elemID("menu")).
 						Class("goapp-shell-item").
-						Style("display", visible(showMenu)).
-						Style("flex-basis", pxToString(s.IitemsBaseWidth)).
-						Style("flex-shrink", "2").
-						Body(
-							If(showMenu, s.Imenu...),
-						),
+						Style("display", visible(s.isMenuVisible)).
+						Style("width", menuWidth).
+						Style("max-width", menuWidth).
+						Body(s.Imenu...),
 					Div().
-						ID(s.elemID("submenu")).
 						Class("goapp-shell-item").
-						Style("display", visible(showSubmenu)).
-						Style("flex-basis", pxToString(s.IitemsBaseWidth)).
-						Style("flex-shrink", "1").
+						Style("display", visible(s.isSubmenuVisible)).
+						Style("width", menuWidth).
+						Style("max-width", menuWidth).
 						Body(s.Isubmenu...),
 					Div().
 						Class("goapp-shell-item").
-						Style("flex-basis", pxToString(s.contentItemBaseWidth())).
+						Style("flex-basis", pxToString(shellContentDefaultWidth)).
 						Style("flex-grow", "1").
-						Style("flex-shrink", layoutShrink).
 						Body(s.Icontent...),
 				),
-			If(s.hasMenu() && s.hasOverlayMenu(),
+			If(s.isOverlayMenuButtonVisible,
 				Button().
-					ID(s.elemID("menu-button")).
 					Class("goapp-shell-menu-button").
-					Style("display", visible(!showMenu && !s.IshowShrunkenMenu)).
+					Style("display", visible(!s.isOverlayMenuVisible)).
 					OnClick(s.onMenuButtonClick).
 					Body(s.ImenuButton...),
 				Div().
 					Class("goapp-shell-overlay-menu").
-					Style("display", visible(!showMenu && s.IshowShrunkenMenu)).
+					Style("display", visible(s.isOverlayMenuVisible)).
 					OnClick(s.onMenuOverlayClick).
 					Body(s.IoverlayMenu...),
 			),
 		)
-}
-
-func (s *shell) elemID(elem string) string {
-	if elem == "" {
-		return ""
-	}
-
-	return "app-shell-" + elem + "-" + s.id
 }
 
 func (s *shell) hasMenu() bool {
@@ -226,70 +229,69 @@ func (s *shell) hasOverlayMenu() bool {
 	return len(s.IoverlayMenu) != 0
 }
 
-func (s *shell) minItemWidth() int {
-	return s.IitemsBaseWidth * 70 / 100
-}
-
-func (s *shell) contentItemBaseWidth() int {
-	return (s.IitemsBaseWidth * 70 / 100) + s.IitemsBaseWidth
-}
-
-func (s *shell) mounted() bool {
-	return s.id != ""
+func (s *shell) requiresLayoutUpdate() bool {
+	return s.Iid != "" && s.Iid != s.id
 }
 
 func (s *shell) refreshLayout(ctx Context) {
-	ctx.Dispatch(func() {
-		s.refreshMenu()
-		s.refreshSubmenu()
+	if s.Iid != "" && s.Iid != s.id {
+		s.id = s.Iid
 		s.Update()
+		return
+	}
+
+	if IsServer {
+		return
+	}
+
+	s.cancelAdjustLayout()
+	if s.adjustLayoutTimer != nil {
+		s.adjustLayoutTimer.Reset(shellAdjustLayoutDelay)
+		return
+	}
+
+	s.adjustLayoutTimer = time.AfterFunc(0, func() {
+		s.Defer(s.adjustLayout)
 	})
 }
 
-func (s *shell) refreshMenu() {
-	if !s.mounted() || !s.hasMenu() {
+func (s *shell) adjustLayout(ctx Context) {
+	root := Window().GetElementByID(s.id)
+	if !root.Truthy() {
+		Log("%s", errors.New("shell root element not found").Tag("id", s.id))
 		return
 	}
 
-	currentWidth := s.minItemWidth() + s.contentItemBaseWidth()
-	if len(s.Isubmenu) != 0 {
-		currentWidth += s.IitemsBaseWidth
-	}
-
-	layoutID := s.elemID("layout")
-	layout := Window().GetElementByID(layoutID)
-	if !layout.Truthy() {
-		Log("%s", errors.New("shell layout not found").Tag("id", layoutID))
+	width := root.Get("clientWidth").Int()
+	if width == 0 {
 		return
 	}
-	layoutWidth := layout.Get("clientWidth").Int()
 
-	s.shrunkenMenu = currentWidth > layoutWidth
+	s.isSubmenuVisible = len(s.Isubmenu) != 0 && shellContentDefaultWidth+s.ImenusWidth <= width
+
+	if s.isSubmenuVisible {
+		s.isMenuVisible = len(s.Imenu) != 0 && shellContentDefaultWidth+2*s.ImenusWidth <= width
+	} else {
+		s.isMenuVisible = len(s.Imenu) != 0 && shellContentDefaultWidth+s.ImenusWidth <= width
+
+	}
+
+	s.isOverlayMenuButtonVisible = len(s.IoverlayMenu) != 0 && !s.isMenuVisible
+	s.Update()
 }
 
-func (s *shell) refreshSubmenu() {
-	if !s.mounted() || !s.hasSubmenu() {
-		return
+func (s *shell) cancelAdjustLayout() {
+	if s.adjustLayoutTimer != nil {
+		s.adjustLayoutTimer.Stop()
 	}
-
-	layoutID := s.elemID("layout")
-	layout := Window().GetElementByID(layoutID)
-	if !layout.Truthy() {
-		Log("%s", errors.New("shell layout not found").Tag("id", layoutID))
-		return
-	}
-
-	currentWidth := s.minItemWidth() + s.contentItemBaseWidth()
-	layoutWidth := layout.Get("clientWidth").Int()
-	s.shrunkenSubmenu = currentWidth > layoutWidth
 }
 
 func (s *shell) onMenuButtonClick(ctx Context, e Event) {
-	s.IshowShrunkenMenu = true
+	s.isOverlayMenuVisible = true
 	s.Update()
 }
 
 func (s *shell) onMenuOverlayClick(ctx Context, e Event) {
-	s.IshowShrunkenMenu = false
+	s.isOverlayMenuVisible = false
 	s.Update()
 }

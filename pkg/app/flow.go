@@ -86,7 +86,9 @@ func (f *flow) ID(v string) UIFlow {
 }
 
 func (f *flow) ItemsBaseWidth(px int) UIFlow {
-	f.IitemsBaseWitdh = px
+	if px > 0 {
+		f.IitemsBaseWitdh = px
+	}
 	return f
 }
 
@@ -161,20 +163,19 @@ func (f *flow) refreshLayout(ctx Context) {
 		return
 	}
 
-	f.adjustSizeTimer = time.AfterFunc(flowResizeSizeDelay, func() {
+	f.adjustSizeTimer = time.AfterFunc(0, func() {
 		f.Defer(f.adjustItemSizes)
 	})
 }
 
 func (f *flow) adjustItemSizes(ctx Context) {
-
 	if f.IitemsBaseWitdh == 0 || len(f.Icontent) == 0 {
 		return
 	}
 
 	elem := Window().GetElementByID(f.id)
 	if !elem.Truthy() {
-		Log("%s", errors.New("flow not found").Tag("id", f.id))
+		Log("%s", errors.New("flow root element found").Tag("id", f.id))
 		return
 	}
 
@@ -182,8 +183,6 @@ func (f *flow) adjustItemSizes(ctx Context) {
 	if width == 0 {
 		return
 	}
-
-	f.width = width
 	defer f.Update()
 
 	itemWidth := f.IitemsBaseWitdh

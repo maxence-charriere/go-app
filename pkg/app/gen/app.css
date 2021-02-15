@@ -166,7 +166,7 @@
 }
 
 /*------------------------------------------------------------------------------
-  Shell
+  Widget Layout
 ------------------------------------------------------------------------------*/
 .goapp-shell,
 .goapp-shell-layout,
@@ -195,14 +195,16 @@
 
 .goapp-shell-item {
   max-height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow: hidden;
 }
 
 .goapp-shell-menu-button,
 .goapp-shell-item > *,
 .goapp-shell-overlay-menu > * {
   pointer-events: auto;
+  overflow: auto;
 }
 
 .goapp-shell-menu-button {
@@ -234,9 +236,6 @@
   left: 0;
 }
 
-/*------------------------------------------------------------------------------
-  Widget Layout
-------------------------------------------------------------------------------*/
 .goapp-flow {
   position: relative;
   display: flex;
