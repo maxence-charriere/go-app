@@ -40,9 +40,9 @@ type UIShell interface {
 	// Default is ☰.
 	MenuButton(elems ...UI) UIShell
 
-	// MenusWidth set the base width for the menu and submenuin px. Default is
+	// MenuWidth set the base width for the menu and submenu in px. Default is
 	// 300px.
-	MenusWidth(px int) UIShell
+	MenuWidth(px int) UIShell
 
 	// OverlayMenu sets the content of the overlay menu. The overlay menu is
 	// shown when the menu is shrunk and the menu button is clicked.
@@ -128,7 +128,7 @@ func (s *shell) MenuButton(elems ...UI) UIShell {
 	return s
 }
 
-func (s *shell) MenusWidth(px int) UIShell {
+func (s *shell) MenuWidth(px int) UIShell {
 	if px > 0 {
 		s.ImenusWidth = px
 	}
