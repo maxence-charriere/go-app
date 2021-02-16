@@ -250,7 +250,7 @@ func (s *shell) refreshLayout(ctx Context) {
 		return
 	}
 
-	s.adjustLayoutTimer = time.AfterFunc(0, func() {
+	s.adjustLayoutTimer = time.AfterFunc(shellAdjustLayoutDelay, func() {
 		s.Defer(s.adjustLayout)
 	})
 }
