@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/url"
 	"reflect"
+	"sync"
 
 	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
@@ -18,6 +19,19 @@ type Dispatcher interface {
 	// Dispatch enqueues the given function to be executed on a goroutine
 	// dedicated to managing UI modifications.
 	Dispatch(func())
+
+	// 	Async launches the given function on a new goroutine.
+	//
+	// The difference versus just launching a goroutine is that it ensures that
+	// the asynchronous instructions are called before the dispatcher is closed.
+	//
+	// This is important during component prerendering since asynchronous
+	// operations need to complete before sending a pre-rendered page over HTTP.
+	Async(func())
+
+	// Wait waits for the asynchronous operations launched with Async() to
+	// complete.
+	Wait()
 
 	start(context.Context)
 	currentPage() Page
@@ -93,6 +107,7 @@ type uiDispatcher struct {
 	page                      Page
 	mountedOnce               bool
 	serverSideMode            bool
+	wg                        sync.WaitGroup
 	resolveStaticResourceFunc func(string) string
 }
 
@@ -107,6 +122,18 @@ func newUIDispatcher(serverSide bool, p Page, resolveStaticResource func(string)
 
 func (d *uiDispatcher) Dispatch(fn func()) {
 	d.ui <- fn
+}
+
+func (d *uiDispatcher) Async(fn func()) {
+	d.wg.Add(1)
+	go func() {
+		fn()
+		d.wg.Done()
+	}()
+}
+
+func (d *uiDispatcher) Wait() {
+	d.wg.Wait()
 }
 
 func (d *uiDispatcher) PreRender() {
@@ -190,6 +217,8 @@ func (d *uiDispatcher) Consume() {
 
 func (d *uiDispatcher) Close() {
 	d.Consume()
+	d.Wait()
+
 	dismount(d.body)
 	d.body = nil
 	close(d.ui)
