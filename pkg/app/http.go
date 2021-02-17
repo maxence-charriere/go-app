@@ -597,8 +597,8 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	disp.PreRender()
 
 	for len(disp.ui) != 0 {
-		disp.Wait()
 		disp.Consume()
+		disp.Wait()
 	}
 
 	var b bytes.Buffer
