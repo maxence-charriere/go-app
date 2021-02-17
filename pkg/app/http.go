@@ -595,7 +595,11 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 	disp.Mount(content)
 	disp.PreRender()
-	disp.Consume()
+
+	for len(disp.ui) != 0 {
+		disp.Wait()
+		disp.Consume()
+	}
 
 	var b bytes.Buffer
 	b.WriteString("<!DOCTYPE html>\n")

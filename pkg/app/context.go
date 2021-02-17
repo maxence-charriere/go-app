@@ -37,6 +37,15 @@ func (ctx Context) Dispatch(fn func()) {
 	ctx.dispatcher.Dispatch(fn)
 }
 
+// Async launches the given function on a new goroutine.
+//
+// The difference versus just launching a goroutine is that it ensures that the
+// asynchronous function is called before a page is fully pre-rendered and
+// served over HTTP.
+func (ctx Context) Async(fn func()) {
+	ctx.dispatcher.Async(fn)
+}
+
 // Reload reloads the WebAssembly app at the current page.
 func (ctx Context) Reload() {
 	if IsServer {
