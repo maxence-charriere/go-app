@@ -163,7 +163,7 @@ func (f *flow) refreshLayout(ctx Context) {
 		return
 	}
 
-	f.adjustSizeTimer = time.AfterFunc(flowResizeSizeDelay, func() {
+	f.adjustSizeTimer = time.AfterFunc(0, func() {
 		f.Defer(f.adjustItemSizes)
 	})
 }
@@ -183,6 +183,8 @@ func (f *flow) adjustItemSizes(ctx Context) {
 	if width == 0 {
 		return
 	}
+
+	defer f.ResizeContent()
 	defer f.Update()
 
 	itemWidth := f.IitemsBaseWitdh

@@ -128,7 +128,7 @@ func (c condition) onNav(*url.URL) {
 func (c condition) onAppUpdate() {
 }
 
-func (c condition) onAppResize() {
+func (c condition) onResize() {
 }
 
 func (c condition) preRender(Page) {

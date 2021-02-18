@@ -38,7 +38,7 @@ type UI interface {
 	update(UI) error
 	onNav(*url.URL)
 	onAppUpdate()
-	onAppResize()
+	onResize()
 	preRender(Page)
 	html(w io.Writer)
 	htmlWithIndent(w io.Writer, indent int)

@@ -158,7 +158,7 @@ func (r rangeLoop) onNav(*url.URL) {
 func (r rangeLoop) onAppUpdate() {
 }
 
-func (r rangeLoop) onAppResize() {
+func (r rangeLoop) onResize() {
 }
 
 func (r rangeLoop) preRender(Page) {

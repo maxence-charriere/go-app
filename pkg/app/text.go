@@ -120,7 +120,7 @@ func (t *text) onNav(*url.URL) {
 func (t *text) onAppUpdate() {
 }
 
-func (t *text) onAppResize() {
+func (t *text) onResize() {
 }
 
 func (t *text) preRender(Page) {

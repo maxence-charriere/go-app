@@ -157,7 +157,7 @@ func (r *raw) onNav(*url.URL) {
 func (r *raw) onAppUpdate() {
 }
 
-func (r *raw) onAppResize() {
+func (r *raw) onResize() {
 }
 
 func (r *raw) preRender(Page) {

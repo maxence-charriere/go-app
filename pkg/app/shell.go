@@ -250,7 +250,7 @@ func (s *shell) refreshLayout(ctx Context) {
 		return
 	}
 
-	s.adjustLayoutTimer = time.AfterFunc(shellAdjustLayoutDelay, func() {
+	s.adjustLayoutTimer = time.AfterFunc(0, func() {
 		s.Defer(s.adjustLayout)
 	})
 }
@@ -278,6 +278,7 @@ func (s *shell) adjustLayout(ctx Context) {
 
 	s.isOverlayMenuButtonVisible = len(s.IoverlayMenu) != 0 && !s.isMenuVisible
 	s.Update()
+	s.ResizeContent()
 }
 
 func (s *shell) cancelAdjustLayout() {

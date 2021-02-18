@@ -199,7 +199,7 @@ func (d *uiDispatcher) AppUpdate() {
 
 func (d *uiDispatcher) AppResize() {
 	d.Dispatch(func() {
-		d.body.onAppResize()
+		d.body.onResize()
 	})
 }
 

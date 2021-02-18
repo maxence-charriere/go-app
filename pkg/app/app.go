@@ -123,7 +123,7 @@ func RunWhenOnBrowser() {
 	defer onAppUpdate.Release()
 	Window().Set("goappOnUpdate", onAppUpdate)
 
-	closeAppResize := Window().AddEventListener("resize", onAppResize)
+	closeAppResize := Window().AddEventListener("resize", onResize)
 	defer closeAppResize()
 
 	closeAppOrientationChange := Window().AddEventListener("orientationchange", onAppOrientationChange)
@@ -333,7 +333,7 @@ func onAppUpdate(d *uiDispatcher) func(this Value, args []Value) interface{} {
 	}
 }
 
-func onAppResize(ctx Context, e Event) {
+func onResize(ctx Context, e Event) {
 	if d, ok := ctx.dispatcher.(*uiDispatcher); ok {
 		d.AppResize()
 	}

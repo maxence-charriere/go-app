@@ -419,9 +419,9 @@ func (e *elem) onAppUpdate() {
 	}
 }
 
-func (e *elem) onAppResize() {
+func (e *elem) onResize() {
 	for _, c := range e.children() {
-		c.onAppResize()
+		c.onResize()
 	}
 }
 

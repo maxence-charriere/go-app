@@ -401,7 +401,7 @@ func (h *hello) OnAppUpdate(ctx Context) {
 	h.appUpdated = true
 }
 
-func (h *hello) OnAppResize(ctx Context) {
+func (h *hello) OnResize(ctx Context) {
 	h.appResized = true
 }
 
@@ -455,7 +455,7 @@ func (b *bar) OnAppUpdate(ctx Context) {
 	b.appUpdated = true
 }
 
-func (b *bar) OnAppResize(ctx Context) {
+func (b *bar) OnResize(ctx Context) {
 	b.appRezized = true
 }
 

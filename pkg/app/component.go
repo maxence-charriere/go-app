@@ -96,10 +96,15 @@ type Updater interface {
 }
 
 // Resizer is the interface that describes a component that is notified when the
-// application size changes.
+// app has been resized or a parent component calls the ResizeContent() method.
 type Resizer interface {
-	// The function called when the application is resized. It is always called
-	// on the UI goroutine.
+	// The function called when the application is resized or a parent component
+	// called its ResizeContent() method. It is always called on the UI
+	// goroutine.
+	OnResize(Context)
+}
+
+type deprecatedResizer interface {
 	OnAppResize(Context)
 }
 
@@ -157,9 +162,10 @@ func (c *Compo) Render() UI {
 // function is called.
 func (c *Compo) Defer(fn func(Context)) {
 	c.dispatcher().Dispatch(func() {
-		if c.Mounted() {
-			fn(makeContext(c.self()))
+		if !c.Mounted() {
+			return
 		}
+		fn(makeContext(c.self()))
 	})
 }
 
@@ -167,18 +173,18 @@ func (c *Compo) Defer(fn func(Context)) {
 // field used to render the component has been modified. Updates are always
 // performed on the UI goroutine.
 func (c *Compo) Update() {
-	if !c.Mounted() {
-		return
-	}
-
-	c.dispatcher().Dispatch(func() {
-		if !c.Mounted() {
-			return
-		}
-
+	c.Defer(func(Context) {
 		if err := c.updateRoot(); err != nil {
 			panic(err)
 		}
+	})
+}
+
+// ResizeContent triggers OnResize() on all the component children that
+// implement the Resizer interface.
+func (c *Compo) ResizeContent() {
+	c.Defer(func(Context) {
+		c.root.onResize()
 	})
 }
 
@@ -384,9 +390,9 @@ func (c *Compo) onNav(u *url.URL) {
 		Log("%s", errors.New("a deprecated component interface is in use").
 			Tag("component", reflect.TypeOf(c.self())).
 			Tag("interface", "app.Navigator").
-			Tag("deprecated-signature", "OnNav(app.Context, *url.URL)").
-			Tag("valid-signature", "OnNav(app.Context)").
-			Tag("how-to-fix", "refactor component to use the valid signature"))
+			Tag("method-current", "OnNav(app.Context, *url.URL)").
+			Tag("method-fix", "OnNav(app.Context)").
+			Tag("how-to-fix", "refactor component to use the right method"))
 		nav.OnNav(ctx, u)
 	}
 }
@@ -399,10 +405,21 @@ func (c *Compo) onAppUpdate() {
 	}
 }
 
-func (c *Compo) onAppResize() {
-	c.root.onAppResize()
+func (c *Compo) onResize() {
+	c.root.onResize()
 
 	if resizer, ok := c.self().(Resizer); ok {
+		resizer.OnResize(makeContext(c.self()))
+		return
+	}
+
+	if resizer, ok := c.self().(deprecatedResizer); ok {
+		Log("%s", errors.New("a deprecated component interface is in use").
+			Tag("component", reflect.TypeOf(c.self())).
+			Tag("interface", "app.Resizer").
+			Tag("method-current", "OnAppResize(app.Context)").
+			Tag("method-fix", "OnResize(app.Context)").
+			Tag("how-to-fix", "refactor component to use the right method"))
 		resizer.OnAppResize(makeContext(c.self()))
 	}
 }
