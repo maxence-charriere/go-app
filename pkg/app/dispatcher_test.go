@@ -48,3 +48,15 @@ func testDispatcherAsyncWait(t *testing.T, d Dispatcher) {
 	d.Wait()
 	require.Equal(t, 5, counts)
 }
+
+func TestDispatcherLocalStorage(t *testing.T) {
+	d := NewClientTestingDispatcher(&hello{})
+	defer d.Close()
+	testBrowserStorage(t, d.localStorage())
+}
+
+func TestDispatcherSessionStorage(t *testing.T) {
+	d := NewClientTestingDispatcher(&hello{})
+	defer d.Close()
+	testBrowserStorage(t, d.sessionStorage())
+}

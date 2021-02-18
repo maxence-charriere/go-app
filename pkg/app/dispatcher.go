@@ -35,6 +35,8 @@ type Dispatcher interface {
 
 	start(context.Context)
 	currentPage() Page
+	localStorage() BrowserStorage
+	sessionStorage() BrowserStorage
 	isServerSideMode() bool
 	resolveStaticResource(string) string
 }
@@ -109,14 +111,30 @@ type uiDispatcher struct {
 	serverSideMode            bool
 	wg                        sync.WaitGroup
 	resolveStaticResourceFunc func(string) string
+	localStore                BrowserStorage
+	sessionStore              BrowserStorage
 }
 
 func newUIDispatcher(serverSide bool, p Page, resolveStaticResource func(string) string) *uiDispatcher {
+	var localStorage BrowserStorage
+	var sessionStorage BrowserStorage
+
+	if IsClient {
+		localStorage = newJSStorage("localStorage")
+		sessionStorage = newJSStorage("sessionStorage")
+
+	} else {
+		localStorage = newMemoryStorage()
+		sessionStorage = newMemoryStorage()
+	}
+
 	return &uiDispatcher{
 		ui:                        make(chan func(), dispatcherSize),
 		page:                      p,
 		serverSideMode:            serverSide,
 		resolveStaticResourceFunc: resolveStaticResource,
+		localStore:                localStorage,
+		sessionStore:              sessionStorage,
 	}
 }
 
@@ -246,4 +264,11 @@ func (d *uiDispatcher) isServerSideMode() bool {
 
 func (d *uiDispatcher) resolveStaticResource(url string) string {
 	return d.resolveStaticResourceFunc(url)
+}
+func (d *uiDispatcher) localStorage() BrowserStorage {
+	return d.localStore
+}
+
+func (d *uiDispatcher) sessionStorage() BrowserStorage {
+	return d.sessionStore
 }

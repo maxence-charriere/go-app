@@ -7,20 +7,18 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestLocalStorage(t *testing.T) {
-	testBrowserStorage(t, LocalStorage)
+func TestMemoryStorage(t *testing.T) {
+	testBrowserStorage(t, newMemoryStorage())
 }
 
-func TestLocalStorageFull(t *testing.T) {
-	testBrowserStorageFull(t, LocalStorage)
+func TestJSLocalStorage(t *testing.T) {
+	testSkipNonWasm(t)
+	testBrowserStorage(t, newJSStorage("localStorage"))
 }
 
-func TestSessionStorage(t *testing.T) {
-	testBrowserStorage(t, SessionStorage)
-}
-
-func TestSessionStorageFull(t *testing.T) {
-	testBrowserStorageFull(t, SessionStorage)
+func TestJSSessionStorage(t *testing.T) {
+	testSkipNonWasm(t)
+	testBrowserStorage(t, newJSStorage("sessionStorage"))
 }
 
 type obj struct {

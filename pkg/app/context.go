@@ -79,6 +79,19 @@ func (ctx Context) ResolveStaticResource(path string) string {
 	return ctx.dispatcher.resolveStaticResource(path)
 }
 
+// LocalStorage returns a storage that uses the browser local storage associated
+// to the document origin. Data stored has no expiration time.
+func (ctx Context) LocalStorage() BrowserStorage {
+	return ctx.dispatcher.localStorage()
+}
+
+// SessionStorage returns a storage that uses the browser session storage
+// associated to the document origin. Data stored expire when the page
+// session ends.
+func (ctx Context) SessionStorage() BrowserStorage {
+	return ctx.dispatcher.sessionStorage()
+}
+
 func makeContext(src UI) Context {
 	return Context{
 		Context:            src.context(),
