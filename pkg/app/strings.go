@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"strconv"
+	"strings"
 	"unsafe"
 )
 
@@ -24,6 +25,21 @@ func toString(v interface{}) string {
 	default:
 		return fmt.Sprint(v)
 	}
+}
+
+func toPath(v ...interface{}) string {
+	var b strings.Builder
+
+	for _, o := range v {
+		s := toString(o)
+		if s == "" {
+			continue
+		}
+		b.WriteByte('/')
+		b.WriteString(s)
+	}
+
+	return b.String()
 }
 
 func writeIndent(w io.Writer, indent int) {

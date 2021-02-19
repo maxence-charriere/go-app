@@ -2223,10 +2223,10 @@ func writeEventFunction(w io.Writer, e eventHandler, t tag, isInterface bool) {
 		fmt.Fprintf(w, `func (e *html%s)`, t.Name)
 	}
 
-	fmt.Fprintf(w, `%s (h EventHandler) HTML%s`, e.Name, t.Name)
+	fmt.Fprintf(w, `%s (h EventHandler, scope ...interface{}) HTML%s`, e.Name, t.Name)
 	if !isInterface {
 		fmt.Fprintf(w, `{
-			e.setEventHandler("%s", h)
+			e.setEventHandler("%s", h, scope...)
 			return e
 		}`, strings.TrimPrefix(strings.ToLower(e.Name), "on"))
 	}
