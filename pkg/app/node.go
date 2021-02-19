@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"fmt"
 	"io"
 	"net/url"
 	"reflect"
@@ -135,13 +134,14 @@ type EventHandler func(ctx Context, e Event)
 
 type eventHandler struct {
 	event   string
+	scope   string
 	jsvalue Func
 	value   EventHandler
 }
 
 func (h eventHandler) equal(o eventHandler) bool {
-	return h.event == o.event &&
-		fmt.Sprintf("%p", h.value) == fmt.Sprintf("%p", o.value)
+	return h.event == o.event && h.scope == o.scope &&
+		reflect.ValueOf(h.value).Pointer() == reflect.ValueOf(o.value).Pointer()
 }
 
 func makeJsEventHandler(src UI, h EventHandler) Func {

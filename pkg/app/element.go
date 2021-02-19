@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"net/url"
 
@@ -363,7 +364,10 @@ func (e *elem) updateEventHandler(handlers map[string]eventHandler) {
 	for k, new := range handlers {
 		if current, exists := e.events[k]; !current.equal(new) {
 			if exists {
+				fmt.Printf("+++ %v: replace event handler %v\n", e.name(), k)
 				e.delJsEventHandler(k, current)
+			} else {
+				fmt.Printf("+++ %v: add event handler%v\n", e.name(), k)
 			}
 
 			e.events[k] = new
@@ -372,13 +376,14 @@ func (e *elem) updateEventHandler(handlers map[string]eventHandler) {
 	}
 }
 
-func (e *elem) setEventHandler(k string, h EventHandler) {
+func (e *elem) setEventHandler(k string, h EventHandler, scope ...interface{}) {
 	if e.events == nil {
 		e.events = make(map[string]eventHandler)
 	}
 
 	e.events[k] = eventHandler{
 		event: k,
+		scope: toPath(scope...),
 		value: h,
 	}
 }
