@@ -345,13 +345,14 @@ func (e *elem) updateEventHandler(handlers map[string]eventHandler) {
 	}
 }
 
-func (e *elem) setEventHandler(k string, h EventHandler) {
+func (e *elem) setEventHandler(k string, h EventHandler, scope ...interface{}) {
 	if e.events == nil {
 		e.events = make(map[string]eventHandler)
 	}
 
 	e.events[k] = eventHandler{
 		event: k,
+		scope: toPath(scope...),
 		value: h,
 	}
 }
