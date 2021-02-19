@@ -29,6 +29,7 @@ func main() {
 		app.Route(path, newPage())
 	}
 	app.Route("/reference", newReference())
+	app.Route("/issue499", newIssue499Data())
 	app.RunWhenOnBrowser()
 
 	ctx, cancel := cli.ContextWithSignals(context.Background(),
