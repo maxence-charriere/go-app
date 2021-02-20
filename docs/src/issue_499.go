@@ -53,9 +53,7 @@ func (c *issue499) Render() app.UI {
 }
 
 func (c *issue499) newListener(id int) app.EventHandler {
-	fn := func(app.Context, app.Event) {
-		fmt.Println("trying to remove elem", id)
-
+	return func(app.Context, app.Event) {
 		for i, d := range c.data {
 			if id == d.ID {
 				c.data = append(c.data[:i], c.data[i+1:]...)
@@ -64,7 +62,4 @@ func (c *issue499) newListener(id int) app.EventHandler {
 			}
 		}
 	}
-
-	fmt.Printf("create event handler: %p \n", fn)
-	return fn
 }
