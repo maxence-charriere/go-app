@@ -16,6 +16,18 @@ import (
 	"github.com/maxence-charriere/go-app/v8/pkg/logs"
 )
 
+const (
+	defaultTitle       = "A Golang package for building progressive web apps"
+	defaultDescription = "A package for building progressive web apps (PWA) with the  Go programming language and WebAssembly. It uses a declarative syntax that allows creating and dealing with HTML elements only by using Go, and without writing any HTML markup."
+	backgroundColor    = "#2e343a"
+
+	buyMeACoffeeURL   = "https://www.buymeacoffee.com/maxence"
+	openCollectiveURL = "https://opencollective.com/go-app"
+	githubURL         = "https://github.com/maxence-charriere/go-app"
+	githubSponsorURL  = "https://github.com/sponsors/maxence-charriere"
+	twitterURL        = "https://twitter.com/jonhymaxoo"
+)
+
 type localOptions struct {
 	Port int `cli:"p" env:"GOAPP_DOCS_PORT" help:"The port used by the server that serves the PWA."`
 }
@@ -30,6 +42,7 @@ func main() {
 	}
 	app.Route("/reference", newReference())
 	app.Route("/issue499", newIssue499Data())
+	app.Route("/", newMarkdownDoc())
 	app.RunWhenOnBrowser()
 
 	ctx, cancel := cli.ContextWithSignals(context.Background(),
@@ -49,13 +62,12 @@ func main() {
 		Help(`Generates the required resources to run the documentation app on GitHub Pages.`).
 		Options(&githubOpts)
 
-	backgroundColor := "#2e343a"
-
 	h := app.Handler{
-		Author:          "Maxence Charriere",
-		BackgroundColor: backgroundColor,
-		Description:     "A package to build progressive web apps with Go programming language and WebAssembly.",
-		Image:           "/web/images/go-app.png",
+		Name:        "Go-app Docs",
+		Title:       defaultTitle,
+		Description: defaultDescription,
+		Author:      "Maxence Charriere",
+		Image:       "/web/images/go-app.png",
 		Keywords: []string{
 			"go-app",
 			"go",
@@ -65,6 +77,8 @@ func main() {
 			"progressive web app",
 			"webassembly",
 			"web assembly",
+			"webapp",
+			"web",
 			"gui",
 			"ui",
 			"user interface",
@@ -74,14 +88,14 @@ func main() {
 			"open source",
 			"github",
 		},
-		LoadingLabel: "Loading go-app documentation...",
-		Name:         "Go-app Docs",
+		BackgroundColor: backgroundColor,
+		ThemeColor:      backgroundColor,
+		LoadingLabel:    "Loading go-app documentation...",
 		Scripts: []string{
 			"/web/js/prism.js",
 		},
 		Styles: []string{
 			"https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap",
-			"https://fonts.googleapis.com/css2?family=Roboto&display=swap",
 			"/web/css/prism.css",
 			"/web/css/docs.css",
 		},
@@ -97,8 +111,6 @@ func main() {
 			  gtag('config', 'G-SW4FQEM9VM');
 			</script>`,
 		},
-		ThemeColor: backgroundColor,
-		Title:      "go-app documentation",
 	}
 
 	switch cli.Load() {

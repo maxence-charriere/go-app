@@ -1,8 +1,6 @@
 package main
 
 import (
-	"strings"
-
 	"github.com/maxence-charriere/go-app/v8/pkg/app"
 )
 
@@ -72,17 +70,7 @@ func (l *tableOfContentLink) Render() app.UI {
 
 	return app.A().
 		Class(focus).
+		Class("index-link").
 		Href(githubIndex(l.Title)).
 		Text(l.Title)
-}
-
-func githubIndex(s string) string {
-	s = strings.ToLower(s)
-	s = strings.TrimSpace(s)
-	s = strings.ReplaceAll(s, "?", "")
-	s = strings.ReplaceAll(s, "(", "")
-	s = strings.ReplaceAll(s, ")", "")
-	s = strings.ReplaceAll(s, " ", "-")
-	s = strings.ReplaceAll(s, ".", "-")
-	return "#" + s
 }

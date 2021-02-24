@@ -8,14 +8,6 @@ import (
 	"github.com/maxence-charriere/go-app/v8/pkg/app"
 )
 
-const (
-	buyMeACoffeeURL   = "https://www.buymeacoffee.com/maxence"
-	openCollectiveURL = "https://opencollective.com/go-app"
-	githubURL         = "https://github.com/maxence-charriere/go-app"
-	githubSponsorURL  = "https://github.com/sponsors/maxence-charriere"
-	twitterURL        = "https://twitter.com/jonhymaxoo"
-)
-
 type pageInfo struct {
 	MarkdownPath    string
 	TableOfContents []string

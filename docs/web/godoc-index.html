@@ -23,6 +23,9 @@
 				<dd><a href="#HTMLString" id="src-HTMLString">func HTMLString(ui UI) string</a></dd>
 			
 				
+				<dd><a href="#HTMLStringWithIndent" id="src-HTMLStringWithIndent">func HTMLStringWithIndent(ui UI) string</a></dd>
+			
+				
 				<dd><a href="#KeepBodyClean" id="src-KeepBodyClean">func KeepBodyClean() (close func())</a></dd>
 			
 				
@@ -32,6 +35,9 @@
 				<dd><a href="#PrintHTML" id="src-PrintHTML">func PrintHTML(w io.Writer, ui UI)</a></dd>
 			
 				
+				<dd><a href="#PrintHTMLWithIndent" id="src-PrintHTMLWithIndent">func PrintHTMLWithIndent(w io.Writer, ui UI)</a></dd>
+			
+				
 				<dd><a href="#Route" id="src-Route">func Route(path string, c Composer)</a></dd>
 			
 				
@@ -39,9 +45,6 @@
 			
 				
 				<dd><a href="#RunWhenOnBrowser" id="src-RunWhenOnBrowser">func RunWhenOnBrowser()</a></dd>
-			
-				
-				<dd><a href="#StaticResource" id="src-StaticResource">func StaticResource(path string) string</a></dd>
 			
 				
 				<dd><a href="#TestMatch" id="src-TestMatch">func TestMatch(tree UI, d TestUIDescriptor) error</a></dd>
@@ -83,6 +86,9 @@
 					<dd>    <a href="#Compo.Render" id="src-Compo.Render">func (c *Compo) Render() UI</a></dd>
 				
 					
+					<dd>    <a href="#Compo.ResizeContent" id="src-Compo.ResizeContent">func (c *Compo) ResizeContent()</a></dd>
+				
+					
 					<dd>    <a href="#Compo.Update" id="src-Compo.Update">func (c *Compo) Update()</a></dd>
 				
 			
@@ -104,7 +110,13 @@
 				
 				
 					
+					<dd>    <a href="#Context.Async" id="src-Context.Async">func (ctx Context) Async(fn func())</a></dd>
+				
+					
 					<dd>    <a href="#Context.Dispatch" id="src-Context.Dispatch">func (ctx Context) Dispatch(fn func())</a></dd>
+				
+					
+					<dd>    <a href="#Context.LocalStorage" id="src-Context.LocalStorage">func (ctx Context) LocalStorage() BrowserStorage</a></dd>
 				
 					
 					<dd>    <a href="#Context.Navigate" id="src-Context.Navigate">func (ctx Context) Navigate(rawURL string)</a></dd>
@@ -114,6 +126,12 @@
 				
 					
 					<dd>    <a href="#Context.Reload" id="src-Context.Reload">func (ctx Context) Reload()</a></dd>
+				
+					
+					<dd>    <a href="#Context.ResolveStaticResource" id="src-Context.ResolveStaticResource">func (ctx Context) ResolveStaticResource(path string) string</a></dd>
+				
+					
+					<dd>    <a href="#Context.SessionStorage" id="src-Context.SessionStorage">func (ctx Context) SessionStorage() BrowserStorage</a></dd>
 				
 			
 				

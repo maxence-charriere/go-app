@@ -2,6 +2,10 @@ package main
 
 import "github.com/maxence-charriere/go-app/v8/pkg/app"
 
+const (
+	supportUsIconSize = 60
+)
+
 func support() app.UI {
 	return app.Div().Body(
 		app.H2().
@@ -104,6 +108,167 @@ func (p *supportPartner) Render() app.UI {
 					app.Div().
 						Class("support-partner-name").
 						Text(p.Iname),
+				),
+		)
+}
+
+type supportUs struct {
+	app.Compo
+}
+
+func newSupportUs() *supportUs {
+	return &supportUs{}
+}
+
+func (s *supportUs) Render() app.UI {
+	return app.Div().
+		ID("support-go-app").
+		Body(
+			app.Div().
+				Class("hspace-out").
+				Body(
+					app.Header().
+						Class("h2").
+						Text("Support go-app"),
+					app.P().Body(
+						app.Text("Hello there, I'am Maxence, the creator of "),
+						app.B().Text("go-app"),
+						app.Text(". I hope you like what you are seeing here and will consider or already use this package to build your next project."),
+					),
+					app.P().Body(
+						app.Text("A lot of hard work is put to develop this. Not mandatory but heartily appreciated, "),
+						app.A().
+							Href(buyMeACoffeeURL).
+							Target("_blank").
+							Text("buying me a coffee"),
+						app.Text(", being part of our "),
+						app.A().
+							Href(openCollectiveURL).
+							Target("_blank").
+							Text("open collective"),
+						app.Text(", or "),
+						app.A().
+							Href(githubSponsorURL).
+							Target("_blank").
+							Text("sponsoring me on GitHub "),
+						app.Text("is always a boost and brings great motivation to keep the good work."),
+					),
+				),
+			app.Flow().
+				Class("space-flow").
+				StrechtOnSingleRow().
+				Content(
+					app.Div().
+						Class("space-flow-item").
+						Body(
+							newSupportUsItem().
+								Class("fill").
+								Label("Buy me a coffee").
+								Href(buyMeACoffeeURL).
+								Icon(
+									newSVGIcon().
+										RawSVG(coffeeSVG).
+										Size(supportUsIconSize),
+								),
+						),
+					app.Div().
+						Class("space-flow-item").
+						Body(
+							newSupportUsItem().
+								Class("fill").
+								Label("Open collective").
+								Href(openCollectiveURL).
+								Icon(
+									newSVGIcon().
+										RawSVG(opensourceSVG).
+										Size(supportUsIconSize),
+								),
+						),
+					app.Div().
+						Class("space-flow-item").
+						Body(
+							newSupportUsItem().
+								Class("fill").
+								Label("Github sponsor").
+								Href(githubSponsorURL).
+								Icon(
+									newSVGIcon().
+										RawSVG(githubSVG).
+										Size(supportUsIconSize),
+								),
+						),
+				),
+		)
+}
+
+type supportUsItem struct {
+	app.Compo
+
+	Iclass string
+	Ilabel string
+	Ihref  string
+	Iicon  app.UI
+}
+
+func newSupportUsItem() *supportUsItem {
+	return &supportUsItem{}
+}
+
+func (i *supportUsItem) Class(v string) *supportUsItem {
+	if v == "" {
+		return i
+	}
+	if i.Iclass != "" {
+		i.Iclass += " "
+	}
+	i.Iclass += v
+	return i
+}
+
+func (i *supportUsItem) Label(v string) *supportUsItem {
+	i.Ilabel = v
+	return i
+}
+
+func (i *supportUsItem) Href(v string) *supportUsItem {
+	i.Ihref = v
+	return i
+}
+
+func (i *supportUsItem) Icon(v app.UI) *supportUsItem {
+	i.Iicon = v
+	return i
+}
+
+func (i *supportUsItem) Render() app.UI {
+	return app.A().
+		Class("support-us-item").
+		Class("hspace-in-stretch").
+		Class("vspace-in").
+		Class("vignette").
+		Class("magnify").
+		Class(i.Iclass).
+		Href(i.Ihref).
+		Body(
+			app.Stack().
+				Class("fill").
+				Center().
+				Content(
+					app.Div().
+						Class("fit").
+						Class("center").
+						Body(
+							app.Div().
+								Class("fit").
+								Class("center").
+								Body(i.Iicon),
+							app.Div().
+								Class("support-us-item-label").
+								Class("heading").
+								Class("default").
+								Class("center").
+								Text(i.Ilabel),
+						),
 				),
 		)
 }
