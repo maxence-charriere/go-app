@@ -153,7 +153,7 @@ func (s *shell) OnNav(ctx Context) {
 	s.refreshLayout(ctx)
 }
 
-func (s *shell) OnAppResize(ctx Context) {
+func (s *shell) OnResize(ctx Context) {
 	s.refreshLayout(ctx)
 }
 

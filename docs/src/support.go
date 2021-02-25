@@ -129,6 +129,7 @@ func (s *supportUs) Render() app.UI {
 				Body(
 					app.Header().
 						Class("h2").
+						Class("header-separator").
 						Text("Support go-app"),
 					app.P().Body(
 						app.Text("Hello there, I'am Maxence, the creator of "),

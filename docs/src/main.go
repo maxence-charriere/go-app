@@ -37,8 +37,8 @@ type githubOptions struct {
 }
 
 func main() {
-	for path := range pages() {
-		app.Route(path, newPage())
+	for path := range mardownPages() {
+		app.Route(path, newMarkdownDoc())
 	}
 	app.Route("/reference", newReference())
 	app.Route("/issue499", newIssue499Data())

@@ -109,7 +109,7 @@ func (f *flow) OnNav(ctx Context) {
 	}
 }
 
-func (f *flow) OnAppResize(ctx Context) {
+func (f *flow) OnResize(ctx Context) {
 	f.refreshLayout(ctx)
 }
 

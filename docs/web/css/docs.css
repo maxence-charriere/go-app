@@ -1,248 +1,4 @@
 /* -----------------------------------------------------------------------------
-// Global
-------------------------------------------------------------------------------*/
-html {
-  background-color: #2e343a;
-}
-
-html,
-body {
-  border: 0;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-  padding: 18px 30px 0;
-  font-family: "Montserrat", sans-serif;
-  text-transform: uppercase;
-  color: white;
-  font-weight: 400;
-}
-
-h1 {
-  padding: 0 30px 0;
-  font-size: 18px;
-  letter-spacing: 5px;
-}
-
-h2 {
-  font-size: 15px;
-  letter-spacing: 3px;
-}
-
-h3,
-.loader .label {
-  font-size: 14px;
-  letter-spacing: 2px;
-}
-
-section {
-  margin: 42px 0 0;
-}
-
-.pane {
-  height: calc(100% - 45px - 12px - 42px);
-  margin: 45px 0 12px;
-  padding: 42px 0 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-.layout {
-  height: 100%;
-}
-
-.layout .header {
-  width: auto;
-  height: 45px;
-  overflow: hidden;
-}
-
-.layout .content {
-  width: auto;
-  padding: 0 0 24px;
-  max-height: calc(100% - 45px - 24px);
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-.focus {
-  color: white;
-}
-
-.error {
-  color: #ef596f;
-}
-
-.hidden {
-  display: none;
-}
-
-/* -----------------------------------------------------------------------------
-// Menu
-------------------------------------------------------------------------------*/
-.menu {
-  height: 100%;
-  overflow: hidden;
-}
-
-.menu .title {
-  display: block;
-  padding: 18px 30px 0;
-  font-family: "Montserrat", sans-serif;
-  font-size: 22px;
-  letter-spacing: 6px;
-  text-transform: uppercase;
-  color: white;
-}
-
-.menu .title:hover {
-  color: deepskyblue;
-}
-
-.menu .content {
-  height: calc(100% - 45px - 12px);
-  margin: 0 0 12px;
-  overflow-y: auto;
-}
-
-.menu .item {
-  display: block;
-  padding: 12px 30px 0;
-}
-
-.menu .item:first-child {
-  padding: 0 30px;
-}
-
-.menu .item .icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 18px;
-}
-
-/* -----------------------------------------------------------------------------
-// Table of contents
-------------------------------------------------------------------------------*/
-.index section {
-  margin: 0;
-  padding: 18px 0 0;
-}
-
-.index a {
-  display: block;
-  width: auto;
-  padding: 0 30px 3px;
-  white-space: pre;
-}
-
-/* -----------------------------------------------------------------------------
-// Document
-------------------------------------------------------------------------------*/
-pre[class*="language-"] {
-  display: block;
-  margin: 18px 30px 0;
-  padding: 18px 24px;
-  border-radius: 12px;
-  background-color: rgba(0, 0, 0, 0.2);
-  font-size: 14px;
-  overflow: auto;
-}
-
-pre[class*="language-"] code {
-  padding: 0;
-  margin: 0;
-  background-color: transparent;
-  font-family: monospace;
-}
-
-.document .token.keyword {
-  color: violet;
-}
-
-.document .token.function,
-.document a {
-  color: deepskyblue;
-}
-
-.document .token.builtin,
-.document .token.symbol {
-  color: dodgerblue;
-}
-
-.document .token.boolean,
-.document .token.number {
-  color: orange;
-}
-
-.document .token.comment {
-  color: grey;
-}
-
-.document .token.string {
-  color: mediumspringgreen;
-}
-
-.document .token.variable {
-  color: #ef596f;
-}
-
-.document strong {
-  color: white;
-}
-
-.document code {
-  padding: 2px 9px;
-  border-radius: 12px;
-  background-color: rgba(0, 0, 0, 0.2);
-  font-size: 14px;
-}
-
-.document h2 {
-  margin-top: 60px;
-}
-
-.document ul {
-  padding: 0 30px;
-}
-
-.document li {
-  margin: 6px 0 0 18px;
-}
-
-.document img {
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 12px;
-}
-
-.document table {
-  width: calc(100% - 30px - 30px);
-  margin: 18px 30px 0;
-  border-collapse: collapse;
-}
-
-.document th {
-  font-family: "Montserrat", sans-serif;
-  text-align: left;
-  text-transform: uppercase;
-  color: white;
-  font-weight: 400;
-  padding: 0 24px 12px 0;
-}
-
-.document td {
-  margin: 0;
-  padding: 12px 24px 12px 0;
-  border-top: 1px solid currentColor;
-}
-
-/* -----------------------------------------------------------------------------
 // Godoc
 ------------------------------------------------------------------------------*/
 .godoc-menu dl,
@@ -291,7 +47,7 @@ pre[class*="language-"] code {
 
 .godoc code,
 .godoc pre,
-.document .chroma {
+.markdown .chroma {
   display: block;
   margin: 18px 30px 0;
   padding: 18px 24px;
@@ -340,76 +96,6 @@ pre[class*="language-"] code {
 }
 
 /* -----------------------------------------------------------------------------
-// Loader
-------------------------------------------------------------------------------*/
-.loader {
-  width: 100%;
-  height: 100%;
-}
-
-.loader .content {
-  margin: 0 auto 45px;
-}
-
-.loader .label {
-  color: white;
-  text-transform: uppercase;
-}
-
-.loader .icon {
-  border: 2px solid #b4b4b4;
-  border-top: 2px solid white;
-  border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  animation: spin 0.75s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.loader .info {
-  max-width: 210px;
-  padding: 0 12px;
-}
-
-.loader .icon-brackground {
-  width: 44px;
-  height: 44px;
-}
-
-/* -----------------------------------------------------------------------------
-// Support
-------------------------------------------------------------------------------*/
-.document .support-partner {
-  display: block;
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 12px;
-  margin: 18px 18px 0 0;
-  padding: 24px;
-  color: currentColor;
-}
-
-.document .support-partner :hover {
-  color: deepskyblue;
-}
-
-.document .support-partner-name {
-  font-family: "Montserrat", sans-serif;
-  text-transform: uppercase;
-  text-align: center;
-  text-overflow: ellipsis;
-  font-weight: 400;
-  padding-top: 6px;
-}
-
-/* -----------------------------------------------------------------------------
 // Global
 ------------------------------------------------------------------------------*/
 html,
@@ -429,15 +115,15 @@ body {
 
 ::-webkit-scrollbar {
   border-radius: 12px;
-  width: 2px;
-  height: 10px;
+  width: 1px;
+  height: 1px;
   background-color: rgba(255, 255, 255, 0.08);
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 12px;
-  width: 2px;
-  height: 10px;
+  width: 1px;
+  height: 1px;
   background-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -453,7 +139,16 @@ body {
 .h4,
 .h5,
 .h6,
-.heading {
+.heading,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  border: 0;
+  margin: 0;
+  padding: 0;
   font-family: "Montserrat", sans-serif;
   font-weight: 300;
   text-transform: uppercase;
@@ -465,13 +160,33 @@ body {
   letter-spacing: 6px;
 }
 
-.h1 {
-  font-size: 19px;
+.h1,
+h1 {
+  font-size: 24px;
+  letter-spacing: 3px;
+}
+
+h1 {
+  padding-top: 18px;
+}
+
+.h2,
+h2 {
+  font-size: 18px;
   letter-spacing: 2px;
 }
 
-.h2 {
-  font-size: 16px;
+.header-separator,
+h1,
+h2 {
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.h3,
+h3 {
+  margin-top: 36px;
+  font-size: 15px;
   letter-spacing: 1px;
 }
 
@@ -561,17 +276,35 @@ a:active {
   margin: 18px 0 0 18px;
 }
 
+@media (max-width: 480px) {
+  .space-flow {
+    margin-left: 9px;
+    width: calc(100% - 9px - 18px);
+  }
+
+  .space-flow-item {
+    margin: 18px 0 0 9px;
+  }
+}
+
 .vspace-in {
   padding-top: 30px;
   padding-bottom: 30px;
+}
+
+.vspace-in-stretch {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  height: calc(100% - 30px - 30px);
 }
 
 .vspace-top {
   margin-top: 24px;
 }
 
-.vspace-section {
-  margin-top: 60px;
+.vspace-section,
+h2 {
+  margin-top: 72px;
 }
 
 .vspace-bottom {
@@ -592,6 +325,10 @@ a:active {
 
 .focus {
   color: white !important;
+}
+
+.error {
+  color: #f06372 !important;
 }
 
 .center {
@@ -705,6 +442,7 @@ a:active {
 .index-link {
   display: block;
   padding: 2px 0;
+  white-space: pre;
   color: currentColor;
 }
 
@@ -718,4 +456,127 @@ a:active {
 .support-us-item-label {
   margin-top: 6px;
   text-align: center;
+}
+
+/* -----------------------------------------------------------------------------
+// Loader
+------------------------------------------------------------------------------*/
+.loader .icon {
+  border: 2px solid silver;
+  border-radius: 50%;
+}
+
+.loader .icon.active {
+  border-top: 2px solid white;
+  animation: spin 0.55s linear infinite;
+}
+
+.loader p {
+  padding-top: 3px;
+  white-space: pre;
+}
+
+.page-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background-image: linear-gradient(#2e343a, #1c1d1f);
+}
+
+/* -----------------------------------------------------------------------------
+// markdown
+------------------------------------------------------------------------------*/
+pre[class*="language-"] {
+  display: block;
+  margin: 18px 0 0;
+  padding: 18px 30px;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  overflow: auto;
+}
+
+pre[class*="language-"] code {
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  font-family: monospace;
+}
+
+.markdown .token.keyword {
+  color: violet;
+}
+
+.markdown .token.function,
+.markdown a {
+  color: deepskyblue;
+}
+
+.markdown .token.builtin,
+.markdown .token.symbol {
+  color: dodgerblue;
+}
+
+.markdown .token.boolean,
+.markdown .token.number {
+  color: orange;
+}
+
+.markdown .token.comment {
+  color: grey;
+}
+
+.markdown .token.string {
+  color: mediumspringgreen;
+}
+
+.markdown .token.variable {
+  color: #ef596f;
+}
+
+.markdown strong {
+  color: white;
+}
+
+.markdown code {
+  padding: 2px 9px;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+}
+
+.markdown ul {
+  padding: 0;
+}
+
+.markdown li {
+  margin: 6px 0 0 18px;
+}
+
+.markdown img {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+}
+
+.markdown table {
+  width: calc(100% - 30px - 30px);
+  margin: 18px 30px 0;
+  border-collapse: collapse;
+}
+
+.markdown th {
+  font-family: "Montserrat", sans-serif;
+  text-align: left;
+  text-transform: uppercase;
+  color: white;
+  font-weight: 400;
+  padding: 0 24px 12px 0;
+}
+
+.markdown td {
+  margin: 0;
+  padding: 12px 24px 12px 0;
+  border-top: 1px solid currentColor;
 }

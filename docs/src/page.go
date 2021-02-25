@@ -59,7 +59,7 @@ func (p *page2) Render() app.UI {
 						Class("hspace-out").
 						Body(
 							app.Header().
-								Class("h1").
+								Class("h2").
 								Class("vspace-top").
 								Text("Index"),
 							app.Div().
@@ -94,16 +94,20 @@ func (p *page2) Render() app.UI {
 							OnClick(p.onUpdateClick),
 					),
 				),
-			app.Main().
+			app.Div().
 				Class("content").
 				Body(
-					app.Range(p.Icontent).Slice(func(i int) app.UI {
-						return p.Icontent[i]
-					}),
-					app.Aside().
-						Class("vspace-section").
-						Class("vspace-bottom").
-						Body(newSupportUs()),
+					app.Main().
+						ID("top").
+						Body(
+							app.Range(p.Icontent).Slice(func(i int) app.UI {
+								return p.Icontent[i]
+							}),
+							app.Aside().
+								Class("vspace-section").
+								Class("vspace-bottom").
+								Body(newSupportUs()),
+						),
 				),
 		)
 }

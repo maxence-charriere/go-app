@@ -92,6 +92,13 @@ func (ctx Context) SessionStorage() BrowserStorage {
 	return ctx.dispatcher.sessionStorage()
 }
 
+// ScrollTo scrolls to the HTML element with the given id.
+func (ctx Context) ScrollTo(id string) {
+	ctx.Dispatch(func() {
+		Window().ScrollToID(id)
+	})
+}
+
 func makeContext(src UI) Context {
 	return Context{
 		Context:            src.context(),

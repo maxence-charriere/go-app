@@ -209,6 +209,9 @@ resources to run Go-based progressive web apps.
 					<dd>    <a href="#Context.ResolveStaticResource" id="src-Context.ResolveStaticResource" id="src-Context.ResolveStaticResource">func (ctx Context) ResolveStaticResource(path string) string</a></dd>
 				
 					
+					<dd>    <a href="#Context.ScrollTo" id="src-Context.ScrollTo" id="src-Context.ScrollTo">func (ctx Context) ScrollTo(id string)</a></dd>
+				
+					
 					<dd>    <a href="#Context.SessionStorage" id="src-Context.SessionStorage" id="src-Context.SessionStorage">func (ctx Context) SessionStorage() BrowserStorage</a></dd>
 				
 			
@@ -2218,6 +2221,21 @@ Reload reloads the WebAssembly app at the current page.
 ResolveStaticResource resolves the given path to make it point to the right
 location whether static resources are located on a local directory or a
 remote bucket.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="Context.ScrollTo">func (Context) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go#L86">ScrollTo</a>
+					<a class="permalink" href="#Context.ScrollTo" id="src-Context.ScrollTo">¶</a>
+					
+					
+				</h3>
+				<pre>func (ctx <a href="#Context" id="src-Context">Context</a>) ScrollTo(id <a href="https://golang.org/pkg/builtin/#string">string</a>)</pre>
+				<p>
+ScrollTo scrolls to the HTML element with the given id.
 </p>
 
 				

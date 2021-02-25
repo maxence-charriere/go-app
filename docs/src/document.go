@@ -5,8 +5,6 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/gomarkdown/markdown"
-	"github.com/gomarkdown/markdown/parser"
 	"github.com/maxence-charriere/go-app/v8/pkg/app"
 	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
@@ -127,10 +125,4 @@ func (d *document) Render() app.UI {
 					support(),
 				),
 		)
-}
-
-func parseMarkdown(md []byte) []byte {
-	extensions := parser.CommonExtensions | parser.AutoHeadingIDs
-	parser := parser.NewWithExtensions(extensions)
-	return markdown.ToHTML(md, parser, nil)
 }

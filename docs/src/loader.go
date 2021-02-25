@@ -1,83 +1,111 @@
 package main
 
-import "github.com/maxence-charriere/go-app/v8/pkg/app"
+import (
+	"fmt"
+
+	"github.com/maxence-charriere/go-app/v8/pkg/app"
+)
 
 type loader struct {
 	app.Compo
 
-	IDescription string
-	IClass       string
-	ILoading     bool
-	IErr         error
+	Iloading     bool
+	Iclass       string
+	Ititle       string
+	Idescription string
+	Ierr         error
+	Isize        int
 }
 
 func newLoader() *loader {
-	return &loader{}
-}
-
-func (l *loader) Description(v string) *loader {
-	l.IDescription = v
-	return l
+	return &loader{
+		Isize: 66,
+	}
 }
 
 func (l *loader) Class(v string) *loader {
-	if l.IClass != "" {
-		l.IClass += " "
+	if v == "" {
+		return l
 	}
-	l.IClass += v
-
+	if l.Iclass != "" {
+		l.Iclass += " "
+	}
+	l.Iclass += v
 	return l
 }
 
-func (l *loader) Err(err error) *loader {
-	l.IErr = err
+func (l *loader) Title(v string) *loader {
+	l.Ititle = v
+	return l
+}
+
+func (l *loader) Description(v string) *loader {
+	l.Idescription = v
 	return l
 }
 
 func (l *loader) Loading(v bool) *loader {
-	l.ILoading = v
+	l.Iloading = v
+	return l
+}
+
+func (l *loader) Err(err error) *loader {
+	l.Ierr = err
+	return l
+}
+
+func (l *loader) Size(v int) *loader {
+	l.Isize = v
 	return l
 }
 
 func (l *loader) Render() app.UI {
-	visibility := "hidden"
-	if l.ILoading || l.IErr != nil {
-		visibility = ""
+	display := "hide"
+	if l.Iloading {
+		display = ""
 	}
 
-	return app.Stack().
+	descriptionMsg := l.Idescription
+	descriptionColor := ""
+	state := "active"
+
+	if l.Ierr != nil {
+		descriptionMsg = l.Ierr.Error()
+		descriptionColor = "error"
+		state = "inactive"
+		display = ""
+	}
+
+	return app.Aside().
 		Class("loader").
-		Class(visibility).
-		Center().
-		Content(
-			app.Div().
-				Class("content").
-				Body(
-					app.Stack().
-						Center().
-						Content(
+		Class(display).
+		Class(l.Iclass).
+		Body(
+			app.Stack().
+				Class("vspace-in-stretch").
+				Class("fit").
+				Class("center").
+				Center().
+				Content(
+					app.Div().
+						Style("width", fmt.Sprintf("%vpx", l.Isize)).
+						Style("height", fmt.Sprintf("%vpx", l.Isize)).
+						Body(
 							app.Div().
-								Class("icon-brackground").
-								Body(
-									app.If(l.IErr == nil,
-										app.Div().Class("icon"),
-									),
-								),
-							app.Div().
-								Class("info").
-								Body(
-									app.Div().
-										Class("label").
-										Text("Loading"),
-									app.If(l.IErr != nil,
-										app.Div().
-											Class("error").
-											Text(l.IErr),
-									).ElseIf(l.IDescription != "",
-										app.Div().Text(l.IDescription),
-									),
-								),
-							app.Div().Class("margin"),
+								Class("icon").
+								Class(state).
+								Style("width", fmt.Sprintf("%vpx", l.Isize-2)).
+								Style("height", fmt.Sprintf("%vpx", l.Isize-2)),
+						),
+					app.Div().
+						Class("hspace-in").
+						Body(
+							app.Header().
+								Class("h1").
+								Text(l.Ititle),
+							app.P().
+								Class(descriptionColor).
+								Text(descriptionMsg),
 						),
 				),
 		)
