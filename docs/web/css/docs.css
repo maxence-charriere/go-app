@@ -546,37 +546,42 @@ pre[class*="language-"] code {
   font-size: 14px;
 }
 
-.markdown ul,
-.markdown ol {
+ul,
+ol {
+  margin: 18px 0 0 0;
   padding: 0;
 }
 
-.markdown li {
+li {
   margin: 6px 0 0 18px;
 }
 
-.markdown img {
+li:first-child {
+  margin: 0 0 0 18px;
+}
+
+img {
   width: 100%;
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 12px;
 }
 
-.markdown table {
-  width: calc(100% - 30px - 30px);
-  margin: 18px 30px 0;
+table {
+  width: 100%;
+  margin: 18px 0 0;
   border-collapse: collapse;
 }
 
-.markdown th {
+th {
   font-family: "Montserrat", sans-serif;
   text-align: left;
   text-transform: uppercase;
   color: white;
   font-weight: 400;
-  padding: 0 24px 12px 0;
+  padding: 0 30px 12px 0;
 }
 
-.markdown td {
+td {
   margin: 0;
   padding: 12px 24px 12px 0;
   border-top: 1px solid currentColor;
