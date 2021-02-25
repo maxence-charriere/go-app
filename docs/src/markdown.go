@@ -2,14 +2,11 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-	"net/http"
 	"path/filepath"
 
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/parser"
 	"github.com/maxence-charriere/go-app/v8/pkg/app"
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 	"github.com/maxence-charriere/go-app/v8/pkg/logs"
 )
 
@@ -241,10 +238,10 @@ func (d *markdownDoc) load(ctx app.Context, path string) {
 	d.Update()
 
 	ctx.Async(func() {
-		md, err := d.get(ctx, path)
+		md, err := get(ctx, path)
 
 		d.Defer(func(ctx app.Context) {
-			d.markdow = md
+			d.markdow = fmt.Sprintf("<div>%s</div>", parseMarkdown(md))
 			d.err = err
 			d.isLoading = false
 			d.Update()
@@ -259,35 +256,6 @@ func (d *markdownDoc) load(ctx app.Context, path string) {
 	})
 }
 
-func (d *markdownDoc) get(ctx app.Context, path string) (string, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, path, nil)
-	if err != nil {
-		return "", errors.New("creating request failed").
-			Tag("path", path).
-			Wrap(err)
-	}
-
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return "", errors.New("getting document failed").
-			Tag("path", path).
-			Wrap(err)
-	}
-	defer res.Body.Close()
-
-	if res.StatusCode >= 400 {
-		return "", errors.New(res.Status).Tag("path", path)
-	}
-
-	b, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return "", errors.New("reading document failed").
-			Tag("path", path).
-			Wrap(err)
-	}
-	return fmt.Sprintf("<div>%s</div>", parseMarkdown(b)), nil
-}
-
 func (d *markdownDoc) highlightCode(ctx app.Context) {
 	ctx.Dispatch(func() {
 		app.Window().Get("Prism").Call("highlightAll")
@@ -295,7 +263,7 @@ func (d *markdownDoc) highlightCode(ctx app.Context) {
 }
 
 func (d *markdownDoc) Render() app.UI {
-	return newPage2().
+	return newPage().
 		Index(
 			newIndex().Links(d.index...),
 		).

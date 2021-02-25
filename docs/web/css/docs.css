@@ -1,101 +1,4 @@
 /* -----------------------------------------------------------------------------
-// Godoc
-------------------------------------------------------------------------------*/
-.godoc-menu dl,
-.godoc-menu a {
-  margin: 0;
-  padding: 0;
-}
-
-.godoc-menu .loader {
-  height: calc(100% - 40px);
-}
-
-.godoc-menu section {
-  margin: 0;
-  padding: 18px 0 0;
-}
-
-.godoc-menu dd {
-  margin: 0;
-  padding: 0 30px 3px;
-  width: calc(100% - 30px - 30px);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.godoc h2 {
-  margin-top: 60px;
-  text-transform: none;
-}
-
-.godoc h3 {
-  margin-top: 36px;
-  text-transform: none;
-}
-
-.godoc h2 a,
-.godoc h3 a,
-.godoc pre a {
-  color: deepskyblue;
-}
-
-.godoc pre .comment {
-  color: mediumspringgreen;
-}
-
-.godoc code,
-.godoc pre,
-.markdown .chroma {
-  display: block;
-  margin: 18px 30px 0;
-  padding: 18px 24px;
-  border-radius: 12px;
-  background-color: rgba(0, 0, 0, 0.2);
-  font-size: 14px;
-  overflow: auto;
-}
-
-.godoc code {
-  margin: 0;
-}
-
-.godoc dd {
-  margin: 0;
-  padding: 0 30px;
-}
-
-.godoc #pkg-overview,
-.godoc #pkg-index {
-  cursor: pointer;
-}
-
-.godoc .pkg-dir {
-  padding: 18px 24px 0;
-}
-
-.godoc .toggleVisible .collapsed {
-  display: none;
-}
-
-.godoc .toggleVisible .expanded {
-  display: block;
-}
-
-.godoc .toggle .collapsed {
-  display: block;
-}
-
-.godoc .toggle .expanded {
-  display: none;
-}
-
-.godoc #footer {
-  display: none;
-}
-
-/* -----------------------------------------------------------------------------
 // Global
 ------------------------------------------------------------------------------*/
 html,
@@ -204,6 +107,47 @@ a {
 a:hover,
 a:active {
   color: deepskyblue;
+}
+
+ul,
+ol {
+  margin: 18px 0 0 0;
+  padding: 0;
+}
+
+li {
+  margin: 6px 0 0 18px;
+}
+
+li:first-child {
+  margin: 0 0 0 18px;
+}
+
+img {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+}
+
+table {
+  width: 100%;
+  margin: 18px 0 0;
+  border-collapse: collapse;
+}
+
+th {
+  font-family: "Montserrat", sans-serif;
+  text-align: left;
+  text-transform: uppercase;
+  color: white;
+  font-weight: 400;
+  padding: 0 30px 12px 0;
+}
+
+td {
+  margin: 0;
+  padding: 12px 24px 12px 0;
+  border-top: 1px solid currentColor;
 }
 
 .fill {
@@ -546,43 +490,95 @@ pre[class*="language-"] code {
   font-size: 14px;
 }
 
-ul,
-ol {
-  margin: 18px 0 0 0;
-  padding: 0;
-}
-
-li {
-  margin: 6px 0 0 18px;
-}
-
-li:first-child {
-  margin: 0 0 0 18px;
-}
-
-img {
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 12px;
-}
-
-table {
-  width: 100%;
-  margin: 18px 0 0;
-  border-collapse: collapse;
-}
-
-th {
-  font-family: "Montserrat", sans-serif;
-  text-align: left;
-  text-transform: uppercase;
-  color: white;
-  font-weight: 400;
-  padding: 0 30px 12px 0;
-}
-
-td {
+/* -----------------------------------------------------------------------------
+// Godoc
+------------------------------------------------------------------------------*/
+.godoc-index dl,
+.godoc-index a {
   margin: 0;
-  padding: 12px 24px 12px 0;
-  border-top: 1px solid currentColor;
+  padding: 0;
+  color: currentColor;
+}
+
+.godoc-index a:hover,
+.godoc-index a:active {
+  color: deepskyblue;
+}
+
+.godoc-index dd {
+  margin: 0;
+  padding: 2px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.godoc h2 {
+  margin-top: 60px;
+  text-transform: none;
+}
+
+.godoc h3 {
+  margin-top: 36px;
+  text-transform: none;
+}
+
+.godoc h2 a,
+.godoc h3 a,
+.godoc pre a {
+  color: deepskyblue;
+}
+
+.godoc pre .comment {
+  color: mediumspringgreen;
+}
+
+.godoc code,
+.godoc pre,
+.markdown .chroma {
+  display: block;
+  margin: 18px 30px 0;
+  padding: 18px 24px;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  overflow: auto;
+}
+
+.godoc code {
+  margin: 0;
+}
+
+.godoc dd {
+  margin: 0;
+  padding: 0 30px;
+}
+
+.godoc #pkg-overview,
+.godoc #pkg-index {
+  cursor: pointer;
+}
+
+.godoc .pkg-dir {
+  padding: 18px 24px 0;
+}
+
+.godoc .toggleVisible .collapsed {
+  display: none;
+}
+
+.godoc .toggleVisible .expanded {
+  display: block;
+}
+
+.godoc .toggle .collapsed {
+  display: block;
+}
+
+.godoc .toggle .expanded {
+  display: none;
+}
+
+.godoc #footer {
+  display: none;
 }

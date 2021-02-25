@@ -8,7 +8,7 @@ const (
 	pageItemWidth = 276
 )
 
-type page2 struct {
+type page struct {
 	app.Compo
 
 	Iindex   []app.UI
@@ -17,34 +17,34 @@ type page2 struct {
 	isAppUpdateAvailable bool
 }
 
-func newPage2() *page2 {
-	return &page2{}
+func newPage() *page {
+	return &page{}
 }
 
-func (p *page2) Index(v ...app.UI) *page2 {
+func (p *page) Index(v ...app.UI) *page {
 	p.Iindex = app.FilterUIElems(v...)
 	return p
 }
 
-func (p *page2) Content(v ...app.UI) *page2 {
+func (p *page) Content(v ...app.UI) *page {
 	p.Icontent = app.FilterUIElems(v...)
 	return p
 }
 
-func (p *page2) OnNav(ctx app.Context) {
+func (p *page) OnNav(ctx app.Context) {
 	p.setAvailableUpdate(ctx)
 }
 
-func (p *page2) OnAppUpdate(ctx app.Context) {
+func (p *page) OnAppUpdate(ctx app.Context) {
 	p.setAvailableUpdate(ctx)
 }
 
-func (p *page2) setAvailableUpdate(ctx app.Context) {
+func (p *page) setAvailableUpdate(ctx app.Context) {
 	p.isAppUpdateAvailable = ctx.AppUpdateAvailable
 	p.Update()
 }
 
-func (p *page2) Render() app.UI {
+func (p *page) Render() app.UI {
 	return app.Shell().
 		Class("background").
 		MenuWidth(pageItemWidth).
@@ -112,7 +112,7 @@ func (p *page2) Render() app.UI {
 		)
 }
 
-func (p *page2) onUpdateClick() {
+func (p *page) onUpdateClick() {
 	p.Defer(func(ctx app.Context) {
 		ctx.Reload()
 	})

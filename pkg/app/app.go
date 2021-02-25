@@ -6,7 +6,7 @@
 // programming language and WebAssembly.
 // It uses a declarative syntax that allows creating and dealing with HTML
 // elements only by using Go, and without writing any HTML markup.
-// The package also provides an http.handler ready to serve all the required
+// The package also provides an http.Handler ready to serve all the required
 // resources to run Go-based progressive web apps.
 package app
 

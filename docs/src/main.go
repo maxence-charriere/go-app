@@ -41,7 +41,6 @@ func main() {
 		app.Route(path, newMarkdownDoc())
 	}
 	app.Route("/reference", newReference())
-	app.Route("/issue499", newIssue499Data())
 	app.Route("/", newMarkdownDoc())
 	app.RunWhenOnBrowser()
 
