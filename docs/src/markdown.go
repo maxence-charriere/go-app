@@ -260,30 +260,30 @@ func (d *markdownDoc) load(ctx app.Context, path string) {
 }
 
 func (d *markdownDoc) get(ctx app.Context, path string) (string, error) {
-	url := *ctx.Page.URL()
-	url.Path = path
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, path, nil)
 	if err != nil {
 		return "", errors.New("creating request failed").
-			Tag("url", url).
+			Tag("path", path).
 			Wrap(err)
 	}
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return "", errors.New("getting document failed").
-			Tag("url", url).
+			Tag("path", path).
 			Wrap(err)
 	}
 	defer res.Body.Close()
 
 	if res.StatusCode >= 400 {
-		return "", errors.New(res.Status)
+		return "", errors.New(res.Status).Tag("path", path)
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", errors.New("reading document failed").Wrap(err)
+		return "", errors.New("reading document failed").
+			Tag("path", path).
+			Wrap(err)
 	}
 	return fmt.Sprintf("<div>%s</div>", parseMarkdown(b)), nil
 }
@@ -305,6 +305,25 @@ func (d *markdownDoc) Render() app.UI {
 				Class("hspace-out-stretch").
 				Body(
 					app.Raw(d.markdow),
+					app.Footer().
+						Class("vspace-section").
+						Body(
+							app.Div().
+								ID("report-issue").
+								Class("h2").
+								Class("header-separator").
+								Text("Report issue"),
+							app.P().Body(
+								app.Text("Found something incorrect, a typo or have suggestions to improve this article? "),
+								app.A().
+									Href(fmt.Sprintf(
+										"%s/issues/new?title=Documentation issues in %s",
+										githubURL,
+										filepath.Base(d.path),
+									)).
+									Text("Let us know :)"),
+							),
+						),
 				),
 			newLoader().
 				Class("page-loader").

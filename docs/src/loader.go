@@ -65,11 +65,13 @@ func (l *loader) Render() app.UI {
 		display = ""
 	}
 
+	title := l.Ititle
 	descriptionMsg := l.Idescription
 	descriptionColor := ""
 	state := "active"
 
 	if l.Ierr != nil {
+		title += " failed"
 		descriptionMsg = l.Ierr.Error()
 		descriptionColor = "error"
 		state = "inactive"
@@ -82,6 +84,7 @@ func (l *loader) Render() app.UI {
 		Class(l.Iclass).
 		Body(
 			app.Stack().
+				Class("hspace-out").
 				Class("vspace-in-stretch").
 				Class("fit").
 				Class("center").
@@ -102,7 +105,7 @@ func (l *loader) Render() app.UI {
 						Body(
 							app.Header().
 								Class("h1").
-								Text(l.Ititle),
+								Text(title),
 							app.P().
 								Class(descriptionColor).
 								Text(descriptionMsg),
