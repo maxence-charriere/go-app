@@ -11,8 +11,9 @@ const (
 type page struct {
 	app.Compo
 
-	Iindex   []app.UI
-	Icontent []app.UI
+	Iindex      []app.UI
+	Icontent    []app.UI
+	IissueTitle string
 
 	isAppUpdateAvailable bool
 }
@@ -28,6 +29,11 @@ func (p *page) Index(v ...app.UI) *page {
 
 func (p *page) Content(v ...app.UI) *page {
 	p.Icontent = app.FilterUIElems(v...)
+	return p
+}
+
+func (p *page) IssueTitle(v string) *page {
+	p.IissueTitle = v
 	return p
 }
 
@@ -100,9 +106,16 @@ func (p *page) Render() app.UI {
 					app.Main().
 						ID("top").
 						Body(
-							app.Range(p.Icontent).Slice(func(i int) app.UI {
-								return p.Icontent[i]
-							}),
+							app.Article().
+								Body(
+									app.Range(p.Icontent).Slice(func(i int) app.UI {
+										return p.Icontent[i]
+									}),
+									app.Footer().
+										Class("vspace-section").
+										Class("hspace-out").
+										Body(newIssue().Title(p.IissueTitle)),
+								),
 							app.Aside().
 								Class("vspace-section").
 								Class("vspace-bottom").

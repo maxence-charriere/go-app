@@ -163,7 +163,7 @@ func (f *flow) refreshLayout(ctx Context) {
 		return
 	}
 
-	f.adjustSizeTimer = time.AfterFunc(0, func() {
+	f.adjustSizeTimer = time.AfterFunc(flowResizeSizeDelay, func() {
 		f.Defer(f.adjustItemSizes)
 	})
 }

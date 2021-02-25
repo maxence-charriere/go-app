@@ -123,12 +123,6 @@ li:first-child {
   margin: 0 0 0 18px;
 }
 
-img {
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 12px;
-}
-
 table {
   width: 100%;
   margin: 18px 0 0;
@@ -148,6 +142,25 @@ td {
   margin: 0;
   padding: 12px 24px 12px 0;
   border-top: 1px solid currentColor;
+}
+
+pre,
+pre[class*="language-"],
+.godoc code {
+  display: block;
+  margin: 18px 0 0;
+  padding: 18px 30px;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  overflow: auto;
+}
+
+pre[class*="language-"] code {
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  font-family: monospace;
 }
 
 .fill {
@@ -431,21 +444,10 @@ h2 {
 /* -----------------------------------------------------------------------------
 // markdown
 ------------------------------------------------------------------------------*/
-pre[class*="language-"] {
-  display: block;
-  margin: 18px 0 0;
-  padding: 18px 30px;
-  border-radius: 12px;
+.markdown img {
+  width: 100%;
   background-color: rgba(0, 0, 0, 0.2);
-  font-size: 14px;
-  overflow: auto;
-}
-
-pre[class*="language-"] code {
-  padding: 0;
-  margin: 0;
-  background-color: transparent;
-  font-family: monospace;
+  border-radius: 12px;
 }
 
 .markdown .token.keyword {
@@ -513,13 +515,8 @@ pre[class*="language-"] code {
   text-overflow: ellipsis;
 }
 
-.godoc h2 {
-  margin-top: 60px;
-  text-transform: none;
-}
-
+.godoc h2,
 .godoc h3 {
-  margin-top: 36px;
   text-transform: none;
 }
 
@@ -533,25 +530,18 @@ pre[class*="language-"] code {
   color: mediumspringgreen;
 }
 
-.godoc code,
-.godoc pre,
-.markdown .chroma {
-  display: block;
-  margin: 18px 30px 0;
-  padding: 18px 24px;
-  border-radius: 12px;
-  background-color: rgba(0, 0, 0, 0.2);
-  font-size: 14px;
-  overflow: auto;
-}
-
-.godoc code {
-  margin: 0;
-}
-
 .godoc dd {
-  margin: 0;
-  padding: 0 30px;
+  margin: 2px 0;
+  padding: 0;
+}
+
+.godoc dd a {
+  color: currentColor;
+}
+
+.godoc dd a:hover,
+.godoc dd a:active {
+  color: deepskyblue;
 }
 
 .godoc #pkg-overview,
@@ -560,7 +550,7 @@ pre[class*="language-"] code {
 }
 
 .godoc .pkg-dir {
-  padding: 18px 24px 0;
+  padding: 18px 0 0;
 }
 
 .godoc .toggleVisible .collapsed {

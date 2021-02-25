@@ -268,30 +268,11 @@ func (d *markdownDoc) Render() app.UI {
 			newIndex().Links(d.index...),
 		).
 		Content(
-			app.Article().
+			app.Div().
 				Class("markdown").
 				Class("hspace-out-stretch").
 				Body(
 					app.Raw(d.markdow),
-					app.Footer().
-						Class("vspace-section").
-						Body(
-							app.Div().
-								ID("report-issue").
-								Class("h2").
-								Class("header-separator").
-								Text("Report issue"),
-							app.P().Body(
-								app.Text("Found something incorrect, a typo or have suggestions to improve this article? "),
-								app.A().
-									Href(fmt.Sprintf(
-										"%s/issues/new?title=Documentation issues in %s",
-										githubURL,
-										filepath.Base(d.path),
-									)).
-									Text("Let us know :)"),
-							),
-						),
 				),
 			newLoader().
 				Class("page-loader").
@@ -300,7 +281,8 @@ func (d *markdownDoc) Render() app.UI {
 				Description(filepath.Base(d.path)).
 				Loading(d.isLoading).
 				Err(d.err),
-		)
+		).
+		IssueTitle(filepath.Base(d.path))
 }
 
 func parseMarkdown(md []byte) []byte {
