@@ -18,7 +18,7 @@ import (
 
 const (
 	defaultTitle       = "A Go package for building Progressive Web Apps"
-	defaultDescription = "A package for building progressive web apps (PWA) with the  Go programming language (Golang) and WebAssembly (Wasm). It uses a declarative syntax that allows creating and dealing with HTML elements only by using Go, and without writing any HTML markup."
+	defaultDescription = "A package for building progressive web apps (PWA) with the Go programming language (Golang) and WebAssembly (Wasm). It uses a declarative syntax that allows creating and dealing with HTML elements only by using Go, and without writing any HTML markup."
 	backgroundColor    = "#2e343a"
 
 	buyMeACoffeeURL   = "https://www.buymeacoffee.com/maxence"
