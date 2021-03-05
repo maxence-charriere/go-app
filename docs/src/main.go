@@ -41,6 +41,7 @@ func main() {
 		app.Route(path, newMarkdownDoc())
 	}
 	app.Route("/reference", newReference())
+	app.RouteWithRegexp(`^/examples(/(\w)+)*$`, newExample())
 	app.Route("/", newMarkdownDoc())
 	app.RunWhenOnBrowser()
 

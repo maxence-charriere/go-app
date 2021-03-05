@@ -163,6 +163,23 @@ pre[class*="language-"] code {
   font-family: monospace;
 }
 
+input[type="text"],
+input[type="password"] {
+  padding: 9px 0 9px 9px;
+  margin: 0;
+  outline: none;
+  border: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  background: transparent;
+  font-size: 14px;
+  color: currentColor;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-left: 1px solid deepskyblue;
+}
+
 .fill {
   height: 100%;
   width: 100%;

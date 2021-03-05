@@ -119,6 +119,11 @@ func (n *nav) Render() app.UI {
 										Href("/built-with").
 										Focus(n.currentPath == "/built-with"),
 									newLink().
+										Label("Examples").
+										Icon(newSVGIcon().RawSVG(schoolSVG)).
+										Href("/examples").
+										Focus(n.currentPath == "/examples"),
+									newLink().
 										Label("Install").
 										Icon(newSVGIcon().RawSVG(downloadSVG)).
 										Href("/install").
