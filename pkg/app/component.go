@@ -38,6 +38,19 @@ type Composer interface {
 	// updating the UI and ensures that the component is mounted when the
 	// function is called.
 	Defer(func(Context))
+
+	// ResizeContent triggers OnResize() on all the component children that
+	// implement the Resizer interface.
+	ResizeContent()
+
+	// 	BindTo stores the value of the DOM element (if exists) that emitted an
+	// event into the given value.
+	//
+	// The given value must be a pointer to a signed integer, unsigned integer,
+	// or a float.
+	//
+	// It panics if the given value is not a pointer.
+	BindTo(interface{}) EventHandler
 }
 
 // PreRenderer is the interface that describes a component that performs
@@ -186,6 +199,27 @@ func (c *Compo) ResizeContent() {
 	c.Defer(func(Context) {
 		c.root.onResize()
 	})
+}
+
+// BindTo stores the value of the DOM element (if exists) that emitted an event
+// into the given value.
+//
+// The given value must be a pointer to a signed integer, unsigned integer, or a
+// float.
+//
+// It panics if the given value is not a pointer.
+func (c *Compo) BindTo(v interface{}) EventHandler {
+	return func(ctx Context, e Event) {
+		value := ctx.JSSrc.Get("value")
+		if !value.Truthy() {
+			return
+		}
+		if err := stringTo(value.String(), v); err != nil {
+			Log("%s", errors.New("binding dom element value failed").Wrap(err))
+			return
+		}
+		c.Update()
+	}
 }
 
 func (c *Compo) name() string {
