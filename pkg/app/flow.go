@@ -175,7 +175,7 @@ func (f *flow) adjustItemSizes(ctx Context) {
 
 	elem := Window().GetElementByID(f.id)
 	if !elem.Truthy() {
-		Log("%s", errors.New("flow root element found").Tag("id", f.id))
+		Log(errors.New("flow root element found").Tag("id", f.id))
 		return
 	}
 

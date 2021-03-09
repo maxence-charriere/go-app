@@ -215,7 +215,7 @@ func (c *Compo) BindTo(v interface{}) EventHandler {
 			return
 		}
 		if err := stringTo(value.String(), v); err != nil {
-			Log("%s", errors.New("binding dom element value failed").Wrap(err))
+			Log(errors.New("binding dom element value failed").Wrap(err))
 			return
 		}
 		c.Update()
@@ -421,7 +421,7 @@ func (c *Compo) onNav(u *url.URL) {
 
 	if nav, ok := c.self().(deprecatedNavigator); ok {
 		ctx := makeContext(c.self())
-		Log("%s", errors.New("a deprecated component interface is in use").
+		Log(errors.New("a deprecated component interface is in use").
 			Tag("component", reflect.TypeOf(c.self())).
 			Tag("interface", "app.Navigator").
 			Tag("method-current", "OnNav(app.Context, *url.URL)").
@@ -448,7 +448,7 @@ func (c *Compo) onResize() {
 	}
 
 	if resizer, ok := c.self().(deprecatedResizer); ok {
-		Log("%s", errors.New("a deprecated component interface is in use").
+		Log(errors.New("a deprecated component interface is in use").
 			Tag("component", reflect.TypeOf(c.self())).
 			Tag("interface", "app.Resizer").
 			Tag("method-current", "OnAppResize(app.Context)").

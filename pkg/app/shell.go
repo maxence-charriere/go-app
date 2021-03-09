@@ -258,7 +258,7 @@ func (s *shell) refreshLayout(ctx Context) {
 func (s *shell) adjustLayout(ctx Context) {
 	root := Window().GetElementByID(s.id)
 	if !root.Truthy() {
-		Log("%s", errors.New("shell root element not found").Tag("id", s.id))
+		Log(errors.New("shell root element not found").Tag("id", s.id))
 		return
 	}
 

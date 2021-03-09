@@ -242,7 +242,7 @@ func onPopState(d Dispatcher) func(this Value, args []Value) interface{} {
 func navigate(d Dispatcher, rawURL string) {
 	u, err := url.Parse(rawURL)
 	if err != nil {
-		Log("%s", errors.New("navigating to URL failed").
+		Log(errors.New("navigating to URL failed").
 			Tag("url", rawURL).
 			Wrap(err))
 		return
