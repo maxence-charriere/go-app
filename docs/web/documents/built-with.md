@@ -6,13 +6,13 @@ Here is a list of progressive web app built with **go-app**.
 
 App to listen LO-FI radios.
 
-[![Lofimusic.app](/web/images/lofimusicapp.png)](https://lofimusic.app)
+[![Lofimusic.app](https://lofimusic.app/web/lofimusic-1.png)](https://lofimusic.app)
 
 ## Murlok.io
 
 World of Warcraft class guides.
 
-[![Murlok.io](/web/images/murlokio.png)](https://murlok.io)
+[![Murlok.io](https://storage.googleapis.com/murlok-v2.appspot.com/app/web/murlokio.png)](https://murlok.io)
 
 ## Astextract
 

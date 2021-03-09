@@ -2,34 +2,34 @@
 
 Progressive web apps created with the **go-app** package are working as a [single page application](https://en.wikipedia.org/wiki/Single-page_application).
 
-At first navigation, the app is loaded in the browser. Then, each time a page is requested, the navigation event is intercepted, then **go-app** routing system read the URL path and display the corresponding component.
+At first navigation, the app is loaded in the browser. Once loaded, each time a page is requested, the navigation event is intercepted and **go-app**'s routing mechanism reads the URL path, then loads a new instance of the associated component.
 
 ![routing.png](/web/images/routing.png)
 
 ## Define a route
 
-Defining a route is done by **associating a URL path with a given component**. Routes can be defined by using a simple pattern or by a regular expression.
+Defining a route is done by **associating a URL path with a given component type**. Routes can be defined by using a simple pattern or by a regular expression.
 
 ### Simple route
 
-Simple routes are when a component matches an exact URL path. They are defined with the [Route()](/reference#Route) function:
+Simple routes are when a component type matches an exact URL path. They are defined with the [Route()](/reference#Route) function:
 
 ```go
 func main() {
-	app.Route("/", &hello{})  // hello component is associated with default path "/".
-	app.Route("/foo", &foo{}) // foo component is associated with "/foo".
-	app.Run()                 // Launches the app in the web browser.
+	app.Route("/", &hello{})  // hello component type is associated with default path "/".
+	app.Route("/foo", &foo{}) // foo component type is associated with "/foo".
+	app.RunWhenOnBrowser()    // Launches the app when in a web browser.
 }
 ```
 
 ### Route with regular expression
 
-Routes with regular expressions are when a component matches an URL path with a given pattern. They are defined with the [RouteWithRegexp()](/reference#RouteWithRegexp)function:
+Routes with regular expressions are when a component type matches an URL path with a given pattern. They are defined with the [RouteWithRegexp()](/reference#RouteWithRegexp)function:
 
 ```go
 func main() {
 	app.RouteWithRegexp("^/bar.*", &bar) // bar component is associated with all paths that start with /bar.
-	app.Run()                            // Launches the app in the web browser.
+	app.RunWhenOnBrowser()               // Launches the app when in a web browser.
 }
 ```
 
