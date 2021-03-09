@@ -33,7 +33,8 @@ func TestHandlerServePageWithLocalDir(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	h := Handler{
-		Title: "Handler testing",
+		Resources: LocalDir(""),
+		Title:     "Handler testing",
 		Scripts: []string{
 			"web/hello.js",
 			"http://boo.com/bar.js",
