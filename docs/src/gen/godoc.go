@@ -17,13 +17,13 @@ func main() {
 		"-url", "/pkg/github.com/maxence-charriere/go-app/v8/pkg/app")
 	out, err := cmd.Output()
 	if err != nil {
-		app.Log("%s", errors.New("reading godoc failed").Wrap(err))
+		app.Log(errors.New("reading godoc failed").Wrap(err))
 		return
 	}
 
 	document, err := html.Parse(bytes.NewReader(out))
 	if err != nil {
-		app.Log("%s", errors.New("parsing html failed").Wrap(err))
+		app.Log(errors.New("parsing html failed").Wrap(err))
 		return
 	}
 
@@ -44,7 +44,7 @@ func main() {
 	for _, d := range docs {
 		n, err := findHTMLNode(document, d.targetID)
 		if err != nil {
-			app.Log("%s", errors.New("finding html node failed").
+			app.Log(errors.New("finding html node failed").
 				Tag("id", d.targetID).
 				Wrap(err))
 			return
@@ -53,7 +53,7 @@ func main() {
 
 		f, err := os.Create(d.file)
 		if err != nil {
-			app.Log("%s", errors.New("creating godoc file failed").
+			app.Log(errors.New("creating godoc file failed").
 				Tag("file", d.file).
 				Wrap(err))
 			return
@@ -61,7 +61,7 @@ func main() {
 		defer f.Close()
 
 		if err = html.Render(f, n); err != nil {
-			app.Log("%s", errors.New("writting godoc file failed").
+			app.Log(errors.New("writting godoc file failed").
 				Tag("file", d.file).
 				Wrap(err))
 			return

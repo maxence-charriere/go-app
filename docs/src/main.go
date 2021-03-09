@@ -123,7 +123,7 @@ func main() {
 }
 
 func runLocal(ctx context.Context, h *app.Handler, opts localOptions) {
-	app.Log("%s", logs.New("starting go-app documentation service").
+	app.Log(logs.New("starting go-app documentation service").
 		Tag("port", opts.Port).
 		Tag("version", h.Version),
 	)

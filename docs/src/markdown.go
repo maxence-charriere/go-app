@@ -217,7 +217,7 @@ func (d *markdownDoc) init(ctx app.Context) {
 
 	page, ok := mardownPages()[ctx.Page.URL().Path]
 	if !ok {
-		app.Log("%s", logs.New("markdown page not found").
+		app.Log(logs.New("markdown page not found").
 			Tag("url", ctx.Page.URL().String()),
 		)
 		return
