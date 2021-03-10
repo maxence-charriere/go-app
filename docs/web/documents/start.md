@@ -19,10 +19,8 @@ go version
 Create a Go package for your PWA and change directory to the newly created location:
 
 ```bash
-# Replace YOUR_PACKAGE by a you own package name.
-# Eg. $GOPATH/src/src/hello
-mkdir -p $GOPATH/src/YOUR_PACKAGE
-cd $GOPATH/src/YOUR_PACKAGE
+mkdir -p $GOPATH/src/github.com/YOUR_GITHUB_ID/hello
+cd $GOPATH/src/github.com/YOUR_GITHUB_ID/hello
 ```
 
 Then Initialize the **go module** and download the **go-app** package.
@@ -32,20 +30,19 @@ go mod init
 go get -u github.com/maxence-charriere/go-app/v8/pkg/app
 ```
 
-## User interface
+## Code
 
-Create the `app.go` file that will contain the [user interface](/architecture#ui) and write the following code:
+Here is the code used to create a progressive web app that displays a simple Hello World.
 
 ```go
-// +build wasm
-
-// The UI is running only on a web browser. Therefore, the build instruction
-// above is to compile the code below only when the program is built for the
-// WebAssembly (wasm) architecture.
-
 package main
 
-import "github.com/maxence-charriere/go-app/v8/pkg/app"
+import (
+	"log"
+	"net/http"
+
+	"github.com/maxence-charriere/go-app/v8/pkg/app"
+)
 
 // hello is a component that displays a simple "Hello World!". A component is a
 // customizable, independent, and reusable UI element. It is created by
@@ -60,53 +57,40 @@ func (h *hello) Render() app.UI {
 	return app.H1().Text("Hello World!")
 }
 
-// The main function is the entry point of the UI. It is where components are
-// associated with URL paths and where the UI is started.
+// The main function is the entry point where the app is configured and started.
+// It is executed on 2 different environments: A client (the web browser) and a
+// server.
 func main() {
-	app.Route("/", &hello{}) // hello component is associated with URL path "/".
-	app.Run()                // Launches the PWA.
-}
-```
-
-## Server
-
-Create the `main.go` file that will contain the [server](/architecture#server) and write the following code:
-
-```go
-// +build !wasm
-
-// The server is a classic Go program that can run on various architecture but
-// not on WebAssembly. Therefore, the build instruction above is to exclude the
-// code below from being built on the wasm architecture.
-
-package main
-
-import (
-	"log"
-	"net/http"
-
-	"github.com/maxence-charriere/go-app/v8/pkg/app"
-)
-
-// The main function is the entry of the server. It is where the HTTP handler
-// that serves the UI is defined and where the server is started.
-//
-// Note that because main.go and app.go are built for different architectures,
-// this main() function is not in conflict with the one in
-// app.go.
-func main() {
-	// app.Handler is a standard HTTP handler that serves the UI and its
-	// resources to make it work in a web browser.
+	// The first thing to do is to associate the hello component with a path.
 	//
-	// It implements the http.Handler interface so it can seamlessly be used
-	// with the Go HTTP standard library.
+	// This is done by calling the Route() function,  which tells go-app what
+	// component to display for a given path, on both client and server-side.
+	app.Route("/", &hello{})
+
+	// Once the routes set up, the next thing to do is to either launch the app
+	// or the server that serves the app.
+	//
+	// When executed on the client-side, the RunWhenOnBrowser() function
+	// launches the app,  starting a loop that listens for app events and
+	// executes client instructions. Since it is a blocking call, the code below
+	// it will never be executed.
+	//
+	// On the server-side, RunWhenOnBrowser() does nothing, which allows the
+	// writing of server logic without needing precompiling instructions.
+	app.RunWhenOnBrowser()
+
+	// Finally, launching the server that serves the app is done by using the Go
+	// standard HTTP package.
+	//
+	// The Handler is an HTTP handler that serves the client and all its
+	// required resources to make it work into a web browser. Here it is
+	// configured to handle requests with a path that starts with "/".
 	http.Handle("/", &app.Handler{
 		Name:        "Hello",
 		Description: "An Hello World! example",
 	})
 
-	err := http.ListenAndServe(":8000", nil)
-	if err != nil {
+	if err := http.ListenAndServe(":8000", nil); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -114,11 +98,15 @@ func main() {
 
 ## Build and run
 
-At this point the package should have the following content:
+Running a progressive app with **go-app** requires 2 Go programs:
+
+- A client that runs in a web browser
+- A server that serves the client and its resources
+
+At this point, the package has the following content:
 
 ```bash
 .
-├── app.go
 ├── go.mod
 ├── go.sum
 └── main.go
@@ -126,25 +114,26 @@ At this point the package should have the following content:
 0 directories, 4 files
 ```
 
-The last thing to do is to build the app. The build is done in 2 steps:
+### Building the client
 
 ```bash
-# Build the wasm program that contains the user interface.
 GOARCH=wasm GOOS=js go build -o web/app.wasm
 ```
 
+Note that the build output is explicitly set to `web/app.wasm`. The reason why is that the [Handler](/reference#Handler) expects the client to be a [static resource](/resources#static-resources) located at the `/web/app.wasm` path.
+
+### Building the server
+
 ```bash
-# Build the server that serves the wasm program and its resources:
 go build
 ```
 
-Note that when building the UI, the build output is explicitly set to `web/app.wasm`. The reason is that the [app.handler](/reference#Handler) tells the browser to load the UI from the `/web/app.wasm` path.
+### Launching the app
 
-Once the UI and the server built, the package should have the following content:
+Now the client and server built, the package has the following content:
 
 ```bash
 .
-├── app.go
 ├── go.mod
 ├── go.sum
 ├── hello
@@ -155,16 +144,15 @@ Once the UI and the server built, the package should have the following content:
 1 directory, 6 files
 ```
 
-Launch the server:
+The server is launched with the following command:
 
 ```bash
-# ./SERVER_NAME
 ./hello
 ```
 
-Finally, [navigate to the app](http://localhost:8000) into you web browser.
+The app is now accessible from a web browser at http://localhost:8000.
 
-## Tips
+### Tips
 
 The build process can be simplified by writing a makefile:
 
@@ -177,7 +165,7 @@ run: build
 	./hello
 ```
 
-Then run:
+It can now be built and ran with this single command:
 
 ```bash
 make run

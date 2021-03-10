@@ -50,7 +50,7 @@ func (i *issue) Render() app.UI {
 						githubURL,
 						i.Ititle,
 					)).
-					Text("Let us know :)"),
+					Text("Let me know :)"),
 			),
 		)
 }
