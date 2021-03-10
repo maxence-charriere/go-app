@@ -29,7 +29,10 @@
 				<dd><a href="#KeepBodyClean" id="src-KeepBodyClean">func KeepBodyClean() (close func())</a></dd>
 			
 				
-				<dd><a href="#Log" id="src-Log">func Log(format string, v ...interface{})</a></dd>
+				<dd><a href="#Log" id="src-Log">func Log(v ...interface{})</a></dd>
+			
+				
+				<dd><a href="#Logf" id="src-Logf">func Logf(format string, v ...interface{})</a></dd>
 			
 				
 				<dd><a href="#PrintHTML" id="src-PrintHTML">func PrintHTML(w io.Writer, ui UI)</a></dd>
@@ -69,6 +72,9 @@
 				
 				<dd><a href="#Compo" id="src-Compo">type Compo</a></dd>
 				
+				
+					
+					<dd>    <a href="#Compo.BindTo" id="src-Compo.BindTo">func (c *Compo) BindTo(v interface{}) EventHandler</a></dd>
 				
 					
 					<dd>    <a href="#Compo.Defer" id="src-Compo.Defer">func (c *Compo) Defer(fn func(Context))</a></dd>
@@ -1119,7 +1125,7 @@
 					<dd>    <a href="#GitHubPages" id="src-GitHubPages">func GitHubPages(repoName string) ResourceProvider</a></dd>
 				
 					
-					<dd>    <a href="#LocalDir" id="src-LocalDir">func LocalDir(path string) ResourceProvider</a></dd>
+					<dd>    <a href="#LocalDir" id="src-LocalDir">func LocalDir(root string) ResourceProvider</a></dd>
 				
 					
 					<dd>    <a href="#RemoteBucket" id="src-RemoteBucket">func RemoteBucket(url string) ResourceProvider</a></dd>

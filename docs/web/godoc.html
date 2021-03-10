@@ -107,7 +107,10 @@ resources to run Go-based progressive web apps.
 				<dd><a href="#KeepBodyClean" id="src-KeepBodyClean" id="src-KeepBodyClean">func KeepBodyClean() (close func())</a></dd>
 			
 				
-				<dd><a href="#Log" id="src-Log" id="src-Log">func Log(format string, v ...interface{})</a></dd>
+				<dd><a href="#Log" id="src-Log" id="src-Log">func Log(v ...interface{})</a></dd>
+			
+				
+				<dd><a href="#Logf" id="src-Logf" id="src-Logf">func Logf(format string, v ...interface{})</a></dd>
 			
 				
 				<dd><a href="#PrintHTML" id="src-PrintHTML" id="src-PrintHTML">func PrintHTML(w io.Writer, ui UI)</a></dd>
@@ -147,6 +150,9 @@ resources to run Go-based progressive web apps.
 				
 				<dd><a href="#Compo" id="src-Compo" id="src-Compo">type Compo</a></dd>
 				
+				
+					
+					<dd>    <a href="#Compo.BindTo" id="src-Compo.BindTo" id="src-Compo.BindTo">func (c *Compo) BindTo(v interface{}) EventHandler</a></dd>
 				
 					
 					<dd>    <a href="#Compo.Defer" id="src-Compo.Defer" id="src-Compo.Defer">func (c *Compo) Defer(fn func(Context))</a></dd>
@@ -1197,7 +1203,7 @@ resources to run Go-based progressive web apps.
 					<dd>    <a href="#GitHubPages" id="src-GitHubPages" id="src-GitHubPages">func GitHubPages(repoName string) ResourceProvider</a></dd>
 				
 					
-					<dd>    <a href="#LocalDir" id="src-LocalDir" id="src-LocalDir">func LocalDir(path string) ResourceProvider</a></dd>
+					<dd>    <a href="#LocalDir" id="src-LocalDir" id="src-LocalDir">func LocalDir(root string) ResourceProvider</a></dd>
 				
 					
 					<dd>    <a href="#RemoteBucket" id="src-RemoteBucket" id="src-RemoteBucket">func RemoteBucket(url string) ResourceProvider</a></dd>
@@ -1385,7 +1391,7 @@ resources to run Go-based progressive web apps.
 				
 				<pre>var (
     <span class="comment">// DefaultLogger is the logger used to log info and errors.</span>
-    <span id="DefaultLogger">DefaultLogger</span> func(format <a href="https://golang.org/pkg/builtin/#string">string</a>, v ...interface{}) = log
+    <span id="DefaultLogger">DefaultLogger</span> func(format <a href="https://golang.org/pkg/builtin/#string">string</a>, v ...interface{})
 )</pre>
 			
 		
@@ -1523,14 +1529,31 @@ body element.
 		
 			
 			
-			<h2 id="Log">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/log.go#L18">Log</a>
+			<h2 id="Log">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/log.go#L25">Log</a>
 				<a class="permalink" href="#Log" id="src-Log">¶</a>
 				
 				
 			</h2>
-			<pre>func Log(format <a href="https://golang.org/pkg/builtin/#string">string</a>, v ...interface{})</pre>
+			<pre>func Log(v ...interface{})</pre>
 			<p>
-Log logs according to a format specifier using the default logger.
+Log logs using the default formats for its operands. Spaces are always added
+between operands.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="Logf">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/log.go#L37">Logf</a>
+				<a class="permalink" href="#Logf" id="src-Logf">¶</a>
+				
+				
+			</h2>
+			<pre>func Logf(format <a href="https://golang.org/pkg/builtin/#string">string</a>, v ...interface{})</pre>
+			<p>
+Logf logs according to a format specifier.
 </p>
 
 			
@@ -1819,7 +1842,7 @@ Window returns the JavaScript &#34;window&#34; object.
 		
 			
 			
-			<h2 id="Compo">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L102">Compo</a>
+			<h2 id="Compo">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L115">Compo</a>
 				<a class="permalink" href="#Compo" id="src-Compo">¶</a>
 				
 				
@@ -1845,7 +1868,30 @@ Compo represents the base struct to use in order to build a component.
 
 			
 				
-				<h3 id="Compo.Defer">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L153">Defer</a>
+				<h3 id="Compo.BindTo">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L201">BindTo</a>
+					<a class="permalink" href="#Compo.BindTo" id="src-Compo.BindTo">¶</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="#Compo" id="src-Compo">Compo</a>) BindTo(v interface{}) <a href="#EventHandler" id="src-EventHandler">EventHandler</a></pre>
+				<p>
+BindTo stores the value of the DOM element (if exists) that emitted an event
+into the given value.
+</p>
+<p>
+The given value must be a pointer to a signed integer, unsigned integer, or a
+float.
+</p>
+<p>
+It panics if the given value is not a pointer.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="Compo.Defer">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L166">Defer</a>
 					<a class="permalink" href="#Compo.Defer" id="src-Compo.Defer">¶</a>
 					
 					
@@ -1862,7 +1908,7 @@ function is called.
 				
 			
 				
-				<h3 id="Compo.JSValue">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L117">JSValue</a>
+				<h3 id="Compo.JSValue">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L130">JSValue</a>
 					<a class="permalink" href="#Compo.JSValue" id="src-Compo.JSValue">¶</a>
 					
 					
@@ -1877,7 +1923,7 @@ JSValue returns the javascript value of the component root.
 				
 			
 				
-				<h3 id="Compo.Kind">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L112">Kind</a>
+				<h3 id="Compo.Kind">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L125">Kind</a>
 					<a class="permalink" href="#Compo.Kind" id="src-Compo.Kind">¶</a>
 					
 					
@@ -1892,7 +1938,7 @@ Kind returns the ui element kind.
 				
 			
 				
-				<h3 id="Compo.Mounted">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L122">Mounted</a>
+				<h3 id="Compo.Mounted">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L135">Mounted</a>
 					<a class="permalink" href="#Compo.Mounted" id="src-Compo.Mounted">¶</a>
 					
 					
@@ -1907,7 +1953,7 @@ Mounted reports whether the component is mounted.
 				
 			
 				
-				<h3 id="Compo.Render">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L133">Render</a>
+				<h3 id="Compo.Render">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L146">Render</a>
 					<a class="permalink" href="#Compo.Render" id="src-Compo.Render">¶</a>
 					
 					
@@ -1924,7 +1970,7 @@ embedded.
 				
 			
 				
-				<h3 id="Compo.ResizeContent">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L175">ResizeContent</a>
+				<h3 id="Compo.ResizeContent">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L188">ResizeContent</a>
 					<a class="permalink" href="#Compo.ResizeContent" id="src-Compo.ResizeContent">¶</a>
 					
 					
@@ -1940,7 +1986,7 @@ implement the Resizer interface.
 				
 			
 				
-				<h3 id="Compo.Update">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L165">Update</a>
+				<h3 id="Compo.Update">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L178">Update</a>
 					<a class="permalink" href="#Compo.Update" id="src-Compo.Update">¶</a>
 					
 					
@@ -1998,6 +2044,19 @@ func (c *Hello) Render() app.UI {
     <span class="comment">// updating the UI and ensures that the component is mounted when the</span>
     <span class="comment">// function is called.</span>
     Defer(func(<a href="#Context" id="src-Context">Context</a>))
+
+    <span class="comment">// ResizeContent triggers OnResize() on all the component children that</span>
+    <span class="comment">// implement the Resizer interface.</span>
+    ResizeContent()
+
+    <span class="comment">// 	BindTo stores the value of the DOM element (if exists) that emitted an</span>
+    <span class="comment">// event into the given value.</span>
+    <span class="comment">//</span>
+    <span class="comment">// The given value must be a pointer to a signed integer, unsigned integer,</span>
+    <span class="comment">// or a float.</span>
+    <span class="comment">//</span>
+    <span class="comment">// It panics if the given value is not a pointer.</span>
+    BindTo(interface{}) <a href="#EventHandler" id="src-EventHandler">EventHandler</a>
 }</pre>
 
 			
@@ -2262,7 +2321,7 @@ session ends.
 		
 			
 			
-			<h2 id="Dismounter">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L58">Dismounter</a>
+			<h2 id="Dismounter">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L71">Dismounter</a>
 				<a class="permalink" href="#Dismounter" id="src-Dismounter">¶</a>
 				
 				
@@ -2338,7 +2397,7 @@ UI instructions and UI elements lifecycle.
 		
 			
 			
-			<h2 id="Environment">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L757">Environment</a>
+			<h2 id="Environment">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L754">Environment</a>
 				<a class="permalink" href="#Environment" id="src-Environment">¶</a>
 				
 				
@@ -22753,7 +22812,7 @@ and its resources.
     <span class="comment">// eg:</span>
     <span class="comment">//  &#34;/web/main.css&#34;</span>
     <span class="comment">//</span>
-    <span class="comment">// Default: LocalDir(&#34;web&#34;)</span>
+    <span class="comment">// Default: LocalDir(&#34;&#34;)</span>
 <span id="Handler.Resources"></span>    Resources <a href="#ResourceProvider" id="src-ResourceProvider">ResourceProvider</a>
 
     <span class="comment">// The paths or urls of the CSS files to use with the page.</span>
@@ -22813,7 +22872,7 @@ and its resources.
 		
 			
 			
-			<h2 id="Icon">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L734">Icon</a>
+			<h2 id="Icon">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L731">Icon</a>
 				<a class="permalink" href="#Icon" id="src-Icon">¶</a>
 				
 				
@@ -22918,7 +22977,7 @@ Kind represents the specific kind of a user interface element.
 		
 			
 			
-			<h2 id="Mounter">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L48">Mounter</a>
+			<h2 id="Mounter">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L61">Mounter</a>
 				<a class="permalink" href="#Mounter" id="src-Mounter">¶</a>
 				
 				
@@ -22950,7 +23009,7 @@ additional actions when mounted.
 		
 			
 			
-			<h2 id="Navigator">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L68">Navigator</a>
+			<h2 id="Navigator">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L81">Navigator</a>
 				<a class="permalink" href="#Navigator" id="src-Navigator">¶</a>
 				
 				
@@ -23152,7 +23211,7 @@ Len return the body length.
 		
 			
 			
-			<h2 id="PreRenderer">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L37">PreRenderer</a>
+			<h2 id="PreRenderer">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L50">PreRenderer</a>
 				<a class="permalink" href="#PreRenderer" id="src-PreRenderer">¶</a>
 				
 				
@@ -23188,7 +23247,7 @@ A pre-rendered component helps in achieving SEO friendly content.
 		
 			
 			
-			<h2 id="ProxyResource">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/resource.go#L145">ProxyResource</a>
+			<h2 id="ProxyResource">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/resource.go#L107">ProxyResource</a>
 				<a class="permalink" href="#ProxyResource" id="src-ProxyResource">¶</a>
 				
 				
@@ -23277,7 +23336,7 @@ be a slice, an array or a map with strings as keys.
 		
 			
 			
-			<h2 id="Resizer">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L90">Resizer</a>
+			<h2 id="Resizer">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L103">Resizer</a>
 				<a class="permalink" href="#Resizer" id="src-Resizer">¶</a>
 				
 				
@@ -23308,58 +23367,35 @@ app has been resized or a parent component calls the ResizeContent() method.
 		
 			
 			
-			<h2 id="ResourceProvider">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/resource.go#L16">ResourceProvider</a>
+			<h2 id="ResourceProvider">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/resource.go#L7">ResourceProvider</a>
 				<a class="permalink" href="#ResourceProvider" id="src-ResourceProvider">¶</a>
 				
 				
 			</h2>
 			<p>
-ResourceProvider is the interface that describes a provider for resources.
+ResourceProvider is the interface that describes a resource provider that
+tells the Handler how to locate and get the package and static resources.
 </p>
 <p>
-App resources are the mandatory resources required to run a PWA. They are
-generated by the Handler and are accessible from the root path. Eg:
+Package resources are the resource required to operate go-app.
 </p>
-<pre>&#34;/app-worker.js&#34;
-&#34;/manifest.webmanifest&#34;
-&#34;/wasm_exec.js&#34;
-</pre>
 <p>
-Static resources are the resources used by the PWA such as the web assembly
-binary, styles, scripts, or images. They can be located on a localhost or a
-remote bucket. In order to avoid confusion with PWA required resources,
-static resources URL paths are always prefixed by &#34;/web&#34;. Eg:
+Static resources are resources such as app.wasm, CSS files, images.
 </p>
-<pre>&#34;/web/app.wasm&#34;
-&#34;/web/main.css&#34;
-&#34;/web/background.jpg&#34;
-</pre>
 <p>
-If the resource provider is an http.Handler, the handler is used to serve
-static resources requests.
+The resource provider is used to serve static resources when it satisfies the
+http.Handler interface.
 </p>
 
 			<pre>type ResourceProvider interface {
-    <span class="comment">// The path to the root directory where app resources are accessible.</span>
-    AppResources() <a href="https://golang.org/pkg/builtin/#string">string</a>
+    <span class="comment">// Package returns the path where the package resources are located.</span>
+    Package() <a href="https://golang.org/pkg/builtin/#string">string</a>
 
-    <span class="comment">// The path or URL where the web directory that contains static resources is</span>
-    <span class="comment">// located.</span>
-    StaticResources() <a href="https://golang.org/pkg/builtin/#string">string</a>
+    <span class="comment">// Static returns the path where the static resources are located.</span>
+    Static() <a href="https://golang.org/pkg/builtin/#string">string</a>
 
-    <span class="comment">// The URL of the app.wasm file. This must match the pattern:</span>
-    <span class="comment">//  StaticResources/web/WASM_FILE.</span>
+    <span class="comment">// AppWASM returns the app.wasm file path.</span>
     AppWASM() <a href="https://golang.org/pkg/builtin/#string">string</a>
-
-    <span class="comment">// The URL of the robots.txt file. This must match the pattern:</span>
-    <span class="comment">//  StaticResources/web/robots.txt.</span>
-    <span class="comment">// DEPRECATED.</span>
-    RobotsTxt() <a href="https://golang.org/pkg/builtin/#string">string</a>
-
-    <span class="comment">// The URL of the ads.txt file. This must match the pattern:</span>
-    <span class="comment">//  StaticResources/web/ads.txt.</span>
-    <span class="comment">// DEPRECATED.</span>
-    AdsTxt() <a href="https://golang.org/pkg/builtin/#string">string</a>
 }</pre>
 
 			
@@ -23372,7 +23408,7 @@ static resources requests.
 
 			
 				
-				<h3 id="GitHubPages">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/resource.go#L111">GitHubPages</a>
+				<h3 id="GitHubPages">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/resource.go#L79">GitHubPages</a>
 					<a class="permalink" href="#GitHubPages" id="src-GitHubPages">¶</a>
 					
 					
@@ -23388,12 +23424,12 @@ GenerateStaticWebsite function.
 				
 			
 				
-				<h3 id="LocalDir">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/resource.go#L41">LocalDir</a>
+				<h3 id="LocalDir">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/resource.go#L20">LocalDir</a>
 					<a class="permalink" href="#LocalDir" id="src-LocalDir">¶</a>
 					
 					
 				</h3>
-				<pre>func LocalDir(path <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#ResourceProvider" id="src-ResourceProvider">ResourceProvider</a></pre>
+				<pre>func LocalDir(root <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#ResourceProvider" id="src-ResourceProvider">ResourceProvider</a></pre>
 				<p>
 LocalDir returns a resource provider that serves static resources from a
 local directory located at the given path.
@@ -23403,7 +23439,7 @@ local directory located at the given path.
 				
 			
 				
-				<h3 id="RemoteBucket">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/resource.go#L75">RemoteBucket</a>
+				<h3 id="RemoteBucket">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/resource.go#L49">RemoteBucket</a>
 					<a class="permalink" href="#RemoteBucket" id="src-RemoteBucket">¶</a>
 					
 					
@@ -23898,7 +23934,7 @@ EXPERIMENTAL WIDGET.
 		
 			
 			
-			<h2 id="Updater">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L82">Updater</a>
+			<h2 id="Updater">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L95">Updater</a>
 				<a class="permalink" href="#Updater" id="src-Updater">¶</a>
 				
 				
@@ -24162,7 +24198,7 @@ Wrapper is implemented by types that are backed by a JavaScript value.
 
 
 <div id="footer">
-Build version go1.15.5.<br/>
+Build version go1.16.<br/>
 Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
 the content of this page is licensed under the
 Creative Commons Attribution 3.0 License,
