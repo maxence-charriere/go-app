@@ -56,6 +56,11 @@ func (n *nav) Render() app.UI {
 								Class("vspace-top").
 								Body(
 									newLink().
+										Label("Home").
+										Icon(newSVGIcon().RawSVG(homeSVG)).
+										Href("/").
+										Focus(n.currentPath == "/"),
+									newLink().
 										Label("Getting started").
 										Icon(newSVGIcon().RawSVG(rocketSVG)).
 										Href("/start").

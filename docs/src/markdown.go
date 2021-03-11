@@ -19,10 +19,22 @@ type markdownPage struct {
 
 func mardownPages() map[string]markdownPage {
 	return map[string]markdownPage{
+		"/": {
+			path:        "/web/documents/home.md",
+			title:       defaultTitle,
+			description: "Introduction abouWorld with Go (Golang) and WebAssembly (WASM).",
+			index: []string{
+				"go-app",
+				"Declarative syntax",
+				"Standard HTTP",
+				"Other features",
+				"Next",
+			},
+		},
 		"/start": {
 			path:        "/web/documents/start.md",
-			title:       defaultTitle,
-			description: defaultDescription,
+			title:       "Getting started building a Progressive Web App with Golang and WebAssembly",
+			description: "Introduction about how to create a Progressive Web App displaying a simple Hello World with the Go programming language (Golang) and WebAssembly (Wasm).",
 			index: []string{
 				"Getting started",
 				"Prerequisite",

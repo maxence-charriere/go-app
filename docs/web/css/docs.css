@@ -88,7 +88,7 @@ h2 {
 
 .h3,
 h3 {
-  margin-top: 42px;
+  margin-top: 60px;
   font-size: 16px;
   letter-spacing: 1px;
 }
@@ -278,7 +278,7 @@ input[type="password"]:focus {
 
 .vspace-section,
 h2 {
-  margin-top: 90px;
+  margin-top: 120px;
 }
 
 .vspace-bottom {
@@ -507,6 +507,54 @@ h2 {
   border-radius: 12px;
   background-color: rgba(0, 0, 0, 0.2);
   font-size: 14px;
+}
+
+.markdown .title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.markdown .title img {
+  background-color: transparent;
+  width: 96px;
+  height: 96px;
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.markdown .title h1 {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  margin-left: 12px;
+  margin-right: 42px;
+  font-size: 26px;
+  letter-spacing: 4px;
+}
+
+.markdown .subtitle {
+  text-align: center;
+  margin-top: 18px;
+}
+
+.markdown .subtitle img {
+  display: initial;
+  width: initial;
+  height: initial;
+  background-color: initial;
+  margin: 0 1.5px;
+}
+
+.markdown .openc {
+  display: initial;
+  width: initial;
+  height: initial;
+  background-color: initial;
+  margin: initial;
+  padding: initial;
 }
 
 /* -----------------------------------------------------------------------------

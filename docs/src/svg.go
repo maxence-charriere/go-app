@@ -66,6 +66,12 @@ const (
 	schoolSVG = `<svg style="width:%vpx;height:%vpx" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
 	</svg>`
+	codeSVG = `<svg style="width:%vpx;height:%vpx" viewBox="0 0 24 24">
+    	<path fill="currentColor" d="M8,3A2,2 0 0,0 6,5V9A2,2 0 0,1 4,11H3V13H4A2,2 0 0,1 6,15V19A2,2 0 0,0 8,21H10V19H8V14A2,2 0 0,0 6,12A2,2 0 0,0 8,10V5H10V3M16,3A2,2 0 0,1 18,5V9A2,2 0 0,0 20,11H21V13H20A2,2 0 0,0 18,15V19A2,2 0 0,1 16,21H14V19H16V14A2,2 0 0,1 18,12A2,2 0 0,1 16,10V5H14V3H16Z" />
+	</svg>`
+	homeSVG = `<svg style="width:%vpx;height:%vpx" viewBox="0 0 24 24">
+    	<path fill="currentColor" d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />
+	</svg>`
 )
 
 type svgIcon struct {

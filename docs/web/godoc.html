@@ -152,9 +152,6 @@ resources to run Go-based progressive web apps.
 				
 				
 					
-					<dd>    <a href="#Compo.BindTo" id="src-Compo.BindTo" id="src-Compo.BindTo">func (c *Compo) BindTo(v interface{}) EventHandler</a></dd>
-				
-					
 					<dd>    <a href="#Compo.Defer" id="src-Compo.Defer" id="src-Compo.Defer">func (c *Compo) Defer(fn func(Context))</a></dd>
 				
 					
@@ -174,6 +171,9 @@ resources to run Go-based progressive web apps.
 				
 					
 					<dd>    <a href="#Compo.Update" id="src-Compo.Update" id="src-Compo.Update">func (c *Compo) Update()</a></dd>
+				
+					
+					<dd>    <a href="#Compo.ValueTo" id="src-Compo.ValueTo" id="src-Compo.ValueTo">func (c *Compo) ValueTo(v interface{}) EventHandler</a></dd>
 				
 			
 				
@@ -1868,29 +1868,6 @@ Compo represents the base struct to use in order to build a component.
 
 			
 				
-				<h3 id="Compo.BindTo">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L201">BindTo</a>
-					<a class="permalink" href="#Compo.BindTo" id="src-Compo.BindTo">¶</a>
-					
-					
-				</h3>
-				<pre>func (c *<a href="#Compo" id="src-Compo">Compo</a>) BindTo(v interface{}) <a href="#EventHandler" id="src-EventHandler">EventHandler</a></pre>
-				<p>
-BindTo stores the value of the DOM element (if exists) that emitted an event
-into the given value.
-</p>
-<p>
-The given value must be a pointer to a signed integer, unsigned integer, or a
-float.
-</p>
-<p>
-It panics if the given value is not a pointer.
-</p>
-
-				
-				
-				
-			
-				
 				<h3 id="Compo.Defer">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L166">Defer</a>
 					<a class="permalink" href="#Compo.Defer" id="src-Compo.Defer">¶</a>
 					
@@ -2002,6 +1979,29 @@ performed on the UI goroutine.
 				
 				
 			
+				
+				<h3 id="Compo.ValueTo">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L201">ValueTo</a>
+					<a class="permalink" href="#Compo.ValueTo" id="src-Compo.ValueTo">¶</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="#Compo" id="src-Compo">Compo</a>) ValueTo(v interface{}) <a href="#EventHandler" id="src-EventHandler">EventHandler</a></pre>
+				<p>
+ValueTo stores the value of the DOM element (if exists) that emitted an event
+into the given value.
+</p>
+<p>
+The given value must be a pointer to a signed integer, unsigned integer, or a
+float.
+</p>
+<p>
+It panics if the given value is not a pointer.
+</p>
+
+				
+				
+				
+			
 		
 			
 			
@@ -2049,14 +2049,14 @@ func (c *Hello) Render() app.UI {
     <span class="comment">// implement the Resizer interface.</span>
     ResizeContent()
 
-    <span class="comment">// 	BindTo stores the value of the DOM element (if exists) that emitted an</span>
+    <span class="comment">// ValueTo stores the value of the DOM element (if exists) that emitted an</span>
     <span class="comment">// event into the given value.</span>
     <span class="comment">//</span>
     <span class="comment">// The given value must be a pointer to a signed integer, unsigned integer,</span>
     <span class="comment">// or a float.</span>
     <span class="comment">//</span>
     <span class="comment">// It panics if the given value is not a pointer.</span>
-    BindTo(interface{}) <a href="#EventHandler" id="src-EventHandler">EventHandler</a>
+    ValueTo(interface{}) <a href="#EventHandler" id="src-EventHandler">EventHandler</a>
 }</pre>
 
 			

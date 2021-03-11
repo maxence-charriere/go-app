@@ -30,7 +30,7 @@ func (h *hello) Render() app.UI {
 				Value(h.name).
 				Placeholder("What is your name?").
 				AutoFocus(true).
-				OnChange(h.BindTo(&h.name)),
+				OnChange(h.ValueTo(&h.name)),
 		),
 	)
 }
