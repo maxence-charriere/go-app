@@ -70,15 +70,15 @@ func (n *nav) Render() app.UI {
 										Icon(newSVGIcon().RawSVG(fileTreeSVG)).
 										Href("/architecture").
 										Focus(n.currentPath == "/architecture"),
+								),
+							app.Div().
+								Class("vspace-top").
+								Body(
 									newLink().
 										Label("API reference").
 										Icon(newSVGIcon().RawSVG(golangSVG)).
 										Href("/reference").
 										Focus(n.currentPath == "/reference"),
-								),
-							app.Div().
-								Class("vspace-top").
-								Body(
 									newLink().
 										Label("Components").
 										Icon(newSVGIcon().RawSVG(gridSVG)).

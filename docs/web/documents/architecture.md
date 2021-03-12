@@ -1,136 +1,84 @@
 # Architecture
 
-[Progressive web apps](https://developers.google.com/web/progressive-web-apps) created with **go-app** are built with the following architecture:
+Like traditional websites, [progressive web apps](https://developers.google.com/web/progressive-web-apps) are provided by a server and are displayed in a web browser. This document provide a description of the different elements which interact each other to operate a PWA.
 
-![architecture diagram](/web/images/architecture.png)
+![architecture diagram](/web/images/architecture.svg)
 
 ## Web browser
 
-The web browser is where the [app](#app) is running. Here is a list of well-known web browsers:
+A web browser is where the PWA is displayed. Here is a list of well-known web browser:
 
 - [Chrome](https://www.google.com/chrome)
 - [Safari](https://www.apple.com/safari)
 - [Firefox](https://www.mozilla.org/firefox)
 - [Electron (Chromium embedded)](https://www.electronjs.org/)
 
-When a user navigates to the app domain, the web browser requests to the [server](#server) a webpage and its associated resources such as the [app](#app), [images, and styles](#static-resources). Then runs the app once all resources are gathered.
+When a user wants to use an app, the web browser requests an [HTML pages](#html-pages) and their associated resources to the server.
+
+Once the required resources are gathered, it displays the app to the user.
 
 ## Server
 
-The server is the service that provides the [app](#app) and its required [resources](#static-resources) to [web browsers](#web-browser). It is where app metadata are defined, and where styles and scripts are linked. Servers are implemented by using the [app.Handler](/reference#Handler), as a standard [http.Handler](https://golang.org/pkg/net/http/#Handler):
+The server is what serves the files to make a go-app progressive web app work into the web browser:
 
-```go
-// +build !wasm
+- [HTML pages](#html-pages)
+- [Package resources](#package-resources)
+- [app.wasm](#app-wasm)
+- [Static resources](#static-resources)
 
-// The build instruction above ensures that this code is only used to build the
-// server.
+It is implemented with the standard [Go HTTP package](https://golang.org/pkg/net/http) and the [Handler](/reference#Handler).
 
-package main
+## HTML pages
 
-import (
-	"log"
-	"net/http"
+HTML pages are pages that indicate to [web browsers](#web-browser) what other resources are required to run the progressive web app:
 
-	"github.com/maxence-charriere/go-app/v8/pkg/app"
-)
+- [Package resources](#package-resources)
+- [app.wasm](#app-wasm)
+- [Static resources](#static-resources)
 
-func main() {
-	// Standard http.Handler that handles all paths.
-	http.Handle("/", &app.Handler{
-		Name:        "Hello",                   // Metadata for PWA name.
-		Title:       "Hello",                   // Metadata for page title.
-		Description: "An Hello World! example", // Metadata for page description.
-		Styles: []string{
-			"/web/hello.css", // Inlude .css file.
-		},
-	})
+They also contain the markup that provides a pre-rendered version of the requested page and that will be replaced by the app dynamic content once [app.wasm](#app-wasm) is loaded.
 
-	// Launches the server.
-	err := http.ListenAndServe(":8000", nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-```
+## Package resources
 
-Servers are built with a standard build command:
+Package resources are the mandatory resources to run a go-app progressive web app into web browsers. Those resources are:
 
-```bash
-go build
-```
+| Package resource         | Description                                             |
+| ------------------------ | ------------------------------------------------------- |
+| **wasm_exec.js**         | Script to interop Go and Javascrip APIs.                |
+| **app.js**               | Script that loads app.wasm and go-app service workers.  |
+| **app-worker.js**        | Script that implements go-app required service workers. |
+| **manifest.webmanifest** | Manifest that describes the progressive web app.        |
+| **app.css**              | go-app widgets styles.                                  |
 
-They can be deployed on multiple supports such as:
+They are served by the [server](#server)'s go-app [Handler](/reference#Handler) and are accessible from the root of the app domain. Eg: `/app.js`.
 
-- Localhost
-- Dedicated instances ([EC2](https://aws.amazon.com/ec2), [Google App Engine](https://cloud.google.com/appengine), ...)
-- Containers ([Docker](https://www.docker.com/), [Kubernetes](https://kubernetes.io/))
-- Cloud function ([AWS lambda](https://aws.amazon.com/lambda/), [Google Cloud functions](https://cloud.google.com/functions/), ...)
+## app.wasm
 
-## App
-
-The app is the program that contains the user interface that is displayed on the [web browser](#web-browser). It is built as a [WebAssembly](https://webassembly.org) binary that is served by the [server](#server) as a [static resource](/static-resources).
-
-It contains at least one [component](/components): a customized, independent, and reusable UI element written in pure Go, that is associated with a URL path.
-
-```go
-// +build wasm
-
-// The build instruction above ensures that this code is only used to build the
-// app.
-
-package main
-
-import "github.com/maxence-charriere/go-app/v8/pkg/app"
-
-// hello is a component that displays a simple "Hello World!". A component is
-// created by embedding app.Compo into a struct.
-type hello struct {
-	app.Compo
-}
-
-// The Render method is where the component appearance is defined.
-func (h *hello) Render() app.UI {
-	return app.H1().Text("Hello World!")
-}
-
-func main() {
-	app.Route("/", &hello{}) // hello component is associated with URL path "/".
-	app.Run()                // Launches the app in the web browser.
-}
-```
-
-Apps are built by specifying the `wasm` architecture and the `js` operatng system when using the build command:
+app.wasm is the binary that contains the UI logic of the progressive web app. It is the app code, built to run on `wasm` architecture.
 
 ```bash
 GOARCH=wasm GOOS=js go build -o web/app.wasm
 ```
 
-The app must be named `app.wasm` and be located in the `web` directory: a directory that is by default relative to the [server](#server) binary and where all [static resources](/static-resources) are located.
+It is a [static resource](#static-resources) that is **always located at `/web/app.wasm`**, and can be served by the [server](#server) or are available from a remote bucket such as [S3](https://aws.amazon.com/s3) or [Google Cloud Storage](https://cloud.google.com/storage).
+
+Once loaded in a [web browser](#web-browser), it displays the app content and handles user interactions.
 
 ## Static resources
 
-[Static resources](/static-resources) represent resources that are not dynamically generated such as:
+Static resource are files such as:
 
-- Styles (\*.css)
-- Scripts (\*.js)
+- CSS files
+- JS files
 - Images
+- Videos
 - Sounds
 - Documents
 
-Like the [app](#app), they are served by the [server](#server) to [web browsers](#web-browser) and are located in a directory named `web`, by default relative to the server binary.
-
-```bash
-.
-├── app.go          # App source.
-├── hello           # Server.
-├── main.go         # Server source.
-└── web             # Web directory containing all static resources.
-    ├── app.wasm    # App.
-    └── hello.css   # Style.
-```
+They are always located within a directory named `web`, and can be served by the [server](#server) or are available from a remote bucket such as [S3](https://aws.amazon.com/s3) or [Google Cloud Storage](https://cloud.google.com/storage).
 
 ## Next
 
 - [How to create a component](/components)
-- [Deal with static resources](/static-resources)
+- [Deal with resources](/resources)
 - [API reference](/reference)

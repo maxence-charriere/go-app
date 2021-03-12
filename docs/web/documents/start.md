@@ -58,7 +58,7 @@ func (h *hello) Render() app.UI {
 }
 
 // The main function is the entry point where the app is configured and started.
-// It is executed on 2 different environments: A client (the web browser) and a
+// It is executed in 2 different environments: A client (the web browser) and a
 // server.
 func main() {
 	// The first thing to do is to associate the hello component with a path.

@@ -56,7 +56,9 @@ func mardownPages() map[string]markdownPage {
 				"Architecture",
 				"Web browser",
 				"Server",
-				"App",
+				"HTML pages",
+				"Package resources",
+				"app.wasm",
 				"Static resources",
 				"Next",
 			},
@@ -206,6 +208,7 @@ type markdownDoc struct {
 	app.Compo
 
 	path      string
+	title     string
 	index     []string
 	markdow   string
 	isLoading bool
@@ -225,7 +228,8 @@ func (d *markdownDoc) OnNav(ctx app.Context) {
 }
 
 func (d *markdownDoc) init(ctx app.Context) {
-	if d.path == ctx.Page.URL().Path {
+	path := ctx.Page.URL().Path
+	if d.path == path {
 		return
 	}
 
@@ -237,7 +241,8 @@ func (d *markdownDoc) init(ctx app.Context) {
 		return
 	}
 
-	d.path = page.path
+	d.path = path
+	d.title = page.path
 	d.index = page.index
 	ctx.Page.SetTitle(page.title)
 	ctx.Page.SetDescription(page.description)
@@ -292,11 +297,11 @@ func (d *markdownDoc) Render() app.UI {
 				Class("page-loader").
 				Class("fill").
 				Title("Loading").
-				Description(filepath.Base(d.path)).
+				Description(filepath.Base(d.title)).
 				Loading(d.isLoading).
 				Err(d.err),
 		).
-		IssueTitle(filepath.Base(d.path))
+		IssueTitle(filepath.Base(d.title))
 }
 
 func parseMarkdown(md []byte) []byte {

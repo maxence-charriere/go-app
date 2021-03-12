@@ -135,13 +135,13 @@ th {
   text-transform: uppercase;
   color: white;
   font-weight: 400;
-  padding: 0 30px 12px 0;
+  padding: 12px 30px 12px 0;
 }
 
 td {
   margin: 0;
   padding: 12px 24px 12px 0;
-  border-top: 1px solid currentColor;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 pre,
