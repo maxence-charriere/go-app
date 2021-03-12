@@ -61,10 +61,12 @@ Apps created with go-app complies with [Go standard HTTP](https://golang.org/pkg
 
 ```go
 func main() {
+    // Components routing:
 	app.Route("/", &hello{})
 	app.Route("/hello", &hello{})
 	app.RunWhenOnBrowser()
 
+    // HTTP routing:
 	http.Handle("/", &app.Handler{
 		Name:        "Hello",
 		Description: "An Hello World! example",
