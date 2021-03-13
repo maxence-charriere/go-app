@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -56,4 +57,23 @@ func main() {
 	if err := http.ListenAndServe(":8000", nil); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func (f *foo) OnNav(ctx app.Context) {
+	ctx.Async(func() {
+		r, err := http.Get("/bar")
+		if err != nil {
+			app.Log(err)
+			return
+		}
+		defer r.Body.Close()
+
+		b, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			app.Log(err)
+			return
+		}
+
+		app.Logf("request response: %s", b)
+	})
 }

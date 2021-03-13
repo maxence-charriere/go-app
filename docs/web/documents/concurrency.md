@@ -1,6 +1,10 @@
 # Concurrency
 
-![concurrency.png](/web/images/concurrency.png)
+In go-app, every event and user interaction are handled on a single goroutine. Because some scenarios can have a long execution time, like performing an HTTP request, there is a risk that the UI feels slow or unresponsive.
+
+This document describes how it works and what tools go-app provides to solve this problem.
+
+![concurrency.png](/web/images/concurrency.svg)
 
 ## UI goroutine
 
@@ -12,90 +16,46 @@ Here are the events that are always executed on the UI goroutine:
 - [Component updates](/components#update)
 - HTML element [event handlers](/syntax#event-handlers)
 - [Dispatch()](#dispatch) calls
+- [Defer()](/reference#Compo.Defer) calls
 
-## Standard goroutines
-
-Those are standard goroutines. They are executed in parallel with the UI goroutine.
+## Async
 
 ```go
-go func() {
-	// ...
-}()
+func (ctx Context) Async(fn func())
 ```
 
-### When to use?
+[Async()](/reference#Context.Async) is a [Context](/reference#Context) method that executes a given function on a new goroutine. It is usually used to perform long or blocking operations.
 
-Since rendering operations are executed on the [UI goroutine](#ui-goroutine), **blocking and long operations should be executed in another goroutine**. That will prevent the UI to feel unresponsive.
-
-If those operations lead to component field modifications, make sure to perform them back on the UI goroutine by calling [Dispatch()](#dispatch).
-
-## Dispatch()
-
-[Dispatch](/reference#Dispatch) is a call that makes the given function to be executed on the UI goroutine.
+Here is an example where an HTTP request is performed when a page is loaded.
 
 ```go
-func Dispatch(func () {
-    // ...
-})
-```
+func (f *foo) OnNav(ctx app.Context) {
+	ctx.Async(func() {
+		r, err := http.Get("/bar")
+		if err != nil {
+			app.Log(err)
+			return
+		}
+		defer r.Body.Close()
 
-Here is an example that asynchronously performs an HTTP request and displays the response.
+		b, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			app.Log(err)
+			return
+		}
 
-```go
-type httpCall struct {
-	app.Compo
-
-	response string
-}
-
-func (c *httpCall) Render() app.UI {
-	return app.Div().Body(
-		app.H1().Text("HTTP Call"),
-
-		app.H2().Text("URL:"),
-		app.Input().
-			Placeholder("Enter an URL").
-			OnChange(c.OnURLChange),
-
-		app.H2().Text("Response:"),
-		app.P().Text(c.response),
-	)
-}
-
-func (c *httpCall) OnURLChange(ctx app.Context, e app.Event) {
-	// Reseting response value:
-	c.response = ""
-	c.Update()
-
-	// Launching HTTP request:
-	url := ctx.JSSrc.Get("value").String()
-	go c.doRequest(url) // Performs blocking operation on a new goroutine.
-}
-
-func (c *httpCall) doRequest(url string) {
-	r, err := http.Get(url)
-	if err != nil {
-		c.updateResponse(err.Error())
-		return
-	}
-	defer r.Body.Close()
-
-	b, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		c.updateResponse(err.Error())
-		return
-	}
-
-	c.updateResponse(string(b))
-}
-
-func (c *httpCall) updateResponse(res string) {
-	app.Dispatch(func() { // Ensures response field is updated on UI goroutine.
-		c.response = res
-		c.Update()
+		app.Logf("request response: %s", b)
 	})
 }
 ```
+
+The difference with manually launching a goroutine is that go-app has no insights about when a manually launched goroutine ceases its execution. It's not a problem on the client-side but when prerendering on the server-side, go-app has to wait for all launched goroutines to finish their jobs in order to properly generate HTML markup. Therefore, manually launching a goroutine for UI-related purposes introduces reliability issues on the server-side.
+
+**Prefer the use of [Async()](/reference#Context.Async) rather than manually launching a goroutine when dealing with UI**.
+
+## Dispatch
+
+## Defer
 
 ## Next
 

@@ -26,6 +26,8 @@ const (
 	githubURL         = "https://github.com/maxence-charriere/go-app"
 	githubSponsorURL  = "https://github.com/sponsors/maxence-charriere"
 	twitterURL        = "https://twitter.com/jonhymaxoo"
+	bitcoinURL        = ""
+	ethURL            = ""
 )
 
 type localOptions struct {
