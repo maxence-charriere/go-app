@@ -74,9 +74,9 @@ It internally triggers the `Render()` method and performs a diff with the curren
 | Different HTML element attributes                          | Current node attributes are updated       |
 | Different HTML element event handlers                      | Current node event handlers are updated   |
 | Different component types                                  | Current node is replaced                  |
-| Different component exported fields                        | Current component fields are updated      |
-| Different component non exported fields                    | No modifications                          |
-| Extra node in new the tree                                 | Node added to the current tree            |
+| Different exported fields on a same component type         | Current component fields are updated      |
+| Different non-exported fields on a same component type     | No modifications                          |
+| Extra node in the new the tree                             | Node added to the current tree            |
 | Missing node in the new tree                               | Extra node is the current tree is removed |
 
 ## Lifecycle
@@ -119,9 +119,9 @@ func (f *foo) OnMount(ctx app.Context) {
 }
 ```
 
-### OnNav
+### Nav
 
-A component is navigated when a page is loaded, reloaded, or navigated from an anchor link or an HREF change.
+A component is navigated when a page is loaded, reloaded, or navigated from an anchor link or an HREF change. It can occur multiple times during a component life.
 
 Custom actions can be performed by implementing the [Navigator](/reference#Navigator) interface:
 
@@ -135,7 +135,7 @@ func (f *foo) OnNav(ctx app.Context) {
 }
 ```
 
-### OnDismount
+### Dismount
 
 A component is dismounted when it is removed from the webpage DOM.
 

@@ -59,7 +59,14 @@ func main() {
 	}
 }
 
+type foo struct {
+	app.Compo
+
+	response []byte
+}
+
 func (f *foo) OnNav(ctx app.Context) {
+	// Launching a new goroutine:
 	ctx.Async(func() {
 		r, err := http.Get("/bar")
 		if err != nil {
@@ -74,6 +81,10 @@ func (f *foo) OnNav(ctx app.Context) {
 			return
 		}
 
-		app.Logf("request response: %s", b)
+		// Storing HTTP response in component field:
+		f.Defer(func(app.Context) {
+			f.response = b
+			f.Update()
+		})
 	})
 }

@@ -88,9 +88,9 @@ func mardownPages() map[string]markdownPage {
 			index: []string{
 				"Concurrency",
 				"UI goroutine",
-				"Standard goroutines",
-				"    When to use?",
-				"Dispatch()",
+				"Async",
+				"Dispatch",
+				"Defer",
 				"Next",
 			},
 		},

@@ -29,7 +29,12 @@ func (ctx Context) Async(fn func())
 Here is an example where an HTTP request is performed when a page is loaded.
 
 ```go
+type foo struct {
+	app.Compo
+}
+
 func (f *foo) OnNav(ctx app.Context) {
+	// Launching a new goroutine:
 	ctx.Async(func() {
 		r, err := http.Get("/bar")
 		if err != nil {
@@ -55,7 +60,89 @@ The difference with manually launching a goroutine is that go-app has no insight
 
 ## Dispatch
 
+```go
+func (ctx Context) Dispatch(fn func())
+```
+
+[Dispatch()](reference#Context.Dispatch) is a [Context](/reference#Context) method that executes a given function on the [UI goroutine](#ui-goroutine). It is used to update the UI after an [Async()](#async) call, in order to avoid concurrent calls when updating a component field.
+
+Here is an example where an HTTP request is performed when a page is loaded, and its result is stored in a component field:
+
+```go
+type foo struct {
+	app.Compo
+
+	response []byte
+}
+
+func (f *foo) OnNav(ctx app.Context) {
+	// Launching a new goroutine:
+	ctx.Async(func() {
+		r, err := http.Get("/bar")
+		if err != nil {
+			app.Log(err)
+			return
+		}
+		defer r.Body.Close()
+
+		b, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			app.Log(err)
+			return
+		}
+
+		// Storing HTTP response in component field:
+		ctx.Dispatch(func() {
+			f.response = b
+			f.Update()
+		})
+	})
+}
+```
+
+**Always update a component fields on the [UI goroutine](#ui-goroutine)!**
+
 ## Defer
+
+```go
+func (c *Compo) Defer(fn func(Context))
+```
+
+[Defer()](/reference#Compo.Defer) is a [Compo](/reference#Compo) method that like [Dispatch()](#dispatch), executes a given function on the [UI goroutine](#ui-goroutine). The difference is that the given function is executed only if the component is still mounted when it is called.
+
+Here is an example where an HTTP request is performed when a page is loaded, and its result is stored in a component field with `Defer()`:
+
+```go
+type foo struct {
+	app.Compo
+
+	response []byte
+}
+
+func (f *foo) OnNav(ctx app.Context) {
+	// Launching a new goroutine:
+	ctx.Async(func() {
+		r, err := http.Get("/bar")
+		if err != nil {
+			app.Log(err)
+			return
+		}
+		defer r.Body.Close()
+
+		b, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			app.Log(err)
+			return
+		}
+
+		// Storing HTTP response in component field:
+		f.Defer(func(app.Context) {
+			f.response = b
+			f.Update()
+		})
+	})
+}
+```
 
 ## Next
 
