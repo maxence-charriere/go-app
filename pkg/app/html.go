@@ -23233,160 +23233,160 @@ func (e *htmlLabel) OnWheel(h EventHandler, scope ...interface{}) HTMLLabel {
 	return e
 }
 
-// HTMLLegends is the interface that describes a <legends> HTML element.
-type HTMLLegends interface {
+// HTMLLegend is the interface that describes a <legend> HTML element.
+type HTMLLegend interface {
 	UI
 
 	// Body set the content of the element.
-	Body(elems ...UI) HTMLLegends
+	Body(elems ...UI) HTMLLegend
 
 	// Text sets the content of the element with a text node containing the stringified given value.
-	Text(v interface{}) HTMLLegends
+	Text(v interface{}) HTMLLegend
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLLegends
+	AccessKey(v string) HTMLLegend
 
 	// Aria stores accessible rich internet applications (ARIA) data.
-	Aria(k string, v interface{}) HTMLLegends
+	Aria(k string, v interface{}) HTMLLegend
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLLegends
+	Class(v string) HTMLLegend
 
 	// ContentEditable specifies whether the content of an element is editable or not.
-	ContentEditable(v bool) HTMLLegends
+	ContentEditable(v bool) HTMLLegend
 
 	// DataSet stores custom data private to the page or application.
-	DataSet(k string, v interface{}) HTMLLegends
+	DataSet(k string, v interface{}) HTMLLegend
 
 	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLLegends
+	Dir(v string) HTMLLegend
 
 	// Draggable specifies whether an element is draggable or not.
-	Draggable(v bool) HTMLLegends
+	Draggable(v bool) HTMLLegend
 
 	// Hidden specifies that an element is not yet, or is no longer relevant.
-	Hidden(v bool) HTMLLegends
+	Hidden(v bool) HTMLLegend
 
 	// ID specifies a unique id for an element.
-	ID(v string) HTMLLegends
+	ID(v string) HTMLLegend
 
 	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLLegends
+	Lang(v string) HTMLLegend
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
-	Spellcheck(v bool) HTMLLegends
+	Spellcheck(v bool) HTMLLegend
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLLegends
+	Style(k, v string) HTMLLegend
 
 	// TabIndex specifies the tabbing order of an element.
-	TabIndex(v int) HTMLLegends
+	TabIndex(v int) HTMLLegend
 
 	// Title specifies extra information about an element.
-	Title(v string) HTMLLegends
+	Title(v string) HTMLLegend
 
 	// OnBlur calls the given handler when the element loses focus.
-	OnBlur(h EventHandler, scope ...interface{}) HTMLLegends
+	OnBlur(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnChange calls the given handler when the value of the element is changed.
-	OnChange(h EventHandler, scope ...interface{}) HTMLLegends
+	OnChange(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnClick calls the given handler when there is a mouse click on the element.
-	OnClick(h EventHandler, scope ...interface{}) HTMLLegends
+	OnClick(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnContextMenu calls the given handler when a context menu is triggered.
-	OnContextMenu(h EventHandler, scope ...interface{}) HTMLLegends
+	OnContextMenu(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnCopy calls the given handler when the user copies the content of an element.
-	OnCopy(h EventHandler, scope ...interface{}) HTMLLegends
+	OnCopy(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnCut calls the given handler when the user cuts the content of an element.
-	OnCut(h EventHandler, scope ...interface{}) HTMLLegends
+	OnCut(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnDblClick calls the given handler when there is a mouse double-click on the element.
-	OnDblClick(h EventHandler, scope ...interface{}) HTMLLegends
+	OnDblClick(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnDrag calls the given handler when an element is dragged.
-	OnDrag(h EventHandler, scope ...interface{}) HTMLLegends
+	OnDrag(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnDragEnd calls the given handler at the end of a drag operation.
-	OnDragEnd(h EventHandler, scope ...interface{}) HTMLLegends
+	OnDragEnd(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnDragEnter calls the given handler when an element has been dragged to a valid drop target.
-	OnDragEnter(h EventHandler, scope ...interface{}) HTMLLegends
+	OnDragEnter(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnDragLeave calls the given handler when an element leaves a valid drop target.
-	OnDragLeave(h EventHandler, scope ...interface{}) HTMLLegends
+	OnDragLeave(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnDragOver calls the given handler when an element is being dragged over a valid drop target.
-	OnDragOver(h EventHandler, scope ...interface{}) HTMLLegends
+	OnDragOver(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnDragStart calls the given handler at the start of a drag operation.
-	OnDragStart(h EventHandler, scope ...interface{}) HTMLLegends
+	OnDragStart(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnDrop calls the given handler when dragged element is being dropped.
-	OnDrop(h EventHandler, scope ...interface{}) HTMLLegends
+	OnDrop(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnFocus calls the given handler when the element gets focus.
-	OnFocus(h EventHandler, scope ...interface{}) HTMLLegends
+	OnFocus(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnInput calls the given handler when an element gets user input.
-	OnInput(h EventHandler, scope ...interface{}) HTMLLegends
+	OnInput(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnInvalid calls the given handler when an element is invalid.
-	OnInvalid(h EventHandler, scope ...interface{}) HTMLLegends
+	OnInvalid(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnKeyDown calls the given handler when a user is pressing a key.
-	OnKeyDown(h EventHandler, scope ...interface{}) HTMLLegends
+	OnKeyDown(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnKeyPress calls the given handler when a user presses a key.
-	OnKeyPress(h EventHandler, scope ...interface{}) HTMLLegends
+	OnKeyPress(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLLegends
+	OnKeyup(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
-	OnMouseDown(h EventHandler, scope ...interface{}) HTMLLegends
+	OnMouseDown(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
-	OnMouseMove(h EventHandler, scope ...interface{}) HTMLLegends
+	OnMouseMove(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnMouseOut calls the given handler when the mouse pointer moves out of an element.
-	OnMouseOut(h EventHandler, scope ...interface{}) HTMLLegends
+	OnMouseOut(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnMouseOver calls the given handler when the mouse pointer moves over an element.
-	OnMouseOver(h EventHandler, scope ...interface{}) HTMLLegends
+	OnMouseOver(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnMouseUp calls the given handler when a mouse button is released over an element.
-	OnMouseUp(h EventHandler, scope ...interface{}) HTMLLegends
+	OnMouseUp(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnPaste calls the given handler when the user pastes some content in an element.
-	OnPaste(h EventHandler, scope ...interface{}) HTMLLegends
+	OnPaste(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnReset calls the given handler when the Reset button in a form is clicked.
-	OnReset(h EventHandler, scope ...interface{}) HTMLLegends
+	OnReset(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnScroll calls the given handler when an element's scrollbar is being scrolled.
-	OnScroll(h EventHandler, scope ...interface{}) HTMLLegends
+	OnScroll(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnSearch calls the given handler when the user writes something in a search field.
-	OnSearch(h EventHandler, scope ...interface{}) HTMLLegends
+	OnSearch(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnSelect calls the given handler after some text has been selected in an element.
-	OnSelect(h EventHandler, scope ...interface{}) HTMLLegends
+	OnSelect(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnSubmit calls the given handler when a form is submitted.
-	OnSubmit(h EventHandler, scope ...interface{}) HTMLLegends
+	OnSubmit(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnWheel calls the given handler when the mouse wheel rolls up or down over an element.
-	OnWheel(h EventHandler, scope ...interface{}) HTMLLegends
+	OnWheel(h EventHandler, scope ...interface{}) HTMLLegend
 }
 
-// Legends returns an HTML element that defines a caption for a fieldset element.
-func Legends() HTMLLegends {
-	e := &htmlLegends{
+// Legend returns an HTML element that defines a caption for a fieldset element.
+func Legend() HTMLLegend {
+	e := &htmlLegend{
 		elem: elem{
-			tag:         "legends",
+			tag:         "legend",
 			selfClosing: false,
 		},
 	}
@@ -23394,70 +23394,70 @@ func Legends() HTMLLegends {
 	return e
 }
 
-type htmlLegends struct {
+type htmlLegend struct {
 	elem
 }
 
-func (e *htmlLegends) Body(elems ...UI) HTMLLegends {
+func (e *htmlLegend) Body(elems ...UI) HTMLLegend {
 	e.setBody(elems...)
 	return e
 }
 
-func (e *htmlLegends) Text(v interface{}) HTMLLegends {
+func (e *htmlLegend) Text(v interface{}) HTMLLegend {
 	return e.Body(Text(v))
 }
 
-func (e *htmlLegends) AccessKey(v string) HTMLLegends {
+func (e *htmlLegend) AccessKey(v string) HTMLLegend {
 	e.setAttr("accesskey", v)
 	return e
 }
 
-func (e *htmlLegends) Aria(k string, v interface{}) HTMLLegends {
+func (e *htmlLegend) Aria(k string, v interface{}) HTMLLegend {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
-func (e *htmlLegends) Class(v string) HTMLLegends {
+func (e *htmlLegend) Class(v string) HTMLLegend {
 	e.setAttr("class", v)
 	return e
 }
 
-func (e *htmlLegends) ContentEditable(v bool) HTMLLegends {
+func (e *htmlLegend) ContentEditable(v bool) HTMLLegend {
 	e.setAttr("contenteditable", v)
 	return e
 }
 
-func (e *htmlLegends) DataSet(k string, v interface{}) HTMLLegends {
+func (e *htmlLegend) DataSet(k string, v interface{}) HTMLLegend {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
-func (e *htmlLegends) Dir(v string) HTMLLegends {
+func (e *htmlLegend) Dir(v string) HTMLLegend {
 	e.setAttr("dir", v)
 	return e
 }
 
-func (e *htmlLegends) Draggable(v bool) HTMLLegends {
+func (e *htmlLegend) Draggable(v bool) HTMLLegend {
 	e.setAttr("draggable", v)
 	return e
 }
 
-func (e *htmlLegends) Hidden(v bool) HTMLLegends {
+func (e *htmlLegend) Hidden(v bool) HTMLLegend {
 	e.setAttr("hidden", v)
 	return e
 }
 
-func (e *htmlLegends) ID(v string) HTMLLegends {
+func (e *htmlLegend) ID(v string) HTMLLegend {
 	e.setAttr("id", v)
 	return e
 }
 
-func (e *htmlLegends) Lang(v string) HTMLLegends {
+func (e *htmlLegend) Lang(v string) HTMLLegend {
 	e.setAttr("lang", v)
 	return e
 }
 
-func (e *htmlLegends) Spellcheck(v bool) HTMLLegends {
+func (e *htmlLegend) Spellcheck(v bool) HTMLLegend {
 	s := "false"
 	if v {
 		s = "true"
@@ -23467,177 +23467,177 @@ func (e *htmlLegends) Spellcheck(v bool) HTMLLegends {
 	return e
 }
 
-func (e *htmlLegends) Style(k, v string) HTMLLegends {
+func (e *htmlLegend) Style(k, v string) HTMLLegend {
 	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlLegends) TabIndex(v int) HTMLLegends {
+func (e *htmlLegend) TabIndex(v int) HTMLLegend {
 	e.setAttr("tabindex", v)
 	return e
 }
 
-func (e *htmlLegends) Title(v string) HTMLLegends {
+func (e *htmlLegend) Title(v string) HTMLLegend {
 	e.setAttr("title", v)
 	return e
 }
 
-func (e *htmlLegends) OnBlur(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnBlur(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("blur", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnChange(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnChange(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("change", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnClick(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnClick(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("click", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnContextMenu(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnContextMenu(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("contextmenu", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnCopy(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnCopy(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("copy", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnCut(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnCut(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("cut", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnDblClick(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnDblClick(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("dblclick", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnDrag(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnDrag(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("drag", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnDragEnd(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnDragEnd(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("dragend", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnDragEnter(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnDragEnter(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("dragenter", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnDragLeave(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnDragLeave(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("dragleave", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnDragOver(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnDragOver(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("dragover", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnDragStart(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnDragStart(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("dragstart", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnDrop(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnDrop(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("drop", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnFocus(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnFocus(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("focus", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnInput(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnInput(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("input", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnInvalid(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnInvalid(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("invalid", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnKeyDown(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnKeyDown(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("keydown", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnKeyPress(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnKeyPress(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("keypress", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnKeyup(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnKeyup(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnMouseDown(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnMouseDown(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("mousedown", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnMouseMove(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnMouseMove(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnMouseOut(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnMouseOut(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("mouseout", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnMouseOver(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnMouseOver(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("mouseover", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnMouseUp(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnMouseUp(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("mouseup", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnPaste(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnPaste(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("paste", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnReset(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnReset(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("reset", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnScroll(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnScroll(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("scroll", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnSearch(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnSearch(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("search", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnSelect(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnSelect(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("select", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnSubmit(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnSubmit(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("submit", h, scope...)
 	return e
 }
 
-func (e *htmlLegends) OnWheel(h EventHandler, scope ...interface{}) HTMLLegends {
+func (e *htmlLegend) OnWheel(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("wheel", h, scope...)
 	return e
 }

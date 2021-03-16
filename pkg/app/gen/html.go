@@ -534,7 +534,7 @@ var tags = []tag{
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
-		Name:          "Legends",
+		Name:          "Legend",
 		Doc:           "defines a caption for a fieldset element.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),

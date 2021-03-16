@@ -3256,8 +3256,8 @@ func TestLabel(t *testing.T) {
 	elem.Text("hello")
 }
 
-func TestLegends(t *testing.T) {
-	elem := Legends()
+func TestLegend(t *testing.T) {
+	elem := Legend()
 	elem.AccessKey("foo")
 	elem.Aria("foo", "bar")
 	elem.Class("foo")
