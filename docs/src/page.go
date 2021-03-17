@@ -55,11 +55,16 @@ func (p *page) Render() app.UI {
 		Class("background").
 		MenuWidth(pageItemWidth).
 		Menu(newNav()).
-		OverlayMenu(newNav().Class("overlay-menu")).
+		OverlayMenu(
+			newNav().
+				Class("overlay-menu").
+				Class("unselectable"),
+		).
 		Submenu(
 			app.Nav().
 				Class("header-out").
 				Class("content").
+				Class("unselectable").
 				Body(
 					app.Div().
 						Class("hspace-out").

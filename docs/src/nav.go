@@ -33,6 +33,7 @@ func (n *nav) Render() app.UI {
 	return app.Div().
 		Class(n.Iclass).
 		Class("fill").
+		Class("unselectable").
 		Body(
 			app.Stack().
 				Class("header").

@@ -35,6 +35,9 @@ func (e *example) init(ctx app.Context) {
 	switch eg {
 	case "/examples/hello":
 		e.example = newHello()
+
+	case "/examples/list":
+		e.example = newFoodList()
 	}
 	e.examplePath = eg
 
@@ -48,6 +51,10 @@ func (e *example) Render() app.UI {
 				Label("Hello").
 				Href("/examples/hello").
 				Focus("/examples/hello" == e.examplePath),
+			newIndexLink().
+				Label("List").
+				Href("/examples/list").
+				Focus("/examples/list" == e.examplePath),
 		).
 		Content(
 			app.Div().

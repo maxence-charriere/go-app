@@ -698,10 +698,10 @@ resources to run Go-based progressive web apps.
 				
 			
 				
-				<dd><a href="#HTMLLegends" id="src-HTMLLegends" id="src-HTMLLegends">type HTMLLegends</a></dd>
+				<dd><a href="#HTMLLegend" id="src-HTMLLegend" id="src-HTMLLegend">type HTMLLegend</a></dd>
 				
 					
-					<dd>    <a href="#Legends" id="src-Legends" id="src-Legends">func Legends() HTMLLegends</a></dd>
+					<dd>    <a href="#Legend" id="src-Legend" id="src-Legend">func Legend() HTMLLegend</a></dd>
 				
 				
 			
@@ -12996,161 +12996,161 @@ Label returns an HTML element that defines a label for an input element.
 		
 			
 			
-			<h2 id="HTMLLegends">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go#L23227">HTMLLegends</a>
-				<a class="permalink" href="#HTMLLegends" id="src-HTMLLegends">¶</a>
+			<h2 id="HTMLLegend">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go#L23227">HTMLLegend</a>
+				<a class="permalink" href="#HTMLLegend" id="src-HTMLLegend">¶</a>
 				
 				
 			</h2>
 			<p>
-HTMLLegends is the interface that describes a &lt;legends&gt; HTML element.
+HTMLLegend is the interface that describes a &lt;legend&gt; HTML element.
 </p>
 
-			<pre>type HTMLLegends interface {
+			<pre>type HTMLLegend interface {
     <a href="#UI" id="src-UI">UI</a>
 
     <span class="comment">// Body set the content of the element.</span>
-    Body(elems ...<a href="#UI" id="src-UI">UI</a>) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    Body(elems ...<a href="#UI" id="src-UI">UI</a>) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// Text sets the content of the element with a text node containing the stringified given value.</span>
-    Text(v interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    Text(v interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// AccessKey specifies a shortcut key to activate/focus an element.</span>
-    AccessKey(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    AccessKey(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// Aria stores accessible rich internet applications (ARIA) data.</span>
-    Aria(k <a href="https://golang.org/pkg/builtin/#string">string</a>, v interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    Aria(k <a href="https://golang.org/pkg/builtin/#string">string</a>, v interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.</span>
-    Class(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    Class(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// ContentEditable specifies whether the content of an element is editable or not.</span>
-    ContentEditable(v <a href="https://golang.org/pkg/builtin/#bool">bool</a>) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    ContentEditable(v <a href="https://golang.org/pkg/builtin/#bool">bool</a>) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// DataSet stores custom data private to the page or application.</span>
-    DataSet(k <a href="https://golang.org/pkg/builtin/#string">string</a>, v interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    DataSet(k <a href="https://golang.org/pkg/builtin/#string">string</a>, v interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// Dir specifies the text direction for the content in an element.</span>
-    Dir(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    Dir(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// Draggable specifies whether an element is draggable or not.</span>
-    Draggable(v <a href="https://golang.org/pkg/builtin/#bool">bool</a>) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    Draggable(v <a href="https://golang.org/pkg/builtin/#bool">bool</a>) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// Hidden specifies that an element is not yet, or is no longer relevant.</span>
-    Hidden(v <a href="https://golang.org/pkg/builtin/#bool">bool</a>) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    Hidden(v <a href="https://golang.org/pkg/builtin/#bool">bool</a>) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// ID specifies a unique id for an element.</span>
-    ID(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    ID(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
-    Lang(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    Lang(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
-    Spellcheck(v <a href="https://golang.org/pkg/builtin/#bool">bool</a>) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    Spellcheck(v <a href="https://golang.org/pkg/builtin/#bool">bool</a>) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.</span>
-    Style(k, v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    Style(k, v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// TabIndex specifies the tabbing order of an element.</span>
-    TabIndex(v <a href="https://golang.org/pkg/builtin/#int">int</a>) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    TabIndex(v <a href="https://golang.org/pkg/builtin/#int">int</a>) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// Title specifies extra information about an element.</span>
-    Title(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    Title(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnBlur calls the given handler when the element loses focus.</span>
-    OnBlur(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnBlur(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnChange calls the given handler when the value of the element is changed.</span>
-    OnChange(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnChange(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnClick calls the given handler when there is a mouse click on the element.</span>
-    OnClick(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnClick(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnContextMenu calls the given handler when a context menu is triggered.</span>
-    OnContextMenu(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnContextMenu(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnCopy calls the given handler when the user copies the content of an element.</span>
-    OnCopy(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnCopy(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnCut calls the given handler when the user cuts the content of an element.</span>
-    OnCut(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnCut(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnDblClick calls the given handler when there is a mouse double-click on the element.</span>
-    OnDblClick(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnDblClick(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnDrag calls the given handler when an element is dragged.</span>
-    OnDrag(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnDrag(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnDragEnd calls the given handler at the end of a drag operation.</span>
-    OnDragEnd(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnDragEnd(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnDragEnter calls the given handler when an element has been dragged to a valid drop target.</span>
-    OnDragEnter(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnDragEnter(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnDragLeave calls the given handler when an element leaves a valid drop target.</span>
-    OnDragLeave(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnDragLeave(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnDragOver calls the given handler when an element is being dragged over a valid drop target.</span>
-    OnDragOver(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnDragOver(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnDragStart calls the given handler at the start of a drag operation.</span>
-    OnDragStart(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnDragStart(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnDrop calls the given handler when dragged element is being dropped.</span>
-    OnDrop(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnDrop(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnFocus calls the given handler when the element gets focus.</span>
-    OnFocus(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnFocus(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnInput calls the given handler when an element gets user input.</span>
-    OnInput(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnInput(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnInvalid calls the given handler when an element is invalid.</span>
-    OnInvalid(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnInvalid(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnKeyDown calls the given handler when a user is pressing a key.</span>
-    OnKeyDown(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnKeyDown(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnKeyPress calls the given handler when a user presses a key.</span>
-    OnKeyPress(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnKeyPress(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnKeyup calls the given handler when a user releases a key.</span>
-    OnKeyup(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnKeyup(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnMouseDown calls the given handler when a mouse button is pressed down on an element.</span>
-    OnMouseDown(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnMouseDown(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.</span>
-    OnMouseMove(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnMouseMove(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnMouseOut calls the given handler when the mouse pointer moves out of an element.</span>
-    OnMouseOut(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnMouseOut(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnMouseOver calls the given handler when the mouse pointer moves over an element.</span>
-    OnMouseOver(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnMouseOver(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnMouseUp calls the given handler when a mouse button is released over an element.</span>
-    OnMouseUp(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnMouseUp(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnPaste calls the given handler when the user pastes some content in an element.</span>
-    OnPaste(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnPaste(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnReset calls the given handler when the Reset button in a form is clicked.</span>
-    OnReset(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnReset(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnScroll calls the given handler when an element&#39;s scrollbar is being scrolled.</span>
-    OnScroll(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnScroll(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnSearch calls the given handler when the user writes something in a search field.</span>
-    OnSearch(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnSearch(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnSelect calls the given handler after some text has been selected in an element.</span>
-    OnSelect(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnSelect(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnSubmit calls the given handler when a form is submitted.</span>
-    OnSubmit(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnSubmit(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// OnWheel calls the given handler when the mouse wheel rolls up or down over an element.</span>
-    OnWheel(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a>
+    OnWheel(h <a href="#EventHandler" id="src-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a>
 }</pre>
 
 			
@@ -13163,14 +13163,14 @@ HTMLLegends is the interface that describes a &lt;legends&gt; HTML element.
 
 			
 				
-				<h3 id="Legends">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go#L23376">Legends</a>
-					<a class="permalink" href="#Legends" id="src-Legends">¶</a>
+				<h3 id="Legend">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go#L23376">Legend</a>
+					<a class="permalink" href="#Legend" id="src-Legend">¶</a>
 					
 					
 				</h3>
-				<pre>func Legends() <a href="#HTMLLegends" id="src-HTMLLegends">HTMLLegends</a></pre>
+				<pre>func Legend() <a href="#HTMLLegend" id="src-HTMLLegend">HTMLLegend</a></pre>
 				<p>
-Legends returns an HTML element that defines a caption for a fieldset element.
+Legend returns an HTML element that defines a caption for a fieldset element.
 </p>
 
 				
