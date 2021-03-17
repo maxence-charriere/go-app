@@ -79,6 +79,68 @@ It internally triggers the `Render()` method and performs a diff with the curren
 | Extra node in the new the tree                             | Node added to the current tree            |
 | Missing node in the new tree                               | Extra node is the current tree is removed |
 
+## Fields
+
+Component fields are used to store component data and state. When a component is [updated](#update), field behavior depends on whether it is exported or not.
+
+Here is a test component with an exported and non exported field:
+
+```go
+type myCompo struct {
+	app.Compo
+
+	ExportedField string
+	internalField string
+}
+```
+
+### Exported fields
+
+Exported fields are like HTML attributes but for components. When [updated](#update), a component is compared to a newly rendered version. Each component fields are compared and updated if different from their newer version counterpart.
+
+Here is a pseudo-Go code that illustrates how it works internally:
+
+```go
+a := myCompo{
+	ExportedField: "A",
+}
+
+b := myCompo{
+	ExportedField: "B",
+}
+
+// update is the internal function that updates a UI element with a newer
+// rendered version.
+update(a, b)
+
+fmt.Println("a.ExportedField:", a.ExportedField) // => "B" (updated)
+```
+
+### Internal fields
+
+Internal (or non exported) fields are like a state. They are not modified when a component is [updated](#update).
+
+Here is a pseudo-Go code that illustrates how it works internally:
+
+```go
+a := myCompo{
+	ExportedField: "A",
+	internalField: "a",
+}
+
+b := myCompo{
+	ExportedField: "B",
+	internalField: "b",
+}
+
+// update is the internal function that updates a UI element with a newer
+// rendered version.
+update(a, b)
+
+fmt.Println("a.ExportedField:", a.ExportedField) // => "B" (updated)
+fmt.Println("a.internalField:", a.internalField) // => "a" (not updated)
+```
+
 ## Lifecycle
 
 During its life, a component goes through several steps where actions could be performed to initialize or release data and resources.
