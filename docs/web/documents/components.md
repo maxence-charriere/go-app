@@ -143,7 +143,7 @@ fmt.Println("a.internalField:", a.internalField) // => "a" (not updated)
 
 ## Lifecycle
 
-During its life, a component goes through several steps where actions could be performed to initialize or release data and resources.
+During its life, a component goes through several steps where actions can be performed to initialize or release data and resources.
 
 ![component lifecycle diagram](/web/images/compo-lifecycle.svg)
 
