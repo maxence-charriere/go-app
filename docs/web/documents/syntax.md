@@ -339,6 +339,40 @@ func (c *myCompo) Render() app.UI {
 }
 ```
 
+## Form helpers
+
+Form helpers are [component](/components) methods that help to map HTML form element values to [component fields](/components#fields).
+
+### ValueTo
+
+[ValueTo](/reference#Compo.ValueTo) maps, when it exists, an HTML element value property to a given variable.
+
+Here is a Hello component version that uses the `ValueTo()` method to get the username from its input rather than defining an [event handler](/syntax#event-handlers):
+
+```go
+type hello struct {
+	app.Compo
+
+	name string
+}
+
+func (h *hello) Render() app.UI {
+	return app.Div().Body(
+		app.H1().Text("Hello " + h.name),
+		app.P().Body(
+			app.Input().
+				Type("text").
+				Value(h.name).
+				Placeholder("What is your name?").
+				AutoFocus(true).
+				// Here the username is directly mapped from the input's change
+				// event.
+				OnChange(h.ValueTo(&h.name)),
+		),
+	)
+}
+```
+
 ## Next
 
 - [Deal with static resources](/static-resources)

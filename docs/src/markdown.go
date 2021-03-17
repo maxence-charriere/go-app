@@ -120,6 +120,8 @@ func mardownPages() map[string]markdownPage {
 				"Range",
 				"    Slice",
 				"    Map",
+				"Form helpers",
+				"    ValueTo",
 				"Next",
 			},
 		},
