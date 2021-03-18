@@ -2,9 +2,9 @@
 
 Progressive web apps created with the **go-app** package are working as a [single page application](https://en.wikipedia.org/wiki/Single-page_application).
 
-At first navigation, the app is loaded in the browser. Once loaded, each time a page is requested, the navigation event is intercepted and **go-app**'s routing mechanism reads the URL path, then loads a new instance of the associated component.
+At first navigation, the app is loaded in the browser. Once loaded, each time a page is requested, the navigation event is intercepted and **go-app**'s routing mechanism reads the URL path, then loads a new instance of the associated [component](/components).
 
-![routing.png](/web/images/routing.png)
+![routing.png](/web/images/routing.svg)
 
 ## Define a route
 
@@ -37,9 +37,19 @@ Regular expressions follow [Go standard syntax](https://github.com/google/re2/wi
 
 ## Detect navigation
 
-Some scenarios may require actions to be done when a page is navigated on. Components can detect when a page is navigated on by implementing the [Navigator](/reference#Navigator) interface.
+Some scenarios may require actions to be done when a page is navigated on. Components can detect when a page is navigated on by implementing the [Navigator](/reference#Navigator) interface:
 
-See [component lifecyle](/components#onnav).
+```go
+type foo struct {
+    app.Compo
+}
+
+func (f *foo) OnNav(ctx app.Context) {
+    fmt.Println("component navigated:", u)
+}
+```
+
+See [component lifecycle](/components#nav).
 
 ## Next
 
