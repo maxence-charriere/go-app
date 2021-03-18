@@ -97,8 +97,8 @@ func mardownPages() map[string]markdownPage {
 		},
 		"/concurrency": {
 			path:        "/web/documents/concurrency.md",
-			title:       "Building concurrency safe Progressive Web Apps",
-			description: "Documentation about go-app tools that help to build concurrency safe Progressive Web Apps.",
+			title:       "Building responsive Progressive Web Apps",
+			description: "Documentation about go-app tools that help to build reactive and concurrency safe Progressive Web Apps.",
 			index: []string{
 				"Concurrency",
 				"UI goroutine",
@@ -175,6 +175,15 @@ func mardownPages() map[string]markdownPage {
 				"    Simple route",
 				"    Route with regular expression",
 				"Detect navigation",
+				"Next",
+			},
+		},
+		"/seo": {
+			path:        "/web/documents/seo.md",
+			title:       "Building an SEO friendly Progressive Web App",
+			description: "Documentation about how to make a Progressive Web App indexable by search engines with go-app package.",
+			index: []string{
+				"SEO",
 				"Next",
 			},
 		},

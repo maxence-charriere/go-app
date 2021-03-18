@@ -116,6 +116,11 @@ func (n *nav) Render() app.UI {
 										Href("/routing").
 										Focus(n.currentPath == "/routing"),
 									newLink().
+										Label("SEO").
+										Icon(newSVGIcon().RawSVG(seoSVG)).
+										Href("/seo").
+										Focus(n.currentPath == "/seo"),
+									newLink().
 										Label("Static resources").
 										Icon(newSVGIcon().RawSVG(fileSVG)).
 										Href("/static-resources").
