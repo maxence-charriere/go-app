@@ -67,10 +67,10 @@ func (n *nav) Render() app.UI {
 										Href("/start").
 										Focus(n.currentPath == "/start"),
 									newLink().
-										Label("Architecture").
-										Icon(newSVGIcon().RawSVG(fileTreeSVG)).
-										Href("/architecture").
-										Focus(n.currentPath == "/architecture"),
+										Label("V7 to V8 guide").
+										Icon(newSVGIcon().RawSVG(upgradeSVG)).
+										Href("/v7-to-v8").
+										Focus(n.currentPath == "/v7-to-v8"),
 								),
 							app.Div().
 								Class("vspace-top").
@@ -80,6 +80,11 @@ func (n *nav) Render() app.UI {
 										Icon(newSVGIcon().RawSVG(golangSVG)).
 										Href("/reference").
 										Focus(n.currentPath == "/reference"),
+									newLink().
+										Label("Architecture").
+										Icon(newSVGIcon().RawSVG(fileTreeSVG)).
+										Href("/architecture").
+										Focus(n.currentPath == "/architecture"),
 									newLink().
 										Label("Components").
 										Icon(newSVGIcon().RawSVG(gridSVG)).
