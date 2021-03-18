@@ -22,7 +22,7 @@ func mardownPages() map[string]markdownPage {
 		"/": {
 			path:        "/web/documents/home.md",
 			title:       defaultTitle,
-			description: "Introduction abouWorld with Go (Golang) and WebAssembly (WASM).",
+			description: defaultDescription,
 			index: []string{
 				"go-app",
 				"Declarative syntax",
@@ -33,7 +33,7 @@ func mardownPages() map[string]markdownPage {
 		},
 		"/start": {
 			path:        "/web/documents/start.md",
-			title:       "Getting started building a Progressive Web App with Golang and WebAssembly",
+			title:       "Getting started building a Progressive Web App with Go and WebAssembly",
 			description: "Introduction about how to create a Progressive Web App displaying a simple Hello World with the Go programming language (Golang) and WebAssembly (Wasm).",
 			index: []string{
 				"Getting started",
@@ -54,12 +54,15 @@ func mardownPages() map[string]markdownPage {
 			description: "Guide about how to migrate a Progressive Web App built with go-app V7 to V8.",
 			index: []string{
 				"V7 to V8 migration guide",
+				"Package functions",
+				"Component interfaces",
+				"Resource provider",
 			},
 		},
 		"/architecture": {
 			path:        "/web/documents/architecture.md",
-			title:       defaultTitle,
-			description: defaultDescription,
+			title:       "Understanding go-app architecture",
+			description: "Documentation about how go-app parts are working together to deliver Progressive Web Apps out of the box?",
 			index: []string{
 				"Architecture",
 				"Web browser",
@@ -73,8 +76,8 @@ func mardownPages() map[string]markdownPage {
 		},
 		"/components": {
 			path:        "/web/documents/components.md",
-			title:       defaultTitle,
-			description: defaultDescription,
+			title:       "Building components: customizable, independent, and reusable UI elements",
+			description: "Documentation about building customizable, independent, and reusable UI elements.",
 			index: []string{
 				"Components",
 				"Create",
@@ -94,8 +97,8 @@ func mardownPages() map[string]markdownPage {
 		},
 		"/concurrency": {
 			path:        "/web/documents/concurrency.md",
-			title:       defaultTitle,
-			description: defaultDescription,
+			title:       "Building concurrency safe Progressive Web Apps",
+			description: "Documentation about go-app tools that help to build concurrency safe Progressive Web Apps.",
 			index: []string{
 				"Concurrency",
 				"UI goroutine",
@@ -107,8 +110,8 @@ func mardownPages() map[string]markdownPage {
 		},
 		"/syntax": {
 			path:        "/web/documents/syntax.md",
-			title:       defaultTitle,
-			description: defaultDescription,
+			title:       "A Go syntax for building beautiful UIs",
+			description: "Documentation about the Go (Golang) syntax to customize go-app components look, and craft beautiful UIs only with the Go Programming Language.",
 			index: []string{
 				"Declarative syntax",
 				"HTML elements",
@@ -135,8 +138,8 @@ func mardownPages() map[string]markdownPage {
 		},
 		"/js": {
 			path:        "/web/documents/js.md",
-			title:       defaultTitle,
-			description: defaultDescription,
+			title:       "Interoperability between Go and JavaScript",
+			description: "Documentation about how to interact with the webpage DOM and JavaScript libraries from Go (Golang).",
 			index: []string{
 				"JavaScript and DOM",
 				"Include JS files",
@@ -152,8 +155,8 @@ func mardownPages() map[string]markdownPage {
 		},
 		"/lifecycle": {
 			path:        "/web/documents/lifecycle.md",
-			title:       defaultTitle,
-			description: defaultDescription,
+			title:       "Understanding app lifecycle in the web browser",
+			description: "Documentation that describes how a web browser installs and updates a go-app Progressive Web App.",
 			index: []string{
 				"Lifecycle",
 				"    First loading",
@@ -164,8 +167,8 @@ func mardownPages() map[string]markdownPage {
 		},
 		"/routing": {
 			path:        "/web/documents/routing.md",
-			title:       defaultTitle,
-			description: defaultDescription,
+			title:       "Routing pages to go-app components",
+			description: "Documentation about how to associate URL paths to go-app components.",
 			index: []string{
 				"Routing",
 				"Define a route",
@@ -177,8 +180,8 @@ func mardownPages() map[string]markdownPage {
 		},
 		"/static-resources": {
 			path:        "/web/documents/static-resources.md",
-			title:       defaultTitle,
-			description: defaultDescription,
+			title:       "Dealing with static resources",
+			description: "Documentation that describes what are static resources, how to interact, and where to host them.",
 			index: []string{
 				"Static resources",
 				"Access static resources",
@@ -193,8 +196,8 @@ func mardownPages() map[string]markdownPage {
 		},
 		"/built-with": {
 			path:        "/web/documents/built-with.md",
-			title:       defaultTitle,
-			description: defaultDescription,
+			title:       "Progressive Web Apps created with go-app",
+			description: "An index that lists Progressive Web Apps built with the go-app package.",
 			index: []string{
 				"Built with go-app",
 				"Lofimusic.app",
@@ -205,8 +208,8 @@ func mardownPages() map[string]markdownPage {
 		},
 		"/install": {
 			path:        "/web/documents/install.md",
-			title:       defaultTitle,
-			description: defaultDescription,
+			title:       "Installing Progressive Web Apps on user devices",
+			description: "Documentation about how to install a Progressive Web App on a user device, from Chromium-based web browsers to mobile devices.",
 			index: []string{
 				"Install",
 				"Desktop",

@@ -18,7 +18,8 @@ type ResourceProvider interface {
 	// Package returns the path where the package resources are located.
 	Package() string
 
-	// Static returns the path where the static resources are located.
+	// Static returns the path where the static resources directory (/web) is
+	// located.
 	Static() string
 
 	// AppWASM returns the app.wasm file path.
