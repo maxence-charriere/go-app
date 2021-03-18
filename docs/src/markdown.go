@@ -142,6 +142,18 @@ func mardownPages() map[string]markdownPage {
 				"Next",
 			},
 		},
+		"/lifecycle": {
+			path:        "/web/documents/lifecycle.md",
+			title:       defaultTitle,
+			description: defaultDescription,
+			index: []string{
+				"Lifecycle",
+				"    First loading",
+				"    Recurrent loadings",
+				"    Loading after app update",
+				"Listen for app updates",
+			},
+		},
 		"/routing": {
 			path:        "/web/documents/routing.md",
 			title:       defaultTitle,
@@ -193,18 +205,6 @@ func mardownPages() map[string]markdownPage {
 				"IOS",
 				"Android",
 				"Next",
-			},
-		},
-		"/lifecycle": {
-			path:        "/web/documents/lifecycle.md",
-			title:       defaultTitle,
-			description: defaultDescription,
-			index: []string{
-				"Lifecycle",
-				"    First loading",
-				"    Recurrent loadings",
-				"    Loading after app update",
-				"Listen for updates",
 			},
 		},
 	}

@@ -1,10 +1,10 @@
 # Lifecycle
 
-![app load flow](/web/images/app-lifecycle.png)
-
-Apps created with this package are WebAssembly binaries that are served through HTTP requests.
+Apps created with go-app are WebAssembly binaries that are served through HTTP requests.
 
 Because they are Progressive Web apps, they have to be available for offline mode. Under the hood, this is done by using [service workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) and caching mechanisms, which results in different app loading scenarios.
+
+![app load flow](/web/images/app-lifecycle.svg)
 
 ### First loading
 
@@ -36,13 +36,13 @@ App loading after an update is occurring when a user comes back on the app but t
 
 The trigger to update the app is a diff between the cached service worker and the live one. **Once the app is updated, the page still has to be reloaded** to be able to see the modifications since the current version displayed is the cached one.
 
-## Listen for updates
+## Listen for app updates
 
 Apps are automatically updated in the background when there are modifications.
 
 Since the displayed version of the app is the cached one, a common scenario is to visually notify the user that an update has been downloaded and that it is available by reloading the page.
 
-This can be done by implementing the [Updater](/reference#Updater) interface into a component:
+This is done by implementing the [Updater](/reference#Updater) interface into a component:
 
 ```go
 // A component that describes a UI.
@@ -50,13 +50,13 @@ type littleApp struct {
 	app.Compo
 
 	// Field that reports whether an app update is available. False by default.
-	UpdateAvailable bool
+	updateAvailable bool
 }
 
 // OnAppUpdate satisfies the app.Updater interface. It is called when the app is
 // updated in background.
 func (a *littleApp) OnAppUpdate(ctx app.Context) {
-	a.UpdateAvailable = ctx.AppUpdateAvailable // Reports that an app update is available.
+	a.updateAvailable = ctx.AppupdateAvailable // Reports that an app update is available.
 	a.Update()                                 // Triggers UI update.
 }
 
@@ -66,7 +66,7 @@ func (a *littleApp) Render() app.UI {
 		app.P().Text("That only display a text."),
 
 		// Displays an Update button when an update is available.
-		app.If(a.UpdateAvailable,
+		app.If(a.updateAvailable,
 			app.Button().
 				Text("Update!").
 				OnClick(a.onUpdateClick),
@@ -76,6 +76,6 @@ func (a *littleApp) Render() app.UI {
 
 func (a *littleApp) onUpdateClick(ctx app.Context, e app.Event) {
 	// Reloads the page to display the modifications.
-	app.Reload()
+	ctx.Reload()
 }
 ```
