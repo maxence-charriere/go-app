@@ -14,6 +14,16 @@ func newHello() *hello {
 	return &hello{}
 }
 
+// func (h *hello) OnPreRender(ctx app.Context) {
+// 	ctx.Page.SetTitle("A Hello World written with go-app")
+// 	ctx.Page.SetAuthor("Maxence")
+// 	h.Update()
+// }
+
+// func (h *hello) Render() app.UI {
+// 	return app.H1().Text("Hello " + h.name)
+// }
+
 func (h *hello) Render() app.UI {
 	return app.Div().Body(
 		app.H1().Body(

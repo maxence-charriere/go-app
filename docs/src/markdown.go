@@ -57,6 +57,7 @@ func mardownPages() map[string]markdownPage {
 				"Package functions",
 				"Component interfaces",
 				"Resource provider",
+				"Concurrency",
 			},
 		},
 		"/architecture": {
@@ -184,6 +185,10 @@ func mardownPages() map[string]markdownPage {
 			description: "Documentation about how to make a Progressive Web App indexable by search engines with go-app package.",
 			index: []string{
 				"SEO",
+				"Prerendering",
+				"    Customizing prerendering",
+				"    Customizing page metadata",
+				"    Caching",
 				"Next",
 			},
 		},

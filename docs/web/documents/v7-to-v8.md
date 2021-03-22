@@ -1,6 +1,6 @@
 # V7 to V8 migration guide
 
-Go-app V8 solves the SEO critical problem by providing server-side prerendering. Unfortunately, parts of the package had to be reworked, which resulted in breaking changes.
+Go-app V8 solves the [SEO](/seo) critical problem by providing server-side prerendering. Unfortunately, parts of the package had to be reworked, which resulted in breaking changes.
 
 This document is here to help to migrate V7 to V8, by enumerating things that have changed.
 
@@ -41,3 +41,7 @@ type ResourceProvider interface {
 	AppWASM() string
 }
 ```
+
+## Concurrency
+
+Goroutines launched from components should now be created with [`Context.Async()`](/reference#Context.Async). See [concurrency](/concurrency#async) topic.
