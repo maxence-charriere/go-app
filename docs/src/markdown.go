@@ -251,7 +251,7 @@ type markdownDoc struct {
 	path      string
 	title     string
 	index     []string
-	markdow   string
+	markdown  string
 	isLoading bool
 	err       error
 }
@@ -301,11 +301,10 @@ func (d *markdownDoc) load(ctx app.Context, path string) {
 		md, err := get(ctx, path)
 
 		d.Defer(func(ctx app.Context) {
-			d.markdow = fmt.Sprintf("<div>%s</div>", parseMarkdown(md))
+			d.markdown = string(md)
 			d.err = err
 			d.isLoading = false
 			d.Update()
-			d.highlightCode(ctx)
 
 			fragment := ctx.Page.URL().Fragment
 			if fragment == "" {
@@ -316,24 +315,15 @@ func (d *markdownDoc) load(ctx app.Context, path string) {
 	})
 }
 
-func (d *markdownDoc) highlightCode(ctx app.Context) {
-	ctx.Dispatch(func() {
-		app.Window().Get("Prism").Call("highlightAll")
-	})
-}
-
 func (d *markdownDoc) Render() app.UI {
 	return newPage().
 		Index(
 			newIndex().Links(d.index...),
 		).
 		Content(
-			app.Div().
-				Class("markdown").
+			newMarkdownContent().
 				Class("hspace-out-stretch").
-				Body(
-					app.Raw(d.markdow),
-				),
+				Markdown(d.markdown),
 			newLoader().
 				Class("page-loader").
 				Class("fill").
@@ -343,6 +333,57 @@ func (d *markdownDoc) Render() app.UI {
 				Err(d.err),
 		).
 		IssueTitle(filepath.Base(d.title))
+}
+
+type markdownContent struct {
+	app.Compo
+
+	Iclass string
+	Imd    string
+	md     string
+}
+
+func newMarkdownContent() *markdownContent {
+	return &markdownContent{}
+}
+
+func (m *markdownContent) Class(v string) *markdownContent {
+	if v == "" {
+		return m
+	}
+	if m.Iclass != "" {
+		m.Iclass += " "
+	}
+	m.Iclass += v
+	return m
+}
+
+func (m *markdownContent) Markdown(v string) *markdownContent {
+	m.Imd = v
+	return m
+}
+
+func (m *markdownContent) Render() app.UI {
+	if m.Imd != m.md {
+		m.Defer(m.refreshMd)
+	}
+
+	return app.Div().
+		Class("markdown").
+		Class(m.Iclass).
+		Body(
+			app.Raw(fmt.Sprintf("<div>%s</div>", parseMarkdown([]byte(m.md)))),
+		)
+}
+
+func (m *markdownContent) refreshMd(ctx app.Context) {
+	m.md = m.Imd
+	m.Update()
+	m.Defer(m.highlightCode)
+}
+
+func (d *markdownContent) highlightCode(ctx app.Context) {
+	app.Window().Get("Prism").Call("highlightAll")
 }
 
 func parseMarkdown(md []byte) []byte {

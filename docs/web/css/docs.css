@@ -343,6 +343,25 @@ h2 {
   user-select: none;
 }
 
+.button {
+  display: inline-block;
+  padding: 9px 24px;
+  color: currentColor;
+  border: 1px solid currentColor;
+  border-radius: 12px;
+  cursor: pointer;
+  text-transform: uppercase;
+  margin: 6px 6px;
+}
+
+.button:hover {
+  color: deepskyblue;
+}
+
+.center-content {
+  text-align: center;
+}
+
 /*------------------------------------------------------------------------------
 ** Animations
 ------------------------------------------------------------------------------*/
