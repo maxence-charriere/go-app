@@ -378,5 +378,4 @@ func (h *hello) Render() app.UI {
 - [Deal with static resources](/static-resources)
 - [Interact with Javascript](/js)
 - [Handle concurrency](/concurrency)
-- [Use widgets](/widgets)
 - [API reference](/reference)

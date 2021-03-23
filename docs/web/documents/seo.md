@@ -126,3 +126,9 @@ type PreRenderCache interface {
 ```
 
 You could implement a cache based on Redis or any other datastore.
+
+## Next
+
+- [Associate components with URL paths](/routing)
+- [Handle concurrency](/concurrency)
+- [API reference](/reference)

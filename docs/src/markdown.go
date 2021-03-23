@@ -164,6 +164,7 @@ func mardownPages() map[string]markdownPage {
 				"    Recurrent loadings",
 				"    Loading after app update",
 				"Listen for app updates",
+				"Next",
 			},
 		},
 		"/routing": {
@@ -205,6 +206,15 @@ func mardownPages() map[string]markdownPage {
 				"Setup local web directory",
 				"Setup remote web directory",
 				"Fully static app",
+				"Next",
+			},
+		},
+		"/testing": {
+			path:        "/web/documents/testing.md",
+			title:       "Testing components",
+			description: "Documentation about how to unit test components created with go-app.",
+			index: []string{
+				"Testing",
 				"Next",
 			},
 		},

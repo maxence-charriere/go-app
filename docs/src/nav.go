@@ -125,6 +125,11 @@ func (n *nav) Render() app.UI {
 										Icon(newSVGIcon().RawSVG(fileSVG)).
 										Href("/static-resources").
 										Focus(n.currentPath == "/static-resources"),
+									newLink().
+										Label("Testing").
+										Icon(newSVGIcon().RawSVG(testSVG)).
+										Href("/testing").
+										Focus(n.currentPath == "/testing"),
 								),
 							app.Div().
 								Class("vspace-top").

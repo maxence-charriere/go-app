@@ -79,3 +79,9 @@ func (a *littleApp) onUpdateClick(ctx app.Context, e app.Event) {
 	ctx.Reload()
 }
 ```
+
+## Next
+
+- [Understand go-app architecture](/architecture)
+- [Associate components with URL paths](/routing)
+- [API reference](/reference)
