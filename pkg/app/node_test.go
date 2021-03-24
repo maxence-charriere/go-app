@@ -101,7 +101,7 @@ func testMountDismount(t *testing.T, utests []mountTest) {
 		t.Run(u.scenario, func(t *testing.T) {
 			n := u.node
 
-			d := NewClientTestingDispatcher(n)
+			d := NewClientTester(n)
 
 			d.Consume()
 			testMounted(t, n)
@@ -156,7 +156,7 @@ type updateTest struct {
 func testUpdate(t *testing.T, utests []updateTest) {
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			d := NewClientTestingDispatcher(u.a)
+			d := NewClientTester(u.a)
 			defer d.Close()
 			d.Consume()
 

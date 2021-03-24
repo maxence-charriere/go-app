@@ -148,6 +148,14 @@ resources to run Go-based progressive web apps.
 				
 			
 				
+				<dd><a href="#ClientDispatcher" id="src-ClientDispatcher" id="src-ClientDispatcher">type ClientDispatcher</a></dd>
+				
+					
+					<dd>    <a href="#NewClientTester" id="src-NewClientTester" id="src-NewClientTester">func NewClientTester(v UI) ClientDispatcher</a></dd>
+				
+				
+			
+				
 				<dd><a href="#Compo" id="src-Compo" id="src-Compo">type Compo</a></dd>
 				
 				
@@ -1211,18 +1219,15 @@ resources to run Go-based progressive web apps.
 				
 			
 				
-				<dd><a href="#TestUIDescriptor" id="src-TestUIDescriptor" id="src-TestUIDescriptor">type TestUIDescriptor</a></dd>
+				<dd><a href="#ServerDispatcher" id="src-ServerDispatcher" id="src-ServerDispatcher">type ServerDispatcher</a></dd>
+				
+					
+					<dd>    <a href="#NewServerTester" id="src-NewServerTester" id="src-NewServerTester">func NewServerTester(v UI) ServerDispatcher</a></dd>
 				
 				
 			
 				
-				<dd><a href="#TestingDispatcher" id="src-TestingDispatcher" id="src-TestingDispatcher">type TestingDispatcher</a></dd>
-				
-					
-					<dd>    <a href="#NewClientTestingDispatcher" id="src-NewClientTestingDispatcher" id="src-NewClientTestingDispatcher">func NewClientTestingDispatcher(v UI) TestingDispatcher</a></dd>
-				
-					
-					<dd>    <a href="#NewServerTestingDispatcher" id="src-NewServerTestingDispatcher" id="src-NewServerTestingDispatcher">func NewServerTestingDispatcher(v UI) TestingDispatcher</a></dd>
+				<dd><a href="#TestUIDescriptor" id="src-TestUIDescriptor" id="src-TestUIDescriptor">type TestUIDescriptor</a></dd>
 				
 				
 			
@@ -1832,6 +1837,68 @@ BrowserWindow is the interface that describes the browser window.
 				<pre>func Window() <a href="#BrowserWindow" id="src-BrowserWindow">BrowserWindow</a></pre>
 				<p>
 Window returns the JavaScript &#34;window&#34; object.
+</p>
+
+				
+				
+			
+
+			
+		
+			
+			
+			<h2 id="ClientDispatcher">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L36">ClientDispatcher</a>
+				<a class="permalink" href="#ClientDispatcher" id="src-ClientDispatcher">¶</a>
+				
+				
+			</h2>
+			<p>
+ClientDispatcher is the interface that describes a dispatcher that emulates a
+client environment.
+</p>
+
+			<pre>type ClientDispatcher interface {
+    <a href="#Dispatcher" id="src-Dispatcher">Dispatcher</a>
+
+    <span class="comment">// Mounts the given component as root component.</span>
+    Mount(<a href="#UI" id="src-UI">UI</a>)
+
+    <span class="comment">// Triggers OnNav from the root component.</span>
+    Nav(*<a href="https://golang.org/pkg/net/url/">url</a>.<a href="https://golang.org/pkg/net/url/#URL">URL</a>)
+
+    <span class="comment">// Triggers OnAppUpdate from the root component.</span>
+    AppUpdate()
+
+    <span class="comment">// Triggers OnAppResize from the root component.</span>
+    AppResize()
+
+    <span class="comment">// Consume executes all the remaining UI instructions.</span>
+    Consume()
+
+    <span class="comment">// Close consumes all the remaining UI instruction and releases allocated</span>
+    <span class="comment">// resources.</span>
+    Close()
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="NewClientTester">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L61">NewClientTester</a>
+					<a class="permalink" href="#NewClientTester" id="src-NewClientTester">¶</a>
+					
+					
+				</h3>
+				<pre>func NewClientTester(v <a href="#UI" id="src-UI">UI</a>) <a href="#ClientDispatcher" id="src-ClientDispatcher">ClientDispatcher</a></pre>
+				<p>
+NewClientTester creates a testing dispatcher that simulates a
+client environment. The given UI element is mounted upon creation.
 </p>
 
 				
@@ -23459,6 +23526,58 @@ remote bucket such as Amazon S3 or Google Cloud Storage.
 		
 			
 			
+			<h2 id="ServerDispatcher">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L66">ServerDispatcher</a>
+				<a class="permalink" href="#ServerDispatcher" id="src-ServerDispatcher">¶</a>
+				
+				
+			</h2>
+			<p>
+ServerDispatcher is the interface that describes a dispatcher that emulates a server environment.
+</p>
+
+			<pre>type ServerDispatcher interface {
+    <a href="#Dispatcher" id="src-Dispatcher">Dispatcher</a>
+
+    <span class="comment">// Pre-renders the given component.</span>
+    PreRender()
+
+    <span class="comment">// Consume executes all the remaining UI instructions.</span>
+    Consume()
+
+    <span class="comment">// Close consumes all the remaining UI instruction and releases allocated</span>
+    <span class="comment">// resources.</span>
+    Close()
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="NewServerTester">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L82">NewServerTester</a>
+					<a class="permalink" href="#NewServerTester" id="src-NewServerTester">¶</a>
+					
+					
+				</h3>
+				<pre>func NewServerTester(v <a href="#UI" id="src-UI">UI</a>) <a href="#ServerDispatcher" id="src-ServerDispatcher">ServerDispatcher</a></pre>
+				<p>
+NewServerTester creates a testing dispatcher that simulates a
+client environment. The given UI element is mounted upon creation.
+</p>
+
+				
+				
+			
+
+			
+		
+			
+			
 			<h2 id="TestUIDescriptor">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/testing.go#L2">TestUIDescriptor</a>
 				<a class="permalink" href="#TestUIDescriptor" id="src-TestUIDescriptor">¶</a>
 				
@@ -23500,85 +23619,6 @@ location from its parents.
 			
 			
 
-			
-
-			
-		
-			
-			
-			<h2 id="TestingDispatcher">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L35">TestingDispatcher</a>
-				<a class="permalink" href="#TestingDispatcher" id="src-TestingDispatcher">¶</a>
-				
-				
-			</h2>
-			<p>
-TestingDispatcher represents a dispatcher to use for testing purposes.
-</p>
-
-			<pre>type TestingDispatcher interface {
-    <a href="#Dispatcher" id="src-Dispatcher">Dispatcher</a>
-
-    <span class="comment">// Pre-renders the given component.</span>
-    PreRender()
-
-    <span class="comment">// Mounts the given component as root component.</span>
-    Mount(<a href="#UI" id="src-UI">UI</a>)
-
-    <span class="comment">// Triggers OnNav from the root component.</span>
-    Nav(*<a href="https://golang.org/pkg/net/url/">url</a>.<a href="https://golang.org/pkg/net/url/#URL">URL</a>)
-
-    <span class="comment">// Triggers OnAppUpdate from the root component.</span>
-    AppUpdate()
-
-    <span class="comment">// Triggers OnAppResize from the root component.</span>
-    AppResize()
-
-    <span class="comment">// Consume executes all the remaining UI instructions.</span>
-    Consume()
-
-    <span class="comment">// Close consumes all the remaining UI instruction and releases allocated</span>
-    <span class="comment">// resources.</span>
-    Close()
-}</pre>
-
-			
-
-			
-
-			
-			
-			
-
-			
-				
-				<h3 id="NewClientTestingDispatcher">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L63">NewClientTestingDispatcher</a>
-					<a class="permalink" href="#NewClientTestingDispatcher" id="src-NewClientTestingDispatcher">¶</a>
-					
-					
-				</h3>
-				<pre>func NewClientTestingDispatcher(v <a href="#UI" id="src-UI">UI</a>) <a href="#TestingDispatcher" id="src-TestingDispatcher">TestingDispatcher</a></pre>
-				<p>
-NewClientTestingDispatcher creates a testing dispatcher that simulates a
-client environment. The given UI element is mounted upon creation.
-</p>
-
-				
-				
-			
-				
-				<h3 id="NewServerTestingDispatcher">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L69">NewServerTestingDispatcher</a>
-					<a class="permalink" href="#NewServerTestingDispatcher" id="src-NewServerTestingDispatcher">¶</a>
-					
-					
-				</h3>
-				<pre>func NewServerTestingDispatcher(v <a href="#UI" id="src-UI">UI</a>) <a href="#TestingDispatcher" id="src-TestingDispatcher">TestingDispatcher</a></pre>
-				<p>
-NewServerTestingDispatcher creates a testing dispatcher that simulates a
-client environment. The given UI element is mounted upon creation.
-</p>
-
-				
-				
 			
 
 			

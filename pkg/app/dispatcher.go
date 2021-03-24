@@ -41,12 +41,10 @@ type Dispatcher interface {
 	resolveStaticResource(string) string
 }
 
-// TestingDispatcher represents a dispatcher to use for testing purposes.
-type TestingDispatcher interface {
+// ClientDispatcher is the interface that describes a dispatcher that emulates a
+// client environment.
+type ClientDispatcher interface {
 	Dispatcher
-
-	// Pre-renders the given component.
-	PreRender()
 
 	// Mounts the given component as root component.
 	Mount(UI)
@@ -68,19 +66,34 @@ type TestingDispatcher interface {
 	Close()
 }
 
-// NewClientTestingDispatcher creates a testing dispatcher that simulates a
+// NewClientTester creates a testing dispatcher that simulates a
 // client environment. The given UI element is mounted upon creation.
-func NewClientTestingDispatcher(v UI) TestingDispatcher {
+func NewClientTester(v UI) ClientDispatcher {
 	return newTestingDispatcher(v, false)
 }
 
-// NewServerTestingDispatcher creates a testing dispatcher that simulates a
+// ServerDispatcher is the interface that describes a dispatcher that emulates a server environment.
+type ServerDispatcher interface {
+	Dispatcher
+
+	// Pre-renders the given component.
+	PreRender()
+
+	// Consume executes all the remaining UI instructions.
+	Consume()
+
+	// Close consumes all the remaining UI instruction and releases allocated
+	// resources.
+	Close()
+}
+
+// NewServerTester creates a testing dispatcher that simulates a
 // client environment. The given UI element is mounted upon creation.
-func NewServerTestingDispatcher(v UI) TestingDispatcher {
+func NewServerTester(v UI) ServerDispatcher {
 	return newTestingDispatcher(v, false)
 }
 
-func newTestingDispatcher(v UI, serverSide bool) TestingDispatcher {
+func newTestingDispatcher(v UI, serverSide bool) *uiDispatcher {
 	u, _ := url.Parse("https://localhost")
 
 	disp := newUIDispatcher(serverSide, &requestPage{url: u}, func(url string) string {

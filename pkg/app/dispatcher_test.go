@@ -8,7 +8,7 @@ import (
 )
 
 func TestDispatcherMultipleMount(t *testing.T) {
-	d := NewClientTestingDispatcher(Div())
+	d := NewClientTester(Div())
 	defer d.Close()
 	d.Mount(A())
 	d.Mount(Text("hello"))
@@ -18,13 +18,13 @@ func TestDispatcherMultipleMount(t *testing.T) {
 }
 
 func TestDispatcherAsyncWaitClient(t *testing.T) {
-	d := NewClientTestingDispatcher(&hello{})
+	d := NewClientTester(&hello{})
 	defer d.Close()
 	testDispatcherAsyncWait(t, d)
 }
 
 func TestDispatcherAsyncWaitServer(t *testing.T) {
-	d := NewServerTestingDispatcher(&hello{})
+	d := NewServerTester(&hello{})
 	defer d.Close()
 	testDispatcherAsyncWait(t, d)
 }
@@ -50,13 +50,13 @@ func testDispatcherAsyncWait(t *testing.T, d Dispatcher) {
 }
 
 func TestDispatcherLocalStorage(t *testing.T) {
-	d := NewClientTestingDispatcher(&hello{})
+	d := NewClientTester(&hello{})
 	defer d.Close()
 	testBrowserStorage(t, d.localStorage())
 }
 
 func TestDispatcherSessionStorage(t *testing.T) {
-	d := NewClientTestingDispatcher(&hello{})
+	d := NewClientTester(&hello{})
 	defer d.Close()
 	testBrowserStorage(t, d.sessionStorage())
 }

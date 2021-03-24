@@ -56,7 +56,7 @@ func TestShellPreRender(t *testing.T) {
 
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			d := NewServerTestingDispatcher(u.shell)
+			d := NewServerTester(u.shell)
 			defer d.Close()
 			d.PreRender()
 		})

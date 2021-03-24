@@ -234,7 +234,7 @@ func TestNavigator(t *testing.T) {
 	u, _ := url.Parse("https://murlok.io")
 	h := &hello{}
 
-	d := NewClientTestingDispatcher(h)
+	d := NewClientTester(h)
 	defer d.Close()
 
 	d.Nav(u)
@@ -247,7 +247,7 @@ func TestNestedtNavigator(t *testing.T) {
 
 	h := &hello{}
 	div := Div().Body(h)
-	d := NewClientTestingDispatcher(div)
+	d := NewClientTester(div)
 	defer d.Close()
 
 	d.Nav(u)
@@ -259,7 +259,7 @@ func TestNestedInComponentNavigator(t *testing.T) {
 	u, _ := url.Parse("https://murlok.io")
 
 	foo := &foo{Bar: "Bar"}
-	d := NewClientTestingDispatcher(foo)
+	d := NewClientTester(foo)
 	defer d.Close()
 
 	d.Nav(u)
@@ -275,7 +275,7 @@ func TestUpdater(t *testing.T) {
 	}()
 
 	h := &hello{}
-	d := NewClientTestingDispatcher(h)
+	d := NewClientTester(h)
 	defer d.Close()
 
 	d.AppUpdate()
@@ -291,7 +291,7 @@ func TestNestedUpdater(t *testing.T) {
 
 	h := &hello{}
 	div := Div().Body(h)
-	d := NewClientTestingDispatcher(div)
+	d := NewClientTester(div)
 	defer d.Close()
 
 	d.AppUpdate()
@@ -306,7 +306,7 @@ func TestNestedInComponentUpdater(t *testing.T) {
 	}()
 
 	foo := &foo{Bar: "Bar"}
-	d := NewClientTestingDispatcher(foo)
+	d := NewClientTester(foo)
 	defer d.Close()
 
 	d.AppUpdate()
@@ -317,7 +317,7 @@ func TestNestedInComponentUpdater(t *testing.T) {
 
 func TestResizer(t *testing.T) {
 	h := &hello{}
-	d := NewClientTestingDispatcher(h)
+	d := NewClientTester(h)
 	defer d.Close()
 
 	d.AppResize()
@@ -328,7 +328,7 @@ func TestResizer(t *testing.T) {
 func TestNestedResizer(t *testing.T) {
 	h := &hello{}
 	div := Div().Body(h)
-	d := NewClientTestingDispatcher(div)
+	d := NewClientTester(div)
 	defer d.Close()
 
 	d.AppResize()
@@ -338,7 +338,7 @@ func TestNestedResizer(t *testing.T) {
 
 func TestNestedInComponentResizer(t *testing.T) {
 	foo := &foo{Bar: "Bar"}
-	d := NewClientTestingDispatcher(foo)
+	d := NewClientTester(foo)
 	defer d.Close()
 
 	d.AppResize()
@@ -349,7 +349,7 @@ func TestNestedInComponentResizer(t *testing.T) {
 
 func TestPreRenderer(t *testing.T) {
 	h := &hello{}
-	d := NewServerTestingDispatcher(h)
+	d := NewServerTester(h)
 	defer d.Close()
 
 	d.PreRender()
@@ -361,7 +361,7 @@ func TestPreRenderer(t *testing.T) {
 func TestNestedPreRenderer(t *testing.T) {
 	h := &hello{}
 	div := Div().Body(h)
-	d := NewServerTestingDispatcher(div)
+	d := NewServerTester(div)
 	defer d.Close()
 
 	d.PreRender()
@@ -372,7 +372,7 @@ func TestNestedPreRenderer(t *testing.T) {
 
 func TestNestedInComponentPreRenderer(t *testing.T) {
 	foo := &foo{Bar: "Bar"}
-	d := NewServerTestingDispatcher(foo)
+	d := NewServerTester(foo)
 	defer d.Close()
 
 	d.PreRender()

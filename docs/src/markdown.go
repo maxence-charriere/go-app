@@ -215,6 +215,10 @@ func mardownPages() map[string]markdownPage {
 			description: "Documentation about how to unit test components created with go-app.",
 			index: []string{
 				"Testing",
+				"Component server prerendering",
+				"Component client lifecycle",
+				"Asynchronous operations",
+				"UI elements",
 				"Next",
 			},
 		},

@@ -30,7 +30,7 @@ func TestFlowPreRender(t *testing.T) {
 
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			d := NewServerTestingDispatcher(u.flow)
+			d := NewServerTester(u.flow)
 			defer d.Close()
 			d.PreRender()
 		})

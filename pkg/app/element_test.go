@@ -125,7 +125,7 @@ func TestElemUpdateAttrs(t *testing.T) {
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
 			n := Div().(*htmlDiv)
-			d := NewClientTestingDispatcher(n)
+			d := NewClientTester(n)
 			defer d.Close()
 
 			d.Consume()
@@ -204,7 +204,7 @@ func TestElemUpdateEventHandlers(t *testing.T) {
 			n := Div().(*htmlDiv)
 			n.events = current
 
-			d := NewClientTestingDispatcher(n)
+			d := NewClientTester(n)
 			defer d.Close()
 
 			d.Consume()
