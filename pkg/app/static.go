@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
@@ -64,6 +65,10 @@ func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
 			continue
 		}
 
+		if !strings.HasPrefix(p, "/") {
+			p = "/" + p
+		}
+
 		resources = append(resources, struct {
 			filename string
 			path     string
@@ -103,10 +108,6 @@ func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
 				Wrap(err)
 		}
 		defer res.Body.Close()
-
-		if res.StatusCode != http.StatusOK {
-			return errors.New(res.Status)
-		}
 
 		body, err := ioutil.ReadAll(res.Body)
 		if err != nil {
