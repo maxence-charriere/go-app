@@ -100,24 +100,11 @@ func (s *supportUs) Render() app.UI {
 						Body(
 							newSupportUsItem().
 								Class("fill").
-								Label("Bitcoin").
-								Href(bitcoinURL).
+								Label("Cryptocurrency").
+								Href(coinbaseBusinessURL).
 								Icon(
 									newSVGIcon().
 										RawSVG(bitcoinSVG).
-										Size(supportUsIconSize),
-								),
-						),
-					app.Div().
-						Class("space-flow-item").
-						Body(
-							newSupportUsItem().
-								Class("fill").
-								Label("Ethereum").
-								Href(ethURL).
-								Icon(
-									newSVGIcon().
-										RawSVG(ethSVG).
 										Size(supportUsIconSize),
 								),
 						),

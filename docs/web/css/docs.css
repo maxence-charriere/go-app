@@ -348,10 +348,11 @@ h2 {
   padding: 9px 24px;
   color: currentColor;
   border: 1px solid currentColor;
-  border-radius: 12px;
+  border-radius: 18px;
   cursor: pointer;
   text-transform: uppercase;
   margin: 6px 6px;
+  letter-spacing: 1px;
 }
 
 .button:hover {
