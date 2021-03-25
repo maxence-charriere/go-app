@@ -4,25 +4,25 @@
 <meta charset="UTF-8">
 <meta httpequiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="author" content="Maxence Charriere">
-<meta name="description" content="Documentation that describes how a web browser installs and updates a go-app Progressive Web App.">
+<meta name="description" content="Documentation about how to unit test components created with go-app.">
 <meta name="keywords" content="go-app, go, golang, app, pwa, progressive web app, webassembly, web assembly, webapp, web, gui, ui, user interface, graphical user interface, frontend, opensource, open source, github">
-<meta content="#2e343a" name="theme-color">
+<meta name="theme-color" content="#2e343a">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
-<meta property="og:url" content="http://127.0.0.1:55708/lifecycle">
-<meta property="og:title" content="Understanding app lifecycle in the web browser">
-<meta property="og:description" content="Documentation that describes how a web browser installs and updates a go-app Progressive Web App.">
+<meta property="og:url" content="http://127.0.0.1:55708/testing">
+<meta property="og:title" content="Testing components">
+<meta property="og:description" content="Documentation about how to unit test components created with go-app.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="/web/images/go-app.png">
 <title>
-Understanding app lifecycle in the web browser
+Testing components
 </title>
-<link href="https://storage.googleapis.com/murlok-github/icon-192.png" rel="icon" type="image/png">
+<link rel="icon" type="image/png" href="https://storage.googleapis.com/murlok-github/icon-192.png">
 <link rel="apple-touch-icon" href="https://storage.googleapis.com/murlok-github/icon-192.png">
 <link rel="manifest" href="/manifest.webmanifest">
-<link href="/app.css" type="text/css" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="/app.css">
 <script defer src="/wasm_exec.js"></script>
 <script defer src="/app.js"></script>
-<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" type="text/css">
 <link type="text/css" rel="stylesheet" href="/web/css/prism.css">
 <link type="text/css" rel="stylesheet" href="/web/css/docs.css">
 <script defer src="/web/js/prism.js"></script>
@@ -39,7 +39,7 @@ Understanding app lifecycle in the web browser
 <body>
 <div>
 <div id="app-pre-render">
-<div id="goapp-shell-f8057592-7311-43ab-8a57-9aede6002f43" class="goapp-shell background">
+<div id="goapp-shell-9ad6a4cd-dd4c-4036-8b0f-0cb6d6caef3f" class="goapp-shell background">
 <div class="goapp-shell-layout" style="align-items:stretch;">
 <div class="goapp-shell-item" style="display:bloc;width:276px;max-width:276px;">
 <div class="fill unselectable">
@@ -54,7 +54,7 @@ go-app
 <div class="hspace-out">
 <div class="vspace-top">
 <a class="link heading fit  " href="/">
-<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -68,7 +68,7 @@ Home
 </div>
 </a>
 <a class="link heading fit  " href="/start">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -82,7 +82,7 @@ Getting started
 </div>
 </a>
 <a class="link heading fit  " href="/v7-to-v8">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
+<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -97,7 +97,7 @@ V7 to V8 guide
 </a>
 </div>
 <div class="vspace-top">
-<a class="link heading fit  " href="/reference">
+<a href="/reference" class="link heading fit  ">
 <div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
 <div class="link-icon">
 <div style="width:24px;height:24px;">
@@ -147,7 +147,7 @@ Components
 </div>
 </div>
 </a>
-<a href="/concurrency" class="link heading fit  ">
+<a class="link heading fit  " href="/concurrency">
 <div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
@@ -162,7 +162,7 @@ Concurrency
 </div>
 </a>
 <a class="link heading fit  " href="/syntax">
-<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -175,7 +175,7 @@ Declarative syntax
 </div>
 </div>
 </a>
-<a class="link heading fit  " href="/js">
+<a href="/js" class="link heading fit  ">
 <div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
@@ -189,7 +189,7 @@ JS/Dom
 </div>
 </div>
 </a>
-<a class="link heading fit  " href="/lifecycle">
+<a href="/lifecycle" class="link heading fit  ">
 <div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
@@ -203,8 +203,8 @@ Lifecycle
 </div>
 </div>
 </a>
-<a href="/routing" class="link heading fit  ">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
+<a class="link heading fit  " href="/routing">
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -218,7 +218,7 @@ Routing
 </div>
 </a>
 <a class="link heading fit  " href="/seo">
-<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -232,7 +232,7 @@ SEO
 </div>
 </a>
 <a class="link heading fit  " href="/static-resources">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -246,7 +246,7 @@ Static resources
 </div>
 </a>
 <a class="link heading fit  " href="/testing">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -261,8 +261,8 @@ Testing
 </a>
 </div>
 <div class="vspace-top">
-<a href="/built-with" class="link heading fit  ">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<a class="link heading fit  " href="/built-with">
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -276,7 +276,7 @@ Built with go-app
 </div>
 </a>
 <a class="link heading fit  " href="/examples">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -290,7 +290,7 @@ Examples
 </div>
 </a>
 <a class="link heading fit  " href="/install">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -306,7 +306,7 @@ Install
 </div>
 <div class="vspace-top vspace-bottom">
 <a class="link heading fit  " href="https://github.com/maxence-charriere/go-app">
-<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -335,8 +335,8 @@ Twitter
 </a>
 </div>
 <div class="vspace-top vspace-bottom">
-<a href="https://www.buymeacoffee.com/maxence" class="link heading fit  ">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<a class="link heading fit  " href="https://www.buymeacoffee.com/maxence">
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -364,7 +364,7 @@ Donate cryptos
 </div>
 </a>
 <a class="link heading fit  " href="https://github.com/sponsors/maxence-charriere">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -378,7 +378,7 @@ GitHub Sponsor
 </div>
 </a>
 <a class="link heading fit  " href="https://opencollective.com/go-app">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -396,7 +396,7 @@ Open Collective
 </nav>
 </div>
 </div>
-<div class="goapp-shell-item" style="display:bloc;width:276px;max-width:276px;">
+<div style="display:bloc;width:276px;max-width:276px;" class="goapp-shell-item">
 <nav class="header-out content unselectable">
 <div class="hspace-out">
 <header class="h2 vspace-top">
@@ -404,20 +404,20 @@ Index
 </header>
 <div class="vspace-top">
 <div class>
-<a href="#lifecycle" class="index-link ">
-Lifecycle
+<a class="index-link " href="#testing">
+Testing
 </a>
-<a href="#first-loading" class="index-link ">
-    First loading
+<a class="index-link " href="#component-server-prerendering">
+Component server prerendering
 </a>
-<a class="index-link " href="#recurrent-loadings">
-    Recurrent loadings
+<a class="index-link " href="#component-client-lifecycle">
+Component client lifecycle
 </a>
-<a class="index-link " href="#loading-after-app-update">
-    Loading after app update
+<a class="index-link " href="#asynchronous-operations">
+Asynchronous operations
 </a>
-<a class="index-link " href="#listen-for-app-updates">
-Listen for app updates
+<a class="index-link " href="#ui-elements">
+UI elements
 </a>
 <a class="index-link " href="#next">
 Next
@@ -428,7 +428,7 @@ Next
 <a class="index-link " href="#report-issue">
 Report issue
 </a>
-<a class="index-link " href="#support-go-app">
+<a href="#support-go-app" class="index-link ">
 Support go-app
 </a>
 </div>
@@ -436,109 +436,228 @@ Support go-app
 </nav>
 </div>
 <div class="goapp-shell-item" style="flex-basis:480px;flex-grow:1;">
-<div id class="goapp-stack header" style="flex-direction:row;align-items:center;"></div>
+<div class="goapp-stack header" style="flex-direction:row;align-items:center;" id></div>
 <div class="content">
 <main id="top">
 <article>
 <div class="markdown hspace-out-stretch">
-<div><h1 id="lifecycle">Lifecycle</h1>
+<div><h1 id="testing">Testing</h1>
 
-<p>Apps created with go-app are WebAssembly binaries that are served through HTTP requests.</p>
+<p>Testing is an essential step to achieve app reliability. Since go-app is working on 2 different environments (web browser and server), it provides 2 testing <a href="/reference#Dispatcher">dispatchers</a> to emulate <a href="/components#lifecycle">components lifecycle</a> behaviors.</p>
 
-<p>Because they are Progressive Web apps, they have to be available for offline mode. Under the hood, this is done by using <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">service workers</a> and caching mechanisms, which results in different app loading scenarios.</p>
+<h2 id="component-server-prerendering">Component server prerendering</h2>
 
-<p><img src="/web/images/app-lifecycle.svg" alt="app load flow" /></p>
+<p><a href="/components#prerender">Prerendering</a> is a component lifecycle step where a component can be initialized on the server-side before being converted into HTML. The server-side environment can be emulated with a dispatcher created with the <a href="/reference#NewServerTester">NewServerTester()</a> function.</p>
 
-<h3 id="first-loading">First loading</h3>
+<p>Here is an example that tests if a component has the expected values after the PreRenderer interface call:</p>
 
-<p>App first loading is the app install. It occurs the first time a user goes on the app with a given web browser.</p>
-
-<ol>
-<li>Page is downloaded</li>
-<li>Service worker is downloaded</li>
-<li>App resources (app.wasm, CSS files and JS files) are downloaded</li>
-<li>Page, Service worker, and app resources are cached into the web browser</li>
-</ol>
-
-<h3 id="recurrent-loadings">Recurrent loadings</h3>
-
-<p>App recurrent loadings are occurring when a user is coming back on the app.</p>
-
-<ol>
-<li>Page is loaded from the web browser cache</li>
-<li>Service worker is downloaded</li>
-<li><strong>Service worker is compared with its cached version =&gt; They are identical</strong></li>
-<li>App resources are loaded from the web browser cache</li>
-</ol>
-
-<h3 id="loading-after-app-update">Loading after app update</h3>
-
-<p>App loading after an update is occurring when a user comes back on the app but the app has been modified since his/her last visit.</p>
-
-<ol>
-<li>Page is loaded from the web browser cache</li>
-<li>Service worker is downloaded</li>
-<li><strong>Service worker is compared with its cached version =&gt; They are different</strong></li>
-<li>Page and app resources are downloaded</li>
-<li>Page, Service worker, and app resources are cached into the web browser</li>
-</ol>
-
-<p>The trigger to update the app is a diff between the cached service worker and the live one. <strong>Once the app is updated, the page still has to be reloaded</strong> to be able to see the modifications since the current version displayed is the cached one.</p>
-
-<h2 id="listen-for-app-updates">Listen for app updates</h2>
-
-<p>Apps are automatically updated in the background when there are modifications.</p>
-
-<p>Since the displayed version of the app is the cached one, a common scenario is to visually notify the user that an update has been downloaded and that it is available by reloading the page.</p>
-
-<p>This is done by implementing the <a href="/reference#Updater">Updater</a> interface into a component:</p>
-
-<pre><code class="language-go">// A component that describes a UI.
-type littleApp struct {
+<pre><code class="language-go">type aTitle struct {
 	app.Compo
 
-	// Field that reports whether an app update is available. False by default.
-	updateAvailable bool
+	title string
 }
 
-// OnAppUpdate satisfies the app.Updater interface. It is called when the app is
-// updated in background.
-func (a *littleApp) OnAppUpdate(ctx app.Context) {
-	a.updateAvailable = ctx.AppupdateAvailable // Reports that an app update is available.
-	a.Update()                                 // Triggers UI update.
+func (t *aTitle) OnPreRender(ctx app.Context) {
+	t.title = &quot;Testing Prerendering&quot;
+	t.Update()
 }
 
-func (a *littleApp) Render() app.UI {
-	return app.Main().Body(
-		app.H1().Text(&quot;A little app&quot;),
-		app.P().Text(&quot;That only display a text.&quot;),
-
-		// Displays an Update button when an update is available.
-		app.If(a.updateAvailable,
-			app.Button().
-				Text(&quot;Update!&quot;).
-				OnClick(a.onUpdateClick),
-		),
-	)
+func (t *aTitle) Render() app.UI {
+	return app.H1().
+		Class(&quot;title&quot;).
+		Text(t.title)
 }
 
-func (a *littleApp) onUpdateClick(ctx app.Context, e app.Event) {
-	// Reloads the page to display the modifications.
-	ctx.Reload()
+func TestComponentPreRendering(t *testing.T) {
+	compo := &amp;aTitle{}
+
+	// Creating the server emulator:
+	disp := app.NewServerTester(compo)
+	defer disp.Close() // Releases alocated resources.
+
+	if compo.title == &quot;Testing Prerendering&quot; {
+		t.Fatal(&quot;bad component title:&quot;, compo.title)
+	}
+
+	// Call OnPreRender() from PreRenderer interface:
+	disp.PreRender()
+
+	// When using Update(), Dispatch() ,or Defer(), operation are queued in
+	// a go channel. Consume() execute pending operations:
+	disp.Consume()
+
+	if compo.title != &quot;Testing Prerendering&quot; {
+		t.Fatal(&quot;bad component title:&quot;, compo.title)
+	}
 }
+</code></pre>
+
+<h2 id="component-client-lifecycle">Component client lifecycle</h2>
+
+<p>Like on the <a href="#testing-component-server-prerendering">server-side</a>, testing a component on the client-side is done by emulating the corresponding environment. On the client-side, it is done with the <a href="/reference#NewClientTester">NewClientTester()</a> function.</p>
+
+<p>Here is an example that tests if a component has the expected values after mounting and navigation:</p>
+
+<pre><code class="language-go">type aTitle struct {
+	app.Compo
+
+	title string
+}
+
+func (t *aTitle) OnMount(ctx app.Context) {
+	t.title = &quot;Testing Mounting&quot;
+	t.Update()
+}
+
+func (t *aTitle) OnNav(ctx app.Context) {
+	t.title = &quot;Testing Nav&quot;
+	t.Update()
+}
+
+func (t *aTitle) Render() app.UI {
+	return app.H1().
+		Class(&quot;title&quot;).
+		Text(t.title)
+}
+
+func TestComponentLifcycle(t *testing.T) {
+	compo := &amp;aTitle{}
+
+	disp := app.NewClientTester(compo)
+	defer disp.Close()
+
+	disp.Nav(&amp;url.URL{})
+	disp.Consume()
+	if compo.title != &quot;Testing Nav&quot; {
+		t.Fatal(&quot;bad component title:&quot;, compo.title)
+	}
+
+}
+</code></pre>
+
+<p>See <a href="/reference#ClientDispatcher">ClientDispatcher</a> for other lifecycle and component extension events.</p>
+
+<h2 id="asynchronous-operations">Asynchronous operations</h2>
+
+<p>Asynchronous operations are started with the context&rsquo;s <a href="/concurrency#async">Async()</a> method. Once started, they can be awaited during testing with the dispatcher <a href="/reference#Dispatcher">Wait()</a> method.</p>
+
+<p>Here is an example that launches a goroutine and modifies a component field:</p>
+
+<pre><code class="language-go">type aTitle struct {
+	app.Compo
+
+	title string
+}
+
+func (t *aTitle) setAsyncTitle(ctx app.Context) {
+	ctx.Async(func() {
+		time.Sleep(time.Millisecond * 100)
+		t.Defer(func(ctx app.Context) {
+			t.title = &quot;Testing Async&quot;
+		})
+	})
+}
+
+func (t *aTitle) Render() app.UI {
+	return app.H1().
+		Class(&quot;title&quot;).
+		Text(t.title)
+}
+
+func TestComponentAsync(t *testing.T) {
+	compo := &amp;aTitle{}
+
+	disp := app.NewClientTester(compo)
+	defer disp.Close()
+
+	compo.setAsyncTitle(disp.Context()) // Async operation queued.
+	disp.Consume()                      // Async operation launched but not completed.
+	if compo.title == &quot;Testing Async&quot; {
+		t.Fatal(&quot;bad component title:&quot;, compo.title)
+	}
+
+	disp.Wait()    // Wait for the async operations do complete.
+	disp.Consume() // Apply changes.
+	if compo.title != &quot;Testing Async&quot; {
+		t.Fatal(&quot;bad component title:&quot;, compo.title)
+	}
+}
+</code></pre>
+
+<h2 id="ui-elements">UI elements</h2>
+
+<p>UI elements can be tested with the help of the <a href="/reference#TestMatch">TestMatch()</a> function and the <a href="/reference#TestUIDescriptor">TestUIDescriptor</a> struct, by allowing a comparison between matching UI elements.</p>
+
+<pre><code class="language-go">func TestMatch(tree UI, d TestUIDescriptor) error
+</code></pre>
+
+<pre><code class="language-go">type TestUIDescriptor struct {
+    // The location of the node. It is used by the TestMatch to find the
+    // element to test.
+    //
+    // If empty, the expected UI element is compared with the root of the tree.
+    //
+    // Otherwise, each integer represents the index of the element to traverse,
+    // from the root's children to the element to compare
+    Path []int
+
+    // The element to compare with the element targeted by Path. Compare
+    // behavior varies depending on the element kind.
+    //
+    // Simple text elements only have their text value compared.
+    //
+    // HTML elements have their attribute compared and check if their event
+    // handlers are set.
+    //
+    // Components have their exported field values compared.
+    Expected UI
+}
+</code></pre>
+
+<p>Here is an example that tests the <code>h1</code> content of the Hello component:</p>
+
+<pre><code class="language-go">type aTitle struct {
+	app.Compo
+
+	title string
+}
+
+func (t *aTitle) OnMount(ctx app.Context) {
+	t.title = &quot;Testing Mounting&quot;
+	t.Update()
+}
+
+func (t *aTitle) Render() app.UI {
+	return app.H1().
+		Class(&quot;title&quot;).
+		Text(t.title)
+}
+
+func TestUIElement(t *testing.T) {
+	compo := &amp;aTitle{}
+	disp := app.NewClientTester(compo)
+	defer disp.Close()
+
+	app.TestMatch(compo, app.TestUIDescriptor{
+		Path:     app.TestPath(0), // Component root.
+		Expected: app.H2().Text(&quot;Testing Mounting&quot;),
+	})
+}
+
 </code></pre>
 
 <h2 id="next">Next</h2>
 
 <ul>
 <li><a href="/architecture">Understand go-app architecture</a></li>
-<li><a href="/routing">Associate components with URL paths</a></li>
+<li><a href="/components">How to create a component</a></li>
+<li><a href="/concurrency">Handle concurrency</a></li>
 <li><a href="/reference">API reference</a></li>
 </ul>
 </div>
 </div>
 <aside class="loader hide page-loader fill">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack hspace-out vspace-in-stretch fit center">
+<div id class="goapp-stack hspace-out vspace-in-stretch fit center" style="flex-direction:row;align-items:center;">
 <div style="width:66px;height:66px;">
 <div class="icon active" style="width:64px;height:64px;"></div>
 </div>
@@ -547,7 +666,7 @@ func (a *littleApp) onUpdateClick(ctx app.Context, e app.Event) {
 Loading
 </header>
 <p class>
-lifecycle.md
+testing.md
 </p>
 </div>
 </div>
@@ -559,7 +678,7 @@ Report issue
 </div>
 <p>
 Found something incorrect, a typo or have suggestions to improve this article? 
-<a href="https://github.com/maxence-charriere/go-app/issues/new?title=Documentation issues in lifecycle.md">
+<a href="https://github.com/maxence-charriere/go-app/issues/new?title=Documentation issues in testing.md">
 Let me know :)
 </a>
 </p>
@@ -600,11 +719,11 @@ GitHub
 , or giving me some cryptocurrencies, all would help me reach that goal, sustain the development, and boost motivation during long coding sessions.
 </p>
 </div>
-<div id="goapp-flow-15fc522f-0dec-45c1-b479-85ff1a6a6bab" class="goapp-flow space-flow">
+<div id="goapp-flow-dffc08a0-2d78-4558-ac6f-e244dbdc0b99" class="goapp-flow space-flow">
 <div class="goapp-flow-item" style="max-width:0px;width:0px;">
 <div class="space-flow-item">
 <a class="support-us-item hspace-in-stretch vspace-in vignette magnify fill" href="https://www.buymeacoffee.com/maxence">
-<div class="goapp-stack fill" style="flex-direction:row;align-items:center;" id>
+<div id class="goapp-stack fill" style="flex-direction:row;align-items:center;">
 <div class="fit center">
 <div class="fit center">
 <div style="width:60px;height:60px;">
@@ -624,7 +743,7 @@ Buy me a coffee
 <div class="goapp-flow-item" style="max-width:0px;width:0px;">
 <div class="space-flow-item">
 <a class="support-us-item hspace-in-stretch vspace-in vignette magnify fill" href="https://commerce.coinbase.com/checkout/851320a4-35b5-41f1-897b-74dd5ee207ae">
-<div class="goapp-stack fill" style="flex-direction:row;align-items:center;" id>
+<div id class="goapp-stack fill" style="flex-direction:row;align-items:center;">
 <div class="fit center">
 <div class="fit center">
 <div style="width:60px;height:60px;">
@@ -643,7 +762,7 @@ Donate cryptos
 </div>
 <div class="goapp-flow-item" style="max-width:0px;width:0px;">
 <div class="space-flow-item">
-<a class="support-us-item hspace-in-stretch vspace-in vignette magnify fill" href="https://github.com/sponsors/maxence-charriere">
+<a href="https://github.com/sponsors/maxence-charriere" class="support-us-item hspace-in-stretch vspace-in vignette magnify fill">
 <div id class="goapp-stack fill" style="flex-direction:row;align-items:center;">
 <div class="fit center">
 <div class="fit center">
@@ -664,7 +783,7 @@ Github sponsor
 <div class="goapp-flow-item" style="max-width:0px;width:0px;">
 <div class="space-flow-item">
 <a class="support-us-item hspace-in-stretch vspace-in vignette magnify fill" href="https://opencollective.com/go-app">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack fill">
+<div id class="goapp-stack fill" style="flex-direction:row;align-items:center;">
 <div class="fit center">
 <div class="fit center">
 <div style="width:60px;height:60px;">
@@ -691,8 +810,8 @@ Open collective
 </div>
 </div>
 <div id="app-wasm-loader" class="goapp-app-info">
-<img class="goapp-logo goapp-spin" src="https://storage.googleapis.com/murlok-github/icon-192.png" id="app-wasm-loader-icon">
-<p class="goapp-label" id="app-wasm-loader-label">
+<img id="app-wasm-loader-icon" class="goapp-logo goapp-spin" src="https://storage.googleapis.com/murlok-github/icon-192.png">
+<p id="app-wasm-loader-label" class="goapp-label">
 Loading go-app documentation...
 </p>
 </div>

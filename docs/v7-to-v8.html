@@ -4,27 +4,27 @@
 <meta charset="UTF-8">
 <meta httpequiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="author" content="Maxence Charriere">
-<meta name="description" content="Documentation that describes how a web browser installs and updates a go-app Progressive Web App.">
+<meta name="description" content="Guide about how to migrate a Progressive Web App built with go-app V7 to V8.">
 <meta name="keywords" content="go-app, go, golang, app, pwa, progressive web app, webassembly, web assembly, webapp, web, gui, ui, user interface, graphical user interface, frontend, opensource, open source, github">
 <meta content="#2e343a" name="theme-color">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
-<meta property="og:url" content="http://127.0.0.1:55708/lifecycle">
-<meta property="og:title" content="Understanding app lifecycle in the web browser">
-<meta property="og:description" content="Documentation that describes how a web browser installs and updates a go-app Progressive Web App.">
-<meta property="og:type" content="website">
+<meta property="og:url" content="http://127.0.0.1:55708/v7-to-v8">
+<meta property="og:title" content="Migrating a go-app Progressive Web App from V7 to V8">
+<meta property="og:description" content="Guide about how to migrate a Progressive Web App built with go-app V7 to V8.">
+<meta content="website" property="og:type">
 <meta property="og:image" content="/web/images/go-app.png">
 <title>
-Understanding app lifecycle in the web browser
+Migrating a go-app Progressive Web App from V7 to V8
 </title>
-<link href="https://storage.googleapis.com/murlok-github/icon-192.png" rel="icon" type="image/png">
+<link rel="icon" type="image/png" href="https://storage.googleapis.com/murlok-github/icon-192.png">
 <link rel="apple-touch-icon" href="https://storage.googleapis.com/murlok-github/icon-192.png">
 <link rel="manifest" href="/manifest.webmanifest">
-<link href="/app.css" type="text/css" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="/app.css">
 <script defer src="/wasm_exec.js"></script>
 <script defer src="/app.js"></script>
 <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap">
-<link type="text/css" rel="stylesheet" href="/web/css/prism.css">
-<link type="text/css" rel="stylesheet" href="/web/css/docs.css">
+<link rel="stylesheet" href="/web/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/web/css/docs.css" type="text/css">
 <script defer src="/web/js/prism.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 			<script async src="https://www.googletagmanager.com/gtag/js?id=G-SW4FQEM9VM"></script>
@@ -39,11 +39,11 @@ Understanding app lifecycle in the web browser
 <body>
 <div>
 <div id="app-pre-render">
-<div id="goapp-shell-f8057592-7311-43ab-8a57-9aede6002f43" class="goapp-shell background">
+<div id="goapp-shell-16d62557-526f-4843-bb97-224013c14445" class="goapp-shell background">
 <div class="goapp-shell-layout" style="align-items:stretch;">
 <div class="goapp-shell-item" style="display:bloc;width:276px;max-width:276px;">
 <div class="fill unselectable">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack header hspace-out">
+<div class="goapp-stack header hspace-out" style="flex-direction:row;align-items:center;" id>
 <header>
 <a class="app-title" href="/">
 go-app
@@ -54,7 +54,7 @@ go-app
 <div class="hspace-out">
 <div class="vspace-top">
 <a class="link heading fit  " href="/">
-<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -68,7 +68,7 @@ Home
 </div>
 </a>
 <a class="link heading fit  " href="/start">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -82,7 +82,7 @@ Getting started
 </div>
 </a>
 <a class="link heading fit  " href="/v7-to-v8">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -98,7 +98,7 @@ V7 to V8 guide
 </div>
 <div class="vspace-top">
 <a class="link heading fit  " href="/reference">
-<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg width="24px" height="24px" viewBox="0 0 207 78" xmlns="http://www.w3.org/2000/svg">
@@ -120,7 +120,7 @@ API reference
 </div>
 </a>
 <a class="link heading fit  " href="/architecture">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -148,7 +148,7 @@ Components
 </div>
 </a>
 <a href="/concurrency" class="link heading fit  ">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -162,7 +162,7 @@ Concurrency
 </div>
 </a>
 <a class="link heading fit  " href="/syntax">
-<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -190,7 +190,7 @@ JS/Dom
 </div>
 </a>
 <a class="link heading fit  " href="/lifecycle">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -203,8 +203,8 @@ Lifecycle
 </div>
 </div>
 </a>
-<a href="/routing" class="link heading fit  ">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
+<a class="link heading fit  " href="/routing">
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -232,7 +232,7 @@ SEO
 </div>
 </a>
 <a class="link heading fit  " href="/static-resources">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -246,7 +246,7 @@ Static resources
 </div>
 </a>
 <a class="link heading fit  " href="/testing">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -261,8 +261,8 @@ Testing
 </a>
 </div>
 <div class="vspace-top">
-<a href="/built-with" class="link heading fit  ">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<a class="link heading fit  " href="/built-with">
+<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -306,7 +306,7 @@ Install
 </div>
 <div class="vspace-top vspace-bottom">
 <a class="link heading fit  " href="https://github.com/maxence-charriere/go-app">
-<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -319,7 +319,7 @@ GitHub
 </div>
 </div>
 </a>
-<a class="link heading fit  " href="https://twitter.com/jonhymaxoo">
+<a href="https://twitter.com/jonhymaxoo" class="link heading fit  ">
 <div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
@@ -336,7 +336,7 @@ Twitter
 </div>
 <div class="vspace-top vspace-bottom">
 <a href="https://www.buymeacoffee.com/maxence" class="link heading fit  ">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -349,8 +349,8 @@ Buy me a coffee
 </div>
 </div>
 </a>
-<a href="https://commerce.coinbase.com/checkout/851320a4-35b5-41f1-897b-74dd5ee207ae" class="link heading fit  ">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<a class="link heading fit  " href="https://commerce.coinbase.com/checkout/851320a4-35b5-41f1-897b-74dd5ee207ae">
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -378,7 +378,7 @@ GitHub Sponsor
 </div>
 </a>
 <a class="link heading fit  " href="https://opencollective.com/go-app">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -396,7 +396,7 @@ Open Collective
 </nav>
 </div>
 </div>
-<div class="goapp-shell-item" style="display:bloc;width:276px;max-width:276px;">
+<div style="display:bloc;width:276px;max-width:276px;" class="goapp-shell-item">
 <nav class="header-out content unselectable">
 <div class="hspace-out">
 <header class="h2 vspace-top">
@@ -404,23 +404,20 @@ Index
 </header>
 <div class="vspace-top">
 <div class>
-<a href="#lifecycle" class="index-link ">
-Lifecycle
+<a class="index-link " href="#v7-to-v8-migration-guide">
+V7 to V8 migration guide
 </a>
-<a href="#first-loading" class="index-link ">
-    First loading
+<a class="index-link " href="#package-functions">
+Package functions
 </a>
-<a class="index-link " href="#recurrent-loadings">
-    Recurrent loadings
+<a class="index-link " href="#component-interfaces">
+Component interfaces
 </a>
-<a class="index-link " href="#loading-after-app-update">
-    Loading after app update
+<a class="index-link " href="#resource-provider">
+Resource provider
 </a>
-<a class="index-link " href="#listen-for-app-updates">
-Listen for app updates
-</a>
-<a class="index-link " href="#next">
-Next
+<a class="index-link " href="#concurrency">
+Concurrency
 </a>
 </div>
 </div>
@@ -441,113 +438,148 @@ Support go-app
 <main id="top">
 <article>
 <div class="markdown hspace-out-stretch">
-<div><h1 id="lifecycle">Lifecycle</h1>
+<div><h1 id="v7-to-v8-migration-guide">V7 to V8 migration guide</h1>
 
-<p>Apps created with go-app are WebAssembly binaries that are served through HTTP requests.</p>
+<p>Go-app V8 solves the <a href="/seo">SEO</a> critical problem by providing server-side prerendering. Unfortunately, parts of the package had to be reworked, which resulted in breaking changes.</p>
 
-<p>Because they are Progressive Web apps, they have to be available for offline mode. Under the hood, this is done by using <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">service workers</a> and caching mechanisms, which results in different app loading scenarios.</p>
+<p>This document is here to help to migrate V7 to V8, by enumerating things that have changed.</p>
 
-<p><img src="/web/images/app-lifecycle.svg" alt="app load flow" /></p>
+<h2 id="import">Import</h2>
 
-<h3 id="first-loading">First loading</h3>
+<p>Replace <code>v7</code> imports by <code>v8</code>.</p>
 
-<p>App first loading is the app install. It occurs the first time a user goes on the app with a given web browser.</p>
+<pre><code class="language-go">import (
+	&quot;github.com/maxence-charriere/go-app/v8/pkg/app&quot;
+)
+</code></pre>
 
-<ol>
-<li>Page is downloaded</li>
-<li>Service worker is downloaded</li>
-<li>App resources (app.wasm, CSS files and JS files) are downloaded</li>
-<li>Page, Service worker, and app resources are cached into the web browser</li>
-</ol>
+<h2 id="package-functions">Package functions</h2>
 
-<h3 id="recurrent-loadings">Recurrent loadings</h3>
+<table>
+<thead>
+<tr>
+<th>V7</th>
+<th>V8</th>
+<th>Description</th>
+</tr>
+</thead>
 
-<p>App recurrent loadings are occurring when a user is coming back on the app.</p>
+<tbody>
+<tr>
+<td><code>func Run()</code></td>
+<td><a href="/reference#RunWhenOnBrowser"><code>func RunWhenOnBrowser()</code></a></td>
+<td>Starting the app on the client-side can now be called in the same code as the server-side. Build instructions and server/client code separation are not required anymore. See the <a href="/start#code">Getting started</a> article.</td>
+</tr>
 
-<ol>
-<li>Page is loaded from the web browser cache</li>
-<li>Service worker is downloaded</li>
-<li><strong>Service worker is compared with its cached version =&gt; They are identical</strong></li>
-<li>App resources are loaded from the web browser cache</li>
-</ol>
+<tr>
+<td><code>func Route(path string, node UI)</code></td>
+<td><a href="/reference#Route"><code>func Route(path string, c Composer)</code></a></td>
+<td>A route can only be associated with a <a href="/components">component</a> now. It now associates the type of the given component rather than an instance. When navigated on, a new component is created and initialized with its zero value. Initializing component shall now be done with the <a href="/reference#Mounter">Mounter</a> interface.</td>
+</tr>
 
-<h3 id="loading-after-app-update">Loading after app update</h3>
+<tr>
+<td><code>func RouteWithRegexp(pattern string, node UI)</code></td>
+<td><a href="/reference#RouteWithRegexp"><code>func RouteWithRegexp(pattern string, c Composer)</code></a></td>
+<td>Same as <a href="/reference#Route">Route()</a>.</td>
+</tr>
 
-<p>App loading after an update is occurring when a user comes back on the app but the app has been modified since his/her last visit.</p>
+<tr>
+<td><code>func Navigate(rawurl string)</code></td>
+<td>- <a href="/reference#Context.Navigate"><code>func (ctx Context) Navigate(rawURL string)</code></a><br>- <a href="/reference#Context.NavigateTo"><code>func (ctx Context) NavigateTo(u *url.URL)</code></a></td>
+<td>Navigating to another page is now a <a href="/reference#Context">Context</a> method.</td>
+</tr>
 
-<ol>
-<li>Page is loaded from the web browser cache</li>
-<li>Service worker is downloaded</li>
-<li><strong>Service worker is compared with its cached version =&gt; They are different</strong></li>
-<li>Page and app resources are downloaded</li>
-<li>Page, Service worker, and app resources are cached into the web browser</li>
-</ol>
+<tr>
+<td><code>func Reload()</code></td>
+<td><a href="/reference#Context.Reload"><code>func (ctx Context) Reload()</code></a></td>
+<td>Reloading the current page is now a <a href="/reference#Context">Context</a> method.</td>
+</tr>
 
-<p>The trigger to update the app is a diff between the cached service worker and the live one. <strong>Once the app is updated, the page still has to be reloaded</strong> to be able to see the modifications since the current version displayed is the cached one.</p>
+<tr>
+<td><code>func Dispatch(fn func())</code></td>
+<td>- <a href="/reference#Context.Dispatch"><code>func (ctx Context) Dispatch(fn func())</code></a>()<br> - <a href="/reference#Compo.Defer"><code>func (c *Compo) Defer(fn func(Context))</code></a></td>
+<td>Executing a function on the UI goroutine is now done from a <a href="/reference#Context">Context</a> or a <a href="http://localhost:7777/reference#Composer">Component</a>.</td>
+</tr>
 
-<h2 id="listen-for-app-updates">Listen for app updates</h2>
+<tr>
+<td><code>func StaticResource(path string) string</code></td>
+<td><a href="/reference#Context.ResolveStaticResource"><code>func (ctx Context) ResolveStaticResource(path string) string</code></a></td>
+<td>Resolving a <a href="/static-resources">static resource</a> is now a <a href="/reference#Context">Context</a> method.</td>
+</tr>
 
-<p>Apps are automatically updated in the background when there are modifications.</p>
+<tr>
+<td><code>func NewContextMenu(menuItems ...MenuItemNode)</code></td>
+<td><strong>Removed</strong></td>
+<td>Context menus have been removed. This may come back eventually under another form.</td>
+</tr>
 
-<p>Since the displayed version of the app is the cached one, a common scenario is to visually notify the user that an update has been downloaded and that it is available by reloading the page.</p>
+<tr>
+<td><code>func Log(format string, v ...interface{})</code></td>
+<td><a href="/reference#Logf"><code>func Logf(format string, v ...interface{})</code></a></td>
+<td><code>Log()</code> has been renamed <code>Logf()</code> to match the <a href="https://golang.org/pkg/fmt/">fmt</a> package. The new <a href="/reference#Log"><code>Log()</code></a> function now have a similar behavior as <code>fmt.Println()</code>.</td>
+</tr>
+</tbody>
+</table>
 
-<p>This is done by implementing the <a href="/reference#Updater">Updater</a> interface into a component:</p>
+<h2 id="component-interfaces">Component interfaces</h2>
 
-<pre><code class="language-go">// A component that describes a UI.
-type littleApp struct {
-	app.Compo
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>V7</th>
+<th>V8</th>
+</tr>
+</thead>
 
-	// Field that reports whether an app update is available. False by default.
-	updateAvailable bool
-}
+<tbody>
+<tr>
+<td><a href="/reference#Navigator">Navigator</a></td>
+<td><code>OnNav(Context, *url.URL)</code></td>
+<td><code>OnNav(Context)</code></td>
+</tr>
 
-// OnAppUpdate satisfies the app.Updater interface. It is called when the app is
-// updated in background.
-func (a *littleApp) OnAppUpdate(ctx app.Context) {
-	a.updateAvailable = ctx.AppupdateAvailable // Reports that an app update is available.
-	a.Update()                                 // Triggers UI update.
-}
+<tr>
+<td><a href="/reference#Resizer">Resizer</a></td>
+<td><code>OnAppResize(Context)</code></td>
+<td><code>OnResize(Context)</code></td>
+</tr>
+</tbody>
+</table>
 
-func (a *littleApp) Render() app.UI {
-	return app.Main().Body(
-		app.H1().Text(&quot;A little app&quot;),
-		app.P().Text(&quot;That only display a text.&quot;),
+<h2 id="resource-provider">Resource provider</h2>
 
-		// Displays an Update button when an update is available.
-		app.If(a.updateAvailable,
-			app.Button().
-				Text(&quot;Update!&quot;).
-				OnClick(a.onUpdateClick),
-		),
-	)
-}
+<p>The <a href="/reference#ResourceProvider">ResourceProvider</a> interface has been changed:</p>
 
-func (a *littleApp) onUpdateClick(ctx app.Context, e app.Event) {
-	// Reloads the page to display the modifications.
-	ctx.Reload()
+<pre><code class="language-go">type ResourceProvider interface {
+	// Package returns the path where the package resources are located.
+	Package() string
+
+	// Static returns the path where the static resources directory (/web) is
+	// located.
+	Static() string
+
+	// AppWASM returns the app.wasm file path.
+	AppWASM() string
 }
 </code></pre>
 
-<h2 id="next">Next</h2>
+<h2 id="concurrency">Concurrency</h2>
 
-<ul>
-<li><a href="/architecture">Understand go-app architecture</a></li>
-<li><a href="/routing">Associate components with URL paths</a></li>
-<li><a href="/reference">API reference</a></li>
-</ul>
+<p>Goroutines launched from components should now be created with <a href="/reference#Context.Async"><code>Context.Async()</code></a>. See <a href="/concurrency#async">concurrency</a> topic.</p>
 </div>
 </div>
 <aside class="loader hide page-loader fill">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack hspace-out vspace-in-stretch fit center">
+<div id class="goapp-stack hspace-out vspace-in-stretch fit center" style="flex-direction:row;align-items:center;">
 <div style="width:66px;height:66px;">
-<div class="icon active" style="width:64px;height:64px;"></div>
+<div style="width:64px;height:64px;" class="icon active"></div>
 </div>
 <div class="hspace-in">
 <header class="h1">
 Loading
 </header>
 <p class>
-lifecycle.md
+v7-to-v8.md
 </p>
 </div>
 </div>
@@ -559,7 +591,7 @@ Report issue
 </div>
 <p>
 Found something incorrect, a typo or have suggestions to improve this article? 
-<a href="https://github.com/maxence-charriere/go-app/issues/new?title=Documentation issues in lifecycle.md">
+<a href="https://github.com/maxence-charriere/go-app/issues/new?title=Documentation issues in v7-to-v8.md">
 Let me know :)
 </a>
 </p>
@@ -594,13 +626,13 @@ Buying me a coffee
 Open Collective
 </a>
 , sponsoring me on 
-<a href="https://github.com/sponsors/maxence-charriere" target="_blank">
+<a target="_blank" href="https://github.com/sponsors/maxence-charriere">
 GitHub
 </a>
 , or giving me some cryptocurrencies, all would help me reach that goal, sustain the development, and boost motivation during long coding sessions.
 </p>
 </div>
-<div id="goapp-flow-15fc522f-0dec-45c1-b479-85ff1a6a6bab" class="goapp-flow space-flow">
+<div id="goapp-flow-731cf652-4ab7-4ef9-a664-c39d5c6e8194" class="goapp-flow space-flow">
 <div class="goapp-flow-item" style="max-width:0px;width:0px;">
 <div class="space-flow-item">
 <a class="support-us-item hspace-in-stretch vspace-in vignette magnify fill" href="https://www.buymeacoffee.com/maxence">
@@ -624,7 +656,7 @@ Buy me a coffee
 <div class="goapp-flow-item" style="max-width:0px;width:0px;">
 <div class="space-flow-item">
 <a class="support-us-item hspace-in-stretch vspace-in vignette magnify fill" href="https://commerce.coinbase.com/checkout/851320a4-35b5-41f1-897b-74dd5ee207ae">
-<div class="goapp-stack fill" style="flex-direction:row;align-items:center;" id>
+<div id class="goapp-stack fill" style="flex-direction:row;align-items:center;">
 <div class="fit center">
 <div class="fit center">
 <div style="width:60px;height:60px;">
@@ -664,7 +696,7 @@ Github sponsor
 <div class="goapp-flow-item" style="max-width:0px;width:0px;">
 <div class="space-flow-item">
 <a class="support-us-item hspace-in-stretch vspace-in vignette magnify fill" href="https://opencollective.com/go-app">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack fill">
+<div class="goapp-stack fill" style="flex-direction:row;align-items:center;" id>
 <div class="fit center">
 <div class="fit center">
 <div style="width:60px;height:60px;">
@@ -691,8 +723,8 @@ Open collective
 </div>
 </div>
 <div id="app-wasm-loader" class="goapp-app-info">
-<img class="goapp-logo goapp-spin" src="https://storage.googleapis.com/murlok-github/icon-192.png" id="app-wasm-loader-icon">
-<p class="goapp-label" id="app-wasm-loader-label">
+<img id="app-wasm-loader-icon" class="goapp-logo goapp-spin" src="https://storage.googleapis.com/murlok-github/icon-192.png">
+<p id="app-wasm-loader-label" class="goapp-label">
 Loading go-app documentation...
 </p>
 </div>

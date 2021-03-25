@@ -160,7 +160,7 @@ func generateGitHubPages(ctx context.Context, h *app.Handler, opts githubOptions
 func exit() {
 	err := recover()
 	if err != nil {
-		app.Log("command failed: %s", errors.Newf("%v", err))
+		app.Log("command failed:", errors.Newf("%v", err))
 		os.Exit(-1)
 	}
 }

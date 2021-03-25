@@ -1,15 +1,18 @@
 package main
 
 import (
-	"context"
 	"io/ioutil"
 	"net/http"
 
+	"github.com/maxence-charriere/go-app/v8/pkg/app"
 	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
 
-func get(ctx context.Context, path string) ([]byte, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, path, nil)
+func get(ctx app.Context, path string) ([]byte, error) {
+	url := *ctx.Page.URL()
+	url.Path = path
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
 	if err != nil {
 		return nil, errors.New("creating request failed").
 			Tag("path", path).
