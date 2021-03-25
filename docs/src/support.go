@@ -74,11 +74,11 @@ func (s *supportUs) Render() app.UI {
 						Body(
 							newSupportUsItem().
 								Class("fill").
-								Label("Open collective").
-								Href(openCollectiveURL).
+								Label("Donate cryptos").
+								Href(coinbaseBusinessURL).
 								Icon(
 									newSVGIcon().
-										RawSVG(opensourceSVG).
+										RawSVG(bitcoinSVG).
 										Size(supportUsIconSize),
 								),
 						),
@@ -100,11 +100,11 @@ func (s *supportUs) Render() app.UI {
 						Body(
 							newSupportUsItem().
 								Class("fill").
-								Label("Cryptocurrency").
-								Href(coinbaseBusinessURL).
+								Label("Open collective").
+								Href(openCollectiveURL).
 								Icon(
 									newSVGIcon().
-										RawSVG(bitcoinSVG).
+										RawSVG(opensourceSVG).
 										Size(supportUsIconSize),
 								),
 						),

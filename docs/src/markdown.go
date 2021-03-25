@@ -369,21 +369,15 @@ func (m *markdownContent) Markdown(v string) *markdownContent {
 
 func (m *markdownContent) Render() app.UI {
 	if m.Imd != m.md {
-		m.Defer(m.refreshMd)
+		m.Defer(m.highlightCode)
 	}
 
 	return app.Div().
 		Class("markdown").
 		Class(m.Iclass).
 		Body(
-			app.Raw(fmt.Sprintf("<div>%s</div>", parseMarkdown([]byte(m.md)))),
+			app.Raw(fmt.Sprintf("<div>%s</div>", parseMarkdown([]byte(m.Imd)))),
 		)
-}
-
-func (m *markdownContent) refreshMd(ctx app.Context) {
-	m.md = m.Imd
-	m.Update()
-	m.Defer(m.highlightCode)
 }
 
 func (d *markdownContent) highlightCode(ctx app.Context) {

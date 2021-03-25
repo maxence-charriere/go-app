@@ -3,6 +3,7 @@ package main
 import (
 	"net/url"
 	"testing"
+	"time"
 
 	"github.com/maxence-charriere/go-app/v8/pkg/app"
 )
@@ -34,6 +35,15 @@ func (t *aTitle) Render() app.UI {
 		Text(t.title)
 }
 
+func (t *aTitle) setAsyncTitle(ctx app.Context) {
+	ctx.Async(func() {
+		time.Sleep(time.Millisecond * 100)
+		t.Defer(func(ctx app.Context) {
+			t.title = "Testing Async"
+		})
+	})
+}
+
 func TestComponentPreRendering(t *testing.T) {
 	compo := &aTitle{}
 
@@ -41,8 +51,8 @@ func TestComponentPreRendering(t *testing.T) {
 	disp := app.NewServerTester(compo)
 	defer disp.Close() // Releases alocated resources.
 
-	if compo.title != "" {
-		t.Fatal("component title is not empty")
+	if compo.title == "Testing Prerendering" {
+		t.Fatal("bad component title:", compo.title)
 	}
 
 	// Call OnPreRender() from PreRenderer interface:
@@ -61,16 +71,42 @@ func TestComponentLifcycle(t *testing.T) {
 	compo := &aTitle{}
 
 	disp := app.NewClientTester(compo)
-	defer disp.Close() // Releases alocated resources.
-
-	disp.Consume()
-	if compo.title != "Testing Mounting" {
-		t.Fatal("bad component title:", compo.title)
-	}
+	defer disp.Close()
 
 	disp.Nav(&url.URL{})
 	disp.Consume()
 	if compo.title != "Testing Nav" {
 		t.Fatal("bad component title:", compo.title)
 	}
+
+}
+
+func TestComponentAsync(t *testing.T) {
+	compo := &aTitle{}
+
+	disp := app.NewClientTester(compo)
+	defer disp.Close()
+
+	compo.setAsyncTitle(disp.Context()) // Async operation queued.
+	disp.Consume()                      // Async operation launched but not completed.
+	if compo.title == "Testing Async" {
+		t.Fatal("bad component title:", compo.title)
+	}
+
+	disp.Wait()    // Wait for the async operations do complete.
+	disp.Consume() // Apply changes.
+	if compo.title != "Testing Async" {
+		t.Fatal("bad component title:", compo.title)
+	}
+}
+
+func TestUIElement(t *testing.T) {
+	compo := &aTitle{}
+	disp := app.NewClientTester(compo)
+	defer disp.Close()
+
+	app.TestMatch(compo, app.TestUIDescriptor{
+		Path:     app.TestPath(0), // Component root.
+		Expected: app.H2().Text("Testing Mounting"),
+	})
 }

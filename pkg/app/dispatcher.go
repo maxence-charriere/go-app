@@ -46,7 +46,10 @@ type Dispatcher interface {
 type ClientDispatcher interface {
 	Dispatcher
 
-	// Mounts the given component as root component.
+	// Context returns the context associated with the root element.
+	Context() Context
+
+	// Mounts the given component as root element.
 	Mount(UI)
 
 	// Triggers OnNav from the root component.
@@ -76,6 +79,9 @@ func NewClientTester(v UI) ClientDispatcher {
 type ServerDispatcher interface {
 	Dispatcher
 
+	// Context returns the context associated with the root element.
+	Context() Context
+
 	// Pre-renders the given component.
 	PreRender()
 
@@ -88,7 +94,7 @@ type ServerDispatcher interface {
 }
 
 // NewServerTester creates a testing dispatcher that simulates a
-// client environment. The given UI element is mounted upon creation.
+// client environment.
 func NewServerTester(v UI) ServerDispatcher {
 	return newTestingDispatcher(v, false)
 }
@@ -113,6 +119,7 @@ func newTestingDispatcher(v UI, serverSide bool) *uiDispatcher {
 	}
 
 	disp.Mount(v)
+	disp.Consume()
 	return disp
 }
 
@@ -149,6 +156,10 @@ func newUIDispatcher(serverSide bool, p Page, resolveStaticResource func(string)
 		localStore:                localStorage,
 		sessionStore:              sessionStorage,
 	}
+}
+
+func (d *uiDispatcher) Context() Context {
+	return makeContext(d.body.children()[0])
 }
 
 func (d *uiDispatcher) Dispatch(fn func()) {

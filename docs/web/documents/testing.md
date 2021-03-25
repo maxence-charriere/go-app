@@ -9,14 +9,6 @@ Testing is an essential step to achieve app reliability. Since go-app is working
 Here is an example that tests if a component has the expected values after the PreRenderer interface call:
 
 ```go
-package main
-
-import (
-	"testing"
-
-	"github.com/maxence-charriere/go-app/v8/pkg/app"
-)
-
 type aTitle struct {
 	app.Compo
 
@@ -41,8 +33,8 @@ func TestComponentPreRendering(t *testing.T) {
 	disp := app.NewServerTester(compo)
 	defer disp.Close() // Releases alocated resources.
 
-	if compo.title != "" {
-		t.Fatal("component title is not empty")
+	if compo.title == "Testing Prerendering" {
+		t.Fatal("bad component title:", compo.title)
 	}
 
 	// Call OnPreRender() from PreRenderer interface:
@@ -65,14 +57,6 @@ Like on the [server-side](#testing-component-server-prerendering), testing a com
 Here is an example that tests if a component has the expected values after mounting and navigation:
 
 ```go
-
-import (
-	"net/url"
-	"testing"
-
-	"github.com/maxence-charriere/go-app/v8/pkg/app"
-)
-
 type aTitle struct {
 	app.Compo
 
@@ -101,26 +85,129 @@ func TestComponentLifcycle(t *testing.T) {
 	disp := app.NewClientTester(compo)
 	defer disp.Close()
 
-	disp.Consume()
-	if compo.title != "Testing Mounting" {
-		t.Fatal("bad component title:", compo.title)
-	}
-
 	disp.Nav(&url.URL{})
 	disp.Consume()
 	if compo.title != "Testing Nav" {
 		t.Fatal("bad component title:", compo.title)
 	}
+
 }
-
-
 ```
 
 See [ClientDispatcher](/reference#ClientDispatcher) for other lifecycle and component extension events.
 
 ## Asynchronous operations
 
+Asynchronous operations are started with the context's [Async()](/concurrency#async) method. Once started, they can be awaited during testing with the dispatcher [Wait()](/reference#Dispatcher) method.
+
+Here is an example that launches a goroutine and modifies a component field:
+
+```go
+type aTitle struct {
+	app.Compo
+
+	title string
+}
+
+func (t *aTitle) setAsyncTitle(ctx app.Context) {
+	ctx.Async(func() {
+		time.Sleep(time.Millisecond * 100)
+		t.Defer(func(ctx app.Context) {
+			t.title = "Testing Async"
+		})
+	})
+}
+
+func (t *aTitle) Render() app.UI {
+	return app.H1().
+		Class("title").
+		Text(t.title)
+}
+
+func TestComponentAsync(t *testing.T) {
+	compo := &aTitle{}
+
+	disp := app.NewClientTester(compo)
+	defer disp.Close()
+
+	compo.setAsyncTitle(disp.Context()) // Async operation queued.
+	disp.Consume()                      // Async operation launched but not completed.
+	if compo.title == "Testing Async" {
+		t.Fatal("bad component title:", compo.title)
+	}
+
+	disp.Wait()    // Wait for the async operations do complete.
+	disp.Consume() // Apply changes.
+	if compo.title != "Testing Async" {
+		t.Fatal("bad component title:", compo.title)
+	}
+}
+```
+
 ## UI elements
+
+UI elements can be tested with the help of the [TestMatch()](/reference#TestMatch) function and the [TestUIDescriptor](/reference#TestUIDescriptor) struct, by allowing a comparison between matching UI elements.
+
+```go
+func TestMatch(tree UI, d TestUIDescriptor) error
+```
+
+```go
+type TestUIDescriptor struct {
+    // The location of the node. It is used by the TestMatch to find the
+    // element to test.
+    //
+    // If empty, the expected UI element is compared with the root of the tree.
+    //
+    // Otherwise, each integer represents the index of the element to traverse,
+    // from the root's children to the element to compare
+    Path []int
+
+    // The element to compare with the element targeted by Path. Compare
+    // behavior varies depending on the element kind.
+    //
+    // Simple text elements only have their text value compared.
+    //
+    // HTML elements have their attribute compared and check if their event
+    // handlers are set.
+    //
+    // Components have their exported field values compared.
+    Expected UI
+}
+```
+
+Here is an example that tests the `h1` content of the Hello component:
+
+```go
+type aTitle struct {
+	app.Compo
+
+	title string
+}
+
+func (t *aTitle) OnMount(ctx app.Context) {
+	t.title = "Testing Mounting"
+	t.Update()
+}
+
+func (t *aTitle) Render() app.UI {
+	return app.H1().
+		Class("title").
+		Text(t.title)
+}
+
+func TestUIElement(t *testing.T) {
+	compo := &aTitle{}
+	disp := app.NewClientTester(compo)
+	defer disp.Close()
+
+	app.TestMatch(compo, app.TestUIDescriptor{
+		Path:     app.TestPath(0), // Component root.
+		Expected: app.H2().Text("Testing Mounting"),
+	})
+}
+
+```
 
 ## Next
 

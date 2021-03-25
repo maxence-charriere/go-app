@@ -155,14 +155,6 @@ func (n *nav) Render() app.UI {
 								Class("vspace-bottom").
 								Body(
 									newLink().
-										Label("Buy me a coffee").
-										Icon(newSVGIcon().RawSVG(coffeeSVG)).
-										Href(buyMeACoffeeURL),
-									newLink().
-										Label("Open Collective").
-										Icon(newSVGIcon().RawSVG(opensourceSVG)).
-										Href(openCollectiveURL),
-									newLink().
 										Label("GitHub").
 										Icon(newSVGIcon().RawSVG(githubSVG)).
 										Href(githubURL),
@@ -170,6 +162,27 @@ func (n *nav) Render() app.UI {
 										Label("Twitter").
 										Icon(newSVGIcon().RawSVG(twitterSVG)).
 										Href(twitterURL),
+								),
+							app.Div().
+								Class("vspace-top").
+								Class("vspace-bottom").
+								Body(
+									newLink().
+										Label("Buy me a coffee").
+										Icon(newSVGIcon().RawSVG(coffeeSVG)).
+										Href(buyMeACoffeeURL),
+									newLink().
+										Label("Donate cryptos").
+										Icon(newSVGIcon().RawSVG(bitcoinSVG)).
+										Href(coinbaseBusinessURL),
+									newLink().
+										Label("GitHub Sponsor").
+										Icon(newSVGIcon().RawSVG(githubSVG)).
+										Href(githubSponsorURL),
+									newLink().
+										Label("Open Collective").
+										Icon(newSVGIcon().RawSVG(opensourceSVG)).
+										Href(openCollectiveURL),
 								),
 						),
 				),
