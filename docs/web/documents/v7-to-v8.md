@@ -4,6 +4,16 @@ Go-app V8 solves the [SEO](/seo) critical problem by providing server-side prere
 
 This document is here to help to migrate V7 to V8, by enumerating things that have changed.
 
+## Import
+
+Replace V7 imports by V8.
+
+```go
+import (
+	"github.com/maxence-charriere/go-app/v8/pkg/app"
+)
+```
+
 ## Package functions
 
 | V7                                               | V8                                                                                                                                                              | Description                                                                                                                                                                                                                                                                                                                  |
