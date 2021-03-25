@@ -64,11 +64,11 @@ func main() {
 		Options(&githubOpts)
 
 	h := app.Handler{
-		Name:        "Go-app Docs",
+		Name:        "Documentation for go-app",
 		Title:       defaultTitle,
 		Description: defaultDescription,
 		Author:      "Maxence Charriere",
-		Image:       "/web/images/go-app.png",
+		Image:       "https://go-app.dev/web/images/go-app.png",
 		Keywords: []string{
 			"go-app",
 			"go",

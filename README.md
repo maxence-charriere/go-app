@@ -95,6 +95,10 @@ func main() {
 }
 ```
 
+## Getting started
+
+**Read the [Getting Started](https://go-app.dev/start) document**.
+
 ## Contributors
 
 ### Code Contributors

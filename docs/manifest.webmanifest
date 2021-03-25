@@ -1,6 +1,6 @@
 {
-  "short_name": "Go-app Docs",
-  "name": "Go-app Docs",
+  "short_name": "Documentation for go-app",
+  "name": "Documentation for go-app",
   "icons": [
     {
       "src": "https://storage.googleapis.com/murlok-github/icon-192.png",
