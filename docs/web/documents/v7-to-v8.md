@@ -6,7 +6,7 @@ This document is here to help to migrate V7 to V8, by enumerating things that ha
 
 ## Import
 
-Replace V7 imports by V8.
+Replace `v7` imports by `v8`.
 
 ```go
 import (
