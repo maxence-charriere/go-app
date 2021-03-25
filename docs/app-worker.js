@@ -1,7 +1,7 @@
-const cacheName = "app-" + "5b9b495dd37357d5183383b73754f3cbc3a72d32";
+const cacheName = "app-" + "43470c611ef7d5f1dded0dc4ffe496d922f223bf";
 
 self.addEventListener("install", event => {
-  console.log("installing app worker 5b9b495dd37357d5183383b73754f3cbc3a72d32");
+  console.log("installing app worker 43470c611ef7d5f1dded0dc4ffe496d922f223bf");
   self.skipWaiting();
 
   event.waitUntil(
@@ -17,7 +17,6 @@ self.addEventListener("install", event => {
         "/web/css/prism.css",
         "/web/js/prism.js",
         "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap",
-        "https://fonts.googleapis.com/css2?family=Roboto&display=swap",
         "https://storage.googleapis.com/murlok-github/icon-192.png",
         "https://storage.googleapis.com/murlok-github/icon-512.png",
         
@@ -38,7 +37,7 @@ self.addEventListener("activate", event => {
       );
     })
   );
-  console.log("app worker 5b9b495dd37357d5183383b73754f3cbc3a72d32 is activated");
+  console.log("app worker 43470c611ef7d5f1dded0dc4ffe496d922f223bf is activated");
 });
 
 self.addEventListener("fetch", event => {

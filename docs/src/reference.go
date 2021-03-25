@@ -1,219 +1,205 @@
 package main
 
 import (
-	"io/ioutil"
-	"net/http"
-	"net/url"
-
-	"github.com/maxence-charriere/go-app/v7/pkg/app"
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	"github.com/maxence-charriere/go-app/v8/pkg/app"
 )
 
 type reference struct {
 	app.Compo
 }
 
-func newReference() app.UI {
+func newReference() app.Composer {
 	return &reference{}
 }
 
 func (r *reference) Render() app.UI {
-	return app.Shell().
-		Class("app-background").
-		Menu(&menu{}).
-		Submenu(newGodocMenu()).
-		OverlayMenu(&overlayMenu{}).
-		Content(&godoc{})
+	return newPage().
+		Index(newGodocIndex()).
+		Content(
+			app.Div().
+				Class("hspace-out-stretch").
+				Body(newGodoc()),
+		).
+		IssueTitle("API reference")
 }
 
-type godocMenu struct {
+type godocIndex struct {
 	app.Compo
 
-	fragment string
-	rawHTML  string
-	loading  bool
-	err      error
+	rawHTML   string
+	fragment  string
+	isLoading bool
+	err       error
 }
 
-func newGodocMenu() app.UI {
-	return &godocMenu{}
+func newGodocIndex() app.UI {
+	return &godocIndex{}
 }
 
-func (m *godocMenu) OnMount(ctx app.Context) {
-	m.loading = true
-	m.err = nil
-	m.Update()
-
-	go m.loadMenu()
+func (i *godocIndex) OnPreRender(ctx app.Context) {
+	i.init(ctx)
 }
 
-func (m *godocMenu) OnNav(ctx app.Context, u *url.URL) {
-	m.unfocusLink()
-	m.focusLink()
+func (i *godocIndex) OnNav(ctx app.Context) {
+	i.init(ctx)
+
+	fragment := ctx.Page.URL().Fragment
+	if fragment == "" {
+		fragment = "top"
+	}
+	ctx.ScrollTo(fragment)
 }
 
-func (m *godocMenu) loadMenu() {
-	var html string
-	var err error
+func (i *godocIndex) init(ctx app.Context) {
+	i.unfocusLink(ctx)
+	if i.rawHTML != "" {
+		i.focusLink(ctx)
+		return
+	}
 
-	defer app.Dispatch(func() {
-		if err != nil {
-			m.err = err
-		}
+	ctx.Page.SetTitle("API reference for building a Progressive Web App with Go")
+	ctx.Page.SetDescription("The API reference for building a Progressive Web App (PWA) with the go-app Go (Golang) package. ")
 
-		m.rawHTML = html
-		m.loading = false
-		m.Update()
+	i.load(ctx)
+}
 
-		app.Dispatch(m.focusLink)
-		app.Dispatch(m.scrollToLink)
+func (i *godocIndex) load(ctx app.Context) {
+	i.isLoading = true
+	i.err = nil
+	i.Update()
+
+	ctx.Async(func() {
+		html, err := get(ctx, "/web/godoc-index.html")
+
+		i.Defer(func(ctx app.Context) {
+			i.rawHTML = string(html)
+			i.err = err
+			i.isLoading = false
+
+			fragment := i.linkID(ctx.Page.URL().Fragment)
+			if fragment == "" {
+				fragment = "top"
+			}
+
+			i.Update()
+			i.Defer(i.focusLink)
+			ctx.ScrollTo(fragment)
+		})
 	})
-
-	path := "/web/godoc-index.html"
-	res, err := http.Get(path)
-	if err != nil {
-		err = errors.New("getting reference menu failed").Wrap(err)
-		return
-	}
-	defer res.Body.Close()
-
-	b, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		app.Log("%s", errors.New("reading reference menu failed").
-			Tag("path", path).
-			Wrap(err))
-		return
-	}
-
-	html = string(b)
 }
 
-func (m *godocMenu) Render() app.UI {
-	return app.Aside().
-		Class("pane").
-		Class("godoc-menu").
+func (i *godocIndex) Render() app.UI {
+	return app.Div().
+		Class("godoc-index").
 		Body(
-			app.H1().Text("Index"),
+			app.Raw(i.rawHTML),
 			newLoader().
-				Description("reference menu").
-				Err(m.err).
-				Loading(m.loading),
-			app.Section().Body(
-				app.Raw(m.rawHTML),
-			),
+				Title("Loading").
+				Description("index").
+				Size(48).
+				Err(i.err).
+				Loading(i.isLoading),
 		)
 }
 
-func (m *godocMenu) focusLink() {
+func (i *godocIndex) focusLink(ctx app.Context) {
 	fragment := app.Window().URL().Fragment
 	if fragment == "" {
 		return
 	}
 
-	link := app.Window().GetElementByID(m.linkID(fragment))
+	link := app.Window().GetElementByID(i.linkID(fragment))
 	if !link.Truthy() {
 		return
 	}
 
 	link.Set("className", "focus")
-	m.fragment = fragment
+	i.fragment = fragment
 }
 
-func (m *godocMenu) unfocusLink() {
-	if m.fragment == "" {
+func (i *godocIndex) unfocusLink(ctx app.Context) {
+	if i.fragment == "" {
 		return
 	}
 
-	link := app.Window().GetElementByID(m.linkID(m.fragment))
+	link := app.Window().GetElementByID(i.linkID(i.fragment))
 	if !link.Truthy() {
 		return
 	}
 
 	link.Set("className", "")
-	m.fragment = ""
+	i.fragment = ""
 }
 
-func (m *godocMenu) scrollToLink() {
-	fragment := app.Window().URL().Fragment
-	if fragment == "" {
-		return
-	}
-
-	app.Window().ScrollToID(m.linkID(fragment))
-}
-
-func (m *godocMenu) linkID(fragment string) string {
+func (i *godocIndex) linkID(fragment string) string {
 	return "src-" + fragment
 }
 
 type godoc struct {
 	app.Compo
 
-	loading     bool
+	isLoading   bool
 	err         error
 	rawHTML     string
 	closeToggle func()
 }
 
-func (d *godoc) OnMount(ctx app.Context) {
-	d.loading = true
+func newGodoc() *godoc {
+	return &godoc{}
+}
+
+func (d *godoc) OnPreRender(ctx app.Context) {
+	d.init(ctx)
+}
+
+func (d *godoc) OnNav(ctx app.Context) {
+	d.init(ctx)
+}
+
+func (d *godoc) init(ctx app.Context) {
+	if d.rawHTML != "" {
+		return
+	}
+	d.load(ctx)
+}
+
+func (d *godoc) load(ctx app.Context) {
+	d.isLoading = true
 	d.err = nil
 	d.Update()
 
-	go d.load()
-}
+	ctx.Async(func() {
+		html, err := get(ctx, "/web/godoc.html")
 
-func (d *godoc) load() {
-	var html string
-	var err error
-
-	defer app.Dispatch(func() {
-		if err != nil {
+		d.Defer(func(ctx app.Context) {
+			d.rawHTML = string(html)
 			d.err = err
-		}
+			d.isLoading = false
 
-		d.rawHTML = html
-		d.loading = false
-		d.Update()
+			fragment := ctx.Page.URL().Fragment
+			if fragment == "" {
+				fragment = "top"
+			}
 
-		app.Dispatch(d.setupToggle)
-		app.Dispatch(d.scrollToSection)
+			d.Update()
+			d.Defer(d.setupToggle)
+			ctx.ScrollTo(fragment)
+		})
 	})
-
-	path := "/web/godoc.html"
-
-	res, err := http.Get(path)
-	if err != nil {
-		err = errors.New("retrieving reference failed").
-			Tag("path", path).
-			Wrap(err)
-		return
-	}
-	defer res.Body.Close()
-
-	b, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		err = errors.New("reading reference failed").
-			Tag("path", path).
-			Wrap(err)
-		return
-	}
-
-	html = string(b)
 }
 
-func (d *godoc) setupToggle() {
+func (d *godoc) setupToggle(ctx app.Context) {
 	onToggle := app.FuncOf(d.onToggle)
 
 	pkgOverview := app.Window().GetElementByID("pkg-overview")
 	if !pkgOverview.Truthy() {
-		panic(errors.New("pkg-overview elem not found"))
+		return
 	}
 	pkgOverview.Call("addEventListener", "click", onToggle)
 
 	pkgIndex := app.Window().GetElementByID("pkg-index")
 	if !pkgIndex.Truthy() {
-		panic(errors.New("pkg-index elem not found"))
+		return
 	}
 	pkgIndex.Call("addEventListener", "click", onToggle)
 
@@ -229,7 +215,7 @@ func (d *godoc) setupToggle() {
 }
 
 func (d *godoc) onToggle(src app.Value, args []app.Value) interface{} {
-	app.Dispatch(func() {
+	d.Defer(func(ctx app.Context) {
 		switch src.Get("className").String() {
 		case "toggleVisible":
 			src.Set("className", "toggle")
@@ -242,10 +228,6 @@ func (d *godoc) onToggle(src app.Value, args []app.Value) interface{} {
 	return nil
 }
 
-func (d *godoc) scrollToSection() {
-	app.Window().ScrollToID(app.Window().URL().Fragment)
-}
-
 func (d *godoc) OnDismount() {
 	if d.closeToggle != nil {
 		d.closeToggle()
@@ -253,14 +235,16 @@ func (d *godoc) OnDismount() {
 }
 
 func (d *godoc) Render() app.UI {
-	return app.Main().
-		Class("pane").
+	return app.Div().
 		Class("godoc").
 		Body(
-			newLoader().
-				Description("reference").
-				Err(d.err).
-				Loading(d.loading),
 			app.Raw(d.rawHTML),
+			newLoader().
+				Class("page-loader").
+				Class("fill").
+				Title("Loading").
+				Description("API reference").
+				Err(d.err).
+				Loading(d.isLoading),
 		)
 }

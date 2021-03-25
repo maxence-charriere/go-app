@@ -5,12 +5,19 @@ import (
 	"io"
 	"net/url"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
+
+type elemWithChildren interface {
+	UI
+
+	replaceChildAt(idx int, new UI) error
+}
 
 type elem struct {
 	attrs       map[string]string
 	body        []UI
+	disp        Dispatcher
 	ctx         context.Context
 	ctxCancel   func()
 	events      map[string]eventHandler
@@ -30,7 +37,9 @@ func (e *elem) JSValue() Value {
 }
 
 func (e *elem) Mounted() bool {
-	return e.ctx != nil && e.ctx.Err() == nil &&
+	return e.dispatcher() != nil &&
+		e.ctx != nil &&
+		e.ctx.Err() == nil &&
 		e.self() != nil &&
 		e.jsvalue != nil
 }
@@ -49,6 +58,10 @@ func (e *elem) setSelf(n UI) {
 
 func (e *elem) context() context.Context {
 	return e.ctx
+}
+
+func (e *elem) dispatcher() Dispatcher {
+	return e.disp
 }
 
 func (e *elem) attributes() map[string]string {
@@ -71,7 +84,7 @@ func (e *elem) children() []UI {
 	return e.body
 }
 
-func (e *elem) mount() error {
+func (e *elem) mount(d Dispatcher) error {
 	if e.Mounted() {
 		return errors.New("mounting ui element failed").
 			Tag("reason", "already mounted").
@@ -79,18 +92,21 @@ func (e *elem) mount() error {
 			Tag("kind", e.Kind())
 	}
 
+	e.disp = d
 	e.ctx, e.ctxCancel = context.WithCancel(context.Background())
 
-	v := Window().Get("document").Call("createElement", e.tag)
-	if !v.Truthy() {
+	v, err := Window().createElement(e.tag)
+	if err != nil {
 		return errors.New("mounting ui element failed").
-			Tag("reason", "create javascript node returned nil").
 			Tag("name", e.name()).
-			Tag("kind", e.Kind())
+			Tag("kind", e.Kind()).
+			Wrap(err)
 	}
 	e.jsvalue = v
 
 	for k, v := range e.attrs {
+		v = e.resolveURLAttr(k, v)
+		e.attrs[k] = v
 		e.setJsAttr(k, v)
 	}
 
@@ -197,7 +213,7 @@ func (e *elem) update(n UI) error {
 }
 
 func (e *elem) appendChild(c UI, onlyJsValue bool) error {
-	if err := mount(c); err != nil {
+	if err := mount(e.dispatcher(), c); err != nil {
 		return errors.New("appending child failed").
 			Tag("name", e.name()).
 			Tag("kind", e.Kind()).
@@ -211,14 +227,14 @@ func (e *elem) appendChild(c UI, onlyJsValue bool) error {
 	}
 
 	c.setParent(e.self())
-	e.JSValue().Call("appendChild", c)
+	e.JSValue().appendChild(c)
 	return nil
 }
 
 func (e *elem) replaceChildAt(idx int, new UI) error {
 	old := e.body[idx]
 
-	if err := mount(new); err != nil {
+	if err := mount(e.dispatcher(), new); err != nil {
 		return errors.New("replacing child failed").
 			Tag("name", e.name()).
 			Tag("kind", e.Kind()).
@@ -232,7 +248,7 @@ func (e *elem) replaceChildAt(idx int, new UI) error {
 
 	e.body[idx] = new
 	new.setParent(e.self())
-	e.JSValue().Call("replaceChild", new, old)
+	e.JSValue().replaceChild(new, old)
 
 	dismount(old)
 	return nil
@@ -255,7 +271,7 @@ func (e *elem) removeChildAt(idx int) error {
 	body = body[:len(body)-1]
 	e.body = body
 
-	e.JSValue().Call("removeChild", c)
+	e.JSValue().removeChild(c)
 	dismount(c)
 	return nil
 }
@@ -272,6 +288,7 @@ func (e *elem) updateAttrs(attrs map[string]string) {
 	}
 
 	for k, v := range attrs {
+		v = e.resolveURLAttr(k, v)
 		if curval, exists := e.attrs[k]; !exists || curval != v {
 			e.attrs[k] = v
 			e.setJsAttr(k, v)
@@ -313,12 +330,22 @@ func (e *elem) setAttr(k string, v interface{}) {
 	}
 }
 
+func (e *elem) resolveURLAttr(k, v string) string {
+	if !isURLAttrValue(k) {
+		return v
+	}
+	return e.disp.resolveStaticResource(v)
+}
+
 func (e *elem) setJsAttr(k, v string) {
-	e.JSValue().Call("setAttribute", k, v)
+	if isURLAttrValue(k) {
+		v = e.dispatcher().resolveStaticResource(v)
+	}
+	e.JSValue().setAttr(k, v)
 }
 
 func (e *elem) delAttr(k string) {
-	e.JSValue().Call("removeAttribute", k)
+	e.JSValue().delAttr(k)
 	delete(e.attrs, k)
 }
 
@@ -361,11 +388,11 @@ func (e *elem) setJsEventHandler(k string, h eventHandler) {
 	jshandler := makeJsEventHandler(e.self(), h.value)
 	h.jsvalue = jshandler
 	e.events[k] = h
-	e.JSValue().Call("addEventListener", k, jshandler)
+	e.JSValue().addEventListener(k, jshandler)
 }
 
 func (e *elem) delJsEventHandler(k string, h eventHandler) {
-	e.JSValue().Call("removeEventListener", k, h.jsvalue)
+	e.jsvalue.removeEventListener(k, h.jsvalue)
 	h.jsvalue.Release()
 	delete(e.events, k)
 }
@@ -393,14 +420,54 @@ func (e *elem) onAppUpdate() {
 	}
 }
 
-func (e *elem) onAppResize() {
+func (e *elem) onResize() {
 	for _, c := range e.children() {
-		c.onAppResize()
+		c.onResize()
+	}
+}
+
+func (e *elem) preRender(p Page) {
+	for _, c := range e.children() {
+		c.preRender(p)
 	}
 }
 
 func (e *elem) html(w io.Writer) {
-	e.htmlWithIndent(w, 0)
+	w.Write(stob("<"))
+	w.Write(stob(e.tag))
+
+	for k, v := range e.attrs {
+		w.Write(stob(" "))
+		w.Write(stob(k))
+
+		if v != "" {
+			w.Write(stob(`="`))
+			w.Write(stob(v))
+			w.Write(stob(`"`))
+		}
+	}
+
+	w.Write(stob(">"))
+
+	if e.selfClosing {
+		return
+	}
+
+	for _, c := range e.body {
+		w.Write(ln())
+		if c.self() == nil {
+			c.setSelf(c)
+		}
+		c.html(w)
+	}
+
+	if len(e.body) != 0 {
+		w.Write(ln())
+	}
+
+	w.Write(stob("</"))
+	w.Write(stob(e.tag))
+	w.Write(stob(">"))
 }
 
 func (e *elem) htmlWithIndent(w io.Writer, indent int) {
@@ -427,7 +494,10 @@ func (e *elem) htmlWithIndent(w io.Writer, indent int) {
 
 	for _, c := range e.body {
 		w.Write(ln())
-		c.(writableNode).htmlWithIndent(w, indent+1)
+		if c.self() == nil {
+			c.setSelf(c)
+		}
+		c.htmlWithIndent(w, indent+1)
 	}
 
 	if len(e.body) != 0 {
@@ -438,4 +508,18 @@ func (e *elem) htmlWithIndent(w io.Writer, indent int) {
 	w.Write(stob("</"))
 	w.Write(stob(e.tag))
 	w.Write(stob(">"))
+}
+
+func isURLAttrValue(k string) bool {
+	switch k {
+	case "cite",
+		"data",
+		"href",
+		"src",
+		"srcset":
+		return true
+
+	default:
+		return false
+	}
 }

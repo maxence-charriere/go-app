@@ -6,7 +6,7 @@ import (
 	"io"
 	"net/url"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
 
 // Text creates a simple text element.
@@ -15,6 +15,7 @@ func Text(v interface{}) UI {
 }
 
 type text struct {
+	disp       Dispatcher
 	jsvalue    Value
 	parentElem UI
 	value      string
@@ -29,7 +30,7 @@ func (t *text) JSValue() Value {
 }
 
 func (t *text) Mounted() bool {
-	return t.jsvalue != nil
+	return t.jsvalue != nil && t.dispatcher() != nil
 }
 
 func (t *text) name() string {
@@ -45,6 +46,10 @@ func (t *text) setSelf(n UI) {
 
 func (t *text) context() context.Context {
 	return context.TODO()
+}
+
+func (t *text) dispatcher() Dispatcher {
+	return t.disp
 }
 
 func (t *text) attributes() map[string]string {
@@ -67,7 +72,7 @@ func (t *text) children() []UI {
 	return nil
 }
 
-func (t *text) mount() error {
+func (t *text) mount(d Dispatcher) error {
 	if t.Mounted() {
 		return errors.New("mounting ui element failed").
 			Tag("reason", "already mounted").
@@ -76,10 +81,8 @@ func (t *text) mount() error {
 			Tag("value", t.value)
 	}
 
-	t.jsvalue = Window().
-		Get("document").
-		Call("createTextNode", t.value)
-
+	t.disp = d
+	t.jsvalue = Window().createTextNode(t.value)
 	return nil
 }
 
@@ -105,7 +108,7 @@ func (t *text) update(n UI) error {
 
 	if t.value != o.value {
 		t.value = o.value
-		t.jsvalue.Set("nodeValue", o.value)
+		t.JSValue().setNodeValue(o.value)
 	}
 
 	return nil
@@ -117,11 +120,14 @@ func (t *text) onNav(*url.URL) {
 func (t *text) onAppUpdate() {
 }
 
-func (t *text) onAppResize() {
+func (t *text) onResize() {
+}
+
+func (t *text) preRender(Page) {
 }
 
 func (t *text) html(w io.Writer) {
-	t.htmlWithIndent(w, 0)
+	w.Write(stob(html.EscapeString(t.value)))
 }
 
 func (t *text) htmlWithIndent(w io.Writer, indent int) {

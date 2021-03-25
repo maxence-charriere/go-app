@@ -73,7 +73,7 @@ By default, the web directory is located next to the server binary.
     └── ... # Static resources.
 ```
 
-The location of the web directory can be changed by setting the [Handler](/reference#Handler) with a [LocalDir](/reference#LocalDir) resource provider:
+The location of the web directory is changed by setting the [Handler](/reference#Handler) with a [LocalDir](/reference#LocalDir) resource provider:
 
 ```go
 http.Handle("/", &app.Handler{
@@ -89,7 +89,7 @@ Note that within the [Handler](/reference#Handler) and the **app**, they will st
 
 ## Setup remote web directory
 
-When deployed on a cloud provider, it is a common practice to put static resources in a storage service such as [S3](https://aws.amazon.com/s3) or [Google Cloud Storage](https://cloud.google.com/storage). In this scenario, changing the web directory to a remote bucket can be done by using the [RemoteBucket](/reference#RemoteBucket) resource provider.
+When deployed on a cloud provider, it is a common practice to put static resources in a storage service such as [S3](https://aws.amazon.com/s3) or [Google Cloud Storage](https://cloud.google.com/storage). In this scenario, changing the web directory to a remote bucket is done by using the [RemoteBucket](/reference#RemoteBucket) resource provider.
 
 ```go
 http.Handle("/", &app.Handler{

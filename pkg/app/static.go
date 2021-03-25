@@ -3,12 +3,14 @@
 package app
 
 import (
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"strings"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
 
 // GenerateStaticWebsite generates the files to run a PWA built with go-app as a
@@ -18,6 +20,10 @@ import (
 // Note that app.wasm must still be built separately and put into the web
 // directory.
 func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
+	if dir == "" {
+		dir = "."
+	}
+
 	if err := os.MkdirAll(filepath.Join(dir, "web"), 0755); err != nil {
 		return errors.New("creating directory for static website failed").
 			Tag("directory", dir).
@@ -59,14 +65,21 @@ func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
 			continue
 		}
 
+		if !strings.HasPrefix(p, "/") {
+			p = "/" + p
+		}
+
 		resources = append(resources, struct {
 			filename string
 			path     string
 		}{
 			filename: p + ".html",
-			path:     "/",
+			path:     p,
 		})
 	}
+
+	server := httptest.NewServer(h)
+	defer server.Close()
 
 	for _, r := range resources {
 		filename := filepath.Join(dir, r.filename)
@@ -79,7 +92,7 @@ func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
 		}
 		defer f.Close()
 
-		req, err := http.NewRequest(http.MethodGet, "http://go-app.io"+r.path, nil)
+		req, err := http.NewRequest(http.MethodGet, server.URL+r.path, nil)
 		if err != nil {
 			return errors.New("creating file request failed").
 				Tag("filename", filename).
@@ -87,16 +100,29 @@ func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
 				Wrap(err)
 		}
 
-		rec := httptest.NewRecorder()
-		h.ServeHTTP(rec, req)
+		res, err := http.DefaultClient.Do(req)
+		if err != nil {
+			return errors.New("http request failed").
+				Tag("filename", filename).
+				Tag("path", r.path).
+				Wrap(err)
+		}
+		defer res.Body.Close()
 
-		if n, err := f.Write(rec.Body.Bytes()); err != nil {
+		body, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			return errors.New("reading request body failed").
+				Tag("filename", filename).
+				Tag("path", r.path).
+				Wrap(err)
+		}
+
+		if n, err := f.Write(body); err != nil {
 			return errors.New("writing file failed").
 				Tag("filename", filename).
 				Tag("bytes-written", n).
 				Wrap(err)
 		}
-
 	}
 
 	return nil

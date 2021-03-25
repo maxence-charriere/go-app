@@ -1,18 +1,18 @@
-# Javascript and DOM
+# JavaScript and DOM
 
 Since WebAssembly is browser-based technology, some scenarios may require DOM access and JavaScript calls.
 
-This is usually done with the help of [syscall/js](https://golang.org/pkg/syscall/js/) but for compatibility and tooling reasons, **go-app wraps the standard package**. Interacting with Javascript is done by using the [Value](/reference#Value) interface.
+This is usually done with the help of [syscall/js](https://golang.org/pkg/syscall/js/) but for compatibility and tooling reasons, **go-app wraps the JS standard package**. Interacting with JavaScript is done by using the [Value](/reference#Value) interface.
 
-This article provide examples that show common interactions with Javascript.
+This article provides examples that show common interactions with JavaScript.
 
 ## Include JS files
 
-Building UIs can sometime require the need of third party Javascript libraries. Those libraries can either be included when the page is loaded or inlined in a component.
+Building UIs can sometimes require the need of third-party JavaScript libraries. Those libraries can either be included at the [page](/architecture#html-pages) level or inlined in a [component](/components).
 
-### Handler
+### Page's scope
 
-This can be done by including a Javascript file URL in the `Scripts` field from the [app.Handler](/reference#Handler):
+JS files can be included on a page by using the [Handler](/reference#Handler) `Scripts` field:
 
 ```go
 handler := &app.Handler{
@@ -24,7 +24,7 @@ handler := &app.Handler{
 }
 ```
 
-Or by directly putting code in the `RawHeaders` field:
+Or by directly putting JS markup in the `RawHeaders` field:
 
 ```go
 handler := &app.Handler{
@@ -44,9 +44,11 @@ handler := &app.Handler{
 }
 ```
 
-### Inline
+### Inlined in Components
 
-Javascript file can also be included in components by using a [Script](/reference#Script) element. Here is an example that asynchronously load Youtube Iframe API script.
+JS files can also be included directly inlined into [components](/components) in the `Render()` method by using the [\<script\>](/reference#Script) HTML element.
+
+The following example asynchronously loads a YouTube video into an `<iframe>`, using a YouTube JavaScript file:
 
 ```go
 type youtubePlayer struct {
@@ -70,17 +72,17 @@ func (p *youtubePlayer) Render() app.UI {
 }
 ```
 
-## Window
+## Using window global object
+
+The `window` JS global object is usable from the [Window](/reference#Window) function.
 
 ```go
 app.Window()
 ```
 
-[Window()](/reference#Window) returns a global javascript object representing the [browser window](/reference#BrowserWindow) that can be used to call functions with `window` and empty namespaces.
-
 ### Get element by ID
 
-`GetElementByID()` allow to get a DOM element from an ID.
+`GetElementByID()` is to get a DOM element from an ID.
 
 ```js
 // JS version:

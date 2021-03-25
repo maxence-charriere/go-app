@@ -1,6 +1,8 @@
 <div id="manual-nav">
 			<dl>
 			
+				<dd><a href="#pkg-constants" id="src-pkg-constants">Constants</a></dd>
+			
 			
 				<dd><a href="#pkg-variables" id="src-pkg-variables">Variables</a></dd>
 			
@@ -12,40 +14,40 @@
 				<dd><a href="#CopyBytesToJS" id="src-CopyBytesToJS">func CopyBytesToJS(dst Value, src []byte) int</a></dd>
 			
 				
-				<dd><a href="#Dispatch" id="src-Dispatch">func Dispatch(f func())</a></dd>
-			
-				
 				<dd><a href="#GenerateStaticWebsite" id="src-GenerateStaticWebsite">func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error</a></dd>
 			
 				
 				<dd><a href="#Getenv" id="src-Getenv">func Getenv(k string) string</a></dd>
 			
 				
+				<dd><a href="#HTMLString" id="src-HTMLString">func HTMLString(ui UI) string</a></dd>
+			
+				
+				<dd><a href="#HTMLStringWithIndent" id="src-HTMLStringWithIndent">func HTMLStringWithIndent(ui UI) string</a></dd>
+			
+				
 				<dd><a href="#KeepBodyClean" id="src-KeepBodyClean">func KeepBodyClean() (close func())</a></dd>
 			
 				
-				<dd><a href="#Log" id="src-Log">func Log(format string, v ...interface{})</a></dd>
+				<dd><a href="#Log" id="src-Log">func Log(v ...interface{})</a></dd>
 			
 				
-				<dd><a href="#Navigate" id="src-Navigate">func Navigate(rawurl string)</a></dd>
+				<dd><a href="#Logf" id="src-Logf">func Logf(format string, v ...interface{})</a></dd>
 			
 				
-				<dd><a href="#NewContextMenu" id="src-NewContextMenu">func NewContextMenu(menuItems ...MenuItemNode)</a></dd>
+				<dd><a href="#PrintHTML" id="src-PrintHTML">func PrintHTML(w io.Writer, ui UI)</a></dd>
 			
 				
-				<dd><a href="#Reload" id="src-Reload">func Reload()</a></dd>
+				<dd><a href="#PrintHTMLWithIndent" id="src-PrintHTMLWithIndent">func PrintHTMLWithIndent(w io.Writer, ui UI)</a></dd>
 			
 				
-				<dd><a href="#Route" id="src-Route">func Route(path string, node UI)</a></dd>
+				<dd><a href="#Route" id="src-Route">func Route(path string, c Composer)</a></dd>
 			
 				
-				<dd><a href="#RouteWithRegexp" id="src-RouteWithRegexp">func RouteWithRegexp(pattern string, node UI)</a></dd>
+				<dd><a href="#RouteWithRegexp" id="src-RouteWithRegexp">func RouteWithRegexp(pattern string, c Composer)</a></dd>
 			
 				
-				<dd><a href="#Run" id="src-Run">func Run()</a></dd>
-			
-				
-				<dd><a href="#StaticResource" id="src-StaticResource">func StaticResource(path string) string</a></dd>
+				<dd><a href="#RunWhenOnBrowser" id="src-RunWhenOnBrowser">func RunWhenOnBrowser()</a></dd>
 			
 				
 				<dd><a href="#TestMatch" id="src-TestMatch">func TestMatch(tree UI, d TestUIDescriptor) error</a></dd>
@@ -68,8 +70,19 @@
 				
 			
 				
+				<dd><a href="#ClientDispatcher" id="src-ClientDispatcher">type ClientDispatcher</a></dd>
+				
+					
+					<dd>    <a href="#NewClientTester" id="src-NewClientTester">func NewClientTester(v UI) ClientDispatcher</a></dd>
+				
+				
+			
+				
 				<dd><a href="#Compo" id="src-Compo">type Compo</a></dd>
 				
+				
+					
+					<dd>    <a href="#Compo.Defer" id="src-Compo.Defer">func (c *Compo) Defer(fn func(Context))</a></dd>
 				
 					
 					<dd>    <a href="#Compo.JSValue" id="src-Compo.JSValue">func (c *Compo) JSValue() Value</a></dd>
@@ -84,7 +97,13 @@
 					<dd>    <a href="#Compo.Render" id="src-Compo.Render">func (c *Compo) Render() UI</a></dd>
 				
 					
+					<dd>    <a href="#Compo.ResizeContent" id="src-Compo.ResizeContent">func (c *Compo) ResizeContent()</a></dd>
+				
+					
 					<dd>    <a href="#Compo.Update" id="src-Compo.Update">func (c *Compo) Update()</a></dd>
+				
+					
+					<dd>    <a href="#Compo.ValueTo" id="src-Compo.ValueTo">func (c *Compo) ValueTo(v interface{}) EventHandler</a></dd>
 				
 			
 				
@@ -103,6 +122,33 @@
 				
 				<dd><a href="#Context" id="src-Context">type Context</a></dd>
 				
+				
+					
+					<dd>    <a href="#Context.Async" id="src-Context.Async">func (ctx Context) Async(fn func())</a></dd>
+				
+					
+					<dd>    <a href="#Context.Dispatch" id="src-Context.Dispatch">func (ctx Context) Dispatch(fn func())</a></dd>
+				
+					
+					<dd>    <a href="#Context.LocalStorage" id="src-Context.LocalStorage">func (ctx Context) LocalStorage() BrowserStorage</a></dd>
+				
+					
+					<dd>    <a href="#Context.Navigate" id="src-Context.Navigate">func (ctx Context) Navigate(rawURL string)</a></dd>
+				
+					
+					<dd>    <a href="#Context.NavigateTo" id="src-Context.NavigateTo">func (ctx Context) NavigateTo(u *url.URL)</a></dd>
+				
+					
+					<dd>    <a href="#Context.Reload" id="src-Context.Reload">func (ctx Context) Reload()</a></dd>
+				
+					
+					<dd>    <a href="#Context.ResolveStaticResource" id="src-Context.ResolveStaticResource">func (ctx Context) ResolveStaticResource(path string) string</a></dd>
+				
+					
+					<dd>    <a href="#Context.ScrollTo" id="src-Context.ScrollTo">func (ctx Context) ScrollTo(id string)</a></dd>
+				
+					
+					<dd>    <a href="#Context.SessionStorage" id="src-Context.SessionStorage">func (ctx Context) SessionStorage() BrowserStorage</a></dd>
 				
 			
 				
@@ -582,10 +628,10 @@
 				
 			
 				
-				<dd><a href="#HTMLLegends" id="src-HTMLLegends">type HTMLLegends</a></dd>
+				<dd><a href="#HTMLLegend" id="src-HTMLLegend">type HTMLLegend</a></dd>
 				
 					
-					<dd>    <a href="#Legends" id="src-Legends">func Legends() HTMLLegends</a></dd>
+					<dd>    <a href="#Legend" id="src-Legend">func Legend() HTMLLegend</a></dd>
 				
 				
 			
@@ -1027,20 +1073,43 @@
 				
 			
 				
-				<dd><a href="#MenuItemNode" id="src-MenuItemNode">type MenuItemNode</a></dd>
-				
-					
-					<dd>    <a href="#MenuItem" id="src-MenuItem">func MenuItem() MenuItemNode</a></dd>
-				
-				
-			
-				
 				<dd><a href="#Mounter" id="src-Mounter">type Mounter</a></dd>
 				
 				
 			
 				
 				<dd><a href="#Navigator" id="src-Navigator">type Navigator</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Page" id="src-Page">type Page</a></dd>
+				
+				
+			
+				
+				<dd><a href="#PreRenderCache" id="src-PreRenderCache">type PreRenderCache</a></dd>
+				
+					
+					<dd>    <a href="#NewPreRenderLRUCache" id="src-NewPreRenderLRUCache">func NewPreRenderLRUCache(size int, itemTTL time.Duration, onEvict ...func(count, size int)) PreRenderCache</a></dd>
+				
+				
+			
+				
+				<dd><a href="#PreRenderedItem" id="src-PreRenderedItem">type PreRenderedItem</a></dd>
+				
+				
+					
+					<dd>    <a href="#PreRenderedItem.Len" id="src-PreRenderedItem.Len">func (r PreRenderedItem) Len() int</a></dd>
+				
+			
+				
+				<dd><a href="#PreRenderer" id="src-PreRenderer">type PreRenderer</a></dd>
+				
+				
+			
+				
+				<dd><a href="#ProxyResource" id="src-ProxyResource">type ProxyResource</a></dd>
 				
 				
 			
@@ -1069,10 +1138,18 @@
 					<dd>    <a href="#GitHubPages" id="src-GitHubPages">func GitHubPages(repoName string) ResourceProvider</a></dd>
 				
 					
-					<dd>    <a href="#LocalDir" id="src-LocalDir">func LocalDir(path string) ResourceProvider</a></dd>
+					<dd>    <a href="#LocalDir" id="src-LocalDir">func LocalDir(root string) ResourceProvider</a></dd>
 				
 					
 					<dd>    <a href="#RemoteBucket" id="src-RemoteBucket">func RemoteBucket(url string) ResourceProvider</a></dd>
+				
+				
+			
+				
+				<dd><a href="#ServerDispatcher" id="src-ServerDispatcher">type ServerDispatcher</a></dd>
+				
+					
+					<dd>    <a href="#NewServerTester" id="src-NewServerTester">func NewServerTester(v UI) ServerDispatcher</a></dd>
 				
 				
 			

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 	"github.com/stretchr/testify/require"
 )
 
@@ -99,14 +99,14 @@ type mountTest struct {
 func testMountDismount(t *testing.T, utests []mountTest) {
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			testSkipNonWasm(t)
-
 			n := u.node
-			err := mount(n)
-			require.NoError(t, err)
+
+			d := NewClientTester(n)
+
+			d.Consume()
 			testMounted(t, n)
 
-			dismount(u.node)
+			d.Close()
 			testDismounted(t, n)
 		})
 	}
@@ -114,6 +114,7 @@ func testMountDismount(t *testing.T, utests []mountTest) {
 
 func testMounted(t *testing.T, n UI) {
 	require.NotNil(t, n.JSValue())
+	require.NotNil(t, n.dispatcher())
 	require.True(t, n.Mounted())
 
 	switch n.Kind() {
@@ -130,6 +131,7 @@ func testMounted(t *testing.T, n UI) {
 
 func testDismounted(t *testing.T, n UI) {
 	require.Nil(t, n.JSValue())
+	require.NotNil(t, n.dispatcher())
 	require.False(t, n.Mounted())
 
 	switch n.Kind() {
@@ -154,13 +156,11 @@ type updateTest struct {
 func testUpdate(t *testing.T, utests []updateTest) {
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			testSkipNonWasm(t)
+			d := NewClientTester(u.a)
+			defer d.Close()
+			d.Consume()
 
-			err := mount(u.a)
-			require.NoError(t, err)
-			defer dismount(u.a)
-
-			err = update(u.a, u.b)
+			err := update(u.a, u.b)
 			if u.replaceErr {
 				require.Error(t, err)
 				require.True(t, isErrReplace(err))
@@ -168,10 +168,44 @@ func testUpdate(t *testing.T, utests []updateTest) {
 			}
 
 			require.NoError(t, err)
-
 			for _, d := range u.matches {
 				require.NoError(t, TestMatch(u.a, d))
 			}
+		})
+	}
+}
+
+func TestHTMLString(t *testing.T) {
+	utests := []struct {
+		scenario string
+		root     UI
+	}{
+		{
+			scenario: "hmtl element",
+			root:     Div().ID("test"),
+		},
+		{
+			scenario: "text",
+			root:     Text("hello"),
+		},
+		{
+			scenario: "component",
+			root:     &hello{},
+		},
+		{
+			scenario: "nested component",
+			root:     Div().Body(&hello{}),
+		},
+		{
+			scenario: "nested nested component",
+			root:     Div().Body(&foo{Bar: "bar"}),
+		},
+	}
+
+	for _, u := range utests {
+		t.Run(u.scenario, func(t *testing.T) {
+			t.Log(HTMLString(u.root))
+			t.Log(HTMLStringWithIndent(u.root))
 		})
 	}
 }

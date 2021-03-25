@@ -6,107 +6,155 @@ import (
 	"net/url"
 	"runtime"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
 
 var (
+	window    = &browserWindow{}
 	errNoWasm = errors.New("unsupported instruction").
-		Tag("required-architecture", "wasm").
-		Tag("current-architecture", runtime.GOARCH)
+			Tag("required-architecture", "wasm").
+			Tag("current-architecture", runtime.GOARCH)
 )
 
 type value struct{}
 
 func (v value) Bool() bool {
-	panic(errNoWasm)
+	return false
 }
 
 func (v value) Call(m string, args ...interface{}) Value {
-	panic(errNoWasm)
+	return value{}
 }
 
 func (v value) Float() float64 {
-	panic(errNoWasm)
+	return 0
 }
 
 func (v value) Get(p string) Value {
-	panic(errNoWasm)
+	return value{}
 }
 
 func (v value) Index(i int) Value {
-	panic(errNoWasm)
+	return value{}
 }
 
 func (v value) InstanceOf(t Value) bool {
-	panic(errNoWasm)
+	return false
 }
 
 func (v value) Int() int {
-	panic(errNoWasm)
+	return 0
 }
 
 func (v value) Invoke(args ...interface{}) Value {
-	panic(errNoWasm)
+	return value{}
 }
 
 func (v value) IsNaN() bool {
-	panic(errNoWasm)
+	return false
 }
 
 func (v value) IsNull() bool {
-	panic(errNoWasm)
+	return true
 }
 
 func (v value) IsUndefined() bool {
-	panic(errNoWasm)
+	return true
 }
 
 func (v value) JSValue() Value {
-	panic(errNoWasm)
+	return v
 }
 
 func (v value) Length() int {
-	panic(errNoWasm)
+	return 0
 }
 
 func (v value) New(args ...interface{}) Value {
-	panic(errNoWasm)
+	return value{}
 }
 
 func (v value) Set(p string, x interface{}) {
-	panic(errNoWasm)
 }
 
 func (v value) SetIndex(i int, x interface{}) {
-	panic(errNoWasm)
 }
 
 func (v value) String() string {
-	panic(errNoWasm)
+	return ""
 }
 
 func (v value) Truthy() bool {
-	panic(errNoWasm)
+	return false
 }
 
 func (v value) Type() Type {
 	panic(errNoWasm)
 }
 
+func (v value) getAttr(k string) string {
+	return ""
+}
+
+func (v value) setAttr(k, val string) {
+}
+
+func (v value) delAttr(k string) {
+}
+
+func (v value) firstChild() Value {
+	return value{}
+}
+
+func (v value) appendChild(c Wrapper) {
+}
+
+func (v value) replaceChild(new, old Wrapper) {
+}
+
+func (v value) removeChild(c Wrapper) {
+}
+
+func (v value) firstElementChild() Value {
+	return value{}
+}
+
+func (v value) addEventListener(event string, fn Func) {
+}
+
+func (v value) removeEventListener(event string, fn Func) {
+}
+
+func (v value) setNodeValue(val string) {
+}
+
+func (v value) setInnerHTML(val string) {
+}
+
+func (v value) setInnerText(val string) {
+}
+
 func null() Value {
-	panic(errNoWasm)
+	return value{}
 }
 
 func undefined() Value {
-	panic(errNoWasm)
+	return value{}
 }
 
 func valueOf(x interface{}) Value {
-	panic(errNoWasm)
+	return value{}
+}
+
+type function struct {
+	value
+}
+
+func (f function) Release() {
 }
 
 func funcOf(fn func(this Value, args []Value) interface{}) Func {
-	panic(errNoWasm)
+	return function{value: value{}}
 }
 
 type browserWindow struct {
@@ -114,37 +162,52 @@ type browserWindow struct {
 }
 
 func (w browserWindow) URL() *url.URL {
-	panic(errNoWasm)
+	return &url.URL{}
 }
 
 func (w browserWindow) Size() (width, height int) {
-	panic(errNoWasm)
+	return 0, 0
 }
 
 func (w browserWindow) CursorPosition() (x, y int) {
-	panic(errNoWasm)
+	return 0, 0
 }
 
 func (w browserWindow) setCursorPosition(x, y int) {
-	panic(errNoWasm)
 }
 
 func (w *browserWindow) GetElementByID(id string) Value {
-	panic(errNoWasm)
+	return value{}
 }
 
 func (w *browserWindow) ScrollToID(id string) {
-	panic(errNoWasm)
 }
 
 func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
-	panic(errNoWasm)
+	return func() {}
+}
+
+func (w *browserWindow) setBody(body UI) {
+}
+
+func (w *browserWindow) createElement(tag string) (Value, error) {
+	return value{}, nil
+}
+
+func (w *browserWindow) createTextNode(v string) Value {
+	return value{}
+}
+
+func (w *browserWindow) addHistory(u *url.URL) {
+}
+
+func (w *browserWindow) replaceHistory(u *url.URL) {
 }
 
 func copyBytesToGo(dst []byte, src Value) int {
-	panic(errNoWasm)
+	return 0
 }
 
 func copyBytesToJS(dst Value, src []byte) int {
-	panic(errNoWasm)
+	return 0
 }

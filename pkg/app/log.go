@@ -3,11 +3,12 @@ package app
 import (
 	"fmt"
 	"runtime"
+	"strings"
 )
 
 var (
 	// DefaultLogger is the logger used to log info and errors.
-	DefaultLogger func(format string, v ...interface{}) = log
+	DefaultLogger func(format string, v ...interface{})
 
 	defaultColor string
 	errorColor   string
@@ -15,21 +16,39 @@ var (
 )
 
 func init() {
-	switch runtime.GOARCH {
-	case "wasm", "window":
-	default:
+	goarch := runtime.GOARCH
+	if goarch == "wasm" {
+		DefaultLogger = clientLog
+		return
+	}
+
+	if goarch != "window" {
 		defaultColor = "\033[00m"
 		errorColor = "\033[91m"
 		infoColor = "\033[94m"
 	}
+	DefaultLogger = serverLog
 }
 
-// Log logs according to a format specifier using the default logger.
-func Log(format string, v ...interface{}) {
+// Log logs using the default formats for its operands. Spaces are always added
+// between operands.
+func Log(v ...interface{}) {
+	var b strings.Builder
+	for i := 0; i < len(v); i++ {
+		if i != 0 {
+			b.WriteByte(' ')
+		}
+		b.WriteString("%v")
+	}
+	Logf(b.String(), v...)
+}
+
+// Logf logs according to a format specifier.
+func Logf(format string, v ...interface{}) {
 	DefaultLogger(format, v...)
 }
 
-func log(format string, v ...interface{}) {
+func serverLog(format string, v ...interface{}) {
 	errorLevel := false
 
 	for _, a := range v {
@@ -45,4 +64,20 @@ func log(format string, v ...interface{}) {
 	}
 
 	fmt.Printf(infoColor+"INFO ‣ "+defaultColor+format+"\n", v...)
+}
+
+func clientLog(format string, v ...interface{}) {
+	isErrorLevel := false
+	for _, a := range v {
+		if _, isErr := a.(error); isErr {
+			isErrorLevel = true
+			break
+		}
+	}
+
+	if isErrorLevel {
+		Window().Get("console").Call("error", fmt.Sprintf(format, v...))
+		return
+	}
+	Window().Get("console").Call("log", fmt.Sprintf(format, v...))
 }

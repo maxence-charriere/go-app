@@ -1,6 +1,12 @@
 package app
 
-import "net/url"
+import (
+	"net/url"
+)
+
+const (
+// isClientSide = runtime.GOARCH == "wasm" && runtime.GOOS == "js"
+)
 
 // Type represents the JavaScript type of a Value.
 type Type int
@@ -107,6 +113,20 @@ type Value interface {
 	// JavaScript's typeof operator, except that it returns TypeNull instead of
 	// TypeObject for null.
 	Type() Type
+
+	getAttr(k string) string
+	setAttr(k, v string)
+	delAttr(k string)
+	firstChild() Value
+	appendChild(c Wrapper)
+	replaceChild(new, old Wrapper)
+	removeChild(c Wrapper)
+	firstElementChild() Value
+	addEventListener(event string, fn Func)
+	removeEventListener(event string, fn Func)
+	setNodeValue(v string)
+	setInnerHTML(v string)
+	setInnerText(v string)
 }
 
 // Null returns the JavaScript value "null".
@@ -192,6 +212,12 @@ type BrowserWindow interface {
 	// returns a function that must be called to unsubscribe the handler and
 	// release allocated resources.
 	AddEventListener(event string, h EventHandler) func()
+
+	setBody(body UI)
+	createElement(tag string) (Value, error)
+	createTextNode(v string) Value
+	addHistory(u *url.URL)
+	replaceHistory(u *url.URL)
 }
 
 // Event is the interface that describes a javascript event.

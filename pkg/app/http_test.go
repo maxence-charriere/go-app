@@ -12,12 +12,29 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func init() {
+	Route("/", &preRenderTestCompo{})
+}
+
+type preRenderTestCompo struct {
+	Compo
+}
+
+func (c *preRenderTestCompo) Render() UI {
+	return Div().
+		ID("pre-render-ok").
+		Body(
+			Img().Src("/web/resolve-static-resource-test.jpg"),
+		)
+}
+
 func TestHandlerServePageWithLocalDir(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/", nil)
 	w := httptest.NewRecorder()
 
 	h := Handler{
-		Title: "Handler testing",
+		Resources: LocalDir(""),
+		Title:     "Handler testing",
 		Scripts: []string{
 			"web/hello.js",
 			"http://boo.com/bar.js",
@@ -30,6 +47,7 @@ func TestHandlerServePageWithLocalDir(t *testing.T) {
 		RawHeaders: []string{
 			`<meta http-equiv="refresh" content="30">`,
 		},
+		Image: "/web/test.png",
 	}
 	h.Icon.AppleTouch = "ios.png"
 
@@ -45,6 +63,9 @@ func TestHandlerServePageWithLocalDir(t *testing.T) {
 	require.Contains(t, body, `href="/manifest.webmanifest"`)
 	require.Contains(t, body, `href="/app.css"`)
 	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
+	require.Contains(t, body, `<div id="pre-render-ok">`)
+	require.Contains(t, body, `content="/web/test.png"`)
+	require.Contains(t, body, `<img src="/web/resolve-static-resource-test.jpg">`)
 
 	t.Log(body)
 }
@@ -68,6 +89,7 @@ func TestHandlerServePageWithRemoteBucket(t *testing.T) {
 		RawHeaders: []string{
 			`<meta http-equiv="refresh" content="30">`,
 		},
+		Image: "/web/test.png",
 	}
 	h.Icon.AppleTouch = "ios.png"
 
@@ -83,6 +105,9 @@ func TestHandlerServePageWithRemoteBucket(t *testing.T) {
 	require.Contains(t, body, `href="/manifest.webmanifest"`)
 	require.Contains(t, body, `href="/app.css"`)
 	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
+	require.Contains(t, body, `<div id="pre-render-ok">`)
+	require.Contains(t, body, `content="https://storage.googleapis.com/go-app/web/test.png"`)
+	require.Contains(t, body, `<img src="https://storage.googleapis.com/go-app/web/resolve-static-resource-test.jpg">`)
 
 	t.Log(body)
 }
@@ -121,7 +146,8 @@ func TestHandlerServePageWithGitHubPages(t *testing.T) {
 	require.Contains(t, body, `href="/go-app/manifest.webmanifest"`)
 	require.Contains(t, body, `href="/go-app/app.css"`)
 	require.Contains(t, body, `<meta http-equiv="refresh" content="30">`)
-
+	require.Contains(t, body, `<div id="pre-render-ok">`)
+	require.Contains(t, body, `<img src="/go-app/web/resolve-static-resource-test.jpg">`)
 	t.Log(body)
 }
 
@@ -135,6 +161,7 @@ func TestHandlerServeWasmExecJS(t *testing.T) {
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
 	require.Equal(t, wasmExecJS, w.Body.String())
+	t.Log(w.Body.String())
 }
 
 func TestHandlerServeAppJSWithLocalDir(t *testing.T) {
@@ -513,7 +540,7 @@ func TestHandlerProxyResources(t *testing.T) {
 		{
 			scenario: "no proxy resource is not fetched",
 			file:     "bye.txt",
-			code:     http.StatusOK,
+			code:     http.StatusNotFound,
 			body:     "bye!",
 			notProxy: true,
 		},
@@ -621,6 +648,52 @@ func TestIsRemoteLocation(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.scenario, func(t *testing.T) {
 			res := isRemoteLocation(test.path)
+			require.Equal(t, test.expected, res)
+		})
+	}
+}
+
+func TestIsStaticResourcePath(t *testing.T) {
+	tests := []struct {
+		scenario string
+		path     string
+		expected bool
+	}{
+		{
+			scenario: "static resource path",
+			path:     "/web/hello",
+			expected: true,
+		},
+		{
+			scenario: "static resource path with prefix slash",
+			path:     "web/hello",
+			expected: true,
+		},
+		{
+			scenario: "static resource directory",
+			path:     "/web",
+			expected: false,
+		},
+		{
+			scenario: "static resource directory without prefix slash",
+			path:     "web",
+			expected: false,
+		},
+		{
+			scenario: "non static resource",
+			path:     "/app.js",
+			expected: false,
+		},
+		{
+			scenario: "remote resource",
+			path:     "https://localhost/hello",
+			expected: false,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.scenario, func(t *testing.T) {
+			res := isStaticResourcePath(test.path)
 			require.Equal(t, test.expected, res)
 		})
 	}

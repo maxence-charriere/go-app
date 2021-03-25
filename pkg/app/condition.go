@@ -2,9 +2,10 @@ package app
 
 import (
 	"context"
+	"io"
 	"net/url"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
 
 // Condition represents a control structure that displays nodes depending on a
@@ -83,6 +84,10 @@ func (c condition) context() context.Context {
 	return nil
 }
 
+func (c condition) dispatcher() Dispatcher {
+	return nil
+}
+
 func (c condition) attributes() map[string]string {
 	return nil
 }
@@ -102,7 +107,7 @@ func (c condition) children() []UI {
 	return c.body
 }
 
-func (c condition) mount() error {
+func (c condition) mount(Dispatcher) error {
 	return errors.New("condition is not mountable").
 		Tag("name", c.name()).
 		Tag("kind", c.Kind())
@@ -123,5 +128,16 @@ func (c condition) onNav(*url.URL) {
 func (c condition) onAppUpdate() {
 }
 
-func (c condition) onAppResize() {
+func (c condition) onResize() {
+}
+
+func (c condition) preRender(Page) {
+}
+
+func (c condition) html(w io.Writer) {
+	panic("shoulnd not be called")
+}
+
+func (c condition) htmlWithIndent(w io.Writer, indent int) {
+	panic("shoulnd not be called")
 }

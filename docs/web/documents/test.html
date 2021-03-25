@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta httpequiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="theme-color" content="#2e343a">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
+    <title>Hello</title>
+    <link rel="icon" type="image/png" href="https://storage.googleapis.com/murlok-github/icon-192.png">
+    <link href="https://storage.googleapis.com/murlok-github/icon-192.png" rel="apple-touch-icon">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link type="text/css" rel="stylesheet" href="/app.css">
+    <script defer src="/wasm_exec.js"></script>
+    <script src="/app.js" defer></script>
+</head>
+
+<body>
+    <div>
+        <!-- Prerendered component is included in the div below: -->
+        <div id="app-pre-render">
+            <h1>Hello World!</h1>
+        </div>
+        <div id="app-wasm-loader" class="goapp-app-info">
+            <img class="goapp-logo goapp-spin" src="https://storage.googleapis.com/murlok-github/icon-192.png"
+                id="app-wasm-loader-icon">
+            <p id="app-wasm-loader-label" class="goapp-label">
+                Loading...
+            </p>
+        </div>
+    </div>
+    <div id="app-end"></div>
+</body>
+
+</html>

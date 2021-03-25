@@ -1,12 +1,10 @@
 # Declarative syntax
 
-Customizing [components](/components) requires to describe how their UI looks like.
+The go-app declarative syntax is to customize [components](/components)' look.
 
-The main way to do it is to use the HTML elements defined in the package API.
+It uses a chaining mechanism made from the [Go programming language](https://golang.org) syntax that allows composing HTML elements and components in order to craft beautiful and usable UIs.
 
-By using them with a chaining mechanism and the Go syntax, writing a UI is done in a declarative fashion, without using another language.
-
-Here is an example that describes a title and its text:
+Here is an example where HTML elements are used to display a title and a paragraph:
 
 ```go
 func (c *myCompo) Render() app.UI {
@@ -23,28 +21,28 @@ func (c *myCompo) Render() app.UI {
 
 ## HTML elements
 
-The package provides an interface for each standard HTML element.
+Go-app provides interfaces for each standard HTML element. Those interfaces describe setters for attributes and event handlers.
 
 Here is a simplified version of the interface for a [\<div>](/reference#HTMLDiv):
 
 ```go
 type HTMLDiv interface {
     // Attributes:
-    Body(nodes ...Node) HTMLDiv
+    Body(children ...UI) HTMLDiv
     Class(v string) HTMLDiv
     ID(v string) HTMLDiv
     Style(k, v string) HTMLDiv
 
     // Event handlers:
-    OnClick(h EventHandler) HTMLDiv
-    OnKeyPress(h EventHandler) HTMLDiv
-    OnMouseOver(h EventHandler) HTMLDiv
+    OnClick(h EventHandler, scope ...interface{}) HTMLDiv
+    OnKeyPress(h EventHandler, scope ...interface{}) HTMLDiv
+    OnMouseOver(h EventHandler, scope ...interface{}) HTMLDiv
 }
 ```
 
 ### Create
 
-Creating an HTML element is done by calling a function named after its name. The example below will create a [\<div>](/reference#Div):
+An HTML element is created by calling a function named after its name. The example below shows how to create a [\<div>](/reference#Div):
 
 ```go
 func (c *myCompo) Render() app.UI {
@@ -54,7 +52,7 @@ func (c *myCompo) Render() app.UI {
 
 ### Standard elements
 
-Standard elements are elements that can contain other elements. To do so they provide the `Body()` method which takes other elements as parameters:
+A standard HTML element is an element that can contain other UI elements. Other HTML elements, texts, and [components](/components) are nested by using the `Body()` method:
 
 ```go
 func (c *myCompo) Render() app.UI {
@@ -67,7 +65,7 @@ func (c *myCompo) Render() app.UI {
 
 ### Self closing elements
 
-Self-closing elements are elements that cannot contain other elements.
+A self-closing element is an HTML element that cannot contain other UI elements.
 
 ```go
 func (c *myCompo) Render() app.UI {
@@ -77,7 +75,7 @@ func (c *myCompo) Render() app.UI {
 
 ### Attributes
 
-HTML element interfaces provide methods to set element attributes:
+HTML element interfaces provide methods to set element attributes. Here is an example that set a `<div>`'s class:
 
 ```go
 func (c *myCompo) Render() app.UI {
@@ -91,7 +89,8 @@ Multiple attributes are set by using the chaining mechanism:
 func (c *myCompo) Render() app.UI {
 	return app.Div().
 		ID("id-name").
-		Class("class-name")
+		Class("class-1").
+		Class("class-2")
 }
 ```
 
@@ -105,7 +104,7 @@ func (c *myCompo) Render() app.UI {
 }
 ```
 
-Multiple styles can be set by calling the `Style()` method successively:
+Like the `Class()` attribute, multiple styles are set by using the chaining mechanism:
 
 ```go
 func (c *myCompo) Render() app.UI {
@@ -124,7 +123,7 @@ func (c *myCompo) Render() app.UI {
 func(ctx app.Context, e app.Event)
 ```
 
-Like attributes, element interfaces provide methods to bind event handlers to given functions:
+Like attributes, HTML element interfaces provide methods to associate an event to a given handler:
 
 ```go
 func (c *myCompo) Render() app.UI {
@@ -134,10 +133,9 @@ func (c *myCompo) Render() app.UI {
 func (c *myCompo) onClick(ctx app.Context, e app.Event) {
 	fmt.Println("onClick is called")
 }
-
 ```
 
-[Context](/reference#Context) is a context that can be used with any function accepting a [context.Context](https://golang.org/pkg/context/#Context). It is cancelled when the source of the event is dismounted. Source element value can be retrieved by the JSSrc method:
+The [Context](/reference#Context) argument embeds several go-app tools that help in creating responsive UIs. Usable with any function accepting a [Go standard context](https://golang.org/pkg/context/#Context), it is canceled when the source of the event is dismounted. The source element value can be retrieved with the JSSrc field:
 
 ```go
 func (c *myCompo) Render() app.UI {
@@ -145,16 +143,15 @@ func (c *myCompo) Render() app.UI {
 }
 
 func (c *myCompo) onChange(ctx app.Context, e app.Event) {
-	v := ctx.JSSrc().Get("value")
+	v := ctx.JSSrc.Get("value")
 }
-
 ```
 
-`ctx.JSSrc()` and [Event](/reference#Event) are [JavaScript objects wrapped in Go interfaces](/js).
+`ctx.JSSrc` and [Event](/reference#Event) are [JavaScript objects wrapped in Go interfaces](/js).
 
 ## Text
 
-Text represents simple HTML text. They are created by calling the [Text()](/reference#Text) function:
+[Text()](/reference#Text) represents simple HTML text. Here is an example that display a `Hello World` text:
 
 ```go
 func (c *myCompo) Render() app.UI {
@@ -165,9 +162,19 @@ func (c *myCompo) Render() app.UI {
 }
 ```
 
+When an HTML element embeds a single text element, HTML element's `Text()` method can be used instead:
+
+```go
+func (c *myCompo) Render() app.UI {
+	return app.Div().Text("Hello World:)
+}
+```
+
 ## Raw elements
 
-There is some case where some raw HTML code might be required. It can be done by using the [Raw()](/reference#Raw) function with HTML code as argument:
+[Raw elements](/reference#Raw) are elements representing plain HTML code. Be aware that using them is **unsafe since there is no check on HTML format**.
+
+Here is an example that creates a `<svg>` element.
 
 ```go
 func (c *myCompo) Render() app.UI {
@@ -179,11 +186,11 @@ func (c *myCompo) Render() app.UI {
 }
 ```
 
-Be aware that using this function is **unsafe** since there is no check on HTML construct or format.
-
 ## Nested components
 
 [Components](/components) are structs that let you split the UI into independent and reusable pieces. They can be used within other components to achieve more complex UIs.
+
+Here is an example where a component named `foo` embeds a [text](#text) and another component named `bar`.
 
 ```go
 // foo component:
@@ -207,8 +214,6 @@ func (b *bar) Render() app.UI {
 	return app.Text("Bar!")
 }
 ```
-
-In the example above, a `bar` component is used in the `Render()` method of `foo`, so that it will be displayed as content of `foo`.
 
 ## Condition
 
@@ -334,10 +339,43 @@ func (c *myCompo) Render() app.UI {
 }
 ```
 
+## Form helpers
+
+Form helpers are [component](/components) methods that help to map HTML form element values to [component fields](/components#fields).
+
+### ValueTo
+
+[ValueTo](/reference#Compo.ValueTo) maps, when it exists, an HTML element value property to a given variable.
+
+Here is a Hello component version that uses the `ValueTo()` method to get the username from its input rather than defining an [event handler](/syntax#event-handlers):
+
+```go
+type hello struct {
+	app.Compo
+
+	name string
+}
+
+func (h *hello) Render() app.UI {
+	return app.Div().Body(
+		app.H1().Text("Hello " + h.name),
+		app.P().Body(
+			app.Input().
+				Type("text").
+				Value(h.name).
+				Placeholder("What is your name?").
+				AutoFocus(true).
+				// Here the username is directly mapped from the input's change
+				// event.
+				OnChange(h.ValueTo(&h.name)),
+		),
+	)
+}
+```
+
 ## Next
 
 - [Deal with static resources](/static-resources)
 - [Interact with Javascript](/js)
 - [Handle concurrency](/concurrency)
-- [Use widgets](/widgets)
 - [API reference](/reference)

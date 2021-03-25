@@ -124,21 +124,18 @@ func TestElemUpdateAttrs(t *testing.T) {
 
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			testSkipNonWasm(t)
-
 			n := Div().(*htmlDiv)
-			err := mount(n)
-			require.NoError(t, err)
-			defer dismount(n)
+			d := NewClientTester(n)
+			defer d.Close()
+
+			d.Consume()
 
 			n.attrs = u.current
 			n.updateAttrs(u.incoming)
-
 			if len(u.incoming) == 0 {
 				require.Empty(t, n.attributes())
 				return
 			}
-
 			require.Equal(t, u.incoming, n.attributes())
 		})
 	}
@@ -183,8 +180,6 @@ func TestElemUpdateEventHandlers(t *testing.T) {
 
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
-			testSkipNonWasm(t)
-
 			var current map[string]eventHandler
 			var incoming map[string]eventHandler
 
@@ -208,9 +203,11 @@ func TestElemUpdateEventHandlers(t *testing.T) {
 
 			n := Div().(*htmlDiv)
 			n.events = current
-			err := mount(n)
-			require.NoError(t, err)
-			defer dismount(n)
+
+			d := NewClientTester(n)
+			defer d.Close()
+
+			d.Consume()
 
 			n.updateEventHandler(incoming)
 
@@ -364,4 +361,42 @@ func TestElemUpdate(t *testing.T) {
 			},
 		},
 	})
+}
+
+func TestIsURLAttrValue(t *testing.T) {
+	utests := []struct {
+		name     string
+		expected bool
+	}{
+		{
+			name:     "cite",
+			expected: true,
+		},
+		{
+			name:     "data",
+			expected: true,
+		},
+		{
+			name:     "href",
+			expected: true,
+		},
+		{
+			name:     "src",
+			expected: true,
+		},
+		{
+			name:     "srcset",
+			expected: true,
+		},
+		{
+			name:     "data-test",
+			expected: false,
+		},
+	}
+
+	for _, u := range utests {
+		t.Run(u.name, func(t *testing.T) {
+			require.Equal(t, u.expected, isURLAttrValue(u.name))
+		})
+	}
 }

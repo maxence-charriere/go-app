@@ -534,7 +534,7 @@ var tags = []tag{
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
-		Name:          "Legends",
+		Name:          "Legend",
 		Doc:           "defines a caption for a fieldset element.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
@@ -594,6 +594,7 @@ var tags = []tag{
 			"content",
 			"http-equiv",
 			"name",
+			"property",
 		)...),
 	},
 	{
@@ -1391,6 +1392,11 @@ var attrs = map[string]attr{
 		Name: "Preload",
 		Type: "string",
 		Doc:  "specifies if and how the author thinks the audio/video should be loaded when the page loads.",
+	},
+	"property": {
+		Name: "Property",
+		Type: "string",
+		Doc:  "specifies the property name.",
 	},
 
 	// R:
@@ -2202,7 +2208,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		fmt.Fprintf(w, `%s(v string) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				e.setAttr("%s", StaticResource(v))
+				e.setAttr("%s", v)
 				return e
 			}`, strings.ToLower(a.Name))
 		}

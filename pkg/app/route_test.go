@@ -1,6 +1,7 @@
 package app
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -8,23 +9,19 @@ import (
 
 type routeCompo struct {
 	Compo
-	id string
+}
+
+type routeWithRegexpCompo struct {
+	Compo
 }
 
 func TestRoutes(t *testing.T) {
-	routes := router{}
-	routes.route("/a", &routeCompo{id: "a"})
-	routes.route("/abc", &routeCompo{id: "abc"})
-	routes.routeWithRegexp("^/a.*$", &routeCompo{id: "a-star"})
-	routes.routeWithRegexp("^/user/.*/settings$", &routeCompo{id: "settings"})
-	routes.routeWithRegexp("^/user/.*/files/.*$", &routeCompo{id: "files"})
-	routes.routeWithRegexp("^/color/(red|green|blue)$", &routeCompo{id: "color"})
-
-	tests := []struct {
-		scenario   string
-		path       string
-		expectedID string
-		notFound   bool
+	utests := []struct {
+		scenario     string
+		createRoutes func(*router)
+		path         string
+		expected     Composer
+		notFound     bool
 	}{
 		{
 			scenario: "path is not routed",
@@ -37,63 +34,97 @@ func TestRoutes(t *testing.T) {
 			notFound: true,
 		},
 		{
-			scenario:   "path is routed",
-			path:       "/a",
-			expectedID: "a",
+			scenario: "path is routed",
+			createRoutes: func(r *router) {
+				r.route("/a", &routeCompo{})
+			},
+			expected: &routeCompo{},
+			path:     "/a",
 		},
 		{
-			scenario:   "path take priority over pattern",
-			path:       "/abc",
-			expectedID: "abc",
+			scenario: "path take priority over pattern",
+			path:     "/abc",
+			createRoutes: func(r *router) {
+				r.route("/abc", &routeCompo{})
+				r.routeWithRegexp("^/a.*$", &routeWithRegexpCompo{})
+			},
+			expected: &routeCompo{},
 		},
 		{
-			scenario:   "pattern is routed",
-			path:       "/ab",
-			expectedID: "a-star",
+			scenario: "pattern is routed",
+			path:     "/ab",
+			createRoutes: func(r *router) {
+				r.route("/abc", &routeCompo{})
+				r.routeWithRegexp("^/a.*$", &routeWithRegexpCompo{})
+			},
+			expected: &routeWithRegexpCompo{},
 		},
 		{
-			scenario:   "pattern with inner wildcard is routed",
-			path:       "/user/42/settings",
-			expectedID: "settings",
+			scenario: "pattern with inner wildcard is routed",
+			path:     "/user/42/settings",
+			createRoutes: func(r *router) {
+				r.routeWithRegexp("^/user/.*/settings$", &routeWithRegexpCompo{})
+			},
+			expected: &routeWithRegexpCompo{},
 		},
 		{
 			scenario: "not matching pattern with inner wildcard is not routed",
 			path:     "/user/42/settings/",
+			createRoutes: func(r *router) {
+				r.routeWithRegexp("^/user/.*/settings$", &routeWithRegexpCompo{})
+			},
 			notFound: true,
 		},
 		{
-			scenario:   "pattern with end wildcard is routed",
-			path:       "/user/1001/files/foo/bar/baz.png",
-			expectedID: "files",
+			scenario: "pattern with end wildcard is routed",
+			path:     "/user/1001/files/foo/bar/baz.png",
+			createRoutes: func(r *router) {
+				r.routeWithRegexp("^/user/.*/files/.*$", &routeWithRegexpCompo{})
+			},
+			expected: &routeWithRegexpCompo{},
 		},
 		{
 			scenario: "not matching pattern with end wildcard is not routed",
 			path:     "/user/1001/files",
+			createRoutes: func(r *router) {
+				r.routeWithRegexp("^/user/.*/files/.*$", &routeWithRegexpCompo{})
+			},
 			notFound: true,
 		},
 		{
-			scenario:   "pattern with OR condition is routed",
-			path:       "/color/red",
-			expectedID: "color",
+			scenario: "pattern with OR condition is routed",
+			path:     "/color/red",
+			createRoutes: func(r *router) {
+				r.routeWithRegexp("^/color/(red|green|blue)$", &routeWithRegexpCompo{})
+			},
+			expected: &routeWithRegexpCompo{},
 		},
 		{
 			scenario: "not matching pattern with OR condition is not routed",
 			path:     "/color/fuschia",
+			createRoutes: func(r *router) {
+				r.routeWithRegexp("^/color/(red|green|blue)$", &routeWithRegexpCompo{})
+			},
 			notFound: true,
 		},
 	}
 
-	for _, test := range tests {
-		t.Run(test.scenario, func(t *testing.T) {
-			node, routed := routes.ui(test.path)
-
-			if test.notFound {
-				require.False(t, routed, "node is routed")
-				return
+	for _, u := range utests {
+		t.Run(u.scenario, func(t *testing.T) {
+			r := makeRouter()
+			if u.createRoutes != nil {
+				u.createRoutes(&r)
 			}
 
-			id := node.(*routeCompo).id
-			require.Equal(t, test.expectedID, id)
+			compo, isRouted := r.createComponent(u.path)
+			if u.notFound {
+				require.Nil(t, compo)
+				require.False(t, isRouted)
+				return
+			}
+			require.True(t, isRouted)
+			require.NotNil(t, compo)
+			require.Equal(t, reflect.TypeOf(u.expected), reflect.TypeOf(compo))
 		})
 	}
 }

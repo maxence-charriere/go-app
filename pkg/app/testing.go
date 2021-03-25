@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
 
 // TestUIDescriptor represents a descriptor that describes a UI element and its
@@ -71,12 +71,6 @@ func TestPath(p ...int) []int {
 //  })
 //  // OK => err == nil
 func TestMatch(tree UI, d TestUIDescriptor) error {
-	if !tree.Mounted() {
-		if err := mount(tree); err != nil {
-			return err
-		}
-	}
-
 	if d.Expected != nil {
 		d.Expected.setSelf(d.Expected)
 	}

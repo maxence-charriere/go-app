@@ -1,15 +1,15 @@
-// +build !wasm
-
 package app
 
 import (
 	"bytes"
+	"context"
 	"crypto/sha1"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"net/url"
+	"os"
+	"reflect"
 	"runtime"
 	"strconv"
 	"strings"
@@ -17,11 +17,13 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
 
 const (
-	defaultThemeColor = "#2d2c2c"
+	defaultThemeColor         = "#2d2c2c"
+	defaultPreRenderCacheSize = 8000000
+	defaultPreRenderCacheTTL  = time.Hour * 24
 )
 
 // Handler is an HTTP handler that serves an HTML page that loads a Go wasm app
@@ -58,6 +60,10 @@ type Handler struct {
 	// found component.
 	Icon Icon
 
+	// The path of the default image that is used by social networks when
+	// linking the app.
+	Image string
+
 	// The page keywords.
 	Keywords []string
 
@@ -66,6 +72,12 @@ type Handler struct {
 
 	// The name of the web application as it is usually displayed to the user.
 	Name string
+
+	// The cache that stores pre-rendered pages.
+	//
+	// Default is a LRU cache that keeps pages up to 24h and have a maximum size
+	// of 8MB.
+	PreRenderCache PreRenderCache
 
 	// The static resources that are accessible from custom paths. Files that
 	// are proxied by default are /robots.txt, /sitemap.xml and /ads.txt.
@@ -95,7 +107,7 @@ type Handler struct {
 	// eg:
 	//  "/web/main.css"
 	//
-	// Default: LocalDir("web")
+	// Default: LocalDir("")
 	Resources ResourceProvider
 
 	// The paths or urls of the CSS files to use with the page.
@@ -126,38 +138,22 @@ type Handler struct {
 	// development system.
 	Version string
 
-	once             sync.Once
-	etag             string
-	appWasmPath      string
-	robotPath        string
-	hasRemoteRootDir bool
-	page             bytes.Buffer
-	manifestJSON     bytes.Buffer
-	appJS            bytes.Buffer
-	appWorkerJS      bytes.Buffer
-	wasmExecJS       []byte
-	appCSS           []byte
-
-	proxyResourceMutex  sync.RWMutex
-	proxyResources      map[string]ProxyResource
-	proxyResourcesCache map[string]proxyResourceCache
+	once           sync.Once
+	etag           string
+	pwaResources   PreRenderCache
+	proxyResources map[string]ProxyResource
 }
 
 func (h *Handler) init() {
 	h.initVersion()
 	h.initStaticResources()
+	h.initImage()
 	h.initStyles()
 	h.initScripts()
 	h.initCacheableResources()
 	h.initIcon()
 	h.initPWA()
-	h.initPage()
-	h.initWasmJS()
-	h.initAppJS()
-	h.initWorkerJS()
-	h.initManifestJSON()
-	h.initScripts()
-	h.initAppCSS()
+	h.initPreRenderedResources()
 	h.initProxyResources()
 }
 
@@ -171,25 +167,31 @@ func (h *Handler) initVersion() {
 
 func (h *Handler) initStaticResources() {
 	if h.Resources == nil {
-		h.Resources = LocalDir("web")
+		h.Resources = LocalDir("")
+	}
+}
+
+func (h *Handler) initImage() {
+	if h.Image != "" {
+		h.Image = h.resolveStaticPath(h.Image)
 	}
 }
 
 func (h *Handler) initStyles() {
 	for i, path := range h.Styles {
-		h.Styles[i] = h.staticResource(path)
+		h.Styles[i] = h.resolveStaticPath(path)
 	}
 }
 
 func (h *Handler) initScripts() {
 	for i, path := range h.Scripts {
-		h.Scripts[i] = h.staticResource(path)
+		h.Scripts[i] = h.resolveStaticPath(path)
 	}
 }
 
 func (h *Handler) initCacheableResources() {
 	for i, path := range h.CacheableResources {
-		h.CacheableResources[i] = h.staticResource(path)
+		h.CacheableResources[i] = h.resolveStaticPath(path)
 	}
 }
 
@@ -203,9 +205,9 @@ func (h *Handler) initIcon() {
 		h.Icon.AppleTouch = h.Icon.Default
 	}
 
-	h.Icon.Default = h.staticResource(h.Icon.Default)
-	h.Icon.Large = h.staticResource(h.Icon.Large)
-	h.Icon.AppleTouch = h.staticResource(h.Icon.AppleTouch)
+	h.Icon.Default = h.resolveStaticPath(h.Icon.Default)
+	h.Icon.Large = h.resolveStaticPath(h.Icon.Large)
+	h.Icon.AppleTouch = h.resolveStaticPath(h.Icon.AppleTouch)
 }
 
 func (h *Handler) initPWA() {
@@ -231,99 +233,64 @@ func (h *Handler) initPWA() {
 	}
 }
 
-func (h *Handler) initPage() {
-	h.page.WriteString("<!DOCTYPE html>\n")
+func (h *Handler) initPreRenderedResources() {
+	h.pwaResources = newPreRenderCache(5)
+	ctx := context.TODO()
 
-	html := Html().Body(
-		Head().Body(
-			Meta().Charset("UTF-8"),
-			Meta().
-				HTTPEquiv("Content-Type").
-				Content("text/html; charset=utf-8"),
-			Meta().
-				Name("author").
-				Content(h.Author),
-			Meta().
-				Name("description").
-				Content(h.Description),
-			Meta().
-				Name("keywords").
-				Content(strings.Join(h.Keywords, ", ")),
-			Meta().
-				Name("theme-color").
-				Content(h.ThemeColor),
-			Meta().
-				Name("viewport").
-				Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
-			Title().Text(h.Title),
-			Link().
-				Rel("icon").
-				Type("image/png").
-				Href(h.Icon.Default),
-			Link().
-				Rel("apple-touch-icon").
-				Href(h.Icon.AppleTouch),
-			Link().
-				Rel("manifest").
-				Href(h.appResource("/manifest.webmanifest")),
-			Link().
-				Type("text/css").
-				Rel("stylesheet").
-				Href(h.appResource("/app.css")),
-			Script().
-				Defer(true).
-				Src(h.appResource("/wasm_exec.js")),
-			Script().
-				Defer(true).
-				Src(h.appResource("/app.js")),
-			Range(h.Styles).Slice(func(i int) UI {
-				return Link().
-					Type("text/css").
-					Rel("stylesheet").
-					Href(h.Styles[i])
-			}),
-			Range(h.Scripts).Slice(func(i int) UI {
-				return Script().
-					Defer(true).
-					Src(h.Scripts[i])
-			}),
-			Range(h.RawHeaders).Slice(func(i int) UI {
-				return Raw(h.RawHeaders[i])
-			}),
-		),
-		Body().Body(
-			Div().
-				ID("app-wasm-layout").
-				Class("goapp-app-info").
-				Body(
-					Img().
-						ID("app-wasm-loader-icon").
-						Class("goapp-logo goapp-spin").
-						Src(h.Icon.Default),
-					P().
-						ID("app-wasm-loader-label").
-						Class("goapp-label").
-						Body(Text(h.LoadingLabel)),
-				),
-			Div().ID("app-context-menu"),
-			Div().ID("app-end"),
-		),
-	)
+	h.pwaResources.Set(ctx, PreRenderedItem{
+		Path:        "/wasm_exec.js",
+		ContentType: "application/javascript",
+		Body:        []byte(wasmExecJS),
+	})
 
-	html.(writableNode).html(&h.page)
+	h.pwaResources.Set(ctx, PreRenderedItem{
+		Path:        "/app.js",
+		ContentType: "application/javascript",
+		Body:        h.makeAppJS(),
+	})
+
+	h.pwaResources.Set(ctx, PreRenderedItem{
+		Path:        "/app-worker.js",
+		ContentType: "application/javascript",
+		Body:        h.makeAppWorkerJS(),
+	})
+
+	h.pwaResources.Set(ctx, PreRenderedItem{
+		Path:        "/manifest.webmanifest",
+		ContentType: "application/manifest+json",
+		Body:        h.makeManifestJSON(),
+	})
+
+	h.pwaResources.Set(ctx, PreRenderedItem{
+		Path:        "/app.css",
+		ContentType: "text/css",
+		Body:        []byte(appCSS),
+	})
+
+	if h.PreRenderCache == nil {
+		h.PreRenderCache = NewPreRenderLRUCache(
+			defaultPreRenderCacheSize,
+			defaultPreRenderCacheTTL,
+		)
+	}
 }
 
-func (h *Handler) initWasmJS() {
-	h.wasmExecJS = []byte(wasmExecJS)
-}
-
-func (h *Handler) initAppJS() {
+func (h *Handler) makeAppJS() []byte {
 	if h.Env == nil {
-		h.Env = make(map[string]string, 2)
+		h.Env = make(map[string]string, 3)
 	}
 	h.Env["GOAPP_VERSION"] = h.Version
-	h.Env["GOAPP_STATIC_RESOURCES_URL"] = h.Resources.StaticResources()
-	h.Env["GOAPP_ROOT_PREFIX"] = h.Resources.AppResources()
+	h.Env["GOAPP_STATIC_RESOURCES_URL"] = h.Resources.Static()
+	h.Env["GOAPP_ROOT_PREFIX"] = h.Resources.Package()
+
+	for k, v := range h.Env {
+		if err := os.Setenv(k, v); err != nil {
+			Log(errors.New("setting app env variable failed").
+				Tag("name", k).
+				Tag("value", v).
+				Wrap(err))
+		}
+	}
 
 	env, err := json.Marshal(h.Env)
 	if err != nil {
@@ -333,32 +300,34 @@ func (h *Handler) initAppJS() {
 		)
 	}
 
+	var b bytes.Buffer
 	if err := template.
 		Must(template.New("app.js").Parse(appJS)).
-		Execute(&h.appJS, struct {
+		Execute(&b, struct {
 			Env      string
 			Wasm     string
 			WorkerJS string
 		}{
 			Env:      btos(env),
 			Wasm:     h.Resources.AppWASM(),
-			WorkerJS: h.appResource("/app-worker.js"),
+			WorkerJS: h.resolvePackagePath("/app-worker.js"),
 		}); err != nil {
 		panic(errors.New("initializing app.js failed").Wrap(err))
 	}
+	return b.Bytes()
 }
 
-func (h *Handler) initWorkerJS() {
+func (h *Handler) makeAppWorkerJS() []byte {
 	cacheableResources := map[string]struct{}{
-		h.appResource("/app.css"):              {},
-		h.appResource("/app.js"):               {},
-		h.appResource("/manifest.webmanifest"): {},
-		h.appResource("/wasm_exec.js"):         {},
-		h.appResource("/"):                     {},
-		h.Resources.AppWASM():                  {},
-		h.Icon.Default:                         {},
-		h.Icon.Large:                           {},
-		h.Icon.AppleTouch:                      {},
+		h.resolvePackagePath("/app.css"):              {},
+		h.resolvePackagePath("/app.js"):               {},
+		h.resolvePackagePath("/manifest.webmanifest"): {},
+		h.resolvePackagePath("/wasm_exec.js"):         {},
+		h.resolvePackagePath("/"):                     {},
+		h.Resources.AppWASM():                         {},
+		h.Icon.Default:                                {},
+		h.Icon.Large:                                  {},
+		h.Icon.AppleTouch:                             {},
 	}
 
 	cacheResources := func(res []string) {
@@ -370,9 +339,10 @@ func (h *Handler) initWorkerJS() {
 	cacheResources(h.Scripts)
 	cacheResources(h.CacheableResources)
 
+	var b bytes.Buffer
 	if err := template.
 		Must(template.New("app-worker.js").Parse(appWorkerJS)).
-		Execute(&h.appWorkerJS, struct {
+		Execute(&b, struct {
 			Version          string
 			ResourcesToCache map[string]struct{}
 		}{
@@ -381,24 +351,24 @@ func (h *Handler) initWorkerJS() {
 		}); err != nil {
 		panic(errors.New("initializing app-worker.js failed").Wrap(err))
 	}
+	return b.Bytes()
 }
 
-func (h *Handler) initManifestJSON() {
+func (h *Handler) makeManifestJSON() []byte {
 	normalize := func(s string) string {
 		if !strings.HasPrefix(s, "/") {
 			s = "/" + s
 		}
-
 		if !strings.HasSuffix(s, "/") {
 			s += "/"
 		}
-
 		return s
 	}
 
+	var b bytes.Buffer
 	if err := template.
 		Must(template.New("manifest.webmanifest").Parse(manifestJSON)).
-		Execute(&h.manifestJSON, struct {
+		Execute(&b, struct {
 			ShortName       string
 			Name            string
 			DefaultIcon     string
@@ -414,15 +384,12 @@ func (h *Handler) initManifestJSON() {
 			LargeIcon:       h.Icon.Large,
 			BackgroundColor: h.BackgroundColor,
 			ThemeColor:      h.ThemeColor,
-			Scope:           normalize(h.Resources.AppResources()),
-			StartURL:        normalize(h.Resources.AppResources()),
+			Scope:           normalize(h.Resources.Package()),
+			StartURL:        normalize(h.Resources.Package()),
 		}); err != nil {
 		panic(errors.New("initializing manifest.webmanifest failed").Wrap(err))
 	}
-}
-
-func (h *Handler) initAppCSS() {
-	h.appCSS = stob(appCSS)
+	return b.Bytes()
 }
 
 func (h *Handler) initProxyResources() {
@@ -469,7 +436,6 @@ func (h *Handler) initProxyResources() {
 	}
 
 	h.proxyResources = resources
-	h.proxyResourcesCache = make(map[string]proxyResourceCache, len(resources))
 }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -486,44 +452,40 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	path := r.URL.Path
 
-	staticResourcesHandler, servesStaticResources := h.Resources.(http.Handler)
-	if servesStaticResources && strings.HasPrefix(path, "/web/") {
-		staticResourcesHandler.ServeHTTP(w, r)
+	fileHandler, isServingStaticResources := h.Resources.(http.Handler)
+	if isServingStaticResources && strings.HasPrefix(path, "/web/") {
+		fileHandler.ServeHTTP(w, r)
 		return
 	}
 
 	switch path {
-	case "/wasm_exec.js":
-		h.serveWasmExecJS(w, r)
-		return
+	case "/goapp.js":
+		path = "/app.js"
 
-	case "/app.js", "/goapp.js":
-		h.serveAppJS(w, r)
-		return
-
-	case "/app-worker.js":
-		h.serveAppWorkerJS(w, r)
-		return
-
-	case "/manifest.json", "/manifest.webmanifest":
-		h.serveManifestJSON(w, r)
-		return
-
-	case "/app.css":
-		h.serveAppCSS(w, r)
-		return
+	case "/manifest.json":
+		path = "/manifest.webmanifest"
 
 	case "/app.wasm", "/goapp.wasm":
-		if servesStaticResources {
+		if isServingStaticResources {
 			r2 := *r
 			r2.URL.Path = h.Resources.AppWASM()
-			staticResourcesHandler.ServeHTTP(w, &r2)
+			fileHandler.ServeHTTP(w, &r2)
 			return
 		}
 
 		w.WriteHeader(http.StatusNotFound)
 		return
 
+	}
+
+	if res, ok := h.pwaResources.Get(r.Context(), path); ok {
+		h.servePreRenderedItem(w, res)
+		return
+	}
+
+	if res, ok := h.PreRenderCache.Get(r.Context(), path); ok {
+		h.servePreRenderedItem(w, res)
+		return
 	}
 
 	if proxyResource, ok := h.proxyResources[path]; ok {
@@ -534,133 +496,244 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.servePage(w, r)
 }
 
-func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Length", strconv.Itoa(h.page.Len()))
-	w.Header().Set("Content-Type", "text/html")
-	w.WriteHeader(http.StatusOK)
-	w.Write(h.page.Bytes())
-}
+func (h *Handler) servePreRenderedItem(w http.ResponseWriter, r PreRenderedItem) {
+	w.Header().Set("Content-Length", strconv.Itoa(r.Len()))
+	w.Header().Set("Content-Type", r.ContentType)
+	if r.ContentEncoding != "" {
+		w.Header().Set("Content-Encoding", r.ContentEncoding)
+	}
 
-func (h *Handler) serveWasmExecJS(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Length", strconv.Itoa(len(h.wasmExecJS)))
-	w.Header().Set("Content-Type", "application/javascript")
 	w.WriteHeader(http.StatusOK)
-	w.Write(h.wasmExecJS)
-}
-
-func (h *Handler) serveAppJS(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Length", strconv.Itoa(h.appJS.Len()))
-	w.Header().Set("Content-Type", "application/javascript")
-	w.WriteHeader(http.StatusOK)
-	w.Write(h.appJS.Bytes())
-}
-
-func (h *Handler) serveAppWorkerJS(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Length", strconv.Itoa(h.appWorkerJS.Len()))
-	w.Header().Set("Content-Type", "application/javascript")
-	w.WriteHeader(http.StatusOK)
-	w.Write(h.appWorkerJS.Bytes())
-}
-
-func (h *Handler) serveManifestJSON(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Length", strconv.Itoa(h.manifestJSON.Len()))
-	w.Header().Set("Content-Type", "application/manifest+json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(h.manifestJSON.Bytes())
-}
-
-func (h *Handler) serveAppCSS(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Length", strconv.Itoa(len(h.appCSS)))
-	w.Header().Set("Content-Type", "text/css")
-	w.WriteHeader(http.StatusOK)
-	w.Write(h.appCSS)
+	w.Write(r.Body)
 }
 
 func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWriter, r *http.Request) {
-	h.proxyResourceMutex.RLock()
-	pres, ok := h.proxyResourcesCache[resource.Path]
-	h.proxyResourceMutex.RUnlock()
+	var u string
+	if _, ok := h.Resources.(http.Handler); ok {
+		u = "http://" + r.Host + resource.ResourcePath
+	} else {
+		u = h.Resources.Static() + resource.ResourcePath
+	}
 
+	res, err := http.Get(u)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		Log(errors.New("getting proxy static resource failed").
+			Tag("url", u).
+			Tag("proxy-path", resource.Path).
+			Tag("static-resource-path", resource.ResourcePath).
+			Wrap(err),
+		)
+		return
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		Log(errors.New("reading proxy static resource failed").
+			Tag("url", u).
+			Tag("proxy-path", resource.Path).
+			Tag("static-resource-path", resource.ResourcePath).
+			Wrap(err),
+		)
+		return
+	}
+
+	item := PreRenderedItem{
+		Path:            resource.Path,
+		ContentType:     res.Header.Get("Content-Type"),
+		ContentEncoding: res.Header.Get("Content-Encoding"),
+		Body:            body,
+	}
+	h.PreRenderCache.Set(r.Context(), item)
+	h.servePreRenderedItem(w, item)
+}
+
+func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
+	content, ok := routes.createComponent(r.URL.Path)
 	if !ok {
-		var u string
-		if _, ok := h.Resources.(http.Handler); ok {
-			u = "http://" + r.Host + resource.ResourcePath
-		} else {
-			u = h.Resources.StaticResources() + resource.ResourcePath
-		}
-
-		res, err := http.Get(u)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			Log("%s", errors.New("getting proxy static resource failed").
-				Tag("url", u).
-				Tag("proxy-path", resource.Path).
-				Tag("static-resource-path", resource.ResourcePath).
-				Wrap(err),
-			)
-			return
-		}
-		defer res.Body.Close()
-
-		if res.StatusCode != http.StatusOK {
-			w.WriteHeader(http.StatusNotFound)
-			return
-		}
-
-		body, err := ioutil.ReadAll(res.Body)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			Log("%s", errors.New("reading proxy static resource failed").
-				Tag("url", u).
-				Tag("proxy-path", resource.Path).
-				Tag("static-resource-path", resource.ResourcePath).
-				Wrap(err),
-			)
-			return
-		}
-
-		pres.Body = body
-		pres.ContentType = res.Header.Get("Content-Type")
-
-		h.proxyResourceMutex.Lock()
-		h.proxyResourcesCache[resource.Path] = pres
-		h.proxyResourceMutex.Unlock()
-
+		http.NotFound(w, r)
+		return
 	}
 
-	w.Header().Set("Content-Length", strconv.Itoa(len(pres.Body)))
-	w.Header().Set("Content-Type", pres.ContentType)
-	w.WriteHeader(http.StatusOK)
-	w.Write(pres.Body)
+	url := *r.URL
+	url.Host = r.Host
+	url.Scheme = "http"
+
+	var page requestPage
+	page.SetTitle(h.Title)
+	page.SetDescription(h.Description)
+	page.SetAuthor(h.Author)
+	page.SetKeywords(h.Keywords...)
+	page.SetLoadingLabel(h.LoadingLabel)
+	page.SetImage(h.Image)
+	page.url = &url
+
+	preRenderContainer := Div().
+		ID("app-pre-render").
+		Body(Div())
+
+	disp := newUIDispatcher(IsServer, &page, h.resolveStaticPath)
+	disp.body = preRenderContainer.(elemWithChildren)
+
+	if err := mount(disp, preRenderContainer); err != nil {
+		panic(errors.New("mounting pre-rendering container failed").
+			Tag("server-side-mode", disp.isServerSideMode()).
+			Tag("body-type", reflect.TypeOf(disp.body)).
+			Tag("ui-len", len(disp.ui)).
+			Tag("ui-cap", cap(disp.ui)).
+			Wrap(err))
+	}
+	disp.body = preRenderContainer.(elemWithChildren)
+	defer disp.Close()
+
+	disp.Mount(content)
+	disp.PreRender()
+
+	for len(disp.ui) != 0 {
+		disp.Consume()
+		disp.Wait()
+	}
+
+	var b bytes.Buffer
+	b.WriteString("<!DOCTYPE html>\n")
+	PrintHTML(&b, Html().Body(
+		Head().Body(
+			Meta().Charset("UTF-8"),
+			Meta().
+				HTTPEquiv("Content-Type").
+				Content("text/html; charset=utf-8"),
+			Meta().
+				Name("author").
+				Content(page.Author()),
+			Meta().
+				Name("description").
+				Content(page.Description()),
+			Meta().
+				Name("keywords").
+				Content(page.Keywords()),
+			Meta().
+				Name("theme-color").
+				Content(h.ThemeColor),
+			Meta().
+				Name("viewport").
+				Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
+			Meta().
+				Property("og:url").
+				Content(page.URL().String()),
+			Meta().
+				Property("og:title").
+				Content(page.Title()),
+			Meta().
+				Property("og:description").
+				Content(page.Description()),
+			Meta().
+				Property("og:type").
+				Content("website"),
+			Meta().
+				Property("og:image").
+				Content(page.Image()),
+			Title().Text(page.Title()),
+			Link().
+				Rel("icon").
+				Type("image/png").
+				Href(h.Icon.Default),
+			Link().
+				Rel("apple-touch-icon").
+				Href(h.Icon.AppleTouch),
+			Link().
+				Rel("manifest").
+				Href(h.resolvePackagePath("/manifest.webmanifest")),
+			Link().
+				Type("text/css").
+				Rel("stylesheet").
+				Href(h.resolvePackagePath("/app.css")),
+			Script().
+				Defer(true).
+				Src(h.resolvePackagePath("/wasm_exec.js")),
+			Script().
+				Defer(true).
+				Src(h.resolvePackagePath("/app.js")),
+			Range(h.Styles).Slice(func(i int) UI {
+				return Link().
+					Type("text/css").
+					Rel("stylesheet").
+					Href(h.Styles[i])
+			}),
+			Range(h.Scripts).Slice(func(i int) UI {
+				return Script().
+					Defer(true).
+					Src(h.Scripts[i])
+			}),
+			Range(h.RawHeaders).Slice(func(i int) UI {
+				return Raw(h.RawHeaders[i])
+			}),
+		),
+		Body().Body(
+			Div().
+				Body(
+					preRenderContainer,
+					Div().
+						ID("app-wasm-loader").
+						Class("goapp-app-info").
+						Body(
+							Img().
+								ID("app-wasm-loader-icon").
+								Class("goapp-logo goapp-spin").
+								Src(h.Icon.Default),
+							P().
+								ID("app-wasm-loader-label").
+								Class("goapp-label").
+								Text(page.loadingLabel),
+						),
+				),
+			Div().ID("app-end"),
+		),
+	))
+
+	item := PreRenderedItem{
+		Path:        page.URL().Path,
+		Body:        b.Bytes(),
+		ContentType: "text/html",
+	}
+	h.PreRenderCache.Set(r.Context(), item)
+	h.servePreRenderedItem(w, item)
 }
 
-func (h *Handler) appResource(path string) string {
-	if !strings.HasPrefix(path, "/") {
-		path = "/" + path
-	}
+func (h *Handler) resolvePackagePath(path string) string {
+	var b strings.Builder
 
-	path = h.Resources.AppResources() + path
-	if !strings.HasPrefix(path, "/") {
-		path = "/" + path
-	}
+	b.WriteByte('/')
+	appResources := strings.Trim(h.Resources.Package(), "/")
+	b.WriteString(appResources)
 
-	if path != "/" && strings.HasSuffix(path, "/") {
-		path = strings.TrimSuffix(path, "/")
+	path = strings.Trim(path, "/")
+	if b.Len() != 1 && path != "" {
+		b.WriteByte('/')
 	}
+	b.WriteString(path)
 
-	return path
+	return b.String()
 }
 
-func (h *Handler) staticResource(path string) string {
-	if isRemoteLocation(path) {
+func (h *Handler) resolveStaticPath(path string) string {
+	if isRemoteLocation(path) || !isStaticResourcePath(path) {
 		return path
 	}
 
-	if !strings.HasPrefix(path, "/") {
-		path = "/" + path
-	}
-
-	return h.Resources.StaticResources() + path
+	var b strings.Builder
+	staticResources := strings.TrimSuffix(h.Resources.Static(), "/")
+	b.WriteString(staticResources)
+	path = strings.Trim(path, "/")
+	b.WriteByte('/')
+	b.WriteString(path)
+	return b.String()
 }
 
 // Icon describes a square image that is used in various places such as
@@ -698,11 +771,26 @@ func normalizeFilePath(path string) string {
 }
 
 func isRemoteLocation(path string) bool {
-	u, _ := url.Parse(path)
-	return u.Scheme != ""
+	return strings.HasPrefix(path, "https://") ||
+		strings.HasPrefix(path, "http://")
 }
 
-type proxyResourceCache struct {
-	Body        []byte
+func isStaticResourcePath(path string) bool {
+	return strings.HasPrefix(path, "/web/") ||
+		strings.HasPrefix(path, "web/")
+}
+
+type httpResource struct {
+	Path        string
 	ContentType string
+	Body        []byte
+	ExpireAt    time.Time
+}
+
+func (r httpResource) Len() int {
+	return len(r.Body)
+}
+
+func (r httpResource) IsExpired() bool {
+	return r.ExpireAt != time.Time{} && r.ExpireAt.Before(time.Now())
 }

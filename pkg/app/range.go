@@ -2,11 +2,12 @@ package app
 
 import (
 	"context"
+	"io"
 	"net/url"
 	"reflect"
 	"sort"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
 
 // RangeLoop represents a control structure that iterates within a slice, an
@@ -113,6 +114,10 @@ func (r rangeLoop) context() context.Context {
 	return nil
 }
 
+func (r rangeLoop) dispatcher() Dispatcher {
+	return nil
+}
+
 func (r rangeLoop) attributes() map[string]string {
 	return nil
 }
@@ -132,7 +137,7 @@ func (r rangeLoop) children() []UI {
 	return r.body
 }
 
-func (r rangeLoop) mount() error {
+func (r rangeLoop) mount(Dispatcher) error {
 	return errors.New("range loop is not mountable").
 		Tag("name", r.name()).
 		Tag("kind", r.Kind())
@@ -153,5 +158,16 @@ func (r rangeLoop) onNav(*url.URL) {
 func (r rangeLoop) onAppUpdate() {
 }
 
-func (r rangeLoop) onAppResize() {
+func (r rangeLoop) onResize() {
+}
+
+func (r rangeLoop) preRender(Page) {
+}
+
+func (r rangeLoop) html(w io.Writer) {
+	panic("should not be called")
+}
+
+func (r rangeLoop) htmlWithIndent(w io.Writer, indent int) {
+	panic("should not be called")
 }

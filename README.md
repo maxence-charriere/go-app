@@ -8,7 +8,7 @@
 	<a href="https://circleci.com/gh/maxence-charriere/go-app"><img src="https://circleci.com/gh/maxence-charriere/go-app.svg?style=svg" alt="Circle CI Go build"></a>
     <a href="https://goreportcard.com/report/github.com/maxence-charriere/go-app"><img src="https://goreportcard.com/badge/github.com/maxence-charriere/go-app" alt="Go Report Card"></a>
 	<a href="https://GitHub.com/maxence-charriere/go-app/releases/"><img src="https://img.shields.io/github/release/maxence-charriere/go-app.svg" alt="GitHub release"></a>
-	<a href="https://pkg.go.dev/github.com/maxence-charriere/go-app/v7/pkg/app"><img src="https://img.shields.io/badge/dev-reference-007d9c?logo=go&logoColor=white&style=flat" alt="pkg.go.dev docs"></a>
+	<a href="https://pkg.go.dev/github.com/maxence-charriere/go-app/v8/pkg/app"><img src="https://img.shields.io/badge/dev-reference-007d9c?logo=go&logoColor=white&style=flat" alt="pkg.go.dev docs"></a>
     <a href="https://twitter.com/jonhymaxoo"><img alt="Twitter URL" src="https://img.shields.io/badge/twitter-@jonhymaxoo-35A9F8?logo=twitter&style=flat"></a>
     <a href="https://opencollective.com/go-app" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/go-app/all/badge.svg?label=open+collective&color=4FB9F6" /></a>
 </p>
@@ -25,7 +25,7 @@ The package also provides an [http.handler](#http-handler) ready to serve all th
 
 - [Getting started](https://go-app.dev/start)
 - [Architecture](https://go-app.dev/architecture)
-- [Reference](https://go-app.dev/reference) | [Go.dev](https://pkg.go.dev/github.com/maxence-charriere/go-app/v7/pkg/app)
+- [Reference](https://go-app.dev/reference) | [Go.dev](https://pkg.go.dev/github.com/maxence-charriere/go-app/v8/pkg/app)
 
 - [Components](https://go-app.dev/components)
 - [Declarative syntax](https://go-app.dev/syntax)
@@ -48,7 +48,7 @@ The package also provides an [http.handler](#http-handler) ready to serve all th
 
 ```sh
 go mod init
-go get -u github.com/maxence-charriere/go-app/v7/pkg/app
+go get -u github.com/maxence-charriere/go-app/v8/pkg/app
 ```
 
 ### Declarative syntax
@@ -58,7 +58,7 @@ go get -u github.com/maxence-charriere/go-app/v7/pkg/app
 ```go
 package main
 
-import "github.com/maxence-charriere/go-app/v7/pkg/app"
+import "github.com/maxence-charriere/go-app/v8/pkg/app"
 
 type hello struct {
     app.Compo
@@ -120,7 +120,7 @@ package main
 import (
     "net/http"
 
-    "github.com/maxence-charriere/go-app/v7/pkg/app"
+    "github.com/maxence-charriere/go-app/v8/pkg/app"
 )
 
 func main() {

@@ -5,7 +5,11 @@ import (
 	"reflect"
 	"syscall/js"
 
-	"github.com/maxence-charriere/go-app/v7/pkg/errors"
+	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+)
+
+var (
+	window = &browserWindow{value: value{Value: js.Global()}}
 )
 
 type value struct {
@@ -51,6 +55,58 @@ func (v value) New(args ...interface{}) Value {
 
 func (v value) Type() Type {
 	return Type(v.Value.Type())
+}
+
+func (v value) getAttr(k string) string {
+	return v.Call("getAttribute", k).String()
+}
+
+func (v value) setAttr(k, val string) {
+	v.Call("setAttribute", k, val)
+}
+
+func (v value) delAttr(k string) {
+	v.Call("removeAttribute", k)
+}
+
+func (v value) firstChild() Value {
+	return v.Get("firstChild")
+}
+
+func (v value) appendChild(c Wrapper) {
+	v.Call("appendChild", c)
+}
+
+func (v value) replaceChild(new, old Wrapper) {
+	v.Call("replaceChild", new, old)
+}
+
+func (v value) removeChild(c Wrapper) {
+	v.Call("removeChild", c)
+}
+
+func (v value) firstElementChild() Value {
+	return v.Get("firstElementChild")
+}
+
+func (v value) addEventListener(event string, fn Func) {
+	v.Call("addEventListener", event, fn)
+}
+
+func (v value) removeEventListener(event string, fn Func) {
+	v.Call("removeEventListener", event, fn)
+}
+
+func (v value) setNodeValue(val string) {
+	v.Set("nodeValue", val)
+}
+
+func (v value) setInnerHTML(val string) {
+	v.Set("innerHTML", val)
+}
+
+func (v value) setInnerText(val string) {
+	v.Set("innerText", val)
 }
 
 func null() Value {
@@ -107,6 +163,7 @@ func funcOf(fn func(this Value, args []Value) interface{}) Func {
 type browserWindow struct {
 	value
 
+	body    UI
 	cursorX int
 	cursorY int
 }
@@ -165,13 +222,41 @@ func (w *browserWindow) ScrollToID(id string) {
 }
 
 func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
-	callback := makeJsEventHandler(body, h)
-	w.Call("addEventListener", event, callback)
+	callback := makeJsEventHandler(w.body, h)
+	w.addEventListener(event, callback)
 
 	return func() {
-		w.Call("removeEventListener", event, callback)
+		w.removeEventListener(event, callback)
 		callback.Release()
 	}
+}
+
+func (w *browserWindow) setBody(body UI) {
+	w.body = body
+}
+
+func (w *browserWindow) createElement(tag string) (Value, error) {
+	v := w.Get("document").Call("createElement", tag)
+	if !v.Truthy() {
+		return nil, errors.New("creating element failed").
+			Tag("reason", "create javascript element returned nil").
+			Tag("tag", tag)
+	}
+	return v, nil
+}
+
+func (w *browserWindow) createTextNode(v string) Value {
+	return w.Get("document").Call("createTextNode", v)
+}
+
+func (w *browserWindow) addHistory(u *url.URL) {
+	w.Get("history").Call("pushState", nil, "", u.String())
+	lastURLVisited = u
+}
+
+func (w *browserWindow) replaceHistory(u *url.URL) {
+	w.Get("history").Call("replaceState", nil, "", u.String())
+	lastURLVisited = u
 }
 
 func val(v js.Value) Value {

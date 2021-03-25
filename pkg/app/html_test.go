@@ -3256,8 +3256,8 @@ func TestLabel(t *testing.T) {
 	elem.Text("hello")
 }
 
-func TestLegends(t *testing.T) {
-	elem := Legends()
+func TestLegend(t *testing.T) {
+	elem := Legend()
 	elem.AccessKey("foo")
 	elem.Aria("foo", "bar")
 	elem.Class("foo")
@@ -3625,6 +3625,7 @@ func TestMeta(t *testing.T) {
 	elem.ID("foo")
 	elem.Lang("foo")
 	elem.Name("foo")
+	elem.Property("foo")
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
