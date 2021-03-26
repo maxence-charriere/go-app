@@ -14,6 +14,89 @@ import (
 )
 ```
 
+## Build directives
+
+V8 does not require build instructions anymore. Build instructions such as `// +build wasm` or `// +build !wasm` should be removed and their `main()` functions merged.
+
+Here is how it is done for the hello example:
+
+```go
+// +build wasm
+
+package main
+
+import "github.com/maxence-charriere/go-app/v7/pkg/app"
+
+func main() {
+	app.Route("/", &hello{})
+	app.Run()
+}
+```
+
+and
+
+```go
+// +build !wasm
+
+package main
+
+import (
+	"log"
+	"net/http"
+
+	"github.com/maxence-charriere/go-app/v7/pkg/app"
+)
+
+func main() {
+	http.Handle("/", &app.Handler{
+		Name:        "Hello",
+		Description: "An Hello World! example",
+	})
+
+	err := http.ListenAndServe(":8000", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+should be merged into:
+
+```go
+package main
+
+import (
+	"log"
+	"net/http"
+
+	"github.com/maxence-charriere/go-app/v8/pkg/app"
+)
+
+func main() {
+	app.Route("/", &hello{})
+	app.RunWhenOnBrowser()
+
+	http.Handle("/", &app.Handler{
+		Name:        "Hello",
+		Description: "An Hello World! example",
+	})
+
+	if err := http.ListenAndServe(":8000", nil); err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+**See the [Getting Started](/start) section for the version with comments**.
+
+## Routing
+
+Since components are now also rendered on the server-side, calls to **[`Route()`](/reference#Route) and [`RouteWithRegexp()`](/reference#RouteWithRegexp) must also be in the server code**.
+
+It should not be a problem if the `main()` functions were merged like in the [Build directives](#build-directives) section, but some may have it still separated in different packages or binaries. In that case, **don't forget to route components on the server-side too!**
+
+Furthermore, `Route()` and `RouteWithRegexp()` calls now only register the type of a given [component](/components). When the routing is done, a fresh instance of the associated component is created. Initialization should be now with [component lifecycle](/components#lifecycle) interfaces.
+
 ## Package functions
 
 | V7                                               | V8                                                                                                                                                              | Description                                                                                                                                                                                                                                                                                                                  |
@@ -26,7 +109,7 @@ import (
 | `func Dispatch(fn func())`                       | - [`func (ctx Context) Dispatch(fn func())`](/reference#Context.Dispatch)()<br> - [`func (c *Compo) Defer(fn func(Context))`](/reference#Compo.Defer)           | Executing a function on the UI goroutine is now done from a [Context](/reference#Context) or a [Component](http://localhost:7777/reference#Composer).                                                                                                                                                                        |
 | `func StaticResource(path string) string`        | [`func (ctx Context) ResolveStaticResource(path string) string`](/reference#Context.ResolveStaticResource)                                                      | Resolving a [static resource](/static-resources) is now a [Context](/reference#Context) method.                                                                                                                                                                                                                              |
 | `func NewContextMenu(menuItems ...MenuItemNode)` | **Removed**                                                                                                                                                     | Context menus have been removed. This may come back eventually under another form.                                                                                                                                                                                                                                           |
-| `func Log(format string, v ...interface{})`      | [`func Logf(format string, v ...interface{})`](/reference#Logf)                                                                                                 | `Log()` has been renamed `Logf()` to match the [fmt](https://golang.org/pkg/fmt/) package. The new [`Log()`](/reference#Log) function now have a similar behavior as `fmt.Println()`.                                                                                                                                            |
+| `func Log(format string, v ...interface{})`      | [`func Logf(format string, v ...interface{})`](/reference#Logf)                                                                                                 | `Log()` has been renamed `Logf()` to match the [fmt](https://golang.org/pkg/fmt/) package. The new [`Log()`](/reference#Log) function now have a similar behavior as `fmt.Println()`.                                                                                                                                        |
 
 ## Component interfaces
 
@@ -56,3 +139,8 @@ type ResourceProvider interface {
 ## Concurrency
 
 Goroutines launched from components should now be created with [`Context.Async()`](/reference#Context.Async). See [concurrency](/concurrency#async) topic.
+
+## Next
+
+- [Getting started with v8](/start)
+- [API reference](/reference)

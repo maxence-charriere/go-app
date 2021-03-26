@@ -8,21 +8,21 @@
 <meta name="keywords" content="go-app, go, golang, app, pwa, progressive web app, webassembly, web assembly, webapp, web, gui, ui, user interface, graphical user interface, frontend, opensource, open source, github">
 <meta name="theme-color" content="#2e343a">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
-<meta property="og:url" content="http://127.0.0.1:57272/v7-to-v8">
+<meta property="og:url" content="http://127.0.0.1:63241/v7-to-v8">
 <meta property="og:title" content="Migrating a go-app Progressive Web App from V7 to V8">
 <meta property="og:description" content="Guide about how to migrate a Progressive Web App built with go-app V7 to V8.">
-<meta content="website" property="og:type">
+<meta property="og:type" content="website">
 <meta property="og:image" content="https://go-app.dev/web/images/go-app.png">
 <title>
 Migrating a go-app Progressive Web App from V7 to V8
 </title>
-<link rel="icon" type="image/png" href="https://storage.googleapis.com/murlok-github/icon-192.png">
+<link href="https://storage.googleapis.com/murlok-github/icon-192.png" rel="icon" type="image/png">
 <link rel="apple-touch-icon" href="https://storage.googleapis.com/murlok-github/icon-192.png">
 <link rel="manifest" href="/manifest.webmanifest">
 <link type="text/css" rel="stylesheet" href="/app.css">
 <script defer src="/wasm_exec.js"></script>
-<script src="/app.js" defer></script>
-<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap">
+<script defer src="/app.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" type="text/css">
 <link type="text/css" rel="stylesheet" href="/web/css/prism.css">
 <link type="text/css" rel="stylesheet" href="/web/css/docs.css">
 <script defer src="/web/js/prism.js"></script>
@@ -39,13 +39,13 @@ Migrating a go-app Progressive Web App from V7 to V8
 <body>
 <div>
 <div id="app-pre-render">
-<div id="goapp-shell-2676fdab-94a7-4ea8-86e9-6ff6ad747564" class="goapp-shell background">
+<div class="goapp-shell background" id="goapp-shell-76a833a2-927e-4c52-a3c1-692f5850126a">
 <div class="goapp-shell-layout" style="align-items:stretch;">
 <div class="goapp-shell-item" style="display:bloc;width:276px;max-width:276px;">
 <div class="fill unselectable">
 <div id class="goapp-stack header hspace-out" style="flex-direction:row;align-items:center;">
 <header>
-<a href="/" class="app-title">
+<a class="app-title" href="/">
 go-app
 </a>
 </header>
@@ -53,8 +53,8 @@ go-app
 <nav class="content">
 <div class="hspace-out">
 <div class="vspace-top">
-<a class="link heading fit  " href="/">
-<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
+<a href="/" class="link heading fit  ">
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -68,7 +68,7 @@ Home
 </div>
 </a>
 <a class="link heading fit  " href="/start">
-<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -82,7 +82,7 @@ Getting started
 </div>
 </a>
 <a class="link heading fit  " href="/v7-to-v8">
-<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -97,7 +97,7 @@ V7 to V8 guide
 </a>
 </div>
 <div class="vspace-top">
-<a class="link heading fit  " href="/reference">
+<a href="/reference" class="link heading fit  ">
 <div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
@@ -134,7 +134,7 @@ Architecture
 </div>
 </a>
 <a class="link heading fit  " href="/components">
-<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -176,7 +176,7 @@ Declarative syntax
 </div>
 </a>
 <a class="link heading fit  " href="/js">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -190,7 +190,7 @@ JS/Dom
 </div>
 </a>
 <a class="link heading fit  " href="/lifecycle">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -217,7 +217,7 @@ Routing
 </div>
 </div>
 </a>
-<a class="link heading fit  " href="/seo">
+<a href="/seo" class="link heading fit  ">
 <div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
@@ -306,7 +306,7 @@ Install
 </div>
 <div class="vspace-top vspace-bottom">
 <a class="link heading fit  " href="https://github.com/maxence-charriere/go-app">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -319,7 +319,7 @@ GitHub
 </div>
 </div>
 </a>
-<a href="https://twitter.com/jonhymaxoo" class="link heading fit  ">
+<a class="link heading fit  " href="https://twitter.com/jonhymaxoo">
 <div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
@@ -349,7 +349,7 @@ Buy me a coffee
 </div>
 </div>
 </a>
-<a href="https://commerce.coinbase.com/checkout/851320a4-35b5-41f1-897b-74dd5ee207ae" class="link heading fit  ">
+<a class="link heading fit  " href="https://commerce.coinbase.com/checkout/851320a4-35b5-41f1-897b-74dd5ee207ae">
 <div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
@@ -378,7 +378,7 @@ GitHub Sponsor
 </div>
 </a>
 <a class="link heading fit  " href="https://opencollective.com/go-app">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -407,10 +407,16 @@ Index
 <a class="index-link " href="#v7-to-v8-migration-guide">
 V7 to V8 migration guide
 </a>
+<a class="index-link " href="#build-directives">
+Build directives
+</a>
+<a class="index-link " href="#routing">
+Routing
+</a>
 <a class="index-link " href="#package-functions">
 Package functions
 </a>
-<a class="index-link " href="#component-interfaces">
+<a href="#component-interfaces" class="index-link ">
 Component interfaces
 </a>
 <a class="index-link " href="#resource-provider">
@@ -418,6 +424,9 @@ Resource provider
 </a>
 <a class="index-link " href="#concurrency">
 Concurrency
+</a>
+<a class="index-link " href="#next">
+Next
 </a>
 </div>
 </div>
@@ -452,6 +461,86 @@ Support go-app
 	&quot;github.com/maxence-charriere/go-app/v8/pkg/app&quot;
 )
 </code></pre>
+
+<h2 id="build-directives">Build directives</h2>
+
+<p>V8 does not require build instructions anymore. Build instructions such as <code>// +build wasm</code> or <code>// +build !wasm</code> should be removed and their <code>main()</code> functions merged.</p>
+
+<p>Here is how it is done for the hello example:</p>
+
+<pre><code class="language-go">// +build wasm
+
+package main
+
+import &quot;github.com/maxence-charriere/go-app/v7/pkg/app&quot;
+
+func main() {
+	app.Route(&quot;/&quot;, &amp;hello{})
+	app.Run()
+}
+</code></pre>
+
+<p>and</p>
+
+<pre><code class="language-go">// +build !wasm
+
+package main
+
+import (
+	&quot;log&quot;
+	&quot;net/http&quot;
+
+	&quot;github.com/maxence-charriere/go-app/v7/pkg/app&quot;
+)
+
+func main() {
+	http.Handle(&quot;/&quot;, &amp;app.Handler{
+		Name:        &quot;Hello&quot;,
+		Description: &quot;An Hello World! example&quot;,
+	})
+
+	err := http.ListenAndServe(&quot;:8000&quot;, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+</code></pre>
+
+<p>should be merged into:</p>
+
+<pre><code class="language-go">package main
+
+import (
+	&quot;log&quot;
+	&quot;net/http&quot;
+
+	&quot;github.com/maxence-charriere/go-app/v8/pkg/app&quot;
+)
+
+func main() {
+	app.Route(&quot;/&quot;, &amp;hello{})
+	app.RunWhenOnBrowser()
+
+	http.Handle(&quot;/&quot;, &amp;app.Handler{
+		Name:        &quot;Hello&quot;,
+		Description: &quot;An Hello World! example&quot;,
+	})
+
+	if err := http.ListenAndServe(&quot;:8000&quot;, nil); err != nil {
+		log.Fatal(err)
+	}
+}
+</code></pre>
+
+<p><strong>See the <a href="/start">Getting Started</a> section for the version with comments</strong>.</p>
+
+<h2 id="routing">Routing</h2>
+
+<p>Since components are now also rendered on the server-side, calls to <strong><a href="/reference#Route"><code>Route()</code></a> and <a href="/reference#RouteWithRegexp"><code>RouteWithRegexp()</code></a> must also be in the server code</strong>.</p>
+
+<p>It should not be a problem if the <code>main()</code> functions were merged like in the <a href="#build-directives">Build directives</a> section, but some may have it still separated in different packages or binaries. In that case, <strong>don&rsquo;t forget to route components on the server-side too!</strong></p>
+
+<p>Furthermore, <code>Route()</code> and <code>RouteWithRegexp()</code> calls now only register the type of a given <a href="/components">component</a>. When the routing is done, a fresh instance of the associated component is created. Initialization should be now with <a href="/components#lifecycle">component lifecycle</a> interfaces.</p>
 
 <h2 id="package-functions">Package functions</h2>
 
@@ -567,10 +656,17 @@ Support go-app
 <h2 id="concurrency">Concurrency</h2>
 
 <p>Goroutines launched from components should now be created with <a href="/reference#Context.Async"><code>Context.Async()</code></a>. See <a href="/concurrency#async">concurrency</a> topic.</p>
+
+<h2 id="next">Next</h2>
+
+<ul>
+<li><a href="/start">Getting started with v8</a></li>
+<li><a href="/reference">API reference</a></li>
+</ul>
 </div>
 </div>
 <aside class="loader hide page-loader fill">
-<div id class="goapp-stack hspace-out vspace-in-stretch fit center" style="flex-direction:row;align-items:center;">
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack hspace-out vspace-in-stretch fit center">
 <div style="width:66px;height:66px;">
 <div class="icon active" style="width:64px;height:64px;"></div>
 </div>
@@ -618,7 +714,7 @@ I want to make this package become something big!
 </strong>
 </p>
 <p>
-<a href="https://www.buymeacoffee.com/maxence" target="_blank">
+<a target="_blank" href="https://www.buymeacoffee.com/maxence">
 Buying me a coffee
 </a>
 , being part of the 
@@ -632,11 +728,11 @@ GitHub
 , or giving me some cryptocurrencies, all would help me reach that goal, sustain the development, and boost motivation during long coding sessions.
 </p>
 </div>
-<div id="goapp-flow-27630ba8-f0fb-4aeb-9bb1-3afc3da4fffc" class="goapp-flow space-flow">
+<div id="goapp-flow-d31cbf79-2a9d-4fb2-8723-a9b53b42dba5" class="goapp-flow space-flow">
 <div class="goapp-flow-item" style="max-width:0px;width:0px;">
 <div class="space-flow-item">
 <a class="support-us-item hspace-in-stretch vspace-in vignette magnify fill" href="https://www.buymeacoffee.com/maxence">
-<div id class="goapp-stack fill" style="flex-direction:row;align-items:center;">
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack fill">
 <div class="fit center">
 <div class="fit center">
 <div style="width:60px;height:60px;">
@@ -653,9 +749,9 @@ Buy me a coffee
 </a>
 </div>
 </div>
-<div class="goapp-flow-item" style="max-width:0px;width:0px;">
+<div style="max-width:0px;width:0px;" class="goapp-flow-item">
 <div class="space-flow-item">
-<a href="https://commerce.coinbase.com/checkout/851320a4-35b5-41f1-897b-74dd5ee207ae" class="support-us-item hspace-in-stretch vspace-in vignette magnify fill">
+<a class="support-us-item hspace-in-stretch vspace-in vignette magnify fill" href="https://commerce.coinbase.com/checkout/851320a4-35b5-41f1-897b-74dd5ee207ae">
 <div id class="goapp-stack fill" style="flex-direction:row;align-items:center;">
 <div class="fit center">
 <div class="fit center">
@@ -673,7 +769,7 @@ Donate cryptos
 </a>
 </div>
 </div>
-<div class="goapp-flow-item" style="max-width:0px;width:0px;">
+<div style="max-width:0px;width:0px;" class="goapp-flow-item">
 <div class="space-flow-item">
 <a class="support-us-item hspace-in-stretch vspace-in vignette magnify fill" href="https://github.com/sponsors/maxence-charriere">
 <div id class="goapp-stack fill" style="flex-direction:row;align-items:center;">
@@ -696,7 +792,7 @@ Github sponsor
 <div class="goapp-flow-item" style="max-width:0px;width:0px;">
 <div class="space-flow-item">
 <a class="support-us-item hspace-in-stretch vspace-in vignette magnify fill" href="https://opencollective.com/go-app">
-<div id class="goapp-stack fill" style="flex-direction:row;align-items:center;">
+<div class="goapp-stack fill" style="flex-direction:row;align-items:center;" id>
 <div class="fit center">
 <div class="fit center">
 <div style="width:60px;height:60px;">
@@ -723,7 +819,7 @@ Open collective
 </div>
 </div>
 <div id="app-wasm-loader" class="goapp-app-info">
-<img id="app-wasm-loader-icon" class="goapp-logo goapp-spin" src="https://storage.googleapis.com/murlok-github/icon-192.png">
+<img class="goapp-logo goapp-spin" src="https://storage.googleapis.com/murlok-github/icon-192.png" id="app-wasm-loader-icon">
 <p id="app-wasm-loader-label" class="goapp-label">
 Loading go-app documentation...
 </p>

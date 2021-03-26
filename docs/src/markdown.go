@@ -54,10 +54,13 @@ func mardownPages() map[string]markdownPage {
 			description: "Guide about how to migrate a Progressive Web App built with go-app V7 to V8.",
 			index: []string{
 				"V7 to V8 migration guide",
+				"Build directives",
+				"Routing",
 				"Package functions",
 				"Component interfaces",
 				"Resource provider",
 				"Concurrency",
+				"Next",
 			},
 		},
 		"/architecture": {
