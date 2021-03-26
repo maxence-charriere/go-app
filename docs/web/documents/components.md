@@ -49,7 +49,7 @@ func (h *hello) Render() app.UI {
 
 		// The input HTML element that get the username.
 		app.Input().
-			Value(h.Name).             // The name field used as current input value
+			Value(h.name).             // The name field used as current input value
 			OnChange(h.OnInputChange), // The event handler that will store the username
 	)
 }
