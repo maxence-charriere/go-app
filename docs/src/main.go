@@ -150,7 +150,12 @@ func generateGitHubPages(ctx context.Context, h *app.Handler, opts githubOptions
 	for path := range pages {
 		p = append(p, path)
 	}
-	p = append(p, "/reference")
+	p = append(p,
+		"/reference",
+		"/examples",
+		"/examples/hello",
+		"/examples/list",
+	)
 
 	if err := app.GenerateStaticWebsite(opts.Output, h, p...); err != nil {
 		panic(err)
