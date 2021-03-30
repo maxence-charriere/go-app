@@ -10,13 +10,21 @@ var (
 	routes = makeRouter()
 )
 
-// Route binds the requested path to the given UI node.
+// Route associates the type of the given component to the given path.
+//
+// When a page is requested and matches the route, a new instance of the given
+// component is created before being displayed.
 func Route(path string, c Composer) {
 	routes.route(path, c)
 }
 
-// RouteWithRegexp binds the regular expression pattern to the given UI node.
+// RouteWithRegexp associates the type of the given component to the given
+// regular expression pattern.
+//
 // Patterns use the Go standard regexp format.
+//
+// When a page is requested and matches the pattern, a new instance of the given
+// component is created before being displayed.
 func RouteWithRegexp(pattern string, c Composer) {
 	routes.routeWithRegexp(pattern, c)
 }

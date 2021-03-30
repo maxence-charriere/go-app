@@ -8,7 +8,11 @@ At first navigation, the app is loaded in the browser. Once loaded, each time a 
 
 ## Define a route
 
-Defining a route is done by **associating a URL path with a given component type**. Routes are defined by using a simple pattern or by a regular expression.
+Defining a route is done by **associating a URL path with a given component type**.
+
+When a page is requested, its URL path is compared with the defined routes. Then **a new instance of the component type associated with the route is created and displayed**.
+
+Routes are defined by using a simple pattern or by a regular expression.
 
 ### Simple route
 

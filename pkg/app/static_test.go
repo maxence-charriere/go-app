@@ -22,7 +22,9 @@ func TestGenerateStaticWebsite(t *testing.T) {
 			Title:     "Static test",
 			Resources: GitHubPages("go-app"),
 		},
-		"hello",
+		"/hello",
+		"world",
+		"/nested/foo",
 	)
 	require.NoError(t, err)
 
@@ -36,6 +38,8 @@ func TestGenerateStaticWebsite(t *testing.T) {
 		filepath.Join(dir, "manifest.webmanifest"),
 		filepath.Join(dir, "app.css"),
 		filepath.Join(dir, "hello.html"),
+		filepath.Join(dir, "world.html"),
+		filepath.Join(dir, "nested", "foo.html"),
 	}
 
 	for _, f := range files {
