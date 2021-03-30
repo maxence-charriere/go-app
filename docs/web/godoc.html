@@ -1601,14 +1601,18 @@ into the given writer.
 		
 			
 			
-			<h2 id="Route">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/route.go#L4">Route</a>
+			<h2 id="Route">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/route.go#L7">Route</a>
 				<a class="permalink" href="#Route" id="src-Route">¶</a>
 				
 				
 			</h2>
 			<pre>func Route(path <a href="https://golang.org/pkg/builtin/#string">string</a>, c <a href="#Composer" id="src-Composer">Composer</a>)</pre>
 			<p>
-Route binds the requested path to the given UI node.
+Route associates the type of the given component to the given path.
+</p>
+<p>
+When a page is requested and matches the route, a new instance of the given
+component is created before being displayed.
 </p>
 
 			
@@ -1617,15 +1621,22 @@ Route binds the requested path to the given UI node.
 		
 			
 			
-			<h2 id="RouteWithRegexp">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/route.go#L10">RouteWithRegexp</a>
+			<h2 id="RouteWithRegexp">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/route.go#L18">RouteWithRegexp</a>
 				<a class="permalink" href="#RouteWithRegexp" id="src-RouteWithRegexp">¶</a>
 				
 				
 			</h2>
 			<pre>func RouteWithRegexp(pattern <a href="https://golang.org/pkg/builtin/#string">string</a>, c <a href="#Composer" id="src-Composer">Composer</a>)</pre>
 			<p>
-RouteWithRegexp binds the regular expression pattern to the given UI node.
+RouteWithRegexp associates the type of the given component to the given
+regular expression pattern.
+</p>
+<p>
 Patterns use the Go standard regexp format.
+</p>
+<p>
+When a page is requested and matches the pattern, a new instance of the given
+component is created before being displayed.
 </p>
 
 			
