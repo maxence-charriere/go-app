@@ -12,6 +12,7 @@ package app
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/url"
 	"os"
@@ -37,6 +38,7 @@ const (
 
 var (
 	rootPrefix         string
+	isInternalURL      func(string) bool
 	appUpdateAvailable bool
 	lastURLVisited     *url.URL
 )
@@ -104,8 +106,9 @@ func RunWhenOnBrowser() {
 		panic(err)
 	}()
 
-	staticResourcesResolver := newClientStaticResourceResolver(Getenv("GOAPP_STATIC_RESOURCES_URL"))
 	rootPrefix = Getenv("GOAPP_ROOT_PREFIX")
+	isInternalURL = internalURLChecker()
+	staticResourcesResolver := newClientStaticResourceResolver(Getenv("GOAPP_STATIC_RESOURCES_URL"))
 
 	disp := engine{
 		UpdateRate:             engineUpdateRate,
@@ -166,6 +169,21 @@ func newClientStaticResourceResolver(staticResourceURL string) func(string) stri
 	}
 }
 
+func internalURLChecker() func(string) bool {
+	var internalURLs []string
+	json.Unmarshal([]byte(Getenv("GOAPP_INTERNAL_URLS")), &internalURLs)
+
+	urls := make(map[string]struct{}, len(internalURLs))
+	for _, u := range internalURLs {
+		urls[u] = struct{}{}
+	}
+
+	return func(url string) bool {
+		_, ok := urls[url]
+		return ok
+	}
+}
+
 func newClientBody(d Dispatcher) *htmlBody {
 	ctx, cancel := context.WithCancel(context.Background())
 	body := &htmlBody{
@@ -209,7 +227,7 @@ func onAchorClick(d Dispatcher) func(Value, []Value) interface{} {
 				}
 
 				u := elem.Get("href").String()
-				if u, _ := url.Parse(u); isExternalNavigation(u) {
+				if u, _ := url.Parse(u); isExternalNavigation(u) && !isInternalURL(u.String()) {
 					elem.Set("target", "_blank")
 					return nil
 				}

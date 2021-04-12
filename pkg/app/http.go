@@ -64,6 +64,13 @@ type Handler struct {
 	// linking the app.
 	Image string
 
+	// The URLs that are launched in the app tab or window.
+	//
+	// By default, URLs with a different domain are launched in another tab.
+	// Specifying internal URLs is to override that behavior. A good use case
+	// would be the URL for an OAuth authentication.
+	InternalURLs []string
+
 	// The page keywords.
 	Keywords []string
 
@@ -277,8 +284,10 @@ func (h *Handler) initPreRenderedResources() {
 
 func (h *Handler) makeAppJS() []byte {
 	if h.Env == nil {
-		h.Env = make(map[string]string, 3)
+		h.Env = make(map[string]string)
 	}
+	internalURLs, _ := json.Marshal(h.InternalURLs)
+	h.Env["GOAPP_INTERNAL_URLS"] = string(internalURLs)
 	h.Env["GOAPP_VERSION"] = h.Version
 	h.Env["GOAPP_STATIC_RESOURCES_URL"] = h.Resources.Static()
 	h.Env["GOAPP_ROOT_PREFIX"] = h.Resources.Package()

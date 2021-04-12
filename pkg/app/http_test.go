@@ -168,7 +168,9 @@ func TestHandlerServeAppJSWithLocalDir(t *testing.T) {
 	r := httptest.NewRequest(http.MethodGet, "/app.js", nil)
 	w := httptest.NewRecorder()
 
-	h := Handler{}
+	h := Handler{
+		InternalURLs: []string{"https://redirect.me"},
+	}
 	h.ServeHTTP(w, r)
 	body := w.Body.String()
 
@@ -179,6 +181,7 @@ func TestHandlerServeAppJSWithLocalDir(t *testing.T) {
 	require.Contains(t, body, "GOAPP_VERSION")
 	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":""`)
 	require.Contains(t, body, `"GOAPP_ROOT_PREFIX":""`)
+	require.Contains(t, body, `"GOAPP_INTERNAL_URLS":"[\"https://redirect.me\"]"`)
 }
 
 func TestHandlerServeAppJSWithRemoteBucket(t *testing.T) {
