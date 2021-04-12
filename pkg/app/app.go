@@ -170,17 +170,16 @@ func newClientStaticResourceResolver(staticResourceURL string) func(string) stri
 }
 
 func internalURLChecker() func(string) bool {
-	var internalURLs []string
-	json.Unmarshal([]byte(Getenv("GOAPP_INTERNAL_URLS")), &internalURLs)
-
-	urls := make(map[string]struct{}, len(internalURLs))
-	for _, u := range internalURLs {
-		urls[u] = struct{}{}
-	}
+	var urls []string
+	json.Unmarshal([]byte(Getenv("GOAPP_INTERNAL_URLS")), &urls)
 
 	return func(url string) bool {
-		_, ok := urls[url]
-		return ok
+		for _, u := range urls {
+			if strings.HasPrefix(url, u) {
+				return true
+			}
+		}
+		return false
 	}
 }
 
