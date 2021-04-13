@@ -221,16 +221,6 @@ func onAchorClick(d Dispatcher) func(Value, []Value) interface{} {
 		for {
 			switch elem.Get("tagName").String() {
 			case "A":
-				if target := elem.Get("target"); target.Truthy() && target.String() == "_blank" {
-					return nil
-				}
-
-				u := elem.Get("href").String()
-				if u, _ := url.Parse(u); isExternalNavigation(u) && !isInternalURL(u.String()) {
-					elem.Set("target", "_blank")
-					return nil
-				}
-
 				if meta := event.Get("metaKey"); meta.Truthy() && meta.Bool() {
 					return nil
 				}
@@ -240,7 +230,7 @@ func onAchorClick(d Dispatcher) func(Value, []Value) interface{} {
 				}
 
 				event.PreventDefault()
-				navigate(d, u)
+				navigate(d, elem.Get("href").String())
 				return nil
 
 			case "BODY":
@@ -282,7 +272,11 @@ func navigateTo(d Dispatcher, u *url.URL, updateHistory bool) {
 	}
 
 	if isExternalNavigation(u) {
-		Window().Get("location").Set("href", u.String())
+		if rawurl := u.String(); isInternalURL(rawurl) {
+			Window().Get("location").Set("href", u.String())
+		} else {
+			Window().Call("open", rawurl)
+		}
 		return
 	}
 
