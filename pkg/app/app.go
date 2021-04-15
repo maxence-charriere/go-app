@@ -232,7 +232,8 @@ func onAchorClick(d *uiDispatcher) func(Value, []Value) interface{} {
 
 func onPopState(d Dispatcher) func(this Value, args []Value) interface{} {
 	return func(this Value, args []Value) interface{} {
-		d.Dispatch(func() {
+		// TO DOUBLECHECK
+		d.Dispatch(nil, func() {
 			navigateTo(d, Window().URL(), false)
 		})
 		return nil
@@ -274,7 +275,9 @@ func navigateTo(d Dispatcher, u *url.URL, updateHistory bool) {
 		}
 
 		d.(*uiDispatcher).Nav(u)
-		d.Dispatch(func() {
+
+		// TO DOUBLECHECK
+		d.Dispatch(nil, func() {
 			if isFragmentNavigation(u) {
 				Window().ScrollToID(u.Fragment)
 			}
@@ -306,7 +309,8 @@ func performNavigate(d Dispatcher, u *url.URL, updateHistory bool) {
 
 	disp.Nav(u)
 	if isFragmentNavigation(u) {
-		disp.Dispatch(func() {
+		// TO DOUBLECHECK
+		disp.Dispatch(nil, func() {
 			Window().ScrollToID(u.Fragment)
 		})
 	}
@@ -322,11 +326,14 @@ func isFragmentNavigation(u *url.URL) bool {
 
 func onAppUpdate(d *uiDispatcher) func(this Value, args []Value) interface{} {
 	return func(this Value, args []Value) interface{} {
-		d.Dispatch(func() {
+		// TO DOUBLECHECK
+		d.Dispatch(nil, func() {
 			appUpdateAvailable = true
 		})
 		d.AppUpdate()
-		d.Dispatch(func() {
+
+		// TO DOUBLECHECK
+		d.Dispatch(nil, func() {
 			fmt.Println("app has been updated, reload to see changes")
 		})
 		return nil

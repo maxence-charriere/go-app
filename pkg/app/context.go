@@ -34,7 +34,7 @@ type Context struct {
 // Dispatch executes the given function on the goroutine dedicated to updating
 // the UI.
 func (ctx Context) Dispatch(fn func()) {
-	ctx.dispatcher.Dispatch(fn)
+	ctx.dispatcher.Dispatch(ctx.Src, fn)
 }
 
 // Async launches the given function on a new goroutine.

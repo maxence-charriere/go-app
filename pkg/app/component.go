@@ -51,6 +51,8 @@ type Composer interface {
 	//
 	// It panics if the given value is not a pointer.
 	ValueTo(interface{}) EventHandler
+
+	updateRoot() error
 }
 
 // PreRenderer is the interface that describes a component that performs
@@ -174,7 +176,7 @@ func (c *Compo) Render() UI {
 // updating the UI and ensures that the component is mounted when the
 // function is called.
 func (c *Compo) Defer(fn func(Context)) {
-	c.dispatcher().Dispatch(func() {
+	c.dispatcher().Dispatch(c.self(), func() {
 		if !c.Mounted() {
 			return
 		}

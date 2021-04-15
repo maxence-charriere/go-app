@@ -146,7 +146,7 @@ func (h eventHandler) equal(o eventHandler) bool {
 
 func makeJsEventHandler(src UI, h EventHandler) Func {
 	return FuncOf(func(this Value, args []Value) interface{} {
-		src.dispatcher().Dispatch(func() {
+		src.dispatcher().Dispatch(src, func() {
 			if !src.Mounted() {
 				return
 			}

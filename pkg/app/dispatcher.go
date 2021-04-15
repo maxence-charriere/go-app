@@ -18,7 +18,7 @@ const (
 type Dispatcher interface {
 	// Dispatch enqueues the given function to be executed on a goroutine
 	// dedicated to managing UI modifications.
-	Dispatch(func())
+	Dispatch(src UI, fn func())
 
 	// 	Async launches the given function on a new goroutine.
 	//
@@ -27,7 +27,7 @@ type Dispatcher interface {
 	//
 	// This is important during component prerendering since asynchronous
 	// operations need to complete before sending a pre-rendered page over HTTP.
-	Async(func())
+	Async(fn func())
 
 	// Wait waits for the asynchronous operations launched with Async() to
 	// complete.
@@ -162,7 +162,7 @@ func (d *uiDispatcher) Context() Context {
 	return makeContext(d.body.children()[0])
 }
 
-func (d *uiDispatcher) Dispatch(fn func()) {
+func (d *uiDispatcher) Dispatch(src UI, fn func()) {
 	d.ui <- fn
 }
 
@@ -179,13 +179,13 @@ func (d *uiDispatcher) Wait() {
 }
 
 func (d *uiDispatcher) PreRender() {
-	d.Dispatch(func() {
+	d.Dispatch(nil, func() {
 		d.body.preRender(d.currentPage())
 	})
 }
 
 func (d *uiDispatcher) Mount(v UI) {
-	d.Dispatch(func() {
+	d.Dispatch(nil, func() {
 		if !d.mountedOnce {
 			if err := d.body.(elemWithChildren).replaceChildAt(0, v); err != nil {
 				panic(errors.New("mounting ui element failed").
@@ -228,19 +228,19 @@ func (d *uiDispatcher) Nav(u *url.URL) {
 		p.url = u
 	}
 
-	d.Dispatch(func() {
+	d.Dispatch(nil, func() {
 		d.body.onNav(u)
 	})
 }
 
 func (d *uiDispatcher) AppUpdate() {
-	d.Dispatch(func() {
+	d.Dispatch(nil, func() {
 		d.body.onAppUpdate()
 	})
 }
 
 func (d *uiDispatcher) AppResize() {
-	d.Dispatch(func() {
+	d.Dispatch(nil, func() {
 		d.body.onResize()
 	})
 }
