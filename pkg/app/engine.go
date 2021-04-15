@@ -35,10 +35,12 @@ type engine struct {
 	ResolveStaticResources func(string) string
 
 	// The body of the page.
-	Body *HTMLBody
+	Body HTMLBody
 
-	init sync.Once
-	wait sync.WaitGroup
+	initOnce  sync.Once
+	startOnce sync.Once
+	closeOnce sync.Once
+	wait      sync.WaitGroup
 
 	events      chan event
 	updates     map[Composer]struct{}
@@ -64,8 +66,91 @@ func (e *engine) Wait() {
 	e.wait.Wait()
 }
 
-func (e *engine) start(ctx context.Context) {
-	e.init.Do(func() {
+func (e *engine) Context() Context {
+	return makeContext(e.Body)
+}
+
+func (e *engine) Consume() {
+	for {
+		select {
+		case ev := <-e.events:
+			ev.function()
+			e.scheduleComponentUpdate(ev.source)
+
+		default:
+			if len(e.updates) == 0 {
+				return
+			}
+			e.updateComponents()
+		}
+	}
+}
+
+func (e *engine) Close() {
+	e.closeOnce.Do(func() {
+		e.Consume()
+		e.Wait()
+
+		dismount(e.Body)
+		e.Body = nil
+		close(e.events)
+	})
+}
+
+func (e *engine) PreRender() {
+	e.Dispatch(e.Body, func() {
+		e.Body.preRender(e.Page)
+	})
+}
+
+func (e *engine) Mount(n UI) {
+	err := update(e.Body.children()[0], n)
+	if err == nil {
+		return
+	}
+	if !isErrReplace(err) {
+		panic(errors.New("mounting ui element failed").
+			Tag("events-count", len(e.events)).
+			Tag("events-capacity", cap(e.events)).
+			Tag("updates-count", len(e.updates)).
+			Tag("updates-queue-len", len(e.updateQueue)).
+			Wrap(err))
+	}
+
+	if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {
+		panic(errors.New("mounting ui element failed").
+			Tag("events-count", len(e.events)).
+			Tag("events-capacity", cap(e.events)).
+			Tag("updates-count", len(e.updates)).
+			Tag("updates-queue-len", len(e.updateQueue)).
+			Wrap(err))
+	}
+}
+
+func (e *engine) Nav(u *url.URL) {
+	if p, ok := e.Page.(*requestPage); ok {
+		p.ReplaceURL(u)
+	}
+
+	e.Dispatch(e.Body, func() {
+		e.Body.onNav(u)
+	})
+}
+
+func (e *engine) AppUpdate() {
+	e.Dispatch(e.Body, func() {
+		e.Body.onAppUpdate()
+	})
+}
+
+func (e *engine) AppResize() {
+	e.Dispatch(e.Body, func() {
+		e.Body.onResize()
+	})
+}
+
+func (e *engine) init() {
+	e.initOnce.Do(func() {
 		e.events = make(chan event, eventBufferSize)
 		e.updates = make(map[Composer]struct{})
 		e.updateQueue = make([]updateDescriptor, 0, updateBufferSize)
@@ -98,8 +183,13 @@ func (e *engine) start(ctx context.Context) {
 			if err := mount(e, body); err != nil {
 				panic(errors.New("mounting engine default body failed").Wrap(err))
 			}
+			e.Body = body
 		}
+	})
+}
 
+func (e *engine) start(ctx context.Context) {
+	e.startOnce.Do(func() {
 		updates := time.NewTicker(time.Second / time.Duration(e.UpdateRate))
 		defer updates.Stop()
 
@@ -113,9 +203,7 @@ func (e *engine) start(ctx context.Context) {
 				e.scheduleComponentUpdate(ev.source)
 
 			case <-updates.C:
-				if len(e.updates) > 0 {
-					e.updateComponents()
-				}
+				e.updateComponents()
 			}
 		}
 	})
@@ -158,6 +246,10 @@ func (e *engine) scheduleComponentUpdate(n UI) {
 }
 
 func (e *engine) updateComponents() {
+	if len(e.updates) > 0 {
+		return
+	}
+
 	sort.Slice(e.updateQueue, func(a, b int) bool {
 		return e.updateQueue[a].priority < e.updateQueue[b].priority
 	})

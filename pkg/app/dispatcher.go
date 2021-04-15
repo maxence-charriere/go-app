@@ -49,6 +49,13 @@ type ClientDispatcher interface {
 	// Context returns the context associated with the root element.
 	Context() Context
 
+	// Consume executes all the remaining UI instructions.
+	Consume()
+
+	// Close consumes all the remaining UI instruction and releases allocated
+	// resources.
+	Close()
+
 	// Mounts the given component as root element.
 	Mount(UI)
 
@@ -60,19 +67,16 @@ type ClientDispatcher interface {
 
 	// Triggers OnAppResize from the root component.
 	AppResize()
-
-	// Consume executes all the remaining UI instructions.
-	Consume()
-
-	// Close consumes all the remaining UI instruction and releases allocated
-	// resources.
-	Close()
 }
 
 // NewClientTester creates a testing dispatcher that simulates a
 // client environment. The given UI element is mounted upon creation.
-func NewClientTester(v UI) ClientDispatcher {
-	return newTestingDispatcher(v, false)
+func NewClientTester(n UI) ClientDispatcher {
+	e := &engine{}
+	e.init()
+	e.Mount(n)
+	e.Consume()
+	return e
 }
 
 // ServerDispatcher is the interface that describes a dispatcher that emulates a server environment.
@@ -82,15 +86,15 @@ type ServerDispatcher interface {
 	// Context returns the context associated with the root element.
 	Context() Context
 
-	// Pre-renders the given component.
-	PreRender()
-
 	// Consume executes all the remaining UI instructions.
 	Consume()
 
 	// Close consumes all the remaining UI instruction and releases allocated
 	// resources.
 	Close()
+
+	// Pre-renders the given component.
+	PreRender()
 }
 
 // NewServerTester creates a testing dispatcher that simulates a
