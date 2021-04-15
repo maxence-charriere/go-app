@@ -234,6 +234,7 @@ func mardownPages() map[string]markdownPage {
 				"Lofimusic.app",
 				"Murlok.io",
 				"Astextract",
+				"Liwasc",
 				"Next",
 			},
 		},
