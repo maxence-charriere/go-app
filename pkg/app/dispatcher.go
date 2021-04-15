@@ -37,7 +37,7 @@ type Dispatcher interface {
 	currentPage() Page
 	localStorage() BrowserStorage
 	sessionStorage() BrowserStorage
-	isServerSideMode() bool
+	runsInServer() bool
 	resolveStaticResource(string) string
 }
 
@@ -111,7 +111,7 @@ func newTestingDispatcher(v UI, serverSide bool) *uiDispatcher {
 
 	if err := mount(disp, disp.body); err != nil {
 		panic(errors.New("mounting body failed").
-			Tag("server-side-mode", disp.isServerSideMode()).
+			Tag("server-side-mode", disp.runsInServer()).
 			Tag("body-type", reflect.TypeOf(disp.body)).
 			Tag("ui-len", len(disp.ui)).
 			Tag("ui-cap", cap(disp.ui)).
@@ -189,7 +189,7 @@ func (d *uiDispatcher) Mount(v UI) {
 		if !d.mountedOnce {
 			if err := d.body.(elemWithChildren).replaceChildAt(0, v); err != nil {
 				panic(errors.New("mounting ui element failed").
-					Tag("server-side-mode", d.isServerSideMode()).
+					Tag("server-side-mode", d.runsInServer()).
 					Tag("body-type", reflect.TypeOf(d.body)).
 					Tag("ui-len", len(d.ui)).
 					Tag("ui-cap", cap(d.ui)).
@@ -205,7 +205,7 @@ func (d *uiDispatcher) Mount(v UI) {
 		}
 		if !isErrReplace(err) {
 			panic(errors.New("mounting ui element failed").
-				Tag("server-side-mode", d.isServerSideMode()).
+				Tag("server-side-mode", d.runsInServer()).
 				Tag("body-type", reflect.TypeOf(d.body)).
 				Tag("ui-len", len(d.ui)).
 				Tag("ui-cap", cap(d.ui)).
@@ -214,7 +214,7 @@ func (d *uiDispatcher) Mount(v UI) {
 
 		if err := d.body.(elemWithChildren).replaceChildAt(0, v); err != nil {
 			panic(errors.New("mounting ui element failed").
-				Tag("server-side-mode", d.isServerSideMode()).
+				Tag("server-side-mode", d.runsInServer()).
 				Tag("body-type", reflect.TypeOf(d.body)).
 				Tag("ui-len", len(d.ui)).
 				Tag("ui-cap", cap(d.ui)).
@@ -282,7 +282,7 @@ func (d *uiDispatcher) currentPage() Page {
 	return d.page
 }
 
-func (d *uiDispatcher) isServerSideMode() bool {
+func (d *uiDispatcher) runsInServer() bool {
 	return d.serverSideMode
 }
 

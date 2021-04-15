@@ -584,7 +584,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 	if err := mount(disp, preRenderContainer); err != nil {
 		panic(errors.New("mounting pre-rendering container failed").
-			Tag("server-side-mode", disp.isServerSideMode()).
+			Tag("server-side", disp.runsInServer()).
 			Tag("body-type", reflect.TypeOf(disp.body)).
 			Tag("ui-len", len(disp.ui)).
 			Tag("ui-cap", cap(disp.ui)).

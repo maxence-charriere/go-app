@@ -292,7 +292,7 @@ func (c *Compo) mount(d Dispatcher) error {
 	root.setParent(c.this)
 	c.root = root
 
-	if mounter, ok := c.self().(Mounter); ok && !c.dispatcher().isServerSideMode() {
+	if mounter, ok := c.self().(Mounter); ok && !c.dispatcher().runsInServer() {
 		mounter.OnMount(makeContext(c.self()))
 	}
 
