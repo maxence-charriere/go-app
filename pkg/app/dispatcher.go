@@ -99,8 +99,14 @@ type ServerDispatcher interface {
 
 // NewServerTester creates a testing dispatcher that simulates a
 // client environment.
-func NewServerTester(v UI) ServerDispatcher {
-	return newTestingDispatcher(v, false)
+func NewServerTester(n UI) ServerDispatcher {
+	return newTestingDispatcher(n, false)
+
+	// e := &engine{RunsInServer: false}
+	// e.init()
+	// e.Mount(n)
+	// e.Consume()
+	// return e
 }
 
 func newTestingDispatcher(v UI, serverSide bool) *uiDispatcher {

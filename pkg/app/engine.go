@@ -42,9 +42,10 @@ type engine struct {
 	closeOnce sync.Once
 	wait      sync.WaitGroup
 
-	events      chan event
-	updates     map[Composer]struct{}
-	updateQueue []updateDescriptor
+	isMountedOnce bool
+	events        chan event
+	updates       map[Composer]struct{}
+	updateQueue   []updateDescriptor
 }
 
 func (e *engine) Dispatch(src UI, fn func()) {
@@ -104,27 +105,43 @@ func (e *engine) PreRender() {
 }
 
 func (e *engine) Mount(n UI) {
-	err := update(e.Body.children()[0], n)
-	if err == nil {
-		return
-	}
-	if !isErrReplace(err) {
-		panic(errors.New("mounting ui element failed").
-			Tag("events-count", len(e.events)).
-			Tag("events-capacity", cap(e.events)).
-			Tag("updates-count", len(e.updates)).
-			Tag("updates-queue-len", len(e.updateQueue)).
-			Wrap(err))
-	}
+	e.Dispatch(e.Body, func() {
+		if !e.isMountedOnce {
+			if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {
+				panic(errors.New("mounting ui element failed").
+					Tag("events-count", len(e.events)).
+					Tag("events-capacity", cap(e.events)).
+					Tag("updates-count", len(e.updates)).
+					Tag("updates-queue-len", len(e.updateQueue)).
+					Wrap(err))
+			}
 
-	if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {
-		panic(errors.New("mounting ui element failed").
-			Tag("events-count", len(e.events)).
-			Tag("events-capacity", cap(e.events)).
-			Tag("updates-count", len(e.updates)).
-			Tag("updates-queue-len", len(e.updateQueue)).
-			Wrap(err))
-	}
+			e.isMountedOnce = true
+			return
+		}
+
+		err := update(e.Body.children()[0], n)
+		if err == nil {
+			return
+		}
+		if !isErrReplace(err) {
+			panic(errors.New("mounting ui element failed").
+				Tag("events-count", len(e.events)).
+				Tag("events-capacity", cap(e.events)).
+				Tag("updates-count", len(e.updates)).
+				Tag("updates-queue-len", len(e.updateQueue)).
+				Wrap(err))
+		}
+
+		if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {
+			panic(errors.New("mounting ui element failed").
+				Tag("events-count", len(e.events)).
+				Tag("events-capacity", cap(e.events)).
+				Tag("updates-count", len(e.updates)).
+				Tag("updates-queue-len", len(e.updateQueue)).
+				Wrap(err))
+		}
+	})
 }
 
 func (e *engine) Nav(u *url.URL) {
