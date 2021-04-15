@@ -8,7 +8,7 @@
 <meta name="keywords" content="go-app, go, golang, app, pwa, progressive web app, webassembly, web assembly, webapp, web, gui, ui, user interface, graphical user interface, frontend, opensource, open source, github">
 <meta name="theme-color" content="#2e343a">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
-<meta property="og:url" content="http://127.0.0.1:61244/">
+<meta property="og:url" content="http://127.0.0.1:62818/">
 <meta property="og:title" content="A Go package for building Progressive Web Apps">
 <meta property="og:description" content="A package for building progressive web apps (PWA) with the Go programming language (Golang) and WebAssembly (Wasm). It uses a declarative syntax that allows creating and dealing with HTML elements only by using Go, and without writing any HTML markup.">
 <meta property="og:type" content="website">
@@ -18,7 +18,7 @@ A Go package for building Progressive Web Apps
 </title>
 <link rel="icon" type="image/png" href="https://storage.googleapis.com/murlok-github/icon-192.png">
 <link rel="apple-touch-icon" href="https://storage.googleapis.com/murlok-github/icon-192.png">
-<link rel="manifest" href="/manifest.webmanifest">
+<link href="/manifest.webmanifest" rel="manifest">
 <link type="text/css" rel="stylesheet" href="/app.css">
 <script defer src="/wasm_exec.js"></script>
 <script defer src="/app.js"></script>
@@ -39,13 +39,13 @@ A Go package for building Progressive Web Apps
 <body>
 <div>
 <div id="app-pre-render">
-<div id="goapp-shell-7277db76-d560-444c-b6f3-dec97b147940" class="goapp-shell background">
+<div id="goapp-shell-4f63719c-f014-439b-b829-c63c453b18aa" class="goapp-shell background">
 <div class="goapp-shell-layout" style="align-items:stretch;">
 <div class="goapp-shell-item" style="display:bloc;width:276px;max-width:276px;">
 <div class="fill unselectable">
 <div id class="goapp-stack header hspace-out" style="flex-direction:row;align-items:center;">
 <header>
-<a href="/" class="app-title">
+<a class="app-title" href="/">
 go-app
 </a>
 </header>
@@ -82,7 +82,7 @@ Getting started
 </div>
 </a>
 <a class="link heading fit  " href="/v7-to-v8">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -133,7 +133,7 @@ Architecture
 </div>
 </div>
 </a>
-<a href="/components" class="link heading fit  ">
+<a class="link heading fit  " href="/components">
 <div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
@@ -246,7 +246,7 @@ Static resources
 </div>
 </a>
 <a href="/testing" class="link heading fit  ">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -275,7 +275,7 @@ Built with go-app
 </div>
 </div>
 </a>
-<a class="link heading fit  " href="/examples">
+<a href="/examples" class="link heading fit  ">
 <div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
@@ -290,7 +290,7 @@ Examples
 </div>
 </a>
 <a class="link heading fit  " href="/install">
-<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -349,7 +349,7 @@ Buy me a coffee
 </div>
 </div>
 </a>
-<a href="https://commerce.coinbase.com/checkout/851320a4-35b5-41f1-897b-74dd5ee207ae" class="link heading fit  ">
+<a class="link heading fit  " href="https://commerce.coinbase.com/checkout/851320a4-35b5-41f1-897b-74dd5ee207ae">
 <div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
@@ -363,8 +363,8 @@ Donate cryptos
 </div>
 </div>
 </a>
-<a href="https://github.com/sponsors/maxence-charriere" class="link heading fit  ">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<a class="link heading fit  " href="https://github.com/sponsors/maxence-charriere">
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -416,7 +416,7 @@ Standard HTTP
 <a class="index-link " href="#other-features">
 Other features
 </a>
-<a href="#next" class="index-link ">
+<a class="index-link " href="#next">
 Next
 </a>
 </div>
@@ -550,7 +550,7 @@ home.md
 </aside>
 <footer class="vspace-section hspace-out">
 <div class>
-<div id="report-issue" class="h2 header-separator">
+<div class="h2 header-separator" id="report-issue">
 Report issue
 </div>
 <p>
@@ -590,14 +590,14 @@ Buying me a coffee
 Open Collective
 </a>
 , sponsoring me on 
-<a href="https://github.com/sponsors/maxence-charriere" target="_blank">
+<a target="_blank" href="https://github.com/sponsors/maxence-charriere">
 GitHub
 </a>
 , or giving me some cryptocurrencies, all would help me reach that goal, sustain the development, and boost motivation during long coding sessions.
 </p>
 </div>
-<div id="goapp-flow-31029f78-2323-43e4-a129-f261f3bd3f94" class="goapp-flow space-flow">
-<div class="goapp-flow-item" style="max-width:0px;width:0px;">
+<div id="goapp-flow-f92e8ae4-3efd-44b3-aaa4-e1ee671d8078" class="goapp-flow space-flow">
+<div style="max-width:0px;width:0px;" class="goapp-flow-item">
 <div class="space-flow-item">
 <a class="support-us-item hspace-in-stretch vspace-in vignette magnify fill" href="https://www.buymeacoffee.com/maxence">
 <div id class="goapp-stack fill" style="flex-direction:row;align-items:center;">
@@ -619,7 +619,7 @@ Buy me a coffee
 </div>
 <div class="goapp-flow-item" style="max-width:0px;width:0px;">
 <div class="space-flow-item">
-<a href="https://commerce.coinbase.com/checkout/851320a4-35b5-41f1-897b-74dd5ee207ae" class="support-us-item hspace-in-stretch vspace-in vignette magnify fill">
+<a class="support-us-item hspace-in-stretch vspace-in vignette magnify fill" href="https://commerce.coinbase.com/checkout/851320a4-35b5-41f1-897b-74dd5ee207ae">
 <div id class="goapp-stack fill" style="flex-direction:row;align-items:center;">
 <div class="fit center">
 <div class="fit center">
@@ -688,7 +688,7 @@ Open collective
 </div>
 <div id="app-wasm-loader" class="goapp-app-info">
 <img id="app-wasm-loader-icon" class="goapp-logo goapp-spin" src="https://storage.googleapis.com/murlok-github/icon-192.png">
-<p id="app-wasm-loader-label" class="goapp-label">
+<p class="goapp-label" id="app-wasm-loader-label">
 Loading go-app documentation...
 </p>
 </div>
