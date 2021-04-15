@@ -263,7 +263,7 @@ func (e *engine) scheduleComponentUpdate(n UI) {
 }
 
 func (e *engine) updateComponents() {
-	if len(e.updates) > 0 {
+	if len(e.updates) == 0 {
 		return
 	}
 
