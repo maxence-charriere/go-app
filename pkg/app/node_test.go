@@ -167,6 +167,8 @@ func testUpdate(t *testing.T, utests []updateTest) {
 				return
 			}
 
+			d.Consume()
+
 			require.NoError(t, err)
 			for _, d := range u.matches {
 				require.NoError(t, TestMatch(u.a, d))

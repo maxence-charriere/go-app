@@ -177,10 +177,9 @@ func (c *Compo) Render() UI {
 // function is called.
 func (c *Compo) Defer(fn func(Context)) {
 	c.dispatcher().Dispatch(c.self(), func() {
-		if !c.Mounted() {
-			return
+		if c.Mounted() {
+			fn(makeContext(c.self()))
 		}
-		fn(makeContext(c.self()))
 	})
 }
 
@@ -293,7 +292,7 @@ func (c *Compo) mount(d Dispatcher) error {
 	c.root = root
 
 	if mounter, ok := c.self().(Mounter); ok && !c.dispatcher().runsInServer() {
-		mounter.OnMount(makeContext(c.self()))
+		c.Defer(mounter.OnMount)
 	}
 
 	return nil
@@ -344,7 +343,8 @@ func (c *Compo) update(n UI) error {
 		}
 	}
 
-	return c.updateRoot()
+	c.Update()
+	return nil
 }
 
 func (c *Compo) updateRoot() error {
@@ -416,20 +416,20 @@ func (c *Compo) onNav(u *url.URL) {
 	c.root.onNav(u)
 
 	if nav, ok := c.self().(Navigator); ok {
-		ctx := makeContext(c.self())
-		nav.OnNav(ctx)
+		c.Defer(nav.OnNav)
 		return
 	}
 
 	if nav, ok := c.self().(deprecatedNavigator); ok {
-		ctx := makeContext(c.self())
 		Log(errors.New("a deprecated component interface is in use").
 			Tag("component", reflect.TypeOf(c.self())).
 			Tag("interface", "app.Navigator").
 			Tag("method-current", "OnNav(app.Context, *url.URL)").
 			Tag("method-fix", "OnNav(app.Context)").
 			Tag("how-to-fix", "refactor component to use the right method"))
-		nav.OnNav(ctx, u)
+		c.Defer(func(ctx Context) {
+			nav.OnNav(ctx, u)
+		})
 	}
 }
 
@@ -437,7 +437,7 @@ func (c *Compo) onAppUpdate() {
 	c.root.onAppUpdate()
 
 	if updater, ok := c.self().(Updater); ok {
-		updater.OnAppUpdate(makeContext(c.self()))
+		c.Defer(updater.OnAppUpdate)
 	}
 }
 
@@ -445,7 +445,7 @@ func (c *Compo) onResize() {
 	c.root.onResize()
 
 	if resizer, ok := c.self().(Resizer); ok {
-		resizer.OnResize(makeContext(c.self()))
+		c.Defer(resizer.OnResize)
 		return
 	}
 
@@ -457,6 +457,9 @@ func (c *Compo) onResize() {
 			Tag("method-fix", "OnResize(app.Context)").
 			Tag("how-to-fix", "refactor component to use the right method"))
 		resizer.OnAppResize(makeContext(c.self()))
+		c.Defer(func(ctx Context) {
+			resizer.OnAppResize(ctx)
+		})
 	}
 }
 
@@ -464,7 +467,7 @@ func (c *Compo) preRender(p Page) {
 	c.root.preRender(p)
 
 	if preRenderer, ok := c.self().(PreRenderer); ok {
-		preRenderer.OnPreRender(makeContext(c.self()))
+		c.Defer(preRenderer.OnPreRender)
 	}
 }
 

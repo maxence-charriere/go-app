@@ -49,9 +49,11 @@ type engine struct {
 }
 
 func (e *engine) Dispatch(src UI, fn func()) {
-	e.events <- event{
-		source:   src,
-		function: fn,
+	if src.Mounted() {
+		e.events <- event{
+			source:   src,
+			function: fn,
+		}
 	}
 }
 
@@ -75,8 +77,10 @@ func (e *engine) Consume() {
 	for {
 		select {
 		case ev := <-e.events:
-			ev.function()
-			e.scheduleComponentUpdate(ev.source)
+			if ev.source.Mounted() {
+				ev.function()
+				e.scheduleComponentUpdate(ev.source)
+			}
 
 		default:
 			if len(e.updates) == 0 {
@@ -216,8 +220,10 @@ func (e *engine) start(ctx context.Context) {
 				return
 
 			case ev := <-e.events:
-				ev.function()
-				e.scheduleComponentUpdate(ev.source)
+				if ev.source.Mounted() {
+					ev.function()
+					e.scheduleComponentUpdate(ev.source)
+				}
 
 			case <-updates.C:
 				e.updateComponents()
@@ -227,10 +233,6 @@ func (e *engine) start(ctx context.Context) {
 }
 
 func (e *engine) scheduleComponentUpdate(n UI) {
-	if !n.Mounted() {
-		return
-	}
-
 	var compo Composer
 	var depth = 0
 
