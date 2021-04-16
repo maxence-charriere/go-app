@@ -118,9 +118,9 @@ func (f *flow) OnDismount() {
 }
 
 func (f *flow) Render() UI {
-	if f.requiresLayoutUpdate() {
-		f.Defer(f.refreshLayout)
-	}
+	// if f.requiresLayoutUpdate() {
+	// 	f.Defer(f.refreshLayout)
+	// }
 
 	return Div().
 		ID(f.id).

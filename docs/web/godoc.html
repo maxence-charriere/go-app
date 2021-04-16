@@ -151,7 +151,7 @@ resources to run Go-based progressive web apps.
 				<dd><a href="#ClientDispatcher" id="src-ClientDispatcher" id="src-ClientDispatcher">type ClientDispatcher</a></dd>
 				
 					
-					<dd>    <a href="#NewClientTester" id="src-NewClientTester" id="src-NewClientTester">func NewClientTester(v UI) ClientDispatcher</a></dd>
+					<dd>    <a href="#NewClientTester" id="src-NewClientTester" id="src-NewClientTester">func NewClientTester(n UI) ClientDispatcher</a></dd>
 				
 				
 			
@@ -1222,7 +1222,7 @@ resources to run Go-based progressive web apps.
 				<dd><a href="#ServerDispatcher" id="src-ServerDispatcher" id="src-ServerDispatcher">type ServerDispatcher</a></dd>
 				
 					
-					<dd>    <a href="#NewServerTester" id="src-NewServerTester" id="src-NewServerTester">func NewServerTester(v UI) ServerDispatcher</a></dd>
+					<dd>    <a href="#NewServerTester" id="src-NewServerTester" id="src-NewServerTester">func NewServerTester(n UI) ServerDispatcher</a></dd>
 				
 				
 			
@@ -1324,6 +1324,8 @@ resources to run Go-based progressive web apps.
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go">dispatcher.go</a>
 			
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/element.go">element.go</a>
+			
+				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/engine.go">engine.go</a>
 			
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/flow.go">flow.go</a>
 			
@@ -1874,6 +1876,13 @@ client environment.
     <span class="comment">// Context returns the context associated with the root element.</span>
     Context() <a href="#Context" id="src-Context">Context</a>
 
+    <span class="comment">// Consume executes all the remaining UI instructions.</span>
+    Consume()
+
+    <span class="comment">// Close consumes all the remaining UI instruction and releases allocated</span>
+    <span class="comment">// resources.</span>
+    Close()
+
     <span class="comment">// Mounts the given component as root element.</span>
     Mount(<a href="#UI" id="src-UI">UI</a>)
 
@@ -1885,13 +1894,6 @@ client environment.
 
     <span class="comment">// Triggers OnAppResize from the root component.</span>
     AppResize()
-
-    <span class="comment">// Consume executes all the remaining UI instructions.</span>
-    Consume()
-
-    <span class="comment">// Close consumes all the remaining UI instruction and releases allocated</span>
-    <span class="comment">// resources.</span>
-    Close()
 }</pre>
 
 			
@@ -1909,7 +1911,7 @@ client environment.
 					
 					
 				</h3>
-				<pre>func NewClientTester(v <a href="#UI" id="src-UI">UI</a>) <a href="#ClientDispatcher" id="src-ClientDispatcher">ClientDispatcher</a></pre>
+				<pre>func NewClientTester(n <a href="#UI" id="src-UI">UI</a>) <a href="#ClientDispatcher" id="src-ClientDispatcher">ClientDispatcher</a></pre>
 				<p>
 NewClientTester creates a testing dispatcher that simulates a
 client environment. The given UI element is mounted upon creation.
@@ -1923,7 +1925,7 @@ client environment. The given UI element is mounted upon creation.
 		
 			
 			
-			<h2 id="Compo">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L115">Compo</a>
+			<h2 id="Compo">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L117">Compo</a>
 				<a class="permalink" href="#Compo" id="src-Compo">¶</a>
 				
 				
@@ -1949,7 +1951,7 @@ Compo represents the base struct to use in order to build a component.
 
 			
 				
-				<h3 id="Compo.Defer">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L166">Defer</a>
+				<h3 id="Compo.Defer">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L168">Defer</a>
 					<a class="permalink" href="#Compo.Defer" id="src-Compo.Defer">¶</a>
 					
 					
@@ -1966,7 +1968,7 @@ function is called.
 				
 			
 				
-				<h3 id="Compo.JSValue">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L130">JSValue</a>
+				<h3 id="Compo.JSValue">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L132">JSValue</a>
 					<a class="permalink" href="#Compo.JSValue" id="src-Compo.JSValue">¶</a>
 					
 					
@@ -1981,7 +1983,7 @@ JSValue returns the javascript value of the component root.
 				
 			
 				
-				<h3 id="Compo.Kind">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L125">Kind</a>
+				<h3 id="Compo.Kind">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L127">Kind</a>
 					<a class="permalink" href="#Compo.Kind" id="src-Compo.Kind">¶</a>
 					
 					
@@ -1996,7 +1998,7 @@ Kind returns the ui element kind.
 				
 			
 				
-				<h3 id="Compo.Mounted">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L135">Mounted</a>
+				<h3 id="Compo.Mounted">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L137">Mounted</a>
 					<a class="permalink" href="#Compo.Mounted" id="src-Compo.Mounted">¶</a>
 					
 					
@@ -2011,7 +2013,7 @@ Mounted reports whether the component is mounted.
 				
 			
 				
-				<h3 id="Compo.Render">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L146">Render</a>
+				<h3 id="Compo.Render">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L148">Render</a>
 					<a class="permalink" href="#Compo.Render" id="src-Compo.Render">¶</a>
 					
 					
@@ -2028,7 +2030,7 @@ embedded.
 				
 			
 				
-				<h3 id="Compo.ResizeContent">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L188">ResizeContent</a>
+				<h3 id="Compo.ResizeContent">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L189">ResizeContent</a>
 					<a class="permalink" href="#Compo.ResizeContent" id="src-Compo.ResizeContent">¶</a>
 					
 					
@@ -2044,7 +2046,7 @@ implement the Resizer interface.
 				
 			
 				
-				<h3 id="Compo.Update">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L178">Update</a>
+				<h3 id="Compo.Update">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L179">Update</a>
 					<a class="permalink" href="#Compo.Update" id="src-Compo.Update">¶</a>
 					
 					
@@ -2061,7 +2063,7 @@ performed on the UI goroutine.
 				
 			
 				
-				<h3 id="Compo.ValueTo">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L201">ValueTo</a>
+				<h3 id="Compo.ValueTo">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L202">ValueTo</a>
 					<a class="permalink" href="#Compo.ValueTo" id="src-Compo.ValueTo">¶</a>
 					
 					
@@ -2138,6 +2140,7 @@ func (c *Hello) Render() app.UI {
     <span class="comment">//</span>
     <span class="comment">// It panics if the given value is not a pointer.</span>
     ValueTo(interface{}) <a href="#EventHandler" id="src-EventHandler">EventHandler</a>
+    <span class="comment">// contains filtered or unexported methods</span>
 }</pre>
 
 			
@@ -2402,7 +2405,7 @@ session ends.
 		
 			
 			
-			<h2 id="Dismounter">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L71">Dismounter</a>
+			<h2 id="Dismounter">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L73">Dismounter</a>
 				<a class="permalink" href="#Dismounter" id="src-Dismounter">¶</a>
 				
 				
@@ -2447,7 +2450,7 @@ UI instructions and UI elements lifecycle.
 			<pre>type Dispatcher interface {
     <span class="comment">// Dispatch enqueues the given function to be executed on a goroutine</span>
     <span class="comment">// dedicated to managing UI modifications.</span>
-    Dispatch(func())
+    Dispatch(src <a href="#UI" id="src-UI">UI</a>, fn func())
 
     <span class="comment">// 	Async launches the given function on a new goroutine.</span>
     <span class="comment">//</span>
@@ -2456,7 +2459,7 @@ UI instructions and UI elements lifecycle.
     <span class="comment">//</span>
     <span class="comment">// This is important during component prerendering since asynchronous</span>
     <span class="comment">// operations need to complete before sending a pre-rendered page over HTTP.</span>
-    Async(func())
+    Async(fn func())
 
     <span class="comment">// Wait waits for the asynchronous operations launched with Async() to</span>
     <span class="comment">// complete.</span>
@@ -2478,7 +2481,7 @@ UI instructions and UI elements lifecycle.
 		
 			
 			
-			<h2 id="Environment">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L754">Environment</a>
+			<h2 id="Environment">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L758">Environment</a>
 				<a class="permalink" href="#Environment" id="src-Environment">¶</a>
 				
 				
@@ -22953,7 +22956,7 @@ and its resources.
 		
 			
 			
-			<h2 id="Icon">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L731">Icon</a>
+			<h2 id="Icon">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L735">Icon</a>
 				<a class="permalink" href="#Icon" id="src-Icon">¶</a>
 				
 				
@@ -23058,7 +23061,7 @@ Kind represents the specific kind of a user interface element.
 		
 			
 			
-			<h2 id="Mounter">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L61">Mounter</a>
+			<h2 id="Mounter">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L63">Mounter</a>
 				<a class="permalink" href="#Mounter" id="src-Mounter">¶</a>
 				
 				
@@ -23090,7 +23093,7 @@ additional actions when mounted.
 		
 			
 			
-			<h2 id="Navigator">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L81">Navigator</a>
+			<h2 id="Navigator">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L83">Navigator</a>
 				<a class="permalink" href="#Navigator" id="src-Navigator">¶</a>
 				
 				
@@ -23292,7 +23295,7 @@ Len return the body length.
 		
 			
 			
-			<h2 id="PreRenderer">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L50">PreRenderer</a>
+			<h2 id="PreRenderer">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L52">PreRenderer</a>
 				<a class="permalink" href="#PreRenderer" id="src-PreRenderer">¶</a>
 				
 				
@@ -23417,7 +23420,7 @@ be a slice, an array or a map with strings as keys.
 		
 			
 			
-			<h2 id="Resizer">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L103">Resizer</a>
+			<h2 id="Resizer">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L105">Resizer</a>
 				<a class="permalink" href="#Resizer" id="src-Resizer">¶</a>
 				
 				
@@ -23540,7 +23543,7 @@ remote bucket such as Amazon S3 or Google Cloud Storage.
 		
 			
 			
-			<h2 id="ServerDispatcher">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L69">ServerDispatcher</a>
+			<h2 id="ServerDispatcher">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L73">ServerDispatcher</a>
 				<a class="permalink" href="#ServerDispatcher" id="src-ServerDispatcher">¶</a>
 				
 				
@@ -23555,15 +23558,15 @@ ServerDispatcher is the interface that describes a dispatcher that emulates a se
     <span class="comment">// Context returns the context associated with the root element.</span>
     Context() <a href="#Context" id="src-Context">Context</a>
 
-    <span class="comment">// Pre-renders the given component.</span>
-    PreRender()
-
     <span class="comment">// Consume executes all the remaining UI instructions.</span>
     Consume()
 
     <span class="comment">// Close consumes all the remaining UI instruction and releases allocated</span>
     <span class="comment">// resources.</span>
     Close()
+
+    <span class="comment">// Pre-renders the given component.</span>
+    PreRender()
 }</pre>
 
 			
@@ -23576,12 +23579,12 @@ ServerDispatcher is the interface that describes a dispatcher that emulates a se
 
 			
 				
-				<h3 id="NewServerTester">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L88">NewServerTester</a>
+				<h3 id="NewServerTester">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L92">NewServerTester</a>
 					<a class="permalink" href="#NewServerTester" id="src-NewServerTester">¶</a>
 					
 					
 				</h3>
-				<pre>func NewServerTester(v <a href="#UI" id="src-UI">UI</a>) <a href="#ServerDispatcher" id="src-ServerDispatcher">ServerDispatcher</a></pre>
+				<pre>func NewServerTester(n <a href="#UI" id="src-UI">UI</a>) <a href="#ServerDispatcher" id="src-ServerDispatcher">ServerDispatcher</a></pre>
 				<p>
 NewServerTester creates a testing dispatcher that simulates a
 client environment.
@@ -23992,7 +23995,7 @@ EXPERIMENTAL WIDGET.
 		
 			
 			
-			<h2 id="Updater">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L95">Updater</a>
+			<h2 id="Updater">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L97">Updater</a>
 				<a class="permalink" href="#Updater" id="src-Updater">¶</a>
 				
 				

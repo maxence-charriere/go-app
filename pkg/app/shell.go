@@ -162,9 +162,9 @@ func (s *shell) Dismount() {
 }
 
 func (s *shell) Render() UI {
-	if s.requiresLayoutUpdate() {
-		s.Defer(s.refreshLayout)
-	}
+	// if s.requiresLayoutUpdate() {
+	// 	s.Defer(s.refreshLayout)
+	// }
 
 	visible := func(b bool) string {
 		if b {

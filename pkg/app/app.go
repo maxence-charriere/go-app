@@ -106,20 +106,28 @@ func RunWhenOnBrowser() {
 	staticResourcesResolver := newClientStaticResourceResolver(Getenv("GOAPP_STATIC_RESOURCES_URL"))
 	rootPrefix = Getenv("GOAPP_ROOT_PREFIX")
 
-	disp := newUIDispatcher(IsServer, browserPage{}, staticResourcesResolver)
+	disp := engine{
+		UpdateRate:             60,
+		Page:                   browserPage{},
+		LocalStorage:           newJSStorage("localStorage"),
+		SessionStorage:         newJSStorage("sessionStorage"),
+		ResolveStaticResources: staticResourcesResolver,
+	}
+	disp.Body = newClientBody(&disp)
+	disp.init()
 	defer disp.Close()
-	disp.body = newClientBody(disp)
-	window.setBody(disp.body)
 
-	onAchorClick := FuncOf(onAchorClick(disp))
+	window.setBody(disp.Body)
+
+	onAchorClick := FuncOf(onAchorClick(&disp))
 	defer onAchorClick.Release()
 	Window().Set("onclick", onAchorClick)
 
-	onPopState := FuncOf(onPopState(disp))
+	onPopState := FuncOf(onPopState(&disp))
 	defer onPopState.Release()
 	Window().Set("onpopstate", onPopState)
 
-	onAppUpdate := FuncOf(onAppUpdate(disp))
+	onAppUpdate := FuncOf(onAppUpdate(&disp))
 	defer onAppUpdate.Release()
 	Window().Set("goappOnUpdate", onAppUpdate)
 
@@ -129,7 +137,7 @@ func RunWhenOnBrowser() {
 	closeAppOrientationChange := Window().AddEventListener("orientationchange", onAppOrientationChange)
 	defer closeAppOrientationChange()
 
-	performNavigate(disp, Window().URL(), false)
+	performNavigate(&disp, Window().URL(), false)
 	disp.start(context.Background())
 }
 
@@ -187,7 +195,7 @@ func newClientBody(d Dispatcher) *htmlBody {
 	return body
 }
 
-func onAchorClick(d *uiDispatcher) func(Value, []Value) interface{} {
+func onAchorClick(d Dispatcher) func(Value, []Value) interface{} {
 	return func(this Value, args []Value) interface{} {
 		event := Event{Value: args[0]}
 		elem := event.Get("target")
@@ -232,7 +240,6 @@ func onAchorClick(d *uiDispatcher) func(Value, []Value) interface{} {
 
 func onPopState(d Dispatcher) func(this Value, args []Value) interface{} {
 	return func(this Value, args []Value) interface{} {
-		// TO DOUBLECHECK
 		d.Dispatch(nil, func() {
 			navigateTo(d, Window().URL(), false)
 		})
@@ -274,9 +281,12 @@ func navigateTo(d Dispatcher, u *url.URL, updateHistory bool) {
 			lastURLVisited = u
 		}
 
-		d.(*uiDispatcher).Nav(u)
+		d, ok := d.(ClientDispatcher)
+		if !ok {
+			return
+		}
+		d.Nav(u)
 
-		// TO DOUBLECHECK
 		d.Dispatch(nil, func() {
 			if isFragmentNavigation(u) {
 				Window().ScrollToID(u.Fragment)
@@ -298,7 +308,10 @@ func performNavigate(d Dispatcher, u *url.URL, updateHistory bool) {
 		compo = &notFound{}
 	}
 
-	disp := d.(*uiDispatcher)
+	disp, ok := d.(ClientDispatcher)
+	if !ok {
+		return
+	}
 	disp.Mount(compo)
 
 	if updateHistory {
@@ -309,7 +322,6 @@ func performNavigate(d Dispatcher, u *url.URL, updateHistory bool) {
 
 	disp.Nav(u)
 	if isFragmentNavigation(u) {
-		// TO DOUBLECHECK
 		disp.Dispatch(nil, func() {
 			Window().ScrollToID(u.Fragment)
 		})
@@ -324,15 +336,13 @@ func isFragmentNavigation(u *url.URL) bool {
 	return u.Fragment != ""
 }
 
-func onAppUpdate(d *uiDispatcher) func(this Value, args []Value) interface{} {
+func onAppUpdate(d ClientDispatcher) func(this Value, args []Value) interface{} {
 	return func(this Value, args []Value) interface{} {
-		// TO DOUBLECHECK
 		d.Dispatch(nil, func() {
 			appUpdateAvailable = true
 		})
 		d.AppUpdate()
 
-		// TO DOUBLECHECK
 		d.Dispatch(nil, func() {
 			fmt.Println("app has been updated, reload to see changes")
 		})
@@ -341,13 +351,13 @@ func onAppUpdate(d *uiDispatcher) func(this Value, args []Value) interface{} {
 }
 
 func onResize(ctx Context, e Event) {
-	if d, ok := ctx.dispatcher.(*uiDispatcher); ok {
+	if d, ok := ctx.dispatcher.(ClientDispatcher); ok {
 		d.AppResize()
 	}
 }
 
 func onAppOrientationChange(ctx Context, e Event) {
-	if d, ok := ctx.dispatcher.(*uiDispatcher); ok {
+	if d, ok := ctx.dispatcher.(ClientDispatcher); ok {
 		go func() {
 			time.Sleep(orientationChangeDelay)
 			d.AppResize()

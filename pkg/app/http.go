@@ -575,31 +575,52 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	page.SetImage(h.Image)
 	page.url = &url
 
-	preRenderContainer := Div().
-		ID("app-pre-render").
-		Body(Div())
-
-	disp := newUIDispatcher(IsServer, &page, h.resolveStaticPath)
-	disp.body = preRenderContainer.(elemWithChildren)
-
-	if err := mount(disp, preRenderContainer); err != nil {
+	disp := engine{
+		Page:                   &page,
+		RunsInServer:           true,
+		ResolveStaticResources: h.resolveStaticPath,
+	}
+	body := Body().Body(
+		Div().Body(
+			Div().ID("app-pre-render").Body(content),
+			Div().
+				ID("app-wasm-loader").
+				Class("goapp-app-info").
+				Body(
+					Img().
+						ID("app-wasm-loader-icon").
+						Class("goapp-logo goapp-spin").
+						Src(h.Icon.Default),
+					P().
+						ID("app-wasm-loader-label").
+						Class("goapp-label").
+						Text(page.loadingLabel),
+				),
+		),
+		Div().ID("app-end"),
+	)
+	if err := mount(&disp, body); err != nil {
 		panic(errors.New("mounting pre-rendering container failed").
 			Tag("server-side", disp.runsInServer()).
-			Tag("body-type", reflect.TypeOf(disp.body)).
-			Tag("ui-len", len(disp.ui)).
-			Tag("ui-cap", cap(disp.ui)).
+			Tag("body-type", reflect.TypeOf(disp.Body)).
 			Wrap(err))
 	}
-	disp.body = preRenderContainer.(elemWithChildren)
+	disp.Body = body
+	disp.init()
 	defer disp.Close()
 
-	disp.Mount(content)
+	fmt.Println("prerender", r.URL)
+
 	disp.PreRender()
 
-	for len(disp.ui) != 0 {
+	fmt.Println("consuming")
+
+	for len(disp.events) != 0 && len(disp.updates) != 0 {
 		disp.Consume()
 		disp.Wait()
 	}
+
+	fmt.Println("writing bytes")
 
 	var b bytes.Buffer
 	b.WriteString("<!DOCTYPE html>\n")
@@ -675,26 +696,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				return Raw(h.RawHeaders[i])
 			}),
 		),
-		Body().Body(
-			Div().
-				Body(
-					preRenderContainer,
-					Div().
-						ID("app-wasm-loader").
-						Class("goapp-app-info").
-						Body(
-							Img().
-								ID("app-wasm-loader-icon").
-								Class("goapp-logo goapp-spin").
-								Src(h.Icon.Default),
-							P().
-								ID("app-wasm-loader-label").
-								Class("goapp-label").
-								Text(page.loadingLabel),
-						),
-				),
-			Div().ID("app-end"),
-		),
+		body,
 	))
 
 	item := PreRenderedItem{
@@ -704,6 +706,8 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	}
 	h.PreRenderCache.Set(r.Context(), item)
 	h.servePreRenderedItem(w, item)
+
+	fmt.Println("Bye")
 }
 
 func (h *Handler) resolvePackagePath(path string) string {

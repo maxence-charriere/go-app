@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"net/url"
 	"sort"
 	"sync"
@@ -49,6 +50,10 @@ type engine struct {
 }
 
 func (e *engine) Dispatch(src UI, fn func()) {
+	if src == nil {
+		src = e.Body
+	}
+
 	if src.Mounted() {
 		e.events <- event{
 			source:   src,
@@ -83,22 +88,35 @@ func (e *engine) Consume() {
 			}
 
 		default:
+			fmt.Println("+ updates:", len(e.updates), len(e.updateQueue))
+
 			if len(e.updates) == 0 {
 				return
 			}
 			e.updateComponents()
+			fmt.Println("- updates:", len(e.updates), len(e.updateQueue))
 		}
 	}
 }
 
 func (e *engine) Close() {
 	e.closeOnce.Do(func() {
+		fmt.Println("close 1")
 		e.Consume()
+		fmt.Println("close 2")
+
 		e.Wait()
+		fmt.Println("close 3")
 
 		dismount(e.Body)
+		fmt.Println("close 4")
+
 		e.Body = nil
+		fmt.Println("close 5")
+
 		close(e.events)
+
+		fmt.Println("engine closed")
 	})
 }
 

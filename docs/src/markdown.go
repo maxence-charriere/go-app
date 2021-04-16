@@ -372,9 +372,9 @@ func (m *markdownContent) Markdown(v string) *markdownContent {
 }
 
 func (m *markdownContent) Render() app.UI {
-	if m.Imd != m.md {
-		m.Defer(m.highlightCode)
-	}
+	// if m.Imd != m.md {
+	// 	m.Defer(m.highlightCode)
+	// }
 
 	return app.Div().
 		Class("markdown").
