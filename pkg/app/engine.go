@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"fmt"
 	"net/url"
 	"sort"
 	"sync"
@@ -88,35 +87,22 @@ func (e *engine) Consume() {
 			}
 
 		default:
-			fmt.Println("+ updates:", len(e.updates), len(e.updateQueue))
-
 			if len(e.updates) == 0 {
 				return
 			}
 			e.updateComponents()
-			fmt.Println("- updates:", len(e.updates), len(e.updateQueue))
 		}
 	}
 }
 
 func (e *engine) Close() {
 	e.closeOnce.Do(func() {
-		fmt.Println("close 1")
 		e.Consume()
-		fmt.Println("close 2")
-
 		e.Wait()
-		fmt.Println("close 3")
 
 		dismount(e.Body)
-		fmt.Println("close 4")
-
 		e.Body = nil
-		fmt.Println("close 5")
-
 		close(e.events)
-
-		fmt.Println("engine closed")
 	})
 }
 
@@ -229,7 +215,9 @@ func (e *engine) init() {
 
 func (e *engine) start(ctx context.Context) {
 	e.startOnce.Do(func() {
-		updates := time.NewTicker(time.Second / time.Duration(e.UpdateRate))
+		updateInterval := time.Second / time.Duration(e.UpdateRate)
+		currentInterval := updateInterval
+		updates := time.NewTicker(currentInterval)
 		defer updates.Stop()
 
 		for {
@@ -239,12 +227,20 @@ func (e *engine) start(ctx context.Context) {
 
 			case ev := <-e.events:
 				if ev.source.Mounted() {
+					if currentInterval != updateInterval {
+						currentInterval = updateInterval
+						updates.Reset(currentInterval)
+					}
 					ev.function()
 					e.scheduleComponentUpdate(ev.source)
 				}
 
 			case <-updates.C:
 				e.updateComponents()
+				if len(e.events) == 0 {
+					currentInterval = time.Hour
+					updates.Reset(currentInterval)
+				}
 			}
 		}
 	})
@@ -252,7 +248,7 @@ func (e *engine) start(ctx context.Context) {
 
 func (e *engine) scheduleComponentUpdate(n UI) {
 	var compo Composer
-	var depth = 0
+	var depth int
 
 	for {
 		if c, isCompo := n.(Composer); compo == nil && isCompo {
@@ -267,7 +263,9 @@ func (e *engine) scheduleComponentUpdate(n UI) {
 			break
 		}
 
-		depth++
+		if compo != nil {
+			depth++
+		}
 		n = parent
 	}
 

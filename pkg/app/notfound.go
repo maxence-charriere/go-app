@@ -21,7 +21,6 @@ func (n *notFound) OnMount(Context) {
 		if rel.String() == "icon" {
 			favicon := link.Call("getAttribute", "href")
 			n.Icon = favicon.String()
-			n.Update()
 			return
 		}
 	}

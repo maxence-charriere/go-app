@@ -212,14 +212,10 @@ func (c *Compo) ResizeContent() {
 func (c *Compo) ValueTo(v interface{}) EventHandler {
 	return func(ctx Context, e Event) {
 		value := ctx.JSSrc.Get("value")
-		if !value.Truthy() {
-			return
-		}
 		if err := stringTo(value.String(), v); err != nil {
 			Log(errors.New("storing dom element value failed").Wrap(err))
 			return
 		}
-		c.Update()
 	}
 }
 

@@ -147,7 +147,6 @@ func (f *flow) requiresLayoutUpdate() bool {
 func (f *flow) refreshLayout(ctx Context) {
 	if f.Iid != "" && f.Iid != f.id {
 		f.id = f.Iid
-		f.Update()
 		return
 	}
 
@@ -185,7 +184,6 @@ func (f *flow) adjustItemSizes(ctx Context) {
 	}
 
 	defer f.ResizeContent()
-	defer f.Update()
 
 	itemWidth := f.IitemsBaseWitdh
 	itemsPerRow := width / itemWidth

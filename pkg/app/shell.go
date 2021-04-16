@@ -236,7 +236,6 @@ func (s *shell) requiresLayoutUpdate() bool {
 func (s *shell) refreshLayout(ctx Context) {
 	if s.Iid != "" && s.Iid != s.id {
 		s.id = s.Iid
-		s.Update()
 		return
 	}
 
@@ -277,7 +276,6 @@ func (s *shell) adjustLayout(ctx Context) {
 	}
 
 	s.isOverlayMenuButtonVisible = len(s.IoverlayMenu) != 0 && !s.isMenuVisible
-	s.Update()
 	s.ResizeContent()
 }
 
@@ -289,10 +287,8 @@ func (s *shell) cancelAdjustLayout() {
 
 func (s *shell) onMenuButtonClick(ctx Context, e Event) {
 	s.isOverlayMenuVisible = true
-	s.Update()
 }
 
 func (s *shell) onMenuOverlayClick(ctx Context, e Event) {
 	s.isOverlayMenuVisible = false
-	s.Update()
 }

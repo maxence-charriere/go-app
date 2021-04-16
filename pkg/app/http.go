@@ -609,18 +609,12 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	disp.init()
 	defer disp.Close()
 
-	fmt.Println("prerender", r.URL)
-
 	disp.PreRender()
-
-	fmt.Println("consuming")
 
 	for len(disp.events) != 0 && len(disp.updates) != 0 {
 		disp.Consume()
 		disp.Wait()
 	}
-
-	fmt.Println("writing bytes")
 
 	var b bytes.Buffer
 	b.WriteString("<!DOCTYPE html>\n")
@@ -706,8 +700,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	}
 	h.PreRenderCache.Set(r.Context(), item)
 	h.servePreRenderedItem(w, item)
-
-	fmt.Println("Bye")
 }
 
 func (h *Handler) resolvePackagePath(path string) string {

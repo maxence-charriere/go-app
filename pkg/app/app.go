@@ -32,6 +32,7 @@ const (
 	IsServer = runtime.GOARCH != "wasm" || runtime.GOOS != "js"
 
 	orientationChangeDelay = time.Millisecond * 500
+	engineUpdateRate       = 120
 )
 
 var (
@@ -107,7 +108,7 @@ func RunWhenOnBrowser() {
 	rootPrefix = Getenv("GOAPP_ROOT_PREFIX")
 
 	disp := engine{
-		UpdateRate:             60,
+		UpdateRate:             engineUpdateRate,
 		Page:                   browserPage{},
 		LocalStorage:           newJSStorage("localStorage"),
 		SessionStorage:         newJSStorage("sessionStorage"),
