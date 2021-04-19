@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"net/url"
+	"time"
 )
 
 // Context represents a context that is tied to a UI element. It is canceled
@@ -31,10 +32,16 @@ type Context struct {
 	dispatcher Dispatcher
 }
 
-// Dispatch executes the given function on the goroutine dedicated to updating
-// the UI.
+// Dispatch executes the given function on the UI goroutine, before updating the
+// context's source nearest parent component.
 func (ctx Context) Dispatch(fn func(Context)) {
 	ctx.dispatcher.Dispatch(ctx.Src, fn)
+}
+
+// Defer executes the given function on the UI goroutine after the context's
+// source nearest parent component has been updated.
+func (ctx Context) Defer(fn func(Context)) {
+	ctx.dispatcher.Defer(ctx.Src, fn)
 }
 
 // Async launches the given function on a new goroutine.
@@ -52,7 +59,7 @@ func (ctx Context) Reload() {
 		return
 	}
 
-	ctx.Dispatch(func(ctx Context) {
+	ctx.Defer(func(ctx Context) {
 		Window().Get("location").Call("reload")
 	})
 }
@@ -60,14 +67,14 @@ func (ctx Context) Reload() {
 // Navigate navigates to the given URL. This is a helper method that converts
 // rawURL to an *url.URL and then calls ctx.NavigateTo under the hood.
 func (ctx Context) Navigate(rawURL string) {
-	ctx.Dispatch(func(ctx Context) {
+	ctx.Defer(func(ctx Context) {
 		navigate(ctx.dispatcher, rawURL)
 	})
 }
 
 // NavigateTo navigates to the given URL.
 func (ctx Context) NavigateTo(u *url.URL) {
-	ctx.Dispatch(func(ctx Context) {
+	ctx.Defer(func(ctx Context) {
 		navigateTo(ctx.dispatcher, u, true)
 	})
 }
@@ -94,8 +101,17 @@ func (ctx Context) SessionStorage() BrowserStorage {
 
 // ScrollTo scrolls to the HTML element with the given id.
 func (ctx Context) ScrollTo(id string) {
-	ctx.Dispatch(func(ctx Context) {
+	ctx.Defer(func(ctx Context) {
 		Window().ScrollToID(id)
+	})
+}
+
+// After asynchronously waits for the given duration and dispatches the given
+// function.
+func (ctx Context) After(d time.Duration, fn func(Context)) {
+	ctx.Async(func() {
+		time.Sleep(d)
+		ctx.Dispatch(fn)
 	})
 }
 

@@ -315,7 +315,6 @@ func (c *Compo) update(n UI) error {
 	aval := reflect.Indirect(reflect.ValueOf(c.self()))
 	bval := reflect.Indirect(reflect.ValueOf(n))
 	compotype := reflect.ValueOf(c).Elem().Type()
-
 	haveModifiedFields := false
 
 	for i := 0; i < aval.NumField(); i++ {
@@ -336,11 +335,12 @@ func (c *Compo) update(n UI) error {
 		}
 	}
 
+	c.Update()
+
 	if updater, ok := c.self().(Updater); ok && haveModifiedFields {
 		c.dispatch(updater.OnUpdate)
 	}
 
-	c.Update()
 	return nil
 }
 

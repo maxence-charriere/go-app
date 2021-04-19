@@ -13,6 +13,7 @@ import (
 const (
 	eventBufferSize  = 4096
 	updateBufferSize = 64
+	deferBufferSize  = 64
 )
 
 type engine struct {
@@ -46,6 +47,7 @@ type engine struct {
 	events        chan event
 	updates       map[Composer]struct{}
 	updateQueue   []updateDescriptor
+	defers        []event
 }
 
 func (e *engine) Dispatch(src UI, fn func(Context)) {
@@ -57,6 +59,20 @@ func (e *engine) Dispatch(src UI, fn func(Context)) {
 		e.events <- event{
 			source:   src,
 			function: fn,
+		}
+	}
+}
+
+func (e *engine) Defer(src UI, fn func(Context)) {
+	if src == nil {
+		src = e.Body
+	}
+
+	if src.Mounted() {
+		e.events <- event{
+			source:    src,
+			deferable: true,
+			function:  fn,
 		}
 	}
 }
@@ -82,15 +98,20 @@ func (e *engine) Consume() {
 		select {
 		case ev := <-e.events:
 			if ev.source.Mounted() {
-				ev.function(makeContext(ev.source))
-				e.scheduleComponentUpdate(ev.source)
+				if ev.deferable {
+					e.defers = append(e.defers, ev)
+				} else {
+					ev.function(makeContext(ev.source))
+					e.scheduleComponentUpdate(ev.source)
+				}
 			}
 
 		default:
+			e.updateComponents()
+			e.execDeferableEvents()
 			if len(e.updates) == 0 {
 				return
 			}
-			e.updateComponents()
 		}
 	}
 }
@@ -179,6 +200,7 @@ func (e *engine) init() {
 		e.events = make(chan event, eventBufferSize)
 		e.updates = make(map[Composer]struct{})
 		e.updateQueue = make([]updateDescriptor, 0, updateBufferSize)
+		e.defers = make([]event, 0, deferBufferSize)
 
 		if e.UpdateRate <= 0 {
 			e.UpdateRate = 60
@@ -231,12 +253,19 @@ func (e *engine) start(ctx context.Context) {
 						currentInterval = updateInterval
 						updates.Reset(currentInterval)
 					}
-					ev.function(makeContext(ev.source))
-					e.scheduleComponentUpdate(ev.source)
+
+					if ev.deferable {
+						e.defers = append(e.defers, ev)
+					} else {
+						ev.function(makeContext(ev.source))
+						e.scheduleComponentUpdate(ev.source)
+					}
 				}
 
 			case <-updates.C:
 				e.updateComponents()
+				e.execDeferableEvents()
+
 				if len(e.events) == 0 {
 					currentInterval = time.Hour
 					updates.Reset(currentInterval)
@@ -304,6 +333,15 @@ func (e *engine) updateComponents() {
 	e.updateQueue = e.updateQueue[:0]
 }
 
+func (e *engine) execDeferableEvents() {
+	for _, ev := range e.defers {
+		if ev.source.Mounted() {
+			ev.function(makeContext(ev.source))
+		}
+	}
+	e.defers = e.defers[:0]
+}
+
 func (e *engine) currentPage() Page {
 	return e.Page
 }
@@ -325,8 +363,9 @@ func (e *engine) resolveStaticResource(path string) string {
 }
 
 type event struct {
-	source   UI
-	function func(Context)
+	source    UI
+	deferable bool
+	function  func(Context)
 }
 
 type updateDescriptor struct {

@@ -12,9 +12,13 @@ const (
 // Dispatcher is the interface that describes an environment that synchronizes
 // UI instructions and UI elements lifecycle.
 type Dispatcher interface {
-	// Dispatch enqueues the given function to be executed on a goroutine
-	// dedicated to managing UI modifications.
+	// Dispatch executes the given function on the UI goroutine, before updating
+	// the source's nearest parent component.
 	Dispatch(src UI, fn func(Context))
+
+	// Defer executes the given function on the UI goroutine after the source's
+	// nearest parent component has been updated.
+	Defer(src UI, fn func(Context))
 
 	// 	Async launches the given function on a new goroutine.
 	//
