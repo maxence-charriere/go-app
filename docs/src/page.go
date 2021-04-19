@@ -47,7 +47,6 @@ func (p *page) OnAppUpdate(ctx app.Context) {
 
 func (p *page) setAvailableUpdate(ctx app.Context) {
 	p.isAppUpdateAvailable = ctx.AppUpdateAvailable
-	p.Update()
 }
 
 func (p *page) Render() app.UI {
@@ -130,8 +129,6 @@ func (p *page) Render() app.UI {
 		)
 }
 
-func (p *page) onUpdateClick() {
-	p.Defer(func(ctx app.Context) {
-		ctx.Reload()
-	})
+func (p *page) onUpdateClick(ctx app.Context, e app.Event) {
+	ctx.Reload()
 }

@@ -17,7 +17,6 @@ type aTitle struct {
 
 func (t *aTitle) OnPreRender(ctx app.Context) {
 	t.title = "Testing Prerendering"
-	t.Update()
 }
 
 func (t *aTitle) Render() app.UI {
@@ -65,12 +64,10 @@ type aTitle struct {
 
 func (t *aTitle) OnMount(ctx app.Context) {
 	t.title = "Testing Mounting"
-	t.Update()
 }
 
 func (t *aTitle) OnNav(ctx app.Context) {
 	t.title = "Testing Nav"
-	t.Update()
 }
 
 func (t *aTitle) Render() app.UI {

@@ -26,7 +26,6 @@ func (n *nav) Class(v string) *nav {
 
 func (n *nav) OnNav(ctx app.Context) {
 	n.currentPath = ctx.Page.URL().Path
-	n.Update()
 }
 
 func (n *nav) Render() app.UI {

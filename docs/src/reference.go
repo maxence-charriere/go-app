@@ -42,12 +42,6 @@ func (i *godocIndex) OnPreRender(ctx app.Context) {
 
 func (i *godocIndex) OnNav(ctx app.Context) {
 	i.init(ctx)
-
-	fragment := ctx.Page.URL().Fragment
-	if fragment == "" {
-		fragment = "top"
-	}
-	ctx.ScrollTo(fragment)
 }
 
 func (i *godocIndex) init(ctx app.Context) {
@@ -66,12 +60,11 @@ func (i *godocIndex) init(ctx app.Context) {
 func (i *godocIndex) load(ctx app.Context) {
 	i.isLoading = true
 	i.err = nil
-	i.Update()
 
 	ctx.Async(func() {
 		html, err := get(ctx, "/web/godoc-index.html")
 
-		i.Defer(func(ctx app.Context) {
+		ctx.Dispatch(func(ctx app.Context) {
 			i.rawHTML = string(html)
 			i.err = err
 			i.isLoading = false
@@ -81,25 +74,10 @@ func (i *godocIndex) load(ctx app.Context) {
 				fragment = "top"
 			}
 
-			i.Update()
-			i.Defer(i.focusLink)
-			ctx.ScrollTo(fragment)
+			ctx.Defer(i.focusLink)
+			ctx.Defer(i.scrollToSelected)
 		})
 	})
-}
-
-func (i *godocIndex) Render() app.UI {
-	return app.Div().
-		Class("godoc-index").
-		Body(
-			app.Raw(i.rawHTML),
-			newLoader().
-				Title("Loading").
-				Description("index").
-				Size(48).
-				Err(i.err).
-				Loading(i.isLoading),
-		)
 }
 
 func (i *godocIndex) focusLink(ctx app.Context) {
@@ -135,6 +113,28 @@ func (i *godocIndex) linkID(fragment string) string {
 	return "src-" + fragment
 }
 
+func (i *godocIndex) scrollToSelected(ctx app.Context) {
+	fragment := i.linkID(ctx.Page.URL().Fragment)
+	if fragment == "" {
+		fragment = "top"
+	}
+	ctx.ScrollTo(fragment)
+}
+
+func (i *godocIndex) Render() app.UI {
+	return app.Div().
+		Class("godoc-index").
+		Body(
+			app.Raw(i.rawHTML),
+			newLoader().
+				Title("Loading").
+				Description("index").
+				Size(48).
+				Err(i.err).
+				Loading(i.isLoading),
+		)
+}
+
 type godoc struct {
 	app.Compo
 
@@ -166,24 +166,17 @@ func (d *godoc) init(ctx app.Context) {
 func (d *godoc) load(ctx app.Context) {
 	d.isLoading = true
 	d.err = nil
-	d.Update()
 
 	ctx.Async(func() {
 		html, err := get(ctx, "/web/godoc.html")
 
-		d.Defer(func(ctx app.Context) {
+		ctx.Dispatch(func(ctx app.Context) {
 			d.rawHTML = string(html)
 			d.err = err
 			d.isLoading = false
 
-			fragment := ctx.Page.URL().Fragment
-			if fragment == "" {
-				fragment = "top"
-			}
-
-			d.Update()
-			d.Defer(d.setupToggle)
-			ctx.ScrollTo(fragment)
+			ctx.Defer(d.setupToggle)
+			d.scrollToFragment(ctx)
 		})
 	})
 }
@@ -215,17 +208,22 @@ func (d *godoc) setupToggle(ctx app.Context) {
 }
 
 func (d *godoc) onToggle(src app.Value, args []app.Value) interface{} {
-	d.Defer(func(ctx app.Context) {
-		switch src.Get("className").String() {
-		case "toggleVisible":
-			src.Set("className", "toggle")
+	switch src.Get("className").String() {
+	case "toggleVisible":
+		src.Set("className", "toggle")
 
-		case "toggle":
-			src.Set("className", "toggleVisible")
-		}
-	})
-
+	case "toggle":
+		src.Set("className", "toggleVisible")
+	}
 	return nil
+}
+
+func (d *godoc) scrollToFragment(ctx app.Context) {
+	fragment := ctx.Page.URL().Fragment
+	if fragment == "" {
+		fragment = "top"
+	}
+	ctx.ScrollTo(fragment)
 }
 
 func (d *godoc) OnDismount() {

@@ -296,23 +296,20 @@ func (d *markdownDoc) init(ctx app.Context) {
 	ctx.Page.SetTitle(page.title)
 	ctx.Page.SetDescription(page.description)
 
-	d.Update()
 	d.load(ctx, page.path)
 }
 
 func (d *markdownDoc) load(ctx app.Context, path string) {
 	d.isLoading = true
 	d.err = nil
-	d.Update()
 
 	ctx.Async(func() {
 		md, err := get(ctx, path)
 
-		d.Defer(func(ctx app.Context) {
+		ctx.Dispatch(func(ctx app.Context) {
 			d.markdown = string(md)
 			d.err = err
 			d.isLoading = false
-			d.Update()
 
 			fragment := ctx.Page.URL().Fragment
 			if fragment == "" {
@@ -371,11 +368,13 @@ func (m *markdownContent) Markdown(v string) *markdownContent {
 	return m
 }
 
-func (m *markdownContent) Render() app.UI {
-	// if m.Imd != m.md {
-	// 	m.Defer(m.highlightCode)
-	// }
+func (m *markdownContent) OnUpdate(ctx app.Context) {
+	if m.Imd != m.md {
+		m.highlightCode(ctx)
+	}
+}
 
+func (m *markdownContent) Render() app.UI {
 	return app.Div().
 		Class("markdown").
 		Class(m.Iclass).

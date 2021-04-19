@@ -75,7 +75,6 @@ type hello struct {
 func (h *hello) OnPreRender(ctx app.Context) {
 	username := ctx.Page.URL().Query().Get("username")
 	h.name = username
-	h.Update()
 }
 
 func (h *hello) Render() app.UI {

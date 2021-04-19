@@ -47,7 +47,6 @@ func (l *foodList) initFood(ctx app.Context) {
 			label: "Fish",
 		},
 	}
-	l.Update()
 }
 
 func (l *foodList) Render() app.UI {
@@ -92,7 +91,6 @@ func (l *foodList) eat(f food) app.EventHandler {
 				// Removing food item:
 				copy(l.foods[i:], l.foods[i+1:])
 				l.foods = l.foods[:len(l.foods)-1]
-				l.Update()
 				return
 			}
 		}
@@ -155,7 +153,6 @@ func (l *foodList) initFood(ctx app.Context) {
 			label: "Fish",
 		},
 	}
-	l.Update()
 }
 
 func (l *foodList) Render() app.UI {
@@ -200,7 +197,6 @@ func (l *foodList) eat(f food) app.EventHandler {
 				// Removing food item:
 				copy(l.foods[i:], l.foods[i+1:])
 				l.foods = l.foods[:len(l.foods)-1]
-				l.Update()
 				return
 			}
 		}

@@ -56,7 +56,6 @@ func (h *hello) Render() app.UI {
 
 func (h *hello) OnInputChange(ctx app.Context, e app.Event) {
 	h.name = ctx.JSSrc.Get("value").String() // Name field is modified
-	h.Update()                               // Update the component UI
 }
 ```
 

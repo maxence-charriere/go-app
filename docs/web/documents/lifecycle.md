@@ -57,7 +57,6 @@ type littleApp struct {
 // updated in background.
 func (a *littleApp) OnAppUpdate(ctx app.Context) {
 	a.updateAvailable = ctx.AppupdateAvailable // Reports that an app update is available.
-	a.Update()                                 // Triggers UI update.
 }
 
 func (a *littleApp) Render() app.UI {

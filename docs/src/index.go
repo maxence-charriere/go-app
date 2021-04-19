@@ -37,7 +37,6 @@ func (i *index) Class(v string) *index {
 
 func (i *index) OnNav(ctx app.Context) {
 	i.currentFragment = ctx.Page.URL().Fragment
-	i.Update()
 }
 
 func (i *index) Render() app.UI {

@@ -82,9 +82,8 @@ func (f *foo) OnNav(ctx app.Context) {
 		}
 
 		// Storing HTTP response in component field:
-		f.Defer(func(app.Context) {
+		ctx.Dispatch(func(app.Context) {
 			f.response = b
-			f.Update()
 		})
 	})
 }

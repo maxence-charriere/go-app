@@ -16,17 +16,14 @@ type aTitle struct {
 
 func (t *aTitle) OnPreRender(ctx app.Context) {
 	t.title = "Testing Prerendering"
-	t.Update()
 }
 
 func (t *aTitle) OnMount(ctx app.Context) {
 	t.title = "Testing Mounting"
-	t.Update()
 }
 
 func (t *aTitle) OnNav(ctx app.Context) {
 	t.title = "Testing Nav"
-	t.Update()
 }
 
 func (t *aTitle) Render() app.UI {
@@ -38,7 +35,7 @@ func (t *aTitle) Render() app.UI {
 func (t *aTitle) setAsyncTitle(ctx app.Context) {
 	ctx.Async(func() {
 		time.Sleep(time.Millisecond * 100)
-		t.Defer(func(ctx app.Context) {
+		ctx.Dispatch(func(ctx app.Context) {
 			t.title = "Testing Async"
 		})
 	})

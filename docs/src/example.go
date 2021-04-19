@@ -37,8 +37,6 @@ func (e *example) OnNav(ctx app.Context) {
 }
 
 func (e *example) init(ctx app.Context) {
-	defer e.Update()
-
 	e.examples = []exampleData{
 		{
 			component:   newHello(),
