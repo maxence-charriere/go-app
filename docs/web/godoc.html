@@ -2272,13 +2272,17 @@ It implements the context.Context interface.
 
 			
 				
-				<h3 id="Context.After">func (Context) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go#L99">After</a>
+				<h3 id="Context.After">func (Context) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go#L101">After</a>
 					<a class="permalink" href="#Context.After" id="src-Context.After">¶</a>
 					
 					
 				</h3>
 				<pre>func (ctx <a href="#Context" id="src-Context">Context</a>) After(d <a href="https://golang.org/pkg/time/">time</a>.<a href="https://golang.org/pkg/time/#Duration">Duration</a>, fn func(<a href="#Context" id="src-Context">Context</a>))</pre>
-				
+				<p>
+After asynchronously waits for the given duration and dispatches the given
+function.
+</p>
+
 				
 				
 				
@@ -2493,11 +2497,11 @@ UI instructions and UI elements lifecycle.
 
 			<pre>type Dispatcher interface {
     <span class="comment">// Dispatch executes the given function on the UI goroutine, before updating</span>
-    <span class="comment">// the component associated with the context.</span>
+    <span class="comment">// the source&#39;s nearest parent component.</span>
     Dispatch(src <a href="#UI" id="src-UI">UI</a>, fn func(<a href="#Context" id="src-Context">Context</a>))
 
-    <span class="comment">// Defer executes the given function on the UI goroutine after the component</span>
-    <span class="comment">// associated with the context has been updated.</span>
+    <span class="comment">// Defer executes the given function on the UI goroutine after the source&#39;s</span>
+    <span class="comment">// nearest parent component has been updated.</span>
     Defer(src <a href="#UI" id="src-UI">UI</a>, fn func(<a href="#Context" id="src-Context">Context</a>))
 
     <span class="comment">// 	Async launches the given function on a new goroutine.</span>
