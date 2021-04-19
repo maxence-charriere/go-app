@@ -5,7 +5,7 @@ import (
 	"io"
 	"net/url"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 // Condition represents a control structure that displays nodes depending on a

@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 // Raw returns a ui element from the given raw value. HTML raw value must have a

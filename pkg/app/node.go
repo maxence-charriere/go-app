@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 // UI is the interface that describes a user interface element such as

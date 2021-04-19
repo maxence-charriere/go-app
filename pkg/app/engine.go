@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 const (

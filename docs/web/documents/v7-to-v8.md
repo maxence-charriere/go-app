@@ -10,7 +10,7 @@ Replace `v7` imports by `v8`.
 
 ```go
 import (
-	"github.com/maxence-charriere/go-app/v8/pkg/app"
+	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 ```
 
@@ -69,7 +69,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/app"
+	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 
 func main() {

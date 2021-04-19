@@ -10,10 +10,10 @@ import (
 	"os"
 	"syscall"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/app"
-	"github.com/maxence-charriere/go-app/v8/pkg/cli"
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
-	"github.com/maxence-charriere/go-app/v8/pkg/logs"
+	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v9/pkg/cli"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/logs"
 )
 
 const (

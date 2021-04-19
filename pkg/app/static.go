@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 // GenerateStaticWebsite generates the files to run a PWA built with go-app as a
