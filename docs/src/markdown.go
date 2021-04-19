@@ -274,6 +274,7 @@ func (d *markdownDoc) OnPreRender(ctx app.Context) {
 
 func (d *markdownDoc) OnNav(ctx app.Context) {
 	d.init(ctx)
+	d.scroll(ctx)
 }
 
 func (d *markdownDoc) init(ctx app.Context) {
@@ -311,13 +312,18 @@ func (d *markdownDoc) load(ctx app.Context, path string) {
 			d.err = err
 			d.isLoading = false
 
-			fragment := ctx.Page.URL().Fragment
-			if fragment == "" {
-				fragment = "top"
-			}
-			ctx.ScrollTo(fragment)
+			d.scroll(ctx)
 		})
 	})
+}
+
+func (d *markdownDoc) scroll(ctx app.Context) {
+	fragment := ctx.Page.URL().Fragment
+	if fragment == "" {
+		fragment = "top"
+	}
+	ctx.ScrollTo(fragment)
+
 }
 
 func (d *markdownDoc) Render() app.UI {
@@ -369,9 +375,7 @@ func (m *markdownContent) Markdown(v string) *markdownContent {
 }
 
 func (m *markdownContent) OnUpdate(ctx app.Context) {
-	if m.Imd != m.md {
-		m.highlightCode(ctx)
-	}
+	m.highlightCode(ctx)
 }
 
 func (m *markdownContent) Render() app.UI {

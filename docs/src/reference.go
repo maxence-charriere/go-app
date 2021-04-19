@@ -75,7 +75,7 @@ func (i *godocIndex) load(ctx app.Context) {
 			}
 
 			ctx.Defer(i.focusLink)
-			ctx.Defer(i.scrollToSelected)
+			ctx.Defer(i.scroll)
 		})
 	})
 }
@@ -113,7 +113,7 @@ func (i *godocIndex) linkID(fragment string) string {
 	return "src-" + fragment
 }
 
-func (i *godocIndex) scrollToSelected(ctx app.Context) {
+func (i *godocIndex) scroll(ctx app.Context) {
 	fragment := i.linkID(ctx.Page.URL().Fragment)
 	if fragment == "" {
 		fragment = "top"
@@ -154,6 +154,7 @@ func (d *godoc) OnPreRender(ctx app.Context) {
 
 func (d *godoc) OnNav(ctx app.Context) {
 	d.init(ctx)
+	d.scroll(ctx)
 }
 
 func (d *godoc) init(ctx app.Context) {
@@ -176,7 +177,7 @@ func (d *godoc) load(ctx app.Context) {
 			d.isLoading = false
 
 			ctx.Defer(d.setupToggle)
-			d.scrollToFragment(ctx)
+			d.scroll(ctx)
 		})
 	})
 }
@@ -218,7 +219,7 @@ func (d *godoc) onToggle(src app.Value, args []app.Value) interface{} {
 	return nil
 }
 
-func (d *godoc) scrollToFragment(ctx app.Context) {
+func (d *godoc) scroll(ctx app.Context) {
 	fragment := ctx.Page.URL().Fragment
 	if fragment == "" {
 		fragment = "top"

@@ -335,7 +335,7 @@ func (c *Compo) update(n UI) error {
 		}
 	}
 
-	c.Update()
+	c.updateRoot()
 
 	if updater, ok := c.self().(Updater); ok && haveModifiedFields {
 		c.dispatch(updater.OnUpdate)
