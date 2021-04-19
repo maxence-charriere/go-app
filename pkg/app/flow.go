@@ -109,6 +109,12 @@ func (f *flow) OnNav(ctx Context) {
 	}
 }
 
+func (f *flow) OnUpdate(ctx Context) {
+	if f.requiresLayoutUpdate() {
+		f.refreshLayout(ctx)
+	}
+}
+
 func (f *flow) OnResize(ctx Context) {
 	f.refreshLayout(ctx)
 }
@@ -118,10 +124,6 @@ func (f *flow) OnDismount() {
 }
 
 func (f *flow) Render() UI {
-	// if f.requiresLayoutUpdate() {
-	// 	f.Defer(f.refreshLayout)
-	// }
-
 	return Div().
 		ID(f.id).
 		Class("goapp-flow").
@@ -163,7 +165,7 @@ func (f *flow) refreshLayout(ctx Context) {
 	}
 
 	f.adjustSizeTimer = time.AfterFunc(flowResizeSizeDelay, func() {
-		f.Defer(f.adjustItemSizes)
+		ctx.Dispatch(f.adjustItemSizes)
 	})
 }
 

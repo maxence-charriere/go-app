@@ -268,7 +268,7 @@ func TestNestedInComponentNavigator(t *testing.T) {
 	require.Equal(t, "https://murlok.io", b.onNavURL)
 }
 
-func TestUpdater(t *testing.T) {
+func TestAppUpdater(t *testing.T) {
 	appUpdateAvailable = true
 	defer func() {
 		appUpdateAvailable = false
@@ -283,7 +283,7 @@ func TestUpdater(t *testing.T) {
 	require.True(t, h.appUpdated)
 }
 
-func TestNestedUpdater(t *testing.T) {
+func TestNestedAppUpdater(t *testing.T) {
 	appUpdateAvailable = true
 	defer func() {
 		appUpdateAvailable = false
@@ -299,7 +299,7 @@ func TestNestedUpdater(t *testing.T) {
 	require.True(t, h.appUpdated)
 }
 
-func TestNestedInComponentUpdater(t *testing.T) {
+func TestNestedInComponentAppUpdater(t *testing.T) {
 	appUpdateAvailable = true
 	defer func() {
 		appUpdateAvailable = false
@@ -380,6 +380,23 @@ func TestNestedInComponentPreRenderer(t *testing.T) {
 	require.Equal(t, "bar", d.currentPage().Title())
 }
 
+func TestUpdater(t *testing.T) {
+	b := &bar{Value: "BAR"}
+	d := NewClientTester(b)
+	defer d.Close()
+
+	require.False(t, b.updated)
+
+	d.Mount(&bar{Value: "BAR"})
+	d.Consume()
+	require.False(t, b.updated)
+
+	d.Mount(&bar{Value: "Bar"})
+	d.Consume()
+	require.Equal(t, "Bar", b.Value)
+	require.True(t, b.updated)
+}
+
 type hello struct {
 	Compo
 
@@ -437,10 +454,12 @@ func (f *foo) Render() UI {
 
 type bar struct {
 	Compo
-	Value      string
+	Value string
+
 	onNavURL   string
 	appUpdated bool
 	appRezized bool
+	updated    bool
 }
 
 func (b *bar) OnPreRender(ctx Context) {
@@ -457,6 +476,10 @@ func (b *bar) OnAppUpdate(ctx Context) {
 
 func (b *bar) OnResize(ctx Context) {
 	b.appRezized = true
+}
+
+func (b *bar) OnUpdate(ctx Context) {
+	b.updated = true
 }
 
 func (b *bar) Render() UI {

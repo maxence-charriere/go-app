@@ -48,7 +48,7 @@ type engine struct {
 	updateQueue   []updateDescriptor
 }
 
-func (e *engine) Dispatch(src UI, fn func()) {
+func (e *engine) Dispatch(src UI, fn func(Context)) {
 	if src == nil {
 		src = e.Body
 	}
@@ -82,7 +82,7 @@ func (e *engine) Consume() {
 		select {
 		case ev := <-e.events:
 			if ev.source.Mounted() {
-				ev.function()
+				ev.function(makeContext(ev.source))
 				e.scheduleComponentUpdate(ev.source)
 			}
 
@@ -107,13 +107,13 @@ func (e *engine) Close() {
 }
 
 func (e *engine) PreRender() {
-	e.Dispatch(e.Body, func() {
+	e.Dispatch(e.Body, func(Context) {
 		e.Body.preRender(e.Page)
 	})
 }
 
 func (e *engine) Mount(n UI) {
-	e.Dispatch(e.Body, func() {
+	e.Dispatch(e.Body, func(Context) {
 		if !e.isMountedOnce {
 			if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {
 				panic(errors.New("mounting ui element failed").
@@ -157,19 +157,19 @@ func (e *engine) Nav(u *url.URL) {
 		p.ReplaceURL(u)
 	}
 
-	e.Dispatch(e.Body, func() {
+	e.Dispatch(e.Body, func(Context) {
 		e.Body.onNav(u)
 	})
 }
 
 func (e *engine) AppUpdate() {
-	e.Dispatch(e.Body, func() {
+	e.Dispatch(e.Body, func(Context) {
 		e.Body.onAppUpdate()
 	})
 }
 
 func (e *engine) AppResize() {
-	e.Dispatch(e.Body, func() {
+	e.Dispatch(e.Body, func(Context) {
 		e.Body.onResize()
 	})
 }
@@ -231,7 +231,7 @@ func (e *engine) start(ctx context.Context) {
 						currentInterval = updateInterval
 						updates.Reset(currentInterval)
 					}
-					ev.function()
+					ev.function(makeContext(ev.source))
 					e.scheduleComponentUpdate(ev.source)
 				}
 
@@ -326,7 +326,7 @@ func (e *engine) resolveStaticResource(path string) string {
 
 type event struct {
 	source   UI
-	function func()
+	function func(Context)
 }
 
 type updateDescriptor struct {

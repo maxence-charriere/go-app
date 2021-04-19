@@ -241,7 +241,7 @@ func onAchorClick(d Dispatcher) func(Value, []Value) interface{} {
 
 func onPopState(d Dispatcher) func(this Value, args []Value) interface{} {
 	return func(this Value, args []Value) interface{} {
-		d.Dispatch(nil, func() {
+		d.Dispatch(nil, func(ctx Context) {
 			navigateTo(d, Window().URL(), false)
 		})
 		return nil
@@ -288,7 +288,7 @@ func navigateTo(d Dispatcher, u *url.URL, updateHistory bool) {
 		}
 		d.Nav(u)
 
-		d.Dispatch(nil, func() {
+		d.Dispatch(nil, func(ctx Context) {
 			if isFragmentNavigation(u) {
 				Window().ScrollToID(u.Fragment)
 			}
@@ -323,7 +323,7 @@ func performNavigate(d Dispatcher, u *url.URL, updateHistory bool) {
 
 	disp.Nav(u)
 	if isFragmentNavigation(u) {
-		disp.Dispatch(nil, func() {
+		disp.Dispatch(nil, func(ctx Context) {
 			Window().ScrollToID(u.Fragment)
 		})
 	}
@@ -339,12 +339,12 @@ func isFragmentNavigation(u *url.URL) bool {
 
 func onAppUpdate(d ClientDispatcher) func(this Value, args []Value) interface{} {
 	return func(this Value, args []Value) interface{} {
-		d.Dispatch(nil, func() {
+		d.Dispatch(nil, func(ctx Context) {
 			appUpdateAvailable = true
 		})
 		d.AppUpdate()
 
-		d.Dispatch(nil, func() {
+		d.Dispatch(nil, func(ctx Context) {
 			fmt.Println("app has been updated, reload to see changes")
 		})
 		return nil

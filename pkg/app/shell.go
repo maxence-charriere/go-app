@@ -153,6 +153,10 @@ func (s *shell) OnNav(ctx Context) {
 	s.refreshLayout(ctx)
 }
 
+func (s *shell) OnUpdate(ctx Context) {
+	s.refreshLayout(ctx)
+}
+
 func (s *shell) OnResize(ctx Context) {
 	s.refreshLayout(ctx)
 }
@@ -162,10 +166,6 @@ func (s *shell) Dismount() {
 }
 
 func (s *shell) Render() UI {
-	// if s.requiresLayoutUpdate() {
-	// 	s.Defer(s.refreshLayout)
-	// }
-
 	visible := func(b bool) string {
 		if b {
 			return "bloc"
@@ -250,7 +250,7 @@ func (s *shell) refreshLayout(ctx Context) {
 	}
 
 	s.adjustLayoutTimer = time.AfterFunc(0, func() {
-		s.Defer(s.adjustLayout)
+		ctx.Dispatch(s.adjustLayout)
 	})
 }
 

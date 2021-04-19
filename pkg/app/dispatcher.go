@@ -14,7 +14,7 @@ const (
 type Dispatcher interface {
 	// Dispatch enqueues the given function to be executed on a goroutine
 	// dedicated to managing UI modifications.
-	Dispatch(src UI, fn func())
+	Dispatch(src UI, fn func(Context))
 
 	// 	Async launches the given function on a new goroutine.
 	//

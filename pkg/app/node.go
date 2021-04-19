@@ -146,7 +146,7 @@ func (h eventHandler) equal(o eventHandler) bool {
 
 func makeJsEventHandler(src UI, h EventHandler) Func {
 	return FuncOf(func(this Value, args []Value) interface{} {
-		src.dispatcher().Dispatch(src, func() {
+		src.dispatcher().Dispatch(src, func(ctx Context) {
 			if !src.Mounted() {
 				return
 			}
@@ -156,7 +156,7 @@ func makeJsEventHandler(src UI, h EventHandler) Func {
 			}
 
 			trackMousePosition(event)
-			h(makeContext(src), event)
+			h(ctx, event)
 		})
 
 		return nil
