@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	flowItemBaseWidth   = 300
-	flowResizeSizeDelay = time.Millisecond * 100
+	flowDefaultItemsWidth = 300
+	flowResizeSizeDelay   = time.Millisecond * 100
 )
 
 // UIFlow is the interface that describes a container that displays its items as
@@ -29,9 +29,9 @@ type UIFlow interface {
 	// ID sets the flow root HTML element id property.
 	ID(v string) UIFlow
 
-	// ItemsBaseWidth sets the items base width in px. Items size is adjusted to
+	// ItemsWidth sets the items base width in px. Items size is adjusted to
 	// fit the space in the container. Default is 300px.
-	ItemsBaseWidth(px int) UIFlow
+	ItemsWidth(px int) UIFlow
 
 	// StrechtOnSingleRow makes the items to occupy all the available space when
 	// the flow spreads on a single row.
@@ -43,15 +43,15 @@ type UIFlow interface {
 // EXPERIMENTAL WIDGET.
 func Flow() UIFlow {
 	return &flow{
-		IitemsBaseWitdh: flowItemBaseWidth,
-		id:              "goapp-flow-" + uuid.New().String(),
+		IitemsWidth: flowDefaultItemsWidth,
+		id:          "goapp-flow-" + uuid.New().String(),
 	}
 }
 
 type flow struct {
 	Compo
 
-	IitemsBaseWitdh    int
+	IitemsWidth        int
 	Iclass             string
 	Iid                string
 	Icontent           []UI
@@ -85,9 +85,9 @@ func (f *flow) ID(v string) UIFlow {
 	return f
 }
 
-func (f *flow) ItemsBaseWidth(px int) UIFlow {
+func (f *flow) ItemsWidth(px int) UIFlow {
 	if px > 0 {
-		f.IitemsBaseWitdh = px
+		f.IitemsWidth = px
 	}
 	return f
 }
@@ -125,15 +125,19 @@ func (f *flow) OnDismount() {
 
 func (f *flow) Render() UI {
 	return Div().
+		DataSet("goapp", "Flow").
 		ID(f.id).
-		Class("goapp-flow").
 		Class(f.Iclass).
+		Style("display", "flex").
+		Style("flex-direction", "row").
+		Style("flex-wrap", "wrap").
+		Style("align-items", "stretch").
 		Body(
 			Range(f.Icontent).Slice(func(i int) UI {
 				itemWidth := strconv.Itoa(f.itemWidth) + "px"
-
 				return Div().
-					Class("goapp-flow-item").
+					Style("flex-grow", "0").
+					Style("flex-shrink", "1").
 					Style("max-width", itemWidth).
 					Style("width", itemWidth).
 					Body(f.Icontent[i])
@@ -170,7 +174,7 @@ func (f *flow) refreshLayout(ctx Context) {
 }
 
 func (f *flow) adjustItemSizes(ctx Context) {
-	if f.IitemsBaseWitdh == 0 || len(f.Icontent) == 0 {
+	if f.IitemsWidth == 0 || len(f.Icontent) == 0 {
 		return
 	}
 
@@ -187,7 +191,7 @@ func (f *flow) adjustItemSizes(ctx Context) {
 
 	defer f.ResizeContent()
 
-	itemWidth := f.IitemsBaseWitdh
+	itemWidth := f.IitemsWidth
 	itemsPerRow := width / itemWidth
 
 	if itemsPerRow <= 1 {
