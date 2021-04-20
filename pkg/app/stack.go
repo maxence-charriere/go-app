@@ -7,26 +7,35 @@ package app
 type UIStack interface {
 	UI
 
-	// Center aligns the items from the center.
-	Center() UIStack
+	// ID sets the stack root HTML element id property.
+	ID(string) UIStack
 
 	// Class adds a CSS class to the stack root HTML element class property.
 	Class(string) UIStack
 
-	// Content sets the content with the given UI elements.
-	Content(elems ...UI) UIStack
+	// Left aligns the content on the left.
+	Left() UIStack
 
-	// End aligns the items from the end.
-	End() UIStack
+	// Center aligns the content on the horizontal center.
+	Center() UIStack
 
-	// ID sets the stack root HTML element id property.
-	ID(string) UIStack
+	// Right aligns the content on the right.
+	Right() UIStack
 
-	// Stretch tries to make the items occupy all the space.
+	// Top aligns the content on the top.
+	Top() UIStack
+
+	// Middle aligns the content on the vertical center.
+	Middle() UIStack
+
+	// Bottom aligns the content on the bottom.
+	Bottom() UIStack
+
+	// Stretch stretches the content vertically.
 	Stretch() UIStack
 
-	// Vertical stacks items vertically.
-	Vertical() UIStack
+	// Content sets the content with the given UI elements.
+	Content(elems ...UI) UIStack
 }
 
 // Stack creates a container that displays its items as stacked panels.
@@ -34,23 +43,58 @@ type UIStack interface {
 // EXPERIMENTAL WIDGET.
 func Stack() UIStack {
 	return &stack{
-		Ialignment: "flex-start",
-		Idirection: "row",
+		IhorizontalAlign: "flex-start",
+		IverticalAlign:   "flex-start",
 	}
 }
 
 type stack struct {
 	Compo
 
-	Ialignment string
-	Iclass     string
-	Idirection string
-	Iid        string
-	Icontent   []UI
+	Iid              string
+	Iclass           string
+	IhorizontalAlign string
+	IverticalAlign   string
+	Icontent         []UI
+}
+
+func (s *stack) ID(v string) UIStack {
+	s.Iid = v
+	return s
+}
+
+func (s *stack) Left() UIStack {
+	s.IhorizontalAlign = "flex-start"
+	return s
 }
 
 func (s *stack) Center() UIStack {
-	s.Ialignment = "center"
+	s.IhorizontalAlign = "center"
+	return s
+}
+
+func (s *stack) Right() UIStack {
+	s.IhorizontalAlign = "flex-end"
+	return s
+}
+
+func (s *stack) Top() UIStack {
+	s.IverticalAlign = "flex-start"
+	return s
+}
+
+func (s *stack) Middle() UIStack {
+	s.IverticalAlign = "center"
+	return s
+}
+
+func (s *stack) Bottom() UIStack {
+	s.IverticalAlign = "flex-end"
+	return s
+}
+
+func (s *stack) Stretch() UIStack {
+	s.IverticalAlign = "stretch"
 	return s
 }
 
@@ -70,32 +114,13 @@ func (s *stack) Content(elems ...UI) UIStack {
 	return s
 }
 
-func (s *stack) End() UIStack {
-	s.Ialignment = "flex-end"
-	return s
-}
-
-func (s *stack) ID(v string) UIStack {
-	s.Iid = v
-	return s
-}
-
-func (s *stack) Stretch() UIStack {
-	s.Ialignment = "stretch"
-	return s
-}
-
-func (s *stack) Vertical() UIStack {
-	s.Idirection = "column"
-	return s
-}
-
 func (s *stack) Render() UI {
 	return Div().
+		DataSet("goapp", "Stack").
 		ID(s.Iid).
-		Class("goapp-stack").
 		Class(s.Iclass).
-		Style("flex-direction", s.Idirection).
-		Style("align-items", s.Ialignment).
+		Style("display", "flex").
+		Style("justify-content", s.IhorizontalAlign).
+		Style("align-items", s.IverticalAlign).
 		Body(s.Icontent...)
 }
