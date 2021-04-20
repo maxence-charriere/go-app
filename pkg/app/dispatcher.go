@@ -148,14 +148,20 @@ func newUIDispatcher(serverSide bool, p Page, resolveStaticResource func(string)
 		sessionStorage = newMemoryStorage()
 	}
 
-	return &uiDispatcher{
+	disp := &uiDispatcher{
 		ui:                        make(chan func(), dispatcherSize),
-		page:                      p,
 		serverSideMode:            serverSide,
 		resolveStaticResourceFunc: resolveStaticResource,
 		localStore:                localStorage,
 		sessionStore:              sessionStorage,
 	}
+
+	if p, ok := p.(browserPage); ok {
+		p.dispatcher = disp
+	}
+	disp.page = p
+
+	return disp
 }
 
 func (d *uiDispatcher) Context() Context {
