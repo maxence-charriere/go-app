@@ -176,6 +176,7 @@ func (s *shell) Render() UI {
 	menuWidth := pxToString(s.ImenusWidth)
 
 	return Div().
+		DataSet("goapp", "Shell").
 		ID(s.id).
 		Class("goapp-shell").
 		Class(s.Iclass).
