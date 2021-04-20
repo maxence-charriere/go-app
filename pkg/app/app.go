@@ -304,7 +304,11 @@ func performNavigate(d Dispatcher, u *url.URL, updateHistory bool) {
 		return
 	}
 
-	compo, ok := routes.createComponent(strings.TrimPrefix(u.Path, rootPrefix))
+	path := strings.TrimPrefix(u.Path, rootPrefix)
+	if path == "" {
+		path = "/"
+	}
+	compo, ok := routes.createComponent(path)
 	if !ok {
 		compo = &notFound{}
 	}

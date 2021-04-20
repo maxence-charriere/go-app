@@ -1216,6 +1216,9 @@ resources to run Go-based progressive web apps.
 				<dd><a href="#ResourceProvider" id="src-ResourceProvider" id="src-ResourceProvider">type ResourceProvider</a></dd>
 				
 					
+					<dd>    <a href="#CustomProvider" id="src-CustomProvider" id="src-CustomProvider">func CustomProvider(path, prefix string) ResourceProvider</a></dd>
+				
+					
 					<dd>    <a href="#GitHubPages" id="src-GitHubPages" id="src-GitHubPages">func GitHubPages(repoName string) ResourceProvider</a></dd>
 				
 					
@@ -23383,7 +23386,7 @@ A pre-rendered component helps in achieving SEO friendly content.
 		
 			
 			
-			<h2 id="ProxyResource">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/resource.go#L108">ProxyResource</a>
+			<h2 id="ProxyResource">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/resource.go#L135">ProxyResource</a>
 				<a class="permalink" href="#ProxyResource" id="src-ProxyResource">¶</a>
 				
 				
@@ -23543,6 +23546,22 @@ http.Handler interface.
 			
 			
 
+			
+				
+				<h3 id="CustomProvider">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/resource.go#L104">CustomProvider</a>
+					<a class="permalink" href="#CustomProvider" id="src-CustomProvider">¶</a>
+					
+					
+				</h3>
+				<pre>func CustomProvider(path, prefix <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#ResourceProvider" id="src-ResourceProvider">ResourceProvider</a></pre>
+				<p>
+CustomProvider returns a resource provider that serves static resources from
+a local directory located at the given path and prefixes URL paths with the
+given prefix.
+</p>
+
+				
+				
 			
 				
 				<h3 id="GitHubPages">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/resource.go#L80">GitHubPages</a>
