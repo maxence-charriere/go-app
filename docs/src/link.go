@@ -74,7 +74,7 @@ func (l *link) Render() app.UI {
 		OnClick(l.onClick).
 		Body(
 			app.Stack().
-				Center().
+				Middle().
 				Content(
 					app.Div().
 						Class(iconVisibility).

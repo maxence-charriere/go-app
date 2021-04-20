@@ -86,9 +86,8 @@ func (l *loader) Render() app.UI {
 			app.Stack().
 				Class("hspace-out").
 				Class("vspace-in-stretch").
-				Class("fit").
-				Class("center").
 				Center().
+				Middle().
 				Content(
 					app.Div().
 						Style("width", fmt.Sprintf("%vpx", l.Isize)).

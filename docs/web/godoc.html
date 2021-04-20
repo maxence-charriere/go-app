@@ -24013,26 +24013,35 @@ EXPERIMENTAL WIDGET.
 			<pre>type UIStack interface {
     <a href="#UI" id="src-UI">UI</a>
 
-    <span class="comment">// Center aligns the items from the center.</span>
-    Center() <a href="#UIStack" id="src-UIStack">UIStack</a>
+    <span class="comment">// ID sets the stack root HTML element id property.</span>
+    ID(<a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#UIStack" id="src-UIStack">UIStack</a>
 
     <span class="comment">// Class adds a CSS class to the stack root HTML element class property.</span>
     Class(<a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#UIStack" id="src-UIStack">UIStack</a>
 
-    <span class="comment">// Content sets the content with the given UI elements.</span>
-    Content(elems ...<a href="#UI" id="src-UI">UI</a>) <a href="#UIStack" id="src-UIStack">UIStack</a>
+    <span class="comment">// Left aligns the content on the left.</span>
+    Left() <a href="#UIStack" id="src-UIStack">UIStack</a>
 
-    <span class="comment">// End aligns the items from the end.</span>
-    End() <a href="#UIStack" id="src-UIStack">UIStack</a>
+    <span class="comment">// Center aligns the content on the horizontal center.</span>
+    Center() <a href="#UIStack" id="src-UIStack">UIStack</a>
 
-    <span class="comment">// ID sets the stack root HTML element id property.</span>
-    ID(<a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#UIStack" id="src-UIStack">UIStack</a>
+    <span class="comment">// Right aligns the content on the right.</span>
+    Right() <a href="#UIStack" id="src-UIStack">UIStack</a>
 
-    <span class="comment">// Stretch tries to make the items occupy all the space.</span>
+    <span class="comment">// Top aligns the content on the top.</span>
+    Top() <a href="#UIStack" id="src-UIStack">UIStack</a>
+
+    <span class="comment">// Middle aligns the content on the vertical center.</span>
+    Middle() <a href="#UIStack" id="src-UIStack">UIStack</a>
+
+    <span class="comment">// Bottom aligns the content on the bottom.</span>
+    Bottom() <a href="#UIStack" id="src-UIStack">UIStack</a>
+
+    <span class="comment">// Stretch stretches the content vertically.</span>
     Stretch() <a href="#UIStack" id="src-UIStack">UIStack</a>
 
-    <span class="comment">// Vertical stacks items vertically.</span>
-    Vertical() <a href="#UIStack" id="src-UIStack">UIStack</a>
+    <span class="comment">// Content sets the content with the given UI elements.</span>
+    Content(elems ...<a href="#UI" id="src-UI">UI</a>) <a href="#UIStack" id="src-UIStack">UIStack</a>
 }</pre>
 
 			
@@ -24045,7 +24054,7 @@ EXPERIMENTAL WIDGET.
 
 			
 				
-				<h3 id="Stack">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/stack.go#L25">Stack</a>
+				<h3 id="Stack">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/stack.go#L34">Stack</a>
 					<a class="permalink" href="#Stack" id="src-Stack">¶</a>
 					
 					

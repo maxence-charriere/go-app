@@ -164,22 +164,21 @@ func (i *supportUsItem) Render() app.UI {
 			app.Stack().
 				Class("fill").
 				Center().
+				Middle().
 				Content(
-					app.Div().
-						Class("fit").
-						Class("center").
-						Body(
-							app.Div().
-								Class("fit").
-								Class("center").
-								Body(i.Iicon),
-							app.Div().
-								Class("support-us-item-label").
-								Class("heading").
-								Class("default").
-								Class("center").
-								Text(i.Ilabel),
-						),
+					app.Div().Body(
+						app.Div().
+							Class("fit").
+							Class("center").
+							Body(i.Iicon),
+						app.Div().
+							Class("support-us-item-label").
+							Class("heading").
+							Class("default").
+							Class("fit").
+							Class("center").
+							Text(i.Ilabel),
+					),
 				),
 		)
 }

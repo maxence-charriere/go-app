@@ -92,12 +92,12 @@ func (p *page) Render() app.UI {
 		Content(
 			app.Stack().
 				Class("header").
-				Center().
+				Right().
+				Middle().
 				Content(
 					app.If(p.isAppUpdateAvailable,
 						newLink().
 							Class("hspace-out").
-							Class("right").
 							Class("link-update").
 							Label("Update").
 							Icon(newSVGIcon().RawSVG(downloadSVG)).

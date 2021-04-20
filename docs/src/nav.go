@@ -37,7 +37,7 @@ func (n *nav) Render() app.UI {
 			app.Stack().
 				Class("header").
 				Class("hspace-out").
-				Center().
+				Middle().
 				Content(
 					app.Header().Body(
 						app.A().
