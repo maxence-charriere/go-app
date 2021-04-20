@@ -97,6 +97,7 @@ func (e *engine) Consume() {
 	for {
 		select {
 		case ev := <-e.events:
+
 			if ev.source.Mounted() {
 				if ev.deferable {
 					e.defers = append(e.defers, ev)
@@ -109,9 +110,7 @@ func (e *engine) Consume() {
 		default:
 			e.updateComponents()
 			e.execDeferableEvents()
-			if len(e.updates) == 0 {
-				return
-			}
+			return
 		}
 	}
 }

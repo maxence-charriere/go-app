@@ -611,7 +611,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 	disp.PreRender()
 
-	for len(disp.events) != 0 && len(disp.updates) != 0 {
+	for len(disp.events) != 0 {
 		disp.Consume()
 		disp.Wait()
 	}
