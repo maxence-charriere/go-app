@@ -88,12 +88,7 @@ func (b remoteBucket) AppWASM() string {
 // pages. This provider must only be used to generate static websites with the
 // GenerateStaticWebsite function.
 func GitHubPages(repoName string) ResourceProvider {
-	root := "/" + strings.Trim(repoName, "/")
-
-	return gitHubPages{
-		root:    root,
-		appWASM: root + "/web/app.wasm",
-	}
+	return CustomProvider("", repoName)
 }
 
 type gitHubPages struct {
@@ -111,6 +106,38 @@ func (g gitHubPages) Static() string {
 
 func (g gitHubPages) AppWASM() string {
 	return g.appWASM
+}
+
+// CustomProvider returns a resource provider that serves static resources from
+// a local directory located at the given path and prefixes URL paths with the
+// given prefix.
+func CustomProvider(path, prefix string) ResourceProvider {
+	root := strings.Trim(path, "/")
+	prefix = "/" + strings.Trim(prefix, "/")
+
+	return localDir{
+		Handler: http.FileServer(http.Dir(root)),
+		root:    prefix,
+		appWASM: prefix + "/web/app.wasm",
+	}
+}
+
+type customProvider struct {
+	http.Handler
+	root    string
+	appWASM string
+}
+
+func (d customProvider) Package() string {
+	return d.root
+}
+
+func (d customProvider) Static() string {
+	return d.root
+}
+
+func (d customProvider) AppWASM() string {
+	return d.appWASM
 }
 
 // ProxyResource is a proxy descriptor that maps a given resource to an URL
