@@ -109,11 +109,11 @@ func RunWhenOnBrowser() {
 
 	disp := engine{
 		UpdateRate:             engineUpdateRate,
-		Page:                   browserPage{},
 		LocalStorage:           newJSStorage("localStorage"),
 		SessionStorage:         newJSStorage("sessionStorage"),
 		ResolveStaticResources: staticResourcesResolver,
 	}
+	disp.Page = browserPage{dispatcher: &disp}
 	disp.Body = newClientBody(&disp)
 	disp.init()
 	defer disp.Close()
