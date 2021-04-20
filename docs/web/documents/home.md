@@ -12,7 +12,7 @@
     </aside>
 </div>
 
-Go-app is a package for **building progressive web apps (PWA)** with the [Go programming language (Golang)](https://golang.org) and [WebAssembly (Wasm)](https://webassembly.org).
+Go-app is a package for **building [progressive web apps (PWA)](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) with the [Go programming language (Golang)](https://golang.org) and [WebAssembly (Wasm)](https://webassembly.org)**.
 
 Shaping a UI is done by using a **[declarative syntax](/syntax) that creates and compose HTML elements only by using the Go programing language**.
 
