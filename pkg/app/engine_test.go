@@ -40,7 +40,7 @@ func TestEngineScheduleComponentUpdate(t *testing.T) {
 	require.Equal(t, struct{}{}, e.updates[h])
 	require.Equal(t, updateDescriptor{
 		compo:    h,
-		priority: 2,
+		priority: 1,
 	}, e.updateQueue[0])
 
 	e.scheduleComponentUpdate(h)
@@ -67,11 +67,11 @@ func TestEngineScheduleNestedComponentUpdate(t *testing.T) {
 	require.Equal(t, struct{}{}, e.updates[h])
 	require.Equal(t, updateDescriptor{
 		compo:    h,
-		priority: 3,
+		priority: 1,
 	}, e.updateQueue[0])
 }
 
-func TestEngineUpdateCoponents(t *testing.T) {
+func TestEngineUpdateComponents(t *testing.T) {
 	e := engine{}
 	e.init()
 
