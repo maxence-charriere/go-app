@@ -23,11 +23,67 @@ func TestEngineInit(t *testing.T) {
 	assert.NotNil(t, e.defers)
 }
 
+func TestEngineDispatch(t *testing.T) {
+	e := engine{}
+	e.init()
+
+	e.Dispatch(nil, func(Context) {})
+	require.Len(t, e.events, 1)
+
+	ev := <-e.events
+	require.Equal(t, e.Body, ev.source)
+	require.False(t, ev.deferable)
+	require.NotNil(t, ev.function)
+}
+
+func TestEngineDefer(t *testing.T) {
+	e := engine{}
+	e.init()
+
+	e.Defer(nil, func(Context) {})
+	require.Len(t, e.events, 1)
+
+	ev := <-e.events
+	require.Equal(t, e.Body, ev.source)
+	require.True(t, ev.deferable)
+	require.NotNil(t, ev.function)
+}
+
+func TestEngineExecEvent(t *testing.T) {
+	e := engine{}
+	e.init()
+
+	called := false
+	isCalled := func(Context) {
+		called = true
+	}
+
+	h := &hello{}
+	e.execEvent(event{source: h})
+	e.execEvent(event{
+		source:   h,
+		function: isCalled,
+	})
+	require.False(t, called)
+
+	e.Mount(h)
+	e.Consume()
+	e.execEvent(event{
+		source:   h,
+		function: isCalled,
+	})
+	require.True(t, called)
+}
+
 func TestEngineScheduleComponentUpdate(t *testing.T) {
 	e := engine{}
 	e.init()
 
 	h := &hello{}
+	e.scheduleComponentUpdate(h)
+	require.Empty(t, e.updates)
+	require.Empty(t, e.updateQueue)
+
 	e.Mount(h)
 	e.Consume()
 	require.Empty(t, e.events)
@@ -54,6 +110,9 @@ func TestEngineScheduleNestedComponentUpdate(t *testing.T) {
 
 	h := &hello{}
 	div := Div().Body(h)
+	e.scheduleComponentUpdate(h)
+	require.Empty(t, e.updates)
+	require.Empty(t, e.updateQueue)
 
 	e.Mount(div)
 	e.Consume()

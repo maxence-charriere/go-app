@@ -97,14 +97,11 @@ func (e *engine) Consume() {
 	for {
 		select {
 		case ev := <-e.events:
-
-			if ev.source.Mounted() {
-				if ev.deferable {
-					e.defers = append(e.defers, ev)
-				} else {
-					ev.function(makeContext(ev.source))
-					e.scheduleComponentUpdate(ev.source)
-				}
+			if ev.deferable {
+				e.defers = append(e.defers, ev)
+			} else {
+				e.execEvent(ev)
+				e.scheduleComponentUpdate(ev.source)
 			}
 
 		default:
@@ -247,18 +244,16 @@ func (e *engine) start(ctx context.Context) {
 				return
 
 			case ev := <-e.events:
-				if ev.source.Mounted() {
-					if currentInterval != updateInterval {
-						currentInterval = updateInterval
-						updates.Reset(currentInterval)
-					}
+				if currentInterval != updateInterval {
+					currentInterval = updateInterval
+					updates.Reset(currentInterval)
+				}
 
-					if ev.deferable {
-						e.defers = append(e.defers, ev)
-					} else {
-						ev.function(makeContext(ev.source))
-						e.scheduleComponentUpdate(ev.source)
-					}
+				if ev.deferable {
+					e.defers = append(e.defers, ev)
+				} else {
+					e.execEvent(ev)
+					e.scheduleComponentUpdate(ev.source)
 				}
 
 			case <-updates.C:
@@ -274,7 +269,17 @@ func (e *engine) start(ctx context.Context) {
 	})
 }
 
+func (e *engine) execEvent(ev event) {
+	if ev.source.Mounted() && ev.function != nil {
+		ev.function(makeContext(ev.source))
+	}
+}
+
 func (e *engine) scheduleComponentUpdate(n UI) {
+	if !n.Mounted() {
+		return
+	}
+
 	var compo Composer
 	var depth int
 
