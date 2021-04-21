@@ -38,6 +38,8 @@ type Composer interface {
 	// implement the Resizer interface.
 	ResizeContent()
 
+	Emit(func())
+
 	// ValueTo stores the value of the DOM element (if exists) that emitted an
 	// event into the given value.
 	//
@@ -194,6 +196,21 @@ func (c *Compo) ResizeContent() {
 	c.dispatch(func(Context) {
 		c.root.onResize()
 	})
+}
+
+func (c *Compo) Emit(fn func()) {
+	fn()
+
+	for {
+		parent := c.parent()
+		if parent == nil {
+			return
+		}
+
+		if compo, ok := parent.(Composer); ok {
+			compo.Update()
+		}
+	}
 }
 
 // ValueTo stores the value of the DOM element (if exists) that emitted an event
