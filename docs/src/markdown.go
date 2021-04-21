@@ -374,6 +374,10 @@ func (m *markdownContent) Markdown(v string) *markdownContent {
 	return m
 }
 
+func (m *markdownContent) OnMount(ctx app.Context) {
+	m.highlightCode(ctx)
+}
+
 func (m *markdownContent) OnUpdate(ctx app.Context) {
 	m.highlightCode(ctx)
 }
