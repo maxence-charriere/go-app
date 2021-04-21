@@ -32,25 +32,31 @@ type Context struct {
 	dispatcher Dispatcher
 }
 
-// Dispatch executes the given function on the UI goroutine, before updating the
-// context's source nearest parent component.
+// Dispatch executes the given function on the UI goroutine and notifies the
+// context's nearest component to update its state.
 func (ctx Context) Dispatch(fn func(Context)) {
 	ctx.dispatcher.Dispatch(ctx.Src, fn)
 }
 
-// Defer executes the given function on the UI goroutine after the context's
-// source nearest parent component has been updated.
+// Defer executes the given function on the UI goroutine after notifying the
+// context's nearest component to update its state.
 func (ctx Context) Defer(fn func(Context)) {
 	ctx.dispatcher.Defer(ctx.Src, fn)
 }
 
-// Async launches the given function on a new goroutine.
+// Async executes the given function on a new goroutine.
 //
 // The difference versus just launching a goroutine is that it ensures that the
 // asynchronous function is called before a page is fully pre-rendered and
 // served over HTTP.
 func (ctx Context) Async(fn func()) {
 	ctx.dispatcher.Async(fn)
+}
+
+// Emit executes the given function and notifies the parent components to update
+// their state. It should be used to launch component custom event handlers.
+func (ctx Context) Emit(fn func()) {
+	ctx.dispatcher.Emit(ctx.Src, fn)
 }
 
 // Reload reloads the WebAssembly app at the current page.

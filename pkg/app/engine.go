@@ -77,6 +77,27 @@ func (e *engine) Defer(src UI, fn func(Context)) {
 	}
 }
 
+func (e *engine) Emit(src UI, fn func()) {
+	if !src.Mounted() {
+		return
+	}
+
+	fn()
+
+	compoCount := 0
+	for n := src; n != nil; n = n.parent() {
+		compo, ok := n.(Composer)
+		if !ok {
+			continue
+		}
+
+		compoCount++
+		if compoCount > 1 {
+			e.Dispatch(compo, nil)
+		}
+	}
+}
+
 func (e *engine) Async(fn func()) {
 	e.wait.Add(1)
 	go func() {
@@ -109,6 +130,22 @@ func (e *engine) Consume() {
 			e.execDeferableEvents()
 			return
 		}
+	}
+}
+
+func (e *engine) ConsumeNext() {
+	select {
+	case ev := <-e.events:
+		if ev.deferable {
+			e.defers = append(e.defers, ev)
+		} else {
+			e.execEvent(ev)
+			e.scheduleComponentUpdate(ev.source)
+		}
+		e.updateComponents()
+		e.execDeferableEvents()
+
+	default:
 	}
 }
 

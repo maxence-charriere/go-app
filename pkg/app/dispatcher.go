@@ -20,6 +20,10 @@ type Dispatcher interface {
 	// source's nearest component to update its state.
 	Defer(src UI, fn func(Context))
 
+	// Emit executes the given function and notifies the source's parent
+	// components to update their state.
+	Emit(src UI, fn func())
+
 	// 	Async launches the given function on a new goroutine.
 	//
 	// The difference versus just launching a goroutine is that it ensures that
@@ -51,6 +55,9 @@ type ClientDispatcher interface {
 
 	// Consume executes all the remaining UI instructions.
 	Consume()
+
+	// ConsumeNext executes the next UI instructions.
+	ConsumeNext()
 
 	// Close consumes all the remaining UI instruction and releases allocated
 	// resources.
@@ -88,6 +95,9 @@ type ServerDispatcher interface {
 
 	// Consume executes all the remaining UI instructions.
 	Consume()
+
+	// ConsumeNext executes the next UI instructions.
+	ConsumeNext()
 
 	// Close consumes all the remaining UI instruction and releases allocated
 	// resources.

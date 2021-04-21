@@ -10,6 +10,7 @@ import (
 func TestEngineInit(t *testing.T) {
 	e := engine{}
 	e.init()
+	defer e.Close()
 
 	assert.NotZero(t, e.UpdateRate)
 	assert.NotNil(t, e.Page)
@@ -26,6 +27,7 @@ func TestEngineInit(t *testing.T) {
 func TestEngineDispatch(t *testing.T) {
 	e := engine{}
 	e.init()
+	defer e.Close()
 
 	e.Dispatch(nil, func(Context) {})
 	require.Len(t, e.events, 1)
@@ -39,6 +41,7 @@ func TestEngineDispatch(t *testing.T) {
 func TestEngineDefer(t *testing.T) {
 	e := engine{}
 	e.init()
+	defer e.Close()
 
 	e.Defer(nil, func(Context) {})
 	require.Len(t, e.events, 1)
@@ -49,9 +52,32 @@ func TestEngineDefer(t *testing.T) {
 	require.NotNil(t, ev.function)
 }
 
+func TestEngineEmit(t *testing.T) {
+	e := engine{}
+	e.init()
+	defer e.Close()
+
+	foo := &foo{Bar: "bar"}
+	e.Mount(foo)
+	e.Consume()
+	require.Empty(t, e.events)
+	require.Empty(t, e.updates)
+	require.Empty(t, e.updateQueue)
+
+	bar := foo.children()[0].(*bar)
+
+	emitted := false
+	e.Emit(bar, func() {
+		emitted = true
+	})
+	require.True(t, emitted)
+	require.Len(t, e.events, 1)
+}
+
 func TestEngineExecEvent(t *testing.T) {
 	e := engine{}
 	e.init()
+	defer e.Close()
 
 	called := false
 	isCalled := func(Context) {
@@ -78,6 +104,7 @@ func TestEngineExecEvent(t *testing.T) {
 func TestEngineScheduleComponentUpdate(t *testing.T) {
 	e := engine{}
 	e.init()
+	defer e.Close()
 
 	h := &hello{}
 	e.scheduleComponentUpdate(h)
@@ -107,6 +134,7 @@ func TestEngineScheduleComponentUpdate(t *testing.T) {
 func TestEngineScheduleNestedComponentUpdate(t *testing.T) {
 	e := engine{}
 	e.init()
+	defer e.Close()
 
 	h := &hello{}
 	div := Div().Body(h)
@@ -133,6 +161,7 @@ func TestEngineScheduleNestedComponentUpdate(t *testing.T) {
 func TestEngineUpdateCoponents(t *testing.T) {
 	e := engine{}
 	e.init()
+	defer e.Close()
 
 	foo := &foo{Bar: "bar"}
 	e.Mount(foo)
@@ -159,6 +188,7 @@ func TestEngineUpdateCoponents(t *testing.T) {
 func TestEngineExecDeferableEvents(t *testing.T) {
 	e := engine{}
 	e.init()
+	defer e.Close()
 
 	h := &hello{}
 	e.Mount(h)
