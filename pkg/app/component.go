@@ -184,9 +184,9 @@ func (c *Compo) Render() UI {
 // performed on the UI goroutine.
 func (c *Compo) Update() {
 	c.dispatch(func(Context) {
-		if err := c.updateRoot(); err != nil {
-			panic(err)
-		}
+		// if err := c.updateRoot(); err != nil {
+		// 	panic(err)
+		// }
 	})
 }
 
