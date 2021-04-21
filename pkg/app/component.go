@@ -201,13 +201,8 @@ func (c *Compo) ResizeContent() {
 func (c *Compo) Emit(fn func()) {
 	fn()
 
-	for {
-		parent := c.parent()
-		if parent == nil {
-			return
-		}
-
-		if compo, ok := parent.(Composer); ok {
+	for n := c.parent(); n != nil; n = n.parent() {
+		if compo, ok := n.(Composer); ok {
 			compo.Update()
 		}
 	}
