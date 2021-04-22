@@ -1,7 +1,10 @@
 package app
 
 import (
+	"math/rand"
+	"sort"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -212,4 +215,108 @@ func TestEngineExecDeferableEvents(t *testing.T) {
 	e.execDeferableEvents()
 	require.True(t, called)
 	require.Empty(t, e.defers)
+}
+
+func TestSortUpdateDescriptors(t *testing.T) {
+	utests := []struct {
+		scenario string
+		in       []updateDescriptor
+		out      []updateDescriptor
+	}{
+		{
+			scenario: "nil",
+		},
+		{
+			scenario: "empty",
+			in:       []updateDescriptor{},
+			out:      []updateDescriptor{},
+		},
+		{
+			scenario: "single value",
+			in: []updateDescriptor{
+				{priority: 42},
+			},
+			out: []updateDescriptor{
+				{priority: 42},
+			},
+		},
+		{
+			scenario: "two values",
+			in: []updateDescriptor{
+				{priority: 42},
+				{priority: 21},
+			},
+			out: []updateDescriptor{
+				{priority: 21},
+				{priority: 42},
+			},
+		},
+		{
+			scenario: "multiple values",
+			in: []updateDescriptor{
+				{priority: 43},
+				{priority: 2},
+				{priority: 9},
+				{priority: 36},
+				{priority: 21},
+				{priority: 198},
+				{priority: 9},
+				{priority: 1},
+			},
+			out: []updateDescriptor{
+				{priority: 1},
+				{priority: 2},
+				{priority: 9},
+				{priority: 9},
+				{priority: 21},
+				{priority: 36},
+				{priority: 43},
+				{priority: 198},
+			},
+		},
+	}
+
+	for _, u := range utests {
+		t.Run(u.scenario, func(t *testing.T) {
+			sortUpdateDescriptors(u.in)
+			require.Equal(t, u.out, u.in)
+		})
+	}
+}
+
+func BenchmarkSortUpdateDescriptor(b *testing.B) {
+	benchSortUpdateDescriptor(b, sortUpdateDescriptors)
+
+}
+
+func BenchmarkSortUpdateDescriptorStd(b *testing.B) {
+	benchSortUpdateDescriptor(b, func(d []updateDescriptor) {
+		sort.Slice(d, func(a, b int) bool {
+			return d[a].priority < d[b].priority
+		})
+	})
+}
+
+func benchSortUpdateDescriptor(b *testing.B, sort func([]updateDescriptor)) {
+	rand.Seed(time.Now().UnixNano())
+
+	d := make([]updateDescriptor, 1000)
+	for i := range d {
+		d[i].compo = &hello{}
+	}
+
+	unorder := func(d []updateDescriptor) {
+		b.StopTimer()
+		for i := range d {
+			d[i].priority = rand.Intn(1000)
+		}
+		b.StartTimer()
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		unorder(d)
+		sort(d)
+	}
 }

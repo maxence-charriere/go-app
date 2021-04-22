@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"net/url"
-	"sort"
 	"sync"
 	"time"
 
@@ -355,10 +354,7 @@ func (e *engine) updateComponents() {
 		return
 	}
 
-	sort.Slice(e.updateQueue, func(a, b int) bool {
-		return e.updateQueue[a].priority < e.updateQueue[b].priority
-	})
-
+	sortUpdateDescriptors(e.updateQueue)
 	for _, ud := range e.updateQueue {
 		compo := ud.compo
 		if !compo.Mounted() {
@@ -412,4 +408,32 @@ type event struct {
 type updateDescriptor struct {
 	compo    Composer
 	priority int
+}
+
+func sortUpdateDescriptors(d []updateDescriptor) {
+	if len(d) < 2 {
+		return
+	}
+
+	pi := sortUpdateDescriptorsPartition(d)
+	sortUpdateDescriptors(d[:pi])
+	sortUpdateDescriptors(d[pi+1:])
+
+}
+
+func sortUpdateDescriptorsPartition(d []updateDescriptor) int {
+	piIdx := len(d) - 1
+	pi := d[piIdx]
+
+	i := -1
+	for j, ud := range d {
+		if ud.priority < pi.priority {
+			i++
+			d[i], d[j] = d[j], d[i]
+		}
+	}
+
+	i++
+	d[i], d[piIdx] = d[piIdx], d[i]
+	return i
 }
