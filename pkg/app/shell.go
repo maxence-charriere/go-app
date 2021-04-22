@@ -251,7 +251,7 @@ func (s *shell) refreshLayout(ctx Context) {
 	}
 
 	s.adjustLayoutTimer = time.AfterFunc(0, func() {
-		ctx.Dispatch(s.adjustLayout)
+		s.adjustLayout(ctx)
 	})
 }
 

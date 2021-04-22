@@ -358,7 +358,6 @@ func (c *Compo) updateRoot() error {
 	if isErrReplace(err) {
 		err = c.replaceRoot(b)
 	}
-
 	if err != nil {
 		return errors.New("updating component failed").
 			Tag("kind", c.Kind()).
@@ -366,6 +365,7 @@ func (c *Compo) updateRoot() error {
 			Wrap(err)
 	}
 
+	c.dispatcher().componentUpdated(c.self().(Composer))
 	return nil
 }
 

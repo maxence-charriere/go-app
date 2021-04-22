@@ -361,13 +361,21 @@ func (e *engine) updateComponents() {
 			continue
 		}
 
+		if _, isNotUpdated := e.updates[compo]; !isNotUpdated {
+			continue
+		}
+
 		if err := compo.updateRoot(); err != nil {
 			panic(err)
 		}
-		delete(e.updates, compo)
+		e.componentUpdated(compo)
 	}
 
 	e.updateQueue = e.updateQueue[:0]
+}
+
+func (e *engine) componentUpdated(c Composer) {
+	delete(e.updates, c)
 }
 
 func (e *engine) execDeferableEvents() {
