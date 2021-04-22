@@ -181,11 +181,7 @@ func (c *Compo) Render() UI {
 // field used to render the component has been modified. Updates are always
 // performed on the UI goroutine.
 func (c *Compo) Update() {
-	c.dispatch(func(Context) {
-		// if err := c.updateRoot(); err != nil {
-		// 	panic(err)
-		// }
-	})
+	c.dispatch(func(Context) {})
 }
 
 // ResizeContent triggers OnResize() on all the component children that
