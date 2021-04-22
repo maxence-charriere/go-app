@@ -12,6 +12,7 @@ package app
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/url"
 	"os"
@@ -37,6 +38,7 @@ const (
 
 var (
 	rootPrefix         string
+	isInternalURL      func(string) bool
 	appUpdateAvailable bool
 	lastURLVisited     *url.URL
 )
@@ -104,8 +106,9 @@ func RunWhenOnBrowser() {
 		panic(err)
 	}()
 
-	staticResourcesResolver := newClientStaticResourceResolver(Getenv("GOAPP_STATIC_RESOURCES_URL"))
 	rootPrefix = Getenv("GOAPP_ROOT_PREFIX")
+	isInternalURL = internalURLChecker()
+	staticResourcesResolver := newClientStaticResourceResolver(Getenv("GOAPP_STATIC_RESOURCES_URL"))
 
 	disp := engine{
 		UpdateRate:             engineUpdateRate,
@@ -166,6 +169,20 @@ func newClientStaticResourceResolver(staticResourceURL string) func(string) stri
 	}
 }
 
+func internalURLChecker() func(string) bool {
+	var urls []string
+	json.Unmarshal([]byte(Getenv("GOAPP_INTERNAL_URLS")), &urls)
+
+	return func(url string) bool {
+		for _, u := range urls {
+			if strings.HasPrefix(url, u) {
+				return true
+			}
+		}
+		return false
+	}
+}
+
 func newClientBody(d Dispatcher) *htmlBody {
 	ctx, cancel := context.WithCancel(context.Background())
 	body := &htmlBody{
@@ -204,16 +221,6 @@ func onAchorClick(d Dispatcher) func(Value, []Value) interface{} {
 		for {
 			switch elem.Get("tagName").String() {
 			case "A":
-				if target := elem.Get("target"); target.Truthy() && target.String() == "_blank" {
-					return nil
-				}
-
-				u := elem.Get("href").String()
-				if u, _ := url.Parse(u); isExternalNavigation(u) {
-					elem.Set("target", "_blank")
-					return nil
-				}
-
 				if meta := event.Get("metaKey"); meta.Truthy() && meta.Bool() {
 					return nil
 				}
@@ -223,7 +230,7 @@ func onAchorClick(d Dispatcher) func(Value, []Value) interface{} {
 				}
 
 				event.PreventDefault()
-				navigate(d, u)
+				navigate(d, elem.Get("href").String())
 				return nil
 
 			case "BODY":
@@ -265,7 +272,11 @@ func navigateTo(d Dispatcher, u *url.URL, updateHistory bool) {
 	}
 
 	if isExternalNavigation(u) {
-		Window().Get("location").Set("href", u.String())
+		if rawurl := u.String(); isInternalURL(rawurl) {
+			Window().Get("location").Set("href", u.String())
+		} else {
+			Window().Call("open", rawurl)
+		}
 		return
 	}
 
