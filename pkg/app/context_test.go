@@ -30,3 +30,79 @@ func TestContextBehavior(t *testing.T) {
 	require.Error(t, ctx4.Err())
 	require.Error(t, ctx5.Err())
 }
+
+func TestContextDeviceID(t *testing.T) {
+	div := Div()
+	disp := NewClientTester(div)
+	defer disp.Close()
+
+	ctx := makeContext(div)
+	id := ctx.DeviceID()
+	require.NotZero(t, id)
+
+	id2 := ctx.DeviceID()
+	require.Equal(t, id, id2)
+}
+
+func TestContextEncryptDecryptStruct(t *testing.T) {
+	div := Div()
+	disp := NewClientTester(div)
+	defer disp.Close()
+	ctx := makeContext(div)
+
+	expected := struct {
+		Title string
+		Value int
+	}{
+		Title: "hello",
+		Value: 42,
+	}
+
+	item := expected
+	item.Title = ""
+	item.Value = 0
+
+	crypted, err := ctx.Encrypt(expected)
+	require.NoError(t, err)
+	require.NotEmpty(t, crypted)
+
+	err = ctx.Decrypt(crypted, &item)
+	require.NoError(t, err)
+	require.Equal(t, expected, item)
+}
+
+func TestContextEncryptDecryptString(t *testing.T) {
+	div := Div()
+	disp := NewClientTester(div)
+	defer disp.Close()
+	ctx := makeContext(div)
+
+	expected := "hello"
+	item := ""
+
+	crypted, err := ctx.Encrypt(expected)
+	require.NoError(t, err)
+	require.NotEmpty(t, crypted)
+
+	err = ctx.Decrypt(crypted, &item)
+	require.NoError(t, err)
+	require.Equal(t, expected, item)
+}
+
+func TestContextEncryptDecryptBytes(t *testing.T) {
+	div := Div()
+	disp := NewClientTester(div)
+	defer disp.Close()
+	ctx := makeContext(div)
+
+	expected := []byte("hello")
+	var item []byte
+
+	crypted, err := ctx.Encrypt(expected)
+	require.NoError(t, err)
+	require.NotEmpty(t, crypted)
+
+	err = ctx.Decrypt(crypted, &item)
+	require.NoError(t, err)
+	require.Equal(t, expected, item)
+}
