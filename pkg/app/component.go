@@ -201,7 +201,7 @@ func (c *Compo) ResizeContent() {
 // It panics if the given value is not a pointer.
 func (c *Compo) ValueTo(v interface{}) EventHandler {
 	return func(ctx Context, e Event) {
-		value := ctx.JSSrc.Get("value")
+		value := ctx.JSSrc().Get("value")
 		if err := stringTo(value.String(), v); err != nil {
 			Log(errors.New("storing dom element value failed").Wrap(err))
 			return

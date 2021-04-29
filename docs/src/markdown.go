@@ -278,15 +278,15 @@ func (d *markdownDoc) OnNav(ctx app.Context) {
 }
 
 func (d *markdownDoc) init(ctx app.Context) {
-	path := ctx.Page.URL().Path
+	path := ctx.Page().URL().Path
 	if d.path == path {
 		return
 	}
 
-	page, ok := mardownPages()[ctx.Page.URL().Path]
+	page, ok := mardownPages()[ctx.Page().URL().Path]
 	if !ok {
 		app.Log(logs.New("markdown page not found").
-			Tag("url", ctx.Page.URL().String()),
+			Tag("url", ctx.Page().URL().String()),
 		)
 		return
 	}
@@ -294,8 +294,8 @@ func (d *markdownDoc) init(ctx app.Context) {
 	d.path = path
 	d.title = page.path
 	d.index = page.index
-	ctx.Page.SetTitle(page.title)
-	ctx.Page.SetDescription(page.description)
+	ctx.Page().SetTitle(page.title)
+	ctx.Page().SetDescription(page.description)
 
 	d.load(ctx, page.path)
 }
@@ -318,7 +318,7 @@ func (d *markdownDoc) load(ctx app.Context, path string) {
 }
 
 func (d *markdownDoc) scroll(ctx app.Context) {
-	fragment := ctx.Page.URL().Fragment
+	fragment := ctx.Page().URL().Fragment
 	if fragment == "" {
 		fragment = "top"
 	}

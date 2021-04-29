@@ -411,7 +411,7 @@ func (h *hello) OnMount(Context) {
 }
 
 func (h *hello) OnNav(ctx Context) {
-	h.onNavURL = ctx.Page.URL().String()
+	h.onNavURL = ctx.Page().URL().String()
 }
 
 func (h *hello) OnAppUpdate(ctx Context) {
@@ -424,7 +424,7 @@ func (h *hello) OnResize(ctx Context) {
 
 func (h *hello) OnPreRender(ctx Context) {
 	h.preRenderer = true
-	ctx.Page.SetTitle("world")
+	ctx.Page().SetTitle("world")
 }
 
 func (h *hello) OnDismount(Context) {
@@ -463,11 +463,11 @@ type bar struct {
 }
 
 func (b *bar) OnPreRender(ctx Context) {
-	ctx.Page.SetTitle("bar")
+	ctx.Page().SetTitle("bar")
 }
 
 func (b *bar) OnNav(ctx Context) {
-	b.onNavURL = ctx.Page.URL().String()
+	b.onNavURL = ctx.Page().URL().String()
 }
 
 func (b *bar) OnAppUpdate(ctx Context) {

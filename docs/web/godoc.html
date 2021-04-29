@@ -203,39 +203,6 @@ resources to run Go-based progressive web apps.
 				<dd><a href="#Context" id="src-Context" id="src-Context">type Context</a></dd>
 				
 				
-					
-					<dd>    <a href="#Context.After" id="src-Context.After" id="src-Context.After">func (ctx Context) After(d time.Duration, fn func(Context))</a></dd>
-				
-					
-					<dd>    <a href="#Context.Async" id="src-Context.Async" id="src-Context.Async">func (ctx Context) Async(fn func())</a></dd>
-				
-					
-					<dd>    <a href="#Context.Defer" id="src-Context.Defer" id="src-Context.Defer">func (ctx Context) Defer(fn func(Context))</a></dd>
-				
-					
-					<dd>    <a href="#Context.Dispatch" id="src-Context.Dispatch" id="src-Context.Dispatch">func (ctx Context) Dispatch(fn func(Context))</a></dd>
-				
-					
-					<dd>    <a href="#Context.LocalStorage" id="src-Context.LocalStorage" id="src-Context.LocalStorage">func (ctx Context) LocalStorage() BrowserStorage</a></dd>
-				
-					
-					<dd>    <a href="#Context.Navigate" id="src-Context.Navigate" id="src-Context.Navigate">func (ctx Context) Navigate(rawURL string)</a></dd>
-				
-					
-					<dd>    <a href="#Context.NavigateTo" id="src-Context.NavigateTo" id="src-Context.NavigateTo">func (ctx Context) NavigateTo(u *url.URL)</a></dd>
-				
-					
-					<dd>    <a href="#Context.Reload" id="src-Context.Reload" id="src-Context.Reload">func (ctx Context) Reload()</a></dd>
-				
-					
-					<dd>    <a href="#Context.ResolveStaticResource" id="src-Context.ResolveStaticResource" id="src-Context.ResolveStaticResource">func (ctx Context) ResolveStaticResource(path string) string</a></dd>
-				
-					
-					<dd>    <a href="#Context.ScrollTo" id="src-Context.ScrollTo" id="src-Context.ScrollTo">func (ctx Context) ScrollTo(id string)</a></dd>
-				
-					
-					<dd>    <a href="#Context.SessionStorage" id="src-Context.SessionStorage" id="src-Context.SessionStorage">func (ctx Context) SessionStorage() BrowserStorage</a></dd>
-				
 			
 				
 				<dd><a href="#Dismounter" id="src-Dismounter" id="src-Dismounter">type Dismounter</a></dd>
@@ -1332,6 +1299,8 @@ resources to run Go-based progressive web apps.
 			
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/contextmenu.go">contextmenu.go</a>
 			
+				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/crypto.go">crypto.go</a>
+			
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go">dispatcher.go</a>
 			
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/element.go">element.go</a>
@@ -1480,7 +1449,7 @@ directory.
 		
 			
 			
-			<h2 id="Getenv">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L36">Getenv</a>
+			<h2 id="Getenv">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L38">Getenv</a>
 				<a class="permalink" href="#Getenv" id="src-Getenv">¶</a>
 				
 				
@@ -1497,7 +1466,7 @@ returns the value, which will be empty if the variable is not present.
 		
 			
 			
-			<h2 id="HTMLString">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L192">HTMLString</a>
+			<h2 id="HTMLString">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L189">HTMLString</a>
 				<a class="permalink" href="#HTMLString" id="src-HTMLString">¶</a>
 				
 				
@@ -1513,7 +1482,7 @@ HTMLString return an HTML string representation of the given UI element.
 		
 			
 			
-			<h2 id="HTMLStringWithIndent">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L200">HTMLStringWithIndent</a>
+			<h2 id="HTMLStringWithIndent">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L197">HTMLStringWithIndent</a>
 				<a class="permalink" href="#HTMLStringWithIndent" id="src-HTMLStringWithIndent">¶</a>
 				
 				
@@ -1530,7 +1499,7 @@ given UI element.
 		
 			
 			
-			<h2 id="KeepBodyClean">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L50">KeepBodyClean</a>
+			<h2 id="KeepBodyClean">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L52">KeepBodyClean</a>
 				<a class="permalink" href="#KeepBodyClean" id="src-KeepBodyClean">¶</a>
 				
 				
@@ -1580,7 +1549,7 @@ Logf logs according to a format specifier.
 		
 			
 			
-			<h2 id="PrintHTML">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L208">PrintHTML</a>
+			<h2 id="PrintHTML">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L205">PrintHTML</a>
 				<a class="permalink" href="#PrintHTML" id="src-PrintHTML">¶</a>
 				
 				
@@ -1597,7 +1566,7 @@ writer.
 		
 			
 			
-			<h2 id="PrintHTMLWithIndent">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L217">PrintHTMLWithIndent</a>
+			<h2 id="PrintHTMLWithIndent">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L214">PrintHTMLWithIndent</a>
 				<a class="permalink" href="#PrintHTMLWithIndent" id="src-PrintHTMLWithIndent">¶</a>
 				
 				
@@ -1658,7 +1627,7 @@ component is created before being displayed.
 		
 			
 			
-			<h2 id="RunWhenOnBrowser">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L86">RunWhenOnBrowser</a>
+			<h2 id="RunWhenOnBrowser">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L88">RunWhenOnBrowser</a>
 				<a class="permalink" href="#RunWhenOnBrowser" id="src-RunWhenOnBrowser">¶</a>
 				
 				
@@ -1883,7 +1852,7 @@ BrowserWindow is the interface that describes the browser window.
 
 			
 				
-				<h3 id="Window">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L62">Window</a>
+				<h3 id="Window">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/app.go#L64">Window</a>
 					<a class="permalink" href="#Window" id="src-Window">¶</a>
 					
 					
@@ -1901,7 +1870,7 @@ Window returns the JavaScript &#34;window&#34; object.
 		
 			
 			
-			<h2 id="ClientDispatcher">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L36">ClientDispatcher</a>
+			<h2 id="ClientDispatcher">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L41">ClientDispatcher</a>
 				<a class="permalink" href="#ClientDispatcher" id="src-ClientDispatcher">¶</a>
 				
 				
@@ -1919,6 +1888,9 @@ client environment.
 
     <span class="comment">// Consume executes all the remaining UI instructions.</span>
     Consume()
+
+    <span class="comment">// ConsumeNext executes the next UI instructions.</span>
+    ConsumeNext()
 
     <span class="comment">// Close consumes all the remaining UI instruction and releases allocated</span>
     <span class="comment">// resources.</span>
@@ -1947,7 +1919,7 @@ client environment.
 
 			
 				
-				<h3 id="NewClientTester">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L64">NewClientTester</a>
+				<h3 id="NewClientTester">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L72">NewClientTester</a>
 					<a class="permalink" href="#NewClientTester" id="src-NewClientTester">¶</a>
 					
 					
@@ -2054,7 +2026,7 @@ embedded.
 				
 			
 				
-				<h3 id="Compo.ResizeContent">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L183">ResizeContent</a>
+				<h3 id="Compo.ResizeContent">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L179">ResizeContent</a>
 					<a class="permalink" href="#Compo.ResizeContent" id="src-Compo.ResizeContent">¶</a>
 					
 					
@@ -2087,7 +2059,7 @@ performed on the UI goroutine.
 				
 			
 				
-				<h3 id="Compo.ValueTo">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L196">ValueTo</a>
+				<h3 id="Compo.ValueTo">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L192">ValueTo</a>
 					<a class="permalink" href="#Compo.ValueTo" id="src-Compo.ValueTo">¶</a>
 					
 					
@@ -2227,41 +2199,98 @@ expression.
 		
 			
 			
-			<h2 id="Context">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go#L4">Context</a>
+			<h2 id="Context">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go#L10">Context</a>
 				<a class="permalink" href="#Context" id="src-Context">¶</a>
 				
 				
 			</h2>
 			<p>
-Context represents a context that is tied to a UI element. It is canceled
-when the element is dismounted.
+Context is the interface that describes a context tied to a UI element.
 </p>
 <p>
-It implements the context.Context interface.
+A context provides mechanisms to deal with the browser, the current page,
+navigation, concurrency, and component communication.
 </p>
-<pre><a href="https://golang.org/pkg/context/#Context">https://golang.org/pkg/context/#Context</a>
-</pre>
+<p>
+It is canceled when its associated UI element is dismounted.
+</p>
 
-			<pre>type Context struct {
+			<pre>type Context interface {
     <a href="https://golang.org/pkg/context/">context</a>.<a href="https://golang.org/pkg/context/#Context">Context</a>
 
-    <span class="comment">// The UI element tied to the context.</span>
-<span id="Context.Src"></span>    Src <a href="#UI" id="src-UI">UI</a>
+    <span class="comment">// Returns the UI element tied to the context.</span>
+    Src() <a href="#UI" id="src-UI">UI</a>
 
-    <span class="comment">// The JavaScript value of the element tied to the context. This is a</span>
-    <span class="comment">// shorthand for:</span>
+    <span class="comment">// Returns the associated JavaScript value. The is an helper method for:</span>
     <span class="comment">//  ctx.Src.JSValue()</span>
-<span id="Context.JSSrc"></span>    JSSrc <a href="#Value" id="src-Value">Value</a>
+    JSSrc() <a href="#Value" id="src-Value">Value</a>
 
     <span class="comment">// Reports whether the app has been updated in background. Use app.Reload()</span>
     <span class="comment">// to load the updated version.</span>
-<span id="Context.AppUpdateAvailable"></span>    AppUpdateAvailable <a href="https://golang.org/pkg/builtin/#bool">bool</a>
+    AppUpdateAvailable() <a href="https://golang.org/pkg/builtin/#bool">bool</a>
 
-    <span class="comment">// The info about the current page.</span>
-<span id="Context.Page"></span>    Page <a href="#Page" id="src-Page">Page</a>
-    <span class="comment">// contains filtered or unexported fields</span>
-}
-</pre>
+    <span class="comment">// Returns the current page.</span>
+    Page() <a href="#Page" id="src-Page">Page</a>
+
+    <span class="comment">// Executes the given function on the UI goroutine and notifies the</span>
+    <span class="comment">// context&#39;s nearest component to update its state.</span>
+    Dispatch(fn func(<a href="#Context" id="src-Context">Context</a>))
+
+    <span class="comment">// Executes the given function on the UI goroutine after notifying the</span>
+    <span class="comment">// context&#39;s nearest component to update its state.</span>
+    Defer(fn func(<a href="#Context" id="src-Context">Context</a>))
+
+    <span class="comment">// Executes the given function on a new goroutine.</span>
+    <span class="comment">//</span>
+    <span class="comment">// The difference versus just launching a goroutine is that it ensures that</span>
+    <span class="comment">// the asynchronous function is called before a page is fully pre-rendered</span>
+    <span class="comment">// and served over HTTP.</span>
+    Async(fn func())
+
+    <span class="comment">// Asynchronously waits for the given duration and dispatches the given</span>
+    <span class="comment">// function.</span>
+    After(d <a href="https://golang.org/pkg/time/">time</a>.<a href="https://golang.org/pkg/time/#Duration">Duration</a>, fn func(<a href="#Context" id="src-Context">Context</a>))
+
+    <span class="comment">// Executes the given function and notifies the parent components to update</span>
+    <span class="comment">// their state. It should be used to launch component custom event handlers.</span>
+    Emit(fn func())
+
+    <span class="comment">// Reloads the WebAssembly app to the current page. It is like refreshing</span>
+    <span class="comment">// the browser page.</span>
+    Reload()
+
+    <span class="comment">// Navigates to the given URL. This is a helper method that converts url to</span>
+    <span class="comment">// an *url.URL and then calls ctx.NavigateTo under the hood.</span>
+    Navigate(url <a href="https://golang.org/pkg/builtin/#string">string</a>)
+
+    <span class="comment">// Navigates to the given URL.</span>
+    NavigateTo(u *<a href="https://golang.org/pkg/net/url/">url</a>.<a href="https://golang.org/pkg/net/url/#URL">URL</a>)
+
+    <span class="comment">// Resolves the given path to make it point to the right location whether</span>
+    <span class="comment">// static resources are located on a local directory or a remote bucket.</span>
+    ResolveStaticResource(<a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="https://golang.org/pkg/builtin/#string">string</a>
+
+    <span class="comment">// Returns a storage that uses the browser local storage associated to the</span>
+    <span class="comment">// document origin. Data stored has no expiration time.</span>
+    LocalStorage() <a href="#BrowserStorage" id="src-BrowserStorage">BrowserStorage</a>
+
+    <span class="comment">// Returns a storage that uses the browser session storage associated to the</span>
+    <span class="comment">// document origin. Data stored expire when the page session ends.</span>
+    SessionStorage() <a href="#BrowserStorage" id="src-BrowserStorage">BrowserStorage</a>
+
+    <span class="comment">// Scrolls to the HTML element with the given id.</span>
+    ScrollTo(id <a href="https://golang.org/pkg/builtin/#string">string</a>)
+
+    <span class="comment">// Returns a UUID that identifies the app on the current device.</span>
+    DeviceID() <a href="https://golang.org/pkg/builtin/#string">string</a>
+
+    <span class="comment">// Encrypts the given value using AES encryption.</span>
+    Encrypt(v interface{}) ([]<a href="https://golang.org/pkg/builtin/#byte">byte</a>, <a href="https://golang.org/pkg/builtin/#error">error</a>)
+
+    <span class="comment">// Decrypts the given encrypted bytes and stores them in the given value.</span>
+    Decrypt(crypted []<a href="https://golang.org/pkg/builtin/#byte">byte</a>, v interface{}) <a href="https://golang.org/pkg/builtin/#error">error</a>
+    <span class="comment">// contains filtered or unexported methods</span>
+}</pre>
 
 			
 
@@ -2273,185 +2302,6 @@ It implements the context.Context interface.
 
 			
 
-			
-				
-				<h3 id="Context.After">func (Context) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go#L101">After</a>
-					<a class="permalink" href="#Context.After" id="src-Context.After">¶</a>
-					
-					
-				</h3>
-				<pre>func (ctx <a href="#Context" id="src-Context">Context</a>) After(d <a href="https://golang.org/pkg/time/">time</a>.<a href="https://golang.org/pkg/time/#Duration">Duration</a>, fn func(<a href="#Context" id="src-Context">Context</a>))</pre>
-				<p>
-After asynchronously waits for the given duration and dispatches the given
-function.
-</p>
-
-				
-				
-				
-			
-				
-				<h3 id="Context.Async">func (Context) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go#L42">Async</a>
-					<a class="permalink" href="#Context.Async" id="src-Context.Async">¶</a>
-					
-					
-				</h3>
-				<pre>func (ctx <a href="#Context" id="src-Context">Context</a>) Async(fn func())</pre>
-				<p>
-Async launches the given function on a new goroutine.
-</p>
-<p>
-The difference versus just launching a goroutine is that it ensures that the
-asynchronous function is called before a page is fully pre-rendered and
-served over HTTP.
-</p>
-
-				
-				
-				
-			
-				
-				<h3 id="Context.Defer">func (Context) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go#L33">Defer</a>
-					<a class="permalink" href="#Context.Defer" id="src-Context.Defer">¶</a>
-					
-					
-				</h3>
-				<pre>func (ctx <a href="#Context" id="src-Context">Context</a>) Defer(fn func(<a href="#Context" id="src-Context">Context</a>))</pre>
-				<p>
-Defer executes the given function on the UI goroutine after the context&#39;s
-source nearest parent component has been updated.
-</p>
-
-				
-				
-				
-			
-				
-				<h3 id="Context.Dispatch">func (Context) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go#L27">Dispatch</a>
-					<a class="permalink" href="#Context.Dispatch" id="src-Context.Dispatch">¶</a>
-					
-					
-				</h3>
-				<pre>func (ctx <a href="#Context" id="src-Context">Context</a>) Dispatch(fn func(<a href="#Context" id="src-Context">Context</a>))</pre>
-				<p>
-Dispatch executes the given function on the UI goroutine, before updating the
-context&#39;s source nearest parent component.
-</p>
-
-				
-				
-				
-			
-				
-				<h3 id="Context.LocalStorage">func (Context) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go#L81">LocalStorage</a>
-					<a class="permalink" href="#Context.LocalStorage" id="src-Context.LocalStorage">¶</a>
-					
-					
-				</h3>
-				<pre>func (ctx <a href="#Context" id="src-Context">Context</a>) LocalStorage() <a href="#BrowserStorage" id="src-BrowserStorage">BrowserStorage</a></pre>
-				<p>
-LocalStorage returns a storage that uses the browser local storage associated
-to the document origin. Data stored has no expiration time.
-</p>
-
-				
-				
-				
-			
-				
-				<h3 id="Context.Navigate">func (Context) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go#L59">Navigate</a>
-					<a class="permalink" href="#Context.Navigate" id="src-Context.Navigate">¶</a>
-					
-					
-				</h3>
-				<pre>func (ctx <a href="#Context" id="src-Context">Context</a>) Navigate(rawURL <a href="https://golang.org/pkg/builtin/#string">string</a>)</pre>
-				<p>
-Navigate navigates to the given URL. This is a helper method that converts
-rawURL to an *url.URL and then calls ctx.NavigateTo under the hood.
-</p>
-
-				
-				
-				
-			
-				
-				<h3 id="Context.NavigateTo">func (Context) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go#L66">NavigateTo</a>
-					<a class="permalink" href="#Context.NavigateTo" id="src-Context.NavigateTo">¶</a>
-					
-					
-				</h3>
-				<pre>func (ctx <a href="#Context" id="src-Context">Context</a>) NavigateTo(u *<a href="https://golang.org/pkg/net/url/">url</a>.<a href="https://golang.org/pkg/net/url/#URL">URL</a>)</pre>
-				<p>
-NavigateTo navigates to the given URL.
-</p>
-
-				
-				
-				
-			
-				
-				<h3 id="Context.Reload">func (Context) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go#L47">Reload</a>
-					<a class="permalink" href="#Context.Reload" id="src-Context.Reload">¶</a>
-					
-					
-				</h3>
-				<pre>func (ctx <a href="#Context" id="src-Context">Context</a>) Reload()</pre>
-				<p>
-Reload reloads the WebAssembly app at the current page.
-</p>
-
-				
-				
-				
-			
-				
-				<h3 id="Context.ResolveStaticResource">func (Context) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go#L75">ResolveStaticResource</a>
-					<a class="permalink" href="#Context.ResolveStaticResource" id="src-Context.ResolveStaticResource">¶</a>
-					
-					
-				</h3>
-				<pre>func (ctx <a href="#Context" id="src-Context">Context</a>) ResolveStaticResource(path <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="https://golang.org/pkg/builtin/#string">string</a></pre>
-				<p>
-ResolveStaticResource resolves the given path to make it point to the right
-location whether static resources are located on a local directory or a
-remote bucket.
-</p>
-
-				
-				
-				
-			
-				
-				<h3 id="Context.ScrollTo">func (Context) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go#L93">ScrollTo</a>
-					<a class="permalink" href="#Context.ScrollTo" id="src-Context.ScrollTo">¶</a>
-					
-					
-				</h3>
-				<pre>func (ctx <a href="#Context" id="src-Context">Context</a>) ScrollTo(id <a href="https://golang.org/pkg/builtin/#string">string</a>)</pre>
-				<p>
-ScrollTo scrolls to the HTML element with the given id.
-</p>
-
-				
-				
-				
-			
-				
-				<h3 id="Context.SessionStorage">func (Context) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go#L88">SessionStorage</a>
-					<a class="permalink" href="#Context.SessionStorage" id="src-Context.SessionStorage">¶</a>
-					
-					
-				</h3>
-				<pre>func (ctx <a href="#Context" id="src-Context">Context</a>) SessionStorage() <a href="#BrowserStorage" id="src-BrowserStorage">BrowserStorage</a></pre>
-				<p>
-SessionStorage returns a storage that uses the browser session storage
-associated to the document origin. Data stored expire when the page
-session ends.
-</p>
-
-				
-				
-				
 			
 		
 			
@@ -2499,13 +2349,17 @@ UI instructions and UI elements lifecycle.
 </p>
 
 			<pre>type Dispatcher interface {
-    <span class="comment">// Dispatch executes the given function on the UI goroutine, before updating</span>
-    <span class="comment">// the source&#39;s nearest parent component.</span>
+    <span class="comment">// Dispatch executes the given function on the UI goroutine and notifies the</span>
+    <span class="comment">// source&#39;s nearest component to update its state.</span>
     Dispatch(src <a href="#UI" id="src-UI">UI</a>, fn func(<a href="#Context" id="src-Context">Context</a>))
 
-    <span class="comment">// Defer executes the given function on the UI goroutine after the source&#39;s</span>
-    <span class="comment">// nearest parent component has been updated.</span>
+    <span class="comment">// Defer executes the given function on the UI goroutine after notifying the</span>
+    <span class="comment">// source&#39;s nearest component to update its state.</span>
     Defer(src <a href="#UI" id="src-UI">UI</a>, fn func(<a href="#Context" id="src-Context">Context</a>))
+
+    <span class="comment">// Emit executes the given function and notifies the source&#39;s parent</span>
+    <span class="comment">// components to update their state.</span>
+    Emit(src <a href="#UI" id="src-UI">UI</a>, fn func())
 
     <span class="comment">// 	Async launches the given function on a new goroutine.</span>
     <span class="comment">//</span>
@@ -2536,7 +2390,7 @@ UI instructions and UI elements lifecycle.
 		
 			
 			
-			<h2 id="Environment">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L750">Environment</a>
+			<h2 id="Environment">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L759">Environment</a>
 				<a class="permalink" href="#Environment" id="src-Environment">¶</a>
 				
 				
@@ -22908,6 +22762,13 @@ and its resources.
     <span class="comment">// linking the app.</span>
 <span id="Handler.Image"></span>    Image <a href="https://golang.org/pkg/builtin/#string">string</a>
 
+    <span class="comment">// The URLs that are launched in the app tab or window.</span>
+    <span class="comment">//</span>
+    <span class="comment">// By default, URLs with a different domain are launched in another tab.</span>
+    <span class="comment">// Specifying internal URLs is to override that behavior. A good use case</span>
+    <span class="comment">// would be the URL for an OAuth authentication.</span>
+<span id="Handler.InternalURLs"></span>    InternalURLs []<a href="https://golang.org/pkg/builtin/#string">string</a>
+
     <span class="comment">// The page keywords.</span>
 <span id="Handler.Keywords"></span>    Keywords []<a href="https://golang.org/pkg/builtin/#string">string</a>
 
@@ -22997,7 +22858,7 @@ and its resources.
 
 			
 				
-				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L431">ServeHTTP</a>
+				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L440">ServeHTTP</a>
 					<a class="permalink" href="#Handler.ServeHTTP" id="src-Handler.ServeHTTP">¶</a>
 					
 					
@@ -23011,7 +22872,7 @@ and its resources.
 		
 			
 			
-			<h2 id="Icon">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L727">Icon</a>
+			<h2 id="Icon">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L736">Icon</a>
 				<a class="permalink" href="#Icon" id="src-Icon">¶</a>
 				
 				
@@ -23614,7 +23475,7 @@ remote bucket such as Amazon S3 or Google Cloud Storage.
 		
 			
 			
-			<h2 id="ServerDispatcher">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L73">ServerDispatcher</a>
+			<h2 id="ServerDispatcher">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L81">ServerDispatcher</a>
 				<a class="permalink" href="#ServerDispatcher" id="src-ServerDispatcher">¶</a>
 				
 				
@@ -23631,6 +23492,9 @@ ServerDispatcher is the interface that describes a dispatcher that emulates a se
 
     <span class="comment">// Consume executes all the remaining UI instructions.</span>
     Consume()
+
+    <span class="comment">// ConsumeNext executes the next UI instructions.</span>
+    ConsumeNext()
 
     <span class="comment">// Close consumes all the remaining UI instruction and releases allocated</span>
     <span class="comment">// resources.</span>
@@ -23650,7 +23514,7 @@ ServerDispatcher is the interface that describes a dispatcher that emulates a se
 
 			
 				
-				<h3 id="NewServerTester">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L92">NewServerTester</a>
+				<h3 id="NewServerTester">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L103">NewServerTester</a>
 					<a class="permalink" href="#NewServerTester" id="src-NewServerTester">¶</a>
 					
 					

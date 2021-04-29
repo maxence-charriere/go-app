@@ -54,19 +54,19 @@ func (e *example) init(ctx app.Context) {
 		},
 	}
 
-	eg := ctx.Page.URL().Path
+	eg := ctx.Page().URL().Path
 	for _, ed := range e.examples {
 		if eg == ed.path {
 			e.current = ed
-			ctx.Page.SetTitle(ed.title)
-			ctx.Page.SetDescription(ed.description)
+			ctx.Page().SetTitle(ed.title)
+			ctx.Page().SetDescription(ed.description)
 			return
 		}
 	}
 
 	e.current = exampleData{}
-	ctx.Page.SetTitle("Examples built with go-app")
-	ctx.Page.SetDescription("Examples built with go-app.")
+	ctx.Page().SetTitle("Examples built with go-app")
+	ctx.Page().SetDescription("Examples built with go-app.")
 }
 
 func (e *example) Render() app.UI {

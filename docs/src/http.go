@@ -9,7 +9,7 @@ import (
 )
 
 func get(ctx app.Context, path string) ([]byte, error) {
-	url := *ctx.Page.URL()
+	url := *ctx.Page().URL()
 	url.Path = path
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)

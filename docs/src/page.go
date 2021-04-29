@@ -46,7 +46,7 @@ func (p *page) OnAppUpdate(ctx app.Context) {
 }
 
 func (p *page) setAvailableUpdate(ctx app.Context) {
-	p.isAppUpdateAvailable = ctx.AppUpdateAvailable
+	p.isAppUpdateAvailable = ctx.AppUpdateAvailable()
 }
 
 func (p *page) Render() app.UI {

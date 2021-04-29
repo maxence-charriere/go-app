@@ -51,8 +51,8 @@ func (i *godocIndex) init(ctx app.Context) {
 		return
 	}
 
-	ctx.Page.SetTitle("API reference for building a Progressive Web App with Go")
-	ctx.Page.SetDescription("The API reference for building a Progressive Web App (PWA) with the go-app Go (Golang) package. ")
+	ctx.Page().SetTitle("API reference for building a Progressive Web App with Go")
+	ctx.Page().SetDescription("The API reference for building a Progressive Web App (PWA) with the go-app Go (Golang) package. ")
 
 	i.load(ctx)
 }
@@ -69,7 +69,7 @@ func (i *godocIndex) load(ctx app.Context) {
 			i.err = err
 			i.isLoading = false
 
-			fragment := i.linkID(ctx.Page.URL().Fragment)
+			fragment := i.linkID(ctx.Page().URL().Fragment)
 			if fragment == "" {
 				fragment = "top"
 			}
@@ -114,7 +114,7 @@ func (i *godocIndex) linkID(fragment string) string {
 }
 
 func (i *godocIndex) scroll(ctx app.Context) {
-	fragment := i.linkID(ctx.Page.URL().Fragment)
+	fragment := i.linkID(ctx.Page().URL().Fragment)
 	if fragment == "" {
 		fragment = "top"
 	}
@@ -220,7 +220,7 @@ func (d *godoc) onToggle(src app.Value, args []app.Value) interface{} {
 }
 
 func (d *godoc) scroll(ctx app.Context) {
-	fragment := ctx.Page.URL().Fragment
+	fragment := ctx.Page().URL().Fragment
 	if fragment == "" {
 		fragment = "top"
 	}

@@ -367,13 +367,13 @@ func onAppUpdate(d ClientDispatcher) func(this Value, args []Value) interface{} 
 }
 
 func onResize(ctx Context, e Event) {
-	if d, ok := ctx.dispatcher.(ClientDispatcher); ok {
+	if d, ok := ctx.dispatcher().(ClientDispatcher); ok {
 		d.AppResize()
 	}
 }
 
 func onAppOrientationChange(ctx Context, e Event) {
-	if d, ok := ctx.dispatcher.(ClientDispatcher); ok {
+	if d, ok := ctx.dispatcher().(ClientDispatcher); ok {
 		go func() {
 			time.Sleep(orientationChangeDelay)
 			d.AppResize()

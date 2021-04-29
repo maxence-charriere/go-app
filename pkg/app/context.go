@@ -11,123 +11,179 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
-// Context represents a context that is tied to a UI element. It is canceled
-// when the element is dismounted.
+// Context is the interface that describes a context tied to a UI element.
 //
-// It implements the context.Context interface.
-//  https://golang.org/pkg/context/#Context
-type Context struct {
+// A context provides mechanisms to deal with the browser, the current page,
+// navigation, concurrency, and component communication.
+//
+// It is canceled when its associated UI element is dismounted.
+type Context interface {
 	context.Context
 
-	// The UI element tied to the context.
-	Src UI
+	// Returns the UI element tied to the context.
+	Src() UI
 
-	// The JavaScript value of the element tied to the context. This is a
-	// shorthand for:
+	// Returns the associated JavaScript value. The is an helper method for:
 	//  ctx.Src.JSValue()
-	JSSrc Value
+	JSSrc() Value
 
 	// Reports whether the app has been updated in background. Use app.Reload()
 	// to load the updated version.
-	AppUpdateAvailable bool
+	AppUpdateAvailable() bool
 
-	// The info about the current page.
-	Page Page
+	// Returns the current page.
+	Page() Page
 
-	dispatcher Dispatcher
+	// Executes the given function on the UI goroutine and notifies the
+	// context's nearest component to update its state.
+	Dispatch(fn func(Context))
+
+	// Executes the given function on the UI goroutine after notifying the
+	// context's nearest component to update its state.
+	Defer(fn func(Context))
+
+	// Executes the given function on a new goroutine.
+	//
+	// The difference versus just launching a goroutine is that it ensures that
+	// the asynchronous function is called before a page is fully pre-rendered
+	// and served over HTTP.
+	Async(fn func())
+
+	// Asynchronously waits for the given duration and dispatches the given
+	// function.
+	After(d time.Duration, fn func(Context))
+
+	// Executes the given function and notifies the parent components to update
+	// their state. It should be used to launch component custom event handlers.
+	Emit(fn func())
+
+	// Reloads the WebAssembly app to the current page. It is like refreshing
+	// the browser page.
+	Reload()
+
+	// Navigates to the given URL. This is a helper method that converts url to
+	// an *url.URL and then calls ctx.NavigateTo under the hood.
+	Navigate(url string)
+
+	// Navigates to the given URL.
+	NavigateTo(u *url.URL)
+
+	// Resolves the given path to make it point to the right location whether
+	// static resources are located on a local directory or a remote bucket.
+	ResolveStaticResource(string) string
+
+	// Returns a storage that uses the browser local storage associated to the
+	// document origin. Data stored has no expiration time.
+	LocalStorage() BrowserStorage
+
+	// Returns a storage that uses the browser session storage associated to the
+	// document origin. Data stored expire when the page session ends.
+	SessionStorage() BrowserStorage
+
+	// Scrolls to the HTML element with the given id.
+	ScrollTo(id string)
+
+	// Returns a UUID that identifies the app on the current device.
+	DeviceID() string
+
+	// Encrypts the given value using AES encryption.
+	Encrypt(v interface{}) ([]byte, error)
+
+	// Decrypts the given encrypted bytes and stores them in the given value.
+	Decrypt(crypted []byte, v interface{}) error
+
+	dispatcher() Dispatcher
 }
 
-// Dispatch executes the given function on the UI goroutine and notifies the
-// context's nearest component to update its state.
-func (ctx Context) Dispatch(fn func(Context)) {
-	ctx.dispatcher.Dispatch(ctx.Src, fn)
+type uiContext struct {
+	context.Context
+
+	src                UI
+	jsSrc              Value
+	appUpdateAvailable bool
+	page               Page
+	disp               Dispatcher
 }
 
-// Defer executes the given function on the UI goroutine after notifying the
-// context's nearest component to update its state.
-func (ctx Context) Defer(fn func(Context)) {
-	ctx.dispatcher.Defer(ctx.Src, fn)
+func (ctx uiContext) Src() UI {
+	return ctx.src
 }
 
-// Async executes the given function on a new goroutine.
-//
-// The difference versus just launching a goroutine is that it ensures that the
-// asynchronous function is called before a page is fully pre-rendered and
-// served over HTTP.
-func (ctx Context) Async(fn func()) {
-	ctx.dispatcher.Async(fn)
+func (ctx uiContext) JSSrc() Value {
+	return ctx.jsSrc
 }
 
-// Emit executes the given function and notifies the parent components to update
-// their state. It should be used to launch component custom event handlers.
-func (ctx Context) Emit(fn func()) {
-	ctx.dispatcher.Emit(ctx.Src, fn)
+func (ctx uiContext) AppUpdateAvailable() bool {
+	return ctx.appUpdateAvailable
 }
 
-// Reload reloads the WebAssembly app at the current page.
-func (ctx Context) Reload() {
-	if IsServer {
-		return
-	}
-
-	ctx.Defer(func(ctx Context) {
-		Window().Get("location").Call("reload")
-	})
+func (ctx uiContext) Page() Page {
+	return ctx.page
 }
 
-// Navigate navigates to the given URL. This is a helper method that converts
-// rawURL to an *url.URL and then calls ctx.NavigateTo under the hood.
-func (ctx Context) Navigate(rawURL string) {
-	ctx.Defer(func(ctx Context) {
-		navigate(ctx.dispatcher, rawURL)
-	})
+func (ctx uiContext) Dispatch(fn func(Context)) {
+	ctx.dispatcher().Dispatch(ctx.Src(), fn)
 }
 
-// NavigateTo navigates to the given URL.
-func (ctx Context) NavigateTo(u *url.URL) {
-	ctx.Defer(func(ctx Context) {
-		navigateTo(ctx.dispatcher, u, true)
-	})
+func (ctx uiContext) Defer(fn func(Context)) {
+	ctx.dispatcher().Defer(ctx.Src(), fn)
 }
 
-// ResolveStaticResource resolves the given path to make it point to the right
-// location whether static resources are located on a local directory or a
-// remote bucket.
-func (ctx Context) ResolveStaticResource(path string) string {
-	return ctx.dispatcher.resolveStaticResource(path)
+func (ctx uiContext) Async(fn func()) {
+	ctx.dispatcher().Async(fn)
 }
 
-// LocalStorage returns a storage that uses the browser local storage associated
-// to the document origin. Data stored has no expiration time.
-func (ctx Context) LocalStorage() BrowserStorage {
-	return ctx.dispatcher.localStorage()
-}
-
-// SessionStorage returns a storage that uses the browser session storage
-// associated to the document origin. Data stored expire when the page
-// session ends.
-func (ctx Context) SessionStorage() BrowserStorage {
-	return ctx.dispatcher.sessionStorage()
-}
-
-// ScrollTo scrolls to the HTML element with the given id.
-func (ctx Context) ScrollTo(id string) {
-	ctx.Defer(func(ctx Context) {
-		Window().ScrollToID(id)
-	})
-}
-
-// After asynchronously waits for the given duration and dispatches the given
-// function.
-func (ctx Context) After(d time.Duration, fn func(Context)) {
+func (ctx uiContext) After(d time.Duration, fn func(Context)) {
 	ctx.Async(func() {
 		time.Sleep(d)
 		ctx.Dispatch(fn)
 	})
 }
 
-// DeviceID returns a UUID that identifies the app on the current device.
-func (ctx Context) DeviceID() string {
+func (ctx uiContext) Emit(fn func()) {
+	ctx.dispatcher().Emit(ctx.Src(), fn)
+}
+
+func (ctx uiContext) Reload() {
+	if IsServer {
+		return
+	}
+	ctx.Defer(func(ctx Context) {
+		Window().Get("location").Call("reload")
+	})
+}
+
+func (ctx uiContext) Navigate(rawURL string) {
+	ctx.Defer(func(ctx Context) {
+		navigate(ctx.dispatcher(), rawURL)
+	})
+}
+
+func (ctx uiContext) NavigateTo(u *url.URL) {
+	ctx.Defer(func(ctx Context) {
+		navigateTo(ctx.dispatcher(), u, true)
+	})
+}
+
+func (ctx uiContext) ResolveStaticResource(path string) string {
+	return ctx.dispatcher().resolveStaticResource(path)
+}
+
+func (ctx uiContext) LocalStorage() BrowserStorage {
+	return ctx.dispatcher().localStorage()
+}
+
+func (ctx uiContext) SessionStorage() BrowserStorage {
+	return ctx.dispatcher().sessionStorage()
+}
+
+func (ctx uiContext) ScrollTo(id string) {
+	ctx.Defer(func(ctx Context) {
+		Window().ScrollToID(id)
+	})
+}
+
+func (ctx uiContext) DeviceID() string {
 	var id string
 	if err := ctx.LocalStorage().Get("/go-app/deviceID", &id); err != nil {
 		panic(errors.New("retrieving device id failed").Wrap(err))
@@ -143,8 +199,7 @@ func (ctx Context) DeviceID() string {
 	return id
 }
 
-// Encrypt encrypts the given value using AES encryption.
-func (ctx Context) Encrypt(v interface{}) ([]byte, error) {
+func (ctx uiContext) Encrypt(v interface{}) ([]byte, error) {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return nil, errors.New("encoding value failed").Wrap(err)
@@ -157,9 +212,7 @@ func (ctx Context) Encrypt(v interface{}) ([]byte, error) {
 	return b, nil
 }
 
-// Decrypt decrypts the given encrypted bytes and stores them in the given
-// value.
-func (ctx Context) Decrypt(crypted []byte, v interface{}) error {
+func (ctx uiContext) Decrypt(crypted []byte, v interface{}) error {
 	b, err := decrypt(ctx.cryptoKey(), crypted)
 	if err != nil {
 		return errors.New("decrypting value failed").Wrap(err)
@@ -171,17 +224,21 @@ func (ctx Context) Decrypt(crypted []byte, v interface{}) error {
 	return nil
 }
 
-func (ctx Context) cryptoKey() string {
+func (ctx uiContext) cryptoKey() string {
 	return strings.ReplaceAll(ctx.DeviceID(), "-", "")
 }
 
+func (ctx uiContext) dispatcher() Dispatcher {
+	return ctx.disp
+}
+
 func makeContext(src UI) Context {
-	return Context{
+	return uiContext{
 		Context:            src.context(),
-		Src:                src,
-		JSSrc:              src.JSValue(),
-		AppUpdateAvailable: appUpdateAvailable,
-		Page:               src.dispatcher().currentPage(),
-		dispatcher:         src.dispatcher(),
+		src:                src,
+		jsSrc:              src.JSValue(),
+		appUpdateAvailable: appUpdateAvailable,
+		page:               src.dispatcher().currentPage(),
+		disp:               src.dispatcher(),
 	}
 }

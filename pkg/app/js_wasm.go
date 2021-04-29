@@ -233,7 +233,7 @@ func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
 		if !ok {
 			return
 		}
-		ctx.dispatcher.Dispatch(compo, nil)
+		ctx.dispatcher().Dispatch(compo, nil)
 	})
 	w.addEventListener(event, callback)
 
