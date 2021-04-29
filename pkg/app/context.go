@@ -2,8 +2,13 @@ package app
 
 import (
 	"context"
+	"encoding/json"
 	"net/url"
+	"strings"
 	"time"
+
+	"github.com/google/uuid"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 // Context represents a context that is tied to a UI element. It is canceled
@@ -119,6 +124,55 @@ func (ctx Context) After(d time.Duration, fn func(Context)) {
 		time.Sleep(d)
 		ctx.Dispatch(fn)
 	})
+}
+
+// DeviceID returns a UUID that identifies the app on the current device.
+func (ctx Context) DeviceID() string {
+	var id string
+	if err := ctx.LocalStorage().Get("/go-app/deviceID", &id); err != nil {
+		panic(errors.New("retrieving device id failed").Wrap(err))
+	}
+	if id != "" {
+		return id
+	}
+
+	id = uuid.New().String()
+	if err := ctx.LocalStorage().Set("/go-app/deviceID", id); err != nil {
+		panic(errors.New("creating device id failed").Wrap(err))
+	}
+	return id
+}
+
+// Encrypt encrypts the given value using AES encryption.
+func (ctx Context) Encrypt(v interface{}) ([]byte, error) {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return nil, errors.New("encoding value failed").Wrap(err)
+	}
+
+	b, err = encrypt(ctx.cryptoKey(), b)
+	if err != nil {
+		return nil, errors.New("encrypting value failed").Wrap(err)
+	}
+	return b, nil
+}
+
+// Decrypt decrypts the given encrypted bytes and stores them in the given
+// value.
+func (ctx Context) Decrypt(crypted []byte, v interface{}) error {
+	b, err := decrypt(ctx.cryptoKey(), crypted)
+	if err != nil {
+		return errors.New("decrypting value failed").Wrap(err)
+	}
+
+	if err := json.Unmarshal(b, v); err != nil {
+		return errors.New("decoding value failed").Wrap(err)
+	}
+	return nil
+}
+
+func (ctx Context) cryptoKey() string {
+	return strings.ReplaceAll(ctx.DeviceID(), "-", "")
 }
 
 func makeContext(src UI) Context {
