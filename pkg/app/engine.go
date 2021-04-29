@@ -81,7 +81,9 @@ func (e *engine) Emit(src UI, fn func()) {
 		return
 	}
 
-	fn()
+	if fn != nil {
+		fn()
+	}
 
 	compoCount := 0
 	for n := src; n != nil; n = n.parent() {

@@ -75,6 +75,8 @@ func TestEngineEmit(t *testing.T) {
 	})
 	require.True(t, emitted)
 	require.Len(t, e.events, 1)
+
+	e.Emit(bar, nil)
 }
 
 func TestEngineExecEvent(t *testing.T) {
