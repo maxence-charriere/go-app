@@ -334,19 +334,20 @@ func (h *Handler) makeAppWorkerJS() []byte {
 		h.resolvePackagePath("/wasm_exec.js"):         {},
 		h.resolvePackagePath("/"):                     {},
 		h.Resources.AppWASM():                         {},
-		h.Icon.Default:                                {},
-		h.Icon.Large:                                  {},
-		h.Icon.AppleTouch:                             {},
 	}
 
-	cacheResources := func(res []string) {
+	cacheResources := func(res ...string) {
 		for _, r := range res {
+			if r == "" {
+				continue
+			}
 			cacheableResources[r] = struct{}{}
 		}
 	}
-	cacheResources(h.Styles)
-	cacheResources(h.Scripts)
-	cacheResources(h.CacheableResources)
+	cacheResources(h.Icon.Default, h.Icon.Large, h.Icon.AppleTouch)
+	cacheResources(h.Styles...)
+	cacheResources(h.Scripts...)
+	cacheResources(h.CacheableResources...)
 
 	var b bytes.Buffer
 	if err := template.
