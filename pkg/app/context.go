@@ -42,6 +42,13 @@ type Context interface {
 	// context's nearest component to update its state.
 	Defer(fn func(Context))
 
+	// Setups the handler to listen to the given message.
+	Handle(msg string, h MsgHandler)
+
+	// Dispatches the given value to all the handlers that listen for the  given
+	// message.
+	Post(msg string, v interface{})
+
 	// Executes the given function on a new goroutine.
 	//
 	// The difference versus just launching a goroutine is that it ensures that
@@ -127,6 +134,14 @@ func (ctx uiContext) Dispatch(fn func(Context)) {
 
 func (ctx uiContext) Defer(fn func(Context)) {
 	ctx.dispatcher().Defer(ctx.Src(), fn)
+}
+
+func (ctx uiContext) Handle(msg string, h MsgHandler) {
+	ctx.dispatcher().Handle(msg, ctx.Src(), h)
+}
+
+func (ctx uiContext) Post(msg string, v interface{}) {
+	ctx.dispatcher().Post(msg, v)
 }
 
 func (ctx uiContext) Async(fn func()) {

@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"net/url"
 	"sync"
 	"time"
@@ -41,12 +42,14 @@ type engine struct {
 	startOnce sync.Once
 	closeOnce sync.Once
 	wait      sync.WaitGroup
+	msgMutex  sync.Mutex
 
 	isMountedOnce bool
 	events        chan event
 	updates       map[Composer]struct{}
 	updateQueue   []updateDescriptor
 	defers        []event
+	messages      map[string]map[string]msgHandler
 }
 
 func (e *engine) Dispatch(src UI, fn func(Context)) {
@@ -96,6 +99,46 @@ func (e *engine) Emit(src UI, fn func()) {
 		if compoCount > 1 {
 			e.Dispatch(compo, nil)
 		}
+	}
+}
+
+func (e *engine) Handle(msg string, src UI, h MsgHandler) {
+	e.msgMutex.Lock()
+	defer e.msgMutex.Unlock()
+
+	key := fmt.Sprintf("%p-%p", src, h)
+
+	handlers, ok := e.messages[msg]
+	if !ok {
+		handlers = make(map[string]msgHandler)
+		e.messages[msg] = handlers
+	}
+
+	handlers[key] = msgHandler{
+		src:      src,
+		function: h,
+	}
+}
+
+func (e *engine) Post(msg string, v interface{}) {
+	e.msgMutex.Lock()
+	defer e.msgMutex.Unlock()
+
+	handlers, ok := e.messages[msg]
+	if !ok {
+		return
+	}
+
+	for k, h := range handlers {
+		src := h.src
+		if !src.Mounted() {
+			delete(handlers, k)
+		}
+
+		function := h.function
+		e.Dispatch(src, func(ctx Context) {
+			function(ctx, v)
+		})
 	}
 }
 
@@ -154,6 +197,7 @@ func (e *engine) Close() {
 	e.closeOnce.Do(func() {
 		e.Consume()
 		e.Wait()
+		e.closeMessageHandlers()
 
 		dismount(e.Body)
 		e.Body = nil
@@ -235,6 +279,7 @@ func (e *engine) init() {
 		e.updates = make(map[Composer]struct{})
 		e.updateQueue = make([]updateDescriptor, 0, updateBufferSize)
 		e.defers = make([]event, 0, deferBufferSize)
+		e.messages = make(map[string]map[string]msgHandler)
 
 		if e.UpdateRate <= 0 {
 			e.UpdateRate = 60
@@ -272,9 +317,13 @@ func (e *engine) init() {
 func (e *engine) start(ctx context.Context) {
 	e.startOnce.Do(func() {
 		updateInterval := time.Second / time.Duration(e.UpdateRate)
-		currentInterval := updateInterval
+		currentInterval := time.Duration(updateInterval)
+
 		updates := time.NewTicker(currentInterval)
 		defer updates.Stop()
+
+		cleanMessages := time.NewTicker(time.Minute)
+		defer cleanMessages.Stop()
 
 		for {
 			select {
@@ -302,6 +351,9 @@ func (e *engine) start(ctx context.Context) {
 					currentInterval = time.Hour
 					updates.Reset(currentInterval)
 				}
+
+			case <-cleanMessages.C:
+				e.closeMessageHandlers()
 			}
 		}
 	})
@@ -389,6 +441,19 @@ func (e *engine) execDeferableEvents() {
 	e.defers = e.defers[:0]
 }
 
+func (e *engine) closeMessageHandlers() {
+	e.msgMutex.Lock()
+	defer e.msgMutex.Unlock()
+
+	for _, handlers := range e.messages {
+		for k, h := range handlers {
+			if !h.src.Mounted() {
+				delete(handlers, k)
+			}
+		}
+	}
+}
+
 func (e *engine) currentPage() Page {
 	return e.Page
 }
@@ -446,4 +511,9 @@ func sortUpdateDescriptorsPartition(d []updateDescriptor) int {
 	i++
 	d[i], d[piIdx] = d[piIdx], d[i]
 	return i
+}
+
+type msgHandler struct {
+	src      UI
+	function MsgHandler
 }

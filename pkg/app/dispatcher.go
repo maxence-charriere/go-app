@@ -24,6 +24,13 @@ type Dispatcher interface {
 	// components to update their state.
 	Emit(src UI, fn func())
 
+	// Handle setups the handler to listen to the given message.
+	Handle(msg string, src UI, h MsgHandler)
+
+	// Post dispatches the given value to all the handlers that listen for the
+	// given message.
+	Post(msg string, v interface{})
+
 	// 	Async launches the given function on a new goroutine.
 	//
 	// The difference versus just launching a goroutine is that it ensures that
@@ -117,3 +124,6 @@ func NewServerTester(n UI) ServerDispatcher {
 	e.Consume()
 	return e
 }
+
+// MsgHandler represents a handler to listen to messages sent with Context.Post.
+type MsgHandler func(Context, interface{})

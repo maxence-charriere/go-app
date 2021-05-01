@@ -219,6 +219,71 @@ func TestEngineExecDeferableEvents(t *testing.T) {
 	require.Empty(t, e.defers)
 }
 
+func TestEngineHandlePost(t *testing.T) {
+	e := engine{}
+	e.init()
+	defer e.Close()
+
+	h := &hello{}
+	e.Mount(h)
+	e.Consume()
+	require.Empty(t, e.messages)
+
+	isHandleACalled := false
+	isHandleBCalled := false
+	isHandleCCalled := false
+
+	e.Handle("/test", h, func(ctx Context, v interface{}) {
+		isHandleACalled = true
+	})
+	require.Len(t, e.messages, 1)
+	require.Len(t, e.messages["/test"], 1)
+
+	e.Handle("/test", h, func(ctx Context, v interface{}) {
+		isHandleBCalled = true
+	})
+	require.Len(t, e.messages, 1)
+	require.Len(t, e.messages["/test"], 2)
+
+	f := &foo{}
+	e.Handle("/test", f, func(ctx Context, v interface{}) {
+		isHandleCCalled = false
+	})
+	require.Len(t, e.messages, 1)
+	require.Len(t, e.messages["/test"], 3)
+
+	e.Post("/test", nil)
+	e.Consume()
+	require.True(t, isHandleACalled)
+	require.True(t, isHandleBCalled)
+	require.False(t, isHandleCCalled)
+	require.Len(t, e.messages["/test"], 2)
+}
+
+func TestCloseMessageHandlers(t *testing.T) {
+	e := engine{}
+	e.init()
+	defer e.Close()
+
+	h := &hello{}
+	e.Mount(h)
+	e.Consume()
+	require.Empty(t, e.messages)
+
+	e.Handle("/test", h, func(ctx Context, v interface{}) {})
+	require.Len(t, e.messages, 1)
+	require.Len(t, e.messages["/test"], 1)
+
+	f := &foo{}
+	e.Handle("/test", f, func(ctx Context, v interface{}) {})
+	require.Len(t, e.messages, 1)
+	require.Len(t, e.messages["/test"], 2)
+
+	e.closeMessageHandlers()
+	require.Len(t, e.messages, 1)
+	require.Len(t, e.messages["/test"], 1)
+}
+
 func TestSortUpdateDescriptors(t *testing.T) {
 	utests := []struct {
 		scenario string
