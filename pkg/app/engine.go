@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"sort"
 	"sync"
 	"time"
 
@@ -486,31 +487,9 @@ type updateDescriptor struct {
 }
 
 func sortUpdateDescriptors(d []updateDescriptor) {
-	if len(d) < 2 {
-		return
-	}
-
-	pi := sortUpdateDescriptorsPartition(d)
-	sortUpdateDescriptors(d[:pi])
-	sortUpdateDescriptors(d[pi+1:])
-
-}
-
-func sortUpdateDescriptorsPartition(d []updateDescriptor) int {
-	piIdx := len(d) - 1
-	pi := d[piIdx]
-
-	i := -1
-	for j, ud := range d {
-		if ud.priority < pi.priority {
-			i++
-			d[i], d[j] = d[j], d[i]
-		}
-	}
-
-	i++
-	d[i], d[piIdx] = d[piIdx], d[i]
-	return i
+	sort.Slice(d, func(a, b int) bool {
+		return d[a].priority < d[b].priority
+	})
 }
 
 type msgHandler struct {
