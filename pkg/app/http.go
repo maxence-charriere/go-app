@@ -507,7 +507,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) servePreRenderedItem(w http.ResponseWriter, r PreRenderedItem) {
-	w.Header().Set("Content-Length", strconv.Itoa(r.Len()))
+	w.Header().Set("Content-Length", strconv.Itoa(r.Size()))
 	w.Header().Set("Content-Type", r.ContentType)
 	if r.ContentEncoding != "" {
 		w.Header().Set("Content-Encoding", r.ContentEncoding)
