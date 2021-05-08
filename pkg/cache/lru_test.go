@@ -28,15 +28,18 @@ func TestLRUEvict(t *testing.T) {
 	}
 
 	c.Set(ctx, "/hello", String("hello"))
+	require.Len(t, c.priority, 1)
 	require.Equal(t, 1, c.Len())
 	require.Equal(t, 5, c.Size())
 
 	c.Set(ctx, "/world", String("world"))
+	require.Len(t, c.priority, 2)
 	require.Equal(t, 2, c.Len())
 	require.Equal(t, 10, c.Size())
 
 	c.Get(ctx, "/world")
 	c.Set(ctx, "/goodbye", String("goodbye"))
+	require.Len(t, c.priority, 2)
 	require.Equal(t, 2, c.Len())
 	require.Equal(t, 12, c.Size())
 	require.True(t, isHelloEvicted)
@@ -62,10 +65,12 @@ func TestLRUSetSameKey(t *testing.T) {
 	}
 
 	c.Set(ctx, "/test", String("test"))
+	require.Len(t, c.priority, 1)
 	require.Equal(t, 1, c.Len())
 	require.Equal(t, 4, c.Size())
 
 	c.Set(ctx, "/test", String("unit-test"))
+	require.Len(t, c.priority, 2)
 	require.Equal(t, 1, c.Len())
 	require.Equal(t, 13, c.Size())
 }

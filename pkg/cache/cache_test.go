@@ -3,6 +3,7 @@ package cache
 import (
 	"context"
 	"testing"
+	"unsafe"
 
 	"github.com/stretchr/testify/require"
 )
@@ -38,4 +39,39 @@ func testCache(t *testing.T, c Cache) {
 	foo, isCached = c.Get(ctx, "/foo")
 	require.False(t, isCached)
 	require.Nil(t, foo)
+}
+
+func TestItemSize(t *testing.T) {
+	utests := []struct {
+		scenario     string
+		item         Item
+		expectedSize int
+	}{
+		{
+			scenario:     "bytes",
+			item:         Bytes("boo"),
+			expectedSize: 3,
+		},
+		{
+			scenario:     "string",
+			item:         String("hello"),
+			expectedSize: 5,
+		},
+		{
+			scenario:     "int",
+			item:         Int(42),
+			expectedSize: int(unsafe.Sizeof(42)),
+		},
+		{
+			scenario:     "float",
+			item:         Float(42.0),
+			expectedSize: int(unsafe.Sizeof(42.1)),
+		},
+	}
+
+	for _, u := range utests {
+		t.Run(u.scenario, func(t *testing.T) {
+			require.Equal(t, u.expectedSize, u.item.Size())
+		})
+	}
 }
