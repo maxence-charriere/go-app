@@ -1,6 +1,9 @@
 package cache
 
-import "context"
+import (
+	"context"
+	"reflect"
+)
 
 // Cache is the interface that describes a cache.
 type Cache interface {
@@ -38,3 +41,20 @@ type String string
 func (s String) Size() int {
 	return len(s)
 }
+
+type Int int
+
+func (i Int) Size() int {
+	return intSize
+}
+
+type Float float64
+
+func (f Float) Size() int {
+	return floatSize
+}
+
+var (
+	intSize   = int(reflect.TypeOf(42).Size())
+	floatSize = int(reflect.TypeOf(23.42).Size())
+)
