@@ -339,7 +339,7 @@ func (e *elem) resolveURLAttr(k, v string) string {
 
 func (e *elem) setJsAttr(k, v string) {
 	if k == "value" {
-		e.JSValue().Set("", v)
+		e.JSValue().Set("value", v)
 		return
 	}
 
