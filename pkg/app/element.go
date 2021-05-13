@@ -338,7 +338,13 @@ func (e *elem) resolveURLAttr(k, v string) string {
 }
 
 func (e *elem) setJsAttr(k, v string) {
-	if isURLAttrValue(k) {
+	if k == "value" {
+		e.JSValue().Set("", v)
+		return
+	}
+
+	switch {
+	case isURLAttrValue(k):
 		v = e.dispatcher().resolveStaticResource(v)
 	}
 	e.JSValue().setAttr(k, v)
