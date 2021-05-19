@@ -4,6 +4,7 @@ import (
 	"context"
 	"io"
 	"net/url"
+	"strconv"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
@@ -338,16 +339,20 @@ func (e *elem) resolveURLAttr(k, v string) string {
 }
 
 func (e *elem) setJsAttr(k, v string) {
-	if k == "value" {
-		e.JSValue().Set("value", v)
-		return
-	}
-
 	switch {
-	case isURLAttrValue(k):
-		v = e.dispatcher().resolveStaticResource(v)
+	case k == "value":
+		e.JSValue().Set("value", v)
+
+	case k == "checked":
+		v, _ := strconv.ParseBool(v)
+		e.JSValue().Set("checked", v)
+
+	default:
+		if isURLAttrValue(k) {
+			v = e.dispatcher().resolveStaticResource(v)
+		}
+		e.JSValue().setAttr(k, v)
 	}
-	e.JSValue().setAttr(k, v)
 }
 
 func (e *elem) delAttr(k string) {
