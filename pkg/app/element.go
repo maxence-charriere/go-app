@@ -4,7 +4,6 @@ import (
 	"context"
 	"io"
 	"net/url"
-	"strconv"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
@@ -343,9 +342,9 @@ func (e *elem) setJsAttr(k, v string) {
 	case k == "value":
 		e.JSValue().Set("value", v)
 
-	case k == "checked":
-		v, _ := strconv.ParseBool(v)
-		e.JSValue().Set("checked", v)
+	// case k == "checked":
+	// 	v, _ := strconv.ParseBool(v)
+	// 	e.JSValue().Set("checked", v)
 
 	default:
 		if isURLAttrValue(k) {
