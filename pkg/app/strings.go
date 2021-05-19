@@ -25,6 +25,9 @@ func toString(v interface{}) string {
 	case float64:
 		return strconv.FormatFloat(v, 'f', 4, 64)
 
+	case bool:
+		return strconv.FormatBool(v)
+
 	case nil:
 		return ""
 

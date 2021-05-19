@@ -4,6 +4,7 @@ import (
 	"context"
 	"io"
 	"net/url"
+	"strconv"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
@@ -305,7 +306,6 @@ func (e *elem) setAttr(k string, v interface{}) {
 	case "style", "allow":
 		s := e.attrs[k] + toString(v) + ";"
 		e.attrs[k] = s
-		return
 
 	case "class":
 		s := e.attrs[k]
@@ -314,20 +314,23 @@ func (e *elem) setAttr(k string, v interface{}) {
 		}
 		s += toString(v)
 		e.attrs[k] = s
-		return
-	}
-
-	switch v := v.(type) {
-	case bool:
-		if !v {
-			delete(e.attrs, k)
-			return
-		}
-		e.attrs[k] = ""
 
 	default:
 		e.attrs[k] = toString(v)
 	}
+
+	// switch v := v.(type) {
+	// case bool:
+	// 	if !v {
+	// 		delete(e.attrs, k)
+	// 		return
+	// 	}
+	// 	e.attrs[k] = ""
+
+	// default:
+	// 	e.attrs[k] = toString(v)
+	// }
+
 }
 
 func (e *elem) resolveURLAttr(k, v string) string {
@@ -342,9 +345,9 @@ func (e *elem) setJsAttr(k, v string) {
 	case k == "value":
 		e.JSValue().Set("value", v)
 
-	// case k == "checked":
-	// 	v, _ := strconv.ParseBool(v)
-	// 	e.JSValue().Set("checked", v)
+	case k == "checked":
+		v, _ := strconv.ParseBool(v)
+		e.JSValue().Set("checked", v)
 
 	default:
 		if isURLAttrValue(k) {
