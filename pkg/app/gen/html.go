@@ -2118,14 +2118,26 @@ func writeStruct(w io.Writer, t tag) {
 			t.Name,
 		)
 
-		fmt.Fprintf(w, `
+		if t.Name == "Textarea" {
+			fmt.Fprintf(w, `
+			func (e *html%s) Text(v interface{}) HTML%s {
+				e.setAttr("value", v)
+				return e
+			}
+			`,
+				t.Name,
+				t.Name,
+			)
+		} else {
+			fmt.Fprintf(w, `
 			func (e *html%s) Text(v interface{}) HTML%s {
 				return e.Body(Text(v))
 			}
 			`,
-			t.Name,
-			t.Name,
-		)
+				t.Name,
+				t.Name,
+			)
+		}
 	}
 
 	for _, a := range t.Attrs {

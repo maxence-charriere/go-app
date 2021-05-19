@@ -39861,7 +39861,8 @@ func (e *htmlTextarea) Body(elems ...UI) HTMLTextarea {
 }
 
 func (e *htmlTextarea) Text(v interface{}) HTMLTextarea {
-	return e.Body(Text(v))
+	e.setAttr("value", v)
+	return e
 }
 
 func (e *htmlTextarea) AccessKey(v string) HTMLTextarea {

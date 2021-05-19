@@ -318,19 +318,6 @@ func (e *elem) setAttr(k string, v interface{}) {
 	default:
 		e.attrs[k] = toString(v)
 	}
-
-	// switch v := v.(type) {
-	// case bool:
-	// 	if !v {
-	// 		delete(e.attrs, k)
-	// 		return
-	// 	}
-	// 	e.attrs[k] = ""
-
-	// default:
-	// 	e.attrs[k] = toString(v)
-	// }
-
 }
 
 func (e *elem) resolveURLAttr(k, v string) string {
