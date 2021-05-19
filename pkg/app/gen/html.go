@@ -1169,7 +1169,7 @@ var attrs = map[string]attr{
 	},
 	"download": {
 		Name: "Download",
-		Type: "bool",
+		Type: "string",
 		Doc:  "specifies that the target will be downloaded when a user clicks on the hyperlink.",
 	},
 	"draggable": {

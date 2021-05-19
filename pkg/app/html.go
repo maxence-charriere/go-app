@@ -35,7 +35,7 @@ type HTMLA interface {
 	Dir(v string) HTMLA
 
 	// Download specifies that the target will be downloaded when a user clicks on the hyperlink.
-	Download(v bool) HTMLA
+	Download(v string) HTMLA
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLA
@@ -234,7 +234,7 @@ func (e *htmlA) Dir(v string) HTMLA {
 	return e
 }
 
-func (e *htmlA) Download(v bool) HTMLA {
+func (e *htmlA) Download(v string) HTMLA {
 	e.setAttr("download", v)
 	return e
 }
@@ -1326,7 +1326,7 @@ type HTMLArea interface {
 	Dir(v string) HTMLArea
 
 	// Download specifies that the target will be downloaded when a user clicks on the hyperlink.
-	Download(v bool) HTMLArea
+	Download(v string) HTMLArea
 
 	// Draggable specifies whether an element is draggable or not.
 	Draggable(v bool) HTMLArea
@@ -1526,7 +1526,7 @@ func (e *htmlArea) Dir(v string) HTMLArea {
 	return e
 }
 
-func (e *htmlArea) Download(v bool) HTMLArea {
+func (e *htmlArea) Download(v string) HTMLArea {
 	e.setAttr("download", v)
 	return e
 }
