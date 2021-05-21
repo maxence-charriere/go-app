@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"fmt"
 	"net/url"
 	"sort"
 	"sync"
@@ -39,18 +38,21 @@ type engine struct {
 	// The body of the page.
 	Body HTMLBody
 
+	// The action handlers that are not associated with a component and are
+	// executed asynchronously.
+	ActionHandlers map[string]ActionHandler
+
 	initOnce  sync.Once
 	startOnce sync.Once
 	closeOnce sync.Once
 	wait      sync.WaitGroup
-	msgMutex  sync.Mutex
 
 	isMountedOnce bool
 	events        chan event
 	updates       map[Composer]struct{}
 	updateQueue   []updateDescriptor
 	defers        []event
-	messages      map[string]map[string]msgHandler
+	actions       actionManager
 }
 
 func (e *engine) Dispatch(src UI, fn func(Context)) {
@@ -103,44 +105,14 @@ func (e *engine) Emit(src UI, fn func()) {
 	}
 }
 
-func (e *engine) Handle(msg string, src UI, h MsgHandler) {
-	e.msgMutex.Lock()
-	defer e.msgMutex.Unlock()
-
-	key := fmt.Sprintf("%p-%p", src, h)
-
-	handlers, ok := e.messages[msg]
-	if !ok {
-		handlers = make(map[string]msgHandler)
-		e.messages[msg] = handlers
-	}
-
-	handlers[key] = msgHandler{
-		src:      src,
-		function: h,
-	}
+func (e *engine) Handle(actionName string, src UI, h ActionHandler) {
+	e.actions.handle(actionName, false, src, h)
 }
 
-func (e *engine) Post(msg string, v interface{}) {
-	e.msgMutex.Lock()
-	defer e.msgMutex.Unlock()
-
-	handlers, ok := e.messages[msg]
-	if !ok {
-		return
-	}
-
-	for k, h := range handlers {
-		src := h.src
-		if !src.Mounted() {
-			delete(handlers, k)
-		}
-
-		function := h.function
-		e.Dispatch(src, func(ctx Context) {
-			function(ctx, v)
-		})
-	}
+func (e *engine) Post(a Action) {
+	e.Async(func() {
+		e.actions.post(a)
+	})
 }
 
 func (e *engine) Async(fn func()) {
@@ -161,6 +133,8 @@ func (e *engine) Context() Context {
 
 func (e *engine) Consume() {
 	for {
+		e.Wait()
+
 		select {
 		case ev := <-e.events:
 			if ev.deferable {
@@ -179,6 +153,8 @@ func (e *engine) Consume() {
 }
 
 func (e *engine) ConsumeNext() {
+	e.Wait()
+
 	select {
 	case ev := <-e.events:
 		if ev.deferable {
@@ -198,7 +174,6 @@ func (e *engine) Close() {
 	e.closeOnce.Do(func() {
 		e.Consume()
 		e.Wait()
-		e.closeMessageHandlers()
 
 		dismount(e.Body)
 		e.Body = nil
@@ -280,7 +255,6 @@ func (e *engine) init() {
 		e.updates = make(map[Composer]struct{})
 		e.updateQueue = make([]updateDescriptor, 0, updateBufferSize)
 		e.defers = make([]event, 0, deferBufferSize)
-		e.messages = make(map[string]map[string]msgHandler)
 
 		if e.UpdateRate <= 0 {
 			e.UpdateRate = 60
@@ -312,6 +286,10 @@ func (e *engine) init() {
 			}
 			e.Body = body
 		}
+
+		for actionName, handler := range e.ActionHandlers {
+			e.actions.handle(actionName, true, e.Body, handler)
+		}
 	})
 }
 
@@ -323,8 +301,8 @@ func (e *engine) start(ctx context.Context) {
 		updates := time.NewTicker(currentInterval)
 		defer updates.Stop()
 
-		cleanMessages := time.NewTicker(time.Minute)
-		defer cleanMessages.Stop()
+		cleanActions := time.NewTicker(time.Minute)
+		defer cleanActions.Stop()
 
 		for {
 			select {
@@ -353,8 +331,8 @@ func (e *engine) start(ctx context.Context) {
 					updates.Reset(currentInterval)
 				}
 
-			case <-cleanMessages.C:
-				e.closeMessageHandlers()
+			case <-cleanActions.C:
+				e.Async(e.actions.closeUnusedHandlers)
 			}
 		}
 	})
@@ -440,19 +418,6 @@ func (e *engine) execDeferableEvents() {
 		}
 	}
 	e.defers = e.defers[:0]
-}
-
-func (e *engine) closeMessageHandlers() {
-	e.msgMutex.Lock()
-	defer e.msgMutex.Unlock()
-
-	for _, handlers := range e.messages {
-		for k, h := range handlers {
-			if !h.src.Mounted() {
-				delete(handlers, k)
-			}
-		}
-	}
 }
 
 func (e *engine) currentPage() Page {

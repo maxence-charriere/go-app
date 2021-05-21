@@ -106,3 +106,28 @@ func TestContextEncryptDecryptBytes(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, expected, item)
 }
+
+func TestContextHandle(t *testing.T) {
+	foo := &foo{}
+	client := NewClientTester(foo)
+	defer client.Close()
+
+	actionName := "/test/context/handle"
+	action := Action{}
+	ctx := makeContext(foo)
+
+	ctx.Handle(actionName, func(ctx Context, a Action) {
+		action = a
+	})
+
+	ctx.NewAction(actionName).
+		Value(21).
+		Tag("hello", "world").
+		Post()
+
+	client.Consume()
+	require.Equal(t, actionName, action.Name)
+	require.Equal(t, 21, action.Value)
+	require.Equal(t, "world", action.Tags.Get("hello"))
+
+}

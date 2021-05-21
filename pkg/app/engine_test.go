@@ -220,68 +220,45 @@ func TestEngineExecDeferableEvents(t *testing.T) {
 }
 
 func TestEngineHandlePost(t *testing.T) {
-	e := engine{}
-	e.init()
-	defer e.Close()
-
-	h := &hello{}
-	e.Mount(h)
-	e.Consume()
-	require.Empty(t, e.messages)
-
+	isAppHandleCalled := false
 	isHandleACalled := false
 	isHandleBCalled := false
 	isHandleCCalled := false
 
-	e.Handle("/test", h, func(ctx Context, v interface{}) {
-		isHandleACalled = true
-	})
-	require.Len(t, e.messages, 1)
-	require.Len(t, e.messages["/test"], 1)
-
-	e.Handle("/test", h, func(ctx Context, v interface{}) {
-		isHandleBCalled = true
-	})
-	require.Len(t, e.messages, 1)
-	require.Len(t, e.messages["/test"], 2)
-
-	f := &foo{}
-	e.Handle("/test", f, func(ctx Context, v interface{}) {
-		isHandleCCalled = false
-	})
-	require.Len(t, e.messages, 1)
-	require.Len(t, e.messages["/test"], 3)
-
-	e.Post("/test", nil)
-	e.Consume()
-	require.True(t, isHandleACalled)
-	require.True(t, isHandleBCalled)
-	require.False(t, isHandleCCalled)
-	require.Len(t, e.messages["/test"], 2)
-}
-
-func TestCloseMessageHandlers(t *testing.T) {
-	e := engine{}
+	e := engine{
+		ActionHandlers: map[string]ActionHandler{
+			"/test": func(ctx Context, a Action) {
+				isAppHandleCalled = true
+			},
+		},
+	}
 	e.init()
 	defer e.Close()
 
 	h := &hello{}
 	e.Mount(h)
 	e.Consume()
-	require.Empty(t, e.messages)
 
-	e.Handle("/test", h, func(ctx Context, v interface{}) {})
-	require.Len(t, e.messages, 1)
-	require.Len(t, e.messages["/test"], 1)
+	e.Handle("/test", h, func(ctx Context, a Action) {
+		isHandleACalled = true
+	})
+
+	e.Handle("/test", h, func(ctx Context, a Action) {
+		isHandleBCalled = true
+	})
 
 	f := &foo{}
-	e.Handle("/test", f, func(ctx Context, v interface{}) {})
-	require.Len(t, e.messages, 1)
-	require.Len(t, e.messages["/test"], 2)
+	e.Handle("/test", f, func(ctx Context, a Action) {
+		isHandleCCalled = true
+	})
 
-	e.closeMessageHandlers()
-	require.Len(t, e.messages, 1)
-	require.Len(t, e.messages["/test"], 1)
+	e.Post(Action{Name: "/test"})
+	e.Consume()
+
+	require.True(t, isAppHandleCalled)
+	require.True(t, isHandleACalled)
+	require.True(t, isHandleBCalled)
+	require.False(t, isHandleCCalled)
 }
 
 func TestSortUpdateDescriptors(t *testing.T) {

@@ -24,12 +24,13 @@ type Dispatcher interface {
 	// components to update their state.
 	Emit(src UI, fn func())
 
-	// Handle setups the handler to listen to the given message.
-	Handle(msg string, src UI, h MsgHandler)
+	// Handle registers the handler for the given action name. When an action
+	// occurs, the handler is executed on the UI goroutine.
+	Handle(actionName string, src UI, h ActionHandler)
 
-	// Post dispatches the given value to all the handlers that listen for the
-	// given message.
-	Post(msg string, v interface{})
+	// Post posts the given action. The action is then handled by handlers
+	// registered with Handle() and Context.Handle().
+	Post(a Action)
 
 	// 	Async launches the given function on a new goroutine.
 	//
@@ -87,7 +88,7 @@ type ClientDispatcher interface {
 // NewClientTester creates a testing dispatcher that simulates a
 // client environment. The given UI element is mounted upon creation.
 func NewClientTester(n UI) ClientDispatcher {
-	e := &engine{}
+	e := &engine{ActionHandlers: actionHandlers}
 	e.init()
 	e.Mount(n)
 	e.Consume()
@@ -118,7 +119,10 @@ type ServerDispatcher interface {
 // NewServerTester creates a testing dispatcher that simulates a
 // client environment.
 func NewServerTester(n UI) ServerDispatcher {
-	e := &engine{RunsInServer: false}
+	e := &engine{
+		RunsInServer:   true,
+		ActionHandlers: actionHandlers,
+	}
 	e.init()
 	e.Mount(n)
 	e.Consume()
