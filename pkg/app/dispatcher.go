@@ -24,12 +24,13 @@ type Dispatcher interface {
 	// components to update their state.
 	Emit(src UI, fn func())
 
-	// Handle setups the handler to listen to the given message.
-	Handle(msg string, src UI, h MsgHandler)
+	// Handle registers the handler for the given action name. When an action
+	// occurs, the handler is executed on the UI goroutine.
+	Handle(actionName string, src UI, h ActionHandler)
 
-	// Post dispatches the given value to all the handlers that listen for the
-	// given message.
-	Post(msg string, v interface{})
+	// Post creates an action with the given name and value. The action is
+	// handled by handlers registered with Handle() and Context.Handle().
+	Post(actionName string, v interface{})
 
 	// 	Async launches the given function on a new goroutine.
 	//

@@ -42,12 +42,13 @@ type Context interface {
 	// context's nearest component to update its state.
 	Defer(fn func(Context))
 
-	// Setups the handler to listen to the given message.
-	Handle(msg string, h MsgHandler)
+	// Registers the handler for the given action name. When an action occurs,
+	// the handler is executed on the UI goroutine.
+	Handle(actionName string, h ActionHandler)
 
-	// Dispatches the given value to all the handlers that listen for the  given
-	// message.
-	Post(msg string, v interface{})
+	// Creates an action with the given name and value. The action is handled by
+	// handlers registered with Handle() and Context.Handle().
+	Post(actionName string, v interface{})
 
 	// Executes the given function on a new goroutine.
 	//
@@ -136,12 +137,12 @@ func (ctx uiContext) Defer(fn func(Context)) {
 	ctx.dispatcher().Defer(ctx.Src(), fn)
 }
 
-func (ctx uiContext) Handle(msg string, h MsgHandler) {
-	ctx.dispatcher().Handle(msg, ctx.Src(), h)
+func (ctx uiContext) Handle(actionName string, h ActionHandler) {
+	ctx.dispatcher().Handle(actionName, ctx.Src(), h)
 }
 
-func (ctx uiContext) Post(msg string, v interface{}) {
-	ctx.dispatcher().Post(msg, v)
+func (ctx uiContext) Post(actionName string, v interface{}) {
+	ctx.dispatcher().Post(actionName, v)
 }
 
 func (ctx uiContext) Async(fn func()) {
