@@ -1,8 +1,8 @@
 package app
 
 import (
+	"sync"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -18,7 +18,6 @@ func TestActionManagerHandle(t *testing.T) {
 	defer e.Close()
 
 	m := actionManager{}
-	defer m.close()
 
 	h := &hello{}
 	e.Mount(h)
@@ -54,13 +53,8 @@ func TestActionManagerHandle(t *testing.T) {
 	require.Len(t, m.handlers, 1)
 	require.Len(t, m.handlers["/test"], 4)
 
-	m.post("/test", nil)
-
-	time.Sleep(time.Millisecond * 50)
-
+	m.post(Action{Name: "/test"})
 	e.Consume()
-	e.Wait()
-
 	require.True(t, isHandleACalled)
 	require.True(t, isHandleBCalled)
 	require.False(t, isHandleCCalled)
@@ -74,7 +68,6 @@ func TestActionManagerCloseUnusedHandlers(t *testing.T) {
 	defer e.Close()
 
 	m := actionManager{}
-	defer m.close()
 
 	h := &hello{}
 	e.Mount(h)
@@ -97,4 +90,30 @@ func TestActionManagerCloseUnusedHandlers(t *testing.T) {
 	e.Consume()
 	m.closeUnusedHandlers()
 	require.Empty(t, m.handlers)
+}
+
+func TestActionBuilder(t *testing.T) {
+	actionName := "/text/actionBuilder"
+	createdAction := Action{}
+
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+
+	Handle(actionName, func(ctx Context, a Action) {
+		createdAction = a
+		wg.Done()
+	})
+
+	disp := NewClientTester(Div())
+	defer disp.Close()
+
+	newActionBuilder(disp, actionName).
+		Value(42).
+		Tag("foo", "bar").
+		Post()
+
+	wg.Wait()
+	require.Equal(t, actionName, createdAction.Name)
+	require.Equal(t, 42, createdAction.Value)
+	require.Equal(t, "bar", createdAction.Tags.Get("foo"))
 }

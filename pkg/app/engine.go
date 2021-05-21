@@ -109,8 +109,10 @@ func (e *engine) Handle(actionName string, src UI, h ActionHandler) {
 	e.actions.handle(actionName, false, src, h)
 }
 
-func (e *engine) Post(actionName string, v interface{}) {
-	e.actions.post(actionName, v)
+func (e *engine) Post(a Action) {
+	e.Async(func() {
+		e.actions.post(a)
+	})
 }
 
 func (e *engine) Async(fn func()) {
@@ -131,6 +133,8 @@ func (e *engine) Context() Context {
 
 func (e *engine) Consume() {
 	for {
+		e.Wait()
+
 		select {
 		case ev := <-e.events:
 			if ev.deferable {
@@ -149,6 +153,8 @@ func (e *engine) Consume() {
 }
 
 func (e *engine) ConsumeNext() {
+	e.Wait()
+
 	select {
 	case ev := <-e.events:
 		if ev.deferable {
@@ -168,7 +174,6 @@ func (e *engine) Close() {
 	e.closeOnce.Do(func() {
 		e.Consume()
 		e.Wait()
-		e.actions.close()
 
 		dismount(e.Body)
 		e.Body = nil

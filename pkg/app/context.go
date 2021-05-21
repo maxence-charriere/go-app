@@ -46,9 +46,10 @@ type Context interface {
 	// the handler is executed on the UI goroutine.
 	Handle(actionName string, h ActionHandler)
 
-	// Creates an action with the given name and value. The action is handled by
-	// handlers registered with Handle() and Context.Handle().
-	Post(actionName string, v interface{})
+	// Returns a builder that creates an action with the given name. The action
+	// can be then posted with the Post() method:
+	//  ctx.NewAction(""myAction").Post()
+	NewAction(name string) ActionBuilder
 
 	// Executes the given function on a new goroutine.
 	//
@@ -141,8 +142,8 @@ func (ctx uiContext) Handle(actionName string, h ActionHandler) {
 	ctx.dispatcher().Handle(actionName, ctx.Src(), h)
 }
 
-func (ctx uiContext) Post(actionName string, v interface{}) {
-	ctx.dispatcher().Post(actionName, v)
+func (ctx uiContext) NewAction(name string) ActionBuilder {
+	return newActionBuilder(ctx.dispatcher(), name)
 }
 
 func (ctx uiContext) Async(fn func()) {

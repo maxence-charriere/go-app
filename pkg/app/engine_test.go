@@ -252,10 +252,8 @@ func TestEngineHandlePost(t *testing.T) {
 		isHandleCCalled = true
 	})
 
-	e.Post("/test", nil)
-	time.Sleep(time.Millisecond * 50)
+	e.Post(Action{Name: "/test"})
 	e.Consume()
-	e.Wait()
 
 	require.True(t, isAppHandleCalled)
 	require.True(t, isHandleACalled)
