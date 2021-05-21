@@ -339,6 +339,7 @@ func (e *elem) setJsAttr(k, v string) {
 		"default",
 		"defer",
 		"disabled",
+		"hidden",
 		"loop",
 		"multiple",
 		"muted",
