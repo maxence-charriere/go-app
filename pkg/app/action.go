@@ -153,13 +153,3 @@ func (b *actionBuilder) Post() {
 		Tags:  b.tags,
 	})
 }
-
-type Tags map[string]string
-
-func (t Tags) Set(name string, v interface{}) {
-	t[name] = toString(v)
-}
-
-func (t Tags) Get(name string) string {
-	return t[name]
-}
