@@ -329,17 +329,19 @@ func (e *elem) resolveURLAttr(k, v string) string {
 
 func (e *elem) setJsAttr(k, v string) {
 	switch k {
+	case "value":
+		e.JSValue().Set("value", v)
+
 	case "class":
 		e.JSValue().Set("className", v)
 
-	case "value":
-		e.JSValue().Set("value", v)
+	case "contenteditable":
+		e.JSValue().Set("contentEditable", v)
 
 	case "async",
 		"autofocus",
 		"autoplay",
 		"checked",
-		"contenteditable",
 		"default",
 		"defer",
 		"disabled",
@@ -354,8 +356,6 @@ func (e *elem) setJsAttr(k, v string) {
 		"reversed",
 		"selected":
 		switch k {
-		case "contenteditable":
-			k = "contentEditable"
 		case "ismap":
 			k = "isMap"
 		case "readonly":
