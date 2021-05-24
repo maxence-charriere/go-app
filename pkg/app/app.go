@@ -115,6 +115,7 @@ func RunWhenOnBrowser() {
 		LocalStorage:           newJSStorage("localStorage"),
 		SessionStorage:         newJSStorage("sessionStorage"),
 		ResolveStaticResources: staticResourcesResolver,
+		ActionHandlers:         actionHandlers,
 	}
 	disp.Page = browserPage{dispatcher: &disp}
 	disp.Body = newClientBody(&disp)

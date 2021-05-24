@@ -589,6 +589,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		Page:                   &page,
 		RunsInServer:           true,
 		ResolveStaticResources: h.resolveStaticPath,
+		ActionHandlers:         actionHandlers,
 	}
 	body := Body().Body(
 		Div().Body(
