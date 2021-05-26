@@ -38,23 +38,30 @@ func TestObserver(t *testing.T) {
 
 	isObserving = false
 	require.False(t, o.isObserving())
+
+	require.Panics(t, func() {
+		var s string
+		newObserver(elem, func(*observer) {}).Value(s)
+	})
 }
 
 func TestStoreGetSet(t *testing.T) {
 	d := NewClientTester(Div())
 	defer d.Close()
 
-	s := newStore(d)
+	s := makeStore(d)
 	key := "/test/getSet"
 
 	var v int
-	err := s.Get(key, &v)
-	require.NoError(t, err)
+	s.Get(key, &v)
 	require.Zero(t, v)
 
 	s.Set(key, 42)
-	err = s.Get(key, &v)
-	require.NoError(t, err)
+	s.Get(key, &v)
+	require.Equal(t, 42, v)
+
+	s.Set(key, "21")
+	s.Get(key, &v)
 	require.Equal(t, 42, v)
 }
 
@@ -63,7 +70,7 @@ func TestStoreObserve(t *testing.T) {
 	d := NewClientTester(source)
 	defer d.Close()
 
-	s := newStore(d)
+	s := makeStore(d)
 	key := "/test/observe"
 
 	s.Observe(key, source).Value(&source.Bar)

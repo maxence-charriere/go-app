@@ -131,3 +131,22 @@ func TestContextHandle(t *testing.T) {
 	require.Equal(t, "world", action.Tags.Get("hello"))
 
 }
+
+func TestContextStates(t *testing.T) {
+	foo := &foo{}
+	client := NewClientTester(foo)
+	defer client.Close()
+
+	state := "/test/context/states"
+	v := ""
+	ctx := makeContext(foo)
+
+	ctx.SetState(state, "hello")
+	ctx.GetState(state, &v)
+	require.Equal(t, "hello", v)
+
+	ctx.ObserveState(state).Value(&v)
+	ctx.SetState(state, "bye")
+	client.Consume()
+	require.Equal(t, "bye", v)
+}

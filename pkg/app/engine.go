@@ -53,6 +53,7 @@ type engine struct {
 	updateQueue   []updateDescriptor
 	defers        []event
 	actions       actionManager
+	states        store
 }
 
 func (e *engine) Dispatch(src UI, fn func(Context)) {
@@ -107,6 +108,18 @@ func (e *engine) Emit(src UI, fn func()) {
 
 func (e *engine) Handle(actionName string, src UI, h ActionHandler) {
 	e.actions.handle(actionName, false, src, h)
+}
+
+func (e *engine) SetState(state string, v interface{}) {
+	e.states.Set(state, v)
+}
+
+func (e *engine) GetState(state string, recv interface{}) {
+	e.states.Get(state, recv)
+}
+
+func (e *engine) ObserveState(state string, elem UI) Observer {
+	return e.states.Observe(state, elem)
 }
 
 func (e *engine) Post(a Action) {
@@ -255,6 +268,7 @@ func (e *engine) init() {
 		e.updates = make(map[Composer]struct{})
 		e.updateQueue = make([]updateDescriptor, 0, updateBufferSize)
 		e.defers = make([]event, 0, deferBufferSize)
+		e.states = makeStore(e)
 
 		if e.UpdateRate <= 0 {
 			e.UpdateRate = 60

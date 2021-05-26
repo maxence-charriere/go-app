@@ -43,6 +43,10 @@ func (o *observer) While(fn func() bool) Observer {
 }
 
 func (o *observer) Value(recv interface{}) {
+	if reflect.ValueOf(recv).Kind() != reflect.Ptr {
+		panic(errors.New("observer value receiver is not a pointer"))
+	}
+
 	o.receiver = recv
 	o.subscribe(o)
 }
@@ -72,8 +76,8 @@ type store struct {
 	disp   Dispatcher
 }
 
-func newStore(d Dispatcher) *store {
-	return &store{
+func makeStore(d Dispatcher) store {
+	return store{
 		states: make(map[string]state),
 		disp:   d,
 	}
@@ -106,17 +110,20 @@ func (s *store) Set(key string, v interface{}) {
 	}
 }
 
-func (s *store) Get(key string, recv interface{}) error {
+func (s *store) Get(key string, recv interface{}) {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 
 	state, exists := s.states[key]
 	if !exists {
-		return nil
+		return
 	}
 
-	err := storeValue(recv, state.value)
-	return err
+	if err := storeValue(recv, state.value); err != nil {
+		Log(errors.New("storing state value failed").
+			Tag("state", key).
+			Wrap(err))
+	}
 }
 
 func (s *store) Observe(key string, elem UI) Observer {

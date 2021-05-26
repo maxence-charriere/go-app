@@ -101,6 +101,26 @@ type Context interface {
 	// Decrypts the given encrypted bytes and stores them in the given value.
 	Decrypt(crypted []byte, v interface{}) error
 
+	// Sets the state with the given value.
+	SetState(state string, v interface{})
+
+	// Stores the specified state value into the given receiver. Panics when the
+	// receiver is not a pointer or nil.
+	GetState(state string, recv interface{})
+
+	// Creates an observer that observes changes for the given state.
+	// Example:
+	//  type myComponent struct {
+	//      app.Compo
+	//
+	//      number int
+	//  }
+	//
+	//  func (c *myComponent) OnMount(ctx app.Context) {
+	//      ctx.ObserveState("/globalNumber").Value(&c.number)
+	//  }
+	ObserveState(state string) Observer
+
 	dispatcher() Dispatcher
 }
 
@@ -239,6 +259,18 @@ func (ctx uiContext) Decrypt(crypted []byte, v interface{}) error {
 		return errors.New("decoding value failed").Wrap(err)
 	}
 	return nil
+}
+
+func (ctx uiContext) SetState(state string, v interface{}) {
+	ctx.dispatcher().SetState(state, v)
+}
+
+func (ctx uiContext) GetState(state string, recv interface{}) {
+	ctx.dispatcher().GetState(state, recv)
+}
+
+func (ctx uiContext) ObserveState(state string) Observer {
+	return ctx.dispatcher().ObserveState(state, ctx.src)
 }
 
 func (ctx uiContext) cryptoKey() string {

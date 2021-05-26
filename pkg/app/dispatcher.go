@@ -32,6 +32,17 @@ type Dispatcher interface {
 	// registered with Handle() and Context.Handle().
 	Post(a Action)
 
+	// Sets the state with the given value.
+	SetState(state string, v interface{})
+
+	// Stores the specified state value into the given receiver. Panics when the
+	// receiver is not a pointer or nil.
+	GetState(state string, recv interface{})
+
+	// Creates an observer that observes changes for the specified state while
+	// the given element is mounted.
+	ObserveState(state string, elem UI) Observer
+
 	// 	Async launches the given function on a new goroutine.
 	//
 	// The difference versus just launching a goroutine is that it ensures that
