@@ -110,12 +110,16 @@ func (e *engine) Handle(actionName string, src UI, h ActionHandler) {
 	e.actions.handle(actionName, false, src, h)
 }
 
-func (e *engine) SetState(state string, v interface{}) {
-	e.states.Set(state, v)
+func (e *engine) SetState(state string, v interface{}, opts ...StateOption) {
+	e.states.Set(state, v, opts...)
 }
 
 func (e *engine) GetState(state string, recv interface{}) {
 	e.states.Get(state, recv)
+}
+
+func (e *engine) DelState(state string) {
+	e.states.Del(state)
 }
 
 func (e *engine) ObserveState(state string, elem UI) Observer {

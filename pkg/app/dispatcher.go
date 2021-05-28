@@ -12,6 +12,9 @@ const (
 // Dispatcher is the interface that describes an environment that synchronizes
 // UI instructions and UI elements lifecycle.
 type Dispatcher interface {
+	// Context returns the context associated with the root element.
+	Context() Context
+
 	// Dispatch executes the given function on the UI goroutine and notifies the
 	// source's nearest component to update its state.
 	Dispatch(src UI, fn func(Context))
@@ -33,11 +36,14 @@ type Dispatcher interface {
 	Post(a Action)
 
 	// Sets the state with the given value.
-	SetState(state string, v interface{})
+	SetState(state string, v interface{}, opts ...StateOption)
 
 	// Stores the specified state value into the given receiver. Panics when the
 	// receiver is not a pointer or nil.
 	GetState(state string, recv interface{})
+
+	// Deletes the given state.
+	DelState(state string)
 
 	// Creates an observer that observes changes for the specified state while
 	// the given element is mounted.
@@ -69,9 +75,6 @@ type Dispatcher interface {
 // client environment.
 type ClientDispatcher interface {
 	Dispatcher
-
-	// Context returns the context associated with the root element.
-	Context() Context
 
 	// Consume executes all the remaining UI instructions.
 	Consume()
@@ -109,9 +112,6 @@ func NewClientTester(n UI) ClientDispatcher {
 // ServerDispatcher is the interface that describes a dispatcher that emulates a server environment.
 type ServerDispatcher interface {
 	Dispatcher
-
-	// Context returns the context associated with the root element.
-	Context() Context
 
 	// Consume executes all the remaining UI instructions.
 	Consume()

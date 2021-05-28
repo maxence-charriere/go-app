@@ -61,7 +61,7 @@ func main() {
 		defer f.Close()
 
 		if err = html.Render(f, n); err != nil {
-			app.Log(errors.New("writting godoc file failed").
+			app.Log(errors.New("writing godoc file failed").
 				Tag("file", d.file).
 				Wrap(err))
 			return

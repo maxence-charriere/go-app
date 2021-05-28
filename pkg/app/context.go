@@ -102,11 +102,21 @@ type Context interface {
 	Decrypt(crypted []byte, v interface{}) error
 
 	// Sets the state with the given value.
-	SetState(state string, v interface{})
+	// Example:
+	//  ctx.SetState("/globalNumber", 42, Persistent)
+	//
+	// Options can be added to persist into the local storage or broadcasting
+	// the state across browser tabs and windows.
+	// Example:
+	//  ctx.SetState("/globalNumber", 42, Persistent, Broadcast)
+	SetState(state string, v interface{}, opts ...StateOption)
 
 	// Stores the specified state value into the given receiver. Panics when the
 	// receiver is not a pointer or nil.
 	GetState(state string, recv interface{})
+
+	// Deletes the given state. All value observations are stopped.
+	DelState(state string)
 
 	// Creates an observer that observes changes for the given state.
 	// Example:
@@ -261,12 +271,16 @@ func (ctx uiContext) Decrypt(crypted []byte, v interface{}) error {
 	return nil
 }
 
-func (ctx uiContext) SetState(state string, v interface{}) {
-	ctx.dispatcher().SetState(state, v)
+func (ctx uiContext) SetState(state string, v interface{}, opts ...StateOption) {
+	ctx.dispatcher().SetState(state, v, opts...)
 }
 
 func (ctx uiContext) GetState(state string, recv interface{}) {
 	ctx.dispatcher().GetState(state, recv)
+}
+
+func (ctx uiContext) DelState(state string) {
+	ctx.dispatcher().DelState(state)
 }
 
 func (ctx uiContext) ObserveState(state string) Observer {
