@@ -81,6 +81,7 @@ func TestStore(t *testing.T) {
 	defer d.Close()
 
 	s := makeStore(d)
+	defer s.Cleanup()
 	key := "/test/store"
 
 	var v int
@@ -238,6 +239,22 @@ func TestStoreExpiresIn(t *testing.T) {
 		require.Equal(t, 0, v)
 		require.Equal(t, 0, d.localStorage().Len())
 	})
+
+	t.Run("expire expired values", func(t *testing.T) {
+		s.Set(key, 99, Persist, ExpiresIn(time.Minute))
+		require.Len(t, s.states, 1)
+		require.Equal(t, 1, d.localStorage().Len())
+
+		state := s.states[key]
+		state.ExpiresAt = time.Now().Add(-time.Minute)
+		s.states[key] = state
+		require.True(t, state.isExpired(time.Now()))
+		require.Equal(t, 1, d.localStorage().Len())
+
+		s.expireExpiredValues()
+		require.True(t, state.isExpired(time.Now()))
+		require.Equal(t, 0, d.localStorage().Len())
+	})
 }
 
 func TestStoreObserve(t *testing.T) {
@@ -273,6 +290,28 @@ func TestStoreObserve(t *testing.T) {
 	s.Set(key, 42)
 	s.Observe(key, source).Value(&source.Bar)
 	require.Equal(t, "", source.Bar)
+}
+
+func TestRemoveUnusedObservers(t *testing.T) {
+	source := &foo{}
+	d := NewClientTester(source)
+	defer d.Close()
+
+	s := makeStore(d)
+	key := "/test/observe/remove"
+
+	var v int
+	n := 5
+	for i := 0; i < 5; i++ {
+		s.Observe(key, source).
+			While(func() bool { return false }).
+			Value(&v)
+	}
+	state := s.states[key]
+	require.Len(t, state.observers, n)
+
+	s.removeUnusedObservers()
+	require.Empty(t, state.observers)
 }
 
 func TestStoreValue(t *testing.T) {

@@ -49,6 +49,9 @@ func (s *State) isExpired(now time.Time) bool {
 type StateOption func(*State)
 
 // Persist is a state option that persists a state in local storage.
+//
+// Be mindful to not use this option as a cache since local storage is limited
+// to 5MB in a lot of web browsers.
 func Persist(s *State) {
 	s.IsPersistent = true
 }
@@ -215,6 +218,14 @@ func (s *store) Observe(key string, elem UI) Observer {
 	})
 }
 
+func (s *store) Cleanup() {
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
+	s.removeUnusedObservers()
+	s.expireExpiredValues()
+}
+
 func (s *store) subscribe(key string, o *observer) error {
 	state := s.states[key]
 	if state.observers == nil {
@@ -233,15 +244,23 @@ func (s *store) subscribe(key string, o *observer) error {
 	return s.getPersistent(key, o.receiver)
 }
 
-func (s *store) expire(key string, state State) State {
-	s.disp.localStorage().Del(key)
-	state.value = nil
-	return state
+func (s *store) removeUnusedObservers() {
+	for _, state := range s.states {
+		for o := range state.observers {
+			if !o.isObserving() {
+				delete(state.observers, o)
+			}
+		}
+	}
 }
 
 func (s *store) getPersistent(key string, recv interface{}) error {
 	var state persistentState
 	s.disp.localStorage().Get(key, &state)
+
+	if state.EncryptedValue == nil && state.Value == nil && state.ExpiresAt == (time.Time{}) {
+		return nil
+	}
 
 	if state.isExpired(time.Now()) {
 		s.disp.localStorage().Del(key)
@@ -268,6 +287,22 @@ func (s *store) setPersistent(key string, encrypt bool, v interface{}) error {
 	}
 
 	return s.disp.localStorage().Set(key, state)
+}
+
+func (s *store) expireExpiredValues() {
+	now := time.Now()
+	for k, state := range s.states {
+		if state.isExpired(now) {
+			state = s.expire(k, state)
+			s.states[k] = state
+		}
+	}
+}
+
+func (s *store) expire(key string, state State) State {
+	s.disp.localStorage().Del(key)
+	state.value = nil
+	return state
 }
 
 func storeValue(recv, v interface{}) error {

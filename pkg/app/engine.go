@@ -319,8 +319,8 @@ func (e *engine) start(ctx context.Context) {
 		updates := time.NewTicker(currentInterval)
 		defer updates.Stop()
 
-		cleanActions := time.NewTicker(time.Minute)
-		defer cleanActions.Stop()
+		cleanup := time.NewTicker(time.Minute)
+		defer cleanup.Stop()
 
 		for {
 			select {
@@ -349,8 +349,9 @@ func (e *engine) start(ctx context.Context) {
 					updates.Reset(currentInterval)
 				}
 
-			case <-cleanActions.C:
+			case <-cleanup.C:
 				e.Async(e.actions.closeUnusedHandlers)
+				e.Async(e.states.Cleanup)
 			}
 		}
 	})
