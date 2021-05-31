@@ -193,7 +193,7 @@ func (s *store) Get(key string, recv interface{}) {
 		s.states[key] = state
 	}
 
-	if exists {
+	if exists && state.value != nil {
 		err = storeValue(recv, state.value)
 	} else {
 		err = s.getPersistent(key, recv)
