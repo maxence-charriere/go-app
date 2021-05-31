@@ -68,8 +68,17 @@ func Encrypt(s *State) {
 // Values persisted to local storage with the Persist option are removed from
 // it.
 func ExpiresIn(d time.Duration) StateOption {
+	return ExpiresAt(time.Now().Add(d))
+}
+
+// ExpiresAt returns a state option that sets a state value to its zero value at
+// the given time.
+//
+// Values persisted to local storage with the Persist option are removed from
+// it.
+func ExpiresAt(t time.Time) StateOption {
 	return func(s *State) {
-		s.ExpiresAt = time.Now().Add(d)
+		s.ExpiresAt = t
 	}
 }
 
