@@ -149,7 +149,7 @@ func (s *store) Set(key string, v interface{}, opts ...StateOption) {
 	s.states[key] = state
 
 	if state.IsPersistent {
-		if err := s.setPersistent(key, state.IsEncrypted, v); err != nil {
+		if err := s.setPersistent(key, state.IsEncrypted, state.ExpiresAt, v); err != nil {
 			Log(errors.New("persisting state failed").
 				Tag("state", key).
 				Wrap(err))
@@ -282,10 +282,12 @@ func (s *store) getPersistent(key string, recv interface{}) error {
 	return s.disp.Context().Decrypt(state.EncryptedValue, recv)
 }
 
-func (s *store) setPersistent(key string, encrypt bool, v interface{}) error {
-	var state persistentState
+func (s *store) setPersistent(key string, encrypt bool, expiresAt time.Time, v interface{}) error {
 	var err error
 
+	state := persistentState{
+		ExpiresAt: expiresAt,
+	}
 	if encrypt {
 		state.EncryptedValue, err = s.disp.Context().Encrypt(v)
 	} else {
