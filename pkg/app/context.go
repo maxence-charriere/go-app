@@ -105,8 +105,8 @@ type Context interface {
 	// Example:
 	//  ctx.SetState("/globalNumber", 42, Persistent)
 	//
-	// Options can be added to persist into the local storage or broadcasting
-	// the state across browser tabs and windows.
+	// Options can be added to persist a state into the local storage, encrypt,
+	// expire, or broadcast the state across browser tabs and windows.
 	// Example:
 	//  ctx.SetState("/globalNumber", 42, Persistent, Broadcast)
 	SetState(state string, v interface{}, opts ...StateOption)
