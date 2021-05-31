@@ -187,13 +187,13 @@ func (s *store) Get(key string, recv interface{}) {
 	defer s.mutex.Unlock()
 
 	var err error
-	state, exists := s.states[key]
+	state := s.states[key]
 	if state.isExpired(time.Now()) {
 		state = s.expire(key, state)
 		s.states[key] = state
 	}
 
-	if exists && state.value != nil {
+	if state.value != nil {
 		err = storeValue(recv, state.value)
 	} else {
 		err = s.getPersistent(key, recv)
