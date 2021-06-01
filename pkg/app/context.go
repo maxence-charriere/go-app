@@ -239,7 +239,7 @@ func (ctx uiContext) DeviceID() string {
 		return id
 	}
 
-	id = uuid.New().String()
+	id = uuid.NewString()
 	if err := ctx.LocalStorage().Set("/go-app/deviceID", id); err != nil {
 		panic(errors.New("creating device id failed").Wrap(err))
 	}

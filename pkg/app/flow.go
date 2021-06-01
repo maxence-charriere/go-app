@@ -44,7 +44,7 @@ type UIFlow interface {
 func Flow() UIFlow {
 	return &flow{
 		IitemsWidth: flowDefaultItemsWidth,
-		id:          "goapp-flow-" + uuid.New().String(),
+		id:          "goapp-flow-" + uuid.NewString(),
 	}
 }
 
