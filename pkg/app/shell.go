@@ -65,7 +65,7 @@ func Shell() UIShell {
 				Class("goapp-shell-menu-button-default").
 				Text("☰"),
 		},
-		id:               "goapp-shell-" + uuid.New().String(),
+		id:               "goapp-shell-" + uuid.NewString(),
 		isMenuVisible:    true,
 		isSubmenuVisible: true,
 	}

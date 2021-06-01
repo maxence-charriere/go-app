@@ -9,7 +9,7 @@ import (
 )
 
 func TestEncryptDecrypt(t *testing.T) {
-	key := strings.ReplaceAll(uuid.New().String(), "-", "")
+	key := strings.ReplaceAll(uuid.NewString(), "-", "")
 	t.Log(key, len(key))
 
 	data := []byte("hello world")

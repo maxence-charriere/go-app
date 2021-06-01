@@ -80,7 +80,8 @@ func TestStore(t *testing.T) {
 	d := NewClientTester(Div())
 	defer d.Close()
 
-	s := makeStore(d)
+	s := newStore(d)
+	defer s.Close()
 	defer s.Cleanup()
 	key := "/test/store"
 
@@ -104,7 +105,8 @@ func TestStorePersist(t *testing.T) {
 	d := NewClientTester(Div())
 	defer d.Close()
 
-	s := makeStore(d)
+	s := newStore(d)
+	defer s.Close()
 	key := "/test/store/persist"
 
 	t.Run("value is pesisted", func(t *testing.T) {
@@ -167,7 +169,8 @@ func TestStoreEncrypt(t *testing.T) {
 	d := NewClientTester(Div())
 	defer d.Close()
 
-	s := makeStore(d)
+	s := newStore(d)
+	defer s.Close()
 	key := "/test/store/crypt"
 
 	t.Run("value is encrypted and decrypted", func(t *testing.T) {
@@ -195,7 +198,8 @@ func TestStoreExpiresIn(t *testing.T) {
 	d := NewClientTester(Div())
 	defer d.Close()
 
-	s := makeStore(d)
+	s := newStore(d)
+	defer s.Close()
 	key := "/test/store/expiresIn"
 
 	t.Run("value is not expired", func(t *testing.T) {
@@ -257,12 +261,68 @@ func TestStoreExpiresIn(t *testing.T) {
 	})
 }
 
+func TestStoreBroadcast(t *testing.T) {
+	d1 := NewClientTester(&foo{})
+	s1 := newStore(d1)
+	defer d1.Close()
+	defer s1.Close()
+
+	bar := &bar{}
+	d2 := NewClientTester(bar)
+	s2 := newStore(d2)
+	defer d2.Close()
+	defer s2.Close()
+
+	require.NotEqual(t, s1.id, s2.id)
+
+	key := "/test/store/broadcast"
+	t.Run("state is not broadcasted", func(t *testing.T) {
+		var v int
+		s2.Observe(key, bar).Value(&v)
+
+		s1.Set(key, func() {}, Broadcast)
+		d2.Consume()
+		require.Zero(t, v)
+	})
+
+	t.Run("state is broadcasted", func(t *testing.T) {
+		if IsServer {
+			t.Skip()
+		}
+
+		var v int
+
+		s2.Observe(key, bar).Value(&v)
+		s1.Set(key, 42, Broadcast)
+
+		time.Sleep(time.Millisecond * 50)
+		d2.Consume()
+		require.Equal(t, 42, v)
+	})
+
+	t.Run("broadcasted state is not observed", func(t *testing.T) {
+		if IsServer {
+			t.Skip()
+		}
+
+		var v func()
+
+		s2.Observe(key, bar).Value(&v)
+		s1.Set(key, 42, Broadcast)
+
+		time.Sleep(time.Millisecond * 50)
+		d2.Consume()
+		require.Zero(t, v)
+	})
+}
+
 func TestStoreObserve(t *testing.T) {
 	source := &foo{}
 	d := NewClientTester(source)
 	defer d.Close()
 
-	s := makeStore(d)
+	s := newStore(d)
+	defer s.Close()
 	key := "/test/observe"
 
 	s.Observe(key, source).Value(&source.Bar)
@@ -297,7 +357,8 @@ func TestRemoveUnusedObservers(t *testing.T) {
 	d := NewClientTester(source)
 	defer d.Close()
 
-	s := makeStore(d)
+	s := newStore(d)
+	defer s.Close()
 	key := "/test/observe/remove"
 
 	var v int
