@@ -53,7 +53,7 @@ type engine struct {
 	updateQueue   []updateDescriptor
 	defers        []event
 	actions       actionManager
-	states        store
+	states        *store
 }
 
 func (e *engine) Dispatch(src UI, fn func(Context)) {
@@ -195,6 +195,8 @@ func (e *engine) Close() {
 		dismount(e.Body)
 		e.Body = nil
 		close(e.events)
+
+		e.states.Close()
 	})
 }
 
@@ -272,7 +274,7 @@ func (e *engine) init() {
 		e.updates = make(map[Composer]struct{})
 		e.updateQueue = make([]updateDescriptor, 0, updateBufferSize)
 		e.defers = make([]event, 0, deferBufferSize)
-		e.states = makeStore(e)
+		e.states = newStore(e)
 
 		if e.UpdateRate <= 0 {
 			e.UpdateRate = 60
