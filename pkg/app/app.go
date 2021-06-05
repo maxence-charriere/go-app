@@ -231,7 +231,9 @@ func onAchorClick(d Dispatcher) func(Value, []Value) interface{} {
 				}
 
 				event.PreventDefault()
-				navigate(d, elem.Get("href").String())
+				if href := elem.Get("href"); href.Truthy() {
+					navigate(d, elem.Get("href").String())
+				}
 				return nil
 
 			case "BODY":
