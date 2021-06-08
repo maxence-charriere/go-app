@@ -17,7 +17,8 @@ type Observer interface {
 	// calling While().
 	While(condition func() bool) Observer
 
-	// Executes the given function when the observed value changes.
+	// Executes the given function when the observed value changes. Multiple
+	// functions can be executed by successively calling OnChange().
 	OnChange(fn func()) Observer
 
 	// Stores the value associated with the observed state into the given
