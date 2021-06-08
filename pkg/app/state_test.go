@@ -21,11 +21,13 @@ func TestObserver(t *testing.T) {
 		isSubscribeCalled = true
 	})
 	o.While(func() bool { return isObserving }).
+		OnChange(func() {}).
 		Value(&v)
 
 	require.True(t, isSubscribeCalled)
 	require.Equal(t, elem, o.element)
 	require.Len(t, o.conditions, 1)
+	require.Len(t, o.onChanges, 1)
 	require.NotNil(t, o.receiver)
 	require.True(t, o.isObserving())
 
@@ -317,39 +319,149 @@ func TestStoreBroadcast(t *testing.T) {
 }
 
 func TestStoreObserve(t *testing.T) {
-	source := &foo{}
-	d := NewClientTester(source)
-	defer d.Close()
-
-	s := newStore(d)
-	defer s.Close()
 	key := "/test/observe"
 
-	s.Observe(key, source).Value(&source.Bar)
-	require.Equal(t, "", source.Bar)
-	require.Len(t, s.states, 1)
-	require.Len(t, s.states[key].observers, 1)
+	t.Run("state is observed and stored in value", func(t *testing.T) {
+		foo := &foo{}
+		d := NewClientTester(foo)
+		defer d.Close()
 
-	s.Set(key, "hello")
-	d.Consume()
-	require.Equal(t, "hello", source.Bar)
+		s := newStore(d)
+		defer s.Close()
 
-	s.Set(key, nil)
-	d.Consume()
-	require.Equal(t, "", source.Bar)
+		s.Observe(key, foo).Value(&foo.Bar)
+		require.Equal(t, "", foo.Bar)
 
-	s.Set(key, 42)
-	d.Consume()
-	require.Equal(t, "", source.Bar)
+		s.Set(key, "hello")
+		d.Consume()
+		require.Equal(t, "hello", foo.Bar)
+	})
 
-	d.Mount(Div())
-	d.Consume()
-	s.Set(key, "hi")
-	require.Empty(t, s.states[key].observers)
+	t.Run("function is called when observed value changes", func(t *testing.T) {
+		foo := &foo{}
+		d := NewClientTester(foo)
+		defer d.Close()
 
-	s.Set(key, 42)
-	s.Observe(key, source).Value(&source.Bar)
-	require.Equal(t, "", source.Bar)
+		s := newStore(d)
+		defer s.Close()
+
+		isOnChangeCalled := false
+		s.Observe(key, foo).
+			OnChange(func() {
+				isOnChangeCalled = true
+			}).
+			Value(&foo.Bar)
+
+		s.Set(key, "hello")
+		d.Consume()
+		require.Equal(t, "hello", foo.Bar)
+		require.True(t, isOnChangeCalled)
+	})
+
+	t.Run("zero value is set and stored in observed value", func(t *testing.T) {
+		foo := &foo{}
+		d := NewClientTester(foo)
+		defer d.Close()
+
+		s := newStore(d)
+		defer s.Close()
+
+		s.Observe(key, foo).Value(&foo.Bar)
+		s.Set(key, "hi")
+		d.Consume()
+		require.Equal(t, "hi", foo.Bar)
+
+		s.Set(key, nil)
+		d.Consume()
+		require.Equal(t, "", foo.Bar)
+	})
+
+	t.Run("observed value with different type is not stored", func(t *testing.T) {
+		foo := &foo{}
+		d := NewClientTester(foo)
+		defer d.Close()
+
+		s := newStore(d)
+		defer s.Close()
+
+		s.Observe(key, foo).Value(&foo.Bar)
+
+		s.Set(key, 42)
+		d.Consume()
+		require.Equal(t, "", foo.Bar)
+	})
+
+	t.Run("observer that stop observing is removed from store", func(t *testing.T) {
+		foo := &foo{}
+		d := NewClientTester(foo)
+		defer d.Close()
+
+		s := newStore(d)
+		defer s.Close()
+
+		isObserving := true
+		s.Observe(key, foo).
+			While(func() bool {
+				return isObserving
+			}).
+			Value(&foo.Bar)
+
+		s.Set(key, "hi")
+		d.Consume()
+		require.Equal(t, "hi", foo.Bar)
+
+		isObserving = false
+		s.Set(key, "hey")
+		d.Consume()
+		require.Equal(t, "hi", foo.Bar)
+		require.Empty(t, s.states[key].observers)
+	})
+
+	t.Run("observer created from unmounted component is removed", func(t *testing.T) {
+		foo := &foo{}
+		d := NewClientTester(foo)
+		defer d.Close()
+
+		s := newStore(d)
+		defer s.Close()
+
+		s.Observe(key, foo).Value(&foo.Bar)
+
+		d.Mount(Div())
+		d.Consume()
+		require.False(t, foo.Mounted())
+
+		s.Set(key, "hi")
+		d.Consume()
+		require.Empty(t, s.states[key].observers)
+		require.Equal(t, "", foo.Bar)
+	})
+
+	t.Run("current value is stored in observer value", func(t *testing.T) {
+		foo := &foo{}
+		d := NewClientTester(foo)
+		defer d.Close()
+
+		s := newStore(d)
+		defer s.Close()
+
+		s.Set(key, "bye")
+		s.Observe(key, foo).Value(&foo.Bar)
+		require.Equal(t, "bye", foo.Bar)
+	})
+
+	t.Run("current value fails to be stored in observer value", func(t *testing.T) {
+		foo := &foo{}
+		d := NewClientTester(foo)
+		defer d.Close()
+
+		s := newStore(d)
+		defer s.Close()
+
+		s.Set(key, 42)
+		s.Observe(key, foo).Value(&foo.Bar)
+		require.Equal(t, "", foo.Bar)
+	})
 }
 
 func TestRemoveUnusedObservers(t *testing.T) {

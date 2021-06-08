@@ -352,8 +352,8 @@ func (e *engine) start(ctx context.Context) {
 				}
 
 			case <-cleanup.C:
-				e.Async(e.actions.closeUnusedHandlers)
-				e.Async(e.states.Cleanup)
+				e.actions.closeUnusedHandlers()
+				e.states.Cleanup()
 			}
 		}
 	})

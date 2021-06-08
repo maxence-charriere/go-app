@@ -17,6 +17,11 @@ type Observer interface {
 	// calling While().
 	While(condition func() bool) Observer
 
+	// Executes the given function on the UI goroutine when the observed value
+	// changes. Multiple functions can be executed by successively calling
+	// OnChange().
+	OnChange(fn func()) Observer
+
 	// Stores the value associated with the observed state into the given
 	// receiver. Panics when the receiver is not a pointer or nil.
 	//
@@ -96,6 +101,7 @@ type observer struct {
 	element    UI
 	subscribe  func(*observer)
 	conditions []func() bool
+	onChanges  []func()
 	receiver   interface{}
 }
 
@@ -108,6 +114,11 @@ func newObserver(elem UI, subscribe func(*observer)) *observer {
 
 func (o *observer) While(fn func() bool) Observer {
 	o.conditions = append(o.conditions, fn)
+	return o
+}
+
+func (o *observer) OnChange(fn func()) Observer {
+	o.onChanges = append(o.onChanges, fn)
 	return o
 }
 
@@ -189,20 +200,32 @@ func (s *store) Set(key string, v interface{}, opts ...StateOption) {
 		}
 	}
 
-	for o := range state.observers {
-		if !o.isObserving() {
+	for obs := range state.observers {
+		o := obs
+
+		if !o.element.Mounted() {
 			delete(state.observers, o)
 			continue
 		}
 
-		elem := o.element
-		recv := o.receiver
-		s.disp.Dispatch(elem, func(ctx Context) {
-			if err := storeValue(recv, v); err != nil {
+		s.disp.Dispatch(o.element, func(ctx Context) {
+			if !o.isObserving() {
+				s.mutex.Lock()
+				delete(state.observers, o)
+				s.mutex.Unlock()
+				return
+			}
+
+			if err := storeValue(o.receiver, v); err != nil {
 				Log(errors.New("notifying observer failed").
 					Tag("state", key).
-					Tag("element", reflect.TypeOf(elem)).
+					Tag("element", reflect.TypeOf(o.element)).
 					Wrap(err))
+				return
+			}
+
+			for _, fn := range o.onChanges {
+				fn()
 			}
 		})
 	}
@@ -359,9 +382,6 @@ func (s *store) initBroadcast() {
 	s.broadcastChannel = broadcastChannel
 
 	onBroadcast := FuncOf(func(this Value, args []Value) interface{} {
-		s.mutex.Lock()
-		defer s.mutex.Unlock()
-
 		s.onBroadcast(args[0].Get("data"))
 		return nil
 	})
@@ -391,24 +411,39 @@ func (s *store) onBroadcast(event Value) {
 		return
 	}
 
+	s.mutex.Lock()
+	defer s.mutex.Unlock()
+
 	key := event.Get("State").String()
 	v := []byte(event.Get("Value").String())
 	state := s.states[key]
 
-	for o := range state.observers {
-		if !o.isObserving() {
+	for obs := range state.observers {
+		o := obs
+
+		if !o.element.Mounted() {
 			delete(state.observers, o)
 			continue
 		}
 
-		elem := o.element
-		recv := o.receiver
-		s.disp.Dispatch(elem, func(ctx Context) {
-			if err := json.Unmarshal(v, recv); err != nil {
+		s.disp.Dispatch(o.element, func(ctx Context) {
+			if !o.isObserving() {
+				s.mutex.Lock()
+				delete(state.observers, o)
+				s.mutex.Unlock()
+				return
+			}
+
+			if err := json.Unmarshal(v, o.receiver); err != nil {
 				Log(errors.New("notifying observer failed").
 					Tag("state", key).
-					Tag("element", reflect.TypeOf(elem)).
+					Tag("element", reflect.TypeOf(o.element)).
 					Wrap(err))
+				return
+			}
+
+			for _, fn := range o.onChanges {
+				fn()
 			}
 		})
 	}
