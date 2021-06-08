@@ -21,11 +21,13 @@ func TestObserver(t *testing.T) {
 		isSubscribeCalled = true
 	})
 	o.While(func() bool { return isObserving }).
+		OnChange(func() {}).
 		Value(&v)
 
 	require.True(t, isSubscribeCalled)
 	require.Equal(t, elem, o.element)
 	require.Len(t, o.conditions, 1)
+	require.Len(t, o.onChanges, 1)
 	require.NotNil(t, o.receiver)
 	require.True(t, o.isObserving())
 
@@ -325,14 +327,22 @@ func TestStoreObserve(t *testing.T) {
 	defer s.Close()
 	key := "/test/observe"
 
-	s.Observe(key, source).Value(&source.Bar)
+	isOnChangeCalled := false
+
+	s.Observe(key, source).
+		OnChange(func() {
+			isOnChangeCalled = true
+		}).
+		Value(&source.Bar)
 	require.Equal(t, "", source.Bar)
+	require.False(t, isOnChangeCalled)
 	require.Len(t, s.states, 1)
 	require.Len(t, s.states[key].observers, 1)
 
 	s.Set(key, "hello")
 	d.Consume()
 	require.Equal(t, "hello", source.Bar)
+	require.True(t, isOnChangeCalled)
 
 	s.Set(key, nil)
 	d.Consume()

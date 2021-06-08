@@ -17,6 +17,9 @@ type Observer interface {
 	// calling While().
 	While(condition func() bool) Observer
 
+	// Executes the given function when the observed value changes.
+	OnChange(fn func()) Observer
+
 	// Stores the value associated with the observed state into the given
 	// receiver. Panics when the receiver is not a pointer or nil.
 	//
@@ -96,6 +99,7 @@ type observer struct {
 	element    UI
 	subscribe  func(*observer)
 	conditions []func() bool
+	onChanges  []func()
 	receiver   interface{}
 }
 
@@ -108,6 +112,11 @@ func newObserver(elem UI, subscribe func(*observer)) *observer {
 
 func (o *observer) While(fn func() bool) Observer {
 	o.conditions = append(o.conditions, fn)
+	return o
+}
+
+func (o *observer) OnChange(fn func()) Observer {
+	o.onChanges = append(o.onChanges, fn)
 	return o
 }
 
@@ -197,12 +206,19 @@ func (s *store) Set(key string, v interface{}, opts ...StateOption) {
 
 		elem := o.element
 		recv := o.receiver
+		onChanges := o.onChanges
+
 		s.disp.Dispatch(elem, func(ctx Context) {
 			if err := storeValue(recv, v); err != nil {
 				Log(errors.New("notifying observer failed").
 					Tag("state", key).
 					Tag("element", reflect.TypeOf(elem)).
 					Wrap(err))
+				return
+			}
+
+			for _, fn := range onChanges {
+				fn()
 			}
 		})
 	}
