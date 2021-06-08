@@ -439,6 +439,11 @@ func (s *store) onBroadcast(event Value) {
 					Tag("state", key).
 					Tag("element", reflect.TypeOf(o.element)).
 					Wrap(err))
+				return
+			}
+
+			for _, fn := range o.onChanges {
+				fn()
 			}
 		})
 	}
