@@ -374,11 +374,12 @@ func (s *store) expire(key string, state State) State {
 }
 
 func (s *store) initBroadcast() {
-	broadcastChannel := Window().Get("BroadcastChannel").New("go-app-broadcast-states")
+	broadcastChannel := Window().Get("BroadcastChannel")
 	if !broadcastChannel.Truthy() {
 		s.onBroadcastClose = func() {}
 		return
 	}
+	broadcastChannel = broadcastChannel.New("go-app-broadcast-states")
 	s.broadcastChannel = broadcastChannel
 
 	onBroadcast := FuncOf(func(this Value, args []Value) interface{} {
