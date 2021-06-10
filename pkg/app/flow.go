@@ -25,7 +25,7 @@ type UIFlow interface {
 	ItemWidth(px int) UIFlow
 
 	// Sets the space between content elements in px.
-	ItemSpacing(px int) UIFlow
+	Spacing(px int) UIFlow
 
 	// Makes the items occupy all the available space when the content has only
 	// one row.
@@ -53,13 +53,13 @@ type flow struct {
 	Iid           string
 	Iclass        string
 	IitemWidth    int
-	IitemSpacing  int
+	Ispacing      int
 	IstretchItems bool
 	Icontent      []UI
 
 	id              string
 	itemsPerRow     int
-	itemWidth       int
+	itemWidth       float64
 	refreshInterval time.Duration
 	refreshTimer    *time.Timer
 }
@@ -87,9 +87,9 @@ func (f *flow) ItemWidth(px int) UIFlow {
 	return f
 }
 
-func (f *flow) ItemSpacing(px int) UIFlow {
+func (f *flow) Spacing(px int) UIFlow {
 	if px > 0 {
-		f.IitemSpacing = px
+		f.Ispacing = px
 	}
 	return f
 }
@@ -142,18 +142,18 @@ func (f *flow) Render() UI {
 					Range(f.Icontent).Slice(func(i int) UI {
 						marginTop := "0"
 						if i >= f.itemsPerRow {
-							marginTop = pxToString(f.IitemSpacing)
+							marginTop = pxToString(f.Ispacing)
 						}
 
 						marginLeft := "0"
 						if i%f.itemsPerRow != 0 {
-							marginLeft = pxToString(f.IitemSpacing)
+							marginLeft = pxToString(f.Ispacing)
 						}
 
 						return Div().
 							Style("position", "relative").
 							Style("flex-shrink", "0").
-							Style("flex-basis", pxToString(f.itemWidth)).
+							Style("flex-basis", fmt.Sprintf("%.6fpx", f.itemWidth)).
 							Style("margin-top", marginTop).
 							Style("margin-left", marginLeft).
 							Style("overflow", "hidden").
@@ -179,11 +179,9 @@ func (f *flow) scheduleRefresh(ctx Context) {
 
 func (f *flow) refresh(ctx Context) {
 	w, _ := f.layoutSize()
-	fmt.Println("layout width:", w)
-	w += f.IitemSpacing
-	fmt.Println("layout v-width:", w)
+	w += f.Ispacing
 
-	itemWidth := f.IitemWidth + f.IitemSpacing
+	itemWidth := f.IitemWidth + f.Ispacing
 	itemsPerRow := w / itemWidth
 	if f.IstretchItems && len(f.Icontent) < itemsPerRow {
 		itemsPerRow = len(f.Icontent)
@@ -191,14 +189,14 @@ func (f *flow) refresh(ctx Context) {
 	if itemsPerRow == 0 {
 		itemsPerRow = 1
 	}
-	itemWidth = (w - f.IitemSpacing*itemsPerRow) / itemsPerRow
+	itemWidthFloat := float64(w-f.Ispacing*itemsPerRow) / float64(itemsPerRow)
 
-	if itemsPerRow != f.itemsPerRow || itemWidth != f.itemWidth {
+	if itemsPerRow != f.itemsPerRow || itemWidthFloat != f.itemWidth {
 		f.ResizeContent()
 	}
 
 	f.itemsPerRow = itemsPerRow
-	f.itemWidth = itemWidth
+	f.itemWidth = itemWidthFloat
 }
 
 func (f *flow) layoutSize() (int, int) {
