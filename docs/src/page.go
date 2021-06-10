@@ -52,14 +52,15 @@ func (p *page) setAvailableUpdate(ctx app.Context) {
 func (p *page) Render() app.UI {
 	return app.Shell().
 		Class("background").
-		MenuWidth(pageItemWidth).
-		Menu(newNav()).
-		OverlayMenu(
+		Class("fill").
+		PaneWidth(pageItemWidth).
+		HamburgerMenu(
 			newNav().
 				Class("overlay-menu").
 				Class("unselectable"),
 		).
-		Submenu(
+		Menu(newNav()).
+		Index(
 			app.Nav().
 				Class("header-out").
 				Class("content").

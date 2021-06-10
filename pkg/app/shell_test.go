@@ -25,11 +25,11 @@ func TestShellPreRender(t *testing.T) {
 		},
 		{
 			scenario: "shell with submenu",
-			shell:    Shell().Submenu(Div()),
+			shell:    Shell().Index(Div()),
 		},
 		{
 			scenario: "shell with overlay",
-			shell:    Shell().OverlayMenu(Div()),
+			shell:    Shell().HamburgerMenu(Div()),
 		},
 		{
 			scenario: "shell with menu and content",
@@ -41,15 +41,15 @@ func TestShellPreRender(t *testing.T) {
 			scenario: "shell with menu, submenu and content",
 			shell: Shell().
 				Menu(Div()).
-				Submenu(Div()).
+				Index(Div()).
 				Content(Div()),
 		},
 		{
 			scenario: "shell with menu, submenu, overlay menu and content",
 			shell: Shell().
 				Menu(Div()).
-				Submenu(Div()).
-				OverlayMenu(Div()).
+				Index(Div()).
+				HamburgerMenu(Div()).
 				Content(Div()),
 		},
 	}
