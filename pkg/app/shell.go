@@ -157,18 +157,21 @@ func (s *shell) Render() UI {
 				Style("overflow", "hidden").
 				Body(
 					Div().
+						Style("position", "relative").
 						Style("display", visible(!s.hideMenu)).
 						Style("flex-shrink", "0").
 						Style("flex-basis", pxToString(s.IpaneWidth)).
 						Style("overflow", "hidden").
 						Body(s.Imenu...),
 					Div().
+						Style("position", "relative").
 						Style("display", visible(!s.hideIndex)).
 						Style("flex-shrink", "0").
 						Style("flex-basis", pxToString(s.IpaneWidth)).
 						Style("overflow", "hidden").
 						Body(s.Iindex...),
 					Div().
+						Style("position", "relative").
 						Style("flex-grow", "1").
 						Style("overflow", "hidden").
 						Body(s.Icontent...),

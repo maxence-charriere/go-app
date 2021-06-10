@@ -44,3 +44,4 @@ github: build
 clean:
 	@go clean -v ./...
 	-@rm docs/documentation
+	@go mod tidy
