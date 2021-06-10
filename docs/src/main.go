@@ -44,7 +44,10 @@ func main() {
 	app.Route("/reference", newReference())
 	app.RouteWithRegexp(`^/examples(/(\w)+)*$`, newExample())
 	app.Route("/", newMarkdownDoc())
+
 	app.Route("/shell", &shellExample{})
+	app.Route("/flow", &flowExample{})
+
 	app.RunWhenOnBrowser()
 
 	ctx, cancel := cli.ContextWithSignals(context.Background(),

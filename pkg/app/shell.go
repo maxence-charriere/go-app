@@ -20,6 +20,7 @@ type UIShell interface {
 	Class(v string) UIShell
 
 	// Sets the width in px for the menu and index panes.
+	// Default is 270px.
 	PaneWidth(px int) UIShell
 
 	// Customizes the hamburger menu button with the given element.
@@ -46,7 +47,7 @@ type UIShell interface {
 func Shell() UIShell {
 	return &shell{
 		IpaneWidth:      270,
-		id:              uuid.NewString(),
+		id:              "goapp-shell-" + uuid.NewString(),
 		refreshInterval: time.Millisecond * 50,
 	}
 }
@@ -88,7 +89,9 @@ func (s *shell) Class(v string) UIShell {
 }
 
 func (s *shell) PaneWidth(px int) UIShell {
-	s.IpaneWidth = px
+	if px > 0 {
+		s.IpaneWidth = px
+	}
 	return s
 }
 
@@ -136,6 +139,12 @@ func (s *shell) OnUpdate(ctx Context) {
 	s.scheduleRefresh(ctx)
 }
 
+func (s *shell) OnDismount() {
+	if s.refreshTimer != nil {
+		s.refreshTimer.Stop()
+	}
+}
+
 func (s *shell) Render() UI {
 	visible := func(v bool) string {
 		if v {
@@ -145,12 +154,12 @@ func (s *shell) Render() UI {
 	}
 
 	return Div().
-		DataSet("goapp", "shell").
+		DataSet("goapp-kit", "shell").
 		ID(s.Iid).
 		Class(s.Iclass).
 		Body(
 			Div().
-				ID("goapp-shell-"+s.id).
+				ID(s.id).
 				Style("display", "flex").
 				Style("width", "100%").
 				Style("height", "100%").
@@ -237,7 +246,7 @@ func (s *shell) refresh(ctx Context) {
 }
 
 func (s *shell) layoutSize() (int, int) {
-	layout := Window().GetElementByID("goapp-shell-" + s.id)
+	layout := Window().GetElementByID(s.id)
 	if !layout.Truthy() {
 		return 320, 568
 	}
