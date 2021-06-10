@@ -218,6 +218,7 @@
   outline: none;
   background-color: transparent;
   color: currentColor;
+  cursor: pointer;
 }
 
 .goapp-shell-menu-button-default {
@@ -235,4 +236,15 @@
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.goapp-shell-hamburger-button-default {
+  font-size: 24px;
+  padding: 12px 18px;
+  color: currentColor;
+}
+
+.goapp-shell-hamburger-button-default:hover {
+  color: dodgerblue;
+  cursor: pointer;
 }
