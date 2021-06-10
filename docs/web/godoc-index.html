@@ -8,10 +8,16 @@
 			
 			
 				
+				<dd><a href="#Broadcast" id="src-Broadcast">func Broadcast(s *State)</a></dd>
+			
+				
 				<dd><a href="#CopyBytesToGo" id="src-CopyBytesToGo">func CopyBytesToGo(dst []byte, src Value) int</a></dd>
 			
 				
 				<dd><a href="#CopyBytesToJS" id="src-CopyBytesToJS">func CopyBytesToJS(dst Value, src []byte) int</a></dd>
+			
+				
+				<dd><a href="#Encrypt" id="src-Encrypt">func Encrypt(s *State)</a></dd>
 			
 				
 				<dd><a href="#GenerateStaticWebsite" id="src-GenerateStaticWebsite">func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error</a></dd>
@@ -26,6 +32,9 @@
 				<dd><a href="#HTMLStringWithIndent" id="src-HTMLStringWithIndent">func HTMLStringWithIndent(ui UI) string</a></dd>
 			
 				
+				<dd><a href="#Handle" id="src-Handle">func Handle(actionName string, h ActionHandler)</a></dd>
+			
+				
 				<dd><a href="#KeepBodyClean" id="src-KeepBodyClean">func KeepBodyClean() (close func())</a></dd>
 			
 				
@@ -33,6 +42,9 @@
 			
 				
 				<dd><a href="#Logf" id="src-Logf">func Logf(format string, v ...interface{})</a></dd>
+			
+				
+				<dd><a href="#Persist" id="src-Persist">func Persist(s *State)</a></dd>
 			
 				
 				<dd><a href="#PrintHTML" id="src-PrintHTML">func PrintHTML(w io.Writer, ui UI)</a></dd>
@@ -55,6 +67,21 @@
 				
 				<dd><a href="#TestPath" id="src-TestPath">func TestPath(p ...int) []int</a></dd>
 			
+			
+				
+				<dd><a href="#Action" id="src-Action">type Action</a></dd>
+				
+				
+			
+				
+				<dd><a href="#ActionBuilder" id="src-ActionBuilder">type ActionBuilder</a></dd>
+				
+				
+			
+				
+				<dd><a href="#ActionHandler" id="src-ActionHandler">type ActionHandler</a></dd>
+				
+				
 			
 				
 				<dd><a href="#AppUpdater" id="src-AppUpdater">type AppUpdater</a></dd>
@@ -1053,7 +1080,17 @@
 				
 			
 				
+				<dd><a href="#MsgHandler" id="src-MsgHandler">type MsgHandler</a></dd>
+				
+				
+			
+				
 				<dd><a href="#Navigator" id="src-Navigator">type Navigator</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Observer" id="src-Observer">type Observer</a></dd>
 				
 				
 			
@@ -1066,7 +1103,7 @@
 				<dd><a href="#PreRenderCache" id="src-PreRenderCache">type PreRenderCache</a></dd>
 				
 					
-					<dd>    <a href="#NewPreRenderLRUCache" id="src-NewPreRenderLRUCache">func NewPreRenderLRUCache(size int, itemTTL time.Duration, onEvict ...func(count, size int)) PreRenderCache</a></dd>
+					<dd>    <a href="#NewPreRenderLRUCache" id="src-NewPreRenderLRUCache">func NewPreRenderLRUCache(size int, itemTTL time.Duration, onEvict ...func(path string, i PreRenderedItem)) PreRenderCache</a></dd>
 				
 				
 			
@@ -1075,7 +1112,7 @@
 				
 				
 					
-					<dd>    <a href="#PreRenderedItem.Len" id="src-PreRenderedItem.Len">func (r PreRenderedItem) Len() int</a></dd>
+					<dd>    <a href="#PreRenderedItem.Size" id="src-PreRenderedItem.Size">func (r PreRenderedItem) Size() int</a></dd>
 				
 			
 				
@@ -1124,6 +1161,33 @@
 					
 					<dd>    <a href="#NewServerTester" id="src-NewServerTester">func NewServerTester(n UI) ServerDispatcher</a></dd>
 				
+				
+			
+				
+				<dd><a href="#State" id="src-State">type State</a></dd>
+				
+				
+			
+				
+				<dd><a href="#StateOption" id="src-StateOption">type StateOption</a></dd>
+				
+					
+					<dd>    <a href="#ExpiresAt" id="src-ExpiresAt">func ExpiresAt(t time.Time) StateOption</a></dd>
+				
+					
+					<dd>    <a href="#ExpiresIn" id="src-ExpiresIn">func ExpiresIn(d time.Duration) StateOption</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Tags" id="src-Tags">type Tags</a></dd>
+				
+				
+					
+					<dd>    <a href="#Tags.Get" id="src-Tags.Get">func (t Tags) Get(name string) string</a></dd>
+				
+					
+					<dd>    <a href="#Tags.Set" id="src-Tags.Set">func (t Tags) Set(name string, v interface{})</a></dd>
 				
 			
 				

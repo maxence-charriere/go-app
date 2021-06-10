@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -11,48 +10,48 @@ import (
 // an index page, and a hamburger menu.
 //
 // EXPERIMENTAL - Subject to change.
-type UIShell2 interface {
+type UIShell interface {
 	UI
 
 	// Sets the ID.
-	ID(v string) UIShell2
+	ID(v string) UIShell
 
 	// Sets the class. Multiple classes can be defined by successive calls.
-	Class(v string) UIShell2
+	Class(v string) UIShell
 
 	// Sets the width in px for the menu and index panes.
-	PaneWidth(px int) UIShell2
+	PaneWidth(px int) UIShell
 
 	// Customizes the hamburger menu button with the given element.
 	// Default is ☰.
-	HamburgerButton(v UI) UIShell2
+	HamburgerButton(v UI) UIShell
 
 	// Sets the hamburger menu content.
-	HamburgerMenu(v ...UI) UIShell2
+	HamburgerMenu(v ...UI) UIShell
 
 	// Sets the menu pane content.
-	Menu(v ...UI) UIShell2
+	Menu(v ...UI) UIShell
 
 	// Sets the index pane content.
-	Index(v ...UI) UIShell2
+	Index(v ...UI) UIShell
 
 	// Sets the content.
-	Content(v ...UI) UIShell2
+	Content(v ...UI) UIShell
 }
 
 // Shell returns a layout that responsively displays a content with a menu pane,
 // an index pane, and a hamburger menu.
 //
 // EXPERIMENTAL - Subject to change.
-func Shell2() UIShell2 {
-	return &shell2{
+func Shell() UIShell {
+	return &shell{
 		IpaneWidth:      270,
 		id:              uuid.NewString(),
 		refreshInterval: time.Millisecond * 50,
 	}
 }
 
-type shell2 struct {
+type shell struct {
 	Compo
 
 	Iid              string
@@ -72,12 +71,12 @@ type shell2 struct {
 	refreshTimer      *time.Timer
 }
 
-func (s *shell2) ID(v string) UIShell2 {
+func (s *shell) ID(v string) UIShell {
 	s.Iid = v
 	return s
 }
 
-func (s *shell2) Class(v string) UIShell2 {
+func (s *shell) Class(v string) UIShell {
 	if v == "" {
 		return s
 	}
@@ -88,12 +87,12 @@ func (s *shell2) Class(v string) UIShell2 {
 	return s
 }
 
-func (s *shell2) PaneWidth(px int) UIShell2 {
+func (s *shell) PaneWidth(px int) UIShell {
 	s.IpaneWidth = px
 	return s
 }
 
-func (s *shell2) HamburgerButton(v UI) UIShell2 {
+func (s *shell) HamburgerButton(v UI) UIShell {
 	b := FilterUIElems(v)
 	if len(b) != 0 {
 		s.IhamburgerButton = b[0]
@@ -101,43 +100,43 @@ func (s *shell2) HamburgerButton(v UI) UIShell2 {
 	return s
 }
 
-func (s *shell2) HamburgerMenu(v ...UI) UIShell2 {
+func (s *shell) HamburgerMenu(v ...UI) UIShell {
 	s.IhamburgerMenu = FilterUIElems(v...)
 	return s
 }
 
-func (s *shell2) Menu(v ...UI) UIShell2 {
+func (s *shell) Menu(v ...UI) UIShell {
 	s.Imenu = FilterUIElems(v...)
 	return s
 }
 
-func (s *shell2) Index(v ...UI) UIShell2 {
+func (s *shell) Index(v ...UI) UIShell {
 	s.Iindex = FilterUIElems(v...)
 	return s
 }
 
-func (s *shell2) Content(v ...UI) UIShell2 {
+func (s *shell) Content(v ...UI) UIShell {
 	s.Icontent = FilterUIElems(v...)
 	return s
 }
 
-func (s *shell2) OnPreRender(ctx Context) {
+func (s *shell) OnPreRender(ctx Context) {
 	s.refresh(ctx)
 }
 
-func (s *shell2) OnMount(ctx Context) {
+func (s *shell) OnMount(ctx Context) {
 	s.refresh(ctx)
 }
 
-func (s *shell2) OnResize(ctx Context) {
+func (s *shell) OnResize(ctx Context) {
 	s.scheduleRefresh(ctx)
 }
 
-func (s *shell2) OnUpdate(ctx Context) {
+func (s *shell) OnUpdate(ctx Context) {
 	s.scheduleRefresh(ctx)
 }
 
-func (s *shell2) Render() UI {
+func (s *shell) Render() UI {
 	visible := func(v bool) string {
 		if v {
 			return "block"
@@ -161,14 +160,17 @@ func (s *shell2) Render() UI {
 						Style("display", visible(!s.hideMenu)).
 						Style("flex-shrink", "0").
 						Style("flex-basis", pxToString(s.IpaneWidth)).
+						Style("overflow", "hidden").
 						Body(s.Imenu...),
 					Div().
 						Style("display", visible(!s.hideIndex)).
 						Style("flex-shrink", "0").
 						Style("flex-basis", pxToString(s.IpaneWidth)).
+						Style("overflow", "hidden").
 						Body(s.Iindex...),
 					Div().
 						Style("flex-grow", "1").
+						Style("overflow", "hidden").
 						Body(s.Icontent...),
 				),
 			Div().
@@ -198,7 +200,7 @@ func (s *shell2) Render() UI {
 		)
 }
 
-func (s *shell2) scheduleRefresh(ctx Context) {
+func (s *shell) scheduleRefresh(ctx Context) {
 	if s.refreshTimer != nil {
 		s.refreshTimer.Stop()
 		s.refreshTimer.Reset(s.refreshInterval)
@@ -212,9 +214,8 @@ func (s *shell2) scheduleRefresh(ctx Context) {
 	}
 }
 
-func (s *shell2) refresh(ctx Context) {
-	w, h := s.layoutSize()
-	fmt.Println("adust - layout:", w, h)
+func (s *shell) refresh(ctx Context) {
+	w, _ := s.layoutSize()
 
 	hideIndex := len(s.Iindex) == 0 || 3*s.IpaneWidth > w
 	hideMenu := false
@@ -232,7 +233,7 @@ func (s *shell2) refresh(ctx Context) {
 	s.hideIndex = hideIndex
 }
 
-func (s *shell2) layoutSize() (int, int) {
+func (s *shell) layoutSize() (int, int) {
 	layout := Window().GetElementByID("goapp-shell-" + s.id)
 	if !layout.Truthy() {
 		return 320, 568
@@ -240,10 +241,10 @@ func (s *shell2) layoutSize() (int, int) {
 	return layout.Get("clientWidth").Int(), layout.Get("clientHeight").Int()
 }
 
-func (s *shell2) onHamburgerButtonClick(ctx Context, e Event) {
+func (s *shell) onHamburgerButtonClick(ctx Context, e Event) {
 	s.showHamburgerMenu = true
 }
 
-func (s *shell2) hideHamburgerMenu(ctx Context, e Event) {
+func (s *shell) hideHamburgerMenu(ctx Context, e Event) {
 	s.showHamburgerMenu = false
 }

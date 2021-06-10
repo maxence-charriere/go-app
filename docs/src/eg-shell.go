@@ -7,7 +7,7 @@ type shellExample struct {
 }
 
 func (e *shellExample) Render() app.UI {
-	return app.Shell2().
+	return app.Shell().
 		Class("fill").
 		HamburgerMenu(
 			app.Div().
