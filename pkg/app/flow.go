@@ -1,67 +1,72 @@
 package app
 
 import (
-	"strconv"
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
-)
-
-const (
-	flowDefaultItemsWidth = 300
-	flowResizeSizeDelay   = time.Millisecond * 100
 )
 
 // UIFlow is the interface that describes a container that displays its items as
 // a flow.
 //
-// EXPERIMENTAL WIDGET.
+// EXPERIMENTAL - Subject to change.
 type UIFlow interface {
 	UI
 
-	// Class adds a CSS class to the flow root HTML element class property.
-	Class(v string) UIFlow
-
-	// Content sets the content with the given UI elements.
-	Content(elems ...UI) UIFlow
-
-	// ID sets the flow root HTML element id property.
+	// Sets the ID.
 	ID(v string) UIFlow
 
-	// ItemsWidth sets the items base width in px. Items size is adjusted to
-	// fit the space in the container. Default is 300px.
-	ItemsWidth(px int) UIFlow
+	// Sets the class. Multiple classes can be defined by successive calls.
+	Class(v string) UIFlow
 
-	// StrechtOnSingleRow makes the items to occupy all the available space when
-	// the flow spreads on a single row.
-	StrechtOnSingleRow() UIFlow
+	// Sets the width in px for the content items.
+	// Default is 300px.
+	ItemWidth(px int) UIFlow
+
+	// Sets the space between content elements in px.
+	ItemSpacing(px int) UIFlow
+
+	// Makes the items occupy all the available space when the content has only
+	// one row.
+	StretchItems() UIFlow
+
+	// Sets the content.
+	Content(elems ...UI) UIFlow
 }
 
 // Flow creates a container that displays its items as a flow.
 //
-// EXPERIMENTAL WIDGET.
+// EXPERIMENTAL - Subject to change.
 func Flow() UIFlow {
 	return &flow{
-		IitemsWidth: flowDefaultItemsWidth,
-		id:          "goapp-flow-" + uuid.NewString(),
+		IitemWidth:      300,
+		id:              "goapp-flow-" + uuid.NewString(),
+		itemsPerRow:     1,
+		refreshInterval: time.Millisecond * 50,
 	}
 }
 
 type flow struct {
 	Compo
 
-	IitemsWidth        int
-	Iclass             string
-	Iid                string
-	Icontent           []UI
-	IstrechOnSingleRow bool
+	Iid           string
+	Iclass        string
+	IitemWidth    int
+	IitemSpacing  int
+	IstretchItems bool
+	Icontent      []UI
 
 	id              string
-	contentLen      int
-	width           int
+	itemsPerRow     int
 	itemWidth       int
-	adjustSizeTimer *time.Timer
+	refreshInterval time.Duration
+	refreshTimer    *time.Timer
+}
+
+func (f *flow) ID(v string) UIFlow {
+	f.Iid = v
+	return f
 }
 
 func (f *flow) Class(v string) UIFlow {
@@ -75,139 +80,131 @@ func (f *flow) Class(v string) UIFlow {
 	return f
 }
 
+func (f *flow) ItemWidth(px int) UIFlow {
+	if px > 0 {
+		f.IitemWidth = px
+	}
+	return f
+}
+
+func (f *flow) ItemSpacing(px int) UIFlow {
+	if px > 0 {
+		f.IitemSpacing = px
+	}
+	return f
+}
+
+func (f *flow) StretchItems() UIFlow {
+	f.IstretchItems = true
+	return f
+}
+
 func (f *flow) Content(elems ...UI) UIFlow {
 	f.Icontent = FilterUIElems(elems...)
 	return f
 }
 
-func (f *flow) ID(v string) UIFlow {
-	f.Iid = v
-	return f
-}
-
-func (f *flow) ItemsWidth(px int) UIFlow {
-	if px > 0 {
-		f.IitemsWidth = px
-	}
-	return f
-}
-
-func (f *flow) StrechtOnSingleRow() UIFlow {
-	f.IstrechOnSingleRow = true
-	return f
+func (f *flow) OnPreRender(ctx Context) {
+	f.refresh(ctx)
 }
 
 func (f *flow) OnMount(ctx Context) {
-	if f.requiresLayoutUpdate() {
-		f.refreshLayout(ctx)
-	}
-}
-
-func (f *flow) OnNav(ctx Context) {
-	if f.requiresLayoutUpdate() {
-		f.refreshLayout(ctx)
-	}
-}
-
-func (f *flow) OnUpdate(ctx Context) {
-	if f.requiresLayoutUpdate() {
-		f.refreshLayout(ctx)
-	}
+	f.refresh(ctx)
 }
 
 func (f *flow) OnResize(ctx Context) {
-	f.refreshLayout(ctx)
+	f.scheduleRefresh(ctx)
+}
+
+func (f *flow) OnUpdate(ctx Context) {
+	f.scheduleRefresh(ctx)
 }
 
 func (f *flow) OnDismount() {
-	f.cancelAdjustItemSizes()
+	if f.refreshTimer != nil {
+		f.refreshTimer.Stop()
+	}
 }
 
 func (f *flow) Render() UI {
 	return Div().
-		DataSet("goapp", "Flow").
-		ID(f.id).
+		DataSet("goapp-kit", "flow").
+		ID(f.Iid).
 		Class(f.Iclass).
-		Style("display", "flex").
-		Style("flex-direction", "row").
-		Style("flex-wrap", "wrap").
-		Style("align-items", "stretch").
 		Body(
-			Range(f.Icontent).Slice(func(i int) UI {
-				itemWidth := strconv.Itoa(f.itemWidth) + "px"
-				return Div().
-					Style("flex-grow", "0").
-					Style("flex-shrink", "1").
-					Style("max-width", itemWidth).
-					Style("width", itemWidth).
-					Body(f.Icontent[i])
-			}),
+			Div().
+				ID(f.id).
+				Style("display", "flex").
+				Style("flex-wrap", "wrap").
+				Style("width", "100%").
+				Style("overflow", "hidden").
+				Body(
+					Range(f.Icontent).Slice(func(i int) UI {
+						marginTop := "0"
+						if i >= f.itemsPerRow {
+							marginTop = pxToString(f.IitemSpacing)
+						}
+
+						marginLeft := "0"
+						if i%f.itemsPerRow != 0 {
+							marginLeft = pxToString(f.IitemSpacing)
+						}
+
+						return Div().
+							Style("position", "relative").
+							Style("flex-shrink", "0").
+							Style("flex-basis", pxToString(f.itemWidth)).
+							Style("margin-top", marginTop).
+							Style("margin-left", marginLeft).
+							Style("overflow", "hidden").
+							Body(f.Icontent[i])
+					}),
+				),
 		)
 }
 
-func (f *flow) requiresLayoutUpdate() bool {
-	return (f.Iid != "" && f.Iid != f.id) ||
-		len(f.Icontent) != f.contentLen
+func (f *flow) scheduleRefresh(ctx Context) {
+	if f.refreshTimer != nil {
+		f.refreshTimer.Stop()
+		f.refreshTimer.Reset(f.refreshInterval)
+		return
+	}
+
+	if IsClient {
+		f.refreshTimer = time.AfterFunc(f.refreshInterval, func() {
+			ctx.Dispatch(f.refresh)
+		})
+	}
 }
 
-func (f *flow) refreshLayout(ctx Context) {
-	if f.Iid != "" && f.Iid != f.id {
-		f.id = f.Iid
-		return
+func (f *flow) refresh(ctx Context) {
+	w, _ := f.layoutSize()
+	fmt.Println("layout width:", w)
+	w += f.IitemSpacing
+	fmt.Println("layout v-width:", w)
+
+	itemWidth := f.IitemWidth + f.IitemSpacing
+	itemsPerRow := w / itemWidth
+	if f.IstretchItems && len(f.Icontent) < itemsPerRow {
+		itemsPerRow = len(f.Icontent)
+	}
+	if itemsPerRow == 0 {
+		itemsPerRow = 1
+	}
+	itemWidth = (w - f.IitemSpacing*itemsPerRow) / itemsPerRow
+
+	if itemsPerRow != f.itemsPerRow || itemWidth != f.itemWidth {
+		f.ResizeContent()
 	}
 
-	f.contentLen = len(f.Icontent)
-
-	if IsServer {
-		return
-	}
-
-	f.cancelAdjustItemSizes()
-	if f.adjustSizeTimer != nil {
-		f.adjustSizeTimer.Reset(flowResizeSizeDelay)
-		return
-	}
-
-	f.adjustSizeTimer = time.AfterFunc(flowResizeSizeDelay, func() {
-		f.adjustItemSizes(ctx)
-	})
-}
-
-func (f *flow) adjustItemSizes(ctx Context) {
-	if f.IitemsWidth == 0 || len(f.Icontent) == 0 {
-		return
-	}
-
-	elem := Window().GetElementByID(f.id)
-	if !elem.Truthy() {
-		Log(errors.New("flow root element found").Tag("id", f.id))
-		return
-	}
-
-	width := elem.Get("clientWidth").Int()
-	if width == 0 {
-		return
-	}
-
-	defer f.ResizeContent()
-
-	itemWidth := f.IitemsWidth
-	itemsPerRow := width / itemWidth
-
-	if itemsPerRow <= 1 {
-		f.itemWidth = width
-		return
-	}
-
-	itemWidth = width / itemsPerRow
-	if l := len(f.Icontent); l <= itemsPerRow && f.IstrechOnSingleRow {
-		itemWidth = width / l
-	}
+	f.itemsPerRow = itemsPerRow
 	f.itemWidth = itemWidth
 }
 
-func (f *flow) cancelAdjustItemSizes() {
-	if f.adjustSizeTimer != nil {
-		f.adjustSizeTimer.Stop()
+func (f *flow) layoutSize() (int, int) {
+	layout := Window().GetElementByID(f.id)
+	if !layout.Truthy() {
+		return 320 - 24 - 24, 568
 	}
+	return layout.Get("clientWidth").Int(), layout.Get("clientHeight").Int()
 }

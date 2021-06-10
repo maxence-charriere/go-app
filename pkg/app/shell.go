@@ -154,7 +154,7 @@ func (s *shell) Render() UI {
 	}
 
 	return Div().
-		DataSet("goapp", "shell").
+		DataSet("goapp-kit", "shell").
 		ID(s.Iid).
 		Class(s.Iclass).
 		Body(

@@ -54,7 +54,7 @@ func (s *supportUs) Render() app.UI {
 				),
 			app.Flow().
 				Class("space-flow").
-				StrechtOnSingleRow().
+				StretchItems().
 				Content(
 					app.Div().
 						Class("space-flow-item").
