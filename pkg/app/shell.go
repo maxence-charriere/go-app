@@ -20,6 +20,7 @@ type UIShell interface {
 	Class(v string) UIShell
 
 	// Sets the width in px for the menu and index panes.
+	// Default is 270px.
 	PaneWidth(px int) UIShell
 
 	// Customizes the hamburger menu button with the given element.
