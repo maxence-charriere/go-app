@@ -137,7 +137,7 @@ func (f *flow) Render() UI {
 				Style("display", "flex").
 				Style("flex-wrap", "wrap").
 				Style("width", "100%").
-				Style("overflow", "hidden").
+				Style("max-width", "100%").
 				Body(
 					Range(f.Icontent).Slice(func(i int) UI {
 						marginTop := "0"
