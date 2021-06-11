@@ -150,10 +150,13 @@ func (f *flow) Render() UI {
 							marginLeft = pxToString(f.Ispacing)
 						}
 
+						width := fmt.Sprintf("%.6fpx", f.itemWidth)
+
 						return Div().
 							Style("position", "relative").
 							Style("flex-shrink", "0").
-							Style("flex-basis", fmt.Sprintf("%.6fpx", f.itemWidth)).
+							Style("flex-basis", width).
+							Style("max-width", width).
 							Style("margin-top", marginTop).
 							Style("margin-left", marginLeft).
 							Body(f.Icontent[i])
