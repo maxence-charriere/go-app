@@ -593,8 +593,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	}
 	body := Body().Body(
 		Div().Body(
-			Div().ID("app-pre-render").Body(content),
-			Div().
+			Aside().
 				ID("app-wasm-loader").
 				Class("goapp-app-info").
 				Body(
@@ -607,8 +606,8 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 						Class("goapp-label").
 						Text(page.loadingLabel),
 				),
+			Div().ID("app-pre-render").Body(content),
 		),
-		Div().ID("app-end"),
 	)
 	if err := mount(&disp, body); err != nil {
 		panic(errors.New("mounting pre-rendering container failed").

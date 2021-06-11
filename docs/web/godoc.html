@@ -1401,7 +1401,7 @@ resources to run Go-based progressive web apps.
 			
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/scripts.go">scripts.go</a>
 			
-				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/shell-v2.go">shell-v2.go</a>
+				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/shell.go">shell.go</a>
 			
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/stack.go">stack.go</a>
 			
@@ -2687,7 +2687,7 @@ UI instructions and UI elements lifecycle.
 		
 			
 			
-			<h2 id="Environment">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L761">Environment</a>
+			<h2 id="Environment">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L760">Environment</a>
 				<a class="permalink" href="#Environment" id="src-Environment">¶</a>
 				
 				
@@ -23169,7 +23169,7 @@ and its resources.
 		
 			
 			
-			<h2 id="Icon">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L738">Icon</a>
+			<h2 id="Icon">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go#L737">Icon</a>
 				<a class="permalink" href="#Icon" id="src-Icon">¶</a>
 				
 				
@@ -24237,7 +24237,7 @@ Text creates a simple text element.
 		
 			
 			
-			<h2 id="UIFlow">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/flow.go#L10">UIFlow</a>
+			<h2 id="UIFlow">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/flow.go#L4">UIFlow</a>
 				<a class="permalink" href="#UIFlow" id="src-UIFlow">¶</a>
 				
 				
@@ -24247,28 +24247,31 @@ UIFlow is the interface that describes a container that displays its items as
 a flow.
 </p>
 <p>
-EXPERIMENTAL WIDGET.
+EXPERIMENTAL - Subject to change.
 </p>
 
 			<pre>type UIFlow interface {
     <a href="#UI" id="src-UI">UI</a>
 
-    <span class="comment">// Class adds a CSS class to the flow root HTML element class property.</span>
-    Class(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#UIFlow" id="src-UIFlow">UIFlow</a>
-
-    <span class="comment">// Content sets the content with the given UI elements.</span>
-    Content(elems ...<a href="#UI" id="src-UI">UI</a>) <a href="#UIFlow" id="src-UIFlow">UIFlow</a>
-
-    <span class="comment">// ID sets the flow root HTML element id property.</span>
+    <span class="comment">// Sets the ID.</span>
     ID(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#UIFlow" id="src-UIFlow">UIFlow</a>
 
-    <span class="comment">// ItemsWidth sets the items base width in px. Items size is adjusted to</span>
-    <span class="comment">// fit the space in the container. Default is 300px.</span>
-    ItemsWidth(px <a href="https://golang.org/pkg/builtin/#int">int</a>) <a href="#UIFlow" id="src-UIFlow">UIFlow</a>
+    <span class="comment">// Sets the class. Multiple classes can be defined by successive calls.</span>
+    Class(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#UIFlow" id="src-UIFlow">UIFlow</a>
 
-    <span class="comment">// StrechtOnSingleRow makes the items to occupy all the available space when</span>
-    <span class="comment">// the flow spreads on a single row.</span>
-    StrechtOnSingleRow() <a href="#UIFlow" id="src-UIFlow">UIFlow</a>
+    <span class="comment">// Sets the width in px for the content items.</span>
+    <span class="comment">// Default is 300px.</span>
+    ItemWidth(px <a href="https://golang.org/pkg/builtin/#int">int</a>) <a href="#UIFlow" id="src-UIFlow">UIFlow</a>
+
+    <span class="comment">// Sets the space between content elements in px.</span>
+    Spacing(px <a href="https://golang.org/pkg/builtin/#int">int</a>) <a href="#UIFlow" id="src-UIFlow">UIFlow</a>
+
+    <span class="comment">// Makes the items occupy all the available space when the content has only</span>
+    <span class="comment">// one row.</span>
+    StretchItems() <a href="#UIFlow" id="src-UIFlow">UIFlow</a>
+
+    <span class="comment">// Sets the content.</span>
+    Content(elems ...<a href="#UI" id="src-UI">UI</a>) <a href="#UIFlow" id="src-UIFlow">UIFlow</a>
 }</pre>
 
 			
@@ -24281,7 +24284,7 @@ EXPERIMENTAL WIDGET.
 
 			
 				
-				<h3 id="Flow">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/flow.go#L34">Flow</a>
+				<h3 id="Flow">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/flow.go#L31">Flow</a>
 					<a class="permalink" href="#Flow" id="src-Flow">¶</a>
 					
 					
@@ -24291,7 +24294,7 @@ EXPERIMENTAL WIDGET.
 Flow creates a container that displays its items as a flow.
 </p>
 <p>
-EXPERIMENTAL WIDGET.
+EXPERIMENTAL - Subject to change.
 </p>
 
 				
@@ -24302,7 +24305,7 @@ EXPERIMENTAL WIDGET.
 		
 			
 			
-			<h2 id="UIShell">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/shell-v2.go#L3">UIShell</a>
+			<h2 id="UIShell">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/shell.go#L3">UIShell</a>
 				<a class="permalink" href="#UIShell" id="src-UIShell">¶</a>
 				
 				
@@ -24325,6 +24328,7 @@ EXPERIMENTAL - Subject to change.
     Class(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#UIShell" id="src-UIShell">UIShell</a>
 
     <span class="comment">// Sets the width in px for the menu and index panes.</span>
+    <span class="comment">// Default is 270px.</span>
     PaneWidth(px <a href="https://golang.org/pkg/builtin/#int">int</a>) <a href="#UIShell" id="src-UIShell">UIShell</a>
 
     <span class="comment">// Customizes the hamburger menu button with the given element.</span>
@@ -24354,7 +24358,7 @@ EXPERIMENTAL - Subject to change.
 
 			
 				
-				<h3 id="Shell">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/shell-v2.go#L36">Shell</a>
+				<h3 id="Shell">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/shell.go#L37">Shell</a>
 					<a class="permalink" href="#Shell" id="src-Shell">¶</a>
 					
 					
