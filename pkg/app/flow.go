@@ -156,7 +156,6 @@ func (f *flow) Render() UI {
 							Style("flex-basis", fmt.Sprintf("%.6fpx", f.itemWidth)).
 							Style("margin-top", marginTop).
 							Style("margin-left", marginLeft).
-							Style("overflow", "hidden").
 							Body(f.Icontent[i])
 					}),
 				),
