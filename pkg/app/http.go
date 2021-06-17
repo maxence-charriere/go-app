@@ -381,6 +381,7 @@ func (h *Handler) makeManifestJSON() []byte {
 		Execute(&b, struct {
 			ShortName       string
 			Name            string
+			Description     string
 			DefaultIcon     string
 			LargeIcon       string
 			BackgroundColor string
@@ -390,6 +391,7 @@ func (h *Handler) makeManifestJSON() []byte {
 		}{
 			ShortName:       h.ShortName,
 			Name:            h.Name,
+			Description:     h.Description,
 			DefaultIcon:     h.Icon.Default,
 			LargeIcon:       h.Icon.Large,
 			BackgroundColor: h.BackgroundColor,

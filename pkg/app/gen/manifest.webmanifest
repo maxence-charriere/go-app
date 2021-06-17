@@ -1,6 +1,7 @@
 {
   "short_name": "{{.ShortName}}",
   "name": "{{.Name}}",
+  "description": "{{.Description}}",
   "icons": [
     {
       "src": "{{.DefaultIcon}}",
