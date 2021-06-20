@@ -199,6 +199,10 @@ func onAchorClick(d *uiDispatcher) func(Value, []Value) interface{} {
 					return nil
 				}
 
+				if download := elem.Get("download"); !download.IsUndefined() {
+					return nil
+				}
+
 				u := elem.Get("href").String()
 				if u, _ := url.Parse(u); isExternalNavigation(u) {
 					elem.Set("target", "_blank")
