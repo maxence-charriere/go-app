@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta httpequiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="author" content="Maxence Charriere">
-<meta content="Guide about how to migrate a Progressive Web App built with go-app V7 to V8." name="description">
+<meta name="description" content="Guide about how to migrate a Progressive Web App built with go-app V7 to V8.">
 <meta name="keywords" content="go-app, go, golang, app, pwa, progressive web app, webassembly, web assembly, webapp, web, gui, ui, user interface, graphical user interface, frontend, opensource, open source, github">
 <meta name="theme-color" content="#2e343a">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
-<meta property="og:url" content="http://127.0.0.1:58086/v7-to-v8">
+<meta property="og:url" content="http://127.0.0.1:49875/v7-to-v8">
 <meta property="og:title" content="Migrating a go-app Progressive Web App from V7 to V8">
-<meta property="og:description" content="Guide about how to migrate a Progressive Web App built with go-app V7 to V8.">
+<meta content="Guide about how to migrate a Progressive Web App built with go-app V7 to V8." property="og:description">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://go-app.dev/web/images/go-app.png">
 <title>
@@ -19,10 +19,10 @@ Migrating a go-app Progressive Web App from V7 to V8
 <link rel="icon" type="image/png" href="https://storage.googleapis.com/murlok-github/icon-192.png">
 <link rel="apple-touch-icon" href="https://storage.googleapis.com/murlok-github/icon-192.png">
 <link rel="manifest" href="/manifest.webmanifest">
-<link type="text/css" rel="stylesheet" href="/app.css">
-<script defer src="/wasm_exec.js"></script>
+<link href="/app.css" type="text/css" rel="stylesheet">
+<script src="/wasm_exec.js" defer></script>
 <script defer src="/app.js"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" type="text/css">
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap">
 <link type="text/css" rel="stylesheet" href="/web/css/prism.css">
 <link type="text/css" rel="stylesheet" href="/web/css/docs.css">
 <script src="/web/js/prism.js" defer></script>
@@ -39,7 +39,7 @@ Migrating a go-app Progressive Web App from V7 to V8
 <body>
 <div>
 <div id="app-pre-render">
-<div id="goapp-shell-1a1ecb20-b072-4b39-937f-d4451e9432d1" class="goapp-shell background">
+<div id="goapp-shell-f5aa5200-9606-42ce-982c-6f9a82bfb7f3" class="goapp-shell background">
 <div class="goapp-shell-layout" style="align-items:stretch;">
 <div class="goapp-shell-item" style="display:bloc;width:276px;max-width:276px;">
 <div class="fill unselectable">
@@ -97,8 +97,8 @@ V7 to V8 guide
 </a>
 </div>
 <div class="vspace-top">
-<a href="/reference" class="link heading fit  ">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
+<a class="link heading fit  " href="/reference">
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg width="24px" height="24px" viewBox="0 0 207 78" xmlns="http://www.w3.org/2000/svg">
@@ -134,7 +134,7 @@ Architecture
 </div>
 </a>
 <a class="link heading fit  " href="/components">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -148,7 +148,7 @@ Components
 </div>
 </a>
 <a class="link heading fit  " href="/concurrency">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -176,7 +176,7 @@ Declarative syntax
 </div>
 </a>
 <a class="link heading fit  " href="/js">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
+<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -190,7 +190,7 @@ JS/Dom
 </div>
 </a>
 <a class="link heading fit  " href="/lifecycle">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -203,8 +203,8 @@ Lifecycle
 </div>
 </div>
 </a>
-<a class="link heading fit  " href="/routing">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
+<a href="/routing" class="link heading fit  ">
+<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -232,7 +232,7 @@ SEO
 </div>
 </a>
 <a class="link heading fit  " href="/static-resources">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -245,8 +245,8 @@ Static resources
 </div>
 </div>
 </a>
-<a class="link heading fit  " href="/testing">
-<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
+<a href="/testing" class="link heading fit  ">
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -262,7 +262,7 @@ Testing
 </div>
 <div class="vspace-top">
 <a class="link heading fit  " href="/built-with">
-<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -276,7 +276,7 @@ Built with go-app
 </div>
 </a>
 <a class="link heading fit  " href="/examples">
-<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -290,7 +290,7 @@ Examples
 </div>
 </a>
 <a class="link heading fit  " href="/install">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -306,7 +306,7 @@ Install
 </div>
 <div class="vspace-top vspace-bottom">
 <a class="link heading fit  " href="https://github.com/maxence-charriere/go-app">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -319,8 +319,8 @@ GitHub
 </div>
 </div>
 </a>
-<a class="link heading fit  " href="https://twitter.com/jonhymaxoo">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack ">
+<a href="https://twitter.com/jonhymaxoo" class="link heading fit  ">
+<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -335,7 +335,7 @@ Twitter
 </a>
 </div>
 <div class="vspace-top vspace-bottom">
-<a href="https://www.buymeacoffee.com/maxence" class="link heading fit  ">
+<a class="link heading fit  " href="https://www.buymeacoffee.com/maxence">
 <div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
@@ -364,7 +364,7 @@ Donate cryptos
 </div>
 </a>
 <a class="link heading fit  " href="https://github.com/sponsors/maxence-charriere">
-<div id class="goapp-stack " style="flex-direction:row;align-items:center;">
+<div class="goapp-stack " style="flex-direction:row;align-items:center;" id>
 <div class="link-icon">
 <div style="width:24px;height:24px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -377,7 +377,7 @@ GitHub Sponsor
 </div>
 </div>
 </a>
-<a class="link heading fit  " href="https://opencollective.com/go-app">
+<a href="https://opencollective.com/go-app" class="link heading fit  ">
 <div id class="goapp-stack " style="flex-direction:row;align-items:center;">
 <div class="link-icon">
 <div style="width:24px;height:24px;">
@@ -442,7 +442,7 @@ Support go-app
 </nav>
 </div>
 <div class="goapp-shell-item" style="flex-basis:480px;flex-grow:1;">
-<div style="flex-direction:row;align-items:center;" id class="goapp-stack header"></div>
+<div class="goapp-stack header" style="flex-direction:row;align-items:center;" id></div>
 <div class="content">
 <main id="top">
 <article>
@@ -666,7 +666,7 @@ func main() {
 </div>
 </div>
 <aside class="loader hide page-loader fill">
-<div id class="goapp-stack hspace-out vspace-in-stretch fit center" style="flex-direction:row;align-items:center;">
+<div style="flex-direction:row;align-items:center;" id class="goapp-stack hspace-out vspace-in-stretch fit center">
 <div style="width:66px;height:66px;">
 <div class="icon active" style="width:64px;height:64px;"></div>
 </div>
@@ -714,11 +714,11 @@ I want to make this package become something big!
 </strong>
 </p>
 <p>
-<a target="_blank" href="https://www.buymeacoffee.com/maxence">
+<a href="https://www.buymeacoffee.com/maxence" target="_blank">
 Buying me a coffee
 </a>
 , being part of the 
-<a href="https://opencollective.com/go-app" target="_blank">
+<a target="_blank" href="https://opencollective.com/go-app">
 Open Collective
 </a>
 , sponsoring me on 
@@ -728,10 +728,10 @@ GitHub
 , or giving me some cryptocurrencies, all would help me reach that goal, sustain the development, and boost motivation during long coding sessions.
 </p>
 </div>
-<div id="goapp-flow-cbfe2305-388f-43e3-9921-22fcd6a74595" class="goapp-flow space-flow">
+<div id="goapp-flow-13a8f960-fb61-4fc5-8595-a8d815901904" class="goapp-flow space-flow">
 <div class="goapp-flow-item" style="max-width:0px;width:0px;">
 <div class="space-flow-item">
-<a href="https://www.buymeacoffee.com/maxence" class="support-us-item hspace-in-stretch vspace-in vignette magnify fill">
+<a class="support-us-item hspace-in-stretch vspace-in vignette magnify fill" href="https://www.buymeacoffee.com/maxence">
 <div id class="goapp-stack fill" style="flex-direction:row;align-items:center;">
 <div class="fit center">
 <div class="fit center">
@@ -752,7 +752,7 @@ Buy me a coffee
 <div class="goapp-flow-item" style="max-width:0px;width:0px;">
 <div class="space-flow-item">
 <a class="support-us-item hspace-in-stretch vspace-in vignette magnify fill" href="https://commerce.coinbase.com/checkout/851320a4-35b5-41f1-897b-74dd5ee207ae">
-<div id class="goapp-stack fill" style="flex-direction:row;align-items:center;">
+<div class="goapp-stack fill" style="flex-direction:row;align-items:center;" id>
 <div class="fit center">
 <div class="fit center">
 <div style="width:60px;height:60px;">
@@ -791,7 +791,7 @@ Github sponsor
 </div>
 <div class="goapp-flow-item" style="max-width:0px;width:0px;">
 <div class="space-flow-item">
-<a href="https://opencollective.com/go-app" class="support-us-item hspace-in-stretch vspace-in vignette magnify fill">
+<a class="support-us-item hspace-in-stretch vspace-in vignette magnify fill" href="https://opencollective.com/go-app">
 <div id class="goapp-stack fill" style="flex-direction:row;align-items:center;">
 <div class="fit center">
 <div class="fit center">
@@ -820,7 +820,7 @@ Open collective
 </div>
 <div class="goapp-app-info" id="app-wasm-loader">
 <img id="app-wasm-loader-icon" class="goapp-logo goapp-spin" src="https://storage.googleapis.com/murlok-github/icon-192.png">
-<p class="goapp-label" id="app-wasm-loader-label">
+<p id="app-wasm-loader-label" class="goapp-label">
 Loading go-app documentation...
 </p>
 </div>
