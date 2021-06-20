@@ -370,36 +370,19 @@ func (e *engine) scheduleComponentUpdate(n UI) {
 		return
 	}
 
-	var compo Composer
-	var depth int
-
-	for {
-		if c, isCompo := n.(Composer); compo == nil && isCompo {
-			if _, isScheduled := e.updates[c]; isScheduled {
-				return
-			}
-			compo = c
-		}
-
-		parent := n.parent()
-		if parent == nil {
-			break
-		}
-
-		if compo != nil {
-			depth++
-		}
-		n = parent
-	}
-
-	if compo == nil {
+	c := nearestCompo(n)
+	if c == nil {
 		return
 	}
 
-	e.updates[compo] = struct{}{}
+	if _, isScheduled := e.updates[c]; isScheduled {
+		return
+	}
+
+	e.updates[c] = struct{}{}
 	e.updateQueue = append(e.updateQueue, updateDescriptor{
-		compo:    compo,
-		priority: depth + 1,
+		compo:    c,
+		priority: compoPriority(c),
 	})
 }
 
@@ -412,23 +395,24 @@ func (e *engine) updateComponents() {
 	for _, ud := range e.updateQueue {
 		compo := ud.compo
 		if !compo.Mounted() {
+			e.removeFromUpdates(compo)
 			continue
 		}
 
-		if _, isNotUpdated := e.updates[compo]; !isNotUpdated {
+		if _, requiresUpdate := e.updates[compo]; !requiresUpdate {
 			continue
 		}
 
 		if err := compo.updateRoot(); err != nil {
 			panic(err)
 		}
-		e.componentUpdated(compo)
+		e.removeFromUpdates(compo)
 	}
 
 	e.updateQueue = e.updateQueue[:0]
 }
 
-func (e *engine) componentUpdated(c Composer) {
+func (e *engine) removeFromUpdates(c Composer) {
 	delete(e.updates, c)
 }
 
@@ -476,6 +460,23 @@ func sortUpdateDescriptors(d []updateDescriptor) {
 	sort.Slice(d, func(a, b int) bool {
 		return d[a].priority < d[b].priority
 	})
+}
+
+func nearestCompo(n UI) Composer {
+	for node := n; node != nil; node = node.parent() {
+		if c, isCompo := node.(Composer); isCompo {
+			return c
+		}
+	}
+	return nil
+}
+
+func compoPriority(c Composer) int {
+	depth := 1
+	for parent := c.parent(); parent != nil; parent = parent.parent() {
+		depth++
+	}
+	return depth
 }
 
 type msgHandler struct {
