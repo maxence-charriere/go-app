@@ -361,7 +361,6 @@ func (c *Compo) updateRoot() error {
 			Wrap(err)
 	}
 
-	c.dispatcher().componentUpdated(c.self().(Composer))
 	return nil
 }
 

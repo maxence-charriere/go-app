@@ -68,7 +68,7 @@ type Dispatcher interface {
 	sessionStorage() BrowserStorage
 	runsInServer() bool
 	resolveStaticResource(string) string
-	componentUpdated(Composer)
+	removeFromUpdates(Composer)
 }
 
 // ClientDispatcher is the interface that describes a dispatcher that emulates a
