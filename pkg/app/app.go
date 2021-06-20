@@ -199,7 +199,7 @@ func onAchorClick(d *uiDispatcher) func(Value, []Value) interface{} {
 					return nil
 				}
 
-				if download := elem.Get("download"); !download.IsUndefined() {
+				if download := elem.Call("getAttribute", "download"); !download.IsNull() {
 					return nil
 				}
 
