@@ -230,6 +230,10 @@ func onAchorClick(d Dispatcher) func(Value, []Value) interface{} {
 					return nil
 				}
 
+				if download := elem.Get("download"); !download.IsUndefined() {
+					return nil
+				}
+
 				event.PreventDefault()
 				if href := elem.Get("href"); href.Truthy() {
 					navigate(d, elem.Get("href").String())
