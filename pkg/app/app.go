@@ -33,7 +33,7 @@ const (
 	IsServer = runtime.GOARCH != "wasm" || runtime.GOOS != "js"
 
 	orientationChangeDelay = time.Millisecond * 500
-	engineUpdateRate       = 99
+	engineUpdateRate       = 120
 )
 
 var (
