@@ -331,12 +331,14 @@ func (c *Compo) update(n UI) error {
 		}
 	}
 
-	c.updateRoot()
-
-	if updater, ok := c.self().(Updater); ok && haveModifiedFields {
-		c.dispatch(updater.OnUpdate)
+	if !haveModifiedFields {
+		return nil
 	}
 
+	c.updateRoot()
+	if updater, ok := c.self().(Updater); ok {
+		c.dispatch(updater.OnUpdate)
+	}
 	return nil
 }
 
