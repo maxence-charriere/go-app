@@ -120,7 +120,7 @@ func (t *text) onNav(*url.URL) {
 func (t *text) onAppUpdate() {
 }
 
-func (t *text) onAppInstall() {
+func (t *text) onAppInstallChange() {
 }
 
 func (t *text) onResize() {

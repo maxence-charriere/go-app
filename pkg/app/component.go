@@ -116,11 +116,13 @@ type AppUpdater interface {
 }
 
 // AppInstaller is the interface that describes a component that is notified
-// when the application is installed.
+// when the application installation state changes.
 type AppInstaller interface {
-	// The function called when the application is installed. It is always
-	// called on the UI goroutine.
-	OnAppInstall(Context)
+	// 	The function called when the application becomes installable or
+	// installed. Use Context.IsAppInstallable() or Context.IsAppInstalled to
+	// check the install state. OnAppInstallChange is always called on the UI
+	// goroutine.
+	OnAppInstallChange(Context)
 }
 
 // Resizer is the interface that describes a component that is notified when the
@@ -449,11 +451,11 @@ func (c *Compo) onAppUpdate() {
 	}
 }
 
-func (c *Compo) onAppInstall() {
-	c.root.onAppInstall()
+func (c *Compo) onAppInstallChange() {
+	c.root.onAppInstallChange()
 
 	if installer, ok := c.self().(AppInstaller); ok {
-		c.dispatch(installer.OnAppInstall)
+		c.dispatch(installer.OnAppInstallChange)
 	}
 }
 

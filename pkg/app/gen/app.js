@@ -26,7 +26,7 @@ if ("serviceWorker" in navigator) {
 }
 
 // -----------------------------------------------------------------------------
-// Init progressive app
+// Env
 // -----------------------------------------------------------------------------
 const goappEnv = {{.Env }};
 
@@ -34,21 +34,30 @@ function goappGetenv(k) {
   return goappEnv[k];
 }
 
+// -----------------------------------------------------------------------------
+// App install
+// -----------------------------------------------------------------------------
 let deferredPrompt = null;
-var goappOnInstall = function () { };
+var goappOnAppInstallChange = function () { };
 
 window.addEventListener("beforeinstallprompt", e => {
   e.preventDefault();
   deferredPrompt = e;
+  goappOnAppInstallChange();
 });
 
-function goappIsInstallable() {
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-  if (isStandalone || navigator.standalone) {
-    return false;
-  }
+window.addEventListener('appinstalled', () => {
+  deferredPrompt = null;
+  goappOnAppInstallChange();
+});
 
-  return deferredPrompt != null
+function goappIsAppInstallable() {
+  return !goappIsAppInstalled() && deferredPrompt != null;
+}
+
+function goappIsAppInstalled() {
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+  return isStandalone || navigator.standalone;
 }
 
 async function goappShowInstallPrompt() {
@@ -56,11 +65,6 @@ async function goappShowInstallPrompt() {
   await deferredPrompt.userChoice;
   deferredPrompt = null;
 }
-
-window.addEventListener('appinstalled', () => {
-  deferredPrompt = null;
-  goappOnInstall();
-});
 
 // -----------------------------------------------------------------------------
 // Keep body clean

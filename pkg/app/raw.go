@@ -157,7 +157,7 @@ func (r *raw) onNav(*url.URL) {
 func (r *raw) onAppUpdate() {
 }
 
-func (r *raw) onAppInstall() {
+func (r *raw) onAppInstallChange() {
 }
 
 func (r *raw) onResize() {

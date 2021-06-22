@@ -320,7 +320,7 @@ func TestAppInstaller(t *testing.T) {
 	d := NewClientTester(h)
 	defer d.Close()
 
-	d.AppInstall()
+	d.AppInstallChange()
 	d.Consume()
 	require.True(t, h.appInstalled)
 }
@@ -331,7 +331,7 @@ func TestNestedAppInstaller(t *testing.T) {
 	d := NewClientTester(div)
 	defer d.Close()
 
-	d.AppInstall()
+	d.AppInstallChange()
 	d.Consume()
 	require.True(t, h.appInstalled)
 }
@@ -341,7 +341,7 @@ func TestNestedInComponentAppInstaller(t *testing.T) {
 	d := NewClientTester(foo)
 	defer d.Close()
 
-	d.AppInstall()
+	d.AppInstallChange()
 	d.Consume()
 	b := foo.children()[0].(*bar)
 	require.True(t, b.appInstalled)
@@ -451,7 +451,7 @@ func (h *hello) OnAppUpdate(ctx Context) {
 	h.appUpdated = true
 }
 
-func (h *hello) OnAppInstall(ctx Context) {
+func (h *hello) OnAppInstallChange(ctx Context) {
 	h.appInstalled = true
 }
 
@@ -512,7 +512,7 @@ func (b *bar) OnAppUpdate(ctx Context) {
 	b.appUpdated = true
 }
 
-func (b *bar) OnAppInstall(ctx Context) {
+func (b *bar) OnAppInstallChange(ctx Context) {
 	b.appInstalled = true
 }
 

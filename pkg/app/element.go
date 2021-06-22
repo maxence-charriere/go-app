@@ -448,9 +448,9 @@ func (e *elem) onAppUpdate() {
 	}
 }
 
-func (e *elem) onAppInstall() {
+func (e *elem) onAppInstallChange() {
 	for _, c := range e.children() {
-		c.onAppInstall()
+		c.onAppInstallChange()
 	}
 }
 

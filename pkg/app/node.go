@@ -37,7 +37,7 @@ type UI interface {
 	update(UI) error
 	onNav(*url.URL)
 	onAppUpdate()
-	onAppInstall()
+	onAppInstallChange()
 	onResize()
 	preRender(Page)
 	html(w io.Writer)

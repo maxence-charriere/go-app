@@ -262,9 +262,9 @@ func (e *engine) AppUpdate() {
 	})
 }
 
-func (e *engine) AppInstall() {
+func (e *engine) AppInstallChange() {
 	e.Dispatch(nil, func(ctx Context) {
-		ctx.Src().onAppInstall()
+		ctx.Src().onAppInstallChange()
 	})
 }
 

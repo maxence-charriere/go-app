@@ -163,13 +163,17 @@ func (ctx uiContext) AppUpdateAvailable() bool {
 }
 
 func (ctx uiContext) IsAppInstallable() bool {
-	if IsServer {
-		return false
+	if Window().Get("goappIsAppInstallable").Truthy() {
+		return Window().Call("goappIsAppInstallable").Bool()
 	}
-	if !Window().Get("goappIsInstallable").Truthy() {
-		return false
+	return false
+}
+
+func (ctx uiContext) IsAppInstalled() bool {
+	if Window().Get("goappIsAppInstalled").Truthy() {
+		return Window().Call("goappIsAppInstalled").Bool()
 	}
-	return Window().Call("goappIsInstallable").Bool()
+	return false
 }
 
 func (ctx uiContext) ShowAppInstallPrompt() {
