@@ -158,6 +158,9 @@ func (r rangeLoop) onNav(*url.URL) {
 func (r rangeLoop) onAppUpdate() {
 }
 
+func (r rangeLoop) onAppInstallChange() {
+}
+
 func (r rangeLoop) onResize() {
 }
 

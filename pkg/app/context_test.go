@@ -44,6 +44,16 @@ func TestContextDeviceID(t *testing.T) {
 	require.Equal(t, id, id2)
 }
 
+func TestContextAppInstallable(t *testing.T) {
+	foo := &foo{}
+	client := NewClientTester(foo)
+	defer client.Close()
+
+	ctx := makeContext(foo)
+	require.False(t, ctx.IsAppInstallable())
+	ctx.ShowAppInstallPrompt()
+}
+
 func TestContextEncryptDecryptStruct(t *testing.T) {
 	div := Div()
 	disp := NewClientTester(div)

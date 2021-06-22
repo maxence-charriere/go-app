@@ -1,12 +1,16 @@
 package main
 
-import "github.com/maxence-charriere/go-app/v9/pkg/app"
+import (
+	"github.com/maxence-charriere/go-app/v9/pkg/app"
+)
 
 type nav struct {
 	app.Compo
 
-	Iclass      string
-	currentPath string
+	Iclass string
+
+	currentPath      string
+	isAppInstallable bool
 }
 
 func newNav() *nav {
@@ -26,6 +30,11 @@ func (n *nav) Class(v string) *nav {
 
 func (n *nav) OnNav(ctx app.Context) {
 	n.currentPath = ctx.Page().URL().Path
+	n.isAppInstallable = ctx.IsAppInstallable()
+}
+
+func (n *nav) OnAppInstallChange(ctx app.Context) {
+	n.isAppInstallable = ctx.IsAppInstallable()
 }
 
 func (n *nav) Render() app.UI {
@@ -183,7 +192,22 @@ func (n *nav) Render() app.UI {
 										Icon(newSVGIcon().RawSVG(opensourceSVG)).
 										Href(openCollectiveURL),
 								),
+							app.If(n.isAppInstallable,
+								app.Div().
+									Class("vspace-top").
+									Class("vspace-bottom").
+									Body(
+										newLink().
+											Label("Install").
+											Icon(newSVGIcon().RawSVG(downloadSVG)).
+											OnClick(n.onInstall),
+									),
+							),
 						),
 				),
 		)
+}
+
+func (n *nav) onInstall(ctx app.Context, e app.Event) {
+	ctx.ShowAppInstallPrompt()
 }

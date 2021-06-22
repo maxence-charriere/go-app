@@ -128,6 +128,9 @@ func (c condition) onNav(*url.URL) {
 func (c condition) onAppUpdate() {
 }
 
+func (c condition) onAppInstallChange() {
+}
+
 func (c condition) onResize() {
 }
 

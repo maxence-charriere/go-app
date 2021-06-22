@@ -315,6 +315,38 @@ func TestNestedInComponentAppUpdater(t *testing.T) {
 	require.True(t, b.appUpdated)
 }
 
+func TestAppInstaller(t *testing.T) {
+	h := &hello{}
+	d := NewClientTester(h)
+	defer d.Close()
+
+	d.AppInstallChange()
+	d.Consume()
+	require.True(t, h.appInstalled)
+}
+
+func TestNestedAppInstaller(t *testing.T) {
+	h := &hello{}
+	div := Div().Body(h)
+	d := NewClientTester(div)
+	defer d.Close()
+
+	d.AppInstallChange()
+	d.Consume()
+	require.True(t, h.appInstalled)
+}
+
+func TestNestedInComponentAppInstaller(t *testing.T) {
+	foo := &foo{Bar: "Bar"}
+	d := NewClientTester(foo)
+	defer d.Close()
+
+	d.AppInstallChange()
+	d.Consume()
+	b := foo.children()[0].(*bar)
+	require.True(t, b.appInstalled)
+}
+
 func TestResizer(t *testing.T) {
 	h := &hello{}
 	d := NewClientTester(h)
@@ -400,11 +432,12 @@ func TestUpdater(t *testing.T) {
 type hello struct {
 	Compo
 
-	Greeting    string
-	onNavURL    string
-	appUpdated  bool
-	appResized  bool
-	preRenderer bool
+	Greeting     string
+	onNavURL     string
+	appUpdated   bool
+	appInstalled bool
+	appResized   bool
+	preRenderer  bool
 }
 
 func (h *hello) OnMount(Context) {
@@ -416,6 +449,10 @@ func (h *hello) OnNav(ctx Context) {
 
 func (h *hello) OnAppUpdate(ctx Context) {
 	h.appUpdated = true
+}
+
+func (h *hello) OnAppInstallChange(ctx Context) {
+	h.appInstalled = true
 }
 
 func (h *hello) OnResize(ctx Context) {
@@ -456,10 +493,11 @@ type bar struct {
 	Compo
 	Value string
 
-	onNavURL   string
-	appUpdated bool
-	appRezized bool
-	updated    bool
+	onNavURL     string
+	appUpdated   bool
+	appInstalled bool
+	appRezized   bool
+	updated      bool
 }
 
 func (b *bar) OnPreRender(ctx Context) {
@@ -472,6 +510,10 @@ func (b *bar) OnNav(ctx Context) {
 
 func (b *bar) OnAppUpdate(ctx Context) {
 	b.appUpdated = true
+}
+
+func (b *bar) OnAppInstallChange(ctx Context) {
+	b.appInstalled = true
 }
 
 func (b *bar) OnResize(ctx Context) {
