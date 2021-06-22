@@ -118,7 +118,7 @@ type AppUpdater interface {
 // AppInstaller is the interface that describes a component that is notified
 // when the application installation state changes.
 type AppInstaller interface {
-	// 	The function called when the application becomes installable or
+	// The function called when the application becomes installable or
 	// installed. Use Context.IsAppInstallable() or Context.IsAppInstalled to
 	// check the install state. OnAppInstallChange is always called on the UI
 	// goroutine.
