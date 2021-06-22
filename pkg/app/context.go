@@ -31,6 +31,12 @@ type Context interface {
 	// to load the updated version.
 	AppUpdateAvailable() bool
 
+	// Reports whether the app is installable.
+	IsAppInstallable() bool
+
+	// Shows the app install prompt if the app is installable.
+	ShowAppInstallPrompt()
+
 	// Returns the current page.
 	Page() Page
 
@@ -154,6 +160,22 @@ func (ctx uiContext) JSSrc() Value {
 
 func (ctx uiContext) AppUpdateAvailable() bool {
 	return ctx.appUpdateAvailable
+}
+
+func (ctx uiContext) IsAppInstallable() bool {
+	if IsServer {
+		return false
+	}
+	if !Window().Get("goappIsInstallable").Truthy() {
+		return false
+	}
+	return Window().Call("goappIsInstallable").Bool()
+}
+
+func (ctx uiContext) ShowAppInstallPrompt() {
+	if ctx.IsAppInstallable() {
+		Window().Call("goappShowInstallPrompt")
+	}
 }
 
 func (ctx uiContext) Page() Page {

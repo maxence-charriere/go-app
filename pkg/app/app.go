@@ -136,6 +136,10 @@ func RunWhenOnBrowser() {
 	defer onAppUpdate.Release()
 	Window().Set("goappOnUpdate", onAppUpdate)
 
+	onAppInstall := FuncOf(onAppInstall(&disp))
+	defer onAppInstall.Release()
+	Window().Set("goappOnInstall", onAppInstall)
+
 	closeAppResize := Window().AddEventListener("resize", onResize)
 	defer closeAppResize()
 
@@ -366,9 +370,16 @@ func onAppUpdate(d ClientDispatcher) func(this Value, args []Value) interface{} 
 		})
 		d.AppUpdate()
 
-		d.Dispatch(nil, func(ctx Context) {
+		d.Defer(nil, func(ctx Context) {
 			fmt.Println("app has been updated, reload to see changes")
 		})
+		return nil
+	}
+}
+
+func onAppInstall(d ClientDispatcher) func(this Value, args []Value) interface{} {
+	return func(this Value, args []Value) interface{} {
+		d.AppInstall()
 		return nil
 	}
 }

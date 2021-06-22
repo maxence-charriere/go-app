@@ -448,6 +448,12 @@ func (e *elem) onAppUpdate() {
 	}
 }
 
+func (e *elem) onAppInstall() {
+	for _, c := range e.children() {
+		c.onAppInstall()
+	}
+}
+
 func (e *elem) onResize() {
 	for _, c := range e.children() {
 		c.onResize()

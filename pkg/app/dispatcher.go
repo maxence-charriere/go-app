@@ -95,6 +95,9 @@ type ClientDispatcher interface {
 	// Triggers OnAppUpdate from the root component.
 	AppUpdate()
 
+	// Triggers OnAppInstall from the root component.
+	AppInstall()
+
 	// Triggers OnAppResize from the root component.
 	AppResize()
 }

@@ -257,8 +257,14 @@ func (e *engine) Nav(u *url.URL) {
 }
 
 func (e *engine) AppUpdate() {
-	e.Dispatch(e.Body, func(Context) {
-		e.Body.onAppUpdate()
+	e.Dispatch(nil, func(ctx Context) {
+		ctx.Src().onAppUpdate()
+	})
+}
+
+func (e *engine) AppInstall() {
+	e.Dispatch(nil, func(ctx Context) {
+		ctx.Src().onAppInstall()
 	})
 }
 

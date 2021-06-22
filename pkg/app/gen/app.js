@@ -34,11 +34,32 @@ function goappGetenv(k) {
   return goappEnv[k];
 }
 
-let deferredPrompt;
+let deferredPrompt = null;
+var goappOnInstall = function () { };
 
 window.addEventListener("beforeinstallprompt", e => {
   e.preventDefault();
   deferredPrompt = e;
+});
+
+function goappIsInstallable() {
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+  if (isStandalone || navigator.standalone) {
+    return false;
+  }
+
+  return deferredPrompt != null
+}
+
+async function goappShowInstallPrompt() {
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+}
+
+window.addEventListener('appinstalled', () => {
+  deferredPrompt = null;
+  goappOnInstall();
 });
 
 // -----------------------------------------------------------------------------
