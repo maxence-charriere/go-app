@@ -7,11 +7,11 @@ import "github.com/maxence-charriere/go-app/v9/pkg/app"
 type IStack interface {
 	app.UI
 
-	// ID sets the stack root HTML element id property.
-	ID(string) IStack
+	// Sets the ID.
+	ID(v string) IStack
 
-	// Class adds a CSS class to the stack root HTML element class property.
-	Class(string) IStack
+	// Sets the class. Multiple classes can be defined by successive calls.
+	Class(v string) IStack
 
 	// Left aligns the content on the left.
 	Left() IStack

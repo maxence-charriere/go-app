@@ -7,8 +7,8 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 
-// IShell is a layout that responsively displays a content with a menu pane,
-// an index page, and a hamburger menu.
+// IShell is the interface that describes a layout that responsively displays a
+// content with a menu pane, an index page, and a hamburger menu.
 type IShell interface {
 	app.UI
 
@@ -151,7 +151,7 @@ func (s *shell) Render() app.UI {
 	}
 
 	return app.Div().
-		DataSet("goapp-kit", "shell").
+		DataSet("goapp-ui", "shell").
 		ID(s.Iid).
 		Class(s.Iclass).
 		Body(

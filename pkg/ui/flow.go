@@ -35,8 +35,6 @@ type IFlow interface {
 }
 
 // Flow creates a container that displays its items as a flow.
-//
-// EXPERIMENTAL - Subject to change.
 func Flow() IFlow {
 	return &flow{
 		IitemWidth:      300,
@@ -127,7 +125,7 @@ func (f *flow) OnDismount() {
 
 func (f *flow) Render() app.UI {
 	return app.Div().
-		DataSet("goapp-kit", "flow").
+		DataSet("goapp-ui", "flow").
 		ID(f.Iid).
 		Class(f.Iclass).
 		Body(
