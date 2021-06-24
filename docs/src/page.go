@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v9/pkg/ui"
 )
 
 const (
@@ -50,7 +51,7 @@ func (p *page) setAvailableUpdate(ctx app.Context) {
 }
 
 func (p *page) Render() app.UI {
-	return app.Shell().
+	return ui.Shell().
 		Class("background").
 		Class("fill").
 		PaneWidth(pageItemWidth).
@@ -91,7 +92,7 @@ func (p *page) Render() app.UI {
 				),
 		).
 		Content(
-			app.Stack().
+			ui.Stack().
 				Class("header").
 				Right().
 				Middle().

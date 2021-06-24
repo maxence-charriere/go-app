@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v9/pkg/ui"
 )
 
 type nav struct {
@@ -43,7 +44,7 @@ func (n *nav) Render() app.UI {
 		Class("fill").
 		Class("unselectable").
 		Body(
-			app.Stack().
+			ui.Stack().
 				Class("header").
 				Class("hspace-out").
 				Middle().

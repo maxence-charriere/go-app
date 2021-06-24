@@ -1,13 +1,16 @@
 package main
 
-import "github.com/maxence-charriere/go-app/v9/pkg/app"
+import (
+	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v9/pkg/ui"
+)
 
 type shellExample struct {
 	app.Compo
 }
 
 func (e *shellExample) Render() app.UI {
-	return app.Shell().
+	return ui.Shell().
 		Class("fill").
 		HamburgerMenu(
 			app.Div().
