@@ -25,7 +25,7 @@ type IBlock interface {
 	// The maximum content width. Default is 540px.
 	MaxContentWidth(px int) IBlock
 
-	// The content.
+	// Sets the content.
 	Content(v ...app.UI) IBlock
 }
 
@@ -87,11 +87,11 @@ func (b *block) Content(v ...app.UI) IBlock {
 }
 
 func (b *block) OnMount(ctx app.Context) {
-	b.refresh(ctx)
+	b.resize(ctx)
 }
 
 func (b *block) OnResize(ctx app.Context) {
-	b.refresh(ctx)
+	b.resize(ctx)
 }
 
 func (b *block) Render() app.UI {
@@ -120,7 +120,7 @@ func (b *block) Render() app.UI {
 		Body(layout)
 }
 
-func (b *block) refresh(ctx app.Context) {
+func (b *block) resize(ctx app.Context) {
 	if w, _ := ctx.Page().Size(); w <= 480 {
 		b.padding = BlockMobilePadding
 		return

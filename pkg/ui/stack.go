@@ -34,7 +34,7 @@ type IStack interface {
 	// Stretch stretches the content vertically.
 	Stretch() IStack
 
-	// Content sets the content with the given UI elements.
+	// Sets the content.
 	Content(elems ...app.UI) IStack
 }
 
