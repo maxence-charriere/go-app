@@ -2,7 +2,6 @@ package ui
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
@@ -37,10 +36,9 @@ type IFlow interface {
 // Flow creates a container that displays its items as a flow.
 func Flow() IFlow {
 	return &flow{
-		IitemWidth:      300,
-		id:              "goapp-flow-" + uuid.NewString(),
-		itemsPerRow:     1,
-		refreshInterval: time.Millisecond * 50,
+		IitemWidth:  300,
+		id:          "goapp-flow-" + uuid.NewString(),
+		itemsPerRow: 1,
 	}
 }
 
@@ -54,11 +52,9 @@ type flow struct {
 	IstretchItems bool
 	Icontent      []app.UI
 
-	id              string
-	itemsPerRow     int
-	itemWidth       float64
-	refreshInterval time.Duration
-	refreshTimer    *time.Timer
+	id          string
+	itemsPerRow int
+	itemWidth   float64
 }
 
 func (f *flow) ID(v string) IFlow {
@@ -110,17 +106,11 @@ func (f *flow) OnMount(ctx app.Context) {
 }
 
 func (f *flow) OnResize(ctx app.Context) {
-	f.scheduleRefresh(ctx)
+	f.refresh(ctx)
 }
 
 func (f *flow) OnUpdate(ctx app.Context) {
-	f.scheduleRefresh(ctx)
-}
-
-func (f *flow) OnDismount() {
-	if f.refreshTimer != nil {
-		f.refreshTimer.Stop()
-	}
+	f.refresh(ctx)
 }
 
 func (f *flow) Render() app.UI {
@@ -160,20 +150,6 @@ func (f *flow) Render() app.UI {
 					}),
 				),
 		)
-}
-
-func (f *flow) scheduleRefresh(ctx app.Context) {
-	if f.refreshTimer != nil {
-		f.refreshTimer.Stop()
-		f.refreshTimer.Reset(f.refreshInterval)
-		return
-	}
-
-	if app.IsClient {
-		f.refreshTimer = time.AfterFunc(f.refreshInterval, func() {
-			ctx.Dispatch(f.refresh)
-		})
-	}
 }
 
 func (f *flow) refresh(ctx app.Context) {
