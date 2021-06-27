@@ -102,19 +102,15 @@ func (s *scroll) Render() app.UI {
 			app.Div().
 				Style("width", "100%").
 				Style("height", "100%").
-				Style("overflow", "hidden").
 				Body(
 					app.Div().
 						Style("height", pxToString(s.IheaderHeight)).
-						Style("overflow", "hidden").
 						Body(s.Iheader...),
 					app.Div().
 						Style("height", fmt.Sprintf("calc(100%s - %vpx)", "%", s.IheaderHeight+s.IfooterHeight)).
-						Style("overflow-x", "hidden").
 						Body(s.Icontent...),
 					app.Div().
 						Style("height", pxToString(s.IfooterHeight)).
-						Style("overflow", "hidden").
 						Body(s.Ifooter...),
 				),
 		)
