@@ -130,11 +130,13 @@ func (s *shell) OnMount(ctx app.Context) {
 }
 
 func (s *shell) OnResize(ctx app.Context) {
-	s.scheduleRefresh(ctx)
+	// s.scheduleRefresh(ctx)
+	s.refresh(ctx)
 }
 
 func (s *shell) OnUpdate(ctx app.Context) {
-	s.scheduleRefresh(ctx)
+	// s.scheduleRefresh(ctx)
+	s.refresh(ctx)
 }
 
 func (s *shell) OnDismount() {
@@ -210,19 +212,19 @@ func (s *shell) Render() app.UI {
 		)
 }
 
-func (s *shell) scheduleRefresh(ctx app.Context) {
-	if s.refreshTimer != nil {
-		s.refreshTimer.Stop()
-		s.refreshTimer.Reset(s.refreshInterval)
-		return
-	}
+// func (s *shell) scheduleRefresh(ctx app.Context) {
+// 	if s.refreshTimer != nil {
+// 		s.refreshTimer.Stop()
+// 		s.refreshTimer.Reset(s.refreshInterval)
+// 		return
+// 	}
 
-	if app.IsClient {
-		s.refreshTimer = time.AfterFunc(s.refreshInterval, func() {
-			ctx.Dispatch(s.refresh)
-		})
-	}
-}
+// 	if app.IsClient {
+// 		s.refreshTimer = time.AfterFunc(s.refreshInterval, func() {
+// 			ctx.Dispatch(s.refresh)
+// 		})
+// 	}
+// }
 
 func (s *shell) refresh(ctx app.Context) {
 	w, _ := s.layoutSize()
