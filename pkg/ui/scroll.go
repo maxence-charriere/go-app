@@ -6,8 +6,8 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 
-// IScroll is the interface that describes scrollable content surrounded by a
-// fixed header and footer.
+// IScroll is the interface that describes a base with a scrollable content
+// surrounded by a fixed header and footer.
 type IScroll interface {
 	app.UI
 
@@ -33,10 +33,13 @@ type IScroll interface {
 	Footer(v ...app.UI) IScroll
 }
 
-// Scroll creates scrollable content surrounded by a fixed header and footer.
+// Scroll creates base with a scrollable content surrounded by a fixed header
+// and footer.
 func Scroll() IScroll {
 	return &scroll{
 		IheaderHeight: 90,
+		hpadding:      BaseHPadding,
+		vpadding:      BaseVPadding,
 	}
 }
 
@@ -50,6 +53,10 @@ type scroll struct {
 	Iheader       []app.UI
 	Icontent      []app.UI
 	Ifooter       []app.UI
+
+	hpadding int
+	vpadding int
+	width    int
 }
 
 func (s *scroll) ID(v string) IScroll {
@@ -93,6 +100,18 @@ func (s *scroll) Footer(v ...app.UI) IScroll {
 	return s
 }
 
+func (s *scroll) OnMount(ctx app.Context) {
+	s.resize(ctx)
+}
+
+func (s *scroll) OnResize(ctx app.Context) {
+	s.resize(ctx)
+}
+
+func (s *scroll) OnUpdate(ctx app.Context) {
+	s.resize(ctx)
+}
+
 func (s *scroll) Render() app.UI {
 	return app.Div().
 		DataSet("goapp-ui", "scroll").
@@ -100,8 +119,9 @@ func (s *scroll) Render() app.UI {
 		Class(s.Iclass).
 		Body(
 			app.Div().
-				Style("width", "100%").
-				Style("height", "100%").
+				Style("width", fmt.Sprintf("calc(100%s - %vpx)", "%", s.hpadding*2)).
+				Style("height", fmt.Sprintf("calc(100%s - %vpx)", "%", s.vpadding*2)).
+				Style("padding", fmt.Sprintf("%vpx %vpx", s.vpadding, s.hpadding)).
 				Body(
 					app.Div().
 						Style("height", pxToString(s.IheaderHeight)).
@@ -115,4 +135,22 @@ func (s *scroll) Render() app.UI {
 						Body(s.Ifooter...),
 				),
 		)
+}
+
+func (s *scroll) resize(ctx app.Context) {
+	if w, _ := ctx.Page().Size(); w <= 480 {
+		return
+	}
+
+	w, _ := ctx.Page().Size()
+	if w <= 480 {
+		s.hpadding = BaseMobileHPadding
+	} else {
+		s.hpadding = BaseHPadding
+	}
+
+	if w != s.width {
+		s.width = w
+		s.ResizeContent()
+	}
 }

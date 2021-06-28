@@ -24,7 +24,7 @@ type IBase interface {
 // Base creates a base for content.
 func Base() IBase {
 	return &base{
-		hpadding: BasePadding,
+		hpadding: BaseHPadding,
 		vpadding: 12,
 	}
 }
@@ -38,6 +38,7 @@ type base struct {
 
 	hpadding int
 	vpadding int
+	width    int
 }
 
 func (b *base) ID(v string) IBase {
@@ -69,6 +70,10 @@ func (b *base) OnResize(ctx app.Context) {
 	b.resize(ctx)
 }
 
+func (b *base) OnUpdate(ctx app.Context) {
+	b.resize(ctx)
+}
+
 func (b *base) Render() app.UI {
 	return app.Div().
 		ID(b.Iid).
@@ -88,8 +93,18 @@ func (b *base) Render() app.UI {
 
 func (b *base) resize(ctx app.Context) {
 	if w, _ := ctx.Page().Size(); w <= 480 {
-		b.hpadding = BaseMobilePadding
 		return
 	}
-	b.hpadding = BasePadding
+
+	w, _ := ctx.Page().Size()
+	if w <= 480 {
+		b.hpadding = BaseMobileHPadding
+	} else {
+		b.hpadding = BaseHPadding
+	}
+
+	if w != b.width {
+		b.width = w
+		b.ResizeContent()
+	}
 }

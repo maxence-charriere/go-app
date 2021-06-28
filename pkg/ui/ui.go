@@ -12,11 +12,14 @@ var (
 	// The padding of block-like components in px when app width is <= 480px.
 	BlockMobilePadding = 18
 
-	// The padding of base-like components in px.
-	BasePadding = 36
+	// The horizontal padding of base-like components in px.
+	BaseHPadding = 36
 
-	// The padding of base-like components in px when app width is <= 480px.
-	BaseMobilePadding = 12
+	// The horizontal padding of base-like components in px when app width is <= 480px.
+	BaseMobileHPadding = 12
+
+	// The vertical padding of base-like components in px.
+	BaseVPadding = 12
 )
 
 func pxToString(px int) string {
