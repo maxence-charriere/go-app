@@ -121,7 +121,7 @@ func (b *block) Render() app.UI {
 	return app.Div().
 		DataSet("goapp-ui", "block").
 		ID(b.Iid).
-		Class(b.Iid).
+		Class(b.Iclass).
 		Body(layout)
 }
 
