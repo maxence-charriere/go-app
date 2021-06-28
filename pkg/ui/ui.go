@@ -35,3 +35,8 @@ const (
 	left
 	middle
 )
+
+type style struct {
+	key   string
+	value string
+}

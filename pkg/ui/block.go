@@ -101,6 +101,8 @@ func (b *block) OnUpdate(ctx app.Context) {
 
 func (b *block) Render() app.UI {
 	layout := Stack().
+		Style("width", "100%").
+		Style("height", "100%").
 		Center().
 		Content(
 			app.Div().

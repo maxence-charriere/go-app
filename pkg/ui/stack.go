@@ -13,6 +13,9 @@ type IStack interface {
 	// Sets the class. Multiple classes can be defined by successive calls.
 	Class(v string) IStack
 
+	// Sets the style. Multiple styles can be defined by successive calls.
+	Style(k, v string) IStack
+
 	// Left aligns the content on the left.
 	Left() IStack
 
@@ -53,11 +56,34 @@ type stack struct {
 	Iclass           string
 	IhorizontalAlign string
 	IverticalAlign   string
+	Istyles          []style
 	Icontent         []app.UI
 }
 
 func (s *stack) ID(v string) IStack {
 	s.Iid = v
+	return s
+}
+
+func (s *stack) Class(v string) IStack {
+	if v == "" {
+		return s
+	}
+	if s.Iclass != "" {
+		s.Iclass += " "
+	}
+	s.Iclass += v
+	return s
+}
+
+func (s *stack) Style(k, v string) IStack {
+	if v == "" {
+		return s
+	}
+	s.Istyles = append(s.Istyles, style{
+		key:   k,
+		value: v,
+	})
 	return s
 }
 
@@ -96,17 +122,6 @@ func (s *stack) Stretch() IStack {
 	return s
 }
 
-func (s *stack) Class(v string) IStack {
-	if v == "" {
-		return s
-	}
-	if s.Iclass != "" {
-		s.Iclass += " "
-	}
-	s.Iclass += v
-	return s
-}
-
 func (s *stack) Content(elems ...app.UI) IStack {
 	s.Icontent = app.FilterUIElems(elems...)
 	return s
@@ -116,12 +131,17 @@ func (s *stack) OnUpdate(ctx app.Context) {
 }
 
 func (s *stack) Render() app.UI {
-	return app.Div().
+	body := app.Div().
 		DataSet("goapp", "Stack").
 		ID(s.Iid).
 		Class(s.Iclass).
 		Style("display", "flex").
 		Style("justify-content", s.IhorizontalAlign).
-		Style("align-items", s.IverticalAlign).
-		Body(s.Icontent...)
+		Style("align-items", s.IverticalAlign)
+
+	for _, s := range s.Istyles {
+		body.Style(s.key, s.value)
+	}
+
+	return body.Body(s.Icontent...)
 }
