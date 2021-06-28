@@ -48,6 +48,7 @@ type block struct {
 	Icontent         []app.UI
 
 	padding int
+	width   int
 }
 
 func (b *block) ID(v string) IBlock {
@@ -94,6 +95,10 @@ func (b *block) OnResize(ctx app.Context) {
 	b.resize(ctx)
 }
 
+func (b *block) OnUpdate(ctx app.Context) {
+	b.resize(ctx)
+}
+
 func (b *block) Render() app.UI {
 	layout := Stack().
 		Center().
@@ -121,9 +126,15 @@ func (b *block) Render() app.UI {
 }
 
 func (b *block) resize(ctx app.Context) {
-	if w, _ := ctx.Page().Size(); w <= 480 {
+	w, _ := ctx.Page().Size()
+	if w <= 480 {
 		b.padding = BlockMobilePadding
-		return
+	} else {
+		b.padding = BlockPadding
 	}
-	b.padding = BlockPadding
+
+	if w != b.width {
+		b.width = w
+		b.ResizeContent()
+	}
 }

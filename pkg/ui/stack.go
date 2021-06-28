@@ -112,7 +112,7 @@ func (s *stack) Content(elems ...app.UI) IStack {
 	return s
 }
 
-func (s *stack) OnResize(ctx app.Context) {
+func (s *stack) OnUpdate(ctx app.Context) {
 }
 
 func (s *stack) Render() app.UI {

@@ -67,6 +67,7 @@ type shell struct {
 	showHamburgerMenu bool
 	refreshInterval   time.Duration
 	refreshTimer      *time.Timer
+	width             int
 }
 
 func (s *shell) ID(v string) IShell {
@@ -234,12 +235,12 @@ func (s *shell) refresh(ctx app.Context) {
 		hideMenu = len(s.Imenu) == 0 || 5*s.IpaneWidth > w
 	}
 
-	if hideMenu != s.hideMenu || hideIndex != s.hideIndex {
+	if hideMenu != s.hideMenu || hideIndex != s.hideIndex || w != s.width {
+		s.hideMenu = hideMenu
+		s.hideIndex = hideIndex
+		s.width = w
 		s.ResizeContent()
 	}
-
-	s.hideMenu = hideMenu
-	s.hideIndex = hideIndex
 }
 
 func (s *shell) layoutSize() (int, int) {
