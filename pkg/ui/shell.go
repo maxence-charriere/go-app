@@ -1,8 +1,6 @@
 package ui
 
 import (
-	"time"
-
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
@@ -43,9 +41,8 @@ type IShell interface {
 // an index pane, and a hamburger menu.
 func Shell() IShell {
 	return &shell{
-		IpaneWidth:      270,
-		id:              "goapp-shell-" + uuid.NewString(),
-		refreshInterval: time.Millisecond * 50,
+		IpaneWidth: 270,
+		id:         "goapp-shell-" + uuid.NewString(),
 	}
 }
 
@@ -65,8 +62,6 @@ type shell struct {
 	hideMenu          bool
 	hideIndex         bool
 	showHamburgerMenu bool
-	refreshInterval   time.Duration
-	refreshTimer      *time.Timer
 	width             int
 }
 
@@ -130,19 +125,11 @@ func (s *shell) OnMount(ctx app.Context) {
 }
 
 func (s *shell) OnResize(ctx app.Context) {
-	// s.scheduleRefresh(ctx)
 	s.refresh(ctx)
 }
 
 func (s *shell) OnUpdate(ctx app.Context) {
-	// s.scheduleRefresh(ctx)
 	s.refresh(ctx)
-}
-
-func (s *shell) OnDismount() {
-	if s.refreshTimer != nil {
-		s.refreshTimer.Stop()
-	}
 }
 
 func (s *shell) Render() app.UI {
@@ -211,20 +198,6 @@ func (s *shell) Render() app.UI {
 				Body(s.IhamburgerMenu...),
 		)
 }
-
-// func (s *shell) scheduleRefresh(ctx app.Context) {
-// 	if s.refreshTimer != nil {
-// 		s.refreshTimer.Stop()
-// 		s.refreshTimer.Reset(s.refreshInterval)
-// 		return
-// 	}
-
-// 	if app.IsClient {
-// 		s.refreshTimer = time.AfterFunc(s.refreshInterval, func() {
-// 			ctx.Dispatch(s.refresh)
-// 		})
-// 	}
-// }
 
 func (s *shell) refresh(ctx app.Context) {
 	w, _ := s.layoutSize()
