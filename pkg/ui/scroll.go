@@ -132,6 +132,7 @@ func (s *scroll) Render() app.UI {
 						Style("width", fmt.Sprintf("calc(100%s - %vpx)", "%", s.hpadding*2)).
 						Style("height", fmt.Sprintf("calc(100%s - %vpx)", "%", s.IheaderHeight+s.IfooterHeight)).
 						Style("padding", fmt.Sprintf("0 %vpx", s.hpadding)).
+						Style("overflow-x", "hidden").
 						Style("overflow-y", "scroll").
 						Body(s.Icontent...),
 					app.Div().
