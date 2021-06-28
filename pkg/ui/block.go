@@ -34,7 +34,8 @@ func Block() IBlock {
 	return &block{
 		Ialignment:       top,
 		ImaxContentWidth: 540,
-		padding:          BlockPadding,
+		hpadding:         BlockPadding,
+		vpadding:         BlockPadding,
 	}
 }
 
@@ -47,8 +48,9 @@ type block struct {
 	ImaxContentWidth int
 	Icontent         []app.UI
 
-	padding int
-	width   int
+	hpadding int
+	vpadding int
+	width    int
 }
 
 func (b *block) ID(v string) IBlock {
@@ -104,8 +106,9 @@ func (b *block) Render() app.UI {
 		Center().
 		Content(
 			app.Div().
-				Style("padding", pxToString(b.padding)).
-				Style("width", fmt.Sprintf("calc(100%s - %vpx)", "%", b.padding*2)).
+				Style("padding", fmt.Sprintf("%vpx %vpx", b.vpadding, b.hpadding)).
+				Style("width", fmt.Sprintf("calc(100%s - %vpx)", "%", b.hpadding*2)).
+				Style("height", fmt.Sprintf("calc(100%s - %vpx)", "%", b.vpadding*2)).
 				Style("max-width", pxToString(b.ImaxContentWidth)).
 				Body(b.Icontent...),
 		)
@@ -128,9 +131,9 @@ func (b *block) Render() app.UI {
 func (b *block) resize(ctx app.Context) {
 	w, _ := ctx.Page().Size()
 	if w <= 480 {
-		b.padding = BlockMobilePadding
+		b.hpadding = BlockMobilePadding
 	} else {
-		b.padding = BlockPadding
+		b.hpadding = BlockPadding
 	}
 
 	if w != b.width {
