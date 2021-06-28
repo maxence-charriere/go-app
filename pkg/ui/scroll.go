@@ -144,10 +144,6 @@ func (s *scroll) Render() app.UI {
 }
 
 func (s *scroll) resize(ctx app.Context) {
-	if w, _ := ctx.Page().Size(); w <= 480 {
-		return
-	}
-
 	w, _ := ctx.Page().Size()
 	if w <= 480 {
 		s.hpadding = BaseMobileHPadding

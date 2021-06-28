@@ -92,10 +92,6 @@ func (b *base) Render() app.UI {
 }
 
 func (b *base) resize(ctx app.Context) {
-	if w, _ := ctx.Page().Size(); w <= 480 {
-		return
-	}
-
 	w, _ := ctx.Page().Size()
 	if w <= 480 {
 		b.hpadding = BaseMobileHPadding
