@@ -121,21 +121,22 @@ func (s *scroll) Render() app.UI {
 			app.Div().
 				Style("width", "100%").
 				Style("height", fmt.Sprintf("calc(100%s - %vpx)", "%", s.vpadding*2)).
+				Style("padding", fmt.Sprintf("%vpx 0", s.vpadding)).
 				Body(
 					app.Div().
 						Style("width", fmt.Sprintf("calc(100%s - %vpx)", "%", s.hpadding*2)).
-						Style("padding", fmt.Sprintf("%vpx %vpx", s.vpadding, s.hpadding)).
+						Style("padding", fmt.Sprintf("0 %vpx", s.hpadding)).
 						Style("height", pxToString(s.IheaderHeight)).
 						Body(s.Iheader...),
 					app.Div().
 						Style("width", fmt.Sprintf("calc(100%s - %vpx)", "%", s.hpadding*2)).
-						Style("padding", fmt.Sprintf("%vpx %vpx", s.vpadding, s.hpadding)).
 						Style("height", fmt.Sprintf("calc(100%s - %vpx)", "%", s.IheaderHeight+s.IfooterHeight)).
+						Style("padding", fmt.Sprintf("0 %vpx", s.hpadding)).
 						Style("overflow-y", "scroll").
 						Body(s.Icontent...),
 					app.Div().
 						Style("width", fmt.Sprintf("calc(100%s - %vpx)", "%", s.hpadding*2)).
-						Style("padding", fmt.Sprintf("%vpx %vpx", s.vpadding, s.hpadding)).
+						Style("padding", fmt.Sprintf("0 %vpx", s.hpadding)).
 						Style("height", pxToString(s.IfooterHeight)).
 						Body(s.Ifooter...),
 				),
