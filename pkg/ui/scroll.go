@@ -108,6 +108,7 @@ func (s *scroll) Render() app.UI {
 						Body(s.Iheader...),
 					app.Div().
 						Style("height", fmt.Sprintf("calc(100%s - %vpx)", "%", s.IheaderHeight+s.IfooterHeight)).
+						Style("overflow-y", "scroll").
 						Body(s.Icontent...),
 					app.Div().
 						Style("height", pxToString(s.IfooterHeight)).
