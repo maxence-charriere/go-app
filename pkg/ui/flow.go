@@ -165,10 +165,6 @@ func (f *flow) refresh(ctx app.Context) {
 		itemsPerRow = 1
 	}
 	itemWidthFloat := float64(w-f.Ispacing*itemsPerRow) / float64(itemsPerRow)
-	if itemWidthFloat == 0 {
-		ctx.Dispatch(f.refresh)
-		return
-	}
 
 	if itemsPerRow != f.itemsPerRow || itemWidthFloat != f.itemWidth {
 		f.itemsPerRow = itemsPerRow
