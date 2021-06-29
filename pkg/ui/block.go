@@ -32,7 +32,7 @@ type IBlock interface {
 // Block creates a block of content.
 func Block() IBlock {
 	return &block{
-		Ialignment:       top,
+		Ialignment:       stretch,
 		ImaxContentWidth: 540,
 		padding:          BlockPadding,
 	}
@@ -113,6 +113,9 @@ func (b *block) Render() app.UI {
 		)
 
 	switch b.Ialignment {
+	case stretch:
+		layout.Stretch()
+
 	case top:
 		layout.Top()
 

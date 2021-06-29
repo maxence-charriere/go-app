@@ -29,7 +29,8 @@ func pxToString(px int) string {
 type alignment int
 
 const (
-	top alignment = iota
+	stretch alignment = iota
+	top
 	right
 	bottom
 	left
