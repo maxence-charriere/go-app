@@ -287,10 +287,15 @@ func (c *Compo) mount(d Dispatcher) error {
 	root.setParent(c.this)
 	c.root = root
 
-	if mounter, ok := c.self().(Mounter); ok && !c.dispatcher().runsInServer() {
-		c.dispatch(mounter.OnMount)
+	if c.dispatcher().runsInServer() {
+		return nil
 	}
 
+	if mounter, ok := c.self().(Mounter); ok {
+		c.dispatch(mounter.OnMount)
+		return nil
+	}
+	c.dispatch(nil)
 	return nil
 }
 
@@ -353,9 +358,7 @@ func (c *Compo) update(n UI) error {
 }
 
 func (c *Compo) dispatch(fn func(Context)) {
-	c.dispatcher().Dispatch(c.self(), func(ctx Context) {
-		fn(ctx)
-	})
+	c.dispatcher().Dispatch(c.self(), fn)
 }
 
 func (c *Compo) updateRoot() error {
