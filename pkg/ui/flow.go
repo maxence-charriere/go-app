@@ -102,8 +102,7 @@ func (f *flow) OnPreRender(ctx app.Context) {
 }
 
 func (f *flow) OnMount(ctx app.Context) {
-	// f.refresh(ctx)
-	ctx.Dispatch(f.refresh)
+	f.refresh(ctx)
 }
 
 func (f *flow) OnResize(ctx app.Context) {
