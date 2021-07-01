@@ -51,5 +51,5 @@ func (a googleAnalytics) gtag(args ...interface{}) {
 	if !gtag.Truthy() {
 		return
 	}
-	gtag.Call("gtag", args...)
+	app.Window().Call("gtag", args...)
 }
