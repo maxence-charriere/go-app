@@ -34,6 +34,7 @@ const (
 
 	orientationChangeDelay = time.Millisecond * 500
 	engineUpdateRate       = 120
+	resizeInterval         = time.Millisecond * 250
 )
 
 var (
@@ -41,6 +42,7 @@ var (
 	isInternalURL      func(string) bool
 	appUpdateAvailable bool
 	lastURLVisited     *url.URL
+	resizeTimer        *time.Timer
 )
 
 // Getenv retrieves the value of the environment variable named by the key. It
@@ -385,9 +387,17 @@ func onAppInstallChange(d ClientDispatcher) func(this Value, args []Value) inter
 }
 
 func onResize(ctx Context, e Event) {
-	if d, ok := ctx.dispatcher().(ClientDispatcher); ok {
-		d.AppResize()
+	if resizeTimer != nil {
+		resizeTimer.Stop()
+		resizeTimer.Reset(resizeInterval)
+		return
 	}
+
+	resizeTimer = time.AfterFunc(resizeInterval, func() {
+		if d, ok := ctx.dispatcher().(ClientDispatcher); ok {
+			d.AppResize()
+		}
+	})
 }
 
 func onAppOrientationChange(ctx Context, e Event) {

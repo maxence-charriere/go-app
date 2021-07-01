@@ -2,15 +2,18 @@ const cacheName = "app-" + "{{.Version}}";
 
 self.addEventListener("install", event => {
   console.log("installing app worker {{.Version}}");
-  self.skipWaiting();
 
   event.waitUntil(
-    caches.open(cacheName).then(cache => {
-      return cache.addAll([
-        {{range $path, $element := .ResourcesToCache}}"{{$path}}",
-        {{end}}
-      ]);
-    })
+    caches.open(cacheName).
+      then(cache => {
+        return cache.addAll([
+          {{range $path, $element := .ResourcesToCache}}"{{$path}}",
+          {{end}}
+        ]);
+      }).
+      then(() => {
+        self.skipWaiting();
+      })
   );
 });
 

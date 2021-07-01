@@ -1,6 +1,9 @@
 package main
 
-import "github.com/maxence-charriere/go-app/v9/pkg/app"
+import (
+	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v9/pkg/ui"
+)
 
 type link struct {
 	app.Compo
@@ -73,7 +76,7 @@ func (l *link) Render() app.UI {
 		Href(l.Ihref).
 		OnClick(l.onClick).
 		Body(
-			app.Stack().
+			ui.Stack().
 				Middle().
 				Content(
 					app.Div().

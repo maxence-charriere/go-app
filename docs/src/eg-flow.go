@@ -1,13 +1,16 @@
 package main
 
-import "github.com/maxence-charriere/go-app/v9/pkg/app"
+import (
+	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v9/pkg/ui"
+)
 
 type flowExample struct {
 	app.Compo
 }
 
 func (e *flowExample) Render() app.UI {
-	return app.Flow().
+	return ui.Flow().
 		Class("fill").
 		StretchItems().
 		Spacing(3).

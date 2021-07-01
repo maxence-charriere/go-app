@@ -1,6 +1,9 @@
 package main
 
-import "github.com/maxence-charriere/go-app/v9/pkg/app"
+import (
+	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v9/pkg/ui"
+)
 
 const (
 	supportUsIconSize = 60
@@ -52,7 +55,7 @@ func (s *supportUs) Render() app.UI {
 						app.Text(", or giving me some cryptocurrencies, all would help me reach that goal, sustain the development, and boost motivation during long coding sessions."),
 					),
 				),
-			app.Flow().
+			ui.Flow().
 				Class("space-flow").
 				StretchItems().
 				Content(
@@ -161,7 +164,7 @@ func (i *supportUsItem) Render() app.UI {
 		Class(i.Iclass).
 		Href(i.Ihref).
 		Body(
-			app.Stack().
+			ui.Stack().
 				Class("fill").
 				Center().
 				Middle().

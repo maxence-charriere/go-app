@@ -162,6 +162,11 @@ resources to run Go-based progressive web apps.
 				
 			
 				
+				<dd><a href="#AppInstaller" id="src-AppInstaller" id="src-AppInstaller">type AppInstaller</a></dd>
+				
+				
+			
+				
 				<dd><a href="#AppUpdater" id="src-AppUpdater" id="src-AppUpdater">type AppUpdater</a></dd>
 				
 				
@@ -1293,30 +1298,6 @@ resources to run Go-based progressive web apps.
 				
 			
 				
-				<dd><a href="#UIFlow" id="src-UIFlow" id="src-UIFlow">type UIFlow</a></dd>
-				
-					
-					<dd>    <a href="#Flow" id="src-Flow" id="src-Flow">func Flow() UIFlow</a></dd>
-				
-				
-			
-				
-				<dd><a href="#UIShell" id="src-UIShell" id="src-UIShell">type UIShell</a></dd>
-				
-					
-					<dd>    <a href="#Shell" id="src-Shell" id="src-Shell">func Shell() UIShell</a></dd>
-				
-				
-			
-				
-				<dd><a href="#UIStack" id="src-UIStack" id="src-UIStack">type UIStack</a></dd>
-				
-					
-					<dd>    <a href="#Stack" id="src-Stack" id="src-Stack">func Stack() UIStack</a></dd>
-				
-				
-			
-				
 				<dd><a href="#Updater" id="src-Updater" id="src-Updater">type Updater</a></dd>
 				
 				
@@ -1373,8 +1354,6 @@ resources to run Go-based progressive web apps.
 			
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/engine.go">engine.go</a>
 			
-				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/flow.go">flow.go</a>
-			
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go">html.go</a>
 			
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go">http.go</a>
@@ -1400,10 +1379,6 @@ resources to run Go-based progressive web apps.
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/route.go">route.go</a>
 			
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/scripts.go">scripts.go</a>
-			
-				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/shell.go">shell.go</a>
-			
-				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/stack.go">stack.go</a>
 			
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/state.go">state.go</a>
 			
@@ -1570,7 +1545,7 @@ returns the value, which will be empty if the variable is not present.
 		
 			
 			
-			<h2 id="HTMLString">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L189">HTMLString</a>
+			<h2 id="HTMLString">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L190">HTMLString</a>
 				<a class="permalink" href="#HTMLString" id="src-HTMLString">¶</a>
 				
 				
@@ -1586,7 +1561,7 @@ HTMLString return an HTML string representation of the given UI element.
 		
 			
 			
-			<h2 id="HTMLStringWithIndent">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L197">HTMLStringWithIndent</a>
+			<h2 id="HTMLStringWithIndent">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L198">HTMLStringWithIndent</a>
 				<a class="permalink" href="#HTMLStringWithIndent" id="src-HTMLStringWithIndent">¶</a>
 				
 				
@@ -1690,7 +1665,7 @@ to 5MB in a lot of web browsers.
 		
 			
 			
-			<h2 id="PrintHTML">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L205">PrintHTML</a>
+			<h2 id="PrintHTML">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L206">PrintHTML</a>
 				<a class="permalink" href="#PrintHTML" id="src-PrintHTML">¶</a>
 				
 				
@@ -1707,7 +1682,7 @@ writer.
 		
 			
 			
-			<h2 id="PrintHTMLWithIndent">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L214">PrintHTMLWithIndent</a>
+			<h2 id="PrintHTMLWithIndent">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L215">PrintHTMLWithIndent</a>
 				<a class="permalink" href="#PrintHTMLWithIndent" id="src-PrintHTMLWithIndent">¶</a>
 				
 				
@@ -1969,6 +1944,38 @@ with Context.NewAction().
 		
 			
 			
+			<h2 id="AppInstaller">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L110">AppInstaller</a>
+				<a class="permalink" href="#AppInstaller" id="src-AppInstaller">¶</a>
+				
+				
+			</h2>
+			<p>
+AppInstaller is the interface that describes a component that is notified
+when the application installation state changes.
+</p>
+
+			<pre>type AppInstaller interface {
+    <span class="comment">// The function called when the application becomes installable or</span>
+    <span class="comment">// installed. Use Context.IsAppInstallable() or Context.IsAppInstalled to</span>
+    <span class="comment">// check the install state. OnAppInstallChange is always called on the UI</span>
+    <span class="comment">// goroutine.</span>
+    OnAppInstallChange(<a href="#Context" id="src-Context">Context</a>)
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
 			<h2 id="AppUpdater">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L102">AppUpdater</a>
 				<a class="permalink" href="#AppUpdater" id="src-AppUpdater">¶</a>
 				
@@ -2138,6 +2145,9 @@ client environment.
     <span class="comment">// Triggers OnAppUpdate from the root component.</span>
     AppUpdate()
 
+    <span class="comment">// Triggers OnAppInstallChange from the root component.</span>
+    AppInstallChange()
+
     <span class="comment">// Triggers OnAppResize from the root component.</span>
     AppResize()
 }</pre>
@@ -2152,7 +2162,7 @@ client environment.
 
 			
 				
-				<h3 id="NewClientTester">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L94">NewClientTester</a>
+				<h3 id="NewClientTester">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L97">NewClientTester</a>
 					<a class="permalink" href="#NewClientTester" id="src-NewClientTester">¶</a>
 					
 					
@@ -2171,7 +2181,7 @@ client environment. The given UI element is mounted upon creation.
 		
 			
 			
-			<h2 id="Compo">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L122">Compo</a>
+			<h2 id="Compo">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L132">Compo</a>
 				<a class="permalink" href="#Compo" id="src-Compo">¶</a>
 				
 				
@@ -2197,7 +2207,7 @@ Compo represents the base struct to use in order to build a component.
 
 			
 				
-				<h3 id="Compo.JSValue">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L137">JSValue</a>
+				<h3 id="Compo.JSValue">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L147">JSValue</a>
 					<a class="permalink" href="#Compo.JSValue" id="src-Compo.JSValue">¶</a>
 					
 					
@@ -2212,7 +2222,7 @@ JSValue returns the javascript value of the component root.
 				
 			
 				
-				<h3 id="Compo.Kind">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L132">Kind</a>
+				<h3 id="Compo.Kind">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L142">Kind</a>
 					<a class="permalink" href="#Compo.Kind" id="src-Compo.Kind">¶</a>
 					
 					
@@ -2227,7 +2237,7 @@ Kind returns the ui element kind.
 				
 			
 				
-				<h3 id="Compo.Mounted">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L142">Mounted</a>
+				<h3 id="Compo.Mounted">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L152">Mounted</a>
 					<a class="permalink" href="#Compo.Mounted" id="src-Compo.Mounted">¶</a>
 					
 					
@@ -2242,7 +2252,7 @@ Mounted reports whether the component is mounted.
 				
 			
 				
-				<h3 id="Compo.Render">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L153">Render</a>
+				<h3 id="Compo.Render">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L163">Render</a>
 					<a class="permalink" href="#Compo.Render" id="src-Compo.Render">¶</a>
 					
 					
@@ -2259,7 +2269,7 @@ embedded.
 				
 			
 				
-				<h3 id="Compo.ResizeContent">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L179">ResizeContent</a>
+				<h3 id="Compo.ResizeContent">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L189">ResizeContent</a>
 					<a class="permalink" href="#Compo.ResizeContent" id="src-Compo.ResizeContent">¶</a>
 					
 					
@@ -2275,7 +2285,7 @@ implement the Resizer interface.
 				
 			
 				
-				<h3 id="Compo.Update">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L173">Update</a>
+				<h3 id="Compo.Update">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L183">Update</a>
 					<a class="permalink" href="#Compo.Update" id="src-Compo.Update">¶</a>
 					
 					
@@ -2292,7 +2302,7 @@ performed on the UI goroutine.
 				
 			
 				
-				<h3 id="Compo.ValueTo">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L192">ValueTo</a>
+				<h3 id="Compo.ValueTo">func (*Compo) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L202">ValueTo</a>
 					<a class="permalink" href="#Compo.ValueTo" id="src-Compo.ValueTo">¶</a>
 					
 					
@@ -2461,6 +2471,12 @@ It is canceled when its associated UI element is dismounted.
     <span class="comment">// Reports whether the app has been updated in background. Use app.Reload()</span>
     <span class="comment">// to load the updated version.</span>
     AppUpdateAvailable() <a href="https://golang.org/pkg/builtin/#bool">bool</a>
+
+    <span class="comment">// Reports whether the app is installable.</span>
+    IsAppInstallable() <a href="https://golang.org/pkg/builtin/#bool">bool</a>
+
+    <span class="comment">// Shows the app install prompt if the app is installable.</span>
+    ShowAppInstallPrompt()
 
     <span class="comment">// Returns the current page.</span>
     Page() <a href="#Page" id="src-Page">Page</a>
@@ -2757,7 +2773,7 @@ belongs to the event will not occur.
 		
 			
 			
-			<h2 id="EventHandler">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L123">EventHandler</a>
+			<h2 id="EventHandler">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L124">EventHandler</a>
 				<a class="permalink" href="#EventHandler" id="src-EventHandler">¶</a>
 				
 				
@@ -23215,7 +23231,7 @@ application icon, favicon or loading icon.
 		
 			
 			
-			<h2 id="Kind">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L37">Kind</a>
+			<h2 id="Kind">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L38">Kind</a>
 				<a class="permalink" href="#Kind" id="src-Kind">¶</a>
 				
 				
@@ -23260,7 +23276,7 @@ Kind represents the specific kind of a user interface element.
 
 			
 				
-				<h3 id="Kind.String">func (Kind) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L39">String</a>
+				<h3 id="Kind.String">func (Kind) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L40">String</a>
 					<a class="permalink" href="#Kind.String" id="src-Kind.String">¶</a>
 					
 					
@@ -23306,7 +23322,7 @@ additional actions when mounted.
 		
 			
 			
-			<h2 id="MsgHandler">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L134">MsgHandler</a>
+			<h2 id="MsgHandler">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L137">MsgHandler</a>
 				<a class="permalink" href="#MsgHandler" id="src-MsgHandler">¶</a>
 				
 				
@@ -23701,7 +23717,7 @@ be a slice, an array or a map with strings as keys.
 		
 			
 			
-			<h2 id="Resizer">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L110">Resizer</a>
+			<h2 id="Resizer">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/component.go#L120">Resizer</a>
 				<a class="permalink" href="#Resizer" id="src-Resizer">¶</a>
 				
 				
@@ -23840,7 +23856,7 @@ remote bucket such as Amazon S3 or Google Cloud Storage.
 		
 			
 			
-			<h2 id="ServerDispatcher">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L103">ServerDispatcher</a>
+			<h2 id="ServerDispatcher">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L106">ServerDispatcher</a>
 				<a class="permalink" href="#ServerDispatcher" id="src-ServerDispatcher">¶</a>
 				
 				
@@ -23876,7 +23892,7 @@ ServerDispatcher is the interface that describes a dispatcher that emulates a se
 
 			
 				
-				<h3 id="NewServerTester">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L122">NewServerTester</a>
+				<h3 id="NewServerTester">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/dispatcher.go#L125">NewServerTester</a>
 					<a class="permalink" href="#NewServerTester" id="src-NewServerTester">¶</a>
 					
 					
@@ -24180,7 +24196,7 @@ components and HTML elements.
 
 			
 				
-				<h3 id="FilterUIElems">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L88">FilterUIElems</a>
+				<h3 id="FilterUIElems">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/node.go#L89">FilterUIElems</a>
 					<a class="permalink" href="#FilterUIElems" id="src-FilterUIElems">¶</a>
 					
 					
@@ -24227,227 +24243,6 @@ raw string content.
 				<pre>func Text(v interface{}) <a href="#UI" id="src-UI">UI</a></pre>
 				<p>
 Text creates a simple text element.
-</p>
-
-				
-				
-			
-
-			
-		
-			
-			
-			<h2 id="UIFlow">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/flow.go#L4">UIFlow</a>
-				<a class="permalink" href="#UIFlow" id="src-UIFlow">¶</a>
-				
-				
-			</h2>
-			<p>
-UIFlow is the interface that describes a container that displays its items as
-a flow.
-</p>
-<p>
-EXPERIMENTAL - Subject to change.
-</p>
-
-			<pre>type UIFlow interface {
-    <a href="#UI" id="src-UI">UI</a>
-
-    <span class="comment">// Sets the ID.</span>
-    ID(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#UIFlow" id="src-UIFlow">UIFlow</a>
-
-    <span class="comment">// Sets the class. Multiple classes can be defined by successive calls.</span>
-    Class(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#UIFlow" id="src-UIFlow">UIFlow</a>
-
-    <span class="comment">// Sets the width in px for the content items.</span>
-    <span class="comment">// Default is 300px.</span>
-    ItemWidth(px <a href="https://golang.org/pkg/builtin/#int">int</a>) <a href="#UIFlow" id="src-UIFlow">UIFlow</a>
-
-    <span class="comment">// Sets the space between content elements in px.</span>
-    Spacing(px <a href="https://golang.org/pkg/builtin/#int">int</a>) <a href="#UIFlow" id="src-UIFlow">UIFlow</a>
-
-    <span class="comment">// Makes the items occupy all the available space when the content has only</span>
-    <span class="comment">// one row.</span>
-    StretchItems() <a href="#UIFlow" id="src-UIFlow">UIFlow</a>
-
-    <span class="comment">// Sets the content.</span>
-    Content(elems ...<a href="#UI" id="src-UI">UI</a>) <a href="#UIFlow" id="src-UIFlow">UIFlow</a>
-}</pre>
-
-			
-
-			
-
-			
-			
-			
-
-			
-				
-				<h3 id="Flow">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/flow.go#L31">Flow</a>
-					<a class="permalink" href="#Flow" id="src-Flow">¶</a>
-					
-					
-				</h3>
-				<pre>func Flow() <a href="#UIFlow" id="src-UIFlow">UIFlow</a></pre>
-				<p>
-Flow creates a container that displays its items as a flow.
-</p>
-<p>
-EXPERIMENTAL - Subject to change.
-</p>
-
-				
-				
-			
-
-			
-		
-			
-			
-			<h2 id="UIShell">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/shell.go#L3">UIShell</a>
-				<a class="permalink" href="#UIShell" id="src-UIShell">¶</a>
-				
-				
-			</h2>
-			<p>
-UIShell is a layout that responsively displays a content with a menu pane,
-an index page, and a hamburger menu.
-</p>
-<p>
-EXPERIMENTAL - Subject to change.
-</p>
-
-			<pre>type UIShell interface {
-    <a href="#UI" id="src-UI">UI</a>
-
-    <span class="comment">// Sets the ID.</span>
-    ID(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#UIShell" id="src-UIShell">UIShell</a>
-
-    <span class="comment">// Sets the class. Multiple classes can be defined by successive calls.</span>
-    Class(v <a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#UIShell" id="src-UIShell">UIShell</a>
-
-    <span class="comment">// Sets the width in px for the menu and index panes.</span>
-    <span class="comment">// Default is 270px.</span>
-    PaneWidth(px <a href="https://golang.org/pkg/builtin/#int">int</a>) <a href="#UIShell" id="src-UIShell">UIShell</a>
-
-    <span class="comment">// Customizes the hamburger menu button with the given element.</span>
-    <span class="comment">// Default is ☰.</span>
-    HamburgerButton(v <a href="#UI" id="src-UI">UI</a>) <a href="#UIShell" id="src-UIShell">UIShell</a>
-
-    <span class="comment">// Sets the hamburger menu content.</span>
-    HamburgerMenu(v ...<a href="#UI" id="src-UI">UI</a>) <a href="#UIShell" id="src-UIShell">UIShell</a>
-
-    <span class="comment">// Sets the menu pane content.</span>
-    Menu(v ...<a href="#UI" id="src-UI">UI</a>) <a href="#UIShell" id="src-UIShell">UIShell</a>
-
-    <span class="comment">// Sets the index pane content.</span>
-    Index(v ...<a href="#UI" id="src-UI">UI</a>) <a href="#UIShell" id="src-UIShell">UIShell</a>
-
-    <span class="comment">// Sets the content.</span>
-    Content(v ...<a href="#UI" id="src-UI">UI</a>) <a href="#UIShell" id="src-UIShell">UIShell</a>
-}</pre>
-
-			
-
-			
-
-			
-			
-			
-
-			
-				
-				<h3 id="Shell">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/shell.go#L37">Shell</a>
-					<a class="permalink" href="#Shell" id="src-Shell">¶</a>
-					
-					
-				</h3>
-				<pre>func Shell() <a href="#UIShell" id="src-UIShell">UIShell</a></pre>
-				<p>
-Shell returns a layout that responsively displays a content with a menu pane,
-an index pane, and a hamburger menu.
-</p>
-<p>
-EXPERIMENTAL - Subject to change.
-</p>
-
-				
-				
-			
-
-			
-		
-			
-			
-			<h2 id="UIStack">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/stack.go#L1">UIStack</a>
-				<a class="permalink" href="#UIStack" id="src-UIStack">¶</a>
-				
-				
-			</h2>
-			<p>
-UIStack is the interface that describes a container that displays its items
-as stacked panels.
-</p>
-<p>
-EXPERIMENTAL WIDGET.
-</p>
-
-			<pre>type UIStack interface {
-    <a href="#UI" id="src-UI">UI</a>
-
-    <span class="comment">// ID sets the stack root HTML element id property.</span>
-    ID(<a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#UIStack" id="src-UIStack">UIStack</a>
-
-    <span class="comment">// Class adds a CSS class to the stack root HTML element class property.</span>
-    Class(<a href="https://golang.org/pkg/builtin/#string">string</a>) <a href="#UIStack" id="src-UIStack">UIStack</a>
-
-    <span class="comment">// Left aligns the content on the left.</span>
-    Left() <a href="#UIStack" id="src-UIStack">UIStack</a>
-
-    <span class="comment">// Center aligns the content on the horizontal center.</span>
-    Center() <a href="#UIStack" id="src-UIStack">UIStack</a>
-
-    <span class="comment">// Right aligns the content on the right.</span>
-    Right() <a href="#UIStack" id="src-UIStack">UIStack</a>
-
-    <span class="comment">// Top aligns the content on the top.</span>
-    Top() <a href="#UIStack" id="src-UIStack">UIStack</a>
-
-    <span class="comment">// Middle aligns the content on the vertical center.</span>
-    Middle() <a href="#UIStack" id="src-UIStack">UIStack</a>
-
-    <span class="comment">// Bottom aligns the content on the bottom.</span>
-    Bottom() <a href="#UIStack" id="src-UIStack">UIStack</a>
-
-    <span class="comment">// Stretch stretches the content vertically.</span>
-    Stretch() <a href="#UIStack" id="src-UIStack">UIStack</a>
-
-    <span class="comment">// Content sets the content with the given UI elements.</span>
-    Content(elems ...<a href="#UI" id="src-UI">UI</a>) <a href="#UIStack" id="src-UIStack">UIStack</a>
-}</pre>
-
-			
-
-			
-
-			
-			
-			
-
-			
-				
-				<h3 id="Stack">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/stack.go#L34">Stack</a>
-					<a class="permalink" href="#Stack" id="src-Stack">¶</a>
-					
-					
-				</h3>
-				<pre>func Stack() <a href="#UIStack" id="src-UIStack">UIStack</a></pre>
-				<p>
-Stack creates a container that displays its items as stacked panels.
-</p>
-<p>
-EXPERIMENTAL WIDGET.
 </p>
 
 				
