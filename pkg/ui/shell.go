@@ -35,6 +35,9 @@ type IShell interface {
 
 	// Sets the content.
 	Content(v ...app.UI) IShell
+
+	// Sets the ads pane.
+	Ads(v ...app.UI) IShell
 }
 
 // Shell returns a layout that responsively displays a content with a menu pane,
@@ -57,10 +60,12 @@ type shell struct {
 	Imenu            []app.UI
 	Iindex           []app.UI
 	Icontent         []app.UI
+	Iads             []app.UI
 
 	id                string
 	hideMenu          bool
 	hideIndex         bool
+	hideAds           bool
 	showHamburgerMenu bool
 	width             int
 }
@@ -113,6 +118,11 @@ func (s *shell) Index(v ...app.UI) IShell {
 
 func (s *shell) Content(v ...app.UI) IShell {
 	s.Icontent = app.FilterUIElems(v...)
+	return s
+}
+
+func (s *shell) Ads(v ...app.UI) IShell {
+	s.Iads = app.FilterUIElems(v...)
 	return s
 }
 
@@ -171,6 +181,13 @@ func (s *shell) Render() app.UI {
 						Style("flex-grow", "1").
 						Style("overflow", "hidden").
 						Body(s.Icontent...),
+					app.Div().
+						Style("position", "relative").
+						Style("display", visible(!s.hideAds)).
+						Style("flex-shrink", "0").
+						Style("flex-basis", pxToString(s.IpaneWidth)).
+						Style("overflow", "hidden").
+						Body(s.Iads...),
 				),
 			app.Div().
 				Style("display", visible(s.hideMenu && len(s.IhamburgerMenu) != 0)).
@@ -202,17 +219,33 @@ func (s *shell) Render() app.UI {
 func (s *shell) refresh(ctx app.Context) {
 	w, _ := s.layoutSize()
 
-	hideIndex := len(s.Iindex) == 0 || 3*s.IpaneWidth > w
-	hideMenu := false
-	if hideIndex {
-		hideMenu = len(s.Imenu) == 0 || 3*s.IpaneWidth > w
-	} else {
-		hideMenu = len(s.Imenu) == 0 || 5*s.IpaneWidth > w
+	cw := int(float64(s.IpaneWidth) * 2.75)
+
+	hideAds := true
+	if len(s.Iads) != 0 && cw+s.IpaneWidth <= w {
+		hideAds = false
+		cw += s.IpaneWidth
 	}
 
-	if hideMenu != s.hideMenu || hideIndex != s.hideIndex || w != s.width {
+	hideIndex := true
+	if len(s.Iindex) != 0 && cw+s.IpaneWidth <= w {
+		hideIndex = false
+		cw += s.IpaneWidth
+	}
+
+	hideMenu := true
+	if len(s.Imenu) != 0 && cw+s.IpaneWidth <= w {
+		hideMenu = false
+		cw += s.IpaneWidth
+	}
+
+	if hideMenu != s.hideMenu ||
+		hideIndex != s.hideIndex ||
+		hideAds != s.hideAds ||
+		w != s.width {
 		s.hideMenu = hideMenu
 		s.hideIndex = hideIndex
+		s.hideAds = hideAds
 		s.width = w
 		s.ResizeContent()
 	}
