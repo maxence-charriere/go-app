@@ -37,6 +37,8 @@ func AdsenseDisplay() IAdsenseDisplay {
 	return &adsenseDisplay{
 		Irefresh: time.Millisecond * 150,
 		id:       "goapp-adsense-display-" + uuid.NewString(),
+		width:    -1,
+		height:   -1,
 	}
 }
 
