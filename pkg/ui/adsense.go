@@ -164,7 +164,7 @@ func refreshAdsenseUnits(ctx app.Context, refresh time.Duration) {
 			app.Logf("%s", errors.New("getting adsbygoogle failed"))
 			return
 		}
-		adsbygoogle.Call("push", map[string]interface{}{})
 		fmt.Println("adsense PUSH")
+		adsbygoogle.Call("push", map[string]interface{}{})
 	})
 }
