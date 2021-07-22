@@ -49,9 +49,10 @@ type adsenseDisplay struct {
 	Islot    string
 	Irefresh time.Duration
 
-	id     string
-	width  int
-	height int
+	id          string
+	currentPath string
+	width       int
+	height      int
 }
 
 func (d *adsenseDisplay) ID(v string) IAdsenseDisplay {
@@ -85,8 +86,13 @@ func (d *adsenseDisplay) Refresh(du time.Duration) IAdsenseDisplay {
 	return d
 }
 
-func (d *adsenseDisplay) OnMount(ctx app.Context) {
-	ctx.Defer(d.resize)
+func (d *adsenseDisplay) OnNav(ctx app.Context) {
+	if path := ctx.Page().URL().Path; path != d.currentPath {
+		d.currentPath = path
+		d.width = 0
+		d.height = 0
+		ctx.Defer(d.resize)
+	}
 }
 
 func (d *adsenseDisplay) OnResize(ctx app.Context) {
