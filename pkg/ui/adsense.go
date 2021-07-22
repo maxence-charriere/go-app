@@ -37,8 +37,6 @@ func AdsenseDisplay() IAdsenseDisplay {
 	return &adsenseDisplay{
 		Irefresh: time.Millisecond * 150,
 		id:       "goapp-adsense-display-" + uuid.NewString(),
-		width:    -1,
-		height:   -1,
 	}
 }
 
@@ -88,19 +86,19 @@ func (d *adsenseDisplay) Refresh(du time.Duration) IAdsenseDisplay {
 }
 
 func (d *adsenseDisplay) OnMount(ctx app.Context) {
-	d.resize(ctx)
+	ctx.Dispatch(d.resize)
 }
 
 func (d *adsenseDisplay) OnNav(ctx app.Context) {
-	d.resize(ctx)
+	ctx.Dispatch(d.resize)
 }
 
 func (d *adsenseDisplay) OnResize(ctx app.Context) {
-	d.resize(ctx)
+	ctx.Dispatch(d.resize)
 }
 
 func (d *adsenseDisplay) OnUpdate(ctx app.Context) {
-	d.resize(ctx)
+	ctx.Dispatch(d.resize)
 }
 
 func (d *adsenseDisplay) Render() app.UI {
