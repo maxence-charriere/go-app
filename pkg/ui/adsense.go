@@ -102,6 +102,8 @@ func (d *adsenseDisplay) Render() app.UI {
 		DataSet("goapp-ui", "adsenseDisplay").
 		ID(d.Iid).
 		Class(d.Iclass).
+		Style("max-width", "100%").
+		Style("max-height", "100%").
 		Body(
 			app.Script().
 				Async(true).
