@@ -110,7 +110,7 @@ func (d *adsenseDisplay) Render() app.UI {
 				Body(
 					app.Script().
 						Async(true).
-						Src("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"),
+						Src(fmt.Sprintf("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=%s", d.Iclient)),
 					app.Ins().
 						ID(d.id).
 						Class("adsbygoogle").
@@ -139,9 +139,8 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 	if w != d.width || h != d.height {
 		ins.Set("innerHTML", "")
 		ins.Set("style", fmt.Sprintf("display:block;width:%vpx;height:%vpx;overflow:hidden", w, h))
-		// ins.Get("dataset").Set("adsbygoogle-status", nil)
-		// ins.Get("dataset").Set("ad-status", nil)
-		ins.Get("dataset").Set("adsbygoogleStatus", nil)
+		ins.Get("dataset").Set("adsbygoogle-status", nil)
+		ins.Get("dataset").Set("ad-status", nil)
 		d.width = w
 		d.height = h
 		refreshAdsenseUnits(ctx, d.Irefresh)
