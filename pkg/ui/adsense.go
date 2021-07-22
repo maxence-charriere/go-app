@@ -94,11 +94,11 @@ func (d *adsenseDisplay) OnNav(ctx app.Context) {
 }
 
 func (d *adsenseDisplay) OnResize(ctx app.Context) {
-	ctx.Dispatch(d.resize)
+	ctx.Defer(d.resize)
 }
 
 func (d *adsenseDisplay) OnUpdate(ctx app.Context) {
-	ctx.Dispatch(d.resize)
+	ctx.Defer(d.resize)
 }
 
 func (d *adsenseDisplay) Render() app.UI {
@@ -138,9 +138,11 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		ins.Get("dataset").Set("adStatus", nil)
 		d.width = w
 		d.height = h
+		fmt.Println("-- ad:", w, h)
 		if w == 0 || h == 0 {
 			return
 		}
+		fmt.Println("++ ad:", w, h)
 		fmt.Println("ad:", w, h)
 		refreshAdsenseUnits(ctx, d.Irefresh)
 	}
