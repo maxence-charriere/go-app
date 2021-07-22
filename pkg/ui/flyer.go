@@ -237,6 +237,5 @@ func (f *flyer) resize(ctx app.Context) {
 		f.bannerHeight = bannerHeight
 		f.premiumHeight = premiumHeight
 		f.bonusHeight = bonusHeight
-		f.ResizeContent()
 	}
 }

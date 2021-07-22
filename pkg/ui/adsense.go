@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"fmt"
+
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
@@ -126,6 +128,7 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		ins.Set("innerHTML", "")
 		ins.Get("dataset").Set("adsbygoogleStatus", "")
 		ins.Get("dataset").Set("adStatus", "")
+		ins.Set("style", fmt.Sprintf("display:block;width:%vpx;height:%vpx;overflow:hidden", w, h))
 		d.width = w
 		d.height = h
 		if w == 0 && h == 0 {
