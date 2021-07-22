@@ -2,6 +2,7 @@ package ui
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
@@ -47,6 +48,7 @@ type adsenseDisplay struct {
 	currentPath string
 	width       int
 	height      int
+	refresh     *time.Timer
 }
 
 func (d *adsenseDisplay) ID(v string) IAdsenseDisplay {
@@ -80,16 +82,22 @@ func (d *adsenseDisplay) OnNav(ctx app.Context) {
 		d.currentPath = path
 		d.width = 0
 		d.height = 0
-		ctx.Defer(d.resize)
+		ctx.Defer(d.scheduleResize)
 	}
 }
 
 func (d *adsenseDisplay) OnResize(ctx app.Context) {
-	ctx.Defer(d.resize)
+	ctx.Defer(d.scheduleResize)
 }
 
 func (d *adsenseDisplay) OnUpdate(ctx app.Context) {
-	ctx.Defer(d.resize)
+	ctx.Defer(d.scheduleResize)
+}
+
+func (d *adsenseDisplay) OnDismount() {
+	if d.refresh != nil {
+		d.refresh.Stop()
+	}
 }
 
 func (d *adsenseDisplay) Render() app.UI {
@@ -108,6 +116,19 @@ func (d *adsenseDisplay) Render() app.UI {
 				DataSet("ad-client", d.Iclient).
 				DataSet("ad-slot", d.Islot),
 		)
+}
+
+func (d *adsenseDisplay) scheduleResize(ctx app.Context) {
+	interval := time.Millisecond * 100
+
+	if d.refresh != nil {
+		d.refresh.Reset(interval)
+		return
+	}
+
+	d.refresh = time.AfterFunc(interval, func() {
+		ctx.Dispatch(d.resize)
+	})
 }
 
 func (d *adsenseDisplay) resize(ctx app.Context) {
@@ -129,21 +150,18 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		ins.Get("dataset").Set("adsbygoogleStatus", "")
 		ins.Get("dataset").Set("adStatus", "")
 		ins.Set("style", fmt.Sprintf("display:block;width:%vpx;height:%vpx;overflow:hidden", w, h))
+
 		d.width = w
 		d.height = h
 		if w == 0 && h == 0 {
 			return
 		}
-		refreshAdsenseUnits()
-	}
 
-}
-
-func refreshAdsenseUnits() {
-	adsbygoogle := app.Window().Get("adsbygoogle")
-	if !adsbygoogle.Truthy() {
-		app.Logf("%s", errors.New("getting adsbygoogle failed"))
-		return
+		adsbygoogle := app.Window().Get("adsbygoogle")
+		if !adsbygoogle.Truthy() {
+			app.Logf("%s", errors.New("getting adsbygoogle failed"))
+			return
+		}
+		adsbygoogle.Call("push", map[string]interface{}{})
 	}
-	adsbygoogle.Call("push", map[string]interface{}{})
 }
