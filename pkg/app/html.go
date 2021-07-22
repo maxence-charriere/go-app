@@ -2617,6 +2617,9 @@ type HTMLAudio interface {
 	// Controls specifies that audio/video controls should be displayed (such as a play/pause button etc).
 	Controls(v bool) HTMLAudio
 
+	// CrossOrigin sets the mode of the request to an HTTP CORS Request.
+	CrossOrigin(v string) HTMLAudio
+
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v interface{}) HTMLAudio
 
@@ -2877,6 +2880,11 @@ func (e *htmlAudio) ContentEditable(v bool) HTMLAudio {
 
 func (e *htmlAudio) Controls(v bool) HTMLAudio {
 	e.setAttr("controls", v)
+	return e
+}
+
+func (e *htmlAudio) CrossOrigin(v string) HTMLAudio {
+	e.setAttr("crossorigin", v)
 	return e
 }
 
@@ -20712,6 +20720,9 @@ type HTMLImg interface {
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLImg
 
+	// CrossOrigin sets the mode of the request to an HTTP CORS Request.
+	CrossOrigin(v string) HTMLImg
+
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v interface{}) HTMLImg
 
@@ -20970,6 +20981,11 @@ func (e *htmlImg) Class(v string) HTMLImg {
 
 func (e *htmlImg) ContentEditable(v bool) HTMLImg {
 	e.setAttr("contenteditable", v)
+	return e
+}
+
+func (e *htmlImg) CrossOrigin(v string) HTMLImg {
+	e.setAttr("crossorigin", v)
 	return e
 }
 
@@ -24075,6 +24091,9 @@ type HTMLLink interface {
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLLink
 
+	// CrossOrigin sets the mode of the request to an HTTP CORS Request.
+	CrossOrigin(v string) HTMLLink
+
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v interface{}) HTMLLink
 
@@ -24256,6 +24275,11 @@ func (e *htmlLink) Class(v string) HTMLLink {
 
 func (e *htmlLink) ContentEditable(v bool) HTMLLink {
 	e.setAttr("contenteditable", v)
+	return e
+}
+
+func (e *htmlLink) CrossOrigin(v string) HTMLLink {
+	e.setAttr("crossorigin", v)
 	return e
 }
 
@@ -33882,6 +33906,9 @@ type HTMLScript interface {
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLScript
 
+	// CrossOrigin sets the mode of the request to an HTTP CORS Request.
+	CrossOrigin(v string) HTMLScript
+
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v interface{}) HTMLScript
 
@@ -33977,6 +34004,11 @@ func (e *htmlScript) Class(v string) HTMLScript {
 
 func (e *htmlScript) ContentEditable(v bool) HTMLScript {
 	e.setAttr("contenteditable", v)
+	return e
+}
+
+func (e *htmlScript) CrossOrigin(v string) HTMLScript {
+	e.setAttr("crossorigin", v)
 	return e
 }
 
@@ -43661,6 +43693,9 @@ type HTMLVideo interface {
 	// Controls specifies that audio/video controls should be displayed (such as a play/pause button etc).
 	Controls(v bool) HTMLVideo
 
+	// CrossOrigin sets the mode of the request to an HTTP CORS Request.
+	CrossOrigin(v string) HTMLVideo
+
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v interface{}) HTMLVideo
 
@@ -43930,6 +43965,11 @@ func (e *htmlVideo) ContentEditable(v bool) HTMLVideo {
 
 func (e *htmlVideo) Controls(v bool) HTMLVideo {
 	e.setAttr("controls", v)
+	return e
+}
+
+func (e *htmlVideo) CrossOrigin(v string) HTMLVideo {
+	e.setAttr("crossorigin", v)
 	return e
 }
 

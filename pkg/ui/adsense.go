@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -102,6 +103,10 @@ func (d *adsenseDisplay) Render() app.UI {
 		ID(d.Iid).
 		Class(d.Iclass).
 		Body(
+			app.Script().
+				Async(true).
+				Src(fmt.Sprintf("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=%s", d.Iclient)).
+				CrossOrigin("anonymous"),
 			app.Ins().
 				ID(d.id).
 				Class("adsbygoogle").
@@ -130,9 +135,10 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 	h := ins.Get("clientHeight").Int()
 
 	if w != d.width || h != d.height {
-		// ins.Set("innerHTML", "")
-		// ins.Set("style", "display:block;width:100%;height:100%")
-		// ins.Get("dataset").Set("adsbygoogleStatus", nil)
+		ins.Set("innerHTML", "")
+		ins.Set("style", "display:block;width:100%;height:100%")
+		ins.Get("dataset").Set("adsbygoogle-status", nil)
+		ins.Get("dataset").Set("ad-status", nil)
 		d.width = w
 		d.height = h
 		refreshAdsenseUnits(ctx, d.Irefresh)
