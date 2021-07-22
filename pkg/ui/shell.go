@@ -260,7 +260,7 @@ func (s *shell) refresh(ctx app.Context) {
 		s.hideIndex = hideIndex
 		s.hideAds = hideAds
 		s.width = w
-		s.ResizeContent()
+		// s.ResizeContent()
 	}
 }
 

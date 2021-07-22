@@ -154,6 +154,6 @@ func (s *scroll) resize(ctx app.Context) {
 
 	if w != s.width {
 		s.width = w
-		s.ResizeContent()
+		// s.ResizeContent()
 	}
 }
