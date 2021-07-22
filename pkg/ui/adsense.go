@@ -102,19 +102,23 @@ func (d *adsenseDisplay) Render() app.UI {
 		DataSet("goapp-ui", "adsenseDisplay").
 		ID(d.Iid).
 		Class(d.Iclass).
-		Style("max-width", "100%").
-		Style("max-height", "100%").
 		Body(
-			app.Script().
-				Async(true).
-				Src("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"),
-			app.Ins().
-				ID(d.id).
-				Class("adsbygoogle").
-				Style("display", "block").
+			app.Div().
+				Style("width", "100%").
+				Style("height", "100%").
 				Style("overflow", "hidden").
-				DataSet("ad-client", d.Iclient).
-				DataSet("ad-slot", d.Islot),
+				Body(
+					app.Script().
+						Async(true).
+						Src("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"),
+					app.Ins().
+						ID(d.id).
+						Class("adsbygoogle").
+						Style("display", "block").
+						Style("overflow", "hidden").
+						DataSet("ad-client", d.Iclient).
+						DataSet("ad-slot", d.Islot),
+				),
 		)
 }
 
@@ -135,8 +139,8 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 	if w != d.width || h != d.height {
 		ins.Set("innerHTML", "")
 		ins.Set("style", fmt.Sprintf("display:block;width:%vpx;height:%vpx;overflow:hidden", w, h))
-		ins.Get("dataset").Set("adsbygoogle-status", nil)
-		ins.Get("dataset").Set("ad-status", nil)
+		// ins.Get("dataset").Set("adsbygoogle-status", nil)
+		// ins.Get("dataset").Set("ad-status", nil)
 		ins.Get("dataset").Set("adsbygoogleStatus", nil)
 		d.width = w
 		d.height = h
