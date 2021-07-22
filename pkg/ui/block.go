@@ -155,6 +155,5 @@ func (b *block) resize(ctx app.Context) {
 	if w != b.width || padding != b.padding {
 		b.width = w
 		b.padding = padding
-		// b.ResizeContent()
 	}
 }
