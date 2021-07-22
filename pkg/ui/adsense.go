@@ -94,11 +94,11 @@ func (d *adsenseDisplay) OnNav(ctx app.Context) {
 }
 
 func (d *adsenseDisplay) OnResize(ctx app.Context) {
-	ctx.Defer(d.resize)
+	ctx.Dispatch(d.resize)
 }
 
 func (d *adsenseDisplay) OnUpdate(ctx app.Context) {
-	ctx.Defer(d.resize)
+	ctx.Dispatch(d.resize)
 }
 
 func (d *adsenseDisplay) Render() app.UI {
