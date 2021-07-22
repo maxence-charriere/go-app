@@ -86,19 +86,19 @@ func (d *adsenseDisplay) Refresh(du time.Duration) IAdsenseDisplay {
 }
 
 func (d *adsenseDisplay) OnMount(ctx app.Context) {
-	ctx.Dispatch(d.resize)
+	ctx.Defer(d.resize)
 }
 
 func (d *adsenseDisplay) OnNav(ctx app.Context) {
-	ctx.Dispatch(d.resize)
+	ctx.Defer(d.resize)
 }
 
 func (d *adsenseDisplay) OnResize(ctx app.Context) {
-	ctx.Dispatch(d.resize)
+	ctx.Defer(d.resize)
 }
 
 func (d *adsenseDisplay) OnUpdate(ctx app.Context) {
-	ctx.Dispatch(d.resize)
+	ctx.Defer(d.resize)
 }
 
 func (d *adsenseDisplay) Render() app.UI {
