@@ -20,6 +20,9 @@ type IShell interface {
 	// Default is 270px.
 	PaneWidth(px int) IShell
 
+	// Sets the width in px for the ads pane.
+	AdsWidth(px int) IShell
+
 	// Customizes the hamburger menu button with the given element.
 	// Default is ☰.
 	HamburgerButton(v app.UI) IShell
@@ -45,6 +48,7 @@ type IShell interface {
 func Shell() IShell {
 	return &shell{
 		IpaneWidth: 270,
+		IadsWidth:  300,
 		id:         "goapp-shell-" + uuid.NewString(),
 	}
 }
@@ -55,6 +59,7 @@ type shell struct {
 	Iid              string
 	Iclass           string
 	IpaneWidth       int
+	IadsWidth        int
 	IhamburgerButton app.UI
 	IhamburgerMenu   []app.UI
 	Imenu            []app.UI
@@ -89,6 +94,13 @@ func (s *shell) Class(v string) IShell {
 func (s *shell) PaneWidth(px int) IShell {
 	if px > 0 {
 		s.IpaneWidth = px
+	}
+	return s
+}
+
+func (s *shell) AdsWidth(px int) IShell {
+	if px > 0 {
+		s.IadsWidth = px
 	}
 	return s
 }
@@ -185,7 +197,7 @@ func (s *shell) Render() app.UI {
 						Style("position", "relative").
 						Style("display", visible(!s.hideAds)).
 						Style("flex-shrink", "0").
-						Style("flex-basis", pxToString(s.IpaneWidth)).
+						Style("flex-basis", pxToString(s.IadsWidth)).
 						Style("overflow", "hidden").
 						Body(s.Iads...),
 				),
@@ -222,9 +234,9 @@ func (s *shell) refresh(ctx app.Context) {
 	cw := int(float64(s.IpaneWidth) * 2.75)
 
 	hideAds := true
-	if len(s.Iads) != 0 && cw+s.IpaneWidth <= w {
+	if len(s.Iads) != 0 && cw+s.IadsWidth <= w {
 		hideAds = false
-		cw += s.IpaneWidth
+		cw += s.IadsWidth
 	}
 
 	hideIndex := true
