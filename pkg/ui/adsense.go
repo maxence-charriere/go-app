@@ -154,18 +154,18 @@ var (
 )
 
 func refreshAdsenseUnits(ctx app.Context, refresh time.Duration) {
-	if adRefresh != nil {
-		adRefresh.Reset(refresh)
+	// if adRefresh != nil {
+	// 	adRefresh.Reset(refresh)
+	// 	return
+	// }
+
+	// adRefresh = time.AfterFunc(refresh, func() {
+	adsbygoogle := app.Window().Get("adsbygoogle")
+	if !adsbygoogle.Truthy() {
+		app.Logf("%s", errors.New("getting adsbygoogle failed"))
 		return
 	}
-
-	adRefresh = time.AfterFunc(refresh, func() {
-		adsbygoogle := app.Window().Get("adsbygoogle")
-		if !adsbygoogle.Truthy() {
-			app.Logf("%s", errors.New("getting adsbygoogle failed"))
-			return
-		}
-		adsbygoogle.Call("push", map[string]interface{}{})
-		fmt.Println("adsense PUSH")
-	})
+	adsbygoogle.Call("push", map[string]interface{}{})
+	fmt.Println("adsense PUSH")
+	// })
 }
