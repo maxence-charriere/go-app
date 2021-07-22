@@ -233,14 +233,15 @@ func (s *shell) refresh(ctx app.Context) {
 
 	cw := int(float64(s.IpaneWidth) * 2.70)
 
+	adsExists := len(s.Iads) != 0
 	hideAds := true
-	if len(s.Iads) != 0 && cw+s.IadsWidth <= w {
+	if adsExists && cw+s.IadsWidth <= w {
 		hideAds = false
 		cw += s.IadsWidth
 	}
 
 	hideIndex := true
-	if !hideAds && len(s.Iindex) != 0 && cw+s.IpaneWidth <= w {
+	if (!adsExists || !hideAds) && len(s.Iindex) != 0 && cw+s.IpaneWidth <= w {
 		hideIndex = false
 		cw += s.IpaneWidth
 	}
