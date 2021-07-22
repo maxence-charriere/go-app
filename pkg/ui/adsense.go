@@ -131,6 +131,7 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 	}
 	w := ins.Get("clientWidth").Int()
 	h := ins.Get("clientHeight").Int()
+	fmt.Println("-- ad:", w, h)
 
 	if w != d.width || h != d.height {
 		ins.Set("innerHTML", "")
@@ -138,14 +139,15 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		ins.Get("dataset").Set("adStatus", nil)
 		d.width = w
 		d.height = h
-		fmt.Println("-- ad:", w, h)
 		if w == 0 || h == 0 {
 			return
 		}
 		fmt.Println("++ ad:", w, h)
 		fmt.Println("ad:", w, h)
-		refreshAdsenseUnits(ctx, d.Irefresh)
 	}
+
+	refreshAdsenseUnits(ctx, d.Irefresh)
+
 }
 
 var (
