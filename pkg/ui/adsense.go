@@ -103,9 +103,9 @@ func (d *adsenseDisplay) Render() app.UI {
 		ID(d.Iid).
 		Class(d.Iclass).
 		Body(
-			app.Script().
-				Async(true).
-				Src(fmt.Sprintf("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=%s", d.Iclient)),
+			// app.Script().
+			// 	Async(true).
+			// 	Src(fmt.Sprintf("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=%s", d.Iclient)),
 			app.Ins().
 				ID(d.id).
 				Class("adsbygoogle").
