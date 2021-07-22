@@ -111,8 +111,6 @@ func (d *adsenseDisplay) Render() app.UI {
 				ID(d.id).
 				Class("adsbygoogle").
 				Style("display", "block").
-				Style("width", "100%").
-				Style("height", "100%").
 				DataSet("ad-client", d.Iclient).
 				DataSet("ad-slot", d.Islot).
 				DataSet("ad-format", "auto").
@@ -130,18 +128,18 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		app.Log(errors.New("getting adsense display ins failed").Tag("id", d.id))
 		return
 	}
-
-	w := ins.Get("clientWidth").Int()
-	h := ins.Get("clientHeight").Int()
+	layout := ins.Get("parentElement")
+	w := layout.Get("clientWidth").Int()
+	h := layout.Get("clientHeight").Int()
 
 	if w != d.width || h != d.height {
 		ins.Set("innerHTML", "")
-		ins.Set("style", "display:block;width:100%;height:100%")
+		ins.Set("style", fmt.Sprintf("display:block;width:%vpx;height:%vpx", w, h))
 		ins.Get("dataset").Set("adsbygoogle-status", nil)
 		ins.Get("dataset").Set("ad-status", nil)
 		d.width = w
 		d.height = h
-		// refreshAdsenseUnits(ctx, d.Irefresh)
+		refreshAdsenseUnits(ctx, d.Irefresh)
 	}
 }
 
