@@ -137,8 +137,8 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 
 	if w != d.width || h != d.height {
 		ins.Set("innerHTML", "")
-		ins.Get("dataset").Set("adsbygoogleStatus", nil)
-		ins.Get("dataset").Set("adStatus", nil)
+		ins.Get("dataset").Set("adsbygoogleStatus", "")
+		ins.Get("dataset").Set("adStatus", "")
 		d.width = w
 		d.height = h
 		if w == 0 && h == 0 {
