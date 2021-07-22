@@ -15,6 +15,22 @@ type routeWithRegexpCompo struct {
 	Compo
 }
 
+type routeFactoryCompo struct {
+	Compo
+}
+
+type routeWithRegexpFactoryCompo struct {
+	Compo
+}
+
+func routefactory() Composer {
+	return &routeFactoryCompo{}
+}
+
+func routeWithRegexpFactory() Composer {
+	return &routeWithRegexpFactoryCompo{}
+}
+
 func TestRoutes(t *testing.T) {
 	utests := []struct {
 		scenario     string
@@ -58,6 +74,23 @@ func TestRoutes(t *testing.T) {
 				r.routeWithRegexp("^/a.*$", &routeWithRegexpCompo{})
 			},
 			expected: &routeWithRegexpCompo{},
+		},
+		{
+			scenario: "path with factory is routed",
+			createRoutes: func(r *router) {
+				r.routeFactory("/a", routefactory)
+			},
+			expected: &routeFactoryCompo{},
+			path:     "/a",
+		},
+		{
+			scenario: "pattern with factory is routed",
+			path:     "/ab",
+			createRoutes: func(r *router) {
+				r.routeFactory("/abc", routefactory)
+				r.routeWithRegexpFactory("^/a.*$", routeWithRegexpFactory)
+			},
+			expected: &routeWithRegexpFactoryCompo{},
 		},
 		{
 			scenario: "pattern with inner wildcard is routed",
