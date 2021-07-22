@@ -157,7 +157,7 @@ func refreshAdsenseUnits(ctx app.Context, refresh time.Duration) {
 	}
 
 	adRefresh = time.AfterFunc(refresh, func() {
-		ctx.Defer(func(ctx app.Context) {
+		ctx.Dispatch(func(ctx app.Context) {
 			adsbygoogle := app.Window().Get("adsbygoogle")
 			if !adsbygoogle.Truthy() {
 				app.Logf("%s", errors.New("getting adsbygoogle failed"))
