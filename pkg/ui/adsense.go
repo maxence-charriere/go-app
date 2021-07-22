@@ -129,8 +129,9 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		app.Log(errors.New("getting adsense display ins failed").Tag("id", d.id))
 		return
 	}
-	w := ins.Get("clientWidth").Int()
-	h := ins.Get("clientHeight").Int()
+	layout := ins.Get("parentElement")
+	w := layout.Get("clientWidth").Int()
+	h := layout.Get("clientHeight").Int()
 
 	if w != d.width || h != d.height {
 		fmt.Println("-- ad:", w, h)
