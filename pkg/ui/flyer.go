@@ -196,7 +196,7 @@ func (f *flyer) resize(ctx app.Context) {
 
 	layout := app.Window().GetElementByID(f.layoutID)
 	if !layout.Truthy() {
-		app.Log(errors.New("flyer container not found").Tag("id", f.layoutID))
+		app.Log(errors.New("getting flyer container failed").Tag("id", f.layoutID))
 		return
 	}
 
