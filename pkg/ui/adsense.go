@@ -89,10 +89,6 @@ func (d *adsenseDisplay) OnMount(ctx app.Context) {
 	ctx.Defer(d.resize)
 }
 
-func (d *adsenseDisplay) OnNav(ctx app.Context) {
-	ctx.Defer(d.resize)
-}
-
 func (d *adsenseDisplay) OnResize(ctx app.Context) {
 	ctx.Defer(d.resize)
 }
