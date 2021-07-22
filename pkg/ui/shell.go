@@ -48,7 +48,7 @@ type IShell interface {
 func Shell() IShell {
 	return &shell{
 		IpaneWidth: 270,
-		IadsWidth:  300,
+		IadsWidth:  300 + 2*BaseHPadding,
 		id:         "goapp-shell-" + uuid.NewString(),
 	}
 }
@@ -231,7 +231,7 @@ func (s *shell) Render() app.UI {
 func (s *shell) refresh(ctx app.Context) {
 	w, _ := s.layoutSize()
 
-	cw := int(float64(s.IpaneWidth) * 2.75)
+	cw := int(float64(s.IpaneWidth) * 2.70)
 
 	hideAds := true
 	if len(s.Iads) != 0 && cw+s.IadsWidth <= w {
@@ -240,13 +240,13 @@ func (s *shell) refresh(ctx app.Context) {
 	}
 
 	hideIndex := true
-	if len(s.Iindex) != 0 && cw+s.IpaneWidth <= w {
+	if !hideAds && len(s.Iindex) != 0 && cw+s.IpaneWidth <= w {
 		hideIndex = false
 		cw += s.IpaneWidth
 	}
 
 	hideMenu := true
-	if len(s.Imenu) != 0 && cw+s.IpaneWidth <= w {
+	if !hideIndex && len(s.Imenu) != 0 && cw+s.IpaneWidth <= w {
 		hideMenu = false
 		cw += s.IpaneWidth
 	}

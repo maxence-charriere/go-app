@@ -37,7 +37,7 @@ type IScroll interface {
 // and footer.
 func Scroll() IScroll {
 	return &scroll{
-		IheaderHeight: 90,
+		IheaderHeight: defaultHeaderHeight,
 		hpadding:      BaseHPadding,
 		vpadding:      BaseVPadding,
 	}

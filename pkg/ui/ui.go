@@ -22,6 +22,10 @@ var (
 	BaseVPadding = 12
 )
 
+const (
+	defaultHeaderHeight = 90
+)
+
 func pxToString(px int) string {
 	return strconv.Itoa(px) + "px"
 }
