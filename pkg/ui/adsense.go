@@ -134,21 +134,15 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 	h := layout.Get("clientHeight").Int()
 
 	if w != d.width || h != d.height {
-		fmt.Println("-- ad:", w, h)
-
 		ins.Set("innerHTML", "")
 		ins.Get("dataset").Set("adsbygoogleStatus", nil)
 		ins.Get("dataset").Set("adStatus", nil)
 		d.width = w
 		d.height = h
-		d.ResizeContent()
 		if w == 0 && h == 0 {
 			return
 		}
-		fmt.Println("++ ad:", w, h)
-
 		refreshAdsenseUnits(ctx, d.Irefresh)
-
 	}
 
 }
@@ -169,7 +163,7 @@ func refreshAdsenseUnits(ctx app.Context, refresh time.Duration) {
 			app.Logf("%s", errors.New("getting adsbygoogle failed"))
 			return
 		}
-		fmt.Println("adsense PUSH")
 		adsbygoogle.Call("push", map[string]interface{}{})
+		fmt.Println("adsense PUSH")
 	})
 }
