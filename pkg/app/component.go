@@ -463,7 +463,7 @@ func (c *Compo) onAppInstallChange() {
 }
 
 func (c *Compo) onResize() {
-	defer c.root.onResize()
+	c.root.onResize()
 
 	if resizer, ok := c.self().(Resizer); ok {
 		c.dispatch(resizer.OnResize)
