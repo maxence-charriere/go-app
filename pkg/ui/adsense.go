@@ -1,9 +1,6 @@
 package ui
 
 import (
-	"fmt"
-	"time"
-
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
@@ -27,27 +24,22 @@ type IAdsenseDisplay interface {
 
 	// Sets the AdSense slot.
 	Slot(v string) IAdsenseDisplay
-
-	// Sets the duration to wait before ads are loaded. Default is 150ms.
-	Refresh(d time.Duration) IAdsenseDisplay
 }
 
 // AdsenseDisplay creates a responsive Adsense display unit.
 func AdsenseDisplay() IAdsenseDisplay {
 	return &adsenseDisplay{
-		Irefresh: time.Millisecond * 150,
-		id:       "goapp-adsense-display-" + uuid.NewString(),
+		id: "goapp-adsense-display-" + uuid.NewString(),
 	}
 }
 
 type adsenseDisplay struct {
 	app.Compo
 
-	Iid      string
-	Iclass   string
-	Iclient  string
-	Islot    string
-	Irefresh time.Duration
+	Iid     string
+	Iclass  string
+	Iclient string
+	Islot   string
 
 	id          string
 	currentPath string
@@ -78,11 +70,6 @@ func (d *adsenseDisplay) Client(v string) IAdsenseDisplay {
 
 func (d *adsenseDisplay) Slot(v string) IAdsenseDisplay {
 	d.Islot = v
-	return d
-}
-
-func (d *adsenseDisplay) Refresh(du time.Duration) IAdsenseDisplay {
-	d.Irefresh = du
 	return d
 }
 
@@ -144,28 +131,16 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		if w == 0 && h == 0 {
 			return
 		}
-		refreshAdsenseUnits(ctx, d.Irefresh)
+		refreshAdsenseUnits()
 	}
 
 }
 
-var (
-	adRefresh *time.Timer
-)
-
-func refreshAdsenseUnits(ctx app.Context, refresh time.Duration) {
-	// if adRefresh != nil {
-	// 	adRefresh.Reset(refresh)
-	// 	return
-	// }
-
-	// adRefresh = time.AfterFunc(refresh, func() {
+func refreshAdsenseUnits() {
 	adsbygoogle := app.Window().Get("adsbygoogle")
 	if !adsbygoogle.Truthy() {
 		app.Logf("%s", errors.New("getting adsbygoogle failed"))
 		return
 	}
 	adsbygoogle.Call("push", map[string]interface{}{})
-	fmt.Println("adsense PUSH")
-	// })
 }
