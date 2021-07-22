@@ -160,5 +160,6 @@ func refreshAdsenseUnits(ctx app.Context, refresh time.Duration) {
 			return
 		}
 		adsbygoogle.Call("push", map[string]interface{}{})
+		fmt.Println("adsense PUSH")
 	})
 }
