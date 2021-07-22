@@ -110,6 +110,7 @@ func (d *adsenseDisplay) Render() app.UI {
 				ID(d.id).
 				Class("adsbygoogle").
 				Style("display", "block").
+				Style("overflow", "hidden").
 				DataSet("ad-client", d.Iclient).
 				DataSet("ad-slot", d.Islot),
 		)
@@ -131,7 +132,7 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 
 	if w != d.width || h != d.height {
 		ins.Set("innerHTML", "")
-		ins.Set("style", fmt.Sprintf("display:block;width:%vpx;height:%vpx", w, h))
+		ins.Set("style", fmt.Sprintf("display:block;width:%vpx;height:%vpx;overflow:hidden", w, h))
 		ins.Get("dataset").Set("adsbygoogle-status", nil)
 		ins.Get("dataset").Set("ad-status", nil)
 		ins.Get("dataset").Set("adsbygoogleStatus", nil)
