@@ -112,9 +112,7 @@ func (d *adsenseDisplay) Render() app.UI {
 				Class("adsbygoogle").
 				Style("display", "block").
 				DataSet("ad-client", d.Iclient).
-				DataSet("ad-slot", d.Islot).
-				DataSet("ad-format", "auto").
-				DataSet("full-width-responsive", "true"),
+				DataSet("ad-slot", d.Islot),
 		)
 }
 
