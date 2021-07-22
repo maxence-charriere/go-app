@@ -141,7 +141,7 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		ins.Get("dataset").Set("ad-status", nil)
 		d.width = w
 		d.height = h
-		refreshAdsenseUnits(ctx, d.Irefresh)
+		// refreshAdsenseUnits(ctx, d.Irefresh)
 	}
 }
 
