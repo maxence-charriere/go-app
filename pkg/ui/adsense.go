@@ -138,7 +138,7 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		ins.Get("dataset").Set("adStatus", nil)
 		d.width = w
 		d.height = h
-		if w < 100 || h < 50 {
+		if w < 0 || h < 0 {
 			return
 		}
 		fmt.Println("ad:", w, h)
@@ -166,5 +166,6 @@ func refreshAdsenseUnits(ctx app.Context, refresh time.Duration) {
 			adsbygoogle.Call("push", map[string]interface{}{})
 			fmt.Println("adsense PUSH")
 		})
+
 	})
 }
