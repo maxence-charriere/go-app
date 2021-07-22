@@ -89,6 +89,10 @@ func (d *adsenseDisplay) OnMount(ctx app.Context) {
 	d.resize(ctx)
 }
 
+func (d *adsenseDisplay) OnNav(ctx app.Context) {
+	d.resize(ctx)
+}
+
 func (d *adsenseDisplay) OnResize(ctx app.Context) {
 	d.resize(ctx)
 }
