@@ -122,9 +122,14 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		app.Log(errors.New("getting adsense display ins failed").Tag("id", d.id))
 		return
 	}
+
 	layout := ins.Get("parentElement")
 	w := layout.Get("clientWidth").Int()
 	h := layout.Get("clientHeight").Int()
+	if !d.isDisplayable(w, h) {
+		d.retry(ctx)
+		return
+	}
 
 	if w != d.width || h != d.height {
 		ins.Set("innerHTML", "")
@@ -133,17 +138,21 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		ins.Set("style", fmt.Sprintf("display:block;width:%vpx;height:%vpx;overflow:hidden", w, h))
 		d.width = w
 		d.height = h
-		if w < 100 && h < 50 {
-			if d.retries >= 5 {
-				app.Log(errors.New("adsense display unit failed to load").Tag("retries", d.retries))
-				return
-			}
-			ctx.After(time.Second, d.resize)
-			d.retries++
-			return
-		}
 		refreshAdsenseUnits()
 	}
+}
+
+func (d *adsenseDisplay) isDisplayable(w, h int) bool {
+	return w >= 100 && h >= 50
+}
+
+func (d *adsenseDisplay) retry(ctx app.Context) {
+	if d.retries > 5 {
+		app.Log(errors.New("adsense display unit failed to load").Tag("retries", d.retries))
+		return
+	}
+	d.retries++
+	ctx.After(time.Second, d.resize)
 }
 
 func refreshAdsenseUnits() {
