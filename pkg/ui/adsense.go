@@ -164,7 +164,7 @@ func (d *adsenseDisplay) isDisplayable(w, h int) bool {
 }
 
 func (d *adsenseDisplay) retry(ctx app.Context) {
-	if d.retries > 5 {
+	if d.retries > 60 {
 		app.Log(errors.New("adsense display unit failed to load").
 			Tag("id", d.id).
 			Tag("width", d.width).
