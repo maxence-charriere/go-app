@@ -426,7 +426,7 @@ func (c *Compo) render() UI {
 }
 
 func (c *Compo) onNav(u *url.URL) {
-	c.root.onNav(u)
+	defer c.root.onNav(u)
 
 	if nav, ok := c.self().(Navigator); ok {
 		c.dispatch(nav.OnNav)
@@ -463,7 +463,7 @@ func (c *Compo) onAppInstallChange() {
 }
 
 func (c *Compo) onResize() {
-	c.root.onResize()
+	defer c.root.onResize()
 
 	if resizer, ok := c.self().(Resizer); ok {
 		c.dispatch(resizer.OnResize)

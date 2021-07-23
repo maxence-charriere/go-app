@@ -101,6 +101,5 @@ func (b *base) resize(ctx app.Context) {
 
 	if w != b.width {
 		b.width = w
-		b.ResizeContent()
 	}
 }

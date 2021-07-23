@@ -20,6 +20,9 @@ type IShell interface {
 	// Default is 270px.
 	PaneWidth(px int) IShell
 
+	// Sets the width in px for the ads pane.
+	AdsWidth(px int) IShell
+
 	// Customizes the hamburger menu button with the given element.
 	// Default is ☰.
 	HamburgerButton(v app.UI) IShell
@@ -35,6 +38,9 @@ type IShell interface {
 
 	// Sets the content.
 	Content(v ...app.UI) IShell
+
+	// Sets the ads pane.
+	Ads(v ...app.UI) IShell
 }
 
 // Shell returns a layout that responsively displays a content with a menu pane,
@@ -42,6 +48,7 @@ type IShell interface {
 func Shell() IShell {
 	return &shell{
 		IpaneWidth: 270,
+		IadsWidth:  300 + 2*BaseHPadding,
 		id:         "goapp-shell-" + uuid.NewString(),
 	}
 }
@@ -52,15 +59,18 @@ type shell struct {
 	Iid              string
 	Iclass           string
 	IpaneWidth       int
+	IadsWidth        int
 	IhamburgerButton app.UI
 	IhamburgerMenu   []app.UI
 	Imenu            []app.UI
 	Iindex           []app.UI
 	Icontent         []app.UI
+	Iads             []app.UI
 
 	id                string
 	hideMenu          bool
 	hideIndex         bool
+	hideAds           bool
 	showHamburgerMenu bool
 	width             int
 }
@@ -84,6 +94,13 @@ func (s *shell) Class(v string) IShell {
 func (s *shell) PaneWidth(px int) IShell {
 	if px > 0 {
 		s.IpaneWidth = px
+	}
+	return s
+}
+
+func (s *shell) AdsWidth(px int) IShell {
+	if px > 0 {
+		s.IadsWidth = px
 	}
 	return s
 }
@@ -113,6 +130,11 @@ func (s *shell) Index(v ...app.UI) IShell {
 
 func (s *shell) Content(v ...app.UI) IShell {
 	s.Icontent = app.FilterUIElems(v...)
+	return s
+}
+
+func (s *shell) Ads(v ...app.UI) IShell {
+	s.Iads = app.FilterUIElems(v...)
 	return s
 }
 
@@ -171,6 +193,13 @@ func (s *shell) Render() app.UI {
 						Style("flex-grow", "1").
 						Style("overflow", "hidden").
 						Body(s.Icontent...),
+					app.Div().
+						Style("position", "relative").
+						Style("display", visible(!s.hideAds)).
+						Style("flex-shrink", "0").
+						Style("flex-basis", pxToString(s.IadsWidth)).
+						Style("overflow", "hidden").
+						Body(s.Iads...),
 				),
 			app.Div().
 				Style("display", visible(s.hideMenu && len(s.IhamburgerMenu) != 0)).
@@ -202,19 +231,35 @@ func (s *shell) Render() app.UI {
 func (s *shell) refresh(ctx app.Context) {
 	w, _ := s.layoutSize()
 
-	hideIndex := len(s.Iindex) == 0 || 3*s.IpaneWidth > w
-	hideMenu := false
-	if hideIndex {
-		hideMenu = len(s.Imenu) == 0 || 3*s.IpaneWidth > w
-	} else {
-		hideMenu = len(s.Imenu) == 0 || 5*s.IpaneWidth > w
+	cw := int(float64(s.IpaneWidth) * 2.70)
+
+	adsExists := len(s.Iads) != 0
+	hideAds := true
+	if adsExists && cw+s.IadsWidth <= w {
+		hideAds = false
+		cw += s.IadsWidth
 	}
 
-	if hideMenu != s.hideMenu || hideIndex != s.hideIndex || w != s.width {
+	hideIndex := true
+	if (!adsExists || !hideAds) && len(s.Iindex) != 0 && cw+s.IpaneWidth <= w {
+		hideIndex = false
+		cw += s.IpaneWidth
+	}
+
+	hideMenu := true
+	if !hideIndex && len(s.Imenu) != 0 && cw+s.IpaneWidth <= w {
+		hideMenu = false
+		cw += s.IpaneWidth
+	}
+
+	if hideMenu != s.hideMenu ||
+		hideIndex != s.hideIndex ||
+		hideAds != s.hideAds ||
+		w != s.width {
 		s.hideMenu = hideMenu
 		s.hideIndex = hideIndex
+		s.hideAds = hideAds
 		s.width = w
-		s.ResizeContent()
 	}
 }
 

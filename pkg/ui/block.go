@@ -22,6 +22,9 @@ type IBlock interface {
 	// Aligns content to the middle.
 	Middle() IBlock
 
+	// Sets whether there is padding. Default is true.
+	Padding(v bool) IBlock
+
 	// The maximum content width. Default is 540px.
 	MaxContentWidth(px int) IBlock
 
@@ -34,6 +37,7 @@ func Block() IBlock {
 	return &block{
 		Ialignment:       stretch,
 		ImaxContentWidth: 540,
+		Ipadding:         true,
 		padding:          BlockPadding,
 	}
 }
@@ -45,6 +49,7 @@ type block struct {
 	Iclass           string
 	Ialignment       alignment
 	ImaxContentWidth int
+	Ipadding         bool
 	Icontent         []app.UI
 
 	padding int
@@ -79,6 +84,11 @@ func (b *block) Middle() IBlock {
 
 func (b *block) MaxContentWidth(px int) IBlock {
 	b.ImaxContentWidth = px
+	return b
+}
+
+func (b *block) Padding(v bool) IBlock {
+	b.Ipadding = v
 	return b
 }
 
@@ -132,14 +142,18 @@ func (b *block) Render() app.UI {
 
 func (b *block) resize(ctx app.Context) {
 	w, _ := ctx.Page().Size()
-	if w <= 480 {
-		b.padding = BlockMobilePadding
-	} else {
-		b.padding = BlockPadding
+
+	var padding int
+	if b.Ipadding {
+		if w <= 480 {
+			padding = BlockMobilePadding
+		} else {
+			padding = BlockPadding
+		}
 	}
 
-	if w != b.width {
+	if w != b.width || padding != b.padding {
 		b.width = w
-		b.ResizeContent()
+		b.padding = padding
 	}
 }

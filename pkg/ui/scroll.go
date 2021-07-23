@@ -37,7 +37,7 @@ type IScroll interface {
 // and footer.
 func Scroll() IScroll {
 	return &scroll{
-		IheaderHeight: 90,
+		IheaderHeight: defaultHeaderHeight,
 		hpadding:      BaseHPadding,
 		vpadding:      BaseVPadding,
 	}
@@ -154,6 +154,5 @@ func (s *scroll) resize(ctx app.Context) {
 
 	if w != s.width {
 		s.width = w
-		s.ResizeContent()
 	}
 }

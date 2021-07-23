@@ -83,6 +83,7 @@ var tags = []tag{
 		Attrs: withGlobalAttrs(attrsByNames(
 			"autoplay",
 			"controls",
+			"crossorigin",
 			"loop",
 			"muted",
 			"preload",
@@ -453,6 +454,7 @@ var tags = []tag{
 		Doc:         "defines an image.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"alt",
+			"crossorigin",
 			"height",
 			"ismap",
 			"sizes",
@@ -552,6 +554,7 @@ var tags = []tag{
 		SelfClosing: true,
 		Doc:         "defines the relationship between a document and an external resource (most used to link to style sheets).",
 		Attrs: withGlobalAttrs(attrsByNames(
+			"crossorigin",
 			"href",
 			"hreflang",
 			"media",
@@ -769,6 +772,7 @@ var tags = []tag{
 		Attrs: withGlobalAttrs(attrsByNames(
 			"async",
 			"charset",
+			"crossorigin",
 			"defer",
 			"src",
 			"type",
@@ -974,6 +978,7 @@ var tags = []tag{
 		Attrs: withGlobalAttrs(attrsByNames(
 			"autoplay",
 			"controls",
+			"crossorigin",
 			"height",
 			"loop",
 			"muted",
@@ -1124,6 +1129,11 @@ var attrs = map[string]attr{
 		Name: "Coords",
 		Type: "string",
 		Doc:  "specifies the coordinates of the area.",
+	},
+	"crossorigin": {
+		Name: "CrossOrigin",
+		Type: "string",
+		Doc:  "sets the mode of the request to an HTTP CORS Request.",
 	},
 
 	// D:
