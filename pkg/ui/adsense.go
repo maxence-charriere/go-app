@@ -176,7 +176,7 @@ var (
 	adMutex           sync.Mutex
 	adUnits           = make(map[*adsenseDisplay]struct{})
 	adRefresh         *time.Timer
-	adRefreshInterval = time.Millisecond * 250
+	adRefreshInterval = time.Millisecond * 100
 )
 
 func refreshAdUnits(u *adsenseDisplay) {
