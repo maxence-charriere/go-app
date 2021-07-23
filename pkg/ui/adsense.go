@@ -191,8 +191,6 @@ func refreshAdUnits(u *adsenseDisplay) {
 	adMutex.Lock()
 	defer adMutex.Unlock()
 
-	adUnits[u] = struct{}{}
-
 	if adRefresh != nil {
 		adRefresh.Reset(adRefreshInterval)
 		return
@@ -212,7 +210,7 @@ func refreshAdUnits(u *adsenseDisplay) {
 		}
 
 		for u := range adUnits {
-			if u.Mounted() {
+			if u.Mounted() && u.loaded {
 				adsbygoogle.Call("push", map[string]interface{}{})
 			}
 			delete(adUnits, u)
