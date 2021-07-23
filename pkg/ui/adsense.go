@@ -145,6 +145,7 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		d.retry(ctx)
 		return
 	}
+	d.retries = 0
 
 	if w != d.width || h != d.height {
 		ins.Set("innerHTML", "")
@@ -154,7 +155,6 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		d.width = w
 		d.height = h
 		d.loaded = true
-		d.retries = 0
 		refreshAdUnits(d)
 	}
 }
