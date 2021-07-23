@@ -201,6 +201,9 @@ func refreshAdUnits(u *adsenseDisplay) {
 		adsbygoogle := app.Window().Get("adsbygoogle")
 		if !adsbygoogle.Truthy() {
 			app.Log(errors.New("getting adsbygoogle failed"))
+			if adRefresh != nil {
+				adRefresh.Reset(adRefreshInterval)
+			}
 			return
 		}
 
