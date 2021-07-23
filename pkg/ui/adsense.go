@@ -153,9 +153,9 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		ins.Set("style", fmt.Sprintf("display:block;width:%vpx;height:%vpx;overflow:hidden", w, h))
 		d.width = w
 		d.height = h
-		refreshAdUnits(d)
 		d.loaded = true
 		d.retries = 0
+		refreshAdUnits(d)
 	}
 }
 
@@ -187,11 +187,7 @@ func refreshAdUnits(u *adsenseDisplay) {
 	adMutex.Lock()
 	defer adMutex.Unlock()
 
-	if u.Mounted() {
-		adUnits[u] = struct{}{}
-	} else {
-		delete(adUnits, u)
-	}
+	adUnits[u] = struct{}{}
 
 	if adRefresh != nil {
 		adRefresh.Reset(adRefreshInterval)
