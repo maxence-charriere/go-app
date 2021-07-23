@@ -7,6 +7,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/logs"
 )
 
 // IAdsenseDisplay is the interface that describes a responsive Adsense display
@@ -92,6 +93,15 @@ func (d *adsenseDisplay) OnResize(ctx app.Context) {
 
 func (d *adsenseDisplay) OnUpdate(ctx app.Context) {
 	ctx.Defer(d.resize)
+}
+
+func (d *adsenseDisplay) OnDismount() {
+	app.Log(logs.New("adsense display unit dismounted").
+		Tag("slot", d.Islot).
+		Tag("width", d.width).
+		Tag("height", d.height).
+		Tag("retries", d.retries).
+		Tag("current-path", d.currentPath))
 }
 
 func (d *adsenseDisplay) Render() app.UI {
