@@ -97,6 +97,7 @@ func (d *adsenseDisplay) OnUpdate(ctx app.Context) {
 
 func (d *adsenseDisplay) OnDismount() {
 	app.Log(logs.New("adsense display unit dismounted").
+		Tag("id", d.id).
 		Tag("slot", d.Islot).
 		Tag("width", d.width).
 		Tag("height", d.height).
@@ -148,7 +149,7 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		ins.Set("style", fmt.Sprintf("display:block;width:%vpx;height:%vpx;overflow:hidden", w, h))
 		d.width = w
 		d.height = h
-		refreshAdsenseUnits()
+		d.refreshAdsenseUnits()
 	}
 }
 
@@ -165,11 +166,18 @@ func (d *adsenseDisplay) retry(ctx app.Context) {
 	ctx.After(time.Second, d.resize)
 }
 
-func refreshAdsenseUnits() {
+func (d *adsenseDisplay) refreshAdsenseUnits() {
 	adsbygoogle := app.Window().Get("adsbygoogle")
 	if !adsbygoogle.Truthy() {
 		app.Logf("%s", errors.New("getting adsbygoogle failed"))
 		return
 	}
+	app.Log(logs.New("adsense push").
+		Tag("id", d.id).
+		Tag("slot", d.Islot).
+		Tag("width", d.width).
+		Tag("height", d.height).
+		Tag("retries", d.retries).
+		Tag("current-path", d.currentPath))
 	adsbygoogle.Call("push", map[string]interface{}{})
 }
