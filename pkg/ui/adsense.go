@@ -2,11 +2,13 @@ package ui
 
 import (
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/logs"
 )
 
 // IAdsenseDisplay is the interface that describes a responsive Adsense display
@@ -104,6 +106,10 @@ func (d *adsenseDisplay) OnUpdate(ctx app.Context) {
 	}
 }
 
+func (d *adsenseDisplay) OnDismount() {
+	refreshAdUnits(d)
+}
+
 func (d *adsenseDisplay) Render() app.UI {
 	return app.Div().
 		DataSet("goapp-ui", "adsenseDisplay").
@@ -148,7 +154,8 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		ins.Set("style", fmt.Sprintf("display:block;width:%vpx;height:%vpx;overflow:hidden", w, h))
 		d.width = w
 		d.height = h
-		d.refreshAdsenseUnits()
+		refreshAdUnits(d)
+		d.loaded = true
 	}
 }
 
@@ -165,13 +172,50 @@ func (d *adsenseDisplay) retry(ctx app.Context) {
 	ctx.After(time.Second, d.resize)
 }
 
-func (d *adsenseDisplay) refreshAdsenseUnits() {
-	adsbygoogle := app.Window().Get("adsbygoogle")
-	if !adsbygoogle.Truthy() {
-		app.Log(errors.New("getting adsbygoogle failed"))
+var (
+	adMutex           sync.Mutex
+	adUnits           = make(map[*adsenseDisplay]struct{})
+	adRefresh         *time.Timer
+	adRefreshInterval = time.Millisecond * 250
+)
+
+func refreshAdUnits(u *adsenseDisplay) {
+	adMutex.Lock()
+	defer adMutex.Unlock()
+
+	if u.Mounted() {
+		adUnits[u] = struct{}{}
+	} else {
+		delete(adUnits, u)
+	}
+
+	if adRefresh != nil {
+		adRefresh.Reset(adRefreshInterval)
 		return
 	}
 
-	adsbygoogle.Call("push", map[string]interface{}{})
-	d.loaded = true
+	adRefresh = time.AfterFunc(adRefreshInterval, func() {
+		adMutex.Lock()
+		defer adMutex.Unlock()
+
+		adsbygoogle := app.Window().Get("adsbygoogle")
+		if !adsbygoogle.Truthy() {
+			app.Log(errors.New("getting adsbygoogle failed"))
+			return
+		}
+
+		for u := range adUnits {
+			if u.Mounted() {
+				app.Log(logs.New("adsense push").
+					Tag("slot", u.Islot).
+					Tag("id", u.id).
+					Tag("width", u.width).
+					Tag("height", u.height).
+					Tag("retries", u.retries))
+				adsbygoogle.Call("push", map[string]interface{}{})
+
+			}
+			delete(adUnits, u)
+		}
+	})
 }
