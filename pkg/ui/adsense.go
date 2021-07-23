@@ -50,6 +50,7 @@ type adsenseDisplay struct {
 	width       int
 	height      int
 	retries     int
+	loaded      bool
 }
 
 func (d *adsenseDisplay) ID(v string) IAdsenseDisplay {
@@ -78,21 +79,30 @@ func (d *adsenseDisplay) Slot(v string) IAdsenseDisplay {
 	return d
 }
 
+func (d *adsenseDisplay) OnMount(ctx app.Context) {
+	ctx.Defer(d.resize)
+}
+
 func (d *adsenseDisplay) OnNav(ctx app.Context) {
-	if path := ctx.Page().URL().Path; path != d.currentPath {
-		d.currentPath = path
+	path := ctx.Page().URL().Path
+	if d.loaded && path != d.currentPath {
 		d.width = 0
 		d.height = 0
 		ctx.Defer(d.resize)
 	}
+	d.currentPath = path
 }
 
 func (d *adsenseDisplay) OnResize(ctx app.Context) {
-	ctx.Defer(d.resize)
+	if d.loaded {
+		ctx.Defer(d.resize)
+	}
 }
 
 func (d *adsenseDisplay) OnUpdate(ctx app.Context) {
-	ctx.Defer(d.resize)
+	if d.loaded {
+		ctx.Defer(d.resize)
+	}
 }
 
 func (d *adsenseDisplay) OnDismount() {
@@ -180,4 +190,5 @@ func (d *adsenseDisplay) refreshAdsenseUnits() {
 		Tag("retries", d.retries).
 		Tag("current-path", d.currentPath))
 	adsbygoogle.Call("push", map[string]interface{}{})
+	d.loaded = true
 }
