@@ -8,7 +8,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
-	"github.com/maxence-charriere/go-app/v9/pkg/logs"
 )
 
 // IAdsenseDisplay is the interface that describes a responsive Adsense display
@@ -211,12 +210,6 @@ func refreshAdUnits(u *adsenseDisplay) {
 
 		for u := range adUnits {
 			if u.Mounted() {
-				app.Log(logs.New("adsense push").
-					Tag("slot", u.Islot).
-					Tag("id", u.id).
-					Tag("width", u.width).
-					Tag("height", u.height).
-					Tag("retries", u.retries))
 				adsbygoogle.Call("push", map[string]interface{}{})
 			}
 			delete(adUnits, u)
