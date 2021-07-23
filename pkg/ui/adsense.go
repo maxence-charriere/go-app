@@ -156,6 +156,7 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		d.height = h
 		refreshAdUnits(d)
 		d.loaded = true
+		d.retries = 0
 	}
 }
 
