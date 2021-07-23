@@ -2,6 +2,7 @@ package ui
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
@@ -47,6 +48,7 @@ type adsenseDisplay struct {
 	currentPath string
 	width       int
 	height      int
+	retries     int
 }
 
 func (d *adsenseDisplay) ID(v string) IAdsenseDisplay {
@@ -131,12 +133,17 @@ func (d *adsenseDisplay) resize(ctx app.Context) {
 		ins.Set("style", fmt.Sprintf("display:block;width:%vpx;height:%vpx;overflow:hidden", w, h))
 		d.width = w
 		d.height = h
-		if w == 0 && h == 0 {
+		if w < 100 && h < 50 {
+			if d.retries >= 5 {
+				app.Log(errors.New("adsense display unit failed to load").Tag("retries", d.retries))
+				return
+			}
+			ctx.After(time.Second, d.resize)
+			d.retries++
 			return
 		}
 		refreshAdsenseUnits()
 	}
-
 }
 
 func refreshAdsenseUnits() {
