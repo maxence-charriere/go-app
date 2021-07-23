@@ -7,7 +7,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
-	"github.com/maxence-charriere/go-app/v9/pkg/logs"
 )
 
 // IAdsenseDisplay is the interface that describes a responsive Adsense display
@@ -105,16 +104,6 @@ func (d *adsenseDisplay) OnUpdate(ctx app.Context) {
 	}
 }
 
-func (d *adsenseDisplay) OnDismount() {
-	app.Log(logs.New("adsense display unit dismounted").
-		Tag("id", d.id).
-		Tag("slot", d.Islot).
-		Tag("width", d.width).
-		Tag("height", d.height).
-		Tag("retries", d.retries).
-		Tag("current-path", d.currentPath))
-}
-
 func (d *adsenseDisplay) Render() app.UI {
 	return app.Div().
 		DataSet("goapp-ui", "adsenseDisplay").
@@ -179,16 +168,10 @@ func (d *adsenseDisplay) retry(ctx app.Context) {
 func (d *adsenseDisplay) refreshAdsenseUnits() {
 	adsbygoogle := app.Window().Get("adsbygoogle")
 	if !adsbygoogle.Truthy() {
-		app.Logf("%s", errors.New("getting adsbygoogle failed"))
+		app.Log(errors.New("getting adsbygoogle failed"))
 		return
 	}
-	app.Log(logs.New("adsense push").
-		Tag("id", d.id).
-		Tag("slot", d.Islot).
-		Tag("width", d.width).
-		Tag("height", d.height).
-		Tag("retries", d.retries).
-		Tag("current-path", d.currentPath))
+
 	adsbygoogle.Call("push", map[string]interface{}{})
 	d.loaded = true
 }
