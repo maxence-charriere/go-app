@@ -181,6 +181,10 @@ var (
 )
 
 func refreshAdUnits(u *adsenseDisplay) {
+	if app.IsServer {
+		return
+	}
+
 	adMutex.Lock()
 	defer adMutex.Unlock()
 
@@ -214,7 +218,6 @@ func refreshAdUnits(u *adsenseDisplay) {
 					Tag("height", u.height).
 					Tag("retries", u.retries))
 				adsbygoogle.Call("push", map[string]interface{}{})
-
 			}
 			delete(adUnits, u)
 		}
