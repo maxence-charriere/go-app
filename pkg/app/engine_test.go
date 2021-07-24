@@ -66,33 +66,6 @@ func TestEngineEmit(t *testing.T) {
 	e.Emit(bar, nil)
 }
 
-// func TestEngineExecEvent(t *testing.T) {
-// 	e := engine{}
-// 	e.init()
-// 	defer e.Close()
-
-// 	called := false
-// 	isCalled := func(Context) {
-// 		called = true
-// 	}
-
-// 	h := &hello{}
-// 	e.execEvent(event{source: h})
-// 	e.execEvent(event{
-// 		source:   h,
-// 		function: isCalled,
-// 	})
-// 	require.False(t, called)
-
-// 	e.Mount(h)
-// 	e.Consume()
-// 	e.execEvent(event{
-// 		source:   h,
-// 		function: isCalled,
-// 	})
-// 	require.True(t, called)
-// }
-
 func TestEngineHandleDispatch(t *testing.T) {
 	t.Run("update", func(t *testing.T) {
 		e := engine{}

@@ -137,7 +137,7 @@ type Context interface {
 	//  }
 	ObserveState(state string) Observer
 
-	// Returns the global dispatcher.
+	// Returns the app dispatcher.
 	Dispatcher() Dispatcher
 }
 

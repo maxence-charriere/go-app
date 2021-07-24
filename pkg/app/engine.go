@@ -194,8 +194,8 @@ func (e *engine) Mount(n UI) {
 			if !e.isMountedOnce {
 				if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {
 					panic(errors.New("mounting ui element failed").
-						Tag("events-count", len(e.dispatches)).
-						Tag("events-capacity", cap(e.dispatches)).
+						Tag("dispatches-count", len(e.dispatches)).
+						Tag("dispatches-capacity", cap(e.dispatches)).
 						Tag("updates-count", len(e.updates)).
 						Tag("updates-queue-len", len(e.updateQueue)).
 						Wrap(err))
@@ -211,8 +211,8 @@ func (e *engine) Mount(n UI) {
 			}
 			if !isErrReplace(err) {
 				panic(errors.New("mounting ui element failed").
-					Tag("events-count", len(e.dispatches)).
-					Tag("events-capacity", cap(e.dispatches)).
+					Tag("dispatches-count", len(e.dispatches)).
+					Tag("dispatches-capacity", cap(e.dispatches)).
 					Tag("updates-count", len(e.updates)).
 					Tag("updates-queue-len", len(e.updateQueue)).
 					Wrap(err))
@@ -220,8 +220,8 @@ func (e *engine) Mount(n UI) {
 
 			if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {
 				panic(errors.New("mounting ui element failed").
-					Tag("events-count", len(e.dispatches)).
-					Tag("events-capacity", cap(e.dispatches)).
+					Tag("dispatches-count", len(e.dispatches)).
+					Tag("dispatches-capacity", cap(e.dispatches)).
 					Tag("updates-count", len(e.updates)).
 					Tag("updates-queue-len", len(e.updateQueue)).
 					Wrap(err))
