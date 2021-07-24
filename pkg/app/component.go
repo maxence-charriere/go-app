@@ -358,7 +358,11 @@ func (c *Compo) update(n UI) error {
 }
 
 func (c *Compo) dispatch(fn func(Context)) {
-	c.dispatcher().Dispatch(c.self(), fn)
+	c.dispatcher().Dispatch(Dispatch{
+		Mode:     Update,
+		Source:   c.self(),
+		Function: fn,
+	})
 }
 
 func (c *Compo) updateRoot() error {

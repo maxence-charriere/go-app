@@ -261,8 +261,11 @@ func onAchorClick(d Dispatcher) func(Value, []Value) interface{} {
 
 func onPopState(d Dispatcher) func(this Value, args []Value) interface{} {
 	return func(this Value, args []Value) interface{} {
-		d.Dispatch(nil, func(ctx Context) {
-			navigateTo(d, Window().URL(), false)
+		d.Dispatch(Dispatch{
+			Mode: Update,
+			Function: func(ctx Context) {
+				navigateTo(d, Window().URL(), false)
+			},
 		})
 		return nil
 	}
@@ -312,11 +315,14 @@ func navigateTo(d Dispatcher, u *url.URL, updateHistory bool) {
 		}
 		d.Nav(u)
 
-		d.Dispatch(nil, func(ctx Context) {
-			if isFragmentNavigation(u) {
-				Window().ScrollToID(u.Fragment)
-			}
-		})
+		if isFragmentNavigation(u) {
+			d.Dispatch(Dispatch{
+				Mode: Defer,
+				Function: func(ctx Context) {
+					Window().ScrollToID(u.Fragment)
+				},
+			})
+		}
 		return
 	}
 
@@ -351,8 +357,11 @@ func performNavigate(d Dispatcher, u *url.URL, updateHistory bool) {
 
 	disp.Nav(u)
 	if isFragmentNavigation(u) {
-		disp.Dispatch(nil, func(ctx Context) {
-			Window().ScrollToID(u.Fragment)
+		d.Dispatch(Dispatch{
+			Mode: Defer,
+			Function: func(ctx Context) {
+				Window().ScrollToID(u.Fragment)
+			},
 		})
 	}
 }
@@ -367,13 +376,15 @@ func isFragmentNavigation(u *url.URL) bool {
 
 func onAppUpdate(d ClientDispatcher) func(this Value, args []Value) interface{} {
 	return func(this Value, args []Value) interface{} {
-		d.Dispatch(nil, func(ctx Context) {
-			appUpdateAvailable = true
-		})
-		d.AppUpdate()
-
-		d.Defer(nil, func(ctx Context) {
-			fmt.Println("app has been updated, reload to see changes")
+		d.Dispatch(Dispatch{
+			Mode: Update,
+			Function: func(ctx Context) {
+				appUpdateAvailable = true
+				d.AppUpdate()
+				ctx.Defer(func(Context) {
+					Log("app has been updated, reload to see changes")
+				})
+			},
 		})
 		return nil
 	}
@@ -394,14 +405,14 @@ func onResize(ctx Context, e Event) {
 	}
 
 	resizeTimer = time.AfterFunc(resizeInterval, func() {
-		if d, ok := ctx.dispatcher().(ClientDispatcher); ok {
+		if d, ok := ctx.Dispatcher().(ClientDispatcher); ok {
 			d.AppResize()
 		}
 	})
 }
 
 func onAppOrientationChange(ctx Context, e Event) {
-	if d, ok := ctx.dispatcher().(ClientDispatcher); ok {
+	if d, ok := ctx.Dispatcher().(ClientDispatcher); ok {
 		go func() {
 			time.Sleep(orientationChangeDelay)
 			d.AppResize()

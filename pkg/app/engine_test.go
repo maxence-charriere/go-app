@@ -21,7 +21,7 @@ func TestEngineInit(t *testing.T) {
 	assert.NotNil(t, e.SessionStorage)
 	assert.NotNil(t, e.ResolveStaticResources)
 	assert.NotNil(t, e.Body)
-	assert.NotNil(t, e.events)
+	assert.NotNil(t, e.dispatches)
 	assert.NotNil(t, e.updates)
 	assert.NotNil(t, e.updateQueue)
 	assert.NotNil(t, e.defers)
@@ -32,27 +32,14 @@ func TestEngineDispatch(t *testing.T) {
 	e.init()
 	defer e.Close()
 
-	e.Dispatch(nil, func(Context) {})
-	require.Len(t, e.events, 1)
+	e.Dispatch(Dispatch{})
 
-	ev := <-e.events
-	require.Equal(t, e.Body, ev.source)
-	require.False(t, ev.deferable)
-	require.NotNil(t, ev.function)
-}
+	require.Len(t, e.dispatches, 1)
 
-func TestEngineDefer(t *testing.T) {
-	e := engine{}
-	e.init()
-	defer e.Close()
-
-	e.Defer(nil, func(Context) {})
-	require.Len(t, e.events, 1)
-
-	ev := <-e.events
-	require.Equal(t, e.Body, ev.source)
-	require.True(t, ev.deferable)
-	require.NotNil(t, ev.function)
+	d := <-e.dispatches
+	require.Equal(t, Update, d.Mode)
+	require.Equal(t, e.Body, d.Source)
+	require.NotNil(t, d.Function)
 }
 
 func TestEngineEmit(t *testing.T) {
@@ -63,7 +50,7 @@ func TestEngineEmit(t *testing.T) {
 	foo := &foo{Bar: "bar"}
 	e.Mount(foo)
 	e.Consume()
-	require.Empty(t, e.events)
+	require.Empty(t, e.dispatches)
 	require.Empty(t, e.updates)
 	require.Empty(t, e.updateQueue)
 
@@ -74,36 +61,96 @@ func TestEngineEmit(t *testing.T) {
 		emitted = true
 	})
 	require.True(t, emitted)
-	require.Len(t, e.events, 1)
+	require.Len(t, e.dispatches, 1)
 
 	e.Emit(bar, nil)
 }
 
-func TestEngineExecEvent(t *testing.T) {
-	e := engine{}
-	e.init()
-	defer e.Close()
+// func TestEngineExecEvent(t *testing.T) {
+// 	e := engine{}
+// 	e.init()
+// 	defer e.Close()
 
-	called := false
-	isCalled := func(Context) {
-		called = true
-	}
+// 	called := false
+// 	isCalled := func(Context) {
+// 		called = true
+// 	}
 
-	h := &hello{}
-	e.execEvent(event{source: h})
-	e.execEvent(event{
-		source:   h,
-		function: isCalled,
+// 	h := &hello{}
+// 	e.execEvent(event{source: h})
+// 	e.execEvent(event{
+// 		source:   h,
+// 		function: isCalled,
+// 	})
+// 	require.False(t, called)
+
+// 	e.Mount(h)
+// 	e.Consume()
+// 	e.execEvent(event{
+// 		source:   h,
+// 		function: isCalled,
+// 	})
+// 	require.True(t, called)
+// }
+
+func TestEngineHandleDispatch(t *testing.T) {
+	t.Run("update", func(t *testing.T) {
+		e := engine{}
+		e.init()
+		defer e.Close()
+
+		bar := &bar{}
+		e.Mount(bar)
+		e.Consume()
+
+		called := false
+		e.handleDispatch(Dispatch{
+			Mode:     Update,
+			Source:   bar,
+			Function: func(Context) { called = true },
+		})
+		require.True(t, called)
+		require.NotEmpty(t, e.updateQueue)
 	})
-	require.False(t, called)
 
-	e.Mount(h)
-	e.Consume()
-	e.execEvent(event{
-		source:   h,
-		function: isCalled,
+	t.Run("defer", func(t *testing.T) {
+		e := engine{}
+		e.init()
+		defer e.Close()
+
+		bar := &bar{}
+		e.Mount(bar)
+		e.Consume()
+
+		called := false
+		e.handleDispatch(Dispatch{
+			Mode:     Defer,
+			Source:   bar,
+			Function: func(Context) { called = true },
+		})
+		require.Empty(t, e.updateQueue)
+		require.Len(t, e.defers, 1)
+		require.False(t, called)
 	})
-	require.True(t, called)
+
+	t.Run("next", func(t *testing.T) {
+		e := engine{}
+		e.init()
+		defer e.Close()
+
+		bar := &bar{}
+		e.Mount(bar)
+		e.Consume()
+
+		called := false
+		e.handleDispatch(Dispatch{
+			Mode:     Next,
+			Source:   bar,
+			Function: func(Context) { called = true },
+		})
+		require.True(t, called)
+		require.Empty(t, e.updateQueue)
+	})
 }
 
 func TestEngineScheduleComponentUpdate(t *testing.T) {
@@ -118,7 +165,7 @@ func TestEngineScheduleComponentUpdate(t *testing.T) {
 
 	e.Mount(h)
 	e.Consume()
-	require.Empty(t, e.events)
+	require.Empty(t, e.dispatches)
 	require.Empty(t, e.updates)
 	require.Empty(t, e.updateQueue)
 
@@ -149,7 +196,7 @@ func TestEngineScheduleNestedComponentUpdate(t *testing.T) {
 
 	e.Mount(div)
 	e.Consume()
-	require.Empty(t, e.events)
+	require.Empty(t, e.dispatches)
 	require.Empty(t, e.updates)
 	require.Empty(t, e.updateQueue)
 
@@ -171,7 +218,7 @@ func TestEngineUpdateCoponents(t *testing.T) {
 	foo := &foo{Bar: "bar"}
 	e.Mount(foo)
 	e.Consume()
-	require.Empty(t, e.events)
+	require.Empty(t, e.dispatches)
 	require.Empty(t, e.updates)
 	require.Empty(t, e.updateQueue)
 	bar := foo.root.(*bar)
@@ -198,17 +245,17 @@ func TestEngineExecDeferableEvents(t *testing.T) {
 	h := &hello{}
 	e.Mount(h)
 	e.Consume()
-	require.Empty(t, e.events)
+	require.Empty(t, e.dispatches)
 	require.Empty(t, e.updates)
 	require.Empty(t, e.updateQueue)
 	require.Empty(t, e.defers)
 
 	called := false
 
-	e.defers = append(e.defers, event{
-		source:    h,
-		deferable: true,
-		function: func(Context) {
+	e.defers = append(e.defers, Dispatch{
+		Mode:   Defer,
+		Source: h,
+		Function: func(Context) {
 			called = true
 		},
 	})

@@ -174,6 +174,7 @@ func (d *adsenseDisplay) retry(ctx app.Context) {
 	}
 	d.retries++
 	ctx.After(time.Second, d.resize)
+
 }
 
 var (

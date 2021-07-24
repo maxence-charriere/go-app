@@ -137,7 +137,8 @@ type Context interface {
 	//  }
 	ObserveState(state string) Observer
 
-	dispatcher() Dispatcher
+	// Returns the global dispatcher.
+	Dispatcher() Dispatcher
 }
 
 type uiContext struct {
@@ -187,23 +188,31 @@ func (ctx uiContext) Page() Page {
 }
 
 func (ctx uiContext) Dispatch(fn func(Context)) {
-	ctx.dispatcher().Dispatch(ctx.Src(), fn)
+	ctx.Dispatcher().Dispatch(Dispatch{
+		Mode:     Update,
+		Source:   ctx.Src(),
+		Function: fn,
+	})
 }
 
 func (ctx uiContext) Defer(fn func(Context)) {
-	ctx.dispatcher().Defer(ctx.Src(), fn)
+	ctx.Dispatcher().Dispatch(Dispatch{
+		Mode:     Defer,
+		Source:   ctx.Src(),
+		Function: fn,
+	})
 }
 
 func (ctx uiContext) Handle(actionName string, h ActionHandler) {
-	ctx.dispatcher().Handle(actionName, ctx.Src(), h)
+	ctx.Dispatcher().Handle(actionName, ctx.Src(), h)
 }
 
 func (ctx uiContext) NewAction(name string) ActionBuilder {
-	return newActionBuilder(ctx.dispatcher(), name)
+	return newActionBuilder(ctx.Dispatcher(), name)
 }
 
 func (ctx uiContext) Async(fn func()) {
-	ctx.dispatcher().Async(fn)
+	ctx.Dispatcher().Async(fn)
 }
 
 func (ctx uiContext) After(d time.Duration, fn func(Context)) {
@@ -214,7 +223,7 @@ func (ctx uiContext) After(d time.Duration, fn func(Context)) {
 }
 
 func (ctx uiContext) Emit(fn func()) {
-	ctx.dispatcher().Emit(ctx.Src(), fn)
+	ctx.Dispatcher().Emit(ctx.Src(), fn)
 }
 
 func (ctx uiContext) Reload() {
@@ -228,26 +237,26 @@ func (ctx uiContext) Reload() {
 
 func (ctx uiContext) Navigate(rawURL string) {
 	ctx.Defer(func(ctx Context) {
-		navigate(ctx.dispatcher(), rawURL)
+		navigate(ctx.Dispatcher(), rawURL)
 	})
 }
 
 func (ctx uiContext) NavigateTo(u *url.URL) {
 	ctx.Defer(func(ctx Context) {
-		navigateTo(ctx.dispatcher(), u, true)
+		navigateTo(ctx.Dispatcher(), u, true)
 	})
 }
 
 func (ctx uiContext) ResolveStaticResource(path string) string {
-	return ctx.dispatcher().resolveStaticResource(path)
+	return ctx.Dispatcher().resolveStaticResource(path)
 }
 
 func (ctx uiContext) LocalStorage() BrowserStorage {
-	return ctx.dispatcher().localStorage()
+	return ctx.Dispatcher().localStorage()
 }
 
 func (ctx uiContext) SessionStorage() BrowserStorage {
-	return ctx.dispatcher().sessionStorage()
+	return ctx.Dispatcher().sessionStorage()
 }
 
 func (ctx uiContext) ScrollTo(id string) {
@@ -298,26 +307,26 @@ func (ctx uiContext) Decrypt(crypted []byte, v interface{}) error {
 }
 
 func (ctx uiContext) SetState(state string, v interface{}, opts ...StateOption) {
-	ctx.dispatcher().SetState(state, v, opts...)
+	ctx.Dispatcher().SetState(state, v, opts...)
 }
 
 func (ctx uiContext) GetState(state string, recv interface{}) {
-	ctx.dispatcher().GetState(state, recv)
+	ctx.Dispatcher().GetState(state, recv)
 }
 
 func (ctx uiContext) DelState(state string) {
-	ctx.dispatcher().DelState(state)
+	ctx.Dispatcher().DelState(state)
 }
 
 func (ctx uiContext) ObserveState(state string) Observer {
-	return ctx.dispatcher().ObserveState(state, ctx.src)
+	return ctx.Dispatcher().ObserveState(state, ctx.src)
 }
 
 func (ctx uiContext) cryptoKey() string {
 	return strings.ReplaceAll(ctx.DeviceID(), "-", "")
 }
 
-func (ctx uiContext) dispatcher() Dispatcher {
+func (ctx uiContext) Dispatcher() Dispatcher {
 	return ctx.disp
 }
 
