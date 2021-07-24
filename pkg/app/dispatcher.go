@@ -15,13 +15,8 @@ type Dispatcher interface {
 	// Context returns the context associated with the root element.
 	Context() Context
 
-	// Dispatch executes the given function on the UI goroutine and notifies the
-	// source's nearest component to update its state.
-	Dispatch(src UI, fn func(Context))
-
-	// Defer executes the given function on the UI goroutine after notifying the
-	// source's nearest component to update its state.
-	Defer(src UI, fn func(Context))
+	// Executes the given dispatch operation on the UI goroutine.
+	Dispatch(d Dispatch)
 
 	// Emit executes the given function and notifies the source's parent
 	// components to update their state.
@@ -142,6 +137,31 @@ func NewServerTester(n UI) ServerDispatcher {
 	e.Consume()
 	return e
 }
+
+// Dispatch represents an operation executed on the UI goroutine.
+type Dispatch struct {
+	Mode     DispatchMode
+	Source   UI
+	Function func(Context)
+}
+
+// DispatchMode represents how a dispatch is processed.
+type DispatchMode int
+
+const (
+	// A dispatch mode where the dispatched operation is enqueued to be executed
+	// as soon as possible and its associated UI element is updated at the end
+	// of the current update cycle.
+	Update DispatchMode = iota
+
+	// A dispatch mode that schedules the dispatched operation to be executed
+	// after the current update frame.
+	Defer
+
+	// A dispatch mode where the dispatched operation is enqueued to be executed
+	// as soon as possible.
+	Next
+)
 
 // MsgHandler represents a handler to listen to messages sent with Context.Post.
 type MsgHandler func(Context, interface{})

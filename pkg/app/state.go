@@ -208,25 +208,29 @@ func (s *store) Set(key string, v interface{}, opts ...StateOption) {
 			continue
 		}
 
-		s.disp.Dispatch(o.element, func(ctx Context) {
-			if !o.isObserving() {
-				s.mutex.Lock()
-				delete(state.observers, o)
-				s.mutex.Unlock()
-				return
-			}
+		s.disp.Dispatch(Dispatch{
+			Mode:   Update,
+			Source: o.element,
+			Function: func(ctx Context) {
+				if !o.isObserving() {
+					s.mutex.Lock()
+					delete(state.observers, o)
+					s.mutex.Unlock()
+					return
+				}
 
-			if err := storeValue(o.receiver, v); err != nil {
-				Log(errors.New("notifying observer failed").
-					Tag("state", key).
-					Tag("element", reflect.TypeOf(o.element)).
-					Wrap(err))
-				return
-			}
+				if err := storeValue(o.receiver, v); err != nil {
+					Log(errors.New("notifying observer failed").
+						Tag("state", key).
+						Tag("element", reflect.TypeOf(o.element)).
+						Wrap(err))
+					return
+				}
 
-			for _, fn := range o.onChanges {
-				fn()
-			}
+				for _, fn := range o.onChanges {
+					fn()
+				}
+			},
 		})
 	}
 }
@@ -427,25 +431,29 @@ func (s *store) onBroadcast(event Value) {
 			continue
 		}
 
-		s.disp.Dispatch(o.element, func(ctx Context) {
-			if !o.isObserving() {
-				s.mutex.Lock()
-				delete(state.observers, o)
-				s.mutex.Unlock()
-				return
-			}
+		s.disp.Dispatch(Dispatch{
+			Mode:   Update,
+			Source: o.element,
+			Function: func(ctx Context) {
+				if !o.isObserving() {
+					s.mutex.Lock()
+					delete(state.observers, o)
+					s.mutex.Unlock()
+					return
+				}
 
-			if err := json.Unmarshal(v, o.receiver); err != nil {
-				Log(errors.New("notifying observer failed").
-					Tag("state", key).
-					Tag("element", reflect.TypeOf(o.element)).
-					Wrap(err))
-				return
-			}
+				if err := json.Unmarshal(v, o.receiver); err != nil {
+					Log(errors.New("notifying observer failed").
+						Tag("state", key).
+						Tag("element", reflect.TypeOf(o.element)).
+						Wrap(err))
+					return
+				}
 
-			for _, fn := range o.onChanges {
-				fn()
-			}
+				for _, fn := range o.onChanges {
+					fn()
+				}
+			},
 		})
 	}
 }

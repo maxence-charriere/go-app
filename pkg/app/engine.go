@@ -48,39 +48,22 @@ type engine struct {
 	wait      sync.WaitGroup
 
 	isMountedOnce bool
-	events        chan event
+	dispatches    chan Dispatch
 	updates       map[Composer]struct{}
 	updateQueue   []updateDescriptor
-	defers        []event
+	defers        []Dispatch
 	actions       actionManager
 	states        *store
 }
 
-func (e *engine) Dispatch(src UI, fn func(Context)) {
-	if src == nil {
-		src = e.Body
+func (e *engine) Dispatch(d Dispatch) {
+	if d.Source == nil {
+		d.Source = e.Body
 	}
-
-	if src.Mounted() {
-		e.events <- event{
-			source:   src,
-			function: fn,
-		}
+	if d.Function == nil {
+		d.Function = func(Context) {}
 	}
-}
-
-func (e *engine) Defer(src UI, fn func(Context)) {
-	if src == nil {
-		src = e.Body
-	}
-
-	if src.Mounted() {
-		e.events <- event{
-			source:    src,
-			deferable: true,
-			function:  fn,
-		}
-	}
+	e.dispatches <- d
 }
 
 func (e *engine) Emit(src UI, fn func()) {
@@ -101,7 +84,10 @@ func (e *engine) Emit(src UI, fn func()) {
 
 		compoCount++
 		if compoCount > 1 {
-			e.Dispatch(compo, nil)
+			e.Dispatch(Dispatch{
+				Source: compo,
+				Mode:   Update,
+			})
 		}
 	}
 }
@@ -153,13 +139,8 @@ func (e *engine) Consume() {
 		e.Wait()
 
 		select {
-		case ev := <-e.events:
-			if ev.deferable {
-				e.defers = append(e.defers, ev)
-			} else {
-				e.execEvent(ev)
-				e.scheduleComponentUpdate(ev.source)
-			}
+		case d := <-e.dispatches:
+			e.handleDispatch(d)
 
 		default:
 			e.updateComponents()
@@ -173,13 +154,8 @@ func (e *engine) ConsumeNext() {
 	e.Wait()
 
 	select {
-	case ev := <-e.events:
-		if ev.deferable {
-			e.defers = append(e.defers, ev)
-		} else {
-			e.execEvent(ev)
-			e.scheduleComponentUpdate(ev.source)
-		}
+	case d := <-e.dispatches:
+		e.handleDispatch(d)
 		e.updateComponents()
 		e.execDeferableEvents()
 
@@ -194,55 +170,63 @@ func (e *engine) Close() {
 
 		dismount(e.Body)
 		e.Body = nil
-		close(e.events)
+		close(e.dispatches)
 
 		e.states.Close()
 	})
 }
 
 func (e *engine) PreRender() {
-	e.Dispatch(e.Body, func(Context) {
-		e.Body.preRender(e.Page)
+	e.Dispatch(Dispatch{
+		Mode:   Update,
+		Source: e.Body,
+		Function: func(ctx Context) {
+			ctx.Src().preRender(e.Page)
+		},
 	})
 }
 
 func (e *engine) Mount(n UI) {
-	e.Dispatch(e.Body, func(Context) {
-		if !e.isMountedOnce {
-			if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {
+	e.Dispatch(Dispatch{
+		Mode:   Update,
+		Source: e.Body,
+		Function: func(ctx Context) {
+			if !e.isMountedOnce {
+				if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {
+					panic(errors.New("mounting ui element failed").
+						Tag("dispatches-count", len(e.dispatches)).
+						Tag("dispatches-capacity", cap(e.dispatches)).
+						Tag("updates-count", len(e.updates)).
+						Tag("updates-queue-len", len(e.updateQueue)).
+						Wrap(err))
+				}
+
+				e.isMountedOnce = true
+				return
+			}
+
+			err := update(e.Body.children()[0], n)
+			if err == nil {
+				return
+			}
+			if !isErrReplace(err) {
 				panic(errors.New("mounting ui element failed").
-					Tag("events-count", len(e.events)).
-					Tag("events-capacity", cap(e.events)).
+					Tag("dispatches-count", len(e.dispatches)).
+					Tag("dispatches-capacity", cap(e.dispatches)).
 					Tag("updates-count", len(e.updates)).
 					Tag("updates-queue-len", len(e.updateQueue)).
 					Wrap(err))
 			}
 
-			e.isMountedOnce = true
-			return
-		}
-
-		err := update(e.Body.children()[0], n)
-		if err == nil {
-			return
-		}
-		if !isErrReplace(err) {
-			panic(errors.New("mounting ui element failed").
-				Tag("events-count", len(e.events)).
-				Tag("events-capacity", cap(e.events)).
-				Tag("updates-count", len(e.updates)).
-				Tag("updates-queue-len", len(e.updateQueue)).
-				Wrap(err))
-		}
-
-		if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {
-			panic(errors.New("mounting ui element failed").
-				Tag("events-count", len(e.events)).
-				Tag("events-capacity", cap(e.events)).
-				Tag("updates-count", len(e.updates)).
-				Tag("updates-queue-len", len(e.updateQueue)).
-				Wrap(err))
-		}
+			if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {
+				panic(errors.New("mounting ui element failed").
+					Tag("dispatches-count", len(e.dispatches)).
+					Tag("dispatches-capacity", cap(e.dispatches)).
+					Tag("updates-count", len(e.updates)).
+					Tag("updates-queue-len", len(e.updateQueue)).
+					Wrap(err))
+			}
+		},
 	})
 }
 
@@ -251,35 +235,51 @@ func (e *engine) Nav(u *url.URL) {
 		p.ReplaceURL(u)
 	}
 
-	e.Dispatch(e.Body, func(Context) {
-		e.Body.onNav(u)
+	e.Dispatch(Dispatch{
+		Mode:   Update,
+		Source: e.Body,
+		Function: func(ctx Context) {
+			ctx.Src().onNav(u)
+		},
 	})
 }
 
 func (e *engine) AppUpdate() {
-	e.Dispatch(nil, func(ctx Context) {
-		ctx.Src().onAppUpdate()
+	e.Dispatch(Dispatch{
+		Mode:   Update,
+		Source: e.Body,
+		Function: func(ctx Context) {
+			ctx.Src().onAppUpdate()
+		},
 	})
 }
 
 func (e *engine) AppInstallChange() {
-	e.Dispatch(nil, func(ctx Context) {
-		ctx.Src().onAppInstallChange()
+	e.Dispatch(Dispatch{
+		Mode:   Update,
+		Source: e.Body,
+		Function: func(ctx Context) {
+			ctx.Src().onAppInstallChange()
+		},
 	})
 }
 
 func (e *engine) AppResize() {
-	e.Dispatch(e.Body, func(Context) {
-		e.Body.onResize()
+	e.Dispatch(Dispatch{
+		Mode:   Update,
+		Source: e.Body,
+		Function: func(ctx Context) {
+			ctx.Src().onResize()
+		},
 	})
 }
 
 func (e *engine) init() {
 	e.initOnce.Do(func() {
-		e.events = make(chan event, eventBufferSize)
+		e.dispatches = make(chan Dispatch, eventBufferSize)
 		e.updates = make(map[Composer]struct{})
 		e.updateQueue = make([]updateDescriptor, 0, updateBufferSize)
-		e.defers = make([]event, 0, deferBufferSize)
+		e.defers = make([]Dispatch, 0, deferBufferSize)
 		e.states = newStore(e)
 
 		if e.UpdateRate <= 0 {
@@ -335,24 +335,19 @@ func (e *engine) start(ctx context.Context) {
 			case <-ctx.Done():
 				return
 
-			case ev := <-e.events:
+			case d := <-e.dispatches:
 				if currentInterval != updateInterval {
 					currentInterval = updateInterval
 					updates.Reset(currentInterval)
 				}
 
-				if ev.deferable {
-					e.defers = append(e.defers, ev)
-				} else {
-					e.execEvent(ev)
-					e.scheduleComponentUpdate(ev.source)
-				}
+				e.handleDispatch(d)
 
 			case <-updates.C:
 				e.updateComponents()
 				e.execDeferableEvents()
 
-				if len(e.events) == 0 {
+				if len(e.dispatches) == 0 {
 					currentInterval = time.Hour
 					updates.Reset(currentInterval)
 				}
@@ -365,9 +360,21 @@ func (e *engine) start(ctx context.Context) {
 	})
 }
 
-func (e *engine) execEvent(ev event) {
-	if ev.source.Mounted() && ev.function != nil {
-		ev.function(makeContext(ev.source))
+func (e *engine) handleDispatch(d Dispatch) {
+	switch d.Mode {
+	case Next:
+		d.Function(makeContext(d.Source))
+
+	case Update:
+		if d.Source.Mounted() {
+			d.Function(makeContext(d.Source))
+			e.scheduleComponentUpdate(d.Source)
+		}
+
+	case Defer:
+		if d.Source.Mounted() {
+			e.defers = append(e.defers, d)
+		}
 	}
 }
 
@@ -423,9 +430,9 @@ func (e *engine) removeFromUpdates(c Composer) {
 }
 
 func (e *engine) execDeferableEvents() {
-	for _, ev := range e.defers {
-		if ev.source.Mounted() {
-			ev.function(makeContext(ev.source))
+	for _, d := range e.defers {
+		if d.Source.Mounted() {
+			d.Function(makeContext(d.Source))
 		}
 	}
 	e.defers = e.defers[:0]
@@ -449,12 +456,6 @@ func (e *engine) runsInServer() bool {
 
 func (e *engine) resolveStaticResource(path string) string {
 	return e.ResolveStaticResources(path)
-}
-
-type event struct {
-	source    UI
-	deferable bool
-	function  func(Context)
 }
 
 type updateDescriptor struct {

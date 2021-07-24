@@ -147,16 +147,19 @@ func (h eventHandler) equal(o eventHandler) bool {
 
 func makeJsEventHandler(src UI, h EventHandler) Func {
 	return FuncOf(func(this Value, args []Value) interface{} {
-		src.dispatcher().Dispatch(src, func(ctx Context) {
-			ctx.Emit(func() {
-				event := Event{
-					Value: args[0],
-				}
-				trackMousePosition(event)
-				h(ctx, event)
-			})
+		src.dispatcher().Dispatch(Dispatch{
+			Mode:   Update,
+			Source: src,
+			Function: func(ctx Context) {
+				ctx.Emit(func() {
+					event := Event{
+						Value: args[0],
+					}
+					trackMousePosition(event)
+					h(ctx, event)
+				})
+			},
 		})
-
 		return nil
 	})
 }
