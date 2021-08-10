@@ -1,7 +1,6 @@
 package app
 
 import (
-	"sync"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -90,30 +89,4 @@ func TestActionManagerCloseUnusedHandlers(t *testing.T) {
 	e.Consume()
 	m.closeUnusedHandlers()
 	require.Empty(t, m.handlers)
-}
-
-func TestActionBuilder(t *testing.T) {
-	actionName := "/text/actionBuilder"
-	createdAction := Action{}
-
-	wg := sync.WaitGroup{}
-	wg.Add(1)
-
-	Handle(actionName, func(ctx Context, a Action) {
-		createdAction = a
-		wg.Done()
-	})
-
-	disp := NewClientTester(Div())
-	defer disp.Close()
-
-	newActionBuilder(disp, actionName).
-		Value(42).
-		Tag("foo", "bar").
-		Post()
-
-	wg.Wait()
-	require.Equal(t, actionName, createdAction.Name)
-	require.Equal(t, 42, createdAction.Value)
-	require.Equal(t, "bar", createdAction.Tags.Get("foo"))
 }
