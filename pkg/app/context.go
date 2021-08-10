@@ -52,16 +52,17 @@ type Context interface {
 	// the handler is executed on the UI goroutine.
 	Handle(actionName string, h ActionHandler)
 
-	// Creates an action to be handled with Context.Handle. Eg:
-	//  // Action with value.
-	//  ctx.NewAction("myAction", nil)
+	// Creates an action with optional tags, to be handled with Context.Handle.
+	// Eg:
+	//  ctx.NewAction("myAction")
+	//  ctx.NewAction("myAction", app.T("purpose", "test"))
+	NewAction(name string, tags ...Tag)
 
-	//  // Action with value.
-	//  ctx.NewAction("processValue", 42)
-
-	//  // Action with value and tags.
-	//  ctx.NewAction("processValue", 42, app.T("type", "number"))
-	NewAction(name string, v interface{}, tags ...Tag)
+	// Creates an action with a value and optional tags, to be handled with
+	// Context.Handle. Eg:
+	//  ctx.NewActionWithValue("processValue", 42)
+	//  ctx.NewActionWithValue("processValue", 42, app.T("type", "number"))
+	NewActionWithValue(name string, v interface{}, tags ...Tag)
 
 	// Executes the given function on a new goroutine.
 	//
@@ -213,7 +214,11 @@ func (ctx uiContext) Handle(actionName string, h ActionHandler) {
 	ctx.Dispatcher().Handle(actionName, ctx.Src(), h)
 }
 
-func (ctx uiContext) NewAction(name string, v interface{}, tags ...Tag) {
+func (ctx uiContext) NewAction(name string, tags ...Tag) {
+	ctx.NewActionWithValue(name, nil, tags...)
+}
+
+func (ctx uiContext) NewActionWithValue(name string, v interface{}, tags ...Tag) {
 	ctx.Dispatcher().Post(Action{
 		Name:  name,
 		Value: v,
