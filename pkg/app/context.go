@@ -56,13 +56,21 @@ type Context interface {
 	// Eg:
 	//  ctx.NewAction("myAction")
 	//  ctx.NewAction("myAction", app.T("purpose", "test"))
-	NewAction(name string, tags ...Tag)
+	//  ctx.NewAction("myAction", app.Tags{
+	//      "foo": "bar",
+	//      "hello": "world",
+	//  })
+	NewAction(name string, tags ...Tagger)
 
 	// Creates an action with a value and optional tags, to be handled with
 	// Context.Handle. Eg:
 	//  ctx.NewActionWithValue("processValue", 42)
 	//  ctx.NewActionWithValue("processValue", 42, app.T("type", "number"))
-	NewActionWithValue(name string, v interface{}, tags ...Tag)
+	//  ctx.NewActionWithValue("myAction", 42, app.Tags{
+	//      "foo": "bar",
+	//      "hello": "world",
+	//  })
+	NewActionWithValue(name string, v interface{}, tags ...Tagger)
 
 	// Executes the given function on a new goroutine.
 	//
@@ -214,15 +222,26 @@ func (ctx uiContext) Handle(actionName string, h ActionHandler) {
 	ctx.Dispatcher().Handle(actionName, ctx.Src(), h)
 }
 
-func (ctx uiContext) NewAction(name string, tags ...Tag) {
+func (ctx uiContext) NewAction(name string, tags ...Tagger) {
 	ctx.NewActionWithValue(name, nil, tags...)
 }
 
-func (ctx uiContext) NewActionWithValue(name string, v interface{}, tags ...Tag) {
+func (ctx uiContext) NewActionWithValue(name string, v interface{}, tags ...Tagger) {
+	var tagMap Tags
+	for _, t := range tags {
+		if tagMap == nil {
+			tagMap = t.Tags()
+			continue
+		}
+		for k, v := range t.Tags() {
+			tagMap[k] = v
+		}
+	}
+
 	ctx.Dispatcher().Post(Action{
 		Name:  name,
 		Value: v,
-		Tags:  makeTags(tags),
+		Tags:  tagMap,
 	})
 }
 

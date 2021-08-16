@@ -1,17 +1,16 @@
 package app
 
+// Tagger is the interface that describes a collection of tags that gives
+// context to something.
+type Tagger interface {
+	// Returns a collection of tags.
+	Tags() Tags
+}
+
 // Tags represent key-value pairs that give context to what they are used with.
 type Tags map[string]string
 
-func makeTags(tags []Tag) Tags {
-	if len(tags) == 0 {
-		return nil
-	}
-
-	t := make(Tags, len(tags))
-	for _, tag := range tags {
-		t[tag.Name] = tag.Value
-	}
+func (t Tags) Tags() Tags {
 	return t
 }
 
@@ -30,6 +29,10 @@ func (t Tags) Get(name string) string {
 type Tag struct {
 	Name  string
 	Value string
+}
+
+func (t Tag) Tags() Tags {
+	return Tags{t.Name: t.Value}
 }
 
 // T creates a tag with the given name and value. The value is converted to a

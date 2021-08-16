@@ -130,12 +130,13 @@ func TestContextHandle(t *testing.T) {
 		action = a
 	})
 
-	ctx.NewActionWithValue(actionName, 21, T("hello", "world"))
+	ctx.NewActionWithValue(actionName, 21, T("hello", "world"), Tags{"foo": "bar"})
 
 	client.Consume()
 	require.Equal(t, actionName, action.Name)
 	require.Equal(t, 21, action.Value)
 	require.Equal(t, "world", action.Tags.Get("hello"))
+	require.Equal(t, "bar", action.Tags.Get("foo"))
 
 	ctx.NewAction(actionName)
 	client.Consume()
