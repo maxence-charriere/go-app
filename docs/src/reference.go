@@ -13,14 +13,7 @@ func newReference() app.Composer {
 }
 
 func (r *reference) Render() app.UI {
-	return newPage().
-		Index(newGodocIndex()).
-		Content(
-			app.Div().
-				Class("hspace-out-stretch").
-				Body(newGodoc()),
-		).
-		IssueTitle("API reference")
+	return nil
 }
 
 type godocIndex struct {

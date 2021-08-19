@@ -6,131 +6,82 @@ import (
 )
 
 const (
-	pageItemWidth = 276
+	headerHeight = 72
 )
 
 type page struct {
 	app.Compo
 
-	Iindex      []app.UI
-	Icontent    []app.UI
-	IissueTitle string
+	Iclass string
 
-	isAppUpdateAvailable bool
+	updateAvailable bool
 }
 
 func newPage() *page {
 	return &page{}
 }
 
-func (p *page) Index(v ...app.UI) *page {
-	p.Iindex = app.FilterUIElems(v...)
-	return p
-}
-
-func (p *page) Content(v ...app.UI) *page {
-	p.Icontent = app.FilterUIElems(v...)
-	return p
-}
-
-func (p *page) IssueTitle(v string) *page {
-	p.IissueTitle = v
-	return p
-}
-
 func (p *page) OnNav(ctx app.Context) {
-	p.setAvailableUpdate(ctx)
+	p.updateAvailable = ctx.AppUpdateAvailable()
 }
 
 func (p *page) OnAppUpdate(ctx app.Context) {
-	p.setAvailableUpdate(ctx)
-}
-
-func (p *page) setAvailableUpdate(ctx app.Context) {
-	p.isAppUpdateAvailable = ctx.AppUpdateAvailable()
+	p.updateAvailable = ctx.AppUpdateAvailable()
 }
 
 func (p *page) Render() app.UI {
 	return ui.Shell().
-		Class("background").
 		Class("fill").
-		PaneWidth(pageItemWidth).
-		HamburgerMenu(
-			newNav().
-				Class("overlay-menu").
-				Class("unselectable"),
-		).
-		Menu(newNav()).
+		Class("background").
+		HamburgerMenu(newMenu().Class("fill")).
+		Menu(newMenu().Class("fill")).
 		Index(
-			app.Nav().
-				Class("header-out").
-				Class("content").
-				Class("unselectable").
-				Body(
-					app.Div().
-						Class("hspace-out").
-						Body(
-							app.Header().
-								Class("h2").
-								Class("vspace-top").
-								Text("Index"),
-							app.Div().
-								Class("vspace-top").
-								Body(
-									app.Range(p.Iindex).Slice(func(i int) app.UI {
-										return p.Iindex[i]
-									}),
-								),
-							newIndex().
-								Class("vspace-top").
-								Class("vspace-bottom").
-								Links(
-									"Report issue",
-									"Support go-app",
-								),
-						),
-				),
+			ui.Scroll().
+				Class("fill").
+				HeaderHeight(headerHeight),
 		).
 		Content(
-			ui.Stack().
-				Class("header").
-				Right().
-				Middle().
-				Content(
-					app.If(p.isAppUpdateAvailable,
-						newLink().
-							Class("hspace-out").
-							Class("link-update").
-							Label("Update").
-							Icon(newSVGIcon().RawSVG(downloadSVG)).
-							OnClick(p.onUpdateClick),
-					),
-				),
-			app.Div().
-				Class("content").
-				Body(
-					app.Main().
-						ID("top").
+			ui.Scroll().
+				Class("fill").
+				Header(
+					app.Nav().
+						Class("fill").
 						Body(
-							app.Article().
-								Body(
-									app.Range(p.Icontent).Slice(func(i int) app.UI {
-										return p.Icontent[i]
-									}),
-									app.Footer().
-										Class("vspace-section").
-										Class("hspace-out").
-										Body(newIssue().Title(p.IissueTitle)),
+							ui.Stack().
+								Class("fill").
+								Right().
+								Middle().
+								Content(
+									app.If(p.updateAvailable,
+										app.Div().
+											Class("link-update").
+											Body(
+												ui.Link().
+													Class("link").
+													Class("heading").
+													Class("fit").
+													Class("unselectable").
+													Icon(downloadSVG).
+													Label("Update").
+													OnClick(p.updateApp),
+											),
+									),
 								),
-							app.Aside().
-								Class("vspace-section").
-								Class("vspace-bottom").
-								Body(newSupportUs()),
 						),
+				).
+				HeaderHeight(headerHeight),
+		).
+		Ads(
+			ui.Flyer().
+				Class("fill").
+				HeaderHeight(headerHeight).
+				PremiumHeight(200).
+				Premium(
+					newGithubSponsor().Class("fill"),
 				),
 		)
 }
 
-func (p *page) onUpdateClick(ctx app.Context, e app.Event) {
-	ctx.Reload()
+func (p *page) updateApp(ctx app.Context, e app.Event) {
+	ctx.NewAction(updateApp)
 }

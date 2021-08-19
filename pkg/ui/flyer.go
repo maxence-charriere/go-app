@@ -202,7 +202,10 @@ func (f *flyer) resize(ctx app.Context) {
 
 	remainingHeight := layout.Get("clientHeight").Int()
 
-	bannerHeight := 600
+	var bannerHeight int
+	if len(f.Ibanner) != 0 {
+		bannerHeight = 600
+	}
 	if bannerHeight > remainingHeight {
 		bannerHeight = remainingHeight
 	}

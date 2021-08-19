@@ -90,7 +90,7 @@ h2 {
 
 .h3,
 h3 {
-  margin-top: 60px;
+  /* margin-top: 60px; */
   font-size: 16px;
   letter-spacing: 1px;
 }
@@ -311,6 +311,19 @@ h2 {
   margin: auto;
 }
 
+.text-center {
+  text-align: center;
+}
+
+.icon-top {
+  margin-bottom: 12px;
+}
+
+.subtext {
+  margin: 6px 0 0;
+  padding: 0;
+}
+
 .right {
   margin-left: auto;
 }
@@ -323,6 +336,7 @@ h2 {
 }
 
 .magnify {
+  display: block;
   cursor: pointer;
   transition: 0.2s all;
 }
@@ -366,6 +380,17 @@ h2 {
 }
 
 /*------------------------------------------------------------------------------
+** menu
+------------------------------------------------------------------------------*/
+.menu .separator:first-of-type {
+  margin-top: 18px;
+}
+
+.menu .separator {
+  margin-top: 30px;
+}
+
+/*------------------------------------------------------------------------------
 ** Animations
 ------------------------------------------------------------------------------*/
 @keyframes spin {
@@ -403,10 +428,10 @@ h2 {
 ------------------------------------------------------------------------------*/
 .link {
   display: block;
-  padding: 3px 0;
   cursor: pointer;
   transition: 0.2s all;
   color: currentColor;
+  text-transform: uppercase;
 }
 
 .link:hover {
@@ -417,10 +442,6 @@ h2 {
 .link:active {
   color: deepskyblue;
   transform: scale(0.98);
-}
-
-.link-icon {
-  margin-right: 12px;
 }
 
 .link-update {

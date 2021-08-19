@@ -38,15 +38,11 @@ type githubOptions struct {
 }
 
 func main() {
-	for path := range mardownPages() {
-		app.Route(path, newMarkdownDoc())
-	}
-	app.Route("/reference", newReference())
-	app.RouteWithRegexp(`^/examples(/(\w)+)*$`, newExample())
-	app.Route("/", newMarkdownDoc())
+	app.Route("/", newHomePage())
+	// app.Route("/reference", newReference())
 
-	app.Route("/shell", &shellExample{})
-	app.Route("/flow", &flowExample{})
+	app.Handle(installApp, handleAppInstall)
+	app.Handle(updateApp, handleAppUpdate)
 
 	app.RunWhenOnBrowser()
 
@@ -95,7 +91,7 @@ func main() {
 		},
 		BackgroundColor: backgroundColor,
 		ThemeColor:      backgroundColor,
-		LoadingLabel:    "Loading go-app documentation...",
+		LoadingLabel:    "go-app documentation",
 		Scripts: []string{
 			"/web/js/prism.js",
 		},
@@ -149,19 +145,7 @@ func runLocal(ctx context.Context, h *app.Handler, opts localOptions) {
 }
 
 func generateGitHubPages(ctx context.Context, h *app.Handler, opts githubOptions) {
-	pages := mardownPages()
-	p := make([]string, 0, len(pages))
-	for path := range pages {
-		p = append(p, path)
-	}
-	p = append(p,
-		"/reference",
-		"/examples",
-		"/examples/hello",
-		"/examples/list",
-	)
-
-	if err := app.GenerateStaticWebsite(opts.Output, h, p...); err != nil {
+	if err := app.GenerateStaticWebsite(opts.Output, h); err != nil {
 		panic(err)
 	}
 }

@@ -2,12 +2,10 @@ package main
 
 import (
 	"fmt"
-	"path/filepath"
 
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/parser"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
-	"github.com/maxence-charriere/go-app/v9/pkg/logs"
 )
 
 type markdownPage struct {
@@ -251,99 +249,6 @@ func mardownPages() map[string]markdownPage {
 			},
 		},
 	}
-}
-
-type markdownDoc struct {
-	app.Compo
-
-	path      string
-	title     string
-	index     []string
-	markdown  string
-	isLoading bool
-	err       error
-}
-
-func newMarkdownDoc() *markdownDoc {
-	return &markdownDoc{}
-}
-
-func (d *markdownDoc) OnPreRender(ctx app.Context) {
-	d.init(ctx)
-}
-
-func (d *markdownDoc) OnNav(ctx app.Context) {
-	d.init(ctx)
-	d.scroll(ctx)
-}
-
-func (d *markdownDoc) init(ctx app.Context) {
-	path := ctx.Page().URL().Path
-	if d.path == path {
-		return
-	}
-
-	page, ok := mardownPages()[ctx.Page().URL().Path]
-	if !ok {
-		app.Log(logs.New("markdown page not found").
-			Tag("url", ctx.Page().URL().String()),
-		)
-		return
-	}
-
-	d.path = path
-	d.title = page.path
-	d.index = page.index
-	ctx.Page().SetTitle(page.title)
-	ctx.Page().SetDescription(page.description)
-
-	d.load(ctx, page.path)
-}
-
-func (d *markdownDoc) load(ctx app.Context, path string) {
-	d.isLoading = true
-	d.err = nil
-
-	ctx.Async(func() {
-		md, err := get(ctx, path)
-
-		ctx.Dispatch(func(ctx app.Context) {
-			d.markdown = string(md)
-			d.err = err
-			d.isLoading = false
-
-			d.scroll(ctx)
-		})
-	})
-}
-
-func (d *markdownDoc) scroll(ctx app.Context) {
-	fragment := ctx.Page().URL().Fragment
-	if fragment == "" {
-		fragment = "top"
-	}
-	ctx.ScrollTo(fragment)
-
-}
-
-func (d *markdownDoc) Render() app.UI {
-	return newPage().
-		Index(
-			newIndex().Links(d.index...),
-		).
-		Content(
-			newMarkdownContent().
-				Class("hspace-out-stretch").
-				Markdown(d.markdown),
-			newLoader().
-				Class("page-loader").
-				Class("fill").
-				Title("Loading").
-				Description(filepath.Base(d.title)).
-				Loading(d.isLoading).
-				Err(d.err),
-		).
-		IssueTitle(filepath.Base(d.title))
 }
 
 type markdownContent struct {
