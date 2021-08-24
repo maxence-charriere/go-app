@@ -37,7 +37,7 @@ func (s *githubSponsor) Render() app.UI {
 							ui.Icon().
 								Class("center").
 								Class("icon-top").
-								Size(90).
+								Size(72).
 								Src(githubSVG),
 							app.Header().
 								Class("h3").

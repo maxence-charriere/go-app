@@ -26,6 +26,9 @@ var (
 
 	// The default icon space.
 	DefaultIconSpace = 6
+
+	// The default width for flow items in px.
+	DefaultFlowItemWidth = 372
 )
 
 const (

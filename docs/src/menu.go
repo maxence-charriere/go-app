@@ -108,6 +108,8 @@ func (m *menu) Render() app.UI {
 						Label("Install").
 						OnClick(m.installApp),
 				),
+
+				app.Div().Class("separator"),
 			),
 		)
 }

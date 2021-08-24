@@ -10,10 +10,12 @@ import (
 	"os"
 	"syscall"
 
+	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/maxence-charriere/go-app/v9/pkg/cli"
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 	"github.com/maxence-charriere/go-app/v9/pkg/logs"
+	"github.com/maxence-charriere/go-app/v9/pkg/ui"
 )
 
 const (
@@ -38,11 +40,15 @@ type githubOptions struct {
 }
 
 func main() {
+	ui.BaseHPadding = 42
+	analytics.Add(analytics.NewGoogleAnalytics())
+
 	app.Route("/", newHomePage())
 	// app.Route("/reference", newReference())
 
 	app.Handle(installApp, handleAppInstall)
 	app.Handle(updateApp, handleAppUpdate)
+	app.Handle(getMarkdown, handleGetMarkdown)
 
 	app.RunWhenOnBrowser()
 
@@ -101,16 +107,7 @@ func main() {
 			"/web/css/docs.css",
 		},
 		RawHeaders: []string{
-			`
-			<!-- Global site tag (gtag.js) - Google Analytics -->
-			<script async src="https://www.googletagmanager.com/gtag/js?id=G-SW4FQEM9VM"></script>
-			<script>
-			  window.dataLayer = window.dataLayer || [];
-			  function gtag(){dataLayer.push(arguments);}
-			  gtag('js', new Date());
-			
-			  gtag('config', 'G-SW4FQEM9VM');
-			</script>`,
+			analytics.GoogleAnalyticsHeader("G-SW4FQEM9VM"),
 		},
 	}
 

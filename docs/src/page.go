@@ -12,13 +12,37 @@ const (
 type page struct {
 	app.Compo
 
-	Iclass string
+	Iclass   string
+	Iindex   []app.UI
+	Iicon    string
+	Ititle   string
+	Icontent []app.UI
 
 	updateAvailable bool
 }
 
 func newPage() *page {
 	return &page{}
+}
+
+func (p *page) Index(v ...app.UI) *page {
+	p.Iindex = app.FilterUIElems(v...)
+	return p
+}
+
+func (p *page) Icon(v string) *page {
+	p.Iicon = v
+	return p
+}
+
+func (p *page) Title(v string) *page {
+	p.Ititle = v
+	return p
+}
+
+func (p *page) Content(v ...app.UI) *page {
+	p.Icontent = app.FilterUIElems(v...)
+	return p
 }
 
 func (p *page) OnNav(ctx app.Context) {
@@ -33,12 +57,33 @@ func (p *page) Render() app.UI {
 	return ui.Shell().
 		Class("fill").
 		Class("background").
-		HamburgerMenu(newMenu().Class("fill")).
-		Menu(newMenu().Class("fill")).
+		HamburgerMenu(
+			newMenu().
+				Class("fill").
+				Class("menu-hamburger-background"),
+		).
+		Menu(
+			newMenu().Class("fill"),
+		).
 		Index(
 			ui.Scroll().
 				Class("fill").
-				HeaderHeight(headerHeight),
+				HeaderHeight(headerHeight).
+				Content(
+					app.Nav().
+						Class("index").
+						Body(
+							app.Div().Class("separator"),
+							app.Header().
+								Class("h2").
+								Text("Index"),
+							app.Div().Class("separator"),
+							app.Range(p.Iindex).Slice(func(i int) app.UI {
+								return p.Iindex[i]
+							}),
+							app.Div().Class("separator"),
+						),
+				),
 		).
 		Content(
 			ui.Scroll().
@@ -69,7 +114,34 @@ func (p *page) Render() app.UI {
 								),
 						),
 				).
-				HeaderHeight(headerHeight),
+				HeaderHeight(headerHeight).
+				Content(
+					app.Main().Body(
+						app.Article().Body(
+							app.Header().
+								Class("page-title").
+								Class("center").
+								Body(
+									ui.Stack().
+										Center().
+										Middle().
+										Content(
+											ui.Icon().
+												Class("icon-left").
+												Class("unselectable").
+												Size(90).
+												Src(p.Iicon),
+											app.H1().Text(p.Ititle),
+										),
+								),
+							app.Div().Class("separator"),
+							app.Range(p.Icontent).Slice(func(i int) app.UI {
+								return p.Icontent[i]
+							}),
+							app.Div().Class("separator"),
+						),
+					),
+				),
 		).
 		Ads(
 			ui.Flyer().
@@ -84,4 +156,11 @@ func (p *page) Render() app.UI {
 
 func (p *page) updateApp(ctx app.Context, e app.Event) {
 	ctx.NewAction(updateApp)
+}
+
+func fragmentFocus(fragment string) string {
+	if fragment == app.Window().URL().Fragment {
+		return "focus"
+	}
+	return ""
 }

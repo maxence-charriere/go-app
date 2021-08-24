@@ -79,6 +79,11 @@ func (i *icon) Render() app.UI {
 	var content app.UI
 	if isSVG(i.Isrc) {
 		content = app.Raw(fmt.Sprintf(i.Isrc, i.Isize, i.Isize))
+	} else {
+		content = app.Img().
+			Style("max-width", "100%").
+			Style("max-height", "100%").
+			Src(i.Isrc)
 	}
 
 	icon := app.Div().

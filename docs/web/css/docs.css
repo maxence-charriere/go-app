@@ -67,12 +67,8 @@ h6 {
 
 .h1,
 h1 {
-  font-size: 24px;
-  letter-spacing: 3px;
-}
-
-h1 {
-  padding-top: 18px;
+  font-size: 26px;
+  letter-spacing: 4px;
 }
 
 .h2,
@@ -83,7 +79,8 @@ h2 {
 
 .header-separator,
 h1,
-h2 {
+h2,
+.h2 {
   padding-bottom: 6px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
@@ -182,6 +179,11 @@ input[type="password"]:focus {
   border-left: 1px solid deepskyblue;
 }
 
+strong {
+  color: white;
+  font-weight: 400;
+}
+
 .fill {
   height: 100%;
   width: 100%;
@@ -278,11 +280,6 @@ input[type="password"]:focus {
   margin-top: 24px;
 }
 
-.vspace-section,
-h2 {
-  margin-top: 120px;
-}
-
 .vspace-bottom {
   margin-bottom: 24px;
 }
@@ -317,6 +314,10 @@ h2 {
 
 .icon-top {
   margin-bottom: 12px;
+}
+
+.icon-left {
+  margin-right: 24px;
 }
 
 .subtext {
@@ -379,15 +380,65 @@ h2 {
   text-align: center;
 }
 
+/* -----------------------------------------------------------------------------
+// Page
+------------------------------------------------------------------------------*/
+.page-title {
+  max-width: 540px;
+}
+
+.separator:first-of-type {
+  margin-top: 42px;
+}
+
+.separator:last-of-type {
+  margin-top: 18px;
+}
+
+.separator,
+.markdown h2 {
+  margin-top: 84px;
+}
+
+.markdown h2:first-of-type {
+  margin-top: 0;
+}
+
 /*------------------------------------------------------------------------------
 ** menu
 ------------------------------------------------------------------------------*/
+.menu-hamburger-background {
+  background: linear-gradient(#2e343a, rgba(0, 0, 0, 0.9));
+}
+
 .menu .separator:first-of-type {
   margin-top: 18px;
 }
 
 .menu .separator {
   margin-top: 30px;
+}
+
+/* -----------------------------------------------------------------------------
+// Index
+------------------------------------------------------------------------------*/
+.index .separator:first-of-type {
+  margin-top: 18px;
+}
+
+.index .separator {
+  margin-top: 24px;
+}
+
+.index .h2 {
+  margin-top: 18px;
+}
+
+.index-link {
+  display: block;
+  padding: 2px 0;
+  white-space: pre;
+  color: currentColor;
 }
 
 /*------------------------------------------------------------------------------
@@ -457,20 +508,19 @@ h2 {
 }
 
 /* -----------------------------------------------------------------------------
-// Page
+// Updates
 ------------------------------------------------------------------------------*/
-.overlay-menu {
-  background: linear-gradient(#2e343a, rgba(0, 0, 0, 0.9));
+.updates .markdown table {
+  margin: 0;
+  padding: 0;
 }
 
-/* -----------------------------------------------------------------------------
-// Index
-------------------------------------------------------------------------------*/
-.index-link {
-  display: block;
-  padding: 2px 0;
-  white-space: pre;
-  color: currentColor;
+.updates .markdown tr:first-child td {
+  /* margin: 0;
+  padding: 12px 24px 12px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08); */
+  /* padding-top: 0; */
+  border-top: none;
 }
 
 /* -----------------------------------------------------------------------------
