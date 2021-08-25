@@ -27,6 +27,7 @@ func handleGetMarkdown(ctx app.Context, a app.Action) {
 
 	md.Status = loading
 	md.Err = nil
+	ctx.SetState(state, md)
 
 	res, err := get(ctx, path)
 	if err != nil {

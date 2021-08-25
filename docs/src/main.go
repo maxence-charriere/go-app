@@ -44,11 +44,12 @@ func main() {
 	analytics.Add(analytics.NewGoogleAnalytics())
 
 	app.Route("/", newHomePage())
-	// app.Route("/reference", newReference())
+	app.Route("/reference", newReferencePage())
 
 	app.Handle(installApp, handleAppInstall)
 	app.Handle(updateApp, handleAppUpdate)
 	app.Handle(getMarkdown, handleGetMarkdown)
+	app.Handle(getReference, handleGetReference)
 
 	app.RunWhenOnBrowser()
 
@@ -108,6 +109,11 @@ func main() {
 		},
 		RawHeaders: []string{
 			analytics.GoogleAnalyticsHeader("G-SW4FQEM9VM"),
+		},
+		CacheableResources: []string{
+			"/web/documents/what-is-go-app.md",
+			"/web/documents/updates.md",
+			"/web/documents/features.md",
 		},
 	}
 

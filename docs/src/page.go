@@ -47,6 +47,7 @@ func (p *page) Content(v ...app.UI) *page {
 
 func (p *page) OnNav(ctx app.Context) {
 	p.updateAvailable = ctx.AppUpdateAvailable()
+	ctx.Defer(p.scrollTo)
 }
 
 func (p *page) OnAppUpdate(ctx app.Context) {
@@ -66,24 +67,26 @@ func (p *page) Render() app.UI {
 			newMenu().Class("fill"),
 		).
 		Index(
-			ui.Scroll().
-				Class("fill").
-				HeaderHeight(headerHeight).
-				Content(
-					app.Nav().
-						Class("index").
-						Body(
-							app.Div().Class("separator"),
-							app.Header().
-								Class("h2").
-								Text("Index"),
-							app.Div().Class("separator"),
-							app.Range(p.Iindex).Slice(func(i int) app.UI {
-								return p.Iindex[i]
-							}),
-							app.Div().Class("separator"),
-						),
-				),
+			app.If(len(p.Iindex) != 0,
+				ui.Scroll().
+					Class("fill").
+					HeaderHeight(headerHeight).
+					Content(
+						app.Nav().
+							Class("index").
+							Body(
+								app.Div().Class("separator"),
+								app.Header().
+									Class("h2").
+									Text("Index"),
+								app.Div().Class("separator"),
+								app.Range(p.Iindex).Slice(func(i int) app.UI {
+									return p.Iindex[i]
+								}),
+								app.Div().Class("separator"),
+							),
+					),
+			),
 		).
 		Content(
 			ui.Scroll().
@@ -119,6 +122,7 @@ func (p *page) Render() app.UI {
 					app.Main().Body(
 						app.Article().Body(
 							app.Header().
+								ID("page-top").
 								Class("page-title").
 								Class("center").
 								Body(
@@ -156,6 +160,14 @@ func (p *page) Render() app.UI {
 
 func (p *page) updateApp(ctx app.Context, e app.Event) {
 	ctx.NewAction(updateApp)
+}
+
+func (p *page) scrollTo(ctx app.Context) {
+	id := ctx.Page().URL().Fragment
+	if id == "" {
+		id = "page-top"
+	}
+	ctx.ScrollTo(id)
 }
 
 func fragmentFocus(fragment string) string {

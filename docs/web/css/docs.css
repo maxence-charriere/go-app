@@ -71,8 +71,9 @@ h1 {
   letter-spacing: 4px;
 }
 
+h2,
 .h2,
-h2 {
+.reference h3 {
   font-size: 18px;
   letter-spacing: 2px;
 }
@@ -80,21 +81,26 @@ h2 {
 .header-separator,
 h1,
 h2,
-.h2 {
+.h2,
+.reference h3 {
   padding-bottom: 6px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+h3,
 .h3,
-h3 {
-  /* margin-top: 60px; */
+.reference h4 {
   font-size: 16px;
   letter-spacing: 1px;
 }
 
-p {
-  margin: 0;
-  padding: 18px 0 0;
+p,
+ul,
+ol,
+.reference .Documentation-function:first-of-type,
+.reference .Documentation-type:first-of-type {
+  padding: 0;
+  margin: 18px 0 0;
 }
 
 a {
@@ -106,12 +112,6 @@ a {
 a:hover,
 a:active {
   color: deepskyblue;
-}
-
-ul,
-ol {
-  margin: 18px 0 0 0;
-  padding: 0;
 }
 
 li {
@@ -144,15 +144,16 @@ td {
 }
 
 pre,
-pre[class*="language-"],
-.godoc code {
+pre[class*="language-"] {
   display: block;
   margin: 18px 0 0;
   padding: 18px 30px;
-  border-radius: 12px;
+  border-radius: 18px;
   background-color: rgba(0, 0, 0, 0.2);
   font-size: 14px;
   overflow: auto;
+  font-family: monospace;
+  tab-size: 4;
 }
 
 pre[class*="language-"] code {
@@ -276,6 +277,11 @@ strong {
   height: calc(100% - 30px - 30px);
 }
 
+.rounded {
+  border-radius: 18px;
+  border: 0;
+}
+
 .vspace-top {
   margin-top: 24px;
 }
@@ -387,7 +393,8 @@ strong {
   max-width: 540px;
 }
 
-.separator:first-of-type {
+.separator:first-of-type,
+.reference .Documentation-overviewHeader {
   margin-top: 42px;
 }
 
@@ -396,7 +403,8 @@ strong {
 }
 
 .separator,
-.markdown h2 {
+.markdown h2,
+.reference h3 {
   margin-top: 84px;
 }
 
@@ -419,6 +427,10 @@ strong {
   margin-top: 30px;
 }
 
+.menu .separator:last-of-type {
+  margin-top: 16px;
+}
+
 /* -----------------------------------------------------------------------------
 // Index
 ------------------------------------------------------------------------------*/
@@ -430,6 +442,10 @@ strong {
   margin-top: 24px;
 }
 
+.index .separator:last-of-type {
+  margin-top: 16px;
+}
+
 .index .h2 {
   margin-top: 18px;
 }
@@ -439,39 +455,6 @@ strong {
   padding: 2px 0;
   white-space: pre;
   color: currentColor;
-}
-
-/*------------------------------------------------------------------------------
-** Animations
-------------------------------------------------------------------------------*/
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes bounce {
-  0% {
-    transform: translateY(0);
-  }
-  10% {
-    transform: translateY(-6px);
-  }
-  30% {
-    transform: translateY(0);
-  }
-  35% {
-    transform: translateY(-6px);
-  }
-  55% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(0);
-  }
 }
 
 /* -----------------------------------------------------------------------------
@@ -521,18 +504,6 @@ strong {
   border-top: 1px solid rgba(255, 255, 255, 0.08); */
   /* padding-top: 0; */
   border-top: none;
-}
-
-/* -----------------------------------------------------------------------------
-// Support us
-------------------------------------------------------------------------------*/
-.support-us-item {
-  color: currentColor;
-}
-
-.support-us-item-label {
-  margin-top: 6px;
-  text-align: center;
 }
 
 /* -----------------------------------------------------------------------------
@@ -661,82 +632,99 @@ strong {
 }
 
 /* -----------------------------------------------------------------------------
-// Godoc
+// Reference 
 ------------------------------------------------------------------------------*/
-.godoc-index dl,
-.godoc-index a {
+.reference-index ul {
+  list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.reference-index li {
+  margin: 0;
+  padding: 2px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reference-index a {
   color: currentColor;
 }
 
-.godoc-index a:hover,
-.godoc-index a:active {
+.reference-index a:hover {
   color: deepskyblue;
 }
 
-.godoc-index dd {
-  margin: 0;
-  padding: 2px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.reference-index li ul,
+.reference li ul {
+  margin: 0 0 0 12px;
 }
 
-.godoc h2,
-.godoc h3 {
+.reference h4 {
   text-transform: none;
 }
 
-.godoc h2 a,
-.godoc h3 a,
-.godoc pre a {
-  color: deepskyblue;
+.reference ul {
+  list-style: none;
 }
 
-.godoc pre .comment {
+.reference li {
+  margin: 6px 0 0;
+}
+
+.reference li:first-child {
+  margin: 0;
+}
+
+.reference .Documentation-function,
+.reference .Documentation-type {
+  text-transform: none;
+  margin-top: 84px;
+}
+
+.reference .Documentation-typeFunc,
+.reference .Documentation-typeMethod {
+  margin-top: 36px;
+}
+
+.reference .Documentation-declarationLink {
+  display: none;
+}
+
+.reference .comment {
   color: mediumspringgreen;
 }
 
-.godoc dd {
-  margin: 2px 0;
-  padding: 0;
+/*------------------------------------------------------------------------------
+** Animations
+------------------------------------------------------------------------------*/
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-.godoc dd a {
-  color: currentColor;
-}
-
-.godoc dd a:hover,
-.godoc dd a:active {
-  color: deepskyblue;
-}
-
-.godoc #pkg-overview,
-.godoc #pkg-index {
-  cursor: pointer;
-}
-
-.godoc .pkg-dir {
-  padding: 18px 0 0;
-}
-
-.godoc .toggleVisible .collapsed {
-  display: none;
-}
-
-.godoc .toggleVisible .expanded {
-  display: block;
-}
-
-.godoc .toggle .collapsed {
-  display: block;
-}
-
-.godoc .toggle .expanded {
-  display: none;
-}
-
-.godoc #footer {
-  display: none;
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  10% {
+    transform: translateY(-6px);
+  }
+  30% {
+    transform: translateY(0);
+  }
+  35% {
+    transform: translateY(-6px);
+  }
+  55% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
