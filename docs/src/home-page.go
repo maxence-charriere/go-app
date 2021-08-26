@@ -19,6 +19,8 @@ func (p *homePage) OnPreRender(ctx app.Context) {
 }
 
 func (p *homePage) OnNav(ctx app.Context) {
+	ctx.Page().SetTitle(defaultTitle)
+	ctx.Page().SetDescription(defaultDescription)
 	p.initPage(ctx)
 }
 
