@@ -44,6 +44,7 @@ func main() {
 	analytics.Add(analytics.NewGoogleAnalytics())
 
 	app.Route("/", newHomePage())
+	app.Route("/getting-started", newGettingStartedPage())
 	app.Route("/reference", newReferencePage())
 
 	app.Handle(installApp, handleAppInstall)

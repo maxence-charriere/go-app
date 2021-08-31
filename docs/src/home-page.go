@@ -19,12 +19,12 @@ func (p *homePage) OnPreRender(ctx app.Context) {
 }
 
 func (p *homePage) OnNav(ctx app.Context) {
-	ctx.Page().SetTitle(defaultTitle)
-	ctx.Page().SetDescription(defaultDescription)
 	p.initPage(ctx)
 }
 
 func (p *homePage) initPage(ctx app.Context) {
+	ctx.Page().SetTitle(defaultTitle)
+	ctx.Page().SetDescription(defaultDescription)
 	analytics.Page("home", nil)
 }
 
@@ -58,7 +58,9 @@ func (p *homePage) Render() app.UI {
 				Class(fragmentFocus("other-features")).
 				Href("#other-features").
 				Text("Other features"),
+
 			app.Div().Class("separator"),
+
 			app.A().
 				Class("index-link").
 				Class(fragmentFocus("next")).

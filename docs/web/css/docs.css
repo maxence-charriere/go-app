@@ -408,6 +408,7 @@ strong {
 
 .separator,
 .markdown h2,
+.markdown h3,
 .reference h3 {
   margin-top: 84px;
 }

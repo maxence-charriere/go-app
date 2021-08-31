@@ -107,6 +107,9 @@ func (d *remoteMarkdownDoc) load(ctx app.Context) {
 		While(func() bool {
 			return src == d.Isrc
 		}).
+		OnChange(func() {
+			ctx.Defer(scrollTo)
+		}).
 		Value(&d.md)
 
 	ctx.NewAction(getMarkdown, app.T("path", d.Isrc))

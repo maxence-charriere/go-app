@@ -49,7 +49,7 @@ func (p *page) Content(v ...app.UI) *page {
 
 func (p *page) OnNav(ctx app.Context) {
 	p.updateAvailable = ctx.AppUpdateAvailable()
-	ctx.Defer(p.scrollTo)
+	ctx.Defer(scrollTo)
 }
 
 func (p *page) OnAppUpdate(ctx app.Context) {
@@ -187,7 +187,7 @@ func (p *page) updateApp(ctx app.Context, e app.Event) {
 	ctx.NewAction(updateApp)
 }
 
-func (p *page) scrollTo(ctx app.Context) {
+func scrollTo(ctx app.Context) {
 	id := ctx.Page().URL().Fragment
 	if id == "" {
 		id = "page-top"
