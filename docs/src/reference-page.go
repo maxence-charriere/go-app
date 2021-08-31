@@ -40,6 +40,7 @@ func (p *referencePage) Render() app.UI {
 			newReferenceContent().
 				Class("reference-index").
 				Index(true),
+			app.Div().Class("separator"),
 		).
 		Content(
 			newReferenceContent().Class("reference"),

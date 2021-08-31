@@ -58,6 +58,7 @@ func (p *homePage) Render() app.UI {
 				Class(fragmentFocus("other-features")).
 				Href("#other-features").
 				Text("Other features"),
+			app.Div().Class("separator"),
 			app.A().
 				Class("index-link").
 				Class(fragmentFocus("next")).

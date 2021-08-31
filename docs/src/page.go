@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/maxence-charriere/go-app/v9/pkg/ui"
 )
@@ -83,6 +85,11 @@ func (p *page) Render() app.UI {
 								app.Range(p.Iindex).Slice(func(i int) app.UI {
 									return p.Iindex[i]
 								}),
+								app.A().
+									Class("index-link").
+									Class(fragmentFocus("repport-an-issue")).
+									Href("#repport-an-issue").
+									Text("Repport an Issue"),
 								app.Div().Class("separator"),
 							),
 					),
@@ -142,6 +149,24 @@ func (p *page) Render() app.UI {
 							app.Range(p.Icontent).Slice(func(i int) app.UI {
 								return p.Icontent[i]
 							}),
+
+							app.Div().Class("separator"),
+							app.Aside().Body(
+								app.Header().
+									ID("repport-an-issue").
+									Class("h2").
+									Text("Report an issue"),
+								app.P().Body(
+									app.Text("Found something incorrect, a typo or have suggestions to improve this page? "),
+									app.A().
+										Href(fmt.Sprintf(
+											"%s/issues/new?title=Documentation issue in %s page",
+											githubURL,
+											p.Ititle,
+										)).
+										Text("🚀 Submit a GitHub issue!"),
+								),
+							),
 							app.Div().Class("separator"),
 						),
 					),
