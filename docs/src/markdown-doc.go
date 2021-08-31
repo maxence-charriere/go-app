@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"path/filepath"
 
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/parser"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v9/pkg/ui"
 )
 
 type markdownDoc struct {
@@ -115,6 +117,12 @@ func (d *remoteMarkdownDoc) Render() app.UI {
 		ID(d.Iid).
 		Class(d.Iclass).
 		Body(
+			ui.Loader().
+				Class("heading").
+				Class("fill").
+				Loading(d.md.Status == loading).
+				Err(d.md.Err).
+				Label(fmt.Sprintf("Loading %s...", filepath.Base(d.Isrc))),
 			app.If(d.md.Status == loaded,
 				newMarkdownDoc().
 					Class("fill").

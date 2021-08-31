@@ -57,18 +57,19 @@ h6 {
   font-family: "Montserrat", sans-serif;
   font-weight: 300;
   text-transform: uppercase;
-  color: white;
 }
 
 .app-title {
   font-size: 30px;
   letter-spacing: 6px;
+  color: white;
 }
 
 .h1,
 h1 {
   font-size: 26px;
   letter-spacing: 4px;
+  color: white;
 }
 
 h2,
@@ -76,6 +77,7 @@ h2,
 .reference h3 {
   font-size: 18px;
   letter-spacing: 2px;
+  color: white;
 }
 
 .header-separator,
@@ -85,6 +87,7 @@ h2,
 .reference h3 {
   padding-bottom: 6px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: white;
 }
 
 h3,
@@ -92,6 +95,7 @@ h3,
 .reference h4 {
   font-size: 16px;
   letter-spacing: 1px;
+  color: white;
 }
 
 p,

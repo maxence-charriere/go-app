@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v9/pkg/ui"
 )
 
 type referenceContent struct {
@@ -58,12 +59,28 @@ func (c *referenceContent) load(ctx app.Context) {
 }
 
 func (c *referenceContent) Render() app.UI {
+	loaderSize := 60
+	loaderSpacing := 18
+	if c.Iindex {
+		loaderSize = 30
+		loaderSpacing = 9
+	}
+
 	return app.Section().
 		ID(c.Iid).
 		Class(c.Iclass).
 		Body(
+			ui.Loader().
+				Class("separator").
+				Class("fill").
+				Class("heading").
+				Loading(c.content.Status == loading).
+				Err(c.content.Err).
+				Size(loaderSize).
+				Spacing(loaderSpacing),
+
 			app.If(!c.Iindex && c.content.Content != "",
-				app.Raw("<div>"+c.content.Content+"</div>"),
+				app.Raw(c.content.Content),
 			).ElseIf(c.Iindex && c.content.Index != "",
 				app.Raw(c.content.Index),
 			),
