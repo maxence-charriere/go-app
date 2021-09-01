@@ -76,16 +76,25 @@ func (m *menu) Render() app.UI {
 					Class(isFocus("/getting-started")),
 				ui.Link().
 					Class(linkClass).
-					Icon(upgradeSVG).
-					Label("V8 to V9 Guide").
-					Href("/migrate").
-					Class(isFocus("/migrate")),
+					Icon(fileTreeSVG).
+					Label("Architecture").
+					Href("/architecture").
+					Class(isFocus("/architecture")),
 				ui.Link().
 					Class(linkClass).
 					Icon(golangSVG).
 					Label("Reference").
 					Href("/reference").
 					Class(isFocus("/reference")),
+
+				app.Div().Class("separator"),
+
+				ui.Link().
+					Class(linkClass).
+					Icon(upgradeSVG).
+					Label("V8 to V9 Guide").
+					Href("/migrate").
+					Class(isFocus("/migrate")),
 
 				app.Div().Class("separator"),
 

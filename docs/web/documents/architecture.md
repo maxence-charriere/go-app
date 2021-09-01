@@ -1,4 +1,4 @@
-# Architecture
+## Overview
 
 Like traditional websites, [progressive web apps](https://developers.google.com/web/progressive-web-apps) are provided by a server and are displayed in a web browser. This document provide a description of the different elements which interact each other to operate a PWA.
 
@@ -79,6 +79,4 @@ They are always located within a directory named `web`, and can be served by the
 
 ## Next
 
-- [How to create a component](/components)
-- [Deal with resources](/resources)
-- [API reference](/reference)
+- [Reference](/reference)
