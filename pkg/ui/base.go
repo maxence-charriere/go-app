@@ -47,13 +47,7 @@ func (b *base) ID(v string) IBase {
 }
 
 func (b *base) Class(v string) IBase {
-	if v == "" {
-		return b
-	}
-	if b.Iclass != "" {
-		b.Iclass += " "
-	}
-	b.Iclass += v
+	b.Iclass = app.AppendClass(b.Iclass, v)
 	return b
 }
 

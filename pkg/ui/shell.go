@@ -81,13 +81,7 @@ func (s *shell) ID(v string) IShell {
 }
 
 func (s *shell) Class(v string) IShell {
-	if v == "" {
-		return s
-	}
-	if s.Iclass != "" {
-		s.Iclass += " "
-	}
-	s.Iclass += v
+	s.Iclass = app.AppendClass(s.Iclass, v)
 	return s
 }
 

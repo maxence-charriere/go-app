@@ -63,13 +63,7 @@ func (f *flow) ID(v string) IFlow {
 }
 
 func (f *flow) Class(v string) IFlow {
-	if v == "" {
-		return f
-	}
-	if f.Iclass != "" {
-		f.Iclass += " "
-	}
-	f.Iclass += v
+	f.Iclass = app.AppendClass(f.Iclass, v)
 	return f
 }
 
