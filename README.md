@@ -21,7 +21,7 @@ It **uses [Go HTTP standard](https://golang.org/pkg/net/http) model**.
 
 An app created with go-app can out of the box **run in its own window**, **supports offline mode**, and are **SEO friendly**.
 
-## Documentation
+## Documentation (built with go-app)
 
 [![go-app documentation](docs/web/images/go-app.png)](https://go-app.dev)
 
