@@ -180,4 +180,5 @@ make run
 
 ## Next
 
+- [Architecture](/architecture)
 - [Reference](/reference)

@@ -37,6 +37,31 @@ func (p *migratePage) Render() app.UI {
 				Class(fragmentFocus("intro")).
 				Href("#intro").
 				Text("Intro"),
+			app.A().
+				Class("index-link").
+				Class(fragmentFocus("changes")).
+				Href("#changes").
+				Text("Changes"),
+			app.A().
+				Class("index-link").
+				Class(fragmentFocus("general")).
+				Href("#general").
+				Text("    General"),
+			app.A().
+				Class("index-link").
+				Class(fragmentFocus("components")).
+				Href("#components").
+				Text("    Components"),
+			app.A().
+				Class("index-link").
+				Class(fragmentFocus("context")).
+				Href("#context").
+				Text("    Context"),
+			app.A().
+				Class("index-link").
+				Class(fragmentFocus("api-design-decisions")).
+				Href("#api-design-decisions").
+				Text("API Design Decisions"),
 
 			app.Div().Class("separator"),
 		).
