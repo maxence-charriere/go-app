@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta httpequiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="author" content="Maxence Charriere">
+<meta content="Documentation that shows how to start building a Progressive Web App (PWA) with Go (Golang) and WebAssembly (WASM)." name="description">
+<meta name="keywords" content="go-app, go, golang, app, pwa, progressive web app, webassembly, web assembly, webapp, web, gui, ui, user interface, graphical user interface, frontend, opensource, open source, github">
+<meta name="theme-color" content="#2e343a">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
+<meta property="og:url" content="http://127.0.0.1:58294/getting-started">
+<meta property="og:title" content="Start building a PWA with Go and WASM">
+<meta content="Documentation that shows how to start building a Progressive Web App (PWA) with Go (Golang) and WebAssembly (WASM)." property="og:description">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://go-app.dev/web/images/go-app.png">
+<title>
+Start building a PWA with Go and WASM
+</title>
+<link rel="icon" type="image/png" href="https://storage.googleapis.com/murlok-github/icon-192.png">
+<link href="https://storage.googleapis.com/murlok-github/icon-192.png" rel="apple-touch-icon">
+<link rel="manifest" href="/manifest.webmanifest">
+<link type="text/css" rel="stylesheet" href="/app.css">
+<script defer="true" src="/wasm_exec.js"></script>
+<script src="/app.js" defer="true"></script>
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap">
+<link type="text/css" rel="stylesheet" href="/web/css/prism.css">
+<link type="text/css" rel="stylesheet" href="/web/css/docs.css">
+<script defer="true" src="/web/js/prism.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script defer src="https://www.googletagmanager.com/gtag/js?id=G-SW4FQEM9VM"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+	
+	  gtag('config', 'G-SW4FQEM9VM', {'send_page_view': false});
+	</script>
+</head>
+<body>
+<div>
+<aside id="app-wasm-loader" class="goapp-app-info">
+<img class="goapp-logo goapp-spin" src="https://storage.googleapis.com/murlok-github/icon-192.png" id="app-wasm-loader-icon">
+<p id="app-wasm-loader-label" class="goapp-label">
+go-app documentation
+</p>
+</aside>
+<div id="app-pre-render">
+<div data-goapp-ui="shell" id class="fill background">
+<div id="goapp-shell-ca3fb3ce-5785-496f-a469-b8fd0390fb9a" style="display:flex;width:100%;height:100%;overflow:hidden;">
+<div style="position:relative;display:none;flex-shrink:0;flex-basis:270px;overflow:hidden;">
+<div data-goapp-ui="scroll" id class="menu fill">
+<div style="width:100%;height:calc(100% - 24px);padding:12px 0;">
+<div style="width:calc(100% - 84px);padding:0 42px;height:72px;">
+<div data-goapp="Stack" id class="fill" style="display:flex;justify-content:flex-start;align-items:center;">
+<header>
+<a class="heading app-title" href="/">
+Go-App
+</a>
+</header>
+</div>
+</div>
+<div style="width:calc(100% - 84px);height:calc(100% - 72px);padding:0 42px;overflow-x:hidden;overflow-y:scroll;">
+<nav>
+<div class="separator"></div>
+<a class="link heading fit unselectable" title href="/" id>
+<div style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id class>
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;margin-right:6px;">
+<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+    	<path fill="currentColor" d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />
+	</svg>
+</div>
+<div>
+Home
+</div>
+</div>
+</a>
+<a title href="/getting-started" id class="link heading fit unselectable">
+<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;margin-right:6px;">
+<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+		<path fill="currentColor" d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19M5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5M21.61 2.39C21.61 2.39 16.66 .269 11 5.93C8.81 8.12 7.5 10.53 6.65 12.64C6.37 13.39 6.56 14.21 7.11 14.77L9.24 16.89C9.79 17.45 10.61 17.63 11.36 17.35C13.5 16.53 15.88 15.19 18.07 13C23.73 7.34 21.61 2.39 21.61 2.39M14.54 9.46C13.76 8.68 13.76 7.41 14.54 6.63S16.59 5.85 17.37 6.63C18.14 7.41 18.15 8.68 17.37 9.46C16.59 10.24 15.32 10.24 14.54 9.46M8.88 16.53L7.47 15.12L8.88 16.53M6.24 22L9.88 18.36C9.54 18.27 9.21 18.12 8.91 17.91L4.83 22H6.24M2 22H3.41L8.18 17.24L6.76 15.83L2 20.59V22M2 19.17L6.09 15.09C5.88 14.79 5.73 14.47 5.64 14.12L2 17.76V19.17Z" />
+	</svg>
+</div>
+<div>
+Getting Started
+</div>
+</div>
+</a>
+<a id class="link heading fit unselectable" title href="/architecture">
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;margin-right:6px;" data-goapp="Icon">
+<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+		<path fill="currentColor" d="M9,2V8H11V11H5C3.89,11 3,11.89 3,13V16H1V22H7V16H5V13H11V16H9V22H15V16H13V13H19V16H17V22H23V16H21V13C21,11.89 20.11,11 19,11H13V8H15V2H9Z" />
+	</svg>
+</div>
+<div>
+Architecture
+</div>
+</div>
+</a>
+<a id class="link heading fit unselectable" title href="/reference">
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;margin-right:6px;">
+<svg width="24px" height="24px" viewBox="0 0 207 78" xmlns="http://www.w3.org/2000/svg">
+		<g fill="currentColor" fill-rule="evenodd">
+			<path d="m16.2 24.1c-.4 0-.5-.2-.3-.5l2.1-2.7c.2-.3.7-.5 1.1-.5h35.7c.4 0 .5.3.3.6l-1.7 2.6c-.2.3-.7.6-1 .6z"/>
+			<path d="m1.1 33.3c-.4 0-.5-.2-.3-.5l2.1-2.7c.2-.3.7-.5 1.1-.5h45.6c.4 0 .6.3.5.6l-.8 2.4c-.1.4-.5.6-.9.6z"/>
+			<path d="m25.3 42.5c-.4 0-.5-.3-.3-.6l1.4-2.5c.2-.3.6-.6 1-.6h20c.4 0 .6.3.6.7l-.2 2.4c0 .4-.4.7-.7.7z"/>
+			<g transform="translate(55)">
+				<path d="m74.1 22.3c-6.3 1.6-10.6 2.8-16.8 4.4-1.5.4-1.6.5-2.9-1-1.5-1.7-2.6-2.8-4.7-3.8-6.3-3.1-12.4-2.2-18.1 1.5-6.8 4.4-10.3 10.9-10.2 19 .1 8 5.6 14.6 13.5 15.7 6.8.9 12.5-1.5 17-6.6.9-1.1 1.7-2.3 2.7-3.7-3.6 0-8.1 0-19.3 0-2.1 0-2.6-1.3-1.9-3 1.3-3.1 3.7-8.3 5.1-10.9.3-.6 1-1.6 2.5-1.6h36.4c-.2 2.7-.2 5.4-.6 8.1-1.1 7.2-3.8 13.8-8.2 19.6-7.2 9.5-16.6 15.4-28.5 17-9.8 1.3-18.9-.6-26.9-6.6-7.4-5.6-11.6-13-12.7-22.2-1.3-10.9 1.9-20.7 8.5-29.3 7.1-9.3 16.5-15.2 28-17.3 9.4-1.7 18.4-.6 26.5 4.9 5.3 3.5 9.1 8.3 11.6 14.1.6.9.2 1.4-1 1.7z"/>
+				<path d="m107.2 77.6c-9.1-.2-17.4-2.8-24.4-8.8-5.9-5.1-9.6-11.6-10.8-19.3-1.8-11.3 1.3-21.3 8.1-30.2 7.3-9.6 16.1-14.6 28-16.7 10.2-1.8 19.8-.8 28.5 5.1 7.9 5.4 12.8 12.7 14.1 22.3 1.7 13.5-2.2 24.5-11.5 33.9-6.6 6.7-14.7 10.9-24 12.8-2.7.5-5.4.6-8 .9zm23.8-40.4c-.1-1.3-.1-2.3-.3-3.3-1.8-9.9-10.9-15.5-20.4-13.3-9.3 2.1-15.3 8-17.5 17.4-1.8 7.8 2 15.7 9.2 18.9 5.5 2.4 11 2.1 16.3-.6 7.9-4.1 12.2-10.5 12.7-19.1z" fill-rule="nonzero"/>
+			</g>
+		</g>
+	</svg>
+</div>
+<div>
+Reference
+</div>
+</div>
+</a>
+<div class="separator"></div>
+<a href="/migrate" id class="link heading fit unselectable" title>
+<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;margin-right:6px;">
+<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+    	<path fill="currentColor" d="M21,9L17,5V8H10V10H17V13M7,11L3,15L7,19V16H14V14H7V11Z" />
+	</svg>
+</div>
+<div>
+Migrate From v8 to v9
+</div>
+</div>
+</a>
+<div class="separator"></div>
+<a id class="link heading fit unselectable" title href="https://github.com/maxence-charriere/go-app">
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<div style="width:24px;height:24px;max-width:24px;max-height:24px;margin-right:6px;" data-goapp="Icon" id class>
+<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+		<path fill="currentColor" d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z" />
+	</svg>
+</div>
+<div>
+GitHub
+</div>
+</div>
+</a>
+<a href="https://twitter.com/jonhymaxoo" id class="link heading fit unselectable" title>
+<div style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id class>
+<div class style="width:24px;height:24px;max-width:24px;max-height:24px;margin-right:6px;" data-goapp="Icon" id>
+<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+		<path fill="#1DA1F2" d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" />
+	</svg>
+</div>
+<div>
+Twitter
+</div>
+</div>
+</a>
+<div class="separator"></div>
+</nav>
+</div>
+<div style="width:calc(100% - 84px);padding:0 42px;height:0px;"></div>
+</div>
+</div>
+</div>
+<div style="position:relative;display:none;flex-shrink:0;flex-basis:270px;overflow:hidden;">
+<div data-goapp-ui="scroll" id class="fill">
+<div style="width:100%;height:calc(100% - 24px);padding:12px 0;">
+<div style="width:calc(100% - 24px);padding:0 12px;height:72px;"></div>
+<div style="width:calc(100% - 24px);height:calc(100% - 72px);padding:0 12px;overflow-x:hidden;overflow-y:scroll;">
+<nav class="index">
+<div class="separator"></div>
+<header class="h2">
+Index
+</header>
+<div class="separator"></div>
+<a class="index-link " href="#intro">
+Intro
+</a>
+<a class="index-link " href="#prerequisite">
+Prerequisite
+</a>
+<a class="index-link " href="#install">
+Install
+</a>
+<a class="index-link " href="#code">
+Code
+</a>
+<a class="index-link " href="#hello-component">
+    Hello component
+</a>
+<a class="index-link " href="#main">
+    Main
+</a>
+<a class="index-link " href="#build-and-run">
+Build and Run
+</a>
+<a class="index-link " href="#build-the-client">
+    Build the Client
+</a>
+<a class="index-link " href="#build-the-server">
+    Build the Server
+</a>
+<a class="index-link " href="#run-the-app">
+    Run the App
+</a>
+<a href="#use-a-makefile" class="index-link ">
+    Use a Makefile
+</a>
+<div class="separator"></div>
+<a class="index-link " href="#next">
+Next
+</a>
+<a class="index-link " href="#repport-an-issue">
+Repport an Issue
+</a>
+<div class="separator"></div>
+</nav>
+</div>
+<div style="width:calc(100% - 24px);padding:0 12px;height:0px;"></div>
+</div>
+</div>
+</div>
+<div style="position:relative;flex-grow:1;overflow:hidden;">
+<div data-goapp-ui="scroll" id class="fill">
+<div style="width:100%;height:calc(100% - 24px);padding:12px 0;">
+<div style="width:calc(100% - 24px);padding:0 12px;height:72px;">
+<nav class="fill">
+<div data-goapp="Stack" id class="fill" style="display:flex;justify-content:flex-end;align-items:center;"></div>
+</nav>
+</div>
+<div style="width:calc(100% - 24px);height:calc(100% - 72px);padding:0 12px;overflow-x:hidden;overflow-y:scroll;">
+<main>
+<article>
+<header id="page-top" class="page-title center">
+<div data-goapp="Stack" id class style="display:flex;justify-content:center;align-items:center;">
+<div data-goapp="Icon" id class="icon-left unselectable" style="width:90px;height:90px;max-width:90px;max-height:90px;">
+<svg style="width:90px;height:90px" viewBox="0 0 24 24">
+		<path fill="currentColor" d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19M5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5M21.61 2.39C21.61 2.39 16.66 .269 11 5.93C8.81 8.12 7.5 10.53 6.65 12.64C6.37 13.39 6.56 14.21 7.11 14.77L9.24 16.89C9.79 17.45 10.61 17.63 11.36 17.35C13.5 16.53 15.88 15.19 18.07 13C23.73 7.34 21.61 2.39 21.61 2.39M14.54 9.46C13.76 8.68 13.76 7.41 14.54 6.63S16.59 5.85 17.37 6.63C18.14 7.41 18.15 8.68 17.37 9.46C16.59 10.24 15.32 10.24 14.54 9.46M8.88 16.53L7.47 15.12L8.88 16.53M6.24 22L9.88 18.36C9.54 18.27 9.21 18.12 8.91 17.91L4.83 22H6.24M2 22H3.41L8.18 17.24L6.76 15.83L2 20.59V22M2 19.17L6.09 15.09C5.88 14.79 5.73 14.47 5.64 14.12L2 17.76V19.17Z" />
+	</svg>
+</div>
+<h1>
+Getting Started
+</h1>
+</div>
+</header>
+<div class="separator"></div>
+<div id class>
+<aside id class="heading fill" style="display:none;">
+<div data-goapp="Stack" id class style="display:flex;justify-content:center;align-items:center;width:100%;height:100%;">
+<div style="width:56px;height:56px;border:2px solid currentColor;border-top:2px solid white;border-radius:50%;animation:goapp-spin-frames 500ms linear infinite;"></div>
+<div style="margin-left:18px;">
+<div>
+Loading getting-started.md...
+</div>
+</div>
+</div>
+</aside>
+</div>
+<div class="separator"></div>
+<aside>
+<header id="repport-an-issue" class="h2">
+Report an issue
+</header>
+<p>
+Found something incorrect, a typo or have suggestions to improve this page? 
+<a href="https://github.com/maxence-charriere/go-app/issues/new?title=Documentation issue in Getting Started page">
+🚀 Submit a GitHub issue!
+</a>
+</p>
+</aside>
+<div class="separator"></div>
+</article>
+</main>
+</div>
+<div style="width:calc(100% - 24px);padding:0 12px;height:0px;"></div>
+</div>
+</div>
+</div>
+<div style="position:relative;display:none;flex-shrink:0;flex-basis:384px;overflow:hidden;">
+<div data-goapp-ui="flyer" id class="fill">
+<div style="width:100%;height:calc(100% - 24px);padding:12px 0;">
+<div style="width:calc(100% - 84px);padding:0 42px;height:72px;"></div>
+<div id="goapp-flyer-layout-c72721c8-c2b4-4378-af7b-6154fb1a9acd" style="display:flex;flex-direction:column;justify-content:center;width:calc(100% - 84px);height:calc(100% - 72px);padding:0 42px;overflow:hidden;">
+<div style="height:0px;overflow:hidden;"></div>
+<div style="display:none;height:0px;">
+<div data-goapp="Stack" id class="fill" style="display:flex;justify-content:center;align-items:center;">
+<aside class="magnify text-center">
+<a class="default" href="https://github.com/sponsors/maxence-charriere">
+<div id class="center icon-top" style="width:72px;height:72px;max-width:72px;max-height:72px;" data-goapp="Icon">
+<svg style="width:72px;height:72px" viewBox="0 0 24 24">
+		<path fill="currentColor" d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z" />
+	</svg>
+</div>
+<header class="h3 default">
+Support on GitHub
+</header>
+<p class="subtext">
+Help with go-app development by sponsoring it on GitHub.
+</p>
+</a>
+</aside>
+</div>
+</div>
+<div style="display:none;height:0px;overflow:hidden;"></div>
+</div>
+<div style="width:calc(100% - 84px);padding:0 42px;height:0px;"></div>
+</div>
+</div>
+</div>
+</div>
+<div style="display:block;position:absolute;top:0;left:0;cursor:pointer;">
+<div class="goapp-shell-hamburger-button-default">
+☰
+</div>
+</div>
+<div style="display:none;position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;">
+<div data-goapp-ui="scroll" id class="menu fill menu-hamburger-background">
+<div style="width:100%;height:calc(100% - 24px);padding:12px 0;">
+<div style="width:calc(100% - 84px);padding:0 42px;height:72px;">
+<div data-goapp="Stack" id class="fill" style="display:flex;justify-content:flex-start;align-items:center;">
+<header>
+<a class="heading app-title" href="/">
+Go-App
+</a>
+</header>
+</div>
+</div>
+<div style="width:calc(100% - 84px);height:calc(100% - 72px);padding:0 42px;overflow-x:hidden;overflow-y:scroll;">
+<nav>
+<div class="separator"></div>
+<a id class="link heading fit unselectable" title href="/">
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;margin-right:6px;">
+<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+    	<path fill="currentColor" d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />
+	</svg>
+</div>
+<div>
+Home
+</div>
+</div>
+</a>
+<a id class="link heading fit unselectable" title href="/getting-started">
+<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;margin-right:6px;">
+<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+		<path fill="currentColor" d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19M5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5M21.61 2.39C21.61 2.39 16.66 .269 11 5.93C8.81 8.12 7.5 10.53 6.65 12.64C6.37 13.39 6.56 14.21 7.11 14.77L9.24 16.89C9.79 17.45 10.61 17.63 11.36 17.35C13.5 16.53 15.88 15.19 18.07 13C23.73 7.34 21.61 2.39 21.61 2.39M14.54 9.46C13.76 8.68 13.76 7.41 14.54 6.63S16.59 5.85 17.37 6.63C18.14 7.41 18.15 8.68 17.37 9.46C16.59 10.24 15.32 10.24 14.54 9.46M8.88 16.53L7.47 15.12L8.88 16.53M6.24 22L9.88 18.36C9.54 18.27 9.21 18.12 8.91 17.91L4.83 22H6.24M2 22H3.41L8.18 17.24L6.76 15.83L2 20.59V22M2 19.17L6.09 15.09C5.88 14.79 5.73 14.47 5.64 14.12L2 17.76V19.17Z" />
+	</svg>
+</div>
+<div>
+Getting Started
+</div>
+</div>
+</a>
+<a href="/architecture" id class="link heading fit unselectable" title>
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<div style="width:24px;height:24px;max-width:24px;max-height:24px;margin-right:6px;" data-goapp="Icon" id class>
+<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+		<path fill="currentColor" d="M9,2V8H11V11H5C3.89,11 3,11.89 3,13V16H1V22H7V16H5V13H11V16H9V22H15V16H13V13H19V16H17V22H23V16H21V13C21,11.89 20.11,11 19,11H13V8H15V2H9Z" />
+	</svg>
+</div>
+<div>
+Architecture
+</div>
+</div>
+</a>
+<a id class="link heading fit unselectable" title href="/reference">
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;margin-right:6px;">
+<svg width="24px" height="24px" viewBox="0 0 207 78" xmlns="http://www.w3.org/2000/svg">
+		<g fill="currentColor" fill-rule="evenodd">
+			<path d="m16.2 24.1c-.4 0-.5-.2-.3-.5l2.1-2.7c.2-.3.7-.5 1.1-.5h35.7c.4 0 .5.3.3.6l-1.7 2.6c-.2.3-.7.6-1 .6z"/>
+			<path d="m1.1 33.3c-.4 0-.5-.2-.3-.5l2.1-2.7c.2-.3.7-.5 1.1-.5h45.6c.4 0 .6.3.5.6l-.8 2.4c-.1.4-.5.6-.9.6z"/>
+			<path d="m25.3 42.5c-.4 0-.5-.3-.3-.6l1.4-2.5c.2-.3.6-.6 1-.6h20c.4 0 .6.3.6.7l-.2 2.4c0 .4-.4.7-.7.7z"/>
+			<g transform="translate(55)">
+				<path d="m74.1 22.3c-6.3 1.6-10.6 2.8-16.8 4.4-1.5.4-1.6.5-2.9-1-1.5-1.7-2.6-2.8-4.7-3.8-6.3-3.1-12.4-2.2-18.1 1.5-6.8 4.4-10.3 10.9-10.2 19 .1 8 5.6 14.6 13.5 15.7 6.8.9 12.5-1.5 17-6.6.9-1.1 1.7-2.3 2.7-3.7-3.6 0-8.1 0-19.3 0-2.1 0-2.6-1.3-1.9-3 1.3-3.1 3.7-8.3 5.1-10.9.3-.6 1-1.6 2.5-1.6h36.4c-.2 2.7-.2 5.4-.6 8.1-1.1 7.2-3.8 13.8-8.2 19.6-7.2 9.5-16.6 15.4-28.5 17-9.8 1.3-18.9-.6-26.9-6.6-7.4-5.6-11.6-13-12.7-22.2-1.3-10.9 1.9-20.7 8.5-29.3 7.1-9.3 16.5-15.2 28-17.3 9.4-1.7 18.4-.6 26.5 4.9 5.3 3.5 9.1 8.3 11.6 14.1.6.9.2 1.4-1 1.7z"/>
+				<path d="m107.2 77.6c-9.1-.2-17.4-2.8-24.4-8.8-5.9-5.1-9.6-11.6-10.8-19.3-1.8-11.3 1.3-21.3 8.1-30.2 7.3-9.6 16.1-14.6 28-16.7 10.2-1.8 19.8-.8 28.5 5.1 7.9 5.4 12.8 12.7 14.1 22.3 1.7 13.5-2.2 24.5-11.5 33.9-6.6 6.7-14.7 10.9-24 12.8-2.7.5-5.4.6-8 .9zm23.8-40.4c-.1-1.3-.1-2.3-.3-3.3-1.8-9.9-10.9-15.5-20.4-13.3-9.3 2.1-15.3 8-17.5 17.4-1.8 7.8 2 15.7 9.2 18.9 5.5 2.4 11 2.1 16.3-.6 7.9-4.1 12.2-10.5 12.7-19.1z" fill-rule="nonzero"/>
+			</g>
+		</g>
+	</svg>
+</div>
+<div>
+Reference
+</div>
+</div>
+</a>
+<div class="separator"></div>
+<a href="/migrate" id class="link heading fit unselectable" title>
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;margin-right:6px;">
+<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+    	<path fill="currentColor" d="M21,9L17,5V8H10V10H17V13M7,11L3,15L7,19V16H14V14H7V11Z" />
+	</svg>
+</div>
+<div>
+Migrate From v8 to v9
+</div>
+</div>
+</a>
+<div class="separator"></div>
+<a title href="https://github.com/maxence-charriere/go-app" id class="link heading fit unselectable">
+<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;margin-right:6px;">
+<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+		<path fill="currentColor" d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z" />
+	</svg>
+</div>
+<div>
+GitHub
+</div>
+</div>
+</a>
+<a title href="https://twitter.com/jonhymaxoo" id class="link heading fit unselectable">
+<div style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id class>
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;margin-right:6px;">
+<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+		<path fill="#1DA1F2" d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" />
+	</svg>
+</div>
+<div>
+Twitter
+</div>
+</div>
+</a>
+<div class="separator"></div>
+</nav>
+</div>
+<div style="width:calc(100% - 84px);padding:0 42px;height:0px;"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

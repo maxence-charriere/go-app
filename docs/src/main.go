@@ -151,7 +151,12 @@ func runLocal(ctx context.Context, h *app.Handler, opts localOptions) {
 }
 
 func generateGitHubPages(ctx context.Context, h *app.Handler, opts githubOptions) {
-	if err := app.GenerateStaticWebsite(opts.Output, h); err != nil {
+	if err := app.GenerateStaticWebsite(opts.Output, h,
+		"/getting-started",
+		"/architecture",
+		"/reference",
+		"/migrate",
+	); err != nil {
 		panic(err)
 	}
 }
