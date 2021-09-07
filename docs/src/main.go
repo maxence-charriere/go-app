@@ -47,6 +47,7 @@ func main() {
 	app.Route("/getting-started", newGettingStartedPage())
 	app.Route("/architecture", newArchitecturePage())
 	app.Route("/reference", newReferencePage())
+	app.Route("/migrate", newMigratePage())
 
 	app.Handle(installApp, handleAppInstall)
 	app.Handle(updateApp, handleAppUpdate)

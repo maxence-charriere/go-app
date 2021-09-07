@@ -1,7 +1,4 @@
 ## Updates
 
 | ---------- | ---- |
-| Mon Aug 23 | Test |
-| Mon Aug 20 | Test |
-| Mon Aug 19 | Test |
-| Mon Aug 1 | Test |
+| 2021 Tue Sept 7 | **go-app v9** is now available |

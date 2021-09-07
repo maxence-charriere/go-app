@@ -91,10 +91,17 @@ func (m *menu) Render() app.UI {
 
 				ui.Link().
 					Class(linkClass).
-					Icon(upgradeSVG).
-					Label("V8 to V9 Guide").
+					Icon(swapSVG).
+					Label("Migrate From v8 to v9").
 					Href("/migrate").
 					Class(isFocus("/migrate")),
+				app.If(m.appInstallable,
+					ui.Link().
+						Class(linkClass).
+						Icon(downloadSVG).
+						Label("Install").
+						OnClick(m.installApp),
+				),
 
 				app.Div().Class("separator"),
 
@@ -108,15 +115,6 @@ func (m *menu) Render() app.UI {
 					Icon(twitterSVG).
 					Label("Twitter").
 					Href(twitterURL),
-
-				app.If(m.appInstallable,
-					app.Div().Class("separator"),
-					ui.Link().
-						Class(linkClass).
-						Icon(downloadSVG).
-						Label("Install").
-						OnClick(m.installApp),
-				),
 
 				app.Div().Class("separator"),
 			),

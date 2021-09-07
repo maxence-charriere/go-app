@@ -60,7 +60,7 @@ app.wasm is the binary that contains the UI logic of the progressive web app. It
 GOARCH=wasm GOOS=js go build -o web/app.wasm
 ```
 
-It is a [static resource](#static-resources) that is **always located at `/web/app.wasm`**, and can be served by the [server](#server) or are available from a remote bucket such as [S3](https://aws.amazon.com/s3) or [Google Cloud Storage](https://cloud.google.com/storage).
+It is a [static resource](#static-resources) that is **always located at `/web/app.wasm`**, and can be served by the [server](#server) or is available from a remote bucket such as [S3](https://aws.amazon.com/s3) or [Google Cloud Storage](https://cloud.google.com/storage).
 
 Once loaded in a [web browser](#web-browser), it displays the app content and handles user interactions.
 
@@ -76,6 +76,14 @@ Static resource are files such as:
 - Documents
 
 They are always located within a directory named `web`, and can be served by the [server](#server) or are available from a remote bucket such as [S3](https://aws.amazon.com/s3) or [Google Cloud Storage](https://cloud.google.com/storage).
+
+Static resources are located in a single directory referred to as the `web` directory:
+
+```sh
+/web/RESOURCE_NAME
+```
+
+By default served by the server, the `web` directory can also be located on a remote bucket such as [S3](https://aws.amazon.com/s3) or [Google Cloud Storage](https://cloud.google.com/storage).
 
 ## Next
 
