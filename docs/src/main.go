@@ -41,6 +41,7 @@ type githubOptions struct {
 
 func main() {
 	ui.BaseHPadding = 42
+	ui.BlockPadding = 18
 	analytics.Add(analytics.NewGoogleAnalytics())
 
 	app.Route("/", newHomePage())
@@ -116,7 +117,8 @@ func main() {
 		CacheableResources: []string{
 			"/web/documents/what-is-go-app.md",
 			"/web/documents/updates.md",
-			"/web/documents/features.md",
+			"/web/documents/home.md",
+			"/web/documents/home-next.md",
 		},
 	}
 

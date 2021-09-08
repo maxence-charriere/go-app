@@ -101,6 +101,7 @@ h3,
 p,
 ul,
 ol,
+.p,
 .reference .Documentation-function:first-of-type,
 .reference .Documentation-type:first-of-type {
   padding: 0;
@@ -250,6 +251,10 @@ strong {
   }
 }
 
+.hstretch {
+  width: 100%;
+}
+
 .space-flow {
   margin-left: 18px;
   width: calc(100% - 18px - 36px);
@@ -322,6 +327,10 @@ strong {
   text-align: center;
 }
 
+.dim {
+  color: dimgrey;
+}
+
 .icon-top {
   margin-bottom: 12px;
 }
@@ -339,17 +348,18 @@ strong {
   margin-left: auto;
 }
 
-.vignette {
-  display: block;
-  border-radius: 18px;
-  overflow: hidden;
-  background-color: rgba(255, 255, 255, 0.035);
+.code-background {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .magnify {
   display: block;
   cursor: pointer;
   transition: 0.2s all;
+}
+
+.text-tiny-top {
+  margin-top: 3px;
 }
 
 .magnify:hover {

@@ -58,6 +58,11 @@ func (p *homePage) Render() app.UI {
 				Class(fragmentFocus("other-features")).
 				Href("#other-features").
 				Text("Other features"),
+			app.A().
+				Class("index-link").
+				Class(fragmentFocus("built-with-goapp")).
+				Href("#built-with-goapp").
+				Text("Built With go-app"),
 
 			app.Div().Class("separator"),
 
@@ -83,6 +88,14 @@ func (p *homePage) Render() app.UI {
 
 			app.Div().Class("separator"),
 
-			newRemoteMarkdownDoc().Src("/web/documents/features.md"),
+			newRemoteMarkdownDoc().Src("/web/documents/home.md"),
+
+			app.Div().Class("separator"),
+
+			newBuiltWithGoapp().ID("built-with-goapp"),
+
+			app.Div().Class("separator"),
+
+			newRemoteMarkdownDoc().Src("/web/documents/home-next.md"),
 		)
 }
