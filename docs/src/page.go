@@ -85,11 +85,7 @@ func (p *page) Render() app.UI {
 								app.Range(p.Iindex).Slice(func(i int) app.UI {
 									return p.Iindex[i]
 								}),
-								app.A().
-									Class("index-link").
-									Class(fragmentFocus("repport-an-issue")).
-									Href("#repport-an-issue").
-									Text("Repport an Issue"),
+								newIndexLink().Title("Repport an Issue"),
 								app.Div().Class("separator"),
 							),
 					),

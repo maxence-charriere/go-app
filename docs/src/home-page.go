@@ -33,44 +33,16 @@ func (p *homePage) Render() app.UI {
 		Title("go-app").
 		Icon("https://storage.googleapis.com/murlok-github/icon-192.png").
 		Index(
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("what-is-go-app")).
-				Href("#what-is-go-app").
-				Text("What is go-app?"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("updates")).
-				Href("#updates").
-				Text("Updates"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("declarative-syntax")).
-				Href("#declarative-syntax").
-				Text("Declarative Syntax"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("standard-http-server")).
-				Href("#standard-http-server").
-				Text("Standard HTTP Server"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("other-features")).
-				Href("#other-features").
-				Text("Other features"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("built-with-goapp")).
-				Href("#built-with-goapp").
-				Text("Built With go-app"),
+			newIndexLink().Title("What is go-app?"),
+			newIndexLink().Title("Updates"),
+			newIndexLink().Title("Declarative Syntax"),
+			newIndexLink().Title("Standard HTTP Server"),
+			newIndexLink().Title("Other features"),
+			newIndexLink().Title("Built With go-app"),
 
 			app.Div().Class("separator"),
 
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("next")).
-				Href("#next").
-				Text("Next"),
+			newIndexLink().Title("Next"),
 		).
 		Content(
 			ui.Flow().
@@ -92,7 +64,7 @@ func (p *homePage) Render() app.UI {
 
 			app.Div().Class("separator"),
 
-			newBuiltWithGoapp().ID("built-with-goapp"),
+			newBuiltWithGoapp().ID("built-with-go-app"),
 
 			app.Div().Class("separator"),
 

@@ -32,69 +32,21 @@ func (p *gettingStartedPage) Render() app.UI {
 		Title("Getting Started").
 		Icon(rocketSVG).
 		Index(
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("intro")).
-				Href("#intro").
-				Text("Intro"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("prerequisite")).
-				Href("#prerequisite").
-				Text("Prerequisite"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("install")).
-				Href("#install").
-				Text("Install"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("code")).
-				Href("#code").
-				Text("Code"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("hello-component")).
-				Href("#hello-component").
-				Text("    Hello component"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("main")).
-				Href("#main").
-				Text("    Main"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("build-and-run")).
-				Href("#build-and-run").
-				Text("Build and Run"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("build-the-client")).
-				Href("#build-the-client").
-				Text("    Build the Client"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("build-the-server")).
-				Href("#build-the-server").
-				Text("    Build the Server"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("running-the-app")).
-				Href("#run-the-app").
-				Text("    Run the App"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("using-a-makefile")).
-				Href("#use-a-makefile").
-				Text("    Use a Makefile"),
+			newIndexLink().Title("Intro"),
+			newIndexLink().Title("Prerequisite"),
+			newIndexLink().Title("Install"),
+			newIndexLink().Title("Code"),
+			newIndexLink().Title("    Hello component"),
+			newIndexLink().Title("    Main"),
+			newIndexLink().Title("Build and Run"),
+			newIndexLink().Title("    Build the Client"),
+			newIndexLink().Title("    Build the Server"),
+			newIndexLink().Title("    Run the App"),
+			newIndexLink().Title("    Use a Makefile"),
 
 			app.Div().Class("separator"),
 
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("next")).
-				Href("#next").
-				Text("Next"),
+			newIndexLink().Title("Next"),
 		).
 		Content(
 			newRemoteMarkdownDoc().Src("/web/documents/getting-started.md"),

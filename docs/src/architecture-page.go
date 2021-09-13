@@ -32,49 +32,17 @@ func (p *architecturePage) Render() app.UI {
 		Title("Architecture").
 		Icon(fileTreeSVG).
 		Index(
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("overview")).
-				Href("#overview").
-				Text("Overview"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("web-browser")).
-				Href("#web-browser").
-				Text("Web Browser"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("server")).
-				Href("#server").
-				Text("Server"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("html-pages")).
-				Href("#html-pages").
-				Text("HTML Pages"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("package-resources")).
-				Href("#package-resources").
-				Text("Package Resources"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("app-wasm")).
-				Href("#app-wasm").
-				Text("app.wasm"),
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("static-resources")).
-				Href("#static-resources").
-				Text("Static Resources"),
+			newIndexLink().Title("Overview"),
+			newIndexLink().Title("Web Browser"),
+			newIndexLink().Title("Server"),
+			newIndexLink().Title("HTML Pages"),
+			newIndexLink().Title("Package Resources"),
+			newIndexLink().Title("app.wasm"),
+			newIndexLink().Title("Static Resources"),
 
 			app.Div().Class("separator"),
 
-			app.A().
-				Class("index-link").
-				Class(fragmentFocus("next")).
-				Href("#next").
-				Text("Next"),
+			newIndexLink().Title("Next"),
 		).
 		Content(
 			newRemoteMarkdownDoc().Src("/web/documents/architecture.md"),

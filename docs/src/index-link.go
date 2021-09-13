@@ -55,6 +55,7 @@ func titleToFragment(v string) string {
 	v = strings.TrimSpace(v)
 	v = strings.ToLower(v)
 	v = strings.ReplaceAll(v, " ", "-")
+	v = strings.ReplaceAll(v, ".", "-")
 	v = strings.ReplaceAll(v, "?", "")
 	return v
 }
