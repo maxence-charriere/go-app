@@ -25,6 +25,15 @@ func (p *componentsPage) Render() app.UI {
 			newIndexLink().Title("Fields"),
 			newIndexLink().Title("    Exported vs Unexported"),
 			newIndexLink().Title("    How chose between Exported and Unexported?"),
+			newIndexLink().Title("Lifecycle Events"),
+			newIndexLink().Title("    PreRender"),
+			newIndexLink().Title("    Mount"),
+			newIndexLink().Title("    Nav"),
+			newIndexLink().Title("    Dismount"),
+			newIndexLink().Title("    Lifecycle Events Reference"),
+
+			newIndexLink().Title("Fields"),
+			newIndexLink().Title("Fields"),
 
 			app.Div().Class("separator"),
 
