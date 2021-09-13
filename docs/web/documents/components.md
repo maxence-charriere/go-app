@@ -1,7 +1,6 @@
-# Components
+## What is a component?
 
-Components are customizable, independent, and reusable UI elements.
-They allow your UI to be split into independent and reusable pieces.
+A component is a customizable, independent, and reusable UI element that allows your UI to be split into independent and reusable pieces.
 
 ## Create
 
@@ -13,9 +12,9 @@ type hello struct {
 }
 ```
 
-## Customize
+## Customize Look
 
-Customizing a component appearance is done by implementing the [Render()](/reference#Composer) method.
+Customizing a component look is done by implementing the [Render()](/reference#Composer) method.
 
 ```go
 func (h *hello) Render() app.UI {
@@ -23,9 +22,124 @@ func (h *hello) Render() app.UI {
 }
 ```
 
-The code above displays an [H1](/reference#H1) HTML element that shows `Hello World!` text.
+The code above displays an [H1](/reference#H1) HTML element that shows the `Hello World!` text.
 
-`Render()` returns an [UI element](/reference#UI) that can be either an HTML element or another component. Refer to the [Declarative Syntax](/syntax) topic to know more about how to describe a component.
+`Render()` returns a [UI element](/reference#UI) that can be either an HTML element or another component. Refer to the [Declarative Syntax](/declarative-syntax) topic to know more about how to customize a component look.
+
+## Fields
+
+Fields are struct fields that store data that can be used to customize a component when rendering. The example below shows a component that displays a name stored in a component field:
+
+```go
+type hello struct {
+	app.Compo
+	Name string // Exported field.
+}
+
+func (h *hello) Render() app.UI {
+	return app.Div().Text("Hello, " + h.Name) // The Name field is display after "Hello, "
+}
+```
+
+### Exported vs Unexported
+
+In addition to the [Go distinction between exported and unexported fields](https://stackoverflow.com/questions/40256161/exported-and-unexported-fields-in-go-language), go-app uses that distinction to define whether a component needs to be updated.
+
+When a UI element update is triggered (done internally), a UI element tree is rendered and compared to the currently displayed one. When 2 child components of the same type are compared to check differences, the comparison is based on the value of exported fields.
+
+Here is a pseudo-Go code that illustrates how it works internally:
+
+```go
+type hello struct {
+	app.Compo
+
+	ExportedName   string
+	unexportedName string
+}
+
+func updateFromExportedField() {
+	current := &hello{
+		ExportedName:   "Max",
+		unexportedName: "Eric",
+	}
+
+	new := &hello{
+		ExportedName:   "Maxence",
+		unexportedName: "Erin",
+	}
+
+	update(app.Div().Body(current), app.Div().Body(new))
+
+    // Current component exported field is updated:
+	fmt.Println("current exported name:" + current.ExportedName)     // Updated:     "Maxence"
+	fmt.Println("current unexported name:" + current.unexportedName) // Not Updated: "Eric"
+}
+
+func updateFromUnexportedField() {
+	current := &hello{
+		ExportedName:   "Max",
+		unexportedName: "Eric",
+	}
+
+	new := &hello{
+		ExportedName:   "Max",
+		unexportedName: "Erin",
+	}
+
+	update(app.Div().Body(current), app.Div().Body(new))
+
+	// Current component is not updated (no different exported field value):
+	fmt.Println("current exported name:" + current.ExportedName)     // Not Updated: "Max"
+	fmt.Println("current unexported name:" + current.unexportedName) // Not Updated: "Eric"
+}
+```
+
+**Child components are updated only when there is diff with their exported fields**, and **only exported field are updated**.
+
+### How chose between exported and unexported?
+
+| Component field type | Triggers update | Value change | Usecase             |
+| -------------------- | --------------- | ------------ | ------------------- |
+| **Exported field**   | Yes             | Yes          | Component attribute |
+| **Unexported field** | No              | No           | Component state     |
+
+In addition to being visible outside a Go package, **exported fields are triggers that says to go-app if a component needs to have its display updated**.
+
+Here is a modified version of the hello component that modifies its `Name` field depending on user input:
+
+```go
+type hello struct {
+	app.Compo
+	Name string // Exported field.
+}
+
+func (h *hello) Render() app.UI {
+	return app.Div().Body(
+		app.H1().Text("Hello, "+h.Name), // Exported field used as tilte value.
+		app.Input().
+			Type("text").
+			Value(h.Name). // Exported field used a input value.
+			OnChange(h.onChange),
+	)
+}
+
+func (h *hello) onChange(ctx app.Context, e app.Event) {
+	h.Name = e.Get("value").String() // Name field is modified.
+}
+```
+
+The `Name` field is modified with the changed input value. After the `onChange` function returns, go-app renders a new UI element tree that is compared with the currently displayed one. When a different name is found, the currently displayed tree is updated with the new value:
+
+```sh
+0 -> input value: ""        => initial state
+1 -> input value: "Max"     => component is updated     ("Max" != "")
+2 -> input value: "Maxence" => component is updated     ("Maxence" != "Max")
+3 -> input value: "Maxence" => component is not updated ("Maxence" == "Maxence")
+```
+
+**Exported values are usually used as an equivalent of HTML attributes but for components**.
+
+### Unexported fields
 
 ## Update
 

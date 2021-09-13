@@ -91,6 +91,21 @@ func (m *menu) Render() app.UI {
 
 				ui.Link().
 					Class(linkClass).
+					Icon(gridSVG).
+					Label("Components").
+					Href("/components").
+					Class(isFocus("/components")),
+				ui.Link().
+					Class(linkClass).
+					Icon(keyboardSVG).
+					Label("Declarative Syntax").
+					Href("/declarative-syntax").
+					Class(isFocus("/declarative-syntax")),
+
+				app.Div().Class("separator"),
+
+				ui.Link().
+					Class(linkClass).
 					Icon(swapSVG).
 					Label("Migrate From v8 to v9").
 					Href("/migrate").

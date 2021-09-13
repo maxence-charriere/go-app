@@ -469,6 +469,8 @@ strong {
   display: block;
   padding: 2px 0;
   white-space: pre;
+  text-overflow: ellipsis;
+  overflow: hidden;
   color: currentColor;
 }
 

@@ -109,6 +109,7 @@ func (i *builtWithGoappItem) Href(v string) *builtWithGoappItem {
 func (i *builtWithGoappItem) Render() app.UI {
 	return app.A().
 		Class(i.Iclass).
+		Class("block").
 		Class("rounded").
 		Class("text-center").
 		Class("magnify").
@@ -116,6 +117,7 @@ func (i *builtWithGoappItem) Render() app.UI {
 		Href(i.Ihref).
 		Body(
 			ui.Block().
+				Class("fill").
 				Middle().
 				Content(
 					app.Img().
