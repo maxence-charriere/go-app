@@ -192,31 +192,41 @@ Here is a list of all the component lifecycle events available:
 
 ## Updates
 
-The component now displays the username in its title and provides input for the user to type his/her name. When the user does so, an event handler is called and the name is stored in the component field named `name`.
+Components are meant to be responsive to different events, modifying their appearance when they occur.
 
-The **[Update()](/reference#Composer) method call is what tells the component that its state changed and that its appearance must be updated**.
+When this is happening, go-app internally starts an update mechanism that checks modifications in the currently displayed UI element tree and, performs the necessary modifications to achieve the desired state.
 
-It internally triggers the `Render()` method and performs a diff with the current component state in order to define and process the changes. Here is how rendering diff behave:
+**This update mechanism is automatically trigerred when the following scenario occurs:**
 
-| Diff                                                       | Modification                              |
-| ---------------------------------------------------------- | ----------------------------------------- |
-| Different types of nodes (Text, HTML element or Component) | Current node is replaced                  |
-| Different texts                                            | Current node text value is updated        |
-| Different HTML elements                                    | Current node is replaced                  |
-| Different HTML element attributes                          | Current node attributes are updated       |
-| Different HTML element event handlers                      | Current node event handlers are updated   |
-| Different component types                                  | Current node is replaced                  |
-| Different exported fields on a same component type         | Current component fields are updated      |
-| Different non-exported fields on a same component type     | No modifications                          |
-| Extra node in the new the tree                             | Node added to the current tree            |
-| Missing node in the new tree                               | Extra node is the current tree is removed |
+- [Component lifecycle events](#lifecycle-events-reference)
+- [HTML event handlers](/declarative-syntax#event-handlers)
+- [Context.Dispatch](/reference#Context.Dispatch)
+- [Context.Handle](/reference#Context.Handler)
+- [Context.ObserveState](/reference#Context.ObserveState)
+
+### Manually Trigger an Update
+
+In the event where it is not automatically triggered with your use case, the component update mechanism can be manually launched by using [Compo.Update](/reference#Compo.Update).
+
+```go
+type myCompo struct {
+	app.Compo
+
+	Number int
+}
+
+func (c *myCompo) Render() app.UI {
+	return app.Div().Text(c.Number)
+}
+
+func (c *myCompo) customTrigger() {
+	c.Number = rand.Intn(42)
+	c.Update() // Manual updated trigger
+}
+```
 
 ## Next
 
 - [Customize components with the declarative syntax](/syntax)
 - [Associate components with URL paths](/routing)
 - [API reference](/reference)
-
-```
-
-```

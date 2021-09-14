@@ -48,7 +48,8 @@ func (l *indexLink) Render() app.UI {
 		Class(l.Iclass).
 		Class(fragmentFocus(fragment)).
 		Href(href).
-		Text(l.Ititle)
+		Text(l.Ititle).
+		Title(l.Ititle)
 }
 
 func titleToFragment(v string) string {

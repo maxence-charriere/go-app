@@ -31,9 +31,8 @@ func (p *componentsPage) Render() app.UI {
 			newIndexLink().Title("    Nav"),
 			newIndexLink().Title("    Dismount"),
 			newIndexLink().Title("    Lifecycle Events Reference"),
-
-			newIndexLink().Title("Fields"),
-			newIndexLink().Title("Fields"),
+			newIndexLink().Title("Updates"),
+			newIndexLink().Title("    Manually Trigger an Update"),
 
 			app.Div().Class("separator"),
 
