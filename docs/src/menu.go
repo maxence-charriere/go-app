@@ -119,6 +119,12 @@ func (m *menu) Render() app.UI {
 					Label("JavaScript Interoperability").
 					Href("/js").
 					Class(isFocus("/js")),
+				ui.Link().
+					Class(linkClass).
+					Icon(concurrencySVG).
+					Label("Concurrency").
+					Href("/concurrency").
+					Class(isFocus("/concurrency")),
 
 				app.Div().Class("separator"),
 

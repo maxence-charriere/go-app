@@ -32,6 +32,16 @@ func (p *jsPage) Render() app.UI {
 		Title("JavaScript Interoperability").
 		Icon(jsSVG).
 		Index(
+			newIndexLink().Title("Intro"),
+			newIndexLink().Title("Include JS files"),
+			newIndexLink().Title("    Page's scope"),
+			newIndexLink().Title("    Inlined in Components"),
+			newIndexLink().Title("Using window global object"),
+			newIndexLink().Title("    Get element by ID"),
+			newIndexLink().Title("    Create JS object"),
+			newIndexLink().Title("Cancel an event"),
+			newIndexLink().Title("Get input value"),
+
 			app.Div().Class("separator"),
 
 			newIndexLink().Title("Next"),

@@ -347,7 +347,7 @@ Form helpers are [component](/components) methods that help to map HTML form ele
 
 [ValueTo](/reference#Compo.ValueTo) maps, when it exists, an HTML element value property to a given variable.
 
-Here is a Hello component version that uses the `ValueTo()` method to get the username from its input rather than defining an [event handler](/syntax#event-handlers):
+Here is a Hello component version that uses the `ValueTo()` method to get the username from its input rather than defining an [event handler](/declarative-syntax#event-handlers):
 
 ```go
 type hello struct {

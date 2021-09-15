@@ -21,7 +21,7 @@ const (
 	gridSVG = `<svg style="width:%vpx;height:%vpx" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M10,5V11H21V5M16,18H21V12H16M4,18H9V5H4M10,18H15V12H10V18Z" />
 	</svg>`
-	concurrecySVG = `<svg style="width:%vpx;height:%vpx" viewBox="0 0 24 24">
+	concurrencySVG = `<svg style="width:%vpx;height:%vpx" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M16,4.5V7H5V9H16V11.5L19.5,8M16,12.5V15H5V17H16V19.5L19.5,16" />
 	</svg>`
 	keyboardSVG = `<svg style="width:%vpx;height:%vpx" viewBox="0 0 24 24">
