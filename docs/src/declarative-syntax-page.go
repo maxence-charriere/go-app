@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 
@@ -10,6 +11,20 @@ type declarativeSyntaxPage struct {
 
 func newDeclarativeSyntaxPage() *declarativeSyntaxPage {
 	return &declarativeSyntaxPage{}
+}
+
+func (p *declarativeSyntaxPage) OnPreRender(ctx app.Context) {
+	p.initPage(ctx)
+}
+
+func (p *declarativeSyntaxPage) OnNav(ctx app.Context) {
+	p.initPage(ctx)
+}
+
+func (p *declarativeSyntaxPage) initPage(ctx app.Context) {
+	ctx.Page().SetTitle("Customize Components with go-app Declarative Syntax")
+	ctx.Page().SetDescription("Documentation about how to customize components with go-app declarative syntax.")
+	analytics.Page("declarative-syntax", nil)
 }
 
 func (p *declarativeSyntaxPage) Render() app.UI {

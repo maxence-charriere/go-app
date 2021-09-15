@@ -53,6 +53,7 @@ func main() {
 	app.Route("/declarative-syntax", newDeclarativeSyntaxPage())
 	app.Route("/routing", newRoutingPage())
 	app.Route("/static-resources", newStaticResourcePage())
+	app.Route("/js", newJSPage())
 
 	app.Route("/migrate", newMigratePage())
 

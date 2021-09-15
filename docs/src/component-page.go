@@ -22,7 +22,7 @@ func (p *componentsPage) OnNav(ctx app.Context) {
 }
 
 func (p *componentsPage) initPage(ctx app.Context) {
-	ctx.Page().SetTitle("BuildingBuilding Components: Customizable, Independent, and Reusable UI Elements")
+	ctx.Page().SetTitle("Building Components: Customizable, Independent, and Reusable UI Elements")
 	ctx.Page().SetDescription("Documentation about building customizable, independent, and reusable UI elements.")
 	analytics.Page("components", nil)
 }

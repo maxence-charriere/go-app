@@ -1,4 +1,4 @@
-# JavaScript and DOM
+## Intro
 
 Since WebAssembly is browser-based technology, some scenarios may require DOM access and JavaScript calls.
 
@@ -61,7 +61,7 @@ func (p *youtubePlayer) Render() app.UI {
 			Src("//www.youtube.com/iframe_api").
 			Async(true),
 		app.IFrame().
-			ID("youtube-player").
+			ID("yt-container").
 			Allow("autoplay").
 			Allow("accelerometer").
 			Allow("encrypted-media").
@@ -110,7 +110,7 @@ Here is an example about how to create a Youtube player:
 
 ```js
 // JS version:
-let player = new YT.Player("player", {
+let player = new YT.Player("yt-container", {
   height: "390",
   width: "640",
   videoId: "M7lc1UVf-VE",
@@ -122,7 +122,7 @@ let player = new YT.Player("player", {
 player := app.Window().
 	Get("YT").
 	Get("Player").
-	New("player", map[string]interface{}{
+	New("yt-container", map[string]interface{}{
 		"height":  390,
 		"width":   640,
 		"videoId": "M7lc1UVf-VE",
@@ -169,6 +169,5 @@ func (f *foo) onInputChange(ctx app.Context, e app.Event) {
 
 ## Next
 
-- [Customize components with the declarative syntax](/syntax)
-- [Deal with static resources](/static-resources)
-- [API reference](/reference)
+- [Concurrency](/concurrency)
+- [Reference](/reference)

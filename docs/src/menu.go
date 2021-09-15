@@ -113,6 +113,12 @@ func (m *menu) Render() app.UI {
 					Label("Images and Static Resources").
 					Href("/static-resources").
 					Class(isFocus("/static-resources")),
+				ui.Link().
+					Class(linkClass).
+					Icon(jsSVG).
+					Label("JavaScript Interoperability").
+					Href("/js").
+					Class(isFocus("/js")),
 
 				app.Div().Class("separator"),
 
