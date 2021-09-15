@@ -101,6 +101,12 @@ func (m *menu) Render() app.UI {
 					Label("Declarative Syntax").
 					Href("/declarative-syntax").
 					Class(isFocus("/declarative-syntax")),
+				ui.Link().
+					Class(linkClass).
+					Icon(routeSVG).
+					Label("Route a Component").
+					Href("/routing").
+					Class(isFocus("/routing")),
 
 				app.Div().Class("separator"),
 

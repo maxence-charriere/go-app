@@ -17,6 +17,26 @@ func (p *declarativeSyntaxPage) Render() app.UI {
 		Title("Declarative Syntax").
 		Icon(keyboardSVG).
 		Index(
+			newIndexLink().Title("Intro"),
+			newIndexLink().Title("HTML Elements"),
+			newIndexLink().Title("    Create"),
+			newIndexLink().Title("    Standard Elements"),
+			newIndexLink().Title("    Self Closing Elements"),
+			newIndexLink().Title("    Attributes"),
+			newIndexLink().Title("    Style"),
+			newIndexLink().Title("    Event handlers"),
+			newIndexLink().Title("Raw elements"),
+			newIndexLink().Title("Nested Components"),
+			newIndexLink().Title("Condition"),
+			newIndexLink().Title("    If"),
+			newIndexLink().Title("    ElseIf"),
+			newIndexLink().Title("    Else"),
+			newIndexLink().Title("Range"),
+			newIndexLink().Title("    Slice"),
+			newIndexLink().Title("    Map"),
+			newIndexLink().Title("Form helpers"),
+			newIndexLink().Title("    ValueTo"),
+
 			app.Div().Class("separator"),
 
 			newIndexLink().Title("Next"),

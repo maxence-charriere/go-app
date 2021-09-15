@@ -1,4 +1,4 @@
-# Routing
+## Intro
 
 Progressive web apps created with the **go-app** package are working as a [single page application](https://en.wikipedia.org/wiki/Single-page_application).
 

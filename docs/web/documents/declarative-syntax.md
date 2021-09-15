@@ -1,4 +1,4 @@
-# Declarative syntax
+## Intro
 
 The go-app declarative syntax is to customize [components](/components)' look.
 
@@ -19,7 +19,7 @@ func (c *myCompo) Render() app.UI {
 }
 ```
 
-## HTML elements
+## HTML Elements
 
 Go-app provides interfaces for each standard HTML element. Those interfaces describe setters for attributes and event handlers.
 
@@ -50,7 +50,7 @@ func (c *myCompo) Render() app.UI {
 }
 ```
 
-### Standard elements
+### Standard Elements
 
 A standard HTML element is an element that can contain other UI elements. Other HTML elements, texts, and [components](/components) are nested by using the `Body()` method:
 
@@ -63,7 +63,7 @@ func (c *myCompo) Render() app.UI {
 }
 ```
 
-### Self closing elements
+### Self Closing Elements
 
 A self-closing element is an HTML element that cannot contain other UI elements.
 
@@ -186,7 +186,7 @@ func (c *myCompo) Render() app.UI {
 }
 ```
 
-## Nested components
+## Nested Components
 
 [Components](/components) are structs that let you split the UI into independent and reusable pieces. They can be used within other components to achieve more complex UIs.
 
@@ -375,7 +375,5 @@ func (h *hello) Render() app.UI {
 
 ## Next
 
-- [Deal with static resources](/static-resources)
-- [Interact with Javascript](/js)
-- [Handle concurrency](/concurrency)
-- [API reference](/reference)
+- [Route a components](/routing)
+- [Reference](/reference)

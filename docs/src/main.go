@@ -48,8 +48,11 @@ func main() {
 	app.Route("/getting-started", newGettingStartedPage())
 	app.Route("/architecture", newArchitecturePage())
 	app.Route("/reference", newReferencePage())
+
 	app.Route("/components", newComponentsPage())
 	app.Route("/declarative-syntax", newDeclarativeSyntaxPage())
+	app.Route("/routing", newRoutingPage())
+
 	app.Route("/migrate", newMigratePage())
 
 	app.Handle(installApp, handleAppInstall)
@@ -160,6 +163,7 @@ func generateGitHubPages(ctx context.Context, h *app.Handler, opts githubOptions
 		"/architecture",
 		"/reference",
 		"/migrate",
+		"/routing",
 	); err != nil {
 		panic(err)
 	}
@@ -172,22 +176,3 @@ func exit() {
 		os.Exit(-1)
 	}
 }
-
-// type hello struct {
-// 	app.Compo
-// 	Name string // Exported field.
-// }
-
-// func (h *hello) Render() app.UI {
-// 	return app.Div().Body(
-// 		app.H1().Text("Hello, "+h.Name), // Exported Name field used as tilte value.
-// 		app.Input().
-// 			Type("text").
-// 			Value(h.Name). // Exported Name field used a input value.
-// 			OnChange(h.onChange),
-// 	)
-// }
-
-// func (h *hello) onChange(ctx app.Context, e app.Event) {
-// 	h.Name = e.Get("value").String() // Exported Name field is modified.
-// }

@@ -182,3 +182,4 @@ make run
 
 - [Architecture](/architecture)
 - [Reference](/reference)
+- [Build a component](/components)

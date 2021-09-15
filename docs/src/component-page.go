@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 
@@ -12,7 +13,19 @@ func newComponentsPage() *componentsPage {
 	return &componentsPage{}
 }
 
-func (p *componentsPage) OnNav(ctx app.Context) {}
+func (p *componentsPage) OnPreRender(ctx app.Context) {
+	p.initPage(ctx)
+}
+
+func (p *componentsPage) OnNav(ctx app.Context) {
+	p.initPage(ctx)
+}
+
+func (p *componentsPage) initPage(ctx app.Context) {
+	ctx.Page().SetTitle("BuildingBuilding Components: Customizable, Independent, and Reusable UI Elements")
+	ctx.Page().SetDescription("Documentation about building customizable, independent, and reusable UI elements.")
+	analytics.Page("components", nil)
+}
 
 func (p *componentsPage) Render() app.UI {
 	return newPage().

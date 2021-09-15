@@ -228,5 +228,4 @@ func (c *myCompo) customTrigger() {
 ## Next
 
 - [Customize components with the declarative syntax](/syntax)
-- [Associate components with URL paths](/routing)
-- [API reference](/reference)
+- [Reference](/reference)
