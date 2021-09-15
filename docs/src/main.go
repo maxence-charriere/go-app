@@ -52,6 +52,7 @@ func main() {
 	app.Route("/components", newComponentsPage())
 	app.Route("/declarative-syntax", newDeclarativeSyntaxPage())
 	app.Route("/routing", newRoutingPage())
+	app.Route("/static-resources", newStaticResourcePage())
 
 	app.Route("/migrate", newMigratePage())
 
@@ -158,13 +159,7 @@ func runLocal(ctx context.Context, h *app.Handler, opts localOptions) {
 }
 
 func generateGitHubPages(ctx context.Context, h *app.Handler, opts githubOptions) {
-	if err := app.GenerateStaticWebsite(opts.Output, h,
-		"/getting-started",
-		"/architecture",
-		"/reference",
-		"/migrate",
-		"/routing",
-	); err != nil {
+	if err := app.GenerateStaticWebsite(opts.Output, h); err != nil {
 		panic(err)
 	}
 }

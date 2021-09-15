@@ -29,13 +29,14 @@ func (p *routingPage) initPage(ctx app.Context) {
 
 func (p *routingPage) Render() app.UI {
 	return newPage().
-		Title("Route a Component").
+		Title("Routing").
 		Icon(routeSVG).
 		Index(
 			newIndexLink().Title("Intro"),
 			newIndexLink().Title("Define a route"),
 			newIndexLink().Title("    Simple route"),
 			newIndexLink().Title("    Route with regular expression"),
+			newIndexLink().Title("How it works?"),
 			newIndexLink().Title("Detect navigation"),
 
 			app.Div().Class("separator"),

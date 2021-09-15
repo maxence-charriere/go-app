@@ -104,9 +104,15 @@ func (m *menu) Render() app.UI {
 				ui.Link().
 					Class(linkClass).
 					Icon(routeSVG).
-					Label("Route a Component").
+					Label("Routing").
 					Href("/routing").
 					Class(isFocus("/routing")),
+				ui.Link().
+					Class(linkClass).
+					Icon(imgFolderSVG).
+					Label("Images and Static Resources").
+					Href("/static-resources").
+					Class(isFocus("/static-resources")),
 
 				app.Div().Class("separator"),
 
