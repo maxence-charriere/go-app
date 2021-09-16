@@ -131,6 +131,12 @@ func (m *menu) Render() app.UI {
 					Label("SEO").
 					Href("/seo").
 					Class(isFocus("/seo")),
+				ui.Link().
+					Class(linkClass).
+					Icon(arrowSVG).
+					Label("Lifecycle and Updates").
+					Href("/lifecycle").
+					Class(isFocus("/lifecycle")),
 
 				app.Div().Class("separator"),
 

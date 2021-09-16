@@ -175,7 +175,7 @@ func (f *foo) OnDismount() {
 }
 ```
 
-### Lifecycle Events Reference
+### Reference
 
 Here is a list of all the component lifecycle events available:
 

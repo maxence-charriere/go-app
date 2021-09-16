@@ -43,7 +43,7 @@ func (p *componentsPage) Render() app.UI {
 			newIndexLink().Title("    Mount"),
 			newIndexLink().Title("    Nav"),
 			newIndexLink().Title("    Dismount"),
-			newIndexLink().Title("    Lifecycle Events Reference"),
+			newIndexLink().Title("    Reference"),
 			newIndexLink().Title("Updates"),
 			newIndexLink().Title("    Manually Trigger an Update"),
 
