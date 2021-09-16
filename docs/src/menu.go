@@ -146,6 +146,12 @@ func (m *menu) Render() app.UI {
 					Label("Migrate From v8 to v9").
 					Href("/migrate").
 					Class(isFocus("/migrate")),
+				ui.Link().
+					Class(linkClass).
+					Icon(githubSVG).
+					Label("Deploy on GitHub Pages").
+					Href("/github-deploy").
+					Class(isFocus("/github-deploy")),
 				app.If(m.appInstallable,
 					ui.Link().
 						Class(linkClass).

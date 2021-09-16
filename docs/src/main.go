@@ -59,6 +59,7 @@ func main() {
 	app.Route("/lifecycle", newLifecyclePage())
 
 	app.Route("/migrate", newMigratePage())
+	app.Route("/github-deploy", newGithubDeployPage())
 
 	app.Handle(installApp, handleAppInstall)
 	app.Handle(updateApp, handleAppUpdate)
