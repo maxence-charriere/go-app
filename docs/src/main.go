@@ -55,6 +55,7 @@ func main() {
 	app.Route("/static-resources", newStaticResourcePage())
 	app.Route("/js", newJSPage())
 	app.Route("/concurrency", newConcurrencyPage())
+	app.Route("/seo", newSEOPage())
 
 	app.Route("/migrate", newMigratePage())
 

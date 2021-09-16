@@ -125,6 +125,12 @@ func (m *menu) Render() app.UI {
 					Label("Concurrency").
 					Href("/concurrency").
 					Class(isFocus("/concurrency")),
+				ui.Link().
+					Class(linkClass).
+					Icon(seoSVG).
+					Label("SEO").
+					Href("/seo").
+					Class(isFocus("/seo")),
 
 				app.Div().Class("separator"),
 
