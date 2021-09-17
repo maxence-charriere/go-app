@@ -62,6 +62,8 @@ func main() {
 	app.Route("/migrate", newMigratePage())
 	app.Route("/github-deploy", newGithubDeployPage())
 
+	app.Route("/privacy-policy", newPrivacyPolicyPage())
+
 	app.Handle(installApp, handleAppInstall)
 	app.Handle(updateApp, handleAppUpdate)
 	app.Handle(getMarkdown, handleGetMarkdown)
