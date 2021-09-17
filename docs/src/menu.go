@@ -137,6 +137,12 @@ func (m *menu) Render() app.UI {
 					Label("Lifecycle and Updates").
 					Href("/lifecycle").
 					Class(isFocus("/lifecycle")),
+				ui.Link().
+					Class(linkClass).
+					Icon(testSVG).
+					Label("Testing").
+					Href("/testing").
+					Class(isFocus("/testing")),
 
 				app.Div().Class("separator"),
 

@@ -81,5 +81,5 @@ func (a *littleApp) onUpdateClick(ctx app.Context, e app.Event) {
 
 ## Next
 
-- [Reactive Programming](/reactive-programming)
+- [Testing](/testing)
 - [Reference](/reference)
