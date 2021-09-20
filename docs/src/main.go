@@ -58,6 +58,7 @@ func main() {
 	app.Route("/seo", newSEOPage())
 	app.Route("/lifecycle", newLifecyclePage())
 	app.Route("/testing", newTestingPage())
+	app.Route("/actions", newActionPage())
 
 	app.Route("/migrate", newMigratePage())
 	app.Route("/github-deploy", newGithubDeployPage())

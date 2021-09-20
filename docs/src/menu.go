@@ -143,6 +143,18 @@ func (m *menu) Render() app.UI {
 					Label("Testing").
 					Href("/testing").
 					Class(isFocus("/testing")),
+				ui.Link().
+					Class(linkClass).
+					Icon(actionSVG).
+					Label("Actions").
+					Href("/actions").
+					Class(isFocus("/actions")),
+				ui.Link().
+					Class(linkClass).
+					Icon(stateSVG).
+					Label("State Management").
+					Href("/states").
+					Class(isFocus("/states")),
 
 				app.Div().Class("separator"),
 
@@ -158,38 +170,38 @@ func (m *menu) Render() app.UI {
 					Label("Deploy on GitHub Pages").
 					Href("/github-deploy").
 					Class(isFocus("/github-deploy")),
-			),
 
-			app.Div().Class("separator"),
+				app.Div().Class("separator"),
 
-			ui.Link().
-				Class(linkClass).
-				Icon(twitterSVG).
-				Label("Twitter").
-				Href(twitterURL),
-			ui.Link().
-				Class(linkClass).
-				Icon(githubSVG).
-				Label("GitHub").
-				Href(githubURL),
-
-			app.Div().Class("separator"),
-
-			app.If(m.appInstallable,
 				ui.Link().
 					Class(linkClass).
-					Icon(downloadSVG).
-					Label("Install").
-					OnClick(m.installApp),
-			),
-			ui.Link().
-				Class(linkClass).
-				Icon(userLockSVG).
-				Label("Privacy Policy").
-				Href("/privacy-policy").
-				Class(isFocus("/privacy-policy")),
+					Icon(twitterSVG).
+					Label("Twitter").
+					Href(twitterURL),
+				ui.Link().
+					Class(linkClass).
+					Icon(githubSVG).
+					Label("GitHub").
+					Href(githubURL),
 
-			app.Div().Class("separator"),
+				app.Div().Class("separator"),
+
+				app.If(m.appInstallable,
+					ui.Link().
+						Class(linkClass).
+						Icon(downloadSVG).
+						Label("Install").
+						OnClick(m.installApp),
+				),
+				ui.Link().
+					Class(linkClass).
+					Icon(userLockSVG).
+					Label("Privacy Policy").
+					Href("/privacy-policy").
+					Class(isFocus("/privacy-policy")),
+
+				app.Div().Class("separator"),
+			),
 		)
 }
 

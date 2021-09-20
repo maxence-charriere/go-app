@@ -5,6 +5,8 @@ import (
 	"sync"
 )
 
+// Action represents a custom event that can be propagated across the app. It
+// can contain a payload and be given additional context with tags.
 type Action struct {
 	// The name that identifies the action..
 	Name string
