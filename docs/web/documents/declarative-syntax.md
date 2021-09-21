@@ -166,7 +166,7 @@ When an HTML element embeds a single text element, HTML element's `Text()` metho
 
 ```go
 func (c *myCompo) Render() app.UI {
-	return app.Div().Text("Hello World:)
+	return app.Div().Text("Hello World")
 }
 ```
 
