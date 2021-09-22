@@ -32,6 +32,14 @@ func (p *staticResourcesPage) Render() app.UI {
 		Title("Images and Static Resources").
 		Icon(imgFolderSVG).
 		Index(
+			newIndexLink().Title("Intro"),
+			newIndexLink().Title("Access static resources"),
+			newIndexLink().Title("    In Handler"),
+			newIndexLink().Title("    In components"),
+			newIndexLink().Title("Setup Custom Web directory"),
+			newIndexLink().Title("    Setup local web directory"),
+			newIndexLink().Title("    Setup remote web directory"),
+
 			app.Div().Class("separator"),
 
 			newIndexLink().Title("Next"),
