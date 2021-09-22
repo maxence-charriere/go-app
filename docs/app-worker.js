@@ -1,7 +1,7 @@
-const cacheName = "app-" + "fc56eed59909d16947ae8a11968d7f6d164e55fa";
+const cacheName = "app-" + "c612a41afbc259be044386cdedefc86e60583c10";
 
 self.addEventListener("install", event => {
-  console.log("installing app worker fc56eed59909d16947ae8a11968d7f6d164e55fa");
+  console.log("installing app worker c612a41afbc259be044386cdedefc86e60583c10");
 
   event.waitUntil(
     caches.open(cacheName).
@@ -15,7 +15,8 @@ self.addEventListener("install", event => {
           "/web/app.wasm",
           "/web/css/docs.css",
           "/web/css/prism.css",
-          "/web/documents/features.md",
+          "/web/documents/home-next.md",
+          "/web/documents/home.md",
           "/web/documents/updates.md",
           "/web/documents/what-is-go-app.md",
           "/web/js/prism.js",
@@ -43,7 +44,7 @@ self.addEventListener("activate", event => {
       );
     })
   );
-  console.log("app worker fc56eed59909d16947ae8a11968d7f6d164e55fa is activated");
+  console.log("app worker c612a41afbc259be044386cdedefc86e60583c10 is activated");
 });
 
 self.addEventListener("fetch", event => {
