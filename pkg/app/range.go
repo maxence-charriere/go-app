@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"sort"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 // RangeLoop represents a control structure that iterates within a slice, an
@@ -156,6 +156,9 @@ func (r rangeLoop) onNav(*url.URL) {
 }
 
 func (r rangeLoop) onAppUpdate() {
+}
+
+func (r rangeLoop) onAppInstallChange() {
 }
 
 func (r rangeLoop) onResize() {

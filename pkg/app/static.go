@@ -1,4 +1,4 @@
-// +build !wasm
+//go:build !wasm
 
 package app
 
@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 // GenerateStaticWebsite generates the files to run a PWA built with go-app as a
@@ -32,6 +32,10 @@ func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
 		"/manifest.webmanifest": {},
 		"/app.css":              {},
 		"/web":                  {},
+	}
+
+	for path := range routes.routes {
+		resources[path] = struct{}{}
 	}
 
 	for _, p := range pages {

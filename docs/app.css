@@ -1,8 +1,11 @@
-/* Loader */
+/*------------------------------------------------------------------------------
+  Loader
+------------------------------------------------------------------------------*/
 .goapp-app-info {
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 1000;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -61,8 +64,9 @@
   }
 }
 
-/* Not found */
-
+/*------------------------------------------------------------------------------
+  Not found
+------------------------------------------------------------------------------*/
 .goapp-notfound-title {
   display: flex;
   justify-content: center;
@@ -71,189 +75,16 @@
   font-weight: 100;
 }
 
-/* Menu */
-#app-contextmenu-background {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  left: 0;
-  top: 0;
-  z-index: 42000;
-}
-
-.goapp-contextmenu {
-  position: fixed;
-  min-width: 150px;
-  max-width: 480px;
-  padding: 6px 0;
-  border-radius: 6px;
-  border: solid 1px rgba(255, 255, 255, 0.1);
-  background-color: rgba(40, 38, 37, 0.97);
-  color: white;
-  -webkit-box-shadow: -1px 12px 38px 0px rgba(0, 0, 0, 0.6);
-  -moz-box-shadow: -1px 12px 38px 0px rgba(0, 0, 0, 0.6);
-  box-shadow: -1px 12px 38px 0px rgba(0, 0, 0, 0.6);
-}
-
-@media (prefers-color-scheme: light) {
-  .goapp-contextmenu {
-    color: black;
-    background-color: rgba(221, 221, 221, 0.97);
-    border: solid 1px rgba(0, 0, 0, 0.2);
-  }
-}
-
-.goapp-contextmenu-hidden {
-  display: none;
-}
-
-.goapp-contextmenu-visible {
-  display: block;
-}
-
-.goapp-menuitem {
-  display: flex;
-  align-items: center;
-  padding: 3px 24px;
-  margin: 0;
-  border: none;
-  width: 100%;
-  cursor: pointer;
-  outline: inherit;
-  background-color: transparent;
-  text-align: left;
-  color: currentColor;
-}
-
-.goapp-menuitem:hover {
-  background-color: deepskyblue;
-}
-
-.goapp-menuitem:disabled {
-  opacity: 0.15;
-  background-color: transparent;
-}
-
-.goapp-menuitem-separator {
-  width: 100%;
-  height: 0;
-  margin: 6px 0;
-  border-top: solid 1px rgba(255, 255, 255, 0.1);
-}
-
-@media (prefers-color-scheme: light) {
-  .goapp-menuitem-separator {
-    border-top: solid 1px rgba(0, 0, 0, 0.2);
-  }
-}
-
-.goapp-menuitem-label {
-  user-select: none;
-  flex-grow: 1;
-}
-
-.goapp-menuitem-keys {
-  flex-grow: 0;
-  margin-left: 12px;
-  text-transform: capitalize;
-}
-
-.goapp-menuitem-icon {
-  width: 18px;
-  height: 18px;
-  margin-right: 12px;
-}
-
 /*------------------------------------------------------------------------------
   Widget Layout
 ------------------------------------------------------------------------------*/
-.goapp-shell,
-.goapp-shell-layout,
-.goapp-shell-overlay-menu {
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.goapp-shell {
-  position: fixed;
-  top: 0;
-  left: 0;
-  -webkit-text-size-adjust: 100%;
-  -moz-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-
-.goapp-shell-layout {
-  position: relative;
-  display: flex;
-}
-
-.goapp-shell-item {
-  position: relative;
-  max-height: 100%;
-  flex-grow: 1;
-  flex-shrink: 1;
-  overflow: hidden;
-}
-
-.goapp-shell-menu-button,
-.goapp-shell-item > *,
-.goapp-shell-overlay-menu > * {
-  pointer-events: auto;
-  overflow: auto;
-}
-
-.goapp-shell-menu-button {
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin: 0;
-  padding: 0;
-  border: none;
-  outline: none;
-  background-color: transparent;
-  color: currentColor;
-}
-
-.goapp-shell-menu-button-default {
+.goapp-shell-hamburger-button-default {
   font-size: 24px;
   padding: 12px 18px;
   color: currentColor;
 }
 
-.goapp-shell-menu-button-default:hover {
+.goapp-shell-hamburger-button-default:hover {
   color: dodgerblue;
   cursor: pointer;
-}
-
-.goapp-shell-overlay-menu {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.goapp-flow {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: stretch;
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.goapp-flow-item {
-  flex-grow: 0;
-  flex-shrink: 1;
-}
-
-.goapp-stack {
-  display: flex;
 }

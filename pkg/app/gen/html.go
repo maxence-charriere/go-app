@@ -1,3 +1,4 @@
+//go:build ignore
 // +build ignore
 
 package main
@@ -83,6 +84,7 @@ var tags = []tag{
 		Attrs: withGlobalAttrs(attrsByNames(
 			"autoplay",
 			"controls",
+			"crossorigin",
 			"loop",
 			"muted",
 			"preload",
@@ -453,6 +455,7 @@ var tags = []tag{
 		Doc:         "defines an image.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"alt",
+			"crossorigin",
 			"height",
 			"ismap",
 			"sizes",
@@ -552,6 +555,7 @@ var tags = []tag{
 		SelfClosing: true,
 		Doc:         "defines the relationship between a document and an external resource (most used to link to style sheets).",
 		Attrs: withGlobalAttrs(attrsByNames(
+			"crossorigin",
 			"href",
 			"hreflang",
 			"media",
@@ -769,6 +773,7 @@ var tags = []tag{
 		Attrs: withGlobalAttrs(attrsByNames(
 			"async",
 			"charset",
+			"crossorigin",
 			"defer",
 			"src",
 			"type",
@@ -974,6 +979,7 @@ var tags = []tag{
 		Attrs: withGlobalAttrs(attrsByNames(
 			"autoplay",
 			"controls",
+			"crossorigin",
 			"height",
 			"loop",
 			"muted",
@@ -1092,8 +1098,8 @@ var attrs = map[string]attr{
 	},
 	"class": {
 		Name: "Class",
-		Type: "string",
-		Doc:  "specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.",
+		Type: "string|class",
+		Doc:  "specifies one or more classnames for an element (refers to a class in a style sheet).",
 	},
 	"cols": {
 		Name: "Cols",
@@ -1124,6 +1130,11 @@ var attrs = map[string]attr{
 		Name: "Coords",
 		Type: "string",
 		Doc:  "specifies the coordinates of the area.",
+	},
+	"crossorigin": {
+		Name: "CrossOrigin",
+		Type: "string",
+		Doc:  "sets the mode of the request to an HTTP CORS Request.",
 	},
 
 	// D:
@@ -1512,6 +1523,11 @@ var attrs = map[string]attr{
 		Type: "style",
 		Doc:  "specifies a CSS style for an element. Can be called multiple times to set multiple css styles.",
 	},
+	"styles": {
+		Name: "Styles",
+		Type: "style|map",
+		Doc:  "specifies CSS styles for an element. Can be called multiple times to set multiple css styles.",
+	},
 
 	// T:
 	"tabindex": {
@@ -1593,6 +1609,7 @@ func withGlobalAttrs(attrs ...attr) []attr {
 		"lang",
 		"spellcheck",
 		"style",
+		"styles",
 		"tabindex",
 		"title",
 	)...)
@@ -2023,6 +2040,7 @@ func generateHTMLGo() {
 	fmt.Fprintln(f, `
 import (
 	"fmt"
+	"strings"
 )
 		`)
 
@@ -2118,14 +2136,26 @@ func writeStruct(w io.Writer, t tag) {
 			t.Name,
 		)
 
-		fmt.Fprintf(w, `
+		if t.Name == "Textarea" {
+			fmt.Fprintf(w, `
+			func (e *html%s) Text(v interface{}) HTML%s {
+				e.setAttr("value", v)
+				return e
+			}
+			`,
+				t.Name,
+				t.Name,
+			)
+		} else {
+			fmt.Fprintf(w, `
 			func (e *html%s) Text(v interface{}) HTML%s {
 				return e.Body(Text(v))
 			}
 			`,
-			t.Name,
-			t.Name,
-		)
+				t.Name,
+				t.Name,
+			)
+		}
 	}
 
 	for _, a := range t.Attrs {
@@ -2176,6 +2206,17 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 			}`)
 		}
 
+	case "style|map":
+		fmt.Fprintf(w, `%s(s map[string]string) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintf(w, `{
+				for k, v := range s {
+					e.Style(k, v)
+				}
+				return e
+			}`)
+		}
+
 	case "on/off":
 		fmt.Fprintf(w, `%s(v bool) HTML%s`, a.Name, t.Name)
 		if !isInterface {
@@ -2209,6 +2250,15 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		if !isInterface {
 			fmt.Fprintf(w, `{
 				e.setAttr("%s", v)
+				return e
+			}`, strings.ToLower(a.Name))
+		}
+
+	case "string|class":
+		fmt.Fprintf(w, `%s(v ...string) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintf(w, `{
+				e.setAttr("%s", strings.Join(v, " "))
 				return e
 			}`, strings.ToLower(a.Name))
 		}
@@ -2274,6 +2324,9 @@ import (
 			case "style":
 				fmt.Fprintln(f, `"color", "deepskyblue")`)
 
+			case "style|map":
+				fmt.Fprintln(f, `map[string]string{"color": "pink"})`)
+
 			case "bool", "bool|force", "on/off":
 				fmt.Fprintln(f, `true)`)
 				fmt.Fprintf(f, `elem.%s(false)`, a.Name)
@@ -2287,6 +2340,9 @@ import (
 
 			case "url":
 				fmt.Fprintln(f, `"http://foo.com")`)
+
+			case "string|class":
+				fmt.Fprintln(f, `"foo bar")`)
 
 			default:
 				fmt.Fprintln(f, `42)`)

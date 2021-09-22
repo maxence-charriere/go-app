@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unsafe"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 func toString(v interface{}) string {
@@ -24,6 +24,9 @@ func toString(v interface{}) string {
 
 	case float64:
 		return strconv.FormatFloat(v, 'f', 4, 64)
+
+	case bool:
+		return strconv.FormatBool(v)
 
 	case nil:
 		return ""
@@ -113,4 +116,16 @@ func stringTo(s string, v interface{}) error {
 	}
 
 	return nil
+}
+
+// AppendClass adds c to the given class string.
+func AppendClass(class, c string) string {
+	if c == "" {
+		return class
+	}
+	if class != "" {
+		class += " "
+	}
+	class += c
+	return class
 }

@@ -1,4 +1,4 @@
-# SEO
+## Intro
 
 [SEO](https://en.wikipedia.org/wiki/Search_engine_optimization) (Search engine optimization) is to make web content readable and indexable by search engines such as [Google](https://google.com).
 
@@ -75,7 +75,6 @@ type hello struct {
 func (h *hello) OnPreRender(ctx app.Context) {
 	username := ctx.Page.URL().Query().Get("username")
 	h.name = username
-	h.Update()
 }
 
 func (h *hello) Render() app.UI {
@@ -129,6 +128,5 @@ You could implement a cache based on Redis or any other datastore.
 
 ## Next
 
-- [Associate components with URL paths](/routing)
-- [Handle concurrency](/concurrency)
-- [API reference](/reference)
+- [Lifecycle and Updates](/lifecycle)
+- [Reference](/reference)

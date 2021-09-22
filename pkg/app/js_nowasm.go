@@ -1,4 +1,4 @@
-// +build !wasm
+//go:build !wasm
 
 package app
 
@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"runtime"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 var (

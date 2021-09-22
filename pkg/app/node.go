@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 // UI is the interface that describes a user interface element such as
@@ -37,6 +37,7 @@ type UI interface {
 	update(UI) error
 	onNav(*url.URL)
 	onAppUpdate()
+	onAppInstallChange()
 	onResize()
 	preRender(Page)
 	html(w io.Writer)
@@ -146,19 +147,19 @@ func (h eventHandler) equal(o eventHandler) bool {
 
 func makeJsEventHandler(src UI, h EventHandler) Func {
 	return FuncOf(func(this Value, args []Value) interface{} {
-		src.dispatcher().Dispatch(func() {
-			if !src.Mounted() {
-				return
-			}
-
-			event := Event{
-				Value: args[0],
-			}
-
-			trackMousePosition(event)
-			h(makeContext(src), event)
+		src.dispatcher().Dispatch(Dispatch{
+			Mode:   Update,
+			Source: src,
+			Function: func(ctx Context) {
+				ctx.Emit(func() {
+					event := Event{
+						Value: args[0],
+					}
+					trackMousePosition(event)
+					h(ctx, event)
+				})
+			},
 		})
-
 		return nil
 	})
 }

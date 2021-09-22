@@ -10,10 +10,12 @@ import (
 	"os"
 	"syscall"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/app"
-	"github.com/maxence-charriere/go-app/v8/pkg/cli"
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
-	"github.com/maxence-charriere/go-app/v8/pkg/logs"
+	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
+	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v9/pkg/cli"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/logs"
+	"github.com/maxence-charriere/go-app/v9/pkg/ui"
 )
 
 const (
@@ -38,12 +40,38 @@ type githubOptions struct {
 }
 
 func main() {
-	for path := range mardownPages() {
-		app.Route(path, newMarkdownDoc())
-	}
-	app.Route("/reference", newReference())
-	app.RouteWithRegexp(`^/examples(/(\w)+)*$`, newExample())
-	app.Route("/", newMarkdownDoc())
+	ui.BaseHPadding = 42
+	ui.BlockPadding = 18
+	analytics.Add(analytics.NewGoogleAnalytics())
+
+	app.Route("/", newHomePage())
+	app.Route("/getting-started", newGettingStartedPage())
+	app.Route("/architecture", newArchitecturePage())
+	app.Route("/reference", newReferencePage())
+
+	app.Route("/components", newComponentsPage())
+	app.Route("/declarative-syntax", newDeclarativeSyntaxPage())
+	app.Route("/routing", newRoutingPage())
+	app.Route("/static-resources", newStaticResourcePage())
+	app.Route("/js", newJSPage())
+	app.Route("/concurrency", newConcurrencyPage())
+	app.Route("/seo", newSEOPage())
+	app.Route("/lifecycle", newLifecyclePage())
+	app.Route("/install", newInstallPage())
+	app.Route("/testing", newTestingPage())
+	app.Route("/actions", newActionPage())
+	app.Route("/states", newStatesPage())
+
+	app.Route("/migrate", newMigratePage())
+	app.Route("/github-deploy", newGithubDeployPage())
+
+	app.Route("/privacy-policy", newPrivacyPolicyPage())
+
+	app.Handle(installApp, handleAppInstall)
+	app.Handle(updateApp, handleAppUpdate)
+	app.Handle(getMarkdown, handleGetMarkdown)
+	app.Handle(getReference, handleGetReference)
+
 	app.RunWhenOnBrowser()
 
 	ctx, cancel := cli.ContextWithSignals(context.Background(),
@@ -91,7 +119,7 @@ func main() {
 		},
 		BackgroundColor: backgroundColor,
 		ThemeColor:      backgroundColor,
-		LoadingLabel:    "Loading go-app documentation...",
+		LoadingLabel:    "go-app documentation",
 		Scripts: []string{
 			"/web/js/prism.js",
 		},
@@ -101,16 +129,13 @@ func main() {
 			"/web/css/docs.css",
 		},
 		RawHeaders: []string{
-			`
-			<!-- Global site tag (gtag.js) - Google Analytics -->
-			<script async src="https://www.googletagmanager.com/gtag/js?id=G-SW4FQEM9VM"></script>
-			<script>
-			  window.dataLayer = window.dataLayer || [];
-			  function gtag(){dataLayer.push(arguments);}
-			  gtag('js', new Date());
-			
-			  gtag('config', 'G-SW4FQEM9VM');
-			</script>`,
+			analytics.GoogleAnalyticsHeader("G-SW4FQEM9VM"),
+		},
+		CacheableResources: []string{
+			"/web/documents/what-is-go-app.md",
+			"/web/documents/updates.md",
+			"/web/documents/home.md",
+			"/web/documents/home-next.md",
 		},
 	}
 
@@ -145,19 +170,7 @@ func runLocal(ctx context.Context, h *app.Handler, opts localOptions) {
 }
 
 func generateGitHubPages(ctx context.Context, h *app.Handler, opts githubOptions) {
-	pages := mardownPages()
-	p := make([]string, 0, len(pages))
-	for path := range pages {
-		p = append(p, path)
-	}
-	p = append(p,
-		"/reference",
-		"/examples",
-		"/examples/hello",
-		"/examples/list",
-	)
-
-	if err := app.GenerateStaticWebsite(opts.Output, h, p...); err != nil {
+	if err := app.GenerateStaticWebsite(opts.Output, h); err != nil {
 		panic(err)
 	}
 }

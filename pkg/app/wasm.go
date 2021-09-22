@@ -1,3 +1,4 @@
+//go:build wasm
 // +build wasm
 
 package app
@@ -5,7 +6,7 @@ package app
 import (
 	"runtime"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 const (

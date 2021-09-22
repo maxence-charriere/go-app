@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/app"
+	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 
 // hello is a component that displays a simple "Hello World!". A component is a
@@ -82,9 +82,8 @@ func (f *foo) OnNav(ctx app.Context) {
 		}
 
 		// Storing HTTP response in component field:
-		f.Defer(func(app.Context) {
+		ctx.Dispatch(func(app.Context) {
 			f.response = b
-			f.Update()
 		})
 	})
 }

@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.14
+      - image: circleci/golang:1.15
     working_directory: /go/src/github.com/maxence-charriere/go-app
     steps:
       - checkout

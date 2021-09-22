@@ -17,7 +17,7 @@ func main() {
 	}
 	defer f.Close()
 
-	fmt.Fprintln(f, "// +build !wasm")
+	fmt.Fprintln(f, "//go:build !wasm")
 	fmt.Fprintln(f)
 	fmt.Fprintln(f, "package app")
 	fmt.Fprintln(f)

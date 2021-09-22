@@ -25,6 +25,9 @@ else
 	@echo "~> make VERSION=\033[90mv6.0.0\033[00m release"
 endif
 	
+gen:
+	@echo "\033[94m• Generating HTML Syntax\033[00m"
+	@go generate ./pkg/app
 
 build:
 	@echo "\033[94m• Building go-app documentation PWA\033[00m"
@@ -44,3 +47,4 @@ github: build
 clean:
 	@go clean -v ./...
 	-@rm docs/documentation
+	@go mod tidy

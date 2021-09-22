@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"syscall/js"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 var (
@@ -222,7 +222,22 @@ func (w *browserWindow) ScrollToID(id string) {
 }
 
 func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
-	callback := makeJsEventHandler(w.body, h)
+	callback := makeJsEventHandler(w.body, func(ctx Context, e Event) {
+		h(ctx, e)
+
+		// Trigger children components updates:
+		if len(w.body.children()) == 0 {
+			return
+		}
+		compo, ok := w.body.children()[0].(Composer)
+		if !ok {
+			return
+		}
+		ctx.Dispatcher().Dispatch(Dispatch{
+			Mode:   Update,
+			Source: compo,
+		})
+	})
 	w.addEventListener(event, callback)
 
 	return func() {

@@ -3,10 +3,6 @@ package app
 import (
 	"context"
 	"net/url"
-	"reflect"
-	"sync"
-
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
 )
 
 const (
@@ -16,9 +12,37 @@ const (
 // Dispatcher is the interface that describes an environment that synchronizes
 // UI instructions and UI elements lifecycle.
 type Dispatcher interface {
-	// Dispatch enqueues the given function to be executed on a goroutine
-	// dedicated to managing UI modifications.
-	Dispatch(func())
+	// Context returns the context associated with the root element.
+	Context() Context
+
+	// Executes the given dispatch operation on the UI goroutine.
+	Dispatch(d Dispatch)
+
+	// Emit executes the given function and notifies the source's parent
+	// components to update their state.
+	Emit(src UI, fn func())
+
+	// Handle registers the handler for the given action name. When an action
+	// occurs, the handler is executed on the UI goroutine.
+	Handle(actionName string, src UI, h ActionHandler)
+
+	// Post posts the given action. The action is then handled by handlers
+	// registered with Handle() and Context.Handle().
+	Post(a Action)
+
+	// Sets the state with the given value.
+	SetState(state string, v interface{}, opts ...StateOption)
+
+	// Stores the specified state value into the given receiver. Panics when the
+	// receiver is not a pointer or nil.
+	GetState(state string, recv interface{})
+
+	// Deletes the given state.
+	DelState(state string)
+
+	// Creates an observer that observes changes for the specified state while
+	// the given element is mounted.
+	ObserveState(state string, elem UI) Observer
 
 	// 	Async launches the given function on a new goroutine.
 	//
@@ -27,7 +51,7 @@ type Dispatcher interface {
 	//
 	// This is important during component prerendering since asynchronous
 	// operations need to complete before sending a pre-rendered page over HTTP.
-	Async(func())
+	Async(fn func())
 
 	// Wait waits for the asynchronous operations launched with Async() to
 	// complete.
@@ -37,8 +61,9 @@ type Dispatcher interface {
 	currentPage() Page
 	localStorage() BrowserStorage
 	sessionStorage() BrowserStorage
-	isServerSideMode() bool
+	runsInServer() bool
 	resolveStaticResource(string) string
+	removeFromUpdates(Composer)
 }
 
 // ClientDispatcher is the interface that describes a dispatcher that emulates a
@@ -46,8 +71,15 @@ type Dispatcher interface {
 type ClientDispatcher interface {
 	Dispatcher
 
-	// Context returns the context associated with the root element.
-	Context() Context
+	// Consume executes all the remaining UI instructions.
+	Consume()
+
+	// ConsumeNext executes the next UI instructions.
+	ConsumeNext()
+
+	// Close consumes all the remaining UI instruction and releases allocated
+	// resources.
+	Close()
 
 	// Mounts the given component as root element.
 	Mount(UI)
@@ -58,247 +90,78 @@ type ClientDispatcher interface {
 	// Triggers OnAppUpdate from the root component.
 	AppUpdate()
 
+	// Triggers OnAppInstallChange from the root component.
+	AppInstallChange()
+
 	// Triggers OnAppResize from the root component.
 	AppResize()
-
-	// Consume executes all the remaining UI instructions.
-	Consume()
-
-	// Close consumes all the remaining UI instruction and releases allocated
-	// resources.
-	Close()
 }
 
 // NewClientTester creates a testing dispatcher that simulates a
 // client environment. The given UI element is mounted upon creation.
-func NewClientTester(v UI) ClientDispatcher {
-	return newTestingDispatcher(v, false)
+func NewClientTester(n UI) ClientDispatcher {
+	e := &engine{ActionHandlers: actionHandlers}
+	e.init()
+	e.Mount(n)
+	e.Consume()
+	return e
 }
 
 // ServerDispatcher is the interface that describes a dispatcher that emulates a server environment.
 type ServerDispatcher interface {
 	Dispatcher
 
-	// Context returns the context associated with the root element.
-	Context() Context
-
-	// Pre-renders the given component.
-	PreRender()
-
 	// Consume executes all the remaining UI instructions.
 	Consume()
+
+	// ConsumeNext executes the next UI instructions.
+	ConsumeNext()
 
 	// Close consumes all the remaining UI instruction and releases allocated
 	// resources.
 	Close()
+
+	// Pre-renders the given component.
+	PreRender()
 }
 
 // NewServerTester creates a testing dispatcher that simulates a
 // client environment.
-func NewServerTester(v UI) ServerDispatcher {
-	return newTestingDispatcher(v, true)
-}
-
-func newTestingDispatcher(v UI, serverSide bool) *uiDispatcher {
-	u, _ := url.Parse("https://localhost")
-
-	disp := newUIDispatcher(serverSide, &requestPage{url: u}, func(url string) string {
-		return url
-	})
-	disp.body = Body().Body(
-		Div(),
-	).(elemWithChildren)
-
-	if err := mount(disp, disp.body); err != nil {
-		panic(errors.New("mounting body failed").
-			Tag("server-side-mode", disp.isServerSideMode()).
-			Tag("body-type", reflect.TypeOf(disp.body)).
-			Tag("ui-len", len(disp.ui)).
-			Tag("ui-cap", cap(disp.ui)).
-			Wrap(err))
+func NewServerTester(n UI) ServerDispatcher {
+	e := &engine{
+		RunsInServer:   true,
+		ActionHandlers: actionHandlers,
 	}
-
-	disp.Mount(v)
-	disp.Consume()
-	return disp
+	e.init()
+	e.Mount(n)
+	e.Consume()
+	return e
 }
 
-type uiDispatcher struct {
-	ui                        chan func()
-	body                      elemWithChildren
-	page                      Page
-	mountedOnce               bool
-	serverSideMode            bool
-	wg                        sync.WaitGroup
-	resolveStaticResourceFunc func(string) string
-	localStore                BrowserStorage
-	sessionStore              BrowserStorage
+// Dispatch represents an operation executed on the UI goroutine.
+type Dispatch struct {
+	Mode     DispatchMode
+	Source   UI
+	Function func(Context)
 }
 
-func newUIDispatcher(serverSide bool, p Page, resolveStaticResource func(string) string) *uiDispatcher {
-	var localStorage BrowserStorage
-	var sessionStorage BrowserStorage
+// DispatchMode represents how a dispatch is processed.
+type DispatchMode int
 
-	if IsClient {
-		localStorage = newJSStorage("localStorage")
-		sessionStorage = newJSStorage("sessionStorage")
+const (
+	// A dispatch mode where the dispatched operation is enqueued to be executed
+	// as soon as possible and its associated UI element is updated at the end
+	// of the current update cycle.
+	Update DispatchMode = iota
 
-	} else {
-		localStorage = newMemoryStorage()
-		sessionStorage = newMemoryStorage()
-	}
+	// A dispatch mode that schedules the dispatched operation to be executed
+	// after the current update frame.
+	Defer
 
-	disp := &uiDispatcher{
-		ui:                        make(chan func(), dispatcherSize),
-		serverSideMode:            serverSide,
-		resolveStaticResourceFunc: resolveStaticResource,
-		localStore:                localStorage,
-		sessionStore:              sessionStorage,
-	}
+	// A dispatch mode where the dispatched operation is enqueued to be executed
+	// as soon as possible.
+	Next
+)
 
-	if p, ok := p.(browserPage); ok {
-		p.dispatcher = disp
-	}
-	disp.page = p
-
-	return disp
-}
-
-func (d *uiDispatcher) Context() Context {
-	return makeContext(d.body.children()[0])
-}
-
-func (d *uiDispatcher) Dispatch(fn func()) {
-	d.ui <- fn
-}
-
-func (d *uiDispatcher) Async(fn func()) {
-	d.wg.Add(1)
-	go func() {
-		fn()
-		d.wg.Done()
-	}()
-}
-
-func (d *uiDispatcher) Wait() {
-	d.wg.Wait()
-}
-
-func (d *uiDispatcher) PreRender() {
-	d.Dispatch(func() {
-		d.body.preRender(d.currentPage())
-	})
-}
-
-func (d *uiDispatcher) Mount(v UI) {
-	d.Dispatch(func() {
-		if !d.mountedOnce {
-			if err := d.body.(elemWithChildren).replaceChildAt(0, v); err != nil {
-				panic(errors.New("mounting ui element failed").
-					Tag("server-side-mode", d.isServerSideMode()).
-					Tag("body-type", reflect.TypeOf(d.body)).
-					Tag("ui-len", len(d.ui)).
-					Tag("ui-cap", cap(d.ui)).
-					Wrap(err))
-			}
-			d.mountedOnce = true
-			return
-		}
-
-		err := update(d.body.children()[0], v)
-		if err == nil {
-			return
-		}
-		if !isErrReplace(err) {
-			panic(errors.New("mounting ui element failed").
-				Tag("server-side-mode", d.isServerSideMode()).
-				Tag("body-type", reflect.TypeOf(d.body)).
-				Tag("ui-len", len(d.ui)).
-				Tag("ui-cap", cap(d.ui)).
-				Wrap(err))
-		}
-
-		if err := d.body.(elemWithChildren).replaceChildAt(0, v); err != nil {
-			panic(errors.New("mounting ui element failed").
-				Tag("server-side-mode", d.isServerSideMode()).
-				Tag("body-type", reflect.TypeOf(d.body)).
-				Tag("ui-len", len(d.ui)).
-				Tag("ui-cap", cap(d.ui)).
-				Wrap(err))
-		}
-	})
-}
-
-func (d *uiDispatcher) Nav(u *url.URL) {
-	if p, ok := d.currentPage().(*requestPage); ok {
-		p.url = u
-	}
-
-	d.Dispatch(func() {
-		d.body.onNav(u)
-	})
-}
-
-func (d *uiDispatcher) AppUpdate() {
-	d.Dispatch(func() {
-		d.body.onAppUpdate()
-	})
-}
-
-func (d *uiDispatcher) AppResize() {
-	d.Dispatch(func() {
-		d.body.onResize()
-	})
-}
-
-func (d *uiDispatcher) Consume() {
-	for {
-		select {
-		case fn := <-d.ui:
-			fn()
-
-		default:
-			return
-		}
-	}
-}
-
-func (d *uiDispatcher) Close() {
-	d.Consume()
-	d.Wait()
-
-	dismount(d.body)
-	d.body = nil
-	close(d.ui)
-}
-
-func (d *uiDispatcher) start(ctx context.Context) {
-	for {
-		select {
-		case fn := <-d.ui:
-			fn()
-
-		case <-ctx.Done():
-			return
-		}
-	}
-}
-
-func (d *uiDispatcher) currentPage() Page {
-	return d.page
-}
-
-func (d *uiDispatcher) isServerSideMode() bool {
-	return d.serverSideMode
-}
-
-func (d *uiDispatcher) resolveStaticResource(url string) string {
-	return d.resolveStaticResourceFunc(url)
-}
-func (d *uiDispatcher) localStorage() BrowserStorage {
-	return d.localStore
-}
-
-func (d *uiDispatcher) sessionStorage() BrowserStorage {
-	return d.sessionStore
-}
+// MsgHandler represents a handler to listen to messages sent with Context.Post.
+type MsgHandler func(Context, interface{})

@@ -1,6 +1,6 @@
-# Testing
+## Intro
 
-Testing is an essential step to achieve app reliability. Since go-app is working on 2 different environments (web browser and server), it provides 2 testing [dispatchers](/reference#Dispatcher) to emulate [components lifecycle](/components#lifecycle) behaviors.
+Testing is an essential step to achieve app reliability. Since go-app is working on 2 different environments (web browser and server), it provides 2 testing [dispatchers](/reference#Dispatcher) to emulate [components lifecycle](/components#lifecycle-events) behaviors.
 
 ## Component server prerendering
 
@@ -17,7 +17,6 @@ type aTitle struct {
 
 func (t *aTitle) OnPreRender(ctx app.Context) {
 	t.title = "Testing Prerendering"
-	t.Update()
 }
 
 func (t *aTitle) Render() app.UI {
@@ -40,8 +39,7 @@ func TestComponentPreRendering(t *testing.T) {
 	// Call OnPreRender() from PreRenderer interface:
 	disp.PreRender()
 
-	// When using Update(), Dispatch() ,or Defer(), operation are queued in
-	// a go channel. Consume() execute pending operations:
+	// Executes all the queued UI instructions.
 	disp.Consume()
 
 	if compo.title != "Testing Prerendering" {
@@ -65,12 +63,10 @@ type aTitle struct {
 
 func (t *aTitle) OnMount(ctx app.Context) {
 	t.title = "Testing Mounting"
-	t.Update()
 }
 
 func (t *aTitle) OnNav(ctx app.Context) {
 	t.title = "Testing Nav"
-	t.Update()
 }
 
 func (t *aTitle) Render() app.UI {
@@ -109,6 +105,12 @@ type aTitle struct {
 	title string
 }
 
+func (t *aTitle) Render() app.UI {
+	return app.H1().
+		Class("title").
+		Text(t.title)
+}
+
 func (t *aTitle) setAsyncTitle(ctx app.Context) {
 	ctx.Async(func() {
 		time.Sleep(time.Millisecond * 100)
@@ -116,12 +118,6 @@ func (t *aTitle) setAsyncTitle(ctx app.Context) {
 			t.title = "Testing Async"
 		})
 	})
-}
-
-func (t *aTitle) Render() app.UI {
-	return app.H1().
-		Class("title").
-		Text(t.title)
 }
 
 func TestComponentAsync(t *testing.T) {
@@ -187,7 +183,6 @@ type aTitle struct {
 
 func (t *aTitle) OnMount(ctx app.Context) {
 	t.title = "Testing Mounting"
-	t.Update()
 }
 
 func (t *aTitle) Render() app.UI {
@@ -211,7 +206,5 @@ func TestUIElement(t *testing.T) {
 
 ## Next
 
-- [Understand go-app architecture](/architecture)
-- [How to create a component](/components)
-- [Handle concurrency](/concurrency)
-- [API reference](/reference)
+- [Reactive Programming](/reactive-programming)
+- [Reference](/reference)

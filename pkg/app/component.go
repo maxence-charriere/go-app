@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 // Composer is the interface that describes a customized, independent and
@@ -34,11 +34,6 @@ type Composer interface {
 	// used to render the component has been modified.
 	Update()
 
-	// Dispatch executes the given function on the goroutine dedicated to
-	// updating the UI and ensures that the component is mounted when the
-	// function is called.
-	Defer(func(Context))
-
 	// ResizeContent triggers OnResize() on all the component children that
 	// implement the Resizer interface.
 	ResizeContent()
@@ -51,6 +46,9 @@ type Composer interface {
 	//
 	// It panics if the given value is not a pointer.
 	ValueTo(interface{}) EventHandler
+
+	updateRoot() error
+	dispatch(func(Context))
 }
 
 // PreRenderer is the interface that describes a component that performs
@@ -100,12 +98,31 @@ type deprecatedNavigator interface {
 	OnNav(Context, *url.URL)
 }
 
-// Updater is the interface that describes a component that is notified when the
-// application is updated.
+// Updater is the interface that describes a component that can do additional
+// instructions when one of its exported fields is modified by its nearest
+// parent component.
 type Updater interface {
+	// The function called when one of the component exported fields is modified
+	// by its nearest parent component. It is always called on the UI goroutine.
+	OnUpdate(Context)
+}
+
+// AppUpdater is the interface that describes a component that is notified when
+// the application is updated.
+type AppUpdater interface {
 	// The function called when the application is updated. It is always called
 	// on the UI goroutine.
 	OnAppUpdate(Context)
+}
+
+// AppInstaller is the interface that describes a component that is notified
+// when the application installation state changes.
+type AppInstaller interface {
+	// The function called when the application becomes installable or
+	// installed. Use Context.IsAppInstallable() or Context.IsAppInstalled to
+	// check the install state. OnAppInstallChange is always called on the UI
+	// goroutine.
+	OnAppInstallChange(Context)
 }
 
 // Resizer is the interface that describes a component that is notified when the
@@ -170,33 +187,17 @@ func (c *Compo) Render() UI {
 		)
 }
 
-// Defer executes the given function on the goroutine dedicated to
-// updating the UI and ensures that the component is mounted when the
-// function is called.
-func (c *Compo) Defer(fn func(Context)) {
-	c.dispatcher().Dispatch(func() {
-		if !c.Mounted() {
-			return
-		}
-		fn(makeContext(c.self()))
-	})
-}
-
 // Update triggers a component appearance update. It should be called when a
 // field used to render the component has been modified. Updates are always
 // performed on the UI goroutine.
 func (c *Compo) Update() {
-	c.Defer(func(Context) {
-		if err := c.updateRoot(); err != nil {
-			panic(err)
-		}
-	})
+	c.dispatch(func(Context) {})
 }
 
 // ResizeContent triggers OnResize() on all the component children that
 // implement the Resizer interface.
 func (c *Compo) ResizeContent() {
-	c.Defer(func(Context) {
+	c.dispatch(func(Context) {
 		c.root.onResize()
 	})
 }
@@ -210,15 +211,11 @@ func (c *Compo) ResizeContent() {
 // It panics if the given value is not a pointer.
 func (c *Compo) ValueTo(v interface{}) EventHandler {
 	return func(ctx Context, e Event) {
-		value := ctx.JSSrc.Get("value")
-		if !value.Truthy() {
-			return
-		}
+		value := ctx.JSSrc().Get("value")
 		if err := stringTo(value.String(), v); err != nil {
 			Log(errors.New("storing dom element value failed").Wrap(err))
 			return
 		}
-		c.Update()
 	}
 }
 
@@ -290,10 +287,15 @@ func (c *Compo) mount(d Dispatcher) error {
 	root.setParent(c.this)
 	c.root = root
 
-	if mounter, ok := c.self().(Mounter); ok && !c.dispatcher().isServerSideMode() {
-		mounter.OnMount(makeContext(c.self()))
+	if c.dispatcher().runsInServer() {
+		return nil
 	}
 
+	if mounter, ok := c.self().(Mounter); ok {
+		c.dispatch(mounter.OnMount)
+		return nil
+	}
+	c.dispatch(nil)
 	return nil
 }
 
@@ -324,6 +326,7 @@ func (c *Compo) update(n UI) error {
 	aval := reflect.Indirect(reflect.ValueOf(c.self()))
 	bval := reflect.Indirect(reflect.ValueOf(n))
 	compotype := reflect.ValueOf(c).Elem().Type()
+	haveModifiedFields := false
 
 	for i := 0; i < aval.NumField(); i++ {
 		a := aval.Field(i)
@@ -339,10 +342,27 @@ func (c *Compo) update(n UI) error {
 
 		if !reflect.DeepEqual(a.Interface(), b.Interface()) {
 			a.Set(b)
+			haveModifiedFields = true
 		}
 	}
 
-	return c.updateRoot()
+	if !haveModifiedFields {
+		return nil
+	}
+
+	c.updateRoot()
+	if updater, ok := c.self().(Updater); ok {
+		c.dispatch(updater.OnUpdate)
+	}
+	return nil
+}
+
+func (c *Compo) dispatch(fn func(Context)) {
+	c.dispatcher().Dispatch(Dispatch{
+		Mode:     Update,
+		Source:   c.self(),
+		Function: fn,
+	})
 }
 
 func (c *Compo) updateRoot() error {
@@ -353,7 +373,6 @@ func (c *Compo) updateRoot() error {
 	if isErrReplace(err) {
 		err = c.replaceRoot(b)
 	}
-
 	if err != nil {
 		return errors.New("updating component failed").
 			Tag("kind", c.Kind()).
@@ -411,39 +430,47 @@ func (c *Compo) render() UI {
 }
 
 func (c *Compo) onNav(u *url.URL) {
-	c.root.onNav(u)
+	defer c.root.onNav(u)
 
 	if nav, ok := c.self().(Navigator); ok {
-		ctx := makeContext(c.self())
-		nav.OnNav(ctx)
+		c.dispatch(nav.OnNav)
 		return
 	}
 
 	if nav, ok := c.self().(deprecatedNavigator); ok {
-		ctx := makeContext(c.self())
 		Log(errors.New("a deprecated component interface is in use").
 			Tag("component", reflect.TypeOf(c.self())).
 			Tag("interface", "app.Navigator").
 			Tag("method-current", "OnNav(app.Context, *url.URL)").
 			Tag("method-fix", "OnNav(app.Context)").
 			Tag("how-to-fix", "refactor component to use the right method"))
-		nav.OnNav(ctx, u)
+		c.dispatch(func(ctx Context) {
+			nav.OnNav(ctx, u)
+		})
 	}
 }
 
 func (c *Compo) onAppUpdate() {
 	c.root.onAppUpdate()
 
-	if updater, ok := c.self().(Updater); ok {
-		updater.OnAppUpdate(makeContext(c.self()))
+	if updater, ok := c.self().(AppUpdater); ok {
+		c.dispatch(updater.OnAppUpdate)
+	}
+}
+
+func (c *Compo) onAppInstallChange() {
+	c.root.onAppInstallChange()
+
+	if installer, ok := c.self().(AppInstaller); ok {
+		c.dispatch(installer.OnAppInstallChange)
 	}
 }
 
 func (c *Compo) onResize() {
-	c.root.onResize()
+	defer c.root.onResize()
 
 	if resizer, ok := c.self().(Resizer); ok {
-		resizer.OnResize(makeContext(c.self()))
+		c.dispatch(resizer.OnResize)
 		return
 	}
 
@@ -455,6 +482,9 @@ func (c *Compo) onResize() {
 			Tag("method-fix", "OnResize(app.Context)").
 			Tag("how-to-fix", "refactor component to use the right method"))
 		resizer.OnAppResize(makeContext(c.self()))
+		c.dispatch(func(ctx Context) {
+			resizer.OnAppResize(ctx)
+		})
 	}
 }
 
@@ -462,7 +492,7 @@ func (c *Compo) preRender(p Page) {
 	c.root.preRender(p)
 
 	if preRenderer, ok := c.self().(PreRenderer); ok {
-		preRenderer.OnPreRender(makeContext(c.self()))
+		c.dispatch(preRenderer.OnPreRender)
 	}
 }
 

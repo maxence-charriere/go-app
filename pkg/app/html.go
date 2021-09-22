@@ -4,6 +4,7 @@ package app
 
 import (
 	"fmt"
+	"strings"
 )
 
 // HTMLA is the interface that describes a <a> HTML element.
@@ -22,8 +23,8 @@ type HTMLA interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLA
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLA
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLA
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLA
@@ -69,6 +70,9 @@ type HTMLA interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLA
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLA
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLA
@@ -214,8 +218,8 @@ func (e *htmlA) Aria(k string, v interface{}) HTMLA {
 	return e
 }
 
-func (e *htmlA) Class(v string) HTMLA {
-	e.setAttr("class", v)
+func (e *htmlA) Class(v ...string) HTMLA {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -296,6 +300,13 @@ func (e *htmlA) Spellcheck(v bool) HTMLA {
 
 func (e *htmlA) Style(k, v string) HTMLA {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlA) Styles(s map[string]string) HTMLA {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -495,8 +506,8 @@ type HTMLAbbr interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLAbbr
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLAbbr
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLAbbr
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLAbbr
@@ -524,6 +535,9 @@ type HTMLAbbr interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLAbbr
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLAbbr
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLAbbr
@@ -663,8 +677,8 @@ func (e *htmlAbbr) Aria(k string, v interface{}) HTMLAbbr {
 	return e
 }
 
-func (e *htmlAbbr) Class(v string) HTMLAbbr {
-	e.setAttr("class", v)
+func (e *htmlAbbr) Class(v ...string) HTMLAbbr {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -715,6 +729,13 @@ func (e *htmlAbbr) Spellcheck(v bool) HTMLAbbr {
 
 func (e *htmlAbbr) Style(k, v string) HTMLAbbr {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlAbbr) Styles(s map[string]string) HTMLAbbr {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -904,8 +925,8 @@ type HTMLAddress interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLAddress
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLAddress
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLAddress
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLAddress
@@ -933,6 +954,9 @@ type HTMLAddress interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLAddress
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLAddress
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLAddress
@@ -1072,8 +1096,8 @@ func (e *htmlAddress) Aria(k string, v interface{}) HTMLAddress {
 	return e
 }
 
-func (e *htmlAddress) Class(v string) HTMLAddress {
-	e.setAttr("class", v)
+func (e *htmlAddress) Class(v ...string) HTMLAddress {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -1124,6 +1148,13 @@ func (e *htmlAddress) Spellcheck(v bool) HTMLAddress {
 
 func (e *htmlAddress) Style(k, v string) HTMLAddress {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlAddress) Styles(s map[string]string) HTMLAddress {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -1310,8 +1341,8 @@ type HTMLArea interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLArea
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLArea
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLArea
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLArea
@@ -1360,6 +1391,9 @@ type HTMLArea interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLArea
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLArea
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLArea
@@ -1501,8 +1535,8 @@ func (e *htmlArea) Aria(k string, v interface{}) HTMLArea {
 	return e
 }
 
-func (e *htmlArea) Class(v string) HTMLArea {
-	e.setAttr("class", v)
+func (e *htmlArea) Class(v ...string) HTMLArea {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -1588,6 +1622,13 @@ func (e *htmlArea) Spellcheck(v bool) HTMLArea {
 
 func (e *htmlArea) Style(k, v string) HTMLArea {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlArea) Styles(s map[string]string) HTMLArea {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -1787,8 +1828,8 @@ type HTMLArticle interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLArticle
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLArticle
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLArticle
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLArticle
@@ -1816,6 +1857,9 @@ type HTMLArticle interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLArticle
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLArticle
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLArticle
@@ -1955,8 +1999,8 @@ func (e *htmlArticle) Aria(k string, v interface{}) HTMLArticle {
 	return e
 }
 
-func (e *htmlArticle) Class(v string) HTMLArticle {
-	e.setAttr("class", v)
+func (e *htmlArticle) Class(v ...string) HTMLArticle {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -2007,6 +2051,13 @@ func (e *htmlArticle) Spellcheck(v bool) HTMLArticle {
 
 func (e *htmlArticle) Style(k, v string) HTMLArticle {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlArticle) Styles(s map[string]string) HTMLArticle {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -2196,8 +2247,8 @@ type HTMLAside interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLAside
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLAside
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLAside
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLAside
@@ -2225,6 +2276,9 @@ type HTMLAside interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLAside
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLAside
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLAside
@@ -2364,8 +2418,8 @@ func (e *htmlAside) Aria(k string, v interface{}) HTMLAside {
 	return e
 }
 
-func (e *htmlAside) Class(v string) HTMLAside {
-	e.setAttr("class", v)
+func (e *htmlAside) Class(v ...string) HTMLAside {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -2416,6 +2470,13 @@ func (e *htmlAside) Spellcheck(v bool) HTMLAside {
 
 func (e *htmlAside) Style(k, v string) HTMLAside {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlAside) Styles(s map[string]string) HTMLAside {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -2608,14 +2669,17 @@ type HTMLAudio interface {
 	// AutoPlay specifies that the audio/video will start playing as soon as it is ready.
 	AutoPlay(v bool) HTMLAudio
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLAudio
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLAudio
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLAudio
 
 	// Controls specifies that audio/video controls should be displayed (such as a play/pause button etc).
 	Controls(v bool) HTMLAudio
+
+	// CrossOrigin sets the mode of the request to an HTTP CORS Request.
+	CrossOrigin(v string) HTMLAudio
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v interface{}) HTMLAudio
@@ -2652,6 +2716,9 @@ type HTMLAudio interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLAudio
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLAudio
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLAudio
@@ -2865,8 +2932,8 @@ func (e *htmlAudio) AutoPlay(v bool) HTMLAudio {
 	return e
 }
 
-func (e *htmlAudio) Class(v string) HTMLAudio {
-	e.setAttr("class", v)
+func (e *htmlAudio) Class(v ...string) HTMLAudio {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -2877,6 +2944,11 @@ func (e *htmlAudio) ContentEditable(v bool) HTMLAudio {
 
 func (e *htmlAudio) Controls(v bool) HTMLAudio {
 	e.setAttr("controls", v)
+	return e
+}
+
+func (e *htmlAudio) CrossOrigin(v string) HTMLAudio {
+	e.setAttr("crossorigin", v)
 	return e
 }
 
@@ -2942,6 +3014,13 @@ func (e *htmlAudio) Src(v string) HTMLAudio {
 
 func (e *htmlAudio) Style(k, v string) HTMLAudio {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlAudio) Styles(s map[string]string) HTMLAudio {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -3246,8 +3325,8 @@ type HTMLB interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLB
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLB
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLB
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLB
@@ -3275,6 +3354,9 @@ type HTMLB interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLB
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLB
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLB
@@ -3414,8 +3496,8 @@ func (e *htmlB) Aria(k string, v interface{}) HTMLB {
 	return e
 }
 
-func (e *htmlB) Class(v string) HTMLB {
-	e.setAttr("class", v)
+func (e *htmlB) Class(v ...string) HTMLB {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -3466,6 +3548,13 @@ func (e *htmlB) Spellcheck(v bool) HTMLB {
 
 func (e *htmlB) Style(k, v string) HTMLB {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlB) Styles(s map[string]string) HTMLB {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -3649,8 +3738,8 @@ type HTMLBase interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLBase
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLBase
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLBase
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLBase
@@ -3681,6 +3770,9 @@ type HTMLBase interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLBase
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLBase
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBase
@@ -3814,8 +3906,8 @@ func (e *htmlBase) Aria(k string, v interface{}) HTMLBase {
 	return e
 }
 
-func (e *htmlBase) Class(v string) HTMLBase {
-	e.setAttr("class", v)
+func (e *htmlBase) Class(v ...string) HTMLBase {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -3871,6 +3963,13 @@ func (e *htmlBase) Spellcheck(v bool) HTMLBase {
 
 func (e *htmlBase) Style(k, v string) HTMLBase {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlBase) Styles(s map[string]string) HTMLBase {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -4065,8 +4164,8 @@ type HTMLBdi interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLBdi
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLBdi
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLBdi
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLBdi
@@ -4094,6 +4193,9 @@ type HTMLBdi interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLBdi
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLBdi
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBdi
@@ -4233,8 +4335,8 @@ func (e *htmlBdi) Aria(k string, v interface{}) HTMLBdi {
 	return e
 }
 
-func (e *htmlBdi) Class(v string) HTMLBdi {
-	e.setAttr("class", v)
+func (e *htmlBdi) Class(v ...string) HTMLBdi {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -4285,6 +4387,13 @@ func (e *htmlBdi) Spellcheck(v bool) HTMLBdi {
 
 func (e *htmlBdi) Style(k, v string) HTMLBdi {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlBdi) Styles(s map[string]string) HTMLBdi {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -4474,8 +4583,8 @@ type HTMLBdo interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLBdo
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLBdo
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLBdo
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLBdo
@@ -4503,6 +4612,9 @@ type HTMLBdo interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLBdo
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLBdo
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBdo
@@ -4642,8 +4754,8 @@ func (e *htmlBdo) Aria(k string, v interface{}) HTMLBdo {
 	return e
 }
 
-func (e *htmlBdo) Class(v string) HTMLBdo {
-	e.setAttr("class", v)
+func (e *htmlBdo) Class(v ...string) HTMLBdo {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -4694,6 +4806,13 @@ func (e *htmlBdo) Spellcheck(v bool) HTMLBdo {
 
 func (e *htmlBdo) Style(k, v string) HTMLBdo {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlBdo) Styles(s map[string]string) HTMLBdo {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -4886,8 +5005,8 @@ type HTMLBlockquote interface {
 	// Cite specifies a URL which explains the quote/deleted/inserted text.
 	Cite(v string) HTMLBlockquote
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLBlockquote
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLBlockquote
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLBlockquote
@@ -4915,6 +5034,9 @@ type HTMLBlockquote interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLBlockquote
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLBlockquote
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBlockquote
@@ -5059,8 +5181,8 @@ func (e *htmlBlockquote) Cite(v string) HTMLBlockquote {
 	return e
 }
 
-func (e *htmlBlockquote) Class(v string) HTMLBlockquote {
-	e.setAttr("class", v)
+func (e *htmlBlockquote) Class(v ...string) HTMLBlockquote {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -5111,6 +5233,13 @@ func (e *htmlBlockquote) Spellcheck(v bool) HTMLBlockquote {
 
 func (e *htmlBlockquote) Style(k, v string) HTMLBlockquote {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlBlockquote) Styles(s map[string]string) HTMLBlockquote {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -5300,8 +5429,8 @@ type HTMLBody interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLBody
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLBody
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLBody
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLBody
@@ -5329,6 +5458,9 @@ type HTMLBody interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLBody
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLBody
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBody
@@ -5513,8 +5645,8 @@ func (e *htmlBody) Aria(k string, v interface{}) HTMLBody {
 	return e
 }
 
-func (e *htmlBody) Class(v string) HTMLBody {
-	e.setAttr("class", v)
+func (e *htmlBody) Class(v ...string) HTMLBody {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -5565,6 +5697,13 @@ func (e *htmlBody) Spellcheck(v bool) HTMLBody {
 
 func (e *htmlBody) Style(k, v string) HTMLBody {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlBody) Styles(s map[string]string) HTMLBody {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -5823,8 +5962,8 @@ type HTMLBr interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLBr
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLBr
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLBr
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLBr
@@ -5852,6 +5991,9 @@ type HTMLBr interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLBr
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLBr
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBr
@@ -5982,8 +6124,8 @@ func (e *htmlBr) Aria(k string, v interface{}) HTMLBr {
 	return e
 }
 
-func (e *htmlBr) Class(v string) HTMLBr {
-	e.setAttr("class", v)
+func (e *htmlBr) Class(v ...string) HTMLBr {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -6034,6 +6176,13 @@ func (e *htmlBr) Spellcheck(v bool) HTMLBr {
 
 func (e *htmlBr) Style(k, v string) HTMLBr {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlBr) Styles(s map[string]string) HTMLBr {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -6226,8 +6375,8 @@ type HTMLButton interface {
 	// AutoFocus specifies that the element should automatically get focus when the page loads.
 	AutoFocus(v bool) HTMLButton
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLButton
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLButton
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLButton
@@ -6279,6 +6428,9 @@ type HTMLButton interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLButton
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLButton
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLButton
@@ -6429,8 +6581,8 @@ func (e *htmlButton) AutoFocus(v bool) HTMLButton {
 	return e
 }
 
-func (e *htmlButton) Class(v string) HTMLButton {
-	e.setAttr("class", v)
+func (e *htmlButton) Class(v ...string) HTMLButton {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -6521,6 +6673,13 @@ func (e *htmlButton) Spellcheck(v bool) HTMLButton {
 
 func (e *htmlButton) Style(k, v string) HTMLButton {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlButton) Styles(s map[string]string) HTMLButton {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -6720,8 +6879,8 @@ type HTMLCanvas interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLCanvas
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLCanvas
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLCanvas
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLCanvas
@@ -6752,6 +6911,9 @@ type HTMLCanvas interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLCanvas
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLCanvas
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLCanvas
@@ -6894,8 +7056,8 @@ func (e *htmlCanvas) Aria(k string, v interface{}) HTMLCanvas {
 	return e
 }
 
-func (e *htmlCanvas) Class(v string) HTMLCanvas {
-	e.setAttr("class", v)
+func (e *htmlCanvas) Class(v ...string) HTMLCanvas {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -6951,6 +7113,13 @@ func (e *htmlCanvas) Spellcheck(v bool) HTMLCanvas {
 
 func (e *htmlCanvas) Style(k, v string) HTMLCanvas {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlCanvas) Styles(s map[string]string) HTMLCanvas {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -7145,8 +7314,8 @@ type HTMLCaption interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLCaption
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLCaption
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLCaption
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLCaption
@@ -7174,6 +7343,9 @@ type HTMLCaption interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLCaption
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLCaption
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLCaption
@@ -7313,8 +7485,8 @@ func (e *htmlCaption) Aria(k string, v interface{}) HTMLCaption {
 	return e
 }
 
-func (e *htmlCaption) Class(v string) HTMLCaption {
-	e.setAttr("class", v)
+func (e *htmlCaption) Class(v ...string) HTMLCaption {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -7365,6 +7537,13 @@ func (e *htmlCaption) Spellcheck(v bool) HTMLCaption {
 
 func (e *htmlCaption) Style(k, v string) HTMLCaption {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlCaption) Styles(s map[string]string) HTMLCaption {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -7554,8 +7733,8 @@ type HTMLCite interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLCite
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLCite
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLCite
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLCite
@@ -7583,6 +7762,9 @@ type HTMLCite interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLCite
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLCite
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLCite
@@ -7722,8 +7904,8 @@ func (e *htmlCite) Aria(k string, v interface{}) HTMLCite {
 	return e
 }
 
-func (e *htmlCite) Class(v string) HTMLCite {
-	e.setAttr("class", v)
+func (e *htmlCite) Class(v ...string) HTMLCite {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -7774,6 +7956,13 @@ func (e *htmlCite) Spellcheck(v bool) HTMLCite {
 
 func (e *htmlCite) Style(k, v string) HTMLCite {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlCite) Styles(s map[string]string) HTMLCite {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -7963,8 +8152,8 @@ type HTMLCode interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLCode
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLCode
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLCode
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLCode
@@ -7992,6 +8181,9 @@ type HTMLCode interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLCode
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLCode
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLCode
@@ -8131,8 +8323,8 @@ func (e *htmlCode) Aria(k string, v interface{}) HTMLCode {
 	return e
 }
 
-func (e *htmlCode) Class(v string) HTMLCode {
-	e.setAttr("class", v)
+func (e *htmlCode) Class(v ...string) HTMLCode {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -8183,6 +8375,13 @@ func (e *htmlCode) Spellcheck(v bool) HTMLCode {
 
 func (e *htmlCode) Style(k, v string) HTMLCode {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlCode) Styles(s map[string]string) HTMLCode {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -8366,8 +8565,8 @@ type HTMLCol interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLCol
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLCol
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLCol
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLCol
@@ -8398,6 +8597,9 @@ type HTMLCol interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLCol
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLCol
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLCol
@@ -8528,8 +8730,8 @@ func (e *htmlCol) Aria(k string, v interface{}) HTMLCol {
 	return e
 }
 
-func (e *htmlCol) Class(v string) HTMLCol {
-	e.setAttr("class", v)
+func (e *htmlCol) Class(v ...string) HTMLCol {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -8585,6 +8787,13 @@ func (e *htmlCol) Spellcheck(v bool) HTMLCol {
 
 func (e *htmlCol) Style(k, v string) HTMLCol {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlCol) Styles(s map[string]string) HTMLCol {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -8774,8 +8983,8 @@ type HTMLColGroup interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLColGroup
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLColGroup
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLColGroup
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLColGroup
@@ -8806,6 +9015,9 @@ type HTMLColGroup interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLColGroup
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLColGroup
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLColGroup
@@ -8945,8 +9157,8 @@ func (e *htmlColGroup) Aria(k string, v interface{}) HTMLColGroup {
 	return e
 }
 
-func (e *htmlColGroup) Class(v string) HTMLColGroup {
-	e.setAttr("class", v)
+func (e *htmlColGroup) Class(v ...string) HTMLColGroup {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -9002,6 +9214,13 @@ func (e *htmlColGroup) Spellcheck(v bool) HTMLColGroup {
 
 func (e *htmlColGroup) Style(k, v string) HTMLColGroup {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlColGroup) Styles(s map[string]string) HTMLColGroup {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -9191,8 +9410,8 @@ type HTMLData interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLData
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLData
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLData
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLData
@@ -9220,6 +9439,9 @@ type HTMLData interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLData
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLData
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLData
@@ -9266,8 +9488,8 @@ func (e *htmlData) Aria(k string, v interface{}) HTMLData {
 	return e
 }
 
-func (e *htmlData) Class(v string) HTMLData {
-	e.setAttr("class", v)
+func (e *htmlData) Class(v ...string) HTMLData {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -9321,6 +9543,13 @@ func (e *htmlData) Style(k, v string) HTMLData {
 	return e
 }
 
+func (e *htmlData) Styles(s map[string]string) HTMLData {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlData) TabIndex(v int) HTMLData {
 	e.setAttr("tabindex", v)
 	return e
@@ -9352,8 +9581,8 @@ type HTMLDataList interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDataList
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDataList
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLDataList
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDataList
@@ -9381,6 +9610,9 @@ type HTMLDataList interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDataList
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDataList
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDataList
@@ -9520,8 +9752,8 @@ func (e *htmlDataList) Aria(k string, v interface{}) HTMLDataList {
 	return e
 }
 
-func (e *htmlDataList) Class(v string) HTMLDataList {
-	e.setAttr("class", v)
+func (e *htmlDataList) Class(v ...string) HTMLDataList {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -9572,6 +9804,13 @@ func (e *htmlDataList) Spellcheck(v bool) HTMLDataList {
 
 func (e *htmlDataList) Style(k, v string) HTMLDataList {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDataList) Styles(s map[string]string) HTMLDataList {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -9761,8 +10000,8 @@ type HTMLDd interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDd
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDd
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLDd
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDd
@@ -9790,6 +10029,9 @@ type HTMLDd interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDd
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDd
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDd
@@ -9929,8 +10171,8 @@ func (e *htmlDd) Aria(k string, v interface{}) HTMLDd {
 	return e
 }
 
-func (e *htmlDd) Class(v string) HTMLDd {
-	e.setAttr("class", v)
+func (e *htmlDd) Class(v ...string) HTMLDd {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -9981,6 +10223,13 @@ func (e *htmlDd) Spellcheck(v bool) HTMLDd {
 
 func (e *htmlDd) Style(k, v string) HTMLDd {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDd) Styles(s map[string]string) HTMLDd {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -10173,8 +10422,8 @@ type HTMLDel interface {
 	// Cite specifies a URL which explains the quote/deleted/inserted text.
 	Cite(v string) HTMLDel
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDel
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLDel
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDel
@@ -10205,6 +10454,9 @@ type HTMLDel interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDel
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDel
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDel
@@ -10349,8 +10601,8 @@ func (e *htmlDel) Cite(v string) HTMLDel {
 	return e
 }
 
-func (e *htmlDel) Class(v string) HTMLDel {
-	e.setAttr("class", v)
+func (e *htmlDel) Class(v ...string) HTMLDel {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -10406,6 +10658,13 @@ func (e *htmlDel) Spellcheck(v bool) HTMLDel {
 
 func (e *htmlDel) Style(k, v string) HTMLDel {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDel) Styles(s map[string]string) HTMLDel {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -10595,8 +10854,8 @@ type HTMLDetails interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDetails
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDetails
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLDetails
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDetails
@@ -10627,6 +10886,9 @@ type HTMLDetails interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDetails
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDetails
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDetails
@@ -10769,8 +11031,8 @@ func (e *htmlDetails) Aria(k string, v interface{}) HTMLDetails {
 	return e
 }
 
-func (e *htmlDetails) Class(v string) HTMLDetails {
-	e.setAttr("class", v)
+func (e *htmlDetails) Class(v ...string) HTMLDetails {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -10826,6 +11088,13 @@ func (e *htmlDetails) Spellcheck(v bool) HTMLDetails {
 
 func (e *htmlDetails) Style(k, v string) HTMLDetails {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDetails) Styles(s map[string]string) HTMLDetails {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -11020,8 +11289,8 @@ type HTMLDfn interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDfn
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDfn
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLDfn
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDfn
@@ -11049,6 +11318,9 @@ type HTMLDfn interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDfn
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDfn
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDfn
@@ -11188,8 +11460,8 @@ func (e *htmlDfn) Aria(k string, v interface{}) HTMLDfn {
 	return e
 }
 
-func (e *htmlDfn) Class(v string) HTMLDfn {
-	e.setAttr("class", v)
+func (e *htmlDfn) Class(v ...string) HTMLDfn {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -11240,6 +11512,13 @@ func (e *htmlDfn) Spellcheck(v bool) HTMLDfn {
 
 func (e *htmlDfn) Style(k, v string) HTMLDfn {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDfn) Styles(s map[string]string) HTMLDfn {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -11429,8 +11708,8 @@ type HTMLDialog interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDialog
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDialog
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLDialog
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDialog
@@ -11461,6 +11740,9 @@ type HTMLDialog interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDialog
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDialog
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDialog
@@ -11600,8 +11882,8 @@ func (e *htmlDialog) Aria(k string, v interface{}) HTMLDialog {
 	return e
 }
 
-func (e *htmlDialog) Class(v string) HTMLDialog {
-	e.setAttr("class", v)
+func (e *htmlDialog) Class(v ...string) HTMLDialog {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -11657,6 +11939,13 @@ func (e *htmlDialog) Spellcheck(v bool) HTMLDialog {
 
 func (e *htmlDialog) Style(k, v string) HTMLDialog {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDialog) Styles(s map[string]string) HTMLDialog {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -11846,8 +12135,8 @@ type HTMLDiv interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDiv
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDiv
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLDiv
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDiv
@@ -11875,6 +12164,9 @@ type HTMLDiv interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDiv
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDiv
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDiv
@@ -12014,8 +12306,8 @@ func (e *htmlDiv) Aria(k string, v interface{}) HTMLDiv {
 	return e
 }
 
-func (e *htmlDiv) Class(v string) HTMLDiv {
-	e.setAttr("class", v)
+func (e *htmlDiv) Class(v ...string) HTMLDiv {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -12066,6 +12358,13 @@ func (e *htmlDiv) Spellcheck(v bool) HTMLDiv {
 
 func (e *htmlDiv) Style(k, v string) HTMLDiv {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDiv) Styles(s map[string]string) HTMLDiv {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -12255,8 +12554,8 @@ type HTMLDl interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDl
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDl
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLDl
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDl
@@ -12284,6 +12583,9 @@ type HTMLDl interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDl
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDl
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDl
@@ -12423,8 +12725,8 @@ func (e *htmlDl) Aria(k string, v interface{}) HTMLDl {
 	return e
 }
 
-func (e *htmlDl) Class(v string) HTMLDl {
-	e.setAttr("class", v)
+func (e *htmlDl) Class(v ...string) HTMLDl {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -12475,6 +12777,13 @@ func (e *htmlDl) Spellcheck(v bool) HTMLDl {
 
 func (e *htmlDl) Style(k, v string) HTMLDl {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDl) Styles(s map[string]string) HTMLDl {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -12664,8 +12973,8 @@ type HTMLDt interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDt
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDt
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLDt
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDt
@@ -12693,6 +13002,9 @@ type HTMLDt interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDt
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDt
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDt
@@ -12832,8 +13144,8 @@ func (e *htmlDt) Aria(k string, v interface{}) HTMLDt {
 	return e
 }
 
-func (e *htmlDt) Class(v string) HTMLDt {
-	e.setAttr("class", v)
+func (e *htmlDt) Class(v ...string) HTMLDt {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -12884,6 +13196,13 @@ func (e *htmlDt) Spellcheck(v bool) HTMLDt {
 
 func (e *htmlDt) Style(k, v string) HTMLDt {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDt) Styles(s map[string]string) HTMLDt {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -13073,8 +13392,8 @@ type HTMLEm interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLEm
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLEm
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLEm
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLEm
@@ -13102,6 +13421,9 @@ type HTMLEm interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLEm
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLEm
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLEm
@@ -13241,8 +13563,8 @@ func (e *htmlEm) Aria(k string, v interface{}) HTMLEm {
 	return e
 }
 
-func (e *htmlEm) Class(v string) HTMLEm {
-	e.setAttr("class", v)
+func (e *htmlEm) Class(v ...string) HTMLEm {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -13293,6 +13615,13 @@ func (e *htmlEm) Spellcheck(v bool) HTMLEm {
 
 func (e *htmlEm) Style(k, v string) HTMLEm {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlEm) Styles(s map[string]string) HTMLEm {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -13476,8 +13805,8 @@ type HTMLEmbed interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLEmbed
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLEmbed
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLEmbed
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLEmbed
@@ -13511,6 +13840,9 @@ type HTMLEmbed interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLEmbed
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLEmbed
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLEmbed
@@ -13716,8 +14048,8 @@ func (e *htmlEmbed) Aria(k string, v interface{}) HTMLEmbed {
 	return e
 }
 
-func (e *htmlEmbed) Class(v string) HTMLEmbed {
-	e.setAttr("class", v)
+func (e *htmlEmbed) Class(v ...string) HTMLEmbed {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -13778,6 +14110,13 @@ func (e *htmlEmbed) Src(v string) HTMLEmbed {
 
 func (e *htmlEmbed) Style(k, v string) HTMLEmbed {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlEmbed) Styles(s map[string]string) HTMLEmbed {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -14092,8 +14431,8 @@ type HTMLFieldSet interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLFieldSet
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLFieldSet
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLFieldSet
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLFieldSet
@@ -14130,6 +14469,9 @@ type HTMLFieldSet interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLFieldSet
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLFieldSet
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLFieldSet
@@ -14269,8 +14611,8 @@ func (e *htmlFieldSet) Aria(k string, v interface{}) HTMLFieldSet {
 	return e
 }
 
-func (e *htmlFieldSet) Class(v string) HTMLFieldSet {
-	e.setAttr("class", v)
+func (e *htmlFieldSet) Class(v ...string) HTMLFieldSet {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -14336,6 +14678,13 @@ func (e *htmlFieldSet) Spellcheck(v bool) HTMLFieldSet {
 
 func (e *htmlFieldSet) Style(k, v string) HTMLFieldSet {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlFieldSet) Styles(s map[string]string) HTMLFieldSet {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -14525,8 +14874,8 @@ type HTMLFigCaption interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLFigCaption
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLFigCaption
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLFigCaption
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLFigCaption
@@ -14554,6 +14903,9 @@ type HTMLFigCaption interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLFigCaption
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLFigCaption
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLFigCaption
@@ -14693,8 +15045,8 @@ func (e *htmlFigCaption) Aria(k string, v interface{}) HTMLFigCaption {
 	return e
 }
 
-func (e *htmlFigCaption) Class(v string) HTMLFigCaption {
-	e.setAttr("class", v)
+func (e *htmlFigCaption) Class(v ...string) HTMLFigCaption {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -14745,6 +15097,13 @@ func (e *htmlFigCaption) Spellcheck(v bool) HTMLFigCaption {
 
 func (e *htmlFigCaption) Style(k, v string) HTMLFigCaption {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlFigCaption) Styles(s map[string]string) HTMLFigCaption {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -14934,8 +15293,8 @@ type HTMLFigure interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLFigure
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLFigure
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLFigure
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLFigure
@@ -14963,6 +15322,9 @@ type HTMLFigure interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLFigure
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLFigure
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLFigure
@@ -15102,8 +15464,8 @@ func (e *htmlFigure) Aria(k string, v interface{}) HTMLFigure {
 	return e
 }
 
-func (e *htmlFigure) Class(v string) HTMLFigure {
-	e.setAttr("class", v)
+func (e *htmlFigure) Class(v ...string) HTMLFigure {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -15154,6 +15516,13 @@ func (e *htmlFigure) Spellcheck(v bool) HTMLFigure {
 
 func (e *htmlFigure) Style(k, v string) HTMLFigure {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlFigure) Styles(s map[string]string) HTMLFigure {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -15343,8 +15712,8 @@ type HTMLFooter interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLFooter
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLFooter
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLFooter
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLFooter
@@ -15372,6 +15741,9 @@ type HTMLFooter interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLFooter
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLFooter
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLFooter
@@ -15511,8 +15883,8 @@ func (e *htmlFooter) Aria(k string, v interface{}) HTMLFooter {
 	return e
 }
 
-func (e *htmlFooter) Class(v string) HTMLFooter {
-	e.setAttr("class", v)
+func (e *htmlFooter) Class(v ...string) HTMLFooter {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -15563,6 +15935,13 @@ func (e *htmlFooter) Spellcheck(v bool) HTMLFooter {
 
 func (e *htmlFooter) Style(k, v string) HTMLFooter {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlFooter) Styles(s map[string]string) HTMLFooter {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -15761,8 +16140,8 @@ type HTMLForm interface {
 	// AutoComplete specifies whether the element should have autocomplete enabled.
 	AutoComplete(v bool) HTMLForm
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLForm
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLForm
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLForm
@@ -15802,6 +16181,9 @@ type HTMLForm interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLForm
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLForm
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLForm
@@ -15964,8 +16346,8 @@ func (e *htmlForm) AutoComplete(v bool) HTMLForm {
 	return e
 }
 
-func (e *htmlForm) Class(v string) HTMLForm {
-	e.setAttr("class", v)
+func (e *htmlForm) Class(v ...string) HTMLForm {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -16036,6 +16418,13 @@ func (e *htmlForm) Spellcheck(v bool) HTMLForm {
 
 func (e *htmlForm) Style(k, v string) HTMLForm {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlForm) Styles(s map[string]string) HTMLForm {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -16230,8 +16619,8 @@ type HTMLH1 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH1
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLH1
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLH1
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLH1
@@ -16259,6 +16648,9 @@ type HTMLH1 interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLH1
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLH1
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH1
@@ -16398,8 +16790,8 @@ func (e *htmlH1) Aria(k string, v interface{}) HTMLH1 {
 	return e
 }
 
-func (e *htmlH1) Class(v string) HTMLH1 {
-	e.setAttr("class", v)
+func (e *htmlH1) Class(v ...string) HTMLH1 {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -16450,6 +16842,13 @@ func (e *htmlH1) Spellcheck(v bool) HTMLH1 {
 
 func (e *htmlH1) Style(k, v string) HTMLH1 {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlH1) Styles(s map[string]string) HTMLH1 {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -16639,8 +17038,8 @@ type HTMLH2 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH2
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLH2
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLH2
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLH2
@@ -16668,6 +17067,9 @@ type HTMLH2 interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLH2
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLH2
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH2
@@ -16807,8 +17209,8 @@ func (e *htmlH2) Aria(k string, v interface{}) HTMLH2 {
 	return e
 }
 
-func (e *htmlH2) Class(v string) HTMLH2 {
-	e.setAttr("class", v)
+func (e *htmlH2) Class(v ...string) HTMLH2 {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -16859,6 +17261,13 @@ func (e *htmlH2) Spellcheck(v bool) HTMLH2 {
 
 func (e *htmlH2) Style(k, v string) HTMLH2 {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlH2) Styles(s map[string]string) HTMLH2 {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -17048,8 +17457,8 @@ type HTMLH3 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH3
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLH3
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLH3
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLH3
@@ -17077,6 +17486,9 @@ type HTMLH3 interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLH3
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLH3
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH3
@@ -17216,8 +17628,8 @@ func (e *htmlH3) Aria(k string, v interface{}) HTMLH3 {
 	return e
 }
 
-func (e *htmlH3) Class(v string) HTMLH3 {
-	e.setAttr("class", v)
+func (e *htmlH3) Class(v ...string) HTMLH3 {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -17268,6 +17680,13 @@ func (e *htmlH3) Spellcheck(v bool) HTMLH3 {
 
 func (e *htmlH3) Style(k, v string) HTMLH3 {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlH3) Styles(s map[string]string) HTMLH3 {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -17457,8 +17876,8 @@ type HTMLH4 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH4
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLH4
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLH4
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLH4
@@ -17486,6 +17905,9 @@ type HTMLH4 interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLH4
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLH4
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH4
@@ -17625,8 +18047,8 @@ func (e *htmlH4) Aria(k string, v interface{}) HTMLH4 {
 	return e
 }
 
-func (e *htmlH4) Class(v string) HTMLH4 {
-	e.setAttr("class", v)
+func (e *htmlH4) Class(v ...string) HTMLH4 {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -17677,6 +18099,13 @@ func (e *htmlH4) Spellcheck(v bool) HTMLH4 {
 
 func (e *htmlH4) Style(k, v string) HTMLH4 {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlH4) Styles(s map[string]string) HTMLH4 {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -17866,8 +18295,8 @@ type HTMLH5 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH5
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLH5
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLH5
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLH5
@@ -17895,6 +18324,9 @@ type HTMLH5 interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLH5
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLH5
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH5
@@ -18034,8 +18466,8 @@ func (e *htmlH5) Aria(k string, v interface{}) HTMLH5 {
 	return e
 }
 
-func (e *htmlH5) Class(v string) HTMLH5 {
-	e.setAttr("class", v)
+func (e *htmlH5) Class(v ...string) HTMLH5 {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -18086,6 +18518,13 @@ func (e *htmlH5) Spellcheck(v bool) HTMLH5 {
 
 func (e *htmlH5) Style(k, v string) HTMLH5 {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlH5) Styles(s map[string]string) HTMLH5 {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -18275,8 +18714,8 @@ type HTMLH6 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH6
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLH6
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLH6
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLH6
@@ -18304,6 +18743,9 @@ type HTMLH6 interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLH6
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLH6
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH6
@@ -18443,8 +18885,8 @@ func (e *htmlH6) Aria(k string, v interface{}) HTMLH6 {
 	return e
 }
 
-func (e *htmlH6) Class(v string) HTMLH6 {
-	e.setAttr("class", v)
+func (e *htmlH6) Class(v ...string) HTMLH6 {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -18495,6 +18937,13 @@ func (e *htmlH6) Spellcheck(v bool) HTMLH6 {
 
 func (e *htmlH6) Style(k, v string) HTMLH6 {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlH6) Styles(s map[string]string) HTMLH6 {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -18684,8 +19133,8 @@ type HTMLHead interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLHead
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLHead
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLHead
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLHead
@@ -18713,6 +19162,9 @@ type HTMLHead interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLHead
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLHead
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLHead
@@ -18756,8 +19208,8 @@ func (e *htmlHead) Aria(k string, v interface{}) HTMLHead {
 	return e
 }
 
-func (e *htmlHead) Class(v string) HTMLHead {
-	e.setAttr("class", v)
+func (e *htmlHead) Class(v ...string) HTMLHead {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -18811,6 +19263,13 @@ func (e *htmlHead) Style(k, v string) HTMLHead {
 	return e
 }
 
+func (e *htmlHead) Styles(s map[string]string) HTMLHead {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlHead) TabIndex(v int) HTMLHead {
 	e.setAttr("tabindex", v)
 	return e
@@ -18837,8 +19296,8 @@ type HTMLHeader interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLHeader
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLHeader
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLHeader
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLHeader
@@ -18866,6 +19325,9 @@ type HTMLHeader interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLHeader
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLHeader
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLHeader
@@ -19005,8 +19467,8 @@ func (e *htmlHeader) Aria(k string, v interface{}) HTMLHeader {
 	return e
 }
 
-func (e *htmlHeader) Class(v string) HTMLHeader {
-	e.setAttr("class", v)
+func (e *htmlHeader) Class(v ...string) HTMLHeader {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -19057,6 +19519,13 @@ func (e *htmlHeader) Spellcheck(v bool) HTMLHeader {
 
 func (e *htmlHeader) Style(k, v string) HTMLHeader {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlHeader) Styles(s map[string]string) HTMLHeader {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -19240,8 +19709,8 @@ type HTMLHr interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLHr
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLHr
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLHr
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLHr
@@ -19269,6 +19738,9 @@ type HTMLHr interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLHr
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLHr
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLHr
@@ -19399,8 +19871,8 @@ func (e *htmlHr) Aria(k string, v interface{}) HTMLHr {
 	return e
 }
 
-func (e *htmlHr) Class(v string) HTMLHr {
-	e.setAttr("class", v)
+func (e *htmlHr) Class(v ...string) HTMLHr {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -19451,6 +19923,13 @@ func (e *htmlHr) Spellcheck(v bool) HTMLHr {
 
 func (e *htmlHr) Style(k, v string) HTMLHr {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlHr) Styles(s map[string]string) HTMLHr {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -19640,8 +20119,8 @@ type HTMLHtml interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLHtml
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLHtml
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLHtml
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLHtml
@@ -19669,6 +20148,9 @@ type HTMLHtml interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLHtml
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLHtml
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLHtml
@@ -19712,8 +20194,8 @@ func (e *htmlHtml) Aria(k string, v interface{}) HTMLHtml {
 	return e
 }
 
-func (e *htmlHtml) Class(v string) HTMLHtml {
-	e.setAttr("class", v)
+func (e *htmlHtml) Class(v ...string) HTMLHtml {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -19767,6 +20249,13 @@ func (e *htmlHtml) Style(k, v string) HTMLHtml {
 	return e
 }
 
+func (e *htmlHtml) Styles(s map[string]string) HTMLHtml {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlHtml) TabIndex(v int) HTMLHtml {
 	e.setAttr("tabindex", v)
 	return e
@@ -19793,8 +20282,8 @@ type HTMLI interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLI
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLI
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLI
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLI
@@ -19822,6 +20311,9 @@ type HTMLI interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLI
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLI
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLI
@@ -19961,8 +20453,8 @@ func (e *htmlI) Aria(k string, v interface{}) HTMLI {
 	return e
 }
 
-func (e *htmlI) Class(v string) HTMLI {
-	e.setAttr("class", v)
+func (e *htmlI) Class(v ...string) HTMLI {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -20013,6 +20505,13 @@ func (e *htmlI) Spellcheck(v bool) HTMLI {
 
 func (e *htmlI) Style(k, v string) HTMLI {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlI) Styles(s map[string]string) HTMLI {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -20211,8 +20710,8 @@ type HTMLIFrame interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLIFrame
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLIFrame
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLIFrame
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLIFrame
@@ -20258,6 +20757,9 @@ type HTMLIFrame interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLIFrame
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLIFrame
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLIFrame
@@ -20428,8 +20930,8 @@ func (e *htmlIFrame) Aria(k string, v interface{}) HTMLIFrame {
 	return e
 }
 
-func (e *htmlIFrame) Class(v string) HTMLIFrame {
-	e.setAttr("class", v)
+func (e *htmlIFrame) Class(v ...string) HTMLIFrame {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -20510,6 +21012,13 @@ func (e *htmlIFrame) SrcDoc(v string) HTMLIFrame {
 
 func (e *htmlIFrame) Style(k, v string) HTMLIFrame {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlIFrame) Styles(s map[string]string) HTMLIFrame {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -20706,11 +21215,14 @@ type HTMLImg interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLImg
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLImg
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLImg
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLImg
+
+	// CrossOrigin sets the mode of the request to an HTTP CORS Request.
+	CrossOrigin(v string) HTMLImg
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v interface{}) HTMLImg
@@ -20750,6 +21262,9 @@ type HTMLImg interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLImg
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLImg
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLImg
@@ -20963,13 +21478,18 @@ func (e *htmlImg) Aria(k string, v interface{}) HTMLImg {
 	return e
 }
 
-func (e *htmlImg) Class(v string) HTMLImg {
-	e.setAttr("class", v)
+func (e *htmlImg) Class(v ...string) HTMLImg {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
 func (e *htmlImg) ContentEditable(v bool) HTMLImg {
 	e.setAttr("contenteditable", v)
+	return e
+}
+
+func (e *htmlImg) CrossOrigin(v string) HTMLImg {
+	e.setAttr("crossorigin", v)
 	return e
 }
 
@@ -21040,6 +21560,13 @@ func (e *htmlImg) SrcSet(v string) HTMLImg {
 
 func (e *htmlImg) Style(k, v string) HTMLImg {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlImg) Styles(s map[string]string) HTMLImg {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -21368,8 +21895,8 @@ type HTMLInput interface {
 	// Checked specifies that an input element should be pre-selected when the page loads (for checkbox or radio types).
 	Checked(v bool) HTMLInput
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLInput
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLInput
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLInput
@@ -21463,6 +21990,9 @@ type HTMLInput interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLInput
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLInput
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLInput
@@ -21635,8 +22165,8 @@ func (e *htmlInput) Checked(v bool) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) Class(v string) HTMLInput {
-	e.setAttr("class", v)
+func (e *htmlInput) Class(v ...string) HTMLInput {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -21797,6 +22327,13 @@ func (e *htmlInput) Step(v float64) HTMLInput {
 
 func (e *htmlInput) Style(k, v string) HTMLInput {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlInput) Styles(s map[string]string) HTMLInput {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -22006,8 +22543,8 @@ type HTMLIns interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLIns
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLIns
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLIns
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLIns
@@ -22035,6 +22572,9 @@ type HTMLIns interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLIns
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLIns
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLIns
@@ -22174,8 +22714,8 @@ func (e *htmlIns) Aria(k string, v interface{}) HTMLIns {
 	return e
 }
 
-func (e *htmlIns) Class(v string) HTMLIns {
-	e.setAttr("class", v)
+func (e *htmlIns) Class(v ...string) HTMLIns {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -22226,6 +22766,13 @@ func (e *htmlIns) Spellcheck(v bool) HTMLIns {
 
 func (e *htmlIns) Style(k, v string) HTMLIns {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlIns) Styles(s map[string]string) HTMLIns {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -22415,8 +22962,8 @@ type HTMLKbd interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLKbd
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLKbd
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLKbd
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLKbd
@@ -22444,6 +22991,9 @@ type HTMLKbd interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLKbd
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLKbd
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLKbd
@@ -22583,8 +23133,8 @@ func (e *htmlKbd) Aria(k string, v interface{}) HTMLKbd {
 	return e
 }
 
-func (e *htmlKbd) Class(v string) HTMLKbd {
-	e.setAttr("class", v)
+func (e *htmlKbd) Class(v ...string) HTMLKbd {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -22635,6 +23185,13 @@ func (e *htmlKbd) Spellcheck(v bool) HTMLKbd {
 
 func (e *htmlKbd) Style(k, v string) HTMLKbd {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlKbd) Styles(s map[string]string) HTMLKbd {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -22824,8 +23381,8 @@ type HTMLLabel interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLLabel
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLLabel
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLLabel
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLLabel
@@ -22859,6 +23416,9 @@ type HTMLLabel interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLLabel
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLLabel
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLLabel
@@ -22998,8 +23558,8 @@ func (e *htmlLabel) Aria(k string, v interface{}) HTMLLabel {
 	return e
 }
 
-func (e *htmlLabel) Class(v string) HTMLLabel {
-	e.setAttr("class", v)
+func (e *htmlLabel) Class(v ...string) HTMLLabel {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -23060,6 +23620,13 @@ func (e *htmlLabel) Spellcheck(v bool) HTMLLabel {
 
 func (e *htmlLabel) Style(k, v string) HTMLLabel {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlLabel) Styles(s map[string]string) HTMLLabel {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -23249,8 +23816,8 @@ type HTMLLegend interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLLegend
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLLegend
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLLegend
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLLegend
@@ -23278,6 +23845,9 @@ type HTMLLegend interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLLegend
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLLegend
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLLegend
@@ -23417,8 +23987,8 @@ func (e *htmlLegend) Aria(k string, v interface{}) HTMLLegend {
 	return e
 }
 
-func (e *htmlLegend) Class(v string) HTMLLegend {
-	e.setAttr("class", v)
+func (e *htmlLegend) Class(v ...string) HTMLLegend {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -23469,6 +24039,13 @@ func (e *htmlLegend) Spellcheck(v bool) HTMLLegend {
 
 func (e *htmlLegend) Style(k, v string) HTMLLegend {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlLegend) Styles(s map[string]string) HTMLLegend {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -23658,8 +24235,8 @@ type HTMLLi interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLLi
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLLi
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLLi
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLLi
@@ -23687,6 +24264,9 @@ type HTMLLi interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLLi
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLLi
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLLi
@@ -23829,8 +24409,8 @@ func (e *htmlLi) Aria(k string, v interface{}) HTMLLi {
 	return e
 }
 
-func (e *htmlLi) Class(v string) HTMLLi {
-	e.setAttr("class", v)
+func (e *htmlLi) Class(v ...string) HTMLLi {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -23881,6 +24461,13 @@ func (e *htmlLi) Spellcheck(v bool) HTMLLi {
 
 func (e *htmlLi) Style(k, v string) HTMLLi {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlLi) Styles(s map[string]string) HTMLLi {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -24069,11 +24656,14 @@ type HTMLLink interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLLink
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLLink
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLLink
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLLink
+
+	// CrossOrigin sets the mode of the request to an HTTP CORS Request.
+	CrossOrigin(v string) HTMLLink
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v interface{}) HTMLLink
@@ -24113,6 +24703,9 @@ type HTMLLink interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLLink
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLLink
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLLink
@@ -24249,13 +24842,18 @@ func (e *htmlLink) Aria(k string, v interface{}) HTMLLink {
 	return e
 }
 
-func (e *htmlLink) Class(v string) HTMLLink {
-	e.setAttr("class", v)
+func (e *htmlLink) Class(v ...string) HTMLLink {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
 func (e *htmlLink) ContentEditable(v bool) HTMLLink {
 	e.setAttr("contenteditable", v)
+	return e
+}
+
+func (e *htmlLink) CrossOrigin(v string) HTMLLink {
+	e.setAttr("crossorigin", v)
 	return e
 }
 
@@ -24326,6 +24924,13 @@ func (e *htmlLink) Spellcheck(v bool) HTMLLink {
 
 func (e *htmlLink) Style(k, v string) HTMLLink {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlLink) Styles(s map[string]string) HTMLLink {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -24525,8 +25130,8 @@ type HTMLMain interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLMain
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLMain
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLMain
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLMain
@@ -24554,6 +25159,9 @@ type HTMLMain interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLMain
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLMain
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLMain
@@ -24693,8 +25301,8 @@ func (e *htmlMain) Aria(k string, v interface{}) HTMLMain {
 	return e
 }
 
-func (e *htmlMain) Class(v string) HTMLMain {
-	e.setAttr("class", v)
+func (e *htmlMain) Class(v ...string) HTMLMain {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -24745,6 +25353,13 @@ func (e *htmlMain) Spellcheck(v bool) HTMLMain {
 
 func (e *htmlMain) Style(k, v string) HTMLMain {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlMain) Styles(s map[string]string) HTMLMain {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -24934,8 +25549,8 @@ type HTMLMap interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLMap
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLMap
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLMap
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLMap
@@ -24966,6 +25581,9 @@ type HTMLMap interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLMap
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLMap
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLMap
@@ -25105,8 +25723,8 @@ func (e *htmlMap) Aria(k string, v interface{}) HTMLMap {
 	return e
 }
 
-func (e *htmlMap) Class(v string) HTMLMap {
-	e.setAttr("class", v)
+func (e *htmlMap) Class(v ...string) HTMLMap {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -25162,6 +25780,13 @@ func (e *htmlMap) Spellcheck(v bool) HTMLMap {
 
 func (e *htmlMap) Style(k, v string) HTMLMap {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlMap) Styles(s map[string]string) HTMLMap {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -25351,8 +25976,8 @@ type HTMLMark interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLMark
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLMark
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLMark
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLMark
@@ -25380,6 +26005,9 @@ type HTMLMark interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLMark
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLMark
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLMark
@@ -25519,8 +26147,8 @@ func (e *htmlMark) Aria(k string, v interface{}) HTMLMark {
 	return e
 }
 
-func (e *htmlMark) Class(v string) HTMLMark {
-	e.setAttr("class", v)
+func (e *htmlMark) Class(v ...string) HTMLMark {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -25571,6 +26199,13 @@ func (e *htmlMark) Spellcheck(v bool) HTMLMark {
 
 func (e *htmlMark) Style(k, v string) HTMLMark {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlMark) Styles(s map[string]string) HTMLMark {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -25757,8 +26392,8 @@ type HTMLMeta interface {
 	// Charset specifies the character encoding.
 	Charset(v string) HTMLMeta
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLMeta
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLMeta
 
 	// Content gives the value associated with the http-equiv or name attribute.
 	Content(v string) HTMLMeta
@@ -25799,6 +26434,9 @@ type HTMLMeta interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLMeta
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLMeta
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLMeta
 
@@ -25837,8 +26475,8 @@ func (e *htmlMeta) Charset(v string) HTMLMeta {
 	return e
 }
 
-func (e *htmlMeta) Class(v string) HTMLMeta {
-	e.setAttr("class", v)
+func (e *htmlMeta) Class(v ...string) HTMLMeta {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -25912,6 +26550,13 @@ func (e *htmlMeta) Style(k, v string) HTMLMeta {
 	return e
 }
 
+func (e *htmlMeta) Styles(s map[string]string) HTMLMeta {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlMeta) TabIndex(v int) HTMLMeta {
 	e.setAttr("tabindex", v)
 	return e
@@ -25938,8 +26583,8 @@ type HTMLMeter interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLMeter
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLMeter
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLMeter
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLMeter
@@ -25985,6 +26630,9 @@ type HTMLMeter interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLMeter
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLMeter
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLMeter
@@ -26127,8 +26775,8 @@ func (e *htmlMeter) Aria(k string, v interface{}) HTMLMeter {
 	return e
 }
 
-func (e *htmlMeter) Class(v string) HTMLMeter {
-	e.setAttr("class", v)
+func (e *htmlMeter) Class(v ...string) HTMLMeter {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -26209,6 +26857,13 @@ func (e *htmlMeter) Spellcheck(v bool) HTMLMeter {
 
 func (e *htmlMeter) Style(k, v string) HTMLMeter {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlMeter) Styles(s map[string]string) HTMLMeter {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -26403,8 +27058,8 @@ type HTMLNav interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLNav
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLNav
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLNav
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLNav
@@ -26432,6 +27087,9 @@ type HTMLNav interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLNav
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLNav
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLNav
@@ -26571,8 +27229,8 @@ func (e *htmlNav) Aria(k string, v interface{}) HTMLNav {
 	return e
 }
 
-func (e *htmlNav) Class(v string) HTMLNav {
-	e.setAttr("class", v)
+func (e *htmlNav) Class(v ...string) HTMLNav {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -26623,6 +27281,13 @@ func (e *htmlNav) Spellcheck(v bool) HTMLNav {
 
 func (e *htmlNav) Style(k, v string) HTMLNav {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlNav) Styles(s map[string]string) HTMLNav {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -26812,8 +27477,8 @@ type HTMLNoScript interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLNoScript
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLNoScript
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLNoScript
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLNoScript
@@ -26841,6 +27506,9 @@ type HTMLNoScript interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLNoScript
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLNoScript
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLNoScript
@@ -26884,8 +27552,8 @@ func (e *htmlNoScript) Aria(k string, v interface{}) HTMLNoScript {
 	return e
 }
 
-func (e *htmlNoScript) Class(v string) HTMLNoScript {
-	e.setAttr("class", v)
+func (e *htmlNoScript) Class(v ...string) HTMLNoScript {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -26939,6 +27607,13 @@ func (e *htmlNoScript) Style(k, v string) HTMLNoScript {
 	return e
 }
 
+func (e *htmlNoScript) Styles(s map[string]string) HTMLNoScript {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlNoScript) TabIndex(v int) HTMLNoScript {
 	e.setAttr("tabindex", v)
 	return e
@@ -26965,8 +27640,8 @@ type HTMLObject interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLObject
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLObject
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLObject
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLObject
@@ -27006,6 +27681,9 @@ type HTMLObject interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLObject
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLObject
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLObject
@@ -27223,8 +27901,8 @@ func (e *htmlObject) Aria(k string, v interface{}) HTMLObject {
 	return e
 }
 
-func (e *htmlObject) Class(v string) HTMLObject {
-	e.setAttr("class", v)
+func (e *htmlObject) Class(v ...string) HTMLObject {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -27295,6 +27973,13 @@ func (e *htmlObject) Spellcheck(v bool) HTMLObject {
 
 func (e *htmlObject) Style(k, v string) HTMLObject {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlObject) Styles(s map[string]string) HTMLObject {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -27614,8 +28299,8 @@ type HTMLOl interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLOl
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLOl
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLOl
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLOl
@@ -27649,6 +28334,9 @@ type HTMLOl interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLOl
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLOl
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLOl
@@ -27791,8 +28479,8 @@ func (e *htmlOl) Aria(k string, v interface{}) HTMLOl {
 	return e
 }
 
-func (e *htmlOl) Class(v string) HTMLOl {
-	e.setAttr("class", v)
+func (e *htmlOl) Class(v ...string) HTMLOl {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -27853,6 +28541,13 @@ func (e *htmlOl) Start(v int) HTMLOl {
 
 func (e *htmlOl) Style(k, v string) HTMLOl {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlOl) Styles(s map[string]string) HTMLOl {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -28047,8 +28742,8 @@ type HTMLOptGroup interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLOptGroup
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLOptGroup
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLOptGroup
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLOptGroup
@@ -28082,6 +28777,9 @@ type HTMLOptGroup interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLOptGroup
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLOptGroup
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLOptGroup
@@ -28221,8 +28919,8 @@ func (e *htmlOptGroup) Aria(k string, v interface{}) HTMLOptGroup {
 	return e
 }
 
-func (e *htmlOptGroup) Class(v string) HTMLOptGroup {
-	e.setAttr("class", v)
+func (e *htmlOptGroup) Class(v ...string) HTMLOptGroup {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -28283,6 +28981,13 @@ func (e *htmlOptGroup) Spellcheck(v bool) HTMLOptGroup {
 
 func (e *htmlOptGroup) Style(k, v string) HTMLOptGroup {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlOptGroup) Styles(s map[string]string) HTMLOptGroup {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -28472,8 +29177,8 @@ type HTMLOption interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLOption
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLOption
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLOption
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLOption
@@ -28510,6 +29215,9 @@ type HTMLOption interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLOption
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLOption
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLOption
@@ -28652,8 +29360,8 @@ func (e *htmlOption) Aria(k string, v interface{}) HTMLOption {
 	return e
 }
 
-func (e *htmlOption) Class(v string) HTMLOption {
-	e.setAttr("class", v)
+func (e *htmlOption) Class(v ...string) HTMLOption {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -28719,6 +29427,13 @@ func (e *htmlOption) Spellcheck(v bool) HTMLOption {
 
 func (e *htmlOption) Style(k, v string) HTMLOption {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlOption) Styles(s map[string]string) HTMLOption {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -28913,8 +29628,8 @@ type HTMLOutput interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLOutput
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLOutput
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLOutput
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLOutput
@@ -28951,6 +29666,9 @@ type HTMLOutput interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLOutput
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLOutput
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLOutput
@@ -29090,8 +29808,8 @@ func (e *htmlOutput) Aria(k string, v interface{}) HTMLOutput {
 	return e
 }
 
-func (e *htmlOutput) Class(v string) HTMLOutput {
-	e.setAttr("class", v)
+func (e *htmlOutput) Class(v ...string) HTMLOutput {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -29157,6 +29875,13 @@ func (e *htmlOutput) Spellcheck(v bool) HTMLOutput {
 
 func (e *htmlOutput) Style(k, v string) HTMLOutput {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlOutput) Styles(s map[string]string) HTMLOutput {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -29346,8 +30071,8 @@ type HTMLP interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLP
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLP
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLP
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLP
@@ -29375,6 +30100,9 @@ type HTMLP interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLP
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLP
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLP
@@ -29514,8 +30242,8 @@ func (e *htmlP) Aria(k string, v interface{}) HTMLP {
 	return e
 }
 
-func (e *htmlP) Class(v string) HTMLP {
-	e.setAttr("class", v)
+func (e *htmlP) Class(v ...string) HTMLP {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -29566,6 +30294,13 @@ func (e *htmlP) Spellcheck(v bool) HTMLP {
 
 func (e *htmlP) Style(k, v string) HTMLP {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlP) Styles(s map[string]string) HTMLP {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -29749,8 +30484,8 @@ type HTMLParam interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLParam
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLParam
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLParam
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLParam
@@ -29781,6 +30516,9 @@ type HTMLParam interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLParam
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLParam
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLParam
@@ -29914,8 +30652,8 @@ func (e *htmlParam) Aria(k string, v interface{}) HTMLParam {
 	return e
 }
 
-func (e *htmlParam) Class(v string) HTMLParam {
-	e.setAttr("class", v)
+func (e *htmlParam) Class(v ...string) HTMLParam {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -29971,6 +30709,13 @@ func (e *htmlParam) Spellcheck(v bool) HTMLParam {
 
 func (e *htmlParam) Style(k, v string) HTMLParam {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlParam) Styles(s map[string]string) HTMLParam {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -30165,8 +30910,8 @@ type HTMLPicture interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLPicture
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLPicture
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLPicture
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLPicture
@@ -30194,6 +30939,9 @@ type HTMLPicture interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLPicture
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLPicture
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLPicture
@@ -30333,8 +31081,8 @@ func (e *htmlPicture) Aria(k string, v interface{}) HTMLPicture {
 	return e
 }
 
-func (e *htmlPicture) Class(v string) HTMLPicture {
-	e.setAttr("class", v)
+func (e *htmlPicture) Class(v ...string) HTMLPicture {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -30385,6 +31133,13 @@ func (e *htmlPicture) Spellcheck(v bool) HTMLPicture {
 
 func (e *htmlPicture) Style(k, v string) HTMLPicture {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlPicture) Styles(s map[string]string) HTMLPicture {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -30574,8 +31329,8 @@ type HTMLPre interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLPre
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLPre
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLPre
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLPre
@@ -30603,6 +31358,9 @@ type HTMLPre interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLPre
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLPre
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLPre
@@ -30742,8 +31500,8 @@ func (e *htmlPre) Aria(k string, v interface{}) HTMLPre {
 	return e
 }
 
-func (e *htmlPre) Class(v string) HTMLPre {
-	e.setAttr("class", v)
+func (e *htmlPre) Class(v ...string) HTMLPre {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -30794,6 +31552,13 @@ func (e *htmlPre) Spellcheck(v bool) HTMLPre {
 
 func (e *htmlPre) Style(k, v string) HTMLPre {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlPre) Styles(s map[string]string) HTMLPre {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -30983,8 +31748,8 @@ type HTMLProgress interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLProgress
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLProgress
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLProgress
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLProgress
@@ -31015,6 +31780,9 @@ type HTMLProgress interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLProgress
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLProgress
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLProgress
@@ -31157,8 +31925,8 @@ func (e *htmlProgress) Aria(k string, v interface{}) HTMLProgress {
 	return e
 }
 
-func (e *htmlProgress) Class(v string) HTMLProgress {
-	e.setAttr("class", v)
+func (e *htmlProgress) Class(v ...string) HTMLProgress {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -31214,6 +31982,13 @@ func (e *htmlProgress) Spellcheck(v bool) HTMLProgress {
 
 func (e *htmlProgress) Style(k, v string) HTMLProgress {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlProgress) Styles(s map[string]string) HTMLProgress {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -31411,8 +32186,8 @@ type HTMLQ interface {
 	// Cite specifies a URL which explains the quote/deleted/inserted text.
 	Cite(v string) HTMLQ
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLQ
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLQ
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLQ
@@ -31440,6 +32215,9 @@ type HTMLQ interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLQ
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLQ
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLQ
@@ -31584,8 +32362,8 @@ func (e *htmlQ) Cite(v string) HTMLQ {
 	return e
 }
 
-func (e *htmlQ) Class(v string) HTMLQ {
-	e.setAttr("class", v)
+func (e *htmlQ) Class(v ...string) HTMLQ {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -31636,6 +32414,13 @@ func (e *htmlQ) Spellcheck(v bool) HTMLQ {
 
 func (e *htmlQ) Style(k, v string) HTMLQ {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlQ) Styles(s map[string]string) HTMLQ {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -31825,8 +32610,8 @@ type HTMLRp interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLRp
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLRp
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLRp
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLRp
@@ -31854,6 +32639,9 @@ type HTMLRp interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLRp
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLRp
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLRp
@@ -31993,8 +32781,8 @@ func (e *htmlRp) Aria(k string, v interface{}) HTMLRp {
 	return e
 }
 
-func (e *htmlRp) Class(v string) HTMLRp {
-	e.setAttr("class", v)
+func (e *htmlRp) Class(v ...string) HTMLRp {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -32045,6 +32833,13 @@ func (e *htmlRp) Spellcheck(v bool) HTMLRp {
 
 func (e *htmlRp) Style(k, v string) HTMLRp {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlRp) Styles(s map[string]string) HTMLRp {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -32234,8 +33029,8 @@ type HTMLRt interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLRt
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLRt
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLRt
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLRt
@@ -32263,6 +33058,9 @@ type HTMLRt interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLRt
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLRt
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLRt
@@ -32402,8 +33200,8 @@ func (e *htmlRt) Aria(k string, v interface{}) HTMLRt {
 	return e
 }
 
-func (e *htmlRt) Class(v string) HTMLRt {
-	e.setAttr("class", v)
+func (e *htmlRt) Class(v ...string) HTMLRt {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -32454,6 +33252,13 @@ func (e *htmlRt) Spellcheck(v bool) HTMLRt {
 
 func (e *htmlRt) Style(k, v string) HTMLRt {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlRt) Styles(s map[string]string) HTMLRt {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -32643,8 +33448,8 @@ type HTMLRuby interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLRuby
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLRuby
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLRuby
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLRuby
@@ -32672,6 +33477,9 @@ type HTMLRuby interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLRuby
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLRuby
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLRuby
@@ -32811,8 +33619,8 @@ func (e *htmlRuby) Aria(k string, v interface{}) HTMLRuby {
 	return e
 }
 
-func (e *htmlRuby) Class(v string) HTMLRuby {
-	e.setAttr("class", v)
+func (e *htmlRuby) Class(v ...string) HTMLRuby {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -32863,6 +33671,13 @@ func (e *htmlRuby) Spellcheck(v bool) HTMLRuby {
 
 func (e *htmlRuby) Style(k, v string) HTMLRuby {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlRuby) Styles(s map[string]string) HTMLRuby {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -33052,8 +33867,8 @@ type HTMLS interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLS
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLS
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLS
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLS
@@ -33081,6 +33896,9 @@ type HTMLS interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLS
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLS
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLS
@@ -33220,8 +34038,8 @@ func (e *htmlS) Aria(k string, v interface{}) HTMLS {
 	return e
 }
 
-func (e *htmlS) Class(v string) HTMLS {
-	e.setAttr("class", v)
+func (e *htmlS) Class(v ...string) HTMLS {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -33272,6 +34090,13 @@ func (e *htmlS) Spellcheck(v bool) HTMLS {
 
 func (e *htmlS) Style(k, v string) HTMLS {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlS) Styles(s map[string]string) HTMLS {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -33461,8 +34286,8 @@ type HTMLSamp interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSamp
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSamp
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLSamp
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSamp
@@ -33490,6 +34315,9 @@ type HTMLSamp interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSamp
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSamp
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSamp
@@ -33629,8 +34457,8 @@ func (e *htmlSamp) Aria(k string, v interface{}) HTMLSamp {
 	return e
 }
 
-func (e *htmlSamp) Class(v string) HTMLSamp {
-	e.setAttr("class", v)
+func (e *htmlSamp) Class(v ...string) HTMLSamp {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -33681,6 +34509,13 @@ func (e *htmlSamp) Spellcheck(v bool) HTMLSamp {
 
 func (e *htmlSamp) Style(k, v string) HTMLSamp {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSamp) Styles(s map[string]string) HTMLSamp {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -33876,11 +34711,14 @@ type HTMLScript interface {
 	// Charset specifies the character encoding.
 	Charset(v string) HTMLScript
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLScript
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLScript
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLScript
+
+	// CrossOrigin sets the mode of the request to an HTTP CORS Request.
+	CrossOrigin(v string) HTMLScript
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v interface{}) HTMLScript
@@ -33911,6 +34749,9 @@ type HTMLScript interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLScript
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLScript
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLScript
@@ -33970,13 +34811,18 @@ func (e *htmlScript) Charset(v string) HTMLScript {
 	return e
 }
 
-func (e *htmlScript) Class(v string) HTMLScript {
-	e.setAttr("class", v)
+func (e *htmlScript) Class(v ...string) HTMLScript {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
 func (e *htmlScript) ContentEditable(v bool) HTMLScript {
 	e.setAttr("contenteditable", v)
+	return e
+}
+
+func (e *htmlScript) CrossOrigin(v string) HTMLScript {
+	e.setAttr("crossorigin", v)
 	return e
 }
 
@@ -34035,6 +34881,13 @@ func (e *htmlScript) Style(k, v string) HTMLScript {
 	return e
 }
 
+func (e *htmlScript) Styles(s map[string]string) HTMLScript {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlScript) TabIndex(v int) HTMLScript {
 	e.setAttr("tabindex", v)
 	return e
@@ -34071,8 +34924,8 @@ type HTMLSection interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSection
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSection
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLSection
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSection
@@ -34100,6 +34953,9 @@ type HTMLSection interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSection
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSection
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSection
@@ -34239,8 +35095,8 @@ func (e *htmlSection) Aria(k string, v interface{}) HTMLSection {
 	return e
 }
 
-func (e *htmlSection) Class(v string) HTMLSection {
-	e.setAttr("class", v)
+func (e *htmlSection) Class(v ...string) HTMLSection {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -34291,6 +35147,13 @@ func (e *htmlSection) Spellcheck(v bool) HTMLSection {
 
 func (e *htmlSection) Style(k, v string) HTMLSection {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSection) Styles(s map[string]string) HTMLSection {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -34483,8 +35346,8 @@ type HTMLSelect interface {
 	// AutoFocus specifies that the element should automatically get focus when the page loads.
 	AutoFocus(v bool) HTMLSelect
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSelect
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLSelect
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSelect
@@ -34530,6 +35393,9 @@ type HTMLSelect interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSelect
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSelect
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSelect
@@ -34674,8 +35540,8 @@ func (e *htmlSelect) AutoFocus(v bool) HTMLSelect {
 	return e
 }
 
-func (e *htmlSelect) Class(v string) HTMLSelect {
-	e.setAttr("class", v)
+func (e *htmlSelect) Class(v ...string) HTMLSelect {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -34756,6 +35622,13 @@ func (e *htmlSelect) Spellcheck(v bool) HTMLSelect {
 
 func (e *htmlSelect) Style(k, v string) HTMLSelect {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSelect) Styles(s map[string]string) HTMLSelect {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -34945,8 +35818,8 @@ type HTMLSmall interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSmall
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSmall
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLSmall
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSmall
@@ -34974,6 +35847,9 @@ type HTMLSmall interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSmall
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSmall
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSmall
@@ -35113,8 +35989,8 @@ func (e *htmlSmall) Aria(k string, v interface{}) HTMLSmall {
 	return e
 }
 
-func (e *htmlSmall) Class(v string) HTMLSmall {
-	e.setAttr("class", v)
+func (e *htmlSmall) Class(v ...string) HTMLSmall {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -35165,6 +36041,13 @@ func (e *htmlSmall) Spellcheck(v bool) HTMLSmall {
 
 func (e *htmlSmall) Style(k, v string) HTMLSmall {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSmall) Styles(s map[string]string) HTMLSmall {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -35348,8 +36231,8 @@ type HTMLSource interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSource
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSource
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLSource
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSource
@@ -35389,6 +36272,9 @@ type HTMLSource interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSource
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSource
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSource
@@ -35522,8 +36408,8 @@ func (e *htmlSource) Aria(k string, v interface{}) HTMLSource {
 	return e
 }
 
-func (e *htmlSource) Class(v string) HTMLSource {
-	e.setAttr("class", v)
+func (e *htmlSource) Class(v ...string) HTMLSource {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -35594,6 +36480,13 @@ func (e *htmlSource) SrcSet(v string) HTMLSource {
 
 func (e *htmlSource) Style(k, v string) HTMLSource {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSource) Styles(s map[string]string) HTMLSource {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -35788,8 +36681,8 @@ type HTMLSpan interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSpan
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSpan
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLSpan
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSpan
@@ -35817,6 +36710,9 @@ type HTMLSpan interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSpan
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSpan
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSpan
@@ -35956,8 +36852,8 @@ func (e *htmlSpan) Aria(k string, v interface{}) HTMLSpan {
 	return e
 }
 
-func (e *htmlSpan) Class(v string) HTMLSpan {
-	e.setAttr("class", v)
+func (e *htmlSpan) Class(v ...string) HTMLSpan {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -36008,6 +36904,13 @@ func (e *htmlSpan) Spellcheck(v bool) HTMLSpan {
 
 func (e *htmlSpan) Style(k, v string) HTMLSpan {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSpan) Styles(s map[string]string) HTMLSpan {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -36197,8 +37100,8 @@ type HTMLStrong interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLStrong
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLStrong
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLStrong
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLStrong
@@ -36226,6 +37129,9 @@ type HTMLStrong interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLStrong
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLStrong
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLStrong
@@ -36365,8 +37271,8 @@ func (e *htmlStrong) Aria(k string, v interface{}) HTMLStrong {
 	return e
 }
 
-func (e *htmlStrong) Class(v string) HTMLStrong {
-	e.setAttr("class", v)
+func (e *htmlStrong) Class(v ...string) HTMLStrong {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -36417,6 +37323,13 @@ func (e *htmlStrong) Spellcheck(v bool) HTMLStrong {
 
 func (e *htmlStrong) Style(k, v string) HTMLStrong {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlStrong) Styles(s map[string]string) HTMLStrong {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -36606,8 +37519,8 @@ type HTMLStyle interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLStyle
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLStyle
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLStyle
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLStyle
@@ -36638,6 +37551,9 @@ type HTMLStyle interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLStyle
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLStyle
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLStyle
@@ -36783,8 +37699,8 @@ func (e *htmlStyle) Aria(k string, v interface{}) HTMLStyle {
 	return e
 }
 
-func (e *htmlStyle) Class(v string) HTMLStyle {
-	e.setAttr("class", v)
+func (e *htmlStyle) Class(v ...string) HTMLStyle {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -36840,6 +37756,13 @@ func (e *htmlStyle) Spellcheck(v bool) HTMLStyle {
 
 func (e *htmlStyle) Style(k, v string) HTMLStyle {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlStyle) Styles(s map[string]string) HTMLStyle {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -37039,8 +37962,8 @@ type HTMLSub interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSub
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSub
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLSub
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSub
@@ -37068,6 +37991,9 @@ type HTMLSub interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSub
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSub
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSub
@@ -37207,8 +38133,8 @@ func (e *htmlSub) Aria(k string, v interface{}) HTMLSub {
 	return e
 }
 
-func (e *htmlSub) Class(v string) HTMLSub {
-	e.setAttr("class", v)
+func (e *htmlSub) Class(v ...string) HTMLSub {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -37259,6 +38185,13 @@ func (e *htmlSub) Spellcheck(v bool) HTMLSub {
 
 func (e *htmlSub) Style(k, v string) HTMLSub {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSub) Styles(s map[string]string) HTMLSub {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -37448,8 +38381,8 @@ type HTMLSummary interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSummary
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSummary
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLSummary
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSummary
@@ -37477,6 +38410,9 @@ type HTMLSummary interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSummary
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSummary
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSummary
@@ -37616,8 +38552,8 @@ func (e *htmlSummary) Aria(k string, v interface{}) HTMLSummary {
 	return e
 }
 
-func (e *htmlSummary) Class(v string) HTMLSummary {
-	e.setAttr("class", v)
+func (e *htmlSummary) Class(v ...string) HTMLSummary {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -37668,6 +38604,13 @@ func (e *htmlSummary) Spellcheck(v bool) HTMLSummary {
 
 func (e *htmlSummary) Style(k, v string) HTMLSummary {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSummary) Styles(s map[string]string) HTMLSummary {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -37857,8 +38800,8 @@ type HTMLSup interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSup
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSup
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLSup
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSup
@@ -37886,6 +38829,9 @@ type HTMLSup interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSup
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSup
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSup
@@ -38025,8 +38971,8 @@ func (e *htmlSup) Aria(k string, v interface{}) HTMLSup {
 	return e
 }
 
-func (e *htmlSup) Class(v string) HTMLSup {
-	e.setAttr("class", v)
+func (e *htmlSup) Class(v ...string) HTMLSup {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -38077,6 +39023,13 @@ func (e *htmlSup) Spellcheck(v bool) HTMLSup {
 
 func (e *htmlSup) Style(k, v string) HTMLSup {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSup) Styles(s map[string]string) HTMLSup {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -38266,8 +39219,8 @@ type HTMLTable interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTable
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTable
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLTable
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLTable
@@ -38295,6 +39248,9 @@ type HTMLTable interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTable
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTable
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTable
@@ -38434,8 +39390,8 @@ func (e *htmlTable) Aria(k string, v interface{}) HTMLTable {
 	return e
 }
 
-func (e *htmlTable) Class(v string) HTMLTable {
-	e.setAttr("class", v)
+func (e *htmlTable) Class(v ...string) HTMLTable {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -38486,6 +39442,13 @@ func (e *htmlTable) Spellcheck(v bool) HTMLTable {
 
 func (e *htmlTable) Style(k, v string) HTMLTable {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTable) Styles(s map[string]string) HTMLTable {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -38675,8 +39638,8 @@ type HTMLTBody interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTBody
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTBody
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLTBody
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLTBody
@@ -38704,6 +39667,9 @@ type HTMLTBody interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTBody
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTBody
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTBody
@@ -38843,8 +39809,8 @@ func (e *htmlTBody) Aria(k string, v interface{}) HTMLTBody {
 	return e
 }
 
-func (e *htmlTBody) Class(v string) HTMLTBody {
-	e.setAttr("class", v)
+func (e *htmlTBody) Class(v ...string) HTMLTBody {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -38895,6 +39861,13 @@ func (e *htmlTBody) Spellcheck(v bool) HTMLTBody {
 
 func (e *htmlTBody) Style(k, v string) HTMLTBody {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTBody) Styles(s map[string]string) HTMLTBody {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -39084,8 +40057,8 @@ type HTMLTd interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTd
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTd
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLTd
 
 	// ColSpan specifies the number of columns a table cell should span.
 	ColSpan(v int) HTMLTd
@@ -39122,6 +40095,9 @@ type HTMLTd interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTd
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTd
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTd
@@ -39261,8 +40237,8 @@ func (e *htmlTd) Aria(k string, v interface{}) HTMLTd {
 	return e
 }
 
-func (e *htmlTd) Class(v string) HTMLTd {
-	e.setAttr("class", v)
+func (e *htmlTd) Class(v ...string) HTMLTd {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -39328,6 +40304,13 @@ func (e *htmlTd) Spellcheck(v bool) HTMLTd {
 
 func (e *htmlTd) Style(k, v string) HTMLTd {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTd) Styles(s map[string]string) HTMLTd {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -39517,8 +40500,8 @@ type HTMLTemplate interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTemplate
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTemplate
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLTemplate
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLTemplate
@@ -39546,6 +40529,9 @@ type HTMLTemplate interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTemplate
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTemplate
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTemplate
@@ -39589,8 +40575,8 @@ func (e *htmlTemplate) Aria(k string, v interface{}) HTMLTemplate {
 	return e
 }
 
-func (e *htmlTemplate) Class(v string) HTMLTemplate {
-	e.setAttr("class", v)
+func (e *htmlTemplate) Class(v ...string) HTMLTemplate {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -39644,6 +40630,13 @@ func (e *htmlTemplate) Style(k, v string) HTMLTemplate {
 	return e
 }
 
+func (e *htmlTemplate) Styles(s map[string]string) HTMLTemplate {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlTemplate) TabIndex(v int) HTMLTemplate {
 	e.setAttr("tabindex", v)
 	return e
@@ -39673,8 +40666,8 @@ type HTMLTextarea interface {
 	// AutoFocus specifies that the element should automatically get focus when the page loads.
 	AutoFocus(v bool) HTMLTextarea
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTextarea
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLTextarea
 
 	// Cols specifies the visible width of a text area.
 	Cols(v int) HTMLTextarea
@@ -39732,6 +40725,9 @@ type HTMLTextarea interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTextarea
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTextarea
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTextarea
@@ -39861,7 +40857,8 @@ func (e *htmlTextarea) Body(elems ...UI) HTMLTextarea {
 }
 
 func (e *htmlTextarea) Text(v interface{}) HTMLTextarea {
-	return e.Body(Text(v))
+	e.setAttr("value", v)
+	return e
 }
 
 func (e *htmlTextarea) AccessKey(v string) HTMLTextarea {
@@ -39879,8 +40876,8 @@ func (e *htmlTextarea) AutoFocus(v bool) HTMLTextarea {
 	return e
 }
 
-func (e *htmlTextarea) Class(v string) HTMLTextarea {
-	e.setAttr("class", v)
+func (e *htmlTextarea) Class(v ...string) HTMLTextarea {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -39981,6 +40978,13 @@ func (e *htmlTextarea) Spellcheck(v bool) HTMLTextarea {
 
 func (e *htmlTextarea) Style(k, v string) HTMLTextarea {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTextarea) Styles(s map[string]string) HTMLTextarea {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -40175,8 +41179,8 @@ type HTMLTfoot interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTfoot
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTfoot
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLTfoot
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLTfoot
@@ -40204,6 +41208,9 @@ type HTMLTfoot interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTfoot
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTfoot
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTfoot
@@ -40343,8 +41350,8 @@ func (e *htmlTfoot) Aria(k string, v interface{}) HTMLTfoot {
 	return e
 }
 
-func (e *htmlTfoot) Class(v string) HTMLTfoot {
-	e.setAttr("class", v)
+func (e *htmlTfoot) Class(v ...string) HTMLTfoot {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -40395,6 +41402,13 @@ func (e *htmlTfoot) Spellcheck(v bool) HTMLTfoot {
 
 func (e *htmlTfoot) Style(k, v string) HTMLTfoot {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTfoot) Styles(s map[string]string) HTMLTfoot {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -40587,8 +41601,8 @@ type HTMLTh interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTh
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTh
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLTh
 
 	// ColSpan specifies the number of columns a table cell should span.
 	ColSpan(v int) HTMLTh
@@ -40628,6 +41642,9 @@ type HTMLTh interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTh
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTh
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTh
@@ -40772,8 +41789,8 @@ func (e *htmlTh) Aria(k string, v interface{}) HTMLTh {
 	return e
 }
 
-func (e *htmlTh) Class(v string) HTMLTh {
-	e.setAttr("class", v)
+func (e *htmlTh) Class(v ...string) HTMLTh {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -40844,6 +41861,13 @@ func (e *htmlTh) Spellcheck(v bool) HTMLTh {
 
 func (e *htmlTh) Style(k, v string) HTMLTh {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTh) Styles(s map[string]string) HTMLTh {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -41033,8 +42057,8 @@ type HTMLTHead interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTHead
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTHead
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLTHead
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLTHead
@@ -41062,6 +42086,9 @@ type HTMLTHead interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTHead
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTHead
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTHead
@@ -41201,8 +42228,8 @@ func (e *htmlTHead) Aria(k string, v interface{}) HTMLTHead {
 	return e
 }
 
-func (e *htmlTHead) Class(v string) HTMLTHead {
-	e.setAttr("class", v)
+func (e *htmlTHead) Class(v ...string) HTMLTHead {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -41253,6 +42280,13 @@ func (e *htmlTHead) Spellcheck(v bool) HTMLTHead {
 
 func (e *htmlTHead) Style(k, v string) HTMLTHead {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTHead) Styles(s map[string]string) HTMLTHead {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -41442,8 +42476,8 @@ type HTMLTime interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTime
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTime
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLTime
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLTime
@@ -41474,6 +42508,9 @@ type HTMLTime interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTime
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTime
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTime
@@ -41613,8 +42650,8 @@ func (e *htmlTime) Aria(k string, v interface{}) HTMLTime {
 	return e
 }
 
-func (e *htmlTime) Class(v string) HTMLTime {
-	e.setAttr("class", v)
+func (e *htmlTime) Class(v ...string) HTMLTime {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -41670,6 +42707,13 @@ func (e *htmlTime) Spellcheck(v bool) HTMLTime {
 
 func (e *htmlTime) Style(k, v string) HTMLTime {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTime) Styles(s map[string]string) HTMLTime {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -41859,8 +42903,8 @@ type HTMLTitle interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTitle
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTitle
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLTitle
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLTitle
@@ -41888,6 +42932,9 @@ type HTMLTitle interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTitle
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTitle
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTitle
@@ -41931,8 +42978,8 @@ func (e *htmlTitle) Aria(k string, v interface{}) HTMLTitle {
 	return e
 }
 
-func (e *htmlTitle) Class(v string) HTMLTitle {
-	e.setAttr("class", v)
+func (e *htmlTitle) Class(v ...string) HTMLTitle {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -41986,6 +43033,13 @@ func (e *htmlTitle) Style(k, v string) HTMLTitle {
 	return e
 }
 
+func (e *htmlTitle) Styles(s map[string]string) HTMLTitle {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlTitle) TabIndex(v int) HTMLTitle {
 	e.setAttr("tabindex", v)
 	return e
@@ -42012,8 +43066,8 @@ type HTMLTr interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTr
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTr
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLTr
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLTr
@@ -42041,6 +43095,9 @@ type HTMLTr interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTr
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTr
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTr
@@ -42180,8 +43237,8 @@ func (e *htmlTr) Aria(k string, v interface{}) HTMLTr {
 	return e
 }
 
-func (e *htmlTr) Class(v string) HTMLTr {
-	e.setAttr("class", v)
+func (e *htmlTr) Class(v ...string) HTMLTr {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -42232,6 +43289,13 @@ func (e *htmlTr) Spellcheck(v bool) HTMLTr {
 
 func (e *htmlTr) Style(k, v string) HTMLTr {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTr) Styles(s map[string]string) HTMLTr {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -42421,8 +43485,8 @@ type HTMLU interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLU
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLU
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLU
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLU
@@ -42450,6 +43514,9 @@ type HTMLU interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLU
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLU
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLU
@@ -42589,8 +43656,8 @@ func (e *htmlU) Aria(k string, v interface{}) HTMLU {
 	return e
 }
 
-func (e *htmlU) Class(v string) HTMLU {
-	e.setAttr("class", v)
+func (e *htmlU) Class(v ...string) HTMLU {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -42641,6 +43708,13 @@ func (e *htmlU) Spellcheck(v bool) HTMLU {
 
 func (e *htmlU) Style(k, v string) HTMLU {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlU) Styles(s map[string]string) HTMLU {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -42830,8 +43904,8 @@ type HTMLUl interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLUl
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLUl
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLUl
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLUl
@@ -42859,6 +43933,9 @@ type HTMLUl interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLUl
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLUl
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLUl
@@ -42998,8 +44075,8 @@ func (e *htmlUl) Aria(k string, v interface{}) HTMLUl {
 	return e
 }
 
-func (e *htmlUl) Class(v string) HTMLUl {
-	e.setAttr("class", v)
+func (e *htmlUl) Class(v ...string) HTMLUl {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -43050,6 +44127,13 @@ func (e *htmlUl) Spellcheck(v bool) HTMLUl {
 
 func (e *htmlUl) Style(k, v string) HTMLUl {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlUl) Styles(s map[string]string) HTMLUl {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -43239,8 +44323,8 @@ type HTMLVar interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLVar
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLVar
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLVar
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLVar
@@ -43268,6 +44352,9 @@ type HTMLVar interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLVar
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLVar
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLVar
@@ -43407,8 +44494,8 @@ func (e *htmlVar) Aria(k string, v interface{}) HTMLVar {
 	return e
 }
 
-func (e *htmlVar) Class(v string) HTMLVar {
-	e.setAttr("class", v)
+func (e *htmlVar) Class(v ...string) HTMLVar {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -43459,6 +44546,13 @@ func (e *htmlVar) Spellcheck(v bool) HTMLVar {
 
 func (e *htmlVar) Style(k, v string) HTMLVar {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlVar) Styles(s map[string]string) HTMLVar {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -43651,14 +44745,17 @@ type HTMLVideo interface {
 	// AutoPlay specifies that the audio/video will start playing as soon as it is ready.
 	AutoPlay(v bool) HTMLVideo
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLVideo
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLVideo
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLVideo
 
 	// Controls specifies that audio/video controls should be displayed (such as a play/pause button etc).
 	Controls(v bool) HTMLVideo
+
+	// CrossOrigin sets the mode of the request to an HTTP CORS Request.
+	CrossOrigin(v string) HTMLVideo
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v interface{}) HTMLVideo
@@ -43701,6 +44798,9 @@ type HTMLVideo interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLVideo
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLVideo
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLVideo
@@ -43917,8 +45017,8 @@ func (e *htmlVideo) AutoPlay(v bool) HTMLVideo {
 	return e
 }
 
-func (e *htmlVideo) Class(v string) HTMLVideo {
-	e.setAttr("class", v)
+func (e *htmlVideo) Class(v ...string) HTMLVideo {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -43929,6 +45029,11 @@ func (e *htmlVideo) ContentEditable(v bool) HTMLVideo {
 
 func (e *htmlVideo) Controls(v bool) HTMLVideo {
 	e.setAttr("controls", v)
+	return e
+}
+
+func (e *htmlVideo) CrossOrigin(v string) HTMLVideo {
+	e.setAttr("crossorigin", v)
 	return e
 }
 
@@ -44004,6 +45109,13 @@ func (e *htmlVideo) Src(v string) HTMLVideo {
 
 func (e *htmlVideo) Style(k, v string) HTMLVideo {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlVideo) Styles(s map[string]string) HTMLVideo {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -44313,8 +45425,8 @@ type HTMLWbr interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLWbr
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLWbr
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLWbr
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLWbr
@@ -44342,6 +45454,9 @@ type HTMLWbr interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLWbr
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLWbr
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLWbr
@@ -44481,8 +45596,8 @@ func (e *htmlWbr) Aria(k string, v interface{}) HTMLWbr {
 	return e
 }
 
-func (e *htmlWbr) Class(v string) HTMLWbr {
-	e.setAttr("class", v)
+func (e *htmlWbr) Class(v ...string) HTMLWbr {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -44533,6 +45648,13 @@ func (e *htmlWbr) Spellcheck(v bool) HTMLWbr {
 
 func (e *htmlWbr) Style(k, v string) HTMLWbr {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlWbr) Styles(s map[string]string) HTMLWbr {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 

@@ -5,7 +5,7 @@ import (
 	"io"
 	"net/url"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 // Condition represents a control structure that displays nodes depending on a
@@ -126,6 +126,9 @@ func (c condition) onNav(*url.URL) {
 }
 
 func (c condition) onAppUpdate() {
+}
+
+func (c condition) onAppInstallChange() {
 }
 
 func (c condition) onResize() {

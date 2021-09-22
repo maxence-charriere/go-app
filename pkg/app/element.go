@@ -4,8 +4,9 @@ import (
 	"context"
 	"io"
 	"net/url"
+	"strconv"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 type elemWithChildren interface {
@@ -305,7 +306,6 @@ func (e *elem) setAttr(k string, v interface{}) {
 	case "style", "allow":
 		s := e.attrs[k] + toString(v) + ";"
 		e.attrs[k] = s
-		return
 
 	case "class":
 		s := e.attrs[k]
@@ -314,16 +314,6 @@ func (e *elem) setAttr(k string, v interface{}) {
 		}
 		s += toString(v)
 		e.attrs[k] = s
-		return
-	}
-
-	switch v := v.(type) {
-	case bool:
-		if !v {
-			delete(e.attrs, k)
-			return
-		}
-		e.attrs[k] = ""
 
 	default:
 		e.attrs[k] = toString(v)
@@ -338,10 +328,48 @@ func (e *elem) resolveURLAttr(k, v string) string {
 }
 
 func (e *elem) setJsAttr(k, v string) {
-	if isURLAttrValue(k) {
-		v = e.dispatcher().resolveStaticResource(v)
+	switch k {
+	case "value":
+		e.JSValue().Set("value", v)
+
+	case "class":
+		e.JSValue().Set("className", v)
+
+	case "contenteditable":
+		e.JSValue().Set("contentEditable", v)
+
+	case "async",
+		"autofocus",
+		"autoplay",
+		"checked",
+		"default",
+		"defer",
+		"disabled",
+		"hidden",
+		"ismap",
+		"loop",
+		"multiple",
+		"muted",
+		"open",
+		"readonly",
+		"required",
+		"reversed",
+		"selected":
+		switch k {
+		case "ismap":
+			k = "isMap"
+		case "readonly":
+			k = "readOnly"
+		}
+		v, _ := strconv.ParseBool(v)
+		e.JSValue().Set(k, v)
+
+	default:
+		if isURLAttrValue(k) {
+			v = e.dispatcher().resolveStaticResource(v)
+		}
+		e.JSValue().setAttr(k, v)
 	}
-	e.JSValue().setAttr(k, v)
 }
 
 func (e *elem) delAttr(k string) {
@@ -417,6 +445,12 @@ func (e *elem) onNav(u *url.URL) {
 func (e *elem) onAppUpdate() {
 	for _, c := range e.children() {
 		c.onAppUpdate()
+	}
+}
+
+func (e *elem) onAppInstallChange() {
+	for _, c := range e.children() {
+		c.onAppInstallChange()
 	}
 }
 

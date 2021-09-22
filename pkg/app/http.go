@@ -17,7 +17,7 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 const (
@@ -63,6 +63,13 @@ type Handler struct {
 	// The path of the default image that is used by social networks when
 	// linking the app.
 	Image string
+
+	// The URLs that are launched in the app tab or window.
+	//
+	// By default, URLs with a different domain are launched in another tab.
+	// Specifying internal URLs is to override that behavior. A good use case
+	// would be the URL for an OAuth authentication.
+	InternalURLs []string
 
 	// The page keywords.
 	Keywords []string
@@ -277,8 +284,10 @@ func (h *Handler) initPreRenderedResources() {
 
 func (h *Handler) makeAppJS() []byte {
 	if h.Env == nil {
-		h.Env = make(map[string]string, 3)
+		h.Env = make(map[string]string)
 	}
+	internalURLs, _ := json.Marshal(h.InternalURLs)
+	h.Env["GOAPP_INTERNAL_URLS"] = string(internalURLs)
 	h.Env["GOAPP_VERSION"] = h.Version
 	h.Env["GOAPP_STATIC_RESOURCES_URL"] = h.Resources.Static()
 	h.Env["GOAPP_ROOT_PREFIX"] = h.Resources.Package()
@@ -325,19 +334,20 @@ func (h *Handler) makeAppWorkerJS() []byte {
 		h.resolvePackagePath("/wasm_exec.js"):         {},
 		h.resolvePackagePath("/"):                     {},
 		h.Resources.AppWASM():                         {},
-		h.Icon.Default:                                {},
-		h.Icon.Large:                                  {},
-		h.Icon.AppleTouch:                             {},
 	}
 
-	cacheResources := func(res []string) {
+	cacheResources := func(res ...string) {
 		for _, r := range res {
+			if r == "" {
+				continue
+			}
 			cacheableResources[r] = struct{}{}
 		}
 	}
-	cacheResources(h.Styles)
-	cacheResources(h.Scripts)
-	cacheResources(h.CacheableResources)
+	cacheResources(h.Icon.Default, h.Icon.Large, h.Icon.AppleTouch)
+	cacheResources(h.Styles...)
+	cacheResources(h.Scripts...)
+	cacheResources(h.CacheableResources...)
 
 	var b bytes.Buffer
 	if err := template.
@@ -371,6 +381,7 @@ func (h *Handler) makeManifestJSON() []byte {
 		Execute(&b, struct {
 			ShortName       string
 			Name            string
+			Description     string
 			DefaultIcon     string
 			LargeIcon       string
 			BackgroundColor string
@@ -380,6 +391,7 @@ func (h *Handler) makeManifestJSON() []byte {
 		}{
 			ShortName:       h.ShortName,
 			Name:            h.Name,
+			Description:     h.Description,
 			DefaultIcon:     h.Icon.Default,
 			LargeIcon:       h.Icon.Large,
 			BackgroundColor: h.BackgroundColor,
@@ -497,7 +509,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) servePreRenderedItem(w http.ResponseWriter, r PreRenderedItem) {
-	w.Header().Set("Content-Length", strconv.Itoa(r.Len()))
+	w.Header().Set("Content-Length", strconv.Itoa(r.Size()))
 	w.Header().Set("Content-Type", r.ContentType)
 	if r.ContentEncoding != "" {
 		w.Header().Set("Content-Encoding", r.ContentEncoding)
@@ -575,28 +587,43 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	page.SetImage(h.Image)
 	page.url = &url
 
-	preRenderContainer := Div().
-		ID("app-pre-render").
-		Body(Div())
-
-	disp := newUIDispatcher(IsServer, &page, h.resolveStaticPath)
-	disp.body = preRenderContainer.(elemWithChildren)
-
-	if err := mount(disp, preRenderContainer); err != nil {
+	disp := engine{
+		Page:                   &page,
+		RunsInServer:           true,
+		ResolveStaticResources: h.resolveStaticPath,
+		ActionHandlers:         actionHandlers,
+	}
+	body := Body().Body(
+		Div().Body(
+			Aside().
+				ID("app-wasm-loader").
+				Class("goapp-app-info").
+				Body(
+					Img().
+						ID("app-wasm-loader-icon").
+						Class("goapp-logo goapp-spin").
+						Src(h.Icon.Default),
+					P().
+						ID("app-wasm-loader-label").
+						Class("goapp-label").
+						Text(page.loadingLabel),
+				),
+			Div().ID("app-pre-render").Body(content),
+		),
+	)
+	if err := mount(&disp, body); err != nil {
 		panic(errors.New("mounting pre-rendering container failed").
-			Tag("server-side-mode", disp.isServerSideMode()).
-			Tag("body-type", reflect.TypeOf(disp.body)).
-			Tag("ui-len", len(disp.ui)).
-			Tag("ui-cap", cap(disp.ui)).
+			Tag("server-side", disp.runsInServer()).
+			Tag("body-type", reflect.TypeOf(disp.Body)).
 			Wrap(err))
 	}
-	disp.body = preRenderContainer.(elemWithChildren)
+	disp.Body = body
+	disp.init()
 	defer disp.Close()
 
-	disp.Mount(content)
 	disp.PreRender()
 
-	for len(disp.ui) != 0 {
+	for len(disp.dispatches) != 0 {
 		disp.Consume()
 		disp.Wait()
 	}
@@ -675,26 +702,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				return Raw(h.RawHeaders[i])
 			}),
 		),
-		Body().Body(
-			Div().
-				Body(
-					preRenderContainer,
-					Div().
-						ID("app-wasm-loader").
-						Class("goapp-app-info").
-						Body(
-							Img().
-								ID("app-wasm-loader-icon").
-								Class("goapp-logo goapp-spin").
-								Src(h.Icon.Default),
-							P().
-								ID("app-wasm-loader-label").
-								Class("goapp-label").
-								Text(page.loadingLabel),
-						),
-				),
-			Div().ID("app-end"),
-		),
+		body,
 	))
 
 	item := PreRenderedItem{

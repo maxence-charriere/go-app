@@ -268,7 +268,7 @@ func TestNestedInComponentNavigator(t *testing.T) {
 	require.Equal(t, "https://murlok.io", b.onNavURL)
 }
 
-func TestUpdater(t *testing.T) {
+func TestAppUpdater(t *testing.T) {
 	appUpdateAvailable = true
 	defer func() {
 		appUpdateAvailable = false
@@ -283,7 +283,7 @@ func TestUpdater(t *testing.T) {
 	require.True(t, h.appUpdated)
 }
 
-func TestNestedUpdater(t *testing.T) {
+func TestNestedAppUpdater(t *testing.T) {
 	appUpdateAvailable = true
 	defer func() {
 		appUpdateAvailable = false
@@ -299,7 +299,7 @@ func TestNestedUpdater(t *testing.T) {
 	require.True(t, h.appUpdated)
 }
 
-func TestNestedInComponentUpdater(t *testing.T) {
+func TestNestedInComponentAppUpdater(t *testing.T) {
 	appUpdateAvailable = true
 	defer func() {
 		appUpdateAvailable = false
@@ -313,6 +313,38 @@ func TestNestedInComponentUpdater(t *testing.T) {
 	d.Consume()
 	b := foo.children()[0].(*bar)
 	require.True(t, b.appUpdated)
+}
+
+func TestAppInstaller(t *testing.T) {
+	h := &hello{}
+	d := NewClientTester(h)
+	defer d.Close()
+
+	d.AppInstallChange()
+	d.Consume()
+	require.True(t, h.appInstalled)
+}
+
+func TestNestedAppInstaller(t *testing.T) {
+	h := &hello{}
+	div := Div().Body(h)
+	d := NewClientTester(div)
+	defer d.Close()
+
+	d.AppInstallChange()
+	d.Consume()
+	require.True(t, h.appInstalled)
+}
+
+func TestNestedInComponentAppInstaller(t *testing.T) {
+	foo := &foo{Bar: "Bar"}
+	d := NewClientTester(foo)
+	defer d.Close()
+
+	d.AppInstallChange()
+	d.Consume()
+	b := foo.children()[0].(*bar)
+	require.True(t, b.appInstalled)
 }
 
 func TestResizer(t *testing.T) {
@@ -380,25 +412,47 @@ func TestNestedInComponentPreRenderer(t *testing.T) {
 	require.Equal(t, "bar", d.currentPage().Title())
 }
 
+func TestUpdater(t *testing.T) {
+	b := &bar{Value: "BAR"}
+	d := NewClientTester(b)
+	defer d.Close()
+
+	require.False(t, b.updated)
+
+	d.Mount(&bar{Value: "BAR"})
+	d.Consume()
+	require.False(t, b.updated)
+
+	d.Mount(&bar{Value: "Bar"})
+	d.Consume()
+	require.Equal(t, "Bar", b.Value)
+	require.True(t, b.updated)
+}
+
 type hello struct {
 	Compo
 
-	Greeting    string
-	onNavURL    string
-	appUpdated  bool
-	appResized  bool
-	preRenderer bool
+	Greeting     string
+	onNavURL     string
+	appUpdated   bool
+	appInstalled bool
+	appResized   bool
+	preRenderer  bool
 }
 
 func (h *hello) OnMount(Context) {
 }
 
 func (h *hello) OnNav(ctx Context) {
-	h.onNavURL = ctx.Page.URL().String()
+	h.onNavURL = ctx.Page().URL().String()
 }
 
 func (h *hello) OnAppUpdate(ctx Context) {
 	h.appUpdated = true
+}
+
+func (h *hello) OnAppInstallChange(ctx Context) {
+	h.appInstalled = true
 }
 
 func (h *hello) OnResize(ctx Context) {
@@ -407,7 +461,7 @@ func (h *hello) OnResize(ctx Context) {
 
 func (h *hello) OnPreRender(ctx Context) {
 	h.preRenderer = true
-	ctx.Page.SetTitle("world")
+	ctx.Page().SetTitle("world")
 }
 
 func (h *hello) OnDismount(Context) {
@@ -437,26 +491,37 @@ func (f *foo) Render() UI {
 
 type bar struct {
 	Compo
-	Value      string
-	onNavURL   string
-	appUpdated bool
-	appRezized bool
+	Value string
+
+	onNavURL     string
+	appUpdated   bool
+	appInstalled bool
+	appRezized   bool
+	updated      bool
 }
 
 func (b *bar) OnPreRender(ctx Context) {
-	ctx.Page.SetTitle("bar")
+	ctx.Page().SetTitle("bar")
 }
 
 func (b *bar) OnNav(ctx Context) {
-	b.onNavURL = ctx.Page.URL().String()
+	b.onNavURL = ctx.Page().URL().String()
 }
 
 func (b *bar) OnAppUpdate(ctx Context) {
 	b.appUpdated = true
 }
 
+func (b *bar) OnAppInstallChange(ctx Context) {
+	b.appInstalled = true
+}
+
 func (b *bar) OnResize(ctx Context) {
 	b.appRezized = true
+}
+
+func (b *bar) OnUpdate(ctx Context) {
+	b.updated = true
 }
 
 func (b *bar) Render() UI {

@@ -12,7 +12,6 @@ func TestElemSetAttr(t *testing.T) {
 		key            string
 		value          interface{}
 		explectedValue string
-		valueNotSet    bool
 	}{
 		{
 			scenario:       "string",
@@ -30,13 +29,13 @@ func TestElemSetAttr(t *testing.T) {
 			scenario:       "bool true",
 			key:            "hidden",
 			value:          true,
-			explectedValue: "",
+			explectedValue: "true",
 		},
 		{
-			scenario:    "bool false",
-			key:         "hidden",
-			value:       false,
-			valueNotSet: true,
+			scenario:       "bool false",
+			key:            "hidden",
+			value:          false,
+			explectedValue: "false",
 		},
 		{
 			scenario:       "style",
@@ -69,9 +68,8 @@ func TestElemSetAttr(t *testing.T) {
 	for _, u := range utests {
 		t.Run(u.scenario, func(t *testing.T) {
 			e.setAttr(u.key, u.value)
-			v, exists := e.attrs[u.key]
+			v, _ := e.attrs[u.key]
 			require.Equal(t, u.explectedValue, v)
-			require.Equal(t, u.valueNotSet, !exists)
 		})
 	}
 }

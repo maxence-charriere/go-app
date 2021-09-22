@@ -12,6 +12,7 @@ package app
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/url"
 	"os"
@@ -19,7 +20,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 const (
@@ -32,12 +33,16 @@ const (
 	IsServer = runtime.GOARCH != "wasm" || runtime.GOOS != "js"
 
 	orientationChangeDelay = time.Millisecond * 500
+	engineUpdateRate       = 120
+	resizeInterval         = time.Millisecond * 250
 )
 
 var (
 	rootPrefix         string
+	isInternalURL      func(string) bool
 	appUpdateAvailable bool
 	lastURLVisited     *url.URL
+	resizeTimer        *time.Timer
 )
 
 // Getenv retrieves the value of the environment variable named by the key. It
@@ -103,25 +108,39 @@ func RunWhenOnBrowser() {
 		panic(err)
 	}()
 
-	staticResourcesResolver := newClientStaticResourceResolver(Getenv("GOAPP_STATIC_RESOURCES_URL"))
 	rootPrefix = Getenv("GOAPP_ROOT_PREFIX")
+	isInternalURL = internalURLChecker()
+	staticResourcesResolver := newClientStaticResourceResolver(Getenv("GOAPP_STATIC_RESOURCES_URL"))
 
-	disp := newUIDispatcher(IsServer, browserPage{}, staticResourcesResolver)
+	disp := engine{
+		UpdateRate:             engineUpdateRate,
+		LocalStorage:           newJSStorage("localStorage"),
+		SessionStorage:         newJSStorage("sessionStorage"),
+		ResolveStaticResources: staticResourcesResolver,
+		ActionHandlers:         actionHandlers,
+	}
+	disp.Page = browserPage{dispatcher: &disp}
+	disp.Body = newClientBody(&disp)
+	disp.init()
 	defer disp.Close()
-	disp.body = newClientBody(disp)
-	window.setBody(disp.body)
 
-	onAchorClick := FuncOf(onAchorClick(disp))
+	window.setBody(disp.Body)
+
+	onAchorClick := FuncOf(onAchorClick(&disp))
 	defer onAchorClick.Release()
 	Window().Set("onclick", onAchorClick)
 
-	onPopState := FuncOf(onPopState(disp))
+	onPopState := FuncOf(onPopState(&disp))
 	defer onPopState.Release()
 	Window().Set("onpopstate", onPopState)
 
-	onAppUpdate := FuncOf(onAppUpdate(disp))
+	onAppUpdate := FuncOf(onAppUpdate(&disp))
 	defer onAppUpdate.Release()
 	Window().Set("goappOnUpdate", onAppUpdate)
+
+	onAppInstallChange := FuncOf(onAppInstallChange(&disp))
+	defer onAppInstallChange.Release()
+	Window().Set("goappOnAppInstallChange", onAppInstallChange)
 
 	closeAppResize := Window().AddEventListener("resize", onResize)
 	defer closeAppResize()
@@ -129,7 +148,7 @@ func RunWhenOnBrowser() {
 	closeAppOrientationChange := Window().AddEventListener("orientationchange", onAppOrientationChange)
 	defer closeAppOrientationChange()
 
-	performNavigate(disp, Window().URL(), false)
+	performNavigate(&disp, Window().URL(), false)
 	disp.start(context.Background())
 }
 
@@ -154,6 +173,20 @@ func newClientStaticResourceResolver(staticResourceURL string) func(string) stri
 		b.WriteByte('/')
 		b.WriteString(strings.TrimPrefix(path, "/"))
 		return b.String()
+	}
+}
+
+func internalURLChecker() func(string) bool {
+	var urls []string
+	json.Unmarshal([]byte(Getenv("GOAPP_INTERNAL_URLS")), &urls)
+
+	return func(url string) bool {
+		for _, u := range urls {
+			if strings.HasPrefix(url, u) {
+				return true
+			}
+		}
+		return false
 	}
 }
 
@@ -187,7 +220,7 @@ func newClientBody(d Dispatcher) *htmlBody {
 	return body
 }
 
-func onAchorClick(d *uiDispatcher) func(Value, []Value) interface{} {
+func onAchorClick(d Dispatcher) func(Value, []Value) interface{} {
 	return func(this Value, args []Value) interface{} {
 		event := Event{Value: args[0]}
 		elem := event.Get("target")
@@ -195,20 +228,6 @@ func onAchorClick(d *uiDispatcher) func(Value, []Value) interface{} {
 		for {
 			switch elem.Get("tagName").String() {
 			case "A":
-				if target := elem.Get("target"); target.Truthy() && target.String() == "_blank" {
-					return nil
-				}
-
-				if download := elem.Call("getAttribute", "download"); !download.IsNull() {
-					return nil
-				}
-
-				u := elem.Get("href").String()
-				if u, _ := url.Parse(u); isExternalNavigation(u) {
-					elem.Set("target", "_blank")
-					return nil
-				}
-
 				if meta := event.Get("metaKey"); meta.Truthy() && meta.Bool() {
 					return nil
 				}
@@ -217,8 +236,14 @@ func onAchorClick(d *uiDispatcher) func(Value, []Value) interface{} {
 					return nil
 				}
 
+				if download := elem.Call("getAttribute", "download"); !download.IsNull() {
+					return nil
+				}
+
 				event.PreventDefault()
-				navigate(d, u)
+				if href := elem.Get("href"); href.Truthy() {
+					navigate(d, elem.Get("href").String())
+				}
 				return nil
 
 			case "BODY":
@@ -236,8 +261,11 @@ func onAchorClick(d *uiDispatcher) func(Value, []Value) interface{} {
 
 func onPopState(d Dispatcher) func(this Value, args []Value) interface{} {
 	return func(this Value, args []Value) interface{} {
-		d.Dispatch(func() {
-			navigateTo(d, Window().URL(), false)
+		d.Dispatch(Dispatch{
+			Mode: Update,
+			Function: func(ctx Context) {
+				navigateTo(d, Window().URL(), false)
+			},
 		})
 		return nil
 	}
@@ -260,7 +288,11 @@ func navigateTo(d Dispatcher, u *url.URL, updateHistory bool) {
 	}
 
 	if isExternalNavigation(u) {
-		Window().Get("location").Set("href", u.String())
+		if rawurl := u.String(); isInternalURL(rawurl) {
+			Window().Get("location").Set("href", u.String())
+		} else {
+			Window().Call("open", rawurl)
+		}
 		return
 	}
 
@@ -277,12 +309,20 @@ func navigateTo(d Dispatcher, u *url.URL, updateHistory bool) {
 			lastURLVisited = u
 		}
 
-		d.(*uiDispatcher).Nav(u)
-		d.Dispatch(func() {
-			if isFragmentNavigation(u) {
-				Window().ScrollToID(u.Fragment)
-			}
-		})
+		d, ok := d.(ClientDispatcher)
+		if !ok {
+			return
+		}
+		d.Nav(u)
+
+		if isFragmentNavigation(u) {
+			d.Dispatch(Dispatch{
+				Mode: Defer,
+				Function: func(ctx Context) {
+					Window().ScrollToID(u.Fragment)
+				},
+			})
+		}
 		return
 	}
 
@@ -303,7 +343,10 @@ func performNavigate(d Dispatcher, u *url.URL, updateHistory bool) {
 		compo = &notFound{}
 	}
 
-	disp := d.(*uiDispatcher)
+	disp, ok := d.(ClientDispatcher)
+	if !ok {
+		return
+	}
 	disp.Mount(compo)
 
 	if updateHistory {
@@ -314,8 +357,11 @@ func performNavigate(d Dispatcher, u *url.URL, updateHistory bool) {
 
 	disp.Nav(u)
 	if isFragmentNavigation(u) {
-		disp.Dispatch(func() {
-			Window().ScrollToID(u.Fragment)
+		d.Dispatch(Dispatch{
+			Mode: Defer,
+			Function: func(ctx Context) {
+				Window().ScrollToID(u.Fragment)
+			},
 		})
 	}
 }
@@ -328,27 +374,45 @@ func isFragmentNavigation(u *url.URL) bool {
 	return u.Fragment != ""
 }
 
-func onAppUpdate(d *uiDispatcher) func(this Value, args []Value) interface{} {
+func onAppUpdate(d ClientDispatcher) func(this Value, args []Value) interface{} {
 	return func(this Value, args []Value) interface{} {
-		d.Dispatch(func() {
-			appUpdateAvailable = true
-		})
-		d.AppUpdate()
-		d.Dispatch(func() {
-			fmt.Println("app has been updated, reload to see changes")
+		d.Dispatch(Dispatch{
+			Mode: Update,
+			Function: func(ctx Context) {
+				appUpdateAvailable = true
+				d.AppUpdate()
+				ctx.Defer(func(Context) {
+					Log("app has been updated, reload to see changes")
+				})
+			},
 		})
 		return nil
 	}
 }
 
-func onResize(ctx Context, e Event) {
-	if d, ok := ctx.dispatcher.(*uiDispatcher); ok {
-		d.AppResize()
+func onAppInstallChange(d ClientDispatcher) func(this Value, args []Value) interface{} {
+	return func(this Value, args []Value) interface{} {
+		d.AppInstallChange()
+		return nil
 	}
 }
 
+func onResize(ctx Context, e Event) {
+	if resizeTimer != nil {
+		resizeTimer.Stop()
+		resizeTimer.Reset(resizeInterval)
+		return
+	}
+
+	resizeTimer = time.AfterFunc(resizeInterval, func() {
+		if d, ok := ctx.Dispatcher().(ClientDispatcher); ok {
+			d.AppResize()
+		}
+	})
+}
+
 func onAppOrientationChange(ctx Context, e Event) {
-	if d, ok := ctx.dispatcher.(*uiDispatcher); ok {
+	if d, ok := ctx.Dispatcher().(ClientDispatcher); ok {
 		go func() {
 			time.Sleep(orientationChangeDelay)
 			d.AppResize()

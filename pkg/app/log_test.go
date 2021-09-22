@@ -3,8 +3,8 @@ package app
 import (
 	"testing"
 
-	"github.com/maxence-charriere/go-app/v8/pkg/errors"
-	"github.com/maxence-charriere/go-app/v8/pkg/logs"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/logs"
 )
 
 func TestLog(t *testing.T) {
