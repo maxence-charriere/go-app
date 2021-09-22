@@ -1,3 +1,4 @@
+//go:build ignore
 // +build ignore
 
 package main
@@ -1097,7 +1098,7 @@ var attrs = map[string]attr{
 	},
 	"class": {
 		Name: "Class",
-		Type: "string",
+		Type: "string|class",
 		Doc:  "specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.",
 	},
 	"cols": {
@@ -2033,6 +2034,7 @@ func generateHTMLGo() {
 	fmt.Fprintln(f, `
 import (
 	"fmt"
+	"strings"
 )
 		`)
 
@@ -2235,6 +2237,15 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 			}`, strings.ToLower(a.Name))
 		}
 
+	case "string|class":
+		fmt.Fprintf(w, `%s(v ...string) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintf(w, `{
+				e.setAttr("%s", strings.Join(v, " "))
+				return e
+			}`, strings.ToLower(a.Name))
+		}
+
 	default:
 		fmt.Fprintf(w, `%s(v %s) HTML%s`, a.Name, a.Type, t.Name)
 		if !isInterface {
@@ -2309,6 +2320,9 @@ import (
 
 			case "url":
 				fmt.Fprintln(f, `"http://foo.com")`)
+
+			case "string|class":
+				fmt.Fprintln(f, `"foo bar")`)
 
 			default:
 				fmt.Fprintln(f, `42)`)

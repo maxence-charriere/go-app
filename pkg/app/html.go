@@ -4,6 +4,7 @@ package app
 
 import (
 	"fmt"
+	"strings"
 )
 
 // HTMLA is the interface that describes a <a> HTML element.
@@ -23,7 +24,7 @@ type HTMLA interface {
 	Aria(k string, v interface{}) HTMLA
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLA
+	Class(v ...string) HTMLA
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLA
@@ -214,8 +215,8 @@ func (e *htmlA) Aria(k string, v interface{}) HTMLA {
 	return e
 }
 
-func (e *htmlA) Class(v string) HTMLA {
-	e.setAttr("class", v)
+func (e *htmlA) Class(v ...string) HTMLA {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -496,7 +497,7 @@ type HTMLAbbr interface {
 	Aria(k string, v interface{}) HTMLAbbr
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLAbbr
+	Class(v ...string) HTMLAbbr
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLAbbr
@@ -663,8 +664,8 @@ func (e *htmlAbbr) Aria(k string, v interface{}) HTMLAbbr {
 	return e
 }
 
-func (e *htmlAbbr) Class(v string) HTMLAbbr {
-	e.setAttr("class", v)
+func (e *htmlAbbr) Class(v ...string) HTMLAbbr {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -905,7 +906,7 @@ type HTMLAddress interface {
 	Aria(k string, v interface{}) HTMLAddress
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLAddress
+	Class(v ...string) HTMLAddress
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLAddress
@@ -1072,8 +1073,8 @@ func (e *htmlAddress) Aria(k string, v interface{}) HTMLAddress {
 	return e
 }
 
-func (e *htmlAddress) Class(v string) HTMLAddress {
-	e.setAttr("class", v)
+func (e *htmlAddress) Class(v ...string) HTMLAddress {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -1311,7 +1312,7 @@ type HTMLArea interface {
 	Aria(k string, v interface{}) HTMLArea
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLArea
+	Class(v ...string) HTMLArea
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLArea
@@ -1501,8 +1502,8 @@ func (e *htmlArea) Aria(k string, v interface{}) HTMLArea {
 	return e
 }
 
-func (e *htmlArea) Class(v string) HTMLArea {
-	e.setAttr("class", v)
+func (e *htmlArea) Class(v ...string) HTMLArea {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -1788,7 +1789,7 @@ type HTMLArticle interface {
 	Aria(k string, v interface{}) HTMLArticle
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLArticle
+	Class(v ...string) HTMLArticle
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLArticle
@@ -1955,8 +1956,8 @@ func (e *htmlArticle) Aria(k string, v interface{}) HTMLArticle {
 	return e
 }
 
-func (e *htmlArticle) Class(v string) HTMLArticle {
-	e.setAttr("class", v)
+func (e *htmlArticle) Class(v ...string) HTMLArticle {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -2197,7 +2198,7 @@ type HTMLAside interface {
 	Aria(k string, v interface{}) HTMLAside
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLAside
+	Class(v ...string) HTMLAside
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLAside
@@ -2364,8 +2365,8 @@ func (e *htmlAside) Aria(k string, v interface{}) HTMLAside {
 	return e
 }
 
-func (e *htmlAside) Class(v string) HTMLAside {
-	e.setAttr("class", v)
+func (e *htmlAside) Class(v ...string) HTMLAside {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -2609,7 +2610,7 @@ type HTMLAudio interface {
 	AutoPlay(v bool) HTMLAudio
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLAudio
+	Class(v ...string) HTMLAudio
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLAudio
@@ -2868,8 +2869,8 @@ func (e *htmlAudio) AutoPlay(v bool) HTMLAudio {
 	return e
 }
 
-func (e *htmlAudio) Class(v string) HTMLAudio {
-	e.setAttr("class", v)
+func (e *htmlAudio) Class(v ...string) HTMLAudio {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -3255,7 +3256,7 @@ type HTMLB interface {
 	Aria(k string, v interface{}) HTMLB
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLB
+	Class(v ...string) HTMLB
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLB
@@ -3422,8 +3423,8 @@ func (e *htmlB) Aria(k string, v interface{}) HTMLB {
 	return e
 }
 
-func (e *htmlB) Class(v string) HTMLB {
-	e.setAttr("class", v)
+func (e *htmlB) Class(v ...string) HTMLB {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -3658,7 +3659,7 @@ type HTMLBase interface {
 	Aria(k string, v interface{}) HTMLBase
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLBase
+	Class(v ...string) HTMLBase
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLBase
@@ -3822,8 +3823,8 @@ func (e *htmlBase) Aria(k string, v interface{}) HTMLBase {
 	return e
 }
 
-func (e *htmlBase) Class(v string) HTMLBase {
-	e.setAttr("class", v)
+func (e *htmlBase) Class(v ...string) HTMLBase {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -4074,7 +4075,7 @@ type HTMLBdi interface {
 	Aria(k string, v interface{}) HTMLBdi
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLBdi
+	Class(v ...string) HTMLBdi
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLBdi
@@ -4241,8 +4242,8 @@ func (e *htmlBdi) Aria(k string, v interface{}) HTMLBdi {
 	return e
 }
 
-func (e *htmlBdi) Class(v string) HTMLBdi {
-	e.setAttr("class", v)
+func (e *htmlBdi) Class(v ...string) HTMLBdi {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -4483,7 +4484,7 @@ type HTMLBdo interface {
 	Aria(k string, v interface{}) HTMLBdo
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLBdo
+	Class(v ...string) HTMLBdo
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLBdo
@@ -4650,8 +4651,8 @@ func (e *htmlBdo) Aria(k string, v interface{}) HTMLBdo {
 	return e
 }
 
-func (e *htmlBdo) Class(v string) HTMLBdo {
-	e.setAttr("class", v)
+func (e *htmlBdo) Class(v ...string) HTMLBdo {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -4895,7 +4896,7 @@ type HTMLBlockquote interface {
 	Cite(v string) HTMLBlockquote
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLBlockquote
+	Class(v ...string) HTMLBlockquote
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLBlockquote
@@ -5067,8 +5068,8 @@ func (e *htmlBlockquote) Cite(v string) HTMLBlockquote {
 	return e
 }
 
-func (e *htmlBlockquote) Class(v string) HTMLBlockquote {
-	e.setAttr("class", v)
+func (e *htmlBlockquote) Class(v ...string) HTMLBlockquote {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -5309,7 +5310,7 @@ type HTMLBody interface {
 	Aria(k string, v interface{}) HTMLBody
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLBody
+	Class(v ...string) HTMLBody
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLBody
@@ -5521,8 +5522,8 @@ func (e *htmlBody) Aria(k string, v interface{}) HTMLBody {
 	return e
 }
 
-func (e *htmlBody) Class(v string) HTMLBody {
-	e.setAttr("class", v)
+func (e *htmlBody) Class(v ...string) HTMLBody {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -5832,7 +5833,7 @@ type HTMLBr interface {
 	Aria(k string, v interface{}) HTMLBr
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLBr
+	Class(v ...string) HTMLBr
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLBr
@@ -5990,8 +5991,8 @@ func (e *htmlBr) Aria(k string, v interface{}) HTMLBr {
 	return e
 }
 
-func (e *htmlBr) Class(v string) HTMLBr {
-	e.setAttr("class", v)
+func (e *htmlBr) Class(v ...string) HTMLBr {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -6235,7 +6236,7 @@ type HTMLButton interface {
 	AutoFocus(v bool) HTMLButton
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLButton
+	Class(v ...string) HTMLButton
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLButton
@@ -6437,8 +6438,8 @@ func (e *htmlButton) AutoFocus(v bool) HTMLButton {
 	return e
 }
 
-func (e *htmlButton) Class(v string) HTMLButton {
-	e.setAttr("class", v)
+func (e *htmlButton) Class(v ...string) HTMLButton {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -6729,7 +6730,7 @@ type HTMLCanvas interface {
 	Aria(k string, v interface{}) HTMLCanvas
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLCanvas
+	Class(v ...string) HTMLCanvas
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLCanvas
@@ -6902,8 +6903,8 @@ func (e *htmlCanvas) Aria(k string, v interface{}) HTMLCanvas {
 	return e
 }
 
-func (e *htmlCanvas) Class(v string) HTMLCanvas {
-	e.setAttr("class", v)
+func (e *htmlCanvas) Class(v ...string) HTMLCanvas {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -7154,7 +7155,7 @@ type HTMLCaption interface {
 	Aria(k string, v interface{}) HTMLCaption
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLCaption
+	Class(v ...string) HTMLCaption
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLCaption
@@ -7321,8 +7322,8 @@ func (e *htmlCaption) Aria(k string, v interface{}) HTMLCaption {
 	return e
 }
 
-func (e *htmlCaption) Class(v string) HTMLCaption {
-	e.setAttr("class", v)
+func (e *htmlCaption) Class(v ...string) HTMLCaption {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -7563,7 +7564,7 @@ type HTMLCite interface {
 	Aria(k string, v interface{}) HTMLCite
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLCite
+	Class(v ...string) HTMLCite
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLCite
@@ -7730,8 +7731,8 @@ func (e *htmlCite) Aria(k string, v interface{}) HTMLCite {
 	return e
 }
 
-func (e *htmlCite) Class(v string) HTMLCite {
-	e.setAttr("class", v)
+func (e *htmlCite) Class(v ...string) HTMLCite {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -7972,7 +7973,7 @@ type HTMLCode interface {
 	Aria(k string, v interface{}) HTMLCode
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLCode
+	Class(v ...string) HTMLCode
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLCode
@@ -8139,8 +8140,8 @@ func (e *htmlCode) Aria(k string, v interface{}) HTMLCode {
 	return e
 }
 
-func (e *htmlCode) Class(v string) HTMLCode {
-	e.setAttr("class", v)
+func (e *htmlCode) Class(v ...string) HTMLCode {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -8375,7 +8376,7 @@ type HTMLCol interface {
 	Aria(k string, v interface{}) HTMLCol
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLCol
+	Class(v ...string) HTMLCol
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLCol
@@ -8536,8 +8537,8 @@ func (e *htmlCol) Aria(k string, v interface{}) HTMLCol {
 	return e
 }
 
-func (e *htmlCol) Class(v string) HTMLCol {
-	e.setAttr("class", v)
+func (e *htmlCol) Class(v ...string) HTMLCol {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -8783,7 +8784,7 @@ type HTMLColGroup interface {
 	Aria(k string, v interface{}) HTMLColGroup
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLColGroup
+	Class(v ...string) HTMLColGroup
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLColGroup
@@ -8953,8 +8954,8 @@ func (e *htmlColGroup) Aria(k string, v interface{}) HTMLColGroup {
 	return e
 }
 
-func (e *htmlColGroup) Class(v string) HTMLColGroup {
-	e.setAttr("class", v)
+func (e *htmlColGroup) Class(v ...string) HTMLColGroup {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -9200,7 +9201,7 @@ type HTMLData interface {
 	Aria(k string, v interface{}) HTMLData
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLData
+	Class(v ...string) HTMLData
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLData
@@ -9274,8 +9275,8 @@ func (e *htmlData) Aria(k string, v interface{}) HTMLData {
 	return e
 }
 
-func (e *htmlData) Class(v string) HTMLData {
-	e.setAttr("class", v)
+func (e *htmlData) Class(v ...string) HTMLData {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -9361,7 +9362,7 @@ type HTMLDataList interface {
 	Aria(k string, v interface{}) HTMLDataList
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDataList
+	Class(v ...string) HTMLDataList
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDataList
@@ -9528,8 +9529,8 @@ func (e *htmlDataList) Aria(k string, v interface{}) HTMLDataList {
 	return e
 }
 
-func (e *htmlDataList) Class(v string) HTMLDataList {
-	e.setAttr("class", v)
+func (e *htmlDataList) Class(v ...string) HTMLDataList {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -9770,7 +9771,7 @@ type HTMLDd interface {
 	Aria(k string, v interface{}) HTMLDd
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDd
+	Class(v ...string) HTMLDd
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDd
@@ -9937,8 +9938,8 @@ func (e *htmlDd) Aria(k string, v interface{}) HTMLDd {
 	return e
 }
 
-func (e *htmlDd) Class(v string) HTMLDd {
-	e.setAttr("class", v)
+func (e *htmlDd) Class(v ...string) HTMLDd {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -10182,7 +10183,7 @@ type HTMLDel interface {
 	Cite(v string) HTMLDel
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDel
+	Class(v ...string) HTMLDel
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDel
@@ -10357,8 +10358,8 @@ func (e *htmlDel) Cite(v string) HTMLDel {
 	return e
 }
 
-func (e *htmlDel) Class(v string) HTMLDel {
-	e.setAttr("class", v)
+func (e *htmlDel) Class(v ...string) HTMLDel {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -10604,7 +10605,7 @@ type HTMLDetails interface {
 	Aria(k string, v interface{}) HTMLDetails
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDetails
+	Class(v ...string) HTMLDetails
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDetails
@@ -10777,8 +10778,8 @@ func (e *htmlDetails) Aria(k string, v interface{}) HTMLDetails {
 	return e
 }
 
-func (e *htmlDetails) Class(v string) HTMLDetails {
-	e.setAttr("class", v)
+func (e *htmlDetails) Class(v ...string) HTMLDetails {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -11029,7 +11030,7 @@ type HTMLDfn interface {
 	Aria(k string, v interface{}) HTMLDfn
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDfn
+	Class(v ...string) HTMLDfn
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDfn
@@ -11196,8 +11197,8 @@ func (e *htmlDfn) Aria(k string, v interface{}) HTMLDfn {
 	return e
 }
 
-func (e *htmlDfn) Class(v string) HTMLDfn {
-	e.setAttr("class", v)
+func (e *htmlDfn) Class(v ...string) HTMLDfn {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -11438,7 +11439,7 @@ type HTMLDialog interface {
 	Aria(k string, v interface{}) HTMLDialog
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDialog
+	Class(v ...string) HTMLDialog
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDialog
@@ -11608,8 +11609,8 @@ func (e *htmlDialog) Aria(k string, v interface{}) HTMLDialog {
 	return e
 }
 
-func (e *htmlDialog) Class(v string) HTMLDialog {
-	e.setAttr("class", v)
+func (e *htmlDialog) Class(v ...string) HTMLDialog {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -11855,7 +11856,7 @@ type HTMLDiv interface {
 	Aria(k string, v interface{}) HTMLDiv
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDiv
+	Class(v ...string) HTMLDiv
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDiv
@@ -12022,8 +12023,8 @@ func (e *htmlDiv) Aria(k string, v interface{}) HTMLDiv {
 	return e
 }
 
-func (e *htmlDiv) Class(v string) HTMLDiv {
-	e.setAttr("class", v)
+func (e *htmlDiv) Class(v ...string) HTMLDiv {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -12264,7 +12265,7 @@ type HTMLDl interface {
 	Aria(k string, v interface{}) HTMLDl
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDl
+	Class(v ...string) HTMLDl
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDl
@@ -12431,8 +12432,8 @@ func (e *htmlDl) Aria(k string, v interface{}) HTMLDl {
 	return e
 }
 
-func (e *htmlDl) Class(v string) HTMLDl {
-	e.setAttr("class", v)
+func (e *htmlDl) Class(v ...string) HTMLDl {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -12673,7 +12674,7 @@ type HTMLDt interface {
 	Aria(k string, v interface{}) HTMLDt
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLDt
+	Class(v ...string) HTMLDt
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLDt
@@ -12840,8 +12841,8 @@ func (e *htmlDt) Aria(k string, v interface{}) HTMLDt {
 	return e
 }
 
-func (e *htmlDt) Class(v string) HTMLDt {
-	e.setAttr("class", v)
+func (e *htmlDt) Class(v ...string) HTMLDt {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -13082,7 +13083,7 @@ type HTMLEm interface {
 	Aria(k string, v interface{}) HTMLEm
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLEm
+	Class(v ...string) HTMLEm
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLEm
@@ -13249,8 +13250,8 @@ func (e *htmlEm) Aria(k string, v interface{}) HTMLEm {
 	return e
 }
 
-func (e *htmlEm) Class(v string) HTMLEm {
-	e.setAttr("class", v)
+func (e *htmlEm) Class(v ...string) HTMLEm {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -13485,7 +13486,7 @@ type HTMLEmbed interface {
 	Aria(k string, v interface{}) HTMLEmbed
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLEmbed
+	Class(v ...string) HTMLEmbed
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLEmbed
@@ -13724,8 +13725,8 @@ func (e *htmlEmbed) Aria(k string, v interface{}) HTMLEmbed {
 	return e
 }
 
-func (e *htmlEmbed) Class(v string) HTMLEmbed {
-	e.setAttr("class", v)
+func (e *htmlEmbed) Class(v ...string) HTMLEmbed {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -14101,7 +14102,7 @@ type HTMLFieldSet interface {
 	Aria(k string, v interface{}) HTMLFieldSet
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLFieldSet
+	Class(v ...string) HTMLFieldSet
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLFieldSet
@@ -14277,8 +14278,8 @@ func (e *htmlFieldSet) Aria(k string, v interface{}) HTMLFieldSet {
 	return e
 }
 
-func (e *htmlFieldSet) Class(v string) HTMLFieldSet {
-	e.setAttr("class", v)
+func (e *htmlFieldSet) Class(v ...string) HTMLFieldSet {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -14534,7 +14535,7 @@ type HTMLFigCaption interface {
 	Aria(k string, v interface{}) HTMLFigCaption
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLFigCaption
+	Class(v ...string) HTMLFigCaption
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLFigCaption
@@ -14701,8 +14702,8 @@ func (e *htmlFigCaption) Aria(k string, v interface{}) HTMLFigCaption {
 	return e
 }
 
-func (e *htmlFigCaption) Class(v string) HTMLFigCaption {
-	e.setAttr("class", v)
+func (e *htmlFigCaption) Class(v ...string) HTMLFigCaption {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -14943,7 +14944,7 @@ type HTMLFigure interface {
 	Aria(k string, v interface{}) HTMLFigure
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLFigure
+	Class(v ...string) HTMLFigure
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLFigure
@@ -15110,8 +15111,8 @@ func (e *htmlFigure) Aria(k string, v interface{}) HTMLFigure {
 	return e
 }
 
-func (e *htmlFigure) Class(v string) HTMLFigure {
-	e.setAttr("class", v)
+func (e *htmlFigure) Class(v ...string) HTMLFigure {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -15352,7 +15353,7 @@ type HTMLFooter interface {
 	Aria(k string, v interface{}) HTMLFooter
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLFooter
+	Class(v ...string) HTMLFooter
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLFooter
@@ -15519,8 +15520,8 @@ func (e *htmlFooter) Aria(k string, v interface{}) HTMLFooter {
 	return e
 }
 
-func (e *htmlFooter) Class(v string) HTMLFooter {
-	e.setAttr("class", v)
+func (e *htmlFooter) Class(v ...string) HTMLFooter {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -15770,7 +15771,7 @@ type HTMLForm interface {
 	AutoComplete(v bool) HTMLForm
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLForm
+	Class(v ...string) HTMLForm
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLForm
@@ -15972,8 +15973,8 @@ func (e *htmlForm) AutoComplete(v bool) HTMLForm {
 	return e
 }
 
-func (e *htmlForm) Class(v string) HTMLForm {
-	e.setAttr("class", v)
+func (e *htmlForm) Class(v ...string) HTMLForm {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -16239,7 +16240,7 @@ type HTMLH1 interface {
 	Aria(k string, v interface{}) HTMLH1
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLH1
+	Class(v ...string) HTMLH1
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLH1
@@ -16406,8 +16407,8 @@ func (e *htmlH1) Aria(k string, v interface{}) HTMLH1 {
 	return e
 }
 
-func (e *htmlH1) Class(v string) HTMLH1 {
-	e.setAttr("class", v)
+func (e *htmlH1) Class(v ...string) HTMLH1 {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -16648,7 +16649,7 @@ type HTMLH2 interface {
 	Aria(k string, v interface{}) HTMLH2
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLH2
+	Class(v ...string) HTMLH2
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLH2
@@ -16815,8 +16816,8 @@ func (e *htmlH2) Aria(k string, v interface{}) HTMLH2 {
 	return e
 }
 
-func (e *htmlH2) Class(v string) HTMLH2 {
-	e.setAttr("class", v)
+func (e *htmlH2) Class(v ...string) HTMLH2 {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -17057,7 +17058,7 @@ type HTMLH3 interface {
 	Aria(k string, v interface{}) HTMLH3
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLH3
+	Class(v ...string) HTMLH3
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLH3
@@ -17224,8 +17225,8 @@ func (e *htmlH3) Aria(k string, v interface{}) HTMLH3 {
 	return e
 }
 
-func (e *htmlH3) Class(v string) HTMLH3 {
-	e.setAttr("class", v)
+func (e *htmlH3) Class(v ...string) HTMLH3 {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -17466,7 +17467,7 @@ type HTMLH4 interface {
 	Aria(k string, v interface{}) HTMLH4
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLH4
+	Class(v ...string) HTMLH4
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLH4
@@ -17633,8 +17634,8 @@ func (e *htmlH4) Aria(k string, v interface{}) HTMLH4 {
 	return e
 }
 
-func (e *htmlH4) Class(v string) HTMLH4 {
-	e.setAttr("class", v)
+func (e *htmlH4) Class(v ...string) HTMLH4 {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -17875,7 +17876,7 @@ type HTMLH5 interface {
 	Aria(k string, v interface{}) HTMLH5
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLH5
+	Class(v ...string) HTMLH5
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLH5
@@ -18042,8 +18043,8 @@ func (e *htmlH5) Aria(k string, v interface{}) HTMLH5 {
 	return e
 }
 
-func (e *htmlH5) Class(v string) HTMLH5 {
-	e.setAttr("class", v)
+func (e *htmlH5) Class(v ...string) HTMLH5 {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -18284,7 +18285,7 @@ type HTMLH6 interface {
 	Aria(k string, v interface{}) HTMLH6
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLH6
+	Class(v ...string) HTMLH6
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLH6
@@ -18451,8 +18452,8 @@ func (e *htmlH6) Aria(k string, v interface{}) HTMLH6 {
 	return e
 }
 
-func (e *htmlH6) Class(v string) HTMLH6 {
-	e.setAttr("class", v)
+func (e *htmlH6) Class(v ...string) HTMLH6 {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -18693,7 +18694,7 @@ type HTMLHead interface {
 	Aria(k string, v interface{}) HTMLHead
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLHead
+	Class(v ...string) HTMLHead
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLHead
@@ -18764,8 +18765,8 @@ func (e *htmlHead) Aria(k string, v interface{}) HTMLHead {
 	return e
 }
 
-func (e *htmlHead) Class(v string) HTMLHead {
-	e.setAttr("class", v)
+func (e *htmlHead) Class(v ...string) HTMLHead {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -18846,7 +18847,7 @@ type HTMLHeader interface {
 	Aria(k string, v interface{}) HTMLHeader
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLHeader
+	Class(v ...string) HTMLHeader
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLHeader
@@ -19013,8 +19014,8 @@ func (e *htmlHeader) Aria(k string, v interface{}) HTMLHeader {
 	return e
 }
 
-func (e *htmlHeader) Class(v string) HTMLHeader {
-	e.setAttr("class", v)
+func (e *htmlHeader) Class(v ...string) HTMLHeader {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -19249,7 +19250,7 @@ type HTMLHr interface {
 	Aria(k string, v interface{}) HTMLHr
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLHr
+	Class(v ...string) HTMLHr
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLHr
@@ -19407,8 +19408,8 @@ func (e *htmlHr) Aria(k string, v interface{}) HTMLHr {
 	return e
 }
 
-func (e *htmlHr) Class(v string) HTMLHr {
-	e.setAttr("class", v)
+func (e *htmlHr) Class(v ...string) HTMLHr {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -19649,7 +19650,7 @@ type HTMLHtml interface {
 	Aria(k string, v interface{}) HTMLHtml
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLHtml
+	Class(v ...string) HTMLHtml
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLHtml
@@ -19720,8 +19721,8 @@ func (e *htmlHtml) Aria(k string, v interface{}) HTMLHtml {
 	return e
 }
 
-func (e *htmlHtml) Class(v string) HTMLHtml {
-	e.setAttr("class", v)
+func (e *htmlHtml) Class(v ...string) HTMLHtml {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -19802,7 +19803,7 @@ type HTMLI interface {
 	Aria(k string, v interface{}) HTMLI
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLI
+	Class(v ...string) HTMLI
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLI
@@ -19969,8 +19970,8 @@ func (e *htmlI) Aria(k string, v interface{}) HTMLI {
 	return e
 }
 
-func (e *htmlI) Class(v string) HTMLI {
-	e.setAttr("class", v)
+func (e *htmlI) Class(v ...string) HTMLI {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -20220,7 +20221,7 @@ type HTMLIFrame interface {
 	Aria(k string, v interface{}) HTMLIFrame
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLIFrame
+	Class(v ...string) HTMLIFrame
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLIFrame
@@ -20436,8 +20437,8 @@ func (e *htmlIFrame) Aria(k string, v interface{}) HTMLIFrame {
 	return e
 }
 
-func (e *htmlIFrame) Class(v string) HTMLIFrame {
-	e.setAttr("class", v)
+func (e *htmlIFrame) Class(v ...string) HTMLIFrame {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -20715,7 +20716,7 @@ type HTMLImg interface {
 	Aria(k string, v interface{}) HTMLImg
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLImg
+	Class(v ...string) HTMLImg
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLImg
@@ -20974,8 +20975,8 @@ func (e *htmlImg) Aria(k string, v interface{}) HTMLImg {
 	return e
 }
 
-func (e *htmlImg) Class(v string) HTMLImg {
-	e.setAttr("class", v)
+func (e *htmlImg) Class(v ...string) HTMLImg {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -21385,7 +21386,7 @@ type HTMLInput interface {
 	Checked(v bool) HTMLInput
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLInput
+	Class(v ...string) HTMLInput
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLInput
@@ -21651,8 +21652,8 @@ func (e *htmlInput) Checked(v bool) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) Class(v string) HTMLInput {
-	e.setAttr("class", v)
+func (e *htmlInput) Class(v ...string) HTMLInput {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -22023,7 +22024,7 @@ type HTMLIns interface {
 	Aria(k string, v interface{}) HTMLIns
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLIns
+	Class(v ...string) HTMLIns
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLIns
@@ -22190,8 +22191,8 @@ func (e *htmlIns) Aria(k string, v interface{}) HTMLIns {
 	return e
 }
 
-func (e *htmlIns) Class(v string) HTMLIns {
-	e.setAttr("class", v)
+func (e *htmlIns) Class(v ...string) HTMLIns {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -22432,7 +22433,7 @@ type HTMLKbd interface {
 	Aria(k string, v interface{}) HTMLKbd
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLKbd
+	Class(v ...string) HTMLKbd
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLKbd
@@ -22599,8 +22600,8 @@ func (e *htmlKbd) Aria(k string, v interface{}) HTMLKbd {
 	return e
 }
 
-func (e *htmlKbd) Class(v string) HTMLKbd {
-	e.setAttr("class", v)
+func (e *htmlKbd) Class(v ...string) HTMLKbd {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -22841,7 +22842,7 @@ type HTMLLabel interface {
 	Aria(k string, v interface{}) HTMLLabel
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLLabel
+	Class(v ...string) HTMLLabel
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLLabel
@@ -23014,8 +23015,8 @@ func (e *htmlLabel) Aria(k string, v interface{}) HTMLLabel {
 	return e
 }
 
-func (e *htmlLabel) Class(v string) HTMLLabel {
-	e.setAttr("class", v)
+func (e *htmlLabel) Class(v ...string) HTMLLabel {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -23266,7 +23267,7 @@ type HTMLLegend interface {
 	Aria(k string, v interface{}) HTMLLegend
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLLegend
+	Class(v ...string) HTMLLegend
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLLegend
@@ -23433,8 +23434,8 @@ func (e *htmlLegend) Aria(k string, v interface{}) HTMLLegend {
 	return e
 }
 
-func (e *htmlLegend) Class(v string) HTMLLegend {
-	e.setAttr("class", v)
+func (e *htmlLegend) Class(v ...string) HTMLLegend {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -23675,7 +23676,7 @@ type HTMLLi interface {
 	Aria(k string, v interface{}) HTMLLi
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLLi
+	Class(v ...string) HTMLLi
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLLi
@@ -23845,8 +23846,8 @@ func (e *htmlLi) Aria(k string, v interface{}) HTMLLi {
 	return e
 }
 
-func (e *htmlLi) Class(v string) HTMLLi {
-	e.setAttr("class", v)
+func (e *htmlLi) Class(v ...string) HTMLLi {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -24086,7 +24087,7 @@ type HTMLLink interface {
 	Aria(k string, v interface{}) HTMLLink
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLLink
+	Class(v ...string) HTMLLink
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLLink
@@ -24268,8 +24269,8 @@ func (e *htmlLink) Aria(k string, v interface{}) HTMLLink {
 	return e
 }
 
-func (e *htmlLink) Class(v string) HTMLLink {
-	e.setAttr("class", v)
+func (e *htmlLink) Class(v ...string) HTMLLink {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -24550,7 +24551,7 @@ type HTMLMain interface {
 	Aria(k string, v interface{}) HTMLMain
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLMain
+	Class(v ...string) HTMLMain
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLMain
@@ -24717,8 +24718,8 @@ func (e *htmlMain) Aria(k string, v interface{}) HTMLMain {
 	return e
 }
 
-func (e *htmlMain) Class(v string) HTMLMain {
-	e.setAttr("class", v)
+func (e *htmlMain) Class(v ...string) HTMLMain {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -24959,7 +24960,7 @@ type HTMLMap interface {
 	Aria(k string, v interface{}) HTMLMap
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLMap
+	Class(v ...string) HTMLMap
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLMap
@@ -25129,8 +25130,8 @@ func (e *htmlMap) Aria(k string, v interface{}) HTMLMap {
 	return e
 }
 
-func (e *htmlMap) Class(v string) HTMLMap {
-	e.setAttr("class", v)
+func (e *htmlMap) Class(v ...string) HTMLMap {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -25376,7 +25377,7 @@ type HTMLMark interface {
 	Aria(k string, v interface{}) HTMLMark
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLMark
+	Class(v ...string) HTMLMark
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLMark
@@ -25543,8 +25544,8 @@ func (e *htmlMark) Aria(k string, v interface{}) HTMLMark {
 	return e
 }
 
-func (e *htmlMark) Class(v string) HTMLMark {
-	e.setAttr("class", v)
+func (e *htmlMark) Class(v ...string) HTMLMark {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -25782,7 +25783,7 @@ type HTMLMeta interface {
 	Charset(v string) HTMLMeta
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLMeta
+	Class(v ...string) HTMLMeta
 
 	// Content gives the value associated with the http-equiv or name attribute.
 	Content(v string) HTMLMeta
@@ -25861,8 +25862,8 @@ func (e *htmlMeta) Charset(v string) HTMLMeta {
 	return e
 }
 
-func (e *htmlMeta) Class(v string) HTMLMeta {
-	e.setAttr("class", v)
+func (e *htmlMeta) Class(v ...string) HTMLMeta {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -25963,7 +25964,7 @@ type HTMLMeter interface {
 	Aria(k string, v interface{}) HTMLMeter
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLMeter
+	Class(v ...string) HTMLMeter
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLMeter
@@ -26151,8 +26152,8 @@ func (e *htmlMeter) Aria(k string, v interface{}) HTMLMeter {
 	return e
 }
 
-func (e *htmlMeter) Class(v string) HTMLMeter {
-	e.setAttr("class", v)
+func (e *htmlMeter) Class(v ...string) HTMLMeter {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -26428,7 +26429,7 @@ type HTMLNav interface {
 	Aria(k string, v interface{}) HTMLNav
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLNav
+	Class(v ...string) HTMLNav
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLNav
@@ -26595,8 +26596,8 @@ func (e *htmlNav) Aria(k string, v interface{}) HTMLNav {
 	return e
 }
 
-func (e *htmlNav) Class(v string) HTMLNav {
-	e.setAttr("class", v)
+func (e *htmlNav) Class(v ...string) HTMLNav {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -26837,7 +26838,7 @@ type HTMLNoScript interface {
 	Aria(k string, v interface{}) HTMLNoScript
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLNoScript
+	Class(v ...string) HTMLNoScript
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLNoScript
@@ -26908,8 +26909,8 @@ func (e *htmlNoScript) Aria(k string, v interface{}) HTMLNoScript {
 	return e
 }
 
-func (e *htmlNoScript) Class(v string) HTMLNoScript {
-	e.setAttr("class", v)
+func (e *htmlNoScript) Class(v ...string) HTMLNoScript {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -26990,7 +26991,7 @@ type HTMLObject interface {
 	Aria(k string, v interface{}) HTMLObject
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLObject
+	Class(v ...string) HTMLObject
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLObject
@@ -27247,8 +27248,8 @@ func (e *htmlObject) Aria(k string, v interface{}) HTMLObject {
 	return e
 }
 
-func (e *htmlObject) Class(v string) HTMLObject {
-	e.setAttr("class", v)
+func (e *htmlObject) Class(v ...string) HTMLObject {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -27639,7 +27640,7 @@ type HTMLOl interface {
 	Aria(k string, v interface{}) HTMLOl
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLOl
+	Class(v ...string) HTMLOl
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLOl
@@ -27815,8 +27816,8 @@ func (e *htmlOl) Aria(k string, v interface{}) HTMLOl {
 	return e
 }
 
-func (e *htmlOl) Class(v string) HTMLOl {
-	e.setAttr("class", v)
+func (e *htmlOl) Class(v ...string) HTMLOl {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -28072,7 +28073,7 @@ type HTMLOptGroup interface {
 	Aria(k string, v interface{}) HTMLOptGroup
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLOptGroup
+	Class(v ...string) HTMLOptGroup
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLOptGroup
@@ -28245,8 +28246,8 @@ func (e *htmlOptGroup) Aria(k string, v interface{}) HTMLOptGroup {
 	return e
 }
 
-func (e *htmlOptGroup) Class(v string) HTMLOptGroup {
-	e.setAttr("class", v)
+func (e *htmlOptGroup) Class(v ...string) HTMLOptGroup {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -28497,7 +28498,7 @@ type HTMLOption interface {
 	Aria(k string, v interface{}) HTMLOption
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLOption
+	Class(v ...string) HTMLOption
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLOption
@@ -28676,8 +28677,8 @@ func (e *htmlOption) Aria(k string, v interface{}) HTMLOption {
 	return e
 }
 
-func (e *htmlOption) Class(v string) HTMLOption {
-	e.setAttr("class", v)
+func (e *htmlOption) Class(v ...string) HTMLOption {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -28938,7 +28939,7 @@ type HTMLOutput interface {
 	Aria(k string, v interface{}) HTMLOutput
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLOutput
+	Class(v ...string) HTMLOutput
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLOutput
@@ -29114,8 +29115,8 @@ func (e *htmlOutput) Aria(k string, v interface{}) HTMLOutput {
 	return e
 }
 
-func (e *htmlOutput) Class(v string) HTMLOutput {
-	e.setAttr("class", v)
+func (e *htmlOutput) Class(v ...string) HTMLOutput {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -29371,7 +29372,7 @@ type HTMLP interface {
 	Aria(k string, v interface{}) HTMLP
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLP
+	Class(v ...string) HTMLP
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLP
@@ -29538,8 +29539,8 @@ func (e *htmlP) Aria(k string, v interface{}) HTMLP {
 	return e
 }
 
-func (e *htmlP) Class(v string) HTMLP {
-	e.setAttr("class", v)
+func (e *htmlP) Class(v ...string) HTMLP {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -29774,7 +29775,7 @@ type HTMLParam interface {
 	Aria(k string, v interface{}) HTMLParam
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLParam
+	Class(v ...string) HTMLParam
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLParam
@@ -29938,8 +29939,8 @@ func (e *htmlParam) Aria(k string, v interface{}) HTMLParam {
 	return e
 }
 
-func (e *htmlParam) Class(v string) HTMLParam {
-	e.setAttr("class", v)
+func (e *htmlParam) Class(v ...string) HTMLParam {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -30190,7 +30191,7 @@ type HTMLPicture interface {
 	Aria(k string, v interface{}) HTMLPicture
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLPicture
+	Class(v ...string) HTMLPicture
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLPicture
@@ -30357,8 +30358,8 @@ func (e *htmlPicture) Aria(k string, v interface{}) HTMLPicture {
 	return e
 }
 
-func (e *htmlPicture) Class(v string) HTMLPicture {
-	e.setAttr("class", v)
+func (e *htmlPicture) Class(v ...string) HTMLPicture {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -30599,7 +30600,7 @@ type HTMLPre interface {
 	Aria(k string, v interface{}) HTMLPre
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLPre
+	Class(v ...string) HTMLPre
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLPre
@@ -30766,8 +30767,8 @@ func (e *htmlPre) Aria(k string, v interface{}) HTMLPre {
 	return e
 }
 
-func (e *htmlPre) Class(v string) HTMLPre {
-	e.setAttr("class", v)
+func (e *htmlPre) Class(v ...string) HTMLPre {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -31008,7 +31009,7 @@ type HTMLProgress interface {
 	Aria(k string, v interface{}) HTMLProgress
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLProgress
+	Class(v ...string) HTMLProgress
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLProgress
@@ -31181,8 +31182,8 @@ func (e *htmlProgress) Aria(k string, v interface{}) HTMLProgress {
 	return e
 }
 
-func (e *htmlProgress) Class(v string) HTMLProgress {
-	e.setAttr("class", v)
+func (e *htmlProgress) Class(v ...string) HTMLProgress {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -31436,7 +31437,7 @@ type HTMLQ interface {
 	Cite(v string) HTMLQ
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLQ
+	Class(v ...string) HTMLQ
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLQ
@@ -31608,8 +31609,8 @@ func (e *htmlQ) Cite(v string) HTMLQ {
 	return e
 }
 
-func (e *htmlQ) Class(v string) HTMLQ {
-	e.setAttr("class", v)
+func (e *htmlQ) Class(v ...string) HTMLQ {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -31850,7 +31851,7 @@ type HTMLRp interface {
 	Aria(k string, v interface{}) HTMLRp
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLRp
+	Class(v ...string) HTMLRp
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLRp
@@ -32017,8 +32018,8 @@ func (e *htmlRp) Aria(k string, v interface{}) HTMLRp {
 	return e
 }
 
-func (e *htmlRp) Class(v string) HTMLRp {
-	e.setAttr("class", v)
+func (e *htmlRp) Class(v ...string) HTMLRp {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -32259,7 +32260,7 @@ type HTMLRt interface {
 	Aria(k string, v interface{}) HTMLRt
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLRt
+	Class(v ...string) HTMLRt
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLRt
@@ -32426,8 +32427,8 @@ func (e *htmlRt) Aria(k string, v interface{}) HTMLRt {
 	return e
 }
 
-func (e *htmlRt) Class(v string) HTMLRt {
-	e.setAttr("class", v)
+func (e *htmlRt) Class(v ...string) HTMLRt {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -32668,7 +32669,7 @@ type HTMLRuby interface {
 	Aria(k string, v interface{}) HTMLRuby
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLRuby
+	Class(v ...string) HTMLRuby
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLRuby
@@ -32835,8 +32836,8 @@ func (e *htmlRuby) Aria(k string, v interface{}) HTMLRuby {
 	return e
 }
 
-func (e *htmlRuby) Class(v string) HTMLRuby {
-	e.setAttr("class", v)
+func (e *htmlRuby) Class(v ...string) HTMLRuby {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -33077,7 +33078,7 @@ type HTMLS interface {
 	Aria(k string, v interface{}) HTMLS
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLS
+	Class(v ...string) HTMLS
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLS
@@ -33244,8 +33245,8 @@ func (e *htmlS) Aria(k string, v interface{}) HTMLS {
 	return e
 }
 
-func (e *htmlS) Class(v string) HTMLS {
-	e.setAttr("class", v)
+func (e *htmlS) Class(v ...string) HTMLS {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -33486,7 +33487,7 @@ type HTMLSamp interface {
 	Aria(k string, v interface{}) HTMLSamp
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSamp
+	Class(v ...string) HTMLSamp
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSamp
@@ -33653,8 +33654,8 @@ func (e *htmlSamp) Aria(k string, v interface{}) HTMLSamp {
 	return e
 }
 
-func (e *htmlSamp) Class(v string) HTMLSamp {
-	e.setAttr("class", v)
+func (e *htmlSamp) Class(v ...string) HTMLSamp {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -33901,7 +33902,7 @@ type HTMLScript interface {
 	Charset(v string) HTMLScript
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLScript
+	Class(v ...string) HTMLScript
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLScript
@@ -33997,8 +33998,8 @@ func (e *htmlScript) Charset(v string) HTMLScript {
 	return e
 }
 
-func (e *htmlScript) Class(v string) HTMLScript {
-	e.setAttr("class", v)
+func (e *htmlScript) Class(v ...string) HTMLScript {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -34104,7 +34105,7 @@ type HTMLSection interface {
 	Aria(k string, v interface{}) HTMLSection
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSection
+	Class(v ...string) HTMLSection
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSection
@@ -34271,8 +34272,8 @@ func (e *htmlSection) Aria(k string, v interface{}) HTMLSection {
 	return e
 }
 
-func (e *htmlSection) Class(v string) HTMLSection {
-	e.setAttr("class", v)
+func (e *htmlSection) Class(v ...string) HTMLSection {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -34516,7 +34517,7 @@ type HTMLSelect interface {
 	AutoFocus(v bool) HTMLSelect
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSelect
+	Class(v ...string) HTMLSelect
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSelect
@@ -34706,8 +34707,8 @@ func (e *htmlSelect) AutoFocus(v bool) HTMLSelect {
 	return e
 }
 
-func (e *htmlSelect) Class(v string) HTMLSelect {
-	e.setAttr("class", v)
+func (e *htmlSelect) Class(v ...string) HTMLSelect {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -34978,7 +34979,7 @@ type HTMLSmall interface {
 	Aria(k string, v interface{}) HTMLSmall
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSmall
+	Class(v ...string) HTMLSmall
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSmall
@@ -35145,8 +35146,8 @@ func (e *htmlSmall) Aria(k string, v interface{}) HTMLSmall {
 	return e
 }
 
-func (e *htmlSmall) Class(v string) HTMLSmall {
-	e.setAttr("class", v)
+func (e *htmlSmall) Class(v ...string) HTMLSmall {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -35381,7 +35382,7 @@ type HTMLSource interface {
 	Aria(k string, v interface{}) HTMLSource
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSource
+	Class(v ...string) HTMLSource
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSource
@@ -35554,8 +35555,8 @@ func (e *htmlSource) Aria(k string, v interface{}) HTMLSource {
 	return e
 }
 
-func (e *htmlSource) Class(v string) HTMLSource {
-	e.setAttr("class", v)
+func (e *htmlSource) Class(v ...string) HTMLSource {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -35821,7 +35822,7 @@ type HTMLSpan interface {
 	Aria(k string, v interface{}) HTMLSpan
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSpan
+	Class(v ...string) HTMLSpan
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSpan
@@ -35988,8 +35989,8 @@ func (e *htmlSpan) Aria(k string, v interface{}) HTMLSpan {
 	return e
 }
 
-func (e *htmlSpan) Class(v string) HTMLSpan {
-	e.setAttr("class", v)
+func (e *htmlSpan) Class(v ...string) HTMLSpan {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -36230,7 +36231,7 @@ type HTMLStrong interface {
 	Aria(k string, v interface{}) HTMLStrong
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLStrong
+	Class(v ...string) HTMLStrong
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLStrong
@@ -36397,8 +36398,8 @@ func (e *htmlStrong) Aria(k string, v interface{}) HTMLStrong {
 	return e
 }
 
-func (e *htmlStrong) Class(v string) HTMLStrong {
-	e.setAttr("class", v)
+func (e *htmlStrong) Class(v ...string) HTMLStrong {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -36639,7 +36640,7 @@ type HTMLStyle interface {
 	Aria(k string, v interface{}) HTMLStyle
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLStyle
+	Class(v ...string) HTMLStyle
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLStyle
@@ -36815,8 +36816,8 @@ func (e *htmlStyle) Aria(k string, v interface{}) HTMLStyle {
 	return e
 }
 
-func (e *htmlStyle) Class(v string) HTMLStyle {
-	e.setAttr("class", v)
+func (e *htmlStyle) Class(v ...string) HTMLStyle {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -37072,7 +37073,7 @@ type HTMLSub interface {
 	Aria(k string, v interface{}) HTMLSub
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSub
+	Class(v ...string) HTMLSub
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSub
@@ -37239,8 +37240,8 @@ func (e *htmlSub) Aria(k string, v interface{}) HTMLSub {
 	return e
 }
 
-func (e *htmlSub) Class(v string) HTMLSub {
-	e.setAttr("class", v)
+func (e *htmlSub) Class(v ...string) HTMLSub {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -37481,7 +37482,7 @@ type HTMLSummary interface {
 	Aria(k string, v interface{}) HTMLSummary
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSummary
+	Class(v ...string) HTMLSummary
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSummary
@@ -37648,8 +37649,8 @@ func (e *htmlSummary) Aria(k string, v interface{}) HTMLSummary {
 	return e
 }
 
-func (e *htmlSummary) Class(v string) HTMLSummary {
-	e.setAttr("class", v)
+func (e *htmlSummary) Class(v ...string) HTMLSummary {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -37890,7 +37891,7 @@ type HTMLSup interface {
 	Aria(k string, v interface{}) HTMLSup
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLSup
+	Class(v ...string) HTMLSup
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLSup
@@ -38057,8 +38058,8 @@ func (e *htmlSup) Aria(k string, v interface{}) HTMLSup {
 	return e
 }
 
-func (e *htmlSup) Class(v string) HTMLSup {
-	e.setAttr("class", v)
+func (e *htmlSup) Class(v ...string) HTMLSup {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -38299,7 +38300,7 @@ type HTMLTable interface {
 	Aria(k string, v interface{}) HTMLTable
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTable
+	Class(v ...string) HTMLTable
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLTable
@@ -38466,8 +38467,8 @@ func (e *htmlTable) Aria(k string, v interface{}) HTMLTable {
 	return e
 }
 
-func (e *htmlTable) Class(v string) HTMLTable {
-	e.setAttr("class", v)
+func (e *htmlTable) Class(v ...string) HTMLTable {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -38708,7 +38709,7 @@ type HTMLTBody interface {
 	Aria(k string, v interface{}) HTMLTBody
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTBody
+	Class(v ...string) HTMLTBody
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLTBody
@@ -38875,8 +38876,8 @@ func (e *htmlTBody) Aria(k string, v interface{}) HTMLTBody {
 	return e
 }
 
-func (e *htmlTBody) Class(v string) HTMLTBody {
-	e.setAttr("class", v)
+func (e *htmlTBody) Class(v ...string) HTMLTBody {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -39117,7 +39118,7 @@ type HTMLTd interface {
 	Aria(k string, v interface{}) HTMLTd
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTd
+	Class(v ...string) HTMLTd
 
 	// ColSpan specifies the number of columns a table cell should span.
 	ColSpan(v int) HTMLTd
@@ -39293,8 +39294,8 @@ func (e *htmlTd) Aria(k string, v interface{}) HTMLTd {
 	return e
 }
 
-func (e *htmlTd) Class(v string) HTMLTd {
-	e.setAttr("class", v)
+func (e *htmlTd) Class(v ...string) HTMLTd {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -39550,7 +39551,7 @@ type HTMLTemplate interface {
 	Aria(k string, v interface{}) HTMLTemplate
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTemplate
+	Class(v ...string) HTMLTemplate
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLTemplate
@@ -39621,8 +39622,8 @@ func (e *htmlTemplate) Aria(k string, v interface{}) HTMLTemplate {
 	return e
 }
 
-func (e *htmlTemplate) Class(v string) HTMLTemplate {
-	e.setAttr("class", v)
+func (e *htmlTemplate) Class(v ...string) HTMLTemplate {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -39706,7 +39707,7 @@ type HTMLTextarea interface {
 	AutoFocus(v bool) HTMLTextarea
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTextarea
+	Class(v ...string) HTMLTextarea
 
 	// Cols specifies the visible width of a text area.
 	Cols(v int) HTMLTextarea
@@ -39912,8 +39913,8 @@ func (e *htmlTextarea) AutoFocus(v bool) HTMLTextarea {
 	return e
 }
 
-func (e *htmlTextarea) Class(v string) HTMLTextarea {
-	e.setAttr("class", v)
+func (e *htmlTextarea) Class(v ...string) HTMLTextarea {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -40209,7 +40210,7 @@ type HTMLTfoot interface {
 	Aria(k string, v interface{}) HTMLTfoot
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTfoot
+	Class(v ...string) HTMLTfoot
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLTfoot
@@ -40376,8 +40377,8 @@ func (e *htmlTfoot) Aria(k string, v interface{}) HTMLTfoot {
 	return e
 }
 
-func (e *htmlTfoot) Class(v string) HTMLTfoot {
-	e.setAttr("class", v)
+func (e *htmlTfoot) Class(v ...string) HTMLTfoot {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -40621,7 +40622,7 @@ type HTMLTh interface {
 	Aria(k string, v interface{}) HTMLTh
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTh
+	Class(v ...string) HTMLTh
 
 	// ColSpan specifies the number of columns a table cell should span.
 	ColSpan(v int) HTMLTh
@@ -40805,8 +40806,8 @@ func (e *htmlTh) Aria(k string, v interface{}) HTMLTh {
 	return e
 }
 
-func (e *htmlTh) Class(v string) HTMLTh {
-	e.setAttr("class", v)
+func (e *htmlTh) Class(v ...string) HTMLTh {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -41067,7 +41068,7 @@ type HTMLTHead interface {
 	Aria(k string, v interface{}) HTMLTHead
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTHead
+	Class(v ...string) HTMLTHead
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLTHead
@@ -41234,8 +41235,8 @@ func (e *htmlTHead) Aria(k string, v interface{}) HTMLTHead {
 	return e
 }
 
-func (e *htmlTHead) Class(v string) HTMLTHead {
-	e.setAttr("class", v)
+func (e *htmlTHead) Class(v ...string) HTMLTHead {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -41476,7 +41477,7 @@ type HTMLTime interface {
 	Aria(k string, v interface{}) HTMLTime
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTime
+	Class(v ...string) HTMLTime
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLTime
@@ -41646,8 +41647,8 @@ func (e *htmlTime) Aria(k string, v interface{}) HTMLTime {
 	return e
 }
 
-func (e *htmlTime) Class(v string) HTMLTime {
-	e.setAttr("class", v)
+func (e *htmlTime) Class(v ...string) HTMLTime {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -41893,7 +41894,7 @@ type HTMLTitle interface {
 	Aria(k string, v interface{}) HTMLTitle
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTitle
+	Class(v ...string) HTMLTitle
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLTitle
@@ -41964,8 +41965,8 @@ func (e *htmlTitle) Aria(k string, v interface{}) HTMLTitle {
 	return e
 }
 
-func (e *htmlTitle) Class(v string) HTMLTitle {
-	e.setAttr("class", v)
+func (e *htmlTitle) Class(v ...string) HTMLTitle {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -42046,7 +42047,7 @@ type HTMLTr interface {
 	Aria(k string, v interface{}) HTMLTr
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLTr
+	Class(v ...string) HTMLTr
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLTr
@@ -42213,8 +42214,8 @@ func (e *htmlTr) Aria(k string, v interface{}) HTMLTr {
 	return e
 }
 
-func (e *htmlTr) Class(v string) HTMLTr {
-	e.setAttr("class", v)
+func (e *htmlTr) Class(v ...string) HTMLTr {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -42455,7 +42456,7 @@ type HTMLU interface {
 	Aria(k string, v interface{}) HTMLU
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLU
+	Class(v ...string) HTMLU
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLU
@@ -42622,8 +42623,8 @@ func (e *htmlU) Aria(k string, v interface{}) HTMLU {
 	return e
 }
 
-func (e *htmlU) Class(v string) HTMLU {
-	e.setAttr("class", v)
+func (e *htmlU) Class(v ...string) HTMLU {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -42864,7 +42865,7 @@ type HTMLUl interface {
 	Aria(k string, v interface{}) HTMLUl
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLUl
+	Class(v ...string) HTMLUl
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLUl
@@ -43031,8 +43032,8 @@ func (e *htmlUl) Aria(k string, v interface{}) HTMLUl {
 	return e
 }
 
-func (e *htmlUl) Class(v string) HTMLUl {
-	e.setAttr("class", v)
+func (e *htmlUl) Class(v ...string) HTMLUl {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -43273,7 +43274,7 @@ type HTMLVar interface {
 	Aria(k string, v interface{}) HTMLVar
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLVar
+	Class(v ...string) HTMLVar
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLVar
@@ -43440,8 +43441,8 @@ func (e *htmlVar) Aria(k string, v interface{}) HTMLVar {
 	return e
 }
 
-func (e *htmlVar) Class(v string) HTMLVar {
-	e.setAttr("class", v)
+func (e *htmlVar) Class(v ...string) HTMLVar {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -43685,7 +43686,7 @@ type HTMLVideo interface {
 	AutoPlay(v bool) HTMLVideo
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLVideo
+	Class(v ...string) HTMLVideo
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLVideo
@@ -43953,8 +43954,8 @@ func (e *htmlVideo) AutoPlay(v bool) HTMLVideo {
 	return e
 }
 
-func (e *htmlVideo) Class(v string) HTMLVideo {
-	e.setAttr("class", v)
+func (e *htmlVideo) Class(v ...string) HTMLVideo {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
@@ -44355,7 +44356,7 @@ type HTMLWbr interface {
 	Aria(k string, v interface{}) HTMLWbr
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
-	Class(v string) HTMLWbr
+	Class(v ...string) HTMLWbr
 
 	// ContentEditable specifies whether the content of an element is editable or not.
 	ContentEditable(v bool) HTMLWbr
@@ -44522,8 +44523,8 @@ func (e *htmlWbr) Aria(k string, v interface{}) HTMLWbr {
 	return e
 }
 
-func (e *htmlWbr) Class(v string) HTMLWbr {
-	e.setAttr("class", v)
+func (e *htmlWbr) Class(v ...string) HTMLWbr {
+	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
