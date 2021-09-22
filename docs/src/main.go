@@ -129,6 +129,7 @@ func main() {
 			"/web/css/docs.css",
 		},
 		RawHeaders: []string{
+			`<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1013306768105236" crossorigin="anonymous"></script>`,
 			analytics.GoogleAnalyticsHeader("G-SW4FQEM9VM"),
 		},
 		CacheableResources: []string{
