@@ -56,7 +56,7 @@ type littleApp struct {
 // OnAppUpdate satisfies the app.AppUpdater interface. It is called when the app
 // is updated in background.
 func (a *littleApp) OnAppUpdate(ctx app.Context) {
-	a.updateAvailable = ctx.AppupdateAvailable // Reports that an app update is available.
+	a.updateAvailable = ctx.AppUpdateAvailable() // Reports that an app update is available.
 }
 
 func (a *littleApp) Render() app.UI {
