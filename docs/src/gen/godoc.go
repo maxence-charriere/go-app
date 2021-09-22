@@ -16,7 +16,7 @@ func main() {
 		targetID string
 	}{
 		{
-			url:      "https://pkg.go.dev/github.com/maxence-charriere/go-app/v8/pkg/app",
+			url:      "https://pkg.go.dev/github.com/maxence-charriere/go-app/v9/pkg/app",
 			file:     "../web/documents/reference.html",
 			targetID: "page",
 		},
