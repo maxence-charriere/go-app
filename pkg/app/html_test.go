@@ -30,6 +30,7 @@ func TestA(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Target("foo")
 	elem.Title("foo")
@@ -89,6 +90,7 @@ func TestAbbr(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -146,6 +148,7 @@ func TestAddress(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -211,6 +214,7 @@ func TestArea(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Target("foo")
 	elem.Title("foo")
@@ -269,6 +273,7 @@ func TestArticle(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -326,6 +331,7 @@ func TestAside(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -394,6 +400,7 @@ func TestAudio(t *testing.T) {
 	elem.Spellcheck(false)
 	elem.Src("http://foo.com")
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -474,6 +481,7 @@ func TestB(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -532,6 +540,7 @@ func TestBase(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Target("foo")
 	elem.Title("foo")
@@ -589,6 +598,7 @@ func TestBdi(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -646,6 +656,7 @@ func TestBdo(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -704,6 +715,7 @@ func TestBlockquote(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -761,6 +773,7 @@ func TestBody(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -833,6 +846,7 @@ func TestBr(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -901,6 +915,7 @@ func TestButton(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Type("foo")
@@ -961,6 +976,7 @@ func TestCanvas(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Width(42)
@@ -1019,6 +1035,7 @@ func TestCaption(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -1076,6 +1093,7 @@ func TestCite(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -1133,6 +1151,7 @@ func TestCode(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -1191,6 +1210,7 @@ func TestCol(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -1248,6 +1268,7 @@ func TestColGroup(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -1305,6 +1326,7 @@ func TestData(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Value(42)
@@ -1329,6 +1351,7 @@ func TestDataList(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -1386,6 +1409,7 @@ func TestDd(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -1445,6 +1469,7 @@ func TestDel(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -1504,6 +1529,7 @@ func TestDetails(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -1562,6 +1588,7 @@ func TestDfn(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -1621,6 +1648,7 @@ func TestDialog(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -1678,6 +1706,7 @@ func TestDiv(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -1735,6 +1764,7 @@ func TestDl(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -1792,6 +1822,7 @@ func TestDt(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -1849,6 +1880,7 @@ func TestEm(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -1908,6 +1940,7 @@ func TestEmbed(t *testing.T) {
 	elem.Spellcheck(false)
 	elem.Src("http://foo.com")
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Type("foo")
@@ -1993,6 +2026,7 @@ func TestFieldSet(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -2050,6 +2084,7 @@ func TestFigCaption(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -2107,6 +2142,7 @@ func TestFigure(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -2164,6 +2200,7 @@ func TestFooter(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -2230,6 +2267,7 @@ func TestForm(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Target("foo")
 	elem.Title("foo")
@@ -2288,6 +2326,7 @@ func TestH1(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -2345,6 +2384,7 @@ func TestH2(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -2402,6 +2442,7 @@ func TestH3(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -2459,6 +2500,7 @@ func TestH4(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -2516,6 +2558,7 @@ func TestH5(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -2573,6 +2616,7 @@ func TestH6(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -2630,6 +2674,7 @@ func TestHead(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Text("hello")
@@ -2653,6 +2698,7 @@ func TestHeader(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -2710,6 +2756,7 @@ func TestHr(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -2766,6 +2813,7 @@ func TestHtml(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Text("hello")
@@ -2789,6 +2837,7 @@ func TestI(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -2857,6 +2906,7 @@ func TestIFrame(t *testing.T) {
 	elem.Src("http://foo.com")
 	elem.SrcDoc("foo")
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Width(42)
@@ -2924,6 +2974,7 @@ func TestImg(t *testing.T) {
 	elem.Src("http://foo.com")
 	elem.SrcSet("http://foo.com")
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.UseMap("foo")
@@ -3041,6 +3092,7 @@ func TestInput(t *testing.T) {
 	elem.Src("http://foo.com")
 	elem.Step(42)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Type("foo")
@@ -3101,6 +3153,7 @@ func TestIns(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -3158,6 +3211,7 @@ func TestKbd(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -3217,6 +3271,7 @@ func TestLabel(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -3274,6 +3329,7 @@ func TestLegend(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -3331,6 +3387,7 @@ func TestLi(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Value(42)
@@ -3395,6 +3452,7 @@ func TestLink(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Type("foo")
@@ -3453,6 +3511,7 @@ func TestMain(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -3511,6 +3570,7 @@ func TestMap(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -3568,6 +3628,7 @@ func TestMark(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -3630,6 +3691,7 @@ func TestMeta(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 }
@@ -3658,6 +3720,7 @@ func TestMeter(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Value(42)
@@ -3716,6 +3779,7 @@ func TestNav(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -3773,6 +3837,7 @@ func TestNoScript(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Text("hello")
@@ -3800,6 +3865,7 @@ func TestObject(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Type("foo")
@@ -3886,6 +3952,7 @@ func TestOl(t *testing.T) {
 	elem.Spellcheck(false)
 	elem.Start(42)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Type("foo")
@@ -3947,6 +4014,7 @@ func TestOptGroup(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -4009,6 +4077,7 @@ func TestOption(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Value(42)
@@ -4070,6 +4139,7 @@ func TestOutput(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -4127,6 +4197,7 @@ func TestP(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -4185,6 +4256,7 @@ func TestParam(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Value(42)
@@ -4242,6 +4314,7 @@ func TestPicture(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -4299,6 +4372,7 @@ func TestPre(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -4357,6 +4431,7 @@ func TestProgress(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Value(42)
@@ -4416,6 +4491,7 @@ func TestQ(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -4473,6 +4549,7 @@ func TestRp(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -4530,6 +4607,7 @@ func TestRt(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -4587,6 +4665,7 @@ func TestRuby(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -4644,6 +4723,7 @@ func TestS(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -4701,6 +4781,7 @@ func TestSamp(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -4765,6 +4846,7 @@ func TestScript(t *testing.T) {
 	elem.Spellcheck(false)
 	elem.Src("http://foo.com")
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Type("foo")
@@ -4792,6 +4874,7 @@ func TestSection(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -4860,6 +4943,7 @@ func TestSelect(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -4917,6 +5001,7 @@ func TestSmall(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -4978,6 +5063,7 @@ func TestSource(t *testing.T) {
 	elem.Src("http://foo.com")
 	elem.SrcSet("http://foo.com")
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Type("foo")
@@ -5035,6 +5121,7 @@ func TestSpan(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -5092,6 +5179,7 @@ func TestStrong(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -5150,6 +5238,7 @@ func TestStyle(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Type("foo")
@@ -5209,6 +5298,7 @@ func TestSub(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -5266,6 +5356,7 @@ func TestSummary(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -5323,6 +5414,7 @@ func TestSup(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -5380,6 +5472,7 @@ func TestTable(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -5437,6 +5530,7 @@ func TestTBody(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -5497,6 +5591,7 @@ func TestTd(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -5554,6 +5649,7 @@ func TestTemplate(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Text("hello")
@@ -5592,6 +5688,7 @@ func TestTextarea(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Wrap("foo")
@@ -5650,6 +5747,7 @@ func TestTfoot(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -5712,6 +5810,7 @@ func TestTh(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -5769,6 +5868,7 @@ func TestTHead(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -5827,6 +5927,7 @@ func TestTime(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -5884,6 +5985,7 @@ func TestTitle(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Text("hello")
@@ -5907,6 +6009,7 @@ func TestTr(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -5964,6 +6067,7 @@ func TestU(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -6021,6 +6125,7 @@ func TestUl(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -6078,6 +6183,7 @@ func TestVar(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 
@@ -6148,6 +6254,7 @@ func TestVideo(t *testing.T) {
 	elem.Spellcheck(false)
 	elem.Src("http://foo.com")
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Width(42)
@@ -6229,6 +6336,7 @@ func TestWbr(t *testing.T) {
 	elem.Spellcheck(true)
 	elem.Spellcheck(false)
 	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
 

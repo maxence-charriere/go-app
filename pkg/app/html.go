@@ -71,6 +71,9 @@ type HTMLA interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLA
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLA
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLA
 
@@ -300,6 +303,13 @@ func (e *htmlA) Style(k, v string) HTMLA {
 	return e
 }
 
+func (e *htmlA) Styles(s map[string]string) HTMLA {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlA) TabIndex(v int) HTMLA {
 	e.setAttr("tabindex", v)
 	return e
@@ -526,6 +536,9 @@ type HTMLAbbr interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLAbbr
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLAbbr
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLAbbr
 
@@ -716,6 +729,13 @@ func (e *htmlAbbr) Spellcheck(v bool) HTMLAbbr {
 
 func (e *htmlAbbr) Style(k, v string) HTMLAbbr {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlAbbr) Styles(s map[string]string) HTMLAbbr {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -935,6 +955,9 @@ type HTMLAddress interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLAddress
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLAddress
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLAddress
 
@@ -1125,6 +1148,13 @@ func (e *htmlAddress) Spellcheck(v bool) HTMLAddress {
 
 func (e *htmlAddress) Style(k, v string) HTMLAddress {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlAddress) Styles(s map[string]string) HTMLAddress {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -1362,6 +1392,9 @@ type HTMLArea interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLArea
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLArea
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLArea
 
@@ -1592,6 +1625,13 @@ func (e *htmlArea) Style(k, v string) HTMLArea {
 	return e
 }
 
+func (e *htmlArea) Styles(s map[string]string) HTMLArea {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlArea) TabIndex(v int) HTMLArea {
 	e.setAttr("tabindex", v)
 	return e
@@ -1818,6 +1858,9 @@ type HTMLArticle interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLArticle
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLArticle
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLArticle
 
@@ -2008,6 +2051,13 @@ func (e *htmlArticle) Spellcheck(v bool) HTMLArticle {
 
 func (e *htmlArticle) Style(k, v string) HTMLArticle {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlArticle) Styles(s map[string]string) HTMLArticle {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -2227,6 +2277,9 @@ type HTMLAside interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLAside
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLAside
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLAside
 
@@ -2417,6 +2470,13 @@ func (e *htmlAside) Spellcheck(v bool) HTMLAside {
 
 func (e *htmlAside) Style(k, v string) HTMLAside {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlAside) Styles(s map[string]string) HTMLAside {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -2656,6 +2716,9 @@ type HTMLAudio interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLAudio
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLAudio
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLAudio
@@ -2951,6 +3014,13 @@ func (e *htmlAudio) Src(v string) HTMLAudio {
 
 func (e *htmlAudio) Style(k, v string) HTMLAudio {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlAudio) Styles(s map[string]string) HTMLAudio {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -3285,6 +3355,9 @@ type HTMLB interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLB
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLB
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLB
 
@@ -3475,6 +3548,13 @@ func (e *htmlB) Spellcheck(v bool) HTMLB {
 
 func (e *htmlB) Style(k, v string) HTMLB {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlB) Styles(s map[string]string) HTMLB {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -3691,6 +3771,9 @@ type HTMLBase interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLBase
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLBase
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBase
 
@@ -3880,6 +3963,13 @@ func (e *htmlBase) Spellcheck(v bool) HTMLBase {
 
 func (e *htmlBase) Style(k, v string) HTMLBase {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlBase) Styles(s map[string]string) HTMLBase {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -4104,6 +4194,9 @@ type HTMLBdi interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLBdi
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLBdi
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBdi
 
@@ -4294,6 +4387,13 @@ func (e *htmlBdi) Spellcheck(v bool) HTMLBdi {
 
 func (e *htmlBdi) Style(k, v string) HTMLBdi {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlBdi) Styles(s map[string]string) HTMLBdi {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -4513,6 +4613,9 @@ type HTMLBdo interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLBdo
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLBdo
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBdo
 
@@ -4703,6 +4806,13 @@ func (e *htmlBdo) Spellcheck(v bool) HTMLBdo {
 
 func (e *htmlBdo) Style(k, v string) HTMLBdo {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlBdo) Styles(s map[string]string) HTMLBdo {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -4925,6 +5035,9 @@ type HTMLBlockquote interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLBlockquote
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLBlockquote
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBlockquote
 
@@ -5120,6 +5233,13 @@ func (e *htmlBlockquote) Spellcheck(v bool) HTMLBlockquote {
 
 func (e *htmlBlockquote) Style(k, v string) HTMLBlockquote {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlBlockquote) Styles(s map[string]string) HTMLBlockquote {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -5338,6 +5458,9 @@ type HTMLBody interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLBody
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLBody
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBody
@@ -5574,6 +5697,13 @@ func (e *htmlBody) Spellcheck(v bool) HTMLBody {
 
 func (e *htmlBody) Style(k, v string) HTMLBody {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlBody) Styles(s map[string]string) HTMLBody {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -5862,6 +5992,9 @@ type HTMLBr interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLBr
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLBr
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLBr
 
@@ -6043,6 +6176,13 @@ func (e *htmlBr) Spellcheck(v bool) HTMLBr {
 
 func (e *htmlBr) Style(k, v string) HTMLBr {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlBr) Styles(s map[string]string) HTMLBr {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -6289,6 +6429,9 @@ type HTMLButton interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLButton
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLButton
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLButton
 
@@ -6533,6 +6676,13 @@ func (e *htmlButton) Style(k, v string) HTMLButton {
 	return e
 }
 
+func (e *htmlButton) Styles(s map[string]string) HTMLButton {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlButton) TabIndex(v int) HTMLButton {
 	e.setAttr("tabindex", v)
 	return e
@@ -6762,6 +6912,9 @@ type HTMLCanvas interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLCanvas
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLCanvas
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLCanvas
 
@@ -6960,6 +7113,13 @@ func (e *htmlCanvas) Spellcheck(v bool) HTMLCanvas {
 
 func (e *htmlCanvas) Style(k, v string) HTMLCanvas {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlCanvas) Styles(s map[string]string) HTMLCanvas {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -7184,6 +7344,9 @@ type HTMLCaption interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLCaption
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLCaption
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLCaption
 
@@ -7374,6 +7537,13 @@ func (e *htmlCaption) Spellcheck(v bool) HTMLCaption {
 
 func (e *htmlCaption) Style(k, v string) HTMLCaption {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlCaption) Styles(s map[string]string) HTMLCaption {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -7593,6 +7763,9 @@ type HTMLCite interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLCite
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLCite
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLCite
 
@@ -7783,6 +7956,13 @@ func (e *htmlCite) Spellcheck(v bool) HTMLCite {
 
 func (e *htmlCite) Style(k, v string) HTMLCite {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlCite) Styles(s map[string]string) HTMLCite {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -8002,6 +8182,9 @@ type HTMLCode interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLCode
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLCode
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLCode
 
@@ -8192,6 +8375,13 @@ func (e *htmlCode) Spellcheck(v bool) HTMLCode {
 
 func (e *htmlCode) Style(k, v string) HTMLCode {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlCode) Styles(s map[string]string) HTMLCode {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -8408,6 +8598,9 @@ type HTMLCol interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLCol
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLCol
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLCol
 
@@ -8594,6 +8787,13 @@ func (e *htmlCol) Spellcheck(v bool) HTMLCol {
 
 func (e *htmlCol) Style(k, v string) HTMLCol {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlCol) Styles(s map[string]string) HTMLCol {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -8816,6 +9016,9 @@ type HTMLColGroup interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLColGroup
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLColGroup
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLColGroup
 
@@ -9011,6 +9214,13 @@ func (e *htmlColGroup) Spellcheck(v bool) HTMLColGroup {
 
 func (e *htmlColGroup) Style(k, v string) HTMLColGroup {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlColGroup) Styles(s map[string]string) HTMLColGroup {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -9230,6 +9440,9 @@ type HTMLData interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLData
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLData
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLData
 
@@ -9330,6 +9543,13 @@ func (e *htmlData) Style(k, v string) HTMLData {
 	return e
 }
 
+func (e *htmlData) Styles(s map[string]string) HTMLData {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlData) TabIndex(v int) HTMLData {
 	e.setAttr("tabindex", v)
 	return e
@@ -9390,6 +9610,9 @@ type HTMLDataList interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDataList
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDataList
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDataList
@@ -9581,6 +9804,13 @@ func (e *htmlDataList) Spellcheck(v bool) HTMLDataList {
 
 func (e *htmlDataList) Style(k, v string) HTMLDataList {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDataList) Styles(s map[string]string) HTMLDataList {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -9800,6 +10030,9 @@ type HTMLDd interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDd
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDd
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDd
 
@@ -9990,6 +10223,13 @@ func (e *htmlDd) Spellcheck(v bool) HTMLDd {
 
 func (e *htmlDd) Style(k, v string) HTMLDd {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDd) Styles(s map[string]string) HTMLDd {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -10215,6 +10455,9 @@ type HTMLDel interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDel
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDel
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDel
 
@@ -10415,6 +10658,13 @@ func (e *htmlDel) Spellcheck(v bool) HTMLDel {
 
 func (e *htmlDel) Style(k, v string) HTMLDel {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDel) Styles(s map[string]string) HTMLDel {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -10637,6 +10887,9 @@ type HTMLDetails interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDetails
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDetails
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDetails
 
@@ -10835,6 +11088,13 @@ func (e *htmlDetails) Spellcheck(v bool) HTMLDetails {
 
 func (e *htmlDetails) Style(k, v string) HTMLDetails {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDetails) Styles(s map[string]string) HTMLDetails {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -11059,6 +11319,9 @@ type HTMLDfn interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDfn
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDfn
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDfn
 
@@ -11249,6 +11512,13 @@ func (e *htmlDfn) Spellcheck(v bool) HTMLDfn {
 
 func (e *htmlDfn) Style(k, v string) HTMLDfn {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDfn) Styles(s map[string]string) HTMLDfn {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -11471,6 +11741,9 @@ type HTMLDialog interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDialog
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDialog
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDialog
 
@@ -11666,6 +11939,13 @@ func (e *htmlDialog) Spellcheck(v bool) HTMLDialog {
 
 func (e *htmlDialog) Style(k, v string) HTMLDialog {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDialog) Styles(s map[string]string) HTMLDialog {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -11885,6 +12165,9 @@ type HTMLDiv interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDiv
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDiv
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDiv
 
@@ -12075,6 +12358,13 @@ func (e *htmlDiv) Spellcheck(v bool) HTMLDiv {
 
 func (e *htmlDiv) Style(k, v string) HTMLDiv {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDiv) Styles(s map[string]string) HTMLDiv {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -12294,6 +12584,9 @@ type HTMLDl interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDl
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDl
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDl
 
@@ -12484,6 +12777,13 @@ func (e *htmlDl) Spellcheck(v bool) HTMLDl {
 
 func (e *htmlDl) Style(k, v string) HTMLDl {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDl) Styles(s map[string]string) HTMLDl {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -12703,6 +13003,9 @@ type HTMLDt interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLDt
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLDt
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLDt
 
@@ -12893,6 +13196,13 @@ func (e *htmlDt) Spellcheck(v bool) HTMLDt {
 
 func (e *htmlDt) Style(k, v string) HTMLDt {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlDt) Styles(s map[string]string) HTMLDt {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -13112,6 +13422,9 @@ type HTMLEm interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLEm
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLEm
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLEm
 
@@ -13302,6 +13615,13 @@ func (e *htmlEm) Spellcheck(v bool) HTMLEm {
 
 func (e *htmlEm) Style(k, v string) HTMLEm {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlEm) Styles(s map[string]string) HTMLEm {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -13520,6 +13840,9 @@ type HTMLEmbed interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLEmbed
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLEmbed
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLEmbed
@@ -13787,6 +14110,13 @@ func (e *htmlEmbed) Src(v string) HTMLEmbed {
 
 func (e *htmlEmbed) Style(k, v string) HTMLEmbed {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlEmbed) Styles(s map[string]string) HTMLEmbed {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -14140,6 +14470,9 @@ type HTMLFieldSet interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLFieldSet
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLFieldSet
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLFieldSet
 
@@ -14345,6 +14678,13 @@ func (e *htmlFieldSet) Spellcheck(v bool) HTMLFieldSet {
 
 func (e *htmlFieldSet) Style(k, v string) HTMLFieldSet {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlFieldSet) Styles(s map[string]string) HTMLFieldSet {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -14564,6 +14904,9 @@ type HTMLFigCaption interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLFigCaption
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLFigCaption
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLFigCaption
 
@@ -14754,6 +15097,13 @@ func (e *htmlFigCaption) Spellcheck(v bool) HTMLFigCaption {
 
 func (e *htmlFigCaption) Style(k, v string) HTMLFigCaption {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlFigCaption) Styles(s map[string]string) HTMLFigCaption {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -14973,6 +15323,9 @@ type HTMLFigure interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLFigure
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLFigure
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLFigure
 
@@ -15163,6 +15516,13 @@ func (e *htmlFigure) Spellcheck(v bool) HTMLFigure {
 
 func (e *htmlFigure) Style(k, v string) HTMLFigure {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlFigure) Styles(s map[string]string) HTMLFigure {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -15382,6 +15742,9 @@ type HTMLFooter interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLFooter
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLFooter
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLFooter
 
@@ -15572,6 +15935,13 @@ func (e *htmlFooter) Spellcheck(v bool) HTMLFooter {
 
 func (e *htmlFooter) Style(k, v string) HTMLFooter {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlFooter) Styles(s map[string]string) HTMLFooter {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -15812,6 +16182,9 @@ type HTMLForm interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLForm
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLForm
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLForm
 
@@ -16048,6 +16421,13 @@ func (e *htmlForm) Style(k, v string) HTMLForm {
 	return e
 }
 
+func (e *htmlForm) Styles(s map[string]string) HTMLForm {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlForm) TabIndex(v int) HTMLForm {
 	e.setAttr("tabindex", v)
 	return e
@@ -16269,6 +16649,9 @@ type HTMLH1 interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLH1
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLH1
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH1
 
@@ -16459,6 +16842,13 @@ func (e *htmlH1) Spellcheck(v bool) HTMLH1 {
 
 func (e *htmlH1) Style(k, v string) HTMLH1 {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlH1) Styles(s map[string]string) HTMLH1 {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -16678,6 +17068,9 @@ type HTMLH2 interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLH2
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLH2
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH2
 
@@ -16868,6 +17261,13 @@ func (e *htmlH2) Spellcheck(v bool) HTMLH2 {
 
 func (e *htmlH2) Style(k, v string) HTMLH2 {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlH2) Styles(s map[string]string) HTMLH2 {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -17087,6 +17487,9 @@ type HTMLH3 interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLH3
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLH3
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH3
 
@@ -17277,6 +17680,13 @@ func (e *htmlH3) Spellcheck(v bool) HTMLH3 {
 
 func (e *htmlH3) Style(k, v string) HTMLH3 {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlH3) Styles(s map[string]string) HTMLH3 {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -17496,6 +17906,9 @@ type HTMLH4 interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLH4
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLH4
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH4
 
@@ -17686,6 +18099,13 @@ func (e *htmlH4) Spellcheck(v bool) HTMLH4 {
 
 func (e *htmlH4) Style(k, v string) HTMLH4 {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlH4) Styles(s map[string]string) HTMLH4 {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -17905,6 +18325,9 @@ type HTMLH5 interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLH5
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLH5
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH5
 
@@ -18095,6 +18518,13 @@ func (e *htmlH5) Spellcheck(v bool) HTMLH5 {
 
 func (e *htmlH5) Style(k, v string) HTMLH5 {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlH5) Styles(s map[string]string) HTMLH5 {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -18314,6 +18744,9 @@ type HTMLH6 interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLH6
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLH6
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLH6
 
@@ -18504,6 +18937,13 @@ func (e *htmlH6) Spellcheck(v bool) HTMLH6 {
 
 func (e *htmlH6) Style(k, v string) HTMLH6 {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlH6) Styles(s map[string]string) HTMLH6 {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -18723,6 +19163,9 @@ type HTMLHead interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLHead
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLHead
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLHead
 
@@ -18820,6 +19263,13 @@ func (e *htmlHead) Style(k, v string) HTMLHead {
 	return e
 }
 
+func (e *htmlHead) Styles(s map[string]string) HTMLHead {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlHead) TabIndex(v int) HTMLHead {
 	e.setAttr("tabindex", v)
 	return e
@@ -18875,6 +19325,9 @@ type HTMLHeader interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLHeader
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLHeader
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLHeader
@@ -19066,6 +19519,13 @@ func (e *htmlHeader) Spellcheck(v bool) HTMLHeader {
 
 func (e *htmlHeader) Style(k, v string) HTMLHeader {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlHeader) Styles(s map[string]string) HTMLHeader {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -19279,6 +19739,9 @@ type HTMLHr interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLHr
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLHr
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLHr
 
@@ -19460,6 +19923,13 @@ func (e *htmlHr) Spellcheck(v bool) HTMLHr {
 
 func (e *htmlHr) Style(k, v string) HTMLHr {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlHr) Styles(s map[string]string) HTMLHr {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -19679,6 +20149,9 @@ type HTMLHtml interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLHtml
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLHtml
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLHtml
 
@@ -19776,6 +20249,13 @@ func (e *htmlHtml) Style(k, v string) HTMLHtml {
 	return e
 }
 
+func (e *htmlHtml) Styles(s map[string]string) HTMLHtml {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlHtml) TabIndex(v int) HTMLHtml {
 	e.setAttr("tabindex", v)
 	return e
@@ -19831,6 +20311,9 @@ type HTMLI interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLI
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLI
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLI
@@ -20022,6 +20505,13 @@ func (e *htmlI) Spellcheck(v bool) HTMLI {
 
 func (e *htmlI) Style(k, v string) HTMLI {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlI) Styles(s map[string]string) HTMLI {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -20267,6 +20757,9 @@ type HTMLIFrame interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLIFrame
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLIFrame
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLIFrame
@@ -20522,6 +21015,13 @@ func (e *htmlIFrame) Style(k, v string) HTMLIFrame {
 	return e
 }
 
+func (e *htmlIFrame) Styles(s map[string]string) HTMLIFrame {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlIFrame) TabIndex(v int) HTMLIFrame {
 	e.setAttr("tabindex", v)
 	return e
@@ -20762,6 +21262,9 @@ type HTMLImg interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLImg
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLImg
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLImg
@@ -21057,6 +21560,13 @@ func (e *htmlImg) SrcSet(v string) HTMLImg {
 
 func (e *htmlImg) Style(k, v string) HTMLImg {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlImg) Styles(s map[string]string) HTMLImg {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -21481,6 +21991,9 @@ type HTMLInput interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLInput
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLInput
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLInput
 
@@ -21817,6 +22330,13 @@ func (e *htmlInput) Style(k, v string) HTMLInput {
 	return e
 }
 
+func (e *htmlInput) Styles(s map[string]string) HTMLInput {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlInput) TabIndex(v int) HTMLInput {
 	e.setAttr("tabindex", v)
 	return e
@@ -22053,6 +22573,9 @@ type HTMLIns interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLIns
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLIns
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLIns
 
@@ -22243,6 +22766,13 @@ func (e *htmlIns) Spellcheck(v bool) HTMLIns {
 
 func (e *htmlIns) Style(k, v string) HTMLIns {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlIns) Styles(s map[string]string) HTMLIns {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -22462,6 +22992,9 @@ type HTMLKbd interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLKbd
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLKbd
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLKbd
 
@@ -22652,6 +23185,13 @@ func (e *htmlKbd) Spellcheck(v bool) HTMLKbd {
 
 func (e *htmlKbd) Style(k, v string) HTMLKbd {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlKbd) Styles(s map[string]string) HTMLKbd {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -22877,6 +23417,9 @@ type HTMLLabel interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLLabel
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLLabel
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLLabel
 
@@ -23077,6 +23620,13 @@ func (e *htmlLabel) Spellcheck(v bool) HTMLLabel {
 
 func (e *htmlLabel) Style(k, v string) HTMLLabel {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlLabel) Styles(s map[string]string) HTMLLabel {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -23296,6 +23846,9 @@ type HTMLLegend interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLLegend
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLLegend
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLLegend
 
@@ -23486,6 +24039,13 @@ func (e *htmlLegend) Spellcheck(v bool) HTMLLegend {
 
 func (e *htmlLegend) Style(k, v string) HTMLLegend {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlLegend) Styles(s map[string]string) HTMLLegend {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -23705,6 +24265,9 @@ type HTMLLi interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLLi
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLLi
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLLi
 
@@ -23898,6 +24461,13 @@ func (e *htmlLi) Spellcheck(v bool) HTMLLi {
 
 func (e *htmlLi) Style(k, v string) HTMLLi {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlLi) Styles(s map[string]string) HTMLLi {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -24134,6 +24704,9 @@ type HTMLLink interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLLink
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLLink
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLLink
 
@@ -24351,6 +24924,13 @@ func (e *htmlLink) Spellcheck(v bool) HTMLLink {
 
 func (e *htmlLink) Style(k, v string) HTMLLink {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlLink) Styles(s map[string]string) HTMLLink {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -24580,6 +25160,9 @@ type HTMLMain interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLMain
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLMain
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLMain
 
@@ -24770,6 +25353,13 @@ func (e *htmlMain) Spellcheck(v bool) HTMLMain {
 
 func (e *htmlMain) Style(k, v string) HTMLMain {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlMain) Styles(s map[string]string) HTMLMain {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -24992,6 +25582,9 @@ type HTMLMap interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLMap
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLMap
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLMap
 
@@ -25187,6 +25780,13 @@ func (e *htmlMap) Spellcheck(v bool) HTMLMap {
 
 func (e *htmlMap) Style(k, v string) HTMLMap {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlMap) Styles(s map[string]string) HTMLMap {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -25406,6 +26006,9 @@ type HTMLMark interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLMark
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLMark
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLMark
 
@@ -25596,6 +26199,13 @@ func (e *htmlMark) Spellcheck(v bool) HTMLMark {
 
 func (e *htmlMark) Style(k, v string) HTMLMark {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlMark) Styles(s map[string]string) HTMLMark {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -25824,6 +26434,9 @@ type HTMLMeta interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLMeta
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLMeta
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLMeta
 
@@ -25937,6 +26550,13 @@ func (e *htmlMeta) Style(k, v string) HTMLMeta {
 	return e
 }
 
+func (e *htmlMeta) Styles(s map[string]string) HTMLMeta {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlMeta) TabIndex(v int) HTMLMeta {
 	e.setAttr("tabindex", v)
 	return e
@@ -26010,6 +26630,9 @@ type HTMLMeter interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLMeter
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLMeter
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLMeter
@@ -26237,6 +26860,13 @@ func (e *htmlMeter) Style(k, v string) HTMLMeter {
 	return e
 }
 
+func (e *htmlMeter) Styles(s map[string]string) HTMLMeter {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlMeter) TabIndex(v int) HTMLMeter {
 	e.setAttr("tabindex", v)
 	return e
@@ -26458,6 +27088,9 @@ type HTMLNav interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLNav
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLNav
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLNav
 
@@ -26648,6 +27281,13 @@ func (e *htmlNav) Spellcheck(v bool) HTMLNav {
 
 func (e *htmlNav) Style(k, v string) HTMLNav {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlNav) Styles(s map[string]string) HTMLNav {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -26867,6 +27507,9 @@ type HTMLNoScript interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLNoScript
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLNoScript
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLNoScript
 
@@ -26964,6 +27607,13 @@ func (e *htmlNoScript) Style(k, v string) HTMLNoScript {
 	return e
 }
 
+func (e *htmlNoScript) Styles(s map[string]string) HTMLNoScript {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlNoScript) TabIndex(v int) HTMLNoScript {
 	e.setAttr("tabindex", v)
 	return e
@@ -27031,6 +27681,9 @@ type HTMLObject interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLObject
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLObject
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLObject
@@ -27320,6 +27973,13 @@ func (e *htmlObject) Spellcheck(v bool) HTMLObject {
 
 func (e *htmlObject) Style(k, v string) HTMLObject {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlObject) Styles(s map[string]string) HTMLObject {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -27675,6 +28335,9 @@ type HTMLOl interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLOl
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLOl
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLOl
 
@@ -27878,6 +28541,13 @@ func (e *htmlOl) Start(v int) HTMLOl {
 
 func (e *htmlOl) Style(k, v string) HTMLOl {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlOl) Styles(s map[string]string) HTMLOl {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -28108,6 +28778,9 @@ type HTMLOptGroup interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLOptGroup
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLOptGroup
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLOptGroup
 
@@ -28308,6 +28981,13 @@ func (e *htmlOptGroup) Spellcheck(v bool) HTMLOptGroup {
 
 func (e *htmlOptGroup) Style(k, v string) HTMLOptGroup {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlOptGroup) Styles(s map[string]string) HTMLOptGroup {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -28536,6 +29216,9 @@ type HTMLOption interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLOption
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLOption
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLOption
 
@@ -28744,6 +29427,13 @@ func (e *htmlOption) Spellcheck(v bool) HTMLOption {
 
 func (e *htmlOption) Style(k, v string) HTMLOption {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlOption) Styles(s map[string]string) HTMLOption {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -28977,6 +29667,9 @@ type HTMLOutput interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLOutput
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLOutput
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLOutput
 
@@ -29182,6 +29875,13 @@ func (e *htmlOutput) Spellcheck(v bool) HTMLOutput {
 
 func (e *htmlOutput) Style(k, v string) HTMLOutput {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlOutput) Styles(s map[string]string) HTMLOutput {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -29401,6 +30101,9 @@ type HTMLP interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLP
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLP
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLP
 
@@ -29591,6 +30294,13 @@ func (e *htmlP) Spellcheck(v bool) HTMLP {
 
 func (e *htmlP) Style(k, v string) HTMLP {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlP) Styles(s map[string]string) HTMLP {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -29807,6 +30517,9 @@ type HTMLParam interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLParam
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLParam
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLParam
 
@@ -29996,6 +30709,13 @@ func (e *htmlParam) Spellcheck(v bool) HTMLParam {
 
 func (e *htmlParam) Style(k, v string) HTMLParam {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlParam) Styles(s map[string]string) HTMLParam {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -30220,6 +30940,9 @@ type HTMLPicture interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLPicture
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLPicture
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLPicture
 
@@ -30410,6 +31133,13 @@ func (e *htmlPicture) Spellcheck(v bool) HTMLPicture {
 
 func (e *htmlPicture) Style(k, v string) HTMLPicture {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlPicture) Styles(s map[string]string) HTMLPicture {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -30629,6 +31359,9 @@ type HTMLPre interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLPre
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLPre
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLPre
 
@@ -30819,6 +31552,13 @@ func (e *htmlPre) Spellcheck(v bool) HTMLPre {
 
 func (e *htmlPre) Style(k, v string) HTMLPre {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlPre) Styles(s map[string]string) HTMLPre {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -31041,6 +31781,9 @@ type HTMLProgress interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLProgress
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLProgress
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLProgress
 
@@ -31239,6 +31982,13 @@ func (e *htmlProgress) Spellcheck(v bool) HTMLProgress {
 
 func (e *htmlProgress) Style(k, v string) HTMLProgress {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlProgress) Styles(s map[string]string) HTMLProgress {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -31466,6 +32216,9 @@ type HTMLQ interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLQ
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLQ
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLQ
 
@@ -31661,6 +32414,13 @@ func (e *htmlQ) Spellcheck(v bool) HTMLQ {
 
 func (e *htmlQ) Style(k, v string) HTMLQ {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlQ) Styles(s map[string]string) HTMLQ {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -31880,6 +32640,9 @@ type HTMLRp interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLRp
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLRp
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLRp
 
@@ -32070,6 +32833,13 @@ func (e *htmlRp) Spellcheck(v bool) HTMLRp {
 
 func (e *htmlRp) Style(k, v string) HTMLRp {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlRp) Styles(s map[string]string) HTMLRp {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -32289,6 +33059,9 @@ type HTMLRt interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLRt
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLRt
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLRt
 
@@ -32479,6 +33252,13 @@ func (e *htmlRt) Spellcheck(v bool) HTMLRt {
 
 func (e *htmlRt) Style(k, v string) HTMLRt {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlRt) Styles(s map[string]string) HTMLRt {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -32698,6 +33478,9 @@ type HTMLRuby interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLRuby
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLRuby
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLRuby
 
@@ -32888,6 +33671,13 @@ func (e *htmlRuby) Spellcheck(v bool) HTMLRuby {
 
 func (e *htmlRuby) Style(k, v string) HTMLRuby {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlRuby) Styles(s map[string]string) HTMLRuby {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -33107,6 +33897,9 @@ type HTMLS interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLS
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLS
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLS
 
@@ -33297,6 +34090,13 @@ func (e *htmlS) Spellcheck(v bool) HTMLS {
 
 func (e *htmlS) Style(k, v string) HTMLS {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlS) Styles(s map[string]string) HTMLS {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -33516,6 +34316,9 @@ type HTMLSamp interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSamp
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSamp
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSamp
 
@@ -33706,6 +34509,13 @@ func (e *htmlSamp) Spellcheck(v bool) HTMLSamp {
 
 func (e *htmlSamp) Style(k, v string) HTMLSamp {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSamp) Styles(s map[string]string) HTMLSamp {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -33940,6 +34750,9 @@ type HTMLScript interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLScript
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLScript
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLScript
 
@@ -34068,6 +34881,13 @@ func (e *htmlScript) Style(k, v string) HTMLScript {
 	return e
 }
 
+func (e *htmlScript) Styles(s map[string]string) HTMLScript {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlScript) TabIndex(v int) HTMLScript {
 	e.setAttr("tabindex", v)
 	return e
@@ -34133,6 +34953,9 @@ type HTMLSection interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSection
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSection
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSection
@@ -34324,6 +35147,13 @@ func (e *htmlSection) Spellcheck(v bool) HTMLSection {
 
 func (e *htmlSection) Style(k, v string) HTMLSection {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSection) Styles(s map[string]string) HTMLSection {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -34564,6 +35394,9 @@ type HTMLSelect interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSelect
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSelect
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSelect
 
@@ -34792,6 +35625,13 @@ func (e *htmlSelect) Style(k, v string) HTMLSelect {
 	return e
 }
 
+func (e *htmlSelect) Styles(s map[string]string) HTMLSelect {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlSelect) TabIndex(v int) HTMLSelect {
 	e.setAttr("tabindex", v)
 	return e
@@ -35008,6 +35848,9 @@ type HTMLSmall interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSmall
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSmall
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSmall
 
@@ -35198,6 +36041,13 @@ func (e *htmlSmall) Spellcheck(v bool) HTMLSmall {
 
 func (e *htmlSmall) Style(k, v string) HTMLSmall {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSmall) Styles(s map[string]string) HTMLSmall {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -35423,6 +36273,9 @@ type HTMLSource interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSource
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSource
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSource
 
@@ -35627,6 +36480,13 @@ func (e *htmlSource) SrcSet(v string) HTMLSource {
 
 func (e *htmlSource) Style(k, v string) HTMLSource {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSource) Styles(s map[string]string) HTMLSource {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -35851,6 +36711,9 @@ type HTMLSpan interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSpan
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSpan
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSpan
 
@@ -36041,6 +36904,13 @@ func (e *htmlSpan) Spellcheck(v bool) HTMLSpan {
 
 func (e *htmlSpan) Style(k, v string) HTMLSpan {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSpan) Styles(s map[string]string) HTMLSpan {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -36260,6 +37130,9 @@ type HTMLStrong interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLStrong
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLStrong
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLStrong
 
@@ -36450,6 +37323,13 @@ func (e *htmlStrong) Spellcheck(v bool) HTMLStrong {
 
 func (e *htmlStrong) Style(k, v string) HTMLStrong {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlStrong) Styles(s map[string]string) HTMLStrong {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -36672,6 +37552,9 @@ type HTMLStyle interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLStyle
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLStyle
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLStyle
 
@@ -36873,6 +37756,13 @@ func (e *htmlStyle) Spellcheck(v bool) HTMLStyle {
 
 func (e *htmlStyle) Style(k, v string) HTMLStyle {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlStyle) Styles(s map[string]string) HTMLStyle {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -37102,6 +37992,9 @@ type HTMLSub interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSub
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSub
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSub
 
@@ -37292,6 +38185,13 @@ func (e *htmlSub) Spellcheck(v bool) HTMLSub {
 
 func (e *htmlSub) Style(k, v string) HTMLSub {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSub) Styles(s map[string]string) HTMLSub {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -37511,6 +38411,9 @@ type HTMLSummary interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSummary
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSummary
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSummary
 
@@ -37701,6 +38604,13 @@ func (e *htmlSummary) Spellcheck(v bool) HTMLSummary {
 
 func (e *htmlSummary) Style(k, v string) HTMLSummary {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSummary) Styles(s map[string]string) HTMLSummary {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -37920,6 +38830,9 @@ type HTMLSup interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLSup
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSup
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLSup
 
@@ -38110,6 +39023,13 @@ func (e *htmlSup) Spellcheck(v bool) HTMLSup {
 
 func (e *htmlSup) Style(k, v string) HTMLSup {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSup) Styles(s map[string]string) HTMLSup {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -38329,6 +39249,9 @@ type HTMLTable interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTable
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTable
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTable
 
@@ -38519,6 +39442,13 @@ func (e *htmlTable) Spellcheck(v bool) HTMLTable {
 
 func (e *htmlTable) Style(k, v string) HTMLTable {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTable) Styles(s map[string]string) HTMLTable {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -38738,6 +39668,9 @@ type HTMLTBody interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTBody
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTBody
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTBody
 
@@ -38928,6 +39861,13 @@ func (e *htmlTBody) Spellcheck(v bool) HTMLTBody {
 
 func (e *htmlTBody) Style(k, v string) HTMLTBody {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTBody) Styles(s map[string]string) HTMLTBody {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -39156,6 +40096,9 @@ type HTMLTd interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTd
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTd
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTd
 
@@ -39361,6 +40304,13 @@ func (e *htmlTd) Spellcheck(v bool) HTMLTd {
 
 func (e *htmlTd) Style(k, v string) HTMLTd {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTd) Styles(s map[string]string) HTMLTd {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -39580,6 +40530,9 @@ type HTMLTemplate interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTemplate
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTemplate
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTemplate
 
@@ -39677,6 +40630,13 @@ func (e *htmlTemplate) Style(k, v string) HTMLTemplate {
 	return e
 }
 
+func (e *htmlTemplate) Styles(s map[string]string) HTMLTemplate {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlTemplate) TabIndex(v int) HTMLTemplate {
 	e.setAttr("tabindex", v)
 	return e
@@ -39765,6 +40725,9 @@ type HTMLTextarea interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTextarea
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTextarea
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTextarea
@@ -40018,6 +40981,13 @@ func (e *htmlTextarea) Style(k, v string) HTMLTextarea {
 	return e
 }
 
+func (e *htmlTextarea) Styles(s map[string]string) HTMLTextarea {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlTextarea) TabIndex(v int) HTMLTextarea {
 	e.setAttr("tabindex", v)
 	return e
@@ -40239,6 +41209,9 @@ type HTMLTfoot interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTfoot
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTfoot
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTfoot
 
@@ -40429,6 +41402,13 @@ func (e *htmlTfoot) Spellcheck(v bool) HTMLTfoot {
 
 func (e *htmlTfoot) Style(k, v string) HTMLTfoot {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTfoot) Styles(s map[string]string) HTMLTfoot {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -40663,6 +41643,9 @@ type HTMLTh interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTh
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTh
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTh
 
@@ -40878,6 +41861,13 @@ func (e *htmlTh) Spellcheck(v bool) HTMLTh {
 
 func (e *htmlTh) Style(k, v string) HTMLTh {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTh) Styles(s map[string]string) HTMLTh {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -41097,6 +42087,9 @@ type HTMLTHead interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTHead
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTHead
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTHead
 
@@ -41287,6 +42280,13 @@ func (e *htmlTHead) Spellcheck(v bool) HTMLTHead {
 
 func (e *htmlTHead) Style(k, v string) HTMLTHead {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTHead) Styles(s map[string]string) HTMLTHead {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -41509,6 +42509,9 @@ type HTMLTime interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTime
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTime
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTime
 
@@ -41704,6 +42707,13 @@ func (e *htmlTime) Spellcheck(v bool) HTMLTime {
 
 func (e *htmlTime) Style(k, v string) HTMLTime {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTime) Styles(s map[string]string) HTMLTime {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -41923,6 +42933,9 @@ type HTMLTitle interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTitle
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTitle
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTitle
 
@@ -42020,6 +43033,13 @@ func (e *htmlTitle) Style(k, v string) HTMLTitle {
 	return e
 }
 
+func (e *htmlTitle) Styles(s map[string]string) HTMLTitle {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
 func (e *htmlTitle) TabIndex(v int) HTMLTitle {
 	e.setAttr("tabindex", v)
 	return e
@@ -42075,6 +43095,9 @@ type HTMLTr interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLTr
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLTr
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLTr
@@ -42266,6 +43289,13 @@ func (e *htmlTr) Spellcheck(v bool) HTMLTr {
 
 func (e *htmlTr) Style(k, v string) HTMLTr {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlTr) Styles(s map[string]string) HTMLTr {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -42485,6 +43515,9 @@ type HTMLU interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLU
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLU
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLU
 
@@ -42675,6 +43708,13 @@ func (e *htmlU) Spellcheck(v bool) HTMLU {
 
 func (e *htmlU) Style(k, v string) HTMLU {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlU) Styles(s map[string]string) HTMLU {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -42894,6 +43934,9 @@ type HTMLUl interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLUl
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLUl
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLUl
 
@@ -43084,6 +44127,13 @@ func (e *htmlUl) Spellcheck(v bool) HTMLUl {
 
 func (e *htmlUl) Style(k, v string) HTMLUl {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlUl) Styles(s map[string]string) HTMLUl {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -43303,6 +44353,9 @@ type HTMLVar interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLVar
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLVar
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLVar
 
@@ -43493,6 +44546,13 @@ func (e *htmlVar) Spellcheck(v bool) HTMLVar {
 
 func (e *htmlVar) Style(k, v string) HTMLVar {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlVar) Styles(s map[string]string) HTMLVar {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -43738,6 +44798,9 @@ type HTMLVideo interface {
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLVideo
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLVideo
 
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLVideo
@@ -44046,6 +45109,13 @@ func (e *htmlVideo) Src(v string) HTMLVideo {
 
 func (e *htmlVideo) Style(k, v string) HTMLVideo {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlVideo) Styles(s map[string]string) HTMLVideo {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 
@@ -44385,6 +45455,9 @@ type HTMLWbr interface {
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
 	Style(k, v string) HTMLWbr
 
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLWbr
+
 	// TabIndex specifies the tabbing order of an element.
 	TabIndex(v int) HTMLWbr
 
@@ -44575,6 +45648,13 @@ func (e *htmlWbr) Spellcheck(v bool) HTMLWbr {
 
 func (e *htmlWbr) Style(k, v string) HTMLWbr {
 	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlWbr) Styles(s map[string]string) HTMLWbr {
+	for k, v := range s {
+		e.Style(k, v)
+	}
 	return e
 }
 

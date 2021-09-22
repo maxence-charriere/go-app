@@ -1523,6 +1523,11 @@ var attrs = map[string]attr{
 		Type: "style",
 		Doc:  "specifies a CSS style for an element. Can be called multiple times to set multiple css styles.",
 	},
+	"styles": {
+		Name: "Styles",
+		Type: "style|map",
+		Doc:  "specifies CSS styles for an element. Can be called multiple times to set multiple css styles.",
+	},
 
 	// T:
 	"tabindex": {
@@ -1604,6 +1609,7 @@ func withGlobalAttrs(attrs ...attr) []attr {
 		"lang",
 		"spellcheck",
 		"style",
+		"styles",
 		"tabindex",
 		"title",
 	)...)
@@ -2200,6 +2206,17 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 			}`)
 		}
 
+	case "style|map":
+		fmt.Fprintf(w, `%s(s map[string]string) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintf(w, `{
+				for k, v := range s {
+					e.Style(k, v)
+				}
+				return e
+			}`)
+		}
+
 	case "on/off":
 		fmt.Fprintf(w, `%s(v bool) HTML%s`, a.Name, t.Name)
 		if !isInterface {
@@ -2306,6 +2323,9 @@ import (
 
 			case "style":
 				fmt.Fprintln(f, `"color", "deepskyblue")`)
+
+			case "style|map":
+				fmt.Fprintln(f, `map[string]string{"color": "pink"})`)
 
 			case "bool", "bool|force", "on/off":
 				fmt.Fprintln(f, `true)`)
