@@ -29,7 +29,7 @@ An app created with go-app can out of the box **run in its own window**, **suppo
 
 **go-app** requirements:
 
-- [Go 1.14](https://golang.org/doc/go1.14) or newer
+- [Go 1.17](https://golang.org/doc/go1.17) or newer
 - [Go module](https://github.com/golang/go/wiki/Modules)
 
 ```sh
@@ -39,7 +39,7 @@ go get -u github.com/maxence-charriere/go-app/v9/pkg/app
 
 ## Declarative syntax
 
-Go-app uses a [declarative syntax](https://go-app.dev/syntax) so you can **write reusable component-based UI elements** just by using the Go programming language.
+Go-app uses a [declarative syntax](https://go-app.dev/declarative-syntax) so you can **write reusable component-based UI elements** just by using the Go programming language.
 
 Here is a Hello World component that takes an input and displays its value in its title:
 
@@ -97,13 +97,14 @@ func main() {
 
 ## Getting started
 
-**Read the [Getting Started](https://go-app.dev/start) document**.
+**Read the [Getting Started](https://go-app.dev/getting-started) document**.
 
 ## Built with go-app
-- [LoFi Music](https://lofimusic.app/collegemusic-lonely)
+
+- [Lofimusic.app](https://lofimusic.app/collegemusic-lonely)
 - [Murlok.io](https://murlok.io/)
 - [liwasc](https://pojntfx.github.io/liwasc/)
-- [go-app documentation](https://go-app.dev/)
+- [go-app Docs](https://go-app.dev/)
 
 ## Contributors
 
