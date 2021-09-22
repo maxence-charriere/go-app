@@ -139,6 +139,12 @@ func (m *menu) Render() app.UI {
 					Class(isFocus("/lifecycle")),
 				ui.Link().
 					Class(linkClass).
+					Icon(downloadSVG).
+					Label("Install").
+					Href("/install").
+					Class(isFocus("/install")),
+				ui.Link().
+					Class(linkClass).
 					Icon(testSVG).
 					Label("Testing").
 					Href("/testing").

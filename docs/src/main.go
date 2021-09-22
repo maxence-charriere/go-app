@@ -57,6 +57,7 @@ func main() {
 	app.Route("/concurrency", newConcurrencyPage())
 	app.Route("/seo", newSEOPage())
 	app.Route("/lifecycle", newLifecyclePage())
+	app.Route("/install", newInstallPage())
 	app.Route("/testing", newTestingPage())
 	app.Route("/actions", newActionPage())
 	app.Route("/states", newStatesPage())

@@ -81,5 +81,5 @@ func (a *littleApp) onUpdateClick(ctx app.Context, e app.Event) {
 
 ## Next
 
-- [Testing](/testing)
+- [Handling Install](/install)
 - [Reference](/reference)

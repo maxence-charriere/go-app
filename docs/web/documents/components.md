@@ -187,7 +187,7 @@ Here is a list of all the component lifecycle events available:
 | [Navigator](/reference#Navigator)       | Listen to page navigation.                                | Once                             |
 | [Updater](/reference#Updater)           | Listen to component update triggered by a parent element. | Can occur multiple times         |
 | [AppUpdater](/reference#AppUpdater)     | Listen to available app update.                           | Can occur once                   |
-| [AppInstaller](/reference#AppInstaller) | Listen to when an app is installabe.                      | Can occur once                   |
+| [AppInstaller](/reference#AppInstaller) | Listen to whether an app is installable.                  | Can occur once                   |
 | [Resizer](/reference#Resizer)           | Listen to the app and parent components resizes.          | Each time a component is resized |
 
 ## Updates

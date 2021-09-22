@@ -1,9 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"time"
-
 	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
@@ -50,24 +47,4 @@ func (p *statesPage) Render() app.UI {
 		Content(
 			newRemoteMarkdownDoc().Src("/web/documents/states.md"),
 		)
-}
-
-func handleGreet(ctx app.Context, a app.Action) {
-	var name string
-	ctx.GetState("greet-name", &name)
-
-	// ...
-}
-
-type hello struct {
-	app.Compo
-	name string
-}
-
-func (h *hello) OnMount(ctx app.Context) {
-	ctx.ObserveState("greet-name").
-		OnChange(func() {
-			fmt.Println("greet-name was changed at", time.Now())
-		}).
-		Value(&h.name)
 }
