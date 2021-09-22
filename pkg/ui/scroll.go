@@ -65,13 +65,7 @@ func (s *scroll) ID(v string) IScroll {
 }
 
 func (s *scroll) Class(v string) IScroll {
-	if v == "" {
-		return s
-	}
-	if s.Iclass != "" {
-		s.Iclass += " "
-	}
-	s.Iclass += v
+	s.Iclass = app.AppendClass(s.Iclass, v)
 	return s
 }
 

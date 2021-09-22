@@ -1,6 +1,7 @@
 {
   "short_name": "Documentation for go-app",
   "name": "Documentation for go-app",
+  "description": "A package for building progressive web apps (PWA) with the Go programming language (Golang) and WebAssembly (Wasm). It uses a declarative syntax that allows creating and dealing with HTML elements only by using Go, and without writing any HTML markup.",
   "icons": [
     {
       "src": "https://storage.googleapis.com/murlok-github/icon-192.png",

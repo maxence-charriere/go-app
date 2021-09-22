@@ -77,13 +77,7 @@ func (f *flyer) ID(v string) IFlyer {
 }
 
 func (f *flyer) Class(v string) IFlyer {
-	if v == "" {
-		return f
-	}
-	if f.Iclass != "" {
-		f.Iclass += " "
-	}
-	f.Iclass += v
+	f.Iclass = app.AppendClass(f.Iclass, v)
 	return f
 }
 
@@ -202,7 +196,10 @@ func (f *flyer) resize(ctx app.Context) {
 
 	remainingHeight := layout.Get("clientHeight").Int()
 
-	bannerHeight := 600
+	var bannerHeight int
+	if len(f.Ibanner) != 0 {
+		bannerHeight = 600
+	}
 	if bannerHeight > remainingHeight {
 		bannerHeight = remainingHeight
 	}

@@ -313,7 +313,7 @@ func navigateTo(d Dispatcher, u *url.URL, updateHistory bool) {
 		if !ok {
 			return
 		}
-		// d.Nav(u)
+		d.Nav(u)
 
 		if isFragmentNavigation(u) {
 			d.Dispatch(Dispatch{

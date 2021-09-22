@@ -20,6 +20,15 @@ var (
 
 	// The vertical padding of base-like components in px.
 	BaseVPadding = 12
+
+	// The default icon size in px.
+	DefaultIconSize = 24
+
+	// The default icon space.
+	DefaultIconSpace = 6
+
+	// The default width for flow items in px.
+	DefaultFlowItemWidth = 372
 )
 
 const (

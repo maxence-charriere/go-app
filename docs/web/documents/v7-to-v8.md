@@ -36,7 +36,7 @@ func main() {
 and
 
 ```go
-// +build !wasm
+//go:build wasm
 
 package main
 

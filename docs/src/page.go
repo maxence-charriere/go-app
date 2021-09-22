@@ -1,22 +1,26 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/maxence-charriere/go-app/v9/pkg/ui"
 )
 
 const (
-	pageItemWidth = 276
+	headerHeight = 72
 )
 
 type page struct {
 	app.Compo
 
-	Iindex      []app.UI
-	Icontent    []app.UI
-	IissueTitle string
+	Iclass   string
+	Iindex   []app.UI
+	Iicon    string
+	Ititle   string
+	Icontent []app.UI
 
-	isAppUpdateAvailable bool
+	updateAvailable bool
 }
 
 func newPage() *page {
@@ -28,109 +32,168 @@ func (p *page) Index(v ...app.UI) *page {
 	return p
 }
 
+func (p *page) Icon(v string) *page {
+	p.Iicon = v
+	return p
+}
+
+func (p *page) Title(v string) *page {
+	p.Ititle = v
+	return p
+}
+
 func (p *page) Content(v ...app.UI) *page {
 	p.Icontent = app.FilterUIElems(v...)
 	return p
 }
 
-func (p *page) IssueTitle(v string) *page {
-	p.IissueTitle = v
-	return p
-}
-
 func (p *page) OnNav(ctx app.Context) {
-	p.setAvailableUpdate(ctx)
+	p.updateAvailable = ctx.AppUpdateAvailable()
+	ctx.Defer(scrollTo)
 }
 
 func (p *page) OnAppUpdate(ctx app.Context) {
-	p.setAvailableUpdate(ctx)
-}
-
-func (p *page) setAvailableUpdate(ctx app.Context) {
-	p.isAppUpdateAvailable = ctx.AppUpdateAvailable()
+	p.updateAvailable = ctx.AppUpdateAvailable()
 }
 
 func (p *page) Render() app.UI {
 	return ui.Shell().
-		Class("background").
 		Class("fill").
-		PaneWidth(pageItemWidth).
+		Class("background").
 		HamburgerMenu(
-			newNav().
-				Class("overlay-menu").
-				Class("unselectable"),
+			newMenu().
+				Class("fill").
+				Class("menu-hamburger-background"),
 		).
-		Menu(newNav()).
+		Menu(
+			newMenu().Class("fill"),
+		).
 		Index(
-			app.Nav().
-				Class("header-out").
-				Class("content").
-				Class("unselectable").
-				Body(
-					app.Div().
-						Class("hspace-out").
-						Body(
-							app.Header().
-								Class("h2").
-								Class("vspace-top").
-								Text("Index"),
-							app.Div().
-								Class("vspace-top").
-								Body(
-									app.Range(p.Iindex).Slice(func(i int) app.UI {
-										return p.Iindex[i]
-									}),
-								),
-							newIndex().
-								Class("vspace-top").
-								Class("vspace-bottom").
-								Links(
-									"Report issue",
-									"Support go-app",
-								),
-						),
-				),
+			app.If(len(p.Iindex) != 0,
+				ui.Scroll().
+					Class("fill").
+					HeaderHeight(headerHeight).
+					Content(
+						app.Nav().
+							Class("index").
+							Body(
+								app.Div().Class("separator"),
+								app.Header().
+									Class("h2").
+									Text("Index"),
+								app.Div().Class("separator"),
+								app.Range(p.Iindex).Slice(func(i int) app.UI {
+									return p.Iindex[i]
+								}),
+								newIndexLink().Title("Repport an Issue"),
+								app.Div().Class("separator"),
+							),
+					),
+			),
 		).
 		Content(
-			ui.Stack().
-				Class("header").
-				Right().
-				Middle().
+			ui.Scroll().
+				Class("fill").
+				Header(
+					app.Nav().
+						Class("fill").
+						Body(
+							ui.Stack().
+								Class("fill").
+								Right().
+								Middle().
+								Content(
+									app.If(p.updateAvailable,
+										app.Div().
+											Class("link-update").
+											Body(
+												ui.Link().
+													Class("link").
+													Class("heading").
+													Class("fit").
+													Class("unselectable").
+													Icon(downloadSVG).
+													Label("Update").
+													OnClick(p.updateApp),
+											),
+									),
+								),
+						),
+				).
+				HeaderHeight(headerHeight).
 				Content(
-					app.If(p.isAppUpdateAvailable,
-						newLink().
-							Class("hspace-out").
-							Class("link-update").
-							Label("Update").
-							Icon(newSVGIcon().RawSVG(downloadSVG)).
-							OnClick(p.onUpdateClick),
+					app.Main().Body(
+						app.Article().Body(
+							app.Header().
+								ID("page-top").
+								Class("page-title").
+								Class("center").
+								Body(
+									ui.Stack().
+										Center().
+										Middle().
+										Content(
+											ui.Icon().
+												Class("icon-left").
+												Class("unselectable").
+												Size(90).
+												Src(p.Iicon),
+											app.H1().Text(p.Ititle),
+										),
+								),
+							app.Div().Class("separator"),
+							app.Range(p.Icontent).Slice(func(i int) app.UI {
+								return p.Icontent[i]
+							}),
+
+							app.Div().Class("separator"),
+							app.Aside().Body(
+								app.Header().
+									ID("repport-an-issue").
+									Class("h2").
+									Text("Report an issue"),
+								app.P().Body(
+									app.Text("Found something incorrect, a typo or have suggestions to improve this page? "),
+									app.A().
+										Href(fmt.Sprintf(
+											"%s/issues/new?title=Documentation issue in %s page",
+											githubURL,
+											p.Ititle,
+										)).
+										Text("🚀 Submit a GitHub issue!"),
+								),
+							),
+							app.Div().Class("separator"),
+						),
 					),
 				),
-			app.Div().
-				Class("content").
-				Body(
-					app.Main().
-						ID("top").
-						Body(
-							app.Article().
-								Body(
-									app.Range(p.Icontent).Slice(func(i int) app.UI {
-										return p.Icontent[i]
-									}),
-									app.Footer().
-										Class("vspace-section").
-										Class("hspace-out").
-										Body(newIssue().Title(p.IissueTitle)),
-								),
-							app.Aside().
-								Class("vspace-section").
-								Class("vspace-bottom").
-								Body(newSupportUs()),
-						),
+		).
+		Ads(
+			ui.Flyer().
+				Class("fill").
+				HeaderHeight(headerHeight).
+				PremiumHeight(200).
+				Premium(
+					newGithubSponsor().Class("fill"),
 				),
 		)
 }
 
-func (p *page) onUpdateClick(ctx app.Context, e app.Event) {
-	ctx.Reload()
+func (p *page) updateApp(ctx app.Context, e app.Event) {
+	ctx.NewAction(updateApp)
+}
+
+func scrollTo(ctx app.Context) {
+	id := ctx.Page().URL().Fragment
+	if id == "" {
+		id = "page-top"
+	}
+	ctx.ScrollTo(id)
+}
+
+func fragmentFocus(fragment string) string {
+	if fragment == app.Window().URL().Fragment {
+		return "focus"
+	}
+	return ""
 }

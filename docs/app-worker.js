@@ -1,27 +1,34 @@
-const cacheName = "app-" + "0431288b7b98d6fa228cd0222801149fb127c75c";
+const cacheName = "app-" + "c612a41afbc259be044386cdedefc86e60583c10";
 
 self.addEventListener("install", event => {
-  console.log("installing app worker 0431288b7b98d6fa228cd0222801149fb127c75c");
-  self.skipWaiting();
+  console.log("installing app worker c612a41afbc259be044386cdedefc86e60583c10");
 
   event.waitUntil(
-    caches.open(cacheName).then(cache => {
-      return cache.addAll([
-        "/",
-        "/app.css",
-        "/app.js",
-        "/manifest.webmanifest",
-        "/wasm_exec.js",
-        "/web/app.wasm",
-        "/web/css/docs.css",
-        "/web/css/prism.css",
-        "/web/js/prism.js",
-        "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap",
-        "https://storage.googleapis.com/murlok-github/icon-192.png",
-        "https://storage.googleapis.com/murlok-github/icon-512.png",
-        
-      ]);
-    })
+    caches.open(cacheName).
+      then(cache => {
+        return cache.addAll([
+          "/",
+          "/app.css",
+          "/app.js",
+          "/manifest.webmanifest",
+          "/wasm_exec.js",
+          "/web/app.wasm",
+          "/web/css/docs.css",
+          "/web/css/prism.css",
+          "/web/documents/home-next.md",
+          "/web/documents/home.md",
+          "/web/documents/updates.md",
+          "/web/documents/what-is-go-app.md",
+          "/web/js/prism.js",
+          "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap",
+          "https://storage.googleapis.com/murlok-github/icon-192.png",
+          "https://storage.googleapis.com/murlok-github/icon-512.png",
+          
+        ]);
+      }).
+      then(() => {
+        self.skipWaiting();
+      })
   );
 });
 
@@ -37,7 +44,7 @@ self.addEventListener("activate", event => {
       );
     })
   );
-  console.log("app worker 0431288b7b98d6fa228cd0222801149fb127c75c is activated");
+  console.log("app worker c612a41afbc259be044386cdedefc86e60583c10 is activated");
 });
 
 self.addEventListener("fetch", event => {

@@ -1,4 +1,4 @@
-# Lifecycle
+## Lifecycle Overview
 
 Apps created with go-app are WebAssembly binaries that are served through HTTP requests.
 
@@ -24,7 +24,7 @@ App recurrent loadings are occurring when a user is coming back on the app.
 3. **Service worker is compared with its cached version => They are identical**
 4. App resources are loaded from the web browser cache
 
-### Loading after app update
+### Loading after an app update
 
 App loading after an update is occurring when a user comes back on the app but the app has been modified since his/her last visit.
 
@@ -36,13 +36,13 @@ App loading after an update is occurring when a user comes back on the app but t
 
 The trigger to update the app is a diff between the cached service worker and the live one. **Once the app is updated, the page still has to be reloaded** to be able to see the modifications since the current version displayed is the cached one.
 
-## Listen for app updates
+## Listen for App Updates
 
 Apps are automatically updated in the background when there are modifications.
 
 Since the displayed version of the app is the cached one, a common scenario is to visually notify the user that an update has been downloaded and that it is available by reloading the page.
 
-This is done by implementing the [Updater](/reference#Updater) interface into a component:
+This is done by implementing the [AppUpdater](/reference#AppUpdater) interface into a component:
 
 ```go
 // A component that describes a UI.
@@ -53,8 +53,8 @@ type littleApp struct {
 	updateAvailable bool
 }
 
-// OnAppUpdate satisfies the app.Updater interface. It is called when the app is
-// updated in background.
+// OnAppUpdate satisfies the app.AppUpdater interface. It is called when the app
+// is updated in background.
 func (a *littleApp) OnAppUpdate(ctx app.Context) {
 	a.updateAvailable = ctx.AppupdateAvailable // Reports that an app update is available.
 }
@@ -81,6 +81,5 @@ func (a *littleApp) onUpdateClick(ctx app.Context, e app.Event) {
 
 ## Next
 
-- [Understand go-app architecture](/architecture)
-- [Associate components with URL paths](/routing)
-- [API reference](/reference)
+- [Handling Install](/install)
+- [Reference](/reference)

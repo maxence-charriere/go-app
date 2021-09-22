@@ -1,4 +1,4 @@
-// +build !wasm
+//go:build !wasm
 
 package app
 
@@ -32,6 +32,10 @@ func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
 		"/manifest.webmanifest": {},
 		"/app.css":              {},
 		"/web":                  {},
+	}
+
+	for path := range routes.routes {
+		resources[path] = struct{}{}
 	}
 
 	for _, p := range pages {

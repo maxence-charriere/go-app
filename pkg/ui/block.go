@@ -62,13 +62,7 @@ func (b *block) ID(v string) IBlock {
 }
 
 func (b *block) Class(v string) IBlock {
-	if v == "" {
-		return b
-	}
-	if b.Iclass != "" {
-		b.Iclass += " "
-	}
-	b.Iclass += v
+	b.Iclass = app.AppendClass(b.Iclass, v)
 	return b
 }
 

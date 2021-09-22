@@ -57,13 +57,7 @@ func (d *adsenseDisplay) ID(v string) IAdsenseDisplay {
 }
 
 func (d *adsenseDisplay) Class(v string) IAdsenseDisplay {
-	if v == "" {
-		return d
-	}
-	if d.Iclass != "" {
-		d.Iclass += " "
-	}
-	d.Iclass += v
+	d.Iclass = app.AppendClass(d.Iclass, v)
 	return d
 }
 

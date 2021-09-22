@@ -81,13 +81,7 @@ func (s *shell) ID(v string) IShell {
 }
 
 func (s *shell) Class(v string) IShell {
-	if v == "" {
-		return s
-	}
-	if s.Iclass != "" {
-		s.Iclass += " "
-	}
-	s.Iclass += v
+	s.Iclass = app.AppendClass(s.Iclass, v)
 	return s
 }
 
@@ -247,7 +241,7 @@ func (s *shell) refresh(ctx app.Context) {
 	}
 
 	hideMenu := true
-	if !hideIndex && len(s.Imenu) != 0 && cw+s.IpaneWidth <= w {
+	if (len(s.Iindex) == 0 || !hideIndex) && len(s.Imenu) != 0 && cw+s.IpaneWidth <= w {
 		hideMenu = false
 		cw += s.IpaneWidth
 	}

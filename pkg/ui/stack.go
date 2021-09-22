@@ -66,13 +66,7 @@ func (s *stack) ID(v string) IStack {
 }
 
 func (s *stack) Class(v string) IStack {
-	if v == "" {
-		return s
-	}
-	if s.Iclass != "" {
-		s.Iclass += " "
-	}
-	s.Iclass += v
+	s.Iclass = app.AppendClass(s.Iclass, v)
 	return s
 }
 

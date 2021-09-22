@@ -117,3 +117,15 @@ func stringTo(s string, v interface{}) error {
 
 	return nil
 }
+
+// AppendClass adds c to the given class string.
+func AppendClass(class, c string) string {
+	if c == "" {
+		return class
+	}
+	if class != "" {
+		class += " "
+	}
+	class += c
+	return class
+}
