@@ -1099,7 +1099,7 @@ var attrs = map[string]attr{
 	"class": {
 		Name: "Class",
 		Type: "string|class",
-		Doc:  "specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.",
+		Doc:  "specifies one or more classnames for an element (refers to a class in a style sheet).",
 	},
 	"cols": {
 		Name: "Cols",

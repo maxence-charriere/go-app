@@ -23,7 +23,7 @@ type HTMLA interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLA
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLA
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -506,7 +506,7 @@ type HTMLAbbr interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLAbbr
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLAbbr
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -925,7 +925,7 @@ type HTMLAddress interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLAddress
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLAddress
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -1341,7 +1341,7 @@ type HTMLArea interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLArea
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLArea
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -1828,7 +1828,7 @@ type HTMLArticle interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLArticle
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLArticle
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -2247,7 +2247,7 @@ type HTMLAside interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLAside
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLAside
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -2669,7 +2669,7 @@ type HTMLAudio interface {
 	// AutoPlay specifies that the audio/video will start playing as soon as it is ready.
 	AutoPlay(v bool) HTMLAudio
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLAudio
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -3325,7 +3325,7 @@ type HTMLB interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLB
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLB
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -3738,7 +3738,7 @@ type HTMLBase interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLBase
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLBase
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -4164,7 +4164,7 @@ type HTMLBdi interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLBdi
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLBdi
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -4583,7 +4583,7 @@ type HTMLBdo interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLBdo
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLBdo
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -5005,7 +5005,7 @@ type HTMLBlockquote interface {
 	// Cite specifies a URL which explains the quote/deleted/inserted text.
 	Cite(v string) HTMLBlockquote
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLBlockquote
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -5429,7 +5429,7 @@ type HTMLBody interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLBody
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLBody
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -5962,7 +5962,7 @@ type HTMLBr interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLBr
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLBr
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -6375,7 +6375,7 @@ type HTMLButton interface {
 	// AutoFocus specifies that the element should automatically get focus when the page loads.
 	AutoFocus(v bool) HTMLButton
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLButton
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -6879,7 +6879,7 @@ type HTMLCanvas interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLCanvas
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLCanvas
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -7314,7 +7314,7 @@ type HTMLCaption interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLCaption
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLCaption
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -7733,7 +7733,7 @@ type HTMLCite interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLCite
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLCite
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -8152,7 +8152,7 @@ type HTMLCode interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLCode
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLCode
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -8565,7 +8565,7 @@ type HTMLCol interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLCol
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLCol
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -8983,7 +8983,7 @@ type HTMLColGroup interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLColGroup
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLColGroup
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -9410,7 +9410,7 @@ type HTMLData interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLData
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLData
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -9581,7 +9581,7 @@ type HTMLDataList interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDataList
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDataList
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -10000,7 +10000,7 @@ type HTMLDd interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDd
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDd
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -10422,7 +10422,7 @@ type HTMLDel interface {
 	// Cite specifies a URL which explains the quote/deleted/inserted text.
 	Cite(v string) HTMLDel
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDel
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -10854,7 +10854,7 @@ type HTMLDetails interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDetails
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDetails
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -11289,7 +11289,7 @@ type HTMLDfn interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDfn
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDfn
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -11708,7 +11708,7 @@ type HTMLDialog interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDialog
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDialog
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -12135,7 +12135,7 @@ type HTMLDiv interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDiv
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDiv
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -12554,7 +12554,7 @@ type HTMLDl interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDl
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDl
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -12973,7 +12973,7 @@ type HTMLDt interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDt
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDt
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -13392,7 +13392,7 @@ type HTMLEm interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLEm
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLEm
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -13805,7 +13805,7 @@ type HTMLEmbed interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLEmbed
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLEmbed
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -14431,7 +14431,7 @@ type HTMLFieldSet interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLFieldSet
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLFieldSet
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -14874,7 +14874,7 @@ type HTMLFigCaption interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLFigCaption
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLFigCaption
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -15293,7 +15293,7 @@ type HTMLFigure interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLFigure
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLFigure
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -15712,7 +15712,7 @@ type HTMLFooter interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLFooter
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLFooter
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -16140,7 +16140,7 @@ type HTMLForm interface {
 	// AutoComplete specifies whether the element should have autocomplete enabled.
 	AutoComplete(v bool) HTMLForm
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLForm
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -16619,7 +16619,7 @@ type HTMLH1 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH1
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLH1
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -17038,7 +17038,7 @@ type HTMLH2 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH2
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLH2
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -17457,7 +17457,7 @@ type HTMLH3 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH3
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLH3
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -17876,7 +17876,7 @@ type HTMLH4 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH4
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLH4
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -18295,7 +18295,7 @@ type HTMLH5 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH5
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLH5
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -18714,7 +18714,7 @@ type HTMLH6 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH6
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLH6
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -19133,7 +19133,7 @@ type HTMLHead interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLHead
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLHead
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -19296,7 +19296,7 @@ type HTMLHeader interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLHeader
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLHeader
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -19709,7 +19709,7 @@ type HTMLHr interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLHr
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLHr
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -20119,7 +20119,7 @@ type HTMLHtml interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLHtml
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLHtml
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -20282,7 +20282,7 @@ type HTMLI interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLI
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLI
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -20710,7 +20710,7 @@ type HTMLIFrame interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLIFrame
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLIFrame
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -21215,7 +21215,7 @@ type HTMLImg interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLImg
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLImg
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -21895,7 +21895,7 @@ type HTMLInput interface {
 	// Checked specifies that an input element should be pre-selected when the page loads (for checkbox or radio types).
 	Checked(v bool) HTMLInput
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLInput
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -22543,7 +22543,7 @@ type HTMLIns interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLIns
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLIns
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -22962,7 +22962,7 @@ type HTMLKbd interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLKbd
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLKbd
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -23381,7 +23381,7 @@ type HTMLLabel interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLLabel
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLLabel
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -23816,7 +23816,7 @@ type HTMLLegend interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLLegend
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLLegend
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -24235,7 +24235,7 @@ type HTMLLi interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLLi
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLLi
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -24656,7 +24656,7 @@ type HTMLLink interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLLink
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLLink
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -25130,7 +25130,7 @@ type HTMLMain interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLMain
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLMain
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -25549,7 +25549,7 @@ type HTMLMap interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLMap
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLMap
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -25976,7 +25976,7 @@ type HTMLMark interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLMark
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLMark
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -26392,7 +26392,7 @@ type HTMLMeta interface {
 	// Charset specifies the character encoding.
 	Charset(v string) HTMLMeta
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLMeta
 
 	// Content gives the value associated with the http-equiv or name attribute.
@@ -26583,7 +26583,7 @@ type HTMLMeter interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLMeter
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLMeter
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -27058,7 +27058,7 @@ type HTMLNav interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLNav
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLNav
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -27477,7 +27477,7 @@ type HTMLNoScript interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLNoScript
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLNoScript
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -27640,7 +27640,7 @@ type HTMLObject interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLObject
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLObject
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -28299,7 +28299,7 @@ type HTMLOl interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLOl
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLOl
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -28742,7 +28742,7 @@ type HTMLOptGroup interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLOptGroup
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLOptGroup
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -29177,7 +29177,7 @@ type HTMLOption interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLOption
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLOption
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -29628,7 +29628,7 @@ type HTMLOutput interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLOutput
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLOutput
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -30071,7 +30071,7 @@ type HTMLP interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLP
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLP
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -30484,7 +30484,7 @@ type HTMLParam interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLParam
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLParam
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -30910,7 +30910,7 @@ type HTMLPicture interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLPicture
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLPicture
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -31329,7 +31329,7 @@ type HTMLPre interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLPre
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLPre
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -31748,7 +31748,7 @@ type HTMLProgress interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLProgress
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLProgress
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -32186,7 +32186,7 @@ type HTMLQ interface {
 	// Cite specifies a URL which explains the quote/deleted/inserted text.
 	Cite(v string) HTMLQ
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLQ
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -32610,7 +32610,7 @@ type HTMLRp interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLRp
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLRp
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -33029,7 +33029,7 @@ type HTMLRt interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLRt
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLRt
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -33448,7 +33448,7 @@ type HTMLRuby interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLRuby
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLRuby
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -33867,7 +33867,7 @@ type HTMLS interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLS
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLS
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -34286,7 +34286,7 @@ type HTMLSamp interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSamp
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLSamp
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -34711,7 +34711,7 @@ type HTMLScript interface {
 	// Charset specifies the character encoding.
 	Charset(v string) HTMLScript
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLScript
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -34924,7 +34924,7 @@ type HTMLSection interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSection
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLSection
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -35346,7 +35346,7 @@ type HTMLSelect interface {
 	// AutoFocus specifies that the element should automatically get focus when the page loads.
 	AutoFocus(v bool) HTMLSelect
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLSelect
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -35818,7 +35818,7 @@ type HTMLSmall interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSmall
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLSmall
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -36231,7 +36231,7 @@ type HTMLSource interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSource
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLSource
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -36681,7 +36681,7 @@ type HTMLSpan interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSpan
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLSpan
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -37100,7 +37100,7 @@ type HTMLStrong interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLStrong
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLStrong
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -37519,7 +37519,7 @@ type HTMLStyle interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLStyle
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLStyle
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -37962,7 +37962,7 @@ type HTMLSub interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSub
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLSub
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -38381,7 +38381,7 @@ type HTMLSummary interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSummary
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLSummary
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -38800,7 +38800,7 @@ type HTMLSup interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSup
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLSup
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -39219,7 +39219,7 @@ type HTMLTable interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTable
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTable
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -39638,7 +39638,7 @@ type HTMLTBody interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTBody
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTBody
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -40057,7 +40057,7 @@ type HTMLTd interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTd
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTd
 
 	// ColSpan specifies the number of columns a table cell should span.
@@ -40500,7 +40500,7 @@ type HTMLTemplate interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTemplate
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTemplate
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -40666,7 +40666,7 @@ type HTMLTextarea interface {
 	// AutoFocus specifies that the element should automatically get focus when the page loads.
 	AutoFocus(v bool) HTMLTextarea
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTextarea
 
 	// Cols specifies the visible width of a text area.
@@ -41179,7 +41179,7 @@ type HTMLTfoot interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTfoot
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTfoot
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -41601,7 +41601,7 @@ type HTMLTh interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTh
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTh
 
 	// ColSpan specifies the number of columns a table cell should span.
@@ -42057,7 +42057,7 @@ type HTMLTHead interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTHead
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTHead
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -42476,7 +42476,7 @@ type HTMLTime interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTime
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTime
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -42903,7 +42903,7 @@ type HTMLTitle interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTitle
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTitle
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -43066,7 +43066,7 @@ type HTMLTr interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTr
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTr
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -43485,7 +43485,7 @@ type HTMLU interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLU
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLU
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -43904,7 +43904,7 @@ type HTMLUl interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLUl
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLUl
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -44323,7 +44323,7 @@ type HTMLVar interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLVar
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLVar
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -44745,7 +44745,7 @@ type HTMLVideo interface {
 	// AutoPlay specifies that the audio/video will start playing as soon as it is ready.
 	AutoPlay(v bool) HTMLVideo
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLVideo
 
 	// ContentEditable specifies whether the content of an element is editable or not.
@@ -45425,7 +45425,7 @@ type HTMLWbr interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLWbr
 
-	// Class specifies one or more classnames for an element (refers to a class in a style sheet). Multiple classnames are space separated.
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLWbr
 
 	// ContentEditable specifies whether the content of an element is editable or not.
