@@ -99,6 +99,12 @@ func main() {
 
 **Read the [Getting Started](https://go-app.dev/start) document**.
 
+## Built with go-app
+- [LoFi Music](https://lofimusic.app/collegemusic-lonely)
+- [Murlok.io](https://murlok.io/)
+- [liwasc](https://pojntfx.github.io/liwasc/)
+- [go-app documentation](https://go-app.dev/)
+
 ## Contributors
 
 ### Code Contributors
