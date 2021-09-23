@@ -8,7 +8,9 @@ import (
 )
 
 const (
-	headerHeight = 72
+	headerHeight  = 72
+	adsenseClient = "ca-pub-1013306768105236"
+	adsenseSlot   = "9307554044"
 )
 
 type page struct {
@@ -172,6 +174,17 @@ func (p *page) Render() app.UI {
 			ui.Flyer().
 				Class("fill").
 				HeaderHeight(headerHeight).
+				Banner(
+					app.Aside().
+						Class("fill").
+						Body(
+							ui.AdsenseDisplay().
+								Class("fill").
+								Class("no-scroll").
+								Client(adsenseClient).
+								Slot(adsenseSlot),
+						),
+				).
 				PremiumHeight(200).
 				Premium(
 					newGithubSponsor().Class("fill"),
