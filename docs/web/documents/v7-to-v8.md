@@ -87,7 +87,7 @@ func main() {
 }
 ```
 
-**See the [Getting Started](/start) section for the version with comments**.
+**See the [Getting Started](/getting-started) section for the version with comments**.
 
 ## Routing
 
@@ -101,7 +101,7 @@ Furthermore, `Route()` and `RouteWithRegexp()` calls now only register the type 
 
 | V7                                               | V8                                                                                                                                                              | Description                                                                                                                                                                                                                                                                                                                  |
 | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `func Run()`                                     | [`func RunWhenOnBrowser()`](/reference#RunWhenOnBrowser)                                                                                                        | Starting the app on the client-side can now be called in the same code as the server-side. Build instructions and server/client code separation are not required anymore. See the [Getting started](/start#code) article.                                                                                                    |
+| `func Run()`                                     | [`func RunWhenOnBrowser()`](/reference#RunWhenOnBrowser)                                                                                                        | Starting the app on the client-side can now be called in the same code as the server-side. Build instructions and server/client code separation are not required anymore. See the [Getting started](/getting-started#code) article.                                                                                                    |
 | `func Route(path string, node UI)`               | [`func Route(path string, c Composer)`](/reference#Route)                                                                                                       | A route can only be associated with a [component](/components) now. It now associates the type of the given component rather than an instance. When navigated on, a new component is created and initialized with its zero value. Initializing component shall now be done with the [Mounter](/reference#Mounter) interface. |
 | `func RouteWithRegexp(pattern string, node UI)`  | [`func RouteWithRegexp(pattern string, c Composer)`](/reference#RouteWithRegexp)                                                                                | Same as [Route()](/reference#Route).                                                                                                                                                                                                                                                                                         |
 | `func Navigate(rawurl string)`                   | - [`func (ctx Context) Navigate(rawURL string)`](/reference#Context.Navigate)<br>- [`func (ctx Context) NavigateTo(u *url.URL)`](/reference#Context.NavigateTo) | Navigating to another page is now a [Context](/reference#Context) method.                                                                                                                                                                                                                                                    |
@@ -142,5 +142,5 @@ Goroutines launched from components should now be created with [`Context.Async()
 
 ## Next
 
-- [Getting started with v8](/start)
+- [Getting started with v8](/getting-started)
 - [API reference](/reference)

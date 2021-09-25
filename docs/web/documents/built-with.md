@@ -28,7 +28,7 @@ An app to list, wake and scan nodes in a network.
 
 ## Next
 
-- [Getting started](/start)
+- [Getting started](/getting-started)
 - [Understand go-app architecture](/architecture)
 - [How to create a component](/components)
 - [API reference](/reference)

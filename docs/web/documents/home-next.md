@@ -1,4 +1,4 @@
 ## Next
 
-- [Getting started](/start)
+- [Getting started](/getting-started)
 - [Reference](/reference)
