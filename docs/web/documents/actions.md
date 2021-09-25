@@ -76,7 +76,7 @@ func handleGreet(ctx app.Context, a app.Action) {
 
 ### Component Level
 
-Actions can also be handle at component level by registering an [ActionHandler](/reference#ActionHandler) from a [Context](/reference#Context):
+Actions can also be handled at component level by registering an [ActionHandler](/reference#ActionHandler) from a [Context](/reference#Context):
 
 ```go
 func (h *hello) OnMount(ctx app.Context) {
