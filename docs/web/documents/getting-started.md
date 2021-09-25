@@ -172,7 +172,7 @@ run: build
 	./hello
 ```
 
-It can now be built and ran with this single command:
+It can now be built and run with this single command:
 
 ```bash
 make run
