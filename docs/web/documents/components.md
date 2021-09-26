@@ -227,5 +227,5 @@ func (c *myCompo) customTrigger() {
 
 ## Next
 
-- [Customize components with the declarative syntax](/syntax)
+- [Customize components with the declarative syntax](/declarative-syntax)
 - [Reference](/reference)
