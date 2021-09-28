@@ -94,6 +94,8 @@ func (i *icon) Render() app.UI {
 		Style("height", pxToString(i.Isize)).
 		Style("max-width", pxToString(i.Isize)).
 		Style("max-height", pxToString(i.Isize)).
+		Style("min-width", pxToString(i.Isize)).
+		Style("min-height", pxToString(i.Isize)).
 		Body(content)
 	for _, s := range i.Istyles {
 		icon.Style(s.key, s.value)
