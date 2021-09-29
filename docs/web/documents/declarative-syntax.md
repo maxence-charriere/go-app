@@ -56,9 +56,9 @@ A standard HTML element is an element that can contain other UI elements. Other 
 
 ```go
 func (c *myCompo) Render() app.UI {
-	return app.Div().Body(        // Div Container
-		app.H1().Text("Title"),   // First child
-		app.P(), Text("Content"), // Second child
+	return app.Div().Body(       // Div Container
+		app.H1().Text("Title"),  // First child
+		app.P().Text("Content"), // Second child
 	)
 }
 ```
