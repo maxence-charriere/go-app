@@ -15,7 +15,7 @@
 
 Go-app is a package for **building progressive web apps (PWA)** with the [Go programming language (Golang)](https://golang.org) and [WebAssembly (Wasm)](https://webassembly.org).
 
-Shaping a UI is done by using a **[declarative syntax](https://go-app.dev/syntax) that creates and compose HTML elements only by using the Go programing language**.
+Shaping a UI is done by using a **[declarative syntax](https://go-app.dev/declarative-syntax) that creates and compose HTML elements only by using the Go programing language**.
 
 It **uses [Go HTTP standard](https://golang.org/pkg/net/http) model**.
 
