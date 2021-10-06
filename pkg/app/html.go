@@ -23,6 +23,9 @@ type HTMLA interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLA
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLA
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLA
 
@@ -215,6 +218,11 @@ func (e *htmlA) AccessKey(v string) HTMLA {
 
 func (e *htmlA) Aria(k string, v interface{}) HTMLA {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlA) Attr(n string, v interface{}) HTMLA {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -506,6 +514,9 @@ type HTMLAbbr interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLAbbr
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLAbbr
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLAbbr
 
@@ -674,6 +685,11 @@ func (e *htmlAbbr) AccessKey(v string) HTMLAbbr {
 
 func (e *htmlAbbr) Aria(k string, v interface{}) HTMLAbbr {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlAbbr) Attr(n string, v interface{}) HTMLAbbr {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -925,6 +941,9 @@ type HTMLAddress interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLAddress
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLAddress
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLAddress
 
@@ -1093,6 +1112,11 @@ func (e *htmlAddress) AccessKey(v string) HTMLAddress {
 
 func (e *htmlAddress) Aria(k string, v interface{}) HTMLAddress {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlAddress) Attr(n string, v interface{}) HTMLAddress {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -1341,6 +1365,9 @@ type HTMLArea interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLArea
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLArea
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLArea
 
@@ -1532,6 +1559,11 @@ func (e *htmlArea) Alt(v string) HTMLArea {
 
 func (e *htmlArea) Aria(k string, v interface{}) HTMLArea {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlArea) Attr(n string, v interface{}) HTMLArea {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -1828,6 +1860,9 @@ type HTMLArticle interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLArticle
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLArticle
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLArticle
 
@@ -1996,6 +2031,11 @@ func (e *htmlArticle) AccessKey(v string) HTMLArticle {
 
 func (e *htmlArticle) Aria(k string, v interface{}) HTMLArticle {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlArticle) Attr(n string, v interface{}) HTMLArticle {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -2247,6 +2287,9 @@ type HTMLAside interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLAside
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLAside
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLAside
 
@@ -2415,6 +2458,11 @@ func (e *htmlAside) AccessKey(v string) HTMLAside {
 
 func (e *htmlAside) Aria(k string, v interface{}) HTMLAside {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlAside) Attr(n string, v interface{}) HTMLAside {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -2665,6 +2713,9 @@ type HTMLAudio interface {
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLAudio
+
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLAudio
 
 	// AutoPlay specifies that the audio/video will start playing as soon as it is ready.
 	AutoPlay(v bool) HTMLAudio
@@ -2924,6 +2975,11 @@ func (e *htmlAudio) AccessKey(v string) HTMLAudio {
 
 func (e *htmlAudio) Aria(k string, v interface{}) HTMLAudio {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlAudio) Attr(n string, v interface{}) HTMLAudio {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -3325,6 +3381,9 @@ type HTMLB interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLB
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLB
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLB
 
@@ -3493,6 +3552,11 @@ func (e *htmlB) AccessKey(v string) HTMLB {
 
 func (e *htmlB) Aria(k string, v interface{}) HTMLB {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlB) Attr(n string, v interface{}) HTMLB {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -3738,6 +3802,9 @@ type HTMLBase interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLBase
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLBase
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLBase
 
@@ -3903,6 +3970,11 @@ func (e *htmlBase) AccessKey(v string) HTMLBase {
 
 func (e *htmlBase) Aria(k string, v interface{}) HTMLBase {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlBase) Attr(n string, v interface{}) HTMLBase {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -4164,6 +4236,9 @@ type HTMLBdi interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLBdi
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLBdi
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLBdi
 
@@ -4332,6 +4407,11 @@ func (e *htmlBdi) AccessKey(v string) HTMLBdi {
 
 func (e *htmlBdi) Aria(k string, v interface{}) HTMLBdi {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlBdi) Attr(n string, v interface{}) HTMLBdi {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -4583,6 +4663,9 @@ type HTMLBdo interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLBdo
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLBdo
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLBdo
 
@@ -4751,6 +4834,11 @@ func (e *htmlBdo) AccessKey(v string) HTMLBdo {
 
 func (e *htmlBdo) Aria(k string, v interface{}) HTMLBdo {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlBdo) Attr(n string, v interface{}) HTMLBdo {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -5002,6 +5090,9 @@ type HTMLBlockquote interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLBlockquote
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLBlockquote
+
 	// Cite specifies a URL which explains the quote/deleted/inserted text.
 	Cite(v string) HTMLBlockquote
 
@@ -5173,6 +5264,11 @@ func (e *htmlBlockquote) AccessKey(v string) HTMLBlockquote {
 
 func (e *htmlBlockquote) Aria(k string, v interface{}) HTMLBlockquote {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlBlockquote) Attr(n string, v interface{}) HTMLBlockquote {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -5429,6 +5525,9 @@ type HTMLBody interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLBody
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLBody
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLBody
 
@@ -5642,6 +5741,11 @@ func (e *htmlBody) AccessKey(v string) HTMLBody {
 
 func (e *htmlBody) Aria(k string, v interface{}) HTMLBody {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlBody) Attr(n string, v interface{}) HTMLBody {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -5962,6 +6066,9 @@ type HTMLBr interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLBr
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLBr
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLBr
 
@@ -6121,6 +6228,11 @@ func (e *htmlBr) AccessKey(v string) HTMLBr {
 
 func (e *htmlBr) Aria(k string, v interface{}) HTMLBr {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlBr) Attr(n string, v interface{}) HTMLBr {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -6372,6 +6484,9 @@ type HTMLButton interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLButton
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLButton
+
 	// AutoFocus specifies that the element should automatically get focus when the page loads.
 	AutoFocus(v bool) HTMLButton
 
@@ -6573,6 +6688,11 @@ func (e *htmlButton) AccessKey(v string) HTMLButton {
 
 func (e *htmlButton) Aria(k string, v interface{}) HTMLButton {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlButton) Attr(n string, v interface{}) HTMLButton {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -6879,6 +6999,9 @@ type HTMLCanvas interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLCanvas
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLCanvas
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLCanvas
 
@@ -7053,6 +7176,11 @@ func (e *htmlCanvas) AccessKey(v string) HTMLCanvas {
 
 func (e *htmlCanvas) Aria(k string, v interface{}) HTMLCanvas {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlCanvas) Attr(n string, v interface{}) HTMLCanvas {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -7314,6 +7442,9 @@ type HTMLCaption interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLCaption
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLCaption
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLCaption
 
@@ -7482,6 +7613,11 @@ func (e *htmlCaption) AccessKey(v string) HTMLCaption {
 
 func (e *htmlCaption) Aria(k string, v interface{}) HTMLCaption {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlCaption) Attr(n string, v interface{}) HTMLCaption {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -7733,6 +7869,9 @@ type HTMLCite interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLCite
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLCite
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLCite
 
@@ -7901,6 +8040,11 @@ func (e *htmlCite) AccessKey(v string) HTMLCite {
 
 func (e *htmlCite) Aria(k string, v interface{}) HTMLCite {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlCite) Attr(n string, v interface{}) HTMLCite {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -8152,6 +8296,9 @@ type HTMLCode interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLCode
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLCode
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLCode
 
@@ -8320,6 +8467,11 @@ func (e *htmlCode) AccessKey(v string) HTMLCode {
 
 func (e *htmlCode) Aria(k string, v interface{}) HTMLCode {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlCode) Attr(n string, v interface{}) HTMLCode {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -8565,6 +8717,9 @@ type HTMLCol interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLCol
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLCol
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLCol
 
@@ -8727,6 +8882,11 @@ func (e *htmlCol) AccessKey(v string) HTMLCol {
 
 func (e *htmlCol) Aria(k string, v interface{}) HTMLCol {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlCol) Attr(n string, v interface{}) HTMLCol {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -8983,6 +9143,9 @@ type HTMLColGroup interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLColGroup
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLColGroup
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLColGroup
 
@@ -9154,6 +9317,11 @@ func (e *htmlColGroup) AccessKey(v string) HTMLColGroup {
 
 func (e *htmlColGroup) Aria(k string, v interface{}) HTMLColGroup {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlColGroup) Attr(n string, v interface{}) HTMLColGroup {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -9410,6 +9578,9 @@ type HTMLData interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLData
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLData
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLData
 
@@ -9485,6 +9656,11 @@ func (e *htmlData) AccessKey(v string) HTMLData {
 
 func (e *htmlData) Aria(k string, v interface{}) HTMLData {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlData) Attr(n string, v interface{}) HTMLData {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -9580,6 +9756,9 @@ type HTMLDataList interface {
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDataList
+
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLDataList
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDataList
@@ -9749,6 +9928,11 @@ func (e *htmlDataList) AccessKey(v string) HTMLDataList {
 
 func (e *htmlDataList) Aria(k string, v interface{}) HTMLDataList {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDataList) Attr(n string, v interface{}) HTMLDataList {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -10000,6 +10184,9 @@ type HTMLDd interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDd
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLDd
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDd
 
@@ -10168,6 +10355,11 @@ func (e *htmlDd) AccessKey(v string) HTMLDd {
 
 func (e *htmlDd) Aria(k string, v interface{}) HTMLDd {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDd) Attr(n string, v interface{}) HTMLDd {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -10419,6 +10611,9 @@ type HTMLDel interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDel
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLDel
+
 	// Cite specifies a URL which explains the quote/deleted/inserted text.
 	Cite(v string) HTMLDel
 
@@ -10593,6 +10788,11 @@ func (e *htmlDel) AccessKey(v string) HTMLDel {
 
 func (e *htmlDel) Aria(k string, v interface{}) HTMLDel {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDel) Attr(n string, v interface{}) HTMLDel {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -10854,6 +11054,9 @@ type HTMLDetails interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDetails
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLDetails
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDetails
 
@@ -11028,6 +11231,11 @@ func (e *htmlDetails) AccessKey(v string) HTMLDetails {
 
 func (e *htmlDetails) Aria(k string, v interface{}) HTMLDetails {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDetails) Attr(n string, v interface{}) HTMLDetails {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -11289,6 +11497,9 @@ type HTMLDfn interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDfn
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLDfn
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDfn
 
@@ -11457,6 +11668,11 @@ func (e *htmlDfn) AccessKey(v string) HTMLDfn {
 
 func (e *htmlDfn) Aria(k string, v interface{}) HTMLDfn {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDfn) Attr(n string, v interface{}) HTMLDfn {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -11708,6 +11924,9 @@ type HTMLDialog interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDialog
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLDialog
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDialog
 
@@ -11879,6 +12098,11 @@ func (e *htmlDialog) AccessKey(v string) HTMLDialog {
 
 func (e *htmlDialog) Aria(k string, v interface{}) HTMLDialog {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDialog) Attr(n string, v interface{}) HTMLDialog {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -12135,6 +12359,9 @@ type HTMLDiv interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDiv
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLDiv
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDiv
 
@@ -12303,6 +12530,11 @@ func (e *htmlDiv) AccessKey(v string) HTMLDiv {
 
 func (e *htmlDiv) Aria(k string, v interface{}) HTMLDiv {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDiv) Attr(n string, v interface{}) HTMLDiv {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -12554,6 +12786,9 @@ type HTMLDl interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDl
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLDl
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDl
 
@@ -12722,6 +12957,11 @@ func (e *htmlDl) AccessKey(v string) HTMLDl {
 
 func (e *htmlDl) Aria(k string, v interface{}) HTMLDl {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDl) Attr(n string, v interface{}) HTMLDl {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -12973,6 +13213,9 @@ type HTMLDt interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLDt
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLDt
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLDt
 
@@ -13141,6 +13384,11 @@ func (e *htmlDt) AccessKey(v string) HTMLDt {
 
 func (e *htmlDt) Aria(k string, v interface{}) HTMLDt {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDt) Attr(n string, v interface{}) HTMLDt {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -13392,6 +13640,9 @@ type HTMLEm interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLEm
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLEm
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLEm
 
@@ -13560,6 +13811,11 @@ func (e *htmlEm) AccessKey(v string) HTMLEm {
 
 func (e *htmlEm) Aria(k string, v interface{}) HTMLEm {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlEm) Attr(n string, v interface{}) HTMLEm {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -13805,6 +14061,9 @@ type HTMLEmbed interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLEmbed
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLEmbed
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLEmbed
 
@@ -14045,6 +14304,11 @@ func (e *htmlEmbed) AccessKey(v string) HTMLEmbed {
 
 func (e *htmlEmbed) Aria(k string, v interface{}) HTMLEmbed {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlEmbed) Attr(n string, v interface{}) HTMLEmbed {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -14431,6 +14695,9 @@ type HTMLFieldSet interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLFieldSet
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLFieldSet
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLFieldSet
 
@@ -14608,6 +14875,11 @@ func (e *htmlFieldSet) AccessKey(v string) HTMLFieldSet {
 
 func (e *htmlFieldSet) Aria(k string, v interface{}) HTMLFieldSet {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlFieldSet) Attr(n string, v interface{}) HTMLFieldSet {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -14874,6 +15146,9 @@ type HTMLFigCaption interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLFigCaption
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLFigCaption
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLFigCaption
 
@@ -15042,6 +15317,11 @@ func (e *htmlFigCaption) AccessKey(v string) HTMLFigCaption {
 
 func (e *htmlFigCaption) Aria(k string, v interface{}) HTMLFigCaption {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlFigCaption) Attr(n string, v interface{}) HTMLFigCaption {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -15293,6 +15573,9 @@ type HTMLFigure interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLFigure
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLFigure
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLFigure
 
@@ -15461,6 +15744,11 @@ func (e *htmlFigure) AccessKey(v string) HTMLFigure {
 
 func (e *htmlFigure) Aria(k string, v interface{}) HTMLFigure {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlFigure) Attr(n string, v interface{}) HTMLFigure {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -15712,6 +16000,9 @@ type HTMLFooter interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLFooter
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLFooter
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLFooter
 
@@ -15880,6 +16171,11 @@ func (e *htmlFooter) AccessKey(v string) HTMLFooter {
 
 func (e *htmlFooter) Aria(k string, v interface{}) HTMLFooter {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlFooter) Attr(n string, v interface{}) HTMLFooter {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -16137,6 +16433,9 @@ type HTMLForm interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLForm
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLForm
+
 	// AutoComplete specifies whether the element should have autocomplete enabled.
 	AutoComplete(v bool) HTMLForm
 
@@ -16333,6 +16632,11 @@ func (e *htmlForm) Action(v string) HTMLForm {
 
 func (e *htmlForm) Aria(k string, v interface{}) HTMLForm {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlForm) Attr(n string, v interface{}) HTMLForm {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -16619,6 +16923,9 @@ type HTMLH1 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH1
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLH1
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLH1
 
@@ -16787,6 +17094,11 @@ func (e *htmlH1) AccessKey(v string) HTMLH1 {
 
 func (e *htmlH1) Aria(k string, v interface{}) HTMLH1 {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlH1) Attr(n string, v interface{}) HTMLH1 {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -17038,6 +17350,9 @@ type HTMLH2 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH2
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLH2
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLH2
 
@@ -17206,6 +17521,11 @@ func (e *htmlH2) AccessKey(v string) HTMLH2 {
 
 func (e *htmlH2) Aria(k string, v interface{}) HTMLH2 {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlH2) Attr(n string, v interface{}) HTMLH2 {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -17457,6 +17777,9 @@ type HTMLH3 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH3
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLH3
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLH3
 
@@ -17625,6 +17948,11 @@ func (e *htmlH3) AccessKey(v string) HTMLH3 {
 
 func (e *htmlH3) Aria(k string, v interface{}) HTMLH3 {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlH3) Attr(n string, v interface{}) HTMLH3 {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -17876,6 +18204,9 @@ type HTMLH4 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH4
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLH4
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLH4
 
@@ -18044,6 +18375,11 @@ func (e *htmlH4) AccessKey(v string) HTMLH4 {
 
 func (e *htmlH4) Aria(k string, v interface{}) HTMLH4 {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlH4) Attr(n string, v interface{}) HTMLH4 {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -18295,6 +18631,9 @@ type HTMLH5 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH5
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLH5
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLH5
 
@@ -18463,6 +18802,11 @@ func (e *htmlH5) AccessKey(v string) HTMLH5 {
 
 func (e *htmlH5) Aria(k string, v interface{}) HTMLH5 {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlH5) Attr(n string, v interface{}) HTMLH5 {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -18714,6 +19058,9 @@ type HTMLH6 interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLH6
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLH6
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLH6
 
@@ -18882,6 +19229,11 @@ func (e *htmlH6) AccessKey(v string) HTMLH6 {
 
 func (e *htmlH6) Aria(k string, v interface{}) HTMLH6 {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlH6) Attr(n string, v interface{}) HTMLH6 {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -19133,6 +19485,9 @@ type HTMLHead interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLHead
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLHead
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLHead
 
@@ -19205,6 +19560,11 @@ func (e *htmlHead) AccessKey(v string) HTMLHead {
 
 func (e *htmlHead) Aria(k string, v interface{}) HTMLHead {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlHead) Attr(n string, v interface{}) HTMLHead {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -19295,6 +19655,9 @@ type HTMLHeader interface {
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLHeader
+
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLHeader
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLHeader
@@ -19464,6 +19827,11 @@ func (e *htmlHeader) AccessKey(v string) HTMLHeader {
 
 func (e *htmlHeader) Aria(k string, v interface{}) HTMLHeader {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlHeader) Attr(n string, v interface{}) HTMLHeader {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -19709,6 +20077,9 @@ type HTMLHr interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLHr
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLHr
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLHr
 
@@ -19868,6 +20239,11 @@ func (e *htmlHr) AccessKey(v string) HTMLHr {
 
 func (e *htmlHr) Aria(k string, v interface{}) HTMLHr {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlHr) Attr(n string, v interface{}) HTMLHr {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -20119,6 +20495,9 @@ type HTMLHtml interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLHtml
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLHtml
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLHtml
 
@@ -20191,6 +20570,11 @@ func (e *htmlHtml) AccessKey(v string) HTMLHtml {
 
 func (e *htmlHtml) Aria(k string, v interface{}) HTMLHtml {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlHtml) Attr(n string, v interface{}) HTMLHtml {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -20281,6 +20665,9 @@ type HTMLI interface {
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLI
+
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLI
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLI
@@ -20450,6 +20837,11 @@ func (e *htmlI) AccessKey(v string) HTMLI {
 
 func (e *htmlI) Aria(k string, v interface{}) HTMLI {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlI) Attr(n string, v interface{}) HTMLI {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -20710,6 +21102,9 @@ type HTMLIFrame interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLIFrame
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLIFrame
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLIFrame
 
@@ -20927,6 +21322,11 @@ func (e *htmlIFrame) AllowPaymentRequest(v bool) HTMLIFrame {
 
 func (e *htmlIFrame) Aria(k string, v interface{}) HTMLIFrame {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlIFrame) Attr(n string, v interface{}) HTMLIFrame {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -21215,6 +21615,9 @@ type HTMLImg interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLImg
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLImg
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLImg
 
@@ -21475,6 +21878,11 @@ func (e *htmlImg) Alt(v string) HTMLImg {
 
 func (e *htmlImg) Aria(k string, v interface{}) HTMLImg {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlImg) Attr(n string, v interface{}) HTMLImg {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -21886,6 +22294,9 @@ type HTMLInput interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLInput
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLInput
+
 	// AutoComplete specifies whether the element should have autocomplete enabled.
 	AutoComplete(v bool) HTMLInput
 
@@ -22142,6 +22553,11 @@ func (e *htmlInput) Alt(v string) HTMLInput {
 
 func (e *htmlInput) Aria(k string, v interface{}) HTMLInput {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlInput) Attr(n string, v interface{}) HTMLInput {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -22543,6 +22959,9 @@ type HTMLIns interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLIns
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLIns
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLIns
 
@@ -22711,6 +23130,11 @@ func (e *htmlIns) AccessKey(v string) HTMLIns {
 
 func (e *htmlIns) Aria(k string, v interface{}) HTMLIns {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlIns) Attr(n string, v interface{}) HTMLIns {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -22962,6 +23386,9 @@ type HTMLKbd interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLKbd
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLKbd
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLKbd
 
@@ -23130,6 +23557,11 @@ func (e *htmlKbd) AccessKey(v string) HTMLKbd {
 
 func (e *htmlKbd) Aria(k string, v interface{}) HTMLKbd {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlKbd) Attr(n string, v interface{}) HTMLKbd {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -23381,6 +23813,9 @@ type HTMLLabel interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLLabel
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLLabel
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLLabel
 
@@ -23555,6 +23990,11 @@ func (e *htmlLabel) AccessKey(v string) HTMLLabel {
 
 func (e *htmlLabel) Aria(k string, v interface{}) HTMLLabel {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlLabel) Attr(n string, v interface{}) HTMLLabel {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -23816,6 +24256,9 @@ type HTMLLegend interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLLegend
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLLegend
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLLegend
 
@@ -23984,6 +24427,11 @@ func (e *htmlLegend) AccessKey(v string) HTMLLegend {
 
 func (e *htmlLegend) Aria(k string, v interface{}) HTMLLegend {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlLegend) Attr(n string, v interface{}) HTMLLegend {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -24235,6 +24683,9 @@ type HTMLLi interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLLi
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLLi
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLLi
 
@@ -24406,6 +24857,11 @@ func (e *htmlLi) AccessKey(v string) HTMLLi {
 
 func (e *htmlLi) Aria(k string, v interface{}) HTMLLi {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlLi) Attr(n string, v interface{}) HTMLLi {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -24656,6 +25112,9 @@ type HTMLLink interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLLink
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLLink
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLLink
 
@@ -24839,6 +25298,11 @@ func (e *htmlLink) AccessKey(v string) HTMLLink {
 
 func (e *htmlLink) Aria(k string, v interface{}) HTMLLink {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlLink) Attr(n string, v interface{}) HTMLLink {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -25130,6 +25594,9 @@ type HTMLMain interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLMain
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLMain
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLMain
 
@@ -25298,6 +25765,11 @@ func (e *htmlMain) AccessKey(v string) HTMLMain {
 
 func (e *htmlMain) Aria(k string, v interface{}) HTMLMain {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlMain) Attr(n string, v interface{}) HTMLMain {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -25549,6 +26021,9 @@ type HTMLMap interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLMap
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLMap
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLMap
 
@@ -25720,6 +26195,11 @@ func (e *htmlMap) AccessKey(v string) HTMLMap {
 
 func (e *htmlMap) Aria(k string, v interface{}) HTMLMap {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlMap) Attr(n string, v interface{}) HTMLMap {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -25976,6 +26456,9 @@ type HTMLMark interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLMark
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLMark
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLMark
 
@@ -26144,6 +26627,11 @@ func (e *htmlMark) AccessKey(v string) HTMLMark {
 
 func (e *htmlMark) Aria(k string, v interface{}) HTMLMark {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlMark) Attr(n string, v interface{}) HTMLMark {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -26389,6 +26877,9 @@ type HTMLMeta interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLMeta
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLMeta
+
 	// Charset specifies the character encoding.
 	Charset(v string) HTMLMeta
 
@@ -26467,6 +26958,11 @@ func (e *htmlMeta) AccessKey(v string) HTMLMeta {
 
 func (e *htmlMeta) Aria(k string, v interface{}) HTMLMeta {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlMeta) Attr(n string, v interface{}) HTMLMeta {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -26582,6 +27078,9 @@ type HTMLMeter interface {
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLMeter
+
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLMeter
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLMeter
@@ -26772,6 +27271,11 @@ func (e *htmlMeter) AccessKey(v string) HTMLMeter {
 
 func (e *htmlMeter) Aria(k string, v interface{}) HTMLMeter {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlMeter) Attr(n string, v interface{}) HTMLMeter {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -27058,6 +27562,9 @@ type HTMLNav interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLNav
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLNav
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLNav
 
@@ -27226,6 +27733,11 @@ func (e *htmlNav) AccessKey(v string) HTMLNav {
 
 func (e *htmlNav) Aria(k string, v interface{}) HTMLNav {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlNav) Attr(n string, v interface{}) HTMLNav {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -27477,6 +27989,9 @@ type HTMLNoScript interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLNoScript
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLNoScript
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLNoScript
 
@@ -27549,6 +28064,11 @@ func (e *htmlNoScript) AccessKey(v string) HTMLNoScript {
 
 func (e *htmlNoScript) Aria(k string, v interface{}) HTMLNoScript {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlNoScript) Attr(n string, v interface{}) HTMLNoScript {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -27639,6 +28159,9 @@ type HTMLObject interface {
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLObject
+
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLObject
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLObject
@@ -27898,6 +28421,11 @@ func (e *htmlObject) AccessKey(v string) HTMLObject {
 
 func (e *htmlObject) Aria(k string, v interface{}) HTMLObject {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlObject) Attr(n string, v interface{}) HTMLObject {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -28299,6 +28827,9 @@ type HTMLOl interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLOl
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLOl
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLOl
 
@@ -28476,6 +29007,11 @@ func (e *htmlOl) AccessKey(v string) HTMLOl {
 
 func (e *htmlOl) Aria(k string, v interface{}) HTMLOl {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlOl) Attr(n string, v interface{}) HTMLOl {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -28742,6 +29278,9 @@ type HTMLOptGroup interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLOptGroup
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLOptGroup
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLOptGroup
 
@@ -28916,6 +29455,11 @@ func (e *htmlOptGroup) AccessKey(v string) HTMLOptGroup {
 
 func (e *htmlOptGroup) Aria(k string, v interface{}) HTMLOptGroup {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlOptGroup) Attr(n string, v interface{}) HTMLOptGroup {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -29177,6 +29721,9 @@ type HTMLOption interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLOption
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLOption
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLOption
 
@@ -29357,6 +29904,11 @@ func (e *htmlOption) AccessKey(v string) HTMLOption {
 
 func (e *htmlOption) Aria(k string, v interface{}) HTMLOption {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlOption) Attr(n string, v interface{}) HTMLOption {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -29628,6 +30180,9 @@ type HTMLOutput interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLOutput
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLOutput
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLOutput
 
@@ -29805,6 +30360,11 @@ func (e *htmlOutput) AccessKey(v string) HTMLOutput {
 
 func (e *htmlOutput) Aria(k string, v interface{}) HTMLOutput {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlOutput) Attr(n string, v interface{}) HTMLOutput {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -30071,6 +30631,9 @@ type HTMLP interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLP
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLP
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLP
 
@@ -30239,6 +30802,11 @@ func (e *htmlP) AccessKey(v string) HTMLP {
 
 func (e *htmlP) Aria(k string, v interface{}) HTMLP {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlP) Attr(n string, v interface{}) HTMLP {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -30484,6 +31052,9 @@ type HTMLParam interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLParam
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLParam
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLParam
 
@@ -30649,6 +31220,11 @@ func (e *htmlParam) AccessKey(v string) HTMLParam {
 
 func (e *htmlParam) Aria(k string, v interface{}) HTMLParam {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlParam) Attr(n string, v interface{}) HTMLParam {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -30910,6 +31486,9 @@ type HTMLPicture interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLPicture
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLPicture
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLPicture
 
@@ -31078,6 +31657,11 @@ func (e *htmlPicture) AccessKey(v string) HTMLPicture {
 
 func (e *htmlPicture) Aria(k string, v interface{}) HTMLPicture {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlPicture) Attr(n string, v interface{}) HTMLPicture {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -31329,6 +31913,9 @@ type HTMLPre interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLPre
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLPre
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLPre
 
@@ -31497,6 +32084,11 @@ func (e *htmlPre) AccessKey(v string) HTMLPre {
 
 func (e *htmlPre) Aria(k string, v interface{}) HTMLPre {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlPre) Attr(n string, v interface{}) HTMLPre {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -31748,6 +32340,9 @@ type HTMLProgress interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLProgress
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLProgress
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLProgress
 
@@ -31922,6 +32517,11 @@ func (e *htmlProgress) AccessKey(v string) HTMLProgress {
 
 func (e *htmlProgress) Aria(k string, v interface{}) HTMLProgress {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlProgress) Attr(n string, v interface{}) HTMLProgress {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -32183,6 +32783,9 @@ type HTMLQ interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLQ
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLQ
+
 	// Cite specifies a URL which explains the quote/deleted/inserted text.
 	Cite(v string) HTMLQ
 
@@ -32354,6 +32957,11 @@ func (e *htmlQ) AccessKey(v string) HTMLQ {
 
 func (e *htmlQ) Aria(k string, v interface{}) HTMLQ {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlQ) Attr(n string, v interface{}) HTMLQ {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -32610,6 +33218,9 @@ type HTMLRp interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLRp
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLRp
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLRp
 
@@ -32778,6 +33389,11 @@ func (e *htmlRp) AccessKey(v string) HTMLRp {
 
 func (e *htmlRp) Aria(k string, v interface{}) HTMLRp {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlRp) Attr(n string, v interface{}) HTMLRp {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -33029,6 +33645,9 @@ type HTMLRt interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLRt
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLRt
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLRt
 
@@ -33197,6 +33816,11 @@ func (e *htmlRt) AccessKey(v string) HTMLRt {
 
 func (e *htmlRt) Aria(k string, v interface{}) HTMLRt {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlRt) Attr(n string, v interface{}) HTMLRt {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -33448,6 +34072,9 @@ type HTMLRuby interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLRuby
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLRuby
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLRuby
 
@@ -33616,6 +34243,11 @@ func (e *htmlRuby) AccessKey(v string) HTMLRuby {
 
 func (e *htmlRuby) Aria(k string, v interface{}) HTMLRuby {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlRuby) Attr(n string, v interface{}) HTMLRuby {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -33867,6 +34499,9 @@ type HTMLS interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLS
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLS
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLS
 
@@ -34035,6 +34670,11 @@ func (e *htmlS) AccessKey(v string) HTMLS {
 
 func (e *htmlS) Aria(k string, v interface{}) HTMLS {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlS) Attr(n string, v interface{}) HTMLS {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -34286,6 +34926,9 @@ type HTMLSamp interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSamp
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLSamp
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLSamp
 
@@ -34454,6 +35097,11 @@ func (e *htmlSamp) AccessKey(v string) HTMLSamp {
 
 func (e *htmlSamp) Aria(k string, v interface{}) HTMLSamp {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSamp) Attr(n string, v interface{}) HTMLSamp {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -34708,6 +35356,9 @@ type HTMLScript interface {
 	// Async specifies that the script is executed asynchronously (only for external scripts).
 	Async(v bool) HTMLScript
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLScript
+
 	// Charset specifies the character encoding.
 	Charset(v string) HTMLScript
 
@@ -34803,6 +35454,11 @@ func (e *htmlScript) Aria(k string, v interface{}) HTMLScript {
 
 func (e *htmlScript) Async(v bool) HTMLScript {
 	e.setAttr("async", v)
+	return e
+}
+
+func (e *htmlScript) Attr(n string, v interface{}) HTMLScript {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -34923,6 +35579,9 @@ type HTMLSection interface {
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSection
+
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLSection
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLSection
@@ -35092,6 +35751,11 @@ func (e *htmlSection) AccessKey(v string) HTMLSection {
 
 func (e *htmlSection) Aria(k string, v interface{}) HTMLSection {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSection) Attr(n string, v interface{}) HTMLSection {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -35343,6 +36007,9 @@ type HTMLSelect interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSelect
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLSelect
+
 	// AutoFocus specifies that the element should automatically get focus when the page loads.
 	AutoFocus(v bool) HTMLSelect
 
@@ -35532,6 +36199,11 @@ func (e *htmlSelect) AccessKey(v string) HTMLSelect {
 
 func (e *htmlSelect) Aria(k string, v interface{}) HTMLSelect {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSelect) Attr(n string, v interface{}) HTMLSelect {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -35818,6 +36490,9 @@ type HTMLSmall interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSmall
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLSmall
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLSmall
 
@@ -35986,6 +36661,11 @@ func (e *htmlSmall) AccessKey(v string) HTMLSmall {
 
 func (e *htmlSmall) Aria(k string, v interface{}) HTMLSmall {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSmall) Attr(n string, v interface{}) HTMLSmall {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -36231,6 +36911,9 @@ type HTMLSource interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSource
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLSource
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLSource
 
@@ -36405,6 +37088,11 @@ func (e *htmlSource) AccessKey(v string) HTMLSource {
 
 func (e *htmlSource) Aria(k string, v interface{}) HTMLSource {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSource) Attr(n string, v interface{}) HTMLSource {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -36681,6 +37369,9 @@ type HTMLSpan interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSpan
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLSpan
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLSpan
 
@@ -36849,6 +37540,11 @@ func (e *htmlSpan) AccessKey(v string) HTMLSpan {
 
 func (e *htmlSpan) Aria(k string, v interface{}) HTMLSpan {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSpan) Attr(n string, v interface{}) HTMLSpan {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -37100,6 +37796,9 @@ type HTMLStrong interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLStrong
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLStrong
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLStrong
 
@@ -37268,6 +37967,11 @@ func (e *htmlStrong) AccessKey(v string) HTMLStrong {
 
 func (e *htmlStrong) Aria(k string, v interface{}) HTMLStrong {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlStrong) Attr(n string, v interface{}) HTMLStrong {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -37519,6 +38223,9 @@ type HTMLStyle interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLStyle
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLStyle
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLStyle
 
@@ -37696,6 +38403,11 @@ func (e *htmlStyle) AccessKey(v string) HTMLStyle {
 
 func (e *htmlStyle) Aria(k string, v interface{}) HTMLStyle {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlStyle) Attr(n string, v interface{}) HTMLStyle {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -37962,6 +38674,9 @@ type HTMLSub interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSub
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLSub
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLSub
 
@@ -38130,6 +38845,11 @@ func (e *htmlSub) AccessKey(v string) HTMLSub {
 
 func (e *htmlSub) Aria(k string, v interface{}) HTMLSub {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSub) Attr(n string, v interface{}) HTMLSub {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -38381,6 +39101,9 @@ type HTMLSummary interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSummary
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLSummary
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLSummary
 
@@ -38549,6 +39272,11 @@ func (e *htmlSummary) AccessKey(v string) HTMLSummary {
 
 func (e *htmlSummary) Aria(k string, v interface{}) HTMLSummary {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSummary) Attr(n string, v interface{}) HTMLSummary {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -38800,6 +39528,9 @@ type HTMLSup interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLSup
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLSup
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLSup
 
@@ -38968,6 +39699,11 @@ func (e *htmlSup) AccessKey(v string) HTMLSup {
 
 func (e *htmlSup) Aria(k string, v interface{}) HTMLSup {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSup) Attr(n string, v interface{}) HTMLSup {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -39219,6 +39955,9 @@ type HTMLTable interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTable
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLTable
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTable
 
@@ -39387,6 +40126,11 @@ func (e *htmlTable) AccessKey(v string) HTMLTable {
 
 func (e *htmlTable) Aria(k string, v interface{}) HTMLTable {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTable) Attr(n string, v interface{}) HTMLTable {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -39638,6 +40382,9 @@ type HTMLTBody interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTBody
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLTBody
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTBody
 
@@ -39806,6 +40553,11 @@ func (e *htmlTBody) AccessKey(v string) HTMLTBody {
 
 func (e *htmlTBody) Aria(k string, v interface{}) HTMLTBody {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTBody) Attr(n string, v interface{}) HTMLTBody {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -40057,6 +40809,9 @@ type HTMLTd interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTd
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLTd
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTd
 
@@ -40234,6 +40989,11 @@ func (e *htmlTd) AccessKey(v string) HTMLTd {
 
 func (e *htmlTd) Aria(k string, v interface{}) HTMLTd {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTd) Attr(n string, v interface{}) HTMLTd {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -40500,6 +41260,9 @@ type HTMLTemplate interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTemplate
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLTemplate
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTemplate
 
@@ -40572,6 +41335,11 @@ func (e *htmlTemplate) AccessKey(v string) HTMLTemplate {
 
 func (e *htmlTemplate) Aria(k string, v interface{}) HTMLTemplate {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTemplate) Attr(n string, v interface{}) HTMLTemplate {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -40662,6 +41430,9 @@ type HTMLTextarea interface {
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTextarea
+
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLTextarea
 
 	// AutoFocus specifies that the element should automatically get focus when the page loads.
 	AutoFocus(v bool) HTMLTextarea
@@ -40868,6 +41639,11 @@ func (e *htmlTextarea) AccessKey(v string) HTMLTextarea {
 
 func (e *htmlTextarea) Aria(k string, v interface{}) HTMLTextarea {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTextarea) Attr(n string, v interface{}) HTMLTextarea {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -41179,6 +41955,9 @@ type HTMLTfoot interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTfoot
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLTfoot
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTfoot
 
@@ -41347,6 +42126,11 @@ func (e *htmlTfoot) AccessKey(v string) HTMLTfoot {
 
 func (e *htmlTfoot) Aria(k string, v interface{}) HTMLTfoot {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTfoot) Attr(n string, v interface{}) HTMLTfoot {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -41601,6 +42385,9 @@ type HTMLTh interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTh
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLTh
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTh
 
@@ -41786,6 +42573,11 @@ func (e *htmlTh) AccessKey(v string) HTMLTh {
 
 func (e *htmlTh) Aria(k string, v interface{}) HTMLTh {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTh) Attr(n string, v interface{}) HTMLTh {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -42057,6 +42849,9 @@ type HTMLTHead interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTHead
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLTHead
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTHead
 
@@ -42225,6 +43020,11 @@ func (e *htmlTHead) AccessKey(v string) HTMLTHead {
 
 func (e *htmlTHead) Aria(k string, v interface{}) HTMLTHead {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTHead) Attr(n string, v interface{}) HTMLTHead {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -42476,6 +43276,9 @@ type HTMLTime interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTime
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLTime
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTime
 
@@ -42647,6 +43450,11 @@ func (e *htmlTime) AccessKey(v string) HTMLTime {
 
 func (e *htmlTime) Aria(k string, v interface{}) HTMLTime {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTime) Attr(n string, v interface{}) HTMLTime {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -42903,6 +43711,9 @@ type HTMLTitle interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTitle
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLTitle
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTitle
 
@@ -42975,6 +43786,11 @@ func (e *htmlTitle) AccessKey(v string) HTMLTitle {
 
 func (e *htmlTitle) Aria(k string, v interface{}) HTMLTitle {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTitle) Attr(n string, v interface{}) HTMLTitle {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -43065,6 +43881,9 @@ type HTMLTr interface {
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLTr
+
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLTr
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLTr
@@ -43234,6 +44053,11 @@ func (e *htmlTr) AccessKey(v string) HTMLTr {
 
 func (e *htmlTr) Aria(k string, v interface{}) HTMLTr {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTr) Attr(n string, v interface{}) HTMLTr {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -43485,6 +44309,9 @@ type HTMLU interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLU
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLU
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLU
 
@@ -43653,6 +44480,11 @@ func (e *htmlU) AccessKey(v string) HTMLU {
 
 func (e *htmlU) Aria(k string, v interface{}) HTMLU {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlU) Attr(n string, v interface{}) HTMLU {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -43904,6 +44736,9 @@ type HTMLUl interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLUl
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLUl
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLUl
 
@@ -44072,6 +44907,11 @@ func (e *htmlUl) AccessKey(v string) HTMLUl {
 
 func (e *htmlUl) Aria(k string, v interface{}) HTMLUl {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlUl) Attr(n string, v interface{}) HTMLUl {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -44323,6 +45163,9 @@ type HTMLVar interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLVar
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLVar
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLVar
 
@@ -44491,6 +45334,11 @@ func (e *htmlVar) AccessKey(v string) HTMLVar {
 
 func (e *htmlVar) Aria(k string, v interface{}) HTMLVar {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlVar) Attr(n string, v interface{}) HTMLVar {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -44741,6 +45589,9 @@ type HTMLVideo interface {
 
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLVideo
+
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLVideo
 
 	// AutoPlay specifies that the audio/video will start playing as soon as it is ready.
 	AutoPlay(v bool) HTMLVideo
@@ -45009,6 +45860,11 @@ func (e *htmlVideo) AccessKey(v string) HTMLVideo {
 
 func (e *htmlVideo) Aria(k string, v interface{}) HTMLVideo {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlVideo) Attr(n string, v interface{}) HTMLVideo {
+	e.setAttr(n, v)
 	return e
 }
 
@@ -45425,6 +46281,9 @@ type HTMLWbr interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v interface{}) HTMLWbr
 
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLWbr
+
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
 	Class(v ...string) HTMLWbr
 
@@ -45593,6 +46452,11 @@ func (e *htmlWbr) AccessKey(v string) HTMLWbr {
 
 func (e *htmlWbr) Aria(k string, v interface{}) HTMLWbr {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlWbr) Attr(n string, v interface{}) HTMLWbr {
+	e.setAttr(n, v)
 	return e
 }
 

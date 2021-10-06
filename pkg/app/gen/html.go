@@ -1038,6 +1038,11 @@ var attrs = map[string]attr{
 		Type: "aria|value",
 		Doc:  "stores accessible rich internet applications (ARIA) data.",
 	},
+	"attribute": {
+		Name: "Attr",
+		Type: "attr|value",
+		Doc:  "sets the named attribute with the given value.",
+	},
 	"accept-charset": {
 		Name:         "AcceptCharset",
 		NameOverride: "accept-charset",
@@ -1612,6 +1617,7 @@ func withGlobalAttrs(attrs ...attr) []attr {
 		"styles",
 		"tabindex",
 		"title",
+		"attribute",
 	)...)
 
 	sort.Slice(attrs, func(i, j int) bool {
@@ -2188,6 +2194,15 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 			}`, "%v")
 		}
 
+	case "attr|value":
+		fmt.Fprintf(w, `%s(n string, v interface{}) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintf(w, `{
+				e.setAttr(n, v)
+				return e
+			}`)
+		}
+
 	case "aria|value":
 		fmt.Fprintf(w, `%s(k string, v interface{}) HTML%s`, a.Name, t.Name)
 		if !isInterface {
@@ -2318,7 +2333,7 @@ import (
 			fmt.Fprintf(f, `elem.%s(`, a.Name)
 
 			switch a.Type {
-			case "data|value", "aria|value":
+			case "data|value", "aria|value", "attr|value":
 				fmt.Fprintln(f, `"foo", "bar")`)
 
 			case "style":
