@@ -64,6 +64,16 @@ type PreRenderer interface {
 	OnPreRender(Context)
 }
 
+// BeforeMounter is the interface that describes a component that can perform
+// additional actions before it mounted.
+type BeforeMounter interface {
+	Composer
+
+	// The function called before the component is mounted. It is always called on
+	// the UI goroutine.
+	OnBeforeMount(Context)
+}
+
 // Mounter is the interface that describes a component that can perform
 // additional actions when mounted.
 type Mounter interface {
@@ -272,6 +282,11 @@ func (c *Compo) mount(d Dispatcher) error {
 			Tag("reason", "already mounted").
 			Tag("name", c.name()).
 			Tag("kind", c.Kind())
+	}
+
+	if beforeMounter, ok := c.self().(BeforeMounter); ok {
+		c.dispatch(beforeMounter.OnBeforeMount)
+		return nil
 	}
 
 	c.disp = d
