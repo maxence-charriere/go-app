@@ -154,8 +154,7 @@ func (l *loader) Render() app.UI {
 						app.Div().
 							Style("width", pxToString(l.Isize-4)).
 							Style("height", pxToString(l.Isize-4)).
-							Style("min-width", pxToString(l.Isize-4)).
-							Style("min-height", pxToString(l.Isize-4)).
+							Style("flex-shrink", "0").
 							Style("border", "2px solid currentColor").
 							Style("border-top", "2px solid "+l.Icolor).
 							Style("border-radius", "50%").
