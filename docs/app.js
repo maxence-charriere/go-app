@@ -28,7 +28,7 @@ if ("serviceWorker" in navigator) {
 // -----------------------------------------------------------------------------
 // Env
 // -----------------------------------------------------------------------------
-const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"54270b4350072755a3440d9d3630b93006c5a32a"};
+const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"8e0f1317d923632879808cfe869d42560fd3eecd"};
 
 function goappGetenv(k) {
   return goappEnv[k];
@@ -103,9 +103,7 @@ async function initWebAssembly() {
 
     let response = await fetch("/web/app.wasm");
     const reader = response.body.getReader();
-    let contentLength = response.headers.get('Content-Length');
-
-    console.log(response.headers);
+    const contentLength = response.headers.get('Content-Length');
 
     let chunks = [];
     let len = 0;
@@ -115,13 +113,13 @@ async function initWebAssembly() {
       if (done) {
         break;
       }
-      if (response.body.length > contentLength) {
-        contentLength = response.body.length;
-      }
 
       chunks.push(value);
       len += value.length;
       let progress = (len * 100 / contentLength).toFixed(2)
+      if (progress > 100) {
+        progress = (100).toFixed(2);
+      }
       loaderLabel.innerText = progress + "%";
     }
 
