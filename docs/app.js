@@ -28,7 +28,7 @@ if ("serviceWorker" in navigator) {
 // -----------------------------------------------------------------------------
 // Env
 // -----------------------------------------------------------------------------
-const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"8f9292a4cbed0e83e98b9154be3ae0ab8a3447cb"};
+const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"68573cc796b246da1c112280dcccdf3dc3965516"};
 
 function goappGetenv(k) {
   return goappEnv[k];
@@ -95,33 +95,52 @@ function goappKeepBodyClean() {
 // -----------------------------------------------------------------------------
 // Init Web Assembly
 // -----------------------------------------------------------------------------
-if (!/bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent)) {
-  if (!WebAssembly.instantiateStreaming) {
-    WebAssembly.instantiateStreaming = async (resp, importObject) => {
-      const source = await (await resp).arrayBuffer();
-      return await WebAssembly.instantiate(source, importObject);
-    };
+async function initWebAssembly() {
+  if (!/bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent)) {
+    const go = new Go();
+
+    const loaderLabel = document.getElementById("app-wasm-loader-label");
+
+    let response = await fetch("/web/app.wasm");
+    const reader = response.body.getReader();
+    const contentLength = response.headers.get('Content-Length');
+    let receivedLength = 0;
+
+    let wasmFile = new Uint8Array(contentLength);
+    let idx = 0;
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        break;
+      }
+
+      wasmFile.set(value, idx);
+      idx += value.length;
+
+      receivedLength += value.length;
+      loaderLabel.innerText = `${(receivedLength / contentLength * 100).toFixed(2)}%`
+    }
+
+    WebAssembly.instantiate(wasmFile.buffer, go.importObject)
+      .then(result => {
+        const loaderIcon = document.getElementById("app-wasm-loader-icon");
+        loaderIcon.className = "goapp-logo";
+
+        go.run(result.instance);
+      })
+      .catch(err => {
+        const loaderIcon = document.getElementById("app-wasm-loader-icon");
+        loaderIcon.className = "goapp-logo";
+
+        const loaderLabel = document.getElementById("app-wasm-loader-label");
+        loaderLabel.innerText = err;
+
+        console.error("loading wasm failed: " + err);
+      });
+  } else {
+    document.getElementById('app-wasm-loader').style.display = "none";
   }
-
-  const go = new Go();
-
-  WebAssembly.instantiateStreaming(fetch("/web/app.wasm"), go.importObject)
-    .then(result => {
-      const loaderIcon = document.getElementById("app-wasm-loader-icon");
-      loaderIcon.className = "goapp-logo";
-
-      go.run(result.instance);
-    })
-    .catch(err => {
-      const loaderIcon = document.getElementById("app-wasm-loader-icon");
-      loaderIcon.className = "goapp-logo";
-
-      const loaderLabel = document.getElementById("app-wasm-loader-label");
-      loaderLabel.innerText = err;
-
-      console.error("loading wasm failed: " + err);
-    });
-} else {
-  document.getElementById('app-wasm-loader').style.display = "none";
 }
 
+initWebAssembly();
