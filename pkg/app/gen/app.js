@@ -111,11 +111,13 @@ async function initWebAssembly() {
 
     while (true) {
       const { done, value } = await reader.read();
+
+      wasmFile.set(value, idx);
+
       if (done) {
         break;
       }
 
-      wasmFile.set(value, idx);
       idx += value.length;
 
       receivedLength += value.length;
