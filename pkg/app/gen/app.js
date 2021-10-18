@@ -116,7 +116,11 @@ async function initWebAssembly() {
 
       chunks.push(value);
       len += value.length;
-      loaderLabel.innerText = `${(len / contentLength * 100).toFixed(2)}%`
+      const progress = (len / contentLength * 100).toFixed(2)
+      if (progress > 100) {
+        progress = (100).toFixed(2);
+      }
+      loaderLabel.innerText = progress + "%";
     }
 
     let wasmFile = new Uint8Array(len);
