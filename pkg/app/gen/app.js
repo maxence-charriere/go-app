@@ -105,6 +105,8 @@ async function initWebAssembly() {
     const reader = response.body.getReader();
     const contentLength = response.headers.get('Content-Length');
 
+    console.log(response.headers);
+
     let chunks = [];
     let len = 0;
 
