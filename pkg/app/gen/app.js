@@ -104,23 +104,26 @@ async function initWebAssembly() {
     let response = await fetch("{{.Wasm}}");
     const reader = response.body.getReader();
     const contentLength = response.headers.get('Content-Length');
-    let receivedLength = 0;
 
-    let wasmFile = new Uint8Array(contentLength);
-    let idx = 0;
+    let chunks = [];
+    let len = 0;
 
     while (true) {
       const { done, value } = await reader.read();
-
-      if (value.length !== 0) {
-        wasmFile.set(value, idx);
-        idx += value.length;
-        loaderLabel.innerText = `${(idx / contentLength * 100).toFixed(2)}%`
-      }
-
       if (done) {
         break;
       }
+
+      chunks.push(value);
+      len += value.length;
+      loaderLabel.innerText = `${(len / contentLength * 100).toFixed(2)}%`
+    }
+
+    let wasmFile = new Uint8Array(len);
+    let idx = 0;
+    for (let c of chunks) {
+      wasmFile.set(c, idx);
+      idx += c.length;
     }
 
     WebAssembly.instantiate(wasmFile.buffer, go.importObject)
