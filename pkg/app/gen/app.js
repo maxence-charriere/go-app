@@ -112,16 +112,15 @@ async function initWebAssembly() {
     while (true) {
       const { done, value } = await reader.read();
 
-      wasmFile.set(value, idx);
+      if (value.length !== 0) {
+        wasmFile.set(value, idx);
+        idx += value.length;
+        loaderLabel.innerText = `${(idx / contentLength * 100).toFixed(2)}%`
+      }
 
       if (done) {
         break;
       }
-
-      idx += value.length;
-
-      receivedLength += value.length;
-      loaderLabel.innerText = `${(receivedLength / contentLength * 100).toFixed(2)}%`
     }
 
     WebAssembly.instantiate(wasmFile.buffer, go.importObject)
