@@ -28,7 +28,7 @@ if ("serviceWorker" in navigator) {
 // -----------------------------------------------------------------------------
 // Env
 // -----------------------------------------------------------------------------
-const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"68573cc796b246da1c112280dcccdf3dc3965516"};
+const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"26cdcf33fa0e267cb6ab8dd1cd6f9013d06ad38f"};
 
 function goappGetenv(k) {
   return goappEnv[k];
@@ -111,11 +111,13 @@ async function initWebAssembly() {
 
     while (true) {
       const { done, value } = await reader.read();
+
+      wasmFile.set(value, idx);
+
       if (done) {
         break;
       }
 
-      wasmFile.set(value, idx);
       idx += value.length;
 
       receivedLength += value.length;
