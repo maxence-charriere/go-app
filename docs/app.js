@@ -28,7 +28,7 @@ if ("serviceWorker" in navigator) {
 // -----------------------------------------------------------------------------
 // Env
 // -----------------------------------------------------------------------------
-const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"f4c84a183d3ef4a189c1221a2ce6dd55a27ba01d"};
+const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"8062e1c6841f9a8649117add3dce41f6400a0503"};
 
 function goappGetenv(k) {
   return goappEnv[k];
@@ -116,7 +116,7 @@ async function initWebAssembly() {
 
       chunks.push(value);
       len += value.length;
-      const progress = (len * 100 / contentLength).toFixed(2)
+      let progress = (len * 100 / contentLength).toFixed(2)
       if (progress > 100) {
         progress = (100).toFixed(2);
       }
