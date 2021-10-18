@@ -103,7 +103,7 @@ async function initWebAssembly() {
 
     let response = await fetch("{{.Wasm}}");
     const reader = response.body.getReader();
-    const contentLength = response.headers.get('Content-Length');
+    let contentLength = response.headers.get('Content-Length');
 
     console.log(response.headers);
 
@@ -115,13 +115,13 @@ async function initWebAssembly() {
       if (done) {
         break;
       }
+      if (response.body.length > contentLength) {
+        contentLength = response.body.length;
+      }
 
       chunks.push(value);
       len += value.length;
       let progress = (len * 100 / contentLength).toFixed(2)
-      if (progress > 100) {
-        progress = (100).toFixed(2);
-      }
       loaderLabel.innerText = progress + "%";
     }
 
