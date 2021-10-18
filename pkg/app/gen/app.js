@@ -116,7 +116,7 @@ async function initWebAssembly() {
 
       chunks.push(value);
       len += value.length;
-      const progress = (len / contentLength * 100).toFixed(2)
+      const progress = (len * 100 / contentLength).toFixed(2)
       if (progress > 100) {
         progress = (100).toFixed(2);
       }

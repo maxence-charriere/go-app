@@ -28,7 +28,7 @@ if ("serviceWorker" in navigator) {
 // -----------------------------------------------------------------------------
 // Env
 // -----------------------------------------------------------------------------
-const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"0f34152588db714b0c29c0ed989409a54439e01f"};
+const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"f4c84a183d3ef4a189c1221a2ce6dd55a27ba01d"};
 
 function goappGetenv(k) {
   return goappEnv[k];
@@ -116,7 +116,11 @@ async function initWebAssembly() {
 
       chunks.push(value);
       len += value.length;
-      loaderLabel.innerText = `${(len / contentLength * 100).toFixed(2)}%`
+      const progress = (len * 100 / contentLength).toFixed(2)
+      if (progress > 100) {
+        progress = (100).toFixed(2);
+      }
+      loaderLabel.innerText = progress + "%";
     }
 
     let wasmFile = new Uint8Array(len);
