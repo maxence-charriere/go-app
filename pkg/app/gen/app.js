@@ -95,32 +95,58 @@ function goappKeepBodyClean() {
 // -----------------------------------------------------------------------------
 // Init Web Assembly
 // -----------------------------------------------------------------------------
-if (!/bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent)) {
-  if (!WebAssembly.instantiateStreaming) {
-    WebAssembly.instantiateStreaming = async (resp, importObject) => {
-      const source = await (await resp).arrayBuffer();
-      return await WebAssembly.instantiate(source, importObject);
-    };
+async function initWebAssembly(){
+  if (!/bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent)) {
+    const go = new Go();
+  
+    let response = await fetch("{{.Wasm}}");
+    const reader = response.body.getReader();
+    // The "= +" for convert stirng to int
+    const contentLength = +response.headers.get('Content-Length');
+    let receivedLength = 0;
+    let chunks = [];
+    const loaderLabel = document.getElementById("app-wasm-loader-label");
+    const loaderLabelText = loaderLabel.innerText;
+    while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+            break;
+        }
+        chunks.push(value);
+        receivedLength += value.length;
+        // In some cases, the wasm file bypasses some reverse proxy with streaming, which does not include the header Content-Length. e.g., Cloudflare, so we need to handle this case.
+        if (contentLength !== 0){
+            loaderLabel.innerText = `Downloading ${(receivedLength/contentLength*100).toFixed(2)}%`
+        }else{
+            loaderLabel.innerText = `Downloading ${(receivedLength/1000000).toFixed(2)}MB`
+        }
+    }
+    let chunksAll = new Uint8Array(receivedLength);
+    let position = 0;
+    for (let chunk of chunks) {
+        chunksAll.set(chunk, position);
+        position += chunk.length;
+    }
+  
+    WebAssembly.instantiate(chunksAll.buffer, go.importObject)
+      .then(result => {
+        const loaderIcon = document.getElementById("app-wasm-loader-icon");
+        loaderIcon.className = "goapp-logo";
+  
+        go.run(result.instance);
+      })
+      .catch(err => {
+        const loaderIcon = document.getElementById("app-wasm-loader-icon");
+        loaderIcon.className = "goapp-logo";
+  
+        const loaderLabel = document.getElementById("app-wasm-loader-label");
+        loaderLabel.innerText = err;
+  
+        console.error("loading wasm failed: " + err);
+      });
+  } else {
+    document.getElementById('app-wasm-loader').style.display = "none";
   }
-
-  const go = new Go();
-
-  WebAssembly.instantiateStreaming(fetch("{{.Wasm}}"), go.importObject)
-    .then(result => {
-      const loaderIcon = document.getElementById("app-wasm-loader-icon");
-      loaderIcon.className = "goapp-logo";
-
-      go.run(result.instance);
-    })
-    .catch(err => {
-      const loaderIcon = document.getElementById("app-wasm-loader-icon");
-      loaderIcon.className = "goapp-logo";
-
-      const loaderLabel = document.getElementById("app-wasm-loader-label");
-      loaderLabel.innerText = err;
-
-      console.error("loading wasm failed: " + err);
-    });
-} else {
-  document.getElementById('app-wasm-loader').style.display = "none";
 }
+
+initWebAssembly();
