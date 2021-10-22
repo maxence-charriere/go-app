@@ -5826,8 +5826,8 @@ func TestTextarea(t *testing.T) {
 	elem.Text("hello")
 }
 
-func TestTfoot(t *testing.T) {
-	elem := Tfoot()
+func TestTFoot(t *testing.T) {
+	elem := TFoot()
 	elem.AccessKey("foo")
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
