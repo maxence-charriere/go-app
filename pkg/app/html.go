@@ -92,6 +92,9 @@ type HTMLA interface {
 	// Type specifies the type of element.
 	Type(v string) HTMLA
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLA
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLA
 
@@ -346,6 +349,11 @@ func (e *htmlA) Type(v string) HTMLA {
 	return e
 }
 
+func (e *htmlA) XMLNS(v string) HTMLA {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlA) OnBlur(h EventHandler, scope ...interface{}) HTMLA {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -567,6 +575,9 @@ type HTMLAbbr interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLAbbr
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLAbbr
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLAbbr
 
@@ -778,6 +789,11 @@ func (e *htmlAbbr) TabIndex(v int) HTMLAbbr {
 
 func (e *htmlAbbr) Title(v string) HTMLAbbr {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlAbbr) XMLNS(v string) HTMLAbbr {
+	e.xmlns = v
 	return e
 }
 
@@ -1002,6 +1018,9 @@ type HTMLAddress interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLAddress
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLAddress
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLAddress
 
@@ -1213,6 +1232,11 @@ func (e *htmlAddress) TabIndex(v int) HTMLAddress {
 
 func (e *htmlAddress) Title(v string) HTMLAddress {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlAddress) XMLNS(v string) HTMLAddress {
+	e.xmlns = v
 	return e
 }
 
@@ -1460,6 +1484,9 @@ type HTMLArea interface {
 
 	// Type specifies the type of element.
 	Type(v string) HTMLArea
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLArea
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLArea
@@ -1716,6 +1743,11 @@ func (e *htmlArea) Type(v string) HTMLArea {
 	return e
 }
 
+func (e *htmlArea) XMLNS(v string) HTMLArea {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlArea) OnBlur(h EventHandler, scope ...interface{}) HTMLArea {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -1937,6 +1969,9 @@ type HTMLArticle interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLArticle
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLArticle
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLArticle
 
@@ -2148,6 +2183,11 @@ func (e *htmlArticle) TabIndex(v int) HTMLArticle {
 
 func (e *htmlArticle) Title(v string) HTMLArticle {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlArticle) XMLNS(v string) HTMLArticle {
+	e.xmlns = v
 	return e
 }
 
@@ -2372,6 +2412,9 @@ type HTMLAside interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLAside
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLAside
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLAside
 
@@ -2583,6 +2626,11 @@ func (e *htmlAside) TabIndex(v int) HTMLAside {
 
 func (e *htmlAside) Title(v string) HTMLAside {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlAside) XMLNS(v string) HTMLAside {
+	e.xmlns = v
 	return e
 }
 
@@ -2827,6 +2875,9 @@ type HTMLAudio interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLAudio
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLAudio
 
 	// OnAbort calls the given handler on abort.
 	OnAbort(h EventHandler, scope ...interface{}) HTMLAudio
@@ -3143,6 +3194,11 @@ func (e *htmlAudio) TabIndex(v int) HTMLAudio {
 
 func (e *htmlAudio) Title(v string) HTMLAudio {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlAudio) XMLNS(v string) HTMLAudio {
+	e.xmlns = v
 	return e
 }
 
@@ -3482,6 +3538,9 @@ type HTMLB interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLB
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLB
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLB
 
@@ -3693,6 +3752,11 @@ func (e *htmlB) TabIndex(v int) HTMLB {
 
 func (e *htmlB) Title(v string) HTMLB {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlB) XMLNS(v string) HTMLB {
+	e.xmlns = v
 	return e
 }
 
@@ -3917,6 +3981,9 @@ type HTMLBase interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBase
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLBase
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLBase
 
@@ -4129,6 +4196,11 @@ func (e *htmlBase) Target(v string) HTMLBase {
 
 func (e *htmlBase) Title(v string) HTMLBase {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlBase) XMLNS(v string) HTMLBase {
+	e.xmlns = v
 	return e
 }
 
@@ -4353,6 +4425,9 @@ type HTMLBdi interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBdi
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLBdi
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLBdi
 
@@ -4564,6 +4639,11 @@ func (e *htmlBdi) TabIndex(v int) HTMLBdi {
 
 func (e *htmlBdi) Title(v string) HTMLBdi {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlBdi) XMLNS(v string) HTMLBdi {
+	e.xmlns = v
 	return e
 }
 
@@ -4788,6 +4868,9 @@ type HTMLBdo interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBdo
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLBdo
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLBdo
 
@@ -4999,6 +5082,11 @@ func (e *htmlBdo) TabIndex(v int) HTMLBdo {
 
 func (e *htmlBdo) Title(v string) HTMLBdo {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlBdo) XMLNS(v string) HTMLBdo {
+	e.xmlns = v
 	return e
 }
 
@@ -5226,6 +5314,9 @@ type HTMLBlockquote interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBlockquote
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLBlockquote
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLBlockquote
 
@@ -5445,6 +5536,11 @@ func (e *htmlBlockquote) Title(v string) HTMLBlockquote {
 	return e
 }
 
+func (e *htmlBlockquote) XMLNS(v string) HTMLBlockquote {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlBlockquote) OnBlur(h EventHandler, scope ...interface{}) HTMLBlockquote {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -5661,6 +5757,9 @@ type HTMLBody interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBody
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLBody
 
 	// OnAfterPrint runs the given handler after the document is printed.
 	OnAfterPrint(h EventHandler, scope ...interface{}) HTMLBody
@@ -5914,6 +6013,11 @@ func (e *htmlBody) TabIndex(v int) HTMLBody {
 
 func (e *htmlBody) Title(v string) HTMLBody {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlBody) XMLNS(v string) HTMLBody {
+	e.xmlns = v
 	return e
 }
 
@@ -6207,6 +6311,9 @@ type HTMLBr interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBr
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLBr
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLBr
 
@@ -6409,6 +6516,11 @@ func (e *htmlBr) TabIndex(v int) HTMLBr {
 
 func (e *htmlBr) Title(v string) HTMLBr {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlBr) XMLNS(v string) HTMLBr {
+	e.xmlns = v
 	return e
 }
 
@@ -6665,6 +6777,9 @@ type HTMLButton interface {
 
 	// Value specifies the value of the element.
 	Value(v interface{}) HTMLButton
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLButton
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLButton
@@ -6935,6 +7050,11 @@ func (e *htmlButton) Value(v interface{}) HTMLButton {
 	return e
 }
 
+func (e *htmlButton) XMLNS(v string) HTMLButton {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlButton) OnBlur(h EventHandler, scope ...interface{}) HTMLButton {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -7162,6 +7282,9 @@ type HTMLCanvas interface {
 	// Width specifies the width of the element.
 	Width(v int) HTMLCanvas
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLCanvas
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLCanvas
 
@@ -7386,6 +7509,11 @@ func (e *htmlCanvas) Width(v int) HTMLCanvas {
 	return e
 }
 
+func (e *htmlCanvas) XMLNS(v string) HTMLCanvas {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlCanvas) OnBlur(h EventHandler, scope ...interface{}) HTMLCanvas {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -7607,6 +7735,9 @@ type HTMLCaption interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLCaption
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLCaption
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLCaption
 
@@ -7818,6 +7949,11 @@ func (e *htmlCaption) TabIndex(v int) HTMLCaption {
 
 func (e *htmlCaption) Title(v string) HTMLCaption {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlCaption) XMLNS(v string) HTMLCaption {
+	e.xmlns = v
 	return e
 }
 
@@ -8042,6 +8178,9 @@ type HTMLCite interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLCite
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLCite
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLCite
 
@@ -8253,6 +8392,11 @@ func (e *htmlCite) TabIndex(v int) HTMLCite {
 
 func (e *htmlCite) Title(v string) HTMLCite {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlCite) XMLNS(v string) HTMLCite {
+	e.xmlns = v
 	return e
 }
 
@@ -8477,6 +8621,9 @@ type HTMLCode interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLCode
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLCode
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLCode
 
@@ -8688,6 +8835,11 @@ func (e *htmlCode) TabIndex(v int) HTMLCode {
 
 func (e *htmlCode) Title(v string) HTMLCode {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlCode) XMLNS(v string) HTMLCode {
+	e.xmlns = v
 	return e
 }
 
@@ -8909,6 +9061,9 @@ type HTMLCol interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLCol
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLCol
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLCol
 
@@ -9116,6 +9271,11 @@ func (e *htmlCol) TabIndex(v int) HTMLCol {
 
 func (e *htmlCol) Title(v string) HTMLCol {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlCol) XMLNS(v string) HTMLCol {
+	e.xmlns = v
 	return e
 }
 
@@ -9343,6 +9503,9 @@ type HTMLColGroup interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLColGroup
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLColGroup
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLColGroup
 
@@ -9559,6 +9722,11 @@ func (e *htmlColGroup) TabIndex(v int) HTMLColGroup {
 
 func (e *htmlColGroup) Title(v string) HTMLColGroup {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlColGroup) XMLNS(v string) HTMLColGroup {
+	e.xmlns = v
 	return e
 }
 
@@ -9785,6 +9953,9 @@ type HTMLData interface {
 
 	// Value specifies the value of the element.
 	Value(v interface{}) HTMLData
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLData
 }
 
 // Data returns an HTML element that links the given content with a machine-readable translation.
@@ -9909,6 +10080,11 @@ func (e *htmlData) Value(v interface{}) HTMLData {
 	return e
 }
 
+func (e *htmlData) XMLNS(v string) HTMLData {
+	e.xmlns = v
+	return e
+}
+
 // HTMLDataList is the interface that describes a <datalist> HTML element.
 type HTMLDataList interface {
 	UI
@@ -9969,6 +10145,9 @@ type HTMLDataList interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDataList
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLDataList
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDataList
@@ -10181,6 +10360,11 @@ func (e *htmlDataList) TabIndex(v int) HTMLDataList {
 
 func (e *htmlDataList) Title(v string) HTMLDataList {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlDataList) XMLNS(v string) HTMLDataList {
+	e.xmlns = v
 	return e
 }
 
@@ -10405,6 +10589,9 @@ type HTMLDd interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDd
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLDd
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDd
 
@@ -10616,6 +10803,11 @@ func (e *htmlDd) TabIndex(v int) HTMLDd {
 
 func (e *htmlDd) Title(v string) HTMLDd {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlDd) XMLNS(v string) HTMLDd {
+	e.xmlns = v
 	return e
 }
 
@@ -10846,6 +11038,9 @@ type HTMLDel interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDel
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLDel
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDel
 
@@ -11067,6 +11262,11 @@ func (e *htmlDel) TabIndex(v int) HTMLDel {
 
 func (e *htmlDel) Title(v string) HTMLDel {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlDel) XMLNS(v string) HTMLDel {
+	e.xmlns = v
 	return e
 }
 
@@ -11294,6 +11494,9 @@ type HTMLDetails interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDetails
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLDetails
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDetails
 
@@ -11513,6 +11716,11 @@ func (e *htmlDetails) TabIndex(v int) HTMLDetails {
 
 func (e *htmlDetails) Title(v string) HTMLDetails {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlDetails) XMLNS(v string) HTMLDetails {
+	e.xmlns = v
 	return e
 }
 
@@ -11742,6 +11950,9 @@ type HTMLDfn interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDfn
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLDfn
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDfn
 
@@ -11953,6 +12164,11 @@ func (e *htmlDfn) TabIndex(v int) HTMLDfn {
 
 func (e *htmlDfn) Title(v string) HTMLDfn {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlDfn) XMLNS(v string) HTMLDfn {
+	e.xmlns = v
 	return e
 }
 
@@ -12180,6 +12396,9 @@ type HTMLDialog interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDialog
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLDialog
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDialog
 
@@ -12396,6 +12615,11 @@ func (e *htmlDialog) TabIndex(v int) HTMLDialog {
 
 func (e *htmlDialog) Title(v string) HTMLDialog {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlDialog) XMLNS(v string) HTMLDialog {
+	e.xmlns = v
 	return e
 }
 
@@ -12620,6 +12844,9 @@ type HTMLDiv interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDiv
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLDiv
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDiv
 
@@ -12831,6 +13058,11 @@ func (e *htmlDiv) TabIndex(v int) HTMLDiv {
 
 func (e *htmlDiv) Title(v string) HTMLDiv {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlDiv) XMLNS(v string) HTMLDiv {
+	e.xmlns = v
 	return e
 }
 
@@ -13055,6 +13287,9 @@ type HTMLDl interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDl
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLDl
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDl
 
@@ -13266,6 +13501,11 @@ func (e *htmlDl) TabIndex(v int) HTMLDl {
 
 func (e *htmlDl) Title(v string) HTMLDl {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlDl) XMLNS(v string) HTMLDl {
+	e.xmlns = v
 	return e
 }
 
@@ -13490,6 +13730,9 @@ type HTMLDt interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDt
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLDt
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDt
 
@@ -13704,6 +13947,11 @@ func (e *htmlDt) Title(v string) HTMLDt {
 	return e
 }
 
+func (e *htmlDt) XMLNS(v string) HTMLDt {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlDt) OnBlur(h EventHandler, scope ...interface{}) HTMLDt {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -13864,6 +14112,877 @@ func (e *htmlDt) OnWheel(h EventHandler, scope ...interface{}) HTMLDt {
 	return e
 }
 
+// HTMLElem is the interface that describes a custom HTML element.
+type HTMLElem interface {
+	UI
+
+	// Body set the content of the element.
+	Body(elems ...UI) HTMLElem
+
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v interface{}) HTMLElem
+
+	// AccessKey specifies a shortcut key to activate/focus an element.
+	AccessKey(v string) HTMLElem
+
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLElem
+
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLElem
+
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLElem
+
+	// ContentEditable specifies whether the content of an element is editable or not.
+	ContentEditable(v bool) HTMLElem
+
+	// DataSet stores custom data private to the page or application.
+	DataSet(k string, v interface{}) HTMLElem
+
+	// Dir specifies the text direction for the content in an element.
+	Dir(v string) HTMLElem
+
+	// Draggable specifies whether an element is draggable or not.
+	Draggable(v bool) HTMLElem
+
+	// Hidden specifies that an element is not yet, or is no longer relevant.
+	Hidden(v bool) HTMLElem
+
+	// ID specifies a unique id for an element.
+	ID(v string) HTMLElem
+
+	// Lang specifies the language of the element's content.
+	Lang(v string) HTMLElem
+
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLElem
+
+	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
+	Spellcheck(v bool) HTMLElem
+
+	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+	Style(k, v string) HTMLElem
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLElem
+
+	// TabIndex specifies the tabbing order of an element.
+	TabIndex(v int) HTMLElem
+
+	// Title specifies extra information about an element.
+	Title(v string) HTMLElem
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLElem
+
+	// OnBlur calls the given handler when the element loses focus.
+	OnBlur(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnChange calls the given handler when the value of the element is changed.
+	OnChange(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnClick calls the given handler when there is a mouse click on the element.
+	OnClick(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnContextMenu calls the given handler when a context menu is triggered.
+	OnContextMenu(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnCopy calls the given handler when the user copies the content of an element.
+	OnCopy(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnCut calls the given handler when the user cuts the content of an element.
+	OnCut(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnDblClick calls the given handler when there is a mouse double-click on the element.
+	OnDblClick(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnDrag calls the given handler when an element is dragged.
+	OnDrag(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnDragEnd calls the given handler at the end of a drag operation.
+	OnDragEnd(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnDragEnter calls the given handler when an element has been dragged to a valid drop target.
+	OnDragEnter(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnDragLeave calls the given handler when an element leaves a valid drop target.
+	OnDragLeave(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnDragOver calls the given handler when an element is being dragged over a valid drop target.
+	OnDragOver(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnDragStart calls the given handler at the start of a drag operation.
+	OnDragStart(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnDrop calls the given handler when dragged element is being dropped.
+	OnDrop(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnFocus calls the given handler when the element gets focus.
+	OnFocus(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnInput calls the given handler when an element gets user input.
+	OnInput(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnInvalid calls the given handler when an element is invalid.
+	OnInvalid(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnKeyDown calls the given handler when a user is pressing a key.
+	OnKeyDown(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnKeyPress calls the given handler when a user presses a key.
+	OnKeyPress(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
+	OnMouseDown(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
+	OnMouseMove(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnMouseOut calls the given handler when the mouse pointer moves out of an element.
+	OnMouseOut(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnMouseOver calls the given handler when the mouse pointer moves over an element.
+	OnMouseOver(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnMouseUp calls the given handler when a mouse button is released over an element.
+	OnMouseUp(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnPaste calls the given handler when the user pastes some content in an element.
+	OnPaste(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnReset calls the given handler when the Reset button in a form is clicked.
+	OnReset(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnScroll calls the given handler when an element's scrollbar is being scrolled.
+	OnScroll(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnSearch calls the given handler when the user writes something in a search field.
+	OnSearch(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnSelect calls the given handler after some text has been selected in an element.
+	OnSelect(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnSubmit calls the given handler when a form is submitted.
+	OnSubmit(h EventHandler, scope ...interface{}) HTMLElem
+
+	// OnWheel calls the given handler when the mouse wheel rolls up or down over an element.
+	OnWheel(h EventHandler, scope ...interface{}) HTMLElem
+}
+
+// Elem, returns an element that defines a custom element
+func Elem(name string) HTMLElem {
+	e := &htmlElem{
+		elem: elem{
+			tag:         name,
+			selfClosing: false,
+		},
+	}
+
+	return e
+}
+
+type htmlElem struct {
+	elem
+}
+
+func (e *htmlElem) Body(elems ...UI) HTMLElem {
+	e.setBody(elems...)
+	return e
+}
+
+func (e *htmlElem) Text(v interface{}) HTMLElem {
+	return e.Body(Text(v))
+}
+
+func (e *htmlElem) AccessKey(v string) HTMLElem {
+	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlElem) Aria(k string, v interface{}) HTMLElem {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlElem) Attr(n string, v interface{}) HTMLElem {
+	e.setAttr(n, v)
+	return e
+}
+
+func (e *htmlElem) Class(v ...string) HTMLElem {
+	e.setAttr("class", strings.Join(v, " "))
+	return e
+}
+
+func (e *htmlElem) ContentEditable(v bool) HTMLElem {
+	e.setAttr("contenteditable", v)
+	return e
+}
+
+func (e *htmlElem) DataSet(k string, v interface{}) HTMLElem {
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlElem) Dir(v string) HTMLElem {
+	e.setAttr("dir", v)
+	return e
+}
+
+func (e *htmlElem) Draggable(v bool) HTMLElem {
+	e.setAttr("draggable", v)
+	return e
+}
+
+func (e *htmlElem) Hidden(v bool) HTMLElem {
+	e.setAttr("hidden", v)
+	return e
+}
+
+func (e *htmlElem) ID(v string) HTMLElem {
+	e.setAttr("id", v)
+	return e
+}
+
+func (e *htmlElem) Lang(v string) HTMLElem {
+	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlElem) Role(v string) HTMLElem {
+	e.setAttr("role", v)
+	return e
+}
+
+func (e *htmlElem) Spellcheck(v bool) HTMLElem {
+	s := "false"
+	if v {
+		s = "true"
+	}
+
+	e.setAttr("spellcheck", s)
+	return e
+}
+
+func (e *htmlElem) Style(k, v string) HTMLElem {
+	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlElem) Styles(s map[string]string) HTMLElem {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
+func (e *htmlElem) TabIndex(v int) HTMLElem {
+	e.setAttr("tabindex", v)
+	return e
+}
+
+func (e *htmlElem) Title(v string) HTMLElem {
+	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlElem) XMLNS(v string) HTMLElem {
+	e.xmlns = v
+	return e
+}
+
+func (e *htmlElem) OnBlur(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("blur", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnChange(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("change", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnClick(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("click", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnContextMenu(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("contextmenu", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnCopy(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("copy", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnCut(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("cut", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnDblClick(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("dblclick", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnDrag(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("drag", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnDragEnd(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("dragend", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnDragEnter(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("dragenter", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnDragLeave(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("dragleave", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnDragOver(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("dragover", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnDragStart(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("dragstart", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnDrop(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("drop", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnFocus(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("focus", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnInput(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("input", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnInvalid(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("invalid", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnKeyDown(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("keydown", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnKeyPress(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("keypress", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnKeyUp(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("keyup", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnMouseDown(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("mousedown", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnMouseMove(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("mousemove", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnMouseOut(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("mouseout", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnMouseOver(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("mouseover", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnMouseUp(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("mouseup", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnPaste(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("paste", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnReset(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("reset", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnScroll(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("scroll", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnSearch(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("search", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnSelect(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("select", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnSubmit(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("submit", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnWheel(h EventHandler, scope ...interface{}) HTMLElem {
+	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+// HTMLElem is the interface that describes a custom HTML element.
+type HTMLElemSC interface {
+	UI
+
+	// AccessKey specifies a shortcut key to activate/focus an element.
+	AccessKey(v string) HTMLElemSC
+
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v interface{}) HTMLElemSC
+
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v interface{}) HTMLElemSC
+
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLElemSC
+
+	// ContentEditable specifies whether the content of an element is editable or not.
+	ContentEditable(v bool) HTMLElemSC
+
+	// DataSet stores custom data private to the page or application.
+	DataSet(k string, v interface{}) HTMLElemSC
+
+	// Dir specifies the text direction for the content in an element.
+	Dir(v string) HTMLElemSC
+
+	// Draggable specifies whether an element is draggable or not.
+	Draggable(v bool) HTMLElemSC
+
+	// Hidden specifies that an element is not yet, or is no longer relevant.
+	Hidden(v bool) HTMLElemSC
+
+	// ID specifies a unique id for an element.
+	ID(v string) HTMLElemSC
+
+	// Lang specifies the language of the element's content.
+	Lang(v string) HTMLElemSC
+
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLElemSC
+
+	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
+	Spellcheck(v bool) HTMLElemSC
+
+	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+	Style(k, v string) HTMLElemSC
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLElemSC
+
+	// TabIndex specifies the tabbing order of an element.
+	TabIndex(v int) HTMLElemSC
+
+	// Title specifies extra information about an element.
+	Title(v string) HTMLElemSC
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLElemSC
+
+	// OnBlur calls the given handler when the element loses focus.
+	OnBlur(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnChange calls the given handler when the value of the element is changed.
+	OnChange(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnClick calls the given handler when there is a mouse click on the element.
+	OnClick(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnContextMenu calls the given handler when a context menu is triggered.
+	OnContextMenu(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnCopy calls the given handler when the user copies the content of an element.
+	OnCopy(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnCut calls the given handler when the user cuts the content of an element.
+	OnCut(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnDblClick calls the given handler when there is a mouse double-click on the element.
+	OnDblClick(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnDrag calls the given handler when an element is dragged.
+	OnDrag(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnDragEnd calls the given handler at the end of a drag operation.
+	OnDragEnd(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnDragEnter calls the given handler when an element has been dragged to a valid drop target.
+	OnDragEnter(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnDragLeave calls the given handler when an element leaves a valid drop target.
+	OnDragLeave(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnDragOver calls the given handler when an element is being dragged over a valid drop target.
+	OnDragOver(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnDragStart calls the given handler at the start of a drag operation.
+	OnDragStart(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnDrop calls the given handler when dragged element is being dropped.
+	OnDrop(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnFocus calls the given handler when the element gets focus.
+	OnFocus(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnInput calls the given handler when an element gets user input.
+	OnInput(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnInvalid calls the given handler when an element is invalid.
+	OnInvalid(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnKeyDown calls the given handler when a user is pressing a key.
+	OnKeyDown(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnKeyPress calls the given handler when a user presses a key.
+	OnKeyPress(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
+	OnMouseDown(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
+	OnMouseMove(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnMouseOut calls the given handler when the mouse pointer moves out of an element.
+	OnMouseOut(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnMouseOver calls the given handler when the mouse pointer moves over an element.
+	OnMouseOver(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnMouseUp calls the given handler when a mouse button is released over an element.
+	OnMouseUp(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnPaste calls the given handler when the user pastes some content in an element.
+	OnPaste(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnReset calls the given handler when the Reset button in a form is clicked.
+	OnReset(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnScroll calls the given handler when an element's scrollbar is being scrolled.
+	OnScroll(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnSearch calls the given handler when the user writes something in a search field.
+	OnSearch(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnSelect calls the given handler after some text has been selected in an element.
+	OnSelect(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnSubmit calls the given handler when a form is submitted.
+	OnSubmit(h EventHandler, scope ...interface{}) HTMLElemSC
+
+	// OnWheel calls the given handler when the mouse wheel rolls up or down over an element.
+	OnWheel(h EventHandler, scope ...interface{}) HTMLElemSC
+}
+
+// ElemSC, returns an element that defines a self closing custom element
+func ElemSC(name string) HTMLElemSC {
+	e := &htmlElemSC{
+		elem: elem{
+			tag:         name,
+			selfClosing: true,
+		},
+	}
+
+	return e
+}
+
+type htmlElemSC struct {
+	elem
+}
+
+func (e *htmlElemSC) AccessKey(v string) HTMLElemSC {
+	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlElemSC) Aria(k string, v interface{}) HTMLElemSC {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlElemSC) Attr(n string, v interface{}) HTMLElemSC {
+	e.setAttr(n, v)
+	return e
+}
+
+func (e *htmlElemSC) Class(v ...string) HTMLElemSC {
+	e.setAttr("class", strings.Join(v, " "))
+	return e
+}
+
+func (e *htmlElemSC) ContentEditable(v bool) HTMLElemSC {
+	e.setAttr("contenteditable", v)
+	return e
+}
+
+func (e *htmlElemSC) DataSet(k string, v interface{}) HTMLElemSC {
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlElemSC) Dir(v string) HTMLElemSC {
+	e.setAttr("dir", v)
+	return e
+}
+
+func (e *htmlElemSC) Draggable(v bool) HTMLElemSC {
+	e.setAttr("draggable", v)
+	return e
+}
+
+func (e *htmlElemSC) Hidden(v bool) HTMLElemSC {
+	e.setAttr("hidden", v)
+	return e
+}
+
+func (e *htmlElemSC) ID(v string) HTMLElemSC {
+	e.setAttr("id", v)
+	return e
+}
+
+func (e *htmlElemSC) Lang(v string) HTMLElemSC {
+	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlElemSC) Role(v string) HTMLElemSC {
+	e.setAttr("role", v)
+	return e
+}
+
+func (e *htmlElemSC) Spellcheck(v bool) HTMLElemSC {
+	s := "false"
+	if v {
+		s = "true"
+	}
+
+	e.setAttr("spellcheck", s)
+	return e
+}
+
+func (e *htmlElemSC) Style(k, v string) HTMLElemSC {
+	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlElemSC) Styles(s map[string]string) HTMLElemSC {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
+func (e *htmlElemSC) TabIndex(v int) HTMLElemSC {
+	e.setAttr("tabindex", v)
+	return e
+}
+
+func (e *htmlElemSC) Title(v string) HTMLElemSC {
+	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlElemSC) XMLNS(v string) HTMLElemSC {
+	e.xmlns = v
+	return e
+}
+
+func (e *htmlElemSC) OnBlur(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("blur", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnChange(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("change", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnClick(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("click", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnContextMenu(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("contextmenu", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnCopy(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("copy", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnCut(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("cut", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnDblClick(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("dblclick", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnDrag(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("drag", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnDragEnd(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("dragend", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnDragEnter(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("dragenter", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnDragLeave(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("dragleave", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnDragOver(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("dragover", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnDragStart(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("dragstart", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnDrop(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("drop", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnFocus(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("focus", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnInput(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("input", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnInvalid(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("invalid", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnKeyDown(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("keydown", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnKeyPress(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("keypress", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnKeyUp(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("keyup", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnMouseDown(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("mousedown", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnMouseMove(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("mousemove", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnMouseOut(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("mouseout", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnMouseOver(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("mouseover", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnMouseUp(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("mouseup", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnPaste(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("paste", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnReset(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("reset", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnScroll(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("scroll", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnSearch(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("search", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnSelect(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("select", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnSubmit(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("submit", h, scope...)
+	return e
+}
+
+func (e *htmlElemSC) OnWheel(h EventHandler, scope ...interface{}) HTMLElemSC {
+	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
 // HTMLEm is the interface that describes a <em> HTML element.
 type HTMLEm interface {
 	UI
@@ -13924,6 +15043,9 @@ type HTMLEm interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLEm
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLEm
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLEm
@@ -14136,6 +15258,11 @@ func (e *htmlEm) TabIndex(v int) HTMLEm {
 
 func (e *htmlEm) Title(v string) HTMLEm {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlEm) XMLNS(v string) HTMLEm {
+	e.xmlns = v
 	return e
 }
 
@@ -14365,6 +15492,9 @@ type HTMLEmbed interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLEmbed
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLEmbed
 
 	// OnAbort calls the given handler on abort.
 	OnAbort(h EventHandler, scope ...interface{}) HTMLEmbed
@@ -14657,6 +15787,11 @@ func (e *htmlEmbed) Type(v string) HTMLEmbed {
 
 func (e *htmlEmbed) Width(v int) HTMLEmbed {
 	e.setAttr("width", v)
+	return e
+}
+
+func (e *htmlEmbed) XMLNS(v string) HTMLEmbed {
+	e.xmlns = v
 	return e
 }
 
@@ -15005,6 +16140,9 @@ type HTMLFieldSet interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLFieldSet
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLFieldSet
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLFieldSet
 
@@ -15234,6 +16372,11 @@ func (e *htmlFieldSet) Title(v string) HTMLFieldSet {
 	return e
 }
 
+func (e *htmlFieldSet) XMLNS(v string) HTMLFieldSet {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlFieldSet) OnBlur(h EventHandler, scope ...interface{}) HTMLFieldSet {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -15455,6 +16598,9 @@ type HTMLFigCaption interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLFigCaption
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLFigCaption
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLFigCaption
 
@@ -15666,6 +16812,11 @@ func (e *htmlFigCaption) TabIndex(v int) HTMLFigCaption {
 
 func (e *htmlFigCaption) Title(v string) HTMLFigCaption {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlFigCaption) XMLNS(v string) HTMLFigCaption {
+	e.xmlns = v
 	return e
 }
 
@@ -15890,6 +17041,9 @@ type HTMLFigure interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLFigure
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLFigure
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLFigure
 
@@ -16101,6 +17255,11 @@ func (e *htmlFigure) TabIndex(v int) HTMLFigure {
 
 func (e *htmlFigure) Title(v string) HTMLFigure {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlFigure) XMLNS(v string) HTMLFigure {
+	e.xmlns = v
 	return e
 }
 
@@ -16325,6 +17484,9 @@ type HTMLFooter interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLFooter
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLFooter
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLFooter
 
@@ -16536,6 +17698,11 @@ func (e *htmlFooter) TabIndex(v int) HTMLFooter {
 
 func (e *htmlFooter) Title(v string) HTMLFooter {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlFooter) XMLNS(v string) HTMLFooter {
+	e.xmlns = v
 	return e
 }
 
@@ -16783,6 +17950,9 @@ type HTMLForm interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLForm
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLForm
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLForm
@@ -17043,6 +18213,11 @@ func (e *htmlForm) Title(v string) HTMLForm {
 	return e
 }
 
+func (e *htmlForm) XMLNS(v string) HTMLForm {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlForm) OnBlur(h EventHandler, scope ...interface{}) HTMLForm {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -17264,6 +18439,9 @@ type HTMLH1 interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH1
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLH1
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLH1
 
@@ -17475,6 +18653,11 @@ func (e *htmlH1) TabIndex(v int) HTMLH1 {
 
 func (e *htmlH1) Title(v string) HTMLH1 {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlH1) XMLNS(v string) HTMLH1 {
+	e.xmlns = v
 	return e
 }
 
@@ -17699,6 +18882,9 @@ type HTMLH2 interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH2
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLH2
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLH2
 
@@ -17910,6 +19096,11 @@ func (e *htmlH2) TabIndex(v int) HTMLH2 {
 
 func (e *htmlH2) Title(v string) HTMLH2 {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlH2) XMLNS(v string) HTMLH2 {
+	e.xmlns = v
 	return e
 }
 
@@ -18134,6 +19325,9 @@ type HTMLH3 interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH3
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLH3
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLH3
 
@@ -18345,6 +19539,11 @@ func (e *htmlH3) TabIndex(v int) HTMLH3 {
 
 func (e *htmlH3) Title(v string) HTMLH3 {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlH3) XMLNS(v string) HTMLH3 {
+	e.xmlns = v
 	return e
 }
 
@@ -18569,6 +19768,9 @@ type HTMLH4 interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH4
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLH4
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLH4
 
@@ -18780,6 +19982,11 @@ func (e *htmlH4) TabIndex(v int) HTMLH4 {
 
 func (e *htmlH4) Title(v string) HTMLH4 {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlH4) XMLNS(v string) HTMLH4 {
+	e.xmlns = v
 	return e
 }
 
@@ -19004,6 +20211,9 @@ type HTMLH5 interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH5
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLH5
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLH5
 
@@ -19215,6 +20425,11 @@ func (e *htmlH5) TabIndex(v int) HTMLH5 {
 
 func (e *htmlH5) Title(v string) HTMLH5 {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlH5) XMLNS(v string) HTMLH5 {
+	e.xmlns = v
 	return e
 }
 
@@ -19439,6 +20654,9 @@ type HTMLH6 interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH6
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLH6
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLH6
 
@@ -19650,6 +20868,11 @@ func (e *htmlH6) TabIndex(v int) HTMLH6 {
 
 func (e *htmlH6) Title(v string) HTMLH6 {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlH6) XMLNS(v string) HTMLH6 {
+	e.xmlns = v
 	return e
 }
 
@@ -19873,6 +21096,9 @@ type HTMLHead interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLHead
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLHead
 }
 
 // Head returns an HTML element that defines information about the document.
@@ -19992,6 +21218,11 @@ func (e *htmlHead) Title(v string) HTMLHead {
 	return e
 }
 
+func (e *htmlHead) XMLNS(v string) HTMLHead {
+	e.xmlns = v
+	return e
+}
+
 // HTMLHeader is the interface that describes a <header> HTML element.
 type HTMLHeader interface {
 	UI
@@ -20052,6 +21283,9 @@ type HTMLHeader interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLHeader
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLHeader
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLHeader
@@ -20264,6 +21498,11 @@ func (e *htmlHeader) TabIndex(v int) HTMLHeader {
 
 func (e *htmlHeader) Title(v string) HTMLHeader {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlHeader) XMLNS(v string) HTMLHeader {
+	e.xmlns = v
 	return e
 }
 
@@ -20482,6 +21721,9 @@ type HTMLHr interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLHr
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLHr
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLHr
 
@@ -20684,6 +21926,11 @@ func (e *htmlHr) TabIndex(v int) HTMLHr {
 
 func (e *htmlHr) Title(v string) HTMLHr {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlHr) XMLNS(v string) HTMLHr {
+	e.xmlns = v
 	return e
 }
 
@@ -20903,6 +22150,9 @@ type HTMLHtml interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLHtml
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLHtml
 }
 
 // Html returns an HTML element that defines the root of an HTML document.
@@ -21018,6 +22268,11 @@ func (e *htmlHtml) Title(v string) HTMLHtml {
 	return e
 }
 
+func (e *htmlHtml) XMLNS(v string) HTMLHtml {
+	e.xmlns = v
+	return e
+}
+
 // HTMLI is the interface that describes a <i> HTML element.
 type HTMLI interface {
 	UI
@@ -21078,6 +22333,9 @@ type HTMLI interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLI
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLI
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLI
@@ -21290,6 +22548,11 @@ func (e *htmlI) TabIndex(v int) HTMLI {
 
 func (e *htmlI) Title(v string) HTMLI {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlI) XMLNS(v string) HTMLI {
+	e.xmlns = v
 	return e
 }
 
@@ -21546,6 +22809,9 @@ type HTMLIFrame interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLIFrame
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLIFrame
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLIFrame
@@ -21829,6 +23095,11 @@ func (e *htmlIFrame) Width(v int) HTMLIFrame {
 	return e
 }
 
+func (e *htmlIFrame) XMLNS(v string) HTMLIFrame {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlIFrame) OnBlur(h EventHandler, scope ...interface{}) HTMLIFrame {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -22075,6 +23346,9 @@ type HTMLImg interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLImg
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLImg
 
 	// OnAbort calls the given handler on abort.
 	OnAbort(h EventHandler, scope ...interface{}) HTMLImg
@@ -22395,6 +23669,11 @@ func (e *htmlImg) UseMap(v string) HTMLImg {
 
 func (e *htmlImg) Width(v int) HTMLImg {
 	e.setAttr("width", v)
+	return e
+}
+
+func (e *htmlImg) XMLNS(v string) HTMLImg {
+	e.xmlns = v
 	return e
 }
 
@@ -22826,6 +24105,9 @@ type HTMLInput interface {
 	// Width specifies the width of the element.
 	Width(v int) HTMLInput
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLInput
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLInput
 
@@ -23194,6 +24476,11 @@ func (e *htmlInput) Width(v int) HTMLInput {
 	return e
 }
 
+func (e *htmlInput) XMLNS(v string) HTMLInput {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlInput) OnBlur(h EventHandler, scope ...interface{}) HTMLInput {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -23420,6 +24707,9 @@ type HTMLIns interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLIns
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLIns
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLIns
 
@@ -23631,6 +24921,11 @@ func (e *htmlIns) TabIndex(v int) HTMLIns {
 
 func (e *htmlIns) Title(v string) HTMLIns {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlIns) XMLNS(v string) HTMLIns {
+	e.xmlns = v
 	return e
 }
 
@@ -23855,6 +25150,9 @@ type HTMLKbd interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLKbd
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLKbd
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLKbd
 
@@ -24066,6 +25364,11 @@ func (e *htmlKbd) TabIndex(v int) HTMLKbd {
 
 func (e *htmlKbd) Title(v string) HTMLKbd {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlKbd) XMLNS(v string) HTMLKbd {
+	e.xmlns = v
 	return e
 }
 
@@ -24296,6 +25599,9 @@ type HTMLLabel interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLLabel
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLLabel
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLLabel
 
@@ -24520,6 +25826,11 @@ func (e *htmlLabel) Title(v string) HTMLLabel {
 	return e
 }
 
+func (e *htmlLabel) XMLNS(v string) HTMLLabel {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlLabel) OnBlur(h EventHandler, scope ...interface{}) HTMLLabel {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -24741,6 +26052,9 @@ type HTMLLegend interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLLegend
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLLegend
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLLegend
 
@@ -24952,6 +26266,11 @@ func (e *htmlLegend) TabIndex(v int) HTMLLegend {
 
 func (e *htmlLegend) Title(v string) HTMLLegend {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlLegend) XMLNS(v string) HTMLLegend {
+	e.xmlns = v
 	return e
 }
 
@@ -25179,6 +26498,9 @@ type HTMLLi interface {
 	// Value specifies the value of the element.
 	Value(v interface{}) HTMLLi
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLLi
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLLi
 
@@ -25395,6 +26717,11 @@ func (e *htmlLi) Title(v string) HTMLLi {
 
 func (e *htmlLi) Value(v interface{}) HTMLLi {
 	e.setAttr("value", v)
+	return e
+}
+
+func (e *htmlLi) XMLNS(v string) HTMLLi {
+	e.xmlns = v
 	return e
 }
 
@@ -25633,6 +26960,9 @@ type HTMLLink interface {
 
 	// Type specifies the type of element.
 	Type(v string) HTMLLink
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLLink
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLLink
@@ -25877,6 +27207,11 @@ func (e *htmlLink) Type(v string) HTMLLink {
 	return e
 }
 
+func (e *htmlLink) XMLNS(v string) HTMLLink {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlLink) OnBlur(h EventHandler, scope ...interface{}) HTMLLink {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -26103,6 +27438,9 @@ type HTMLMain interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLMain
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLMain
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLMain
 
@@ -26314,6 +27652,11 @@ func (e *htmlMain) TabIndex(v int) HTMLMain {
 
 func (e *htmlMain) Title(v string) HTMLMain {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlMain) XMLNS(v string) HTMLMain {
+	e.xmlns = v
 	return e
 }
 
@@ -26541,6 +27884,9 @@ type HTMLMap interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLMap
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLMap
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLMap
 
@@ -26757,6 +28103,11 @@ func (e *htmlMap) TabIndex(v int) HTMLMap {
 
 func (e *htmlMap) Title(v string) HTMLMap {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlMap) XMLNS(v string) HTMLMap {
+	e.xmlns = v
 	return e
 }
 
@@ -26981,6 +28332,9 @@ type HTMLMark interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLMark
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLMark
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLMark
 
@@ -27192,6 +28546,11 @@ func (e *htmlMark) TabIndex(v int) HTMLMark {
 
 func (e *htmlMark) Title(v string) HTMLMark {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlMark) XMLNS(v string) HTMLMark {
+	e.xmlns = v
 	return e
 }
 
@@ -27424,6 +28783,9 @@ type HTMLMeta interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLMeta
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLMeta
 }
 
 // Meta returns an HTML element that .
@@ -27559,6 +28921,11 @@ func (e *htmlMeta) Title(v string) HTMLMeta {
 	return e
 }
 
+func (e *htmlMeta) XMLNS(v string) HTMLMeta {
+	e.xmlns = v
+	return e
+}
+
 // HTMLMeter is the interface that describes a <meter> HTML element.
 type HTMLMeter interface {
 	UI
@@ -27640,6 +29007,9 @@ type HTMLMeter interface {
 
 	// Value specifies the value of the element.
 	Value(v interface{}) HTMLMeter
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLMeter
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLMeter
@@ -27890,6 +29260,11 @@ func (e *htmlMeter) Value(v interface{}) HTMLMeter {
 	return e
 }
 
+func (e *htmlMeter) XMLNS(v string) HTMLMeter {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlMeter) OnBlur(h EventHandler, scope ...interface{}) HTMLMeter {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -28111,6 +29486,9 @@ type HTMLNav interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLNav
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLNav
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLNav
 
@@ -28322,6 +29700,11 @@ func (e *htmlNav) TabIndex(v int) HTMLNav {
 
 func (e *htmlNav) Title(v string) HTMLNav {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlNav) XMLNS(v string) HTMLNav {
+	e.xmlns = v
 	return e
 }
 
@@ -28545,6 +29928,9 @@ type HTMLNoScript interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLNoScript
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLNoScript
 }
 
 // NoScript returns an HTML element that defines an alternate content for users that do not support client-side scripts.
@@ -28664,6 +30050,11 @@ func (e *htmlNoScript) Title(v string) HTMLNoScript {
 	return e
 }
 
+func (e *htmlNoScript) XMLNS(v string) HTMLNoScript {
+	e.xmlns = v
+	return e
+}
+
 // HTMLObject is the interface that describes a <object> HTML element.
 type HTMLObject interface {
 	UI
@@ -28745,6 +30136,9 @@ type HTMLObject interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLObject
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLObject
 
 	// OnAbort calls the given handler on abort.
 	OnAbort(h EventHandler, scope ...interface{}) HTMLObject
@@ -29061,6 +30455,11 @@ func (e *htmlObject) UseMap(v string) HTMLObject {
 
 func (e *htmlObject) Width(v int) HTMLObject {
 	e.setAttr("width", v)
+	return e
+}
+
+func (e *htmlObject) XMLNS(v string) HTMLObject {
+	e.xmlns = v
 	return e
 }
 
@@ -29409,6 +30808,9 @@ type HTMLOl interface {
 	// Type specifies the type of element.
 	Type(v string) HTMLOl
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLOl
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLOl
 
@@ -29635,6 +31037,11 @@ func (e *htmlOl) Title(v string) HTMLOl {
 
 func (e *htmlOl) Type(v string) HTMLOl {
 	e.setAttr("type", v)
+	return e
+}
+
+func (e *htmlOl) XMLNS(v string) HTMLOl {
+	e.xmlns = v
 	return e
 }
 
@@ -29865,6 +31272,9 @@ type HTMLOptGroup interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLOptGroup
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLOptGroup
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLOptGroup
 
@@ -30086,6 +31496,11 @@ func (e *htmlOptGroup) TabIndex(v int) HTMLOptGroup {
 
 func (e *htmlOptGroup) Title(v string) HTMLOptGroup {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlOptGroup) XMLNS(v string) HTMLOptGroup {
+	e.xmlns = v
 	return e
 }
 
@@ -30322,6 +31737,9 @@ type HTMLOption interface {
 	// Value specifies the value of the element.
 	Value(v interface{}) HTMLOption
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLOption
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLOption
 
@@ -30556,6 +31974,11 @@ func (e *htmlOption) Value(v interface{}) HTMLOption {
 	return e
 }
 
+func (e *htmlOption) XMLNS(v string) HTMLOption {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlOption) OnBlur(h EventHandler, scope ...interface{}) HTMLOption {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -30786,6 +32209,9 @@ type HTMLOutput interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLOutput
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLOutput
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLOutput
 
@@ -31015,6 +32441,11 @@ func (e *htmlOutput) Title(v string) HTMLOutput {
 	return e
 }
 
+func (e *htmlOutput) XMLNS(v string) HTMLOutput {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlOutput) OnBlur(h EventHandler, scope ...interface{}) HTMLOutput {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -31236,6 +32667,9 @@ type HTMLP interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLP
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLP
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLP
 
@@ -31447,6 +32881,11 @@ func (e *htmlP) TabIndex(v int) HTMLP {
 
 func (e *htmlP) Title(v string) HTMLP {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlP) XMLNS(v string) HTMLP {
+	e.xmlns = v
 	return e
 }
 
@@ -31671,6 +33110,9 @@ type HTMLParam interface {
 	// Value specifies the value of the element.
 	Value(v interface{}) HTMLParam
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLParam
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLParam
 
@@ -31883,6 +33325,11 @@ func (e *htmlParam) Title(v string) HTMLParam {
 
 func (e *htmlParam) Value(v interface{}) HTMLParam {
 	e.setAttr("value", v)
+	return e
+}
+
+func (e *htmlParam) XMLNS(v string) HTMLParam {
+	e.xmlns = v
 	return e
 }
 
@@ -32107,6 +33554,9 @@ type HTMLPicture interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLPicture
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLPicture
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLPicture
 
@@ -32318,6 +33768,11 @@ func (e *htmlPicture) TabIndex(v int) HTMLPicture {
 
 func (e *htmlPicture) Title(v string) HTMLPicture {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlPicture) XMLNS(v string) HTMLPicture {
+	e.xmlns = v
 	return e
 }
 
@@ -32542,6 +33997,9 @@ type HTMLPre interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLPre
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLPre
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLPre
 
@@ -32753,6 +34211,11 @@ func (e *htmlPre) TabIndex(v int) HTMLPre {
 
 func (e *htmlPre) Title(v string) HTMLPre {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlPre) XMLNS(v string) HTMLPre {
+	e.xmlns = v
 	return e
 }
 
@@ -32983,6 +34446,9 @@ type HTMLProgress interface {
 	// Value specifies the value of the element.
 	Value(v interface{}) HTMLProgress
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLProgress
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLProgress
 
@@ -33204,6 +34670,11 @@ func (e *htmlProgress) Title(v string) HTMLProgress {
 
 func (e *htmlProgress) Value(v interface{}) HTMLProgress {
 	e.setAttr("value", v)
+	return e
+}
+
+func (e *htmlProgress) XMLNS(v string) HTMLProgress {
+	e.xmlns = v
 	return e
 }
 
@@ -33431,6 +34902,9 @@ type HTMLQ interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLQ
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLQ
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLQ
 
@@ -33647,6 +35121,11 @@ func (e *htmlQ) TabIndex(v int) HTMLQ {
 
 func (e *htmlQ) Title(v string) HTMLQ {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlQ) XMLNS(v string) HTMLQ {
+	e.xmlns = v
 	return e
 }
 
@@ -33871,6 +35350,9 @@ type HTMLRp interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLRp
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLRp
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLRp
 
@@ -34082,6 +35564,11 @@ func (e *htmlRp) TabIndex(v int) HTMLRp {
 
 func (e *htmlRp) Title(v string) HTMLRp {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlRp) XMLNS(v string) HTMLRp {
+	e.xmlns = v
 	return e
 }
 
@@ -34306,6 +35793,9 @@ type HTMLRt interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLRt
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLRt
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLRt
 
@@ -34517,6 +36007,11 @@ func (e *htmlRt) TabIndex(v int) HTMLRt {
 
 func (e *htmlRt) Title(v string) HTMLRt {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlRt) XMLNS(v string) HTMLRt {
+	e.xmlns = v
 	return e
 }
 
@@ -34741,6 +36236,9 @@ type HTMLRuby interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLRuby
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLRuby
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLRuby
 
@@ -34952,6 +36450,11 @@ func (e *htmlRuby) TabIndex(v int) HTMLRuby {
 
 func (e *htmlRuby) Title(v string) HTMLRuby {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlRuby) XMLNS(v string) HTMLRuby {
+	e.xmlns = v
 	return e
 }
 
@@ -35176,6 +36679,9 @@ type HTMLS interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLS
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLS
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLS
 
@@ -35387,6 +36893,11 @@ func (e *htmlS) TabIndex(v int) HTMLS {
 
 func (e *htmlS) Title(v string) HTMLS {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlS) XMLNS(v string) HTMLS {
+	e.xmlns = v
 	return e
 }
 
@@ -35611,6 +37122,9 @@ type HTMLSamp interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSamp
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLSamp
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSamp
 
@@ -35822,6 +37336,11 @@ func (e *htmlSamp) TabIndex(v int) HTMLSamp {
 
 func (e *htmlSamp) Title(v string) HTMLSamp {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlSamp) XMLNS(v string) HTMLSamp {
+	e.xmlns = v
 	return e
 }
 
@@ -36064,6 +37583,9 @@ type HTMLScript interface {
 	// Type specifies the type of element.
 	Type(v string) HTMLScript
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLScript
+
 	// OnLoad calls the given handler after the element is finished loading.
 	OnLoad(h EventHandler, scope ...interface{}) HTMLScript
 }
@@ -36215,6 +37737,11 @@ func (e *htmlScript) Type(v string) HTMLScript {
 	return e
 }
 
+func (e *htmlScript) XMLNS(v string) HTMLScript {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlScript) OnLoad(h EventHandler, scope ...interface{}) HTMLScript {
 	e.setEventHandler("load", h, scope...)
 	return e
@@ -36280,6 +37807,9 @@ type HTMLSection interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSection
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLSection
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSection
@@ -36492,6 +38022,11 @@ func (e *htmlSection) TabIndex(v int) HTMLSection {
 
 func (e *htmlSection) Title(v string) HTMLSection {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlSection) XMLNS(v string) HTMLSection {
+	e.xmlns = v
 	return e
 }
 
@@ -36736,6 +38271,9 @@ type HTMLSelect interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSelect
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLSelect
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSelect
@@ -36986,6 +38524,11 @@ func (e *htmlSelect) Title(v string) HTMLSelect {
 	return e
 }
 
+func (e *htmlSelect) XMLNS(v string) HTMLSelect {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlSelect) OnBlur(h EventHandler, scope ...interface{}) HTMLSelect {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -37207,6 +38750,9 @@ type HTMLSmall interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSmall
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLSmall
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSmall
 
@@ -37418,6 +38964,11 @@ func (e *htmlSmall) TabIndex(v int) HTMLSmall {
 
 func (e *htmlSmall) Title(v string) HTMLSmall {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlSmall) XMLNS(v string) HTMLSmall {
+	e.xmlns = v
 	return e
 }
 
@@ -37651,6 +39202,9 @@ type HTMLSource interface {
 	// Type specifies the type of element.
 	Type(v string) HTMLSource
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLSource
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSource
 
@@ -37881,6 +39435,11 @@ func (e *htmlSource) Type(v string) HTMLSource {
 	return e
 }
 
+func (e *htmlSource) XMLNS(v string) HTMLSource {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlSource) OnBlur(h EventHandler, scope ...interface{}) HTMLSource {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -38102,6 +39661,9 @@ type HTMLSpan interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSpan
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLSpan
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSpan
 
@@ -38313,6 +39875,11 @@ func (e *htmlSpan) TabIndex(v int) HTMLSpan {
 
 func (e *htmlSpan) Title(v string) HTMLSpan {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlSpan) XMLNS(v string) HTMLSpan {
+	e.xmlns = v
 	return e
 }
 
@@ -38537,6 +40104,9 @@ type HTMLStrong interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLStrong
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLStrong
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLStrong
 
@@ -38748,6 +40318,11 @@ func (e *htmlStrong) TabIndex(v int) HTMLStrong {
 
 func (e *htmlStrong) Title(v string) HTMLStrong {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlStrong) XMLNS(v string) HTMLStrong {
+	e.xmlns = v
 	return e
 }
 
@@ -38978,6 +40553,9 @@ type HTMLStyle interface {
 	// Type specifies the type of element.
 	Type(v string) HTMLStyle
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLStyle
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLStyle
 
@@ -39202,6 +40780,11 @@ func (e *htmlStyle) Title(v string) HTMLStyle {
 
 func (e *htmlStyle) Type(v string) HTMLStyle {
 	e.setAttr("type", v)
+	return e
+}
+
+func (e *htmlStyle) XMLNS(v string) HTMLStyle {
+	e.xmlns = v
 	return e
 }
 
@@ -39431,6 +41014,9 @@ type HTMLSub interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSub
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLSub
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSub
 
@@ -39642,6 +41228,11 @@ func (e *htmlSub) TabIndex(v int) HTMLSub {
 
 func (e *htmlSub) Title(v string) HTMLSub {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlSub) XMLNS(v string) HTMLSub {
+	e.xmlns = v
 	return e
 }
 
@@ -39866,6 +41457,9 @@ type HTMLSummary interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSummary
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLSummary
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSummary
 
@@ -40077,6 +41671,11 @@ func (e *htmlSummary) TabIndex(v int) HTMLSummary {
 
 func (e *htmlSummary) Title(v string) HTMLSummary {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlSummary) XMLNS(v string) HTMLSummary {
+	e.xmlns = v
 	return e
 }
 
@@ -40301,6 +41900,9 @@ type HTMLSup interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSup
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLSup
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSup
 
@@ -40512,6 +42114,11 @@ func (e *htmlSup) TabIndex(v int) HTMLSup {
 
 func (e *htmlSup) Title(v string) HTMLSup {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlSup) XMLNS(v string) HTMLSup {
+	e.xmlns = v
 	return e
 }
 
@@ -40736,6 +42343,9 @@ type HTMLTable interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTable
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLTable
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTable
 
@@ -40947,6 +42557,11 @@ func (e *htmlTable) TabIndex(v int) HTMLTable {
 
 func (e *htmlTable) Title(v string) HTMLTable {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlTable) XMLNS(v string) HTMLTable {
+	e.xmlns = v
 	return e
 }
 
@@ -41171,6 +42786,9 @@ type HTMLTBody interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTBody
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLTBody
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTBody
 
@@ -41382,6 +43000,11 @@ func (e *htmlTBody) TabIndex(v int) HTMLTBody {
 
 func (e *htmlTBody) Title(v string) HTMLTBody {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlTBody) XMLNS(v string) HTMLTBody {
+	e.xmlns = v
 	return e
 }
 
@@ -41615,6 +43238,9 @@ type HTMLTd interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTd
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLTd
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTd
 
@@ -41844,6 +43470,11 @@ func (e *htmlTd) Title(v string) HTMLTd {
 	return e
 }
 
+func (e *htmlTd) XMLNS(v string) HTMLTd {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlTd) OnBlur(h EventHandler, scope ...interface{}) HTMLTd {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -42064,6 +43695,9 @@ type HTMLTemplate interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTemplate
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLTemplate
 }
 
 // Template returns an HTML element that defines a template.
@@ -42183,6 +43817,11 @@ func (e *htmlTemplate) Title(v string) HTMLTemplate {
 	return e
 }
 
+func (e *htmlTemplate) XMLNS(v string) HTMLTemplate {
+	e.xmlns = v
+	return e
+}
+
 // HTMLTextarea is the interface that describes a <textarea> HTML element.
 type HTMLTextarea interface {
 	UI
@@ -42279,6 +43918,9 @@ type HTMLTextarea interface {
 
 	// Wrap specifies how the text in a text area is to be wrapped when submitted in a form.
 	Wrap(v string) HTMLTextarea
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLTextarea
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTextarea
@@ -42555,6 +44197,11 @@ func (e *htmlTextarea) Wrap(v string) HTMLTextarea {
 	return e
 }
 
+func (e *htmlTextarea) XMLNS(v string) HTMLTextarea {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlTextarea) OnBlur(h EventHandler, scope ...interface{}) HTMLTextarea {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -42776,6 +44423,9 @@ type HTMLTFoot interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTFoot
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLTFoot
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTFoot
 
@@ -42987,6 +44637,11 @@ func (e *htmlTFoot) TabIndex(v int) HTMLTFoot {
 
 func (e *htmlTFoot) Title(v string) HTMLTFoot {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlTFoot) XMLNS(v string) HTMLTFoot {
+	e.xmlns = v
 	return e
 }
 
@@ -43225,6 +44880,9 @@ type HTMLTh interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTh
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLTh
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTh
@@ -43465,6 +45123,11 @@ func (e *htmlTh) Title(v string) HTMLTh {
 	return e
 }
 
+func (e *htmlTh) XMLNS(v string) HTMLTh {
+	e.xmlns = v
+	return e
+}
+
 func (e *htmlTh) OnBlur(h EventHandler, scope ...interface{}) HTMLTh {
 	e.setEventHandler("blur", h, scope...)
 	return e
@@ -43686,6 +45349,9 @@ type HTMLTHead interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTHead
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLTHead
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTHead
 
@@ -43897,6 +45563,11 @@ func (e *htmlTHead) TabIndex(v int) HTMLTHead {
 
 func (e *htmlTHead) Title(v string) HTMLTHead {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlTHead) XMLNS(v string) HTMLTHead {
+	e.xmlns = v
 	return e
 }
 
@@ -44124,6 +45795,9 @@ type HTMLTime interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTime
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLTime
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTime
 
@@ -44340,6 +46014,11 @@ func (e *htmlTime) TabIndex(v int) HTMLTime {
 
 func (e *htmlTime) Title(v string) HTMLTime {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlTime) XMLNS(v string) HTMLTime {
+	e.xmlns = v
 	return e
 }
 
@@ -44563,6 +46242,9 @@ type HTMLTitle interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTitle
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLTitle
 }
 
 // Title returns an HTML element that defines a title for the document.
@@ -44682,6 +46364,11 @@ func (e *htmlTitle) Title(v string) HTMLTitle {
 	return e
 }
 
+func (e *htmlTitle) XMLNS(v string) HTMLTitle {
+	e.xmlns = v
+	return e
+}
+
 // HTMLTr is the interface that describes a <tr> HTML element.
 type HTMLTr interface {
 	UI
@@ -44742,6 +46429,9 @@ type HTMLTr interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTr
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLTr
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTr
@@ -44954,6 +46644,11 @@ func (e *htmlTr) TabIndex(v int) HTMLTr {
 
 func (e *htmlTr) Title(v string) HTMLTr {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlTr) XMLNS(v string) HTMLTr {
+	e.xmlns = v
 	return e
 }
 
@@ -45178,6 +46873,9 @@ type HTMLU interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLU
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLU
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLU
 
@@ -45389,6 +47087,11 @@ func (e *htmlU) TabIndex(v int) HTMLU {
 
 func (e *htmlU) Title(v string) HTMLU {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlU) XMLNS(v string) HTMLU {
+	e.xmlns = v
 	return e
 }
 
@@ -45613,6 +47316,9 @@ type HTMLUl interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLUl
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLUl
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLUl
 
@@ -45824,6 +47530,11 @@ func (e *htmlUl) TabIndex(v int) HTMLUl {
 
 func (e *htmlUl) Title(v string) HTMLUl {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlUl) XMLNS(v string) HTMLUl {
+	e.xmlns = v
 	return e
 }
 
@@ -46048,6 +47759,9 @@ type HTMLVar interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLVar
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLVar
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLVar
 
@@ -46259,6 +47973,11 @@ func (e *htmlVar) TabIndex(v int) HTMLVar {
 
 func (e *htmlVar) Title(v string) HTMLVar {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlVar) XMLNS(v string) HTMLVar {
+	e.xmlns = v
 	return e
 }
 
@@ -46512,6 +48231,9 @@ type HTMLVideo interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLVideo
+
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLVideo
 
 	// OnAbort calls the given handler on abort.
 	OnAbort(h EventHandler, scope ...interface{}) HTMLVideo
@@ -46843,6 +48565,11 @@ func (e *htmlVideo) Title(v string) HTMLVideo {
 
 func (e *htmlVideo) Width(v int) HTMLVideo {
 	e.setAttr("width", v)
+	return e
+}
+
+func (e *htmlVideo) XMLNS(v string) HTMLVideo {
+	e.xmlns = v
 	return e
 }
 
@@ -47182,6 +48909,9 @@ type HTMLWbr interface {
 	// Title specifies extra information about an element.
 	Title(v string) HTMLWbr
 
+	// XMLNS specifies the xml namespace of the element (defaults to "" for HTML5).
+	XMLNS(v string) HTMLWbr
+
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLWbr
 
@@ -47393,6 +49123,11 @@ func (e *htmlWbr) TabIndex(v int) HTMLWbr {
 
 func (e *htmlWbr) Title(v string) HTMLWbr {
 	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlWbr) XMLNS(v string) HTMLWbr {
+	e.xmlns = v
 	return e
 }
 

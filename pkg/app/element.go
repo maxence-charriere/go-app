@@ -9,6 +9,9 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
+// SVG is the namespace needed for SVG Elements
+const SVG = "http://www.w3.org/2000/svg"
+
 type elemWithChildren interface {
 	UI
 
@@ -26,6 +29,7 @@ type elem struct {
 	parentElem  UI
 	selfClosing bool
 	tag         string
+	xmlns       string
 	this        UI
 }
 
@@ -96,7 +100,13 @@ func (e *elem) mount(d Dispatcher) error {
 	e.disp = d
 	e.ctx, e.ctxCancel = context.WithCancel(context.Background())
 
-	v, err := Window().createElement(e.tag)
+	var v Value
+	var err error
+	if e.xmlns == "" {
+		v, err = Window().createElement(e.tag)
+	} else {
+		v, err = Window().createElementNS(e.xmlns, e.tag)
+	}
 	if err != nil {
 		return errors.New("mounting ui element failed").
 			Tag("name", e.name()).
@@ -470,6 +480,10 @@ func (e *elem) html(w io.Writer) {
 	w.Write([]byte("<"))
 	w.Write([]byte(e.tag))
 
+	if e.xmlns != "" {
+		w.Write([]byte(` xmlns="` + e.xmlns + `"`))
+	}
+
 	for k, v := range e.attrs {
 		w.Write([]byte(" "))
 		w.Write([]byte(k))
@@ -508,6 +522,10 @@ func (e *elem) htmlWithIndent(w io.Writer, indent int) {
 	writeIndent(w, indent)
 	w.Write([]byte("<"))
 	w.Write([]byte(e.tag))
+
+	if e.xmlns != "" {
+		w.Write([]byte(` xmlns="` + e.xmlns + `"`))
+	}
 
 	for k, v := range e.attrs {
 		w.Write([]byte(" "))

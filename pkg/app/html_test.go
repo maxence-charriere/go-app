@@ -37,6 +37,7 @@ func TestA(t *testing.T) {
 	elem.Target("foo")
 	elem.Title("foo")
 	elem.Type("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -97,6 +98,7 @@ func TestAbbr(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -157,6 +159,7 @@ func TestAddress(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -227,6 +230,7 @@ func TestArea(t *testing.T) {
 	elem.Target("foo")
 	elem.Title("foo")
 	elem.Type("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -286,6 +290,7 @@ func TestArticle(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -346,6 +351,7 @@ func TestAside(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -417,6 +423,7 @@ func TestAudio(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnAbort(h)
@@ -500,6 +507,7 @@ func TestB(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -562,6 +570,7 @@ func TestBase(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Target("foo")
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -621,6 +630,7 @@ func TestBdi(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -681,6 +691,7 @@ func TestBdo(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -742,6 +753,7 @@ func TestBlockquote(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -802,6 +814,7 @@ func TestBody(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnAfterPrint(h)
@@ -877,6 +890,7 @@ func TestBr(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -950,6 +964,7 @@ func TestButton(t *testing.T) {
 	elem.Title("foo")
 	elem.Type("foo")
 	elem.Value(42)
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -1012,6 +1027,7 @@ func TestCanvas(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Width(42)
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -1072,6 +1088,7 @@ func TestCaption(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -1132,6 +1149,7 @@ func TestCite(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -1192,6 +1210,7 @@ func TestCode(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -1253,6 +1272,7 @@ func TestCol(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -1313,6 +1333,7 @@ func TestColGroup(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -1374,6 +1395,7 @@ func TestData(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Value(42)
+	elem.XMLNS("")
 	elem.Text("hello")
 }
 
@@ -1400,6 +1422,7 @@ func TestDataList(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -1460,6 +1483,7 @@ func TestDd(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -1522,6 +1546,7 @@ func TestDel(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -1584,6 +1609,7 @@ func TestDetails(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -1645,6 +1671,7 @@ func TestDfn(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -1707,6 +1734,7 @@ func TestDialog(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -1767,6 +1795,7 @@ func TestDiv(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -1827,6 +1856,7 @@ func TestDl(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -1887,6 +1917,7 @@ func TestDt(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -1924,6 +1955,127 @@ func TestDt(t *testing.T) {
 	elem.Text("hello")
 }
 
+func TestElem(t *testing.T) {
+	elem := Elem("custom")
+	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
+	elem.Attr("foo", "bar")
+	elem.Class("foo bar")
+	elem.ContentEditable(true)
+	elem.ContentEditable(false)
+	elem.DataSet("foo", "bar")
+	elem.Dir("foo")
+	elem.Draggable(true)
+	elem.Draggable(false)
+	elem.Hidden(true)
+	elem.Hidden(false)
+	elem.ID("foo")
+	elem.Lang("foo")
+	elem.Role("foo")
+	elem.Spellcheck(true)
+	elem.Spellcheck(false)
+	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
+	elem.TabIndex(42)
+	elem.Title("foo")
+	elem.XMLNS("")
+
+	h := func(ctx Context, e Event) {}
+	elem.OnBlur(h)
+	elem.OnChange(h)
+	elem.OnClick(h)
+	elem.OnContextMenu(h)
+	elem.OnCopy(h)
+	elem.OnCut(h)
+	elem.OnDblClick(h)
+	elem.OnDrag(h)
+	elem.OnDragEnd(h)
+	elem.OnDragEnter(h)
+	elem.OnDragLeave(h)
+	elem.OnDragOver(h)
+	elem.OnDragStart(h)
+	elem.OnDrop(h)
+	elem.OnFocus(h)
+	elem.OnInput(h)
+	elem.OnInvalid(h)
+	elem.OnKeyDown(h)
+	elem.OnKeyPress(h)
+	elem.OnKeyUp(h)
+	elem.OnMouseDown(h)
+	elem.OnMouseMove(h)
+	elem.OnMouseOut(h)
+	elem.OnMouseOver(h)
+	elem.OnMouseUp(h)
+	elem.OnPaste(h)
+	elem.OnReset(h)
+	elem.OnScroll(h)
+	elem.OnSearch(h)
+	elem.OnSelect(h)
+	elem.OnSubmit(h)
+	elem.OnWheel(h)
+	elem.Text("hello")
+}
+
+func TestElemSC(t *testing.T) {
+	elem := ElemSC("custom")
+	elem.AccessKey("foo")
+	elem.Aria("foo", "bar")
+	elem.Attr("foo", "bar")
+	elem.Class("foo bar")
+	elem.ContentEditable(true)
+	elem.ContentEditable(false)
+	elem.DataSet("foo", "bar")
+	elem.Dir("foo")
+	elem.Draggable(true)
+	elem.Draggable(false)
+	elem.Hidden(true)
+	elem.Hidden(false)
+	elem.ID("foo")
+	elem.Lang("foo")
+	elem.Role("foo")
+	elem.Spellcheck(true)
+	elem.Spellcheck(false)
+	elem.Style("color", "deepskyblue")
+	elem.Styles(map[string]string{"color": "pink"})
+	elem.TabIndex(42)
+	elem.Title("foo")
+	elem.XMLNS("")
+
+	h := func(ctx Context, e Event) {}
+	elem.OnBlur(h)
+	elem.OnChange(h)
+	elem.OnClick(h)
+	elem.OnContextMenu(h)
+	elem.OnCopy(h)
+	elem.OnCut(h)
+	elem.OnDblClick(h)
+	elem.OnDrag(h)
+	elem.OnDragEnd(h)
+	elem.OnDragEnter(h)
+	elem.OnDragLeave(h)
+	elem.OnDragOver(h)
+	elem.OnDragStart(h)
+	elem.OnDrop(h)
+	elem.OnFocus(h)
+	elem.OnInput(h)
+	elem.OnInvalid(h)
+	elem.OnKeyDown(h)
+	elem.OnKeyPress(h)
+	elem.OnKeyUp(h)
+	elem.OnMouseDown(h)
+	elem.OnMouseMove(h)
+	elem.OnMouseOut(h)
+	elem.OnMouseOver(h)
+	elem.OnMouseUp(h)
+	elem.OnPaste(h)
+	elem.OnReset(h)
+	elem.OnScroll(h)
+	elem.OnSearch(h)
+	elem.OnSelect(h)
+	elem.OnSubmit(h)
+	elem.OnWheel(h)
+}
+
 func TestEm(t *testing.T) {
 	elem := Em()
 	elem.AccessKey("foo")
@@ -1947,6 +2099,7 @@ func TestEm(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -2011,6 +2164,7 @@ func TestEmbed(t *testing.T) {
 	elem.Title("foo")
 	elem.Type("foo")
 	elem.Width(42)
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnAbort(h)
@@ -2097,6 +2251,7 @@ func TestFieldSet(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -2157,6 +2312,7 @@ func TestFigCaption(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -2217,6 +2373,7 @@ func TestFigure(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -2277,6 +2434,7 @@ func TestFooter(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -2347,6 +2505,7 @@ func TestForm(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Target("foo")
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -2407,6 +2566,7 @@ func TestH1(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -2467,6 +2627,7 @@ func TestH2(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -2527,6 +2688,7 @@ func TestH3(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -2587,6 +2749,7 @@ func TestH4(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -2647,6 +2810,7 @@ func TestH5(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -2707,6 +2871,7 @@ func TestH6(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -2767,6 +2932,7 @@ func TestHead(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 	elem.Text("hello")
 }
 
@@ -2793,6 +2959,7 @@ func TestHeader(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -2853,6 +3020,7 @@ func TestHr(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -2912,6 +3080,7 @@ func TestHtml(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 	elem.privateBody(Text("hello"))
 }
 
@@ -2938,6 +3107,7 @@ func TestI(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -3011,6 +3181,7 @@ func TestIFrame(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Width(42)
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -3082,6 +3253,7 @@ func TestImg(t *testing.T) {
 	elem.Title("foo")
 	elem.UseMap("foo")
 	elem.Width(42)
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnAbort(h)
@@ -3204,6 +3376,7 @@ func TestInput(t *testing.T) {
 	elem.Type("foo")
 	elem.Value(42)
 	elem.Width(42)
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -3264,6 +3437,7 @@ func TestIns(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -3324,6 +3498,7 @@ func TestKbd(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -3386,6 +3561,7 @@ func TestLabel(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -3446,6 +3622,7 @@ func TestLegend(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -3507,6 +3684,7 @@ func TestLi(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Value(42)
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -3574,6 +3752,7 @@ func TestLink(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Type("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -3634,6 +3813,7 @@ func TestMain(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -3695,6 +3875,7 @@ func TestMap(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -3755,6 +3936,7 @@ func TestMark(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -3820,6 +4002,7 @@ func TestMeta(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 }
 
 func TestMeter(t *testing.T) {
@@ -3852,6 +4035,7 @@ func TestMeter(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Value(42)
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -3912,6 +4096,7 @@ func TestNav(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -3972,6 +4157,7 @@ func TestNoScript(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 	elem.Text("hello")
 }
 
@@ -4005,6 +4191,7 @@ func TestObject(t *testing.T) {
 	elem.Type("foo")
 	elem.UseMap("foo")
 	elem.Width(42)
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnAbort(h)
@@ -4092,6 +4279,7 @@ func TestOl(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Type("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -4155,6 +4343,7 @@ func TestOptGroup(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -4221,6 +4410,7 @@ func TestOption(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Value(42)
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -4284,6 +4474,7 @@ func TestOutput(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -4344,6 +4535,7 @@ func TestP(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -4406,6 +4598,7 @@ func TestParam(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Value(42)
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -4465,6 +4658,7 @@ func TestPicture(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -4525,6 +4719,7 @@ func TestPre(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -4587,6 +4782,7 @@ func TestProgress(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Value(42)
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -4648,6 +4844,7 @@ func TestQ(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -4708,6 +4905,7 @@ func TestRp(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -4768,6 +4966,7 @@ func TestRt(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -4828,6 +5027,7 @@ func TestRuby(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -4888,6 +5088,7 @@ func TestS(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -4948,6 +5149,7 @@ func TestSamp(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -5016,6 +5218,7 @@ func TestScript(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Type("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnLoad(h)
@@ -5045,6 +5248,7 @@ func TestSection(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -5116,6 +5320,7 @@ func TestSelect(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -5176,6 +5381,7 @@ func TestSmall(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -5241,6 +5447,7 @@ func TestSource(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Type("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -5300,6 +5507,7 @@ func TestSpan(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -5360,6 +5568,7 @@ func TestStrong(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -5422,6 +5631,7 @@ func TestStyle(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Type("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -5483,6 +5693,7 @@ func TestSub(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -5543,6 +5754,7 @@ func TestSummary(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -5603,6 +5815,7 @@ func TestSup(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -5663,6 +5876,7 @@ func TestTable(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -5723,6 +5937,7 @@ func TestTBody(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -5786,6 +6001,7 @@ func TestTd(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -5846,6 +6062,7 @@ func TestTemplate(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 	elem.Text("hello")
 }
 
@@ -5888,6 +6105,7 @@ func TestTextarea(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Wrap("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -5948,6 +6166,7 @@ func TestTFoot(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -6013,6 +6232,7 @@ func TestTh(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -6073,6 +6293,7 @@ func TestTHead(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -6134,6 +6355,7 @@ func TestTime(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -6194,6 +6416,7 @@ func TestTitle(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 	elem.Text("hello")
 }
 
@@ -6220,6 +6443,7 @@ func TestTr(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -6280,6 +6504,7 @@ func TestU(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -6340,6 +6565,7 @@ func TestUl(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -6400,6 +6626,7 @@ func TestVar(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)
@@ -6474,6 +6701,7 @@ func TestVideo(t *testing.T) {
 	elem.TabIndex(42)
 	elem.Title("foo")
 	elem.Width(42)
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnAbort(h)
@@ -6557,6 +6785,7 @@ func TestWbr(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
+	elem.XMLNS("")
 
 	h := func(ctx Context, e Event) {}
 	elem.OnBlur(h)

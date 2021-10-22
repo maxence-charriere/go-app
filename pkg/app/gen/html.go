@@ -1,5 +1,5 @@
-//go:build ignore
-// +build ignore
+//go:b1uild ignore
+// +bu1ild ignore
 
 package main
 
@@ -306,6 +306,19 @@ var tags = []tag{
 	},
 
 	// E:
+	{
+		Name:          "Elem",
+		Doc:           "defines a custom element",
+		Attrs:         withGlobalAttrs(),
+		EventHandlers: withGlobalEventHandlers(),
+	},
+	{
+		Name:          "ElemSC",
+		Type:          selfClosing,
+		Doc:           "defines a self closing custom element",
+		Attrs:         withGlobalAttrs(),
+		EventHandlers: withGlobalEventHandlers(),
+	},
 	{
 		Name:          "Em",
 		Doc:           "defines emphasized text.",
@@ -1608,6 +1621,12 @@ var attrs = map[string]attr{
 		Type: "string",
 		Doc:  "specifies how the text in a text area is to be wrapped when submitted in a form.",
 	},
+	// X:
+	"xmlns": {
+		Name: "XMLNS",
+		Type: "xmlns",
+		Doc:  "specifies the xml namespace of the element (defaults to \"\" for HTML5).",
+	},
 }
 
 func attrsByNames(names ...string) []attr {
@@ -1646,6 +1665,7 @@ func withGlobalAttrs(attrs ...attr) []attr {
 		"tabindex",
 		"title",
 		"attribute",
+		"xmlns",
 	)...)
 
 	sort.Slice(attrs, func(i, j int) bool {
@@ -2081,7 +2101,29 @@ import (
 	for _, t := range tags {
 		writeInterface(f, t)
 
-		fmt.Fprintf(f, `
+		if t.Name == "Elem" || t.Name == "ElemSC" {
+			fmt.Fprintf(f, `
+		// %s, returns an element that %s
+		func %s(name string) HTML%s {
+			e := &html%s{
+				elem: elem{
+					tag: name,
+					selfClosing: %v,
+				},
+			}
+
+			return e
+		}
+		`,
+				t.Name,
+				t.Doc,
+				t.Name,
+				t.Name,
+				t.Name,
+				t.Type == selfClosing,
+			)
+		} else {
+			fmt.Fprintf(f, `
 		// %s returns an HTML element that %s
 		func %s() HTML%s {
 			e := &html%s{
@@ -2094,14 +2136,15 @@ import (
 			return e
 		}
 		`,
-			t.Name,
-			t.Doc,
-			t.Name,
-			t.Name,
-			t.Name,
-			strings.ToLower(t.Name),
-			t.Type == selfClosing,
-		)
+				t.Name,
+				t.Doc,
+				t.Name,
+				t.Name,
+				t.Name,
+				strings.ToLower(t.Name),
+				t.Type == selfClosing,
+			)
+		}
 
 		fmt.Fprintln(f)
 		fmt.Fprintln(f)
@@ -2112,15 +2155,25 @@ import (
 }
 
 func writeInterface(w io.Writer, t tag) {
-	fmt.Fprintf(w, `
+	if t.Name == "Elem" || t.Name == "ElemSC" {
+		fmt.Fprintf(w, `
+		// HTMLElem is the interface that describes a custom HTML element.
+		type HTML%s interface {
+			UI
+		`,
+			t.Name,
+		)
+	} else {
+		fmt.Fprintf(w, `
 		// HTML%s is the interface that describes a <%s> HTML element.
 		type HTML%s interface {
 			UI
 		`,
-		t.Name,
-		strings.ToLower(t.Name),
-		t.Name,
-	)
+			t.Name,
+			strings.ToLower(t.Name),
+			t.Name,
+		)
+	}
 
 	switch t.Type {
 	case parent:
@@ -2324,6 +2377,15 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 			}`, strings.ToLower(a.Name))
 		}
 
+	case "xmlns":
+		fmt.Fprintf(w, `%s(v string) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintf(w, `{
+				e.xmlns = v
+				return e
+			}`)
+		}
+
 	default:
 		fmt.Fprintf(w, `%s(v %s) HTML%s`, a.Name, a.Type, t.Name)
 		if !isInterface {
@@ -2367,13 +2429,23 @@ import (
 
 	for _, t := range tags {
 		fmt.Fprintln(f)
-		fmt.Fprintf(f, `
+		if t.Name == "Elem" || t.Name == "ElemSC" {
+			fmt.Fprintf(f, `
+		func Test%s(t *testing.T) {
+			elem := %s("custom")
+		`,
+				t.Name,
+				t.Name,
+			)
+		} else {
+			fmt.Fprintf(f, `
 		func Test%s(t *testing.T) {
 			elem := %s()
 		`,
-			t.Name,
-			t.Name,
-		)
+				t.Name,
+				t.Name,
+			)
+		}
 
 		for _, a := range t.Attrs {
 			fmt.Fprintf(f, `elem.%s(`, a.Name)
@@ -2398,6 +2470,9 @@ import (
 
 			case "string":
 				fmt.Fprintln(f, `"foo")`)
+
+			case "xmlns":
+				fmt.Fprintln(f, `"")`)
 
 			case "url":
 				fmt.Fprintln(f, `"http://foo.com")`)

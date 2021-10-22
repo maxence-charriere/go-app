@@ -278,6 +278,16 @@ func (w *browserWindow) createElement(tag string) (Value, error) {
 	return v, nil
 }
 
+func (w *browserWindow) createElementNS(ns string, tag string) (Value, error) {
+	v := w.Get("document").Call("createElementNS", ns, tag)
+	if !v.Truthy() {
+		return nil, errors.New("creating element failed").
+			Tag("reason", "create javascript element returned nil").
+			Tag("tag", tag)
+	}
+	return v, nil
+}
+
 func (w *browserWindow) createTextNode(v string) Value {
 	return w.Get("document").Call("createTextNode", v)
 }

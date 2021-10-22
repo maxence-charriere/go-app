@@ -219,6 +219,7 @@ type BrowserWindow interface {
 
 	setBody(body UI)
 	createElement(tag string) (Value, error)
+	createElementNS(ns string, tag string) (Value, error)
 	createTextNode(v string) Value
 	addHistory(u *url.URL)
 	replaceHistory(u *url.URL)
