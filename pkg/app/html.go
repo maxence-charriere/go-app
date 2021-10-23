@@ -68,6 +68,9 @@ type HTMLA interface {
 	// Rel specifies the relationship between the current document and the linked document.
 	Rel(v string) HTMLA
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLA
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLA
 
@@ -293,6 +296,11 @@ func (e *htmlA) Ping(v string) HTMLA {
 
 func (e *htmlA) Rel(v string) HTMLA {
 	e.setAttr("rel", v)
+	return e
+}
+
+func (e *htmlA) Role(v string) HTMLA {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -541,6 +549,9 @@ type HTMLAbbr interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLAbbr
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLAbbr
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLAbbr
 
@@ -730,6 +741,11 @@ func (e *htmlAbbr) ID(v string) HTMLAbbr {
 
 func (e *htmlAbbr) Lang(v string) HTMLAbbr {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlAbbr) Role(v string) HTMLAbbr {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -968,6 +984,9 @@ type HTMLAddress interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLAddress
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLAddress
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLAddress
 
@@ -1157,6 +1176,11 @@ func (e *htmlAddress) ID(v string) HTMLAddress {
 
 func (e *htmlAddress) Lang(v string) HTMLAddress {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlAddress) Role(v string) HTMLAddress {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -1410,6 +1434,9 @@ type HTMLArea interface {
 	// Rel specifies the relationship between the current document and the linked document.
 	Rel(v string) HTMLArea
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLArea
+
 	// Shape specifies the shape of the area.
 	Shape(v string) HTMLArea
 
@@ -1634,6 +1661,11 @@ func (e *htmlArea) Media(v string) HTMLArea {
 
 func (e *htmlArea) Rel(v string) HTMLArea {
 	e.setAttr("rel", v)
+	return e
+}
+
+func (e *htmlArea) Role(v string) HTMLArea {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -1887,6 +1919,9 @@ type HTMLArticle interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLArticle
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLArticle
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLArticle
 
@@ -2076,6 +2111,11 @@ func (e *htmlArticle) ID(v string) HTMLArticle {
 
 func (e *htmlArticle) Lang(v string) HTMLArticle {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlArticle) Role(v string) HTMLArticle {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -2314,6 +2354,9 @@ type HTMLAside interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLAside
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLAside
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLAside
 
@@ -2503,6 +2546,11 @@ func (e *htmlAside) ID(v string) HTMLAside {
 
 func (e *htmlAside) Lang(v string) HTMLAside {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlAside) Role(v string) HTMLAside {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -2758,6 +2806,9 @@ type HTMLAudio interface {
 
 	// Preload specifies if and how the author thinks the audio/video should be loaded when the page loads.
 	Preload(v string) HTMLAudio
+
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLAudio
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLAudio
@@ -3050,6 +3101,11 @@ func (e *htmlAudio) Muted(v bool) HTMLAudio {
 
 func (e *htmlAudio) Preload(v string) HTMLAudio {
 	e.setAttr("preload", v)
+	return e
+}
+
+func (e *htmlAudio) Role(v string) HTMLAudio {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -3408,6 +3464,9 @@ type HTMLB interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLB
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLB
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLB
 
@@ -3597,6 +3656,11 @@ func (e *htmlB) ID(v string) HTMLB {
 
 func (e *htmlB) Lang(v string) HTMLB {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlB) Role(v string) HTMLB {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -3832,6 +3896,9 @@ type HTMLBase interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLBase
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLBase
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLBase
 
@@ -4020,6 +4087,11 @@ func (e *htmlBase) ID(v string) HTMLBase {
 
 func (e *htmlBase) Lang(v string) HTMLBase {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlBase) Role(v string) HTMLBase {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -4263,6 +4335,9 @@ type HTMLBdi interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLBdi
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLBdi
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLBdi
 
@@ -4452,6 +4527,11 @@ func (e *htmlBdi) ID(v string) HTMLBdi {
 
 func (e *htmlBdi) Lang(v string) HTMLBdi {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlBdi) Role(v string) HTMLBdi {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -4690,6 +4770,9 @@ type HTMLBdo interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLBdo
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLBdo
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLBdo
 
@@ -4879,6 +4962,11 @@ func (e *htmlBdo) ID(v string) HTMLBdo {
 
 func (e *htmlBdo) Lang(v string) HTMLBdo {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlBdo) Role(v string) HTMLBdo {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -5120,6 +5208,9 @@ type HTMLBlockquote interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLBlockquote
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLBlockquote
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLBlockquote
 
@@ -5314,6 +5405,11 @@ func (e *htmlBlockquote) ID(v string) HTMLBlockquote {
 
 func (e *htmlBlockquote) Lang(v string) HTMLBlockquote {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlBlockquote) Role(v string) HTMLBlockquote {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -5552,6 +5648,9 @@ type HTMLBody interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLBody
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLBody
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLBody
 
@@ -5786,6 +5885,11 @@ func (e *htmlBody) ID(v string) HTMLBody {
 
 func (e *htmlBody) Lang(v string) HTMLBody {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlBody) Role(v string) HTMLBody {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -6093,6 +6197,9 @@ type HTMLBr interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLBr
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLBr
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLBr
 
@@ -6273,6 +6380,11 @@ func (e *htmlBr) ID(v string) HTMLBr {
 
 func (e *htmlBr) Lang(v string) HTMLBr {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlBr) Role(v string) HTMLBr {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -6538,6 +6650,9 @@ type HTMLButton interface {
 	// Name specifies the name of the element.
 	Name(v string) HTMLButton
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLButton
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLButton
 
@@ -6778,6 +6893,11 @@ func (e *htmlButton) Lang(v string) HTMLButton {
 
 func (e *htmlButton) Name(v string) HTMLButton {
 	e.setAttr("name", v)
+	return e
+}
+
+func (e *htmlButton) Role(v string) HTMLButton {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -7029,6 +7149,9 @@ type HTMLCanvas interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLCanvas
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLCanvas
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLCanvas
 
@@ -7226,6 +7349,11 @@ func (e *htmlCanvas) ID(v string) HTMLCanvas {
 
 func (e *htmlCanvas) Lang(v string) HTMLCanvas {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlCanvas) Role(v string) HTMLCanvas {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -7469,6 +7597,9 @@ type HTMLCaption interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLCaption
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLCaption
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLCaption
 
@@ -7658,6 +7789,11 @@ func (e *htmlCaption) ID(v string) HTMLCaption {
 
 func (e *htmlCaption) Lang(v string) HTMLCaption {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlCaption) Role(v string) HTMLCaption {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -7896,6 +8032,9 @@ type HTMLCite interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLCite
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLCite
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLCite
 
@@ -8085,6 +8224,11 @@ func (e *htmlCite) ID(v string) HTMLCite {
 
 func (e *htmlCite) Lang(v string) HTMLCite {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlCite) Role(v string) HTMLCite {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -8323,6 +8467,9 @@ type HTMLCode interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLCode
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLCode
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLCode
 
@@ -8512,6 +8659,11 @@ func (e *htmlCode) ID(v string) HTMLCode {
 
 func (e *htmlCode) Lang(v string) HTMLCode {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlCode) Role(v string) HTMLCode {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -8744,6 +8896,9 @@ type HTMLCol interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLCol
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLCol
+
 	// Span specifies the number of columns to span.
 	Span(v int) HTMLCol
 
@@ -8927,6 +9082,11 @@ func (e *htmlCol) ID(v string) HTMLCol {
 
 func (e *htmlCol) Lang(v string) HTMLCol {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlCol) Role(v string) HTMLCol {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -9170,6 +9330,9 @@ type HTMLColGroup interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLColGroup
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLColGroup
+
 	// Span specifies the number of columns to span.
 	Span(v int) HTMLColGroup
 
@@ -9362,6 +9525,11 @@ func (e *htmlColGroup) ID(v string) HTMLColGroup {
 
 func (e *htmlColGroup) Lang(v string) HTMLColGroup {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlColGroup) Role(v string) HTMLColGroup {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -9605,6 +9773,9 @@ type HTMLData interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLData
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLData
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLData
 
@@ -9704,6 +9875,11 @@ func (e *htmlData) Lang(v string) HTMLData {
 	return e
 }
 
+func (e *htmlData) Role(v string) HTMLData {
+	e.setAttr("role", v)
+	return e
+}
+
 func (e *htmlData) Spellcheck(v bool) HTMLData {
 	s := "false"
 	if v {
@@ -9783,6 +9959,9 @@ type HTMLDataList interface {
 
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLDataList
+
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLDataList
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDataList
@@ -9973,6 +10152,11 @@ func (e *htmlDataList) ID(v string) HTMLDataList {
 
 func (e *htmlDataList) Lang(v string) HTMLDataList {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlDataList) Role(v string) HTMLDataList {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -10211,6 +10395,9 @@ type HTMLDd interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLDd
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLDd
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDd
 
@@ -10400,6 +10587,11 @@ func (e *htmlDd) ID(v string) HTMLDd {
 
 func (e *htmlDd) Lang(v string) HTMLDd {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlDd) Role(v string) HTMLDd {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -10644,6 +10836,9 @@ type HTMLDel interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLDel
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLDel
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDel
 
@@ -10843,6 +11038,11 @@ func (e *htmlDel) ID(v string) HTMLDel {
 
 func (e *htmlDel) Lang(v string) HTMLDel {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlDel) Role(v string) HTMLDel {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -11084,6 +11284,9 @@ type HTMLDetails interface {
 	// Open specifies that the details should be visible (open) to the user.
 	Open(v bool) HTMLDetails
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLDetails
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDetails
 
@@ -11281,6 +11484,11 @@ func (e *htmlDetails) Lang(v string) HTMLDetails {
 
 func (e *htmlDetails) Open(v bool) HTMLDetails {
 	e.setAttr("open", v)
+	return e
+}
+
+func (e *htmlDetails) Role(v string) HTMLDetails {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -11524,6 +11732,9 @@ type HTMLDfn interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLDfn
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLDfn
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDfn
 
@@ -11713,6 +11924,11 @@ func (e *htmlDfn) ID(v string) HTMLDfn {
 
 func (e *htmlDfn) Lang(v string) HTMLDfn {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlDfn) Role(v string) HTMLDfn {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -11954,6 +12170,9 @@ type HTMLDialog interface {
 	// Open specifies that the details should be visible (open) to the user.
 	Open(v bool) HTMLDialog
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLDialog
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDialog
 
@@ -12148,6 +12367,11 @@ func (e *htmlDialog) Lang(v string) HTMLDialog {
 
 func (e *htmlDialog) Open(v bool) HTMLDialog {
 	e.setAttr("open", v)
+	return e
+}
+
+func (e *htmlDialog) Role(v string) HTMLDialog {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -12386,6 +12610,9 @@ type HTMLDiv interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLDiv
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLDiv
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDiv
 
@@ -12575,6 +12802,11 @@ func (e *htmlDiv) ID(v string) HTMLDiv {
 
 func (e *htmlDiv) Lang(v string) HTMLDiv {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlDiv) Role(v string) HTMLDiv {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -12813,6 +13045,9 @@ type HTMLDl interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLDl
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLDl
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDl
 
@@ -13002,6 +13237,11 @@ func (e *htmlDl) ID(v string) HTMLDl {
 
 func (e *htmlDl) Lang(v string) HTMLDl {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlDl) Role(v string) HTMLDl {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -13240,6 +13480,9 @@ type HTMLDt interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLDt
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLDt
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLDt
 
@@ -13429,6 +13672,11 @@ func (e *htmlDt) ID(v string) HTMLDt {
 
 func (e *htmlDt) Lang(v string) HTMLDt {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlDt) Role(v string) HTMLDt {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -13667,6 +13915,9 @@ type HTMLEm interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLEm
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLEm
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLEm
 
@@ -13856,6 +14107,11 @@ func (e *htmlEm) ID(v string) HTMLEm {
 
 func (e *htmlEm) Lang(v string) HTMLEm {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlEm) Role(v string) HTMLEm {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -14090,6 +14346,9 @@ type HTMLEmbed interface {
 
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLEmbed
+
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLEmbed
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLEmbed
@@ -14354,6 +14613,11 @@ func (e *htmlEmbed) ID(v string) HTMLEmbed {
 
 func (e *htmlEmbed) Lang(v string) HTMLEmbed {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlEmbed) Role(v string) HTMLEmbed {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -14731,6 +14995,9 @@ type HTMLFieldSet interface {
 	// Name specifies the name of the element.
 	Name(v string) HTMLFieldSet
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLFieldSet
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLFieldSet
 
@@ -14935,6 +15202,11 @@ func (e *htmlFieldSet) Lang(v string) HTMLFieldSet {
 
 func (e *htmlFieldSet) Name(v string) HTMLFieldSet {
 	e.setAttr("name", v)
+	return e
+}
+
+func (e *htmlFieldSet) Role(v string) HTMLFieldSet {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -15173,6 +15445,9 @@ type HTMLFigCaption interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLFigCaption
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLFigCaption
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLFigCaption
 
@@ -15362,6 +15637,11 @@ func (e *htmlFigCaption) ID(v string) HTMLFigCaption {
 
 func (e *htmlFigCaption) Lang(v string) HTMLFigCaption {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlFigCaption) Role(v string) HTMLFigCaption {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -15600,6 +15880,9 @@ type HTMLFigure interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLFigure
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLFigure
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLFigure
 
@@ -15789,6 +16072,11 @@ func (e *htmlFigure) ID(v string) HTMLFigure {
 
 func (e *htmlFigure) Lang(v string) HTMLFigure {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlFigure) Role(v string) HTMLFigure {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -16027,6 +16315,9 @@ type HTMLFooter interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLFooter
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLFooter
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLFooter
 
@@ -16216,6 +16507,11 @@ func (e *htmlFooter) ID(v string) HTMLFooter {
 
 func (e *htmlFooter) Lang(v string) HTMLFooter {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlFooter) Role(v string) HTMLFooter {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -16475,6 +16771,9 @@ type HTMLForm interface {
 	// NoValidate specifies that the form should not be validated when submitted.
 	NoValidate(v bool) HTMLForm
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLForm
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLForm
 
@@ -16707,6 +17006,11 @@ func (e *htmlForm) Name(v string) HTMLForm {
 
 func (e *htmlForm) NoValidate(v bool) HTMLForm {
 	e.setAttr("novalidate", v)
+	return e
+}
+
+func (e *htmlForm) Role(v string) HTMLForm {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -16950,6 +17254,9 @@ type HTMLH1 interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLH1
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLH1
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLH1
 
@@ -17139,6 +17446,11 @@ func (e *htmlH1) ID(v string) HTMLH1 {
 
 func (e *htmlH1) Lang(v string) HTMLH1 {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlH1) Role(v string) HTMLH1 {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -17377,6 +17689,9 @@ type HTMLH2 interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLH2
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLH2
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLH2
 
@@ -17566,6 +17881,11 @@ func (e *htmlH2) ID(v string) HTMLH2 {
 
 func (e *htmlH2) Lang(v string) HTMLH2 {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlH2) Role(v string) HTMLH2 {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -17804,6 +18124,9 @@ type HTMLH3 interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLH3
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLH3
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLH3
 
@@ -17993,6 +18316,11 @@ func (e *htmlH3) ID(v string) HTMLH3 {
 
 func (e *htmlH3) Lang(v string) HTMLH3 {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlH3) Role(v string) HTMLH3 {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -18231,6 +18559,9 @@ type HTMLH4 interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLH4
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLH4
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLH4
 
@@ -18420,6 +18751,11 @@ func (e *htmlH4) ID(v string) HTMLH4 {
 
 func (e *htmlH4) Lang(v string) HTMLH4 {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlH4) Role(v string) HTMLH4 {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -18658,6 +18994,9 @@ type HTMLH5 interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLH5
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLH5
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLH5
 
@@ -18847,6 +19186,11 @@ func (e *htmlH5) ID(v string) HTMLH5 {
 
 func (e *htmlH5) Lang(v string) HTMLH5 {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlH5) Role(v string) HTMLH5 {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -19085,6 +19429,9 @@ type HTMLH6 interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLH6
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLH6
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLH6
 
@@ -19274,6 +19621,11 @@ func (e *htmlH6) ID(v string) HTMLH6 {
 
 func (e *htmlH6) Lang(v string) HTMLH6 {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlH6) Role(v string) HTMLH6 {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -19512,6 +19864,9 @@ type HTMLHead interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLHead
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLHead
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLHead
 
@@ -19608,6 +19963,11 @@ func (e *htmlHead) Lang(v string) HTMLHead {
 	return e
 }
 
+func (e *htmlHead) Role(v string) HTMLHead {
+	e.setAttr("role", v)
+	return e
+}
+
 func (e *htmlHead) Spellcheck(v bool) HTMLHead {
 	s := "false"
 	if v {
@@ -19682,6 +20042,9 @@ type HTMLHeader interface {
 
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLHeader
+
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLHeader
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLHeader
@@ -19872,6 +20235,11 @@ func (e *htmlHeader) ID(v string) HTMLHeader {
 
 func (e *htmlHeader) Lang(v string) HTMLHeader {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlHeader) Role(v string) HTMLHeader {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -20104,6 +20472,9 @@ type HTMLHr interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLHr
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLHr
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLHr
 
@@ -20284,6 +20655,11 @@ func (e *htmlHr) ID(v string) HTMLHr {
 
 func (e *htmlHr) Lang(v string) HTMLHr {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlHr) Role(v string) HTMLHr {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -20522,6 +20898,9 @@ type HTMLHtml interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLHtml
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLHtml
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLHtml
 
@@ -20618,6 +20997,11 @@ func (e *htmlHtml) Lang(v string) HTMLHtml {
 	return e
 }
 
+func (e *htmlHtml) Role(v string) HTMLHtml {
+	e.setAttr("role", v)
+	return e
+}
+
 func (e *htmlHtml) Spellcheck(v bool) HTMLHtml {
 	s := "false"
 	if v {
@@ -20692,6 +21076,9 @@ type HTMLI interface {
 
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLI
+
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLI
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLI
@@ -20882,6 +21269,11 @@ func (e *htmlI) ID(v string) HTMLI {
 
 func (e *htmlI) Lang(v string) HTMLI {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlI) Role(v string) HTMLI {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -21138,6 +21530,9 @@ type HTMLIFrame interface {
 	// ReferrerPolicy specifies how much/which referrer information that will be sent when processing the iframe attributes
 	ReferrerPolicy(v string) HTMLIFrame
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLIFrame
+
 	// Sandbox enables an extra set of restrictions for the content in an iframe.
 	Sandbox(v interface{}) HTMLIFrame
 
@@ -21382,6 +21777,11 @@ func (e *htmlIFrame) Name(v string) HTMLIFrame {
 
 func (e *htmlIFrame) ReferrerPolicy(v string) HTMLIFrame {
 	e.setAttr("referrerpolicy", v)
+	return e
+}
+
+func (e *htmlIFrame) Role(v string) HTMLIFrame {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -21650,6 +22050,9 @@ type HTMLImg interface {
 
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLImg
+
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLImg
 
 	// Sizes specifies the size of the linked resource.
 	Sizes(v string) HTMLImg
@@ -21938,6 +22341,11 @@ func (e *htmlImg) IsMap(v bool) HTMLImg {
 
 func (e *htmlImg) Lang(v string) HTMLImg {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlImg) Role(v string) HTMLImg {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -22390,6 +22798,9 @@ type HTMLInput interface {
 	// Required specifies that the element must be filled out before submitting the form.
 	Required(v bool) HTMLInput
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLInput
+
 	// Size specifies the width.
 	Size(v int) HTMLInput
 
@@ -22724,6 +23135,11 @@ func (e *htmlInput) Required(v bool) HTMLInput {
 	return e
 }
 
+func (e *htmlInput) Role(v string) HTMLInput {
+	e.setAttr("role", v)
+	return e
+}
+
 func (e *htmlInput) Size(v int) HTMLInput {
 	e.setAttr("size", v)
 	return e
@@ -22994,6 +23410,9 @@ type HTMLIns interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLIns
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLIns
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLIns
 
@@ -23183,6 +23602,11 @@ func (e *htmlIns) ID(v string) HTMLIns {
 
 func (e *htmlIns) Lang(v string) HTMLIns {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlIns) Role(v string) HTMLIns {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -23421,6 +23845,9 @@ type HTMLKbd interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLKbd
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLKbd
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLKbd
 
@@ -23610,6 +24037,11 @@ func (e *htmlKbd) ID(v string) HTMLKbd {
 
 func (e *htmlKbd) Lang(v string) HTMLKbd {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlKbd) Role(v string) HTMLKbd {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -23854,6 +24286,9 @@ type HTMLLabel interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLLabel
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLLabel
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLLabel
 
@@ -24053,6 +24488,11 @@ func (e *htmlLabel) ID(v string) HTMLLabel {
 
 func (e *htmlLabel) Lang(v string) HTMLLabel {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlLabel) Role(v string) HTMLLabel {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -24291,6 +24731,9 @@ type HTMLLegend interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLLegend
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLLegend
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLLegend
 
@@ -24480,6 +24923,11 @@ func (e *htmlLegend) ID(v string) HTMLLegend {
 
 func (e *htmlLegend) Lang(v string) HTMLLegend {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlLegend) Role(v string) HTMLLegend {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -24718,6 +25166,9 @@ type HTMLLi interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLLi
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLLi
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLLi
 
@@ -24910,6 +25361,11 @@ func (e *htmlLi) ID(v string) HTMLLi {
 
 func (e *htmlLi) Lang(v string) HTMLLi {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlLi) Role(v string) HTMLLi {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -25162,6 +25618,9 @@ type HTMLLink interface {
 	// Rel specifies the relationship between the current document and the linked document.
 	Rel(v string) HTMLLink
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLLink
+
 	// Sizes specifies the size of the linked resource.
 	Sizes(v string) HTMLLink
 
@@ -25376,6 +25835,11 @@ func (e *htmlLink) Media(v string) HTMLLink {
 
 func (e *htmlLink) Rel(v string) HTMLLink {
 	e.setAttr("rel", v)
+	return e
+}
+
+func (e *htmlLink) Role(v string) HTMLLink {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -25629,6 +26093,9 @@ type HTMLMain interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLMain
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLMain
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLMain
 
@@ -25818,6 +26285,11 @@ func (e *htmlMain) ID(v string) HTMLMain {
 
 func (e *htmlMain) Lang(v string) HTMLMain {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlMain) Role(v string) HTMLMain {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -26059,6 +26531,9 @@ type HTMLMap interface {
 	// Name specifies the name of the element.
 	Name(v string) HTMLMap
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLMap
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLMap
 
@@ -26253,6 +26728,11 @@ func (e *htmlMap) Lang(v string) HTMLMap {
 
 func (e *htmlMap) Name(v string) HTMLMap {
 	e.setAttr("name", v)
+	return e
+}
+
+func (e *htmlMap) Role(v string) HTMLMap {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -26491,6 +26971,9 @@ type HTMLMark interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLMark
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLMark
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLMark
 
@@ -26680,6 +27163,11 @@ func (e *htmlMark) ID(v string) HTMLMark {
 
 func (e *htmlMark) Lang(v string) HTMLMark {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlMark) Role(v string) HTMLMark {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -26927,6 +27415,9 @@ type HTMLMeta interface {
 	// Property specifies the property name.
 	Property(v string) HTMLMeta
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLMeta
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLMeta
 
@@ -27039,6 +27530,11 @@ func (e *htmlMeta) Property(v string) HTMLMeta {
 	return e
 }
 
+func (e *htmlMeta) Role(v string) HTMLMeta {
+	e.setAttr("role", v)
+	return e
+}
+
 func (e *htmlMeta) Spellcheck(v bool) HTMLMeta {
 	s := "false"
 	if v {
@@ -27131,6 +27627,9 @@ type HTMLMeter interface {
 
 	// Optimum specifies what value is the optimal value for the gauge.
 	Optimum(v float64) HTMLMeter
+
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLMeter
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLMeter
@@ -27354,6 +27853,11 @@ func (e *htmlMeter) Min(v interface{}) HTMLMeter {
 
 func (e *htmlMeter) Optimum(v float64) HTMLMeter {
 	e.setAttr("optimum", v)
+	return e
+}
+
+func (e *htmlMeter) Role(v string) HTMLMeter {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -27597,6 +28101,9 @@ type HTMLNav interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLNav
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLNav
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLNav
 
@@ -27786,6 +28293,11 @@ func (e *htmlNav) ID(v string) HTMLNav {
 
 func (e *htmlNav) Lang(v string) HTMLNav {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlNav) Role(v string) HTMLNav {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -28024,6 +28536,9 @@ type HTMLNoScript interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLNoScript
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLNoScript
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLNoScript
 
@@ -28120,6 +28635,11 @@ func (e *htmlNoScript) Lang(v string) HTMLNoScript {
 	return e
 }
 
+func (e *htmlNoScript) Role(v string) HTMLNoScript {
+	e.setAttr("role", v)
+	return e
+}
+
 func (e *htmlNoScript) Spellcheck(v bool) HTMLNoScript {
 	s := "false"
 	if v {
@@ -28206,6 +28726,9 @@ type HTMLObject interface {
 
 	// Name specifies the name of the element.
 	Name(v string) HTMLObject
+
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLObject
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLObject
@@ -28494,6 +29017,11 @@ func (e *htmlObject) Lang(v string) HTMLObject {
 
 func (e *htmlObject) Name(v string) HTMLObject {
 	e.setAttr("name", v)
+	return e
+}
+
+func (e *htmlObject) Role(v string) HTMLObject {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -28865,6 +29393,9 @@ type HTMLOl interface {
 	// Reversed specifies that the list order should be descending (9,8,7...).
 	Reversed(v bool) HTMLOl
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLOl
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLOl
 
@@ -29065,6 +29596,11 @@ func (e *htmlOl) Lang(v string) HTMLOl {
 
 func (e *htmlOl) Reversed(v bool) HTMLOl {
 	e.setAttr("reversed", v)
+	return e
+}
+
+func (e *htmlOl) Role(v string) HTMLOl {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -29319,6 +29855,9 @@ type HTMLOptGroup interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLOptGroup
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLOptGroup
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLOptGroup
 
@@ -29518,6 +30057,11 @@ func (e *htmlOptGroup) Label(v string) HTMLOptGroup {
 
 func (e *htmlOptGroup) Lang(v string) HTMLOptGroup {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlOptGroup) Role(v string) HTMLOptGroup {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -29762,6 +30306,9 @@ type HTMLOption interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLOption
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLOption
+
 	// Selected specifies that an option should be pre-selected when the page loads.
 	Selected(v bool) HTMLOption
 
@@ -29967,6 +30514,11 @@ func (e *htmlOption) Label(v string) HTMLOption {
 
 func (e *htmlOption) Lang(v string) HTMLOption {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlOption) Role(v string) HTMLOption {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -30224,6 +30776,9 @@ type HTMLOutput interface {
 	// Name specifies the name of the element.
 	Name(v string) HTMLOutput
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLOutput
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLOutput
 
@@ -30428,6 +30983,11 @@ func (e *htmlOutput) Lang(v string) HTMLOutput {
 
 func (e *htmlOutput) Name(v string) HTMLOutput {
 	e.setAttr("name", v)
+	return e
+}
+
+func (e *htmlOutput) Role(v string) HTMLOutput {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -30666,6 +31226,9 @@ type HTMLP interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLP
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLP
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLP
 
@@ -30855,6 +31418,11 @@ func (e *htmlP) ID(v string) HTMLP {
 
 func (e *htmlP) Lang(v string) HTMLP {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlP) Role(v string) HTMLP {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -31090,6 +31658,9 @@ type HTMLParam interface {
 	// Name specifies the name of the element.
 	Name(v string) HTMLParam
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLParam
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLParam
 
@@ -31278,6 +31849,11 @@ func (e *htmlParam) Lang(v string) HTMLParam {
 
 func (e *htmlParam) Name(v string) HTMLParam {
 	e.setAttr("name", v)
+	return e
+}
+
+func (e *htmlParam) Role(v string) HTMLParam {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -31521,6 +32097,9 @@ type HTMLPicture interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLPicture
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLPicture
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLPicture
 
@@ -31710,6 +32289,11 @@ func (e *htmlPicture) ID(v string) HTMLPicture {
 
 func (e *htmlPicture) Lang(v string) HTMLPicture {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlPicture) Role(v string) HTMLPicture {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -31948,6 +32532,9 @@ type HTMLPre interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLPre
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLPre
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLPre
 
@@ -32137,6 +32724,11 @@ func (e *htmlPre) ID(v string) HTMLPre {
 
 func (e *htmlPre) Lang(v string) HTMLPre {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlPre) Role(v string) HTMLPre {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -32378,6 +32970,9 @@ type HTMLProgress interface {
 	// Max Specifies the maximum value.
 	Max(v interface{}) HTMLProgress
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLProgress
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLProgress
 
@@ -32575,6 +33170,11 @@ func (e *htmlProgress) Lang(v string) HTMLProgress {
 
 func (e *htmlProgress) Max(v interface{}) HTMLProgress {
 	e.setAttr("max", v)
+	return e
+}
+
+func (e *htmlProgress) Role(v string) HTMLProgress {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -32821,6 +33421,9 @@ type HTMLQ interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLQ
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLQ
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLQ
 
@@ -33015,6 +33618,11 @@ func (e *htmlQ) ID(v string) HTMLQ {
 
 func (e *htmlQ) Lang(v string) HTMLQ {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlQ) Role(v string) HTMLQ {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -33253,6 +33861,9 @@ type HTMLRp interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLRp
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLRp
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLRp
 
@@ -33442,6 +34053,11 @@ func (e *htmlRp) ID(v string) HTMLRp {
 
 func (e *htmlRp) Lang(v string) HTMLRp {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlRp) Role(v string) HTMLRp {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -33680,6 +34296,9 @@ type HTMLRt interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLRt
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLRt
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLRt
 
@@ -33869,6 +34488,11 @@ func (e *htmlRt) ID(v string) HTMLRt {
 
 func (e *htmlRt) Lang(v string) HTMLRt {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlRt) Role(v string) HTMLRt {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -34107,6 +34731,9 @@ type HTMLRuby interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLRuby
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLRuby
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLRuby
 
@@ -34296,6 +34923,11 @@ func (e *htmlRuby) ID(v string) HTMLRuby {
 
 func (e *htmlRuby) Lang(v string) HTMLRuby {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlRuby) Role(v string) HTMLRuby {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -34534,6 +35166,9 @@ type HTMLS interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLS
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLS
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLS
 
@@ -34723,6 +35358,11 @@ func (e *htmlS) ID(v string) HTMLS {
 
 func (e *htmlS) Lang(v string) HTMLS {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlS) Role(v string) HTMLS {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -34961,6 +35601,9 @@ type HTMLSamp interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLSamp
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLSamp
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLSamp
 
@@ -35150,6 +35793,11 @@ func (e *htmlSamp) ID(v string) HTMLSamp {
 
 func (e *htmlSamp) Lang(v string) HTMLSamp {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlSamp) Role(v string) HTMLSamp {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -35400,6 +36048,9 @@ type HTMLScript interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLScript
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLScript
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLScript
 
@@ -35525,6 +36176,11 @@ func (e *htmlScript) Lang(v string) HTMLScript {
 	return e
 }
 
+func (e *htmlScript) Role(v string) HTMLScript {
+	e.setAttr("role", v)
+	return e
+}
+
 func (e *htmlScript) Spellcheck(v bool) HTMLScript {
 	s := "false"
 	if v {
@@ -35614,6 +36270,9 @@ type HTMLSection interface {
 
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLSection
+
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLSection
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLSection
@@ -35804,6 +36463,11 @@ func (e *htmlSection) ID(v string) HTMLSection {
 
 func (e *htmlSection) Lang(v string) HTMLSection {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlSection) Role(v string) HTMLSection {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -36060,6 +36724,9 @@ type HTMLSelect interface {
 	// Required specifies that the element must be filled out before submitting the form.
 	Required(v bool) HTMLSelect
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLSelect
+
 	// Size specifies the width.
 	Size(v int) HTMLSelect
 
@@ -36282,6 +36949,11 @@ func (e *htmlSelect) Name(v string) HTMLSelect {
 
 func (e *htmlSelect) Required(v bool) HTMLSelect {
 	e.setAttr("required", v)
+	return e
+}
+
+func (e *htmlSelect) Role(v string) HTMLSelect {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -36525,6 +37197,9 @@ type HTMLSmall interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLSmall
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLSmall
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLSmall
 
@@ -36714,6 +37389,11 @@ func (e *htmlSmall) ID(v string) HTMLSmall {
 
 func (e *htmlSmall) Lang(v string) HTMLSmall {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlSmall) Role(v string) HTMLSmall {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -36949,6 +37629,9 @@ type HTMLSource interface {
 	// Media specifies what media/device the linked document is optimized for.
 	Media(v string) HTMLSource
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLSource
+
 	// Sizes specifies the size of the linked resource.
 	Sizes(v string) HTMLSource
 
@@ -37146,6 +37829,11 @@ func (e *htmlSource) Lang(v string) HTMLSource {
 
 func (e *htmlSource) Media(v string) HTMLSource {
 	e.setAttr("media", v)
+	return e
+}
+
+func (e *htmlSource) Role(v string) HTMLSource {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -37404,6 +38092,9 @@ type HTMLSpan interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLSpan
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLSpan
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLSpan
 
@@ -37593,6 +38284,11 @@ func (e *htmlSpan) ID(v string) HTMLSpan {
 
 func (e *htmlSpan) Lang(v string) HTMLSpan {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlSpan) Role(v string) HTMLSpan {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -37831,6 +38527,9 @@ type HTMLStrong interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLStrong
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLStrong
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLStrong
 
@@ -38020,6 +38719,11 @@ func (e *htmlStrong) ID(v string) HTMLStrong {
 
 func (e *htmlStrong) Lang(v string) HTMLStrong {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlStrong) Role(v string) HTMLStrong {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -38261,6 +38965,9 @@ type HTMLStyle interface {
 	// Media specifies what media/device the linked document is optimized for.
 	Media(v string) HTMLStyle
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLStyle
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLStyle
 
@@ -38461,6 +39168,11 @@ func (e *htmlStyle) Lang(v string) HTMLStyle {
 
 func (e *htmlStyle) Media(v string) HTMLStyle {
 	e.setAttr("media", v)
+	return e
+}
+
+func (e *htmlStyle) Role(v string) HTMLStyle {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -38709,6 +39421,9 @@ type HTMLSub interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLSub
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLSub
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLSub
 
@@ -38898,6 +39613,11 @@ func (e *htmlSub) ID(v string) HTMLSub {
 
 func (e *htmlSub) Lang(v string) HTMLSub {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlSub) Role(v string) HTMLSub {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -39136,6 +39856,9 @@ type HTMLSummary interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLSummary
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLSummary
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLSummary
 
@@ -39325,6 +40048,11 @@ func (e *htmlSummary) ID(v string) HTMLSummary {
 
 func (e *htmlSummary) Lang(v string) HTMLSummary {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlSummary) Role(v string) HTMLSummary {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -39563,6 +40291,9 @@ type HTMLSup interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLSup
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLSup
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLSup
 
@@ -39752,6 +40483,11 @@ func (e *htmlSup) ID(v string) HTMLSup {
 
 func (e *htmlSup) Lang(v string) HTMLSup {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlSup) Role(v string) HTMLSup {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -39990,6 +40726,9 @@ type HTMLTable interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLTable
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLTable
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLTable
 
@@ -40179,6 +40918,11 @@ func (e *htmlTable) ID(v string) HTMLTable {
 
 func (e *htmlTable) Lang(v string) HTMLTable {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlTable) Role(v string) HTMLTable {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -40417,6 +41161,9 @@ type HTMLTBody interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLTBody
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLTBody
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLTBody
 
@@ -40606,6 +41353,11 @@ func (e *htmlTBody) ID(v string) HTMLTBody {
 
 func (e *htmlTBody) Lang(v string) HTMLTBody {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlTBody) Role(v string) HTMLTBody {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -40850,6 +41602,9 @@ type HTMLTd interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLTd
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLTd
+
 	// Rowspan specifies the number of rows a table cell should span.
 	Rowspan(v int) HTMLTd
 
@@ -41052,6 +41807,11 @@ func (e *htmlTd) ID(v string) HTMLTd {
 
 func (e *htmlTd) Lang(v string) HTMLTd {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlTd) Role(v string) HTMLTd {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -41295,6 +42055,9 @@ type HTMLTemplate interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLTemplate
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLTemplate
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLTemplate
 
@@ -41388,6 +42151,11 @@ func (e *htmlTemplate) ID(v string) HTMLTemplate {
 
 func (e *htmlTemplate) Lang(v string) HTMLTemplate {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlTemplate) Role(v string) HTMLTemplate {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -41495,6 +42263,9 @@ type HTMLTextarea interface {
 
 	// Required specifies that the element must be filled out before submitting the form.
 	Required(v bool) HTMLTextarea
+
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLTextarea
 
 	// Rows specifies the visible number of lines in a text area.
 	Rows(v int) HTMLTextarea
@@ -41745,6 +42516,11 @@ func (e *htmlTextarea) Required(v bool) HTMLTextarea {
 	return e
 }
 
+func (e *htmlTextarea) Role(v string) HTMLTextarea {
+	e.setAttr("role", v)
+	return e
+}
+
 func (e *htmlTextarea) Rows(v int) HTMLTextarea {
 	e.setAttr("rows", v)
 	return e
@@ -41990,6 +42766,9 @@ type HTMLTFoot interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLTFoot
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLTFoot
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLTFoot
 
@@ -42179,6 +42958,11 @@ func (e *htmlTFoot) ID(v string) HTMLTFoot {
 
 func (e *htmlTFoot) Lang(v string) HTMLTFoot {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlTFoot) Role(v string) HTMLTFoot {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -42426,6 +43210,9 @@ type HTMLTh interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLTh
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLTh
+
 	// Rowspan specifies the number of rows a table cell should span.
 	Rowspan(v int) HTMLTh
 
@@ -42636,6 +43423,11 @@ func (e *htmlTh) ID(v string) HTMLTh {
 
 func (e *htmlTh) Lang(v string) HTMLTh {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlTh) Role(v string) HTMLTh {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -42884,6 +43676,9 @@ type HTMLTHead interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLTHead
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLTHead
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLTHead
 
@@ -43073,6 +43868,11 @@ func (e *htmlTHead) ID(v string) HTMLTHead {
 
 func (e *htmlTHead) Lang(v string) HTMLTHead {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlTHead) Role(v string) HTMLTHead {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -43314,6 +44114,9 @@ type HTMLTime interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLTime
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLTime
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLTime
 
@@ -43508,6 +44311,11 @@ func (e *htmlTime) ID(v string) HTMLTime {
 
 func (e *htmlTime) Lang(v string) HTMLTime {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlTime) Role(v string) HTMLTime {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -43746,6 +44554,9 @@ type HTMLTitle interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLTitle
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLTitle
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLTitle
 
@@ -43842,6 +44653,11 @@ func (e *htmlTitle) Lang(v string) HTMLTitle {
 	return e
 }
 
+func (e *htmlTitle) Role(v string) HTMLTitle {
+	e.setAttr("role", v)
+	return e
+}
+
 func (e *htmlTitle) Spellcheck(v bool) HTMLTitle {
 	s := "false"
 	if v {
@@ -43916,6 +44732,9 @@ type HTMLTr interface {
 
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLTr
+
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLTr
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLTr
@@ -44106,6 +44925,11 @@ func (e *htmlTr) ID(v string) HTMLTr {
 
 func (e *htmlTr) Lang(v string) HTMLTr {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlTr) Role(v string) HTMLTr {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -44344,6 +45168,9 @@ type HTMLU interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLU
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLU
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLU
 
@@ -44533,6 +45360,11 @@ func (e *htmlU) ID(v string) HTMLU {
 
 func (e *htmlU) Lang(v string) HTMLU {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlU) Role(v string) HTMLU {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -44771,6 +45603,9 @@ type HTMLUl interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLUl
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLUl
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLUl
 
@@ -44960,6 +45795,11 @@ func (e *htmlUl) ID(v string) HTMLUl {
 
 func (e *htmlUl) Lang(v string) HTMLUl {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlUl) Role(v string) HTMLUl {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -45198,6 +46038,9 @@ type HTMLVar interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLVar
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLVar
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLVar
 
@@ -45387,6 +46230,11 @@ func (e *htmlVar) ID(v string) HTMLVar {
 
 func (e *htmlVar) Lang(v string) HTMLVar {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlVar) Role(v string) HTMLVar {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -45648,6 +46496,9 @@ type HTMLVideo interface {
 
 	// Preload specifies if and how the author thinks the audio/video should be loaded when the page loads.
 	Preload(v string) HTMLVideo
+
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLVideo
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLVideo
@@ -45953,6 +46804,11 @@ func (e *htmlVideo) Poster(v string) HTMLVideo {
 
 func (e *htmlVideo) Preload(v string) HTMLVideo {
 	e.setAttr("preload", v)
+	return e
+}
+
+func (e *htmlVideo) Role(v string) HTMLVideo {
+	e.setAttr("role", v)
 	return e
 }
 
@@ -46316,6 +47172,9 @@ type HTMLWbr interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLWbr
 
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLWbr
+
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
 	Spellcheck(v bool) HTMLWbr
 
@@ -46505,6 +47364,11 @@ func (e *htmlWbr) ID(v string) HTMLWbr {
 
 func (e *htmlWbr) Lang(v string) HTMLWbr {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlWbr) Role(v string) HTMLWbr {
+	e.setAttr("role", v)
 	return e
 }
 

@@ -1447,6 +1447,11 @@ var attrs = map[string]attr{
 		Type: "bool",
 		Doc:  "specifies that the list order should be descending (9,8,7...).",
 	},
+	"role": {
+		Name: "Role",
+		Type: "string",
+		Doc:  "specifies to parsing software the exact function of an element (and its children).",
+	},
 	"rows": {
 		Name: "Rows",
 		Type: "int",
@@ -1618,6 +1623,7 @@ func withGlobalAttrs(attrs ...attr) []attr {
 		"hidden",
 		"id",
 		"lang",
+		"role",
 		"spellcheck",
 		"style",
 		"styles",
