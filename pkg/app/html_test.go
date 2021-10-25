@@ -3101,6 +3101,7 @@ func TestInput(t *testing.T) {
 	elem.AutoComplete(false)
 	elem.AutoFocus(true)
 	elem.AutoFocus(false)
+	elem.Capture("foo")
 	elem.Checked(true)
 	elem.Checked(false)
 	elem.Class("foo bar")
