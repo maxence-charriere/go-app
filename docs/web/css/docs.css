@@ -73,8 +73,7 @@ h1 {
 }
 
 h2,
-.h2,
-.reference h3 {
+.h2 {
   font-size: 18px;
   letter-spacing: 2px;
   color: white;
@@ -83,16 +82,14 @@ h2,
 .header-separator,
 h1,
 h2,
-.h2,
-.reference h3 {
+.h2 {
   padding-bottom: 6px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   color: white;
 }
 
 h3,
-.h3,
-.reference h4 {
+.h3 {
   font-size: 16px;
   letter-spacing: 1px;
   color: white;
@@ -101,9 +98,7 @@ h3,
 p,
 ul,
 ol,
-.p,
-.reference .Documentation-function:first-of-type,
-.reference .Documentation-type:first-of-type {
+.p {
   padding: 0;
   margin: 18px 0 0;
 }
@@ -423,7 +418,7 @@ strong {
 .separator,
 .markdown h2,
 .markdown h3,
-.reference h3 {
+.reference h2 {
   margin-top: 84px;
 }
 
@@ -655,13 +650,13 @@ strong {
 /* -----------------------------------------------------------------------------
 // Reference 
 ------------------------------------------------------------------------------*/
-.reference-index ul {
+.reference-index dl {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.reference-index li {
+.reference-index dd {
   margin: 0;
   padding: 2px 0;
   overflow: hidden;
@@ -677,40 +672,36 @@ strong {
   color: deepskyblue;
 }
 
-.reference-index li ul,
-.reference li ul {
-  margin: 0 0 0 12px;
+.reference #page h1,
+.reference #page #short-nav,
+.reference #page #pkg-overview .collapsed,
+.reference #page #pkg-index .collapsed,
+.reference #page #pkg-subdirectories,
+.reference #page .pkg-dir,
+.reference #page #footer {
+  display: none;
 }
 
-.reference h4 {
+.reference #pkg-overview h2 {
+  padding: 0 0 6px;
+  margin: 18px 0 0;
+}
+
+.reference h3 {
   text-transform: none;
-}
-
-.reference ul {
-  list-style: none;
-}
-
-.reference li {
-  margin: 6px 0 0;
-}
-
-.reference li:first-child {
-  margin: 0;
-}
-
-.reference .Documentation-function,
-.reference .Documentation-type {
-  text-transform: none;
-  margin-top: 84px;
-}
-
-.reference .Documentation-typeFunc,
-.reference .Documentation-typeMethod {
   margin-top: 36px;
 }
 
-.reference .Documentation-declarationLink {
-  display: none;
+.reference dl {
+  list-style: none;
+}
+
+.reference dd {
+  margin: 6px 0 0;
+}
+
+.reference dd:first-child {
+  margin: 0;
 }
 
 .reference .comment {
