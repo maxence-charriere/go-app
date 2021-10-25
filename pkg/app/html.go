@@ -41947,164 +41947,164 @@ func (e *htmlTextarea) OnWheel(h EventHandler, scope ...interface{}) HTMLTextare
 	return e
 }
 
-// HTMLTfoot is the interface that describes a <tfoot> HTML element.
-type HTMLTfoot interface {
+// HTMLTFoot is the interface that describes a <tfoot> HTML element.
+type HTMLTFoot interface {
 	UI
 
 	// Body set the content of the element.
-	Body(elems ...UI) HTMLTfoot
+	Body(elems ...UI) HTMLTFoot
 
 	// Text sets the content of the element with a text node containing the stringified given value.
-	Text(v interface{}) HTMLTfoot
+	Text(v interface{}) HTMLTFoot
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLTfoot
+	AccessKey(v string) HTMLTFoot
 
 	// Aria stores accessible rich internet applications (ARIA) data.
-	Aria(k string, v interface{}) HTMLTfoot
+	Aria(k string, v interface{}) HTMLTFoot
 
 	// Attr sets the named attribute with the given value.
-	Attr(n string, v interface{}) HTMLTfoot
+	Attr(n string, v interface{}) HTMLTFoot
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
-	Class(v ...string) HTMLTfoot
+	Class(v ...string) HTMLTFoot
 
 	// ContentEditable specifies whether the content of an element is editable or not.
-	ContentEditable(v bool) HTMLTfoot
+	ContentEditable(v bool) HTMLTFoot
 
 	// DataSet stores custom data private to the page or application.
-	DataSet(k string, v interface{}) HTMLTfoot
+	DataSet(k string, v interface{}) HTMLTFoot
 
 	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLTfoot
+	Dir(v string) HTMLTFoot
 
 	// Draggable specifies whether an element is draggable or not.
-	Draggable(v bool) HTMLTfoot
+	Draggable(v bool) HTMLTFoot
 
 	// Hidden specifies that an element is not yet, or is no longer relevant.
-	Hidden(v bool) HTMLTfoot
+	Hidden(v bool) HTMLTFoot
 
 	// ID specifies a unique id for an element.
-	ID(v string) HTMLTfoot
+	ID(v string) HTMLTFoot
 
 	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLTfoot
+	Lang(v string) HTMLTFoot
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
-	Spellcheck(v bool) HTMLTfoot
+	Spellcheck(v bool) HTMLTFoot
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLTfoot
+	Style(k, v string) HTMLTFoot
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
-	Styles(s map[string]string) HTMLTfoot
+	Styles(s map[string]string) HTMLTFoot
 
 	// TabIndex specifies the tabbing order of an element.
-	TabIndex(v int) HTMLTfoot
+	TabIndex(v int) HTMLTFoot
 
 	// Title specifies extra information about an element.
-	Title(v string) HTMLTfoot
+	Title(v string) HTMLTFoot
 
 	// OnBlur calls the given handler when the element loses focus.
-	OnBlur(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnBlur(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnChange calls the given handler when the value of the element is changed.
-	OnChange(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnChange(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnClick calls the given handler when there is a mouse click on the element.
-	OnClick(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnClick(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnContextMenu calls the given handler when a context menu is triggered.
-	OnContextMenu(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnContextMenu(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnCopy calls the given handler when the user copies the content of an element.
-	OnCopy(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnCopy(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnCut calls the given handler when the user cuts the content of an element.
-	OnCut(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnCut(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnDblClick calls the given handler when there is a mouse double-click on the element.
-	OnDblClick(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnDblClick(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnDrag calls the given handler when an element is dragged.
-	OnDrag(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnDrag(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnDragEnd calls the given handler at the end of a drag operation.
-	OnDragEnd(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnDragEnd(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnDragEnter calls the given handler when an element has been dragged to a valid drop target.
-	OnDragEnter(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnDragEnter(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnDragLeave calls the given handler when an element leaves a valid drop target.
-	OnDragLeave(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnDragLeave(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnDragOver calls the given handler when an element is being dragged over a valid drop target.
-	OnDragOver(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnDragOver(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnDragStart calls the given handler at the start of a drag operation.
-	OnDragStart(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnDragStart(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnDrop calls the given handler when dragged element is being dropped.
-	OnDrop(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnDrop(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnFocus calls the given handler when the element gets focus.
-	OnFocus(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnFocus(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnInput calls the given handler when an element gets user input.
-	OnInput(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnInput(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnInvalid calls the given handler when an element is invalid.
-	OnInvalid(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnInvalid(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnKeyDown calls the given handler when a user is pressing a key.
-	OnKeyDown(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnKeyDown(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnKeyPress calls the given handler when a user presses a key.
-	OnKeyPress(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnKeyPress(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnKeyup(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
-	OnMouseDown(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnMouseDown(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
-	OnMouseMove(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnMouseMove(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnMouseOut calls the given handler when the mouse pointer moves out of an element.
-	OnMouseOut(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnMouseOut(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnMouseOver calls the given handler when the mouse pointer moves over an element.
-	OnMouseOver(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnMouseOver(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnMouseUp calls the given handler when a mouse button is released over an element.
-	OnMouseUp(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnMouseUp(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnPaste calls the given handler when the user pastes some content in an element.
-	OnPaste(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnPaste(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnReset calls the given handler when the Reset button in a form is clicked.
-	OnReset(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnReset(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnScroll calls the given handler when an element's scrollbar is being scrolled.
-	OnScroll(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnScroll(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnSearch calls the given handler when the user writes something in a search field.
-	OnSearch(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnSearch(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnSelect calls the given handler after some text has been selected in an element.
-	OnSelect(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnSelect(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnSubmit calls the given handler when a form is submitted.
-	OnSubmit(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnSubmit(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnWheel calls the given handler when the mouse wheel rolls up or down over an element.
-	OnWheel(h EventHandler, scope ...interface{}) HTMLTfoot
+	OnWheel(h EventHandler, scope ...interface{}) HTMLTFoot
 }
 
-// Tfoot returns an HTML element that groups the footer content in a table.
-func Tfoot() HTMLTfoot {
-	e := &htmlTfoot{
+// TFoot returns an HTML element that groups the footer content in a table.
+func TFoot() HTMLTFoot {
+	e := &htmlTFoot{
 		elem: elem{
 			tag:         "tfoot",
 			selfClosing: false,
@@ -42114,75 +42114,75 @@ func Tfoot() HTMLTfoot {
 	return e
 }
 
-type htmlTfoot struct {
+type htmlTFoot struct {
 	elem
 }
 
-func (e *htmlTfoot) Body(elems ...UI) HTMLTfoot {
+func (e *htmlTFoot) Body(elems ...UI) HTMLTFoot {
 	e.setBody(elems...)
 	return e
 }
 
-func (e *htmlTfoot) Text(v interface{}) HTMLTfoot {
+func (e *htmlTFoot) Text(v interface{}) HTMLTFoot {
 	return e.Body(Text(v))
 }
 
-func (e *htmlTfoot) AccessKey(v string) HTMLTfoot {
+func (e *htmlTFoot) AccessKey(v string) HTMLTFoot {
 	e.setAttr("accesskey", v)
 	return e
 }
 
-func (e *htmlTfoot) Aria(k string, v interface{}) HTMLTfoot {
+func (e *htmlTFoot) Aria(k string, v interface{}) HTMLTFoot {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
-func (e *htmlTfoot) Attr(n string, v interface{}) HTMLTfoot {
+func (e *htmlTFoot) Attr(n string, v interface{}) HTMLTFoot {
 	e.setAttr(n, v)
 	return e
 }
 
-func (e *htmlTfoot) Class(v ...string) HTMLTfoot {
+func (e *htmlTFoot) Class(v ...string) HTMLTFoot {
 	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
-func (e *htmlTfoot) ContentEditable(v bool) HTMLTfoot {
+func (e *htmlTFoot) ContentEditable(v bool) HTMLTFoot {
 	e.setAttr("contenteditable", v)
 	return e
 }
 
-func (e *htmlTfoot) DataSet(k string, v interface{}) HTMLTfoot {
+func (e *htmlTFoot) DataSet(k string, v interface{}) HTMLTFoot {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
-func (e *htmlTfoot) Dir(v string) HTMLTfoot {
+func (e *htmlTFoot) Dir(v string) HTMLTFoot {
 	e.setAttr("dir", v)
 	return e
 }
 
-func (e *htmlTfoot) Draggable(v bool) HTMLTfoot {
+func (e *htmlTFoot) Draggable(v bool) HTMLTFoot {
 	e.setAttr("draggable", v)
 	return e
 }
 
-func (e *htmlTfoot) Hidden(v bool) HTMLTfoot {
+func (e *htmlTFoot) Hidden(v bool) HTMLTFoot {
 	e.setAttr("hidden", v)
 	return e
 }
 
-func (e *htmlTfoot) ID(v string) HTMLTfoot {
+func (e *htmlTFoot) ID(v string) HTMLTFoot {
 	e.setAttr("id", v)
 	return e
 }
 
-func (e *htmlTfoot) Lang(v string) HTMLTfoot {
+func (e *htmlTFoot) Lang(v string) HTMLTFoot {
 	e.setAttr("lang", v)
 	return e
 }
 
-func (e *htmlTfoot) Spellcheck(v bool) HTMLTfoot {
+func (e *htmlTFoot) Spellcheck(v bool) HTMLTFoot {
 	s := "false"
 	if v {
 		s = "true"
@@ -42192,184 +42192,184 @@ func (e *htmlTfoot) Spellcheck(v bool) HTMLTfoot {
 	return e
 }
 
-func (e *htmlTfoot) Style(k, v string) HTMLTfoot {
+func (e *htmlTFoot) Style(k, v string) HTMLTFoot {
 	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlTfoot) Styles(s map[string]string) HTMLTfoot {
+func (e *htmlTFoot) Styles(s map[string]string) HTMLTFoot {
 	for k, v := range s {
 		e.Style(k, v)
 	}
 	return e
 }
 
-func (e *htmlTfoot) TabIndex(v int) HTMLTfoot {
+func (e *htmlTFoot) TabIndex(v int) HTMLTFoot {
 	e.setAttr("tabindex", v)
 	return e
 }
 
-func (e *htmlTfoot) Title(v string) HTMLTfoot {
+func (e *htmlTFoot) Title(v string) HTMLTFoot {
 	e.setAttr("title", v)
 	return e
 }
 
-func (e *htmlTfoot) OnBlur(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnBlur(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("blur", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnChange(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnChange(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("change", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnClick(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnClick(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("click", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnContextMenu(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnContextMenu(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("contextmenu", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnCopy(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnCopy(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("copy", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnCut(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnCut(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("cut", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnDblClick(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnDblClick(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("dblclick", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnDrag(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnDrag(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("drag", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnDragEnd(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnDragEnd(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("dragend", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnDragEnter(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnDragEnter(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("dragenter", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnDragLeave(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnDragLeave(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("dragleave", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnDragOver(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnDragOver(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("dragover", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnDragStart(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnDragStart(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("dragstart", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnDrop(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnDrop(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("drop", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnFocus(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnFocus(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("focus", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnInput(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnInput(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("input", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnInvalid(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnInvalid(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("invalid", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnKeyDown(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnKeyDown(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("keydown", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnKeyPress(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnKeyPress(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("keypress", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnKeyup(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnKeyup(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnMouseDown(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnMouseDown(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("mousedown", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnMouseMove(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnMouseMove(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnMouseOut(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnMouseOut(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("mouseout", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnMouseOver(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnMouseOver(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("mouseover", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnMouseUp(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnMouseUp(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("mouseup", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnPaste(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnPaste(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("paste", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnReset(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnReset(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("reset", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnScroll(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnScroll(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("scroll", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnSearch(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnSearch(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("search", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnSelect(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnSelect(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("select", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnSubmit(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnSubmit(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("submit", h, scope...)
 	return e
 }
 
-func (e *htmlTfoot) OnWheel(h EventHandler, scope ...interface{}) HTMLTfoot {
+func (e *htmlTFoot) OnWheel(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("wheel", h, scope...)
 	return e
 }
