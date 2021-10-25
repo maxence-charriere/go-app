@@ -45,15 +45,19 @@ func handleGetReference(ctx app.Context, a app.Action) {
 		return
 	}
 
-	content, err := getHTML(doc, "Documentation-content js-docContent")
+	content, err := getHTML(doc, "#page")
 	if err != nil {
 		ref.Status = loadingErr
 		ref.Err = errors.New("generating reference content failed").Wrap(err)
 		ctx.SetState(state, ref)
 		return
 	}
+	content = strings.ReplaceAll(content, "▾", "")
+	content = strings.ReplaceAll(content, `title="Click to hide Overview section"`, "")
+	content = strings.ReplaceAll(content, `title="Click to hide Index section"`, "")
+	content = strings.ReplaceAll(content, "/src/github.com/maxence-charriere/go-app/v9/", "https://github.com/maxence-charriere/go-app/blob/master/")
 
-	index, err := getHTML(doc, "Documentation-indexList")
+	index, err := getHTML(doc, "#manual-nav")
 	if err != nil {
 		ref.Status = loadingErr
 		ref.Err = errors.New("generating reference content failed").Wrap(err)
@@ -93,17 +97,22 @@ func getHTML(n *html.Node, class string) (string, error) {
 	return b.String(), nil
 }
 
-func findHTMLNode(n *html.Node, class string) (*html.Node, error) {
+func findHTMLNode(n *html.Node, sel string) (*html.Node, error) {
 	if n.Type == html.ElementNode {
 		for _, a := range n.Attr {
-			if a.Key == "class" && a.Val == class {
+			switch {
+			case a.Key == "class" && a.Val == strings.TrimPrefix(sel, "."):
+				return n, nil
+
+			case a.Key == "id" && a.Val == strings.TrimPrefix(sel, "#"):
 				return n, nil
 			}
+
 		}
 	}
 
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		if child, err := findHTMLNode(c, class); err == nil {
+		if child, err := findHTMLNode(c, sel); err == nil {
 			return child, nil
 		}
 	}

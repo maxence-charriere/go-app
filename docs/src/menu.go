@@ -189,6 +189,11 @@ func (m *menu) Render() app.UI {
 					Icon(githubSVG).
 					Label("GitHub").
 					Href(githubURL),
+				ui.Link().
+					Class(linkClass).
+					Icon(opensourceSVG).
+					Label("Open Collective").
+					Href(openCollectiveURL),
 
 				app.Div().Class("separator"),
 
