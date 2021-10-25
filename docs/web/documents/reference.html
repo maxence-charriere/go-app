@@ -1066,6 +1066,14 @@ resources to run Go-based progressive web apps.
 				
 			
 				
+				<dd><a href="#HTMLTFoot">type HTMLTFoot</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#TFoot">func TFoot() HTMLTFoot</a></dd>
+				
+				
+			
+				
 				<dd><a href="#HTMLTHead">type HTMLTHead</a></dd>
 				
 					
@@ -1102,14 +1110,6 @@ resources to run Go-based progressive web apps.
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Textarea">func Textarea() HTMLTextarea</a></dd>
-				
-				
-			
-				
-				<dd><a href="#HTMLTfoot">type HTMLTfoot</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#Tfoot">func Tfoot() HTMLTfoot</a></dd>
 				
 				
 			
@@ -20994,6 +20994,197 @@ TBody returns an HTML element that groups the body content in a table.
 		
 			
 			
+			<h2 id="HTMLTFoot">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1228198:1234566#L41941">HTMLTFoot</a>
+				<a class="permalink" href="#HTMLTFoot">&#xb6;</a>
+				
+				
+			</h2>
+			<p>
+HTMLTFoot is the interface that describes a &lt;tfoot&gt; HTML element.
+</p>
+
+			<pre>type HTMLTFoot interface {
+    <a href="#UI">UI</a>
+
+    <span class="comment">// Body set the content of the element.</span>
+    Body(elems ...<a href="#UI">UI</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// Text sets the content of the element with a text node containing the stringified given value.</span>
+    Text(v interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// AccessKey specifies a shortcut key to activate/focus an element.</span>
+    AccessKey(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// Aria stores accessible rich internet applications (ARIA) data.</span>
+    Aria(k <a href="/pkg/builtin/#string">string</a>, v interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// Attr sets the named attribute with the given value.</span>
+    Attr(n <a href="/pkg/builtin/#string">string</a>, v interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// Class specifies one or more classnames for an element (refers to a class in a style sheet).</span>
+    Class(v ...<a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// ContentEditable specifies whether the content of an element is editable or not.</span>
+    ContentEditable(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// DataSet stores custom data private to the page or application.</span>
+    DataSet(k <a href="/pkg/builtin/#string">string</a>, v interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// Dir specifies the text direction for the content in an element.</span>
+    Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// Draggable specifies whether an element is draggable or not.</span>
+    Draggable(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// Hidden specifies that an element is not yet, or is no longer relevant.</span>
+    Hidden(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// ID specifies a unique id for an element.</span>
+    ID(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
+    Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
+    Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.</span>
+    Style(k, v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.</span>
+    Styles(s map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// TabIndex specifies the tabbing order of an element.</span>
+    TabIndex(v <a href="/pkg/builtin/#int">int</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// Title specifies extra information about an element.</span>
+    Title(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnBlur calls the given handler when the element loses focus.</span>
+    OnBlur(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnChange calls the given handler when the value of the element is changed.</span>
+    OnChange(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnClick calls the given handler when there is a mouse click on the element.</span>
+    OnClick(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnContextMenu calls the given handler when a context menu is triggered.</span>
+    OnContextMenu(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnCopy calls the given handler when the user copies the content of an element.</span>
+    OnCopy(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnCut calls the given handler when the user cuts the content of an element.</span>
+    OnCut(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnDblClick calls the given handler when there is a mouse double-click on the element.</span>
+    OnDblClick(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnDrag calls the given handler when an element is dragged.</span>
+    OnDrag(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnDragEnd calls the given handler at the end of a drag operation.</span>
+    OnDragEnd(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnDragEnter calls the given handler when an element has been dragged to a valid drop target.</span>
+    OnDragEnter(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnDragLeave calls the given handler when an element leaves a valid drop target.</span>
+    OnDragLeave(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnDragOver calls the given handler when an element is being dragged over a valid drop target.</span>
+    OnDragOver(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnDragStart calls the given handler at the start of a drag operation.</span>
+    OnDragStart(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnDrop calls the given handler when dragged element is being dropped.</span>
+    OnDrop(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnFocus calls the given handler when the element gets focus.</span>
+    OnFocus(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnInput calls the given handler when an element gets user input.</span>
+    OnInput(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnInvalid calls the given handler when an element is invalid.</span>
+    OnInvalid(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnKeyDown calls the given handler when a user is pressing a key.</span>
+    OnKeyDown(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnKeyPress calls the given handler when a user presses a key.</span>
+    OnKeyPress(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnKeyup calls the given handler when a user releases a key.</span>
+    OnKeyup(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnMouseDown calls the given handler when a mouse button is pressed down on an element.</span>
+    OnMouseDown(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.</span>
+    OnMouseMove(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnMouseOut calls the given handler when the mouse pointer moves out of an element.</span>
+    OnMouseOut(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnMouseOver calls the given handler when the mouse pointer moves over an element.</span>
+    OnMouseOver(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnMouseUp calls the given handler when a mouse button is released over an element.</span>
+    OnMouseUp(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnPaste calls the given handler when the user pastes some content in an element.</span>
+    OnPaste(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnReset calls the given handler when the Reset button in a form is clicked.</span>
+    OnReset(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnScroll calls the given handler when an element&#39;s scrollbar is being scrolled.</span>
+    OnScroll(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnSearch calls the given handler when the user writes something in a search field.</span>
+    OnSearch(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnSelect calls the given handler after some text has been selected in an element.</span>
+    OnSelect(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnSubmit calls the given handler when a form is submitted.</span>
+    OnSubmit(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// OnWheel calls the given handler when the mouse wheel rolls up or down over an element.</span>
+    OnWheel(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTFoot">HTMLTFoot</a>
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="TFoot">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1234644:1234666#L42096">TFoot</a>
+					<a class="permalink" href="#TFoot">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func TFoot() <a href="#HTMLTFoot">HTMLTFoot</a></pre>
+				<p>
+TFoot returns an HTML element that groups the footer content in a table.
+</p>
+
+				
+				
+			
+
+			
+		
+			
+			
 			<h2 id="HTMLTHead">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1254061:1260429#L42835">HTMLTHead</a>
 				<a class="permalink" href="#HTMLTHead">&#xb6;</a>
 				
@@ -21888,197 +22079,6 @@ HTMLTextarea is the interface that describes a &lt;textarea&gt; HTML element.
 				<pre>func Textarea() <a href="#HTMLTextarea">HTMLTextarea</a></pre>
 				<p>
 Textarea returns an HTML element that defines a multiline input control (text area).
-</p>
-
-				
-				
-			
-
-			
-		
-			
-			
-			<h2 id="HTMLTfoot">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1228198:1234566#L41941">HTMLTfoot</a>
-				<a class="permalink" href="#HTMLTfoot">&#xb6;</a>
-				
-				
-			</h2>
-			<p>
-HTMLTfoot is the interface that describes a &lt;tfoot&gt; HTML element.
-</p>
-
-			<pre>type HTMLTfoot interface {
-    <a href="#UI">UI</a>
-
-    <span class="comment">// Body set the content of the element.</span>
-    Body(elems ...<a href="#UI">UI</a>) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// Text sets the content of the element with a text node containing the stringified given value.</span>
-    Text(v interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// AccessKey specifies a shortcut key to activate/focus an element.</span>
-    AccessKey(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// Aria stores accessible rich internet applications (ARIA) data.</span>
-    Aria(k <a href="/pkg/builtin/#string">string</a>, v interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// Attr sets the named attribute with the given value.</span>
-    Attr(n <a href="/pkg/builtin/#string">string</a>, v interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// Class specifies one or more classnames for an element (refers to a class in a style sheet).</span>
-    Class(v ...<a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// ContentEditable specifies whether the content of an element is editable or not.</span>
-    ContentEditable(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// DataSet stores custom data private to the page or application.</span>
-    DataSet(k <a href="/pkg/builtin/#string">string</a>, v interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// Dir specifies the text direction for the content in an element.</span>
-    Dir(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// Draggable specifies whether an element is draggable or not.</span>
-    Draggable(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// Hidden specifies that an element is not yet, or is no longer relevant.</span>
-    Hidden(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// ID specifies a unique id for an element.</span>
-    ID(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
-    Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
-    Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.</span>
-    Style(k, v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.</span>
-    Styles(s map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// TabIndex specifies the tabbing order of an element.</span>
-    TabIndex(v <a href="/pkg/builtin/#int">int</a>) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// Title specifies extra information about an element.</span>
-    Title(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnBlur calls the given handler when the element loses focus.</span>
-    OnBlur(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnChange calls the given handler when the value of the element is changed.</span>
-    OnChange(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnClick calls the given handler when there is a mouse click on the element.</span>
-    OnClick(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnContextMenu calls the given handler when a context menu is triggered.</span>
-    OnContextMenu(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnCopy calls the given handler when the user copies the content of an element.</span>
-    OnCopy(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnCut calls the given handler when the user cuts the content of an element.</span>
-    OnCut(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnDblClick calls the given handler when there is a mouse double-click on the element.</span>
-    OnDblClick(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnDrag calls the given handler when an element is dragged.</span>
-    OnDrag(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnDragEnd calls the given handler at the end of a drag operation.</span>
-    OnDragEnd(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnDragEnter calls the given handler when an element has been dragged to a valid drop target.</span>
-    OnDragEnter(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnDragLeave calls the given handler when an element leaves a valid drop target.</span>
-    OnDragLeave(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnDragOver calls the given handler when an element is being dragged over a valid drop target.</span>
-    OnDragOver(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnDragStart calls the given handler at the start of a drag operation.</span>
-    OnDragStart(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnDrop calls the given handler when dragged element is being dropped.</span>
-    OnDrop(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnFocus calls the given handler when the element gets focus.</span>
-    OnFocus(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnInput calls the given handler when an element gets user input.</span>
-    OnInput(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnInvalid calls the given handler when an element is invalid.</span>
-    OnInvalid(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnKeyDown calls the given handler when a user is pressing a key.</span>
-    OnKeyDown(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnKeyPress calls the given handler when a user presses a key.</span>
-    OnKeyPress(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnKeyup calls the given handler when a user releases a key.</span>
-    OnKeyup(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnMouseDown calls the given handler when a mouse button is pressed down on an element.</span>
-    OnMouseDown(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.</span>
-    OnMouseMove(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnMouseOut calls the given handler when the mouse pointer moves out of an element.</span>
-    OnMouseOut(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnMouseOver calls the given handler when the mouse pointer moves over an element.</span>
-    OnMouseOver(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnMouseUp calls the given handler when a mouse button is released over an element.</span>
-    OnMouseUp(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnPaste calls the given handler when the user pastes some content in an element.</span>
-    OnPaste(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnReset calls the given handler when the Reset button in a form is clicked.</span>
-    OnReset(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnScroll calls the given handler when an element&#39;s scrollbar is being scrolled.</span>
-    OnScroll(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnSearch calls the given handler when the user writes something in a search field.</span>
-    OnSearch(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnSelect calls the given handler after some text has been selected in an element.</span>
-    OnSelect(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnSubmit calls the given handler when a form is submitted.</span>
-    OnSubmit(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-
-    <span class="comment">// OnWheel calls the given handler when the mouse wheel rolls up or down over an element.</span>
-    OnWheel(h <a href="#EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLTfoot">HTMLTfoot</a>
-}</pre>
-
-			
-
-			
-
-			
-			
-			
-
-			
-				
-				<h3 id="Tfoot">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1234644:1234666#L42096">Tfoot</a>
-					<a class="permalink" href="#Tfoot">&#xb6;</a>
-					
-					
-				</h3>
-				<pre>func Tfoot() <a href="#HTMLTfoot">HTMLTfoot</a></pre>
-				<p>
-Tfoot returns an HTML element that groups the footer content in a table.
 </p>
 
 				
