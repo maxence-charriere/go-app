@@ -479,6 +479,7 @@ var tags = []tag{
 			"alt",
 			"autocomplete",
 			"autofocus",
+			"capture",
 			"checked",
 			"dirname",
 			"disabled",
@@ -1086,6 +1087,11 @@ var attrs = map[string]attr{
 	},
 
 	// C:
+	"capture": {
+		Name: "Capture",
+		Type: "string",
+		Doc:  "specifies the capture input method in file upload controls",
+	},
 	"charset": {
 		Name: "Charset",
 		Type: "string",

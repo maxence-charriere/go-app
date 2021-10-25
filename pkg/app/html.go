@@ -22303,6 +22303,9 @@ type HTMLInput interface {
 	// AutoFocus specifies that the element should automatically get focus when the page loads.
 	AutoFocus(v bool) HTMLInput
 
+	// Capture specifies the capture input method in file upload controls
+	Capture(v string) HTMLInput
+
 	// Checked specifies that an input element should be pre-selected when the page loads (for checkbox or radio types).
 	Checked(v bool) HTMLInput
 
@@ -22573,6 +22576,11 @@ func (e *htmlInput) AutoComplete(v bool) HTMLInput {
 
 func (e *htmlInput) AutoFocus(v bool) HTMLInput {
 	e.setAttr("autofocus", v)
+	return e
+}
+
+func (e *htmlInput) Capture(v string) HTMLInput {
+	e.setAttr("capture", v)
 	return e
 }
 
