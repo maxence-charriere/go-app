@@ -64,6 +64,15 @@ type PreRenderer interface {
 	OnPreRender(Context)
 }
 
+// Initialiser is the interface that describes a component that can perform
+// additional initialisations once before it is the first time rendered.
+type Initialiser interface {
+	Composer
+
+	// The function called once before the component is rendered the first time.
+	OnInit()
+}
+
 // Mounter is the interface that describes a component that can perform
 // additional actions when mounted.
 type Mounter interface {
@@ -272,6 +281,11 @@ func (c *Compo) mount(d Dispatcher) error {
 			Tag("reason", "already mounted").
 			Tag("name", c.name()).
 			Tag("kind", c.Kind())
+	}
+
+	if Initialiser, ok := c.self().(Initialiser); ok && c.disp == nil {
+		// will only run once even with multiple dismount/mounts
+		Initialiser.OnInit()
 	}
 
 	c.disp = d

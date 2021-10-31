@@ -429,6 +429,27 @@ func TestUpdater(t *testing.T) {
 	require.True(t, b.updated)
 }
 
+func TestInitializerServer(t *testing.T) {
+	h := &bar{}
+	d := NewServerTester(h)
+	defer d.Close()
+
+	d.PreRender()
+	d.Consume()
+	require.Equal(t, "bar", d.currentPage().Title())
+}
+
+func TestInitializerClient(t *testing.T) {
+	h := &bar{}
+	d := NewClientTester(h)
+	d.Mount(h)
+	d.Mount(h)
+	d.Consume()
+	defer d.Close()
+
+	require.Equal(t, "bar", h.title)
+}
+
 type hello struct {
 	Compo
 
@@ -498,10 +519,15 @@ type bar struct {
 	appInstalled bool
 	appRezized   bool
 	updated      bool
+	title        string
+}
+
+func (b *bar) OnInit() {
+	b.title+="bar"
 }
 
 func (b *bar) OnPreRender(ctx Context) {
-	ctx.Page().SetTitle("bar")
+	ctx.Page().SetTitle(b.title)
 }
 
 func (b *bar) OnNav(ctx Context) {
