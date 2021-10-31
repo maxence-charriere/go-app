@@ -77,6 +77,12 @@ type Handler struct {
 	// linking the app.
 	Image string
 
+	// If the wasm file gets served compressen the loader can't know its
+	// uncompressed size and we need to provide it. For this we send a non
+	// standard header "x-app-wasm-length" so our loader can show the right
+	// percentage while loading the file.
+	WASMSize int
+
 	// The paths or urls of the CSS files to use with the page.
 	//
 	// eg:
@@ -508,6 +514,21 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	fileHandler, isServingStaticResources := h.Resources.(http.Handler)
 	if isServingStaticResources && strings.HasPrefix(path, "/web/") {
+		// we are adding the length from disk if no length is given
+		// in the handler. So we can have compress middleware and manual
+		// compression both working.
+		if path == "/web/app.wasm" {
+			if h.WASMSize == 0 {
+				fi, err := os.Stat("./web/app.wasm")
+				if err == nil {
+					// get the size
+					h.WASMSize = int(fi.Size())
+				}
+			}
+			if h.WASMSize != 0 {
+				w.Header().Set("X-App-Wasm-Length", strconv.Itoa(h.WASMSize))
+			}
+		}
 		fileHandler.ServeHTTP(w, r)
 		return
 	}
