@@ -29,6 +29,17 @@ const (
 // Handler is an HTTP handler that serves an HTML page that loads a Go wasm app
 // and its resources.
 type Handler struct {
+	// The content of the html lang attribute (defaults to "en")
+	Language string
+
+	// An optional prebuild HTML Element for the pages so you can setup stuff like DaisyUI
+	// (eg. `app.HTML().DataSet("theme","dark")`)
+	HTMLTag HTMLHtml
+
+	// An optional prebuild BODY Element for the pages so you can setup stuff like TailwindCSS
+	// (eg. `app.Body().Class("flex flex-col min-h-screen`)
+	BodyTag HTMLBody
+
 	// The page authors.
 	Author string
 
@@ -582,10 +593,23 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	page.SetTitle(h.Title)
 	page.SetDescription(h.Description)
 	page.SetAuthor(h.Author)
+	if h.Language=="" {
+		h.Language="en"
+	}
+	page.SetLanguage(h.Language)
 	page.SetKeywords(h.Keywords...)
 	page.SetLoadingLabel(h.LoadingLabel)
 	page.SetImage(h.Image)
 	page.url = &url
+
+	if h.BodyTag == nil {
+		h.BodyTag = Body()
+	}
+
+	if h.HTMLTag == nil {
+		h.HTMLTag = Html()
+	}
+
 
 	disp := engine{
 		Page:                   &page,
@@ -593,7 +617,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		ResolveStaticResources: h.resolveStaticPath,
 		ActionHandlers:         actionHandlers,
 	}
-	body := Body().Body(
+	body := h.BodyTag.Body(
 		Div().Body(
 			Aside().
 				ID("app-wasm-loader").
@@ -630,7 +654,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 	var b bytes.Buffer
 	b.WriteString("<!DOCTYPE html>\n")
-	PrintHTML(&b, Html().Body(
+	PrintHTML(&b, h.HTMLTag.Lang(page.Language()).Body(
 		Head().Body(
 			Meta().Charset("UTF-8"),
 			Meta().

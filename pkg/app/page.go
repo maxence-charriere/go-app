@@ -56,6 +56,7 @@ type requestPage struct {
 	title        string
 	description  string
 	author       string
+	language     string
 	keywords     string
 	loadingLabel string
 	image        string
@@ -86,6 +87,14 @@ func (p *requestPage) Author() string {
 
 func (p *requestPage) SetAuthor(v string) {
 	p.author = v
+}
+
+func (p *requestPage) Language() string {
+	return p.language
+}
+
+func (p *requestPage) SetLanguage(v string) {
+	p.language = v
 }
 
 func (p *requestPage) Keywords() string {
