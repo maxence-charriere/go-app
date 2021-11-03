@@ -1199,6 +1199,11 @@ resources to run Go-based progressive web apps.
 				
 			
 				
+				<dd><a href="#Initializer">type Initializer</a></dd>
+				
+				
+			
+				
 				<dd><a href="#Kind">type Kind</a></dd>
 				
 				
@@ -1995,7 +2000,7 @@ with Context.NewAction().
 		
 			
 			
-			<h2 id="AppInstaller">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=3409:3702#L110">AppInstaller</a>
+			<h2 id="AppInstaller">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=3676:3969#L119">AppInstaller</a>
 				<a class="permalink" href="#AppInstaller">&#xb6;</a>
 				
 				
@@ -2027,7 +2032,7 @@ when the application installation state changes.
 		
 			
 			
-			<h2 id="AppUpdater">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=3125:3278#L102">AppUpdater</a>
+			<h2 id="AppUpdater">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=3392:3545#L111">AppUpdater</a>
 				<a class="permalink" href="#AppUpdater">&#xb6;</a>
 				
 				
@@ -2232,7 +2237,7 @@ client environment. The given UI element is mounted upon creation.
 		
 			
 			
-			<h2 id="Compo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4208:4350#L132">Compo</a>
+			<h2 id="Compo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4475:4617#L141">Compo</a>
 				<a class="permalink" href="#Compo">&#xb6;</a>
 				
 				
@@ -2258,7 +2263,7 @@ Compo represents the base struct to use in order to build a component.
 
 			
 				
-				<h3 id="Compo.JSValue">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4503:4534#L147">JSValue</a>
+				<h3 id="Compo.JSValue">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4770:4801#L156">JSValue</a>
 					<a class="permalink" href="#Compo.JSValue">&#xb6;</a>
 					
 					
@@ -2273,7 +2278,7 @@ JSValue returns the javascript value of the component root.
 				
 			
 				
-				<h3 id="Compo.Kind">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4389:4416#L142">Kind</a>
+				<h3 id="Compo.Kind">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4656:4683#L151">Kind</a>
 					<a class="permalink" href="#Compo.Kind">&#xb6;</a>
 					
 					
@@ -2288,7 +2293,7 @@ Kind returns the ui element kind.
 				
 			
 				
-				<h3 id="Compo.Mounted">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4618:4648#L152">Mounted</a>
+				<h3 id="Compo.Mounted">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4885:4915#L161">Mounted</a>
 					<a class="permalink" href="#Compo.Mounted">&#xb6;</a>
 					
 					
@@ -2303,7 +2308,7 @@ Mounted reports whether the component is mounted.
 				
 			
 				
-				<h3 id="Compo.Render">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4958:4985#L163">Render</a>
+				<h3 id="Compo.Render">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=5225:5252#L172">Render</a>
 					<a class="permalink" href="#Compo.Render">&#xb6;</a>
 					
 					
@@ -2320,7 +2325,7 @@ embedded.
 				
 			
 				
-				<h3 id="Compo.ResizeContent">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=5744:5775#L189">ResizeContent</a>
+				<h3 id="Compo.ResizeContent">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=6011:6042#L198">ResizeContent</a>
 					<a class="permalink" href="#Compo.ResizeContent">&#xb6;</a>
 					
 					
@@ -2336,7 +2341,7 @@ implement the Resizer interface.
 				
 			
 				
-				<h3 id="Compo.Update">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=5576:5600#L183">Update</a>
+				<h3 id="Compo.Update">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=5843:5867#L192">Update</a>
 					<a class="permalink" href="#Compo.Update">&#xb6;</a>
 					
 					
@@ -2353,7 +2358,7 @@ performed on the UI goroutine.
 				
 			
 				
-				<h3 id="Compo.ValueTo">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=6086:6137#L202">ValueTo</a>
+				<h3 id="Compo.ValueTo">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=6353:6404#L211">ValueTo</a>
 					<a class="permalink" href="#Compo.ValueTo">&#xb6;</a>
 					
 					
@@ -2662,7 +2667,7 @@ It is canceled when its associated UI element is dismounted.
 		
 			
 			
-			<h2 id="Dismounter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2130:2287#L69">Dismounter</a>
+			<h2 id="Dismounter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2397:2554#L78">Dismounter</a>
 				<a class="permalink" href="#Dismounter">&#xb6;</a>
 				
 				
@@ -2997,7 +3002,7 @@ be used any more.
 		
 			
 			
-			<h2 id="HTMLA">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=152:7110#L1">HTMLA</a>
+			<h2 id="HTMLA">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=152:7225#L1">HTMLA</a>
 				<a class="permalink" href="#HTMLA">&#xb6;</a>
 				
 				
@@ -3065,6 +3070,9 @@ HTMLA is the interface that describes a &lt;a&gt; HTML element.
 
     <span class="comment">// Rel specifies the relationship between the current document and the linked document.</span>
     Rel(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLA">HTMLA</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLA">HTMLA</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLA">HTMLA</a>
@@ -3194,7 +3202,7 @@ HTMLA is the interface that describes a &lt;a&gt; HTML element.
 
 			
 				
-				<h3 id="A">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=7167:7181#L180">A</a>
+				<h3 id="A">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=7282:7296#L183">A</a>
 					<a class="permalink" href="#A">&#xb6;</a>
 					
 					
@@ -3212,7 +3220,7 @@ A returns an HTML element that defines a hyperlink.
 		
 			
 			
-			<h2 id="HTMLAbbr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=13628:19945#L492">HTMLAbbr</a>
+			<h2 id="HTMLAbbr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=13817:20252#L500">HTMLAbbr</a>
 				<a class="permalink" href="#HTMLAbbr">&#xb6;</a>
 				
 				
@@ -3262,6 +3270,9 @@ HTMLAbbr is the interface that describes a &lt;abbr&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLAbbr">HTMLAbbr</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLAbbr">HTMLAbbr</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLAbbr">HTMLAbbr</a>
@@ -3385,7 +3396,7 @@ HTMLAbbr is the interface that describes a &lt;abbr&gt; HTML element.
 
 			
 				
-				<h3 id="Abbr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=20023:20043#L647">Abbr</a>
+				<h3 id="Abbr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=20330:20350#L658">Abbr</a>
 					<a class="permalink" href="#Abbr">&#xb6;</a>
 					
 					
@@ -3403,7 +3414,7 @@ Abbr returns an HTML element that defines an abbreviation or an acronym.
 		
 			
 			
-			<h2 id="HTMLAddress">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=26193:32663#L919">HTMLAddress</a>
+			<h2 id="HTMLAddress">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=26580:33171#L935">HTMLAddress</a>
 				<a class="permalink" href="#HTMLAddress">&#xb6;</a>
 				
 				
@@ -3453,6 +3464,9 @@ HTMLAddress is the interface that describes a &lt;address&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLAddress">HTMLAddress</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLAddress">HTMLAddress</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLAddress">HTMLAddress</a>
@@ -3576,7 +3590,7 @@ HTMLAddress is the interface that describes a &lt;address&gt; HTML element.
 
 			
 				
-				<h3 id="Address">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=32769:32795#L1074">Address</a>
+				<h3 id="Address">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=33277:33303#L1093">Address</a>
 					<a class="permalink" href="#Address">&#xb6;</a>
 					
 					
@@ -3594,7 +3608,7 @@ Address returns an HTML element that defines contact information for the author/
 		
 			
 			
-			<h2 id="HTMLArea">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=39248:46327#L1346">HTMLArea</a>
+			<h2 id="HTMLArea">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=39842:47039#L1370">HTMLArea</a>
 				<a class="permalink" href="#HTMLArea">&#xb6;</a>
 				
 				
@@ -3659,6 +3673,9 @@ HTMLArea is the interface that describes a &lt;area&gt; HTML element.
 
     <span class="comment">// Rel specifies the relationship between the current document and the linked document.</span>
     Rel(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLArea">HTMLArea</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLArea">HTMLArea</a>
 
     <span class="comment">// Shape specifies the shape of the area.</span>
     Shape(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLArea">HTMLArea</a>
@@ -3791,7 +3808,7 @@ HTMLArea is the interface that describes a &lt;area&gt; HTML element.
 
 			
 				
-				<h3 id="Area">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=46403:46423#L1525">Area</a>
+				<h3 id="Area">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=47115:47135#L1552">Area</a>
 					<a class="permalink" href="#Area">&#xb6;</a>
 					
 					
@@ -3809,7 +3826,7 @@ Area returns an HTML element that defines an area inside an image-map.
 		
 			
 			
-			<h2 id="HTMLArticle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=53237:59707#L1838">HTMLArticle</a>
+			<h2 id="HTMLArticle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=54029:60620#L1870">HTMLArticle</a>
 				<a class="permalink" href="#HTMLArticle">&#xb6;</a>
 				
 				
@@ -3859,6 +3876,9 @@ HTMLArticle is the interface that describes a &lt;article&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLArticle">HTMLArticle</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLArticle">HTMLArticle</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLArticle">HTMLArticle</a>
@@ -3982,7 +4002,7 @@ HTMLArticle is the interface that describes a &lt;article&gt; HTML element.
 
 			
 				
-				<h3 id="Article">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=59769:59795#L1993">Article</a>
+				<h3 id="Article">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=60682:60708#L2028">Article</a>
 					<a class="permalink" href="#Article">&#xb6;</a>
 					
 					
@@ -4000,7 +4020,7 @@ Article returns an HTML element that defines an article.
 		
 			
 			
-			<h2 id="HTMLAside">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=66250:72618#L2265">HTMLAside</a>
+			<h2 id="HTMLAside">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=67249:73736#L2305">HTMLAside</a>
 				<a class="permalink" href="#HTMLAside">&#xb6;</a>
 				
 				
@@ -4050,6 +4070,9 @@ HTMLAside is the interface that describes a &lt;aside&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLAside">HTMLAside</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLAside">HTMLAside</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLAside">HTMLAside</a>
@@ -4173,7 +4196,7 @@ HTMLAside is the interface that describes a &lt;aside&gt; HTML element.
 
 			
 				
-				<h3 id="Aside">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=72703:72725#L2420">Aside</a>
+				<h3 id="Aside">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=73821:73843#L2463">Aside</a>
 					<a class="permalink" href="#Aside">&#xb6;</a>
 					
 					
@@ -4191,7 +4214,7 @@ Aside returns an HTML element that defines content aside from the page content.
 		
 			
 			
-			<h2 id="HTMLAudio">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=78974:89902#L2692">HTMLAudio</a>
+			<h2 id="HTMLAudio">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=80174:91221#L2740">HTMLAudio</a>
 				<a class="permalink" href="#HTMLAudio">&#xb6;</a>
 				
 				
@@ -4259,6 +4282,9 @@ HTMLAudio is the interface that describes a &lt;audio&gt; HTML element.
 
     <span class="comment">// Preload specifies if and how the author thinks the audio/video should be loaded when the page loads.</span>
     Preload(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLAudio">HTMLAudio</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLAudio">HTMLAudio</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLAudio">HTMLAudio</a>
@@ -4454,7 +4480,7 @@ HTMLAudio is the interface that describes a &lt;audio&gt; HTML element.
 
 			
 				
-				<h3 id="Audio">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=89965:89987#L2937">Audio</a>
+				<h3 id="Audio">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=91284:91306#L2988">Audio</a>
 					<a class="permalink" href="#Audio">&#xb6;</a>
 					
 					
@@ -4472,7 +4498,7 @@ Audio returns an HTML element that defines sound content.
 		
 			
 			
-			<h2 id="HTMLB">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=100014:106178#L3359">HTMLB</a>
+			<h2 id="HTMLB">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=101415:107694#L3415">HTMLB</a>
 				<a class="permalink" href="#HTMLB">&#xb6;</a>
 				
 				
@@ -4522,6 +4548,9 @@ HTMLB is the interface that describes a &lt;b&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLB">HTMLB</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLB">HTMLB</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLB">HTMLB</a>
@@ -4645,7 +4674,7 @@ HTMLB is the interface that describes a &lt;b&gt; HTML element.
 
 			
 				
-				<h3 id="B">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=106233:106247#L3514">B</a>
+				<h3 id="B">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=107749:107763#L3573">B</a>
 					<a class="permalink" href="#B">&#xb6;</a>
 					
 					
@@ -4663,7 +4692,7 @@ B returns an HTML element that defines bold text.
 		
 			
 			
-			<h2 id="HTMLBase">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=112082:118410#L3786">HTMLBase</a>
+			<h2 id="HTMLBase">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=113672:120118#L3850">HTMLBase</a>
 				<a class="permalink" href="#HTMLBase">&#xb6;</a>
 				
 				
@@ -4710,6 +4739,9 @@ HTMLBase is the interface that describes a &lt;base&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBase">HTMLBase</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBase">HTMLBase</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLBase">HTMLBase</a>
@@ -4836,7 +4868,7 @@ HTMLBase is the interface that describes a &lt;base&gt; HTML element.
 
 			
 				
-				<h3 id="Base">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=118516:118536#L3941">Base</a>
+				<h3 id="Base">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=120224:120244#L4008">Base</a>
 					<a class="permalink" href="#Base">&#xb6;</a>
 					
 					
@@ -4854,7 +4886,7 @@ Base returns an HTML element that specifies the base URL/target for all relative
 		
 			
 			
-			<h2 id="HTMLBdi">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=124682:130948#L4214">HTMLBdi</a>
+			<h2 id="HTMLBdi">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=126470:132853#L4286">HTMLBdi</a>
 				<a class="permalink" href="#HTMLBdi">&#xb6;</a>
 				
 				
@@ -4904,6 +4936,9 @@ HTMLBdi is the interface that describes a &lt;bdi&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBdi">HTMLBdi</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBdi">HTMLBdi</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLBdi">HTMLBdi</a>
@@ -5027,7 +5062,7 @@ HTMLBdi is the interface that describes a &lt;bdi&gt; HTML element.
 
 			
 				
-				<h3 id="Bdi">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=131087:131105#L4369">Bdi</a>
+				<h3 id="Bdi">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=132992:133010#L4444">Bdi</a>
 					<a class="permalink" href="#Bdi">&#xb6;</a>
 					
 					
@@ -5045,7 +5080,7 @@ Bdi returns an HTML element that isolates a part of text that might be formatted
 		
 			
 			
-			<h2 id="HTMLBdo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=137144:143410#L4641">HTMLBdo</a>
+			<h2 id="HTMLBdo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=139127:145510#L4721">HTMLBdo</a>
 				<a class="permalink" href="#HTMLBdo">&#xb6;</a>
 				
 				
@@ -5095,6 +5130,9 @@ HTMLBdo is the interface that describes a &lt;bdo&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBdo">HTMLBdo</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBdo">HTMLBdo</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLBdo">HTMLBdo</a>
@@ -5218,7 +5256,7 @@ HTMLBdo is the interface that describes a &lt;bdo&gt; HTML element.
 
 			
 				
-				<h3 id="Bdo">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=143486:143504#L4796">Bdo</a>
+				<h3 id="Bdo">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=145586:145604#L4879">Bdo</a>
 					<a class="permalink" href="#Bdo">&#xb6;</a>
 					
 					
@@ -5236,7 +5274,7 @@ Bdo returns an HTML element that overrides the current text direction.
 		
 			
 			
-			<h2 id="HTMLBlockquote">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=149557:156285#L5068">HTMLBlockquote</a>
+			<h2 id="HTMLBlockquote">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=151735:158587#L5156">HTMLBlockquote</a>
 				<a class="permalink" href="#HTMLBlockquote">&#xb6;</a>
 				
 				
@@ -5289,6 +5327,9 @@ HTMLBlockquote is the interface that describes a &lt;blockquote&gt; HTML element
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBlockquote">HTMLBlockquote</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBlockquote">HTMLBlockquote</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLBlockquote">HTMLBlockquote</a>
@@ -5412,7 +5453,7 @@ HTMLBlockquote is the interface that describes a &lt;blockquote&gt; HTML element
 
 			
 				
-				<h3 id="Blockquote">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=156384:156416#L5226">Blockquote</a>
+				<h3 id="Blockquote">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=158686:158718#L5317">Blockquote</a>
 					<a class="permalink" href="#Blockquote">&#xb6;</a>
 					
 					
@@ -5430,7 +5471,7 @@ Blockquote returns an HTML element that defines a section that is quoted from an
 		
 			
 			
-			<h2 id="HTMLBody">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=163270:171646#L5503">HTMLBody</a>
+			<h2 id="HTMLBody">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=165664:174158#L5599">HTMLBody</a>
 				<a class="permalink" href="#HTMLBody">&#xb6;</a>
 				
 				
@@ -5480,6 +5521,9 @@ HTMLBody is the interface that describes a &lt;body&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBody">HTMLBody</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBody">HTMLBody</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLBody">HTMLBody</a>
@@ -5648,7 +5692,7 @@ HTMLBody is the interface that describes a &lt;body&gt; HTML element.
 
 			
 				
-				<h3 id="Body">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=171714:171734#L5703">Body</a>
+				<h3 id="Body">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=174226:174246#L5802">Body</a>
 					<a class="permalink" href="#Body">&#xb6;</a>
 					
 					
@@ -5666,7 +5710,7 @@ Body returns an HTML element that defines the document&#39;s body.
 		
 			
 			
-			<h2 id="HTMLBr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=179904:185924#L6050">HTMLBr</a>
+			<h2 id="HTMLBr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=182496:188632#L6154">HTMLBr</a>
 				<a class="permalink" href="#HTMLBr">&#xb6;</a>
 				
 				
@@ -5710,6 +5754,9 @@ HTMLBr is the interface that describes a &lt;br&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBr">HTMLBr</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLBr">HTMLBr</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLBr">HTMLBr</a>
@@ -5833,7 +5880,7 @@ HTMLBr is the interface that describes a &lt;br&gt; HTML element.
 
 			
 				
-				<h3 id="Br">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=185990:186006#L6199">Br</a>
+				<h3 id="Br">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=188698:188714#L6306">Br</a>
 					<a class="permalink" href="#Br">&#xb6;</a>
 					
 					
@@ -5851,7 +5898,7 @@ Br returns an HTML element that defines a single line break.
 		
 			
 			
-			<h2 id="HTMLButton">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=191796:199468#L6462">HTMLButton</a>
+			<h2 id="HTMLButton">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=194580:202372#L6574">HTMLButton</a>
 				<a class="permalink" href="#HTMLButton">&#xb6;</a>
 				
 				
@@ -5928,6 +5975,9 @@ HTMLButton is the interface that describes a &lt;button&gt; HTML element.
 
     <span class="comment">// Name specifies the name of the element.</span>
     Name(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLButton">HTMLButton</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLButton">HTMLButton</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLButton">HTMLButton</a>
@@ -6057,7 +6107,7 @@ HTMLButton is the interface that describes a &lt;button&gt; HTML element.
 
 			
 				
-				<h3 id="Button">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=199537:199561#L6650">Button</a>
+				<h3 id="Button">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=202441:202465#L6765">Button</a>
 					<a class="permalink" href="#Button">&#xb6;</a>
 					
 					
@@ -6075,7 +6125,7 @@ Button returns an HTML element that defines a clickable button.
 		
 			
 			
-			<h2 id="HTMLCanvas">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=206928:213506#L6977">HTMLCanvas</a>
+			<h2 id="HTMLCanvas">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=209916:216614#L7097">HTMLCanvas</a>
 				<a class="permalink" href="#HTMLCanvas">&#xb6;</a>
 				
 				
@@ -6128,6 +6178,9 @@ HTMLCanvas is the interface that describes a &lt;canvas&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLCanvas">HTMLCanvas</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLCanvas">HTMLCanvas</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLCanvas">HTMLCanvas</a>
@@ -6254,7 +6307,7 @@ HTMLCanvas is the interface that describes a &lt;canvas&gt; HTML element.
 
 			
 				
-				<h3 id="Canvas">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=213584:213608#L7138">Canvas</a>
+				<h3 id="Canvas">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=216692:216716#L7261">Canvas</a>
 					<a class="permalink" href="#Canvas">&#xb6;</a>
 					
 					
@@ -6272,7 +6325,7 @@ Canvas returns an HTML element that is used to draw graphics on the fly.
 		
 			
 			
-			<h2 id="HTMLCaption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=220132:226602#L7420">HTMLCaption</a>
+			<h2 id="HTMLCaption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=223324:229915#L7548">HTMLCaption</a>
 				<a class="permalink" href="#HTMLCaption">&#xb6;</a>
 				
 				
@@ -6322,6 +6375,9 @@ HTMLCaption is the interface that describes a &lt;caption&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLCaption">HTMLCaption</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLCaption">HTMLCaption</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLCaption">HTMLCaption</a>
@@ -6445,7 +6501,7 @@ HTMLCaption is the interface that describes a &lt;caption&gt; HTML element.
 
 			
 				
-				<h3 id="Caption">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=226669:226695#L7575">Caption</a>
+				<h3 id="Caption">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=229982:230008#L7706">Caption</a>
 					<a class="permalink" href="#Caption">&#xb6;</a>
 					
 					
@@ -6463,7 +6519,7 @@ Caption returns an HTML element that defines a table caption.
 		
 			
 			
-			<h2 id="HTMLCite">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=233148:239465#L7847">HTMLCite</a>
+			<h2 id="HTMLCite">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=236547:242982#L7983">HTMLCite</a>
 				<a class="permalink" href="#HTMLCite">&#xb6;</a>
 				
 				
@@ -6513,6 +6569,9 @@ HTMLCite is the interface that describes a &lt;cite&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLCite">HTMLCite</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLCite">HTMLCite</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLCite">HTMLCite</a>
@@ -6636,7 +6695,7 @@ HTMLCite is the interface that describes a &lt;cite&gt; HTML element.
 
 			
 				
-				<h3 id="Cite">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=239533:239553#L8002">Cite</a>
+				<h3 id="Cite">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=243050:243070#L8141">Cite</a>
 					<a class="permalink" href="#Cite">&#xb6;</a>
 					
 					
@@ -6654,7 +6713,7 @@ Cite returns an HTML element that defines the title of a work.
 		
 			
 			
-			<h2 id="HTMLCode">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=245697:252014#L8274">HTMLCode</a>
+			<h2 id="HTMLCode">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=249294:255729#L8418">HTMLCode</a>
 				<a class="permalink" href="#HTMLCode">&#xb6;</a>
 				
 				
@@ -6704,6 +6763,9 @@ HTMLCode is the interface that describes a &lt;code&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLCode">HTMLCode</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLCode">HTMLCode</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLCode">HTMLCode</a>
@@ -6827,7 +6889,7 @@ HTMLCode is the interface that describes a &lt;code&gt; HTML element.
 
 			
 				
-				<h3 id="Code">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=252087:252107#L8429">Code</a>
+				<h3 id="Code">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=255802:255822#L8576">Code</a>
 					<a class="permalink" href="#Code">&#xb6;</a>
 					
 					
@@ -6845,7 +6907,7 @@ Code returns an HTML element that defines a piece of computer code.
 		
 			
 			
-			<h2 id="HTMLCol">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=258249:264390#L8701">HTMLCol</a>
+			<h2 id="HTMLCol">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=262044:268302#L8853">HTMLCol</a>
 				<a class="permalink" href="#HTMLCol">&#xb6;</a>
 				
 				
@@ -6889,6 +6951,9 @@ HTMLCol is the interface that describes a &lt;col&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLCol">HTMLCol</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLCol">HTMLCol</a>
 
     <span class="comment">// Span specifies the number of columns to span.</span>
     Span(v <a href="/pkg/builtin/#int">int</a>) <a href="#HTMLCol">HTMLCol</a>
@@ -7015,7 +7080,7 @@ HTMLCol is the interface that describes a &lt;col&gt; HTML element.
 
 			
 				
-				<h3 id="Col">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=264499:264517#L8853">Col</a>
+				<h3 id="Col">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=268411:268429#L9008">Col</a>
 					<a class="permalink" href="#Col">&#xb6;</a>
 					
 					
@@ -7033,7 +7098,7 @@ Col returns an HTML element that specifies column properties for each column wit
 		
 			
 			
-			<h2 id="HTMLColGroup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=270485:277083#L9121">HTMLColGroup</a>
+			<h2 id="HTMLColGroup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=274475:281195#L9281">HTMLColGroup</a>
 				<a class="permalink" href="#HTMLColGroup">&#xb6;</a>
 				
 				
@@ -7083,6 +7148,9 @@ HTMLColGroup is the interface that describes a &lt;colgroup&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLColGroup">HTMLColGroup</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLColGroup">HTMLColGroup</a>
 
     <span class="comment">// Span specifies the number of columns to span.</span>
     Span(v <a href="/pkg/builtin/#int">int</a>) <a href="#HTMLColGroup">HTMLColGroup</a>
@@ -7209,7 +7277,7 @@ HTMLColGroup is the interface that describes a &lt;colgroup&gt; HTML element.
 
 			
 				
-				<h3 id="ColGroup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=277194:277222#L9279">ColGroup</a>
+				<h3 id="ColGroup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=281306:281334#L9442">ColGroup</a>
 					<a class="permalink" href="#ColGroup">&#xb6;</a>
 					
 					
@@ -7227,7 +7295,7 @@ ColGroup returns an HTML element that specifies a group of one or more columns i
 		
 			
 			
-			<h2 id="HTMLData">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=283863:285844#L9556">HTMLData</a>
+			<h2 id="HTMLData">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=288063:290162#L9724">HTMLData</a>
 				<a class="permalink" href="#HTMLData">&#xb6;</a>
 				
 				
@@ -7278,6 +7346,9 @@ HTMLData is the interface that describes a &lt;data&gt; HTML element.
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLData">HTMLData</a>
 
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLData">HTMLData</a>
+
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLData">HTMLData</a>
 
@@ -7307,7 +7378,7 @@ HTMLData is the interface that describes a &lt;data&gt; HTML element.
 
 			
 				
-				<h3 id="Data">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=285944:285964#L9618">Data</a>
+				<h3 id="Data">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=290262:290282#L9789">Data</a>
 					<a class="permalink" href="#Data">&#xb6;</a>
 					
 					
@@ -7325,7 +7396,7 @@ Data returns an HTML element that links the given content with a machine-readabl
 		
 			
 			
-			<h2 id="HTMLDataList">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=287945:294466#L9735">HTMLDataList</a>
+			<h2 id="HTMLDataList">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=292343:298986#L9911">HTMLDataList</a>
 				<a class="permalink" href="#HTMLDataList">&#xb6;</a>
 				
 				
@@ -7375,6 +7446,9 @@ HTMLDataList is the interface that describes a &lt;datalist&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDataList">HTMLDataList</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDataList">HTMLDataList</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLDataList">HTMLDataList</a>
@@ -7498,7 +7572,7 @@ HTMLDataList is the interface that describes a &lt;datalist&gt; HTML element.
 
 			
 				
-				<h3 id="DataList">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=294569:294597#L9890">DataList</a>
+				<h3 id="DataList">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=299089:299117#L10069">DataList</a>
 					<a class="permalink" href="#DataList">&#xb6;</a>
 					
 					
@@ -7516,7 +7590,7 @@ DataList returns an HTML element that specifies a list of pre-defined options fo
 		
 			
 			
-			<h2 id="HTMLDd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=301149:307364#L10162">HTMLDd</a>
+			<h2 id="HTMLDd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=305757:312088#L10346">HTMLDd</a>
 				<a class="permalink" href="#HTMLDd">&#xb6;</a>
 				
 				
@@ -7566,6 +7640,9 @@ HTMLDd is the interface that describes a &lt;dd&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDd">HTMLDd</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDd">HTMLDd</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLDd">HTMLDd</a>
@@ -7689,7 +7766,7 @@ HTMLDd is the interface that describes a &lt;dd&gt; HTML element.
 
 			
 				
-				<h3 id="Dd">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=307462:307478#L10317">Dd</a>
+				<h3 id="Dd">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=312186:312202#L10504">Dd</a>
 					<a class="permalink" href="#Dd">&#xb6;</a>
 					
 					
@@ -7707,7 +7784,7 @@ Dd returns an HTML element that defines a description/value of a term in a descr
 		
 			
 			
-			<h2 id="HTMLDel">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=313414:319849#L10589">HTMLDel</a>
+			<h2 id="HTMLDel">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=318214:324766#L10781">HTMLDel</a>
 				<a class="permalink" href="#HTMLDel">&#xb6;</a>
 				
 				
@@ -7763,6 +7840,9 @@ HTMLDel is the interface that describes a &lt;del&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDel">HTMLDel</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDel">HTMLDel</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLDel">HTMLDel</a>
@@ -7886,7 +7966,7 @@ HTMLDel is the interface that describes a &lt;del&gt; HTML element.
 
 			
 				
-				<h3 id="Del">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=319939:319957#L10750">Del</a>
+				<h3 id="Del">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=324856:324874#L10945">Del</a>
 					<a class="permalink" href="#Del">&#xb6;</a>
 					
 					
@@ -7904,7 +7984,7 @@ Del returns an HTML element that defines text that has been deleted from a docum
 		
 			
 			
-			<h2 id="HTMLDetails">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=326168:332888#L11032">HTMLDetails</a>
+			<h2 id="HTMLDetails">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=331163:338004#L11232">HTMLDetails</a>
 				<a class="permalink" href="#HTMLDetails">&#xb6;</a>
 				
 				
@@ -7957,6 +8037,9 @@ HTMLDetails is the interface that describes a &lt;details&gt; HTML element.
 
     <span class="comment">// Open specifies that the details should be visible (open) to the user.</span>
     Open(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLDetails">HTMLDetails</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDetails">HTMLDetails</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLDetails">HTMLDetails</a>
@@ -8083,7 +8166,7 @@ HTMLDetails is the interface that describes a &lt;details&gt; HTML element.
 
 			
 				
-				<h3 id="Details">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=332989:333015#L11193">Details</a>
+				<h3 id="Details">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=338105:338131#L11396">Details</a>
 					<a class="permalink" href="#Details">&#xb6;</a>
 					
 					
@@ -8101,7 +8184,7 @@ Details returns an HTML element that defines additional details that the user ca
 		
 			
 			
-			<h2 id="HTMLDfn">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=339688:345954#L11475">HTMLDfn</a>
+			<h2 id="HTMLDfn">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=344890:351273#L11683">HTMLDfn</a>
 				<a class="permalink" href="#HTMLDfn">&#xb6;</a>
 				
 				
@@ -8151,6 +8234,9 @@ HTMLDfn is the interface that describes a &lt;dfn&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDfn">HTMLDfn</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDfn">HTMLDfn</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLDfn">HTMLDfn</a>
@@ -8274,7 +8360,7 @@ HTMLDfn is the interface that describes a &lt;dfn&gt; HTML element.
 
 			
 				
-				<h3 id="Dfn">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=346036:346054#L11630">Dfn</a>
+				<h3 id="Dfn">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=351355:351373#L11841">Dfn</a>
 					<a class="permalink" href="#Dfn">&#xb6;</a>
 					
 					
@@ -8292,7 +8378,7 @@ Dfn returns an HTML element that represents the defining instance of a term.
 		
 			
 			
-			<h2 id="HTMLDialog">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=352099:358618#L11902">HTMLDialog</a>
+			<h2 id="HTMLDialog">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=357496:364135#L12118">HTMLDialog</a>
 				<a class="permalink" href="#HTMLDialog">&#xb6;</a>
 				
 				
@@ -8345,6 +8431,9 @@ HTMLDialog is the interface that describes a &lt;dialog&gt; HTML element.
 
     <span class="comment">// Open specifies that the details should be visible (open) to the user.</span>
     Open(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLDialog">HTMLDialog</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDialog">HTMLDialog</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLDialog">HTMLDialog</a>
@@ -8468,7 +8557,7 @@ HTMLDialog is the interface that describes a &lt;dialog&gt; HTML element.
 
 			
 				
-				<h3 id="Dialog">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=358691:358715#L12060">Dialog</a>
+				<h3 id="Dialog">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=364208:364232#L12279">Dialog</a>
 					<a class="permalink" href="#Dialog">&#xb6;</a>
 					
 					
@@ -8486,7 +8575,7 @@ Dialog returns an HTML element that defines a dialog box or window.
 		
 			
 			
-			<h2 id="HTMLDiv">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=365145:371411#L12337">HTMLDiv</a>
+			<h2 id="HTMLDiv">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=370746:377129#L12561">HTMLDiv</a>
 				<a class="permalink" href="#HTMLDiv">&#xb6;</a>
 				
 				
@@ -8536,6 +8625,9 @@ HTMLDiv is the interface that describes a &lt;div&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDiv">HTMLDiv</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDiv">HTMLDiv</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLDiv">HTMLDiv</a>
@@ -8659,7 +8751,7 @@ HTMLDiv is the interface that describes a &lt;div&gt; HTML element.
 
 			
 				
-				<h3 id="Div">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=371482:371500#L12492">Div</a>
+				<h3 id="Div">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=377200:377218#L12719">Div</a>
 					<a class="permalink" href="#Div">&#xb6;</a>
 					
 					
@@ -8677,7 +8769,7 @@ Div returns an HTML element that defines a section in a document.
 		
 			
 			
-			<h2 id="HTMLDl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=377537:383752#L12764">HTMLDl</a>
+			<h2 id="HTMLDl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=383333:389664#L12996">HTMLDl</a>
 				<a class="permalink" href="#HTMLDl">&#xb6;</a>
 				
 				
@@ -8727,6 +8819,9 @@ HTMLDl is the interface that describes a &lt;dl&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDl">HTMLDl</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDl">HTMLDl</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLDl">HTMLDl</a>
@@ -8850,7 +8945,7 @@ HTMLDl is the interface that describes a &lt;dl&gt; HTML element.
 
 			
 				
-				<h3 id="Dl">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=383817:383833#L12919">Dl</a>
+				<h3 id="Dl">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=389729:389745#L13154">Dl</a>
 					<a class="permalink" href="#Dl">&#xb6;</a>
 					
 					
@@ -8868,7 +8963,7 @@ Dl returns an HTML element that defines a description list.
 		
 			
 			
-			<h2 id="HTMLDt">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=389767:395982#L13191">HTMLDt</a>
+			<h2 id="HTMLDt">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=395755:402086#L13431">HTMLDt</a>
 				<a class="permalink" href="#HTMLDt">&#xb6;</a>
 				
 				
@@ -8918,6 +9013,9 @@ HTMLDt is the interface that describes a &lt;dt&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDt">HTMLDt</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLDt">HTMLDt</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLDt">HTMLDt</a>
@@ -9041,7 +9139,7 @@ HTMLDt is the interface that describes a &lt;dt&gt; HTML element.
 
 			
 				
-				<h3 id="Dt">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=396062:396078#L13346">Dt</a>
+				<h3 id="Dt">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=402166:402182#L13589">Dt</a>
 					<a class="permalink" href="#Dt">&#xb6;</a>
 					
 					
@@ -9059,7 +9157,7 @@ Dt returns an HTML element that defines a term/name in a description list.
 		
 			
 			
-			<h2 id="HTMLEm">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=402012:408227#L13618">HTMLEm</a>
+			<h2 id="HTMLEm">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=408192:414523#L13866">HTMLEm</a>
 				<a class="permalink" href="#HTMLEm">&#xb6;</a>
 				
 				
@@ -9109,6 +9207,9 @@ HTMLEm is the interface that describes a &lt;em&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLEm">HTMLEm</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLEm">HTMLEm</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLEm">HTMLEm</a>
@@ -9232,7 +9333,7 @@ HTMLEm is the interface that describes a &lt;em&gt; HTML element.
 
 			
 				
-				<h3 id="Em">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=408289:408305#L13773">Em</a>
+				<h3 id="Em">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=414585:414601#L14024">Em</a>
 					<a class="permalink" href="#Em">&#xb6;</a>
 					
 					
@@ -9250,7 +9351,7 @@ Em returns an HTML element that defines emphasized text.
 		
 			
 			
-			<h2 id="HTMLEmbed">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=414245:424495#L14045">HTMLEmbed</a>
+			<h2 id="HTMLEmbed">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=420617:430986#L14301">HTMLEmbed</a>
 				<a class="permalink" href="#HTMLEmbed">&#xb6;</a>
 				
 				
@@ -9297,6 +9398,9 @@ HTMLEmbed is the interface that describes a &lt;embed&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLEmbed">HTMLEmbed</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLEmbed">HTMLEmbed</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLEmbed">HTMLEmbed</a>
@@ -9498,7 +9602,7 @@ HTMLEmbed is the interface that describes a &lt;embed&gt; HTML element.
 
 			
 				
-				<h3 id="Embed">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=424595:424617#L14275">Embed</a>
+				<h3 id="Embed">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=431086:431108#L14534">Embed</a>
 					<a class="permalink" href="#Embed">&#xb6;</a>
 					
 					
@@ -9516,7 +9620,7 @@ Embed returns an HTML element that defines a container for an external (non-HTML
 		
 			
 			
-			<h2 id="HTMLFieldSet">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=434218:441027#L14673">HTMLFieldSet</a>
+			<h2 id="HTMLFieldSet">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=440791:447722#L14937">HTMLFieldSet</a>
 				<a class="permalink" href="#HTMLFieldSet">&#xb6;</a>
 				
 				
@@ -9575,6 +9679,9 @@ HTMLFieldSet is the interface that describes a &lt;fieldset&gt; HTML element.
 
     <span class="comment">// Name specifies the name of the element.</span>
     Name(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLFieldSet">HTMLFieldSet</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLFieldSet">HTMLFieldSet</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLFieldSet">HTMLFieldSet</a>
@@ -9698,7 +9805,7 @@ HTMLFieldSet is the interface that describes a &lt;fieldset&gt; HTML element.
 
 			
 				
-				<h3 id="FieldSet">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=441105:441133#L14837">FieldSet</a>
+				<h3 id="FieldSet">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=447800:447828#L15104">FieldSet</a>
 					<a class="permalink" href="#FieldSet">&#xb6;</a>
 					
 					
@@ -9716,7 +9823,7 @@ FieldSet returns an HTML element that groups related elements in a form.
 		
 			
 			
-			<h2 id="HTMLFigCaption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=447971:454594#L15124">HTMLFigCaption</a>
+			<h2 id="HTMLFigCaption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=454754:461501#L15396">HTMLFigCaption</a>
 				<a class="permalink" href="#HTMLFigCaption">&#xb6;</a>
 				
 				
@@ -9766,6 +9873,9 @@ HTMLFigCaption is the interface that describes a &lt;figcaption&gt; HTML element
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLFigCaption">HTMLFigCaption</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLFigCaption">HTMLFigCaption</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLFigCaption">HTMLFigCaption</a>
@@ -9889,7 +9999,7 @@ HTMLFigCaption is the interface that describes a &lt;figcaption&gt; HTML element
 
 			
 				
-				<h3 id="FigCaption">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=454679:454711#L15279">FigCaption</a>
+				<h3 id="FigCaption">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=461586:461618#L15554">FigCaption</a>
 					<a class="permalink" href="#FigCaption">&#xb6;</a>
 					
 					
@@ -9907,7 +10017,7 @@ FigCaption returns an HTML element that defines a caption for a figure element.
 		
 			
 			
-			<h2 id="HTMLFigure">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=461477:467896#L15551">HTMLFigure</a>
+			<h2 id="HTMLFigure">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=468476:475015#L15831">HTMLFigure</a>
 				<a class="permalink" href="#HTMLFigure">&#xb6;</a>
 				
 				
@@ -9957,6 +10067,9 @@ HTMLFigure is the interface that describes a &lt;figure&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLFigure">HTMLFigure</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLFigure">HTMLFigure</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLFigure">HTMLFigure</a>
@@ -10080,7 +10193,7 @@ HTMLFigure is the interface that describes a &lt;figure&gt; HTML element.
 
 			
 				
-				<h3 id="Figure">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=467971:467995#L15706">Figure</a>
+				<h3 id="Figure">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=475090:475114#L15989">Figure</a>
 					<a class="permalink" href="#Figure">&#xb6;</a>
 					
 					
@@ -10098,7 +10211,7 @@ Figure returns an HTML element that specifies self-contained content.
 		
 			
 			
-			<h2 id="HTMLFooter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=474349:480768#L15978">HTMLFooter</a>
+			<h2 id="HTMLFooter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=481552:488091#L16266">HTMLFooter</a>
 				<a class="permalink" href="#HTMLFooter">&#xb6;</a>
 				
 				
@@ -10148,6 +10261,9 @@ HTMLFooter is the interface that describes a &lt;footer&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLFooter">HTMLFooter</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLFooter">HTMLFooter</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLFooter">HTMLFooter</a>
@@ -10271,7 +10387,7 @@ HTMLFooter is the interface that describes a &lt;footer&gt; HTML element.
 
 			
 				
-				<h3 id="Footer">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=480853:480877#L16133">Footer</a>
+				<h3 id="Footer">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=488176:488200#L16424">Footer</a>
 					<a class="permalink" href="#Footer">&#xb6;</a>
 					
 					
@@ -10289,7 +10405,7 @@ Footer returns an HTML element that defines a footer for a document or section.
 		
 			
 			
-			<h2 id="HTMLForm">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=487227:494438#L16405">HTMLForm</a>
+			<h2 id="HTMLForm">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=494634:501963#L16701">HTMLForm</a>
 				<a class="permalink" href="#HTMLForm">&#xb6;</a>
 				
 				
@@ -10360,6 +10476,9 @@ HTMLForm is the interface that describes a &lt;form&gt; HTML element.
 
     <span class="comment">// NoValidate specifies that the form should not be validated when submitted.</span>
     NoValidate(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLForm">HTMLForm</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLForm">HTMLForm</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLForm">HTMLForm</a>
@@ -10486,7 +10605,7 @@ HTMLForm is the interface that describes a &lt;form&gt; HTML element.
 
 			
 				
-				<h3 id="Form">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=494514:494534#L16584">Form</a>
+				<h3 id="Form">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=502039:502059#L16883">Form</a>
 					<a class="permalink" href="#Form">&#xb6;</a>
 					
 					
@@ -10504,7 +10623,7 @@ Form returns an HTML element that defines an HTML form for user input.
 		
 			
 			
-			<h2 id="HTMLH1">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=501409:507624#L16901">HTMLH1</a>
+			<h2 id="HTMLH1">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=509014:515345#L17205">HTMLH1</a>
 				<a class="permalink" href="#HTMLH1">&#xb6;</a>
 				
 				
@@ -10554,6 +10673,9 @@ HTMLH1 is the interface that describes a &lt;h1&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH1">HTMLH1</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH1">HTMLH1</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLH1">HTMLH1</a>
@@ -10677,7 +10799,7 @@ HTMLH1 is the interface that describes a &lt;h1&gt; HTML element.
 
 			
 				
-				<h3 id="H1">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=507683:507699#L17056">H1</a>
+				<h3 id="H1">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=515404:515420#L17363">H1</a>
 					<a class="permalink" href="#H1">&#xb6;</a>
 					
 					
@@ -10695,7 +10817,7 @@ H1 returns an HTML element that defines HTML heading.
 		
 			
 			
-			<h2 id="HTMLH2">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=513633:519848#L17328">HTMLH2</a>
+			<h2 id="HTMLH2">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=521430:527761#L17640">HTMLH2</a>
 				<a class="permalink" href="#HTMLH2">&#xb6;</a>
 				
 				
@@ -10745,6 +10867,9 @@ HTMLH2 is the interface that describes a &lt;h2&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH2">HTMLH2</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH2">HTMLH2</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLH2">HTMLH2</a>
@@ -10868,7 +10993,7 @@ HTMLH2 is the interface that describes a &lt;h2&gt; HTML element.
 
 			
 				
-				<h3 id="H2">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=519907:519923#L17483">H2</a>
+				<h3 id="H2">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=527820:527836#L17798">H2</a>
 					<a class="permalink" href="#H2">&#xb6;</a>
 					
 					
@@ -10886,7 +11011,7 @@ H2 returns an HTML element that defines HTML heading.
 		
 			
 			
-			<h2 id="HTMLH3">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=525857:532072#L17755">HTMLH3</a>
+			<h2 id="HTMLH3">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=533846:540177#L18075">HTMLH3</a>
 				<a class="permalink" href="#HTMLH3">&#xb6;</a>
 				
 				
@@ -10936,6 +11061,9 @@ HTMLH3 is the interface that describes a &lt;h3&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH3">HTMLH3</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH3">HTMLH3</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLH3">HTMLH3</a>
@@ -11059,7 +11187,7 @@ HTMLH3 is the interface that describes a &lt;h3&gt; HTML element.
 
 			
 				
-				<h3 id="H3">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=532131:532147#L17910">H3</a>
+				<h3 id="H3">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=540236:540252#L18233">H3</a>
 					<a class="permalink" href="#H3">&#xb6;</a>
 					
 					
@@ -11077,7 +11205,7 @@ H3 returns an HTML element that defines HTML heading.
 		
 			
 			
-			<h2 id="HTMLH4">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=538081:544296#L18182">HTMLH4</a>
+			<h2 id="HTMLH4">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=546262:552593#L18510">HTMLH4</a>
 				<a class="permalink" href="#HTMLH4">&#xb6;</a>
 				
 				
@@ -11127,6 +11255,9 @@ HTMLH4 is the interface that describes a &lt;h4&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH4">HTMLH4</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH4">HTMLH4</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLH4">HTMLH4</a>
@@ -11250,7 +11381,7 @@ HTMLH4 is the interface that describes a &lt;h4&gt; HTML element.
 
 			
 				
-				<h3 id="H4">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=544355:544371#L18337">H4</a>
+				<h3 id="H4">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=552652:552668#L18668">H4</a>
 					<a class="permalink" href="#H4">&#xb6;</a>
 					
 					
@@ -11268,7 +11399,7 @@ H4 returns an HTML element that defines HTML heading.
 		
 			
 			
-			<h2 id="HTMLH5">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=550305:556520#L18609">HTMLH5</a>
+			<h2 id="HTMLH5">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=558678:565009#L18945">HTMLH5</a>
 				<a class="permalink" href="#HTMLH5">&#xb6;</a>
 				
 				
@@ -11318,6 +11449,9 @@ HTMLH5 is the interface that describes a &lt;h5&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH5">HTMLH5</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH5">HTMLH5</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLH5">HTMLH5</a>
@@ -11441,7 +11575,7 @@ HTMLH5 is the interface that describes a &lt;h5&gt; HTML element.
 
 			
 				
-				<h3 id="H5">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=556579:556595#L18764">H5</a>
+				<h3 id="H5">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=565068:565084#L19103">H5</a>
 					<a class="permalink" href="#H5">&#xb6;</a>
 					
 					
@@ -11459,7 +11593,7 @@ H5 returns an HTML element that defines HTML heading.
 		
 			
 			
-			<h2 id="HTMLH6">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=562529:568744#L19036">HTMLH6</a>
+			<h2 id="HTMLH6">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=571094:577425#L19380">HTMLH6</a>
 				<a class="permalink" href="#HTMLH6">&#xb6;</a>
 				
 				
@@ -11509,6 +11643,9 @@ HTMLH6 is the interface that describes a &lt;h6&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH6">HTMLH6</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLH6">HTMLH6</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLH6">HTMLH6</a>
@@ -11632,7 +11769,7 @@ HTMLH6 is the interface that describes a &lt;h6&gt; HTML element.
 
 			
 				
-				<h3 id="H6">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=568803:568819#L19191">H6</a>
+				<h3 id="H6">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=577484:577500#L19538">H6</a>
 					<a class="permalink" href="#H6">&#xb6;</a>
 					
 					
@@ -11650,7 +11787,7 @@ H6 returns an HTML element that defines HTML heading.
 		
 			
 			
-			<h2 id="HTMLHead">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=574757:576660#L19463">HTMLHead</a>
+			<h2 id="HTMLHead">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=583514:585535#L19815">HTMLHead</a>
 				<a class="permalink" href="#HTMLHead">&#xb6;</a>
 				
 				
@@ -11701,6 +11838,9 @@ HTMLHead is the interface that describes a &lt;head&gt; HTML element.
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLHead">HTMLHead</a>
 
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLHead">HTMLHead</a>
+
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLHead">HTMLHead</a>
 
@@ -11727,7 +11867,7 @@ HTMLHead is the interface that describes a &lt;head&gt; HTML element.
 
 			
 				
-				<h3 id="Head">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=576739:576759#L19522">Head</a>
+				<h3 id="Head">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=585614:585634#L19877">Head</a>
 					<a class="permalink" href="#Head">&#xb6;</a>
 					
 					
@@ -11745,7 +11885,7 @@ Head returns an HTML element that defines information about the document.
 		
 			
 			
-			<h2 id="HTMLHeader">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=578649:585068#L19634">HTMLHeader</a>
+			<h2 id="HTMLHeader">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=587604:594143#L19994">HTMLHeader</a>
 				<a class="permalink" href="#HTMLHeader">&#xb6;</a>
 				
 				
@@ -11795,6 +11935,9 @@ HTMLHeader is the interface that describes a &lt;header&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLHeader">HTMLHeader</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLHeader">HTMLHeader</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLHeader">HTMLHeader</a>
@@ -11918,7 +12061,7 @@ HTMLHeader is the interface that describes a &lt;header&gt; HTML element.
 
 			
 				
-				<h3 id="Header">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=585153:585177#L19789">Header</a>
+				<h3 id="Header">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=594228:594252#L20152">Header</a>
 					<a class="permalink" href="#Header">&#xb6;</a>
 					
 					
@@ -11936,7 +12079,7 @@ Header returns an HTML element that defines a header for a document or section.
 		
 			
 			
-			<h2 id="HTMLHr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=591523:597543#L20061">HTMLHr</a>
+			<h2 id="HTMLHr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=600682:606818#L20429">HTMLHr</a>
 				<a class="permalink" href="#HTMLHr">&#xb6;</a>
 				
 				
@@ -11980,6 +12123,9 @@ HTMLHr is the interface that describes a &lt;hr&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLHr">HTMLHr</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLHr">HTMLHr</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLHr">HTMLHr</a>
@@ -12103,7 +12249,7 @@ HTMLHr is the interface that describes a &lt;hr&gt; HTML element.
 
 			
 				
-				<h3 id="Hr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=597622:597638#L20210">Hr</a>
+				<h3 id="Hr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=606897:606913#L20581">Hr</a>
 					<a class="permalink" href="#Hr">&#xb6;</a>
 					
 					
@@ -12121,7 +12267,7 @@ Hr returns an HTML element that defines a thematic change in the content.
 		
 			
 			
-			<h2 id="HTMLHtml">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=603424:605327#L20473">HTMLHtml</a>
+			<h2 id="HTMLHtml">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=612775:614796#L20849">HTMLHtml</a>
 				<a class="permalink" href="#HTMLHtml">&#xb6;</a>
 				
 				
@@ -12172,6 +12318,9 @@ HTMLHtml is the interface that describes a &lt;html&gt; HTML element.
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLHtml">HTMLHtml</a>
 
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLHtml">HTMLHtml</a>
+
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLHtml">HTMLHtml</a>
 
@@ -12198,7 +12347,7 @@ HTMLHtml is the interface that describes a &lt;html&gt; HTML element.
 
 			
 				
-				<h3 id="Html">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=605404:605424#L20532">Html</a>
+				<h3 id="Html">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=614873:614893#L20911">Html</a>
 					<a class="permalink" href="#Html">&#xb6;</a>
 					
 					
@@ -12216,7 +12365,7 @@ Html returns an HTML element that defines the root of an HTML document.
 		
 			
 			
-			<h2 id="HTMLI">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=607304:613468#L20644">HTMLI</a>
+			<h2 id="HTMLI">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=616853:623132#L21028">HTMLI</a>
 				<a class="permalink" href="#HTMLI">&#xb6;</a>
 				
 				
@@ -12266,6 +12415,9 @@ HTMLI is the interface that describes a &lt;i&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLI">HTMLI</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLI">HTMLI</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLI">HTMLI</a>
@@ -12389,7 +12541,7 @@ HTMLI is the interface that describes a &lt;i&gt; HTML element.
 
 			
 				
-				<h3 id="I">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=613558:613572#L20799">I</a>
+				<h3 id="I">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=623222:623236#L21186">I</a>
 					<a class="permalink" href="#I">&#xb6;</a>
 					
 					
@@ -12407,7 +12559,7 @@ I returns an HTML element that defines a part of text in an alternate voice or m
 		
 			
 			
-			<h2 id="HTMLIFrame">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=619411:627020#L21071">HTMLIFrame</a>
+			<h2 id="HTMLIFrame">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=629149:636878#L21463">HTMLIFrame</a>
 				<a class="permalink" href="#HTMLIFrame">&#xb6;</a>
 				
 				
@@ -12475,6 +12627,9 @@ HTMLIFrame is the interface that describes a &lt;iframe&gt; HTML element.
 
     <span class="comment">// ReferrerPolicy specifies how much/which referrer information that will be sent when processing the iframe attributes</span>
     ReferrerPolicy(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLIFrame">HTMLIFrame</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLIFrame">HTMLIFrame</a>
 
     <span class="comment">// Sandbox enables an extra set of restrictions for the content in an iframe.</span>
     Sandbox(v interface{}) <a href="#HTMLIFrame">HTMLIFrame</a>
@@ -12613,7 +12768,7 @@ HTMLIFrame is the interface that describes a &lt;iframe&gt; HTML element.
 
 			
 				
-				<h3 id="IFrame">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=627086:627110#L21259">IFrame</a>
+				<h3 id="IFrame">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=636944:636968#L21654">IFrame</a>
 					<a class="permalink" href="#IFrame">&#xb6;</a>
 					
 					
@@ -12631,7 +12786,7 @@ IFrame returns an HTML element that defines an inline frame.
 		
 			
 			
-			<h2 id="HTMLImg">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=634591:645305#L21596">HTMLImg</a>
+			<h2 id="HTMLImg">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=644533:655364#L21996">HTMLImg</a>
 				<a class="permalink" href="#HTMLImg">&#xb6;</a>
 				
 				
@@ -12687,6 +12842,9 @@ HTMLImg is the interface that describes a &lt;img&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLImg">HTMLImg</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLImg">HTMLImg</a>
 
     <span class="comment">// Sizes specifies the size of the linked resource.</span>
     Sizes(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLImg">HTMLImg</a>
@@ -12897,7 +13055,7 @@ HTMLImg is the interface that describes a &lt;img&gt; HTML element.
 
 			
 				
-				<h3 id="Img">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=645361:645379#L21844">Img</a>
+				<h3 id="Img">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=655420:655438#L22247">Img</a>
 					<a class="permalink" href="#Img">&#xb6;</a>
 					
 					
@@ -12915,7 +13073,7 @@ Img returns an HTML element that defines an image.
 		
 			
 			
-			<h2 id="HTMLInput">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=655206:664703#L22272">HTMLInput</a>
+			<h2 id="HTMLInput">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=665343:674959#L22680">HTMLInput</a>
 				<a class="permalink" href="#HTMLInput">&#xb6;</a>
 				
 				
@@ -13034,6 +13192,9 @@ HTMLInput is the interface that describes a &lt;input&gt; HTML element.
 
     <span class="comment">// Required specifies that the element must be filled out before submitting the form.</span>
     Required(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLInput">HTMLInput</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLInput">HTMLInput</a>
 
     <span class="comment">// Size specifies the width.</span>
     Size(v <a href="/pkg/builtin/#int">int</a>) <a href="#HTMLInput">HTMLInput</a>
@@ -13178,7 +13339,7 @@ HTMLInput is the interface that describes a &lt;input&gt; HTML element.
 
 			
 				
-				<h3 id="Input">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=664769:664791#L22517">Input</a>
+				<h3 id="Input">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=675025:675047#L22928">Input</a>
 					<a class="permalink" href="#Input">&#xb6;</a>
 					
 					
@@ -13196,7 +13357,7 @@ Input returns an HTML element that defines an input control.
 		
 			
 			
-			<h2 id="HTMLIns">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=673747:680013#L22945">HTMLIns</a>
+			<h2 id="HTMLIns">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=684085:690468#L23361">HTMLIns</a>
 				<a class="permalink" href="#HTMLIns">&#xb6;</a>
 				
 				
@@ -13246,6 +13407,9 @@ HTMLIns is the interface that describes a &lt;ins&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLIns">HTMLIns</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLIns">HTMLIns</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLIns">HTMLIns</a>
@@ -13369,7 +13533,7 @@ HTMLIns is the interface that describes a &lt;ins&gt; HTML element.
 
 			
 				
-				<h3 id="Ins">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=680106:680124#L23100">Ins</a>
+				<h3 id="Ins">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=690561:690579#L23519">Ins</a>
 					<a class="permalink" href="#Ins">&#xb6;</a>
 					
 					
@@ -13387,7 +13551,7 @@ Ins returns an HTML element that defines a text that has been inserted into a do
 		
 			
 			
-			<h2 id="HTMLKbd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=686163:692429#L23372">HTMLKbd</a>
+			<h2 id="HTMLKbd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=696696:703079#L23796">HTMLKbd</a>
 				<a class="permalink" href="#HTMLKbd">&#xb6;</a>
 				
 				
@@ -13437,6 +13601,9 @@ HTMLKbd is the interface that describes a &lt;kbd&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLKbd">HTMLKbd</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLKbd">HTMLKbd</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLKbd">HTMLKbd</a>
@@ -13560,7 +13727,7 @@ HTMLKbd is the interface that describes a &lt;kbd&gt; HTML element.
 
 			
 				
-				<h3 id="Kbd">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=692491:692509#L23527">Kbd</a>
+				<h3 id="Kbd">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=703141:703159#L23954">Kbd</a>
 					<a class="permalink" href="#Kbd">&#xb6;</a>
 					
 					
@@ -13578,7 +13745,7 @@ Kbd returns an HTML element that defines keyboard input.
 		
 			
 			
-			<h2 id="HTMLLabel">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=698552:705110#L23799">HTMLLabel</a>
+			<h2 id="HTMLLabel">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=709280:715957#L24231">HTMLLabel</a>
 				<a class="permalink" href="#HTMLLabel">&#xb6;</a>
 				
 				
@@ -13634,6 +13801,9 @@ HTMLLabel is the interface that describes a &lt;label&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLLabel">HTMLLabel</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLLabel">HTMLLabel</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLLabel">HTMLLabel</a>
@@ -13757,7 +13927,7 @@ HTMLLabel is the interface that describes a &lt;label&gt; HTML element.
 
 			
 				
-				<h3 id="Label">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=705188:705210#L23960">Label</a>
+				<h3 id="Label">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=716035:716057#L24395">Label</a>
 					<a class="permalink" href="#Label">&#xb6;</a>
 					
 					
@@ -13775,7 +13945,7 @@ Label returns an HTML element that defines a label for an input element.
 		
 			
 			
-			<h2 id="HTMLLegend">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=711623:718042#L24242">HTMLLegend</a>
+			<h2 id="HTMLLegend">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=722552:729091#L24682">HTMLLegend</a>
 				<a class="permalink" href="#HTMLLegend">&#xb6;</a>
 				
 				
@@ -13825,6 +13995,9 @@ HTMLLegend is the interface that describes a &lt;legend&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLLegend">HTMLLegend</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLLegend">HTMLLegend</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLLegend">HTMLLegend</a>
@@ -13948,7 +14121,7 @@ HTMLLegend is the interface that describes a &lt;legend&gt; HTML element.
 
 			
 				
-				<h3 id="Legend">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=718125:718149#L24397">Legend</a>
+				<h3 id="Legend">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=729174:729198#L24840">Legend</a>
 					<a class="permalink" href="#Legend">&#xb6;</a>
 					
 					
@@ -13966,7 +14139,7 @@ Legend returns an HTML element that defines a caption for a fieldset element.
 		
 			
 			
-			<h2 id="HTMLLi">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=724495:730786#L24669">HTMLLi</a>
+			<h2 id="HTMLLi">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=735628:742035#L25117">HTMLLi</a>
 				<a class="permalink" href="#HTMLLi">&#xb6;</a>
 				
 				
@@ -14016,6 +14189,9 @@ HTMLLi is the interface that describes a &lt;li&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLLi">HTMLLi</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLLi">HTMLLi</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLLi">HTMLLi</a>
@@ -14142,7 +14318,7 @@ HTMLLi is the interface that describes a &lt;li&gt; HTML element.
 
 			
 				
-				<h3 id="Li">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=730844:730860#L24827">Li</a>
+				<h3 id="Li">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=742093:742109#L25278">Li</a>
 					<a class="permalink" href="#Li">&#xb6;</a>
 					
 					
@@ -14160,7 +14336,7 @@ Li returns an HTML element that defines a list item.
 		
 			
 			
-			<h2 id="HTMLLink">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=736881:743768#L25104">HTMLLink</a>
+			<h2 id="HTMLLink">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=748206:755211#L25560">HTMLLink</a>
 				<a class="permalink" href="#HTMLLink">&#xb6;</a>
 				
 				
@@ -14219,6 +14395,9 @@ HTMLLink is the interface that describes a &lt;link&gt; HTML element.
 
     <span class="comment">// Rel specifies the relationship between the current document and the linked document.</span>
     Rel(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLLink">HTMLLink</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLLink">HTMLLink</a>
 
     <span class="comment">// Sizes specifies the size of the linked resource.</span>
     Sizes(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLLink">HTMLLink</a>
@@ -14351,7 +14530,7 @@ HTMLLink is the interface that describes a &lt;link&gt; HTML element.
 
 			
 				
-				<h3 id="Link">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=743913:743933#L25277">Link</a>
+				<h3 id="Link">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=755356:755376#L25736">Link</a>
 					<a class="permalink" href="#Link">&#xb6;</a>
 					
 					
@@ -14369,7 +14548,7 @@ Link returns an HTML element that defines the relationship between a document an
 		
 			
 			
-			<h2 id="HTMLMain">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=750629:756946#L25580">HTMLMain</a>
+			<h2 id="HTMLMain">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=762152:768587#L26044">HTMLMain</a>
 				<a class="permalink" href="#HTMLMain">&#xb6;</a>
 				
 				
@@ -14419,6 +14598,9 @@ HTMLMain is the interface that describes a &lt;main&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLMain">HTMLMain</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLMain">HTMLMain</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLMain">HTMLMain</a>
@@ -14542,7 +14724,7 @@ HTMLMain is the interface that describes a &lt;main&gt; HTML element.
 
 			
 				
-				<h3 id="Main">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=757027:757047#L25735">Main</a>
+				<h3 id="Main">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=768668:768688#L26202">Main</a>
 					<a class="permalink" href="#Main">&#xb6;</a>
 					
 					
@@ -14560,7 +14742,7 @@ Main returns an HTML element that specifies the main content of a document.
 		
 			
 			
-			<h2 id="HTMLMap">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=763189:769524#L26007">HTMLMap</a>
+			<h2 id="HTMLMap">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=774910:781362#L26479">HTMLMap</a>
 				<a class="permalink" href="#HTMLMap">&#xb6;</a>
 				
 				
@@ -14613,6 +14795,9 @@ HTMLMap is the interface that describes a &lt;map&gt; HTML element.
 
     <span class="comment">// Name specifies the name of the element.</span>
     Name(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLMap">HTMLMap</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLMap">HTMLMap</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLMap">HTMLMap</a>
@@ -14736,7 +14921,7 @@ HTMLMap is the interface that describes a &lt;map&gt; HTML element.
 
 			
 				
-				<h3 id="Map">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=769595:769613#L26165">Map</a>
+				<h3 id="Map">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=781433:781451#L26640">Map</a>
 					<a class="permalink" href="#Map">&#xb6;</a>
 					
 					
@@ -14754,7 +14939,7 @@ Map returns an HTML element that defines a client-side image-map.
 		
 			
 			
-			<h2 id="HTMLMark">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=775732:782049#L26442">HTMLMark</a>
+			<h2 id="HTMLMark">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=787648:794083#L26922">HTMLMark</a>
 				<a class="permalink" href="#HTMLMark">&#xb6;</a>
 				
 				
@@ -14804,6 +14989,9 @@ HTMLMark is the interface that describes a &lt;mark&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLMark">HTMLMark</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLMark">HTMLMark</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLMark">HTMLMark</a>
@@ -14927,7 +15115,7 @@ HTMLMark is the interface that describes a &lt;mark&gt; HTML element.
 
 			
 				
-				<h3 id="Mark">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=782121:782141#L26597">Mark</a>
+				<h3 id="Mark">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=794155:794175#L27080">Mark</a>
 					<a class="permalink" href="#Mark">&#xb6;</a>
 					
 					
@@ -14945,7 +15133,7 @@ Mark returns an HTML element that defines marked/highlighted text.
 		
 			
 			
-			<h2 id="HTMLMeta">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=788285:790434#L26869">HTMLMeta</a>
+			<h2 id="HTMLMeta">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=800399:802666#L27357">HTMLMeta</a>
 				<a class="permalink" href="#HTMLMeta">&#xb6;</a>
 				
 				
@@ -15005,6 +15193,9 @@ HTMLMeta is the interface that describes a &lt;meta&gt; HTML element.
     <span class="comment">// Property specifies the property name.</span>
     Property(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLMeta">HTMLMeta</a>
 
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLMeta">HTMLMeta</a>
+
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLMeta">HTMLMeta</a>
 
@@ -15031,7 +15222,7 @@ HTMLMeta is the interface that describes a &lt;meta&gt; HTML element.
 
 			
 				
-				<h3 id="Meta">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=790475:790495#L26937">Meta</a>
+				<h3 id="Meta">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=802707:802727#L27428">Meta</a>
 					<a class="permalink" href="#Meta">&#xb6;</a>
 					
 					
@@ -15049,7 +15240,7 @@ Meta returns an HTML element that .
 		
 			
 			
-			<h2 id="HTMLMeter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=792653:799614#L27065">HTMLMeter</a>
+			<h2 id="HTMLMeter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=804965:812045#L27561">HTMLMeter</a>
 				<a class="permalink" href="#HTMLMeter">&#xb6;</a>
 				
 				
@@ -15117,6 +15308,9 @@ HTMLMeter is the interface that describes a &lt;meter&gt; HTML element.
 
     <span class="comment">// Optimum specifies what value is the optimal value for the gauge.</span>
     Optimum(v <a href="/pkg/builtin/#float64">float64</a>) <a href="#HTMLMeter">HTMLMeter</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLMeter">HTMLMeter</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLMeter">HTMLMeter</a>
@@ -15243,7 +15437,7 @@ HTMLMeter is the interface that describes a &lt;meter&gt; HTML element.
 
 			
 				
-				<h3 id="Meter">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=799715:799737#L27241">Meter</a>
+				<h3 id="Meter">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=812146:812168#L27740">Meter</a>
 					<a class="permalink" href="#Meter">&#xb6;</a>
 					
 					
@@ -15261,7 +15455,7 @@ Meter returns an HTML element that defines a scalar measurement within a known r
 		
 			
 			
-			<h2 id="HTMLNav">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=806576:812842#L27548">HTMLNav</a>
+			<h2 id="HTMLNav">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=819089:825472#L28052">HTMLNav</a>
 				<a class="permalink" href="#HTMLNav">&#xb6;</a>
 				
 				
@@ -15311,6 +15505,9 @@ HTMLNav is the interface that describes a &lt;nav&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLNav">HTMLNav</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLNav">HTMLNav</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLNav">HTMLNav</a>
@@ -15434,7 +15631,7 @@ HTMLNav is the interface that describes a &lt;nav&gt; HTML element.
 
 			
 				
-				<h3 id="Nav">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=812906:812924#L27703">Nav</a>
+				<h3 id="Nav">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=825536:825554#L28210">Nav</a>
 					<a class="permalink" href="#Nav">&#xb6;</a>
 					
 					
@@ -15452,7 +15649,7 @@ Nav returns an HTML element that defines navigation links.
 		
 			
 			
-			<h2 id="HTMLNoScript">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=818973:820952#L27975">HTMLNoScript</a>
+			<h2 id="HTMLNoScript">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=831681:833782#L28487">HTMLNoScript</a>
 				<a class="permalink" href="#HTMLNoScript">&#xb6;</a>
 				
 				
@@ -15503,6 +15700,9 @@ HTMLNoScript is the interface that describes a &lt;noscript&gt; HTML element.
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLNoScript">HTMLNoScript</a>
 
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLNoScript">HTMLNoScript</a>
+
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLNoScript">HTMLNoScript</a>
 
@@ -15529,7 +15729,7 @@ HTMLNoScript is the interface that describes a &lt;noscript&gt; HTML element.
 
 			
 				
-				<h3 id="NoScript">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=821075:821103#L28034">NoScript</a>
+				<h3 id="NoScript">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=833905:833933#L28549">NoScript</a>
 					<a class="permalink" href="#NoScript">&#xb6;</a>
 					
 					
@@ -15547,7 +15747,7 @@ NoScript returns an HTML element that defines an alternate content for users tha
 		
 			
 			
-			<h2 id="HTMLObject">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=823149:833955#L28146">HTMLObject</a>
+			<h2 id="HTMLObject">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=836067:846993#L28666">HTMLObject</a>
 				<a class="permalink" href="#HTMLObject">&#xb6;</a>
 				
 				
@@ -15609,6 +15809,9 @@ HTMLObject is the interface that describes a &lt;object&gt; HTML element.
 
     <span class="comment">// Name specifies the name of the element.</span>
     Name(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLObject">HTMLObject</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLObject">HTMLObject</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLObject">HTMLObject</a>
@@ -15810,7 +16013,7 @@ HTMLObject is the interface that describes a &lt;object&gt; HTML element.
 
 			
 				
-				<h3 id="Object">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=834024:834048#L28391">Object</a>
+				<h3 id="Object">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=847062:847086#L28914">Object</a>
 					<a class="permalink" href="#Object">&#xb6;</a>
 					
 					
@@ -15828,7 +16031,7 @@ Object returns an HTML element that defines an embedded object.
 		
 			
 			
-			<h2 id="HTMLOl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=844216:850676#L28813">HTMLOl</a>
+			<h2 id="HTMLOl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=857338:863914#L29341">HTMLOl</a>
 				<a class="permalink" href="#HTMLOl">&#xb6;</a>
 				
 				
@@ -15881,6 +16084,9 @@ HTMLOl is the interface that describes a &lt;ol&gt; HTML element.
 
     <span class="comment">// Reversed specifies that the list order should be descending (9,8,7...).</span>
     Reversed(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLOl">HTMLOl</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLOl">HTMLOl</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLOl">HTMLOl</a>
@@ -16010,7 +16216,7 @@ HTMLOl is the interface that describes a &lt;ol&gt; HTML element.
 
 			
 				
-				<h3 id="Ol">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=850738:850754#L28977">Ol</a>
+				<h3 id="Ol">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=863976:863992#L29508">Ol</a>
 					<a class="permalink" href="#Ol">&#xb6;</a>
 					
 					
@@ -16028,7 +16234,7 @@ Ol returns an HTML element that defines an ordered list.
 		
 			
 			
-			<h2 id="HTMLOptGroup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=856933:863657#L29264">HTMLOptGroup</a>
+			<h2 id="HTMLOptGroup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=870247:877093#L29800">HTMLOptGroup</a>
 				<a class="permalink" href="#HTMLOptGroup">&#xb6;</a>
 				
 				
@@ -16084,6 +16290,9 @@ HTMLOptGroup is the interface that describes a &lt;optgroup&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLOptGroup">HTMLOptGroup</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLOptGroup">HTMLOptGroup</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLOptGroup">HTMLOptGroup</a>
@@ -16207,7 +16416,7 @@ HTMLOptGroup is the interface that describes a &lt;optgroup&gt; HTML element.
 
 			
 				
-				<h3 id="OptGroup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=863756:863784#L29425">OptGroup</a>
+				<h3 id="OptGroup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=877192:877220#L29964">OptGroup</a>
 					<a class="permalink" href="#OptGroup">&#xb6;</a>
 					
 					
@@ -16225,7 +16434,7 @@ OptGroup returns an HTML element that defines a group of related options in a dr
 		
 			
 			
-			<h2 id="HTMLOption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=870528:877338#L29707">HTMLOption</a>
+			<h2 id="HTMLOption">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=884052:890982#L30251">HTMLOption</a>
 				<a class="permalink" href="#HTMLOption">&#xb6;</a>
 				
 				
@@ -16281,6 +16490,9 @@ HTMLOption is the interface that describes a &lt;option&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLOption">HTMLOption</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLOption">HTMLOption</a>
 
     <span class="comment">// Selected specifies that an option should be pre-selected when the page loads.</span>
     Selected(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLOption">HTMLOption</a>
@@ -16410,7 +16622,7 @@ HTMLOption is the interface that describes a &lt;option&gt; HTML element.
 
 			
 				
-				<h3 id="Option">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=877418:877442#L29874">Option</a>
+				<h3 id="Option">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=891062:891086#L30421">Option</a>
 					<a class="permalink" href="#Option">&#xb6;</a>
 					
 					
@@ -16428,7 +16640,7 @@ Option returns an HTML element that defines an option in a drop-down list.
 		
 			
 			
-			<h2 id="HTMLOutput">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=884153:890836#L30166">HTMLOutput</a>
+			<h2 id="HTMLOutput">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=897881:904684#L30718">HTMLOutput</a>
 				<a class="permalink" href="#HTMLOutput">&#xb6;</a>
 				
 				
@@ -16487,6 +16699,9 @@ HTMLOutput is the interface that describes a &lt;output&gt; HTML element.
 
     <span class="comment">// Name specifies the name of the element.</span>
     Name(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLOutput">HTMLOutput</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLOutput">HTMLOutput</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLOutput">HTMLOutput</a>
@@ -16610,7 +16825,7 @@ HTMLOutput is the interface that describes a &lt;output&gt; HTML element.
 
 			
 				
-				<h3 id="Output">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=890879:890903#L30330">Output</a>
+				<h3 id="Output">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=904727:904751#L30885">Output</a>
 					<a class="permalink" href="#Output">&#xb6;</a>
 					
 					
@@ -16628,7 +16843,7 @@ Output returns an HTML element that .
 		
 			
 			
-			<h2 id="HTMLP">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=897497:903661#L30617">HTMLP</a>
+			<h2 id="HTMLP">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=911429:917708#L31177">HTMLP</a>
 				<a class="permalink" href="#HTMLP">&#xb6;</a>
 				
 				
@@ -16678,6 +16893,9 @@ HTMLP is the interface that describes a &lt;p&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLP">HTMLP</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLP">HTMLP</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLP">HTMLP</a>
@@ -16801,7 +17019,7 @@ HTMLP is the interface that describes a &lt;p&gt; HTML element.
 
 			
 				
-				<h3 id="P">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=903718:903732#L30772">P</a>
+				<h3 id="P">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=917765:917779#L31335">P</a>
 					<a class="permalink" href="#P">&#xb6;</a>
 					
 					
@@ -16819,7 +17037,7 @@ P returns an HTML element that defines a paragraph.
 		
 			
 			
-			<h2 id="HTMLParam">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=909569:915886#L31044">HTMLParam</a>
+			<h2 id="HTMLParam">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=923690:930126#L31612">HTMLParam</a>
 				<a class="permalink" href="#HTMLParam">&#xb6;</a>
 				
 				
@@ -16866,6 +17084,9 @@ HTMLParam is the interface that describes a &lt;param&gt; HTML element.
 
     <span class="comment">// Name specifies the name of the element.</span>
     Name(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLParam">HTMLParam</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLParam">HTMLParam</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLParam">HTMLParam</a>
@@ -16992,7 +17213,7 @@ HTMLParam is the interface that describes a &lt;param&gt; HTML element.
 
 			
 				
-				<h3 id="Param">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=915961:915983#L31199">Param</a>
+				<h3 id="Param">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=930201:930223#L31770">Param</a>
 					<a class="permalink" href="#Param">&#xb6;</a>
 					
 					
@@ -17010,7 +17231,7 @@ Param returns an HTML element that defines a parameter for an object.
 		
 			
 			
-			<h2 id="HTMLPicture">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=922243:928713#L31472">HTMLPicture</a>
+			<h2 id="HTMLPicture">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=936565:943156#L32048">HTMLPicture</a>
 				<a class="permalink" href="#HTMLPicture">&#xb6;</a>
 				
 				
@@ -17060,6 +17281,9 @@ HTMLPicture is the interface that describes a &lt;picture&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLPicture">HTMLPicture</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLPicture">HTMLPicture</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLPicture">HTMLPicture</a>
@@ -17183,7 +17407,7 @@ HTMLPicture is the interface that describes a &lt;picture&gt; HTML element.
 
 			
 				
-				<h3 id="Picture">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=928805:928831#L31627">Picture</a>
+				<h3 id="Picture">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=943248:943274#L32206">Picture</a>
 					<a class="permalink" href="#Picture">&#xb6;</a>
 					
 					
@@ -17201,7 +17425,7 @@ Picture returns an HTML element that defines a container for multiple image reso
 		
 			
 			
-			<h2 id="HTMLPre">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=935282:941548#L31899">HTMLPre</a>
+			<h2 id="HTMLPre">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=949811:956194#L32483">HTMLPre</a>
 				<a class="permalink" href="#HTMLPre">&#xb6;</a>
 				
 				
@@ -17251,6 +17475,9 @@ HTMLPre is the interface that describes a &lt;pre&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLPre">HTMLPre</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLPre">HTMLPre</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLPre">HTMLPre</a>
@@ -17374,7 +17601,7 @@ HTMLPre is the interface that describes a &lt;pre&gt; HTML element.
 
 			
 				
-				<h3 id="Pre">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=941613:941631#L32054">Pre</a>
+				<h3 id="Pre">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=956259:956277#L32641">Pre</a>
 					<a class="permalink" href="#Pre">&#xb6;</a>
 					
 					
@@ -17392,7 +17619,7 @@ Pre returns an HTML element that defines preformatted text.
 		
 			
 			
-			<h2 id="HTMLProgress">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=947680:954354#L32326">HTMLProgress</a>
+			<h2 id="HTMLProgress">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=962404:969200#L32918">HTMLProgress</a>
 				<a class="permalink" href="#HTMLProgress">&#xb6;</a>
 				
 				
@@ -17445,6 +17672,9 @@ HTMLProgress is the interface that describes a &lt;progress&gt; HTML element.
 
     <span class="comment">// Max Specifies the maximum value.</span>
     Max(v interface{}) <a href="#HTMLProgress">HTMLProgress</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLProgress">HTMLProgress</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLProgress">HTMLProgress</a>
@@ -17571,7 +17801,7 @@ HTMLProgress is the interface that describes a &lt;progress&gt; HTML element.
 
 			
 				
-				<h3 id="Progress">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=954432:954460#L32487">Progress</a>
+				<h3 id="Progress">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=969278:969306#L33082">Progress</a>
 					<a class="permalink" href="#Progress">&#xb6;</a>
 					
 					
@@ -17589,7 +17819,7 @@ Progress returns an HTML element that represents the progress of a task.
 		
 			
 			
-			<h2 id="HTMLQ">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=961196:967456#L32769">HTMLQ</a>
+			<h2 id="HTMLQ">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=976130:982505#L33369">HTMLQ</a>
 				<a class="permalink" href="#HTMLQ">&#xb6;</a>
 				
 				
@@ -17642,6 +17872,9 @@ HTMLQ is the interface that describes a &lt;q&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLQ">HTMLQ</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLQ">HTMLQ</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLQ">HTMLQ</a>
@@ -17765,7 +17998,7 @@ HTMLQ is the interface that describes a &lt;q&gt; HTML element.
 
 			
 				
-				<h3 id="Q">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=967519:967533#L32927">Q</a>
+				<h3 id="Q">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=982568:982582#L33530">Q</a>
 					<a class="permalink" href="#Q">&#xb6;</a>
 					
 					
@@ -17783,7 +18016,7 @@ Q returns an HTML element that defines a short quotation.
 		
 			
 			
-			<h2 id="HTMLRp">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=973438:979653#L33204">HTMLRp</a>
+			<h2 id="HTMLRp">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=988561:994892#L33812">HTMLRp</a>
 				<a class="permalink" href="#HTMLRp">&#xb6;</a>
 				
 				
@@ -17833,6 +18066,9 @@ HTMLRp is the interface that describes a &lt;rp&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLRp">HTMLRp</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLRp">HTMLRp</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLRp">HTMLRp</a>
@@ -17956,7 +18192,7 @@ HTMLRp is the interface that describes a &lt;rp&gt; HTML element.
 
 			
 				
-				<h3 id="Rp">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=979761:979777#L33359">Rp</a>
+				<h3 id="Rp">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=995000:995016#L33970">Rp</a>
 					<a class="permalink" href="#Rp">&#xb6;</a>
 					
 					
@@ -17974,7 +18210,7 @@ Rp returns an HTML element that defines what to show in browsers that do not sup
 		
 			
 			
-			<h2 id="HTMLRt">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=985711:991926#L33631">HTMLRt</a>
+			<h2 id="HTMLRt">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1001026:1007357#L34247">HTMLRt</a>
 				<a class="permalink" href="#HTMLRt">&#xb6;</a>
 				
 				
@@ -18024,6 +18260,9 @@ HTMLRt is the interface that describes a &lt;rt&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLRt">HTMLRt</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLRt">HTMLRt</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLRt">HTMLRt</a>
@@ -18147,7 +18386,7 @@ HTMLRt is the interface that describes a &lt;rt&gt; HTML element.
 
 			
 				
-				<h3 id="Rt">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=992043:992059#L33786">Rt</a>
+				<h3 id="Rt">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1007474:1007490#L34405">Rt</a>
 					<a class="permalink" href="#Rt">&#xb6;</a>
 					
 					
@@ -18165,7 +18404,7 @@ Rt returns an HTML element that defines an explanation/pronunciation of characte
 		
 			
 			
-			<h2 id="HTMLRuby">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=997997:1004314#L34058">HTMLRuby</a>
+			<h2 id="HTMLRuby">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1013504:1019939#L34682">HTMLRuby</a>
 				<a class="permalink" href="#HTMLRuby">&#xb6;</a>
 				
 				
@@ -18215,6 +18454,9 @@ HTMLRuby is the interface that describes a &lt;ruby&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLRuby">HTMLRuby</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLRuby">HTMLRuby</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLRuby">HTMLRuby</a>
@@ -18338,7 +18580,7 @@ HTMLRuby is the interface that describes a &lt;ruby&gt; HTML element.
 
 			
 				
-				<h3 id="Ruby">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1004408:1004428#L34213">Ruby</a>
+				<h3 id="Ruby">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1020033:1020053#L34840">Ruby</a>
 					<a class="permalink" href="#Ruby">&#xb6;</a>
 					
 					
@@ -18356,7 +18598,7 @@ Ruby returns an HTML element that defines a ruby annotation (for East Asian typo
 		
 			
 			
-			<h2 id="HTMLS">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1010566:1016730#L34485">HTMLS</a>
+			<h2 id="HTMLS">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1026271:1032550#L35117">HTMLS</a>
 				<a class="permalink" href="#HTMLS">&#xb6;</a>
 				
 				
@@ -18406,6 +18648,9 @@ HTMLS is the interface that describes a &lt;s&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLS">HTMLS</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLS">HTMLS</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLS">HTMLS</a>
@@ -18529,7 +18774,7 @@ HTMLS is the interface that describes a &lt;s&gt; HTML element.
 
 			
 				
-				<h3 id="S">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1016806:1016820#L34640">S</a>
+				<h3 id="S">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1032626:1032640#L35275">S</a>
 					<a class="permalink" href="#S">&#xb6;</a>
 					
 					
@@ -18547,7 +18792,7 @@ S returns an HTML element that Defines text that is no longer correct.
 		
 			
 			
-			<h2 id="HTMLSamp">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1022655:1028972#L34912">HTMLSamp</a>
+			<h2 id="HTMLSamp">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1038549:1044984#L35552">HTMLSamp</a>
 				<a class="permalink" href="#HTMLSamp">&#xb6;</a>
 				
 				
@@ -18597,6 +18842,9 @@ HTMLSamp is the interface that describes a &lt;samp&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSamp">HTMLSamp</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSamp">HTMLSamp</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLSamp">HTMLSamp</a>
@@ -18720,7 +18968,7 @@ HTMLSamp is the interface that describes a &lt;samp&gt; HTML element.
 
 			
 				
-				<h3 id="Samp">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1029058:1029078#L35067">Samp</a>
+				<h3 id="Samp">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1045070:1045090#L35710">Samp</a>
 					<a class="permalink" href="#Samp">&#xb6;</a>
 					
 					
@@ -18738,7 +18986,7 @@ Samp returns an HTML element that defines sample output from a computer program.
 		
 			
 			
-			<h2 id="HTMLScript">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1035226:1037879#L35339">HTMLScript</a>
+			<h2 id="HTMLScript">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1051318:1054091#L35987">HTMLScript</a>
 				<a class="permalink" href="#HTMLScript">&#xb6;</a>
 				
 				
@@ -18801,6 +19049,9 @@ HTMLScript is the interface that describes a &lt;script&gt; HTML element.
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLScript">HTMLScript</a>
 
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLScript">HTMLScript</a>
+
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLScript">HTMLScript</a>
 
@@ -18836,7 +19087,7 @@ HTMLScript is the interface that describes a &lt;script&gt; HTML element.
 
 			
 				
-				<h3 id="Script">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1037950:1037974#L35419">Script</a>
+				<h3 id="Script">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1054162:1054186#L36070">Script</a>
 					<a class="permalink" href="#Script">&#xb6;</a>
 					
 					
@@ -18854,7 +19105,7 @@ Script returns an HTML element that defines a client-side script.
 		
 			
 			
-			<h2 id="HTMLSection">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1040598:1047068#L35566">HTMLSection</a>
+			<h2 id="HTMLSection">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1056894:1063485#L36222">HTMLSection</a>
 				<a class="permalink" href="#HTMLSection">&#xb6;</a>
 				
 				
@@ -18904,6 +19155,9 @@ HTMLSection is the interface that describes a &lt;section&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSection">HTMLSection</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSection">HTMLSection</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLSection">HTMLSection</a>
@@ -19027,7 +19281,7 @@ HTMLSection is the interface that describes a &lt;section&gt; HTML element.
 
 			
 				
-				<h3 id="Section">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1047143:1047169#L35721">Section</a>
+				<h3 id="Section">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1063560:1063586#L36380">Section</a>
 					<a class="permalink" href="#Section">&#xb6;</a>
 					
 					
@@ -19045,7 +19299,7 @@ Section returns an HTML element that defines a section in a document.
 		
 			
 			
-			<h2 id="HTMLSelect">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1053626:1060719#L35993">HTMLSelect</a>
+			<h2 id="HTMLSelect">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1070129:1077342#L36657">HTMLSelect</a>
 				<a class="permalink" href="#HTMLSelect">&#xb6;</a>
 				
 				
@@ -19113,6 +19367,9 @@ HTMLSelect is the interface that describes a &lt;select&gt; HTML element.
 
     <span class="comment">// Required specifies that the element must be filled out before submitting the form.</span>
     Required(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLSelect">HTMLSelect</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSelect">HTMLSelect</a>
 
     <span class="comment">// Size specifies the width.</span>
     Size(v <a href="/pkg/builtin/#int">int</a>) <a href="#HTMLSelect">HTMLSelect</a>
@@ -19239,7 +19496,7 @@ HTMLSelect is the interface that describes a &lt;select&gt; HTML element.
 
 			
 				
-				<h3 id="Select">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1060786:1060810#L36169">Select</a>
+				<h3 id="Select">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1077409:1077433#L36836">Select</a>
 					<a class="permalink" href="#Select">&#xb6;</a>
 					
 					
@@ -19257,7 +19514,7 @@ Select returns an HTML element that defines a drop-down list.
 		
 			
 			
-			<h2 id="HTMLSmall">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1067773:1074141#L36476">HTMLSmall</a>
+			<h2 id="HTMLSmall">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1084480:1090967#L37148">HTMLSmall</a>
 				<a class="permalink" href="#HTMLSmall">&#xb6;</a>
 				
 				
@@ -19307,6 +19564,9 @@ HTMLSmall is the interface that describes a &lt;small&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSmall">HTMLSmall</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSmall">HTMLSmall</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLSmall">HTMLSmall</a>
@@ -19430,7 +19690,7 @@ HTMLSmall is the interface that describes a &lt;small&gt; HTML element.
 
 			
 				
-				<h3 id="Small">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1074203:1074225#L36631">Small</a>
+				<h3 id="Small">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1091029:1091051#L37306">Small</a>
 					<a class="permalink" href="#Small">&#xb6;</a>
 					
 					
@@ -19448,7 +19708,7 @@ Small returns an HTML element that defines smaller text.
 		
 			
 			
-			<h2 id="HTMLSource">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1080476:1087123#L36903">HTMLSource</a>
+			<h2 id="HTMLSource">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1097384:1104151#L37583">HTMLSource</a>
 				<a class="permalink" href="#HTMLSource">&#xb6;</a>
 				
 				
@@ -19495,6 +19755,9 @@ HTMLSource is the interface that describes a &lt;source&gt; HTML element.
 
     <span class="comment">// Media specifies what media/device the linked document is optimized for.</span>
     Media(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSource">HTMLSource</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSource">HTMLSource</a>
 
     <span class="comment">// Sizes specifies the size of the linked resource.</span>
     Sizes(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSource">HTMLSource</a>
@@ -19630,7 +19893,7 @@ HTMLSource is the interface that describes a &lt;source&gt; HTML element.
 
 			
 				
-				<h3 id="Source">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1087166:1087190#L37067">Source</a>
+				<h3 id="Source">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1104194:1104218#L37750">Source</a>
 					<a class="permalink" href="#Source">&#xb6;</a>
 					
 					
@@ -19648,7 +19911,7 @@ Source returns an HTML element that .
 		
 			
 			
-			<h2 id="HTMLSpan">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1093798:1100115#L37355">HTMLSpan</a>
+			<h2 id="HTMLSpan">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1110910:1117345#L38043">HTMLSpan</a>
 				<a class="permalink" href="#HTMLSpan">&#xb6;</a>
 				
 				
@@ -19698,6 +19961,9 @@ HTMLSpan is the interface that describes a &lt;span&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSpan">HTMLSpan</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSpan">HTMLSpan</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLSpan">HTMLSpan</a>
@@ -19821,7 +20087,7 @@ HTMLSpan is the interface that describes a &lt;span&gt; HTML element.
 
 			
 				
-				<h3 id="Span">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1100187:1100207#L37510">Span</a>
+				<h3 id="Span">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1117417:1117437#L38201">Span</a>
 					<a class="permalink" href="#Span">&#xb6;</a>
 					
 					
@@ -19839,7 +20105,7 @@ Span returns an HTML element that defines a section in a document.
 		
 			
 			
-			<h2 id="HTMLStrong">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1106355:1112774#L37782">HTMLStrong</a>
+			<h2 id="HTMLStrong">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1123665:1130204#L38478">HTMLStrong</a>
 				<a class="permalink" href="#HTMLStrong">&#xb6;</a>
 				
 				
@@ -19889,6 +20155,9 @@ HTMLStrong is the interface that describes a &lt;strong&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLStrong">HTMLStrong</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLStrong">HTMLStrong</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLStrong">HTMLStrong</a>
@@ -20012,7 +20281,7 @@ HTMLStrong is the interface that describes a &lt;strong&gt; HTML element.
 
 			
 				
-				<h3 id="Strong">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1112839:1112863#L37937">Strong</a>
+				<h3 id="Strong">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1130269:1130293#L38636">Strong</a>
 					<a class="permalink" href="#Strong">&#xb6;</a>
 					
 					
@@ -20030,7 +20299,7 @@ Strong returns an HTML element that defines important text.
 		
 			
 			
-			<h2 id="HTMLStyle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1119215:1125885#L38209">HTMLStyle</a>
+			<h2 id="HTMLStyle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1136729:1143518#L38913">HTMLStyle</a>
 				<a class="permalink" href="#HTMLStyle">&#xb6;</a>
 				
 				
@@ -20083,6 +20352,9 @@ HTMLStyle is the interface that describes a &lt;style&gt; HTML element.
 
     <span class="comment">// Media specifies what media/device the linked document is optimized for.</span>
     Media(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLStyle">HTMLStyle</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLStyle">HTMLStyle</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLStyle">HTMLStyle</a>
@@ -20212,7 +20484,7 @@ HTMLStyle is the interface that describes a &lt;style&gt; HTML element.
 
 			
 				
-				<h3 id="Style">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1125967:1125989#L38373">Style</a>
+				<h3 id="Style">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1143600:1143622#L39080">Style</a>
 					<a class="permalink" href="#Style">&#xb6;</a>
 					
 					
@@ -20230,7 +20502,7 @@ Style returns an HTML element that defines style information for a document.
 		
 			
 			
-			<h2 id="HTMLSub">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1132530:1138796#L38660">HTMLSub</a>
+			<h2 id="HTMLSub">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1150245:1156628#L39372">HTMLSub</a>
 				<a class="permalink" href="#HTMLSub">&#xb6;</a>
 				
 				
@@ -20280,6 +20552,9 @@ HTMLSub is the interface that describes a &lt;sub&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSub">HTMLSub</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSub">HTMLSub</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLSub">HTMLSub</a>
@@ -20403,7 +20678,7 @@ HTMLSub is the interface that describes a &lt;sub&gt; HTML element.
 
 			
 				
-				<h3 id="Sub">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1138860:1138878#L38815">Sub</a>
+				<h3 id="Sub">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1156692:1156710#L39530">Sub</a>
 					<a class="permalink" href="#Sub">&#xb6;</a>
 					
 					
@@ -20421,7 +20696,7 @@ Sub returns an HTML element that defines subscripted text.
 		
 			
 			
-			<h2 id="HTMLSummary">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1144925:1151395#L39087">HTMLSummary</a>
+			<h2 id="HTMLSummary">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1162835:1169426#L39807">HTMLSummary</a>
 				<a class="permalink" href="#HTMLSummary">&#xb6;</a>
 				
 				
@@ -20471,6 +20746,9 @@ HTMLSummary is the interface that describes a &lt;summary&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSummary">HTMLSummary</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSummary">HTMLSummary</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLSummary">HTMLSummary</a>
@@ -20594,7 +20872,7 @@ HTMLSummary is the interface that describes a &lt;summary&gt; HTML element.
 
 			
 				
-				<h3 id="Summary">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1151486:1151512#L39242">Summary</a>
+				<h3 id="Summary">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1169517:1169543#L39965">Summary</a>
 					<a class="permalink" href="#Summary">&#xb6;</a>
 					
 					
@@ -20612,7 +20890,7 @@ Summary returns an HTML element that defines a visible heading for a details ele
 		
 			
 			
-			<h2 id="HTMLSup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1157963:1164229#L39514">HTMLSup</a>
+			<h2 id="HTMLSup">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1176080:1182463#L40242">HTMLSup</a>
 				<a class="permalink" href="#HTMLSup">&#xb6;</a>
 				
 				
@@ -20662,6 +20940,9 @@ HTMLSup is the interface that describes a &lt;sup&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSup">HTMLSup</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLSup">HTMLSup</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLSup">HTMLSup</a>
@@ -20785,7 +21066,7 @@ HTMLSup is the interface that describes a &lt;sup&gt; HTML element.
 
 			
 				
-				<h3 id="Sup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1164295:1164313#L39669">Sup</a>
+				<h3 id="Sup">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1182529:1182547#L40400">Sup</a>
 					<a class="permalink" href="#Sup">&#xb6;</a>
 					
 					
@@ -20803,7 +21084,7 @@ Sup returns an HTML element that defines superscripted text.
 		
 			
 			
-			<h2 id="HTMLTBody">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1183052:1189420#L40368">HTMLTBody</a>
+			<h2 id="HTMLTBody">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1201565:1208052#L41112">HTMLTBody</a>
 				<a class="permalink" href="#HTMLTBody">&#xb6;</a>
 				
 				
@@ -20853,6 +21134,9 @@ HTMLTBody is the interface that describes a &lt;tbody&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTBody">HTMLTBody</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTBody">HTMLTBody</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLTBody">HTMLTBody</a>
@@ -20976,7 +21260,7 @@ HTMLTBody is the interface that describes a &lt;tbody&gt; HTML element.
 
 			
 				
-				<h3 id="TBody">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1189496:1189518#L40523">TBody</a>
+				<h3 id="TBody">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1208128:1208150#L41270">TBody</a>
 					<a class="permalink" href="#TBody">&#xb6;</a>
 					
 					
@@ -20994,7 +21278,7 @@ TBody returns an HTML element that groups the body content in a table.
 		
 			
 			
-			<h2 id="HTMLTFoot">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1228198:1234566#L41941">HTMLTFoot</a>
+			<h2 id="HTMLTFoot">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1247524:1254011#L42717">HTMLTFoot</a>
 				<a class="permalink" href="#HTMLTFoot">&#xb6;</a>
 				
 				
@@ -21044,6 +21328,9 @@ HTMLTFoot is the interface that describes a &lt;tfoot&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLTFoot">HTMLTFoot</a>
@@ -21167,7 +21454,7 @@ HTMLTFoot is the interface that describes a &lt;tfoot&gt; HTML element.
 
 			
 				
-				<h3 id="TFoot">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1234644:1234666#L42096">TFoot</a>
+				<h3 id="TFoot">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1254089:1254111#L42875">TFoot</a>
 					<a class="permalink" href="#TFoot">&#xb6;</a>
 					
 					
@@ -21185,7 +21472,7 @@ TFoot returns an HTML element that groups the footer content in a table.
 		
 			
 			
-			<h2 id="HTMLTHead">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1254061:1260429#L42835">HTMLTHead</a>
+			<h2 id="HTMLTHead">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1273780:1280267#L43627">HTMLTHead</a>
 				<a class="permalink" href="#HTMLTHead">&#xb6;</a>
 				
 				
@@ -21235,6 +21522,9 @@ HTMLTHead is the interface that describes a &lt;thead&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTHead">HTMLTHead</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTHead">HTMLTHead</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLTHead">HTMLTHead</a>
@@ -21358,7 +21648,7 @@ HTMLTHead is the interface that describes a &lt;thead&gt; HTML element.
 
 			
 				
-				<h3 id="THead">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1260506:1260528#L42990">THead</a>
+				<h3 id="THead">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1280344:1280366#L43785">THead</a>
 					<a class="permalink" href="#THead">&#xb6;</a>
 					
 					
@@ -21376,7 +21666,7 @@ THead returns an HTML element that groups the header content in a table
 		
 			
 			
-			<h2 id="HTMLTable">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1170356:1176724#L39941">HTMLTable</a>
+			<h2 id="HTMLTable">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1188668:1195155#L40677">HTMLTable</a>
 				<a class="permalink" href="#HTMLTable">&#xb6;</a>
 				
 				
@@ -21426,6 +21716,9 @@ HTMLTable is the interface that describes a &lt;table&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTable">HTMLTable</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTable">HTMLTable</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLTable">HTMLTable</a>
@@ -21549,7 +21842,7 @@ HTMLTable is the interface that describes a &lt;table&gt; HTML element.
 
 			
 				
-				<h3 id="Table">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1176781:1176803#L40096">Table</a>
+				<h3 id="Table">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1195212:1195234#L40835">Table</a>
 					<a class="permalink" href="#Table">&#xb6;</a>
 					
 					
@@ -21567,7 +21860,7 @@ Table returns an HTML element that defines a table.
 		
 			
 			
-			<h2 id="HTMLTd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1195761:1202258#L40795">HTMLTd</a>
+			<h2 id="HTMLTd">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1214475:1221088#L41547">HTMLTd</a>
 				<a class="permalink" href="#HTMLTd">&#xb6;</a>
 				
 				
@@ -21623,6 +21916,9 @@ HTMLTd is the interface that describes a &lt;td&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTd">HTMLTd</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTd">HTMLTd</a>
 
     <span class="comment">// Rowspan specifies the number of rows a table cell should span.</span>
     Rowspan(v <a href="/pkg/builtin/#int">int</a>) <a href="#HTMLTd">HTMLTd</a>
@@ -21749,7 +22045,7 @@ HTMLTd is the interface that describes a &lt;td&gt; HTML element.
 
 			
 				
-				<h3 id="Td">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1202322:1202338#L40959">Td</a>
+				<h3 id="Td">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1221152:1221168#L41714">Td</a>
 					<a class="permalink" href="#Td">&#xb6;</a>
 					
 					
@@ -21767,7 +22063,7 @@ Td returns an HTML element that defines a cell in a table.
 		
 			
 			
-			<h2 id="HTMLTemplate">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1208524:1210503#L41246">HTMLTemplate</a>
+			<h2 id="HTMLTemplate">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1227430:1229531#L42006">HTMLTemplate</a>
 				<a class="permalink" href="#HTMLTemplate">&#xb6;</a>
 				
 				
@@ -21818,6 +22114,9 @@ HTMLTemplate is the interface that describes a &lt;template&gt; HTML element.
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTemplate">HTMLTemplate</a>
 
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTemplate">HTMLTemplate</a>
+
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLTemplate">HTMLTemplate</a>
 
@@ -21844,7 +22143,7 @@ HTMLTemplate is the interface that describes a &lt;template&gt; HTML element.
 
 			
 				
-				<h3 id="Template">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1210566:1210594#L41305">Template</a>
+				<h3 id="Template">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1229594:1229622#L42068">Template</a>
 					<a class="permalink" href="#Template">&#xb6;</a>
 					
 					
@@ -21862,7 +22161,7 @@ Template returns an HTML element that defines a template.
 		
 			
 			
-			<h2 id="HTMLTextarea">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1212644:1220410#L41417">HTMLTextarea</a>
+			<h2 id="HTMLTextarea">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1231760:1239648#L42185">HTMLTextarea</a>
 				<a class="permalink" href="#HTMLTextarea">&#xb6;</a>
 				
 				
@@ -21942,6 +22241,9 @@ HTMLTextarea is the interface that describes a &lt;textarea&gt; HTML element.
 
     <span class="comment">// Required specifies that the element must be filled out before submitting the form.</span>
     Required(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLTextarea">HTMLTextarea</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTextarea">HTMLTextarea</a>
 
     <span class="comment">// Rows specifies the visible number of lines in a text area.</span>
     Rows(v <a href="/pkg/builtin/#int">int</a>) <a href="#HTMLTextarea">HTMLTextarea</a>
@@ -22071,7 +22373,7 @@ HTMLTextarea is the interface that describes a &lt;textarea&gt; HTML element.
 
 			
 				
-				<h3 id="Textarea">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1220500:1220528#L41608">Textarea</a>
+				<h3 id="Textarea">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1239738:1239766#L42379">Textarea</a>
 					<a class="permalink" href="#Textarea">&#xb6;</a>
 					
 					
@@ -22089,7 +22391,7 @@ Textarea returns an HTML element that defines a multiline input control (text ar
 		
 			
 			
-			<h2 id="HTMLTh">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1240909:1247636#L42368">HTMLTh</a>
+			<h2 id="HTMLTh">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1260436:1267279#L43152">HTMLTh</a>
 				<a class="permalink" href="#HTMLTh">&#xb6;</a>
 				
 				
@@ -22148,6 +22450,9 @@ HTMLTh is the interface that describes a &lt;th&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTh">HTMLTh</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTh">HTMLTh</a>
 
     <span class="comment">// Rowspan specifies the number of rows a table cell should span.</span>
     Rowspan(v <a href="/pkg/builtin/#int">int</a>) <a href="#HTMLTh">HTMLTh</a>
@@ -22277,7 +22582,7 @@ HTMLTh is the interface that describes a &lt;th&gt; HTML element.
 
 			
 				
-				<h3 id="Th">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1247707:1247723#L42538">Th</a>
+				<h3 id="Th">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1267350:1267366#L43325">Th</a>
 					<a class="permalink" href="#Th">&#xb6;</a>
 					
 					
@@ -22295,7 +22600,7 @@ Th returns an HTML element that defines a header cell in a table.
 		
 			
 			
-			<h2 id="HTMLTime">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1266775:1273164#L43262">HTMLTime</a>
+			<h2 id="HTMLTime">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1286695:1293202#L44062">HTMLTime</a>
 				<a class="permalink" href="#HTMLTime">&#xb6;</a>
 				
 				
@@ -22348,6 +22653,9 @@ HTMLTime is the interface that describes a &lt;time&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTime">HTMLTime</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTime">HTMLTime</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLTime">HTMLTime</a>
@@ -22471,7 +22779,7 @@ HTMLTime is the interface that describes a &lt;time&gt; HTML element.
 
 			
 				
-				<h3 id="Time">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1273224:1273244#L43420">Time</a>
+				<h3 id="Time">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1293262:1293282#L44223">Time</a>
 					<a class="permalink" href="#Time">&#xb6;</a>
 					
 					
@@ -22489,7 +22797,7 @@ Time returns an HTML element that defines a date/time.
 		
 			
 			
-			<h2 id="HTMLTitle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1279478:1281400#L43697">HTMLTitle</a>
+			<h2 id="HTMLTitle">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1299596:1301637#L44505">HTMLTitle</a>
 				<a class="permalink" href="#HTMLTitle">&#xb6;</a>
 				
 				
@@ -22540,6 +22848,9 @@ HTMLTitle is the interface that describes a &lt;title&gt; HTML element.
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTitle">HTMLTitle</a>
 
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTitle">HTMLTitle</a>
+
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLTitle">HTMLTitle</a>
 
@@ -22566,7 +22877,7 @@ HTMLTitle is the interface that describes a &lt;title&gt; HTML element.
 
 			
 				
-				<h3 id="Title">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1281474:1281496#L43756">Title</a>
+				<h3 id="Title">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1301711:1301733#L44567">Title</a>
 					<a class="permalink" href="#Title">&#xb6;</a>
 					
 					
@@ -22584,7 +22895,7 @@ Title returns an HTML element that defines a title for the document.
 		
 			
 			
-			<h2 id="HTMLTr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1283417:1289632#L43868">HTMLTr</a>
+			<h2 id="HTMLTr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1303736:1310067#L44684">HTMLTr</a>
 				<a class="permalink" href="#HTMLTr">&#xb6;</a>
 				
 				
@@ -22634,6 +22945,9 @@ HTMLTr is the interface that describes a &lt;tr&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTr">HTMLTr</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLTr">HTMLTr</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLTr">HTMLTr</a>
@@ -22757,7 +23071,7 @@ HTMLTr is the interface that describes a &lt;tr&gt; HTML element.
 
 			
 				
-				<h3 id="Tr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1289695:1289711#L44023">Tr</a>
+				<h3 id="Tr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1310130:1310146#L44842">Tr</a>
 					<a class="permalink" href="#Tr">&#xb6;</a>
 					
 					
@@ -22775,7 +23089,7 @@ Tr returns an HTML element that defines a row in a table.
 		
 			
 			
-			<h2 id="HTMLU">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1295643:1301807#L44295">HTMLU</a>
+			<h2 id="HTMLU">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1316154:1322433#L45119">HTMLU</a>
 				<a class="permalink" href="#HTMLU">&#xb6;</a>
 				
 				
@@ -22825,6 +23139,9 @@ HTMLU is the interface that describes a &lt;u&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLU">HTMLU</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLU">HTMLU</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLU">HTMLU</a>
@@ -22948,7 +23265,7 @@ HTMLU is the interface that describes a &lt;u&gt; HTML element.
 
 			
 				
-				<h3 id="U">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1301913:1301927#L44450">U</a>
+				<h3 id="U">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1322539:1322553#L45277">U</a>
 					<a class="permalink" href="#U">&#xb6;</a>
 					
 					
@@ -22966,7 +23283,7 @@ U returns an HTML element that defines text that should be stylistically differe
 		
 			
 			
-			<h2 id="HTMLUl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1307758:1313973#L44722">HTMLUl</a>
+			<h2 id="HTMLUl">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1328458:1334789#L45554">HTMLUl</a>
 				<a class="permalink" href="#HTMLUl">&#xb6;</a>
 				
 				
@@ -23016,6 +23333,9 @@ HTMLUl is the interface that describes a &lt;ul&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLUl">HTMLUl</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLUl">HTMLUl</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLUl">HTMLUl</a>
@@ -23139,7 +23459,7 @@ HTMLUl is the interface that describes a &lt;ul&gt; HTML element.
 
 			
 				
-				<h3 id="Ul">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1314037:1314053#L44877">Ul</a>
+				<h3 id="Ul">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1334853:1334869#L45712">Ul</a>
 					<a class="permalink" href="#Ul">&#xb6;</a>
 					
 					
@@ -23157,7 +23477,7 @@ Ul returns an HTML element that defines an unordered list.
 		
 			
 			
-			<h2 id="HTMLVar">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1319989:1326255#L45149">HTMLVar</a>
+			<h2 id="HTMLVar">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1340881:1347264#L45989">HTMLVar</a>
 				<a class="permalink" href="#HTMLVar">&#xb6;</a>
 				
 				
@@ -23207,6 +23527,9 @@ HTMLVar is the interface that describes a &lt;var&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLVar">HTMLVar</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLVar">HTMLVar</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLVar">HTMLVar</a>
@@ -23330,7 +23653,7 @@ HTMLVar is the interface that describes a &lt;var&gt; HTML element.
 
 			
 				
-				<h3 id="Var">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1326313:1326331#L45304">Var</a>
+				<h3 id="Var">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1347322:1347340#L46147">Var</a>
 					<a class="permalink" href="#Var">&#xb6;</a>
 					
 					
@@ -23348,7 +23671,7 @@ Var returns an HTML element that defines a variable.
 		
 			
 			
-			<h2 id="HTMLVideo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1332374:1343602#L45576">HTMLVideo</a>
+			<h2 id="HTMLVideo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1353461:1364808#L46424">HTMLVideo</a>
 				<a class="permalink" href="#HTMLVideo">&#xb6;</a>
 				
 				
@@ -23422,6 +23745,9 @@ HTMLVideo is the interface that describes a &lt;video&gt; HTML element.
 
     <span class="comment">// Preload specifies if and how the author thinks the audio/video should be loaded when the page loads.</span>
     Preload(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLVideo">HTMLVideo</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLVideo">HTMLVideo</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLVideo">HTMLVideo</a>
@@ -23620,7 +23946,7 @@ HTMLVideo is the interface that describes a &lt;video&gt; HTML element.
 
 			
 				
-				<h3 id="Video">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1343668:1343690#L45830">Video</a>
+				<h3 id="Video">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1364874:1364896#L46681">Video</a>
 					<a class="permalink" href="#Video">&#xb6;</a>
 					
 					
@@ -23638,7 +23964,7 @@ Video returns an HTML element that defines a video or movie.
 		
 			
 			
-			<h2 id="HTMLWbr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1353971:1360237#L46267">HTMLWbr</a>
+			<h2 id="HTMLWbr">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1375259:1381642#L47123">HTMLWbr</a>
 				<a class="permalink" href="#HTMLWbr">&#xb6;</a>
 				
 				
@@ -23688,6 +24014,9 @@ HTMLWbr is the interface that describes a &lt;wbr&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLWbr">HTMLWbr</a>
+
+    <span class="comment">// Role specifies to parsing software the exact function of an element (and its children).</span>
+    Role(v <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLWbr">HTMLWbr</a>
 
     <span class="comment">// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.</span>
     Spellcheck(v <a href="/pkg/builtin/#bool">bool</a>) <a href="#HTMLWbr">HTMLWbr</a>
@@ -23811,7 +24140,7 @@ HTMLWbr is the interface that describes a &lt;wbr&gt; HTML element.
 
 			
 				
-				<h3 id="Wbr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1360306:1360324#L46422">Wbr</a>
+				<h3 id="Wbr">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go?s=1381711:1381729#L47281">Wbr</a>
 					<a class="permalink" href="#Wbr">&#xb6;</a>
 					
 					
@@ -24031,6 +24360,37 @@ application icon, favicon or loading icon.
 		
 			
 			
+			<h2 id="Initializer">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=1892:2016#L59">Initializer</a>
+				<a class="permalink" href="#Initializer">&#xb6;</a>
+				
+				
+			</h2>
+			<p>
+Initializer is the interface that describes a component that performs
+initialization instruction before being pre-rendered or mounted.
+</p>
+
+			<pre>type Initializer interface {
+    <a href="#Composer">Composer</a>
+
+    <span class="comment">// The function called before the component is pre-rendered or mounted.</span>
+    OnInit()
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
 			<h2 id="Kind">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=941:955#L38">Kind</a>
 				<a class="permalink" href="#Kind">&#xb6;</a>
 				
@@ -24090,7 +24450,7 @@ Kind represents the specific kind of a user interface element.
 		
 			
 			
-			<h2 id="Mounter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=1859:2014#L59">Mounter</a>
+			<h2 id="Mounter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2126:2281#L68">Mounter</a>
 				<a class="permalink" href="#Mounter">&#xb6;</a>
 				
 				
@@ -24147,7 +24507,7 @@ MsgHandler represents a handler to listen to messages sent with Context.Post.
 		
 			
 			
-			<h2 id="Navigator">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2404:2569#L79">Navigator</a>
+			<h2 id="Navigator">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2671:2836#L88">Navigator</a>
 				<a class="permalink" href="#Navigator">&#xb6;</a>
 				
 				
@@ -24517,7 +24877,7 @@ be a slice, an array or a map with strings as keys.
 		
 			
 			
-			<h2 id="Resizer">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=3865:4072#L120">Resizer</a>
+			<h2 id="Resizer">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4132:4339#L129">Resizer</a>
 				<a class="permalink" href="#Resizer">&#xb6;</a>
 				
 				
@@ -25150,7 +25510,7 @@ Text creates a simple text element.
 		
 			
 			
-			<h2 id="Updater">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2811:3012#L94">Updater</a>
+			<h2 id="Updater">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=3078:3279#L103">Updater</a>
 				<a class="permalink" href="#Updater">&#xb6;</a>
 				
 				
