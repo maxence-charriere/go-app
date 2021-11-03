@@ -143,7 +143,7 @@ func (c *myCompo) Render() app.UI {
 }
 
 func (c *myCompo) onChange(ctx app.Context, e app.Event) {
-	v := ctx.JSSrc.Get("value")
+	v := ctx.JSSrc().Get("value")
 }
 ```
 

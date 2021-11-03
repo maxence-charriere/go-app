@@ -163,7 +163,7 @@ func (f *foo) Render() app.UI {
 }
 
 func (f *foo) onInputChange(ctx app.Context, e app.Event) {
-    v := ctx.JSSrc.Get("value").String()
+    v := ctx.JSSrc().Get("value").String()
 }
 ```
 
