@@ -430,24 +430,21 @@ func TestUpdater(t *testing.T) {
 }
 
 func TestInitializerServer(t *testing.T) {
-	h := &bar{}
-	d := NewServerTester(h)
+	b := &bar{}
+	d := NewServerTester(b)
 	defer d.Close()
+	require.False(t, b.initialized)
 
 	d.PreRender()
 	d.Consume()
-	require.Equal(t, "bar", d.currentPage().Title())
+	require.True(t, b.initialized)
 }
 
 func TestInitializerClient(t *testing.T) {
-	h := &bar{}
-	d := NewClientTester(h)
-	d.Mount(h)
-	d.Mount(h)
-	d.Consume()
+	b := &bar{}
+	d := NewClientTester(b)
 	defer d.Close()
-
-	require.Equal(t, "bar", h.title)
+	require.True(t, b.initialized) // b is mounted in NewClientTester
 }
 
 type hello struct {
@@ -519,15 +516,16 @@ type bar struct {
 	appInstalled bool
 	appRezized   bool
 	updated      bool
+	initialized  bool
 	title        string
 }
 
 func (b *bar) OnInit() {
-	b.title+="bar"
+	b.initialized = true
 }
 
 func (b *bar) OnPreRender(ctx Context) {
-	ctx.Page().SetTitle(b.title)
+	ctx.Page().SetTitle("bar")
 }
 
 func (b *bar) OnNav(ctx Context) {

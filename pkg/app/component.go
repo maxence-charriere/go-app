@@ -64,12 +64,12 @@ type PreRenderer interface {
 	OnPreRender(Context)
 }
 
-// Initialiser is the interface that describes a component that can perform
-// additional initialisations once before it is the first time rendered.
-type Initialiser interface {
+// Initializer is the interface that describes a component that performs
+// initialization instruction before being mounted.
+type Initializer interface {
 	Composer
 
-	// The function called once before the component is rendered the first time.
+	// The function called before the component is mounted.
 	OnInit()
 }
 
@@ -283,9 +283,8 @@ func (c *Compo) mount(d Dispatcher) error {
 			Tag("kind", c.Kind())
 	}
 
-	if Initialiser, ok := c.self().(Initialiser); ok && c.disp == nil {
-		// will only run once even with multiple dismount/mounts
-		Initialiser.OnInit()
+	if initializer, ok := c.self().(Initializer); ok && !d.runsInServer() {
+		initializer.OnInit()
 	}
 
 	c.disp = d
@@ -504,6 +503,10 @@ func (c *Compo) onResize() {
 
 func (c *Compo) preRender(p Page) {
 	c.root.preRender(p)
+
+	if initializer, ok := c.self().(Initializer); ok {
+		initializer.OnInit()
+	}
 
 	if preRenderer, ok := c.self().(PreRenderer); ok {
 		c.dispatch(preRenderer.OnPreRender)
