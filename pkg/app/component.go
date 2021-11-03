@@ -70,7 +70,8 @@ type Initializer interface {
 	Composer
 
 	// The function called before the component is pre-rendered or mounted.
-	OnInit()
+	// Its parameter is true if this is the first call to OnInit for this component
+	OnInit(bool)
 }
 
 // Mounter is the interface that describes a component that can perform
@@ -284,7 +285,7 @@ func (c *Compo) mount(d Dispatcher) error {
 	}
 
 	if initializer, ok := c.self().(Initializer); ok && !d.runsInServer() {
-		initializer.OnInit()
+		initializer.OnInit(c.disp==nil)
 	}
 
 	c.disp = d
@@ -505,7 +506,7 @@ func (c *Compo) preRender(p Page) {
 	c.root.preRender(p)
 
 	if initializer, ok := c.self().(Initializer); ok {
-		initializer.OnInit()
+		initializer.OnInit(true)
 	}
 
 	if preRenderer, ok := c.self().(PreRenderer); ok {
