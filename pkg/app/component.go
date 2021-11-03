@@ -65,11 +65,11 @@ type PreRenderer interface {
 }
 
 // Initializer is the interface that describes a component that performs
-// initialization instruction before being mounted.
+// initialization instruction before being pre-rendered or mounted.
 type Initializer interface {
 	Composer
 
-	// The function called before the component is mounted.
+	// The function called before the component is pre-rendered or mounted.
 	OnInit()
 }
 
