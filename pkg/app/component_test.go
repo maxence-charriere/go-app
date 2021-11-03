@@ -429,6 +429,24 @@ func TestUpdater(t *testing.T) {
 	require.True(t, b.updated)
 }
 
+func TestInitializerServer(t *testing.T) {
+	b := &bar{}
+	d := NewServerTester(b)
+	defer d.Close()
+	require.False(t, b.initialized)
+
+	d.PreRender()
+	d.Consume()
+	require.True(t, b.initialized)
+}
+
+func TestInitializerClient(t *testing.T) {
+	b := &bar{}
+	d := NewClientTester(b)
+	defer d.Close()
+	require.True(t, b.initialized) // b is mounted in NewClientTester
+}
+
 type hello struct {
 	Compo
 
@@ -498,6 +516,12 @@ type bar struct {
 	appInstalled bool
 	appRezized   bool
 	updated      bool
+	initialized  bool
+	title        string
+}
+
+func (b *bar) OnInit() {
+	b.initialized = true
 }
 
 func (b *bar) OnPreRender(ctx Context) {
