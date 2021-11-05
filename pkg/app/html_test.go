@@ -5986,7 +5986,7 @@ func TestTFoot(t *testing.T) {
 
 func TestTh(t *testing.T) {
 	elem := Th()
-	elem.Accept("foo")
+	elem.Abbr("foo")
 	elem.AccessKey("foo")
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")

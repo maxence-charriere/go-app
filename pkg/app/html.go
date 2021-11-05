@@ -43168,8 +43168,8 @@ type HTMLTh interface {
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLTh
 
-	// Accept specifies an abbreviated version of the content in a header cell.
-	Accept(v string) HTMLTh
+	// Abbr specifies an abbreviated version of the content in a header cell.
+	Abbr(v string) HTMLTh
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTh
@@ -43356,8 +43356,8 @@ func (e *htmlTh) Text(v interface{}) HTMLTh {
 	return e.Body(Text(v))
 }
 
-func (e *htmlTh) Accept(v string) HTMLTh {
-	e.setAttr("accept", v)
+func (e *htmlTh) Abbr(v string) HTMLTh {
+	e.setAttr("abbr", v)
 	return e
 }
 

@@ -1010,7 +1010,7 @@ type attr struct {
 var attrs = map[string]attr{
 	// A:
 	"abbr": {
-		Name: "Accept",
+		Name: "Abbr",
 		Type: "string",
 		Doc:  "specifies an abbreviated version of the content in a header cell.",
 	},
