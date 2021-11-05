@@ -1759,7 +1759,7 @@ var eventHandlers = map[string]eventHandler{
 		Doc:  "calls the given handler when a user presses a key.",
 	},
 	"onkeyup": {
-		Name: "OnKeyup",
+		Name: "OnKeyUp",
 		Doc:  "calls the given handler when a user releases a key.",
 	},
 
