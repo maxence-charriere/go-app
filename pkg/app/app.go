@@ -367,7 +367,14 @@ func performNavigate(d Dispatcher, u *url.URL, updateHistory bool) {
 }
 
 func isExternalNavigation(u *url.URL) bool {
-	return u.Host != "" && u.Host != Window().URL().Host
+	switch {
+	case u.Host != "" && u.Host != Window().URL().Host,
+		u.Scheme == "mailto":
+		return true
+
+	default:
+		return false
+	}
 }
 
 func isFragmentNavigation(u *url.URL) bool {
