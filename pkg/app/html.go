@@ -149,8 +149,8 @@ type HTMLA interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLA
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLA
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLA
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLA
@@ -441,7 +441,7 @@ func (e *htmlA) OnKeyPress(h EventHandler, scope ...interface{}) HTMLA {
 	return e
 }
 
-func (e *htmlA) OnKeyup(h EventHandler, scope ...interface{}) HTMLA {
+func (e *htmlA) OnKeyUp(h EventHandler, scope ...interface{}) HTMLA {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -624,8 +624,8 @@ type HTMLAbbr interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLAbbr
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLAbbr
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLAbbr
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLAbbr
@@ -876,7 +876,7 @@ func (e *htmlAbbr) OnKeyPress(h EventHandler, scope ...interface{}) HTMLAbbr {
 	return e
 }
 
-func (e *htmlAbbr) OnKeyup(h EventHandler, scope ...interface{}) HTMLAbbr {
+func (e *htmlAbbr) OnKeyUp(h EventHandler, scope ...interface{}) HTMLAbbr {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -1059,8 +1059,8 @@ type HTMLAddress interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLAddress
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLAddress
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLAddress
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLAddress
@@ -1311,7 +1311,7 @@ func (e *htmlAddress) OnKeyPress(h EventHandler, scope ...interface{}) HTMLAddre
 	return e
 }
 
-func (e *htmlAddress) OnKeyup(h EventHandler, scope ...interface{}) HTMLAddress {
+func (e *htmlAddress) OnKeyUp(h EventHandler, scope ...interface{}) HTMLAddress {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -1518,8 +1518,8 @@ type HTMLArea interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLArea
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLArea
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLArea
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLArea
@@ -1811,7 +1811,7 @@ func (e *htmlArea) OnKeyPress(h EventHandler, scope ...interface{}) HTMLArea {
 	return e
 }
 
-func (e *htmlArea) OnKeyup(h EventHandler, scope ...interface{}) HTMLArea {
+func (e *htmlArea) OnKeyUp(h EventHandler, scope ...interface{}) HTMLArea {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -1994,8 +1994,8 @@ type HTMLArticle interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLArticle
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLArticle
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLArticle
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLArticle
@@ -2246,7 +2246,7 @@ func (e *htmlArticle) OnKeyPress(h EventHandler, scope ...interface{}) HTMLArtic
 	return e
 }
 
-func (e *htmlArticle) OnKeyup(h EventHandler, scope ...interface{}) HTMLArticle {
+func (e *htmlArticle) OnKeyUp(h EventHandler, scope ...interface{}) HTMLArticle {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -2429,8 +2429,8 @@ type HTMLAside interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLAside
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLAside
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLAside
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLAside
@@ -2681,7 +2681,7 @@ func (e *htmlAside) OnKeyPress(h EventHandler, scope ...interface{}) HTMLAside {
 	return e
 }
 
-func (e *htmlAside) OnKeyup(h EventHandler, scope ...interface{}) HTMLAside {
+func (e *htmlAside) OnKeyUp(h EventHandler, scope ...interface{}) HTMLAside {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -2909,8 +2909,8 @@ type HTMLAudio interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLAudio
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLAudio
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLAudio
 
 	// OnLoadStart calls the given handler just as the file begins to load before anything is actually loaded.
 	OnLoadStart(h EventHandler, scope ...interface{}) HTMLAudio
@@ -3281,7 +3281,7 @@ func (e *htmlAudio) OnKeyPress(h EventHandler, scope ...interface{}) HTMLAudio {
 	return e
 }
 
-func (e *htmlAudio) OnKeyup(h EventHandler, scope ...interface{}) HTMLAudio {
+func (e *htmlAudio) OnKeyUp(h EventHandler, scope ...interface{}) HTMLAudio {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -3539,8 +3539,8 @@ type HTMLB interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLB
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLB
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLB
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLB
@@ -3791,7 +3791,7 @@ func (e *htmlB) OnKeyPress(h EventHandler, scope ...interface{}) HTMLB {
 	return e
 }
 
-func (e *htmlB) OnKeyup(h EventHandler, scope ...interface{}) HTMLB {
+func (e *htmlB) OnKeyUp(h EventHandler, scope ...interface{}) HTMLB {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -3974,8 +3974,8 @@ type HTMLBase interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLBase
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLBase
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLBase
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLBase
@@ -4227,7 +4227,7 @@ func (e *htmlBase) OnKeyPress(h EventHandler, scope ...interface{}) HTMLBase {
 	return e
 }
 
-func (e *htmlBase) OnKeyup(h EventHandler, scope ...interface{}) HTMLBase {
+func (e *htmlBase) OnKeyUp(h EventHandler, scope ...interface{}) HTMLBase {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -4410,8 +4410,8 @@ type HTMLBdi interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLBdi
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLBdi
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLBdi
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLBdi
@@ -4662,7 +4662,7 @@ func (e *htmlBdi) OnKeyPress(h EventHandler, scope ...interface{}) HTMLBdi {
 	return e
 }
 
-func (e *htmlBdi) OnKeyup(h EventHandler, scope ...interface{}) HTMLBdi {
+func (e *htmlBdi) OnKeyUp(h EventHandler, scope ...interface{}) HTMLBdi {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -4845,8 +4845,8 @@ type HTMLBdo interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLBdo
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLBdo
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLBdo
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLBdo
@@ -5097,7 +5097,7 @@ func (e *htmlBdo) OnKeyPress(h EventHandler, scope ...interface{}) HTMLBdo {
 	return e
 }
 
-func (e *htmlBdo) OnKeyup(h EventHandler, scope ...interface{}) HTMLBdo {
+func (e *htmlBdo) OnKeyUp(h EventHandler, scope ...interface{}) HTMLBdo {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -5283,8 +5283,8 @@ type HTMLBlockquote interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLBlockquote
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLBlockquote
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLBlockquote
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLBlockquote
@@ -5540,7 +5540,7 @@ func (e *htmlBlockquote) OnKeyPress(h EventHandler, scope ...interface{}) HTMLBl
 	return e
 }
 
-func (e *htmlBlockquote) OnKeyup(h EventHandler, scope ...interface{}) HTMLBlockquote {
+func (e *htmlBlockquote) OnKeyUp(h EventHandler, scope ...interface{}) HTMLBlockquote {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -5738,8 +5738,8 @@ type HTMLBody interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLBody
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLBody
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLBody
 
 	// OnLoad calls the given handler after the element is finished loading.
 	OnLoad(h EventHandler, scope ...interface{}) HTMLBody
@@ -6045,7 +6045,7 @@ func (e *htmlBody) OnKeyPress(h EventHandler, scope ...interface{}) HTMLBody {
 	return e
 }
 
-func (e *htmlBody) OnKeyup(h EventHandler, scope ...interface{}) HTMLBody {
+func (e *htmlBody) OnKeyUp(h EventHandler, scope ...interface{}) HTMLBody {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -6272,8 +6272,8 @@ type HTMLBr interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLBr
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLBr
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLBr
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLBr
@@ -6515,7 +6515,7 @@ func (e *htmlBr) OnKeyPress(h EventHandler, scope ...interface{}) HTMLBr {
 	return e
 }
 
-func (e *htmlBr) OnKeyup(h EventHandler, scope ...interface{}) HTMLBr {
+func (e *htmlBr) OnKeyUp(h EventHandler, scope ...interface{}) HTMLBr {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -6731,8 +6731,8 @@ type HTMLButton interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLButton
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLButton
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLButton
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLButton
@@ -7038,7 +7038,7 @@ func (e *htmlButton) OnKeyPress(h EventHandler, scope ...interface{}) HTMLButton
 	return e
 }
 
-func (e *htmlButton) OnKeyup(h EventHandler, scope ...interface{}) HTMLButton {
+func (e *htmlButton) OnKeyUp(h EventHandler, scope ...interface{}) HTMLButton {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -7227,8 +7227,8 @@ type HTMLCanvas interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLCanvas
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLCanvas
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLCanvas
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLCanvas
@@ -7489,7 +7489,7 @@ func (e *htmlCanvas) OnKeyPress(h EventHandler, scope ...interface{}) HTMLCanvas
 	return e
 }
 
-func (e *htmlCanvas) OnKeyup(h EventHandler, scope ...interface{}) HTMLCanvas {
+func (e *htmlCanvas) OnKeyUp(h EventHandler, scope ...interface{}) HTMLCanvas {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -7672,8 +7672,8 @@ type HTMLCaption interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLCaption
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLCaption
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLCaption
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLCaption
@@ -7924,7 +7924,7 @@ func (e *htmlCaption) OnKeyPress(h EventHandler, scope ...interface{}) HTMLCapti
 	return e
 }
 
-func (e *htmlCaption) OnKeyup(h EventHandler, scope ...interface{}) HTMLCaption {
+func (e *htmlCaption) OnKeyUp(h EventHandler, scope ...interface{}) HTMLCaption {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -8107,8 +8107,8 @@ type HTMLCite interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLCite
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLCite
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLCite
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLCite
@@ -8359,7 +8359,7 @@ func (e *htmlCite) OnKeyPress(h EventHandler, scope ...interface{}) HTMLCite {
 	return e
 }
 
-func (e *htmlCite) OnKeyup(h EventHandler, scope ...interface{}) HTMLCite {
+func (e *htmlCite) OnKeyUp(h EventHandler, scope ...interface{}) HTMLCite {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -8542,8 +8542,8 @@ type HTMLCode interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLCode
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLCode
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLCode
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLCode
@@ -8794,7 +8794,7 @@ func (e *htmlCode) OnKeyPress(h EventHandler, scope ...interface{}) HTMLCode {
 	return e
 }
 
-func (e *htmlCode) OnKeyup(h EventHandler, scope ...interface{}) HTMLCode {
+func (e *htmlCode) OnKeyUp(h EventHandler, scope ...interface{}) HTMLCode {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -8974,8 +8974,8 @@ type HTMLCol interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLCol
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLCol
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLCol
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLCol
@@ -9222,7 +9222,7 @@ func (e *htmlCol) OnKeyPress(h EventHandler, scope ...interface{}) HTMLCol {
 	return e
 }
 
-func (e *htmlCol) OnKeyup(h EventHandler, scope ...interface{}) HTMLCol {
+func (e *htmlCol) OnKeyUp(h EventHandler, scope ...interface{}) HTMLCol {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -9408,8 +9408,8 @@ type HTMLColGroup interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLColGroup
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLColGroup
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLColGroup
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLColGroup
@@ -9665,7 +9665,7 @@ func (e *htmlColGroup) OnKeyPress(h EventHandler, scope ...interface{}) HTMLColG
 	return e
 }
 
-func (e *htmlColGroup) OnKeyup(h EventHandler, scope ...interface{}) HTMLColGroup {
+func (e *htmlColGroup) OnKeyUp(h EventHandler, scope ...interface{}) HTMLColGroup {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -10035,8 +10035,8 @@ type HTMLDataList interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLDataList
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLDataList
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLDataList
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLDataList
@@ -10287,7 +10287,7 @@ func (e *htmlDataList) OnKeyPress(h EventHandler, scope ...interface{}) HTMLData
 	return e
 }
 
-func (e *htmlDataList) OnKeyup(h EventHandler, scope ...interface{}) HTMLDataList {
+func (e *htmlDataList) OnKeyUp(h EventHandler, scope ...interface{}) HTMLDataList {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -10470,8 +10470,8 @@ type HTMLDd interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLDd
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLDd
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLDd
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLDd
@@ -10722,7 +10722,7 @@ func (e *htmlDd) OnKeyPress(h EventHandler, scope ...interface{}) HTMLDd {
 	return e
 }
 
-func (e *htmlDd) OnKeyup(h EventHandler, scope ...interface{}) HTMLDd {
+func (e *htmlDd) OnKeyUp(h EventHandler, scope ...interface{}) HTMLDd {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -10911,8 +10911,8 @@ type HTMLDel interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLDel
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLDel
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLDel
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLDel
@@ -11173,7 +11173,7 @@ func (e *htmlDel) OnKeyPress(h EventHandler, scope ...interface{}) HTMLDel {
 	return e
 }
 
-func (e *htmlDel) OnKeyup(h EventHandler, scope ...interface{}) HTMLDel {
+func (e *htmlDel) OnKeyUp(h EventHandler, scope ...interface{}) HTMLDel {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -11359,8 +11359,8 @@ type HTMLDetails interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLDetails
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLDetails
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLDetails
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLDetails
@@ -11619,7 +11619,7 @@ func (e *htmlDetails) OnKeyPress(h EventHandler, scope ...interface{}) HTMLDetai
 	return e
 }
 
-func (e *htmlDetails) OnKeyup(h EventHandler, scope ...interface{}) HTMLDetails {
+func (e *htmlDetails) OnKeyUp(h EventHandler, scope ...interface{}) HTMLDetails {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -11807,8 +11807,8 @@ type HTMLDfn interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLDfn
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLDfn
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLDfn
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLDfn
@@ -12059,7 +12059,7 @@ func (e *htmlDfn) OnKeyPress(h EventHandler, scope ...interface{}) HTMLDfn {
 	return e
 }
 
-func (e *htmlDfn) OnKeyup(h EventHandler, scope ...interface{}) HTMLDfn {
+func (e *htmlDfn) OnKeyUp(h EventHandler, scope ...interface{}) HTMLDfn {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -12245,8 +12245,8 @@ type HTMLDialog interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLDialog
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLDialog
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLDialog
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLDialog
@@ -12502,7 +12502,7 @@ func (e *htmlDialog) OnKeyPress(h EventHandler, scope ...interface{}) HTMLDialog
 	return e
 }
 
-func (e *htmlDialog) OnKeyup(h EventHandler, scope ...interface{}) HTMLDialog {
+func (e *htmlDialog) OnKeyUp(h EventHandler, scope ...interface{}) HTMLDialog {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -12685,8 +12685,8 @@ type HTMLDiv interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLDiv
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLDiv
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLDiv
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLDiv
@@ -12937,7 +12937,7 @@ func (e *htmlDiv) OnKeyPress(h EventHandler, scope ...interface{}) HTMLDiv {
 	return e
 }
 
-func (e *htmlDiv) OnKeyup(h EventHandler, scope ...interface{}) HTMLDiv {
+func (e *htmlDiv) OnKeyUp(h EventHandler, scope ...interface{}) HTMLDiv {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -13120,8 +13120,8 @@ type HTMLDl interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLDl
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLDl
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLDl
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLDl
@@ -13372,7 +13372,7 @@ func (e *htmlDl) OnKeyPress(h EventHandler, scope ...interface{}) HTMLDl {
 	return e
 }
 
-func (e *htmlDl) OnKeyup(h EventHandler, scope ...interface{}) HTMLDl {
+func (e *htmlDl) OnKeyUp(h EventHandler, scope ...interface{}) HTMLDl {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -13555,8 +13555,8 @@ type HTMLDt interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLDt
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLDt
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLDt
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLDt
@@ -13807,7 +13807,7 @@ func (e *htmlDt) OnKeyPress(h EventHandler, scope ...interface{}) HTMLDt {
 	return e
 }
 
-func (e *htmlDt) OnKeyup(h EventHandler, scope ...interface{}) HTMLDt {
+func (e *htmlDt) OnKeyUp(h EventHandler, scope ...interface{}) HTMLDt {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -13990,8 +13990,8 @@ type HTMLEm interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLEm
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLEm
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLEm
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLEm
@@ -14242,7 +14242,7 @@ func (e *htmlEm) OnKeyPress(h EventHandler, scope ...interface{}) HTMLEm {
 	return e
 }
 
-func (e *htmlEm) OnKeyup(h EventHandler, scope ...interface{}) HTMLEm {
+func (e *htmlEm) OnKeyUp(h EventHandler, scope ...interface{}) HTMLEm {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -14455,8 +14455,8 @@ type HTMLEmbed interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLEmbed
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLEmbed
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLEmbed
 
 	// OnLoadStart calls the given handler just as the file begins to load before anything is actually loaded.
 	OnLoadStart(h EventHandler, scope ...interface{}) HTMLEmbed
@@ -14803,7 +14803,7 @@ func (e *htmlEmbed) OnKeyPress(h EventHandler, scope ...interface{}) HTMLEmbed {
 	return e
 }
 
-func (e *htmlEmbed) OnKeyup(h EventHandler, scope ...interface{}) HTMLEmbed {
+func (e *htmlEmbed) OnKeyUp(h EventHandler, scope ...interface{}) HTMLEmbed {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -15070,8 +15070,8 @@ type HTMLFieldSet interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLFieldSet
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLFieldSet
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLFieldSet
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLFieldSet
@@ -15337,7 +15337,7 @@ func (e *htmlFieldSet) OnKeyPress(h EventHandler, scope ...interface{}) HTMLFiel
 	return e
 }
 
-func (e *htmlFieldSet) OnKeyup(h EventHandler, scope ...interface{}) HTMLFieldSet {
+func (e *htmlFieldSet) OnKeyUp(h EventHandler, scope ...interface{}) HTMLFieldSet {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -15520,8 +15520,8 @@ type HTMLFigCaption interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLFigCaption
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLFigCaption
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLFigCaption
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLFigCaption
@@ -15772,7 +15772,7 @@ func (e *htmlFigCaption) OnKeyPress(h EventHandler, scope ...interface{}) HTMLFi
 	return e
 }
 
-func (e *htmlFigCaption) OnKeyup(h EventHandler, scope ...interface{}) HTMLFigCaption {
+func (e *htmlFigCaption) OnKeyUp(h EventHandler, scope ...interface{}) HTMLFigCaption {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -15955,8 +15955,8 @@ type HTMLFigure interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLFigure
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLFigure
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLFigure
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLFigure
@@ -16207,7 +16207,7 @@ func (e *htmlFigure) OnKeyPress(h EventHandler, scope ...interface{}) HTMLFigure
 	return e
 }
 
-func (e *htmlFigure) OnKeyup(h EventHandler, scope ...interface{}) HTMLFigure {
+func (e *htmlFigure) OnKeyUp(h EventHandler, scope ...interface{}) HTMLFigure {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -16390,8 +16390,8 @@ type HTMLFooter interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLFooter
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLFooter
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLFooter
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLFooter
@@ -16642,7 +16642,7 @@ func (e *htmlFooter) OnKeyPress(h EventHandler, scope ...interface{}) HTMLFooter
 	return e
 }
 
-func (e *htmlFooter) OnKeyup(h EventHandler, scope ...interface{}) HTMLFooter {
+func (e *htmlFooter) OnKeyUp(h EventHandler, scope ...interface{}) HTMLFooter {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -16849,8 +16849,8 @@ type HTMLForm interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLForm
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLForm
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLForm
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLForm
@@ -17146,7 +17146,7 @@ func (e *htmlForm) OnKeyPress(h EventHandler, scope ...interface{}) HTMLForm {
 	return e
 }
 
-func (e *htmlForm) OnKeyup(h EventHandler, scope ...interface{}) HTMLForm {
+func (e *htmlForm) OnKeyUp(h EventHandler, scope ...interface{}) HTMLForm {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -17329,8 +17329,8 @@ type HTMLH1 interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLH1
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLH1
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLH1
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLH1
@@ -17581,7 +17581,7 @@ func (e *htmlH1) OnKeyPress(h EventHandler, scope ...interface{}) HTMLH1 {
 	return e
 }
 
-func (e *htmlH1) OnKeyup(h EventHandler, scope ...interface{}) HTMLH1 {
+func (e *htmlH1) OnKeyUp(h EventHandler, scope ...interface{}) HTMLH1 {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -17764,8 +17764,8 @@ type HTMLH2 interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLH2
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLH2
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLH2
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLH2
@@ -18016,7 +18016,7 @@ func (e *htmlH2) OnKeyPress(h EventHandler, scope ...interface{}) HTMLH2 {
 	return e
 }
 
-func (e *htmlH2) OnKeyup(h EventHandler, scope ...interface{}) HTMLH2 {
+func (e *htmlH2) OnKeyUp(h EventHandler, scope ...interface{}) HTMLH2 {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -18199,8 +18199,8 @@ type HTMLH3 interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLH3
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLH3
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLH3
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLH3
@@ -18451,7 +18451,7 @@ func (e *htmlH3) OnKeyPress(h EventHandler, scope ...interface{}) HTMLH3 {
 	return e
 }
 
-func (e *htmlH3) OnKeyup(h EventHandler, scope ...interface{}) HTMLH3 {
+func (e *htmlH3) OnKeyUp(h EventHandler, scope ...interface{}) HTMLH3 {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -18634,8 +18634,8 @@ type HTMLH4 interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLH4
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLH4
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLH4
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLH4
@@ -18886,7 +18886,7 @@ func (e *htmlH4) OnKeyPress(h EventHandler, scope ...interface{}) HTMLH4 {
 	return e
 }
 
-func (e *htmlH4) OnKeyup(h EventHandler, scope ...interface{}) HTMLH4 {
+func (e *htmlH4) OnKeyUp(h EventHandler, scope ...interface{}) HTMLH4 {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -19069,8 +19069,8 @@ type HTMLH5 interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLH5
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLH5
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLH5
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLH5
@@ -19321,7 +19321,7 @@ func (e *htmlH5) OnKeyPress(h EventHandler, scope ...interface{}) HTMLH5 {
 	return e
 }
 
-func (e *htmlH5) OnKeyup(h EventHandler, scope ...interface{}) HTMLH5 {
+func (e *htmlH5) OnKeyUp(h EventHandler, scope ...interface{}) HTMLH5 {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -19504,8 +19504,8 @@ type HTMLH6 interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLH6
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLH6
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLH6
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLH6
@@ -19756,7 +19756,7 @@ func (e *htmlH6) OnKeyPress(h EventHandler, scope ...interface{}) HTMLH6 {
 	return e
 }
 
-func (e *htmlH6) OnKeyup(h EventHandler, scope ...interface{}) HTMLH6 {
+func (e *htmlH6) OnKeyUp(h EventHandler, scope ...interface{}) HTMLH6 {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -20118,8 +20118,8 @@ type HTMLHeader interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLHeader
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLHeader
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLHeader
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLHeader
@@ -20370,7 +20370,7 @@ func (e *htmlHeader) OnKeyPress(h EventHandler, scope ...interface{}) HTMLHeader
 	return e
 }
 
-func (e *htmlHeader) OnKeyup(h EventHandler, scope ...interface{}) HTMLHeader {
+func (e *htmlHeader) OnKeyUp(h EventHandler, scope ...interface{}) HTMLHeader {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -20547,8 +20547,8 @@ type HTMLHr interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLHr
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLHr
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLHr
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLHr
@@ -20790,7 +20790,7 @@ func (e *htmlHr) OnKeyPress(h EventHandler, scope ...interface{}) HTMLHr {
 	return e
 }
 
-func (e *htmlHr) OnKeyup(h EventHandler, scope ...interface{}) HTMLHr {
+func (e *htmlHr) OnKeyUp(h EventHandler, scope ...interface{}) HTMLHr {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -21152,8 +21152,8 @@ type HTMLI interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLI
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLI
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLI
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLI
@@ -21404,7 +21404,7 @@ func (e *htmlI) OnKeyPress(h EventHandler, scope ...interface{}) HTMLI {
 	return e
 }
 
-func (e *htmlI) OnKeyup(h EventHandler, scope ...interface{}) HTMLI {
+func (e *htmlI) OnKeyUp(h EventHandler, scope ...interface{}) HTMLI {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -21617,8 +21617,8 @@ type HTMLIFrame interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLIFrame
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLIFrame
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLIFrame
 
 	// OnLoad calls the given handler after the element is finished loading.
 	OnLoad(h EventHandler, scope ...interface{}) HTMLIFrame
@@ -21932,7 +21932,7 @@ func (e *htmlIFrame) OnKeyPress(h EventHandler, scope ...interface{}) HTMLIFrame
 	return e
 }
 
-func (e *htmlIFrame) OnKeyup(h EventHandler, scope ...interface{}) HTMLIFrame {
+func (e *htmlIFrame) OnKeyUp(h EventHandler, scope ...interface{}) HTMLIFrame {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -22165,8 +22165,8 @@ type HTMLImg interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLImg
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLImg
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLImg
 
 	// OnLoad calls the given handler after the element is finished loading.
 	OnLoad(h EventHandler, scope ...interface{}) HTMLImg
@@ -22541,7 +22541,7 @@ func (e *htmlImg) OnKeyPress(h EventHandler, scope ...interface{}) HTMLImg {
 	return e
 }
 
-func (e *htmlImg) OnKeyup(h EventHandler, scope ...interface{}) HTMLImg {
+func (e *htmlImg) OnKeyUp(h EventHandler, scope ...interface{}) HTMLImg {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -22891,8 +22891,8 @@ type HTMLInput interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLInput
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLInput
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLInput
 
 	// OnLoad calls the given handler after the element is finished loading.
 	OnLoad(h EventHandler, scope ...interface{}) HTMLInput
@@ -23297,7 +23297,7 @@ func (e *htmlInput) OnKeyPress(h EventHandler, scope ...interface{}) HTMLInput {
 	return e
 }
 
-func (e *htmlInput) OnKeyup(h EventHandler, scope ...interface{}) HTMLInput {
+func (e *htmlInput) OnKeyUp(h EventHandler, scope ...interface{}) HTMLInput {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -23485,8 +23485,8 @@ type HTMLIns interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLIns
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLIns
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLIns
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLIns
@@ -23737,7 +23737,7 @@ func (e *htmlIns) OnKeyPress(h EventHandler, scope ...interface{}) HTMLIns {
 	return e
 }
 
-func (e *htmlIns) OnKeyup(h EventHandler, scope ...interface{}) HTMLIns {
+func (e *htmlIns) OnKeyUp(h EventHandler, scope ...interface{}) HTMLIns {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -23920,8 +23920,8 @@ type HTMLKbd interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLKbd
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLKbd
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLKbd
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLKbd
@@ -24172,7 +24172,7 @@ func (e *htmlKbd) OnKeyPress(h EventHandler, scope ...interface{}) HTMLKbd {
 	return e
 }
 
-func (e *htmlKbd) OnKeyup(h EventHandler, scope ...interface{}) HTMLKbd {
+func (e *htmlKbd) OnKeyUp(h EventHandler, scope ...interface{}) HTMLKbd {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -24361,8 +24361,8 @@ type HTMLLabel interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLLabel
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLLabel
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLLabel
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLLabel
@@ -24623,7 +24623,7 @@ func (e *htmlLabel) OnKeyPress(h EventHandler, scope ...interface{}) HTMLLabel {
 	return e
 }
 
-func (e *htmlLabel) OnKeyup(h EventHandler, scope ...interface{}) HTMLLabel {
+func (e *htmlLabel) OnKeyUp(h EventHandler, scope ...interface{}) HTMLLabel {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -24806,8 +24806,8 @@ type HTMLLegend interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLLegend
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLLegend
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLLegend
@@ -25058,7 +25058,7 @@ func (e *htmlLegend) OnKeyPress(h EventHandler, scope ...interface{}) HTMLLegend
 	return e
 }
 
-func (e *htmlLegend) OnKeyup(h EventHandler, scope ...interface{}) HTMLLegend {
+func (e *htmlLegend) OnKeyUp(h EventHandler, scope ...interface{}) HTMLLegend {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -25244,8 +25244,8 @@ type HTMLLi interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLLi
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLLi
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLLi
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLLi
@@ -25501,7 +25501,7 @@ func (e *htmlLi) OnKeyPress(h EventHandler, scope ...interface{}) HTMLLi {
 	return e
 }
 
-func (e *htmlLi) OnKeyup(h EventHandler, scope ...interface{}) HTMLLi {
+func (e *htmlLi) OnKeyUp(h EventHandler, scope ...interface{}) HTMLLi {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -25699,8 +25699,8 @@ type HTMLLink interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLLink
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLLink
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLLink
 
 	// OnLoad calls the given handler after the element is finished loading.
 	OnLoad(h EventHandler, scope ...interface{}) HTMLLink
@@ -25980,7 +25980,7 @@ func (e *htmlLink) OnKeyPress(h EventHandler, scope ...interface{}) HTMLLink {
 	return e
 }
 
-func (e *htmlLink) OnKeyup(h EventHandler, scope ...interface{}) HTMLLink {
+func (e *htmlLink) OnKeyUp(h EventHandler, scope ...interface{}) HTMLLink {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -26168,8 +26168,8 @@ type HTMLMain interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLMain
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLMain
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLMain
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLMain
@@ -26420,7 +26420,7 @@ func (e *htmlMain) OnKeyPress(h EventHandler, scope ...interface{}) HTMLMain {
 	return e
 }
 
-func (e *htmlMain) OnKeyup(h EventHandler, scope ...interface{}) HTMLMain {
+func (e *htmlMain) OnKeyUp(h EventHandler, scope ...interface{}) HTMLMain {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -26606,8 +26606,8 @@ type HTMLMap interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLMap
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLMap
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLMap
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLMap
@@ -26863,7 +26863,7 @@ func (e *htmlMap) OnKeyPress(h EventHandler, scope ...interface{}) HTMLMap {
 	return e
 }
 
-func (e *htmlMap) OnKeyup(h EventHandler, scope ...interface{}) HTMLMap {
+func (e *htmlMap) OnKeyUp(h EventHandler, scope ...interface{}) HTMLMap {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -27046,8 +27046,8 @@ type HTMLMark interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLMark
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLMark
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLMark
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLMark
@@ -27298,7 +27298,7 @@ func (e *htmlMark) OnKeyPress(h EventHandler, scope ...interface{}) HTMLMark {
 	return e
 }
 
-func (e *htmlMark) OnKeyup(h EventHandler, scope ...interface{}) HTMLMark {
+func (e *htmlMark) OnKeyUp(h EventHandler, scope ...interface{}) HTMLMark {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -27706,8 +27706,8 @@ type HTMLMeter interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLMeter
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLMeter
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLMeter
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLMeter
@@ -27993,7 +27993,7 @@ func (e *htmlMeter) OnKeyPress(h EventHandler, scope ...interface{}) HTMLMeter {
 	return e
 }
 
-func (e *htmlMeter) OnKeyup(h EventHandler, scope ...interface{}) HTMLMeter {
+func (e *htmlMeter) OnKeyUp(h EventHandler, scope ...interface{}) HTMLMeter {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -28176,8 +28176,8 @@ type HTMLNav interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLNav
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLNav
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLNav
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLNav
@@ -28428,7 +28428,7 @@ func (e *htmlNav) OnKeyPress(h EventHandler, scope ...interface{}) HTMLNav {
 	return e
 }
 
-func (e *htmlNav) OnKeyup(h EventHandler, scope ...interface{}) HTMLNav {
+func (e *htmlNav) OnKeyUp(h EventHandler, scope ...interface{}) HTMLNav {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -28835,8 +28835,8 @@ type HTMLObject interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLObject
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLObject
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLObject
 
 	// OnLoadStart calls the given handler just as the file begins to load before anything is actually loaded.
 	OnLoadStart(h EventHandler, scope ...interface{}) HTMLObject
@@ -29207,7 +29207,7 @@ func (e *htmlObject) OnKeyPress(h EventHandler, scope ...interface{}) HTMLObject
 	return e
 }
 
-func (e *htmlObject) OnKeyup(h EventHandler, scope ...interface{}) HTMLObject {
+func (e *htmlObject) OnKeyUp(h EventHandler, scope ...interface{}) HTMLObject {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -29474,8 +29474,8 @@ type HTMLOl interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLOl
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLOl
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLOl
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLOl
@@ -29741,7 +29741,7 @@ func (e *htmlOl) OnKeyPress(h EventHandler, scope ...interface{}) HTMLOl {
 	return e
 }
 
-func (e *htmlOl) OnKeyup(h EventHandler, scope ...interface{}) HTMLOl {
+func (e *htmlOl) OnKeyUp(h EventHandler, scope ...interface{}) HTMLOl {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -29930,8 +29930,8 @@ type HTMLOptGroup interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLOptGroup
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLOptGroup
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLOptGroup
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLOptGroup
@@ -30192,7 +30192,7 @@ func (e *htmlOptGroup) OnKeyPress(h EventHandler, scope ...interface{}) HTMLOptG
 	return e
 }
 
-func (e *htmlOptGroup) OnKeyup(h EventHandler, scope ...interface{}) HTMLOptGroup {
+func (e *htmlOptGroup) OnKeyUp(h EventHandler, scope ...interface{}) HTMLOptGroup {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -30387,8 +30387,8 @@ type HTMLOption interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLOption
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLOption
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLOption
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLOption
@@ -30659,7 +30659,7 @@ func (e *htmlOption) OnKeyPress(h EventHandler, scope ...interface{}) HTMLOption
 	return e
 }
 
-func (e *htmlOption) OnKeyup(h EventHandler, scope ...interface{}) HTMLOption {
+func (e *htmlOption) OnKeyUp(h EventHandler, scope ...interface{}) HTMLOption {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -30851,8 +30851,8 @@ type HTMLOutput interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLOutput
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLOutput
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLOutput
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLOutput
@@ -31118,7 +31118,7 @@ func (e *htmlOutput) OnKeyPress(h EventHandler, scope ...interface{}) HTMLOutput
 	return e
 }
 
-func (e *htmlOutput) OnKeyup(h EventHandler, scope ...interface{}) HTMLOutput {
+func (e *htmlOutput) OnKeyUp(h EventHandler, scope ...interface{}) HTMLOutput {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -31301,8 +31301,8 @@ type HTMLP interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLP
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLP
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLP
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLP
@@ -31553,7 +31553,7 @@ func (e *htmlP) OnKeyPress(h EventHandler, scope ...interface{}) HTMLP {
 	return e
 }
 
-func (e *htmlP) OnKeyup(h EventHandler, scope ...interface{}) HTMLP {
+func (e *htmlP) OnKeyUp(h EventHandler, scope ...interface{}) HTMLP {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -31736,8 +31736,8 @@ type HTMLParam interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLParam
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLParam
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLParam
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLParam
@@ -31989,7 +31989,7 @@ func (e *htmlParam) OnKeyPress(h EventHandler, scope ...interface{}) HTMLParam {
 	return e
 }
 
-func (e *htmlParam) OnKeyup(h EventHandler, scope ...interface{}) HTMLParam {
+func (e *htmlParam) OnKeyUp(h EventHandler, scope ...interface{}) HTMLParam {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -32172,8 +32172,8 @@ type HTMLPicture interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLPicture
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLPicture
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLPicture
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLPicture
@@ -32424,7 +32424,7 @@ func (e *htmlPicture) OnKeyPress(h EventHandler, scope ...interface{}) HTMLPictu
 	return e
 }
 
-func (e *htmlPicture) OnKeyup(h EventHandler, scope ...interface{}) HTMLPicture {
+func (e *htmlPicture) OnKeyUp(h EventHandler, scope ...interface{}) HTMLPicture {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -32607,8 +32607,8 @@ type HTMLPre interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLPre
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLPre
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLPre
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLPre
@@ -32859,7 +32859,7 @@ func (e *htmlPre) OnKeyPress(h EventHandler, scope ...interface{}) HTMLPre {
 	return e
 }
 
-func (e *htmlPre) OnKeyup(h EventHandler, scope ...interface{}) HTMLPre {
+func (e *htmlPre) OnKeyUp(h EventHandler, scope ...interface{}) HTMLPre {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -33048,8 +33048,8 @@ type HTMLProgress interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLProgress
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLProgress
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLProgress
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLProgress
@@ -33310,7 +33310,7 @@ func (e *htmlProgress) OnKeyPress(h EventHandler, scope ...interface{}) HTMLProg
 	return e
 }
 
-func (e *htmlProgress) OnKeyup(h EventHandler, scope ...interface{}) HTMLProgress {
+func (e *htmlProgress) OnKeyUp(h EventHandler, scope ...interface{}) HTMLProgress {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -33496,8 +33496,8 @@ type HTMLQ interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLQ
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLQ
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLQ
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLQ
@@ -33753,7 +33753,7 @@ func (e *htmlQ) OnKeyPress(h EventHandler, scope ...interface{}) HTMLQ {
 	return e
 }
 
-func (e *htmlQ) OnKeyup(h EventHandler, scope ...interface{}) HTMLQ {
+func (e *htmlQ) OnKeyUp(h EventHandler, scope ...interface{}) HTMLQ {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -33936,8 +33936,8 @@ type HTMLRp interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLRp
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLRp
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLRp
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLRp
@@ -34188,7 +34188,7 @@ func (e *htmlRp) OnKeyPress(h EventHandler, scope ...interface{}) HTMLRp {
 	return e
 }
 
-func (e *htmlRp) OnKeyup(h EventHandler, scope ...interface{}) HTMLRp {
+func (e *htmlRp) OnKeyUp(h EventHandler, scope ...interface{}) HTMLRp {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -34371,8 +34371,8 @@ type HTMLRt interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLRt
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLRt
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLRt
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLRt
@@ -34623,7 +34623,7 @@ func (e *htmlRt) OnKeyPress(h EventHandler, scope ...interface{}) HTMLRt {
 	return e
 }
 
-func (e *htmlRt) OnKeyup(h EventHandler, scope ...interface{}) HTMLRt {
+func (e *htmlRt) OnKeyUp(h EventHandler, scope ...interface{}) HTMLRt {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -34806,8 +34806,8 @@ type HTMLRuby interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLRuby
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLRuby
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLRuby
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLRuby
@@ -35058,7 +35058,7 @@ func (e *htmlRuby) OnKeyPress(h EventHandler, scope ...interface{}) HTMLRuby {
 	return e
 }
 
-func (e *htmlRuby) OnKeyup(h EventHandler, scope ...interface{}) HTMLRuby {
+func (e *htmlRuby) OnKeyUp(h EventHandler, scope ...interface{}) HTMLRuby {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -35241,8 +35241,8 @@ type HTMLS interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLS
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLS
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLS
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLS
@@ -35493,7 +35493,7 @@ func (e *htmlS) OnKeyPress(h EventHandler, scope ...interface{}) HTMLS {
 	return e
 }
 
-func (e *htmlS) OnKeyup(h EventHandler, scope ...interface{}) HTMLS {
+func (e *htmlS) OnKeyUp(h EventHandler, scope ...interface{}) HTMLS {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -35676,8 +35676,8 @@ type HTMLSamp interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLSamp
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLSamp
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLSamp
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLSamp
@@ -35928,7 +35928,7 @@ func (e *htmlSamp) OnKeyPress(h EventHandler, scope ...interface{}) HTMLSamp {
 	return e
 }
 
-func (e *htmlSamp) OnKeyup(h EventHandler, scope ...interface{}) HTMLSamp {
+func (e *htmlSamp) OnKeyUp(h EventHandler, scope ...interface{}) HTMLSamp {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -36346,8 +36346,8 @@ type HTMLSection interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLSection
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLSection
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLSection
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLSection
@@ -36598,7 +36598,7 @@ func (e *htmlSection) OnKeyPress(h EventHandler, scope ...interface{}) HTMLSecti
 	return e
 }
 
-func (e *htmlSection) OnKeyup(h EventHandler, scope ...interface{}) HTMLSection {
+func (e *htmlSection) OnKeyUp(h EventHandler, scope ...interface{}) HTMLSection {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -36802,8 +36802,8 @@ type HTMLSelect interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLSelect
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLSelect
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLSelect
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLSelect
@@ -37089,7 +37089,7 @@ func (e *htmlSelect) OnKeyPress(h EventHandler, scope ...interface{}) HTMLSelect
 	return e
 }
 
-func (e *htmlSelect) OnKeyup(h EventHandler, scope ...interface{}) HTMLSelect {
+func (e *htmlSelect) OnKeyUp(h EventHandler, scope ...interface{}) HTMLSelect {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -37272,8 +37272,8 @@ type HTMLSmall interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLSmall
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLSmall
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLSmall
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLSmall
@@ -37524,7 +37524,7 @@ func (e *htmlSmall) OnKeyPress(h EventHandler, scope ...interface{}) HTMLSmall {
 	return e
 }
 
-func (e *htmlSmall) OnKeyup(h EventHandler, scope ...interface{}) HTMLSmall {
+func (e *htmlSmall) OnKeyUp(h EventHandler, scope ...interface{}) HTMLSmall {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -37716,8 +37716,8 @@ type HTMLSource interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLSource
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLSource
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLSource
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLSource
@@ -37984,7 +37984,7 @@ func (e *htmlSource) OnKeyPress(h EventHandler, scope ...interface{}) HTMLSource
 	return e
 }
 
-func (e *htmlSource) OnKeyup(h EventHandler, scope ...interface{}) HTMLSource {
+func (e *htmlSource) OnKeyUp(h EventHandler, scope ...interface{}) HTMLSource {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -38167,8 +38167,8 @@ type HTMLSpan interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLSpan
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLSpan
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLSpan
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLSpan
@@ -38419,7 +38419,7 @@ func (e *htmlSpan) OnKeyPress(h EventHandler, scope ...interface{}) HTMLSpan {
 	return e
 }
 
-func (e *htmlSpan) OnKeyup(h EventHandler, scope ...interface{}) HTMLSpan {
+func (e *htmlSpan) OnKeyUp(h EventHandler, scope ...interface{}) HTMLSpan {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -38602,8 +38602,8 @@ type HTMLStrong interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLStrong
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLStrong
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLStrong
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLStrong
@@ -38854,7 +38854,7 @@ func (e *htmlStrong) OnKeyPress(h EventHandler, scope ...interface{}) HTMLStrong
 	return e
 }
 
-func (e *htmlStrong) OnKeyup(h EventHandler, scope ...interface{}) HTMLStrong {
+func (e *htmlStrong) OnKeyUp(h EventHandler, scope ...interface{}) HTMLStrong {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -39043,8 +39043,8 @@ type HTMLStyle interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLStyle
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLStyle
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLStyle
 
 	// OnLoad calls the given handler after the element is finished loading.
 	OnLoad(h EventHandler, scope ...interface{}) HTMLStyle
@@ -39308,7 +39308,7 @@ func (e *htmlStyle) OnKeyPress(h EventHandler, scope ...interface{}) HTMLStyle {
 	return e
 }
 
-func (e *htmlStyle) OnKeyup(h EventHandler, scope ...interface{}) HTMLStyle {
+func (e *htmlStyle) OnKeyUp(h EventHandler, scope ...interface{}) HTMLStyle {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -39496,8 +39496,8 @@ type HTMLSub interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLSub
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLSub
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLSub
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLSub
@@ -39748,7 +39748,7 @@ func (e *htmlSub) OnKeyPress(h EventHandler, scope ...interface{}) HTMLSub {
 	return e
 }
 
-func (e *htmlSub) OnKeyup(h EventHandler, scope ...interface{}) HTMLSub {
+func (e *htmlSub) OnKeyUp(h EventHandler, scope ...interface{}) HTMLSub {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -39931,8 +39931,8 @@ type HTMLSummary interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLSummary
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLSummary
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLSummary
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLSummary
@@ -40183,7 +40183,7 @@ func (e *htmlSummary) OnKeyPress(h EventHandler, scope ...interface{}) HTMLSumma
 	return e
 }
 
-func (e *htmlSummary) OnKeyup(h EventHandler, scope ...interface{}) HTMLSummary {
+func (e *htmlSummary) OnKeyUp(h EventHandler, scope ...interface{}) HTMLSummary {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -40366,8 +40366,8 @@ type HTMLSup interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLSup
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLSup
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLSup
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLSup
@@ -40618,7 +40618,7 @@ func (e *htmlSup) OnKeyPress(h EventHandler, scope ...interface{}) HTMLSup {
 	return e
 }
 
-func (e *htmlSup) OnKeyup(h EventHandler, scope ...interface{}) HTMLSup {
+func (e *htmlSup) OnKeyUp(h EventHandler, scope ...interface{}) HTMLSup {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -40801,8 +40801,8 @@ type HTMLTable interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLTable
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLTable
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLTable
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLTable
@@ -41053,7 +41053,7 @@ func (e *htmlTable) OnKeyPress(h EventHandler, scope ...interface{}) HTMLTable {
 	return e
 }
 
-func (e *htmlTable) OnKeyup(h EventHandler, scope ...interface{}) HTMLTable {
+func (e *htmlTable) OnKeyUp(h EventHandler, scope ...interface{}) HTMLTable {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -41236,8 +41236,8 @@ type HTMLTBody interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLTBody
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLTBody
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLTBody
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLTBody
@@ -41488,7 +41488,7 @@ func (e *htmlTBody) OnKeyPress(h EventHandler, scope ...interface{}) HTMLTBody {
 	return e
 }
 
-func (e *htmlTBody) OnKeyup(h EventHandler, scope ...interface{}) HTMLTBody {
+func (e *htmlTBody) OnKeyUp(h EventHandler, scope ...interface{}) HTMLTBody {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -41680,8 +41680,8 @@ type HTMLTd interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLTd
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLTd
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLTd
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLTd
@@ -41947,7 +41947,7 @@ func (e *htmlTd) OnKeyPress(h EventHandler, scope ...interface{}) HTMLTd {
 	return e
 }
 
-func (e *htmlTd) OnKeyup(h EventHandler, scope ...interface{}) HTMLTd {
+func (e *htmlTd) OnKeyUp(h EventHandler, scope ...interface{}) HTMLTd {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -42345,8 +42345,8 @@ type HTMLTextarea interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLTextarea
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLTextarea
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLTextarea
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLTextarea
@@ -42658,7 +42658,7 @@ func (e *htmlTextarea) OnKeyPress(h EventHandler, scope ...interface{}) HTMLText
 	return e
 }
 
-func (e *htmlTextarea) OnKeyup(h EventHandler, scope ...interface{}) HTMLTextarea {
+func (e *htmlTextarea) OnKeyUp(h EventHandler, scope ...interface{}) HTMLTextarea {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -42841,8 +42841,8 @@ type HTMLTFoot interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLTFoot
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLTFoot
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLTFoot
@@ -43093,7 +43093,7 @@ func (e *htmlTFoot) OnKeyPress(h EventHandler, scope ...interface{}) HTMLTFoot {
 	return e
 }
 
-func (e *htmlTFoot) OnKeyup(h EventHandler, scope ...interface{}) HTMLTFoot {
+func (e *htmlTFoot) OnKeyUp(h EventHandler, scope ...interface{}) HTMLTFoot {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -43168,8 +43168,8 @@ type HTMLTh interface {
 	// Text sets the content of the element with a text node containing the stringified given value.
 	Text(v interface{}) HTMLTh
 
-	// Accept specifies an abbreviated version of the content in a header cell.
-	Accept(v string) HTMLTh
+	// Abbr specifies an abbreviated version of the content in a header cell.
+	Abbr(v string) HTMLTh
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLTh
@@ -43291,8 +43291,8 @@ type HTMLTh interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLTh
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLTh
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLTh
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLTh
@@ -43356,8 +43356,8 @@ func (e *htmlTh) Text(v interface{}) HTMLTh {
 	return e.Body(Text(v))
 }
 
-func (e *htmlTh) Accept(v string) HTMLTh {
-	e.setAttr("accept", v)
+func (e *htmlTh) Abbr(v string) HTMLTh {
+	e.setAttr("abbr", v)
 	return e
 }
 
@@ -43568,7 +43568,7 @@ func (e *htmlTh) OnKeyPress(h EventHandler, scope ...interface{}) HTMLTh {
 	return e
 }
 
-func (e *htmlTh) OnKeyup(h EventHandler, scope ...interface{}) HTMLTh {
+func (e *htmlTh) OnKeyUp(h EventHandler, scope ...interface{}) HTMLTh {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -43751,8 +43751,8 @@ type HTMLTHead interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLTHead
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLTHead
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLTHead
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLTHead
@@ -44003,7 +44003,7 @@ func (e *htmlTHead) OnKeyPress(h EventHandler, scope ...interface{}) HTMLTHead {
 	return e
 }
 
-func (e *htmlTHead) OnKeyup(h EventHandler, scope ...interface{}) HTMLTHead {
+func (e *htmlTHead) OnKeyUp(h EventHandler, scope ...interface{}) HTMLTHead {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -44189,8 +44189,8 @@ type HTMLTime interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLTime
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLTime
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLTime
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLTime
@@ -44446,7 +44446,7 @@ func (e *htmlTime) OnKeyPress(h EventHandler, scope ...interface{}) HTMLTime {
 	return e
 }
 
-func (e *htmlTime) OnKeyup(h EventHandler, scope ...interface{}) HTMLTime {
+func (e *htmlTime) OnKeyUp(h EventHandler, scope ...interface{}) HTMLTime {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -44808,8 +44808,8 @@ type HTMLTr interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLTr
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLTr
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLTr
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLTr
@@ -45060,7 +45060,7 @@ func (e *htmlTr) OnKeyPress(h EventHandler, scope ...interface{}) HTMLTr {
 	return e
 }
 
-func (e *htmlTr) OnKeyup(h EventHandler, scope ...interface{}) HTMLTr {
+func (e *htmlTr) OnKeyUp(h EventHandler, scope ...interface{}) HTMLTr {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -45243,8 +45243,8 @@ type HTMLU interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLU
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLU
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLU
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLU
@@ -45495,7 +45495,7 @@ func (e *htmlU) OnKeyPress(h EventHandler, scope ...interface{}) HTMLU {
 	return e
 }
 
-func (e *htmlU) OnKeyup(h EventHandler, scope ...interface{}) HTMLU {
+func (e *htmlU) OnKeyUp(h EventHandler, scope ...interface{}) HTMLU {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -45678,8 +45678,8 @@ type HTMLUl interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLUl
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLUl
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLUl
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLUl
@@ -45930,7 +45930,7 @@ func (e *htmlUl) OnKeyPress(h EventHandler, scope ...interface{}) HTMLUl {
 	return e
 }
 
-func (e *htmlUl) OnKeyup(h EventHandler, scope ...interface{}) HTMLUl {
+func (e *htmlUl) OnKeyUp(h EventHandler, scope ...interface{}) HTMLUl {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -46113,8 +46113,8 @@ type HTMLVar interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLVar
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLVar
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLVar
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLVar
@@ -46365,7 +46365,7 @@ func (e *htmlVar) OnKeyPress(h EventHandler, scope ...interface{}) HTMLVar {
 	return e
 }
 
-func (e *htmlVar) OnKeyup(h EventHandler, scope ...interface{}) HTMLVar {
+func (e *htmlVar) OnKeyUp(h EventHandler, scope ...interface{}) HTMLVar {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -46602,8 +46602,8 @@ type HTMLVideo interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLVideo
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLVideo
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLVideo
 
 	// OnLoadStart calls the given handler just as the file begins to load before anything is actually loaded.
 	OnLoadStart(h EventHandler, scope ...interface{}) HTMLVideo
@@ -46989,7 +46989,7 @@ func (e *htmlVideo) OnKeyPress(h EventHandler, scope ...interface{}) HTMLVideo {
 	return e
 }
 
-func (e *htmlVideo) OnKeyup(h EventHandler, scope ...interface{}) HTMLVideo {
+func (e *htmlVideo) OnKeyUp(h EventHandler, scope ...interface{}) HTMLVideo {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
@@ -47247,8 +47247,8 @@ type HTMLWbr interface {
 	// OnKeyPress calls the given handler when a user presses a key.
 	OnKeyPress(h EventHandler, scope ...interface{}) HTMLWbr
 
-	// OnKeyup calls the given handler when a user releases a key.
-	OnKeyup(h EventHandler, scope ...interface{}) HTMLWbr
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...interface{}) HTMLWbr
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...interface{}) HTMLWbr
@@ -47499,7 +47499,7 @@ func (e *htmlWbr) OnKeyPress(h EventHandler, scope ...interface{}) HTMLWbr {
 	return e
 }
 
-func (e *htmlWbr) OnKeyup(h EventHandler, scope ...interface{}) HTMLWbr {
+func (e *htmlWbr) OnKeyUp(h EventHandler, scope ...interface{}) HTMLWbr {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }

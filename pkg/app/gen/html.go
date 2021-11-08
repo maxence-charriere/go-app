@@ -1010,7 +1010,7 @@ type attr struct {
 var attrs = map[string]attr{
 	// A:
 	"abbr": {
-		Name: "Accept",
+		Name: "Abbr",
 		Type: "string",
 		Doc:  "specifies an abbreviated version of the content in a header cell.",
 	},
@@ -1759,7 +1759,7 @@ var eventHandlers = map[string]eventHandler{
 		Doc:  "calls the given handler when a user presses a key.",
 	},
 	"onkeyup": {
-		Name: "OnKeyup",
+		Name: "OnKeyUp",
 		Doc:  "calls the given handler when a user releases a key.",
 	},
 
