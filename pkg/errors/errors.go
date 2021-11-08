@@ -100,6 +100,10 @@ func (e Error) Lookup(tag string) (string, bool) {
 			return t.value, true
 		}
 	}
+
+	if w, ok := e.wrap.(Error); ok {
+		return w.Lookup(tag)
+	}
 	return "", false
 }
 
