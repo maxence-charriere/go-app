@@ -87,7 +87,7 @@ func (p *page) Render() app.UI {
 								app.Range(p.Iindex).Slice(func(i int) app.UI {
 									return p.Iindex[i]
 								}),
-								newIndexLink().Title("Repport an Issue"),
+								newIndexLink().Title("Report an Issue"),
 								app.Div().Class("separator"),
 							),
 					),
