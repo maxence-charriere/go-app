@@ -288,7 +288,7 @@ func navigateTo(d Dispatcher, u *url.URL, updateHistory bool) {
 	}
 
 	if isExternalNavigation(u) {
-		if rawurl := u.String(); isInternalURL(rawurl) {
+		if rawurl := u.String(); isInternalURL(rawurl) || isMailTo(u) {
 			Window().Get("location").Set("href", u.String())
 		} else {
 			Window().Call("open", rawurl)
@@ -369,12 +369,16 @@ func performNavigate(d Dispatcher, u *url.URL, updateHistory bool) {
 func isExternalNavigation(u *url.URL) bool {
 	switch {
 	case u.Host != "" && u.Host != Window().URL().Host,
-		u.Scheme == "mailto":
+		isMailTo(u):
 		return true
 
 	default:
 		return false
 	}
+}
+
+func isMailTo(u *url.URL) bool {
+	return u.Scheme == "mailto"
 }
 
 func isFragmentNavigation(u *url.URL) bool {
