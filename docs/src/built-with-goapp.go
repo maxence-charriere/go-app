@@ -61,8 +61,14 @@ func (b *builtWithGoapp) Render() app.UI {
 						Class("fill").
 						Image("/web/images/liwasc.png").
 						Name("Liwasc").
-						Description("Tool to converts Go code into its go/ast representation.").
+						Description("List, wake and scan nodes in a network.").
 						Href("https://pojntfx.github.io/liwasc"),
+					newBuiltWithGoappItem().
+						Class("fill").
+						Image("/web/images/keygean.png").
+						Name("Keygean").
+						Description("Sign, verify, encrypt and decrypt data with GPG in your browser.").
+						Href("https://pojntfx.github.io/keygaen"),
 				),
 		)
 }
