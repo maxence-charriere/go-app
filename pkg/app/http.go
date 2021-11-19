@@ -34,11 +34,11 @@ type Handler struct {
 
 	// An optional prebuild HTML Element for the pages so you can setup stuff like DaisyUI
 	// (eg. `app.HTML().DataSet("theme","dark")`)
-	HTMLTag HTMLHtml
+	HTMLTag func() HTMLHtml
 
 	// An optional prebuild BODY Element for the pages so you can setup stuff like TailwindCSS
 	// (eg. `app.Body().Class("flex flex-col min-h-screen`)
-	BodyTag HTMLBody
+	BodyTag func() HTMLBody
 
 	// The page authors.
 	Author string
@@ -603,11 +603,11 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	page.url = &url
 
 	if h.BodyTag == nil {
-		h.BodyTag = Body()
+		h.BodyTag = Body
 	}
 
 	if h.HTMLTag == nil {
-		h.HTMLTag = Html()
+		h.HTMLTag = Html
 	}
 
 
@@ -617,7 +617,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		ResolveStaticResources: h.resolveStaticPath,
 		ActionHandlers:         actionHandlers,
 	}
-	body := h.BodyTag.Body(
+	body := h.BodyTag().Body(
 		Div().Body(
 			Aside().
 				ID("app-wasm-loader").
@@ -654,7 +654,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 	var b bytes.Buffer
 	b.WriteString("<!DOCTYPE html>\n")
-	PrintHTML(&b, h.HTMLTag.Lang(page.Language()).Body(
+	PrintHTML(&b, h.HTMLTag().Lang(page.Language()).Body(
 		Head().Body(
 			Meta().Charset("UTF-8"),
 			Meta().
