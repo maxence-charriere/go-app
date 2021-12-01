@@ -163,6 +163,10 @@ func (f *flow) refresh(ctx app.Context) {
 	if itemsPerRow != f.itemsPerRow || itemWidthFloat != f.itemWidth {
 		f.itemsPerRow = itemsPerRow
 		f.itemWidth = itemWidthFloat
+
+		ctx.Defer(func(app.Context) {
+			f.ResizeContent()
+		})
 	}
 }
 
