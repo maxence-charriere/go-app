@@ -255,6 +255,8 @@ func (s *shell) refresh(ctx app.Context) {
 		s.hideAds = hideAds
 		s.width = w
 	}
+
+	s.ResizeContent()
 }
 
 func (s *shell) layoutSize() (int, int) {
