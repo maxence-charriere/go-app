@@ -256,7 +256,9 @@ func (s *shell) refresh(ctx app.Context) {
 		s.width = w
 	}
 
-	s.ResizeContent()
+	ctx.Defer(func(app.Context) {
+		s.ResizeContent()
+	})
 }
 
 func (s *shell) layoutSize() (int, int) {
