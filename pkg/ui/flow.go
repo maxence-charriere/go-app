@@ -92,19 +92,19 @@ func (f *flow) Content(elems ...app.UI) IFlow {
 }
 
 func (f *flow) OnPreRender(ctx app.Context) {
-	ctx.Dispatch(f.refresh)
+	f.refresh(ctx)
 }
 
 func (f *flow) OnMount(ctx app.Context) {
-	ctx.Dispatch(f.refresh)
+	f.refresh(ctx)
 }
 
 func (f *flow) OnResize(ctx app.Context) {
-	ctx.Dispatch(f.refresh)
+	f.refresh(ctx)
 }
 
 func (f *flow) OnUpdate(ctx app.Context) {
-	ctx.Dispatch(f.refresh)
+	f.refresh(ctx)
 }
 
 func (f *flow) Render() app.UI {
@@ -164,6 +164,8 @@ func (f *flow) refresh(ctx app.Context) {
 		f.itemsPerRow = itemsPerRow
 		f.itemWidth = itemWidthFloat
 	}
+
+	f.ResizeContent()
 }
 
 func (f *flow) layoutSize() (int, int) {
