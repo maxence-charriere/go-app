@@ -363,10 +363,11 @@ func (c *Compo) update(n UI) error {
 		return nil
 	}
 
-	c.updateRoot()
 	if updater, ok := c.self().(Updater); ok {
 		c.dispatch(updater.OnUpdate)
 	}
+	c.updateRoot()
+
 	return nil
 }
 
@@ -494,10 +495,7 @@ func (c *Compo) onResize() {
 			Tag("method-current", "OnAppResize(app.Context)").
 			Tag("method-fix", "OnResize(app.Context)").
 			Tag("how-to-fix", "refactor component to use the right method"))
-		resizer.OnAppResize(makeContext(c.self()))
-		c.dispatch(func(ctx Context) {
-			resizer.OnAppResize(ctx)
-		})
+		c.dispatch(resizer.OnAppResize)
 	}
 }
 
