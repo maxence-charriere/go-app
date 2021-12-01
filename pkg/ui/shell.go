@@ -254,11 +254,11 @@ func (s *shell) refresh(ctx app.Context) {
 		s.hideIndex = hideIndex
 		s.hideAds = hideAds
 		s.width = w
-	}
 
-	ctx.Defer(func(app.Context) {
-		s.ResizeContent()
-	})
+		ctx.Defer(func(app.Context) {
+			s.ResizeContent()
+		})
+	}
 }
 
 func (s *shell) layoutSize() (int, int) {

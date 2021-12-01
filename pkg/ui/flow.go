@@ -164,8 +164,6 @@ func (f *flow) refresh(ctx app.Context) {
 		f.itemsPerRow = itemsPerRow
 		f.itemWidth = itemWidthFloat
 	}
-
-	f.ResizeContent()
 }
 
 func (f *flow) layoutSize() (int, int) {
