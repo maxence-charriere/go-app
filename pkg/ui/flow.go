@@ -92,19 +92,19 @@ func (f *flow) Content(elems ...app.UI) IFlow {
 }
 
 func (f *flow) OnPreRender(ctx app.Context) {
-	f.refresh(ctx)
+	ctx.Dispatch(f.refresh)
 }
 
 func (f *flow) OnMount(ctx app.Context) {
-	f.refresh(ctx)
+	ctx.Dispatch(f.refresh)
 }
 
 func (f *flow) OnResize(ctx app.Context) {
-	f.refresh(ctx)
+	ctx.Dispatch(f.refresh)
 }
 
 func (f *flow) OnUpdate(ctx app.Context) {
-	f.refresh(ctx)
+	ctx.Dispatch(f.refresh)
 }
 
 func (f *flow) Render() app.UI {
