@@ -36,7 +36,7 @@ type IBlock interface {
 func Block() IBlock {
 	return &block{
 		Ialignment:       stretch,
-		ImaxContentWidth: 540,
+		ImaxContentWidth: BlockContentWidth,
 		Ipadding:         true,
 		padding:          BlockPadding,
 	}
