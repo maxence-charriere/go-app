@@ -13,7 +13,7 @@ var (
 	BlockMobilePadding = 18
 
 	// The content width of block-like components in px.
-	BlockContentWidth = 728
+	BlockContentWidth = 580
 
 	// The horizontal padding of base-like components in px.
 	BaseHPadding = 36
