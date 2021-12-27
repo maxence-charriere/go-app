@@ -1321,7 +1321,7 @@ var attrs = map[string]attr{
 	"loading": {
 		Name: "Loading",
 		Type: "string",
-		Doc:  "specifies the loading strategie for the content (used with iframes).",
+		Doc:  "indicates how the browser should load the iframe (eager|lazy).",
 	},
 	"loop": {
 		Name: "Loop",
