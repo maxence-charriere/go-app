@@ -2997,6 +2997,7 @@ func TestIFrame(t *testing.T) {
 	elem.Hidden(false)
 	elem.ID("foo")
 	elem.Lang("foo")
+	elem.Loading("foo")
 	elem.Name("foo")
 	elem.ReferrerPolicy("foo")
 	elem.Role("foo")

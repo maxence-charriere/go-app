@@ -443,6 +443,7 @@ var tags = []tag{
 			"src",
 			"srcdoc",
 			"width",
+			"loading",
 		)...),
 		EventHandlers: withGlobalEventHandlers(eventHandlersByName(
 			"onload",
@@ -1316,6 +1317,11 @@ var attrs = map[string]attr{
 		Name: "List",
 		Type: "string",
 		Doc:  "refers to a datalist element that contains pre-defined options for an input element.",
+	},
+	"loading": {
+		Name: "Loading",
+		Type: "string",
+		Doc:  "specifies the loading strategie for the content (used with iframes).",
 	},
 	"loop": {
 		Name: "Loop",

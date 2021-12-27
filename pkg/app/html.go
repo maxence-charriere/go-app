@@ -21524,6 +21524,9 @@ type HTMLIFrame interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLIFrame
 
+	// Loading specifies the loading strategie for the content (used with iframes).
+	Loading(v string) HTMLIFrame
+
 	// Name specifies the name of the element.
 	Name(v string) HTMLIFrame
 
@@ -21767,6 +21770,11 @@ func (e *htmlIFrame) ID(v string) HTMLIFrame {
 
 func (e *htmlIFrame) Lang(v string) HTMLIFrame {
 	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlIFrame) Loading(v string) HTMLIFrame {
+	e.setAttr("loading", v)
 	return e
 }
 
