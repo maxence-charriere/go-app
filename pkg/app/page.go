@@ -13,6 +13,12 @@ type Page interface {
 	// Sets the page title.
 	SetTitle(string)
 
+	// Returns the page language.
+	Lang() string
+
+	// Set the page language.
+	SetLang(string)
+
 	// Returns the page description.
 	Description() string
 
@@ -54,6 +60,7 @@ type Page interface {
 
 type requestPage struct {
 	title        string
+	lang         string
 	description  string
 	author       string
 	keywords     string
@@ -70,6 +77,14 @@ func (p *requestPage) Title() string {
 
 func (p *requestPage) SetTitle(v string) {
 	p.title = v
+}
+
+func (p *requestPage) Lang() string {
+	return p.lang
+}
+
+func (p *requestPage) SetLang(v string) {
+	p.lang = v
 }
 
 func (p *requestPage) Description() string {
@@ -128,12 +143,28 @@ type browserPage struct {
 func (p browserPage) Title() string {
 	return Window().
 		Get("document").
-		Get("title").String()
+		Get("title").
+		String()
 }
 
 func (p browserPage) SetTitle(v string) {
 	Window().Get("document").Set("title", v)
 	p.metaByProperty("og:title").setAttr("content", v)
+}
+
+func (p browserPage) Lang() string {
+	return Window().
+		Get("document").
+		Get("documentElement").
+		Get("lang").
+		String()
+}
+
+func (p browserPage) SetLang(v string) {
+	Window().
+		Get("document").
+		Get("documentElement").
+		Set("lang", v)
 }
 
 func (p browserPage) Description() string {

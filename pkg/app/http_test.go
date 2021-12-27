@@ -55,6 +55,7 @@ func TestHandlerServePageWithLocalDir(t *testing.T) {
 
 	body := w.Body.String()
 	require.Equal(t, http.StatusOK, w.Code)
+	require.Contains(t, body, `<html lang="en">`)
 	require.Contains(t, body, `href="/web/foo.css"`)
 	require.Contains(t, body, `href="/web/bar.css"`)
 	require.Contains(t, body, `href="http://boo.com/bar.css"`)
