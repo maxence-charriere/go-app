@@ -29,8 +29,16 @@ const (
 // Handler is an HTTP handler that serves an HTML page that loads a Go wasm app
 // and its resources.
 type Handler struct {
-	// The page authors.
-	Author string
+	// The name of the web application as it is usually displayed to the user.
+	Name string
+
+	// The name of the web application displayed to the user when there is not
+	// enough space to display Name.
+	ShortName string
+
+	// The icon that is used for the PWA, favicon, loading and default not
+	// found component.
+	Icon Icon
 
 	// A placeholder background color for the application page to display before
 	// its stylesheets are loaded.
@@ -38,89 +46,35 @@ type Handler struct {
 	// DEFAULT: #2d2c2c.
 	BackgroundColor string
 
-	// The path of the static resources that the browser is caching in order to
-	// provide offline mode.
+	// The theme color for the application. This affects how the OS displays the
+	// app (e.g., PWA title bar or Android's task switcher).
 	//
-	// Note that Icon, Styles and Scripts are already cached by default.
-	//
-	// Paths are relative to the root directory.
-	CacheableResources []string
+	// DEFAULT: #2d2c2c.
+	ThemeColor string
 
-	// The page description.
-	Description string
-
-	// The environment variables that are passed to the progressive web app.
-	//
-	// Reserved keys:
-	// - GOAPP_VERSION
-	// - GOAPP_GOAPP_STATIC_RESOURCES_URL
-	Env Environment
-
-	// The icon that is used for the PWA, favicon, loading and default not
-	// found component.
-	Icon Icon
-
-	// The path of the default image that is used by social networks when
-	// linking the app.
-	Image string
-
-	// The URLs that are launched in the app tab or window.
-	//
-	// By default, URLs with a different domain are launched in another tab.
-	// Specifying internal URLs is to override that behavior. A good use case
-	// would be the URL for an OAuth authentication.
-	InternalURLs []string
-
-	// The page keywords.
-	Keywords []string
+	// The text displayed while loading a page.
+	LoadingLabel string
 
 	// The page language.
 	//
 	// DEFAULT: en.
 	Lang string
 
-	// The text displayed while loading a page.
-	LoadingLabel string
+	// The page title.
+	Title string
 
-	// The name of the web application as it is usually displayed to the user.
-	Name string
+	// The page description.
+	Description string
 
-	// The cache that stores pre-rendered pages.
-	//
-	// Default is a LRU cache that keeps pages up to 24h and have a maximum size
-	// of 8MB.
-	PreRenderCache PreRenderCache
+	// The page authors.
+	Author string
 
-	// The static resources that are accessible from custom paths. Files that
-	// are proxied by default are /robots.txt, /sitemap.xml and /ads.txt.
-	ProxyResources []ProxyResource
+	// The page keywords.
+	Keywords []string
 
-	// Additional headers to be added in head element.
-	RawHeaders []string
-
-	// The paths or urls of the JavaScript files to use with the page.
-	//
-	// eg:
-	//  app.Handler{
-	//      Scripts: []string{
-	//          "/web/test.js",            // Static resource
-	//          "https://foo.com/test.js", // External resource
-	//      },
-	//  },
-	Scripts []string
-
-	// The name of the web application displayed to the user when there is not
-	// enough space to display Name.
-	ShortName string
-
-	// The resource provider that provides static resources. Static resources
-	// are always accessed from a path that starts with "/web/".
-	//
-	// eg:
-	//  "/web/main.css"
-	//
-	// Default: LocalDir("")
-	Resources ResourceProvider
+	// The path of the default image that is used by social networks when
+	// linking the app.
+	Image string
 
 	// The paths or urls of the CSS files to use with the page.
 	//
@@ -133,14 +87,73 @@ type Handler struct {
 	//  },
 	Styles []string
 
-	// The theme color for the application. This affects how the OS displays the
-	// app (e.g., PWA title bar or Android's task switcher).
+	// The paths or urls of the JavaScript files to use with the page.
 	//
-	// DEFAULT: #2d2c2c.
-	ThemeColor string
+	// eg:
+	//  app.Handler{
+	//      Scripts: []string{
+	//          "/web/test.js",            // Static resource
+	//          "https://foo.com/test.js", // External resource
+	//      },
+	//  },
+	Scripts []string
 
-	// The page title.
-	Title string
+	// The path of the static resources that the browser is caching in order to
+	// provide offline mode.
+	//
+	// Note that Icon, Styles and Scripts are already cached by default.
+	//
+	// Paths are relative to the root directory.
+	CacheableResources []string
+
+	// Additional headers to be added in head element.
+	RawHeaders []string
+
+	// The page HTML element.
+	//
+	// Default: Html().
+	HTML func() HTMLHtml
+
+	// The page body element.
+	//
+	// Note that the lang attribute is always overridden by the Handler.Lang
+	// value.
+	//
+	// Default: Body().
+	Body func() HTMLBody
+
+	// The environment variables that are passed to the progressive web app.
+	//
+	// Reserved keys:
+	// - GOAPP_VERSION
+	// - GOAPP_GOAPP_STATIC_RESOURCES_URL
+	Env Environment
+
+	// The URLs that are launched in the app tab or window.
+	//
+	// By default, URLs with a different domain are launched in another tab.
+	// Specifying internal URLs is to override that behavior. A good use case
+	// would be the URL for an OAuth authentication.
+	InternalURLs []string
+
+	// The cache that stores pre-rendered pages.
+	//
+	// Default: A LRU cache that keeps pages up to 24h and have a maximum size
+	// of 8MB.
+	PreRenderCache PreRenderCache
+
+	// The static resources that are accessible from custom paths. Files that
+	// are proxied by default are /robots.txt, /sitemap.xml and /ads.txt.
+	ProxyResources []ProxyResource
+
+	// The resource provider that provides static resources. Static resources
+	// are always accessed from a path that starts with "/web/".
+	//
+	// eg:
+	//  "/web/main.css"
+	//
+	// Default: LocalDir("")
+	Resources ResourceProvider
 
 	// The version number. This is used in order to update the PWA application
 	// in the browser. It must be set when deployed on a live system in order to
@@ -165,6 +178,7 @@ func (h *Handler) init() {
 	h.initCacheableResources()
 	h.initIcon()
 	h.initPWA()
+	h.initPageContent()
 	h.initPreRenderedResources()
 	h.initProxyResources()
 }
@@ -246,6 +260,16 @@ func (h *Handler) initPWA() {
 
 	if h.LoadingLabel == "" {
 		h.LoadingLabel = "Loading"
+	}
+}
+
+func (h *Handler) initPageContent() {
+	if h.HTML == nil {
+		h.HTML = Html
+	}
+
+	if h.Body == nil {
+		h.Body = Body
 	}
 }
 
@@ -603,7 +627,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		ResolveStaticResources: h.resolveStaticPath,
 		ActionHandlers:         actionHandlers,
 	}
-	body := Body().Body(
+	body := h.Body().privateBody(
 		Div().Body(
 			Aside().
 				ID("app-wasm-loader").
@@ -640,9 +664,9 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 	var b bytes.Buffer
 	b.WriteString("<!DOCTYPE html>\n")
-	PrintHTML(&b, Html().
+	PrintHTML(&b, h.HTML().
 		Lang(page.Lang()).
-		Body(
+		privateBody(
 			Head().Body(
 				Meta().Charset("UTF-8"),
 				Meta().

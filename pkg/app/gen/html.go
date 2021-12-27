@@ -13,11 +13,19 @@ import (
 
 type tag struct {
 	Name          string
-	SelfClosing   bool
+	Type          tagType
 	Doc           string
 	Attrs         []attr
 	EventHandlers []eventHandler
 }
+
+type tagType int
+
+const (
+	parent tagType = iota
+	privateParent
+	selfClosing
+)
 
 var tags = []tag{
 	{
@@ -49,9 +57,9 @@ var tags = []tag{
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
-		Name:        "Area",
-		SelfClosing: true,
-		Doc:         "defines an area inside an image-map.",
+		Name: "Area",
+		Type: selfClosing,
+		Doc:  "defines an area inside an image-map.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"alt",
 			"coords",
@@ -101,9 +109,9 @@ var tags = []tag{
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
-		Name:        "Base",
-		SelfClosing: true,
-		Doc:         "specifies the base URL/target for all relative URLs in a document.",
+		Name: "Base",
+		Type: selfClosing,
+		Doc:  "specifies the base URL/target for all relative URLs in a document.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"href",
 			"target",
@@ -132,6 +140,7 @@ var tags = []tag{
 	},
 	{
 		Name:  "Body",
+		Type:  privateParent,
 		Doc:   "defines the document's body.",
 		Attrs: withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(eventHandlersByName(
@@ -154,7 +163,7 @@ var tags = []tag{
 	},
 	{
 		Name:          "Br",
-		SelfClosing:   true,
+		Type:          selfClosing,
 		Doc:           "defines a single line break.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
@@ -207,9 +216,9 @@ var tags = []tag{
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
-		Name:        "Col",
-		SelfClosing: true,
-		Doc:         "specifies column properties for each column within a colgroup element.",
+		Name: "Col",
+		Type: selfClosing,
+		Doc:  "specifies column properties for each column within a colgroup element.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"span",
 		)...),
@@ -304,9 +313,9 @@ var tags = []tag{
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
-		Name:        "Embed",
-		SelfClosing: true,
-		Doc:         "defines a container for an external (non-HTML) application.",
+		Name: "Embed",
+		Type: selfClosing,
+		Doc:  "defines a container for an external (non-HTML) application.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"height",
 			"src",
@@ -411,13 +420,14 @@ var tags = []tag{
 	},
 	{
 		Name:          "Hr",
-		SelfClosing:   true,
+		Type:          selfClosing,
 		Doc:           "defines a thematic change in the content.",
 		Attrs:         withGlobalAttrs(),
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
 		Name:  "Html",
+		Type:  privateParent,
 		Doc:   "defines the root of an HTML document.",
 		Attrs: withGlobalAttrs(),
 	},
@@ -451,9 +461,9 @@ var tags = []tag{
 		),
 	},
 	{
-		Name:        "Img",
-		SelfClosing: true,
-		Doc:         "defines an image.",
+		Name: "Img",
+		Type: selfClosing,
+		Doc:  "defines an image.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"alt",
 			"crossorigin",
@@ -472,9 +482,9 @@ var tags = []tag{
 		)...),
 	},
 	{
-		Name:        "Input",
-		SelfClosing: true,
-		Doc:         "defines an input control.",
+		Name: "Input",
+		Type: selfClosing,
+		Doc:  "defines an input control.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"accept",
 			"alt",
@@ -553,9 +563,9 @@ var tags = []tag{
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
-		Name:        "Link",
-		SelfClosing: true,
-		Doc:         "defines the relationship between a document and an external resource (most used to link to style sheets).",
+		Name: "Link",
+		Type: selfClosing,
+		Doc:  "defines the relationship between a document and an external resource (most used to link to style sheets).",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"crossorigin",
 			"href",
@@ -592,9 +602,9 @@ var tags = []tag{
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
-		Name:        "Meta",
-		SelfClosing: true,
-		Doc:         ".",
+		Name: "Meta",
+		Type: selfClosing,
+		Doc:  ".",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"charset",
 			"content",
@@ -695,9 +705,9 @@ var tags = []tag{
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
-		Name:        "Param",
-		SelfClosing: true,
-		Doc:         "defines a parameter for an object.",
+		Name: "Param",
+		Type: selfClosing,
+		Doc:  "defines a parameter for an object.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"name",
 			"value",
@@ -809,9 +819,9 @@ var tags = []tag{
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
-		Name:        "Source",
-		SelfClosing: true,
-		Doc:         ".",
+		Name: "Source",
+		Type: selfClosing,
+		Doc:  ".",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"src",
 			"srcset",
@@ -2090,7 +2100,7 @@ import (
 			t.Name,
 			t.Name,
 			strings.ToLower(t.Name),
-			t.SelfClosing,
+			t.Type == selfClosing,
 		)
 
 		fmt.Fprintln(f)
@@ -2112,7 +2122,8 @@ func writeInterface(w io.Writer, t tag) {
 		t.Name,
 	)
 
-	if !t.SelfClosing {
+	switch t.Type {
+	case parent:
 		fmt.Fprintf(w, `
 			// Body set the content of the element.
 			Body(elems ...UI) HTML%s 
@@ -2121,6 +2132,11 @@ func writeInterface(w io.Writer, t tag) {
 		fmt.Fprintf(w, `
 			// Text sets the content of the element with a text node containing the stringified given value.
 			Text(v interface{}) HTML%s
+		`, t.Name)
+
+	case privateParent:
+		fmt.Fprintf(w, `
+			privateBody(elems ...UI) HTML%s 
 		`, t.Name)
 	}
 
@@ -2149,7 +2165,8 @@ func writeStruct(w io.Writer, t tag) {
 			elem
 		}`, t.Name)
 
-	if !t.SelfClosing {
+	switch t.Type {
+	case parent:
 		fmt.Fprintf(w, `
 			func (e *html%s) Body(elems ...UI) HTML%s {
 				e.setBody(elems...)
@@ -2180,6 +2197,17 @@ func writeStruct(w io.Writer, t tag) {
 				t.Name,
 			)
 		}
+
+	case privateParent:
+		fmt.Fprintf(w, `
+			func (e *html%s) privateBody(elems ...UI) HTML%s {
+				e.setBody(elems...)
+				return e
+			}
+			`,
+			t.Name,
+			t.Name,
+		)
 	}
 
 	for _, a := range t.Attrs {
@@ -2393,8 +2421,12 @@ import (
 			fmt.Fprintln(f)
 		}
 
-		if !t.SelfClosing {
+		switch t.Type {
+		case parent:
 			fmt.Fprintln(f, `elem.Text("hello")`)
+
+		case privateParent:
+			fmt.Fprintln(f, `elem.privateBody(Text("hello"))`)
 		}
 
 		fmt.Fprintln(f, "}")

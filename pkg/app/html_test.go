@@ -851,7 +851,7 @@ func TestBody(t *testing.T) {
 	elem.OnSubmit(h)
 	elem.OnUnload(h)
 	elem.OnWheel(h)
-	elem.Text("hello")
+	elem.privateBody(Text("hello"))
 }
 
 func TestBr(t *testing.T) {
@@ -2912,7 +2912,7 @@ func TestHtml(t *testing.T) {
 	elem.Styles(map[string]string{"color": "pink"})
 	elem.TabIndex(42)
 	elem.Title("foo")
-	elem.Text("hello")
+	elem.privateBody(Text("hello"))
 }
 
 func TestI(t *testing.T) {

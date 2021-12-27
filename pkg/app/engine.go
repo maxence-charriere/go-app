@@ -306,7 +306,7 @@ func (e *engine) init() {
 		}
 
 		if e.Body == nil {
-			body := Body().Body(Div())
+			body := Body().privateBody(Div())
 			if err := mount(e, body); err != nil {
 				panic(errors.New("mounting engine default body failed").Wrap(err))
 			}
