@@ -74,6 +74,11 @@ type Handler struct {
 	// The page keywords.
 	Keywords []string
 
+	// The page language.
+	//
+	// DEFAULT: en.
+	Lang string
+
 	// The text displayed while loading a page.
 	LoadingLabel string
 
@@ -233,6 +238,10 @@ func (h *Handler) initPWA() {
 	}
 	if h.ThemeColor == "" {
 		h.ThemeColor = defaultThemeColor
+	}
+
+	if h.Lang == "" {
+		h.Lang = "en"
 	}
 
 	if h.LoadingLabel == "" {
@@ -580,6 +589,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 	var page requestPage
 	page.SetTitle(h.Title)
+	page.SetLang(h.Lang)
 	page.SetDescription(h.Description)
 	page.SetAuthor(h.Author)
 	page.SetKeywords(h.Keywords...)
@@ -630,80 +640,82 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 	var b bytes.Buffer
 	b.WriteString("<!DOCTYPE html>\n")
-	PrintHTML(&b, Html().Body(
-		Head().Body(
-			Meta().Charset("UTF-8"),
-			Meta().
-				HTTPEquiv("Content-Type").
-				Content("text/html; charset=utf-8"),
-			Meta().
-				Name("author").
-				Content(page.Author()),
-			Meta().
-				Name("description").
-				Content(page.Description()),
-			Meta().
-				Name("keywords").
-				Content(page.Keywords()),
-			Meta().
-				Name("theme-color").
-				Content(h.ThemeColor),
-			Meta().
-				Name("viewport").
-				Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
-			Meta().
-				Property("og:url").
-				Content(page.URL().String()),
-			Meta().
-				Property("og:title").
-				Content(page.Title()),
-			Meta().
-				Property("og:description").
-				Content(page.Description()),
-			Meta().
-				Property("og:type").
-				Content("website"),
-			Meta().
-				Property("og:image").
-				Content(page.Image()),
-			Title().Text(page.Title()),
-			Link().
-				Rel("icon").
-				Type("image/png").
-				Href(h.Icon.Default),
-			Link().
-				Rel("apple-touch-icon").
-				Href(h.Icon.AppleTouch),
-			Link().
-				Rel("manifest").
-				Href(h.resolvePackagePath("/manifest.webmanifest")),
-			Link().
-				Type("text/css").
-				Rel("stylesheet").
-				Href(h.resolvePackagePath("/app.css")),
-			Script().
-				Defer(true).
-				Src(h.resolvePackagePath("/wasm_exec.js")),
-			Script().
-				Defer(true).
-				Src(h.resolvePackagePath("/app.js")),
-			Range(h.Styles).Slice(func(i int) UI {
-				return Link().
+	PrintHTML(&b, Html().
+		Lang(page.Lang()).
+		Body(
+			Head().Body(
+				Meta().Charset("UTF-8"),
+				Meta().
+					HTTPEquiv("Content-Type").
+					Content("text/html; charset=utf-8"),
+				Meta().
+					Name("author").
+					Content(page.Author()),
+				Meta().
+					Name("description").
+					Content(page.Description()),
+				Meta().
+					Name("keywords").
+					Content(page.Keywords()),
+				Meta().
+					Name("theme-color").
+					Content(h.ThemeColor),
+				Meta().
+					Name("viewport").
+					Content("width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover"),
+				Meta().
+					Property("og:url").
+					Content(page.URL().String()),
+				Meta().
+					Property("og:title").
+					Content(page.Title()),
+				Meta().
+					Property("og:description").
+					Content(page.Description()),
+				Meta().
+					Property("og:type").
+					Content("website"),
+				Meta().
+					Property("og:image").
+					Content(page.Image()),
+				Title().Text(page.Title()),
+				Link().
+					Rel("icon").
+					Type("image/png").
+					Href(h.Icon.Default),
+				Link().
+					Rel("apple-touch-icon").
+					Href(h.Icon.AppleTouch),
+				Link().
+					Rel("manifest").
+					Href(h.resolvePackagePath("/manifest.webmanifest")),
+				Link().
 					Type("text/css").
 					Rel("stylesheet").
-					Href(h.Styles[i])
-			}),
-			Range(h.Scripts).Slice(func(i int) UI {
-				return Script().
+					Href(h.resolvePackagePath("/app.css")),
+				Script().
 					Defer(true).
-					Src(h.Scripts[i])
-			}),
-			Range(h.RawHeaders).Slice(func(i int) UI {
-				return Raw(h.RawHeaders[i])
-			}),
-		),
-		body,
-	))
+					Src(h.resolvePackagePath("/wasm_exec.js")),
+				Script().
+					Defer(true).
+					Src(h.resolvePackagePath("/app.js")),
+				Range(h.Styles).Slice(func(i int) UI {
+					return Link().
+						Type("text/css").
+						Rel("stylesheet").
+						Href(h.Styles[i])
+				}),
+				Range(h.Scripts).Slice(func(i int) UI {
+					return Script().
+						Defer(true).
+						Src(h.Scripts[i])
+				}),
+				Range(h.RawHeaders).Slice(func(i int) UI {
+					return Raw(h.RawHeaders[i])
+				}),
+			),
+			body,
+		))
 
 	item := PreRenderedItem{
 		Path:        page.URL().Path,

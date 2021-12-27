@@ -14,14 +14,17 @@ func TestRequestPage(t *testing.T) {
 	})
 }
 
-// func TestBrowserPage(t *testing.T) {
-// 	testSkipNonWasm(t)
-// 	testPage(t, browserPage{})
-// }
+func TestBrowserPage(t *testing.T) {
+	testSkipNonWasm(t)
+	testPage(t, browserPage{})
+}
 
 func testPage(t *testing.T, p Page) {
 	p.SetTitle("go-app")
 	require.Equal(t, "go-app", p.Title())
+
+	p.SetLang("fr")
+	require.Equal(t, "fr", p.Lang())
 
 	p.SetDescription("test")
 	require.Equal(t, "test", p.Description())
