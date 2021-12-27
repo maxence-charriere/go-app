@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta httpequiv="Content-Type" content="text/html; charset=utf-8">
-<meta content="Maxence Charriere" name="author">
+<meta name="author" content="Maxence Charriere">
 <meta name="description" content="Go-app API reference for building Progressive Web Apps (PWA) with Go (Golang) and WebAssembly (WASM).">
 <meta name="keywords" content="go-app, go, golang, app, pwa, progressive web app, webassembly, web assembly, webapp, web, gui, ui, user interface, graphical user interface, frontend, opensource, open source, github">
-<meta name="theme-color" content="#2e343a">
+<meta content="#2e343a" name="theme-color">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
-<meta property="og:url" content="http://127.0.0.1:49660/reference">
+<meta property="og:url" content="http://127.0.0.1:53615/reference">
 <meta property="og:title" content="Reference for building PWA with Go and WASM">
 <meta property="og:description" content="Go-app API reference for building Progressive Web Apps (PWA) with Go (Golang) and WebAssembly (WASM).">
 <meta property="og:type" content="website">
@@ -21,8 +21,8 @@ Reference for building PWA with Go and WASM
 <link rel="manifest" href="/manifest.webmanifest">
 <link type="text/css" rel="stylesheet" href="/app.css">
 <script defer="true" src="/wasm_exec.js"></script>
-<script defer="true" src="/app.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" type="text/css" rel="stylesheet">
+<script src="/app.js" defer="true"></script>
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap">
 <link type="text/css" rel="stylesheet" href="/web/css/prism.css">
 <link href="/web/css/docs.css" type="text/css" rel="stylesheet">
 <script defer="true" src="/web/js/prism.js"></script>
@@ -41,30 +41,30 @@ Reference for building PWA with Go and WASM
 <div>
 <aside id="app-wasm-loader" class="goapp-app-info">
 <img id="app-wasm-loader-icon" class="goapp-logo goapp-spin" src="https://storage.googleapis.com/murlok-github/icon-192.png">
-<p class="goapp-label" id="app-wasm-loader-label">
+<p id="app-wasm-loader-label" class="goapp-label">
 go-app documentation
 </p>
 </aside>
 <div id="app-pre-render">
-<div data-goapp-ui="shell" id class="fill background">
-<div id="goapp-shell-198fb894-6b64-47c8-b29c-192b0aac21ed" style="display:flex;width:100%;height:100%;overflow:hidden;">
+<div class="fill background" data-goapp-ui="shell" id>
+<div id="goapp-shell-3513eb3f-ac44-45a7-9ee5-661c7803d0a4" style="display:flex;width:100%;height:100%;overflow:hidden;">
 <div style="position:relative;display:none;flex-shrink:0;flex-basis:270px;overflow:hidden;">
 <div data-goapp-ui="scroll" id class="menu fill">
 <div style="width:100%;height:calc(100% - 24px);padding:12px 0;">
-<div style="width:calc(100% - 84px);padding:0 42px;height:72px;">
-<div style="display:flex;justify-content:flex-start;align-items:center;" data-goapp="Stack" id class="fill">
+<div style="width:calc(100% - 24px);padding:0 12px;height:72px;">
+<div class="fill" style="display:flex;justify-content:flex-start;align-items:center;" data-goapp="Stack" id>
 <header>
-<a class="heading app-title" href="/">
+<a href="/" class="heading app-title">
 Go-App
 </a>
 </header>
 </div>
 </div>
-<div style="width:calc(100% - 84px);height:calc(100% - 72px);padding:0 42px;overflow-x:hidden;overflow-y:scroll;">
+<div style="width:calc(100% - 24px);height:calc(100% - 72px);padding:0 12px;overflow-x:hidden;overflow-y:scroll;">
 <nav>
 <div class="separator"></div>
-<a id class="link heading fit unselectable" title href="/">
-<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<a title href="/" id class="link heading fit unselectable">
+<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />
@@ -75,9 +75,9 @@ Home
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/getting-started">
-<div class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id>
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<a href="/getting-started" id class="link heading fit unselectable" title>
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19M5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5M21.61 2.39C21.61 2.39 16.66 .269 11 5.93C8.81 8.12 7.5 10.53 6.65 12.64C6.37 13.39 6.56 14.21 7.11 14.77L9.24 16.89C9.79 17.45 10.61 17.63 11.36 17.35C13.5 16.53 15.88 15.19 18.07 13C23.73 7.34 21.61 2.39 21.61 2.39M14.54 9.46C13.76 8.68 13.76 7.41 14.54 6.63S16.59 5.85 17.37 6.63C18.14 7.41 18.15 8.68 17.37 9.46C16.59 10.24 15.32 10.24 14.54 9.46M8.88 16.53L7.47 15.12L8.88 16.53M6.24 22L9.88 18.36C9.54 18.27 9.21 18.12 8.91 17.91L4.83 22H6.24M2 22H3.41L8.18 17.24L6.76 15.83L2 20.59V22M2 19.17L6.09 15.09C5.88 14.79 5.73 14.47 5.64 14.12L2 17.76V19.17Z" />
 	</svg>
@@ -87,8 +87,8 @@ Getting Started
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/architecture">
-<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<a title href="/architecture" id class="link heading fit unselectable">
+<div style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id class>
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M9,2V8H11V11H5C3.89,11 3,11.89 3,13V16H1V22H7V16H5V13H11V16H9V22H15V16H13V13H19V16H17V22H23V16H21V13C21,11.89 20.11,11 19,11H13V8H15V2H9Z" />
@@ -101,7 +101,7 @@ Architecture
 </a>
 <a class="link heading fit unselectable" title href="/reference" id>
 <div class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id>
-<div class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id>
+<div style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id class>
 <svg width="24px" height="24px" viewBox="0 0 207 78" xmlns="http://www.w3.org/2000/svg">
 		<g fill="currentColor" fill-rule="evenodd">
 			<path d="m16.2 24.1c-.4 0-.5-.2-.3-.5l2.1-2.7c.2-.3.7-.5 1.1-.5h35.7c.4 0 .5.3.3.6l-1.7 2.6c-.2.3-.7.6-1 .6z"/>
@@ -121,7 +121,7 @@ Reference
 </a>
 <div class="separator"></div>
 <a id class="link heading fit unselectable" title href="/components">
-<div style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id class>
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M10,5V11H21V5M16,18H21V12H16M4,18H9V5H4M10,18H15V12H10V18Z" />
@@ -133,8 +133,8 @@ Components
 </div>
 </a>
 <a id class="link heading fit unselectable" title href="/declarative-syntax">
-<div style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id class>
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<div class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M19,10H17V8H19M19,13H17V11H19M16,10H14V8H16M16,13H14V11H16M16,17H8V15H16M7,10H5V8H7M7,13H5V11H7M8,11H10V13H8M8,8H10V10H8M11,11H13V13H11M11,8H13V10H11M20,5H4C2.89,5 2,5.89 2,7V17A2,2 0 0,0 4,19H20A2,2 0 0,0 22,17V7C22,5.89 21.1,5 20,5Z" />
 	</svg>
@@ -146,7 +146,7 @@ Declarative Syntax
 </a>
 <a id class="link heading fit unselectable" title href="/routing">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M11,10H5L3,8L5,6H11V3L12,2L13,3V4H19L21,6L19,8H13V10H19L21,12L19,14H13V20A2,2 0 0,1 15,22H9A2,2 0 0,1 11,20V10Z" />
 	</svg>
@@ -156,9 +156,9 @@ Routing
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/static-resources">
+<a class="link heading fit unselectable" title href="/static-resources" id>
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<div style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id class>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M7,15L11.5,9L15,13.5L17.5,10.5L21,15M22,4H14L12,2H6A2,2 0 0,0 4,4V16A2,2 0 0,0 6,18H22A2,2 0 0,0 24,16V6A2,2 0 0,0 22,4M2,6H0V11H0V20A2,2 0 0,0 2,22H20V20H2V6Z" />
 	</svg>
@@ -168,7 +168,7 @@ Images and Static Resources
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/js">
+<a title href="/js" id class="link heading fit unselectable">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -180,7 +180,7 @@ JavaScript Interoperability
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/concurrency">
+<a href="/concurrency" id class="link heading fit unselectable" title>
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -193,8 +193,8 @@ Concurrency
 </div>
 </a>
 <a id class="link heading fit unselectable" title href="/seo">
-<div style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id class>
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
+<div class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M15.5,14L20.5,19L19,20.5L14,15.5V14.71L13.73,14.43C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.43,13.73L14.71,14H15.5M9.5,4.5L8.95,4.53C8.71,5.05 8.34,5.93 8.07,7H10.93C10.66,5.93 10.29,5.05 10.05,4.53C9.87,4.5 9.69,4.5 9.5,4.5M13.83,7C13.24,5.97 12.29,5.17 11.15,4.78C11.39,5.31 11.7,6.08 11.93,7H13.83M5.17,7H7.07C7.3,6.08 7.61,5.31 7.85,4.78C6.71,5.17 5.76,5.97 5.17,7M4.5,9.5C4.5,10 4.58,10.53 4.73,11H6.87L6.75,9.5L6.87,8H4.73C4.58,8.47 4.5,9 4.5,9.5M14.27,11C14.42,10.53 14.5,10 14.5,9.5C14.5,9 14.42,8.47 14.27,8H12.13C12.21,8.5 12.25,9 12.25,9.5C12.25,10 12.21,10.5 12.13,11H14.27M7.87,8L7.75,9.5L7.87,11H11.13C11.21,10.5 11.25,10 11.25,9.5C11.25,9 11.21,8.5 11.13,8H7.87M9.5,14.5C9.68,14.5 9.86,14.5 10.03,14.47C10.28,13.95 10.66,13.07 10.93,12H8.07C8.34,13.07 8.72,13.95 8.97,14.47L9.5,14.5M13.83,12H11.93C11.7,12.92 11.39,13.69 11.15,14.22C12.29,13.83 13.24,13.03 13.83,12M5.17,12C5.76,13.03 6.71,13.83 7.85,14.22C7.61,13.69 7.3,12.92 7.07,12H5.17Z" />
 	</svg>
@@ -204,9 +204,9 @@ SEO
 </div>
 </div>
 </a>
-<a title href="/lifecycle" id class="link heading fit unselectable">
+<a href="/lifecycle" id class="link heading fit unselectable" title>
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<div style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id class>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M23,12L19,16V13H6.83C6.42,14.17 5.31,15 4,15A3,3 0 0,1 1,12A3,3 0 0,1 4,9C5.31,9 6.42,9.83 6.83,11H19V8L23,12Z" />
 	</svg>
@@ -216,8 +216,8 @@ Lifecycle and Updates
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/install">
-<div class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id>
+<a href="/install" id class="link heading fit unselectable" title>
+<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
@@ -228,7 +228,7 @@ Install
 </div>
 </div>
 </a>
-<a class="link heading fit unselectable" title href="/testing" id>
+<a id class="link heading fit unselectable" title href="/testing">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -240,7 +240,7 @@ Testing
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/actions">
+<a href="/actions" id class="link heading fit unselectable" title>
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -252,7 +252,7 @@ Actions
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/states">
+<a class="link heading fit unselectable" title href="/states" id>
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -290,7 +290,7 @@ Deploy on GitHub Pages
 </div>
 </a>
 <div class="separator"></div>
-<a title href="https://twitter.com/jonhymaxoo" id class="link heading fit unselectable">
+<a id class="link heading fit unselectable" title href="https://twitter.com/jonhymaxoo">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -303,8 +303,8 @@ Twitter
 </div>
 </a>
 <a id class="link heading fit unselectable" title href="https://github.com/maxence-charriere/go-app">
-<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
-<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z" />
 	</svg>
@@ -314,7 +314,7 @@ GitHub
 </div>
 </div>
 </a>
-<a class="link heading fit unselectable" title href="https://opencollective.com/go-app" id>
+<a id class="link heading fit unselectable" title href="https://opencollective.com/go-app">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -328,8 +328,8 @@ Open Collective
 </a>
 <div class="separator"></div>
 <a id class="link heading fit unselectable" title href="/privacy-policy">
-<div style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id class>
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
+<div style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id class>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M22 17V16.5C22 15.12 20.88 14 19.5 14S17 15.12 17 16.5V17C16.45 17 16 17.45 16 18V22C16 22.55 16.45 23 17 23H22C22.55 23 23 22.55 23 22V18C23 17.45 22.55 17 22 17M21 17H18V16.5C18 15.67 18.67 15 19.5 15S21 15.67 21 16.5V17M8 8C8 5.79 9.79 4 12 4S16 5.79 16 8 14.21 12 12 12 8 10.21 8 8M14 20H4V18C4 15.79 7.58 14 12 14C13.27 14 14.46 14.15 15.53 14.41C15.32 14.82 15.15 15.25 15.07 15.71C14.42 16.26 14 17.08 14 18V20Z" />
 	</svg>
@@ -342,7 +342,7 @@ Privacy Policy
 <div class="separator"></div>
 </nav>
 </div>
-<div style="width:calc(100% - 84px);padding:0 42px;height:0px;"></div>
+<div style="width:calc(100% - 24px);padding:0 12px;height:0px;"></div>
 </div>
 </div>
 </div>
@@ -357,7 +357,7 @@ Privacy Policy
 Index
 </header>
 <div class="separator"></div>
-<a href="#pkg-overview" class="index-link ">
+<a class="index-link " href="#pkg-overview">
 Overview
 </a>
 <section id class="reference-index">
@@ -1656,7 +1656,7 @@ Loading...
 </div>
 </section>
 <div class="separator"></div>
-<a class="index-link  " href="#report-an-issue" title="Report an Issue">
+<a href="#report-an-issue" title="Report an Issue" class="index-link  ">
 Report an Issue
 </a>
 <div class="separator"></div>
@@ -1678,8 +1678,8 @@ Report an Issue
 <main>
 <article>
 <header id="page-top" class="page-title center">
-<div data-goapp="Stack" id class style="display:flex;justify-content:center;align-items:center;">
-<div data-goapp="Icon" id class="icon-left unselectable" style="width:90px;height:90px;max-width:90px;max-height:90px;min-width:90px;min-height:90px;">
+<div style="display:flex;justify-content:center;align-items:center;" data-goapp="Stack" id class>
+<div class="icon-left unselectable" style="width:90px;height:90px;max-width:90px;max-height:90px;min-width:90px;min-height:90px;" data-goapp="Icon" id>
 <svg width="90px" height="90px" viewBox="0 0 207 78" xmlns="http://www.w3.org/2000/svg">
 		<g fill="currentColor" fill-rule="evenodd">
 			<path d="m16.2 24.1c-.4 0-.5-.2-.3-.5l2.1-2.7c.2-.3.7-.5 1.1-.5h35.7c.4 0 .5.3.3.6l-1.7 2.6c-.2.3-.7.6-1 .6z"/>
@@ -1698,7 +1698,7 @@ Reference
 </div>
 </header>
 <div class="separator"></div>
-<section class="reference" id>
+<section id class="reference">
 <aside id class="separator fill heading" style="display:none;">
 <div data-goapp="Stack" id class style="display:flex;justify-content:center;align-items:center;width:100%;height:100%;">
 <div style="width:56px;height:56px;min-width:56px;min-height:56px;border:2px solid currentColor;border-top:2px solid white;border-radius:50%;animation:goapp-spin-frames 500ms linear infinite;"></div>
@@ -4512,7 +4512,7 @@ UI instructions and UI elements lifecycle.
 		
 			
 			
-			<h2 id="Environment">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go?s=18417:18451#L762" id="ref-link-L762">Environment</a>
+			<h2 id="Environment">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go?s=19029:19063#L798" id="ref-link-L798">Environment</a>
 				<a class="permalink" href="#Environment" id="ref-link-Environment">¶</a>
 				
 				
@@ -7141,7 +7141,7 @@ Blockquote returns an HTML element that defines a section that is quoted from an
 		
 			
 			
-			<h2 id="HTMLBody">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=165664:174158#L5599" id="ref-link-L5599">HTMLBody</a>
+			<h2 id="HTMLBody">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=165664:173995#L5599" id="ref-link-L5599">HTMLBody</a>
 				<a class="permalink" href="#HTMLBody" id="ref-link-HTMLBody">¶</a>
 				
 				
@@ -7152,12 +7152,6 @@ HTMLBody is the interface that describes a &lt;body&gt; HTML element.
 
 			<pre>type HTMLBody interface {
     <a href="#UI" id="ref-link-UI">UI</a>
-
-    <span class="comment">// Body set the content of the element.</span>
-    Body(elems ...<a href="#UI" id="ref-link-UI">UI</a>) <a href="#HTMLBody" id="ref-link-HTMLBody">HTMLBody</a>
-
-    <span class="comment">// Text sets the content of the element with a text node containing the stringified given value.</span>
-    Text(v interface{}) <a href="#HTMLBody" id="ref-link-HTMLBody">HTMLBody</a>
 
     <span class="comment">// AccessKey specifies a shortcut key to activate/focus an element.</span>
     AccessKey(v <a href="/pkg/builtin/#string" id="ref-link-string">string</a>) <a href="#HTMLBody" id="ref-link-HTMLBody">HTMLBody</a>
@@ -7350,6 +7344,7 @@ HTMLBody is the interface that describes a &lt;body&gt; HTML element.
 
     <span class="comment">// OnWheel calls the given handler when the mouse wheel rolls up or down over an element.</span>
     OnWheel(h <a href="#EventHandler" id="ref-link-EventHandler">EventHandler</a>, scope ...interface{}) <a href="#HTMLBody" id="ref-link-HTMLBody">HTMLBody</a>
+    <span class="comment">// contains filtered or unexported methods</span>
 }</pre>
 
 			
@@ -7362,7 +7357,7 @@ HTMLBody is the interface that describes a &lt;body&gt; HTML element.
 
 			
 				
-				<h3 id="Body">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=174226:174246#L5802" id="ref-link-L5802">Body</a>
+				<h3 id="Body">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=174063:174083#L5798" id="ref-link-L5798">Body</a>
 					<a class="permalink" href="#Body" id="ref-link-Body">¶</a>
 					
 					
@@ -7380,7 +7375,7 @@ Body returns an HTML element that defines the document&#39;s body.
 		
 			
 			
-			<h2 id="HTMLBr">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=182496:188632#L6154" id="ref-link-L6154">HTMLBr</a>
+			<h2 id="HTMLBr">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=182263:188399#L6146" id="ref-link-L6146">HTMLBr</a>
 				<a class="permalink" href="#HTMLBr" id="ref-link-HTMLBr">¶</a>
 				
 				
@@ -7550,7 +7545,7 @@ HTMLBr is the interface that describes a &lt;br&gt; HTML element.
 
 			
 				
-				<h3 id="Br">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=188698:188714#L6306" id="ref-link-L6306">Br</a>
+				<h3 id="Br">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=188465:188481#L6298" id="ref-link-L6298">Br</a>
 					<a class="permalink" href="#Br" id="ref-link-Br">¶</a>
 					
 					
@@ -7568,7 +7563,7 @@ Br returns an HTML element that defines a single line break.
 		
 			
 			
-			<h2 id="HTMLButton">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=194580:202372#L6574" id="ref-link-L6574">HTMLButton</a>
+			<h2 id="HTMLButton">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=194347:202139#L6566" id="ref-link-L6566">HTMLButton</a>
 				<a class="permalink" href="#HTMLButton" id="ref-link-HTMLButton">¶</a>
 				
 				
@@ -7777,7 +7772,7 @@ HTMLButton is the interface that describes a &lt;button&gt; HTML element.
 
 			
 				
-				<h3 id="Button">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=202441:202465#L6765" id="ref-link-L6765">Button</a>
+				<h3 id="Button">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=202208:202232#L6757" id="ref-link-L6757">Button</a>
 					<a class="permalink" href="#Button" id="ref-link-Button">¶</a>
 					
 					
@@ -7795,7 +7790,7 @@ Button returns an HTML element that defines a clickable button.
 		
 			
 			
-			<h2 id="HTMLCanvas">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=209916:216614#L7097" id="ref-link-L7097">HTMLCanvas</a>
+			<h2 id="HTMLCanvas">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=209683:216381#L7089" id="ref-link-L7089">HTMLCanvas</a>
 				<a class="permalink" href="#HTMLCanvas" id="ref-link-HTMLCanvas">¶</a>
 				
 				
@@ -7977,7 +7972,7 @@ HTMLCanvas is the interface that describes a &lt;canvas&gt; HTML element.
 
 			
 				
-				<h3 id="Canvas">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=216692:216716#L7261" id="ref-link-L7261">Canvas</a>
+				<h3 id="Canvas">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=216459:216483#L7253" id="ref-link-L7253">Canvas</a>
 					<a class="permalink" href="#Canvas" id="ref-link-Canvas">¶</a>
 					
 					
@@ -7995,7 +7990,7 @@ Canvas returns an HTML element that is used to draw graphics on the fly.
 		
 			
 			
-			<h2 id="HTMLCaption">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=223324:229915#L7548" id="ref-link-L7548">HTMLCaption</a>
+			<h2 id="HTMLCaption">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=223091:229682#L7540" id="ref-link-L7540">HTMLCaption</a>
 				<a class="permalink" href="#HTMLCaption" id="ref-link-HTMLCaption">¶</a>
 				
 				
@@ -8171,7 +8166,7 @@ HTMLCaption is the interface that describes a &lt;caption&gt; HTML element.
 
 			
 				
-				<h3 id="Caption">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=229982:230008#L7706" id="ref-link-L7706">Caption</a>
+				<h3 id="Caption">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=229749:229775#L7698" id="ref-link-L7698">Caption</a>
 					<a class="permalink" href="#Caption" id="ref-link-Caption">¶</a>
 					
 					
@@ -8189,7 +8184,7 @@ Caption returns an HTML element that defines a table caption.
 		
 			
 			
-			<h2 id="HTMLCite">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=236547:242982#L7983" id="ref-link-L7983">HTMLCite</a>
+			<h2 id="HTMLCite">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=236314:242749#L7975" id="ref-link-L7975">HTMLCite</a>
 				<a class="permalink" href="#HTMLCite" id="ref-link-HTMLCite">¶</a>
 				
 				
@@ -8365,7 +8360,7 @@ HTMLCite is the interface that describes a &lt;cite&gt; HTML element.
 
 			
 				
-				<h3 id="Cite">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=243050:243070#L8141" id="ref-link-L8141">Cite</a>
+				<h3 id="Cite">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=242817:242837#L8133" id="ref-link-L8133">Cite</a>
 					<a class="permalink" href="#Cite" id="ref-link-Cite">¶</a>
 					
 					
@@ -8383,7 +8378,7 @@ Cite returns an HTML element that defines the title of a work.
 		
 			
 			
-			<h2 id="HTMLCode">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=249294:255729#L8418" id="ref-link-L8418">HTMLCode</a>
+			<h2 id="HTMLCode">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=249061:255496#L8410" id="ref-link-L8410">HTMLCode</a>
 				<a class="permalink" href="#HTMLCode" id="ref-link-HTMLCode">¶</a>
 				
 				
@@ -8559,7 +8554,7 @@ HTMLCode is the interface that describes a &lt;code&gt; HTML element.
 
 			
 				
-				<h3 id="Code">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=255802:255822#L8576" id="ref-link-L8576">Code</a>
+				<h3 id="Code">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=255569:255589#L8568" id="ref-link-L8568">Code</a>
 					<a class="permalink" href="#Code" id="ref-link-Code">¶</a>
 					
 					
@@ -8577,7 +8572,7 @@ Code returns an HTML element that defines a piece of computer code.
 		
 			
 			
-			<h2 id="HTMLCol">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=262044:268302#L8853" id="ref-link-L8853">HTMLCol</a>
+			<h2 id="HTMLCol">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=261811:268069#L8845" id="ref-link-L8845">HTMLCol</a>
 				<a class="permalink" href="#HTMLCol" id="ref-link-HTMLCol">¶</a>
 				
 				
@@ -8750,7 +8745,7 @@ HTMLCol is the interface that describes a &lt;col&gt; HTML element.
 
 			
 				
-				<h3 id="Col">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=268411:268429#L9008" id="ref-link-L9008">Col</a>
+				<h3 id="Col">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=268178:268196#L9000" id="ref-link-L9000">Col</a>
 					<a class="permalink" href="#Col" id="ref-link-Col">¶</a>
 					
 					
@@ -8768,7 +8763,7 @@ Col returns an HTML element that specifies column properties for each column wit
 		
 			
 			
-			<h2 id="HTMLColGroup">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=274475:281195#L9281" id="ref-link-L9281">HTMLColGroup</a>
+			<h2 id="HTMLColGroup">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=274242:280962#L9273" id="ref-link-L9273">HTMLColGroup</a>
 				<a class="permalink" href="#HTMLColGroup" id="ref-link-HTMLColGroup">¶</a>
 				
 				
@@ -8947,7 +8942,7 @@ HTMLColGroup is the interface that describes a &lt;colgroup&gt; HTML element.
 
 			
 				
-				<h3 id="ColGroup">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=281306:281334#L9442" id="ref-link-L9442">ColGroup</a>
+				<h3 id="ColGroup">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=281073:281101#L9434" id="ref-link-L9434">ColGroup</a>
 					<a class="permalink" href="#ColGroup" id="ref-link-ColGroup">¶</a>
 					
 					
@@ -8965,7 +8960,7 @@ ColGroup returns an HTML element that specifies a group of one or more columns i
 		
 			
 			
-			<h2 id="HTMLData">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=288063:290162#L9724" id="ref-link-L9724">HTMLData</a>
+			<h2 id="HTMLData">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=287830:289929#L9716" id="ref-link-L9716">HTMLData</a>
 				<a class="permalink" href="#HTMLData" id="ref-link-HTMLData">¶</a>
 				
 				
@@ -9048,7 +9043,7 @@ HTMLData is the interface that describes a &lt;data&gt; HTML element.
 
 			
 				
-				<h3 id="Data">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=290262:290282#L9789" id="ref-link-L9789">Data</a>
+				<h3 id="Data">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=290029:290049#L9781" id="ref-link-L9781">Data</a>
 					<a class="permalink" href="#Data" id="ref-link-Data">¶</a>
 					
 					
@@ -9066,7 +9061,7 @@ Data returns an HTML element that links the given content with a machine-readabl
 		
 			
 			
-			<h2 id="HTMLDataList">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=292343:298986#L9911" id="ref-link-L9911">HTMLDataList</a>
+			<h2 id="HTMLDataList">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=292110:298753#L9903" id="ref-link-L9903">HTMLDataList</a>
 				<a class="permalink" href="#HTMLDataList" id="ref-link-HTMLDataList">¶</a>
 				
 				
@@ -9242,7 +9237,7 @@ HTMLDataList is the interface that describes a &lt;datalist&gt; HTML element.
 
 			
 				
-				<h3 id="DataList">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=299089:299117#L10069" id="ref-link-L10069">DataList</a>
+				<h3 id="DataList">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=298856:298884#L10061" id="ref-link-L10061">DataList</a>
 					<a class="permalink" href="#DataList" id="ref-link-DataList">¶</a>
 					
 					
@@ -9260,7 +9255,7 @@ DataList returns an HTML element that specifies a list of pre-defined options fo
 		
 			
 			
-			<h2 id="HTMLDd">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=305757:312088#L10346" id="ref-link-L10346">HTMLDd</a>
+			<h2 id="HTMLDd">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=305524:311855#L10338" id="ref-link-L10338">HTMLDd</a>
 				<a class="permalink" href="#HTMLDd" id="ref-link-HTMLDd">¶</a>
 				
 				
@@ -9436,7 +9431,7 @@ HTMLDd is the interface that describes a &lt;dd&gt; HTML element.
 
 			
 				
-				<h3 id="Dd">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=312186:312202#L10504" id="ref-link-L10504">Dd</a>
+				<h3 id="Dd">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=311953:311969#L10496" id="ref-link-L10496">Dd</a>
 					<a class="permalink" href="#Dd" id="ref-link-Dd">¶</a>
 					
 					
@@ -9454,7 +9449,7 @@ Dd returns an HTML element that defines a description/value of a term in a descr
 		
 			
 			
-			<h2 id="HTMLDel">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=318214:324766#L10781" id="ref-link-L10781">HTMLDel</a>
+			<h2 id="HTMLDel">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=317981:324533#L10773" id="ref-link-L10773">HTMLDel</a>
 				<a class="permalink" href="#HTMLDel" id="ref-link-HTMLDel">¶</a>
 				
 				
@@ -9636,7 +9631,7 @@ HTMLDel is the interface that describes a &lt;del&gt; HTML element.
 
 			
 				
-				<h3 id="Del">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=324856:324874#L10945" id="ref-link-L10945">Del</a>
+				<h3 id="Del">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=324623:324641#L10937" id="ref-link-L10937">Del</a>
 					<a class="permalink" href="#Del" id="ref-link-Del">¶</a>
 					
 					
@@ -9654,7 +9649,7 @@ Del returns an HTML element that defines text that has been deleted from a docum
 		
 			
 			
-			<h2 id="HTMLDetails">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=331163:338004#L11232" id="ref-link-L11232">HTMLDetails</a>
+			<h2 id="HTMLDetails">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=330930:337771#L11224" id="ref-link-L11224">HTMLDetails</a>
 				<a class="permalink" href="#HTMLDetails" id="ref-link-HTMLDetails">¶</a>
 				
 				
@@ -9836,7 +9831,7 @@ HTMLDetails is the interface that describes a &lt;details&gt; HTML element.
 
 			
 				
-				<h3 id="Details">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=338105:338131#L11396" id="ref-link-L11396">Details</a>
+				<h3 id="Details">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=337872:337898#L11388" id="ref-link-L11388">Details</a>
 					<a class="permalink" href="#Details" id="ref-link-Details">¶</a>
 					
 					
@@ -9854,7 +9849,7 @@ Details returns an HTML element that defines additional details that the user ca
 		
 			
 			
-			<h2 id="HTMLDfn">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=344890:351273#L11683" id="ref-link-L11683">HTMLDfn</a>
+			<h2 id="HTMLDfn">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=344657:351040#L11675" id="ref-link-L11675">HTMLDfn</a>
 				<a class="permalink" href="#HTMLDfn" id="ref-link-HTMLDfn">¶</a>
 				
 				
@@ -10030,7 +10025,7 @@ HTMLDfn is the interface that describes a &lt;dfn&gt; HTML element.
 
 			
 				
-				<h3 id="Dfn">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=351355:351373#L11841" id="ref-link-L11841">Dfn</a>
+				<h3 id="Dfn">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=351122:351140#L11833" id="ref-link-L11833">Dfn</a>
 					<a class="permalink" href="#Dfn" id="ref-link-Dfn">¶</a>
 					
 					
@@ -10048,7 +10043,7 @@ Dfn returns an HTML element that represents the defining instance of a term.
 		
 			
 			
-			<h2 id="HTMLDialog">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=357496:364135#L12118" id="ref-link-L12118">HTMLDialog</a>
+			<h2 id="HTMLDialog">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=357263:363902#L12110" id="ref-link-L12110">HTMLDialog</a>
 				<a class="permalink" href="#HTMLDialog" id="ref-link-HTMLDialog">¶</a>
 				
 				
@@ -10227,7 +10222,7 @@ HTMLDialog is the interface that describes a &lt;dialog&gt; HTML element.
 
 			
 				
-				<h3 id="Dialog">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=364208:364232#L12279" id="ref-link-L12279">Dialog</a>
+				<h3 id="Dialog">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=363975:363999#L12271" id="ref-link-L12271">Dialog</a>
 					<a class="permalink" href="#Dialog" id="ref-link-Dialog">¶</a>
 					
 					
@@ -10245,7 +10240,7 @@ Dialog returns an HTML element that defines a dialog box or window.
 		
 			
 			
-			<h2 id="HTMLDiv">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=370746:377129#L12561" id="ref-link-L12561">HTMLDiv</a>
+			<h2 id="HTMLDiv">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=370513:376896#L12553" id="ref-link-L12553">HTMLDiv</a>
 				<a class="permalink" href="#HTMLDiv" id="ref-link-HTMLDiv">¶</a>
 				
 				
@@ -10421,7 +10416,7 @@ HTMLDiv is the interface that describes a &lt;div&gt; HTML element.
 
 			
 				
-				<h3 id="Div">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=377200:377218#L12719" id="ref-link-L12719">Div</a>
+				<h3 id="Div">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=376967:376985#L12711" id="ref-link-L12711">Div</a>
 					<a class="permalink" href="#Div" id="ref-link-Div">¶</a>
 					
 					
@@ -10439,7 +10434,7 @@ Div returns an HTML element that defines a section in a document.
 		
 			
 			
-			<h2 id="HTMLDl">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=383333:389664#L12996" id="ref-link-L12996">HTMLDl</a>
+			<h2 id="HTMLDl">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=383100:389431#L12988" id="ref-link-L12988">HTMLDl</a>
 				<a class="permalink" href="#HTMLDl" id="ref-link-HTMLDl">¶</a>
 				
 				
@@ -10615,7 +10610,7 @@ HTMLDl is the interface that describes a &lt;dl&gt; HTML element.
 
 			
 				
-				<h3 id="Dl">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=389729:389745#L13154" id="ref-link-L13154">Dl</a>
+				<h3 id="Dl">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=389496:389512#L13146" id="ref-link-L13146">Dl</a>
 					<a class="permalink" href="#Dl" id="ref-link-Dl">¶</a>
 					
 					
@@ -10633,7 +10628,7 @@ Dl returns an HTML element that defines a description list.
 		
 			
 			
-			<h2 id="HTMLDt">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=395755:402086#L13431" id="ref-link-L13431">HTMLDt</a>
+			<h2 id="HTMLDt">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=395522:401853#L13423" id="ref-link-L13423">HTMLDt</a>
 				<a class="permalink" href="#HTMLDt" id="ref-link-HTMLDt">¶</a>
 				
 				
@@ -10809,7 +10804,7 @@ HTMLDt is the interface that describes a &lt;dt&gt; HTML element.
 
 			
 				
-				<h3 id="Dt">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=402166:402182#L13589" id="ref-link-L13589">Dt</a>
+				<h3 id="Dt">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=401933:401949#L13581" id="ref-link-L13581">Dt</a>
 					<a class="permalink" href="#Dt" id="ref-link-Dt">¶</a>
 					
 					
@@ -10827,7 +10822,7 @@ Dt returns an HTML element that defines a term/name in a description list.
 		
 			
 			
-			<h2 id="HTMLEm">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=408192:414523#L13866" id="ref-link-L13866">HTMLEm</a>
+			<h2 id="HTMLEm">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=407959:414290#L13858" id="ref-link-L13858">HTMLEm</a>
 				<a class="permalink" href="#HTMLEm" id="ref-link-HTMLEm">¶</a>
 				
 				
@@ -11003,7 +10998,7 @@ HTMLEm is the interface that describes a &lt;em&gt; HTML element.
 
 			
 				
-				<h3 id="Em">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=414585:414601#L14024" id="ref-link-L14024">Em</a>
+				<h3 id="Em">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=414352:414368#L14016" id="ref-link-L14016">Em</a>
 					<a class="permalink" href="#Em" id="ref-link-Em">¶</a>
 					
 					
@@ -11021,7 +11016,7 @@ Em returns an HTML element that defines emphasized text.
 		
 			
 			
-			<h2 id="HTMLEmbed">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=420617:430986#L14301" id="ref-link-L14301">HTMLEmbed</a>
+			<h2 id="HTMLEmbed">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=420384:430753#L14293" id="ref-link-L14293">HTMLEmbed</a>
 				<a class="permalink" href="#HTMLEmbed" id="ref-link-HTMLEmbed">¶</a>
 				
 				
@@ -11272,7 +11267,7 @@ HTMLEmbed is the interface that describes a &lt;embed&gt; HTML element.
 
 			
 				
-				<h3 id="Embed">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=431086:431108#L14534" id="ref-link-L14534">Embed</a>
+				<h3 id="Embed">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=430853:430875#L14526" id="ref-link-L14526">Embed</a>
 					<a class="permalink" href="#Embed" id="ref-link-Embed">¶</a>
 					
 					
@@ -11290,7 +11285,7 @@ Embed returns an HTML element that defines a container for an external (non-HTML
 		
 			
 			
-			<h2 id="HTMLFieldSet">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=440791:447722#L14937" id="ref-link-L14937">HTMLFieldSet</a>
+			<h2 id="HTMLFieldSet">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=440558:447489#L14929" id="ref-link-L14929">HTMLFieldSet</a>
 				<a class="permalink" href="#HTMLFieldSet" id="ref-link-HTMLFieldSet">¶</a>
 				
 				
@@ -11475,7 +11470,7 @@ HTMLFieldSet is the interface that describes a &lt;fieldset&gt; HTML element.
 
 			
 				
-				<h3 id="FieldSet">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=447800:447828#L15104" id="ref-link-L15104">FieldSet</a>
+				<h3 id="FieldSet">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=447567:447595#L15096" id="ref-link-L15096">FieldSet</a>
 					<a class="permalink" href="#FieldSet" id="ref-link-FieldSet">¶</a>
 					
 					
@@ -11493,7 +11488,7 @@ FieldSet returns an HTML element that groups related elements in a form.
 		
 			
 			
-			<h2 id="HTMLFigCaption">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=454754:461501#L15396" id="ref-link-L15396">HTMLFigCaption</a>
+			<h2 id="HTMLFigCaption">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=454521:461268#L15388" id="ref-link-L15388">HTMLFigCaption</a>
 				<a class="permalink" href="#HTMLFigCaption" id="ref-link-HTMLFigCaption">¶</a>
 				
 				
@@ -11669,7 +11664,7 @@ HTMLFigCaption is the interface that describes a &lt;figcaption&gt; HTML element
 
 			
 				
-				<h3 id="FigCaption">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=461586:461618#L15554" id="ref-link-L15554">FigCaption</a>
+				<h3 id="FigCaption">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=461353:461385#L15546" id="ref-link-L15546">FigCaption</a>
 					<a class="permalink" href="#FigCaption" id="ref-link-FigCaption">¶</a>
 					
 					
@@ -11687,7 +11682,7 @@ FigCaption returns an HTML element that defines a caption for a figure element.
 		
 			
 			
-			<h2 id="HTMLFigure">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=468476:475015#L15831" id="ref-link-L15831">HTMLFigure</a>
+			<h2 id="HTMLFigure">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=468243:474782#L15823" id="ref-link-L15823">HTMLFigure</a>
 				<a class="permalink" href="#HTMLFigure" id="ref-link-HTMLFigure">¶</a>
 				
 				
@@ -11863,7 +11858,7 @@ HTMLFigure is the interface that describes a &lt;figure&gt; HTML element.
 
 			
 				
-				<h3 id="Figure">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=475090:475114#L15989" id="ref-link-L15989">Figure</a>
+				<h3 id="Figure">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=474857:474881#L15981" id="ref-link-L15981">Figure</a>
 					<a class="permalink" href="#Figure" id="ref-link-Figure">¶</a>
 					
 					
@@ -11881,7 +11876,7 @@ Figure returns an HTML element that specifies self-contained content.
 		
 			
 			
-			<h2 id="HTMLFooter">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=481552:488091#L16266" id="ref-link-L16266">HTMLFooter</a>
+			<h2 id="HTMLFooter">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=481319:487858#L16258" id="ref-link-L16258">HTMLFooter</a>
 				<a class="permalink" href="#HTMLFooter" id="ref-link-HTMLFooter">¶</a>
 				
 				
@@ -12057,7 +12052,7 @@ HTMLFooter is the interface that describes a &lt;footer&gt; HTML element.
 
 			
 				
-				<h3 id="Footer">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=488176:488200#L16424" id="ref-link-L16424">Footer</a>
+				<h3 id="Footer">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=487943:487967#L16416" id="ref-link-L16416">Footer</a>
 					<a class="permalink" href="#Footer" id="ref-link-Footer">¶</a>
 					
 					
@@ -12075,7 +12070,7 @@ Footer returns an HTML element that defines a footer for a document or section.
 		
 			
 			
-			<h2 id="HTMLForm">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=494634:501963#L16701" id="ref-link-L16701">HTMLForm</a>
+			<h2 id="HTMLForm">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=494401:501730#L16693" id="ref-link-L16693">HTMLForm</a>
 				<a class="permalink" href="#HTMLForm" id="ref-link-HTMLForm">¶</a>
 				
 				
@@ -12275,7 +12270,7 @@ HTMLForm is the interface that describes a &lt;form&gt; HTML element.
 
 			
 				
-				<h3 id="Form">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=502039:502059#L16883" id="ref-link-L16883">Form</a>
+				<h3 id="Form">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=501806:501826#L16875" id="ref-link-L16875">Form</a>
 					<a class="permalink" href="#Form" id="ref-link-Form">¶</a>
 					
 					
@@ -12293,7 +12288,7 @@ Form returns an HTML element that defines an HTML form for user input.
 		
 			
 			
-			<h2 id="HTMLH1">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=509014:515345#L17205" id="ref-link-L17205">HTMLH1</a>
+			<h2 id="HTMLH1">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=508781:515112#L17197" id="ref-link-L17197">HTMLH1</a>
 				<a class="permalink" href="#HTMLH1" id="ref-link-HTMLH1">¶</a>
 				
 				
@@ -12469,7 +12464,7 @@ HTMLH1 is the interface that describes a &lt;h1&gt; HTML element.
 
 			
 				
-				<h3 id="H1">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=515404:515420#L17363" id="ref-link-L17363">H1</a>
+				<h3 id="H1">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=515171:515187#L17355" id="ref-link-L17355">H1</a>
 					<a class="permalink" href="#H1" id="ref-link-H1">¶</a>
 					
 					
@@ -12487,7 +12482,7 @@ H1 returns an HTML element that defines HTML heading.
 		
 			
 			
-			<h2 id="HTMLH2">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=521430:527761#L17640" id="ref-link-L17640">HTMLH2</a>
+			<h2 id="HTMLH2">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=521197:527528#L17632" id="ref-link-L17632">HTMLH2</a>
 				<a class="permalink" href="#HTMLH2" id="ref-link-HTMLH2">¶</a>
 				
 				
@@ -12663,7 +12658,7 @@ HTMLH2 is the interface that describes a &lt;h2&gt; HTML element.
 
 			
 				
-				<h3 id="H2">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=527820:527836#L17798" id="ref-link-L17798">H2</a>
+				<h3 id="H2">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=527587:527603#L17790" id="ref-link-L17790">H2</a>
 					<a class="permalink" href="#H2" id="ref-link-H2">¶</a>
 					
 					
@@ -12681,7 +12676,7 @@ H2 returns an HTML element that defines HTML heading.
 		
 			
 			
-			<h2 id="HTMLH3">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=533846:540177#L18075" id="ref-link-L18075">HTMLH3</a>
+			<h2 id="HTMLH3">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=533613:539944#L18067" id="ref-link-L18067">HTMLH3</a>
 				<a class="permalink" href="#HTMLH3" id="ref-link-HTMLH3">¶</a>
 				
 				
@@ -12857,7 +12852,7 @@ HTMLH3 is the interface that describes a &lt;h3&gt; HTML element.
 
 			
 				
-				<h3 id="H3">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=540236:540252#L18233" id="ref-link-L18233">H3</a>
+				<h3 id="H3">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=540003:540019#L18225" id="ref-link-L18225">H3</a>
 					<a class="permalink" href="#H3" id="ref-link-H3">¶</a>
 					
 					
@@ -12875,7 +12870,7 @@ H3 returns an HTML element that defines HTML heading.
 		
 			
 			
-			<h2 id="HTMLH4">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=546262:552593#L18510" id="ref-link-L18510">HTMLH4</a>
+			<h2 id="HTMLH4">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=546029:552360#L18502" id="ref-link-L18502">HTMLH4</a>
 				<a class="permalink" href="#HTMLH4" id="ref-link-HTMLH4">¶</a>
 				
 				
@@ -13051,7 +13046,7 @@ HTMLH4 is the interface that describes a &lt;h4&gt; HTML element.
 
 			
 				
-				<h3 id="H4">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=552652:552668#L18668" id="ref-link-L18668">H4</a>
+				<h3 id="H4">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=552419:552435#L18660" id="ref-link-L18660">H4</a>
 					<a class="permalink" href="#H4" id="ref-link-H4">¶</a>
 					
 					
@@ -13069,7 +13064,7 @@ H4 returns an HTML element that defines HTML heading.
 		
 			
 			
-			<h2 id="HTMLH5">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=558678:565009#L18945" id="ref-link-L18945">HTMLH5</a>
+			<h2 id="HTMLH5">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=558445:564776#L18937" id="ref-link-L18937">HTMLH5</a>
 				<a class="permalink" href="#HTMLH5" id="ref-link-HTMLH5">¶</a>
 				
 				
@@ -13245,7 +13240,7 @@ HTMLH5 is the interface that describes a &lt;h5&gt; HTML element.
 
 			
 				
-				<h3 id="H5">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=565068:565084#L19103" id="ref-link-L19103">H5</a>
+				<h3 id="H5">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=564835:564851#L19095" id="ref-link-L19095">H5</a>
 					<a class="permalink" href="#H5" id="ref-link-H5">¶</a>
 					
 					
@@ -13263,7 +13258,7 @@ H5 returns an HTML element that defines HTML heading.
 		
 			
 			
-			<h2 id="HTMLH6">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=571094:577425#L19380" id="ref-link-L19380">HTMLH6</a>
+			<h2 id="HTMLH6">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=570861:577192#L19372" id="ref-link-L19372">HTMLH6</a>
 				<a class="permalink" href="#HTMLH6" id="ref-link-HTMLH6">¶</a>
 				
 				
@@ -13439,7 +13434,7 @@ HTMLH6 is the interface that describes a &lt;h6&gt; HTML element.
 
 			
 				
-				<h3 id="H6">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=577484:577500#L19538" id="ref-link-L19538">H6</a>
+				<h3 id="H6">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=577251:577267#L19530" id="ref-link-L19530">H6</a>
 					<a class="permalink" href="#H6" id="ref-link-H6">¶</a>
 					
 					
@@ -13457,7 +13452,7 @@ H6 returns an HTML element that defines HTML heading.
 		
 			
 			
-			<h2 id="HTMLHead">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=583514:585535#L19815" id="ref-link-L19815">HTMLHead</a>
+			<h2 id="HTMLHead">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=583281:585302#L19807" id="ref-link-L19807">HTMLHead</a>
 				<a class="permalink" href="#HTMLHead" id="ref-link-HTMLHead">¶</a>
 				
 				
@@ -13537,7 +13532,7 @@ HTMLHead is the interface that describes a &lt;head&gt; HTML element.
 
 			
 				
-				<h3 id="Head">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=585614:585634#L19877" id="ref-link-L19877">Head</a>
+				<h3 id="Head">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=585381:585401#L19869" id="ref-link-L19869">Head</a>
 					<a class="permalink" href="#Head" id="ref-link-Head">¶</a>
 					
 					
@@ -13555,7 +13550,7 @@ Head returns an HTML element that defines information about the document.
 		
 			
 			
-			<h2 id="HTMLHeader">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=587604:594143#L19994" id="ref-link-L19994">HTMLHeader</a>
+			<h2 id="HTMLHeader">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=587371:593910#L19986" id="ref-link-L19986">HTMLHeader</a>
 				<a class="permalink" href="#HTMLHeader" id="ref-link-HTMLHeader">¶</a>
 				
 				
@@ -13731,7 +13726,7 @@ HTMLHeader is the interface that describes a &lt;header&gt; HTML element.
 
 			
 				
-				<h3 id="Header">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=594228:594252#L20152" id="ref-link-L20152">Header</a>
+				<h3 id="Header">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=593995:594019#L20144" id="ref-link-L20144">Header</a>
 					<a class="permalink" href="#Header" id="ref-link-Header">¶</a>
 					
 					
@@ -13749,7 +13744,7 @@ Header returns an HTML element that defines a header for a document or section.
 		
 			
 			
-			<h2 id="HTMLHr">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=600682:606818#L20429" id="ref-link-L20429">HTMLHr</a>
+			<h2 id="HTMLHr">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=600449:606585#L20421" id="ref-link-L20421">HTMLHr</a>
 				<a class="permalink" href="#HTMLHr" id="ref-link-HTMLHr">¶</a>
 				
 				
@@ -13919,7 +13914,7 @@ HTMLHr is the interface that describes a &lt;hr&gt; HTML element.
 
 			
 				
-				<h3 id="Hr">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=606897:606913#L20581" id="ref-link-L20581">Hr</a>
+				<h3 id="Hr">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=606664:606680#L20573" id="ref-link-L20573">Hr</a>
 					<a class="permalink" href="#Hr" id="ref-link-Hr">¶</a>
 					
 					
@@ -13937,7 +13932,7 @@ Hr returns an HTML element that defines a thematic change in the content.
 		
 			
 			
-			<h2 id="HTMLHtml">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=612775:614796#L20849" id="ref-link-L20849">HTMLHtml</a>
+			<h2 id="HTMLHtml">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=612542:614400#L20841" id="ref-link-L20841">HTMLHtml</a>
 				<a class="permalink" href="#HTMLHtml" id="ref-link-HTMLHtml">¶</a>
 				
 				
@@ -13948,12 +13943,6 @@ HTMLHtml is the interface that describes a &lt;html&gt; HTML element.
 
 			<pre>type HTMLHtml interface {
     <a href="#UI" id="ref-link-UI">UI</a>
-
-    <span class="comment">// Body set the content of the element.</span>
-    Body(elems ...<a href="#UI" id="ref-link-UI">UI</a>) <a href="#HTMLHtml" id="ref-link-HTMLHtml">HTMLHtml</a>
-
-    <span class="comment">// Text sets the content of the element with a text node containing the stringified given value.</span>
-    Text(v interface{}) <a href="#HTMLHtml" id="ref-link-HTMLHtml">HTMLHtml</a>
 
     <span class="comment">// AccessKey specifies a shortcut key to activate/focus an element.</span>
     AccessKey(v <a href="/pkg/builtin/#string" id="ref-link-string">string</a>) <a href="#HTMLHtml" id="ref-link-HTMLHtml">HTMLHtml</a>
@@ -14005,6 +13994,7 @@ HTMLHtml is the interface that describes a &lt;html&gt; HTML element.
 
     <span class="comment">// Title specifies extra information about an element.</span>
     Title(v <a href="/pkg/builtin/#string" id="ref-link-string">string</a>) <a href="#HTMLHtml" id="ref-link-HTMLHtml">HTMLHtml</a>
+    <span class="comment">// contains filtered or unexported methods</span>
 }</pre>
 
 			
@@ -14017,7 +14007,7 @@ HTMLHtml is the interface that describes a &lt;html&gt; HTML element.
 
 			
 				
-				<h3 id="Html">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=614873:614893#L20911" id="ref-link-L20911">Html</a>
+				<h3 id="Html">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=614477:614497#L20899" id="ref-link-L20899">Html</a>
 					<a class="permalink" href="#Html" id="ref-link-Html">¶</a>
 					
 					
@@ -14035,7 +14025,7 @@ Html returns an HTML element that defines the root of an HTML document.
 		
 			
 			
-			<h2 id="HTMLI">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=616853:623132#L21028" id="ref-link-L21028">HTMLI</a>
+			<h2 id="HTMLI">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=616387:622666#L21012" id="ref-link-L21012">HTMLI</a>
 				<a class="permalink" href="#HTMLI" id="ref-link-HTMLI">¶</a>
 				
 				
@@ -14211,7 +14201,7 @@ HTMLI is the interface that describes a &lt;i&gt; HTML element.
 
 			
 				
-				<h3 id="I">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=623222:623236#L21186" id="ref-link-L21186">I</a>
+				<h3 id="I">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=622756:622770#L21170" id="ref-link-L21170">I</a>
 					<a class="permalink" href="#I" id="ref-link-I">¶</a>
 					
 					
@@ -14229,7 +14219,7 @@ I returns an HTML element that defines a part of text in an alternate voice or m
 		
 			
 			
-			<h2 id="HTMLIFrame">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=629149:636878#L21463" id="ref-link-L21463">HTMLIFrame</a>
+			<h2 id="HTMLIFrame">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=628683:636518#L21447" id="ref-link-L21447">HTMLIFrame</a>
 				<a class="permalink" href="#HTMLIFrame" id="ref-link-HTMLIFrame">¶</a>
 				
 				
@@ -14291,6 +14281,9 @@ HTMLIFrame is the interface that describes a &lt;iframe&gt; HTML element.
 
     <span class="comment">// Lang specifies the language of the element&#39;s content.</span>
     Lang(v <a href="/pkg/builtin/#string" id="ref-link-string">string</a>) <a href="#HTMLIFrame" id="ref-link-HTMLIFrame">HTMLIFrame</a>
+
+    <span class="comment">// Loading indicates how the browser should load the iframe (eager|lazy).</span>
+    Loading(v <a href="/pkg/builtin/#string" id="ref-link-string">string</a>) <a href="#HTMLIFrame" id="ref-link-HTMLIFrame">HTMLIFrame</a>
 
     <span class="comment">// Name specifies the name of the element.</span>
     Name(v <a href="/pkg/builtin/#string" id="ref-link-string">string</a>) <a href="#HTMLIFrame" id="ref-link-HTMLIFrame">HTMLIFrame</a>
@@ -14438,7 +14431,7 @@ HTMLIFrame is the interface that describes a &lt;iframe&gt; HTML element.
 
 			
 				
-				<h3 id="IFrame">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=636944:636968#L21654" id="ref-link-L21654">IFrame</a>
+				<h3 id="IFrame">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=636584:636608#L21641" id="ref-link-L21641">IFrame</a>
 					<a class="permalink" href="#IFrame" id="ref-link-IFrame">¶</a>
 					
 					
@@ -14456,7 +14449,7 @@ IFrame returns an HTML element that defines an inline frame.
 		
 			
 			
-			<h2 id="HTMLImg">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=644533:655364#L21996" id="ref-link-L21996">HTMLImg</a>
+			<h2 id="HTMLImg">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=644263:655094#L21988" id="ref-link-L21988">HTMLImg</a>
 				<a class="permalink" href="#HTMLImg" id="ref-link-HTMLImg">¶</a>
 				
 				
@@ -14725,7 +14718,7 @@ HTMLImg is the interface that describes a &lt;img&gt; HTML element.
 
 			
 				
-				<h3 id="Img">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=655420:655438#L22247" id="ref-link-L22247">Img</a>
+				<h3 id="Img">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=655150:655168#L22239" id="ref-link-L22239">Img</a>
 					<a class="permalink" href="#Img" id="ref-link-Img">¶</a>
 					
 					
@@ -14743,7 +14736,7 @@ Img returns an HTML element that defines an image.
 		
 			
 			
-			<h2 id="HTMLInput">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=665343:674959#L22680" id="ref-link-L22680">HTMLInput</a>
+			<h2 id="HTMLInput">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=665073:674689#L22672" id="ref-link-L22672">HTMLInput</a>
 				<a class="permalink" href="#HTMLInput" id="ref-link-HTMLInput">¶</a>
 				
 				
@@ -15009,7 +15002,7 @@ HTMLInput is the interface that describes a &lt;input&gt; HTML element.
 
 			
 				
-				<h3 id="Input">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=675025:675047#L22928" id="ref-link-L22928">Input</a>
+				<h3 id="Input">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=674755:674777#L22920" id="ref-link-L22920">Input</a>
 					<a class="permalink" href="#Input" id="ref-link-Input">¶</a>
 					
 					
@@ -15027,7 +15020,7 @@ Input returns an HTML element that defines an input control.
 		
 			
 			
-			<h2 id="HTMLIns">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=684085:690468#L23361" id="ref-link-L23361">HTMLIns</a>
+			<h2 id="HTMLIns">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=683815:690198#L23353" id="ref-link-L23353">HTMLIns</a>
 				<a class="permalink" href="#HTMLIns" id="ref-link-HTMLIns">¶</a>
 				
 				
@@ -15203,7 +15196,7 @@ HTMLIns is the interface that describes a &lt;ins&gt; HTML element.
 
 			
 				
-				<h3 id="Ins">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=690561:690579#L23519" id="ref-link-L23519">Ins</a>
+				<h3 id="Ins">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=690291:690309#L23511" id="ref-link-L23511">Ins</a>
 					<a class="permalink" href="#Ins" id="ref-link-Ins">¶</a>
 					
 					
@@ -15221,7 +15214,7 @@ Ins returns an HTML element that defines a text that has been inserted into a do
 		
 			
 			
-			<h2 id="HTMLKbd">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=696696:703079#L23796" id="ref-link-L23796">HTMLKbd</a>
+			<h2 id="HTMLKbd">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=696426:702809#L23788" id="ref-link-L23788">HTMLKbd</a>
 				<a class="permalink" href="#HTMLKbd" id="ref-link-HTMLKbd">¶</a>
 				
 				
@@ -15397,7 +15390,7 @@ HTMLKbd is the interface that describes a &lt;kbd&gt; HTML element.
 
 			
 				
-				<h3 id="Kbd">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=703141:703159#L23954" id="ref-link-L23954">Kbd</a>
+				<h3 id="Kbd">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=702871:702889#L23946" id="ref-link-L23946">Kbd</a>
 					<a class="permalink" href="#Kbd" id="ref-link-Kbd">¶</a>
 					
 					
@@ -15415,7 +15408,7 @@ Kbd returns an HTML element that defines keyboard input.
 		
 			
 			
-			<h2 id="HTMLLabel">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=709280:715957#L24231" id="ref-link-L24231">HTMLLabel</a>
+			<h2 id="HTMLLabel">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=709010:715687#L24223" id="ref-link-L24223">HTMLLabel</a>
 				<a class="permalink" href="#HTMLLabel" id="ref-link-HTMLLabel">¶</a>
 				
 				
@@ -15597,7 +15590,7 @@ HTMLLabel is the interface that describes a &lt;label&gt; HTML element.
 
 			
 				
-				<h3 id="Label">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=716035:716057#L24395" id="ref-link-L24395">Label</a>
+				<h3 id="Label">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=715765:715787#L24387" id="ref-link-L24387">Label</a>
 					<a class="permalink" href="#Label" id="ref-link-Label">¶</a>
 					
 					
@@ -15615,7 +15608,7 @@ Label returns an HTML element that defines a label for an input element.
 		
 			
 			
-			<h2 id="HTMLLegend">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=722552:729091#L24682" id="ref-link-L24682">HTMLLegend</a>
+			<h2 id="HTMLLegend">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=722282:728821#L24674" id="ref-link-L24674">HTMLLegend</a>
 				<a class="permalink" href="#HTMLLegend" id="ref-link-HTMLLegend">¶</a>
 				
 				
@@ -15791,7 +15784,7 @@ HTMLLegend is the interface that describes a &lt;legend&gt; HTML element.
 
 			
 				
-				<h3 id="Legend">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=729174:729198#L24840" id="ref-link-L24840">Legend</a>
+				<h3 id="Legend">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=728904:728928#L24832" id="ref-link-L24832">Legend</a>
 					<a class="permalink" href="#Legend" id="ref-link-Legend">¶</a>
 					
 					
@@ -15809,7 +15802,7 @@ Legend returns an HTML element that defines a caption for a fieldset element.
 		
 			
 			
-			<h2 id="HTMLLi">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=735628:742035#L25117" id="ref-link-L25117">HTMLLi</a>
+			<h2 id="HTMLLi">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=735358:741765#L25109" id="ref-link-L25109">HTMLLi</a>
 				<a class="permalink" href="#HTMLLi" id="ref-link-HTMLLi">¶</a>
 				
 				
@@ -15988,7 +15981,7 @@ HTMLLi is the interface that describes a &lt;li&gt; HTML element.
 
 			
 				
-				<h3 id="Li">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=742093:742109#L25278" id="ref-link-L25278">Li</a>
+				<h3 id="Li">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=741823:741839#L25270" id="ref-link-L25270">Li</a>
 					<a class="permalink" href="#Li" id="ref-link-Li">¶</a>
 					
 					
@@ -16006,7 +15999,7 @@ Li returns an HTML element that defines a list item.
 		
 			
 			
-			<h2 id="HTMLLink">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=748206:755211#L25560" id="ref-link-L25560">HTMLLink</a>
+			<h2 id="HTMLLink">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=747936:754941#L25552" id="ref-link-L25552">HTMLLink</a>
 				<a class="permalink" href="#HTMLLink" id="ref-link-HTMLLink">¶</a>
 				
 				
@@ -16200,7 +16193,7 @@ HTMLLink is the interface that describes a &lt;link&gt; HTML element.
 
 			
 				
-				<h3 id="Link">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=755356:755376#L25736" id="ref-link-L25736">Link</a>
+				<h3 id="Link">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=755086:755106#L25728" id="ref-link-L25728">Link</a>
 					<a class="permalink" href="#Link" id="ref-link-Link">¶</a>
 					
 					
@@ -16218,7 +16211,7 @@ Link returns an HTML element that defines the relationship between a document an
 		
 			
 			
-			<h2 id="HTMLMain">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=762152:768587#L26044" id="ref-link-L26044">HTMLMain</a>
+			<h2 id="HTMLMain">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=761882:768317#L26036" id="ref-link-L26036">HTMLMain</a>
 				<a class="permalink" href="#HTMLMain" id="ref-link-HTMLMain">¶</a>
 				
 				
@@ -16394,7 +16387,7 @@ HTMLMain is the interface that describes a &lt;main&gt; HTML element.
 
 			
 				
-				<h3 id="Main">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=768668:768688#L26202" id="ref-link-L26202">Main</a>
+				<h3 id="Main">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=768398:768418#L26194" id="ref-link-L26194">Main</a>
 					<a class="permalink" href="#Main" id="ref-link-Main">¶</a>
 					
 					
@@ -16412,7 +16405,7 @@ Main returns an HTML element that specifies the main content of a document.
 		
 			
 			
-			<h2 id="HTMLMap">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=774910:781362#L26479" id="ref-link-L26479">HTMLMap</a>
+			<h2 id="HTMLMap">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=774640:781092#L26471" id="ref-link-L26471">HTMLMap</a>
 				<a class="permalink" href="#HTMLMap" id="ref-link-HTMLMap">¶</a>
 				
 				
@@ -16591,7 +16584,7 @@ HTMLMap is the interface that describes a &lt;map&gt; HTML element.
 
 			
 				
-				<h3 id="Map">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=781433:781451#L26640" id="ref-link-L26640">Map</a>
+				<h3 id="Map">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=781163:781181#L26632" id="ref-link-L26632">Map</a>
 					<a class="permalink" href="#Map" id="ref-link-Map">¶</a>
 					
 					
@@ -16609,7 +16602,7 @@ Map returns an HTML element that defines a client-side image-map.
 		
 			
 			
-			<h2 id="HTMLMark">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=787648:794083#L26922" id="ref-link-L26922">HTMLMark</a>
+			<h2 id="HTMLMark">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=787378:793813#L26914" id="ref-link-L26914">HTMLMark</a>
 				<a class="permalink" href="#HTMLMark" id="ref-link-HTMLMark">¶</a>
 				
 				
@@ -16785,7 +16778,7 @@ HTMLMark is the interface that describes a &lt;mark&gt; HTML element.
 
 			
 				
-				<h3 id="Mark">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=794155:794175#L27080" id="ref-link-L27080">Mark</a>
+				<h3 id="Mark">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=793885:793905#L27072" id="ref-link-L27072">Mark</a>
 					<a class="permalink" href="#Mark" id="ref-link-Mark">¶</a>
 					
 					
@@ -16803,7 +16796,7 @@ Mark returns an HTML element that defines marked/highlighted text.
 		
 			
 			
-			<h2 id="HTMLMeta">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=800399:802666#L27357" id="ref-link-L27357">HTMLMeta</a>
+			<h2 id="HTMLMeta">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=800129:802396#L27349" id="ref-link-L27349">HTMLMeta</a>
 				<a class="permalink" href="#HTMLMeta" id="ref-link-HTMLMeta">¶</a>
 				
 				
@@ -16892,7 +16885,7 @@ HTMLMeta is the interface that describes a &lt;meta&gt; HTML element.
 
 			
 				
-				<h3 id="Meta">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=802707:802727#L27428" id="ref-link-L27428">Meta</a>
+				<h3 id="Meta">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=802437:802457#L27420" id="ref-link-L27420">Meta</a>
 					<a class="permalink" href="#Meta" id="ref-link-Meta">¶</a>
 					
 					
@@ -16910,7 +16903,7 @@ Meta returns an HTML element that .
 		
 			
 			
-			<h2 id="HTMLMeter">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=804965:812045#L27561" id="ref-link-L27561">HTMLMeter</a>
+			<h2 id="HTMLMeter">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=804695:811775#L27553" id="ref-link-L27553">HTMLMeter</a>
 				<a class="permalink" href="#HTMLMeter" id="ref-link-HTMLMeter">¶</a>
 				
 				
@@ -17107,7 +17100,7 @@ HTMLMeter is the interface that describes a &lt;meter&gt; HTML element.
 
 			
 				
-				<h3 id="Meter">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=812146:812168#L27740" id="ref-link-L27740">Meter</a>
+				<h3 id="Meter">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=811876:811898#L27732" id="ref-link-L27732">Meter</a>
 					<a class="permalink" href="#Meter" id="ref-link-Meter">¶</a>
 					
 					
@@ -17125,7 +17118,7 @@ Meter returns an HTML element that defines a scalar measurement within a known r
 		
 			
 			
-			<h2 id="HTMLNav">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=819089:825472#L28052" id="ref-link-L28052">HTMLNav</a>
+			<h2 id="HTMLNav">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=818819:825202#L28044" id="ref-link-L28044">HTMLNav</a>
 				<a class="permalink" href="#HTMLNav" id="ref-link-HTMLNav">¶</a>
 				
 				
@@ -17301,7 +17294,7 @@ HTMLNav is the interface that describes a &lt;nav&gt; HTML element.
 
 			
 				
-				<h3 id="Nav">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=825536:825554#L28210" id="ref-link-L28210">Nav</a>
+				<h3 id="Nav">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=825266:825284#L28202" id="ref-link-L28202">Nav</a>
 					<a class="permalink" href="#Nav" id="ref-link-Nav">¶</a>
 					
 					
@@ -17319,7 +17312,7 @@ Nav returns an HTML element that defines navigation links.
 		
 			
 			
-			<h2 id="HTMLNoScript">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=831681:833782#L28487" id="ref-link-L28487">HTMLNoScript</a>
+			<h2 id="HTMLNoScript">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=831411:833512#L28479" id="ref-link-L28479">HTMLNoScript</a>
 				<a class="permalink" href="#HTMLNoScript" id="ref-link-HTMLNoScript">¶</a>
 				
 				
@@ -17399,7 +17392,7 @@ HTMLNoScript is the interface that describes a &lt;noscript&gt; HTML element.
 
 			
 				
-				<h3 id="NoScript">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=833905:833933#L28549" id="ref-link-L28549">NoScript</a>
+				<h3 id="NoScript">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=833635:833663#L28541" id="ref-link-L28541">NoScript</a>
 					<a class="permalink" href="#NoScript" id="ref-link-NoScript">¶</a>
 					
 					
@@ -17417,7 +17410,7 @@ NoScript returns an HTML element that defines an alternate content for users tha
 		
 			
 			
-			<h2 id="HTMLObject">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=836067:846993#L28666" id="ref-link-L28666">HTMLObject</a>
+			<h2 id="HTMLObject">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=835797:846723#L28658" id="ref-link-L28658">HTMLObject</a>
 				<a class="permalink" href="#HTMLObject" id="ref-link-HTMLObject">¶</a>
 				
 				
@@ -17683,7 +17676,7 @@ HTMLObject is the interface that describes a &lt;object&gt; HTML element.
 
 			
 				
-				<h3 id="Object">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=847062:847086#L28914" id="ref-link-L28914">Object</a>
+				<h3 id="Object">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=846792:846816#L28906" id="ref-link-L28906">Object</a>
 					<a class="permalink" href="#Object" id="ref-link-Object">¶</a>
 					
 					
@@ -17701,7 +17694,7 @@ Object returns an HTML element that defines an embedded object.
 		
 			
 			
-			<h2 id="HTMLOl">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=857338:863914#L29341" id="ref-link-L29341">HTMLOl</a>
+			<h2 id="HTMLOl">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=857068:863644#L29333" id="ref-link-L29333">HTMLOl</a>
 				<a class="permalink" href="#HTMLOl" id="ref-link-HTMLOl">¶</a>
 				
 				
@@ -17886,7 +17879,7 @@ HTMLOl is the interface that describes a &lt;ol&gt; HTML element.
 
 			
 				
-				<h3 id="Ol">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=863976:863992#L29508" id="ref-link-L29508">Ol</a>
+				<h3 id="Ol">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=863706:863722#L29500" id="ref-link-L29500">Ol</a>
 					<a class="permalink" href="#Ol" id="ref-link-Ol">¶</a>
 					
 					
@@ -17904,7 +17897,7 @@ Ol returns an HTML element that defines an ordered list.
 		
 			
 			
-			<h2 id="HTMLOptGroup">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=870247:877093#L29800" id="ref-link-L29800">HTMLOptGroup</a>
+			<h2 id="HTMLOptGroup">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=869977:876823#L29792" id="ref-link-L29792">HTMLOptGroup</a>
 				<a class="permalink" href="#HTMLOptGroup" id="ref-link-HTMLOptGroup">¶</a>
 				
 				
@@ -18086,7 +18079,7 @@ HTMLOptGroup is the interface that describes a &lt;optgroup&gt; HTML element.
 
 			
 				
-				<h3 id="OptGroup">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=877192:877220#L29964" id="ref-link-L29964">OptGroup</a>
+				<h3 id="OptGroup">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=876922:876950#L29956" id="ref-link-L29956">OptGroup</a>
 					<a class="permalink" href="#OptGroup" id="ref-link-OptGroup">¶</a>
 					
 					
@@ -18104,7 +18097,7 @@ OptGroup returns an HTML element that defines a group of related options in a dr
 		
 			
 			
-			<h2 id="HTMLOption">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=884052:890982#L30251" id="ref-link-L30251">HTMLOption</a>
+			<h2 id="HTMLOption">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=883782:890712#L30243" id="ref-link-L30243">HTMLOption</a>
 				<a class="permalink" href="#HTMLOption" id="ref-link-HTMLOption">¶</a>
 				
 				
@@ -18292,7 +18285,7 @@ HTMLOption is the interface that describes a &lt;option&gt; HTML element.
 
 			
 				
-				<h3 id="Option">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=891062:891086#L30421" id="ref-link-L30421">Option</a>
+				<h3 id="Option">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=890792:890816#L30413" id="ref-link-L30413">Option</a>
 					<a class="permalink" href="#Option" id="ref-link-Option">¶</a>
 					
 					
@@ -18310,7 +18303,7 @@ Option returns an HTML element that defines an option in a drop-down list.
 		
 			
 			
-			<h2 id="HTMLOutput">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=897881:904684#L30718" id="ref-link-L30718">HTMLOutput</a>
+			<h2 id="HTMLOutput">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=897611:904414#L30710" id="ref-link-L30710">HTMLOutput</a>
 				<a class="permalink" href="#HTMLOutput" id="ref-link-HTMLOutput">¶</a>
 				
 				
@@ -18495,7 +18488,7 @@ HTMLOutput is the interface that describes a &lt;output&gt; HTML element.
 
 			
 				
-				<h3 id="Output">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=904727:904751#L30885" id="ref-link-L30885">Output</a>
+				<h3 id="Output">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=904457:904481#L30877" id="ref-link-L30877">Output</a>
 					<a class="permalink" href="#Output" id="ref-link-Output">¶</a>
 					
 					
@@ -18513,7 +18506,7 @@ Output returns an HTML element that .
 		
 			
 			
-			<h2 id="HTMLP">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=911429:917708#L31177" id="ref-link-L31177">HTMLP</a>
+			<h2 id="HTMLP">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=911159:917438#L31169" id="ref-link-L31169">HTMLP</a>
 				<a class="permalink" href="#HTMLP" id="ref-link-HTMLP">¶</a>
 				
 				
@@ -18689,7 +18682,7 @@ HTMLP is the interface that describes a &lt;p&gt; HTML element.
 
 			
 				
-				<h3 id="P">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=917765:917779#L31335" id="ref-link-L31335">P</a>
+				<h3 id="P">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=917495:917509#L31327" id="ref-link-L31327">P</a>
 					<a class="permalink" href="#P" id="ref-link-P">¶</a>
 					
 					
@@ -18707,7 +18700,7 @@ P returns an HTML element that defines a paragraph.
 		
 			
 			
-			<h2 id="HTMLParam">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=923690:930126#L31612" id="ref-link-L31612">HTMLParam</a>
+			<h2 id="HTMLParam">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=923420:929856#L31604" id="ref-link-L31604">HTMLParam</a>
 				<a class="permalink" href="#HTMLParam" id="ref-link-HTMLParam">¶</a>
 				
 				
@@ -18883,7 +18876,7 @@ HTMLParam is the interface that describes a &lt;param&gt; HTML element.
 
 			
 				
-				<h3 id="Param">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=930201:930223#L31770" id="ref-link-L31770">Param</a>
+				<h3 id="Param">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=929931:929953#L31762" id="ref-link-L31762">Param</a>
 					<a class="permalink" href="#Param" id="ref-link-Param">¶</a>
 					
 					
@@ -18901,7 +18894,7 @@ Param returns an HTML element that defines a parameter for an object.
 		
 			
 			
-			<h2 id="HTMLPicture">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=936565:943156#L32048" id="ref-link-L32048">HTMLPicture</a>
+			<h2 id="HTMLPicture">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=936295:942886#L32040" id="ref-link-L32040">HTMLPicture</a>
 				<a class="permalink" href="#HTMLPicture" id="ref-link-HTMLPicture">¶</a>
 				
 				
@@ -19077,7 +19070,7 @@ HTMLPicture is the interface that describes a &lt;picture&gt; HTML element.
 
 			
 				
-				<h3 id="Picture">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=943248:943274#L32206" id="ref-link-L32206">Picture</a>
+				<h3 id="Picture">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=942978:943004#L32198" id="ref-link-L32198">Picture</a>
 					<a class="permalink" href="#Picture" id="ref-link-Picture">¶</a>
 					
 					
@@ -19095,7 +19088,7 @@ Picture returns an HTML element that defines a container for multiple image reso
 		
 			
 			
-			<h2 id="HTMLPre">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=949811:956194#L32483" id="ref-link-L32483">HTMLPre</a>
+			<h2 id="HTMLPre">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=949541:955924#L32475" id="ref-link-L32475">HTMLPre</a>
 				<a class="permalink" href="#HTMLPre" id="ref-link-HTMLPre">¶</a>
 				
 				
@@ -19271,7 +19264,7 @@ HTMLPre is the interface that describes a &lt;pre&gt; HTML element.
 
 			
 				
-				<h3 id="Pre">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=956259:956277#L32641" id="ref-link-L32641">Pre</a>
+				<h3 id="Pre">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=955989:956007#L32633" id="ref-link-L32633">Pre</a>
 					<a class="permalink" href="#Pre" id="ref-link-Pre">¶</a>
 					
 					
@@ -19289,7 +19282,7 @@ Pre returns an HTML element that defines preformatted text.
 		
 			
 			
-			<h2 id="HTMLProgress">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=962404:969200#L32918" id="ref-link-L32918">HTMLProgress</a>
+			<h2 id="HTMLProgress">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=962134:968930#L32910" id="ref-link-L32910">HTMLProgress</a>
 				<a class="permalink" href="#HTMLProgress" id="ref-link-HTMLProgress">¶</a>
 				
 				
@@ -19471,7 +19464,7 @@ HTMLProgress is the interface that describes a &lt;progress&gt; HTML element.
 
 			
 				
-				<h3 id="Progress">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=969278:969306#L33082" id="ref-link-L33082">Progress</a>
+				<h3 id="Progress">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=969008:969036#L33074" id="ref-link-L33074">Progress</a>
 					<a class="permalink" href="#Progress" id="ref-link-Progress">¶</a>
 					
 					
@@ -19489,7 +19482,7 @@ Progress returns an HTML element that represents the progress of a task.
 		
 			
 			
-			<h2 id="HTMLQ">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=976130:982505#L33369" id="ref-link-L33369">HTMLQ</a>
+			<h2 id="HTMLQ">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=975860:982235#L33361" id="ref-link-L33361">HTMLQ</a>
 				<a class="permalink" href="#HTMLQ" id="ref-link-HTMLQ">¶</a>
 				
 				
@@ -19668,7 +19661,7 @@ HTMLQ is the interface that describes a &lt;q&gt; HTML element.
 
 			
 				
-				<h3 id="Q">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=982568:982582#L33530" id="ref-link-L33530">Q</a>
+				<h3 id="Q">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=982298:982312#L33522" id="ref-link-L33522">Q</a>
 					<a class="permalink" href="#Q" id="ref-link-Q">¶</a>
 					
 					
@@ -19686,7 +19679,7 @@ Q returns an HTML element that defines a short quotation.
 		
 			
 			
-			<h2 id="HTMLRp">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=988561:994892#L33812" id="ref-link-L33812">HTMLRp</a>
+			<h2 id="HTMLRp">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=988291:994622#L33804" id="ref-link-L33804">HTMLRp</a>
 				<a class="permalink" href="#HTMLRp" id="ref-link-HTMLRp">¶</a>
 				
 				
@@ -19862,7 +19855,7 @@ HTMLRp is the interface that describes a &lt;rp&gt; HTML element.
 
 			
 				
-				<h3 id="Rp">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=995000:995016#L33970" id="ref-link-L33970">Rp</a>
+				<h3 id="Rp">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=994730:994746#L33962" id="ref-link-L33962">Rp</a>
 					<a class="permalink" href="#Rp" id="ref-link-Rp">¶</a>
 					
 					
@@ -19880,7 +19873,7 @@ Rp returns an HTML element that defines what to show in browsers that do not sup
 		
 			
 			
-			<h2 id="HTMLRt">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1001026:1007357#L34247" id="ref-link-L34247">HTMLRt</a>
+			<h2 id="HTMLRt">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1000756:1007087#L34239" id="ref-link-L34239">HTMLRt</a>
 				<a class="permalink" href="#HTMLRt" id="ref-link-HTMLRt">¶</a>
 				
 				
@@ -20056,7 +20049,7 @@ HTMLRt is the interface that describes a &lt;rt&gt; HTML element.
 
 			
 				
-				<h3 id="Rt">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1007474:1007490#L34405" id="ref-link-L34405">Rt</a>
+				<h3 id="Rt">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1007204:1007220#L34397" id="ref-link-L34397">Rt</a>
 					<a class="permalink" href="#Rt" id="ref-link-Rt">¶</a>
 					
 					
@@ -20074,7 +20067,7 @@ Rt returns an HTML element that defines an explanation/pronunciation of characte
 		
 			
 			
-			<h2 id="HTMLRuby">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1013504:1019939#L34682" id="ref-link-L34682">HTMLRuby</a>
+			<h2 id="HTMLRuby">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1013234:1019669#L34674" id="ref-link-L34674">HTMLRuby</a>
 				<a class="permalink" href="#HTMLRuby" id="ref-link-HTMLRuby">¶</a>
 				
 				
@@ -20250,7 +20243,7 @@ HTMLRuby is the interface that describes a &lt;ruby&gt; HTML element.
 
 			
 				
-				<h3 id="Ruby">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1020033:1020053#L34840" id="ref-link-L34840">Ruby</a>
+				<h3 id="Ruby">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1019763:1019783#L34832" id="ref-link-L34832">Ruby</a>
 					<a class="permalink" href="#Ruby" id="ref-link-Ruby">¶</a>
 					
 					
@@ -20268,7 +20261,7 @@ Ruby returns an HTML element that defines a ruby annotation (for East Asian typo
 		
 			
 			
-			<h2 id="HTMLS">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1026271:1032550#L35117" id="ref-link-L35117">HTMLS</a>
+			<h2 id="HTMLS">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1026001:1032280#L35109" id="ref-link-L35109">HTMLS</a>
 				<a class="permalink" href="#HTMLS" id="ref-link-HTMLS">¶</a>
 				
 				
@@ -20444,7 +20437,7 @@ HTMLS is the interface that describes a &lt;s&gt; HTML element.
 
 			
 				
-				<h3 id="S">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1032626:1032640#L35275" id="ref-link-L35275">S</a>
+				<h3 id="S">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1032356:1032370#L35267" id="ref-link-L35267">S</a>
 					<a class="permalink" href="#S" id="ref-link-S">¶</a>
 					
 					
@@ -20462,7 +20455,7 @@ S returns an HTML element that Defines text that is no longer correct.
 		
 			
 			
-			<h2 id="HTMLSamp">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1038549:1044984#L35552" id="ref-link-L35552">HTMLSamp</a>
+			<h2 id="HTMLSamp">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1038279:1044714#L35544" id="ref-link-L35544">HTMLSamp</a>
 				<a class="permalink" href="#HTMLSamp" id="ref-link-HTMLSamp">¶</a>
 				
 				
@@ -20638,7 +20631,7 @@ HTMLSamp is the interface that describes a &lt;samp&gt; HTML element.
 
 			
 				
-				<h3 id="Samp">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1045070:1045090#L35710" id="ref-link-L35710">Samp</a>
+				<h3 id="Samp">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1044800:1044820#L35702" id="ref-link-L35702">Samp</a>
 					<a class="permalink" href="#Samp" id="ref-link-Samp">¶</a>
 					
 					
@@ -20656,7 +20649,7 @@ Samp returns an HTML element that defines sample output from a computer program.
 		
 			
 			
-			<h2 id="HTMLScript">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1051318:1054091#L35987" id="ref-link-L35987">HTMLScript</a>
+			<h2 id="HTMLScript">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1051048:1053821#L35979" id="ref-link-L35979">HTMLScript</a>
 				<a class="permalink" href="#HTMLScript" id="ref-link-HTMLScript">¶</a>
 				
 				
@@ -20757,7 +20750,7 @@ HTMLScript is the interface that describes a &lt;script&gt; HTML element.
 
 			
 				
-				<h3 id="Script">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1054162:1054186#L36070" id="ref-link-L36070">Script</a>
+				<h3 id="Script">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1053892:1053916#L36062" id="ref-link-L36062">Script</a>
 					<a class="permalink" href="#Script" id="ref-link-Script">¶</a>
 					
 					
@@ -20775,7 +20768,7 @@ Script returns an HTML element that defines a client-side script.
 		
 			
 			
-			<h2 id="HTMLSection">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1056894:1063485#L36222" id="ref-link-L36222">HTMLSection</a>
+			<h2 id="HTMLSection">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1056624:1063215#L36214" id="ref-link-L36214">HTMLSection</a>
 				<a class="permalink" href="#HTMLSection" id="ref-link-HTMLSection">¶</a>
 				
 				
@@ -20951,7 +20944,7 @@ HTMLSection is the interface that describes a &lt;section&gt; HTML element.
 
 			
 				
-				<h3 id="Section">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1063560:1063586#L36380" id="ref-link-L36380">Section</a>
+				<h3 id="Section">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1063290:1063316#L36372" id="ref-link-L36372">Section</a>
 					<a class="permalink" href="#Section" id="ref-link-Section">¶</a>
 					
 					
@@ -20969,7 +20962,7 @@ Section returns an HTML element that defines a section in a document.
 		
 			
 			
-			<h2 id="HTMLSelect">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1070129:1077342#L36657" id="ref-link-L36657">HTMLSelect</a>
+			<h2 id="HTMLSelect">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1069859:1077072#L36649" id="ref-link-L36649">HTMLSelect</a>
 				<a class="permalink" href="#HTMLSelect" id="ref-link-HTMLSelect">¶</a>
 				
 				
@@ -21166,7 +21159,7 @@ HTMLSelect is the interface that describes a &lt;select&gt; HTML element.
 
 			
 				
-				<h3 id="Select">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1077409:1077433#L36836" id="ref-link-L36836">Select</a>
+				<h3 id="Select">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1077139:1077163#L36828" id="ref-link-L36828">Select</a>
 					<a class="permalink" href="#Select" id="ref-link-Select">¶</a>
 					
 					
@@ -21184,7 +21177,7 @@ Select returns an HTML element that defines a drop-down list.
 		
 			
 			
-			<h2 id="HTMLSmall">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1084480:1090967#L37148" id="ref-link-L37148">HTMLSmall</a>
+			<h2 id="HTMLSmall">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1084210:1090697#L37140" id="ref-link-L37140">HTMLSmall</a>
 				<a class="permalink" href="#HTMLSmall" id="ref-link-HTMLSmall">¶</a>
 				
 				
@@ -21360,7 +21353,7 @@ HTMLSmall is the interface that describes a &lt;small&gt; HTML element.
 
 			
 				
-				<h3 id="Small">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1091029:1091051#L37306" id="ref-link-L37306">Small</a>
+				<h3 id="Small">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1090759:1090781#L37298" id="ref-link-L37298">Small</a>
 					<a class="permalink" href="#Small" id="ref-link-Small">¶</a>
 					
 					
@@ -21378,7 +21371,7 @@ Small returns an HTML element that defines smaller text.
 		
 			
 			
-			<h2 id="HTMLSource">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1097384:1104151#L37583" id="ref-link-L37583">HTMLSource</a>
+			<h2 id="HTMLSource">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1097114:1103881#L37575" id="ref-link-L37575">HTMLSource</a>
 				<a class="permalink" href="#HTMLSource" id="ref-link-HTMLSource">¶</a>
 				
 				
@@ -21563,7 +21556,7 @@ HTMLSource is the interface that describes a &lt;source&gt; HTML element.
 
 			
 				
-				<h3 id="Source">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1104194:1104218#L37750" id="ref-link-L37750">Source</a>
+				<h3 id="Source">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1103924:1103948#L37742" id="ref-link-L37742">Source</a>
 					<a class="permalink" href="#Source" id="ref-link-Source">¶</a>
 					
 					
@@ -21581,7 +21574,7 @@ Source returns an HTML element that .
 		
 			
 			
-			<h2 id="HTMLSpan">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1110910:1117345#L38043" id="ref-link-L38043">HTMLSpan</a>
+			<h2 id="HTMLSpan">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1110640:1117075#L38035" id="ref-link-L38035">HTMLSpan</a>
 				<a class="permalink" href="#HTMLSpan" id="ref-link-HTMLSpan">¶</a>
 				
 				
@@ -21757,7 +21750,7 @@ HTMLSpan is the interface that describes a &lt;span&gt; HTML element.
 
 			
 				
-				<h3 id="Span">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1117417:1117437#L38201" id="ref-link-L38201">Span</a>
+				<h3 id="Span">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1117147:1117167#L38193" id="ref-link-L38193">Span</a>
 					<a class="permalink" href="#Span" id="ref-link-Span">¶</a>
 					
 					
@@ -21775,7 +21768,7 @@ Span returns an HTML element that defines a section in a document.
 		
 			
 			
-			<h2 id="HTMLStrong">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1123665:1130204#L38478" id="ref-link-L38478">HTMLStrong</a>
+			<h2 id="HTMLStrong">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1123395:1129934#L38470" id="ref-link-L38470">HTMLStrong</a>
 				<a class="permalink" href="#HTMLStrong" id="ref-link-HTMLStrong">¶</a>
 				
 				
@@ -21951,7 +21944,7 @@ HTMLStrong is the interface that describes a &lt;strong&gt; HTML element.
 
 			
 				
-				<h3 id="Strong">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1130269:1130293#L38636" id="ref-link-L38636">Strong</a>
+				<h3 id="Strong">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1129999:1130023#L38628" id="ref-link-L38628">Strong</a>
 					<a class="permalink" href="#Strong" id="ref-link-Strong">¶</a>
 					
 					
@@ -21969,7 +21962,7 @@ Strong returns an HTML element that defines important text.
 		
 			
 			
-			<h2 id="HTMLStyle">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1136729:1143518#L38913" id="ref-link-L38913">HTMLStyle</a>
+			<h2 id="HTMLStyle">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1136459:1143248#L38905" id="ref-link-L38905">HTMLStyle</a>
 				<a class="permalink" href="#HTMLStyle" id="ref-link-HTMLStyle">¶</a>
 				
 				
@@ -22154,7 +22147,7 @@ HTMLStyle is the interface that describes a &lt;style&gt; HTML element.
 
 			
 				
-				<h3 id="Style">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1143600:1143622#L39080" id="ref-link-L39080">Style</a>
+				<h3 id="Style">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1143330:1143352#L39072" id="ref-link-L39072">Style</a>
 					<a class="permalink" href="#Style" id="ref-link-Style">¶</a>
 					
 					
@@ -22172,7 +22165,7 @@ Style returns an HTML element that defines style information for a document.
 		
 			
 			
-			<h2 id="HTMLSub">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1150245:1156628#L39372" id="ref-link-L39372">HTMLSub</a>
+			<h2 id="HTMLSub">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1149975:1156358#L39364" id="ref-link-L39364">HTMLSub</a>
 				<a class="permalink" href="#HTMLSub" id="ref-link-HTMLSub">¶</a>
 				
 				
@@ -22348,7 +22341,7 @@ HTMLSub is the interface that describes a &lt;sub&gt; HTML element.
 
 			
 				
-				<h3 id="Sub">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1156692:1156710#L39530" id="ref-link-L39530">Sub</a>
+				<h3 id="Sub">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1156422:1156440#L39522" id="ref-link-L39522">Sub</a>
 					<a class="permalink" href="#Sub" id="ref-link-Sub">¶</a>
 					
 					
@@ -22366,7 +22359,7 @@ Sub returns an HTML element that defines subscripted text.
 		
 			
 			
-			<h2 id="HTMLSummary">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1162835:1169426#L39807" id="ref-link-L39807">HTMLSummary</a>
+			<h2 id="HTMLSummary">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1162565:1169156#L39799" id="ref-link-L39799">HTMLSummary</a>
 				<a class="permalink" href="#HTMLSummary" id="ref-link-HTMLSummary">¶</a>
 				
 				
@@ -22542,7 +22535,7 @@ HTMLSummary is the interface that describes a &lt;summary&gt; HTML element.
 
 			
 				
-				<h3 id="Summary">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1169517:1169543#L39965" id="ref-link-L39965">Summary</a>
+				<h3 id="Summary">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1169247:1169273#L39957" id="ref-link-L39957">Summary</a>
 					<a class="permalink" href="#Summary" id="ref-link-Summary">¶</a>
 					
 					
@@ -22560,7 +22553,7 @@ Summary returns an HTML element that defines a visible heading for a details ele
 		
 			
 			
-			<h2 id="HTMLSup">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1176080:1182463#L40242" id="ref-link-L40242">HTMLSup</a>
+			<h2 id="HTMLSup">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1175810:1182193#L40234" id="ref-link-L40234">HTMLSup</a>
 				<a class="permalink" href="#HTMLSup" id="ref-link-HTMLSup">¶</a>
 				
 				
@@ -22736,7 +22729,7 @@ HTMLSup is the interface that describes a &lt;sup&gt; HTML element.
 
 			
 				
-				<h3 id="Sup">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1182529:1182547#L40400" id="ref-link-L40400">Sup</a>
+				<h3 id="Sup">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1182259:1182277#L40392" id="ref-link-L40392">Sup</a>
 					<a class="permalink" href="#Sup" id="ref-link-Sup">¶</a>
 					
 					
@@ -22754,7 +22747,7 @@ Sup returns an HTML element that defines superscripted text.
 		
 			
 			
-			<h2 id="HTMLTBody">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1201565:1208052#L41112" id="ref-link-L41112">HTMLTBody</a>
+			<h2 id="HTMLTBody">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1201295:1207782#L41104" id="ref-link-L41104">HTMLTBody</a>
 				<a class="permalink" href="#HTMLTBody" id="ref-link-HTMLTBody">¶</a>
 				
 				
@@ -22930,7 +22923,7 @@ HTMLTBody is the interface that describes a &lt;tbody&gt; HTML element.
 
 			
 				
-				<h3 id="TBody">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1208128:1208150#L41270" id="ref-link-L41270">TBody</a>
+				<h3 id="TBody">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1207858:1207880#L41262" id="ref-link-L41262">TBody</a>
 					<a class="permalink" href="#TBody" id="ref-link-TBody">¶</a>
 					
 					
@@ -22948,7 +22941,7 @@ TBody returns an HTML element that groups the body content in a table.
 		
 			
 			
-			<h2 id="HTMLTFoot">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1247524:1254011#L42717" id="ref-link-L42717">HTMLTFoot</a>
+			<h2 id="HTMLTFoot">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1247254:1253741#L42709" id="ref-link-L42709">HTMLTFoot</a>
 				<a class="permalink" href="#HTMLTFoot" id="ref-link-HTMLTFoot">¶</a>
 				
 				
@@ -23124,7 +23117,7 @@ HTMLTFoot is the interface that describes a &lt;tfoot&gt; HTML element.
 
 			
 				
-				<h3 id="TFoot">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1254089:1254111#L42875" id="ref-link-L42875">TFoot</a>
+				<h3 id="TFoot">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1253819:1253841#L42867" id="ref-link-L42867">TFoot</a>
 					<a class="permalink" href="#TFoot" id="ref-link-TFoot">¶</a>
 					
 					
@@ -23142,7 +23135,7 @@ TFoot returns an HTML element that groups the footer content in a table.
 		
 			
 			
-			<h2 id="HTMLTHead">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1273772:1280259#L43627" id="ref-link-L43627">HTMLTHead</a>
+			<h2 id="HTMLTHead">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1273502:1279989#L43619" id="ref-link-L43619">HTMLTHead</a>
 				<a class="permalink" href="#HTMLTHead" id="ref-link-HTMLTHead">¶</a>
 				
 				
@@ -23318,7 +23311,7 @@ HTMLTHead is the interface that describes a &lt;thead&gt; HTML element.
 
 			
 				
-				<h3 id="THead">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1280336:1280358#L43785" id="ref-link-L43785">THead</a>
+				<h3 id="THead">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1280066:1280088#L43777" id="ref-link-L43777">THead</a>
 					<a class="permalink" href="#THead" id="ref-link-THead">¶</a>
 					
 					
@@ -23336,7 +23329,7 @@ THead returns an HTML element that groups the header content in a table
 		
 			
 			
-			<h2 id="HTMLTable">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1188668:1195155#L40677" id="ref-link-L40677">HTMLTable</a>
+			<h2 id="HTMLTable">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1188398:1194885#L40669" id="ref-link-L40669">HTMLTable</a>
 				<a class="permalink" href="#HTMLTable" id="ref-link-HTMLTable">¶</a>
 				
 				
@@ -23512,7 +23505,7 @@ HTMLTable is the interface that describes a &lt;table&gt; HTML element.
 
 			
 				
-				<h3 id="Table">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1195212:1195234#L40835" id="ref-link-L40835">Table</a>
+				<h3 id="Table">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1194942:1194964#L40827" id="ref-link-L40827">Table</a>
 					<a class="permalink" href="#Table" id="ref-link-Table">¶</a>
 					
 					
@@ -23530,7 +23523,7 @@ Table returns an HTML element that defines a table.
 		
 			
 			
-			<h2 id="HTMLTd">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1214475:1221088#L41547" id="ref-link-L41547">HTMLTd</a>
+			<h2 id="HTMLTd">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1214205:1220818#L41539" id="ref-link-L41539">HTMLTd</a>
 				<a class="permalink" href="#HTMLTd" id="ref-link-HTMLTd">¶</a>
 				
 				
@@ -23715,7 +23708,7 @@ HTMLTd is the interface that describes a &lt;td&gt; HTML element.
 
 			
 				
-				<h3 id="Td">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1221152:1221168#L41714" id="ref-link-L41714">Td</a>
+				<h3 id="Td">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1220882:1220898#L41706" id="ref-link-L41706">Td</a>
 					<a class="permalink" href="#Td" id="ref-link-Td">¶</a>
 					
 					
@@ -23733,7 +23726,7 @@ Td returns an HTML element that defines a cell in a table.
 		
 			
 			
-			<h2 id="HTMLTemplate">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1227430:1229531#L42006" id="ref-link-L42006">HTMLTemplate</a>
+			<h2 id="HTMLTemplate">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1227160:1229261#L41998" id="ref-link-L41998">HTMLTemplate</a>
 				<a class="permalink" href="#HTMLTemplate" id="ref-link-HTMLTemplate">¶</a>
 				
 				
@@ -23813,7 +23806,7 @@ HTMLTemplate is the interface that describes a &lt;template&gt; HTML element.
 
 			
 				
-				<h3 id="Template">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1229594:1229622#L42068" id="ref-link-L42068">Template</a>
+				<h3 id="Template">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1229324:1229352#L42060" id="ref-link-L42060">Template</a>
 					<a class="permalink" href="#Template" id="ref-link-Template">¶</a>
 					
 					
@@ -23831,7 +23824,7 @@ Template returns an HTML element that defines a template.
 		
 			
 			
-			<h2 id="HTMLTextarea">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1231760:1239648#L42185" id="ref-link-L42185">HTMLTextarea</a>
+			<h2 id="HTMLTextarea">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1231490:1239378#L42177" id="ref-link-L42177">HTMLTextarea</a>
 				<a class="permalink" href="#HTMLTextarea" id="ref-link-HTMLTextarea">¶</a>
 				
 				
@@ -24043,7 +24036,7 @@ HTMLTextarea is the interface that describes a &lt;textarea&gt; HTML element.
 
 			
 				
-				<h3 id="Textarea">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1239738:1239766#L42379" id="ref-link-L42379">Textarea</a>
+				<h3 id="Textarea">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1239468:1239496#L42371" id="ref-link-L42371">Textarea</a>
 					<a class="permalink" href="#Textarea" id="ref-link-Textarea">¶</a>
 					
 					
@@ -24061,7 +24054,7 @@ Textarea returns an HTML element that defines a multiline input control (text ar
 		
 			
 			
-			<h2 id="HTMLTh">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1260436:1267275#L43152" id="ref-link-L43152">HTMLTh</a>
+			<h2 id="HTMLTh">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1260166:1267005#L43144" id="ref-link-L43144">HTMLTh</a>
 				<a class="permalink" href="#HTMLTh" id="ref-link-HTMLTh">¶</a>
 				
 				
@@ -24252,7 +24245,7 @@ HTMLTh is the interface that describes a &lt;th&gt; HTML element.
 
 			
 				
-				<h3 id="Th">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1267346:1267362#L43325" id="ref-link-L43325">Th</a>
+				<h3 id="Th">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1267076:1267092#L43317" id="ref-link-L43317">Th</a>
 					<a class="permalink" href="#Th" id="ref-link-Th">¶</a>
 					
 					
@@ -24270,7 +24263,7 @@ Th returns an HTML element that defines a header cell in a table.
 		
 			
 			
-			<h2 id="HTMLTime">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1286687:1293194#L44062" id="ref-link-L44062">HTMLTime</a>
+			<h2 id="HTMLTime">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1286417:1292924#L44054" id="ref-link-L44054">HTMLTime</a>
 				<a class="permalink" href="#HTMLTime" id="ref-link-HTMLTime">¶</a>
 				
 				
@@ -24449,7 +24442,7 @@ HTMLTime is the interface that describes a &lt;time&gt; HTML element.
 
 			
 				
-				<h3 id="Time">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1293254:1293274#L44223" id="ref-link-L44223">Time</a>
+				<h3 id="Time">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1292984:1293004#L44215" id="ref-link-L44215">Time</a>
 					<a class="permalink" href="#Time" id="ref-link-Time">¶</a>
 					
 					
@@ -24467,7 +24460,7 @@ Time returns an HTML element that defines a date/time.
 		
 			
 			
-			<h2 id="HTMLTitle">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1299588:1301629#L44505" id="ref-link-L44505">HTMLTitle</a>
+			<h2 id="HTMLTitle">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1299318:1301359#L44497" id="ref-link-L44497">HTMLTitle</a>
 				<a class="permalink" href="#HTMLTitle" id="ref-link-HTMLTitle">¶</a>
 				
 				
@@ -24547,7 +24540,7 @@ HTMLTitle is the interface that describes a &lt;title&gt; HTML element.
 
 			
 				
-				<h3 id="Title">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1301703:1301725#L44567" id="ref-link-L44567">Title</a>
+				<h3 id="Title">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1301433:1301455#L44559" id="ref-link-L44559">Title</a>
 					<a class="permalink" href="#Title" id="ref-link-Title">¶</a>
 					
 					
@@ -24565,7 +24558,7 @@ Title returns an HTML element that defines a title for the document.
 		
 			
 			
-			<h2 id="HTMLTr">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1303728:1310059#L44684" id="ref-link-L44684">HTMLTr</a>
+			<h2 id="HTMLTr">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1303458:1309789#L44676" id="ref-link-L44676">HTMLTr</a>
 				<a class="permalink" href="#HTMLTr" id="ref-link-HTMLTr">¶</a>
 				
 				
@@ -24741,7 +24734,7 @@ HTMLTr is the interface that describes a &lt;tr&gt; HTML element.
 
 			
 				
-				<h3 id="Tr">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1310122:1310138#L44842" id="ref-link-L44842">Tr</a>
+				<h3 id="Tr">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1309852:1309868#L44834" id="ref-link-L44834">Tr</a>
 					<a class="permalink" href="#Tr" id="ref-link-Tr">¶</a>
 					
 					
@@ -24759,7 +24752,7 @@ Tr returns an HTML element that defines a row in a table.
 		
 			
 			
-			<h2 id="HTMLU">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1316146:1322425#L45119" id="ref-link-L45119">HTMLU</a>
+			<h2 id="HTMLU">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1315876:1322155#L45111" id="ref-link-L45111">HTMLU</a>
 				<a class="permalink" href="#HTMLU" id="ref-link-HTMLU">¶</a>
 				
 				
@@ -24935,7 +24928,7 @@ HTMLU is the interface that describes a &lt;u&gt; HTML element.
 
 			
 				
-				<h3 id="U">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1322531:1322545#L45277" id="ref-link-L45277">U</a>
+				<h3 id="U">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1322261:1322275#L45269" id="ref-link-L45269">U</a>
 					<a class="permalink" href="#U" id="ref-link-U">¶</a>
 					
 					
@@ -24953,7 +24946,7 @@ U returns an HTML element that defines text that should be stylistically differe
 		
 			
 			
-			<h2 id="HTMLUl">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1328450:1334781#L45554" id="ref-link-L45554">HTMLUl</a>
+			<h2 id="HTMLUl">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1328180:1334511#L45546" id="ref-link-L45546">HTMLUl</a>
 				<a class="permalink" href="#HTMLUl" id="ref-link-HTMLUl">¶</a>
 				
 				
@@ -25129,7 +25122,7 @@ HTMLUl is the interface that describes a &lt;ul&gt; HTML element.
 
 			
 				
-				<h3 id="Ul">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1334845:1334861#L45712" id="ref-link-L45712">Ul</a>
+				<h3 id="Ul">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1334575:1334591#L45704" id="ref-link-L45704">Ul</a>
 					<a class="permalink" href="#Ul" id="ref-link-Ul">¶</a>
 					
 					
@@ -25147,7 +25140,7 @@ Ul returns an HTML element that defines an unordered list.
 		
 			
 			
-			<h2 id="HTMLVar">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1340873:1347256#L45989" id="ref-link-L45989">HTMLVar</a>
+			<h2 id="HTMLVar">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1340603:1346986#L45981" id="ref-link-L45981">HTMLVar</a>
 				<a class="permalink" href="#HTMLVar" id="ref-link-HTMLVar">¶</a>
 				
 				
@@ -25323,7 +25316,7 @@ HTMLVar is the interface that describes a &lt;var&gt; HTML element.
 
 			
 				
-				<h3 id="Var">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1347314:1347332#L46147" id="ref-link-L46147">Var</a>
+				<h3 id="Var">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1347044:1347062#L46139" id="ref-link-L46139">Var</a>
 					<a class="permalink" href="#Var" id="ref-link-Var">¶</a>
 					
 					
@@ -25341,7 +25334,7 @@ Var returns an HTML element that defines a variable.
 		
 			
 			
-			<h2 id="HTMLVideo">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1353453:1364800#L46424" id="ref-link-L46424">HTMLVideo</a>
+			<h2 id="HTMLVideo">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1353183:1364530#L46416" id="ref-link-L46416">HTMLVideo</a>
 				<a class="permalink" href="#HTMLVideo" id="ref-link-HTMLVideo">¶</a>
 				
 				
@@ -25616,7 +25609,7 @@ HTMLVideo is the interface that describes a &lt;video&gt; HTML element.
 
 			
 				
-				<h3 id="Video">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1364866:1364888#L46681" id="ref-link-L46681">Video</a>
+				<h3 id="Video">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1364596:1364618#L46673" id="ref-link-L46673">Video</a>
 					<a class="permalink" href="#Video" id="ref-link-Video">¶</a>
 					
 					
@@ -25634,7 +25627,7 @@ Video returns an HTML element that defines a video or movie.
 		
 			
 			
-			<h2 id="HTMLWbr">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1375251:1381634#L47123" id="ref-link-L47123">HTMLWbr</a>
+			<h2 id="HTMLWbr">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1374981:1381364#L47115" id="ref-link-L47115">HTMLWbr</a>
 				<a class="permalink" href="#HTMLWbr" id="ref-link-HTMLWbr">¶</a>
 				
 				
@@ -25810,7 +25803,7 @@ HTMLWbr is the interface that describes a &lt;wbr&gt; HTML element.
 
 			
 				
-				<h3 id="Wbr">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1381703:1381721#L47281" id="ref-link-L47281">Wbr</a>
+				<h3 id="Wbr">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/html.go?s=1381433:1381451#L47273" id="ref-link-L47273">Wbr</a>
 					<a class="permalink" href="#Wbr" id="ref-link-Wbr">¶</a>
 					
 					
@@ -25828,7 +25821,7 @@ Wbr returns an HTML element that defines a possible line-break.
 		
 			
 			
-			<h2 id="Handler">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go?s=479:3859#L21" id="ref-link-L21">Handler</a>
+			<h2 id="Handler">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go?s=479:4154#L21" id="ref-link-L21">Handler</a>
 				<a class="permalink" href="#Handler" id="ref-link-Handler">¶</a>
 				
 				
@@ -25839,8 +25832,16 @@ and its resources.
 </p>
 
 			<pre>type Handler struct {
-    <span class="comment">// The page authors.</span>
-<span id="Handler.Author"></span>    Author <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
+    <span class="comment">// The name of the web application as it is usually displayed to the user.</span>
+<span id="Handler.Name"></span>    Name <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
+
+    <span class="comment">// The name of the web application displayed to the user when there is not</span>
+    <span class="comment">// enough space to display Name.</span>
+<span id="Handler.ShortName"></span>    ShortName <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
+
+    <span class="comment">// The icon that is used for the PWA, favicon, loading and default not</span>
+    <span class="comment">// found component.</span>
+<span id="Handler.Icon"></span>    Icon <a href="#Icon" id="ref-link-Icon">Icon</a>
 
     <span class="comment">// A placeholder background color for the application page to display before</span>
     <span class="comment">// its stylesheets are loaded.</span>
@@ -25848,84 +25849,35 @@ and its resources.
     <span class="comment">// DEFAULT: #2d2c2c.</span>
 <span id="Handler.BackgroundColor"></span>    BackgroundColor <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
 
-    <span class="comment">// The path of the static resources that the browser is caching in order to</span>
-    <span class="comment">// provide offline mode.</span>
+    <span class="comment">// The theme color for the application. This affects how the OS displays the</span>
+    <span class="comment">// app (e.g., PWA title bar or Android&#39;s task switcher).</span>
     <span class="comment">//</span>
-    <span class="comment">// Note that Icon, Styles and Scripts are already cached by default.</span>
-    <span class="comment">//</span>
-    <span class="comment">// Paths are relative to the root directory.</span>
-<span id="Handler.CacheableResources"></span>    CacheableResources []<a href="/pkg/builtin/#string" id="ref-link-string">string</a>
-
-    <span class="comment">// The page description.</span>
-<span id="Handler.Description"></span>    Description <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
-
-    <span class="comment">// The environment variables that are passed to the progressive web app.</span>
-    <span class="comment">//</span>
-    <span class="comment">// Reserved keys:</span>
-    <span class="comment">// - GOAPP_VERSION</span>
-    <span class="comment">// - GOAPP_GOAPP_STATIC_RESOURCES_URL</span>
-<span id="Handler.Env"></span>    Env <a href="#Environment" id="ref-link-Environment">Environment</a>
-
-    <span class="comment">// The icon that is used for the PWA, favicon, loading and default not</span>
-    <span class="comment">// found component.</span>
-<span id="Handler.Icon"></span>    Icon <a href="#Icon" id="ref-link-Icon">Icon</a>
-
-    <span class="comment">// The path of the default image that is used by social networks when</span>
-    <span class="comment">// linking the app.</span>
-<span id="Handler.Image"></span>    Image <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
-
-    <span class="comment">// The URLs that are launched in the app tab or window.</span>
-    <span class="comment">//</span>
-    <span class="comment">// By default, URLs with a different domain are launched in another tab.</span>
-    <span class="comment">// Specifying internal URLs is to override that behavior. A good use case</span>
-    <span class="comment">// would be the URL for an OAuth authentication.</span>
-<span id="Handler.InternalURLs"></span>    InternalURLs []<a href="/pkg/builtin/#string" id="ref-link-string">string</a>
-
-    <span class="comment">// The page keywords.</span>
-<span id="Handler.Keywords"></span>    Keywords []<a href="/pkg/builtin/#string" id="ref-link-string">string</a>
+    <span class="comment">// DEFAULT: #2d2c2c.</span>
+<span id="Handler.ThemeColor"></span>    ThemeColor <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
 
     <span class="comment">// The text displayed while loading a page.</span>
 <span id="Handler.LoadingLabel"></span>    LoadingLabel <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
 
-    <span class="comment">// The name of the web application as it is usually displayed to the user.</span>
-<span id="Handler.Name"></span>    Name <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
-
-    <span class="comment">// The cache that stores pre-rendered pages.</span>
+    <span class="comment">// The page language.</span>
     <span class="comment">//</span>
-    <span class="comment">// Default is a LRU cache that keeps pages up to 24h and have a maximum size</span>
-    <span class="comment">// of 8MB.</span>
-<span id="Handler.PreRenderCache"></span>    PreRenderCache <a href="#PreRenderCache" id="ref-link-PreRenderCache">PreRenderCache</a>
+    <span class="comment">// DEFAULT: en.</span>
+<span id="Handler.Lang"></span>    Lang <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
 
-    <span class="comment">// The static resources that are accessible from custom paths. Files that</span>
-    <span class="comment">// are proxied by default are /robots.txt, /sitemap.xml and /ads.txt.</span>
-<span id="Handler.ProxyResources"></span>    ProxyResources []<a href="#ProxyResource" id="ref-link-ProxyResource">ProxyResource</a>
+    <span class="comment">// The page title.</span>
+<span id="Handler.Title"></span>    Title <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
 
-    <span class="comment">// Additional headers to be added in head element.</span>
-<span id="Handler.RawHeaders"></span>    RawHeaders []<a href="/pkg/builtin/#string" id="ref-link-string">string</a>
+    <span class="comment">// The page description.</span>
+<span id="Handler.Description"></span>    Description <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
 
-    <span class="comment">// The paths or urls of the JavaScript files to use with the page.</span>
-    <span class="comment">//</span>
-    <span class="comment">// eg:</span>
-    <span class="comment">//  app.Handler{</span>
-    <span class="comment">//      Scripts: []string{</span>
-    <span class="comment">//          &#34;/web/test.js&#34;,            // Static resource</span>
-    <span class="comment">//          &#34;https://foo.com/test.js&#34;, // External resource</span>
-    <span class="comment">//      },</span>
-    <span class="comment">//  },</span>
-<span id="Handler.Scripts"></span>    Scripts []<a href="/pkg/builtin/#string" id="ref-link-string">string</a>
+    <span class="comment">// The page authors.</span>
+<span id="Handler.Author"></span>    Author <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
 
-    <span class="comment">// The name of the web application displayed to the user when there is not</span>
-    <span class="comment">// enough space to display Name.</span>
-<span id="Handler.ShortName"></span>    ShortName <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
+    <span class="comment">// The page keywords.</span>
+<span id="Handler.Keywords"></span>    Keywords []<a href="/pkg/builtin/#string" id="ref-link-string">string</a>
 
-    <span class="comment">// The resource provider that provides static resources. Static resources</span>
-    <span class="comment">// are always accessed from a path that starts with &#34;/web/&#34;.</span>
-    <span class="comment">//</span>
-    <span class="comment">// eg:</span>
-    <span class="comment">//  &#34;/web/main.css&#34;</span>
-    <span class="comment">//</span>
-    <span class="comment">// Default: LocalDir(&#34;&#34;)</span>
-<span id="Handler.Resources"></span>    Resources <a href="#ResourceProvider" id="ref-link-ResourceProvider">ResourceProvider</a>
+    <span class="comment">// The path of the default image that is used by social networks when</span>
+    <span class="comment">// linking the app.</span>
+<span id="Handler.Image"></span>    Image <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
 
     <span class="comment">// The paths or urls of the CSS files to use with the page.</span>
     <span class="comment">//</span>
@@ -25938,14 +25890,73 @@ and its resources.
     <span class="comment">//  },</span>
 <span id="Handler.Styles"></span>    Styles []<a href="/pkg/builtin/#string" id="ref-link-string">string</a>
 
-    <span class="comment">// The theme color for the application. This affects how the OS displays the</span>
-    <span class="comment">// app (e.g., PWA title bar or Android&#39;s task switcher).</span>
+    <span class="comment">// The paths or urls of the JavaScript files to use with the page.</span>
     <span class="comment">//</span>
-    <span class="comment">// DEFAULT: #2d2c2c.</span>
-<span id="Handler.ThemeColor"></span>    ThemeColor <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
+    <span class="comment">// eg:</span>
+    <span class="comment">//  app.Handler{</span>
+    <span class="comment">//      Scripts: []string{</span>
+    <span class="comment">//          &#34;/web/test.js&#34;,            // Static resource</span>
+    <span class="comment">//          &#34;https://foo.com/test.js&#34;, // External resource</span>
+    <span class="comment">//      },</span>
+    <span class="comment">//  },</span>
+<span id="Handler.Scripts"></span>    Scripts []<a href="/pkg/builtin/#string" id="ref-link-string">string</a>
 
-    <span class="comment">// The page title.</span>
-<span id="Handler.Title"></span>    Title <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
+    <span class="comment">// The path of the static resources that the browser is caching in order to</span>
+    <span class="comment">// provide offline mode.</span>
+    <span class="comment">//</span>
+    <span class="comment">// Note that Icon, Styles and Scripts are already cached by default.</span>
+    <span class="comment">//</span>
+    <span class="comment">// Paths are relative to the root directory.</span>
+<span id="Handler.CacheableResources"></span>    CacheableResources []<a href="/pkg/builtin/#string" id="ref-link-string">string</a>
+
+    <span class="comment">// Additional headers to be added in head element.</span>
+<span id="Handler.RawHeaders"></span>    RawHeaders []<a href="/pkg/builtin/#string" id="ref-link-string">string</a>
+
+    <span class="comment">// The page HTML element.</span>
+    <span class="comment">//</span>
+    <span class="comment">// Default: Html().</span>
+<span id="Handler.HTML"></span>    HTML func() <a href="#HTMLHtml" id="ref-link-HTMLHtml">HTMLHtml</a>
+
+    <span class="comment">// The page body element.</span>
+    <span class="comment">//</span>
+    <span class="comment">// Note that the lang attribute is always overridden by the Handler.Lang</span>
+    <span class="comment">// value.</span>
+    <span class="comment">//</span>
+    <span class="comment">// Default: Body().</span>
+<span id="Handler.Body"></span>    Body func() <a href="#HTMLBody" id="ref-link-HTMLBody">HTMLBody</a>
+
+    <span class="comment">// The environment variables that are passed to the progressive web app.</span>
+    <span class="comment">//</span>
+    <span class="comment">// Reserved keys:</span>
+    <span class="comment">// - GOAPP_VERSION</span>
+    <span class="comment">// - GOAPP_GOAPP_STATIC_RESOURCES_URL</span>
+<span id="Handler.Env"></span>    Env <a href="#Environment" id="ref-link-Environment">Environment</a>
+
+    <span class="comment">// The URLs that are launched in the app tab or window.</span>
+    <span class="comment">//</span>
+    <span class="comment">// By default, URLs with a different domain are launched in another tab.</span>
+    <span class="comment">// Specifying internal URLs is to override that behavior. A good use case</span>
+    <span class="comment">// would be the URL for an OAuth authentication.</span>
+<span id="Handler.InternalURLs"></span>    InternalURLs []<a href="/pkg/builtin/#string" id="ref-link-string">string</a>
+
+    <span class="comment">// The cache that stores pre-rendered pages.</span>
+    <span class="comment">//</span>
+    <span class="comment">// Default: A LRU cache that keeps pages up to 24h and have a maximum size</span>
+    <span class="comment">// of 8MB.</span>
+<span id="Handler.PreRenderCache"></span>    PreRenderCache <a href="#PreRenderCache" id="ref-link-PreRenderCache">PreRenderCache</a>
+
+    <span class="comment">// The static resources that are accessible from custom paths. Files that</span>
+    <span class="comment">// are proxied by default are /robots.txt, /sitemap.xml and /ads.txt.</span>
+<span id="Handler.ProxyResources"></span>    ProxyResources []<a href="#ProxyResource" id="ref-link-ProxyResource">ProxyResource</a>
+
+    <span class="comment">// The resource provider that provides static resources. Static resources</span>
+    <span class="comment">// are always accessed from a path that starts with &#34;/web/&#34;.</span>
+    <span class="comment">//</span>
+    <span class="comment">// eg:</span>
+    <span class="comment">//  &#34;/web/main.css&#34;</span>
+    <span class="comment">//</span>
+    <span class="comment">// Default: LocalDir(&#34;&#34;)</span>
+<span id="Handler.Resources"></span>    Resources <a href="#ResourceProvider" id="ref-link-ResourceProvider">ResourceProvider</a>
 
     <span class="comment">// The version number. This is used in order to update the PWA application</span>
     <span class="comment">// in the browser. It must be set when deployed on a live system in order to</span>
@@ -25970,7 +25981,7 @@ and its resources.
 
 			
 				
-				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go?s=10908:10975#L443" id="ref-link-L443">ServeHTTP</a>
+				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go?s=11383:11450#L476" id="ref-link-L476">ServeHTTP</a>
 					<a class="permalink" href="#Handler.ServeHTTP" id="ref-link-Handler.ServeHTTP">¶</a>
 					
 					
@@ -25984,7 +25995,7 @@ and its resources.
 		
 			
 			
-			<h2 id="Icon">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go?s=17788:18325#L739" id="ref-link-L739">Icon</a>
+			<h2 id="Icon">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go?s=18400:18937#L775" id="ref-link-L775">Icon</a>
 				<a class="permalink" href="#Icon" id="ref-link-Icon">¶</a>
 				
 				
@@ -26252,7 +26263,7 @@ Observer is an observer that observes changes for a given state.
 		
 			
 			
-			<h2 id="Page">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/page.go?s=99:1003#L1" id="ref-link-L1">Page</a>
+			<h2 id="Page">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/page.go?s=99:1095#L1" id="ref-link-L1">Page</a>
 				<a class="permalink" href="#Page" id="ref-link-Page">¶</a>
 				
 				
@@ -26267,6 +26278,12 @@ Page is the interface that describes a web page.
 
     <span class="comment">// Sets the page title.</span>
     SetTitle(<a href="/pkg/builtin/#string" id="ref-link-string">string</a>)
+
+    <span class="comment">// Returns the page language.</span>
+    Lang() <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
+
+    <span class="comment">// Set the page language.</span>
+    SetLang(<a href="/pkg/builtin/#string" id="ref-link-string">string</a>)
 
     <span class="comment">// Returns the page description.</span>
     Description() <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
@@ -27445,7 +27462,7 @@ Wrapper is implemented by types that are backed by a JavaScript value.
 
 
 <div id="footer">
-Build version go1.17.2.<br/>
+Build version go1.17.3.<br/>
 Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
 the content of this page is licensed under the
 Creative Commons Attribution 3.0 License,
@@ -27462,7 +27479,7 @@ and code is licensed under a <a href="/LICENSE">BSD license</a>.<br/>
 </section>
 <div class="separator"></div>
 <aside>
-<header id="repport-an-issue" class="h2">
+<header class="h2" id="repport-an-issue">
 Report an issue
 </header>
 <p>
@@ -27484,19 +27501,19 @@ Found something incorrect, a typo or have suggestions to improve this page?
 <div data-goapp-ui="flyer" id class="fill">
 <div style="width:100%;height:calc(100% - 24px);padding:12px 0;">
 <div style="width:calc(100% - 84px);padding:0 42px;height:72px;"></div>
-<div id="goapp-flyer-layout-70082633-4a32-49e1-84e0-5076c7fd1c82" style="display:flex;flex-direction:column;justify-content:center;width:calc(100% - 84px);height:calc(100% - 72px);padding:0 42px;overflow:hidden;">
+<div style="display:flex;flex-direction:column;justify-content:center;width:calc(100% - 84px);height:calc(100% - 72px);padding:0 42px;overflow:hidden;" id="goapp-flyer-layout-5d7e133a-5404-49d3-87fb-1a0d37a331c9">
 <div style="height:0px;overflow:hidden;">
 <aside class="fill">
 <div data-goapp-ui="adsenseDisplay" id class="fill no-scroll">
-<ins id="goapp-adsense-display-1c48ea76-92cc-4050-8f48-823ba8d1f8f2"></ins>
+<ins id="goapp-adsense-display-68914eaf-7737-4c11-abac-e5637875ac03"></ins>
 </div>
 </aside>
 </div>
 <div style="display:none;height:0px;">
-<div id class="fill" style="display:flex;justify-content:center;align-items:center;" data-goapp="Stack">
+<div data-goapp="Stack" id class="fill" style="display:flex;justify-content:center;align-items:center;">
 <aside class="magnify text-center">
-<a href="https://github.com/sponsors/maxence-charriere" class="default">
-<div data-goapp="Icon" id class="center icon-top" style="width:72px;height:72px;max-width:72px;max-height:72px;min-width:72px;min-height:72px;">
+<a class="default" href="https://github.com/sponsors/maxence-charriere">
+<div id class="center icon-top" style="width:72px;height:72px;max-width:72px;max-height:72px;min-width:72px;min-height:72px;" data-goapp="Icon">
 <svg style="width:72px;height:72px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z" />
 	</svg>
@@ -27524,9 +27541,9 @@ Help with go-app development by sponsoring it on GitHub.
 </div>
 </div>
 <div style="display:none;position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;">
-<div class="menu fill menu-hamburger-background" data-goapp-ui="scroll" id>
+<div data-goapp-ui="scroll" id class="menu fill menu-hamburger-background">
 <div style="width:100%;height:calc(100% - 24px);padding:12px 0;">
-<div style="width:calc(100% - 84px);padding:0 42px;height:72px;">
+<div style="width:calc(100% - 24px);padding:0 12px;height:72px;">
 <div data-goapp="Stack" id class="fill" style="display:flex;justify-content:flex-start;align-items:center;">
 <header>
 <a class="heading app-title" href="/">
@@ -27535,7 +27552,7 @@ Go-App
 </header>
 </div>
 </div>
-<div style="width:calc(100% - 84px);height:calc(100% - 72px);padding:0 42px;overflow-x:hidden;overflow-y:scroll;">
+<div style="width:calc(100% - 24px);height:calc(100% - 72px);padding:0 12px;overflow-x:hidden;overflow-y:scroll;">
 <nav>
 <div class="separator"></div>
 <a title href="/" id class="link heading fit unselectable">
@@ -27550,9 +27567,9 @@ Home
 </div>
 </div>
 </a>
-<a class="link heading fit unselectable" title href="/getting-started" id>
+<a id class="link heading fit unselectable" title href="/getting-started">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<div style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id class>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19M5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5M21.61 2.39C21.61 2.39 16.66 .269 11 5.93C8.81 8.12 7.5 10.53 6.65 12.64C6.37 13.39 6.56 14.21 7.11 14.77L9.24 16.89C9.79 17.45 10.61 17.63 11.36 17.35C13.5 16.53 15.88 15.19 18.07 13C23.73 7.34 21.61 2.39 21.61 2.39M14.54 9.46C13.76 8.68 13.76 7.41 14.54 6.63S16.59 5.85 17.37 6.63C18.14 7.41 18.15 8.68 17.37 9.46C16.59 10.24 15.32 10.24 14.54 9.46M8.88 16.53L7.47 15.12L8.88 16.53M6.24 22L9.88 18.36C9.54 18.27 9.21 18.12 8.91 17.91L4.83 22H6.24M2 22H3.41L8.18 17.24L6.76 15.83L2 20.59V22M2 19.17L6.09 15.09C5.88 14.79 5.73 14.47 5.64 14.12L2 17.76V19.17Z" />
 	</svg>
@@ -27562,8 +27579,8 @@ Getting Started
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/architecture">
-<div class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id>
+<a href="/architecture" id class="link heading fit unselectable" title>
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M9,2V8H11V11H5C3.89,11 3,11.89 3,13V16H1V22H7V16H5V13H11V16H9V22H15V16H13V13H19V16H17V22H23V16H21V13C21,11.89 20.11,11 19,11H13V8H15V2H9Z" />
@@ -27576,7 +27593,7 @@ Architecture
 </a>
 <a id class="link heading fit unselectable" title href="/reference">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<div class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id>
 <svg width="24px" height="24px" viewBox="0 0 207 78" xmlns="http://www.w3.org/2000/svg">
 		<g fill="currentColor" fill-rule="evenodd">
 			<path d="m16.2 24.1c-.4 0-.5-.2-.3-.5l2.1-2.7c.2-.3.7-.5 1.1-.5h35.7c.4 0 .5.3.3.6l-1.7 2.6c-.2.3-.7.6-1 .6z"/>
@@ -27596,7 +27613,7 @@ Reference
 </a>
 <div class="separator"></div>
 <a id class="link heading fit unselectable" title href="/components">
-<div style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id class>
+<div class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id>
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M10,5V11H21V5M16,18H21V12H16M4,18H9V5H4M10,18H15V12H10V18Z" />
@@ -27607,7 +27624,7 @@ Components
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/declarative-syntax">
+<a href="/declarative-syntax" id class="link heading fit unselectable" title>
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -27619,8 +27636,8 @@ Declarative Syntax
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/routing">
-<div style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id class>
+<a class="link heading fit unselectable" title href="/routing" id>
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M11,10H5L3,8L5,6H11V3L12,2L13,3V4H19L21,6L19,8H13V10H19L21,12L19,14H13V20A2,2 0 0,1 15,22H9A2,2 0 0,1 11,20V10Z" />
@@ -27631,8 +27648,8 @@ Routing
 </div>
 </div>
 </a>
-<a href="/static-resources" id class="link heading fit unselectable" title>
-<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<a title href="/static-resources" id class="link heading fit unselectable">
+<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M7,15L11.5,9L15,13.5L17.5,10.5L21,15M22,4H14L12,2H6A2,2 0 0,0 4,4V16A2,2 0 0,0 6,18H22A2,2 0 0,0 24,16V6A2,2 0 0,0 22,4M2,6H0V11H0V20A2,2 0 0,0 2,22H20V20H2V6Z" />
@@ -27643,8 +27660,8 @@ Images and Static Resources
 </div>
 </div>
 </a>
-<a class="link heading fit unselectable" title href="/js" id>
-<div style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id class>
+<a id class="link heading fit unselectable" title href="/js">
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M3,3H21V21H3V3M7.73,18.04C8.13,18.89 8.92,19.59 10.27,19.59C11.77,19.59 12.8,18.79 12.8,17.04V11.26H11.1V17C11.1,17.86 10.75,18.08 10.2,18.08C9.62,18.08 9.38,17.68 9.11,17.21L7.73,18.04M13.71,17.86C14.21,18.84 15.22,19.59 16.8,19.59C18.4,19.59 19.6,18.76 19.6,17.23C19.6,15.82 18.79,15.19 17.35,14.57L16.93,14.39C16.2,14.08 15.89,13.87 15.89,13.37C15.89,12.96 16.2,12.64 16.7,12.64C17.18,12.64 17.5,12.85 17.79,13.37L19.1,12.5C18.55,11.54 17.77,11.17 16.7,11.17C15.19,11.17 14.22,12.13 14.22,13.4C14.22,14.78 15.03,15.43 16.25,15.95L16.67,16.13C17.45,16.47 17.91,16.68 17.91,17.26C17.91,17.74 17.46,18.09 16.76,18.09C15.93,18.09 15.45,17.66 15.09,17.06L13.71,17.86Z" />
@@ -27655,8 +27672,8 @@ JavaScript Interoperability
 </div>
 </div>
 </a>
-<a title href="/concurrency" id class="link heading fit unselectable">
-<div class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id>
+<a class="link heading fit unselectable" title href="/concurrency" id>
+<div style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id class>
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M16,4.5V7H5V9H16V11.5L19.5,8M16,12.5V15H5V17H16V19.5L19.5,16" />
@@ -27669,7 +27686,7 @@ Concurrency
 </a>
 <a id class="link heading fit unselectable" title href="/seo">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<div style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id class>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M15.5,14L20.5,19L19,20.5L14,15.5V14.71L13.73,14.43C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.43,13.73L14.71,14H15.5M9.5,4.5L8.95,4.53C8.71,5.05 8.34,5.93 8.07,7H10.93C10.66,5.93 10.29,5.05 10.05,4.53C9.87,4.5 9.69,4.5 9.5,4.5M13.83,7C13.24,5.97 12.29,5.17 11.15,4.78C11.39,5.31 11.7,6.08 11.93,7H13.83M5.17,7H7.07C7.3,6.08 7.61,5.31 7.85,4.78C6.71,5.17 5.76,5.97 5.17,7M4.5,9.5C4.5,10 4.58,10.53 4.73,11H6.87L6.75,9.5L6.87,8H4.73C4.58,8.47 4.5,9 4.5,9.5M14.27,11C14.42,10.53 14.5,10 14.5,9.5C14.5,9 14.42,8.47 14.27,8H12.13C12.21,8.5 12.25,9 12.25,9.5C12.25,10 12.21,10.5 12.13,11H14.27M7.87,8L7.75,9.5L7.87,11H11.13C11.21,10.5 11.25,10 11.25,9.5C11.25,9 11.21,8.5 11.13,8H7.87M9.5,14.5C9.68,14.5 9.86,14.5 10.03,14.47C10.28,13.95 10.66,13.07 10.93,12H8.07C8.34,13.07 8.72,13.95 8.97,14.47L9.5,14.5M13.83,12H11.93C11.7,12.92 11.39,13.69 11.15,14.22C12.29,13.83 13.24,13.03 13.83,12M5.17,12C5.76,13.03 6.71,13.83 7.85,14.22C7.61,13.69 7.3,12.92 7.07,12H5.17Z" />
 	</svg>
@@ -27691,9 +27708,9 @@ Lifecycle and Updates
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/install">
+<a class="link heading fit unselectable" title href="/install" id>
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id class>
+<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
 	</svg>
@@ -27703,9 +27720,9 @@ Install
 </div>
 </div>
 </a>
-<a class="link heading fit unselectable" title href="/testing" id>
+<a id class="link heading fit unselectable" title href="/testing">
 <div class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id>
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M7,2V4H8V18A4,4 0 0,0 12,22A4,4 0 0,0 16,18V4H17V2H7M11,16C10.4,16 10,15.6 10,15C10,14.4 10.4,14 11,14C11.6,14 12,14.4 12,15C12,15.6 11.6,16 11,16M13,12C12.4,12 12,11.6 12,11C12,10.4 12.4,10 13,10C13.6,10 14,10.4 14,11C14,11.6 13.6,12 13,12M14,7H10V4H14V7Z" />
 	</svg>
@@ -27715,8 +27732,8 @@ Testing
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/actions">
-<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<a class="link heading fit unselectable" title href="/actions" id>
+<div style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id class>
 <div class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M16,4L9,8.04V15.96L16,20L23,15.96V8.04M16,6.31L19.8,8.5L16,10.69L12.21,8.5M0,7V9H7V7M11,10.11L15,12.42V17.11L11,14.81M21,10.11V14.81L17,17.11V12.42M2,11V13H7V11M4,15V17H7V15" />
@@ -27729,7 +27746,7 @@ Actions
 </a>
 <a href="/states" id class="link heading fit unselectable" title>
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M4 12V9C4 11.2 7.6 13 12 13S20 11.2 20 9V12C20 12.5 19.8 12.9 19.5 13.4C18.7 13.1 17.9 13 17 13C14.5 13 12.1 14.1 10.6 15.9C6.8 15.6 4 14 4 12M12 11C16.4 11 20 9.2 20 7S16.4 3 12 3 4 4.8 4 7 7.6 11 12 11M9.1 19.7L8.8 19L9.1 18.3C9.2 18.1 9.3 18 9.3 17.8C6.2 17.2 4 15.8 4 14V17C4 18.8 6.4 20.3 9.7 20.8C9.5 20.5 9.3 20.1 9.1 19.7M17 18C16.4 18 16 18.4 16 19S16.4 20 17 20 18 19.6 18 19 17.6 18 17 18M23 19C22.1 21.3 19.7 23 17 23S11.9 21.3 11 19C11.9 16.7 14.3 15 17 15S22.1 16.7 23 19M19.5 19C19.5 17.6 18.4 16.5 17 16.5S14.5 17.6 14.5 19 15.6 21.5 17 21.5 19.5 20.4 19.5 19Z" />
 	</svg>
@@ -27741,8 +27758,8 @@ State Management
 </a>
 <div class="separator"></div>
 <a id class="link heading fit unselectable" title href="/migrate">
-<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id>
+<div style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id class>
+<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M21,9L17,5V8H10V10H17V13M7,11L3,15L7,19V16H14V14H7V11Z" />
 	</svg>
@@ -27777,9 +27794,9 @@ Twitter
 </div>
 </div>
 </a>
-<a title href="https://github.com/maxence-charriere/go-app" id class="link heading fit unselectable">
+<a id class="link heading fit unselectable" title href="https://github.com/maxence-charriere/go-app">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<div class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z" />
 	</svg>
@@ -27789,9 +27806,9 @@ GitHub
 </div>
 </div>
 </a>
-<a title href="https://opencollective.com/go-app" id class="link heading fit unselectable">
+<a id class="link heading fit unselectable" title href="https://opencollective.com/go-app">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M15.41,22C15.35,22 15.28,22 15.22,22C15.1,21.95 15,21.85 14.96,21.73L12.74,15.93C12.65,15.69 12.77,15.42 13,15.32C13.71,15.06 14.28,14.5 14.58,13.83C15.22,12.4 14.58,10.73 13.15,10.09C11.72,9.45 10.05,10.09 9.41,11.5C9.11,12.21 9.09,13 9.36,13.69C9.66,14.43 10.25,15 11,15.28C11.24,15.37 11.37,15.64 11.28,15.89L9,21.69C8.96,21.81 8.87,21.91 8.75,21.96C8.63,22 8.5,22 8.39,21.96C3.24,19.97 0.67,14.18 2.66,9.03C4.65,3.88 10.44,1.31 15.59,3.3C18.06,4.26 20.05,6.15 21.13,8.57C22.22,11 22.29,13.75 21.33,16.22C20.32,18.88 18.23,21 15.58,22C15.5,22 15.47,22 15.41,22M12,3.59C7.03,3.46 2.9,7.39 2.77,12.36C2.68,16.08 4.88,19.47 8.32,20.9L10.21,16C8.38,15 7.69,12.72 8.68,10.89C9.67,9.06 11.96,8.38 13.79,9.36C15.62,10.35 16.31,12.64 15.32,14.47C14.97,15.12 14.44,15.65 13.79,16L15.68,20.93C17.86,19.95 19.57,18.16 20.44,15.93C22.28,11.31 20.04,6.08 15.42,4.23C14.33,3.8 13.17,3.58 12,3.59Z" />
 	</svg>
@@ -27817,7 +27834,7 @@ Privacy Policy
 <div class="separator"></div>
 </nav>
 </div>
-<div style="width:calc(100% - 84px);padding:0 42px;height:0px;"></div>
+<div style="width:calc(100% - 24px);padding:0 12px;height:0px;"></div>
 </div>
 </div>
 </div>
