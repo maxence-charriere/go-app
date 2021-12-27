@@ -116,6 +116,9 @@ type Handler struct {
 
 	// The page body element.
 	//
+	// Note that the lang attribute is always overridden by the Handler.Lang
+	// value.
+	//
 	// Default: Body().
 	Body func() HTMLBody
 
