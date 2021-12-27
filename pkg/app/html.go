@@ -5609,11 +5609,7 @@ func (e *htmlBlockquote) OnWheel(h EventHandler, scope ...interface{}) HTMLBlock
 type HTMLBody interface {
 	UI
 
-	// Body set the content of the element.
-	Body(elems ...UI) HTMLBody
-
-	// Text sets the content of the element with a text node containing the stringified given value.
-	Text(v interface{}) HTMLBody
+	privateBody(elems ...UI) HTMLBody
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLBody
@@ -5824,13 +5820,9 @@ type htmlBody struct {
 	elem
 }
 
-func (e *htmlBody) Body(elems ...UI) HTMLBody {
+func (e *htmlBody) privateBody(elems ...UI) HTMLBody {
 	e.setBody(elems...)
 	return e
-}
-
-func (e *htmlBody) Text(v interface{}) HTMLBody {
-	return e.Body(Text(v))
 }
 
 func (e *htmlBody) AccessKey(v string) HTMLBody {
@@ -20859,11 +20851,7 @@ func (e *htmlHr) OnWheel(h EventHandler, scope ...interface{}) HTMLHr {
 type HTMLHtml interface {
 	UI
 
-	// Body set the content of the element.
-	Body(elems ...UI) HTMLHtml
-
-	// Text sets the content of the element with a text node containing the stringified given value.
-	Text(v interface{}) HTMLHtml
+	privateBody(elems ...UI) HTMLHtml
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
 	AccessKey(v string) HTMLHtml
@@ -20933,13 +20921,9 @@ type htmlHtml struct {
 	elem
 }
 
-func (e *htmlHtml) Body(elems ...UI) HTMLHtml {
+func (e *htmlHtml) privateBody(elems ...UI) HTMLHtml {
 	e.setBody(elems...)
 	return e
-}
-
-func (e *htmlHtml) Text(v interface{}) HTMLHtml {
-	return e.Body(Text(v))
 }
 
 func (e *htmlHtml) AccessKey(v string) HTMLHtml {
@@ -21524,7 +21508,7 @@ type HTMLIFrame interface {
 	// Lang specifies the language of the element's content.
 	Lang(v string) HTMLIFrame
 
-	// Loading specifies the loading strategie for the content (used with iframes).
+	// Loading indicates how the browser should load the iframe (eager|lazy).
 	Loading(v string) HTMLIFrame
 
 	// Name specifies the name of the element.
