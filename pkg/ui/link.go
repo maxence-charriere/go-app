@@ -1,6 +1,10 @@
 package ui
 
-import "github.com/maxence-charriere/go-app/v9/pkg/app"
+import (
+	"fmt"
+
+	"github.com/maxence-charriere/go-app/v9/pkg/app"
+)
 
 // ILink is the interface that describes a clickable link.
 type ILink interface {
@@ -24,6 +28,9 @@ type ILink interface {
 	// Sets the space between the icon and the label.
 	IconSpace(px int) ILink
 
+	// Sets the content vertical padding.
+	Padding(v int) ILink
+
 	// Sets the label.
 	Label(v string) ILink
 
@@ -42,6 +49,7 @@ func Link() ILink {
 	return &link{
 		IiconSize:  DefaultIconSize,
 		IiconSpace: DefaultIconSpace,
+		Ipadding:   3,
 	}
 }
 
@@ -54,6 +62,7 @@ type link struct {
 	Iicon      string
 	IiconSize  int
 	IiconSpace int
+	Ipadding   int
 	Ilabel     string
 	Ihelp      string
 	Ihref      string
@@ -96,6 +105,11 @@ func (l *link) IconSpace(px int) ILink {
 	return l
 }
 
+func (l *link) Padding(px int) ILink {
+	l.Ipadding = px
+	return l
+}
+
 func (l *link) Label(v string) ILink {
 	l.Ilabel = v
 	return l
@@ -125,7 +139,7 @@ func (l *link) Render() app.UI {
 		OnClick(l.onClick).
 		Body(
 			Stack().
-				Style("padding", "3px 0").
+				Style("padding", fmt.Sprintf("%vpx 0", l.Ipadding)).
 				Middle().
 				Content(
 					app.If(l.Iicon != "",
