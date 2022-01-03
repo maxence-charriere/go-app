@@ -2,6 +2,7 @@ package app
 
 import (
 	"net/http"
+	"path/filepath"
 	"strings"
 )
 
@@ -101,7 +102,7 @@ func CustomProvider(path, prefix string) ResourceProvider {
 	return localDir{
 		Handler: http.FileServer(http.Dir(root)),
 		root:    prefix,
-		appWASM: prefix + "/web/app.wasm",
+		appWASM: filepath.Join(prefix, "web/app.wasm"),
 	}
 }
 
