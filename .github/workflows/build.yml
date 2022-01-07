@@ -1,0 +1,48 @@
+name: Build
+
+on: [push]
+
+jobs:
+  code:
+    name: Code Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: "1.17"
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Vet
+        run: go vet ./...
+
+  server:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: "1.17"
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Run Unit Tests
+        run: go test -v -race ./...
+
+  client:
+    name: WebAssembly Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: "1.17"
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Install WASM Browser Test
+        run: |
+          go install github.com/agnivade/wasmbrowsertest@latest
+          mv `go env GOPATH`/bin/wasmbrowsertest `go env GOPATH`/bin/go_js_wasm_exec
+      - name: Run Unit Tests
+        run: |
+          GOARCH=wasm GOOS=js go test ./pkg/app
