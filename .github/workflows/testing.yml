@@ -13,10 +13,11 @@ jobs:
           go-version: "1.17"
       - name: Checkout Code
         uses: actions/checkout@v2
-      - name: Check Go Code
+      - name: Vet
         run: go vet ./...
+
   server:
-    name: Server Side Tests
+    name: Unit Tests
     runs-on: ubuntu-latest
     steps:
       - name: Setup Go
@@ -27,8 +28,9 @@ jobs:
         uses: actions/checkout@v2
       - name: Run Unit Tests
         run: go test -v -race ./...
+
   client:
-    name: Client Side Tests
+    name: WebAssembly Unit Tests
     runs-on: ubuntu-latest
     steps:
       - name: Setup Go
