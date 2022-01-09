@@ -28,7 +28,7 @@ if ("serviceWorker" in navigator) {
 // -----------------------------------------------------------------------------
 // Env
 // -----------------------------------------------------------------------------
-const goappEnv = {{.Env }};
+const goappEnv = {{.Env}};
 
 function goappGetenv(k) {
   return goappEnv[k];

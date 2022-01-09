@@ -7,8 +7,7 @@ self.addEventListener("install", event => {
     caches.open(cacheName).
       then(cache => {
         return cache.addAll([
-          {{range $path, $element := .ResourcesToCache}}"{{$path}}",
-          {{end}}
+          {{.ResourcesToCache}}
         ]);
       }).
       then(() => {

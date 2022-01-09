@@ -14,7 +14,6 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"text/template"
 	"time"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
@@ -342,21 +341,11 @@ func (h *Handler) makeAppJS() []byte {
 		)
 	}
 
-	var b bytes.Buffer
-	if err := template.
-		Must(template.New("app.js").Parse(appJS)).
-		Execute(&b, struct {
-			Env      string
-			Wasm     string
-			WorkerJS string
-		}{
-			Env:      btos(env),
-			Wasm:     h.Resources.AppWASM(),
-			WorkerJS: h.resolvePackagePath("/app-worker.js"),
-		}); err != nil {
-		panic(errors.New("initializing app.js failed").Wrap(err))
-	}
-	return b.Bytes()
+	s := appJS
+	s = strings.ReplaceAll(s, "{{.Env}}", btos(env))
+	s = strings.ReplaceAll(s, "{{.Wasm}}", h.Resources.AppWASM())
+	s = strings.ReplaceAll(s, "{{.WorkerJS}}", h.resolvePackagePath("/app-worker.js"))
+	return []byte(s)
 }
 
 func (h *Handler) makeAppWorkerJS() []byte {
@@ -382,19 +371,15 @@ func (h *Handler) makeAppWorkerJS() []byte {
 	cacheResources(h.Scripts...)
 	cacheResources(h.CacheableResources...)
 
-	var b bytes.Buffer
-	if err := template.
-		Must(template.New("app-worker.js").Parse(appWorkerJS)).
-		Execute(&b, struct {
-			Version          string
-			ResourcesToCache map[string]struct{}
-		}{
-			Version:          h.Version,
-			ResourcesToCache: cacheableResources,
-		}); err != nil {
-		panic(errors.New("initializing app-worker.js failed").Wrap(err))
+	s := appWorkerJS
+	s = strings.ReplaceAll(s, "{{.Version}}", h.Version)
+
+	var resources string
+	for entry := range cacheableResources {
+		resources += fmt.Sprintf("\"%s\",\n", entry)
 	}
-	return b.Bytes()
+	s = strings.ReplaceAll(s, "{{.ResourcesToCache}}", resources)
+	return []byte(s)
 }
 
 func (h *Handler) makeManifestJSON() []byte {
@@ -408,33 +393,17 @@ func (h *Handler) makeManifestJSON() []byte {
 		return s
 	}
 
-	var b bytes.Buffer
-	if err := template.
-		Must(template.New("manifest.webmanifest").Parse(manifestJSON)).
-		Execute(&b, struct {
-			ShortName       string
-			Name            string
-			Description     string
-			DefaultIcon     string
-			LargeIcon       string
-			BackgroundColor string
-			ThemeColor      string
-			Scope           string
-			StartURL        string
-		}{
-			ShortName:       h.ShortName,
-			Name:            h.Name,
-			Description:     h.Description,
-			DefaultIcon:     h.Icon.Default,
-			LargeIcon:       h.Icon.Large,
-			BackgroundColor: h.BackgroundColor,
-			ThemeColor:      h.ThemeColor,
-			Scope:           normalize(h.Resources.Package()),
-			StartURL:        normalize(h.Resources.Package()),
-		}); err != nil {
-		panic(errors.New("initializing manifest.webmanifest failed").Wrap(err))
-	}
-	return b.Bytes()
+	s := manifestJSON
+	s = strings.ReplaceAll(s, "{{.ShortName}}", h.ShortName)
+	s = strings.ReplaceAll(s, "{{.Name}}", h.Name)
+	s = strings.ReplaceAll(s, "{{.Description}}", h.Description)
+	s = strings.ReplaceAll(s, "{{.DefaultIcon}}", h.Icon.Default)
+	s = strings.ReplaceAll(s, "{{.LargeIcon}}", h.Icon.Large)
+	s = strings.ReplaceAll(s, "{{.BackgroundColor}}", h.BackgroundColor)
+	s = strings.ReplaceAll(s, "{{.ThemeColor}}", h.ThemeColor)
+	s = strings.ReplaceAll(s, "{{.Scope}}", normalize(h.Resources.Package()))
+	s = strings.ReplaceAll(s, "{{.StartURL}}", normalize(h.Resources.Package()))
+	return []byte(s)
 }
 
 func (h *Handler) initProxyResources() {
