@@ -10,11 +10,12 @@ import (
 )
 
 const (
-	wasmExecJS   = ""
-	appJS        = ""
-	appWorkerJS  = ""
-	manifestJSON = ""
-	appCSS       = ""
+	wasmExecJS     = ""
+	wasmExecJSTiny = ""
+	appJS          = ""
+	appWorkerJS    = ""
+	manifestJSON   = ""
+	appCSS         = ""
 )
 
 var (

@@ -1,15 +1,12 @@
-const cacheName = "app-" + "{{.Version}}";
+const cacheName = "app-" + "T(Version)";
 
 self.addEventListener("install", event => {
-  console.log("installing app worker {{.Version}}");
+  console.log("installing app worker " + "T(Version)");
 
   event.waitUntil(
     caches.open(cacheName).
       then(cache => {
-        return cache.addAll([
-          {{range $path, $element := .ResourcesToCache}}"{{$path}}",
-          {{end}}
-        ]);
+        return cache.addAll("T(ResourcesToCache)");
       }).
       then(() => {
         self.skipWaiting();
@@ -29,7 +26,7 @@ self.addEventListener("activate", event => {
       );
     })
   );
-  console.log("app worker {{.Version}} is activated");
+  console.log("app worker " + "T(Version)" + " is activated");
 });
 
 self.addEventListener("fetch", event => {

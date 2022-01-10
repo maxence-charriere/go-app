@@ -1,3 +1,4 @@
+//go:build ignore
 // +build ignore
 
 package main
@@ -32,6 +33,11 @@ func main() {
 			runtime.GOROOT(),
 			"misc",
 			"wasm",
+			"wasm_exec.js",
+		)},
+		{Var: "wasmExecJSTiny", Filename: filepath.Join(
+			"/usr/local/Cellar/tinygo/0.21.0",
+			"targets",
 			"wasm_exec.js",
 		)},
 		{Var: "appJS", Filename: "gen/app.js"},

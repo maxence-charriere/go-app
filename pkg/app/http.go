@@ -8,16 +8,15 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"reflect"
 	"runtime"
 	"strconv"
 	"strings"
 	"sync"
-	"text/template"
 	"time"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+	"github.com/maxence-charriere/go-app/v9/pkg/template"
 )
 
 const (
@@ -277,10 +276,16 @@ func (h *Handler) initPreRenderedResources() {
 	h.pwaResources = newPreRenderCache(5)
 	ctx := context.TODO()
 
+	// h.pwaResources.Set(ctx, PreRenderedItem{
+	// 	Path:        "/wasm_exec.js",
+	// 	ContentType: "application/javascript",
+	// 	Body:        []byte(wasmExecJS),
+	// })
+
 	h.pwaResources.Set(ctx, PreRenderedItem{
 		Path:        "/wasm_exec.js",
 		ContentType: "application/javascript",
-		Body:        []byte(wasmExecJS),
+		Body:        []byte(wasmExecJSTiny),
 	})
 
 	h.pwaResources.Set(ctx, PreRenderedItem{
@@ -325,38 +330,28 @@ func (h *Handler) makeAppJS() []byte {
 	h.Env["GOAPP_STATIC_RESOURCES_URL"] = h.Resources.Static()
 	h.Env["GOAPP_ROOT_PREFIX"] = h.Resources.Package()
 
-	for k, v := range h.Env {
-		if err := os.Setenv(k, v); err != nil {
-			Log(errors.New("setting app env variable failed").
-				Tag("name", k).
-				Tag("value", v).
-				Wrap(err))
-		}
-	}
+	// for k, v := range h.Env {
+	// 	if err := os.Setenv(k, v); err != nil {
+	// 		Log(errors.New("setting app env variable failed").
+	// 			Tag("name", k).
+	// 			Tag("value", v).
+	// 			Wrap(err))
+	// 	}
+	// }
 
-	env, err := json.Marshal(h.Env)
+	b, err := template.Gen(json.Marshal, appJS, struct {
+		Env      Environment
+		Wasm     string
+		WorkerJS string
+	}{
+		Env:      h.Env,
+		Wasm:     h.Resources.AppWASM(),
+		WorkerJS: h.resolvePackagePath("/app-worker.js"),
+	})
 	if err != nil {
-		panic(errors.New("encoding pwa env failed").
-			Tag("env", h.Env).
-			Wrap(err),
-		)
-	}
-
-	var b bytes.Buffer
-	if err := template.
-		Must(template.New("app.js").Parse(appJS)).
-		Execute(&b, struct {
-			Env      string
-			Wasm     string
-			WorkerJS string
-		}{
-			Env:      btos(env),
-			Wasm:     h.Resources.AppWASM(),
-			WorkerJS: h.resolvePackagePath("/app-worker.js"),
-		}); err != nil {
 		panic(errors.New("initializing app.js failed").Wrap(err))
 	}
-	return b.Bytes()
+	return b
 }
 
 func (h *Handler) makeAppWorkerJS() []byte {
@@ -382,19 +377,22 @@ func (h *Handler) makeAppWorkerJS() []byte {
 	cacheResources(h.Scripts...)
 	cacheResources(h.CacheableResources...)
 
-	var b bytes.Buffer
-	if err := template.
-		Must(template.New("app-worker.js").Parse(appWorkerJS)).
-		Execute(&b, struct {
-			Version          string
-			ResourcesToCache map[string]struct{}
-		}{
-			Version:          h.Version,
-			ResourcesToCache: cacheableResources,
-		}); err != nil {
+	resourcesToCache := make([]string, 0, len(cacheableResources))
+	for k := range cacheableResources {
+		resourcesToCache = append(resourcesToCache, k)
+	}
+
+	b, err := template.Gen(json.Marshal, appWorkerJS, struct {
+		Version          string
+		ResourcesToCache []string
+	}{
+		Version:          h.Version,
+		ResourcesToCache: resourcesToCache,
+	})
+	if err != nil {
 		panic(errors.New("initializing app-worker.js failed").Wrap(err))
 	}
-	return b.Bytes()
+	return b
 }
 
 func (h *Handler) makeManifestJSON() []byte {
@@ -408,33 +406,31 @@ func (h *Handler) makeManifestJSON() []byte {
 		return s
 	}
 
-	var b bytes.Buffer
-	if err := template.
-		Must(template.New("manifest.webmanifest").Parse(manifestJSON)).
-		Execute(&b, struct {
-			ShortName       string
-			Name            string
-			Description     string
-			DefaultIcon     string
-			LargeIcon       string
-			BackgroundColor string
-			ThemeColor      string
-			Scope           string
-			StartURL        string
-		}{
-			ShortName:       h.ShortName,
-			Name:            h.Name,
-			Description:     h.Description,
-			DefaultIcon:     h.Icon.Default,
-			LargeIcon:       h.Icon.Large,
-			BackgroundColor: h.BackgroundColor,
-			ThemeColor:      h.ThemeColor,
-			Scope:           normalize(h.Resources.Package()),
-			StartURL:        normalize(h.Resources.Package()),
-		}); err != nil {
+	b, err := template.Gen(json.Marshal, manifestJSON, struct {
+		ShortName       string
+		Name            string
+		Description     string
+		DefaultIcon     string
+		LargeIcon       string
+		BackgroundColor string
+		ThemeColor      string
+		Scope           string
+		StartURL        string
+	}{
+		ShortName:       h.ShortName,
+		Name:            h.Name,
+		Description:     h.Description,
+		DefaultIcon:     h.Icon.Default,
+		LargeIcon:       h.Icon.Large,
+		BackgroundColor: h.BackgroundColor,
+		ThemeColor:      h.ThemeColor,
+		Scope:           normalize(h.Resources.Package()),
+		StartURL:        normalize(h.Resources.Package()),
+	})
+	if err != nil {
 		panic(errors.New("initializing manifest.webmanifest failed").Wrap(err))
 	}
-	return b.Bytes()
+	return b
 }
 
 func (h *Handler) initProxyResources() {

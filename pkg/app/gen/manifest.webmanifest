@@ -1,22 +1,22 @@
 {
-  "short_name": "{{.ShortName}}",
-  "name": "{{.Name}}",
-  "description": "{{.Description}}",
+  "short_name": "T(ShortName)",
+  "name": "T(Name)",
+  "description": "T(Description)",
   "icons": [
     {
-      "src": "{{.DefaultIcon}}",
+      "src": "T(DefaultIcon)",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "{{.LargeIcon}}",
+      "src": "T(LargeIcon)",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
-  "scope": "{{.Scope}}",
-  "start_url": "{{.StartURL}}",
-  "background_color": "{{.BackgroundColor}}",
-  "theme_color": "{{.ThemeColor}}",
+  "scope": "T(Scope)",
+  "start_url": "T(StartURL)",
+  "background_color": "T(BackgroundColor)",
+  "theme_color": "T(ThemeColor)",
   "display": "standalone"
 }

@@ -15,7 +15,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
-	"os"
 	"runtime"
 	"strings"
 	"time"
@@ -48,9 +47,9 @@ var (
 // Getenv retrieves the value of the environment variable named by the key. It
 // returns the value, which will be empty if the variable is not present.
 func Getenv(k string) string {
-	if IsServer {
-		return os.Getenv(k)
-	}
+	// if IsServer {
+	// 	return os.Getenv(k)
+	// }
 
 	env := Window().Call("goappGetenv", k)
 	if !env.Truthy() {
