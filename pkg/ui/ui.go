@@ -22,7 +22,7 @@ var (
 	BaseMobileHPadding = 12
 
 	// The horizontal padding of base-like ad components in px.
-	BaseAdHPadding = BaseHPadding / 3
+	BaseAdHPadding = BaseHPadding / 2
 
 	// The vertical padding of base-like components in px.
 	BaseVPadding = 12
