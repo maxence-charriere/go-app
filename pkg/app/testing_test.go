@@ -40,6 +40,6 @@ func testCreateDir(t *testing.T, path string) func() {
 }
 
 func testCreateFile(t *testing.T, path, content string) {
-	err := ioutil.WriteFile(path, stob(content), 0666)
+	err := ioutil.WriteFile(path, []byte(content), 0666)
 	require.NoError(t, err)
 }

@@ -53,20 +53,16 @@ func toPath(v ...interface{}) string {
 
 func writeIndent(w io.Writer, indent int) {
 	for i := 0; i < indent*2; i++ {
-		w.Write(stob(" "))
+		w.Write([]byte(" "))
 	}
 }
 
 func ln() []byte {
-	return stob("\n")
+	return []byte("\n")
 }
 
 func btos(b []byte) string {
 	return *(*string)(unsafe.Pointer(&b))
-}
-
-func stob(s string) []byte {
-	return *(*[]byte)(unsafe.Pointer(&s))
 }
 
 func pxToString(px int) string {

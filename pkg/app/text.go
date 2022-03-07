@@ -130,10 +130,10 @@ func (t *text) preRender(Page) {
 }
 
 func (t *text) html(w io.Writer) {
-	w.Write(stob(html.EscapeString(t.value)))
+	w.Write([]byte(html.EscapeString(t.value)))
 }
 
 func (t *text) htmlWithIndent(w io.Writer, indent int) {
 	writeIndent(w, indent)
-	w.Write(stob(html.EscapeString(t.value)))
+	w.Write([]byte(html.EscapeString(t.value)))
 }

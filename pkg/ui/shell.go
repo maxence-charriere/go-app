@@ -48,7 +48,7 @@ type IShell interface {
 func Shell() IShell {
 	return &shell{
 		IpaneWidth: 270,
-		IadsWidth:  300 + 2*BaseHPadding,
+		IadsWidth:  300 + 2*BaseAdHPadding,
 		id:         "goapp-shell-" + uuid.NewString(),
 	}
 }

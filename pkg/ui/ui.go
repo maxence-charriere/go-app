@@ -21,6 +21,9 @@ var (
 	// The horizontal padding of base-like components in px when app width is <= 480px.
 	BaseMobileHPadding = 12
 
+	// The horizontal padding of base-like ad components in px.
+	BaseAdHPadding = BaseHPadding / 3
+
 	// The vertical padding of base-like components in px.
 	BaseVPadding = 12
 
