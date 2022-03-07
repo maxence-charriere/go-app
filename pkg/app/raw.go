@@ -167,12 +167,12 @@ func (r *raw) preRender(Page) {
 }
 
 func (r *raw) html(w io.Writer) {
-	w.Write(stob(r.value))
+	w.Write([]byte(r.value))
 }
 
 func (r *raw) htmlWithIndent(w io.Writer, indent int) {
 	writeIndent(w, indent)
-	w.Write(stob(r.value))
+	w.Write([]byte(r.value))
 }
 
 func rawRootTagName(raw string) string {

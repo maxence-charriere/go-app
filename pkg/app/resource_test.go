@@ -30,7 +30,7 @@ func TestLocalDir(t *testing.T) {
 	for _, r := range resources {
 		t.Run(r, func(t *testing.T) {
 			path := strings.Replace(r, "/web", "test/web", 1)
-			err := ioutil.WriteFile(path, stob("hello"), 0666)
+			err := ioutil.WriteFile(path, []byte("hello"), 0666)
 			require.NoError(t, err)
 
 			req := httptest.NewRequest(http.MethodGet, r, nil)

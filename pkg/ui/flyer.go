@@ -45,7 +45,7 @@ func Flyer() IFlyer {
 	return &flyer{
 		IheaderHeight:  defaultHeaderHeight,
 		IpremiumHeight: 250,
-		hpadding:       BaseHPadding,
+		hpadding:       BaseAdHPadding,
 		vpadding:       BaseVPadding,
 		layoutID:       "goapp-flyer-layout-" + uuid.NewString(),
 	}

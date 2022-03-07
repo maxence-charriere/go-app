@@ -144,7 +144,7 @@ func (s *jsStorage) Get(k string, v interface{}) error {
 		return nil
 	}
 
-	return json.Unmarshal(stob(item.String()), v)
+	return json.Unmarshal([]byte(item.String()), v)
 }
 
 func (s *jsStorage) Del(k string) {

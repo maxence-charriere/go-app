@@ -467,21 +467,21 @@ func (e *elem) preRender(p Page) {
 }
 
 func (e *elem) html(w io.Writer) {
-	w.Write(stob("<"))
-	w.Write(stob(e.tag))
+	w.Write([]byte("<"))
+	w.Write([]byte(e.tag))
 
 	for k, v := range e.attrs {
-		w.Write(stob(" "))
-		w.Write(stob(k))
+		w.Write([]byte(" "))
+		w.Write([]byte(k))
 
 		if v != "" {
-			w.Write(stob(`="`))
-			w.Write(stob(v))
-			w.Write(stob(`"`))
+			w.Write([]byte(`="`))
+			w.Write([]byte(v))
+			w.Write([]byte(`"`))
 		}
 	}
 
-	w.Write(stob(">"))
+	w.Write([]byte(">"))
 
 	if e.selfClosing {
 		return
@@ -499,28 +499,28 @@ func (e *elem) html(w io.Writer) {
 		w.Write(ln())
 	}
 
-	w.Write(stob("</"))
-	w.Write(stob(e.tag))
-	w.Write(stob(">"))
+	w.Write([]byte("</"))
+	w.Write([]byte(e.tag))
+	w.Write([]byte(">"))
 }
 
 func (e *elem) htmlWithIndent(w io.Writer, indent int) {
 	writeIndent(w, indent)
-	w.Write(stob("<"))
-	w.Write(stob(e.tag))
+	w.Write([]byte("<"))
+	w.Write([]byte(e.tag))
 
 	for k, v := range e.attrs {
-		w.Write(stob(" "))
-		w.Write(stob(k))
+		w.Write([]byte(" "))
+		w.Write([]byte(k))
 
 		if v != "" {
-			w.Write(stob(`="`))
-			w.Write(stob(v))
-			w.Write(stob(`"`))
+			w.Write([]byte(`="`))
+			w.Write([]byte(v))
+			w.Write([]byte(`"`))
 		}
 	}
 
-	w.Write(stob(">"))
+	w.Write([]byte(">"))
 
 	if e.selfClosing {
 		return
@@ -539,9 +539,9 @@ func (e *elem) htmlWithIndent(w io.Writer, indent int) {
 		writeIndent(w, indent)
 	}
 
-	w.Write(stob("</"))
-	w.Write(stob(e.tag))
-	w.Write(stob(">"))
+	w.Write([]byte("</"))
+	w.Write([]byte(e.tag))
+	w.Write([]byte(">"))
 }
 
 func isURLAttrValue(k string) bool {
