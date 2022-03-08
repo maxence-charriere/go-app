@@ -1,4 +1,5 @@
 //go:build !wasm
+// +build !wasm
 
 package app
 
