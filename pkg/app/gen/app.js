@@ -3,6 +3,8 @@
 // -----------------------------------------------------------------------------
 var goappOnUpdate = function () { };
 
+const autoUpdateInterval = {{.AutoUpdateInterval}};
+
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("{{.WorkerJS}}")
@@ -18,6 +20,11 @@ if ("serviceWorker" in navigator) {
             }
           }
         };
+      }
+      if (autoUpdateInterval != 0) {
+        window.setInterval(function () {
+          reg.update()
+        }, autoUpdateInterval)
       }
     })
     .catch(err => {
