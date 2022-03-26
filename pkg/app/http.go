@@ -122,6 +122,12 @@ type Handler struct {
 	// Default: Body().
 	Body func() HTMLBody
 
+	// The interval between each app auto-update while running in a web browser.
+	// Zero or negative values deactivates the auto-update mechanism.
+	//
+	// Default is 0.
+	AutoUpdateInterval time.Duration
+
 	// The environment variables that are passed to the progressive web app.
 	//
 	// Reserved keys:
@@ -346,13 +352,15 @@ func (h *Handler) makeAppJS() []byte {
 	if err := template.
 		Must(template.New("app.js").Parse(appJS)).
 		Execute(&b, struct {
-			Env      string
-			Wasm     string
-			WorkerJS string
+			Env                string
+			Wasm               string
+			WorkerJS           string
+			AutoUpdateInterval int64
 		}{
-			Env:      btos(env),
-			Wasm:     h.Resources.AppWASM(),
-			WorkerJS: h.resolvePackagePath("/app-worker.js"),
+			Env:                btos(env),
+			Wasm:               h.Resources.AppWASM(),
+			WorkerJS:           h.resolvePackagePath("/app-worker.js"),
+			AutoUpdateInterval: h.AutoUpdateInterval.Milliseconds(),
 		}); err != nil {
 		panic(errors.New("initializing app.js failed").Wrap(err))
 	}
