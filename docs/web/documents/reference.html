@@ -1595,7 +1595,7 @@ storage. Encryption is performed only when the Persist option is also set.
 		
 			
 			
-			<h2 id="GenerateStaticWebsite">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/static.go?s=459:532#L12">GenerateStaticWebsite</a>
+			<h2 id="GenerateStaticWebsite">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/static.go?s=475:548#L13">GenerateStaticWebsite</a>
 				<a class="permalink" href="#GenerateStaticWebsite">&#xb6;</a>
 				
 				
@@ -2842,7 +2842,7 @@ UI instructions and UI elements lifecycle.
 		
 			
 			
-			<h2 id="Environment">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=19029:19063#L798">Environment</a>
+			<h2 id="Environment">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=19379:19413#L806">Environment</a>
 				<a class="permalink" href="#Environment">&#xb6;</a>
 				
 				
@@ -24151,7 +24151,7 @@ Wbr returns an HTML element that defines a possible line-break.
 		
 			
 			
-			<h2 id="Handler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=479:4154#L21">Handler</a>
+			<h2 id="Handler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=479:4356#L21">Handler</a>
 				<a class="permalink" href="#Handler">&#xb6;</a>
 				
 				
@@ -24255,6 +24255,12 @@ and its resources.
     <span class="comment">// Default: Body().</span>
 <span id="Handler.Body"></span>    Body func() <a href="#HTMLBody">HTMLBody</a>
 
+    <span class="comment">// The interval between each app auto-update while running in a web browser.</span>
+    <span class="comment">// Zero or negative values deactivates the auto-update mechanism.</span>
+    <span class="comment">//</span>
+    <span class="comment">// Default is 0.</span>
+<span id="Handler.AutoUpdateInterval"></span>    AutoUpdateInterval <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Duration">Duration</a>
+
     <span class="comment">// The environment variables that are passed to the progressive web app.</span>
     <span class="comment">//</span>
     <span class="comment">// Reserved keys:</span>
@@ -24311,7 +24317,7 @@ and its resources.
 
 			
 				
-				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=11383:11450#L476">ServeHTTP</a>
+				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=11733:11800#L484">ServeHTTP</a>
 					<a class="permalink" href="#Handler.ServeHTTP">&#xb6;</a>
 					
 					
@@ -24325,7 +24331,7 @@ and its resources.
 		
 			
 			
-			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=18400:18937#L775">Icon</a>
+			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=18750:19287#L783">Icon</a>
 				<a class="permalink" href="#Icon">&#xb6;</a>
 				
 				

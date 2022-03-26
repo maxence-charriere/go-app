@@ -3,6 +3,8 @@
 // -----------------------------------------------------------------------------
 var goappOnUpdate = function () { };
 
+const autoUpdateInterval = 0;
+
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("/app-worker.js")
@@ -19,6 +21,11 @@ if ("serviceWorker" in navigator) {
           }
         };
       }
+      if (autoUpdateInterval != 0) {
+        window.setInterval(function () {
+          reg.update()
+        }, autoUpdateInterval)
+      }
     })
     .catch(err => {
       console.error("offline service worker registration failed", err);
@@ -28,7 +35,7 @@ if ("serviceWorker" in navigator) {
 // -----------------------------------------------------------------------------
 // Env
 // -----------------------------------------------------------------------------
-const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"08670b076047580515ff12fc540481125231396b"};
+const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"cbe81c8e8d87490d3bd0cc38081f15c30b5550e4"};
 
 function goappGetenv(k) {
   return goappEnv[k];
