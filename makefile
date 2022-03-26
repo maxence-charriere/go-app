@@ -13,7 +13,7 @@ test:
 	@echo "\033[94m\n• Running go wasm tests\033[00m"
 	GOARCH=wasm GOOS=js go test ./pkg/app
 
-release: test
+release:
 ifdef VERSION
 	@echo "\033[94m\n• Releasing ${VERSION}\033[00m"
 	@git tag ${VERSION}
