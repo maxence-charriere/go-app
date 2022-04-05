@@ -20,7 +20,7 @@ type Dispatcher interface {
 
 	// Emit executes the given function and notifies the source's parent
 	// components to update their state.
-	Emit(src UI, fn func())
+	Emit(src UI, fn func() bool)
 
 	// Handle registers the handler for the given action name. When an action
 	// occurs, the handler is executed on the UI goroutine.

@@ -57,8 +57,9 @@ func TestEngineEmit(t *testing.T) {
 	bar := foo.children()[0].(*bar)
 
 	emitted := false
-	e.Emit(bar, func() {
+	e.Emit(bar, func() bool {
 		emitted = true
+		return false
 	})
 	require.True(t, emitted)
 	require.Len(t, e.dispatches, 1)
@@ -84,6 +85,28 @@ func TestEngineHandleDispatch(t *testing.T) {
 		})
 		require.True(t, called)
 		require.NotEmpty(t, e.updateQueue)
+	})
+
+	t.Run("update (skipped)", func(t *testing.T) {
+		e := engine{}
+		e.init()
+		defer e.Close()
+
+		bar := &bar{}
+		e.Mount(bar)
+		e.Consume()
+
+		called := false
+		e.handleDispatch(Dispatch{
+			Mode:   Update,
+			Source: bar,
+			Function: func(ctx Context) {
+				called = true
+				ctx.SkipAllUpdates()
+			},
+		})
+		require.True(t, called)
+		require.Empty(t, e.updateQueue)
 	})
 
 	t.Run("defer", func(t *testing.T) {

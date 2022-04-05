@@ -52,6 +52,14 @@ type Context interface {
 	// the handler is executed on the UI goroutine.
 	Handle(actionName string, h ActionHandler)
 
+	// Called in an event handler it prevents the updated of the component and its parent.
+	// This can be used for example to return from a key handler when no changes where
+	// made that need the components to updated.
+	SkipAllUpdates()
+
+	// Called in an event handler it prevents the updated of the parent components.
+	SkipParentUpdates()
+
 	// Creates an action with optional tags, to be handled with Context.Handle.
 	// Eg:
 	//  ctx.NewAction("myAction")
@@ -85,7 +93,7 @@ type Context interface {
 
 	// Executes the given function and notifies the parent components to update
 	// their state. It should be used to launch component custom event handlers.
-	Emit(fn func())
+	Emit(fn func() bool)
 
 	// Reloads the WebAssembly app to the current page. It is like refreshing
 	// the browser page.
@@ -167,6 +175,7 @@ type uiContext struct {
 	appUpdateAvailable bool
 	page               Page
 	disp               Dispatcher
+	skipUpdates        *int
 }
 
 func (ctx uiContext) Src() UI {
@@ -259,7 +268,7 @@ func (ctx uiContext) After(d time.Duration, fn func(Context)) {
 	})
 }
 
-func (ctx uiContext) Emit(fn func()) {
+func (ctx uiContext) Emit(fn func() bool) {
 	ctx.Dispatcher().Emit(ctx.Src(), fn)
 }
 
@@ -371,7 +380,16 @@ func (ctx uiContext) cryptoKey() string {
 	return strings.ReplaceAll(ctx.DeviceID(), "-", "")
 }
 
+func (ctx uiContext) SkipParentUpdates() {
+	*ctx.skipUpdates = 1
+}
+
+func (ctx uiContext) SkipAllUpdates() {
+	*ctx.skipUpdates = 2
+}
+
 func makeContext(src UI) Context {
+	b := 0
 	return uiContext{
 		Context:            src.context(),
 		src:                src,
@@ -379,5 +397,6 @@ func makeContext(src UI) Context {
 		appUpdateAvailable: appUpdateAvailable,
 		page:               src.dispatcher().currentPage(),
 		disp:               src.dispatcher(),
+		skipUpdates:        &b,
 	}
 }

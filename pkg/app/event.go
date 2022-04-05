@@ -36,12 +36,16 @@ func makeJsEventHandler(src UI, h EventHandler) Func {
 			Mode:   Update,
 			Source: src,
 			Function: func(ctx Context) {
-				ctx.Emit(func() {
+				ctx.Emit(func() bool {
 					event := Event{
 						Value: args[0],
 					}
 					trackMousePosition(event)
 					h(ctx, event)
+					if uictx, ok := ctx.(uiContext); ok {
+						return *uictx.skipUpdates != 0
+					}
+					return false
 				})
 			},
 		})

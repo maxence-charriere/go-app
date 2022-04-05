@@ -66,13 +66,16 @@ func (e *engine) Dispatch(d Dispatch) {
 	e.dispatches <- d
 }
 
-func (e *engine) Emit(src UI, fn func()) {
+func (e *engine) Emit(src UI, fn func() bool) {
 	if !src.Mounted() {
 		return
 	}
 
 	if fn != nil {
-		fn()
+		if fn() {
+			// is true if updates should be skipped
+			return
+		}
 	}
 
 	compoCount := 0
@@ -367,8 +370,11 @@ func (e *engine) handleDispatch(d Dispatch) {
 
 	case Update:
 		if d.Source.Mounted() {
-			d.Function(makeContext(d.Source))
-			e.scheduleComponentUpdate(d.Source)
+			ctx := makeContext(d.Source).(uiContext)
+			d.Function(ctx)
+			if *ctx.skipUpdates < 2 {
+				e.scheduleComponentUpdate(d.Source)
+			}
 		}
 
 	case Defer:
