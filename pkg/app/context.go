@@ -154,6 +154,9 @@ type Context interface {
 
 	// Returns the app dispatcher.
 	Dispatcher() Dispatcher
+
+	// Requests the user whether the app can use notifications.
+	RequestNotificationPermission() bool
 }
 
 type uiContext struct {
@@ -362,6 +365,22 @@ func (ctx uiContext) cryptoKey() string {
 
 func (ctx uiContext) Dispatcher() Dispatcher {
 	return ctx.disp
+}
+
+func (ctx uiContext) RequestNotificationPermission() bool {
+	notification := Window().Get("Notification")
+	if !notification.Truthy() {
+		return false
+	}
+
+	permission := make(chan string, 1)
+	defer close(permission)
+
+	notification.Call("requestPermission").Then(func(v Value) {
+		permission <- v.String()
+	})
+
+	return <-permission == "granted"
 }
 
 func makeContext(src UI) Context {
