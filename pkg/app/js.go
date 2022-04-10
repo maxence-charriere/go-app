@@ -114,6 +114,10 @@ type Value interface {
 	// TypeObject for null.
 	Type() Type
 
+	// Then calls the given function when the promise resolves. The current
+	// value must be a promise.
+	Then(f func(Value))
+
 	getAttr(k string) string
 	setAttr(k, v string)
 	delAttr(k string)

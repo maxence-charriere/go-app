@@ -57,6 +57,24 @@ func (v value) Type() Type {
 	return Type(v.Value.Type())
 }
 
+func (v value) Then(f func(Value)) {
+	release := func() {}
+
+	then := FuncOf(func(this Value, args []Value) interface{} {
+		var arg Value
+		if len(args) > 0 {
+			arg = args[0]
+		}
+
+		f(arg)
+		release()
+		return nil
+	})
+
+	release = then.Release
+	v.Call("then", then)
+}
+
 func (v value) getAttr(k string) string {
 	return v.Call("getAttribute", k).String()
 }

@@ -93,6 +93,9 @@ func (v value) Type() Type {
 	panic(errNoWasm)
 }
 
+func (v value) Then(f func(Value)) {
+}
+
 func (v value) getAttr(k string) string {
 	return ""
 }
