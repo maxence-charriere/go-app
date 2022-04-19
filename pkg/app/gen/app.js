@@ -9,7 +9,7 @@ const autoUpdateInterval = {{.AutoUpdateInterval}};
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("{{.WorkerJS}}")
-    .then(reg => {
+    .then((reg) => {
       console.log("registering app service worker");
 
       reg.onupdatefound = function () {
@@ -21,17 +21,28 @@ if ("serviceWorker" in navigator) {
             }
           }
         };
-      }
+      };
       if (autoUpdateInterval != 0) {
         window.setInterval(function () {
-          reg.update()
-        }, autoUpdateInterval)
+          reg.update();
+        }, autoUpdateInterval);
       }
+
+      reg.pushManager
+        .subscribe({
+          userVisibleOnly: true,
+          applicationServerKey:
+            "BKDoFJumqmfXF3CggnNRdIkvKjvuECluUzVtbqqIuc9kfmmJg-2ngLfvT4Kfm1cxnXacDFGTP_MphJk6HCS5MF0",
+        })
+        .then((subscription) => {
+          console.log(JSON.stringify(subscription));
+        });
     })
-    .catch(err => {
+    .catch((err) => {
       console.error("offline service worker registration failed", err);
     });
 }
+
 
 // -----------------------------------------------------------------------------
 // Env

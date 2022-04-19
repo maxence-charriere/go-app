@@ -152,6 +152,9 @@ type Handler struct {
 	// are proxied by default are /robots.txt, /sitemap.xml and /ads.txt.
 	ProxyResources []ProxyResource
 
+	// The configuration to subscribe to and receive push notifications.
+	PushNotifications PushNotificationsConfig
+
 	// The resource provider that provides static resources. Static resources
 	// are always accessed from a path that starts with "/web/".
 	//

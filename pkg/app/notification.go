@@ -67,3 +67,12 @@ type NotificationAction struct {
 	// The URL to navigate to when the action is clicked.
 	Target string `json:"target"`
 }
+
+// The configuration to subscribe to and receive push notifications.
+type PushNotificationsConfig struct {
+	// The public VAPID key.
+	VAPIDPublicKey string
+
+	// The URL where push notification subscriptions are sent.
+	RegistrationURL string
+}
