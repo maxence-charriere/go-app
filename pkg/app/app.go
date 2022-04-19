@@ -134,6 +134,10 @@ func RunWhenOnBrowser() {
 	defer onPopState.Release()
 	Window().Set("onpopstate", onPopState)
 
+	goappNav := FuncOf(goappNav(&disp))
+	defer goappNav.Release()
+	Window().Set("goappNav", goappNav)
+
 	onAppUpdate := FuncOf(onAppUpdate(&disp))
 	defer onAppUpdate.Release()
 	Window().Set("goappOnUpdate", onAppUpdate)
@@ -267,6 +271,13 @@ func onPopState(d Dispatcher) func(this Value, args []Value) interface{} {
 				navigateTo(d, Window().URL(), false)
 			},
 		})
+		return nil
+	}
+}
+
+func goappNav(d Dispatcher) func(this Value, args []Value) interface{} {
+	return func(this Value, args []Value) interface{} {
+		navigate(d, args[0].String())
 		return nil
 	}
 }

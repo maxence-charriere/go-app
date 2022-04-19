@@ -383,12 +383,6 @@ func (ctx uiContext) RequestNotificationPermission() bool {
 }
 
 func (ctx uiContext) NewNotification(n Notification) {
-	notification := Window().Get("Notification")
-	if !notification.Truthy() {
-		return
-	}
-
-	options := make(map[string]interface{})
 	setObjectField := func(obj map[string]interface{}, name string, value interface{}) {
 		switch v := value.(type) {
 		case string:
@@ -409,23 +403,27 @@ func (ctx uiContext) NewNotification(n Notification) {
 			}
 		}
 	}
-	setObjectField(options, "lang", n.Lang)
-	setObjectField(options, "badge", n.Badge)
-	setObjectField(options, "body", n.Body)
-	setObjectField(options, "tag", n.Tag)
-	setObjectField(options, "icon", n.Icon)
-	setObjectField(options, "image", n.Image)
-	setObjectField(options, "data", n.Data)
-	setObjectField(options, "renotify", n.Renotify)
-	setObjectField(options, "requireInteraction", n.RequireInteraction)
-	setObjectField(options, "silent", n.Silent)
+
+	notification := make(map[string]interface{})
+	notification["title"] = n.Title
+	notification["target"] = n.Target
+	setObjectField(notification, "lang", n.Lang)
+	setObjectField(notification, "badge", n.Badge)
+	setObjectField(notification, "body", n.Body)
+	setObjectField(notification, "tag", n.Tag)
+	setObjectField(notification, "icon", n.Icon)
+	setObjectField(notification, "image", n.Image)
+	setObjectField(notification, "data", n.Data)
+	setObjectField(notification, "renotify", n.Renotify)
+	setObjectField(notification, "requireInteraction", n.RequireInteraction)
+	setObjectField(notification, "silent", n.Silent)
 
 	if l := len(n.Vibrate); l != 0 {
 		vibrate := make([]interface{}, l)
 		for i, v := range n.Vibrate {
 			vibrate[i] = v
 		}
-		options["vibrate"] = vibrate
+		notification["vibrate"] = vibrate
 	}
 
 	if l := len(n.Actions); l != 0 {
@@ -435,41 +433,13 @@ func (ctx uiContext) NewNotification(n Notification) {
 			setObjectField(action, "action", a.Action)
 			setObjectField(action, "title", a.Title)
 			setObjectField(action, "icon", a.Icon)
+			setObjectField(action, "target", a.Target)
 			actions[i] = action
 		}
-		options["actions"] = actions
+		notification["actions"] = actions
 	}
 
-	notif := notification.New(n.Title, options)
-
-	handlers := make([]Func, 0, 4)
-	release := func() {
-		for _, h := range handlers {
-			h.Release()
-		}
-	}
-
-	setNotificationEventHandler := func(notif Value, event string, h EventHandler) {
-		if h != nil {
-			f := makeJsEventHandler(ctx.Src(), h)
-			handlers = append(handlers, f)
-			notif.Set(event, f)
-		}
-	}
-	setNotificationEventHandler(notif, "onshow", n.OnShow)
-	setNotificationEventHandler(notif, "onclick", n.OnClick)
-	setNotificationEventHandler(notif, "onerror", func(ctx Context, e Event) {
-		defer release()
-		if n.OnError != nil {
-			n.OnError(ctx, e)
-		}
-	})
-	setNotificationEventHandler(notif, "onclose", func(ctx Context, e Event) {
-		defer release()
-		if n.OnClose != nil {
-			n.OnClose(ctx, e)
-		}
-	})
+	Window().Call("goappNewNotification", notification)
 }
 
 func (ctx uiContext) cryptoKey() string {
