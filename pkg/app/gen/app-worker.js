@@ -49,8 +49,13 @@ self.addEventListener("push", (event) => {
     return;
   }
 
-  event.waitUntil(
-    console.log("NOTIFICATION:", notification)
-    // goappShowNotification(self.registration.showNotification, notification)
-  );
+  const title = notification.title;
+  delete notification.title;
+  delete notification.target;
+
+  for (let action in notification.actions) {
+    delete action.target;
+  }
+
+  event.waitUntil(self.registration.showNotification(title, notification));
 });

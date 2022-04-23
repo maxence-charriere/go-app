@@ -146,36 +146,27 @@ async function goappRegisterSubscription(registration) {
 }
 
 function goappNewNotification(notification) {
-  goappShowNotification((title, options) => {
-    try {
-      const notification = new Notification(title, options);
-
-      notification.onclick = (e) => {
-        let target = options.target;
-        if (!target) {
-          target = "/";
-        }
-
-        goappNav(target);
-        notification.close();
-      };
-    } catch (err) {
-      console.error(err);
-    }
-  }, notification);
-}
-
-function goappShowNotification(showNotification, notification) {
   console.log(notification);
 
   const title = notification.title;
   delete notification.title;
 
+  let target = notification.target;
+  if (!target) {
+    target = "/";
+  }
+  delete notification.target;
+
   for (let action in notification.actions) {
     delete action.target;
   }
 
-  showNotification(title, notification);
+  const webNotification = new Notification(title, notification);
+
+  webNotification.onclick = () => {
+    goappNav(target);
+    webNotification.close();
+  };
 }
 
 // -----------------------------------------------------------------------------

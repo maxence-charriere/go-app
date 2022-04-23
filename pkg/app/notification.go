@@ -50,7 +50,7 @@ type Notification struct {
 	Vibrate []int `json:"vibrate,omitempty"`
 
 	// The actions to display in the notification.
-	Actions []NotificationAction
+	Actions []NotificationAction `json:"actions,omitempty"`
 }
 
 // A notification action.

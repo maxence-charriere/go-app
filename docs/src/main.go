@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"net/http"
 	"os"
 	"path"
@@ -238,9 +239,18 @@ func (h *notificationHandler) handleTests(w http.ResponseWriter, r *http.Request
 
 	for _, sub := range h.subscriptions {
 		go func(sub webpush.Subscription) {
-			fmt.Println("sending push")
+			n := rand.Intn(42)
+			fmt.Println("sending push", n)
 
-			res, err := webpush.SendNotification([]byte(`"Test"`), &sub, &webpush.Options{
+			notif := app.Notification{
+				Title: fmt.Sprintf("Push test from server %v", n),
+				Body:  fmt.Sprintf("YEAH BABY PUSH ME %v", n),
+				Icon:  "/web/images/go-app.png",
+			}
+
+			b, _ := json.Marshal(notif)
+
+			res, err := webpush.SendNotification(b, &sub, &webpush.Options{
 				VAPIDPrivateKey: h.VAPIDPrivateKey,
 				VAPIDPublicKey:  h.VAPIDPublicKey,
 				TTL:             30,
