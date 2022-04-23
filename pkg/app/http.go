@@ -374,37 +374,43 @@ func (h *Handler) makeAppJS() []byte {
 }
 
 func (h *Handler) makeAppWorkerJS() []byte {
-	cacheableResources := map[string]struct{}{
-		h.resolvePackagePath("/app.css"):              {},
-		h.resolvePackagePath("/app.js"):               {},
-		h.resolvePackagePath("/manifest.webmanifest"): {},
-		h.resolvePackagePath("/wasm_exec.js"):         {},
-		h.resolvePackagePath("/"):                     {},
-		h.Resources.AppWASM():                         {},
-	}
-
-	cacheResources := func(res ...string) {
+	resources := make(map[string]struct{})
+	setResources := func(res ...string) {
 		for _, r := range res {
 			if r == "" {
 				continue
 			}
-			cacheableResources[r] = struct{}{}
+			resources[r] = struct{}{}
 		}
 	}
-	cacheResources(h.Icon.Default, h.Icon.Large, h.Icon.AppleTouch)
-	cacheResources(h.Styles...)
-	cacheResources(h.Scripts...)
-	cacheResources(h.CacheableResources...)
+	setResources(
+		h.resolvePackagePath("/app.css"),
+		h.resolvePackagePath("/app.js"),
+		h.resolvePackagePath("/manifest.webmanifest"),
+		h.resolvePackagePath("/wasm_exec.js"),
+		h.resolvePackagePath("/"),
+		h.Resources.AppWASM(),
+	)
+	setResources(h.Icon.Default, h.Icon.Large, h.Icon.AppleTouch)
+	setResources(h.Styles...)
+	setResources(h.Scripts...)
+	setResources(h.CacheableResources...)
+
+	resourcesTocache := make([]string, 0, len(resources))
+	for k := range resources {
+		resourcesTocache = append(resourcesTocache, k)
+	}
+	resourcesJSON, _ := json.MarshalIndent(resourcesTocache, "", "  ")
 
 	var b bytes.Buffer
 	if err := template.
 		Must(template.New("app-worker.js").Parse(appWorkerJS)).
 		Execute(&b, struct {
 			Version          string
-			ResourcesToCache map[string]struct{}
+			ResourcesToCache string
 		}{
 			Version:          h.Version,
-			ResourcesToCache: cacheableResources,
+			ResourcesToCache: string(resourcesJSON),
 		}); err != nil {
 		panic(errors.New("initializing app-worker.js failed").Wrap(err))
 	}

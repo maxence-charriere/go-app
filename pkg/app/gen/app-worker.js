@@ -1,4 +1,5 @@
 const cacheName = "app-" + "{{.Version}}";
+const resourcesToCache = JSON.parse(`{{.ResourcesToCache}}`);
 
 self.addEventListener("install", (event) => {
   console.log("installing app worker {{.Version}}");
@@ -7,10 +8,7 @@ self.addEventListener("install", (event) => {
     caches
       .open(cacheName)
       .then((cache) => {
-        return cache.addAll([
-          {{range $path, $element := .ResourcesToCache}}"{{$path}}",
-          {{end}}
-        ]);
+        return cache.addAll(resourcesToCache);
       })
       .then(() => {
         self.skipWaiting();
@@ -52,6 +50,7 @@ self.addEventListener("push", (event) => {
   }
 
   event.waitUntil(
-    goappShowNotification(self.registration.showNotification, notification)
+    console.log("NOTIFICATION:", notification)
+    // goappShowNotification(self.registration.showNotification, notification)
   );
 });

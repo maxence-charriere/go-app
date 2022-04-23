@@ -2,11 +2,16 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
+	"path"
+	"sync"
 	"syscall"
+	"time"
 
+	"github.com/SherClockHolmes/webpush-go"
 	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/maxence-charriere/go-app/v9/pkg/cli"
@@ -78,6 +83,8 @@ func main() {
 	defer cancel()
 	defer exit()
 
+	// s := &webpush.Subscription{}
+
 	localOpts := localOptions{Port: 7777}
 	cli.Register("local").
 		Help(`Launches a server that serves the documentation app in a local environment.`).
@@ -135,6 +142,11 @@ func main() {
 			"/web/documents/home.md",
 			"/web/documents/home-next.md",
 		},
+		PushNotifications: app.PushNotificationsConfig{
+			VAPIDPublicKey:  "BKDoFJumqmfXF3CggnNRdIkvKjvuECluUzVtbqqIuc9kfmmJg-2ngLfvT4Kfm1cxnXacDFGTP_MphJk6HCS5MF0",
+			RegistrationURL: "/notifications/register",
+		},
+		AutoUpdateInterval: time.Minute,
 	}
 
 	switch cli.Load() {
@@ -152,9 +164,14 @@ func runLocal(ctx context.Context, h *app.Handler, opts localOptions) {
 		Tag("version", h.Version),
 	)
 
+	http.Handle("/", h)
+	http.Handle("/notifications/", &notificationHandler{
+		VAPIDPrivateKey: "2brW91WSzPBOLQ1odwbnNad8ZNMrMop7S7Z-j8rrGbA",
+		VAPIDPublicKey:  h.PushNotifications.VAPIDPublicKey,
+	})
+
 	s := http.Server{
-		Addr:    fmt.Sprintf(":%v", opts.Port),
-		Handler: h,
+		Addr: fmt.Sprintf(":%v", opts.Port),
 	}
 
 	go func() {
@@ -178,5 +195,61 @@ func exit() {
 	if err != nil {
 		app.Log("command failed:", errors.Newf("%v", err))
 		os.Exit(-1)
+	}
+}
+
+type notificationHandler struct {
+	VAPIDPrivateKey string
+	VAPIDPublicKey  string
+
+	mutex         sync.Mutex
+	subscriptions map[string]webpush.Subscription
+}
+
+func (h *notificationHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	switch path := path.Base(r.URL.Path); path {
+	case "register":
+		h.handleRegistrations(w, r)
+
+	case "test":
+		h.handleTests(w, r)
+	}
+}
+
+func (h *notificationHandler) handleRegistrations(w http.ResponseWriter, r *http.Request) {
+	var sub webpush.Subscription
+	if err := json.NewDecoder(r.Body).Decode(&sub); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	h.mutex.Lock()
+	defer h.mutex.Unlock()
+
+	if h.subscriptions == nil {
+		h.subscriptions = make(map[string]webpush.Subscription)
+	}
+	h.subscriptions[sub.Endpoint] = sub
+}
+
+func (h *notificationHandler) handleTests(w http.ResponseWriter, r *http.Request) {
+	h.mutex.Lock()
+	defer h.mutex.Unlock()
+
+	for _, sub := range h.subscriptions {
+		go func(sub webpush.Subscription) {
+			fmt.Println("sending push")
+
+			res, err := webpush.SendNotification([]byte(`"Test"`), &sub, &webpush.Options{
+				VAPIDPrivateKey: h.VAPIDPrivateKey,
+				VAPIDPublicKey:  h.VAPIDPublicKey,
+				TTL:             30,
+			})
+			if err != nil {
+				app.Log(errors.New("sending push notification failed").Wrap(err))
+				return
+			}
+			defer res.Body.Close()
+		}(sub)
 	}
 }

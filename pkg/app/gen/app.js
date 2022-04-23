@@ -109,29 +109,40 @@ function goappGetenv(k) {
 // Notifications
 // -----------------------------------------------------------------------------
 async function goappRegisterSubscription(registration) {
-  const vapIDPublicKey = "{{.PushNotifications.VAPIDPublicKey}}";
-  const registrationURL = "{{.PushNotifications.SubscriptionPayloadFormat}}";
-  if (!vapIDPublicKey || !registrationURL) {
-    return;
+  try {
+    const vapIDPublicKey = "{{.PushNotifications.VAPIDPublicKey}}";
+    const registrationURL = "{{.PushNotifications.RegistrationURL}}";
+    if (!vapIDPublicKey || !registrationURL) {
+      return;
+    }
+
+    const options = {
+      userVisibleOnly: true,
+      applicationServerKey: vapIDPublicKey,
+    };
+
+    const permission = await registration.pushManager.permissionState(options);
+    if (permission != "granted") {
+      return;
+    }
+
+    const subscription = await registration.pushManager.subscribe(options);
+
+    console.log(subscription);
+
+    let body = "{{.PushNotifications.SubscriptionPayloadFormat}}";
+    body = body.replace("%s", JSON.stringify(subscription));
+
+    fetch(registrationURL, {
+      method: "post",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: body,
+    });
+  } catch (err) {
+    console.error("registering for push notifications failed:", err);
   }
-
-  const subscription = await registration.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: vapIDPublicKey,
-  });
-
-  console.log(subscription);
-
-  let body = "{{.PushNotifications.SubscriptionPayloadFormat}}";
-  body = body.replace("%s", JSON.stringify(subscription));
-
-  fetch("{{.PushNotifications.RegistrationURL}}", {
-    method: "post",
-    headers: {
-      "Content-type": "application/json",
-    },
-    body: body,
-  });
 }
 
 function goappNewNotification(notification) {
@@ -149,7 +160,7 @@ function goappNewNotification(notification) {
         notification.close();
       };
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }, notification);
 }
