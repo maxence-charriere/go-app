@@ -43,7 +43,7 @@ type Handler struct {
 	// A placeholder background color for the application page to display before
 	// its stylesheets are loaded.
 	//
-	// DEFAULT: #2d2c2c.
+	// Default: #2d2c2c.
 	BackgroundColor string
 
 	// The theme color for the application. This affects how the OS displays the
@@ -188,6 +188,7 @@ func (h *Handler) init() {
 	h.initIcon()
 	h.initPWA()
 	h.initPageContent()
+	h.initPushNotifications()
 	h.initPreRenderedResources()
 	h.initProxyResources()
 }
@@ -359,11 +360,13 @@ func (h *Handler) makeAppJS() []byte {
 			Wasm               string
 			WorkerJS           string
 			AutoUpdateInterval int64
+			PushNotifications  PushNotificationsConfig
 		}{
 			Env:                btos(env),
 			Wasm:               h.Resources.AppWASM(),
 			WorkerJS:           h.resolvePackagePath("/app-worker.js"),
 			AutoUpdateInterval: h.AutoUpdateInterval.Milliseconds(),
+			PushNotifications:  h.PushNotifications,
 		}); err != nil {
 		panic(errors.New("initializing app.js failed").Wrap(err))
 	}
@@ -492,6 +495,16 @@ func (h *Handler) initProxyResources() {
 	}
 
 	h.proxyResources = resources
+}
+
+func (h *Handler) initPushNotifications() {
+	if h.PushNotifications.SubscriptionPayloadFormat == "" {
+		h.PushNotifications.SubscriptionPayloadFormat = "%s"
+	}
+
+	if !strings.Contains(h.PushNotifications.SubscriptionPayloadFormat, "%s") {
+		Log(errors.New("push notification subscription payload format does not contain %s"))
+	}
 }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {

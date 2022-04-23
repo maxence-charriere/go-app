@@ -75,4 +75,10 @@ type PushNotificationsConfig struct {
 
 	// The URL where push notification subscriptions are sent.
 	RegistrationURL string
+
+	// The format string to format a subscription when sent for registration. It
+	// must contain %s where the JSON encoded subscription will be inserted.
+	//
+	// Default: "%s".
+	SubscriptionPayloadFormat string
 }
