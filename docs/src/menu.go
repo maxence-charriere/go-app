@@ -161,6 +161,12 @@ func (m *menu) Render() app.UI {
 					Label("State Management").
 					Href("/states").
 					Class(isFocus("/states")),
+				ui.Link().
+					Class(linkClass).
+					Icon(bellSVG).
+					Label("Notifications").
+					Href("/notifications").
+					Class(isFocus("/notifications")),
 
 				app.Div().Class("separator"),
 

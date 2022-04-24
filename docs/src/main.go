@@ -64,6 +64,7 @@ func main() {
 	app.Route("/testing", newTestingPage())
 	app.Route("/actions", newActionPage())
 	app.Route("/states", newStatesPage())
+	app.Route("/notifications", newNotificationsPage())
 
 	app.Route("/migrate", newMigratePage())
 	app.Route("/github-deploy", newGithubDeployPage())
@@ -83,8 +84,6 @@ func main() {
 	)
 	defer cancel()
 	defer exit()
-
-	// s := &webpush.Subscription{}
 
 	localOpts := localOptions{Port: 7777}
 	cli.Register("local").
@@ -166,7 +165,7 @@ func runLocal(ctx context.Context, h *app.Handler, opts localOptions) {
 	)
 
 	http.Handle("/", h)
-	http.Handle("/notifications/", &notificationHandler{
+	http.Handle("/test/notifications/", &notificationHandler{
 		VAPIDPrivateKey: "2brW91WSzPBOLQ1odwbnNad8ZNMrMop7S7Z-j8rrGbA",
 		VAPIDPublicKey:  h.PushNotifications.VAPIDPublicKey,
 	})

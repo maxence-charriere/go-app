@@ -385,10 +385,18 @@ strong {
   text-transform: uppercase;
   margin: 6px 6px;
   letter-spacing: 1px;
+  background-color: transparent;
+  transition: 0.2s all;
 }
 
 .button:hover {
   color: deepskyblue;
+  transform: scale(1.1);
+}
+
+.button:active {
+  color: deepskyblue;
+  transform: scale(0.98);
 }
 
 .center-content {
@@ -397,6 +405,11 @@ strong {
 
 .no-scroll {
   overflow: hidden;
+}
+
+.disabled {
+  pointer-events: none !important;
+  color: dimgray;
 }
 
 /* -----------------------------------------------------------------------------
