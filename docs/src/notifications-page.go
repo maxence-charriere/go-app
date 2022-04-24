@@ -38,7 +38,7 @@ func (p *notificationsPage) initPage(ctx app.Context) {
 
 func (p *notificationsPage) Render() app.UI {
 	requestEnabled := ""
-	if p.notificationPermission == app.NotificationGranted {
+	if p.notificationPermission != app.NotificationDefault {
 		requestEnabled = "disabled"
 	}
 

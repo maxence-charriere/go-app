@@ -132,3 +132,7 @@ func requestNotificationPermission() NotificationPermission {
 
 	return NotificationPermission(<-permission)
 }
+
+func subscribeForPushNotifications(vapIDPublicKey string) NotificationSubscription {
+	panic("not implemented")
+}

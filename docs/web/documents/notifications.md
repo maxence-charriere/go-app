@@ -25,15 +25,18 @@ The Notification permission is given by requesting the user permission with [Con
 ```go
 func (f *foo) Render() app.UI {
 	return app.Div().Body(
-		app.If(f.notificationPermission == app.NotificationGranted,
-			app.Text("Notification permission is already granted"),
-		).Else(
+		app.If(f.notificationPermission == app.NotificationDefault,
 			app.Button().
 				Text("Enable Notifications").
 				OnClick(f.enableNotifications),
+		).ElseIf(f.notificationPermission == app.NotificationDenied,
+			app.Text("Notification permission is denied"),
+		).ElseIf(f.notificationPermission == app.NotificationGranted,
+			app.Text("Notification permission is already granted"),
 		),
 	)
 }
+
 
 func (f *foo) enableNotifications(ctx app.Context, e app.Event) {
     // Triggers a browser popup that asks for user permission.
@@ -48,13 +51,15 @@ A local notification is a notification created in the app with [Context.NewNotif
 ```go
 func (f *foo) Render() app.UI {
 	return app.Div().Body(
-		app.If(f.notificationPermission == app.NotificationGranted,
-			app.Button().
-				Text("Test Notification").
-				OnClick(f.enableNotifications),
-		).Else(
+		app.If(f.notificationPermission == app.NotificationDefault,
 			app.Button().
 				Text("Enable Notifications").
+				OnClick(f.enableNotifications),
+		).ElseIf(f.notificationPermission == app.NotificationDenied,
+			app.Text("Notification permission is denied"),
+		).ElseIf(f.notificationPermission == app.NotificationGranted,
+			app.Button().
+				Text("Test Notification").
 				OnClick(f.enableNotifications),
 		),
 	)
