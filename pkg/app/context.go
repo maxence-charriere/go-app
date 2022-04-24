@@ -155,10 +155,13 @@ type Context interface {
 	// Returns the app dispatcher.
 	Dispatcher() Dispatcher
 
-	// Requests the user whether the app can use notifications.
-	RequestNotificationPermission() bool
+	// Returns the current notification permission.
+	NotificationPermission() NotificationPermission
 
-	// Creates a user notification.
+	// Requests the user whether the app can use notifications.
+	RequestNotificationPermission() NotificationPermission
+
+	// Creates and display a user notification.
 	NewNotification(n Notification)
 }
 
@@ -366,20 +369,12 @@ func (ctx uiContext) Dispatcher() Dispatcher {
 	return ctx.disp
 }
 
-func (ctx uiContext) RequestNotificationPermission() bool {
-	notification := Window().Get("Notification")
-	if !notification.Truthy() {
-		return false
-	}
+func (ctx uiContext) NotificationPermission() NotificationPermission {
+	return getNotificationPermission()
+}
 
-	permission := make(chan string, 1)
-	defer close(permission)
-
-	notification.Call("requestPermission").Then(func(v Value) {
-		permission <- v.String()
-	})
-
-	return <-permission == "granted"
+func (ctx uiContext) RequestNotificationPermission() NotificationPermission {
+	return requestNotificationPermission()
 }
 
 func (ctx uiContext) NewNotification(n Notification) {

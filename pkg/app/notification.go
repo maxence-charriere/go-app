@@ -82,3 +82,53 @@ type PushNotificationsConfig struct {
 	// Default: "%s".
 	SubscriptionPayloadFormat string
 }
+
+// NotificationSubscription represents a PushSubscription object from the Push
+// API.
+type NotificationSubscription struct {
+	Endpoint string `json:"endpoint"`
+	Keys     struct {
+		Auth   string `json:"auth"`
+		P256dh string `json:"p256dh"`
+	} `json:"keys"`
+}
+
+// NotificationPermission a permission to display notifications.
+type NotificationPermission string
+
+const (
+	// The user notifications choice is unknown and therefore the browser acts
+	// as if the value were denied.
+	NotificationDefault NotificationPermission = "default"
+
+	// The user accepts having notifications displayed.
+	NotificationGranted NotificationPermission = "granted"
+
+	// The user refuses to have notifications displayed.
+	NotificationDenied NotificationPermission = "denied"
+)
+
+func getNotificationPermission() NotificationPermission {
+	notification := Window().Get("Notification")
+	if !notification.Truthy() {
+		return NotificationDenied
+	}
+
+	return NotificationPermission(notification.Get("permission").String())
+}
+
+func requestNotificationPermission() NotificationPermission {
+	notification := Window().Get("Notification")
+	if !notification.Truthy() {
+		return NotificationDenied
+	}
+
+	permission := make(chan string, 1)
+	defer close(permission)
+
+	notification.Call("requestPermission").Then(func(v Value) {
+		permission <- v.String()
+	})
+
+	return NotificationPermission(<-permission)
+}

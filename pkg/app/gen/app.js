@@ -7,6 +7,7 @@ var goappOnAppInstallChange = function () {};
 
 const goappEnv = JSON.parse(`{{.Env}}`);
 
+let goappServiceWorkerRegistration;
 let deferredPrompt = null;
 
 goappInitServiceWorker();
@@ -24,9 +25,9 @@ async function goappInitServiceWorker() {
         "{{.WorkerJS}}"
       );
 
+      goappServiceWorkerRegistration = registration;
       goappSetupNotifyUpdate(registration);
       goappSetupAutoUpdate(registration);
-      goappRegisterSubscription(registration);
     } catch (err) {
       console.error("goapp service worker registration failed", err);
     }
