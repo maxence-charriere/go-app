@@ -80,6 +80,10 @@ func (p *notificationsPage) Render() app.UI {
 					Text("Test Notification").
 					OnClick(p.testNotification),
 			),
+
+			app.Div().Class("separator"),
+
+			newRemoteMarkdownDoc().Src("/web/documents/notifications-push.md"),
 		)
 }
 
