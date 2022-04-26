@@ -4,7 +4,7 @@ Enabling notifications requires the user to give permission to display them.
 
 ### Current Permission
 
-The current notifications permission is retrieved by calling [Context.NotificationPermission](/reference#Context):
+The current notifications permission is retrieved by calling [Context.Notifications().Permission()](/reference#NotificationService.Permission):
 
 ```go
 type foo struct {
@@ -14,13 +14,13 @@ type foo struct {
 }
 
 func (f *foo) OnMount(ctx app.Context) {
-	f.notificationPermission = ctx.NotificationPermission()
+	f.notificationPermission = ctx.Notifications().Permission()
 }
 ```
 
 ### Request Permission
 
-The Notification permission is given by requesting the user permission with [Context.RequestNotificationPermission](/reference#Context):
+The Notification permission is given by requesting the user permission with [Context.Notifications().RequestPermission()](/reference#NotificationService.RequestPermission):
 
 ```go
 func (f *foo) Render() app.UI {
@@ -33,20 +33,21 @@ func (f *foo) Render() app.UI {
 			app.Text("Notification permission is denied"),
 		).ElseIf(f.notificationPermission == app.NotificationGranted,
 			app.Text("Notification permission is already granted"),
+		).Else(
+			app.Text("Notification are not supported"),
 		),
 	)
 }
 
-
 func (f *foo) enableNotifications(ctx app.Context, e app.Event) {
-    // Triggers a browser popup that asks for user permission.
-	f.notificationPermission = ctx.RequestNotificationPermission()
+	// Triggers a browser popup that asks for user permission.
+	f.notificationPermission = ctx.Notifications().RequestPermission()
 }
 ```
 
 ### Display Local Notifications
 
-A local notification is a notification created in the app with [Context.NewNotification](/reference#Context):
+A local notification is a notification created in the app with [Context.Notifications().New()](/reference#NotificationService.New):
 
 ```go
 func (f *foo) Render() app.UI {
@@ -61,17 +62,21 @@ func (f *foo) Render() app.UI {
 			app.Button().
 				Text("Test Notification").
 				OnClick(f.enableNotifications),
+		).Else(
+			app.Text("Notification are not supported"),
 		),
 	)
 }
 
 func (f *foo) testNotification(ctx app.Context, e app.Event) {
-	ctx.NewNotification(app.Notification{
-		Title: "Test",
-		Body:  "A test notification",
-        Target: "/mypage",
+	ctx.Notifications().New(app.Notification{
+		Title:  "Test",
+		Body:   "A test notification",
+		Target: "/mypage",
 	})
 }
 ```
+
+[Notification.Target](/reference#Notification) is an URL that targets a page in the app. When a notification is clicked, the app will be navigated on this URL. Responding to notification is handled within components. Behavior can be customized by including URL query parameters.
 
 ### Example

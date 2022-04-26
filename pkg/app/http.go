@@ -152,9 +152,6 @@ type Handler struct {
 	// are proxied by default are /robots.txt, /sitemap.xml and /ads.txt.
 	ProxyResources []ProxyResource
 
-	// The configuration to subscribe to and receive push notifications.
-	PushNotifications PushNotificationsConfig
-
 	// The resource provider that provides static resources. Static resources
 	// are always accessed from a path that starts with "/web/".
 	//
@@ -188,7 +185,6 @@ func (h *Handler) init() {
 	h.initIcon()
 	h.initPWA()
 	h.initPageContent()
-	h.initPushNotifications()
 	h.initPreRenderedResources()
 	h.initProxyResources()
 }
@@ -360,13 +356,11 @@ func (h *Handler) makeAppJS() []byte {
 			Wasm               string
 			WorkerJS           string
 			AutoUpdateInterval int64
-			PushNotifications  PushNotificationsConfig
 		}{
 			Env:                btos(env),
 			Wasm:               h.Resources.AppWASM(),
 			WorkerJS:           h.resolvePackagePath("/app-worker.js"),
 			AutoUpdateInterval: h.AutoUpdateInterval.Milliseconds(),
-			PushNotifications:  h.PushNotifications,
 		}); err != nil {
 		panic(errors.New("initializing app.js failed").Wrap(err))
 	}
@@ -501,16 +495,6 @@ func (h *Handler) initProxyResources() {
 	}
 
 	h.proxyResources = resources
-}
-
-func (h *Handler) initPushNotifications() {
-	if h.PushNotifications.SubscriptionPayloadFormat == "" {
-		h.PushNotifications.SubscriptionPayloadFormat = "%s"
-	}
-
-	if !strings.Contains(h.PushNotifications.SubscriptionPayloadFormat, "%s") {
-		Log(errors.New("push notification subscription payload format does not contain %s"))
-	}
 }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {

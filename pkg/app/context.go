@@ -155,14 +155,8 @@ type Context interface {
 	// Returns the app dispatcher.
 	Dispatcher() Dispatcher
 
-	// Returns the current notification permission.
-	NotificationPermission() NotificationPermission
-
-	// Requests the user whether the app can use notifications.
-	RequestNotificationPermission() NotificationPermission
-
-	// Creates and display a user notification.
-	NewNotification(n Notification)
+	// Returns the service to setup and display notifications.
+	Notifications() NotificationService
 }
 
 type uiContext struct {
@@ -369,72 +363,8 @@ func (ctx uiContext) Dispatcher() Dispatcher {
 	return ctx.disp
 }
 
-func (ctx uiContext) NotificationPermission() NotificationPermission {
-	return getNotificationPermission()
-}
-
-func (ctx uiContext) RequestNotificationPermission() NotificationPermission {
-	return requestNotificationPermission()
-}
-
-func (ctx uiContext) NewNotification(n Notification) {
-	setObjectField := func(obj map[string]interface{}, name string, value interface{}) {
-		switch v := value.(type) {
-		case string:
-			if v == "" {
-				return
-			}
-			switch name {
-			case "badge", "icon", "image":
-				obj[name] = ctx.Dispatcher().resolveStaticResource(v)
-
-			default:
-				obj[name] = v
-			}
-
-		case bool:
-			if v {
-				obj[name] = v
-			}
-		}
-	}
-
-	notification := make(map[string]interface{})
-	notification["title"] = n.Title
-	notification["target"] = n.Target
-	setObjectField(notification, "lang", n.Lang)
-	setObjectField(notification, "badge", n.Badge)
-	setObjectField(notification, "body", n.Body)
-	setObjectField(notification, "tag", n.Tag)
-	setObjectField(notification, "icon", n.Icon)
-	setObjectField(notification, "image", n.Image)
-	setObjectField(notification, "data", n.Data)
-	setObjectField(notification, "renotify", n.Renotify)
-	setObjectField(notification, "requireInteraction", n.RequireInteraction)
-	setObjectField(notification, "silent", n.Silent)
-
-	if l := len(n.Vibrate); l != 0 {
-		vibrate := make([]interface{}, l)
-		for i, v := range n.Vibrate {
-			vibrate[i] = v
-		}
-		notification["vibrate"] = vibrate
-	}
-
-	if l := len(n.Actions); l != 0 {
-		actions := make([]interface{}, l)
-		for i, a := range n.Actions {
-			action := make(map[string]interface{}, 3)
-			setObjectField(action, "action", a.Action)
-			setObjectField(action, "title", a.Title)
-			setObjectField(action, "icon", a.Icon)
-			setObjectField(action, "target", a.Target)
-			actions[i] = action
-		}
-		notification["actions"] = actions
-	}
-
-	Window().Call("goappNewNotification", notification)
+func (ctx uiContext) Notifications() NotificationService {
+	return NotificationService{dispatcher: ctx.Dispatcher()}
 }
 
 func (ctx uiContext) cryptoKey() string {

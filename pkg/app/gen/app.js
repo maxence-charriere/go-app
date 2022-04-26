@@ -109,46 +109,21 @@ function goappGetenv(k) {
 // -----------------------------------------------------------------------------
 // Notifications
 // -----------------------------------------------------------------------------
-async function goappRegisterSubscription(registration) {
+async function goappSubscribePushNotifications(vapIDpublicKey) {
   try {
-    const vapIDPublicKey = "{{.PushNotifications.VAPIDPublicKey}}";
-    const registrationURL = "{{.PushNotifications.RegistrationURL}}";
-    if (!vapIDPublicKey || !registrationURL) {
-      return;
-    }
-
-    const options = {
-      userVisibleOnly: true,
-      applicationServerKey: vapIDPublicKey,
-    };
-
-    const permission = await registration.pushManager.permissionState(options);
-    if (permission != "granted") {
-      return;
-    }
-
-    const subscription = await registration.pushManager.subscribe(options);
-
-    console.log(subscription);
-
-    let body = "{{.PushNotifications.SubscriptionPayloadFormat}}";
-    body = body.replace("%s", JSON.stringify(subscription));
-
-    fetch(registrationURL, {
-      method: "post",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: body,
-    });
+    const subscription =
+      await goappServiceWorkerRegistration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: vapIDpublicKey,
+      });
+    return JSON.stringify(subscription);
   } catch (err) {
-    console.error("registering for push notifications failed:", err);
+    console.error(err);
+    return "";
   }
 }
 
 function goappNewNotification(notification) {
-  console.log(notification);
-
   const title = notification.title;
   delete notification.title;
 

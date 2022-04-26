@@ -1,5 +1,11 @@
 package app
 
+import (
+	"encoding/json"
+
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
+)
+
 // A user notification.
 type Notification struct {
 	// The title shown at the top of the notification window.
@@ -68,21 +74,6 @@ type NotificationAction struct {
 	Target string `json:"target"`
 }
 
-// The configuration to subscribe to and receive push notifications.
-type PushNotificationsConfig struct {
-	// The public VAPID key.
-	VAPIDPublicKey string
-
-	// The URL where push notification subscriptions are sent.
-	RegistrationURL string
-
-	// The format string to format a subscription when sent for registration. It
-	// must contain %s where the JSON encoded subscription will be inserted.
-	//
-	// Default: "%s".
-	SubscriptionPayloadFormat string
-}
-
 // NotificationSubscription represents a PushSubscription object from the Push
 // API.
 type NotificationSubscription struct {
@@ -106,21 +97,30 @@ const (
 
 	// The user refuses to have notifications displayed.
 	NotificationDenied NotificationPermission = "denied"
+
+	// Notifications are not supported by the browser.
+	NotificationNotSupported NotificationPermission = "unsupported"
 )
 
-func getNotificationPermission() NotificationPermission {
+type NotificationService struct {
+	dispatcher Dispatcher
+}
+
+// Returns the current notification permission.
+func (s NotificationService) Permission() NotificationPermission {
 	notification := Window().Get("Notification")
 	if !notification.Truthy() {
-		return NotificationDenied
+		return NotificationNotSupported
 	}
 
 	return NotificationPermission(notification.Get("permission").String())
 }
 
-func requestNotificationPermission() NotificationPermission {
+// Requests the user whether the app can use notifications.
+func (s NotificationService) RequestPermission() NotificationPermission {
 	notification := Window().Get("Notification")
 	if !notification.Truthy() {
-		return NotificationDenied
+		return NotificationNotSupported
 	}
 
 	permission := make(chan string, 1)
@@ -133,6 +133,92 @@ func requestNotificationPermission() NotificationPermission {
 	return NotificationPermission(<-permission)
 }
 
-func subscribeForPushNotifications(vapIDPublicKey string) NotificationSubscription {
-	panic("not implemented")
+// Creates and display a user notification.
+func (s NotificationService) New(n Notification) {
+	setObjectField := func(obj map[string]interface{}, name string, value interface{}) {
+		switch v := value.(type) {
+		case string:
+			if v == "" {
+				return
+			}
+			switch name {
+			case "badge", "icon", "image":
+				obj[name] = s.dispatcher.resolveStaticResource(v)
+
+			default:
+				obj[name] = v
+			}
+
+		case bool:
+			if v {
+				obj[name] = v
+			}
+		}
+	}
+
+	notification := make(map[string]interface{})
+	notification["title"] = n.Title
+	notification["target"] = n.Target
+	setObjectField(notification, "lang", n.Lang)
+	setObjectField(notification, "badge", n.Badge)
+	setObjectField(notification, "body", n.Body)
+	setObjectField(notification, "tag", n.Tag)
+	setObjectField(notification, "icon", n.Icon)
+	setObjectField(notification, "image", n.Image)
+	setObjectField(notification, "data", n.Data)
+	setObjectField(notification, "renotify", n.Renotify)
+	setObjectField(notification, "requireInteraction", n.RequireInteraction)
+	setObjectField(notification, "silent", n.Silent)
+
+	if l := len(n.Vibrate); l != 0 {
+		vibrate := make([]interface{}, l)
+		for i, v := range n.Vibrate {
+			vibrate[i] = v
+		}
+		notification["vibrate"] = vibrate
+	}
+
+	if l := len(n.Actions); l != 0 {
+		actions := make([]interface{}, l)
+		for i, a := range n.Actions {
+			action := make(map[string]interface{}, 3)
+			setObjectField(action, "action", a.Action)
+			setObjectField(action, "title", a.Title)
+			setObjectField(action, "icon", a.Icon)
+			setObjectField(action, "target", a.Target)
+			actions[i] = action
+		}
+		notification["actions"] = actions
+	}
+
+	Window().Call("goappNewNotification", notification)
+}
+
+// Returns a notification subscription with the given vap id.
+func (s NotificationService) Subscribe(vapIDPublicKey string) (NotificationSubscription, error) {
+	if vapIDPublicKey == "" {
+		return NotificationSubscription{}, errors.New("vapid public key is empty")
+	}
+
+	subc := make(chan string, 1)
+	defer close(subc)
+
+	Window().Call("goappSubscribePushNotifications", vapIDPublicKey).Then(func(v Value) {
+		subc <- v.String()
+	})
+
+	jsSub := <-subc
+	if jsSub == "" {
+		return NotificationSubscription{}, errors.
+			New("push notifications are not supported by the browser")
+	}
+
+	var sub NotificationSubscription
+	err := json.Unmarshal([]byte(jsSub), &sub)
+	if err != nil {
+		return NotificationSubscription{}, errors.
+			New("decoding push notification subscription failed").
+			Wrap(err)
+	}
+	return sub, nil
 }

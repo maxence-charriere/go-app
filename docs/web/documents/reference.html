@@ -1227,6 +1227,43 @@ resources to run Go-based progressive web apps.
 				
 			
 				
+				<dd><a href="#Notification">type Notification</a></dd>
+				
+				
+			
+				
+				<dd><a href="#NotificationAction">type NotificationAction</a></dd>
+				
+				
+			
+				
+				<dd><a href="#NotificationPermission">type NotificationPermission</a></dd>
+				
+				
+			
+				
+				<dd><a href="#NotificationService">type NotificationService</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NotificationService.New">func (s NotificationService) New(n Notification)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NotificationService.Permission">func (s NotificationService) Permission() NotificationPermission</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NotificationService.RequestPermission">func (s NotificationService) RequestPermission() NotificationPermission</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NotificationService.Subscribe">func (s NotificationService) Subscribe(vapIDPublicKey string) (NotificationSubscription, error)</a></dd>
+				
+			
+				
+				<dd><a href="#NotificationSubscription">type NotificationSubscription</a></dd>
+				
+				
+			
+				
 				<dd><a href="#Observer">type Observer</a></dd>
 				
 				
@@ -1441,6 +1478,8 @@ resources to run Go-based progressive web apps.
 			
 				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notfound.go">notfound.go</a>
 			
+				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go">notification.go</a>
+			
 				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/page.go">page.go</a>
 			
 				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/range.go">range.go</a>
@@ -1536,7 +1575,7 @@ windows from the same origin.
 		
 			
 			
-			<h2 id="CopyBytesToGo">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=7482:7527#L229">CopyBytesToGo</a>
+			<h2 id="CopyBytesToGo">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=7606:7651#L233">CopyBytesToGo</a>
 				<a class="permalink" href="#CopyBytesToGo">&#xb6;</a>
 				
 				
@@ -1557,7 +1596,7 @@ CopyBytesToGo panics if src is not an Uint8Array.
 		
 			
 			
-			<h2 id="CopyBytesToJS">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=7785:7830#L238">CopyBytesToJS</a>
+			<h2 id="CopyBytesToJS">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=7909:7954#L242">CopyBytesToJS</a>
 				<a class="permalink" href="#CopyBytesToJS">&#xb6;</a>
 				
 				
@@ -2107,7 +2146,7 @@ BrowserStorage is the interface that describes a web browser storage.
 		
 			
 			
-			<h2 id="BrowserWindow">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=6159:6985#L181">BrowserWindow</a>
+			<h2 id="BrowserWindow">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=6283:7109#L185">BrowserWindow</a>
 				<a class="permalink" href="#BrowserWindow">&#xb6;</a>
 				
 				
@@ -2498,7 +2537,7 @@ expression.
 		
 			
 			
-			<h2 id="Context">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=442:4985#L10">Context</a>
+			<h2 id="Context">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=442:5083#L10">Context</a>
 				<a class="permalink" href="#Context">&#xb6;</a>
 				
 				
@@ -2651,6 +2690,9 @@ It is canceled when its associated UI element is dismounted.
 
     <span class="comment">// Returns the app dispatcher.</span>
     Dispatcher() <a href="#Dispatcher">Dispatcher</a>
+
+    <span class="comment">// Returns the service to setup and display notifications.</span>
+    Notifications() <a href="#NotificationService">NotificationService</a>
 }</pre>
 
 			
@@ -2842,7 +2884,7 @@ UI instructions and UI elements lifecycle.
 		
 			
 			
-			<h2 id="Environment">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=19379:19413#L806">Environment</a>
+			<h2 id="Environment">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=19461:19495#L812">Environment</a>
 				<a class="permalink" href="#Environment">&#xb6;</a>
 				
 				
@@ -2868,7 +2910,7 @@ web app.
 		
 			
 			
-			<h2 id="Event">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=7048:7076#L214">Event</a>
+			<h2 id="Event">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=7172:7200#L218">Event</a>
 				<a class="permalink" href="#Event">&#xb6;</a>
 				
 				
@@ -2894,7 +2936,7 @@ Event is the interface that describes a javascript event.
 
 			
 				
-				<h3 id="Event.PreventDefault">func (Event) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=7199:7230#L220">PreventDefault</a>
+				<h3 id="Event.PreventDefault">func (Event) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=7323:7354#L224">PreventDefault</a>
 					<a class="permalink" href="#Event.PreventDefault">&#xb6;</a>
 					
 					
@@ -2938,7 +2980,7 @@ always called on the UI goroutine.
 		
 			
 			
-			<h2 id="Func">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=4957:5118#L152">Func</a>
+			<h2 id="Func">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=5081:5242#L156">Func</a>
 				<a class="permalink" href="#Func">&#xb6;</a>
 				
 				
@@ -2966,7 +3008,7 @@ JavaScript.
 
 			
 				
-				<h3 id="FuncOf">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=6002:6065#L176">FuncOf</a>
+				<h3 id="FuncOf">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=6126:6189#L180">FuncOf</a>
 					<a class="permalink" href="#FuncOf">&#xb6;</a>
 					
 					
@@ -24176,7 +24218,7 @@ and its resources.
     <span class="comment">// A placeholder background color for the application page to display before</span>
     <span class="comment">// its stylesheets are loaded.</span>
     <span class="comment">//</span>
-    <span class="comment">// DEFAULT: #2d2c2c.</span>
+    <span class="comment">// Default: #2d2c2c.</span>
 <span id="Handler.BackgroundColor"></span>    BackgroundColor <a href="/pkg/builtin/#string">string</a>
 
     <span class="comment">// The theme color for the application. This affects how the OS displays the</span>
@@ -24317,7 +24359,7 @@ and its resources.
 
 			
 				
-				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=11733:11800#L484">ServeHTTP</a>
+				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=11815:11882#L490">ServeHTTP</a>
 					<a class="permalink" href="#Handler.ServeHTTP">&#xb6;</a>
 					
 					
@@ -24331,7 +24373,7 @@ and its resources.
 		
 			
 			
-			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=18750:19287#L783">Icon</a>
+			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=18832:19369#L789">Icon</a>
 				<a class="permalink" href="#Icon">&#xb6;</a>
 				
 				
@@ -24541,6 +24583,279 @@ additional actions when navigated on.
     <span class="comment">// called on the UI goroutine.</span>
     OnNav(<a href="#Context">Context</a>)
 }</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Notification">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=120:1990#L1">Notification</a>
+				<a class="permalink" href="#Notification">&#xb6;</a>
+				
+				
+			</h2>
+			<p>
+A user notification.
+</p>
+
+			<pre>type Notification struct {
+    <span class="comment">// The title shown at the top of the notification window.</span>
+<span id="Notification.Title"></span>    Title <a href="/pkg/builtin/#string">string</a> `json:&#34;title&#34;`
+
+    <span class="comment">// The URL to navigate to when the notification is clicked.</span>
+<span id="Notification.Target"></span>    Target <a href="/pkg/builtin/#string">string</a> `json:&#34;target&#34;`
+
+    <span class="comment">// The notification&#39;s language, as specified in</span>
+    <span class="comment">// https://www.sitepoint.com/iso-2-letter-language-codes.</span>
+<span id="Notification.Lang"></span>    Lang <a href="/pkg/builtin/#string">string</a> `json:&#34;lang,omitempty&#34;`
+
+    <span class="comment">// The URL of the image used to represent the notification when there isn&#39;t</span>
+    <span class="comment">// enough space to display the notification itself.</span>
+<span id="Notification.Badge"></span>    Badge <a href="/pkg/builtin/#string">string</a> `json:&#34;badge,omitempty&#34;`
+
+    <span class="comment">// The body text of the notification, which is displayed below the title.</span>
+<span id="Notification.Body"></span>    Body <a href="/pkg/builtin/#string">string</a> `json:&#34;body,omitempty&#34;`
+
+    <span class="comment">// An identifying tag for the notification.</span>
+<span id="Notification.Tag"></span>    Tag <a href="/pkg/builtin/#string">string</a> `json:&#34;tag,omitempty&#34;`
+
+    <span class="comment">// The URL of an icon to be displayed in the notification.</span>
+<span id="Notification.Icon"></span>    Icon <a href="/pkg/builtin/#string">string</a> `json:&#34;icon,omitempty&#34;`
+
+    <span class="comment">// The URL of an image to be displayed in the notification.</span>
+<span id="Notification.Image"></span>    Image <a href="/pkg/builtin/#string">string</a> `json:&#34;image,omitempty&#34;`
+
+    <span class="comment">// Arbitrary data that to be associated with the notification.</span>
+<span id="Notification.Data"></span>    Data interface{} `json:&#34;data,omitempty&#34;`
+
+    <span class="comment">// Specifies whether the user should be notified after a new notification</span>
+    <span class="comment">// replaces an old one.</span>
+<span id="Notification.Renotify"></span>    Renotify <a href="/pkg/builtin/#bool">bool</a> `json:&#34;renotify,omitempty&#34;`
+
+    <span class="comment">// Indicates whether a notification should remain active until the user</span>
+    <span class="comment">// clicks or dismisses it, rather than closing automatically.</span>
+<span id="Notification.RequireInteraction"></span>    RequireInteraction <a href="/pkg/builtin/#bool">bool</a> `json:&#34;requireInteraction,omitempty&#34;`
+
+    <span class="comment">// specifies whether the notification is silent (no sounds or vibrations</span>
+    <span class="comment">// issued), regardless of the device settings.</span>
+<span id="Notification.Silent"></span>    Silent <a href="/pkg/builtin/#bool">bool</a> `json:&#34;silent,omitempty&#34;`
+
+    <span class="comment">// A vibration pattern for the device&#39;s vibration hardware to emit with the</span>
+    <span class="comment">// notification.</span>
+    <span class="comment">//</span>
+    <span class="comment">// See https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API#vibration_patterns.</span>
+<span id="Notification.Vibrate"></span>    Vibrate []<a href="/pkg/builtin/#int">int</a> `json:&#34;vibrate,omitempty&#34;`
+
+    <span class="comment">// The actions to display in the notification.</span>
+<span id="Notification.Actions"></span>    Actions []<a href="#NotificationAction">NotificationAction</a> `json:&#34;actions,omitempty&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="NotificationAction">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=2018:2394#L53">NotificationAction</a>
+				<a class="permalink" href="#NotificationAction">&#xb6;</a>
+				
+				
+			</h2>
+			<p>
+A notification action.
+</p>
+
+			<pre>type NotificationAction struct {
+    <span class="comment">// The user action id to be displayed on the notification.</span>
+<span id="NotificationAction.Action"></span>    Action <a href="/pkg/builtin/#string">string</a> `json:&#34;action&#34;`
+
+    <span class="comment">// The action text to be shown to the user.</span>
+<span id="NotificationAction.Title"></span>    Title <a href="/pkg/builtin/#string">string</a> `json:&#34;title&#34;`
+
+    <span class="comment">// The URL of an icon to display with the action.</span>
+<span id="NotificationAction.Icon"></span>    Icon <a href="/pkg/builtin/#string">string</a> `json:&#34;icon,omitempty&#34;`
+
+    <span class="comment">// The URL to navigate to when the action is clicked.</span>
+<span id="NotificationAction.Target"></span>    Target <a href="/pkg/builtin/#string">string</a> `json:&#34;target&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="NotificationPermission">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=2723:2757#L78">NotificationPermission</a>
+				<a class="permalink" href="#NotificationPermission">&#xb6;</a>
+				
+				
+			</h2>
+			<p>
+NotificationPermission a permission to display notifications.
+</p>
+
+			<pre>type NotificationPermission <a href="/pkg/builtin/#string">string</a></pre>
+
+			
+				
+				<pre>const (
+    <span class="comment">// The user notifications choice is unknown and therefore the browser acts</span>
+    <span class="comment">// as if the value were denied.</span>
+    <span id="NotificationDefault">NotificationDefault</span> <a href="#NotificationPermission">NotificationPermission</a> = &#34;default&#34;
+
+    <span class="comment">// The user accepts having notifications displayed.</span>
+    <span id="NotificationGranted">NotificationGranted</span> <a href="#NotificationPermission">NotificationPermission</a> = &#34;granted&#34;
+
+    <span class="comment">// The user refuses to have notifications displayed.</span>
+    <span id="NotificationDenied">NotificationDenied</span> <a href="#NotificationPermission">NotificationPermission</a> = &#34;denied&#34;
+
+    <span class="comment">// Notifications are not supported by the browser.</span>
+    <span id="NotificationNotSupported">NotificationNotSupported</span> <a href="#NotificationPermission">NotificationPermission</a> = &#34;unsupported&#34;
+)</pre>
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="NotificationService">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=3272:3330#L95">NotificationService</a>
+				<a class="permalink" href="#NotificationService">&#xb6;</a>
+				
+				
+			</h2>
+			
+			<pre>type NotificationService struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+				
+				<h3 id="NotificationService.New">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=4129:4177#L127">New</a>
+					<a class="permalink" href="#NotificationService.New">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (s <a href="#NotificationService">NotificationService</a>) New(n <a href="#Notification">Notification</a>)</pre>
+				<p>
+Creates and display a user notification.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="NotificationService.Permission">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=3380:3444#L100">Permission</a>
+					<a class="permalink" href="#NotificationService.Permission">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (s <a href="#NotificationService">NotificationService</a>) Permission() <a href="#NotificationPermission">NotificationPermission</a></pre>
+				<p>
+Returns the current notification permission.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="NotificationService.RequestPermission">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=3695:3766#L110">RequestPermission</a>
+					<a class="permalink" href="#NotificationService.RequestPermission">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (s <a href="#NotificationService">NotificationService</a>) RequestPermission() <a href="#NotificationPermission">NotificationPermission</a></pre>
+				<p>
+Requests the user whether the app can use notifications.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="NotificationService.Subscribe">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=5829:5924#L188">Subscribe</a>
+					<a class="permalink" href="#NotificationService.Subscribe">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (s <a href="#NotificationService">NotificationService</a>) Subscribe(vapIDPublicKey <a href="/pkg/builtin/#string">string</a>) (<a href="#NotificationSubscription">NotificationSubscription</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Returns a notification subscription with the given vap id.
+</p>
+
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="NotificationSubscription">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=2483:2656#L69">NotificationSubscription</a>
+				<a class="permalink" href="#NotificationSubscription">&#xb6;</a>
+				
+				
+			</h2>
+			<p>
+NotificationSubscription represents a PushSubscription object from the Push
+API.
+</p>
+
+			<pre>type NotificationSubscription struct {
+<span id="NotificationSubscription.Endpoint"></span>    Endpoint <a href="/pkg/builtin/#string">string</a> `json:&#34;endpoint&#34;`
+<span id="NotificationSubscription.Keys"></span>    Keys     struct {
+        Auth   <a href="/pkg/builtin/#string">string</a> `json:&#34;auth&#34;`
+        P256dh <a href="/pkg/builtin/#string">string</a> `json:&#34;p256dh&#34;`
+    } `json:&#34;keys&#34;`
+}
+</pre>
 
 			
 
@@ -25564,7 +25879,7 @@ parent component.
 		
 			
 			
-			<h2 id="Value">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=631:3959#L24">Value</a>
+			<h2 id="Value">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=631:4083#L24">Value</a>
 				<a class="permalink" href="#Value">&#xb6;</a>
 				
 				
@@ -25657,6 +25972,10 @@ package.
     <span class="comment">// JavaScript&#39;s typeof operator, except that it returns TypeNull instead of</span>
     <span class="comment">// TypeObject for null.</span>
     Type() <a href="#Type">Type</a>
+
+    <span class="comment">// Then calls the given function when the promise resolves. The current</span>
+    <span class="comment">// value must be a promise.</span>
+    Then(f func(<a href="#Value">Value</a>))
     <span class="comment">// contains filtered or unexported methods</span>
 }</pre>
 
@@ -25670,7 +25989,7 @@ package.
 
 			
 				
-				<h3 id="Null">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=4006:4023#L123">Null</a>
+				<h3 id="Null">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=4130:4147#L127">Null</a>
 					<a class="permalink" href="#Null">&#xb6;</a>
 					
 					
@@ -25684,7 +26003,7 @@ Null returns the JavaScript value &#34;null&#34;.
 				
 			
 				
-				<h3 id="Undefined">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=4099:4121#L128">Undefined</a>
+				<h3 id="Undefined">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=4223:4245#L132">Undefined</a>
 					<a class="permalink" href="#Undefined">&#xb6;</a>
 					
 					
@@ -25698,7 +26017,7 @@ Undefined returns the JavaScript value &#34;undefined&#34;.
 				
 			
 				
-				<h3 id="ValueOf">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=4806:4839#L146">ValueOf</a>
+				<h3 id="ValueOf">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=4930:4963#L150">ValueOf</a>
 					<a class="permalink" href="#ValueOf">&#xb6;</a>
 					
 					

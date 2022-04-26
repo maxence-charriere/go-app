@@ -1,11 +1,15 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"math/rand"
+	"net/http"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/analytics"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 type notificationsPage struct {
@@ -23,7 +27,8 @@ func (p *notificationsPage) OnPreRender(ctx app.Context) {
 }
 
 func (p *notificationsPage) OnMount(ctx app.Context) {
-	p.notificationPermission = ctx.NotificationPermission()
+	p.notificationPermission = ctx.Notifications().Permission()
+	p.registerSubscription(ctx)
 }
 
 func (p *notificationsPage) OnNav(ctx app.Context) {
@@ -60,6 +65,8 @@ func (p *notificationsPage) Render() app.UI {
 			app.Div().Class("separator"),
 
 			newIndexLink().Title("Push Notifications"),
+			newIndexLink().Title("    Getting Notification Subscription"),
+			newIndexLink().Title("    Registering Notification Subscription"),
 
 			app.Div().Class("separator"),
 
@@ -88,15 +95,43 @@ func (p *notificationsPage) Render() app.UI {
 }
 
 func (p *notificationsPage) enableNotifications(ctx app.Context, e app.Event) {
-	p.notificationPermission = ctx.RequestNotificationPermission()
+	p.notificationPermission = ctx.Notifications().RequestPermission()
+	p.registerSubscription(ctx)
 }
 
 func (p *notificationsPage) testNotification(ctx app.Context, e app.Event) {
 	n := rand.Intn(43)
 
-	ctx.NewNotification(app.Notification{
+	ctx.Notifications().New(app.Notification{
 		Title:  fmt.Sprintln("go-app test", n),
 		Body:   fmt.Sprintln("Test notification for go-app number", n),
 		Target: "/notifications#example",
+	})
+}
+
+func (p *notificationsPage) registerSubscription(ctx app.Context) {
+	if p.notificationPermission != app.NotificationGranted {
+		return
+	}
+
+	sub, err := ctx.Notifications().Subscribe(app.Getenv("VAPID_PUBLIC_KEY"))
+	if err != nil {
+		app.Log(err)
+		return
+	}
+
+	ctx.Async(func() {
+		var body bytes.Buffer
+		if err := json.NewEncoder(&body).Encode(sub); err != nil {
+			app.Log(errors.New("encoding notification subscription failed").Wrap(err))
+			return
+		}
+
+		res, err := http.Post("/test/notifications/register", "application/json", &body)
+		if err != nil {
+			app.Log(errors.New("registering notification subscription failed").Wrap(err))
+			return
+		}
+		defer res.Body.Close()
 	})
 }

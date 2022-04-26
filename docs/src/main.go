@@ -35,7 +35,9 @@ const (
 )
 
 type localOptions struct {
-	Port int `cli:"p" env:"GOAPP_DOCS_PORT" help:"The port used by the server that serves the PWA."`
+	Port            int    `cli:"p"                 env:"GOAPP_DOCS_PORT"   help:"The port used by the server that serves the PWA."`
+	VAPIDPrivateKey string `cli:"vapid-private-key" env:"VAPID_PRIVATE_KEY" help:"The VAP id private key to sign push notifications."`
+	VAPIDPublicKey  string `cli:"vapid-public-key"  env:"VAPID_PUBLIC_KEY"  help:"The VAP id public key to verify push notifications."`
 }
 
 type githubOptions struct {
@@ -142,10 +144,6 @@ func main() {
 			"/web/documents/home.md",
 			"/web/documents/home-next.md",
 		},
-		PushNotifications: app.PushNotificationsConfig{
-			VAPIDPublicKey:  "BKDoFJumqmfXF3CggnNRdIkvKjvuECluUzVtbqqIuc9kfmmJg-2ngLfvT4Kfm1cxnXacDFGTP_MphJk6HCS5MF0",
-			RegistrationURL: "/notifications/register",
-		},
 		AutoUpdateInterval: time.Minute,
 	}
 
@@ -164,10 +162,14 @@ func runLocal(ctx context.Context, h *app.Handler, opts localOptions) {
 		Tag("version", h.Version),
 	)
 
+	h.Env = app.Environment{
+		"VAPID_PUBLIC_KEY": opts.VAPIDPublicKey,
+	}
+
 	http.Handle("/", h)
 	http.Handle("/test/notifications/", &notificationHandler{
-		VAPIDPrivateKey: "2brW91WSzPBOLQ1odwbnNad8ZNMrMop7S7Z-j8rrGbA",
-		VAPIDPublicKey:  h.PushNotifications.VAPIDPublicKey,
+		VAPIDPrivateKey: opts.VAPIDPrivateKey,
+		VAPIDPublicKey:  opts.VAPIDPublicKey,
 	})
 
 	s := http.Server{
