@@ -394,7 +394,7 @@ func (h *Handler) makeAppWorkerJS() []byte {
 	for k := range resources {
 		resourcesTocache = append(resourcesTocache, k)
 	}
-	resourcesJSON, _ := json.MarshalIndent(resourcesTocache, "", "  ")
+	resourcesJSON, _ := json.Marshal(resourcesTocache)
 
 	var b bytes.Buffer
 	if err := template.
@@ -404,7 +404,7 @@ func (h *Handler) makeAppWorkerJS() []byte {
 			ResourcesToCache string
 		}{
 			Version:          h.Version,
-			ResourcesToCache: string(resourcesJSON),
+			ResourcesToCache: strings.Trim(strconv.Quote(string(resourcesJSON)), `"`),
 		}); err != nil {
 		panic(errors.New("initializing app-worker.js failed").Wrap(err))
 	}

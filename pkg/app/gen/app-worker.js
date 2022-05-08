@@ -1,5 +1,5 @@
 const cacheName = "app-" + "{{.Version}}";
-const resourcesToCache = JSON.parse(`{{.ResourcesToCache}}`);
+const resourcesToCache = JSON.parse("{{.ResourcesToCache}}");
 
 self.addEventListener("install", (event) => {
   console.log("installing app worker {{.Version}}");
