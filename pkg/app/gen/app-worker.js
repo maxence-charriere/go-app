@@ -99,8 +99,13 @@ self.addEventListener("notificationclick", (event) => {
           let client = clientList[i];
           if ("focus" in client) {
             client.focus();
-            client.navigate(path);
-            break;
+            client.postMessage({
+              goapp: {
+                type: "notification",
+                path: path,
+              },
+            });
+            return;
           }
         }
 

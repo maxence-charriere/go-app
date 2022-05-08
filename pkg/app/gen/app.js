@@ -28,6 +28,7 @@ async function goappInitServiceWorker() {
       goappServiceWorkerRegistration = registration;
       goappSetupNotifyUpdate(registration);
       goappSetupAutoUpdate(registration);
+      goappSetupPushNotification();
     } catch (err) {
       console.error("goapp service worker registration failed", err);
     }
@@ -109,6 +110,21 @@ function goappGetenv(k) {
 // -----------------------------------------------------------------------------
 // Notifications
 // -----------------------------------------------------------------------------
+function goappSetupPushNotification() {
+  navigator.serviceWorker.addEventListener("message", (event) => {
+    const msg = event.data.goapp;
+    if (!msg) {
+      return;
+    }
+
+    if (msg.type !== "notification") {
+      return;
+    }
+
+    goappNav(msg.path);
+  });
+}
+
 async function goappSubscribePushNotifications(vapIDpublicKey) {
   try {
     const subscription =
