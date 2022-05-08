@@ -11,8 +11,8 @@ type Notification struct {
 	// The title shown at the top of the notification window.
 	Title string `json:"title"`
 
-	// The URL to navigate to when the notification is clicked.
-	Target string `json:"target"`
+	// The URL path to navigate to when the notification is clicked.
+	Path string `json:"path"`
 
 	// The notification's language, as specified in
 	// https://www.sitepoint.com/iso-2-letter-language-codes.
@@ -35,7 +35,9 @@ type Notification struct {
 	Image string `json:"image,omitempty"`
 
 	// Arbitrary data that to be associated with the notification.
-	Data interface{} `json:"data,omitempty"`
+	//
+	// The "goapp" key is reserved to go-app data.
+	Data map[string]interface{} `json:"data"`
 
 	// Specifies whether the user should be notified after a new notification
 	// replaces an old one.
@@ -70,8 +72,8 @@ type NotificationAction struct {
 	// The URL of an icon to display with the action.
 	Icon string `json:"icon,omitempty"`
 
-	// The URL to navigate to when the action is clicked.
-	Target string `json:"target"`
+	// The URL path to navigate to when the action is clicked.
+	Path string `json:"path"`
 }
 
 // NotificationSubscription represents a PushSubscription object from the Push
@@ -135,63 +137,8 @@ func (s NotificationService) RequestPermission() NotificationPermission {
 
 // Creates and display a user notification.
 func (s NotificationService) New(n Notification) {
-	setObjectField := func(obj map[string]interface{}, name string, value interface{}) {
-		switch v := value.(type) {
-		case string:
-			if v == "" {
-				return
-			}
-			switch name {
-			case "badge", "icon", "image":
-				obj[name] = s.dispatcher.resolveStaticResource(v)
-
-			default:
-				obj[name] = v
-			}
-
-		case bool:
-			if v {
-				obj[name] = v
-			}
-		}
-	}
-
-	notification := make(map[string]interface{})
-	notification["title"] = n.Title
-	notification["target"] = n.Target
-	setObjectField(notification, "lang", n.Lang)
-	setObjectField(notification, "badge", n.Badge)
-	setObjectField(notification, "body", n.Body)
-	setObjectField(notification, "tag", n.Tag)
-	setObjectField(notification, "icon", n.Icon)
-	setObjectField(notification, "image", n.Image)
-	setObjectField(notification, "data", n.Data)
-	setObjectField(notification, "renotify", n.Renotify)
-	setObjectField(notification, "requireInteraction", n.RequireInteraction)
-	setObjectField(notification, "silent", n.Silent)
-
-	if l := len(n.Vibrate); l != 0 {
-		vibrate := make([]interface{}, l)
-		for i, v := range n.Vibrate {
-			vibrate[i] = v
-		}
-		notification["vibrate"] = vibrate
-	}
-
-	if l := len(n.Actions); l != 0 {
-		actions := make([]interface{}, l)
-		for i, a := range n.Actions {
-			action := make(map[string]interface{}, 3)
-			setObjectField(action, "action", a.Action)
-			setObjectField(action, "title", a.Title)
-			setObjectField(action, "icon", a.Icon)
-			setObjectField(action, "target", a.Target)
-			actions[i] = action
-		}
-		notification["actions"] = actions
-	}
-
-	Window().Call("goappNewNotification", notification)
+	notification, _ := json.Marshal(n)
+	Window().Call("goappNewNotification", string(notification))
 }
 
 // Returns a notification subscription with the given vap id.

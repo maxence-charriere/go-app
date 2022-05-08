@@ -51,11 +51,62 @@ self.addEventListener("push", (event) => {
 
   const title = notification.title;
   delete notification.title;
-  delete notification.target;
 
-  for (let action in notification.actions) {
-    delete action.target;
+  if (!notification.data) {
+    notification.data = {};
   }
+  let actions = [];
+  for (let i in notification.actions) {
+    const action = notification.actions[i];
+
+    actions.push({
+      action: action.action,
+      path: action.path,
+    });
+
+    delete action.path;
+  }
+  notification.data.goapp = {
+    path: notification.path,
+    actions: actions,
+  };
+  delete notification.path;
 
   event.waitUntil(self.registration.showNotification(title, notification));
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+
+  const notification = event.notification;
+  let path = notification.data.goapp.path;
+
+  for (let i in notification.data.goapp.actions) {
+    const action = notification.data.goapp.actions[i];
+    if (action.action === event.action) {
+      path = action.path;
+      break;
+    }
+  }
+
+  event.waitUntil(
+    clients
+      .matchAll({
+        type: "window",
+      })
+      .then((clientList) => {
+        for (var i = 0; i < clientList.length; i++) {
+          let client = clientList[i];
+          if ("focus" in client) {
+            client.focus();
+            client.navigate(path);
+            break;
+          }
+        }
+
+        if (clients.openWindow) {
+          return clients.openWindow(path);
+        }
+      })
+  );
 });

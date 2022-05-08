@@ -24598,7 +24598,7 @@ additional actions when navigated on.
 		
 			
 			
-			<h2 id="Notification">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=120:1990#L1">Notification</a>
+			<h2 id="Notification">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=120:2044#L1">Notification</a>
 				<a class="permalink" href="#Notification">&#xb6;</a>
 				
 				
@@ -24611,8 +24611,8 @@ A user notification.
     <span class="comment">// The title shown at the top of the notification window.</span>
 <span id="Notification.Title"></span>    Title <a href="/pkg/builtin/#string">string</a> `json:&#34;title&#34;`
 
-    <span class="comment">// The URL to navigate to when the notification is clicked.</span>
-<span id="Notification.Target"></span>    Target <a href="/pkg/builtin/#string">string</a> `json:&#34;target&#34;`
+    <span class="comment">// The URL path to navigate to when the notification is clicked.</span>
+<span id="Notification.Path"></span>    Path <a href="/pkg/builtin/#string">string</a> `json:&#34;path&#34;`
 
     <span class="comment">// The notification&#39;s language, as specified in</span>
     <span class="comment">// https://www.sitepoint.com/iso-2-letter-language-codes.</span>
@@ -24635,7 +24635,9 @@ A user notification.
 <span id="Notification.Image"></span>    Image <a href="/pkg/builtin/#string">string</a> `json:&#34;image,omitempty&#34;`
 
     <span class="comment">// Arbitrary data that to be associated with the notification.</span>
-<span id="Notification.Data"></span>    Data interface{} `json:&#34;data,omitempty&#34;`
+    <span class="comment">//</span>
+    <span class="comment">// The &#34;goapp&#34; key is reserved to go-app data.</span>
+<span id="Notification.Data"></span>    Data map[<a href="/pkg/builtin/#string">string</a>]interface{} `json:&#34;data&#34;`
 
     <span class="comment">// Specifies whether the user should be notified after a new notification</span>
     <span class="comment">// replaces an old one.</span>
@@ -24674,7 +24676,7 @@ A user notification.
 		
 			
 			
-			<h2 id="NotificationAction">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=2018:2394#L53">NotificationAction</a>
+			<h2 id="NotificationAction">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=2072:2449#L55">NotificationAction</a>
 				<a class="permalink" href="#NotificationAction">&#xb6;</a>
 				
 				
@@ -24693,8 +24695,8 @@ A notification action.
     <span class="comment">// The URL of an icon to display with the action.</span>
 <span id="NotificationAction.Icon"></span>    Icon <a href="/pkg/builtin/#string">string</a> `json:&#34;icon,omitempty&#34;`
 
-    <span class="comment">// The URL to navigate to when the action is clicked.</span>
-<span id="NotificationAction.Target"></span>    Target <a href="/pkg/builtin/#string">string</a> `json:&#34;target&#34;`
+    <span class="comment">// The URL path to navigate to when the action is clicked.</span>
+<span id="NotificationAction.Path"></span>    Path <a href="/pkg/builtin/#string">string</a> `json:&#34;path&#34;`
 }
 </pre>
 
@@ -24712,7 +24714,7 @@ A notification action.
 		
 			
 			
-			<h2 id="NotificationPermission">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=2723:2757#L78">NotificationPermission</a>
+			<h2 id="NotificationPermission">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=2778:2812#L80">NotificationPermission</a>
 				<a class="permalink" href="#NotificationPermission">&#xb6;</a>
 				
 				
@@ -24753,7 +24755,7 @@ NotificationPermission a permission to display notifications.
 		
 			
 			
-			<h2 id="NotificationService">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=3272:3330#L95">NotificationService</a>
+			<h2 id="NotificationService">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=3327:3385#L97">NotificationService</a>
 				<a class="permalink" href="#NotificationService">&#xb6;</a>
 				
 				
@@ -24776,7 +24778,7 @@ NotificationPermission a permission to display notifications.
 
 			
 				
-				<h3 id="NotificationService.New">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=4129:4177#L127">New</a>
+				<h3 id="NotificationService.New">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=4184:4232#L129">New</a>
 					<a class="permalink" href="#NotificationService.New">&#xb6;</a>
 					
 					
@@ -24791,7 +24793,7 @@ Creates and display a user notification.
 				
 			
 				
-				<h3 id="NotificationService.Permission">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=3380:3444#L100">Permission</a>
+				<h3 id="NotificationService.Permission">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=3435:3499#L102">Permission</a>
 					<a class="permalink" href="#NotificationService.Permission">&#xb6;</a>
 					
 					
@@ -24806,7 +24808,7 @@ Returns the current notification permission.
 				
 			
 				
-				<h3 id="NotificationService.RequestPermission">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=3695:3766#L110">RequestPermission</a>
+				<h3 id="NotificationService.RequestPermission">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=3750:3821#L112">RequestPermission</a>
 					<a class="permalink" href="#NotificationService.RequestPermission">&#xb6;</a>
 					
 					
@@ -24821,7 +24823,7 @@ Requests the user whether the app can use notifications.
 				
 			
 				
-				<h3 id="NotificationService.Subscribe">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=5829:5924#L188">Subscribe</a>
+				<h3 id="NotificationService.Subscribe">func (NotificationService) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=4397:4492#L135">Subscribe</a>
 					<a class="permalink" href="#NotificationService.Subscribe">&#xb6;</a>
 					
 					
@@ -24838,7 +24840,7 @@ Returns a notification subscription with the given vap id.
 		
 			
 			
-			<h2 id="NotificationSubscription">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=2483:2656#L69">NotificationSubscription</a>
+			<h2 id="NotificationSubscription">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/notification.go?s=2538:2711#L71">NotificationSubscription</a>
 				<a class="permalink" href="#NotificationSubscription">&#xb6;</a>
 				
 				

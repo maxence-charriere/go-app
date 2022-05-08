@@ -218,6 +218,7 @@ func (h *notificationHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
+// handleRegistrations receives and stores the previously created subscription.
 func (h *notificationHandler) handleRegistrations(w http.ResponseWriter, r *http.Request) {
 	var sub webpush.Subscription
 	if err := json.NewDecoder(r.Body).Decode(&sub); err != nil {
@@ -234,6 +235,8 @@ func (h *notificationHandler) handleRegistrations(w http.ResponseWriter, r *http
 	h.subscriptions[sub.Endpoint] = sub
 }
 
+// handleTests creates and sends a push notification for all the registered
+// subscriptions.
 func (h *notificationHandler) handleTests(w http.ResponseWriter, r *http.Request) {
 	h.mutex.Lock()
 	defer h.mutex.Unlock()
@@ -247,9 +250,18 @@ func (h *notificationHandler) handleTests(w http.ResponseWriter, r *http.Request
 				Title: fmt.Sprintf("Push test from server %v", n),
 				Body:  fmt.Sprintf("YEAH BABY PUSH ME %v", n),
 				Icon:  "/web/images/go-app.png",
+				Path:  "/notifications",
+				// Actions: []app.NotificationAction{
+				// 	{Action: "js", Title: "JS", Path: "/js"},
+				// 	{Action: "seo", Title: "SEO", Path: "/seo"},
+				// },
 			}
 
-			b, _ := json.Marshal(notif)
+			b, err := json.Marshal(notif)
+			if err != nil {
+				app.Log(err)
+				return
+			}
 
 			res, err := webpush.SendNotification(b, &sub, &webpush.Options{
 				VAPIDPrivateKey: h.VAPIDPrivateKey,

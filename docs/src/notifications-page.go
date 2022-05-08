@@ -67,6 +67,7 @@ func (p *notificationsPage) Render() app.UI {
 			newIndexLink().Title("Push Notifications"),
 			newIndexLink().Title("    Getting Notification Subscription"),
 			newIndexLink().Title("    Registering Notification Subscription"),
+			newIndexLink().Title("    Sending Push Notification"),
 
 			app.Div().Class("separator"),
 
@@ -103,9 +104,9 @@ func (p *notificationsPage) testNotification(ctx app.Context, e app.Event) {
 	n := rand.Intn(43)
 
 	ctx.Notifications().New(app.Notification{
-		Title:  fmt.Sprintln("go-app test", n),
-		Body:   fmt.Sprintln("Test notification for go-app number", n),
-		Target: "/notifications#example",
+		Title: fmt.Sprintln("go-app test", n),
+		Body:  fmt.Sprintln("Test notification for go-app number", n),
+		Path:  "/notifications#example",
 	})
 }
 

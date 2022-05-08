@@ -72,11 +72,11 @@ func (f *foo) testNotification(ctx app.Context, e app.Event) {
 	ctx.Notifications().New(app.Notification{
 		Title:  "Test",
 		Body:   "A test notification",
-		Target: "/mypage",
+		Path: "/mypage",
 	})
 }
 ```
 
-[Notification.Target](/reference#Notification) is an URL that targets a page in the app. When a notification is clicked, the app will be navigated on this URL. Responding to notification is handled within components. Behavior can be customized by including URL query parameters.
+[Notification.Path](/reference#Notification) is an URL path that targets a page in the app. When a notification is clicked, the app will be navigated on this URL. Responding to notification is handled within components. Behavior can be customized by including URL query parameters.
 
 ### Example

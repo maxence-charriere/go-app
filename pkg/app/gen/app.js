@@ -123,24 +123,21 @@ async function goappSubscribePushNotifications(vapIDpublicKey) {
   }
 }
 
-function goappNewNotification(notification) {
+function goappNewNotification(jsonNotification) {
+  let notification = JSON.parse(jsonNotification);
+
   const title = notification.title;
   delete notification.title;
 
-  let target = notification.target;
-  if (!target) {
-    target = "/";
-  }
-  delete notification.target;
-
-  for (let action in notification.actions) {
-    delete action.target;
+  let path = notification.path;
+  if (!path) {
+    path = "/";
   }
 
   const webNotification = new Notification(title, notification);
 
   webNotification.onclick = () => {
-    goappNav(target);
+    goappNav(path);
     webNotification.close();
   };
 }
