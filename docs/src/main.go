@@ -250,7 +250,7 @@ func (h *notificationHandler) handleTests(w http.ResponseWriter, r *http.Request
 				Title: fmt.Sprintf("Push test from server %v", n),
 				Body:  fmt.Sprintf("YEAH BABY PUSH ME %v", n),
 				Icon:  "/web/images/go-app.png",
-				Path:  "/notifications",
+				Path:  "/notifications#sending-push-notification",
 				// Actions: []app.NotificationAction{
 				// 	{Action: "js", Title: "JS", Path: "/js"},
 				// 	{Action: "seo", Title: "SEO", Path: "/seo"},
