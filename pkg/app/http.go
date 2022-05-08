@@ -357,7 +357,7 @@ func (h *Handler) makeAppJS() []byte {
 			WorkerJS           string
 			AutoUpdateInterval int64
 		}{
-			Env:                btos(env),
+			Env:                strings.Trim(strconv.Quote(string(env)), `"`),
 			Wasm:               h.Resources.AppWASM(),
 			WorkerJS:           h.resolvePackagePath("/app-worker.js"),
 			AutoUpdateInterval: h.AutoUpdateInterval.Milliseconds(),

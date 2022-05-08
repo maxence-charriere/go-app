@@ -6,7 +6,6 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
-	"unsafe"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
@@ -17,7 +16,7 @@ func toString(v interface{}) string {
 		return v
 
 	case []byte:
-		return btos(v)
+		return string(v)
 
 	case int:
 		return strconv.Itoa(v)
@@ -59,10 +58,6 @@ func writeIndent(w io.Writer, indent int) {
 
 func ln() []byte {
 	return []byte("\n")
-}
-
-func btos(b []byte) string {
-	return *(*string)(unsafe.Pointer(&b))
 }
 
 func pxToString(px int) string {
