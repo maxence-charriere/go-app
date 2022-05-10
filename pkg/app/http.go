@@ -11,6 +11,7 @@ import (
 	"os"
 	"reflect"
 	"runtime"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -386,6 +387,9 @@ func (h *Handler) makeAppWorkerJS() []byte {
 	for k := range resources {
 		resourcesTocache = append(resourcesTocache, k)
 	}
+	sort.Slice(resourcesTocache, func(a, b int) bool {
+		return strings.Compare(resourcesTocache[a], resourcesTocache[b]) < 0
+	})
 
 	var b bytes.Buffer
 	if err := template.
