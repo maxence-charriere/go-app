@@ -178,7 +178,7 @@ func TestHandlerServeAppJSWithLocalDir(t *testing.T) {
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `register("/app-worker.js"`)
+	require.Contains(t, body, `"/app-worker.js"`)
 	require.Contains(t, body, `fetch("/web/app.wasm"`)
 	require.Contains(t, body, "GOAPP_VERSION")
 	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":""`)
@@ -198,7 +198,7 @@ func TestHandlerServeAppJSWithRemoteBucket(t *testing.T) {
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `register("/app-worker.js"`)
+	require.Contains(t, body, `"/app-worker.js"`)
 	require.Contains(t, body, `fetch("https://storage.googleapis.com/go-app/web/app.wasm"`)
 	require.Contains(t, body, "GOAPP_VERSION")
 	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":"https://storage.googleapis.com/go-app"`)
@@ -217,7 +217,7 @@ func TestHandlerServeAppJSWithGitHubPages(t *testing.T) {
 
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `register("/go-app/app-worker.js"`)
+	require.Contains(t, body, `"/go-app/app-worker.js"`)
 	require.Contains(t, body, `fetch("/go-app/web/app.wasm"`)
 	require.Contains(t, body, "GOAPP_VERSION")
 	require.Contains(t, body, `"GOAPP_STATIC_RESOURCES_URL":"/go-app"`)
@@ -263,17 +263,17 @@ func TestHandlerServeAppWorkerJSWithLocalDir(t *testing.T) {
 	body := w.Body.String()
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `self.addEventListener("install", event => {`)
-	require.Contains(t, body, `self.addEventListener("activate", event => {`)
-	require.Contains(t, body, `self.addEventListener("fetch", event => {`)
-	require.Contains(t, body, `"/web/hello.css",`)
-	require.Contains(t, body, `"/web/hello.js",`)
-	require.Contains(t, body, `"/web/hello.png",`)
-	require.Contains(t, body, `"http://test.io/hello.png",`)
-	require.Contains(t, body, `"/wasm_exec.js",`)
-	require.Contains(t, body, `"/app.js",`)
-	require.Contains(t, body, `"/web/app.wasm",`)
-	require.Contains(t, body, `"/",`)
+	require.Contains(t, body, `self.addEventListener("install", (event) => {`)
+	require.Contains(t, body, `self.addEventListener("activate", (event) => {`)
+	require.Contains(t, body, `self.addEventListener("fetch", (event) => {`)
+	require.Contains(t, body, `"/web/hello.css"`)
+	require.Contains(t, body, `"/web/hello.js"`)
+	require.Contains(t, body, `"/web/hello.png"`)
+	require.Contains(t, body, `"http://test.io/hello.png"`)
+	require.Contains(t, body, `"/wasm_exec.js"`)
+	require.Contains(t, body, `"/app.js"`)
+	require.Contains(t, body, `"/web/app.wasm"`)
+	require.Contains(t, body, `"/"`)
 }
 
 func TestHandlerServeAppWorkerJSWithRemoteBucket(t *testing.T) {
@@ -294,17 +294,17 @@ func TestHandlerServeAppWorkerJSWithRemoteBucket(t *testing.T) {
 	body := w.Body.String()
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `self.addEventListener("install", event => {`)
-	require.Contains(t, body, `self.addEventListener("activate", event => {`)
-	require.Contains(t, body, `self.addEventListener("fetch", event => {`)
-	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/hello.css",`)
-	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/hello.js",`)
-	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/hello.png",`)
-	require.Contains(t, body, `"http://test.io/hello.png",`)
-	require.Contains(t, body, `"/wasm_exec.js",`)
-	require.Contains(t, body, `"/app.js",`)
-	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/app.wasm",`)
-	require.Contains(t, body, `"/",`)
+	require.Contains(t, body, `self.addEventListener("install", (event) => {`)
+	require.Contains(t, body, `self.addEventListener("activate", (event) => {`)
+	require.Contains(t, body, `self.addEventListener("fetch", (event) => {`)
+	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/hello.css"`)
+	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/hello.js"`)
+	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/hello.png"`)
+	require.Contains(t, body, `"http://test.io/hello.png"`)
+	require.Contains(t, body, `"/wasm_exec.js"`)
+	require.Contains(t, body, `"/app.js"`)
+	require.Contains(t, body, `"https://storage.googleapis.com/go-app/web/app.wasm"`)
+	require.Contains(t, body, `"/"`)
 }
 
 func TestHandlerServeAppWorkerJSWithGitHubPages(t *testing.T) {
@@ -325,17 +325,17 @@ func TestHandlerServeAppWorkerJSWithGitHubPages(t *testing.T) {
 	body := w.Body.String()
 	require.Equal(t, http.StatusOK, w.Code)
 	require.Equal(t, "application/javascript", w.Header().Get("Content-Type"))
-	require.Contains(t, body, `self.addEventListener("install", event => {`)
-	require.Contains(t, body, `self.addEventListener("activate", event => {`)
-	require.Contains(t, body, `self.addEventListener("fetch", event => {`)
-	require.Contains(t, body, `"/go-app/web/hello.css",`)
-	require.Contains(t, body, `"/go-app/web/hello.js",`)
-	require.Contains(t, body, `"/go-app/web/hello.png",`)
-	require.Contains(t, body, `"http://test.io/hello.png",`)
-	require.Contains(t, body, `"/go-app/wasm_exec.js",`)
-	require.Contains(t, body, `"/go-app/app.js",`)
-	require.Contains(t, body, `"/go-app/web/app.wasm",`)
-	require.Contains(t, body, `"/go-app",`)
+	require.Contains(t, body, `self.addEventListener("install", (event) => {`)
+	require.Contains(t, body, `self.addEventListener("activate", (event) => {`)
+	require.Contains(t, body, `self.addEventListener("fetch", (event) => {`)
+	require.Contains(t, body, `"/go-app/web/hello.css"`)
+	require.Contains(t, body, `"/go-app/web/hello.js"`)
+	require.Contains(t, body, `"/go-app/web/hello.png"`)
+	require.Contains(t, body, `"http://test.io/hello.png"`)
+	require.Contains(t, body, `"/go-app/wasm_exec.js"`)
+	require.Contains(t, body, `"/go-app/app.js"`)
+	require.Contains(t, body, `"/go-app/web/app.wasm"`)
+	require.Contains(t, body, `"/go-app"`)
 }
 
 func TestHandlerServeManifestJSONWithLocalDir(t *testing.T) {
@@ -580,11 +580,11 @@ func TestHandlerProxyResources(t *testing.T) {
 				require.NoError(t, err)
 
 				if u.notProxy {
-					require.NotEqual(t, u.body, btos(body))
+					require.NotEqual(t, u.body, string(body))
 					return
 				}
 
-				require.Equal(t, u.body, btos(body))
+				require.Equal(t, u.body, string(body))
 			}
 		})
 	}

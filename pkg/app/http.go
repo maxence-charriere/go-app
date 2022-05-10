@@ -340,14 +340,6 @@ func (h *Handler) makeAppJS() []byte {
 		}
 	}
 
-	env, err := json.Marshal(h.Env)
-	if err != nil {
-		panic(errors.New("encoding pwa env failed").
-			Tag("env", h.Env).
-			Wrap(err),
-		)
-	}
-
 	var b bytes.Buffer
 	if err := template.
 		Must(template.New("app.js").Parse(appJS)).
@@ -357,7 +349,7 @@ func (h *Handler) makeAppJS() []byte {
 			WorkerJS           string
 			AutoUpdateInterval int64
 		}{
-			Env:                strings.Trim(strconv.Quote(string(env)), `"`),
+			Env:                jsonString(h.Env),
 			Wasm:               h.Resources.AppWASM(),
 			WorkerJS:           h.resolvePackagePath("/app-worker.js"),
 			AutoUpdateInterval: h.AutoUpdateInterval.Milliseconds(),
@@ -394,7 +386,6 @@ func (h *Handler) makeAppWorkerJS() []byte {
 	for k := range resources {
 		resourcesTocache = append(resourcesTocache, k)
 	}
-	resourcesJSON, _ := json.Marshal(resourcesTocache)
 
 	var b bytes.Buffer
 	if err := template.
@@ -404,7 +395,7 @@ func (h *Handler) makeAppWorkerJS() []byte {
 			ResourcesToCache string
 		}{
 			Version:          h.Version,
-			ResourcesToCache: strings.Trim(strconv.Quote(string(resourcesJSON)), `"`),
+			ResourcesToCache: jsonString(resourcesTocache),
 		}); err != nil {
 		panic(errors.New("initializing app-worker.js failed").Wrap(err))
 	}

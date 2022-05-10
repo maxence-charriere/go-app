@@ -1,6 +1,7 @@
 package app
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"reflect"
@@ -119,4 +120,12 @@ func AppendClass(class, c string) string {
 	}
 	class += c
 	return class
+}
+
+func jsonString(v interface{}) string {
+	b, err := json.Marshal(v)
+	if err != nil {
+		panic(errors.New("converting value to json string failed").Wrap(err))
+	}
+	return string(b)
 }

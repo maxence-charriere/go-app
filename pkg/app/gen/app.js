@@ -5,7 +5,7 @@ var goappNav = function () {};
 var goappOnUpdate = function () {};
 var goappOnAppInstallChange = function () {};
 
-const goappEnv = JSON.parse("{{.Env}}");
+const goappEnv = {{.Env}};
 
 let goappServiceWorkerRegistration;
 let deferredPrompt = null;
