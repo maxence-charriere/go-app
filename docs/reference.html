@@ -6,10 +6,10 @@
 <meta name="author" content="Maxence Charriere">
 <meta name="description" content="Go-app API reference for building Progressive Web Apps (PWA) with Go (Golang) and WebAssembly (WASM).">
 <meta name="keywords" content="go-app, go, golang, app, pwa, progressive web app, webassembly, web assembly, webapp, web, gui, ui, user interface, graphical user interface, frontend, opensource, open source, github">
-<meta name="theme-color" content="#2e343a">
+<meta content="#2e343a" name="theme-color">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
-<meta property="og:url" content="http://127.0.0.1:50201/reference">
-<meta property="og:title" content="Reference for building PWA with Go and WASM">
+<meta property="og:url" content="http://127.0.0.1:51418/reference">
+<meta content="Reference for building PWA with Go and WASM" property="og:title">
 <meta property="og:description" content="Go-app API reference for building Progressive Web Apps (PWA) with Go (Golang) and WebAssembly (WASM).">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://go-app.dev/web/images/go-app.png">
@@ -18,9 +18,9 @@ Reference for building PWA with Go and WASM
 </title>
 <link rel="icon" type="image/png" href="https://storage.googleapis.com/murlok-github/icon-192.png">
 <link rel="apple-touch-icon" href="https://storage.googleapis.com/murlok-github/icon-192.png">
-<link rel="manifest" href="/manifest.webmanifest">
-<link type="text/css" rel="stylesheet" href="/app.css">
-<script defer="true" src="/wasm_exec.js"></script>
+<link href="/manifest.webmanifest" rel="manifest">
+<link rel="stylesheet" href="/app.css" type="text/css">
+<script src="/wasm_exec.js" defer="true"></script>
 <script src="/app.js" defer="true"></script>
 <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap">
 <link type="text/css" rel="stylesheet" href="/web/css/prism.css">
@@ -46,13 +46,13 @@ go-app documentation
 </p>
 </aside>
 <div id="app-pre-render">
-<div class="fill background" data-goapp-ui="shell" id>
-<div id="goapp-shell-f9da22e8-6460-43d8-9531-bbb9cf3f524f" style="display:flex;width:100%;height:100%;overflow:hidden;">
+<div id class="fill background" data-goapp-ui="shell">
+<div id="goapp-shell-8b944a46-d587-4645-a69d-ab61b6685468" style="display:flex;width:100%;height:100%;overflow:hidden;">
 <div style="position:relative;display:none;flex-shrink:0;flex-basis:270px;overflow:hidden;">
 <div data-goapp-ui="scroll" id class="menu fill">
 <div style="width:100%;height:calc(100% - 24px);padding:12px 0;">
 <div style="width:calc(100% - 24px);padding:0 12px;height:72px;">
-<div id class="fill" style="display:flex;justify-content:flex-start;align-items:center;" data-goapp="Stack">
+<div data-goapp="Stack" id class="fill" style="display:flex;justify-content:flex-start;align-items:center;">
 <header>
 <a class="heading app-title" href="/">
 Go-App
@@ -63,7 +63,7 @@ Go-App
 <div style="width:calc(100% - 24px);height:calc(100% - 72px);padding:0 12px;overflow-x:hidden;overflow-y:scroll;">
 <nav>
 <div class="separator"></div>
-<a class="link heading fit unselectable" title href="/" id>
+<a id class="link heading fit unselectable" title href="/">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -87,8 +87,8 @@ Getting Started
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/architecture">
-<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
+<a class="link heading fit unselectable" title href="/architecture" id>
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M9,2V8H11V11H5C3.89,11 3,11.89 3,13V16H1V22H7V16H5V13H11V16H9V22H15V16H13V13H19V16H17V22H23V16H21V13C21,11.89 20.11,11 19,11H13V8H15V2H9Z" />
@@ -99,7 +99,7 @@ Architecture
 </div>
 </div>
 </a>
-<a href="/reference" id class="link heading fit unselectable" title>
+<a title href="/reference" id class="link heading fit unselectable">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg width="24px" height="24px" viewBox="0 0 207 78" xmlns="http://www.w3.org/2000/svg">
@@ -120,7 +120,7 @@ Reference
 </div>
 </a>
 <div class="separator"></div>
-<a title href="/components" id class="link heading fit unselectable">
+<a href="/components" id class="link heading fit unselectable" title>
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -132,9 +132,9 @@ Components
 </div>
 </div>
 </a>
-<a class="link heading fit unselectable" title href="/declarative-syntax" id>
+<a id class="link heading fit unselectable" title href="/declarative-syntax">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<div class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M19,10H17V8H19M19,13H17V11H19M16,10H14V8H16M16,13H14V11H16M16,17H8V15H16M7,10H5V8H7M7,13H5V11H7M8,11H10V13H8M8,8H10V10H8M11,11H13V13H11M11,8H13V10H11M20,5H4C2.89,5 2,5.89 2,7V17A2,2 0 0,0 4,19H20A2,2 0 0,0 22,17V7C22,5.89 21.1,5 20,5Z" />
 	</svg>
@@ -146,7 +146,7 @@ Declarative Syntax
 </a>
 <a id class="link heading fit unselectable" title href="/routing">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M11,10H5L3,8L5,6H11V3L12,2L13,3V4H19L21,6L19,8H13V10H19L21,12L19,14H13V20A2,2 0 0,1 15,22H9A2,2 0 0,1 11,20V10Z" />
 	</svg>
@@ -168,7 +168,7 @@ Images and Static Resources
 </div>
 </div>
 </a>
-<a href="/js" id class="link heading fit unselectable" title>
+<a id class="link heading fit unselectable" title href="/js">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -180,8 +180,8 @@ JavaScript Interoperability
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/concurrency">
-<div class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id>
+<a title href="/concurrency" id class="link heading fit unselectable">
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M16,4.5V7H5V9H16V11.5L19.5,8M16,12.5V15H5V17H16V19.5L19.5,16" />
@@ -193,8 +193,8 @@ Concurrency
 </div>
 </a>
 <a id class="link heading fit unselectable" title href="/seo">
-<div class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id>
-<div class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id>
+<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
+<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M15.5,14L20.5,19L19,20.5L14,15.5V14.71L13.73,14.43C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.43,13.73L14.71,14H15.5M9.5,4.5L8.95,4.53C8.71,5.05 8.34,5.93 8.07,7H10.93C10.66,5.93 10.29,5.05 10.05,4.53C9.87,4.5 9.69,4.5 9.5,4.5M13.83,7C13.24,5.97 12.29,5.17 11.15,4.78C11.39,5.31 11.7,6.08 11.93,7H13.83M5.17,7H7.07C7.3,6.08 7.61,5.31 7.85,4.78C6.71,5.17 5.76,5.97 5.17,7M4.5,9.5C4.5,10 4.58,10.53 4.73,11H6.87L6.75,9.5L6.87,8H4.73C4.58,8.47 4.5,9 4.5,9.5M14.27,11C14.42,10.53 14.5,10 14.5,9.5C14.5,9 14.42,8.47 14.27,8H12.13C12.21,8.5 12.25,9 12.25,9.5C12.25,10 12.21,10.5 12.13,11H14.27M7.87,8L7.75,9.5L7.87,11H11.13C11.21,10.5 11.25,10 11.25,9.5C11.25,9 11.21,8.5 11.13,8H7.87M9.5,14.5C9.68,14.5 9.86,14.5 10.03,14.47C10.28,13.95 10.66,13.07 10.93,12H8.07C8.34,13.07 8.72,13.95 8.97,14.47L9.5,14.5M13.83,12H11.93C11.7,12.92 11.39,13.69 11.15,14.22C12.29,13.83 13.24,13.03 13.83,12M5.17,12C5.76,13.03 6.71,13.83 7.85,14.22C7.61,13.69 7.3,12.92 7.07,12H5.17Z" />
 	</svg>
@@ -204,8 +204,8 @@ SEO
 </div>
 </div>
 </a>
-<a class="link heading fit unselectable" title href="/lifecycle" id>
-<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<a id class="link heading fit unselectable" title href="/lifecycle">
+<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M23,12L19,16V13H6.83C6.42,14.17 5.31,15 4,15A3,3 0 0,1 1,12A3,3 0 0,1 4,9C5.31,9 6.42,9.83 6.83,11H19V8L23,12Z" />
@@ -216,7 +216,7 @@ Lifecycle and Updates
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/install">
+<a class="link heading fit unselectable" title href="/install" id>
 <div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -229,7 +229,7 @@ Install
 </div>
 </a>
 <a id class="link heading fit unselectable" title href="/testing">
-<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M7,2V4H8V18A4,4 0 0,0 12,22A4,4 0 0,0 16,18V4H17V2H7M11,16C10.4,16 10,15.6 10,15C10,14.4 10.4,14 11,14C11.6,14 12,14.4 12,15C12,15.6 11.6,16 11,16M13,12C12.4,12 12,11.6 12,11C12,10.4 12.4,10 13,10C13.6,10 14,10.4 14,11C14,11.6 13.6,12 13,12M14,7H10V4H14V7Z" />
@@ -242,7 +242,7 @@ Testing
 </a>
 <a id class="link heading fit unselectable" title href="/actions">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M16,4L9,8.04V15.96L16,20L23,15.96V8.04M16,6.31L19.8,8.5L16,10.69L12.21,8.5M0,7V9H7V7M11,10.11L15,12.42V17.11L11,14.81M21,10.11V14.81L17,17.11V12.42M2,11V13H7V11M4,15V17H7V15" />
 	</svg>
@@ -252,9 +252,9 @@ Actions
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/states">
+<a title href="/states" id class="link heading fit unselectable">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id class>
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M4 12V9C4 11.2 7.6 13 12 13S20 11.2 20 9V12C20 12.5 19.8 12.9 19.5 13.4C18.7 13.1 17.9 13 17 13C14.5 13 12.1 14.1 10.6 15.9C6.8 15.6 4 14 4 12M12 11C16.4 11 20 9.2 20 7S16.4 3 12 3 4 4.8 4 7 7.6 11 12 11M9.1 19.7L8.8 19L9.1 18.3C9.2 18.1 9.3 18 9.3 17.8C6.2 17.2 4 15.8 4 14V17C4 18.8 6.4 20.3 9.7 20.8C9.5 20.5 9.3 20.1 9.1 19.7M17 18C16.4 18 16 18.4 16 19S16.4 20 17 20 18 19.6 18 19 17.6 18 17 18M23 19C22.1 21.3 19.7 23 17 23S11.9 21.3 11 19C11.9 16.7 14.3 15 17 15S22.1 16.7 23 19M19.5 19C19.5 17.6 18.4 16.5 17 16.5S14.5 17.6 14.5 19 15.6 21.5 17 21.5 19.5 20.4 19.5 19Z" />
 	</svg>
@@ -264,9 +264,21 @@ State Management
 </div>
 </div>
 </a>
-<div class="separator"></div>
-<a class="link heading fit unselectable" title href="/migrate" id>
+<a id class="link heading fit unselectable" title href="/notifications">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+    	<path fill="currentColor" d="M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21" />
+	</svg>
+</div>
+<div>
+Notifications
+</div>
+</div>
+</a>
+<div class="separator"></div>
+<a href="/migrate" id class="link heading fit unselectable" title>
+<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M21,9L17,5V8H10V10H17V13M7,11L3,15L7,19V16H14V14H7V11Z" />
@@ -302,7 +314,7 @@ Twitter
 </div>
 </div>
 </a>
-<a class="link heading fit unselectable" title href="https://github.com/maxence-charriere/go-app" id>
+<a href="https://github.com/maxence-charriere/go-app" id class="link heading fit unselectable" title>
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -314,9 +326,9 @@ GitHub
 </div>
 </div>
 </a>
-<a class="link heading fit unselectable" title href="https://opencollective.com/go-app" id>
+<a id class="link heading fit unselectable" title href="https://opencollective.com/go-app">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<div class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M15.41,22C15.35,22 15.28,22 15.22,22C15.1,21.95 15,21.85 14.96,21.73L12.74,15.93C12.65,15.69 12.77,15.42 13,15.32C13.71,15.06 14.28,14.5 14.58,13.83C15.22,12.4 14.58,10.73 13.15,10.09C11.72,9.45 10.05,10.09 9.41,11.5C9.11,12.21 9.09,13 9.36,13.69C9.66,14.43 10.25,15 11,15.28C11.24,15.37 11.37,15.64 11.28,15.89L9,21.69C8.96,21.81 8.87,21.91 8.75,21.96C8.63,22 8.5,22 8.39,21.96C3.24,19.97 0.67,14.18 2.66,9.03C4.65,3.88 10.44,1.31 15.59,3.3C18.06,4.26 20.05,6.15 21.13,8.57C22.22,11 22.29,13.75 21.33,16.22C20.32,18.88 18.23,21 15.58,22C15.5,22 15.47,22 15.41,22M12,3.59C7.03,3.46 2.9,7.39 2.77,12.36C2.68,16.08 4.88,19.47 8.32,20.9L10.21,16C8.38,15 7.69,12.72 8.68,10.89C9.67,9.06 11.96,8.38 13.79,9.36C15.62,10.35 16.31,12.64 15.32,14.47C14.97,15.12 14.44,15.65 13.79,16L15.68,20.93C17.86,19.95 19.57,18.16 20.44,15.93C22.28,11.31 20.04,6.08 15.42,4.23C14.33,3.8 13.17,3.58 12,3.59Z" />
 	</svg>
@@ -328,8 +340,8 @@ Open Collective
 </a>
 <div class="separator"></div>
 <a id class="link heading fit unselectable" title href="/privacy-policy">
-<div style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id class>
-<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<div style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id class>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M22 17V16.5C22 15.12 20.88 14 19.5 14S17 15.12 17 16.5V17C16.45 17 16 17.45 16 18V22C16 22.55 16.45 23 17 23H22C22.55 23 23 22.55 23 22V18C23 17.45 22.55 17 22 17M21 17H18V16.5C18 15.67 18.67 15 19.5 15S21 15.67 21 16.5V17M8 8C8 5.79 9.79 4 12 4S16 5.79 16 8 14.21 12 12 12 8 10.21 8 8M14 20H4V18C4 15.79 7.58 14 12 14C13.27 14 14.46 14.15 15.53 14.41C15.32 14.82 15.15 15.25 15.07 15.71C14.42 16.26 14 17.08 14 18V20Z" />
 	</svg>
@@ -357,12 +369,12 @@ Privacy Policy
 Index
 </header>
 <div class="separator"></div>
-<a href="#pkg-overview" class="index-link ">
+<a class="index-link " href="#pkg-overview">
 Overview
 </a>
 <section id class="reference-index">
 <aside id class="separator fill heading" style="display:none;">
-<div data-goapp="Stack" id class style="display:flex;justify-content:center;align-items:center;width:100%;height:100%;">
+<div class style="display:flex;justify-content:center;align-items:center;width:100%;height:100%;" data-goapp="Stack" id>
 <div style="width:26px;height:26px;min-width:26px;min-height:26px;border:2px solid currentColor;border-top:2px solid white;border-radius:50%;animation:goapp-spin-frames 500ms linear infinite;"></div>
 <div style="margin-left:9px;">
 <div>
@@ -1481,6 +1493,43 @@ Loading...
 				
 			
 				
+				<dd><a href="#Notification" id="ref-link-Notification" id="ref-link-Notification">type Notification</a></dd>
+				
+				
+			
+				
+				<dd><a href="#NotificationAction" id="ref-link-NotificationAction" id="ref-link-NotificationAction">type NotificationAction</a></dd>
+				
+				
+			
+				
+				<dd><a href="#NotificationPermission" id="ref-link-NotificationPermission" id="ref-link-NotificationPermission">type NotificationPermission</a></dd>
+				
+				
+			
+				
+				<dd><a href="#NotificationService" id="ref-link-NotificationService" id="ref-link-NotificationService">type NotificationService</a></dd>
+				
+				
+					
+					<dd>    <a href="#NotificationService.New" id="ref-link-NotificationService.New" id="ref-link-NotificationService.New">func (s NotificationService) New(n Notification)</a></dd>
+				
+					
+					<dd>    <a href="#NotificationService.Permission" id="ref-link-NotificationService.Permission" id="ref-link-NotificationService.Permission">func (s NotificationService) Permission() NotificationPermission</a></dd>
+				
+					
+					<dd>    <a href="#NotificationService.RequestPermission" id="ref-link-NotificationService.RequestPermission" id="ref-link-NotificationService.RequestPermission">func (s NotificationService) RequestPermission() NotificationPermission</a></dd>
+				
+					
+					<dd>    <a href="#NotificationService.Subscribe" id="ref-link-NotificationService.Subscribe" id="ref-link-NotificationService.Subscribe">func (s NotificationService) Subscribe(vapIDPublicKey string) (NotificationSubscription, error)</a></dd>
+				
+			
+				
+				<dd><a href="#NotificationSubscription" id="ref-link-NotificationSubscription" id="ref-link-NotificationSubscription">type NotificationSubscription</a></dd>
+				
+				
+			
+				
 				<dd><a href="#Observer" id="ref-link-Observer" id="ref-link-Observer">type Observer</a></dd>
 				
 				
@@ -1656,7 +1705,7 @@ Loading...
 </div>
 </section>
 <div class="separator"></div>
-<a class="index-link  " href="#report-an-issue" title="Report an Issue">
+<a href="#report-an-issue" title="Report an Issue" class="index-link  ">
 Report an Issue
 </a>
 <div class="separator"></div>
@@ -1678,8 +1727,8 @@ Report an Issue
 <main>
 <article>
 <header id="page-top" class="page-title center">
-<div style="display:flex;justify-content:center;align-items:center;" data-goapp="Stack" id class>
-<div class="icon-left unselectable" style="width:90px;height:90px;max-width:90px;max-height:90px;min-width:90px;min-height:90px;" data-goapp="Icon" id>
+<div class style="display:flex;justify-content:center;align-items:center;" data-goapp="Stack" id>
+<div data-goapp="Icon" id class="icon-left unselectable" style="width:90px;height:90px;max-width:90px;max-height:90px;min-width:90px;min-height:90px;">
 <svg width="90px" height="90px" viewBox="0 0 207 78" xmlns="http://www.w3.org/2000/svg">
 		<g fill="currentColor" fill-rule="evenodd">
 			<path d="m16.2 24.1c-.4 0-.5-.2-.3-.5l2.1-2.7c.2-.3.7-.5 1.1-.5h35.7c.4 0 .5.3.3.6l-1.7 2.6c-.2.3-.7.6-1 .6z"/>
@@ -1698,7 +1747,7 @@ Reference
 </div>
 </header>
 <div class="separator"></div>
-<section id class="reference">
+<section class="reference" id>
 <aside id class="separator fill heading" style="display:none;">
 <div data-goapp="Stack" id class style="display:flex;justify-content:center;align-items:center;width:100%;height:100%;">
 <div style="width:56px;height:56px;min-width:56px;min-height:56px;border:2px solid currentColor;border-top:2px solid white;border-radius:50%;animation:goapp-spin-frames 500ms linear infinite;"></div>
@@ -2897,6 +2946,43 @@ resources to run Go-based progressive web apps.
 				
 			
 				
+				<dd><a href="#Notification" id="ref-link-Notification">type Notification</a></dd>
+				
+				
+			
+				
+				<dd><a href="#NotificationAction" id="ref-link-NotificationAction">type NotificationAction</a></dd>
+				
+				
+			
+				
+				<dd><a href="#NotificationPermission" id="ref-link-NotificationPermission">type NotificationPermission</a></dd>
+				
+				
+			
+				
+				<dd><a href="#NotificationService" id="ref-link-NotificationService">type NotificationService</a></dd>
+				
+				
+					
+					<dd>    <a href="#NotificationService.New" id="ref-link-NotificationService.New">func (s NotificationService) New(n Notification)</a></dd>
+				
+					
+					<dd>    <a href="#NotificationService.Permission" id="ref-link-NotificationService.Permission">func (s NotificationService) Permission() NotificationPermission</a></dd>
+				
+					
+					<dd>    <a href="#NotificationService.RequestPermission" id="ref-link-NotificationService.RequestPermission">func (s NotificationService) RequestPermission() NotificationPermission</a></dd>
+				
+					
+					<dd>    <a href="#NotificationService.Subscribe" id="ref-link-NotificationService.Subscribe">func (s NotificationService) Subscribe(vapIDPublicKey string) (NotificationSubscription, error)</a></dd>
+				
+			
+				
+				<dd><a href="#NotificationSubscription" id="ref-link-NotificationSubscription">type NotificationSubscription</a></dd>
+				
+				
+			
+				
 				<dd><a href="#Observer" id="ref-link-Observer">type Observer</a></dd>
 				
 				
@@ -3111,6 +3197,8 @@ resources to run Go-based progressive web apps.
 			
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/notfound.go">notfound.go</a>
 			
+				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/notification.go">notification.go</a>
+			
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/page.go">page.go</a>
 			
 				<a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/range.go">range.go</a>
@@ -3173,7 +3261,7 @@ resources to run Go-based progressive web apps.
 		
 			
 			
-			<h2 id="AppendClass">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/strings.go?s=1867:1907#L108" id="ref-link-L108">AppendClass</a>
+			<h2 id="AppendClass">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/strings.go?s=1805:1845#L104" id="ref-link-L104">AppendClass</a>
 				<a class="permalink" href="#AppendClass" id="ref-link-AppendClass">¶</a>
 				
 				
@@ -3206,7 +3294,7 @@ windows from the same origin.
 		
 			
 			
-			<h2 id="CopyBytesToGo">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=7482:7527#L229" id="ref-link-L229">CopyBytesToGo</a>
+			<h2 id="CopyBytesToGo">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=7606:7651#L233" id="ref-link-L233">CopyBytesToGo</a>
 				<a class="permalink" href="#CopyBytesToGo" id="ref-link-CopyBytesToGo">¶</a>
 				
 				
@@ -3227,7 +3315,7 @@ CopyBytesToGo panics if src is not an Uint8Array.
 		
 			
 			
-			<h2 id="CopyBytesToJS">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=7785:7830#L238" id="ref-link-L238">CopyBytesToJS</a>
+			<h2 id="CopyBytesToJS">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=7909:7954#L242" id="ref-link-L242">CopyBytesToJS</a>
 				<a class="permalink" href="#CopyBytesToJS" id="ref-link-CopyBytesToJS">¶</a>
 				
 				
@@ -3777,7 +3865,7 @@ BrowserStorage is the interface that describes a web browser storage.
 		
 			
 			
-			<h2 id="BrowserWindow">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=6159:6985#L181" id="ref-link-L181">BrowserWindow</a>
+			<h2 id="BrowserWindow">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=6283:7109#L185" id="ref-link-L185">BrowserWindow</a>
 				<a class="permalink" href="#BrowserWindow" id="ref-link-BrowserWindow">¶</a>
 				
 				
@@ -4168,7 +4256,7 @@ expression.
 		
 			
 			
-			<h2 id="Context">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go?s=442:4985#L10" id="ref-link-L10">Context</a>
+			<h2 id="Context">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/context.go?s=442:5083#L10" id="ref-link-L10">Context</a>
 				<a class="permalink" href="#Context" id="ref-link-Context">¶</a>
 				
 				
@@ -4321,6 +4409,9 @@ It is canceled when its associated UI element is dismounted.
 
     <span class="comment">// Returns the app dispatcher.</span>
     Dispatcher() <a href="#Dispatcher" id="ref-link-Dispatcher">Dispatcher</a>
+
+    <span class="comment">// Returns the service to setup and display notifications.</span>
+    Notifications() <a href="#NotificationService" id="ref-link-NotificationService">NotificationService</a>
 }</pre>
 
 			
@@ -4512,7 +4603,7 @@ UI instructions and UI elements lifecycle.
 		
 			
 			
-			<h2 id="Environment">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go?s=19379:19413#L806" id="ref-link-L806">Environment</a>
+			<h2 id="Environment">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go?s=19267:19301#L803" id="ref-link-L803">Environment</a>
 				<a class="permalink" href="#Environment" id="ref-link-Environment">¶</a>
 				
 				
@@ -4538,7 +4629,7 @@ web app.
 		
 			
 			
-			<h2 id="Event">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=7048:7076#L214" id="ref-link-L214">Event</a>
+			<h2 id="Event">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=7172:7200#L218" id="ref-link-L218">Event</a>
 				<a class="permalink" href="#Event" id="ref-link-Event">¶</a>
 				
 				
@@ -4564,7 +4655,7 @@ Event is the interface that describes a javascript event.
 
 			
 				
-				<h3 id="Event.PreventDefault">func (Event) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=7199:7230#L220" id="ref-link-L220">PreventDefault</a>
+				<h3 id="Event.PreventDefault">func (Event) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=7323:7354#L224" id="ref-link-L224">PreventDefault</a>
 					<a class="permalink" href="#Event.PreventDefault" id="ref-link-Event.PreventDefault">¶</a>
 					
 					
@@ -4608,7 +4699,7 @@ always called on the UI goroutine.
 		
 			
 			
-			<h2 id="Func">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=4957:5118#L152" id="ref-link-L152">Func</a>
+			<h2 id="Func">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=5081:5242#L156" id="ref-link-L156">Func</a>
 				<a class="permalink" href="#Func" id="ref-link-Func">¶</a>
 				
 				
@@ -4636,7 +4727,7 @@ JavaScript.
 
 			
 				
-				<h3 id="FuncOf">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=6002:6065#L176" id="ref-link-L176">FuncOf</a>
+				<h3 id="FuncOf">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=6126:6189#L180" id="ref-link-L180">FuncOf</a>
 					<a class="permalink" href="#FuncOf" id="ref-link-FuncOf">¶</a>
 					
 					
@@ -25846,7 +25937,7 @@ and its resources.
     <span class="comment">// A placeholder background color for the application page to display before</span>
     <span class="comment">// its stylesheets are loaded.</span>
     <span class="comment">//</span>
-    <span class="comment">// DEFAULT: #2d2c2c.</span>
+    <span class="comment">// Default: #2d2c2c.</span>
 <span id="Handler.BackgroundColor"></span>    BackgroundColor <a href="/pkg/builtin/#string" id="ref-link-string">string</a>
 
     <span class="comment">// The theme color for the application. This affects how the OS displays the</span>
@@ -25987,7 +26078,7 @@ and its resources.
 
 			
 				
-				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go?s=11733:11800#L484" id="ref-link-L484">ServeHTTP</a>
+				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go?s=11621:11688#L481" id="ref-link-L481">ServeHTTP</a>
 					<a class="permalink" href="#Handler.ServeHTTP" id="ref-link-Handler.ServeHTTP">¶</a>
 					
 					
@@ -26001,7 +26092,7 @@ and its resources.
 		
 			
 			
-			<h2 id="Icon">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go?s=18750:19287#L783" id="ref-link-L783">Icon</a>
+			<h2 id="Icon">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/http.go?s=18638:19175#L780" id="ref-link-L780">Icon</a>
 				<a class="permalink" href="#Icon" id="ref-link-Icon">¶</a>
 				
 				
@@ -26211,6 +26302,281 @@ additional actions when navigated on.
     <span class="comment">// called on the UI goroutine.</span>
     OnNav(<a href="#Context" id="ref-link-Context">Context</a>)
 }</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Notification">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/notification.go?s=120:2044#L1" id="ref-link-L1">Notification</a>
+				<a class="permalink" href="#Notification" id="ref-link-Notification">¶</a>
+				
+				
+			</h2>
+			<p>
+A user notification.
+</p>
+
+			<pre>type Notification struct {
+    <span class="comment">// The title shown at the top of the notification window.</span>
+<span id="Notification.Title"></span>    Title <a href="/pkg/builtin/#string" id="ref-link-string">string</a> `json:&#34;title&#34;`
+
+    <span class="comment">// The URL path to navigate to when the notification is clicked.</span>
+<span id="Notification.Path"></span>    Path <a href="/pkg/builtin/#string" id="ref-link-string">string</a> `json:&#34;path&#34;`
+
+    <span class="comment">// The notification&#39;s language, as specified in</span>
+    <span class="comment">// https://www.sitepoint.com/iso-2-letter-language-codes.</span>
+<span id="Notification.Lang"></span>    Lang <a href="/pkg/builtin/#string" id="ref-link-string">string</a> `json:&#34;lang,omitempty&#34;`
+
+    <span class="comment">// The URL of the image used to represent the notification when there isn&#39;t</span>
+    <span class="comment">// enough space to display the notification itself.</span>
+<span id="Notification.Badge"></span>    Badge <a href="/pkg/builtin/#string" id="ref-link-string">string</a> `json:&#34;badge,omitempty&#34;`
+
+    <span class="comment">// The body text of the notification, which is displayed below the title.</span>
+<span id="Notification.Body"></span>    Body <a href="/pkg/builtin/#string" id="ref-link-string">string</a> `json:&#34;body,omitempty&#34;`
+
+    <span class="comment">// An identifying tag for the notification.</span>
+<span id="Notification.Tag"></span>    Tag <a href="/pkg/builtin/#string" id="ref-link-string">string</a> `json:&#34;tag,omitempty&#34;`
+
+    <span class="comment">// The URL of an icon to be displayed in the notification.</span>
+<span id="Notification.Icon"></span>    Icon <a href="/pkg/builtin/#string" id="ref-link-string">string</a> `json:&#34;icon,omitempty&#34;`
+
+    <span class="comment">// The URL of an image to be displayed in the notification.</span>
+<span id="Notification.Image"></span>    Image <a href="/pkg/builtin/#string" id="ref-link-string">string</a> `json:&#34;image,omitempty&#34;`
+
+    <span class="comment">// Arbitrary data that to be associated with the notification.</span>
+    <span class="comment">//</span>
+    <span class="comment">// The &#34;goapp&#34; key is reserved to go-app data.</span>
+<span id="Notification.Data"></span>    Data map[<a href="/pkg/builtin/#string" id="ref-link-string">string</a>]interface{} `json:&#34;data&#34;`
+
+    <span class="comment">// Specifies whether the user should be notified after a new notification</span>
+    <span class="comment">// replaces an old one.</span>
+<span id="Notification.Renotify"></span>    Renotify <a href="/pkg/builtin/#bool" id="ref-link-bool">bool</a> `json:&#34;renotify,omitempty&#34;`
+
+    <span class="comment">// Indicates whether a notification should remain active until the user</span>
+    <span class="comment">// clicks or dismisses it, rather than closing automatically.</span>
+<span id="Notification.RequireInteraction"></span>    RequireInteraction <a href="/pkg/builtin/#bool" id="ref-link-bool">bool</a> `json:&#34;requireInteraction,omitempty&#34;`
+
+    <span class="comment">// specifies whether the notification is silent (no sounds or vibrations</span>
+    <span class="comment">// issued), regardless of the device settings.</span>
+<span id="Notification.Silent"></span>    Silent <a href="/pkg/builtin/#bool" id="ref-link-bool">bool</a> `json:&#34;silent,omitempty&#34;`
+
+    <span class="comment">// A vibration pattern for the device&#39;s vibration hardware to emit with the</span>
+    <span class="comment">// notification.</span>
+    <span class="comment">//</span>
+    <span class="comment">// See https://developer.mozilla.org/en-US/docs/Web/API/Vibration_API#vibration_patterns.</span>
+<span id="Notification.Vibrate"></span>    Vibrate []<a href="/pkg/builtin/#int" id="ref-link-int">int</a> `json:&#34;vibrate,omitempty&#34;`
+
+    <span class="comment">// The actions to display in the notification.</span>
+<span id="Notification.Actions"></span>    Actions []<a href="#NotificationAction" id="ref-link-NotificationAction">NotificationAction</a> `json:&#34;actions,omitempty&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="NotificationAction">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/notification.go?s=2072:2449#L55" id="ref-link-L55">NotificationAction</a>
+				<a class="permalink" href="#NotificationAction" id="ref-link-NotificationAction">¶</a>
+				
+				
+			</h2>
+			<p>
+A notification action.
+</p>
+
+			<pre>type NotificationAction struct {
+    <span class="comment">// The user action id to be displayed on the notification.</span>
+<span id="NotificationAction.Action"></span>    Action <a href="/pkg/builtin/#string" id="ref-link-string">string</a> `json:&#34;action&#34;`
+
+    <span class="comment">// The action text to be shown to the user.</span>
+<span id="NotificationAction.Title"></span>    Title <a href="/pkg/builtin/#string" id="ref-link-string">string</a> `json:&#34;title&#34;`
+
+    <span class="comment">// The URL of an icon to display with the action.</span>
+<span id="NotificationAction.Icon"></span>    Icon <a href="/pkg/builtin/#string" id="ref-link-string">string</a> `json:&#34;icon,omitempty&#34;`
+
+    <span class="comment">// The URL path to navigate to when the action is clicked.</span>
+<span id="NotificationAction.Path"></span>    Path <a href="/pkg/builtin/#string" id="ref-link-string">string</a> `json:&#34;path&#34;`
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="NotificationPermission">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/notification.go?s=2778:2812#L80" id="ref-link-L80">NotificationPermission</a>
+				<a class="permalink" href="#NotificationPermission" id="ref-link-NotificationPermission">¶</a>
+				
+				
+			</h2>
+			<p>
+NotificationPermission a permission to display notifications.
+</p>
+
+			<pre>type NotificationPermission <a href="/pkg/builtin/#string" id="ref-link-string">string</a></pre>
+
+			
+				
+				<pre>const (
+    <span class="comment">// The user notifications choice is unknown and therefore the browser acts</span>
+    <span class="comment">// as if the value were denied.</span>
+    <span id="NotificationDefault">NotificationDefault</span> <a href="#NotificationPermission" id="ref-link-NotificationPermission">NotificationPermission</a> = &#34;default&#34;
+
+    <span class="comment">// The user accepts having notifications displayed.</span>
+    <span id="NotificationGranted">NotificationGranted</span> <a href="#NotificationPermission" id="ref-link-NotificationPermission">NotificationPermission</a> = &#34;granted&#34;
+
+    <span class="comment">// The user refuses to have notifications displayed.</span>
+    <span id="NotificationDenied">NotificationDenied</span> <a href="#NotificationPermission" id="ref-link-NotificationPermission">NotificationPermission</a> = &#34;denied&#34;
+
+    <span class="comment">// Notifications are not supported by the browser.</span>
+    <span id="NotificationNotSupported">NotificationNotSupported</span> <a href="#NotificationPermission" id="ref-link-NotificationPermission">NotificationPermission</a> = &#34;unsupported&#34;
+)</pre>
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="NotificationService">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/notification.go?s=3327:3385#L97" id="ref-link-L97">NotificationService</a>
+				<a class="permalink" href="#NotificationService" id="ref-link-NotificationService">¶</a>
+				
+				
+			</h2>
+			
+			<pre>type NotificationService struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+				
+				<h3 id="NotificationService.New">func (NotificationService) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/notification.go?s=4184:4232#L129" id="ref-link-L129">New</a>
+					<a class="permalink" href="#NotificationService.New" id="ref-link-NotificationService.New">¶</a>
+					
+					
+				</h3>
+				<pre>func (s <a href="#NotificationService" id="ref-link-NotificationService">NotificationService</a>) New(n <a href="#Notification" id="ref-link-Notification">Notification</a>)</pre>
+				<p>
+Creates and display a user notification.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="NotificationService.Permission">func (NotificationService) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/notification.go?s=3435:3499#L102" id="ref-link-L102">Permission</a>
+					<a class="permalink" href="#NotificationService.Permission" id="ref-link-NotificationService.Permission">¶</a>
+					
+					
+				</h3>
+				<pre>func (s <a href="#NotificationService" id="ref-link-NotificationService">NotificationService</a>) Permission() <a href="#NotificationPermission" id="ref-link-NotificationPermission">NotificationPermission</a></pre>
+				<p>
+Returns the current notification permission.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="NotificationService.RequestPermission">func (NotificationService) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/notification.go?s=3750:3821#L112" id="ref-link-L112">RequestPermission</a>
+					<a class="permalink" href="#NotificationService.RequestPermission" id="ref-link-NotificationService.RequestPermission">¶</a>
+					
+					
+				</h3>
+				<pre>func (s <a href="#NotificationService" id="ref-link-NotificationService">NotificationService</a>) RequestPermission() <a href="#NotificationPermission" id="ref-link-NotificationPermission">NotificationPermission</a></pre>
+				<p>
+Requests the user whether the app can use notifications.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="NotificationService.Subscribe">func (NotificationService) <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/notification.go?s=4397:4492#L135" id="ref-link-L135">Subscribe</a>
+					<a class="permalink" href="#NotificationService.Subscribe" id="ref-link-NotificationService.Subscribe">¶</a>
+					
+					
+				</h3>
+				<pre>func (s <a href="#NotificationService" id="ref-link-NotificationService">NotificationService</a>) Subscribe(vapIDPublicKey <a href="/pkg/builtin/#string" id="ref-link-string">string</a>) (<a href="#NotificationSubscription" id="ref-link-NotificationSubscription">NotificationSubscription</a>, <a href="/pkg/builtin/#error" id="ref-link-error">error</a>)</pre>
+				<p>
+Returns a notification subscription with the given vap id.
+</p>
+
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="NotificationSubscription">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/notification.go?s=2538:2711#L71" id="ref-link-L71">NotificationSubscription</a>
+				<a class="permalink" href="#NotificationSubscription" id="ref-link-NotificationSubscription">¶</a>
+				
+				
+			</h2>
+			<p>
+NotificationSubscription represents a PushSubscription object from the Push
+API.
+</p>
+
+			<pre>type NotificationSubscription struct {
+<span id="NotificationSubscription.Endpoint"></span>    Endpoint <a href="/pkg/builtin/#string" id="ref-link-string">string</a> `json:&#34;endpoint&#34;`
+<span id="NotificationSubscription.Keys"></span>    Keys     struct {
+        Auth   <a href="/pkg/builtin/#string" id="ref-link-string">string</a> `json:&#34;auth&#34;`
+        P256dh <a href="/pkg/builtin/#string" id="ref-link-string">string</a> `json:&#34;p256dh&#34;`
+    } `json:&#34;keys&#34;`
+}
+</pre>
 
 			
 
@@ -27234,7 +27600,7 @@ parent component.
 		
 			
 			
-			<h2 id="Value">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=631:3959#L24" id="ref-link-L24">Value</a>
+			<h2 id="Value">type <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=631:4083#L24" id="ref-link-L24">Value</a>
 				<a class="permalink" href="#Value" id="ref-link-Value">¶</a>
 				
 				
@@ -27327,6 +27693,10 @@ package.
     <span class="comment">// JavaScript&#39;s typeof operator, except that it returns TypeNull instead of</span>
     <span class="comment">// TypeObject for null.</span>
     Type() <a href="#Type" id="ref-link-Type">Type</a>
+
+    <span class="comment">// Then calls the given function when the promise resolves. The current</span>
+    <span class="comment">// value must be a promise.</span>
+    Then(f func(<a href="#Value" id="ref-link-Value">Value</a>))
     <span class="comment">// contains filtered or unexported methods</span>
 }</pre>
 
@@ -27340,7 +27710,7 @@ package.
 
 			
 				
-				<h3 id="Null">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=4006:4023#L123" id="ref-link-L123">Null</a>
+				<h3 id="Null">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=4130:4147#L127" id="ref-link-L127">Null</a>
 					<a class="permalink" href="#Null" id="ref-link-Null">¶</a>
 					
 					
@@ -27354,7 +27724,7 @@ Null returns the JavaScript value &#34;null&#34;.
 				
 			
 				
-				<h3 id="Undefined">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=4099:4121#L128" id="ref-link-L128">Undefined</a>
+				<h3 id="Undefined">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=4223:4245#L132" id="ref-link-L132">Undefined</a>
 					<a class="permalink" href="#Undefined" id="ref-link-Undefined">¶</a>
 					
 					
@@ -27368,7 +27738,7 @@ Undefined returns the JavaScript value &#34;undefined&#34;.
 				
 			
 				
-				<h3 id="ValueOf">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=4806:4839#L146" id="ref-link-L146">ValueOf</a>
+				<h3 id="ValueOf">func <a href="https://github.com/maxence-charriere/go-app/blob/master/pkg/app/js.go?s=4930:4963#L150" id="ref-link-L150">ValueOf</a>
 					<a class="permalink" href="#ValueOf" id="ref-link-ValueOf">¶</a>
 					
 					
@@ -27507,19 +27877,19 @@ Found something incorrect, a typo or have suggestions to improve this page?
 <div data-goapp-ui="flyer" id class="fill">
 <div style="width:100%;height:calc(100% - 24px);padding:12px 0;">
 <div style="width:calc(100% - 36px);padding:0 18px;height:72px;"></div>
-<div id="goapp-flyer-layout-368e11f2-38e9-4786-8716-f501d81ed19a" style="display:flex;flex-direction:column;justify-content:center;width:calc(100% - 36px);height:calc(100% - 72px);padding:0 18px;overflow:hidden;">
+<div id="goapp-flyer-layout-90f342a2-4a30-42c1-937f-36043226c131" style="display:flex;flex-direction:column;justify-content:center;width:calc(100% - 36px);height:calc(100% - 72px);padding:0 18px;overflow:hidden;">
 <div style="height:0px;overflow:hidden;">
 <aside class="fill">
-<div id class="fill no-scroll" data-goapp-ui="adsenseDisplay">
-<ins id="goapp-adsense-display-54dd137c-f337-4823-b7fb-fca8e79d2663"></ins>
+<div data-goapp-ui="adsenseDisplay" id class="fill no-scroll">
+<ins id="goapp-adsense-display-616c440e-19e1-4815-9460-dcd93a7196d6"></ins>
 </div>
 </aside>
 </div>
 <div style="display:none;height:0px;">
-<div data-goapp="Stack" id class="fill" style="display:flex;justify-content:center;align-items:center;">
+<div id class="fill" style="display:flex;justify-content:center;align-items:center;" data-goapp="Stack">
 <aside class="magnify text-center">
 <a class="default" href="https://github.com/sponsors/maxence-charriere">
-<div class="center icon-top" style="width:72px;height:72px;max-width:72px;max-height:72px;min-width:72px;min-height:72px;" data-goapp="Icon" id>
+<div style="width:72px;height:72px;max-width:72px;max-height:72px;min-width:72px;min-height:72px;" data-goapp="Icon" id class="center icon-top">
 <svg style="width:72px;height:72px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z" />
 	</svg>
@@ -27550,7 +27920,7 @@ Help with go-app development by sponsoring it on GitHub.
 <div data-goapp-ui="scroll" id class="menu fill menu-hamburger-background">
 <div style="width:100%;height:calc(100% - 24px);padding:12px 0;">
 <div style="width:calc(100% - 24px);padding:0 12px;height:72px;">
-<div data-goapp="Stack" id class="fill" style="display:flex;justify-content:flex-start;align-items:center;">
+<div style="display:flex;justify-content:flex-start;align-items:center;" data-goapp="Stack" id class="fill">
 <header>
 <a class="heading app-title" href="/">
 Go-App
@@ -27561,9 +27931,9 @@ Go-App
 <div style="width:calc(100% - 24px);height:calc(100% - 72px);padding:0 12px;overflow-x:hidden;overflow-y:scroll;">
 <nav>
 <div class="separator"></div>
-<a id class="link heading fit unselectable" title href="/">
+<a class="link heading fit unselectable" title href="/" id>
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" />
 	</svg>
@@ -27573,9 +27943,9 @@ Home
 </div>
 </div>
 </a>
-<a class="link heading fit unselectable" title href="/getting-started" id>
+<a id class="link heading fit unselectable" title href="/getting-started">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id>
+<div style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id class>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19M5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5M21.61 2.39C21.61 2.39 16.66 .269 11 5.93C8.81 8.12 7.5 10.53 6.65 12.64C6.37 13.39 6.56 14.21 7.11 14.77L9.24 16.89C9.79 17.45 10.61 17.63 11.36 17.35C13.5 16.53 15.88 15.19 18.07 13C23.73 7.34 21.61 2.39 21.61 2.39M14.54 9.46C13.76 8.68 13.76 7.41 14.54 6.63S16.59 5.85 17.37 6.63C18.14 7.41 18.15 8.68 17.37 9.46C16.59 10.24 15.32 10.24 14.54 9.46M8.88 16.53L7.47 15.12L8.88 16.53M6.24 22L9.88 18.36C9.54 18.27 9.21 18.12 8.91 17.91L4.83 22H6.24M2 22H3.41L8.18 17.24L6.76 15.83L2 20.59V22M2 19.17L6.09 15.09C5.88 14.79 5.73 14.47 5.64 14.12L2 17.76V19.17Z" />
 	</svg>
@@ -27585,9 +27955,9 @@ Getting Started
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/architecture">
-<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
-<div style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id class>
+<a title href="/architecture" id class="link heading fit unselectable">
+<div class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id>
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M9,2V8H11V11H5C3.89,11 3,11.89 3,13V16H1V22H7V16H5V13H11V16H9V22H15V16H13V13H19V16H17V22H23V16H21V13C21,11.89 20.11,11 19,11H13V8H15V2H9Z" />
 	</svg>
@@ -27618,9 +27988,9 @@ Reference
 </div>
 </a>
 <div class="separator"></div>
-<a id class="link heading fit unselectable" title href="/components">
+<a class="link heading fit unselectable" title href="/components" id>
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id>
+<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M10,5V11H21V5M16,18H21V12H16M4,18H9V5H4M10,18H15V12H10V18Z" />
 	</svg>
@@ -27632,7 +28002,7 @@ Components
 </a>
 <a id class="link heading fit unselectable" title href="/declarative-syntax">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
+<div style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id class>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M19,10H17V8H19M19,13H17V11H19M16,10H14V8H16M16,13H14V11H16M16,17H8V15H16M7,10H5V8H7M7,13H5V11H7M8,11H10V13H8M8,8H10V10H8M11,11H13V13H11M11,8H13V10H11M20,5H4C2.89,5 2,5.89 2,7V17A2,2 0 0,0 4,19H20A2,2 0 0,0 22,17V7C22,5.89 21.1,5 20,5Z" />
 	</svg>
@@ -27643,8 +28013,8 @@ Declarative Syntax
 </div>
 </a>
 <a id class="link heading fit unselectable" title href="/routing">
-<div class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id>
-<div class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id>
+<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M11,10H5L3,8L5,6H11V3L12,2L13,3V4H19L21,6L19,8H13V10H19L21,12L19,14H13V20A2,2 0 0,1 15,22H9A2,2 0 0,1 11,20V10Z" />
 	</svg>
@@ -27654,9 +28024,9 @@ Routing
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/static-resources">
+<a title href="/static-resources" id class="link heading fit unselectable">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<div style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id class>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M7,15L11.5,9L15,13.5L17.5,10.5L21,15M22,4H14L12,2H6A2,2 0 0,0 4,4V16A2,2 0 0,0 6,18H22A2,2 0 0,0 24,16V6A2,2 0 0,0 22,4M2,6H0V11H0V20A2,2 0 0,0 2,22H20V20H2V6Z" />
 	</svg>
@@ -27666,9 +28036,9 @@ Images and Static Resources
 </div>
 </div>
 </a>
-<a class="link heading fit unselectable" title href="/js" id>
-<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<a href="/js" id class="link heading fit unselectable" title>
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M3,3H21V21H3V3M7.73,18.04C8.13,18.89 8.92,19.59 10.27,19.59C11.77,19.59 12.8,18.79 12.8,17.04V11.26H11.1V17C11.1,17.86 10.75,18.08 10.2,18.08C9.62,18.08 9.38,17.68 9.11,17.21L7.73,18.04M13.71,17.86C14.21,18.84 15.22,19.59 16.8,19.59C18.4,19.59 19.6,18.76 19.6,17.23C19.6,15.82 18.79,15.19 17.35,14.57L16.93,14.39C16.2,14.08 15.89,13.87 15.89,13.37C15.89,12.96 16.2,12.64 16.7,12.64C17.18,12.64 17.5,12.85 17.79,13.37L19.1,12.5C18.55,11.54 17.77,11.17 16.7,11.17C15.19,11.17 14.22,12.13 14.22,13.4C14.22,14.78 15.03,15.43 16.25,15.95L16.67,16.13C17.45,16.47 17.91,16.68 17.91,17.26C17.91,17.74 17.46,18.09 16.76,18.09C15.93,18.09 15.45,17.66 15.09,17.06L13.71,17.86Z" />
 	</svg>
@@ -27679,7 +28049,7 @@ JavaScript Interoperability
 </div>
 </a>
 <a id class="link heading fit unselectable" title href="/concurrency">
-<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<div class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id>
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M16,4.5V7H5V9H16V11.5L19.5,8M16,12.5V15H5V17H16V19.5L19.5,16" />
@@ -27690,8 +28060,8 @@ Concurrency
 </div>
 </div>
 </a>
-<a title href="/seo" id class="link heading fit unselectable">
-<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<a id class="link heading fit unselectable" title href="/seo">
+<div style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id class>
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M15.5,14L20.5,19L19,20.5L14,15.5V14.71L13.73,14.43C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.43,13.73L14.71,14H15.5M9.5,4.5L8.95,4.53C8.71,5.05 8.34,5.93 8.07,7H10.93C10.66,5.93 10.29,5.05 10.05,4.53C9.87,4.5 9.69,4.5 9.5,4.5M13.83,7C13.24,5.97 12.29,5.17 11.15,4.78C11.39,5.31 11.7,6.08 11.93,7H13.83M5.17,7H7.07C7.3,6.08 7.61,5.31 7.85,4.78C6.71,5.17 5.76,5.97 5.17,7M4.5,9.5C4.5,10 4.58,10.53 4.73,11H6.87L6.75,9.5L6.87,8H4.73C4.58,8.47 4.5,9 4.5,9.5M14.27,11C14.42,10.53 14.5,10 14.5,9.5C14.5,9 14.42,8.47 14.27,8H12.13C12.21,8.5 12.25,9 12.25,9.5C12.25,10 12.21,10.5 12.13,11H14.27M7.87,8L7.75,9.5L7.87,11H11.13C11.21,10.5 11.25,10 11.25,9.5C11.25,9 11.21,8.5 11.13,8H7.87M9.5,14.5C9.68,14.5 9.86,14.5 10.03,14.47C10.28,13.95 10.66,13.07 10.93,12H8.07C8.34,13.07 8.72,13.95 8.97,14.47L9.5,14.5M13.83,12H11.93C11.7,12.92 11.39,13.69 11.15,14.22C12.29,13.83 13.24,13.03 13.83,12M5.17,12C5.76,13.03 6.71,13.83 7.85,14.22C7.61,13.69 7.3,12.92 7.07,12H5.17Z" />
@@ -27702,9 +28072,9 @@ SEO
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/lifecycle">
+<a href="/lifecycle" id class="link heading fit unselectable" title>
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
+<div class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M23,12L19,16V13H6.83C6.42,14.17 5.31,15 4,15A3,3 0 0,1 1,12A3,3 0 0,1 4,9C5.31,9 6.42,9.83 6.83,11H19V8L23,12Z" />
 	</svg>
@@ -27714,9 +28084,9 @@ Lifecycle and Updates
 </div>
 </div>
 </a>
-<a href="/install" id class="link heading fit unselectable" title>
-<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
-<div class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id>
+<a id class="link heading fit unselectable" title href="/install">
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
 	</svg>
@@ -27726,7 +28096,7 @@ Install
 </div>
 </div>
 </a>
-<a href="/testing" id class="link heading fit unselectable" title>
+<a id class="link heading fit unselectable" title href="/testing">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -27750,8 +28120,8 @@ Actions
 </div>
 </div>
 </a>
-<a href="/states" id class="link heading fit unselectable" title>
-<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<a class="link heading fit unselectable" title href="/states" id>
+<div class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id>
 <div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M4 12V9C4 11.2 7.6 13 12 13S20 11.2 20 9V12C20 12.5 19.8 12.9 19.5 13.4C18.7 13.1 17.9 13 17 13C14.5 13 12.1 14.1 10.6 15.9C6.8 15.6 4 14 4 12M12 11C16.4 11 20 9.2 20 7S16.4 3 12 3 4 4.8 4 7 7.6 11 12 11M9.1 19.7L8.8 19L9.1 18.3C9.2 18.1 9.3 18 9.3 17.8C6.2 17.2 4 15.8 4 14V17C4 18.8 6.4 20.3 9.7 20.8C9.5 20.5 9.3 20.1 9.1 19.7M17 18C16.4 18 16 18.4 16 19S16.4 20 17 20 18 19.6 18 19 17.6 18 17 18M23 19C22.1 21.3 19.7 23 17 23S11.9 21.3 11 19C11.9 16.7 14.3 15 17 15S22.1 16.7 23 19M19.5 19C19.5 17.6 18.4 16.5 17 16.5S14.5 17.6 14.5 19 15.6 21.5 17 21.5 19.5 20.4 19.5 19Z" />
@@ -27762,10 +28132,22 @@ State Management
 </div>
 </div>
 </a>
-<div class="separator"></div>
-<a id class="link heading fit unselectable" title href="/migrate">
+<a id class="link heading fit unselectable" title href="/notifications">
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id class>
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<svg style="width:24px;height:24px" viewBox="0 0 24 24">
+    	<path fill="currentColor" d="M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M14,21A2,2 0 0,1 12,23A2,2 0 0,1 10,21" />
+	</svg>
+</div>
+<div>
+Notifications
+</div>
+</div>
+</a>
+<div class="separator"></div>
+<a href="/migrate" id class="link heading fit unselectable" title>
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M21,9L17,5V8H10V10H17V13M7,11L3,15L7,19V16H14V14H7V11Z" />
 	</svg>
@@ -27775,9 +28157,9 @@ Migrate From v8 to v9
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="/github-deploy">
+<a href="/github-deploy" id class="link heading fit unselectable" title>
 <div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<div style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id class>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z" />
 	</svg>
@@ -27788,8 +28170,8 @@ Deploy on GitHub Pages
 </div>
 </a>
 <div class="separator"></div>
-<a class="link heading fit unselectable" title href="https://twitter.com/jonhymaxoo" id>
-<div style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id class>
+<a title href="https://twitter.com/jonhymaxoo" id class="link heading fit unselectable">
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
 <div style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id class>
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="#1DA1F2" d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" />
@@ -27800,9 +28182,9 @@ Twitter
 </div>
 </div>
 </a>
-<a id class="link heading fit unselectable" title href="https://github.com/maxence-charriere/go-app">
-<div class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack" id>
-<div style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon" id class>
+<a href="https://github.com/maxence-charriere/go-app" id class="link heading fit unselectable" title>
+<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
+<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
 		<path fill="currentColor" d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z" />
 	</svg>
@@ -27825,9 +28207,9 @@ Open Collective
 </div>
 </a>
 <div class="separator"></div>
-<a id class="link heading fit unselectable" title href="/privacy-policy">
-<div data-goapp="Stack" id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;">
-<div data-goapp="Icon" id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;">
+<a href="/privacy-policy" id class="link heading fit unselectable" title>
+<div id class style="display:flex;justify-content:flex-start;align-items:center;padding:3px 0;" data-goapp="Stack">
+<div id class style="width:24px;height:24px;max-width:24px;max-height:24px;min-width:24px;min-height:24px;margin-right:6px;" data-goapp="Icon">
 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
     	<path fill="currentColor" d="M22 17V16.5C22 15.12 20.88 14 19.5 14S17 15.12 17 16.5V17C16.45 17 16 17.45 16 18V22C16 22.55 16.45 23 17 23H22C22.55 23 23 22.55 23 22V18C23 17.45 22.55 17 22 17M21 17H18V16.5C18 15.67 18.67 15 19.5 15S21 15.67 21 16.5V17M8 8C8 5.79 9.79 4 12 4S16 5.79 16 8 14.21 12 12 12 8 10.21 8 8M14 20H4V18C4 15.79 7.58 14 12 14C13.27 14 14.46 14.15 15.53 14.41C15.32 14.82 15.15 15.25 15.07 15.71C14.42 16.26 14 17.08 14 18V20Z" />
 	</svg>
