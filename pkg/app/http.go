@@ -43,7 +43,7 @@ type Handler struct {
 	// A placeholder background color for the application page to display before
 	// its stylesheets are loaded.
 	//
-	// DEFAULT: #2d2c2c.
+	// Default: #2d2c2c.
 	BackgroundColor string
 
 	// The theme color for the application. This affects how the OS displays the
@@ -340,14 +340,6 @@ func (h *Handler) makeAppJS() []byte {
 		}
 	}
 
-	env, err := json.Marshal(h.Env)
-	if err != nil {
-		panic(errors.New("encoding pwa env failed").
-			Tag("env", h.Env).
-			Wrap(err),
-		)
-	}
-
 	var b bytes.Buffer
 	if err := template.
 		Must(template.New("app.js").Parse(appJS)).
@@ -357,7 +349,7 @@ func (h *Handler) makeAppJS() []byte {
 			WorkerJS           string
 			AutoUpdateInterval int64
 		}{
-			Env:                btos(env),
+			Env:                jsonString(h.Env),
 			Wasm:               h.Resources.AppWASM(),
 			WorkerJS:           h.resolvePackagePath("/app-worker.js"),
 			AutoUpdateInterval: h.AutoUpdateInterval.Milliseconds(),
@@ -368,37 +360,42 @@ func (h *Handler) makeAppJS() []byte {
 }
 
 func (h *Handler) makeAppWorkerJS() []byte {
-	cacheableResources := map[string]struct{}{
-		h.resolvePackagePath("/app.css"):              {},
-		h.resolvePackagePath("/app.js"):               {},
-		h.resolvePackagePath("/manifest.webmanifest"): {},
-		h.resolvePackagePath("/wasm_exec.js"):         {},
-		h.resolvePackagePath("/"):                     {},
-		h.Resources.AppWASM():                         {},
-	}
-
-	cacheResources := func(res ...string) {
+	resources := make(map[string]struct{})
+	setResources := func(res ...string) {
 		for _, r := range res {
 			if r == "" {
 				continue
 			}
-			cacheableResources[r] = struct{}{}
+			resources[r] = struct{}{}
 		}
 	}
-	cacheResources(h.Icon.Default, h.Icon.Large, h.Icon.AppleTouch)
-	cacheResources(h.Styles...)
-	cacheResources(h.Scripts...)
-	cacheResources(h.CacheableResources...)
+	setResources(
+		h.resolvePackagePath("/app.css"),
+		h.resolvePackagePath("/app.js"),
+		h.resolvePackagePath("/manifest.webmanifest"),
+		h.resolvePackagePath("/wasm_exec.js"),
+		h.resolvePackagePath("/"),
+		h.Resources.AppWASM(),
+	)
+	setResources(h.Icon.Default, h.Icon.Large, h.Icon.AppleTouch)
+	setResources(h.Styles...)
+	setResources(h.Scripts...)
+	setResources(h.CacheableResources...)
+
+	resourcesTocache := make([]string, 0, len(resources))
+	for k := range resources {
+		resourcesTocache = append(resourcesTocache, k)
+	}
 
 	var b bytes.Buffer
 	if err := template.
 		Must(template.New("app-worker.js").Parse(appWorkerJS)).
 		Execute(&b, struct {
 			Version          string
-			ResourcesToCache map[string]struct{}
+			ResourcesToCache string
 		}{
 			Version:          h.Version,
-			ResourcesToCache: cacheableResources,
+			ResourcesToCache: jsonString(resourcesTocache),
 		}); err != nil {
 		panic(errors.New("initializing app-worker.js failed").Wrap(err))
 	}

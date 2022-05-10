@@ -131,7 +131,7 @@ func (s *jsStorage) Set(k string, v interface{}) (err error) {
 		return err
 	}
 
-	Window().Get(s.name).Call("setItem", k, btos(b))
+	Window().Get(s.name).Call("setItem", k, string(b))
 	return nil
 }
 
