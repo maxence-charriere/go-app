@@ -389,7 +389,7 @@ func (e *elem) updateEventHandler(handlers map[string]eventHandler) {
 	}
 
 	for k, new := range handlers {
-		if current, exists := e.events[k]; !current.equal(new) {
+		if current, exists := e.events[k]; !current.Equal(new) {
 			if exists {
 				e.delJsEventHandler(k, current)
 			}
@@ -406,22 +406,22 @@ func (e *elem) setEventHandler(k string, h EventHandler, scope ...interface{}) {
 	}
 
 	e.events[k] = eventHandler{
-		event: k,
-		scope: toPath(scope...),
-		value: h,
+		event:     k,
+		scope:     toPath(scope...),
+		goHandler: h,
 	}
 }
 
 func (e *elem) setJsEventHandler(k string, h eventHandler) {
-	jshandler := makeJsEventHandler(e.self(), h.value)
-	h.jsvalue = jshandler
+	jsHandler := makeJsEventHandler(e.self(), h.goHandler)
+	h.jsHandler = jsHandler
 	e.events[k] = h
-	e.JSValue().addEventListener(k, jshandler)
+	e.JSValue().addEventListener(k, jsHandler)
 }
 
 func (e *elem) delJsEventHandler(k string, h eventHandler) {
-	e.jsvalue.removeEventListener(k, h.jsvalue)
-	h.jsvalue.Release()
+	e.jsvalue.removeEventListener(k, h.jsHandler)
+	h.jsHandler.Release()
 	delete(e.events, k)
 }
 
