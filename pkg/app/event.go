@@ -18,16 +18,16 @@ func (e Event) PreventDefault() {
 }
 
 type eventHandler struct {
-	event   string
-	scope   string
-	jsvalue Func
-	value   EventHandler
+	event     string
+	scope     string
+	goHandler EventHandler
+	jsHandler Func
 }
 
-func (h eventHandler) Equal(o eventHandler) bool {
-	return h.event == o.event &&
-		h.scope == o.scope &&
-		reflect.ValueOf(h.value).Pointer() == reflect.ValueOf(o.value).Pointer()
+func (h eventHandler) Equal(v eventHandler) bool {
+	return h.event == v.event &&
+		h.scope == v.scope &&
+		reflect.ValueOf(h.goHandler).Pointer() == reflect.ValueOf(v.goHandler).Pointer()
 }
 
 func makeJsEventHandler(src UI, h EventHandler) Func {

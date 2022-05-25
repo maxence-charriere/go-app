@@ -145,8 +145,8 @@ func TestElemSetEventHandler(t *testing.T) {
 	e.setEventHandler("click", h)
 
 	expectedHandler := eventHandler{
-		event: "click",
-		value: h,
+		event:     "click",
+		goHandler: h,
 	}
 
 	registeredHandler := e.events["click"]
@@ -184,8 +184,8 @@ func TestElemUpdateEventHandlers(t *testing.T) {
 			if u.current != nil {
 				current = map[string]eventHandler{
 					"click": {
-						event: "click",
-						value: u.current,
+						event:     "click",
+						goHandler: u.current,
 					},
 				}
 			}
@@ -193,8 +193,8 @@ func TestElemUpdateEventHandlers(t *testing.T) {
 			if u.incoming != nil {
 				incoming = map[string]eventHandler{
 					"click": {
-						event: "click",
-						value: u.incoming,
+						event:     "click",
+						goHandler: u.incoming,
 					},
 				}
 			}

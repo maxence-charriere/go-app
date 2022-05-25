@@ -19,64 +19,64 @@ func TestEventHandlerEquality(t *testing.T) {
 		{
 			scenario: "same event with same func are equal",
 			a: eventHandler{
-				event: "test",
-				value: funcA,
+				event:     "test",
+				goHandler: funcA,
 			},
 			b: eventHandler{
-				event: "test",
-				value: funcA,
+				event:     "test",
+				goHandler: funcA,
 			},
 			equals: true,
 		},
 		{
 			scenario: "same event with different func are not equal",
 			a: eventHandler{
-				event: "test",
-				value: funcA,
+				event:     "test",
+				goHandler: funcA,
 			},
 			b: eventHandler{
-				event: "test",
-				value: funcB,
+				event:     "test",
+				goHandler: funcB,
 			},
 			equals: false,
 		},
 		{
 			scenario: "same event with a nil func are not equal",
 			a: eventHandler{
-				event: "test",
-				value: funcA,
+				event:     "test",
+				goHandler: funcA,
 			},
 			b: eventHandler{
-				event: "test",
-				value: nil,
+				event:     "test",
+				goHandler: nil,
 			},
 			equals: false,
 		},
 		{
 			scenario: "same event with same func and same scope are equal",
 			a: eventHandler{
-				event: "test",
-				scope: "/hello",
-				value: funcA,
+				event:     "test",
+				scope:     "/hello",
+				goHandler: funcA,
 			},
 			b: eventHandler{
-				event: "test",
-				scope: "/hello",
-				value: funcA,
+				event:     "test",
+				scope:     "/hello",
+				goHandler: funcA,
 			},
 			equals: true,
 		},
 		{
 			scenario: "same event with same func and different scope are not equal",
 			a: eventHandler{
-				event: "test",
-				scope: "/hello",
-				value: funcA,
+				event:     "test",
+				scope:     "/hello",
+				goHandler: funcA,
 			},
 			b: eventHandler{
-				event: "test",
-				scope: "/bye",
-				value: funcA,
+				event:     "test",
+				scope:     "/bye",
+				goHandler: funcA,
 			},
 			equals: false,
 		},
@@ -95,13 +95,13 @@ func BenchmarkEventHandlerEquality(b *testing.B) {
 
 	for n := 0; n < b.N; n++ {
 		a := eventHandler{
-			event: "test",
-			value: funcA,
+			event:     "test",
+			goHandler: funcA,
 		}
 
 		b := eventHandler{
-			event: "test",
-			value: funcB,
+			event:     "test",
+			goHandler: funcB,
 		}
 
 		a.Equal(b)
