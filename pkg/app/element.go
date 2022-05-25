@@ -389,7 +389,7 @@ func (e *elem) updateEventHandler(handlers map[string]eventHandler) {
 	}
 
 	for k, new := range handlers {
-		if current, exists := e.events[k]; !current.equal(new) {
+		if current, exists := e.events[k]; !current.Equal(new) {
 			if exists {
 				e.delJsEventHandler(k, current)
 			}

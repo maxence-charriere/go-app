@@ -150,7 +150,7 @@ func TestElemSetEventHandler(t *testing.T) {
 	}
 
 	registeredHandler := e.events["click"]
-	require.True(t, expectedHandler.equal(registeredHandler))
+	require.True(t, expectedHandler.Equal(registeredHandler))
 }
 
 func TestElemUpdateEventHandlers(t *testing.T) {
@@ -215,7 +215,7 @@ func TestElemUpdateEventHandlers(t *testing.T) {
 			}
 
 			h := n.eventHandlers()["click"]
-			require.True(t, h.equal(incoming["click"]))
+			require.True(t, h.Equal(incoming["click"]))
 		})
 	}
 }

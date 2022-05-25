@@ -224,17 +224,6 @@ type BrowserWindow interface {
 	replaceHistory(u *url.URL)
 }
 
-// Event is the interface that describes a javascript event.
-type Event struct {
-	Value
-}
-
-// PreventDefault cancels the event if it is cancelable. The default action that
-// belongs to the event will not occur.
-func (e Event) PreventDefault() {
-	e.Call("preventDefault")
-}
-
 // CopyBytesToGo copies bytes from the Uint8Array src to dst. It returns the
 // number of bytes copied, which will be the minimum of the lengths of src and
 // dst.
