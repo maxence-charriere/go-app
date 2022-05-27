@@ -133,7 +133,7 @@ func (r rangeLoop) parent() UI {
 func (r rangeLoop) setParent(UI) {
 }
 
-func (r rangeLoop) children() []UI {
+func (r rangeLoop) getChildren() []UI {
 	return r.body
 }
 

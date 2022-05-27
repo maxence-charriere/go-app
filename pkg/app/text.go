@@ -68,7 +68,7 @@ func (t *text) setParent(p UI) {
 	t.parentElem = p
 }
 
-func (t *text) children() []UI {
+func (t *text) getChildren() []UI {
 	return nil
 }
 

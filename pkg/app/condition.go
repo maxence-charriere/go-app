@@ -103,7 +103,7 @@ func (c condition) parent() UI {
 func (c condition) setParent(UI) {
 }
 
-func (c condition) children() []UI {
+func (c condition) getChildren() []UI {
 	return c.body
 }
 

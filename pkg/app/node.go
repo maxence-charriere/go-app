@@ -31,7 +31,7 @@ type UI interface {
 	eventHandlers() map[string]eventHandler
 	parent() UI
 	setParent(UI)
-	children() []UI
+	getChildren() []UI
 	mount(Dispatcher) error
 	dismount()
 	update(UI) error
@@ -115,7 +115,7 @@ func FilterUIElems(uis ...UI) []UI {
 			elems = append(elems, n)
 
 		case Selector:
-			elems = append(elems, n.children()...)
+			elems = append(elems, n.getChildren()...)
 
 		default:
 			panic(errors.New("filtering ui elements failed").

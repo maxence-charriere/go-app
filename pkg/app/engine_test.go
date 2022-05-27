@@ -54,7 +54,7 @@ func TestEngineEmit(t *testing.T) {
 	require.Empty(t, e.updates)
 	require.Empty(t, e.updateQueue)
 
-	bar := foo.children()[0].(*bar)
+	bar := foo.getChildren()[0].(*bar)
 
 	emitted := false
 	e.Emit(bar, func() {

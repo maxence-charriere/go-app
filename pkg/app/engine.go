@@ -205,7 +205,7 @@ func (e *engine) Mount(n UI) {
 				return
 			}
 
-			err := update(e.Body.children()[0], n)
+			err := update(e.Body.getChildren()[0], n)
 			if err == nil {
 				return
 			}

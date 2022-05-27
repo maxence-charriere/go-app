@@ -123,7 +123,7 @@ func testMounted(t *testing.T, n UI) {
 		require.NotNil(t, n.self())
 	}
 
-	for _, c := range n.children() {
+	for _, c := range n.getChildren() {
 		require.Equal(t, n, c.parent())
 		testMounted(t, c)
 	}
@@ -140,7 +140,7 @@ func testDismounted(t *testing.T, n UI) {
 		require.Nil(t, n.self())
 	}
 
-	for _, c := range n.children() {
+	for _, c := range n.getChildren() {
 		testDismounted(t, c)
 	}
 }

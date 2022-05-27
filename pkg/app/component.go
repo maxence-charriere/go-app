@@ -271,7 +271,7 @@ func (c *Compo) setParent(p UI) {
 	c.parentElem = p
 }
 
-func (c *Compo) children() []UI {
+func (c *Compo) getChildren() []UI {
 	return []UI{c.root}
 }
 

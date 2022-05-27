@@ -81,7 +81,7 @@ func (e *elem) setParent(p UI) {
 	e.parentElem = p
 }
 
-func (e *elem) children() []UI {
+func (e *elem) getChildren() []UI {
 	return e.body
 }
 
@@ -115,7 +115,7 @@ func (e *elem) mount(d Dispatcher) error {
 		e.setJsEventHandler(k, v)
 	}
 
-	for _, c := range e.children() {
+	for _, c := range e.getChildren() {
 		if err := e.appendChild(c, true); err != nil {
 			return errors.New("mounting ui element failed").
 				Tag("name", e.name()).
@@ -128,7 +128,7 @@ func (e *elem) mount(d Dispatcher) error {
 }
 
 func (e *elem) dismount() {
-	for _, c := range e.children() {
+	for _, c := range e.getChildren() {
 		dismount(c)
 	}
 
@@ -158,8 +158,8 @@ func (e *elem) update(n UI) error {
 	e.updateAttrs(n.getAttributes())
 	e.updateEventHandler(n.eventHandlers())
 
-	achildren := e.children()
-	bchildren := n.children()
+	achildren := e.getChildren()
+	bchildren := n.getChildren()
 	i := 0
 
 	// Update children:
@@ -437,31 +437,31 @@ func (e *elem) setBody(body ...UI) {
 }
 
 func (e *elem) onNav(u *url.URL) {
-	for _, c := range e.children() {
+	for _, c := range e.getChildren() {
 		c.onNav(u)
 	}
 }
 
 func (e *elem) onAppUpdate() {
-	for _, c := range e.children() {
+	for _, c := range e.getChildren() {
 		c.onAppUpdate()
 	}
 }
 
 func (e *elem) onAppInstallChange() {
-	for _, c := range e.children() {
+	for _, c := range e.getChildren() {
 		c.onAppInstallChange()
 	}
 }
 
 func (e *elem) onResize() {
-	for _, c := range e.children() {
+	for _, c := range e.getChildren() {
 		c.onResize()
 	}
 }
 
 func (e *elem) preRender(p Page) {
-	for _, c := range e.children() {
+	for _, c := range e.getChildren() {
 		c.preRender(p)
 	}
 }

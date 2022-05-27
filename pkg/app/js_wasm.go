@@ -244,10 +244,10 @@ func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
 		h(ctx, e)
 
 		// Trigger children components updates:
-		if len(w.body.children()) == 0 {
+		if len(w.body.getChildren()) == 0 {
 			return
 		}
-		compo, ok := w.body.children()[0].(Composer)
+		compo, ok := w.body.getChildren()[0].(Composer)
 		if !ok {
 			return
 		}

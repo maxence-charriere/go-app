@@ -83,7 +83,7 @@ func (r *raw) setParent(p UI) {
 	r.parentElem = p
 }
 
-func (r *raw) children() []UI {
+func (r *raw) getChildren() []UI {
 	return nil
 }
 

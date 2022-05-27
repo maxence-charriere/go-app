@@ -78,7 +78,7 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 	if len(d.Path) != 0 {
 		idx := d.Path[0]
 
-		if idx < 0 || idx >= len(tree.children()) {
+		if idx < 0 || idx >= len(tree.getChildren()) {
 			// Check that the element does not exists.
 			if d.Expected == nil {
 				return nil
@@ -89,11 +89,11 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 				Tag("kind", d.Expected.Kind()).
 				Tag("parent-name", tree.name()).
 				Tag("parent-kind", tree.Kind()).
-				Tag("parent-children-count", len(tree.children())).
+				Tag("parent-children-count", len(tree.getChildren())).
 				Tag("index", idx)
 		}
 
-		c := tree.children()[idx]
+		c := tree.getChildren()[idx]
 		p := c.parent()
 
 		if p != tree {
