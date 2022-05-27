@@ -69,11 +69,11 @@ func (e *elem) getAttributes() map[string]string {
 	return e.attrs
 }
 
-func (e *elem) eventHandlers() map[string]eventHandler {
+func (e *elem) getEventHandlers() map[string]eventHandler {
 	return e.events
 }
 
-func (e *elem) parent() UI {
+func (e *elem) getParent() UI {
 	return e.parentElem
 }
 
@@ -156,7 +156,7 @@ func (e *elem) update(n UI) error {
 	}
 
 	e.updateAttrs(n.getAttributes())
-	e.updateEventHandler(n.eventHandlers())
+	e.updateEventHandler(n.getEventHandlers())
 
 	achildren := e.getChildren()
 	bchildren := n.getChildren()

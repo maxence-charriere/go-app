@@ -28,8 +28,8 @@ type UI interface {
 	getContext() context.Context
 	getDispatcher() Dispatcher
 	getAttributes() map[string]string
-	eventHandlers() map[string]eventHandler
-	parent() UI
+	getEventHandlers() map[string]eventHandler
+	getParent() UI
 	setParent(UI)
 	getChildren() []UI
 	mount(Dispatcher) error

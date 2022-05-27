@@ -71,11 +71,11 @@ func (r *raw) getAttributes() map[string]string {
 	return nil
 }
 
-func (r *raw) eventHandlers() map[string]eventHandler {
+func (r *raw) getEventHandlers() map[string]eventHandler {
 	return nil
 }
 
-func (r *raw) parent() UI {
+func (r *raw) getParent() UI {
 	return r.parentElem
 }
 

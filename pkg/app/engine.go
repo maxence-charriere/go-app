@@ -76,7 +76,7 @@ func (e *engine) Emit(src UI, fn func()) {
 	}
 
 	compoCount := 0
-	for n := src; n != nil; n = n.parent() {
+	for n := src; n != nil; n = n.getParent() {
 		compo, ok := n.(Composer)
 		if !ok {
 			continue
@@ -470,7 +470,7 @@ func sortUpdateDescriptors(d []updateDescriptor) {
 }
 
 func nearestCompo(n UI) Composer {
-	for node := n; node != nil; node = node.parent() {
+	for node := n; node != nil; node = node.getParent() {
 		if c, isCompo := node.(Composer); isCompo {
 			return c
 		}
@@ -480,7 +480,7 @@ func nearestCompo(n UI) Composer {
 
 func compoPriority(c Composer) int {
 	depth := 1
-	for parent := c.parent(); parent != nil; parent = parent.parent() {
+	for parent := c.getParent(); parent != nil; parent = parent.getParent() {
 		depth++
 	}
 	return depth

@@ -56,11 +56,11 @@ func (t *text) getAttributes() map[string]string {
 	return nil
 }
 
-func (t *text) eventHandlers() map[string]eventHandler {
+func (t *text) getEventHandlers() map[string]eventHandler {
 	return nil
 }
 
-func (t *text) parent() UI {
+func (t *text) getParent() UI {
 	return t.parentElem
 }
 

@@ -92,11 +92,11 @@ func (c condition) getAttributes() map[string]string {
 	return nil
 }
 
-func (c condition) eventHandlers() map[string]eventHandler {
+func (c condition) getEventHandlers() map[string]eventHandler {
 	return nil
 }
 
-func (c condition) parent() UI {
+func (c condition) getParent() UI {
 	return nil
 }
 

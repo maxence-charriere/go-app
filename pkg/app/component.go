@@ -259,11 +259,11 @@ func (c *Compo) getAttributes() map[string]string {
 	return nil
 }
 
-func (c *Compo) eventHandlers() map[string]eventHandler {
+func (c *Compo) getEventHandlers() map[string]eventHandler {
 	return nil
 }
 
-func (c *Compo) parent() UI {
+func (c *Compo) getParent() UI {
 	return c.parentElem
 }
 
@@ -414,7 +414,7 @@ func (c *Compo) replaceRoot(n UI) error {
 
 	var parent UI
 	for {
-		parent = c.parent()
+		parent = c.getParent()
 		if parent == nil || parent.Kind() == HTML {
 			break
 		}

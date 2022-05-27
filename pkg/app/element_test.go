@@ -214,7 +214,7 @@ func TestElemUpdateEventHandlers(t *testing.T) {
 				return
 			}
 
-			h := n.eventHandlers()["click"]
+			h := n.getEventHandlers()["click"]
 			require.True(t, h.Equal(incoming["click"]))
 		})
 	}

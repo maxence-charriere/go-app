@@ -94,7 +94,7 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 		}
 
 		c := tree.getChildren()[idx]
-		p := c.parent()
+		p := c.getParent()
 
 		if p != tree {
 			return errors.New("unexpected ui element parent").
@@ -202,8 +202,8 @@ func matchHTMLElemAttrs(n UI, d TestUIDescriptor) error {
 }
 
 func matchHTMLElemEventHandlers(n UI, d TestUIDescriptor) error {
-	aevents := n.eventHandlers()
-	bevents := d.Expected.eventHandlers()
+	aevents := n.getEventHandlers()
+	bevents := d.Expected.getEventHandlers()
 
 	if len(aevents) != len(bevents) {
 		return errors.New("the html element is not matching the descriptor").

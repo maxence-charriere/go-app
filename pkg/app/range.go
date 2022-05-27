@@ -122,11 +122,11 @@ func (r rangeLoop) getAttributes() map[string]string {
 	return nil
 }
 
-func (r rangeLoop) eventHandlers() map[string]eventHandler {
+func (r rangeLoop) getEventHandlers() map[string]eventHandler {
 	return nil
 }
 
-func (r rangeLoop) parent() UI {
+func (r rangeLoop) getParent() UI {
 	return nil
 }
 

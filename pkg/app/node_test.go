@@ -124,7 +124,7 @@ func testMounted(t *testing.T, n UI) {
 	}
 
 	for _, c := range n.getChildren() {
-		require.Equal(t, n, c.parent())
+		require.Equal(t, n, c.getParent())
 		testMounted(t, c)
 	}
 }
