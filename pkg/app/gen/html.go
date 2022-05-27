@@ -2062,7 +2062,7 @@ func main() {
 }
 
 func generateHTMLGo() {
-	f, err := os.Create("html.go")
+	f, err := os.Create("html_gen.go")
 	if err != nil {
 		panic(err)
 	}
@@ -2350,7 +2350,7 @@ func writeEventFunction(w io.Writer, e eventHandler, t tag, isInterface bool) {
 }
 
 func generateHTMLTestGo() {
-	f, err := os.Create("html_test.go")
+	f, err := os.Create("html_gen_test.go")
 	if err != nil {
 		panic(err)
 	}
