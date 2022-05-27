@@ -30,7 +30,7 @@ func (t *text) JSValue() Value {
 }
 
 func (t *text) IsMounted() bool {
-	return t.jsvalue != nil && t.dispatcher() != nil
+	return t.jsvalue != nil && t.getDispatcher() != nil
 }
 
 func (t *text) name() string {
@@ -48,7 +48,7 @@ func (t *text) context() context.Context {
 	return context.TODO()
 }
 
-func (t *text) dispatcher() Dispatcher {
+func (t *text) getDispatcher() Dispatcher {
 	return t.disp
 }
 

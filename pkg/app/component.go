@@ -169,7 +169,7 @@ func (c *Compo) JSValue() Value {
 
 // Mounted reports whether the component is mounted.
 func (c *Compo) IsMounted() bool {
-	return c.dispatcher() != nil &&
+	return c.getDispatcher() != nil &&
 		c.ctx != nil &&
 		c.ctx.Err() == nil &&
 		c.root != nil && c.root.IsMounted() &&
@@ -251,7 +251,7 @@ func (c *Compo) context() context.Context {
 	return c.ctx
 }
 
-func (c *Compo) dispatcher() Dispatcher {
+func (c *Compo) getDispatcher() Dispatcher {
 	return c.disp
 }
 
@@ -300,7 +300,7 @@ func (c *Compo) mount(d Dispatcher) error {
 	root.setParent(c.this)
 	c.root = root
 
-	if c.dispatcher().runsInServer() {
+	if c.getDispatcher().runsInServer() {
 		return nil
 	}
 
@@ -372,7 +372,7 @@ func (c *Compo) update(n UI) error {
 }
 
 func (c *Compo) dispatch(fn func(Context)) {
-	c.dispatcher().Dispatch(Dispatch{
+	c.getDispatcher().Dispatch(Dispatch{
 		Mode:     Update,
 		Source:   c.self(),
 		Function: fn,
@@ -401,7 +401,7 @@ func (c *Compo) replaceRoot(n UI) error {
 	old := c.root
 	new := n
 
-	if err := mount(c.dispatcher(), new); err != nil {
+	if err := mount(c.getDispatcher(), new); err != nil {
 		return errors.New("replacing component root failed").
 			Tag("kind", c.Kind()).
 			Tag("name", c.name()).

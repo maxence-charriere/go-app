@@ -114,7 +114,7 @@ func (r rangeLoop) context() context.Context {
 	return nil
 }
 
-func (r rangeLoop) dispatcher() Dispatcher {
+func (r rangeLoop) getDispatcher() Dispatcher {
 	return nil
 }
 

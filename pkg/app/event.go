@@ -32,7 +32,7 @@ func (h eventHandler) Equal(v eventHandler) bool {
 
 func makeJsEventHandler(src UI, h EventHandler) Func {
 	return FuncOf(func(this Value, args []Value) interface{} {
-		src.dispatcher().Dispatch(Dispatch{
+		src.getDispatcher().Dispatch(Dispatch{
 			Mode:   Update,
 			Source: src,
 			Function: func(ctx Context) {

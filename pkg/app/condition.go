@@ -84,7 +84,7 @@ func (c condition) context() context.Context {
 	return nil
 }
 
-func (c condition) dispatcher() Dispatcher {
+func (c condition) getDispatcher() Dispatcher {
 	return nil
 }
 

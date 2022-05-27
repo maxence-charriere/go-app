@@ -38,7 +38,7 @@ func (e *elem) JSValue() Value {
 }
 
 func (e *elem) IsMounted() bool {
-	return e.dispatcher() != nil &&
+	return e.getDispatcher() != nil &&
 		e.ctx != nil &&
 		e.ctx.Err() == nil &&
 		e.self() != nil &&
@@ -61,7 +61,7 @@ func (e *elem) context() context.Context {
 	return e.ctx
 }
 
-func (e *elem) dispatcher() Dispatcher {
+func (e *elem) getDispatcher() Dispatcher {
 	return e.disp
 }
 
@@ -214,7 +214,7 @@ func (e *elem) update(n UI) error {
 }
 
 func (e *elem) appendChild(c UI, onlyJsValue bool) error {
-	if err := mount(e.dispatcher(), c); err != nil {
+	if err := mount(e.getDispatcher(), c); err != nil {
 		return errors.New("appending child failed").
 			Tag("name", e.name()).
 			Tag("kind", e.Kind()).
@@ -235,7 +235,7 @@ func (e *elem) appendChild(c UI, onlyJsValue bool) error {
 func (e *elem) replaceChildAt(idx int, new UI) error {
 	old := e.body[idx]
 
-	if err := mount(e.dispatcher(), new); err != nil {
+	if err := mount(e.getDispatcher(), new); err != nil {
 		return errors.New("replacing child failed").
 			Tag("name", e.name()).
 			Tag("kind", e.Kind()).
@@ -366,7 +366,7 @@ func (e *elem) setJsAttr(k, v string) {
 
 	default:
 		if isURLAttrValue(k) {
-			v = e.dispatcher().resolveStaticResource(v)
+			v = e.getDispatcher().resolveStaticResource(v)
 		}
 		e.JSValue().setAttr(k, v)
 	}

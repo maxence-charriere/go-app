@@ -45,7 +45,7 @@ func (r *raw) JSValue() Value {
 }
 
 func (r *raw) IsMounted() bool {
-	return r.jsvalue != nil && r.dispatcher() != nil
+	return r.jsvalue != nil && r.getDispatcher() != nil
 }
 
 func (r *raw) name() string {
@@ -63,7 +63,7 @@ func (r *raw) context() context.Context {
 	return nil
 }
 
-func (r *raw) dispatcher() Dispatcher {
+func (r *raw) getDispatcher() Dispatcher {
 	return r.disp
 }
 
