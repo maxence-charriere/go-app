@@ -247,7 +247,7 @@ func (c *Compo) setSelf(n UI) {
 	c.this = nil
 }
 
-func (c *Compo) context() context.Context {
+func (c *Compo) getContext() context.Context {
 	return c.ctx
 }
 

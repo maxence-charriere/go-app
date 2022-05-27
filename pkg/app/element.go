@@ -57,7 +57,7 @@ func (e *elem) setSelf(n UI) {
 	e.this = n
 }
 
-func (e *elem) context() context.Context {
+func (e *elem) getContext() context.Context {
 	return e.ctx
 }
 

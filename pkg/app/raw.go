@@ -59,7 +59,7 @@ func (r *raw) self() UI {
 func (r *raw) setSelf(UI) {
 }
 
-func (r *raw) context() context.Context {
+func (r *raw) getContext() context.Context {
 	return nil
 }
 

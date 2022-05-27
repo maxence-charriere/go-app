@@ -80,7 +80,7 @@ func (c condition) self() UI {
 func (c condition) setSelf(UI) {
 }
 
-func (c condition) context() context.Context {
+func (c condition) getContext() context.Context {
 	return nil
 }
 

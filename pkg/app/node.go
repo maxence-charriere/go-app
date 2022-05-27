@@ -25,7 +25,7 @@ type UI interface {
 	name() string
 	self() UI
 	setSelf(UI)
-	context() context.Context
+	getContext() context.Context
 	getDispatcher() Dispatcher
 	getAttributes() map[string]string
 	eventHandlers() map[string]eventHandler

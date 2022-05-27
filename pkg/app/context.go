@@ -373,7 +373,7 @@ func (ctx uiContext) cryptoKey() string {
 
 func makeContext(src UI) Context {
 	return uiContext{
-		Context:            src.context(),
+		Context:            src.getContext(),
 		src:                src,
 		jsSrc:              src.JSValue(),
 		appUpdateAvailable: appUpdateAvailable,

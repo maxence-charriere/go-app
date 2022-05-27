@@ -44,7 +44,7 @@ func (t *text) self() UI {
 func (t *text) setSelf(n UI) {
 }
 
-func (t *text) context() context.Context {
+func (t *text) getContext() context.Context {
 	return context.TODO()
 }
 

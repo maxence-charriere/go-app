@@ -110,7 +110,7 @@ func (r rangeLoop) self() UI {
 func (r rangeLoop) setSelf(UI) {
 }
 
-func (r rangeLoop) context() context.Context {
+func (r rangeLoop) getContext() context.Context {
 	return nil
 }
 
