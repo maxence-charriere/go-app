@@ -52,7 +52,7 @@ func (t *text) dispatcher() Dispatcher {
 	return t.disp
 }
 
-func (t *text) attributes() map[string]string {
+func (t *text) getAttributes() map[string]string {
 	return nil
 }
 

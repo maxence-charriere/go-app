@@ -255,7 +255,7 @@ func (c *Compo) dispatcher() Dispatcher {
 	return c.disp
 }
 
-func (c *Compo) attributes() map[string]string {
+func (c *Compo) getAttributes() map[string]string {
 	return nil
 }
 

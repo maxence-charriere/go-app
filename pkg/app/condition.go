@@ -88,7 +88,7 @@ func (c condition) dispatcher() Dispatcher {
 	return nil
 }
 
-func (c condition) attributes() map[string]string {
+func (c condition) getAttributes() map[string]string {
 	return nil
 }
 

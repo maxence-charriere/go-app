@@ -118,7 +118,7 @@ func (r rangeLoop) dispatcher() Dispatcher {
 	return nil
 }
 
-func (r rangeLoop) attributes() map[string]string {
+func (r rangeLoop) getAttributes() map[string]string {
 	return nil
 }
 

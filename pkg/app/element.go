@@ -65,7 +65,7 @@ func (e *elem) dispatcher() Dispatcher {
 	return e.disp
 }
 
-func (e *elem) attributes() map[string]string {
+func (e *elem) getAttributes() map[string]string {
 	return e.attrs
 }
 
@@ -155,7 +155,7 @@ func (e *elem) update(n UI) error {
 			Tag("updated-name", n.name())
 	}
 
-	e.updateAttrs(n.attributes())
+	e.updateAttrs(n.getAttributes())
 	e.updateEventHandler(n.eventHandlers())
 
 	achildren := e.children()

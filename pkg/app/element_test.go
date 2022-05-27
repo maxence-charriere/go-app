@@ -131,10 +131,10 @@ func TestElemUpdateAttrs(t *testing.T) {
 			n.attrs = u.current
 			n.updateAttrs(u.incoming)
 			if len(u.incoming) == 0 {
-				require.Empty(t, n.attributes())
+				require.Empty(t, n.getAttributes())
 				return
 			}
-			require.Equal(t, u.incoming, n.attributes())
+			require.Equal(t, u.incoming, n.getAttributes())
 		})
 	}
 }
@@ -210,7 +210,7 @@ func TestElemUpdateEventHandlers(t *testing.T) {
 			n.updateEventHandler(incoming)
 
 			if len(incoming) == 0 {
-				require.Empty(t, n.attributes())
+				require.Empty(t, n.getAttributes())
 				return
 			}
 

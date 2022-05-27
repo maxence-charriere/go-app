@@ -67,7 +67,7 @@ func (r *raw) dispatcher() Dispatcher {
 	return r.disp
 }
 
-func (r *raw) attributes() map[string]string {
+func (r *raw) getAttributes() map[string]string {
 	return nil
 }
 

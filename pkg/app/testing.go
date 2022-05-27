@@ -158,8 +158,8 @@ func matchText(n UI, d TestUIDescriptor) error {
 }
 
 func matchHTMLElemAttrs(n UI, d TestUIDescriptor) error {
-	aAttrs := n.attributes()
-	bAttrs := d.Expected.attributes()
+	aAttrs := n.getAttributes()
+	bAttrs := d.Expected.getAttributes()
 
 	if len(aAttrs) != len(bAttrs) {
 		return errors.New("the html element is not matching the descriptor").
