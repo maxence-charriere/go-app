@@ -95,7 +95,7 @@ func (r rangeLoop) JSValue() Value {
 	return nil
 }
 
-func (r rangeLoop) Mounted() bool {
+func (r rangeLoop) IsMounted() bool {
 	return false
 }
 

@@ -129,3 +129,7 @@ func jsonString(v interface{}) string {
 	}
 	return string(b)
 }
+
+func toAttributeValue(v any) string {
+	return strings.TrimSpace(toString(v))
+}

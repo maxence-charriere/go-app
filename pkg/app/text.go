@@ -29,7 +29,7 @@ func (t *text) JSValue() Value {
 	return t.jsvalue
 }
 
-func (t *text) Mounted() bool {
+func (t *text) IsMounted() bool {
 	return t.jsvalue != nil && t.dispatcher() != nil
 }
 
@@ -73,7 +73,7 @@ func (t *text) children() []UI {
 }
 
 func (t *text) mount(d Dispatcher) error {
-	if t.Mounted() {
+	if t.IsMounted() {
 		return errors.New("mounting ui element failed").
 			Tag("reason", "already mounted").
 			Tag("kind", t.Kind()).
@@ -91,7 +91,7 @@ func (t *text) dismount() {
 }
 
 func (t *text) update(n UI) error {
-	if !t.Mounted() {
+	if !t.IsMounted() {
 		return nil
 	}
 

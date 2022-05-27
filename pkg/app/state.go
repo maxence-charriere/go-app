@@ -132,7 +132,7 @@ func (o *observer) Value(recv interface{}) {
 }
 
 func (o *observer) isObserving() bool {
-	if !o.element.Mounted() {
+	if !o.element.IsMounted() {
 		return false
 	}
 
@@ -203,7 +203,7 @@ func (s *store) Set(key string, v interface{}, opts ...StateOption) {
 	for obs := range state.observers {
 		o := obs
 
-		if !o.element.Mounted() {
+		if !o.element.IsMounted() {
 			delete(state.observers, o)
 			continue
 		}
@@ -426,7 +426,7 @@ func (s *store) onBroadcast(event Value) {
 	for obs := range state.observers {
 		o := obs
 
-		if !o.element.Mounted() {
+		if !o.element.IsMounted() {
 			delete(state.observers, o)
 			continue
 		}

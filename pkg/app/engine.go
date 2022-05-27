@@ -67,7 +67,7 @@ func (e *engine) Dispatch(d Dispatch) {
 }
 
 func (e *engine) Emit(src UI, fn func()) {
-	if !src.Mounted() {
+	if !src.IsMounted() {
 		return
 	}
 
@@ -366,20 +366,20 @@ func (e *engine) handleDispatch(d Dispatch) {
 		d.Function(makeContext(d.Source))
 
 	case Update:
-		if d.Source.Mounted() {
+		if d.Source.IsMounted() {
 			d.Function(makeContext(d.Source))
 			e.scheduleComponentUpdate(d.Source)
 		}
 
 	case Defer:
-		if d.Source.Mounted() {
+		if d.Source.IsMounted() {
 			e.defers = append(e.defers, d)
 		}
 	}
 }
 
 func (e *engine) scheduleComponentUpdate(n UI) {
-	if !n.Mounted() {
+	if !n.IsMounted() {
 		return
 	}
 
@@ -407,7 +407,7 @@ func (e *engine) updateComponents() {
 	sortUpdateDescriptors(e.updateQueue)
 	for _, ud := range e.updateQueue {
 		compo := ud.compo
-		if !compo.Mounted() {
+		if !compo.IsMounted() {
 			e.removeFromUpdates(compo)
 			continue
 		}
@@ -431,7 +431,7 @@ func (e *engine) removeFromUpdates(c Composer) {
 
 func (e *engine) execDeferableEvents() {
 	for _, d := range e.defers {
-		if d.Source.Mounted() {
+		if d.Source.IsMounted() {
 			d.Function(makeContext(d.Source))
 		}
 	}

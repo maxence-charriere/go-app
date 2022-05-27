@@ -37,7 +37,7 @@ func (e *elem) JSValue() Value {
 	return e.jsvalue
 }
 
-func (e *elem) Mounted() bool {
+func (e *elem) IsMounted() bool {
 	return e.dispatcher() != nil &&
 		e.ctx != nil &&
 		e.ctx.Err() == nil &&
@@ -86,7 +86,7 @@ func (e *elem) children() []UI {
 }
 
 func (e *elem) mount(d Dispatcher) error {
-	if e.Mounted() {
+	if e.IsMounted() {
 		return errors.New("mounting ui element failed").
 			Tag("reason", "already mounted").
 			Tag("name", e.name()).
@@ -141,7 +141,7 @@ func (e *elem) dismount() {
 }
 
 func (e *elem) update(n UI) error {
-	if !e.Mounted() {
+	if !e.IsMounted() {
 		return nil
 	}
 

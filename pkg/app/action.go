@@ -54,7 +54,7 @@ func (m *actionManager) post(a Action) {
 	handlers := m.handlers[a.Name]
 	for key, h := range handlers {
 		source := h.source
-		if !source.Mounted() {
+		if !source.IsMounted() {
 			delete(handlers, key)
 			continue
 		}
@@ -95,7 +95,7 @@ func (m *actionManager) closeUnusedHandlers() {
 
 	for actionName, handlers := range m.handlers {
 		for key, h := range handlers {
-			if !h.source.Mounted() {
+			if !h.source.IsMounted() {
 				delete(handlers, key)
 			}
 		}
