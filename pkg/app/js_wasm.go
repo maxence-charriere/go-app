@@ -268,14 +268,20 @@ func (w *browserWindow) setBody(body UI) {
 	w.body = body
 }
 
-func (w *browserWindow) createElement(tag string) (Value, error) {
-	v := w.Get("document").Call("createElement", tag)
-	if !v.Truthy() {
-		return nil, errors.New("creating element failed").
-			Tag("reason", "create javascript element returned nil").
-			Tag("tag", tag)
+func (w *browserWindow) createElement(tag, xmlns string) (Value, error) {
+	var element Value
+	if xmlns == "" {
+		element = w.Get("document").Call("createElement", tag)
+	} else {
+		element = w.Get("document").Call("createElementNS", xmlns, tag)
 	}
-	return v, nil
+
+	if !element.Truthy() {
+		return nil, errors.New("creating javascript element failed").
+			Tag("tag", tag).
+			Tag("xmlns", xmlns)
+	}
+	return element, nil
 }
 
 func (w *browserWindow) createTextNode(v string) Value {

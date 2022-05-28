@@ -218,7 +218,7 @@ type BrowserWindow interface {
 	AddEventListener(event string, h EventHandler) func()
 
 	setBody(body UI)
-	createElement(tag string) (Value, error)
+	createElement(tag, xmlns string) (Value, error)
 	createTextNode(v string) Value
 	addHistory(u *url.URL)
 	replaceHistory(u *url.URL)

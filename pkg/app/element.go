@@ -96,7 +96,7 @@ func (e *elem) mount(d Dispatcher) error {
 	e.disp = d
 	e.ctx, e.ctxCancel = context.WithCancel(context.Background())
 
-	v, err := Window().createElement(e.tag)
+	v, err := Window().createElement(e.tag, "")
 	if err != nil {
 		return errors.New("mounting ui element failed").
 			Tag("name", e.name()).

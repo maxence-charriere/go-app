@@ -97,7 +97,7 @@ func (r *raw) mount(d Dispatcher) error {
 
 	r.disp = d
 
-	wrapper, err := Window().createElement("div")
+	wrapper, err := Window().createElement("div", "")
 	if err != nil {
 		return errors.New("creating raw node wrapper failed").Wrap(err)
 	}

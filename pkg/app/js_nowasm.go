@@ -194,7 +194,7 @@ func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
 func (w *browserWindow) setBody(body UI) {
 }
 
-func (w *browserWindow) createElement(tag string) (Value, error) {
+func (w *browserWindow) createElement(tag, xmlns string) (Value, error) {
 	return value{}, nil
 }
 
