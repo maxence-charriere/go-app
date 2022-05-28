@@ -4,6 +4,8 @@ import (
 	"context"
 	"io"
 	"net/url"
+	"reflect"
+	"strconv"
 	"strings"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
@@ -61,12 +63,7 @@ func (e *htmlElement[T]) On(event string, h EventHandler, scope ...any) T {
 	if e.eventHandlers == nil {
 		e.eventHandlers = make(map[string]eventHandler)
 	}
-
-	e.eventHandlers[event] = eventHandler{
-		event:     event,
-		scope:     toPath(scope...),
-		goHandler: h,
-	}
+	e.eventHandlers[event] = makeEventHandler(event, h, scope...)
 
 	return e.toHTMLInterface()
 }
@@ -137,8 +134,104 @@ func (e *htmlElement[T]) getChildren() []UI {
 	return e.children
 }
 
-func (e *htmlElement[T]) mount(Dispatcher) error {
-	panic("not implemented")
+func (e *htmlElement[T]) mount(d Dispatcher) error {
+	if e.IsMounted() {
+		return errors.New("html element is already mounted").Tag("tag", e.tag)
+	}
+
+	e.context, e.contextCancel = context.WithCancel(context.Background())
+	e.dispatcher = d
+
+	jsElement, err := Window().createElement(e.tag, e.xmlns)
+	if err != nil {
+		return errors.New("creating javascript element failed").
+			Tag("tag", e.tag).
+			Tag("xmlns", e.xmlns).
+			Wrap(err)
+	}
+	e.jsElement = jsElement
+
+	for k, v := range e.attributes {
+		v = e.resolveAttributeURLValue(k, v, d.resolveStaticResource)
+		e.attributes[k] = v
+		e.setJSAttribute(k, v)
+	}
+
+	for k, eh := range e.eventHandlers {
+		e.eventHandlers[k] = eh.WithJSHandler(e)
+	}
+
+	for i, c := range e.children {
+		if err := mount(d, c); err != nil {
+			return errors.New("mounting child failed").
+				Tag("index", i).
+				Tag("child-type", reflect.TypeOf(c)).
+				Wrap(err)
+		}
+
+		c.setParent(e)
+		e.JSValue().appendChild(c)
+	}
+
+	return nil
+}
+
+func (e htmlElement[T]) resolveAttributeURLValue(k, v string, resolve func(string) string) string {
+	switch k {
+	case "cite",
+		"data",
+		"href",
+		"src",
+		"srcset":
+		return resolve(v)
+
+	default:
+		return v
+	}
+}
+
+func (e htmlElement[T]) setJSAttribute(k, v string) {
+	toBool := func(v string) bool {
+		b, _ := strconv.ParseBool(v)
+		return b
+	}
+
+	switch k {
+	case "value":
+		e.jsElement.Set("value", v)
+
+	case "class":
+		e.jsElement.Set("className", v)
+
+	case "contenteditable":
+		e.jsElement.Set("contentEditable", v)
+
+	case "ismap":
+		e.jsElement.Set("isMap", toBool(v))
+
+	case "readonly":
+		e.jsElement.Set("readOnly", toBool(v))
+
+	case "async",
+		"autofocus",
+		"autoplay",
+		"checked",
+		"default",
+		"defer",
+		"disabled",
+		"hidden",
+		"loop",
+		"multiple",
+		"muted",
+		"open",
+		"required",
+		"reversed",
+		"selected":
+		e.jsElement.Set(k, toBool(v))
+
+	default:
+		e.jsElement.setAttr(k, v)
+	}
 }
 
 func (e *htmlElement[T]) dismount() {

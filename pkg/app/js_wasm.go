@@ -240,7 +240,7 @@ func (w *browserWindow) ScrollToID(id string) {
 }
 
 func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
-	callback := makeJsEventHandler(w.body, func(ctx Context, e Event) {
+	callback := makeJSEventHandler(w.body, func(ctx Context, e Event) {
 		h(ctx, e)
 
 		// Trigger children components updates:

@@ -413,7 +413,7 @@ func (e *elem) setEventHandler(k string, h EventHandler, scope ...interface{}) {
 }
 
 func (e *elem) setJsEventHandler(k string, h eventHandler) {
-	jsHandler := makeJsEventHandler(e.self(), h.goHandler)
+	jsHandler := makeJSEventHandler(e.self(), h.goHandler)
 	h.jsHandler = jsHandler
 	e.events[k] = h
 	e.JSValue().addEventListener(k, jsHandler)
