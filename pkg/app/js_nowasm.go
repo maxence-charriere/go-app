@@ -27,6 +27,13 @@ func (v value) Call(m string, args ...interface{}) Value {
 	return value{}
 }
 
+func (v value) Delete(p string) {
+}
+
+func (v value) Equal(w Value) bool {
+	return v == w
+}
+
 func (v value) Float() float64 {
 	return 0
 }

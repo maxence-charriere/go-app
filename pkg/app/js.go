@@ -41,6 +41,14 @@ type Value interface {
 	// JavaScript values according to the ValueOf function.
 	Call(m string, args ...interface{}) Value
 
+	// Delete deletes the JavaScript property p of value v. It panics if v is
+	// not a JavaScript object.
+	Delete(p string)
+
+	// Equal reports whether v and w are equal according to JavaScript's ===
+	// operator.
+	Equal(w Value) bool
+
 	// Float returns the value v as a float64. It panics if v is not a
 	// JavaScript number.
 	Float() float64

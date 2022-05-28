@@ -21,6 +21,14 @@ func (v value) Call(m string, args ...interface{}) Value {
 	return val(v.Value.Call(m, args...))
 }
 
+func (v value) Delete(p string) {
+	v.Value.Delete(p)
+}
+
+func (v value) Equal(w Value) bool {
+	return v.Value.Equal(jsVal(w))
+}
+
 func (v value) Get(p string) Value {
 	return val(v.Value.Get(p))
 }
