@@ -5,8 +5,6 @@ import (
 	"io"
 	"net/url"
 	"reflect"
-	"strconv"
-	"strings"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
@@ -15,7 +13,7 @@ type htmlElement[T any] struct {
 	tag           string
 	xmlns         string
 	isSelfClosing bool
-	attributes    map[string]string
+	attributes    attributes
 	eventHandlers map[string]eventHandler
 	parent        UI
 	children      []UI
@@ -26,31 +24,11 @@ type htmlElement[T any] struct {
 	jsElement     Value
 }
 
-func (e *htmlElement[T]) Attr(k string, v any) T {
+func (e *htmlElement[T]) Attr(name string, value any) T {
 	if e.attributes == nil {
-		e.attributes = make(map[string]string)
+		e.attributes = make(attributes)
 	}
-
-	switch k {
-	case "style", "allow":
-		var b strings.Builder
-		b.WriteString(e.attributes[k])
-		b.WriteString(toAttributeValue(v))
-		b.WriteByte(';')
-		e.attributes[k] = b.String()
-
-	case "class":
-		var b strings.Builder
-		b.WriteString(e.attributes[k])
-		if b.Len() != 0 {
-			b.WriteByte(' ')
-		}
-		b.WriteString(toAttributeValue(v))
-		e.attributes[k] = b.String()
-
-	default:
-		e.attributes[k] = toAttributeValue(v)
-	}
+	e.attributes.Set(name, value)
 
 	return e.toHTMLInterface()
 }
@@ -95,10 +73,7 @@ func (e *htmlElement[T]) JSValue() Value {
 }
 
 func (e *htmlElement[T]) IsMounted() bool {
-	return e.context != nil &&
-		e.context.Err() == nil &&
-		e.dispatcher != nil &&
-		e.jsElement != nil
+	return e.context != nil && e.context.Err() == nil
 }
 
 func (e *htmlElement[T]) toHTMLInterface() T {
@@ -151,14 +126,10 @@ func (e *htmlElement[T]) mount(d Dispatcher) error {
 	}
 	e.jsElement = jsElement
 
-	for k, v := range e.attributes {
-		v = e.resolveAttributeURLValue(k, v, d.resolveStaticResource)
-		e.attributes[k] = v
-		e.setJSAttribute(k, v)
-	}
+	e.attributes.Mount(jsElement, d.resolveStaticResource)
 
-	for k, eh := range e.eventHandlers {
-		e.eventHandlers[k] = eh.WithJSHandler(e)
+	for event, eh := range e.eventHandlers {
+		e.eventHandlers[event] = eh.Mount(e)
 	}
 
 	for i, c := range e.children {
@@ -176,66 +147,16 @@ func (e *htmlElement[T]) mount(d Dispatcher) error {
 	return nil
 }
 
-func (e htmlElement[T]) resolveAttributeURLValue(k, v string, resolve func(string) string) string {
-	switch k {
-	case "cite",
-		"data",
-		"href",
-		"src",
-		"srcset":
-		return resolve(v)
-
-	default:
-		return v
-	}
-}
-
-func (e htmlElement[T]) setJSAttribute(k, v string) {
-	toBool := func(v string) bool {
-		b, _ := strconv.ParseBool(v)
-		return b
-	}
-
-	switch k {
-	case "value":
-		e.jsElement.Set("value", v)
-
-	case "class":
-		e.jsElement.Set("className", v)
-
-	case "contenteditable":
-		e.jsElement.Set("contentEditable", v)
-
-	case "ismap":
-		e.jsElement.Set("isMap", toBool(v))
-
-	case "readonly":
-		e.jsElement.Set("readOnly", toBool(v))
-
-	case "async",
-		"autofocus",
-		"autoplay",
-		"checked",
-		"default",
-		"defer",
-		"disabled",
-		"hidden",
-		"loop",
-		"multiple",
-		"muted",
-		"open",
-		"required",
-		"reversed",
-		"selected":
-		e.jsElement.Set(k, toBool(v))
-
-	default:
-		e.jsElement.setAttr(k, v)
-	}
-}
-
 func (e *htmlElement[T]) dismount() {
-	panic("not implemented")
+	for _, c := range e.children {
+		dismount(c)
+	}
+
+	for _, eh := range e.eventHandlers {
+		eh.Dismount()
+	}
+
+	e.contextCancel()
 }
 
 func (e *htmlElement[T]) update(UI) error {

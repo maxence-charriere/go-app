@@ -22,6 +22,7 @@ type eventHandler struct {
 	scope     string
 	goHandler EventHandler
 	jsHandler Func
+	close     func()
 }
 
 func makeEventHandler(event string, h EventHandler, scope ...any) eventHandler {
@@ -38,14 +39,23 @@ func (h eventHandler) Equal(v eventHandler) bool {
 		reflect.ValueOf(h.goHandler).Pointer() == reflect.ValueOf(v.goHandler).Pointer()
 }
 
-func (h eventHandler) WithJSHandler(src UI) eventHandler {
-	h.jsHandler = makeJSEventHandler(src, h.goHandler)
+func (h eventHandler) Mount(src UI) eventHandler {
+	jsHandler := makeJSEventHandler(src, h.goHandler)
+	src.JSValue().addEventListener(h.event, jsHandler)
+
+	close := func() {
+		src.JSValue().removeEventListener(h.event, jsHandler)
+		jsHandler.Release()
+	}
+
+	h.jsHandler = jsHandler
+	h.close = close
 	return h
 }
 
-func (h eventHandler) Close() {
-	if h.jsHandler != nil {
-		h.jsHandler.Release()
+func (h eventHandler) Dismount() {
+	if h.close != nil {
+		h.close()
 	}
 }
 
