@@ -34,12 +34,6 @@ func TestCompoUpdate(t *testing.T) {
 			},
 		},
 		{
-			scenario:   "component returns replace error when updated with a non component-element",
-			a:          &hello{},
-			b:          Text("hello"),
-			replaceErr: true,
-		},
-		{
 			scenario: "component is updated",
 			a:        &hello{},
 			b:        &hello{Greeting: "world"},

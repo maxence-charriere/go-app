@@ -1,10 +1,8 @@
 package app
 
 import (
-	"fmt"
 	"testing"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 	"github.com/stretchr/testify/require"
 )
 
@@ -53,42 +51,6 @@ func TestFilterUIElems(t *testing.T) {
 
 	res := FilterUIElems(nil, nilText, simpleText)
 	require.Equal(t, expectedResult, res)
-}
-
-func TestIsErrReplace(t *testing.T) {
-	utests := []struct {
-		scenario     string
-		err          error
-		isErrReplace bool
-	}{
-		{
-			scenario:     "error is a replace error",
-			err:          errors.New("test").Tag("replace", true),
-			isErrReplace: true,
-		},
-		{
-			scenario:     "error is not a replace error",
-			err:          errors.New("test").Tag("test", true),
-			isErrReplace: false,
-		},
-		{
-			scenario:     "standard error is not a replace error",
-			err:          fmt.Errorf("test"),
-			isErrReplace: false,
-		},
-		{
-			scenario:     "nil error is not a replace error",
-			err:          nil,
-			isErrReplace: false,
-		},
-	}
-
-	for _, u := range utests {
-		t.Run(u.scenario, func(t *testing.T) {
-			res := isErrReplace(u.err)
-			require.Equal(t, u.isErrReplace, res)
-		})
-	}
 }
 
 type mountTest struct {
@@ -146,11 +108,10 @@ func testDismounted(t *testing.T, n UI) {
 }
 
 type updateTest struct {
-	scenario   string
-	a          UI
-	b          UI
-	matches    []TestUIDescriptor
-	replaceErr bool
+	scenario string
+	a        UI
+	b        UI
+	matches  []TestUIDescriptor
 }
 
 func testUpdate(t *testing.T, utests []updateTest) {
@@ -161,15 +122,10 @@ func testUpdate(t *testing.T, utests []updateTest) {
 			d.Consume()
 
 			err := update(u.a, u.b)
-			if u.replaceErr {
-				require.Error(t, err)
-				require.True(t, isErrReplace(err))
-				return
-			}
+			require.NoError(t, err)
 
 			d.Consume()
 
-			require.NoError(t, err)
 			for _, d := range u.matches {
 				require.NoError(t, TestMatch(u.a, d))
 			}

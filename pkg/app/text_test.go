@@ -14,12 +14,6 @@ func TestTextMountDismout(t *testing.T) {
 func TestTextUpdate(t *testing.T) {
 	testUpdate(t, []updateTest{
 		{
-			scenario:   "text element returns replace error when updated with a non text-element",
-			a:          Text("hello"),
-			b:          Div(),
-			replaceErr: true,
-		},
-		{
 			scenario: "text element is updated",
 			a:        Text("hello"),
 			b:        Text("world"),

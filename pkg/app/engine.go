@@ -205,17 +205,17 @@ func (e *engine) Mount(n UI) {
 				return
 			}
 
-			err := update(e.Body.getChildren()[0], n)
-			if err == nil {
+			firstChild := e.Body.getChildren()[0]
+			if canUpdate(firstChild, n) {
+				if err := update(firstChild, n); err != nil {
+					panic(errors.New("mounting ui element failed").
+						Tag("dispatches-count", len(e.dispatches)).
+						Tag("dispatches-capacity", cap(e.dispatches)).
+						Tag("updates-count", len(e.updates)).
+						Tag("updates-queue-len", len(e.updateQueue)).
+						Wrap(err))
+				}
 				return
-			}
-			if !isErrReplace(err) {
-				panic(errors.New("mounting ui element failed").
-					Tag("dispatches-count", len(e.dispatches)).
-					Tag("dispatches-capacity", cap(e.dispatches)).
-					Tag("updates-count", len(e.updates)).
-					Tag("updates-queue-len", len(e.updateQueue)).
-					Wrap(err))
 			}
 
 			if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {

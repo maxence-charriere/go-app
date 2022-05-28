@@ -140,19 +140,13 @@ func (e *elem) dismount() {
 	e.jsvalue = nil
 }
 
-func (e *elem) update(n UI) error {
+func (e *elem) canUpdateWith(n UI) bool {
+	return n.Kind() == e.Kind() && n.name() == e.name()
+}
+
+func (e *elem) updateWith(n UI) error {
 	if !e.IsMounted() {
 		return nil
-	}
-
-	if n.Kind() != e.Kind() || n.name() != e.name() {
-		return errors.New("updating ui element failed").
-			Tag("replace", true).
-			Tag("reason", "different element types").
-			Tag("current-kind", e.Kind()).
-			Tag("current-name", e.name()).
-			Tag("updated-kind", n.Kind()).
-			Tag("updated-name", n.name())
 	}
 
 	e.updateAttrs(n.getAttributes())
@@ -167,11 +161,12 @@ func (e *elem) update(n UI) error {
 		a := achildren[0]
 		b := bchildren[0]
 
-		err := update(a, b)
-		if isErrReplace(err) {
+		var err error
+		if canUpdate(a, b) {
+			err = update(a, b)
+		} else {
 			err = e.replaceChildAt(i, b)
 		}
-
 		if err != nil {
 			return errors.New("updating ui element failed").
 				Tag("kind", e.Kind()).

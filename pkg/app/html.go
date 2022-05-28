@@ -159,7 +159,18 @@ func (e *htmlElement[T]) dismount() {
 	e.contextCancel()
 }
 
-func (e *htmlElement[T]) update(UI) error {
+func (e *htmlElement[T]) canUpdateWith(v UI) bool {
+	if v, ok := v.(*htmlElement[T]); ok {
+		return ok && e.tag == v.tag
+	}
+	return false
+}
+
+func (e *htmlElement[T]) updateWith(v UI) error {
+	if e.IsMounted() {
+		return nil
+	}
+
 	panic("not implemented")
 }
 

@@ -125,29 +125,14 @@ func (r *raw) dismount() {
 	r.jsvalue = nil
 }
 
-func (r *raw) update(n UI) error {
-	if !r.IsMounted() {
-		return nil
+func (r *raw) canUpdateWith(n UI) bool {
+	if n, ok := n.(*raw); ok {
+		return r.value == n.value
 	}
+	return false
+}
 
-	if n.Kind() != r.Kind() || n.name() != r.name() {
-		return errors.New("updating raw html element failed").
-			Tag("replace", true).
-			Tag("reason", "different element types").
-			Tag("current-kind", r.Kind()).
-			Tag("current-name", r.name()).
-			Tag("updated-kind", n.Kind()).
-			Tag("updated-name", n.name())
-	}
-
-	if v := n.(*raw).value; r.value != v {
-		return errors.New("updating raw html element failed").
-			Tag("replace", true).
-			Tag("reason", "different raw values").
-			Tag("current-value", r.value).
-			Tag("new-value", v)
-	}
-
+func (r *raw) updateWith(n UI) error {
 	return nil
 }
 

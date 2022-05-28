@@ -146,7 +146,11 @@ func (r rangeLoop) mount(Dispatcher) error {
 func (r rangeLoop) dismount() {
 }
 
-func (r rangeLoop) update(UI) error {
+func (r rangeLoop) canUpdateWith(UI) bool {
+	return false
+}
+
+func (r rangeLoop) updateWith(UI) error {
 	return errors.New("range loop cannot be updated").
 		Tag("name", r.name()).
 		Tag("kind", r.Kind())

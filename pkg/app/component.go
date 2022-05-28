@@ -321,19 +321,13 @@ func (c *Compo) dismount() {
 	}
 }
 
-func (c *Compo) update(n UI) error {
+func (c *Compo) canUpdateWith(n UI) bool {
+	return n.Kind() == c.Kind() && n.name() == c.name()
+}
+
+func (c *Compo) updateWith(n UI) error {
 	if c.self() == n || !c.IsMounted() {
 		return nil
-	}
-
-	if n.Kind() != c.Kind() || n.name() != c.name() {
-		return errors.New("updating ui element failed").
-			Tag("replace", true).
-			Tag("reason", "different element types").
-			Tag("current-kind", c.Kind()).
-			Tag("current-name", c.name()).
-			Tag("updated-kind", n.Kind()).
-			Tag("updated-name", n.name())
 	}
 
 	aval := reflect.Indirect(reflect.ValueOf(c.self()))
@@ -383,18 +377,10 @@ func (c *Compo) updateRoot() error {
 	a := c.root
 	b := c.render()
 
-	err := update(a, b)
-	if isErrReplace(err) {
-		err = c.replaceRoot(b)
+	if canUpdate(a, b) {
+		return update(a, b)
 	}
-	if err != nil {
-		return errors.New("updating component failed").
-			Tag("kind", c.Kind()).
-			Tag("name", c.name()).
-			Wrap(err)
-	}
-
-	return nil
+	return c.replaceRoot(b)
 }
 
 func (c *Compo) replaceRoot(n UI) error {

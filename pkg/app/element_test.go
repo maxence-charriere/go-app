@@ -234,12 +234,6 @@ func TestElemMountDismount(t *testing.T) {
 func TestElemUpdate(t *testing.T) {
 	testUpdate(t, []updateTest{
 		{
-			scenario:   "html element returns replace error when updated with a non html-element",
-			a:          Div(),
-			b:          Text("hello"),
-			replaceErr: true,
-		},
-		{
 			scenario: "html element attributes are updated",
 			a: Div().
 				ID("max").

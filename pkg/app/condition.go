@@ -116,7 +116,11 @@ func (c condition) mount(Dispatcher) error {
 func (c condition) dismount() {
 }
 
-func (c condition) update(UI) error {
+func (c condition) canUpdateWith(UI) bool {
+	return false
+}
+
+func (c condition) updateWith(UI) error {
 	return errors.New("condition cannot be updated").
 		Tag("name", c.name()).
 		Tag("kind", c.Kind())

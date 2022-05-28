@@ -34,7 +34,8 @@ type UI interface {
 	getChildren() []UI
 	mount(Dispatcher) error
 	dismount()
-	update(UI) error
+	canUpdateWith(UI) bool
+	updateWith(UI) error
 	onNav(*url.URL)
 	onAppUpdate()
 	onAppInstallChange()
@@ -129,11 +130,6 @@ func FilterUIElems(uis ...UI) []UI {
 	return elems
 }
 
-func isErrReplace(err error) bool {
-	_, replace := errors.Tag(err, "replace")
-	return replace
-}
-
 func mount(d Dispatcher, n UI) error {
 	n.setSelf(n)
 	return n.mount(d)
@@ -144,10 +140,17 @@ func dismount(n UI) {
 	n.setSelf(nil)
 }
 
+func canUpdate(a, b UI) bool {
+	a.setSelf(a)
+	b.setSelf(b)
+
+	return a.canUpdateWith(b)
+}
+
 func update(a, b UI) error {
 	a.setSelf(a)
 	b.setSelf(b)
-	return a.update(b)
+	return a.updateWith(b)
 }
 
 // HTMLString return an HTML string representation of the given UI element.

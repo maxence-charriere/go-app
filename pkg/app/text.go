@@ -90,22 +90,17 @@ func (t *text) dismount() {
 	t.jsvalue = nil
 }
 
-func (t *text) update(n UI) error {
+func (t *text) canUpdateWith(n UI) bool {
+	_, ok := n.(*text)
+	return ok
+}
+
+func (t *text) updateWith(n UI) error {
 	if !t.IsMounted() {
 		return nil
 	}
 
-	o, isText := n.(*text)
-	if !isText {
-		return errors.New("updating ui element failed").
-			Tag("replace", true).
-			Tag("reason", "different element types").
-			Tag("current-kind", t.Kind()).
-			Tag("current-name", t.name()).
-			Tag("updated-kind", n.Kind()).
-			Tag("updated-name", n.name())
-	}
-
+	o, _ := n.(*text)
 	if t.value != o.value {
 		t.value = o.value
 		t.JSValue().setNodeValue(o.value)
