@@ -226,7 +226,7 @@ func (p browserPage) metaByName(v string) Value {
 
 	if meta.IsNull() {
 		meta, _ = Window().createElement("meta", "")
-		meta.Set("name", v)
+		meta.setAttr("name", v)
 
 		Window().Get("document").
 			Call("getElementsByTagName", "head").
@@ -244,7 +244,7 @@ func (p browserPage) metaByProperty(v string) Value {
 
 	if meta.IsNull() {
 		meta, _ = Window().createElement("meta", "")
-		meta.Set("property", v)
+		meta.setAttr("property", v)
 
 		Window().Get("document").
 			Call("getElementsByTagName", "head").

@@ -1,7 +1,6 @@
 package app
 
 import (
-	"net/url"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -19,7 +18,9 @@ func TestBrowserPage(t *testing.T) {
 
 	client := NewClientTester(Div())
 	defer client.Close()
-	testPage(t, browserPage{dispatcher: client})
+	testPage(t, browserPage{
+		dispatcher: client,
+	})
 }
 
 func testPage(t *testing.T, p Page) {
@@ -43,7 +44,8 @@ func testPage(t *testing.T, p Page) {
 	p.SetImage("image")
 	require.Equal(t, "image", p.Image())
 
-	u, _ := url.Parse("https://murlok.io")
+	u := p.URL()
+	u.Path = "/test"
 	p.ReplaceURL(u)
 	require.Equal(t, u.String(), p.URL().String())
 
