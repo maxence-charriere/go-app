@@ -297,7 +297,7 @@ func TestStoreBroadcast(t *testing.T) {
 		s2.Observe(key, bar).Value(&v)
 		s1.Set(key, 42, Broadcast)
 
-		time.Sleep(time.Millisecond * 50)
+		time.Sleep(time.Millisecond * 100)
 		d2.Consume()
 		require.Equal(t, 42, v)
 	})
