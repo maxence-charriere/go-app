@@ -16,7 +16,10 @@ func TestRequestPage(t *testing.T) {
 
 func TestBrowserPage(t *testing.T) {
 	testSkipNonWasm(t)
-	testPage(t, browserPage{})
+
+	client := NewClientTester(Div())
+	defer client.Close()
+	testPage(t, browserPage{dispatcher: client})
 }
 
 func testPage(t *testing.T, p Page) {
