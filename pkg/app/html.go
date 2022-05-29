@@ -297,32 +297,122 @@ func (e *htmlElement[T]) appendChild(v UI) error {
 	return nil
 }
 
-func (e *htmlElement[T]) onNav(*url.URL) {
-	panic("not implemented")
+func (e *htmlElement[T]) onNav(u *url.URL) {
+	for _, c := range e.children {
+		c.onNav(u)
+	}
 }
 
 func (e *htmlElement[T]) onAppUpdate() {
-	panic("not implemented")
+	for _, c := range e.children {
+		c.onAppUpdate()
+	}
 }
 
 func (e *htmlElement[T]) onAppInstallChange() {
-	panic("not implemented")
+	for _, c := range e.children {
+		c.onAppInstallChange()
+	}
 }
 
 func (e *htmlElement[T]) onResize() {
-	panic("not implemented")
+	for _, c := range e.children {
+		c.onResize()
+	}
 }
 
-func (e *htmlElement[T]) preRender(Page) {
-	panic("not implemented")
+func (e *htmlElement[T]) preRender(p Page) {
+	for _, c := range e.children {
+		c.preRender(p)
+	}
 }
 
 func (e *htmlElement[T]) html(w io.Writer) {
-	panic("not implemented")
+	w.Write([]byte("<"))
+	w.Write([]byte(e.tag))
+
+	for k, v := range e.attributes {
+		w.Write([]byte(" "))
+		w.Write([]byte(k))
+
+		if v != "" {
+			w.Write([]byte(`="`))
+			w.Write([]byte(resolveAttributeURLValue(k, v, func(s string) string {
+				if e.dispatcher != nil {
+					return e.dispatcher.resolveStaticResource(v)
+				}
+				return v
+			})))
+			w.Write([]byte(`"`))
+		}
+	}
+
+	w.Write([]byte(">"))
+
+	if e.isSelfClosing {
+		return
+	}
+
+	for _, c := range e.children {
+		w.Write(ln())
+		if c.self() == nil {
+			c.setSelf(c)
+		}
+		c.html(w)
+	}
+
+	if len(e.children) != 0 {
+		w.Write(ln())
+	}
+
+	w.Write([]byte("</"))
+	w.Write([]byte(e.tag))
+	w.Write([]byte(">"))
 }
 
 func (e *htmlElement[T]) htmlWithIndent(w io.Writer, indent int) {
-	panic("not implemented")
+	writeIndent(w, indent)
+	w.Write([]byte("<"))
+	w.Write([]byte(e.tag))
+
+	for k, v := range e.attributes {
+		w.Write([]byte(" "))
+		w.Write([]byte(k))
+
+		if v != "" {
+			w.Write([]byte(`="`))
+			w.Write([]byte(resolveAttributeURLValue(k, v, func(s string) string {
+				if e.dispatcher != nil {
+					return e.dispatcher.resolveStaticResource(v)
+				}
+				return v
+			})))
+			w.Write([]byte(`"`))
+		}
+	}
+
+	w.Write([]byte(">"))
+
+	if e.isSelfClosing {
+		return
+	}
+
+	for _, c := range e.children {
+		w.Write(ln())
+		if c.self() == nil {
+			c.setSelf(c)
+		}
+		c.htmlWithIndent(w, indent+1)
+	}
+
+	if len(e.children) != 0 {
+		w.Write(ln())
+		writeIndent(w, indent)
+	}
+
+	w.Write([]byte("</"))
+	w.Write([]byte(e.tag))
+	w.Write([]byte(">"))
 }
 
 // -----------------------------------------------------------------------------
