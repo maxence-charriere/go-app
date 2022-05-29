@@ -40,6 +40,28 @@ func (a attributes) Mount(jsElement Value, resolveURL attributeURLResolver) {
 	}
 }
 
+func (a attributes) Update(jsElement Value, b attributes, resolveURL attributeURLResolver) {
+	for name := range a {
+		if _, ok := b[name]; !ok {
+			deleteJSAttribute(jsElement, name)
+			delete(a, name)
+		}
+	}
+
+	for name, value := range b {
+		if a[name] == value {
+			continue
+		}
+
+		a[name] = value
+		setJSAttribute(jsElement, name, resolveAttributeURLValue(
+			name,
+			value,
+			resolveURL,
+		))
+	}
+}
+
 type attributeURLResolver func(string) string
 
 func toAttributeValue(v any) string {
@@ -68,7 +90,7 @@ func setJSAttribute(jsElement Value, name, value string) {
 
 	switch name {
 	case "value":
-		jsElement.Set("value", value)
+		jsElement.Set(name, value)
 
 	case "class":
 		jsElement.Set("className", value)
@@ -100,6 +122,43 @@ func setJSAttribute(jsElement Value, name, value string) {
 		jsElement.Set(name, toBool(value))
 
 	default:
-		jsElement.setAttr(name, value)
+		jsElement.Call("setAttribute", name, value)
+	}
+}
+
+func deleteJSAttribute(jsElement Value, name string) {
+	switch name {
+	case "class":
+		jsElement.Delete("className")
+
+	case "contenteditable":
+		jsElement.Delete("contentEditable")
+
+	case "ismap":
+		jsElement.Delete("isMap")
+
+	case "readonly":
+		jsElement.Delete("readOnly")
+
+	case "value",
+		"async",
+		"autofocus",
+		"autoplay",
+		"checked",
+		"default",
+		"defer",
+		"disabled",
+		"hidden",
+		"loop",
+		"multiple",
+		"muted",
+		"open",
+		"required",
+		"reversed",
+		"selected":
+		jsElement.Delete(name)
+
+	default:
+		jsElement.Call("removeAttribute", name)
 	}
 }

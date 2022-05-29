@@ -17,6 +17,38 @@ func (e Event) PreventDefault() {
 	e.Call("preventDefault")
 }
 
+type eventHandlers map[string]eventHandler
+
+func (h eventHandlers) Set(event string, eh EventHandler, scope ...any) {
+	if eh != nil {
+		h[event] = makeEventHandler(event, eh, scope...)
+	}
+}
+
+func (h eventHandlers) Mount(src UI) {
+	for event, eh := range h {
+		h[event] = eh.Mount(src)
+	}
+}
+
+func (h eventHandlers) Update(src UI, v eventHandlers) {
+	for event, eh := range h {
+		if _, ok := v[event]; !ok {
+			eh.Dismount()
+			delete(h, event)
+		}
+	}
+
+	for event, eh := range v {
+		if h[event].Equal(eh) {
+			continue
+		}
+
+		h[event].Dismount()
+		h[event] = eh.Mount(src)
+	}
+}
+
 type eventHandler struct {
 	event     string
 	scope     string

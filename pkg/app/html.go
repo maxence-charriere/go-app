@@ -14,7 +14,7 @@ type htmlElement[T any] struct {
 	xmlns         string
 	isSelfClosing bool
 	attributes    attributes
-	eventHandlers map[string]eventHandler
+	eventHandlers eventHandlers
 	parent        UI
 	children      []UI
 
@@ -34,14 +34,10 @@ func (e *htmlElement[T]) Attr(name string, value any) T {
 }
 
 func (e *htmlElement[T]) On(event string, h EventHandler, scope ...any) T {
-	if h == nil {
-		return e.toHTMLInterface()
-	}
-
 	if e.eventHandlers == nil {
-		e.eventHandlers = make(map[string]eventHandler)
+		e.eventHandlers = make(eventHandlers)
 	}
-	e.eventHandlers[event] = makeEventHandler(event, h, scope...)
+	e.eventHandlers.Set(event, h, scope...)
 
 	return e.toHTMLInterface()
 }
@@ -127,10 +123,7 @@ func (e *htmlElement[T]) mount(d Dispatcher) error {
 	e.jsElement = jsElement
 
 	e.attributes.Mount(jsElement, d.resolveStaticResource)
-
-	for event, eh := range e.eventHandlers {
-		e.eventHandlers[event] = eh.Mount(e)
-	}
+	e.eventHandlers.Mount(e)
 
 	for i, c := range e.children {
 		if err := mount(d, c); err != nil {
@@ -171,7 +164,137 @@ func (e *htmlElement[T]) updateWith(v UI) error {
 		return nil
 	}
 
-	panic("not implemented")
+	newElement, ok := v.(*htmlElement[T])
+	if !ok {
+		return errors.New("new element is not an html element").
+			Tag("new-element-type", reflect.TypeOf(v))
+	}
+
+	if e.attributes == nil && newElement.attributes != nil {
+		e.attributes = newElement.attributes
+		e.attributes.Mount(e.jsElement, e.dispatcher.resolveStaticResource)
+	} else if e.attributes != nil && newElement.attributes != nil {
+		e.attributes.Update(
+			e.jsElement,
+			newElement.attributes,
+			e.getDispatcher().resolveStaticResource,
+		)
+	}
+
+	if e.eventHandlers == nil && newElement.eventHandlers != nil {
+		e.eventHandlers = newElement.eventHandlers
+		e.eventHandlers.Mount(e)
+	} else if e.eventHandlers != nil && newElement.eventHandlers != nil {
+		e.eventHandlers.Update(e, newElement.eventHandlers)
+	}
+
+	childrenA := e.children
+	childrenB := newElement.children
+	i := 0
+
+	for len(childrenA) != 0 && len(childrenB) != 0 {
+		a := childrenA[0]
+		b := childrenB[0]
+
+		if canUpdate(a, b) {
+			if err := update(a, b); err != nil {
+				return errors.New("updating child failed").
+					Tag("child-type", reflect.TypeOf(a)).
+					Tag("new-child-type", reflect.TypeOf(b)).
+					Tag("index", i).
+					Wrap(err)
+			}
+		} else {
+			if err := e.replaceChildAt(i, b); err != nil {
+				return errors.New("replacing child failed").
+					Tag("child-type", reflect.TypeOf(a)).
+					Tag("new-child-type", reflect.TypeOf(b)).
+					Tag("index", i).
+					Wrap(err)
+			}
+		}
+
+		childrenA = childrenA[1:]
+		childrenB = childrenB[1:]
+		i++
+	}
+
+	for len(childrenA) != 0 {
+		if err := e.removeChildAt(i); err != nil {
+			return errors.New("removing child failed").
+				Tag("child-type", reflect.TypeOf(childrenA[0])).
+				Wrap(err)
+		}
+
+		childrenA = childrenA[1:]
+	}
+
+	for len(childrenB) != 0 {
+		b := childrenB[0]
+
+		if err := e.appendChild(b); err != nil {
+			return errors.New("appending child failed").
+				Tag("child-type", reflect.TypeOf(b)).
+				Wrap(err)
+		}
+
+		childrenB = childrenB[1:]
+	}
+
+	return nil
+}
+
+func (e *htmlElement[T]) replaceChildAt(i int, new UI) error {
+	if i < 0 || i >= len(e.children) {
+		return errors.New("index out of range").
+			Tag("index", i).
+			Tag("children-count", len(e.children))
+	}
+
+	if err := mount(e.dispatcher, new); err != nil {
+		return errors.New("mounting new element failed").
+			Tag("element-type", reflect.TypeOf(new)).
+			Wrap(err)
+	}
+
+	old := e.children[i]
+	defer dismount(old)
+
+	new.setParent(e)
+	e.children[i] = new
+	e.jsElement.replaceChild(new, old)
+	return nil
+}
+
+func (e *htmlElement[T]) removeChildAt(i int) error {
+	if i < 0 || i >= len(e.children) {
+		return errors.New("index out of range").
+			Tag("index", i).
+			Tag("children-count", len(e.children))
+	}
+
+	child := e.children[i]
+	e.jsElement.removeChild(child)
+	dismount(child)
+
+	children := e.children
+	copy(children[i:], children[i+1:])
+	children[len(children)-1] = nil
+	e.children = children[:len(children)-1]
+	return nil
+}
+
+func (e *htmlElement[T]) appendChild(v UI) error {
+	if err := mount(e.dispatcher, v); err != nil {
+		return errors.New("mounting element failed").
+			Tag("element-type", reflect.TypeOf(v)).
+			Wrap(err)
+	}
+
+	v.setParent(e)
+	e.jsElement.appendChild(v)
+	e.children = append(e.children, v)
+	return nil
 }
 
 func (e *htmlElement[T]) onNav(*url.URL) {
