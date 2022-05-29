@@ -26,7 +26,7 @@ func (v value) Delete(p string) {
 }
 
 func (v value) Equal(w Value) bool {
-	return v.Value.Equal(jsVal(w))
+	return v.Value.Equal(jsval(w))
 }
 
 func (v value) Get(p string) Value {
