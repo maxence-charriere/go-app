@@ -1,6 +1,7 @@
 package app
 
 import (
+	"net/url"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -10,6 +11,7 @@ func TestRequestPage(t *testing.T) {
 	testPage(t, &requestPage{
 		width:  42,
 		height: 21,
+		url:    &url.URL{Path: "/"},
 	})
 }
 
