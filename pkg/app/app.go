@@ -198,11 +198,11 @@ func newClientBody(d Dispatcher) *htmlBody {
 	ctx, cancel := context.WithCancel(context.Background())
 	body := &htmlBody{
 		elem: elem{
+			tag:           "body",
 			context:       ctx,
 			contextCancel: cancel,
-			jsvalue:       Window().Get("document").Get("body"),
-			tag:           "body",
 			dispatcher:    d,
+			jsElement:     Window().Get("document").Get("body"),
 		},
 	}
 	body.setSelf(body)
@@ -210,11 +210,11 @@ func newClientBody(d Dispatcher) *htmlBody {
 	ctx, cancel = context.WithCancel(context.Background())
 	content := &htmlDiv{
 		elem: elem{
+			tag:           "div",
 			context:       ctx,
 			contextCancel: cancel,
-			jsvalue:       body.JSValue().firstElementChild(),
-			tag:           "div",
 			dispatcher:    d,
+			jsElement:     body.JSValue().firstElementChild(),
 		},
 	}
 	content.setSelf(content)

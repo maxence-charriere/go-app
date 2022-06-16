@@ -25,12 +25,12 @@ type elem struct {
 	context       context.Context
 	contextCancel func()
 	dispatcher    Dispatcher
+	jsElement     Value
 
 	attrs map[string]string
 
-	events  map[string]eventHandler
-	jsvalue Value
-	this    UI
+	events map[string]eventHandler
+	this   UI
 }
 
 func (e *elem) Kind() Kind {
@@ -38,7 +38,7 @@ func (e *elem) Kind() Kind {
 }
 
 func (e *elem) JSValue() Value {
-	return e.jsvalue
+	return e.jsElement
 }
 
 func (e *elem) IsMounted() bool {
@@ -46,7 +46,7 @@ func (e *elem) IsMounted() bool {
 		e.context != nil &&
 		e.context.Err() == nil &&
 		e.self() != nil &&
-		e.jsvalue != nil
+		e.jsElement != nil
 }
 
 func (e *elem) name() string {
@@ -107,7 +107,7 @@ func (e *elem) mount(d Dispatcher) error {
 			Tag("kind", e.Kind()).
 			Wrap(err)
 	}
-	e.jsvalue = v
+	e.jsElement = v
 
 	for k, v := range e.attrs {
 		v = e.resolveURLAttr(k, v)
@@ -141,7 +141,7 @@ func (e *elem) dismount() {
 	}
 
 	e.contextCancel()
-	e.jsvalue = nil
+	e.jsElement = nil
 }
 
 func (e *elem) canUpdateWith(n UI) bool {
@@ -419,7 +419,7 @@ func (e *elem) setJsEventHandler(k string, h eventHandler) {
 }
 
 func (e *elem) delJsEventHandler(k string, h eventHandler) {
-	e.jsvalue.removeEventListener(k, h.jsHandler)
+	e.jsElement.removeEventListener(k, h.jsHandler)
 	h.jsHandler.Release()
 	delete(e.events, k)
 }
