@@ -21,7 +21,7 @@ type text struct {
 	value      string
 }
 
-func (t *text) Kind() Kind {
+func (t *text) kind() Kind {
 	return SimpleText
 }
 
@@ -76,7 +76,7 @@ func (t *text) mount(d Dispatcher) error {
 	if t.IsMounted() {
 		return errors.New("mounting ui element failed").
 			Tag("reason", "already mounted").
-			Tag("kind", t.Kind()).
+			Tag("kind", t.kind()).
 			Tag("name", t.name()).
 			Tag("value", t.value)
 	}

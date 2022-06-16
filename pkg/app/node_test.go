@@ -79,7 +79,7 @@ func testMounted(t *testing.T, n UI) {
 	require.NotNil(t, n.getDispatcher())
 	require.True(t, n.IsMounted())
 
-	switch n.Kind() {
+	switch n.kind() {
 	case HTML, Component:
 		require.NoError(t, n.getContext().Err())
 		require.NotNil(t, n.self())
@@ -92,11 +92,10 @@ func testMounted(t *testing.T, n UI) {
 }
 
 func testDismounted(t *testing.T, n UI) {
-	require.Nil(t, n.JSValue())
 	require.NotNil(t, n.getDispatcher())
 	require.False(t, n.IsMounted())
 
-	switch n.Kind() {
+	switch n.kind() {
 	case HTML, Component:
 		require.Error(t, n.getContext().Err())
 		require.Nil(t, n.self())

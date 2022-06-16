@@ -86,9 +86,9 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 
 			return errors.New("ui element to match is out of range").
 				Tag("name", d.Expected.name()).
-				Tag("kind", d.Expected.Kind()).
+				Tag("kind", d.Expected.kind()).
 				Tag("parent-name", tree.name()).
-				Tag("parent-kind", tree.Kind()).
+				Tag("parent-kind", tree.kind()).
 				Tag("parent-children-count", len(tree.getChildren())).
 				Tag("index", idx)
 		}
@@ -99,12 +99,12 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 		if p != tree {
 			return errors.New("unexpected ui element parent").
 				Tag("name", d.Expected.name()).
-				Tag("kind", d.Expected.Kind()).
+				Tag("kind", d.Expected.kind()).
 				Tag("parent-name", p.name()).
-				Tag("parent-kind", p.Kind()).
+				Tag("parent-kind", p.kind()).
 				Tag("parent-addr", fmt.Sprintf("%p", p)).
 				Tag("expected-parent-name", tree.name()).
-				Tag("expected-parent-kind", tree.Kind()).
+				Tag("expected-parent-kind", tree.kind()).
 				Tag("expected-parent-addr", fmt.Sprintf("%p", tree))
 		}
 
@@ -112,15 +112,15 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 		return TestMatch(c, d)
 	}
 
-	if d.Expected.name() != tree.name() || d.Expected.Kind() != tree.Kind() {
+	if d.Expected.name() != tree.name() || d.Expected.kind() != tree.kind() {
 		return errors.New("the UI element is not matching the descriptor").
 			Tag("expected-name", d.Expected.name()).
-			Tag("expected-kind", d.Expected.Kind()).
+			Tag("expected-kind", d.Expected.kind()).
 			Tag("current-name", tree.name()).
-			Tag("current-kind", tree.Kind())
+			Tag("current-kind", tree.kind())
 	}
 
-	switch d.Expected.Kind() {
+	switch d.Expected.kind() {
 	case SimpleText:
 		return matchText(tree, d)
 
@@ -139,7 +139,7 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 	default:
 		return errors.New("the UI element is not matching the descriptor").
 			Tag("reason", "unavailable matching for the kind").
-			Tag("kind", d.Expected.Kind())
+			Tag("kind", d.Expected.kind())
 	}
 }
 
