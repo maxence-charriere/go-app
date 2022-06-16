@@ -52,11 +52,11 @@ func (t *text) getDispatcher() Dispatcher {
 	return t.disp
 }
 
-func (t *text) getAttributes() map[string]string {
+func (t *text) getAttributes() attributes {
 	return nil
 }
 
-func (t *text) getEventHandlers() map[string]eventHandler {
+func (t *text) getEventHandlers() eventHandlers {
 	return nil
 }
 

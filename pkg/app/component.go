@@ -255,11 +255,11 @@ func (c *Compo) getDispatcher() Dispatcher {
 	return c.disp
 }
 
-func (c *Compo) getAttributes() map[string]string {
+func (c *Compo) getAttributes() attributes {
 	return nil
 }
 
-func (c *Compo) getEventHandlers() map[string]eventHandler {
+func (c *Compo) getEventHandlers() eventHandlers {
 	return nil
 }
 

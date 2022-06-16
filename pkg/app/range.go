@@ -118,11 +118,11 @@ func (r rangeLoop) getDispatcher() Dispatcher {
 	return nil
 }
 
-func (r rangeLoop) getAttributes() map[string]string {
+func (r rangeLoop) getAttributes() attributes {
 	return nil
 }
 
-func (r rangeLoop) getEventHandlers() map[string]eventHandler {
+func (r rangeLoop) getEventHandlers() eventHandlers {
 	return nil
 }
 

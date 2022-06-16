@@ -67,11 +67,11 @@ func (r *raw) getDispatcher() Dispatcher {
 	return r.disp
 }
 
-func (r *raw) getAttributes() map[string]string {
+func (r *raw) getAttributes() attributes {
 	return nil
 }
 
-func (r *raw) getEventHandlers() map[string]eventHandler {
+func (r *raw) getEventHandlers() eventHandlers {
 	return nil
 }
 

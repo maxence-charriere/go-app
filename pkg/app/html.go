@@ -85,11 +85,11 @@ func (e *htmlElement[T]) getDispatcher() Dispatcher {
 	return e.dispatcher
 }
 
-func (e *htmlElement[T]) getAttributes() map[string]string {
+func (e *htmlElement[T]) getAttributes() attributes {
 	return e.attributes
 }
 
-func (e *htmlElement[T]) getEventHandlers() map[string]eventHandler {
+func (e *htmlElement[T]) getEventHandlers() eventHandlers {
 	return e.eventHandlers
 }
 

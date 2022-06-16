@@ -88,11 +88,11 @@ func (c condition) getDispatcher() Dispatcher {
 	return nil
 }
 
-func (c condition) getAttributes() map[string]string {
+func (c condition) getAttributes() attributes {
 	return nil
 }
 
-func (c condition) getEventHandlers() map[string]eventHandler {
+func (c condition) getEventHandlers() eventHandlers {
 	return nil
 }
 

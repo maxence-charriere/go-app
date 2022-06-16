@@ -27,8 +27,8 @@ type UI interface {
 	setSelf(UI)
 	getContext() context.Context
 	getDispatcher() Dispatcher
-	getAttributes() map[string]string
-	getEventHandlers() map[string]eventHandler
+	getAttributes() attributes
+	getEventHandlers() eventHandlers
 	getParent() UI
 	setParent(UI)
 	getChildren() []UI
