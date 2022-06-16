@@ -1347,7 +1347,7 @@ var attrs = map[string]attr{
 	// M:
 	"max": {
 		Name: "Max",
-		Type: "interface{}",
+		Type: "any",
 		Doc:  "Specifies the maximum value.",
 	},
 	"maxlength": {
@@ -1367,7 +1367,7 @@ var attrs = map[string]attr{
 	},
 	"min": {
 		Name: "Min",
-		Type: "interface{}",
+		Type: "any",
 		Doc:  "specifies a minimum value.",
 	},
 	"multiple": {
@@ -1482,7 +1482,7 @@ var attrs = map[string]attr{
 	// S:
 	"sandbox": {
 		Name: "Sandbox",
-		Type: "interface{}",
+		Type: "any",
 		Doc:  "enables an extra set of restrictions for the content in an iframe.",
 	},
 	"scope": {
@@ -1593,7 +1593,7 @@ var attrs = map[string]attr{
 	// V:
 	"value": {
 		Name: "Value",
-		Type: "interface{}",
+		Type: "any",
 		Doc:  "specifies the value of the element.",
 	},
 
@@ -1895,7 +1895,7 @@ var eventHandlers = map[string]eventHandler{
 		Doc:  "calls the given handler when media data is loaded.",
 	},
 	"onloadedmetadata": {
-		Name: "OnloadedMetaData",
+		Name: "OnLoadedMetaData",
 		Doc:  "calls the given handler when meta data (like dimensions and duration) are loaded.",
 	},
 	"onloadstart": {
@@ -2131,7 +2131,7 @@ func writeInterface(w io.Writer, t tag) {
 
 		fmt.Fprintf(w, `
 			// Text sets the content of the element with a text node containing the stringified given value.
-			Text(v interface{}) HTML%s
+			Text(v any) HTML%s
 		`, t.Name)
 
 	case privateParent:
@@ -2150,7 +2150,7 @@ func writeInterface(w io.Writer, t tag) {
 
 	fmt.Fprintf(w, `
 		// On registers the given event handler to the specified event.
-		On(event string, h EventHandler, scope ...interface{}) HTML%s 
+		On(event string, h EventHandler, scope ...any) HTML%s 
 	`, t.Name)
 
 	for _, e := range t.EventHandlers {
@@ -2184,7 +2184,7 @@ func writeStruct(w io.Writer, t tag) {
 
 		if t.Name == "Textarea" {
 			fmt.Fprintf(w, `
-			func (e *html%s) Text(v interface{}) HTML%s {
+			func (e *html%s) Text(v any) HTML%s {
 				e.setAttr("value", v)
 				return e
 			}
@@ -2194,7 +2194,7 @@ func writeStruct(w io.Writer, t tag) {
 			)
 		} else {
 			fmt.Fprintf(w, `
-			func (e *html%s) Text(v interface{}) HTML%s {
+			func (e *html%s) Text(v any) HTML%s {
 				return e.Body(Text(v))
 			}
 			`,
@@ -2223,7 +2223,7 @@ func writeStruct(w io.Writer, t tag) {
 	}
 
 	fmt.Fprintf(w, `
-		func (e *html%s) On(event string, h EventHandler, scope ...interface{})  HTML%s {
+		func (e *html%s) On(event string, h EventHandler, scope ...any)  HTML%s {
 			e.setEventHandler(event, h, scope...)
 			return e
 		}
@@ -2247,7 +2247,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 
 	switch a.Type {
 	case "data|value":
-		fmt.Fprintf(w, `%s(k string, v interface{}) HTML%s`, a.Name, t.Name)
+		fmt.Fprintf(w, `%s(k string, v any) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
 				e.setAttr("data-"+k, fmt.Sprintf("%s", v))
@@ -2256,7 +2256,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		}
 
 	case "attr|value":
-		fmt.Fprintf(w, `%s(n string, v interface{}) HTML%s`, a.Name, t.Name)
+		fmt.Fprintf(w, `%s(n string, v any) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
 				e.setAttr(n, v)
@@ -2265,7 +2265,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		}
 
 	case "aria|value":
-		fmt.Fprintf(w, `%s(k string, v interface{}) HTML%s`, a.Name, t.Name)
+		fmt.Fprintf(w, `%s(k string, v any) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
 				e.setAttr("aria-"+k, fmt.Sprintf("%s", v))
@@ -2355,7 +2355,7 @@ func writeEventFunction(w io.Writer, e eventHandler, t tag, isInterface bool) {
 		fmt.Fprintf(w, `func (e *html%s)`, t.Name)
 	}
 
-	fmt.Fprintf(w, `%s (h EventHandler, scope ...interface{}) HTML%s`, e.Name, t.Name)
+	fmt.Fprintf(w, `%s (h EventHandler, scope ...any) HTML%s`, e.Name, t.Name)
 	if !isInterface {
 		fmt.Fprintf(w, `{
 			e.setEventHandler("%s", h, scope...)
