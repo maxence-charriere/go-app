@@ -220,7 +220,7 @@ func newClientBody(d Dispatcher) *htmlBody {
 	content.setSelf(content)
 	content.setParent(body)
 
-	body.body = append(body.body, content)
+	body.children = append(body.children, content)
 	return body
 }
 

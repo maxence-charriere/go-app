@@ -19,16 +19,16 @@ type elem struct {
 	tag           string
 	xmlns         string
 	isSelfClosing bool
+	parent        UI
+	children      []UI
 
-	attrs      map[string]string
-	body       []UI
-	disp       Dispatcher
-	ctx        context.Context
-	ctxCancel  func()
-	events     map[string]eventHandler
-	jsvalue    Value
-	parentElem UI
-	this       UI
+	attrs     map[string]string
+	disp      Dispatcher
+	ctx       context.Context
+	ctxCancel func()
+	events    map[string]eventHandler
+	jsvalue   Value
+	this      UI
 }
 
 func (e *elem) Kind() Kind {
@@ -76,15 +76,15 @@ func (e *elem) getEventHandlers() map[string]eventHandler {
 }
 
 func (e *elem) getParent() UI {
-	return e.parentElem
+	return e.parent
 }
 
 func (e *elem) setParent(p UI) {
-	e.parentElem = p
+	e.parent = p
 }
 
 func (e *elem) getChildren() []UI {
-	return e.body
+	return e.children
 }
 
 func (e *elem) mount(d Dispatcher) error {
@@ -221,7 +221,7 @@ func (e *elem) appendChild(c UI, onlyJsValue bool) error {
 	}
 
 	if !onlyJsValue {
-		e.body = append(e.body, c)
+		e.children = append(e.children, c)
 	}
 
 	c.setParent(e.self())
@@ -230,7 +230,7 @@ func (e *elem) appendChild(c UI, onlyJsValue bool) error {
 }
 
 func (e *elem) replaceChildAt(idx int, new UI) error {
-	old := e.body[idx]
+	old := e.children[idx]
 
 	if err := mount(e.getDispatcher(), new); err != nil {
 		return errors.New("replacing child failed").
@@ -244,7 +244,7 @@ func (e *elem) replaceChildAt(idx int, new UI) error {
 			Wrap(err)
 	}
 
-	e.body[idx] = new
+	e.children[idx] = new
 	new.setParent(e.self())
 	e.JSValue().replaceChild(new, old)
 
@@ -253,7 +253,7 @@ func (e *elem) replaceChildAt(idx int, new UI) error {
 }
 
 func (e *elem) removeChildAt(idx int) error {
-	body := e.body
+	body := e.children
 	if idx < 0 || idx >= len(body) {
 		return errors.New("removing child failed").
 			Tag("reason", "index out of range").
@@ -267,7 +267,7 @@ func (e *elem) removeChildAt(idx int) error {
 	copy(body[idx:], body[idx+1:])
 	body[len(body)-1] = nil
 	body = body[:len(body)-1]
-	e.body = body
+	e.children = body
 
 	e.JSValue().removeChild(c)
 	dismount(c)
@@ -430,7 +430,7 @@ func (e *elem) setBody(body ...UI) {
 		)
 	}
 
-	e.body = FilterUIElems(body...)
+	e.children = FilterUIElems(body...)
 }
 
 func (e *elem) onNav(u *url.URL) {
@@ -484,7 +484,7 @@ func (e *elem) html(w io.Writer) {
 		return
 	}
 
-	for _, c := range e.body {
+	for _, c := range e.children {
 		w.Write(ln())
 		if c.self() == nil {
 			c.setSelf(c)
@@ -492,7 +492,7 @@ func (e *elem) html(w io.Writer) {
 		c.html(w)
 	}
 
-	if len(e.body) != 0 {
+	if len(e.children) != 0 {
 		w.Write(ln())
 	}
 
@@ -523,7 +523,7 @@ func (e *elem) htmlWithIndent(w io.Writer, indent int) {
 		return
 	}
 
-	for _, c := range e.body {
+	for _, c := range e.children {
 		w.Write(ln())
 		if c.self() == nil {
 			c.setSelf(c)
@@ -531,7 +531,7 @@ func (e *elem) htmlWithIndent(w io.Writer, indent int) {
 		c.htmlWithIndent(w, indent+1)
 	}
 
-	if len(e.body) != 0 {
+	if len(e.children) != 0 {
 		w.Write(ln())
 		writeIndent(w, indent)
 	}
