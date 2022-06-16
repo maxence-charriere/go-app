@@ -4,6 +4,7 @@ import (
 	"context"
 	"io"
 	"net/url"
+	"reflect"
 	"strconv"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
@@ -140,7 +141,14 @@ func (e *elem) canUpdateWith(n UI) bool {
 
 func (e *elem) updateWith(n UI) error {
 	if !e.IsMounted() {
-		return nil
+		return errors.New("cannot update a non mounted html element").
+			Tag("element", reflect.TypeOf(e.self()))
+	}
+
+	if !e.canUpdateWith(n) {
+		return errors.New("cannot update html element").
+			Tag("current-element", reflect.TypeOf(e.self())).
+			Tag("new-element", reflect.TypeOf(n))
 	}
 
 	if e.attributes == nil && n.getAttributes() != nil {
@@ -161,78 +169,74 @@ func (e *elem) updateWith(n UI) error {
 		e.eventHandlers.Update(e, n.getEventHandlers())
 	}
 
-	achildren := e.getChildren()
-	bchildren := n.getChildren()
+	childrenA := e.children
+	childrenB := n.getChildren()
 	i := 0
 
-	// Update children:
-	for len(achildren) != 0 && len(bchildren) != 0 {
-		a := achildren[0]
-		b := bchildren[0]
+	for len(childrenA) != 0 && len(childrenB) != 0 {
+		a := childrenA[0]
+		b := childrenB[0]
 
-		var err error
 		if canUpdate(a, b) {
-			err = update(a, b)
+			if err := update(a, b); err != nil {
+				return errors.New("updating child failed").
+					Tag("child", reflect.TypeOf(a)).
+					Tag("new-child", reflect.TypeOf(b)).
+					Tag("index", i).
+					Wrap(err)
+			}
 		} else {
-			err = e.replaceChildAt(i, b)
-		}
-		if err != nil {
-			return errors.New("updating ui element failed").
-				Tag("kind", e.Kind()).
-				Tag("name", e.name()).
-				Wrap(err)
+			if err := e.replaceChildAt(i, b); err != nil {
+				return errors.New("replacing child failed").
+					Tag("child", reflect.TypeOf(a)).
+					Tag("new-child", reflect.TypeOf(b)).
+					Tag("index", i).
+					Wrap(err)
+			}
 		}
 
-		achildren = achildren[1:]
-		bchildren = bchildren[1:]
+		childrenA = childrenA[1:]
+		childrenB = childrenB[1:]
 		i++
 	}
 
-	// Remove children:
-	for len(achildren) != 0 {
+	for len(childrenA) != 0 {
 		if err := e.removeChildAt(i); err != nil {
-			return errors.New("updating ui element failed").
-				Tag("kind", e.Kind()).
-				Tag("name", e.name()).
+			return errors.New("removing child failed").
+				Tag("child", reflect.TypeOf(childrenA[0])).
+				Tag("index", i).
 				Wrap(err)
 		}
 
-		achildren = achildren[1:]
+		childrenA = childrenA[1:]
 	}
 
-	// Add children:
-	for len(bchildren) != 0 {
-		c := bchildren[0]
+	for len(childrenB) != 0 {
+		b := childrenB[0]
 
-		if err := e.appendChild(c, false); err != nil {
-			return errors.New("updating ui element failed").
-				Tag("kind", e.Kind()).
-				Tag("name", e.name()).
+		if err := e.appendChild(b); err != nil {
+			return errors.New("appending child failed").
+				Tag("child", reflect.TypeOf(b)).
+				Tag("index", i).
 				Wrap(err)
 		}
 
-		bchildren = bchildren[1:]
+		childrenB = childrenB[1:]
 	}
 
 	return nil
 }
 
-func (e *elem) appendChild(c UI, onlyJsValue bool) error {
-	if err := mount(e.getDispatcher(), c); err != nil {
-		return errors.New("appending child failed").
-			Tag("name", e.name()).
-			Tag("kind", e.Kind()).
-			Tag("child-name", c.name()).
-			Tag("child-kind", c.Kind()).
+func (e *elem) appendChild(v UI) error {
+	if err := mount(e.getDispatcher(), v); err != nil {
+		return errors.New("mounting element failed").
+			Tag("element", reflect.TypeOf(v)).
 			Wrap(err)
 	}
 
-	if !onlyJsValue {
-		e.children = append(e.children, c)
-	}
-
-	c.setParent(e.self())
-	e.JSValue().appendChild(c)
+	v.setParent(e.self())
+	e.JSValue().appendChild(v)
+	e.children = append(e.children, v)
 	return nil
 }
 

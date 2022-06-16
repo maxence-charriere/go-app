@@ -1,10 +1,1 @@
-[94mINFO ‣ [00mtest:
-    type: log
-[91mERROR ‣ [00mtest:
-    type: error
-goos: darwin
-goarch: arm64
-pkg: github.com/maxence-charriere/go-app/v9/pkg/app
-BenchmarkMountHTMLElement-10    	   50120	     24883 ns/op	  140311 B/op	      72 allocs/op
-PASS
-ok  	github.com/maxence-charriere/go-app/v9/pkg/app	1.649s
+FAIL	github.com/maxence-charriere/go-app/v9/pkg/app [build failed]

@@ -160,7 +160,7 @@ func (e *htmlElement[T]) canUpdateWith(v UI) bool {
 }
 
 func (e *htmlElement[T]) updateWith(v UI) error {
-	if e.IsMounted() {
+	if !e.IsMounted() {
 		return nil
 	}
 
