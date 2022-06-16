@@ -91,6 +91,8 @@ type HTMLA interface {
 
 	// Type specifies the type of element.
 	Type(v string) HTMLA
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLA
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLA
@@ -192,7 +194,7 @@ type HTMLA interface {
 // A returns an HTML element that defines a hyperlink.
 func A() HTMLA {
 	e := &htmlA{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "a",
 			isSelfClosing: false,
 		},
@@ -202,11 +204,11 @@ func A() HTMLA {
 }
 
 type htmlA struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlA) Body(elems ...UI) HTMLA {
-	e.setBody(elems...)
+func (e *htmlA) Body(v ...UI) HTMLA {
+	e.setChildren(v...)
 	return e
 }
 
@@ -343,6 +345,10 @@ func (e *htmlA) Title(v string) HTMLA {
 
 func (e *htmlA) Type(v string) HTMLA {
 	e.setAttr("type", v)
+	return e
+}
+func (e *htmlA) On(event string, h EventHandler, scope ...interface{}) HTMLA {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -566,6 +572,8 @@ type HTMLAbbr interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLAbbr
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLAbbr
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLAbbr
@@ -667,7 +675,7 @@ type HTMLAbbr interface {
 // Abbr returns an HTML element that defines an abbreviation or an acronym.
 func Abbr() HTMLAbbr {
 	e := &htmlAbbr{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "abbr",
 			isSelfClosing: false,
 		},
@@ -677,11 +685,11 @@ func Abbr() HTMLAbbr {
 }
 
 type htmlAbbr struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlAbbr) Body(elems ...UI) HTMLAbbr {
-	e.setBody(elems...)
+func (e *htmlAbbr) Body(v ...UI) HTMLAbbr {
+	e.setChildren(v...)
 	return e
 }
 
@@ -778,6 +786,10 @@ func (e *htmlAbbr) TabIndex(v int) HTMLAbbr {
 
 func (e *htmlAbbr) Title(v string) HTMLAbbr {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlAbbr) On(event string, h EventHandler, scope ...interface{}) HTMLAbbr {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -1001,6 +1013,8 @@ type HTMLAddress interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLAddress
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLAddress
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLAddress
@@ -1102,7 +1116,7 @@ type HTMLAddress interface {
 // Address returns an HTML element that defines contact information for the author/owner of a document.
 func Address() HTMLAddress {
 	e := &htmlAddress{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "address",
 			isSelfClosing: false,
 		},
@@ -1112,11 +1126,11 @@ func Address() HTMLAddress {
 }
 
 type htmlAddress struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlAddress) Body(elems ...UI) HTMLAddress {
-	e.setBody(elems...)
+func (e *htmlAddress) Body(v ...UI) HTMLAddress {
+	e.setChildren(v...)
 	return e
 }
 
@@ -1213,6 +1227,10 @@ func (e *htmlAddress) TabIndex(v int) HTMLAddress {
 
 func (e *htmlAddress) Title(v string) HTMLAddress {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlAddress) On(event string, h EventHandler, scope ...interface{}) HTMLAddress {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -1460,6 +1478,8 @@ type HTMLArea interface {
 
 	// Type specifies the type of element.
 	Type(v string) HTMLArea
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLArea
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLArea
@@ -1561,7 +1581,7 @@ type HTMLArea interface {
 // Area returns an HTML element that defines an area inside an image-map.
 func Area() HTMLArea {
 	e := &htmlArea{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "area",
 			isSelfClosing: true,
 		},
@@ -1571,7 +1591,7 @@ func Area() HTMLArea {
 }
 
 type htmlArea struct {
-	elem
+	htmlElement
 }
 
 func (e *htmlArea) AccessKey(v string) HTMLArea {
@@ -1713,6 +1733,10 @@ func (e *htmlArea) Title(v string) HTMLArea {
 
 func (e *htmlArea) Type(v string) HTMLArea {
 	e.setAttr("type", v)
+	return e
+}
+func (e *htmlArea) On(event string, h EventHandler, scope ...interface{}) HTMLArea {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -1936,6 +1960,8 @@ type HTMLArticle interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLArticle
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLArticle
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLArticle
@@ -2037,7 +2063,7 @@ type HTMLArticle interface {
 // Article returns an HTML element that defines an article.
 func Article() HTMLArticle {
 	e := &htmlArticle{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "article",
 			isSelfClosing: false,
 		},
@@ -2047,11 +2073,11 @@ func Article() HTMLArticle {
 }
 
 type htmlArticle struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlArticle) Body(elems ...UI) HTMLArticle {
-	e.setBody(elems...)
+func (e *htmlArticle) Body(v ...UI) HTMLArticle {
+	e.setChildren(v...)
 	return e
 }
 
@@ -2148,6 +2174,10 @@ func (e *htmlArticle) TabIndex(v int) HTMLArticle {
 
 func (e *htmlArticle) Title(v string) HTMLArticle {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlArticle) On(event string, h EventHandler, scope ...interface{}) HTMLArticle {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -2371,6 +2401,8 @@ type HTMLAside interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLAside
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLAside
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLAside
@@ -2472,7 +2504,7 @@ type HTMLAside interface {
 // Aside returns an HTML element that defines content aside from the page content.
 func Aside() HTMLAside {
 	e := &htmlAside{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "aside",
 			isSelfClosing: false,
 		},
@@ -2482,11 +2514,11 @@ func Aside() HTMLAside {
 }
 
 type htmlAside struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlAside) Body(elems ...UI) HTMLAside {
-	e.setBody(elems...)
+func (e *htmlAside) Body(v ...UI) HTMLAside {
+	e.setChildren(v...)
 	return e
 }
 
@@ -2583,6 +2615,10 @@ func (e *htmlAside) TabIndex(v int) HTMLAside {
 
 func (e *htmlAside) Title(v string) HTMLAside {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlAside) On(event string, h EventHandler, scope ...interface{}) HTMLAside {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -2827,6 +2863,8 @@ type HTMLAudio interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLAudio
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLAudio
 
 	// OnAbort calls the given handler on abort.
 	OnAbort(h EventHandler, scope ...interface{}) HTMLAudio
@@ -2997,7 +3035,7 @@ type HTMLAudio interface {
 // Audio returns an HTML element that defines sound content.
 func Audio() HTMLAudio {
 	e := &htmlAudio{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "audio",
 			isSelfClosing: false,
 		},
@@ -3007,11 +3045,11 @@ func Audio() HTMLAudio {
 }
 
 type htmlAudio struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlAudio) Body(elems ...UI) HTMLAudio {
-	e.setBody(elems...)
+func (e *htmlAudio) Body(v ...UI) HTMLAudio {
+	e.setChildren(v...)
 	return e
 }
 
@@ -3143,6 +3181,10 @@ func (e *htmlAudio) TabIndex(v int) HTMLAudio {
 
 func (e *htmlAudio) Title(v string) HTMLAudio {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlAudio) On(event string, h EventHandler, scope ...interface{}) HTMLAudio {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -3481,6 +3523,8 @@ type HTMLB interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLB
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLB
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLB
@@ -3582,7 +3626,7 @@ type HTMLB interface {
 // B returns an HTML element that defines bold text.
 func B() HTMLB {
 	e := &htmlB{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "b",
 			isSelfClosing: false,
 		},
@@ -3592,11 +3636,11 @@ func B() HTMLB {
 }
 
 type htmlB struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlB) Body(elems ...UI) HTMLB {
-	e.setBody(elems...)
+func (e *htmlB) Body(v ...UI) HTMLB {
+	e.setChildren(v...)
 	return e
 }
 
@@ -3693,6 +3737,10 @@ func (e *htmlB) TabIndex(v int) HTMLB {
 
 func (e *htmlB) Title(v string) HTMLB {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlB) On(event string, h EventHandler, scope ...interface{}) HTMLB {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -3916,6 +3964,8 @@ type HTMLBase interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBase
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLBase
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLBase
@@ -4017,7 +4067,7 @@ type HTMLBase interface {
 // Base returns an HTML element that specifies the base URL/target for all relative URLs in a document.
 func Base() HTMLBase {
 	e := &htmlBase{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "base",
 			isSelfClosing: true,
 		},
@@ -4027,7 +4077,7 @@ func Base() HTMLBase {
 }
 
 type htmlBase struct {
-	elem
+	htmlElement
 }
 
 func (e *htmlBase) AccessKey(v string) HTMLBase {
@@ -4129,6 +4179,10 @@ func (e *htmlBase) Target(v string) HTMLBase {
 
 func (e *htmlBase) Title(v string) HTMLBase {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlBase) On(event string, h EventHandler, scope ...interface{}) HTMLBase {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -4352,6 +4406,8 @@ type HTMLBdi interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBdi
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLBdi
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLBdi
@@ -4453,7 +4509,7 @@ type HTMLBdi interface {
 // Bdi returns an HTML element that isolates a part of text that might be formatted in a different direction from other text outside it.
 func Bdi() HTMLBdi {
 	e := &htmlBdi{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "bdi",
 			isSelfClosing: false,
 		},
@@ -4463,11 +4519,11 @@ func Bdi() HTMLBdi {
 }
 
 type htmlBdi struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlBdi) Body(elems ...UI) HTMLBdi {
-	e.setBody(elems...)
+func (e *htmlBdi) Body(v ...UI) HTMLBdi {
+	e.setChildren(v...)
 	return e
 }
 
@@ -4564,6 +4620,10 @@ func (e *htmlBdi) TabIndex(v int) HTMLBdi {
 
 func (e *htmlBdi) Title(v string) HTMLBdi {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlBdi) On(event string, h EventHandler, scope ...interface{}) HTMLBdi {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -4787,6 +4847,8 @@ type HTMLBdo interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBdo
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLBdo
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLBdo
@@ -4888,7 +4950,7 @@ type HTMLBdo interface {
 // Bdo returns an HTML element that overrides the current text direction.
 func Bdo() HTMLBdo {
 	e := &htmlBdo{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "bdo",
 			isSelfClosing: false,
 		},
@@ -4898,11 +4960,11 @@ func Bdo() HTMLBdo {
 }
 
 type htmlBdo struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlBdo) Body(elems ...UI) HTMLBdo {
-	e.setBody(elems...)
+func (e *htmlBdo) Body(v ...UI) HTMLBdo {
+	e.setChildren(v...)
 	return e
 }
 
@@ -4999,6 +5061,10 @@ func (e *htmlBdo) TabIndex(v int) HTMLBdo {
 
 func (e *htmlBdo) Title(v string) HTMLBdo {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlBdo) On(event string, h EventHandler, scope ...interface{}) HTMLBdo {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -5225,6 +5291,8 @@ type HTMLBlockquote interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBlockquote
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLBlockquote
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLBlockquote
@@ -5326,7 +5394,7 @@ type HTMLBlockquote interface {
 // Blockquote returns an HTML element that defines a section that is quoted from another source.
 func Blockquote() HTMLBlockquote {
 	e := &htmlBlockquote{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "blockquote",
 			isSelfClosing: false,
 		},
@@ -5336,11 +5404,11 @@ func Blockquote() HTMLBlockquote {
 }
 
 type htmlBlockquote struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlBlockquote) Body(elems ...UI) HTMLBlockquote {
-	e.setBody(elems...)
+func (e *htmlBlockquote) Body(v ...UI) HTMLBlockquote {
+	e.setChildren(v...)
 	return e
 }
 
@@ -5442,6 +5510,10 @@ func (e *htmlBlockquote) TabIndex(v int) HTMLBlockquote {
 
 func (e *htmlBlockquote) Title(v string) HTMLBlockquote {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlBlockquote) On(event string, h EventHandler, scope ...interface{}) HTMLBlockquote {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -5661,6 +5733,8 @@ type HTMLBody interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBody
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLBody
 
 	// OnAfterPrint runs the given handler after the document is printed.
 	OnAfterPrint(h EventHandler, scope ...interface{}) HTMLBody
@@ -5807,7 +5881,7 @@ type HTMLBody interface {
 // Body returns an HTML element that defines the document's body.
 func Body() HTMLBody {
 	e := &htmlBody{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "body",
 			isSelfClosing: false,
 		},
@@ -5817,11 +5891,11 @@ func Body() HTMLBody {
 }
 
 type htmlBody struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlBody) privateBody(elems ...UI) HTMLBody {
-	e.setBody(elems...)
+func (e *htmlBody) privateBody(v ...UI) HTMLBody {
+	e.setChildren(v...)
 	return e
 }
 
@@ -5914,6 +5988,10 @@ func (e *htmlBody) TabIndex(v int) HTMLBody {
 
 func (e *htmlBody) Title(v string) HTMLBody {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlBody) On(event string, h EventHandler, scope ...interface{}) HTMLBody {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -6206,6 +6284,8 @@ type HTMLBr interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBr
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLBr
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLBr
@@ -6307,7 +6387,7 @@ type HTMLBr interface {
 // Br returns an HTML element that defines a single line break.
 func Br() HTMLBr {
 	e := &htmlBr{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "br",
 			isSelfClosing: true,
 		},
@@ -6317,7 +6397,7 @@ func Br() HTMLBr {
 }
 
 type htmlBr struct {
-	elem
+	htmlElement
 }
 
 func (e *htmlBr) AccessKey(v string) HTMLBr {
@@ -6409,6 +6489,10 @@ func (e *htmlBr) TabIndex(v int) HTMLBr {
 
 func (e *htmlBr) Title(v string) HTMLBr {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlBr) On(event string, h EventHandler, scope ...interface{}) HTMLBr {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -6665,6 +6749,8 @@ type HTMLButton interface {
 
 	// Value specifies the value of the element.
 	Value(v interface{}) HTMLButton
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLButton
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLButton
@@ -6766,7 +6852,7 @@ type HTMLButton interface {
 // Button returns an HTML element that defines a clickable button.
 func Button() HTMLButton {
 	e := &htmlButton{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "button",
 			isSelfClosing: false,
 		},
@@ -6776,11 +6862,11 @@ func Button() HTMLButton {
 }
 
 type htmlButton struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlButton) Body(elems ...UI) HTMLButton {
-	e.setBody(elems...)
+func (e *htmlButton) Body(v ...UI) HTMLButton {
+	e.setChildren(v...)
 	return e
 }
 
@@ -6932,6 +7018,10 @@ func (e *htmlButton) Type(v string) HTMLButton {
 
 func (e *htmlButton) Value(v interface{}) HTMLButton {
 	e.setAttr("value", v)
+	return e
+}
+func (e *htmlButton) On(event string, h EventHandler, scope ...interface{}) HTMLButton {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -7161,6 +7251,8 @@ type HTMLCanvas interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLCanvas
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLCanvas
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLCanvas
@@ -7262,7 +7354,7 @@ type HTMLCanvas interface {
 // Canvas returns an HTML element that is used to draw graphics on the fly.
 func Canvas() HTMLCanvas {
 	e := &htmlCanvas{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "canvas",
 			isSelfClosing: false,
 		},
@@ -7272,11 +7364,11 @@ func Canvas() HTMLCanvas {
 }
 
 type htmlCanvas struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlCanvas) Body(elems ...UI) HTMLCanvas {
-	e.setBody(elems...)
+func (e *htmlCanvas) Body(v ...UI) HTMLCanvas {
+	e.setChildren(v...)
 	return e
 }
 
@@ -7383,6 +7475,10 @@ func (e *htmlCanvas) Title(v string) HTMLCanvas {
 
 func (e *htmlCanvas) Width(v int) HTMLCanvas {
 	e.setAttr("width", v)
+	return e
+}
+func (e *htmlCanvas) On(event string, h EventHandler, scope ...interface{}) HTMLCanvas {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -7606,6 +7702,8 @@ type HTMLCaption interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLCaption
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLCaption
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLCaption
@@ -7707,7 +7805,7 @@ type HTMLCaption interface {
 // Caption returns an HTML element that defines a table caption.
 func Caption() HTMLCaption {
 	e := &htmlCaption{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "caption",
 			isSelfClosing: false,
 		},
@@ -7717,11 +7815,11 @@ func Caption() HTMLCaption {
 }
 
 type htmlCaption struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlCaption) Body(elems ...UI) HTMLCaption {
-	e.setBody(elems...)
+func (e *htmlCaption) Body(v ...UI) HTMLCaption {
+	e.setChildren(v...)
 	return e
 }
 
@@ -7818,6 +7916,10 @@ func (e *htmlCaption) TabIndex(v int) HTMLCaption {
 
 func (e *htmlCaption) Title(v string) HTMLCaption {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlCaption) On(event string, h EventHandler, scope ...interface{}) HTMLCaption {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -8041,6 +8143,8 @@ type HTMLCite interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLCite
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLCite
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLCite
@@ -8142,7 +8246,7 @@ type HTMLCite interface {
 // Cite returns an HTML element that defines the title of a work.
 func Cite() HTMLCite {
 	e := &htmlCite{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "cite",
 			isSelfClosing: false,
 		},
@@ -8152,11 +8256,11 @@ func Cite() HTMLCite {
 }
 
 type htmlCite struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlCite) Body(elems ...UI) HTMLCite {
-	e.setBody(elems...)
+func (e *htmlCite) Body(v ...UI) HTMLCite {
+	e.setChildren(v...)
 	return e
 }
 
@@ -8253,6 +8357,10 @@ func (e *htmlCite) TabIndex(v int) HTMLCite {
 
 func (e *htmlCite) Title(v string) HTMLCite {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlCite) On(event string, h EventHandler, scope ...interface{}) HTMLCite {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -8476,6 +8584,8 @@ type HTMLCode interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLCode
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLCode
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLCode
@@ -8577,7 +8687,7 @@ type HTMLCode interface {
 // Code returns an HTML element that defines a piece of computer code.
 func Code() HTMLCode {
 	e := &htmlCode{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "code",
 			isSelfClosing: false,
 		},
@@ -8587,11 +8697,11 @@ func Code() HTMLCode {
 }
 
 type htmlCode struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlCode) Body(elems ...UI) HTMLCode {
-	e.setBody(elems...)
+func (e *htmlCode) Body(v ...UI) HTMLCode {
+	e.setChildren(v...)
 	return e
 }
 
@@ -8688,6 +8798,10 @@ func (e *htmlCode) TabIndex(v int) HTMLCode {
 
 func (e *htmlCode) Title(v string) HTMLCode {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlCode) On(event string, h EventHandler, scope ...interface{}) HTMLCode {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -8908,6 +9022,8 @@ type HTMLCol interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLCol
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLCol
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLCol
@@ -9009,7 +9125,7 @@ type HTMLCol interface {
 // Col returns an HTML element that specifies column properties for each column within a colgroup element.
 func Col() HTMLCol {
 	e := &htmlCol{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "col",
 			isSelfClosing: true,
 		},
@@ -9019,7 +9135,7 @@ func Col() HTMLCol {
 }
 
 type htmlCol struct {
-	elem
+	htmlElement
 }
 
 func (e *htmlCol) AccessKey(v string) HTMLCol {
@@ -9116,6 +9232,10 @@ func (e *htmlCol) TabIndex(v int) HTMLCol {
 
 func (e *htmlCol) Title(v string) HTMLCol {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlCol) On(event string, h EventHandler, scope ...interface{}) HTMLCol {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -9342,6 +9462,8 @@ type HTMLColGroup interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLColGroup
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLColGroup
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLColGroup
@@ -9443,7 +9565,7 @@ type HTMLColGroup interface {
 // ColGroup returns an HTML element that specifies a group of one or more columns in a table for formatting.
 func ColGroup() HTMLColGroup {
 	e := &htmlColGroup{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "colgroup",
 			isSelfClosing: false,
 		},
@@ -9453,11 +9575,11 @@ func ColGroup() HTMLColGroup {
 }
 
 type htmlColGroup struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlColGroup) Body(elems ...UI) HTMLColGroup {
-	e.setBody(elems...)
+func (e *htmlColGroup) Body(v ...UI) HTMLColGroup {
+	e.setChildren(v...)
 	return e
 }
 
@@ -9559,6 +9681,10 @@ func (e *htmlColGroup) TabIndex(v int) HTMLColGroup {
 
 func (e *htmlColGroup) Title(v string) HTMLColGroup {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlColGroup) On(event string, h EventHandler, scope ...interface{}) HTMLColGroup {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -9785,12 +9911,14 @@ type HTMLData interface {
 
 	// Value specifies the value of the element.
 	Value(v interface{}) HTMLData
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLData
 }
 
 // Data returns an HTML element that links the given content with a machine-readable translation.
 func Data() HTMLData {
 	e := &htmlData{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "data",
 			isSelfClosing: false,
 		},
@@ -9800,11 +9928,11 @@ func Data() HTMLData {
 }
 
 type htmlData struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlData) Body(elems ...UI) HTMLData {
-	e.setBody(elems...)
+func (e *htmlData) Body(v ...UI) HTMLData {
+	e.setChildren(v...)
 	return e
 }
 
@@ -9908,6 +10036,10 @@ func (e *htmlData) Value(v interface{}) HTMLData {
 	e.setAttr("value", v)
 	return e
 }
+func (e *htmlData) On(event string, h EventHandler, scope ...interface{}) HTMLData {
+	e.setEventHandler(event, h, scope...)
+	return e
+}
 
 // HTMLDataList is the interface that describes a <datalist> HTML element.
 type HTMLDataList interface {
@@ -9969,6 +10101,8 @@ type HTMLDataList interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDataList
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLDataList
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDataList
@@ -10070,7 +10204,7 @@ type HTMLDataList interface {
 // DataList returns an HTML element that specifies a list of pre-defined options for input controls.
 func DataList() HTMLDataList {
 	e := &htmlDataList{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "datalist",
 			isSelfClosing: false,
 		},
@@ -10080,11 +10214,11 @@ func DataList() HTMLDataList {
 }
 
 type htmlDataList struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlDataList) Body(elems ...UI) HTMLDataList {
-	e.setBody(elems...)
+func (e *htmlDataList) Body(v ...UI) HTMLDataList {
+	e.setChildren(v...)
 	return e
 }
 
@@ -10181,6 +10315,10 @@ func (e *htmlDataList) TabIndex(v int) HTMLDataList {
 
 func (e *htmlDataList) Title(v string) HTMLDataList {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlDataList) On(event string, h EventHandler, scope ...interface{}) HTMLDataList {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -10404,6 +10542,8 @@ type HTMLDd interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDd
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLDd
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDd
@@ -10505,7 +10645,7 @@ type HTMLDd interface {
 // Dd returns an HTML element that defines a description/value of a term in a description list.
 func Dd() HTMLDd {
 	e := &htmlDd{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "dd",
 			isSelfClosing: false,
 		},
@@ -10515,11 +10655,11 @@ func Dd() HTMLDd {
 }
 
 type htmlDd struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlDd) Body(elems ...UI) HTMLDd {
-	e.setBody(elems...)
+func (e *htmlDd) Body(v ...UI) HTMLDd {
+	e.setChildren(v...)
 	return e
 }
 
@@ -10616,6 +10756,10 @@ func (e *htmlDd) TabIndex(v int) HTMLDd {
 
 func (e *htmlDd) Title(v string) HTMLDd {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlDd) On(event string, h EventHandler, scope ...interface{}) HTMLDd {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -10845,6 +10989,8 @@ type HTMLDel interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDel
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLDel
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDel
@@ -10946,7 +11092,7 @@ type HTMLDel interface {
 // Del returns an HTML element that defines text that has been deleted from a document.
 func Del() HTMLDel {
 	e := &htmlDel{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "del",
 			isSelfClosing: false,
 		},
@@ -10956,11 +11102,11 @@ func Del() HTMLDel {
 }
 
 type htmlDel struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlDel) Body(elems ...UI) HTMLDel {
-	e.setBody(elems...)
+func (e *htmlDel) Body(v ...UI) HTMLDel {
+	e.setChildren(v...)
 	return e
 }
 
@@ -11067,6 +11213,10 @@ func (e *htmlDel) TabIndex(v int) HTMLDel {
 
 func (e *htmlDel) Title(v string) HTMLDel {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlDel) On(event string, h EventHandler, scope ...interface{}) HTMLDel {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -11293,6 +11443,8 @@ type HTMLDetails interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDetails
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLDetails
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDetails
@@ -11397,7 +11549,7 @@ type HTMLDetails interface {
 // Details returns an HTML element that defines additional details that the user can view or hide.
 func Details() HTMLDetails {
 	e := &htmlDetails{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "details",
 			isSelfClosing: false,
 		},
@@ -11407,11 +11559,11 @@ func Details() HTMLDetails {
 }
 
 type htmlDetails struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlDetails) Body(elems ...UI) HTMLDetails {
-	e.setBody(elems...)
+func (e *htmlDetails) Body(v ...UI) HTMLDetails {
+	e.setChildren(v...)
 	return e
 }
 
@@ -11513,6 +11665,10 @@ func (e *htmlDetails) TabIndex(v int) HTMLDetails {
 
 func (e *htmlDetails) Title(v string) HTMLDetails {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlDetails) On(event string, h EventHandler, scope ...interface{}) HTMLDetails {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -11741,6 +11897,8 @@ type HTMLDfn interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDfn
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLDfn
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDfn
@@ -11842,7 +12000,7 @@ type HTMLDfn interface {
 // Dfn returns an HTML element that represents the defining instance of a term.
 func Dfn() HTMLDfn {
 	e := &htmlDfn{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "dfn",
 			isSelfClosing: false,
 		},
@@ -11852,11 +12010,11 @@ func Dfn() HTMLDfn {
 }
 
 type htmlDfn struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlDfn) Body(elems ...UI) HTMLDfn {
-	e.setBody(elems...)
+func (e *htmlDfn) Body(v ...UI) HTMLDfn {
+	e.setChildren(v...)
 	return e
 }
 
@@ -11953,6 +12111,10 @@ func (e *htmlDfn) TabIndex(v int) HTMLDfn {
 
 func (e *htmlDfn) Title(v string) HTMLDfn {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlDfn) On(event string, h EventHandler, scope ...interface{}) HTMLDfn {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -12179,6 +12341,8 @@ type HTMLDialog interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDialog
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLDialog
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDialog
@@ -12280,7 +12444,7 @@ type HTMLDialog interface {
 // Dialog returns an HTML element that defines a dialog box or window.
 func Dialog() HTMLDialog {
 	e := &htmlDialog{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "dialog",
 			isSelfClosing: false,
 		},
@@ -12290,11 +12454,11 @@ func Dialog() HTMLDialog {
 }
 
 type htmlDialog struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlDialog) Body(elems ...UI) HTMLDialog {
-	e.setBody(elems...)
+func (e *htmlDialog) Body(v ...UI) HTMLDialog {
+	e.setChildren(v...)
 	return e
 }
 
@@ -12396,6 +12560,10 @@ func (e *htmlDialog) TabIndex(v int) HTMLDialog {
 
 func (e *htmlDialog) Title(v string) HTMLDialog {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlDialog) On(event string, h EventHandler, scope ...interface{}) HTMLDialog {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -12619,6 +12787,8 @@ type HTMLDiv interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDiv
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLDiv
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDiv
@@ -12720,7 +12890,7 @@ type HTMLDiv interface {
 // Div returns an HTML element that defines a section in a document.
 func Div() HTMLDiv {
 	e := &htmlDiv{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "div",
 			isSelfClosing: false,
 		},
@@ -12730,11 +12900,11 @@ func Div() HTMLDiv {
 }
 
 type htmlDiv struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlDiv) Body(elems ...UI) HTMLDiv {
-	e.setBody(elems...)
+func (e *htmlDiv) Body(v ...UI) HTMLDiv {
+	e.setChildren(v...)
 	return e
 }
 
@@ -12831,6 +13001,10 @@ func (e *htmlDiv) TabIndex(v int) HTMLDiv {
 
 func (e *htmlDiv) Title(v string) HTMLDiv {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlDiv) On(event string, h EventHandler, scope ...interface{}) HTMLDiv {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -13054,6 +13228,8 @@ type HTMLDl interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDl
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLDl
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDl
@@ -13155,7 +13331,7 @@ type HTMLDl interface {
 // Dl returns an HTML element that defines a description list.
 func Dl() HTMLDl {
 	e := &htmlDl{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "dl",
 			isSelfClosing: false,
 		},
@@ -13165,11 +13341,11 @@ func Dl() HTMLDl {
 }
 
 type htmlDl struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlDl) Body(elems ...UI) HTMLDl {
-	e.setBody(elems...)
+func (e *htmlDl) Body(v ...UI) HTMLDl {
+	e.setChildren(v...)
 	return e
 }
 
@@ -13266,6 +13442,10 @@ func (e *htmlDl) TabIndex(v int) HTMLDl {
 
 func (e *htmlDl) Title(v string) HTMLDl {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlDl) On(event string, h EventHandler, scope ...interface{}) HTMLDl {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -13489,6 +13669,8 @@ type HTMLDt interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDt
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLDt
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLDt
@@ -13590,7 +13772,7 @@ type HTMLDt interface {
 // Dt returns an HTML element that defines a term/name in a description list.
 func Dt() HTMLDt {
 	e := &htmlDt{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "dt",
 			isSelfClosing: false,
 		},
@@ -13600,11 +13782,11 @@ func Dt() HTMLDt {
 }
 
 type htmlDt struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlDt) Body(elems ...UI) HTMLDt {
-	e.setBody(elems...)
+func (e *htmlDt) Body(v ...UI) HTMLDt {
+	e.setChildren(v...)
 	return e
 }
 
@@ -13701,6 +13883,10 @@ func (e *htmlDt) TabIndex(v int) HTMLDt {
 
 func (e *htmlDt) Title(v string) HTMLDt {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlDt) On(event string, h EventHandler, scope ...interface{}) HTMLDt {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -13924,6 +14110,8 @@ type HTMLEm interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLEm
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLEm
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLEm
@@ -14025,7 +14213,7 @@ type HTMLEm interface {
 // Em returns an HTML element that defines emphasized text.
 func Em() HTMLEm {
 	e := &htmlEm{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "em",
 			isSelfClosing: false,
 		},
@@ -14035,11 +14223,11 @@ func Em() HTMLEm {
 }
 
 type htmlEm struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlEm) Body(elems ...UI) HTMLEm {
-	e.setBody(elems...)
+func (e *htmlEm) Body(v ...UI) HTMLEm {
+	e.setChildren(v...)
 	return e
 }
 
@@ -14136,6 +14324,10 @@ func (e *htmlEm) TabIndex(v int) HTMLEm {
 
 func (e *htmlEm) Title(v string) HTMLEm {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlEm) On(event string, h EventHandler, scope ...interface{}) HTMLEm {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -14365,6 +14557,8 @@ type HTMLEmbed interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLEmbed
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLEmbed
 
 	// OnAbort calls the given handler on abort.
 	OnAbort(h EventHandler, scope ...interface{}) HTMLEmbed
@@ -14535,7 +14729,7 @@ type HTMLEmbed interface {
 // Embed returns an HTML element that defines a container for an external (non-HTML) application.
 func Embed() HTMLEmbed {
 	e := &htmlEmbed{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "embed",
 			isSelfClosing: true,
 		},
@@ -14545,7 +14739,7 @@ func Embed() HTMLEmbed {
 }
 
 type htmlEmbed struct {
-	elem
+	htmlElement
 }
 
 func (e *htmlEmbed) AccessKey(v string) HTMLEmbed {
@@ -14657,6 +14851,10 @@ func (e *htmlEmbed) Type(v string) HTMLEmbed {
 
 func (e *htmlEmbed) Width(v int) HTMLEmbed {
 	e.setAttr("width", v)
+	return e
+}
+func (e *htmlEmbed) On(event string, h EventHandler, scope ...interface{}) HTMLEmbed {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -15004,6 +15202,8 @@ type HTMLFieldSet interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLFieldSet
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLFieldSet
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLFieldSet
@@ -15105,7 +15305,7 @@ type HTMLFieldSet interface {
 // FieldSet returns an HTML element that groups related elements in a form.
 func FieldSet() HTMLFieldSet {
 	e := &htmlFieldSet{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "fieldset",
 			isSelfClosing: false,
 		},
@@ -15115,11 +15315,11 @@ func FieldSet() HTMLFieldSet {
 }
 
 type htmlFieldSet struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlFieldSet) Body(elems ...UI) HTMLFieldSet {
-	e.setBody(elems...)
+func (e *htmlFieldSet) Body(v ...UI) HTMLFieldSet {
+	e.setChildren(v...)
 	return e
 }
 
@@ -15231,6 +15431,10 @@ func (e *htmlFieldSet) TabIndex(v int) HTMLFieldSet {
 
 func (e *htmlFieldSet) Title(v string) HTMLFieldSet {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlFieldSet) On(event string, h EventHandler, scope ...interface{}) HTMLFieldSet {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -15454,6 +15658,8 @@ type HTMLFigCaption interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLFigCaption
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLFigCaption
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLFigCaption
@@ -15555,7 +15761,7 @@ type HTMLFigCaption interface {
 // FigCaption returns an HTML element that defines a caption for a figure element.
 func FigCaption() HTMLFigCaption {
 	e := &htmlFigCaption{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "figcaption",
 			isSelfClosing: false,
 		},
@@ -15565,11 +15771,11 @@ func FigCaption() HTMLFigCaption {
 }
 
 type htmlFigCaption struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlFigCaption) Body(elems ...UI) HTMLFigCaption {
-	e.setBody(elems...)
+func (e *htmlFigCaption) Body(v ...UI) HTMLFigCaption {
+	e.setChildren(v...)
 	return e
 }
 
@@ -15666,6 +15872,10 @@ func (e *htmlFigCaption) TabIndex(v int) HTMLFigCaption {
 
 func (e *htmlFigCaption) Title(v string) HTMLFigCaption {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlFigCaption) On(event string, h EventHandler, scope ...interface{}) HTMLFigCaption {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -15889,6 +16099,8 @@ type HTMLFigure interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLFigure
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLFigure
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLFigure
@@ -15990,7 +16202,7 @@ type HTMLFigure interface {
 // Figure returns an HTML element that specifies self-contained content.
 func Figure() HTMLFigure {
 	e := &htmlFigure{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "figure",
 			isSelfClosing: false,
 		},
@@ -16000,11 +16212,11 @@ func Figure() HTMLFigure {
 }
 
 type htmlFigure struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlFigure) Body(elems ...UI) HTMLFigure {
-	e.setBody(elems...)
+func (e *htmlFigure) Body(v ...UI) HTMLFigure {
+	e.setChildren(v...)
 	return e
 }
 
@@ -16101,6 +16313,10 @@ func (e *htmlFigure) TabIndex(v int) HTMLFigure {
 
 func (e *htmlFigure) Title(v string) HTMLFigure {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlFigure) On(event string, h EventHandler, scope ...interface{}) HTMLFigure {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -16324,6 +16540,8 @@ type HTMLFooter interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLFooter
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLFooter
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLFooter
@@ -16425,7 +16643,7 @@ type HTMLFooter interface {
 // Footer returns an HTML element that defines a footer for a document or section.
 func Footer() HTMLFooter {
 	e := &htmlFooter{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "footer",
 			isSelfClosing: false,
 		},
@@ -16435,11 +16653,11 @@ func Footer() HTMLFooter {
 }
 
 type htmlFooter struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlFooter) Body(elems ...UI) HTMLFooter {
-	e.setBody(elems...)
+func (e *htmlFooter) Body(v ...UI) HTMLFooter {
+	e.setChildren(v...)
 	return e
 }
 
@@ -16536,6 +16754,10 @@ func (e *htmlFooter) TabIndex(v int) HTMLFooter {
 
 func (e *htmlFooter) Title(v string) HTMLFooter {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlFooter) On(event string, h EventHandler, scope ...interface{}) HTMLFooter {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -16783,6 +17005,8 @@ type HTMLForm interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLForm
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLForm
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLForm
@@ -16884,7 +17108,7 @@ type HTMLForm interface {
 // Form returns an HTML element that defines an HTML form for user input.
 func Form() HTMLForm {
 	e := &htmlForm{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "form",
 			isSelfClosing: false,
 		},
@@ -16894,11 +17118,11 @@ func Form() HTMLForm {
 }
 
 type htmlForm struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlForm) Body(elems ...UI) HTMLForm {
-	e.setBody(elems...)
+func (e *htmlForm) Body(v ...UI) HTMLForm {
+	e.setChildren(v...)
 	return e
 }
 
@@ -17040,6 +17264,10 @@ func (e *htmlForm) Target(v string) HTMLForm {
 
 func (e *htmlForm) Title(v string) HTMLForm {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlForm) On(event string, h EventHandler, scope ...interface{}) HTMLForm {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -17263,6 +17491,8 @@ type HTMLH1 interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH1
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLH1
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLH1
@@ -17364,7 +17594,7 @@ type HTMLH1 interface {
 // H1 returns an HTML element that defines HTML heading.
 func H1() HTMLH1 {
 	e := &htmlH1{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "h1",
 			isSelfClosing: false,
 		},
@@ -17374,11 +17604,11 @@ func H1() HTMLH1 {
 }
 
 type htmlH1 struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlH1) Body(elems ...UI) HTMLH1 {
-	e.setBody(elems...)
+func (e *htmlH1) Body(v ...UI) HTMLH1 {
+	e.setChildren(v...)
 	return e
 }
 
@@ -17475,6 +17705,10 @@ func (e *htmlH1) TabIndex(v int) HTMLH1 {
 
 func (e *htmlH1) Title(v string) HTMLH1 {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlH1) On(event string, h EventHandler, scope ...interface{}) HTMLH1 {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -17698,6 +17932,8 @@ type HTMLH2 interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH2
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLH2
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLH2
@@ -17799,7 +18035,7 @@ type HTMLH2 interface {
 // H2 returns an HTML element that defines HTML heading.
 func H2() HTMLH2 {
 	e := &htmlH2{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "h2",
 			isSelfClosing: false,
 		},
@@ -17809,11 +18045,11 @@ func H2() HTMLH2 {
 }
 
 type htmlH2 struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlH2) Body(elems ...UI) HTMLH2 {
-	e.setBody(elems...)
+func (e *htmlH2) Body(v ...UI) HTMLH2 {
+	e.setChildren(v...)
 	return e
 }
 
@@ -17910,6 +18146,10 @@ func (e *htmlH2) TabIndex(v int) HTMLH2 {
 
 func (e *htmlH2) Title(v string) HTMLH2 {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlH2) On(event string, h EventHandler, scope ...interface{}) HTMLH2 {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -18133,6 +18373,8 @@ type HTMLH3 interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH3
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLH3
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLH3
@@ -18234,7 +18476,7 @@ type HTMLH3 interface {
 // H3 returns an HTML element that defines HTML heading.
 func H3() HTMLH3 {
 	e := &htmlH3{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "h3",
 			isSelfClosing: false,
 		},
@@ -18244,11 +18486,11 @@ func H3() HTMLH3 {
 }
 
 type htmlH3 struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlH3) Body(elems ...UI) HTMLH3 {
-	e.setBody(elems...)
+func (e *htmlH3) Body(v ...UI) HTMLH3 {
+	e.setChildren(v...)
 	return e
 }
 
@@ -18345,6 +18587,10 @@ func (e *htmlH3) TabIndex(v int) HTMLH3 {
 
 func (e *htmlH3) Title(v string) HTMLH3 {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlH3) On(event string, h EventHandler, scope ...interface{}) HTMLH3 {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -18568,6 +18814,8 @@ type HTMLH4 interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH4
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLH4
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLH4
@@ -18669,7 +18917,7 @@ type HTMLH4 interface {
 // H4 returns an HTML element that defines HTML heading.
 func H4() HTMLH4 {
 	e := &htmlH4{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "h4",
 			isSelfClosing: false,
 		},
@@ -18679,11 +18927,11 @@ func H4() HTMLH4 {
 }
 
 type htmlH4 struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlH4) Body(elems ...UI) HTMLH4 {
-	e.setBody(elems...)
+func (e *htmlH4) Body(v ...UI) HTMLH4 {
+	e.setChildren(v...)
 	return e
 }
 
@@ -18780,6 +19028,10 @@ func (e *htmlH4) TabIndex(v int) HTMLH4 {
 
 func (e *htmlH4) Title(v string) HTMLH4 {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlH4) On(event string, h EventHandler, scope ...interface{}) HTMLH4 {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -19003,6 +19255,8 @@ type HTMLH5 interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH5
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLH5
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLH5
@@ -19104,7 +19358,7 @@ type HTMLH5 interface {
 // H5 returns an HTML element that defines HTML heading.
 func H5() HTMLH5 {
 	e := &htmlH5{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "h5",
 			isSelfClosing: false,
 		},
@@ -19114,11 +19368,11 @@ func H5() HTMLH5 {
 }
 
 type htmlH5 struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlH5) Body(elems ...UI) HTMLH5 {
-	e.setBody(elems...)
+func (e *htmlH5) Body(v ...UI) HTMLH5 {
+	e.setChildren(v...)
 	return e
 }
 
@@ -19215,6 +19469,10 @@ func (e *htmlH5) TabIndex(v int) HTMLH5 {
 
 func (e *htmlH5) Title(v string) HTMLH5 {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlH5) On(event string, h EventHandler, scope ...interface{}) HTMLH5 {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -19438,6 +19696,8 @@ type HTMLH6 interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH6
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLH6
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLH6
@@ -19539,7 +19799,7 @@ type HTMLH6 interface {
 // H6 returns an HTML element that defines HTML heading.
 func H6() HTMLH6 {
 	e := &htmlH6{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "h6",
 			isSelfClosing: false,
 		},
@@ -19549,11 +19809,11 @@ func H6() HTMLH6 {
 }
 
 type htmlH6 struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlH6) Body(elems ...UI) HTMLH6 {
-	e.setBody(elems...)
+func (e *htmlH6) Body(v ...UI) HTMLH6 {
+	e.setChildren(v...)
 	return e
 }
 
@@ -19650,6 +19910,10 @@ func (e *htmlH6) TabIndex(v int) HTMLH6 {
 
 func (e *htmlH6) Title(v string) HTMLH6 {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlH6) On(event string, h EventHandler, scope ...interface{}) HTMLH6 {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -19873,12 +20137,14 @@ type HTMLHead interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLHead
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLHead
 }
 
 // Head returns an HTML element that defines information about the document.
 func Head() HTMLHead {
 	e := &htmlHead{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "head",
 			isSelfClosing: false,
 		},
@@ -19888,11 +20154,11 @@ func Head() HTMLHead {
 }
 
 type htmlHead struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlHead) Body(elems ...UI) HTMLHead {
-	e.setBody(elems...)
+func (e *htmlHead) Body(v ...UI) HTMLHead {
+	e.setChildren(v...)
 	return e
 }
 
@@ -19991,6 +20257,10 @@ func (e *htmlHead) Title(v string) HTMLHead {
 	e.setAttr("title", v)
 	return e
 }
+func (e *htmlHead) On(event string, h EventHandler, scope ...interface{}) HTMLHead {
+	e.setEventHandler(event, h, scope...)
+	return e
+}
 
 // HTMLHeader is the interface that describes a <header> HTML element.
 type HTMLHeader interface {
@@ -20052,6 +20322,8 @@ type HTMLHeader interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLHeader
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLHeader
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLHeader
@@ -20153,7 +20425,7 @@ type HTMLHeader interface {
 // Header returns an HTML element that defines a header for a document or section.
 func Header() HTMLHeader {
 	e := &htmlHeader{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "header",
 			isSelfClosing: false,
 		},
@@ -20163,11 +20435,11 @@ func Header() HTMLHeader {
 }
 
 type htmlHeader struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlHeader) Body(elems ...UI) HTMLHeader {
-	e.setBody(elems...)
+func (e *htmlHeader) Body(v ...UI) HTMLHeader {
+	e.setChildren(v...)
 	return e
 }
 
@@ -20264,6 +20536,10 @@ func (e *htmlHeader) TabIndex(v int) HTMLHeader {
 
 func (e *htmlHeader) Title(v string) HTMLHeader {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlHeader) On(event string, h EventHandler, scope ...interface{}) HTMLHeader {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -20481,6 +20757,8 @@ type HTMLHr interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLHr
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLHr
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLHr
@@ -20582,7 +20860,7 @@ type HTMLHr interface {
 // Hr returns an HTML element that defines a thematic change in the content.
 func Hr() HTMLHr {
 	e := &htmlHr{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "hr",
 			isSelfClosing: true,
 		},
@@ -20592,7 +20870,7 @@ func Hr() HTMLHr {
 }
 
 type htmlHr struct {
-	elem
+	htmlElement
 }
 
 func (e *htmlHr) AccessKey(v string) HTMLHr {
@@ -20684,6 +20962,10 @@ func (e *htmlHr) TabIndex(v int) HTMLHr {
 
 func (e *htmlHr) Title(v string) HTMLHr {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlHr) On(event string, h EventHandler, scope ...interface{}) HTMLHr {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -20903,12 +21185,14 @@ type HTMLHtml interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLHtml
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLHtml
 }
 
 // Html returns an HTML element that defines the root of an HTML document.
 func Html() HTMLHtml {
 	e := &htmlHtml{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "html",
 			isSelfClosing: false,
 		},
@@ -20918,11 +21202,11 @@ func Html() HTMLHtml {
 }
 
 type htmlHtml struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlHtml) privateBody(elems ...UI) HTMLHtml {
-	e.setBody(elems...)
+func (e *htmlHtml) privateBody(v ...UI) HTMLHtml {
+	e.setChildren(v...)
 	return e
 }
 
@@ -21017,6 +21301,10 @@ func (e *htmlHtml) Title(v string) HTMLHtml {
 	e.setAttr("title", v)
 	return e
 }
+func (e *htmlHtml) On(event string, h EventHandler, scope ...interface{}) HTMLHtml {
+	e.setEventHandler(event, h, scope...)
+	return e
+}
 
 // HTMLI is the interface that describes a <i> HTML element.
 type HTMLI interface {
@@ -21078,6 +21366,8 @@ type HTMLI interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLI
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLI
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLI
@@ -21179,7 +21469,7 @@ type HTMLI interface {
 // I returns an HTML element that defines a part of text in an alternate voice or mood.
 func I() HTMLI {
 	e := &htmlI{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "i",
 			isSelfClosing: false,
 		},
@@ -21189,11 +21479,11 @@ func I() HTMLI {
 }
 
 type htmlI struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlI) Body(elems ...UI) HTMLI {
-	e.setBody(elems...)
+func (e *htmlI) Body(v ...UI) HTMLI {
+	e.setChildren(v...)
 	return e
 }
 
@@ -21290,6 +21580,10 @@ func (e *htmlI) TabIndex(v int) HTMLI {
 
 func (e *htmlI) Title(v string) HTMLI {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlI) On(event string, h EventHandler, scope ...interface{}) HTMLI {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -21546,6 +21840,8 @@ type HTMLIFrame interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLIFrame
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLIFrame
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLIFrame
@@ -21650,7 +21946,7 @@ type HTMLIFrame interface {
 // IFrame returns an HTML element that defines an inline frame.
 func IFrame() HTMLIFrame {
 	e := &htmlIFrame{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "iframe",
 			isSelfClosing: false,
 		},
@@ -21660,11 +21956,11 @@ func IFrame() HTMLIFrame {
 }
 
 type htmlIFrame struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlIFrame) Body(elems ...UI) HTMLIFrame {
-	e.setBody(elems...)
+func (e *htmlIFrame) Body(v ...UI) HTMLIFrame {
+	e.setChildren(v...)
 	return e
 }
 
@@ -21826,6 +22122,10 @@ func (e *htmlIFrame) Title(v string) HTMLIFrame {
 
 func (e *htmlIFrame) Width(v int) HTMLIFrame {
 	e.setAttr("width", v)
+	return e
+}
+func (e *htmlIFrame) On(event string, h EventHandler, scope ...interface{}) HTMLIFrame {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -22075,6 +22375,8 @@ type HTMLImg interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLImg
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLImg
 
 	// OnAbort calls the given handler on abort.
 	OnAbort(h EventHandler, scope ...interface{}) HTMLImg
@@ -22248,7 +22550,7 @@ type HTMLImg interface {
 // Img returns an HTML element that defines an image.
 func Img() HTMLImg {
 	e := &htmlImg{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "img",
 			isSelfClosing: true,
 		},
@@ -22258,7 +22560,7 @@ func Img() HTMLImg {
 }
 
 type htmlImg struct {
-	elem
+	htmlElement
 }
 
 func (e *htmlImg) AccessKey(v string) HTMLImg {
@@ -22395,6 +22697,10 @@ func (e *htmlImg) UseMap(v string) HTMLImg {
 
 func (e *htmlImg) Width(v int) HTMLImg {
 	e.setAttr("width", v)
+	return e
+}
+func (e *htmlImg) On(event string, h EventHandler, scope ...interface{}) HTMLImg {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -22825,6 +23131,8 @@ type HTMLInput interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLInput
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLInput
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLInput
@@ -22929,7 +23237,7 @@ type HTMLInput interface {
 // Input returns an HTML element that defines an input control.
 func Input() HTMLInput {
 	e := &htmlInput{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "input",
 			isSelfClosing: true,
 		},
@@ -22939,7 +23247,7 @@ func Input() HTMLInput {
 }
 
 type htmlInput struct {
-	elem
+	htmlElement
 }
 
 func (e *htmlInput) Accept(v string) HTMLInput {
@@ -23193,6 +23501,10 @@ func (e *htmlInput) Width(v int) HTMLInput {
 	e.setAttr("width", v)
 	return e
 }
+func (e *htmlInput) On(event string, h EventHandler, scope ...interface{}) HTMLInput {
+	e.setEventHandler(event, h, scope...)
+	return e
+}
 
 func (e *htmlInput) OnBlur(h EventHandler, scope ...interface{}) HTMLInput {
 	e.setEventHandler("blur", h, scope...)
@@ -23419,6 +23731,8 @@ type HTMLIns interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLIns
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLIns
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLIns
@@ -23520,7 +23834,7 @@ type HTMLIns interface {
 // Ins returns an HTML element that defines a text that has been inserted into a document.
 func Ins() HTMLIns {
 	e := &htmlIns{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "ins",
 			isSelfClosing: false,
 		},
@@ -23530,11 +23844,11 @@ func Ins() HTMLIns {
 }
 
 type htmlIns struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlIns) Body(elems ...UI) HTMLIns {
-	e.setBody(elems...)
+func (e *htmlIns) Body(v ...UI) HTMLIns {
+	e.setChildren(v...)
 	return e
 }
 
@@ -23631,6 +23945,10 @@ func (e *htmlIns) TabIndex(v int) HTMLIns {
 
 func (e *htmlIns) Title(v string) HTMLIns {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlIns) On(event string, h EventHandler, scope ...interface{}) HTMLIns {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -23854,6 +24172,8 @@ type HTMLKbd interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLKbd
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLKbd
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLKbd
@@ -23955,7 +24275,7 @@ type HTMLKbd interface {
 // Kbd returns an HTML element that defines keyboard input.
 func Kbd() HTMLKbd {
 	e := &htmlKbd{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "kbd",
 			isSelfClosing: false,
 		},
@@ -23965,11 +24285,11 @@ func Kbd() HTMLKbd {
 }
 
 type htmlKbd struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlKbd) Body(elems ...UI) HTMLKbd {
-	e.setBody(elems...)
+func (e *htmlKbd) Body(v ...UI) HTMLKbd {
+	e.setChildren(v...)
 	return e
 }
 
@@ -24066,6 +24386,10 @@ func (e *htmlKbd) TabIndex(v int) HTMLKbd {
 
 func (e *htmlKbd) Title(v string) HTMLKbd {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlKbd) On(event string, h EventHandler, scope ...interface{}) HTMLKbd {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -24295,6 +24619,8 @@ type HTMLLabel interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLLabel
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLLabel
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLLabel
@@ -24396,7 +24722,7 @@ type HTMLLabel interface {
 // Label returns an HTML element that defines a label for an input element.
 func Label() HTMLLabel {
 	e := &htmlLabel{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "label",
 			isSelfClosing: false,
 		},
@@ -24406,11 +24732,11 @@ func Label() HTMLLabel {
 }
 
 type htmlLabel struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlLabel) Body(elems ...UI) HTMLLabel {
-	e.setBody(elems...)
+func (e *htmlLabel) Body(v ...UI) HTMLLabel {
+	e.setChildren(v...)
 	return e
 }
 
@@ -24517,6 +24843,10 @@ func (e *htmlLabel) TabIndex(v int) HTMLLabel {
 
 func (e *htmlLabel) Title(v string) HTMLLabel {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlLabel) On(event string, h EventHandler, scope ...interface{}) HTMLLabel {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -24740,6 +25070,8 @@ type HTMLLegend interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLLegend
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLLegend
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLLegend
@@ -24841,7 +25173,7 @@ type HTMLLegend interface {
 // Legend returns an HTML element that defines a caption for a fieldset element.
 func Legend() HTMLLegend {
 	e := &htmlLegend{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "legend",
 			isSelfClosing: false,
 		},
@@ -24851,11 +25183,11 @@ func Legend() HTMLLegend {
 }
 
 type htmlLegend struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlLegend) Body(elems ...UI) HTMLLegend {
-	e.setBody(elems...)
+func (e *htmlLegend) Body(v ...UI) HTMLLegend {
+	e.setChildren(v...)
 	return e
 }
 
@@ -24952,6 +25284,10 @@ func (e *htmlLegend) TabIndex(v int) HTMLLegend {
 
 func (e *htmlLegend) Title(v string) HTMLLegend {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlLegend) On(event string, h EventHandler, scope ...interface{}) HTMLLegend {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -25178,6 +25514,8 @@ type HTMLLi interface {
 
 	// Value specifies the value of the element.
 	Value(v interface{}) HTMLLi
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLLi
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLLi
@@ -25279,7 +25617,7 @@ type HTMLLi interface {
 // Li returns an HTML element that defines a list item.
 func Li() HTMLLi {
 	e := &htmlLi{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "li",
 			isSelfClosing: false,
 		},
@@ -25289,11 +25627,11 @@ func Li() HTMLLi {
 }
 
 type htmlLi struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlLi) Body(elems ...UI) HTMLLi {
-	e.setBody(elems...)
+func (e *htmlLi) Body(v ...UI) HTMLLi {
+	e.setChildren(v...)
 	return e
 }
 
@@ -25395,6 +25733,10 @@ func (e *htmlLi) Title(v string) HTMLLi {
 
 func (e *htmlLi) Value(v interface{}) HTMLLi {
 	e.setAttr("value", v)
+	return e
+}
+func (e *htmlLi) On(event string, h EventHandler, scope ...interface{}) HTMLLi {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -25633,6 +25975,8 @@ type HTMLLink interface {
 
 	// Type specifies the type of element.
 	Type(v string) HTMLLink
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLLink
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLLink
@@ -25737,7 +26081,7 @@ type HTMLLink interface {
 // Link returns an HTML element that defines the relationship between a document and an external resource (most used to link to style sheets).
 func Link() HTMLLink {
 	e := &htmlLink{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "link",
 			isSelfClosing: true,
 		},
@@ -25747,7 +26091,7 @@ func Link() HTMLLink {
 }
 
 type htmlLink struct {
-	elem
+	htmlElement
 }
 
 func (e *htmlLink) AccessKey(v string) HTMLLink {
@@ -25874,6 +26218,10 @@ func (e *htmlLink) Title(v string) HTMLLink {
 
 func (e *htmlLink) Type(v string) HTMLLink {
 	e.setAttr("type", v)
+	return e
+}
+func (e *htmlLink) On(event string, h EventHandler, scope ...interface{}) HTMLLink {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -26102,6 +26450,8 @@ type HTMLMain interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLMain
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLMain
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLMain
@@ -26203,7 +26553,7 @@ type HTMLMain interface {
 // Main returns an HTML element that specifies the main content of a document.
 func Main() HTMLMain {
 	e := &htmlMain{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "main",
 			isSelfClosing: false,
 		},
@@ -26213,11 +26563,11 @@ func Main() HTMLMain {
 }
 
 type htmlMain struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlMain) Body(elems ...UI) HTMLMain {
-	e.setBody(elems...)
+func (e *htmlMain) Body(v ...UI) HTMLMain {
+	e.setChildren(v...)
 	return e
 }
 
@@ -26314,6 +26664,10 @@ func (e *htmlMain) TabIndex(v int) HTMLMain {
 
 func (e *htmlMain) Title(v string) HTMLMain {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlMain) On(event string, h EventHandler, scope ...interface{}) HTMLMain {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -26540,6 +26894,8 @@ type HTMLMap interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLMap
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLMap
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLMap
@@ -26641,7 +26997,7 @@ type HTMLMap interface {
 // Map returns an HTML element that defines a client-side image-map.
 func Map() HTMLMap {
 	e := &htmlMap{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "map",
 			isSelfClosing: false,
 		},
@@ -26651,11 +27007,11 @@ func Map() HTMLMap {
 }
 
 type htmlMap struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlMap) Body(elems ...UI) HTMLMap {
-	e.setBody(elems...)
+func (e *htmlMap) Body(v ...UI) HTMLMap {
+	e.setChildren(v...)
 	return e
 }
 
@@ -26757,6 +27113,10 @@ func (e *htmlMap) TabIndex(v int) HTMLMap {
 
 func (e *htmlMap) Title(v string) HTMLMap {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlMap) On(event string, h EventHandler, scope ...interface{}) HTMLMap {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -26980,6 +27340,8 @@ type HTMLMark interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLMark
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLMark
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLMark
@@ -27081,7 +27443,7 @@ type HTMLMark interface {
 // Mark returns an HTML element that defines marked/highlighted text.
 func Mark() HTMLMark {
 	e := &htmlMark{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "mark",
 			isSelfClosing: false,
 		},
@@ -27091,11 +27453,11 @@ func Mark() HTMLMark {
 }
 
 type htmlMark struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlMark) Body(elems ...UI) HTMLMark {
-	e.setBody(elems...)
+func (e *htmlMark) Body(v ...UI) HTMLMark {
+	e.setChildren(v...)
 	return e
 }
 
@@ -27192,6 +27554,10 @@ func (e *htmlMark) TabIndex(v int) HTMLMark {
 
 func (e *htmlMark) Title(v string) HTMLMark {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlMark) On(event string, h EventHandler, scope ...interface{}) HTMLMark {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -27424,12 +27790,14 @@ type HTMLMeta interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLMeta
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLMeta
 }
 
 // Meta returns an HTML element that .
 func Meta() HTMLMeta {
 	e := &htmlMeta{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "meta",
 			isSelfClosing: true,
 		},
@@ -27439,7 +27807,7 @@ func Meta() HTMLMeta {
 }
 
 type htmlMeta struct {
-	elem
+	htmlElement
 }
 
 func (e *htmlMeta) AccessKey(v string) HTMLMeta {
@@ -27558,6 +27926,10 @@ func (e *htmlMeta) Title(v string) HTMLMeta {
 	e.setAttr("title", v)
 	return e
 }
+func (e *htmlMeta) On(event string, h EventHandler, scope ...interface{}) HTMLMeta {
+	e.setEventHandler(event, h, scope...)
+	return e
+}
 
 // HTMLMeter is the interface that describes a <meter> HTML element.
 type HTMLMeter interface {
@@ -27640,6 +28012,8 @@ type HTMLMeter interface {
 
 	// Value specifies the value of the element.
 	Value(v interface{}) HTMLMeter
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLMeter
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLMeter
@@ -27741,7 +28115,7 @@ type HTMLMeter interface {
 // Meter returns an HTML element that defines a scalar measurement within a known range (a gauge).
 func Meter() HTMLMeter {
 	e := &htmlMeter{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "meter",
 			isSelfClosing: false,
 		},
@@ -27751,11 +28125,11 @@ func Meter() HTMLMeter {
 }
 
 type htmlMeter struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlMeter) Body(elems ...UI) HTMLMeter {
-	e.setBody(elems...)
+func (e *htmlMeter) Body(v ...UI) HTMLMeter {
+	e.setChildren(v...)
 	return e
 }
 
@@ -27887,6 +28261,10 @@ func (e *htmlMeter) Title(v string) HTMLMeter {
 
 func (e *htmlMeter) Value(v interface{}) HTMLMeter {
 	e.setAttr("value", v)
+	return e
+}
+func (e *htmlMeter) On(event string, h EventHandler, scope ...interface{}) HTMLMeter {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -28110,6 +28488,8 @@ type HTMLNav interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLNav
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLNav
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLNav
@@ -28211,7 +28591,7 @@ type HTMLNav interface {
 // Nav returns an HTML element that defines navigation links.
 func Nav() HTMLNav {
 	e := &htmlNav{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "nav",
 			isSelfClosing: false,
 		},
@@ -28221,11 +28601,11 @@ func Nav() HTMLNav {
 }
 
 type htmlNav struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlNav) Body(elems ...UI) HTMLNav {
-	e.setBody(elems...)
+func (e *htmlNav) Body(v ...UI) HTMLNav {
+	e.setChildren(v...)
 	return e
 }
 
@@ -28322,6 +28702,10 @@ func (e *htmlNav) TabIndex(v int) HTMLNav {
 
 func (e *htmlNav) Title(v string) HTMLNav {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlNav) On(event string, h EventHandler, scope ...interface{}) HTMLNav {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -28545,12 +28929,14 @@ type HTMLNoScript interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLNoScript
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLNoScript
 }
 
 // NoScript returns an HTML element that defines an alternate content for users that do not support client-side scripts.
 func NoScript() HTMLNoScript {
 	e := &htmlNoScript{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "noscript",
 			isSelfClosing: false,
 		},
@@ -28560,11 +28946,11 @@ func NoScript() HTMLNoScript {
 }
 
 type htmlNoScript struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlNoScript) Body(elems ...UI) HTMLNoScript {
-	e.setBody(elems...)
+func (e *htmlNoScript) Body(v ...UI) HTMLNoScript {
+	e.setChildren(v...)
 	return e
 }
 
@@ -28663,6 +29049,10 @@ func (e *htmlNoScript) Title(v string) HTMLNoScript {
 	e.setAttr("title", v)
 	return e
 }
+func (e *htmlNoScript) On(event string, h EventHandler, scope ...interface{}) HTMLNoScript {
+	e.setEventHandler(event, h, scope...)
+	return e
+}
 
 // HTMLObject is the interface that describes a <object> HTML element.
 type HTMLObject interface {
@@ -28745,6 +29135,8 @@ type HTMLObject interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLObject
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLObject
 
 	// OnAbort calls the given handler on abort.
 	OnAbort(h EventHandler, scope ...interface{}) HTMLObject
@@ -28915,7 +29307,7 @@ type HTMLObject interface {
 // Object returns an HTML element that defines an embedded object.
 func Object() HTMLObject {
 	e := &htmlObject{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "object",
 			isSelfClosing: false,
 		},
@@ -28925,11 +29317,11 @@ func Object() HTMLObject {
 }
 
 type htmlObject struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlObject) Body(elems ...UI) HTMLObject {
-	e.setBody(elems...)
+func (e *htmlObject) Body(v ...UI) HTMLObject {
+	e.setChildren(v...)
 	return e
 }
 
@@ -29061,6 +29453,10 @@ func (e *htmlObject) UseMap(v string) HTMLObject {
 
 func (e *htmlObject) Width(v int) HTMLObject {
 	e.setAttr("width", v)
+	return e
+}
+func (e *htmlObject) On(event string, h EventHandler, scope ...interface{}) HTMLObject {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -29408,6 +29804,8 @@ type HTMLOl interface {
 
 	// Type specifies the type of element.
 	Type(v string) HTMLOl
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLOl
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLOl
@@ -29509,7 +29907,7 @@ type HTMLOl interface {
 // Ol returns an HTML element that defines an ordered list.
 func Ol() HTMLOl {
 	e := &htmlOl{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "ol",
 			isSelfClosing: false,
 		},
@@ -29519,11 +29917,11 @@ func Ol() HTMLOl {
 }
 
 type htmlOl struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlOl) Body(elems ...UI) HTMLOl {
-	e.setBody(elems...)
+func (e *htmlOl) Body(v ...UI) HTMLOl {
+	e.setChildren(v...)
 	return e
 }
 
@@ -29635,6 +30033,10 @@ func (e *htmlOl) Title(v string) HTMLOl {
 
 func (e *htmlOl) Type(v string) HTMLOl {
 	e.setAttr("type", v)
+	return e
+}
+func (e *htmlOl) On(event string, h EventHandler, scope ...interface{}) HTMLOl {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -29864,6 +30266,8 @@ type HTMLOptGroup interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLOptGroup
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLOptGroup
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLOptGroup
@@ -29965,7 +30369,7 @@ type HTMLOptGroup interface {
 // OptGroup returns an HTML element that defines a group of related options in a drop-down list.
 func OptGroup() HTMLOptGroup {
 	e := &htmlOptGroup{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "optgroup",
 			isSelfClosing: false,
 		},
@@ -29975,11 +30379,11 @@ func OptGroup() HTMLOptGroup {
 }
 
 type htmlOptGroup struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlOptGroup) Body(elems ...UI) HTMLOptGroup {
-	e.setBody(elems...)
+func (e *htmlOptGroup) Body(v ...UI) HTMLOptGroup {
+	e.setChildren(v...)
 	return e
 }
 
@@ -30086,6 +30490,10 @@ func (e *htmlOptGroup) TabIndex(v int) HTMLOptGroup {
 
 func (e *htmlOptGroup) Title(v string) HTMLOptGroup {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlOptGroup) On(event string, h EventHandler, scope ...interface{}) HTMLOptGroup {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -30321,6 +30729,8 @@ type HTMLOption interface {
 
 	// Value specifies the value of the element.
 	Value(v interface{}) HTMLOption
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLOption
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLOption
@@ -30422,7 +30832,7 @@ type HTMLOption interface {
 // Option returns an HTML element that defines an option in a drop-down list.
 func Option() HTMLOption {
 	e := &htmlOption{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "option",
 			isSelfClosing: false,
 		},
@@ -30432,11 +30842,11 @@ func Option() HTMLOption {
 }
 
 type htmlOption struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlOption) Body(elems ...UI) HTMLOption {
-	e.setBody(elems...)
+func (e *htmlOption) Body(v ...UI) HTMLOption {
+	e.setChildren(v...)
 	return e
 }
 
@@ -30553,6 +30963,10 @@ func (e *htmlOption) Title(v string) HTMLOption {
 
 func (e *htmlOption) Value(v interface{}) HTMLOption {
 	e.setAttr("value", v)
+	return e
+}
+func (e *htmlOption) On(event string, h EventHandler, scope ...interface{}) HTMLOption {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -30785,6 +31199,8 @@ type HTMLOutput interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLOutput
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLOutput
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLOutput
@@ -30886,7 +31302,7 @@ type HTMLOutput interface {
 // Output returns an HTML element that .
 func Output() HTMLOutput {
 	e := &htmlOutput{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "output",
 			isSelfClosing: false,
 		},
@@ -30896,11 +31312,11 @@ func Output() HTMLOutput {
 }
 
 type htmlOutput struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlOutput) Body(elems ...UI) HTMLOutput {
-	e.setBody(elems...)
+func (e *htmlOutput) Body(v ...UI) HTMLOutput {
+	e.setChildren(v...)
 	return e
 }
 
@@ -31012,6 +31428,10 @@ func (e *htmlOutput) TabIndex(v int) HTMLOutput {
 
 func (e *htmlOutput) Title(v string) HTMLOutput {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlOutput) On(event string, h EventHandler, scope ...interface{}) HTMLOutput {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -31235,6 +31655,8 @@ type HTMLP interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLP
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLP
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLP
@@ -31336,7 +31758,7 @@ type HTMLP interface {
 // P returns an HTML element that defines a paragraph.
 func P() HTMLP {
 	e := &htmlP{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "p",
 			isSelfClosing: false,
 		},
@@ -31346,11 +31768,11 @@ func P() HTMLP {
 }
 
 type htmlP struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlP) Body(elems ...UI) HTMLP {
-	e.setBody(elems...)
+func (e *htmlP) Body(v ...UI) HTMLP {
+	e.setChildren(v...)
 	return e
 }
 
@@ -31447,6 +31869,10 @@ func (e *htmlP) TabIndex(v int) HTMLP {
 
 func (e *htmlP) Title(v string) HTMLP {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlP) On(event string, h EventHandler, scope ...interface{}) HTMLP {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -31670,6 +32096,8 @@ type HTMLParam interface {
 
 	// Value specifies the value of the element.
 	Value(v interface{}) HTMLParam
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLParam
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLParam
@@ -31771,7 +32199,7 @@ type HTMLParam interface {
 // Param returns an HTML element that defines a parameter for an object.
 func Param() HTMLParam {
 	e := &htmlParam{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "param",
 			isSelfClosing: true,
 		},
@@ -31781,7 +32209,7 @@ func Param() HTMLParam {
 }
 
 type htmlParam struct {
-	elem
+	htmlElement
 }
 
 func (e *htmlParam) AccessKey(v string) HTMLParam {
@@ -31883,6 +32311,10 @@ func (e *htmlParam) Title(v string) HTMLParam {
 
 func (e *htmlParam) Value(v interface{}) HTMLParam {
 	e.setAttr("value", v)
+	return e
+}
+func (e *htmlParam) On(event string, h EventHandler, scope ...interface{}) HTMLParam {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -32106,6 +32538,8 @@ type HTMLPicture interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLPicture
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLPicture
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLPicture
@@ -32207,7 +32641,7 @@ type HTMLPicture interface {
 // Picture returns an HTML element that defines a container for multiple image resources.
 func Picture() HTMLPicture {
 	e := &htmlPicture{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "picture",
 			isSelfClosing: false,
 		},
@@ -32217,11 +32651,11 @@ func Picture() HTMLPicture {
 }
 
 type htmlPicture struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlPicture) Body(elems ...UI) HTMLPicture {
-	e.setBody(elems...)
+func (e *htmlPicture) Body(v ...UI) HTMLPicture {
+	e.setChildren(v...)
 	return e
 }
 
@@ -32318,6 +32752,10 @@ func (e *htmlPicture) TabIndex(v int) HTMLPicture {
 
 func (e *htmlPicture) Title(v string) HTMLPicture {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlPicture) On(event string, h EventHandler, scope ...interface{}) HTMLPicture {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -32541,6 +32979,8 @@ type HTMLPre interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLPre
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLPre
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLPre
@@ -32642,7 +33082,7 @@ type HTMLPre interface {
 // Pre returns an HTML element that defines preformatted text.
 func Pre() HTMLPre {
 	e := &htmlPre{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "pre",
 			isSelfClosing: false,
 		},
@@ -32652,11 +33092,11 @@ func Pre() HTMLPre {
 }
 
 type htmlPre struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlPre) Body(elems ...UI) HTMLPre {
-	e.setBody(elems...)
+func (e *htmlPre) Body(v ...UI) HTMLPre {
+	e.setChildren(v...)
 	return e
 }
 
@@ -32753,6 +33193,10 @@ func (e *htmlPre) TabIndex(v int) HTMLPre {
 
 func (e *htmlPre) Title(v string) HTMLPre {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlPre) On(event string, h EventHandler, scope ...interface{}) HTMLPre {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -32982,6 +33426,8 @@ type HTMLProgress interface {
 
 	// Value specifies the value of the element.
 	Value(v interface{}) HTMLProgress
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLProgress
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLProgress
@@ -33083,7 +33529,7 @@ type HTMLProgress interface {
 // Progress returns an HTML element that represents the progress of a task.
 func Progress() HTMLProgress {
 	e := &htmlProgress{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "progress",
 			isSelfClosing: false,
 		},
@@ -33093,11 +33539,11 @@ func Progress() HTMLProgress {
 }
 
 type htmlProgress struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlProgress) Body(elems ...UI) HTMLProgress {
-	e.setBody(elems...)
+func (e *htmlProgress) Body(v ...UI) HTMLProgress {
+	e.setChildren(v...)
 	return e
 }
 
@@ -33204,6 +33650,10 @@ func (e *htmlProgress) Title(v string) HTMLProgress {
 
 func (e *htmlProgress) Value(v interface{}) HTMLProgress {
 	e.setAttr("value", v)
+	return e
+}
+func (e *htmlProgress) On(event string, h EventHandler, scope ...interface{}) HTMLProgress {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -33430,6 +33880,8 @@ type HTMLQ interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLQ
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLQ
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLQ
@@ -33531,7 +33983,7 @@ type HTMLQ interface {
 // Q returns an HTML element that defines a short quotation.
 func Q() HTMLQ {
 	e := &htmlQ{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "q",
 			isSelfClosing: false,
 		},
@@ -33541,11 +33993,11 @@ func Q() HTMLQ {
 }
 
 type htmlQ struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlQ) Body(elems ...UI) HTMLQ {
-	e.setBody(elems...)
+func (e *htmlQ) Body(v ...UI) HTMLQ {
+	e.setChildren(v...)
 	return e
 }
 
@@ -33647,6 +34099,10 @@ func (e *htmlQ) TabIndex(v int) HTMLQ {
 
 func (e *htmlQ) Title(v string) HTMLQ {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlQ) On(event string, h EventHandler, scope ...interface{}) HTMLQ {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -33870,6 +34326,8 @@ type HTMLRp interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLRp
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLRp
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLRp
@@ -33971,7 +34429,7 @@ type HTMLRp interface {
 // Rp returns an HTML element that defines what to show in browsers that do not support ruby annotations.
 func Rp() HTMLRp {
 	e := &htmlRp{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "rp",
 			isSelfClosing: false,
 		},
@@ -33981,11 +34439,11 @@ func Rp() HTMLRp {
 }
 
 type htmlRp struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlRp) Body(elems ...UI) HTMLRp {
-	e.setBody(elems...)
+func (e *htmlRp) Body(v ...UI) HTMLRp {
+	e.setChildren(v...)
 	return e
 }
 
@@ -34082,6 +34540,10 @@ func (e *htmlRp) TabIndex(v int) HTMLRp {
 
 func (e *htmlRp) Title(v string) HTMLRp {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlRp) On(event string, h EventHandler, scope ...interface{}) HTMLRp {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -34305,6 +34767,8 @@ type HTMLRt interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLRt
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLRt
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLRt
@@ -34406,7 +34870,7 @@ type HTMLRt interface {
 // Rt returns an HTML element that defines an explanation/pronunciation of characters (for East Asian typography).
 func Rt() HTMLRt {
 	e := &htmlRt{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "rt",
 			isSelfClosing: false,
 		},
@@ -34416,11 +34880,11 @@ func Rt() HTMLRt {
 }
 
 type htmlRt struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlRt) Body(elems ...UI) HTMLRt {
-	e.setBody(elems...)
+func (e *htmlRt) Body(v ...UI) HTMLRt {
+	e.setChildren(v...)
 	return e
 }
 
@@ -34517,6 +34981,10 @@ func (e *htmlRt) TabIndex(v int) HTMLRt {
 
 func (e *htmlRt) Title(v string) HTMLRt {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlRt) On(event string, h EventHandler, scope ...interface{}) HTMLRt {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -34740,6 +35208,8 @@ type HTMLRuby interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLRuby
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLRuby
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLRuby
@@ -34841,7 +35311,7 @@ type HTMLRuby interface {
 // Ruby returns an HTML element that defines a ruby annotation (for East Asian typography).
 func Ruby() HTMLRuby {
 	e := &htmlRuby{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "ruby",
 			isSelfClosing: false,
 		},
@@ -34851,11 +35321,11 @@ func Ruby() HTMLRuby {
 }
 
 type htmlRuby struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlRuby) Body(elems ...UI) HTMLRuby {
-	e.setBody(elems...)
+func (e *htmlRuby) Body(v ...UI) HTMLRuby {
+	e.setChildren(v...)
 	return e
 }
 
@@ -34952,6 +35422,10 @@ func (e *htmlRuby) TabIndex(v int) HTMLRuby {
 
 func (e *htmlRuby) Title(v string) HTMLRuby {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlRuby) On(event string, h EventHandler, scope ...interface{}) HTMLRuby {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -35175,6 +35649,8 @@ type HTMLS interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLS
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLS
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLS
@@ -35276,7 +35752,7 @@ type HTMLS interface {
 // S returns an HTML element that Defines text that is no longer correct.
 func S() HTMLS {
 	e := &htmlS{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "s",
 			isSelfClosing: false,
 		},
@@ -35286,11 +35762,11 @@ func S() HTMLS {
 }
 
 type htmlS struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlS) Body(elems ...UI) HTMLS {
-	e.setBody(elems...)
+func (e *htmlS) Body(v ...UI) HTMLS {
+	e.setChildren(v...)
 	return e
 }
 
@@ -35387,6 +35863,10 @@ func (e *htmlS) TabIndex(v int) HTMLS {
 
 func (e *htmlS) Title(v string) HTMLS {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlS) On(event string, h EventHandler, scope ...interface{}) HTMLS {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -35610,6 +36090,8 @@ type HTMLSamp interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSamp
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLSamp
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSamp
@@ -35711,7 +36193,7 @@ type HTMLSamp interface {
 // Samp returns an HTML element that defines sample output from a computer program.
 func Samp() HTMLSamp {
 	e := &htmlSamp{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "samp",
 			isSelfClosing: false,
 		},
@@ -35721,11 +36203,11 @@ func Samp() HTMLSamp {
 }
 
 type htmlSamp struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlSamp) Body(elems ...UI) HTMLSamp {
-	e.setBody(elems...)
+func (e *htmlSamp) Body(v ...UI) HTMLSamp {
+	e.setChildren(v...)
 	return e
 }
 
@@ -35822,6 +36304,10 @@ func (e *htmlSamp) TabIndex(v int) HTMLSamp {
 
 func (e *htmlSamp) Title(v string) HTMLSamp {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlSamp) On(event string, h EventHandler, scope ...interface{}) HTMLSamp {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -36063,6 +36549,8 @@ type HTMLScript interface {
 
 	// Type specifies the type of element.
 	Type(v string) HTMLScript
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLScript
 
 	// OnLoad calls the given handler after the element is finished loading.
 	OnLoad(h EventHandler, scope ...interface{}) HTMLScript
@@ -36071,7 +36559,7 @@ type HTMLScript interface {
 // Script returns an HTML element that defines a client-side script.
 func Script() HTMLScript {
 	e := &htmlScript{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "script",
 			isSelfClosing: false,
 		},
@@ -36081,11 +36569,11 @@ func Script() HTMLScript {
 }
 
 type htmlScript struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlScript) Body(elems ...UI) HTMLScript {
-	e.setBody(elems...)
+func (e *htmlScript) Body(v ...UI) HTMLScript {
+	e.setChildren(v...)
 	return e
 }
 
@@ -36214,6 +36702,10 @@ func (e *htmlScript) Type(v string) HTMLScript {
 	e.setAttr("type", v)
 	return e
 }
+func (e *htmlScript) On(event string, h EventHandler, scope ...interface{}) HTMLScript {
+	e.setEventHandler(event, h, scope...)
+	return e
+}
 
 func (e *htmlScript) OnLoad(h EventHandler, scope ...interface{}) HTMLScript {
 	e.setEventHandler("load", h, scope...)
@@ -36280,6 +36772,8 @@ type HTMLSection interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSection
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLSection
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSection
@@ -36381,7 +36875,7 @@ type HTMLSection interface {
 // Section returns an HTML element that defines a section in a document.
 func Section() HTMLSection {
 	e := &htmlSection{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "section",
 			isSelfClosing: false,
 		},
@@ -36391,11 +36885,11 @@ func Section() HTMLSection {
 }
 
 type htmlSection struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlSection) Body(elems ...UI) HTMLSection {
-	e.setBody(elems...)
+func (e *htmlSection) Body(v ...UI) HTMLSection {
+	e.setChildren(v...)
 	return e
 }
 
@@ -36492,6 +36986,10 @@ func (e *htmlSection) TabIndex(v int) HTMLSection {
 
 func (e *htmlSection) Title(v string) HTMLSection {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlSection) On(event string, h EventHandler, scope ...interface{}) HTMLSection {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -36736,6 +37234,8 @@ type HTMLSelect interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSelect
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLSelect
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSelect
@@ -36837,7 +37337,7 @@ type HTMLSelect interface {
 // Select returns an HTML element that defines a drop-down list.
 func Select() HTMLSelect {
 	e := &htmlSelect{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "select",
 			isSelfClosing: false,
 		},
@@ -36847,11 +37347,11 @@ func Select() HTMLSelect {
 }
 
 type htmlSelect struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlSelect) Body(elems ...UI) HTMLSelect {
-	e.setBody(elems...)
+func (e *htmlSelect) Body(v ...UI) HTMLSelect {
+	e.setChildren(v...)
 	return e
 }
 
@@ -36983,6 +37483,10 @@ func (e *htmlSelect) TabIndex(v int) HTMLSelect {
 
 func (e *htmlSelect) Title(v string) HTMLSelect {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlSelect) On(event string, h EventHandler, scope ...interface{}) HTMLSelect {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -37206,6 +37710,8 @@ type HTMLSmall interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSmall
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLSmall
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSmall
@@ -37307,7 +37813,7 @@ type HTMLSmall interface {
 // Small returns an HTML element that defines smaller text.
 func Small() HTMLSmall {
 	e := &htmlSmall{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "small",
 			isSelfClosing: false,
 		},
@@ -37317,11 +37823,11 @@ func Small() HTMLSmall {
 }
 
 type htmlSmall struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlSmall) Body(elems ...UI) HTMLSmall {
-	e.setBody(elems...)
+func (e *htmlSmall) Body(v ...UI) HTMLSmall {
+	e.setChildren(v...)
 	return e
 }
 
@@ -37418,6 +37924,10 @@ func (e *htmlSmall) TabIndex(v int) HTMLSmall {
 
 func (e *htmlSmall) Title(v string) HTMLSmall {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlSmall) On(event string, h EventHandler, scope ...interface{}) HTMLSmall {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -37650,6 +38160,8 @@ type HTMLSource interface {
 
 	// Type specifies the type of element.
 	Type(v string) HTMLSource
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLSource
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSource
@@ -37751,7 +38263,7 @@ type HTMLSource interface {
 // Source returns an HTML element that .
 func Source() HTMLSource {
 	e := &htmlSource{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "source",
 			isSelfClosing: true,
 		},
@@ -37761,7 +38273,7 @@ func Source() HTMLSource {
 }
 
 type htmlSource struct {
-	elem
+	htmlElement
 }
 
 func (e *htmlSource) AccessKey(v string) HTMLSource {
@@ -37878,6 +38390,10 @@ func (e *htmlSource) Title(v string) HTMLSource {
 
 func (e *htmlSource) Type(v string) HTMLSource {
 	e.setAttr("type", v)
+	return e
+}
+func (e *htmlSource) On(event string, h EventHandler, scope ...interface{}) HTMLSource {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -38101,6 +38617,8 @@ type HTMLSpan interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSpan
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLSpan
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSpan
@@ -38202,7 +38720,7 @@ type HTMLSpan interface {
 // Span returns an HTML element that defines a section in a document.
 func Span() HTMLSpan {
 	e := &htmlSpan{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "span",
 			isSelfClosing: false,
 		},
@@ -38212,11 +38730,11 @@ func Span() HTMLSpan {
 }
 
 type htmlSpan struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlSpan) Body(elems ...UI) HTMLSpan {
-	e.setBody(elems...)
+func (e *htmlSpan) Body(v ...UI) HTMLSpan {
+	e.setChildren(v...)
 	return e
 }
 
@@ -38313,6 +38831,10 @@ func (e *htmlSpan) TabIndex(v int) HTMLSpan {
 
 func (e *htmlSpan) Title(v string) HTMLSpan {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlSpan) On(event string, h EventHandler, scope ...interface{}) HTMLSpan {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -38536,6 +39058,8 @@ type HTMLStrong interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLStrong
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLStrong
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLStrong
@@ -38637,7 +39161,7 @@ type HTMLStrong interface {
 // Strong returns an HTML element that defines important text.
 func Strong() HTMLStrong {
 	e := &htmlStrong{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "strong",
 			isSelfClosing: false,
 		},
@@ -38647,11 +39171,11 @@ func Strong() HTMLStrong {
 }
 
 type htmlStrong struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlStrong) Body(elems ...UI) HTMLStrong {
-	e.setBody(elems...)
+func (e *htmlStrong) Body(v ...UI) HTMLStrong {
+	e.setChildren(v...)
 	return e
 }
 
@@ -38748,6 +39272,10 @@ func (e *htmlStrong) TabIndex(v int) HTMLStrong {
 
 func (e *htmlStrong) Title(v string) HTMLStrong {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlStrong) On(event string, h EventHandler, scope ...interface{}) HTMLStrong {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -38977,6 +39505,8 @@ type HTMLStyle interface {
 
 	// Type specifies the type of element.
 	Type(v string) HTMLStyle
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLStyle
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLStyle
@@ -39081,7 +39611,7 @@ type HTMLStyle interface {
 // Style returns an HTML element that defines style information for a document.
 func Style() HTMLStyle {
 	e := &htmlStyle{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "style",
 			isSelfClosing: false,
 		},
@@ -39091,11 +39621,11 @@ func Style() HTMLStyle {
 }
 
 type htmlStyle struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlStyle) Body(elems ...UI) HTMLStyle {
-	e.setBody(elems...)
+func (e *htmlStyle) Body(v ...UI) HTMLStyle {
+	e.setChildren(v...)
 	return e
 }
 
@@ -39202,6 +39732,10 @@ func (e *htmlStyle) Title(v string) HTMLStyle {
 
 func (e *htmlStyle) Type(v string) HTMLStyle {
 	e.setAttr("type", v)
+	return e
+}
+func (e *htmlStyle) On(event string, h EventHandler, scope ...interface{}) HTMLStyle {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -39430,6 +39964,8 @@ type HTMLSub interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSub
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLSub
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSub
@@ -39531,7 +40067,7 @@ type HTMLSub interface {
 // Sub returns an HTML element that defines subscripted text.
 func Sub() HTMLSub {
 	e := &htmlSub{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "sub",
 			isSelfClosing: false,
 		},
@@ -39541,11 +40077,11 @@ func Sub() HTMLSub {
 }
 
 type htmlSub struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlSub) Body(elems ...UI) HTMLSub {
-	e.setBody(elems...)
+func (e *htmlSub) Body(v ...UI) HTMLSub {
+	e.setChildren(v...)
 	return e
 }
 
@@ -39642,6 +40178,10 @@ func (e *htmlSub) TabIndex(v int) HTMLSub {
 
 func (e *htmlSub) Title(v string) HTMLSub {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlSub) On(event string, h EventHandler, scope ...interface{}) HTMLSub {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -39865,6 +40405,8 @@ type HTMLSummary interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSummary
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLSummary
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSummary
@@ -39966,7 +40508,7 @@ type HTMLSummary interface {
 // Summary returns an HTML element that defines a visible heading for a details element.
 func Summary() HTMLSummary {
 	e := &htmlSummary{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "summary",
 			isSelfClosing: false,
 		},
@@ -39976,11 +40518,11 @@ func Summary() HTMLSummary {
 }
 
 type htmlSummary struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlSummary) Body(elems ...UI) HTMLSummary {
-	e.setBody(elems...)
+func (e *htmlSummary) Body(v ...UI) HTMLSummary {
+	e.setChildren(v...)
 	return e
 }
 
@@ -40077,6 +40619,10 @@ func (e *htmlSummary) TabIndex(v int) HTMLSummary {
 
 func (e *htmlSummary) Title(v string) HTMLSummary {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlSummary) On(event string, h EventHandler, scope ...interface{}) HTMLSummary {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -40300,6 +40846,8 @@ type HTMLSup interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSup
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLSup
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLSup
@@ -40401,7 +40949,7 @@ type HTMLSup interface {
 // Sup returns an HTML element that defines superscripted text.
 func Sup() HTMLSup {
 	e := &htmlSup{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "sup",
 			isSelfClosing: false,
 		},
@@ -40411,11 +40959,11 @@ func Sup() HTMLSup {
 }
 
 type htmlSup struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlSup) Body(elems ...UI) HTMLSup {
-	e.setBody(elems...)
+func (e *htmlSup) Body(v ...UI) HTMLSup {
+	e.setChildren(v...)
 	return e
 }
 
@@ -40512,6 +41060,10 @@ func (e *htmlSup) TabIndex(v int) HTMLSup {
 
 func (e *htmlSup) Title(v string) HTMLSup {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlSup) On(event string, h EventHandler, scope ...interface{}) HTMLSup {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -40735,6 +41287,8 @@ type HTMLTable interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTable
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLTable
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTable
@@ -40836,7 +41390,7 @@ type HTMLTable interface {
 // Table returns an HTML element that defines a table.
 func Table() HTMLTable {
 	e := &htmlTable{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "table",
 			isSelfClosing: false,
 		},
@@ -40846,11 +41400,11 @@ func Table() HTMLTable {
 }
 
 type htmlTable struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlTable) Body(elems ...UI) HTMLTable {
-	e.setBody(elems...)
+func (e *htmlTable) Body(v ...UI) HTMLTable {
+	e.setChildren(v...)
 	return e
 }
 
@@ -40947,6 +41501,10 @@ func (e *htmlTable) TabIndex(v int) HTMLTable {
 
 func (e *htmlTable) Title(v string) HTMLTable {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlTable) On(event string, h EventHandler, scope ...interface{}) HTMLTable {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -41170,6 +41728,8 @@ type HTMLTBody interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTBody
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLTBody
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTBody
@@ -41271,7 +41831,7 @@ type HTMLTBody interface {
 // TBody returns an HTML element that groups the body content in a table.
 func TBody() HTMLTBody {
 	e := &htmlTBody{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "tbody",
 			isSelfClosing: false,
 		},
@@ -41281,11 +41841,11 @@ func TBody() HTMLTBody {
 }
 
 type htmlTBody struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlTBody) Body(elems ...UI) HTMLTBody {
-	e.setBody(elems...)
+func (e *htmlTBody) Body(v ...UI) HTMLTBody {
+	e.setChildren(v...)
 	return e
 }
 
@@ -41382,6 +41942,10 @@ func (e *htmlTBody) TabIndex(v int) HTMLTBody {
 
 func (e *htmlTBody) Title(v string) HTMLTBody {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlTBody) On(event string, h EventHandler, scope ...interface{}) HTMLTBody {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -41614,6 +42178,8 @@ type HTMLTd interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTd
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLTd
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTd
@@ -41715,7 +42281,7 @@ type HTMLTd interface {
 // Td returns an HTML element that defines a cell in a table.
 func Td() HTMLTd {
 	e := &htmlTd{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "td",
 			isSelfClosing: false,
 		},
@@ -41725,11 +42291,11 @@ func Td() HTMLTd {
 }
 
 type htmlTd struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlTd) Body(elems ...UI) HTMLTd {
-	e.setBody(elems...)
+func (e *htmlTd) Body(v ...UI) HTMLTd {
+	e.setChildren(v...)
 	return e
 }
 
@@ -41841,6 +42407,10 @@ func (e *htmlTd) TabIndex(v int) HTMLTd {
 
 func (e *htmlTd) Title(v string) HTMLTd {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlTd) On(event string, h EventHandler, scope ...interface{}) HTMLTd {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -42064,12 +42634,14 @@ type HTMLTemplate interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTemplate
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLTemplate
 }
 
 // Template returns an HTML element that defines a template.
 func Template() HTMLTemplate {
 	e := &htmlTemplate{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "template",
 			isSelfClosing: false,
 		},
@@ -42079,11 +42651,11 @@ func Template() HTMLTemplate {
 }
 
 type htmlTemplate struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlTemplate) Body(elems ...UI) HTMLTemplate {
-	e.setBody(elems...)
+func (e *htmlTemplate) Body(v ...UI) HTMLTemplate {
+	e.setChildren(v...)
 	return e
 }
 
@@ -42180,6 +42752,10 @@ func (e *htmlTemplate) TabIndex(v int) HTMLTemplate {
 
 func (e *htmlTemplate) Title(v string) HTMLTemplate {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlTemplate) On(event string, h EventHandler, scope ...interface{}) HTMLTemplate {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -42279,6 +42855,8 @@ type HTMLTextarea interface {
 
 	// Wrap specifies how the text in a text area is to be wrapped when submitted in a form.
 	Wrap(v string) HTMLTextarea
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLTextarea
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTextarea
@@ -42380,7 +42958,7 @@ type HTMLTextarea interface {
 // Textarea returns an HTML element that defines a multiline input control (text area).
 func Textarea() HTMLTextarea {
 	e := &htmlTextarea{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "textarea",
 			isSelfClosing: false,
 		},
@@ -42390,11 +42968,11 @@ func Textarea() HTMLTextarea {
 }
 
 type htmlTextarea struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlTextarea) Body(elems ...UI) HTMLTextarea {
-	e.setBody(elems...)
+func (e *htmlTextarea) Body(v ...UI) HTMLTextarea {
+	e.setChildren(v...)
 	return e
 }
 
@@ -42552,6 +43130,10 @@ func (e *htmlTextarea) Title(v string) HTMLTextarea {
 
 func (e *htmlTextarea) Wrap(v string) HTMLTextarea {
 	e.setAttr("wrap", v)
+	return e
+}
+func (e *htmlTextarea) On(event string, h EventHandler, scope ...interface{}) HTMLTextarea {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -42775,6 +43357,8 @@ type HTMLTFoot interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTFoot
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLTFoot
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTFoot
@@ -42876,7 +43460,7 @@ type HTMLTFoot interface {
 // TFoot returns an HTML element that groups the footer content in a table.
 func TFoot() HTMLTFoot {
 	e := &htmlTFoot{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "tfoot",
 			isSelfClosing: false,
 		},
@@ -42886,11 +43470,11 @@ func TFoot() HTMLTFoot {
 }
 
 type htmlTFoot struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlTFoot) Body(elems ...UI) HTMLTFoot {
-	e.setBody(elems...)
+func (e *htmlTFoot) Body(v ...UI) HTMLTFoot {
+	e.setChildren(v...)
 	return e
 }
 
@@ -42987,6 +43571,10 @@ func (e *htmlTFoot) TabIndex(v int) HTMLTFoot {
 
 func (e *htmlTFoot) Title(v string) HTMLTFoot {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlTFoot) On(event string, h EventHandler, scope ...interface{}) HTMLTFoot {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -43225,6 +43813,8 @@ type HTMLTh interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTh
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLTh
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTh
@@ -43326,7 +43916,7 @@ type HTMLTh interface {
 // Th returns an HTML element that defines a header cell in a table.
 func Th() HTMLTh {
 	e := &htmlTh{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "th",
 			isSelfClosing: false,
 		},
@@ -43336,11 +43926,11 @@ func Th() HTMLTh {
 }
 
 type htmlTh struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlTh) Body(elems ...UI) HTMLTh {
-	e.setBody(elems...)
+func (e *htmlTh) Body(v ...UI) HTMLTh {
+	e.setChildren(v...)
 	return e
 }
 
@@ -43462,6 +44052,10 @@ func (e *htmlTh) TabIndex(v int) HTMLTh {
 
 func (e *htmlTh) Title(v string) HTMLTh {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlTh) On(event string, h EventHandler, scope ...interface{}) HTMLTh {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -43685,6 +44279,8 @@ type HTMLTHead interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTHead
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLTHead
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTHead
@@ -43786,7 +44382,7 @@ type HTMLTHead interface {
 // THead returns an HTML element that groups the header content in a table
 func THead() HTMLTHead {
 	e := &htmlTHead{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "thead",
 			isSelfClosing: false,
 		},
@@ -43796,11 +44392,11 @@ func THead() HTMLTHead {
 }
 
 type htmlTHead struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlTHead) Body(elems ...UI) HTMLTHead {
-	e.setBody(elems...)
+func (e *htmlTHead) Body(v ...UI) HTMLTHead {
+	e.setChildren(v...)
 	return e
 }
 
@@ -43897,6 +44493,10 @@ func (e *htmlTHead) TabIndex(v int) HTMLTHead {
 
 func (e *htmlTHead) Title(v string) HTMLTHead {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlTHead) On(event string, h EventHandler, scope ...interface{}) HTMLTHead {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -44123,6 +44723,8 @@ type HTMLTime interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTime
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLTime
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTime
@@ -44224,7 +44826,7 @@ type HTMLTime interface {
 // Time returns an HTML element that defines a date/time.
 func Time() HTMLTime {
 	e := &htmlTime{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "time",
 			isSelfClosing: false,
 		},
@@ -44234,11 +44836,11 @@ func Time() HTMLTime {
 }
 
 type htmlTime struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlTime) Body(elems ...UI) HTMLTime {
-	e.setBody(elems...)
+func (e *htmlTime) Body(v ...UI) HTMLTime {
+	e.setChildren(v...)
 	return e
 }
 
@@ -44340,6 +44942,10 @@ func (e *htmlTime) TabIndex(v int) HTMLTime {
 
 func (e *htmlTime) Title(v string) HTMLTime {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlTime) On(event string, h EventHandler, scope ...interface{}) HTMLTime {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -44563,12 +45169,14 @@ type HTMLTitle interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTitle
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLTitle
 }
 
 // Title returns an HTML element that defines a title for the document.
 func Title() HTMLTitle {
 	e := &htmlTitle{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "title",
 			isSelfClosing: false,
 		},
@@ -44578,11 +45186,11 @@ func Title() HTMLTitle {
 }
 
 type htmlTitle struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlTitle) Body(elems ...UI) HTMLTitle {
-	e.setBody(elems...)
+func (e *htmlTitle) Body(v ...UI) HTMLTitle {
+	e.setChildren(v...)
 	return e
 }
 
@@ -44681,6 +45289,10 @@ func (e *htmlTitle) Title(v string) HTMLTitle {
 	e.setAttr("title", v)
 	return e
 }
+func (e *htmlTitle) On(event string, h EventHandler, scope ...interface{}) HTMLTitle {
+	e.setEventHandler(event, h, scope...)
+	return e
+}
 
 // HTMLTr is the interface that describes a <tr> HTML element.
 type HTMLTr interface {
@@ -44742,6 +45354,8 @@ type HTMLTr interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTr
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLTr
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLTr
@@ -44843,7 +45457,7 @@ type HTMLTr interface {
 // Tr returns an HTML element that defines a row in a table.
 func Tr() HTMLTr {
 	e := &htmlTr{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "tr",
 			isSelfClosing: false,
 		},
@@ -44853,11 +45467,11 @@ func Tr() HTMLTr {
 }
 
 type htmlTr struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlTr) Body(elems ...UI) HTMLTr {
-	e.setBody(elems...)
+func (e *htmlTr) Body(v ...UI) HTMLTr {
+	e.setChildren(v...)
 	return e
 }
 
@@ -44954,6 +45568,10 @@ func (e *htmlTr) TabIndex(v int) HTMLTr {
 
 func (e *htmlTr) Title(v string) HTMLTr {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlTr) On(event string, h EventHandler, scope ...interface{}) HTMLTr {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -45177,6 +45795,8 @@ type HTMLU interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLU
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLU
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLU
@@ -45278,7 +45898,7 @@ type HTMLU interface {
 // U returns an HTML element that defines text that should be stylistically different from normal text.
 func U() HTMLU {
 	e := &htmlU{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "u",
 			isSelfClosing: false,
 		},
@@ -45288,11 +45908,11 @@ func U() HTMLU {
 }
 
 type htmlU struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlU) Body(elems ...UI) HTMLU {
-	e.setBody(elems...)
+func (e *htmlU) Body(v ...UI) HTMLU {
+	e.setChildren(v...)
 	return e
 }
 
@@ -45389,6 +46009,10 @@ func (e *htmlU) TabIndex(v int) HTMLU {
 
 func (e *htmlU) Title(v string) HTMLU {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlU) On(event string, h EventHandler, scope ...interface{}) HTMLU {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -45612,6 +46236,8 @@ type HTMLUl interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLUl
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLUl
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLUl
@@ -45713,7 +46339,7 @@ type HTMLUl interface {
 // Ul returns an HTML element that defines an unordered list.
 func Ul() HTMLUl {
 	e := &htmlUl{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "ul",
 			isSelfClosing: false,
 		},
@@ -45723,11 +46349,11 @@ func Ul() HTMLUl {
 }
 
 type htmlUl struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlUl) Body(elems ...UI) HTMLUl {
-	e.setBody(elems...)
+func (e *htmlUl) Body(v ...UI) HTMLUl {
+	e.setChildren(v...)
 	return e
 }
 
@@ -45824,6 +46450,10 @@ func (e *htmlUl) TabIndex(v int) HTMLUl {
 
 func (e *htmlUl) Title(v string) HTMLUl {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlUl) On(event string, h EventHandler, scope ...interface{}) HTMLUl {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -46047,6 +46677,8 @@ type HTMLVar interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLVar
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLVar
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLVar
@@ -46148,7 +46780,7 @@ type HTMLVar interface {
 // Var returns an HTML element that defines a variable.
 func Var() HTMLVar {
 	e := &htmlVar{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "var",
 			isSelfClosing: false,
 		},
@@ -46158,11 +46790,11 @@ func Var() HTMLVar {
 }
 
 type htmlVar struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlVar) Body(elems ...UI) HTMLVar {
-	e.setBody(elems...)
+func (e *htmlVar) Body(v ...UI) HTMLVar {
+	e.setChildren(v...)
 	return e
 }
 
@@ -46259,6 +46891,10 @@ func (e *htmlVar) TabIndex(v int) HTMLVar {
 
 func (e *htmlVar) Title(v string) HTMLVar {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlVar) On(event string, h EventHandler, scope ...interface{}) HTMLVar {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -46512,6 +47148,8 @@ type HTMLVideo interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLVideo
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLVideo
 
 	// OnAbort calls the given handler on abort.
 	OnAbort(h EventHandler, scope ...interface{}) HTMLVideo
@@ -46682,7 +47320,7 @@ type HTMLVideo interface {
 // Video returns an HTML element that defines a video or movie.
 func Video() HTMLVideo {
 	e := &htmlVideo{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "video",
 			isSelfClosing: false,
 		},
@@ -46692,11 +47330,11 @@ func Video() HTMLVideo {
 }
 
 type htmlVideo struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlVideo) Body(elems ...UI) HTMLVideo {
-	e.setBody(elems...)
+func (e *htmlVideo) Body(v ...UI) HTMLVideo {
+	e.setChildren(v...)
 	return e
 }
 
@@ -46843,6 +47481,10 @@ func (e *htmlVideo) Title(v string) HTMLVideo {
 
 func (e *htmlVideo) Width(v int) HTMLVideo {
 	e.setAttr("width", v)
+	return e
+}
+func (e *htmlVideo) On(event string, h EventHandler, scope ...interface{}) HTMLVideo {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 
@@ -47181,6 +47823,8 @@ type HTMLWbr interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLWbr
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...interface{}) HTMLWbr
 
 	// OnBlur calls the given handler when the element loses focus.
 	OnBlur(h EventHandler, scope ...interface{}) HTMLWbr
@@ -47282,7 +47926,7 @@ type HTMLWbr interface {
 // Wbr returns an HTML element that defines a possible line-break.
 func Wbr() HTMLWbr {
 	e := &htmlWbr{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "wbr",
 			isSelfClosing: false,
 		},
@@ -47292,11 +47936,11 @@ func Wbr() HTMLWbr {
 }
 
 type htmlWbr struct {
-	elem
+	htmlElement
 }
 
-func (e *htmlWbr) Body(elems ...UI) HTMLWbr {
-	e.setBody(elems...)
+func (e *htmlWbr) Body(v ...UI) HTMLWbr {
+	e.setChildren(v...)
 	return e
 }
 
@@ -47393,6 +48037,10 @@ func (e *htmlWbr) TabIndex(v int) HTMLWbr {
 
 func (e *htmlWbr) Title(v string) HTMLWbr {
 	e.setAttr("title", v)
+	return e
+}
+func (e *htmlWbr) On(event string, h EventHandler, scope ...interface{}) HTMLWbr {
+	e.setEventHandler(event, h, scope...)
 	return e
 }
 

@@ -9,7 +9,7 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
-type elem struct {
+type htmlElement struct {
 	tag           string
 	xmlns         string
 	isSelfClosing bool
@@ -25,59 +25,59 @@ type elem struct {
 	this          UI
 }
 
-func (e *elem) Kind() Kind {
+func (e *htmlElement) Kind() Kind {
 	return HTML
 }
 
-func (e *elem) JSValue() Value {
+func (e *htmlElement) JSValue() Value {
 	return e.jsElement
 }
 
-func (e *elem) IsMounted() bool {
+func (e *htmlElement) IsMounted() bool {
 	return e.context != nil && e.context.Err() == nil
 }
 
-func (e *elem) name() string {
+func (e *htmlElement) name() string {
 	return e.tag
 }
 
-func (e *elem) self() UI {
+func (e *htmlElement) self() UI {
 	return e.this
 }
 
-func (e *elem) setSelf(n UI) {
+func (e *htmlElement) setSelf(n UI) {
 	e.this = n
 }
 
-func (e *elem) getContext() context.Context {
+func (e *htmlElement) getContext() context.Context {
 	return e.context
 }
 
-func (e *elem) getDispatcher() Dispatcher {
+func (e *htmlElement) getDispatcher() Dispatcher {
 	return e.dispatcher
 }
 
-func (e *elem) getAttributes() attributes {
+func (e *htmlElement) getAttributes() attributes {
 	return e.attributes
 }
 
-func (e *elem) getEventHandlers() eventHandlers {
+func (e *htmlElement) getEventHandlers() eventHandlers {
 	return e.eventHandlers
 }
 
-func (e *elem) getParent() UI {
+func (e *htmlElement) getParent() UI {
 	return e.parent
 }
 
-func (e *elem) setParent(p UI) {
+func (e *htmlElement) setParent(p UI) {
 	e.parent = p
 }
 
-func (e *elem) getChildren() []UI {
+func (e *htmlElement) getChildren() []UI {
 	return e.children
 }
 
-func (e *elem) mount(d Dispatcher) error {
+func (e *htmlElement) mount(d Dispatcher) error {
 	if e.IsMounted() {
 		return errors.New("html element is already mounted").
 			Tag("tag", e.tag).
@@ -116,7 +116,7 @@ func (e *elem) mount(d Dispatcher) error {
 	return nil
 }
 
-func (e *elem) dismount() {
+func (e *htmlElement) dismount() {
 	for _, c := range e.children {
 		dismount(c)
 	}
@@ -128,11 +128,11 @@ func (e *elem) dismount() {
 	e.contextCancel()
 }
 
-func (e *elem) canUpdateWith(n UI) bool {
+func (e *htmlElement) canUpdateWith(n UI) bool {
 	return n.Kind() == e.Kind() && n.name() == e.name()
 }
 
-func (e *elem) updateWith(n UI) error {
+func (e *htmlElement) updateWith(n UI) error {
 	if !e.IsMounted() {
 		return errors.New("cannot update a non mounted html element").
 			Tag("element", reflect.TypeOf(e.self()))
@@ -220,7 +220,7 @@ func (e *elem) updateWith(n UI) error {
 	return nil
 }
 
-func (e *elem) replaceChildAt(idx int, new UI) error {
+func (e *htmlElement) replaceChildAt(idx int, new UI) error {
 	old := e.children[idx]
 
 	if err := mount(e.getDispatcher(), new); err != nil {
@@ -243,7 +243,7 @@ func (e *elem) replaceChildAt(idx int, new UI) error {
 	return nil
 }
 
-func (e *elem) removeChildAt(i int) error {
+func (e *htmlElement) removeChildAt(i int) error {
 	if i < 0 || i >= len(e.children) {
 		return errors.New("index out of range").
 			Tag("index", i).
@@ -261,7 +261,7 @@ func (e *elem) removeChildAt(i int) error {
 	return nil
 }
 
-func (e *elem) appendChild(v UI) error {
+func (e *htmlElement) appendChild(v UI) error {
 	if err := mount(e.getDispatcher(), v); err != nil {
 		return errors.New("mounting element failed").
 			Tag("element", reflect.TypeOf(v)).
@@ -274,62 +274,61 @@ func (e *elem) appendChild(v UI) error {
 	return nil
 }
 
-func (e *elem) setAttr(name string, value interface{}) {
+func (e *htmlElement) setAttr(name string, value interface{}) {
 	if e.attributes == nil {
 		e.attributes = make(attributes)
 	}
 	e.attributes.Set(name, value)
 }
 
-func (e *elem) setEventHandler(event string, h EventHandler, scope ...interface{}) {
+func (e *htmlElement) setEventHandler(event string, h EventHandler, scope ...interface{}) {
 	if e.eventHandlers == nil {
 		e.eventHandlers = make(eventHandlers)
 	}
 	e.eventHandlers.Set(event, h, scope...)
 }
 
-func (e *elem) setBody(body ...UI) {
+func (e *htmlElement) setChildren(v ...UI) {
 	if e.isSelfClosing {
-		panic(errors.New("setting html element body failed").
-			Tag("reason", "self closing element can't have children").
-			Tag("name", e.name()),
+		panic(errors.New("cannot set children of a self closing element").
+			Tag("element", e.tag),
 		)
 	}
 
-	e.children = FilterUIElems(body...)
+	e.children = FilterUIElems(v...)
 }
 
-func (e *elem) onNav(u *url.URL) {
+func (e *htmlElement) onNav(u *url.URL) {
 	for _, c := range e.getChildren() {
 		c.onNav(u)
 	}
 }
 
-func (e *elem) onAppUpdate() {
+func (e *htmlElement) onAppUpdate() {
 	for _, c := range e.getChildren() {
 		c.onAppUpdate()
 	}
 }
 
-func (e *elem) onAppInstallChange() {
+func (e *htmlElement) onAppInstallChange() {
 	for _, c := range e.getChildren() {
 		c.onAppInstallChange()
 	}
 }
 
-func (e *elem) onResize() {
+func (e *htmlElement) onResize() {
 	for _, c := range e.getChildren() {
 		c.onResize()
 	}
 }
 
-func (e *elem) preRender(p Page) {
+func (e *htmlElement) preRender(p Page) {
 	for _, c := range e.getChildren() {
 		c.preRender(p)
 	}
 }
 
-func (e *elem) html(w io.Writer) {
+func (e *htmlElement) html(w io.Writer) {
 	w.Write([]byte("<"))
 	w.Write([]byte(e.tag))
 
@@ -372,7 +371,7 @@ func (e *elem) html(w io.Writer) {
 	w.Write([]byte(">"))
 }
 
-func (e *elem) htmlWithIndent(w io.Writer, indent int) {
+func (e *htmlElement) htmlWithIndent(w io.Writer, indent int) {
 	writeIndent(w, indent)
 	w.Write([]byte("<"))
 	w.Write([]byte(e.tag))

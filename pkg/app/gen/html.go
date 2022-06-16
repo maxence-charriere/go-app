@@ -2085,7 +2085,7 @@ import (
 		// %s returns an HTML element that %s
 		func %s() HTML%s {
 			e := &html%s{
-				elem: elem{
+				htmlElement: htmlElement{
 					tag: "%s",
 					isSelfClosing: %v,
 				},
@@ -2148,6 +2148,11 @@ func writeInterface(w io.Writer, t tag) {
 		writeAttrFunction(w, a, t, true)
 	}
 
+	fmt.Fprintf(w, `
+		// On registers the given event handler to the specified event.
+		On(event string, h EventHandler, scope ...interface{}) HTML%s 
+	`, t.Name)
+
 	for _, e := range t.EventHandlers {
 		fmt.Fprintln(w)
 		fmt.Fprintln(w)
@@ -2162,14 +2167,14 @@ func writeInterface(w io.Writer, t tag) {
 
 func writeStruct(w io.Writer, t tag) {
 	fmt.Fprintf(w, `type html%s struct {
-			elem
+			htmlElement
 		}`, t.Name)
 
 	switch t.Type {
 	case parent:
 		fmt.Fprintf(w, `
-			func (e *html%s) Body(elems ...UI) HTML%s {
-				e.setBody(elems...)
+			func (e *html%s) Body(v ...UI) HTML%s {
+				e.setChildren(v...)
 				return e
 			}
 			`,
@@ -2200,8 +2205,8 @@ func writeStruct(w io.Writer, t tag) {
 
 	case privateParent:
 		fmt.Fprintf(w, `
-			func (e *html%s) privateBody(elems ...UI) HTML%s {
-				e.setBody(elems...)
+			func (e *html%s) privateBody(v ...UI) HTML%s {
+				e.setChildren(v...)
 				return e
 			}
 			`,
@@ -2216,6 +2221,16 @@ func writeStruct(w io.Writer, t tag) {
 
 		writeAttrFunction(w, a, t, false)
 	}
+
+	fmt.Fprintf(w, `
+		func (e *html%s) On(event string, h EventHandler, scope ...interface{})  HTML%s {
+			e.setEventHandler(event, h, scope...)
+			return e
+		}
+		`,
+		t.Name,
+		t.Name,
+	)
 
 	for _, e := range t.EventHandlers {
 		fmt.Fprintln(w)
@@ -2412,8 +2427,10 @@ import (
 
 		if len(t.EventHandlers) != 0 {
 			fmt.Fprint(f, `
-			h := func(ctx Context, e Event) {}
-		`)
+				h := func(ctx Context, e Event) {}
+			`)
+			fmt.Fprintf(f, `elem.On("click", h)`)
+			fmt.Fprintln(f)
 		}
 
 		for _, e := range t.EventHandlers {

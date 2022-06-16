@@ -197,7 +197,7 @@ func internalURLChecker() func(string) bool {
 func newClientBody(d Dispatcher) *htmlBody {
 	ctx, cancel := context.WithCancel(context.Background())
 	body := &htmlBody{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "body",
 			context:       ctx,
 			contextCancel: cancel,
@@ -209,7 +209,7 @@ func newClientBody(d Dispatcher) *htmlBody {
 
 	ctx, cancel = context.WithCancel(context.Background())
 	content := &htmlDiv{
-		elem: elem{
+		htmlElement: htmlElement{
 			tag:           "div",
 			context:       ctx,
 			contextCancel: cancel,
