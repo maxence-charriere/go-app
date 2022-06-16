@@ -227,19 +227,6 @@ func (e *elem) updateWith(n UI) error {
 	return nil
 }
 
-func (e *elem) appendChild(v UI) error {
-	if err := mount(e.getDispatcher(), v); err != nil {
-		return errors.New("mounting element failed").
-			Tag("element", reflect.TypeOf(v)).
-			Wrap(err)
-	}
-
-	v.setParent(e.self())
-	e.JSValue().appendChild(v)
-	e.children = append(e.children, v)
-	return nil
-}
-
 func (e *elem) replaceChildAt(idx int, new UI) error {
 	old := e.children[idx]
 
@@ -263,25 +250,34 @@ func (e *elem) replaceChildAt(idx int, new UI) error {
 	return nil
 }
 
-func (e *elem) removeChildAt(idx int) error {
-	body := e.children
-	if idx < 0 || idx >= len(body) {
-		return errors.New("removing child failed").
-			Tag("reason", "index out of range").
-			Tag("index", idx).
-			Tag("name", e.name()).
-			Tag("kind", e.Kind())
+func (e *elem) removeChildAt(i int) error {
+	if i < 0 || i >= len(e.children) {
+		return errors.New("index out of range").
+			Tag("index", i).
+			Tag("children-count", len(e.children))
 	}
 
-	c := body[idx]
+	child := e.children[i]
+	e.jsElement.removeChild(child)
+	dismount(child)
 
-	copy(body[idx:], body[idx+1:])
-	body[len(body)-1] = nil
-	body = body[:len(body)-1]
-	e.children = body
+	children := e.children
+	copy(children[i:], children[i+1:])
+	children[len(children)-1] = nil
+	e.children = children[:len(children)-1]
+	return nil
+}
 
-	e.JSValue().removeChild(c)
-	dismount(c)
+func (e *elem) appendChild(v UI) error {
+	if err := mount(e.getDispatcher(), v); err != nil {
+		return errors.New("mounting element failed").
+			Tag("element", reflect.TypeOf(v)).
+			Wrap(err)
+	}
+
+	v.setParent(e.self())
+	e.JSValue().appendChild(v)
+	e.children = append(e.children, v)
 	return nil
 }
 
