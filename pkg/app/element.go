@@ -40,11 +40,7 @@ func (e *elem) JSValue() Value {
 }
 
 func (e *elem) IsMounted() bool {
-	return e.getDispatcher() != nil &&
-		e.context != nil &&
-		e.context.Err() == nil &&
-		e.self() != nil &&
-		e.jsElement != nil
+	return e.context != nil && e.context.Err() == nil
 }
 
 func (e *elem) name() string {
@@ -94,14 +90,15 @@ func (e *elem) mount(d Dispatcher) error {
 			Tag("kind", e.Kind())
 	}
 
-	e.dispatcher = d
 	e.context, e.contextCancel = context.WithCancel(context.Background())
+	e.dispatcher = d
 
-	jsElement, err := Window().createElement(e.tag, "")
+	jsElement, err := Window().createElement(e.tag, e.xmlns)
 	if err != nil {
-		return errors.New("mounting ui element failed").
-			Tag("name", e.name()).
+		return errors.New("mounting js element failed").
 			Tag("kind", e.Kind()).
+			Tag("tag", e.tag).
+			Tag("xmlns", e.xmlns).
 			Wrap(err)
 	}
 	e.jsElement = jsElement
@@ -109,20 +106,24 @@ func (e *elem) mount(d Dispatcher) error {
 	e.attributes.Mount(jsElement, d.resolveStaticResource)
 	e.eventHandlers.Mount(e)
 
-	for _, c := range e.getChildren() {
-		if err := e.appendChild(c, true); err != nil {
-			return errors.New("mounting ui element failed").
-				Tag("name", e.name()).
-				Tag("kind", e.Kind()).
+	for i, c := range e.children {
+		if err := mount(d, c); err != nil {
+			return errors.New("mounting child failed").
+				Tag("index", i).
+				Tag("child", c.name()).
+				Tag("child-kind", c.Kind()).
 				Wrap(err)
 		}
+
+		c.setParent(e.self())
+		e.JSValue().appendChild(c)
 	}
 
 	return nil
 }
 
 func (e *elem) dismount() {
-	for _, c := range e.getChildren() {
+	for _, c := range e.children {
 		dismount(c)
 	}
 
@@ -131,7 +132,6 @@ func (e *elem) dismount() {
 	}
 
 	e.contextCancel()
-	e.jsElement = nil
 }
 
 func (e *elem) canUpdateWith(n UI) bool {
