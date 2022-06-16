@@ -22,13 +22,15 @@ type elem struct {
 	parent        UI
 	children      []UI
 
-	attrs     map[string]string
-	disp      Dispatcher
-	ctx       context.Context
-	ctxCancel func()
-	events    map[string]eventHandler
-	jsvalue   Value
-	this      UI
+	context       context.Context
+	contextCancel func()
+	dispatcher    Dispatcher
+
+	attrs map[string]string
+
+	events  map[string]eventHandler
+	jsvalue Value
+	this    UI
 }
 
 func (e *elem) Kind() Kind {
@@ -41,8 +43,8 @@ func (e *elem) JSValue() Value {
 
 func (e *elem) IsMounted() bool {
 	return e.getDispatcher() != nil &&
-		e.ctx != nil &&
-		e.ctx.Err() == nil &&
+		e.context != nil &&
+		e.context.Err() == nil &&
 		e.self() != nil &&
 		e.jsvalue != nil
 }
@@ -60,11 +62,11 @@ func (e *elem) setSelf(n UI) {
 }
 
 func (e *elem) getContext() context.Context {
-	return e.ctx
+	return e.context
 }
 
 func (e *elem) getDispatcher() Dispatcher {
-	return e.disp
+	return e.dispatcher
 }
 
 func (e *elem) getAttributes() map[string]string {
@@ -95,8 +97,8 @@ func (e *elem) mount(d Dispatcher) error {
 			Tag("kind", e.Kind())
 	}
 
-	e.disp = d
-	e.ctx, e.ctxCancel = context.WithCancel(context.Background())
+	e.dispatcher = d
+	e.context, e.contextCancel = context.WithCancel(context.Background())
 
 	v, err := Window().createElement(e.tag, "")
 	if err != nil {
@@ -138,7 +140,7 @@ func (e *elem) dismount() {
 		e.delJsEventHandler(k, v)
 	}
 
-	e.ctxCancel()
+	e.contextCancel()
 	e.jsvalue = nil
 }
 
@@ -321,7 +323,7 @@ func (e *elem) resolveURLAttr(k, v string) string {
 	if !isURLAttrValue(k) {
 		return v
 	}
-	return e.disp.resolveStaticResource(v)
+	return e.dispatcher.resolveStaticResource(v)
 }
 
 func (e *elem) setJsAttr(k, v string) {
