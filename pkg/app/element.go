@@ -20,6 +20,7 @@ type elem struct {
 	xmlns         string
 	isSelfClosing bool
 	attributes    attributes
+	eventHandlers eventHandlers
 	parent        UI
 	children      []UI
 
@@ -28,8 +29,6 @@ type elem struct {
 	dispatcher    Dispatcher
 	jsElement     Value
 	this          UI
-
-	events map[string]eventHandler
 }
 
 func (e *elem) Kind() Kind {
@@ -73,7 +72,7 @@ func (e *elem) getAttributes() map[string]string {
 }
 
 func (e *elem) getEventHandlers() map[string]eventHandler {
-	return e.events
+	return e.eventHandlers
 }
 
 func (e *elem) getParent() UI {
@@ -108,10 +107,7 @@ func (e *elem) mount(d Dispatcher) error {
 	e.jsElement = jsElement
 
 	e.attributes.Mount(jsElement, d.resolveStaticResource)
-
-	for k, v := range e.events {
-		e.setJsEventHandler(k, v)
-	}
+	e.eventHandlers.Mount(e)
 
 	for _, c := range e.getChildren() {
 		if err := e.appendChild(c, true); err != nil {
@@ -130,8 +126,8 @@ func (e *elem) dismount() {
 		dismount(c)
 	}
 
-	for k, v := range e.events {
-		e.delJsEventHandler(k, v)
+	for _, eh := range e.eventHandlers {
+		eh.Dismount()
 	}
 
 	e.contextCancel()
@@ -150,7 +146,7 @@ func (e *elem) updateWith(n UI) error {
 	if e.attributes == nil && n.getAttributes() != nil {
 		e.attributes = n.getAttributes()
 		e.attributes.Mount(e.jsElement, e.dispatcher.resolveStaticResource)
-	} else if e.attributes != nil && n.getAttributes() != nil {
+	} else if e.attributes != nil {
 		e.attributes.Update(
 			e.jsElement,
 			n.getAttributes(),
@@ -158,7 +154,12 @@ func (e *elem) updateWith(n UI) error {
 		)
 	}
 
-	e.updateEventHandler(n.getEventHandlers())
+	if e.eventHandlers == nil && n.getEventHandlers() != nil {
+		e.eventHandlers = n.getEventHandlers()
+		e.eventHandlers.Mount(e)
+	} else if e.eventHandlers != nil {
+		e.eventHandlers.Update(e, n.getEventHandlers())
+	}
 
 	achildren := e.getChildren()
 	bchildren := n.getChildren()
@@ -339,52 +340,11 @@ func (e *elem) setJsAttr(k, v string) {
 	}
 }
 
-func (e *elem) updateEventHandler(handlers map[string]eventHandler) {
-	for k, current := range e.events {
-		if _, exists := handlers[k]; !exists {
-			e.delJsEventHandler(k, current)
-		}
+func (e *elem) setEventHandler(event string, h EventHandler, scope ...interface{}) {
+	if e.eventHandlers == nil {
+		e.eventHandlers = make(eventHandlers)
 	}
-
-	if e.events == nil && len(handlers) != 0 {
-		e.events = make(map[string]eventHandler, len(handlers))
-	}
-
-	for k, new := range handlers {
-		if current, exists := e.events[k]; !current.Equal(new) {
-			if exists {
-				e.delJsEventHandler(k, current)
-			}
-
-			e.events[k] = new
-			e.setJsEventHandler(k, new)
-		}
-	}
-}
-
-func (e *elem) setEventHandler(k string, h EventHandler, scope ...interface{}) {
-	if e.events == nil {
-		e.events = make(map[string]eventHandler)
-	}
-
-	e.events[k] = eventHandler{
-		event:     k,
-		scope:     toPath(scope...),
-		goHandler: h,
-	}
-}
-
-func (e *elem) setJsEventHandler(k string, h eventHandler) {
-	jsHandler := makeJSEventHandler(e.self(), h.goHandler)
-	h.jsHandler = jsHandler
-	e.events[k] = h
-	e.JSValue().addEventListener(k, jsHandler)
-}
-
-func (e *elem) delJsEventHandler(k string, h eventHandler) {
-	e.jsElement.removeEventListener(k, h.jsHandler)
-	h.jsHandler.Release()
-	delete(e.events, k)
+	e.eventHandlers.Set(event, h, scope...)
 }
 
 func (e *elem) setBody(body ...UI) {

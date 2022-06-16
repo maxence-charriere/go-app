@@ -6,87 +6,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestElemSetEventHandler(t *testing.T) {
-	e := &elem{}
-	h := func(Context, Event) {}
-	e.setEventHandler("click", h)
-
-	expectedHandler := eventHandler{
-		event:     "click",
-		goHandler: h,
-	}
-
-	registeredHandler := e.events["click"]
-	require.True(t, expectedHandler.Equal(registeredHandler))
-}
-
-func TestElemUpdateEventHandlers(t *testing.T) {
-	utests := []struct {
-		scenario string
-		current  EventHandler
-		incoming EventHandler
-	}{
-		{
-			scenario: "handler is removed",
-			current:  func(Context, Event) {},
-			incoming: nil,
-		},
-		{
-			scenario: "handler is added",
-			current:  nil,
-			incoming: func(Context, Event) {},
-		},
-		{
-			scenario: "handler is updated",
-			current:  func(Context, Event) {},
-			incoming: func(Context, Event) {},
-		},
-	}
-
-	for _, u := range utests {
-		t.Run(u.scenario, func(t *testing.T) {
-			var current map[string]eventHandler
-			var incoming map[string]eventHandler
-
-			if u.current != nil {
-				current = map[string]eventHandler{
-					"click": {
-						event:     "click",
-						goHandler: u.current,
-					},
-				}
-			}
-
-			if u.incoming != nil {
-				incoming = map[string]eventHandler{
-					"click": {
-						event:     "click",
-						goHandler: u.incoming,
-					},
-				}
-			}
-
-			n := Div().(*htmlDiv)
-			n.events = current
-
-			d := NewClientTester(n)
-			defer d.Close()
-
-			d.Consume()
-
-			n.updateEventHandler(incoming)
-
-			if len(incoming) == 0 {
-				require.Empty(t, n.getAttributes())
-				return
-			}
-
-			h := n.getEventHandlers()["click"]
-			require.True(t, h.Equal(incoming["click"]))
-		})
-	}
-}
-
 func TestElemMountDismount(t *testing.T) {
 	testMountDismount(t, []mountTest{
 		{
@@ -120,6 +39,20 @@ func TestElemUpdate(t *testing.T) {
 			},
 		},
 		{
+			scenario: "html element event handlers are added",
+			a:        Div(),
+			b: Div().
+				OnClick(func(Context, Event) {}).
+				OnChange(func(Context, Event) {}),
+			matches: []TestUIDescriptor{
+				{
+					Expected: Div().
+						OnClick(func(Context, Event) {}).
+						OnChange(func(Context, Event) {}),
+				},
+			},
+		},
+		{
 			scenario: "html element event handlers are updated",
 			a: Div().
 				OnClick(func(Context, Event) {}).
@@ -130,8 +63,20 @@ func TestElemUpdate(t *testing.T) {
 			matches: []TestUIDescriptor{
 				{
 					Expected: Div().
-						OnClick(nil).
-						OnChange(nil),
+						OnClick(func(Context, Event) {}).
+						OnChange(func(Context, Event) {}),
+				},
+			},
+		},
+		{
+			scenario: "html element event handlers are removed",
+			a: Div().
+				OnClick(func(Context, Event) {}).
+				OnBlur(func(Context, Event) {}),
+			b: Div(),
+			matches: []TestUIDescriptor{
+				{
+					Expected: Div(),
 				},
 			},
 		},
