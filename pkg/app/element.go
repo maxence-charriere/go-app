@@ -19,6 +19,7 @@ type elem struct {
 	tag           string
 	xmlns         string
 	isSelfClosing bool
+	attributes    attributes
 	parent        UI
 	children      []UI
 
@@ -26,11 +27,9 @@ type elem struct {
 	contextCancel func()
 	dispatcher    Dispatcher
 	jsElement     Value
-
-	attrs map[string]string
+	this          UI
 
 	events map[string]eventHandler
-	this   UI
 }
 
 func (e *elem) Kind() Kind {
@@ -70,7 +69,7 @@ func (e *elem) getDispatcher() Dispatcher {
 }
 
 func (e *elem) getAttributes() map[string]string {
-	return e.attrs
+	return e.attributes
 }
 
 func (e *elem) getEventHandlers() map[string]eventHandler {
@@ -91,29 +90,24 @@ func (e *elem) getChildren() []UI {
 
 func (e *elem) mount(d Dispatcher) error {
 	if e.IsMounted() {
-		return errors.New("mounting ui element failed").
-			Tag("reason", "already mounted").
-			Tag("name", e.name()).
+		return errors.New("html element is already mounted").
+			Tag("tag", e.tag).
 			Tag("kind", e.Kind())
 	}
 
 	e.dispatcher = d
 	e.context, e.contextCancel = context.WithCancel(context.Background())
 
-	v, err := Window().createElement(e.tag, "")
+	jsElement, err := Window().createElement(e.tag, "")
 	if err != nil {
 		return errors.New("mounting ui element failed").
 			Tag("name", e.name()).
 			Tag("kind", e.Kind()).
 			Wrap(err)
 	}
-	e.jsElement = v
+	e.jsElement = jsElement
 
-	for k, v := range e.attrs {
-		v = e.resolveURLAttr(k, v)
-		e.attrs[k] = v
-		e.setJsAttr(k, v)
-	}
+	e.attributes.Mount(jsElement, d.resolveStaticResource)
 
 	for k, v := range e.events {
 		e.setJsEventHandler(k, v)
@@ -153,7 +147,17 @@ func (e *elem) updateWith(n UI) error {
 		return nil
 	}
 
-	e.updateAttrs(n.getAttributes())
+	if e.attributes == nil && n.getAttributes() != nil {
+		e.attributes = n.getAttributes()
+		e.attributes.Mount(e.jsElement, e.dispatcher.resolveStaticResource)
+	} else if e.attributes != nil && n.getAttributes() != nil {
+		e.attributes.Update(
+			e.jsElement,
+			n.getAttributes(),
+			e.getDispatcher().resolveStaticResource,
+		)
+	}
+
 	e.updateEventHandler(n.getEventHandlers())
 
 	achildren := e.getChildren()
@@ -276,47 +280,11 @@ func (e *elem) removeChildAt(idx int) error {
 	return nil
 }
 
-func (e *elem) updateAttrs(attrs map[string]string) {
-	for k := range e.attrs {
-		if _, exists := attrs[k]; !exists {
-			e.delAttr(k)
-		}
+func (e *elem) setAttr(name string, value interface{}) {
+	if e.attributes == nil {
+		e.attributes = make(attributes)
 	}
-
-	if e.attrs == nil && len(attrs) != 0 {
-		e.attrs = make(map[string]string, len(attrs))
-	}
-
-	for k, v := range attrs {
-		v = e.resolveURLAttr(k, v)
-		if curval, exists := e.attrs[k]; !exists || curval != v {
-			e.attrs[k] = v
-			e.setJsAttr(k, v)
-		}
-	}
-}
-
-func (e *elem) setAttr(k string, v interface{}) {
-	if e.attrs == nil {
-		e.attrs = make(map[string]string)
-	}
-
-	switch k {
-	case "style", "allow":
-		s := e.attrs[k] + toString(v) + ";"
-		e.attrs[k] = s
-
-	case "class":
-		s := e.attrs[k]
-		if s != "" {
-			s += " "
-		}
-		s += toString(v)
-		e.attrs[k] = s
-
-	default:
-		e.attrs[k] = toString(v)
-	}
+	e.attributes.Set(name, value)
 }
 
 func (e *elem) resolveURLAttr(k, v string) string {
@@ -369,11 +337,6 @@ func (e *elem) setJsAttr(k, v string) {
 		}
 		e.JSValue().setAttr(k, v)
 	}
-}
-
-func (e *elem) delAttr(k string) {
-	e.JSValue().delAttr(k)
-	delete(e.attrs, k)
 }
 
 func (e *elem) updateEventHandler(handlers map[string]eventHandler) {
@@ -469,13 +432,18 @@ func (e *elem) html(w io.Writer) {
 	w.Write([]byte("<"))
 	w.Write([]byte(e.tag))
 
-	for k, v := range e.attrs {
+	for k, v := range e.attributes {
 		w.Write([]byte(" "))
 		w.Write([]byte(k))
 
 		if v != "" {
 			w.Write([]byte(`="`))
-			w.Write([]byte(v))
+			w.Write([]byte(resolveAttributeURLValue(k, v, func(s string) string {
+				if e.dispatcher != nil {
+					return e.dispatcher.resolveStaticResource(v)
+				}
+				return v
+			})))
 			w.Write([]byte(`"`))
 		}
 	}
@@ -508,13 +476,18 @@ func (e *elem) htmlWithIndent(w io.Writer, indent int) {
 	w.Write([]byte("<"))
 	w.Write([]byte(e.tag))
 
-	for k, v := range e.attrs {
+	for k, v := range e.attributes {
 		w.Write([]byte(" "))
 		w.Write([]byte(k))
 
 		if v != "" {
 			w.Write([]byte(`="`))
-			w.Write([]byte(v))
+			w.Write([]byte(resolveAttributeURLValue(k, v, func(s string) string {
+				if e.dispatcher != nil {
+					return e.dispatcher.resolveStaticResource(v)
+				}
+				return v
+			})))
 			w.Write([]byte(`"`))
 		}
 	}
