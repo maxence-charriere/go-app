@@ -1,1 +1,10 @@
-FAIL	github.com/maxence-charriere/go-app/v9/pkg/app [build failed]
+[94mINFO ‣ [00mtest:
+    type: log
+[91mERROR ‣ [00mtest:
+    type: error
+goos: darwin
+goarch: arm64
+pkg: github.com/maxence-charriere/go-app/v9/pkg/app
+BenchmarkMountHTMLElement-10    	   52202	     23502 ns/op	  140310 B/op	      72 allocs/op
+PASS
+ok  	github.com/maxence-charriere/go-app/v9/pkg/app	2.818s

@@ -9,7 +9,7 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
-type htmlElement[T any] struct {
+type elem struct {
 	tag           string
 	xmlns         string
 	isSelfClosing bool
@@ -22,92 +22,66 @@ type htmlElement[T any] struct {
 	contextCancel func()
 	dispatcher    Dispatcher
 	jsElement     Value
+	this          UI
 }
 
-func (e *htmlElement[T]) Attr(name string, value any) T {
-	if e.attributes == nil {
-		e.attributes = make(attributes)
-	}
-	e.attributes.Set(name, value)
-
-	return e.toHTMLInterface()
+func (e *elem) Kind() Kind {
+	return HTML
 }
 
-func (e *htmlElement[T]) On(event string, h EventHandler, scope ...any) T {
-	if e.eventHandlers == nil {
-		e.eventHandlers = make(eventHandlers)
-	}
-	e.eventHandlers.Set(event, h, scope...)
-
-	return e.toHTMLInterface()
-}
-
-func (e *htmlElement[T]) Text(v any) T {
-	switch e.tag {
-	case "textarea":
-		return e.Attr("value", v)
-
-	default:
-		return e.Body(Text(v))
-	}
-}
-
-func (e *htmlElement[T]) Body(v ...UI) T {
-	if e.isSelfClosing {
-		panic(errors.New("setting html element body failed").
-			Tag("reason", "self closing element can't have children").
-			Tag("tag", e.tag),
-		)
-	}
-
-	e.children = FilterUIElems(v...)
-	return e.toHTMLInterface()
-}
-
-func (e *htmlElement[T]) JSValue() Value {
+func (e *elem) JSValue() Value {
 	return e.jsElement
 }
 
-func (e *htmlElement[T]) IsMounted() bool {
+func (e *elem) IsMounted() bool {
 	return e.context != nil && e.context.Err() == nil
 }
 
-func (e *htmlElement[T]) toHTMLInterface() T {
-	var i any = e
-	return i.(T)
+func (e *elem) name() string {
+	return e.tag
 }
 
-func (e *htmlElement[T]) getContext() context.Context {
+func (e *elem) self() UI {
+	return e.this
+}
+
+func (e *elem) setSelf(n UI) {
+	e.this = n
+}
+
+func (e *elem) getContext() context.Context {
 	return e.context
 }
 
-func (e *htmlElement[T]) getDispatcher() Dispatcher {
+func (e *elem) getDispatcher() Dispatcher {
 	return e.dispatcher
 }
 
-func (e *htmlElement[T]) getAttributes() attributes {
+func (e *elem) getAttributes() attributes {
 	return e.attributes
 }
 
-func (e *htmlElement[T]) getEventHandlers() eventHandlers {
+func (e *elem) getEventHandlers() eventHandlers {
 	return e.eventHandlers
 }
 
-func (e *htmlElement[T]) getParent() UI {
+func (e *elem) getParent() UI {
 	return e.parent
 }
 
-func (e *htmlElement[T]) setParent(v UI) {
-	e.parent = v
+func (e *elem) setParent(p UI) {
+	e.parent = p
 }
 
-func (e *htmlElement[T]) getChildren() []UI {
+func (e *elem) getChildren() []UI {
 	return e.children
 }
 
-func (e *htmlElement[T]) mount(d Dispatcher) error {
+func (e *elem) mount(d Dispatcher) error {
 	if e.IsMounted() {
-		return errors.New("html element is already mounted").Tag("tag", e.tag)
+		return errors.New("html element is already mounted").
+			Tag("tag", e.tag).
+			Tag("kind", e.Kind())
 	}
 
 	e.context, e.contextCancel = context.WithCancel(context.Background())
@@ -115,7 +89,8 @@ func (e *htmlElement[T]) mount(d Dispatcher) error {
 
 	jsElement, err := Window().createElement(e.tag, e.xmlns)
 	if err != nil {
-		return errors.New("creating javascript element failed").
+		return errors.New("mounting js element failed").
+			Tag("kind", e.Kind()).
 			Tag("tag", e.tag).
 			Tag("xmlns", e.xmlns).
 			Wrap(err)
@@ -129,18 +104,19 @@ func (e *htmlElement[T]) mount(d Dispatcher) error {
 		if err := mount(d, c); err != nil {
 			return errors.New("mounting child failed").
 				Tag("index", i).
-				Tag("child-type", reflect.TypeOf(c)).
+				Tag("child", c.name()).
+				Tag("child-kind", c.Kind()).
 				Wrap(err)
 		}
 
-		c.setParent(e)
+		c.setParent(e.self())
 		e.JSValue().appendChild(c)
 	}
 
 	return nil
 }
 
-func (e *htmlElement[T]) dismount() {
+func (e *elem) dismount() {
 	for _, c := range e.children {
 		dismount(c)
 	}
@@ -152,44 +128,42 @@ func (e *htmlElement[T]) dismount() {
 	e.contextCancel()
 }
 
-func (e *htmlElement[T]) canUpdateWith(v UI) bool {
-	if v, ok := v.(*htmlElement[T]); ok {
-		return ok && e.tag == v.tag
-	}
-	return false
+func (e *elem) canUpdateWith(n UI) bool {
+	return n.Kind() == e.Kind() && n.name() == e.name()
 }
 
-func (e *htmlElement[T]) updateWith(v UI) error {
+func (e *elem) updateWith(n UI) error {
 	if !e.IsMounted() {
-		return nil
+		return errors.New("cannot update a non mounted html element").
+			Tag("element", reflect.TypeOf(e.self()))
 	}
 
-	newElement, ok := v.(*htmlElement[T])
-	if !ok {
-		return errors.New("new element is not an html element").
-			Tag("new-element-type", reflect.TypeOf(v))
+	if !e.canUpdateWith(n) {
+		return errors.New("cannot update html element").
+			Tag("current-element", reflect.TypeOf(e.self())).
+			Tag("new-element", reflect.TypeOf(n))
 	}
 
-	if e.attributes == nil && newElement.attributes != nil {
-		e.attributes = newElement.attributes
+	if e.attributes == nil && n.getAttributes() != nil {
+		e.attributes = n.getAttributes()
 		e.attributes.Mount(e.jsElement, e.dispatcher.resolveStaticResource)
-	} else if e.attributes != nil && newElement.attributes != nil {
+	} else if e.attributes != nil {
 		e.attributes.Update(
 			e.jsElement,
-			newElement.attributes,
+			n.getAttributes(),
 			e.getDispatcher().resolveStaticResource,
 		)
 	}
 
-	if e.eventHandlers == nil && newElement.eventHandlers != nil {
-		e.eventHandlers = newElement.eventHandlers
+	if e.eventHandlers == nil && n.getEventHandlers() != nil {
+		e.eventHandlers = n.getEventHandlers()
 		e.eventHandlers.Mount(e)
-	} else if e.eventHandlers != nil && newElement.eventHandlers != nil {
-		e.eventHandlers.Update(e, newElement.eventHandlers)
+	} else if e.eventHandlers != nil {
+		e.eventHandlers.Update(e, n.getEventHandlers())
 	}
 
 	childrenA := e.children
-	childrenB := newElement.children
+	childrenB := n.getChildren()
 	i := 0
 
 	for len(childrenA) != 0 && len(childrenB) != 0 {
@@ -199,16 +173,16 @@ func (e *htmlElement[T]) updateWith(v UI) error {
 		if canUpdate(a, b) {
 			if err := update(a, b); err != nil {
 				return errors.New("updating child failed").
-					Tag("child-type", reflect.TypeOf(a)).
-					Tag("new-child-type", reflect.TypeOf(b)).
+					Tag("child", reflect.TypeOf(a)).
+					Tag("new-child", reflect.TypeOf(b)).
 					Tag("index", i).
 					Wrap(err)
 			}
 		} else {
 			if err := e.replaceChildAt(i, b); err != nil {
 				return errors.New("replacing child failed").
-					Tag("child-type", reflect.TypeOf(a)).
-					Tag("new-child-type", reflect.TypeOf(b)).
+					Tag("child", reflect.TypeOf(a)).
+					Tag("new-child", reflect.TypeOf(b)).
 					Tag("index", i).
 					Wrap(err)
 			}
@@ -222,7 +196,8 @@ func (e *htmlElement[T]) updateWith(v UI) error {
 	for len(childrenA) != 0 {
 		if err := e.removeChildAt(i); err != nil {
 			return errors.New("removing child failed").
-				Tag("child-type", reflect.TypeOf(childrenA[0])).
+				Tag("child", reflect.TypeOf(childrenA[0])).
+				Tag("index", i).
 				Wrap(err)
 		}
 
@@ -234,7 +209,8 @@ func (e *htmlElement[T]) updateWith(v UI) error {
 
 		if err := e.appendChild(b); err != nil {
 			return errors.New("appending child failed").
-				Tag("child-type", reflect.TypeOf(b)).
+				Tag("child", reflect.TypeOf(b)).
+				Tag("index", i).
 				Wrap(err)
 		}
 
@@ -244,29 +220,30 @@ func (e *htmlElement[T]) updateWith(v UI) error {
 	return nil
 }
 
-func (e *htmlElement[T]) replaceChildAt(i int, new UI) error {
-	if i < 0 || i >= len(e.children) {
-		return errors.New("index out of range").
-			Tag("index", i).
-			Tag("children-count", len(e.children))
-	}
+func (e *elem) replaceChildAt(idx int, new UI) error {
+	old := e.children[idx]
 
-	if err := mount(e.dispatcher, new); err != nil {
-		return errors.New("mounting new element failed").
-			Tag("element-type", reflect.TypeOf(new)).
+	if err := mount(e.getDispatcher(), new); err != nil {
+		return errors.New("replacing child failed").
+			Tag("name", e.name()).
+			Tag("kind", e.Kind()).
+			Tag("index", idx).
+			Tag("old-name", old.name()).
+			Tag("old-kind", old.Kind()).
+			Tag("new-name", new.name()).
+			Tag("new-kind", new.Kind()).
 			Wrap(err)
 	}
 
-	old := e.children[i]
-	defer dismount(old)
+	e.children[idx] = new
+	new.setParent(e.self())
+	e.JSValue().replaceChild(new, old)
 
-	new.setParent(e)
-	e.children[i] = new
-	e.jsElement.replaceChild(new, old)
+	dismount(old)
 	return nil
 }
 
-func (e *htmlElement[T]) removeChildAt(i int) error {
+func (e *elem) removeChildAt(i int) error {
 	if i < 0 || i >= len(e.children) {
 		return errors.New("index out of range").
 			Tag("index", i).
@@ -284,50 +261,75 @@ func (e *htmlElement[T]) removeChildAt(i int) error {
 	return nil
 }
 
-func (e *htmlElement[T]) appendChild(v UI) error {
-	if err := mount(e.dispatcher, v); err != nil {
+func (e *elem) appendChild(v UI) error {
+	if err := mount(e.getDispatcher(), v); err != nil {
 		return errors.New("mounting element failed").
-			Tag("element-type", reflect.TypeOf(v)).
+			Tag("element", reflect.TypeOf(v)).
 			Wrap(err)
 	}
 
-	v.setParent(e)
-	e.jsElement.appendChild(v)
+	v.setParent(e.self())
+	e.JSValue().appendChild(v)
 	e.children = append(e.children, v)
 	return nil
 }
 
-func (e *htmlElement[T]) onNav(u *url.URL) {
-	for _, c := range e.children {
+func (e *elem) setAttr(name string, value interface{}) {
+	if e.attributes == nil {
+		e.attributes = make(attributes)
+	}
+	e.attributes.Set(name, value)
+}
+
+func (e *elem) setEventHandler(event string, h EventHandler, scope ...interface{}) {
+	if e.eventHandlers == nil {
+		e.eventHandlers = make(eventHandlers)
+	}
+	e.eventHandlers.Set(event, h, scope...)
+}
+
+func (e *elem) setBody(body ...UI) {
+	if e.isSelfClosing {
+		panic(errors.New("setting html element body failed").
+			Tag("reason", "self closing element can't have children").
+			Tag("name", e.name()),
+		)
+	}
+
+	e.children = FilterUIElems(body...)
+}
+
+func (e *elem) onNav(u *url.URL) {
+	for _, c := range e.getChildren() {
 		c.onNav(u)
 	}
 }
 
-func (e *htmlElement[T]) onAppUpdate() {
-	for _, c := range e.children {
+func (e *elem) onAppUpdate() {
+	for _, c := range e.getChildren() {
 		c.onAppUpdate()
 	}
 }
 
-func (e *htmlElement[T]) onAppInstallChange() {
-	for _, c := range e.children {
+func (e *elem) onAppInstallChange() {
+	for _, c := range e.getChildren() {
 		c.onAppInstallChange()
 	}
 }
 
-func (e *htmlElement[T]) onResize() {
-	for _, c := range e.children {
+func (e *elem) onResize() {
+	for _, c := range e.getChildren() {
 		c.onResize()
 	}
 }
 
-func (e *htmlElement[T]) preRender(p Page) {
-	for _, c := range e.children {
+func (e *elem) preRender(p Page) {
+	for _, c := range e.getChildren() {
 		c.preRender(p)
 	}
 }
 
-func (e *htmlElement[T]) html(w io.Writer) {
+func (e *elem) html(w io.Writer) {
 	w.Write([]byte("<"))
 	w.Write([]byte(e.tag))
 
@@ -370,7 +372,7 @@ func (e *htmlElement[T]) html(w io.Writer) {
 	w.Write([]byte(">"))
 }
 
-func (e *htmlElement[T]) htmlWithIndent(w io.Writer, indent int) {
+func (e *elem) htmlWithIndent(w io.Writer, indent int) {
 	writeIndent(w, indent)
 	w.Write([]byte("<"))
 	w.Write([]byte(e.tag))
@@ -415,20 +417,16 @@ func (e *htmlElement[T]) htmlWithIndent(w io.Writer, indent int) {
 	w.Write([]byte(">"))
 }
 
-// -----------------------------------------------------------------------------
-// The method below might be removed in later versions.
-// -----------------------------------------------------------------------------
-func (e *htmlElement[T]) Kind() Kind {
-	return HTML
-}
+func isURLAttrValue(k string) bool {
+	switch k {
+	case "cite",
+		"data",
+		"href",
+		"src",
+		"srcset":
+		return true
 
-func (e *htmlElement[T]) name() string {
-	return e.tag
-}
-
-func (e *htmlElement[T]) self() UI {
-	return e
-}
-
-func (e *htmlElement[T]) setSelf(UI) {
+	default:
+		return false
+	}
 }

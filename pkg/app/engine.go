@@ -192,7 +192,7 @@ func (e *engine) Mount(n UI) {
 		Source: e.Body,
 		Function: func(ctx Context) {
 			if !e.isMountedOnce {
-				if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {
+				if err := e.Body.(*htmlBody).replaceChildAt(0, n); err != nil {
 					panic(errors.New("mounting ui element failed").
 						Tag("dispatches-count", len(e.dispatches)).
 						Tag("dispatches-capacity", cap(e.dispatches)).
@@ -218,7 +218,7 @@ func (e *engine) Mount(n UI) {
 				return
 			}
 
-			if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {
+			if err := e.Body.(*htmlBody).replaceChildAt(0, n); err != nil {
 				panic(errors.New("mounting ui element failed").
 					Tag("dispatches-count", len(e.dispatches)).
 					Tag("dispatches-capacity", cap(e.dispatches)).
