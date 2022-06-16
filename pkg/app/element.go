@@ -5,7 +5,6 @@ import (
 	"io"
 	"net/url"
 	"reflect"
-	"strconv"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
@@ -286,58 +285,6 @@ func (e *elem) setAttr(name string, value interface{}) {
 		e.attributes = make(attributes)
 	}
 	e.attributes.Set(name, value)
-}
-
-func (e *elem) resolveURLAttr(k, v string) string {
-	if !isURLAttrValue(k) {
-		return v
-	}
-	return e.dispatcher.resolveStaticResource(v)
-}
-
-func (e *elem) setJsAttr(k, v string) {
-	switch k {
-	case "value":
-		e.JSValue().Set("value", v)
-
-	case "class":
-		e.JSValue().Set("className", v)
-
-	case "contenteditable":
-		e.JSValue().Set("contentEditable", v)
-
-	case "async",
-		"autofocus",
-		"autoplay",
-		"checked",
-		"default",
-		"defer",
-		"disabled",
-		"hidden",
-		"ismap",
-		"loop",
-		"multiple",
-		"muted",
-		"open",
-		"readonly",
-		"required",
-		"reversed",
-		"selected":
-		switch k {
-		case "ismap":
-			k = "isMap"
-		case "readonly":
-			k = "readOnly"
-		}
-		v, _ := strconv.ParseBool(v)
-		e.JSValue().Set(k, v)
-
-	default:
-		if isURLAttrValue(k) {
-			v = e.getDispatcher().resolveStaticResource(v)
-		}
-		e.JSValue().setAttr(k, v)
-	}
 }
 
 func (e *elem) setEventHandler(event string, h EventHandler, scope ...interface{}) {
