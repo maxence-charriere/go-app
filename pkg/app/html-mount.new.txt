@@ -1,0 +1,10 @@
+[94mINFO ‣ [00mtest:
+    type: log
+[91mERROR ‣ [00mtest:
+    type: error
+goos: darwin
+goarch: arm64
+pkg: github.com/maxence-charriere/go-app/v9/pkg/app
+BenchmarkMountHTMLElement-10    	   52724	     22592 ns/op	  139967 B/op	      61 allocs/op
+PASS
+ok  	github.com/maxence-charriere/go-app/v9/pkg/app	2.555s
