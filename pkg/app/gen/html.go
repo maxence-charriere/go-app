@@ -2087,7 +2087,7 @@ import (
 			e := &html%s{
 				elem: elem{
 					tag: "%s",
-					selfClosing: %v,
+					isSelfClosing: %v,
 				},
 			}
 

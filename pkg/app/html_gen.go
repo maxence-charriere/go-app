@@ -193,8 +193,8 @@ type HTMLA interface {
 func A() HTMLA {
 	e := &htmlA{
 		elem: elem{
-			tag:         "a",
-			selfClosing: false,
+			tag:           "a",
+			isSelfClosing: false,
 		},
 	}
 
@@ -668,8 +668,8 @@ type HTMLAbbr interface {
 func Abbr() HTMLAbbr {
 	e := &htmlAbbr{
 		elem: elem{
-			tag:         "abbr",
-			selfClosing: false,
+			tag:           "abbr",
+			isSelfClosing: false,
 		},
 	}
 
@@ -1103,8 +1103,8 @@ type HTMLAddress interface {
 func Address() HTMLAddress {
 	e := &htmlAddress{
 		elem: elem{
-			tag:         "address",
-			selfClosing: false,
+			tag:           "address",
+			isSelfClosing: false,
 		},
 	}
 
@@ -1562,8 +1562,8 @@ type HTMLArea interface {
 func Area() HTMLArea {
 	e := &htmlArea{
 		elem: elem{
-			tag:         "area",
-			selfClosing: true,
+			tag:           "area",
+			isSelfClosing: true,
 		},
 	}
 
@@ -2038,8 +2038,8 @@ type HTMLArticle interface {
 func Article() HTMLArticle {
 	e := &htmlArticle{
 		elem: elem{
-			tag:         "article",
-			selfClosing: false,
+			tag:           "article",
+			isSelfClosing: false,
 		},
 	}
 
@@ -2473,8 +2473,8 @@ type HTMLAside interface {
 func Aside() HTMLAside {
 	e := &htmlAside{
 		elem: elem{
-			tag:         "aside",
-			selfClosing: false,
+			tag:           "aside",
+			isSelfClosing: false,
 		},
 	}
 
@@ -2998,8 +2998,8 @@ type HTMLAudio interface {
 func Audio() HTMLAudio {
 	e := &htmlAudio{
 		elem: elem{
-			tag:         "audio",
-			selfClosing: false,
+			tag:           "audio",
+			isSelfClosing: false,
 		},
 	}
 
@@ -3583,8 +3583,8 @@ type HTMLB interface {
 func B() HTMLB {
 	e := &htmlB{
 		elem: elem{
-			tag:         "b",
-			selfClosing: false,
+			tag:           "b",
+			isSelfClosing: false,
 		},
 	}
 
@@ -4018,8 +4018,8 @@ type HTMLBase interface {
 func Base() HTMLBase {
 	e := &htmlBase{
 		elem: elem{
-			tag:         "base",
-			selfClosing: true,
+			tag:           "base",
+			isSelfClosing: true,
 		},
 	}
 
@@ -4454,8 +4454,8 @@ type HTMLBdi interface {
 func Bdi() HTMLBdi {
 	e := &htmlBdi{
 		elem: elem{
-			tag:         "bdi",
-			selfClosing: false,
+			tag:           "bdi",
+			isSelfClosing: false,
 		},
 	}
 
@@ -4889,8 +4889,8 @@ type HTMLBdo interface {
 func Bdo() HTMLBdo {
 	e := &htmlBdo{
 		elem: elem{
-			tag:         "bdo",
-			selfClosing: false,
+			tag:           "bdo",
+			isSelfClosing: false,
 		},
 	}
 
@@ -5327,8 +5327,8 @@ type HTMLBlockquote interface {
 func Blockquote() HTMLBlockquote {
 	e := &htmlBlockquote{
 		elem: elem{
-			tag:         "blockquote",
-			selfClosing: false,
+			tag:           "blockquote",
+			isSelfClosing: false,
 		},
 	}
 
@@ -5808,8 +5808,8 @@ type HTMLBody interface {
 func Body() HTMLBody {
 	e := &htmlBody{
 		elem: elem{
-			tag:         "body",
-			selfClosing: false,
+			tag:           "body",
+			isSelfClosing: false,
 		},
 	}
 
@@ -6308,8 +6308,8 @@ type HTMLBr interface {
 func Br() HTMLBr {
 	e := &htmlBr{
 		elem: elem{
-			tag:         "br",
-			selfClosing: true,
+			tag:           "br",
+			isSelfClosing: true,
 		},
 	}
 
@@ -6767,8 +6767,8 @@ type HTMLButton interface {
 func Button() HTMLButton {
 	e := &htmlButton{
 		elem: elem{
-			tag:         "button",
-			selfClosing: false,
+			tag:           "button",
+			isSelfClosing: false,
 		},
 	}
 
@@ -7263,8 +7263,8 @@ type HTMLCanvas interface {
 func Canvas() HTMLCanvas {
 	e := &htmlCanvas{
 		elem: elem{
-			tag:         "canvas",
-			selfClosing: false,
+			tag:           "canvas",
+			isSelfClosing: false,
 		},
 	}
 
@@ -7708,8 +7708,8 @@ type HTMLCaption interface {
 func Caption() HTMLCaption {
 	e := &htmlCaption{
 		elem: elem{
-			tag:         "caption",
-			selfClosing: false,
+			tag:           "caption",
+			isSelfClosing: false,
 		},
 	}
 
@@ -8143,8 +8143,8 @@ type HTMLCite interface {
 func Cite() HTMLCite {
 	e := &htmlCite{
 		elem: elem{
-			tag:         "cite",
-			selfClosing: false,
+			tag:           "cite",
+			isSelfClosing: false,
 		},
 	}
 
@@ -8578,8 +8578,8 @@ type HTMLCode interface {
 func Code() HTMLCode {
 	e := &htmlCode{
 		elem: elem{
-			tag:         "code",
-			selfClosing: false,
+			tag:           "code",
+			isSelfClosing: false,
 		},
 	}
 
@@ -9010,8 +9010,8 @@ type HTMLCol interface {
 func Col() HTMLCol {
 	e := &htmlCol{
 		elem: elem{
-			tag:         "col",
-			selfClosing: true,
+			tag:           "col",
+			isSelfClosing: true,
 		},
 	}
 
@@ -9444,8 +9444,8 @@ type HTMLColGroup interface {
 func ColGroup() HTMLColGroup {
 	e := &htmlColGroup{
 		elem: elem{
-			tag:         "colgroup",
-			selfClosing: false,
+			tag:           "colgroup",
+			isSelfClosing: false,
 		},
 	}
 
@@ -9791,8 +9791,8 @@ type HTMLData interface {
 func Data() HTMLData {
 	e := &htmlData{
 		elem: elem{
-			tag:         "data",
-			selfClosing: false,
+			tag:           "data",
+			isSelfClosing: false,
 		},
 	}
 
@@ -10071,8 +10071,8 @@ type HTMLDataList interface {
 func DataList() HTMLDataList {
 	e := &htmlDataList{
 		elem: elem{
-			tag:         "datalist",
-			selfClosing: false,
+			tag:           "datalist",
+			isSelfClosing: false,
 		},
 	}
 
@@ -10506,8 +10506,8 @@ type HTMLDd interface {
 func Dd() HTMLDd {
 	e := &htmlDd{
 		elem: elem{
-			tag:         "dd",
-			selfClosing: false,
+			tag:           "dd",
+			isSelfClosing: false,
 		},
 	}
 
@@ -10947,8 +10947,8 @@ type HTMLDel interface {
 func Del() HTMLDel {
 	e := &htmlDel{
 		elem: elem{
-			tag:         "del",
-			selfClosing: false,
+			tag:           "del",
+			isSelfClosing: false,
 		},
 	}
 
@@ -11398,8 +11398,8 @@ type HTMLDetails interface {
 func Details() HTMLDetails {
 	e := &htmlDetails{
 		elem: elem{
-			tag:         "details",
-			selfClosing: false,
+			tag:           "details",
+			isSelfClosing: false,
 		},
 	}
 
@@ -11843,8 +11843,8 @@ type HTMLDfn interface {
 func Dfn() HTMLDfn {
 	e := &htmlDfn{
 		elem: elem{
-			tag:         "dfn",
-			selfClosing: false,
+			tag:           "dfn",
+			isSelfClosing: false,
 		},
 	}
 
@@ -12281,8 +12281,8 @@ type HTMLDialog interface {
 func Dialog() HTMLDialog {
 	e := &htmlDialog{
 		elem: elem{
-			tag:         "dialog",
-			selfClosing: false,
+			tag:           "dialog",
+			isSelfClosing: false,
 		},
 	}
 
@@ -12721,8 +12721,8 @@ type HTMLDiv interface {
 func Div() HTMLDiv {
 	e := &htmlDiv{
 		elem: elem{
-			tag:         "div",
-			selfClosing: false,
+			tag:           "div",
+			isSelfClosing: false,
 		},
 	}
 
@@ -13156,8 +13156,8 @@ type HTMLDl interface {
 func Dl() HTMLDl {
 	e := &htmlDl{
 		elem: elem{
-			tag:         "dl",
-			selfClosing: false,
+			tag:           "dl",
+			isSelfClosing: false,
 		},
 	}
 
@@ -13591,8 +13591,8 @@ type HTMLDt interface {
 func Dt() HTMLDt {
 	e := &htmlDt{
 		elem: elem{
-			tag:         "dt",
-			selfClosing: false,
+			tag:           "dt",
+			isSelfClosing: false,
 		},
 	}
 
@@ -14026,8 +14026,8 @@ type HTMLEm interface {
 func Em() HTMLEm {
 	e := &htmlEm{
 		elem: elem{
-			tag:         "em",
-			selfClosing: false,
+			tag:           "em",
+			isSelfClosing: false,
 		},
 	}
 
@@ -14536,8 +14536,8 @@ type HTMLEmbed interface {
 func Embed() HTMLEmbed {
 	e := &htmlEmbed{
 		elem: elem{
-			tag:         "embed",
-			selfClosing: true,
+			tag:           "embed",
+			isSelfClosing: true,
 		},
 	}
 
@@ -15106,8 +15106,8 @@ type HTMLFieldSet interface {
 func FieldSet() HTMLFieldSet {
 	e := &htmlFieldSet{
 		elem: elem{
-			tag:         "fieldset",
-			selfClosing: false,
+			tag:           "fieldset",
+			isSelfClosing: false,
 		},
 	}
 
@@ -15556,8 +15556,8 @@ type HTMLFigCaption interface {
 func FigCaption() HTMLFigCaption {
 	e := &htmlFigCaption{
 		elem: elem{
-			tag:         "figcaption",
-			selfClosing: false,
+			tag:           "figcaption",
+			isSelfClosing: false,
 		},
 	}
 
@@ -15991,8 +15991,8 @@ type HTMLFigure interface {
 func Figure() HTMLFigure {
 	e := &htmlFigure{
 		elem: elem{
-			tag:         "figure",
-			selfClosing: false,
+			tag:           "figure",
+			isSelfClosing: false,
 		},
 	}
 
@@ -16426,8 +16426,8 @@ type HTMLFooter interface {
 func Footer() HTMLFooter {
 	e := &htmlFooter{
 		elem: elem{
-			tag:         "footer",
-			selfClosing: false,
+			tag:           "footer",
+			isSelfClosing: false,
 		},
 	}
 
@@ -16885,8 +16885,8 @@ type HTMLForm interface {
 func Form() HTMLForm {
 	e := &htmlForm{
 		elem: elem{
-			tag:         "form",
-			selfClosing: false,
+			tag:           "form",
+			isSelfClosing: false,
 		},
 	}
 
@@ -17365,8 +17365,8 @@ type HTMLH1 interface {
 func H1() HTMLH1 {
 	e := &htmlH1{
 		elem: elem{
-			tag:         "h1",
-			selfClosing: false,
+			tag:           "h1",
+			isSelfClosing: false,
 		},
 	}
 
@@ -17800,8 +17800,8 @@ type HTMLH2 interface {
 func H2() HTMLH2 {
 	e := &htmlH2{
 		elem: elem{
-			tag:         "h2",
-			selfClosing: false,
+			tag:           "h2",
+			isSelfClosing: false,
 		},
 	}
 
@@ -18235,8 +18235,8 @@ type HTMLH3 interface {
 func H3() HTMLH3 {
 	e := &htmlH3{
 		elem: elem{
-			tag:         "h3",
-			selfClosing: false,
+			tag:           "h3",
+			isSelfClosing: false,
 		},
 	}
 
@@ -18670,8 +18670,8 @@ type HTMLH4 interface {
 func H4() HTMLH4 {
 	e := &htmlH4{
 		elem: elem{
-			tag:         "h4",
-			selfClosing: false,
+			tag:           "h4",
+			isSelfClosing: false,
 		},
 	}
 
@@ -19105,8 +19105,8 @@ type HTMLH5 interface {
 func H5() HTMLH5 {
 	e := &htmlH5{
 		elem: elem{
-			tag:         "h5",
-			selfClosing: false,
+			tag:           "h5",
+			isSelfClosing: false,
 		},
 	}
 
@@ -19540,8 +19540,8 @@ type HTMLH6 interface {
 func H6() HTMLH6 {
 	e := &htmlH6{
 		elem: elem{
-			tag:         "h6",
-			selfClosing: false,
+			tag:           "h6",
+			isSelfClosing: false,
 		},
 	}
 
@@ -19879,8 +19879,8 @@ type HTMLHead interface {
 func Head() HTMLHead {
 	e := &htmlHead{
 		elem: elem{
-			tag:         "head",
-			selfClosing: false,
+			tag:           "head",
+			isSelfClosing: false,
 		},
 	}
 
@@ -20154,8 +20154,8 @@ type HTMLHeader interface {
 func Header() HTMLHeader {
 	e := &htmlHeader{
 		elem: elem{
-			tag:         "header",
-			selfClosing: false,
+			tag:           "header",
+			isSelfClosing: false,
 		},
 	}
 
@@ -20583,8 +20583,8 @@ type HTMLHr interface {
 func Hr() HTMLHr {
 	e := &htmlHr{
 		elem: elem{
-			tag:         "hr",
-			selfClosing: true,
+			tag:           "hr",
+			isSelfClosing: true,
 		},
 	}
 
@@ -20909,8 +20909,8 @@ type HTMLHtml interface {
 func Html() HTMLHtml {
 	e := &htmlHtml{
 		elem: elem{
-			tag:         "html",
-			selfClosing: false,
+			tag:           "html",
+			isSelfClosing: false,
 		},
 	}
 
@@ -21180,8 +21180,8 @@ type HTMLI interface {
 func I() HTMLI {
 	e := &htmlI{
 		elem: elem{
-			tag:         "i",
-			selfClosing: false,
+			tag:           "i",
+			isSelfClosing: false,
 		},
 	}
 
@@ -21651,8 +21651,8 @@ type HTMLIFrame interface {
 func IFrame() HTMLIFrame {
 	e := &htmlIFrame{
 		elem: elem{
-			tag:         "iframe",
-			selfClosing: false,
+			tag:           "iframe",
+			isSelfClosing: false,
 		},
 	}
 
@@ -22249,8 +22249,8 @@ type HTMLImg interface {
 func Img() HTMLImg {
 	e := &htmlImg{
 		elem: elem{
-			tag:         "img",
-			selfClosing: true,
+			tag:           "img",
+			isSelfClosing: true,
 		},
 	}
 
@@ -22930,8 +22930,8 @@ type HTMLInput interface {
 func Input() HTMLInput {
 	e := &htmlInput{
 		elem: elem{
-			tag:         "input",
-			selfClosing: true,
+			tag:           "input",
+			isSelfClosing: true,
 		},
 	}
 
@@ -23521,8 +23521,8 @@ type HTMLIns interface {
 func Ins() HTMLIns {
 	e := &htmlIns{
 		elem: elem{
-			tag:         "ins",
-			selfClosing: false,
+			tag:           "ins",
+			isSelfClosing: false,
 		},
 	}
 
@@ -23956,8 +23956,8 @@ type HTMLKbd interface {
 func Kbd() HTMLKbd {
 	e := &htmlKbd{
 		elem: elem{
-			tag:         "kbd",
-			selfClosing: false,
+			tag:           "kbd",
+			isSelfClosing: false,
 		},
 	}
 
@@ -24397,8 +24397,8 @@ type HTMLLabel interface {
 func Label() HTMLLabel {
 	e := &htmlLabel{
 		elem: elem{
-			tag:         "label",
-			selfClosing: false,
+			tag:           "label",
+			isSelfClosing: false,
 		},
 	}
 
@@ -24842,8 +24842,8 @@ type HTMLLegend interface {
 func Legend() HTMLLegend {
 	e := &htmlLegend{
 		elem: elem{
-			tag:         "legend",
-			selfClosing: false,
+			tag:           "legend",
+			isSelfClosing: false,
 		},
 	}
 
@@ -25280,8 +25280,8 @@ type HTMLLi interface {
 func Li() HTMLLi {
 	e := &htmlLi{
 		elem: elem{
-			tag:         "li",
-			selfClosing: false,
+			tag:           "li",
+			isSelfClosing: false,
 		},
 	}
 
@@ -25738,8 +25738,8 @@ type HTMLLink interface {
 func Link() HTMLLink {
 	e := &htmlLink{
 		elem: elem{
-			tag:         "link",
-			selfClosing: true,
+			tag:           "link",
+			isSelfClosing: true,
 		},
 	}
 
@@ -26204,8 +26204,8 @@ type HTMLMain interface {
 func Main() HTMLMain {
 	e := &htmlMain{
 		elem: elem{
-			tag:         "main",
-			selfClosing: false,
+			tag:           "main",
+			isSelfClosing: false,
 		},
 	}
 
@@ -26642,8 +26642,8 @@ type HTMLMap interface {
 func Map() HTMLMap {
 	e := &htmlMap{
 		elem: elem{
-			tag:         "map",
-			selfClosing: false,
+			tag:           "map",
+			isSelfClosing: false,
 		},
 	}
 
@@ -27082,8 +27082,8 @@ type HTMLMark interface {
 func Mark() HTMLMark {
 	e := &htmlMark{
 		elem: elem{
-			tag:         "mark",
-			selfClosing: false,
+			tag:           "mark",
+			isSelfClosing: false,
 		},
 	}
 
@@ -27430,8 +27430,8 @@ type HTMLMeta interface {
 func Meta() HTMLMeta {
 	e := &htmlMeta{
 		elem: elem{
-			tag:         "meta",
-			selfClosing: true,
+			tag:           "meta",
+			isSelfClosing: true,
 		},
 	}
 
@@ -27742,8 +27742,8 @@ type HTMLMeter interface {
 func Meter() HTMLMeter {
 	e := &htmlMeter{
 		elem: elem{
-			tag:         "meter",
-			selfClosing: false,
+			tag:           "meter",
+			isSelfClosing: false,
 		},
 	}
 
@@ -28212,8 +28212,8 @@ type HTMLNav interface {
 func Nav() HTMLNav {
 	e := &htmlNav{
 		elem: elem{
-			tag:         "nav",
-			selfClosing: false,
+			tag:           "nav",
+			isSelfClosing: false,
 		},
 	}
 
@@ -28551,8 +28551,8 @@ type HTMLNoScript interface {
 func NoScript() HTMLNoScript {
 	e := &htmlNoScript{
 		elem: elem{
-			tag:         "noscript",
-			selfClosing: false,
+			tag:           "noscript",
+			isSelfClosing: false,
 		},
 	}
 
@@ -28916,8 +28916,8 @@ type HTMLObject interface {
 func Object() HTMLObject {
 	e := &htmlObject{
 		elem: elem{
-			tag:         "object",
-			selfClosing: false,
+			tag:           "object",
+			isSelfClosing: false,
 		},
 	}
 
@@ -29510,8 +29510,8 @@ type HTMLOl interface {
 func Ol() HTMLOl {
 	e := &htmlOl{
 		elem: elem{
-			tag:         "ol",
-			selfClosing: false,
+			tag:           "ol",
+			isSelfClosing: false,
 		},
 	}
 
@@ -29966,8 +29966,8 @@ type HTMLOptGroup interface {
 func OptGroup() HTMLOptGroup {
 	e := &htmlOptGroup{
 		elem: elem{
-			tag:         "optgroup",
-			selfClosing: false,
+			tag:           "optgroup",
+			isSelfClosing: false,
 		},
 	}
 
@@ -30423,8 +30423,8 @@ type HTMLOption interface {
 func Option() HTMLOption {
 	e := &htmlOption{
 		elem: elem{
-			tag:         "option",
-			selfClosing: false,
+			tag:           "option",
+			isSelfClosing: false,
 		},
 	}
 
@@ -30887,8 +30887,8 @@ type HTMLOutput interface {
 func Output() HTMLOutput {
 	e := &htmlOutput{
 		elem: elem{
-			tag:         "output",
-			selfClosing: false,
+			tag:           "output",
+			isSelfClosing: false,
 		},
 	}
 
@@ -31337,8 +31337,8 @@ type HTMLP interface {
 func P() HTMLP {
 	e := &htmlP{
 		elem: elem{
-			tag:         "p",
-			selfClosing: false,
+			tag:           "p",
+			isSelfClosing: false,
 		},
 	}
 
@@ -31772,8 +31772,8 @@ type HTMLParam interface {
 func Param() HTMLParam {
 	e := &htmlParam{
 		elem: elem{
-			tag:         "param",
-			selfClosing: true,
+			tag:           "param",
+			isSelfClosing: true,
 		},
 	}
 
@@ -32208,8 +32208,8 @@ type HTMLPicture interface {
 func Picture() HTMLPicture {
 	e := &htmlPicture{
 		elem: elem{
-			tag:         "picture",
-			selfClosing: false,
+			tag:           "picture",
+			isSelfClosing: false,
 		},
 	}
 
@@ -32643,8 +32643,8 @@ type HTMLPre interface {
 func Pre() HTMLPre {
 	e := &htmlPre{
 		elem: elem{
-			tag:         "pre",
-			selfClosing: false,
+			tag:           "pre",
+			isSelfClosing: false,
 		},
 	}
 
@@ -33084,8 +33084,8 @@ type HTMLProgress interface {
 func Progress() HTMLProgress {
 	e := &htmlProgress{
 		elem: elem{
-			tag:         "progress",
-			selfClosing: false,
+			tag:           "progress",
+			isSelfClosing: false,
 		},
 	}
 
@@ -33532,8 +33532,8 @@ type HTMLQ interface {
 func Q() HTMLQ {
 	e := &htmlQ{
 		elem: elem{
-			tag:         "q",
-			selfClosing: false,
+			tag:           "q",
+			isSelfClosing: false,
 		},
 	}
 
@@ -33972,8 +33972,8 @@ type HTMLRp interface {
 func Rp() HTMLRp {
 	e := &htmlRp{
 		elem: elem{
-			tag:         "rp",
-			selfClosing: false,
+			tag:           "rp",
+			isSelfClosing: false,
 		},
 	}
 
@@ -34407,8 +34407,8 @@ type HTMLRt interface {
 func Rt() HTMLRt {
 	e := &htmlRt{
 		elem: elem{
-			tag:         "rt",
-			selfClosing: false,
+			tag:           "rt",
+			isSelfClosing: false,
 		},
 	}
 
@@ -34842,8 +34842,8 @@ type HTMLRuby interface {
 func Ruby() HTMLRuby {
 	e := &htmlRuby{
 		elem: elem{
-			tag:         "ruby",
-			selfClosing: false,
+			tag:           "ruby",
+			isSelfClosing: false,
 		},
 	}
 
@@ -35277,8 +35277,8 @@ type HTMLS interface {
 func S() HTMLS {
 	e := &htmlS{
 		elem: elem{
-			tag:         "s",
-			selfClosing: false,
+			tag:           "s",
+			isSelfClosing: false,
 		},
 	}
 
@@ -35712,8 +35712,8 @@ type HTMLSamp interface {
 func Samp() HTMLSamp {
 	e := &htmlSamp{
 		elem: elem{
-			tag:         "samp",
-			selfClosing: false,
+			tag:           "samp",
+			isSelfClosing: false,
 		},
 	}
 
@@ -36072,8 +36072,8 @@ type HTMLScript interface {
 func Script() HTMLScript {
 	e := &htmlScript{
 		elem: elem{
-			tag:         "script",
-			selfClosing: false,
+			tag:           "script",
+			isSelfClosing: false,
 		},
 	}
 
@@ -36382,8 +36382,8 @@ type HTMLSection interface {
 func Section() HTMLSection {
 	e := &htmlSection{
 		elem: elem{
-			tag:         "section",
-			selfClosing: false,
+			tag:           "section",
+			isSelfClosing: false,
 		},
 	}
 
@@ -36838,8 +36838,8 @@ type HTMLSelect interface {
 func Select() HTMLSelect {
 	e := &htmlSelect{
 		elem: elem{
-			tag:         "select",
-			selfClosing: false,
+			tag:           "select",
+			isSelfClosing: false,
 		},
 	}
 
@@ -37308,8 +37308,8 @@ type HTMLSmall interface {
 func Small() HTMLSmall {
 	e := &htmlSmall{
 		elem: elem{
-			tag:         "small",
-			selfClosing: false,
+			tag:           "small",
+			isSelfClosing: false,
 		},
 	}
 
@@ -37752,8 +37752,8 @@ type HTMLSource interface {
 func Source() HTMLSource {
 	e := &htmlSource{
 		elem: elem{
-			tag:         "source",
-			selfClosing: true,
+			tag:           "source",
+			isSelfClosing: true,
 		},
 	}
 
@@ -38203,8 +38203,8 @@ type HTMLSpan interface {
 func Span() HTMLSpan {
 	e := &htmlSpan{
 		elem: elem{
-			tag:         "span",
-			selfClosing: false,
+			tag:           "span",
+			isSelfClosing: false,
 		},
 	}
 
@@ -38638,8 +38638,8 @@ type HTMLStrong interface {
 func Strong() HTMLStrong {
 	e := &htmlStrong{
 		elem: elem{
-			tag:         "strong",
-			selfClosing: false,
+			tag:           "strong",
+			isSelfClosing: false,
 		},
 	}
 
@@ -39082,8 +39082,8 @@ type HTMLStyle interface {
 func Style() HTMLStyle {
 	e := &htmlStyle{
 		elem: elem{
-			tag:         "style",
-			selfClosing: false,
+			tag:           "style",
+			isSelfClosing: false,
 		},
 	}
 
@@ -39532,8 +39532,8 @@ type HTMLSub interface {
 func Sub() HTMLSub {
 	e := &htmlSub{
 		elem: elem{
-			tag:         "sub",
-			selfClosing: false,
+			tag:           "sub",
+			isSelfClosing: false,
 		},
 	}
 
@@ -39967,8 +39967,8 @@ type HTMLSummary interface {
 func Summary() HTMLSummary {
 	e := &htmlSummary{
 		elem: elem{
-			tag:         "summary",
-			selfClosing: false,
+			tag:           "summary",
+			isSelfClosing: false,
 		},
 	}
 
@@ -40402,8 +40402,8 @@ type HTMLSup interface {
 func Sup() HTMLSup {
 	e := &htmlSup{
 		elem: elem{
-			tag:         "sup",
-			selfClosing: false,
+			tag:           "sup",
+			isSelfClosing: false,
 		},
 	}
 
@@ -40837,8 +40837,8 @@ type HTMLTable interface {
 func Table() HTMLTable {
 	e := &htmlTable{
 		elem: elem{
-			tag:         "table",
-			selfClosing: false,
+			tag:           "table",
+			isSelfClosing: false,
 		},
 	}
 
@@ -41272,8 +41272,8 @@ type HTMLTBody interface {
 func TBody() HTMLTBody {
 	e := &htmlTBody{
 		elem: elem{
-			tag:         "tbody",
-			selfClosing: false,
+			tag:           "tbody",
+			isSelfClosing: false,
 		},
 	}
 
@@ -41716,8 +41716,8 @@ type HTMLTd interface {
 func Td() HTMLTd {
 	e := &htmlTd{
 		elem: elem{
-			tag:         "td",
-			selfClosing: false,
+			tag:           "td",
+			isSelfClosing: false,
 		},
 	}
 
@@ -42070,8 +42070,8 @@ type HTMLTemplate interface {
 func Template() HTMLTemplate {
 	e := &htmlTemplate{
 		elem: elem{
-			tag:         "template",
-			selfClosing: false,
+			tag:           "template",
+			isSelfClosing: false,
 		},
 	}
 
@@ -42381,8 +42381,8 @@ type HTMLTextarea interface {
 func Textarea() HTMLTextarea {
 	e := &htmlTextarea{
 		elem: elem{
-			tag:         "textarea",
-			selfClosing: false,
+			tag:           "textarea",
+			isSelfClosing: false,
 		},
 	}
 
@@ -42877,8 +42877,8 @@ type HTMLTFoot interface {
 func TFoot() HTMLTFoot {
 	e := &htmlTFoot{
 		elem: elem{
-			tag:         "tfoot",
-			selfClosing: false,
+			tag:           "tfoot",
+			isSelfClosing: false,
 		},
 	}
 
@@ -43327,8 +43327,8 @@ type HTMLTh interface {
 func Th() HTMLTh {
 	e := &htmlTh{
 		elem: elem{
-			tag:         "th",
-			selfClosing: false,
+			tag:           "th",
+			isSelfClosing: false,
 		},
 	}
 
@@ -43787,8 +43787,8 @@ type HTMLTHead interface {
 func THead() HTMLTHead {
 	e := &htmlTHead{
 		elem: elem{
-			tag:         "thead",
-			selfClosing: false,
+			tag:           "thead",
+			isSelfClosing: false,
 		},
 	}
 
@@ -44225,8 +44225,8 @@ type HTMLTime interface {
 func Time() HTMLTime {
 	e := &htmlTime{
 		elem: elem{
-			tag:         "time",
-			selfClosing: false,
+			tag:           "time",
+			isSelfClosing: false,
 		},
 	}
 
@@ -44569,8 +44569,8 @@ type HTMLTitle interface {
 func Title() HTMLTitle {
 	e := &htmlTitle{
 		elem: elem{
-			tag:         "title",
-			selfClosing: false,
+			tag:           "title",
+			isSelfClosing: false,
 		},
 	}
 
@@ -44844,8 +44844,8 @@ type HTMLTr interface {
 func Tr() HTMLTr {
 	e := &htmlTr{
 		elem: elem{
-			tag:         "tr",
-			selfClosing: false,
+			tag:           "tr",
+			isSelfClosing: false,
 		},
 	}
 
@@ -45279,8 +45279,8 @@ type HTMLU interface {
 func U() HTMLU {
 	e := &htmlU{
 		elem: elem{
-			tag:         "u",
-			selfClosing: false,
+			tag:           "u",
+			isSelfClosing: false,
 		},
 	}
 
@@ -45714,8 +45714,8 @@ type HTMLUl interface {
 func Ul() HTMLUl {
 	e := &htmlUl{
 		elem: elem{
-			tag:         "ul",
-			selfClosing: false,
+			tag:           "ul",
+			isSelfClosing: false,
 		},
 	}
 
@@ -46149,8 +46149,8 @@ type HTMLVar interface {
 func Var() HTMLVar {
 	e := &htmlVar{
 		elem: elem{
-			tag:         "var",
-			selfClosing: false,
+			tag:           "var",
+			isSelfClosing: false,
 		},
 	}
 
@@ -46683,8 +46683,8 @@ type HTMLVideo interface {
 func Video() HTMLVideo {
 	e := &htmlVideo{
 		elem: elem{
-			tag:         "video",
-			selfClosing: false,
+			tag:           "video",
+			isSelfClosing: false,
 		},
 	}
 
@@ -47283,8 +47283,8 @@ type HTMLWbr interface {
 func Wbr() HTMLWbr {
 	e := &htmlWbr{
 		elem: elem{
-			tag:         "wbr",
-			selfClosing: false,
+			tag:           "wbr",
+			isSelfClosing: false,
 		},
 	}
 

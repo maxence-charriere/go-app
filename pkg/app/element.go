@@ -16,17 +16,19 @@ type elemWithChildren interface {
 }
 
 type elem struct {
-	attrs       map[string]string
-	body        []UI
-	disp        Dispatcher
-	ctx         context.Context
-	ctxCancel   func()
-	events      map[string]eventHandler
-	jsvalue     Value
-	parentElem  UI
-	selfClosing bool
-	tag         string
-	this        UI
+	tag           string
+	xmlns         string
+	isSelfClosing bool
+
+	attrs      map[string]string
+	body       []UI
+	disp       Dispatcher
+	ctx        context.Context
+	ctxCancel  func()
+	events     map[string]eventHandler
+	jsvalue    Value
+	parentElem UI
+	this       UI
 }
 
 func (e *elem) Kind() Kind {
@@ -421,7 +423,7 @@ func (e *elem) delJsEventHandler(k string, h eventHandler) {
 }
 
 func (e *elem) setBody(body ...UI) {
-	if e.selfClosing {
+	if e.isSelfClosing {
 		panic(errors.New("setting html element body failed").
 			Tag("reason", "self closing element can't have children").
 			Tag("name", e.name()),
@@ -478,7 +480,7 @@ func (e *elem) html(w io.Writer) {
 
 	w.Write([]byte(">"))
 
-	if e.selfClosing {
+	if e.isSelfClosing {
 		return
 	}
 
@@ -517,7 +519,7 @@ func (e *elem) htmlWithIndent(w io.Writer, indent int) {
 
 	w.Write([]byte(">"))
 
-	if e.selfClosing {
+	if e.isSelfClosing {
 		return
 	}
 
