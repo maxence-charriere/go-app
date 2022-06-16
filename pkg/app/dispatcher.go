@@ -31,11 +31,11 @@ type Dispatcher interface {
 	Post(a Action)
 
 	// Sets the state with the given value.
-	SetState(state string, v interface{}, opts ...StateOption)
+	SetState(state string, v any, opts ...StateOption)
 
 	// Stores the specified state value into the given receiver. Panics when the
 	// receiver is not a pointer or nil.
-	GetState(state string, recv interface{})
+	GetState(state string, recv any)
 
 	// Deletes the given state.
 	DelState(state string)
@@ -166,4 +166,4 @@ const (
 )
 
 // MsgHandler represents a handler to listen to messages sent with Context.Post.
-type MsgHandler func(Context, interface{})
+type MsgHandler func(Context, any)

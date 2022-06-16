@@ -23,7 +23,7 @@ func (v value) Bool() bool {
 	return false
 }
 
-func (v value) Call(m string, args ...interface{}) Value {
+func (v value) Call(m string, args ...any) Value {
 	return value{}
 }
 
@@ -54,7 +54,7 @@ func (v value) Int() int {
 	return 0
 }
 
-func (v value) Invoke(args ...interface{}) Value {
+func (v value) Invoke(args ...any) Value {
 	return value{}
 }
 
@@ -78,14 +78,14 @@ func (v value) Length() int {
 	return 0
 }
 
-func (v value) New(args ...interface{}) Value {
+func (v value) New(args ...any) Value {
 	return value{}
 }
 
-func (v value) Set(p string, x interface{}) {
+func (v value) Set(p string, x any) {
 }
 
-func (v value) SetIndex(i int, x interface{}) {
+func (v value) SetIndex(i int, x any) {
 }
 
 func (v value) String() string {
@@ -153,7 +153,7 @@ func undefined() Value {
 	return value{}
 }
 
-func valueOf(x interface{}) Value {
+func valueOf(x any) Value {
 	return value{}
 }
 
@@ -164,7 +164,7 @@ type function struct {
 func (f function) Release() {
 }
 
-func funcOf(fn func(this Value, args []Value) interface{}) Func {
+func funcOf(fn func(this Value, args []Value) any) Func {
 	return function{value: value{}}
 }
 

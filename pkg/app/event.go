@@ -92,7 +92,7 @@ func (h eventHandler) Dismount() {
 }
 
 func makeJSEventHandler(src UI, h EventHandler) Func {
-	return FuncOf(func(this Value, args []Value) interface{} {
+	return FuncOf(func(this Value, args []Value) any {
 		src.getDispatcher().Dispatch(Dispatch{
 			Mode:   Update,
 			Source: src,

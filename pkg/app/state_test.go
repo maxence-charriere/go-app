@@ -493,9 +493,9 @@ func TestStoreValue(t *testing.T) {
 
 	utests := []struct {
 		scenario string
-		src      interface{}
-		recv     interface{}
-		expected interface{}
+		src      any
+		recv     any
+		expected any
 		err      bool
 	}{
 		{

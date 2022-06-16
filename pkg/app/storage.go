@@ -10,12 +10,12 @@ import (
 // BrowserStorage is the interface that describes a web browser storage.
 type BrowserStorage interface {
 	// Set sets the value to the given key. The value must be json convertible.
-	Set(k string, v interface{}) error
+	Set(k string, v any) error
 
 	// Get gets the item associated to the given key and store it in the given
 	// value.
 	// It returns an error if v is not a pointer.
-	Get(k string, v interface{}) error
+	Get(k string, v any) error
 
 	// Del deletes the item associated with the given key.
 	Del(k string)
@@ -41,7 +41,7 @@ func newMemoryStorage() *memoryStorage {
 	}
 }
 
-func (s *memoryStorage) Set(k string, v interface{}) error {
+func (s *memoryStorage) Set(k string, v any) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -53,7 +53,7 @@ func (s *memoryStorage) Set(k string, v interface{}) error {
 	return nil
 }
 
-func (s *memoryStorage) Get(k string, v interface{}) error {
+func (s *memoryStorage) Get(k string, v any) error {
 	s.mu.RLock()
 	d, ok := s.data[k]
 	if !ok {
@@ -112,7 +112,7 @@ func newJSStorage(name string) *jsStorage {
 	return &jsStorage{name: name}
 }
 
-func (s *jsStorage) Set(k string, v interface{}) (err error) {
+func (s *jsStorage) Set(k string, v any) (err error) {
 	defer func() {
 		r := recover()
 		if r != nil {
@@ -135,7 +135,7 @@ func (s *jsStorage) Set(k string, v interface{}) (err error) {
 	return nil
 }
 
-func (s *jsStorage) Get(k string, v interface{}) error {
+func (s *jsStorage) Get(k string, v any) error {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 

@@ -45,7 +45,7 @@ type Composer interface {
 	// or a float.
 	//
 	// It panics if the given value is not a pointer.
-	ValueTo(interface{}) EventHandler
+	ValueTo(any) EventHandler
 
 	updateRoot() error
 	dispatch(func(Context))
@@ -218,7 +218,7 @@ func (c *Compo) ResizeContent() {
 // float.
 //
 // It panics if the given value is not a pointer.
-func (c *Compo) ValueTo(v interface{}) EventHandler {
+func (c *Compo) ValueTo(v any) EventHandler {
 	return func(ctx Context, e Event) {
 		value := ctx.JSSrc().Get("value")
 		if err := stringTo(value.String(), v); err != nil {

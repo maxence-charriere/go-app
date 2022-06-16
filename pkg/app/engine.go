@@ -96,11 +96,11 @@ func (e *engine) Handle(actionName string, src UI, h ActionHandler) {
 	e.actions.handle(actionName, false, src, h)
 }
 
-func (e *engine) SetState(state string, v interface{}, opts ...StateOption) {
+func (e *engine) SetState(state string, v any, opts ...StateOption) {
 	e.states.Set(state, v, opts...)
 }
 
-func (e *engine) GetState(state string, recv interface{}) {
+func (e *engine) GetState(state string, recv any) {
 	e.states.Get(state, recv)
 }
 

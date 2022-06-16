@@ -11,7 +11,7 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
-func toString(v interface{}) string {
+func toString(v any) string {
 	switch v := v.(type) {
 	case string:
 		return v
@@ -36,7 +36,7 @@ func toString(v interface{}) string {
 	}
 }
 
-func toPath(v ...interface{}) string {
+func toPath(v ...any) string {
 	var b strings.Builder
 
 	for _, o := range v {
@@ -65,7 +65,7 @@ func pxToString(px int) string {
 	return strconv.Itoa(px) + "px"
 }
 
-func stringTo(s string, v interface{}) error {
+func stringTo(s string, v any) error {
 	val := reflect.ValueOf(v)
 
 	if val.Kind() != reflect.Ptr {
@@ -122,7 +122,7 @@ func AppendClass(class, c string) string {
 	return class
 }
 
-func jsonString(v interface{}) string {
+func jsonString(v any) string {
 	b, err := json.Marshal(v)
 	if err != nil {
 		panic(errors.New("converting value to json string failed").Wrap(err))

@@ -274,14 +274,14 @@ func (e *htmlElement) appendChild(v UI) error {
 	return nil
 }
 
-func (e *htmlElement) setAttr(name string, value interface{}) {
+func (e *htmlElement) setAttr(name string, value any) {
 	if e.attributes == nil {
 		e.attributes = make(attributes)
 	}
 	e.attributes.Set(name, value)
 }
 
-func (e *htmlElement) setEventHandler(event string, h EventHandler, scope ...interface{}) {
+func (e *htmlElement) setEventHandler(event string, h EventHandler, scope ...any) {
 	if e.eventHandlers == nil {
 		e.eventHandlers = make(eventHandlers)
 	}

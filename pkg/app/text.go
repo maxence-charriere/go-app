@@ -10,7 +10,7 @@ import (
 )
 
 // Text creates a simple text element.
-func Text(v interface{}) UI {
+func Text(v any) UI {
 	return &text{value: toString(v)}
 }
 

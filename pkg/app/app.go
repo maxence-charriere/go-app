@@ -156,7 +156,7 @@ func RunWhenOnBrowser() {
 	disp.start(context.Background())
 }
 
-func displayLoadError(err interface{}) {
+func displayLoadError(err any) {
 	loadingLabel := Window().
 		Get("document").
 		Call("getElementById", "app-wasm-loader-label")
@@ -224,8 +224,8 @@ func newClientBody(d Dispatcher) *htmlBody {
 	return body
 }
 
-func onAchorClick(d Dispatcher) func(Value, []Value) interface{} {
-	return func(this Value, args []Value) interface{} {
+func onAchorClick(d Dispatcher) func(Value, []Value) any {
+	return func(this Value, args []Value) any {
 		event := Event{Value: args[0]}
 		elem := event.Get("target")
 
@@ -263,8 +263,8 @@ func onAchorClick(d Dispatcher) func(Value, []Value) interface{} {
 	}
 }
 
-func onPopState(d Dispatcher) func(this Value, args []Value) interface{} {
-	return func(this Value, args []Value) interface{} {
+func onPopState(d Dispatcher) func(this Value, args []Value) any {
+	return func(this Value, args []Value) any {
 		d.Dispatch(Dispatch{
 			Mode: Update,
 			Function: func(ctx Context) {
@@ -275,8 +275,8 @@ func onPopState(d Dispatcher) func(this Value, args []Value) interface{} {
 	}
 }
 
-func goappNav(d Dispatcher) func(this Value, args []Value) interface{} {
-	return func(this Value, args []Value) interface{} {
+func goappNav(d Dispatcher) func(this Value, args []Value) any {
+	return func(this Value, args []Value) any {
 		navigate(d, args[0].String())
 		return nil
 	}
@@ -396,8 +396,8 @@ func isFragmentNavigation(u *url.URL) bool {
 	return u.Fragment != ""
 }
 
-func onAppUpdate(d ClientDispatcher) func(this Value, args []Value) interface{} {
-	return func(this Value, args []Value) interface{} {
+func onAppUpdate(d ClientDispatcher) func(this Value, args []Value) any {
+	return func(this Value, args []Value) any {
 		d.Dispatch(Dispatch{
 			Mode: Update,
 			Function: func(ctx Context) {
@@ -412,8 +412,8 @@ func onAppUpdate(d ClientDispatcher) func(this Value, args []Value) interface{} 
 	}
 }
 
-func onAppInstallChange(d ClientDispatcher) func(this Value, args []Value) interface{} {
-	return func(this Value, args []Value) interface{} {
+func onAppInstallChange(d ClientDispatcher) func(this Value, args []Value) any {
+	return func(this Value, args []Value) any {
 		d.AppInstallChange()
 		return nil
 	}

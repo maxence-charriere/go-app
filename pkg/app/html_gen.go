@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// HTMLA is the interface that describes a <a> HTML element.
+// HTMLA is the interface that describes a "a" HTML element.
 type HTMLA interface {
 	UI
 
@@ -91,6 +91,7 @@ type HTMLA interface {
 
 	// Type specifies the type of element.
 	Type(v string) HTMLA
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLA
 
@@ -512,7 +513,7 @@ func (e *htmlA) OnWheel(h EventHandler, scope ...any) HTMLA {
 	return e
 }
 
-// HTMLAbbr is the interface that describes a <abbr> HTML element.
+// HTMLAbbr is the interface that describes a "abbr" HTML element.
 type HTMLAbbr interface {
 	UI
 
@@ -572,6 +573,7 @@ type HTMLAbbr interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLAbbr
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLAbbr
 
@@ -953,7 +955,7 @@ func (e *htmlAbbr) OnWheel(h EventHandler, scope ...any) HTMLAbbr {
 	return e
 }
 
-// HTMLAddress is the interface that describes a <address> HTML element.
+// HTMLAddress is the interface that describes a "address" HTML element.
 type HTMLAddress interface {
 	UI
 
@@ -1013,6 +1015,7 @@ type HTMLAddress interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLAddress
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLAddress
 
@@ -1394,7 +1397,7 @@ func (e *htmlAddress) OnWheel(h EventHandler, scope ...any) HTMLAddress {
 	return e
 }
 
-// HTMLArea is the interface that describes a <area> HTML element.
+// HTMLArea is the interface that describes a "area" HTML element.
 type HTMLArea interface {
 	UI
 
@@ -1478,6 +1481,7 @@ type HTMLArea interface {
 
 	// Type specifies the type of element.
 	Type(v string) HTMLArea
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLArea
 
@@ -1900,7 +1904,7 @@ func (e *htmlArea) OnWheel(h EventHandler, scope ...any) HTMLArea {
 	return e
 }
 
-// HTMLArticle is the interface that describes a <article> HTML element.
+// HTMLArticle is the interface that describes a "article" HTML element.
 type HTMLArticle interface {
 	UI
 
@@ -1960,6 +1964,7 @@ type HTMLArticle interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLArticle
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLArticle
 
@@ -2341,7 +2346,7 @@ func (e *htmlArticle) OnWheel(h EventHandler, scope ...any) HTMLArticle {
 	return e
 }
 
-// HTMLAside is the interface that describes a <aside> HTML element.
+// HTMLAside is the interface that describes a "aside" HTML element.
 type HTMLAside interface {
 	UI
 
@@ -2401,6 +2406,7 @@ type HTMLAside interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLAside
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLAside
 
@@ -2782,7 +2788,7 @@ func (e *htmlAside) OnWheel(h EventHandler, scope ...any) HTMLAside {
 	return e
 }
 
-// HTMLAudio is the interface that describes a <audio> HTML element.
+// HTMLAudio is the interface that describes a "audio" HTML element.
 type HTMLAudio interface {
 	UI
 
@@ -2863,6 +2869,7 @@ type HTMLAudio interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLAudio
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLAudio
 
@@ -3463,7 +3470,7 @@ func (e *htmlAudio) OnWheel(h EventHandler, scope ...any) HTMLAudio {
 	return e
 }
 
-// HTMLB is the interface that describes a <b> HTML element.
+// HTMLB is the interface that describes a "b" HTML element.
 type HTMLB interface {
 	UI
 
@@ -3523,6 +3530,7 @@ type HTMLB interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLB
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLB
 
@@ -3904,7 +3912,7 @@ func (e *htmlB) OnWheel(h EventHandler, scope ...any) HTMLB {
 	return e
 }
 
-// HTMLBase is the interface that describes a <base> HTML element.
+// HTMLBase is the interface that describes a "base" HTML element.
 type HTMLBase interface {
 	UI
 
@@ -3964,6 +3972,7 @@ type HTMLBase interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBase
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBase
 
@@ -4346,7 +4355,7 @@ func (e *htmlBase) OnWheel(h EventHandler, scope ...any) HTMLBase {
 	return e
 }
 
-// HTMLBdi is the interface that describes a <bdi> HTML element.
+// HTMLBdi is the interface that describes a "bdi" HTML element.
 type HTMLBdi interface {
 	UI
 
@@ -4406,6 +4415,7 @@ type HTMLBdi interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBdi
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBdi
 
@@ -4787,7 +4797,7 @@ func (e *htmlBdi) OnWheel(h EventHandler, scope ...any) HTMLBdi {
 	return e
 }
 
-// HTMLBdo is the interface that describes a <bdo> HTML element.
+// HTMLBdo is the interface that describes a "bdo" HTML element.
 type HTMLBdo interface {
 	UI
 
@@ -4847,6 +4857,7 @@ type HTMLBdo interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBdo
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBdo
 
@@ -5228,7 +5239,7 @@ func (e *htmlBdo) OnWheel(h EventHandler, scope ...any) HTMLBdo {
 	return e
 }
 
-// HTMLBlockquote is the interface that describes a <blockquote> HTML element.
+// HTMLBlockquote is the interface that describes a "blockquote" HTML element.
 type HTMLBlockquote interface {
 	UI
 
@@ -5291,6 +5302,7 @@ type HTMLBlockquote interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBlockquote
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBlockquote
 
@@ -5677,7 +5689,7 @@ func (e *htmlBlockquote) OnWheel(h EventHandler, scope ...any) HTMLBlockquote {
 	return e
 }
 
-// HTMLBody is the interface that describes a <body> HTML element.
+// HTMLBody is the interface that describes a "body" HTML element.
 type HTMLBody interface {
 	UI
 
@@ -5733,6 +5745,7 @@ type HTMLBody interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBody
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBody
 
@@ -6230,7 +6243,7 @@ func (e *htmlBody) OnWheel(h EventHandler, scope ...any) HTMLBody {
 	return e
 }
 
-// HTMLBr is the interface that describes a <br> HTML element.
+// HTMLBr is the interface that describes a "br" HTML element.
 type HTMLBr interface {
 	UI
 
@@ -6284,6 +6297,7 @@ type HTMLBr interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLBr
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLBr
 
@@ -6656,7 +6670,7 @@ func (e *htmlBr) OnWheel(h EventHandler, scope ...any) HTMLBr {
 	return e
 }
 
-// HTMLButton is the interface that describes a <button> HTML element.
+// HTMLButton is the interface that describes a "button" HTML element.
 type HTMLButton interface {
 	UI
 
@@ -6749,6 +6763,7 @@ type HTMLButton interface {
 
 	// Value specifies the value of the element.
 	Value(v any) HTMLButton
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLButton
 
@@ -7185,7 +7200,7 @@ func (e *htmlButton) OnWheel(h EventHandler, scope ...any) HTMLButton {
 	return e
 }
 
-// HTMLCanvas is the interface that describes a <canvas> HTML element.
+// HTMLCanvas is the interface that describes a "canvas" HTML element.
 type HTMLCanvas interface {
 	UI
 
@@ -7251,6 +7266,7 @@ type HTMLCanvas interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLCanvas
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLCanvas
 
@@ -7642,7 +7658,7 @@ func (e *htmlCanvas) OnWheel(h EventHandler, scope ...any) HTMLCanvas {
 	return e
 }
 
-// HTMLCaption is the interface that describes a <caption> HTML element.
+// HTMLCaption is the interface that describes a "caption" HTML element.
 type HTMLCaption interface {
 	UI
 
@@ -7702,6 +7718,7 @@ type HTMLCaption interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLCaption
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLCaption
 
@@ -8083,7 +8100,7 @@ func (e *htmlCaption) OnWheel(h EventHandler, scope ...any) HTMLCaption {
 	return e
 }
 
-// HTMLCite is the interface that describes a <cite> HTML element.
+// HTMLCite is the interface that describes a "cite" HTML element.
 type HTMLCite interface {
 	UI
 
@@ -8143,6 +8160,7 @@ type HTMLCite interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLCite
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLCite
 
@@ -8524,7 +8542,7 @@ func (e *htmlCite) OnWheel(h EventHandler, scope ...any) HTMLCite {
 	return e
 }
 
-// HTMLCode is the interface that describes a <code> HTML element.
+// HTMLCode is the interface that describes a "code" HTML element.
 type HTMLCode interface {
 	UI
 
@@ -8584,6 +8602,7 @@ type HTMLCode interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLCode
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLCode
 
@@ -8965,7 +8984,7 @@ func (e *htmlCode) OnWheel(h EventHandler, scope ...any) HTMLCode {
 	return e
 }
 
-// HTMLCol is the interface that describes a <col> HTML element.
+// HTMLCol is the interface that describes a "col" HTML element.
 type HTMLCol interface {
 	UI
 
@@ -9022,6 +9041,7 @@ type HTMLCol interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLCol
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLCol
 
@@ -9399,7 +9419,7 @@ func (e *htmlCol) OnWheel(h EventHandler, scope ...any) HTMLCol {
 	return e
 }
 
-// HTMLColGroup is the interface that describes a <colgroup> HTML element.
+// HTMLColGroup is the interface that describes a "colgroup" HTML element.
 type HTMLColGroup interface {
 	UI
 
@@ -9462,6 +9482,7 @@ type HTMLColGroup interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLColGroup
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLColGroup
 
@@ -9848,7 +9869,458 @@ func (e *htmlColGroup) OnWheel(h EventHandler, scope ...any) HTMLColGroup {
 	return e
 }
 
-// HTMLData is the interface that describes a <data> HTML element.
+// HTMLCustomizable is the interface that describes a "customizable" HTML element.
+type HTMLCustomizable interface {
+	UI
+
+	// Body set the content of the element.
+	Body(elems ...UI) HTMLCustomizable
+
+	// Text sets the content of the element with a text node containing the stringified given value.
+	Text(v any) HTMLCustomizable
+
+	// AccessKey specifies a shortcut key to activate/focus an element.
+	AccessKey(v string) HTMLCustomizable
+
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v any) HTMLCustomizable
+
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v any) HTMLCustomizable
+
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLCustomizable
+
+	// ContentEditable specifies whether the content of an element is editable or not.
+	ContentEditable(v bool) HTMLCustomizable
+
+	// DataSet stores custom data private to the page or application.
+	DataSet(k string, v any) HTMLCustomizable
+
+	// Dir specifies the text direction for the content in an element.
+	Dir(v string) HTMLCustomizable
+
+	// Draggable specifies whether an element is draggable or not.
+	Draggable(v bool) HTMLCustomizable
+
+	// Hidden specifies that an element is not yet, or is no longer relevant.
+	Hidden(v bool) HTMLCustomizable
+
+	// ID specifies a unique id for an element.
+	ID(v string) HTMLCustomizable
+
+	// Lang specifies the language of the element's content.
+	Lang(v string) HTMLCustomizable
+
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLCustomizable
+
+	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
+	Spellcheck(v bool) HTMLCustomizable
+
+	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+	Style(k, v string) HTMLCustomizable
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLCustomizable
+
+	// TabIndex specifies the tabbing order of an element.
+	TabIndex(v int) HTMLCustomizable
+
+	// Title specifies extra information about an element.
+	Title(v string) HTMLCustomizable
+
+	// XMLNS specifies the xml namespace of the element.
+	XMLNS(v string) HTMLCustomizable
+
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnBlur calls the given handler when the element loses focus.
+	OnBlur(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnChange calls the given handler when the value of the element is changed.
+	OnChange(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnClick calls the given handler when there is a mouse click on the element.
+	OnClick(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnContextMenu calls the given handler when a context menu is triggered.
+	OnContextMenu(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnCopy calls the given handler when the user copies the content of an element.
+	OnCopy(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnCut calls the given handler when the user cuts the content of an element.
+	OnCut(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnDblClick calls the given handler when there is a mouse double-click on the element.
+	OnDblClick(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnDrag calls the given handler when an element is dragged.
+	OnDrag(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnDragEnd calls the given handler at the end of a drag operation.
+	OnDragEnd(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnDragEnter calls the given handler when an element has been dragged to a valid drop target.
+	OnDragEnter(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnDragLeave calls the given handler when an element leaves a valid drop target.
+	OnDragLeave(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnDragOver calls the given handler when an element is being dragged over a valid drop target.
+	OnDragOver(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnDragStart calls the given handler at the start of a drag operation.
+	OnDragStart(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnDrop calls the given handler when dragged element is being dropped.
+	OnDrop(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnFocus calls the given handler when the element gets focus.
+	OnFocus(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnInput calls the given handler when an element gets user input.
+	OnInput(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnInvalid calls the given handler when an element is invalid.
+	OnInvalid(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnKeyDown calls the given handler when a user is pressing a key.
+	OnKeyDown(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnKeyPress calls the given handler when a user presses a key.
+	OnKeyPress(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
+	OnMouseDown(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
+	OnMouseMove(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnMouseOut calls the given handler when the mouse pointer moves out of an element.
+	OnMouseOut(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnMouseOver calls the given handler when the mouse pointer moves over an element.
+	OnMouseOver(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnMouseUp calls the given handler when a mouse button is released over an element.
+	OnMouseUp(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnPaste calls the given handler when the user pastes some content in an element.
+	OnPaste(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnReset calls the given handler when the Reset button in a form is clicked.
+	OnReset(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnScroll calls the given handler when an element's scrollbar is being scrolled.
+	OnScroll(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnSearch calls the given handler when the user writes something in a search field.
+	OnSearch(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnSelect calls the given handler after some text has been selected in an element.
+	OnSelect(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnSubmit calls the given handler when a form is submitted.
+	OnSubmit(h EventHandler, scope ...any) HTMLCustomizable
+
+	// OnWheel calls the given handler when the mouse wheel rolls up or down over an element.
+	OnWheel(h EventHandler, scope ...any) HTMLCustomizable
+}
+
+// Customizable returns an HTML element that represents an customizable HTML element.
+func Customizable() HTMLCustomizable {
+	e := &htmlCustomizable{
+		htmlElement: htmlElement{
+			tag:           "customizable",
+			isSelfClosing: false,
+		},
+	}
+
+	return e
+}
+
+type htmlCustomizable struct {
+	htmlElement
+}
+
+func (e *htmlCustomizable) Body(v ...UI) HTMLCustomizable {
+	e.setChildren(v...)
+	return e
+}
+
+func (e *htmlCustomizable) Text(v any) HTMLCustomizable {
+	return e.Body(Text(v))
+}
+
+func (e *htmlCustomizable) AccessKey(v string) HTMLCustomizable {
+	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlCustomizable) Aria(k string, v any) HTMLCustomizable {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlCustomizable) Attr(n string, v any) HTMLCustomizable {
+	e.setAttr(n, v)
+	return e
+}
+
+func (e *htmlCustomizable) Class(v ...string) HTMLCustomizable {
+	e.setAttr("class", strings.Join(v, " "))
+	return e
+}
+
+func (e *htmlCustomizable) ContentEditable(v bool) HTMLCustomizable {
+	e.setAttr("contenteditable", v)
+	return e
+}
+
+func (e *htmlCustomizable) DataSet(k string, v any) HTMLCustomizable {
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlCustomizable) Dir(v string) HTMLCustomizable {
+	e.setAttr("dir", v)
+	return e
+}
+
+func (e *htmlCustomizable) Draggable(v bool) HTMLCustomizable {
+	e.setAttr("draggable", v)
+	return e
+}
+
+func (e *htmlCustomizable) Hidden(v bool) HTMLCustomizable {
+	e.setAttr("hidden", v)
+	return e
+}
+
+func (e *htmlCustomizable) ID(v string) HTMLCustomizable {
+	e.setAttr("id", v)
+	return e
+}
+
+func (e *htmlCustomizable) Lang(v string) HTMLCustomizable {
+	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlCustomizable) Role(v string) HTMLCustomizable {
+	e.setAttr("role", v)
+	return e
+}
+
+func (e *htmlCustomizable) Spellcheck(v bool) HTMLCustomizable {
+	s := "false"
+	if v {
+		s = "true"
+	}
+
+	e.setAttr("spellcheck", s)
+	return e
+}
+
+func (e *htmlCustomizable) Style(k, v string) HTMLCustomizable {
+	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlCustomizable) Styles(s map[string]string) HTMLCustomizable {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
+func (e *htmlCustomizable) TabIndex(v int) HTMLCustomizable {
+	e.setAttr("tabindex", v)
+	return e
+}
+
+func (e *htmlCustomizable) Title(v string) HTMLCustomizable {
+	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlCustomizable) XMLNS(v string) HTMLCustomizable {
+	e.xmlns = v
+	return e
+}
+
+func (e *htmlCustomizable) On(event string, h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler(event, h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnBlur(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("blur", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnChange(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("change", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnClick(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("click", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnContextMenu(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("contextmenu", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnCopy(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("copy", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnCut(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("cut", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnDblClick(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("dblclick", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnDrag(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("drag", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnDragEnd(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("dragend", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnDragEnter(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("dragenter", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnDragLeave(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("dragleave", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnDragOver(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("dragover", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnDragStart(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("dragstart", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnDrop(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("drop", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnFocus(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("focus", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnInput(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("input", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnInvalid(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("invalid", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnKeyDown(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("keydown", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnKeyPress(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("keypress", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnKeyUp(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("keyup", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnMouseDown(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("mousedown", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnMouseMove(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("mousemove", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnMouseOut(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("mouseout", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnMouseOver(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("mouseover", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnMouseUp(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("mouseup", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnPaste(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("paste", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnReset(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("reset", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnScroll(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("scroll", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnSearch(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("search", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnSelect(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("select", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnSubmit(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("submit", h, scope...)
+	return e
+}
+
+func (e *htmlCustomizable) OnWheel(h EventHandler, scope ...any) HTMLCustomizable {
+	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+// HTMLData is the interface that describes a "data" HTML element.
 type HTMLData interface {
 	UI
 
@@ -9911,6 +10383,7 @@ type HTMLData interface {
 
 	// Value specifies the value of the element.
 	Value(v any) HTMLData
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLData
 }
@@ -10041,7 +10514,7 @@ func (e *htmlData) On(event string, h EventHandler, scope ...any) HTMLData {
 	return e
 }
 
-// HTMLDataList is the interface that describes a <datalist> HTML element.
+// HTMLDataList is the interface that describes a "datalist" HTML element.
 type HTMLDataList interface {
 	UI
 
@@ -10101,6 +10574,7 @@ type HTMLDataList interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDataList
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDataList
 
@@ -10482,7 +10956,7 @@ func (e *htmlDataList) OnWheel(h EventHandler, scope ...any) HTMLDataList {
 	return e
 }
 
-// HTMLDd is the interface that describes a <dd> HTML element.
+// HTMLDd is the interface that describes a "dd" HTML element.
 type HTMLDd interface {
 	UI
 
@@ -10542,6 +11016,7 @@ type HTMLDd interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDd
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDd
 
@@ -10923,7 +11398,7 @@ func (e *htmlDd) OnWheel(h EventHandler, scope ...any) HTMLDd {
 	return e
 }
 
-// HTMLDel is the interface that describes a <del> HTML element.
+// HTMLDel is the interface that describes a "del" HTML element.
 type HTMLDel interface {
 	UI
 
@@ -10989,6 +11464,7 @@ type HTMLDel interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDel
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDel
 
@@ -11380,7 +11856,7 @@ func (e *htmlDel) OnWheel(h EventHandler, scope ...any) HTMLDel {
 	return e
 }
 
-// HTMLDetails is the interface that describes a <details> HTML element.
+// HTMLDetails is the interface that describes a "details" HTML element.
 type HTMLDetails interface {
 	UI
 
@@ -11443,6 +11919,7 @@ type HTMLDetails interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDetails
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDetails
 
@@ -11837,7 +12314,7 @@ func (e *htmlDetails) OnWheel(h EventHandler, scope ...any) HTMLDetails {
 	return e
 }
 
-// HTMLDfn is the interface that describes a <dfn> HTML element.
+// HTMLDfn is the interface that describes a "dfn" HTML element.
 type HTMLDfn interface {
 	UI
 
@@ -11897,6 +12374,7 @@ type HTMLDfn interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDfn
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDfn
 
@@ -12278,7 +12756,7 @@ func (e *htmlDfn) OnWheel(h EventHandler, scope ...any) HTMLDfn {
 	return e
 }
 
-// HTMLDialog is the interface that describes a <dialog> HTML element.
+// HTMLDialog is the interface that describes a "dialog" HTML element.
 type HTMLDialog interface {
 	UI
 
@@ -12341,6 +12819,7 @@ type HTMLDialog interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDialog
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDialog
 
@@ -12727,7 +13206,7 @@ func (e *htmlDialog) OnWheel(h EventHandler, scope ...any) HTMLDialog {
 	return e
 }
 
-// HTMLDiv is the interface that describes a <div> HTML element.
+// HTMLDiv is the interface that describes a "div" HTML element.
 type HTMLDiv interface {
 	UI
 
@@ -12787,6 +13266,7 @@ type HTMLDiv interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDiv
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDiv
 
@@ -13168,7 +13648,7 @@ func (e *htmlDiv) OnWheel(h EventHandler, scope ...any) HTMLDiv {
 	return e
 }
 
-// HTMLDl is the interface that describes a <dl> HTML element.
+// HTMLDl is the interface that describes a "dl" HTML element.
 type HTMLDl interface {
 	UI
 
@@ -13228,6 +13708,7 @@ type HTMLDl interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDl
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDl
 
@@ -13609,7 +14090,7 @@ func (e *htmlDl) OnWheel(h EventHandler, scope ...any) HTMLDl {
 	return e
 }
 
-// HTMLDt is the interface that describes a <dt> HTML element.
+// HTMLDt is the interface that describes a "dt" HTML element.
 type HTMLDt interface {
 	UI
 
@@ -13669,6 +14150,7 @@ type HTMLDt interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLDt
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLDt
 
@@ -14050,7 +14532,7 @@ func (e *htmlDt) OnWheel(h EventHandler, scope ...any) HTMLDt {
 	return e
 }
 
-// HTMLEm is the interface that describes a <em> HTML element.
+// HTMLEm is the interface that describes a "em" HTML element.
 type HTMLEm interface {
 	UI
 
@@ -14110,6 +14592,7 @@ type HTMLEm interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLEm
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLEm
 
@@ -14491,7 +14974,7 @@ func (e *htmlEm) OnWheel(h EventHandler, scope ...any) HTMLEm {
 	return e
 }
 
-// HTMLEmbed is the interface that describes a <embed> HTML element.
+// HTMLEmbed is the interface that describes a "embed" HTML element.
 type HTMLEmbed interface {
 	UI
 
@@ -14557,6 +15040,7 @@ type HTMLEmbed interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLEmbed
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLEmbed
 
@@ -15133,7 +15617,7 @@ func (e *htmlEmbed) OnWheel(h EventHandler, scope ...any) HTMLEmbed {
 	return e
 }
 
-// HTMLFieldSet is the interface that describes a <fieldset> HTML element.
+// HTMLFieldSet is the interface that describes a "fieldset" HTML element.
 type HTMLFieldSet interface {
 	UI
 
@@ -15202,6 +15686,7 @@ type HTMLFieldSet interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLFieldSet
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLFieldSet
 
@@ -15598,7 +16083,7 @@ func (e *htmlFieldSet) OnWheel(h EventHandler, scope ...any) HTMLFieldSet {
 	return e
 }
 
-// HTMLFigCaption is the interface that describes a <figcaption> HTML element.
+// HTMLFigCaption is the interface that describes a "figcaption" HTML element.
 type HTMLFigCaption interface {
 	UI
 
@@ -15658,6 +16143,7 @@ type HTMLFigCaption interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLFigCaption
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLFigCaption
 
@@ -16039,7 +16525,7 @@ func (e *htmlFigCaption) OnWheel(h EventHandler, scope ...any) HTMLFigCaption {
 	return e
 }
 
-// HTMLFigure is the interface that describes a <figure> HTML element.
+// HTMLFigure is the interface that describes a "figure" HTML element.
 type HTMLFigure interface {
 	UI
 
@@ -16099,6 +16585,7 @@ type HTMLFigure interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLFigure
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLFigure
 
@@ -16480,7 +16967,7 @@ func (e *htmlFigure) OnWheel(h EventHandler, scope ...any) HTMLFigure {
 	return e
 }
 
-// HTMLFooter is the interface that describes a <footer> HTML element.
+// HTMLFooter is the interface that describes a "footer" HTML element.
 type HTMLFooter interface {
 	UI
 
@@ -16540,6 +17027,7 @@ type HTMLFooter interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLFooter
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLFooter
 
@@ -16921,7 +17409,7 @@ func (e *htmlFooter) OnWheel(h EventHandler, scope ...any) HTMLFooter {
 	return e
 }
 
-// HTMLForm is the interface that describes a <form> HTML element.
+// HTMLForm is the interface that describes a "form" HTML element.
 type HTMLForm interface {
 	UI
 
@@ -17005,6 +17493,7 @@ type HTMLForm interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLForm
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLForm
 
@@ -17431,7 +17920,7 @@ func (e *htmlForm) OnWheel(h EventHandler, scope ...any) HTMLForm {
 	return e
 }
 
-// HTMLH1 is the interface that describes a <h1> HTML element.
+// HTMLH1 is the interface that describes a "h1" HTML element.
 type HTMLH1 interface {
 	UI
 
@@ -17491,6 +17980,7 @@ type HTMLH1 interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH1
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH1
 
@@ -17872,7 +18362,7 @@ func (e *htmlH1) OnWheel(h EventHandler, scope ...any) HTMLH1 {
 	return e
 }
 
-// HTMLH2 is the interface that describes a <h2> HTML element.
+// HTMLH2 is the interface that describes a "h2" HTML element.
 type HTMLH2 interface {
 	UI
 
@@ -17932,6 +18422,7 @@ type HTMLH2 interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH2
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH2
 
@@ -18313,7 +18804,7 @@ func (e *htmlH2) OnWheel(h EventHandler, scope ...any) HTMLH2 {
 	return e
 }
 
-// HTMLH3 is the interface that describes a <h3> HTML element.
+// HTMLH3 is the interface that describes a "h3" HTML element.
 type HTMLH3 interface {
 	UI
 
@@ -18373,6 +18864,7 @@ type HTMLH3 interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH3
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH3
 
@@ -18754,7 +19246,7 @@ func (e *htmlH3) OnWheel(h EventHandler, scope ...any) HTMLH3 {
 	return e
 }
 
-// HTMLH4 is the interface that describes a <h4> HTML element.
+// HTMLH4 is the interface that describes a "h4" HTML element.
 type HTMLH4 interface {
 	UI
 
@@ -18814,6 +19306,7 @@ type HTMLH4 interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH4
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH4
 
@@ -19195,7 +19688,7 @@ func (e *htmlH4) OnWheel(h EventHandler, scope ...any) HTMLH4 {
 	return e
 }
 
-// HTMLH5 is the interface that describes a <h5> HTML element.
+// HTMLH5 is the interface that describes a "h5" HTML element.
 type HTMLH5 interface {
 	UI
 
@@ -19255,6 +19748,7 @@ type HTMLH5 interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH5
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH5
 
@@ -19636,7 +20130,7 @@ func (e *htmlH5) OnWheel(h EventHandler, scope ...any) HTMLH5 {
 	return e
 }
 
-// HTMLH6 is the interface that describes a <h6> HTML element.
+// HTMLH6 is the interface that describes a "h6" HTML element.
 type HTMLH6 interface {
 	UI
 
@@ -19696,6 +20190,7 @@ type HTMLH6 interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLH6
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLH6
 
@@ -20077,7 +20572,7 @@ func (e *htmlH6) OnWheel(h EventHandler, scope ...any) HTMLH6 {
 	return e
 }
 
-// HTMLHead is the interface that describes a <head> HTML element.
+// HTMLHead is the interface that describes a "head" HTML element.
 type HTMLHead interface {
 	UI
 
@@ -20137,6 +20632,7 @@ type HTMLHead interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLHead
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLHead
 }
@@ -20262,7 +20758,7 @@ func (e *htmlHead) On(event string, h EventHandler, scope ...any) HTMLHead {
 	return e
 }
 
-// HTMLHeader is the interface that describes a <header> HTML element.
+// HTMLHeader is the interface that describes a "header" HTML element.
 type HTMLHeader interface {
 	UI
 
@@ -20322,6 +20818,7 @@ type HTMLHeader interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLHeader
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLHeader
 
@@ -20703,7 +21200,7 @@ func (e *htmlHeader) OnWheel(h EventHandler, scope ...any) HTMLHeader {
 	return e
 }
 
-// HTMLHr is the interface that describes a <hr> HTML element.
+// HTMLHr is the interface that describes a "hr" HTML element.
 type HTMLHr interface {
 	UI
 
@@ -20757,6 +21254,7 @@ type HTMLHr interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLHr
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLHr
 
@@ -21129,7 +21627,7 @@ func (e *htmlHr) OnWheel(h EventHandler, scope ...any) HTMLHr {
 	return e
 }
 
-// HTMLHtml is the interface that describes a <html> HTML element.
+// HTMLHtml is the interface that describes a "html" HTML element.
 type HTMLHtml interface {
 	UI
 
@@ -21185,6 +21683,7 @@ type HTMLHtml interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLHtml
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLHtml
 }
@@ -21306,7 +21805,7 @@ func (e *htmlHtml) On(event string, h EventHandler, scope ...any) HTMLHtml {
 	return e
 }
 
-// HTMLI is the interface that describes a <i> HTML element.
+// HTMLI is the interface that describes a "i" HTML element.
 type HTMLI interface {
 	UI
 
@@ -21366,6 +21865,7 @@ type HTMLI interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLI
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLI
 
@@ -21747,7 +22247,7 @@ func (e *htmlI) OnWheel(h EventHandler, scope ...any) HTMLI {
 	return e
 }
 
-// HTMLIFrame is the interface that describes a <iframe> HTML element.
+// HTMLIFrame is the interface that describes a "iframe" HTML element.
 type HTMLIFrame interface {
 	UI
 
@@ -21840,6 +22340,7 @@ type HTMLIFrame interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLIFrame
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLIFrame
 
@@ -22294,7 +22795,7 @@ func (e *htmlIFrame) OnWheel(h EventHandler, scope ...any) HTMLIFrame {
 	return e
 }
 
-// HTMLImg is the interface that describes a <img> HTML element.
+// HTMLImg is the interface that describes a "img" HTML element.
 type HTMLImg interface {
 	UI
 
@@ -22375,6 +22876,7 @@ type HTMLImg interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLImg
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLImg
 
@@ -22984,7 +23486,7 @@ func (e *htmlImg) OnWheel(h EventHandler, scope ...any) HTMLImg {
 	return e
 }
 
-// HTMLInput is the interface that describes a <input> HTML element.
+// HTMLInput is the interface that describes a "input" HTML element.
 type HTMLInput interface {
 	UI
 
@@ -23131,6 +23633,7 @@ type HTMLInput interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLInput
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLInput
 
@@ -23671,7 +24174,7 @@ func (e *htmlInput) OnWheel(h EventHandler, scope ...any) HTMLInput {
 	return e
 }
 
-// HTMLIns is the interface that describes a <ins> HTML element.
+// HTMLIns is the interface that describes a "ins" HTML element.
 type HTMLIns interface {
 	UI
 
@@ -23731,6 +24234,7 @@ type HTMLIns interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLIns
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLIns
 
@@ -24112,7 +24616,7 @@ func (e *htmlIns) OnWheel(h EventHandler, scope ...any) HTMLIns {
 	return e
 }
 
-// HTMLKbd is the interface that describes a <kbd> HTML element.
+// HTMLKbd is the interface that describes a "kbd" HTML element.
 type HTMLKbd interface {
 	UI
 
@@ -24172,6 +24676,7 @@ type HTMLKbd interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLKbd
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLKbd
 
@@ -24553,7 +25058,7 @@ func (e *htmlKbd) OnWheel(h EventHandler, scope ...any) HTMLKbd {
 	return e
 }
 
-// HTMLLabel is the interface that describes a <label> HTML element.
+// HTMLLabel is the interface that describes a "label" HTML element.
 type HTMLLabel interface {
 	UI
 
@@ -24619,6 +25124,7 @@ type HTMLLabel interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLLabel
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLLabel
 
@@ -25010,7 +25516,7 @@ func (e *htmlLabel) OnWheel(h EventHandler, scope ...any) HTMLLabel {
 	return e
 }
 
-// HTMLLegend is the interface that describes a <legend> HTML element.
+// HTMLLegend is the interface that describes a "legend" HTML element.
 type HTMLLegend interface {
 	UI
 
@@ -25070,6 +25576,7 @@ type HTMLLegend interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLLegend
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLLegend
 
@@ -25451,7 +25958,7 @@ func (e *htmlLegend) OnWheel(h EventHandler, scope ...any) HTMLLegend {
 	return e
 }
 
-// HTMLLi is the interface that describes a <li> HTML element.
+// HTMLLi is the interface that describes a "li" HTML element.
 type HTMLLi interface {
 	UI
 
@@ -25514,6 +26021,7 @@ type HTMLLi interface {
 
 	// Value specifies the value of the element.
 	Value(v any) HTMLLi
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLLi
 
@@ -25900,7 +26408,7 @@ func (e *htmlLi) OnWheel(h EventHandler, scope ...any) HTMLLi {
 	return e
 }
 
-// HTMLLink is the interface that describes a <link> HTML element.
+// HTMLLink is the interface that describes a "link" HTML element.
 type HTMLLink interface {
 	UI
 
@@ -25975,6 +26483,7 @@ type HTMLLink interface {
 
 	// Type specifies the type of element.
 	Type(v string) HTMLLink
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLLink
 
@@ -26390,7 +26899,7 @@ func (e *htmlLink) OnWheel(h EventHandler, scope ...any) HTMLLink {
 	return e
 }
 
-// HTMLMain is the interface that describes a <main> HTML element.
+// HTMLMain is the interface that describes a "main" HTML element.
 type HTMLMain interface {
 	UI
 
@@ -26450,6 +26959,7 @@ type HTMLMain interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLMain
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLMain
 
@@ -26831,7 +27341,7 @@ func (e *htmlMain) OnWheel(h EventHandler, scope ...any) HTMLMain {
 	return e
 }
 
-// HTMLMap is the interface that describes a <map> HTML element.
+// HTMLMap is the interface that describes a "map" HTML element.
 type HTMLMap interface {
 	UI
 
@@ -26894,6 +27404,7 @@ type HTMLMap interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLMap
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLMap
 
@@ -27280,7 +27791,7 @@ func (e *htmlMap) OnWheel(h EventHandler, scope ...any) HTMLMap {
 	return e
 }
 
-// HTMLMark is the interface that describes a <mark> HTML element.
+// HTMLMark is the interface that describes a "mark" HTML element.
 type HTMLMark interface {
 	UI
 
@@ -27340,6 +27851,7 @@ type HTMLMark interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLMark
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLMark
 
@@ -27721,7 +28233,7 @@ func (e *htmlMark) OnWheel(h EventHandler, scope ...any) HTMLMark {
 	return e
 }
 
-// HTMLMeta is the interface that describes a <meta> HTML element.
+// HTMLMeta is the interface that describes a "meta" HTML element.
 type HTMLMeta interface {
 	UI
 
@@ -27790,6 +28302,7 @@ type HTMLMeta interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLMeta
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLMeta
 }
@@ -27931,7 +28444,7 @@ func (e *htmlMeta) On(event string, h EventHandler, scope ...any) HTMLMeta {
 	return e
 }
 
-// HTMLMeter is the interface that describes a <meter> HTML element.
+// HTMLMeter is the interface that describes a "meter" HTML element.
 type HTMLMeter interface {
 	UI
 
@@ -28012,6 +28525,7 @@ type HTMLMeter interface {
 
 	// Value specifies the value of the element.
 	Value(v any) HTMLMeter
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLMeter
 
@@ -28428,7 +28942,7 @@ func (e *htmlMeter) OnWheel(h EventHandler, scope ...any) HTMLMeter {
 	return e
 }
 
-// HTMLNav is the interface that describes a <nav> HTML element.
+// HTMLNav is the interface that describes a "nav" HTML element.
 type HTMLNav interface {
 	UI
 
@@ -28488,6 +29002,7 @@ type HTMLNav interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLNav
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLNav
 
@@ -28869,7 +29384,7 @@ func (e *htmlNav) OnWheel(h EventHandler, scope ...any) HTMLNav {
 	return e
 }
 
-// HTMLNoScript is the interface that describes a <noscript> HTML element.
+// HTMLNoScript is the interface that describes a "noscript" HTML element.
 type HTMLNoScript interface {
 	UI
 
@@ -28929,6 +29444,7 @@ type HTMLNoScript interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLNoScript
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLNoScript
 }
@@ -29054,7 +29570,7 @@ func (e *htmlNoScript) On(event string, h EventHandler, scope ...any) HTMLNoScri
 	return e
 }
 
-// HTMLObject is the interface that describes a <object> HTML element.
+// HTMLObject is the interface that describes a "object" HTML element.
 type HTMLObject interface {
 	UI
 
@@ -29135,6 +29651,7 @@ type HTMLObject interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLObject
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLObject
 
@@ -29735,7 +30252,7 @@ func (e *htmlObject) OnWheel(h EventHandler, scope ...any) HTMLObject {
 	return e
 }
 
-// HTMLOl is the interface that describes a <ol> HTML element.
+// HTMLOl is the interface that describes a "ol" HTML element.
 type HTMLOl interface {
 	UI
 
@@ -29804,6 +30321,7 @@ type HTMLOl interface {
 
 	// Type specifies the type of element.
 	Type(v string) HTMLOl
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLOl
 
@@ -30200,7 +30718,7 @@ func (e *htmlOl) OnWheel(h EventHandler, scope ...any) HTMLOl {
 	return e
 }
 
-// HTMLOptGroup is the interface that describes a <optgroup> HTML element.
+// HTMLOptGroup is the interface that describes a "optgroup" HTML element.
 type HTMLOptGroup interface {
 	UI
 
@@ -30266,6 +30784,7 @@ type HTMLOptGroup interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLOptGroup
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLOptGroup
 
@@ -30657,7 +31176,7 @@ func (e *htmlOptGroup) OnWheel(h EventHandler, scope ...any) HTMLOptGroup {
 	return e
 }
 
-// HTMLOption is the interface that describes a <option> HTML element.
+// HTMLOption is the interface that describes a "option" HTML element.
 type HTMLOption interface {
 	UI
 
@@ -30729,6 +31248,7 @@ type HTMLOption interface {
 
 	// Value specifies the value of the element.
 	Value(v any) HTMLOption
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLOption
 
@@ -31130,7 +31650,7 @@ func (e *htmlOption) OnWheel(h EventHandler, scope ...any) HTMLOption {
 	return e
 }
 
-// HTMLOutput is the interface that describes a <output> HTML element.
+// HTMLOutput is the interface that describes a "output" HTML element.
 type HTMLOutput interface {
 	UI
 
@@ -31199,6 +31719,7 @@ type HTMLOutput interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLOutput
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLOutput
 
@@ -31595,7 +32116,7 @@ func (e *htmlOutput) OnWheel(h EventHandler, scope ...any) HTMLOutput {
 	return e
 }
 
-// HTMLP is the interface that describes a <p> HTML element.
+// HTMLP is the interface that describes a "p" HTML element.
 type HTMLP interface {
 	UI
 
@@ -31655,6 +32176,7 @@ type HTMLP interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLP
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLP
 
@@ -32036,7 +32558,7 @@ func (e *htmlP) OnWheel(h EventHandler, scope ...any) HTMLP {
 	return e
 }
 
-// HTMLParam is the interface that describes a <param> HTML element.
+// HTMLParam is the interface that describes a "param" HTML element.
 type HTMLParam interface {
 	UI
 
@@ -32096,6 +32618,7 @@ type HTMLParam interface {
 
 	// Value specifies the value of the element.
 	Value(v any) HTMLParam
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLParam
 
@@ -32478,7 +33001,7 @@ func (e *htmlParam) OnWheel(h EventHandler, scope ...any) HTMLParam {
 	return e
 }
 
-// HTMLPicture is the interface that describes a <picture> HTML element.
+// HTMLPicture is the interface that describes a "picture" HTML element.
 type HTMLPicture interface {
 	UI
 
@@ -32538,6 +33061,7 @@ type HTMLPicture interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLPicture
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLPicture
 
@@ -32919,7 +33443,7 @@ func (e *htmlPicture) OnWheel(h EventHandler, scope ...any) HTMLPicture {
 	return e
 }
 
-// HTMLPre is the interface that describes a <pre> HTML element.
+// HTMLPre is the interface that describes a "pre" HTML element.
 type HTMLPre interface {
 	UI
 
@@ -32979,6 +33503,7 @@ type HTMLPre interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLPre
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLPre
 
@@ -33360,7 +33885,7 @@ func (e *htmlPre) OnWheel(h EventHandler, scope ...any) HTMLPre {
 	return e
 }
 
-// HTMLProgress is the interface that describes a <progress> HTML element.
+// HTMLProgress is the interface that describes a "progress" HTML element.
 type HTMLProgress interface {
 	UI
 
@@ -33426,6 +33951,7 @@ type HTMLProgress interface {
 
 	// Value specifies the value of the element.
 	Value(v any) HTMLProgress
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLProgress
 
@@ -33817,7 +34343,7 @@ func (e *htmlProgress) OnWheel(h EventHandler, scope ...any) HTMLProgress {
 	return e
 }
 
-// HTMLQ is the interface that describes a <q> HTML element.
+// HTMLQ is the interface that describes a "q" HTML element.
 type HTMLQ interface {
 	UI
 
@@ -33880,6 +34406,7 @@ type HTMLQ interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLQ
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLQ
 
@@ -34266,7 +34793,7 @@ func (e *htmlQ) OnWheel(h EventHandler, scope ...any) HTMLQ {
 	return e
 }
 
-// HTMLRp is the interface that describes a <rp> HTML element.
+// HTMLRp is the interface that describes a "rp" HTML element.
 type HTMLRp interface {
 	UI
 
@@ -34326,6 +34853,7 @@ type HTMLRp interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLRp
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLRp
 
@@ -34707,7 +35235,7 @@ func (e *htmlRp) OnWheel(h EventHandler, scope ...any) HTMLRp {
 	return e
 }
 
-// HTMLRt is the interface that describes a <rt> HTML element.
+// HTMLRt is the interface that describes a "rt" HTML element.
 type HTMLRt interface {
 	UI
 
@@ -34767,6 +35295,7 @@ type HTMLRt interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLRt
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLRt
 
@@ -35148,7 +35677,7 @@ func (e *htmlRt) OnWheel(h EventHandler, scope ...any) HTMLRt {
 	return e
 }
 
-// HTMLRuby is the interface that describes a <ruby> HTML element.
+// HTMLRuby is the interface that describes a "ruby" HTML element.
 type HTMLRuby interface {
 	UI
 
@@ -35208,6 +35737,7 @@ type HTMLRuby interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLRuby
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLRuby
 
@@ -35589,7 +36119,7 @@ func (e *htmlRuby) OnWheel(h EventHandler, scope ...any) HTMLRuby {
 	return e
 }
 
-// HTMLS is the interface that describes a <s> HTML element.
+// HTMLS is the interface that describes a "s" HTML element.
 type HTMLS interface {
 	UI
 
@@ -35649,6 +36179,7 @@ type HTMLS interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLS
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLS
 
@@ -36030,7 +36561,7 @@ func (e *htmlS) OnWheel(h EventHandler, scope ...any) HTMLS {
 	return e
 }
 
-// HTMLSamp is the interface that describes a <samp> HTML element.
+// HTMLSamp is the interface that describes a "samp" HTML element.
 type HTMLSamp interface {
 	UI
 
@@ -36090,6 +36621,7 @@ type HTMLSamp interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSamp
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSamp
 
@@ -36471,7 +37003,7 @@ func (e *htmlSamp) OnWheel(h EventHandler, scope ...any) HTMLSamp {
 	return e
 }
 
-// HTMLScript is the interface that describes a <script> HTML element.
+// HTMLScript is the interface that describes a "script" HTML element.
 type HTMLScript interface {
 	UI
 
@@ -36549,6 +37081,7 @@ type HTMLScript interface {
 
 	// Type specifies the type of element.
 	Type(v string) HTMLScript
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLScript
 
@@ -36712,7 +37245,7 @@ func (e *htmlScript) OnLoad(h EventHandler, scope ...any) HTMLScript {
 	return e
 }
 
-// HTMLSection is the interface that describes a <section> HTML element.
+// HTMLSection is the interface that describes a "section" HTML element.
 type HTMLSection interface {
 	UI
 
@@ -36772,6 +37305,7 @@ type HTMLSection interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSection
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSection
 
@@ -37153,7 +37687,7 @@ func (e *htmlSection) OnWheel(h EventHandler, scope ...any) HTMLSection {
 	return e
 }
 
-// HTMLSelect is the interface that describes a <select> HTML element.
+// HTMLSelect is the interface that describes a "select" HTML element.
 type HTMLSelect interface {
 	UI
 
@@ -37234,6 +37768,7 @@ type HTMLSelect interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSelect
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSelect
 
@@ -37650,7 +38185,443 @@ func (e *htmlSelect) OnWheel(h EventHandler, scope ...any) HTMLSelect {
 	return e
 }
 
-// HTMLSmall is the interface that describes a <small> HTML element.
+// HTMLSelfClosingCustomizable is the interface that describes a "selfclosingcustomizable" HTML element.
+type HTMLSelfClosingCustomizable interface {
+	UI
+
+	// AccessKey specifies a shortcut key to activate/focus an element.
+	AccessKey(v string) HTMLSelfClosingCustomizable
+
+	// Aria stores accessible rich internet applications (ARIA) data.
+	Aria(k string, v any) HTMLSelfClosingCustomizable
+
+	// Attr sets the named attribute with the given value.
+	Attr(n string, v any) HTMLSelfClosingCustomizable
+
+	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
+	Class(v ...string) HTMLSelfClosingCustomizable
+
+	// ContentEditable specifies whether the content of an element is editable or not.
+	ContentEditable(v bool) HTMLSelfClosingCustomizable
+
+	// DataSet stores custom data private to the page or application.
+	DataSet(k string, v any) HTMLSelfClosingCustomizable
+
+	// Dir specifies the text direction for the content in an element.
+	Dir(v string) HTMLSelfClosingCustomizable
+
+	// Draggable specifies whether an element is draggable or not.
+	Draggable(v bool) HTMLSelfClosingCustomizable
+
+	// Hidden specifies that an element is not yet, or is no longer relevant.
+	Hidden(v bool) HTMLSelfClosingCustomizable
+
+	// ID specifies a unique id for an element.
+	ID(v string) HTMLSelfClosingCustomizable
+
+	// Lang specifies the language of the element's content.
+	Lang(v string) HTMLSelfClosingCustomizable
+
+	// Role specifies to parsing software the exact function of an element (and its children).
+	Role(v string) HTMLSelfClosingCustomizable
+
+	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
+	Spellcheck(v bool) HTMLSelfClosingCustomizable
+
+	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
+	Style(k, v string) HTMLSelfClosingCustomizable
+
+	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
+	Styles(s map[string]string) HTMLSelfClosingCustomizable
+
+	// TabIndex specifies the tabbing order of an element.
+	TabIndex(v int) HTMLSelfClosingCustomizable
+
+	// Title specifies extra information about an element.
+	Title(v string) HTMLSelfClosingCustomizable
+
+	// XMLNS specifies the xml namespace of the element.
+	XMLNS(v string) HTMLSelfClosingCustomizable
+
+	// On registers the given event handler to the specified event.
+	On(event string, h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnBlur calls the given handler when the element loses focus.
+	OnBlur(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnChange calls the given handler when the value of the element is changed.
+	OnChange(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnClick calls the given handler when there is a mouse click on the element.
+	OnClick(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnContextMenu calls the given handler when a context menu is triggered.
+	OnContextMenu(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnCopy calls the given handler when the user copies the content of an element.
+	OnCopy(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnCut calls the given handler when the user cuts the content of an element.
+	OnCut(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnDblClick calls the given handler when there is a mouse double-click on the element.
+	OnDblClick(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnDrag calls the given handler when an element is dragged.
+	OnDrag(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnDragEnd calls the given handler at the end of a drag operation.
+	OnDragEnd(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnDragEnter calls the given handler when an element has been dragged to a valid drop target.
+	OnDragEnter(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnDragLeave calls the given handler when an element leaves a valid drop target.
+	OnDragLeave(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnDragOver calls the given handler when an element is being dragged over a valid drop target.
+	OnDragOver(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnDragStart calls the given handler at the start of a drag operation.
+	OnDragStart(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnDrop calls the given handler when dragged element is being dropped.
+	OnDrop(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnFocus calls the given handler when the element gets focus.
+	OnFocus(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnInput calls the given handler when an element gets user input.
+	OnInput(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnInvalid calls the given handler when an element is invalid.
+	OnInvalid(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnKeyDown calls the given handler when a user is pressing a key.
+	OnKeyDown(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnKeyPress calls the given handler when a user presses a key.
+	OnKeyPress(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnKeyUp calls the given handler when a user releases a key.
+	OnKeyUp(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
+	OnMouseDown(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
+	OnMouseMove(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnMouseOut calls the given handler when the mouse pointer moves out of an element.
+	OnMouseOut(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnMouseOver calls the given handler when the mouse pointer moves over an element.
+	OnMouseOver(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnMouseUp calls the given handler when a mouse button is released over an element.
+	OnMouseUp(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnPaste calls the given handler when the user pastes some content in an element.
+	OnPaste(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnReset calls the given handler when the Reset button in a form is clicked.
+	OnReset(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnScroll calls the given handler when an element's scrollbar is being scrolled.
+	OnScroll(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnSearch calls the given handler when the user writes something in a search field.
+	OnSearch(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnSelect calls the given handler after some text has been selected in an element.
+	OnSelect(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnSubmit calls the given handler when a form is submitted.
+	OnSubmit(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+
+	// OnWheel calls the given handler when the mouse wheel rolls up or down over an element.
+	OnWheel(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
+}
+
+// SelfClosingCustomizable returns an HTML element that represents a self closing custom HTML element.
+func SelfClosingCustomizable() HTMLSelfClosingCustomizable {
+	e := &htmlSelfClosingCustomizable{
+		htmlElement: htmlElement{
+			tag:           "selfclosingcustomizable",
+			isSelfClosing: true,
+		},
+	}
+
+	return e
+}
+
+type htmlSelfClosingCustomizable struct {
+	htmlElement
+}
+
+func (e *htmlSelfClosingCustomizable) AccessKey(v string) HTMLSelfClosingCustomizable {
+	e.setAttr("accesskey", v)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) Aria(k string, v any) HTMLSelfClosingCustomizable {
+	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) Attr(n string, v any) HTMLSelfClosingCustomizable {
+	e.setAttr(n, v)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) Class(v ...string) HTMLSelfClosingCustomizable {
+	e.setAttr("class", strings.Join(v, " "))
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) ContentEditable(v bool) HTMLSelfClosingCustomizable {
+	e.setAttr("contenteditable", v)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) DataSet(k string, v any) HTMLSelfClosingCustomizable {
+	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) Dir(v string) HTMLSelfClosingCustomizable {
+	e.setAttr("dir", v)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) Draggable(v bool) HTMLSelfClosingCustomizable {
+	e.setAttr("draggable", v)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) Hidden(v bool) HTMLSelfClosingCustomizable {
+	e.setAttr("hidden", v)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) ID(v string) HTMLSelfClosingCustomizable {
+	e.setAttr("id", v)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) Lang(v string) HTMLSelfClosingCustomizable {
+	e.setAttr("lang", v)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) Role(v string) HTMLSelfClosingCustomizable {
+	e.setAttr("role", v)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) Spellcheck(v bool) HTMLSelfClosingCustomizable {
+	s := "false"
+	if v {
+		s = "true"
+	}
+
+	e.setAttr("spellcheck", s)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) Style(k, v string) HTMLSelfClosingCustomizable {
+	e.setAttr("style", k+":"+v)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) Styles(s map[string]string) HTMLSelfClosingCustomizable {
+	for k, v := range s {
+		e.Style(k, v)
+	}
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) TabIndex(v int) HTMLSelfClosingCustomizable {
+	e.setAttr("tabindex", v)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) Title(v string) HTMLSelfClosingCustomizable {
+	e.setAttr("title", v)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) XMLNS(v string) HTMLSelfClosingCustomizable {
+	e.xmlns = v
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) On(event string, h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler(event, h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnBlur(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("blur", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnChange(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("change", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnClick(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("click", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnContextMenu(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("contextmenu", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnCopy(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("copy", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnCut(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("cut", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnDblClick(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("dblclick", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnDrag(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("drag", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnDragEnd(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("dragend", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnDragEnter(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("dragenter", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnDragLeave(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("dragleave", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnDragOver(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("dragover", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnDragStart(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("dragstart", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnDrop(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("drop", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnFocus(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("focus", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnInput(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("input", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnInvalid(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("invalid", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnKeyDown(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("keydown", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnKeyPress(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("keypress", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnKeyUp(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("keyup", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnMouseDown(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("mousedown", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnMouseMove(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("mousemove", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnMouseOut(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("mouseout", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnMouseOver(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("mouseover", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnMouseUp(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("mouseup", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnPaste(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("paste", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnReset(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("reset", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnScroll(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("scroll", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnSearch(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("search", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnSelect(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("select", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnSubmit(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("submit", h, scope...)
+	return e
+}
+
+func (e *htmlSelfClosingCustomizable) OnWheel(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
+	e.setEventHandler("wheel", h, scope...)
+	return e
+}
+
+// HTMLSmall is the interface that describes a "small" HTML element.
 type HTMLSmall interface {
 	UI
 
@@ -37710,6 +38681,7 @@ type HTMLSmall interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSmall
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSmall
 
@@ -38091,7 +39063,7 @@ func (e *htmlSmall) OnWheel(h EventHandler, scope ...any) HTMLSmall {
 	return e
 }
 
-// HTMLSource is the interface that describes a <source> HTML element.
+// HTMLSource is the interface that describes a "source" HTML element.
 type HTMLSource interface {
 	UI
 
@@ -38160,6 +39132,7 @@ type HTMLSource interface {
 
 	// Type specifies the type of element.
 	Type(v string) HTMLSource
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSource
 
@@ -38557,7 +39530,7 @@ func (e *htmlSource) OnWheel(h EventHandler, scope ...any) HTMLSource {
 	return e
 }
 
-// HTMLSpan is the interface that describes a <span> HTML element.
+// HTMLSpan is the interface that describes a "span" HTML element.
 type HTMLSpan interface {
 	UI
 
@@ -38617,6 +39590,7 @@ type HTMLSpan interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSpan
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSpan
 
@@ -38998,7 +39972,7 @@ func (e *htmlSpan) OnWheel(h EventHandler, scope ...any) HTMLSpan {
 	return e
 }
 
-// HTMLStrong is the interface that describes a <strong> HTML element.
+// HTMLStrong is the interface that describes a "strong" HTML element.
 type HTMLStrong interface {
 	UI
 
@@ -39058,6 +40032,7 @@ type HTMLStrong interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLStrong
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLStrong
 
@@ -39439,7 +40414,7 @@ func (e *htmlStrong) OnWheel(h EventHandler, scope ...any) HTMLStrong {
 	return e
 }
 
-// HTMLStyle is the interface that describes a <style> HTML element.
+// HTMLStyle is the interface that describes a "style" HTML element.
 type HTMLStyle interface {
 	UI
 
@@ -39505,6 +40480,7 @@ type HTMLStyle interface {
 
 	// Type specifies the type of element.
 	Type(v string) HTMLStyle
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLStyle
 
@@ -39904,7 +40880,7 @@ func (e *htmlStyle) OnWheel(h EventHandler, scope ...any) HTMLStyle {
 	return e
 }
 
-// HTMLSub is the interface that describes a <sub> HTML element.
+// HTMLSub is the interface that describes a "sub" HTML element.
 type HTMLSub interface {
 	UI
 
@@ -39964,6 +40940,7 @@ type HTMLSub interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSub
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSub
 
@@ -40345,7 +41322,7 @@ func (e *htmlSub) OnWheel(h EventHandler, scope ...any) HTMLSub {
 	return e
 }
 
-// HTMLSummary is the interface that describes a <summary> HTML element.
+// HTMLSummary is the interface that describes a "summary" HTML element.
 type HTMLSummary interface {
 	UI
 
@@ -40405,6 +41382,7 @@ type HTMLSummary interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSummary
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSummary
 
@@ -40786,7 +41764,7 @@ func (e *htmlSummary) OnWheel(h EventHandler, scope ...any) HTMLSummary {
 	return e
 }
 
-// HTMLSup is the interface that describes a <sup> HTML element.
+// HTMLSup is the interface that describes a "sup" HTML element.
 type HTMLSup interface {
 	UI
 
@@ -40846,6 +41824,7 @@ type HTMLSup interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLSup
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLSup
 
@@ -41227,7 +42206,7 @@ func (e *htmlSup) OnWheel(h EventHandler, scope ...any) HTMLSup {
 	return e
 }
 
-// HTMLTable is the interface that describes a <table> HTML element.
+// HTMLTable is the interface that describes a "table" HTML element.
 type HTMLTable interface {
 	UI
 
@@ -41287,6 +42266,7 @@ type HTMLTable interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTable
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTable
 
@@ -41668,7 +42648,7 @@ func (e *htmlTable) OnWheel(h EventHandler, scope ...any) HTMLTable {
 	return e
 }
 
-// HTMLTBody is the interface that describes a <tbody> HTML element.
+// HTMLTBody is the interface that describes a "tbody" HTML element.
 type HTMLTBody interface {
 	UI
 
@@ -41728,6 +42708,7 @@ type HTMLTBody interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTBody
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTBody
 
@@ -42109,7 +43090,7 @@ func (e *htmlTBody) OnWheel(h EventHandler, scope ...any) HTMLTBody {
 	return e
 }
 
-// HTMLTd is the interface that describes a <td> HTML element.
+// HTMLTd is the interface that describes a "td" HTML element.
 type HTMLTd interface {
 	UI
 
@@ -42178,6 +43159,7 @@ type HTMLTd interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTd
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTd
 
@@ -42574,7 +43556,7 @@ func (e *htmlTd) OnWheel(h EventHandler, scope ...any) HTMLTd {
 	return e
 }
 
-// HTMLTemplate is the interface that describes a <template> HTML element.
+// HTMLTemplate is the interface that describes a "template" HTML element.
 type HTMLTemplate interface {
 	UI
 
@@ -42634,6 +43616,7 @@ type HTMLTemplate interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTemplate
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTemplate
 }
@@ -42759,7 +43742,7 @@ func (e *htmlTemplate) On(event string, h EventHandler, scope ...any) HTMLTempla
 	return e
 }
 
-// HTMLTextarea is the interface that describes a <textarea> HTML element.
+// HTMLTextarea is the interface that describes a "textarea" HTML element.
 type HTMLTextarea interface {
 	UI
 
@@ -42855,6 +43838,7 @@ type HTMLTextarea interface {
 
 	// Wrap specifies how the text in a text area is to be wrapped when submitted in a form.
 	Wrap(v string) HTMLTextarea
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTextarea
 
@@ -43297,7 +44281,7 @@ func (e *htmlTextarea) OnWheel(h EventHandler, scope ...any) HTMLTextarea {
 	return e
 }
 
-// HTMLTFoot is the interface that describes a <tfoot> HTML element.
+// HTMLTFoot is the interface that describes a "tfoot" HTML element.
 type HTMLTFoot interface {
 	UI
 
@@ -43357,6 +44341,7 @@ type HTMLTFoot interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTFoot
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTFoot
 
@@ -43738,7 +44723,7 @@ func (e *htmlTFoot) OnWheel(h EventHandler, scope ...any) HTMLTFoot {
 	return e
 }
 
-// HTMLTh is the interface that describes a <th> HTML element.
+// HTMLTh is the interface that describes a "th" HTML element.
 type HTMLTh interface {
 	UI
 
@@ -43813,6 +44798,7 @@ type HTMLTh interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTh
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTh
 
@@ -44219,7 +45205,7 @@ func (e *htmlTh) OnWheel(h EventHandler, scope ...any) HTMLTh {
 	return e
 }
 
-// HTMLTHead is the interface that describes a <thead> HTML element.
+// HTMLTHead is the interface that describes a "thead" HTML element.
 type HTMLTHead interface {
 	UI
 
@@ -44279,6 +45265,7 @@ type HTMLTHead interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTHead
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTHead
 
@@ -44660,7 +45647,7 @@ func (e *htmlTHead) OnWheel(h EventHandler, scope ...any) HTMLTHead {
 	return e
 }
 
-// HTMLTime is the interface that describes a <time> HTML element.
+// HTMLTime is the interface that describes a "time" HTML element.
 type HTMLTime interface {
 	UI
 
@@ -44723,6 +45710,7 @@ type HTMLTime interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTime
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTime
 
@@ -45109,7 +46097,7 @@ func (e *htmlTime) OnWheel(h EventHandler, scope ...any) HTMLTime {
 	return e
 }
 
-// HTMLTitle is the interface that describes a <title> HTML element.
+// HTMLTitle is the interface that describes a "title" HTML element.
 type HTMLTitle interface {
 	UI
 
@@ -45169,6 +46157,7 @@ type HTMLTitle interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTitle
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTitle
 }
@@ -45294,7 +46283,7 @@ func (e *htmlTitle) On(event string, h EventHandler, scope ...any) HTMLTitle {
 	return e
 }
 
-// HTMLTr is the interface that describes a <tr> HTML element.
+// HTMLTr is the interface that describes a "tr" HTML element.
 type HTMLTr interface {
 	UI
 
@@ -45354,6 +46343,7 @@ type HTMLTr interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLTr
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLTr
 
@@ -45735,7 +46725,7 @@ func (e *htmlTr) OnWheel(h EventHandler, scope ...any) HTMLTr {
 	return e
 }
 
-// HTMLU is the interface that describes a <u> HTML element.
+// HTMLU is the interface that describes a "u" HTML element.
 type HTMLU interface {
 	UI
 
@@ -45795,6 +46785,7 @@ type HTMLU interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLU
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLU
 
@@ -46176,7 +47167,7 @@ func (e *htmlU) OnWheel(h EventHandler, scope ...any) HTMLU {
 	return e
 }
 
-// HTMLUl is the interface that describes a <ul> HTML element.
+// HTMLUl is the interface that describes a "ul" HTML element.
 type HTMLUl interface {
 	UI
 
@@ -46236,6 +47227,7 @@ type HTMLUl interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLUl
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLUl
 
@@ -46617,7 +47609,7 @@ func (e *htmlUl) OnWheel(h EventHandler, scope ...any) HTMLUl {
 	return e
 }
 
-// HTMLVar is the interface that describes a <var> HTML element.
+// HTMLVar is the interface that describes a "var" HTML element.
 type HTMLVar interface {
 	UI
 
@@ -46677,6 +47669,7 @@ type HTMLVar interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLVar
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLVar
 
@@ -47058,7 +48051,7 @@ func (e *htmlVar) OnWheel(h EventHandler, scope ...any) HTMLVar {
 	return e
 }
 
-// HTMLVideo is the interface that describes a <video> HTML element.
+// HTMLVideo is the interface that describes a "video" HTML element.
 type HTMLVideo interface {
 	UI
 
@@ -47148,6 +48141,7 @@ type HTMLVideo interface {
 
 	// Width specifies the width of the element.
 	Width(v int) HTMLVideo
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLVideo
 
@@ -47763,7 +48757,7 @@ func (e *htmlVideo) OnWheel(h EventHandler, scope ...any) HTMLVideo {
 	return e
 }
 
-// HTMLWbr is the interface that describes a <wbr> HTML element.
+// HTMLWbr is the interface that describes a "wbr" HTML element.
 type HTMLWbr interface {
 	UI
 
@@ -47823,6 +48817,7 @@ type HTMLWbr interface {
 
 	// Title specifies extra information about an element.
 	Title(v string) HTMLWbr
+
 	// On registers the given event handler to the specified event.
 	On(event string, h EventHandler, scope ...any) HTMLWbr
 

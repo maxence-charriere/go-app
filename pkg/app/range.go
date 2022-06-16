@@ -30,13 +30,13 @@ type RangeLoop interface {
 
 // Range returns a range loop that iterates within the given source. Source must
 // be a slice, an array or a map with strings as keys.
-func Range(src interface{}) RangeLoop {
+func Range(src any) RangeLoop {
 	return rangeLoop{source: src}
 }
 
 type rangeLoop struct {
 	body   []UI
-	source interface{}
+	source any
 }
 
 func (r rangeLoop) Slice(f func(int) UI) RangeLoop {

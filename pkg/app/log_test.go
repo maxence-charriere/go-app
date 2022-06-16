@@ -23,10 +23,10 @@ func TestClientLog(t *testing.T) {
 	testLogger(t, clientLog)
 }
 
-func testLogger(t *testing.T, l func(string, ...interface{})) {
+func testLogger(t *testing.T, l func(string, ...any)) {
 	utests := []struct {
 		scenario string
-		value    interface{}
+		value    any
 	}{
 		{
 			scenario: "log",

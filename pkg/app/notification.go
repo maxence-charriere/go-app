@@ -37,7 +37,7 @@ type Notification struct {
 	// Arbitrary data that to be associated with the notification.
 	//
 	// The "goapp" key is reserved to go-app data.
-	Data map[string]interface{} `json:"data"`
+	Data map[string]any `json:"data"`
 
 	// Specifies whether the user should be notified after a new notification
 	// replaces an old one.

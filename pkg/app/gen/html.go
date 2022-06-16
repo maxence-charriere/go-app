@@ -232,6 +232,14 @@ var tags = []tag{
 		)...),
 		EventHandlers: withGlobalEventHandlers(),
 	},
+	{
+		Name: "Customizable",
+		Doc:  "represents an customizable HTML element.",
+		Attrs: withGlobalAttrs(attrsByNames(
+			"xmlns",
+		)...),
+		EventHandlers: withGlobalEventHandlers(),
+	},
 
 	// D:
 	{
@@ -809,6 +817,15 @@ var tags = []tag{
 			"name",
 			"required",
 			"size",
+		)...),
+		EventHandlers: withGlobalEventHandlers(),
+	},
+	{
+		Name: "SelfClosingCustomizable",
+		Type: selfClosing,
+		Doc:  "represents a self closing custom HTML element.",
+		Attrs: withGlobalAttrs(attrsByNames(
+			"xmlns",
 		)...),
 		EventHandlers: withGlobalEventHandlers(),
 	},
@@ -1608,6 +1625,11 @@ var attrs = map[string]attr{
 		Type: "string",
 		Doc:  "specifies how the text in a text area is to be wrapped when submitted in a form.",
 	},
+	"xmlns": {
+		Name: "XMLNS",
+		Type: "xmlns",
+		Doc:  "specifies the xml namespace of the element.",
+	},
 }
 
 func attrsByNames(names ...string) []attr {
@@ -2113,7 +2135,7 @@ import (
 
 func writeInterface(w io.Writer, t tag) {
 	fmt.Fprintf(w, `
-		// HTML%s is the interface that describes a <%s> HTML element.
+		// HTML%s is the interface that describes a "%s" HTML element.
 		type HTML%s interface {
 			UI
 		`,
@@ -2147,6 +2169,8 @@ func writeInterface(w io.Writer, t tag) {
 		fmt.Fprintf(w, "// %s %s\n", a.Name, a.Doc)
 		writeAttrFunction(w, a, t, true)
 	}
+
+	fmt.Fprintln(w)
 
 	fmt.Fprintf(w, `
 		// On registers the given event handler to the specified event.
@@ -2339,6 +2363,15 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 			}`, strings.ToLower(a.Name))
 		}
 
+	case "xmlns":
+		fmt.Fprintf(w, `%s(v string) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintln(w, `{
+				e.xmlns = v
+				return e
+			}`)
+		}
+
 	default:
 		fmt.Fprintf(w, `%s(v %s) HTML%s`, a.Name, a.Type, t.Name)
 		if !isInterface {
@@ -2419,6 +2452,9 @@ import (
 
 			case "string|class":
 				fmt.Fprintln(f, `"foo bar")`)
+
+			case "xmlns":
+				fmt.Fprintln(f, `"http://www.w3.org/2000/svg")`)
 
 			default:
 				fmt.Fprintln(f, `42)`)
