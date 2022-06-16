@@ -1,4 +1,5 @@
 //go:build ignore
+// +build ignore
 
 package main
 
@@ -27,8 +28,8 @@ const (
 )
 
 var tags = []tag{
-	// A:
 	{
+		// A:
 		Name: "A",
 		Doc:  "defines a hyperlink.",
 		Attrs: withGlobalAttrs(attrsByNames(
@@ -1049,6 +1050,11 @@ var attrs = map[string]attr{
 		Type: "aria|value",
 		Doc:  "stores accessible rich internet applications (ARIA) data.",
 	},
+	"attribute": {
+		Name: "Attr",
+		Type: "attr|value",
+		Doc:  "sets the named attribute with the given value.",
+	},
 	"accept-charset": {
 		Name:         "AcceptCharset",
 		NameOverride: "accept-charset",
@@ -1341,7 +1347,7 @@ var attrs = map[string]attr{
 	// M:
 	"max": {
 		Name: "Max",
-		Type: "any",
+		Type: "interface{}",
 		Doc:  "Specifies the maximum value.",
 	},
 	"maxlength": {
@@ -1361,7 +1367,7 @@ var attrs = map[string]attr{
 	},
 	"min": {
 		Name: "Min",
-		Type: "any",
+		Type: "interface{}",
 		Doc:  "specifies a minimum value.",
 	},
 	"multiple": {
@@ -1476,7 +1482,7 @@ var attrs = map[string]attr{
 	// S:
 	"sandbox": {
 		Name: "Sandbox",
-		Type: "any",
+		Type: "interface{}",
 		Doc:  "enables an extra set of restrictions for the content in an iframe.",
 	},
 	"scope": {
@@ -1587,7 +1593,7 @@ var attrs = map[string]attr{
 	// V:
 	"value": {
 		Name: "Value",
-		Type: "any",
+		Type: "interface{}",
 		Doc:  "specifies the value of the element.",
 	},
 
@@ -1601,13 +1607,6 @@ var attrs = map[string]attr{
 		Name: "Wrap",
 		Type: "string",
 		Doc:  "specifies how the text in a text area is to be wrapped when submitted in a form.",
-	},
-
-	// X:
-	"xmlns": {
-		Name: "XMLNS",
-		Type: "xmlns",
-		Doc:  "specifies the xml namespace of the element.",
 	},
 }
 
@@ -1646,6 +1645,7 @@ func withGlobalAttrs(attrs ...attr) []attr {
 		"styles",
 		"tabindex",
 		"title",
+		"attribute",
 	)...)
 
 	sort.Slice(attrs, func(i, j int) bool {
@@ -1895,7 +1895,7 @@ var eventHandlers = map[string]eventHandler{
 		Doc:  "calls the given handler when media data is loaded.",
 	},
 	"onloadedmetadata": {
-		Name: "OnLoadedMetaData",
+		Name: "OnloadedMetaData",
 		Doc:  "calls the given handler when meta data (like dimensions and duration) are loaded.",
 	},
 	"onloadstart": {
@@ -2062,7 +2062,7 @@ func main() {
 }
 
 func generateHTMLGo() {
-	f, err := os.Create("html-gen.go")
+	f, err := os.Create("html_gen.go")
 	if err != nil {
 		panic(err)
 	}
@@ -2084,10 +2084,14 @@ import (
 		fmt.Fprintf(f, `
 		// %s returns an HTML element that %s
 		func %s() HTML%s {
-			return &htmlElement[HTML%s] {
-				tag:           %q,
-				isSelfClosing: %v,
+			e := &html%s{
+				elem: elem{
+					tag: "%s",
+					selfClosing: %v,
+				},
 			}
+
+			return e
 		}
 		`,
 			t.Name,
@@ -2100,9 +2104,11 @@ import (
 		)
 
 		fmt.Fprintln(f)
+		fmt.Fprintln(f)
+		writeStruct(f, t)
+		fmt.Fprintln(f)
+		fmt.Fprintln(f)
 	}
-
-	writeHTMLElementMethods(f)
 }
 
 func writeInterface(w io.Writer, t tag) {
@@ -2119,25 +2125,20 @@ func writeInterface(w io.Writer, t tag) {
 	switch t.Type {
 	case parent:
 		fmt.Fprintf(w, `
-			// Text sets the content of the element with a text node containing the stringified given value.
-			Text(v any) HTML%s
+			// Body set the content of the element.
+			Body(elems ...UI) HTML%s 
 		`, t.Name)
 
 		fmt.Fprintf(w, `
-			// Body set the content of the element.
-			Body(v ...UI) HTML%s 
+			// Text sets the content of the element with a text node containing the stringified given value.
+			Text(v interface{}) HTML%s
 		`, t.Name)
 
 	case privateParent:
 		fmt.Fprintf(w, `
-			setChildren(v ...UI) HTML%s 
+			privateBody(elems ...UI) HTML%s 
 		`, t.Name)
 	}
-
-	fmt.Fprintf(w, `
-		// Attr sets the named attribute with the given value.
-		Attr(k string, v any) HTML%s 
-	`, t.Name)
 
 	for _, a := range t.Attrs {
 		fmt.Fprintln(w)
@@ -2146,13 +2147,6 @@ func writeInterface(w io.Writer, t tag) {
 		fmt.Fprintf(w, "// %s %s\n", a.Name, a.Doc)
 		writeAttrFunction(w, a, t, true)
 	}
-
-	fmt.Fprintln(w)
-
-	fmt.Fprintf(w, `
-		// On calls the given event handler when the named event is triggered.
-		On(event string, h EventHandler, scope ...any) HTML%s 
-	`, t.Name)
 
 	for _, e := range t.EventHandlers {
 		fmt.Fprintln(w)
@@ -2166,33 +2160,64 @@ func writeInterface(w io.Writer, t tag) {
 	fmt.Fprintln(w, "}")
 }
 
-func writeHTMLElementMethods(w io.Writer) {
-	t := tag{Name: "Element[T]"}
+func writeStruct(w io.Writer, t tag) {
+	fmt.Fprintf(w, `type html%s struct {
+			elem
+		}`, t.Name)
 
-	attrList := make([]attr, 0, len(attrs))
-	for _, a := range attrs {
-		attrList = append(attrList, a)
+	switch t.Type {
+	case parent:
+		fmt.Fprintf(w, `
+			func (e *html%s) Body(elems ...UI) HTML%s {
+				e.setBody(elems...)
+				return e
+			}
+			`,
+			t.Name,
+			t.Name,
+		)
+
+		if t.Name == "Textarea" {
+			fmt.Fprintf(w, `
+			func (e *html%s) Text(v interface{}) HTML%s {
+				e.setAttr("value", v)
+				return e
+			}
+			`,
+				t.Name,
+				t.Name,
+			)
+		} else {
+			fmt.Fprintf(w, `
+			func (e *html%s) Text(v interface{}) HTML%s {
+				return e.Body(Text(v))
+			}
+			`,
+				t.Name,
+				t.Name,
+			)
+		}
+
+	case privateParent:
+		fmt.Fprintf(w, `
+			func (e *html%s) privateBody(elems ...UI) HTML%s {
+				e.setBody(elems...)
+				return e
+			}
+			`,
+			t.Name,
+			t.Name,
+		)
 	}
-	sort.Slice(attrList, func(a, b int) bool {
-		return strings.Compare(attrList[a].Name, attrList[b].Name) < 0
-	})
 
-	for _, a := range attrList {
+	for _, a := range t.Attrs {
 		fmt.Fprintln(w)
 		fmt.Fprintln(w)
 
 		writeAttrFunction(w, a, t, false)
 	}
 
-	eventHandlerList := make([]eventHandler, 0, len(eventHandlers))
-	for _, h := range eventHandlers {
-		eventHandlerList = append(eventHandlerList, h)
-	}
-	sort.Slice(eventHandlerList, func(a, b int) bool {
-		return strings.Compare(eventHandlerList[a].Name, eventHandlerList[b].Name) < 0
-	})
-
-	for _, e := range eventHandlerList {
+	for _, e := range t.EventHandlers {
 		fmt.Fprintln(w)
 		fmt.Fprintln(w)
 
@@ -2201,134 +2226,131 @@ func writeHTMLElementMethods(w io.Writer) {
 }
 
 func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
-	funcType := ""
-	returnType := "HTML" + t.Name
 	if !isInterface {
-		funcType = fmt.Sprintf("func (e html%s)", t.Name)
-		returnType = "T"
+		fmt.Fprintf(w, "func (e *html%s)", t.Name)
 	}
 
 	switch a.Type {
 	case "data|value":
-		fmt.Fprintf(w, `%s %s(k string, v any) %s`, funcType, a.Name, returnType)
+		fmt.Fprintf(w, `%s(k string, v interface{}) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				return e.Attr("data-"+k, fmt.Sprintf("%s", v))
+				e.setAttr("data-"+k, fmt.Sprintf("%s", v))
+				return e
 			}`, "%v")
 		}
 
-	case "aria|value":
-		fmt.Fprintf(w, `%s %s(k string, v any) %s`, funcType, a.Name, returnType)
+	case "attr|value":
+		fmt.Fprintf(w, `%s(n string, v interface{}) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				return e.Attr("aria-"+k, fmt.Sprintf("%s", v))
+				e.setAttr(n, v)
+				return e
+			}`)
+		}
+
+	case "aria|value":
+		fmt.Fprintf(w, `%s(k string, v interface{}) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintf(w, `{
+				e.setAttr("aria-"+k, fmt.Sprintf("%s", v))
+				return e
 			}`, "%v")
 		}
 
 	case "style":
-		fmt.Fprintf(w, `%s %s(k, v string) %s`, funcType, a.Name, returnType)
+		fmt.Fprintf(w, `%s(k, v string) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				var b strings.Builder
-				b.WriteString(k)
-				b.WriteByte(':')
-				b.WriteString(v)
-				return e.Attr("style", strings.Trim(b.String(), ";"))
+				e.setAttr("style", k+":"+v)
+				return e
 			}`)
 		}
 
 	case "style|map":
-		fmt.Fprintf(w, `%s %s(s map[string]string) %s`, funcType, a.Name, returnType)
+		fmt.Fprintf(w, `%s(s map[string]string) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				var b strings.Builder
 				for k, v := range s {
-					b.WriteString(k)
-					b.WriteByte(':')
-					b.WriteString(v)
-					b.WriteByte(';')
+					e.Style(k, v)
 				}
-				return e.Attr("style", strings.Trim(b.String(), ";"))
+				return e
 			}`)
 		}
 
 	case "on/off":
-		fmt.Fprintf(w, `%s %s(v bool) %s`, funcType, a.Name, returnType)
+		fmt.Fprintf(w, `%s(v bool) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
 				s := "off"
 				if (v) {
 					s = "on"
 				}
-				return e.Attr("%s", s)
+	
+				e.setAttr("%s", s)
+				return e
 			}`, strings.ToLower(a.Name))
 		}
 
 	case "bool|force":
-		fmt.Fprintf(w, `%s %s(v bool) %s`, funcType, a.Name, returnType)
+		fmt.Fprintf(w, `%s(v bool) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
 				s := "false"
 				if (v) {
 					s = "true"
 				}
-				return e.Attr("%s", s)
+	
+				e.setAttr("%s", s)
+				return e
 			}`, strings.ToLower(a.Name))
 		}
 
 	case "url":
-		fmt.Fprintf(w, `%s %s(v string) %s`, funcType, a.Name, returnType)
+		fmt.Fprintf(w, `%s(v string) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				return e.Attr("%s", v)
+				e.setAttr("%s", v)
+				return e
 			}`, strings.ToLower(a.Name))
 		}
 
 	case "string|class":
-		fmt.Fprintf(w, `%s %s(v ...string) %s`, funcType, a.Name, returnType)
+		fmt.Fprintf(w, `%s(v ...string) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				return e.Attr("%s", strings.Join(v, " "))
+				e.setAttr("%s", strings.Join(v, " "))
+				return e
 			}`, strings.ToLower(a.Name))
 		}
 
-	case "xmlns":
-		fmt.Fprintf(w, `%s %s(v string) %s`, funcType, a.Name, returnType)
-		if !isInterface {
-			fmt.Fprintf(w, `{
-				e.xmlns = v
-				return e.toHTMLInterface()
-			}`)
-		}
-
 	default:
-		fmt.Fprintf(w, `%s %s(v %s) %s`, funcType, a.Name, a.Type, returnType)
+		fmt.Fprintf(w, `%s(v %s) HTML%s`, a.Name, a.Type, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
-				return e.Attr("%s", v)
+				e.setAttr("%s", v)
+				return e
 			}`, strings.ToLower(a.Name))
 		}
 	}
 }
 
 func writeEventFunction(w io.Writer, e eventHandler, t tag, isInterface bool) {
-	funcType := ""
-	returnType := "HTML" + t.Name
 	if !isInterface {
-		funcType = fmt.Sprintf("func (e html%s)", t.Name)
-		returnType = "T"
+		fmt.Fprintf(w, `func (e *html%s)`, t.Name)
 	}
 
-	fmt.Fprintf(w, `%s %s (h EventHandler, scope ...any) %s`, funcType, e.Name, returnType)
+	fmt.Fprintf(w, `%s (h EventHandler, scope ...interface{}) HTML%s`, e.Name, t.Name)
 	if !isInterface {
 		fmt.Fprintf(w, `{
-			return e.On("%s", h, scope...)
+			e.setEventHandler("%s", h, scope...)
+			return e
 		}`, strings.TrimPrefix(strings.ToLower(e.Name), "on"))
 	}
 }
 
 func generateHTMLTestGo() {
-	f, err := os.Create("html-gen_test.go")
+	f, err := os.Create("html_gen_test.go")
 	if err != nil {
 		panic(err)
 	}
@@ -2357,7 +2379,7 @@ import (
 			fmt.Fprintf(f, `elem.%s(`, a.Name)
 
 			switch a.Type {
-			case "data|value", "aria|value":
+			case "data|value", "aria|value", "attr|value":
 				fmt.Fprintln(f, `"foo", "bar")`)
 
 			case "style":
@@ -2374,7 +2396,7 @@ import (
 			case "int":
 				fmt.Fprintln(f, `42)`)
 
-			case "string", "xmlns":
+			case "string":
 				fmt.Fprintln(f, `"foo")`)
 
 			case "url":
@@ -2404,7 +2426,7 @@ import (
 			fmt.Fprintln(f, `elem.Text("hello")`)
 
 		case privateParent:
-			fmt.Fprintln(f, `elem.setChildren(Text("hello"))`)
+			fmt.Fprintln(f, `elem.privateBody(Text("hello"))`)
 		}
 
 		fmt.Fprintln(f, "}")

@@ -34,7 +34,7 @@ func TestCompoUpdate(t *testing.T) {
 			},
 		},
 		{
-			scenario: "component is updated 2",
+			scenario: "component is updated",
 			a:        &hello{},
 			b:        &hello{Greeting: "world"},
 			matches: []TestUIDescriptor{

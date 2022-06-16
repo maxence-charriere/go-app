@@ -158,7 +158,7 @@ type Compo struct {
 }
 
 // Kind returns the ui element kind.
-func (c *Compo) kind() Kind {
+func (c *Compo) Kind() Kind {
 	return Component
 }
 
@@ -280,7 +280,7 @@ func (c *Compo) mount(d Dispatcher) error {
 		return errors.New("mounting component failed").
 			Tag("reason", "already mounted").
 			Tag("name", c.name()).
-			Tag("kind", c.kind())
+			Tag("kind", c.Kind())
 	}
 
 	if initializer, ok := c.self().(Initializer); ok && !d.runsInServer() {
@@ -294,7 +294,7 @@ func (c *Compo) mount(d Dispatcher) error {
 	if err := mount(d, root); err != nil {
 		return errors.New("mounting component failed").
 			Tag("name", c.name()).
-			Tag("kind", c.kind()).
+			Tag("kind", c.Kind()).
 			Wrap(err)
 	}
 	root.setParent(c.this)
@@ -322,7 +322,7 @@ func (c *Compo) dismount() {
 }
 
 func (c *Compo) canUpdateWith(n UI) bool {
-	return n.kind() == c.kind() && n.name() == c.name()
+	return n.Kind() == c.Kind() && n.name() == c.name()
 }
 
 func (c *Compo) updateWith(n UI) error {
@@ -389,11 +389,11 @@ func (c *Compo) replaceRoot(n UI) error {
 
 	if err := mount(c.getDispatcher(), new); err != nil {
 		return errors.New("replacing component root failed").
-			Tag("kind", c.kind()).
+			Tag("kind", c.Kind()).
 			Tag("name", c.name()).
-			Tag("root-kind", old.kind()).
+			Tag("root-kind", old.Kind()).
 			Tag("root-name", old.name()).
-			Tag("new-root-kind", new.kind()).
+			Tag("new-root-kind", new.Kind()).
 			Tag("new-root-name", new.name()).
 			Wrap(err)
 	}
@@ -401,14 +401,14 @@ func (c *Compo) replaceRoot(n UI) error {
 	var parent UI
 	for {
 		parent = c.getParent()
-		if parent == nil || parent.kind() == HTML {
+		if parent == nil || parent.Kind() == HTML {
 			break
 		}
 	}
 
 	if parent == nil {
 		return errors.New("replacing component root failed").
-			Tag("kind", c.kind()).
+			Tag("kind", c.Kind()).
 			Tag("name", c.name()).
 			Tag("reason", "coponent does not have html element parents")
 	}

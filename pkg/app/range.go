@@ -87,7 +87,7 @@ func (r rangeLoop) Map(f func(string) UI) RangeLoop {
 	return r
 }
 
-func (r rangeLoop) kind() Kind {
+func (r rangeLoop) Kind() Kind {
 	return Selector
 }
 
@@ -140,7 +140,7 @@ func (r rangeLoop) getChildren() []UI {
 func (r rangeLoop) mount(Dispatcher) error {
 	return errors.New("range loop is not mountable").
 		Tag("name", r.name()).
-		Tag("kind", r.kind())
+		Tag("kind", r.Kind())
 }
 
 func (r rangeLoop) dismount() {
@@ -153,7 +153,7 @@ func (r rangeLoop) canUpdateWith(UI) bool {
 func (r rangeLoop) updateWith(UI) error {
 	return errors.New("range loop cannot be updated").
 		Tag("name", r.name()).
-		Tag("kind", r.kind())
+		Tag("kind", r.Kind())
 }
 
 func (r rangeLoop) onNav(*url.URL) {

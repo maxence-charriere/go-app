@@ -636,7 +636,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		ResolveStaticResources: h.resolveStaticPath,
 		ActionHandlers:         actionHandlers,
 	}
-	body := h.Body().setChildren(
+	body := h.Body().privateBody(
 		Div().Body(
 			Aside().
 				ID("app-wasm-loader").
@@ -675,7 +675,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	b.WriteString("<!DOCTYPE html>\n")
 	PrintHTML(&b, h.HTML().
 		Lang(page.Lang()).
-		setChildren(
+		privateBody(
 			Head().Body(
 				Meta().Charset("UTF-8"),
 				Meta().

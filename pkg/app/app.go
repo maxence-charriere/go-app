@@ -194,29 +194,33 @@ func internalURLChecker() func(string) bool {
 	}
 }
 
-func newClientBody(d Dispatcher) *htmlElement[HTMLBody] {
+func newClientBody(d Dispatcher) *htmlBody {
 	ctx, cancel := context.WithCancel(context.Background())
-	body := &htmlElement[HTMLBody]{
-		tag:           "body",
-		context:       ctx,
-		contextCancel: cancel,
-		dispatcher:    d,
-		jsElement:     Window().Get("document").Get("body"),
+	body := &htmlBody{
+		elem: elem{
+			ctx:       ctx,
+			ctxCancel: cancel,
+			jsvalue:   Window().Get("document").Get("body"),
+			tag:       "body",
+			disp:      d,
+		},
 	}
 	body.setSelf(body)
 
 	ctx, cancel = context.WithCancel(context.Background())
-	content := &htmlElement[HTMLDiv]{
-		tag:           "div",
-		context:       ctx,
-		contextCancel: cancel,
-		dispatcher:    d,
-		jsElement:     body.JSValue().firstElementChild(),
+	content := &htmlDiv{
+		elem: elem{
+			ctx:       ctx,
+			ctxCancel: cancel,
+			jsvalue:   body.JSValue().firstElementChild(),
+			tag:       "div",
+			disp:      d,
+		},
 	}
 	content.setSelf(content)
 	content.setParent(body)
 
-	body.children = append(body.children, content)
+	body.body = append(body.body, content)
 	return body
 }
 

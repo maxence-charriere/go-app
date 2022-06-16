@@ -53,7 +53,15 @@ func (e *htmlElement[T]) Text(v any) T {
 }
 
 func (e *htmlElement[T]) Body(v ...UI) T {
-	return e.setChildren(v...)
+	if e.isSelfClosing {
+		panic(errors.New("setting html element body failed").
+			Tag("reason", "self closing element can't have children").
+			Tag("tag", e.tag),
+		)
+	}
+
+	e.children = FilterUIElems(v...)
+	return e.toHTMLInterface()
 }
 
 func (e *htmlElement[T]) JSValue() Value {
@@ -95,17 +103,6 @@ func (e *htmlElement[T]) setParent(v UI) {
 
 func (e *htmlElement[T]) getChildren() []UI {
 	return e.children
-}
-
-func (e *htmlElement[T]) setChildren(v ...UI) T {
-	if e.isSelfClosing {
-		panic(errors.New("cannot set children of a self closing element").
-			Tag("tag", e.tag),
-		)
-	}
-
-	e.children = FilterUIElems(v...)
-	return e.toHTMLInterface()
 }
 
 func (e *htmlElement[T]) mount(d Dispatcher) error {
@@ -153,7 +150,6 @@ func (e *htmlElement[T]) dismount() {
 	}
 
 	e.contextCancel()
-	e.jsElement = nil
 }
 
 func (e *htmlElement[T]) canUpdateWith(v UI) bool {
@@ -422,7 +418,7 @@ func (e *htmlElement[T]) htmlWithIndent(w io.Writer, indent int) {
 // -----------------------------------------------------------------------------
 // The method below might be removed in later versions.
 // -----------------------------------------------------------------------------
-func (e *htmlElement[T]) kind() Kind {
+func (e *htmlElement[T]) Kind() Kind {
 	return HTML
 }
 
@@ -431,10 +427,7 @@ func (e *htmlElement[T]) name() string {
 }
 
 func (e *htmlElement[T]) self() UI {
-	if e.IsMounted() {
-		return e
-	}
-	return nil
+	return e
 }
 
 func (e *htmlElement[T]) setSelf(UI) {

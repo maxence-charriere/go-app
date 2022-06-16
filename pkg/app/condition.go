@@ -57,7 +57,7 @@ func (c condition) Else(elems ...UI) Condition {
 	return c.ElseIf(true, elems...)
 }
 
-func (c condition) kind() Kind {
+func (c condition) Kind() Kind {
 	return Selector
 }
 
@@ -110,7 +110,7 @@ func (c condition) getChildren() []UI {
 func (c condition) mount(Dispatcher) error {
 	return errors.New("condition is not mountable").
 		Tag("name", c.name()).
-		Tag("kind", c.kind())
+		Tag("kind", c.Kind())
 }
 
 func (c condition) dismount() {
@@ -123,7 +123,7 @@ func (c condition) canUpdateWith(UI) bool {
 func (c condition) updateWith(UI) error {
 	return errors.New("condition cannot be updated").
 		Tag("name", c.name()).
-		Tag("kind", c.kind())
+		Tag("kind", c.Kind())
 }
 
 func (c condition) onNav(*url.URL) {

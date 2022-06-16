@@ -13,13 +13,15 @@ import (
 // UI is the interface that describes a user interface element such as
 // components and HTML elements.
 type UI interface {
+	// Kind represents the specific kind of a UI element.
+	Kind() Kind
+
 	// JSValue returns the javascript value linked to the element.
 	JSValue() Value
 
 	// Reports whether the element is mounted.
 	IsMounted() bool
 
-	kind() Kind
 	name() string
 	self() UI
 	setSelf(UI)
@@ -109,7 +111,7 @@ func FilterUIElems(uis ...UI) []UI {
 			continue
 		}
 
-		switch n.kind() {
+		switch n.Kind() {
 		case SimpleText, HTML, Component, RawHTML:
 			elems = append(elems, n)
 
@@ -119,7 +121,7 @@ func FilterUIElems(uis ...UI) []UI {
 		default:
 			panic(errors.New("filtering ui elements failed").
 				Tag("reason", "unexpected element type found").
-				Tag("kind", n.kind()).
+				Tag("kind", n.Kind()).
 				Tag("name", n.name()),
 			)
 		}
