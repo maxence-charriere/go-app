@@ -1,7 +1,6 @@
 package app
 
 import (
-	"bufio"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -53,11 +52,8 @@ func toPath(v ...any) string {
 }
 
 func writeIndent(w io.Writer, indent int) {
-	bw := bufio.NewWriter(w)
-	defer bw.Flush()
-
 	for i := 0; i < indent*2; i++ {
-		bw.WriteString(" ")
+		w.Write([]byte(" "))
 	}
 }
 
