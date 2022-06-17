@@ -1,10 +1,7 @@
 package app
 
 import (
-	"math/rand"
-	"sort"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -346,72 +343,4 @@ func TestSortUpdateDescriptors(t *testing.T) {
 			require.Equal(t, u.out, u.in)
 		})
 	}
-}
-
-const (
-	sortUpdateBenchCount = 1000
-)
-
-func BenchmarkSortUpdateDescriptor(b *testing.B) {
-	benchSortUpdateDescriptor(b, sortUpdateBenchCount, sortUpdateDescriptors)
-
-}
-
-func BenchmarkSortUpdateDescriptorStd(b *testing.B) {
-	benchSortUpdateDescriptor(b, sortUpdateBenchCount, func(d []updateDescriptor) {
-		sort.Slice(d, func(a, b int) bool {
-			return d[a].priority < d[b].priority
-		})
-	})
-}
-
-func BenchmarkSortUpdateDescriptorOrdered(b *testing.B) {
-	benchSortUpdateDescriptorOrdered(b, sortUpdateBenchCount, sortUpdateDescriptors)
-
-}
-
-func BenchmarkSortUpdateDescriptorOrderedStd(b *testing.B) {
-	benchSortUpdateDescriptorOrdered(b, sortUpdateBenchCount, func(d []updateDescriptor) {
-		sort.Slice(d, func(a, b int) bool {
-			return d[a].priority < d[b].priority
-		})
-	})
-}
-
-func benchSortUpdateDescriptor(b *testing.B, n int, sort func([]updateDescriptor)) {
-	rand.Seed(time.Now().UnixNano())
-
-	d := make([]updateDescriptor, n)
-	for i := range d {
-		d[i].compo = &hello{}
-	}
-
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		unorderUpdateDescriptor(b, d)
-		sort(d)
-	}
-}
-
-func benchSortUpdateDescriptorOrdered(b *testing.B, n int, sort func([]updateDescriptor)) {
-	rand.Seed(time.Now().UnixNano())
-
-	d := make([]updateDescriptor, n)
-	for i := range d {
-		d[i].compo = &hello{}
-	}
-	unorderUpdateDescriptor(b, d)
-
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		sort(d)
-	}
-}
-
-func unorderUpdateDescriptor(b *testing.B, d []updateDescriptor) {
-	b.StopTimer()
-	for i := range d {
-		d[i].priority = rand.Intn(1000)
-	}
-	b.StartTimer()
 }
