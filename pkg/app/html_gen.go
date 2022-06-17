@@ -9869,173 +9869,173 @@ func (e *htmlColGroup) OnWheel(h EventHandler, scope ...any) HTMLColGroup {
 	return e
 }
 
-// HTMLElem is the interface that describes a "elem" HTML element.
-type HTMLElem interface {
+// HTMLCustomizable is the interface that describes a "customizable" HTML element.
+type HTMLCustomizable interface {
 	UI
 
 	// Body set the content of the element.
-	Body(elems ...UI) HTMLElem
+	Body(elems ...UI) HTMLCustomizable
 
 	// Text sets the content of the element with a text node containing the stringified given value.
-	Text(v any) HTMLElem
+	Text(v any) HTMLCustomizable
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLElem
+	AccessKey(v string) HTMLCustomizable
 
 	// Aria stores accessible rich internet applications (ARIA) data.
-	Aria(k string, v any) HTMLElem
+	Aria(k string, v any) HTMLCustomizable
 
 	// Attr sets the named attribute with the given value.
-	Attr(n string, v any) HTMLElem
+	Attr(n string, v any) HTMLCustomizable
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
-	Class(v ...string) HTMLElem
+	Class(v ...string) HTMLCustomizable
 
 	// ContentEditable specifies whether the content of an element is editable or not.
-	ContentEditable(v bool) HTMLElem
+	ContentEditable(v bool) HTMLCustomizable
 
 	// DataSet stores custom data private to the page or application.
-	DataSet(k string, v any) HTMLElem
+	DataSet(k string, v any) HTMLCustomizable
 
 	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLElem
+	Dir(v string) HTMLCustomizable
 
 	// Draggable specifies whether an element is draggable or not.
-	Draggable(v bool) HTMLElem
+	Draggable(v bool) HTMLCustomizable
 
 	// Hidden specifies that an element is not yet, or is no longer relevant.
-	Hidden(v bool) HTMLElem
+	Hidden(v bool) HTMLCustomizable
 
 	// ID specifies a unique id for an element.
-	ID(v string) HTMLElem
+	ID(v string) HTMLCustomizable
 
 	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLElem
+	Lang(v string) HTMLCustomizable
 
 	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLElem
+	Role(v string) HTMLCustomizable
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
-	Spellcheck(v bool) HTMLElem
+	Spellcheck(v bool) HTMLCustomizable
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLElem
+	Style(k, v string) HTMLCustomizable
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
-	Styles(s map[string]string) HTMLElem
+	Styles(s map[string]string) HTMLCustomizable
 
 	// TabIndex specifies the tabbing order of an element.
-	TabIndex(v int) HTMLElem
+	TabIndex(v int) HTMLCustomizable
 
 	// Title specifies extra information about an element.
-	Title(v string) HTMLElem
+	Title(v string) HTMLCustomizable
 
 	// XMLNS specifies the xml namespace of the element.
-	XMLNS(v string) HTMLElem
+	XMLNS(v string) HTMLCustomizable
 
 	// On registers the given event handler to the specified event.
-	On(event string, h EventHandler, scope ...any) HTMLElem
+	On(event string, h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnBlur calls the given handler when the element loses focus.
-	OnBlur(h EventHandler, scope ...any) HTMLElem
+	OnBlur(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnChange calls the given handler when the value of the element is changed.
-	OnChange(h EventHandler, scope ...any) HTMLElem
+	OnChange(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnClick calls the given handler when there is a mouse click on the element.
-	OnClick(h EventHandler, scope ...any) HTMLElem
+	OnClick(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnContextMenu calls the given handler when a context menu is triggered.
-	OnContextMenu(h EventHandler, scope ...any) HTMLElem
+	OnContextMenu(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnCopy calls the given handler when the user copies the content of an element.
-	OnCopy(h EventHandler, scope ...any) HTMLElem
+	OnCopy(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnCut calls the given handler when the user cuts the content of an element.
-	OnCut(h EventHandler, scope ...any) HTMLElem
+	OnCut(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnDblClick calls the given handler when there is a mouse double-click on the element.
-	OnDblClick(h EventHandler, scope ...any) HTMLElem
+	OnDblClick(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnDrag calls the given handler when an element is dragged.
-	OnDrag(h EventHandler, scope ...any) HTMLElem
+	OnDrag(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnDragEnd calls the given handler at the end of a drag operation.
-	OnDragEnd(h EventHandler, scope ...any) HTMLElem
+	OnDragEnd(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnDragEnter calls the given handler when an element has been dragged to a valid drop target.
-	OnDragEnter(h EventHandler, scope ...any) HTMLElem
+	OnDragEnter(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnDragLeave calls the given handler when an element leaves a valid drop target.
-	OnDragLeave(h EventHandler, scope ...any) HTMLElem
+	OnDragLeave(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnDragOver calls the given handler when an element is being dragged over a valid drop target.
-	OnDragOver(h EventHandler, scope ...any) HTMLElem
+	OnDragOver(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnDragStart calls the given handler at the start of a drag operation.
-	OnDragStart(h EventHandler, scope ...any) HTMLElem
+	OnDragStart(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnDrop calls the given handler when dragged element is being dropped.
-	OnDrop(h EventHandler, scope ...any) HTMLElem
+	OnDrop(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnFocus calls the given handler when the element gets focus.
-	OnFocus(h EventHandler, scope ...any) HTMLElem
+	OnFocus(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnInput calls the given handler when an element gets user input.
-	OnInput(h EventHandler, scope ...any) HTMLElem
+	OnInput(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnInvalid calls the given handler when an element is invalid.
-	OnInvalid(h EventHandler, scope ...any) HTMLElem
+	OnInvalid(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnKeyDown calls the given handler when a user is pressing a key.
-	OnKeyDown(h EventHandler, scope ...any) HTMLElem
+	OnKeyDown(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnKeyPress calls the given handler when a user presses a key.
-	OnKeyPress(h EventHandler, scope ...any) HTMLElem
+	OnKeyPress(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnKeyUp calls the given handler when a user releases a key.
-	OnKeyUp(h EventHandler, scope ...any) HTMLElem
+	OnKeyUp(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
-	OnMouseDown(h EventHandler, scope ...any) HTMLElem
+	OnMouseDown(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
-	OnMouseMove(h EventHandler, scope ...any) HTMLElem
+	OnMouseMove(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnMouseOut calls the given handler when the mouse pointer moves out of an element.
-	OnMouseOut(h EventHandler, scope ...any) HTMLElem
+	OnMouseOut(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnMouseOver calls the given handler when the mouse pointer moves over an element.
-	OnMouseOver(h EventHandler, scope ...any) HTMLElem
+	OnMouseOver(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnMouseUp calls the given handler when a mouse button is released over an element.
-	OnMouseUp(h EventHandler, scope ...any) HTMLElem
+	OnMouseUp(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnPaste calls the given handler when the user pastes some content in an element.
-	OnPaste(h EventHandler, scope ...any) HTMLElem
+	OnPaste(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnReset calls the given handler when the Reset button in a form is clicked.
-	OnReset(h EventHandler, scope ...any) HTMLElem
+	OnReset(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnScroll calls the given handler when an element's scrollbar is being scrolled.
-	OnScroll(h EventHandler, scope ...any) HTMLElem
+	OnScroll(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnSearch calls the given handler when the user writes something in a search field.
-	OnSearch(h EventHandler, scope ...any) HTMLElem
+	OnSearch(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnSelect calls the given handler after some text has been selected in an element.
-	OnSelect(h EventHandler, scope ...any) HTMLElem
+	OnSelect(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnSubmit calls the given handler when a form is submitted.
-	OnSubmit(h EventHandler, scope ...any) HTMLElem
+	OnSubmit(h EventHandler, scope ...any) HTMLCustomizable
 
 	// OnWheel calls the given handler when the mouse wheel rolls up or down over an element.
-	OnWheel(h EventHandler, scope ...any) HTMLElem
+	OnWheel(h EventHandler, scope ...any) HTMLCustomizable
 }
 
-// Elem returns an HTML element that represents an customizable HTML element.
-func Elem(tag string) HTMLElem {
-	e := &htmlElem{
+// Customizable returns an HTML element that represents an customizable HTML element.
+func Customizable(tag string) HTMLCustomizable {
+	e := &htmlCustomizable{
 		htmlElement: htmlElement{
 			tag:           tag,
 			isSelfClosing: false,
@@ -10045,80 +10045,80 @@ func Elem(tag string) HTMLElem {
 	return e
 }
 
-type htmlElem struct {
+type htmlCustomizable struct {
 	htmlElement
 }
 
-func (e *htmlElem) Body(v ...UI) HTMLElem {
+func (e *htmlCustomizable) Body(v ...UI) HTMLCustomizable {
 	e.setChildren(v...)
 	return e
 }
 
-func (e *htmlElem) Text(v any) HTMLElem {
+func (e *htmlCustomizable) Text(v any) HTMLCustomizable {
 	return e.Body(Text(v))
 }
 
-func (e *htmlElem) AccessKey(v string) HTMLElem {
+func (e *htmlCustomizable) AccessKey(v string) HTMLCustomizable {
 	e.setAttr("accesskey", v)
 	return e
 }
 
-func (e *htmlElem) Aria(k string, v any) HTMLElem {
+func (e *htmlCustomizable) Aria(k string, v any) HTMLCustomizable {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
-func (e *htmlElem) Attr(n string, v any) HTMLElem {
+func (e *htmlCustomizable) Attr(n string, v any) HTMLCustomizable {
 	e.setAttr(n, v)
 	return e
 }
 
-func (e *htmlElem) Class(v ...string) HTMLElem {
+func (e *htmlCustomizable) Class(v ...string) HTMLCustomizable {
 	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
-func (e *htmlElem) ContentEditable(v bool) HTMLElem {
+func (e *htmlCustomizable) ContentEditable(v bool) HTMLCustomizable {
 	e.setAttr("contenteditable", v)
 	return e
 }
 
-func (e *htmlElem) DataSet(k string, v any) HTMLElem {
+func (e *htmlCustomizable) DataSet(k string, v any) HTMLCustomizable {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
-func (e *htmlElem) Dir(v string) HTMLElem {
+func (e *htmlCustomizable) Dir(v string) HTMLCustomizable {
 	e.setAttr("dir", v)
 	return e
 }
 
-func (e *htmlElem) Draggable(v bool) HTMLElem {
+func (e *htmlCustomizable) Draggable(v bool) HTMLCustomizable {
 	e.setAttr("draggable", v)
 	return e
 }
 
-func (e *htmlElem) Hidden(v bool) HTMLElem {
+func (e *htmlCustomizable) Hidden(v bool) HTMLCustomizable {
 	e.setAttr("hidden", v)
 	return e
 }
 
-func (e *htmlElem) ID(v string) HTMLElem {
+func (e *htmlCustomizable) ID(v string) HTMLCustomizable {
 	e.setAttr("id", v)
 	return e
 }
 
-func (e *htmlElem) Lang(v string) HTMLElem {
+func (e *htmlCustomizable) Lang(v string) HTMLCustomizable {
 	e.setAttr("lang", v)
 	return e
 }
 
-func (e *htmlElem) Role(v string) HTMLElem {
+func (e *htmlCustomizable) Role(v string) HTMLCustomizable {
 	e.setAttr("role", v)
 	return e
 }
 
-func (e *htmlElem) Spellcheck(v bool) HTMLElem {
+func (e *htmlCustomizable) Spellcheck(v bool) HTMLCustomizable {
 	s := "false"
 	if v {
 		s = "true"
@@ -10128,194 +10128,194 @@ func (e *htmlElem) Spellcheck(v bool) HTMLElem {
 	return e
 }
 
-func (e *htmlElem) Style(k, v string) HTMLElem {
+func (e *htmlCustomizable) Style(k, v string) HTMLCustomizable {
 	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlElem) Styles(s map[string]string) HTMLElem {
+func (e *htmlCustomizable) Styles(s map[string]string) HTMLCustomizable {
 	for k, v := range s {
 		e.Style(k, v)
 	}
 	return e
 }
 
-func (e *htmlElem) TabIndex(v int) HTMLElem {
+func (e *htmlCustomizable) TabIndex(v int) HTMLCustomizable {
 	e.setAttr("tabindex", v)
 	return e
 }
 
-func (e *htmlElem) Title(v string) HTMLElem {
+func (e *htmlCustomizable) Title(v string) HTMLCustomizable {
 	e.setAttr("title", v)
 	return e
 }
 
-func (e *htmlElem) XMLNS(v string) HTMLElem {
+func (e *htmlCustomizable) XMLNS(v string) HTMLCustomizable {
 	e.xmlns = v
 	return e
 }
 
-func (e *htmlElem) On(event string, h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) On(event string, h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler(event, h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnBlur(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnBlur(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("blur", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnChange(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnChange(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("change", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnClick(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnClick(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("click", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnContextMenu(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnContextMenu(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("contextmenu", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnCopy(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnCopy(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("copy", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnCut(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnCut(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("cut", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnDblClick(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnDblClick(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("dblclick", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnDrag(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnDrag(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("drag", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnDragEnd(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnDragEnd(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("dragend", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnDragEnter(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnDragEnter(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("dragenter", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnDragLeave(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnDragLeave(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("dragleave", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnDragOver(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnDragOver(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("dragover", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnDragStart(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnDragStart(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("dragstart", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnDrop(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnDrop(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("drop", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnFocus(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnFocus(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("focus", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnInput(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnInput(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("input", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnInvalid(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnInvalid(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("invalid", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnKeyDown(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnKeyDown(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("keydown", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnKeyPress(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnKeyPress(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("keypress", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnKeyUp(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnKeyUp(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnMouseDown(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnMouseDown(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("mousedown", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnMouseMove(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnMouseMove(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnMouseOut(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnMouseOut(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("mouseout", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnMouseOver(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnMouseOver(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("mouseover", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnMouseUp(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnMouseUp(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("mouseup", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnPaste(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnPaste(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("paste", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnReset(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnReset(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("reset", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnScroll(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnScroll(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("scroll", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnSearch(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnSearch(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("search", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnSelect(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnSelect(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("select", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnSubmit(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnSubmit(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("submit", h, scope...)
 	return e
 }
 
-func (e *htmlElem) OnWheel(h EventHandler, scope ...any) HTMLElem {
+func (e *htmlCustomizable) OnWheel(h EventHandler, scope ...any) HTMLCustomizable {
 	e.setEventHandler("wheel", h, scope...)
 	return e
 }
@@ -38185,167 +38185,167 @@ func (e *htmlSelect) OnWheel(h EventHandler, scope ...any) HTMLSelect {
 	return e
 }
 
-// HTMLSelfClosingElem is the interface that describes a "selfclosingelem" HTML element.
-type HTMLSelfClosingElem interface {
+// HTMLSelfClosingCustomizable is the interface that describes a "selfclosingcustomizable" HTML element.
+type HTMLSelfClosingCustomizable interface {
 	UI
 
 	// AccessKey specifies a shortcut key to activate/focus an element.
-	AccessKey(v string) HTMLSelfClosingElem
+	AccessKey(v string) HTMLSelfClosingCustomizable
 
 	// Aria stores accessible rich internet applications (ARIA) data.
-	Aria(k string, v any) HTMLSelfClosingElem
+	Aria(k string, v any) HTMLSelfClosingCustomizable
 
 	// Attr sets the named attribute with the given value.
-	Attr(n string, v any) HTMLSelfClosingElem
+	Attr(n string, v any) HTMLSelfClosingCustomizable
 
 	// Class specifies one or more classnames for an element (refers to a class in a style sheet).
-	Class(v ...string) HTMLSelfClosingElem
+	Class(v ...string) HTMLSelfClosingCustomizable
 
 	// ContentEditable specifies whether the content of an element is editable or not.
-	ContentEditable(v bool) HTMLSelfClosingElem
+	ContentEditable(v bool) HTMLSelfClosingCustomizable
 
 	// DataSet stores custom data private to the page or application.
-	DataSet(k string, v any) HTMLSelfClosingElem
+	DataSet(k string, v any) HTMLSelfClosingCustomizable
 
 	// Dir specifies the text direction for the content in an element.
-	Dir(v string) HTMLSelfClosingElem
+	Dir(v string) HTMLSelfClosingCustomizable
 
 	// Draggable specifies whether an element is draggable or not.
-	Draggable(v bool) HTMLSelfClosingElem
+	Draggable(v bool) HTMLSelfClosingCustomizable
 
 	// Hidden specifies that an element is not yet, or is no longer relevant.
-	Hidden(v bool) HTMLSelfClosingElem
+	Hidden(v bool) HTMLSelfClosingCustomizable
 
 	// ID specifies a unique id for an element.
-	ID(v string) HTMLSelfClosingElem
+	ID(v string) HTMLSelfClosingCustomizable
 
 	// Lang specifies the language of the element's content.
-	Lang(v string) HTMLSelfClosingElem
+	Lang(v string) HTMLSelfClosingCustomizable
 
 	// Role specifies to parsing software the exact function of an element (and its children).
-	Role(v string) HTMLSelfClosingElem
+	Role(v string) HTMLSelfClosingCustomizable
 
 	// Spellcheck specifies whether the element is to have its spelling and grammar checked or not.
-	Spellcheck(v bool) HTMLSelfClosingElem
+	Spellcheck(v bool) HTMLSelfClosingCustomizable
 
 	// Style specifies a CSS style for an element. Can be called multiple times to set multiple css styles.
-	Style(k, v string) HTMLSelfClosingElem
+	Style(k, v string) HTMLSelfClosingCustomizable
 
 	// Styles specifies CSS styles for an element. Can be called multiple times to set multiple css styles.
-	Styles(s map[string]string) HTMLSelfClosingElem
+	Styles(s map[string]string) HTMLSelfClosingCustomizable
 
 	// TabIndex specifies the tabbing order of an element.
-	TabIndex(v int) HTMLSelfClosingElem
+	TabIndex(v int) HTMLSelfClosingCustomizable
 
 	// Title specifies extra information about an element.
-	Title(v string) HTMLSelfClosingElem
+	Title(v string) HTMLSelfClosingCustomizable
 
 	// XMLNS specifies the xml namespace of the element.
-	XMLNS(v string) HTMLSelfClosingElem
+	XMLNS(v string) HTMLSelfClosingCustomizable
 
 	// On registers the given event handler to the specified event.
-	On(event string, h EventHandler, scope ...any) HTMLSelfClosingElem
+	On(event string, h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnBlur calls the given handler when the element loses focus.
-	OnBlur(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnBlur(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnChange calls the given handler when the value of the element is changed.
-	OnChange(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnChange(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnClick calls the given handler when there is a mouse click on the element.
-	OnClick(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnClick(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnContextMenu calls the given handler when a context menu is triggered.
-	OnContextMenu(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnContextMenu(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnCopy calls the given handler when the user copies the content of an element.
-	OnCopy(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnCopy(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnCut calls the given handler when the user cuts the content of an element.
-	OnCut(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnCut(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnDblClick calls the given handler when there is a mouse double-click on the element.
-	OnDblClick(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnDblClick(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnDrag calls the given handler when an element is dragged.
-	OnDrag(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnDrag(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnDragEnd calls the given handler at the end of a drag operation.
-	OnDragEnd(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnDragEnd(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnDragEnter calls the given handler when an element has been dragged to a valid drop target.
-	OnDragEnter(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnDragEnter(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnDragLeave calls the given handler when an element leaves a valid drop target.
-	OnDragLeave(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnDragLeave(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnDragOver calls the given handler when an element is being dragged over a valid drop target.
-	OnDragOver(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnDragOver(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnDragStart calls the given handler at the start of a drag operation.
-	OnDragStart(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnDragStart(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnDrop calls the given handler when dragged element is being dropped.
-	OnDrop(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnDrop(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnFocus calls the given handler when the element gets focus.
-	OnFocus(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnFocus(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnInput calls the given handler when an element gets user input.
-	OnInput(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnInput(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnInvalid calls the given handler when an element is invalid.
-	OnInvalid(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnInvalid(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnKeyDown calls the given handler when a user is pressing a key.
-	OnKeyDown(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnKeyDown(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnKeyPress calls the given handler when a user presses a key.
-	OnKeyPress(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnKeyPress(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnKeyUp calls the given handler when a user releases a key.
-	OnKeyUp(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnKeyUp(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
-	OnMouseDown(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnMouseDown(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
-	OnMouseMove(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnMouseMove(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnMouseOut calls the given handler when the mouse pointer moves out of an element.
-	OnMouseOut(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnMouseOut(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnMouseOver calls the given handler when the mouse pointer moves over an element.
-	OnMouseOver(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnMouseOver(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnMouseUp calls the given handler when a mouse button is released over an element.
-	OnMouseUp(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnMouseUp(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnPaste calls the given handler when the user pastes some content in an element.
-	OnPaste(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnPaste(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnReset calls the given handler when the Reset button in a form is clicked.
-	OnReset(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnReset(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnScroll calls the given handler when an element's scrollbar is being scrolled.
-	OnScroll(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnScroll(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnSearch calls the given handler when the user writes something in a search field.
-	OnSearch(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnSearch(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnSelect calls the given handler after some text has been selected in an element.
-	OnSelect(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnSelect(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnSubmit calls the given handler when a form is submitted.
-	OnSubmit(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnSubmit(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 
 	// OnWheel calls the given handler when the mouse wheel rolls up or down over an element.
-	OnWheel(h EventHandler, scope ...any) HTMLSelfClosingElem
+	OnWheel(h EventHandler, scope ...any) HTMLSelfClosingCustomizable
 }
 
-// SelfClosingElem returns an HTML element that represents a self closing custom HTML element.
-func SelfClosingElem(tag string) HTMLSelfClosingElem {
-	e := &htmlSelfClosingElem{
+// SelfClosingCustomizable returns an HTML element that represents a self closing custom HTML element.
+func SelfClosingCustomizable(tag string) HTMLSelfClosingCustomizable {
+	e := &htmlSelfClosingCustomizable{
 		htmlElement: htmlElement{
 			tag:           tag,
 			isSelfClosing: true,
@@ -38355,71 +38355,71 @@ func SelfClosingElem(tag string) HTMLSelfClosingElem {
 	return e
 }
 
-type htmlSelfClosingElem struct {
+type htmlSelfClosingCustomizable struct {
 	htmlElement
 }
 
-func (e *htmlSelfClosingElem) AccessKey(v string) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) AccessKey(v string) HTMLSelfClosingCustomizable {
 	e.setAttr("accesskey", v)
 	return e
 }
 
-func (e *htmlSelfClosingElem) Aria(k string, v any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) Aria(k string, v any) HTMLSelfClosingCustomizable {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
-func (e *htmlSelfClosingElem) Attr(n string, v any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) Attr(n string, v any) HTMLSelfClosingCustomizable {
 	e.setAttr(n, v)
 	return e
 }
 
-func (e *htmlSelfClosingElem) Class(v ...string) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) Class(v ...string) HTMLSelfClosingCustomizable {
 	e.setAttr("class", strings.Join(v, " "))
 	return e
 }
 
-func (e *htmlSelfClosingElem) ContentEditable(v bool) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) ContentEditable(v bool) HTMLSelfClosingCustomizable {
 	e.setAttr("contenteditable", v)
 	return e
 }
 
-func (e *htmlSelfClosingElem) DataSet(k string, v any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) DataSet(k string, v any) HTMLSelfClosingCustomizable {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
 	return e
 }
 
-func (e *htmlSelfClosingElem) Dir(v string) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) Dir(v string) HTMLSelfClosingCustomizable {
 	e.setAttr("dir", v)
 	return e
 }
 
-func (e *htmlSelfClosingElem) Draggable(v bool) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) Draggable(v bool) HTMLSelfClosingCustomizable {
 	e.setAttr("draggable", v)
 	return e
 }
 
-func (e *htmlSelfClosingElem) Hidden(v bool) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) Hidden(v bool) HTMLSelfClosingCustomizable {
 	e.setAttr("hidden", v)
 	return e
 }
 
-func (e *htmlSelfClosingElem) ID(v string) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) ID(v string) HTMLSelfClosingCustomizable {
 	e.setAttr("id", v)
 	return e
 }
 
-func (e *htmlSelfClosingElem) Lang(v string) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) Lang(v string) HTMLSelfClosingCustomizable {
 	e.setAttr("lang", v)
 	return e
 }
 
-func (e *htmlSelfClosingElem) Role(v string) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) Role(v string) HTMLSelfClosingCustomizable {
 	e.setAttr("role", v)
 	return e
 }
 
-func (e *htmlSelfClosingElem) Spellcheck(v bool) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) Spellcheck(v bool) HTMLSelfClosingCustomizable {
 	s := "false"
 	if v {
 		s = "true"
@@ -38429,194 +38429,194 @@ func (e *htmlSelfClosingElem) Spellcheck(v bool) HTMLSelfClosingElem {
 	return e
 }
 
-func (e *htmlSelfClosingElem) Style(k, v string) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) Style(k, v string) HTMLSelfClosingCustomizable {
 	e.setAttr("style", k+":"+v)
 	return e
 }
 
-func (e *htmlSelfClosingElem) Styles(s map[string]string) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) Styles(s map[string]string) HTMLSelfClosingCustomizable {
 	for k, v := range s {
 		e.Style(k, v)
 	}
 	return e
 }
 
-func (e *htmlSelfClosingElem) TabIndex(v int) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) TabIndex(v int) HTMLSelfClosingCustomizable {
 	e.setAttr("tabindex", v)
 	return e
 }
 
-func (e *htmlSelfClosingElem) Title(v string) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) Title(v string) HTMLSelfClosingCustomizable {
 	e.setAttr("title", v)
 	return e
 }
 
-func (e *htmlSelfClosingElem) XMLNS(v string) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) XMLNS(v string) HTMLSelfClosingCustomizable {
 	e.xmlns = v
 	return e
 }
 
-func (e *htmlSelfClosingElem) On(event string, h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) On(event string, h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler(event, h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnBlur(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnBlur(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("blur", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnChange(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnChange(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("change", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnClick(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnClick(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("click", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnContextMenu(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnContextMenu(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("contextmenu", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnCopy(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnCopy(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("copy", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnCut(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnCut(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("cut", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnDblClick(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnDblClick(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("dblclick", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnDrag(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnDrag(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("drag", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnDragEnd(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnDragEnd(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("dragend", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnDragEnter(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnDragEnter(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("dragenter", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnDragLeave(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnDragLeave(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("dragleave", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnDragOver(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnDragOver(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("dragover", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnDragStart(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnDragStart(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("dragstart", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnDrop(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnDrop(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("drop", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnFocus(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnFocus(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("focus", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnInput(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnInput(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("input", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnInvalid(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnInvalid(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("invalid", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnKeyDown(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnKeyDown(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("keydown", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnKeyPress(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnKeyPress(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("keypress", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnKeyUp(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnKeyUp(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("keyup", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnMouseDown(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnMouseDown(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("mousedown", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnMouseMove(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnMouseMove(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnMouseOut(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnMouseOut(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("mouseout", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnMouseOver(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnMouseOver(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("mouseover", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnMouseUp(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnMouseUp(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("mouseup", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnPaste(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnPaste(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("paste", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnReset(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnReset(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("reset", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnScroll(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnScroll(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("scroll", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnSearch(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnSearch(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("search", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnSelect(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnSelect(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("select", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnSubmit(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnSubmit(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("submit", h, scope...)
 	return e
 }
 
-func (e *htmlSelfClosingElem) OnWheel(h EventHandler, scope ...any) HTMLSelfClosingElem {
+func (e *htmlSelfClosingCustomizable) OnWheel(h EventHandler, scope ...any) HTMLSelfClosingCustomizable {
 	e.setEventHandler("wheel", h, scope...)
 	return e
 }

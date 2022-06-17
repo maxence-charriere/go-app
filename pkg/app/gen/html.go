@@ -233,7 +233,7 @@ var tags = []tag{
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
-		Name: "Elem",
+		Name: "Customizable",
 		Doc:  "represents an customizable HTML element.",
 		Attrs: withGlobalAttrs(attrsByNames(
 			"xmlns",
@@ -821,7 +821,7 @@ var tags = []tag{
 		EventHandlers: withGlobalEventHandlers(),
 	},
 	{
-		Name: "SelfClosingElem",
+		Name: "SelfClosingCustomizable",
 		Type: selfClosing,
 		Doc:  "represents a self closing custom HTML element.",
 		Attrs: withGlobalAttrs(attrsByNames(
@@ -2104,7 +2104,7 @@ import (
 		writeInterface(f, t)
 
 		switch t.Name {
-		case "Elem", "SelfClosingElem":
+		case "Customizable", "SelfClosingCustomizable":
 			fmt.Fprintf(f, `
 			// %s returns an HTML element that %s
 			func %s(tag string) HTML%s {
@@ -2445,7 +2445,7 @@ import (
 		fmt.Fprintln(f)
 
 		switch t.Name {
-		case "Elem", "SelfClosingElem":
+		case "Customizable", "SelfClosingCustomizable":
 			fmt.Fprintf(f, `elem := %s("div")`, t.Name)
 
 		default:
