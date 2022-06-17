@@ -415,17 +415,3 @@ func (e *htmlElement) htmlWithIndent(w io.Writer, indent int) {
 	w.Write([]byte(e.tag))
 	w.Write([]byte(">"))
 }
-
-func isURLAttrValue(k string) bool {
-	switch k {
-	case "cite",
-		"data",
-		"href",
-		"src",
-		"srcset":
-		return true
-
-	default:
-		return false
-	}
-}
