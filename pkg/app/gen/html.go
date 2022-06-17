@@ -2103,27 +2103,52 @@ import (
 	for _, t := range tags {
 		writeInterface(f, t)
 
-		fmt.Fprintf(f, `
-		// %s returns an HTML element that %s
-		func %s() HTML%s {
-			e := &html%s{
-				htmlElement: htmlElement{
-					tag: "%s",
-					isSelfClosing: %v,
-				},
-			}
+		switch t.Name {
+		case "Customizable", "SelfClosingCustomizable":
+			fmt.Fprintf(f, `
+			// %s returns an HTML element that %s
+			func %s(tag string) HTML%s {
+				e := &html%s{
+					htmlElement: htmlElement{
+						tag: tag,
+						isSelfClosing: %v,
+					},
+				}
 
-			return e
+				return e
+			}
+			`,
+				t.Name,
+				t.Doc,
+				t.Name,
+				t.Name,
+				t.Name,
+				t.Type == selfClosing,
+			)
+
+		default:
+			fmt.Fprintf(f, `
+			// %s returns an HTML element that %s
+			func %s() HTML%s {
+				e := &html%s{
+					htmlElement: htmlElement{
+						tag: "%s",
+						isSelfClosing: %v,
+					},
+				}
+
+				return e
+			}
+			`,
+				t.Name,
+				t.Doc,
+				t.Name,
+				t.Name,
+				t.Name,
+				strings.ToLower(t.Name),
+				t.Type == selfClosing,
+			)
 		}
-		`,
-			t.Name,
-			t.Doc,
-			t.Name,
-			t.Name,
-			t.Name,
-			strings.ToLower(t.Name),
-			t.Type == selfClosing,
-		)
 
 		fmt.Fprintln(f)
 		fmt.Fprintln(f)
@@ -2131,6 +2156,7 @@ import (
 		fmt.Fprintln(f)
 		fmt.Fprintln(f)
 	}
+
 }
 
 func writeInterface(w io.Writer, t tag) {
@@ -2415,13 +2441,18 @@ import (
 
 	for _, t := range tags {
 		fmt.Fprintln(f)
-		fmt.Fprintf(f, `
-		func Test%s(t *testing.T) {
-			elem := %s()
-		`,
-			t.Name,
-			t.Name,
-		)
+		fmt.Fprintf(f, `func Test%s(t *testing.T) {`, t.Name)
+		fmt.Fprintln(f)
+
+		switch t.Name {
+		case "Customizable", "SelfClosingCustomizable":
+			fmt.Fprintf(f, `elem := %s("div")`, t.Name)
+
+		default:
+			fmt.Fprintf(f, `elem := %s()`, t.Name)
+		}
+
+		fmt.Fprintln(f)
 
 		for _, a := range t.Attrs {
 			fmt.Fprintf(f, `elem.%s(`, a.Name)

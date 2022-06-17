@@ -10034,10 +10034,10 @@ type HTMLCustomizable interface {
 }
 
 // Customizable returns an HTML element that represents an customizable HTML element.
-func Customizable() HTMLCustomizable {
+func Customizable(tag string) HTMLCustomizable {
 	e := &htmlCustomizable{
 		htmlElement: htmlElement{
-			tag:           "customizable",
+			tag:           tag,
 			isSelfClosing: false,
 		},
 	}
@@ -38344,10 +38344,10 @@ type HTMLSelfClosingCustomizable interface {
 }
 
 // SelfClosingCustomizable returns an HTML element that represents a self closing custom HTML element.
-func SelfClosingCustomizable() HTMLSelfClosingCustomizable {
+func SelfClosingCustomizable(tag string) HTMLSelfClosingCustomizable {
 	e := &htmlSelfClosingCustomizable{
 		htmlElement: htmlElement{
-			tag:           "selfclosingcustomizable",
+			tag:           tag,
 			isSelfClosing: true,
 		},
 	}
