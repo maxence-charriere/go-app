@@ -1,7 +1,6 @@
 package app
 
 import (
-	"bufio"
 	"context"
 	"io"
 	"net/url"
@@ -330,95 +329,89 @@ func (e *htmlElement) preRender(p Page) {
 }
 
 func (e *htmlElement) html(w io.Writer) {
-	bw := bufio.NewWriter(w)
-	defer bw.Flush()
-
-	bw.WriteString("<")
-	bw.WriteString(e.tag)
+	io.WriteString(w, "<")
+	io.WriteString(w, e.tag)
 
 	for k, v := range e.attributes {
-		bw.WriteString(" ")
-		bw.WriteString(k)
+		io.WriteString(w, " ")
+		io.WriteString(w, k)
 
 		if v != "" {
-			bw.WriteString(`="`)
-			bw.WriteString(resolveAttributeURLValue(k, v, func(s string) string {
+			io.WriteString(w, `="`)
+			io.WriteString(w, resolveAttributeURLValue(k, v, func(s string) string {
 				if e.dispatcher != nil {
 					return e.dispatcher.resolveStaticResource(v)
 				}
 				return v
 			}))
-			bw.WriteString(`"`)
+			io.WriteString(w, `"`)
 		}
 	}
 
-	bw.WriteString(">")
+	io.WriteString(w, ">")
 
 	if e.isSelfClosing {
 		return
 	}
 
 	for _, c := range e.children {
-		bw.WriteString("n")
+		io.WriteString(w, "\n")
 		if c.self() == nil {
 			c.setSelf(c)
 		}
-		c.html(bw)
+		c.html(w)
 	}
 
 	if len(e.children) != 0 {
-		bw.WriteString("\n")
+		io.WriteString(w, "\n")
 	}
 
-	bw.WriteString("</")
-	bw.WriteString(e.tag)
-	bw.WriteString(">")
+	io.WriteString(w, "</")
+	io.WriteString(w, e.tag)
+	io.WriteString(w, ">")
 }
 
 func (e *htmlElement) htmlWithIndent(w io.Writer, indent int) {
-	bw := bufio.NewWriter(w)
-	defer bw.Flush()
-
 	writeIndent(w, indent)
-	bw.WriteString("<")
-	bw.WriteString(e.tag)
+	io.WriteString(w, "<")
+	io.WriteString(w, e.tag)
 
 	for k, v := range e.attributes {
-		bw.WriteString(" ")
-		bw.WriteString(k)
+		io.WriteString(w, " ")
+		io.WriteString(w, k)
 
 		if v != "" {
-			bw.WriteString(`="`)
-			bw.WriteString(resolveAttributeURLValue(k, v, func(s string) string {
+			io.WriteString(w, `="`)
+			io.WriteString(w, resolveAttributeURLValue(k, v, func(s string) string {
 				if e.dispatcher != nil {
 					return e.dispatcher.resolveStaticResource(v)
 				}
 				return v
 			}))
-			bw.WriteString(`"`)
+			io.WriteString(w, `"`)
 		}
 	}
 
-	bw.WriteString(">")
+	io.WriteString(w, ">")
 
 	if e.isSelfClosing {
 		return
 	}
 
 	for _, c := range e.children {
-		bw.WriteString("\n")
+		io.WriteString(w, "\n")
 		if c.self() == nil {
 			c.setSelf(c)
 		}
-		c.htmlWithIndent(bw, indent+1)
+		c.htmlWithIndent(w, indent+1)
 	}
 
 	if len(e.children) != 0 {
-		bw.WriteString("\n")
-		writeIndent(bw, indent)
+		io.WriteString(w, "\n")
+		writeIndent(w, indent)
 	}
 
-	bw.WriteString("</")
-	bw.WriteString(e.tag)
-	bw.WriteString(">")
+	io.WriteString(w, "</")
+	io.WriteString(w, e.tag)
+	io.WriteString(w, ">")
 }
