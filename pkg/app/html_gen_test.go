@@ -1371,8 +1371,8 @@ func TestColGroup(t *testing.T) {
 	elem.Text("hello")
 }
 
-func TestCustomizable(t *testing.T) {
-	elem := Customizable("div")
+func TestElem(t *testing.T) {
+	elem := Elem("div")
 	elem.AccessKey("foo")
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
@@ -5294,8 +5294,8 @@ func TestSelect(t *testing.T) {
 	elem.Text("hello")
 }
 
-func TestSelfClosingCustomizable(t *testing.T) {
-	elem := SelfClosingCustomizable("div")
+func TestSelfClosingElem(t *testing.T) {
+	elem := SelfClosingElem("div")
 	elem.AccessKey("foo")
 	elem.Aria("foo", "bar")
 	elem.Attr("foo", "bar")
