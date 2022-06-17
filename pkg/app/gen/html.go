@@ -232,14 +232,6 @@ var tags = []tag{
 		)...),
 		EventHandlers: withGlobalEventHandlers(),
 	},
-	{
-		Name: "Elem",
-		Doc:  "represents an customizable HTML element.",
-		Attrs: withGlobalAttrs(attrsByNames(
-			"xmlns",
-		)...),
-		EventHandlers: withGlobalEventHandlers(),
-	},
 
 	// D:
 	{
@@ -314,6 +306,23 @@ var tags = []tag{
 	},
 
 	// E:
+	{
+		Name: "Elem",
+		Doc:  "represents an customizable HTML element.",
+		Attrs: withGlobalAttrs(attrsByNames(
+			"xmlns",
+		)...),
+		EventHandlers: withGlobalEventHandlers(),
+	},
+	{
+		Name: "ElemSelfClosing",
+		Type: selfClosing,
+		Doc:  "represents a self closing custom HTML element.",
+		Attrs: withGlobalAttrs(attrsByNames(
+			"xmlns",
+		)...),
+		EventHandlers: withGlobalEventHandlers(),
+	},
 	{
 		Name:          "Em",
 		Doc:           "defines emphasized text.",
@@ -817,15 +826,6 @@ var tags = []tag{
 			"name",
 			"required",
 			"size",
-		)...),
-		EventHandlers: withGlobalEventHandlers(),
-	},
-	{
-		Name: "SelfClosingElem",
-		Type: selfClosing,
-		Doc:  "represents a self closing custom HTML element.",
-		Attrs: withGlobalAttrs(attrsByNames(
-			"xmlns",
 		)...),
 		EventHandlers: withGlobalEventHandlers(),
 	},
@@ -2104,7 +2104,7 @@ import (
 		writeInterface(f, t)
 
 		switch t.Name {
-		case "Elem", "SelfClosingElem":
+		case "Elem", "ElemSelfClosing":
 			fmt.Fprintf(f, `
 			// %s returns an HTML element that %s
 			func %s(tag string) HTML%s {
@@ -2445,7 +2445,7 @@ import (
 		fmt.Fprintln(f)
 
 		switch t.Name {
-		case "Elem", "SelfClosingElem":
+		case "Elem", "ElemSelfClosing":
 			fmt.Fprintf(f, `elem := %s("div")`, t.Name)
 
 		default:
