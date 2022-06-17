@@ -1,8 +1,8 @@
-const cacheName = "app-" + "5b5659f9412858d9a889d51820887845d1eff4de";
-const resourcesToCache = ["/app.css","/app.js","/manifest.webmanifest","https://storage.googleapis.com/murlok-github/icon-192.png","/wasm_exec.js","/","/web/css/prism.css","/web/css/docs.css","https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500\u0026display=swap","/web/documents/updates.md","/web/app.wasm","https://storage.googleapis.com/murlok-github/icon-512.png","/web/js/prism.js","/web/documents/what-is-go-app.md","/web/documents/home.md","/web/documents/home-next.md"];
+const cacheName = "app-" + "957cc8314e772cd970000290bf74639a7cf065ca";
+const resourcesToCache = ["/","/app.css","/app.js","/manifest.webmanifest","/wasm_exec.js","/web/app.wasm","/web/css/docs.css","/web/css/prism.css","/web/documents/home-next.md","/web/documents/home.md","/web/documents/updates.md","/web/documents/what-is-go-app.md","/web/js/prism.js","https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500\u0026display=swap","https://storage.googleapis.com/murlok-github/icon-192.png","https://storage.googleapis.com/murlok-github/icon-512.png"];
 
 self.addEventListener("install", (event) => {
-  console.log("installing app worker 5b5659f9412858d9a889d51820887845d1eff4de");
+  console.log("installing app worker 957cc8314e772cd970000290bf74639a7cf065ca");
 
   event.waitUntil(
     caches
@@ -28,7 +28,7 @@ self.addEventListener("activate", (event) => {
       );
     })
   );
-  console.log("app worker 5b5659f9412858d9a889d51820887845d1eff4de is activated");
+  console.log("app worker 957cc8314e772cd970000290bf74639a7cf065ca is activated");
 });
 
 self.addEventListener("fetch", (event) => {
