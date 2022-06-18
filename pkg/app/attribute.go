@@ -127,38 +127,5 @@ func setJSAttribute(jsElement Value, name, value string) {
 }
 
 func deleteJSAttribute(jsElement Value, name string) {
-	switch name {
-	case "class":
-		jsElement.Delete("className")
-
-	case "contenteditable":
-		jsElement.Delete("contentEditable")
-
-	case "ismap":
-		jsElement.Delete("isMap")
-
-	case "readonly":
-		jsElement.Delete("readOnly")
-
-	case "value",
-		"async",
-		"autofocus",
-		"autoplay",
-		"checked",
-		"default",
-		"defer",
-		"disabled",
-		"hidden",
-		"loop",
-		"multiple",
-		"muted",
-		"open",
-		"required",
-		"reversed",
-		"selected":
-		jsElement.Delete(name)
-
-	default:
-		jsElement.Call("removeAttribute", name)
-	}
+	jsElement.Call("removeAttribute", name)
 }
