@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -42,6 +43,7 @@ func TestKindString(t *testing.T) {
 
 func TestFilterUIElems(t *testing.T) {
 	var nilText *text
+	var foo *foo
 
 	simpleText := Text("hello")
 
@@ -49,8 +51,27 @@ func TestFilterUIElems(t *testing.T) {
 		simpleText,
 	}
 
-	res := FilterUIElems(nil, nilText, simpleText)
+	res := FilterUIElems(nil, nilText, simpleText, foo)
 	require.Equal(t, expectedResult, res)
+}
+
+func BenchmarkFilterUIElems(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		FilterUIElems(Div().
+			Class("shell").
+			Body(
+				H1().Class("title").
+					Text("Hello"),
+				Input().
+					Type("text").
+					Class("in").
+					Value("World").
+					Placeholder("Type a name.").
+					OnChange(func(ctx Context, e Event) {
+						fmt.Println("Yo!")
+					}),
+			))
+	}
 }
 
 type mountTest struct {
