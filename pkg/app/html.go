@@ -33,7 +33,7 @@ func (e *htmlElement) JSValue() Value {
 	return e.jsElement
 }
 
-func (e *htmlElement) IsMounted() bool {
+func (e *htmlElement) Mounted() bool {
 	return e.context != nil && e.context.Err() == nil
 }
 
@@ -78,7 +78,7 @@ func (e *htmlElement) getChildren() []UI {
 }
 
 func (e *htmlElement) mount(d Dispatcher) error {
-	if e.IsMounted() {
+	if e.Mounted() {
 		return errors.New("html element is already mounted").
 			Tag("tag", e.tag).
 			Tag("kind", e.Kind())
@@ -133,7 +133,7 @@ func (e *htmlElement) canUpdateWith(n UI) bool {
 }
 
 func (e *htmlElement) updateWith(n UI) error {
-	if !e.IsMounted() {
+	if !e.Mounted() {
 		return errors.New("cannot update a non mounted html element").
 			Tag("element", reflect.TypeOf(e.self()))
 	}

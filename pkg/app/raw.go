@@ -44,7 +44,7 @@ func (r *raw) JSValue() Value {
 	return r.jsvalue
 }
 
-func (r *raw) IsMounted() bool {
+func (r *raw) Mounted() bool {
 	return r.jsvalue != nil && r.getDispatcher() != nil
 }
 
@@ -88,7 +88,7 @@ func (r *raw) getChildren() []UI {
 }
 
 func (r *raw) mount(d Dispatcher) error {
-	if r.IsMounted() {
+	if r.Mounted() {
 		return errors.New("mounting raw html element failed").
 			Tag("reason", "already mounted").
 			Tag("name", r.name()).

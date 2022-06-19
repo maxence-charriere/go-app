@@ -65,7 +65,7 @@ func (c condition) JSValue() Value {
 	return nil
 }
 
-func (c condition) IsMounted() bool {
+func (c condition) Mounted() bool {
 	return false
 }
 

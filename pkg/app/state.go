@@ -132,7 +132,7 @@ func (o *observer) Value(recv any) {
 }
 
 func (o *observer) isObserving() bool {
-	if !o.element.IsMounted() {
+	if !o.element.Mounted() {
 		return false
 	}
 
@@ -203,7 +203,7 @@ func (s *store) Set(key string, v any, opts ...StateOption) {
 	for obs := range state.observers {
 		o := obs
 
-		if !o.element.IsMounted() {
+		if !o.element.Mounted() {
 			delete(state.observers, o)
 			continue
 		}
@@ -426,7 +426,7 @@ func (s *store) onBroadcast(event Value) {
 	for obs := range state.observers {
 		o := obs
 
-		if !o.element.IsMounted() {
+		if !o.element.Mounted() {
 			delete(state.observers, o)
 			continue
 		}

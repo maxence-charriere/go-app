@@ -168,11 +168,11 @@ func (c *Compo) JSValue() Value {
 }
 
 // Mounted reports whether the component is mounted.
-func (c *Compo) IsMounted() bool {
+func (c *Compo) Mounted() bool {
 	return c.getDispatcher() != nil &&
 		c.ctx != nil &&
 		c.ctx.Err() == nil &&
-		c.root != nil && c.root.IsMounted() &&
+		c.root != nil && c.root.Mounted() &&
 		c.self() != nil
 }
 
@@ -276,7 +276,7 @@ func (c *Compo) getChildren() []UI {
 }
 
 func (c *Compo) mount(d Dispatcher) error {
-	if c.IsMounted() {
+	if c.Mounted() {
 		return errors.New("mounting component failed").
 			Tag("reason", "already mounted").
 			Tag("name", c.name()).
@@ -326,7 +326,7 @@ func (c *Compo) canUpdateWith(n UI) bool {
 }
 
 func (c *Compo) updateWith(n UI) error {
-	if c.self() == n || !c.IsMounted() {
+	if c.self() == n || !c.Mounted() {
 		return nil
 	}
 

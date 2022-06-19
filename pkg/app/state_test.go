@@ -429,7 +429,7 @@ func TestStoreObserve(t *testing.T) {
 
 		d.Mount(Div())
 		d.Consume()
-		require.False(t, foo.IsMounted())
+		require.False(t, foo.Mounted())
 
 		s.Set(key, "hi")
 		d.Consume()

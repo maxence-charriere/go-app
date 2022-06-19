@@ -20,7 +20,7 @@ type UI interface {
 	JSValue() Value
 
 	// Reports whether the element is mounted.
-	IsMounted() bool
+	Mounted() bool
 
 	name() string
 	self() UI
@@ -171,7 +171,7 @@ func HTMLStringWithIndent(ui UI) string {
 // PrintHTML writes an HTML representation of the UI element into the given
 // writer.
 func PrintHTML(w io.Writer, ui UI) {
-	if !ui.IsMounted() {
+	if !ui.Mounted() {
 		ui.setSelf(ui)
 	}
 	ui.html(w)
@@ -180,7 +180,7 @@ func PrintHTML(w io.Writer, ui UI) {
 // PrintHTMLWithIndent writes an idented HTML representation of the UI element
 // into the given writer.
 func PrintHTMLWithIndent(w io.Writer, ui UI) {
-	if !ui.IsMounted() {
+	if !ui.Mounted() {
 		ui.setSelf(ui)
 	}
 	ui.htmlWithIndent(w, 0)
