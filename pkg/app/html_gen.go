@@ -348,6 +348,7 @@ func (e *htmlA) Type(v string) HTMLA {
 	e.setAttr("type", v)
 	return e
 }
+
 func (e *htmlA) On(event string, h EventHandler, scope ...any) HTMLA {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -790,6 +791,7 @@ func (e *htmlAbbr) Title(v string) HTMLAbbr {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlAbbr) On(event string, h EventHandler, scope ...any) HTMLAbbr {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -1232,6 +1234,7 @@ func (e *htmlAddress) Title(v string) HTMLAddress {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlAddress) On(event string, h EventHandler, scope ...any) HTMLAddress {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -1739,6 +1742,7 @@ func (e *htmlArea) Type(v string) HTMLArea {
 	e.setAttr("type", v)
 	return e
 }
+
 func (e *htmlArea) On(event string, h EventHandler, scope ...any) HTMLArea {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -2181,6 +2185,7 @@ func (e *htmlArticle) Title(v string) HTMLArticle {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlArticle) On(event string, h EventHandler, scope ...any) HTMLArticle {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -2623,6 +2628,7 @@ func (e *htmlAside) Title(v string) HTMLAside {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlAside) On(event string, h EventHandler, scope ...any) HTMLAside {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -3190,6 +3196,7 @@ func (e *htmlAudio) Title(v string) HTMLAudio {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlAudio) On(event string, h EventHandler, scope ...any) HTMLAudio {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -3747,6 +3754,7 @@ func (e *htmlB) Title(v string) HTMLB {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlB) On(event string, h EventHandler, scope ...any) HTMLB {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -4190,6 +4198,7 @@ func (e *htmlBase) Title(v string) HTMLBase {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlBase) On(event string, h EventHandler, scope ...any) HTMLBase {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -4632,6 +4641,7 @@ func (e *htmlBdi) Title(v string) HTMLBdi {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlBdi) On(event string, h EventHandler, scope ...any) HTMLBdi {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -5074,6 +5084,7 @@ func (e *htmlBdo) Title(v string) HTMLBdo {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlBdo) On(event string, h EventHandler, scope ...any) HTMLBdo {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -5524,6 +5535,7 @@ func (e *htmlBlockquote) Title(v string) HTMLBlockquote {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlBlockquote) On(event string, h EventHandler, scope ...any) HTMLBlockquote {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -6003,6 +6015,7 @@ func (e *htmlBody) Title(v string) HTMLBody {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlBody) On(event string, h EventHandler, scope ...any) HTMLBody {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -6505,6 +6518,7 @@ func (e *htmlBr) Title(v string) HTMLBr {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlBr) On(event string, h EventHandler, scope ...any) HTMLBr {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -7035,6 +7049,7 @@ func (e *htmlButton) Value(v any) HTMLButton {
 	e.setAttr("value", v)
 	return e
 }
+
 func (e *htmlButton) On(event string, h EventHandler, scope ...any) HTMLButton {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -7493,6 +7508,7 @@ func (e *htmlCanvas) Width(v int) HTMLCanvas {
 	e.setAttr("width", v)
 	return e
 }
+
 func (e *htmlCanvas) On(event string, h EventHandler, scope ...any) HTMLCanvas {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -7935,6 +7951,7 @@ func (e *htmlCaption) Title(v string) HTMLCaption {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlCaption) On(event string, h EventHandler, scope ...any) HTMLCaption {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -8377,6 +8394,7 @@ func (e *htmlCite) Title(v string) HTMLCite {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlCite) On(event string, h EventHandler, scope ...any) HTMLCite {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -8819,6 +8837,7 @@ func (e *htmlCode) Title(v string) HTMLCode {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlCode) On(event string, h EventHandler, scope ...any) HTMLCode {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -9254,6 +9273,7 @@ func (e *htmlCol) Title(v string) HTMLCol {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlCol) On(event string, h EventHandler, scope ...any) HTMLCol {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -9704,6 +9724,7 @@ func (e *htmlColGroup) Title(v string) HTMLColGroup {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlColGroup) On(event string, h EventHandler, scope ...any) HTMLColGroup {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -10058,6 +10079,7 @@ func (e *htmlData) Value(v any) HTMLData {
 	e.setAttr("value", v)
 	return e
 }
+
 func (e *htmlData) On(event string, h EventHandler, scope ...any) HTMLData {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -10340,6 +10362,7 @@ func (e *htmlDataList) Title(v string) HTMLDataList {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlDataList) On(event string, h EventHandler, scope ...any) HTMLDataList {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -10782,6 +10805,7 @@ func (e *htmlDd) Title(v string) HTMLDd {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlDd) On(event string, h EventHandler, scope ...any) HTMLDd {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -11240,6 +11264,7 @@ func (e *htmlDel) Title(v string) HTMLDel {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlDel) On(event string, h EventHandler, scope ...any) HTMLDel {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -11693,6 +11718,7 @@ func (e *htmlDetails) Title(v string) HTMLDetails {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlDetails) On(event string, h EventHandler, scope ...any) HTMLDetails {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -12140,6 +12166,7 @@ func (e *htmlDfn) Title(v string) HTMLDfn {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlDfn) On(event string, h EventHandler, scope ...any) HTMLDfn {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -12590,6 +12617,7 @@ func (e *htmlDialog) Title(v string) HTMLDialog {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlDialog) On(event string, h EventHandler, scope ...any) HTMLDialog {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -13032,6 +13060,7 @@ func (e *htmlDiv) Title(v string) HTMLDiv {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlDiv) On(event string, h EventHandler, scope ...any) HTMLDiv {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -13474,6 +13503,7 @@ func (e *htmlDl) Title(v string) HTMLDl {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlDl) On(event string, h EventHandler, scope ...any) HTMLDl {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -13916,6 +13946,7 @@ func (e *htmlDt) Title(v string) HTMLDt {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlDt) On(event string, h EventHandler, scope ...any) HTMLDt {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -15245,6 +15276,7 @@ func (e *htmlEm) Title(v string) HTMLEm {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlEm) On(event string, h EventHandler, scope ...any) HTMLEm {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -15773,6 +15805,7 @@ func (e *htmlEmbed) Width(v int) HTMLEmbed {
 	e.setAttr("width", v)
 	return e
 }
+
 func (e *htmlEmbed) On(event string, h EventHandler, scope ...any) HTMLEmbed {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -16354,6 +16387,7 @@ func (e *htmlFieldSet) Title(v string) HTMLFieldSet {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlFieldSet) On(event string, h EventHandler, scope ...any) HTMLFieldSet {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -16796,6 +16830,7 @@ func (e *htmlFigCaption) Title(v string) HTMLFigCaption {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlFigCaption) On(event string, h EventHandler, scope ...any) HTMLFigCaption {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -17238,6 +17273,7 @@ func (e *htmlFigure) Title(v string) HTMLFigure {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlFigure) On(event string, h EventHandler, scope ...any) HTMLFigure {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -17680,6 +17716,7 @@ func (e *htmlFooter) Title(v string) HTMLFooter {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlFooter) On(event string, h EventHandler, scope ...any) HTMLFooter {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -18191,6 +18228,7 @@ func (e *htmlForm) Title(v string) HTMLForm {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlForm) On(event string, h EventHandler, scope ...any) HTMLForm {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -18633,6 +18671,7 @@ func (e *htmlH1) Title(v string) HTMLH1 {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlH1) On(event string, h EventHandler, scope ...any) HTMLH1 {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -19075,6 +19114,7 @@ func (e *htmlH2) Title(v string) HTMLH2 {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlH2) On(event string, h EventHandler, scope ...any) HTMLH2 {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -19517,6 +19557,7 @@ func (e *htmlH3) Title(v string) HTMLH3 {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlH3) On(event string, h EventHandler, scope ...any) HTMLH3 {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -19959,6 +20000,7 @@ func (e *htmlH4) Title(v string) HTMLH4 {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlH4) On(event string, h EventHandler, scope ...any) HTMLH4 {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -20401,6 +20443,7 @@ func (e *htmlH5) Title(v string) HTMLH5 {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlH5) On(event string, h EventHandler, scope ...any) HTMLH5 {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -20843,6 +20886,7 @@ func (e *htmlH6) Title(v string) HTMLH6 {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlH6) On(event string, h EventHandler, scope ...any) HTMLH6 {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -21189,6 +21233,7 @@ func (e *htmlHead) Title(v string) HTMLHead {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlHead) On(event string, h EventHandler, scope ...any) HTMLHead {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -21471,6 +21516,7 @@ func (e *htmlHeader) Title(v string) HTMLHeader {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlHeader) On(event string, h EventHandler, scope ...any) HTMLHeader {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -21898,6 +21944,7 @@ func (e *htmlHr) Title(v string) HTMLHr {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlHr) On(event string, h EventHandler, scope ...any) HTMLHr {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -22236,6 +22283,7 @@ func (e *htmlHtml) Title(v string) HTMLHtml {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlHtml) On(event string, h EventHandler, scope ...any) HTMLHtml {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -22518,6 +22566,7 @@ func (e *htmlI) Title(v string) HTMLI {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlI) On(event string, h EventHandler, scope ...any) HTMLI {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -23061,6 +23110,7 @@ func (e *htmlIFrame) Width(v int) HTMLIFrame {
 	e.setAttr("width", v)
 	return e
 }
+
 func (e *htmlIFrame) On(event string, h EventHandler, scope ...any) HTMLIFrame {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -23637,6 +23687,7 @@ func (e *htmlImg) Width(v int) HTMLImg {
 	e.setAttr("width", v)
 	return e
 }
+
 func (e *htmlImg) On(event string, h EventHandler, scope ...any) HTMLImg {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -24440,6 +24491,7 @@ func (e *htmlInput) Width(v int) HTMLInput {
 	e.setAttr("width", v)
 	return e
 }
+
 func (e *htmlInput) On(event string, h EventHandler, scope ...any) HTMLInput {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -24887,6 +24939,7 @@ func (e *htmlIns) Title(v string) HTMLIns {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlIns) On(event string, h EventHandler, scope ...any) HTMLIns {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -25329,6 +25382,7 @@ func (e *htmlKbd) Title(v string) HTMLKbd {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlKbd) On(event string, h EventHandler, scope ...any) HTMLKbd {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -25787,6 +25841,7 @@ func (e *htmlLabel) Title(v string) HTMLLabel {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlLabel) On(event string, h EventHandler, scope ...any) HTMLLabel {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -26229,6 +26284,7 @@ func (e *htmlLegend) Title(v string) HTMLLegend {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlLegend) On(event string, h EventHandler, scope ...any) HTMLLegend {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -26679,6 +26735,7 @@ func (e *htmlLi) Value(v any) HTMLLi {
 	e.setAttr("value", v)
 	return e
 }
+
 func (e *htmlLi) On(event string, h EventHandler, scope ...any) HTMLLi {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -27165,6 +27222,7 @@ func (e *htmlLink) Type(v string) HTMLLink {
 	e.setAttr("type", v)
 	return e
 }
+
 func (e *htmlLink) On(event string, h EventHandler, scope ...any) HTMLLink {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -27612,6 +27670,7 @@ func (e *htmlMain) Title(v string) HTMLMain {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlMain) On(event string, h EventHandler, scope ...any) HTMLMain {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -28062,6 +28121,7 @@ func (e *htmlMap) Title(v string) HTMLMap {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlMap) On(event string, h EventHandler, scope ...any) HTMLMap {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -28504,6 +28564,7 @@ func (e *htmlMark) Title(v string) HTMLMark {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlMark) On(event string, h EventHandler, scope ...any) HTMLMark {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -28875,6 +28936,7 @@ func (e *htmlMeta) Title(v string) HTMLMeta {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlMeta) On(event string, h EventHandler, scope ...any) HTMLMeta {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -29213,6 +29275,7 @@ func (e *htmlMeter) Value(v any) HTMLMeter {
 	e.setAttr("value", v)
 	return e
 }
+
 func (e *htmlMeter) On(event string, h EventHandler, scope ...any) HTMLMeter {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -29655,6 +29718,7 @@ func (e *htmlNav) Title(v string) HTMLNav {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlNav) On(event string, h EventHandler, scope ...any) HTMLNav {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -30001,6 +30065,7 @@ func (e *htmlNoScript) Title(v string) HTMLNoScript {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlNoScript) On(event string, h EventHandler, scope ...any) HTMLNoScript {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -30408,6 +30473,7 @@ func (e *htmlObject) Width(v int) HTMLObject {
 	e.setAttr("width", v)
 	return e
 }
+
 func (e *htmlObject) On(event string, h EventHandler, scope ...any) HTMLObject {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -30989,6 +31055,7 @@ func (e *htmlOl) Type(v string) HTMLOl {
 	e.setAttr("type", v)
 	return e
 }
+
 func (e *htmlOl) On(event string, h EventHandler, scope ...any) HTMLOl {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -31447,6 +31514,7 @@ func (e *htmlOptGroup) Title(v string) HTMLOptGroup {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlOptGroup) On(event string, h EventHandler, scope ...any) HTMLOptGroup {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -31921,6 +31989,7 @@ func (e *htmlOption) Value(v any) HTMLOption {
 	e.setAttr("value", v)
 	return e
 }
+
 func (e *htmlOption) On(event string, h EventHandler, scope ...any) HTMLOption {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -32387,6 +32456,7 @@ func (e *htmlOutput) Title(v string) HTMLOutput {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlOutput) On(event string, h EventHandler, scope ...any) HTMLOutput {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -32829,6 +32899,7 @@ func (e *htmlP) Title(v string) HTMLP {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlP) On(event string, h EventHandler, scope ...any) HTMLP {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -33272,6 +33343,7 @@ func (e *htmlParam) Value(v any) HTMLParam {
 	e.setAttr("value", v)
 	return e
 }
+
 func (e *htmlParam) On(event string, h EventHandler, scope ...any) HTMLParam {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -33714,6 +33786,7 @@ func (e *htmlPicture) Title(v string) HTMLPicture {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlPicture) On(event string, h EventHandler, scope ...any) HTMLPicture {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -34156,6 +34229,7 @@ func (e *htmlPre) Title(v string) HTMLPre {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlPre) On(event string, h EventHandler, scope ...any) HTMLPre {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -34614,6 +34688,7 @@ func (e *htmlProgress) Value(v any) HTMLProgress {
 	e.setAttr("value", v)
 	return e
 }
+
 func (e *htmlProgress) On(event string, h EventHandler, scope ...any) HTMLProgress {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -35064,6 +35139,7 @@ func (e *htmlQ) Title(v string) HTMLQ {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlQ) On(event string, h EventHandler, scope ...any) HTMLQ {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -35506,6 +35582,7 @@ func (e *htmlRp) Title(v string) HTMLRp {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlRp) On(event string, h EventHandler, scope ...any) HTMLRp {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -35948,6 +36025,7 @@ func (e *htmlRt) Title(v string) HTMLRt {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlRt) On(event string, h EventHandler, scope ...any) HTMLRt {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -36390,6 +36468,7 @@ func (e *htmlRuby) Title(v string) HTMLRuby {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlRuby) On(event string, h EventHandler, scope ...any) HTMLRuby {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -36832,6 +36911,7 @@ func (e *htmlS) Title(v string) HTMLS {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlS) On(event string, h EventHandler, scope ...any) HTMLS {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -37274,6 +37354,7 @@ func (e *htmlSamp) Title(v string) HTMLSamp {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlSamp) On(event string, h EventHandler, scope ...any) HTMLSamp {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -37671,6 +37752,7 @@ func (e *htmlScript) Type(v string) HTMLScript {
 	e.setAttr("type", v)
 	return e
 }
+
 func (e *htmlScript) On(event string, h EventHandler, scope ...any) HTMLScript {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -37958,6 +38040,7 @@ func (e *htmlSection) Title(v string) HTMLSection {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlSection) On(event string, h EventHandler, scope ...any) HTMLSection {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -38456,6 +38539,7 @@ func (e *htmlSelect) Title(v string) HTMLSelect {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlSelect) On(event string, h EventHandler, scope ...any) HTMLSelect {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -38898,6 +38982,7 @@ func (e *htmlSmall) Title(v string) HTMLSmall {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlSmall) On(event string, h EventHandler, scope ...any) HTMLSmall {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -39365,6 +39450,7 @@ func (e *htmlSource) Type(v string) HTMLSource {
 	e.setAttr("type", v)
 	return e
 }
+
 func (e *htmlSource) On(event string, h EventHandler, scope ...any) HTMLSource {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -39807,6 +39893,7 @@ func (e *htmlSpan) Title(v string) HTMLSpan {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlSpan) On(event string, h EventHandler, scope ...any) HTMLSpan {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -40249,6 +40336,7 @@ func (e *htmlStrong) Title(v string) HTMLStrong {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlStrong) On(event string, h EventHandler, scope ...any) HTMLStrong {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -40710,6 +40798,7 @@ func (e *htmlStyle) Type(v string) HTMLStyle {
 	e.setAttr("type", v)
 	return e
 }
+
 func (e *htmlStyle) On(event string, h EventHandler, scope ...any) HTMLStyle {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -41157,6 +41246,7 @@ func (e *htmlSub) Title(v string) HTMLSub {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlSub) On(event string, h EventHandler, scope ...any) HTMLSub {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -41599,6 +41689,7 @@ func (e *htmlSummary) Title(v string) HTMLSummary {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlSummary) On(event string, h EventHandler, scope ...any) HTMLSummary {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -42041,6 +42132,7 @@ func (e *htmlSup) Title(v string) HTMLSup {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlSup) On(event string, h EventHandler, scope ...any) HTMLSup {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -42483,6 +42575,7 @@ func (e *htmlTable) Title(v string) HTMLTable {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlTable) On(event string, h EventHandler, scope ...any) HTMLTable {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -42925,6 +43018,7 @@ func (e *htmlTBody) Title(v string) HTMLTBody {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlTBody) On(event string, h EventHandler, scope ...any) HTMLTBody {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -43391,6 +43485,7 @@ func (e *htmlTd) Title(v string) HTMLTd {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlTd) On(event string, h EventHandler, scope ...any) HTMLTd {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -43737,6 +43832,7 @@ func (e *htmlTemplate) Title(v string) HTMLTemplate {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlTemplate) On(event string, h EventHandler, scope ...any) HTMLTemplate {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -44116,6 +44212,7 @@ func (e *htmlTextarea) Wrap(v string) HTMLTextarea {
 	e.setAttr("wrap", v)
 	return e
 }
+
 func (e *htmlTextarea) On(event string, h EventHandler, scope ...any) HTMLTextarea {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -44558,6 +44655,7 @@ func (e *htmlTFoot) Title(v string) HTMLTFoot {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlTFoot) On(event string, h EventHandler, scope ...any) HTMLTFoot {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -45040,6 +45138,7 @@ func (e *htmlTh) Title(v string) HTMLTh {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlTh) On(event string, h EventHandler, scope ...any) HTMLTh {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -45482,6 +45581,7 @@ func (e *htmlTHead) Title(v string) HTMLTHead {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlTHead) On(event string, h EventHandler, scope ...any) HTMLTHead {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -45932,6 +46032,7 @@ func (e *htmlTime) Title(v string) HTMLTime {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlTime) On(event string, h EventHandler, scope ...any) HTMLTime {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -46278,6 +46379,7 @@ func (e *htmlTitle) Title(v string) HTMLTitle {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlTitle) On(event string, h EventHandler, scope ...any) HTMLTitle {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -46560,6 +46662,7 @@ func (e *htmlTr) Title(v string) HTMLTr {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlTr) On(event string, h EventHandler, scope ...any) HTMLTr {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -47002,6 +47105,7 @@ func (e *htmlU) Title(v string) HTMLU {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlU) On(event string, h EventHandler, scope ...any) HTMLU {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -47444,6 +47548,7 @@ func (e *htmlUl) Title(v string) HTMLUl {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlUl) On(event string, h EventHandler, scope ...any) HTMLUl {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -47886,6 +47991,7 @@ func (e *htmlVar) Title(v string) HTMLVar {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlVar) On(event string, h EventHandler, scope ...any) HTMLVar {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -48477,6 +48583,7 @@ func (e *htmlVideo) Width(v int) HTMLVideo {
 	e.setAttr("width", v)
 	return e
 }
+
 func (e *htmlVideo) On(event string, h EventHandler, scope ...any) HTMLVideo {
 	e.setEventHandler(event, h, scope...)
 	return e
@@ -49034,6 +49141,7 @@ func (e *htmlWbr) Title(v string) HTMLWbr {
 	e.setAttr("title", v)
 	return e
 }
+
 func (e *htmlWbr) On(event string, h EventHandler, scope ...any) HTMLWbr {
 	e.setEventHandler(event, h, scope...)
 	return e
