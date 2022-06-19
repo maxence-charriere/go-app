@@ -236,13 +236,13 @@ resources to run Go-based progressive web apps.
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Compo.IsMounted">func (c *Compo) IsMounted() bool</a></dd>
-				
-					
 					<dd>&nbsp; &nbsp; <a href="#Compo.JSValue">func (c *Compo) JSValue() Value</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Compo.Kind">func (c *Compo) Kind() Kind</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Compo.Mounted">func (c *Compo) Mounted() bool</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Compo.Render">func (c *Compo) Render() UI</a></dd>
@@ -1693,7 +1693,7 @@ returns the value, which will be empty if the variable is not present.
 		
 			
 			
-			<h2 id="HTMLString">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=3046:3075#L147">HTMLString</a>
+			<h2 id="HTMLString">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=3044:3073#L147">HTMLString</a>
 				<a class="permalink" href="#HTMLString">&#xb6;</a>
 				
 				
@@ -1709,7 +1709,7 @@ HTMLString return an HTML string representation of the given UI element.
 		
 			
 			
-			<h2 id="HTMLStringWithIndent">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=3240:3279#L155">HTMLStringWithIndent</a>
+			<h2 id="HTMLStringWithIndent">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=3238:3277#L155">HTMLStringWithIndent</a>
 				<a class="permalink" href="#HTMLStringWithIndent">&#xb6;</a>
 				
 				
@@ -1813,7 +1813,7 @@ to 5MB in a lot of web browsers.
 		
 			
 			
-			<h2 id="PrintHTML">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=3443:3477#L163">PrintHTML</a>
+			<h2 id="PrintHTML">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=3441:3475#L163">PrintHTML</a>
 				<a class="permalink" href="#PrintHTML">&#xb6;</a>
 				
 				
@@ -1830,7 +1830,7 @@ writer.
 		
 			
 			
-			<h2 id="PrintHTMLWithIndent">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=3642:3686#L172">PrintHTMLWithIndent</a>
+			<h2 id="PrintHTMLWithIndent">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=3638:3682#L172">PrintHTMLWithIndent</a>
 				<a class="permalink" href="#PrintHTMLWithIndent">&#xb6;</a>
 				
 				
@@ -2322,21 +2322,6 @@ Compo represents the base struct to use in order to build a component.
 
 			
 				
-				<h3 id="Compo.IsMounted">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4877:4909#L161">IsMounted</a>
-					<a class="permalink" href="#Compo.IsMounted">&#xb6;</a>
-					
-					
-				</h3>
-				<pre>func (c *<a href="#Compo">Compo</a>) IsMounted() <a href="/pkg/builtin/#bool">bool</a></pre>
-				<p>
-Mounted reports whether the component is mounted.
-</p>
-
-				
-				
-				
-			
-				
 				<h3 id="Compo.JSValue">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4762:4793#L156">JSValue</a>
 					<a class="permalink" href="#Compo.JSValue">&#xb6;</a>
 					
@@ -2367,7 +2352,22 @@ Kind returns the ui element kind.
 				
 			
 				
-				<h3 id="Compo.Render">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=5224:5251#L172">Render</a>
+				<h3 id="Compo.Mounted">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4877:4907#L161">Mounted</a>
+					<a class="permalink" href="#Compo.Mounted">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (c *<a href="#Compo">Compo</a>) Mounted() <a href="/pkg/builtin/#bool">bool</a></pre>
+				<p>
+Mounted reports whether the component is mounted.
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="Compo.Render">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=5220:5247#L172">Render</a>
 					<a class="permalink" href="#Compo.Render">&#xb6;</a>
 					
 					
@@ -2384,7 +2384,7 @@ embedded.
 				
 			
 				
-				<h3 id="Compo.ResizeContent">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=6010:6041#L198">ResizeContent</a>
+				<h3 id="Compo.ResizeContent">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=6006:6037#L198">ResizeContent</a>
 					<a class="permalink" href="#Compo.ResizeContent">&#xb6;</a>
 					
 					
@@ -2400,7 +2400,7 @@ implement the Resizer interface.
 				
 			
 				
-				<h3 id="Compo.Update">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=5842:5866#L192">Update</a>
+				<h3 id="Compo.Update">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=5838:5862#L192">Update</a>
 					<a class="permalink" href="#Compo.Update">&#xb6;</a>
 					
 					
@@ -2417,7 +2417,7 @@ performed on the UI goroutine.
 				
 			
 				
-				<h3 id="Compo.ValueTo">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=6352:6395#L211">ValueTo</a>
+				<h3 id="Compo.ValueTo">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=6348:6391#L211">ValueTo</a>
 					<a class="permalink" href="#Compo.ValueTo">&#xb6;</a>
 					
 					
@@ -25188,7 +25188,7 @@ initialization instruction before being pre-rendered or mounted.
 		
 			
 			
-			<h2 id="Kind">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=972:986#L39">Kind</a>
+			<h2 id="Kind">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=970:984#L39">Kind</a>
 				<a class="permalink" href="#Kind">&#xb6;</a>
 				
 				
@@ -25233,7 +25233,7 @@ Kind represents the specific kind of a user interface element.
 
 			
 				
-				<h3 id="Kind.String">func (Kind) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=988:1017#L41">String</a>
+				<h3 id="Kind.String">func (Kind) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=986:1015#L41">String</a>
 					<a class="permalink" href="#Kind.String">&#xb6;</a>
 					
 					
@@ -26492,7 +26492,7 @@ Constants that enumerates the JavaScript types.
 		
 			
 			
-			<h2 id="UI">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=233:904#L5">UI</a>
+			<h2 id="UI">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=233:902#L5">UI</a>
 				<a class="permalink" href="#UI">&#xb6;</a>
 				
 				
@@ -26510,7 +26510,7 @@ components and HTML elements.
     JSValue() <a href="#Value">Value</a>
 
     <span class="comment">// Reports whether the element is mounted.</span>
-    IsMounted() <a href="/pkg/builtin/#bool">bool</a>
+    Mounted() <a href="/pkg/builtin/#bool">bool</a>
     <span class="comment">// contains filtered or unexported methods</span>
 }</pre>
 
@@ -26531,7 +26531,7 @@ components and HTML elements.
 
 			
 				
-				<h3 id="FilterUIElems">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=2048:2082#L90">FilterUIElems</a>
+				<h3 id="FilterUIElems">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=2046:2080#L90">FilterUIElems</a>
 					<a class="permalink" href="#FilterUIElems">&#xb6;</a>
 					
 					

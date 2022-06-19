@@ -205,7 +205,7 @@ func (p *adPimp) addUnit(u adUnit) {
 }
 
 func (p *adPimp) pushUnit(u adUnit) {
-	if !u.IsMounted() {
+	if !u.Mounted() {
 		p.removeUnit(u)
 		return
 	}
