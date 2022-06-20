@@ -128,42 +128,39 @@ func (e *htmlElement) dismount() {
 	e.contextCancel()
 }
 
-func (e *htmlElement) canUpdateWith(n UI) bool {
-	return n.Kind() == e.Kind() && n.name() == e.name()
+func (e *htmlElement) canUpdateWith(v UI) bool {
+	return e.Mounted() &&
+		e.Kind() == v.Kind() &&
+		e.name() == v.name()
 }
 
-func (e *htmlElement) updateWith(n UI) error {
-	if !e.Mounted() {
-		return errors.New("cannot update a non mounted html element").
-			Tag("element", reflect.TypeOf(e.self()))
+func (e *htmlElement) updateWith(v UI) error {
+	if !e.canUpdateWith(v) {
+		return errors.New("cannot update html element with given element").
+			Tag("current", reflect.TypeOf(e.self())).
+			Tag("new", reflect.TypeOf(v))
 	}
 
-	if !e.canUpdateWith(n) {
-		return errors.New("cannot update html element").
-			Tag("current-element", reflect.TypeOf(e.self())).
-			Tag("new-element", reflect.TypeOf(n))
-	}
-
-	if e.attributes == nil && n.getAttributes() != nil {
-		e.attributes = n.getAttributes()
+	if e.attributes == nil && v.getAttributes() != nil {
+		e.attributes = v.getAttributes()
 		e.attributes.Mount(e.jsElement, e.dispatcher.resolveStaticResource)
 	} else if e.attributes != nil {
 		e.attributes.Update(
 			e.jsElement,
-			n.getAttributes(),
+			v.getAttributes(),
 			e.getDispatcher().resolveStaticResource,
 		)
 	}
 
-	if e.eventHandlers == nil && n.getEventHandlers() != nil {
-		e.eventHandlers = n.getEventHandlers()
+	if e.eventHandlers == nil && v.getEventHandlers() != nil {
+		e.eventHandlers = v.getEventHandlers()
 		e.eventHandlers.Mount(e)
 	} else if e.eventHandlers != nil {
-		e.eventHandlers.Update(e, n.getEventHandlers())
+		e.eventHandlers.Update(e, v.getEventHandlers())
 	}
 
 	childrenA := e.children
-	childrenB := n.getChildren()
+	childrenB := v.getChildren()
 	i := 0
 
 	for len(childrenA) != 0 && len(childrenB) != 0 {

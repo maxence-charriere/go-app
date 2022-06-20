@@ -321,17 +321,25 @@ func (c *Compo) dismount() {
 	}
 }
 
-func (c *Compo) canUpdateWith(n UI) bool {
-	return n.Kind() == c.Kind() && n.name() == c.name()
+func (c *Compo) canUpdateWith(v UI) bool {
+	return c.Mounted() &&
+		c.Kind() == v.Kind() &&
+		c.name() == v.name()
 }
 
-func (c *Compo) updateWith(n UI) error {
-	if c.self() == n || !c.Mounted() {
+func (c *Compo) updateWith(v UI) error {
+	if c.self() == v {
 		return nil
 	}
 
+	if !c.canUpdateWith(v) {
+		return errors.New("cannot update component with given element").
+			Tag("current", reflect.TypeOf(c.self())).
+			Tag("new", reflect.TypeOf(v))
+	}
+
 	aval := reflect.Indirect(reflect.ValueOf(c.self()))
-	bval := reflect.Indirect(reflect.ValueOf(n))
+	bval := reflect.Indirect(reflect.ValueOf(v))
 	compotype := reflect.ValueOf(c).Elem().Type()
 	haveModifiedFields := false
 
