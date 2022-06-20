@@ -10,20 +10,15 @@ type attributes map[string]string
 func (a attributes) Set(name string, value any) {
 	switch name {
 	case "style", "allow":
-		var b strings.Builder
-		b.WriteString(a[name])
-		b.WriteString(toAttributeValue(value))
-		b.WriteByte(';')
-		a[name] = b.String()
+		a[name] += toAttributeValue(value) + ";"
 
 	case "class":
-		var b strings.Builder
-		b.WriteString(a[name])
-		if b.Len() != 0 {
-			b.WriteByte(' ')
+		s := a[name]
+		if s != "" {
+			s += " "
 		}
-		b.WriteString(toAttributeValue(value))
-		a[name] = b.String()
+		s += toAttributeValue(value)
+		a[name] = s
 
 	default:
 		a[name] = toAttributeValue(value)

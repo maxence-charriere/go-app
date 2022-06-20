@@ -2272,6 +2272,8 @@ func writeStruct(w io.Writer, t tag) {
 		writeAttrFunction(w, a, t, false)
 	}
 
+	fmt.Fprintln(w)
+
 	fmt.Fprintf(w, `
 		func (e *html%s) On(event string, h EventHandler, scope ...any)  HTML%s {
 			e.setEventHandler(event, h, scope...)
