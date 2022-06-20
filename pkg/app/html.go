@@ -45,8 +45,8 @@ func (e *htmlElement) self() UI {
 	return e.this
 }
 
-func (e *htmlElement) setSelf(n UI) {
-	e.this = n
+func (e *htmlElement) setSelf(v UI) {
+	e.this = v
 }
 
 func (e *htmlElement) getContext() context.Context {
