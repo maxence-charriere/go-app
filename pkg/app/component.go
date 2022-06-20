@@ -238,9 +238,9 @@ func (c *Compo) self() UI {
 	return c.this
 }
 
-func (c *Compo) setSelf(n UI) {
-	if n != nil {
-		c.this = n.(Composer)
+func (c *Compo) setSelf(v UI) {
+	if v != nil {
+		c.this = v.(Composer)
 		return
 	}
 
@@ -391,9 +391,9 @@ func (c *Compo) updateRoot() error {
 	return c.replaceRoot(b)
 }
 
-func (c *Compo) replaceRoot(n UI) error {
+func (c *Compo) replaceRoot(v UI) error {
 	old := c.root
-	new := n
+	new := v
 
 	if err := mount(c.getDispatcher(), new); err != nil {
 		return errors.New("replacing component root failed").
@@ -425,7 +425,7 @@ func (c *Compo) replaceRoot(n UI) error {
 	new.setParent(c.self())
 
 	oldjs := old.JSValue()
-	newjs := n.JSValue()
+	newjs := v.JSValue()
 	parent.JSValue().replaceChild(newjs, oldjs)
 
 	dismount(old)
