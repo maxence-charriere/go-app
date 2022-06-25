@@ -69,12 +69,6 @@ func TestRawMountDismount(t *testing.T) {
 func TestRawUpdate(t *testing.T) {
 	testUpdate(t, []updateTest{
 		{
-			scenario:   "raw html element returns replace error when updated with a non text-element",
-			a:          Raw("<svg></svg>"),
-			b:          Div(),
-			replaceErr: true,
-		},
-		{
 			scenario: "raw html element is replace by another raw html element",
 			a: Div().Body(
 				Raw("<div></div>"),

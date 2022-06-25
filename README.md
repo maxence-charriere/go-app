@@ -29,7 +29,7 @@ An app created with go-app can out of the box **run in its own window**, **suppo
 
 **go-app** requirements:
 
-- [Go 1.17](https://golang.org/doc/go1.17) or newer
+- [Go 1.18](https://golang.org/doc/go1.17) or newer
 - [Go module](https://github.com/golang/go/wiki/Modules)
 
 ```sh

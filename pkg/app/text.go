@@ -10,7 +10,7 @@ import (
 )
 
 // Text creates a simple text element.
-func Text(v interface{}) UI {
+func Text(v any) UI {
 	return &text{value: toString(v)}
 }
 
@@ -30,7 +30,7 @@ func (t *text) JSValue() Value {
 }
 
 func (t *text) Mounted() bool {
-	return t.jsvalue != nil && t.dispatcher() != nil
+	return t.jsvalue != nil && t.getDispatcher() != nil
 }
 
 func (t *text) name() string {
@@ -44,23 +44,23 @@ func (t *text) self() UI {
 func (t *text) setSelf(n UI) {
 }
 
-func (t *text) context() context.Context {
+func (t *text) getContext() context.Context {
 	return context.TODO()
 }
 
-func (t *text) dispatcher() Dispatcher {
+func (t *text) getDispatcher() Dispatcher {
 	return t.disp
 }
 
-func (t *text) attributes() map[string]string {
+func (t *text) getAttributes() attributes {
 	return nil
 }
 
-func (t *text) eventHandlers() map[string]eventHandler {
+func (t *text) getEventHandlers() eventHandlers {
 	return nil
 }
 
-func (t *text) parent() UI {
+func (t *text) getParent() UI {
 	return t.parentElem
 }
 
@@ -68,7 +68,7 @@ func (t *text) setParent(p UI) {
 	t.parentElem = p
 }
 
-func (t *text) children() []UI {
+func (t *text) getChildren() []UI {
 	return nil
 }
 
@@ -90,22 +90,17 @@ func (t *text) dismount() {
 	t.jsvalue = nil
 }
 
-func (t *text) update(n UI) error {
+func (t *text) canUpdateWith(n UI) bool {
+	_, ok := n.(*text)
+	return ok
+}
+
+func (t *text) updateWith(n UI) error {
 	if !t.Mounted() {
 		return nil
 	}
 
-	o, isText := n.(*text)
-	if !isText {
-		return errors.New("updating ui element failed").
-			Tag("replace", true).
-			Tag("reason", "different element types").
-			Tag("current-kind", t.Kind()).
-			Tag("current-name", t.name()).
-			Tag("updated-kind", n.Kind()).
-			Tag("updated-name", n.name())
-	}
-
+	o, _ := n.(*text)
 	if t.value != o.value {
 		t.value = o.value
 		t.JSValue().setNodeValue(o.value)

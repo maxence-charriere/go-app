@@ -220,13 +220,37 @@ func (p browserPage) Size() (width int, height int) {
 }
 
 func (p browserPage) metaByName(v string) Value {
-	return Window().
+	meta := Window().
 		Get("document").
 		Call("querySelector", "meta[name='"+v+"']")
+
+	if meta.IsNull() {
+		meta, _ = Window().createElement("meta", "")
+		meta.setAttr("name", v)
+
+		Window().Get("document").
+			Call("getElementsByTagName", "head").
+			Index(0).
+			appendChild(meta)
+	}
+
+	return meta
 }
 
 func (p browserPage) metaByProperty(v string) Value {
-	return Window().
+	meta := Window().
 		Get("document").
 		Call("querySelector", "meta[property='"+v+"']")
+
+	if meta.IsNull() {
+		meta, _ = Window().createElement("meta", "")
+		meta.setAttr("property", v)
+
+		Window().Get("document").
+			Call("getElementsByTagName", "head").
+			Index(0).
+			appendChild(meta)
+	}
+
+	return meta
 }

@@ -297,7 +297,7 @@ func TestStoreBroadcast(t *testing.T) {
 		s2.Observe(key, bar).Value(&v)
 		s1.Set(key, 42, Broadcast)
 
-		time.Sleep(time.Millisecond * 50)
+		time.Sleep(time.Millisecond * 100)
 		d2.Consume()
 		require.Equal(t, 42, v)
 	})
@@ -493,9 +493,9 @@ func TestStoreValue(t *testing.T) {
 
 	utests := []struct {
 		scenario string
-		src      interface{}
-		recv     interface{}
-		expected interface{}
+		src      any
+		recv     any
+		expected any
 		err      bool
 	}{
 		{

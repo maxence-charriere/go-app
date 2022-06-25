@@ -16,7 +16,7 @@ func (t Tags) Tags() Tags {
 
 // Set sets a tag with the given name and value. The value is converted to a
 // string.
-func (t Tags) Set(name string, v interface{}) {
+func (t Tags) Set(name string, v any) {
 	t[name] = toString(v)
 }
 
@@ -37,7 +37,7 @@ func (t Tag) Tags() Tags {
 
 // T creates a tag with the given name and value. The value is converted to a
 // string.
-func T(name string, value interface{}) Tag {
+func T(name string, value any) Tag {
 	return Tag{
 		Name:  name,
 		Value: toString(value),

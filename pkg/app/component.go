@@ -45,7 +45,7 @@ type Composer interface {
 	// or a float.
 	//
 	// It panics if the given value is not a pointer.
-	ValueTo(interface{}) EventHandler
+	ValueTo(any) EventHandler
 
 	updateRoot() error
 	dispatch(func(Context))
@@ -169,7 +169,7 @@ func (c *Compo) JSValue() Value {
 
 // Mounted reports whether the component is mounted.
 func (c *Compo) Mounted() bool {
-	return c.dispatcher() != nil &&
+	return c.getDispatcher() != nil &&
 		c.ctx != nil &&
 		c.ctx.Err() == nil &&
 		c.root != nil && c.root.Mounted() &&
@@ -218,7 +218,7 @@ func (c *Compo) ResizeContent() {
 // float.
 //
 // It panics if the given value is not a pointer.
-func (c *Compo) ValueTo(v interface{}) EventHandler {
+func (c *Compo) ValueTo(v any) EventHandler {
 	return func(ctx Context, e Event) {
 		value := ctx.JSSrc().Get("value")
 		if err := stringTo(value.String(), v); err != nil {
@@ -238,32 +238,32 @@ func (c *Compo) self() UI {
 	return c.this
 }
 
-func (c *Compo) setSelf(n UI) {
-	if n != nil {
-		c.this = n.(Composer)
+func (c *Compo) setSelf(v UI) {
+	if v != nil {
+		c.this = v.(Composer)
 		return
 	}
 
 	c.this = nil
 }
 
-func (c *Compo) context() context.Context {
+func (c *Compo) getContext() context.Context {
 	return c.ctx
 }
 
-func (c *Compo) dispatcher() Dispatcher {
+func (c *Compo) getDispatcher() Dispatcher {
 	return c.disp
 }
 
-func (c *Compo) attributes() map[string]string {
+func (c *Compo) getAttributes() attributes {
 	return nil
 }
 
-func (c *Compo) eventHandlers() map[string]eventHandler {
+func (c *Compo) getEventHandlers() eventHandlers {
 	return nil
 }
 
-func (c *Compo) parent() UI {
+func (c *Compo) getParent() UI {
 	return c.parentElem
 }
 
@@ -271,7 +271,7 @@ func (c *Compo) setParent(p UI) {
 	c.parentElem = p
 }
 
-func (c *Compo) children() []UI {
+func (c *Compo) getChildren() []UI {
 	return []UI{c.root}
 }
 
@@ -300,7 +300,7 @@ func (c *Compo) mount(d Dispatcher) error {
 	root.setParent(c.this)
 	c.root = root
 
-	if c.dispatcher().runsInServer() {
+	if c.getDispatcher().runsInServer() {
 		return nil
 	}
 
@@ -321,23 +321,25 @@ func (c *Compo) dismount() {
 	}
 }
 
-func (c *Compo) update(n UI) error {
-	if c.self() == n || !c.Mounted() {
+func (c *Compo) canUpdateWith(v UI) bool {
+	return c.Mounted() &&
+		c.Kind() == v.Kind() &&
+		c.name() == v.name()
+}
+
+func (c *Compo) updateWith(v UI) error {
+	if c.self() == v {
 		return nil
 	}
 
-	if n.Kind() != c.Kind() || n.name() != c.name() {
-		return errors.New("updating ui element failed").
-			Tag("replace", true).
-			Tag("reason", "different element types").
-			Tag("current-kind", c.Kind()).
-			Tag("current-name", c.name()).
-			Tag("updated-kind", n.Kind()).
-			Tag("updated-name", n.name())
+	if !c.canUpdateWith(v) {
+		return errors.New("cannot update component with given element").
+			Tag("current", reflect.TypeOf(c.self())).
+			Tag("new", reflect.TypeOf(v))
 	}
 
 	aval := reflect.Indirect(reflect.ValueOf(c.self()))
-	bval := reflect.Indirect(reflect.ValueOf(n))
+	bval := reflect.Indirect(reflect.ValueOf(v))
 	compotype := reflect.ValueOf(c).Elem().Type()
 	haveModifiedFields := false
 
@@ -372,7 +374,7 @@ func (c *Compo) update(n UI) error {
 }
 
 func (c *Compo) dispatch(fn func(Context)) {
-	c.dispatcher().Dispatch(Dispatch{
+	c.getDispatcher().Dispatch(Dispatch{
 		Mode:     Update,
 		Source:   c.self(),
 		Function: fn,
@@ -383,25 +385,17 @@ func (c *Compo) updateRoot() error {
 	a := c.root
 	b := c.render()
 
-	err := update(a, b)
-	if isErrReplace(err) {
-		err = c.replaceRoot(b)
+	if canUpdate(a, b) {
+		return update(a, b)
 	}
-	if err != nil {
-		return errors.New("updating component failed").
-			Tag("kind", c.Kind()).
-			Tag("name", c.name()).
-			Wrap(err)
-	}
-
-	return nil
+	return c.replaceRoot(b)
 }
 
-func (c *Compo) replaceRoot(n UI) error {
+func (c *Compo) replaceRoot(v UI) error {
 	old := c.root
-	new := n
+	new := v
 
-	if err := mount(c.dispatcher(), new); err != nil {
+	if err := mount(c.getDispatcher(), new); err != nil {
 		return errors.New("replacing component root failed").
 			Tag("kind", c.Kind()).
 			Tag("name", c.name()).
@@ -414,7 +408,7 @@ func (c *Compo) replaceRoot(n UI) error {
 
 	var parent UI
 	for {
-		parent = c.parent()
+		parent = c.getParent()
 		if parent == nil || parent.Kind() == HTML {
 			break
 		}
@@ -431,7 +425,7 @@ func (c *Compo) replaceRoot(n UI) error {
 	new.setParent(c.self())
 
 	oldjs := old.JSValue()
-	newjs := n.JSValue()
+	newjs := v.JSValue()
 	parent.JSValue().replaceChild(newjs, oldjs)
 
 	dismount(old)

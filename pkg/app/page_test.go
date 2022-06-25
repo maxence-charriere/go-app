@@ -11,12 +11,18 @@ func TestRequestPage(t *testing.T) {
 	testPage(t, &requestPage{
 		width:  42,
 		height: 21,
+		url:    &url.URL{Path: "/"},
 	})
 }
 
 func TestBrowserPage(t *testing.T) {
 	testSkipNonWasm(t)
-	testPage(t, browserPage{})
+
+	client := NewClientTester(Div())
+	defer client.Close()
+	testPage(t, browserPage{
+		dispatcher: client,
+	})
 }
 
 func testPage(t *testing.T, p Page) {
@@ -40,7 +46,8 @@ func testPage(t *testing.T, p Page) {
 	p.SetImage("image")
 	require.Equal(t, "image", p.Image())
 
-	u, _ := url.Parse("https://murlok.io")
+	u := p.URL()
+	u.Path = "/test"
 	p.ReplaceURL(u)
 	require.Equal(t, u.String(), p.URL().String())
 

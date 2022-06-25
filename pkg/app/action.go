@@ -12,7 +12,7 @@ type Action struct {
 	Name string
 
 	// The value passed along with the action. Can be nil.
-	Value interface{}
+	Value any
 
 	// Tags that provide some context to the action.
 	Tags Tags

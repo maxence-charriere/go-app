@@ -30,13 +30,13 @@ type RangeLoop interface {
 
 // Range returns a range loop that iterates within the given source. Source must
 // be a slice, an array or a map with strings as keys.
-func Range(src interface{}) RangeLoop {
+func Range(src any) RangeLoop {
 	return rangeLoop{source: src}
 }
 
 type rangeLoop struct {
 	body   []UI
-	source interface{}
+	source any
 }
 
 func (r rangeLoop) Slice(f func(int) UI) RangeLoop {
@@ -110,30 +110,30 @@ func (r rangeLoop) self() UI {
 func (r rangeLoop) setSelf(UI) {
 }
 
-func (r rangeLoop) context() context.Context {
+func (r rangeLoop) getContext() context.Context {
 	return nil
 }
 
-func (r rangeLoop) dispatcher() Dispatcher {
+func (r rangeLoop) getDispatcher() Dispatcher {
 	return nil
 }
 
-func (r rangeLoop) attributes() map[string]string {
+func (r rangeLoop) getAttributes() attributes {
 	return nil
 }
 
-func (r rangeLoop) eventHandlers() map[string]eventHandler {
+func (r rangeLoop) getEventHandlers() eventHandlers {
 	return nil
 }
 
-func (r rangeLoop) parent() UI {
+func (r rangeLoop) getParent() UI {
 	return nil
 }
 
 func (r rangeLoop) setParent(UI) {
 }
 
-func (r rangeLoop) children() []UI {
+func (r rangeLoop) getChildren() []UI {
 	return r.body
 }
 
@@ -146,7 +146,11 @@ func (r rangeLoop) mount(Dispatcher) error {
 func (r rangeLoop) dismount() {
 }
 
-func (r rangeLoop) update(UI) error {
+func (r rangeLoop) canUpdateWith(UI) bool {
+	return false
+}
+
+func (r rangeLoop) updateWith(UI) error {
 	return errors.New("range loop cannot be updated").
 		Tag("name", r.name()).
 		Tag("kind", r.Kind())

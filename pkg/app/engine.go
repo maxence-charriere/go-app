@@ -76,7 +76,7 @@ func (e *engine) Emit(src UI, fn func()) {
 	}
 
 	compoCount := 0
-	for n := src; n != nil; n = n.parent() {
+	for n := src; n != nil; n = n.getParent() {
 		compo, ok := n.(Composer)
 		if !ok {
 			continue
@@ -96,11 +96,11 @@ func (e *engine) Handle(actionName string, src UI, h ActionHandler) {
 	e.actions.handle(actionName, false, src, h)
 }
 
-func (e *engine) SetState(state string, v interface{}, opts ...StateOption) {
+func (e *engine) SetState(state string, v any, opts ...StateOption) {
 	e.states.Set(state, v, opts...)
 }
 
-func (e *engine) GetState(state string, recv interface{}) {
+func (e *engine) GetState(state string, recv any) {
 	e.states.Get(state, recv)
 }
 
@@ -192,7 +192,7 @@ func (e *engine) Mount(n UI) {
 		Source: e.Body,
 		Function: func(ctx Context) {
 			if !e.isMountedOnce {
-				if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {
+				if err := e.Body.(*htmlBody).replaceChildAt(0, n); err != nil {
 					panic(errors.New("mounting ui element failed").
 						Tag("dispatches-count", len(e.dispatches)).
 						Tag("dispatches-capacity", cap(e.dispatches)).
@@ -205,20 +205,20 @@ func (e *engine) Mount(n UI) {
 				return
 			}
 
-			err := update(e.Body.children()[0], n)
-			if err == nil {
+			firstChild := e.Body.getChildren()[0]
+			if canUpdate(firstChild, n) {
+				if err := update(firstChild, n); err != nil {
+					panic(errors.New("mounting ui element failed").
+						Tag("dispatches-count", len(e.dispatches)).
+						Tag("dispatches-capacity", cap(e.dispatches)).
+						Tag("updates-count", len(e.updates)).
+						Tag("updates-queue-len", len(e.updateQueue)).
+						Wrap(err))
+				}
 				return
 			}
-			if !isErrReplace(err) {
-				panic(errors.New("mounting ui element failed").
-					Tag("dispatches-count", len(e.dispatches)).
-					Tag("dispatches-capacity", cap(e.dispatches)).
-					Tag("updates-count", len(e.updates)).
-					Tag("updates-queue-len", len(e.updateQueue)).
-					Wrap(err))
-			}
 
-			if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {
+			if err := e.Body.(*htmlBody).replaceChildAt(0, n); err != nil {
 				panic(errors.New("mounting ui element failed").
 					Tag("dispatches-count", len(e.dispatches)).
 					Tag("dispatches-capacity", cap(e.dispatches)).
@@ -470,7 +470,7 @@ func sortUpdateDescriptors(d []updateDescriptor) {
 }
 
 func nearestCompo(n UI) Composer {
-	for node := n; node != nil; node = node.parent() {
+	for node := n; node != nil; node = node.getParent() {
 		if c, isCompo := node.(Composer); isCompo {
 			return c
 		}
@@ -480,7 +480,7 @@ func nearestCompo(n UI) Composer {
 
 func compoPriority(c Composer) int {
 	depth := 1
-	for parent := c.parent(); parent != nil; parent = parent.parent() {
+	for parent := c.getParent(); parent != nil; parent = parent.getParent() {
 		depth++
 	}
 	return depth

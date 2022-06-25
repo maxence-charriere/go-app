@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 	"github.com/stretchr/testify/require"
 )
 
@@ -44,6 +43,7 @@ func TestKindString(t *testing.T) {
 
 func TestFilterUIElems(t *testing.T) {
 	var nilText *text
+	var foo *foo
 
 	simpleText := Text("hello")
 
@@ -51,43 +51,26 @@ func TestFilterUIElems(t *testing.T) {
 		simpleText,
 	}
 
-	res := FilterUIElems(nil, nilText, simpleText)
+	res := FilterUIElems(nil, nilText, simpleText, foo)
 	require.Equal(t, expectedResult, res)
 }
 
-func TestIsErrReplace(t *testing.T) {
-	utests := []struct {
-		scenario     string
-		err          error
-		isErrReplace bool
-	}{
-		{
-			scenario:     "error is a replace error",
-			err:          errors.New("test").Tag("replace", true),
-			isErrReplace: true,
-		},
-		{
-			scenario:     "error is not a replace error",
-			err:          errors.New("test").Tag("test", true),
-			isErrReplace: false,
-		},
-		{
-			scenario:     "standard error is not a replace error",
-			err:          fmt.Errorf("test"),
-			isErrReplace: false,
-		},
-		{
-			scenario:     "nil error is not a replace error",
-			err:          nil,
-			isErrReplace: false,
-		},
-	}
-
-	for _, u := range utests {
-		t.Run(u.scenario, func(t *testing.T) {
-			res := isErrReplace(u.err)
-			require.Equal(t, u.isErrReplace, res)
-		})
+func BenchmarkFilterUIElems(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		FilterUIElems(Div().
+			Class("shell").
+			Body(
+				H1().Class("title").
+					Text("Hello"),
+				Input().
+					Type("text").
+					Class("in").
+					Value("World").
+					Placeholder("Type a name.").
+					OnChange(func(ctx Context, e Event) {
+						fmt.Println("Yo!")
+					}),
+			))
 	}
 }
 
@@ -114,43 +97,41 @@ func testMountDismount(t *testing.T, utests []mountTest) {
 
 func testMounted(t *testing.T, n UI) {
 	require.NotNil(t, n.JSValue())
-	require.NotNil(t, n.dispatcher())
+	require.NotNil(t, n.getDispatcher())
 	require.True(t, n.Mounted())
 
 	switch n.Kind() {
 	case HTML, Component:
-		require.NoError(t, n.context().Err())
+		require.NoError(t, n.getContext().Err())
 		require.NotNil(t, n.self())
 	}
 
-	for _, c := range n.children() {
-		require.Equal(t, n, c.parent())
+	for _, c := range n.getChildren() {
+		require.Equal(t, n, c.getParent())
 		testMounted(t, c)
 	}
 }
 
 func testDismounted(t *testing.T, n UI) {
-	require.Nil(t, n.JSValue())
-	require.NotNil(t, n.dispatcher())
+	require.NotNil(t, n.getDispatcher())
 	require.False(t, n.Mounted())
 
 	switch n.Kind() {
 	case HTML, Component:
-		require.Error(t, n.context().Err())
+		require.Error(t, n.getContext().Err())
 		require.Nil(t, n.self())
 	}
 
-	for _, c := range n.children() {
+	for _, c := range n.getChildren() {
 		testDismounted(t, c)
 	}
 }
 
 type updateTest struct {
-	scenario   string
-	a          UI
-	b          UI
-	matches    []TestUIDescriptor
-	replaceErr bool
+	scenario string
+	a        UI
+	b        UI
+	matches  []TestUIDescriptor
 }
 
 func testUpdate(t *testing.T, utests []updateTest) {
@@ -161,15 +142,10 @@ func testUpdate(t *testing.T, utests []updateTest) {
 			d.Consume()
 
 			err := update(u.a, u.b)
-			if u.replaceErr {
-				require.Error(t, err)
-				require.True(t, isErrReplace(err))
-				return
-			}
+			require.NoError(t, err)
 
 			d.Consume()
 
-			require.NoError(t, err)
 			for _, d := range u.matches {
 				require.NoError(t, TestMatch(u.a, d))
 			}
