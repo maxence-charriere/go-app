@@ -351,7 +351,7 @@ func performNavigate(d Dispatcher, u *url.URL, updateHistory bool) {
 	}
 	compo, ok := routes.createComponent(path)
 	if !ok {
-		compo = &notFound{}
+		compo = NotFound
 	}
 
 	disp, ok := d.(ClientDispatcher)
