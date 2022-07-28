@@ -679,9 +679,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 			Head().Body(
 				Meta().Charset("UTF-8"),
 				Meta().
-					HTTPEquiv("Content-Type").
-					Content("text/html; charset=utf-8"),
-				Meta().
 					Name("author").
 					Content(page.Author()),
 				Meta().
