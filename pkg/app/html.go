@@ -16907,7 +16907,7 @@ func (e *htmlForm) Text(v interface{}) HTMLForm {
 }
 
 func (e *htmlForm) AcceptCharset(v string) HTMLForm {
-	e.setAttr("acceptcharset", v)
+	e.setAttr("accept-charset", v)
 	return e
 }
 
@@ -27493,7 +27493,7 @@ func (e *htmlMeta) Draggable(v bool) HTMLMeta {
 }
 
 func (e *htmlMeta) HTTPEquiv(v string) HTMLMeta {
-	e.setAttr("httpequiv", v)
+	e.setAttr("http-equiv", v)
 	return e
 }
 
