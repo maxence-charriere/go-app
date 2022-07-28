@@ -32,7 +32,11 @@ func toString(v any) string {
 		return ""
 
 	default:
-		return fmt.Sprint(v)
+		val := reflect.ValueOf(v)
+		if val.Kind() != reflect.Ptr {
+			return fmt.Sprint(v)
+		}
+		return val.String()
 	}
 }
 
