@@ -2297,6 +2297,13 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		fmt.Fprintf(w, "func (e *html%s)", t.Name)
 	}
 
+	var attrName string
+	if a.NameOverride != "" {
+		attrName = strings.ToLower(a.NameOverride)
+	} else {
+		attrName = strings.ToLower(a.Name)
+	}
+
 	switch a.Type {
 	case "data|value":
 		fmt.Fprintf(w, `%s(k string, v any) HTML%s`, a.Name, t.Name)
@@ -2356,7 +2363,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 	
 				e.setAttr("%s", s)
 				return e
-			}`, strings.ToLower(a.Name))
+			}`, attrName)
 		}
 
 	case "bool|force":
@@ -2370,7 +2377,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 	
 				e.setAttr("%s", s)
 				return e
-			}`, strings.ToLower(a.Name))
+			}`, attrName)
 		}
 
 	case "url":
@@ -2379,7 +2386,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 			fmt.Fprintf(w, `{
 				e.setAttr("%s", v)
 				return e
-			}`, strings.ToLower(a.Name))
+			}`, attrName)
 		}
 
 	case "string|class":
@@ -2388,7 +2395,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 			fmt.Fprintf(w, `{
 				e.setAttr("%s", strings.Join(v, " "))
 				return e
-			}`, strings.ToLower(a.Name))
+			}`, attrName)
 		}
 
 	case "xmlns":
@@ -2406,7 +2413,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 			fmt.Fprintf(w, `{
 				e.setAttr("%s", v)
 				return e
-			}`, strings.ToLower(a.Name))
+			}`, attrName)
 		}
 	}
 }
