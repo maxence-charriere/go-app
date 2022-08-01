@@ -171,6 +171,9 @@ func (r rangeLoop) onResize() {
 func (r rangeLoop) preRender(Page) {
 }
 
+func (r rangeLoop) onLifecyleEvent(any) {
+}
+
 func (r rangeLoop) html(w io.Writer) {
 	panic("should not be called")
 }

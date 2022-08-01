@@ -39,6 +39,7 @@ type UI interface {
 	onAppInstallChange()
 	onResize()
 	preRender(Page)
+	onLifecyleEvent(any)
 	html(w io.Writer)
 	htmlWithIndent(w io.Writer, indent int)
 }

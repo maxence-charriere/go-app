@@ -141,6 +141,9 @@ func (c condition) onResize() {
 func (c condition) preRender(Page) {
 }
 
+func (c condition) onLifecyleEvent(any) {
+}
+
 func (c condition) html(w io.Writer) {
 	panic("shoulnd not be called")
 }

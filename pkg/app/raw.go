@@ -151,6 +151,9 @@ func (r *raw) onResize() {
 func (r *raw) preRender(Page) {
 }
 
+func (r *raw) onLifecyleEvent(any) {
+}
+
 func (r *raw) html(w io.Writer) {
 	w.Write([]byte(r.value))
 }

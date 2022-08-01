@@ -505,6 +505,9 @@ func (c *Compo) preRender(p Page) {
 	}
 }
 
+func (c *Compo) onLifecyleEvent(le any) {
+}
+
 func (c *Compo) html(w io.Writer) {
 	if c.root == nil {
 		c.root = c.render()

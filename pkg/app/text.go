@@ -124,6 +124,9 @@ func (t *text) onResize() {
 func (t *text) preRender(Page) {
 }
 
+func (t *text) onLifecyleEvent(any) {
+}
+
 func (t *text) html(w io.Writer) {
 	w.Write([]byte(html.EscapeString(t.value)))
 }

@@ -325,6 +325,12 @@ func (e *htmlElement) preRender(p Page) {
 	}
 }
 
+func (e *htmlElement) onLifecyleEvent(le any) {
+	for _, c := range e.getChildren() {
+		c.onLifecyleEvent(le)
+	}
+}
+
 func (e *htmlElement) html(w io.Writer) {
 	io.WriteString(w, "<")
 	io.WriteString(w, e.tag)
