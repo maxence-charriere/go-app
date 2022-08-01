@@ -112,9 +112,6 @@ func (t *text) updateWith(n UI) error {
 func (t *text) onNav(*url.URL) {
 }
 
-func (t *text) onAppInstallChange() {
-}
-
 func (t *text) onResize() {
 }
 

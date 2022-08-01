@@ -136,6 +136,8 @@ type AppInstaller interface {
 	OnAppInstallChange(Context)
 }
 
+type appInstallChange struct{}
+
 // Resizer is the interface that describes a component that is notified when the
 // app has been resized or a parent component calls the ResizeContent() method.
 type Resizer interface {
@@ -460,14 +462,6 @@ func (c *Compo) onNav(u *url.URL) {
 	}
 }
 
-func (c *Compo) onAppInstallChange() {
-	c.root.onAppInstallChange()
-
-	if installer, ok := c.self().(AppInstaller); ok {
-		c.dispatch(installer.OnAppInstallChange)
-	}
-}
-
 func (c *Compo) onResize() {
 	defer c.root.onResize()
 
@@ -503,6 +497,9 @@ func (c *Compo) onLifecycleEvent(le any) {
 	switch le := le.(type) {
 	case appUpdate:
 		c.onAppUpdate(le)
+
+	case appInstallChange:
+		c.onAppInstallChange(le)
 	}
 
 	c.root.onLifecycleEvent(le)
@@ -511,6 +508,12 @@ func (c *Compo) onLifecycleEvent(le any) {
 func (c *Compo) onAppUpdate(au appUpdate) {
 	if updater, ok := c.self().(AppUpdater); ok {
 		c.dispatch(updater.OnAppUpdate)
+	}
+}
+
+func (c *Compo) onAppInstallChange(ai appInstallChange) {
+	if installer, ok := c.self().(AppInstaller); ok {
+		c.dispatch(installer.OnAppInstallChange)
 	}
 }
 

@@ -35,7 +35,6 @@ type UI interface {
 	canUpdateWith(UI) bool
 	updateWith(UI) error
 	onNav(*url.URL)
-	onAppInstallChange()
 	onResize()
 	preRender(Page)
 	onLifecycleEvent(any)

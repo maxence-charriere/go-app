@@ -259,7 +259,7 @@ func (e *engine) AppInstallChange() {
 		Mode:   Update,
 		Source: e.Body,
 		Function: func(ctx Context) {
-			ctx.Src().onAppInstallChange()
+			ctx.Src().onLifecycleEvent(appInstallChange{})
 		},
 	})
 }

@@ -129,9 +129,6 @@ func (c condition) updateWith(UI) error {
 func (c condition) onNav(*url.URL) {
 }
 
-func (c condition) onAppInstallChange() {
-}
-
 func (c condition) onResize() {
 }
 

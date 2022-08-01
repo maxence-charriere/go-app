@@ -301,12 +301,6 @@ func (e *htmlElement) onNav(u *url.URL) {
 	}
 }
 
-func (e *htmlElement) onAppInstallChange() {
-	for _, c := range e.getChildren() {
-		c.onAppInstallChange()
-	}
-}
-
 func (e *htmlElement) onResize() {
 	for _, c := range e.getChildren() {
 		c.onResize()

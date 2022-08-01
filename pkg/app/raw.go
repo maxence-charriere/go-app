@@ -139,9 +139,6 @@ func (r *raw) updateWith(n UI) error {
 func (r *raw) onNav(*url.URL) {
 }
 
-func (r *raw) onAppInstallChange() {
-}
-
 func (r *raw) onResize() {
 }
 
