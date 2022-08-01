@@ -301,12 +301,6 @@ func (e *htmlElement) onNav(u *url.URL) {
 	}
 }
 
-func (e *htmlElement) onResize() {
-	for _, c := range e.getChildren() {
-		c.onResize()
-	}
-}
-
 func (e *htmlElement) preRender(p Page) {
 	for _, c := range e.getChildren() {
 		c.preRender(p)

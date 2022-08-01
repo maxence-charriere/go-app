@@ -269,7 +269,7 @@ func (e *engine) AppResize() {
 		Mode:   Update,
 		Source: e.Body,
 		Function: func(ctx Context) {
-			ctx.Src().onResize()
+			ctx.Src().onLifecycleEvent(resize{})
 		},
 	})
 }

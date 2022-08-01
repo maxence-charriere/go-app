@@ -147,9 +147,7 @@ type Resizer interface {
 	OnResize(Context)
 }
 
-type deprecatedResizer interface {
-	OnAppResize(Context)
-}
+type resize struct{}
 
 // Compo represents the base struct to use in order to build a component.
 type Compo struct {
@@ -211,7 +209,7 @@ func (c *Compo) Update() {
 // implement the Resizer interface.
 func (c *Compo) ResizeContent() {
 	c.dispatch(func(Context) {
-		c.root.onResize()
+		c.root.onLifecycleEvent(resize{})
 	})
 }
 
@@ -462,25 +460,6 @@ func (c *Compo) onNav(u *url.URL) {
 	}
 }
 
-func (c *Compo) onResize() {
-	defer c.root.onResize()
-
-	if resizer, ok := c.self().(Resizer); ok {
-		c.dispatch(resizer.OnResize)
-		return
-	}
-
-	if resizer, ok := c.self().(deprecatedResizer); ok {
-		Log(errors.New("a deprecated component interface is in use").
-			Tag("component", reflect.TypeOf(c.self())).
-			Tag("interface", "app.Resizer").
-			Tag("method-current", "OnAppResize(app.Context)").
-			Tag("method-fix", "OnResize(app.Context)").
-			Tag("how-to-fix", "refactor component to use the right method"))
-		c.dispatch(resizer.OnAppResize)
-	}
-}
-
 func (c *Compo) preRender(p Page) {
 	c.root.preRender(p)
 
@@ -500,6 +479,9 @@ func (c *Compo) onLifecycleEvent(le any) {
 
 	case appInstallChange:
 		c.onAppInstallChange(le)
+
+	case resize:
+		c.onResize(le)
 	}
 
 	c.root.onLifecycleEvent(le)
@@ -514,6 +496,13 @@ func (c *Compo) onAppUpdate(au appUpdate) {
 func (c *Compo) onAppInstallChange(ai appInstallChange) {
 	if installer, ok := c.self().(AppInstaller); ok {
 		c.dispatch(installer.OnAppInstallChange)
+	}
+}
+
+func (c *Compo) onResize(r resize) {
+	if resizer, ok := c.self().(Resizer); ok {
+		c.dispatch(resizer.OnResize)
+		return
 	}
 }
 

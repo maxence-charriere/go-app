@@ -112,9 +112,6 @@ func (t *text) updateWith(n UI) error {
 func (t *text) onNav(*url.URL) {
 }
 
-func (t *text) onResize() {
-}
-
 func (t *text) preRender(Page) {
 }
 
