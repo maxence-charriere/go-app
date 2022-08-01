@@ -239,7 +239,7 @@ func (e *engine) Nav(u *url.URL) {
 		Mode:   Update,
 		Source: e.Body,
 		Function: func(ctx Context) {
-			ctx.Src().onNav(u)
+			ctx.Src().onLifecycleEvent(nav{})
 		},
 	})
 }

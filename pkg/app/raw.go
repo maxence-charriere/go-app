@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"io"
-	"net/url"
 	"strings"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
@@ -134,9 +133,6 @@ func (r *raw) canUpdateWith(n UI) bool {
 
 func (r *raw) updateWith(n UI) error {
 	return nil
-}
-
-func (r *raw) onNav(*url.URL) {
 }
 
 func (r *raw) preRender(Page) {

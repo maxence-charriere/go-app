@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"io"
-	"net/url"
 	"reflect"
 	"sort"
 
@@ -154,9 +153,6 @@ func (r rangeLoop) updateWith(UI) error {
 	return errors.New("range loop cannot be updated").
 		Tag("name", r.name()).
 		Tag("kind", r.Kind())
-}
-
-func (r rangeLoop) onNav(*url.URL) {
 }
 
 func (r rangeLoop) preRender(Page) {

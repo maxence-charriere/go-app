@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"io"
-	"net/url"
 	"reflect"
 	"strings"
 
@@ -103,9 +102,7 @@ type Navigator interface {
 	OnNav(Context)
 }
 
-type deprecatedNavigator interface {
-	OnNav(Context, *url.URL)
-}
+type nav struct{}
 
 // Updater is the interface that describes a component that can do additional
 // instructions when one of its exported fields is modified by its nearest
@@ -439,27 +436,6 @@ func (c *Compo) render() UI {
 	return elems[0]
 }
 
-func (c *Compo) onNav(u *url.URL) {
-	defer c.root.onNav(u)
-
-	if nav, ok := c.self().(Navigator); ok {
-		c.dispatch(nav.OnNav)
-		return
-	}
-
-	if nav, ok := c.self().(deprecatedNavigator); ok {
-		Log(errors.New("a deprecated component interface is in use").
-			Tag("component", reflect.TypeOf(c.self())).
-			Tag("interface", "app.Navigator").
-			Tag("method-current", "OnNav(app.Context, *url.URL)").
-			Tag("method-fix", "OnNav(app.Context)").
-			Tag("how-to-fix", "refactor component to use the right method"))
-		c.dispatch(func(ctx Context) {
-			nav.OnNav(ctx, u)
-		})
-	}
-}
-
 func (c *Compo) preRender(p Page) {
 	c.root.preRender(p)
 
@@ -474,6 +450,9 @@ func (c *Compo) preRender(p Page) {
 
 func (c *Compo) onLifecycleEvent(le any) {
 	switch le := le.(type) {
+	case nav:
+		c.onNav(le)
+
 	case appUpdate:
 		c.onAppUpdate(le)
 
@@ -485,6 +464,13 @@ func (c *Compo) onLifecycleEvent(le any) {
 	}
 
 	c.root.onLifecycleEvent(le)
+}
+
+func (c *Compo) onNav(n nav) {
+	if nav, ok := c.self().(Navigator); ok {
+		c.dispatch(nav.OnNav)
+		return
+	}
 }
 
 func (c *Compo) onAppUpdate(au appUpdate) {

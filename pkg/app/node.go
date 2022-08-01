@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"io"
-	"net/url"
 	"reflect"
 	"strings"
 )
@@ -34,7 +33,6 @@ type UI interface {
 	dismount()
 	canUpdateWith(UI) bool
 	updateWith(UI) error
-	onNav(*url.URL)
 	preRender(Page)
 	onLifecycleEvent(any)
 	html(w io.Writer)

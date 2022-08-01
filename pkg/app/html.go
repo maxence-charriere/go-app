@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"io"
-	"net/url"
 	"reflect"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
@@ -293,12 +292,6 @@ func (e *htmlElement) setChildren(v ...UI) {
 	}
 
 	e.children = FilterUIElems(v...)
-}
-
-func (e *htmlElement) onNav(u *url.URL) {
-	for _, c := range e.getChildren() {
-		c.onNav(u)
-	}
 }
 
 func (e *htmlElement) preRender(p Page) {
