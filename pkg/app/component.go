@@ -124,6 +124,8 @@ type AppUpdater interface {
 	OnAppUpdate(Context)
 }
 
+type appUpdate struct{}
+
 // AppInstaller is the interface that describes a component that is notified
 // when the application installation state changes.
 type AppInstaller interface {
@@ -458,14 +460,6 @@ func (c *Compo) onNav(u *url.URL) {
 	}
 }
 
-func (c *Compo) onAppUpdate() {
-	c.root.onAppUpdate()
-
-	if updater, ok := c.self().(AppUpdater); ok {
-		c.dispatch(updater.OnAppUpdate)
-	}
-}
-
 func (c *Compo) onAppInstallChange() {
 	c.root.onAppInstallChange()
 
@@ -505,7 +499,19 @@ func (c *Compo) preRender(p Page) {
 	}
 }
 
-func (c *Compo) onLifecyleEvent(le any) {
+func (c *Compo) onLifecycleEvent(le any) {
+	switch le := le.(type) {
+	case appUpdate:
+		c.onAppUpdate(le)
+	}
+
+	c.root.onLifecycleEvent(le)
+}
+
+func (c *Compo) onAppUpdate(au appUpdate) {
+	if updater, ok := c.self().(AppUpdater); ok {
+		c.dispatch(updater.OnAppUpdate)
+	}
 }
 
 func (c *Compo) html(w io.Writer) {

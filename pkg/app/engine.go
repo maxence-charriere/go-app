@@ -249,7 +249,7 @@ func (e *engine) AppUpdate() {
 		Mode:   Update,
 		Source: e.Body,
 		Function: func(ctx Context) {
-			ctx.Src().onAppUpdate()
+			ctx.Src().onLifecycleEvent(appUpdate{})
 		},
 	})
 }

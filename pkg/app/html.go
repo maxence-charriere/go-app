@@ -301,12 +301,6 @@ func (e *htmlElement) onNav(u *url.URL) {
 	}
 }
 
-func (e *htmlElement) onAppUpdate() {
-	for _, c := range e.getChildren() {
-		c.onAppUpdate()
-	}
-}
-
 func (e *htmlElement) onAppInstallChange() {
 	for _, c := range e.getChildren() {
 		c.onAppInstallChange()
@@ -325,9 +319,9 @@ func (e *htmlElement) preRender(p Page) {
 	}
 }
 
-func (e *htmlElement) onLifecyleEvent(le any) {
+func (e *htmlElement) onLifecycleEvent(le any) {
 	for _, c := range e.getChildren() {
-		c.onLifecyleEvent(le)
+		c.onLifecycleEvent(le)
 	}
 }
 

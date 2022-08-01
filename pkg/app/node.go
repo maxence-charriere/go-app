@@ -35,11 +35,10 @@ type UI interface {
 	canUpdateWith(UI) bool
 	updateWith(UI) error
 	onNav(*url.URL)
-	onAppUpdate()
 	onAppInstallChange()
 	onResize()
 	preRender(Page)
-	onLifecyleEvent(any)
+	onLifecycleEvent(any)
 	html(w io.Writer)
 	htmlWithIndent(w io.Writer, indent int)
 }

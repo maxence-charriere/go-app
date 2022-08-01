@@ -129,9 +129,6 @@ func (c condition) updateWith(UI) error {
 func (c condition) onNav(*url.URL) {
 }
 
-func (c condition) onAppUpdate() {
-}
-
 func (c condition) onAppInstallChange() {
 }
 
@@ -141,7 +138,7 @@ func (c condition) onResize() {
 func (c condition) preRender(Page) {
 }
 
-func (c condition) onLifecyleEvent(any) {
+func (c condition) onLifecycleEvent(any) {
 }
 
 func (c condition) html(w io.Writer) {

@@ -159,9 +159,6 @@ func (r rangeLoop) updateWith(UI) error {
 func (r rangeLoop) onNav(*url.URL) {
 }
 
-func (r rangeLoop) onAppUpdate() {
-}
-
 func (r rangeLoop) onAppInstallChange() {
 }
 
@@ -171,7 +168,7 @@ func (r rangeLoop) onResize() {
 func (r rangeLoop) preRender(Page) {
 }
 
-func (r rangeLoop) onLifecyleEvent(any) {
+func (r rangeLoop) onLifecycleEvent(any) {
 }
 
 func (r rangeLoop) html(w io.Writer) {

@@ -112,9 +112,6 @@ func (t *text) updateWith(n UI) error {
 func (t *text) onNav(*url.URL) {
 }
 
-func (t *text) onAppUpdate() {
-}
-
 func (t *text) onAppInstallChange() {
 }
 
@@ -124,7 +121,7 @@ func (t *text) onResize() {
 func (t *text) preRender(Page) {
 }
 
-func (t *text) onLifecyleEvent(any) {
+func (t *text) onLifecycleEvent(any) {
 }
 
 func (t *text) html(w io.Writer) {
