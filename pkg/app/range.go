@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"io"
-	"net/url"
 	"reflect"
 	"sort"
 
@@ -156,19 +155,10 @@ func (r rangeLoop) updateWith(UI) error {
 		Tag("kind", r.Kind())
 }
 
-func (r rangeLoop) onNav(*url.URL) {
-}
-
-func (r rangeLoop) onAppUpdate() {
-}
-
-func (r rangeLoop) onAppInstallChange() {
-}
-
-func (r rangeLoop) onResize() {
-}
-
 func (r rangeLoop) preRender(Page) {
+}
+
+func (r rangeLoop) onComponentEvent(any) {
 }
 
 func (r rangeLoop) html(w io.Writer) {

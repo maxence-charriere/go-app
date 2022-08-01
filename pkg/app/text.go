@@ -4,7 +4,6 @@ import (
 	"context"
 	"html"
 	"io"
-	"net/url"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
@@ -109,19 +108,10 @@ func (t *text) updateWith(n UI) error {
 	return nil
 }
 
-func (t *text) onNav(*url.URL) {
-}
-
-func (t *text) onAppUpdate() {
-}
-
-func (t *text) onAppInstallChange() {
-}
-
-func (t *text) onResize() {
-}
-
 func (t *text) preRender(Page) {
+}
+
+func (t *text) onComponentEvent(any) {
 }
 
 func (t *text) html(w io.Writer) {

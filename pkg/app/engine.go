@@ -239,7 +239,7 @@ func (e *engine) Nav(u *url.URL) {
 		Mode:   Update,
 		Source: e.Body,
 		Function: func(ctx Context) {
-			ctx.Src().onNav(u)
+			ctx.Src().onComponentEvent(nav{})
 		},
 	})
 }
@@ -249,7 +249,7 @@ func (e *engine) AppUpdate() {
 		Mode:   Update,
 		Source: e.Body,
 		Function: func(ctx Context) {
-			ctx.Src().onAppUpdate()
+			ctx.Src().onComponentEvent(appUpdate{})
 		},
 	})
 }
@@ -259,7 +259,7 @@ func (e *engine) AppInstallChange() {
 		Mode:   Update,
 		Source: e.Body,
 		Function: func(ctx Context) {
-			ctx.Src().onAppInstallChange()
+			ctx.Src().onComponentEvent(appInstallChange{})
 		},
 	})
 }
@@ -269,7 +269,7 @@ func (e *engine) AppResize() {
 		Mode:   Update,
 		Source: e.Body,
 		Function: func(ctx Context) {
-			ctx.Src().onResize()
+			ctx.Src().onComponentEvent(resize{})
 		},
 	})
 }

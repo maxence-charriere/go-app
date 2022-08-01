@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"io"
-	"net/url"
 	"reflect"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
@@ -295,33 +294,15 @@ func (e *htmlElement) setChildren(v ...UI) {
 	e.children = FilterUIElems(v...)
 }
 
-func (e *htmlElement) onNav(u *url.URL) {
-	for _, c := range e.getChildren() {
-		c.onNav(u)
-	}
-}
-
-func (e *htmlElement) onAppUpdate() {
-	for _, c := range e.getChildren() {
-		c.onAppUpdate()
-	}
-}
-
-func (e *htmlElement) onAppInstallChange() {
-	for _, c := range e.getChildren() {
-		c.onAppInstallChange()
-	}
-}
-
-func (e *htmlElement) onResize() {
-	for _, c := range e.getChildren() {
-		c.onResize()
-	}
-}
-
 func (e *htmlElement) preRender(p Page) {
 	for _, c := range e.getChildren() {
 		c.preRender(p)
+	}
+}
+
+func (e *htmlElement) onComponentEvent(le any) {
+	for _, c := range e.getChildren() {
+		c.onComponentEvent(le)
 	}
 }
 

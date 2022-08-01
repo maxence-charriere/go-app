@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"io"
-	"net/url"
 	"reflect"
 	"strings"
 
@@ -103,10 +102,6 @@ type Navigator interface {
 	OnNav(Context)
 }
 
-type deprecatedNavigator interface {
-	OnNav(Context, *url.URL)
-}
-
 // Updater is the interface that describes a component that can do additional
 // instructions when one of its exported fields is modified by its nearest
 // parent component.
@@ -143,9 +138,11 @@ type Resizer interface {
 	OnResize(Context)
 }
 
-type deprecatedResizer interface {
-	OnAppResize(Context)
-}
+// Component events.
+type nav struct{}
+type appUpdate struct{}
+type appInstallChange struct{}
+type resize struct{}
 
 // Compo represents the base struct to use in order to build a component.
 type Compo struct {
@@ -207,7 +204,7 @@ func (c *Compo) Update() {
 // implement the Resizer interface.
 func (c *Compo) ResizeContent() {
 	c.dispatch(func(Context) {
-		c.root.onResize()
+		c.root.onComponentEvent(resize{})
 	})
 }
 
@@ -437,62 +434,6 @@ func (c *Compo) render() UI {
 	return elems[0]
 }
 
-func (c *Compo) onNav(u *url.URL) {
-	defer c.root.onNav(u)
-
-	if nav, ok := c.self().(Navigator); ok {
-		c.dispatch(nav.OnNav)
-		return
-	}
-
-	if nav, ok := c.self().(deprecatedNavigator); ok {
-		Log(errors.New("a deprecated component interface is in use").
-			Tag("component", reflect.TypeOf(c.self())).
-			Tag("interface", "app.Navigator").
-			Tag("method-current", "OnNav(app.Context, *url.URL)").
-			Tag("method-fix", "OnNav(app.Context)").
-			Tag("how-to-fix", "refactor component to use the right method"))
-		c.dispatch(func(ctx Context) {
-			nav.OnNav(ctx, u)
-		})
-	}
-}
-
-func (c *Compo) onAppUpdate() {
-	c.root.onAppUpdate()
-
-	if updater, ok := c.self().(AppUpdater); ok {
-		c.dispatch(updater.OnAppUpdate)
-	}
-}
-
-func (c *Compo) onAppInstallChange() {
-	c.root.onAppInstallChange()
-
-	if installer, ok := c.self().(AppInstaller); ok {
-		c.dispatch(installer.OnAppInstallChange)
-	}
-}
-
-func (c *Compo) onResize() {
-	defer c.root.onResize()
-
-	if resizer, ok := c.self().(Resizer); ok {
-		c.dispatch(resizer.OnResize)
-		return
-	}
-
-	if resizer, ok := c.self().(deprecatedResizer); ok {
-		Log(errors.New("a deprecated component interface is in use").
-			Tag("component", reflect.TypeOf(c.self())).
-			Tag("interface", "app.Resizer").
-			Tag("method-current", "OnAppResize(app.Context)").
-			Tag("method-fix", "OnResize(app.Context)").
-			Tag("how-to-fix", "refactor component to use the right method"))
-		c.dispatch(resizer.OnAppResize)
-	}
-}
-
 func (c *Compo) preRender(p Page) {
 	c.root.preRender(p)
 
@@ -502,6 +443,50 @@ func (c *Compo) preRender(p Page) {
 
 	if preRenderer, ok := c.self().(PreRenderer); ok {
 		c.dispatch(preRenderer.OnPreRender)
+	}
+}
+
+func (c *Compo) onComponentEvent(le any) {
+	switch le := le.(type) {
+	case nav:
+		c.onNav(le)
+
+	case appUpdate:
+		c.onAppUpdate(le)
+
+	case appInstallChange:
+		c.onAppInstallChange(le)
+
+	case resize:
+		c.onResize(le)
+	}
+
+	c.root.onComponentEvent(le)
+}
+
+func (c *Compo) onNav(n nav) {
+	if nav, ok := c.self().(Navigator); ok {
+		c.dispatch(nav.OnNav)
+		return
+	}
+}
+
+func (c *Compo) onAppUpdate(au appUpdate) {
+	if updater, ok := c.self().(AppUpdater); ok {
+		c.dispatch(updater.OnAppUpdate)
+	}
+}
+
+func (c *Compo) onAppInstallChange(ai appInstallChange) {
+	if installer, ok := c.self().(AppInstaller); ok {
+		c.dispatch(installer.OnAppInstallChange)
+	}
+}
+
+func (c *Compo) onResize(r resize) {
+	if resizer, ok := c.self().(Resizer); ok {
+		c.dispatch(resizer.OnResize)
+		return
 	}
 }
 
