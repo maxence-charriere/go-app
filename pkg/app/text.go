@@ -111,7 +111,7 @@ func (t *text) updateWith(n UI) error {
 func (t *text) preRender(Page) {
 }
 
-func (t *text) onLifecycleEvent(any) {
+func (t *text) onComponentEvent(any) {
 }
 
 func (t *text) html(w io.Writer) {

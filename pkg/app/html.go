@@ -300,9 +300,9 @@ func (e *htmlElement) preRender(p Page) {
 	}
 }
 
-func (e *htmlElement) onLifecycleEvent(le any) {
+func (e *htmlElement) onComponentEvent(le any) {
 	for _, c := range e.getChildren() {
-		c.onLifecycleEvent(le)
+		c.onComponentEvent(le)
 	}
 }
 

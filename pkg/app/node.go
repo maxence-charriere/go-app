@@ -34,7 +34,7 @@ type UI interface {
 	canUpdateWith(UI) bool
 	updateWith(UI) error
 	preRender(Page)
-	onLifecycleEvent(any)
+	onComponentEvent(any)
 	html(w io.Writer)
 	htmlWithIndent(w io.Writer, indent int)
 }

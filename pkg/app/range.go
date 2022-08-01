@@ -158,7 +158,7 @@ func (r rangeLoop) updateWith(UI) error {
 func (r rangeLoop) preRender(Page) {
 }
 
-func (r rangeLoop) onLifecycleEvent(any) {
+func (r rangeLoop) onComponentEvent(any) {
 }
 
 func (r rangeLoop) html(w io.Writer) {

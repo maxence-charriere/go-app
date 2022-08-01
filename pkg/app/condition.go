@@ -128,7 +128,7 @@ func (c condition) updateWith(UI) error {
 func (c condition) preRender(Page) {
 }
 
-func (c condition) onLifecycleEvent(any) {
+func (c condition) onComponentEvent(any) {
 }
 
 func (c condition) html(w io.Writer) {

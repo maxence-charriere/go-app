@@ -102,8 +102,6 @@ type Navigator interface {
 	OnNav(Context)
 }
 
-type nav struct{}
-
 // Updater is the interface that describes a component that can do additional
 // instructions when one of its exported fields is modified by its nearest
 // parent component.
@@ -121,8 +119,6 @@ type AppUpdater interface {
 	OnAppUpdate(Context)
 }
 
-type appUpdate struct{}
-
 // AppInstaller is the interface that describes a component that is notified
 // when the application installation state changes.
 type AppInstaller interface {
@@ -133,8 +129,6 @@ type AppInstaller interface {
 	OnAppInstallChange(Context)
 }
 
-type appInstallChange struct{}
-
 // Resizer is the interface that describes a component that is notified when the
 // app has been resized or a parent component calls the ResizeContent() method.
 type Resizer interface {
@@ -144,6 +138,10 @@ type Resizer interface {
 	OnResize(Context)
 }
 
+// Component events.
+type nav struct{}
+type appUpdate struct{}
+type appInstallChange struct{}
 type resize struct{}
 
 // Compo represents the base struct to use in order to build a component.
@@ -206,7 +204,7 @@ func (c *Compo) Update() {
 // implement the Resizer interface.
 func (c *Compo) ResizeContent() {
 	c.dispatch(func(Context) {
-		c.root.onLifecycleEvent(resize{})
+		c.root.onComponentEvent(resize{})
 	})
 }
 
@@ -448,7 +446,7 @@ func (c *Compo) preRender(p Page) {
 	}
 }
 
-func (c *Compo) onLifecycleEvent(le any) {
+func (c *Compo) onComponentEvent(le any) {
 	switch le := le.(type) {
 	case nav:
 		c.onNav(le)
@@ -463,7 +461,7 @@ func (c *Compo) onLifecycleEvent(le any) {
 		c.onResize(le)
 	}
 
-	c.root.onLifecycleEvent(le)
+	c.root.onComponentEvent(le)
 }
 
 func (c *Compo) onNav(n nav) {
