@@ -106,6 +106,9 @@ func makeJSEventHandler(src UI, h EventHandler) Func {
 				})
 			},
 		})
+
+		// TODO: replace by just Emit on engine is fully refactored.
+
 		return nil
 	})
 }

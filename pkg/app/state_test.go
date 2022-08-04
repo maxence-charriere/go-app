@@ -228,7 +228,7 @@ func TestStoreExpiresIn(t *testing.T) {
 		s.Del(key)
 		delete(s.states, key)
 
-		s.disp.localStorage().Set(key, persistentState{
+		s.disp.getLocalStorage().Set(key, persistentState{
 			ExpiresAt: time.Now().Add(-time.Minute),
 		})
 

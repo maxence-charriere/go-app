@@ -289,11 +289,11 @@ func (ctx uiContext) ResolveStaticResource(path string) string {
 }
 
 func (ctx uiContext) LocalStorage() BrowserStorage {
-	return ctx.Dispatcher().localStorage()
+	return ctx.Dispatcher().getLocalStorage()
 }
 
 func (ctx uiContext) SessionStorage() BrowserStorage {
-	return ctx.Dispatcher().sessionStorage()
+	return ctx.Dispatcher().getSessionStorage()
 }
 
 func (ctx uiContext) ScrollTo(id string) {
@@ -377,7 +377,7 @@ func makeContext(src UI) Context {
 		src:                src,
 		jsSrc:              src.JSValue(),
 		appUpdateAvailable: appUpdateAvailable,
-		page:               src.getDispatcher().currentPage(),
+		page:               src.getDispatcher().getCurrentPage(),
 		disp:               src.getDispatcher(),
 	}
 }

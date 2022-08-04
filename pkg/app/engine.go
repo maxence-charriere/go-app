@@ -383,7 +383,7 @@ func (e *engine) scheduleComponentUpdate(n UI) {
 		return
 	}
 
-	c := nearestCompo(n)
+	c := getParentComponent(n)
 	if c == nil {
 		return
 	}
@@ -438,19 +438,19 @@ func (e *engine) execDeferableEvents() {
 	e.defers = e.defers[:0]
 }
 
-func (e *engine) currentPage() Page {
+func (e *engine) getCurrentPage() Page {
 	return e.Page
 }
 
-func (e *engine) localStorage() BrowserStorage {
+func (e *engine) getLocalStorage() BrowserStorage {
 	return e.LocalStorage
 }
 
-func (e *engine) sessionStorage() BrowserStorage {
+func (e *engine) getSessionStorage() BrowserStorage {
 	return e.SessionStorage
 }
 
-func (e *engine) runsInServer() bool {
+func (e *engine) isServerSide() bool {
 	return e.RunsInServer
 }
 
@@ -469,7 +469,7 @@ func sortUpdateDescriptors(d []updateDescriptor) {
 	})
 }
 
-func nearestCompo(n UI) Composer {
+func getParentComponent(n UI) Composer {
 	for node := n; node != nil; node = node.getParent() {
 		if c, isCompo := node.(Composer); isCompo {
 			return c

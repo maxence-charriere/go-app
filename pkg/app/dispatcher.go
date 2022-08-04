@@ -58,12 +58,11 @@ type Dispatcher interface {
 	Wait()
 
 	start(context.Context)
-	currentPage() Page
-	localStorage() BrowserStorage
-	sessionStorage() BrowserStorage
-	runsInServer() bool
+	getCurrentPage() Page
+	getLocalStorage() BrowserStorage
+	getSessionStorage() BrowserStorage
+	isServerSide() bool
 	resolveStaticResource(string) string
-	removeFromUpdates(Composer)
 }
 
 // ClientDispatcher is the interface that describes a dispatcher that emulates a
@@ -145,6 +144,13 @@ type Dispatch struct {
 	Mode     DispatchMode
 	Source   UI
 	Function func(Context)
+}
+
+func (d Dispatch) do() {
+	if !d.Source.Mounted() || d.Function == nil {
+		return
+	}
+	d.Function(makeContext(d.Source))
 }
 
 // DispatchMode represents how a dispatch is processed.
