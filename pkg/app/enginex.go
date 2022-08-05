@@ -35,13 +35,16 @@ type engineX struct {
 	// executed asynchronously.
 	ActionHandlers map[string]ActionHandler
 
-	wait sync.WaitGroup
+	initOnce  sync.Once
+	closeOnce sync.Once
+	wait      sync.WaitGroup
 
 	dispatches       chan Dispatch
 	componentUpdates map[Composer]bool
 	deferables       []Dispatch
 	actions          actionManager
 	states           *store
+	isFirstMount     bool
 }
 
 func (e *engineX) Context() Context {
@@ -112,6 +115,119 @@ func (e *engineX) Wait() {
 	e.wait.Wait()
 }
 
+func (e *engineX) Consume() {
+	for {
+		e.Wait()
+
+		select {
+		case d := <-e.dispatches:
+			e.handleDispatch(d)
+
+		default:
+			e.handleFrame()
+		}
+	}
+}
+
+func (e *engineX) ConsumeNext() {
+	e.Wait()
+	e.handleDispatch(<-e.dispatches)
+	e.handleFrame()
+}
+
+func (e *engineX) Close() {
+	e.closeOnce.Do(func() {
+		e.Consume()
+		e.Wait()
+
+		dismount(e.Body)
+		e.Body = nil
+		e.states.Close()
+	})
+}
+
+func (e *engineX) PreRender() {
+	e.Dispatch(Dispatch{
+		Mode:   Update,
+		Source: e.Body,
+		Function: func(ctx Context) {
+			ctx.Src().preRender(e.Page)
+		},
+	})
+}
+
+func (e *engineX) Mount(v UI) {
+	e.Dispatch(Dispatch{
+		Mode:   Update,
+		Source: e.Body,
+		Function: func(ctx Context) {
+			if !e.isFirstMount {
+				if err := e.Body.(*htmlBody).replaceChildAt(0, v); err != nil {
+					panic(errors.New("mounting first ui element failed").Wrap(err))
+				}
+
+				e.isFirstMount = false
+				return
+			}
+
+			if firstChild := e.Body.getChildren()[0]; canUpdate(firstChild, v) {
+				if err := update(firstChild, v); err != nil {
+					panic(errors.New("mounting ui element failed").Wrap(err))
+				}
+				return
+			}
+
+			if err := e.Body.(*htmlBody).replaceChildAt(0, v); err != nil {
+				panic(errors.New("mounting ui element failed").Wrap(err))
+			}
+		},
+	})
+}
+
+func (e *engineX) Nav(u *url.URL) {
+	if p, ok := e.Page.(*requestPage); ok {
+		p.ReplaceURL(u)
+	}
+
+	e.Dispatch(Dispatch{
+		Mode:   Update,
+		Source: e.Body,
+		Function: func(ctx Context) {
+			ctx.Src().onComponentEvent(nav{})
+		},
+	})
+}
+
+func (e *engineX) AppUpdate() {
+	e.Dispatch(Dispatch{
+		Mode:   Update,
+		Source: e.Body,
+		Function: func(ctx Context) {
+			ctx.Src().onComponentEvent(appUpdate{})
+		},
+	})
+}
+
+func (e *engineX) AppInstallChange() {
+	e.Dispatch(Dispatch{
+		Mode:   Update,
+		Source: e.Body,
+		Function: func(ctx Context) {
+			ctx.Src().onComponentEvent(appInstallChange{})
+		},
+	})
+}
+
+func (e *engineX) AppResize() {
+	e.Dispatch(Dispatch{
+		Mode:   Update,
+		Source: e.Body,
+		Function: func(ctx Context) {
+			ctx.Src().onComponentEvent(resize{})
+		},
+	})
+}
+
 func (e *engineX) init() {
 	if e.FrameRate <= 0 {
 		e.FrameRate = 60
@@ -148,6 +264,7 @@ func (e *engineX) init() {
 	e.componentUpdates = make(map[Composer]bool)
 	e.deferables = make([]Dispatch, 32)
 	e.states = newStore(e)
+	e.isFirstMount = true
 
 	for actionName, handler := range e.ActionHandlers {
 		e.actions.handle(actionName, true, e.Body, handler)
