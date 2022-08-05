@@ -52,11 +52,11 @@ func testDispatcherAsyncWait(t *testing.T, d Dispatcher) {
 func TestDispatcherLocalStorage(t *testing.T) {
 	d := NewClientTester(&hello{})
 	defer d.Close()
-	testBrowserStorage(t, d.localStorage())
+	testBrowserStorage(t, d.getLocalStorage())
 }
 
 func TestDispatcherSessionStorage(t *testing.T) {
 	d := NewClientTester(&hello{})
 	defer d.Close()
-	testBrowserStorage(t, d.sessionStorage())
+	testBrowserStorage(t, d.getSessionStorage())
 }
