@@ -311,6 +311,7 @@ func (e *engineX) addDeferable(d Dispatch) {
 
 func (e *engineX) start(ctx context.Context) {
 	frameDuration := time.Second / time.Duration(e.FrameRate)
+	currentFrameDuration := frameDuration
 	frames := time.NewTicker(frameDuration)
 
 	cleanups := time.NewTicker(time.Minute)
@@ -322,10 +323,18 @@ func (e *engineX) start(ctx context.Context) {
 			return
 
 		case d := <-e.dispatches:
+			if currentFrameDuration != frameDuration {
+				currentFrameDuration = frameDuration
+				frames.Reset(currentFrameDuration)
+			}
 			e.handleDispatch(d)
 
 		case <-frames.C:
 			e.handleFrame()
+			if len(e.dispatches) == 0 {
+				currentFrameDuration *= 2
+				frames.Reset(currentFrameDuration)
+			}
 
 		case <-cleanups.C:
 			e.actions.closeUnusedHandlers()
