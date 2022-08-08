@@ -36,6 +36,7 @@ type engineX struct {
 	ActionHandlers map[string]ActionHandler
 
 	initOnce  sync.Once
+	startOnce sync.Once
 	closeOnce sync.Once
 	wait      sync.WaitGroup
 
@@ -229,46 +230,48 @@ func (e *engineX) AppResize() {
 }
 
 func (e *engineX) init() {
-	if e.FrameRate <= 0 {
-		e.FrameRate = 60
-	}
-
-	if e.Page == nil {
-		u, _ := url.Parse("https://test.go-app.dev")
-		e.Page = &requestPage{url: u}
-	}
-
-	if e.LocalStorage == nil {
-		e.LocalStorage = newMemoryStorage()
-	}
-
-	if e.SessionStorage == nil {
-		e.SessionStorage = newMemoryStorage()
-	}
-
-	if e.StaticResourceResolver == nil {
-		e.StaticResourceResolver = func(path string) string {
-			return path
+	e.initOnce.Do(func() {
+		if e.FrameRate <= 0 {
+			e.FrameRate = 60
 		}
-	}
 
-	if e.Body == nil {
-		body := Body().privateBody(Div())
-		if err := mount(e, body); err != nil {
-			panic(errors.New("mounting engine default body failed").Wrap(err))
+		if e.Page == nil {
+			u, _ := url.Parse("https://test.go-app.dev")
+			e.Page = &requestPage{url: u}
 		}
-		e.Body = body
-	}
 
-	e.dispatches = make(chan Dispatch, 4096)
-	e.componentUpdates = make(map[Composer]bool)
-	e.deferables = make([]Dispatch, 32)
-	e.states = newStore(e)
-	e.isFirstMount = true
+		if e.LocalStorage == nil {
+			e.LocalStorage = newMemoryStorage()
+		}
 
-	for actionName, handler := range e.ActionHandlers {
-		e.actions.handle(actionName, true, e.Body, handler)
-	}
+		if e.SessionStorage == nil {
+			e.SessionStorage = newMemoryStorage()
+		}
+
+		if e.StaticResourceResolver == nil {
+			e.StaticResourceResolver = func(path string) string {
+				return path
+			}
+		}
+
+		if e.Body == nil {
+			body := Body().privateBody(Div())
+			if err := mount(e, body); err != nil {
+				panic(errors.New("mounting engine default body failed").Wrap(err))
+			}
+			e.Body = body
+		}
+
+		e.dispatches = make(chan Dispatch, 4096)
+		e.componentUpdates = make(map[Composer]bool)
+		e.deferables = make([]Dispatch, 32)
+		e.states = newStore(e)
+		e.isFirstMount = true
+
+		for actionName, handler := range e.ActionHandlers {
+			e.actions.handle(actionName, true, e.Body, handler)
+		}
+	})
 }
 
 func (e *engineX) getCurrentPage() Page {
@@ -310,37 +313,39 @@ func (e *engineX) addDeferable(d Dispatch) {
 }
 
 func (e *engineX) start(ctx context.Context) {
-	frameDuration := time.Second / time.Duration(e.FrameRate)
-	currentFrameDuration := frameDuration
-	frames := time.NewTicker(frameDuration)
+	e.startOnce.Do(func() {
+		frameDuration := time.Second / time.Duration(e.FrameRate)
+		currentFrameDuration := frameDuration
+		frames := time.NewTicker(frameDuration)
 
-	cleanups := time.NewTicker(time.Minute)
-	defer cleanups.Stop()
+		cleanups := time.NewTicker(time.Minute)
+		defer cleanups.Stop()
 
-	for {
-		select {
-		case <-ctx.Done():
-			return
+		for {
+			select {
+			case <-ctx.Done():
+				return
 
-		case d := <-e.dispatches:
-			if currentFrameDuration != frameDuration {
-				currentFrameDuration = frameDuration
-				frames.Reset(currentFrameDuration)
+			case d := <-e.dispatches:
+				if currentFrameDuration != frameDuration {
+					currentFrameDuration = frameDuration
+					frames.Reset(currentFrameDuration)
+				}
+				e.handleDispatch(d)
+
+			case <-frames.C:
+				e.handleFrame()
+				if len(e.dispatches) == 0 {
+					currentFrameDuration *= 2
+					frames.Reset(currentFrameDuration)
+				}
+
+			case <-cleanups.C:
+				e.actions.closeUnusedHandlers()
+				e.states.Cleanup()
 			}
-			e.handleDispatch(d)
-
-		case <-frames.C:
-			e.handleFrame()
-			if len(e.dispatches) == 0 {
-				currentFrameDuration *= 2
-				frames.Reset(currentFrameDuration)
-			}
-
-		case <-cleanups.C:
-			e.actions.closeUnusedHandlers()
-			e.states.Cleanup()
 		}
-	}
+	})
 }
 
 func (e *engineX) handleDispatch(d Dispatch) {
