@@ -313,6 +313,9 @@ func (e *engineX) start(ctx context.Context) {
 	frameDuration := time.Second / time.Duration(e.FrameRate)
 	frames := time.NewTicker(frameDuration)
 
+	cleanups := time.NewTicker(time.Minute)
+	defer cleanups.Stop()
+
 	for {
 		select {
 		case <-ctx.Done():
@@ -323,6 +326,10 @@ func (e *engineX) start(ctx context.Context) {
 
 		case <-frames.C:
 			e.handleFrame()
+
+		case <-cleanups.C:
+			e.actions.closeUnusedHandlers()
+			e.states.Cleanup()
 		}
 	}
 }
