@@ -12,16 +12,15 @@ func TestEngineInit(t *testing.T) {
 	e.init()
 	defer e.Close()
 
-	assert.NotZero(t, e.UpdateRate)
+	assert.NotZero(t, e.FrameRate)
 	assert.NotNil(t, e.Page)
 	assert.NotNil(t, e.LocalStorage)
 	assert.NotNil(t, e.SessionStorage)
-	assert.NotNil(t, e.ResolveStaticResources)
+	assert.NotNil(t, e.StaticResourceResolver)
 	assert.NotNil(t, e.Body)
 	assert.NotNil(t, e.dispatches)
-	assert.NotNil(t, e.updates)
-	assert.NotNil(t, e.updateQueue)
-	assert.NotNil(t, e.defers)
+	assert.NotNil(t, e.componentUpdates)
+	assert.NotNil(t, e.deferables)
 }
 
 func TestEngineDispatch(t *testing.T) {
@@ -36,7 +35,6 @@ func TestEngineDispatch(t *testing.T) {
 	d := <-e.dispatches
 	require.Equal(t, Update, d.Mode)
 	require.Equal(t, e.Body, d.Source)
-	require.NotNil(t, d.Function)
 }
 
 func TestEngineEmit(t *testing.T) {
@@ -48,8 +46,7 @@ func TestEngineEmit(t *testing.T) {
 	e.Mount(foo)
 	e.Consume()
 	require.Empty(t, e.dispatches)
-	require.Empty(t, e.updates)
-	require.Empty(t, e.updateQueue)
+	require.Empty(t, e.componentUpdates)
 
 	bar := foo.getChildren()[0].(*bar)
 
@@ -57,10 +54,12 @@ func TestEngineEmit(t *testing.T) {
 	e.Emit(bar, func() {
 		emitted = true
 	})
-	require.True(t, emitted)
+	require.False(t, emitted)
 	require.Len(t, e.dispatches, 1)
 
-	e.Emit(bar, nil)
+	e.Consume()
+	require.True(t, emitted)
+	require.Empty(t, e.dispatches)
 }
 
 func TestEngineHandleDispatch(t *testing.T) {
@@ -80,7 +79,7 @@ func TestEngineHandleDispatch(t *testing.T) {
 			Function: func(Context) { called = true },
 		})
 		require.True(t, called)
-		require.NotEmpty(t, e.updateQueue)
+		require.NotEmpty(t, e.componentUpdates)
 	})
 
 	t.Run("defer", func(t *testing.T) {
@@ -98,8 +97,8 @@ func TestEngineHandleDispatch(t *testing.T) {
 			Source:   bar,
 			Function: func(Context) { called = true },
 		})
-		require.Empty(t, e.updateQueue)
-		require.Len(t, e.defers, 1)
+		require.Empty(t, e.componentUpdates)
+		require.Len(t, e.deferables, 1)
 		require.False(t, called)
 	})
 
@@ -119,68 +118,49 @@ func TestEngineHandleDispatch(t *testing.T) {
 			Function: func(Context) { called = true },
 		})
 		require.True(t, called)
-		require.Empty(t, e.updateQueue)
+		require.Empty(t, e.componentUpdates)
 	})
 }
 
-func TestEngineScheduleComponentUpdate(t *testing.T) {
+func TestEngineAddComponentUpdate(t *testing.T) {
 	e := engine{}
 	e.init()
 	defer e.Close()
 
 	h := &hello{}
-	e.scheduleComponentUpdate(h)
-	require.Empty(t, e.updates)
-	require.Empty(t, e.updateQueue)
+	e.addComponentUpdate(h)
+	require.Empty(t, e.componentUpdates)
 
 	e.Mount(h)
 	e.Consume()
 	require.Empty(t, e.dispatches)
-	require.Empty(t, e.updates)
-	require.Empty(t, e.updateQueue)
+	require.Empty(t, e.componentUpdates)
 
-	e.scheduleComponentUpdate(h)
-	require.Len(t, e.updates, 1)
-	require.Len(t, e.updateQueue, 1)
-	require.Equal(t, struct{}{}, e.updates[h])
-	require.Equal(t, updateDescriptor{
-		compo:    h,
-		priority: 2,
-	}, e.updateQueue[0])
+	e.addComponentUpdate(h)
+	require.Len(t, e.componentUpdates, 1)
+	require.True(t, e.componentUpdates[h])
 
-	e.scheduleComponentUpdate(h)
-	require.Len(t, e.updates, 1)
-	require.Len(t, e.updateQueue, 1)
+	e.addComponentUpdate(h)
+	require.Len(t, e.componentUpdates, 1)
 }
 
-func TestEngineScheduleNestedComponentUpdate(t *testing.T) {
+func TestPreventComponentUpdate(t *testing.T) {
 	e := engine{}
 	e.init()
 	defer e.Close()
 
 	h := &hello{}
-	div := Div().Body(h)
-	e.scheduleComponentUpdate(h)
-	require.Empty(t, e.updates)
-	require.Empty(t, e.updateQueue)
-
-	e.Mount(div)
+	e.Mount(h)
 	e.Consume()
 	require.Empty(t, e.dispatches)
-	require.Empty(t, e.updates)
-	require.Empty(t, e.updateQueue)
+	require.Empty(t, e.componentUpdates)
 
-	e.scheduleComponentUpdate(h)
-	require.Len(t, e.updates, 1)
-	require.Len(t, e.updateQueue, 1)
-	require.Equal(t, struct{}{}, e.updates[h])
-	require.Equal(t, updateDescriptor{
-		compo:    h,
-		priority: 3,
-	}, e.updateQueue[0])
+	e.preventComponentUpdate(h)
+	require.Len(t, e.componentUpdates, 1)
+	require.False(t, e.componentUpdates[h])
 }
 
-func TestEngineUpdateCoponents(t *testing.T) {
+func TestEngineHandleComponentUpdates(t *testing.T) {
 	e := engine{}
 	e.init()
 	defer e.Close()
@@ -189,22 +169,15 @@ func TestEngineUpdateCoponents(t *testing.T) {
 	e.Mount(foo)
 	e.Consume()
 	require.Empty(t, e.dispatches)
-	require.Empty(t, e.updates)
-	require.Empty(t, e.updateQueue)
+	require.Empty(t, e.componentUpdates)
 	bar := foo.root.(*bar)
 
-	e.scheduleComponentUpdate(foo)
-	e.scheduleComponentUpdate(bar)
-	require.Len(t, e.updates, 2)
-	require.Len(t, e.updateQueue, 2)
+	e.addComponentUpdate(foo)
+	e.addComponentUpdate(bar)
+	require.Len(t, e.componentUpdates, 2)
 
-	e.updateComponents()
-	require.Empty(t, e.updates)
-	require.Empty(t, e.updateQueue)
-
-	e.updateComponents()
-	require.Empty(t, e.updates)
-	require.Empty(t, e.updateQueue)
+	e.handleComponentUpdates()
+	require.Empty(t, e.componentUpdates)
 }
 
 func TestEngineExecDeferableEvents(t *testing.T) {
@@ -216,24 +189,22 @@ func TestEngineExecDeferableEvents(t *testing.T) {
 	e.Mount(h)
 	e.Consume()
 	require.Empty(t, e.dispatches)
-	require.Empty(t, e.updates)
-	require.Empty(t, e.updateQueue)
-	require.Empty(t, e.defers)
+	require.Empty(t, e.componentUpdates)
 
 	called := false
 
-	e.defers = append(e.defers, Dispatch{
+	e.addDeferable(Dispatch{
 		Mode:   Defer,
 		Source: h,
 		Function: func(Context) {
 			called = true
 		},
 	})
-	require.Len(t, e.defers, 1)
+	require.Len(t, e.deferables, 1)
 
-	e.execDeferableEvents()
+	e.handleDeferables()
 	require.True(t, called)
-	require.Empty(t, e.defers)
+	require.Empty(t, e.deferables)
 }
 
 func TestEngineHandlePost(t *testing.T) {
@@ -276,71 +247,4 @@ func TestEngineHandlePost(t *testing.T) {
 	require.True(t, isHandleACalled)
 	require.True(t, isHandleBCalled)
 	require.False(t, isHandleCCalled)
-}
-
-func TestSortUpdateDescriptors(t *testing.T) {
-	utests := []struct {
-		scenario string
-		in       []updateDescriptor
-		out      []updateDescriptor
-	}{
-		{
-			scenario: "nil",
-		},
-		{
-			scenario: "empty",
-			in:       []updateDescriptor{},
-			out:      []updateDescriptor{},
-		},
-		{
-			scenario: "single value",
-			in: []updateDescriptor{
-				{priority: 42},
-			},
-			out: []updateDescriptor{
-				{priority: 42},
-			},
-		},
-		{
-			scenario: "two values",
-			in: []updateDescriptor{
-				{priority: 42},
-				{priority: 21},
-			},
-			out: []updateDescriptor{
-				{priority: 21},
-				{priority: 42},
-			},
-		},
-		{
-			scenario: "multiple values",
-			in: []updateDescriptor{
-				{priority: 43},
-				{priority: 2},
-				{priority: 9},
-				{priority: 36},
-				{priority: 21},
-				{priority: 198},
-				{priority: 9},
-				{priority: 1},
-			},
-			out: []updateDescriptor{
-				{priority: 1},
-				{priority: 2},
-				{priority: 9},
-				{priority: 9},
-				{priority: 21},
-				{priority: 36},
-				{priority: 43},
-				{priority: 198},
-			},
-		},
-	}
-
-	for _, u := range utests {
-		t.Run(u.scenario, func(t *testing.T) {
-			sortUpdateDescriptors(u.in)
-			require.Equal(t, u.out, u.in)
-		})
-	}
 }

@@ -112,7 +112,7 @@ func RunWhenOnBrowser() {
 	isInternalURL = internalURLChecker()
 	staticResourcesResolver := newClientStaticResourceResolver(Getenv("GOAPP_STATIC_RESOURCES_URL"))
 
-	disp := engineX{
+	disp := engine{
 		FrameRate:              engineUpdateRate,
 		LocalStorage:           newJSStorage("localStorage"),
 		SessionStorage:         newJSStorage("sessionStorage"),

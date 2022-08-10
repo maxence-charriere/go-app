@@ -630,7 +630,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	page.SetImage(h.Image)
 	page.url = &url
 
-	disp := engineX{
+	disp := engine{
 		Page:                   &page,
 		IsServerSide:           true,
 		StaticResourceResolver: h.resolveStaticPath,
