@@ -630,10 +630,10 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	page.SetImage(h.Image)
 	page.url = &url
 
-	disp := engine{
+	disp := engineX{
 		Page:                   &page,
-		RunsInServer:           true,
-		ResolveStaticResources: h.resolveStaticPath,
+		IsServerSide:           true,
+		StaticResourceResolver: h.resolveStaticPath,
 		ActionHandlers:         actionHandlers,
 	}
 	body := h.Body().privateBody(

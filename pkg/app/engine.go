@@ -383,7 +383,7 @@ func (e *engine) scheduleComponentUpdate(n UI) {
 		return
 	}
 
-	c := getParentComponent(n)
+	c := getComponent(n)
 	if c == nil {
 		return
 	}
@@ -469,7 +469,7 @@ func sortUpdateDescriptors(d []updateDescriptor) {
 	})
 }
 
-func getParentComponent(n UI) Composer {
+func getComponent(n UI) Composer {
 	for node := n; node != nil; node = node.getParent() {
 		if c, isCompo := node.(Composer); isCompo {
 			return c

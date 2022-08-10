@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"net/url"
 	"sync"
 	"time"
@@ -56,9 +57,6 @@ func (e *engineX) Dispatch(d Dispatch) {
 	if d.Source == nil {
 		d.Source = e.Body
 	}
-	if d.Function == nil {
-		d.Function = func(Context) {}
-	}
 	e.dispatches <- d
 }
 
@@ -67,11 +65,15 @@ func (e *engineX) Emit(src UI, fn func()) {
 		Mode:   Next,
 		Source: src,
 		Function: func(ctx Context) {
+			if !src.Mounted() {
+				return
+			}
+
 			if fn != nil {
 				fn()
 			}
 
-			for c := getParentComponent(src); c != nil; c = getParentComponent(c) {
+			for c := getComponent(src); c != nil; c = getComponent(c.getParent()) {
 				e.addComponentUpdate(c)
 			}
 		},
@@ -126,6 +128,7 @@ func (e *engineX) Consume() {
 
 		default:
 			e.handleFrame()
+			return
 		}
 	}
 }
@@ -162,7 +165,7 @@ func (e *engineX) Mount(v UI) {
 		Mode:   Update,
 		Source: e.Body,
 		Function: func(ctx Context) {
-			if !e.isFirstMount {
+			if e.isFirstMount {
 				if err := e.Body.(*htmlBody).replaceChildAt(0, v); err != nil {
 					panic(errors.New("mounting first ui element failed").Wrap(err))
 				}
@@ -341,6 +344,7 @@ func (e *engineX) start(ctx context.Context) {
 				}
 
 			case <-cleanups.C:
+				fmt.Println("cleanup")
 				e.actions.closeUnusedHandlers()
 				e.states.Cleanup()
 			}
@@ -352,7 +356,7 @@ func (e *engineX) handleDispatch(d Dispatch) {
 	switch d.Mode {
 	case Update:
 		d.do()
-		e.addComponentUpdate(getParentComponent(d.Source))
+		e.addComponentUpdate(getComponent(d.Source))
 
 	case Defer:
 		e.deferables = append(e.deferables, d)
@@ -386,6 +390,5 @@ func (e *engineX) handleDeferables() {
 		e.deferables[i].do()
 		e.deferables[i] = Dispatch{}
 	}
-
 	e.deferables = e.deferables[:0]
 }
