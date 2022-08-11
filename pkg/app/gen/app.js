@@ -205,7 +205,10 @@ async function goappInitWebAssembly() {
     const go = new Go();
 
     const wasm = await instantiateStreaming(
-      fetch("{{.Wasm}}"),
+      fetchWithProgress("{{.Wasm}}", (progress) => {
+        const loaderLabel = document.getElementById("app-wasm-loader-label");
+        loaderLabel.innerText = progress + "%";
+      }),
       go.importObject
     );
 
@@ -228,4 +231,49 @@ function goappCanLoadWebAssembly() {
   return !/bot|googlebot|crawler|spider|robot|crawling/i.test(
     navigator.userAgent
   );
+}
+
+async function fetchWithProgress(url, progess) {
+  const response = await fetch(url);
+
+  const contentLength = response.headers.get("Content-Length");
+  const total = parseInt(contentLength, 10);
+  let loaded = 0;
+
+  const progressHandler = function (loaded, total) {
+    progess(Math.round((loaded * 100) / total));
+  };
+
+  var res = new Response(
+    new ReadableStream(
+      {
+        async start(controller) {
+          var reader = response.body.getReader();
+          for (;;) {
+            var { done, value } = await reader.read();
+
+            if (done) {
+              progressHandler(total, total);
+              break;
+            }
+
+            loaded += value.byteLength;
+            progressHandler(loaded, total);
+            controller.enqueue(value);
+          }
+          controller.close();
+        },
+      },
+      {
+        status: response.status,
+        statusText: response.statusText,
+      }
+    )
+  );
+
+  for (var pair of response.headers.entries()) {
+    res.headers.set(pair[0], pair[1]);
+  }
+
+  return res;
 }
