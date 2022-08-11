@@ -64,6 +64,7 @@ type Dispatcher interface {
 	isServerSide() bool
 	resolveStaticResource(string) string
 	preventComponentUpdate(Composer)
+	removeComponentUpdate(Composer)
 }
 
 // ClientDispatcher is the interface that describes a dispatcher that emulates a

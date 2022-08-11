@@ -311,6 +311,10 @@ func (e *engine) preventComponentUpdate(c Composer) {
 	e.componentUpdates[c] = false
 }
 
+func (e *engine) removeComponentUpdate(c Composer) {
+	delete(e.componentUpdates, c)
+}
+
 func (e *engine) addDeferable(d Dispatch) {
 	e.deferables = append(e.deferables, d)
 }
