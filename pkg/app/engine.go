@@ -347,7 +347,9 @@ func (e *engine) start(ctx context.Context) {
 			case <-frames.C:
 				e.handleFrame()
 				if len(e.dispatches) == 0 {
-					currentFrameDuration *= 2
+					if currentFrameDuration < time.Hour {
+						currentFrameDuration *= 2
+					}
 					frames.Reset(currentFrameDuration)
 				}
 
