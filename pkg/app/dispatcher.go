@@ -58,12 +58,12 @@ type Dispatcher interface {
 	Wait()
 
 	start(context.Context)
-	currentPage() Page
-	localStorage() BrowserStorage
-	sessionStorage() BrowserStorage
-	runsInServer() bool
+	getCurrentPage() Page
+	getLocalStorage() BrowserStorage
+	getSessionStorage() BrowserStorage
+	isServerSide() bool
 	resolveStaticResource(string) string
-	removeFromUpdates(Composer)
+	preventComponentUpdate(Composer)
 }
 
 // ClientDispatcher is the interface that describes a dispatcher that emulates a
@@ -131,7 +131,7 @@ type ServerDispatcher interface {
 // client environment.
 func NewServerTester(n UI) ServerDispatcher {
 	e := &engine{
-		RunsInServer:   true,
+		IsServerSide:   true,
 		ActionHandlers: actionHandlers,
 	}
 	e.init()
@@ -145,6 +145,13 @@ type Dispatch struct {
 	Mode     DispatchMode
 	Source   UI
 	Function func(Context)
+}
+
+func (d Dispatch) do() {
+	if d.Source == nil || !d.Source.Mounted() || d.Function == nil {
+		return
+	}
+	d.Function(makeContext(d.Source))
 }
 
 // DispatchMode represents how a dispatch is processed.

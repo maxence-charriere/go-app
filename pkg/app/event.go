@@ -93,19 +93,14 @@ func (h eventHandler) Dismount() {
 
 func makeJSEventHandler(src UI, h EventHandler) Func {
 	return FuncOf(func(this Value, args []Value) any {
-		src.getDispatcher().Dispatch(Dispatch{
-			Mode:   Update,
-			Source: src,
-			Function: func(ctx Context) {
-				ctx.Emit(func() {
-					event := Event{
-						Value: args[0],
-					}
-					trackMousePosition(event)
-					h(ctx, event)
-				})
-			},
+		src.getDispatcher().Emit(src, func() {
+			event := Event{
+				Value: args[0],
+			}
+			trackMousePosition(event)
+			h(makeContext(src), event)
 		})
+
 		return nil
 	})
 }

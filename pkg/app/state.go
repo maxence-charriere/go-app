@@ -263,7 +263,7 @@ func (s *store) Del(key string) {
 	defer s.mutex.Unlock()
 
 	delete(s.states, key)
-	s.disp.localStorage().Del(key)
+	s.disp.getLocalStorage().Del(key)
 }
 
 func (s *store) Observe(key string, elem UI) Observer {
@@ -326,14 +326,14 @@ func (s *store) removeUnusedObservers() {
 
 func (s *store) getPersistent(key string, recv any) error {
 	var state persistentState
-	s.disp.localStorage().Get(key, &state)
+	s.disp.getLocalStorage().Get(key, &state)
 
 	if state.EncryptedValue == nil && state.Value == nil && state.ExpiresAt == (time.Time{}) {
 		return nil
 	}
 
 	if state.isExpired(time.Now()) {
-		s.disp.localStorage().Del(key)
+		s.disp.getLocalStorage().Del(key)
 		return nil
 	}
 
@@ -358,7 +358,7 @@ func (s *store) setPersistent(key string, encrypt bool, expiresAt time.Time, v a
 		return err
 	}
 
-	return s.disp.localStorage().Set(key, state)
+	return s.disp.getLocalStorage().Set(key, state)
 }
 
 func (s *store) expireExpiredValues() {
@@ -372,7 +372,7 @@ func (s *store) expireExpiredValues() {
 }
 
 func (s *store) expire(key string, state State) State {
-	s.disp.localStorage().Del(key)
+	s.disp.getLocalStorage().Del(key)
 	state.value = nil
 	return state
 }

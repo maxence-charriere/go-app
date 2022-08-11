@@ -381,7 +381,7 @@ func TestPreRenderer(t *testing.T) {
 	d.PreRender()
 	d.Consume()
 	require.True(t, h.preRenderer)
-	require.Equal(t, "world", d.currentPage().Title())
+	require.Equal(t, "world", d.getCurrentPage().Title())
 }
 
 func TestNestedPreRenderer(t *testing.T) {
@@ -393,7 +393,7 @@ func TestNestedPreRenderer(t *testing.T) {
 	d.PreRender()
 	d.Consume()
 	require.True(t, h.preRenderer)
-	require.Equal(t, "world", d.currentPage().Title())
+	require.Equal(t, "world", d.getCurrentPage().Title())
 }
 
 func TestNestedInComponentPreRenderer(t *testing.T) {
@@ -403,7 +403,7 @@ func TestNestedInComponentPreRenderer(t *testing.T) {
 
 	d.PreRender()
 	d.Consume()
-	require.Equal(t, "bar", d.currentPage().Title())
+	require.Equal(t, "bar", d.getCurrentPage().Title())
 }
 
 func TestUpdater(t *testing.T) {

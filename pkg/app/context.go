@@ -157,6 +157,9 @@ type Context interface {
 
 	// Returns the service to setup and display notifications.
 	Notifications() NotificationService
+
+	// Prevents the component that contains the context source to be updated.
+	PreventUpdate()
 }
 
 type uiContext struct {
@@ -289,11 +292,11 @@ func (ctx uiContext) ResolveStaticResource(path string) string {
 }
 
 func (ctx uiContext) LocalStorage() BrowserStorage {
-	return ctx.Dispatcher().localStorage()
+	return ctx.Dispatcher().getLocalStorage()
 }
 
 func (ctx uiContext) SessionStorage() BrowserStorage {
-	return ctx.Dispatcher().sessionStorage()
+	return ctx.Dispatcher().getSessionStorage()
 }
 
 func (ctx uiContext) ScrollTo(id string) {
@@ -367,6 +370,10 @@ func (ctx uiContext) Notifications() NotificationService {
 	return NotificationService{dispatcher: ctx.Dispatcher()}
 }
 
+func (ctx uiContext) PreventUpdate() {
+	ctx.Dispatcher().preventComponentUpdate(getComponent(ctx.src))
+}
+
 func (ctx uiContext) cryptoKey() string {
 	return strings.ReplaceAll(ctx.DeviceID(), "-", "")
 }
@@ -377,7 +384,7 @@ func makeContext(src UI) Context {
 		src:                src,
 		jsSrc:              src.JSValue(),
 		appUpdateAvailable: appUpdateAvailable,
-		page:               src.getDispatcher().currentPage(),
+		page:               src.getDispatcher().getCurrentPage(),
 		disp:               src.getDispatcher(),
 	}
 }

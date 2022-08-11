@@ -632,8 +632,8 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 	disp := engine{
 		Page:                   &page,
-		RunsInServer:           true,
-		ResolveStaticResources: h.resolveStaticPath,
+		IsServerSide:           true,
+		StaticResourceResolver: h.resolveStaticPath,
 		ActionHandlers:         actionHandlers,
 	}
 	body := h.Body().privateBody(
@@ -656,7 +656,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	)
 	if err := mount(&disp, body); err != nil {
 		panic(errors.New("mounting pre-rendering container failed").
-			Tag("server-side", disp.runsInServer()).
+			Tag("server-side", disp.isServerSide()).
 			Tag("body-type", reflect.TypeOf(disp.Body)).
 			Wrap(err))
 	}

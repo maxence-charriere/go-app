@@ -280,7 +280,7 @@ func (c *Compo) mount(d Dispatcher) error {
 			Tag("kind", c.Kind())
 	}
 
-	if initializer, ok := c.self().(Initializer); ok && !d.runsInServer() {
+	if initializer, ok := c.self().(Initializer); ok && !d.isServerSide() {
 		initializer.OnInit()
 	}
 
@@ -297,7 +297,7 @@ func (c *Compo) mount(d Dispatcher) error {
 	root.setParent(c.this)
 	c.root = root
 
-	if c.getDispatcher().runsInServer() {
+	if c.getDispatcher().isServerSide() {
 		return nil
 	}
 
