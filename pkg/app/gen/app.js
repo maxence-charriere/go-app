@@ -204,11 +204,15 @@ async function goappInitWebAssembly() {
   try {
     const go = new Go();
 
+    const showProgress = (progress) => {
+      const loaderLabel = document.getElementById("app-wasm-loader-label");
+      loaderLabel.innerText = progress + "%";
+    };
+
+    showProgress(0);
+
     const wasm = await instantiateStreaming(
-      fetchWithProgress("{{.Wasm}}", (progress) => {
-        const loaderLabel = document.getElementById("app-wasm-loader-label");
-        loaderLabel.innerText = progress + "%";
-      }),
+      fetchWithProgress("{{.Wasm}}", showProgress),
       go.importObject
     );
 
