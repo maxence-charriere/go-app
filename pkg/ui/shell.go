@@ -246,19 +246,19 @@ func (s *shell) refresh(ctx app.Context) {
 		cw += s.IpaneWidth
 	}
 
-	// if hideMenu != s.hideMenu ||
-	// 	hideIndex != s.hideIndex ||
-	// 	hideAds != s.hideAds ||
-	// 	w != s.width {
-	// 	s.hideMenu = hideMenu
-	// 	s.hideIndex = hideIndex
-	// 	s.hideAds = hideAds
-	// 	s.width = w
+	if hideMenu != s.hideMenu ||
+		hideIndex != s.hideIndex ||
+		hideAds != s.hideAds ||
+		w != s.width {
+		s.hideMenu = hideMenu
+		s.hideIndex = hideIndex
+		s.hideAds = hideAds
+		s.width = w
 
-	ctx.Defer(func(app.Context) {
-		s.ResizeContent()
-	})
-	// }
+		ctx.Defer(func(app.Context) {
+			s.ResizeContent()
+		})
+	}
 }
 
 func (s *shell) layoutSize() (int, int) {
