@@ -308,9 +308,7 @@ func (e *engine) addComponentUpdate(c Composer) {
 	if c == nil || !c.Mounted() {
 		return
 	}
-	if _, isAdded := e.componentUpdates[c]; isAdded {
-		return
-	}
+
 	e.componentUpdates[c] = true
 }
 
