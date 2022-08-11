@@ -274,6 +274,7 @@ func (c *Compo) getChildren() []UI {
 
 func (c *Compo) mount(d Dispatcher) error {
 	if c.Mounted() {
+		return nil
 		return errors.New("mounting component failed").
 			Tag("reason", "already mounted").
 			Tag("name", c.name()).
