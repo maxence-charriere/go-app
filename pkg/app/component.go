@@ -335,6 +335,8 @@ func (c *Compo) updateWith(v UI) error {
 			Tag("new", reflect.TypeOf(v))
 	}
 
+	defer c.getDispatcher().preventComponentUpdate(c.this)
+
 	aval := reflect.Indirect(reflect.ValueOf(c.self()))
 	bval := reflect.Indirect(reflect.ValueOf(v))
 	compotype := reflect.ValueOf(c).Elem().Type()

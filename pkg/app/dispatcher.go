@@ -63,6 +63,7 @@ type Dispatcher interface {
 	getSessionStorage() BrowserStorage
 	isServerSide() bool
 	resolveStaticResource(string) string
+	preventComponentUpdate(Composer)
 }
 
 // ClientDispatcher is the interface that describes a dispatcher that emulates a

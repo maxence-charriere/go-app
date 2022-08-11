@@ -68,7 +68,12 @@ func (e *engine) Emit(src UI, fn func()) {
 				fn()
 			}
 
-			for c := getComponent(src); c != nil; c = getComponent(c.getParent()) {
+			compo := getComponent(src)
+			if canUpdate, ok := e.componentUpdates[compo]; ok && !canUpdate {
+				return
+			}
+
+			for c := compo; c != nil; c = getComponent(c.getParent()) {
 				e.addComponentUpdate(c)
 			}
 		},
