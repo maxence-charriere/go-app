@@ -35,10 +35,11 @@ type engine struct {
 	// executed asynchronously.
 	ActionHandlers map[string]ActionHandler
 
-	initOnce  sync.Once
-	startOnce sync.Once
-	closeOnce sync.Once
-	wait      sync.WaitGroup
+	initOnce             sync.Once
+	startOnce            sync.Once
+	closeOnce            sync.Once
+	wait                 sync.WaitGroup
+	componentUpdateMutex sync.RWMutex
 
 	dispatches       chan Dispatch
 	componentUpdates map[Composer]bool
@@ -68,10 +69,13 @@ func (e *engine) Emit(src UI, fn func()) {
 				fn()
 			}
 
+			e.componentUpdateMutex.RLock()
 			compo := getComponent(src)
 			if canUpdate, ok := e.componentUpdates[compo]; ok && !canUpdate {
+				e.componentUpdateMutex.RUnlock()
 				return
 			}
+			e.componentUpdateMutex.RUnlock()
 
 			for c := compo; c != nil; c = getComponent(c.getParent()) {
 				e.addComponentUpdate(c)
@@ -298,6 +302,9 @@ func (e *engine) resolveStaticResource(path string) string {
 }
 
 func (e *engine) addComponentUpdate(c Composer) {
+	e.componentUpdateMutex.Lock()
+	defer e.componentUpdateMutex.Unlock()
+
 	if c == nil || !c.Mounted() {
 		return
 	}
@@ -308,6 +315,9 @@ func (e *engine) addComponentUpdate(c Composer) {
 }
 
 func (e *engine) preventComponentUpdate(c Composer) {
+	e.componentUpdateMutex.Lock()
+	defer e.componentUpdateMutex.Unlock()
+
 	e.componentUpdates[c] = false
 }
 
@@ -371,6 +381,9 @@ func (e *engine) handleFrame() {
 }
 
 func (e *engine) handleComponentUpdates() {
+	e.componentUpdateMutex.Lock()
+	defer e.componentUpdateMutex.Unlock()
+
 	for component, canUppdate := range e.componentUpdates {
 		if !component.Mounted() || !canUppdate {
 			delete(e.componentUpdates, component)

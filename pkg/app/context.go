@@ -157,6 +157,9 @@ type Context interface {
 
 	// Returns the service to setup and display notifications.
 	Notifications() NotificationService
+
+	// Prevents the component that contains the context source to be updated.
+	PreventUpdate()
 }
 
 type uiContext struct {
@@ -365,6 +368,10 @@ func (ctx uiContext) Dispatcher() Dispatcher {
 
 func (ctx uiContext) Notifications() NotificationService {
 	return NotificationService{dispatcher: ctx.Dispatcher()}
+}
+
+func (ctx uiContext) PreventUpdate() {
+	ctx.Dispatcher().preventComponentUpdate(getComponent(ctx.src))
 }
 
 func (ctx uiContext) cryptoKey() string {
