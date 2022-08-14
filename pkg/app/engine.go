@@ -394,7 +394,7 @@ func (e *engine) handleComponentUpdates() {
 	}
 
 	sort.Slice(queue, func(i, j int) bool {
-		return compoPriority(queue[i]) <= compoPriority(queue[j])
+		return compoPriority(queue[i]) > compoPriority(queue[j])
 	})
 
 	for _, c := range queue {
