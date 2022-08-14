@@ -41,12 +41,13 @@ type engine struct {
 	wait                 sync.WaitGroup
 	componentUpdateMutex sync.RWMutex
 
-	dispatches       chan Dispatch
-	componentUpdates map[Composer]bool
-	deferables       []Dispatch
-	actions          actionManager
-	states           *store
-	isFirstMount     bool
+	dispatches           chan Dispatch
+	componentUpdates     map[Composer]bool
+	componentUpdateQueue []Composer
+	deferables           []Dispatch
+	actions              actionManager
+	states               *store
+	isFirstMount         bool
 }
 
 func (e *engine) Context() Context {
@@ -271,6 +272,7 @@ func (e *engine) init() {
 
 		e.dispatches = make(chan Dispatch, 4096)
 		e.componentUpdates = make(map[Composer]bool)
+		e.componentUpdateQueue = make([]Composer, 0, 32)
 		e.deferables = make([]Dispatch, 32)
 		e.states = newStore(e)
 		e.isFirstMount = true
@@ -307,10 +309,6 @@ func (e *engine) addComponentUpdate(c Composer) {
 	}
 
 	e.componentUpdates[c] = true
-}
-
-func (e *engine) removeComponentUpdate(c Composer) {
-	delete(e.componentUpdates, c)
 }
 
 func (e *engine) preventComponentUpdate(c Composer) {
@@ -384,24 +382,6 @@ func (e *engine) handleFrame() {
 func (e *engine) handleComponentUpdates() {
 	e.componentUpdateMutex.Lock()
 	defer e.componentUpdateMutex.Unlock()
-
-	// queue := make([]Composer, 0, len(e.componentUpdates))
-	// for c, canUpdate := range e.componentUpdates {
-	// 	if c.Mounted() && canUpdate {
-	// 		queue = append(queue, c)
-	// 	}
-	// 	e.removeComponentUpdate(c)
-	// }
-
-	// sort.Slice(queue, func(i, j int) bool {
-	// 	return compoPriority(queue[i]) > compoPriority(queue[j])
-	// })
-
-	// for _, c := range queue {
-	// 	if err := c.updateRoot(); err != nil {
-	// 		panic(err)
-	// 	}
-	// }
 
 	for component, canUppdate := range e.componentUpdates {
 		if !component.Mounted() || !canUppdate {
