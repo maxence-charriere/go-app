@@ -88,6 +88,7 @@ func (r *raw) getChildren() []UI {
 
 func (r *raw) mount(d Dispatcher) error {
 	if r.Mounted() {
+		return nil
 		return errors.New("mounting raw html element failed").
 			Tag("reason", "already mounted").
 			Tag("name", r.name()).

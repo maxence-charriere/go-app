@@ -73,6 +73,7 @@ func (t *text) getChildren() []UI {
 
 func (t *text) mount(d Dispatcher) error {
 	if t.Mounted() {
+		return nil
 		return errors.New("mounting ui element failed").
 			Tag("reason", "already mounted").
 			Tag("kind", t.Kind()).

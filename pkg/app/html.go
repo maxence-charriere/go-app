@@ -78,6 +78,7 @@ func (e *htmlElement) getChildren() []UI {
 
 func (e *htmlElement) mount(d Dispatcher) error {
 	if e.Mounted() {
+		return nil
 		return errors.New("html element is already mounted").
 			Tag("tag", e.tag).
 			Tag("kind", e.Kind())
