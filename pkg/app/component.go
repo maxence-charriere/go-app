@@ -362,10 +362,13 @@ func (c *Compo) updateWith(v UI) error {
 		return nil
 	}
 
+	if err := c.updateRoot(); err != nil {
+		return errors.New("updating root failed").Wrap(err)
+	}
+
 	if updater, ok := c.self().(Updater); ok {
 		c.dispatch(updater.OnUpdate)
 	}
-	c.updateRoot()
 
 	return nil
 }
