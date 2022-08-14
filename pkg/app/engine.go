@@ -303,14 +303,15 @@ func (e *engine) resolveStaticResource(path string) string {
 }
 
 func (e *engine) addComponentUpdate(c Composer) {
-	e.componentUpdateMutex.Lock()
-	defer e.componentUpdateMutex.Unlock()
-
 	if c == nil || !c.Mounted() {
 		return
 	}
 
 	e.componentUpdates[c] = true
+}
+
+func (e *engine) removeComponentUpdate(c Composer) {
+	delete(e.componentUpdates, c)
 }
 
 func (e *engine) preventComponentUpdate(c Composer) {
@@ -390,7 +391,7 @@ func (e *engine) handleComponentUpdates() {
 		if c.Mounted() && canUpdate {
 			queue = append(queue, c)
 		}
-		delete(e.componentUpdates, c)
+		e.removeComponentUpdate(c)
 	}
 
 	sort.Slice(queue, func(i, j int) bool {
