@@ -144,7 +144,6 @@ func dismount(n UI) {
 func canUpdate(a, b UI) bool {
 	a.setSelf(a)
 	b.setSelf(b)
-
 	return a.canUpdateWith(b)
 }
 

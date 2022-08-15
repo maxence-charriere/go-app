@@ -296,11 +296,6 @@ resources to run Go-based progressive web apps.
 				
 			
 				
-				<dd><a href="#Engine">type Engine</a></dd>
-				
-				
-			
-				
 				<dd><a href="#Environment">type Environment</a></dd>
 				
 				
@@ -1485,8 +1480,6 @@ resources to run Go-based progressive web apps.
 			
 				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/engine.go">engine.go</a>
 			
-				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/enginex.go">enginex.go</a>
-			
 				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/event.go">event.go</a>
 			
 				<a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/html.go">html.go</a>
@@ -2235,7 +2228,7 @@ Window returns the JavaScript &#34;window&#34; object.
 		
 			
 			
-			<h2 id="ClientDispatcher">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=2089:2697#L60">ClientDispatcher</a>
+			<h2 id="ClientDispatcher">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=2123:2731#L61">ClientDispatcher</a>
 				<a class="permalink" href="#ClientDispatcher">&#xb6;</a>
 				
 				
@@ -2284,7 +2277,7 @@ client environment.
 
 			
 				
-				<h3 id="NewClientTester">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=2834:2877#L91">NewClientTester</a>
+				<h3 id="NewClientTester">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=2868:2911#L92">NewClientTester</a>
 					<a class="permalink" href="#NewClientTester">&#xb6;</a>
 					
 					
@@ -2564,7 +2557,7 @@ expression.
 		
 			
 			
-			<h2 id="Context">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=442:5043#L10">Context</a>
+			<h2 id="Context">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/context.go?s=442:5136#L10">Context</a>
 				<a class="permalink" href="#Context">&#xb6;</a>
 				
 				
@@ -2720,6 +2713,9 @@ It is canceled when its associated UI element is dismounted.
 
     <span class="comment">// Returns the service to setup and display notifications.</span>
     Notifications() <a href="#NotificationService">NotificationService</a>
+
+    <span class="comment">// Prevents the component that contains the context source to be updated.</span>
+    PreventUpdate()
 }</pre>
 
 			
@@ -2768,7 +2764,7 @@ additional actions when dismounted.
 		
 			
 			
-			<h2 id="Dispatch">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3740:3824#L133">Dispatch</a>
+			<h2 id="Dispatch">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3774:3858#L134">Dispatch</a>
 				<a class="permalink" href="#Dispatch">&#xb6;</a>
 				
 				
@@ -2798,7 +2794,7 @@ Dispatch represents an operation executed on the UI goroutine.
 		
 			
 			
-			<h2 id="DispatchMode">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=4004:4025#L147">DispatchMode</a>
+			<h2 id="DispatchMode">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=4057:4078#L148">DispatchMode</a>
 				<a class="permalink" href="#DispatchMode">&#xb6;</a>
 				
 				
@@ -2839,7 +2835,7 @@ DispatchMode represents how a dispatch is processed.
 		
 			
 			
-			<h2 id="Dispatcher">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=206:1983#L4">Dispatcher</a>
+			<h2 id="Dispatcher">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=206:2017#L4">Dispatcher</a>
 				<a class="permalink" href="#Dispatcher">&#xb6;</a>
 				
 				
@@ -2895,29 +2891,6 @@ UI instructions and UI elements lifecycle.
     <span class="comment">// complete.</span>
     Wait()
     <span class="comment">// contains filtered or unexported methods</span>
-}</pre>
-
-			
-
-			
-
-			
-			
-			
-
-			
-
-			
-		
-			
-			
-			<h2 id="Engine">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/enginex.go?s=187:212#L6">Engine</a>
-				<a class="permalink" href="#Engine">&#xb6;</a>
-				
-				
-			</h2>
-			
-			<pre>type Engine interface {
 }</pre>
 
 			
@@ -25309,7 +25282,7 @@ additional actions when mounted.
 		
 			
 			
-			<h2 id="MsgHandler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=4563:4597#L165">MsgHandler</a>
+			<h2 id="MsgHandler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=4616:4650#L166">MsgHandler</a>
 				<a class="permalink" href="#MsgHandler">&#xb6;</a>
 				
 				
@@ -26124,7 +26097,7 @@ remote bucket such as Amazon S3 or Google Cloud Storage.
 		
 			
 			
-			<h2 id="ServerDispatcher">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3081:3414#L102">ServerDispatcher</a>
+			<h2 id="ServerDispatcher">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3115:3448#L103">ServerDispatcher</a>
 				<a class="permalink" href="#ServerDispatcher">&#xb6;</a>
 				
 				
@@ -26160,7 +26133,7 @@ ServerDispatcher is the interface that describes a dispatcher that emulates a se
 
 			
 				
-				<h3 id="NewServerTester">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3504:3547#L121">NewServerTester</a>
+				<h3 id="NewServerTester">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3538:3581#L122">NewServerTester</a>
 					<a class="permalink" href="#NewServerTester">&#xb6;</a>
 					
 					

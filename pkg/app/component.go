@@ -310,8 +310,8 @@ func (c *Compo) mount(d Dispatcher) error {
 }
 
 func (c *Compo) dismount() {
-	dismount(c.root)
 	c.ctxCancel()
+	dismount(c.root)
 
 	if dismounter, ok := c.this.(Dismounter); ok {
 		dismounter.OnDismount()
@@ -362,11 +362,15 @@ func (c *Compo) updateWith(v UI) error {
 		return nil
 	}
 
+	if err := c.updateRoot(); err != nil {
+		return errors.New("updating root failed").Wrap(err)
+	}
+
 	if updater, ok := c.self().(Updater); ok {
 		c.dispatch(updater.OnUpdate)
 	}
-	c.updateRoot()
 
+	c.getDispatcher().removeComponentUpdate(c.this)
 	return nil
 }
 

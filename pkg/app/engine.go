@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"net/url"
+	"sort"
 	"sync"
 	"time"
 
@@ -41,12 +42,13 @@ type engine struct {
 	wait                 sync.WaitGroup
 	componentUpdateMutex sync.RWMutex
 
-	dispatches       chan Dispatch
-	componentUpdates map[Composer]bool
-	deferables       []Dispatch
-	actions          actionManager
-	states           *store
-	isFirstMount     bool
+	dispatches           chan Dispatch
+	componentUpdates     map[Composer]bool
+	componentUpdateQueue []componentUpdate
+	deferables           []Dispatch
+	actions              actionManager
+	states               *store
+	isFirstMount         bool
 }
 
 func (e *engine) Context() Context {
@@ -271,6 +273,7 @@ func (e *engine) init() {
 
 		e.dispatches = make(chan Dispatch, 4096)
 		e.componentUpdates = make(map[Composer]bool)
+		e.componentUpdateQueue = make([]componentUpdate, 0, 32)
 		e.deferables = make([]Dispatch, 32)
 		e.states = newStore(e)
 		e.isFirstMount = true
@@ -302,14 +305,15 @@ func (e *engine) resolveStaticResource(path string) string {
 }
 
 func (e *engine) addComponentUpdate(c Composer) {
-	e.componentUpdateMutex.Lock()
-	defer e.componentUpdateMutex.Unlock()
-
 	if c == nil || !c.Mounted() {
 		return
 	}
 
 	e.componentUpdates[c] = true
+}
+
+func (e *engine) removeComponentUpdate(c Composer) {
+	delete(e.componentUpdates, c)
 }
 
 func (e *engine) preventComponentUpdate(c Composer) {
@@ -384,17 +388,34 @@ func (e *engine) handleComponentUpdates() {
 	e.componentUpdateMutex.Lock()
 	defer e.componentUpdateMutex.Unlock()
 
-	for component, canUppdate := range e.componentUpdates {
-		if !component.Mounted() || !canUppdate {
-			delete(e.componentUpdates, component)
+	for c, canUpdate := range e.componentUpdates {
+		if c.Mounted() && canUpdate {
+			e.componentUpdateQueue = append(e.componentUpdateQueue, componentUpdate{
+				component: c,
+				priority:  getComponentPriority(c),
+			})
+		}
+	}
+
+	sort.Slice(e.componentUpdateQueue, func(i, j int) bool {
+		return e.componentUpdateQueue[i].priority < e.componentUpdateQueue[j].priority
+	})
+
+	for i, u := range e.componentUpdateQueue {
+		if _, ok := e.componentUpdates[u.component]; !ok || !u.component.Mounted() {
+			e.removeComponentUpdate(u.component)
+			e.componentUpdateQueue[i] = componentUpdate{}
 			continue
 		}
 
-		if err := component.updateRoot(); err != nil {
+		if err := u.component.updateRoot(); err != nil {
 			panic(err)
 		}
-		delete(e.componentUpdates, component)
+		e.removeComponentUpdate(u.component)
+		e.componentUpdateQueue[i] = componentUpdate{}
 	}
+
+	e.componentUpdateQueue = e.componentUpdateQueue[:0]
 }
 
 func (e *engine) handleDeferables() {
@@ -412,4 +433,17 @@ func getComponent(n UI) Composer {
 		}
 	}
 	return nil
+}
+
+func getComponentPriority(c Composer) int {
+	depth := 1
+	for parent := c.getParent(); parent != nil; parent = parent.getParent() {
+		depth++
+	}
+	return depth
+}
+
+type componentUpdate struct {
+	component Composer
+	priority  int
 }
