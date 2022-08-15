@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"net/url"
+	"sort"
 	"sync"
 	"time"
 
@@ -383,17 +384,33 @@ func (e *engine) handleComponentUpdates() {
 	e.componentUpdateMutex.Lock()
 	defer e.componentUpdateMutex.Unlock()
 
-	for component, canUppdate := range e.componentUpdates {
-		if !component.Mounted() || !canUppdate {
-			delete(e.componentUpdates, component)
-			continue
+	queue := make([]Composer, 0, len(e.componentUpdates))
+	for c, canUpdate := range e.componentUpdates {
+		if c.Mounted() && canUpdate {
+			queue = append(queue, c)
 		}
-
-		if err := component.updateRoot(); err != nil {
+		delete(e.componentUpdates, c)
+	}
+	sort.Slice(queue, func(i, j int) bool {
+		return compoPriority(queue[i]) < compoPriority(queue[j])
+	})
+	for _, c := range queue {
+		if err := c.updateRoot(); err != nil {
 			panic(err)
 		}
-		delete(e.componentUpdates, component)
 	}
+
+	// for component, canUppdate := range e.componentUpdates {
+	// 	if !component.Mounted() || !canUppdate {
+	// 		delete(e.componentUpdates, component)
+	// 		continue
+	// 	}
+
+	// 	if err := component.updateRoot(); err != nil {
+	// 		panic(err)
+	// 	}
+	// 	delete(e.componentUpdates, component)
+	// }
 }
 
 func (e *engine) handleDeferables() {
