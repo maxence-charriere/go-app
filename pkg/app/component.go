@@ -310,8 +310,8 @@ func (c *Compo) mount(d Dispatcher) error {
 }
 
 func (c *Compo) dismount() {
-	dismount(c.root)
 	c.ctxCancel()
+	dismount(c.root)
 
 	if dismounter, ok := c.this.(Dismounter); ok {
 		dismounter.OnDismount()
@@ -325,7 +325,7 @@ func (c *Compo) canUpdateWith(v UI) bool {
 }
 
 func (c *Compo) updateWith(v UI) error {
-	if c.self() == v {
+	if c.self() == v || !c.Mounted() {
 		return nil
 	}
 
