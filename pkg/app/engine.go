@@ -312,6 +312,10 @@ func (e *engine) addComponentUpdate(c Composer) {
 	e.componentUpdates[c] = true
 }
 
+func (e *engine) removeComponentUpdate(c Composer) {
+	delete(e.componentUpdates, c)
+}
+
 func (e *engine) preventComponentUpdate(c Composer) {
 	e.componentUpdateMutex.Lock()
 	defer e.componentUpdateMutex.Unlock()
@@ -389,18 +393,19 @@ func (e *engine) handleComponentUpdates() {
 		if c.Mounted() && canUpdate {
 			queue = append(queue, c)
 		}
-		delete(e.componentUpdates, c)
 	}
 	sort.Slice(queue, func(i, j int) bool {
-		return compoPriority(queue[i]) > compoPriority(queue[j])
+		return compoPriority(queue[i]) < compoPriority(queue[j])
 	})
 	for _, c := range queue {
-		if !c.Mounted() {
+		if _, ok := e.componentUpdates[c]; !ok || !c.Mounted() {
+			delete(e.componentUpdates, c)
 			continue
 		}
 		if err := c.updateRoot(); err != nil {
 			panic(err)
 		}
+		delete(e.componentUpdates, c)
 	}
 
 	// for component, canUppdate := range e.componentUpdates {

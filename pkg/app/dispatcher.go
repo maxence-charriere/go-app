@@ -63,6 +63,7 @@ type Dispatcher interface {
 	getSessionStorage() BrowserStorage
 	isServerSide() bool
 	resolveStaticResource(string) string
+	removeComponentUpdate(Composer)
 	preventComponentUpdate(Composer)
 }
 

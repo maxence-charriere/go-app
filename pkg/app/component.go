@@ -370,6 +370,7 @@ func (c *Compo) updateWith(v UI) error {
 		c.dispatch(updater.OnUpdate)
 	}
 
+	c.getDispatcher().removeComponentUpdate(c.this)
 	return nil
 }
 
