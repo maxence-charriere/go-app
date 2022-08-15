@@ -44,7 +44,7 @@ type engine struct {
 
 	dispatches           chan Dispatch
 	componentUpdates     map[Composer]bool
-	componentUpdateQueue []Composer
+	componentUpdateQueue []componentUpdate
 	deferables           []Dispatch
 	actions              actionManager
 	states               *store
@@ -273,7 +273,7 @@ func (e *engine) init() {
 
 		e.dispatches = make(chan Dispatch, 4096)
 		e.componentUpdates = make(map[Composer]bool)
-		e.componentUpdateQueue = make([]Composer, 0, 32)
+		e.componentUpdateQueue = make([]componentUpdate, 0, 32)
 		e.deferables = make([]Dispatch, 32)
 		e.states = newStore(e)
 		e.isFirstMount = true
@@ -388,37 +388,34 @@ func (e *engine) handleComponentUpdates() {
 	e.componentUpdateMutex.Lock()
 	defer e.componentUpdateMutex.Unlock()
 
-	queue := make([]Composer, 0, len(e.componentUpdates))
 	for c, canUpdate := range e.componentUpdates {
 		if c.Mounted() && canUpdate {
-			queue = append(queue, c)
+			e.componentUpdateQueue = append(e.componentUpdateQueue, componentUpdate{
+				component: c,
+				priority:  getComponentPriority(c),
+			})
 		}
 	}
-	sort.Slice(queue, func(i, j int) bool {
-		return compoPriority(queue[i]) < compoPriority(queue[j])
+
+	sort.Slice(e.componentUpdateQueue, func(i, j int) bool {
+		return e.componentUpdateQueue[i].priority < e.componentUpdateQueue[j].priority
 	})
-	for _, c := range queue {
-		if _, ok := e.componentUpdates[c]; !ok || !c.Mounted() {
-			delete(e.componentUpdates, c)
+
+	for i, u := range e.componentUpdateQueue {
+		if _, ok := e.componentUpdates[u.component]; !ok || !u.component.Mounted() {
+			e.removeComponentUpdate(u.component)
+			e.componentUpdateQueue[i] = componentUpdate{}
 			continue
 		}
-		if err := c.updateRoot(); err != nil {
+
+		if err := u.component.updateRoot(); err != nil {
 			panic(err)
 		}
-		delete(e.componentUpdates, c)
+		e.removeComponentUpdate(u.component)
+		e.componentUpdateQueue[i] = componentUpdate{}
 	}
 
-	// for component, canUppdate := range e.componentUpdates {
-	// 	if !component.Mounted() || !canUppdate {
-	// 		delete(e.componentUpdates, component)
-	// 		continue
-	// 	}
-
-	// 	if err := component.updateRoot(); err != nil {
-	// 		panic(err)
-	// 	}
-	// 	delete(e.componentUpdates, component)
-	// }
+	e.componentUpdateQueue = e.componentUpdateQueue[:0]
 }
 
 func (e *engine) handleDeferables() {
@@ -438,10 +435,15 @@ func getComponent(n UI) Composer {
 	return nil
 }
 
-func compoPriority(c Composer) int {
+func getComponentPriority(c Composer) int {
 	depth := 1
 	for parent := c.getParent(); parent != nil; parent = parent.getParent() {
 		depth++
 	}
 	return depth
+}
+
+type componentUpdate struct {
+	component Composer
+	priority  int
 }
