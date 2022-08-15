@@ -392,7 +392,7 @@ func (e *engine) handleComponentUpdates() {
 		delete(e.componentUpdates, c)
 	}
 	sort.Slice(queue, func(i, j int) bool {
-		return compoPriority(queue[i]) < compoPriority(queue[j])
+		return compoPriority(queue[i]) > compoPriority(queue[j])
 	})
 	for _, c := range queue {
 		if err := c.updateRoot(); err != nil {
