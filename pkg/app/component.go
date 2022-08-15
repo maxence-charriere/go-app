@@ -325,7 +325,7 @@ func (c *Compo) canUpdateWith(v UI) bool {
 }
 
 func (c *Compo) updateWith(v UI) error {
-	if c.self() == v || !c.Mounted() {
+	if c.self() == v {
 		return nil
 	}
 
