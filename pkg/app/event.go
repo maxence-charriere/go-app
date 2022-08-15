@@ -101,18 +101,6 @@ func makeJSEventHandler(src UI, h EventHandler) Func {
 			h(makeContext(src), event)
 		})
 
-		// src.getDispatcher().Dispatch(Dispatch{
-		// 	Mode:   Update,
-		// 	Source: src,
-		// 	Function: func(ctx Context) {
-		// 		event := Event{
-		// 			Value: args[0],
-		// 		}
-		// 		trackMousePosition(event)
-		// 		h(ctx, event)
-		// 	},
-		// })
-
 		return nil
 	})
 }
