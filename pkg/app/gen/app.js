@@ -6,6 +6,7 @@ var goappOnUpdate = function () {};
 var goappOnAppInstallChange = function () {};
 
 const goappEnv = {{.Env}};
+const goappWasmContentLengthHeader = "{{.WasmContentLengthHeader}}";
 
 let goappServiceWorkerRegistration;
 let deferredPrompt = null;
@@ -202,22 +203,21 @@ async function goappInitWebAssembly() {
   }
 
   try {
-    const go = new Go();
+    const loaderIcon = document.getElementById("app-wasm-loader-icon");
+    loaderIcon.className = "goapp-logo";
 
+    const loaderLabel = document.getElementById("app-wasm-loader-label");
+    const loadingLabel = loaderLabel.innerText;
     const showProgress = (progress) => {
-      const loaderLabel = document.getElementById("app-wasm-loader-label");
-      loaderLabel.innerText = progress + "%";
+      loaderLabel.innerText = loadingLabel.replace("{progress}", progress);
     };
-
     showProgress(0);
 
+    const go = new Go();
     const wasm = await instantiateStreaming(
       fetchWithProgress("{{.Wasm}}", showProgress),
       go.importObject
     );
-
-    const loaderIcon = document.getElementById("app-wasm-loader-icon");
-    loaderIcon.className = "goapp-logo";
 
     go.run(wasm.instance);
   } catch (err) {
@@ -240,7 +240,10 @@ function goappCanLoadWebAssembly() {
 async function fetchWithProgress(url, progess) {
   const response = await fetch(url);
 
-  const contentLength = response.headers.get("Content-Length");
+  let contentLength = response.headers.get(goappWasmContentLengthHeader);
+  if (!goappWasmContentLengthHeader || !contentLength) {
+    contentLength = response.headers.get("Content-Length");
+  }
   const total = parseInt(contentLength, 10);
   let loaded = 0;
 
