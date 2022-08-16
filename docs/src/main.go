@@ -125,7 +125,7 @@ func main() {
 		},
 		BackgroundColor: backgroundColor,
 		ThemeColor:      backgroundColor,
-		LoadingLabel:    "go-app documentation",
+		LoadingLabel:    "go-app documentation {progress}%",
 		Scripts: []string{
 			"/web/js/prism.js",
 		},
