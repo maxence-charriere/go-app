@@ -240,10 +240,14 @@ function goappCanLoadWebAssembly() {
 async function fetchWithProgress(url, progess) {
   const response = await fetch(url);
 
-  let contentLength = response.headers.get(goappWasmContentLengthHeader);
+  let contentLength;
+  try {
+    contentLength = response.headers.get(goappWasmContentLengthHeader);
+  } catch {}
   if (!goappWasmContentLengthHeader || !contentLength) {
     contentLength = response.headers.get("Content-Length");
   }
+  
   const total = parseInt(contentLength, 10);
   let loaded = 0;
 

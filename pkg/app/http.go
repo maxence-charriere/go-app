@@ -211,10 +211,6 @@ func (h *Handler) initStaticResources() {
 	if h.Resources == nil {
 		h.Resources = LocalDir("")
 	}
-
-	if h.WasmContentLengthHeader == "" {
-		h.WasmContentLengthHeader = "Content-Length"
-	}
 }
 
 func (h *Handler) initImage() {
