@@ -362,7 +362,7 @@ func (h *Handler) makeAppJS() []byte {
 		}{
 			Env:                     jsonString(h.Env),
 			Wasm:                    h.Resources.AppWASM(),
-			WasmContentLengthHeader: "Content-Length",
+			WasmContentLengthHeader: h.WasmContentLengthHeader,
 			WorkerJS:                h.resolvePackagePath("/app-worker.js"),
 			AutoUpdateInterval:      h.AutoUpdateInterval.Milliseconds(),
 		}); err != nil {
