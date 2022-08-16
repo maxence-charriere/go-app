@@ -53,7 +53,10 @@ type Handler struct {
 	// DEFAULT: #2d2c2c.
 	ThemeColor string
 
-	// The text displayed while loading a page.
+	// The text displayed while loading a page. Load progress can be inserted by
+	// including "{progress}" in the loading label.
+	//
+	// DEFAULT: "{progress}%".
 	LoadingLabel string
 
 	// The page language.
@@ -266,7 +269,7 @@ func (h *Handler) initPWA() {
 	}
 
 	if h.LoadingLabel == "" {
-		h.LoadingLabel = "Loading"
+		h.LoadingLabel = "{progress}%"
 	}
 }
 

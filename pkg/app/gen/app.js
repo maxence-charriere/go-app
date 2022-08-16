@@ -202,22 +202,21 @@ async function goappInitWebAssembly() {
   }
 
   try {
-    const go = new Go();
+    const loaderIcon = document.getElementById("app-wasm-loader-icon");
+    loaderIcon.className = "goapp-logo";
 
+    const loaderLabel = document.getElementById("app-wasm-loader-label");
+    const loadingLabel = loaderLabel.innerText;
     const showProgress = (progress) => {
-      const loaderLabel = document.getElementById("app-wasm-loader-label");
-      loaderLabel.innerText = progress + "%";
+      loaderLabel.innerText = loadingLabel.replace("{progress}", progress);
     };
-
     showProgress(0);
 
+    const go = new Go();
     const wasm = await instantiateStreaming(
       fetchWithProgress("{{.Wasm}}", showProgress),
       go.importObject
     );
-
-    const loaderIcon = document.getElementById("app-wasm-loader-icon");
-    loaderIcon.className = "goapp-logo";
 
     go.run(wasm.instance);
   } catch (err) {
