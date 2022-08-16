@@ -173,6 +173,12 @@ type Handler struct {
 	// development system.
 	Version string
 
+	// The HTTP header to retrieve the WebAssembly file content length.
+	//
+	// Content length finding falls back to the Content-Length HTTP header when
+	// no content length is found with the defined header.
+	WasmContentLengthHeader string
+
 	once           sync.Once
 	etag           string
 	pwaResources   PreRenderCache
@@ -348,15 +354,17 @@ func (h *Handler) makeAppJS() []byte {
 	if err := template.
 		Must(template.New("app.js").Parse(appJS)).
 		Execute(&b, struct {
-			Env                string
-			Wasm               string
-			WorkerJS           string
-			AutoUpdateInterval int64
+			Env                     string
+			Wasm                    string
+			WasmContentLengthHeader string
+			WorkerJS                string
+			AutoUpdateInterval      int64
 		}{
-			Env:                jsonString(h.Env),
-			Wasm:               h.Resources.AppWASM(),
-			WorkerJS:           h.resolvePackagePath("/app-worker.js"),
-			AutoUpdateInterval: h.AutoUpdateInterval.Milliseconds(),
+			Env:                     jsonString(h.Env),
+			Wasm:                    h.Resources.AppWASM(),
+			WasmContentLengthHeader: "Content-Length",
+			WorkerJS:                h.resolvePackagePath("/app-worker.js"),
+			AutoUpdateInterval:      h.AutoUpdateInterval.Milliseconds(),
 		}); err != nil {
 		panic(errors.New("initializing app.js failed").Wrap(err))
 	}
