@@ -26,19 +26,36 @@ func main() {
 	fmt.Fprintln(f)
 
 	gen := []struct {
-		Var      string
-		Filename string
+		Var           string
+		Filename      string
+		Documentation string
 	}{
-		{Var: "wasmExecJS", Filename: filepath.Join(
-			runtime.GOROOT(),
-			"misc",
-			"wasm",
-			"wasm_exec.js",
-		)},
-		{Var: "appJS", Filename: "gen/app.js"},
-		{Var: "appWorkerJS", Filename: "gen/app-worker.js"},
-		{Var: "manifestJSON", Filename: "gen/manifest.webmanifest"},
-		{Var: "appCSS", Filename: "gen/app.css"},
+		{
+			Var:           "DefaultAppWorkerJS",
+			Filename:      "gen/app-worker.js",
+			Documentation: "The default template used to generate app-worker.js.",
+		},
+		{
+			Var: "wasmExecJS",
+			Filename: filepath.Join(
+				runtime.GOROOT(),
+				"misc",
+				"wasm",
+				"wasm_exec.js",
+			),
+		},
+		{
+			Var:      "appJS",
+			Filename: "gen/app.js",
+		},
+		{
+			Var:      "manifestJSON",
+			Filename: "gen/manifest.webmanifest",
+		},
+		{
+			Var:      "appCSS",
+			Filename: "gen/app.css",
+		},
 	}
 
 	fmt.Fprintln(f, "const(")
@@ -47,6 +64,11 @@ func main() {
 		b, err := ioutil.ReadFile(g.Filename)
 		if err != nil {
 			panic(err)
+		}
+
+		if g.Documentation != "" {
+			fmt.Fprintln(f, "//", g.Documentation)
+
 		}
 
 		fmt.Fprintf(f, "%s = %q", g.Var, b)
