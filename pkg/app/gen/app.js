@@ -203,11 +203,10 @@ async function goappInitWebAssembly() {
     };
   }
 
-  try {
-    const loaderIcon = document.getElementById("app-wasm-loader-icon");
-    loaderIcon.className = "goapp-logo";
+  const loaderIcon = document.getElementById("app-wasm-loader-icon");
+  const loaderLabel = document.getElementById("app-wasm-loader-label");
 
-    const loaderLabel = document.getElementById("app-wasm-loader-label");
+  try {
     const showProgress = (progress) => {
       loaderLabel.innerText = goappLoadingLabel.replace("{progress}", progress);
     };
@@ -221,12 +220,8 @@ async function goappInitWebAssembly() {
 
     go.run(wasm.instance);
   } catch (err) {
-    const loaderIcon = document.getElementById("app-wasm-loader-icon");
     loaderIcon.className = "goapp-logo";
-
-    const loaderLabel = document.getElementById("app-wasm-loader-label");
     loaderLabel.innerText = err;
-
     console.error("loading wasm failed: ", err);
   }
 }

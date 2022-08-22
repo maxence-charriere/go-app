@@ -5,7 +5,7 @@ var goappNav = function () {};
 var goappOnUpdate = function () {};
 var goappOnAppInstallChange = function () {};
 
-const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"14a2a162a0ac80801aa21f83ff5b57d0a9226b3a"};
+const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"752a92f3739e5d2f41ca7d4fa6f99d61479dc31f"};
 const goappLoadingLabel = "go-app documentation {progress}%";
 const goappWasmContentLengthHeader = "";
 
@@ -203,11 +203,10 @@ async function goappInitWebAssembly() {
     };
   }
 
-  try {
-    const loaderIcon = document.getElementById("app-wasm-loader-icon");
-    loaderIcon.className = "goapp-logo";
+  const loaderIcon = document.getElementById("app-wasm-loader-icon");
+  const loaderLabel = document.getElementById("app-wasm-loader-label");
 
-    const loaderLabel = document.getElementById("app-wasm-loader-label");
+  try {
     const showProgress = (progress) => {
       loaderLabel.innerText = goappLoadingLabel.replace("{progress}", progress);
     };
@@ -221,12 +220,8 @@ async function goappInitWebAssembly() {
 
     go.run(wasm.instance);
   } catch (err) {
-    const loaderIcon = document.getElementById("app-wasm-loader-icon");
     loaderIcon.className = "goapp-logo";
-
-    const loaderLabel = document.getElementById("app-wasm-loader-label");
     loaderLabel.innerText = err;
-
     console.error("loading wasm failed: ", err);
   }
 }
