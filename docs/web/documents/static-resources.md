@@ -51,7 +51,7 @@ func (f *foo) Render() app.UI {
 
 ## Setup Custom Web directory
 
-By default relative to the server executable, The `web` directory can be configured to be located in other locations such as a different local directory or a remote bucket.
+By default relative to the working directory, the `web` directory can be configured to be located in other locations such as a different local directory or a remote bucket.
 
 Keep in mind that **wherever the directory is located, static resources will always be accessible from `/web/RESOURCE_NAME` in code**.
 
