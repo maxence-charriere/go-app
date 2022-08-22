@@ -6,6 +6,7 @@ var goappOnUpdate = function () {};
 var goappOnAppInstallChange = function () {};
 
 const goappEnv = {{.Env}};
+const goappLoadingLabel = "{{.LoadingLabel}}";
 const goappWasmContentLengthHeader = "{{.WasmContentLengthHeader}}";
 
 let goappServiceWorkerRegistration;
@@ -207,9 +208,8 @@ async function goappInitWebAssembly() {
     loaderIcon.className = "goapp-logo";
 
     const loaderLabel = document.getElementById("app-wasm-loader-label");
-    const loadingLabel = loaderLabel.innerText;
     const showProgress = (progress) => {
-      loaderLabel.innerText = loadingLabel.replace("{progress}", progress);
+      loaderLabel.innerText = goappLoadingLabel.replace("{progress}", progress);
     };
     showProgress(0);
 
@@ -247,7 +247,7 @@ async function fetchWithProgress(url, progess) {
   if (!goappWasmContentLengthHeader || !contentLength) {
     contentLength = response.headers.get("Content-Length");
   }
-  
+
   const total = parseInt(contentLength, 10);
   let loaded = 0;
 
