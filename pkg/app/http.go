@@ -302,6 +302,7 @@ func (h *Handler) initPageContent() {
 	if h.Body == nil {
 		h.Body = Body
 	}
+
 }
 
 func (h *Handler) initPreRenderedResources() {
@@ -370,12 +371,14 @@ func (h *Handler) makeAppJS() []byte {
 		Must(template.New("app.js").Parse(appJS)).
 		Execute(&b, struct {
 			Env                     string
+			LoadingLabel            string
 			Wasm                    string
 			WasmContentLengthHeader string
 			WorkerJS                string
 			AutoUpdateInterval      int64
 		}{
 			Env:                     jsonString(h.Env),
+			LoadingLabel:            h.LoadingLabel,
 			Wasm:                    h.Resources.AppWASM(),
 			WasmContentLengthHeader: h.WasmContentLengthHeader,
 			WorkerJS:                h.resolvePackagePath("/app-worker.js"),
@@ -652,7 +655,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	page.SetDescription(h.Description)
 	page.SetAuthor(h.Author)
 	page.SetKeywords(h.Keywords...)
-	page.SetLoadingLabel(h.LoadingLabel)
+	page.SetLoadingLabel(strings.ReplaceAll(h.LoadingLabel, "{progress}", "0"))
 	page.SetImage(h.Image)
 	page.url = &url
 

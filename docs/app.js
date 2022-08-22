@@ -5,7 +5,8 @@ var goappNav = function () {};
 var goappOnUpdate = function () {};
 var goappOnAppInstallChange = function () {};
 
-const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"99744976a78f1c0e6202f9856d65e47589cb83ca"};
+const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"14a2a162a0ac80801aa21f83ff5b57d0a9226b3a"};
+const goappLoadingLabel = "go-app documentation {progress}%";
 const goappWasmContentLengthHeader = "";
 
 let goappServiceWorkerRegistration;
@@ -207,9 +208,8 @@ async function goappInitWebAssembly() {
     loaderIcon.className = "goapp-logo";
 
     const loaderLabel = document.getElementById("app-wasm-loader-label");
-    const loadingLabel = loaderLabel.innerText;
     const showProgress = (progress) => {
-      loaderLabel.innerText = loadingLabel.replace("{progress}", progress);
+      loaderLabel.innerText = goappLoadingLabel.replace("{progress}", progress);
     };
     showProgress(0);
 
@@ -247,7 +247,7 @@ async function fetchWithProgress(url, progess) {
   if (!goappWasmContentLengthHeader || !contentLength) {
     contentLength = response.headers.get("Content-Length");
   }
-  
+
   const total = parseInt(contentLength, 10);
   let loaded = 0;
 
