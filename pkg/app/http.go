@@ -179,6 +179,14 @@ type Handler struct {
 	// no content length is found with the defined header.
 	WasmContentLengthHeader string
 
+	// The template used to generate app-worker.js. The template follows the
+	// text/template package model.
+	//
+	// By default set to DefaultAppWorkerJS, changing the template have very
+	// high chances to mess up go-app usage. Any issue related to a custom app
+	// worker template is not supported and will be closed.
+	ServiceWorkerTemplate string
+
 	once           sync.Once
 	etag           string
 	pwaResources   PreRenderCache
@@ -191,6 +199,7 @@ func (h *Handler) init() {
 	h.initImage()
 	h.initStyles()
 	h.initScripts()
+	h.initServiceWorker()
 	h.initCacheableResources()
 	h.initIcon()
 	h.initPWA()
@@ -228,6 +237,12 @@ func (h *Handler) initStyles() {
 func (h *Handler) initScripts() {
 	for i, path := range h.Scripts {
 		h.Scripts[i] = h.resolveStaticPath(path)
+	}
+}
+
+func (h *Handler) initServiceWorker() {
+	if h.ServiceWorkerTemplate == "" {
+		h.ServiceWorkerTemplate = DefaultAppWorkerJS
 	}
 }
 
@@ -404,7 +419,7 @@ func (h *Handler) makeAppWorkerJS() []byte {
 
 	var b bytes.Buffer
 	if err := template.
-		Must(template.New("app-worker.js").Parse(appWorkerJS)).
+		Must(template.New("app-worker.js").Parse(h.ServiceWorkerTemplate)).
 		Execute(&b, struct {
 			Version          string
 			ResourcesToCache string
