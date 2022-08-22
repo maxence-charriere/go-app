@@ -5,7 +5,8 @@ var goappNav = function () {};
 var goappOnUpdate = function () {};
 var goappOnAppInstallChange = function () {};
 
-const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"e187477debc28eef777e36d0fc2e69cb9e0663ee"};
+const goappEnv = {"GOAPP_INTERNAL_URLS":"null","GOAPP_ROOT_PREFIX":"","GOAPP_STATIC_RESOURCES_URL":"","GOAPP_VERSION":"99744976a78f1c0e6202f9856d65e47589cb83ca"};
+const goappWasmContentLengthHeader = "";
 
 let goappServiceWorkerRegistration;
 let deferredPrompt = null;
@@ -202,15 +203,21 @@ async function goappInitWebAssembly() {
   }
 
   try {
-    const go = new Go();
-
-    const wasm = await instantiateStreaming(
-      fetch("/web/app.wasm"),
-      go.importObject
-    );
-
     const loaderIcon = document.getElementById("app-wasm-loader-icon");
     loaderIcon.className = "goapp-logo";
+
+    const loaderLabel = document.getElementById("app-wasm-loader-label");
+    const loadingLabel = loaderLabel.innerText;
+    const showProgress = (progress) => {
+      loaderLabel.innerText = loadingLabel.replace("{progress}", progress);
+    };
+    showProgress(0);
+
+    const go = new Go();
+    const wasm = await instantiateStreaming(
+      fetchWithProgress("/web/app.wasm", showProgress),
+      go.importObject
+    );
 
     go.run(wasm.instance);
   } catch (err) {
@@ -228,4 +235,56 @@ function goappCanLoadWebAssembly() {
   return !/bot|googlebot|crawler|spider|robot|crawling/i.test(
     navigator.userAgent
   );
+}
+
+async function fetchWithProgress(url, progess) {
+  const response = await fetch(url);
+
+  let contentLength;
+  try {
+    contentLength = response.headers.get(goappWasmContentLengthHeader);
+  } catch {}
+  if (!goappWasmContentLengthHeader || !contentLength) {
+    contentLength = response.headers.get("Content-Length");
+  }
+  
+  const total = parseInt(contentLength, 10);
+  let loaded = 0;
+
+  const progressHandler = function (loaded, total) {
+    progess(Math.round((loaded * 100) / total));
+  };
+
+  var res = new Response(
+    new ReadableStream(
+      {
+        async start(controller) {
+          var reader = response.body.getReader();
+          for (;;) {
+            var { done, value } = await reader.read();
+
+            if (done) {
+              progressHandler(total, total);
+              break;
+            }
+
+            loaded += value.byteLength;
+            progressHandler(loaded, total);
+            controller.enqueue(value);
+          }
+          controller.close();
+        },
+      },
+      {
+        status: response.status,
+        statusText: response.statusText,
+      }
+    )
+  );
+
+  for (var pair of response.headers.entries()) {
+    res.headers.set(pair[0], pair[1]);
+  }
+
+  return res;
 }

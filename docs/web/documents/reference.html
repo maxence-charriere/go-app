@@ -1548,6 +1548,12 @@ resources to run Go-based progressive web apps.
     <span id="IsServer">IsServer</span> = <a href="/pkg/runtime/">runtime</a>.<a href="/pkg/runtime/#GOARCH">GOARCH</a> != &#34;wasm&#34; || <a href="/pkg/runtime/">runtime</a>.<a href="/pkg/runtime/#GOOS">GOOS</a> != &#34;js&#34;
 )</pre>
 			
+				
+				<pre>const (
+    <span class="comment">// The default template used to generate app-worker.js.</span>
+    <span id="DefaultAppWorkerJS">DefaultAppWorkerJS</span> = &#34;const cacheName = \&#34;app-\&#34; + \&#34;{{.Version}}\&#34;;\nconst resourcesToCache = {{.ResourcesToCache}};\n\nself.addEventListener(\&#34;install\&#34;, (event) =&gt; {\n  console.log(\&#34;installing app worker {{.Version}}\&#34;);\n\n  event.waitUntil(\n    caches\n      .open(cacheName)\n      .then((cache) =&gt; {\n        return cache.addAll(resourcesToCache);\n      })\n      .then(() =&gt; {\n        self.skipWaiting();\n      })\n  );\n});\n\nself.addEventListener(\&#34;activate\&#34;, (event) =&gt; {\n  event.waitUntil(\n    caches.keys().then((keyList) =&gt; {\n      return Promise.all(\n        keyList.map((key) =&gt; {\n          if (key !== cacheName) {\n            return caches.delete(key);\n          }\n        })\n      );\n    })\n  );\n  console.log(\&#34;app worker {{.Version}} is activated\&#34;);\n});\n\nself.addEventListener(\&#34;fetch\&#34;, (event) =&gt; {\n  event.respondWith(\n    caches.match(event.request).then((response) =&gt; {\n      return response || fetch(event.request);\n    })\n  );\n});\n\nself.addEventListener(\&#34;push\&#34;, (event) =&gt; {\n  if (!event.data || !event.data.text()) {\n    return;\n  }\n\n  const notification = JSON.parse(event.data.text());\n  if (!notification) {\n    return;\n  }\n\n  const title = notification.title;\n  delete notification.title;\n\n  if (!notification.data) {\n    notification.data = {};\n  }\n  let actions = [];\n  for (let i in notification.actions) {\n    const action = notification.actions[i];\n\n    actions.push({\n      action: action.action,\n      path: action.path,\n    });\n\n    delete action.path;\n  }\n  notification.data.goapp = {\n    path: notification.path,\n    actions: actions,\n  };\n  delete notification.path;\n\n  event.waitUntil(self.registration.showNotification(title, notification));\n});\n\nself.addEventListener(\&#34;notificationclick\&#34;, (event) =&gt; {\n  event.notification.close();\n\n  const notification = event.notification;\n  let path = notification.data.goapp.path;\n\n  for (let i in notification.data.goapp.actions) {\n    const action = notification.data.goapp.actions[i];\n    if (action.action === event.action) {\n      path = action.path;\n      break;\n    }\n  }\n\n  event.waitUntil(\n    clients\n      .matchAll({\n        type: \&#34;window\&#34;,\n      })\n      .then((clientList) =&gt; {\n        for (var i = 0; i &lt; clientList.length; i++) {\n          let client = clientList[i];\n          if (\&#34;focus\&#34; in client) {\n            client.focus();\n            client.postMessage({\n              goapp: {\n                type: \&#34;notification\&#34;,\n                path: path,\n              },\n            });\n            return;\n          }\n        }\n\n        if (clients.openWindow) {\n          return clients.openWindow(path);\n        }\n      })\n  );\n});\n&#34;
+)</pre>
+			
 		
 		
 			<h2 id="pkg-variables">Variables</h2>
@@ -1693,7 +1699,7 @@ returns the value, which will be empty if the variable is not present.
 		
 			
 			
-			<h2 id="HTMLString">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=2951:2980#L148">HTMLString</a>
+			<h2 id="HTMLString">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=2950:2979#L147">HTMLString</a>
 				<a class="permalink" href="#HTMLString">&#xb6;</a>
 				
 				
@@ -1709,7 +1715,7 @@ HTMLString return an HTML string representation of the given UI element.
 		
 			
 			
-			<h2 id="HTMLStringWithIndent">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=3145:3184#L156">HTMLStringWithIndent</a>
+			<h2 id="HTMLStringWithIndent">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=3144:3183#L155">HTMLStringWithIndent</a>
 				<a class="permalink" href="#HTMLStringWithIndent">&#xb6;</a>
 				
 				
@@ -1813,7 +1819,7 @@ to 5MB in a lot of web browsers.
 		
 			
 			
-			<h2 id="PrintHTML">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=3348:3382#L164">PrintHTML</a>
+			<h2 id="PrintHTML">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=3347:3381#L163">PrintHTML</a>
 				<a class="permalink" href="#PrintHTML">&#xb6;</a>
 				
 				
@@ -1830,7 +1836,7 @@ writer.
 		
 			
 			
-			<h2 id="PrintHTMLWithIndent">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=3545:3589#L173">PrintHTMLWithIndent</a>
+			<h2 id="PrintHTMLWithIndent">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/node.go?s=3544:3588#L172">PrintHTMLWithIndent</a>
 				<a class="permalink" href="#PrintHTMLWithIndent">&#xb6;</a>
 				
 				
@@ -2228,7 +2234,7 @@ Window returns the JavaScript &#34;window&#34; object.
 		
 			
 			
-			<h2 id="ClientDispatcher">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=2123:2731#L61">ClientDispatcher</a>
+			<h2 id="ClientDispatcher">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=2156:2764#L62">ClientDispatcher</a>
 				<a class="permalink" href="#ClientDispatcher">&#xb6;</a>
 				
 				
@@ -2277,7 +2283,7 @@ client environment.
 
 			
 				
-				<h3 id="NewClientTester">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=2868:2911#L92">NewClientTester</a>
+				<h3 id="NewClientTester">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=2901:2944#L93">NewClientTester</a>
 					<a class="permalink" href="#NewClientTester">&#xb6;</a>
 					
 					
@@ -2764,7 +2770,7 @@ additional actions when dismounted.
 		
 			
 			
-			<h2 id="Dispatch">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3774:3858#L134">Dispatch</a>
+			<h2 id="Dispatch">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3807:3891#L135">Dispatch</a>
 				<a class="permalink" href="#Dispatch">&#xb6;</a>
 				
 				
@@ -2794,7 +2800,7 @@ Dispatch represents an operation executed on the UI goroutine.
 		
 			
 			
-			<h2 id="DispatchMode">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=4057:4078#L148">DispatchMode</a>
+			<h2 id="DispatchMode">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=4090:4111#L149">DispatchMode</a>
 				<a class="permalink" href="#DispatchMode">&#xb6;</a>
 				
 				
@@ -2835,7 +2841,7 @@ DispatchMode represents how a dispatch is processed.
 		
 			
 			
-			<h2 id="Dispatcher">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=206:2017#L4">Dispatcher</a>
+			<h2 id="Dispatcher">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=206:2050#L4">Dispatcher</a>
 				<a class="permalink" href="#Dispatcher">&#xb6;</a>
 				
 				
@@ -2907,7 +2913,7 @@ UI instructions and UI elements lifecycle.
 		
 			
 			
-			<h2 id="Environment">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=19316:19350#L804">Environment</a>
+			<h2 id="Environment">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=20315:20349#L830">Environment</a>
 				<a class="permalink" href="#Environment">&#xb6;</a>
 				
 				
@@ -24934,7 +24940,7 @@ Wbr returns an HTML element that defines a possible line-break.
 		
 			
 			
-			<h2 id="Handler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=487:4364#L22">Handler</a>
+			<h2 id="Handler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=487:5066#L22">Handler</a>
 				<a class="permalink" href="#Handler">&#xb6;</a>
 				
 				
@@ -24968,7 +24974,10 @@ and its resources.
     <span class="comment">// DEFAULT: #2d2c2c.</span>
 <span id="Handler.ThemeColor"></span>    ThemeColor <a href="/pkg/builtin/#string">string</a>
 
-    <span class="comment">// The text displayed while loading a page.</span>
+    <span class="comment">// The text displayed while loading a page. Load progress can be inserted by</span>
+    <span class="comment">// including &#34;{progress}&#34; in the loading label.</span>
+    <span class="comment">//</span>
+    <span class="comment">// DEFAULT: &#34;{progress}%&#34;.</span>
 <span id="Handler.LoadingLabel"></span>    LoadingLabel <a href="/pkg/builtin/#string">string</a>
 
     <span class="comment">// The page language.</span>
@@ -25084,6 +25093,20 @@ and its resources.
     <span class="comment">// Default: Auto-generated in order to trigger pwa update on a local</span>
     <span class="comment">// development system.</span>
 <span id="Handler.Version"></span>    Version <a href="/pkg/builtin/#string">string</a>
+
+    <span class="comment">// The HTTP header to retrieve the WebAssembly file content length.</span>
+    <span class="comment">//</span>
+    <span class="comment">// Content length finding falls back to the Content-Length HTTP header when</span>
+    <span class="comment">// no content length is found with the defined header.</span>
+<span id="Handler.WasmContentLengthHeader"></span>    WasmContentLengthHeader <a href="/pkg/builtin/#string">string</a>
+
+    <span class="comment">// The template used to generate app-worker.js. The template follows the</span>
+    <span class="comment">// text/template package model.</span>
+    <span class="comment">//</span>
+    <span class="comment">// By default set to DefaultAppWorkerJS, changing the template have very</span>
+    <span class="comment">// high chances to mess up go-app usage. Any issue related to a custom app</span>
+    <span class="comment">// worker template is not supported and will be closed.</span>
+<span id="Handler.ServiceWorkerTemplate"></span>    ServiceWorkerTemplate <a href="/pkg/builtin/#string">string</a>
     <span class="comment">// contains filtered or unexported fields</span>
 }
 </pre>
@@ -25100,7 +25123,7 @@ and its resources.
 
 			
 				
-				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=11756:11823#L485">ServeHTTP</a>
+				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=12755:12822#L511">ServeHTTP</a>
 					<a class="permalink" href="#Handler.ServeHTTP">&#xb6;</a>
 					
 					
@@ -25114,7 +25137,7 @@ and its resources.
 		
 			
 			
-			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=18687:19224#L781">Icon</a>
+			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=19686:20223#L807">Icon</a>
 				<a class="permalink" href="#Icon">&#xb6;</a>
 				
 				
@@ -25282,7 +25305,7 @@ additional actions when mounted.
 		
 			
 			
-			<h2 id="MsgHandler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=4616:4650#L166">MsgHandler</a>
+			<h2 id="MsgHandler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=4649:4683#L167">MsgHandler</a>
 				<a class="permalink" href="#MsgHandler">&#xb6;</a>
 				
 				
@@ -26097,7 +26120,7 @@ remote bucket such as Amazon S3 or Google Cloud Storage.
 		
 			
 			
-			<h2 id="ServerDispatcher">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3115:3448#L103">ServerDispatcher</a>
+			<h2 id="ServerDispatcher">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3148:3481#L104">ServerDispatcher</a>
 				<a class="permalink" href="#ServerDispatcher">&#xb6;</a>
 				
 				
@@ -26133,7 +26156,7 @@ ServerDispatcher is the interface that describes a dispatcher that emulates a se
 
 			
 				
-				<h3 id="NewServerTester">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3538:3581#L122">NewServerTester</a>
+				<h3 id="NewServerTester">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/dispatcher.go?s=3571:3614#L123">NewServerTester</a>
 					<a class="permalink" href="#NewServerTester">&#xb6;</a>
 					
 					
