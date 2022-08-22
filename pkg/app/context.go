@@ -70,7 +70,7 @@ type Context interface {
 	//      "foo": "bar",
 	//      "hello": "world",
 	//  })
-	NewActionWithValue(name string, v interface{}, tags ...Tagger)
+	NewActionWithValue(name string, v any, tags ...Tagger)
 
 	// Executes the given function on a new goroutine.
 	//
@@ -117,10 +117,10 @@ type Context interface {
 	DeviceID() string
 
 	// Encrypts the given value using AES encryption.
-	Encrypt(v interface{}) ([]byte, error)
+	Encrypt(v any) ([]byte, error)
 
 	// Decrypts the given encrypted bytes and stores them in the given value.
-	Decrypt(crypted []byte, v interface{}) error
+	Decrypt(crypted []byte, v any) error
 
 	// Sets the state with the given value.
 	// Example:
@@ -130,11 +130,11 @@ type Context interface {
 	// expire, or broadcast the state across browser tabs and windows.
 	// Example:
 	//  ctx.SetState("/globalNumber", 42, Persistent, Broadcast)
-	SetState(state string, v interface{}, opts ...StateOption)
+	SetState(state string, v any, opts ...StateOption)
 
 	// Stores the specified state value into the given receiver. Panics when the
 	// receiver is not a pointer or nil.
-	GetState(state string, recv interface{})
+	GetState(state string, recv any)
 
 	// Deletes the given state. All value observations are stopped.
 	DelState(state string)
@@ -157,6 +157,9 @@ type Context interface {
 
 	// Returns the service to setup and display notifications.
 	Notifications() NotificationService
+
+	// Prevents the component that contains the context source to be updated.
+	PreventUpdate()
 }
 
 type uiContext struct {
@@ -229,7 +232,7 @@ func (ctx uiContext) NewAction(name string, tags ...Tagger) {
 	ctx.NewActionWithValue(name, nil, tags...)
 }
 
-func (ctx uiContext) NewActionWithValue(name string, v interface{}, tags ...Tagger) {
+func (ctx uiContext) NewActionWithValue(name string, v any, tags ...Tagger) {
 	var tagMap Tags
 	for _, t := range tags {
 		if tagMap == nil {
@@ -289,11 +292,11 @@ func (ctx uiContext) ResolveStaticResource(path string) string {
 }
 
 func (ctx uiContext) LocalStorage() BrowserStorage {
-	return ctx.Dispatcher().localStorage()
+	return ctx.Dispatcher().getLocalStorage()
 }
 
 func (ctx uiContext) SessionStorage() BrowserStorage {
-	return ctx.Dispatcher().sessionStorage()
+	return ctx.Dispatcher().getSessionStorage()
 }
 
 func (ctx uiContext) ScrollTo(id string) {
@@ -318,7 +321,7 @@ func (ctx uiContext) DeviceID() string {
 	return id
 }
 
-func (ctx uiContext) Encrypt(v interface{}) ([]byte, error) {
+func (ctx uiContext) Encrypt(v any) ([]byte, error) {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return nil, errors.New("encoding value failed").Wrap(err)
@@ -331,7 +334,7 @@ func (ctx uiContext) Encrypt(v interface{}) ([]byte, error) {
 	return b, nil
 }
 
-func (ctx uiContext) Decrypt(crypted []byte, v interface{}) error {
+func (ctx uiContext) Decrypt(crypted []byte, v any) error {
 	b, err := decrypt(ctx.cryptoKey(), crypted)
 	if err != nil {
 		return errors.New("decrypting value failed").Wrap(err)
@@ -343,11 +346,11 @@ func (ctx uiContext) Decrypt(crypted []byte, v interface{}) error {
 	return nil
 }
 
-func (ctx uiContext) SetState(state string, v interface{}, opts ...StateOption) {
+func (ctx uiContext) SetState(state string, v any, opts ...StateOption) {
 	ctx.Dispatcher().SetState(state, v, opts...)
 }
 
-func (ctx uiContext) GetState(state string, recv interface{}) {
+func (ctx uiContext) GetState(state string, recv any) {
 	ctx.Dispatcher().GetState(state, recv)
 }
 
@@ -367,17 +370,21 @@ func (ctx uiContext) Notifications() NotificationService {
 	return NotificationService{dispatcher: ctx.Dispatcher()}
 }
 
+func (ctx uiContext) PreventUpdate() {
+	ctx.Dispatcher().preventComponentUpdate(getComponent(ctx.src))
+}
+
 func (ctx uiContext) cryptoKey() string {
 	return strings.ReplaceAll(ctx.DeviceID(), "-", "")
 }
 
 func makeContext(src UI) Context {
 	return uiContext{
-		Context:            src.context(),
+		Context:            src.getContext(),
 		src:                src,
 		jsSrc:              src.JSValue(),
 		appUpdateAvailable: appUpdateAvailable,
-		page:               src.dispatcher().currentPage(),
-		disp:               src.dispatcher(),
+		page:               src.getDispatcher().getCurrentPage(),
+		disp:               src.getDispatcher(),
 	}
 }

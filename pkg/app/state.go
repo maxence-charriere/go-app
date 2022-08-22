@@ -28,7 +28,7 @@ type Observer interface {
 	// The receiver is updated each time the associated state changes. It is
 	// unchanged when its pointed value has a different type than the associated
 	// state value.
-	Value(recv interface{})
+	Value(recv any)
 }
 
 // A state represents an observable value available across the app.
@@ -46,7 +46,7 @@ type State struct {
 	// Reports whether a state is broadcasted to other browser tabs and windows.
 	IsBroadcasted bool
 
-	value     interface{}
+	value     any
 	observers map[*observer]struct{}
 }
 
@@ -102,7 +102,7 @@ type observer struct {
 	subscribe  func(*observer)
 	conditions []func() bool
 	onChanges  []func()
-	receiver   interface{}
+	receiver   any
 }
 
 func newObserver(elem UI, subscribe func(*observer)) *observer {
@@ -122,7 +122,7 @@ func (o *observer) OnChange(fn func()) Observer {
 	return o
 }
 
-func (o *observer) Value(recv interface{}) {
+func (o *observer) Value(recv any) {
 	if reflect.ValueOf(recv).Kind() != reflect.Ptr {
 		panic(errors.New("observer value receiver is not a pointer"))
 	}
@@ -165,7 +165,7 @@ func newStore(d Dispatcher) *store {
 	return s
 }
 
-func (s *store) Set(key string, v interface{}, opts ...StateOption) {
+func (s *store) Set(key string, v any, opts ...StateOption) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
@@ -235,7 +235,7 @@ func (s *store) Set(key string, v interface{}, opts ...StateOption) {
 	}
 }
 
-func (s *store) Get(key string, recv interface{}) {
+func (s *store) Get(key string, recv any) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
 
@@ -263,7 +263,7 @@ func (s *store) Del(key string) {
 	defer s.mutex.Unlock()
 
 	delete(s.states, key)
-	s.disp.localStorage().Del(key)
+	s.disp.getLocalStorage().Del(key)
 }
 
 func (s *store) Observe(key string, elem UI) Observer {
@@ -324,16 +324,16 @@ func (s *store) removeUnusedObservers() {
 	}
 }
 
-func (s *store) getPersistent(key string, recv interface{}) error {
+func (s *store) getPersistent(key string, recv any) error {
 	var state persistentState
-	s.disp.localStorage().Get(key, &state)
+	s.disp.getLocalStorage().Get(key, &state)
 
 	if state.EncryptedValue == nil && state.Value == nil && state.ExpiresAt == (time.Time{}) {
 		return nil
 	}
 
 	if state.isExpired(time.Now()) {
-		s.disp.localStorage().Del(key)
+		s.disp.getLocalStorage().Del(key)
 		return nil
 	}
 
@@ -343,7 +343,7 @@ func (s *store) getPersistent(key string, recv interface{}) error {
 	return s.disp.Context().Decrypt(state.EncryptedValue, recv)
 }
 
-func (s *store) setPersistent(key string, encrypt bool, expiresAt time.Time, v interface{}) error {
+func (s *store) setPersistent(key string, encrypt bool, expiresAt time.Time, v any) error {
 	var err error
 
 	state := persistentState{
@@ -358,7 +358,7 @@ func (s *store) setPersistent(key string, encrypt bool, expiresAt time.Time, v i
 		return err
 	}
 
-	return s.disp.localStorage().Set(key, state)
+	return s.disp.getLocalStorage().Set(key, state)
 }
 
 func (s *store) expireExpiredValues() {
@@ -372,7 +372,7 @@ func (s *store) expireExpiredValues() {
 }
 
 func (s *store) expire(key string, state State) State {
-	s.disp.localStorage().Del(key)
+	s.disp.getLocalStorage().Del(key)
 	state.value = nil
 	return state
 }
@@ -386,7 +386,7 @@ func (s *store) initBroadcast() {
 	broadcastChannel = broadcastChannel.New("go-app-broadcast-states")
 	s.broadcastChannel = broadcastChannel
 
-	onBroadcast := FuncOf(func(this Value, args []Value) interface{} {
+	onBroadcast := FuncOf(func(this Value, args []Value) any {
 		s.onBroadcast(args[0].Get("data"))
 		return nil
 	})
@@ -395,14 +395,14 @@ func (s *store) initBroadcast() {
 	broadcastChannel.Set("onmessage", onBroadcast)
 }
 
-func (s *store) broadcast(key string, v interface{}) error {
+func (s *store) broadcast(key string, v any) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
 	}
 
 	if s.broadcastChannel != nil {
-		s.broadcastChannel.Call("postMessage", map[string]interface{}{
+		s.broadcastChannel.Call("postMessage", map[string]any{
 			"StoreID": s.id,
 			"State":   key,
 			"Value":   string(b),
@@ -458,7 +458,7 @@ func (s *store) onBroadcast(event Value) {
 	}
 }
 
-func storeValue(recv, v interface{}) error {
+func storeValue(recv, v any) error {
 	dst := reflect.ValueOf(recv)
 	if dst.Kind() != reflect.Ptr {
 		return errors.New("receiver is not a pointer")

@@ -117,7 +117,7 @@ func TestStorePersist(t *testing.T) {
 		s.Set(key, 42, Persist)
 		s.Get(key, &v)
 		require.Equal(t, 42, v)
-		require.Equal(t, 1, d.localStorage().Len())
+		require.Equal(t, 1, d.getLocalStorage().Len())
 	})
 
 	t.Run("value is not pesisted", func(t *testing.T) {
@@ -139,7 +139,7 @@ func TestStorePersist(t *testing.T) {
 
 		s.Get(key, &v)
 		require.Equal(t, 21, v)
-		require.Equal(t, 1, d.localStorage().Len())
+		require.Equal(t, 1, d.getLocalStorage().Len())
 	})
 
 	t.Run("value is observed from local storage", func(t *testing.T) {
@@ -151,7 +151,7 @@ func TestStorePersist(t *testing.T) {
 
 		s.Observe(key, Div()).Value(&v)
 		require.Equal(t, 84, v)
-		require.Equal(t, 1, d.localStorage().Len())
+		require.Equal(t, 1, d.getLocalStorage().Len())
 	})
 
 	t.Run("value is deleted", func(t *testing.T) {
@@ -163,7 +163,7 @@ func TestStorePersist(t *testing.T) {
 		require.Empty(t, s.states)
 		s.Get(key, &v)
 		require.Equal(t, 0, v)
-		require.Equal(t, 0, d.localStorage().Len())
+		require.Equal(t, 0, d.getLocalStorage().Len())
 	})
 }
 
@@ -181,7 +181,7 @@ func TestStoreEncrypt(t *testing.T) {
 		s.Set(key, 42, Persist, Encrypt)
 		s.Get(key, &v)
 		require.Equal(t, 42, v)
-		require.Equal(t, 2, d.localStorage().Len(), d.localStorage()) // Contain app ID.
+		require.Equal(t, 2, d.getLocalStorage().Len(), d.getLocalStorage()) // Contain app ID.
 	})
 
 	t.Run("value is decrypted from local storage", func(t *testing.T) {
@@ -192,7 +192,7 @@ func TestStoreEncrypt(t *testing.T) {
 
 		s.Get(key, &v)
 		require.Equal(t, 43, v)
-		require.Equal(t, 2, d.localStorage().Len()) // Contain app ID.
+		require.Equal(t, 2, d.getLocalStorage().Len()) // Contain app ID.
 	})
 }
 
@@ -210,7 +210,7 @@ func TestStoreExpiresIn(t *testing.T) {
 		s.Set(key, 42, Persist, ExpiresIn(time.Minute))
 		s.Get(key, &v)
 		require.Equal(t, 42, v)
-		require.Equal(t, 1, d.localStorage().Len())
+		require.Equal(t, 1, d.getLocalStorage().Len())
 	})
 
 	t.Run("get expired value", func(t *testing.T) {
@@ -219,7 +219,7 @@ func TestStoreExpiresIn(t *testing.T) {
 		s.Set(key, 21, Persist, ExpiresIn(-time.Minute))
 		s.Get(key, &v)
 		require.Equal(t, 0, v)
-		require.Equal(t, 0, d.localStorage().Len())
+		require.Equal(t, 0, d.getLocalStorage().Len())
 	})
 
 	t.Run("get persisted expired value", func(t *testing.T) {
@@ -228,13 +228,13 @@ func TestStoreExpiresIn(t *testing.T) {
 		s.Del(key)
 		delete(s.states, key)
 
-		s.disp.localStorage().Set(key, persistentState{
+		s.disp.getLocalStorage().Set(key, persistentState{
 			ExpiresAt: time.Now().Add(-time.Minute),
 		})
 
 		s.Get(key, &v)
 		require.Equal(t, 0, v)
-		require.Equal(t, 0, d.localStorage().Len())
+		require.Equal(t, 0, d.getLocalStorage().Len())
 	})
 
 	t.Run("observe expired value", func(t *testing.T) {
@@ -243,23 +243,23 @@ func TestStoreExpiresIn(t *testing.T) {
 		s.Set(key, 21, Persist, ExpiresIn(-time.Minute))
 		s.Observe(key, Div()).Value(&v)
 		require.Equal(t, 0, v)
-		require.Equal(t, 0, d.localStorage().Len())
+		require.Equal(t, 0, d.getLocalStorage().Len())
 	})
 
 	t.Run("expire expired values", func(t *testing.T) {
 		s.Set(key, 99, Persist, ExpiresIn(time.Minute))
 		require.Len(t, s.states, 1)
-		require.Equal(t, 1, d.localStorage().Len())
+		require.Equal(t, 1, d.getLocalStorage().Len())
 
 		state := s.states[key]
 		state.ExpiresAt = time.Now().Add(-time.Minute)
 		s.states[key] = state
 		require.True(t, state.isExpired(time.Now()))
-		require.Equal(t, 1, d.localStorage().Len())
+		require.Equal(t, 1, d.getLocalStorage().Len())
 
 		s.expireExpiredValues()
 		require.True(t, state.isExpired(time.Now()))
-		require.Equal(t, 0, d.localStorage().Len())
+		require.Equal(t, 0, d.getLocalStorage().Len())
 	})
 }
 
@@ -297,7 +297,7 @@ func TestStoreBroadcast(t *testing.T) {
 		s2.Observe(key, bar).Value(&v)
 		s1.Set(key, 42, Broadcast)
 
-		time.Sleep(time.Millisecond * 50)
+		time.Sleep(time.Millisecond * 100)
 		d2.Consume()
 		require.Equal(t, 42, v)
 	})
@@ -493,9 +493,9 @@ func TestStoreValue(t *testing.T) {
 
 	utests := []struct {
 		scenario string
-		src      interface{}
-		recv     interface{}
-		expected interface{}
+		src      any
+		recv     any
+		expected any
 		err      bool
 	}{
 		{

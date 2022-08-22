@@ -307,6 +307,23 @@ var tags = []tag{
 
 	// E:
 	{
+		Name: "Elem",
+		Doc:  "represents an customizable HTML element.",
+		Attrs: withGlobalAttrs(attrsByNames(
+			"xmlns",
+		)...),
+		EventHandlers: withGlobalEventHandlers(),
+	},
+	{
+		Name: "ElemSelfClosing",
+		Type: selfClosing,
+		Doc:  "represents a self closing custom HTML element.",
+		Attrs: withGlobalAttrs(attrsByNames(
+			"xmlns",
+		)...),
+		EventHandlers: withGlobalEventHandlers(),
+	},
+	{
 		Name:          "Em",
 		Doc:           "defines emphasized text.",
 		Attrs:         withGlobalAttrs(),
@@ -1347,7 +1364,7 @@ var attrs = map[string]attr{
 	// M:
 	"max": {
 		Name: "Max",
-		Type: "interface{}",
+		Type: "any",
 		Doc:  "Specifies the maximum value.",
 	},
 	"maxlength": {
@@ -1367,7 +1384,7 @@ var attrs = map[string]attr{
 	},
 	"min": {
 		Name: "Min",
-		Type: "interface{}",
+		Type: "any",
 		Doc:  "specifies a minimum value.",
 	},
 	"multiple": {
@@ -1482,7 +1499,7 @@ var attrs = map[string]attr{
 	// S:
 	"sandbox": {
 		Name: "Sandbox",
-		Type: "interface{}",
+		Type: "any",
 		Doc:  "enables an extra set of restrictions for the content in an iframe.",
 	},
 	"scope": {
@@ -1593,7 +1610,7 @@ var attrs = map[string]attr{
 	// V:
 	"value": {
 		Name: "Value",
-		Type: "interface{}",
+		Type: "any",
 		Doc:  "specifies the value of the element.",
 	},
 
@@ -1607,6 +1624,11 @@ var attrs = map[string]attr{
 		Name: "Wrap",
 		Type: "string",
 		Doc:  "specifies how the text in a text area is to be wrapped when submitted in a form.",
+	},
+	"xmlns": {
+		Name: "XMLNS",
+		Type: "xmlns",
+		Doc:  "specifies the xml namespace of the element.",
 	},
 }
 
@@ -1895,7 +1917,7 @@ var eventHandlers = map[string]eventHandler{
 		Doc:  "calls the given handler when media data is loaded.",
 	},
 	"onloadedmetadata": {
-		Name: "OnloadedMetaData",
+		Name: "OnLoadedMetaData",
 		Doc:  "calls the given handler when meta data (like dimensions and duration) are loaded.",
 	},
 	"onloadstart": {
@@ -2062,7 +2084,7 @@ func main() {
 }
 
 func generateHTMLGo() {
-	f, err := os.Create("html.go")
+	f, err := os.Create("html_gen.go")
 	if err != nil {
 		panic(err)
 	}
@@ -2081,27 +2103,52 @@ import (
 	for _, t := range tags {
 		writeInterface(f, t)
 
-		fmt.Fprintf(f, `
-		// %s returns an HTML element that %s
-		func %s() HTML%s {
-			e := &html%s{
-				elem: elem{
-					tag: "%s",
-					selfClosing: %v,
-				},
-			}
+		switch t.Name {
+		case "Elem", "ElemSelfClosing":
+			fmt.Fprintf(f, `
+			// %s returns an HTML element that %s
+			func %s(tag string) HTML%s {
+				e := &html%s{
+					htmlElement: htmlElement{
+						tag: tag,
+						isSelfClosing: %v,
+					},
+				}
 
-			return e
+				return e
+			}
+			`,
+				t.Name,
+				t.Doc,
+				t.Name,
+				t.Name,
+				t.Name,
+				t.Type == selfClosing,
+			)
+
+		default:
+			fmt.Fprintf(f, `
+			// %s returns an HTML element that %s
+			func %s() HTML%s {
+				e := &html%s{
+					htmlElement: htmlElement{
+						tag: "%s",
+						isSelfClosing: %v,
+					},
+				}
+
+				return e
+			}
+			`,
+				t.Name,
+				t.Doc,
+				t.Name,
+				t.Name,
+				t.Name,
+				strings.ToLower(t.Name),
+				t.Type == selfClosing,
+			)
 		}
-		`,
-			t.Name,
-			t.Doc,
-			t.Name,
-			t.Name,
-			t.Name,
-			strings.ToLower(t.Name),
-			t.Type == selfClosing,
-		)
 
 		fmt.Fprintln(f)
 		fmt.Fprintln(f)
@@ -2109,11 +2156,12 @@ import (
 		fmt.Fprintln(f)
 		fmt.Fprintln(f)
 	}
+
 }
 
 func writeInterface(w io.Writer, t tag) {
 	fmt.Fprintf(w, `
-		// HTML%s is the interface that describes a <%s> HTML element.
+		// HTML%s is the interface that describes a "%s" HTML element.
 		type HTML%s interface {
 			UI
 		`,
@@ -2131,7 +2179,7 @@ func writeInterface(w io.Writer, t tag) {
 
 		fmt.Fprintf(w, `
 			// Text sets the content of the element with a text node containing the stringified given value.
-			Text(v interface{}) HTML%s
+			Text(v any) HTML%s
 		`, t.Name)
 
 	case privateParent:
@@ -2148,6 +2196,13 @@ func writeInterface(w io.Writer, t tag) {
 		writeAttrFunction(w, a, t, true)
 	}
 
+	fmt.Fprintln(w)
+
+	fmt.Fprintf(w, `
+		// On registers the given event handler to the specified event.
+		On(event string, h EventHandler, scope ...any) HTML%s 
+	`, t.Name)
+
 	for _, e := range t.EventHandlers {
 		fmt.Fprintln(w)
 		fmt.Fprintln(w)
@@ -2162,14 +2217,14 @@ func writeInterface(w io.Writer, t tag) {
 
 func writeStruct(w io.Writer, t tag) {
 	fmt.Fprintf(w, `type html%s struct {
-			elem
+			htmlElement
 		}`, t.Name)
 
 	switch t.Type {
 	case parent:
 		fmt.Fprintf(w, `
-			func (e *html%s) Body(elems ...UI) HTML%s {
-				e.setBody(elems...)
+			func (e *html%s) Body(v ...UI) HTML%s {
+				e.setChildren(v...)
 				return e
 			}
 			`,
@@ -2179,7 +2234,7 @@ func writeStruct(w io.Writer, t tag) {
 
 		if t.Name == "Textarea" {
 			fmt.Fprintf(w, `
-			func (e *html%s) Text(v interface{}) HTML%s {
+			func (e *html%s) Text(v any) HTML%s {
 				e.setAttr("value", v)
 				return e
 			}
@@ -2189,7 +2244,7 @@ func writeStruct(w io.Writer, t tag) {
 			)
 		} else {
 			fmt.Fprintf(w, `
-			func (e *html%s) Text(v interface{}) HTML%s {
+			func (e *html%s) Text(v any) HTML%s {
 				return e.Body(Text(v))
 			}
 			`,
@@ -2200,8 +2255,8 @@ func writeStruct(w io.Writer, t tag) {
 
 	case privateParent:
 		fmt.Fprintf(w, `
-			func (e *html%s) privateBody(elems ...UI) HTML%s {
-				e.setBody(elems...)
+			func (e *html%s) privateBody(v ...UI) HTML%s {
+				e.setChildren(v...)
 				return e
 			}
 			`,
@@ -2217,6 +2272,18 @@ func writeStruct(w io.Writer, t tag) {
 		writeAttrFunction(w, a, t, false)
 	}
 
+	fmt.Fprintln(w)
+
+	fmt.Fprintf(w, `
+		func (e *html%s) On(event string, h EventHandler, scope ...any)  HTML%s {
+			e.setEventHandler(event, h, scope...)
+			return e
+		}
+		`,
+		t.Name,
+		t.Name,
+	)
+
 	for _, e := range t.EventHandlers {
 		fmt.Fprintln(w)
 		fmt.Fprintln(w)
@@ -2230,9 +2297,16 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		fmt.Fprintf(w, "func (e *html%s)", t.Name)
 	}
 
+	var attrName string
+	if a.NameOverride != "" {
+		attrName = strings.ToLower(a.NameOverride)
+	} else {
+		attrName = strings.ToLower(a.Name)
+	}
+
 	switch a.Type {
 	case "data|value":
-		fmt.Fprintf(w, `%s(k string, v interface{}) HTML%s`, a.Name, t.Name)
+		fmt.Fprintf(w, `%s(k string, v any) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
 				e.setAttr("data-"+k, fmt.Sprintf("%s", v))
@@ -2241,7 +2315,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		}
 
 	case "attr|value":
-		fmt.Fprintf(w, `%s(n string, v interface{}) HTML%s`, a.Name, t.Name)
+		fmt.Fprintf(w, `%s(n string, v any) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
 				e.setAttr(n, v)
@@ -2250,7 +2324,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 		}
 
 	case "aria|value":
-		fmt.Fprintf(w, `%s(k string, v interface{}) HTML%s`, a.Name, t.Name)
+		fmt.Fprintf(w, `%s(k string, v any) HTML%s`, a.Name, t.Name)
 		if !isInterface {
 			fmt.Fprintf(w, `{
 				e.setAttr("aria-"+k, fmt.Sprintf("%s", v))
@@ -2289,7 +2363,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 	
 				e.setAttr("%s", s)
 				return e
-			}`, strings.ToLower(a.Name))
+			}`, attrName)
 		}
 
 	case "bool|force":
@@ -2303,7 +2377,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 	
 				e.setAttr("%s", s)
 				return e
-			}`, strings.ToLower(a.Name))
+			}`, attrName)
 		}
 
 	case "url":
@@ -2312,7 +2386,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 			fmt.Fprintf(w, `{
 				e.setAttr("%s", v)
 				return e
-			}`, strings.ToLower(a.Name))
+			}`, attrName)
 		}
 
 	case "string|class":
@@ -2321,7 +2395,16 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 			fmt.Fprintf(w, `{
 				e.setAttr("%s", strings.Join(v, " "))
 				return e
-			}`, strings.ToLower(a.Name))
+			}`, attrName)
+		}
+
+	case "xmlns":
+		fmt.Fprintf(w, `%s(v string) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintln(w, `{
+				e.xmlns = v
+				return e
+			}`)
 		}
 
 	default:
@@ -2330,7 +2413,7 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 			fmt.Fprintf(w, `{
 				e.setAttr("%s", v)
 				return e
-			}`, strings.ToLower(a.Name))
+			}`, attrName)
 		}
 	}
 }
@@ -2340,7 +2423,7 @@ func writeEventFunction(w io.Writer, e eventHandler, t tag, isInterface bool) {
 		fmt.Fprintf(w, `func (e *html%s)`, t.Name)
 	}
 
-	fmt.Fprintf(w, `%s (h EventHandler, scope ...interface{}) HTML%s`, e.Name, t.Name)
+	fmt.Fprintf(w, `%s (h EventHandler, scope ...any) HTML%s`, e.Name, t.Name)
 	if !isInterface {
 		fmt.Fprintf(w, `{
 			e.setEventHandler("%s", h, scope...)
@@ -2350,7 +2433,7 @@ func writeEventFunction(w io.Writer, e eventHandler, t tag, isInterface bool) {
 }
 
 func generateHTMLTestGo() {
-	f, err := os.Create("html_test.go")
+	f, err := os.Create("html_gen_test.go")
 	if err != nil {
 		panic(err)
 	}
@@ -2367,13 +2450,18 @@ import (
 
 	for _, t := range tags {
 		fmt.Fprintln(f)
-		fmt.Fprintf(f, `
-		func Test%s(t *testing.T) {
-			elem := %s()
-		`,
-			t.Name,
-			t.Name,
-		)
+		fmt.Fprintf(f, `func Test%s(t *testing.T) {`, t.Name)
+		fmt.Fprintln(f)
+
+		switch t.Name {
+		case "Elem", "ElemSelfClosing":
+			fmt.Fprintf(f, `elem := %s("div")`, t.Name)
+
+		default:
+			fmt.Fprintf(f, `elem := %s()`, t.Name)
+		}
+
+		fmt.Fprintln(f)
 
 		for _, a := range t.Attrs {
 			fmt.Fprintf(f, `elem.%s(`, a.Name)
@@ -2405,6 +2493,9 @@ import (
 			case "string|class":
 				fmt.Fprintln(f, `"foo bar")`)
 
+			case "xmlns":
+				fmt.Fprintln(f, `"http://www.w3.org/2000/svg")`)
+
 			default:
 				fmt.Fprintln(f, `42)`)
 			}
@@ -2412,8 +2503,10 @@ import (
 
 		if len(t.EventHandlers) != 0 {
 			fmt.Fprint(f, `
-			h := func(ctx Context, e Event) {}
-		`)
+				h := func(ctx Context, e Event) {}
+			`)
+			fmt.Fprintf(f, `elem.On("click", h)`)
+			fmt.Fprintln(f)
 		}
 
 		for _, e := range t.EventHandlers {

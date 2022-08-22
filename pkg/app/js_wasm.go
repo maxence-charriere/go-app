@@ -16,16 +16,24 @@ type value struct {
 	js.Value
 }
 
-func (v value) Call(m string, args ...interface{}) Value {
+func (v value) Call(m string, args ...any) Value {
 	args = cleanArgs(args...)
 	return val(v.Value.Call(m, args...))
+}
+
+func (v value) Delete(p string) {
+	v.Value.Delete(p)
+}
+
+func (v value) Equal(w Value) bool {
+	return v.Value.Equal(jsval(w))
 }
 
 func (v value) Get(p string) Value {
 	return val(v.Value.Get(p))
 }
 
-func (v value) Set(p string, x interface{}) {
+func (v value) Set(p string, x any) {
 	if wrapper, ok := x.(Wrapper); ok {
 		x = jsval(wrapper.JSValue())
 	}
@@ -40,7 +48,7 @@ func (v value) InstanceOf(t Value) bool {
 	return v.Value.InstanceOf(jsval(t))
 }
 
-func (v value) Invoke(args ...interface{}) Value {
+func (v value) Invoke(args ...any) Value {
 	return val(v.Value.Invoke(args...))
 }
 
@@ -48,7 +56,7 @@ func (v value) JSValue() Value {
 	return v
 }
 
-func (v value) New(args ...interface{}) Value {
+func (v value) New(args ...any) Value {
 	args = cleanArgs(args...)
 	return val(v.Value.New(args...))
 }
@@ -60,7 +68,7 @@ func (v value) Type() Type {
 func (v value) Then(f func(Value)) {
 	release := func() {}
 
-	then := FuncOf(func(this Value, args []Value) interface{} {
+	then := FuncOf(func(this Value, args []Value) any {
 		var arg Value
 		if len(args) > 0 {
 			arg = args[0]
@@ -135,7 +143,7 @@ func undefined() Value {
 	return val(js.Undefined())
 }
 
-func valueOf(x interface{}) Value {
+func valueOf(x any) Value {
 	switch t := x.(type) {
 	case value:
 		x = t.Value
@@ -162,8 +170,8 @@ func (f function) Release() {
 	f.fn.Release()
 }
 
-func funcOf(fn func(this Value, args []Value) interface{}) Func {
-	f := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+func funcOf(fn func(this Value, args []Value) any) Func {
+	f := js.FuncOf(func(this js.Value, args []js.Value) any {
 		wargs := make([]Value, len(args))
 		for i, a := range args {
 			wargs[i] = val(a)
@@ -240,14 +248,14 @@ func (w *browserWindow) ScrollToID(id string) {
 }
 
 func (w *browserWindow) AddEventListener(event string, h EventHandler) func() {
-	callback := makeJsEventHandler(w.body, func(ctx Context, e Event) {
+	callback := makeJSEventHandler(w.body, func(ctx Context, e Event) {
 		h(ctx, e)
 
 		// Trigger children components updates:
-		if len(w.body.children()) == 0 {
+		if len(w.body.getChildren()) == 0 {
 			return
 		}
-		compo, ok := w.body.children()[0].(Composer)
+		compo, ok := w.body.getChildren()[0].(Composer)
 		if !ok {
 			return
 		}
@@ -268,14 +276,20 @@ func (w *browserWindow) setBody(body UI) {
 	w.body = body
 }
 
-func (w *browserWindow) createElement(tag string) (Value, error) {
-	v := w.Get("document").Call("createElement", tag)
-	if !v.Truthy() {
-		return nil, errors.New("creating element failed").
-			Tag("reason", "create javascript element returned nil").
-			Tag("tag", tag)
+func (w *browserWindow) createElement(tag, xmlns string) (Value, error) {
+	var element Value
+	if xmlns == "" {
+		element = w.Get("document").Call("createElement", tag)
+	} else {
+		element = w.Get("document").Call("createElementNS", xmlns, tag)
 	}
-	return v, nil
+
+	if !element.Truthy() {
+		return nil, errors.New("creating javascript element failed").
+			Tag("tag", tag).
+			Tag("xmlns", xmlns)
+	}
+	return element, nil
 }
 
 func (w *browserWindow) createTextNode(v string) Value {
@@ -332,7 +346,7 @@ func copyBytesToJS(dst Value, src []byte) int {
 	return js.CopyBytesToJS(jsval(dst), src)
 }
 
-func cleanArgs(args ...interface{}) []interface{} {
+func cleanArgs(args ...any) []any {
 	for i, a := range args {
 
 		args[i] = cleanArg(a)
@@ -341,17 +355,17 @@ func cleanArgs(args ...interface{}) []interface{} {
 	return args
 }
 
-func cleanArg(v interface{}) interface{} {
+func cleanArg(v any) any {
 	switch v := v.(type) {
-	case map[string]interface{}:
-		m := make(map[string]interface{}, len(v))
+	case map[string]any:
+		m := make(map[string]any, len(v))
 		for key, val := range v {
 			m[key] = cleanArg(val)
 		}
 		return m
 
-	case []interface{}:
-		s := make([]interface{}, len(v))
+	case []any:
+		s := make([]any, len(v))
 		for i, val := range v {
 			s[i] = cleanArgs(val)
 		}

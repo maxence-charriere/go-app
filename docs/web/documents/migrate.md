@@ -8,7 +8,7 @@ This document has for purpose to help you transition from go-app v8 to v9 by enu
 
 ### General
 
-- This package now requires [Go 1.17](https://golang.org/doc/install)
+- This package now requires [Go 1.18](https://golang.org/doc/install)
 
 ### Components
 

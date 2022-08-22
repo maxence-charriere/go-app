@@ -39,7 +39,15 @@ type Value interface {
 	// Call does a JavaScript call to the method m of value v with the given
 	// arguments. It panics if v has no method m. The arguments get mapped to
 	// JavaScript values according to the ValueOf function.
-	Call(m string, args ...interface{}) Value
+	Call(m string, args ...any) Value
+
+	// Delete deletes the JavaScript property p of value v. It panics if v is
+	// not a JavaScript object.
+	Delete(p string)
+
+	// Equal reports whether v and w are equal according to JavaScript's ===
+	// operator.
+	Equal(w Value) bool
 
 	// Float returns the value v as a float64. It panics if v is not a
 	// JavaScript number.
@@ -64,7 +72,7 @@ type Value interface {
 	// Invoke does a JavaScript call of the value v with the given arguments. It
 	// panics if v is not a JavaScript function. The arguments get mapped to
 	// JavaScript values according to the ValueOf function.
-	Invoke(args ...interface{}) Value
+	Invoke(args ...any) Value
 
 	// IsNaN reports whether v is the JavaScript value "NaN".
 	IsNaN() bool
@@ -86,15 +94,15 @@ type Value interface {
 	// given arguments. It panics if v is not a JavaScript function. The
 	// arguments get mapped to JavaScript values according to the ValueOf
 	// function.
-	New(args ...interface{}) Value
+	New(args ...any) Value
 
 	// Set sets the JavaScript property p of value v to ValueOf(x). It panics if
 	// v is not a JavaScript object.
-	Set(p string, x interface{})
+	Set(p string, x any)
 
 	// SetIndex sets the JavaScript index i of value v to ValueOf(x). It panics
 	// if v is not a JavaScript object.
-	SetIndex(i int, x interface{})
+	SetIndex(i int, x any)
 
 	// String returns the value v as a string. String is a special case because
 	// of Go's String method convention. Unlike the other getters, it does not
@@ -153,11 +161,11 @@ func Undefined() Value {
 //  | bool                   | boolean                |
 //  | integers and floats    | number                 |
 //  | string                 | string                 |
-//  | []interface{}          | new array              |
-//  | map[string]interface{} | new object             |
+//  | []any          | new array              |
+//  | map[string]any | new object             |
 //
 // Panics if x is not one of the expected types.
-func ValueOf(x interface{}) Value {
+func ValueOf(x any) Value {
 	return valueOf(x)
 }
 
@@ -187,7 +195,7 @@ type Func interface {
 //
 // Func.Release must be called to free up resources when the function will not
 // be used any more.
-func FuncOf(fn func(this Value, args []Value) interface{}) Func {
+func FuncOf(fn func(this Value, args []Value) any) Func {
 	return funcOf(fn)
 }
 
@@ -218,7 +226,7 @@ type BrowserWindow interface {
 	AddEventListener(event string, h EventHandler) func()
 
 	setBody(body UI)
-	createElement(tag string) (Value, error)
+	createElement(tag, xmlns string) (Value, error)
 	createTextNode(v string) Value
 	addHistory(u *url.URL)
 	replaceHistory(u *url.URL)

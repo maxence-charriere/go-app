@@ -53,7 +53,10 @@ type Handler struct {
 	// DEFAULT: #2d2c2c.
 	ThemeColor string
 
-	// The text displayed while loading a page.
+	// The text displayed while loading a page. Load progress can be inserted by
+	// including "{progress}" in the loading label.
+	//
+	// DEFAULT: "{progress}%".
 	LoadingLabel string
 
 	// The page language.
@@ -170,6 +173,20 @@ type Handler struct {
 	// development system.
 	Version string
 
+	// The HTTP header to retrieve the WebAssembly file content length.
+	//
+	// Content length finding falls back to the Content-Length HTTP header when
+	// no content length is found with the defined header.
+	WasmContentLengthHeader string
+
+	// The template used to generate app-worker.js. The template follows the
+	// text/template package model.
+	//
+	// By default set to DefaultAppWorkerJS, changing the template have very
+	// high chances to mess up go-app usage. Any issue related to a custom app
+	// worker template is not supported and will be closed.
+	ServiceWorkerTemplate string
+
 	once           sync.Once
 	etag           string
 	pwaResources   PreRenderCache
@@ -182,6 +199,7 @@ func (h *Handler) init() {
 	h.initImage()
 	h.initStyles()
 	h.initScripts()
+	h.initServiceWorker()
 	h.initCacheableResources()
 	h.initIcon()
 	h.initPWA()
@@ -219,6 +237,12 @@ func (h *Handler) initStyles() {
 func (h *Handler) initScripts() {
 	for i, path := range h.Scripts {
 		h.Scripts[i] = h.resolveStaticPath(path)
+	}
+}
+
+func (h *Handler) initServiceWorker() {
+	if h.ServiceWorkerTemplate == "" {
+		h.ServiceWorkerTemplate = DefaultAppWorkerJS
 	}
 }
 
@@ -266,7 +290,7 @@ func (h *Handler) initPWA() {
 	}
 
 	if h.LoadingLabel == "" {
-		h.LoadingLabel = "Loading"
+		h.LoadingLabel = "{progress}%"
 	}
 }
 
@@ -345,15 +369,17 @@ func (h *Handler) makeAppJS() []byte {
 	if err := template.
 		Must(template.New("app.js").Parse(appJS)).
 		Execute(&b, struct {
-			Env                string
-			Wasm               string
-			WorkerJS           string
-			AutoUpdateInterval int64
+			Env                     string
+			Wasm                    string
+			WasmContentLengthHeader string
+			WorkerJS                string
+			AutoUpdateInterval      int64
 		}{
-			Env:                jsonString(h.Env),
-			Wasm:               h.Resources.AppWASM(),
-			WorkerJS:           h.resolvePackagePath("/app-worker.js"),
-			AutoUpdateInterval: h.AutoUpdateInterval.Milliseconds(),
+			Env:                     jsonString(h.Env),
+			Wasm:                    h.Resources.AppWASM(),
+			WasmContentLengthHeader: h.WasmContentLengthHeader,
+			WorkerJS:                h.resolvePackagePath("/app-worker.js"),
+			AutoUpdateInterval:      h.AutoUpdateInterval.Milliseconds(),
 		}); err != nil {
 		panic(errors.New("initializing app.js failed").Wrap(err))
 	}
@@ -393,7 +419,7 @@ func (h *Handler) makeAppWorkerJS() []byte {
 
 	var b bytes.Buffer
 	if err := template.
-		Must(template.New("app-worker.js").Parse(appWorkerJS)).
+		Must(template.New("app-worker.js").Parse(h.ServiceWorkerTemplate)).
 		Execute(&b, struct {
 			Version          string
 			ResourcesToCache string
@@ -632,8 +658,8 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 	disp := engine{
 		Page:                   &page,
-		RunsInServer:           true,
-		ResolveStaticResources: h.resolveStaticPath,
+		IsServerSide:           true,
+		StaticResourceResolver: h.resolveStaticPath,
 		ActionHandlers:         actionHandlers,
 	}
 	body := h.Body().privateBody(
@@ -656,7 +682,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	)
 	if err := mount(&disp, body); err != nil {
 		panic(errors.New("mounting pre-rendering container failed").
-			Tag("server-side", disp.runsInServer()).
+			Tag("server-side", disp.isServerSide()).
 			Tag("body-type", reflect.TypeOf(disp.Body)).
 			Wrap(err))
 	}
@@ -678,9 +704,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		privateBody(
 			Head().Body(
 				Meta().Charset("UTF-8"),
-				Meta().
-					HTTPEquiv("Content-Type").
-					Content("text/html; charset=utf-8"),
 				Meta().
 					Name("author").
 					Content(page.Author()),

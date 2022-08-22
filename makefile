@@ -3,6 +3,7 @@ install:
 	go install github.com/agnivade/wasmbrowsertest@latest
 	mv `go env GOPATH`/bin/wasmbrowsertest `go env GOPATH`/bin/go_js_wasm_exec
 	go install golang.org/x/tools/cmd/godoc@latest
+	go install golang.org/x/perf/cmd/benchstat@latest
 
 .PHONY: test
 test:

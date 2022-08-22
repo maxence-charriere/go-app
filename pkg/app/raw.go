@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"io"
-	"net/url"
 	"strings"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
@@ -45,7 +44,7 @@ func (r *raw) JSValue() Value {
 }
 
 func (r *raw) Mounted() bool {
-	return r.jsvalue != nil && r.dispatcher() != nil
+	return r.jsvalue != nil && r.getDispatcher() != nil
 }
 
 func (r *raw) name() string {
@@ -59,23 +58,23 @@ func (r *raw) self() UI {
 func (r *raw) setSelf(UI) {
 }
 
-func (r *raw) context() context.Context {
+func (r *raw) getContext() context.Context {
 	return nil
 }
 
-func (r *raw) dispatcher() Dispatcher {
+func (r *raw) getDispatcher() Dispatcher {
 	return r.disp
 }
 
-func (r *raw) attributes() map[string]string {
+func (r *raw) getAttributes() attributes {
 	return nil
 }
 
-func (r *raw) eventHandlers() map[string]eventHandler {
+func (r *raw) getEventHandlers() eventHandlers {
 	return nil
 }
 
-func (r *raw) parent() UI {
+func (r *raw) getParent() UI {
 	return r.parentElem
 }
 
@@ -83,7 +82,7 @@ func (r *raw) setParent(p UI) {
 	r.parentElem = p
 }
 
-func (r *raw) children() []UI {
+func (r *raw) getChildren() []UI {
 	return nil
 }
 
@@ -97,7 +96,7 @@ func (r *raw) mount(d Dispatcher) error {
 
 	r.disp = d
 
-	wrapper, err := Window().createElement("div")
+	wrapper, err := Window().createElement("div", "")
 	if err != nil {
 		return errors.New("creating raw node wrapper failed").Wrap(err)
 	}
@@ -125,45 +124,21 @@ func (r *raw) dismount() {
 	r.jsvalue = nil
 }
 
-func (r *raw) update(n UI) error {
-	if !r.Mounted() {
-		return nil
+func (r *raw) canUpdateWith(n UI) bool {
+	if n, ok := n.(*raw); ok {
+		return r.value == n.value
 	}
+	return false
+}
 
-	if n.Kind() != r.Kind() || n.name() != r.name() {
-		return errors.New("updating raw html element failed").
-			Tag("replace", true).
-			Tag("reason", "different element types").
-			Tag("current-kind", r.Kind()).
-			Tag("current-name", r.name()).
-			Tag("updated-kind", n.Kind()).
-			Tag("updated-name", n.name())
-	}
-
-	if v := n.(*raw).value; r.value != v {
-		return errors.New("updating raw html element failed").
-			Tag("replace", true).
-			Tag("reason", "different raw values").
-			Tag("current-value", r.value).
-			Tag("new-value", v)
-	}
-
+func (r *raw) updateWith(n UI) error {
 	return nil
 }
 
-func (r *raw) onNav(*url.URL) {
-}
-
-func (r *raw) onAppUpdate() {
-}
-
-func (r *raw) onAppInstallChange() {
-}
-
-func (r *raw) onResize() {
-}
-
 func (r *raw) preRender(Page) {
+}
+
+func (r *raw) onComponentEvent(any) {
 }
 
 func (r *raw) html(w io.Writer) {

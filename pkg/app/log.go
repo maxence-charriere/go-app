@@ -8,7 +8,7 @@ import (
 
 var (
 	// DefaultLogger is the logger used to log info and errors.
-	DefaultLogger func(format string, v ...interface{})
+	DefaultLogger func(format string, v ...any)
 
 	defaultColor string
 	errorColor   string
@@ -32,7 +32,7 @@ func init() {
 
 // Log logs using the default formats for its operands. Spaces are always added
 // between operands.
-func Log(v ...interface{}) {
+func Log(v ...any) {
 	var b strings.Builder
 	for i := 0; i < len(v); i++ {
 		if i != 0 {
@@ -44,11 +44,11 @@ func Log(v ...interface{}) {
 }
 
 // Logf logs according to a format specifier.
-func Logf(format string, v ...interface{}) {
+func Logf(format string, v ...any) {
 	DefaultLogger(format, v...)
 }
 
-func serverLog(format string, v ...interface{}) {
+func serverLog(format string, v ...any) {
 	errorLevel := false
 
 	for _, a := range v {
@@ -66,7 +66,7 @@ func serverLog(format string, v ...interface{}) {
 	fmt.Printf(infoColor+"INFO ‣ "+defaultColor+format+"\n", v...)
 }
 
-func clientLog(format string, v ...interface{}) {
+func clientLog(format string, v ...any) {
 	isErrorLevel := false
 	for _, a := range v {
 		if _, isErr := a.(error); isErr {

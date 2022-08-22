@@ -6,7 +6,7 @@ You are about to learn how to get started with this package by **building and ru
 
 ## Prerequisite
 
-Using this package **requires a fully functional Go environment installed with [Go 1.17](https://golang.org/doc/install) or greater**.
+Using this package **requires a fully functional Go environment installed with [Go 1.18](https://golang.org/doc/install) or greater**.
 
 Go installation can be checked with the following command in a terminal:
 

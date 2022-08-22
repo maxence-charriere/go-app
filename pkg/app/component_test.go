@@ -34,12 +34,6 @@ func TestCompoUpdate(t *testing.T) {
 			},
 		},
 		{
-			scenario:   "component returns replace error when updated with a non component-element",
-			a:          &hello{},
-			b:          Text("hello"),
-			replaceErr: true,
-		},
-		{
 			scenario: "component is updated",
 			a:        &hello{},
 			b:        &hello{Greeting: "world"},
@@ -264,7 +258,7 @@ func TestNestedInComponentNavigator(t *testing.T) {
 
 	d.Nav(u)
 	d.Consume()
-	b := foo.children()[0].(*bar)
+	b := foo.getChildren()[0].(*bar)
 	require.Equal(t, "https://murlok.io", b.onNavURL)
 }
 
@@ -311,7 +305,7 @@ func TestNestedInComponentAppUpdater(t *testing.T) {
 
 	d.AppUpdate()
 	d.Consume()
-	b := foo.children()[0].(*bar)
+	b := foo.getChildren()[0].(*bar)
 	require.True(t, b.appUpdated)
 }
 
@@ -343,7 +337,7 @@ func TestNestedInComponentAppInstaller(t *testing.T) {
 
 	d.AppInstallChange()
 	d.Consume()
-	b := foo.children()[0].(*bar)
+	b := foo.getChildren()[0].(*bar)
 	require.True(t, b.appInstalled)
 }
 
@@ -375,7 +369,7 @@ func TestNestedInComponentResizer(t *testing.T) {
 
 	d.AppResize()
 	d.Consume()
-	b := foo.children()[0].(*bar)
+	b := foo.getChildren()[0].(*bar)
 	require.True(t, b.appRezized)
 }
 
@@ -387,7 +381,7 @@ func TestPreRenderer(t *testing.T) {
 	d.PreRender()
 	d.Consume()
 	require.True(t, h.preRenderer)
-	require.Equal(t, "world", d.currentPage().Title())
+	require.Equal(t, "world", d.getCurrentPage().Title())
 }
 
 func TestNestedPreRenderer(t *testing.T) {
@@ -399,7 +393,7 @@ func TestNestedPreRenderer(t *testing.T) {
 	d.PreRender()
 	d.Consume()
 	require.True(t, h.preRenderer)
-	require.Equal(t, "world", d.currentPage().Title())
+	require.Equal(t, "world", d.getCurrentPage().Title())
 }
 
 func TestNestedInComponentPreRenderer(t *testing.T) {
@@ -409,7 +403,7 @@ func TestNestedInComponentPreRenderer(t *testing.T) {
 
 	d.PreRender()
 	d.Consume()
-	require.Equal(t, "bar", d.currentPage().Title())
+	require.Equal(t, "bar", d.getCurrentPage().Title())
 }
 
 func TestUpdater(t *testing.T) {

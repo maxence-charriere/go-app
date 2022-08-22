@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"io"
-	"net/url"
 	"reflect"
 	"strings"
 
@@ -45,7 +44,7 @@ type Composer interface {
 	// or a float.
 	//
 	// It panics if the given value is not a pointer.
-	ValueTo(interface{}) EventHandler
+	ValueTo(any) EventHandler
 
 	updateRoot() error
 	dispatch(func(Context))
@@ -103,10 +102,6 @@ type Navigator interface {
 	OnNav(Context)
 }
 
-type deprecatedNavigator interface {
-	OnNav(Context, *url.URL)
-}
-
 // Updater is the interface that describes a component that can do additional
 // instructions when one of its exported fields is modified by its nearest
 // parent component.
@@ -143,9 +138,11 @@ type Resizer interface {
 	OnResize(Context)
 }
 
-type deprecatedResizer interface {
-	OnAppResize(Context)
-}
+// Component events.
+type nav struct{}
+type appUpdate struct{}
+type appInstallChange struct{}
+type resize struct{}
 
 // Compo represents the base struct to use in order to build a component.
 type Compo struct {
@@ -169,7 +166,7 @@ func (c *Compo) JSValue() Value {
 
 // Mounted reports whether the component is mounted.
 func (c *Compo) Mounted() bool {
-	return c.dispatcher() != nil &&
+	return c.getDispatcher() != nil &&
 		c.ctx != nil &&
 		c.ctx.Err() == nil &&
 		c.root != nil && c.root.Mounted() &&
@@ -207,7 +204,7 @@ func (c *Compo) Update() {
 // implement the Resizer interface.
 func (c *Compo) ResizeContent() {
 	c.dispatch(func(Context) {
-		c.root.onResize()
+		c.root.onComponentEvent(resize{})
 	})
 }
 
@@ -218,7 +215,7 @@ func (c *Compo) ResizeContent() {
 // float.
 //
 // It panics if the given value is not a pointer.
-func (c *Compo) ValueTo(v interface{}) EventHandler {
+func (c *Compo) ValueTo(v any) EventHandler {
 	return func(ctx Context, e Event) {
 		value := ctx.JSSrc().Get("value")
 		if err := stringTo(value.String(), v); err != nil {
@@ -238,32 +235,32 @@ func (c *Compo) self() UI {
 	return c.this
 }
 
-func (c *Compo) setSelf(n UI) {
-	if n != nil {
-		c.this = n.(Composer)
+func (c *Compo) setSelf(v UI) {
+	if v != nil {
+		c.this = v.(Composer)
 		return
 	}
 
 	c.this = nil
 }
 
-func (c *Compo) context() context.Context {
+func (c *Compo) getContext() context.Context {
 	return c.ctx
 }
 
-func (c *Compo) dispatcher() Dispatcher {
+func (c *Compo) getDispatcher() Dispatcher {
 	return c.disp
 }
 
-func (c *Compo) attributes() map[string]string {
+func (c *Compo) getAttributes() attributes {
 	return nil
 }
 
-func (c *Compo) eventHandlers() map[string]eventHandler {
+func (c *Compo) getEventHandlers() eventHandlers {
 	return nil
 }
 
-func (c *Compo) parent() UI {
+func (c *Compo) getParent() UI {
 	return c.parentElem
 }
 
@@ -271,7 +268,7 @@ func (c *Compo) setParent(p UI) {
 	c.parentElem = p
 }
 
-func (c *Compo) children() []UI {
+func (c *Compo) getChildren() []UI {
 	return []UI{c.root}
 }
 
@@ -283,7 +280,7 @@ func (c *Compo) mount(d Dispatcher) error {
 			Tag("kind", c.Kind())
 	}
 
-	if initializer, ok := c.self().(Initializer); ok && !d.runsInServer() {
+	if initializer, ok := c.self().(Initializer); ok && !d.isServerSide() {
 		initializer.OnInit()
 	}
 
@@ -300,7 +297,7 @@ func (c *Compo) mount(d Dispatcher) error {
 	root.setParent(c.this)
 	c.root = root
 
-	if c.dispatcher().runsInServer() {
+	if c.getDispatcher().isServerSide() {
 		return nil
 	}
 
@@ -313,31 +310,33 @@ func (c *Compo) mount(d Dispatcher) error {
 }
 
 func (c *Compo) dismount() {
-	dismount(c.root)
 	c.ctxCancel()
+	dismount(c.root)
 
 	if dismounter, ok := c.this.(Dismounter); ok {
 		dismounter.OnDismount()
 	}
 }
 
-func (c *Compo) update(n UI) error {
-	if c.self() == n || !c.Mounted() {
+func (c *Compo) canUpdateWith(v UI) bool {
+	return c.Mounted() &&
+		c.Kind() == v.Kind() &&
+		c.name() == v.name()
+}
+
+func (c *Compo) updateWith(v UI) error {
+	if c.self() == v {
 		return nil
 	}
 
-	if n.Kind() != c.Kind() || n.name() != c.name() {
-		return errors.New("updating ui element failed").
-			Tag("replace", true).
-			Tag("reason", "different element types").
-			Tag("current-kind", c.Kind()).
-			Tag("current-name", c.name()).
-			Tag("updated-kind", n.Kind()).
-			Tag("updated-name", n.name())
+	if !c.canUpdateWith(v) {
+		return errors.New("cannot update component with given element").
+			Tag("current", reflect.TypeOf(c.self())).
+			Tag("new", reflect.TypeOf(v))
 	}
 
 	aval := reflect.Indirect(reflect.ValueOf(c.self()))
-	bval := reflect.Indirect(reflect.ValueOf(n))
+	bval := reflect.Indirect(reflect.ValueOf(v))
 	compotype := reflect.ValueOf(c).Elem().Type()
 	haveModifiedFields := false
 
@@ -363,16 +362,20 @@ func (c *Compo) update(n UI) error {
 		return nil
 	}
 
+	if err := c.updateRoot(); err != nil {
+		return errors.New("updating root failed").Wrap(err)
+	}
+
 	if updater, ok := c.self().(Updater); ok {
 		c.dispatch(updater.OnUpdate)
 	}
-	c.updateRoot()
 
+	c.getDispatcher().removeComponentUpdate(c.this)
 	return nil
 }
 
 func (c *Compo) dispatch(fn func(Context)) {
-	c.dispatcher().Dispatch(Dispatch{
+	c.getDispatcher().Dispatch(Dispatch{
 		Mode:     Update,
 		Source:   c.self(),
 		Function: fn,
@@ -383,25 +386,17 @@ func (c *Compo) updateRoot() error {
 	a := c.root
 	b := c.render()
 
-	err := update(a, b)
-	if isErrReplace(err) {
-		err = c.replaceRoot(b)
+	if canUpdate(a, b) {
+		return update(a, b)
 	}
-	if err != nil {
-		return errors.New("updating component failed").
-			Tag("kind", c.Kind()).
-			Tag("name", c.name()).
-			Wrap(err)
-	}
-
-	return nil
+	return c.replaceRoot(b)
 }
 
-func (c *Compo) replaceRoot(n UI) error {
+func (c *Compo) replaceRoot(v UI) error {
 	old := c.root
-	new := n
+	new := v
 
-	if err := mount(c.dispatcher(), new); err != nil {
+	if err := mount(c.getDispatcher(), new); err != nil {
 		return errors.New("replacing component root failed").
 			Tag("kind", c.Kind()).
 			Tag("name", c.name()).
@@ -414,7 +409,7 @@ func (c *Compo) replaceRoot(n UI) error {
 
 	var parent UI
 	for {
-		parent = c.parent()
+		parent = c.getParent()
 		if parent == nil || parent.Kind() == HTML {
 			break
 		}
@@ -431,7 +426,7 @@ func (c *Compo) replaceRoot(n UI) error {
 	new.setParent(c.self())
 
 	oldjs := old.JSValue()
-	newjs := n.JSValue()
+	newjs := v.JSValue()
 	parent.JSValue().replaceChild(newjs, oldjs)
 
 	dismount(old)
@@ -443,62 +438,6 @@ func (c *Compo) render() UI {
 	return elems[0]
 }
 
-func (c *Compo) onNav(u *url.URL) {
-	defer c.root.onNav(u)
-
-	if nav, ok := c.self().(Navigator); ok {
-		c.dispatch(nav.OnNav)
-		return
-	}
-
-	if nav, ok := c.self().(deprecatedNavigator); ok {
-		Log(errors.New("a deprecated component interface is in use").
-			Tag("component", reflect.TypeOf(c.self())).
-			Tag("interface", "app.Navigator").
-			Tag("method-current", "OnNav(app.Context, *url.URL)").
-			Tag("method-fix", "OnNav(app.Context)").
-			Tag("how-to-fix", "refactor component to use the right method"))
-		c.dispatch(func(ctx Context) {
-			nav.OnNav(ctx, u)
-		})
-	}
-}
-
-func (c *Compo) onAppUpdate() {
-	c.root.onAppUpdate()
-
-	if updater, ok := c.self().(AppUpdater); ok {
-		c.dispatch(updater.OnAppUpdate)
-	}
-}
-
-func (c *Compo) onAppInstallChange() {
-	c.root.onAppInstallChange()
-
-	if installer, ok := c.self().(AppInstaller); ok {
-		c.dispatch(installer.OnAppInstallChange)
-	}
-}
-
-func (c *Compo) onResize() {
-	defer c.root.onResize()
-
-	if resizer, ok := c.self().(Resizer); ok {
-		c.dispatch(resizer.OnResize)
-		return
-	}
-
-	if resizer, ok := c.self().(deprecatedResizer); ok {
-		Log(errors.New("a deprecated component interface is in use").
-			Tag("component", reflect.TypeOf(c.self())).
-			Tag("interface", "app.Resizer").
-			Tag("method-current", "OnAppResize(app.Context)").
-			Tag("method-fix", "OnResize(app.Context)").
-			Tag("how-to-fix", "refactor component to use the right method"))
-		c.dispatch(resizer.OnAppResize)
-	}
-}
-
 func (c *Compo) preRender(p Page) {
 	c.root.preRender(p)
 
@@ -508,6 +447,50 @@ func (c *Compo) preRender(p Page) {
 
 	if preRenderer, ok := c.self().(PreRenderer); ok {
 		c.dispatch(preRenderer.OnPreRender)
+	}
+}
+
+func (c *Compo) onComponentEvent(le any) {
+	switch le := le.(type) {
+	case nav:
+		c.onNav(le)
+
+	case appUpdate:
+		c.onAppUpdate(le)
+
+	case appInstallChange:
+		c.onAppInstallChange(le)
+
+	case resize:
+		c.onResize(le)
+	}
+
+	c.root.onComponentEvent(le)
+}
+
+func (c *Compo) onNav(n nav) {
+	if nav, ok := c.self().(Navigator); ok {
+		c.dispatch(nav.OnNav)
+		return
+	}
+}
+
+func (c *Compo) onAppUpdate(au appUpdate) {
+	if updater, ok := c.self().(AppUpdater); ok {
+		c.dispatch(updater.OnAppUpdate)
+	}
+}
+
+func (c *Compo) onAppInstallChange(ai appInstallChange) {
+	if installer, ok := c.self().(AppInstaller); ok {
+		c.dispatch(installer.OnAppInstallChange)
+	}
+}
+
+func (c *Compo) onResize(r resize) {
+	if resizer, ok := c.self().(Resizer); ok {
+		c.dispatch(resizer.OnResize)
+		return
 	}
 }
 

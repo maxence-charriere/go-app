@@ -10,21 +10,15 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
-const (
-	eventBufferSize  = 4096
-	updateBufferSize = 64
-	deferBufferSize  = 64
-)
-
 type engine struct {
-	// The rate where component updates are performed (per seconds).
-	UpdateRate int
+	// The number of frame per seconds.
+	FrameRate int
 
 	// The page.
 	Page Page
 
-	// Reports whether the engine runs in a server.
-	RunsInServer bool
+	// Reports whether the engine runs on server-side.
+	IsServerSide bool
 
 	// The storage use as local storage.
 	LocalStorage BrowserStorage
@@ -33,7 +27,7 @@ type engine struct {
 	SessionStorage BrowserStorage
 
 	// The function used to resolve static resource paths.
-	ResolveStaticResources func(string) string
+	StaticResourceResolver func(string) string
 
 	// The body of the page.
 	Body HTMLBody
@@ -42,65 +36,71 @@ type engine struct {
 	// executed asynchronously.
 	ActionHandlers map[string]ActionHandler
 
-	initOnce  sync.Once
-	startOnce sync.Once
-	closeOnce sync.Once
-	wait      sync.WaitGroup
+	initOnce             sync.Once
+	startOnce            sync.Once
+	closeOnce            sync.Once
+	wait                 sync.WaitGroup
+	componentUpdateMutex sync.RWMutex
 
-	isMountedOnce bool
-	dispatches    chan Dispatch
-	updates       map[Composer]struct{}
-	updateQueue   []updateDescriptor
-	defers        []Dispatch
-	actions       actionManager
-	states        *store
+	dispatches           chan Dispatch
+	componentUpdates     map[Composer]bool
+	componentUpdateQueue []componentUpdate
+	deferables           []Dispatch
+	actions              actionManager
+	states               *store
+	isFirstMount         bool
+}
+
+func (e *engine) Context() Context {
+	return makeContext(e.Body)
 }
 
 func (e *engine) Dispatch(d Dispatch) {
 	if d.Source == nil {
 		d.Source = e.Body
 	}
-	if d.Function == nil {
-		d.Function = func(Context) {}
-	}
 	e.dispatches <- d
 }
 
 func (e *engine) Emit(src UI, fn func()) {
-	if !src.Mounted() {
-		return
-	}
+	e.Dispatch(Dispatch{
+		Mode:   Next,
+		Source: src,
+		Function: func(ctx Context) {
+			if fn != nil {
+				fn()
+			}
 
-	if fn != nil {
-		fn()
-	}
+			e.componentUpdateMutex.RLock()
+			compo := getComponent(src)
+			if canUpdate, ok := e.componentUpdates[compo]; ok && !canUpdate {
+				e.componentUpdateMutex.RUnlock()
+				return
+			}
+			e.componentUpdateMutex.RUnlock()
 
-	compoCount := 0
-	for n := src; n != nil; n = n.parent() {
-		compo, ok := n.(Composer)
-		if !ok {
-			continue
-		}
-
-		compoCount++
-		if compoCount > 1 {
-			e.Dispatch(Dispatch{
-				Source: compo,
-				Mode:   Update,
-			})
-		}
-	}
+			for c := compo; c != nil; c = getComponent(c.getParent()) {
+				e.addComponentUpdate(c)
+			}
+		},
+	})
 }
 
 func (e *engine) Handle(actionName string, src UI, h ActionHandler) {
 	e.actions.handle(actionName, false, src, h)
 }
 
-func (e *engine) SetState(state string, v interface{}, opts ...StateOption) {
+func (e *engine) Post(a Action) {
+	e.Async(func() {
+		e.actions.post(a)
+	})
+}
+
+func (e *engine) SetState(state string, v any, opts ...StateOption) {
 	e.states.Set(state, v, opts...)
 }
 
-func (e *engine) GetState(state string, recv interface{}) {
+func (e *engine) GetState(state string, recv any) {
 	e.states.Get(state, recv)
 }
 
@@ -110,12 +110,6 @@ func (e *engine) DelState(state string) {
 
 func (e *engine) ObserveState(state string, elem UI) Observer {
 	return e.states.Observe(state, elem)
-}
-
-func (e *engine) Post(a Action) {
-	e.Async(func() {
-		e.actions.post(a)
-	})
 }
 
 func (e *engine) Async(fn func()) {
@@ -130,10 +124,6 @@ func (e *engine) Wait() {
 	e.wait.Wait()
 }
 
-func (e *engine) Context() Context {
-	return makeContext(e.Body)
-}
-
 func (e *engine) Consume() {
 	for {
 		e.Wait()
@@ -143,8 +133,7 @@ func (e *engine) Consume() {
 			e.handleDispatch(d)
 
 		default:
-			e.updateComponents()
-			e.execDeferableEvents()
+			e.handleFrame()
 			return
 		}
 	}
@@ -152,15 +141,8 @@ func (e *engine) Consume() {
 
 func (e *engine) ConsumeNext() {
 	e.Wait()
-
-	select {
-	case d := <-e.dispatches:
-		e.handleDispatch(d)
-		e.updateComponents()
-		e.execDeferableEvents()
-
-	default:
-	}
+	e.handleDispatch(<-e.dispatches)
+	e.handleFrame()
 }
 
 func (e *engine) Close() {
@@ -170,8 +152,6 @@ func (e *engine) Close() {
 
 		dismount(e.Body)
 		e.Body = nil
-		close(e.dispatches)
-
 		e.states.Close()
 	})
 }
@@ -186,45 +166,29 @@ func (e *engine) PreRender() {
 	})
 }
 
-func (e *engine) Mount(n UI) {
+func (e *engine) Mount(v UI) {
 	e.Dispatch(Dispatch{
 		Mode:   Update,
 		Source: e.Body,
 		Function: func(ctx Context) {
-			if !e.isMountedOnce {
-				if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {
-					panic(errors.New("mounting ui element failed").
-						Tag("dispatches-count", len(e.dispatches)).
-						Tag("dispatches-capacity", cap(e.dispatches)).
-						Tag("updates-count", len(e.updates)).
-						Tag("updates-queue-len", len(e.updateQueue)).
-						Wrap(err))
+			if e.isFirstMount {
+				if err := e.Body.(*htmlBody).replaceChildAt(0, v); err != nil {
+					panic(errors.New("mounting first ui element failed").Wrap(err))
 				}
 
-				e.isMountedOnce = true
+				e.isFirstMount = false
 				return
 			}
 
-			err := update(e.Body.children()[0], n)
-			if err == nil {
+			if firstChild := e.Body.getChildren()[0]; canUpdate(firstChild, v) {
+				if err := update(firstChild, v); err != nil {
+					panic(errors.New("mounting ui element failed").Wrap(err))
+				}
 				return
 			}
-			if !isErrReplace(err) {
-				panic(errors.New("mounting ui element failed").
-					Tag("dispatches-count", len(e.dispatches)).
-					Tag("dispatches-capacity", cap(e.dispatches)).
-					Tag("updates-count", len(e.updates)).
-					Tag("updates-queue-len", len(e.updateQueue)).
-					Wrap(err))
-			}
 
-			if err := e.Body.(elemWithChildren).replaceChildAt(0, n); err != nil {
-				panic(errors.New("mounting ui element failed").
-					Tag("dispatches-count", len(e.dispatches)).
-					Tag("dispatches-capacity", cap(e.dispatches)).
-					Tag("updates-count", len(e.updates)).
-					Tag("updates-queue-len", len(e.updateQueue)).
-					Wrap(err))
+			if err := e.Body.(*htmlBody).replaceChildAt(0, v); err != nil {
+				panic(errors.New("mounting ui element failed").Wrap(err))
 			}
 		},
 	})
@@ -239,7 +203,7 @@ func (e *engine) Nav(u *url.URL) {
 		Mode:   Update,
 		Source: e.Body,
 		Function: func(ctx Context) {
-			ctx.Src().onNav(u)
+			ctx.Src().onComponentEvent(nav{})
 		},
 	})
 }
@@ -249,7 +213,7 @@ func (e *engine) AppUpdate() {
 		Mode:   Update,
 		Source: e.Body,
 		Function: func(ctx Context) {
-			ctx.Src().onAppUpdate()
+			ctx.Src().onComponentEvent(appUpdate{})
 		},
 	})
 }
@@ -259,7 +223,7 @@ func (e *engine) AppInstallChange() {
 		Mode:   Update,
 		Source: e.Body,
 		Function: func(ctx Context) {
-			ctx.Src().onAppInstallChange()
+			ctx.Src().onComponentEvent(appInstallChange{})
 		},
 	})
 }
@@ -269,21 +233,15 @@ func (e *engine) AppResize() {
 		Mode:   Update,
 		Source: e.Body,
 		Function: func(ctx Context) {
-			ctx.Src().onResize()
+			ctx.Src().onComponentEvent(resize{})
 		},
 	})
 }
 
 func (e *engine) init() {
 	e.initOnce.Do(func() {
-		e.dispatches = make(chan Dispatch, eventBufferSize)
-		e.updates = make(map[Composer]struct{})
-		e.updateQueue = make([]updateDescriptor, 0, updateBufferSize)
-		e.defers = make([]Dispatch, 0, deferBufferSize)
-		e.states = newStore(e)
-
-		if e.UpdateRate <= 0 {
-			e.UpdateRate = 60
+		if e.FrameRate <= 0 {
+			e.FrameRate = 60
 		}
 
 		if e.Page == nil {
@@ -299,8 +257,8 @@ func (e *engine) init() {
 			e.SessionStorage = newMemoryStorage()
 		}
 
-		if e.ResolveStaticResources == nil {
-			e.ResolveStaticResources = func(path string) string {
+		if e.StaticResourceResolver == nil {
+			e.StaticResourceResolver = func(path string) string {
 				return path
 			}
 		}
@@ -313,22 +271,70 @@ func (e *engine) init() {
 			e.Body = body
 		}
 
+		e.dispatches = make(chan Dispatch, 4096)
+		e.componentUpdates = make(map[Composer]bool)
+		e.componentUpdateQueue = make([]componentUpdate, 0, 32)
+		e.deferables = make([]Dispatch, 32)
+		e.states = newStore(e)
+		e.isFirstMount = true
+
 		for actionName, handler := range e.ActionHandlers {
 			e.actions.handle(actionName, true, e.Body, handler)
 		}
 	})
 }
 
+func (e *engine) getCurrentPage() Page {
+	return e.Page
+}
+
+func (e *engine) getLocalStorage() BrowserStorage {
+	return e.LocalStorage
+}
+
+func (e *engine) getSessionStorage() BrowserStorage {
+	return e.SessionStorage
+}
+
+func (e *engine) isServerSide() bool {
+	return e.IsServerSide
+}
+
+func (e *engine) resolveStaticResource(path string) string {
+	return e.StaticResourceResolver(path)
+}
+
+func (e *engine) addComponentUpdate(c Composer) {
+	if c == nil || !c.Mounted() {
+		return
+	}
+
+	e.componentUpdates[c] = true
+}
+
+func (e *engine) removeComponentUpdate(c Composer) {
+	delete(e.componentUpdates, c)
+}
+
+func (e *engine) preventComponentUpdate(c Composer) {
+	e.componentUpdateMutex.Lock()
+	defer e.componentUpdateMutex.Unlock()
+
+	e.componentUpdates[c] = false
+}
+
+func (e *engine) addDeferable(d Dispatch) {
+	e.deferables = append(e.deferables, d)
+}
+
 func (e *engine) start(ctx context.Context) {
 	e.startOnce.Do(func() {
-		updateInterval := time.Second / time.Duration(e.UpdateRate)
-		currentInterval := time.Duration(updateInterval)
+		frameDuration := time.Second / time.Duration(e.FrameRate)
+		currentFrameDuration := frameDuration
+		frames := time.NewTicker(frameDuration)
 
-		updates := time.NewTicker(currentInterval)
-		defer updates.Stop()
-
-		cleanup := time.NewTicker(time.Minute)
-		defer cleanup.Stop()
+		cleanups := time.NewTicker(time.Minute)
+		defer cleanups.Stop()
 
 		for {
 			select {
@@ -336,23 +342,22 @@ func (e *engine) start(ctx context.Context) {
 				return
 
 			case d := <-e.dispatches:
-				if currentInterval != updateInterval {
-					currentInterval = updateInterval
-					updates.Reset(currentInterval)
+				if currentFrameDuration != frameDuration {
+					currentFrameDuration = frameDuration
+					frames.Reset(currentFrameDuration)
 				}
-
 				e.handleDispatch(d)
 
-			case <-updates.C:
-				e.updateComponents()
-				e.execDeferableEvents()
-
+			case <-frames.C:
+				e.handleFrame()
 				if len(e.dispatches) == 0 {
-					currentInterval = time.Hour
-					updates.Reset(currentInterval)
+					if currentFrameDuration < time.Hour {
+						currentFrameDuration *= 2
+					}
+					frames.Reset(currentFrameDuration)
 				}
 
-			case <-cleanup.C:
+			case <-cleanups.C:
 				e.actions.closeUnusedHandlers()
 				e.states.Cleanup()
 			}
@@ -362,115 +367,67 @@ func (e *engine) start(ctx context.Context) {
 
 func (e *engine) handleDispatch(d Dispatch) {
 	switch d.Mode {
-	case Next:
-		d.Function(makeContext(d.Source))
-
 	case Update:
-		if d.Source.Mounted() {
-			d.Function(makeContext(d.Source))
-			e.scheduleComponentUpdate(d.Source)
-		}
+		d.do()
+		e.addComponentUpdate(getComponent(d.Source))
 
 	case Defer:
-		if d.Source.Mounted() {
-			e.defers = append(e.defers, d)
-		}
+		e.deferables = append(e.deferables, d)
+
+	case Next:
+		d.do()
 	}
 }
 
-func (e *engine) scheduleComponentUpdate(n UI) {
-	if !n.Mounted() {
-		return
+func (e *engine) handleFrame() {
+	e.handleComponentUpdates()
+	e.handleDeferables()
+}
+
+func (e *engine) handleComponentUpdates() {
+	e.componentUpdateMutex.Lock()
+	defer e.componentUpdateMutex.Unlock()
+
+	for c, canUpdate := range e.componentUpdates {
+		if c.Mounted() && canUpdate {
+			e.componentUpdateQueue = append(e.componentUpdateQueue, componentUpdate{
+				component: c,
+				priority:  getComponentPriority(c),
+			})
+		}
 	}
 
-	c := nearestCompo(n)
-	if c == nil {
-		return
-	}
-
-	if _, isScheduled := e.updates[c]; isScheduled {
-		return
-	}
-
-	e.updates[c] = struct{}{}
-	e.updateQueue = append(e.updateQueue, updateDescriptor{
-		compo:    c,
-		priority: compoPriority(c),
+	sort.Slice(e.componentUpdateQueue, func(i, j int) bool {
+		return e.componentUpdateQueue[i].priority < e.componentUpdateQueue[j].priority
 	})
-}
 
-func (e *engine) updateComponents() {
-	if len(e.updates) == 0 {
-		return
-	}
-
-	sortUpdateDescriptors(e.updateQueue)
-	for _, ud := range e.updateQueue {
-		compo := ud.compo
-		if !compo.Mounted() {
-			e.removeFromUpdates(compo)
+	for i, u := range e.componentUpdateQueue {
+		if _, ok := e.componentUpdates[u.component]; !ok || !u.component.Mounted() {
+			e.removeComponentUpdate(u.component)
+			e.componentUpdateQueue[i] = componentUpdate{}
 			continue
 		}
 
-		if _, requiresUpdate := e.updates[compo]; !requiresUpdate {
-			continue
-		}
-
-		if err := compo.updateRoot(); err != nil {
+		if err := u.component.updateRoot(); err != nil {
 			panic(err)
 		}
-		e.removeFromUpdates(compo)
+		e.removeComponentUpdate(u.component)
+		e.componentUpdateQueue[i] = componentUpdate{}
 	}
 
-	e.updateQueue = e.updateQueue[:0]
+	e.componentUpdateQueue = e.componentUpdateQueue[:0]
 }
 
-func (e *engine) removeFromUpdates(c Composer) {
-	delete(e.updates, c)
-}
-
-func (e *engine) execDeferableEvents() {
-	for _, d := range e.defers {
-		if d.Source.Mounted() {
-			d.Function(makeContext(d.Source))
-		}
+func (e *engine) handleDeferables() {
+	for i := range e.deferables {
+		e.deferables[i].do()
+		e.deferables[i] = Dispatch{}
 	}
-	e.defers = e.defers[:0]
+	e.deferables = e.deferables[:0]
 }
 
-func (e *engine) currentPage() Page {
-	return e.Page
-}
-
-func (e *engine) localStorage() BrowserStorage {
-	return e.LocalStorage
-}
-
-func (e *engine) sessionStorage() BrowserStorage {
-	return e.SessionStorage
-}
-
-func (e *engine) runsInServer() bool {
-	return e.RunsInServer
-}
-
-func (e *engine) resolveStaticResource(path string) string {
-	return e.ResolveStaticResources(path)
-}
-
-type updateDescriptor struct {
-	compo    Composer
-	priority int
-}
-
-func sortUpdateDescriptors(d []updateDescriptor) {
-	sort.Slice(d, func(a, b int) bool {
-		return d[a].priority < d[b].priority
-	})
-}
-
-func nearestCompo(n UI) Composer {
-	for node := n; node != nil; node = node.parent() {
+func getComponent(n UI) Composer {
+	for node := n; node != nil; node = node.getParent() {
 		if c, isCompo := node.(Composer); isCompo {
 			return c
 		}
@@ -478,15 +435,15 @@ func nearestCompo(n UI) Composer {
 	return nil
 }
 
-func compoPriority(c Composer) int {
+func getComponentPriority(c Composer) int {
 	depth := 1
-	for parent := c.parent(); parent != nil; parent = parent.parent() {
+	for parent := c.getParent(); parent != nil; parent = parent.getParent() {
 		depth++
 	}
 	return depth
 }
 
-type msgHandler struct {
-	src      UI
-	function MsgHandler
+type componentUpdate struct {
+	component Composer
+	priority  int
 }

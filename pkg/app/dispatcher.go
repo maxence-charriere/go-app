@@ -31,11 +31,11 @@ type Dispatcher interface {
 	Post(a Action)
 
 	// Sets the state with the given value.
-	SetState(state string, v interface{}, opts ...StateOption)
+	SetState(state string, v any, opts ...StateOption)
 
 	// Stores the specified state value into the given receiver. Panics when the
 	// receiver is not a pointer or nil.
-	GetState(state string, recv interface{})
+	GetState(state string, recv any)
 
 	// Deletes the given state.
 	DelState(state string)
@@ -58,12 +58,13 @@ type Dispatcher interface {
 	Wait()
 
 	start(context.Context)
-	currentPage() Page
-	localStorage() BrowserStorage
-	sessionStorage() BrowserStorage
-	runsInServer() bool
+	getCurrentPage() Page
+	getLocalStorage() BrowserStorage
+	getSessionStorage() BrowserStorage
+	isServerSide() bool
 	resolveStaticResource(string) string
-	removeFromUpdates(Composer)
+	removeComponentUpdate(Composer)
+	preventComponentUpdate(Composer)
 }
 
 // ClientDispatcher is the interface that describes a dispatcher that emulates a
@@ -100,7 +101,9 @@ type ClientDispatcher interface {
 // NewClientTester creates a testing dispatcher that simulates a
 // client environment. The given UI element is mounted upon creation.
 func NewClientTester(n UI) ClientDispatcher {
-	e := &engine{ActionHandlers: actionHandlers}
+	e := &engine{
+		ActionHandlers: actionHandlers,
+	}
 	e.init()
 	e.Mount(n)
 	e.Consume()
@@ -129,7 +132,7 @@ type ServerDispatcher interface {
 // client environment.
 func NewServerTester(n UI) ServerDispatcher {
 	e := &engine{
-		RunsInServer:   true,
+		IsServerSide:   true,
 		ActionHandlers: actionHandlers,
 	}
 	e.init()
@@ -143,6 +146,13 @@ type Dispatch struct {
 	Mode     DispatchMode
 	Source   UI
 	Function func(Context)
+}
+
+func (d Dispatch) do() {
+	if d.Source == nil || !d.Source.Mounted() || d.Function == nil {
+		return
+	}
+	d.Function(makeContext(d.Source))
 }
 
 // DispatchMode represents how a dispatch is processed.
@@ -164,4 +174,4 @@ const (
 )
 
 // MsgHandler represents a handler to listen to messages sent with Context.Post.
-type MsgHandler func(Context, interface{})
+type MsgHandler func(Context, any)

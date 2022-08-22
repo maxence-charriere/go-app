@@ -3,11 +3,8 @@ package app
 import (
 	"context"
 	"io"
-	"net/url"
 	"reflect"
 	"strings"
-
-	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
 // UI is the interface that describes a user interface element such as
@@ -25,21 +22,19 @@ type UI interface {
 	name() string
 	self() UI
 	setSelf(UI)
-	context() context.Context
-	dispatcher() Dispatcher
-	attributes() map[string]string
-	eventHandlers() map[string]eventHandler
-	parent() UI
+	getContext() context.Context
+	getDispatcher() Dispatcher
+	getAttributes() attributes
+	getEventHandlers() eventHandlers
+	getParent() UI
 	setParent(UI)
-	children() []UI
+	getChildren() []UI
 	mount(Dispatcher) error
 	dismount()
-	update(UI) error
-	onNav(*url.URL)
-	onAppUpdate()
-	onAppInstallChange()
-	onResize()
+	canUpdateWith(UI) bool
+	updateWith(UI) error
 	preRender(Page)
+	onComponentEvent(any)
 	html(w io.Writer)
 	htmlWithIndent(w io.Writer, indent int)
 }
@@ -96,42 +91,44 @@ const (
 //
 // It should be used only when implementing components that can accept content
 // with variadic arguments like HTML elements Body method.
-func FilterUIElems(uis ...UI) []UI {
-	if len(uis) == 0 {
+func FilterUIElems(v ...UI) []UI {
+	if len(v) == 0 {
 		return nil
 	}
 
-	elems := make([]UI, 0, len(uis))
+	remove := func(i int) {
+		copy(v[i:], v[i+1:])
+		v[len(v)-1] = nil
+		v = v[:len(v)-1]
+	}
 
-	for _, n := range uis {
-		// Ignore nil elements:
-		if v := reflect.ValueOf(n); n == nil ||
-			v.Kind() == reflect.Ptr && v.IsNil() {
+	var b []UI
+	replaceAt := func(i int, s ...UI) {
+		b = append(b, v[i+1:]...)
+		v = append(v[:i], s...)
+		v = append(v, b...)
+		b = b[:0]
+	}
+
+	for i := len(v) - 1; i >= 0; i-- {
+		e := v[i]
+		if ev := reflect.ValueOf(e); e == nil || ev.Kind() == reflect.Pointer && ev.IsNil() {
+			remove(i)
 			continue
 		}
 
-		switch n.Kind() {
+		switch e.Kind() {
 		case SimpleText, HTML, Component, RawHTML:
-			elems = append(elems, n)
 
 		case Selector:
-			elems = append(elems, n.children()...)
+			replaceAt(i, e.getChildren()...)
 
 		default:
-			panic(errors.New("filtering ui elements failed").
-				Tag("reason", "unexpected element type found").
-				Tag("kind", n.Kind()).
-				Tag("name", n.name()),
-			)
+			remove(i)
 		}
 	}
 
-	return elems
-}
-
-func isErrReplace(err error) bool {
-	_, replace := errors.Tag(err, "replace")
-	return replace
+	return v
 }
 
 func mount(d Dispatcher, n UI) error {
@@ -144,10 +141,16 @@ func dismount(n UI) {
 	n.setSelf(nil)
 }
 
+func canUpdate(a, b UI) bool {
+	a.setSelf(a)
+	b.setSelf(b)
+	return a.canUpdateWith(b)
+}
+
 func update(a, b UI) error {
 	a.setSelf(a)
 	b.setSelf(b)
-	return a.update(b)
+	return a.updateWith(b)
 }
 
 // HTMLString return an HTML string representation of the given UI element.

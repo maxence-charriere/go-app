@@ -78,7 +78,7 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 	if len(d.Path) != 0 {
 		idx := d.Path[0]
 
-		if idx < 0 || idx >= len(tree.children()) {
+		if idx < 0 || idx >= len(tree.getChildren()) {
 			// Check that the element does not exists.
 			if d.Expected == nil {
 				return nil
@@ -89,12 +89,12 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 				Tag("kind", d.Expected.Kind()).
 				Tag("parent-name", tree.name()).
 				Tag("parent-kind", tree.Kind()).
-				Tag("parent-children-count", len(tree.children())).
+				Tag("parent-children-count", len(tree.getChildren())).
 				Tag("index", idx)
 		}
 
-		c := tree.children()[idx]
-		p := c.parent()
+		c := tree.getChildren()[idx]
+		p := c.getParent()
 
 		if p != tree {
 			return errors.New("unexpected ui element parent").
@@ -158,8 +158,8 @@ func matchText(n UI, d TestUIDescriptor) error {
 }
 
 func matchHTMLElemAttrs(n UI, d TestUIDescriptor) error {
-	aAttrs := n.attributes()
-	bAttrs := d.Expected.attributes()
+	aAttrs := n.getAttributes()
+	bAttrs := d.Expected.getAttributes()
 
 	if len(aAttrs) != len(bAttrs) {
 		return errors.New("the html element is not matching the descriptor").
@@ -202,8 +202,8 @@ func matchHTMLElemAttrs(n UI, d TestUIDescriptor) error {
 }
 
 func matchHTMLElemEventHandlers(n UI, d TestUIDescriptor) error {
-	aevents := n.eventHandlers()
-	bevents := d.Expected.eventHandlers()
+	aevents := n.getEventHandlers()
+	bevents := d.Expected.getEventHandlers()
 
 	if len(aevents) != len(bevents) {
 		return errors.New("the html element is not matching the descriptor").

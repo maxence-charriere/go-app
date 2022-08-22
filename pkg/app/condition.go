@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"io"
-	"net/url"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
@@ -80,30 +79,30 @@ func (c condition) self() UI {
 func (c condition) setSelf(UI) {
 }
 
-func (c condition) context() context.Context {
+func (c condition) getContext() context.Context {
 	return nil
 }
 
-func (c condition) dispatcher() Dispatcher {
+func (c condition) getDispatcher() Dispatcher {
 	return nil
 }
 
-func (c condition) attributes() map[string]string {
+func (c condition) getAttributes() attributes {
 	return nil
 }
 
-func (c condition) eventHandlers() map[string]eventHandler {
+func (c condition) getEventHandlers() eventHandlers {
 	return nil
 }
 
-func (c condition) parent() UI {
+func (c condition) getParent() UI {
 	return nil
 }
 
 func (c condition) setParent(UI) {
 }
 
-func (c condition) children() []UI {
+func (c condition) getChildren() []UI {
 	return c.body
 }
 
@@ -116,25 +115,20 @@ func (c condition) mount(Dispatcher) error {
 func (c condition) dismount() {
 }
 
-func (c condition) update(UI) error {
+func (c condition) canUpdateWith(UI) bool {
+	return false
+}
+
+func (c condition) updateWith(UI) error {
 	return errors.New("condition cannot be updated").
 		Tag("name", c.name()).
 		Tag("kind", c.Kind())
 }
 
-func (c condition) onNav(*url.URL) {
-}
-
-func (c condition) onAppUpdate() {
-}
-
-func (c condition) onAppInstallChange() {
-}
-
-func (c condition) onResize() {
-}
-
 func (c condition) preRender(Page) {
+}
+
+func (c condition) onComponentEvent(any) {
 }
 
 func (c condition) html(w io.Writer) {
