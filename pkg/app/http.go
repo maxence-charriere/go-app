@@ -6,7 +6,7 @@ import (
 	"crypto/sha1"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"reflect"
@@ -593,7 +593,13 @@ func (h *Handler) servePreRenderedItem(w http.ResponseWriter, r PreRenderedItem)
 func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWriter, r *http.Request) {
 	var u string
 	if _, ok := h.Resources.(http.Handler); ok {
-		u = "http://" + r.Host + resource.ResourcePath
+		var protocol string
+		if r.TLS != nil {
+			protocol = "https://"
+		} else {
+			protocol = "http://"
+		}
+		u = protocol + r.Host + resource.ResourcePath
 	} else {
 		u = h.Resources.Static() + resource.ResourcePath
 	}
@@ -616,7 +622,7 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 		return
 	}
 
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		Log(errors.New("reading proxy static resource failed").
