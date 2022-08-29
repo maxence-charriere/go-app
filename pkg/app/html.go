@@ -165,7 +165,18 @@ func (e *htmlElement) updateWith(v UI) error {
 	for len(childrenA) != 0 && len(childrenB) != 0 {
 		a := childrenA[0]
 		b := childrenB[0]
-
+                j1 := 0
+		j2 := 0
+		for j := j1; j < len(childrenA); j++ {
+			if childrenA[j] == b {
+				j2 = j
+				break
+			}
+		}
+		if j1!=j2 {
+			childrenA[0], childrenA[j2] = childrenA[j2], childrenA[0]
+			a = childrenA[0]
+		}
 		if canUpdate(a, b) {
 			if err := update(a, b); err != nil {
 				return errors.New("updating child failed").
