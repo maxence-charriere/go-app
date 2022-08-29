@@ -85,18 +85,19 @@ func Window() BrowserWindow {
 // pre-compilation flags.
 //
 // Eg:
-//  func main() {
-// 		// Define app routes.
-// 		app.Route("/", myComponent{})
-// 		app.Route("/other-page", myOtherComponent{})
 //
-// 		// Run the application when on a web browser (only executed on client side).
-// 		app.RunWhenOnBrowser()
+//	 func main() {
+//			// Define app routes.
+//			app.Route("/", myComponent{})
+//			app.Route("/other-page", myOtherComponent{})
 //
-// 		// Launch the server that serves the app (only executed on server side):
-// 		http.Handle("/", &app.Handler{Name: "My app"})
-// 		http.ListenAndServe(":8080", nil)
-//  }
+//			// Run the application when on a web browser (only executed on client side).
+//			app.RunWhenOnBrowser()
+//
+//			// Launch the server that serves the app (only executed on server side):
+//			http.Handle("/", &app.Handler{Name: "My app"})
+//			http.ListenAndServe(":8080", nil)
+//	 }
 func RunWhenOnBrowser() {
 	if IsServer {
 		return

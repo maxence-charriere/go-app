@@ -153,16 +153,16 @@ func Undefined() Value {
 
 // ValueOf returns x as a JavaScript value:
 //
-//  | Go                     | JavaScript             |
-//  | ---------------------- | ---------------------- |
-//  | js.Value               | [its value]            |
-//  | js.Func                | function               |
-//  | nil                    | null                   |
-//  | bool                   | boolean                |
-//  | integers and floats    | number                 |
-//  | string                 | string                 |
-//  | []any          | new array              |
-//  | map[string]any | new object             |
+//	| Go                     | JavaScript             |
+//	| ---------------------- | ---------------------- |
+//	| js.Value               | [its value]            |
+//	| js.Func                | function               |
+//	| nil                    | null                   |
+//	| bool                   | boolean                |
+//	| integers and floats    | number                 |
+//	| string                 | string                 |
+//	| []any          | new array              |
+//	| map[string]any | new object             |
 //
 // Panics if x is not one of the expected types.
 func ValueOf(x any) Value {

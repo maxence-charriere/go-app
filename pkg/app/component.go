@@ -16,13 +16,14 @@ import (
 // implementing the Render function.
 //
 // Example:
-//  type Hello struct {
-//      app.Compo
-//  }
 //
-//  func (c *Hello) Render() app.UI {
-//      return app.Text("hello")
-//  }
+//	type Hello struct {
+//	    app.Compo
+//	}
+//
+//	func (c *Hello) Render() app.UI {
+//	    return app.Text("hello")
+//	}
 type Composer interface {
 	UI
 

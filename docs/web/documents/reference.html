@@ -15,7 +15,7 @@ using module mode; GOMOD=/Users/maxence/Dev/src/github.com/maxence-charriere/go-
 
 
 
-<script>var goVersion = "go1.18.3";</script>
+<script>var goVersion = "go1.19";</script>
 <script src="/lib/godoc/godocs.js" defer></script>
 </head>
 <body>
@@ -96,14 +96,12 @@ using module mode; GOMOD=/Users/maxence/Dev/src/github.com/maxence-charriere/go-
 			</div>
 			<div class="expanded">
 				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
-				<p>
-Package app is a package to build progressive web apps (PWA) with Go
+				<p>Package app is a package to build progressive web apps (PWA) with Go
 programming language and WebAssembly.
 It uses a declarative syntax that allows creating and dealing with HTML
 elements only by using Go, and without writing any HTML markup.
 The package also provides an http.Handler ready to serve all the required
 resources to run Go-based progressive web apps.
-</p>
 
 				
 			</div>
@@ -1574,9 +1572,7 @@ resources to run Go-based progressive web apps.
 				
 			</h2>
 			<pre>func AppendClass(class, c <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			<p>
-AppendClass adds c to the given class string.
-</p>
+			<p>AppendClass adds c to the given class string.
 
 			
 			
@@ -1590,10 +1586,8 @@ AppendClass adds c to the given class string.
 				
 			</h2>
 			<pre>func Broadcast(s *<a href="#State">State</a>)</pre>
-			<p>
-Broadcast is a state option that broadcasts a state to other browser tabs and
+			<p>Broadcast is a state option that broadcasts a state to other browser tabs and
 windows from the same origin.
-</p>
 
 			
 			
@@ -1601,20 +1595,16 @@ windows from the same origin.
 		
 			
 			
-			<h2 id="CopyBytesToGo">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=7499:7544#L230">CopyBytesToGo</a>
+			<h2 id="CopyBytesToGo">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=7489:7534#L230">CopyBytesToGo</a>
 				<a class="permalink" href="#CopyBytesToGo">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func CopyBytesToGo(dst []<a href="/pkg/builtin/#byte">byte</a>, src <a href="#Value">Value</a>) <a href="/pkg/builtin/#int">int</a></pre>
-			<p>
-CopyBytesToGo copies bytes from the Uint8Array src to dst. It returns the
+			<p>CopyBytesToGo copies bytes from the Uint8Array src to dst. It returns the
 number of bytes copied, which will be the minimum of the lengths of src and
 dst.
-</p>
-<p>
-CopyBytesToGo panics if src is not an Uint8Array.
-</p>
+<p>CopyBytesToGo panics if src is not an Uint8Array.
 
 			
 			
@@ -1622,20 +1612,16 @@ CopyBytesToGo panics if src is not an Uint8Array.
 		
 			
 			
-			<h2 id="CopyBytesToJS">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=7802:7847#L239">CopyBytesToJS</a>
+			<h2 id="CopyBytesToJS">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=7792:7837#L239">CopyBytesToJS</a>
 				<a class="permalink" href="#CopyBytesToJS">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func CopyBytesToJS(dst <a href="#Value">Value</a>, src []<a href="/pkg/builtin/#byte">byte</a>) <a href="/pkg/builtin/#int">int</a></pre>
-			<p>
-CopyBytesToJS copies bytes from src to the Uint8Array dst. It returns the
+			<p>CopyBytesToJS copies bytes from src to the Uint8Array dst. It returns the
 number of bytes copied, which will be the minimum of the lengths of src and
 dst.
-</p>
-<p>
-CopyBytesToJS panics if dst is not an Uint8Array.
-</p>
+<p>CopyBytesToJS panics if dst is not an Uint8Array.
 
 			
 			
@@ -1649,10 +1635,8 @@ CopyBytesToJS panics if dst is not an Uint8Array.
 				
 			</h2>
 			<pre>func Encrypt(s *<a href="#State">State</a>)</pre>
-			<p>
-Encrypt is a state option that encrypts a state before persisting it in local
+			<p>Encrypt is a state option that encrypts a state before persisting it in local
 storage. Encryption is performed only when the Persist option is also set.
-</p>
 
 			
 			
@@ -1666,15 +1650,11 @@ storage. Encryption is performed only when the Persist option is also set.
 				
 			</h2>
 			<pre>func GenerateStaticWebsite(dir <a href="/pkg/builtin/#string">string</a>, h *<a href="#Handler">Handler</a>, pages ...<a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#error">error</a></pre>
-			<p>
-GenerateStaticWebsite generates the files to run a PWA built with go-app as a
+			<p>GenerateStaticWebsite generates the files to run a PWA built with go-app as a
 static website in the specified directory. Static websites can be used with
 hosts such as Github Pages.
-</p>
-<p>
-Note that app.wasm must still be built separately and put into the web
+<p>Note that app.wasm must still be built separately and put into the web
 directory.
-</p>
 
 			
 			
@@ -1688,10 +1668,8 @@ directory.
 				
 			</h2>
 			<pre>func Getenv(k <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			<p>
-Getenv retrieves the value of the environment variable named by the key. It
+			<p>Getenv retrieves the value of the environment variable named by the key. It
 returns the value, which will be empty if the variable is not present.
-</p>
 
 			
 			
@@ -1705,9 +1683,7 @@ returns the value, which will be empty if the variable is not present.
 				
 			</h2>
 			<pre>func HTMLString(ui <a href="#UI">UI</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			<p>
-HTMLString return an HTML string representation of the given UI element.
-</p>
+			<p>HTMLString return an HTML string representation of the given UI element.
 
 			
 			
@@ -1721,10 +1697,8 @@ HTMLString return an HTML string representation of the given UI element.
 				
 			</h2>
 			<pre>func HTMLStringWithIndent(ui <a href="#UI">UI</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			<p>
-HTMLStringWithIndent return an indented HTML string representation of the
+			<p>HTMLStringWithIndent return an indented HTML string representation of the
 given UI element.
-</p>
 
 			
 			
@@ -1738,10 +1712,8 @@ given UI element.
 				
 			</h2>
 			<pre>func Handle(actionName <a href="/pkg/builtin/#string">string</a>, h <a href="#ActionHandler">ActionHandler</a>)</pre>
-			<p>
-Handle registers the handler for the given action name. When an action
+			<p>Handle registers the handler for the given action name. When an action
 occurs, the handler is executed on its own goroutine.
-</p>
 
 			
 			
@@ -1755,10 +1727,8 @@ occurs, the handler is executed on its own goroutine.
 				
 			</h2>
 			<pre>func KeepBodyClean() (close func())</pre>
-			<p>
-KeepBodyClean prevents third-party Javascript libraries to add nodes to the
+			<p>KeepBodyClean prevents third-party Javascript libraries to add nodes to the
 body element.
-</p>
 
 			
 			
@@ -1772,10 +1742,8 @@ body element.
 				
 			</h2>
 			<pre>func Log(v ...<a href="/pkg/builtin/#any">any</a>)</pre>
-			<p>
-Log logs using the default formats for its operands. Spaces are always added
+			<p>Log logs using the default formats for its operands. Spaces are always added
 between operands.
-</p>
 
 			
 			
@@ -1789,9 +1757,7 @@ between operands.
 				
 			</h2>
 			<pre>func Logf(format <a href="/pkg/builtin/#string">string</a>, v ...<a href="/pkg/builtin/#any">any</a>)</pre>
-			<p>
-Logf logs according to a format specifier.
-</p>
+			<p>Logf logs according to a format specifier.
 
 			
 			
@@ -1805,13 +1771,9 @@ Logf logs according to a format specifier.
 				
 			</h2>
 			<pre>func Persist(s *<a href="#State">State</a>)</pre>
-			<p>
-Persist is a state option that persists a state in local storage.
-</p>
-<p>
-Be mindful to not use this option as a cache since local storage is limited
+			<p>Persist is a state option that persists a state in local storage.
+<p>Be mindful to not use this option as a cache since local storage is limited
 to 5MB in a lot of web browsers.
-</p>
 
 			
 			
@@ -1825,10 +1787,8 @@ to 5MB in a lot of web browsers.
 				
 			</h2>
 			<pre>func PrintHTML(w <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Writer">Writer</a>, ui <a href="#UI">UI</a>)</pre>
-			<p>
-PrintHTML writes an HTML representation of the UI element into the given
+			<p>PrintHTML writes an HTML representation of the UI element into the given
 writer.
-</p>
 
 			
 			
@@ -1842,10 +1802,8 @@ writer.
 				
 			</h2>
 			<pre>func PrintHTMLWithIndent(w <a href="/pkg/io/">io</a>.<a href="/pkg/io/#Writer">Writer</a>, ui <a href="#UI">UI</a>)</pre>
-			<p>
-PrintHTMLWithIndent writes an idented HTML representation of the UI element
+			<p>PrintHTMLWithIndent writes an idented HTML representation of the UI element
 into the given writer.
-</p>
 
 			
 			
@@ -1859,13 +1817,9 @@ into the given writer.
 				
 			</h2>
 			<pre>func Route(path <a href="/pkg/builtin/#string">string</a>, c <a href="#Composer">Composer</a>)</pre>
-			<p>
-Route associates the type of the given component to the given path.
-</p>
-<p>
-When a page is requested and matches the route, a new instance of the given
+			<p>Route associates the type of the given component to the given path.
+<p>When a page is requested and matches the route, a new instance of the given
 component is created before being displayed.
-</p>
 
 			
 			
@@ -1879,17 +1833,11 @@ component is created before being displayed.
 				
 			</h2>
 			<pre>func RouteWithRegexp(pattern <a href="/pkg/builtin/#string">string</a>, c <a href="#Composer">Composer</a>)</pre>
-			<p>
-RouteWithRegexp associates the type of the given component to the given
+			<p>RouteWithRegexp associates the type of the given component to the given
 regular expression pattern.
-</p>
-<p>
-Patterns use the Go standard regexp format.
-</p>
-<p>
-When a page is requested and matches the pattern, a new instance of the given
+<p>Patterns use the Go standard regexp format.
+<p>When a page is requested and matches the pattern, a new instance of the given
 component is created before being displayed.
-</p>
 
 			
 			
@@ -1897,35 +1845,29 @@ component is created before being displayed.
 		
 			
 			
-			<h2 id="RunWhenOnBrowser">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/app.go?s=2643:2666#L90">RunWhenOnBrowser</a>
+			<h2 id="RunWhenOnBrowser">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/app.go?s=2646:2669#L91">RunWhenOnBrowser</a>
 				<a class="permalink" href="#RunWhenOnBrowser">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func RunWhenOnBrowser()</pre>
-			<p>
-RunWhenOnBrowser starts the app, displaying the component associated with the
+			<p>RunWhenOnBrowser starts the app, displaying the component associated with the
 current URL path.
-</p>
-<p>
-This call is skipped when the program is not run on a web browser. This
+<p>This call is skipped when the program is not run on a web browser. This
 allows writing client and server-side code without separation or
 pre-compilation flags.
-</p>
-<p>
-Eg:
-</p>
+<p>Eg:
 <pre> func main() {
 		// Define app routes.
-		app.Route(&#34;/&#34;, myComponent{})
-		app.Route(&#34;/other-page&#34;, myOtherComponent{})
+		app.Route(&quot;/&quot;, myComponent{})
+		app.Route(&quot;/other-page&quot;, myOtherComponent{})
 
 		// Run the application when on a web browser (only executed on client side).
 		app.RunWhenOnBrowser()
 
 		// Launch the server that serves the app (only executed on server side):
-		http.Handle(&#34;/&#34;, &amp;app.Handler{Name: &#34;My app&#34;})
-		http.ListenAndServe(&#34;:8080&#34;, nil)
+		http.Handle(&quot;/&quot;, &amp;app.Handler{Name: &quot;My app&quot;})
+		http.ListenAndServe(&quot;:8080&quot;, nil)
  }
 </pre>
 
@@ -1935,25 +1877,21 @@ Eg:
 		
 			
 			
-			<h2 id="TestMatch">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/testing.go?s=1914:1963#L63">TestMatch</a>
+			<h2 id="TestMatch">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/testing.go?s=1891:1940#L64">TestMatch</a>
 				<a class="permalink" href="#TestMatch">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func TestMatch(tree <a href="#UI">UI</a>, d <a href="#TestUIDescriptor">TestUIDescriptor</a>) <a href="/pkg/builtin/#error">error</a></pre>
-			<p>
-TestMatch looks for the element targeted by the descriptor in the given tree
+			<p>TestMatch looks for the element targeted by the descriptor in the given tree
 and reports whether it matches with the expected element.
-</p>
-<p>
-Eg:
-</p>
+<p>Eg:
 <pre>tree := app.Div().Body(
     app.H2().Body(
-        app.Text(&#34;foo&#34;),
+        app.Text(&quot;foo&quot;),
     ),
     app.P().Body(
-        app.Text(&#34;bar&#34;),
+        app.Text(&quot;bar&quot;),
     ),
 )
 
@@ -1974,7 +1912,7 @@ err := app.TestMatch(tree, app.TestUIDescriptor{
 // Testing text from p:
 err = app.TestMatch(tree, app.TestUIDescriptor{
     Path:     TestPath(1, 0),
-    Expected: app.Text(&#34;bar&#34;),
+    Expected: app.Text(&quot;bar&quot;),
 })
 // OK =&gt; err == nil
 </pre>
@@ -1991,10 +1929,8 @@ err = app.TestMatch(tree, app.TestUIDescriptor{
 				
 			</h2>
 			<pre>func TestPath(p ...<a href="/pkg/builtin/#int">int</a>) []<a href="/pkg/builtin/#int">int</a></pre>
-			<p>
-TestPath is a helper function that returns a path to use in a
+			<p>TestPath is a helper function that returns a path to use in a
 TestUIDescriptor.
-</p>
 
 			
 			
@@ -2008,10 +1944,8 @@ TestUIDescriptor.
 				
 				
 			</h2>
-			<p>
-Action represents a custom event that can be propagated across the app. It
+			<p>Action represents a custom event that can be propagated across the app. It
 can contain a payload and be given additional context with tags.
-</p>
 
 			<pre>type Action struct {
     <span class="comment">// The name that identifies the action..</span>
@@ -2044,10 +1978,8 @@ can contain a payload and be given additional context with tags.
 				
 				
 			</h2>
-			<p>
-ActionHandler represents a handler that is executed when an action is created
+			<p>ActionHandler represents a handler that is executed when an action is created
 with Context.NewAction().
-</p>
 
 			<pre>type ActionHandler func(<a href="#Context">Context</a>, <a href="#Action">Action</a>)</pre>
 
@@ -2065,15 +1997,13 @@ with Context.NewAction().
 		
 			
 			
-			<h2 id="AppInstaller">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=3591:3884#L114">AppInstaller</a>
+			<h2 id="AppInstaller">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=3588:3881#L115">AppInstaller</a>
 				<a class="permalink" href="#AppInstaller">&#xb6;</a>
 				
 				
 			</h2>
-			<p>
-AppInstaller is the interface that describes a component that is notified
+			<p>AppInstaller is the interface that describes a component that is notified
 when the application installation state changes.
-</p>
 
 			<pre>type AppInstaller interface {
     <span class="comment">// The function called when the application becomes installable or</span>
@@ -2097,15 +2027,13 @@ when the application installation state changes.
 		
 			
 			
-			<h2 id="AppUpdater">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=3307:3460#L106">AppUpdater</a>
+			<h2 id="AppUpdater">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=3304:3457#L107">AppUpdater</a>
 				<a class="permalink" href="#AppUpdater">&#xb6;</a>
 				
 				
 			</h2>
-			<p>
-AppUpdater is the interface that describes a component that is notified when
+			<p>AppUpdater is the interface that describes a component that is notified when
 the application is updated.
-</p>
 
 			<pre>type AppUpdater interface {
     <span class="comment">// The function called when the application is updated. It is always called</span>
@@ -2132,9 +2060,7 @@ the application is updated.
 				
 				
 			</h2>
-			<p>
-BrowserStorage is the interface that describes a web browser storage.
-</p>
+			<p>BrowserStorage is the interface that describes a web browser storage.
 
 			<pre>type BrowserStorage interface {
     <span class="comment">// Set sets the value to the given key. The value must be json convertible.</span>
@@ -2172,14 +2098,12 @@ BrowserStorage is the interface that describes a web browser storage.
 		
 			
 			
-			<h2 id="BrowserWindow">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=6444:7277#L193">BrowserWindow</a>
+			<h2 id="BrowserWindow">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=6434:7267#L193">BrowserWindow</a>
 				<a class="permalink" href="#BrowserWindow">&#xb6;</a>
 				
 				
 			</h2>
-			<p>
-BrowserWindow is the interface that describes the browser window.
-</p>
+			<p>BrowserWindow is the interface that describes the browser window.
 
 			<pre>type BrowserWindow interface {
     <a href="#Value">Value</a>
@@ -2222,9 +2146,7 @@ BrowserWindow is the interface that describes the browser window.
 					
 				</h3>
 				<pre>func Window() <a href="#BrowserWindow">BrowserWindow</a></pre>
-				<p>
-Window returns the JavaScript &#34;window&#34; object.
-</p>
+				<p>Window returns the JavaScript &quot;window&quot; object.
 
 				
 				
@@ -2239,10 +2161,8 @@ Window returns the JavaScript &#34;window&#34; object.
 				
 				
 			</h2>
-			<p>
-ClientDispatcher is the interface that describes a dispatcher that emulates a
+			<p>ClientDispatcher is the interface that describes a dispatcher that emulates a
 client environment.
-</p>
 
 			<pre>type ClientDispatcher interface {
     <a href="#Dispatcher">Dispatcher</a>
@@ -2289,10 +2209,8 @@ client environment.
 					
 				</h3>
 				<pre>func NewClientTester(n <a href="#UI">UI</a>) <a href="#ClientDispatcher">ClientDispatcher</a></pre>
-				<p>
-NewClientTester creates a testing dispatcher that simulates a
+				<p>NewClientTester creates a testing dispatcher that simulates a
 client environment. The given UI element is mounted upon creation.
-</p>
 
 				
 				
@@ -2302,14 +2220,12 @@ client environment. The given UI element is mounted upon creation.
 		
 			
 			
-			<h2 id="Compo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4446:4588#L138">Compo</a>
+			<h2 id="Compo">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4443:4585#L139">Compo</a>
 				<a class="permalink" href="#Compo">&#xb6;</a>
 				
 				
 			</h2>
-			<p>
-Compo represents the base struct to use in order to build a component.
-</p>
+			<p>Compo represents the base struct to use in order to build a component.
 
 			<pre>type Compo struct {
     <span class="comment">// contains filtered or unexported fields</span>
@@ -2328,118 +2244,100 @@ Compo represents the base struct to use in order to build a component.
 
 			
 				
-				<h3 id="Compo.JSValue">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4741:4772#L153">JSValue</a>
+				<h3 id="Compo.JSValue">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4738:4769#L154">JSValue</a>
 					<a class="permalink" href="#Compo.JSValue">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (c *<a href="#Compo">Compo</a>) JSValue() <a href="#Value">Value</a></pre>
-				<p>
-JSValue returns the javascript value of the component root.
-</p>
+				<p>JSValue returns the javascript value of the component root.
 
 				
 				
 				
 			
 				
-				<h3 id="Compo.Kind">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4627:4654#L148">Kind</a>
+				<h3 id="Compo.Kind">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4624:4651#L149">Kind</a>
 					<a class="permalink" href="#Compo.Kind">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (c *<a href="#Compo">Compo</a>) Kind() <a href="#Kind">Kind</a></pre>
-				<p>
-Kind returns the ui element kind.
-</p>
+				<p>Kind returns the ui element kind.
 
 				
 				
 				
 			
 				
-				<h3 id="Compo.Mounted">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4856:4886#L158">Mounted</a>
+				<h3 id="Compo.Mounted">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4853:4883#L159">Mounted</a>
 					<a class="permalink" href="#Compo.Mounted">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (c *<a href="#Compo">Compo</a>) Mounted() <a href="/pkg/builtin/#bool">bool</a></pre>
-				<p>
-Mounted reports whether the component is mounted.
-</p>
+				<p>Mounted reports whether the component is mounted.
 
 				
 				
 				
 			
 				
-				<h3 id="Compo.Render">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=5199:5226#L169">Render</a>
+				<h3 id="Compo.Render">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=5196:5223#L170">Render</a>
 					<a class="permalink" href="#Compo.Render">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (c *<a href="#Compo">Compo</a>) Render() <a href="#UI">UI</a></pre>
-				<p>
-Render describes the component content. This is a default implementation to
+				<p>Render describes the component content. This is a default implementation to
 satisfy the app.Composer interface. It should be redefined when app.Compo is
 embedded.
-</p>
 
 				
 				
 				
 			
 				
-				<h3 id="Compo.ResizeContent">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=5985:6016#L195">ResizeContent</a>
+				<h3 id="Compo.ResizeContent">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=5982:6013#L196">ResizeContent</a>
 					<a class="permalink" href="#Compo.ResizeContent">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (c *<a href="#Compo">Compo</a>) ResizeContent()</pre>
-				<p>
-ResizeContent triggers OnResize() on all the component children that
+				<p>ResizeContent triggers OnResize() on all the component children that
 implement the Resizer interface.
-</p>
 
 				
 				
 				
 			
 				
-				<h3 id="Compo.Update">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=5817:5841#L189">Update</a>
+				<h3 id="Compo.Update">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=5814:5838#L190">Update</a>
 					<a class="permalink" href="#Compo.Update">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (c *<a href="#Compo">Compo</a>) Update()</pre>
-				<p>
-Update triggers a component appearance update. It should be called when a
+				<p>Update triggers a component appearance update. It should be called when a
 field used to render the component has been modified. Updates are always
 performed on the UI goroutine.
-</p>
 
 				
 				
 				
 			
 				
-				<h3 id="Compo.ValueTo">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=6343:6386#L208">ValueTo</a>
+				<h3 id="Compo.ValueTo">func (*Compo) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=6340:6383#L209">ValueTo</a>
 					<a class="permalink" href="#Compo.ValueTo">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (c *<a href="#Compo">Compo</a>) ValueTo(v <a href="/pkg/builtin/#any">any</a>) <a href="#EventHandler">EventHandler</a></pre>
-				<p>
-ValueTo stores the value of the DOM element (if exists) that emitted an event
+				<p>ValueTo stores the value of the DOM element (if exists) that emitted an event
 into the given value.
-</p>
-<p>
-The given value must be a pointer to a signed integer, unsigned integer, or a
+<p>The given value must be a pointer to a signed integer, unsigned integer, or a
 float.
-</p>
-<p>
-It panics if the given value is not a pointer.
-</p>
+<p>It panics if the given value is not a pointer.
 
 				
 				
@@ -2448,28 +2346,22 @@ It panics if the given value is not a pointer.
 		
 			
 			
-			<h2 id="Composer">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=477:1201#L16">Composer</a>
+			<h2 id="Composer">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=474:1198#L17">Composer</a>
 				<a class="permalink" href="#Composer">&#xb6;</a>
 				
 				
 			</h2>
-			<p>
-Composer is the interface that describes a customized, independent and
+			<p>Composer is the interface that describes a customized, independent and
 reusable UI element.
-</p>
-<p>
-Satisfying this interface is done by embedding app.Compo into a struct and
+<p>Satisfying this interface is done by embedding app.Compo into a struct and
 implementing the Render function.
-</p>
-<p>
-Example:
-</p>
+<p>Example:
 <pre>type Hello struct {
     app.Compo
 }
 
 func (c *Hello) Render() app.UI {
-    return app.Text(&#34;hello&#34;)
+    return app.Text(&quot;hello&quot;)
 }
 </pre>
 
@@ -2517,10 +2409,8 @@ func (c *Hello) Render() app.UI {
 				
 				
 			</h2>
-			<p>
-Condition represents a control structure that displays nodes depending on a
+			<p>Condition represents a control structure that displays nodes depending on a
 given expression.
-</p>
 
 			<pre>type Condition interface {
     <a href="#UI">UI</a>
@@ -2550,10 +2440,8 @@ given expression.
 					
 				</h3>
 				<pre>func If(expr <a href="/pkg/builtin/#bool">bool</a>, elems ...<a href="#UI">UI</a>) <a href="#Condition">Condition</a></pre>
-				<p>
-If returns a condition that filters the given elements according to the given
+				<p>If returns a condition that filters the given elements according to the given
 expression.
-</p>
 
 				
 				
@@ -2568,16 +2456,10 @@ expression.
 				
 				
 			</h2>
-			<p>
-Context is the interface that describes a context tied to a UI element.
-</p>
-<p>
-A context provides mechanisms to deal with the browser, the current page,
+			<p>Context is the interface that describes a context tied to a UI element.
+<p>A context provides mechanisms to deal with the browser, the current page,
 navigation, concurrency, and component communication.
-</p>
-<p>
-It is canceled when its associated UI element is dismounted.
-</p>
+<p>It is canceled when its associated UI element is dismounted.
 
 			<pre>type Context interface {
     <a href="/pkg/context/">context</a>.<a href="/pkg/context/#Context">Context</a>
@@ -2738,15 +2620,13 @@ It is canceled when its associated UI element is dismounted.
 		
 			
 			
-			<h2 id="Dismounter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2378:2535#L77">Dismounter</a>
+			<h2 id="Dismounter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2375:2532#L78">Dismounter</a>
 				<a class="permalink" href="#Dismounter">&#xb6;</a>
 				
 				
 			</h2>
-			<p>
-Dismounter is the interface that describes a component that can perform
+			<p>Dismounter is the interface that describes a component that can perform
 additional actions when dismounted.
-</p>
 
 			<pre>type Dismounter interface {
     <a href="#Composer">Composer</a>
@@ -2775,9 +2655,7 @@ additional actions when dismounted.
 				
 				
 			</h2>
-			<p>
-Dispatch represents an operation executed on the UI goroutine.
-</p>
+			<p>Dispatch represents an operation executed on the UI goroutine.
 
 			<pre>type Dispatch struct {
 <span id="Dispatch.Mode"></span>    Mode     <a href="#DispatchMode">DispatchMode</a>
@@ -2805,9 +2683,7 @@ Dispatch represents an operation executed on the UI goroutine.
 				
 				
 			</h2>
-			<p>
-DispatchMode represents how a dispatch is processed.
-</p>
+			<p>DispatchMode represents how a dispatch is processed.
 
 			<pre>type DispatchMode <a href="/pkg/builtin/#int">int</a></pre>
 
@@ -2846,10 +2722,8 @@ DispatchMode represents how a dispatch is processed.
 				
 				
 			</h2>
-			<p>
-Dispatcher is the interface that describes an environment that synchronizes
+			<p>Dispatcher is the interface that describes an environment that synchronizes
 UI instructions and UI elements lifecycle.
-</p>
 
 			<pre>type Dispatcher interface {
     <span class="comment">// Context returns the context associated with the root element.</span>
@@ -2913,15 +2787,13 @@ UI instructions and UI elements lifecycle.
 		
 			
 			
-			<h2 id="Environment">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=20433:20467#L833">Environment</a>
+			<h2 id="Environment">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=20527:20561#L839">Environment</a>
 				<a class="permalink" href="#Environment">&#xb6;</a>
 				
 				
 			</h2>
-			<p>
-Environment describes the environment variables to pass to the progressive
+			<p>Environment describes the environment variables to pass to the progressive
 web app.
-</p>
 
 			<pre>type Environment map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a></pre>
 
@@ -2944,9 +2816,7 @@ web app.
 				
 				
 			</h2>
-			<p>
-Event is the interface that describes a javascript event.
-</p>
+			<p>Event is the interface that describes a javascript event.
 
 			<pre>type Event struct {
     <a href="#Value">Value</a>
@@ -2971,10 +2841,8 @@ Event is the interface that describes a javascript event.
 					
 				</h3>
 				<pre>func (e <a href="#Event">Event</a>) PreventDefault()</pre>
-				<p>
-PreventDefault cancels the event if it is cancelable. The default action that
+				<p>PreventDefault cancels the event if it is cancelable. The default action that
 belongs to the event will not occur.
-</p>
 
 				
 				
@@ -2988,10 +2856,8 @@ belongs to the event will not occur.
 				
 				
 			</h2>
-			<p>
-EventHandler represents a function that can handle HTML events. They are
+			<p>EventHandler represents a function that can handle HTML events. They are
 always called on the UI goroutine.
-</p>
 
 			<pre>type EventHandler func(ctx <a href="#Context">Context</a>, e <a href="#Event">Event</a>)</pre>
 
@@ -3009,15 +2875,13 @@ always called on the UI goroutine.
 		
 			
 			
-			<h2 id="Func">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=5250:5411#L164">Func</a>
+			<h2 id="Func">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=5240:5401#L164">Func</a>
 				<a class="permalink" href="#Func">&#xb6;</a>
 				
 				
 			</h2>
-			<p>
-Func is the interface that describes a wrapped Go function to be called by
+			<p>Func is the interface that describes a wrapped Go function to be called by
 JavaScript.
-</p>
 
 			<pre>type Func interface {
     <a href="#Value">Value</a>
@@ -3037,33 +2901,25 @@ JavaScript.
 
 			
 				
-				<h3 id="FuncOf">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=6295:6350#L188">FuncOf</a>
+				<h3 id="FuncOf">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=6285:6340#L188">FuncOf</a>
 					<a class="permalink" href="#FuncOf">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func FuncOf(fn func(this <a href="#Value">Value</a>, args []<a href="#Value">Value</a>) <a href="/pkg/builtin/#any">any</a>) <a href="#Func">Func</a></pre>
-				<p>
-FuncOf returns a wrapped function.
-</p>
-<p>
-Invoking the JavaScript function will synchronously call the Go function fn
-with the value of JavaScript&#39;s &#34;this&#34; keyword and the arguments of the
+				<p>FuncOf returns a wrapped function.
+<p>Invoking the JavaScript function will synchronously call the Go function fn
+with the value of JavaScript&apos;s &quot;this&quot; keyword and the arguments of the
 invocation. The return value of the invocation is the result of the Go
 function mapped back to JavaScript according to ValueOf.
-</p>
-<p>
-A wrapped function triggered during a call from Go to JavaScript gets
-executed on the same goroutine. A wrapped function triggered by JavaScript&#39;s
+<p>A wrapped function triggered during a call from Go to JavaScript gets
+executed on the same goroutine. A wrapped function triggered by JavaScript&apos;s
 event loop gets executed on an extra goroutine. Blocking operations in the
 wrapped function will block the event loop. As a consequence, if one wrapped
 function blocks, other wrapped funcs will not be processed. A blocking
 function should therefore explicitly start a new goroutine.
-</p>
-<p>
-Func.Release must be called to free up resources when the function will not
+<p>Func.Release must be called to free up resources when the function will not
 be used any more.
-</p>
 
 				
 				
@@ -3078,9 +2934,7 @@ be used any more.
 				
 				
 			</h2>
-			<p>
-HTMLA is the interface that describes a &#34;a&#34; HTML element.
-</p>
+			<p>HTMLA is the interface that describes a &quot;a&quot; HTML element.
 
 			<pre>type HTMLA interface {
     <a href="#UI">UI</a>
@@ -3282,9 +3136,7 @@ HTMLA is the interface that describes a &#34;a&#34; HTML element.
 					
 				</h3>
 				<pre>func A() <a href="#HTMLA">HTMLA</a></pre>
-				<p>
-A returns an HTML element that defines a hyperlink.
-</p>
+				<p>A returns an HTML element that defines a hyperlink.
 
 				
 				
@@ -3299,9 +3151,7 @@ A returns an HTML element that defines a hyperlink.
 				
 				
 			</h2>
-			<p>
-HTMLAbbr is the interface that describes a &#34;abbr&#34; HTML element.
-</p>
+			<p>HTMLAbbr is the interface that describes a &quot;abbr&quot; HTML element.
 
 			<pre>type HTMLAbbr interface {
     <a href="#UI">UI</a>
@@ -3479,9 +3329,7 @@ HTMLAbbr is the interface that describes a &#34;abbr&#34; HTML element.
 					
 				</h3>
 				<pre>func Abbr() <a href="#HTMLAbbr">HTMLAbbr</a></pre>
-				<p>
-Abbr returns an HTML element that defines an abbreviation or an acronym.
-</p>
+				<p>Abbr returns an HTML element that defines an abbreviation or an acronym.
 
 				
 				
@@ -3496,9 +3344,7 @@ Abbr returns an HTML element that defines an abbreviation or an acronym.
 				
 				
 			</h2>
-			<p>
-HTMLAddress is the interface that describes a &#34;address&#34; HTML element.
-</p>
+			<p>HTMLAddress is the interface that describes a &quot;address&quot; HTML element.
 
 			<pre>type HTMLAddress interface {
     <a href="#UI">UI</a>
@@ -3676,9 +3522,7 @@ HTMLAddress is the interface that describes a &#34;address&#34; HTML element.
 					
 				</h3>
 				<pre>func Address() <a href="#HTMLAddress">HTMLAddress</a></pre>
-				<p>
-Address returns an HTML element that defines contact information for the author/owner of a document.
-</p>
+				<p>Address returns an HTML element that defines contact information for the author/owner of a document.
 
 				
 				
@@ -3693,9 +3537,7 @@ Address returns an HTML element that defines contact information for the author/
 				
 				
 			</h2>
-			<p>
-HTMLArea is the interface that describes a &#34;area&#34; HTML element.
-</p>
+			<p>HTMLArea is the interface that describes a &quot;area&quot; HTML element.
 
 			<pre>type HTMLArea interface {
     <a href="#UI">UI</a>
@@ -3897,9 +3739,7 @@ HTMLArea is the interface that describes a &#34;area&#34; HTML element.
 					
 				</h3>
 				<pre>func Area() <a href="#HTMLArea">HTMLArea</a></pre>
-				<p>
-Area returns an HTML element that defines an area inside an image-map.
-</p>
+				<p>Area returns an HTML element that defines an area inside an image-map.
 
 				
 				
@@ -3914,9 +3754,7 @@ Area returns an HTML element that defines an area inside an image-map.
 				
 				
 			</h2>
-			<p>
-HTMLArticle is the interface that describes a &#34;article&#34; HTML element.
-</p>
+			<p>HTMLArticle is the interface that describes a &quot;article&quot; HTML element.
 
 			<pre>type HTMLArticle interface {
     <a href="#UI">UI</a>
@@ -4094,9 +3932,7 @@ HTMLArticle is the interface that describes a &#34;article&#34; HTML element.
 					
 				</h3>
 				<pre>func Article() <a href="#HTMLArticle">HTMLArticle</a></pre>
-				<p>
-Article returns an HTML element that defines an article.
-</p>
+				<p>Article returns an HTML element that defines an article.
 
 				
 				
@@ -4111,9 +3947,7 @@ Article returns an HTML element that defines an article.
 				
 				
 			</h2>
-			<p>
-HTMLAside is the interface that describes a &#34;aside&#34; HTML element.
-</p>
+			<p>HTMLAside is the interface that describes a &quot;aside&quot; HTML element.
 
 			<pre>type HTMLAside interface {
     <a href="#UI">UI</a>
@@ -4291,9 +4125,7 @@ HTMLAside is the interface that describes a &#34;aside&#34; HTML element.
 					
 				</h3>
 				<pre>func Aside() <a href="#HTMLAside">HTMLAside</a></pre>
-				<p>
-Aside returns an HTML element that defines content aside from the page content.
-</p>
+				<p>Aside returns an HTML element that defines content aside from the page content.
 
 				
 				
@@ -4308,9 +4140,7 @@ Aside returns an HTML element that defines content aside from the page content.
 				
 				
 			</h2>
-			<p>
-HTMLAudio is the interface that describes a &#34;audio&#34; HTML element.
-</p>
+			<p>HTMLAudio is the interface that describes a &quot;audio&quot; HTML element.
 
 			<pre>type HTMLAudio interface {
     <a href="#UI">UI</a>
@@ -4578,9 +4408,7 @@ HTMLAudio is the interface that describes a &#34;audio&#34; HTML element.
 					
 				</h3>
 				<pre>func Audio() <a href="#HTMLAudio">HTMLAudio</a></pre>
-				<p>
-Audio returns an HTML element that defines sound content.
-</p>
+				<p>Audio returns an HTML element that defines sound content.
 
 				
 				
@@ -4595,9 +4423,7 @@ Audio returns an HTML element that defines sound content.
 				
 				
 			</h2>
-			<p>
-HTMLB is the interface that describes a &#34;b&#34; HTML element.
-</p>
+			<p>HTMLB is the interface that describes a &quot;b&quot; HTML element.
 
 			<pre>type HTMLB interface {
     <a href="#UI">UI</a>
@@ -4775,9 +4601,7 @@ HTMLB is the interface that describes a &#34;b&#34; HTML element.
 					
 				</h3>
 				<pre>func B() <a href="#HTMLB">HTMLB</a></pre>
-				<p>
-B returns an HTML element that defines bold text.
-</p>
+				<p>B returns an HTML element that defines bold text.
 
 				
 				
@@ -4792,9 +4616,7 @@ B returns an HTML element that defines bold text.
 				
 				
 			</h2>
-			<p>
-HTMLBase is the interface that describes a &#34;base&#34; HTML element.
-</p>
+			<p>HTMLBase is the interface that describes a &quot;base&quot; HTML element.
 
 			<pre>type HTMLBase interface {
     <a href="#UI">UI</a>
@@ -4972,9 +4794,7 @@ HTMLBase is the interface that describes a &#34;base&#34; HTML element.
 					
 				</h3>
 				<pre>func Base() <a href="#HTMLBase">HTMLBase</a></pre>
-				<p>
-Base returns an HTML element that specifies the base URL/target for all relative URLs in a document.
-</p>
+				<p>Base returns an HTML element that specifies the base URL/target for all relative URLs in a document.
 
 				
 				
@@ -4989,9 +4809,7 @@ Base returns an HTML element that specifies the base URL/target for all relative
 				
 				
 			</h2>
-			<p>
-HTMLBdi is the interface that describes a &#34;bdi&#34; HTML element.
-</p>
+			<p>HTMLBdi is the interface that describes a &quot;bdi&quot; HTML element.
 
 			<pre>type HTMLBdi interface {
     <a href="#UI">UI</a>
@@ -5169,9 +4987,7 @@ HTMLBdi is the interface that describes a &#34;bdi&#34; HTML element.
 					
 				</h3>
 				<pre>func Bdi() <a href="#HTMLBdi">HTMLBdi</a></pre>
-				<p>
-Bdi returns an HTML element that isolates a part of text that might be formatted in a different direction from other text outside it.
-</p>
+				<p>Bdi returns an HTML element that isolates a part of text that might be formatted in a different direction from other text outside it.
 
 				
 				
@@ -5186,9 +5002,7 @@ Bdi returns an HTML element that isolates a part of text that might be formatted
 				
 				
 			</h2>
-			<p>
-HTMLBdo is the interface that describes a &#34;bdo&#34; HTML element.
-</p>
+			<p>HTMLBdo is the interface that describes a &quot;bdo&quot; HTML element.
 
 			<pre>type HTMLBdo interface {
     <a href="#UI">UI</a>
@@ -5366,9 +5180,7 @@ HTMLBdo is the interface that describes a &#34;bdo&#34; HTML element.
 					
 				</h3>
 				<pre>func Bdo() <a href="#HTMLBdo">HTMLBdo</a></pre>
-				<p>
-Bdo returns an HTML element that overrides the current text direction.
-</p>
+				<p>Bdo returns an HTML element that overrides the current text direction.
 
 				
 				
@@ -5383,9 +5195,7 @@ Bdo returns an HTML element that overrides the current text direction.
 				
 				
 			</h2>
-			<p>
-HTMLBlockquote is the interface that describes a &#34;blockquote&#34; HTML element.
-</p>
+			<p>HTMLBlockquote is the interface that describes a &quot;blockquote&quot; HTML element.
 
 			<pre>type HTMLBlockquote interface {
     <a href="#UI">UI</a>
@@ -5566,9 +5376,7 @@ HTMLBlockquote is the interface that describes a &#34;blockquote&#34; HTML eleme
 					
 				</h3>
 				<pre>func Blockquote() <a href="#HTMLBlockquote">HTMLBlockquote</a></pre>
-				<p>
-Blockquote returns an HTML element that defines a section that is quoted from another source.
-</p>
+				<p>Blockquote returns an HTML element that defines a section that is quoted from another source.
 
 				
 				
@@ -5583,9 +5391,7 @@ Blockquote returns an HTML element that defines a section that is quoted from an
 				
 				
 			</h2>
-			<p>
-HTMLBody is the interface that describes a &#34;body&#34; HTML element.
-</p>
+			<p>HTMLBody is the interface that describes a &quot;body&quot; HTML element.
 
 			<pre>type HTMLBody interface {
     <a href="#UI">UI</a>
@@ -5803,9 +5609,7 @@ HTMLBody is the interface that describes a &#34;body&#34; HTML element.
 					
 				</h3>
 				<pre>func Body() <a href="#HTMLBody">HTMLBody</a></pre>
-				<p>
-Body returns an HTML element that defines the document&#39;s body.
-</p>
+				<p>Body returns an HTML element that defines the document&apos;s body.
 
 				
 				
@@ -5820,9 +5624,7 @@ Body returns an HTML element that defines the document&#39;s body.
 				
 				
 			</h2>
-			<p>
-HTMLBr is the interface that describes a &#34;br&#34; HTML element.
-</p>
+			<p>HTMLBr is the interface that describes a &quot;br&quot; HTML element.
 
 			<pre>type HTMLBr interface {
     <a href="#UI">UI</a>
@@ -5994,9 +5796,7 @@ HTMLBr is the interface that describes a &#34;br&#34; HTML element.
 					
 				</h3>
 				<pre>func Br() <a href="#HTMLBr">HTMLBr</a></pre>
-				<p>
-Br returns an HTML element that defines a single line break.
-</p>
+				<p>Br returns an HTML element that defines a single line break.
 
 				
 				
@@ -6011,9 +5811,7 @@ Br returns an HTML element that defines a single line break.
 				
 				
 			</h2>
-			<p>
-HTMLButton is the interface that describes a &#34;button&#34; HTML element.
-</p>
+			<p>HTMLButton is the interface that describes a &quot;button&quot; HTML element.
 
 			<pre>type HTMLButton interface {
     <a href="#UI">UI</a>
@@ -6224,9 +6022,7 @@ HTMLButton is the interface that describes a &#34;button&#34; HTML element.
 					
 				</h3>
 				<pre>func Button() <a href="#HTMLButton">HTMLButton</a></pre>
-				<p>
-Button returns an HTML element that defines a clickable button.
-</p>
+				<p>Button returns an HTML element that defines a clickable button.
 
 				
 				
@@ -6241,9 +6037,7 @@ Button returns an HTML element that defines a clickable button.
 				
 				
 			</h2>
-			<p>
-HTMLCanvas is the interface that describes a &#34;canvas&#34; HTML element.
-</p>
+			<p>HTMLCanvas is the interface that describes a &quot;canvas&quot; HTML element.
 
 			<pre>type HTMLCanvas interface {
     <a href="#UI">UI</a>
@@ -6427,9 +6221,7 @@ HTMLCanvas is the interface that describes a &#34;canvas&#34; HTML element.
 					
 				</h3>
 				<pre>func Canvas() <a href="#HTMLCanvas">HTMLCanvas</a></pre>
-				<p>
-Canvas returns an HTML element that is used to draw graphics on the fly.
-</p>
+				<p>Canvas returns an HTML element that is used to draw graphics on the fly.
 
 				
 				
@@ -6444,9 +6236,7 @@ Canvas returns an HTML element that is used to draw graphics on the fly.
 				
 				
 			</h2>
-			<p>
-HTMLCaption is the interface that describes a &#34;caption&#34; HTML element.
-</p>
+			<p>HTMLCaption is the interface that describes a &quot;caption&quot; HTML element.
 
 			<pre>type HTMLCaption interface {
     <a href="#UI">UI</a>
@@ -6624,9 +6414,7 @@ HTMLCaption is the interface that describes a &#34;caption&#34; HTML element.
 					
 				</h3>
 				<pre>func Caption() <a href="#HTMLCaption">HTMLCaption</a></pre>
-				<p>
-Caption returns an HTML element that defines a table caption.
-</p>
+				<p>Caption returns an HTML element that defines a table caption.
 
 				
 				
@@ -6641,9 +6429,7 @@ Caption returns an HTML element that defines a table caption.
 				
 				
 			</h2>
-			<p>
-HTMLCite is the interface that describes a &#34;cite&#34; HTML element.
-</p>
+			<p>HTMLCite is the interface that describes a &quot;cite&quot; HTML element.
 
 			<pre>type HTMLCite interface {
     <a href="#UI">UI</a>
@@ -6821,9 +6607,7 @@ HTMLCite is the interface that describes a &#34;cite&#34; HTML element.
 					
 				</h3>
 				<pre>func Cite() <a href="#HTMLCite">HTMLCite</a></pre>
-				<p>
-Cite returns an HTML element that defines the title of a work.
-</p>
+				<p>Cite returns an HTML element that defines the title of a work.
 
 				
 				
@@ -6838,9 +6622,7 @@ Cite returns an HTML element that defines the title of a work.
 				
 				
 			</h2>
-			<p>
-HTMLCode is the interface that describes a &#34;code&#34; HTML element.
-</p>
+			<p>HTMLCode is the interface that describes a &quot;code&quot; HTML element.
 
 			<pre>type HTMLCode interface {
     <a href="#UI">UI</a>
@@ -7018,9 +6800,7 @@ HTMLCode is the interface that describes a &#34;code&#34; HTML element.
 					
 				</h3>
 				<pre>func Code() <a href="#HTMLCode">HTMLCode</a></pre>
-				<p>
-Code returns an HTML element that defines a piece of computer code.
-</p>
+				<p>Code returns an HTML element that defines a piece of computer code.
 
 				
 				
@@ -7035,9 +6815,7 @@ Code returns an HTML element that defines a piece of computer code.
 				
 				
 			</h2>
-			<p>
-HTMLCol is the interface that describes a &#34;col&#34; HTML element.
-</p>
+			<p>HTMLCol is the interface that describes a &quot;col&quot; HTML element.
 
 			<pre>type HTMLCol interface {
     <a href="#UI">UI</a>
@@ -7212,9 +6990,7 @@ HTMLCol is the interface that describes a &#34;col&#34; HTML element.
 					
 				</h3>
 				<pre>func Col() <a href="#HTMLCol">HTMLCol</a></pre>
-				<p>
-Col returns an HTML element that specifies column properties for each column within a colgroup element.
-</p>
+				<p>Col returns an HTML element that specifies column properties for each column within a colgroup element.
 
 				
 				
@@ -7229,9 +7005,7 @@ Col returns an HTML element that specifies column properties for each column wit
 				
 				
 			</h2>
-			<p>
-HTMLColGroup is the interface that describes a &#34;colgroup&#34; HTML element.
-</p>
+			<p>HTMLColGroup is the interface that describes a &quot;colgroup&quot; HTML element.
 
 			<pre>type HTMLColGroup interface {
     <a href="#UI">UI</a>
@@ -7412,9 +7186,7 @@ HTMLColGroup is the interface that describes a &#34;colgroup&#34; HTML element.
 					
 				</h3>
 				<pre>func ColGroup() <a href="#HTMLColGroup">HTMLColGroup</a></pre>
-				<p>
-ColGroup returns an HTML element that specifies a group of one or more columns in a table for formatting.
-</p>
+				<p>ColGroup returns an HTML element that specifies a group of one or more columns in a table for formatting.
 
 				
 				
@@ -7429,9 +7201,7 @@ ColGroup returns an HTML element that specifies a group of one or more columns i
 				
 				
 			</h2>
-			<p>
-HTMLData is the interface that describes a &#34;data&#34; HTML element.
-</p>
+			<p>HTMLData is the interface that describes a &quot;data&quot; HTML element.
 
 			<pre>type HTMLData interface {
     <a href="#UI">UI</a>
@@ -7516,9 +7286,7 @@ HTMLData is the interface that describes a &#34;data&#34; HTML element.
 					
 				</h3>
 				<pre>func Data() <a href="#HTMLData">HTMLData</a></pre>
-				<p>
-Data returns an HTML element that links the given content with a machine-readable translation.
-</p>
+				<p>Data returns an HTML element that links the given content with a machine-readable translation.
 
 				
 				
@@ -7533,9 +7301,7 @@ Data returns an HTML element that links the given content with a machine-readabl
 				
 				
 			</h2>
-			<p>
-HTMLDataList is the interface that describes a &#34;datalist&#34; HTML element.
-</p>
+			<p>HTMLDataList is the interface that describes a &quot;datalist&quot; HTML element.
 
 			<pre>type HTMLDataList interface {
     <a href="#UI">UI</a>
@@ -7713,9 +7479,7 @@ HTMLDataList is the interface that describes a &#34;datalist&#34; HTML element.
 					
 				</h3>
 				<pre>func DataList() <a href="#HTMLDataList">HTMLDataList</a></pre>
-				<p>
-DataList returns an HTML element that specifies a list of pre-defined options for input controls.
-</p>
+				<p>DataList returns an HTML element that specifies a list of pre-defined options for input controls.
 
 				
 				
@@ -7730,9 +7494,7 @@ DataList returns an HTML element that specifies a list of pre-defined options fo
 				
 				
 			</h2>
-			<p>
-HTMLDd is the interface that describes a &#34;dd&#34; HTML element.
-</p>
+			<p>HTMLDd is the interface that describes a &quot;dd&quot; HTML element.
 
 			<pre>type HTMLDd interface {
     <a href="#UI">UI</a>
@@ -7910,9 +7672,7 @@ HTMLDd is the interface that describes a &#34;dd&#34; HTML element.
 					
 				</h3>
 				<pre>func Dd() <a href="#HTMLDd">HTMLDd</a></pre>
-				<p>
-Dd returns an HTML element that defines a description/value of a term in a description list.
-</p>
+				<p>Dd returns an HTML element that defines a description/value of a term in a description list.
 
 				
 				
@@ -7927,9 +7687,7 @@ Dd returns an HTML element that defines a description/value of a term in a descr
 				
 				
 			</h2>
-			<p>
-HTMLDel is the interface that describes a &#34;del&#34; HTML element.
-</p>
+			<p>HTMLDel is the interface that describes a &quot;del&quot; HTML element.
 
 			<pre>type HTMLDel interface {
     <a href="#UI">UI</a>
@@ -8113,9 +7871,7 @@ HTMLDel is the interface that describes a &#34;del&#34; HTML element.
 					
 				</h3>
 				<pre>func Del() <a href="#HTMLDel">HTMLDel</a></pre>
-				<p>
-Del returns an HTML element that defines text that has been deleted from a document.
-</p>
+				<p>Del returns an HTML element that defines text that has been deleted from a document.
 
 				
 				
@@ -8130,9 +7886,7 @@ Del returns an HTML element that defines text that has been deleted from a docum
 				
 				
 			</h2>
-			<p>
-HTMLDetails is the interface that describes a &#34;details&#34; HTML element.
-</p>
+			<p>HTMLDetails is the interface that describes a &quot;details&quot; HTML element.
 
 			<pre>type HTMLDetails interface {
     <a href="#UI">UI</a>
@@ -8316,9 +8070,7 @@ HTMLDetails is the interface that describes a &#34;details&#34; HTML element.
 					
 				</h3>
 				<pre>func Details() <a href="#HTMLDetails">HTMLDetails</a></pre>
-				<p>
-Details returns an HTML element that defines additional details that the user can view or hide.
-</p>
+				<p>Details returns an HTML element that defines additional details that the user can view or hide.
 
 				
 				
@@ -8333,9 +8085,7 @@ Details returns an HTML element that defines additional details that the user ca
 				
 				
 			</h2>
-			<p>
-HTMLDfn is the interface that describes a &#34;dfn&#34; HTML element.
-</p>
+			<p>HTMLDfn is the interface that describes a &quot;dfn&quot; HTML element.
 
 			<pre>type HTMLDfn interface {
     <a href="#UI">UI</a>
@@ -8513,9 +8263,7 @@ HTMLDfn is the interface that describes a &#34;dfn&#34; HTML element.
 					
 				</h3>
 				<pre>func Dfn() <a href="#HTMLDfn">HTMLDfn</a></pre>
-				<p>
-Dfn returns an HTML element that represents the defining instance of a term.
-</p>
+				<p>Dfn returns an HTML element that represents the defining instance of a term.
 
 				
 				
@@ -8530,9 +8278,7 @@ Dfn returns an HTML element that represents the defining instance of a term.
 				
 				
 			</h2>
-			<p>
-HTMLDialog is the interface that describes a &#34;dialog&#34; HTML element.
-</p>
+			<p>HTMLDialog is the interface that describes a &quot;dialog&quot; HTML element.
 
 			<pre>type HTMLDialog interface {
     <a href="#UI">UI</a>
@@ -8713,9 +8459,7 @@ HTMLDialog is the interface that describes a &#34;dialog&#34; HTML element.
 					
 				</h3>
 				<pre>func Dialog() <a href="#HTMLDialog">HTMLDialog</a></pre>
-				<p>
-Dialog returns an HTML element that defines a dialog box or window.
-</p>
+				<p>Dialog returns an HTML element that defines a dialog box or window.
 
 				
 				
@@ -8730,9 +8474,7 @@ Dialog returns an HTML element that defines a dialog box or window.
 				
 				
 			</h2>
-			<p>
-HTMLDiv is the interface that describes a &#34;div&#34; HTML element.
-</p>
+			<p>HTMLDiv is the interface that describes a &quot;div&quot; HTML element.
 
 			<pre>type HTMLDiv interface {
     <a href="#UI">UI</a>
@@ -8910,9 +8652,7 @@ HTMLDiv is the interface that describes a &#34;div&#34; HTML element.
 					
 				</h3>
 				<pre>func Div() <a href="#HTMLDiv">HTMLDiv</a></pre>
-				<p>
-Div returns an HTML element that defines a section in a document.
-</p>
+				<p>Div returns an HTML element that defines a section in a document.
 
 				
 				
@@ -8927,9 +8667,7 @@ Div returns an HTML element that defines a section in a document.
 				
 				
 			</h2>
-			<p>
-HTMLDl is the interface that describes a &#34;dl&#34; HTML element.
-</p>
+			<p>HTMLDl is the interface that describes a &quot;dl&quot; HTML element.
 
 			<pre>type HTMLDl interface {
     <a href="#UI">UI</a>
@@ -9107,9 +8845,7 @@ HTMLDl is the interface that describes a &#34;dl&#34; HTML element.
 					
 				</h3>
 				<pre>func Dl() <a href="#HTMLDl">HTMLDl</a></pre>
-				<p>
-Dl returns an HTML element that defines a description list.
-</p>
+				<p>Dl returns an HTML element that defines a description list.
 
 				
 				
@@ -9124,9 +8860,7 @@ Dl returns an HTML element that defines a description list.
 				
 				
 			</h2>
-			<p>
-HTMLDt is the interface that describes a &#34;dt&#34; HTML element.
-</p>
+			<p>HTMLDt is the interface that describes a &quot;dt&quot; HTML element.
 
 			<pre>type HTMLDt interface {
     <a href="#UI">UI</a>
@@ -9304,9 +9038,7 @@ HTMLDt is the interface that describes a &#34;dt&#34; HTML element.
 					
 				</h3>
 				<pre>func Dt() <a href="#HTMLDt">HTMLDt</a></pre>
-				<p>
-Dt returns an HTML element that defines a term/name in a description list.
-</p>
+				<p>Dt returns an HTML element that defines a term/name in a description list.
 
 				
 				
@@ -9321,9 +9053,7 @@ Dt returns an HTML element that defines a term/name in a description list.
 				
 				
 			</h2>
-			<p>
-HTMLElem is the interface that describes a &#34;elem&#34; HTML element.
-</p>
+			<p>HTMLElem is the interface that describes a &quot;elem&quot; HTML element.
 
 			<pre>type HTMLElem interface {
     <a href="#UI">UI</a>
@@ -9504,9 +9234,7 @@ HTMLElem is the interface that describes a &#34;elem&#34; HTML element.
 					
 				</h3>
 				<pre>func Elem(tag <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLElem">HTMLElem</a></pre>
-				<p>
-Elem returns an HTML element that represents an customizable HTML element.
-</p>
+				<p>Elem returns an HTML element that represents an customizable HTML element.
 
 				
 				
@@ -9521,9 +9249,7 @@ Elem returns an HTML element that represents an customizable HTML element.
 				
 				
 			</h2>
-			<p>
-HTMLElemSelfClosing is the interface that describes a &#34;elemselfclosing&#34; HTML element.
-</p>
+			<p>HTMLElemSelfClosing is the interface that describes a &quot;elemselfclosing&quot; HTML element.
 
 			<pre>type HTMLElemSelfClosing interface {
     <a href="#UI">UI</a>
@@ -9698,9 +9424,7 @@ HTMLElemSelfClosing is the interface that describes a &#34;elemselfclosing&#34; 
 					
 				</h3>
 				<pre>func ElemSelfClosing(tag <a href="/pkg/builtin/#string">string</a>) <a href="#HTMLElemSelfClosing">HTMLElemSelfClosing</a></pre>
-				<p>
-ElemSelfClosing returns an HTML element that represents a self closing custom HTML element.
-</p>
+				<p>ElemSelfClosing returns an HTML element that represents a self closing custom HTML element.
 
 				
 				
@@ -9715,9 +9439,7 @@ ElemSelfClosing returns an HTML element that represents a self closing custom HT
 				
 				
 			</h2>
-			<p>
-HTMLEm is the interface that describes a &#34;em&#34; HTML element.
-</p>
+			<p>HTMLEm is the interface that describes a &quot;em&quot; HTML element.
 
 			<pre>type HTMLEm interface {
     <a href="#UI">UI</a>
@@ -9895,9 +9617,7 @@ HTMLEm is the interface that describes a &#34;em&#34; HTML element.
 					
 				</h3>
 				<pre>func Em() <a href="#HTMLEm">HTMLEm</a></pre>
-				<p>
-Em returns an HTML element that defines emphasized text.
-</p>
+				<p>Em returns an HTML element that defines emphasized text.
 
 				
 				
@@ -9912,9 +9632,7 @@ Em returns an HTML element that defines emphasized text.
 				
 				
 			</h2>
-			<p>
-HTMLEmbed is the interface that describes a &#34;embed&#34; HTML element.
-</p>
+			<p>HTMLEmbed is the interface that describes a &quot;embed&quot; HTML element.
 
 			<pre>type HTMLEmbed interface {
     <a href="#UI">UI</a>
@@ -10167,9 +9885,7 @@ HTMLEmbed is the interface that describes a &#34;embed&#34; HTML element.
 					
 				</h3>
 				<pre>func Embed() <a href="#HTMLEmbed">HTMLEmbed</a></pre>
-				<p>
-Embed returns an HTML element that defines a container for an external (non-HTML) application.
-</p>
+				<p>Embed returns an HTML element that defines a container for an external (non-HTML) application.
 
 				
 				
@@ -10184,9 +9900,7 @@ Embed returns an HTML element that defines a container for an external (non-HTML
 				
 				
 			</h2>
-			<p>
-HTMLFieldSet is the interface that describes a &#34;fieldset&#34; HTML element.
-</p>
+			<p>HTMLFieldSet is the interface that describes a &quot;fieldset&quot; HTML element.
 
 			<pre>type HTMLFieldSet interface {
     <a href="#UI">UI</a>
@@ -10373,9 +10087,7 @@ HTMLFieldSet is the interface that describes a &#34;fieldset&#34; HTML element.
 					
 				</h3>
 				<pre>func FieldSet() <a href="#HTMLFieldSet">HTMLFieldSet</a></pre>
-				<p>
-FieldSet returns an HTML element that groups related elements in a form.
-</p>
+				<p>FieldSet returns an HTML element that groups related elements in a form.
 
 				
 				
@@ -10390,9 +10102,7 @@ FieldSet returns an HTML element that groups related elements in a form.
 				
 				
 			</h2>
-			<p>
-HTMLFigCaption is the interface that describes a &#34;figcaption&#34; HTML element.
-</p>
+			<p>HTMLFigCaption is the interface that describes a &quot;figcaption&quot; HTML element.
 
 			<pre>type HTMLFigCaption interface {
     <a href="#UI">UI</a>
@@ -10570,9 +10280,7 @@ HTMLFigCaption is the interface that describes a &#34;figcaption&#34; HTML eleme
 					
 				</h3>
 				<pre>func FigCaption() <a href="#HTMLFigCaption">HTMLFigCaption</a></pre>
-				<p>
-FigCaption returns an HTML element that defines a caption for a figure element.
-</p>
+				<p>FigCaption returns an HTML element that defines a caption for a figure element.
 
 				
 				
@@ -10587,9 +10295,7 @@ FigCaption returns an HTML element that defines a caption for a figure element.
 				
 				
 			</h2>
-			<p>
-HTMLFigure is the interface that describes a &#34;figure&#34; HTML element.
-</p>
+			<p>HTMLFigure is the interface that describes a &quot;figure&quot; HTML element.
 
 			<pre>type HTMLFigure interface {
     <a href="#UI">UI</a>
@@ -10767,9 +10473,7 @@ HTMLFigure is the interface that describes a &#34;figure&#34; HTML element.
 					
 				</h3>
 				<pre>func Figure() <a href="#HTMLFigure">HTMLFigure</a></pre>
-				<p>
-Figure returns an HTML element that specifies self-contained content.
-</p>
+				<p>Figure returns an HTML element that specifies self-contained content.
 
 				
 				
@@ -10784,9 +10488,7 @@ Figure returns an HTML element that specifies self-contained content.
 				
 				
 			</h2>
-			<p>
-HTMLFooter is the interface that describes a &#34;footer&#34; HTML element.
-</p>
+			<p>HTMLFooter is the interface that describes a &quot;footer&quot; HTML element.
 
 			<pre>type HTMLFooter interface {
     <a href="#UI">UI</a>
@@ -10964,9 +10666,7 @@ HTMLFooter is the interface that describes a &#34;footer&#34; HTML element.
 					
 				</h3>
 				<pre>func Footer() <a href="#HTMLFooter">HTMLFooter</a></pre>
-				<p>
-Footer returns an HTML element that defines a footer for a document or section.
-</p>
+				<p>Footer returns an HTML element that defines a footer for a document or section.
 
 				
 				
@@ -10981,9 +10681,7 @@ Footer returns an HTML element that defines a footer for a document or section.
 				
 				
 			</h2>
-			<p>
-HTMLForm is the interface that describes a &#34;form&#34; HTML element.
-</p>
+			<p>HTMLForm is the interface that describes a &quot;form&quot; HTML element.
 
 			<pre>type HTMLForm interface {
     <a href="#UI">UI</a>
@@ -11185,9 +10883,7 @@ HTMLForm is the interface that describes a &#34;form&#34; HTML element.
 					
 				</h3>
 				<pre>func Form() <a href="#HTMLForm">HTMLForm</a></pre>
-				<p>
-Form returns an HTML element that defines an HTML form for user input.
-</p>
+				<p>Form returns an HTML element that defines an HTML form for user input.
 
 				
 				
@@ -11202,9 +10898,7 @@ Form returns an HTML element that defines an HTML form for user input.
 				
 				
 			</h2>
-			<p>
-HTMLH1 is the interface that describes a &#34;h1&#34; HTML element.
-</p>
+			<p>HTMLH1 is the interface that describes a &quot;h1&quot; HTML element.
 
 			<pre>type HTMLH1 interface {
     <a href="#UI">UI</a>
@@ -11382,9 +11076,7 @@ HTMLH1 is the interface that describes a &#34;h1&#34; HTML element.
 					
 				</h3>
 				<pre>func H1() <a href="#HTMLH1">HTMLH1</a></pre>
-				<p>
-H1 returns an HTML element that defines HTML heading.
-</p>
+				<p>H1 returns an HTML element that defines HTML heading.
 
 				
 				
@@ -11399,9 +11091,7 @@ H1 returns an HTML element that defines HTML heading.
 				
 				
 			</h2>
-			<p>
-HTMLH2 is the interface that describes a &#34;h2&#34; HTML element.
-</p>
+			<p>HTMLH2 is the interface that describes a &quot;h2&quot; HTML element.
 
 			<pre>type HTMLH2 interface {
     <a href="#UI">UI</a>
@@ -11579,9 +11269,7 @@ HTMLH2 is the interface that describes a &#34;h2&#34; HTML element.
 					
 				</h3>
 				<pre>func H2() <a href="#HTMLH2">HTMLH2</a></pre>
-				<p>
-H2 returns an HTML element that defines HTML heading.
-</p>
+				<p>H2 returns an HTML element that defines HTML heading.
 
 				
 				
@@ -11596,9 +11284,7 @@ H2 returns an HTML element that defines HTML heading.
 				
 				
 			</h2>
-			<p>
-HTMLH3 is the interface that describes a &#34;h3&#34; HTML element.
-</p>
+			<p>HTMLH3 is the interface that describes a &quot;h3&quot; HTML element.
 
 			<pre>type HTMLH3 interface {
     <a href="#UI">UI</a>
@@ -11776,9 +11462,7 @@ HTMLH3 is the interface that describes a &#34;h3&#34; HTML element.
 					
 				</h3>
 				<pre>func H3() <a href="#HTMLH3">HTMLH3</a></pre>
-				<p>
-H3 returns an HTML element that defines HTML heading.
-</p>
+				<p>H3 returns an HTML element that defines HTML heading.
 
 				
 				
@@ -11793,9 +11477,7 @@ H3 returns an HTML element that defines HTML heading.
 				
 				
 			</h2>
-			<p>
-HTMLH4 is the interface that describes a &#34;h4&#34; HTML element.
-</p>
+			<p>HTMLH4 is the interface that describes a &quot;h4&quot; HTML element.
 
 			<pre>type HTMLH4 interface {
     <a href="#UI">UI</a>
@@ -11973,9 +11655,7 @@ HTMLH4 is the interface that describes a &#34;h4&#34; HTML element.
 					
 				</h3>
 				<pre>func H4() <a href="#HTMLH4">HTMLH4</a></pre>
-				<p>
-H4 returns an HTML element that defines HTML heading.
-</p>
+				<p>H4 returns an HTML element that defines HTML heading.
 
 				
 				
@@ -11990,9 +11670,7 @@ H4 returns an HTML element that defines HTML heading.
 				
 				
 			</h2>
-			<p>
-HTMLH5 is the interface that describes a &#34;h5&#34; HTML element.
-</p>
+			<p>HTMLH5 is the interface that describes a &quot;h5&quot; HTML element.
 
 			<pre>type HTMLH5 interface {
     <a href="#UI">UI</a>
@@ -12170,9 +11848,7 @@ HTMLH5 is the interface that describes a &#34;h5&#34; HTML element.
 					
 				</h3>
 				<pre>func H5() <a href="#HTMLH5">HTMLH5</a></pre>
-				<p>
-H5 returns an HTML element that defines HTML heading.
-</p>
+				<p>H5 returns an HTML element that defines HTML heading.
 
 				
 				
@@ -12187,9 +11863,7 @@ H5 returns an HTML element that defines HTML heading.
 				
 				
 			</h2>
-			<p>
-HTMLH6 is the interface that describes a &#34;h6&#34; HTML element.
-</p>
+			<p>HTMLH6 is the interface that describes a &quot;h6&quot; HTML element.
 
 			<pre>type HTMLH6 interface {
     <a href="#UI">UI</a>
@@ -12367,9 +12041,7 @@ HTMLH6 is the interface that describes a &#34;h6&#34; HTML element.
 					
 				</h3>
 				<pre>func H6() <a href="#HTMLH6">HTMLH6</a></pre>
-				<p>
-H6 returns an HTML element that defines HTML heading.
-</p>
+				<p>H6 returns an HTML element that defines HTML heading.
 
 				
 				
@@ -12384,9 +12056,7 @@ H6 returns an HTML element that defines HTML heading.
 				
 				
 			</h2>
-			<p>
-HTMLHead is the interface that describes a &#34;head&#34; HTML element.
-</p>
+			<p>HTMLHead is the interface that describes a &quot;head&quot; HTML element.
 
 			<pre>type HTMLHead interface {
     <a href="#UI">UI</a>
@@ -12468,9 +12138,7 @@ HTMLHead is the interface that describes a &#34;head&#34; HTML element.
 					
 				</h3>
 				<pre>func Head() <a href="#HTMLHead">HTMLHead</a></pre>
-				<p>
-Head returns an HTML element that defines information about the document.
-</p>
+				<p>Head returns an HTML element that defines information about the document.
 
 				
 				
@@ -12485,9 +12153,7 @@ Head returns an HTML element that defines information about the document.
 				
 				
 			</h2>
-			<p>
-HTMLHeader is the interface that describes a &#34;header&#34; HTML element.
-</p>
+			<p>HTMLHeader is the interface that describes a &quot;header&quot; HTML element.
 
 			<pre>type HTMLHeader interface {
     <a href="#UI">UI</a>
@@ -12665,9 +12331,7 @@ HTMLHeader is the interface that describes a &#34;header&#34; HTML element.
 					
 				</h3>
 				<pre>func Header() <a href="#HTMLHeader">HTMLHeader</a></pre>
-				<p>
-Header returns an HTML element that defines a header for a document or section.
-</p>
+				<p>Header returns an HTML element that defines a header for a document or section.
 
 				
 				
@@ -12682,9 +12346,7 @@ Header returns an HTML element that defines a header for a document or section.
 				
 				
 			</h2>
-			<p>
-HTMLHr is the interface that describes a &#34;hr&#34; HTML element.
-</p>
+			<p>HTMLHr is the interface that describes a &quot;hr&quot; HTML element.
 
 			<pre>type HTMLHr interface {
     <a href="#UI">UI</a>
@@ -12856,9 +12518,7 @@ HTMLHr is the interface that describes a &#34;hr&#34; HTML element.
 					
 				</h3>
 				<pre>func Hr() <a href="#HTMLHr">HTMLHr</a></pre>
-				<p>
-Hr returns an HTML element that defines a thematic change in the content.
-</p>
+				<p>Hr returns an HTML element that defines a thematic change in the content.
 
 				
 				
@@ -12873,9 +12533,7 @@ Hr returns an HTML element that defines a thematic change in the content.
 				
 				
 			</h2>
-			<p>
-HTMLHtml is the interface that describes a &#34;html&#34; HTML element.
-</p>
+			<p>HTMLHtml is the interface that describes a &quot;html&quot; HTML element.
 
 			<pre>type HTMLHtml interface {
     <a href="#UI">UI</a>
@@ -12952,9 +12610,7 @@ HTMLHtml is the interface that describes a &#34;html&#34; HTML element.
 					
 				</h3>
 				<pre>func Html() <a href="#HTMLHtml">HTMLHtml</a></pre>
-				<p>
-Html returns an HTML element that defines the root of an HTML document.
-</p>
+				<p>Html returns an HTML element that defines the root of an HTML document.
 
 				
 				
@@ -12969,9 +12625,7 @@ Html returns an HTML element that defines the root of an HTML document.
 				
 				
 			</h2>
-			<p>
-HTMLI is the interface that describes a &#34;i&#34; HTML element.
-</p>
+			<p>HTMLI is the interface that describes a &quot;i&quot; HTML element.
 
 			<pre>type HTMLI interface {
     <a href="#UI">UI</a>
@@ -13149,9 +12803,7 @@ HTMLI is the interface that describes a &#34;i&#34; HTML element.
 					
 				</h3>
 				<pre>func I() <a href="#HTMLI">HTMLI</a></pre>
-				<p>
-I returns an HTML element that defines a part of text in an alternate voice or mood.
-</p>
+				<p>I returns an HTML element that defines a part of text in an alternate voice or mood.
 
 				
 				
@@ -13166,9 +12818,7 @@ I returns an HTML element that defines a part of text in an alternate voice or m
 				
 				
 			</h2>
-			<p>
-HTMLIFrame is the interface that describes a &#34;iframe&#34; HTML element.
-</p>
+			<p>HTMLIFrame is the interface that describes a &quot;iframe&quot; HTML element.
 
 			<pre>type HTMLIFrame interface {
     <a href="#UI">UI</a>
@@ -13382,9 +13032,7 @@ HTMLIFrame is the interface that describes a &#34;iframe&#34; HTML element.
 					
 				</h3>
 				<pre>func IFrame() <a href="#HTMLIFrame">HTMLIFrame</a></pre>
-				<p>
-IFrame returns an HTML element that defines an inline frame.
-</p>
+				<p>IFrame returns an HTML element that defines an inline frame.
 
 				
 				
@@ -13399,9 +13047,7 @@ IFrame returns an HTML element that defines an inline frame.
 				
 				
 			</h2>
-			<p>
-HTMLImg is the interface that describes a &#34;img&#34; HTML element.
-</p>
+			<p>HTMLImg is the interface that describes a &quot;img&quot; HTML element.
 
 			<pre>type HTMLImg interface {
     <a href="#UI">UI</a>
@@ -13672,9 +13318,7 @@ HTMLImg is the interface that describes a &#34;img&#34; HTML element.
 					
 				</h3>
 				<pre>func Img() <a href="#HTMLImg">HTMLImg</a></pre>
-				<p>
-Img returns an HTML element that defines an image.
-</p>
+				<p>Img returns an HTML element that defines an image.
 
 				
 				
@@ -13689,9 +13333,7 @@ Img returns an HTML element that defines an image.
 				
 				
 			</h2>
-			<p>
-HTMLInput is the interface that describes a &#34;input&#34; HTML element.
-</p>
+			<p>HTMLInput is the interface that describes a &quot;input&quot; HTML element.
 
 			<pre>type HTMLInput interface {
     <a href="#UI">UI</a>
@@ -13959,9 +13601,7 @@ HTMLInput is the interface that describes a &#34;input&#34; HTML element.
 					
 				</h3>
 				<pre>func Input() <a href="#HTMLInput">HTMLInput</a></pre>
-				<p>
-Input returns an HTML element that defines an input control.
-</p>
+				<p>Input returns an HTML element that defines an input control.
 
 				
 				
@@ -13976,9 +13616,7 @@ Input returns an HTML element that defines an input control.
 				
 				
 			</h2>
-			<p>
-HTMLIns is the interface that describes a &#34;ins&#34; HTML element.
-</p>
+			<p>HTMLIns is the interface that describes a &quot;ins&quot; HTML element.
 
 			<pre>type HTMLIns interface {
     <a href="#UI">UI</a>
@@ -14156,9 +13794,7 @@ HTMLIns is the interface that describes a &#34;ins&#34; HTML element.
 					
 				</h3>
 				<pre>func Ins() <a href="#HTMLIns">HTMLIns</a></pre>
-				<p>
-Ins returns an HTML element that defines a text that has been inserted into a document.
-</p>
+				<p>Ins returns an HTML element that defines a text that has been inserted into a document.
 
 				
 				
@@ -14173,9 +13809,7 @@ Ins returns an HTML element that defines a text that has been inserted into a do
 				
 				
 			</h2>
-			<p>
-HTMLKbd is the interface that describes a &#34;kbd&#34; HTML element.
-</p>
+			<p>HTMLKbd is the interface that describes a &quot;kbd&quot; HTML element.
 
 			<pre>type HTMLKbd interface {
     <a href="#UI">UI</a>
@@ -14353,9 +13987,7 @@ HTMLKbd is the interface that describes a &#34;kbd&#34; HTML element.
 					
 				</h3>
 				<pre>func Kbd() <a href="#HTMLKbd">HTMLKbd</a></pre>
-				<p>
-Kbd returns an HTML element that defines keyboard input.
-</p>
+				<p>Kbd returns an HTML element that defines keyboard input.
 
 				
 				
@@ -14370,9 +14002,7 @@ Kbd returns an HTML element that defines keyboard input.
 				
 				
 			</h2>
-			<p>
-HTMLLabel is the interface that describes a &#34;label&#34; HTML element.
-</p>
+			<p>HTMLLabel is the interface that describes a &quot;label&quot; HTML element.
 
 			<pre>type HTMLLabel interface {
     <a href="#UI">UI</a>
@@ -14556,9 +14186,7 @@ HTMLLabel is the interface that describes a &#34;label&#34; HTML element.
 					
 				</h3>
 				<pre>func Label() <a href="#HTMLLabel">HTMLLabel</a></pre>
-				<p>
-Label returns an HTML element that defines a label for an input element.
-</p>
+				<p>Label returns an HTML element that defines a label for an input element.
 
 				
 				
@@ -14573,9 +14201,7 @@ Label returns an HTML element that defines a label for an input element.
 				
 				
 			</h2>
-			<p>
-HTMLLegend is the interface that describes a &#34;legend&#34; HTML element.
-</p>
+			<p>HTMLLegend is the interface that describes a &quot;legend&quot; HTML element.
 
 			<pre>type HTMLLegend interface {
     <a href="#UI">UI</a>
@@ -14753,9 +14379,7 @@ HTMLLegend is the interface that describes a &#34;legend&#34; HTML element.
 					
 				</h3>
 				<pre>func Legend() <a href="#HTMLLegend">HTMLLegend</a></pre>
-				<p>
-Legend returns an HTML element that defines a caption for a fieldset element.
-</p>
+				<p>Legend returns an HTML element that defines a caption for a fieldset element.
 
 				
 				
@@ -14770,9 +14394,7 @@ Legend returns an HTML element that defines a caption for a fieldset element.
 				
 				
 			</h2>
-			<p>
-HTMLLi is the interface that describes a &#34;li&#34; HTML element.
-</p>
+			<p>HTMLLi is the interface that describes a &quot;li&quot; HTML element.
 
 			<pre>type HTMLLi interface {
     <a href="#UI">UI</a>
@@ -14953,9 +14575,7 @@ HTMLLi is the interface that describes a &#34;li&#34; HTML element.
 					
 				</h3>
 				<pre>func Li() <a href="#HTMLLi">HTMLLi</a></pre>
-				<p>
-Li returns an HTML element that defines a list item.
-</p>
+				<p>Li returns an HTML element that defines a list item.
 
 				
 				
@@ -14970,9 +14590,7 @@ Li returns an HTML element that defines a list item.
 				
 				
 			</h2>
-			<p>
-HTMLLink is the interface that describes a &#34;link&#34; HTML element.
-</p>
+			<p>HTMLLink is the interface that describes a &quot;link&quot; HTML element.
 
 			<pre>type HTMLLink interface {
     <a href="#UI">UI</a>
@@ -15168,9 +14786,7 @@ HTMLLink is the interface that describes a &#34;link&#34; HTML element.
 					
 				</h3>
 				<pre>func Link() <a href="#HTMLLink">HTMLLink</a></pre>
-				<p>
-Link returns an HTML element that defines the relationship between a document and an external resource (most used to link to style sheets).
-</p>
+				<p>Link returns an HTML element that defines the relationship between a document and an external resource (most used to link to style sheets).
 
 				
 				
@@ -15185,9 +14801,7 @@ Link returns an HTML element that defines the relationship between a document an
 				
 				
 			</h2>
-			<p>
-HTMLMain is the interface that describes a &#34;main&#34; HTML element.
-</p>
+			<p>HTMLMain is the interface that describes a &quot;main&quot; HTML element.
 
 			<pre>type HTMLMain interface {
     <a href="#UI">UI</a>
@@ -15365,9 +14979,7 @@ HTMLMain is the interface that describes a &#34;main&#34; HTML element.
 					
 				</h3>
 				<pre>func Main() <a href="#HTMLMain">HTMLMain</a></pre>
-				<p>
-Main returns an HTML element that specifies the main content of a document.
-</p>
+				<p>Main returns an HTML element that specifies the main content of a document.
 
 				
 				
@@ -15382,9 +14994,7 @@ Main returns an HTML element that specifies the main content of a document.
 				
 				
 			</h2>
-			<p>
-HTMLMap is the interface that describes a &#34;map&#34; HTML element.
-</p>
+			<p>HTMLMap is the interface that describes a &quot;map&quot; HTML element.
 
 			<pre>type HTMLMap interface {
     <a href="#UI">UI</a>
@@ -15565,9 +15175,7 @@ HTMLMap is the interface that describes a &#34;map&#34; HTML element.
 					
 				</h3>
 				<pre>func Map() <a href="#HTMLMap">HTMLMap</a></pre>
-				<p>
-Map returns an HTML element that defines a client-side image-map.
-</p>
+				<p>Map returns an HTML element that defines a client-side image-map.
 
 				
 				
@@ -15582,9 +15190,7 @@ Map returns an HTML element that defines a client-side image-map.
 				
 				
 			</h2>
-			<p>
-HTMLMark is the interface that describes a &#34;mark&#34; HTML element.
-</p>
+			<p>HTMLMark is the interface that describes a &quot;mark&quot; HTML element.
 
 			<pre>type HTMLMark interface {
     <a href="#UI">UI</a>
@@ -15762,9 +15368,7 @@ HTMLMark is the interface that describes a &#34;mark&#34; HTML element.
 					
 				</h3>
 				<pre>func Mark() <a href="#HTMLMark">HTMLMark</a></pre>
-				<p>
-Mark returns an HTML element that defines marked/highlighted text.
-</p>
+				<p>Mark returns an HTML element that defines marked/highlighted text.
 
 				
 				
@@ -15779,9 +15383,7 @@ Mark returns an HTML element that defines marked/highlighted text.
 				
 				
 			</h2>
-			<p>
-HTMLMeta is the interface that describes a &#34;meta&#34; HTML element.
-</p>
+			<p>HTMLMeta is the interface that describes a &quot;meta&quot; HTML element.
 
 			<pre>type HTMLMeta interface {
     <a href="#UI">UI</a>
@@ -15872,9 +15474,7 @@ HTMLMeta is the interface that describes a &#34;meta&#34; HTML element.
 					
 				</h3>
 				<pre>func Meta() <a href="#HTMLMeta">HTMLMeta</a></pre>
-				<p>
-Meta returns an HTML element that .
-</p>
+				<p>Meta returns an HTML element that .
 
 				
 				
@@ -15889,9 +15489,7 @@ Meta returns an HTML element that .
 				
 				
 			</h2>
-			<p>
-HTMLMeter is the interface that describes a &#34;meter&#34; HTML element.
-</p>
+			<p>HTMLMeter is the interface that describes a &quot;meter&quot; HTML element.
 
 			<pre>type HTMLMeter interface {
     <a href="#UI">UI</a>
@@ -16090,9 +15688,7 @@ HTMLMeter is the interface that describes a &#34;meter&#34; HTML element.
 					
 				</h3>
 				<pre>func Meter() <a href="#HTMLMeter">HTMLMeter</a></pre>
-				<p>
-Meter returns an HTML element that defines a scalar measurement within a known range (a gauge).
-</p>
+				<p>Meter returns an HTML element that defines a scalar measurement within a known range (a gauge).
 
 				
 				
@@ -16107,9 +15703,7 @@ Meter returns an HTML element that defines a scalar measurement within a known r
 				
 				
 			</h2>
-			<p>
-HTMLNav is the interface that describes a &#34;nav&#34; HTML element.
-</p>
+			<p>HTMLNav is the interface that describes a &quot;nav&quot; HTML element.
 
 			<pre>type HTMLNav interface {
     <a href="#UI">UI</a>
@@ -16287,9 +15881,7 @@ HTMLNav is the interface that describes a &#34;nav&#34; HTML element.
 					
 				</h3>
 				<pre>func Nav() <a href="#HTMLNav">HTMLNav</a></pre>
-				<p>
-Nav returns an HTML element that defines navigation links.
-</p>
+				<p>Nav returns an HTML element that defines navigation links.
 
 				
 				
@@ -16304,9 +15896,7 @@ Nav returns an HTML element that defines navigation links.
 				
 				
 			</h2>
-			<p>
-HTMLNoScript is the interface that describes a &#34;noscript&#34; HTML element.
-</p>
+			<p>HTMLNoScript is the interface that describes a &quot;noscript&quot; HTML element.
 
 			<pre>type HTMLNoScript interface {
     <a href="#UI">UI</a>
@@ -16388,9 +15978,7 @@ HTMLNoScript is the interface that describes a &#34;noscript&#34; HTML element.
 					
 				</h3>
 				<pre>func NoScript() <a href="#HTMLNoScript">HTMLNoScript</a></pre>
-				<p>
-NoScript returns an HTML element that defines an alternate content for users that do not support client-side scripts.
-</p>
+				<p>NoScript returns an HTML element that defines an alternate content for users that do not support client-side scripts.
 
 				
 				
@@ -16405,9 +15993,7 @@ NoScript returns an HTML element that defines an alternate content for users tha
 				
 				
 			</h2>
-			<p>
-HTMLObject is the interface that describes a &#34;object&#34; HTML element.
-</p>
+			<p>HTMLObject is the interface that describes a &quot;object&quot; HTML element.
 
 			<pre>type HTMLObject interface {
     <a href="#UI">UI</a>
@@ -16675,9 +16261,7 @@ HTMLObject is the interface that describes a &#34;object&#34; HTML element.
 					
 				</h3>
 				<pre>func Object() <a href="#HTMLObject">HTMLObject</a></pre>
-				<p>
-Object returns an HTML element that defines an embedded object.
-</p>
+				<p>Object returns an HTML element that defines an embedded object.
 
 				
 				
@@ -16692,9 +16276,7 @@ Object returns an HTML element that defines an embedded object.
 				
 				
 			</h2>
-			<p>
-HTMLOl is the interface that describes a &#34;ol&#34; HTML element.
-</p>
+			<p>HTMLOl is the interface that describes a &quot;ol&quot; HTML element.
 
 			<pre>type HTMLOl interface {
     <a href="#UI">UI</a>
@@ -16881,9 +16463,7 @@ HTMLOl is the interface that describes a &#34;ol&#34; HTML element.
 					
 				</h3>
 				<pre>func Ol() <a href="#HTMLOl">HTMLOl</a></pre>
-				<p>
-Ol returns an HTML element that defines an ordered list.
-</p>
+				<p>Ol returns an HTML element that defines an ordered list.
 
 				
 				
@@ -16898,9 +16478,7 @@ Ol returns an HTML element that defines an ordered list.
 				
 				
 			</h2>
-			<p>
-HTMLOptGroup is the interface that describes a &#34;optgroup&#34; HTML element.
-</p>
+			<p>HTMLOptGroup is the interface that describes a &quot;optgroup&quot; HTML element.
 
 			<pre>type HTMLOptGroup interface {
     <a href="#UI">UI</a>
@@ -17084,9 +16662,7 @@ HTMLOptGroup is the interface that describes a &#34;optgroup&#34; HTML element.
 					
 				</h3>
 				<pre>func OptGroup() <a href="#HTMLOptGroup">HTMLOptGroup</a></pre>
-				<p>
-OptGroup returns an HTML element that defines a group of related options in a drop-down list.
-</p>
+				<p>OptGroup returns an HTML element that defines a group of related options in a drop-down list.
 
 				
 				
@@ -17101,9 +16677,7 @@ OptGroup returns an HTML element that defines a group of related options in a dr
 				
 				
 			</h2>
-			<p>
-HTMLOption is the interface that describes a &#34;option&#34; HTML element.
-</p>
+			<p>HTMLOption is the interface that describes a &quot;option&quot; HTML element.
 
 			<pre>type HTMLOption interface {
     <a href="#UI">UI</a>
@@ -17293,9 +16867,7 @@ HTMLOption is the interface that describes a &#34;option&#34; HTML element.
 					
 				</h3>
 				<pre>func Option() <a href="#HTMLOption">HTMLOption</a></pre>
-				<p>
-Option returns an HTML element that defines an option in a drop-down list.
-</p>
+				<p>Option returns an HTML element that defines an option in a drop-down list.
 
 				
 				
@@ -17310,9 +16882,7 @@ Option returns an HTML element that defines an option in a drop-down list.
 				
 				
 			</h2>
-			<p>
-HTMLOutput is the interface that describes a &#34;output&#34; HTML element.
-</p>
+			<p>HTMLOutput is the interface that describes a &quot;output&quot; HTML element.
 
 			<pre>type HTMLOutput interface {
     <a href="#UI">UI</a>
@@ -17499,9 +17069,7 @@ HTMLOutput is the interface that describes a &#34;output&#34; HTML element.
 					
 				</h3>
 				<pre>func Output() <a href="#HTMLOutput">HTMLOutput</a></pre>
-				<p>
-Output returns an HTML element that .
-</p>
+				<p>Output returns an HTML element that .
 
 				
 				
@@ -17516,9 +17084,7 @@ Output returns an HTML element that .
 				
 				
 			</h2>
-			<p>
-HTMLP is the interface that describes a &#34;p&#34; HTML element.
-</p>
+			<p>HTMLP is the interface that describes a &quot;p&quot; HTML element.
 
 			<pre>type HTMLP interface {
     <a href="#UI">UI</a>
@@ -17696,9 +17262,7 @@ HTMLP is the interface that describes a &#34;p&#34; HTML element.
 					
 				</h3>
 				<pre>func P() <a href="#HTMLP">HTMLP</a></pre>
-				<p>
-P returns an HTML element that defines a paragraph.
-</p>
+				<p>P returns an HTML element that defines a paragraph.
 
 				
 				
@@ -17713,9 +17277,7 @@ P returns an HTML element that defines a paragraph.
 				
 				
 			</h2>
-			<p>
-HTMLParam is the interface that describes a &#34;param&#34; HTML element.
-</p>
+			<p>HTMLParam is the interface that describes a &quot;param&quot; HTML element.
 
 			<pre>type HTMLParam interface {
     <a href="#UI">UI</a>
@@ -17893,9 +17455,7 @@ HTMLParam is the interface that describes a &#34;param&#34; HTML element.
 					
 				</h3>
 				<pre>func Param() <a href="#HTMLParam">HTMLParam</a></pre>
-				<p>
-Param returns an HTML element that defines a parameter for an object.
-</p>
+				<p>Param returns an HTML element that defines a parameter for an object.
 
 				
 				
@@ -17910,9 +17470,7 @@ Param returns an HTML element that defines a parameter for an object.
 				
 				
 			</h2>
-			<p>
-HTMLPicture is the interface that describes a &#34;picture&#34; HTML element.
-</p>
+			<p>HTMLPicture is the interface that describes a &quot;picture&quot; HTML element.
 
 			<pre>type HTMLPicture interface {
     <a href="#UI">UI</a>
@@ -18090,9 +17648,7 @@ HTMLPicture is the interface that describes a &#34;picture&#34; HTML element.
 					
 				</h3>
 				<pre>func Picture() <a href="#HTMLPicture">HTMLPicture</a></pre>
-				<p>
-Picture returns an HTML element that defines a container for multiple image resources.
-</p>
+				<p>Picture returns an HTML element that defines a container for multiple image resources.
 
 				
 				
@@ -18107,9 +17663,7 @@ Picture returns an HTML element that defines a container for multiple image reso
 				
 				
 			</h2>
-			<p>
-HTMLPre is the interface that describes a &#34;pre&#34; HTML element.
-</p>
+			<p>HTMLPre is the interface that describes a &quot;pre&quot; HTML element.
 
 			<pre>type HTMLPre interface {
     <a href="#UI">UI</a>
@@ -18287,9 +17841,7 @@ HTMLPre is the interface that describes a &#34;pre&#34; HTML element.
 					
 				</h3>
 				<pre>func Pre() <a href="#HTMLPre">HTMLPre</a></pre>
-				<p>
-Pre returns an HTML element that defines preformatted text.
-</p>
+				<p>Pre returns an HTML element that defines preformatted text.
 
 				
 				
@@ -18304,9 +17856,7 @@ Pre returns an HTML element that defines preformatted text.
 				
 				
 			</h2>
-			<p>
-HTMLProgress is the interface that describes a &#34;progress&#34; HTML element.
-</p>
+			<p>HTMLProgress is the interface that describes a &quot;progress&quot; HTML element.
 
 			<pre>type HTMLProgress interface {
     <a href="#UI">UI</a>
@@ -18490,9 +18040,7 @@ HTMLProgress is the interface that describes a &#34;progress&#34; HTML element.
 					
 				</h3>
 				<pre>func Progress() <a href="#HTMLProgress">HTMLProgress</a></pre>
-				<p>
-Progress returns an HTML element that represents the progress of a task.
-</p>
+				<p>Progress returns an HTML element that represents the progress of a task.
 
 				
 				
@@ -18507,9 +18055,7 @@ Progress returns an HTML element that represents the progress of a task.
 				
 				
 			</h2>
-			<p>
-HTMLQ is the interface that describes a &#34;q&#34; HTML element.
-</p>
+			<p>HTMLQ is the interface that describes a &quot;q&quot; HTML element.
 
 			<pre>type HTMLQ interface {
     <a href="#UI">UI</a>
@@ -18690,9 +18236,7 @@ HTMLQ is the interface that describes a &#34;q&#34; HTML element.
 					
 				</h3>
 				<pre>func Q() <a href="#HTMLQ">HTMLQ</a></pre>
-				<p>
-Q returns an HTML element that defines a short quotation.
-</p>
+				<p>Q returns an HTML element that defines a short quotation.
 
 				
 				
@@ -18707,9 +18251,7 @@ Q returns an HTML element that defines a short quotation.
 				
 				
 			</h2>
-			<p>
-HTMLRp is the interface that describes a &#34;rp&#34; HTML element.
-</p>
+			<p>HTMLRp is the interface that describes a &quot;rp&quot; HTML element.
 
 			<pre>type HTMLRp interface {
     <a href="#UI">UI</a>
@@ -18887,9 +18429,7 @@ HTMLRp is the interface that describes a &#34;rp&#34; HTML element.
 					
 				</h3>
 				<pre>func Rp() <a href="#HTMLRp">HTMLRp</a></pre>
-				<p>
-Rp returns an HTML element that defines what to show in browsers that do not support ruby annotations.
-</p>
+				<p>Rp returns an HTML element that defines what to show in browsers that do not support ruby annotations.
 
 				
 				
@@ -18904,9 +18444,7 @@ Rp returns an HTML element that defines what to show in browsers that do not sup
 				
 				
 			</h2>
-			<p>
-HTMLRt is the interface that describes a &#34;rt&#34; HTML element.
-</p>
+			<p>HTMLRt is the interface that describes a &quot;rt&quot; HTML element.
 
 			<pre>type HTMLRt interface {
     <a href="#UI">UI</a>
@@ -19084,9 +18622,7 @@ HTMLRt is the interface that describes a &#34;rt&#34; HTML element.
 					
 				</h3>
 				<pre>func Rt() <a href="#HTMLRt">HTMLRt</a></pre>
-				<p>
-Rt returns an HTML element that defines an explanation/pronunciation of characters (for East Asian typography).
-</p>
+				<p>Rt returns an HTML element that defines an explanation/pronunciation of characters (for East Asian typography).
 
 				
 				
@@ -19101,9 +18637,7 @@ Rt returns an HTML element that defines an explanation/pronunciation of characte
 				
 				
 			</h2>
-			<p>
-HTMLRuby is the interface that describes a &#34;ruby&#34; HTML element.
-</p>
+			<p>HTMLRuby is the interface that describes a &quot;ruby&quot; HTML element.
 
 			<pre>type HTMLRuby interface {
     <a href="#UI">UI</a>
@@ -19281,9 +18815,7 @@ HTMLRuby is the interface that describes a &#34;ruby&#34; HTML element.
 					
 				</h3>
 				<pre>func Ruby() <a href="#HTMLRuby">HTMLRuby</a></pre>
-				<p>
-Ruby returns an HTML element that defines a ruby annotation (for East Asian typography).
-</p>
+				<p>Ruby returns an HTML element that defines a ruby annotation (for East Asian typography).
 
 				
 				
@@ -19298,9 +18830,7 @@ Ruby returns an HTML element that defines a ruby annotation (for East Asian typo
 				
 				
 			</h2>
-			<p>
-HTMLS is the interface that describes a &#34;s&#34; HTML element.
-</p>
+			<p>HTMLS is the interface that describes a &quot;s&quot; HTML element.
 
 			<pre>type HTMLS interface {
     <a href="#UI">UI</a>
@@ -19478,9 +19008,7 @@ HTMLS is the interface that describes a &#34;s&#34; HTML element.
 					
 				</h3>
 				<pre>func S() <a href="#HTMLS">HTMLS</a></pre>
-				<p>
-S returns an HTML element that Defines text that is no longer correct.
-</p>
+				<p>S returns an HTML element that Defines text that is no longer correct.
 
 				
 				
@@ -19495,9 +19023,7 @@ S returns an HTML element that Defines text that is no longer correct.
 				
 				
 			</h2>
-			<p>
-HTMLSamp is the interface that describes a &#34;samp&#34; HTML element.
-</p>
+			<p>HTMLSamp is the interface that describes a &quot;samp&quot; HTML element.
 
 			<pre>type HTMLSamp interface {
     <a href="#UI">UI</a>
@@ -19675,9 +19201,7 @@ HTMLSamp is the interface that describes a &#34;samp&#34; HTML element.
 					
 				</h3>
 				<pre>func Samp() <a href="#HTMLSamp">HTMLSamp</a></pre>
-				<p>
-Samp returns an HTML element that defines sample output from a computer program.
-</p>
+				<p>Samp returns an HTML element that defines sample output from a computer program.
 
 				
 				
@@ -19692,9 +19216,7 @@ Samp returns an HTML element that defines sample output from a computer program.
 				
 				
 			</h2>
-			<p>
-HTMLScript is the interface that describes a &#34;script&#34; HTML element.
-</p>
+			<p>HTMLScript is the interface that describes a &quot;script&quot; HTML element.
 
 			<pre>type HTMLScript interface {
     <a href="#UI">UI</a>
@@ -19797,9 +19319,7 @@ HTMLScript is the interface that describes a &#34;script&#34; HTML element.
 					
 				</h3>
 				<pre>func Script() <a href="#HTMLScript">HTMLScript</a></pre>
-				<p>
-Script returns an HTML element that defines a client-side script.
-</p>
+				<p>Script returns an HTML element that defines a client-side script.
 
 				
 				
@@ -19814,9 +19334,7 @@ Script returns an HTML element that defines a client-side script.
 				
 				
 			</h2>
-			<p>
-HTMLSection is the interface that describes a &#34;section&#34; HTML element.
-</p>
+			<p>HTMLSection is the interface that describes a &quot;section&quot; HTML element.
 
 			<pre>type HTMLSection interface {
     <a href="#UI">UI</a>
@@ -19994,9 +19512,7 @@ HTMLSection is the interface that describes a &#34;section&#34; HTML element.
 					
 				</h3>
 				<pre>func Section() <a href="#HTMLSection">HTMLSection</a></pre>
-				<p>
-Section returns an HTML element that defines a section in a document.
-</p>
+				<p>Section returns an HTML element that defines a section in a document.
 
 				
 				
@@ -20011,9 +19527,7 @@ Section returns an HTML element that defines a section in a document.
 				
 				
 			</h2>
-			<p>
-HTMLSelect is the interface that describes a &#34;select&#34; HTML element.
-</p>
+			<p>HTMLSelect is the interface that describes a &quot;select&quot; HTML element.
 
 			<pre>type HTMLSelect interface {
     <a href="#UI">UI</a>
@@ -20212,9 +19726,7 @@ HTMLSelect is the interface that describes a &#34;select&#34; HTML element.
 					
 				</h3>
 				<pre>func Select() <a href="#HTMLSelect">HTMLSelect</a></pre>
-				<p>
-Select returns an HTML element that defines a drop-down list.
-</p>
+				<p>Select returns an HTML element that defines a drop-down list.
 
 				
 				
@@ -20229,9 +19741,7 @@ Select returns an HTML element that defines a drop-down list.
 				
 				
 			</h2>
-			<p>
-HTMLSmall is the interface that describes a &#34;small&#34; HTML element.
-</p>
+			<p>HTMLSmall is the interface that describes a &quot;small&quot; HTML element.
 
 			<pre>type HTMLSmall interface {
     <a href="#UI">UI</a>
@@ -20409,9 +19919,7 @@ HTMLSmall is the interface that describes a &#34;small&#34; HTML element.
 					
 				</h3>
 				<pre>func Small() <a href="#HTMLSmall">HTMLSmall</a></pre>
-				<p>
-Small returns an HTML element that defines smaller text.
-</p>
+				<p>Small returns an HTML element that defines smaller text.
 
 				
 				
@@ -20426,9 +19934,7 @@ Small returns an HTML element that defines smaller text.
 				
 				
 			</h2>
-			<p>
-HTMLSource is the interface that describes a &#34;source&#34; HTML element.
-</p>
+			<p>HTMLSource is the interface that describes a &quot;source&quot; HTML element.
 
 			<pre>type HTMLSource interface {
     <a href="#UI">UI</a>
@@ -20615,9 +20121,7 @@ HTMLSource is the interface that describes a &#34;source&#34; HTML element.
 					
 				</h3>
 				<pre>func Source() <a href="#HTMLSource">HTMLSource</a></pre>
-				<p>
-Source returns an HTML element that .
-</p>
+				<p>Source returns an HTML element that .
 
 				
 				
@@ -20632,9 +20136,7 @@ Source returns an HTML element that .
 				
 				
 			</h2>
-			<p>
-HTMLSpan is the interface that describes a &#34;span&#34; HTML element.
-</p>
+			<p>HTMLSpan is the interface that describes a &quot;span&quot; HTML element.
 
 			<pre>type HTMLSpan interface {
     <a href="#UI">UI</a>
@@ -20812,9 +20314,7 @@ HTMLSpan is the interface that describes a &#34;span&#34; HTML element.
 					
 				</h3>
 				<pre>func Span() <a href="#HTMLSpan">HTMLSpan</a></pre>
-				<p>
-Span returns an HTML element that defines a section in a document.
-</p>
+				<p>Span returns an HTML element that defines a section in a document.
 
 				
 				
@@ -20829,9 +20329,7 @@ Span returns an HTML element that defines a section in a document.
 				
 				
 			</h2>
-			<p>
-HTMLStrong is the interface that describes a &#34;strong&#34; HTML element.
-</p>
+			<p>HTMLStrong is the interface that describes a &quot;strong&quot; HTML element.
 
 			<pre>type HTMLStrong interface {
     <a href="#UI">UI</a>
@@ -21009,9 +20507,7 @@ HTMLStrong is the interface that describes a &#34;strong&#34; HTML element.
 					
 				</h3>
 				<pre>func Strong() <a href="#HTMLStrong">HTMLStrong</a></pre>
-				<p>
-Strong returns an HTML element that defines important text.
-</p>
+				<p>Strong returns an HTML element that defines important text.
 
 				
 				
@@ -21026,9 +20522,7 @@ Strong returns an HTML element that defines important text.
 				
 				
 			</h2>
-			<p>
-HTMLStyle is the interface that describes a &#34;style&#34; HTML element.
-</p>
+			<p>HTMLStyle is the interface that describes a &quot;style&quot; HTML element.
 
 			<pre>type HTMLStyle interface {
     <a href="#UI">UI</a>
@@ -21215,9 +20709,7 @@ HTMLStyle is the interface that describes a &#34;style&#34; HTML element.
 					
 				</h3>
 				<pre>func Style() <a href="#HTMLStyle">HTMLStyle</a></pre>
-				<p>
-Style returns an HTML element that defines style information for a document.
-</p>
+				<p>Style returns an HTML element that defines style information for a document.
 
 				
 				
@@ -21232,9 +20724,7 @@ Style returns an HTML element that defines style information for a document.
 				
 				
 			</h2>
-			<p>
-HTMLSub is the interface that describes a &#34;sub&#34; HTML element.
-</p>
+			<p>HTMLSub is the interface that describes a &quot;sub&quot; HTML element.
 
 			<pre>type HTMLSub interface {
     <a href="#UI">UI</a>
@@ -21412,9 +20902,7 @@ HTMLSub is the interface that describes a &#34;sub&#34; HTML element.
 					
 				</h3>
 				<pre>func Sub() <a href="#HTMLSub">HTMLSub</a></pre>
-				<p>
-Sub returns an HTML element that defines subscripted text.
-</p>
+				<p>Sub returns an HTML element that defines subscripted text.
 
 				
 				
@@ -21429,9 +20917,7 @@ Sub returns an HTML element that defines subscripted text.
 				
 				
 			</h2>
-			<p>
-HTMLSummary is the interface that describes a &#34;summary&#34; HTML element.
-</p>
+			<p>HTMLSummary is the interface that describes a &quot;summary&quot; HTML element.
 
 			<pre>type HTMLSummary interface {
     <a href="#UI">UI</a>
@@ -21609,9 +21095,7 @@ HTMLSummary is the interface that describes a &#34;summary&#34; HTML element.
 					
 				</h3>
 				<pre>func Summary() <a href="#HTMLSummary">HTMLSummary</a></pre>
-				<p>
-Summary returns an HTML element that defines a visible heading for a details element.
-</p>
+				<p>Summary returns an HTML element that defines a visible heading for a details element.
 
 				
 				
@@ -21626,9 +21110,7 @@ Summary returns an HTML element that defines a visible heading for a details ele
 				
 				
 			</h2>
-			<p>
-HTMLSup is the interface that describes a &#34;sup&#34; HTML element.
-</p>
+			<p>HTMLSup is the interface that describes a &quot;sup&quot; HTML element.
 
 			<pre>type HTMLSup interface {
     <a href="#UI">UI</a>
@@ -21806,9 +21288,7 @@ HTMLSup is the interface that describes a &#34;sup&#34; HTML element.
 					
 				</h3>
 				<pre>func Sup() <a href="#HTMLSup">HTMLSup</a></pre>
-				<p>
-Sup returns an HTML element that defines superscripted text.
-</p>
+				<p>Sup returns an HTML element that defines superscripted text.
 
 				
 				
@@ -21823,9 +21303,7 @@ Sup returns an HTML element that defines superscripted text.
 				
 				
 			</h2>
-			<p>
-HTMLTBody is the interface that describes a &#34;tbody&#34; HTML element.
-</p>
+			<p>HTMLTBody is the interface that describes a &quot;tbody&quot; HTML element.
 
 			<pre>type HTMLTBody interface {
     <a href="#UI">UI</a>
@@ -22003,9 +21481,7 @@ HTMLTBody is the interface that describes a &#34;tbody&#34; HTML element.
 					
 				</h3>
 				<pre>func TBody() <a href="#HTMLTBody">HTMLTBody</a></pre>
-				<p>
-TBody returns an HTML element that groups the body content in a table.
-</p>
+				<p>TBody returns an HTML element that groups the body content in a table.
 
 				
 				
@@ -22020,9 +21496,7 @@ TBody returns an HTML element that groups the body content in a table.
 				
 				
 			</h2>
-			<p>
-HTMLTFoot is the interface that describes a &#34;tfoot&#34; HTML element.
-</p>
+			<p>HTMLTFoot is the interface that describes a &quot;tfoot&quot; HTML element.
 
 			<pre>type HTMLTFoot interface {
     <a href="#UI">UI</a>
@@ -22200,9 +21674,7 @@ HTMLTFoot is the interface that describes a &#34;tfoot&#34; HTML element.
 					
 				</h3>
 				<pre>func TFoot() <a href="#HTMLTFoot">HTMLTFoot</a></pre>
-				<p>
-TFoot returns an HTML element that groups the footer content in a table.
-</p>
+				<p>TFoot returns an HTML element that groups the footer content in a table.
 
 				
 				
@@ -22217,9 +21689,7 @@ TFoot returns an HTML element that groups the footer content in a table.
 				
 				
 			</h2>
-			<p>
-HTMLTHead is the interface that describes a &#34;thead&#34; HTML element.
-</p>
+			<p>HTMLTHead is the interface that describes a &quot;thead&quot; HTML element.
 
 			<pre>type HTMLTHead interface {
     <a href="#UI">UI</a>
@@ -22397,9 +21867,7 @@ HTMLTHead is the interface that describes a &#34;thead&#34; HTML element.
 					
 				</h3>
 				<pre>func THead() <a href="#HTMLTHead">HTMLTHead</a></pre>
-				<p>
-THead returns an HTML element that groups the header content in a table
-</p>
+				<p>THead returns an HTML element that groups the header content in a table
 
 				
 				
@@ -22414,9 +21882,7 @@ THead returns an HTML element that groups the header content in a table
 				
 				
 			</h2>
-			<p>
-HTMLTable is the interface that describes a &#34;table&#34; HTML element.
-</p>
+			<p>HTMLTable is the interface that describes a &quot;table&quot; HTML element.
 
 			<pre>type HTMLTable interface {
     <a href="#UI">UI</a>
@@ -22594,9 +22060,7 @@ HTMLTable is the interface that describes a &#34;table&#34; HTML element.
 					
 				</h3>
 				<pre>func Table() <a href="#HTMLTable">HTMLTable</a></pre>
-				<p>
-Table returns an HTML element that defines a table.
-</p>
+				<p>Table returns an HTML element that defines a table.
 
 				
 				
@@ -22611,9 +22075,7 @@ Table returns an HTML element that defines a table.
 				
 				
 			</h2>
-			<p>
-HTMLTd is the interface that describes a &#34;td&#34; HTML element.
-</p>
+			<p>HTMLTd is the interface that describes a &quot;td&quot; HTML element.
 
 			<pre>type HTMLTd interface {
     <a href="#UI">UI</a>
@@ -22800,9 +22262,7 @@ HTMLTd is the interface that describes a &#34;td&#34; HTML element.
 					
 				</h3>
 				<pre>func Td() <a href="#HTMLTd">HTMLTd</a></pre>
-				<p>
-Td returns an HTML element that defines a cell in a table.
-</p>
+				<p>Td returns an HTML element that defines a cell in a table.
 
 				
 				
@@ -22817,9 +22277,7 @@ Td returns an HTML element that defines a cell in a table.
 				
 				
 			</h2>
-			<p>
-HTMLTemplate is the interface that describes a &#34;template&#34; HTML element.
-</p>
+			<p>HTMLTemplate is the interface that describes a &quot;template&quot; HTML element.
 
 			<pre>type HTMLTemplate interface {
     <a href="#UI">UI</a>
@@ -22901,9 +22359,7 @@ HTMLTemplate is the interface that describes a &#34;template&#34; HTML element.
 					
 				</h3>
 				<pre>func Template() <a href="#HTMLTemplate">HTMLTemplate</a></pre>
-				<p>
-Template returns an HTML element that defines a template.
-</p>
+				<p>Template returns an HTML element that defines a template.
 
 				
 				
@@ -22918,9 +22374,7 @@ Template returns an HTML element that defines a template.
 				
 				
 			</h2>
-			<p>
-HTMLTextarea is the interface that describes a &#34;textarea&#34; HTML element.
-</p>
+			<p>HTMLTextarea is the interface that describes a &quot;textarea&quot; HTML element.
 
 			<pre>type HTMLTextarea interface {
     <a href="#UI">UI</a>
@@ -23134,9 +22588,7 @@ HTMLTextarea is the interface that describes a &#34;textarea&#34; HTML element.
 					
 				</h3>
 				<pre>func Textarea() <a href="#HTMLTextarea">HTMLTextarea</a></pre>
-				<p>
-Textarea returns an HTML element that defines a multiline input control (text area).
-</p>
+				<p>Textarea returns an HTML element that defines a multiline input control (text area).
 
 				
 				
@@ -23151,9 +22603,7 @@ Textarea returns an HTML element that defines a multiline input control (text ar
 				
 				
 			</h2>
-			<p>
-HTMLTh is the interface that describes a &#34;th&#34; HTML element.
-</p>
+			<p>HTMLTh is the interface that describes a &quot;th&quot; HTML element.
 
 			<pre>type HTMLTh interface {
     <a href="#UI">UI</a>
@@ -23346,9 +22796,7 @@ HTMLTh is the interface that describes a &#34;th&#34; HTML element.
 					
 				</h3>
 				<pre>func Th() <a href="#HTMLTh">HTMLTh</a></pre>
-				<p>
-Th returns an HTML element that defines a header cell in a table.
-</p>
+				<p>Th returns an HTML element that defines a header cell in a table.
 
 				
 				
@@ -23363,9 +22811,7 @@ Th returns an HTML element that defines a header cell in a table.
 				
 				
 			</h2>
-			<p>
-HTMLTime is the interface that describes a &#34;time&#34; HTML element.
-</p>
+			<p>HTMLTime is the interface that describes a &quot;time&quot; HTML element.
 
 			<pre>type HTMLTime interface {
     <a href="#UI">UI</a>
@@ -23546,9 +22992,7 @@ HTMLTime is the interface that describes a &#34;time&#34; HTML element.
 					
 				</h3>
 				<pre>func Time() <a href="#HTMLTime">HTMLTime</a></pre>
-				<p>
-Time returns an HTML element that defines a date/time.
-</p>
+				<p>Time returns an HTML element that defines a date/time.
 
 				
 				
@@ -23563,9 +23007,7 @@ Time returns an HTML element that defines a date/time.
 				
 				
 			</h2>
-			<p>
-HTMLTitle is the interface that describes a &#34;title&#34; HTML element.
-</p>
+			<p>HTMLTitle is the interface that describes a &quot;title&quot; HTML element.
 
 			<pre>type HTMLTitle interface {
     <a href="#UI">UI</a>
@@ -23647,9 +23089,7 @@ HTMLTitle is the interface that describes a &#34;title&#34; HTML element.
 					
 				</h3>
 				<pre>func Title() <a href="#HTMLTitle">HTMLTitle</a></pre>
-				<p>
-Title returns an HTML element that defines a title for the document.
-</p>
+				<p>Title returns an HTML element that defines a title for the document.
 
 				
 				
@@ -23664,9 +23104,7 @@ Title returns an HTML element that defines a title for the document.
 				
 				
 			</h2>
-			<p>
-HTMLTr is the interface that describes a &#34;tr&#34; HTML element.
-</p>
+			<p>HTMLTr is the interface that describes a &quot;tr&quot; HTML element.
 
 			<pre>type HTMLTr interface {
     <a href="#UI">UI</a>
@@ -23844,9 +23282,7 @@ HTMLTr is the interface that describes a &#34;tr&#34; HTML element.
 					
 				</h3>
 				<pre>func Tr() <a href="#HTMLTr">HTMLTr</a></pre>
-				<p>
-Tr returns an HTML element that defines a row in a table.
-</p>
+				<p>Tr returns an HTML element that defines a row in a table.
 
 				
 				
@@ -23861,9 +23297,7 @@ Tr returns an HTML element that defines a row in a table.
 				
 				
 			</h2>
-			<p>
-HTMLU is the interface that describes a &#34;u&#34; HTML element.
-</p>
+			<p>HTMLU is the interface that describes a &quot;u&quot; HTML element.
 
 			<pre>type HTMLU interface {
     <a href="#UI">UI</a>
@@ -24041,9 +23475,7 @@ HTMLU is the interface that describes a &#34;u&#34; HTML element.
 					
 				</h3>
 				<pre>func U() <a href="#HTMLU">HTMLU</a></pre>
-				<p>
-U returns an HTML element that defines text that should be stylistically different from normal text.
-</p>
+				<p>U returns an HTML element that defines text that should be stylistically different from normal text.
 
 				
 				
@@ -24058,9 +23490,7 @@ U returns an HTML element that defines text that should be stylistically differe
 				
 				
 			</h2>
-			<p>
-HTMLUl is the interface that describes a &#34;ul&#34; HTML element.
-</p>
+			<p>HTMLUl is the interface that describes a &quot;ul&quot; HTML element.
 
 			<pre>type HTMLUl interface {
     <a href="#UI">UI</a>
@@ -24238,9 +23668,7 @@ HTMLUl is the interface that describes a &#34;ul&#34; HTML element.
 					
 				</h3>
 				<pre>func Ul() <a href="#HTMLUl">HTMLUl</a></pre>
-				<p>
-Ul returns an HTML element that defines an unordered list.
-</p>
+				<p>Ul returns an HTML element that defines an unordered list.
 
 				
 				
@@ -24255,9 +23683,7 @@ Ul returns an HTML element that defines an unordered list.
 				
 				
 			</h2>
-			<p>
-HTMLVar is the interface that describes a &#34;var&#34; HTML element.
-</p>
+			<p>HTMLVar is the interface that describes a &quot;var&quot; HTML element.
 
 			<pre>type HTMLVar interface {
     <a href="#UI">UI</a>
@@ -24435,9 +23861,7 @@ HTMLVar is the interface that describes a &#34;var&#34; HTML element.
 					
 				</h3>
 				<pre>func Var() <a href="#HTMLVar">HTMLVar</a></pre>
-				<p>
-Var returns an HTML element that defines a variable.
-</p>
+				<p>Var returns an HTML element that defines a variable.
 
 				
 				
@@ -24452,9 +23876,7 @@ Var returns an HTML element that defines a variable.
 				
 				
 			</h2>
-			<p>
-HTMLVideo is the interface that describes a &#34;video&#34; HTML element.
-</p>
+			<p>HTMLVideo is the interface that describes a &quot;video&quot; HTML element.
 
 			<pre>type HTMLVideo interface {
     <a href="#UI">UI</a>
@@ -24731,9 +24153,7 @@ HTMLVideo is the interface that describes a &#34;video&#34; HTML element.
 					
 				</h3>
 				<pre>func Video() <a href="#HTMLVideo">HTMLVideo</a></pre>
-				<p>
-Video returns an HTML element that defines a video or movie.
-</p>
+				<p>Video returns an HTML element that defines a video or movie.
 
 				
 				
@@ -24748,9 +24168,7 @@ Video returns an HTML element that defines a video or movie.
 				
 				
 			</h2>
-			<p>
-HTMLWbr is the interface that describes a &#34;wbr&#34; HTML element.
-</p>
+			<p>HTMLWbr is the interface that describes a &quot;wbr&quot; HTML element.
 
 			<pre>type HTMLWbr interface {
     <a href="#UI">UI</a>
@@ -24928,9 +24346,7 @@ HTMLWbr is the interface that describes a &#34;wbr&#34; HTML element.
 					
 				</h3>
 				<pre>func Wbr() <a href="#HTMLWbr">HTMLWbr</a></pre>
-				<p>
-Wbr returns an HTML element that defines a possible line-break.
-</p>
+				<p>Wbr returns an HTML element that defines a possible line-break.
 
 				
 				
@@ -24940,15 +24356,13 @@ Wbr returns an HTML element that defines a possible line-break.
 		
 			
 			
-			<h2 id="Handler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=487:5066#L22">Handler</a>
+			<h2 id="Handler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=480:5059#L22">Handler</a>
 				<a class="permalink" href="#Handler">&#xb6;</a>
 				
 				
 			</h2>
-			<p>
-Handler is an HTTP handler that serves an HTML page that loads a Go wasm app
+			<p>Handler is an HTTP handler that serves an HTML page that loads a Go wasm app
 and its resources.
-</p>
 
 			<pre>type Handler struct {
     <span class="comment">// The name of the web application as it is usually displayed to the user.</span>
@@ -25123,7 +24537,7 @@ and its resources.
 
 			
 				
-				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=12834:12901#L514">ServeHTTP</a>
+				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=12827:12894#L514">ServeHTTP</a>
 					<a class="permalink" href="#Handler.ServeHTTP">&#xb6;</a>
 					
 					
@@ -25137,15 +24551,13 @@ and its resources.
 		
 			
 			
-			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=19804:20341#L810">Icon</a>
+			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=19898:20435#L816">Icon</a>
 				<a class="permalink" href="#Icon">&#xb6;</a>
 				
 				
 			</h2>
-			<p>
-Icon describes a square image that is used in various places such as
+			<p>Icon describes a square image that is used in various places such as
 application icon, favicon or loading icon.
-</p>
 
 			<pre>type Icon struct {
     <span class="comment">// The path or url to a square image/png file. It must have a side of 192px.</span>
@@ -25183,15 +24595,13 @@ application icon, favicon or loading icon.
 		
 			
 			
-			<h2 id="Initializer">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=1873:1997#L58">Initializer</a>
+			<h2 id="Initializer">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=1870:1994#L59">Initializer</a>
 				<a class="permalink" href="#Initializer">&#xb6;</a>
 				
 				
 			</h2>
-			<p>
-Initializer is the interface that describes a component that performs
+			<p>Initializer is the interface that describes a component that performs
 initialization instruction before being pre-rendered or mounted.
-</p>
 
 			<pre>type Initializer interface {
     <a href="#Composer">Composer</a>
@@ -25219,9 +24629,7 @@ initialization instruction before being pre-rendered or mounted.
 				
 				
 			</h2>
-			<p>
-Kind represents the specific kind of a user interface element.
-</p>
+			<p>Kind represents the specific kind of a user interface element.
 
 			<pre>type Kind <a href="/pkg/builtin/#uint">uint</a></pre>
 
@@ -25273,15 +24681,13 @@ Kind represents the specific kind of a user interface element.
 		
 			
 			
-			<h2 id="Mounter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2107:2262#L67">Mounter</a>
+			<h2 id="Mounter">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2104:2259#L68">Mounter</a>
 				<a class="permalink" href="#Mounter">&#xb6;</a>
 				
 				
 			</h2>
-			<p>
-Mounter is the interface that describes a component that can perform
+			<p>Mounter is the interface that describes a component that can perform
 additional actions when mounted.
-</p>
 
 			<pre>type Mounter interface {
     <a href="#Composer">Composer</a>
@@ -25310,9 +24716,7 @@ additional actions when mounted.
 				
 				
 			</h2>
-			<p>
-MsgHandler represents a handler to listen to messages sent with Context.Post.
-</p>
+			<p>MsgHandler represents a handler to listen to messages sent with Context.Post.
 
 			<pre>type MsgHandler func(<a href="#Context">Context</a>, <a href="/pkg/builtin/#any">any</a>)</pre>
 
@@ -25330,15 +24734,13 @@ MsgHandler represents a handler to listen to messages sent with Context.Post.
 		
 			
 			
-			<h2 id="Navigator">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2652:2817#L87">Navigator</a>
+			<h2 id="Navigator">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2649:2814#L88">Navigator</a>
 				<a class="permalink" href="#Navigator">&#xb6;</a>
 				
 				
 			</h2>
-			<p>
-Navigator is the interface that describes a component that can perform
+			<p>Navigator is the interface that describes a component that can perform
 additional actions when navigated on.
-</p>
 
 			<pre>type Navigator interface {
     <a href="#Composer">Composer</a>
@@ -25367,9 +24769,7 @@ additional actions when navigated on.
 				
 				
 			</h2>
-			<p>
-A user notification.
-</p>
+			<p>A user notification.
 
 			<pre>type Notification struct {
     <span class="comment">// The title shown at the top of the notification window.</span>
@@ -25445,9 +24845,7 @@ A user notification.
 				
 				
 			</h2>
-			<p>
-A notification action.
-</p>
+			<p>A notification action.
 
 			<pre>type NotificationAction struct {
     <span class="comment">// The user action id to be displayed on the notification.</span>
@@ -25483,9 +24881,7 @@ A notification action.
 				
 				
 			</h2>
-			<p>
-NotificationPermission a permission to display notifications.
-</p>
+			<p>NotificationPermission a permission to display notifications.
 
 			<pre>type NotificationPermission <a href="/pkg/builtin/#string">string</a></pre>
 
@@ -25548,9 +24944,7 @@ NotificationPermission a permission to display notifications.
 					
 				</h3>
 				<pre>func (s <a href="#NotificationService">NotificationService</a>) New(n <a href="#Notification">Notification</a>)</pre>
-				<p>
-Creates and display a user notification.
-</p>
+				<p>Creates and display a user notification.
 
 				
 				
@@ -25563,9 +24957,7 @@ Creates and display a user notification.
 					
 				</h3>
 				<pre>func (s <a href="#NotificationService">NotificationService</a>) Permission() <a href="#NotificationPermission">NotificationPermission</a></pre>
-				<p>
-Returns the current notification permission.
-</p>
+				<p>Returns the current notification permission.
 
 				
 				
@@ -25578,9 +24970,7 @@ Returns the current notification permission.
 					
 				</h3>
 				<pre>func (s <a href="#NotificationService">NotificationService</a>) RequestPermission() <a href="#NotificationPermission">NotificationPermission</a></pre>
-				<p>
-Requests the user whether the app can use notifications.
-</p>
+				<p>Requests the user whether the app can use notifications.
 
 				
 				
@@ -25593,9 +24983,7 @@ Requests the user whether the app can use notifications.
 					
 				</h3>
 				<pre>func (s <a href="#NotificationService">NotificationService</a>) Subscribe(vapIDPublicKey <a href="/pkg/builtin/#string">string</a>) (<a href="#NotificationSubscription">NotificationSubscription</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
-				<p>
-Returns a notification subscription with the given vap id.
-</p>
+				<p>Returns a notification subscription with the given vap id.
 
 				
 				
@@ -25609,10 +24997,8 @@ Returns a notification subscription with the given vap id.
 				
 				
 			</h2>
-			<p>
-NotificationSubscription represents a PushSubscription object from the Push
+			<p>NotificationSubscription represents a PushSubscription object from the Push
 API.
-</p>
 
 			<pre>type NotificationSubscription struct {
 <span id="NotificationSubscription.Endpoint"></span>    Endpoint <a href="/pkg/builtin/#string">string</a> `json:&#34;endpoint&#34;`
@@ -25642,9 +25028,7 @@ API.
 				
 				
 			</h2>
-			<p>
-Observer is an observer that observes changes for a given state.
-</p>
+			<p>Observer is an observer that observes changes for a given state.
 
 			<pre>type Observer interface {
     <span class="comment">// Defines a condition that reports whether the observer keeps observing the</span>
@@ -25685,9 +25069,7 @@ Observer is an observer that observes changes for a given state.
 				
 				
 			</h2>
-			<p>
-Page is the interface that describes a web page.
-</p>
+			<p>Page is the interface that describes a web page.
 
 			<pre>type Page interface {
     <span class="comment">// Returns the page title.</span>
@@ -25760,10 +25142,8 @@ Page is the interface that describes a web page.
 				
 				
 			</h2>
-			<p>
-PreRenderCache is the interface that describes a cache that stores
+			<p>PreRenderCache is the interface that describes a cache that stores
 pre-rendered resources.
-</p>
 
 			<pre>type PreRenderCache interface {
     <span class="comment">// Get returns the item at the given path.</span>
@@ -25789,11 +25169,9 @@ pre-rendered resources.
 					
 				</h3>
 				<pre>func NewPreRenderLRUCache(size <a href="/pkg/builtin/#int">int</a>, itemTTL <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Duration">Duration</a>, onEvict ...func(path <a href="/pkg/builtin/#string">string</a>, i <a href="#PreRenderedItem">PreRenderedItem</a>)) <a href="#PreRenderCache">PreRenderCache</a></pre>
-				<p>
-NewPreRenderLRUCache creates an in memory LRU cache that stores items for the
+				<p>NewPreRenderLRUCache creates an in memory LRU cache that stores items for the
 given duration. If provided, on eviction functions are called when item are
 evicted.
-</p>
 
 				
 				
@@ -25808,9 +25186,7 @@ evicted.
 				
 				
 			</h2>
-			<p>
-PreRenderedItem represent an item that is stored in a PreRenderCache.
-</p>
+			<p>PreRenderedItem represent an item that is stored in a PreRenderCache.
 
 			<pre>type PreRenderedItem struct {
     <span class="comment">// The request path.</span>
@@ -25845,9 +25221,7 @@ PreRenderedItem represent an item that is stored in a PreRenderCache.
 					
 				</h3>
 				<pre>func (r <a href="#PreRenderedItem">PreRenderedItem</a>) Size() <a href="/pkg/builtin/#int">int</a></pre>
-				<p>
-Len return the body length.
-</p>
+				<p>Len return the body length.
 
 				
 				
@@ -25856,18 +25230,14 @@ Len return the body length.
 		
 			
 			
-			<h2 id="PreRenderer">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=1400:1730#L47">PreRenderer</a>
+			<h2 id="PreRenderer">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=1397:1727#L48">PreRenderer</a>
 				<a class="permalink" href="#PreRenderer">&#xb6;</a>
 				
 				
 			</h2>
-			<p>
-PreRenderer is the interface that describes a component that performs
+			<p>PreRenderer is the interface that describes a component that performs
 instruction when it is server-side pre-rendered.
-</p>
-<p>
-A pre-rendered component helps in achieving SEO friendly content.
-</p>
+<p>A pre-rendered component helps in achieving SEO friendly content.
 
 			<pre>type PreRenderer interface {
     <span class="comment">// The function called when the component is server-side pre-rendered.</span>
@@ -25897,10 +25267,8 @@ A pre-rendered component helps in achieving SEO friendly content.
 				
 				
 			</h2>
-			<p>
-ProxyResource is a proxy descriptor that maps a given resource to an URL
+			<p>ProxyResource is a proxy descriptor that maps a given resource to an URL
 path.
-</p>
 
 			<pre>type ProxyResource struct {
     <span class="comment">// The URL path from where a static resource is accessible.</span>
@@ -25931,10 +25299,8 @@ path.
 				
 				
 			</h2>
-			<p>
-RangeLoop represents a control structure that iterates within a slice, an
+			<p>RangeLoop represents a control structure that iterates within a slice, an
 array or a map.
-</p>
 
 			<pre>type RangeLoop interface {
     <a href="#UI">UI</a>
@@ -25968,10 +25334,8 @@ array or a map.
 					
 				</h3>
 				<pre>func Range(src <a href="/pkg/builtin/#any">any</a>) <a href="#RangeLoop">RangeLoop</a></pre>
-				<p>
-Range returns a range loop that iterates within the given source. Source must
+				<p>Range returns a range loop that iterates within the given source. Source must
 be a slice, an array or a map with strings as keys.
-</p>
 
 				
 				
@@ -25981,15 +25345,13 @@ be a slice, an array or a map with strings as keys.
 		
 			
 			
-			<h2 id="Resizer">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4047:4254#L124">Resizer</a>
+			<h2 id="Resizer">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=4044:4251#L125">Resizer</a>
 				<a class="permalink" href="#Resizer">&#xb6;</a>
 				
 				
 			</h2>
-			<p>
-Resizer is the interface that describes a component that is notified when the
+			<p>Resizer is the interface that describes a component that is notified when the
 app has been resized or a parent component calls the ResizeContent() method.
-</p>
 
 			<pre>type Resizer interface {
     <span class="comment">// The function called when the application is resized or a parent component</span>
@@ -26017,20 +25379,12 @@ app has been resized or a parent component calls the ResizeContent() method.
 				
 				
 			</h2>
-			<p>
-ResourceProvider is the interface that describes a resource provider that
+			<p>ResourceProvider is the interface that describes a resource provider that
 tells the Handler how to locate and get the package and static resources.
-</p>
-<p>
-Package resources are the resource required to operate go-app.
-</p>
-<p>
-Static resources are resources such as app.wasm, CSS files, images.
-</p>
-<p>
-The resource provider is used to serve static resources when it satisfies the
+<p>Package resources are the resource required to operate go-app.
+<p>Static resources are resources such as app.wasm, CSS files, images.
+<p>The resource provider is used to serve static resources when it satisfies the
 http.Handler interface.
-</p>
 
 			<pre>type ResourceProvider interface {
     <span class="comment">// Package returns the path where the package resources are located.</span>
@@ -26060,11 +25414,9 @@ http.Handler interface.
 					
 				</h3>
 				<pre>func CustomProvider(path, prefix <a href="/pkg/builtin/#string">string</a>) <a href="#ResourceProvider">ResourceProvider</a></pre>
-				<p>
-CustomProvider returns a resource provider that serves static resources from
+				<p>CustomProvider returns a resource provider that serves static resources from
 a local directory located at the given path and prefixes URL paths with the
 given prefix.
-</p>
 
 				
 				
@@ -26076,11 +25428,9 @@ given prefix.
 					
 				</h3>
 				<pre>func GitHubPages(repoName <a href="/pkg/builtin/#string">string</a>) <a href="#ResourceProvider">ResourceProvider</a></pre>
-				<p>
-GitHubPages returns a resource provider that provides resources from GitHub
+				<p>GitHubPages returns a resource provider that provides resources from GitHub
 pages. This provider must only be used to generate static websites with the
 GenerateStaticWebsite function.
-</p>
 
 				
 				
@@ -26092,10 +25442,8 @@ GenerateStaticWebsite function.
 					
 				</h3>
 				<pre>func LocalDir(root <a href="/pkg/builtin/#string">string</a>) <a href="#ResourceProvider">ResourceProvider</a></pre>
-				<p>
-LocalDir returns a resource provider that serves static resources from a
+				<p>LocalDir returns a resource provider that serves static resources from a
 local directory located at the given path.
-</p>
 
 				
 				
@@ -26107,10 +25455,8 @@ local directory located at the given path.
 					
 				</h3>
 				<pre>func RemoteBucket(url <a href="/pkg/builtin/#string">string</a>) <a href="#ResourceProvider">ResourceProvider</a></pre>
-				<p>
-RemoteBucket returns a resource provider that provides resources from a
+				<p>RemoteBucket returns a resource provider that provides resources from a
 remote bucket such as Amazon S3 or Google Cloud Storage.
-</p>
 
 				
 				
@@ -26125,9 +25471,7 @@ remote bucket such as Amazon S3 or Google Cloud Storage.
 				
 				
 			</h2>
-			<p>
-ServerDispatcher is the interface that describes a dispatcher that emulates a server environment.
-</p>
+			<p>ServerDispatcher is the interface that describes a dispatcher that emulates a server environment.
 
 			<pre>type ServerDispatcher interface {
     <a href="#Dispatcher">Dispatcher</a>
@@ -26162,10 +25506,8 @@ ServerDispatcher is the interface that describes a dispatcher that emulates a se
 					
 				</h3>
 				<pre>func NewServerTester(n <a href="#UI">UI</a>) <a href="#ServerDispatcher">ServerDispatcher</a></pre>
-				<p>
-NewServerTester creates a testing dispatcher that simulates a
+				<p>NewServerTester creates a testing dispatcher that simulates a
 client environment.
-</p>
 
 				
 				
@@ -26180,9 +25522,7 @@ client environment.
 				
 				
 			</h2>
-			<p>
-A state represents an observable value available across the app.
-</p>
+			<p>A state represents an observable value available across the app.
 
 			<pre>type State struct {
     <span class="comment">// Reports whether the state is persisted in local storage.</span>
@@ -26220,9 +25560,7 @@ A state represents an observable value available across the app.
 				
 				
 			</h2>
-			<p>
-StateOption represents an option applied when a state is set.
-</p>
+			<p>StateOption represents an option applied when a state is set.
 
 			<pre>type StateOption func(*<a href="#State">State</a>)</pre>
 
@@ -26242,14 +25580,10 @@ StateOption represents an option applied when a state is set.
 					
 				</h3>
 				<pre>func ExpiresAt(t <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Time">Time</a>) <a href="#StateOption">StateOption</a></pre>
-				<p>
-ExpiresAt returns a state option that sets a state value to its zero value at
+				<p>ExpiresAt returns a state option that sets a state value to its zero value at
 the given time.
-</p>
-<p>
-Values persisted to local storage with the Persist option are removed from
+<p>Values persisted to local storage with the Persist option are removed from
 it.
-</p>
 
 				
 				
@@ -26261,14 +25595,10 @@ it.
 					
 				</h3>
 				<pre>func ExpiresIn(d <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Duration">Duration</a>) <a href="#StateOption">StateOption</a></pre>
-				<p>
-ExpiresIn returns a state option that sets a state value to its zero value
+				<p>ExpiresIn returns a state option that sets a state value to its zero value
 after the given duration.
-</p>
-<p>
-Values persisted to local storage with the Persist option are removed from
+<p>Values persisted to local storage with the Persist option are removed from
 it.
-</p>
 
 				
 				
@@ -26283,9 +25613,7 @@ it.
 				
 				
 			</h2>
-			<p>
-Tag is a key-value pair that adds context to an action.
-</p>
+			<p>Tag is a key-value pair that adds context to an action.
 
 			<pre>type Tag struct {
 <span id="Tag.Name"></span>    Name  <a href="/pkg/builtin/#string">string</a>
@@ -26309,10 +25637,8 @@ Tag is a key-value pair that adds context to an action.
 					
 				</h3>
 				<pre>func T(name <a href="/pkg/builtin/#string">string</a>, value <a href="/pkg/builtin/#any">any</a>) <a href="#Tag">Tag</a></pre>
-				<p>
-T creates a tag with the given name and value. The value is converted to a
+				<p>T creates a tag with the given name and value. The value is converted to a
 string.
-</p>
 
 				
 				
@@ -26339,10 +25665,8 @@ string.
 				
 				
 			</h2>
-			<p>
-Tagger is the interface that describes a collection of tags that gives
+			<p>Tagger is the interface that describes a collection of tags that gives
 context to something.
-</p>
 
 			<pre>type Tagger interface {
     <span class="comment">// Returns a collection of tags.</span>
@@ -26368,9 +25692,7 @@ context to something.
 				
 				
 			</h2>
-			<p>
-Tags represent key-value pairs that give context to what they are used with.
-</p>
+			<p>Tags represent key-value pairs that give context to what they are used with.
 
 			<pre>type Tags map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a></pre>
 
@@ -26392,9 +25714,7 @@ Tags represent key-value pairs that give context to what they are used with.
 					
 				</h3>
 				<pre>func (t <a href="#Tags">Tags</a>) Get(name <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
-				<p>
-Get returns a tag value with the given name.
-</p>
+				<p>Get returns a tag value with the given name.
 
 				
 				
@@ -26407,10 +25727,8 @@ Get returns a tag value with the given name.
 					
 				</h3>
 				<pre>func (t <a href="#Tags">Tags</a>) Set(name <a href="/pkg/builtin/#string">string</a>, v <a href="/pkg/builtin/#any">any</a>)</pre>
-				<p>
-Set sets a tag with the given name and value. The value is converted to a
+				<p>Set sets a tag with the given name and value. The value is converted to a
 string.
-</p>
 
 				
 				
@@ -26436,10 +25754,8 @@ string.
 				
 				
 			</h2>
-			<p>
-TestUIDescriptor represents a descriptor that describes a UI element and its
+			<p>TestUIDescriptor represents a descriptor that describes a UI element and its
 location from its parents.
-</p>
 
 			<pre>type TestUIDescriptor struct {
     <span class="comment">// The location of the node. It is used by the TestMatch to find the</span>
@@ -26483,16 +25799,12 @@ location from its parents.
 				
 				
 			</h2>
-			<p>
-Type represents the JavaScript type of a Value.
-</p>
+			<p>Type represents the JavaScript type of a Value.
 
 			<pre>type Type <a href="/pkg/builtin/#int">int</a></pre>
 
 			
-				<p>
-Constants that enumerates the JavaScript types.
-</p>
+				<p>Constants that enumerates the JavaScript types.
 
 				<pre>const (
     <span id="TypeUndefined">TypeUndefined</span> <a href="#Type">Type</a> = <a href="/pkg/builtin/#iota">iota</a>
@@ -26523,10 +25835,8 @@ Constants that enumerates the JavaScript types.
 				
 				
 			</h2>
-			<p>
-UI is the interface that describes a user interface element such as
+			<p>UI is the interface that describes a user interface element such as
 components and HTML elements.
-</p>
 
 			<pre>type UI interface {
     <span class="comment">// Kind represents the specific kind of a UI element.</span>
@@ -26563,15 +25873,11 @@ components and HTML elements.
 					
 				</h3>
 				<pre>func FilterUIElems(v ...<a href="#UI">UI</a>) []<a href="#UI">UI</a></pre>
-				<p>
-FilterUIElems returns a filtered version of the given UI elements where
+				<p>FilterUIElems returns a filtered version of the given UI elements where
 selector elements such as If and Range are interpreted and removed. It also
 remove nil elements.
-</p>
-<p>
-It should be used only when implementing components that can accept content
+<p>It should be used only when implementing components that can accept content
 with variadic arguments like HTML elements Body method.
-</p>
 
 				
 				
@@ -26583,14 +25889,10 @@ with variadic arguments like HTML elements Body method.
 					
 				</h3>
 				<pre>func Raw(v <a href="/pkg/builtin/#string">string</a>) <a href="#UI">UI</a></pre>
-				<p>
-Raw returns a ui element from the given raw value. HTML raw value must have a
+				<p>Raw returns a ui element from the given raw value. HTML raw value must have a
 single root.
-</p>
-<p>
-It is not recommended to use this kind of node since there is no check on the
+<p>It is not recommended to use this kind of node since there is no check on the
 raw string content.
-</p>
 
 				
 				
@@ -26602,9 +25904,7 @@ raw string content.
 					
 				</h3>
 				<pre>func Text(v <a href="/pkg/builtin/#any">any</a>) <a href="#UI">UI</a></pre>
-				<p>
-Text creates a simple text element.
-</p>
+				<p>Text creates a simple text element.
 
 				
 				
@@ -26614,16 +25914,14 @@ Text creates a simple text element.
 		
 			
 			
-			<h2 id="Updater">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2993:3194#L98">Updater</a>
+			<h2 id="Updater">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/component.go?s=2990:3191#L99">Updater</a>
 				<a class="permalink" href="#Updater">&#xb6;</a>
 				
 				
 			</h2>
-			<p>
-Updater is the interface that describes a component that can do additional
+			<p>Updater is the interface that describes a component that can do additional
 instructions when one of its exported fields is modified by its nearest
 parent component.
-</p>
 
 			<pre>type Updater interface {
     <span class="comment">// The function called when one of the component exported fields is modified</span>
@@ -26650,11 +25948,9 @@ parent component.
 				
 				
 			</h2>
-			<p>
-Value is the interface that represents a JavaScript value. On wasm
+			<p>Value is the interface that represents a JavaScript value. On wasm
 architecture, it wraps the Value from <a href="https://golang.org/pkg/syscall/js/">https://golang.org/pkg/syscall/js/</a>
 package.
-</p>
 
 			<pre>type Value interface {
     <span class="comment">// Bool returns the value v as a bool. It panics if v is not a JavaScript</span>
@@ -26769,9 +26065,7 @@ package.
 					
 				</h3>
 				<pre>func Null() <a href="#Value">Value</a></pre>
-				<p>
-Null returns the JavaScript value &#34;null&#34;.
-</p>
+				<p>Null returns the JavaScript value &quot;null&quot;.
 
 				
 				
@@ -26783,23 +26077,19 @@ Null returns the JavaScript value &#34;null&#34;.
 					
 				</h3>
 				<pre>func Undefined() <a href="#Value">Value</a></pre>
-				<p>
-Undefined returns the JavaScript value &#34;undefined&#34;.
-</p>
+				<p>Undefined returns the JavaScript value &quot;undefined&quot;.
 
 				
 				
 			
 				
-				<h3 id="ValueOf">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=5107:5132#L158">ValueOf</a>
+				<h3 id="ValueOf">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/js.go?s=5097:5122#L158">ValueOf</a>
 					<a class="permalink" href="#ValueOf">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func ValueOf(x <a href="/pkg/builtin/#any">any</a>) <a href="#Value">Value</a></pre>
-				<p>
-ValueOf returns x as a JavaScript value:
-</p>
+				<p>ValueOf returns x as a JavaScript value:
 <pre>| Go                     | JavaScript             |
 | ---------------------- | ---------------------- |
 | js.Value               | [its value]            |
@@ -26811,9 +26101,7 @@ ValueOf returns x as a JavaScript value:
 | []any          | new array              |
 | map[string]any | new object             |
 </pre>
-<p>
-Panics if x is not one of the expected types.
-</p>
+<p>Panics if x is not one of the expected types.
 
 				
 				
@@ -26828,9 +26116,7 @@ Panics if x is not one of the expected types.
 				
 				
 			</h2>
-			<p>
-Wrapper is implemented by types that are backed by a JavaScript value.
-</p>
+			<p>Wrapper is implemented by types that are backed by a JavaScript value.
 
 			<pre>type Wrapper interface {
     JSValue() <a href="#Value">Value</a>
@@ -26891,7 +26177,7 @@ Wrapper is implemented by types that are backed by a JavaScript value.
 
 
 <div id="footer">
-Build version go1.18.3.<br>
+Build version go1.19.<br>
 Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
 the content of this page is licensed under the
 Creative Commons Attribution 3.0 License,

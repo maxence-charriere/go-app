@@ -41,35 +41,36 @@ func TestPath(p ...int) []int {
 // and reports whether it matches with the expected element.
 //
 // Eg:
-//  tree := app.Div().Body(
-//      app.H2().Body(
-//          app.Text("foo"),
-//      ),
-//      app.P().Body(
-//          app.Text("bar"),
-//      ),
-//  )
 //
-//  // Testing root:
-//  err := app.TestMatch(tree, app.TestUIDescriptor{
-//      Path:     TestPath(),
-//      Expected: app.Div(),
-//  })
-//  // OK => err == nil
+//	tree := app.Div().Body(
+//	    app.H2().Body(
+//	        app.Text("foo"),
+//	    ),
+//	    app.P().Body(
+//	        app.Text("bar"),
+//	    ),
+//	)
 //
-//  // Testing h2:
-//  err := app.TestMatch(tree, app.TestUIDescriptor{
-//      Path:     TestPath(0),
-//      Expected: app.H3(),
-//  })
-//  // KO => err != nil because we ask h2 to match with h3
+//	// Testing root:
+//	err := app.TestMatch(tree, app.TestUIDescriptor{
+//	    Path:     TestPath(),
+//	    Expected: app.Div(),
+//	})
+//	// OK => err == nil
 //
-//  // Testing text from p:
-//  err = app.TestMatch(tree, app.TestUIDescriptor{
-//      Path:     TestPath(1, 0),
-//      Expected: app.Text("bar"),
-//  })
-//  // OK => err == nil
+//	// Testing h2:
+//	err := app.TestMatch(tree, app.TestUIDescriptor{
+//	    Path:     TestPath(0),
+//	    Expected: app.H3(),
+//	})
+//	// KO => err != nil because we ask h2 to match with h3
+//
+//	// Testing text from p:
+//	err = app.TestMatch(tree, app.TestUIDescriptor{
+//	    Path:     TestPath(1, 0),
+//	    Expected: app.Text("bar"),
+//	})
+//	// OK => err == nil
 func TestMatch(tree UI, d TestUIDescriptor) error {
 	if d.Expected != nil {
 		d.Expected.setSelf(d.Expected)
