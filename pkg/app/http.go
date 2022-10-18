@@ -749,11 +749,11 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Href(h.Icon.Default),
 				Link().
 					Rel("mask-icon").
+					Attr("color", h.ThemeColor).
 					Href(h.Icon.Default),
 				Link().
 					Rel("apple-touch-icon").
-					Href(h.Icon.AppleTouch).
-					Attr("color", h.ThemeColor),
+					Href(h.Icon.AppleTouch),
 				Link().
 					Rel("manifest").
 					Href(h.resolvePackagePath("/manifest.webmanifest")),
