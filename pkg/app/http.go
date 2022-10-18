@@ -747,10 +747,12 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				Link().
 					Rel("icon").
 					Href(h.Icon.Default),
-				Link().
-					Rel("mask-icon").
-					Attr("color", h.ThemeColor).
-					Href(h.Icon.Default),
+				If(h.Icon.Mask != "",
+					Link().
+						Rel("mask-icon").
+						Attr("color", h.Icon.MaskColor).
+						Href(h.Icon.Mask),
+				),
 				Link().
 					Rel("apple-touch-icon").
 					Href(h.Icon.AppleTouch),
@@ -845,6 +847,10 @@ type Icon struct {
 	//
 	// DEFAULT: Icon.Default
 	AppleTouch string
+
+	Mask string
+
+	MaskColor string
 }
 
 // Environment describes the environment variables to pass to the progressive
