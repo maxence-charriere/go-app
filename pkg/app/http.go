@@ -746,11 +746,14 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				Title().Text(page.Title()),
 				Link().
 					Rel("icon").
-					Type("image/png").
+					Href(h.Icon.Default),
+				Link().
+					Rel("mask-icon").
 					Href(h.Icon.Default),
 				Link().
 					Rel("apple-touch-icon").
-					Href(h.Icon.AppleTouch),
+					Href(h.Icon.AppleTouch).
+					Attr("color", h.ThemeColor),
 				Link().
 					Rel("manifest").
 					Href(h.resolvePackagePath("/manifest.webmanifest")),
