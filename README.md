@@ -19,7 +19,7 @@ Shaping a UI is done by using a **[declarative syntax](https://go-app.dev/declar
 
 It **uses [Go HTTP standard](https://golang.org/pkg/net/http) model**.
 
-An app created with go-app can out of the box **run in its own window**, **supports offline mode**, and are **SEO friendly**.
+An app created with go-app can out of the box **runs in its own window**, **supports offline mode**, and is **SEO friendly**.
 
 ## Documentation (built with go-app)
 
