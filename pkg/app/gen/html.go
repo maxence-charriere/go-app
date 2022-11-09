@@ -1814,6 +1814,14 @@ var eventHandlers = map[string]eventHandler{
 		Name: "OnMouseDown",
 		Doc:  "calls the given handler when a mouse button is pressed down on an element.",
 	},
+	"onmouseenter": {
+		Name: "OnMouseEnter",
+		Doc:  "calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.",
+	},
+	"onmouseleave": {
+		Name: "OnMouseLeave",
+		Doc:  "calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.",
+	},
 	"onmousemove": {
 		Name: "OnMouseMove",
 		Doc:  "calls the given handler when the mouse pointer is moving while it is over an element.",
@@ -2017,6 +2025,8 @@ func withGlobalEventHandlers(handlers ...eventHandler) []eventHandler {
 		"onclick",
 		"ondblclick",
 		"onmousedown",
+		"onmouseenter",
+		"onmouseleave",
 		"onmousemove",
 		"onmouseout",
 		"onmouseover",
