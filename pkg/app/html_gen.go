@@ -158,6 +158,12 @@ type HTMLA interface {
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLA
 
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLA
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLA
+
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLA
 
@@ -459,6 +465,16 @@ func (e *htmlA) OnMouseDown(h EventHandler, scope ...any) HTMLA {
 	return e
 }
 
+func (e *htmlA) OnMouseEnter(h EventHandler, scope ...any) HTMLA {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlA) OnMouseLeave(h EventHandler, scope ...any) HTMLA {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlA) OnMouseMove(h EventHandler, scope ...any) HTMLA {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -640,6 +656,12 @@ type HTMLAbbr interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLAbbr
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLAbbr
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLAbbr
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLAbbr
@@ -902,6 +924,16 @@ func (e *htmlAbbr) OnMouseDown(h EventHandler, scope ...any) HTMLAbbr {
 	return e
 }
 
+func (e *htmlAbbr) OnMouseEnter(h EventHandler, scope ...any) HTMLAbbr {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlAbbr) OnMouseLeave(h EventHandler, scope ...any) HTMLAbbr {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlAbbr) OnMouseMove(h EventHandler, scope ...any) HTMLAbbr {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -1083,6 +1115,12 @@ type HTMLAddress interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLAddress
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLAddress
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLAddress
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLAddress
@@ -1345,6 +1383,16 @@ func (e *htmlAddress) OnMouseDown(h EventHandler, scope ...any) HTMLAddress {
 	return e
 }
 
+func (e *htmlAddress) OnMouseEnter(h EventHandler, scope ...any) HTMLAddress {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlAddress) OnMouseLeave(h EventHandler, scope ...any) HTMLAddress {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlAddress) OnMouseMove(h EventHandler, scope ...any) HTMLAddress {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -1550,6 +1598,12 @@ type HTMLArea interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLArea
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLArea
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLArea
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLArea
@@ -1853,6 +1907,16 @@ func (e *htmlArea) OnMouseDown(h EventHandler, scope ...any) HTMLArea {
 	return e
 }
 
+func (e *htmlArea) OnMouseEnter(h EventHandler, scope ...any) HTMLArea {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlArea) OnMouseLeave(h EventHandler, scope ...any) HTMLArea {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlArea) OnMouseMove(h EventHandler, scope ...any) HTMLArea {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -2034,6 +2098,12 @@ type HTMLArticle interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLArticle
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLArticle
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLArticle
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLArticle
@@ -2296,6 +2366,16 @@ func (e *htmlArticle) OnMouseDown(h EventHandler, scope ...any) HTMLArticle {
 	return e
 }
 
+func (e *htmlArticle) OnMouseEnter(h EventHandler, scope ...any) HTMLArticle {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlArticle) OnMouseLeave(h EventHandler, scope ...any) HTMLArticle {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlArticle) OnMouseMove(h EventHandler, scope ...any) HTMLArticle {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -2477,6 +2557,12 @@ type HTMLAside interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLAside
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLAside
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLAside
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLAside
@@ -2739,6 +2825,16 @@ func (e *htmlAside) OnMouseDown(h EventHandler, scope ...any) HTMLAside {
 	return e
 }
 
+func (e *htmlAside) OnMouseEnter(h EventHandler, scope ...any) HTMLAside {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlAside) OnMouseLeave(h EventHandler, scope ...any) HTMLAside {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlAside) OnMouseMove(h EventHandler, scope ...any) HTMLAside {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -2974,6 +3070,12 @@ type HTMLAudio interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLAudio
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLAudio
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLAudio
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLAudio
@@ -3362,6 +3464,16 @@ func (e *htmlAudio) OnMouseDown(h EventHandler, scope ...any) HTMLAudio {
 	return e
 }
 
+func (e *htmlAudio) OnMouseEnter(h EventHandler, scope ...any) HTMLAudio {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlAudio) OnMouseLeave(h EventHandler, scope ...any) HTMLAudio {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlAudio) OnMouseMove(h EventHandler, scope ...any) HTMLAudio {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -3603,6 +3715,12 @@ type HTMLB interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLB
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLB
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLB
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLB
@@ -3865,6 +3983,16 @@ func (e *htmlB) OnMouseDown(h EventHandler, scope ...any) HTMLB {
 	return e
 }
 
+func (e *htmlB) OnMouseEnter(h EventHandler, scope ...any) HTMLB {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlB) OnMouseLeave(h EventHandler, scope ...any) HTMLB {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlB) OnMouseMove(h EventHandler, scope ...any) HTMLB {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -4046,6 +4174,12 @@ type HTMLBase interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLBase
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLBase
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLBase
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLBase
@@ -4309,6 +4443,16 @@ func (e *htmlBase) OnMouseDown(h EventHandler, scope ...any) HTMLBase {
 	return e
 }
 
+func (e *htmlBase) OnMouseEnter(h EventHandler, scope ...any) HTMLBase {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlBase) OnMouseLeave(h EventHandler, scope ...any) HTMLBase {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlBase) OnMouseMove(h EventHandler, scope ...any) HTMLBase {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -4490,6 +4634,12 @@ type HTMLBdi interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLBdi
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLBdi
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLBdi
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLBdi
@@ -4752,6 +4902,16 @@ func (e *htmlBdi) OnMouseDown(h EventHandler, scope ...any) HTMLBdi {
 	return e
 }
 
+func (e *htmlBdi) OnMouseEnter(h EventHandler, scope ...any) HTMLBdi {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlBdi) OnMouseLeave(h EventHandler, scope ...any) HTMLBdi {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlBdi) OnMouseMove(h EventHandler, scope ...any) HTMLBdi {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -4933,6 +5093,12 @@ type HTMLBdo interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLBdo
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLBdo
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLBdo
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLBdo
@@ -5195,6 +5361,16 @@ func (e *htmlBdo) OnMouseDown(h EventHandler, scope ...any) HTMLBdo {
 	return e
 }
 
+func (e *htmlBdo) OnMouseEnter(h EventHandler, scope ...any) HTMLBdo {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlBdo) OnMouseLeave(h EventHandler, scope ...any) HTMLBdo {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlBdo) OnMouseMove(h EventHandler, scope ...any) HTMLBdo {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -5379,6 +5555,12 @@ type HTMLBlockquote interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLBlockquote
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLBlockquote
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLBlockquote
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLBlockquote
@@ -5646,6 +5828,16 @@ func (e *htmlBlockquote) OnMouseDown(h EventHandler, scope ...any) HTMLBlockquot
 	return e
 }
 
+func (e *htmlBlockquote) OnMouseEnter(h EventHandler, scope ...any) HTMLBlockquote {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlBlockquote) OnMouseLeave(h EventHandler, scope ...any) HTMLBlockquote {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlBlockquote) OnMouseMove(h EventHandler, scope ...any) HTMLBlockquote {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -5844,6 +6036,12 @@ type HTMLBody interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLBody
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLBody
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLBody
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLBody
@@ -6161,6 +6359,16 @@ func (e *htmlBody) OnMouseDown(h EventHandler, scope ...any) HTMLBody {
 	return e
 }
 
+func (e *htmlBody) OnMouseEnter(h EventHandler, scope ...any) HTMLBody {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlBody) OnMouseLeave(h EventHandler, scope ...any) HTMLBody {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlBody) OnMouseMove(h EventHandler, scope ...any) HTMLBody {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -6376,6 +6584,12 @@ type HTMLBr interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLBr
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLBr
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLBr
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLBr
@@ -6629,6 +6843,16 @@ func (e *htmlBr) OnMouseDown(h EventHandler, scope ...any) HTMLBr {
 	return e
 }
 
+func (e *htmlBr) OnMouseEnter(h EventHandler, scope ...any) HTMLBr {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlBr) OnMouseLeave(h EventHandler, scope ...any) HTMLBr {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlBr) OnMouseMove(h EventHandler, scope ...any) HTMLBr {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -6843,6 +7067,12 @@ type HTMLButton interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLButton
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLButton
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLButton
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLButton
@@ -7160,6 +7390,16 @@ func (e *htmlButton) OnMouseDown(h EventHandler, scope ...any) HTMLButton {
 	return e
 }
 
+func (e *htmlButton) OnMouseEnter(h EventHandler, scope ...any) HTMLButton {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlButton) OnMouseLeave(h EventHandler, scope ...any) HTMLButton {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlButton) OnMouseMove(h EventHandler, scope ...any) HTMLButton {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -7347,6 +7587,12 @@ type HTMLCanvas interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLCanvas
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLCanvas
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLCanvas
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLCanvas
@@ -7619,6 +7865,16 @@ func (e *htmlCanvas) OnMouseDown(h EventHandler, scope ...any) HTMLCanvas {
 	return e
 }
 
+func (e *htmlCanvas) OnMouseEnter(h EventHandler, scope ...any) HTMLCanvas {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlCanvas) OnMouseLeave(h EventHandler, scope ...any) HTMLCanvas {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlCanvas) OnMouseMove(h EventHandler, scope ...any) HTMLCanvas {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -7800,6 +8056,12 @@ type HTMLCaption interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLCaption
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLCaption
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLCaption
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLCaption
@@ -8062,6 +8324,16 @@ func (e *htmlCaption) OnMouseDown(h EventHandler, scope ...any) HTMLCaption {
 	return e
 }
 
+func (e *htmlCaption) OnMouseEnter(h EventHandler, scope ...any) HTMLCaption {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlCaption) OnMouseLeave(h EventHandler, scope ...any) HTMLCaption {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlCaption) OnMouseMove(h EventHandler, scope ...any) HTMLCaption {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -8243,6 +8515,12 @@ type HTMLCite interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLCite
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLCite
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLCite
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLCite
@@ -8505,6 +8783,16 @@ func (e *htmlCite) OnMouseDown(h EventHandler, scope ...any) HTMLCite {
 	return e
 }
 
+func (e *htmlCite) OnMouseEnter(h EventHandler, scope ...any) HTMLCite {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlCite) OnMouseLeave(h EventHandler, scope ...any) HTMLCite {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlCite) OnMouseMove(h EventHandler, scope ...any) HTMLCite {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -8686,6 +8974,12 @@ type HTMLCode interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLCode
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLCode
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLCode
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLCode
@@ -8948,6 +9242,16 @@ func (e *htmlCode) OnMouseDown(h EventHandler, scope ...any) HTMLCode {
 	return e
 }
 
+func (e *htmlCode) OnMouseEnter(h EventHandler, scope ...any) HTMLCode {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlCode) OnMouseLeave(h EventHandler, scope ...any) HTMLCode {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlCode) OnMouseMove(h EventHandler, scope ...any) HTMLCode {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -9126,6 +9430,12 @@ type HTMLCol interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLCol
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLCol
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLCol
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLCol
@@ -9384,6 +9694,16 @@ func (e *htmlCol) OnMouseDown(h EventHandler, scope ...any) HTMLCol {
 	return e
 }
 
+func (e *htmlCol) OnMouseEnter(h EventHandler, scope ...any) HTMLCol {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlCol) OnMouseLeave(h EventHandler, scope ...any) HTMLCol {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlCol) OnMouseMove(h EventHandler, scope ...any) HTMLCol {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -9568,6 +9888,12 @@ type HTMLColGroup interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLColGroup
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLColGroup
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLColGroup
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLColGroup
@@ -9832,6 +10158,16 @@ func (e *htmlColGroup) OnKeyUp(h EventHandler, scope ...any) HTMLColGroup {
 
 func (e *htmlColGroup) OnMouseDown(h EventHandler, scope ...any) HTMLColGroup {
 	e.setEventHandler("mousedown", h, scope...)
+	return e
+}
+
+func (e *htmlColGroup) OnMouseEnter(h EventHandler, scope ...any) HTMLColGroup {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlColGroup) OnMouseLeave(h EventHandler, scope ...any) HTMLColGroup {
+	e.setEventHandler("mouseleave", h, scope...)
 	return e
 }
 
@@ -10212,6 +10548,12 @@ type HTMLDataList interface {
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLDataList
 
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLDataList
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLDataList
+
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLDataList
 
@@ -10473,6 +10815,16 @@ func (e *htmlDataList) OnMouseDown(h EventHandler, scope ...any) HTMLDataList {
 	return e
 }
 
+func (e *htmlDataList) OnMouseEnter(h EventHandler, scope ...any) HTMLDataList {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlDataList) OnMouseLeave(h EventHandler, scope ...any) HTMLDataList {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlDataList) OnMouseMove(h EventHandler, scope ...any) HTMLDataList {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -10654,6 +11006,12 @@ type HTMLDd interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLDd
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLDd
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLDd
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLDd
@@ -10916,6 +11274,16 @@ func (e *htmlDd) OnMouseDown(h EventHandler, scope ...any) HTMLDd {
 	return e
 }
 
+func (e *htmlDd) OnMouseEnter(h EventHandler, scope ...any) HTMLDd {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlDd) OnMouseLeave(h EventHandler, scope ...any) HTMLDd {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlDd) OnMouseMove(h EventHandler, scope ...any) HTMLDd {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -11103,6 +11471,12 @@ type HTMLDel interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLDel
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLDel
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLDel
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLDel
@@ -11375,6 +11749,16 @@ func (e *htmlDel) OnMouseDown(h EventHandler, scope ...any) HTMLDel {
 	return e
 }
 
+func (e *htmlDel) OnMouseEnter(h EventHandler, scope ...any) HTMLDel {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlDel) OnMouseLeave(h EventHandler, scope ...any) HTMLDel {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlDel) OnMouseMove(h EventHandler, scope ...any) HTMLDel {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -11559,6 +11943,12 @@ type HTMLDetails interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLDetails
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLDetails
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLDetails
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLDetails
@@ -11829,6 +12219,16 @@ func (e *htmlDetails) OnMouseDown(h EventHandler, scope ...any) HTMLDetails {
 	return e
 }
 
+func (e *htmlDetails) OnMouseEnter(h EventHandler, scope ...any) HTMLDetails {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlDetails) OnMouseLeave(h EventHandler, scope ...any) HTMLDetails {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlDetails) OnMouseMove(h EventHandler, scope ...any) HTMLDetails {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -12015,6 +12415,12 @@ type HTMLDfn interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLDfn
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLDfn
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLDfn
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLDfn
@@ -12277,6 +12683,16 @@ func (e *htmlDfn) OnMouseDown(h EventHandler, scope ...any) HTMLDfn {
 	return e
 }
 
+func (e *htmlDfn) OnMouseEnter(h EventHandler, scope ...any) HTMLDfn {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlDfn) OnMouseLeave(h EventHandler, scope ...any) HTMLDfn {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlDfn) OnMouseMove(h EventHandler, scope ...any) HTMLDfn {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -12461,6 +12877,12 @@ type HTMLDialog interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLDialog
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLDialog
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLDialog
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLDialog
@@ -12728,6 +13150,16 @@ func (e *htmlDialog) OnMouseDown(h EventHandler, scope ...any) HTMLDialog {
 	return e
 }
 
+func (e *htmlDialog) OnMouseEnter(h EventHandler, scope ...any) HTMLDialog {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlDialog) OnMouseLeave(h EventHandler, scope ...any) HTMLDialog {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlDialog) OnMouseMove(h EventHandler, scope ...any) HTMLDialog {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -12909,6 +13341,12 @@ type HTMLDiv interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLDiv
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLDiv
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLDiv
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLDiv
@@ -13171,6 +13609,16 @@ func (e *htmlDiv) OnMouseDown(h EventHandler, scope ...any) HTMLDiv {
 	return e
 }
 
+func (e *htmlDiv) OnMouseEnter(h EventHandler, scope ...any) HTMLDiv {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlDiv) OnMouseLeave(h EventHandler, scope ...any) HTMLDiv {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlDiv) OnMouseMove(h EventHandler, scope ...any) HTMLDiv {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -13352,6 +13800,12 @@ type HTMLDl interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLDl
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLDl
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLDl
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLDl
@@ -13614,6 +14068,16 @@ func (e *htmlDl) OnMouseDown(h EventHandler, scope ...any) HTMLDl {
 	return e
 }
 
+func (e *htmlDl) OnMouseEnter(h EventHandler, scope ...any) HTMLDl {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlDl) OnMouseLeave(h EventHandler, scope ...any) HTMLDl {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlDl) OnMouseMove(h EventHandler, scope ...any) HTMLDl {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -13795,6 +14259,12 @@ type HTMLDt interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLDt
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLDt
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLDt
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLDt
@@ -14057,6 +14527,16 @@ func (e *htmlDt) OnMouseDown(h EventHandler, scope ...any) HTMLDt {
 	return e
 }
 
+func (e *htmlDt) OnMouseEnter(h EventHandler, scope ...any) HTMLDt {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlDt) OnMouseLeave(h EventHandler, scope ...any) HTMLDt {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlDt) OnMouseMove(h EventHandler, scope ...any) HTMLDt {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -14241,6 +14721,12 @@ type HTMLElem interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLElem
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLElem
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLElem
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLElem
@@ -14508,6 +14994,16 @@ func (e *htmlElem) OnMouseDown(h EventHandler, scope ...any) HTMLElem {
 	return e
 }
 
+func (e *htmlElem) OnMouseEnter(h EventHandler, scope ...any) HTMLElem {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlElem) OnMouseLeave(h EventHandler, scope ...any) HTMLElem {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlElem) OnMouseMove(h EventHandler, scope ...any) HTMLElem {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -14686,6 +15182,12 @@ type HTMLElemSelfClosing interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLElemSelfClosing
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLElemSelfClosing
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLElemSelfClosing
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLElemSelfClosing
@@ -14944,6 +15446,16 @@ func (e *htmlElemSelfClosing) OnMouseDown(h EventHandler, scope ...any) HTMLElem
 	return e
 }
 
+func (e *htmlElemSelfClosing) OnMouseEnter(h EventHandler, scope ...any) HTMLElemSelfClosing {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlElemSelfClosing) OnMouseLeave(h EventHandler, scope ...any) HTMLElemSelfClosing {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlElemSelfClosing) OnMouseMove(h EventHandler, scope ...any) HTMLElemSelfClosing {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -15125,6 +15637,12 @@ type HTMLEm interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLEm
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLEm
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLEm
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLEm
@@ -15387,6 +15905,16 @@ func (e *htmlEm) OnMouseDown(h EventHandler, scope ...any) HTMLEm {
 	return e
 }
 
+func (e *htmlEm) OnMouseEnter(h EventHandler, scope ...any) HTMLEm {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlEm) OnMouseLeave(h EventHandler, scope ...any) HTMLEm {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlEm) OnMouseMove(h EventHandler, scope ...any) HTMLEm {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -15607,6 +16135,12 @@ type HTMLEmbed interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLEmbed
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLEmbed
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLEmbed
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLEmbed
@@ -15971,6 +16505,16 @@ func (e *htmlEmbed) OnMouseDown(h EventHandler, scope ...any) HTMLEmbed {
 	return e
 }
 
+func (e *htmlEmbed) OnMouseEnter(h EventHandler, scope ...any) HTMLEmbed {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlEmbed) OnMouseLeave(h EventHandler, scope ...any) HTMLEmbed {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlEmbed) OnMouseMove(h EventHandler, scope ...any) HTMLEmbed {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -16221,6 +16765,12 @@ type HTMLFieldSet interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLFieldSet
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLFieldSet
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLFieldSet
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLFieldSet
@@ -16498,6 +17048,16 @@ func (e *htmlFieldSet) OnMouseDown(h EventHandler, scope ...any) HTMLFieldSet {
 	return e
 }
 
+func (e *htmlFieldSet) OnMouseEnter(h EventHandler, scope ...any) HTMLFieldSet {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlFieldSet) OnMouseLeave(h EventHandler, scope ...any) HTMLFieldSet {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlFieldSet) OnMouseMove(h EventHandler, scope ...any) HTMLFieldSet {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -16679,6 +17239,12 @@ type HTMLFigCaption interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLFigCaption
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLFigCaption
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLFigCaption
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLFigCaption
@@ -16941,6 +17507,16 @@ func (e *htmlFigCaption) OnMouseDown(h EventHandler, scope ...any) HTMLFigCaptio
 	return e
 }
 
+func (e *htmlFigCaption) OnMouseEnter(h EventHandler, scope ...any) HTMLFigCaption {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlFigCaption) OnMouseLeave(h EventHandler, scope ...any) HTMLFigCaption {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlFigCaption) OnMouseMove(h EventHandler, scope ...any) HTMLFigCaption {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -17122,6 +17698,12 @@ type HTMLFigure interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLFigure
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLFigure
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLFigure
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLFigure
@@ -17384,6 +17966,16 @@ func (e *htmlFigure) OnMouseDown(h EventHandler, scope ...any) HTMLFigure {
 	return e
 }
 
+func (e *htmlFigure) OnMouseEnter(h EventHandler, scope ...any) HTMLFigure {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlFigure) OnMouseLeave(h EventHandler, scope ...any) HTMLFigure {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlFigure) OnMouseMove(h EventHandler, scope ...any) HTMLFigure {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -17565,6 +18157,12 @@ type HTMLFooter interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLFooter
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLFooter
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLFooter
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLFooter
@@ -17827,6 +18425,16 @@ func (e *htmlFooter) OnMouseDown(h EventHandler, scope ...any) HTMLFooter {
 	return e
 }
 
+func (e *htmlFooter) OnMouseEnter(h EventHandler, scope ...any) HTMLFooter {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlFooter) OnMouseLeave(h EventHandler, scope ...any) HTMLFooter {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlFooter) OnMouseMove(h EventHandler, scope ...any) HTMLFooter {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -18032,6 +18640,12 @@ type HTMLForm interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLForm
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLForm
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLForm
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLForm
@@ -18339,6 +18953,16 @@ func (e *htmlForm) OnMouseDown(h EventHandler, scope ...any) HTMLForm {
 	return e
 }
 
+func (e *htmlForm) OnMouseEnter(h EventHandler, scope ...any) HTMLForm {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlForm) OnMouseLeave(h EventHandler, scope ...any) HTMLForm {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlForm) OnMouseMove(h EventHandler, scope ...any) HTMLForm {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -18520,6 +19144,12 @@ type HTMLH1 interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLH1
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLH1
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLH1
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLH1
@@ -18782,6 +19412,16 @@ func (e *htmlH1) OnMouseDown(h EventHandler, scope ...any) HTMLH1 {
 	return e
 }
 
+func (e *htmlH1) OnMouseEnter(h EventHandler, scope ...any) HTMLH1 {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlH1) OnMouseLeave(h EventHandler, scope ...any) HTMLH1 {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlH1) OnMouseMove(h EventHandler, scope ...any) HTMLH1 {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -18963,6 +19603,12 @@ type HTMLH2 interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLH2
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLH2
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLH2
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLH2
@@ -19225,6 +19871,16 @@ func (e *htmlH2) OnMouseDown(h EventHandler, scope ...any) HTMLH2 {
 	return e
 }
 
+func (e *htmlH2) OnMouseEnter(h EventHandler, scope ...any) HTMLH2 {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlH2) OnMouseLeave(h EventHandler, scope ...any) HTMLH2 {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlH2) OnMouseMove(h EventHandler, scope ...any) HTMLH2 {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -19406,6 +20062,12 @@ type HTMLH3 interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLH3
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLH3
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLH3
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLH3
@@ -19668,6 +20330,16 @@ func (e *htmlH3) OnMouseDown(h EventHandler, scope ...any) HTMLH3 {
 	return e
 }
 
+func (e *htmlH3) OnMouseEnter(h EventHandler, scope ...any) HTMLH3 {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlH3) OnMouseLeave(h EventHandler, scope ...any) HTMLH3 {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlH3) OnMouseMove(h EventHandler, scope ...any) HTMLH3 {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -19849,6 +20521,12 @@ type HTMLH4 interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLH4
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLH4
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLH4
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLH4
@@ -20111,6 +20789,16 @@ func (e *htmlH4) OnMouseDown(h EventHandler, scope ...any) HTMLH4 {
 	return e
 }
 
+func (e *htmlH4) OnMouseEnter(h EventHandler, scope ...any) HTMLH4 {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlH4) OnMouseLeave(h EventHandler, scope ...any) HTMLH4 {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlH4) OnMouseMove(h EventHandler, scope ...any) HTMLH4 {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -20292,6 +20980,12 @@ type HTMLH5 interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLH5
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLH5
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLH5
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLH5
@@ -20554,6 +21248,16 @@ func (e *htmlH5) OnMouseDown(h EventHandler, scope ...any) HTMLH5 {
 	return e
 }
 
+func (e *htmlH5) OnMouseEnter(h EventHandler, scope ...any) HTMLH5 {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlH5) OnMouseLeave(h EventHandler, scope ...any) HTMLH5 {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlH5) OnMouseMove(h EventHandler, scope ...any) HTMLH5 {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -20735,6 +21439,12 @@ type HTMLH6 interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLH6
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLH6
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLH6
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLH6
@@ -20994,6 +21704,16 @@ func (e *htmlH6) OnKeyUp(h EventHandler, scope ...any) HTMLH6 {
 
 func (e *htmlH6) OnMouseDown(h EventHandler, scope ...any) HTMLH6 {
 	e.setEventHandler("mousedown", h, scope...)
+	return e
+}
+
+func (e *htmlH6) OnMouseEnter(h EventHandler, scope ...any) HTMLH6 {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlH6) OnMouseLeave(h EventHandler, scope ...any) HTMLH6 {
+	e.setEventHandler("mouseleave", h, scope...)
 	return e
 }
 
@@ -21366,6 +22086,12 @@ type HTMLHeader interface {
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLHeader
 
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLHeader
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLHeader
+
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLHeader
 
@@ -21627,6 +22353,16 @@ func (e *htmlHeader) OnMouseDown(h EventHandler, scope ...any) HTMLHeader {
 	return e
 }
 
+func (e *htmlHeader) OnMouseEnter(h EventHandler, scope ...any) HTMLHeader {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlHeader) OnMouseLeave(h EventHandler, scope ...any) HTMLHeader {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlHeader) OnMouseMove(h EventHandler, scope ...any) HTMLHeader {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -21802,6 +22538,12 @@ type HTMLHr interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLHr
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLHr
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLHr
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLHr
@@ -22052,6 +22794,16 @@ func (e *htmlHr) OnKeyUp(h EventHandler, scope ...any) HTMLHr {
 
 func (e *htmlHr) OnMouseDown(h EventHandler, scope ...any) HTMLHr {
 	e.setEventHandler("mousedown", h, scope...)
+	return e
+}
+
+func (e *htmlHr) OnMouseEnter(h EventHandler, scope ...any) HTMLHr {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlHr) OnMouseLeave(h EventHandler, scope ...any) HTMLHr {
+	e.setEventHandler("mouseleave", h, scope...)
 	return e
 }
 
@@ -22416,6 +23168,12 @@ type HTMLI interface {
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLI
 
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLI
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLI
+
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLI
 
@@ -22677,6 +23435,16 @@ func (e *htmlI) OnMouseDown(h EventHandler, scope ...any) HTMLI {
 	return e
 }
 
+func (e *htmlI) OnMouseEnter(h EventHandler, scope ...any) HTMLI {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlI) OnMouseLeave(h EventHandler, scope ...any) HTMLI {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlI) OnMouseMove(h EventHandler, scope ...any) HTMLI {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -22894,6 +23662,12 @@ type HTMLIFrame interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLIFrame
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLIFrame
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLIFrame
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLIFrame
@@ -23226,6 +24000,16 @@ func (e *htmlIFrame) OnMouseDown(h EventHandler, scope ...any) HTMLIFrame {
 	return e
 }
 
+func (e *htmlIFrame) OnMouseEnter(h EventHandler, scope ...any) HTMLIFrame {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlIFrame) OnMouseLeave(h EventHandler, scope ...any) HTMLIFrame {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlIFrame) OnMouseMove(h EventHandler, scope ...any) HTMLIFrame {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -23464,6 +24248,12 @@ type HTMLImg interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLImg
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLImg
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLImg
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLImg
@@ -23858,6 +24648,16 @@ func (e *htmlImg) OnMouseDown(h EventHandler, scope ...any) HTMLImg {
 	return e
 }
 
+func (e *htmlImg) OnMouseEnter(h EventHandler, scope ...any) HTMLImg {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlImg) OnMouseLeave(h EventHandler, scope ...any) HTMLImg {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlImg) OnMouseMove(h EventHandler, scope ...any) HTMLImg {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -24189,6 +24989,12 @@ type HTMLInput interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLInput
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLInput
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLInput
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLInput
@@ -24607,6 +25413,16 @@ func (e *htmlInput) OnMouseDown(h EventHandler, scope ...any) HTMLInput {
 	return e
 }
 
+func (e *htmlInput) OnMouseEnter(h EventHandler, scope ...any) HTMLInput {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlInput) OnMouseLeave(h EventHandler, scope ...any) HTMLInput {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlInput) OnMouseMove(h EventHandler, scope ...any) HTMLInput {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -24788,6 +25604,12 @@ type HTMLIns interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLIns
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLIns
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLIns
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLIns
@@ -25050,6 +25872,16 @@ func (e *htmlIns) OnMouseDown(h EventHandler, scope ...any) HTMLIns {
 	return e
 }
 
+func (e *htmlIns) OnMouseEnter(h EventHandler, scope ...any) HTMLIns {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlIns) OnMouseLeave(h EventHandler, scope ...any) HTMLIns {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlIns) OnMouseMove(h EventHandler, scope ...any) HTMLIns {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -25231,6 +26063,12 @@ type HTMLKbd interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLKbd
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLKbd
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLKbd
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLKbd
@@ -25493,6 +26331,16 @@ func (e *htmlKbd) OnMouseDown(h EventHandler, scope ...any) HTMLKbd {
 	return e
 }
 
+func (e *htmlKbd) OnMouseEnter(h EventHandler, scope ...any) HTMLKbd {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlKbd) OnMouseLeave(h EventHandler, scope ...any) HTMLKbd {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlKbd) OnMouseMove(h EventHandler, scope ...any) HTMLKbd {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -25680,6 +26528,12 @@ type HTMLLabel interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLLabel
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLLabel
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLLabel
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLLabel
@@ -25952,6 +26806,16 @@ func (e *htmlLabel) OnMouseDown(h EventHandler, scope ...any) HTMLLabel {
 	return e
 }
 
+func (e *htmlLabel) OnMouseEnter(h EventHandler, scope ...any) HTMLLabel {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlLabel) OnMouseLeave(h EventHandler, scope ...any) HTMLLabel {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlLabel) OnMouseMove(h EventHandler, scope ...any) HTMLLabel {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -26133,6 +26997,12 @@ type HTMLLegend interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLLegend
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLLegend
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLLegend
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLLegend
@@ -26395,6 +27265,16 @@ func (e *htmlLegend) OnMouseDown(h EventHandler, scope ...any) HTMLLegend {
 	return e
 }
 
+func (e *htmlLegend) OnMouseEnter(h EventHandler, scope ...any) HTMLLegend {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlLegend) OnMouseLeave(h EventHandler, scope ...any) HTMLLegend {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlLegend) OnMouseMove(h EventHandler, scope ...any) HTMLLegend {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -26579,6 +27459,12 @@ type HTMLLi interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLLi
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLLi
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLLi
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLLi
@@ -26846,6 +27732,16 @@ func (e *htmlLi) OnMouseDown(h EventHandler, scope ...any) HTMLLi {
 	return e
 }
 
+func (e *htmlLi) OnMouseEnter(h EventHandler, scope ...any) HTMLLi {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlLi) OnMouseLeave(h EventHandler, scope ...any) HTMLLi {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlLi) OnMouseMove(h EventHandler, scope ...any) HTMLLi {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -27045,6 +27941,12 @@ type HTMLLink interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLLink
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLLink
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLLink
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLLink
@@ -27338,6 +28240,16 @@ func (e *htmlLink) OnMouseDown(h EventHandler, scope ...any) HTMLLink {
 	return e
 }
 
+func (e *htmlLink) OnMouseEnter(h EventHandler, scope ...any) HTMLLink {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlLink) OnMouseLeave(h EventHandler, scope ...any) HTMLLink {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlLink) OnMouseMove(h EventHandler, scope ...any) HTMLLink {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -27519,6 +28431,12 @@ type HTMLMain interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLMain
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLMain
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLMain
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLMain
@@ -27781,6 +28699,16 @@ func (e *htmlMain) OnMouseDown(h EventHandler, scope ...any) HTMLMain {
 	return e
 }
 
+func (e *htmlMain) OnMouseEnter(h EventHandler, scope ...any) HTMLMain {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlMain) OnMouseLeave(h EventHandler, scope ...any) HTMLMain {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlMain) OnMouseMove(h EventHandler, scope ...any) HTMLMain {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -27965,6 +28893,12 @@ type HTMLMap interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLMap
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLMap
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLMap
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLMap
@@ -28232,6 +29166,16 @@ func (e *htmlMap) OnMouseDown(h EventHandler, scope ...any) HTMLMap {
 	return e
 }
 
+func (e *htmlMap) OnMouseEnter(h EventHandler, scope ...any) HTMLMap {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlMap) OnMouseLeave(h EventHandler, scope ...any) HTMLMap {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlMap) OnMouseMove(h EventHandler, scope ...any) HTMLMap {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -28413,6 +29357,12 @@ type HTMLMark interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLMark
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLMark
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLMark
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLMark
@@ -28672,6 +29622,16 @@ func (e *htmlMark) OnKeyUp(h EventHandler, scope ...any) HTMLMark {
 
 func (e *htmlMark) OnMouseDown(h EventHandler, scope ...any) HTMLMark {
 	e.setEventHandler("mousedown", h, scope...)
+	return e
+}
+
+func (e *htmlMark) OnMouseEnter(h EventHandler, scope ...any) HTMLMark {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlMark) OnMouseLeave(h EventHandler, scope ...any) HTMLMark {
+	e.setEventHandler("mouseleave", h, scope...)
 	return e
 }
 
@@ -29090,6 +30050,12 @@ type HTMLMeter interface {
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLMeter
 
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLMeter
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLMeter
+
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLMeter
 
@@ -29386,6 +30352,16 @@ func (e *htmlMeter) OnMouseDown(h EventHandler, scope ...any) HTMLMeter {
 	return e
 }
 
+func (e *htmlMeter) OnMouseEnter(h EventHandler, scope ...any) HTMLMeter {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlMeter) OnMouseLeave(h EventHandler, scope ...any) HTMLMeter {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlMeter) OnMouseMove(h EventHandler, scope ...any) HTMLMeter {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -29567,6 +30543,12 @@ type HTMLNav interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLNav
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLNav
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLNav
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLNav
@@ -29826,6 +30808,16 @@ func (e *htmlNav) OnKeyUp(h EventHandler, scope ...any) HTMLNav {
 
 func (e *htmlNav) OnMouseDown(h EventHandler, scope ...any) HTMLNav {
 	e.setEventHandler("mousedown", h, scope...)
+	return e
+}
+
+func (e *htmlNav) OnMouseEnter(h EventHandler, scope ...any) HTMLNav {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlNav) OnMouseLeave(h EventHandler, scope ...any) HTMLNav {
+	e.setEventHandler("mouseleave", h, scope...)
 	return e
 }
 
@@ -30252,6 +31244,12 @@ type HTMLObject interface {
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLObject
 
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLObject
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLObject
+
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLObject
 
@@ -30639,6 +31637,16 @@ func (e *htmlObject) OnMouseDown(h EventHandler, scope ...any) HTMLObject {
 	return e
 }
 
+func (e *htmlObject) OnMouseEnter(h EventHandler, scope ...any) HTMLObject {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlObject) OnMouseLeave(h EventHandler, scope ...any) HTMLObject {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlObject) OnMouseMove(h EventHandler, scope ...any) HTMLObject {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -30889,6 +31897,12 @@ type HTMLOl interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLOl
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLOl
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLOl
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLOl
@@ -31166,6 +32180,16 @@ func (e *htmlOl) OnMouseDown(h EventHandler, scope ...any) HTMLOl {
 	return e
 }
 
+func (e *htmlOl) OnMouseEnter(h EventHandler, scope ...any) HTMLOl {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlOl) OnMouseLeave(h EventHandler, scope ...any) HTMLOl {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlOl) OnMouseMove(h EventHandler, scope ...any) HTMLOl {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -31353,6 +32377,12 @@ type HTMLOptGroup interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLOptGroup
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLOptGroup
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLOptGroup
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLOptGroup
@@ -31625,6 +32655,16 @@ func (e *htmlOptGroup) OnMouseDown(h EventHandler, scope ...any) HTMLOptGroup {
 	return e
 }
 
+func (e *htmlOptGroup) OnMouseEnter(h EventHandler, scope ...any) HTMLOptGroup {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlOptGroup) OnMouseLeave(h EventHandler, scope ...any) HTMLOptGroup {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlOptGroup) OnMouseMove(h EventHandler, scope ...any) HTMLOptGroup {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -31818,6 +32858,12 @@ type HTMLOption interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLOption
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLOption
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLOption
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLOption
@@ -32100,6 +33146,16 @@ func (e *htmlOption) OnMouseDown(h EventHandler, scope ...any) HTMLOption {
 	return e
 }
 
+func (e *htmlOption) OnMouseEnter(h EventHandler, scope ...any) HTMLOption {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlOption) OnMouseLeave(h EventHandler, scope ...any) HTMLOption {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlOption) OnMouseMove(h EventHandler, scope ...any) HTMLOption {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -32290,6 +33346,12 @@ type HTMLOutput interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLOutput
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLOutput
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLOutput
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLOutput
@@ -32567,6 +33629,16 @@ func (e *htmlOutput) OnMouseDown(h EventHandler, scope ...any) HTMLOutput {
 	return e
 }
 
+func (e *htmlOutput) OnMouseEnter(h EventHandler, scope ...any) HTMLOutput {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlOutput) OnMouseLeave(h EventHandler, scope ...any) HTMLOutput {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlOutput) OnMouseMove(h EventHandler, scope ...any) HTMLOutput {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -32748,6 +33820,12 @@ type HTMLP interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLP
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLP
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLP
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLP
@@ -33010,6 +34088,16 @@ func (e *htmlP) OnMouseDown(h EventHandler, scope ...any) HTMLP {
 	return e
 }
 
+func (e *htmlP) OnMouseEnter(h EventHandler, scope ...any) HTMLP {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlP) OnMouseLeave(h EventHandler, scope ...any) HTMLP {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlP) OnMouseMove(h EventHandler, scope ...any) HTMLP {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -33191,6 +34279,12 @@ type HTMLParam interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLParam
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLParam
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLParam
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLParam
@@ -33454,6 +34548,16 @@ func (e *htmlParam) OnMouseDown(h EventHandler, scope ...any) HTMLParam {
 	return e
 }
 
+func (e *htmlParam) OnMouseEnter(h EventHandler, scope ...any) HTMLParam {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlParam) OnMouseLeave(h EventHandler, scope ...any) HTMLParam {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlParam) OnMouseMove(h EventHandler, scope ...any) HTMLParam {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -33635,6 +34739,12 @@ type HTMLPicture interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLPicture
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLPicture
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLPicture
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLPicture
@@ -33897,6 +35007,16 @@ func (e *htmlPicture) OnMouseDown(h EventHandler, scope ...any) HTMLPicture {
 	return e
 }
 
+func (e *htmlPicture) OnMouseEnter(h EventHandler, scope ...any) HTMLPicture {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlPicture) OnMouseLeave(h EventHandler, scope ...any) HTMLPicture {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlPicture) OnMouseMove(h EventHandler, scope ...any) HTMLPicture {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -34078,6 +35198,12 @@ type HTMLPre interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLPre
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLPre
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLPre
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLPre
@@ -34340,6 +35466,16 @@ func (e *htmlPre) OnMouseDown(h EventHandler, scope ...any) HTMLPre {
 	return e
 }
 
+func (e *htmlPre) OnMouseEnter(h EventHandler, scope ...any) HTMLPre {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlPre) OnMouseLeave(h EventHandler, scope ...any) HTMLPre {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlPre) OnMouseMove(h EventHandler, scope ...any) HTMLPre {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -34527,6 +35663,12 @@ type HTMLProgress interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLProgress
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLProgress
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLProgress
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLProgress
@@ -34799,6 +35941,16 @@ func (e *htmlProgress) OnMouseDown(h EventHandler, scope ...any) HTMLProgress {
 	return e
 }
 
+func (e *htmlProgress) OnMouseEnter(h EventHandler, scope ...any) HTMLProgress {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlProgress) OnMouseLeave(h EventHandler, scope ...any) HTMLProgress {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlProgress) OnMouseMove(h EventHandler, scope ...any) HTMLProgress {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -34983,6 +36135,12 @@ type HTMLQ interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLQ
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLQ
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLQ
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLQ
@@ -35250,6 +36408,16 @@ func (e *htmlQ) OnMouseDown(h EventHandler, scope ...any) HTMLQ {
 	return e
 }
 
+func (e *htmlQ) OnMouseEnter(h EventHandler, scope ...any) HTMLQ {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlQ) OnMouseLeave(h EventHandler, scope ...any) HTMLQ {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlQ) OnMouseMove(h EventHandler, scope ...any) HTMLQ {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -35431,6 +36599,12 @@ type HTMLRp interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLRp
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLRp
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLRp
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLRp
@@ -35693,6 +36867,16 @@ func (e *htmlRp) OnMouseDown(h EventHandler, scope ...any) HTMLRp {
 	return e
 }
 
+func (e *htmlRp) OnMouseEnter(h EventHandler, scope ...any) HTMLRp {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlRp) OnMouseLeave(h EventHandler, scope ...any) HTMLRp {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlRp) OnMouseMove(h EventHandler, scope ...any) HTMLRp {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -35874,6 +37058,12 @@ type HTMLRt interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLRt
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLRt
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLRt
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLRt
@@ -36136,6 +37326,16 @@ func (e *htmlRt) OnMouseDown(h EventHandler, scope ...any) HTMLRt {
 	return e
 }
 
+func (e *htmlRt) OnMouseEnter(h EventHandler, scope ...any) HTMLRt {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlRt) OnMouseLeave(h EventHandler, scope ...any) HTMLRt {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlRt) OnMouseMove(h EventHandler, scope ...any) HTMLRt {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -36317,6 +37517,12 @@ type HTMLRuby interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLRuby
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLRuby
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLRuby
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLRuby
@@ -36579,6 +37785,16 @@ func (e *htmlRuby) OnMouseDown(h EventHandler, scope ...any) HTMLRuby {
 	return e
 }
 
+func (e *htmlRuby) OnMouseEnter(h EventHandler, scope ...any) HTMLRuby {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlRuby) OnMouseLeave(h EventHandler, scope ...any) HTMLRuby {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlRuby) OnMouseMove(h EventHandler, scope ...any) HTMLRuby {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -36760,6 +37976,12 @@ type HTMLS interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLS
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLS
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLS
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLS
@@ -37022,6 +38244,16 @@ func (e *htmlS) OnMouseDown(h EventHandler, scope ...any) HTMLS {
 	return e
 }
 
+func (e *htmlS) OnMouseEnter(h EventHandler, scope ...any) HTMLS {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlS) OnMouseLeave(h EventHandler, scope ...any) HTMLS {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlS) OnMouseMove(h EventHandler, scope ...any) HTMLS {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -37203,6 +38435,12 @@ type HTMLSamp interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLSamp
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLSamp
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLSamp
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLSamp
@@ -37462,6 +38700,16 @@ func (e *htmlSamp) OnKeyUp(h EventHandler, scope ...any) HTMLSamp {
 
 func (e *htmlSamp) OnMouseDown(h EventHandler, scope ...any) HTMLSamp {
 	e.setEventHandler("mousedown", h, scope...)
+	return e
+}
+
+func (e *htmlSamp) OnMouseEnter(h EventHandler, scope ...any) HTMLSamp {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlSamp) OnMouseLeave(h EventHandler, scope ...any) HTMLSamp {
+	e.setEventHandler("mouseleave", h, scope...)
 	return e
 }
 
@@ -37890,6 +39138,12 @@ type HTMLSection interface {
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLSection
 
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLSection
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLSection
+
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLSection
 
@@ -38151,6 +39405,16 @@ func (e *htmlSection) OnMouseDown(h EventHandler, scope ...any) HTMLSection {
 	return e
 }
 
+func (e *htmlSection) OnMouseEnter(h EventHandler, scope ...any) HTMLSection {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlSection) OnMouseLeave(h EventHandler, scope ...any) HTMLSection {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlSection) OnMouseMove(h EventHandler, scope ...any) HTMLSection {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -38353,6 +39617,12 @@ type HTMLSelect interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLSelect
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLSelect
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLSelect
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLSelect
@@ -38650,6 +39920,16 @@ func (e *htmlSelect) OnMouseDown(h EventHandler, scope ...any) HTMLSelect {
 	return e
 }
 
+func (e *htmlSelect) OnMouseEnter(h EventHandler, scope ...any) HTMLSelect {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlSelect) OnMouseLeave(h EventHandler, scope ...any) HTMLSelect {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlSelect) OnMouseMove(h EventHandler, scope ...any) HTMLSelect {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -38831,6 +40111,12 @@ type HTMLSmall interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLSmall
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLSmall
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLSmall
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLSmall
@@ -39093,6 +40379,16 @@ func (e *htmlSmall) OnMouseDown(h EventHandler, scope ...any) HTMLSmall {
 	return e
 }
 
+func (e *htmlSmall) OnMouseEnter(h EventHandler, scope ...any) HTMLSmall {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlSmall) OnMouseLeave(h EventHandler, scope ...any) HTMLSmall {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlSmall) OnMouseMove(h EventHandler, scope ...any) HTMLSmall {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -39283,6 +40579,12 @@ type HTMLSource interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLSource
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLSource
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLSource
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLSource
@@ -39561,6 +40863,16 @@ func (e *htmlSource) OnMouseDown(h EventHandler, scope ...any) HTMLSource {
 	return e
 }
 
+func (e *htmlSource) OnMouseEnter(h EventHandler, scope ...any) HTMLSource {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlSource) OnMouseLeave(h EventHandler, scope ...any) HTMLSource {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlSource) OnMouseMove(h EventHandler, scope ...any) HTMLSource {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -39742,6 +41054,12 @@ type HTMLSpan interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLSpan
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLSpan
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLSpan
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLSpan
@@ -40004,6 +41322,16 @@ func (e *htmlSpan) OnMouseDown(h EventHandler, scope ...any) HTMLSpan {
 	return e
 }
 
+func (e *htmlSpan) OnMouseEnter(h EventHandler, scope ...any) HTMLSpan {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlSpan) OnMouseLeave(h EventHandler, scope ...any) HTMLSpan {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlSpan) OnMouseMove(h EventHandler, scope ...any) HTMLSpan {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -40185,6 +41513,12 @@ type HTMLStrong interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLStrong
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLStrong
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLStrong
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLStrong
@@ -40447,6 +41781,16 @@ func (e *htmlStrong) OnMouseDown(h EventHandler, scope ...any) HTMLStrong {
 	return e
 }
 
+func (e *htmlStrong) OnMouseEnter(h EventHandler, scope ...any) HTMLStrong {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlStrong) OnMouseLeave(h EventHandler, scope ...any) HTMLStrong {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlStrong) OnMouseMove(h EventHandler, scope ...any) HTMLStrong {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -40637,6 +41981,12 @@ type HTMLStyle interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLStyle
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLStyle
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLStyle
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLStyle
@@ -40914,6 +42264,16 @@ func (e *htmlStyle) OnMouseDown(h EventHandler, scope ...any) HTMLStyle {
 	return e
 }
 
+func (e *htmlStyle) OnMouseEnter(h EventHandler, scope ...any) HTMLStyle {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlStyle) OnMouseLeave(h EventHandler, scope ...any) HTMLStyle {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlStyle) OnMouseMove(h EventHandler, scope ...any) HTMLStyle {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -41095,6 +42455,12 @@ type HTMLSub interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLSub
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLSub
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLSub
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLSub
@@ -41357,6 +42723,16 @@ func (e *htmlSub) OnMouseDown(h EventHandler, scope ...any) HTMLSub {
 	return e
 }
 
+func (e *htmlSub) OnMouseEnter(h EventHandler, scope ...any) HTMLSub {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlSub) OnMouseLeave(h EventHandler, scope ...any) HTMLSub {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlSub) OnMouseMove(h EventHandler, scope ...any) HTMLSub {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -41538,6 +42914,12 @@ type HTMLSummary interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLSummary
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLSummary
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLSummary
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLSummary
@@ -41800,6 +43182,16 @@ func (e *htmlSummary) OnMouseDown(h EventHandler, scope ...any) HTMLSummary {
 	return e
 }
 
+func (e *htmlSummary) OnMouseEnter(h EventHandler, scope ...any) HTMLSummary {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlSummary) OnMouseLeave(h EventHandler, scope ...any) HTMLSummary {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlSummary) OnMouseMove(h EventHandler, scope ...any) HTMLSummary {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -41981,6 +43373,12 @@ type HTMLSup interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLSup
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLSup
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLSup
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLSup
@@ -42243,6 +43641,16 @@ func (e *htmlSup) OnMouseDown(h EventHandler, scope ...any) HTMLSup {
 	return e
 }
 
+func (e *htmlSup) OnMouseEnter(h EventHandler, scope ...any) HTMLSup {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlSup) OnMouseLeave(h EventHandler, scope ...any) HTMLSup {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlSup) OnMouseMove(h EventHandler, scope ...any) HTMLSup {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -42424,6 +43832,12 @@ type HTMLTable interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLTable
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLTable
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLTable
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLTable
@@ -42686,6 +44100,16 @@ func (e *htmlTable) OnMouseDown(h EventHandler, scope ...any) HTMLTable {
 	return e
 }
 
+func (e *htmlTable) OnMouseEnter(h EventHandler, scope ...any) HTMLTable {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlTable) OnMouseLeave(h EventHandler, scope ...any) HTMLTable {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlTable) OnMouseMove(h EventHandler, scope ...any) HTMLTable {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -42867,6 +44291,12 @@ type HTMLTBody interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLTBody
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLTBody
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLTBody
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLTBody
@@ -43129,6 +44559,16 @@ func (e *htmlTBody) OnMouseDown(h EventHandler, scope ...any) HTMLTBody {
 	return e
 }
 
+func (e *htmlTBody) OnMouseEnter(h EventHandler, scope ...any) HTMLTBody {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlTBody) OnMouseLeave(h EventHandler, scope ...any) HTMLTBody {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlTBody) OnMouseMove(h EventHandler, scope ...any) HTMLTBody {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -43319,6 +44759,12 @@ type HTMLTd interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLTd
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLTd
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLTd
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLTd
@@ -43593,6 +45039,16 @@ func (e *htmlTd) OnKeyUp(h EventHandler, scope ...any) HTMLTd {
 
 func (e *htmlTd) OnMouseDown(h EventHandler, scope ...any) HTMLTd {
 	e.setEventHandler("mousedown", h, scope...)
+	return e
+}
+
+func (e *htmlTd) OnMouseEnter(h EventHandler, scope ...any) HTMLTd {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlTd) OnMouseLeave(h EventHandler, scope ...any) HTMLTd {
+	e.setEventHandler("mouseleave", h, scope...)
 	return e
 }
 
@@ -44001,6 +45457,12 @@ type HTMLTextarea interface {
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLTextarea
 
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLTextarea
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLTextarea
+
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLTextarea
 
@@ -44323,6 +45785,16 @@ func (e *htmlTextarea) OnMouseDown(h EventHandler, scope ...any) HTMLTextarea {
 	return e
 }
 
+func (e *htmlTextarea) OnMouseEnter(h EventHandler, scope ...any) HTMLTextarea {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlTextarea) OnMouseLeave(h EventHandler, scope ...any) HTMLTextarea {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlTextarea) OnMouseMove(h EventHandler, scope ...any) HTMLTextarea {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -44504,6 +45976,12 @@ type HTMLTFoot interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLTFoot
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLTFoot
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLTFoot
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLTFoot
@@ -44766,6 +46244,16 @@ func (e *htmlTFoot) OnMouseDown(h EventHandler, scope ...any) HTMLTFoot {
 	return e
 }
 
+func (e *htmlTFoot) OnMouseEnter(h EventHandler, scope ...any) HTMLTFoot {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlTFoot) OnMouseLeave(h EventHandler, scope ...any) HTMLTFoot {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlTFoot) OnMouseMove(h EventHandler, scope ...any) HTMLTFoot {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -44962,6 +46450,12 @@ type HTMLTh interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLTh
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLTh
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLTh
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLTh
@@ -45249,6 +46743,16 @@ func (e *htmlTh) OnMouseDown(h EventHandler, scope ...any) HTMLTh {
 	return e
 }
 
+func (e *htmlTh) OnMouseEnter(h EventHandler, scope ...any) HTMLTh {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlTh) OnMouseLeave(h EventHandler, scope ...any) HTMLTh {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlTh) OnMouseMove(h EventHandler, scope ...any) HTMLTh {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -45430,6 +46934,12 @@ type HTMLTHead interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLTHead
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLTHead
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLTHead
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLTHead
@@ -45692,6 +47202,16 @@ func (e *htmlTHead) OnMouseDown(h EventHandler, scope ...any) HTMLTHead {
 	return e
 }
 
+func (e *htmlTHead) OnMouseEnter(h EventHandler, scope ...any) HTMLTHead {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlTHead) OnMouseLeave(h EventHandler, scope ...any) HTMLTHead {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlTHead) OnMouseMove(h EventHandler, scope ...any) HTMLTHead {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -45876,6 +47396,12 @@ type HTMLTime interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLTime
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLTime
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLTime
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLTime
@@ -46140,6 +47666,16 @@ func (e *htmlTime) OnKeyUp(h EventHandler, scope ...any) HTMLTime {
 
 func (e *htmlTime) OnMouseDown(h EventHandler, scope ...any) HTMLTime {
 	e.setEventHandler("mousedown", h, scope...)
+	return e
+}
+
+func (e *htmlTime) OnMouseEnter(h EventHandler, scope ...any) HTMLTime {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlTime) OnMouseLeave(h EventHandler, scope ...any) HTMLTime {
+	e.setEventHandler("mouseleave", h, scope...)
 	return e
 }
 
@@ -46512,6 +48048,12 @@ type HTMLTr interface {
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLTr
 
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLTr
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLTr
+
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLTr
 
@@ -46773,6 +48315,16 @@ func (e *htmlTr) OnMouseDown(h EventHandler, scope ...any) HTMLTr {
 	return e
 }
 
+func (e *htmlTr) OnMouseEnter(h EventHandler, scope ...any) HTMLTr {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlTr) OnMouseLeave(h EventHandler, scope ...any) HTMLTr {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlTr) OnMouseMove(h EventHandler, scope ...any) HTMLTr {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -46954,6 +48506,12 @@ type HTMLU interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLU
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLU
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLU
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLU
@@ -47216,6 +48774,16 @@ func (e *htmlU) OnMouseDown(h EventHandler, scope ...any) HTMLU {
 	return e
 }
 
+func (e *htmlU) OnMouseEnter(h EventHandler, scope ...any) HTMLU {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlU) OnMouseLeave(h EventHandler, scope ...any) HTMLU {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlU) OnMouseMove(h EventHandler, scope ...any) HTMLU {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -47397,6 +48965,12 @@ type HTMLUl interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLUl
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLUl
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLUl
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLUl
@@ -47659,6 +49233,16 @@ func (e *htmlUl) OnMouseDown(h EventHandler, scope ...any) HTMLUl {
 	return e
 }
 
+func (e *htmlUl) OnMouseEnter(h EventHandler, scope ...any) HTMLUl {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlUl) OnMouseLeave(h EventHandler, scope ...any) HTMLUl {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlUl) OnMouseMove(h EventHandler, scope ...any) HTMLUl {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -47840,6 +49424,12 @@ type HTMLVar interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLVar
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLVar
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLVar
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLVar
@@ -48102,6 +49692,16 @@ func (e *htmlVar) OnMouseDown(h EventHandler, scope ...any) HTMLVar {
 	return e
 }
 
+func (e *htmlVar) OnMouseEnter(h EventHandler, scope ...any) HTMLVar {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlVar) OnMouseLeave(h EventHandler, scope ...any) HTMLVar {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlVar) OnMouseMove(h EventHandler, scope ...any) HTMLVar {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -48346,6 +49946,12 @@ type HTMLVideo interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLVideo
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLVideo
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLVideo
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLVideo
@@ -48749,6 +50355,16 @@ func (e *htmlVideo) OnMouseDown(h EventHandler, scope ...any) HTMLVideo {
 	return e
 }
 
+func (e *htmlVideo) OnMouseEnter(h EventHandler, scope ...any) HTMLVideo {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlVideo) OnMouseLeave(h EventHandler, scope ...any) HTMLVideo {
+	e.setEventHandler("mouseleave", h, scope...)
+	return e
+}
+
 func (e *htmlVideo) OnMouseMove(h EventHandler, scope ...any) HTMLVideo {
 	e.setEventHandler("mousemove", h, scope...)
 	return e
@@ -48990,6 +50606,12 @@ type HTMLWbr interface {
 
 	// OnMouseDown calls the given handler when a mouse button is pressed down on an element.
 	OnMouseDown(h EventHandler, scope ...any) HTMLWbr
+
+	// OnMouseEnter calls the given handler when a mouse button is initially moved so that its hotspot is within the element at which the event was fired.
+	OnMouseEnter(h EventHandler, scope ...any) HTMLWbr
+
+	// OnMouseLeave calls the given handler when the mouse pointer is fired when the pointer has exited the element and all of its descendants.
+	OnMouseLeave(h EventHandler, scope ...any) HTMLWbr
 
 	// OnMouseMove calls the given handler when the mouse pointer is moving while it is over an element.
 	OnMouseMove(h EventHandler, scope ...any) HTMLWbr
@@ -49249,6 +50871,16 @@ func (e *htmlWbr) OnKeyUp(h EventHandler, scope ...any) HTMLWbr {
 
 func (e *htmlWbr) OnMouseDown(h EventHandler, scope ...any) HTMLWbr {
 	e.setEventHandler("mousedown", h, scope...)
+	return e
+}
+
+func (e *htmlWbr) OnMouseEnter(h EventHandler, scope ...any) HTMLWbr {
+	e.setEventHandler("mouseenter", h, scope...)
+	return e
+}
+
+func (e *htmlWbr) OnMouseLeave(h EventHandler, scope ...any) HTMLWbr {
+	e.setEventHandler("mouseleave", h, scope...)
 	return e
 }
 
