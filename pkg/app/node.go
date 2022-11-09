@@ -33,7 +33,6 @@ type UI interface {
 	dismount()
 	canUpdateWith(UI) bool
 	updateWith(UI) error
-	preRender(Page)
 	onComponentEvent(any)
 	html(w io.Writer)
 	htmlWithIndent(w io.Writer, indent int)

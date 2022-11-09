@@ -294,12 +294,6 @@ func (e *htmlElement) setChildren(v ...UI) {
 	e.children = FilterUIElems(v...)
 }
 
-func (e *htmlElement) preRender(p Page) {
-	for _, c := range e.getChildren() {
-		c.preRender(p)
-	}
-}
-
 func (e *htmlElement) onComponentEvent(le any) {
 	for _, c := range e.getChildren() {
 		c.onComponentEvent(le)
