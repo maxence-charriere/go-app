@@ -302,10 +302,15 @@ func (c *Compo) mount(d Dispatcher) error {
 		return nil
 	}
 
-	if mounter, ok := c.self().(Mounter); ok {
+	if mounter, ok := c.self().(Mounter); IsClient && ok {
 		c.dispatch(mounter.OnMount)
 		return nil
 	}
+
+	if preRenderer, ok := c.self().(PreRenderer); IsServer && ok {
+		c.dispatch(preRenderer.OnPreRender)
+	}
+
 	c.dispatch(nil)
 	return nil
 }
