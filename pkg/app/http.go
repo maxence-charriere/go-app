@@ -152,6 +152,9 @@ type Handler struct {
 	// of 8MB.
 	PreRenderCache PreRenderCache
 
+	// The Control-Cache header value for pre-rendered resources.
+	PreRenderCacheControl string
+
 	// The static resources that are accessible from custom paths. Files that
 	// are proxied by default are /robots.txt, /sitemap.xml and /ads.txt.
 	ProxyResources []ProxyResource
@@ -579,15 +582,20 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.servePage(w, r)
 }
 
-func (h *Handler) servePreRenderedItem(w http.ResponseWriter, r PreRenderedItem) {
-	w.Header().Set("Content-Length", strconv.Itoa(r.Size()))
-	w.Header().Set("Content-Type", r.ContentType)
-	if r.ContentEncoding != "" {
-		w.Header().Set("Content-Encoding", r.ContentEncoding)
+func (h *Handler) servePreRenderedItem(w http.ResponseWriter, i PreRenderedItem) {
+	w.Header().Set("Content-Length", strconv.Itoa(i.Size()))
+	w.Header().Set("Content-Type", i.ContentType)
+
+	if i.ContentEncoding != "" {
+		w.Header().Set("Content-Encoding", i.ContentEncoding)
+	}
+
+	if i.CacheControl != "" {
+		w.Header().Set("Cache-Control", i.CacheControl)
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write(r.Body)
+	w.Write(i.Body)
 }
 
 func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWriter, r *http.Request) {
@@ -786,9 +794,10 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		))
 
 	item := PreRenderedItem{
-		Path:        page.URL().Path,
-		Body:        b.Bytes(),
-		ContentType: "text/html",
+		Path:         page.URL().Path,
+		Body:         b.Bytes(),
+		ContentType:  "text/html",
+		CacheControl: h.PreRenderCacheControl,
 	}
 	h.PreRenderCache.Set(r.Context(), item)
 	h.servePreRenderedItem(w, item)
