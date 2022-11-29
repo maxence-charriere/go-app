@@ -5,7 +5,7 @@
   "icons": [
     {
       "src": "{{.DefaultIcon}}",
-      "type": "icon/hd_hi.svg",
+      "type": "image/svg+xml",
       "sizes": "any"
     }
   ],
