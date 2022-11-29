@@ -267,6 +267,7 @@ func (h *Handler) initIcon() {
 
 	h.Icon.Default = h.resolveStaticPath(h.Icon.Default)
 	h.Icon.Large = h.resolveStaticPath(h.Icon.Large)
+	h.Icon.SVG = h.resolveStaticPath(h.Icon.SVG)
 	h.Icon.AppleTouch = h.resolveStaticPath(h.Icon.AppleTouch)
 }
 
@@ -458,6 +459,7 @@ func (h *Handler) makeManifestJSON() []byte {
 			Description     string
 			DefaultIcon     string
 			LargeIcon       string
+			SVGIcon         string
 			BackgroundColor string
 			ThemeColor      string
 			Scope           string
@@ -468,6 +470,7 @@ func (h *Handler) makeManifestJSON() []byte {
 			Description:     h.Description,
 			DefaultIcon:     h.Icon.Default,
 			LargeIcon:       h.Icon.Large,
+			SVGIcon:         h.Icon.SVG,
 			BackgroundColor: h.BackgroundColor,
 			ThemeColor:      h.ThemeColor,
 			Scope:           normalize(h.Resources.Package()),
@@ -712,6 +715,11 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		disp.Wait()
 	}
 
+	icon := h.Icon.SVG
+	if icon == "" {
+		icon = h.Icon.Default
+	}
+
 	var b bytes.Buffer
 	b.WriteString("<!DOCTYPE html>\n")
 	PrintHTML(&b, h.HTML().
@@ -752,13 +760,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				Title().Text(page.Title()),
 				Link().
 					Rel("icon").
-					Href(h.Icon.Default),
-				If(h.Icon.Mask != "",
-					Link().
-						Rel("mask-icon").
-						Attr("color", h.Icon.MaskColor).
-						Href(h.Icon.Mask),
-				),
+					Href(icon),
 				Link().
 					Rel("apple-touch-icon").
 					Href(h.Icon.AppleTouch),
@@ -847,6 +849,9 @@ type Icon struct {
 	// Path is relative to the root directory.
 	Large string
 
+	// The path or url to a svg file.
+	SVG string
+
 	// The path or url to a square image/png file that is used for IOS/IPadOS
 	// home screen icon. It must have a side of 192px.
 	//
@@ -854,10 +859,6 @@ type Icon struct {
 	//
 	// DEFAULT: Icon.Default
 	AppleTouch string
-
-	Mask string
-
-	MaskColor string
 }
 
 // Environment describes the environment variables to pass to the progressive
