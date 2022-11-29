@@ -761,7 +761,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				),
 				Link().
 					Rel("apple-touch-icon").
-					Sizes("180x180").
 					Href(h.Icon.AppleTouch),
 				Link().
 					Rel("manifest").

@@ -5,13 +5,8 @@
   "icons": [
     {
       "src": "{{.DefaultIcon}}",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "{{.LargeIcon}}",
-      "type": "image/png",
-      "sizes": "512x512"
+      "type": "icon/hd_hi.svg",
+      "sizes": "any"
     }
   ],
   "scope": "{{.Scope}}",
