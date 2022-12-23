@@ -420,7 +420,7 @@ func (c *Compo) replaceRoot(v UI) error {
 		return errors.New("replacing component root failed").
 			Tag("kind", c.Kind()).
 			Tag("name", c.name()).
-			Tag("reason", "coponent does not have html element parents")
+			Tag("reason", "component does not have html element parents")
 	}
 
 	c.root = new
