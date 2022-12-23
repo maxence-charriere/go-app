@@ -408,12 +408,12 @@ func (c *Compo) replaceRoot(v UI) error {
 			Wrap(err)
 	}
 
-	var parent UI
+	parent := c.getParent()
 	for {
-		parent = c.getParent()
 		if parent == nil || parent.Kind() == HTML {
 			break
 		}
+		parent = parent.getParent()
 	}
 
 	if parent == nil {
