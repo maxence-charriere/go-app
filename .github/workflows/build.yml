@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v3
         with:
           go-version: "1.18"
       - name: Checkout Code
@@ -38,7 +38,7 @@ jobs:
         with:
           go-version: "1.18"
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Install WASM Browser Test
         run: |
           go install github.com/agnivade/wasmbrowsertest@latest
