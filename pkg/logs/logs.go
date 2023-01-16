@@ -2,100 +2,81 @@
 //
 // Logs created are taggable.
 //
-//   logWithTags := logs.New("a log with tags").
-//       Tag("a", 42).
-// 	     Tag("b", 21)
+//	  logWithTags := logs.New("a log with tags").
+//	      Tag("a", 42).
+//		     Tag("b", 21)
 package logs
 
 import (
-	"bytes"
+	"encoding/json"
 	"fmt"
-	"sort"
-	"strings"
-	"unsafe"
+	"path/filepath"
+	"runtime"
+
+	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
 
-// New returns a log with the given description that can be tagged.
-func New(v string) Log {
-	return Log{
-		description: v,
+var (
+	// The function used to encode log entries and their tags.
+	Encoder func(any) ([]byte, error)
+)
+
+func init() {
+	SetInlineEncoder()
+}
+
+// SetInlineEncoder is a helper function that set the logs encoder to
+// json.Marshal.
+func SetInlineEncoder() {
+	Encoder = json.Marshal
+}
+
+// SetIndentEncoder is a helper function that set the logs encoder to a
+// function that uses json.MarshalIndent.
+func SetIndentEncoder() {
+	Encoder = func(v any) ([]byte, error) {
+		return json.MarshalIndent(v, "", "  ")
 	}
+}
+
+// New returns a log with the given description that can be tagged.
+func New(v string) Entry {
+	return Newf(v)
 }
 
 // Newf returns a log with the given formatted description that can be tagged.
-func Newf(format string, v ...interface{}) Log {
-	return New(fmt.Sprintf(format, v...))
+func Newf(msgFormat string, v ...any) Entry {
+	_, filename, line, _ := runtime.Caller(2)
+
+	return Entry{
+		Line:    fmt.Sprintf("%s:%v", filepath.Base(filename), line),
+		Message: fmt.Sprintf(msgFormat, v...),
+	}
 }
 
 // Log is a implementation that supports tagging.
-type Log struct {
-	description string
-	tags        []tag
-	maxKeyLen   int
+type Entry struct {
+	Line    string         `json:"line,omitempty"`
+	Message string         `json:"message"`
+	Tags    map[string]any `json:"tags,omitempty"`
 }
 
-// Tag sets the named tag with the given value.
-func (l Log) Tag(k string, v interface{}) Log {
-	if l.tags == nil {
-		l.tags = make([]tag, 0, 8)
+// WithTag sets the named tag with the given value.
+func (e Entry) WithTag(k string, v any) Entry {
+	if e.Tags == nil {
+		e.Tags = make(map[string]any)
 	}
 
-	if length := len(k); length > l.maxKeyLen {
-		l.maxKeyLen = length
-	}
+	e.Tags[k] = v
 
-	switch v := v.(type) {
-	case string:
-		l.tags = append(l.tags, tag{key: k, value: v})
-
-	default:
-		l.tags = append(l.tags, tag{key: k, value: fmt.Sprintf("%+v", v)})
-	}
-
-	return l
+	return e
 }
 
-func (l Log) String() string {
-	w := bytes.NewBuffer(make([]byte, 0, len(l.description)+len(l.tags)*(l.maxKeyLen+11)))
-	l.format(w, 0)
-	return bytesToString(w.Bytes())
-}
-
-func (l Log) format(w *bytes.Buffer, indent int) {
-	w.WriteString(l.description)
-	if len(l.tags) != 0 {
-		w.WriteByte(':')
+func (e Entry) String() string {
+	s, err := Encoder(e)
+	if err != nil {
+		return errors.Newf("encoding log entry failed").Wrap(err).Error()
 	}
 
-	tags := l.tags
-	sort.Slice(tags, func(a, b int) bool {
-		return strings.Compare(tags[a].key, tags[b].key) < 0
-	})
-
-	for _, t := range l.tags {
-		k := t.key
-		v := t.value
-
-		w.WriteByte('\n')
-		l.indent(w, indent+4)
-		w.WriteString(k)
-		w.WriteByte(':')
-		l.indent(w, l.maxKeyLen-len(k)+1)
-		w.WriteString(v)
-	}
-}
-
-func (l Log) indent(w *bytes.Buffer, n int) {
-	for i := 0; i < n; i++ {
-		w.WriteByte(' ')
-	}
-}
-
-type tag struct {
-	key   string
-	value string
-}
-
-func bytesToString(b []byte) string {
-	return *(*string)(unsafe.Pointer(&b))
+	return string(s)
 }

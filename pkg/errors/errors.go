@@ -189,7 +189,7 @@ func New(msg string) Error {
 // Newf returns an error with the given formatted message that can be enriched
 // with a type and tags.
 func Newf(msgFormat string, v ...any) Error {
-	return makeRichError(fmt.Sprintf(msgFormat, v...))
+	return makeRichError(msgFormat, v...)
 }
 
 type richError struct {
@@ -200,11 +200,11 @@ type richError struct {
 	wrappedErr  error
 }
 
-func makeRichError(msg string) richError {
+func makeRichError(msgFormat string, v ...any) richError {
 	_, filename, line, _ := runtime.Caller(2)
 
 	return richError{
-		message: msg,
+		message: fmt.Sprintf(msgFormat, v...),
 		line:    fmt.Sprintf("%s:%v", filepath.Base(filename), line),
 	}
 }

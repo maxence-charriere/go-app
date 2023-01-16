@@ -226,10 +226,10 @@ func (p *adPimp) pushUnit(u adUnit) {
 	h := layout.Get("clientHeight").Int()
 	if w == 0 && h == 0 {
 		app.Log(logs.New("ad unit not visible").
-			Tag("width", w).
-			Tag("height", h).
-			Tag("slot", u.slot()).
-			Tag("container-id", u.containerID()),
+			WithTag("width", w).
+			WithTag("height", h).
+			WithTag("slot", u.slot()).
+			WithTag("container-id", u.containerID()),
 		)
 		p.removeUnit(u)
 		return
@@ -245,10 +245,10 @@ func (p *adPimp) pushUnit(u adUnit) {
 	}
 
 	app.Log(logs.New("loading ad unit").
-		Tag("width", w).
-		Tag("height", h).
-		Tag("slot", u.slot()).
-		Tag("container-id", u.containerID()),
+		WithTag("width", w).
+		WithTag("height", h).
+		WithTag("slot", u.slot()).
+		WithTag("container-id", u.containerID()),
 	)
 
 	ins.Set("className", "adsbygoogle")
