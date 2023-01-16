@@ -2,9 +2,9 @@
 //
 // Logs created are taggable.
 //
-//	  logWithTags := logs.New("a log with tags").
-//	      Tag("a", 42).
-//		     Tag("b", 21)
+//	logs.WithTags := logs.New("a log with tags").
+//	    WithTag("a", 42).
+//	    WithTag("b", 21)
 package logs
 
 import (
@@ -54,7 +54,7 @@ func Newf(msgFormat string, v ...any) Entry {
 	}
 }
 
-// Log is a implementation that supports tagging.
+// A log entry.
 type Entry struct {
 	Line    string         `json:"line,omitempty"`
 	Message string         `json:"message"`
