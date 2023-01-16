@@ -155,9 +155,6 @@ func (r rangeLoop) updateWith(UI) error {
 		Tag("kind", r.Kind())
 }
 
-func (r rangeLoop) preRender(Page) {
-}
-
 func (r rangeLoop) onComponentEvent(any) {
 }
 

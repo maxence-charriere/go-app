@@ -135,9 +135,6 @@ func (r *raw) updateWith(n UI) error {
 	return nil
 }
 
-func (r *raw) preRender(Page) {
-}
-
 func (r *raw) onComponentEvent(any) {
 }
 

@@ -125,9 +125,6 @@ func (c condition) updateWith(UI) error {
 		Tag("kind", c.Kind())
 }
 
-func (c condition) preRender(Page) {
-}
-
 func (c condition) onComponentEvent(any) {
 }
 

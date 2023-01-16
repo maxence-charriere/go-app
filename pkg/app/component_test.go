@@ -378,7 +378,6 @@ func TestPreRenderer(t *testing.T) {
 	d := NewServerTester(h)
 	defer d.Close()
 
-	d.PreRender()
 	d.Consume()
 	require.True(t, h.preRenderer)
 	require.Equal(t, "world", d.getCurrentPage().Title())
@@ -390,7 +389,6 @@ func TestNestedPreRenderer(t *testing.T) {
 	d := NewServerTester(div)
 	defer d.Close()
 
-	d.PreRender()
 	d.Consume()
 	require.True(t, h.preRenderer)
 	require.Equal(t, "world", d.getCurrentPage().Title())
@@ -401,7 +399,6 @@ func TestNestedInComponentPreRenderer(t *testing.T) {
 	d := NewServerTester(foo)
 	defer d.Close()
 
-	d.PreRender()
 	d.Consume()
 	require.Equal(t, "bar", d.getCurrentPage().Title())
 }
@@ -427,10 +424,6 @@ func TestInitializerServer(t *testing.T) {
 	b := &bar{}
 	d := NewServerTester(b)
 	defer d.Close()
-	require.False(t, b.initialized)
-
-	d.PreRender()
-	d.Consume()
 	require.True(t, b.initialized)
 }
 
@@ -511,7 +504,6 @@ type bar struct {
 	appRezized   bool
 	updated      bool
 	initialized  bool
-	title        string
 }
 
 func (b *bar) OnInit() {

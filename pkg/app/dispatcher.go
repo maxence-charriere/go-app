@@ -123,9 +123,6 @@ type ServerDispatcher interface {
 	// Close consumes all the remaining UI instruction and releases allocated
 	// resources.
 	Close()
-
-	// Pre-renders the given component.
-	PreRender()
 }
 
 // NewServerTester creates a testing dispatcher that simulates a

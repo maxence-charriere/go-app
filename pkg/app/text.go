@@ -108,9 +108,6 @@ func (t *text) updateWith(n UI) error {
 	return nil
 }
 
-func (t *text) preRender(Page) {
-}
-
 func (t *text) onComponentEvent(any) {
 }
 

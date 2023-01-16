@@ -281,7 +281,7 @@ func (c *Compo) mount(d Dispatcher) error {
 			Tag("kind", c.Kind())
 	}
 
-	if initializer, ok := c.self().(Initializer); ok && !d.isServerSide() {
+	if initializer, ok := c.self().(Initializer); ok {
 		initializer.OnInit()
 	}
 
@@ -298,14 +298,16 @@ func (c *Compo) mount(d Dispatcher) error {
 	root.setParent(c.this)
 	c.root = root
 
-	if c.getDispatcher().isServerSide() {
-		return nil
-	}
-
-	if mounter, ok := c.self().(Mounter); ok {
+	if mounter, ok := c.self().(Mounter); !c.getDispatcher().isServerSide() && ok {
 		c.dispatch(mounter.OnMount)
 		return nil
 	}
+
+	if preRenderer, ok := c.self().(PreRenderer); c.getDispatcher().isServerSide() && ok {
+		c.dispatch(preRenderer.OnPreRender)
+		return nil
+	}
+
 	c.dispatch(nil)
 	return nil
 }
@@ -437,18 +439,6 @@ func (c *Compo) replaceRoot(v UI) error {
 func (c *Compo) render() UI {
 	elems := FilterUIElems(c.this.Render())
 	return elems[0]
-}
-
-func (c *Compo) preRender(p Page) {
-	c.root.preRender(p)
-
-	if initializer, ok := c.self().(Initializer); ok {
-		initializer.OnInit()
-	}
-
-	if preRenderer, ok := c.self().(PreRenderer); ok {
-		c.dispatch(preRenderer.OnPreRender)
-	}
 }
 
 func (c *Compo) onComponentEvent(le any) {
