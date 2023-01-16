@@ -136,12 +136,13 @@ func Tag(err error, k string) any {
 	}
 }
 
+// An enriched error.
 type Error struct {
-	Line        string         `json:"line,omitempty"`
-	Message     string         `json:"message"`
-	DefinedType string         `json:"type,omitempty"`
-	Tags        map[string]any `json:"tags,omitempty"`
-	WrappedErr  error          `json:"wrap,omitempty"`
+	Line        string
+	Message     string
+	DefinedType string
+	Tags        map[string]any
+	WrappedErr  error
 }
 
 // New returns an error with the given message that can be enriched with a type
@@ -206,17 +207,33 @@ func (e Error) Unwrap() error {
 }
 
 func (e Error) Error() string {
+	s, err := Encoder(e)
+	if err != nil {
+		return fmt.Sprintf(`{"message": "encoding error failed: %s"}`, err)
+	}
+	return string(s)
+}
+
+func (e Error) MarshalJSON() ([]byte, error) {
 	if e.WrappedErr != nil && !Is(e.WrappedErr, Error{}) {
 		e.WrappedErr = Error{
 			Message: e.WrappedErr.Error(),
 		}
 	}
 
-	s, err := Encoder(e)
-	if err != nil {
-		return fmt.Sprintf(`{"message": "encoding error failed: %s"}`, err)
-	}
-	return string(s)
+	return Encoder(struct {
+		Line        string         `json:"line,omitempty"`
+		Message     string         `json:"message"`
+		DefinedType string         `json:"type,omitempty"`
+		Tags        map[string]any `json:"tags,omitempty"`
+		WrappedErr  any            `json:"wrap,omitempty"`
+	}{
+		Line:        e.Line,
+		Message:     e.Message,
+		DefinedType: e.DefinedType,
+		Tags:        e.Tags,
+		WrappedErr:  e.WrappedErr,
+	})
 }
 
 func (e Error) Is(err error) bool {
