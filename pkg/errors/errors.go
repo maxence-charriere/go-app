@@ -215,10 +215,9 @@ func (e Error) Error() string {
 }
 
 func (e Error) MarshalJSON() ([]byte, error) {
-	if e.WrappedErr != nil && !Is(e.WrappedErr, Error{}) {
-		e.WrappedErr = Error{
-			Message: e.WrappedErr.Error(),
-		}
+	var wrappedErr any = e.WrappedErr
+	if _, ok := e.WrappedErr.(Error); !ok && e.WrappedErr != nil {
+		wrappedErr = e.WrappedErr.Error()
 	}
 
 	return Encoder(struct {
@@ -232,7 +231,7 @@ func (e Error) MarshalJSON() ([]byte, error) {
 		Message:     e.Message,
 		DefinedType: e.DefinedType,
 		Tags:        e.Tags,
-		WrappedErr:  e.WrappedErr,
+		WrappedErr:  wrappedErr,
 	})
 }
 
