@@ -257,8 +257,8 @@ func (h *Handler) initCacheableResources() {
 
 func (h *Handler) initIcon() {
 	if h.Icon.Default == "" {
-		h.Icon.Default = "https://storage.googleapis.com/murlok-github/icon-192.png"
-		h.Icon.Large = "https://storage.googleapis.com/murlok-github/icon-512.png"
+		h.Icon.Default = "https://github.com/maxence-charriere/go-app/blob/master/docs/web/icon.png"
+		h.Icon.Large = "https://github.com/maxence-charriere/go-app/blob/master/docs/web/icon.png"
 	}
 
 	if h.Icon.AppleTouch == "" {
