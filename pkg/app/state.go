@@ -179,7 +179,7 @@ func (s *store) Set(key string, v any, opts ...StateOption) {
 	if state.IsPersistent {
 		if err := s.setPersistent(key, state.IsEncrypted, state.ExpiresAt, v); err != nil {
 			Log(errors.New("persisting state failed").
-				Tag("state", key).
+				WithTag("state", key).
 				Wrap(err))
 			return
 		}
@@ -194,7 +194,7 @@ func (s *store) Set(key string, v any, opts ...StateOption) {
 	if state.IsBroadcasted {
 		if err := s.broadcast(key, v); err != nil {
 			Log(errors.New("broadcasting state failed").
-				Tag("state", key).
+				WithTag("state", key).
 				Wrap(err))
 			return
 		}
@@ -221,8 +221,8 @@ func (s *store) Set(key string, v any, opts ...StateOption) {
 
 				if err := storeValue(o.receiver, v); err != nil {
 					Log(errors.New("notifying observer failed").
-						Tag("state", key).
-						Tag("element", reflect.TypeOf(o.element)).
+						WithTag("state", key).
+						WithTag("element", reflect.TypeOf(o.element)).
 						Wrap(err))
 					return
 				}
@@ -253,7 +253,7 @@ func (s *store) Get(key string, recv any) {
 	}
 	if err != nil {
 		Log(errors.New("getting state value failed").
-			Tag("state", key).
+			WithTag("state", key).
 			Wrap(err))
 	}
 }
@@ -273,8 +273,8 @@ func (s *store) Observe(key string, elem UI) Observer {
 
 		if err := s.subscribe(key, o); err != nil {
 			Log(errors.New("notifying observer failed").
-				Tag("state", key).
-				Tag("element", reflect.TypeOf(elem)).
+				WithTag("state", key).
+				WithTag("element", reflect.TypeOf(elem)).
 				Wrap(err))
 		}
 	})
@@ -444,8 +444,8 @@ func (s *store) onBroadcast(event Value) {
 
 				if err := json.Unmarshal(v, o.receiver); err != nil {
 					Log(errors.New("notifying observer failed").
-						Tag("state", key).
-						Tag("element", reflect.TypeOf(o.element)).
+						WithTag("state", key).
+						WithTag("element", reflect.TypeOf(o.element)).
 						Wrap(err))
 					return
 				}
@@ -477,8 +477,8 @@ func storeValue(recv, v any) error {
 
 	if src.Type() != dst.Type() {
 		return errors.New("value and receiver are not of the same type").
-			Tag("value", src.Type()).
-			Tag("receiver", dst.Type())
+			WithTag("value", src.Type()).
+			WithTag("receiver", dst.Type())
 	}
 
 	dst.Set(src)

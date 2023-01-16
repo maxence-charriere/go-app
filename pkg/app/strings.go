@@ -69,7 +69,7 @@ func stringTo(s string, v any) error {
 	val := reflect.ValueOf(v)
 
 	if val.Kind() != reflect.Ptr {
-		return errors.New("receiver in not a pointer").Tag("receiver-type", val.Type())
+		return errors.New("receiver in not a pointer").WithTag("receiver-type", val.Type())
 	}
 	val = val.Elem()
 
@@ -103,8 +103,8 @@ func stringTo(s string, v any) error {
 
 	default:
 		return errors.New("string cannot be converted to receiver type").
-			Tag("string", s).
-			Tag("receiver-type", val.Type())
+			WithTag("string", s).
+			WithTag("receiver-type", val.Type())
 	}
 
 	return nil

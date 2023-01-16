@@ -364,8 +364,8 @@ func (h *Handler) makeAppJS() []byte {
 	for k, v := range h.Env {
 		if err := os.Setenv(k, v); err != nil {
 			Log(errors.New("setting app env variable failed").
-				Tag("name", k).
-				Tag("value", v).
+				WithTag("name", k).
+				WithTag("value", v).
 				Wrap(err))
 		}
 	}
@@ -619,9 +619,9 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		Log(errors.New("getting proxy static resource failed").
-			Tag("url", u).
-			Tag("proxy-path", resource.Path).
-			Tag("static-resource-path", resource.ResourcePath).
+			WithTag("url", u).
+			WithTag("proxy-path", resource.Path).
+			WithTag("static-resource-path", resource.ResourcePath).
 			Wrap(err),
 		)
 		return
@@ -637,9 +637,9 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		Log(errors.New("reading proxy static resource failed").
-			Tag("url", u).
-			Tag("proxy-path", resource.Path).
-			Tag("static-resource-path", resource.ResourcePath).
+			WithTag("url", u).
+			WithTag("proxy-path", resource.Path).
+			WithTag("static-resource-path", resource.ResourcePath).
 			Wrap(err),
 		)
 		return
@@ -685,8 +685,8 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	body := h.Body().privateBody(Div())
 	if err := mount(&disp, body); err != nil {
 		panic(errors.New("mounting pre-rendering container failed").
-			Tag("server-side", disp.isServerSide()).
-			Tag("body-type", reflect.TypeOf(disp.Body)).
+			WithTag("server-side", disp.isServerSide()).
+			WithTag("body-type", reflect.TypeOf(disp.Body)).
 			Wrap(err))
 	}
 	disp.Body = body
