@@ -39,26 +39,30 @@ func SetIndentEncoder() {
 	}
 }
 
+// A log entry.
+type Entry struct {
+	Line    string         `json:"line,omitempty"`
+	Message string         `json:"message"`
+	Tags    map[string]any `json:"tags,omitempty"`
+}
+
 // New returns a log with the given description that can be tagged.
 func New(v string) Entry {
-	return Newf(v)
+	return makeEntry(v)
 }
 
 // Newf returns a log with the given formatted description that can be tagged.
 func Newf(msgFormat string, v ...any) Entry {
+	return makeEntry(msgFormat, v...)
+}
+
+func makeEntry(msgFormat string, v ...any) Entry {
 	_, filename, line, _ := runtime.Caller(2)
 
 	return Entry{
 		Line:    fmt.Sprintf("%s:%v", filepath.Base(filename), line),
 		Message: fmt.Sprintf(msgFormat, v...),
 	}
-}
-
-// A log entry.
-type Entry struct {
-	Line    string         `json:"line,omitempty"`
-	Message string         `json:"message"`
-	Tags    map[string]any `json:"tags,omitempty"`
 }
 
 // WithTag sets the named tag with the given value.
@@ -68,7 +72,6 @@ func (e Entry) WithTag(k string, v any) Entry {
 	}
 
 	e.Tags[k] = v
-
 	return e
 }
 
@@ -77,6 +80,5 @@ func (e Entry) String() string {
 	if err != nil {
 		return errors.Newf("encoding log entry failed").Wrap(err).Error()
 	}
-
 	return string(s)
 }

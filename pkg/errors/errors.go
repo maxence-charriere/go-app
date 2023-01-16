@@ -7,8 +7,6 @@ import (
 	"path/filepath"
 	"reflect"
 	"runtime"
-	"strconv"
-	"time"
 )
 
 var (
@@ -124,227 +122,112 @@ func HasType(err error, v string) bool {
 //
 // An error has a tag when it has a method Tag(string) string such that Tag(k)
 // returns a non-empty string value.
-func Tag(err error, k string) string {
+func Tag(err error, k string) any {
 	for {
-		if err, ok := err.(interface{ Tag(string) string }); ok {
-			if v := err.Tag(k); v != "" {
+		if err, ok := err.(Error); ok {
+			if v := err.Tag(k); v != nil {
 				return v
 			}
 		}
 
 		if err = Unwrap(err); err == nil {
-			return ""
+			return nil
 		}
 	}
 }
 
-// Message returns the error message.
-func Message(err error) string {
-	if err, ok := err.(Error); ok {
-		return err.Message()
-	}
-
-	return err.Error()
-}
-
-// Error is the interface that describes an enriched error.
-type Error interface {
-	error
-
-	// Returns the file line where the error was created.
-	Line() string
-
-	// Returns the error message.
-	Message() string
-
-	// Sets the given type to the error.
-	WithType(v string) Error
-
-	// Returns the type of the error.
-	Type() string
-
-	// Sets the tag key with the given value. The value is converted to a
-	// string.
-	WithTag(k string, v any) Error
-
-	// Return the tag value associated with the given key.
-	Tag(k string) string
-
-	// Returns the tags as a list of key-value pairs.
-	Tags() map[string]string
-
-	// Wraps the given error.
-	Wrap(err error) Error
-
-	// Returns the wrapped error. Returns nil when there is no wrapped error.
-	Unwrap() error
+type Error struct {
+	Line        string         `json:"line,omitempty"`
+	Message     string         `json:"message"`
+	DefinedType string         `json:"type,omitempty"`
+	Tags        map[string]any `json:"tags,omitempty"`
+	WrappedErr  error          `json:"wrap,omitempty"`
 }
 
 // New returns an error with the given message that can be enriched with a type
 // and tags.
 func New(msg string) Error {
-	return makeRichError(msg)
+	return makeError(msg)
 }
 
 // Newf returns an error with the given formatted message that can be enriched
 // with a type and tags.
 func Newf(msgFormat string, v ...any) Error {
-	return makeRichError(msgFormat, v...)
+	return makeError(msgFormat, v...)
 }
 
-type richError struct {
-	line        string
-	message     string
-	definedType string
-	tags        map[string]string
-	wrappedErr  error
-}
-
-func makeRichError(msgFormat string, v ...any) richError {
+func makeError(msgFormat string, v ...any) Error {
 	_, filename, line, _ := runtime.Caller(2)
 
-	return richError{
-		message: fmt.Sprintf(msgFormat, v...),
-		line:    fmt.Sprintf("%s:%v", filepath.Base(filename), line),
+	err := Error{
+		Line:    fmt.Sprintf("%s:%v", filepath.Base(filename), line),
+		Message: fmt.Sprintf(msgFormat, v...),
 	}
+	return err
 }
 
-func (e richError) Line() string {
-	return e.line
-}
-
-func (e richError) Message() string {
-	return e.message
-}
-
-func (e richError) WithType(v string) Error {
-	e.definedType = v
+func (e Error) WithType(v string) Error {
+	e.DefinedType = v
 	return e
 }
 
-func (e richError) Type() string {
-	if e.definedType != "" {
-		return e.definedType
+func (e Error) Type() string {
+	if e.DefinedType != "" {
+		return e.DefinedType
 	}
 
-	if e.wrappedErr != nil {
-		return Type(e.wrappedErr)
+	if e.WrappedErr != nil {
+		return Type(e.WrappedErr)
 	}
 
-	return reflect.TypeOf(richError{}).String()
+	return reflect.TypeOf(e).String()
 }
 
-func (e richError) WithTag(k string, v any) Error {
-	if e.tags == nil {
-		e.tags = make(map[string]string)
+func (e Error) WithTag(k string, v any) Error {
+	if e.Tags == nil {
+		e.Tags = make(map[string]any)
 	}
 
-	e.tags[k] = toString(v)
+	e.Tags[k] = v
 	return e
 }
 
-func (e richError) Tag(k string) string {
-	return e.tags[k]
+func (e Error) Tag(k string) any {
+	return e.Tags[k]
 }
 
-func (e richError) Tags() map[string]string {
-	return e.tags
-}
-
-func (e richError) Wrap(err error) Error {
-	e.wrappedErr = err
+func (e Error) Wrap(err error) Error {
+	e.WrappedErr = err
 	return e
 }
 
-func (e richError) Unwrap() error {
-	return e.wrappedErr
+func (e Error) Unwrap() error {
+	return e.WrappedErr
 }
 
-func (e richError) Error() string {
-	b, _ := e.MarshalJSON()
-	return string(b)
-}
-
-func (e richError) MarshalJSON() ([]byte, error) {
-	werr := e.wrappedErr
-	if _, ok := werr.(Error); !ok && werr != nil {
-		werr = richError{
-			message:     werr.Error(),
-			definedType: Type(werr),
+func (e Error) Error() string {
+	if e.WrappedErr != nil && !Is(e.WrappedErr, Error{}) {
+		e.WrappedErr = Error{
+			Message: e.WrappedErr.Error(),
 		}
 	}
 
-	return Encoder(struct {
-		Line    string            `json:"line,omitempty"`
-		Message string            `json:"message"`
-		Type    string            `json:"type"`
-		Tags    map[string]string `json:"tags,omitempty"`
-		Wrap    error             `json:"wrap,omitempty"`
-	}{
-		Line:    e.line,
-		Message: e.message,
-		Type:    e.Type(),
-		Tags:    e.tags,
-		Wrap:    werr,
-	})
+	s, err := Encoder(e)
+	if err != nil {
+		return fmt.Sprintf(`{"message": "encoding error failed: %s"}`, err)
+	}
+	return string(s)
 }
 
-func (e richError) Is(err error) bool {
-	rerr, ok := err.(richError)
+func (e Error) Is(err error) bool {
+	rerr, ok := err.(Error)
 	if !ok {
 		return false
 	}
 
-	return rerr.line == e.line &&
-		rerr.message == e.message &&
-		rerr.definedType == e.definedType &&
-		reflect.DeepEqual(rerr.tags, e.tags) &&
-		rerr.wrappedErr == e.wrappedErr
-}
-
-func toString(v any) string {
-	switch v := v.(type) {
-	case string:
-		return v
-
-	case int:
-		return strconv.FormatInt(int64(v), 10)
-	case int64:
-		return strconv.FormatInt(v, 10)
-	case int32:
-		return strconv.FormatInt(int64(v), 10)
-	case int16:
-		return strconv.FormatInt(int64(v), 10)
-	case int8:
-		return strconv.FormatInt(int64(v), 10)
-
-	case uint:
-		return strconv.FormatUint(uint64(v), 10)
-	case uint64:
-		return strconv.FormatUint(v, 10)
-	case uint32:
-		return strconv.FormatUint(uint64(v), 10)
-	case uint16:
-		return strconv.FormatUint(uint64(v), 10)
-	case uint8:
-		return strconv.FormatUint(uint64(v), 10)
-
-	case float64:
-		return strconv.FormatFloat(v, 'f', -1, 64)
-	case float32:
-		return strconv.FormatFloat(float64(v), 'f', -1, 32)
-
-	case bool:
-		return strconv.FormatBool(v)
-
-	case time.Duration:
-		return v.String()
-
-	case []byte:
-		return string(v)
-
-	default:
-		b, _ := Encoder(v)
-		return string(b)
-	}
+	return rerr.Line == e.Line &&
+		rerr.Message == e.Message &&
+		rerr.DefinedType == e.DefinedType &&
+		reflect.DeepEqual(rerr.Tags, e.Tags) &&
+		rerr.WrappedErr == e.WrappedErr
 }

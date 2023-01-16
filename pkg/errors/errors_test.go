@@ -2,25 +2,23 @@ package errors
 
 import (
 	"fmt"
-	"reflect"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/require"
 )
 
 func TestNew(t *testing.T) {
 	t.Run("new error", func(t *testing.T) {
-		err := New("hello").(richError)
-		require.Equal(t, "hello", err.Message())
-		require.Equal(t, "errors_test.go:14", err.Line())
+		err := New("hello")
+		require.Equal(t, "hello", err.Message)
+		require.Equal(t, "errors_test.go:12", err.Line)
 		t.Log(err)
 	})
 
 	t.Run("new error with format", func(t *testing.T) {
-		err := Newf("hello %v", 42).(richError)
-		require.Equal(t, "hello 42", err.Message())
-		require.Equal(t, "errors_test.go:21", err.Line())
+		err := Newf("hello %v", 42)
+		require.Equal(t, "hello 42", err.Message)
+		require.Equal(t, "errors_test.go:19", err.Line)
 		t.Log(err)
 	})
 }
@@ -101,7 +99,7 @@ func TestHasType(t *testing.T) {
 
 	t.Run("enriched error is of the default type", func(t *testing.T) {
 		err := New("err")
-		require.True(t, HasType(err, "errors.richError"))
+		require.True(t, HasType(err, "errors.Error"))
 	})
 
 	t.Run("enriched error is of the defined type", func(t *testing.T) {
@@ -167,18 +165,6 @@ func TestTag(t *testing.T) {
 	})
 }
 
-func TestTags(t *testing.T) {
-	t.Run("error without tags returns nil", func(t *testing.T) {
-		err := New("err")
-		require.Nil(t, err.Tags())
-	})
-
-	t.Run("error tags are returned", func(t *testing.T) {
-		err := New("err").WithTag("foo", "bar")
-		require.Equal(t, map[string]string{"foo": "bar"}, err.Tags())
-	})
-}
-
 func TestError(t *testing.T) {
 	SetIndentEncoder()
 	defer SetInlineEncoder()
@@ -188,7 +174,6 @@ func TestError(t *testing.T) {
 			WithTag("foo", "bar").
 			Error()
 		require.Contains(t, err, "err")
-		require.Contains(t, err, "errors.richError")
 		t.Log(err)
 	})
 
@@ -198,7 +183,6 @@ func TestError(t *testing.T) {
 			Wrap(New("werr").WithType("boo")).
 			Error()
 		require.Contains(t, err, "err")
-		require.NotContains(t, err, "errors.richError")
 		require.Contains(t, err, "werr")
 		require.Contains(t, err, "boo")
 		t.Log(err)
@@ -209,12 +193,10 @@ func TestError(t *testing.T) {
 			WithTag("foo", "bar").
 			Wrap(fmt.Errorf("werr")).
 			Error()
-		require.Contains(t, err, "err")
-		require.NotContains(t, err, "errors.richError")
-		require.Contains(t, err, "werr")
-		require.Contains(t, err, "*errors.errorString")
-		t.Log(err)
 
+		require.Contains(t, err, "err")
+		require.Contains(t, err, "werr")
+		t.Log(err)
 	})
 
 	t.Run("stringify a non enriched error wrapped in an enriched error", func(t *testing.T) {
@@ -222,105 +204,12 @@ func TestError(t *testing.T) {
 		require.Contains(t, err, "werr")
 		require.NotContains(t, err, "*errors.errorString")
 		require.Contains(t, err, "err")
-		require.Contains(t, err, "errors.richError")
 		t.Log(err)
 	})
-}
 
-func TestMessage(t *testing.T) {
-	t.Run("enriched error message is returned", func(t *testing.T) {
-		err := New("hello").WithTag("name", "buu")
-		require.Equal(t, "hello", Message(err))
+	t.Run("stringify an enriched error with a bad tag", func(t *testing.T) {
+		err := New("err").WithTag("func", func() {}).Error()
+		require.Contains(t, err, "encoding error failed")
+		t.Log(err)
 	})
-
-	t.Run("standard error message is returned", func(t *testing.T) {
-		err := fmt.Errorf("hello world")
-		require.Equal(t, "hello world", Message(err))
-	})
-}
-
-func TestToString(t *testing.T) {
-	utests := []struct {
-		in  interface{}
-		out string
-	}{
-		{
-			in:  "hello",
-			out: "hello",
-		},
-		{
-			in:  []byte("bye"),
-			out: "bye",
-		},
-		{
-			in:  -42,
-			out: "-42",
-		},
-		{
-			in:  int64(-42),
-			out: "-42",
-		},
-		{
-			in:  int32(-42),
-			out: "-42",
-		},
-		{
-			in:  int16(-42),
-			out: "-42",
-		},
-		{
-			in:  int8(-42),
-			out: "-42",
-		},
-		{
-			in:  uint(84),
-			out: "84",
-		},
-		{
-			in:  uint64(84),
-			out: "84",
-		},
-		{
-			in:  uint32(84),
-			out: "84",
-		},
-		{
-			in:  uint16(84),
-			out: "84",
-		},
-		{
-			in:  uint8(84),
-			out: "84",
-		},
-		{
-			in:  42.42,
-			out: "42.42",
-		},
-		{
-			in:  float32(42.42),
-			out: "42.42",
-		},
-		{
-			in:  true,
-			out: "true",
-		},
-		{
-			in:  false,
-			out: "false",
-		},
-		{
-			in:  time.Minute,
-			out: "1m0s",
-		},
-		{
-			in:  map[string]string{"foo": "bar"},
-			out: `{"foo":"bar"}`,
-		},
-	}
-
-	for _, u := range utests {
-		t.Run(reflect.TypeOf(u.in).String(), func(t *testing.T) {
-			require.Equal(t, u.out, toString(u.in))
-		})
-	}
 }
