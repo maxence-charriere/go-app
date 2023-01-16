@@ -86,12 +86,12 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 			}
 
 			return errors.New("ui element to match is out of range").
-				Tag("name", d.Expected.name()).
-				Tag("kind", d.Expected.Kind()).
-				Tag("parent-name", tree.name()).
-				Tag("parent-kind", tree.Kind()).
-				Tag("parent-children-count", len(tree.getChildren())).
-				Tag("index", idx)
+				WithTag("name", d.Expected.name()).
+				WithTag("kind", d.Expected.Kind()).
+				WithTag("parent-name", tree.name()).
+				WithTag("parent-kind", tree.Kind()).
+				WithTag("parent-children-count", len(tree.getChildren())).
+				WithTag("index", idx)
 		}
 
 		c := tree.getChildren()[idx]
@@ -99,14 +99,14 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 
 		if p != tree {
 			return errors.New("unexpected ui element parent").
-				Tag("name", d.Expected.name()).
-				Tag("kind", d.Expected.Kind()).
-				Tag("parent-name", p.name()).
-				Tag("parent-kind", p.Kind()).
-				Tag("parent-addr", fmt.Sprintf("%p", p)).
-				Tag("expected-parent-name", tree.name()).
-				Tag("expected-parent-kind", tree.Kind()).
-				Tag("expected-parent-addr", fmt.Sprintf("%p", tree))
+				WithTag("name", d.Expected.name()).
+				WithTag("kind", d.Expected.Kind()).
+				WithTag("parent-name", p.name()).
+				WithTag("parent-kind", p.Kind()).
+				WithTag("parent-addr", fmt.Sprintf("%p", p)).
+				WithTag("expected-parent-name", tree.name()).
+				WithTag("expected-parent-kind", tree.Kind()).
+				WithTag("expected-parent-addr", fmt.Sprintf("%p", tree))
 		}
 
 		d.Path = d.Path[1:]
@@ -115,10 +115,10 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 
 	if d.Expected.name() != tree.name() || d.Expected.Kind() != tree.Kind() {
 		return errors.New("the UI element is not matching the descriptor").
-			Tag("expected-name", d.Expected.name()).
-			Tag("expected-kind", d.Expected.Kind()).
-			Tag("current-name", tree.name()).
-			Tag("current-kind", tree.Kind())
+			WithTag("expected-name", d.Expected.name()).
+			WithTag("expected-kind", d.Expected.Kind()).
+			WithTag("current-name", tree.name()).
+			WithTag("current-kind", tree.Kind())
 	}
 
 	switch d.Expected.Kind() {
@@ -139,8 +139,8 @@ func TestMatch(tree UI, d TestUIDescriptor) error {
 
 	default:
 		return errors.New("the UI element is not matching the descriptor").
-			Tag("reason", "unavailable matching for the kind").
-			Tag("kind", d.Expected.Kind())
+			WithTag("reason", "unavailable matching for the kind").
+			WithTag("kind", d.Expected.Kind())
 	}
 }
 
@@ -150,10 +150,10 @@ func matchText(n UI, d TestUIDescriptor) error {
 
 	if a.value != b.value {
 		return errors.New("the text element is not matching the descriptor").
-			Tag("name", a.name()).
-			Tag("reason", "unexpected text value").
-			Tag("expected-value", b.value).
-			Tag("current-value", a.value)
+			WithTag("name", a.name()).
+			WithTag("reason", "unexpected text value").
+			WithTag("expected-value", b.value).
+			WithTag("current-value", a.value)
 	}
 	return nil
 }
@@ -164,28 +164,28 @@ func matchHTMLElemAttrs(n UI, d TestUIDescriptor) error {
 
 	if len(aAttrs) != len(bAttrs) {
 		return errors.New("the html element is not matching the descriptor").
-			Tag("name", n.name()).
-			Tag("reason", "unexpected attributes length").
-			Tag("expected-attributes-length", len(bAttrs)).
-			Tag("current-attributes-length", len(aAttrs))
+			WithTag("name", n.name()).
+			WithTag("reason", "unexpected attributes length").
+			WithTag("expected-attributes-length", len(bAttrs)).
+			WithTag("current-attributes-length", len(aAttrs))
 	}
 
 	for k, b := range bAttrs {
 		a, exists := aAttrs[k]
 		if !exists {
 			return errors.New("the html element is not matching the descriptor").
-				Tag("name", n.name()).
-				Tag("reason", "an attribute is missing").
-				Tag("attribute", k)
+				WithTag("name", n.name()).
+				WithTag("reason", "an attribute is missing").
+				WithTag("attribute", k)
 		}
 
 		if a != b {
 			return errors.New("the html element is not matching the descriptor").
-				Tag("name", n.name()).
-				Tag("reason", "unexpected attribute value").
-				Tag("attribute", k).
-				Tag("expected-value", b).
-				Tag("current-value", a)
+				WithTag("name", n.name()).
+				WithTag("reason", "unexpected attribute value").
+				WithTag("attribute", k).
+				WithTag("expected-value", b).
+				WithTag("current-value", a)
 		}
 	}
 
@@ -193,9 +193,9 @@ func matchHTMLElemAttrs(n UI, d TestUIDescriptor) error {
 		_, exists := bAttrs[k]
 		if !exists {
 			return errors.New("the html element is not matching the descriptor").
-				Tag("name", n.name()).
-				Tag("reason", "an unexpected attribute is present").
-				Tag("attribute", k)
+				WithTag("name", n.name()).
+				WithTag("reason", "an unexpected attribute is present").
+				WithTag("attribute", k)
 		}
 	}
 
@@ -208,19 +208,19 @@ func matchHTMLElemEventHandlers(n UI, d TestUIDescriptor) error {
 
 	if len(aevents) != len(bevents) {
 		return errors.New("the html element is not matching the descriptor").
-			Tag("name", n.name()).
-			Tag("reason", "unexpected event handlers length").
-			Tag("expected-event-handlers-length", len(bevents)).
-			Tag("current-event-handlers-length", len(aevents))
+			WithTag("name", n.name()).
+			WithTag("reason", "unexpected event handlers length").
+			WithTag("expected-event-handlers-length", len(bevents)).
+			WithTag("current-event-handlers-length", len(aevents))
 	}
 
 	for k := range bevents {
 		_, exists := aevents[k]
 		if !exists {
 			return errors.New("the html element is not matching the descriptor").
-				Tag("name", n.name()).
-				Tag("reason", "an event handler is missing").
-				Tag("event-handler", k)
+				WithTag("name", n.name()).
+				WithTag("reason", "an event handler is missing").
+				WithTag("event-handler", k)
 		}
 	}
 
@@ -228,9 +228,9 @@ func matchHTMLElemEventHandlers(n UI, d TestUIDescriptor) error {
 		_, exists := aevents[k]
 		if !exists {
 			return errors.New("the html element is not matching the descriptor").
-				Tag("name", n.name()).
-				Tag("reason", "an unexpected event handler is present").
-				Tag("event-handler", k)
+				WithTag("name", n.name()).
+				WithTag("reason", "an unexpected event handler is present").
+				WithTag("event-handler", k)
 		}
 	}
 
@@ -258,11 +258,11 @@ func matchComponent(n UI, d TestUIDescriptor) error {
 
 		if !reflect.DeepEqual(a.Interface(), b.Interface()) {
 			return errors.New("the component is not matching with the descriptor").
-				Tag("name", n.name()).
-				Tag("reason", "unexpected field value").
-				Tag("field", bval.Type().Field(i).Name).
-				Tag("expected-value", b.Interface()).
-				Tag("current-value", a.Interface())
+				WithTag("name", n.name()).
+				WithTag("reason", "unexpected field value").
+				WithTag("field", bval.Type().Field(i).Name).
+				WithTag("expected-value", b.Interface()).
+				WithTag("current-value", a.Interface())
 		}
 	}
 
@@ -275,10 +275,10 @@ func matchRaw(n UI, d TestUIDescriptor) error {
 
 	if a.value != b.value {
 		return errors.New("the raw html element is not matching with the descriptor").
-			Tag("name", n.name()).
-			Tag("reason", "unexpected value").
-			Tag("expected-value", b.value).
-			Tag("current-value", a.value)
+			WithTag("name", n.name()).
+			WithTag("reason", "unexpected value").
+			WithTag("expected-value", b.value).
+			WithTag("current-value", a.value)
 	}
 
 	return nil

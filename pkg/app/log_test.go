@@ -30,11 +30,11 @@ func testLogger(t *testing.T, l func(string, ...any)) {
 	}{
 		{
 			scenario: "log",
-			value:    logs.New("test").Tag("type", "log"),
+			value:    logs.New("test").WithTag("type", "log"),
 		},
 		{
 			scenario: "error",
-			value:    errors.New("test").Tag("type", "error"),
+			value:    errors.New("test").WithTag("type", "error"),
 		},
 	}
 

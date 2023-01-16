@@ -42,7 +42,7 @@ func (r rangeLoop) Slice(f func(int) UI) RangeLoop {
 	src := reflect.ValueOf(r.source)
 	if src.Kind() != reflect.Slice && src.Kind() != reflect.Array {
 		panic(errors.New("range loop source is not a slice or array").
-			Tag("src-type", src.Type),
+			WithTag("src-type", src.Type),
 		)
 	}
 
@@ -59,14 +59,14 @@ func (r rangeLoop) Map(f func(string) UI) RangeLoop {
 	src := reflect.ValueOf(r.source)
 	if src.Kind() != reflect.Map {
 		panic(errors.New("range loop source is not a map").
-			Tag("src-type", src.Type),
+			WithTag("src-type", src.Type),
 		)
 	}
 
 	if keyType := src.Type().Key(); keyType.Kind() != reflect.String {
 		panic(errors.New("range loop source keys are not strings").
-			Tag("src-type", src.Type).
-			Tag("key-type", keyType),
+			WithTag("src-type", src.Type).
+			WithTag("key-type", keyType),
 		)
 	}
 
@@ -138,8 +138,8 @@ func (r rangeLoop) getChildren() []UI {
 
 func (r rangeLoop) mount(Dispatcher) error {
 	return errors.New("range loop is not mountable").
-		Tag("name", r.name()).
-		Tag("kind", r.Kind())
+		WithTag("name", r.name()).
+		WithTag("kind", r.Kind())
 }
 
 func (r rangeLoop) dismount() {
@@ -151,8 +151,8 @@ func (r rangeLoop) canUpdateWith(UI) bool {
 
 func (r rangeLoop) updateWith(UI) error {
 	return errors.New("range loop cannot be updated").
-		Tag("name", r.name()).
-		Tag("kind", r.Kind())
+		WithTag("name", r.name()).
+		WithTag("kind", r.Kind())
 }
 
 func (r rangeLoop) onComponentEvent(any) {

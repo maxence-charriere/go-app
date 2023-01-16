@@ -276,9 +276,9 @@ func (c *Compo) getChildren() []UI {
 func (c *Compo) mount(d Dispatcher) error {
 	if c.Mounted() {
 		return errors.New("mounting component failed").
-			Tag("reason", "already mounted").
-			Tag("name", c.name()).
-			Tag("kind", c.Kind())
+			WithTag("reason", "already mounted").
+			WithTag("name", c.name()).
+			WithTag("kind", c.Kind())
 	}
 
 	if initializer, ok := c.self().(Initializer); ok {
@@ -291,8 +291,8 @@ func (c *Compo) mount(d Dispatcher) error {
 	root := c.render()
 	if err := mount(d, root); err != nil {
 		return errors.New("mounting component failed").
-			Tag("name", c.name()).
-			Tag("kind", c.Kind()).
+			WithTag("name", c.name()).
+			WithTag("kind", c.Kind()).
 			Wrap(err)
 	}
 	root.setParent(c.this)
@@ -334,8 +334,8 @@ func (c *Compo) updateWith(v UI) error {
 
 	if !c.canUpdateWith(v) {
 		return errors.New("cannot update component with given element").
-			Tag("current", reflect.TypeOf(c.self())).
-			Tag("new", reflect.TypeOf(v))
+			WithTag("current", reflect.TypeOf(c.self())).
+			WithTag("new", reflect.TypeOf(v))
 	}
 
 	aval := reflect.Indirect(reflect.ValueOf(c.self()))
@@ -401,12 +401,12 @@ func (c *Compo) replaceRoot(v UI) error {
 
 	if err := mount(c.getDispatcher(), new); err != nil {
 		return errors.New("replacing component root failed").
-			Tag("kind", c.Kind()).
-			Tag("name", c.name()).
-			Tag("root-kind", old.Kind()).
-			Tag("root-name", old.name()).
-			Tag("new-root-kind", new.Kind()).
-			Tag("new-root-name", new.name()).
+			WithTag("kind", c.Kind()).
+			WithTag("name", c.name()).
+			WithTag("root-kind", old.Kind()).
+			WithTag("root-name", old.name()).
+			WithTag("new-root-kind", new.Kind()).
+			WithTag("new-root-name", new.name()).
 			Wrap(err)
 	}
 
@@ -420,9 +420,9 @@ func (c *Compo) replaceRoot(v UI) error {
 
 	if parent == nil {
 		return errors.New("replacing component root failed").
-			Tag("kind", c.Kind()).
-			Tag("name", c.name()).
-			Tag("reason", "coponent does not have html element parents")
+			WithTag("kind", c.Kind()).
+			WithTag("name", c.name()).
+			WithTag("reason", "coponent does not have html element parents")
 	}
 
 	c.root = new

@@ -286,8 +286,8 @@ func (w *browserWindow) createElement(tag, xmlns string) (Value, error) {
 
 	if !element.Truthy() {
 		return nil, errors.New("creating javascript element failed").
-			Tag("tag", tag).
-			Tag("xmlns", xmlns)
+			WithTag("tag", tag).
+			WithTag("xmlns", xmlns)
 	}
 	return element, nil
 }
@@ -326,7 +326,7 @@ func jsval(v Value) js.Value {
 
 	default:
 		Log("%s", errors.New("syscall/js value conversion failed").
-			Tag("type", reflect.TypeOf(v)),
+			WithTag("type", reflect.TypeOf(v)),
 		)
 		return js.Undefined()
 	}

@@ -19,7 +19,7 @@ const (
 
 var (
 	errBadInstruction = errors.New("unsupported instruction").
-		Tag("architecture", runtime.GOARCH)
+		WithTag("architecture", runtime.GOARCH)
 )
 
 func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {

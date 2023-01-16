@@ -89,9 +89,9 @@ func (r *raw) getChildren() []UI {
 func (r *raw) mount(d Dispatcher) error {
 	if r.Mounted() {
 		return errors.New("mounting raw html element failed").
-			Tag("reason", "already mounted").
-			Tag("name", r.name()).
-			Tag("kind", r.Kind())
+			WithTag("reason", "already mounted").
+			WithTag("name", r.name()).
+			WithTag("kind", r.Kind())
 	}
 
 	r.disp = d
@@ -110,10 +110,10 @@ func (r *raw) mount(d Dispatcher) error {
 	value := wrapper.firstChild()
 	if !value.Truthy() {
 		return errors.New("mounting raw html element failed").
-			Tag("reason", "converting raw html to html elements returned nil").
-			Tag("name", r.name()).
-			Tag("kind", r.Kind()).
-			Tag("raw-html", r.value)
+			WithTag("reason", "converting raw html to html elements returned nil").
+			WithTag("name", r.name()).
+			WithTag("kind", r.Kind()).
+			WithTag("raw-html", r.value)
 	}
 	wrapper.removeChild(value)
 	r.jsvalue = value
