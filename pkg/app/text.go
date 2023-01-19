@@ -74,10 +74,10 @@ func (t *text) getChildren() []UI {
 func (t *text) mount(d Dispatcher) error {
 	if t.Mounted() {
 		return errors.New("mounting ui element failed").
-			Tag("reason", "already mounted").
-			Tag("kind", t.Kind()).
-			Tag("name", t.name()).
-			Tag("value", t.value)
+			WithTag("reason", "already mounted").
+			WithTag("kind", t.Kind()).
+			WithTag("name", t.name()).
+			WithTag("value", t.value)
 	}
 
 	t.disp = d
@@ -106,9 +106,6 @@ func (t *text) updateWith(n UI) error {
 	}
 
 	return nil
-}
-
-func (t *text) preRender(Page) {
 }
 
 func (t *text) onComponentEvent(any) {

@@ -13,7 +13,7 @@ func handleGetMarkdown(ctx app.Context, a app.Action) {
 	path := a.Tags.Get("path")
 	if path == "" {
 		app.Log(errors.New("getting markdown failed").
-			Tag("reason", "empty path"))
+			WithTag("reason", "empty path"))
 		return
 	}
 	state := markdownState(path)

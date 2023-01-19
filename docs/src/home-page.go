@@ -31,7 +31,7 @@ func (p *homePage) initPage(ctx app.Context) {
 func (p *homePage) Render() app.UI {
 	return newPage().
 		Title("go-app").
-		Icon("https://storage.googleapis.com/murlok-github/icon-192.png").
+		Icon("/web/icon.png").
 		Index(
 			newIndexLink().Title("What is go-app?"),
 			newIndexLink().Title("Updates"),

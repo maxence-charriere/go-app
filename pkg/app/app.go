@@ -287,7 +287,7 @@ func navigate(d Dispatcher, rawURL string) {
 	u, err := url.Parse(rawURL)
 	if err != nil {
 		Log(errors.New("navigating to URL failed").
-			Tag("url", rawURL).
+			WithTag("url", rawURL).
 			Wrap(err))
 		return
 	}

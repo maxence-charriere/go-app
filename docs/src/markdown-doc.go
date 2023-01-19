@@ -93,6 +93,10 @@ func (d *remoteMarkdownDoc) Src(v string) *remoteMarkdownDoc {
 	return d
 }
 
+func (d *remoteMarkdownDoc) OnPreRender(ctx app.Context) {
+	d.load(ctx)
+}
+
 func (d *remoteMarkdownDoc) OnMount(ctx app.Context) {
 	d.load(ctx)
 }

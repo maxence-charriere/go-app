@@ -79,8 +79,8 @@ func (e *htmlElement) getChildren() []UI {
 func (e *htmlElement) mount(d Dispatcher) error {
 	if e.Mounted() {
 		return errors.New("html element is already mounted").
-			Tag("tag", e.tag).
-			Tag("kind", e.Kind())
+			WithTag("tag", e.tag).
+			WithTag("kind", e.Kind())
 	}
 
 	e.context, e.contextCancel = context.WithCancel(context.Background())
@@ -89,9 +89,9 @@ func (e *htmlElement) mount(d Dispatcher) error {
 	jsElement, err := Window().createElement(e.tag, e.xmlns)
 	if err != nil {
 		return errors.New("mounting js element failed").
-			Tag("kind", e.Kind()).
-			Tag("tag", e.tag).
-			Tag("xmlns", e.xmlns).
+			WithTag("kind", e.Kind()).
+			WithTag("tag", e.tag).
+			WithTag("xmlns", e.xmlns).
 			Wrap(err)
 	}
 	e.jsElement = jsElement
@@ -102,9 +102,9 @@ func (e *htmlElement) mount(d Dispatcher) error {
 	for i, c := range e.children {
 		if err := mount(d, c); err != nil {
 			return errors.New("mounting child failed").
-				Tag("index", i).
-				Tag("child", c.name()).
-				Tag("child-kind", c.Kind()).
+				WithTag("index", i).
+				WithTag("child", c.name()).
+				WithTag("child-kind", c.Kind()).
 				Wrap(err)
 		}
 
@@ -136,8 +136,8 @@ func (e *htmlElement) canUpdateWith(v UI) bool {
 func (e *htmlElement) updateWith(v UI) error {
 	if !e.canUpdateWith(v) {
 		return errors.New("cannot update html element with given element").
-			Tag("current", reflect.TypeOf(e.self())).
-			Tag("new", reflect.TypeOf(v))
+			WithTag("current", reflect.TypeOf(e.self())).
+			WithTag("new", reflect.TypeOf(v))
 	}
 
 	if e.attributes == nil && v.getAttributes() != nil {
@@ -169,17 +169,17 @@ func (e *htmlElement) updateWith(v UI) error {
 		if canUpdate(a, b) {
 			if err := update(a, b); err != nil {
 				return errors.New("updating child failed").
-					Tag("child", reflect.TypeOf(a)).
-					Tag("new-child", reflect.TypeOf(b)).
-					Tag("index", i).
+					WithTag("child", reflect.TypeOf(a)).
+					WithTag("new-child", reflect.TypeOf(b)).
+					WithTag("index", i).
 					Wrap(err)
 			}
 		} else {
 			if err := e.replaceChildAt(i, b); err != nil {
 				return errors.New("replacing child failed").
-					Tag("child", reflect.TypeOf(a)).
-					Tag("new-child", reflect.TypeOf(b)).
-					Tag("index", i).
+					WithTag("child", reflect.TypeOf(a)).
+					WithTag("new-child", reflect.TypeOf(b)).
+					WithTag("index", i).
 					Wrap(err)
 			}
 		}
@@ -192,8 +192,8 @@ func (e *htmlElement) updateWith(v UI) error {
 	for len(childrenA) != 0 {
 		if err := e.removeChildAt(i); err != nil {
 			return errors.New("removing child failed").
-				Tag("child", reflect.TypeOf(childrenA[0])).
-				Tag("index", i).
+				WithTag("child", reflect.TypeOf(childrenA[0])).
+				WithTag("index", i).
 				Wrap(err)
 		}
 
@@ -205,8 +205,8 @@ func (e *htmlElement) updateWith(v UI) error {
 
 		if err := e.appendChild(b); err != nil {
 			return errors.New("appending child failed").
-				Tag("child", reflect.TypeOf(b)).
-				Tag("index", i).
+				WithTag("child", reflect.TypeOf(b)).
+				WithTag("index", i).
 				Wrap(err)
 		}
 
@@ -221,13 +221,13 @@ func (e *htmlElement) replaceChildAt(idx int, new UI) error {
 
 	if err := mount(e.getDispatcher(), new); err != nil {
 		return errors.New("replacing child failed").
-			Tag("name", e.name()).
-			Tag("kind", e.Kind()).
-			Tag("index", idx).
-			Tag("old-name", old.name()).
-			Tag("old-kind", old.Kind()).
-			Tag("new-name", new.name()).
-			Tag("new-kind", new.Kind()).
+			WithTag("name", e.name()).
+			WithTag("kind", e.Kind()).
+			WithTag("index", idx).
+			WithTag("old-name", old.name()).
+			WithTag("old-kind", old.Kind()).
+			WithTag("new-name", new.name()).
+			WithTag("new-kind", new.Kind()).
 			Wrap(err)
 	}
 
@@ -242,8 +242,8 @@ func (e *htmlElement) replaceChildAt(idx int, new UI) error {
 func (e *htmlElement) removeChildAt(i int) error {
 	if i < 0 || i >= len(e.children) {
 		return errors.New("index out of range").
-			Tag("index", i).
-			Tag("children-count", len(e.children))
+			WithTag("index", i).
+			WithTag("children-count", len(e.children))
 	}
 
 	child := e.children[i]
@@ -260,7 +260,7 @@ func (e *htmlElement) removeChildAt(i int) error {
 func (e *htmlElement) appendChild(v UI) error {
 	if err := mount(e.getDispatcher(), v); err != nil {
 		return errors.New("mounting element failed").
-			Tag("element", reflect.TypeOf(v)).
+			WithTag("element", reflect.TypeOf(v)).
 			Wrap(err)
 	}
 
@@ -287,17 +287,11 @@ func (e *htmlElement) setEventHandler(event string, h EventHandler, scope ...any
 func (e *htmlElement) setChildren(v ...UI) {
 	if e.isSelfClosing {
 		panic(errors.New("cannot set children of a self closing element").
-			Tag("element", e.tag),
+			WithTag("element", e.tag),
 		)
 	}
 
 	e.children = FilterUIElems(v...)
-}
-
-func (e *htmlElement) preRender(p Page) {
-	for _, c := range e.getChildren() {
-		c.preRender(p)
-	}
 }
 
 func (e *htmlElement) onComponentEvent(le any) {

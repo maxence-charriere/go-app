@@ -68,8 +68,8 @@ func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
 			f, err := createStaticFile(dir, filename)
 			if err != nil {
 				return errors.New("creating file failed").
-					Tag("path", path).
-					Tag("filename", filename).
+					WithTag("path", path).
+					WithTag("filename", filename).
 					Wrap(err)
 			}
 			defer f.Close()
@@ -77,16 +77,16 @@ func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
 			page, err := createStaticPage(server.URL + path)
 			if err != nil {
 				return errors.New("creating page failed").
-					Tag("path", path).
-					Tag("filename", filename).
+					WithTag("path", path).
+					WithTag("filename", filename).
 					Wrap(err)
 			}
 
 			if n, err := f.Write(page); err != nil {
 				return errors.New("writing page failed").
-					Tag("path", path).
-					Tag("filename", filename).
-					Tag("bytes-written", n).
+					WithTag("path", path).
+					WithTag("filename", filename).
+					WithTag("bytes-written", n).
 					Wrap(err)
 			}
 		}
@@ -120,14 +120,14 @@ func createStaticPage(path string) ([]byte, error) {
 	req, err := http.NewRequest(http.MethodGet, path, nil)
 	if err != nil {
 		return nil, errors.New("creating http request failed").
-			Tag("path", path).
+			WithTag("path", path).
 			Wrap(err)
 	}
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, errors.New("http request failed").
-			Tag("path", path).
+			WithTag("path", path).
 			Wrap(err)
 	}
 	defer res.Body.Close()
@@ -135,7 +135,7 @@ func createStaticPage(path string) ([]byte, error) {
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		return nil, errors.New("reading request body failed").
-			Tag("path", path).
+			WithTag("path", path).
 			Wrap(err)
 	}
 	return body, nil

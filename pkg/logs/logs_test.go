@@ -6,28 +6,37 @@ import (
 )
 
 func TestLog(t *testing.T) {
+	SetIndentEncoder()
+	defer SetInlineEncoder()
+
 	log := New("a simple log")
 	t.Log(log)
 }
 
 func TestLogWithTags(t *testing.T) {
 	log := New("an log with tags").
-		Tag("string", "hello world").
-		Tag("go-stringer", goStringer{}).
-		Tag("duration", time.Duration(3600000000)).
-		Tag("int", 42).
-		Tag("int8", int8(8)).
-		Tag("int16", int16(16)).
-		Tag("int32", int32(32)).
-		Tag("int64", int64(64)).
-		Tag("uint", uint(42)).
-		Tag("uint8", uint8(8)).
-		Tag("uint16", uint16(16)).
-		Tag("uint32", uint32(32)).
-		Tag("uint64", uint64(64)).
-		Tag("float32", float32(32.42)).
-		Tag("float64", float64(64.42)).
-		Tag("slice", []string{"hello", "world"})
+		WithTag("string", "hello world").
+		WithTag("go-stringer", goStringer{}).
+		WithTag("duration", time.Duration(3600000000)).
+		WithTag("int", 42).
+		WithTag("int8", int8(8)).
+		WithTag("int16", int16(16)).
+		WithTag("int32", int32(32)).
+		WithTag("int64", int64(64)).
+		WithTag("uint", uint(42)).
+		WithTag("uint8", uint8(8)).
+		WithTag("uint16", uint16(16)).
+		WithTag("uint32", uint32(32)).
+		WithTag("uint64", uint64(64)).
+		WithTag("float32", float32(32.42)).
+		WithTag("float64", float64(64.42)).
+		WithTag("slice", []string{"hello", "world"})
+	t.Log("\n", log)
+}
+
+func TestLogWithBadTag(t *testing.T) {
+	log := New("an log with tags").
+		WithTag("func", func() {})
 	t.Log("\n", log)
 }
 
@@ -45,11 +54,11 @@ func (s goStringer) GoString() string {
 func BenchmarkNew(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		New("a log with tags").
-			Tag("string", "hello world").
-			Tag("int8", int8(8)).
-			Tag("int16", int16(16)).
-			Tag("int32", int32(32)).
-			Tag("int64", int64(64))
+			WithTag("string", "hello world").
+			WithTag("int8", int8(8)).
+			WithTag("int16", int16(16)).
+			WithTag("int32", int32(32)).
+			WithTag("int64", int64(64))
 	}
 }
 
@@ -58,11 +67,11 @@ func BenchmarkString(b *testing.B) {
 
 	for n := 0; n < b.N; n++ {
 		s = New("a log with tags").
-			Tag("string", "hello world").
-			Tag("int8", int8(8)).
-			Tag("int16", int16(16)).
-			Tag("int32", int32(32)).
-			Tag("int64", int64(64)).
+			WithTag("string", "hello world").
+			WithTag("int8", int8(8)).
+			WithTag("int16", int16(16)).
+			WithTag("int32", int32(32)).
+			WithTag("int64", int64(64)).
 			String()
 	}
 
