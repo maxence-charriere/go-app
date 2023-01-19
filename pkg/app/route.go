@@ -10,51 +10,65 @@ var (
 	routes = makeRouter()
 )
 
-// Route associates the type of the given component to the given path.
-//
-// When a page is requested and matches the route, a new instance of the given
-// component is created before being displayed.
+// Route set the type of component to be mounted when a page is navigated to the
+// given path.
 func Route(path string, c Composer) {
-	routes.route(path, c)
+	RouteFunc(path, newZeroComponentFunc(c))
 }
 
-// RouteWithRegexp associates the type of the given component to the given
-// regular expression pattern.
-//
-// Patterns use the Go standard regexp format.
-//
-// When a page is requested and matches the pattern, a new instance of the given
-// component is created before being displayed.
+// RouteWithRegexp set the type of component to be mounted when a page is
+// navigated to a path that matches the given pattern.
 func RouteWithRegexp(pattern string, c Composer) {
-	routes.routeWithRegexp(pattern, c)
+	RouteWithRegexpFunc(pattern, newZeroComponentFunc(c))
+
+}
+
+// RouteFunc set a function that creates the component to be mounted when a page
+// is navigated to the given path.
+func RouteFunc(path string, newComponent func() Composer) {
+	routes.route(path, newComponent)
+}
+
+// RouteWithRegexpFunc set a function that creates the component to be mounted
+// when a page is navigated to a path that matches the given pattern.
+func RouteWithRegexpFunc(pattern string, newComponent func() Composer) {
+	routes.routeWithRegexp(pattern, newComponent)
+}
+
+func newZeroComponentFunc(c Composer) func() Composer {
+	componentType := reflect.TypeOf(c)
+
+	return func() Composer {
+		return reflect.New(componentType.Elem()).Interface().(Composer)
+	}
 }
 
 type router struct {
 	mu               sync.RWMutex
-	routes           map[string]reflect.Type
+	routes           map[string]func() Composer
 	routesWithRegexp []regexpRoute
 }
 
 func makeRouter() router {
 	return router{
-		routes: make(map[string]reflect.Type),
+		routes: make(map[string]func() Composer),
 	}
 }
 
-func (r *router) route(path string, c Composer) {
+func (r *router) route(path string, newComponent func() Composer) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	r.routes[path] = reflect.TypeOf(c)
+	r.routes[path] = newComponent
 }
 
-func (r *router) routeWithRegexp(pattern string, c Composer) {
+func (r *router) routeWithRegexp(pattern string, newComponent func() Composer) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
 	r.routesWithRegexp = append(r.routesWithRegexp, regexpRoute{
-		regexp:    regexp.MustCompile(pattern),
-		compoType: reflect.TypeOf(c),
+		regexp:       regexp.MustCompile(pattern),
+		newComponent: newComponent,
 	})
 }
 
@@ -62,11 +76,11 @@ func (r *router) createComponent(path string) (Composer, bool) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
-	compoType, isRouted := r.routes[path]
+	newComponent, isRouted := r.routes[path]
 	if !isRouted {
 		for _, rwr := range r.routesWithRegexp {
 			if rwr.regexp.MatchString(path) {
-				compoType = rwr.compoType
+				newComponent = rwr.newComponent
 				isRouted = true
 				break
 			}
@@ -76,15 +90,10 @@ func (r *router) createComponent(path string) (Composer, bool) {
 		return nil, false
 	}
 
-	compo := reflect.New(compoType.Elem()).Interface().(Composer)
-	return compo, true
-}
-
-func (r *router) len() int {
-	return len(r.routes) + len(r.routesWithRegexp)
+	return newComponent(), true
 }
 
 type regexpRoute struct {
-	regexp    *regexp.Regexp
-	compoType reflect.Type
+	regexp       *regexp.Regexp
+	newComponent func() Composer
 }
