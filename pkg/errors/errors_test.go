@@ -1,153 +1,215 @@
 package errors
 
 import (
-	"errors"
+	"fmt"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/require"
 )
 
-func TestError(t *testing.T) {
-	err := New("a simple error")
-	t.Log(err)
+func TestNew(t *testing.T) {
+	t.Run("new error", func(t *testing.T) {
+		err := New("hello")
+		require.Equal(t, "hello", err.Message)
+		require.Equal(t, "errors_test.go:12", err.Line)
+		t.Log(err)
+	})
+
+	t.Run("new error with format", func(t *testing.T) {
+		err := Newf("hello %v", 42)
+		require.Equal(t, "hello 42", err.Message)
+		require.Equal(t, "errors_test.go:19", err.Line)
+		t.Log(err)
+	})
 }
 
-func TestErrorWithTags(t *testing.T) {
-	err := New("an error with tags").
-		Tag("string", "hello world").
-		Tag("go-stringer", goStringer{}).
-		Tag("duration", time.Duration(3600000000)).
-		Tag("int", 42).
-		Tag("int8", int8(8)).
-		Tag("int16", int16(16)).
-		Tag("int32", int32(32)).
-		Tag("int64", int64(64)).
-		Tag("uint", uint(42)).
-		Tag("uint8", uint8(8)).
-		Tag("uint16", uint16(16)).
-		Tag("uint32", uint32(32)).
-		Tag("uint64", uint64(64)).
-		Tag("float32", float32(32.42)).
-		Tag("float64", float64(64.42)).
-		Tag("slice", []string{"hello", "world"})
-	t.Log("\n", err)
-}
+func TestUnwrap(t *testing.T) {
+	t.Run("enriched error is unwraped", func(t *testing.T) {
+		werr := fmt.Errorf("werr")
+		err := New("err").Wrap(werr)
+		require.Equal(t, werr, Unwrap(err))
+	})
 
-func TestErrorWithWrap(t *testing.T) {
-	b := New("b").Wrap(errors.New("c"))
-	a := New("a").
-		Wrap(b).
-		Wrap(nil)
-	require.True(t, b.Is(a.wrap))
-
-	d := New("d").
-		Wrap(a).
-		Wrap(b).
-		Wrap(errors.New("f"))
-	t.Log("\n", d)
-}
-
-func TestErrorWithTagsAndWrap(t *testing.T) {
-	err := New("an error with tags").
-		Tag("uint64", uint64(64)).
-		Tag("float64", float64(64.42)).
-		Tag("slice", []string{"hello", "world"}).
-		Wrap(errors.New("another error"))
-	t.Log("\n", err)
-}
-
-func TestLookup(t *testing.T) {
-	err := New("error").Tag("foo", 42)
-
-	v, found := err.Lookup("foo")
-	require.True(t, found)
-	require.Equal(t, "42", v)
-
-	v, found = err.Lookup("bar")
-	require.False(t, found)
-	require.Empty(t, v)
-}
-
-func TestErrorUwrap(t *testing.T) {
-	a := New("a").Tag("wrap", true)
-	b := New("b").Wrap(a)
-
-	err := b.Unwrap()
-	require.Equal(t, a, err)
-
-	err = Unwrap(b)
-	require.Equal(t, a, err)
-}
-
-func TestAs(t *testing.T) {
-	a := New("a").Tag("wrap", true)
-	b := New("b").Wrap(a)
-	c := New("c").Wrap(b)
-	d := New("d")
-
-	require.True(t, As(c, &a))
-	require.True(t, As(c, &d))
+	t.Run("enriched error is not unwraped", func(t *testing.T) {
+		err := New("err")
+		require.Nil(t, Unwrap(err))
+	})
 }
 
 func TestIs(t *testing.T) {
-	a := New("a").Tag("wrap", true)
-	b := New("b").Wrap(a)
-	c := New("c").Wrap(b)
-	d := New("d")
-	e := errors.New("e")
+	t.Run("is enriched error is true", func(t *testing.T) {
+		err := New("test")
+		require.True(t, Is(err, err))
+	})
 
-	require.True(t, Is(c, a))
-	require.False(t, Is(c, d))
-	require.False(t, Is(d, e))
+	t.Run("is enriched error is false", func(t *testing.T) {
+		err := New("test")
+		require.False(t, Is(err, New("test b")))
+	})
+
+	t.Run("is nested enriched error is true", func(t *testing.T) {
+		werr := New("werr")
+		err := fmt.Errorf("err: %w", werr)
+		require.True(t, Is(err, werr))
+	})
+
+	t.Run("is nested enriched error is false", func(t *testing.T) {
+		werr := New("werr")
+		err := fmt.Errorf("err: %w", New("werr"))
+		require.False(t, Is(err, werr))
+	})
+
+	t.Run("is not enriched nested error is true", func(t *testing.T) {
+		werr := fmt.Errorf("werr")
+		err := New("err").Wrap(werr)
+		require.True(t, Is(err, werr))
+	})
+
+	t.Run("is not enriched nested error is false", func(t *testing.T) {
+		werr := fmt.Errorf("werr")
+		err := New("err").Wrap(fmt.Errorf("werr"))
+		require.False(t, Is(err, werr))
+	})
+}
+
+func TestAs(t *testing.T) {
+	t.Run("has enriched error is true", func(t *testing.T) {
+		var ierr Error
+		err := New("err")
+		require.True(t, As(err, &ierr))
+	})
+
+	t.Run("has not enriched error is false", func(t *testing.T) {
+		var ierr Error
+		err := fmt.Errorf("err")
+		require.False(t, As(err, &ierr))
+	})
+
+	t.Run("has nested enriched error is true", func(t *testing.T) {
+		var ierr Error
+		err := fmt.Errorf("err: %w", New("werr"))
+		require.True(t, As(err, &ierr))
+	})
+}
+
+func TestHasType(t *testing.T) {
+	t.Run("nil error is empty", func(t *testing.T) {
+		require.True(t, HasType(nil, ""))
+	})
+
+	t.Run("enriched error is of the default type", func(t *testing.T) {
+		err := New("err")
+		require.True(t, HasType(err, "errors.Error"))
+	})
+
+	t.Run("enriched error is of the defined type", func(t *testing.T) {
+		err := New("err").WithType("foo")
+		require.True(t, HasType(err, "foo"))
+	})
+
+	t.Run("enriched error is not of the requested type", func(t *testing.T) {
+		err := New("err").WithType("foo")
+		require.False(t, HasType(err, "bar"))
+	})
+
+	t.Run("non enriched error is of the default type", func(t *testing.T) {
+		err := fmt.Errorf("err")
+		require.True(t, HasType(err, "*errors.errorString"))
+	})
+
+	t.Run("non enriched error is not of the requested type", func(t *testing.T) {
+		err := fmt.Errorf("err")
+		require.False(t, HasType(err, "foo"))
+	})
+
+	t.Run("enriched error is of the nested enriched type", func(t *testing.T) {
+		err := New("err").Wrap(New("werr").WithType("foo"))
+		require.True(t, HasType(err, "foo"))
+	})
+
+	t.Run("enriched error is of the nested non enriched type", func(t *testing.T) {
+		err := New("err").Wrap(fmt.Errorf("werr"))
+		require.True(t, HasType(err, "*errors.errorString"))
+	})
+
+	t.Run("non enriched error is of the nested enriched type", func(t *testing.T) {
+		err := fmt.Errorf("err: %w", New("werr").WithType("foo"))
+		require.True(t, HasType(err, "foo"))
+	})
 }
 
 func TestTag(t *testing.T) {
-	a := errors.New("a")
-	v, isTagged := Tag(a, "test")
-	require.Empty(t, v)
-	require.False(t, isTagged)
+	t.Run("enriched error returns the tag value", func(t *testing.T) {
+		err := New("test").WithTag("foo", "bar")
+		require.Equal(t, "bar", Tag(err, "foo"))
+	})
 
-	b := New("b").Tag("test", "true")
-	v, isTagged = Tag(b, "test")
-	require.Equal(t, "true", v)
-	require.True(t, isTagged)
+	t.Run("enriched error does not returns the tag value", func(t *testing.T) {
+		err := New("test")
+		require.Empty(t, Tag(err, "foo"))
+	})
+
+	t.Run("nested enriched error in enriched error returns the tag value", func(t *testing.T) {
+		err := New("err").Wrap(New("werr").WithTag("foo", "bar"))
+		require.Equal(t, "bar", Tag(err, "foo"))
+	})
+
+	t.Run("nested enriched error in non enriched error returns the tag value", func(t *testing.T) {
+		err := fmt.Errorf("err: %w", New("werr").WithTag("foo", "bar"))
+		require.Equal(t, "bar", Tag(err, "foo"))
+	})
+
+	t.Run("non enriched error does not returns the tag value", func(t *testing.T) {
+		err := fmt.Errorf("err")
+		require.Empty(t, Tag(err, "foo"))
+	})
 }
 
-func TestNewf(t *testing.T) {
-	err := Newf("hello %q", "world")
-	t.Log(err)
-}
+func TestError(t *testing.T) {
+	SetIndentEncoder()
+	defer SetInlineEncoder()
 
-type goStringer struct{}
-
-func (s goStringer) GoString() string {
-	return "go stringer !"
-}
-
-func BenchmarkNew(b *testing.B) {
-	for n := 0; n < b.N; n++ {
-		New("an error with tags").
-			Tag("string", "hello world").
-			Tag("int8", int8(8)).
-			Tag("int16", int16(16)).
-			Tag("int32", int32(32)).
-			Tag("int64", int64(64))
-	}
-}
-
-func BenchmarkError(b *testing.B) {
-	var s string
-
-	for n := 0; n < b.N; n++ {
-		s = New("an error with tags").
-			Tag("string", "hello world").
-			Tag("int8", int8(8)).
-			Tag("int16", int16(16)).
-			Tag("int32", int32(32)).
-			Tag("int64", int64(64)).
+	t.Run("stringify an enriched error", func(t *testing.T) {
+		err := New("err").
+			WithTag("foo", "bar").
 			Error()
-	}
+		require.Contains(t, err, "err")
+		t.Log(err)
+	})
 
-	b.Log(s)
+	t.Run("stringify an enriched error wrapped in an enriched error", func(t *testing.T) {
+		err := New("err").
+			WithTag("foo", "bar").
+			Wrap(New("werr").WithType("boo")).
+			Error()
+		require.Contains(t, err, "err")
+		require.Contains(t, err, "werr")
+		require.Contains(t, err, "boo")
+		t.Log(err)
+	})
+
+	t.Run("stringify a non enriched error wrapped in an enriched error", func(t *testing.T) {
+		err := New("err").
+			WithTag("foo", "bar").
+			Wrap(fmt.Errorf("werr")).
+			Error()
+
+		require.Contains(t, err, "err")
+		require.Contains(t, err, "werr")
+		t.Log(err)
+	})
+
+	t.Run("stringify a non enriched error wrapped in an enriched error", func(t *testing.T) {
+		err := fmt.Errorf("err: %w", New("werr")).Error()
+		require.Contains(t, err, "werr")
+		require.NotContains(t, err, "*errors.errorString")
+		require.Contains(t, err, "err")
+		t.Log(err)
+	})
+
+	t.Run("stringify an enriched error with a bad tag", func(t *testing.T) {
+		err := New("err").WithTag("func", func() {}).Error()
+		require.Contains(t, err, "encoding error failed")
+		t.Log(err)
+	})
 }

@@ -14,10 +14,6 @@ type nestedStruct struct {
 	Float float64
 }
 
-type nestedStructWithNonexportedField struct {
-	nonexport string
-}
-
 func TestOptionParserParse(t *testing.T) {
 	tests := []struct {
 		scenario        string

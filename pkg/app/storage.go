@@ -99,8 +99,8 @@ func (s *memoryStorage) Key(i int) (string, error) {
 	}
 
 	return "", errors.New("index out of range").
-		Tag("index", i).
-		Tag("len", s.Len())
+		WithTag("index", i).
+		WithTag("len", s.Len())
 }
 
 type jsStorage struct {
@@ -117,8 +117,8 @@ func (s *jsStorage) Set(k string, v any) (err error) {
 		r := recover()
 		if r != nil {
 			err = errors.New("setting storage value failed").
-				Tag("storage-type", s.name).
-				Tag("key", k).
+				WithTag("storage-type", s.name).
+				WithTag("key", k).
 				Wrap(r.(error))
 		}
 	}()
@@ -175,8 +175,8 @@ func (s *jsStorage) len() int {
 func (s *jsStorage) Key(i int) (string, error) {
 	if l := s.len(); i < 0 || i >= l {
 		return "", errors.New("index out of range").
-			Tag("index", i).
-			Tag("len", l)
+			WithTag("index", i).
+			WithTag("len", l)
 	}
 
 	return Window().Get(s.name).Call("key", i).String(), nil

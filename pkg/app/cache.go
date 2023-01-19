@@ -29,6 +29,9 @@ type PreRenderedItem struct {
 	// The response content encoding.
 	ContentEncoding string
 
+	// The cache control.
+	CacheControl string
+
 	// The response body.
 	Body []byte
 }

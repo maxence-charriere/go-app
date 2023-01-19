@@ -276,12 +276,12 @@ func (c *Compo) getChildren() []UI {
 func (c *Compo) mount(d Dispatcher) error {
 	if c.Mounted() {
 		return errors.New("mounting component failed").
-			Tag("reason", "already mounted").
-			Tag("name", c.name()).
-			Tag("kind", c.Kind())
+			WithTag("reason", "already mounted").
+			WithTag("name", c.name()).
+			WithTag("kind", c.Kind())
 	}
 
-	if initializer, ok := c.self().(Initializer); ok && !d.isServerSide() {
+	if initializer, ok := c.self().(Initializer); ok {
 		initializer.OnInit()
 	}
 
@@ -291,21 +291,23 @@ func (c *Compo) mount(d Dispatcher) error {
 	root := c.render()
 	if err := mount(d, root); err != nil {
 		return errors.New("mounting component failed").
-			Tag("name", c.name()).
-			Tag("kind", c.Kind()).
+			WithTag("name", c.name()).
+			WithTag("kind", c.Kind()).
 			Wrap(err)
 	}
 	root.setParent(c.this)
 	c.root = root
 
-	if c.getDispatcher().isServerSide() {
-		return nil
-	}
-
-	if mounter, ok := c.self().(Mounter); ok {
+	if mounter, ok := c.self().(Mounter); !c.getDispatcher().isServerSide() && ok {
 		c.dispatch(mounter.OnMount)
 		return nil
 	}
+
+	if preRenderer, ok := c.self().(PreRenderer); c.getDispatcher().isServerSide() && ok {
+		c.dispatch(preRenderer.OnPreRender)
+		return nil
+	}
+
 	c.dispatch(nil)
 	return nil
 }
@@ -332,8 +334,8 @@ func (c *Compo) updateWith(v UI) error {
 
 	if !c.canUpdateWith(v) {
 		return errors.New("cannot update component with given element").
-			Tag("current", reflect.TypeOf(c.self())).
-			Tag("new", reflect.TypeOf(v))
+			WithTag("current", reflect.TypeOf(c.self())).
+			WithTag("new", reflect.TypeOf(v))
 	}
 
 	aval := reflect.Indirect(reflect.ValueOf(c.self()))
@@ -399,12 +401,12 @@ func (c *Compo) replaceRoot(v UI) error {
 
 	if err := mount(c.getDispatcher(), new); err != nil {
 		return errors.New("replacing component root failed").
-			Tag("kind", c.Kind()).
-			Tag("name", c.name()).
-			Tag("root-kind", old.Kind()).
-			Tag("root-name", old.name()).
-			Tag("new-root-kind", new.Kind()).
-			Tag("new-root-name", new.name()).
+			WithTag("kind", c.Kind()).
+			WithTag("name", c.name()).
+			WithTag("root-kind", old.Kind()).
+			WithTag("root-name", old.name()).
+			WithTag("new-root-kind", new.Kind()).
+			WithTag("new-root-name", new.name()).
 			Wrap(err)
 	}
 
@@ -418,9 +420,9 @@ func (c *Compo) replaceRoot(v UI) error {
 
 	if parent == nil {
 		return errors.New("replacing component root failed").
-			Tag("kind", c.Kind()).
-			Tag("name", c.name()).
-			Tag("reason", "component does not have html element parents")
+			WithTag("kind", c.Kind()).
+			WithTag("name", c.name()).
+			WithTag("reason", "coponent does not have html element parents")
 	}
 
 	c.root = new
@@ -437,18 +439,6 @@ func (c *Compo) replaceRoot(v UI) error {
 func (c *Compo) render() UI {
 	elems := FilterUIElems(c.this.Render())
 	return elems[0]
-}
-
-func (c *Compo) preRender(p Page) {
-	c.root.preRender(p)
-
-	if initializer, ok := c.self().(Initializer); ok {
-		initializer.OnInit()
-	}
-
-	if preRenderer, ok := c.self().(PreRenderer); ok {
-		c.dispatch(preRenderer.OnPreRender)
-	}
 }
 
 func (c *Compo) onComponentEvent(le any) {

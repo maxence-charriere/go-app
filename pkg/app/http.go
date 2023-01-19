@@ -152,6 +152,9 @@ type Handler struct {
 	// of 8MB.
 	PreRenderCache PreRenderCache
 
+	// The Control-Cache header value for pre-rendered resources.
+	PreRenderCacheControl string
+
 	// The static resources that are accessible from custom paths. Files that
 	// are proxied by default are /robots.txt, /sitemap.xml and /ads.txt.
 	ProxyResources []ProxyResource
@@ -254,8 +257,8 @@ func (h *Handler) initCacheableResources() {
 
 func (h *Handler) initIcon() {
 	if h.Icon.Default == "" {
-		h.Icon.Default = "https://storage.googleapis.com/murlok-github/icon-192.png"
-		h.Icon.Large = "https://storage.googleapis.com/murlok-github/icon-512.png"
+		h.Icon.Default = "https://github.com/maxence-charriere/go-app/blob/master/docs/web/icon.png"
+		h.Icon.Large = "https://github.com/maxence-charriere/go-app/blob/master/docs/web/icon.png"
 	}
 
 	if h.Icon.AppleTouch == "" {
@@ -264,6 +267,7 @@ func (h *Handler) initIcon() {
 
 	h.Icon.Default = h.resolveStaticPath(h.Icon.Default)
 	h.Icon.Large = h.resolveStaticPath(h.Icon.Large)
+	h.Icon.SVG = h.resolveStaticPath(h.Icon.SVG)
 	h.Icon.AppleTouch = h.resolveStaticPath(h.Icon.AppleTouch)
 }
 
@@ -360,8 +364,8 @@ func (h *Handler) makeAppJS() []byte {
 	for k, v := range h.Env {
 		if err := os.Setenv(k, v); err != nil {
 			Log(errors.New("setting app env variable failed").
-				Tag("name", k).
-				Tag("value", v).
+				WithTag("name", k).
+				WithTag("value", v).
 				Wrap(err))
 		}
 	}
@@ -455,6 +459,7 @@ func (h *Handler) makeManifestJSON() []byte {
 			Description     string
 			DefaultIcon     string
 			LargeIcon       string
+			SVGIcon         string
 			BackgroundColor string
 			ThemeColor      string
 			Scope           string
@@ -465,6 +470,7 @@ func (h *Handler) makeManifestJSON() []byte {
 			Description:     h.Description,
 			DefaultIcon:     h.Icon.Default,
 			LargeIcon:       h.Icon.Large,
+			SVGIcon:         h.Icon.SVG,
 			BackgroundColor: h.BackgroundColor,
 			ThemeColor:      h.ThemeColor,
 			Scope:           normalize(h.Resources.Package()),
@@ -579,15 +585,20 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.servePage(w, r)
 }
 
-func (h *Handler) servePreRenderedItem(w http.ResponseWriter, r PreRenderedItem) {
-	w.Header().Set("Content-Length", strconv.Itoa(r.Size()))
-	w.Header().Set("Content-Type", r.ContentType)
-	if r.ContentEncoding != "" {
-		w.Header().Set("Content-Encoding", r.ContentEncoding)
+func (h *Handler) servePreRenderedItem(w http.ResponseWriter, i PreRenderedItem) {
+	w.Header().Set("Content-Length", strconv.Itoa(i.Size()))
+	w.Header().Set("Content-Type", i.ContentType)
+
+	if i.ContentEncoding != "" {
+		w.Header().Set("Content-Encoding", i.ContentEncoding)
+	}
+
+	if i.CacheControl != "" {
+		w.Header().Set("Cache-Control", i.CacheControl)
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write(r.Body)
+	w.Write(i.Body)
 }
 
 func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWriter, r *http.Request) {
@@ -608,9 +619,9 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		Log(errors.New("getting proxy static resource failed").
-			Tag("url", u).
-			Tag("proxy-path", resource.Path).
-			Tag("static-resource-path", resource.ResourcePath).
+			WithTag("url", u).
+			WithTag("proxy-path", resource.Path).
+			WithTag("static-resource-path", resource.ResourcePath).
 			Wrap(err),
 		)
 		return
@@ -626,9 +637,9 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		Log(errors.New("reading proxy static resource failed").
-			Tag("url", u).
-			Tag("proxy-path", resource.Path).
-			Tag("static-resource-path", resource.ResourcePath).
+			WithTag("url", u).
+			WithTag("proxy-path", resource.Path).
+			WithTag("static-resource-path", resource.ResourcePath).
 			Wrap(err),
 		)
 		return
@@ -671,39 +682,42 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		StaticResourceResolver: h.resolveStaticPath,
 		ActionHandlers:         actionHandlers,
 	}
-	body := h.Body().privateBody(
-		Div().Body(
-			Aside().
-				ID("app-wasm-loader").
-				Class("goapp-app-info").
-				Body(
-					Img().
-						ID("app-wasm-loader-icon").
-						Class("goapp-logo goapp-spin").
-						Src(h.Icon.Default),
-					P().
-						ID("app-wasm-loader-label").
-						Class("goapp-label").
-						Text(page.loadingLabel),
-				),
-			Div().ID("app-pre-render").Body(content),
-		),
-	)
+	body := h.Body().privateBody(Div())
 	if err := mount(&disp, body); err != nil {
 		panic(errors.New("mounting pre-rendering container failed").
-			Tag("server-side", disp.isServerSide()).
-			Tag("body-type", reflect.TypeOf(disp.Body)).
+			WithTag("server-side", disp.isServerSide()).
+			WithTag("body-type", reflect.TypeOf(disp.Body)).
 			Wrap(err))
 	}
 	disp.Body = body
 	disp.init()
 	defer disp.Close()
 
-	disp.PreRender()
+	disp.Mount(Div().Body(
+		Aside().
+			ID("app-wasm-loader").
+			Class("goapp-app-info").
+			Body(
+				Img().
+					ID("app-wasm-loader-icon").
+					Class("goapp-logo goapp-spin").
+					Src(h.Icon.Default),
+				P().
+					ID("app-wasm-loader-label").
+					Class("goapp-label").
+					Text(page.loadingLabel),
+			),
+		Div().ID("app-pre-render").Body(content),
+	))
 
 	for len(disp.dispatches) != 0 {
 		disp.Consume()
 		disp.Wait()
+	}
+
+	icon := h.Icon.SVG
+	if icon == "" {
+		icon = h.Icon.Default
 	}
 
 	var b bytes.Buffer
@@ -746,13 +760,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				Title().Text(page.Title()),
 				Link().
 					Rel("icon").
-					Href(h.Icon.Default),
-				If(h.Icon.Mask != "",
-					Link().
-						Rel("mask-icon").
-						Attr("color", h.Icon.MaskColor).
-						Href(h.Icon.Mask),
-				),
+					Href(icon),
 				Link().
 					Rel("apple-touch-icon").
 					Href(h.Icon.AppleTouch),
@@ -788,9 +796,10 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		))
 
 	item := PreRenderedItem{
-		Path:        page.URL().Path,
-		Body:        b.Bytes(),
-		ContentType: "text/html",
+		Path:         page.URL().Path,
+		Body:         b.Bytes(),
+		ContentType:  "text/html",
+		CacheControl: h.PreRenderCacheControl,
 	}
 	h.PreRenderCache.Set(r.Context(), item)
 	h.servePreRenderedItem(w, item)
@@ -840,6 +849,9 @@ type Icon struct {
 	// Path is relative to the root directory.
 	Large string
 
+	// The path or url to a svg file.
+	SVG string
+
 	// The path or url to a square image/png file that is used for IOS/IPadOS
 	// home screen icon. It must have a side of 192px.
 	//
@@ -847,10 +859,6 @@ type Icon struct {
 	//
 	// DEFAULT: Icon.Default
 	AppleTouch string
-
-	Mask string
-
-	MaskColor string
 }
 
 // Environment describes the environment variables to pass to the progressive

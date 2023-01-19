@@ -55,7 +55,7 @@ func (m *commandManager) parse(args ...string) (string, func(), error) {
 	if !ok {
 		err := errNoRootCmd
 		if k != "" {
-			err = errors.New("unknown command").Tag("command-name", k)
+			err = errors.New("unknown command").WithTag("command-name", k)
 		}
 		return "", commandUsageIndex(m.out, m.commands), err
 	}
@@ -69,7 +69,7 @@ func (m *commandManager) parse(args ...string) (string, func(), error) {
 	opts, err := optsParser.parse(cmd.options)
 	if err != nil {
 		return "", nil, errors.New("parsing options failed").
-			Tag("command-name", k).
+			WithTag("command-name", k).
 			Wrap(err)
 	}
 

@@ -13,9 +13,9 @@ import (
 func testSkipNonWasm(t *testing.T) {
 	if goarch := runtime.GOARCH; goarch != "wasm" {
 		t.Skip(logs.New("skipping test").
-			Tag("reason", "unsupported architecture").
-			Tag("required-architecture", "wasm").
-			Tag("current-architecture", goarch),
+			WithTag("reason", "unsupported architecture").
+			WithTag("required-architecture", "wasm").
+			WithTag("current-architecture", goarch),
 		)
 	}
 }
@@ -23,9 +23,9 @@ func testSkipNonWasm(t *testing.T) {
 func testSkipWasm(t *testing.T) {
 	if goarch := runtime.GOARCH; goarch == "wasm" {
 		t.Skip(logs.New("skipping test").
-			Tag("reason", "unsupported architecture").
-			Tag("required-architecture", "!= than wasm").
-			Tag("current-architecture", goarch),
+			WithTag("reason", "unsupported architecture").
+			WithTag("required-architecture", "!= than wasm").
+			WithTag("current-architecture", goarch),
 		)
 	}
 }
