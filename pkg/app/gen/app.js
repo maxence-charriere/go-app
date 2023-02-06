@@ -190,8 +190,10 @@ function goappKeepBodyClean() {
 // Web Assembly
 // -----------------------------------------------------------------------------
 async function goappInitWebAssembly() {
+  const loader = document.getElementById("app-wasm-loader");
+
   if (!goappCanLoadWebAssembly()) {
-    document.getElementById("app-wasm-loader").style.display = "none";
+    loader.remove();
     return;
   }
 
@@ -219,7 +221,7 @@ async function goappInitWebAssembly() {
     );
 
     go.run(wasm.instance);
-    document.getElementById("app-wasm-loader").remove();
+    loader.remove();
   } catch (err) {
     loaderIcon.className = "goapp-logo";
     loaderLabel.innerText = err;
