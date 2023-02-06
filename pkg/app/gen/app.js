@@ -227,9 +227,14 @@ async function goappInitWebAssembly() {
 }
 
 function goappCanLoadWebAssembly() {
-  return !/bot|googlebot|crawler|spider|robot|crawling/i.test(
-    navigator.userAgent
-  );
+  if (
+    /bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent)
+  ) {
+    return false;
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get("wasm") !== "false";
 }
 
 async function fetchWithProgress(url, progess) {
