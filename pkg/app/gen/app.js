@@ -219,6 +219,7 @@ async function goappInitWebAssembly() {
     );
 
     go.run(wasm.instance);
+    document.getElementById("app-wasm-loader").remove();
   } catch (err) {
     loaderIcon.className = "goapp-logo";
     loaderLabel.innerText = err;

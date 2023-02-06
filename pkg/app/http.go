@@ -682,18 +682,8 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		StaticResourceResolver: h.resolveStaticPath,
 		ActionHandlers:         actionHandlers,
 	}
-	body := h.Body().privateBody(Div())
-	if err := mount(&disp, body); err != nil {
-		panic(errors.New("mounting pre-rendering container failed").
-			WithTag("server-side", disp.isServerSide()).
-			WithTag("body-type", reflect.TypeOf(disp.Body)).
-			Wrap(err))
-	}
-	disp.Body = body
-	disp.init()
-	defer disp.Close()
-
-	disp.Mount(Div().Body(
+	body := h.Body().privateBody(
+		Div(), // Pre-rendeging placeholder
 		Aside().
 			ID("app-wasm-loader").
 			Class("goapp-app-info").
@@ -707,8 +697,18 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Class("goapp-label").
 					Text(page.loadingLabel),
 			),
-		Div().ID("app-pre-render").Body(content),
-	))
+	)
+	if err := mount(&disp, body); err != nil {
+		panic(errors.New("mounting pre-rendering container failed").
+			WithTag("server-side", disp.isServerSide()).
+			WithTag("body-type", reflect.TypeOf(disp.Body)).
+			Wrap(err))
+	}
+	disp.Body = body
+	disp.init()
+	defer disp.Close()
+
+	disp.Mount(content)
 
 	for len(disp.dispatches) != 0 {
 		disp.Consume()
