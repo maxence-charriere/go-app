@@ -4,6 +4,7 @@ import (
 	"context"
 	"io"
 	"reflect"
+	"strconv"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
@@ -309,14 +310,13 @@ func (e *htmlElement) html(w io.Writer) {
 		io.WriteString(w, k)
 
 		if v != "" {
-			io.WriteString(w, `="`)
-			io.WriteString(w, resolveAttributeURLValue(k, v, func(s string) string {
+			io.WriteString(w, `=`)
+			io.WriteString(w, strconv.Quote(resolveAttributeURLValue(k, v, func(s string) string {
 				if e.dispatcher != nil {
 					return e.dispatcher.resolveStaticResource(v)
 				}
 				return v
-			}))
-			io.WriteString(w, `"`)
+			})))
 		}
 	}
 
@@ -353,14 +353,13 @@ func (e *htmlElement) htmlWithIndent(w io.Writer, indent int) {
 		io.WriteString(w, k)
 
 		if v != "" {
-			io.WriteString(w, `="`)
-			io.WriteString(w, resolveAttributeURLValue(k, v, func(s string) string {
+			io.WriteString(w, `=`)
+			io.WriteString(w, strconv.Quote(resolveAttributeURLValue(k, v, func(s string) string {
 				if e.dispatcher != nil {
 					return e.dispatcher.resolveStaticResource(v)
 				}
 				return v
-			}))
-			io.WriteString(w, `"`)
+			})))
 		}
 	}
 

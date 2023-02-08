@@ -190,10 +190,14 @@ function goappKeepBodyClean() {
 // Web Assembly
 // -----------------------------------------------------------------------------
 async function goappInitWebAssembly() {
+  const loader = document.getElementById("app-wasm-loader");
+
   if (!goappCanLoadWebAssembly()) {
-    document.getElementById("app-wasm-loader").style.display = "none";
+    loader.remove();
     return;
   }
+
+  loader.className = "app-wasm-loader";
 
   let instantiateStreaming = WebAssembly.instantiateStreaming;
   if (!instantiateStreaming) {
@@ -219,6 +223,7 @@ async function goappInitWebAssembly() {
     );
 
     go.run(wasm.instance);
+    loader.remove();
   } catch (err) {
     loaderIcon.className = "goapp-logo";
     loaderLabel.innerText = err;
@@ -227,9 +232,14 @@ async function goappInitWebAssembly() {
 }
 
 function goappCanLoadWebAssembly() {
-  return !/bot|googlebot|crawler|spider|robot|crawling/i.test(
-    navigator.userAgent
-  );
+  if (
+    /bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent)
+  ) {
+    return false;
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get("wasm") !== "false";
 }
 
 async function fetchWithProgress(url, progess) {
