@@ -770,18 +770,18 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Type("text/css").
 					Rel("stylesheet").
 					Href(h.resolvePackagePath("/app.css")),
-				Script().
-					Defer(true).
-					Src(h.resolvePackagePath("/wasm_exec.js")),
-				Script().
-					Defer(true).
-					Src(h.resolvePackagePath("/app.js")),
 				Range(h.Styles).Slice(func(i int) UI {
 					return Link().
 						Type("text/css").
 						Rel("stylesheet").
 						Href(h.Styles[i])
 				}),
+				Script().
+					Defer(true).
+					Src(h.resolvePackagePath("/wasm_exec.js")),
+				Script().
+					Defer(true).
+					Src(h.resolvePackagePath("/app.js")),
 				Range(h.Scripts).Slice(func(i int) UI {
 					return Script().
 						Defer(true).
