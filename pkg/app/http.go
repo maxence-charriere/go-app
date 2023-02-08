@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"os"
 	"reflect"
-	"runtime"
 	"sort"
 	"strconv"
 	"strings"
@@ -865,13 +864,6 @@ type Icon struct {
 // web app.
 type Environment map[string]string
 
-func normalizeFilePath(path string) string {
-	if runtime.GOOS == "windows" {
-		return strings.ReplaceAll(path, "/", `\`)
-	}
-	return path
-}
-
 func isRemoteLocation(path string) bool {
 	return strings.HasPrefix(path, "https://") ||
 		strings.HasPrefix(path, "http://")
@@ -880,19 +872,4 @@ func isRemoteLocation(path string) bool {
 func isStaticResourcePath(path string) bool {
 	return strings.HasPrefix(path, "/web/") ||
 		strings.HasPrefix(path, "web/")
-}
-
-type httpResource struct {
-	Path        string
-	ContentType string
-	Body        []byte
-	ExpireAt    time.Time
-}
-
-func (r httpResource) Len() int {
-	return len(r.Body)
-}
-
-func (r httpResource) IsExpired() bool {
-	return r.ExpireAt != time.Time{} && r.ExpireAt.Before(time.Now())
 }
