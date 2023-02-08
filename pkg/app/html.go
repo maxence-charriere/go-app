@@ -353,14 +353,13 @@ func (e *htmlElement) htmlWithIndent(w io.Writer, indent int) {
 		io.WriteString(w, k)
 
 		if v != "" {
-			io.WriteString(w, `="`)
-			io.WriteString(w, resolveAttributeURLValue(k, v, func(s string) string {
+			io.WriteString(w, `=`)
+			io.WriteString(w, strconv.Quote(resolveAttributeURLValue(k, v, func(s string) string {
 				if e.dispatcher != nil {
 					return e.dispatcher.resolveStaticResource(v)
 				}
 				return v
-			}))
-			io.WriteString(w, `"`)
+			})))
 		}
 	}
 
