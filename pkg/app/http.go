@@ -686,7 +686,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		Div(), // Pre-rendeging placeholder
 		Aside().
 			ID("app-wasm-loader").
-			Class("goapp-app-info").
+			Class("app-wasm-loader-hidden").
 			Body(
 				Img().
 					ID("app-wasm-loader-icon").
