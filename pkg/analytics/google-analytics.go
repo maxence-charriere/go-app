@@ -10,7 +10,7 @@ import (
 // field to initialize Google Analytics.
 func GoogleAnalyticsHeader(propertyID string) string {
 	return fmt.Sprintf(`<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script defer src="https://www.googletagmanager.com/gtag/js?id=%s"></script>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=%s"></script>
 	<script>
 	  window.dataLayer = window.dataLayer || [];
 	  function gtag(){dataLayer.push(arguments);}
@@ -25,7 +25,6 @@ func NewGoogleAnalytics() Backend {
 }
 
 type googleAnalytics struct {
-	propertyID string
 }
 
 func (a googleAnalytics) Identify(userID string, traits map[string]interface{}) {
