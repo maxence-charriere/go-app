@@ -326,15 +326,21 @@ func (e *htmlElement) html(w io.Writer) {
 		return
 	}
 
+	hasNewLineChildren := (len(e.children) == 1 && e.children[0].Kind() == HTML) ||
+		len(e.children) > 1
+
 	for _, c := range e.children {
-		io.WriteString(w, "\n")
+		if hasNewLineChildren {
+			io.WriteString(w, "\n")
+		}
+
 		if c.self() == nil {
 			c.setSelf(c)
 		}
 		c.html(w)
 	}
 
-	if len(e.children) != 0 {
+	if hasNewLineChildren {
 		io.WriteString(w, "\n")
 	}
 
@@ -369,15 +375,21 @@ func (e *htmlElement) htmlWithIndent(w io.Writer, indent int) {
 		return
 	}
 
+	hasNewLineChildren := (len(e.children) == 1 && e.children[0].Kind() == HTML) ||
+		len(e.children) > 1
+
 	for _, c := range e.children {
-		io.WriteString(w, "\n")
+		if hasNewLineChildren {
+			io.WriteString(w, "\n")
+		}
+
 		if c.self() == nil {
 			c.setSelf(c)
 		}
 		c.htmlWithIndent(w, indent+1)
 	}
 
-	if len(e.children) != 0 {
+	if hasNewLineChildren {
 		io.WriteString(w, "\n")
 		writeIndent(w, indent)
 	}
