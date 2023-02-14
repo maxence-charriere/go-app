@@ -326,8 +326,7 @@ func (e *htmlElement) html(w io.Writer) {
 		return
 	}
 
-	hasNewLineChildren := (len(e.children) == 1 && e.children[0].Kind() != SimpleText) ||
-		len(e.children) > 1
+	hasNewLineChildren := len(e.children) > 1
 
 	for _, c := range e.children {
 		if hasNewLineChildren {
