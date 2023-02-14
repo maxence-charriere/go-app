@@ -326,7 +326,7 @@ func (e *htmlElement) html(w io.Writer) {
 		return
 	}
 
-	hasNewLineChildren := (len(e.children) == 1 && e.children[0].Kind() == HTML) ||
+	hasNewLineChildren := (len(e.children) == 1 && e.children[0].Kind() != SimpleText) ||
 		len(e.children) > 1
 
 	for _, c := range e.children {
@@ -375,7 +375,7 @@ func (e *htmlElement) htmlWithIndent(w io.Writer, indent int) {
 		return
 	}
 
-	hasNewLineChildren := (len(e.children) == 1 && e.children[0].Kind() == HTML) ||
+	hasNewLineChildren := (len(e.children) == 1 && e.children[0].Kind() != SimpleText) ||
 		len(e.children) > 1
 
 	for _, c := range e.children {
