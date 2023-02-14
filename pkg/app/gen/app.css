@@ -77,17 +77,3 @@
   font-size: 65pt;
   font-weight: 100;
 }
-
-/*------------------------------------------------------------------------------
-  Widget Layout
-------------------------------------------------------------------------------*/
-.goapp-shell-hamburger-button-default {
-  font-size: 24px;
-  padding: 12px 18px;
-  color: currentColor;
-}
-
-.goapp-shell-hamburger-button-default:hover {
-  color: dodgerblue;
-  cursor: pointer;
-}
