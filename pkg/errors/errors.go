@@ -1,212 +1,249 @@
-// Package errors implements functions to manipulate errors.
-//
-// Errors created are taggable and wrappable.
-//
-//   errWithTags := errors.New("an error with tags").
-//       Tag("a", 42).
-// 	     Tag("b", 21)
-//
-//   errWithWrap := errors.New("error").
-//       Tag("a", 42).
-// 	     Wrap(errors.New("wrapped error"))
-//
-// The package mirrors https://golang.org/pkg/errors package.
 package errors
 
 import (
-	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"path/filepath"
 	"reflect"
-	"sort"
-	"strings"
-	"unsafe"
+	"runtime"
 )
 
-// As is documented at https://golang.org/pkg/errors/#As.
-func As(err error, target interface{}) bool {
-	return errors.As(err, target)
+var (
+	// The function used to encode errors and their tags.
+	Encoder func(any) ([]byte, error)
+)
+
+func init() {
+	SetInlineEncoder()
 }
 
-// Is is documented at https://golang.org/pkg/errors/#Is.
-func Is(err, target error) bool {
-	return errors.Is(err, target)
+// SetInlineEncoder is a helper function that set the error encoder to
+// json.Marshal.
+func SetInlineEncoder() {
+	Encoder = json.Marshal
 }
 
-// Unwrap is documented at https://golang.org/pkg/errors/#Unwrap.
+// SetIndentEncoder is a helper function that set the error encoder to a
+// function that uses json.MarshalIndent.
+func SetIndentEncoder() {
+	Encoder = func(v any) ([]byte, error) {
+		return json.MarshalIndent(v, "", "  ")
+	}
+}
+
+// Unwrap returns the result of calling the Unwrap method on err, if err's type
+// contains an Unwrap method returning error.
+// Otherwise, Unwrap returns nil.
 func Unwrap(err error) error {
 	return errors.Unwrap(err)
 }
 
-// Tag retrieves the value of the tag named by the key. If the tag exists,
-// its value (which may be empty) is returned and the boolean is true. Otherwise
-// the returned value will be empty and the boolean will be false.
-func Tag(err error, k string) (string, bool) {
-	ierr, ok := err.(Error)
-	if !ok {
-		return "", false
-	}
-	return ierr.Lookup(k)
+// Is reports whether any error in err's chain matches target.
+//
+// The chain consists of err itself followed by the sequence of errors obtained
+// by repeatedly calling Unwrap.
+//
+// An error is considered to match a target if it is equal to that target or if
+// it implements a method Is(error) bool such that Is(target) returns true.
+//
+// An error type might provide an Is method so it can be treated as equivalent
+// to an existing error. For example, if MyError defines
+//
+//	func (m MyError) Is(target error) bool { return target == fs.ErrExist }
+//
+// then Is(MyError{}, fs.ErrExist) returns true. See syscall.Errno.Is for an
+// example in the standard library. An Is method should only shallowly compare
+// err and the target and not call Unwrap on either.
+func Is(err, target error) bool {
+	return errors.Is(err, target)
 }
 
-// New returns an error with the given description that can be tagged.
-func New(v string) Error {
-	return Error{
-		description: v,
-	}
+// As finds the first error in err's chain that matches target, and if one is
+// found, sets target to that error value and returns true. Otherwise, it
+// returns false.
+//
+// The chain consists of err itself followed by the sequence of errors obtained
+// by repeatedly calling Unwrap.
+//
+// An error matches target if the error's concrete value is assignable to the
+// value pointed to by target, or if the error has a method As(any) bool
+// such that As(target) returns true. In the latter case, the As method is
+// responsible for setting target.
+//
+// An error type might provide an As method so it can be treated as if it were a
+// different error type.
+//
+// As panics if target is not a non-nil pointer to either a type that implements
+// error, or to any interface type.
+func As(err error, target any) bool {
+	return errors.As(err, target)
 }
 
-// Newf returns an error with the given formatted description that can be
-// tagged.
-func Newf(format string, v ...interface{}) Error {
-	return New(fmt.Sprintf(format, v...))
-}
-
-// Error is an error implementation that supports tagging and wrapping.
-type Error struct {
-	description string
-	tags        []tag
-	maxKeyLen   int
-	wrap        error
-}
-
-// Tag sets the named tag with the given value.
-func (e Error) Tag(k string, v interface{}) Error {
-	if e.tags == nil {
-		e.tags = make([]tag, 0, 8)
+// Type returns the type of the error.
+//
+// Uses reflect.TypeOf() when the given error does not implements the Error
+// interface.
+func Type(err error) string {
+	if err == nil {
+		return ""
 	}
 
-	if l := len(k); l > e.maxKeyLen {
-		e.maxKeyLen = l
+	if err, ok := err.(interface{ Type() string }); ok {
+		return err.Type()
 	}
 
-	switch v := v.(type) {
-	case string:
-		e.tags = append(e.tags, tag{key: k, value: v})
-
-	default:
-		e.tags = append(e.tags, tag{key: k, value: fmt.Sprintf("%+v", v)})
-	}
-
-	return e
+	return reflect.TypeOf(err).String()
 }
 
-// Lookup retrieves the value of the tag named by the key. If the tag exists,
-// its value (which may be empty) is returned and the boolean is true. Otherwise
-// the returned value will be empty and the boolean will be false.
-func (e Error) Lookup(tag string) (string, bool) {
-	for _, t := range e.tags {
-		if t.key == tag {
-			return t.value, true
+// HasType reports whether any error in err's chain matches the given type.
+//
+// The chain consists of err itself followed by the sequence of errors obtained
+// by repeatedly calling Unwrap.
+//
+// An error matches the given type if the error has a method Type() string such
+// that Type() returns a string equal to the given type.
+func HasType(err error, v string) bool {
+	for {
+		if v == Type(err) {
+			return true
+		}
+
+		if err = Unwrap(err); err == nil {
+			return false
 		}
 	}
-
-	if w, ok := e.wrap.(Error); ok {
-		return w.Lookup(tag)
-	}
-	return "", false
 }
 
-// Wrap wraps the given error. Nil errors are ingnored.
-func (e Error) Wrap(err error) Error {
-	if err == nil {
-		return e
-	}
+// Tag returns the first tag value in err's chain that matches the given key.
+//
+// The chain consists of err itself followed by the sequence of errors obtained
+// by repeatedly calling Unwrap.
+//
+// An error has a tag when it has a method Tag(string) string such that Tag(k)
+// returns a non-empty string value.
+func Tag(err error, k string) any {
+	for {
+		if err, ok := err.(Error); ok {
+			if v := err.Tag(k); v != nil {
+				return v
+			}
+		}
 
-	if e.maxKeyLen < 5 {
-		e.maxKeyLen = 5
+		if err = Unwrap(err); err == nil {
+			return nil
+		}
 	}
+}
 
-	if e.wrap == nil {
-		e.wrap = err
-		return e
+// An enriched error.
+type Error struct {
+	Line        string
+	Message     string
+	DefinedType string
+	Tags        map[string]any
+	WrappedErr  error
+}
+
+// New returns an error with the given message that can be enriched with a type
+// and tags.
+func New(msg string) Error {
+	return makeError(msg)
+}
+
+// Newf returns an error with the given formatted message that can be enriched
+// with a type and tags.
+func Newf(msgFormat string, v ...any) Error {
+	return makeError(msgFormat, v...)
+}
+
+func makeError(msgFormat string, v ...any) Error {
+	_, filename, line, _ := runtime.Caller(2)
+
+	err := Error{
+		Line:    fmt.Sprintf("%s:%v", filepath.Base(filename), line),
+		Message: fmt.Sprintf(msgFormat, v...),
 	}
+	return err
+}
 
-	description := ""
-	if perr, ok := err.(Error); ok {
-		description = perr.description
-	} else {
-		description = err.Error()
-	}
-
-	e.wrap = New(description).Wrap(e.wrap)
+func (e Error) WithType(v string) Error {
+	e.DefinedType = v
 	return e
 }
 
-// Unwrap unwraps the given error.
-func (e Error) Unwrap() error {
-	return e.wrap
+func (e Error) Type() string {
+	if e.DefinedType != "" {
+		return e.DefinedType
+	}
+
+	if e.WrappedErr != nil {
+		return Type(e.WrappedErr)
+	}
+
+	return reflect.TypeOf(e).String()
 }
 
-// Is reports if the target matches the error or its wrapped values.
-func (e Error) Is(target error) bool {
-	o, ok := target.(Error)
+func (e Error) WithTag(k string, v any) Error {
+	if e.Tags == nil {
+		e.Tags = make(map[string]any)
+	}
+
+	e.Tags[k] = v
+	return e
+}
+
+func (e Error) Tag(k string) any {
+	return e.Tags[k]
+}
+
+func (e Error) Wrap(err error) Error {
+	e.WrappedErr = err
+	return e
+}
+
+func (e Error) Unwrap() error {
+	return e.WrappedErr
+}
+
+func (e Error) Error() string {
+	s, err := Encoder(e)
+	if err != nil {
+		return fmt.Sprintf(`{"message": "encoding error failed: %s"}`, err)
+	}
+	return string(s)
+}
+
+func (e Error) MarshalJSON() ([]byte, error) {
+	var wrappedErr any = e.WrappedErr
+	if _, ok := e.WrappedErr.(Error); !ok && e.WrappedErr != nil {
+		wrappedErr = e.WrappedErr.Error()
+	}
+
+	return Encoder(struct {
+		Line        string         `json:"line,omitempty"`
+		Message     string         `json:"message"`
+		DefinedType string         `json:"type,omitempty"`
+		Tags        map[string]any `json:"tags,omitempty"`
+		WrappedErr  any            `json:"wrap,omitempty"`
+	}{
+		Line:        e.Line,
+		Message:     e.Message,
+		DefinedType: e.DefinedType,
+		Tags:        e.Tags,
+		WrappedErr:  wrappedErr,
+	})
+}
+
+func (e Error) Is(err error) bool {
+	rerr, ok := err.(Error)
 	if !ok {
 		return false
 	}
 
-	return e.description == o.description &&
-		reflect.DeepEqual(e.tags, o.tags)
-}
-
-func (e Error) Error() string {
-	w := bytes.NewBuffer(make([]byte, 0, len(e.description)+len(e.tags)*(e.maxKeyLen+11)))
-	e.format(w, 0)
-	return bytesToString(w.Bytes())
-}
-
-func (e Error) format(w *bytes.Buffer, indent int) {
-	w.WriteString(e.description)
-	if e.wrap != nil || len(e.tags) != 0 {
-		w.WriteByte(':')
-	}
-
-	tags := e.tags
-	sort.Slice(tags, func(a, b int) bool {
-		return strings.Compare(tags[a].key, tags[b].key) < 0
-	})
-
-	for _, t := range e.tags {
-		k := t.key
-		v := t.value
-
-		w.WriteByte('\n')
-		e.indent(w, indent+4)
-		w.WriteString(k)
-		w.WriteByte(':')
-		e.indent(w, e.maxKeyLen-len(k)+1)
-		w.WriteString(v)
-	}
-
-	if e.wrap == nil {
-		return
-	}
-
-	w.WriteByte('\n')
-	e.indent(w, indent+4)
-	w.WriteString("error")
-	w.WriteByte(':')
-	e.indent(w, e.maxKeyLen-5+1)
-
-	if err, ok := e.wrap.(Error); ok {
-		err.format(w, indent+4)
-		return
-	}
-
-	w.WriteString(e.wrap.Error())
-}
-
-func (e Error) indent(w *bytes.Buffer, n int) {
-	for i := 0; i < n; i++ {
-		w.WriteByte(' ')
-	}
-}
-
-type tag struct {
-	key   string
-	value string
-}
-
-func bytesToString(b []byte) string {
-	return *(*string)(unsafe.Pointer(&b))
+	return rerr.Line == e.Line &&
+		rerr.Message == e.Message &&
+		rerr.DefinedType == e.DefinedType &&
+		reflect.DeepEqual(rerr.Tags, e.Tags) &&
+		rerr.WrappedErr == e.WrappedErr
 }

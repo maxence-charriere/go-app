@@ -108,8 +108,8 @@ func (c condition) getChildren() []UI {
 
 func (c condition) mount(Dispatcher) error {
 	return errors.New("condition is not mountable").
-		Tag("name", c.name()).
-		Tag("kind", c.Kind())
+		WithTag("name", c.name()).
+		WithTag("kind", c.Kind())
 }
 
 func (c condition) dismount() {
@@ -121,11 +121,8 @@ func (c condition) canUpdateWith(UI) bool {
 
 func (c condition) updateWith(UI) error {
 	return errors.New("condition cannot be updated").
-		Tag("name", c.name()).
-		Tag("kind", c.Kind())
-}
-
-func (c condition) preRender(Page) {
+		WithTag("name", c.name()).
+		WithTag("kind", c.Kind())
 }
 
 func (c condition) onComponentEvent(any) {

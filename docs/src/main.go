@@ -103,6 +103,9 @@ func main() {
 		Description: defaultDescription,
 		Author:      "Maxence Charriere",
 		Image:       "https://go-app.dev/web/images/go-app.png",
+		Icon: app.Icon{
+			Default: "/web/icon.png",
+		},
 		Keywords: []string{
 			"go-app",
 			"go",
@@ -158,8 +161,8 @@ func main() {
 
 func runLocal(ctx context.Context, h *app.Handler, opts localOptions) {
 	app.Log(logs.New("starting go-app documentation service").
-		Tag("port", opts.Port).
-		Tag("version", h.Version),
+		WithTag("port", opts.Port).
+		WithTag("version", h.Version),
 	)
 
 	h.Env = app.Environment{

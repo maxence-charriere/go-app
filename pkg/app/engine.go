@@ -156,16 +156,6 @@ func (e *engine) Close() {
 	})
 }
 
-func (e *engine) PreRender() {
-	e.Dispatch(Dispatch{
-		Mode:   Update,
-		Source: e.Body,
-		Function: func(ctx Context) {
-			ctx.Src().preRender(e.Page)
-		},
-	})
-}
-
 func (e *engine) Mount(v UI) {
 	e.Dispatch(Dispatch{
 		Mode:   Update,

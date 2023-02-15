@@ -82,7 +82,7 @@ func getHTML(n *html.Node, class string) (string, error) {
 	section, err := findHTMLNode(n, class)
 	if err != nil {
 		return "", errors.New("finding html node failed").
-			Tag("target", class).
+			WithTag("target", class).
 			Wrap(err)
 	}
 
@@ -91,7 +91,7 @@ func getHTML(n *html.Node, class string) (string, error) {
 	var b bytes.Buffer
 	if err := html.Render(&b, section); err != nil {
 		return "", errors.New("rendering html failed").
-			Tag("target", class).
+			WithTag("target", class).
 			Wrap(err)
 	}
 	return b.String(), nil
