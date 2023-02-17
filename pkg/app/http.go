@@ -145,6 +145,13 @@ type Handler struct {
 	// would be the URL for an OAuth authentication.
 	InternalURLs []string
 
+	// The URLs of the origins to preconnect in order to improve the user
+	// experience by preemptively initiating a connection to those origins.
+	// Preconnecting speeds up future loads from a given origin by preemptively
+	// performing part or all of the handshake (DNS+TCP for HTTP, and
+	// DNS+TCP+TLS for HTTPS origins).
+	Preconnect []string
+
 	// The cache that stores pre-rendered pages.
 	//
 	// Default: A LRU cache that keeps pages up to 24h and have a maximum size
@@ -199,7 +206,7 @@ func (h *Handler) init() {
 	h.initVersion()
 	h.initStaticResources()
 	h.initImage()
-	h.initStyles()
+	h.initLinks()
 	h.initScripts()
 	h.initServiceWorker()
 	h.initCacheableResources()
@@ -230,7 +237,11 @@ func (h *Handler) initImage() {
 	}
 }
 
-func (h *Handler) initStyles() {
+func (h *Handler) initLinks() {
+	for i, path := range h.Preconnect {
+		h.Preconnect[i] = h.resolveStaticPath(path)
+	}
+
 	for i, path := range h.Styles {
 		h.Styles[i] = h.resolveStaticPath(path)
 	}
@@ -757,6 +768,11 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Property("og:image").
 					Content(page.Image()),
 				Title().Text(page.Title()),
+				Range(h.Preconnect).Slice(func(i int) UI {
+					return Link().
+						Rel("preconnect").
+						Href(h.Preconnect[i])
+				}),
 				Link().
 					Rel("icon").
 					Href(icon),
