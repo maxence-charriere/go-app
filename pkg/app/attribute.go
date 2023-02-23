@@ -17,8 +17,14 @@ func (a attributes) Set(name string, value any) {
 		if s != "" {
 			s += " "
 		}
-		s += toAttributeValue(value)
-		a[name] = s
+		a[name] = s + toAttributeValue(value)
+
+	case "srcset":
+		s := a[name]
+		if s != "" {
+			s += ", "
+		}
+		a[name] = s + toAttributeValue(value)
 
 	default:
 		a[name] = toAttributeValue(value)
@@ -68,9 +74,15 @@ func resolveAttributeURLValue(name, value string, resolve attributeURLResolver) 
 	case "cite",
 		"data",
 		"href",
-		"src",
-		"srcset":
+		"src":
 		return resolve(value)
+
+	case "srcset":
+		srcs := strings.Split(value, ", ")
+		for i, src := range srcs {
+			srcs[i] = resolve(src)
+		}
+		return strings.Join(srcs, ", ")
 
 	default:
 		return value
