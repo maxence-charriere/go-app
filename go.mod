@@ -7,7 +7,7 @@ require (
 	github.com/gomarkdown/markdown v0.0.0-20220607163217-45f7c050e2d1
 	github.com/google/uuid v1.3.0
 	github.com/stretchr/testify v1.6.1
-	golang.org/x/net v0.0.0-20220615171555-694bf12d69de
+	golang.org/x/net v0.7.0
 )
 
 require (
