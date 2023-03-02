@@ -95,6 +95,12 @@ func main() {
 }
 ```
 
+### Build the client
+
+```
+GOARCH=wasm GOOS=js go build -o web/app.wasm
+```
+
 ## Getting started
 
 **Read the [Getting Started](https://go-app.dev/getting-started) document**.
