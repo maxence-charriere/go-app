@@ -3,8 +3,27 @@ package app
 import (
 	"bytes"
 	"fmt"
+	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
+
+func TestHTMLElementHTML(t *testing.T) {
+	t.Run("srcset", func(t *testing.T) {
+		e := Img().Src("/web/test.jpg").
+			SrcSet("/web/test.webp").
+			SrcSet("/web/test/jpg")
+
+		var b strings.Builder
+		e.html(&b)
+
+		html := b.String()
+
+		require.Equal(t, 1, strings.Count(html, "/web/test.webp"))
+		t.Log(html)
+	})
+}
 
 func BenchmarkMountHTMLElement(b *testing.B) {
 	for n := 0; n < b.N; n++ {

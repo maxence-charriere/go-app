@@ -313,9 +313,9 @@ func (e *htmlElement) html(w io.Writer) {
 			io.WriteString(w, `=`)
 			io.WriteString(w, strconv.Quote(resolveAttributeURLValue(k, v, func(s string) string {
 				if e.dispatcher != nil {
-					return e.dispatcher.resolveStaticResource(v)
+					return e.dispatcher.resolveStaticResource(s)
 				}
-				return v
+				return s
 			})))
 		}
 	}
@@ -361,9 +361,9 @@ func (e *htmlElement) htmlWithIndent(w io.Writer, indent int) {
 			io.WriteString(w, `=`)
 			io.WriteString(w, strconv.Quote(resolveAttributeURLValue(k, v, func(s string) string {
 				if e.dispatcher != nil {
-					return e.dispatcher.resolveStaticResource(v)
+					return e.dispatcher.resolveStaticResource(s)
 				}
-				return v
+				return s
 			})))
 		}
 	}
