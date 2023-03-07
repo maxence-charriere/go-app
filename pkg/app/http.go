@@ -775,8 +775,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 					link := Link().
 						Rel("preconnect").
-						Href(url).
-						CrossOrigin(crossOrigin)
+						Href(url)
 
 					if crossOrigin != "" {
 						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
