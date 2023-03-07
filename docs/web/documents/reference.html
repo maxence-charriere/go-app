@@ -15,7 +15,7 @@ using module mode; GOMOD=/Users/maxence/Dev/src/github.com/maxence-charriere/go-
 
 
 
-<script>var goVersion = "go1.19.5";</script>
+<script>var goVersion = "go1.20.1";</script>
 <script src="/lib/godoc/godocs.js" defer></script>
 </head>
 <body>
@@ -125,7 +125,7 @@ resources to run Go-based progressive web apps.
 			
 			
 				
-				<dd><a href="#AppendClass">func AppendClass(class, c string) string</a></dd>
+				<dd><a href="#AppendClass">func AppendClass(class string, v ...string) string</a></dd>
 			
 				
 				<dd><a href="#Broadcast">func Broadcast(s *State)</a></dd>
@@ -176,7 +176,13 @@ resources to run Go-based progressive web apps.
 				<dd><a href="#Route">func Route(path string, c Composer)</a></dd>
 			
 				
+				<dd><a href="#RouteFunc">func RouteFunc(path string, newComponent func() Composer)</a></dd>
+			
+				
 				<dd><a href="#RouteWithRegexp">func RouteWithRegexp(pattern string, c Composer)</a></dd>
+			
+				
+				<dd><a href="#RouteWithRegexpFunc">func RouteWithRegexpFunc(pattern string, newComponent func() Composer)</a></dd>
 			
 				
 				<dd><a href="#RunWhenOnBrowser">func RunWhenOnBrowser()</a></dd>
@@ -1566,13 +1572,13 @@ resources to run Go-based progressive web apps.
 		
 			
 			
-			<h2 id="AppendClass">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/strings.go?s=1795:1835#L104">AppendClass</a>
+			<h2 id="AppendClass">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/strings.go?s=1689:1739#L96">AppendClass</a>
 				<a class="permalink" href="#AppendClass">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func AppendClass(class, c <a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
-			<p>AppendClass adds c to the given class string.
+			<pre>func AppendClass(class <a href="/pkg/builtin/#string">string</a>, v ...<a href="/pkg/builtin/#string">string</a>) <a href="/pkg/builtin/#string">string</a></pre>
+			<p>AppendClass adds values to the given class string.
 
 			
 			
@@ -1811,15 +1817,14 @@ into the given writer.
 		
 			
 			
-			<h2 id="Route">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/route.go?s=287:322#L7">Route</a>
+			<h2 id="Route">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/route.go?s=182:217#L5">Route</a>
 				<a class="permalink" href="#Route">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func Route(path <a href="/pkg/builtin/#string">string</a>, c <a href="#Composer">Composer</a>)</pre>
-			<p>Route associates the type of the given component to the given path.
-<p>When a page is requested and matches the route, a new instance of the given
-component is created before being displayed.
+			<p>Route set the type of component to be mounted when a page is navigated to the
+given path.
 
 			
 			
@@ -1827,17 +1832,44 @@ component is created before being displayed.
 		
 			
 			
-			<h2 id="RouteWithRegexp">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/route.go?s=639:687#L18">RouteWithRegexp</a>
+			<h2 id="RouteFunc">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/route.go?s=620:677#L18">RouteFunc</a>
+				<a class="permalink" href="#RouteFunc">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func RouteFunc(path <a href="/pkg/builtin/#string">string</a>, newComponent func() <a href="#Composer">Composer</a>)</pre>
+			<p>RouteFunc set a function that creates the component to be mounted when a page
+is navigated to the given path.
+
+			
+			
+
+		
+			
+			
+			<h2 id="RouteWithRegexp">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/route.go?s=394:442#L11">RouteWithRegexp</a>
 				<a class="permalink" href="#RouteWithRegexp">&#xb6;</a>
 				
 				
 			</h2>
 			<pre>func RouteWithRegexp(pattern <a href="/pkg/builtin/#string">string</a>, c <a href="#Composer">Composer</a>)</pre>
-			<p>RouteWithRegexp associates the type of the given component to the given
-regular expression pattern.
-<p>Patterns use the Go standard regexp format.
-<p>When a page is requested and matches the pattern, a new instance of the given
-component is created before being displayed.
+			<p>RouteWithRegexp set the type of component to be mounted when a page is
+navigated to a path that matches the given pattern.
+
+			
+			
+
+		
+			
+			
+			<h2 id="RouteWithRegexpFunc">func <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/route.go?s=866:936#L24">RouteWithRegexpFunc</a>
+				<a class="permalink" href="#RouteWithRegexpFunc">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func RouteWithRegexpFunc(pattern <a href="/pkg/builtin/#string">string</a>, newComponent func() <a href="#Composer">Composer</a>)</pre>
+			<p>RouteWithRegexpFunc set a function that creates the component to be mounted
+when a page is navigated to a path that matches the given pattern.
 
 			
 			
@@ -2787,7 +2819,7 @@ UI instructions and UI elements lifecycle.
 		
 			
 			
-			<h2 id="Environment">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=20982:21016#L856">Environment</a>
+			<h2 id="Environment">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=22153:22187#L903">Environment</a>
 				<a class="permalink" href="#Environment">&#xb6;</a>
 				
 				
@@ -24968,7 +25000,7 @@ be used any more.
 		
 			
 			
-			<h2 id="Handler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=480:5153#L22">Handler</a>
+			<h2 id="Handler">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=469:5488#L21">Handler</a>
 				<a class="permalink" href="#Handler">&#xb6;</a>
 				
 				
@@ -25093,6 +25125,13 @@ and its resources.
     <span class="comment">// would be the URL for an OAuth authentication.</span>
 <span id="Handler.InternalURLs"></span>    InternalURLs []<a href="/pkg/builtin/#string">string</a>
 
+    <span class="comment">// The URLs of the origins to preconnect in order to improve the user</span>
+    <span class="comment">// experience by preemptively initiating a connection to those origins.</span>
+    <span class="comment">// Preconnecting speeds up future loads from a given origin by preemptively</span>
+    <span class="comment">// performing part or all of the handshake (DNS+TCP for HTTP, and</span>
+    <span class="comment">// DNS+TCP+TLS for HTTPS origins).</span>
+<span id="Handler.Preconnect"></span>    Preconnect []<a href="/pkg/builtin/#string">string</a>
+
     <span class="comment">// The cache that stores pre-rendered pages.</span>
     <span class="comment">//</span>
     <span class="comment">// Default: A LRU cache that keeps pages up to 24h and have a maximum size</span>
@@ -25152,7 +25191,7 @@ and its resources.
 
 			
 				
-				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=13065:13132#L520">ServeHTTP</a>
+				<h3 id="Handler.ServeHTTP">func (*Handler) <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=13511:13578#L532">ServeHTTP</a>
 					<a class="permalink" href="#Handler.ServeHTTP">&#xb6;</a>
 					
 					
@@ -25166,7 +25205,7 @@ and its resources.
 		
 			
 			
-			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=20305:20890#L830">Icon</a>
+			<h2 id="Icon">type <a href="/src/github.com/maxence-charriere/go-app/v9/pkg/app/http.go?s=21476:22061#L877">Icon</a>
 				<a class="permalink" href="#Icon">&#xb6;</a>
 				
 				
@@ -26795,7 +26834,7 @@ package.
 
 
 <div id="footer">
-Build version go1.19.5.<br>
+Build version go1.20.1.<br>
 Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
 the content of this page is licensed under the
 Creative Commons Attribution 3.0 License,
