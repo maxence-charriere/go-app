@@ -410,6 +410,8 @@ func (h *Handler) makeAppWorkerJS() []byte {
 			if r == "" {
 				continue
 			}
+
+			r, _, _ = parseSrc(r)
 			resources[r] = struct{}{}
 		}
 	}
@@ -769,9 +771,18 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Content(page.Image()),
 				Title().Text(page.Title()),
 				Range(h.Preconnect).Slice(func(i int) UI {
-					return Link().
+					url, crossOrigin, _ := parseSrc(h.Preconnect[i])
+
+					link := Link().
 						Rel("preconnect").
-						Href(h.Preconnect[i])
+						Href(url).
+						CrossOrigin(crossOrigin)
+
+					if crossOrigin != "" {
+						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
+					}
+
+					return link
 				}),
 				Link().
 					Rel("icon").
@@ -787,10 +798,18 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Rel("stylesheet").
 					Href(h.resolvePackagePath("/app.css")),
 				Range(h.Styles).Slice(func(i int) UI {
-					return Link().
+					url, crossOrigin, _ := parseSrc(h.Styles[i])
+
+					link := Link().
 						Type("text/css").
 						Rel("stylesheet").
-						Href(h.Styles[i])
+						Href(url)
+
+					if crossOrigin != "" {
+						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
+					}
+
+					return link
 				}),
 				Script().
 					Defer(true).
@@ -799,9 +818,23 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Defer(true).
 					Src(h.resolvePackagePath("/app.js")),
 				Range(h.Scripts).Slice(func(i int) UI {
-					return Script().
-						Defer(true).
-						Src(h.Scripts[i])
+					url, crossOrigin, loading := parseSrc(h.Scripts[i])
+
+					script := Script().Src(url)
+
+					if crossOrigin != "" {
+						script = script.CrossOrigin(strings.Trim(crossOrigin, "true"))
+					}
+
+					switch loading {
+					case "defer":
+						script = script.Defer(true)
+
+					case "async":
+						script.Async(true)
+					}
+
+					return script
 				}),
 				Range(h.RawHeaders).Slice(func(i int) UI {
 					return Raw(h.RawHeaders[i])
@@ -888,4 +921,32 @@ func isRemoteLocation(path string) bool {
 func isStaticResourcePath(path string) bool {
 	return strings.HasPrefix(path, "/web/") ||
 		strings.HasPrefix(path, "web/")
+}
+
+func parseSrc(link string) (url, crossOrigin, loading string) {
+	for _, p := range strings.Split(link, " ") {
+		p = strings.TrimSpace(p)
+		if p == "" {
+			continue
+		}
+
+		switch {
+		case p == "crossorigin":
+			crossOrigin = "true"
+
+		case strings.HasPrefix(p, "crossorigin="):
+			crossOrigin = strings.TrimPrefix(p, "crossorigin=")
+
+		case p == "defer":
+			loading = "defer"
+
+		case p == "async":
+			loading = "async"
+
+		default:
+			url = p
+		}
+	}
+
+	return url, crossOrigin, loading
 }

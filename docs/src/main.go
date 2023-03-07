@@ -129,16 +129,16 @@ func main() {
 		BackgroundColor: backgroundColor,
 		ThemeColor:      backgroundColor,
 		LoadingLabel:    "go-app documentation {progress}%",
-		Scripts: []string{
-			"/web/js/prism.js",
-		},
 		Styles: []string{
 			"https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap",
 			"/web/css/prism.css",
 			"/web/css/docs.css",
 		},
+		Scripts: []string{
+			"/web/js/prism.js defer",
+			"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1013306768105236 async crossorigin=anonymous",
+		},
 		RawHeaders: []string{
-			`<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1013306768105236" crossorigin="anonymous"></script>`,
 			analytics.GoogleAnalyticsHeader("G-SW4FQEM9VM"),
 		},
 		CacheableResources: []string{

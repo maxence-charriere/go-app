@@ -57,14 +57,6 @@ func writeIndent(w io.Writer, indent int) {
 	}
 }
 
-func ln() []byte {
-	return []byte("\n")
-}
-
-func pxToString(px int) string {
-	return strconv.Itoa(px) + "px"
-}
-
 func stringTo(s string, v any) error {
 	val := reflect.ValueOf(v)
 
