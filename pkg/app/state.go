@@ -494,8 +494,3 @@ type persistentState struct {
 func (s *persistentState) isExpired(now time.Time) bool {
 	return s.ExpiresAt != time.Time{} && now.After(s.ExpiresAt)
 }
-
-type broadcastState struct {
-	StoreID string          `json:""`
-	Value   json.RawMessage `json:",omitempty"`
-}
