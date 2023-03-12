@@ -190,7 +190,7 @@ type Handler struct {
 	etag                 string
 	proxyResources       map[string]ProxyResource
 	cachedProxyResources *memoryCache
-	pwaResources         *memoryCache
+	cachedPWAResources   *memoryCache
 }
 
 func (h *Handler) init() {
@@ -311,33 +311,33 @@ func (h *Handler) initPageContent() {
 }
 
 func (h *Handler) initPWAResources() {
-	h.pwaResources = newMemoryCache(5)
+	h.cachedPWAResources = newMemoryCache(5)
 
-	h.pwaResources.Set(cacheItem{
+	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/wasm_exec.js",
 		ContentType: "application/javascript",
 		Body:        []byte(wasmExecJS),
 	})
 
-	h.pwaResources.Set(cacheItem{
+	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/app.js",
 		ContentType: "application/javascript",
 		Body:        h.makeAppJS(),
 	})
 
-	h.pwaResources.Set(cacheItem{
+	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/app-worker.js",
 		ContentType: "application/javascript",
 		Body:        h.makeAppWorkerJS(),
 	})
 
-	h.pwaResources.Set(cacheItem{
+	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/manifest.webmanifest",
 		ContentType: "application/manifest+json",
 		Body:        h.makeManifestJSON(),
 	})
 
-	h.pwaResources.Set(cacheItem{
+	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/app.css",
 		ContentType: "text/css",
 		Body:        []byte(appCSS),
@@ -563,7 +563,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	if res, ok := h.pwaResources.Get(path); ok {
+	if res, ok := h.cachedPWAResources.Get(path); ok {
 		h.serveCachedItem(w, res)
 		return
 	}
