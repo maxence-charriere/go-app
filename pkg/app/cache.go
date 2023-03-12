@@ -29,9 +29,6 @@ type PreRenderedItem struct {
 	// The response content encoding.
 	ContentEncoding string
 
-	// The cache control.
-	CacheControl string
-
 	// The response body.
 	Body []byte
 }
@@ -86,11 +83,13 @@ func newPreRenderCache(size int) *preRenderCache {
 		items: make(map[string]PreRenderedItem, size),
 	}
 }
+
 func (c *preRenderCache) Set(ctx context.Context, i PreRenderedItem) {
 	c.mu.Lock()
 	c.items[i.Path] = i
 	c.mu.Unlock()
 }
+
 func (c *preRenderCache) Get(ctx context.Context, path string) (PreRenderedItem, bool) {
 	c.mu.Lock()
 	i, ok := c.items[path]
