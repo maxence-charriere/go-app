@@ -2,7 +2,6 @@ package app
 
 import (
 	"bytes"
-	"context"
 	"crypto/sha1"
 	"encoding/json"
 	"fmt"
@@ -190,8 +189,8 @@ type Handler struct {
 	once                 sync.Once
 	etag                 string
 	proxyResources       map[string]ProxyResource
-	proxyCachedResources PreRenderCache
-	pwaResources         PreRenderCache
+	proxyCachedResources *memoryCache
+	pwaResources         *memoryCache
 }
 
 func (h *Handler) init() {
@@ -312,35 +311,34 @@ func (h *Handler) initPageContent() {
 }
 
 func (h *Handler) initPreRenderedResources() {
-	h.proxyCachedResources = newPreRenderCache(len(h.ProxyResources))
-	h.pwaResources = newPreRenderCache(5)
-	ctx := context.TODO()
+	h.proxyCachedResources = newMemoryCache(len(h.ProxyResources))
+	h.pwaResources = newMemoryCache(5)
 
-	h.pwaResources.Set(ctx, PreRenderedItem{
+	h.pwaResources.Set(cacheItem{
 		Path:        "/wasm_exec.js",
 		ContentType: "application/javascript",
 		Body:        []byte(wasmExecJS),
 	})
 
-	h.pwaResources.Set(ctx, PreRenderedItem{
+	h.pwaResources.Set(cacheItem{
 		Path:        "/app.js",
 		ContentType: "application/javascript",
 		Body:        h.makeAppJS(),
 	})
 
-	h.pwaResources.Set(ctx, PreRenderedItem{
+	h.pwaResources.Set(cacheItem{
 		Path:        "/app-worker.js",
 		ContentType: "application/javascript",
 		Body:        h.makeAppWorkerJS(),
 	})
 
-	h.pwaResources.Set(ctx, PreRenderedItem{
+	h.pwaResources.Set(cacheItem{
 		Path:        "/manifest.webmanifest",
 		ContentType: "application/manifest+json",
 		Body:        h.makeManifestJSON(),
 	})
 
-	h.pwaResources.Set(ctx, PreRenderedItem{
+	h.pwaResources.Set(cacheItem{
 		Path:        "/app.css",
 		ContentType: "text/css",
 		Body:        []byte(appCSS),
@@ -565,7 +563,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	if res, ok := h.pwaResources.Get(r.Context(), path); ok {
+	if res, ok := h.pwaResources.Get(path); ok {
 		h.servePreRenderedItem(w, res)
 		return
 	}
@@ -578,8 +576,8 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.servePage(w, r)
 }
 
-func (h *Handler) servePreRenderedItem(w http.ResponseWriter, i PreRenderedItem) {
-	w.Header().Set("Content-Length", strconv.Itoa(i.Size()))
+func (h *Handler) servePreRenderedItem(w http.ResponseWriter, i cacheItem) {
+	w.Header().Set("Content-Length", strconv.Itoa(i.Len()))
 	w.Header().Set("Content-Type", i.ContentType)
 
 	if i.ContentEncoding != "" {
@@ -634,13 +632,13 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 		return
 	}
 
-	item := PreRenderedItem{
+	item := cacheItem{
 		Path:            resource.Path,
 		ContentType:     res.Header.Get("Content-Type"),
 		ContentEncoding: res.Header.Get("Content-Encoding"),
 		Body:            body,
 	}
-	h.proxyCachedResources.Set(r.Context(), item)
+	h.proxyCachedResources.Set(item)
 	h.servePreRenderedItem(w, item)
 }
 
