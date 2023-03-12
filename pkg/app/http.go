@@ -189,7 +189,7 @@ type Handler struct {
 	once                 sync.Once
 	etag                 string
 	proxyResources       map[string]ProxyResource
-	proxyCachedResources *memoryCache
+	cachedProxyResources *memoryCache
 	pwaResources         *memoryCache
 }
 
@@ -204,7 +204,7 @@ func (h *Handler) init() {
 	h.initIcon()
 	h.initPWA()
 	h.initPageContent()
-	h.initPreRenderedResources()
+	h.initPWAResources()
 	h.initProxyResources()
 }
 
@@ -310,8 +310,7 @@ func (h *Handler) initPageContent() {
 
 }
 
-func (h *Handler) initPreRenderedResources() {
-	h.proxyCachedResources = newMemoryCache(len(h.ProxyResources))
+func (h *Handler) initPWAResources() {
 	h.pwaResources = newMemoryCache(5)
 
 	h.pwaResources.Set(cacheItem{
@@ -478,6 +477,7 @@ func (h *Handler) makeManifestJSON() []byte {
 }
 
 func (h *Handler) initProxyResources() {
+	h.cachedProxyResources = newMemoryCache(len(h.ProxyResources))
 	resources := make(map[string]ProxyResource)
 
 	for _, r := range h.ProxyResources {
@@ -564,7 +564,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if res, ok := h.pwaResources.Get(path); ok {
-		h.servePreRenderedItem(w, res)
+		h.serveCachedItem(w, res)
 		return
 	}
 
@@ -576,7 +576,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.servePage(w, r)
 }
 
-func (h *Handler) servePreRenderedItem(w http.ResponseWriter, i cacheItem) {
+func (h *Handler) serveCachedItem(w http.ResponseWriter, i cacheItem) {
 	w.Header().Set("Content-Length", strconv.Itoa(i.Len()))
 	w.Header().Set("Content-Type", i.ContentType)
 
@@ -600,6 +600,11 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 		u = protocol + r.Host + resource.ResourcePath
 	} else {
 		u = h.Resources.Static() + resource.ResourcePath
+	}
+
+	if i, ok := h.cachedProxyResources.Get(resource.Path); ok {
+		h.serveCachedItem(w, i)
+		return
 	}
 
 	res, err := http.Get(u)
@@ -638,8 +643,8 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 		ContentEncoding: res.Header.Get("Content-Encoding"),
 		Body:            body,
 	}
-	h.proxyCachedResources.Set(item)
-	h.servePreRenderedItem(w, item)
+	h.cachedProxyResources.Set(item)
+	h.serveCachedItem(w, item)
 }
 
 func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
