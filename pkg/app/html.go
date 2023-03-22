@@ -306,10 +306,6 @@ func (e *htmlElement) html(w io.Writer) {
 	io.WriteString(w, e.tag)
 
 	for k, v := range e.attributes {
-		if v == "" && k == "id" || k == "class" {
-			continue
-		}
-
 		io.WriteString(w, " ")
 		io.WriteString(w, k)
 
@@ -358,10 +354,6 @@ func (e *htmlElement) htmlWithIndent(w io.Writer, indent int) {
 	io.WriteString(w, e.tag)
 
 	for k, v := range e.attributes {
-		if v == "" && k == "id" || k == "class" {
-			continue
-		}
-
 		io.WriteString(w, " ")
 		io.WriteString(w, k)
 
