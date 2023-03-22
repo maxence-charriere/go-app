@@ -20,9 +20,7 @@ import (
 )
 
 const (
-	defaultThemeColor         = "#2d2c2c"
-	defaultPreRenderCacheSize = 8000000
-	defaultPreRenderCacheTTL  = time.Hour * 24
+	defaultThemeColor = "#2d2c2c"
 )
 
 // Handler is an HTTP handler that serves an HTML page that loads a Go wasm app
