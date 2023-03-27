@@ -234,6 +234,7 @@ func (h *Handler) initLinks() {
 	for i, path := range h.Styles {
 		h.Styles[i] = h.resolveStaticPath(path)
 	}
+	h.Styles = append([]string{h.resolvePackagePath("/app.css")}, h.Styles...)
 }
 
 func (h *Handler) initScripts() {
@@ -770,10 +771,35 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				Link().
 					Rel("manifest").
 					Href(h.resolvePackagePath("/manifest.webmanifest")),
-				Link().
-					Type("text/css").
-					Rel("stylesheet").
-					Href(h.resolvePackagePath("/app.css")),
+				Range(h.Styles).Slice(func(i int) UI {
+					url, crossOrigin, _ := parseSrc(h.Styles[i])
+
+					link := Link().
+						Type("text/css").
+						Rel("preload").
+						Href(url).
+						As("style")
+
+					if crossOrigin != "" {
+						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
+					}
+
+					return link
+				}),
+				Range(h.Styles).Slice(func(i int) UI {
+					url, crossOrigin, _ := parseSrc(h.Styles[i])
+
+					link := Link().
+						Rel("stylesheet").
+						Type("text/css").
+						Href(url)
+
+					if crossOrigin != "" {
+						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
+					}
+
+					return link
+				}),
 				Range(h.Styles).Slice(func(i int) UI {
 					url, crossOrigin, _ := parseSrc(h.Styles[i])
 

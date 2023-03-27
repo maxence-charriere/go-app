@@ -3837,6 +3837,7 @@ func TestLink(t *testing.T) {
 	elem := Link()
 	elem.AccessKey("foo")
 	elem.Aria("foo", "bar")
+	elem.As("foo")
 	elem.Attr("foo", "bar")
 	elem.Class("foo bar")
 	elem.ContentEditable(true)

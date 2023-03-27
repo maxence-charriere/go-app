@@ -27807,6 +27807,9 @@ type HTMLLink interface {
 	// Aria stores accessible rich internet applications (ARIA) data.
 	Aria(k string, v any) HTMLLink
 
+	// As specifies a resource type to preload.
+	As(v string) HTMLLink
+
 	// Attr sets the named attribute with the given value.
 	Attr(n string, v any) HTMLLink
 
@@ -28005,6 +28008,11 @@ func (e *htmlLink) AccessKey(v string) HTMLLink {
 
 func (e *htmlLink) Aria(k string, v any) HTMLLink {
 	e.setAttr("aria-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlLink) As(v string) HTMLLink {
+	e.setAttr("as", v)
 	return e
 }
 

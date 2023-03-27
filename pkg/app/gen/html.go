@@ -584,6 +584,7 @@ var tags = []tag{
 		Type: selfClosing,
 		Doc:  "defines the relationship between a document and an external resource (most used to link to style sheets).",
 		Attrs: withGlobalAttrs(attrsByNames(
+			"as",
 			"crossorigin",
 			"href",
 			"hreflang",
@@ -1092,6 +1093,11 @@ var attrs = map[string]attr{
 		Name: "Alt",
 		Type: "string",
 		Doc:  "specifies an alternate text when the original element fails to display.",
+	},
+	"as": {
+		Name: "As",
+		Type: "string",
+		Doc:  "specifies a resource type to preload.",
 	},
 	"async": {
 		Name: "Async",
