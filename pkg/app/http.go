@@ -765,15 +765,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 					return link
 				}),
-				Link().
-					Rel("icon").
-					Href(icon),
-				Link().
-					Rel("apple-touch-icon").
-					Href(h.Icon.AppleTouch),
-				Link().
-					Rel("manifest").
-					Href(h.resolvePackagePath("/manifest.webmanifest")),
 				Range(h.Styles).Slice(func(i int) UI {
 					url, crossOrigin, _ := parseSrc(h.Styles[i])
 					if url == "" {
@@ -792,6 +783,15 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 
 					return link
 				}),
+				Link().
+					Rel("icon").
+					Href(icon),
+				Link().
+					Rel("apple-touch-icon").
+					Href(h.Icon.AppleTouch),
+				Link().
+					Rel("manifest").
+					Href(h.resolvePackagePath("/manifest.webmanifest")),
 				Range(h.Styles).Slice(func(i int) UI {
 					url, crossOrigin, _ := parseSrc(h.Styles[i])
 					if url == "" {
