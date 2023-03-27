@@ -751,6 +751,9 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				Title().Text(page.Title()),
 				Range(h.Preconnect).Slice(func(i int) UI {
 					url, crossOrigin, _ := parseSrc(h.Preconnect[i])
+					if url == "" {
+						return nil
+					}
 
 					link := Link().
 						Rel("preconnect").
@@ -773,6 +776,9 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Href(h.resolvePackagePath("/manifest.webmanifest")),
 				Range(h.Styles).Slice(func(i int) UI {
 					url, crossOrigin, _ := parseSrc(h.Styles[i])
+					if url == "" {
+						return nil
+					}
 
 					link := Link().
 						Type("text/css").
@@ -788,6 +794,9 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				}),
 				Range(h.Styles).Slice(func(i int) UI {
 					url, crossOrigin, _ := parseSrc(h.Styles[i])
+					if url == "" {
+						return nil
+					}
 
 					link := Link().
 						Rel("stylesheet").
@@ -802,6 +811,9 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				}),
 				Range(h.Styles).Slice(func(i int) UI {
 					url, crossOrigin, _ := parseSrc(h.Styles[i])
+					if url == "" {
+						return nil
+					}
 
 					link := Link().
 						Type("text/css").
@@ -822,6 +834,9 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Src(h.resolvePackagePath("/app.js")),
 				Range(h.Scripts).Slice(func(i int) UI {
 					url, crossOrigin, loading := parseSrc(h.Scripts[i])
+					if url == "" {
+						return nil
+					}
 
 					script := Script().Src(url)
 
