@@ -41,7 +41,7 @@ type Composer interface {
 	// ValueTo stores the value of the DOM element (if exists) that emitted an
 	// event into the given value.
 	//
-	// The given value must be a pointer to a signed integer, unsigned integer,
+	// The given value must be a pointer to a string, signed integer, unsigned integer,
 	// or a float.
 	//
 	// It panics if the given value is not a pointer.
@@ -212,7 +212,7 @@ func (c *Compo) ResizeContent() {
 // ValueTo stores the value of the DOM element (if exists) that emitted an event
 // into the given value.
 //
-// The given value must be a pointer to a signed integer, unsigned integer, or a
+// The given value must be a pointer to a string, signed integer, unsigned integer, or a
 // float.
 //
 // It panics if the given value is not a pointer.
