@@ -423,6 +423,7 @@ func (h *Handler) makeAppWorkerJS() []byte {
 	)
 	setResources(h.Icon.Default, h.Icon.Large, h.Icon.AppleTouch)
 	setResources(h.Styles...)
+	setResources(h.Fonts...)
 	setResources(h.Scripts...)
 	setResources(h.CacheableResources...)
 
