@@ -249,7 +249,7 @@ func (h *Handler) initLinks() {
 	h.Styles = append([]string{h.resolvePackagePath("/app.css")}, h.Styles...)
 
 	for i, path := range h.Fonts {
-		h.Fonts[i] = h.resolvePackagePath(path)
+		h.Fonts[i] = h.resolveStaticPath(path)
 	}
 }
 
