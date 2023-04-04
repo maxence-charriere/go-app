@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"reflect"
 	"sort"
 	"strconv"
@@ -86,6 +87,17 @@ type Handler struct {
 	//      },
 	//  },
 	Styles []string
+
+	// The paths or urls of the font files to preload with the page.
+	//
+	// eg:
+	//  app.Handler{
+	//      Fonts: []string{
+	//          "/web/test.woff2",            // Static resource
+	//          "https://foo.com/test.woff2", // External resource
+	//      },
+	//  },
+	Fonts []string
 
 	// The paths or urls of the JavaScript files to use with the page.
 	//
@@ -235,6 +247,10 @@ func (h *Handler) initLinks() {
 		h.Styles[i] = h.resolveStaticPath(path)
 	}
 	h.Styles = append([]string{h.resolvePackagePath("/app.css")}, h.Styles...)
+
+	for i, path := range h.Fonts {
+		h.Fonts[i] = h.resolvePackagePath(path)
+	}
 }
 
 func (h *Handler) initScripts() {
@@ -776,6 +792,24 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 						Rel("preload").
 						Href(url).
 						As("style")
+
+					if crossOrigin != "" {
+						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
+					}
+
+					return link
+				}),
+				Range(h.Fonts).Slice(func(i int) UI {
+					url, crossOrigin, _ := parseSrc(h.Fonts[i])
+					if url == "" {
+						return nil
+					}
+
+					link := Link().
+						Type("font/" + filepath.Ext(url)).
+						Rel("preload").
+						Href(url).
+						As("font")
 
 					if crossOrigin != "" {
 						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
