@@ -806,7 +806,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					}
 
 					link := Link().
-						Type("font/" + filepath.Ext(url)).
+						Type("font/" + strings.TrimPrefix(filepath.Ext(url), ".")).
 						Rel("preload").
 						Href(url).
 						As("font")
