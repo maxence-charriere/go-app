@@ -306,18 +306,7 @@ func (e *htmlElement) html(w io.Writer) {
 	io.WriteString(w, e.tag)
 
 	for k, v := range e.attributes {
-		io.WriteString(w, " ")
-		io.WriteString(w, k)
-
-		if v != "" && v != "true" {
-			io.WriteString(w, `=`)
-			io.WriteString(w, strconv.Quote(resolveAttributeURLValue(k, v, func(s string) string {
-				if e.dispatcher != nil {
-					return e.dispatcher.resolveStaticResource(s)
-				}
-				return s
-			})))
-		}
+		e.writeHTMLAttribute(w, k, v)
 	}
 
 	io.WriteString(w, ">")
@@ -354,18 +343,7 @@ func (e *htmlElement) htmlWithIndent(w io.Writer, indent int) {
 	io.WriteString(w, e.tag)
 
 	for k, v := range e.attributes {
-		io.WriteString(w, " ")
-		io.WriteString(w, k)
-
-		if v != "" && v != "true" {
-			io.WriteString(w, `=`)
-			io.WriteString(w, strconv.Quote(resolveAttributeURLValue(k, v, func(s string) string {
-				if e.dispatcher != nil {
-					return e.dispatcher.resolveStaticResource(s)
-				}
-				return s
-			})))
-		}
+		e.writeHTMLAttribute(w, k, v)
 	}
 
 	io.WriteString(w, ">")
@@ -396,4 +374,23 @@ func (e *htmlElement) htmlWithIndent(w io.Writer, indent int) {
 	io.WriteString(w, "</")
 	io.WriteString(w, e.tag)
 	io.WriteString(w, ">")
+}
+
+func (e *htmlElement) writeHTMLAttribute(w io.Writer, k, v string) {
+	if (k == "id" || k == "class") && v == "" {
+		return
+	}
+
+	io.WriteString(w, " ")
+	io.WriteString(w, k)
+
+	if v != "" && v != "true" {
+		io.WriteString(w, `=`)
+		io.WriteString(w, strconv.Quote(resolveAttributeURLValue(k, v, func(s string) string {
+			if e.dispatcher != nil {
+				return e.dispatcher.resolveStaticResource(s)
+			}
+			return s
+		})))
+	}
 }
