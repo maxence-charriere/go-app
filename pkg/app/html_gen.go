@@ -35,6 +35,9 @@ type HTMLA interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLA
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLA
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLA
 
@@ -250,6 +253,13 @@ func (e *htmlA) ContentEditable(v bool) HTMLA {
 
 func (e *htmlA) DataSet(k string, v any) HTMLA {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlA) DataSets(ds map[string]any) HTMLA {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -558,6 +568,9 @@ type HTMLAbbr interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLAbbr
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLAbbr
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLAbbr
 
@@ -749,6 +762,13 @@ func (e *htmlAbbr) ContentEditable(v bool) HTMLAbbr {
 
 func (e *htmlAbbr) DataSet(k string, v any) HTMLAbbr {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlAbbr) DataSets(ds map[string]any) HTMLAbbr {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -1017,6 +1037,9 @@ type HTMLAddress interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLAddress
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLAddress
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLAddress
 
@@ -1208,6 +1231,13 @@ func (e *htmlAddress) ContentEditable(v bool) HTMLAddress {
 
 func (e *htmlAddress) DataSet(k string, v any) HTMLAddress {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlAddress) DataSets(ds map[string]any) HTMLAddress {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -1476,6 +1506,9 @@ type HTMLArea interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLArea
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLArea
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLArea
 
@@ -1692,6 +1725,13 @@ func (e *htmlArea) Coords(v string) HTMLArea {
 
 func (e *htmlArea) DataSet(k string, v any) HTMLArea {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlArea) DataSets(ds map[string]any) HTMLArea {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -2000,6 +2040,9 @@ type HTMLArticle interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLArticle
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLArticle
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLArticle
 
@@ -2191,6 +2234,13 @@ func (e *htmlArticle) ContentEditable(v bool) HTMLArticle {
 
 func (e *htmlArticle) DataSet(k string, v any) HTMLArticle {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlArticle) DataSets(ds map[string]any) HTMLArticle {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -2459,6 +2509,9 @@ type HTMLAside interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLAside
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLAside
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLAside
 
@@ -2650,6 +2703,13 @@ func (e *htmlAside) ContentEditable(v bool) HTMLAside {
 
 func (e *htmlAside) DataSet(k string, v any) HTMLAside {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlAside) DataSets(ds map[string]any) HTMLAside {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -2926,6 +2986,9 @@ type HTMLAudio interface {
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLAudio
+
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLAudio
 
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLAudio
@@ -3214,6 +3277,13 @@ func (e *htmlAudio) CrossOrigin(v string) HTMLAudio {
 
 func (e *htmlAudio) DataSet(k string, v any) HTMLAudio {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlAudio) DataSets(ds map[string]any) HTMLAudio {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -3617,6 +3687,9 @@ type HTMLB interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLB
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLB
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLB
 
@@ -3808,6 +3881,13 @@ func (e *htmlB) ContentEditable(v bool) HTMLB {
 
 func (e *htmlB) DataSet(k string, v any) HTMLB {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlB) DataSets(ds map[string]any) HTMLB {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -4070,6 +4150,9 @@ type HTMLBase interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLBase
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLBase
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLBase
 
@@ -4258,6 +4341,13 @@ func (e *htmlBase) ContentEditable(v bool) HTMLBase {
 
 func (e *htmlBase) DataSet(k string, v any) HTMLBase {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlBase) DataSets(ds map[string]any) HTMLBase {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -4536,6 +4626,9 @@ type HTMLBdi interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLBdi
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLBdi
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLBdi
 
@@ -4727,6 +4820,13 @@ func (e *htmlBdi) ContentEditable(v bool) HTMLBdi {
 
 func (e *htmlBdi) DataSet(k string, v any) HTMLBdi {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlBdi) DataSets(ds map[string]any) HTMLBdi {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -4995,6 +5095,9 @@ type HTMLBdo interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLBdo
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLBdo
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLBdo
 
@@ -5186,6 +5289,13 @@ func (e *htmlBdo) ContentEditable(v bool) HTMLBdo {
 
 func (e *htmlBdo) DataSet(k string, v any) HTMLBdo {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlBdo) DataSets(ds map[string]any) HTMLBdo {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -5457,6 +5567,9 @@ type HTMLBlockquote interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLBlockquote
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLBlockquote
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLBlockquote
 
@@ -5653,6 +5766,13 @@ func (e *htmlBlockquote) ContentEditable(v bool) HTMLBlockquote {
 
 func (e *htmlBlockquote) DataSet(k string, v any) HTMLBlockquote {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlBlockquote) DataSets(ds map[string]any) HTMLBlockquote {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -5917,6 +6037,9 @@ type HTMLBody interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLBody
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLBody
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLBody
 
@@ -6149,6 +6272,13 @@ func (e *htmlBody) ContentEditable(v bool) HTMLBody {
 
 func (e *htmlBody) DataSet(k string, v any) HTMLBody {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlBody) DataSets(ds map[string]any) HTMLBody {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -6486,6 +6616,9 @@ type HTMLBr interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLBr
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLBr
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLBr
 
@@ -6668,6 +6801,13 @@ func (e *htmlBr) ContentEditable(v bool) HTMLBr {
 
 func (e *htmlBr) DataSet(k string, v any) HTMLBr {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlBr) DataSets(ds map[string]any) HTMLBr {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -6939,6 +7079,9 @@ type HTMLButton interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLButton
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLButton
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLButton
 
@@ -7165,6 +7308,13 @@ func (e *htmlButton) ContentEditable(v bool) HTMLButton {
 
 func (e *htmlButton) DataSet(k string, v any) HTMLButton {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlButton) DataSets(ds map[string]any) HTMLButton {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -7483,6 +7633,9 @@ type HTMLCanvas interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLCanvas
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLCanvas
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLCanvas
 
@@ -7680,6 +7833,13 @@ func (e *htmlCanvas) ContentEditable(v bool) HTMLCanvas {
 
 func (e *htmlCanvas) DataSet(k string, v any) HTMLCanvas {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlCanvas) DataSets(ds map[string]any) HTMLCanvas {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -7958,6 +8118,9 @@ type HTMLCaption interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLCaption
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLCaption
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLCaption
 
@@ -8149,6 +8312,13 @@ func (e *htmlCaption) ContentEditable(v bool) HTMLCaption {
 
 func (e *htmlCaption) DataSet(k string, v any) HTMLCaption {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlCaption) DataSets(ds map[string]any) HTMLCaption {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -8417,6 +8587,9 @@ type HTMLCite interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLCite
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLCite
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLCite
 
@@ -8608,6 +8781,13 @@ func (e *htmlCite) ContentEditable(v bool) HTMLCite {
 
 func (e *htmlCite) DataSet(k string, v any) HTMLCite {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlCite) DataSets(ds map[string]any) HTMLCite {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -8876,6 +9056,9 @@ type HTMLCode interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLCode
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLCode
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLCode
 
@@ -9067,6 +9250,13 @@ func (e *htmlCode) ContentEditable(v bool) HTMLCode {
 
 func (e *htmlCode) DataSet(k string, v any) HTMLCode {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlCode) DataSets(ds map[string]any) HTMLCode {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -9329,6 +9519,9 @@ type HTMLCol interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLCol
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLCol
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLCol
 
@@ -9514,6 +9707,13 @@ func (e *htmlCol) ContentEditable(v bool) HTMLCol {
 
 func (e *htmlCol) DataSet(k string, v any) HTMLCol {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlCol) DataSets(ds map[string]any) HTMLCol {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -9787,6 +9987,9 @@ type HTMLColGroup interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLColGroup
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLColGroup
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLColGroup
 
@@ -9981,6 +10184,13 @@ func (e *htmlColGroup) ContentEditable(v bool) HTMLColGroup {
 
 func (e *htmlColGroup) DataSet(k string, v any) HTMLColGroup {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlColGroup) DataSets(ds map[string]any) HTMLColGroup {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -10254,6 +10464,9 @@ type HTMLData interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLData
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLData
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLData
 
@@ -10346,6 +10559,13 @@ func (e *htmlData) ContentEditable(v bool) HTMLData {
 
 func (e *htmlData) DataSet(k string, v any) HTMLData {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlData) DataSets(ds map[string]any) HTMLData {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -10448,6 +10668,9 @@ type HTMLDataList interface {
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLDataList
+
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLDataList
 
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLDataList
@@ -10640,6 +10863,13 @@ func (e *htmlDataList) ContentEditable(v bool) HTMLDataList {
 
 func (e *htmlDataList) DataSet(k string, v any) HTMLDataList {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDataList) DataSets(ds map[string]any) HTMLDataList {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -10908,6 +11138,9 @@ type HTMLDd interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLDd
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLDd
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLDd
 
@@ -11099,6 +11332,13 @@ func (e *htmlDd) ContentEditable(v bool) HTMLDd {
 
 func (e *htmlDd) DataSet(k string, v any) HTMLDd {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDd) DataSets(ds map[string]any) HTMLDd {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -11370,6 +11610,9 @@ type HTMLDel interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLDel
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLDel
+
 	// DateTime specifies the date and time.
 	DateTime(v string) HTMLDel
 
@@ -11569,6 +11812,13 @@ func (e *htmlDel) ContentEditable(v bool) HTMLDel {
 
 func (e *htmlDel) DataSet(k string, v any) HTMLDel {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDel) DataSets(ds map[string]any) HTMLDel {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -11842,6 +12092,9 @@ type HTMLDetails interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLDetails
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLDetails
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLDetails
 
@@ -12039,6 +12292,13 @@ func (e *htmlDetails) ContentEditable(v bool) HTMLDetails {
 
 func (e *htmlDetails) DataSet(k string, v any) HTMLDetails {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDetails) DataSets(ds map[string]any) HTMLDetails {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -12317,6 +12577,9 @@ type HTMLDfn interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLDfn
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLDfn
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLDfn
 
@@ -12508,6 +12771,13 @@ func (e *htmlDfn) ContentEditable(v bool) HTMLDfn {
 
 func (e *htmlDfn) DataSet(k string, v any) HTMLDfn {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDfn) DataSets(ds map[string]any) HTMLDfn {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -12776,6 +13046,9 @@ type HTMLDialog interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLDialog
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLDialog
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLDialog
 
@@ -12970,6 +13243,13 @@ func (e *htmlDialog) ContentEditable(v bool) HTMLDialog {
 
 func (e *htmlDialog) DataSet(k string, v any) HTMLDialog {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDialog) DataSets(ds map[string]any) HTMLDialog {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -13243,6 +13523,9 @@ type HTMLDiv interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLDiv
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLDiv
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLDiv
 
@@ -13434,6 +13717,13 @@ func (e *htmlDiv) ContentEditable(v bool) HTMLDiv {
 
 func (e *htmlDiv) DataSet(k string, v any) HTMLDiv {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDiv) DataSets(ds map[string]any) HTMLDiv {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -13702,6 +13992,9 @@ type HTMLDl interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLDl
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLDl
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLDl
 
@@ -13893,6 +14186,13 @@ func (e *htmlDl) ContentEditable(v bool) HTMLDl {
 
 func (e *htmlDl) DataSet(k string, v any) HTMLDl {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDl) DataSets(ds map[string]any) HTMLDl {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -14161,6 +14461,9 @@ type HTMLDt interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLDt
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLDt
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLDt
 
@@ -14352,6 +14655,13 @@ func (e *htmlDt) ContentEditable(v bool) HTMLDt {
 
 func (e *htmlDt) DataSet(k string, v any) HTMLDt {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlDt) DataSets(ds map[string]any) HTMLDt {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -14620,6 +14930,9 @@ type HTMLElem interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLElem
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLElem
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLElem
 
@@ -14814,6 +15127,13 @@ func (e *htmlElem) ContentEditable(v bool) HTMLElem {
 
 func (e *htmlElem) DataSet(k string, v any) HTMLElem {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlElem) DataSets(ds map[string]any) HTMLElem {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -15081,6 +15401,9 @@ type HTMLElemSelfClosing interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLElemSelfClosing
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLElemSelfClosing
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLElemSelfClosing
 
@@ -15266,6 +15589,13 @@ func (e *htmlElemSelfClosing) ContentEditable(v bool) HTMLElemSelfClosing {
 
 func (e *htmlElemSelfClosing) DataSet(k string, v any) HTMLElemSelfClosing {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlElemSelfClosing) DataSets(ds map[string]any) HTMLElemSelfClosing {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -15539,6 +15869,9 @@ type HTMLEm interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLEm
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLEm
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLEm
 
@@ -15730,6 +16063,13 @@ func (e *htmlEm) ContentEditable(v bool) HTMLEm {
 
 func (e *htmlEm) DataSet(k string, v any) HTMLEm {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlEm) DataSets(ds map[string]any) HTMLEm {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -15991,6 +16331,9 @@ type HTMLEmbed interface {
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLEmbed
+
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLEmbed
 
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLEmbed
@@ -16255,6 +16598,13 @@ func (e *htmlEmbed) ContentEditable(v bool) HTMLEmbed {
 
 func (e *htmlEmbed) DataSet(k string, v any) HTMLEmbed {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlEmbed) DataSets(ds map[string]any) HTMLEmbed {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -16658,6 +17008,9 @@ type HTMLFieldSet interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLFieldSet
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLFieldSet
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLFieldSet
 
@@ -16858,6 +17211,13 @@ func (e *htmlFieldSet) ContentEditable(v bool) HTMLFieldSet {
 
 func (e *htmlFieldSet) DataSet(k string, v any) HTMLFieldSet {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlFieldSet) DataSets(ds map[string]any) HTMLFieldSet {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -17141,6 +17501,9 @@ type HTMLFigCaption interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLFigCaption
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLFigCaption
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLFigCaption
 
@@ -17332,6 +17695,13 @@ func (e *htmlFigCaption) ContentEditable(v bool) HTMLFigCaption {
 
 func (e *htmlFigCaption) DataSet(k string, v any) HTMLFigCaption {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlFigCaption) DataSets(ds map[string]any) HTMLFigCaption {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -17600,6 +17970,9 @@ type HTMLFigure interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLFigure
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLFigure
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLFigure
 
@@ -17791,6 +18164,13 @@ func (e *htmlFigure) ContentEditable(v bool) HTMLFigure {
 
 func (e *htmlFigure) DataSet(k string, v any) HTMLFigure {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlFigure) DataSets(ds map[string]any) HTMLFigure {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -18059,6 +18439,9 @@ type HTMLFooter interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLFooter
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLFooter
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLFooter
 
@@ -18250,6 +18633,13 @@ func (e *htmlFooter) ContentEditable(v bool) HTMLFooter {
 
 func (e *htmlFooter) DataSet(k string, v any) HTMLFooter {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlFooter) DataSets(ds map[string]any) HTMLFooter {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -18527,6 +18917,9 @@ type HTMLForm interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLForm
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLForm
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLForm
 
@@ -18753,6 +19146,13 @@ func (e *htmlForm) ContentEditable(v bool) HTMLForm {
 
 func (e *htmlForm) DataSet(k string, v any) HTMLForm {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlForm) DataSets(ds map[string]any) HTMLForm {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -19046,6 +19446,9 @@ type HTMLH1 interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLH1
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLH1
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLH1
 
@@ -19237,6 +19640,13 @@ func (e *htmlH1) ContentEditable(v bool) HTMLH1 {
 
 func (e *htmlH1) DataSet(k string, v any) HTMLH1 {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlH1) DataSets(ds map[string]any) HTMLH1 {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -19505,6 +19915,9 @@ type HTMLH2 interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLH2
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLH2
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLH2
 
@@ -19696,6 +20109,13 @@ func (e *htmlH2) ContentEditable(v bool) HTMLH2 {
 
 func (e *htmlH2) DataSet(k string, v any) HTMLH2 {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlH2) DataSets(ds map[string]any) HTMLH2 {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -19964,6 +20384,9 @@ type HTMLH3 interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLH3
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLH3
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLH3
 
@@ -20155,6 +20578,13 @@ func (e *htmlH3) ContentEditable(v bool) HTMLH3 {
 
 func (e *htmlH3) DataSet(k string, v any) HTMLH3 {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlH3) DataSets(ds map[string]any) HTMLH3 {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -20423,6 +20853,9 @@ type HTMLH4 interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLH4
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLH4
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLH4
 
@@ -20614,6 +21047,13 @@ func (e *htmlH4) ContentEditable(v bool) HTMLH4 {
 
 func (e *htmlH4) DataSet(k string, v any) HTMLH4 {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlH4) DataSets(ds map[string]any) HTMLH4 {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -20882,6 +21322,9 @@ type HTMLH5 interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLH5
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLH5
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLH5
 
@@ -21073,6 +21516,13 @@ func (e *htmlH5) ContentEditable(v bool) HTMLH5 {
 
 func (e *htmlH5) DataSet(k string, v any) HTMLH5 {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlH5) DataSets(ds map[string]any) HTMLH5 {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -21341,6 +21791,9 @@ type HTMLH6 interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLH6
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLH6
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLH6
 
@@ -21532,6 +21985,13 @@ func (e *htmlH6) ContentEditable(v bool) HTMLH6 {
 
 func (e *htmlH6) DataSet(k string, v any) HTMLH6 {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlH6) DataSets(ds map[string]any) HTMLH6 {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -21800,6 +22260,9 @@ type HTMLHead interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLHead
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLHead
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLHead
 
@@ -21889,6 +22352,13 @@ func (e *htmlHead) ContentEditable(v bool) HTMLHead {
 
 func (e *htmlHead) DataSet(k string, v any) HTMLHead {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlHead) DataSets(ds map[string]any) HTMLHead {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -21986,6 +22456,9 @@ type HTMLHeader interface {
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLHeader
+
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLHeader
 
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLHeader
@@ -22178,6 +22651,13 @@ func (e *htmlHeader) ContentEditable(v bool) HTMLHeader {
 
 func (e *htmlHeader) DataSet(k string, v any) HTMLHeader {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlHeader) DataSets(ds map[string]any) HTMLHeader {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -22440,6 +22920,9 @@ type HTMLHr interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLHr
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLHr
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLHr
 
@@ -22622,6 +23105,13 @@ func (e *htmlHr) ContentEditable(v bool) HTMLHr {
 
 func (e *htmlHr) DataSet(k string, v any) HTMLHr {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlHr) DataSets(ds map[string]any) HTMLHr {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -22886,6 +23376,9 @@ type HTMLHtml interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLHtml
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLHtml
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLHtml
 
@@ -22971,6 +23464,13 @@ func (e *htmlHtml) ContentEditable(v bool) HTMLHtml {
 
 func (e *htmlHtml) DataSet(k string, v any) HTMLHtml {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlHtml) DataSets(ds map[string]any) HTMLHtml {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -23068,6 +23568,9 @@ type HTMLI interface {
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLI
+
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLI
 
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLI
@@ -23260,6 +23763,13 @@ func (e *htmlI) ContentEditable(v bool) HTMLI {
 
 func (e *htmlI) DataSet(k string, v any) HTMLI {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlI) DataSets(ds map[string]any) HTMLI {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -23537,6 +24047,9 @@ type HTMLIFrame interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLIFrame
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLIFrame
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLIFrame
 
@@ -23780,6 +24293,13 @@ func (e *htmlIFrame) ContentEditable(v bool) HTMLIFrame {
 
 func (e *htmlIFrame) DataSet(k string, v any) HTMLIFrame {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlIFrame) DataSets(ds map[string]any) HTMLIFrame {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -24093,6 +24613,9 @@ type HTMLImg interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLImg
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLImg
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLImg
 
@@ -24378,6 +24901,13 @@ func (e *htmlImg) CrossOrigin(v string) HTMLImg {
 
 func (e *htmlImg) DataSet(k string, v any) HTMLImg {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlImg) DataSets(ds map[string]any) HTMLImg {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -24813,6 +25343,9 @@ type HTMLInput interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLInput
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLInput
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLInput
 
@@ -25108,6 +25641,13 @@ func (e *htmlInput) ContentEditable(v bool) HTMLInput {
 
 func (e *htmlInput) DataSet(k string, v any) HTMLInput {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlInput) DataSets(ds map[string]any) HTMLInput {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -25506,6 +26046,9 @@ type HTMLIns interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLIns
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLIns
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLIns
 
@@ -25697,6 +26240,13 @@ func (e *htmlIns) ContentEditable(v bool) HTMLIns {
 
 func (e *htmlIns) DataSet(k string, v any) HTMLIns {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlIns) DataSets(ds map[string]any) HTMLIns {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -25965,6 +26515,9 @@ type HTMLKbd interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLKbd
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLKbd
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLKbd
 
@@ -26156,6 +26709,13 @@ func (e *htmlKbd) ContentEditable(v bool) HTMLKbd {
 
 func (e *htmlKbd) DataSet(k string, v any) HTMLKbd {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlKbd) DataSets(ds map[string]any) HTMLKbd {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -26424,6 +26984,9 @@ type HTMLLabel interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLLabel
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLLabel
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLLabel
 
@@ -26621,6 +27184,13 @@ func (e *htmlLabel) ContentEditable(v bool) HTMLLabel {
 
 func (e *htmlLabel) DataSet(k string, v any) HTMLLabel {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlLabel) DataSets(ds map[string]any) HTMLLabel {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -26899,6 +27469,9 @@ type HTMLLegend interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLLegend
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLLegend
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLLegend
 
@@ -27090,6 +27663,13 @@ func (e *htmlLegend) ContentEditable(v bool) HTMLLegend {
 
 func (e *htmlLegend) DataSet(k string, v any) HTMLLegend {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlLegend) DataSets(ds map[string]any) HTMLLegend {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -27358,6 +27938,9 @@ type HTMLLi interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLLi
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLLi
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLLi
 
@@ -27552,6 +28135,13 @@ func (e *htmlLi) ContentEditable(v bool) HTMLLi {
 
 func (e *htmlLi) DataSet(k string, v any) HTMLLi {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlLi) DataSets(ds map[string]any) HTMLLi {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -27825,6 +28415,9 @@ type HTMLLink interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLLink
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLLink
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLLink
 
@@ -28038,6 +28631,13 @@ func (e *htmlLink) CrossOrigin(v string) HTMLLink {
 
 func (e *htmlLink) DataSet(k string, v any) HTMLLink {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlLink) DataSets(ds map[string]any) HTMLLink {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -28341,6 +28941,9 @@ type HTMLMain interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLMain
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLMain
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLMain
 
@@ -28532,6 +29135,13 @@ func (e *htmlMain) ContentEditable(v bool) HTMLMain {
 
 func (e *htmlMain) DataSet(k string, v any) HTMLMain {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlMain) DataSets(ds map[string]any) HTMLMain {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -28800,6 +29410,9 @@ type HTMLMap interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLMap
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLMap
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLMap
 
@@ -28994,6 +29607,13 @@ func (e *htmlMap) ContentEditable(v bool) HTMLMap {
 
 func (e *htmlMap) DataSet(k string, v any) HTMLMap {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlMap) DataSets(ds map[string]any) HTMLMap {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -29267,6 +29887,9 @@ type HTMLMark interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLMark
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLMark
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLMark
 
@@ -29458,6 +30081,13 @@ func (e *htmlMark) ContentEditable(v bool) HTMLMark {
 
 func (e *htmlMark) DataSet(k string, v any) HTMLMark {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlMark) DataSets(ds map[string]any) HTMLMark {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -29726,6 +30356,9 @@ type HTMLMeta interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLMeta
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLMeta
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLMeta
 
@@ -29825,6 +30458,13 @@ func (e *htmlMeta) ContentEditable(v bool) HTMLMeta {
 
 func (e *htmlMeta) DataSet(k string, v any) HTMLMeta {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlMeta) DataSets(ds map[string]any) HTMLMeta {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -29937,6 +30577,9 @@ type HTMLMeter interface {
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLMeter
+
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLMeter
 
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLMeter
@@ -30150,6 +30793,13 @@ func (e *htmlMeter) ContentEditable(v bool) HTMLMeter {
 
 func (e *htmlMeter) DataSet(k string, v any) HTMLMeter {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlMeter) DataSets(ds map[string]any) HTMLMeter {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -30453,6 +31103,9 @@ type HTMLNav interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLNav
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLNav
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLNav
 
@@ -30644,6 +31297,13 @@ func (e *htmlNav) ContentEditable(v bool) HTMLNav {
 
 func (e *htmlNav) DataSet(k string, v any) HTMLNav {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlNav) DataSets(ds map[string]any) HTMLNav {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -30912,6 +31572,9 @@ type HTMLNoScript interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLNoScript
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLNoScript
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLNoScript
 
@@ -31001,6 +31664,13 @@ func (e *htmlNoScript) ContentEditable(v bool) HTMLNoScript {
 
 func (e *htmlNoScript) DataSet(k string, v any) HTMLNoScript {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlNoScript) DataSets(ds map[string]any) HTMLNoScript {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -31101,6 +31771,9 @@ type HTMLObject interface {
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLObject
+
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLObject
 
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLObject
@@ -31385,6 +32058,13 @@ func (e *htmlObject) Data(v string) HTMLObject {
 
 func (e *htmlObject) DataSet(k string, v any) HTMLObject {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlObject) DataSets(ds map[string]any) HTMLObject {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -31798,6 +32478,9 @@ type HTMLOl interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLOl
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLOl
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLOl
 
@@ -31998,6 +32681,13 @@ func (e *htmlOl) ContentEditable(v bool) HTMLOl {
 
 func (e *htmlOl) DataSet(k string, v any) HTMLOl {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlOl) DataSets(ds map[string]any) HTMLOl {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -32281,6 +32971,9 @@ type HTMLOptGroup interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLOptGroup
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLOptGroup
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLOptGroup
 
@@ -32478,6 +33171,13 @@ func (e *htmlOptGroup) ContentEditable(v bool) HTMLOptGroup {
 
 func (e *htmlOptGroup) DataSet(k string, v any) HTMLOptGroup {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlOptGroup) DataSets(ds map[string]any) HTMLOptGroup {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -32756,6 +33456,9 @@ type HTMLOption interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLOption
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLOption
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLOption
 
@@ -32959,6 +33662,13 @@ func (e *htmlOption) ContentEditable(v bool) HTMLOption {
 
 func (e *htmlOption) DataSet(k string, v any) HTMLOption {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlOption) DataSets(ds map[string]any) HTMLOption {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -33247,6 +33957,9 @@ type HTMLOutput interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLOutput
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLOutput
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLOutput
 
@@ -33447,6 +34160,13 @@ func (e *htmlOutput) ContentEditable(v bool) HTMLOutput {
 
 func (e *htmlOutput) DataSet(k string, v any) HTMLOutput {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlOutput) DataSets(ds map[string]any) HTMLOutput {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -33730,6 +34450,9 @@ type HTMLP interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLP
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLP
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLP
 
@@ -33921,6 +34644,13 @@ func (e *htmlP) ContentEditable(v bool) HTMLP {
 
 func (e *htmlP) DataSet(k string, v any) HTMLP {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlP) DataSets(ds map[string]any) HTMLP {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -34183,6 +34913,9 @@ type HTMLParam interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLParam
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLParam
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLParam
 
@@ -34371,6 +35104,13 @@ func (e *htmlParam) ContentEditable(v bool) HTMLParam {
 
 func (e *htmlParam) DataSet(k string, v any) HTMLParam {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlParam) DataSets(ds map[string]any) HTMLParam {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -34649,6 +35389,9 @@ type HTMLPicture interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLPicture
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLPicture
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLPicture
 
@@ -34840,6 +35583,13 @@ func (e *htmlPicture) ContentEditable(v bool) HTMLPicture {
 
 func (e *htmlPicture) DataSet(k string, v any) HTMLPicture {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlPicture) DataSets(ds map[string]any) HTMLPicture {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -35108,6 +35858,9 @@ type HTMLPre interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLPre
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLPre
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLPre
 
@@ -35299,6 +36052,13 @@ func (e *htmlPre) ContentEditable(v bool) HTMLPre {
 
 func (e *htmlPre) DataSet(k string, v any) HTMLPre {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlPre) DataSets(ds map[string]any) HTMLPre {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -35567,6 +36327,9 @@ type HTMLProgress interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLProgress
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLProgress
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLProgress
 
@@ -35764,6 +36527,13 @@ func (e *htmlProgress) ContentEditable(v bool) HTMLProgress {
 
 func (e *htmlProgress) DataSet(k string, v any) HTMLProgress {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlProgress) DataSets(ds map[string]any) HTMLProgress {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -36045,6 +36815,9 @@ type HTMLQ interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLQ
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLQ
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLQ
 
@@ -36241,6 +37014,13 @@ func (e *htmlQ) ContentEditable(v bool) HTMLQ {
 
 func (e *htmlQ) DataSet(k string, v any) HTMLQ {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlQ) DataSets(ds map[string]any) HTMLQ {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -36509,6 +37289,9 @@ type HTMLRp interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLRp
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLRp
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLRp
 
@@ -36700,6 +37483,13 @@ func (e *htmlRp) ContentEditable(v bool) HTMLRp {
 
 func (e *htmlRp) DataSet(k string, v any) HTMLRp {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlRp) DataSets(ds map[string]any) HTMLRp {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -36968,6 +37758,9 @@ type HTMLRt interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLRt
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLRt
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLRt
 
@@ -37159,6 +37952,13 @@ func (e *htmlRt) ContentEditable(v bool) HTMLRt {
 
 func (e *htmlRt) DataSet(k string, v any) HTMLRt {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlRt) DataSets(ds map[string]any) HTMLRt {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -37427,6 +38227,9 @@ type HTMLRuby interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLRuby
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLRuby
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLRuby
 
@@ -37618,6 +38421,13 @@ func (e *htmlRuby) ContentEditable(v bool) HTMLRuby {
 
 func (e *htmlRuby) DataSet(k string, v any) HTMLRuby {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlRuby) DataSets(ds map[string]any) HTMLRuby {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -37886,6 +38696,9 @@ type HTMLS interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLS
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLS
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLS
 
@@ -38077,6 +38890,13 @@ func (e *htmlS) ContentEditable(v bool) HTMLS {
 
 func (e *htmlS) DataSet(k string, v any) HTMLS {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlS) DataSets(ds map[string]any) HTMLS {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -38345,6 +39165,9 @@ type HTMLSamp interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLSamp
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLSamp
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLSamp
 
@@ -38536,6 +39359,13 @@ func (e *htmlSamp) ContentEditable(v bool) HTMLSamp {
 
 func (e *htmlSamp) DataSet(k string, v any) HTMLSamp {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSamp) DataSets(ds map[string]any) HTMLSamp {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -38813,6 +39643,9 @@ type HTMLScript interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLScript
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLScript
+
 	// Defer specifies that the script is executed when the page has finished parsing (only for external scripts).
 	Defer(v bool) HTMLScript
 
@@ -38932,6 +39765,13 @@ func (e *htmlScript) DataSet(k string, v any) HTMLScript {
 	return e
 }
 
+func (e *htmlScript) DataSets(ds map[string]any) HTMLScript {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
+	return e
+}
+
 func (e *htmlScript) Defer(v bool) HTMLScript {
 	e.setAttr("defer", v)
 	return e
@@ -39046,6 +39886,9 @@ type HTMLSection interface {
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLSection
+
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLSection
 
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLSection
@@ -39238,6 +40081,13 @@ func (e *htmlSection) ContentEditable(v bool) HTMLSection {
 
 func (e *htmlSection) DataSet(k string, v any) HTMLSection {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSection) DataSets(ds map[string]any) HTMLSection {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -39509,6 +40359,9 @@ type HTMLSelect interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLSelect
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLSelect
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLSelect
 
@@ -39723,6 +40576,13 @@ func (e *htmlSelect) ContentEditable(v bool) HTMLSelect {
 
 func (e *htmlSelect) DataSet(k string, v any) HTMLSelect {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSelect) DataSets(ds map[string]any) HTMLSelect {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -40021,6 +40881,9 @@ type HTMLSmall interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLSmall
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLSmall
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLSmall
 
@@ -40212,6 +41075,13 @@ func (e *htmlSmall) ContentEditable(v bool) HTMLSmall {
 
 func (e *htmlSmall) DataSet(k string, v any) HTMLSmall {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSmall) DataSets(ds map[string]any) HTMLSmall {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -40474,6 +41344,9 @@ type HTMLSource interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLSource
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLSource
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLSource
 
@@ -40671,6 +41544,13 @@ func (e *htmlSource) ContentEditable(v bool) HTMLSource {
 
 func (e *htmlSource) DataSet(k string, v any) HTMLSource {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSource) DataSets(ds map[string]any) HTMLSource {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -40964,6 +41844,9 @@ type HTMLSpan interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLSpan
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLSpan
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLSpan
 
@@ -41155,6 +42038,13 @@ func (e *htmlSpan) ContentEditable(v bool) HTMLSpan {
 
 func (e *htmlSpan) DataSet(k string, v any) HTMLSpan {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSpan) DataSets(ds map[string]any) HTMLSpan {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -41423,6 +42313,9 @@ type HTMLStrong interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLStrong
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLStrong
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLStrong
 
@@ -41614,6 +42507,13 @@ func (e *htmlStrong) ContentEditable(v bool) HTMLStrong {
 
 func (e *htmlStrong) DataSet(k string, v any) HTMLStrong {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlStrong) DataSets(ds map[string]any) HTMLStrong {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -41882,6 +42782,9 @@ type HTMLStyle interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLStyle
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLStyle
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLStyle
 
@@ -42082,6 +42985,13 @@ func (e *htmlStyle) ContentEditable(v bool) HTMLStyle {
 
 func (e *htmlStyle) DataSet(k string, v any) HTMLStyle {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlStyle) DataSets(ds map[string]any) HTMLStyle {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -42365,6 +43275,9 @@ type HTMLSub interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLSub
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLSub
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLSub
 
@@ -42556,6 +43469,13 @@ func (e *htmlSub) ContentEditable(v bool) HTMLSub {
 
 func (e *htmlSub) DataSet(k string, v any) HTMLSub {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSub) DataSets(ds map[string]any) HTMLSub {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -42824,6 +43744,9 @@ type HTMLSummary interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLSummary
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLSummary
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLSummary
 
@@ -43015,6 +43938,13 @@ func (e *htmlSummary) ContentEditable(v bool) HTMLSummary {
 
 func (e *htmlSummary) DataSet(k string, v any) HTMLSummary {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSummary) DataSets(ds map[string]any) HTMLSummary {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -43283,6 +44213,9 @@ type HTMLSup interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLSup
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLSup
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLSup
 
@@ -43474,6 +44407,13 @@ func (e *htmlSup) ContentEditable(v bool) HTMLSup {
 
 func (e *htmlSup) DataSet(k string, v any) HTMLSup {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlSup) DataSets(ds map[string]any) HTMLSup {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -43742,6 +44682,9 @@ type HTMLTable interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLTable
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLTable
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLTable
 
@@ -43933,6 +44876,13 @@ func (e *htmlTable) ContentEditable(v bool) HTMLTable {
 
 func (e *htmlTable) DataSet(k string, v any) HTMLTable {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTable) DataSets(ds map[string]any) HTMLTable {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -44201,6 +45151,9 @@ type HTMLTBody interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLTBody
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLTBody
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLTBody
 
@@ -44392,6 +45345,13 @@ func (e *htmlTBody) ContentEditable(v bool) HTMLTBody {
 
 func (e *htmlTBody) DataSet(k string, v any) HTMLTBody {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTBody) DataSets(ds map[string]any) HTMLTBody {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -44663,6 +45623,9 @@ type HTMLTd interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLTd
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLTd
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLTd
 
@@ -44865,6 +45828,13 @@ func (e *htmlTd) ContentEditable(v bool) HTMLTd {
 
 func (e *htmlTd) DataSet(k string, v any) HTMLTd {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTd) DataSets(ds map[string]any) HTMLTd {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -45143,6 +46113,9 @@ type HTMLTemplate interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLTemplate
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLTemplate
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLTemplate
 
@@ -45232,6 +46205,13 @@ func (e *htmlTemplate) ContentEditable(v bool) HTMLTemplate {
 
 func (e *htmlTemplate) DataSet(k string, v any) HTMLTemplate {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTemplate) DataSets(ds map[string]any) HTMLTemplate {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -45335,6 +46315,9 @@ type HTMLTextarea interface {
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLTextarea
+
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLTextarea
 
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLTextarea
@@ -45568,6 +46551,13 @@ func (e *htmlTextarea) ContentEditable(v bool) HTMLTextarea {
 
 func (e *htmlTextarea) DataSet(k string, v any) HTMLTextarea {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTextarea) DataSets(ds map[string]any) HTMLTextarea {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -45886,6 +46876,9 @@ type HTMLTFoot interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLTFoot
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLTFoot
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLTFoot
 
@@ -46077,6 +47070,13 @@ func (e *htmlTFoot) ContentEditable(v bool) HTMLTFoot {
 
 func (e *htmlTFoot) DataSet(k string, v any) HTMLTFoot {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTFoot) DataSets(ds map[string]any) HTMLTFoot {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -46351,6 +47351,9 @@ type HTMLTh interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLTh
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLTh
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLTh
 
@@ -46561,6 +47564,13 @@ func (e *htmlTh) ContentEditable(v bool) HTMLTh {
 
 func (e *htmlTh) DataSet(k string, v any) HTMLTh {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTh) DataSets(ds map[string]any) HTMLTh {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -46844,6 +47854,9 @@ type HTMLTHead interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLTHead
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLTHead
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLTHead
 
@@ -47035,6 +48048,13 @@ func (e *htmlTHead) ContentEditable(v bool) HTMLTHead {
 
 func (e *htmlTHead) DataSet(k string, v any) HTMLTHead {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTHead) DataSets(ds map[string]any) HTMLTHead {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -47303,6 +48323,9 @@ type HTMLTime interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLTime
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLTime
+
 	// DateTime specifies the date and time.
 	DateTime(v string) HTMLTime
 
@@ -47497,6 +48520,13 @@ func (e *htmlTime) ContentEditable(v bool) HTMLTime {
 
 func (e *htmlTime) DataSet(k string, v any) HTMLTime {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTime) DataSets(ds map[string]any) HTMLTime {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -47770,6 +48800,9 @@ type HTMLTitle interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLTitle
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLTitle
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLTitle
 
@@ -47859,6 +48892,13 @@ func (e *htmlTitle) ContentEditable(v bool) HTMLTitle {
 
 func (e *htmlTitle) DataSet(k string, v any) HTMLTitle {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTitle) DataSets(ds map[string]any) HTMLTitle {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -47956,6 +48996,9 @@ type HTMLTr interface {
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLTr
+
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLTr
 
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLTr
@@ -48148,6 +49191,13 @@ func (e *htmlTr) ContentEditable(v bool) HTMLTr {
 
 func (e *htmlTr) DataSet(k string, v any) HTMLTr {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlTr) DataSets(ds map[string]any) HTMLTr {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -48416,6 +49466,9 @@ type HTMLU interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLU
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLU
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLU
 
@@ -48607,6 +49660,13 @@ func (e *htmlU) ContentEditable(v bool) HTMLU {
 
 func (e *htmlU) DataSet(k string, v any) HTMLU {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlU) DataSets(ds map[string]any) HTMLU {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -48875,6 +49935,9 @@ type HTMLUl interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLUl
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLUl
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLUl
 
@@ -49066,6 +50129,13 @@ func (e *htmlUl) ContentEditable(v bool) HTMLUl {
 
 func (e *htmlUl) DataSet(k string, v any) HTMLUl {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlUl) DataSets(ds map[string]any) HTMLUl {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -49334,6 +50404,9 @@ type HTMLVar interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLVar
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLVar
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLVar
 
@@ -49525,6 +50598,13 @@ func (e *htmlVar) ContentEditable(v bool) HTMLVar {
 
 func (e *htmlVar) DataSet(k string, v any) HTMLVar {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlVar) DataSets(ds map[string]any) HTMLVar {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -49801,6 +50881,9 @@ type HTMLVideo interface {
 
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLVideo
+
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLVideo
 
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLVideo
@@ -50098,6 +51181,13 @@ func (e *htmlVideo) CrossOrigin(v string) HTMLVideo {
 
 func (e *htmlVideo) DataSet(k string, v any) HTMLVideo {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlVideo) DataSets(ds map[string]any) HTMLVideo {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
@@ -50516,6 +51606,9 @@ type HTMLWbr interface {
 	// DataSet stores custom data private to the page or application.
 	DataSet(k string, v any) HTMLWbr
 
+	// DataSets specifies datsets for an element. Can be called multiple times to set multiple data set.
+	DataSets(ds map[string]any) HTMLWbr
+
 	// Dir specifies the text direction for the content in an element.
 	Dir(v string) HTMLWbr
 
@@ -50707,6 +51800,13 @@ func (e *htmlWbr) ContentEditable(v bool) HTMLWbr {
 
 func (e *htmlWbr) DataSet(k string, v any) HTMLWbr {
 	e.setAttr("data-"+k, fmt.Sprintf("%v", v))
+	return e
+}
+
+func (e *htmlWbr) DataSets(ds map[string]any) HTMLWbr {
+	for k, v := range ds {
+		e.DataSet(k, v)
+	}
 	return e
 }
 
