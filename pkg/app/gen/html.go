@@ -1193,6 +1193,11 @@ var attrs = map[string]attr{
 		Type: "data|value",
 		Doc:  "stores custom data private to the page or application.",
 	},
+	"datasets": {
+		Name: "DataSets",
+		Type: "data|map",
+		Doc:  "specifies datsets for an element. Can be called multiple times to set multiple data set.",
+	},
 	"datetime": {
 		Name: "DateTime",
 		Type: "string",
@@ -1662,6 +1667,7 @@ func withGlobalAttrs(attrs ...attr) []attr {
 		"class",
 		"contenteditable",
 		"data-*",
+		"datasets",
 		"dir",
 		"draggable",
 		"hidden",
@@ -2330,6 +2336,17 @@ func writeAttrFunction(w io.Writer, a attr, t tag, isInterface bool) {
 			}`, "%v")
 		}
 
+	case "data|map":
+		fmt.Fprintf(w, `%s(ds map[string]any) HTML%s`, a.Name, t.Name)
+		if !isInterface {
+			fmt.Fprintf(w, `{
+				for k, v := range ds {
+					e.DataSet(k, v)
+				}
+				return e
+			}`)
+		}
+
 	case "attr|value":
 		fmt.Fprintf(w, `%s(n string, v any) HTML%s`, a.Name, t.Name)
 		if !isInterface {
@@ -2485,6 +2502,9 @@ import (
 			switch a.Type {
 			case "data|value", "aria|value", "attr|value":
 				fmt.Fprintln(f, `"foo", "bar")`)
+
+			case "data|map":
+				fmt.Fprintln(f, `map[string]any{"foo": "bar"})`)
 
 			case "style":
 				fmt.Fprintln(f, `"color", "deepskyblue")`)
