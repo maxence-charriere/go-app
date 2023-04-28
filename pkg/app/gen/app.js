@@ -197,8 +197,6 @@ async function goappInitWebAssembly() {
     return;
   }
 
-  loader.className = "app-wasm-loader";
-
   let instantiateStreaming = WebAssembly.instantiateStreaming;
   if (!instantiateStreaming) {
     instantiateStreaming = async (resp, importObject) => {
