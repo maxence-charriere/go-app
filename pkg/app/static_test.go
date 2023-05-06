@@ -1,5 +1,5 @@
-//go:build !wasm
-// +build !wasm
+//go:build !js
+// +build !js
 
 package app
 
@@ -12,7 +12,7 @@ import (
 )
 
 func TestGenerateStaticWebsite(t *testing.T) {
-	testSkipWasm(t)
+	testSkipJS(t)
 
 	dir := "static-test"
 	defer os.RemoveAll(dir)

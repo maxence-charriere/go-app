@@ -16,7 +16,7 @@ func TestRequestPage(t *testing.T) {
 }
 
 func TestBrowserPage(t *testing.T) {
-	testSkipNonWasm(t)
+	testSkipNonJS(t)
 
 	client := NewClientTester(Div())
 	defer client.Close()

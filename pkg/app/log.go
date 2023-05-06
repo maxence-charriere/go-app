@@ -16,13 +16,12 @@ var (
 )
 
 func init() {
-	goarch := runtime.GOARCH
-	if goarch == "wasm" {
+	if runtime.GOOS == "js" {
 		DefaultLogger = clientLog
 		return
 	}
 
-	if goarch != "window" {
+	if runtime.GOOS != "windows" {
 		defaultColor = "\033[00m"
 		errorColor = "\033[91m"
 		infoColor = "\033[94m"

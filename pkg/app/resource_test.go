@@ -1,5 +1,5 @@
-//go:build !wasm
-// +build !wasm
+//go:build !js
+// +build !js
 
 package app
 
@@ -14,7 +14,7 @@ import (
 )
 
 func TestLocalDir(t *testing.T) {
-	testSkipWasm(t)
+	testSkipJS(t)
 
 	h, _ := LocalDir("test").(localDir)
 	require.Equal(t, "test", h.Static())

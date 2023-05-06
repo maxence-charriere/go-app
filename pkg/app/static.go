@@ -1,5 +1,5 @@
-//go:build !wasm
-// +build !wasm
+//go:build !js
+// +build !js
 
 package app
 
