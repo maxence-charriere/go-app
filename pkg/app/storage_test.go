@@ -12,12 +12,12 @@ func TestMemoryStorage(t *testing.T) {
 }
 
 func TestJSLocalStorage(t *testing.T) {
-	testSkipNonWasm(t)
+	testSkipNonJS(t)
 	testBrowserStorage(t, newJSStorage("localStorage"))
 }
 
 func TestJSSessionStorage(t *testing.T) {
-	testSkipNonWasm(t)
+	testSkipNonJS(t)
 	testBrowserStorage(t, newJSStorage("sessionStorage"))
 }
 
@@ -143,7 +143,7 @@ func testBrowserStorageGetError(t *testing.T, s BrowserStorage) {
 }
 
 func testBrowserStorageFull(t *testing.T, s BrowserStorage) {
-	testSkipNonWasm(t)
+	testSkipNonJS(t)
 
 	var err error
 	data := make([]byte, 4096)

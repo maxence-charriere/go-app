@@ -115,3 +115,19 @@ type ProxyResource struct {
 	// "/web/".
 	ResourcePath string
 }
+
+func resolvePackagePath(resources ResourceProvider, path string) string {
+	var b strings.Builder
+
+	b.WriteByte('/')
+	appResources := strings.Trim(resources.Package(), "/")
+	b.WriteString(appResources)
+
+	path = strings.Trim(path, "/")
+	if b.Len() != 1 && path != "" {
+		b.WriteByte('/')
+	}
+	b.WriteString(path)
+
+	return b.String()
+}

@@ -190,6 +190,15 @@ type Handler struct {
 	// worker template is not supported and will be closed.
 	ServiceWorkerTemplate string
 
+	// The driver that is responsible for setting up go-app execution environment
+	// on the client side.
+	//
+	// By default uses the internal implementation targeting Go WebAssembly.
+	// Changing the driver has high chances to mess up go-app usage. Any issue
+	// with go-app using a custom driver must be directed to the author of the
+	// driver.
+	Driver Driver
+
 	once           sync.Once
 	etag           string
 	pwaResources   PreRenderCache
@@ -199,6 +208,7 @@ type Handler struct {
 func (h *Handler) init() {
 	h.initVersion()
 	h.initStaticResources()
+	h.initDriver()
 	h.initImage()
 	h.initStyles()
 	h.initScripts()
@@ -207,6 +217,7 @@ func (h *Handler) init() {
 	h.initIcon()
 	h.initPWA()
 	h.initPageContent()
+	h.initEnv()
 	h.initPreRenderedResources()
 	h.initProxyResources()
 }
@@ -222,6 +233,16 @@ func (h *Handler) initVersion() {
 func (h *Handler) initStaticResources() {
 	if h.Resources == nil {
 		h.Resources = LocalDir("")
+	}
+}
+
+func (h *Handler) initDriver() {
+	if h.Driver == nil {
+		h.Driver = &goWasmDriver{
+			LoadingLabel:            h.LoadingLabel,
+			Resources:               h.Resources,
+			WasmContentLengthHeader: h.WasmContentLengthHeader,
+		}
 	}
 }
 
@@ -309,15 +330,35 @@ func (h *Handler) initPageContent() {
 
 }
 
+func (h *Handler) initEnv() {
+	if h.Env == nil {
+		h.Env = make(map[string]string)
+	}
+	internalURLs, _ := json.Marshal(h.InternalURLs)
+	h.Env["GOAPP_INTERNAL_URLS"] = string(internalURLs)
+	h.Env["GOAPP_VERSION"] = h.Version
+	h.Env["GOAPP_STATIC_RESOURCES_URL"] = h.Resources.Static()
+	h.Env["GOAPP_ROOT_PREFIX"] = h.Resources.Package()
+
+	for k, v := range h.Env {
+		if err := os.Setenv(k, v); err != nil {
+			Log(errors.New("setting app env variable failed").
+				WithTag("name", k).
+				WithTag("value", v).
+				Wrap(err))
+		}
+	}
+}
+
 func (h *Handler) initPreRenderedResources() {
-	h.pwaResources = newPreRenderCache(5)
+	driverItems := h.Driver.PreRenderItems()
+
+	h.pwaResources = newPreRenderCache(4 + len(driverItems))
 	ctx := context.TODO()
 
-	h.pwaResources.Set(ctx, PreRenderedItem{
-		Path:        "/wasm_exec.js",
-		ContentType: "application/javascript",
-		Body:        []byte(wasmExecJS),
-	})
+	for _, item := range driverItems {
+		h.pwaResources.Set(ctx, item)
+	}
 
 	h.pwaResources.Set(ctx, PreRenderedItem{
 		Path:        "/app.js",
@@ -352,41 +393,17 @@ func (h *Handler) initPreRenderedResources() {
 }
 
 func (h *Handler) makeAppJS() []byte {
-	if h.Env == nil {
-		h.Env = make(map[string]string)
-	}
-	internalURLs, _ := json.Marshal(h.InternalURLs)
-	h.Env["GOAPP_INTERNAL_URLS"] = string(internalURLs)
-	h.Env["GOAPP_VERSION"] = h.Version
-	h.Env["GOAPP_STATIC_RESOURCES_URL"] = h.Resources.Static()
-	h.Env["GOAPP_ROOT_PREFIX"] = h.Resources.Package()
-
-	for k, v := range h.Env {
-		if err := os.Setenv(k, v); err != nil {
-			Log(errors.New("setting app env variable failed").
-				WithTag("name", k).
-				WithTag("value", v).
-				Wrap(err))
-		}
-	}
-
 	var b bytes.Buffer
 	if err := template.
 		Must(template.New("app.js").Parse(appJS)).
 		Execute(&b, struct {
-			Env                     string
-			LoadingLabel            string
-			Wasm                    string
-			WasmContentLengthHeader string
-			WorkerJS                string
-			AutoUpdateInterval      int64
+			Env                string
+			WorkerJS           string
+			AutoUpdateInterval int64
 		}{
-			Env:                     jsonString(h.Env),
-			LoadingLabel:            h.LoadingLabel,
-			Wasm:                    h.Resources.AppWASM(),
-			WasmContentLengthHeader: h.WasmContentLengthHeader,
-			WorkerJS:                h.resolvePackagePath("/app-worker.js"),
-			AutoUpdateInterval:      h.AutoUpdateInterval.Milliseconds(),
+			Env:                jsonString(h.Env),
+			WorkerJS:           h.resolvePackagePath("/app-worker.js"),
+			AutoUpdateInterval: h.AutoUpdateInterval.Milliseconds(),
 		}); err != nil {
 		panic(errors.New("initializing app.js failed").Wrap(err))
 	}
@@ -407,14 +424,15 @@ func (h *Handler) makeAppWorkerJS() []byte {
 		h.resolvePackagePath("/app.css"),
 		h.resolvePackagePath("/app.js"),
 		h.resolvePackagePath("/manifest.webmanifest"),
-		h.resolvePackagePath("/wasm_exec.js"),
 		h.resolvePackagePath("/"),
-		h.Resources.AppWASM(),
 	)
 	setResources(h.Icon.Default, h.Icon.Large, h.Icon.AppleTouch)
 	setResources(h.Styles...)
 	setResources(h.Scripts...)
 	setResources(h.CacheableResources...)
+	setResources(h.Driver.Scripts()...)
+	setResources(h.Driver.Styles()...)
+	setResources(h.Driver.CacheableResources()...)
 
 	resourcesTocache := make([]string, 0, len(resources))
 	for k := range resources {
@@ -720,6 +738,9 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		icon = h.Icon.Default
 	}
 
+	driverScripts := h.Driver.Scripts()
+	driverStyles := h.Driver.Styles()
+
 	var b bytes.Buffer
 	b.WriteString("<!DOCTYPE html>\n")
 	PrintHTML(&b, h.HTML().
@@ -773,10 +794,18 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Href(h.resolvePackagePath("/app.css")),
 				Script().
 					Defer(true).
-					Src(h.resolvePackagePath("/wasm_exec.js")),
-				Script().
-					Defer(true).
 					Src(h.resolvePackagePath("/app.js")),
+				Range(driverScripts).Slice(func(i int) UI {
+					return Script().
+						Defer(true).
+						Src(driverScripts[i])
+				}),
+				Range(driverStyles).Slice(func(i int) UI {
+					return Link().
+						Type("text/css").
+						Rel("stylesheet").
+						Href(driverStyles[i])
+				}),
 				Range(h.Styles).Slice(func(i int) UI {
 					return Link().
 						Type("text/css").
@@ -806,19 +835,7 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) resolvePackagePath(path string) string {
-	var b strings.Builder
-
-	b.WriteByte('/')
-	appResources := strings.Trim(h.Resources.Package(), "/")
-	b.WriteString(appResources)
-
-	path = strings.Trim(path, "/")
-	if b.Len() != 1 && path != "" {
-		b.WriteByte('/')
-	}
-	b.WriteString(path)
-
-	return b.String()
+	return resolvePackagePath(h.Resources, path)
 }
 
 func (h *Handler) resolveStaticPath(path string) string {
@@ -882,17 +899,80 @@ func isStaticResourcePath(path string) bool {
 		strings.HasPrefix(path, "web/")
 }
 
-type httpResource struct {
-	Path        string
-	ContentType string
-	Body        []byte
-	ExpireAt    time.Time
+// Driver sets up go-app execution environment on the client side.
+type Driver interface {
+	// A list of scripts that must be included into every pre-rendered page to
+	// initialize the app.
+	Scripts() []string
+
+	// A list of CSS style sheets required by the driver scripts.
+	Styles() []string
+
+	// A list of additional HTTP resources that should be cached by the service
+	// worker, such as the wasm binary.
+	//
+	// Scripts and styles are cached automatically and don't need to be repeated
+	// here.
+	CacheableResources() []string
+
+	// A list of pre-rendered resources (scripts, styles, etc.) that are
+	// generated by the driver at startup.
+	PreRenderItems() []PreRenderedItem
 }
 
-func (r httpResource) Len() int {
-	return len(r.Body)
+// goWasmDriver sets up go-app execution environment when the client side is
+// compiles using Go WebAssembly.
+type goWasmDriver struct {
+	LoadingLabel            string
+	Resources               ResourceProvider
+	WasmContentLengthHeader string
 }
 
-func (r httpResource) IsExpired() bool {
-	return r.ExpireAt != time.Time{} && r.ExpireAt.Before(time.Now())
+func (d *goWasmDriver) Scripts() []string {
+	return []string{
+		resolvePackagePath(d.Resources, "/wasm_exec.js"),
+		resolvePackagePath(d.Resources, "/driver-wasm.js"),
+	}
+}
+
+func (d *goWasmDriver) Styles() []string { return nil }
+
+func (d *goWasmDriver) CacheableResources() []string {
+	return []string{
+		d.Resources.AppWASM(),
+	}
+}
+
+func (d *goWasmDriver) PreRenderItems() []PreRenderedItem {
+	items := []PreRenderedItem{
+		{
+			Path:        "/wasm_exec.js",
+			ContentType: "application/javascript",
+			Body:        []byte(wasmExecJS),
+		},
+		{
+			Path:        "/driver-wasm.js",
+			ContentType: "application/javascript",
+			Body:        d.makeDriverJS(),
+		},
+	}
+	return items
+}
+
+func (d *goWasmDriver) makeDriverJS() []byte {
+	var b bytes.Buffer
+	if err := template.
+		Must(template.New("driver-wasm.js").Parse(wasmDriverJS)).
+		Execute(&b, struct {
+			LoadingLabel            string
+			Wasm                    string
+			WasmContentLengthHeader string
+		}{
+			LoadingLabel:            d.LoadingLabel,
+			Wasm:                    d.Resources.AppWASM(),
+			WasmContentLengthHeader: d.WasmContentLengthHeader,
+		}); err != nil {
+		panic(errors.New("initializing driver-wasm.js failed").Wrap(err))
+	}
+	return b.Bytes()
 }

@@ -10,22 +10,22 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func testSkipNonWasm(t *testing.T) {
-	if goarch := runtime.GOARCH; goarch != "wasm" {
+func testSkipNonJS(t *testing.T) {
+	if goos := runtime.GOOS; goos != "js" {
 		t.Skip(logs.New("skipping test").
-			WithTag("reason", "unsupported architecture").
-			WithTag("required-architecture", "wasm").
-			WithTag("current-architecture", goarch),
+			WithTag("reason", "unsupported OS").
+			WithTag("required-os", "js").
+			WithTag("current-os", goos),
 		)
 	}
 }
 
-func testSkipWasm(t *testing.T) {
-	if goarch := runtime.GOARCH; goarch == "wasm" {
+func testSkipJS(t *testing.T) {
+	if goos := runtime.GOOS; goos == "js" {
 		t.Skip(logs.New("skipping test").
-			WithTag("reason", "unsupported architecture").
-			WithTag("required-architecture", "!= than wasm").
-			WithTag("current-architecture", goarch),
+			WithTag("reason", "unsupported OS").
+			WithTag("required-os", "!= than js").
+			WithTag("current-os", goos),
 		)
 	}
 }

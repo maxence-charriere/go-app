@@ -26,11 +26,11 @@ import (
 const (
 	// IsClient reports whether the code is running as a client in the
 	// WebAssembly binary (app.wasm).
-	IsClient = runtime.GOARCH == "wasm" && runtime.GOOS == "js"
+	IsClient = runtime.GOOS == "js"
 
 	// IsServer reports whether the code is running on a server for
 	// pre-rendering purposes.
-	IsServer = runtime.GOARCH != "wasm" || runtime.GOOS != "js"
+	IsServer = runtime.GOOS != "js"
 
 	orientationChangeDelay = time.Millisecond * 500
 	engineUpdateRate       = 120

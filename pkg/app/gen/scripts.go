@@ -18,7 +18,7 @@ func main() {
 	}
 	defer f.Close()
 
-	fmt.Fprintln(f, "//go:build !wasm")
+	fmt.Fprintln(f, "//go:build !js")
 	fmt.Fprintln(f)
 	fmt.Fprintln(f, "package app")
 	fmt.Fprintln(f)
@@ -43,6 +43,10 @@ func main() {
 				"wasm",
 				"wasm_exec.js",
 			),
+		},
+		{
+			Var:      "wasmDriverJS",
+			Filename: "gen/driver-wasm.js",
 		},
 		{
 			Var:      "appJS",

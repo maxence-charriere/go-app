@@ -14,12 +14,12 @@ func TestLog(t *testing.T) {
 }
 
 func TestServerLog(t *testing.T) {
-	testSkipWasm(t)
+	testSkipJS(t)
 	testLogger(t, serverLog)
 }
 
 func TestClientLog(t *testing.T) {
-	testSkipNonWasm(t)
+	testSkipNonJS(t)
 	testLogger(t, clientLog)
 }
 

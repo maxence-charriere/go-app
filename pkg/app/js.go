@@ -5,7 +5,7 @@ import (
 )
 
 const (
-// isClientSide = runtime.GOARCH == "wasm" && runtime.GOOS == "js"
+// isClientSide = runtime.GOOS == "js"
 )
 
 // Type represents the JavaScript type of a Value.

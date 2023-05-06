@@ -1,6 +1,3 @@
-//go:build wasm
-// +build wasm
-
 package app
 
 import (
@@ -11,6 +8,7 @@ import (
 
 const (
 	wasmExecJS   = ""
+	wasmDriverJS = ""
 	appJS        = ""
 	appWorkerJS  = ""
 	manifestJSON = ""
@@ -19,7 +17,7 @@ const (
 
 var (
 	errBadInstruction = errors.New("unsupported instruction").
-		WithTag("architecture", runtime.GOARCH)
+		WithTag("os", runtime.GOOS)
 )
 
 func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
