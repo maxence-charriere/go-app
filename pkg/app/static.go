@@ -27,12 +27,19 @@ func GenerateStaticWebsite(dir string, h *Handler, pages ...string) error {
 
 	resources := map[string]struct{}{
 		"/":                     {},
-		"/wasm_exec.js":         {},
 		"/app.js":               {},
 		"/app-worker.js":        {},
 		"/manifest.webmanifest": {},
 		"/app.css":              {},
 		"/web":                  {},
+	}
+
+	for _, path := range h.Driver.Scripts() {
+		resources[path] = struct{}{}
+	}
+
+	for _, path := range h.Driver.Styles() {
+		resources[path] = struct{}{}
 	}
 
 	for path := range routes.routes {

@@ -8,6 +8,7 @@ import (
 
 const (
 	wasmExecJS   = ""
+	wasmDriverJS = ""
 	appJS        = ""
 	appWorkerJS  = ""
 	manifestJSON = ""

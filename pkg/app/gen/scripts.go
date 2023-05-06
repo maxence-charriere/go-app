@@ -45,6 +45,10 @@ func main() {
 			),
 		},
 		{
+			Var:      "wasmDriverJS",
+			Filename: "gen/driver-wasm.js",
+		},
+		{
 			Var:      "appJS",
 			Filename: "gen/app.js",
 		},
