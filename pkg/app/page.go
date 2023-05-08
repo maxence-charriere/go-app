@@ -59,6 +59,9 @@ type Page interface {
 }
 
 type requestPage struct {
+	url                   *url.URL
+	resolveStaticResource func(string) string
+
 	title        string
 	lang         string
 	description  string
@@ -66,7 +69,6 @@ type requestPage struct {
 	keywords     string
 	loadingLabel string
 	image        string
-	url          *url.URL
 	width        int
 	height       int
 }
@@ -120,7 +122,7 @@ func (p *requestPage) Image() string {
 }
 
 func (p *requestPage) SetImage(v string) {
-	p.image = v
+	p.image = p.resolveStaticResource(v)
 }
 
 func (p *requestPage) URL() *url.URL {
@@ -136,8 +138,8 @@ func (p *requestPage) Size() (width int, height int) {
 }
 
 type browserPage struct {
-	url        *url.URL
-	dispatcher Dispatcher
+	url                   *url.URL
+	resolveStaticResource func(string) string
 }
 
 func (p browserPage) Title() string {
@@ -200,7 +202,7 @@ func (p browserPage) Image() string {
 }
 
 func (p browserPage) SetImage(v string) {
-	p.metaByProperty("og:image").setAttr("content", p.dispatcher.resolveStaticResource(v))
+	p.metaByProperty("og:image").setAttr("content", p.resolveStaticResource(v))
 }
 
 func (p browserPage) URL() *url.URL {

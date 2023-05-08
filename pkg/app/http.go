@@ -674,7 +674,10 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	url.Host = r.Host
 	url.Scheme = "http"
 
-	var page requestPage
+	page := requestPage{
+		url:                   &url,
+		resolveStaticResource: h.resolveStaticPath,
+	}
 	page.SetTitle(h.Title)
 	page.SetLang(h.Lang)
 	page.SetDescription(h.Description)
@@ -682,7 +685,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	page.SetKeywords(h.Keywords...)
 	page.SetLoadingLabel(strings.ReplaceAll(h.LoadingLabel, "{progress}", "0"))
 	page.SetImage(h.Image)
-	page.url = &url
 
 	disp := engine{
 		Page:                   &page,

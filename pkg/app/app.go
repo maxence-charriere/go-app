@@ -120,7 +120,7 @@ func RunWhenOnBrowser() {
 		StaticResourceResolver: staticResourcesResolver,
 		ActionHandlers:         actionHandlers,
 	}
-	disp.Page = browserPage{dispatcher: &disp}
+	disp.Page = browserPage{resolveStaticResource: staticResourcesResolver}
 	disp.Body = newClientBody(&disp)
 	disp.init()
 	defer disp.Close()
