@@ -9,9 +9,10 @@ import (
 
 func TestRequestPage(t *testing.T) {
 	testPage(t, &requestPage{
-		width:  42,
-		height: 21,
-		url:    &url.URL{Path: "/"},
+		width:                 42,
+		height:                21,
+		url:                   &url.URL{Path: "/"},
+		resolveStaticResource: func(v string) string { return v },
 	})
 }
 
@@ -21,7 +22,7 @@ func TestBrowserPage(t *testing.T) {
 	client := NewClientTester(Div())
 	defer client.Close()
 	testPage(t, browserPage{
-		dispatcher: client,
+		resolveStaticResource: func(v string) string { return v },
 	})
 }
 
