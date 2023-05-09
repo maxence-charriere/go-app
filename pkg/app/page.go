@@ -56,21 +56,25 @@ type Page interface {
 
 	// Returns the page width and height in px.
 	Size() (w int, h int)
+
+	// Set the Twitter card.
+	SetTwitterCard(v TwitterCard)
 }
 
 type requestPage struct {
 	url                   *url.URL
 	resolveStaticResource func(string) string
 
-	title        string
-	lang         string
-	description  string
-	author       string
-	keywords     string
-	loadingLabel string
-	image        string
-	width        int
-	height       int
+	title          string
+	lang           string
+	description    string
+	author         string
+	keywords       string
+	loadingLabel   string
+	image          string
+	width          int
+	height         int
+	twitterCardMap map[string]string
 }
 
 func (p *requestPage) Title() string {
@@ -135,6 +139,11 @@ func (p *requestPage) ReplaceURL(v *url.URL) {
 
 func (p *requestPage) Size() (width int, height int) {
 	return p.width, p.height
+}
+
+func (p *requestPage) SetTwitterCard(v TwitterCard) {
+	v.Image = p.resolveStaticResource(v.Image)
+	p.twitterCardMap = v.toMap()
 }
 
 type browserPage struct {
@@ -221,6 +230,21 @@ func (p browserPage) Size() (width int, height int) {
 	return Window().Size()
 }
 
+func (p browserPage) SetTwitterCard(v TwitterCard) {
+	v.Image = p.resolveStaticResource(v.Image)
+	head := Window().Get("document").Get("head")
+
+	for k, v := range v.toMap() {
+		if v == "" {
+			continue
+		}
+		meta, _ := Window().createElement("meta", "")
+		meta.setAttr("name", k)
+		meta.setAttr("content", v)
+		head.appendChild(meta)
+	}
+}
+
 func (p browserPage) metaByName(v string) Value {
 	meta := Window().
 		Get("document").
@@ -231,8 +255,7 @@ func (p browserPage) metaByName(v string) Value {
 		meta.setAttr("name", v)
 
 		Window().Get("document").
-			Call("getElementsByTagName", "head").
-			Index(0).
+			Get("head").
 			appendChild(meta)
 	}
 
@@ -249,8 +272,7 @@ func (p browserPage) metaByProperty(v string) Value {
 		meta.setAttr("property", v)
 
 		Window().Get("document").
-			Call("getElementsByTagName", "head").
-			Index(0).
+			Get("head").
 			appendChild(meta)
 	}
 

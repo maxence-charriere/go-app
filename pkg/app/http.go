@@ -767,6 +767,16 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				Meta().
 					Property("og:image").
 					Content(page.Image()),
+				Range(page.twitterCardMap).Map(func(k string) UI {
+					v := page.twitterCardMap[k]
+					if v == "" {
+						return nil
+					}
+					return Meta().
+						Name(k).
+						Content(v)
+				}),
+
 				Title().Text(page.Title()),
 				Range(h.Preconnect).Slice(func(i int) UI {
 					url, crossOrigin, _ := parseSrc(h.Preconnect[i])

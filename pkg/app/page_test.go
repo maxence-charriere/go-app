@@ -55,4 +55,6 @@ func testPage(t *testing.T, p Page) {
 	w, h := p.Size()
 	require.NotZero(t, w)
 	require.NotZero(t, h)
+
+	p.SetTwitterCard(TwitterCard{Card: "summary"})
 }
