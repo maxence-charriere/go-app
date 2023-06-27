@@ -26,6 +26,19 @@ func TestAttributesSet(t *testing.T) {
 		require.Equal(t, "foo bar", attributes["class"])
 	})
 
+	t.Run("set srcset", func(t *testing.T) {
+		attributes := make(attributes)
+		attributes.Set("srcset", "/hi")
+		require.Equal(t, "/hi", attributes["srcset"])
+	})
+
+	t.Run("set multiple srcset", func(t *testing.T) {
+		attributes := make(attributes)
+		attributes.Set("srcset", "/hi")
+		attributes.Set("srcset", "/bye")
+		require.Equal(t, "/hi, /bye", attributes["srcset"])
+	})
+
 	t.Run("set common attribute", func(t *testing.T) {
 		attributes := make(attributes)
 		attributes.Set("value", "foo")
@@ -139,6 +152,11 @@ func TestResolveAttributeURLValue(t *testing.T) {
 			name:          "srcset",
 			value:         "bar",
 			resolvedValue: "/foo/bar",
+		},
+		{
+			name:          "srcset",
+			value:         "hi, bye",
+			resolvedValue: "/foo/hi, /foo/bye",
 		},
 	}
 

@@ -4,6 +4,7 @@ import (
 	"context"
 	"io"
 	"reflect"
+	"strconv"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/errors"
 )
@@ -305,19 +306,7 @@ func (e *htmlElement) html(w io.Writer) {
 	io.WriteString(w, e.tag)
 
 	for k, v := range e.attributes {
-		io.WriteString(w, " ")
-		io.WriteString(w, k)
-
-		if v != "" {
-			io.WriteString(w, `="`)
-			io.WriteString(w, resolveAttributeURLValue(k, v, func(s string) string {
-				if e.dispatcher != nil {
-					return e.dispatcher.resolveStaticResource(v)
-				}
-				return v
-			}))
-			io.WriteString(w, `"`)
-		}
+		e.writeHTMLAttribute(w, k, v)
 	}
 
 	io.WriteString(w, ">")
@@ -326,15 +315,20 @@ func (e *htmlElement) html(w io.Writer) {
 		return
 	}
 
+	hasNewLineChildren := len(e.children) > 1
+
 	for _, c := range e.children {
-		io.WriteString(w, "\n")
+		if hasNewLineChildren {
+			io.WriteString(w, "\n")
+		}
+
 		if c.self() == nil {
 			c.setSelf(c)
 		}
 		c.html(w)
 	}
 
-	if len(e.children) != 0 {
+	if hasNewLineChildren {
 		io.WriteString(w, "\n")
 	}
 
@@ -349,19 +343,7 @@ func (e *htmlElement) htmlWithIndent(w io.Writer, indent int) {
 	io.WriteString(w, e.tag)
 
 	for k, v := range e.attributes {
-		io.WriteString(w, " ")
-		io.WriteString(w, k)
-
-		if v != "" {
-			io.WriteString(w, `="`)
-			io.WriteString(w, resolveAttributeURLValue(k, v, func(s string) string {
-				if e.dispatcher != nil {
-					return e.dispatcher.resolveStaticResource(v)
-				}
-				return v
-			}))
-			io.WriteString(w, `"`)
-		}
+		e.writeHTMLAttribute(w, k, v)
 	}
 
 	io.WriteString(w, ">")
@@ -370,15 +352,21 @@ func (e *htmlElement) htmlWithIndent(w io.Writer, indent int) {
 		return
 	}
 
+	hasNewLineChildren := (len(e.children) == 1 && e.children[0].Kind() != SimpleText) ||
+		len(e.children) > 1
+
 	for _, c := range e.children {
-		io.WriteString(w, "\n")
+		if hasNewLineChildren {
+			io.WriteString(w, "\n")
+		}
+
 		if c.self() == nil {
 			c.setSelf(c)
 		}
 		c.htmlWithIndent(w, indent+1)
 	}
 
-	if len(e.children) != 0 {
+	if hasNewLineChildren {
 		io.WriteString(w, "\n")
 		writeIndent(w, indent)
 	}
@@ -386,4 +374,23 @@ func (e *htmlElement) htmlWithIndent(w io.Writer, indent int) {
 	io.WriteString(w, "</")
 	io.WriteString(w, e.tag)
 	io.WriteString(w, ">")
+}
+
+func (e *htmlElement) writeHTMLAttribute(w io.Writer, k, v string) {
+	if (k == "id" || k == "class") && v == "" {
+		return
+	}
+
+	io.WriteString(w, " ")
+	io.WriteString(w, k)
+
+	if v != "" && v != "true" {
+		io.WriteString(w, `=`)
+		io.WriteString(w, strconv.Quote(resolveAttributeURLValue(k, v, func(s string) string {
+			if e.dispatcher != nil {
+				return e.dispatcher.resolveStaticResource(s)
+			}
+			return s
+		})))
+	}
 }

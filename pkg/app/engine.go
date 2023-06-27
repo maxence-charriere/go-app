@@ -323,6 +323,7 @@ func (e *engine) start(ctx context.Context) {
 		currentFrameDuration := frameDuration
 		frames := time.NewTicker(frameDuration)
 
+		e.states.Cleanup()
 		cleanups := time.NewTicker(time.Minute)
 		defer cleanups.Stop()
 

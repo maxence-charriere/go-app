@@ -57,14 +57,6 @@ func writeIndent(w io.Writer, indent int) {
 	}
 }
 
-func ln() []byte {
-	return []byte("\n")
-}
-
-func pxToString(px int) string {
-	return strconv.Itoa(px) + "px"
-}
-
 func stringTo(s string, v any) error {
 	val := reflect.ValueOf(v)
 
@@ -110,16 +102,23 @@ func stringTo(s string, v any) error {
 	return nil
 }
 
-// AppendClass adds c to the given class string.
-func AppendClass(class, c string) string {
-	if c == "" {
-		return class
+// AppendClass adds values to the given class string.
+func AppendClass(class string, v ...string) string {
+	var b strings.Builder
+	b.WriteString(strings.TrimSpace(class))
+
+	for _, c := range v {
+		if len(c) == 0 {
+			continue
+		}
+
+		if b.Len() != 0 {
+			b.WriteByte(' ')
+		}
+		b.WriteString(strings.TrimSpace(c))
 	}
-	if class != "" {
-		class += " "
-	}
-	class += c
-	return class
+
+	return b.String()
 }
 
 func jsonString(v any) string {

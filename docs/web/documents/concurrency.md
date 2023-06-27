@@ -104,7 +104,7 @@ func (f *foo) OnNav(ctx app.Context) {
 ## Defer
 
 ```go
-func (c *Compo) Defer(fn func(Context))
+func (ctx Context) Defer(fn func(Context))
 ```
 
 [Defer()](/reference#Compo.Defer) is a [Compo](/reference#Compo) method that like [Dispatch()](#dispatch), executes a given function on the [UI goroutine](#ui-goroutine). The difference is that the given function is executed after a component has its UI updated.

@@ -56,19 +56,25 @@ type Page interface {
 
 	// Returns the page width and height in px.
 	Size() (w int, h int)
+
+	// Set the Twitter card.
+	SetTwitterCard(v TwitterCard)
 }
 
 type requestPage struct {
-	title        string
-	lang         string
-	description  string
-	author       string
-	keywords     string
-	loadingLabel string
-	image        string
-	url          *url.URL
-	width        int
-	height       int
+	url                   *url.URL
+	resolveStaticResource func(string) string
+
+	title          string
+	lang           string
+	description    string
+	author         string
+	keywords       string
+	loadingLabel   string
+	image          string
+	width          int
+	height         int
+	twitterCardMap map[string]string
 }
 
 func (p *requestPage) Title() string {
@@ -120,7 +126,7 @@ func (p *requestPage) Image() string {
 }
 
 func (p *requestPage) SetImage(v string) {
-	p.image = v
+	p.image = p.resolveStaticResource(v)
 }
 
 func (p *requestPage) URL() *url.URL {
@@ -135,9 +141,14 @@ func (p *requestPage) Size() (width int, height int) {
 	return p.width, p.height
 }
 
+func (p *requestPage) SetTwitterCard(v TwitterCard) {
+	v.Image = p.resolveStaticResource(v.Image)
+	p.twitterCardMap = v.toMap()
+}
+
 type browserPage struct {
-	url        *url.URL
-	dispatcher Dispatcher
+	url                   *url.URL
+	resolveStaticResource func(string) string
 }
 
 func (p browserPage) Title() string {
@@ -200,7 +211,7 @@ func (p browserPage) Image() string {
 }
 
 func (p browserPage) SetImage(v string) {
-	p.metaByProperty("og:image").setAttr("content", p.dispatcher.resolveStaticResource(v))
+	p.metaByProperty("og:image").setAttr("content", p.resolveStaticResource(v))
 }
 
 func (p browserPage) URL() *url.URL {
@@ -219,6 +230,21 @@ func (p browserPage) Size() (width int, height int) {
 	return Window().Size()
 }
 
+func (p browserPage) SetTwitterCard(v TwitterCard) {
+	v.Image = p.resolveStaticResource(v.Image)
+	head := Window().Get("document").Get("head")
+
+	for k, v := range v.toMap() {
+		if v == "" {
+			continue
+		}
+		meta, _ := Window().createElement("meta", "")
+		meta.setAttr("name", k)
+		meta.setAttr("content", v)
+		head.appendChild(meta)
+	}
+}
+
 func (p browserPage) metaByName(v string) Value {
 	meta := Window().
 		Get("document").
@@ -229,8 +255,7 @@ func (p browserPage) metaByName(v string) Value {
 		meta.setAttr("name", v)
 
 		Window().Get("document").
-			Call("getElementsByTagName", "head").
-			Index(0).
+			Get("head").
 			appendChild(meta)
 	}
 
@@ -247,8 +272,7 @@ func (p browserPage) metaByProperty(v string) Value {
 		meta.setAttr("property", v)
 
 		Window().Get("document").
-			Call("getElementsByTagName", "head").
-			Index(0).
+			Get("head").
 			appendChild(meta)
 	}
 

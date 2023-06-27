@@ -703,3 +703,93 @@ func TestIsStaticResourcePath(t *testing.T) {
 		})
 	}
 }
+
+func TestParseSrc(t *testing.T) {
+	utests := []struct {
+		scenario    string
+		in          string
+		url         string
+		crossOrigin string
+		loading     string
+	}{
+		{
+			scenario:    "empty",
+			in:          "",
+			url:         "",
+			crossOrigin: "",
+			loading:     "",
+		},
+		{
+			scenario:    "url is parsed",
+			in:          "https://hello.world",
+			url:         "https://hello.world",
+			crossOrigin: "",
+			loading:     "",
+		},
+		{
+			scenario:    "url and simple crossorigin is parsed",
+			in:          "https://hello.world crossorigin",
+			url:         "https://hello.world",
+			crossOrigin: "true",
+			loading:     "",
+		},
+		{
+			scenario:    "url and defined crossorigin is parsed",
+			in:          "https://hello.world crossorigin=use-credentials",
+			url:         "https://hello.world",
+			crossOrigin: "use-credentials",
+			loading:     "",
+		},
+		{
+			scenario:    "simple crossorigin is parsed",
+			in:          "crossorigin",
+			url:         "",
+			crossOrigin: "true",
+			loading:     "",
+		},
+		{
+			scenario:    "defined crossorigin is parsed",
+			in:          "crossorigin=anonymous",
+			url:         "",
+			crossOrigin: "anonymous",
+			loading:     "",
+		},
+		{
+			scenario:    "out of order url and simple crossorigin is parsed",
+			in:          "    crossorigin    https://hello.world ",
+			url:         "https://hello.world",
+			crossOrigin: "true",
+			loading:     "",
+		},
+		{
+			scenario:    "url and async loading is parsed",
+			in:          "https://hello.world async",
+			url:         "https://hello.world",
+			crossOrigin: "",
+			loading:     "async",
+		},
+		{
+			scenario:    "url and defer loading is parsed",
+			in:          "https://hello.world defer",
+			url:         "https://hello.world",
+			crossOrigin: "",
+			loading:     "defer",
+		},
+		{
+			scenario:    "url with crossorigin and loading is parsed",
+			in:          "https://hello.world defer crossorigin",
+			url:         "https://hello.world",
+			crossOrigin: "true",
+			loading:     "defer",
+		},
+	}
+
+	for _, u := range utests {
+		t.Run(u.scenario, func(t *testing.T) {
+			url, crossOrigin, loading := parseSrc(u.in)
+			require.Equal(t, u.url, url)
+			require.Equal(t, u.crossOrigin, crossOrigin)
+			require.Equal(t, u.loading, loading)
+		})
+	}
+}

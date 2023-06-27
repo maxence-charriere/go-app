@@ -2,15 +2,14 @@ package app
 
 import (
 	"bytes"
-	"context"
 	"crypto/sha1"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"reflect"
-	"runtime"
 	"sort"
 	"strconv"
 	"strings"
@@ -22,9 +21,7 @@ import (
 )
 
 const (
-	defaultThemeColor         = "#2d2c2c"
-	defaultPreRenderCacheSize = 8000000
-	defaultPreRenderCacheTTL  = time.Hour * 24
+	defaultThemeColor = "#2d2c2c"
 )
 
 // Handler is an HTTP handler that serves an HTML page that loads a Go wasm app
@@ -91,6 +88,17 @@ type Handler struct {
 	//  },
 	Styles []string
 
+	// The paths or urls of the font files to preload with the page.
+	//
+	// eg:
+	//  app.Handler{
+	//      Fonts: []string{
+	//          "/web/test.woff2",            // Static resource
+	//          "https://foo.com/test.woff2", // External resource
+	//      },
+	//  },
+	Fonts []string
+
 	// The paths or urls of the JavaScript files to use with the page.
 	//
 	// eg:
@@ -146,14 +154,12 @@ type Handler struct {
 	// would be the URL for an OAuth authentication.
 	InternalURLs []string
 
-	// The cache that stores pre-rendered pages.
-	//
-	// Default: A LRU cache that keeps pages up to 24h and have a maximum size
-	// of 8MB.
-	PreRenderCache PreRenderCache
-
-	// The Control-Cache header value for pre-rendered resources.
-	PreRenderCacheControl string
+	// The URLs of the origins to preconnect in order to improve the user
+	// experience by preemptively initiating a connection to those origins.
+	// Preconnecting speeds up future loads from a given origin by preemptively
+	// performing part or all of the handshake (DNS+TCP for HTTP, and
+	// DNS+TCP+TLS for HTTPS origins).
+	Preconnect []string
 
 	// The static resources that are accessible from custom paths. Files that
 	// are proxied by default are /robots.txt, /sitemap.xml and /ads.txt.
@@ -190,24 +196,25 @@ type Handler struct {
 	// worker template is not supported and will be closed.
 	ServiceWorkerTemplate string
 
-	once           sync.Once
-	etag           string
-	pwaResources   PreRenderCache
-	proxyResources map[string]ProxyResource
+	once                 sync.Once
+	etag                 string
+	proxyResources       map[string]ProxyResource
+	cachedProxyResources *memoryCache
+	cachedPWAResources   *memoryCache
 }
 
 func (h *Handler) init() {
 	h.initVersion()
 	h.initStaticResources()
 	h.initImage()
-	h.initStyles()
+	h.initLinks()
 	h.initScripts()
 	h.initServiceWorker()
 	h.initCacheableResources()
 	h.initIcon()
 	h.initPWA()
 	h.initPageContent()
-	h.initPreRenderedResources()
+	h.initPWAResources()
 	h.initProxyResources()
 }
 
@@ -231,9 +238,18 @@ func (h *Handler) initImage() {
 	}
 }
 
-func (h *Handler) initStyles() {
+func (h *Handler) initLinks() {
+	for i, path := range h.Preconnect {
+		h.Preconnect[i] = h.resolveStaticPath(path)
+	}
+
 	for i, path := range h.Styles {
 		h.Styles[i] = h.resolveStaticPath(path)
+	}
+	h.Styles = append([]string{h.resolvePackagePath("/app.css")}, h.Styles...)
+
+	for i, path := range h.Fonts {
+		h.Fonts[i] = h.resolveStaticPath(path)
 	}
 }
 
@@ -309,46 +325,38 @@ func (h *Handler) initPageContent() {
 
 }
 
-func (h *Handler) initPreRenderedResources() {
-	h.pwaResources = newPreRenderCache(5)
-	ctx := context.TODO()
+func (h *Handler) initPWAResources() {
+	h.cachedPWAResources = newMemoryCache(5)
 
-	h.pwaResources.Set(ctx, PreRenderedItem{
+	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/wasm_exec.js",
 		ContentType: "application/javascript",
 		Body:        []byte(wasmExecJS),
 	})
 
-	h.pwaResources.Set(ctx, PreRenderedItem{
+	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/app.js",
 		ContentType: "application/javascript",
 		Body:        h.makeAppJS(),
 	})
 
-	h.pwaResources.Set(ctx, PreRenderedItem{
+	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/app-worker.js",
 		ContentType: "application/javascript",
 		Body:        h.makeAppWorkerJS(),
 	})
 
-	h.pwaResources.Set(ctx, PreRenderedItem{
+	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/manifest.webmanifest",
 		ContentType: "application/manifest+json",
 		Body:        h.makeManifestJSON(),
 	})
 
-	h.pwaResources.Set(ctx, PreRenderedItem{
+	h.cachedPWAResources.Set(cacheItem{
 		Path:        "/app.css",
 		ContentType: "text/css",
 		Body:        []byte(appCSS),
 	})
-
-	if h.PreRenderCache == nil {
-		h.PreRenderCache = NewPreRenderLRUCache(
-			defaultPreRenderCacheSize,
-			defaultPreRenderCacheTTL,
-		)
-	}
 }
 
 func (h *Handler) makeAppJS() []byte {
@@ -400,6 +408,8 @@ func (h *Handler) makeAppWorkerJS() []byte {
 			if r == "" {
 				continue
 			}
+
+			r, _, _ = parseSrc(r)
 			resources[r] = struct{}{}
 		}
 	}
@@ -413,6 +423,7 @@ func (h *Handler) makeAppWorkerJS() []byte {
 	)
 	setResources(h.Icon.Default, h.Icon.Large, h.Icon.AppleTouch)
 	setResources(h.Styles...)
+	setResources(h.Fonts...)
 	setResources(h.Scripts...)
 	setResources(h.CacheableResources...)
 
@@ -482,6 +493,7 @@ func (h *Handler) makeManifestJSON() []byte {
 }
 
 func (h *Handler) initProxyResources() {
+	h.cachedProxyResources = newMemoryCache(len(h.ProxyResources))
 	resources := make(map[string]ProxyResource)
 
 	for _, r := range h.ProxyResources {
@@ -567,13 +579,8 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	if res, ok := h.pwaResources.Get(r.Context(), path); ok {
-		h.servePreRenderedItem(w, res)
-		return
-	}
-
-	if res, ok := h.PreRenderCache.Get(r.Context(), path); ok {
-		h.servePreRenderedItem(w, res)
+	if res, ok := h.cachedPWAResources.Get(path); ok {
+		h.serveCachedItem(w, res)
 		return
 	}
 
@@ -585,16 +592,12 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.servePage(w, r)
 }
 
-func (h *Handler) servePreRenderedItem(w http.ResponseWriter, i PreRenderedItem) {
-	w.Header().Set("Content-Length", strconv.Itoa(i.Size()))
+func (h *Handler) serveCachedItem(w http.ResponseWriter, i cacheItem) {
+	w.Header().Set("Content-Length", strconv.Itoa(i.Len()))
 	w.Header().Set("Content-Type", i.ContentType)
 
 	if i.ContentEncoding != "" {
 		w.Header().Set("Content-Encoding", i.ContentEncoding)
-	}
-
-	if i.CacheControl != "" {
-		w.Header().Set("Cache-Control", i.CacheControl)
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -613,6 +616,11 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 		u = protocol + r.Host + resource.ResourcePath
 	} else {
 		u = h.Resources.Static() + resource.ResourcePath
+	}
+
+	if i, ok := h.cachedProxyResources.Get(resource.Path); ok {
+		h.serveCachedItem(w, i)
+		return
 	}
 
 	res, err := http.Get(u)
@@ -645,14 +653,14 @@ func (h *Handler) serveProxyResource(resource ProxyResource, w http.ResponseWrit
 		return
 	}
 
-	item := PreRenderedItem{
+	item := cacheItem{
 		Path:            resource.Path,
 		ContentType:     res.Header.Get("Content-Type"),
 		ContentEncoding: res.Header.Get("Content-Encoding"),
 		Body:            body,
 	}
-	h.PreRenderCache.Set(r.Context(), item)
-	h.servePreRenderedItem(w, item)
+	h.cachedProxyResources.Set(item)
+	h.serveCachedItem(w, item)
 }
 
 func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
@@ -666,7 +674,10 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	url.Host = r.Host
 	url.Scheme = "http"
 
-	var page requestPage
+	page := requestPage{
+		url:                   &url,
+		resolveStaticResource: h.resolveStaticPath,
+	}
 	page.SetTitle(h.Title)
 	page.SetLang(h.Lang)
 	page.SetDescription(h.Description)
@@ -674,7 +685,6 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 	page.SetKeywords(h.Keywords...)
 	page.SetLoadingLabel(strings.ReplaceAll(h.LoadingLabel, "{progress}", "0"))
 	page.SetImage(h.Image)
-	page.url = &url
 
 	disp := engine{
 		Page:                   &page,
@@ -682,21 +692,11 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 		StaticResourceResolver: h.resolveStaticPath,
 		ActionHandlers:         actionHandlers,
 	}
-	body := h.Body().privateBody(Div())
-	if err := mount(&disp, body); err != nil {
-		panic(errors.New("mounting pre-rendering container failed").
-			WithTag("server-side", disp.isServerSide()).
-			WithTag("body-type", reflect.TypeOf(disp.Body)).
-			Wrap(err))
-	}
-	disp.Body = body
-	disp.init()
-	defer disp.Close()
-
-	disp.Mount(Div().Body(
+	body := h.Body().privateBody(
+		Div(), // Pre-rendeging placeholder
 		Aside().
 			ID("app-wasm-loader").
-			Class("goapp-app-info").
+			Class("app-wasm-loader").
 			Body(
 				Img().
 					ID("app-wasm-loader-icon").
@@ -707,8 +707,18 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 					Class("goapp-label").
 					Text(page.loadingLabel),
 			),
-		Div().ID("app-pre-render").Body(content),
-	))
+	)
+	if err := mount(&disp, body); err != nil {
+		panic(errors.New("mounting pre-rendering container failed").
+			WithTag("server-side", disp.isServerSide()).
+			WithTag("body-type", reflect.TypeOf(disp.Body)).
+			Wrap(err))
+	}
+	disp.Body = body
+	disp.init()
+	defer disp.Close()
+
+	disp.Mount(content)
 
 	for len(disp.dispatches) != 0 {
 		disp.Consume()
@@ -757,7 +767,69 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				Meta().
 					Property("og:image").
 					Content(page.Image()),
+				Range(page.twitterCardMap).Map(func(k string) UI {
+					v := page.twitterCardMap[k]
+					if v == "" {
+						return nil
+					}
+					return Meta().
+						Name(k).
+						Content(v)
+				}),
+
 				Title().Text(page.Title()),
+				Range(h.Preconnect).Slice(func(i int) UI {
+					url, crossOrigin, _ := parseSrc(h.Preconnect[i])
+					if url == "" {
+						return nil
+					}
+
+					link := Link().
+						Rel("preconnect").
+						Href(url)
+
+					if crossOrigin != "" {
+						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
+					}
+
+					return link
+				}),
+				Range(h.Fonts).Slice(func(i int) UI {
+					url, crossOrigin, _ := parseSrc(h.Fonts[i])
+					if url == "" {
+						return nil
+					}
+
+					link := Link().
+						Type("font/" + strings.TrimPrefix(filepath.Ext(url), ".")).
+						Rel("preload").
+						Href(url).
+						As("font")
+
+					if crossOrigin != "" {
+						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
+					}
+
+					return link
+				}),
+				Range(h.Styles).Slice(func(i int) UI {
+					url, crossOrigin, _ := parseSrc(h.Styles[i])
+					if url == "" {
+						return nil
+					}
+
+					link := Link().
+						Type("text/css").
+						Rel("preload").
+						Href(url).
+						As("style")
+
+					if crossOrigin != "" {
+						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
+					}
+
+					return link
+				}),
 				Link().
 					Rel("icon").
 					Href(icon),
@@ -767,26 +839,67 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 				Link().
 					Rel("manifest").
 					Href(h.resolvePackagePath("/manifest.webmanifest")),
-				Link().
-					Type("text/css").
-					Rel("stylesheet").
-					Href(h.resolvePackagePath("/app.css")),
+				Range(h.Styles).Slice(func(i int) UI {
+					url, crossOrigin, _ := parseSrc(h.Styles[i])
+					if url == "" {
+						return nil
+					}
+
+					link := Link().
+						Rel("stylesheet").
+						Type("text/css").
+						Href(url)
+
+					if crossOrigin != "" {
+						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
+					}
+
+					return link
+				}),
+				Range(h.Styles).Slice(func(i int) UI {
+					url, crossOrigin, _ := parseSrc(h.Styles[i])
+					if url == "" {
+						return nil
+					}
+
+					link := Link().
+						Type("text/css").
+						Rel("stylesheet").
+						Href(url)
+
+					if crossOrigin != "" {
+						link = link.CrossOrigin(strings.Trim(crossOrigin, "true"))
+					}
+
+					return link
+				}),
 				Script().
 					Defer(true).
 					Src(h.resolvePackagePath("/wasm_exec.js")),
 				Script().
 					Defer(true).
 					Src(h.resolvePackagePath("/app.js")),
-				Range(h.Styles).Slice(func(i int) UI {
-					return Link().
-						Type("text/css").
-						Rel("stylesheet").
-						Href(h.Styles[i])
-				}),
 				Range(h.Scripts).Slice(func(i int) UI {
-					return Script().
-						Defer(true).
-						Src(h.Scripts[i])
+					url, crossOrigin, loading := parseSrc(h.Scripts[i])
+					if url == "" {
+						return nil
+					}
+
+					script := Script().Src(url)
+
+					if crossOrigin != "" {
+						script = script.CrossOrigin(strings.Trim(crossOrigin, "true"))
+					}
+
+					switch loading {
+					case "defer":
+						script = script.Defer(true)
+
+					case "async":
+						script.Async(true)
+					}
+
+					return script
 				}),
 				Range(h.RawHeaders).Slice(func(i int) UI {
 					return Raw(h.RawHeaders[i])
@@ -795,14 +908,10 @@ func (h *Handler) servePage(w http.ResponseWriter, r *http.Request) {
 			body,
 		))
 
-	item := PreRenderedItem{
-		Path:         page.URL().Path,
-		Body:         b.Bytes(),
-		ContentType:  "text/html",
-		CacheControl: h.PreRenderCacheControl,
-	}
-	h.PreRenderCache.Set(r.Context(), item)
-	h.servePreRenderedItem(w, item)
+	w.Header().Set("Content-Length", strconv.Itoa(b.Len()))
+	w.Header().Set("Content-Type", "text/html")
+	w.WriteHeader(http.StatusOK)
+	w.Write(b.Bytes())
 }
 
 func (h *Handler) resolvePackagePath(path string) string {
@@ -865,13 +974,6 @@ type Icon struct {
 // web app.
 type Environment map[string]string
 
-func normalizeFilePath(path string) string {
-	if runtime.GOOS == "windows" {
-		return strings.ReplaceAll(path, "/", `\`)
-	}
-	return path
-}
-
 func isRemoteLocation(path string) bool {
 	return strings.HasPrefix(path, "https://") ||
 		strings.HasPrefix(path, "http://")
@@ -882,17 +984,30 @@ func isStaticResourcePath(path string) bool {
 		strings.HasPrefix(path, "web/")
 }
 
-type httpResource struct {
-	Path        string
-	ContentType string
-	Body        []byte
-	ExpireAt    time.Time
-}
+func parseSrc(link string) (url, crossOrigin, loading string) {
+	for _, p := range strings.Split(link, " ") {
+		p = strings.TrimSpace(p)
+		if p == "" {
+			continue
+		}
 
-func (r httpResource) Len() int {
-	return len(r.Body)
-}
+		switch {
+		case p == "crossorigin":
+			crossOrigin = "true"
 
-func (r httpResource) IsExpired() bool {
-	return r.ExpireAt != time.Time{} && r.ExpireAt.Before(time.Now())
+		case strings.HasPrefix(p, "crossorigin="):
+			crossOrigin = strings.TrimPrefix(p, "crossorigin=")
+
+		case p == "defer":
+			loading = "defer"
+
+		case p == "async":
+			loading = "async"
+
+		default:
+			url = p
+		}
+	}
+
+	return url, crossOrigin, loading
 }

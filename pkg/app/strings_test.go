@@ -96,3 +96,48 @@ func TestStringToFloat(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, float64(0), f64)
 }
+
+func TestAppendClass(t *testing.T) {
+	utests := []struct {
+		scenario       string
+		class          string
+		addedClasses   []string
+		expectedResult string
+	}{
+		{
+			scenario:       "empty class without additional classes",
+			class:          "",
+			addedClasses:   nil,
+			expectedResult: "",
+		},
+		{
+			scenario:       "empty class with additional classes",
+			class:          "",
+			addedClasses:   []string{"foo", "bar"},
+			expectedResult: "foo bar",
+		},
+		{
+			scenario:       "class without additional classes",
+			class:          "foo",
+			addedClasses:   nil,
+			expectedResult: "foo",
+		},
+		{
+			scenario:       "class with additional classes",
+			class:          "foo",
+			addedClasses:   []string{"bar"},
+			expectedResult: "foo bar",
+		},
+	}
+
+	for _, u := range utests {
+		res := AppendClass(u.class, u.addedClasses...)
+		require.Equal(t, u.expectedResult, res)
+	}
+}
+
+func BenchmarkAppendClass(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		AppendClass("hello", "foo-bar-k", "bar-lkj-adsf-adsf")
+	}
+}
